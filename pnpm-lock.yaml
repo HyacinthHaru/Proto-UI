@@ -816,6 +816,28 @@ importers:
         specifier: workspace:*
         version: link:../../runtime
 
+  packages/prototypes/brutalist:
+    dependencies:
+      '@proto.ui/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@proto.ui/prototypes-base':
+        specifier: workspace:*
+        version: link:../base
+    devDependencies:
+      '@proto.ui/module-as-trigger':
+        specifier: workspace:*
+        version: link:../../modules/as-trigger
+      '@proto.ui/module-event':
+        specifier: workspace:*
+        version: link:../../modules/event
+      '@proto.ui/module-rule-meta':
+        specifier: workspace:*
+        version: link:../../modules/rule-meta
+      '@proto.ui/runtime':
+        specifier: workspace:*
+        version: link:../../runtime
+
   packages/prototypes/lucide:
     dependencies:
       '@proto.ui/core':
