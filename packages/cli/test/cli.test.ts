@@ -90,7 +90,7 @@ describe('@proto.ui/cli', () => {
   it('keeps installation packages separate from family import paths', () => {
     for (const entry of Object.values(COMPONENT_REGISTRY)) {
       expect(entry.importPath).toBe(
-        `${entry.packageName}/${entry.id.replace(/^(?:base|shadcn)-/, '')}`
+        `${entry.packageName}/${entry.id.replace(/^(?:base|shadcn|brutalist)-/, '')}`
       );
       expect(entry.importPath).not.toBe(entry.packageName);
     }
@@ -385,6 +385,62 @@ describe('@proto.ui/cli', () => {
     expect(wcIndex).toContain(`from '@proto.ui/prototypes-shadcn/button';`);
     expect(wcIndex).toContain(`export const ShadcnButtonElement = AdaptToWebComponent`);
     expect(rootIndex).toContain(`export { ShadcnButtonElement } from './wc';`);
+  });
+
+  it('initializes with the Brutalist prototype and style preset when requested', async () => {
+    const cwd = await createTempProject('pui-cli-init-brutalist', {
+      name: 'pui-cli-init-brutalist',
+      private: true,
+    });
+
+    const result = runCli(cwd, [
+      'init',
+      '--no-interactive',
+      '--no-install',
+      '--prototypes',
+      'brutalist',
+    ]);
+
+    expect(result.status).toBe(0);
+    const config = JSON.parse(await fs.readFile(path.join(cwd, 'proto-ui/config.json'), 'utf8'));
+    const theme = await fs.readFile(path.join(cwd, 'src/styles/brutalist-theme.css'), 'utf8');
+    const tokens = await fs.readFile(
+      path.join(cwd, 'src/styles/proto-ui-tokens.generated.css'),
+      'utf8'
+    );
+
+    expect(config.styles.preset).toBe('brutalist');
+    expect(theme).toContain('--pui-background: #f4f1ea');
+    expect(theme).toContain(':root.dark');
+    expect(tokens).toContain('shadow-[5px_5px_0_0_#000]');
+  });
+
+  it('adds the Brutalist Button React facade without installing packages', async () => {
+    const cwd = await createTempProject('pui-cli-add-brutalist', {
+      name: 'pui-cli-add-brutalist',
+      private: true,
+      dependencies: {
+        react: '^19.0.0',
+        'react-dom': '^19.0.0',
+      },
+    });
+
+    expect(runCli(cwd, ['init', '--no-interactive', '--no-styles']).status).toBe(0);
+    const result = runCli(cwd, ['add', 'react', 'brutalist-button', '--no-install']);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain(`@proto.ui/prototypes-brutalist@${cliVersion}`);
+    const reactIndex = await fs.readFile(
+      path.join(cwd, 'proto-ui/components/react/index.ts'),
+      'utf8'
+    );
+    const config = JSON.parse(await fs.readFile(path.join(cwd, 'proto-ui/config.json'), 'utf8'));
+
+    expect(reactIndex).toContain(
+      `import { brutalistButton } from '@proto.ui/prototypes-brutalist/button';`
+    );
+    expect(reactIndex).toContain(`export const BrutalistButton = adapt(brutalistButton);`);
+    expect(config.components.react).toEqual(['brutalist-button']);
   });
 
   it('fails fast when the required React runtime is missing', async () => {

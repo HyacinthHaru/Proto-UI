@@ -7,6 +7,7 @@ export const ADAPTER_PACKAGES = {
 
 export const PROTOTYPE_PACKAGES = {
   shadcn: '@proto.ui/prototypes-shadcn',
+  brutalist: '@proto.ui/prototypes-brutalist',
 };
 
 export const CLI_PACKAGE = '@proto.ui/cli';
@@ -15,6 +16,7 @@ export const DEFAULT_THEME_NAME = 'shadcn';
 export const DEFAULT_THEME_IMPORT = './shadcn-theme.css';
 export const DEFAULT_TOKENS_IMPORT = './proto-ui-tokens.generated.css';
 export { SHADCN_STYLE_TOKENS } from '../generated/shadcn-style-tokens.js';
+export { BRUTALIST_STYLE_TOKENS } from '../generated/brutalist-style-tokens.js';
 
 export const SHADCN_THEME_CSS = `:root {
     --radius: 0.625rem;
@@ -102,5 +104,64 @@ export const SHADCN_THEME_CSS = `:root {
     --code-number: lab(67.52% -0.0000298023 0);
     --selection: lab(90.952% 0 -0.0000119209);
     --selection-foreground: lab(7.78201% -0.0000149012 0);
+  }
+  `;
+
+export const BRUTALIST_THEME_CSS = `:root {
+    --radius: 0;
+    --background: #f4f1ea;
+    --secondary-background: #ffffff;
+    --foreground: #000000;
+    --main: #ffd23f;
+    --main-foreground: #000000;
+    --destructive: #ff6b6b;
+    --destructive-foreground: #000000;
+    --border: #000000;
+    --input: #000000;
+    --ring: #000000;
+    --overlay: rgba(0, 0, 0, 0.75);
+    --card: var(--secondary-background);
+    --card-foreground: var(--foreground);
+    --popover: var(--secondary-background);
+    --popover-foreground: var(--foreground);
+    --primary: var(--main);
+    --primary-foreground: var(--main-foreground);
+    --secondary: var(--secondary-background);
+    --secondary-foreground: var(--foreground);
+    --muted: var(--background);
+    --muted-foreground: var(--foreground);
+    --accent: var(--main);
+    --accent-foreground: var(--main-foreground);
+    --selection: #000000;
+    --selection-foreground: #f4f1ea;
+  }
+
+  :root.dark,
+  :root[data-theme='dark'] {
+    --background: #1c1914;
+    --secondary-background: #2a241c;
+    --foreground: #f4f1ea;
+    --main: #ffd23f;
+    --main-foreground: #000000;
+    --destructive: #ff6b6b;
+    --destructive-foreground: #000000;
+    --border: #000000;
+    --input: #000000;
+    --ring: #f4f1ea;
+    --overlay: rgba(0, 0, 0, 0.85);
+    --card: var(--secondary-background);
+    --card-foreground: var(--foreground);
+    --popover: var(--secondary-background);
+    --popover-foreground: var(--foreground);
+    --primary: var(--main);
+    --primary-foreground: var(--main-foreground);
+    --secondary: var(--secondary-background);
+    --secondary-foreground: var(--foreground);
+    --muted: var(--secondary-background);
+    --muted-foreground: var(--foreground);
+    --accent: var(--main);
+    --accent-foreground: var(--main-foreground);
+    --selection: #f4f1ea;
+    --selection-foreground: #1c1914;
   }
   `;

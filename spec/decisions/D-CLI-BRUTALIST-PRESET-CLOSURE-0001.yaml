@@ -1,0 +1,44 @@
+id: D-CLI-BRUTALIST-PRESET-CLOSURE-0001
+type: decision
+title: CLI Brutalist preset is a generated closure of official prototype style tokens
+status: draft
+since: 0.2.0-rc.3
+summary: The CLI carries an install-time Brutalist token preset for first-run and offline use, generated deterministically from official Brutalist prototype sources instead of maintained as an independent token list.
+statement:
+  en: >-
+    `proto-ui init --prototypes brutalist` must produce usable initial CSS before the target project installs prototype packages, so the CLI carries a static Brutalist preset manifest generated from `packages/prototypes/brutalist/src` through the shared scanner.
+
+  zh-CN: >-
+    `proto-ui init --prototypes brutalist` 必须在目标项目安装 prototype package 之前生成可用初始 CSS，因此 CLI 携带由 `packages/prototypes/brutalist/src` 通过共享 scanner 生成的静态 Brutalist preset manifest。
+
+criteria:
+  - id: D-CLI-BRUTALIST-PRESET-CLOSURE-0001-A
+    text:
+      en: The Brutalist preset manifest carried by the CLI must be generated deterministically from official Brutalist prototype sources through the shared scanner and provide an executable stale check.
+      zh-CN: CLI 携带的 Brutalist preset manifest 必须由官方 Brutalist prototype 源码经共享 scanner 确定性生成，并提供可执行 stale check。
+  - id: D-CLI-BRUTALIST-PRESET-CLOSURE-0001-B
+    text:
+      en: Token CSS produced by `proto-ui init --prototypes brutalist` must include the hard-shadow and square-corner token closure scanned from official Brutalist prototype sources.
+      zh-CN: '`proto-ui init --prototypes brutalist` 产生的 token CSS 必须包含从官方 Brutalist prototype 源码扫描出的硬阴影与直角 token closure。'
+  - id: D-CLI-BRUTALIST-PRESET-CLOSURE-0001-C
+    text:
+      en: The generated Brutalist theme CSS must include light and dark theme variables while preserving prefixed Proto UI CSS variable output.
+      zh-CN: 生成的 Brutalist theme CSS 必须包含 Light 与 Dark theme 变量，并保持 Proto UI prefixed CSS variable 输出。
+sources:
+  - path: docs/superpowers/specs/2026-07-24-brutalist-design-system-design.md
+  - path: scripts/styles/generate-brutalist-style-tokens.ts
+  - path: packages/cli/src/generated/brutalist-style-tokens.ts
+  - path: packages/cli/src/services/prototype-style-tokens.ts
+  - path: packages/cli/src/legacy/cli.ts
+  - path: packages/cli/src/commands/init.ts
+  - path: packages/cli/test/cli.test.ts
+relates:
+  contracts: [C-FEEDBACK-STYLE-0003, C-RULE-INTENT-FEEDBACK-STYLE-0001]
+  prototypes: [P-BRUTALIST-BUTTON, P-BRUTALIST-DIALOG-CONTENT]
+verifies:
+  tests: [T-CLI-BRUTALIST-PRESET-CLOSURE-0001]
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Introduced generated CLI Brutalist style preset closure governance.
+tags: [cli, brutalist, style, preset, tokens, generator]
