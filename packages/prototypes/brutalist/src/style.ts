@@ -6,17 +6,17 @@ export const BRUTALIST_CONTROL_TOKENS = [
   'border-2',
   'border-black',
   'shadow-[5px_5px_0_0_#000]',
-  'bg-[var(--secondary-background)]',
-  'text-[var(--foreground)]',
+  'bg-secondary-background',
+  'text-foreground',
 ].join(' ');
 
 export const BRUTALIST_PANEL_TOKENS = [
   'rounded-none',
-  'border-[3px]',
+  'border-2',
   'border-black',
   'shadow-[8px_8px_0_0_#000]',
-  'bg-[var(--secondary-background)]',
-  'text-[var(--foreground)]',
+  'bg-secondary-background',
+  'text-foreground',
 ].join(' ');
 
 export const BRUTALIST_HOVER_LIFT_TOKENS =

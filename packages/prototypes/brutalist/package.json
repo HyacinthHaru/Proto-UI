@@ -34,6 +34,22 @@
     "./tabs": {
       "types": "./src/tabs/index.ts",
       "default": "./src/tabs/index.ts"
+    },
+    "./hover-card": {
+      "types": "./src/hover-card/index.ts",
+      "default": "./src/hover-card/index.ts"
+    },
+    "./dropdown": {
+      "types": "./src/dropdown/index.ts",
+      "default": "./src/dropdown/index.ts"
+    },
+    "./select": {
+      "types": "./src/select/index.ts",
+      "default": "./src/select/index.ts"
+    },
+    "./dialog": {
+      "types": "./src/dialog/index.ts",
+      "default": "./src/dialog/index.ts"
     }
   },
   "description": "Neo-Brutalist Proto UI prototype library for adapter-driven components.",

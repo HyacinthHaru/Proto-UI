@@ -48,3 +48,41 @@ export type {
   BrutalistTabsTriggerProps,
   BrutalistTabsTriggerStateHandles,
 } from './tabs/types';
+
+export { hoverCardRoot, hoverCardTrigger, hoverCardContent } from './hover-card';
+export { dropdownRoot, dropdownTrigger, dropdownContent, dropdownItem } from './dropdown';
+export { selectRoot, selectTrigger, selectValue, selectContent, selectItem } from './select';
+export {
+  dialogRoot,
+  dialogTrigger,
+  dialogMask,
+  dialogContent,
+  dialogTitle,
+  dialogDescription,
+  dialogClose,
+  dialogCloseIcon,
+  dialogHeader,
+  dialogFooter,
+} from './dialog';
+export { default as brutalistHoverCardRoot } from './hover-card/root.proto';
+export { default as brutalistHoverCardTrigger } from './hover-card/trigger.proto';
+export { default as brutalistHoverCardContent } from './hover-card/content.proto';
+export { default as brutalistDropdownRoot } from './dropdown/root.proto';
+export { default as brutalistDropdownTrigger } from './dropdown/trigger.proto';
+export { default as brutalistDropdownContent } from './dropdown/content.proto';
+export { default as brutalistDropdownItem } from './dropdown/item.proto';
+export { default as brutalistSelectRoot } from './select/root.proto';
+export { default as brutalistSelectTrigger } from './select/trigger.proto';
+export { default as brutalistSelectValue } from './select/value.proto';
+export { default as brutalistSelectContent } from './select/content.proto';
+export { default as brutalistSelectItem } from './select/item.proto';
+export { default as brutalistDialogRoot } from './dialog/root.proto';
+export { default as brutalistDialogTrigger } from './dialog/trigger.proto';
+export { default as brutalistDialogMask } from './dialog/overlay.proto';
+export { default as brutalistDialogContent } from './dialog/content.proto';
+export { default as brutalistDialogTitle } from './dialog/title.proto';
+export { default as brutalistDialogDescription } from './dialog/description.proto';
+export { default as brutalistDialogClose } from './dialog/close.proto';
+export { default as brutalistDialogCloseIcon } from './dialog/close-icon.proto';
+export { default as brutalistDialogHeader } from './dialog/header.proto';
+export { default as brutalistDialogFooter } from './dialog/footer.proto';
