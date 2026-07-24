@@ -140,3 +140,5 @@ apps/workspace/public/spec-workspace.json
 # Generated docs style presets
 apps/www/src/styles/proto-ui-tokens.generated.css
 apps/www/src/styles/shadcn-theme.css
+
+.worktrees/
