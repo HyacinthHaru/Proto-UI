@@ -1,0 +1,50 @@
+id: T-BRUTALIST-HOVER-CARD-0001
+type: test
+title: Brutalist Hover Card family visual contract tests
+status: draft
+since: 0.2.0-rc.3
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for the hover-card prototype family.
+cases:
+  - id: T-BRUTALIST-HOVER-CARD-0001-CASE-1
+    title: P-BRUTALIST-HOVER-CARD retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-HOVER-CARD-VISUAL-GRAMMAR, P-BRUTALIST-HOVER-CARD-TESTED-SURFACE]
+    expectation: p-brutalist-hover-card-visual-contract
+  - id: T-BRUTALIST-HOVER-CARD-0001-CASE-2
+    title: P-BRUTALIST-HOVER-CARD-TRIGGER retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers:
+      [P-BRUTALIST-HOVER-CARD-TRIGGER-VISUAL-GRAMMAR, P-BRUTALIST-HOVER-CARD-TRIGGER-TESTED-SURFACE]
+    expectation: p-brutalist-hover-card-trigger-visual-contract
+  - id: T-BRUTALIST-HOVER-CARD-0001-CASE-3
+    title: P-BRUTALIST-HOVER-CARD-CONTENT retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers:
+      [P-BRUTALIST-HOVER-CARD-CONTENT-VISUAL-GRAMMAR, P-BRUTALIST-HOVER-CARD-CONTENT-TESTED-SURFACE]
+    expectation: p-brutalist-hover-card-content-visual-contract
+implementations:
+  - id: prototypes-brutalist-hover-card-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/hover-card.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-HOVER-CARD-0001-CASE-1
+      - T-BRUTALIST-HOVER-CARD-0001-CASE-2
+      - T-BRUTALIST-HOVER-CARD-0001-CASE-3
+    exercises:
+      - P-BRUTALIST-HOVER-CARD
+      - P-BRUTALIST-HOVER-CARD-TRIGGER
+      - P-BRUTALIST-HOVER-CARD-CONTENT
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-HOVER-CARD
+    - id: P-BRUTALIST-HOVER-CARD-TRIGGER
+    - id: P-BRUTALIST-HOVER-CARD-CONTENT
+exercises:
+  prototypes:
+    - P-BRUTALIST-HOVER-CARD
+    - P-BRUTALIST-HOVER-CARD-TRIGGER
+    - P-BRUTALIST-HOVER-CARD-CONTENT
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Added draft Brutalist hover-card prototype coverage.
+tags: [test, brutalist, neo-brutalist, visual, hover-card]

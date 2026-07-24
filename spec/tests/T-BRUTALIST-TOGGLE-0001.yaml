@@ -1,0 +1,32 @@
+id: T-BRUTALIST-TOGGLE-0001
+type: test
+title: Brutalist Toggle visual contract tests
+status: draft
+since: 0.2.0-rc.3
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for the toggle prototype family.
+cases:
+  - id: T-BRUTALIST-TOGGLE-0001-CASE-1
+    title: P-BRUTALIST-TOGGLE retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-TOGGLE-VISUAL-GRAMMAR, P-BRUTALIST-TOGGLE-TESTED-SURFACE]
+    expectation: p-brutalist-toggle-visual-contract
+implementations:
+  - id: prototypes-brutalist-toggle-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/toggle.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-TOGGLE-0001-CASE-1
+    exercises:
+      - P-BRUTALIST-TOGGLE
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-TOGGLE
+exercises:
+  prototypes:
+    - P-BRUTALIST-TOGGLE
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Added draft Brutalist toggle prototype coverage.
+tags: [test, brutalist, neo-brutalist, visual, toggle]

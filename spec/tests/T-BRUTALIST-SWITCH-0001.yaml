@@ -1,0 +1,40 @@
+id: T-BRUTALIST-SWITCH-0001
+type: test
+title: Brutalist Switch family visual contract tests
+status: draft
+since: 0.2.0-rc.3
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for the switch prototype family.
+cases:
+  - id: T-BRUTALIST-SWITCH-0001-CASE-1
+    title: P-BRUTALIST-SWITCH retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-SWITCH-VISUAL-GRAMMAR, P-BRUTALIST-SWITCH-TESTED-SURFACE]
+    expectation: p-brutalist-switch-visual-contract
+  - id: T-BRUTALIST-SWITCH-0001-CASE-2
+    title: P-BRUTALIST-SWITCH-THUMB retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-SWITCH-THUMB-VISUAL-GRAMMAR, P-BRUTALIST-SWITCH-THUMB-TESTED-SURFACE]
+    expectation: p-brutalist-switch-thumb-visual-contract
+implementations:
+  - id: prototypes-brutalist-switch-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/switch.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-SWITCH-0001-CASE-1
+      - T-BRUTALIST-SWITCH-0001-CASE-2
+    exercises:
+      - P-BRUTALIST-SWITCH
+      - P-BRUTALIST-SWITCH-THUMB
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-SWITCH
+    - id: P-BRUTALIST-SWITCH-THUMB
+exercises:
+  prototypes:
+    - P-BRUTALIST-SWITCH
+    - P-BRUTALIST-SWITCH-THUMB
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Added draft Brutalist switch prototype coverage.
+tags: [test, brutalist, neo-brutalist, visual, switch]

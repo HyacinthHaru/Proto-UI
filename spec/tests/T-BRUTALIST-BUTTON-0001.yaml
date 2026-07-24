@@ -1,0 +1,32 @@
+id: T-BRUTALIST-BUTTON-0001
+type: test
+title: Brutalist Button dual-theme visual contract tests
+status: draft
+since: 0.2.0-rc.3
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for the button prototype family.
+cases:
+  - id: T-BRUTALIST-BUTTON-0001-CASE-1
+    title: P-BRUTALIST-BUTTON retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-BUTTON-VISUAL-GRAMMAR, P-BRUTALIST-BUTTON-TESTED-SURFACE]
+    expectation: p-brutalist-button-visual-contract
+implementations:
+  - id: prototypes-brutalist-button-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/button.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-BUTTON-0001-CASE-1
+    exercises:
+      - P-BRUTALIST-BUTTON
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-BUTTON
+exercises:
+  prototypes:
+    - P-BRUTALIST-BUTTON
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Added draft Brutalist button prototype coverage.
+tags: [test, brutalist, neo-brutalist, visual, button]

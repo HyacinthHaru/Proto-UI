@@ -1,0 +1,106 @@
+id: T-BRUTALIST-DIALOG-0001
+type: test
+title: Brutalist Dialog family visual contract tests
+status: draft
+since: 0.2.0-rc.3
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for the dialog prototype family.
+cases:
+  - id: T-BRUTALIST-DIALOG-0001-CASE-1
+    title: P-BRUTALIST-DIALOG retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DIALOG-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-2
+    title: P-BRUTALIST-DIALOG-TRIGGER retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DIALOG-TRIGGER-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-TRIGGER-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-trigger-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-3
+    title: P-BRUTALIST-DIALOG-MASK retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DIALOG-MASK-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-MASK-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-mask-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-4
+    title: P-BRUTALIST-DIALOG-CONTENT retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DIALOG-CONTENT-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-CONTENT-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-content-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-5
+    title: P-BRUTALIST-DIALOG-TITLE retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DIALOG-TITLE-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-TITLE-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-title-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-6
+    title: P-BRUTALIST-DIALOG-DESCRIPTION retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers:
+      [P-BRUTALIST-DIALOG-DESCRIPTION-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-DESCRIPTION-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-description-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-7
+    title: P-BRUTALIST-DIALOG-CLOSE retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DIALOG-CLOSE-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-CLOSE-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-close-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-8
+    title: P-BRUTALIST-DIALOG-CLOSE-ICON retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers:
+      [P-BRUTALIST-DIALOG-CLOSE-ICON-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-CLOSE-ICON-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-close-icon-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-9
+    title: P-BRUTALIST-DIALOG-HEADER retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DIALOG-HEADER-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-HEADER-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-header-visual-contract
+  - id: T-BRUTALIST-DIALOG-0001-CASE-10
+    title: P-BRUTALIST-DIALOG-FOOTER retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DIALOG-FOOTER-VISUAL-GRAMMAR, P-BRUTALIST-DIALOG-FOOTER-TESTED-SURFACE]
+    expectation: p-brutalist-dialog-footer-visual-contract
+implementations:
+  - id: prototypes-brutalist-dialog-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/dialog.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-DIALOG-0001-CASE-1
+      - T-BRUTALIST-DIALOG-0001-CASE-2
+      - T-BRUTALIST-DIALOG-0001-CASE-3
+      - T-BRUTALIST-DIALOG-0001-CASE-4
+      - T-BRUTALIST-DIALOG-0001-CASE-5
+      - T-BRUTALIST-DIALOG-0001-CASE-6
+      - T-BRUTALIST-DIALOG-0001-CASE-7
+      - T-BRUTALIST-DIALOG-0001-CASE-8
+      - T-BRUTALIST-DIALOG-0001-CASE-9
+      - T-BRUTALIST-DIALOG-0001-CASE-10
+    exercises:
+      - P-BRUTALIST-DIALOG
+      - P-BRUTALIST-DIALOG-TRIGGER
+      - P-BRUTALIST-DIALOG-MASK
+      - P-BRUTALIST-DIALOG-CONTENT
+      - P-BRUTALIST-DIALOG-TITLE
+      - P-BRUTALIST-DIALOG-DESCRIPTION
+      - P-BRUTALIST-DIALOG-CLOSE
+      - P-BRUTALIST-DIALOG-CLOSE-ICON
+      - P-BRUTALIST-DIALOG-HEADER
+      - P-BRUTALIST-DIALOG-FOOTER
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-DIALOG
+    - id: P-BRUTALIST-DIALOG-TRIGGER
+    - id: P-BRUTALIST-DIALOG-MASK
+    - id: P-BRUTALIST-DIALOG-CONTENT
+    - id: P-BRUTALIST-DIALOG-TITLE
+    - id: P-BRUTALIST-DIALOG-DESCRIPTION
+    - id: P-BRUTALIST-DIALOG-CLOSE
+    - id: P-BRUTALIST-DIALOG-CLOSE-ICON
+    - id: P-BRUTALIST-DIALOG-HEADER
+    - id: P-BRUTALIST-DIALOG-FOOTER
+exercises:
+  prototypes:
+    - P-BRUTALIST-DIALOG
+    - P-BRUTALIST-DIALOG-TRIGGER
+    - P-BRUTALIST-DIALOG-MASK
+    - P-BRUTALIST-DIALOG-CONTENT
+    - P-BRUTALIST-DIALOG-TITLE
+    - P-BRUTALIST-DIALOG-DESCRIPTION
+    - P-BRUTALIST-DIALOG-CLOSE
+    - P-BRUTALIST-DIALOG-CLOSE-ICON
+    - P-BRUTALIST-DIALOG-HEADER
+    - P-BRUTALIST-DIALOG-FOOTER
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Added draft Brutalist dialog prototype coverage.
+tags: [test, brutalist, neo-brutalist, visual, dialog]

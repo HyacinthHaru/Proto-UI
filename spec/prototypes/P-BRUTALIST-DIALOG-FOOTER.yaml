@@ -1,0 +1,37 @@
+id: P-BRUTALIST-DIALOG-FOOTER
+type: prototype
+title: Brutalist Dialog Footer is an optional layout-only anatomy part
+status: draft
+since: 0.2.0-rc.3
+summary: Brutalist Dialog Footer is an optional layout-only anatomy part. The current passing claim is limited to Base inheritance where declared, square Neo-Brutalist styling, hard black borders and shadows, and light/dark theme-compatible token surfaces covered by tests.
+statement:
+  en: >-
+    Brutalist Dialog Footer is an optional layout-only anatomy part. This draft Proto UI-maintained design-language projection keeps inherited Base protocol semantics where an inherited prototype is declared and adds only visual/style behavior: zero radius, black structural borders, hard offset shadows, flat fills, and dual light/dark theme compatibility.
+
+  zh-CN: >-
+    Brutalist Dialog Footer is an optional layout-only anatomy part。该 draft Proto UI 维护的 design-language 投射在声明继承关系的位置保留 Base protocol 语义，仅增加视觉/style 行为：零圆角、黑色结构边框、硬偏移阴影、平面填充以及 Light/Dark 主题兼容 token 表面。
+
+criteria:
+  - id: P-BRUTALIST-DIALOG-FOOTER-DESIGN-LANGUAGE-IDENTITY
+    text:
+      en: The prototype is a Proto UI-maintained Neo-Brutalist design-language projection and must not claim third-party upstream ownership or certification.
+      zh-CN: 该 prototype 是 Proto UI 维护的 Neo-Brutalist design-language 投射，不得声称第三方上游所有权或认证。
+  - id: P-BRUTALIST-DIALOG-FOOTER-VISUAL-GRAMMAR
+    text:
+      en: The prototype visual surface must preserve square corners, black structural borders, hard zero-blur offset shadows, and flat theme-token fills without gradients, glass, rounded cards, or soft elevation.
+      zh-CN: 该 prototype 视觉表面必须保持直角、黑色结构边框、零模糊硬偏移阴影和平面主题 token 填充，不得使用渐变、玻璃拟态、圆角卡片或柔和高度阴影。
+  - id: P-BRUTALIST-DIALOG-FOOTER-TESTED-SURFACE
+    text:
+      en: The current passing guarantee is limited to the behavior and visual tokens exercised by the corresponding Brutalist prototype test entity.
+      zh-CN: 当前 passing guarantee 仅限对应 Brutalist prototype test entity 覆盖的行为与视觉 token。
+sources:
+  - path: packages/prototypes/brutalist/src/dialog/footer.proto.ts
+  - path: packages/prototypes/brutalist/test/dialog.test.ts
+dependsOn:
+  contracts: [C-CORE-SYNTAX-0003, C-RULE-INTENT-FEEDBACK-STYLE-0001]
+verifies: { tests: [T-BRUTALIST-DIALOG-0001] }
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Introduced the draft Brutalist design-language projection for this prototype surface.
+tags: [prototype, brutalist, neo-brutalist, visual, delta, dialog]

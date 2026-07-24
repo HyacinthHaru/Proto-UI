@@ -1,0 +1,65 @@
+id: T-BRUTALIST-DROPDOWN-MENU-0001
+type: test
+title: Brutalist Dropdown Menu family visual contract tests
+status: draft
+since: 0.2.0-rc.3
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for the dropdown prototype family.
+cases:
+  - id: T-BRUTALIST-DROPDOWN-MENU-0001-CASE-1
+    title: P-BRUTALIST-DROPDOWN-MENU retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-DROPDOWN-MENU-VISUAL-GRAMMAR, P-BRUTALIST-DROPDOWN-MENU-TESTED-SURFACE]
+    expectation: p-brutalist-dropdown-menu-visual-contract
+  - id: T-BRUTALIST-DROPDOWN-MENU-0001-CASE-2
+    title: P-BRUTALIST-DROPDOWN-MENU-TRIGGER retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers:
+      [
+        P-BRUTALIST-DROPDOWN-MENU-TRIGGER-VISUAL-GRAMMAR,
+        P-BRUTALIST-DROPDOWN-MENU-TRIGGER-TESTED-SURFACE,
+      ]
+    expectation: p-brutalist-dropdown-menu-trigger-visual-contract
+  - id: T-BRUTALIST-DROPDOWN-MENU-0001-CASE-3
+    title: P-BRUTALIST-DROPDOWN-MENU-CONTENT retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers:
+      [
+        P-BRUTALIST-DROPDOWN-MENU-CONTENT-VISUAL-GRAMMAR,
+        P-BRUTALIST-DROPDOWN-MENU-CONTENT-TESTED-SURFACE,
+      ]
+    expectation: p-brutalist-dropdown-menu-content-visual-contract
+  - id: T-BRUTALIST-DROPDOWN-MENU-0001-CASE-4
+    title: P-BRUTALIST-DROPDOWN-MENU-ITEM retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers:
+      [P-BRUTALIST-DROPDOWN-MENU-ITEM-VISUAL-GRAMMAR, P-BRUTALIST-DROPDOWN-MENU-ITEM-TESTED-SURFACE]
+    expectation: p-brutalist-dropdown-menu-item-visual-contract
+implementations:
+  - id: prototypes-brutalist-dropdown-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/dropdown.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-DROPDOWN-MENU-0001-CASE-1
+      - T-BRUTALIST-DROPDOWN-MENU-0001-CASE-2
+      - T-BRUTALIST-DROPDOWN-MENU-0001-CASE-3
+      - T-BRUTALIST-DROPDOWN-MENU-0001-CASE-4
+    exercises:
+      - P-BRUTALIST-DROPDOWN-MENU
+      - P-BRUTALIST-DROPDOWN-MENU-TRIGGER
+      - P-BRUTALIST-DROPDOWN-MENU-CONTENT
+      - P-BRUTALIST-DROPDOWN-MENU-ITEM
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-DROPDOWN-MENU
+    - id: P-BRUTALIST-DROPDOWN-MENU-TRIGGER
+    - id: P-BRUTALIST-DROPDOWN-MENU-CONTENT
+    - id: P-BRUTALIST-DROPDOWN-MENU-ITEM
+exercises:
+  prototypes:
+    - P-BRUTALIST-DROPDOWN-MENU
+    - P-BRUTALIST-DROPDOWN-MENU-TRIGGER
+    - P-BRUTALIST-DROPDOWN-MENU-CONTENT
+    - P-BRUTALIST-DROPDOWN-MENU-ITEM
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Added draft Brutalist dropdown prototype coverage.
+tags: [test, brutalist, neo-brutalist, visual, dropdown]

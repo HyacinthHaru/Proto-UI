@@ -1,0 +1,56 @@
+id: T-BRUTALIST-TABS-0001
+type: test
+title: Brutalist Tabs family visual contract tests
+status: draft
+since: 0.2.0-rc.3
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for the tabs prototype family.
+cases:
+  - id: T-BRUTALIST-TABS-0001-CASE-1
+    title: P-BRUTALIST-TABS retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-TABS-VISUAL-GRAMMAR, P-BRUTALIST-TABS-TESTED-SURFACE]
+    expectation: p-brutalist-tabs-visual-contract
+  - id: T-BRUTALIST-TABS-0001-CASE-2
+    title: P-BRUTALIST-TABS-LIST retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-TABS-LIST-VISUAL-GRAMMAR, P-BRUTALIST-TABS-LIST-TESTED-SURFACE]
+    expectation: p-brutalist-tabs-list-visual-contract
+  - id: T-BRUTALIST-TABS-0001-CASE-3
+    title: P-BRUTALIST-TABS-TRIGGER retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-TABS-TRIGGER-VISUAL-GRAMMAR, P-BRUTALIST-TABS-TRIGGER-TESTED-SURFACE]
+    expectation: p-brutalist-tabs-trigger-visual-contract
+  - id: T-BRUTALIST-TABS-0001-CASE-4
+    title: P-BRUTALIST-TABS-CONTENT retains Base semantics where applicable and projects the Brutalist visual grammar
+    covers: [P-BRUTALIST-TABS-CONTENT-VISUAL-GRAMMAR, P-BRUTALIST-TABS-CONTENT-TESTED-SURFACE]
+    expectation: p-brutalist-tabs-content-visual-contract
+implementations:
+  - id: prototypes-brutalist-tabs-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/tabs.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-TABS-0001-CASE-1
+      - T-BRUTALIST-TABS-0001-CASE-2
+      - T-BRUTALIST-TABS-0001-CASE-3
+      - T-BRUTALIST-TABS-0001-CASE-4
+    exercises:
+      - P-BRUTALIST-TABS
+      - P-BRUTALIST-TABS-LIST
+      - P-BRUTALIST-TABS-TRIGGER
+      - P-BRUTALIST-TABS-CONTENT
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-TABS
+    - id: P-BRUTALIST-TABS-LIST
+    - id: P-BRUTALIST-TABS-TRIGGER
+    - id: P-BRUTALIST-TABS-CONTENT
+exercises:
+  prototypes:
+    - P-BRUTALIST-TABS
+    - P-BRUTALIST-TABS-LIST
+    - P-BRUTALIST-TABS-TRIGGER
+    - P-BRUTALIST-TABS-CONTENT
+revisions:
+  - version: 0.2.0-rc.3
+    change: introduced
+    summary: Added draft Brutalist tabs prototype coverage.
+tags: [test, brutalist, neo-brutalist, visual, tabs]
