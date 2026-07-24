@@ -22,6 +22,18 @@
     "./button": {
       "types": "./src/button/index.ts",
       "default": "./src/button/index.ts"
+    },
+    "./toggle": {
+      "types": "./src/toggle/index.ts",
+      "default": "./src/toggle/index.ts"
+    },
+    "./switch": {
+      "types": "./src/switch/index.ts",
+      "default": "./src/switch/index.ts"
+    },
+    "./tabs": {
+      "types": "./src/tabs/index.ts",
+      "default": "./src/tabs/index.ts"
     }
   },
   "description": "Neo-Brutalist Proto UI prototype library for adapter-driven components.",

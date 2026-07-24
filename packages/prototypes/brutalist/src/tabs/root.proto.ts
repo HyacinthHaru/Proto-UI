@@ -1,0 +1,13 @@
+import { definePrototype, tw } from '@proto.ui/core';
+import { asTabsRoot } from '@proto.ui/prototypes-base/tabs';
+import type { BrutalistTabsRootExposes, BrutalistTabsRootProps } from './types';
+
+const tabsRoot = definePrototype<BrutalistTabsRootProps, BrutalistTabsRootExposes>({
+  name: 'brutalist-tabs-root',
+  setup(def) {
+    asTabsRoot();
+    def.feedback.style.use(tw('flex flex-col gap-3 text-foreground'));
+  },
+});
+
+export default tabsRoot;
