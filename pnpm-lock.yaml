@@ -105,6 +105,9 @@ importers:
       '@proto.ui/prototypes-base':
         specifier: workspace:*
         version: link:../../packages/prototypes/base
+      '@proto.ui/prototypes-brutalist':
+        specifier: workspace:*
+        version: link:../../packages/prototypes/brutalist
       '@proto.ui/prototypes-lucide':
         specifier: workspace:*
         version: link:../../packages/prototypes/lucide

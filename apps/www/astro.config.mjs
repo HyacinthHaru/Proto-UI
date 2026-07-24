@@ -542,6 +542,7 @@ export default defineConfig({
         '@proto.ui/adapter-web-component',
         '@proto.ui/prototypes-base',
         '@proto.ui/prototypes-shadcn',
+        '@proto.ui/prototypes-brutalist',
         '@proto.ui/hooks',
         '@proto.ui/module-overlay',
         '@proto.ui/module-presence',
