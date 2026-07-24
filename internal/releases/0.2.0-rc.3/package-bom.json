@@ -5,7 +5,7 @@
   "npmDistTag": "next",
   "packageVersionPolicy": "exact",
   "packageScope": "public-@proto.ui",
-  "packageCount": 37,
+  "packageCount": 38,
   "packages": [
     {
       "name": "@proto.ui/cli",
@@ -316,11 +316,19 @@
       "internalDependencies": ["@proto.ui/core", "@proto.ui/hooks"]
     },
     {
+      "name": "@proto.ui/prototypes-brutalist",
+      "version": "0.2.0-rc.3",
+      "path": "packages/prototypes/brutalist",
+      "releaseRole": "public-non-launch-commitment",
+      "publishOrder": 32,
+      "internalDependencies": ["@proto.ui/core", "@proto.ui/prototypes-base"]
+    },
+    {
       "name": "@proto.ui/prototypes-shadcn",
       "version": "0.2.0-rc.3",
       "path": "packages/prototypes/shadcn",
       "releaseRole": "launch-commitment",
-      "publishOrder": 32,
+      "publishOrder": 33,
       "internalDependencies": ["@proto.ui/core", "@proto.ui/prototypes-base"]
     },
     {
@@ -328,7 +336,7 @@
       "version": "0.2.0-rc.3",
       "path": "packages/runtime",
       "releaseRole": "internal-or-dependency-directed",
-      "publishOrder": 33,
+      "publishOrder": 34,
       "internalDependencies": [
         "@proto.ui/core",
         "@proto.ui/hooks",
@@ -365,7 +373,7 @@
       "version": "0.2.0-rc.3",
       "path": "packages/adapters/base",
       "releaseRole": "public-non-launch-commitment",
-      "publishOrder": 34,
+      "publishOrder": 35,
       "internalDependencies": [
         "@proto.ui/core",
         "@proto.ui/module-expose-state",
@@ -378,7 +386,7 @@
       "version": "0.2.0-rc.3",
       "path": "packages/adapters/react",
       "releaseRole": "launch-commitment",
-      "publishOrder": 35,
+      "publishOrder": 36,
       "internalDependencies": [
         "@proto.ui/adapter-base",
         "@proto.ui/core",
@@ -408,7 +416,7 @@
       "version": "0.2.0-rc.3",
       "path": "packages/adapters/vue",
       "releaseRole": "launch-commitment",
-      "publishOrder": 36,
+      "publishOrder": 37,
       "internalDependencies": [
         "@proto.ui/adapter-base",
         "@proto.ui/core",
@@ -438,7 +446,7 @@
       "version": "0.2.0-rc.3",
       "path": "packages/adapters/web-component",
       "releaseRole": "launch-commitment",
-      "publishOrder": 37,
+      "publishOrder": 38,
       "internalDependencies": [
         "@proto.ui/adapter-base",
         "@proto.ui/core",
