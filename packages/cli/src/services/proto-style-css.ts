@@ -24,6 +24,7 @@ const spacing: Record<string, string> = {
   '9': '2.25rem',
   '10': '2.5rem',
   '11': '2.75rem',
+  '12': '3rem',
   '32': '8rem',
   '64': '16rem',
   '28': '7rem',
@@ -42,6 +43,10 @@ const colorVars = new Set([
   'input',
   'muted',
   'muted-foreground',
+  'main',
+  'main-foreground',
+  'overlay',
+  'secondary-background',
   'primary',
   'primary-foreground',
   'popover',
@@ -61,10 +66,12 @@ const staticUtilities: Record<string, string[]> = {
   grid: ['display: grid;'],
   hidden: ['display: none;'],
   'flex-col': ['flex-direction: column;'],
+  'flex-col-reverse': ['flex-direction: column-reverse;'],
   'items-center': ['align-items: center;'],
   'items-start': ['align-items: flex-start;'],
   'justify-center': ['justify-content: center;'],
   'justify-between': ['justify-content: space-between;'],
+  'justify-end': ['justify-content: flex-end;'],
   'shrink-0': ['flex-shrink: 0;'],
   'pointer-events-none': ['pointer-events: none;'],
   'cursor-default': ['cursor: default;'],
@@ -107,16 +114,27 @@ const staticUtilities: Record<string, string[]> = {
   'ease-in-out': ['transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);'],
   'font-medium': ['font-weight: 500;'],
   'font-semibold': ['font-weight: 600;'],
+  'font-bold': ['font-weight: 700;'],
+  'font-mono': [
+    'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;',
+  ],
+  uppercase: ['text-transform: uppercase;'],
   'leading-6': ['line-height: 1.5rem;'],
   'leading-none': ['line-height: 1;'],
   'tracking-tight': ['letter-spacing: -0.025em;'],
   'text-left': ['text-align: left;'],
+  'text-xs': ['font-size: 0.75rem;', 'line-height: 1rem;'],
   'text-sm': ['font-size: 0.875rem;', 'line-height: 1.25rem;'],
+  'text-base': ['font-size: 1rem;', 'line-height: 1.5rem;'],
   'text-lg': ['font-size: 1.125rem;', 'line-height: 1.75rem;'],
   'text-[0.8rem]': ['font-size: 0.8rem;'],
   underline: ['text-decoration-line: underline;'],
   'underline-offset-4': ['text-underline-offset: 4px;'],
   border: ['border-width: 1px;', 'border-style: solid;'],
+  'border-2': ['border-width: 2px;', 'border-style: solid;'],
+  'border-b-2': ['border-bottom-width: 2px;', 'border-bottom-style: solid;'],
+  'border-t-2': ['border-top-width: 2px;', 'border-top-style: solid;'],
+  'border-black': ['border-color: #000;'],
   'border-transparent': ['border-color: transparent;'],
   'bg-transparent': ['background-color: transparent;'],
   'inset-0': ['inset: 0px;'],
@@ -142,6 +160,11 @@ const staticUtilities: Record<string, string[]> = {
     '--pui-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);',
     ...composedShadow(),
   ],
+  'shadow-[3px_3px_0_0_#000]': ['--pui-shadow: 3px 3px 0 0 #000;', ...composedShadow()],
+  'shadow-[5px_5px_0_0_#000]': ['--pui-shadow: 5px 5px 0 0 #000;', ...composedShadow()],
+  'shadow-[8px_8px_0_0_#000]': ['--pui-shadow: 8px 8px 0 0 #000;', ...composedShadow()],
+  'shadow-[-5px_5px_0_0_#000]': ['--pui-shadow: -5px 5px 0 0 #000;', ...composedShadow()],
+  'shadow-none': ['--pui-shadow: 0 0 #0000;', ...composedShadow()],
   'backdrop-blur-xs': ['backdrop-filter: blur(4px);'],
   'z-40': ['z-index: 40;'],
   'z-50': ['z-index: 50;'],
@@ -149,6 +172,7 @@ const staticUtilities: Record<string, string[]> = {
   peer: [],
   'group/button': [],
   'group/toggle': [],
+  'group/brutalist-dialog-trigger': [],
 };
 
 export function renderProtoStyleTokenCss(tokens: string[]): string {
@@ -334,7 +358,7 @@ function renderUtility(utility: string): string[] | null {
 
 function renderSpacingUtility(utility: string): string[] | null {
   const spacingMatch = utility.match(
-    /^(gap|h|w|min-h|min-w|max-h|size|p|px|py|pl|pr|mt|mb|ml|mr|top|left)-(.+)$/
+    /^(gap|h|w|min-h|min-w|max-h|size|p|px|py|pl|pr|pt|pb|mt|mb|ml|mr|top|left|right)-(.+)$/
   );
   if (!spacingMatch) return null;
   const [, kind, rawValue] = spacingMatch;
@@ -353,12 +377,15 @@ function renderSpacingUtility(utility: string): string[] | null {
   if (kind === 'py') return [`padding-block: ${value};`];
   if (kind === 'pl') return [`padding-left: ${value};`];
   if (kind === 'pr') return [`padding-right: ${value};`];
+  if (kind === 'pt') return [`padding-top: ${value};`];
+  if (kind === 'pb') return [`padding-bottom: ${value};`];
   if (kind === 'mt') return [`margin-top: ${value};`];
   if (kind === 'mb') return [`margin-bottom: ${value};`];
   if (kind === 'ml') return [`margin-left: ${value};`];
   if (kind === 'mr') return [`margin-right: ${value};`];
   if (kind === 'top') return [`top: ${value};`];
   if (kind === 'left') return [`left: ${value};`];
+  if (kind === 'right') return [`right: ${value};`];
   return null;
 }
 
@@ -381,6 +408,7 @@ function renderColorUtility(utility: string): string[] | null {
 }
 
 function renderRoundedUtility(utility: string): string[] | null {
+  if (utility === 'rounded-none') return ['border-radius: 0;'];
   if (utility === 'rounded-full') return ['border-radius: 9999px;'];
   if (utility === 'rounded-xl') return ['border-radius: var(--pui-radius-xl);'];
   if (utility === 'rounded-lg') return ['border-radius: var(--pui-radius-lg);'];
@@ -398,6 +426,10 @@ function renderTransformUtility(utility: string): string[] | null {
   if (utility === 'translate-x-0') return ['--pui-translate-x: 0px;', transformValue()];
   if (utility === 'translate-y-0') return ['--pui-translate-y: 0px;', transformValue()];
   if (utility === 'translate-y-px') return ['--pui-translate-y: 1px;', transformValue()];
+  if (utility === '-translate-x-0.5') return ['--pui-translate-x: -0.125rem;', transformValue()];
+  if (utility === '-translate-y-0.5') return ['--pui-translate-y: -0.125rem;', transformValue()];
+  if (utility === 'translate-x-[5px]') return ['--pui-translate-x: 5px;', transformValue()];
+  if (utility === 'translate-y-[5px]') return ['--pui-translate-y: 5px;', transformValue()];
 
   const scaleMatch = utility.match(/^scale-\[(.+)\]$/);
   if (scaleMatch)

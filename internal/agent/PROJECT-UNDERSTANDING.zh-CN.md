@@ -11,16 +11,16 @@
 | 当前 spec 版本 | `0.2.0-rc.3` |
 | Release channel | `prerelease` |
 | Version entity | [`V-PROTO-UI-0003`](../../spec/versions/V-PROTO-UI-0003.yaml) |
-| 工作区实体数 | 391 |
+| 工作区实体数 | 431 |
 | Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:a8d71a15524a5f4ba26f621b7501ea39287223e054441204c30349a21db1bae2` |
+| 工作区快照指纹 | `sha256:c6318bece5fd6ea27312e74206df0715ef75b50b9c7fc7898ba0abb46fe62c09` |
 | 已发布 release snapshot digest | `sha256:a7b0a99b3071ef53d55933265ce0bb6c47d2d9e913fea0ee1ee00f83d5db6c2d` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
 
 ## 阅读与权威边界
 
-当前快照包含 37 个 active、349 个 draft、5 个 deprecated、0 个 removed 实体。
+当前快照包含 37 个 active、389 个 draft、5 个 deprecated、0 个 removed 实体。
 
 - `active` 可以作为当前稳定保证读取。
 - `draft` 是已进入正式目录的当前方向，但不能包装为稳定公共承诺。
@@ -60,27 +60,27 @@ flowchart LR
 | 类型 | 总数 | active | draft | deprecated | 有 statement | 有 criteria | 有 open questions |
 | --- | --: | --: | --: | --: | --: | --: | --: |
 | `knowledge` | 5 | 0 | 5 | 0 | 5 | 5 | 0 |
-| `decision` | 48 | 6 | 40 | 2 | 33 | 18 | 3 |
+| `decision` | 49 | 6 | 41 | 2 | 34 | 19 | 3 |
 | `contract` | 144 | 15 | 126 | 3 | 141 | 141 | 22 |
-| `prototype` | 62 | 0 | 62 | 0 | 62 | 62 | 32 |
+| `prototype` | 92 | 0 | 92 | 0 | 92 | 92 | 32 |
 | `module` | 5 | 1 | 4 | 0 | 0 | 0 | 0 |
 | `host-cap` | 4 | 0 | 4 | 0 | 2 | 2 | 0 |
-| `test` | 120 | 12 | 108 | 0 | 0 | 0 | 4 |
+| `test` | 129 | 12 | 117 | 0 | 0 | 0 | 4 |
 | `version` | 3 | 3 | 0 | 0 | 3 | 3 | 0 |
 
 ### 实体级关系分布
 
 | Relation     | 边数 |
 | ------------ | ---: |
-| `relates`    |  222 |
-| `dependsOn`  |  770 |
-| `inherits`   |   28 |
+| `relates`    |  226 |
+| `dependsOn`  |  858 |
+| `inherits`   |   56 |
 | `references` |    7 |
 | `refines`    |   18 |
 | `satisfies`  |   27 |
-| `verifies`   |  292 |
+| `verifies`   |  354 |
 | `explains`   |   36 |
-| `exercises`  |  166 |
+| `exercises`  |  198 |
 | `requires`   |    4 |
 | `owns`       |    1 |
 
@@ -466,6 +466,41 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 | [`P-BASE-TOGGLE`](../../spec/prototypes/P-BASE-TOGGLE.yaml) | `draft` | Base Toggle is a button-like persistent active control | — | — | 37 | 3 |
 | [`P-BASE-TRANSITION`](../../spec/prototypes/P-BASE-TRANSITION.yaml) | `draft` | Base Transition governs host-neutral perceptual presence | — | — | 12 | 2 |
 
+### BRUTALIST（30）
+
+| Entity | 状态 | 标题 | 继承 | Anatomy | Criteria | 关联 T |
+| --- | --- | --- | --- | --- | --: | --: |
+| [`P-BRUTALIST-BUTTON`](../../spec/prototypes/P-BRUTALIST-BUTTON.yaml) | `draft` | Brutalist Button inherits Base Button and layers a dual-theme Neo-Brutalist visual API | `P-BASE-BUTTON` | — | 3 | 3 |
+| [`P-BRUTALIST-DIALOG`](../../spec/prototypes/P-BRUTALIST-DIALOG.yaml) | `draft` | Brutalist Dialog Root inherits Base modal ownership | `P-BASE-DIALOG` | — | 3 | 2 |
+| [`P-BRUTALIST-DIALOG-CLOSE`](../../spec/prototypes/P-BRUTALIST-DIALOG-CLOSE.yaml) | `draft` | Brutalist Dialog Close inherits Base close behavior and layers a square close surface | `P-BASE-DIALOG-CLOSE` | — | 3 | 2 |
+| [`P-BRUTALIST-DIALOG-CLOSE-ICON`](../../spec/prototypes/P-BRUTALIST-DIALOG-CLOSE-ICON.yaml) | `draft` | Brutalist Dialog Close Icon inherits Base close behavior and layers a default X close surface | `P-BASE-DIALOG-CLOSE` | — | 3 | 2 |
+| [`P-BRUTALIST-DIALOG-CONTENT`](../../spec/prototypes/P-BRUTALIST-DIALOG-CONTENT.yaml) | `draft` | Brutalist Dialog Content inherits Base content and layers a hard-shadowed modal panel | `P-BASE-DIALOG-CONTENT` | — | 3 | 3 |
+| [`P-BRUTALIST-DIALOG-DESCRIPTION`](../../spec/prototypes/P-BRUTALIST-DIALOG-DESCRIPTION.yaml) | `draft` | Brutalist Dialog Description inherits Base description relations and layers mono description typography | `P-BASE-DIALOG-DESCRIPTION` | — | 3 | 2 |
+| [`P-BRUTALIST-DIALOG-FOOTER`](../../spec/prototypes/P-BRUTALIST-DIALOG-FOOTER.yaml) | `draft` | Brutalist Dialog Footer is an optional layout-only anatomy part | — | — | 3 | 2 |
+| [`P-BRUTALIST-DIALOG-HEADER`](../../spec/prototypes/P-BRUTALIST-DIALOG-HEADER.yaml) | `draft` | Brutalist Dialog Header is an optional layout-only anatomy part | — | — | 3 | 2 |
+| [`P-BRUTALIST-DIALOG-MASK`](../../spec/prototypes/P-BRUTALIST-DIALOG-MASK.yaml) | `draft` | Brutalist Dialog Mask inherits Base modal masking and projects a flat overlay without blur | `P-BASE-DIALOG-MASK` | — | 3 | 2 |
+| [`P-BRUTALIST-DIALOG-TITLE`](../../spec/prototypes/P-BRUTALIST-DIALOG-TITLE.yaml) | `draft` | Brutalist Dialog Title inherits Base title relations and layers heavy heading typography | `P-BASE-DIALOG-TITLE` | — | 3 | 2 |
+| [`P-BRUTALIST-DIALOG-TRIGGER`](../../spec/prototypes/P-BRUTALIST-DIALOG-TRIGGER.yaml) | `draft` | Brutalist Dialog Trigger inherits Base trigger behavior and layers a hard-shadowed command surface | `P-BASE-DIALOG-TRIGGER` | — | 3 | 2 |
+| [`P-BRUTALIST-DROPDOWN-MENU`](../../spec/prototypes/P-BRUTALIST-DROPDOWN-MENU.yaml) | `draft` | Brutalist Dropdown Menu Root inherits Base action-menu ownership | `P-BASE-DROPDOWN-MENU` | — | 3 | 2 |
+| [`P-BRUTALIST-DROPDOWN-MENU-CONTENT`](../../spec/prototypes/P-BRUTALIST-DROPDOWN-MENU-CONTENT.yaml) | `draft` | Brutalist Dropdown Menu Content inherits Base menu overlay behavior and layers a hard-shadowed panel | `P-BASE-DROPDOWN-MENU-CONTENT` | — | 3 | 2 |
+| [`P-BRUTALIST-DROPDOWN-MENU-ITEM`](../../spec/prototypes/P-BRUTALIST-DROPDOWN-MENU-ITEM.yaml) | `draft` | Brutalist Dropdown Menu Item inherits Base menu item behavior and layers mono active styling | `P-BASE-DROPDOWN-MENU-ITEM` | — | 3 | 2 |
+| [`P-BRUTALIST-DROPDOWN-MENU-TRIGGER`](../../spec/prototypes/P-BRUTALIST-DROPDOWN-MENU-TRIGGER.yaml) | `draft` | Brutalist Dropdown Menu Trigger inherits Base menu-button behavior and layers a hard-shadowed command surface | `P-BASE-DROPDOWN-MENU-TRIGGER` | — | 3 | 2 |
+| [`P-BRUTALIST-HOVER-CARD`](../../spec/prototypes/P-BRUTALIST-HOVER-CARD.yaml) | `draft` | Brutalist Hover Card Root inherits Base Hover Card ownership | `P-BASE-HOVER-CARD` | — | 3 | 2 |
+| [`P-BRUTALIST-HOVER-CARD-CONTENT`](../../spec/prototypes/P-BRUTALIST-HOVER-CARD-CONTENT.yaml) | `draft` | Brutalist Hover Card Content inherits Base preview content and layers a hard-shadowed panel | `P-BASE-HOVER-CARD-CONTENT` | — | 3 | 2 |
+| [`P-BRUTALIST-HOVER-CARD-TRIGGER`](../../spec/prototypes/P-BRUTALIST-HOVER-CARD-TRIGGER.yaml) | `draft` | Brutalist Hover Card Trigger inherits Base preview intent and layers a command-like surface | `P-BASE-HOVER-CARD-TRIGGER` | — | 3 | 2 |
+| [`P-BRUTALIST-SELECT`](../../spec/prototypes/P-BRUTALIST-SELECT.yaml) | `draft` | Brutalist Select Root inherits Base Select ownership | `P-BASE-SELECT` | — | 3 | 2 |
+| [`P-BRUTALIST-SELECT-CONTENT`](../../spec/prototypes/P-BRUTALIST-SELECT-CONTENT.yaml) | `draft` | Brutalist Select Content inherits Base Select Content and layers a hard-shadowed listbox panel | `P-BASE-SELECT-CONTENT` | — | 3 | 2 |
+| [`P-BRUTALIST-SELECT-ITEM`](../../spec/prototypes/P-BRUTALIST-SELECT-ITEM.yaml) | `draft` | Brutalist Select Item inherits Base Select Item and layers selected option styling | `P-BASE-SELECT-ITEM` | — | 3 | 2 |
+| [`P-BRUTALIST-SELECT-TRIGGER`](../../spec/prototypes/P-BRUTALIST-SELECT-TRIGGER.yaml) | `draft` | Brutalist Select Trigger inherits Base Select Trigger and layers a hard-shadowed combobox command | `P-BASE-SELECT-TRIGGER` | — | 3 | 2 |
+| [`P-BRUTALIST-SELECT-VALUE`](../../spec/prototypes/P-BRUTALIST-SELECT-VALUE.yaml) | `draft` | Brutalist Select Value inherits Base Select Value and renders committed-value text | `P-BASE-SELECT-VALUE` | — | 3 | 2 |
+| [`P-BRUTALIST-SWITCH`](../../spec/prototypes/P-BRUTALIST-SWITCH.yaml) | `draft` | Brutalist Switch Root inherits Base Switch and layers a square track surface | `P-BASE-SWITCH` | — | 3 | 2 |
+| [`P-BRUTALIST-SWITCH-THUMB`](../../spec/prototypes/P-BRUTALIST-SWITCH-THUMB.yaml) | `draft` | Brutalist Switch Thumb inherits Base Switch Thumb and layers a square indicator surface | `P-BASE-SWITCH-THUMB` | — | 3 | 2 |
+| [`P-BRUTALIST-TABS`](../../spec/prototypes/P-BRUTALIST-TABS.yaml) | `draft` | Brutalist Tabs Root inherits Base Tabs and owns the family layout surface | `P-BASE-TABS` | — | 3 | 2 |
+| [`P-BRUTALIST-TABS-CONTENT`](../../spec/prototypes/P-BRUTALIST-TABS-CONTENT.yaml) | `draft` | Brutalist Tabs Content inherits Base Tabs Content and layers a hard-shadowed panel | `P-BASE-TABS-CONTENT` | — | 3 | 2 |
+| [`P-BRUTALIST-TABS-LIST`](../../spec/prototypes/P-BRUTALIST-TABS-LIST.yaml) | `draft` | Brutalist Tabs List inherits Base Tabs List and layers a ruled tab strip | `P-BASE-TABS-LIST` | — | 3 | 2 |
+| [`P-BRUTALIST-TABS-TRIGGER`](../../spec/prototypes/P-BRUTALIST-TABS-TRIGGER.yaml) | `draft` | Brutalist Tabs Trigger inherits Base Tabs Trigger and layers selected block styling | `P-BASE-TABS-TRIGGER` | — | 3 | 2 |
+| [`P-BRUTALIST-TOGGLE`](../../spec/prototypes/P-BRUTALIST-TOGGLE.yaml) | `draft` | Brutalist Toggle inherits Base Toggle and layers a square active-control surface | `P-BASE-TOGGLE` | — | 3 | 2 |
+
 ### LUCIDE（1）
 
 | Entity | 状态 | 标题 | 继承 | Anatomy | Criteria | 关联 T |
@@ -583,10 +618,11 @@ Decision 实体固定已经稳定下来的设计与治理选择。它们解释�
 | [`D-BASE-PROTOTYPE-INDEPENDENCE-0001`](../../spec/decisions/D-BASE-PROTOTYPE-INDEPENDENCE-0001.yaml) | `draft` | Base prototypes stay independently consumable | 4 | Base prototype protocols should stay independently consumable; shared hooks with protocol names must serve their owning prototype protocol rather than becoming cross-prototype substrate. |
 | [`D-BASE-TABS-L1-MATERIALIZATION-0001`](../../spec/decisions/D-BASE-TABS-L1-MATERIALIZATION-0001.yaml) | `active` | Base Tabs Content defaults to lazy L1 materialization | 0 | Inactive Base Tabs Content will default to no view, detach on exit, and preserve its Proto instance; keepMounted remains the explicit full-view retention option. |
 
-### CLI（1）
+### CLI（2）
 
 | Entity | 状态 | 标题 | Criteria | 摘要 |
 | --- | --- | --- | --: | --- |
+| [`D-CLI-BRUTALIST-PRESET-CLOSURE-0001`](../../spec/decisions/D-CLI-BRUTALIST-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Brutalist preset is a generated closure of official prototype style tokens | 3 | The CLI carries an install-time Brutalist token preset for first-run and offline use, generated deterministically from official Brutalist prototype sources instead of maintained as an independent token list. |
 | [`D-CLI-SHADCN-PRESET-CLOSURE-0001`](../../spec/decisions/D-CLI-SHADCN-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Shadcn preset is a generated closure of official prototype style tokens | 3 | The CLI keeps an install-time Shadcn token preset for first-run and offline use, but generates that manifest deterministically from official Shadcn prototype sources instead of maintaining an independent token list. |
 
 ### COLLECTION（1）
@@ -701,7 +737,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Status    | 数量 |
 | --------- | ---: |
 | `active`  |   18 |
-| `passing` |  257 |
+| `passing` |  267 |
 | `planned` |   14 |
 
 ### Implementation 类型
@@ -710,9 +746,9 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | ----------------- | ---: |
 | `adapter-test`    |   71 |
 | `fixture`         |   17 |
-| `module-test`     |  124 |
+| `module-test`     |  133 |
 | `runtime-test`    |   70 |
-| `workspace-check` |    7 |
+| `workspace-check` |    8 |
 
 ### Test entities
 
@@ -811,10 +847,24 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | --- | --- | --- | --: | --- | --- | --- |
 | [`T-BOUNDARY-0001`](../../spec/tests/T-BOUNDARY-0001.yaml) | `draft` | Boundary observation, classification, stacking, and cleanup tests | 7 | `passing` 2 | `C-BOUNDARY-0001` | — |
 
-### CLI（1）
+### BRUTALIST（8）
 
 | Entity | 状态 | 标题 | Cases | Implementations | Verifies | Exercises |
 | --- | --- | --- | --: | --- | --- | --- |
+| [`T-BRUTALIST-BUTTON-0001`](../../spec/tests/T-BRUTALIST-BUTTON-0001.yaml) | `draft` | Brutalist Button dual-theme visual contract tests | 1 | `passing` 1 | `P-BRUTALIST-BUTTON` | `P-BRUTALIST-BUTTON` |
+| [`T-BRUTALIST-DIALOG-0001`](../../spec/tests/T-BRUTALIST-DIALOG-0001.yaml) | `draft` | Brutalist Dialog family visual contract tests | 10 | `passing` 1 | `P-BRUTALIST-DIALOG`<br>`P-BRUTALIST-DIALOG-TRIGGER`<br>`P-BRUTALIST-DIALOG-MASK`<br>`P-BRUTALIST-DIALOG-CONTENT`<br>`P-BRUTALIST-DIALOG-TITLE`<br>`P-BRUTALIST-DIALOG-DESCRIPTION`<br>`P-BRUTALIST-DIALOG-CLOSE`<br>`P-BRUTALIST-DIALOG-CLOSE-ICON`<br>`P-BRUTALIST-DIALOG-HEADER`<br>`P-BRUTALIST-DIALOG-FOOTER` | `P-BRUTALIST-DIALOG`<br>`P-BRUTALIST-DIALOG-TRIGGER`<br>`P-BRUTALIST-DIALOG-MASK`<br>`P-BRUTALIST-DIALOG-CONTENT`<br>`P-BRUTALIST-DIALOG-TITLE`<br>`P-BRUTALIST-DIALOG-DESCRIPTION`<br>`P-BRUTALIST-DIALOG-CLOSE`<br>`P-BRUTALIST-DIALOG-CLOSE-ICON`<br>`P-BRUTALIST-DIALOG-HEADER`<br>`P-BRUTALIST-DIALOG-FOOTER` |
+| [`T-BRUTALIST-DROPDOWN-MENU-0001`](../../spec/tests/T-BRUTALIST-DROPDOWN-MENU-0001.yaml) | `draft` | Brutalist Dropdown Menu family visual contract tests | 4 | `passing` 1 | `P-BRUTALIST-DROPDOWN-MENU`<br>`P-BRUTALIST-DROPDOWN-MENU-TRIGGER`<br>`P-BRUTALIST-DROPDOWN-MENU-CONTENT`<br>`P-BRUTALIST-DROPDOWN-MENU-ITEM` | `P-BRUTALIST-DROPDOWN-MENU`<br>`P-BRUTALIST-DROPDOWN-MENU-TRIGGER`<br>`P-BRUTALIST-DROPDOWN-MENU-CONTENT`<br>`P-BRUTALIST-DROPDOWN-MENU-ITEM` |
+| [`T-BRUTALIST-HOVER-CARD-0001`](../../spec/tests/T-BRUTALIST-HOVER-CARD-0001.yaml) | `draft` | Brutalist Hover Card family visual contract tests | 3 | `passing` 1 | `P-BRUTALIST-HOVER-CARD`<br>`P-BRUTALIST-HOVER-CARD-TRIGGER`<br>`P-BRUTALIST-HOVER-CARD-CONTENT` | `P-BRUTALIST-HOVER-CARD`<br>`P-BRUTALIST-HOVER-CARD-TRIGGER`<br>`P-BRUTALIST-HOVER-CARD-CONTENT` |
+| [`T-BRUTALIST-SELECT-0001`](../../spec/tests/T-BRUTALIST-SELECT-0001.yaml) | `draft` | Brutalist Select family visual contract tests | 5 | `passing` 1 | `P-BRUTALIST-SELECT`<br>`P-BRUTALIST-SELECT-TRIGGER`<br>`P-BRUTALIST-SELECT-VALUE`<br>`P-BRUTALIST-SELECT-CONTENT`<br>`P-BRUTALIST-SELECT-ITEM` | `P-BRUTALIST-SELECT`<br>`P-BRUTALIST-SELECT-TRIGGER`<br>`P-BRUTALIST-SELECT-VALUE`<br>`P-BRUTALIST-SELECT-CONTENT`<br>`P-BRUTALIST-SELECT-ITEM` |
+| [`T-BRUTALIST-SWITCH-0001`](../../spec/tests/T-BRUTALIST-SWITCH-0001.yaml) | `draft` | Brutalist Switch family visual contract tests | 2 | `passing` 1 | `P-BRUTALIST-SWITCH`<br>`P-BRUTALIST-SWITCH-THUMB` | `P-BRUTALIST-SWITCH`<br>`P-BRUTALIST-SWITCH-THUMB` |
+| [`T-BRUTALIST-TABS-0001`](../../spec/tests/T-BRUTALIST-TABS-0001.yaml) | `draft` | Brutalist Tabs family visual contract tests | 4 | `passing` 1 | `P-BRUTALIST-TABS`<br>`P-BRUTALIST-TABS-LIST`<br>`P-BRUTALIST-TABS-TRIGGER`<br>`P-BRUTALIST-TABS-CONTENT` | `P-BRUTALIST-TABS`<br>`P-BRUTALIST-TABS-LIST`<br>`P-BRUTALIST-TABS-TRIGGER`<br>`P-BRUTALIST-TABS-CONTENT` |
+| [`T-BRUTALIST-TOGGLE-0001`](../../spec/tests/T-BRUTALIST-TOGGLE-0001.yaml) | `draft` | Brutalist Toggle visual contract tests | 1 | `passing` 1 | `P-BRUTALIST-TOGGLE` | `P-BRUTALIST-TOGGLE` |
+
+### CLI（2）
+
+| Entity | 状态 | 标题 | Cases | Implementations | Verifies | Exercises |
+| --- | --- | --- | --: | --- | --- | --- |
+| [`T-CLI-BRUTALIST-PRESET-CLOSURE-0001`](../../spec/tests/T-CLI-BRUTALIST-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Brutalist preset source-closure tests | 3 | `passing` 2 | `D-CLI-BRUTALIST-PRESET-CLOSURE-0001` | `P-BRUTALIST-BUTTON`<br>`P-BRUTALIST-DIALOG-CONTENT` |
 | [`T-CLI-SHADCN-PRESET-CLOSURE-0001`](../../spec/tests/T-CLI-SHADCN-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Shadcn preset source-closure tests | 3 | `passing` 3 | `D-CLI-SHADCN-PRESET-CLOSURE-0001` | `P-SHADCN-DIALOG-CONTENT`<br>`P-SHADCN-DIALOG-MASK` |
 
 ### COLLECTION（1）
@@ -1124,7 +1174,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 
 ## 十一、当前快照的结构性限制
 
-- 349/391 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
+- 389/431 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
 - 当前只有 5 个 Module 与 4 个 Host Capability 实体；不要据此推断实现中只有这些能力。
 - Adapter 与 Compiler 尚无一级实体类型，因此宿主 profile、支持矩阵和 translation-layer 权衡仍可能主要存在于实现、旧契约和 records。
 - 生成器只验证 schema 与关系完整性，不验证网站内容、README、package exports 或运行时代码与实体完全一致。

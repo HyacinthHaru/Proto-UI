@@ -19,7 +19,7 @@ cases:
     expectation: brutalist-registry-add-generates-facade
 implementations:
   - id: cli-brutalist-preset-stale-check
-    kind: script
+    kind: workspace-check
     status: passing
     path: scripts/styles/generate-brutalist-style-tokens.ts
     required: true

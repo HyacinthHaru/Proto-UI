@@ -47,7 +47,9 @@ function createButtonHost(
 
 describe('prototypes/brutalist: button', () => {
   it('maps variant and size props to Neo-Brutalist rule style tokens', () => {
-    const rawPropsRef = { current: { variant: 'default', size: 'default', disabled: false } };
+    const rawPropsRef: { current: Record<string, unknown> } = {
+      current: { variant: 'default', size: 'default', disabled: false },
+    };
     const { host } = createButtonHost(rawPropsRef);
     const { controller } = executeWithHost(button as any, host as any);
 
