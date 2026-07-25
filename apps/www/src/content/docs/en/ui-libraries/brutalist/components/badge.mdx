@@ -1,0 +1,25 @@
+---
+title: Badge
+sidebar:
+  order: 3
+---
+
+import BrutalistPageStyle from '../../../../../components/BrutalistPageStyle.astro';
+import PrototypePreviewer from '../../../../../components/PrototypePreviewer/PrototypePreviewer.astro';
+
+<BrutalistPageStyle />
+
+Brutalist Badge is the compact status-label projection of Base Badge.
+
+## Contract
+
+- Square geometry, `2px` ink border, and a small hard shadow.
+- Bold mono uppercase text on Yandu Canary.
+- Flat color only; no pill radius, gradients, glass, or glow.
+- Explicit anatomy composition works without a component preset.
+
+Use it for unread counts, participant roles, environment labels, and delivery status. Do not use Badge as an interactive control; compose Button or Toggle when activation is required.
+
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-foreground:#000;--pui-canary:#FEF08A;--pui-canary-foreground:#000;background:#f4f1ea;color:#000;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:1rem;">
+  <PrototypePreviewer demoId="demo-brutalist-badge" initialRuntime="wc" />
+</div>

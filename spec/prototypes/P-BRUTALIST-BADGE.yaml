@@ -1,0 +1,27 @@
+id: P-BRUTALIST-BADGE
+kind: prototype
+status: draft
+since: 0.2.0-rc.6
+summary: Brutalist Badge 是 Base Badge 的方角高对比状态标签样式增量。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests: [T-BRUTALIST-BADGE]
+  dependsOn: [P-BASE-BADGE]
+  refines: []
+  conflictsWith: []
+implementation:
+  - packages/prototypes/brutalist/src/badge/root.proto.ts
+  - packages/prototypes/brutalist/src/badge/index.ts
+criteria:
+  - id: P-BRUTALIST-BADGE-INHERIT-BASE
+    statement: The root calls asBadgeRoot and preserves Base badge anatomy and slot semantics.
+  - id: P-BRUTALIST-BADGE-GRAMMAR
+    statement: The badge uses square geometry, two-pixel ink border, mono uppercase label, flat Yandu Canary surface, and a two-pixel hard shadow.
+  - id: P-BRUTALIST-BADGE-COMPOSITION
+    statement: Explicit anatomy composition remains fully usable without any component preset artifact.
+revisions:
+  - date: 2026-07-25
+    note: Added Brutalist Badge for cross-library ChatUI status and unread-count composition.

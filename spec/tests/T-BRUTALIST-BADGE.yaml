@@ -1,0 +1,26 @@
+id: T-BRUTALIST-BADGE
+kind: test
+status: draft
+since: 0.2.0-rc.6
+summary: 验证 Brutalist Badge 保留 Base anatomy 并投影粗野主义标签 token。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests: []
+  dependsOn: [P-BRUTALIST-BADGE]
+  refines: []
+  conflictsWith: []
+target:
+  - packages/prototypes/brutalist/src/badge/root.proto.ts
+implementation:
+  - packages/prototypes/brutalist/test/badge.test.ts
+criteria:
+  - id: T-BRUTALIST-BADGE-STYLE
+    statement: Executable coverage verifies square border, mono uppercase label, Canary surface, ink foreground, and hard shadow tokens.
+  - id: T-BRUTALIST-BADGE-BASE-ANATOMY
+    statement: Executable coverage verifies the Base badge anatomy remains present in the rendered styled root.
+revisions:
+  - date: 2026-07-25
+    note: Added executable Brutalist Badge style and Base-anatomy coverage.
