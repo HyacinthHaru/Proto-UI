@@ -1,0 +1,27 @@
+---
+title: Avatar
+sidebar:
+  order: 2
+---
+
+import BrutalistPageStyle from '../../../../../components/BrutalistPageStyle.astro';
+import PrototypePreviewer from '../../../../../components/PrototypePreviewer/PrototypePreviewer.astro';
+
+<BrutalistPageStyle />
+
+Brutalist Avatar is the square, hard-shadow projection of the Base Avatar loading and fallback protocol. The styled parts do not own image loading or fallback selection.
+
+## Visual contract
+
+- The root is a square paper surface with a `2px` ink border and offset hard shadow.
+- The image fills and covers the root while Base controls loaded visibility.
+- The fallback is centered, bold, and high contrast on Yandu Sky.
+- No circular crop, gradient, glass, blur glow, or soft shadow.
+
+## ChatUI use
+
+Use Avatar for participants in conversation lists, message headers, support agents, and presence rows. Pair it with Item or Message rather than embedding conversation behavior into Avatar.
+
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-foreground:#000;--pui-border:#000;--pui-sky:#BAE6FD;--pui-sky-foreground:#000;background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);box-shadow:3px 3px 0 var(--pui-foreground);padding:1rem;">
+  <PrototypePreviewer demoId="demo-brutalist-avatar" initialRuntime="wc" />
+</div>

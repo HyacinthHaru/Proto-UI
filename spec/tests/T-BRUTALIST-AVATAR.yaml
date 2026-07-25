@@ -1,0 +1,35 @@
+id: T-BRUTALIST-AVATAR
+kind: test
+status: draft
+since: 0.2.0-rc.5
+summary: 验证 Brutalist Avatar 继承 Base 行为并投影方角、硬阴影与 Yandu fallback 样式。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests: []
+  dependsOn:
+    - P-BRUTALIST-AVATAR
+  refines: []
+  conflictsWith: []
+target:
+  - packages/prototypes/brutalist/src/avatar/root.proto.ts
+  - packages/prototypes/brutalist/src/avatar/image.proto.ts
+  - packages/prototypes/brutalist/src/avatar/fallback.proto.ts
+implementation:
+  - packages/prototypes/brutalist/test/avatar.test.ts
+criteria:
+  - id: T-BRUTALIST-AVATAR-PART-STYLES
+    statement: >-
+      Executable coverage verifies root, image, and fallback feedback tokens including square border geometry, hard shadow, object cover, centered fallback, and Yandu Sky color roles.
+
+
+  - id: T-BRUTALIST-AVATAR-BASE-INHERITANCE
+    statement: >-
+      Executable coverage proves the styled parts initialize through Base Avatar hooks without replacing Base loading, fallback, accessibility, or anatomy behavior.
+
+
+revisions:
+  - date: 2026-07-25
+    note: Added executable coverage requirements for the Brutalist Avatar styled delta.

@@ -1,0 +1,27 @@
+---
+title: Avatar
+sidebar:
+  order: 2
+---
+
+import BrutalistPageStyle from '../../../../../components/BrutalistPageStyle.astro';
+import PrototypePreviewer from '../../../../../components/PrototypePreviewer/PrototypePreviewer.astro';
+
+<BrutalistPageStyle />
+
+Brutalist Avatar 是 Base Avatar 加载与 fallback 协议的方角、硬阴影视觉投影。样式层不接管图片加载或 fallback 选择。
+
+## 视觉契约
+
+- Root 是方形 paper 表面，使用 `2px` ink 边框与偏移硬阴影。
+- Image 填满并 cover root；loaded 可见性仍由 Base 控制。
+- Fallback 居中、粗体、高对比，使用 Yandu 天空蓝表面。
+- 禁止圆形裁切、渐变、玻璃、柔光和软阴影。
+
+## ChatUI 用途
+
+Avatar 用于会话列表、消息头、客服坐席和 presence 行。应与 Item 或 Message 组合，不把会话行为塞入 Avatar。
+
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-foreground:#000;--pui-border:#000;--pui-sky:#BAE6FD;--pui-sky-foreground:#000;background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);box-shadow:3px 3px 0 var(--pui-foreground);padding:1rem;">
+  <PrototypePreviewer demoId="demo-brutalist-avatar" initialRuntime="wc" />
+</div>

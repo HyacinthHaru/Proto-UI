@@ -1,0 +1,50 @@
+id: P-BRUTALIST-AVATAR
+kind: prototype
+status: draft
+since: 0.2.0-rc.5
+summary: Brutalist Avatar 是 Base Avatar 协议的方角、硬阴影样式增量。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests:
+    - T-BRUTALIST-AVATAR
+  dependsOn:
+    - P-BASE-AVATAR
+  refines: []
+  conflictsWith: []
+implementation:
+  - packages/prototypes/brutalist/src/avatar/root.proto.ts
+  - packages/prototypes/brutalist/src/avatar/image.proto.ts
+  - packages/prototypes/brutalist/src/avatar/fallback.proto.ts
+  - packages/prototypes/brutalist/src/avatar/index.ts
+criteria:
+  - id: P-BRUTALIST-AVATAR-INHERIT-BASE
+    statement: >-
+      Every Brutalist Avatar part must call the matching Base Avatar asHook so image loading, fallback visibility, accessibility, and anatomy remain owned by P-BASE-AVATAR.
+
+
+  - id: P-BRUTALIST-AVATAR-ROOT-GRAMMAR
+    statement: >-
+      The root uses square geometry, a two-pixel ink border, paper background, overflow clipping, and a hard offset ink shadow with no gradient, glass, blur glow, or soft rounded treatment.
+
+
+  - id: P-BRUTALIST-AVATAR-IMAGE-AND-FALLBACK
+    statement: >-
+      The image fills and covers the root while the fallback remains centered, typographically explicit, and high contrast; Base loading state determines which part is visible.
+
+
+  - id: P-BRUTALIST-AVATAR-YANDU-PALETTE
+    statement: >-
+      The fallback uses the Yandu Sky semantic surface with ink foreground while structural borders and shadows remain paper-and-ink.
+
+
+  - id: P-BRUTALIST-AVATAR-ADAPTER-PARITY
+    statement: >-
+      React, Vue, Web Component, and other adapters must observe the same Base Avatar behavior; the Brutalist family introduces no host-specific loading or fallback path.
+
+
+revisions:
+  - date: 2026-07-25
+    note: Added the Base-inheriting Brutalist Avatar contract for cross-library ChatUI parity.
