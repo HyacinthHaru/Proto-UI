@@ -19,6 +19,7 @@ const ROOT_BASE_TOKENS = [
   'shadow-[3px_3px_0_0_var(--pui-foreground)]',
   'outline-none',
   'select-none',
+  'transition-none',
 ].join(' ');
 
 const switchRoot = definePrototype<BrutalistSwitchRootProps, BrutalistSwitchRootExposes>({
@@ -30,13 +31,17 @@ const switchRoot = definePrototype<BrutalistSwitchRootProps, BrutalistSwitchRoot
         '[brutalist-switch-root] asSwitchRoot must project Switch root state handles.'
       );
     }
-    const { checked, disabled, focusVisible } = switchState;
+    const { checked, disabled, focusVisible, pressed } = switchState;
 
     def.feedback.style.use(tw(ROOT_BASE_TOKENS));
 
     def.rule({
       when: (w) => w.state(checked).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground pl-5 pr-0.5')),
+      intent: (i) => i.feedback.style.use(tw('bg-sky pl-5 pr-0.5')),
+    });
+    def.rule({
+      when: (w) => w.state(pressed).eq(true),
+      intent: (i) => i.feedback.style.use(tw('bg-coral shadow-none')),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),

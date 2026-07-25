@@ -250,7 +250,7 @@ describe('@proto.ui/cli', () => {
     expect(tokensCss).not.toContain(`not-[data-open]:hidden`);
     expect(tokensCss).toContain(`[data-pui-style~="px-0.5"]`);
     expect(tokensCss).toContain(`data-[checked]:translate-x-5"])[data-checked]`);
-    expect(tokensCss).not.toContain(`data-[checked]:pl-5"])[data-checked]`);
+    expect(tokensCss).toContain(`data-[checked]:pl-5"])[data-checked]`);
     expect(tokensCss).toContain(`data-[checked]:bg-primary"])[data-checked]`);
     expect(tokensCss).toContain(`data-[selected]:bg-background"])[data-selected]`);
     expect(tokensCss).toContain(`data-[hidden]:hidden"])[data-hidden]`);

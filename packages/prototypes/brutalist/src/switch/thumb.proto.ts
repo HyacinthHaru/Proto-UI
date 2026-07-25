@@ -9,16 +9,27 @@ const THUMB_TOKENS = [
   'rounded-none',
   'border-2',
   'border-foreground',
-  'bg-main',
+  'bg-foreground',
   'shadow-[3px_3px_0_0_var(--pui-foreground)]',
   'translate-x-0',
+  'transition-none',
 ].join(' ');
 
 const switchThumb = definePrototype<BrutalistSwitchThumbProps, BrutalistSwitchThumbExposes>({
   name: 'brutalist-switch-thumb',
   setup(def) {
-    asSwitchThumb();
+    const switchState = asSwitchThumb().stateHandles;
+    if (!switchState) {
+      throw new Error(
+        '[brutalist-switch-thumb] asSwitchThumb must project Switch thumb state handles.'
+      );
+    }
+    const { checked } = switchState;
     def.feedback.style.use(tw(THUMB_TOKENS));
+    def.rule({
+      when: (w) => w.state(checked).eq(true),
+      intent: (i) => i.feedback.style.use(tw('translate-x-5 bg-canary')),
+    });
   },
 });
 

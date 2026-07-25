@@ -28,7 +28,9 @@ describe('prototypes/brutalist: switch', () => {
     await Promise.resolve();
     expect(root.getExposes().checked.get()).toBe(true);
     expect(thumb.getExposes().isChecked()).toBe(true);
-    expect(styleContains(root, 'data-[checked]:bg-main')).toBe(true);
+    expect(styleContains(root, 'data-[checked]:bg-sky')).toBe(true);
+    expect(styleContains(thumb, 'data-[checked]:translate-x-5')).toBe(true);
+    expect(styleContains(thumb, 'data-[checked]:bg-canary')).toBe(true);
     // Thumb travel mirrors the Shadcn root-padding swap: unchecked keeps the
     // thumb left, checked swaps padding to push it to the right.
     expect(styleContains(root, 'pr-5')).toBe(true);
