@@ -14,8 +14,9 @@ const ROOT_BASE_TOKENS = [
   'border-2',
   'border-black',
   'bg-secondary-background',
-  'p-0.5',
-  'shadow-[5px_5px_0_0_#000]',
+  'pl-0.5',
+  'pr-5',
+  'shadow-[5px_5px_0_0_var(--pui-foreground)]',
   'outline-none',
   'select-none',
 ].join(' ');
@@ -35,7 +36,7 @@ const switchRoot = definePrototype<BrutalistSwitchRootProps, BrutalistSwitchRoot
 
     def.rule({
       when: (w) => w.state(checked).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground')),
+      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground pl-5 pr-0.5')),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),

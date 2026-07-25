@@ -20,15 +20,20 @@ describe('prototypes/brutalist: switch', () => {
 
     expect(styleContains(root, 'rounded-none')).toBe(true);
     expect(styleContains(root, 'border-2')).toBe(true);
-    expect(styleContains(root, 'shadow-[5px_5px_0_0_#000]')).toBe(true);
+    expect(styleContains(root, 'shadow-[5px_5px_0_0_var(--pui-foreground)]')).toBe(true);
     expect(styleContains(thumb, 'rounded-none')).toBe(true);
-    expect(styleContains(thumb, 'shadow-[3px_3px_0_0_#000]')).toBe(true);
+    expect(styleContains(thumb, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
 
     root.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await Promise.resolve();
     expect(root.getExposes().checked.get()).toBe(true);
     expect(thumb.getExposes().isChecked()).toBe(true);
     expect(styleContains(root, 'data-[checked]:bg-main')).toBe(true);
+    // Thumb travel mirrors the Shadcn root-padding swap: unchecked keeps the
+    // thumb left, checked swaps padding to push it to the right.
+    expect(styleContains(root, 'pr-5')).toBe(true);
+    expect(styleContains(root, 'data-[checked]:pl-5')).toBe(true);
+    expect(styleContains(root, 'data-[checked]:pr-0.5')).toBe(true);
 
     root.remove();
     await Promise.resolve();

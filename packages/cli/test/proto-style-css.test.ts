@@ -23,6 +23,18 @@ describe('proto style css renderer', () => {
     expect(css).not.toContain('Unsupported Proto UI style tokens');
   });
 
+  it('renders solid black surfaces and treats brutalist group markers as no-ops', () => {
+    const css = renderProtoStyleTokenCss([
+      'bg-black',
+      'group/brutalist-button',
+      'group/brutalist-toggle',
+    ]);
+
+    expect(css).toContain('[data-pui-style~="bg-black"]');
+    expect(css).toContain('background-color: #000;');
+    expect(css).not.toContain('Unsupported Proto UI style tokens');
+  });
+
   it('renders internal negative data selector variants', () => {
     const css = renderProtoStyleTokenCss(['data-[hovered]:not-[data-active]:bg-muted']);
 

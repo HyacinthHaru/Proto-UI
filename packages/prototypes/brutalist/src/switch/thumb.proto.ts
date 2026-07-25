@@ -10,7 +10,7 @@ const THUMB_TOKENS = [
   'border-2',
   'border-black',
   'bg-main',
-  'shadow-[3px_3px_0_0_#000]',
+  'shadow-[3px_3px_0_0_var(--pui-foreground)]',
   'translate-x-0',
 ].join(' ');
 

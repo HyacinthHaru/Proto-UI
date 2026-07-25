@@ -34,7 +34,7 @@ const VARIANT_TOKENS: Record<BrutalistButtonVariant, string> = {
   outline: `${BRUTALIST_CONTROL_TOKENS} bg-secondary-background text-foreground`,
   secondary: `${BRUTALIST_CONTROL_TOKENS} bg-background text-foreground`,
   destructive: `${BRUTALIST_CONTROL_TOKENS} bg-destructive text-main-foreground`,
-  reverse: `${BRUTALIST_CONTROL_TOKENS} bg-black text-background shadow-[-5px_5px_0_0_#000]`,
+  reverse: `${BRUTALIST_CONTROL_TOKENS} bg-black text-background shadow-[-5px_5px_0_0_var(--pui-foreground)]`,
 };
 
 const SIZE_TOKENS: Record<BrutalistButtonSize, string> = {

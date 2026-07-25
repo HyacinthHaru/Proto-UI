@@ -8,6 +8,18 @@ import { PrototypePreviewer } from '@/components/PrototypePreviewer';
 
 当前页面展示 draft Brutalist design-language prototypes：零圆角、黑色边框、硬偏移阴影，以及显式 Light/Dark 主题变量。
 
+{/_ 弹层/对话框内容会被 portal 到 <body>，脱离下方每个 demo 的主题 wrapper。这些页面级变量保证 portaled 浮层继续使用 Neo-Brutalist 配色（浅色面板 + 黑色边框 + 硬阴影）。 _/}
+
+<style>{`
+  :root {
+    --pui-main: #ffd23f;
+    --pui-main-foreground: #000000;
+    --pui-secondary-background: #ffffff;
+    --pui-destructive: #ff6b6b;
+    --pui-overlay: rgba(0, 0, 0, 0.75);
+  }
+`}</style>
+
 ## Light Mode
 
 ### Button

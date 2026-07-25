@@ -64,7 +64,7 @@ describe('prototypes/brutalist: button', () => {
     expect(tokens).toContain('border-black');
     expect(tokens).toContain('bg-main');
     expect(tokens).toContain('text-main-foreground');
-    expect(tokens).toContain('shadow-[5px_5px_0_0_#000]');
+    expect(tokens).toContain('shadow-[5px_5px_0_0_var(--pui-foreground)]');
     expect(tokens).toContain('h-10');
 
     rawPropsRef.current = { variant: 'destructive', size: 'lg', disabled: true };
@@ -95,7 +95,7 @@ describe('prototypes/brutalist: button', () => {
 
     rootTarget.dispatchEvent(new CustomEvent('pointer.enter'));
     let tokens = controller.getRuleStyleTokens();
-    expect(tokens).toContain('shadow-[8px_8px_0_0_#000]');
+    expect(tokens).toContain('shadow-[8px_8px_0_0_var(--pui-foreground)]');
     expect(tokens).toContain('-translate-x-0.5');
     expect(tokens).toContain('-translate-y-0.5');
 

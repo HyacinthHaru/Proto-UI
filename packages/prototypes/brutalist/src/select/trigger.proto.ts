@@ -42,7 +42,7 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     // P-BRUTALIST-SELECT-TRIGGER-CURRENT-VISUAL-SURFACE
     def.feedback.style.use(
       tw(
-        'flex items-center justify-between gap-2 rounded-none border-2 border-black bg-secondary-background px-3 py-2 text-sm whitespace-nowrap shadow-[5px_5px_0_0_#000] outline-none select-none'
+        'flex items-center justify-between gap-2 rounded-none border-2 border-black bg-secondary-background px-3 py-2 text-sm whitespace-nowrap shadow-[5px_5px_0_0_var(--pui-foreground)] outline-none select-none'
       )
     );
     // P-BRUTALIST-SELECT-TRIGGER-STATE-DRIVEN-STYLES
@@ -60,16 +60,21 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     });
     def.rule({
       when: (w) => w.state(hovered).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-input/50')),
+      intent: (i) =>
+        i.feedback.style.use(
+          tw('-translate-x-0.5 -translate-y-0.5 shadow-[8px_8px_0_0_var(--pui-foreground)]')
+        ),
+    });
+    def.rule({
+      when: (w) => w.state(pressed).eq(true),
+      intent: (i) => i.feedback.style.use(tw('translate-x-[5px] translate-y-[5px] shadow-none')),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),
       intent: (i) =>
-        i.feedback.style.use(tw('ring-2 ring-ring ring-offset-2 ring-offset-background')),
-    });
-    def.rule({
-      when: (w) => w.state(pressed).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-input/70')),
+        i.feedback.style.use(
+          tw('outline-none ring-2 ring-ring ring-offset-2 ring-offset-background')
+        ),
     });
     def.rule({
       when: (w) => w.state(disabled).eq(true),

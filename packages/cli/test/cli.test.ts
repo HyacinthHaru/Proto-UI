@@ -412,7 +412,7 @@ describe('@proto.ui/cli', () => {
     expect(config.styles.preset).toBe('brutalist');
     expect(theme).toContain('--pui-background: #f4f1ea');
     expect(theme).toContain(':root.dark');
-    expect(tokens).toContain('shadow-[5px_5px_0_0_#000]');
+    expect(tokens).toContain('shadow-[5px_5px_0_0_var(--pui-foreground)]');
   });
 
   it('adds the Brutalist Button React facade without installing packages', async () => {

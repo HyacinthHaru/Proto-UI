@@ -137,6 +137,7 @@ const staticUtilities: Record<string, string[]> = {
   'border-black': ['border-color: #000;'],
   'border-transparent': ['border-color: transparent;'],
   'bg-transparent': ['background-color: transparent;'],
+  'bg-black': ['background-color: #000;'],
   'inset-0': ['inset: 0px;'],
   'bottom-0': ['bottom: 0px;'],
   'bottom-full': ['bottom: 100%;'],
@@ -164,6 +165,22 @@ const staticUtilities: Record<string, string[]> = {
   'shadow-[5px_5px_0_0_#000]': ['--pui-shadow: 5px 5px 0 0 #000;', ...composedShadow()],
   'shadow-[8px_8px_0_0_#000]': ['--pui-shadow: 8px 8px 0 0 #000;', ...composedShadow()],
   'shadow-[-5px_5px_0_0_#000]': ['--pui-shadow: -5px 5px 0 0 #000;', ...composedShadow()],
+  'shadow-[3px_3px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 3px 3px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
+  'shadow-[5px_5px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 5px 5px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
+  'shadow-[8px_8px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 8px 8px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
+  'shadow-[-5px_5px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: -5px 5px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
   'shadow-none': ['--pui-shadow: 0 0 #0000;', ...composedShadow()],
   'backdrop-blur-xs': ['backdrop-filter: blur(4px);'],
   'z-40': ['z-index: 40;'],
@@ -173,6 +190,8 @@ const staticUtilities: Record<string, string[]> = {
   'group/button': [],
   'group/toggle': [],
   'group/brutalist-dialog-trigger': [],
+  'group/brutalist-button': [],
+  'group/brutalist-toggle': [],
 };
 
 export function renderProtoStyleTokenCss(tokens: string[]): string {

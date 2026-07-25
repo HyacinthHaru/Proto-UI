@@ -5,6 +5,7 @@ import {
   BRUTALIST_DISABLED_TOKENS,
   BRUTALIST_FOCUS_TOKENS,
   BRUTALIST_HOVER_LIFT_TOKENS,
+  BRUTALIST_PRESS_TOKENS,
 } from '../style';
 import type { BrutalistToggleExposes, BrutalistToggleProps, BrutalistToggleSize } from './types';
 
@@ -42,7 +43,7 @@ const toggle = definePrototype<BrutalistToggleProps, BrutalistToggleExposes>({
     if (!toggleState) {
       throw new Error('[brutalist-toggle] asToggle must project Toggle state handles.');
     }
-    const { active, disabled, hovered, focusVisible } = toggleState;
+    const { active, disabled, hovered, focusVisible, pressed } = toggleState;
 
     def.feedback.style.use(tw(TOGGLE_BASE_TOKENS));
 
@@ -60,6 +61,10 @@ const toggle = definePrototype<BrutalistToggleProps, BrutalistToggleExposes>({
     def.rule({
       when: (w) => w.all(w.state(hovered).eq(true), w.state(active).eq(false)),
       intent: (i) => i.feedback.style.use(tw(BRUTALIST_HOVER_LIFT_TOKENS)),
+    });
+    def.rule({
+      when: (w) => w.state(pressed).eq(true),
+      intent: (i) => i.feedback.style.use(tw(BRUTALIST_PRESS_TOKENS)),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),

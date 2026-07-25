@@ -22,7 +22,7 @@ const TRIGGER_BASE_TOKENS = [
   'font-bold',
   'uppercase',
   'text-main-foreground',
-  'shadow-[5px_5px_0_0_#000]',
+  'shadow-[5px_5px_0_0_var(--pui-foreground)]',
   'outline-none',
   'select-none',
 ].join(' ');
@@ -108,17 +108,23 @@ const dropdownTrigger = definePrototype<
     // P-BRUTALIST-DROPDOWN-MENU-TRIGGER-STATE-DRIVEN-STYLES
     def.rule({
       when: (w) => w.state(hovered).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-muted text-foreground')),
-    });
-
-    def.rule({
-      when: (w) => w.state(focusVisible).eq(true),
-      intent: (i) => i.feedback.style.use(tw('ring-3 ring-ring/50 ring-offset-2')),
+      intent: (i) =>
+        i.feedback.style.use(
+          tw('-translate-x-0.5 -translate-y-0.5 shadow-[8px_8px_0_0_var(--pui-foreground)]')
+        ),
     });
 
     def.rule({
       when: (w) => w.state(pressed).eq(true),
-      intent: (i) => i.feedback.style.use(tw('translate-y-px bg-muted text-foreground')),
+      intent: (i) => i.feedback.style.use(tw('translate-x-[5px] translate-y-[5px] shadow-none')),
+    });
+
+    def.rule({
+      when: (w) => w.state(focusVisible).eq(true),
+      intent: (i) =>
+        i.feedback.style.use(
+          tw('outline-none ring-2 ring-ring ring-offset-2 ring-offset-background')
+        ),
     });
 
     def.rule({
