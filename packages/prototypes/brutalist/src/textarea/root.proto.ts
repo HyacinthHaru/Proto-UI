@@ -1,6 +1,6 @@
 import { definePrototype, tw } from '@proto.ui/core';
 import { asTextareaRoot } from '@proto.ui/prototypes-base';
-import { BRUTALIST_DISABLED_TOKENS, BRUTALIST_FOCUS_TOKENS } from '../shared';
+import { BRUTALIST_DISABLED_TOKENS, BRUTALIST_FOCUS_TOKENS } from '../style';
 import type { BrutalistTextareaRootExposes, BrutalistTextareaRootProps } from './types';
 
 export const BrutalistTextareaRoot = definePrototype<

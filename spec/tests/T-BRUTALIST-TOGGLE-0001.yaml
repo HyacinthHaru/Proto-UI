@@ -7,7 +7,9 @@ summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherit
 cases:
   - id: T-BRUTALIST-TOGGLE-0001-CASE-1
     title: P-BRUTALIST-TOGGLE retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-TOGGLE-VISUAL-GRAMMAR, P-BRUTALIST-TOGGLE-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-TOGGLE-VISUAL-GRAMMAR
+      - P-BRUTALIST-TOGGLE-TESTED-SURFACE
     expectation: p-brutalist-toggle-visual-contract
 implementations:
   - id: prototypes-brutalist-toggle-contract
@@ -18,15 +20,22 @@ implementations:
     consumesCases:
       - T-BRUTALIST-TOGGLE-0001-CASE-1
     exercises:
+      - P-BASE-TOGGLE
       - P-BRUTALIST-TOGGLE
 verifies:
   prototypes:
     - id: P-BRUTALIST-TOGGLE
 exercises:
   prototypes:
+    - P-BASE-TOGGLE
     - P-BRUTALIST-TOGGLE
 revisions:
   - version: 0.2.0-rc.3
     change: introduced
     summary: Added draft Brutalist toggle prototype coverage.
-tags: [test, brutalist, neo-brutalist, visual, toggle]
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - toggle

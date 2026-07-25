@@ -1,6 +1,6 @@
 import { definePrototype, tw } from '@proto.ui/core';
 import { asInputRoot } from '@proto.ui/prototypes-base';
-import { BRUTALIST_DISABLED_TOKENS, BRUTALIST_FOCUS_TOKENS } from '../shared';
+import { BRUTALIST_DISABLED_TOKENS, BRUTALIST_FOCUS_TOKENS } from '../style';
 import type { BrutalistInputRootExposes, BrutalistInputRootProps } from './types';
 
 export const BrutalistInputRoot = definePrototype<

@@ -1,27 +1,35 @@
 id: P-BRUTALIST-BADGE
-kind: prototype
+type: prototype
+title: Brutalist Badge  protocol
 status: draft
 since: 0.2.0-rc.6
-summary: Brutalist Badge 是 Base Badge 的方角高对比状态标签样式增量。
-relations:
-  supersedes: []
-  supersededBy: []
-  governedBy: []
-  implements: []
-  tests: [T-BRUTALIST-BADGE]
-  dependsOn: [P-BASE-BADGE]
-  refines: []
-  conflictsWith: []
-implementation:
-  - packages/prototypes/brutalist/src/badge/root.proto.ts
-  - packages/prototypes/brutalist/src/badge/index.ts
+summary: Brutalist Badge  protocol for the Proto UI framework.
+statement:
+  en: Brutalist Badge  protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Brutalist Badge  protocol。该 draft entity 编目协议面。
 criteria:
-  - id: P-BRUTALIST-BADGE-INHERIT-BASE
-    statement: The root calls asBadgeRoot and preserves Base badge anatomy and slot semantics.
-  - id: P-BRUTALIST-BADGE-GRAMMAR
-    statement: The badge uses square geometry, two-pixel ink border, mono uppercase label, flat Yandu Canary surface, and a two-pixel hard shadow.
-  - id: P-BRUTALIST-BADGE-COMPOSITION
-    statement: Explicit anatomy composition remains fully usable without any component preset artifact.
+  - id: P-BRUTALIST-BADGE-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/brutalist/src/badge/root.proto.ts
 revisions:
-  - date: 2026-07-25
-    note: Added Brutalist Badge for cross-library ChatUI status and unread-count composition.
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Introduced brutalist badge  protocol.
+tags:
+  - prototype
+  - brutalist
+  - badge
+inherits:
+  prototypes:
+    - id: P-BASE-BADGE
+dependsOn:
+  contracts:
+    - C-CORE-SYNTAX-0003
+    - C-AS-HOOK-0001
+    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+verifies:
+  tests:
+    - T-BRUTALIST-BADGE-0001

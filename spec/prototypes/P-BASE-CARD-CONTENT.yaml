@@ -1,0 +1,27 @@
+id: P-BASE-CARD-CONTENT
+type: prototype
+title: Base Card Content protocol
+status: draft
+since: 0.2.0-rc.6
+summary: Base Card Content protocol for the Proto UI framework.
+statement:
+  en: Base Card Content protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Base Card Content protocol。该 draft entity 编目协议面。
+criteria:
+  - id: P-BASE-CARD-CONTENT-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/base/src/card/content.proto.ts
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Introduced base card content protocol.
+tags:
+  - prototype
+  - base
+  - card
+verifies:
+  tests:
+    - T-BRUTALIST-CARD-0001

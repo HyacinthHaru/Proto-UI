@@ -1,0 +1,18 @@
+---
+title: Tooltip
+sidebar:
+  order: 10
+---
+
+import BrutalistPageStyle from '../../../../../components/BrutalistPageStyle.astro';
+import PrototypePreviewer from '../../../../../components/PrototypePreviewer/PrototypePreviewer.astro';
+
+<BrutalistPageStyle />
+
+Brutalist Tooltip keeps Base open state, hover/focus routing, delay, escape handling, portal ownership, positioning, and arrow geometry. Only Content and Arrow receive visual feedback.
+
+Use Tooltip for unlabeled icon actions in ChatUI and dense SaaS surfaces. It supplements an accessible name; it does not replace one.
+
+<div style="--pui-background:#f4f1ea;--pui-foreground:#000;background:#f4f1ea;color:#000;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:2rem;">
+  <PrototypePreviewer demoId="demo-brutalist-tooltip" initialRuntime="wc" />
+</div>

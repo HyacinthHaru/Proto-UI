@@ -1,0 +1,49 @@
+id: T-BRUTALIST-AVATAR-0001
+type: test
+title: Brutalist Avatar visual contract tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist avatar.
+cases:
+  - id: T-BRUTALIST-AVATAR-0001-CASE-1
+    title: P-BRUTALIST-AVATAR retains Base semantics and projects the Brutalist visual grammar
+    covers:
+      - P-BRUTALIST-AVATAR-VISUAL-GRAMMAR
+      - P-BRUTALIST-AVATAR-TESTED-SURFACE
+    expectation: p-brutalist-avatar-visual-contract
+implementations:
+  - id: prototypes-brutalist-avatar-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/avatar.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-AVATAR-0001-CASE-1
+    exercises:
+      - P-BASE-AVATAR
+      - P-BASE-AVATAR-FALLBACK
+      - P-BASE-AVATAR-IMAGE
+      - P-BRUTALIST-AVATAR
+      - P-BRUTALIST-AVATAR-FALLBACK
+      - P-BRUTALIST-AVATAR-IMAGE
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-AVATAR
+exercises:
+  prototypes:
+    - P-BASE-AVATAR
+    - P-BASE-AVATAR-FALLBACK
+    - P-BASE-AVATAR-IMAGE
+    - P-BRUTALIST-AVATAR
+    - P-BRUTALIST-AVATAR-FALLBACK
+    - P-BRUTALIST-AVATAR-IMAGE
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added draft Brutalist avatar prototype coverage.
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - avatar

@@ -7,7 +7,9 @@ summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherit
 cases:
   - id: T-BRUTALIST-BUTTON-0001-CASE-1
     title: P-BRUTALIST-BUTTON retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-BUTTON-VISUAL-GRAMMAR, P-BRUTALIST-BUTTON-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-BUTTON-VISUAL-GRAMMAR
+      - P-BRUTALIST-BUTTON-TESTED-SURFACE
     expectation: p-brutalist-button-visual-contract
 implementations:
   - id: prototypes-brutalist-button-contract
@@ -18,15 +20,22 @@ implementations:
     consumesCases:
       - T-BRUTALIST-BUTTON-0001-CASE-1
     exercises:
+      - P-BASE-BUTTON
       - P-BRUTALIST-BUTTON
 verifies:
   prototypes:
     - id: P-BRUTALIST-BUTTON
 exercises:
   prototypes:
+    - P-BASE-BUTTON
     - P-BRUTALIST-BUTTON
 revisions:
   - version: 0.2.0-rc.3
     change: introduced
     summary: Added draft Brutalist button prototype coverage.
-tags: [test, brutalist, neo-brutalist, visual, button]
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - button

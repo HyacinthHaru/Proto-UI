@@ -1,0 +1,39 @@
+id: T-BRUTALIST-SKELETON-0001
+type: test
+title: Brutalist Skeleton visual contract tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist skeleton.
+cases:
+  - id: T-BRUTALIST-SKELETON-0001-CASE-1
+    title: P-BRUTALIST-SKELETON retains Base semantics and projects the Brutalist visual grammar
+    covers:
+      - P-BRUTALIST-SKELETON-VISUAL-GRAMMAR
+      - P-BRUTALIST-SKELETON-TESTED-SURFACE
+    expectation: p-brutalist-skeleton-visual-contract
+implementations:
+  - id: prototypes-brutalist-skeleton-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/skeleton.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-SKELETON-0001-CASE-1
+    exercises: &id001
+      - P-BRUTALIST-SKELETON
+      - P-BASE-SKELETON
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-SKELETON
+exercises:
+  prototypes: *id001
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added draft Brutalist skeleton prototype coverage.
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - skeleton

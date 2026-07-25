@@ -1,27 +1,35 @@
 id: P-BRUTALIST-SEPARATOR
-kind: prototype
+type: prototype
+title: Brutalist Separator  protocol
 status: draft
 since: 0.2.0-rc.6
-summary: Brutalist Separator 是 Base Separator orientation 与 decorative 语义的两像素 ink 分隔线样式增量。
-relations:
-  supersedes: []
-  supersededBy: []
-  governedBy: []
-  implements: []
-  tests: [T-BRUTALIST-SEPARATOR]
-  dependsOn: [P-BASE-SEPARATOR]
-  refines: []
-  conflictsWith: []
-implementation:
-  - packages/prototypes/brutalist/src/separator/root.proto.ts
-  - packages/prototypes/brutalist/src/separator/index.ts
+summary: Brutalist Separator  protocol for the Proto UI framework.
+statement:
+  en: Brutalist Separator  protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Brutalist Separator  protocol。该 draft entity 编目协议面。
 criteria:
-  - id: P-BRUTALIST-SEPARATOR-INHERIT-BASE
-    statement: Root calls asSeparatorRoot and preserves Base horizontal/vertical and decorative accessibility semantics.
-  - id: P-BRUTALIST-SEPARATOR-GRAMMAR
-    statement: Horizontal and vertical projections use a flat two-pixel ink rule with no gradient, radius, glow, or shadow.
-  - id: P-BRUTALIST-SEPARATOR-COMPOSITION
-    statement: Explicit Separator composition works without presets in message groups, cards, lists, and forms.
+  - id: P-BRUTALIST-SEPARATOR-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/brutalist/src/separator/root.proto.ts
 revisions:
-  - date: 2026-07-25
-    note: Added Brutalist Separator for ChatUI and SaaS grouping.
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Introduced brutalist separator  protocol.
+tags:
+  - prototype
+  - brutalist
+  - separator
+inherits:
+  prototypes:
+    - id: P-BASE-SEPARATOR
+dependsOn:
+  contracts:
+    - C-CORE-SYNTAX-0003
+    - C-AS-HOOK-0001
+    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+verifies:
+  tests:
+    - T-BRUTALIST-SEPARATOR-0001

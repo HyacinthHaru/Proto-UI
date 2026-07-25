@@ -1,27 +1,35 @@
 id: P-BRUTALIST-SKELETON
-kind: prototype
+type: prototype
+title: Brutalist Skeleton  protocol
 status: draft
 since: 0.2.0-rc.6
-summary: Brutalist Skeleton 是 Base Skeleton 的方角高对比加载占位样式增量。
-relations:
-  supersedes: []
-  supersededBy: []
-  governedBy: []
-  implements: []
-  tests: [T-BRUTALIST-SKELETON]
-  dependsOn: [P-BASE-SKELETON]
-  refines: []
-  conflictsWith: []
-implementation:
-  - packages/prototypes/brutalist/src/skeleton/root.proto.ts
-  - packages/prototypes/brutalist/src/skeleton/index.ts
+summary: Brutalist Skeleton  protocol for the Proto UI framework.
+statement:
+  en: Brutalist Skeleton  protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Brutalist Skeleton  protocol。该 draft entity 编目协议面。
 criteria:
-  - id: P-BRUTALIST-SKELETON-INHERIT-BASE
-    statement: Root calls asSkeletonRoot and preserves Base placeholder anatomy and explicit composition.
-  - id: P-BRUTALIST-SKELETON-GRAMMAR
-    statement: Skeleton uses a square Yandu Lavender block, ink border, and compact hard shadow without radius, gradient, shimmer, blur glow, or mandatory animation.
-  - id: P-BRUTALIST-SKELETON-MOTION
-    statement: The styled prototype does not own a repeating animation; applications may add reduced-motion-safe progress behavior externally.
+  - id: P-BRUTALIST-SKELETON-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/brutalist/src/skeleton/root.proto.ts
 revisions:
-  - date: 2026-07-25
-    note: Added Brutalist Skeleton for ChatUI message and SaaS panel loading states.
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Introduced brutalist skeleton  protocol.
+tags:
+  - prototype
+  - brutalist
+  - skeleton
+inherits:
+  prototypes:
+    - id: P-BASE-SKELETON
+dependsOn:
+  contracts:
+    - C-CORE-SYNTAX-0003
+    - C-AS-HOOK-0001
+    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+verifies:
+  tests:
+    - T-BRUTALIST-SKELETON-0001

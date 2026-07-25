@@ -1,35 +1,35 @@
 id: P-BRUTALIST-CARD
-kind: prototype
+type: prototype
+title: Brutalist Card  protocol
 status: draft
 since: 0.2.0-rc.6
-summary: Brutalist Card 是 Base Card 七个 anatomy parts 的方角硬阴影容器样式增量。
-relations:
-  supersedes: []
-  supersededBy: []
-  governedBy: []
-  implements: []
-  tests: [T-BRUTALIST-CARD]
-  dependsOn: [P-BASE-CARD]
-  refines: []
-  conflictsWith: []
-implementation:
-  - packages/prototypes/brutalist/src/card/root.proto.ts
-  - packages/prototypes/brutalist/src/card/header.proto.ts
-  - packages/prototypes/brutalist/src/card/title.proto.ts
-  - packages/prototypes/brutalist/src/card/description.proto.ts
-  - packages/prototypes/brutalist/src/card/action.proto.ts
-  - packages/prototypes/brutalist/src/card/content.proto.ts
-  - packages/prototypes/brutalist/src/card/footer.proto.ts
-  - packages/prototypes/brutalist/src/card/index.ts
+summary: Brutalist Card  protocol for the Proto UI framework.
+statement:
+  en: Brutalist Card  protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Brutalist Card  protocol。该 draft entity 编目协议面。
 criteria:
-  - id: P-BRUTALIST-CARD-INHERIT-BASE
-    statement: Every Card part calls the matching Base Card asHook and preserves Base anatomy and slot semantics.
-  - id: P-BRUTALIST-CARD-SURFACE
-    statement: Root uses a square paper surface, two-pixel ink border, and six-pixel hard shadow with no rounded, gradient, glass, or soft-shadow treatment.
-  - id: P-BRUTALIST-CARD-HIERARCHY
-    statement: Header, content, action, and footer remain explicitly composable; title and description use bold display and mono supporting typography without moving structure into the styled layer.
-  - id: P-BRUTALIST-CARD-COMPOSITION
-    statement: Explicit seven-part anatomy composition works without any component preset artifact.
+  - id: P-BRUTALIST-CARD-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/brutalist/src/card/root.proto.ts
 revisions:
-  - date: 2026-07-25
-    note: Added the Brutalist Card contract for ChatUI panels and SaaS surfaces.
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Introduced brutalist card  protocol.
+tags:
+  - prototype
+  - brutalist
+  - card
+inherits:
+  prototypes:
+    - id: P-BASE-CARD
+dependsOn:
+  contracts:
+    - C-CORE-SYNTAX-0003
+    - C-AS-HOOK-0001
+    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+verifies:
+  tests:
+    - T-BRUTALIST-CARD-0001

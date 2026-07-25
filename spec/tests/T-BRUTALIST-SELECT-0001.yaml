@@ -7,23 +7,33 @@ summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherit
 cases:
   - id: T-BRUTALIST-SELECT-0001-CASE-1
     title: P-BRUTALIST-SELECT retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-SELECT-VISUAL-GRAMMAR, P-BRUTALIST-SELECT-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-SELECT-VISUAL-GRAMMAR
+      - P-BRUTALIST-SELECT-TESTED-SURFACE
     expectation: p-brutalist-select-visual-contract
   - id: T-BRUTALIST-SELECT-0001-CASE-2
     title: P-BRUTALIST-SELECT-TRIGGER retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-SELECT-TRIGGER-VISUAL-GRAMMAR, P-BRUTALIST-SELECT-TRIGGER-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-SELECT-TRIGGER-VISUAL-GRAMMAR
+      - P-BRUTALIST-SELECT-TRIGGER-TESTED-SURFACE
     expectation: p-brutalist-select-trigger-visual-contract
   - id: T-BRUTALIST-SELECT-0001-CASE-3
     title: P-BRUTALIST-SELECT-VALUE retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-SELECT-VALUE-VISUAL-GRAMMAR, P-BRUTALIST-SELECT-VALUE-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-SELECT-VALUE-VISUAL-GRAMMAR
+      - P-BRUTALIST-SELECT-VALUE-TESTED-SURFACE
     expectation: p-brutalist-select-value-visual-contract
   - id: T-BRUTALIST-SELECT-0001-CASE-4
     title: P-BRUTALIST-SELECT-CONTENT retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-SELECT-CONTENT-VISUAL-GRAMMAR, P-BRUTALIST-SELECT-CONTENT-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-SELECT-CONTENT-VISUAL-GRAMMAR
+      - P-BRUTALIST-SELECT-CONTENT-TESTED-SURFACE
     expectation: p-brutalist-select-content-visual-contract
   - id: T-BRUTALIST-SELECT-0001-CASE-5
     title: P-BRUTALIST-SELECT-ITEM retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-SELECT-ITEM-VISUAL-GRAMMAR, P-BRUTALIST-SELECT-ITEM-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-SELECT-ITEM-VISUAL-GRAMMAR
+      - P-BRUTALIST-SELECT-ITEM-TESTED-SURFACE
     expectation: p-brutalist-select-item-visual-contract
 implementations:
   - id: prototypes-brutalist-select-contract
@@ -38,11 +48,14 @@ implementations:
       - T-BRUTALIST-SELECT-0001-CASE-4
       - T-BRUTALIST-SELECT-0001-CASE-5
     exercises:
+      - P-BASE-SELECT
+      - P-BASE-SELECT-CONTENT
+      - P-BASE-SELECT-TRIGGER
       - P-BRUTALIST-SELECT
-      - P-BRUTALIST-SELECT-TRIGGER
-      - P-BRUTALIST-SELECT-VALUE
       - P-BRUTALIST-SELECT-CONTENT
       - P-BRUTALIST-SELECT-ITEM
+      - P-BRUTALIST-SELECT-TRIGGER
+      - P-BRUTALIST-SELECT-VALUE
 verifies:
   prototypes:
     - id: P-BRUTALIST-SELECT
@@ -52,13 +65,21 @@ verifies:
     - id: P-BRUTALIST-SELECT-ITEM
 exercises:
   prototypes:
+    - P-BASE-SELECT
+    - P-BASE-SELECT-CONTENT
+    - P-BASE-SELECT-TRIGGER
     - P-BRUTALIST-SELECT
-    - P-BRUTALIST-SELECT-TRIGGER
-    - P-BRUTALIST-SELECT-VALUE
     - P-BRUTALIST-SELECT-CONTENT
     - P-BRUTALIST-SELECT-ITEM
+    - P-BRUTALIST-SELECT-TRIGGER
+    - P-BRUTALIST-SELECT-VALUE
 revisions:
   - version: 0.2.0-rc.3
     change: introduced
     summary: Added draft Brutalist select prototype coverage.
-tags: [test, brutalist, neo-brutalist, visual, select]
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - select

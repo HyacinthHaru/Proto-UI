@@ -175,7 +175,7 @@ const brutalistCompound = (
   id: string,
   label: string,
   parts: { prototypeImport: string; exportBaseName: string; elementName: string }[],
-  preset?: ComponentPreset
+  preset?: ComponentPresetRecipe
 ) =>
   defineCompound(
     id,
@@ -240,10 +240,10 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     ],
     {
       kind: 'replaceable-default-part',
+      placement: 'direct-child',
       exportName: 'BrutalistSwitch',
-      rootExport: 'BrutalistSwitchRoot',
-      defaultPartExport: 'BrutalistSwitchThumb',
-      defaultPartElementName: 'proto-ui-brutalist-switch-thumb',
+      rootPrototype: 'brutalistSwitchRoot',
+      defaultPartPrototype: 'brutalistSwitchThumb',
       inputName: 'thumb',
       elementName: 'proto-ui-brutalist-switch',
       omissionAttribute: 'data-pui-no-default-thumb',
@@ -399,10 +399,10 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     ],
     {
       kind: 'replaceable-default-part',
+      placement: 'direct-child',
       exportName: 'BrutalistDialogContent',
-      rootExport: 'BrutalistDialogContentRaw',
-      defaultPartExport: 'BrutalistDialogCloseIcon',
-      defaultPartElementName: 'proto-ui-brutalist-dialog-close-icon',
+      rootPrototype: 'brutalistDialogContent',
+      defaultPartPrototype: 'brutalistDialogCloseIcon',
       inputName: 'close',
       elementName: 'proto-ui-brutalist-dialog-content',
       omissionAttribute: 'data-pui-no-default-close',

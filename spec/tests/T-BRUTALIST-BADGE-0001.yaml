@@ -1,0 +1,41 @@
+id: T-BRUTALIST-BADGE-0001
+type: test
+title: Brutalist Badge visual contract tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist badge.
+cases:
+  - id: T-BRUTALIST-BADGE-0001-CASE-1
+    title: P-BRUTALIST-BADGE retains Base semantics and projects the Brutalist visual grammar
+    covers:
+      - P-BRUTALIST-BADGE-VISUAL-GRAMMAR
+      - P-BRUTALIST-BADGE-TESTED-SURFACE
+    expectation: p-brutalist-badge-visual-contract
+implementations:
+  - id: prototypes-brutalist-badge-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/badge.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-BADGE-0001-CASE-1
+    exercises:
+      - P-BASE-BADGE
+      - P-BRUTALIST-BADGE
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-BADGE
+exercises:
+  prototypes:
+    - P-BASE-BADGE
+    - P-BRUTALIST-BADGE
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added draft Brutalist badge prototype coverage.
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - badge

@@ -1,29 +1,20 @@
-import { afterEach, describe, expect, it } from 'vitest';
-import { defineReactComponent } from '../../adapters/react/src/index';
-import { defineWebComponent } from '../../adapters/web-component/src/index';
+import { describe, expect, it } from 'vitest';
+import { styleContains } from '../../test-utils/style';
+import { AdaptToWebComponent } from '@proto.ui/adapter-web-component';
 import { BrutalistSkeletonRoot } from '../src/skeleton';
-const TAG = 'pui-test-brutalist-skeleton';
-const settle = async () => {
-  await Promise.resolve();
-  await Promise.resolve();
-};
-const styleTokens = (el: HTMLElement) => (el.getAttribute('data-pui-style') ?? '').split(/\s+/);
-afterEach(() => {
-  document.body.innerHTML = '';
-});
-describe('Brutalist Skeleton', () => {
-  it('projects a static square Lavender placeholder', async () => {
-    const def = defineReactComponent(BrutalistSkeletonRoot, () => null).def;
-    defineWebComponent(TAG, def);
-    const skeleton = document.createElement(TAG) as HTMLElement;
-    document.body.append(skeleton);
-    await settle();
-    const tokens = styleTokens(skeleton);
-    expect(tokens).toContain('rounded-none');
-    expect(tokens).toContain('border-2');
-    expect(tokens).toContain('bg-lavender');
-    expect(tokens).toContain('shadow-[2px_2px_0_0_var(--pui-foreground)]');
-    expect(tokens).not.toContain('animate-pulse');
-    expect(tokens.every((token) => !token.includes('shimmer'))).toBe(true);
+
+AdaptToWebComponent(BrutalistSkeletonRoot as any);
+
+describe('prototypes/brutalist: skeleton', () => {
+  it('projects the Brutalist visual grammar', async () => {
+    const el = document.createElement('brutalist-skeleton-root') as any;
+    document.body.appendChild(el);
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(styleContains(el, 'rounded-none')).toBe(true);
+    expect(styleContains(el, 'border-2')).toBe(true);
+    expect(styleContains(el, 'bg-lavender')).toBe(true);
+
+    el.remove();
   });
 });

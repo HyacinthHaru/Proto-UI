@@ -1,29 +1,35 @@
 id: P-BRUTALIST-INPUT
-kind: prototype
+type: prototype
+title: Brutalist Input  protocol
 status: draft
 since: 0.2.0-rc.6
-summary: Brutalist Input 是 Base Input 值与焦点协议的方角硬阴影文本输入样式增量。
-relations:
-  supersedes: []
-  supersededBy: []
-  governedBy: []
-  implements: []
-  tests: [T-BRUTALIST-INPUT]
-  dependsOn: [P-BASE-INPUT]
-  refines: []
-  conflictsWith: []
-implementation:
-  - packages/prototypes/brutalist/src/input/root.proto.ts
-  - packages/prototypes/brutalist/src/input/index.ts
+summary: Brutalist Input  protocol for the Proto UI framework.
+statement:
+  en: Brutalist Input  protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Brutalist Input  protocol。该 draft entity 编目协议面。
 criteria:
-  - id: P-BRUTALIST-INPUT-INHERIT-BASE
-    statement: Root calls asInputRoot and preserves Base value, disabled, focus-visible, name, placeholder, type, and change semantics.
-  - id: P-BRUTALIST-INPUT-GRAMMAR
-    statement: Input uses square geometry, two-pixel ink border, paper surface, mono text, and a three-pixel hard shadow.
-  - id: P-BRUTALIST-INPUT-FOCUS-DISABLED
-    statement: Focus-visible and disabled feedback use shared Brutalist tokens while Base remains the semantic owner of both states.
-  - id: P-BRUTALIST-INPUT-COMPOSITION
-    statement: Explicit Input anatomy composition works without a component preset and combines with Field or InputGroup for labels, errors, and actions.
+  - id: P-BRUTALIST-INPUT-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/brutalist/src/input/root.proto.ts
 revisions:
-  - date: 2026-07-25
-    note: Added Brutalist Input for search, composer, and SaaS form composition.
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Introduced brutalist input  protocol.
+tags:
+  - prototype
+  - brutalist
+  - input
+inherits:
+  prototypes:
+    - id: P-BASE-INPUT
+dependsOn:
+  contracts:
+    - C-CORE-SYNTAX-0003
+    - C-AS-HOOK-0001
+    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+verifies:
+  tests:
+    - T-BRUTALIST-INPUT-0001

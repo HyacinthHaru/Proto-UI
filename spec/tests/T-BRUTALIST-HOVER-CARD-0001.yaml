@@ -7,17 +7,21 @@ summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherit
 cases:
   - id: T-BRUTALIST-HOVER-CARD-0001-CASE-1
     title: P-BRUTALIST-HOVER-CARD retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-HOVER-CARD-VISUAL-GRAMMAR, P-BRUTALIST-HOVER-CARD-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-HOVER-CARD-VISUAL-GRAMMAR
+      - P-BRUTALIST-HOVER-CARD-TESTED-SURFACE
     expectation: p-brutalist-hover-card-visual-contract
   - id: T-BRUTALIST-HOVER-CARD-0001-CASE-2
     title: P-BRUTALIST-HOVER-CARD-TRIGGER retains Base semantics where applicable and projects the Brutalist visual grammar
     covers:
-      [P-BRUTALIST-HOVER-CARD-TRIGGER-VISUAL-GRAMMAR, P-BRUTALIST-HOVER-CARD-TRIGGER-TESTED-SURFACE]
+      - P-BRUTALIST-HOVER-CARD-TRIGGER-VISUAL-GRAMMAR
+      - P-BRUTALIST-HOVER-CARD-TRIGGER-TESTED-SURFACE
     expectation: p-brutalist-hover-card-trigger-visual-contract
   - id: T-BRUTALIST-HOVER-CARD-0001-CASE-3
     title: P-BRUTALIST-HOVER-CARD-CONTENT retains Base semantics where applicable and projects the Brutalist visual grammar
     covers:
-      [P-BRUTALIST-HOVER-CARD-CONTENT-VISUAL-GRAMMAR, P-BRUTALIST-HOVER-CARD-CONTENT-TESTED-SURFACE]
+      - P-BRUTALIST-HOVER-CARD-CONTENT-VISUAL-GRAMMAR
+      - P-BRUTALIST-HOVER-CARD-CONTENT-TESTED-SURFACE
     expectation: p-brutalist-hover-card-content-visual-contract
 implementations:
   - id: prototypes-brutalist-hover-card-contract
@@ -30,9 +34,12 @@ implementations:
       - T-BRUTALIST-HOVER-CARD-0001-CASE-2
       - T-BRUTALIST-HOVER-CARD-0001-CASE-3
     exercises:
+      - P-BASE-HOVER-CARD
+      - P-BASE-HOVER-CARD-CONTENT
+      - P-BASE-HOVER-CARD-TRIGGER
       - P-BRUTALIST-HOVER-CARD
-      - P-BRUTALIST-HOVER-CARD-TRIGGER
       - P-BRUTALIST-HOVER-CARD-CONTENT
+      - P-BRUTALIST-HOVER-CARD-TRIGGER
 verifies:
   prototypes:
     - id: P-BRUTALIST-HOVER-CARD
@@ -40,11 +47,19 @@ verifies:
     - id: P-BRUTALIST-HOVER-CARD-CONTENT
 exercises:
   prototypes:
+    - P-BASE-HOVER-CARD
+    - P-BASE-HOVER-CARD-CONTENT
+    - P-BASE-HOVER-CARD-TRIGGER
     - P-BRUTALIST-HOVER-CARD
-    - P-BRUTALIST-HOVER-CARD-TRIGGER
     - P-BRUTALIST-HOVER-CARD-CONTENT
+    - P-BRUTALIST-HOVER-CARD-TRIGGER
 revisions:
   - version: 0.2.0-rc.3
     change: introduced
     summary: Added draft Brutalist hover-card prototype coverage.
-tags: [test, brutalist, neo-brutalist, visual, hover-card]
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - hover-card

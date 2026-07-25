@@ -1,0 +1,41 @@
+id: T-BRUTALIST-INPUT-0001
+type: test
+title: Brutalist Input visual contract tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist input.
+cases:
+  - id: T-BRUTALIST-INPUT-0001-CASE-1
+    title: P-BRUTALIST-INPUT retains Base semantics and projects the Brutalist visual grammar
+    covers:
+      - P-BRUTALIST-INPUT-VISUAL-GRAMMAR
+      - P-BRUTALIST-INPUT-TESTED-SURFACE
+    expectation: p-brutalist-input-visual-contract
+implementations:
+  - id: prototypes-brutalist-input-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/input.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-INPUT-0001-CASE-1
+    exercises:
+      - P-BASE-INPUT
+      - P-BRUTALIST-INPUT
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-INPUT
+exercises:
+  prototypes:
+    - P-BASE-INPUT
+    - P-BRUTALIST-INPUT
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added draft Brutalist input prototype coverage.
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - input

@@ -1,0 +1,65 @@
+id: T-BRUTALIST-CARD-0001
+type: test
+title: Brutalist Card visual contract tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist card.
+cases:
+  - id: T-BRUTALIST-CARD-0001-CASE-1
+    title: P-BRUTALIST-CARD retains Base semantics and projects the Brutalist visual grammar
+    covers:
+      - P-BRUTALIST-CARD-VISUAL-GRAMMAR
+      - P-BRUTALIST-CARD-TESTED-SURFACE
+    expectation: p-brutalist-card-visual-contract
+implementations:
+  - id: prototypes-brutalist-card-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/card.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-CARD-0001-CASE-1
+    exercises:
+      - P-BASE-CARD
+      - P-BASE-CARD-ACTION
+      - P-BASE-CARD-CONTENT
+      - P-BASE-CARD-DESCRIPTION
+      - P-BASE-CARD-FOOTER
+      - P-BASE-CARD-HEADER
+      - P-BASE-CARD-TITLE
+      - P-BRUTALIST-CARD
+      - P-BRUTALIST-CARD-ACTION
+      - P-BRUTALIST-CARD-CONTENT
+      - P-BRUTALIST-CARD-DESCRIPTION
+      - P-BRUTALIST-CARD-FOOTER
+      - P-BRUTALIST-CARD-HEADER
+      - P-BRUTALIST-CARD-TITLE
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-CARD
+exercises:
+  prototypes:
+    - P-BASE-CARD
+    - P-BASE-CARD-ACTION
+    - P-BASE-CARD-CONTENT
+    - P-BASE-CARD-DESCRIPTION
+    - P-BASE-CARD-FOOTER
+    - P-BASE-CARD-HEADER
+    - P-BASE-CARD-TITLE
+    - P-BRUTALIST-CARD
+    - P-BRUTALIST-CARD-ACTION
+    - P-BRUTALIST-CARD-CONTENT
+    - P-BRUTALIST-CARD-DESCRIPTION
+    - P-BRUTALIST-CARD-FOOTER
+    - P-BRUTALIST-CARD-HEADER
+    - P-BRUTALIST-CARD-TITLE
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added draft Brutalist card prototype coverage.
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - card

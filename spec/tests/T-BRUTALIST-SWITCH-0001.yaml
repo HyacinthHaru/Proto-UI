@@ -7,11 +7,15 @@ summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherit
 cases:
   - id: T-BRUTALIST-SWITCH-0001-CASE-1
     title: P-BRUTALIST-SWITCH retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-SWITCH-VISUAL-GRAMMAR, P-BRUTALIST-SWITCH-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-SWITCH-VISUAL-GRAMMAR
+      - P-BRUTALIST-SWITCH-TESTED-SURFACE
     expectation: p-brutalist-switch-visual-contract
   - id: T-BRUTALIST-SWITCH-0001-CASE-2
     title: P-BRUTALIST-SWITCH-THUMB retains Base semantics where applicable and projects the Brutalist visual grammar
-    covers: [P-BRUTALIST-SWITCH-THUMB-VISUAL-GRAMMAR, P-BRUTALIST-SWITCH-THUMB-TESTED-SURFACE]
+    covers:
+      - P-BRUTALIST-SWITCH-THUMB-VISUAL-GRAMMAR
+      - P-BRUTALIST-SWITCH-THUMB-TESTED-SURFACE
     expectation: p-brutalist-switch-thumb-visual-contract
 implementations:
   - id: prototypes-brutalist-switch-contract
@@ -23,6 +27,8 @@ implementations:
       - T-BRUTALIST-SWITCH-0001-CASE-1
       - T-BRUTALIST-SWITCH-0001-CASE-2
     exercises:
+      - P-BASE-SWITCH
+      - P-BASE-SWITCH-THUMB
       - P-BRUTALIST-SWITCH
       - P-BRUTALIST-SWITCH-THUMB
 verifies:
@@ -31,10 +37,17 @@ verifies:
     - id: P-BRUTALIST-SWITCH-THUMB
 exercises:
   prototypes:
+    - P-BASE-SWITCH
+    - P-BASE-SWITCH-THUMB
     - P-BRUTALIST-SWITCH
     - P-BRUTALIST-SWITCH-THUMB
 revisions:
   - version: 0.2.0-rc.3
     change: introduced
     summary: Added draft Brutalist switch prototype coverage.
-tags: [test, brutalist, neo-brutalist, visual, switch]
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - switch

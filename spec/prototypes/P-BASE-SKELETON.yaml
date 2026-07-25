@@ -1,0 +1,27 @@
+id: P-BASE-SKELETON
+type: prototype
+title: Base Skeleton  protocol
+status: draft
+since: 0.2.0-rc.6
+summary: Base Skeleton  protocol for the Proto UI framework.
+statement:
+  en: Base Skeleton  protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Base Skeleton  protocol。该 draft entity 编目协议面。
+criteria:
+  - id: P-BASE-SKELETON-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/base/src/skeleton/root.proto.ts
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Introduced base skeleton  protocol.
+tags:
+  - prototype
+  - base
+  - skeleton
+verifies:
+  tests:
+    - T-BRUTALIST-SKELETON-0001

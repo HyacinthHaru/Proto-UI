@@ -262,6 +262,112 @@ export default defineConfig({
                 },
               ],
             },
+            {
+              label: 'Brutalist',
+              translations: { en: 'Brutalist', 'zh-CN': 'Brutalist' },
+              items: [
+                {
+                  label: 'Overview',
+                  translations: { en: 'Overview', 'zh-CN': '概览' },
+                  slug: 'ui-libraries/brutalist',
+                },
+                {
+                  label: 'Design Contract',
+                  translations: { en: 'Design Contract', 'zh-CN': '设计合约' },
+                  slug: 'ui-libraries/brutalist/design-contract',
+                },
+                {
+                  label: 'Components',
+                  translations: { en: 'Components', 'zh-CN': '组件' },
+                  slug: 'ui-libraries/brutalist/components',
+                },
+                {
+                  label: 'Button',
+                  translations: { en: 'Button', 'zh-CN': 'Button' },
+                  slug: 'ui-libraries/brutalist/components/button',
+                },
+                {
+                  label: 'Switch',
+                  translations: { en: 'Switch', 'zh-CN': 'Switch' },
+                  slug: 'ui-libraries/brutalist/components/switch',
+                },
+                {
+                  label: 'Toggle',
+                  translations: { en: 'Toggle', 'zh-CN': 'Toggle' },
+                  slug: 'ui-libraries/brutalist/components/toggle',
+                },
+                {
+                  label: 'Tabs',
+                  translations: { en: 'Tabs', 'zh-CN': 'Tabs' },
+                  slug: 'ui-libraries/brutalist/components/tabs',
+                },
+                {
+                  label: 'Dialog',
+                  translations: { en: 'Dialog', 'zh-CN': 'Dialog' },
+                  slug: 'ui-libraries/brutalist/components/dialog',
+                },
+                {
+                  label: 'Hover Card',
+                  translations: { en: 'Hover Card', 'zh-CN': 'Hover Card' },
+                  slug: 'ui-libraries/brutalist/components/hover-card',
+                },
+                {
+                  label: 'Dropdown Menu',
+                  translations: { en: 'Dropdown Menu', 'zh-CN': 'Dropdown Menu' },
+                  slug: 'ui-libraries/brutalist/components/dropdown-menu',
+                },
+                {
+                  label: 'Select',
+                  translations: { en: 'Select', 'zh-CN': 'Select' },
+                  slug: 'ui-libraries/brutalist/components/select',
+                },
+                {
+                  label: 'Avatar',
+                  translations: { en: 'Avatar', 'zh-CN': 'Avatar' },
+                  slug: 'ui-libraries/brutalist/components/avatar',
+                },
+                {
+                  label: 'Badge',
+                  translations: { en: 'Badge', 'zh-CN': 'Badge' },
+                  slug: 'ui-libraries/brutalist/components/badge',
+                },
+                {
+                  label: 'Card',
+                  translations: { en: 'Card', 'zh-CN': 'Card' },
+                  slug: 'ui-libraries/brutalist/components/card',
+                },
+                {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/brutalist/components/input',
+                },
+                {
+                  label: 'Textarea',
+                  translations: { en: 'Textarea', 'zh-CN': 'Textarea' },
+                  slug: 'ui-libraries/brutalist/components/textarea',
+                },
+                {
+                  label: 'Separator',
+                  translations: { en: 'Separator', 'zh-CN': 'Separator' },
+                  slug: 'ui-libraries/brutalist/components/separator',
+                },
+                {
+                  label: 'Skeleton',
+                  translations: { en: 'Skeleton', 'zh-CN': 'Skeleton' },
+                  slug: 'ui-libraries/brutalist/components/skeleton',
+                },
+                {
+                  label: 'Scroll Area',
+                  translations: { en: 'Scroll Area', 'zh-CN': 'Scroll Area' },
+                  slug: 'ui-libraries/brutalist/components/scroll-area',
+                },
+                {
+                  label: 'Tooltip',
+                  translations: { en: 'Tooltip', 'zh-CN': 'Tooltip' },
+                  slug: 'ui-libraries/brutalist/components/tooltip',
+                },
+              ],
+            },
           ],
         },
         {

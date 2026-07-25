@@ -1,0 +1,39 @@
+id: T-BRUTALIST-SEPARATOR-0001
+type: test
+title: Brutalist Separator visual contract tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist separator.
+cases:
+  - id: T-BRUTALIST-SEPARATOR-0001-CASE-1
+    title: P-BRUTALIST-SEPARATOR retains Base semantics and projects the Brutalist visual grammar
+    covers:
+      - P-BRUTALIST-SEPARATOR-VISUAL-GRAMMAR
+      - P-BRUTALIST-SEPARATOR-TESTED-SURFACE
+    expectation: p-brutalist-separator-visual-contract
+implementations:
+  - id: prototypes-brutalist-separator-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/separator.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-SEPARATOR-0001-CASE-1
+    exercises: &id001
+      - P-BRUTALIST-SEPARATOR
+      - P-BASE-SEPARATOR
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-SEPARATOR
+exercises:
+  prototypes: *id001
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added draft Brutalist separator prototype coverage.
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - separator
