@@ -1,0 +1,23 @@
+---
+title: Input
+sidebar:
+  order: 5
+---
+
+import BrutalistPageStyle from '../../../../../components/BrutalistPageStyle.astro';
+import PrototypePreviewer from '../../../../../components/PrototypePreviewer/PrototypePreviewer.astro';
+
+<BrutalistPageStyle />
+
+Brutalist Input 保留 Base Input 的 value、change、disabled 与 focus 语义，视觉上投影为方形 paper 字段、ink 边框和硬阴影。
+
+用于会话搜索、标题、筛选器和紧凑表单字段。标签、描述、验证消息和附加操作应组合 Field 或 InputGroup；Input 不重复这些契约。
+
+- `2px` ink 边框、mono 文本、paper 填充、偏移硬阴影。
+- 共享 Brutalist focus-visible 与 disabled feedback。
+- 禁止圆角、渐变、玻璃或柔和 inset glow。
+- 显式 anatomy composition 不依赖 preset。
+
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-foreground:#000;--pui-ring:#DDD6FE;background:#f4f1ea;color:#000;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:1rem;">
+  <PrototypePreviewer demoId="demo-brutalist-input" initialRuntime="wc" />
+</div>

@@ -119,6 +119,7 @@ export const BRUTALIST_STYLE_TOKENS: string[] = [
   'max-h-[var(--proto-ui-available-height)]',
   'max-w-lg',
   'min-h-28',
+  'min-w-0',
   'min-w-10',
   'min-w-12',
   'min-w-32',
