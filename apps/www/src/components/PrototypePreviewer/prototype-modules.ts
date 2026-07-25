@@ -386,9 +386,154 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
       await import('../../../../../packages/prototypes/brutalist/src/dialog/footer.proto');
     registerPrototype('brutalist-dialog-footer', mod.default);
   },
+  'brutalist-avatar-root': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/avatar/root.proto');
+    registerPrototype('brutalist-avatar-root', mod.BrutalistAvatarRoot);
+  },
+  'brutalist-avatar-image': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/avatar/image.proto');
+    registerPrototype('brutalist-avatar-image', mod.BrutalistAvatarImage);
+  },
+  'brutalist-avatar-fallback': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/avatar/fallback.proto');
+    registerPrototype('brutalist-avatar-fallback', mod.BrutalistAvatarFallback);
+  },
+  'brutalist-badge-root': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/badge/root.proto');
+    registerPrototype('brutalist-badge-root', mod.BrutalistBadgeRoot);
+  },
+  'brutalist-card-root': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/card/root.proto');
+    registerPrototype('brutalist-card-root', mod.BrutalistCardRoot);
+  },
+  'brutalist-card-header': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/card/header.proto');
+    registerPrototype('brutalist-card-header', mod.BrutalistCardHeader);
+  },
+  'brutalist-card-title': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/card/title.proto');
+    registerPrototype('brutalist-card-title', mod.BrutalistCardTitle);
+  },
+  'brutalist-card-description': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/card/description.proto');
+    registerPrototype('brutalist-card-description', mod.BrutalistCardDescription);
+  },
+  'brutalist-card-content': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/card/content.proto');
+    registerPrototype('brutalist-card-content', mod.BrutalistCardContent);
+  },
+  'brutalist-card-footer': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/card/footer.proto');
+    registerPrototype('brutalist-card-footer', mod.BrutalistCardFooter);
+  },
+  'brutalist-input-root': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/input/root.proto');
+    registerPrototype('brutalist-input-root', mod.BrutalistInputRoot);
+  },
+  'brutalist-textarea-root': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/textarea/root.proto');
+    registerPrototype('brutalist-textarea-root', mod.BrutalistTextareaRoot);
+  },
+  'brutalist-separator-root': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/separator/root.proto');
+    registerPrototype('brutalist-separator-root', mod.BrutalistSeparatorRoot);
+  },
+  'brutalist-skeleton-root': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/skeleton/root.proto');
+    registerPrototype('brutalist-skeleton-root', mod.BrutalistSkeletonRoot);
+  },
+  'brutalist-scroll-area-root': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/scroll-area/root.proto');
+    registerPrototype('brutalist-scroll-area-root', mod.BrutalistScrollAreaRoot);
+  },
+  'brutalist-scroll-area-viewport': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/scroll-area/viewport.proto');
+    registerPrototype('brutalist-scroll-area-viewport', mod.BrutalistScrollAreaViewport);
+  },
+  'brutalist-scroll-area-scrollbar': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/scroll-area/scrollbar.proto');
+    registerPrototype('brutalist-scroll-area-scrollbar', mod.BrutalistScrollAreaScrollbar);
+  },
+  'brutalist-scroll-area-thumb': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/scroll-area/thumb.proto');
+    registerPrototype('brutalist-scroll-area-thumb', mod.BrutalistScrollAreaThumb);
+  },
+  'brutalist-scroll-area-corner': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/scroll-area/corner.proto');
+    registerPrototype('brutalist-scroll-area-corner', mod.BrutalistScrollAreaCorner);
+  },
+  'brutalist-tooltip-root': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/tooltip/root.proto');
+    registerPrototype('brutalist-tooltip-root', mod.BrutalistTooltipRoot);
+  },
+  'brutalist-tooltip-trigger': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/tooltip/trigger.proto');
+    registerPrototype('brutalist-tooltip-trigger', mod.BrutalistTooltipTrigger);
+  },
+  'brutalist-tooltip-portal': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/tooltip/portal.proto');
+    registerPrototype('brutalist-tooltip-portal', mod.BrutalistTooltipPortal);
+  },
+  'brutalist-tooltip-content': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/tooltip/content.proto');
+    registerPrototype('brutalist-tooltip-content', mod.BrutalistTooltipContent);
+  },
+  'brutalist-tooltip-arrow': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/tooltip/arrow.proto');
+    registerPrototype('brutalist-tooltip-arrow', mod.BrutalistTooltipArrow);
+  },
   'brutalist-message-root': async () => {
     const mod = await import('../../../../../packages/prototypes/brutalist/src/message/root.proto');
     registerPrototype('brutalist-message-root', mod.BrutalistMessageRoot);
+  },
+  'brutalist-composer-root': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/composer/root.proto');
+    registerPrototype('brutalist-composer-root', mod.default);
+  },
+  'brutalist-composer-input': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/composer/input.proto');
+    registerPrototype('brutalist-composer-input', mod.default);
+  },
+  'brutalist-composer-actions': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/composer/actions.proto');
+    registerPrototype('brutalist-composer-actions', mod.default);
+  },
+  'brutalist-composer-send-button': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/composer/send-button.proto');
+    registerPrototype('brutalist-composer-send-button', mod.default);
+  },
+  'brutalist-code-block-root': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/code-block/root.proto');
+    registerPrototype('brutalist-code-block-root', mod.default);
+  },
+  'brutalist-code-block-header': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/code-block/header.proto');
+    registerPrototype('brutalist-code-block-header', mod.default);
+  },
+  'brutalist-code-block-content': async () => {
+    const mod =
+      await import('../../../../../packages/prototypes/brutalist/src/code-block/content.proto');
+    registerPrototype('brutalist-code-block-content', mod.default);
   },
 };
 

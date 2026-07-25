@@ -16,24 +16,24 @@ export default {
               {
                 kind: 'proto',
                 prototypeId: 'brutalist-card-title',
-                children: [{ kind: 'text', value: 'AI Support' }],
+                children: ['AI Support'],
               },
               {
                 kind: 'proto',
                 prototypeId: 'brutalist-card-description',
-                children: [{ kind: 'text', value: 'Conversation workspace' }],
+                children: ['Conversation workspace'],
               },
             ],
           },
           {
             kind: 'proto',
             prototypeId: 'brutalist-card-content',
-            children: [{ kind: 'text', value: 'Use Card as an explicit panel shell.' }],
+            children: ['Use Card as an explicit panel shell.'],
           },
           {
             kind: 'proto',
             prototypeId: 'brutalist-card-footer',
-            children: [{ kind: 'text', value: '12 messages' }],
+            children: ['12 messages'],
           },
         ],
       },

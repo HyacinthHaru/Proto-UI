@@ -11,7 +11,7 @@ export default {
           {
             kind: 'proto',
             prototypeId: 'brutalist-avatar-fallback',
-            children: [{ kind: 'text', value: 'AL' }],
+            children: ['AL'],
           },
         ],
       },
@@ -27,7 +27,7 @@ export default {
           {
             kind: 'proto',
             prototypeId: 'brutalist-avatar-fallback',
-            children: [{ kind: 'text', value: 'PU' }],
+            children: ['PU'],
           },
         ],
       },

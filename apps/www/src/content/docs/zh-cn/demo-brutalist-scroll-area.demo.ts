@@ -13,11 +13,7 @@ export default {
             kind: 'proto',
             prototypeId: 'brutalist-scroll-area-viewport',
             children: [
-              {
-                kind: 'text',
-                value:
-                  'Scrollable conversation content.\\nRow 2\\nRow 3\\nRow 4\\nRow 5\\nRow 6\\nRow 7\\nRow 8\\nRow 9\\nRow 10',
-              },
+              'Scrollable conversation content.\\nRow 2\\nRow 3\\nRow 4\\nRow 5\\nRow 6\\nRow 7\\nRow 8\\nRow 9\\nRow 10',
             ],
           },
           {

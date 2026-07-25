@@ -7,13 +7,13 @@ export default {
       {
         kind: 'proto',
         prototypeId: 'brutalist-message-root',
-        children: [{ kind: 'text', value: 'How do I set up the Neo-Brutalist theme?' }],
+        children: ['How do I set up the Neo-Brutalist theme?'],
       },
       {
         kind: 'proto',
         prototypeId: 'brutalist-message-root',
         props: { direction: 'outgoing' },
-        children: [{ kind: 'text', value: 'Use the generated CSS variables and preset tokens.' }],
+        children: ['Use the generated CSS variables and preset tokens.'],
       },
     ],
   },

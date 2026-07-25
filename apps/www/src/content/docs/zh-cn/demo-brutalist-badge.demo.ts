@@ -7,19 +7,19 @@ export default {
       {
         kind: 'proto',
         prototypeId: 'brutalist-badge-root',
-        children: [{ kind: 'text', value: 'Default' }],
+        children: ['Default'],
       },
       {
         kind: 'proto',
         prototypeId: 'brutalist-badge-root',
         props: { variant: 'secondary' },
-        children: [{ kind: 'text', value: 'Secondary' }],
+        children: ['Secondary'],
       },
       {
         kind: 'proto',
         prototypeId: 'brutalist-badge-root',
         props: { variant: 'destructive' },
-        children: [{ kind: 'text', value: 'Error' }],
+        children: ['Error'],
       },
     ],
   },

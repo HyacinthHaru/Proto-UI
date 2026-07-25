@@ -6,6 +6,19 @@ import baseDialogDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-bas
 import shadcnDialogDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-shadcn-dialog.demo';
 import baseHoverCardDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-base-hover-card.demo';
 import baseDropdownDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-base-dropdown-menu.demo';
+import { assertDemoSpec } from '../../../../apps/www/src/components/PrototypePreviewer/demo-types';
+import brutalistMessageDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-message.demo';
+import brutalistComposerDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-composer.demo';
+import brutalistCodeBlockDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-code-block.demo';
+import brutalistAvatarDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-avatar.demo';
+import brutalistBadgeDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-badge.demo';
+import brutalistCardDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-card.demo';
+import brutalistInputDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-input.demo';
+import brutalistTextareaDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-textarea.demo';
+import brutalistSeparatorDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-separator.demo';
+import brutalistSkeletonDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-skeleton.demo';
+import brutalistScrollAreaDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-scroll-area.demo';
+import brutalistTooltipDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-tooltip.demo';
 
 function styleContains(el: Element | null, token: string): boolean {
   return (el?.getAttribute('data-pui-style') ?? '').split(/\s+/).includes(token);
@@ -250,5 +263,24 @@ describe('PrototypePreviewer demo-renderer / wc', () => {
 
     await session.destroy();
     host.remove();
+  });
+
+  it('accepts every new Brutalist component demo spec', () => {
+    const demos = [
+      brutalistAvatarDemo,
+      brutalistBadgeDemo,
+      brutalistCardDemo,
+      brutalistInputDemo,
+      brutalistTextareaDemo,
+      brutalistSeparatorDemo,
+      brutalistSkeletonDemo,
+      brutalistScrollAreaDemo,
+      brutalistTooltipDemo,
+      brutalistMessageDemo,
+      brutalistComposerDemo,
+      brutalistCodeBlockDemo,
+    ];
+
+    for (const demo of demos) expect(() => assertDemoSpec(demo as any)).not.toThrow();
   });
 });

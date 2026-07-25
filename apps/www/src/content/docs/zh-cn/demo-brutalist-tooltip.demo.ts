@@ -13,7 +13,7 @@ export default {
           {
             kind: 'proto',
             prototypeId: 'brutalist-tooltip-trigger',
-            children: [{ kind: 'text', value: 'Hover me' }],
+            children: ['Hover me'],
           },
           {
             kind: 'proto',
@@ -23,7 +23,7 @@ export default {
                 kind: 'proto',
                 prototypeId: 'brutalist-tooltip-content',
                 children: [
-                  { kind: 'text', value: 'Tooltip content' },
+                  'Tooltip content',
                   { kind: 'proto', prototypeId: 'brutalist-tooltip-arrow' },
                 ],
               },

@@ -4,9 +4,9 @@ export default {
     kind: 'box',
     className: 'flex flex-col gap-3',
     children: [
-      { kind: 'text', value: 'Today' },
+      'Today',
       { kind: 'proto', prototypeId: 'brutalist-separator-root' },
-      { kind: 'text', value: 'Yesterday' },
+      'Yesterday',
       {
         kind: 'proto',
         prototypeId: 'brutalist-separator-root',
