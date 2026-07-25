@@ -53,6 +53,15 @@ implementations:
       - T-BASE-TABS-CONTENT-0001-CASE-PRESENCE-POLICY
     exercises:
       - P-BASE-TABS-CONTENT
+  - id: adapter-web-component-tabs-content-presence
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/web-component/test/tabs.test.ts
+    required: true
+    consumesCases:
+      - T-BASE-TABS-CONTENT-0001-CASE-PRESENCE-POLICY
+    exercises:
+      - P-BASE-TABS-CONTENT
 verifies:
   prototypes:
     - id: P-BASE-TABS-CONTENT

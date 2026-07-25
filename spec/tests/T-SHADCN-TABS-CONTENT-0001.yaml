@@ -25,6 +25,15 @@ cases:
         P-SHADCN-TABS-CONTENT-AS-CHILD-OMISSION,
       ]
     expectation: shadcn-tabs-content-current-panel-with-bounded-presence-parity
+  - id: T-SHADCN-TABS-CONTENT-0001-CASE-WC-REMATERIALIZATION
+    title: Web Component content rematerializes after selection returns and clears stale hidden projection
+    covers:
+      [
+        P-SHADCN-TABS-CONTENT-BASE-INHERITANCE,
+        P-SHADCN-TABS-CONTENT-CURRENT-BASE-DEVIATIONS,
+        P-SHADCN-TABS-CONTENT-HIDDEN-PROJECTION,
+      ]
+    expectation: shadcn-tabs-content-wc-rematerializes-with-current-a11y-state
 implementations:
   - id: prototypes-shadcn-tabs-content-contract
     kind: module-test
@@ -39,6 +48,14 @@ implementations:
     exercises: [P-SHADCN-TABS-CONTENT, P-BASE-TABS-CONTENT]
     notes:
       - Positive tests cover context-derived current state, inactive host hiding, selection switching, and current tokens; forceMount mapping and exact parity remain bounded by the centralized question.
+  - id: adapter-web-component-shadcn-tabs-content-rematerialization
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/web-component/test/tabs.test.ts
+    required: true
+    consumesCases:
+      - T-SHADCN-TABS-CONTENT-0001-CASE-WC-REMATERIALIZATION
+    exercises: [P-SHADCN-TABS-CONTENT, P-BASE-TABS-CONTENT]
 verifies:
   prototypes:
     - id: P-SHADCN-TABS-CONTENT

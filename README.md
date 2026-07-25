@@ -6,7 +6,7 @@ A Proto UI _prototype_ describes the identity and interaction semantics of a com
 
 English | [中文](README.zh-CN.md)
 
-> **Status:** Proto UI is in its v0 prerelease stage. The exact `0.2.0-rc.3` ecosystem release is available on npm under the `next` channel for reproducible trials. It is not the stable `latest` onboarding path and is not recommended for critical production workloads.
+> **Status:** Proto UI is in its v0 prerelease stage. The exact `0.2.0-rc.4` ecosystem release is available on npm under the `next` channel for reproducible trials. It is not the stable `latest` onboarding path and is not recommended for critical production workloads.
 
 ## The core idea
 
@@ -33,14 +33,14 @@ The current release is Adapter-based. Compiler output and zero-runtime delivery 
 Use the exact version so the CLI, Adapter, Prototype packages, and trial result all belong to the same release train:
 
 ```sh
-npx @proto.ui/cli@0.2.0-rc.3 --help
-npx @proto.ui/cli@0.2.0-rc.3 init
-npx @proto.ui/cli@0.2.0-rc.3 add react shadcn-button
+npx @proto.ui/cli@0.2.0-rc.4 --help
+npx @proto.ui/cli@0.2.0-rc.4 init
+npx @proto.ui/cli@0.2.0-rc.4 add react shadcn-button
 ```
 
 Run `init` and `add` from an existing application project. The CLI creates a local `proto-ui/` workspace, installs the matching official packages, writes style presets, and generates host-specific component facades.
 
-Follow the complete [0.2 RC Trial](https://proto-ui.com/en/start-here/rc-trial/) for generated paths, style imports, typed component usage, multiple hosts, and the current limitations. See the [v0.2.0-rc.3 release](https://github.com/Proto-UI/Proto-UI/releases/tag/v0.2.0-rc.3) for immutable release evidence.
+Follow the complete [0.2 RC Trial](https://proto-ui.com/en/start-here/rc-trial/) for generated paths, style imports, typed component usage, multiple hosts, and the current limitations. See the [v0.2.0-rc.4 release](https://github.com/Proto-UI/Proto-UI/releases/tag/v0.2.0-rc.4) for immutable release evidence.
 
 ## What exists today
 
@@ -108,7 +108,7 @@ corepack pnpm@10.32.1 test
 
 ## Near-term direction
 
-The immediate focus is to exercise `0.2.0-rc.3` in real projects, fix onboarding or semantic blockers, improve the documentation paths exposed by those trials, and close the `0.2` release line without expanding the Prototype surface indiscriminately.
+The immediate focus is to exercise `0.2.0-rc.4` in real projects, fix onboarding or semantic blockers, improve the documentation paths exposed by those trials, and close the `0.2` release line without expanding the Prototype surface indiscriminately.
 
 Module, Host Capability, and Adapter catalog work will continue through coherent vertical slices informed by real consumption evidence. Compiler-oriented and editable local styled-prototype workflows remain longer-term directions rather than current release promises.
 

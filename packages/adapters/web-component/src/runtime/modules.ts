@@ -263,11 +263,14 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   let mountedEl: HTMLElement | null = null;
   let originalParent: Node | null = null;
   let originalNext: Node | null = null;
-  const getTriggerSurface = () => {
+  const getConnectedTriggerSurface = () => {
     const target = getLogicalTriggerSurfaceRoot(instanceToken);
     const surface = resolveWebComponentTriggerSurface(el, target);
-    return args.isViewReady() && surface?.isConnected ? surface : null;
+    return surface?.isConnected ? surface : null;
   };
+  // A11y must project while the rematerialized host is still behind the reveal
+  // barrier; focus remains gated until that host is ready for interaction.
+  const getTriggerSurface = () => (args.isViewReady() ? getConnectedTriggerSurface() : null);
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
     const offSurface = subscribeLogicalTriggerSurface(instanceToken, listener);
@@ -283,7 +286,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
     .use('a11y', [
       [
         A11Y_PROJECT_CAP,
-        createWebA11yProjector(getTriggerSurface, (listener) =>
+        createWebA11yProjector(getConnectedTriggerSurface, (listener) =>
           subscribeLogicalTriggerSurface(instanceToken, listener)
         ),
       ],

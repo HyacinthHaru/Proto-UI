@@ -129,4 +129,55 @@ describe('adapter-web-component: L1 view intent', () => {
     el.remove();
     await flushReconciliation();
   });
+
+  it('projects the latest a11y state before revealing a rematerialized view', async () => {
+    let run!: RunHandle<any>;
+    const proto = definePrototype({
+      name: 'x-wc-view-intent-a11y-replay',
+      setup(def) {
+        const hidden = def.state.bool('hidden', true);
+        def.a11y.state('hidden', hidden);
+        def.lifecycle.onCreated((nextRun) => {
+          run = nextRun;
+          run.lifecycle.setPresent(false);
+        });
+        def.expose('view', {
+          show: () => {
+            hidden.set(false);
+            run.lifecycle.setPresent(true);
+          },
+          hide: () => {
+            hidden.set(true);
+            run.lifecycle.setPresent(false);
+          },
+        });
+      },
+    });
+
+    AdaptToWebComponent(proto, { schedule: (task) => task() });
+    const el = document.createElement(proto.name) as HTMLElement & {
+      getExposes(): { view: { show(): void; hide(): void } };
+    };
+    document.body.appendChild(el);
+
+    el.getExposes().view.show();
+    await flushReconciliation();
+    expect(el.hasAttribute('data-pui-view-detached')).toBe(false);
+    expect(el.hasAttribute('hidden')).toBe(false);
+    expect(el.getAttribute('aria-hidden')).toBe('false');
+
+    el.getExposes().view.hide();
+    await flushReconciliation();
+    expect(el.hasAttribute('data-pui-view-detached')).toBe(true);
+    expect(el.hasAttribute('hidden')).toBe(true);
+
+    el.getExposes().view.show();
+    await flushReconciliation();
+    expect(el.hasAttribute('data-pui-view-detached')).toBe(false);
+    expect(el.hasAttribute('hidden')).toBe(false);
+    expect(el.getAttribute('aria-hidden')).toBe('false');
+
+    el.remove();
+    await flushReconciliation();
+  });
 });
