@@ -1,0 +1,18 @@
+---
+title: Skeleton
+sidebar:
+  order: 8
+---
+
+import BrutalistPageStyle from '../../../../../components/BrutalistPageStyle.astro';
+import PrototypePreviewer from '../../../../../components/PrototypePreviewer/PrototypePreviewer.astro';
+
+<BrutalistPageStyle />
+
+Brutalist Skeleton is a static square Yandu Lavender loading placeholder with an ink border and hard shadow. It intentionally owns no repeating shimmer or pulse; applications may add reduced-motion-safe progress behavior externally.
+
+Use it for message rows, cards, avatars, and data panels while content shape is unresolved.
+
+<div style="--pui-lavender:#DDD6FE;--pui-foreground:#000;background:#f4f1ea;color:#000;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:1rem;">
+  <PrototypePreviewer demoId="demo-brutalist-skeleton" initialRuntime="wc" />
+</div>
