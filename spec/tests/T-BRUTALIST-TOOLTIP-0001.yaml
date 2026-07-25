@@ -2,7 +2,7 @@ id: T-BRUTALIST-TOOLTIP-0001
 type: test
 title: Brutalist Tooltip visual contract tests
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist tooltip.
 cases:
   - id: T-BRUTALIST-TOOLTIP-0001-CASE-1
@@ -46,7 +46,7 @@ exercises:
     - P-BRUTALIST-TOOLTIP-PORTAL
     - P-BRUTALIST-TOOLTIP-TRIGGER
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Added draft Brutalist tooltip prototype coverage.
 tags:

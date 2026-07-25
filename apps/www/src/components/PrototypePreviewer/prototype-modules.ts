@@ -386,6 +386,10 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
       await import('../../../../../packages/prototypes/brutalist/src/dialog/footer.proto');
     registerPrototype('brutalist-dialog-footer', mod.default);
   },
+  'brutalist-message-root': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/message/root.proto');
+    registerPrototype('brutalist-message-root', mod.BrutalistMessageRoot);
+  },
 };
 
 /**

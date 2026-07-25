@@ -2,7 +2,7 @@ id: T-BRUTALIST-SKELETON-0001
 type: test
 title: Brutalist Skeleton visual contract tests
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist skeleton.
 cases:
   - id: T-BRUTALIST-SKELETON-0001-CASE-1
@@ -28,7 +28,7 @@ verifies:
 exercises:
   prototypes: *id001
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Added draft Brutalist skeleton prototype coverage.
 tags:

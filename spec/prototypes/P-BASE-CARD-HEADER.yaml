@@ -2,7 +2,7 @@ id: P-BASE-CARD-HEADER
 type: prototype
 title: Base Card Header protocol
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Base Card Header protocol for the Proto UI framework.
 statement:
   en: Base Card Header protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/base/src/card/header.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Introduced base card header protocol.
 tags:

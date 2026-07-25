@@ -2,7 +2,7 @@ id: P-BRUTALIST-INPUT
 type: prototype
 title: Brutalist Input  protocol
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Brutalist Input  protocol for the Proto UI framework.
 statement:
   en: Brutalist Input  protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/brutalist/src/input/root.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Introduced brutalist input  protocol.
 tags:

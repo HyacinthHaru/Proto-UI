@@ -2,7 +2,7 @@ id: P-BRUTALIST-CARD
 type: prototype
 title: Brutalist Card  protocol
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Brutalist Card  protocol for the Proto UI framework.
 statement:
   en: Brutalist Card  protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/brutalist/src/card/root.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Introduced brutalist card  protocol.
 tags:

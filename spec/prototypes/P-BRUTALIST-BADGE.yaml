@@ -2,7 +2,7 @@ id: P-BRUTALIST-BADGE
 type: prototype
 title: Brutalist Badge  protocol
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Brutalist Badge  protocol for the Proto UI framework.
 statement:
   en: Brutalist Badge  protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/brutalist/src/badge/root.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Introduced brutalist badge  protocol.
 tags:

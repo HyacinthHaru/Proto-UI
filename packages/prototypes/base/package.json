@@ -68,6 +68,18 @@
     "./transition": {
       "types": "./src/transition/index.ts",
       "default": "./src/transition/index.ts"
+    },
+    "./message": {
+      "types": "./src/message/index.ts",
+      "default": "./src/message/index.ts"
+    },
+    "./composer": {
+      "types": "./src/composer/index.ts",
+      "default": "./src/composer/index.ts"
+    },
+    "./code-block": {
+      "types": "./src/code-block/index.ts",
+      "default": "./src/code-block/index.ts"
     }
   },
   "description": "Base Proto UI prototype library for reusable interaction prototypes.",

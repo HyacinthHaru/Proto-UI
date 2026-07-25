@@ -95,3 +95,6 @@ export * from './textarea';
 export * from './skeleton';
 export * from './scroll-area';
 export * from './tooltip';
+export * from './message';
+export * from './composer';
+export * from './code-block';

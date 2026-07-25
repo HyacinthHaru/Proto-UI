@@ -2,7 +2,7 @@ id: T-BRUTALIST-AVATAR-0001
 type: test
 title: Brutalist Avatar visual contract tests
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist avatar.
 cases:
   - id: T-BRUTALIST-AVATAR-0001-CASE-1
@@ -38,7 +38,7 @@ exercises:
     - P-BRUTALIST-AVATAR-FALLBACK
     - P-BRUTALIST-AVATAR-IMAGE
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Added draft Brutalist avatar prototype coverage.
 tags:

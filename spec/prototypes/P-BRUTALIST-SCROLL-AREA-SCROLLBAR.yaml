@@ -2,7 +2,7 @@ id: P-BRUTALIST-SCROLL-AREA-SCROLLBAR
 type: prototype
 title: Brutalist Scroll Area Scrollbar protocol
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Brutalist Scroll Area Scrollbar protocol for the Proto UI framework.
 statement:
   en: Brutalist Scroll Area Scrollbar protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/brutalist/src/scroll-area/scrollbar.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Introduced brutalist scroll area scrollbar protocol.
 tags:

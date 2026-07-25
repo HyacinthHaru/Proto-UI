@@ -2,7 +2,7 @@ id: T-BRUTALIST-SCROLL-AREA-0001
 type: test
 title: Brutalist Scroll Area visual contract tests
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist scroll area.
 cases:
   - id: T-BRUTALIST-SCROLL-AREA-0001-CASE-1
@@ -46,7 +46,7 @@ exercises:
     - P-BRUTALIST-SCROLL-AREA-THUMB
     - P-BRUTALIST-SCROLL-AREA-VIEWPORT
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Added draft Brutalist scroll-area prototype coverage.
 tags:

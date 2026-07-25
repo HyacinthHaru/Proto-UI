@@ -2,7 +2,7 @@ id: P-BASE-TOOLTIP
 type: prototype
 title: Base Tooltip  protocol
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Base Tooltip  protocol for the Proto UI framework.
 statement:
   en: Base Tooltip  protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/base/src/tooltip/root.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Introduced base tooltip  protocol.
 tags:

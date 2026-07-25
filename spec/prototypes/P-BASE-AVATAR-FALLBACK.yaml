@@ -2,7 +2,7 @@ id: P-BASE-AVATAR-FALLBACK
 type: prototype
 title: Base Avatar Fallback protocol
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Base Avatar Fallback protocol for the Proto UI framework.
 statement:
   en: Base Avatar Fallback protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/base/src/avatar/fallback.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Introduced base avatar fallback protocol.
 tags:

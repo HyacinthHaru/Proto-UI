@@ -1,5 +1,223 @@
 {
   "schemaVersion": 1,
   "description": "Existing concrete prototype declarations that still need P/T catalog entities. CI rejects unlisted or stale debt, so accepting a new gap requires an explicit reviewed edit.",
-  "uncataloged": []
+  "uncataloged": [
+    {
+      "file": "packages/prototypes/base/src/code-block/content.proto.ts",
+      "entries": [
+        {
+          "kind": "asHook",
+          "name": "as-code-block-content"
+        },
+        {
+          "kind": "prototype",
+          "name": "base-code-block-content"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/base/src/code-block/header.proto.ts",
+      "entries": [
+        {
+          "kind": "asHook",
+          "name": "as-code-block-header"
+        },
+        {
+          "kind": "prototype",
+          "name": "base-code-block-header"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/base/src/code-block/root.proto.ts",
+      "entries": [
+        {
+          "kind": "asHook",
+          "name": "as-code-block-root"
+        },
+        {
+          "kind": "prototype",
+          "name": "base-code-block-root"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/base/src/composer/actions.proto.ts",
+      "entries": [
+        {
+          "kind": "asHook",
+          "name": "as-composer-actions"
+        },
+        {
+          "kind": "prototype",
+          "name": "base-composer-actions"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/base/src/composer/input.proto.ts",
+      "entries": [
+        {
+          "kind": "asHook",
+          "name": "as-composer-input"
+        },
+        {
+          "kind": "prototype",
+          "name": "base-composer-input"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/base/src/composer/root.proto.ts",
+      "entries": [
+        {
+          "kind": "asHook",
+          "name": "as-composer-root"
+        },
+        {
+          "kind": "prototype",
+          "name": "base-composer-root"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/base/src/composer/send-button.proto.ts",
+      "entries": [
+        {
+          "kind": "asHook",
+          "name": "as-composer-send-button"
+        },
+        {
+          "kind": "prototype",
+          "name": "base-composer-send-button"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/brutalist/src/code-block/content.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "brutalist-code-block-content"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/brutalist/src/code-block/header.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "brutalist-code-block-header"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/brutalist/src/code-block/root.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "brutalist-code-block-root"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/brutalist/src/composer/actions.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "brutalist-composer-actions"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/brutalist/src/composer/input.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "brutalist-composer-input"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/brutalist/src/composer/root.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "brutalist-composer-root"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/brutalist/src/composer/send-button.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "brutalist-composer-send-button"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/shadcn/src/code-block/content.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "shadcn-code-block-content"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/shadcn/src/code-block/header.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "shadcn-code-block-header"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/shadcn/src/code-block/root.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "shadcn-code-block-root"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/shadcn/src/composer/actions.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "shadcn-composer-actions"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/shadcn/src/composer/input.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "shadcn-composer-input"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/shadcn/src/composer/root.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "shadcn-composer-root"
+        }
+      ]
+    },
+    {
+      "file": "packages/prototypes/shadcn/src/composer/send-button.proto.ts",
+      "entries": [
+        {
+          "kind": "prototype",
+          "name": "shadcn-composer-send-button"
+        }
+      ]
+    }
+  ]
 }

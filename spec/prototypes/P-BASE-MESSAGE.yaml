@@ -1,0 +1,17 @@
+id: P-BASE-MESSAGE
+type: prototype
+title: Base Message
+status: draft
+since: 0.2.0-rc.5
+summary: Base Message protocol.
+sources:
+  - path: packages/prototypes/base/src/message/root.proto.ts
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Introduced base message.
+tags:
+  - prototype
+verifies:
+  tests:
+    - T-BASE-MESSAGE-0001

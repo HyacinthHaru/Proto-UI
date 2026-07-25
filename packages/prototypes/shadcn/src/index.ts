@@ -54,6 +54,12 @@ export { default as shadcnDialogClose } from './dialog/close.proto';
 export { default as shadcnDialogCloseIcon } from './dialog/close-icon.proto';
 export { default as shadcnDialogHeader } from './dialog/header.proto';
 export { default as shadcnDialogFooter } from './dialog/footer.proto';
+export { default as shadcnMessageRoot } from './message/root.proto';
+export * from './message';
+export { default as shadcnComposerRoot } from './composer/root.proto';
+export * from './composer';
+export { default as shadcnCodeBlockRoot } from './code-block/root.proto';
+export * from './code-block';
 export type {
   ShadcnButtonProps,
   ShadcnButtonExposes,

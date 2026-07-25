@@ -2,7 +2,7 @@ id: T-BRUTALIST-INPUT-0001
 type: test
 title: Brutalist Input visual contract tests
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist input.
 cases:
   - id: T-BRUTALIST-INPUT-0001-CASE-1
@@ -30,7 +30,7 @@ exercises:
     - P-BASE-INPUT
     - P-BRUTALIST-INPUT
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Added draft Brutalist input prototype coverage.
 tags:

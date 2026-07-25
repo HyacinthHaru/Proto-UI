@@ -1,0 +1,20 @@
+id: P-SHADCN-MESSAGE
+type: prototype
+title: Shadcn Message
+status: draft
+since: 0.2.0-rc.5
+summary: Shadcn Message protocol.
+sources:
+  - path: packages/prototypes/shadcn/src/message/root.proto.ts
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Introduced shadcn message.
+tags:
+  - prototype
+verifies:
+  tests:
+    - T-SHADCN-MESSAGE-0001
+inherits:
+  prototypes:
+    - id: P-BASE-MESSAGE

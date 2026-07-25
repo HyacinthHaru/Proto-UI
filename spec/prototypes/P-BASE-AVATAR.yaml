@@ -2,7 +2,7 @@ id: P-BASE-AVATAR
 type: prototype
 title: Base Avatar  protocol
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.5
 summary: Base Avatar  protocol for the Proto UI framework.
 statement:
   en: Base Avatar  protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/base/src/avatar/root.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.5
     change: introduced
     summary: Introduced base avatar  protocol.
 tags:

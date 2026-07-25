@@ -336,6 +336,11 @@ export default defineConfig({
                   translations: { en: 'Tooltip', 'zh-CN': 'Tooltip' },
                   slug: 'ui-libraries/brutalist/components/tooltip',
                 },
+                {
+                  label: 'Message',
+                  translations: { en: 'Message', 'zh-CN': 'Message' },
+                  slug: 'ui-libraries/brutalist/components/message',
+                },
               ],
             },
           ],

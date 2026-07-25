@@ -1,0 +1,34 @@
+id: T-SHADCN-MESSAGE-0001
+type: test
+title: P-SHADCN-MESSAGE tests
+status: draft
+since: 0.2.0-rc.5
+summary: Covers P-SHADCN-MESSAGE behavior and visual grammar.
+cases:
+  - id: T-SHADCN-MESSAGE-0001-CASE-1
+    title: P-SHADCN-MESSAGE works
+    covers:
+      - P-SHADCN-MESSAGE-CATALOGED
+    expectation: pass
+implementations:
+  - id: p-shadcn-message-impl
+    kind: module-test
+    status: passing
+    path: packages/prototypes/shadcn/test/message.test.ts
+    required: true
+    consumesCases:
+      - T-SHADCN-MESSAGE-0001-CASE-1
+    exercises: &id001
+      - P-SHADCN-MESSAGE
+      - P-BASE-MESSAGE
+verifies:
+  prototypes:
+    - id: P-SHADCN-MESSAGE
+exercises:
+  prototypes: *id001
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Added P-SHADCN-MESSAGE tests.
+tags:
+  - test
