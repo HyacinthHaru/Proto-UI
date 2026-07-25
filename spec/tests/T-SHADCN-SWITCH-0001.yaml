@@ -16,22 +16,22 @@ cases:
       ]
     expectation: shadcn-switch-root-direct-entry-inherits-as-switch-root
   - id: T-SHADCN-SWITCH-0001-CASE-FAMILY-AND-VISUALS
-    title: inherited checked focus and disabled facts coordinate the family and drive current Root styles with canonical spacing tokens
+    title: inherited checked focus and disabled facts coordinate the family while Root keeps symmetric track spacing
     covers:
       [
         P-SHADCN-SWITCH-CURRENT-VISUAL-SURFACE,
         P-SHADCN-SWITCH-STATE-DRIVEN-STYLES,
         C-FEEDBACK-STYLE-0003-E,
       ]
-    expectation: shadcn-switch-root-state-drives-family-with-canonical-spacing-tokens
+    expectation: shadcn-switch-root-state-drives-family-with-symmetric-track-spacing
   - id: T-SHADCN-SWITCH-0001-CASE-COMPATIBILITY-SUBSET
     title: intentional asChild omission and remaining upstream gaps stay outside the passing claim
     covers: [P-SHADCN-SWITCH-COMPATIBILITY-SUBSET, P-SHADCN-SWITCH-AS-CHILD-OMISSION]
     expectation: shadcn-switch-root-does-not-overclaim-upstream-parity
   - id: T-SHADCN-SWITCH-0001-CASE-COMPONENT-PRESET
-    title: generated convenience facades materialize replaceable default Thumb parts before mount
-    covers: [P-SHADCN-SWITCH-COMPONENT-PRESET]
-    expectation: shadcn-switch-generated-facades-support-default-replacement-and-omission
+    title: generated convenience facades mount replaceable default Thumb parts only after Root context exists
+    covers: [P-SHADCN-SWITCH-COMPONENT-PRESET, D-COMPONENT-PRESET-MATERIALIZATION-0001-F]
+    expectation: shadcn-switch-generated-facades-support-context-safe-default-replacement-and-omission
 implementations:
   - id: prototypes-shadcn-switch-root-contract
     kind: module-test
@@ -54,10 +54,21 @@ implementations:
     required: true
     consumesCases: [T-SHADCN-SWITCH-0001-CASE-COMPONENT-PRESET]
     exercises: [P-SHADCN-SWITCH]
+  - id: release-packed-cli-switch-component-preset
+    kind: workspace-check
+    status: passing
+    path: scripts/release/consumer-smoke-cli.mjs
+    required: true
+    consumesCases: [T-SHADCN-SWITCH-0001-CASE-COMPONENT-PRESET]
+    exercises: [P-SHADCN-SWITCH, P-SHADCN-SWITCH-THUMB]
 verifies:
   contracts:
     - id: C-FEEDBACK-STYLE-0003
       anchors: [C-FEEDBACK-STYLE-0003-E]
+  decisions:
+    - id: D-COMPONENT-PRESET-MATERIALIZATION-0001
+      since: 0.2.0-rc.3
+      anchors: [D-COMPONENT-PRESET-MATERIALIZATION-0001-F]
   prototypes:
     - id: P-SHADCN-SWITCH
       anchors:
@@ -81,4 +92,7 @@ revisions:
   - version: 0.2.0-rc.3
     change: expanded
     summary: Added generated component-preset coverage for default, replacement, and omission paths across adapters.
+  - version: 0.2.0-rc.5
+    change: expanded
+    summary: Added symmetric Root spacing and packed-consumer coverage for context-safe default Thumb mounting.
 tags: [prototype, shadcn, switch, root, delta, compatibility, test]

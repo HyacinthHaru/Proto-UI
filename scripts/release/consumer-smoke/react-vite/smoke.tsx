@@ -33,11 +33,18 @@ async function mountAndAssert(label: string) {
   const switchRoot = container.querySelector('.consumer-switch');
   assert(switchRoot?.getAttribute('role') === 'switch', `${label}: Switch role is missing`);
   assert(switchRoot?.getAttribute('aria-checked') === 'true', `${label}: Switch state is missing`);
+  const switchThumb = switchRoot?.firstElementChild;
+  assert(switchThumb?.hasAttribute('data-checked'), `${label}: Switch Thumb state is missing`);
+  assert(
+    switchThumb?.getAttribute('data-pui-style')?.includes('data-[checked]:translate-x-5'),
+    `${label}: Switch Thumb checked translation is missing`
+  );
   await React.act(async () => {
     switchRoot?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await flush();
   });
   assert(switchRoot?.getAttribute('aria-checked') === 'false', `${label}: Switch click failed`);
+  assert(!switchThumb?.hasAttribute('data-checked'), `${label}: Switch Thumb did not update`);
 
   const selectTrigger = container.querySelector('.consumer-select-trigger');
   assert(selectTrigger?.getAttribute('role') === 'combobox', `${label}: Select role is missing`);

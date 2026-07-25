@@ -6,7 +6,7 @@ Proto UI 的“原型（Prototype）”描述组件的身份与交互语义，Ad
 
 中文 | [English](README.md)
 
-> **当前状态：** Proto UI 处于 v0 预发布阶段。精确版本 `0.2.0-rc.4` 已通过 npm `next` channel 发布，可用于可复现试用；它不是稳定的 `latest` 上手路径，也不推荐用于关键生产业务。
+> **当前状态：** Proto UI 处于 v0 预发布阶段。精确版本 `0.2.0-rc.5` 已通过 npm `next` channel 发布，可用于可复现试用；它不是稳定的 `latest` 上手路径，也不推荐用于关键生产业务。
 
 ## 核心思路
 
@@ -33,14 +33,14 @@ Prototype protocol -> Compiler -> Host component code
 请使用精确版本，确保 CLI、Adapter、Prototype package 与试用结果都属于同一条 release train：
 
 ```sh
-npx @proto.ui/cli@0.2.0-rc.4 --help
-npx @proto.ui/cli@0.2.0-rc.4 init
-npx @proto.ui/cli@0.2.0-rc.4 add react shadcn-button
+npx @proto.ui/cli@0.2.0-rc.5 --help
+npx @proto.ui/cli@0.2.0-rc.5 init
+npx @proto.ui/cli@0.2.0-rc.5 add react shadcn-button
 ```
 
 请在已有应用项目中执行 `init` 和 `add`。CLI 会创建本地 `proto-ui/` workspace，安装版本完全一致的官方 package，生成样式预设和宿主专用的 component facade。
 
-完整的生成路径、样式引入、带类型组件使用、多宿主方式和当前限制见 [0.2 RC 试用](https://proto-ui.com/zh-cn/start-here/rc-trial/)。不可变发行证据见 [v0.2.0-rc.4 Release](https://github.com/Proto-UI/Proto-UI/releases/tag/v0.2.0-rc.4)。
+完整的生成路径、样式引入、带类型组件使用、多宿主方式和当前限制见 [0.2 RC 试用](https://proto-ui.com/zh-cn/start-here/rc-trial/)。不可变发行证据见 [v0.2.0-rc.5 Release](https://github.com/Proto-UI/Proto-UI/releases/tag/v0.2.0-rc.5)。
 
 ## 目前已经具备的能力
 
@@ -108,7 +108,7 @@ corepack pnpm@10.32.1 test
 
 ## 近期方向
 
-当前工作的重点是：在真实项目中试用 `0.2.0-rc.4`，修复上手或语义 blocker，按照试用暴露的真实缺口补充文档，并在不无序扩张 Prototype 表面的前提下完成 `0.2` release line 收口。
+当前工作的重点是：在真实项目中试用 `0.2.0-rc.5`，修复上手或语义 blocker，按照试用暴露的真实缺口补充文档，并在不无序扩张 Prototype 表面的前提下完成 `0.2` release line 收口。
 
 Module、Host Capability 与 Adapter 的系统编目会根据真实消费证据，以完整垂直切片继续推进。Compiler 方向和可在本地编辑的 styled prototype 工作流仍属于长期方向，而不是当前版本承诺。
 

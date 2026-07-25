@@ -18,9 +18,9 @@ cases:
   - id: T-SHADCN-SWITCH-THUMB-0001-CASE-CONTEXT-AND-VISUALS
     title: Thumb follows same-domain Root checked state and projects its current visual surface
     covers: [P-SHADCN-SWITCH-THUMB-CONTEXT-INDICATOR, P-SHADCN-SWITCH-THUMB-CURRENT-VISUAL-SURFACE]
-    expectation: shadcn-switch-thumb-follows-root-and-projects-current-tokens
+    expectation: shadcn-switch-thumb-follows-root-and-translates-from-inherited-checked-state
   - id: T-SHADCN-SWITCH-THUMB-0001-CASE-COMPATIBILITY-SUBSET
-    title: upstream internal composition and state-driven token gaps remain outside the passing claim
+    title: upstream internal composition and remaining token gaps stay outside the passing claim
     covers: [P-SHADCN-SWITCH-THUMB-COMPATIBILITY-SUBSET]
     expectation: shadcn-switch-thumb-does-not-overclaim-upstream-parity
 implementations:
@@ -57,4 +57,7 @@ revisions:
   - version: 0.2.0-rc.0
     change: introduced
     summary: Added Shadcn Switch Thumb delta coverage for Base indicator inheritance, context-driven display state, current visual tokens, and bounded upstream composition.
+  - version: 0.2.0-rc.5
+    change: expanded
+    summary: Added executable coverage for checked-state-driven Thumb translation.
 tags: [prototype, shadcn, switch, thumb, delta, compatibility, test]

@@ -113,6 +113,9 @@ describe('@proto.ui/cli', () => {
     expect(wc).toContain('export class ShadcnSwitchElement extends ShadcnSwitchRootElement');
     expect(wc).toContain("!this.hasAttribute('data-pui-no-default-thumb')");
     expect(wc).toContain("document.createElement('proto-ui-shadcn-switch-thumb')");
+    expect(wc.indexOf('ShadcnSwitchRootElement.prototype as unknown')).toBeLessThan(
+      wc.indexOf("document.createElement('proto-ui-shadcn-switch-thumb')")
+    );
 
     const root = renderRootIndex({
       react: ['shadcn-switch'],
@@ -141,6 +144,9 @@ describe('@proto.ui/cli', () => {
       'export class ShadcnDialogContentElement extends ShadcnDialogContentRawElement'
     );
     expect(wc).toContain("!this.hasAttribute('data-pui-no-default-close')");
+    expect(wc.indexOf('ShadcnDialogContentRawElement.prototype as unknown')).toBeLessThan(
+      wc.indexOf("document.createElement('proto-ui-shadcn-dialog-close-icon')")
+    );
   });
 
   it('prints the new help text', () => {
@@ -242,8 +248,9 @@ describe('@proto.ui/cli', () => {
       `data-[hovered]:not-[data-active]:bg-muted"])[data-hovered]:not([data-active])`
     );
     expect(tokensCss).not.toContain(`not-[data-open]:hidden`);
-    expect(tokensCss).toContain(`data-[checked]:pl-5"])[data-checked]`);
-    expect(tokensCss).not.toContain(`data-[checked]:pl-[20px]"])[data-checked]`);
+    expect(tokensCss).toContain(`[data-pui-style~="px-0.5"]`);
+    expect(tokensCss).toContain(`data-[checked]:translate-x-5"])[data-checked]`);
+    expect(tokensCss).not.toContain(`data-[checked]:pl-5"])[data-checked]`);
     expect(tokensCss).toContain(`data-[checked]:bg-primary"])[data-checked]`);
     expect(tokensCss).toContain(`data-[selected]:bg-background"])[data-selected]`);
     expect(tokensCss).toContain(`data-[hidden]:hidden"])[data-hidden]`);

@@ -3,13 +3,15 @@ type: decision
 title: Component presets materialize replaceable defaults outside Anatomy
 status: draft
 since: 0.2.0-rc.3
-summary: Component presets declare deterministic replaceable default parts that CLI or adapters materialize before Anatomy validates the resulting real structure.
+summary: Component presets declare deterministic replaceable default parts that CLI or adapters mount once in the owning Root context before Anatomy validates the resulting real structure.
 statement:
   zh-CN: >-
-    Proto UI 可以为常规消费提供 component preset，但 preset 必须是独立于 Anatomy 的确定性 composition recipe。Prototype library 声明默认 part identity 与替换策略，CLI 或 adapter materializer 在 Root 的同一 materialization context 中、真实实例挂载前解析默认、显式替换或显式关闭；Anatomy 只观察并验证最终真实存在的 parts，不得创建、移动、卸载或自动补全结构。Raw prototype facades 必须继续可用，使 App Maker 能绕过 convenience preset 进行完整显式组合。
+    Proto UI 可以为常规消费提供 component preset，但 preset 必须是独立于 Anatomy 的确定性 composition recipe。Prototype library 声明默认 part identity 与替换策略，CLI 或 adapter materializer 必须在候选 part 挂载前解析默认、显式替换或显式关闭，并使最终 part 在 Root 的同一 materialization context 中只挂载一次；Anatomy 只观察并验证最终真实存在的 parts，不得创建、移动、卸载或自动补全结构。Raw prototype facades 必须继续可用，使 App Maker 能绕过 convenience preset 进行完整显式组合。
+
 
   en: >-
-    Proto UI may provide component presets for ordinary consumption, but a preset must be a deterministic composition recipe independent of Anatomy. The prototype library declares default-part identities and replacement policy, while a CLI or adapter materializer resolves default, explicit replacement, or explicit omission in the Root's materialization context before real instances mount. Anatomy only observes and validates the resulting real parts and must not create, move, unmount, or automatically complete structure. Raw prototype facades remain available so App Makers can bypass convenience presets for fully explicit composition.
+    Proto UI may provide component presets for ordinary consumption, but a preset must be a deterministic composition recipe independent of Anatomy. The prototype library declares default-part identities and replacement policy, while a CLI or adapter materializer resolves default, explicit replacement, or explicit omission before any candidate part mounts and mounts the resulting part exactly once in the Root's materialization context. Anatomy only observes and validates the resulting real parts and must not create, move, unmount, or automatically complete structure. Raw prototype facades remain available so App Makers can bypass convenience presets for fully explicit composition.
+
 
 criteria:
   - id: D-COMPONENT-PRESET-MATERIALIZATION-0001-A
@@ -32,8 +34,13 @@ criteria:
     text:
       zh-CN: Convenience preset 与 raw Root/part facades 必须同时保留，且 preset 产物必须通过对应 anatomy family/profile validation。
       en: The convenience preset and raw Root/part facades must coexist, and preset output must pass the corresponding anatomy family or profile validation.
+  - id: D-COMPONENT-PRESET-MATERIALIZATION-0001-F
+    text:
+      zh-CN: 若宿主生命周期不允许在 constructor 中安全创建默认 part，materializer 可以先建立 Root runtime/context 再连接已解析的默认 part；不得让默认 part 先连接后再补建其 parent context，也不得通过失败后重挂载来恢复。
+      en: If a host lifecycle cannot safely create the default part in its constructor, the materializer may establish the Root runtime and context before connecting the already-resolved default part; it must not connect the default part before creating its parent context or recover by remounting after failure.
 sources:
   - path: internal/records/2026-07-22-trigger-surface-and-component-preset.zh-CN.md
+  - path: internal/records/2026-07-25-rc4-dialog-close-icon-and-switch-trial-regressions.zh-CN.md
   - path: spec/contracts/C-ANATOMY-0001.yaml
   - path: spec/contracts/C-ANATOMY-0010.yaml
   - path: packages/cli/src/registry/components.ts
@@ -45,4 +52,7 @@ revisions:
   - version: 0.2.0-rc.3
     change: introduced
     summary: Kept default part materialization outside Anatomy and defined deterministic three-state replacement with raw-facade escape hatches.
+  - version: 0.2.0-rc.5
+    change: revised
+    summary: Required generated default parts to connect only after the owning Root context exists, without failure-driven remount recovery.
 tags: [component-preset, materialization, cli, adapter, anatomy, composition]

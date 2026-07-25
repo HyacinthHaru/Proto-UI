@@ -20,9 +20,9 @@ cases:
     covers: [P-SHADCN-DIALOG-CLOSE-ICON-BASE-INHERITANCE, P-SHADCN-DIALOG-CLOSE-ICON-SURFACE]
     expectation: dialog-close-icon-renders-and-closes-through-base-command
   - id: T-SHADCN-DIALOG-LAYOUT-0001-CASE-PRESET
-    title: generated Content facades materialize a replaceable default CloseIcon
-    covers: [P-SHADCN-DIALOG-CLOSE-ICON-PRESET]
-    expectation: dialog-content-preset-supports-default-replacement-and-omission
+    title: generated Content facades connect a replaceable default CloseIcon after Dialog context exists
+    covers: [P-SHADCN-DIALOG-CLOSE-ICON-PRESET, D-COMPONENT-PRESET-MATERIALIZATION-0001-F]
+    expectation: dialog-content-preset-supports-context-safe-default-replacement-and-omission
 implementations:
   - id: prototypes-shadcn-dialog-layout
     kind: module-test
@@ -39,7 +39,17 @@ implementations:
     required: true
     consumesCases: [T-SHADCN-DIALOG-LAYOUT-0001-CASE-PRESET]
     exercises: [P-SHADCN-DIALOG-CLOSE-ICON]
+  - id: release-packed-cli-dialog-content-preset
+    kind: workspace-check
+    status: passing
+    path: scripts/release/consumer-smoke-cli.mjs
+    required: true
+    consumesCases: [T-SHADCN-DIALOG-LAYOUT-0001-CASE-PRESET]
+    exercises: [P-SHADCN-DIALOG-CLOSE-ICON]
 verifies:
+  decisions:
+    - id: D-COMPONENT-PRESET-MATERIALIZATION-0001
+      anchors: [D-COMPONENT-PRESET-MATERIALIZATION-0001-F]
   prototypes:
     - id: P-SHADCN-DIALOG-HEADER
       anchors: [P-SHADCN-DIALOG-HEADER-ANATOMY, P-SHADCN-DIALOG-HEADER-LAYOUT-ONLY]
@@ -58,4 +68,7 @@ revisions:
   - version: 0.2.0-rc.3
     change: introduced
     summary: Added layout-part, CloseIcon, and generated Content preset coverage.
+  - version: 0.2.0-rc.5
+    change: expanded
+    summary: Added packed-consumer coverage for connecting the default CloseIcon after Dialog context initialization.
 tags: [test, shadcn, dialog, anatomy, close-icon, preset]

@@ -8,19 +8,19 @@
 
 | 项目 | 值 |
 | --- | --- |
-| 当前 spec 版本 | `0.2.0-rc.4` |
+| 当前 spec 版本 | `0.2.0-rc.5` |
 | Release channel | `prerelease` |
-| Version entity | [`V-PROTO-UI-0004`](../../spec/versions/V-PROTO-UI-0004.yaml) |
-| 工作区实体数 | 392 |
+| Version entity | [`V-PROTO-UI-0005`](../../spec/versions/V-PROTO-UI-0005.yaml) |
+| 工作区实体数 | 393 |
 | Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:b3c5db3a4d5bd1f248bf6372707cd39c7c8dfd382e173c92577dde74587a44f8` |
-| 已发布 release snapshot digest | `sha256:b88e4c782655e89d3176196c184da1f7b3aab143d019b28334b8c8a1cd83e168` |
+| 工作区快照指纹 | `sha256:df2049e4b972a54679e4032823064904ba5e306e2f90085f3cc4b1ee7f90febf` |
+| 已发布 release snapshot digest | `sha256:21152b5b6fd27ac2dbffd4bffe71ba0f376c532ccf3d7d074ed3fda846c758d8` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
 
 ## 阅读与权威边界
 
-当前快照包含 38 个 active、349 个 draft、5 个 deprecated、0 个 removed 实体。
+当前快照包含 39 个 active、349 个 draft、5 个 deprecated、0 个 removed 实体。
 
 - `active` 可以作为当前稳定保证读取。
 - `draft` 是已进入正式目录的当前方向，但不能包装为稳定公共承诺。
@@ -66,23 +66,22 @@ flowchart LR
 | `module` | 5 | 1 | 4 | 0 | 0 | 0 | 0 |
 | `host-cap` | 4 | 0 | 4 | 0 | 2 | 2 | 0 |
 | `test` | 120 | 12 | 108 | 0 | 0 | 0 | 4 |
-| `version` | 4 | 4 | 0 | 0 | 4 | 4 | 0 |
+| `version` | 5 | 5 | 0 | 0 | 5 | 5 | 0 |
 
 ### 实体级关系分布
 
 | Relation     | 边数 |
 | ------------ | ---: |
 | `relates`    |  222 |
-| `dependsOn`  |  771 |
+| `dependsOn`  |  772 |
 | `inherits`   |   28 |
 | `references` |    7 |
 | `refines`    |   18 |
 | `satisfies`  |   27 |
-| `verifies`   |  354 |
-| `explains`   |   36 |
-| `exercises`  |  198 |
-| `requires`   |    4 |
-| `owns`       |    1 |
+
+<<<<<<< HEAD | `verifies` | 354 | ======= | `verifies` | 294 |
+
+> > > > > > > origin/main | `explains` | 36 | | `exercises` | 198 | | `requires` | 4 | | `owns` | 1 |
 
 关系统计只计算实体顶层 relation；criterion 内的 `dependsOn` 和 `references` 仍保留在各实体源文件中。
 
@@ -635,7 +634,7 @@ Decision 实体固定已经稳定下来的设计与治理选择。它们解释�
 
 | Entity | 状态 | 标题 | Criteria | 摘要 |
 | --- | --- | --- | --: | --- |
-| [`D-COMPONENT-PRESET-MATERIALIZATION-0001`](../../spec/decisions/D-COMPONENT-PRESET-MATERIALIZATION-0001.yaml) | `draft` | Component presets materialize replaceable defaults outside Anatomy | 5 | Component presets declare deterministic replaceable default parts that CLI or adapters materialize before Anatomy validates the resulting real structure. |
+| [`D-COMPONENT-PRESET-MATERIALIZATION-0001`](../../spec/decisions/D-COMPONENT-PRESET-MATERIALIZATION-0001.yaml) | `draft` | Component presets materialize replaceable defaults outside Anatomy | 6 | Component presets declare deterministic replaceable default parts that CLI or adapters mount once in the owning Root context before Anatomy validates the resulting real structure. |
 
 ### CONTEXT（3）
 
@@ -737,18 +736,21 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Status    | 数量 |
 | --------- | ---: |
 | `active`  |   18 |
-| `passing` |  259 |
+| `passing` |  261 |
 | `planned` |   14 |
 
 ### Implementation 类型
 
-| Kind              | 数量 |
-| ----------------- | ---: |
-| `adapter-test`    |   73 |
-| `fixture`         |   17 |
-| `module-test`     |  133 |
-| `runtime-test`    |   70 |
-| `workspace-check` |    8 |
+| Kind           | 数量 |
+| -------------- | ---: |
+| `adapter-test` |   73 |
+| `fixture`      |   17 |
+| `module-test`  |  133 |
+| `runtime-test` |   70 |
+
+<<<<<<< HEAD | `workspace-check` | 8 | ======= | `workspace-check` | 9 |
+
+> > > > > > > origin/main
 
 ### Test entities
 
@@ -975,7 +977,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | [`T-SHADCN-DIALOG-CLOSE-0001`](../../spec/tests/T-SHADCN-DIALOG-CLOSE-0001.yaml) | `draft` | Shadcn Dialog Close delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-DIALOG-CLOSE` | `P-SHADCN-DIALOG-CLOSE`<br>`P-BASE-DIALOG-CLOSE` |
 | [`T-SHADCN-DIALOG-CONTENT-0001`](../../spec/tests/T-SHADCN-DIALOG-CONTENT-0001.yaml) | `draft` | Shadcn Dialog Content delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-DIALOG-CONTENT` | `P-SHADCN-DIALOG-CONTENT`<br>`P-BASE-DIALOG-CONTENT` |
 | [`T-SHADCN-DIALOG-DESCRIPTION-0001`](../../spec/tests/T-SHADCN-DIALOG-DESCRIPTION-0001.yaml) | `draft` | Shadcn Dialog Description delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-DIALOG-DESCRIPTION` | `P-SHADCN-DIALOG-DESCRIPTION`<br>`P-BASE-DIALOG-DESCRIPTION` |
-| [`T-SHADCN-DIALOG-LAYOUT-0001`](../../spec/tests/T-SHADCN-DIALOG-LAYOUT-0001.yaml) | `draft` | Shadcn Dialog layout and default CloseIcon tests | 3 | `passing` 2 | `P-SHADCN-DIALOG-HEADER`<br>`P-SHADCN-DIALOG-FOOTER`<br>`P-SHADCN-DIALOG-CLOSE-ICON` | `P-SHADCN-DIALOG-HEADER`<br>`P-SHADCN-DIALOG-FOOTER`<br>`P-SHADCN-DIALOG-CLOSE-ICON` |
+| [`T-SHADCN-DIALOG-LAYOUT-0001`](../../spec/tests/T-SHADCN-DIALOG-LAYOUT-0001.yaml) | `draft` | Shadcn Dialog layout and default CloseIcon tests | 3 | `passing` 3 | `P-SHADCN-DIALOG-HEADER`<br>`P-SHADCN-DIALOG-FOOTER`<br>`P-SHADCN-DIALOG-CLOSE-ICON`<br>`D-COMPONENT-PRESET-MATERIALIZATION-0001` | `P-SHADCN-DIALOG-HEADER`<br>`P-SHADCN-DIALOG-FOOTER`<br>`P-SHADCN-DIALOG-CLOSE-ICON` |
 | [`T-SHADCN-DIALOG-MASK-0001`](../../spec/tests/T-SHADCN-DIALOG-MASK-0001.yaml) | `draft` | Shadcn Dialog Mask delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-DIALOG-MASK` | `P-SHADCN-DIALOG-MASK`<br>`P-BASE-DIALOG-MASK` |
 | [`T-SHADCN-DIALOG-TITLE-0001`](../../spec/tests/T-SHADCN-DIALOG-TITLE-0001.yaml) | `draft` | Shadcn Dialog Title delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-DIALOG-TITLE` | `P-SHADCN-DIALOG-TITLE`<br>`P-BASE-DIALOG-TITLE` |
 | [`T-SHADCN-DIALOG-TRIGGER-0001`](../../spec/tests/T-SHADCN-DIALOG-TRIGGER-0001.yaml) | `draft` | Shadcn Dialog Trigger delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-DIALOG-TRIGGER` | `P-SHADCN-DIALOG-TRIGGER`<br>`P-BASE-DIALOG-TRIGGER` |
@@ -991,7 +993,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | [`T-SHADCN-SELECT-ITEM-0001`](../../spec/tests/T-SHADCN-SELECT-ITEM-0001.yaml) | `draft` | Shadcn Select Item delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-SELECT-ITEM` | `P-SHADCN-SELECT-ITEM`<br>`P-BASE-SELECT-ITEM` |
 | [`T-SHADCN-SELECT-TRIGGER-0001`](../../spec/tests/T-SHADCN-SELECT-TRIGGER-0001.yaml) | `draft` | Shadcn Select Trigger delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-SELECT-TRIGGER` | `P-SHADCN-SELECT-TRIGGER`<br>`P-BASE-SELECT-TRIGGER` |
 | [`T-SHADCN-SELECT-VALUE-0001`](../../spec/tests/T-SHADCN-SELECT-VALUE-0001.yaml) | `draft` | Shadcn Select Value delta protocol contract tests | 1 | `passing` 1 | `P-SHADCN-SELECT-VALUE` | `P-SHADCN-SELECT-VALUE`<br>`P-BASE-SELECT-VALUE` |
-| [`T-SHADCN-SWITCH-0001`](../../spec/tests/T-SHADCN-SWITCH-0001.yaml) | `draft` | Shadcn Switch Root delta protocol contract tests | 4 | `passing` 2 | `C-FEEDBACK-STYLE-0003`<br>`P-SHADCN-SWITCH` | `P-SHADCN-SWITCH`<br>`P-BASE-SWITCH` |
+| [`T-SHADCN-SWITCH-0001`](../../spec/tests/T-SHADCN-SWITCH-0001.yaml) | `draft` | Shadcn Switch Root delta protocol contract tests | 4 | `passing` 3 | `C-FEEDBACK-STYLE-0003`<br>`P-SHADCN-SWITCH`<br>`D-COMPONENT-PRESET-MATERIALIZATION-0001` | `P-SHADCN-SWITCH`<br>`P-BASE-SWITCH` |
 | [`T-SHADCN-SWITCH-THUMB-0001`](../../spec/tests/T-SHADCN-SWITCH-THUMB-0001.yaml) | `draft` | Shadcn Switch Thumb delta protocol contract tests | 3 | `passing` 1 | `P-SHADCN-SWITCH-THUMB` | `P-SHADCN-SWITCH-THUMB`<br>`P-BASE-SWITCH-THUMB` |
 | [`T-SHADCN-TABS-0001`](../../spec/tests/T-SHADCN-TABS-0001.yaml) | `draft` | Shadcn Tabs Root delta protocol contract tests | 2 | `passing` 1 | `P-SHADCN-TABS` | `P-SHADCN-TABS`<br>`P-BASE-TABS` |
 | [`T-SHADCN-TABS-CONTENT-0001`](../../spec/tests/T-SHADCN-TABS-CONTENT-0001.yaml) | `draft` | Shadcn Tabs Content delta protocol contract tests | 3 | `passing` 2 | `P-SHADCN-TABS-CONTENT` | `P-SHADCN-TABS-CONTENT`<br>`P-BASE-TABS-CONTENT` |
@@ -1078,6 +1080,20 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Published at    | `2026-07-24T12:57:02Z`                                                    |
 | Commit          | `d0d9d2a68f9624923faab16132c82eea0b6a3b8b`                                |
 | Snapshot digest | `sha256:b88e4c782655e89d3176196c184da1f7b3aab143d019b28334b8c8a1cd83e168` |
+
+### [`V-PROTO-UI-0005`](../../spec/versions/V-PROTO-UI-0005.yaml) Proto UI 0.2.0-rc.5
+
+| Field           | Value                                                                     |
+| --------------- | ------------------------------------------------------------------------- |
+| Entity status   | `active`                                                                  |
+| Version         | `0.2.0-rc.5`                                                              |
+| Channel         | `prerelease`                                                              |
+| Git tag         | `v0.2.0-rc.5`                                                             |
+| npm dist-tag    | `next`                                                                    |
+| Package policy  | `exact` / `public-@proto.ui`                                              |
+| Published at    | `2026-07-25T06:09:06Z`                                                    |
+| Commit          | `6edb7c9471ba14eeb7e00ca8a5d097fc9fc0c26a`                                |
+| Snapshot digest | `sha256:21152b5b6fd27ac2dbffd4bffe71ba0f376c532ccf3d7d074ed3fda846c758d8` |
 
 ## 九、显式 Open Questions
 
@@ -1188,7 +1204,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 
 ## 十一、当前快照的结构性限制
 
-- 349/392 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
+- 349/393 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
 - 当前只有 5 个 Module 与 4 个 Host Capability 实体；不要据此推断实现中只有这些能力。
 - Adapter 与 Compiler 尚无一级实体类型，因此宿主 profile、支持矩阵和 translation-layer 权衡仍可能主要存在于实现、旧契约和 records。
 - 生成器只验证 schema 与关系完整性，不验证网站内容、README、package exports 或运行时代码与实体完全一致。

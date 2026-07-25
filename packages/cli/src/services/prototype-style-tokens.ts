@@ -409,6 +409,13 @@ function resolveKnownAsHookStateHandles(node) {
     ]);
   }
 
+  if (hookName === 'asSwitchThumb') {
+    return new Map([
+      ['checked', 'data-[checked]'],
+      ['disabled', 'data-[disabled]'],
+    ]);
+  }
+
   if (hookName === 'asToggle') {
     return new Map([
       ['active', 'data-[active]'],

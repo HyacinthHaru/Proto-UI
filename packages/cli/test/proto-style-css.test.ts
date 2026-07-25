@@ -106,6 +106,15 @@ describe('proto style css renderer', () => {
     expect(css).not.toContain('Unsupported Proto UI style tokens');
   });
 
+  it('renders state-driven spacing translations used by the Switch thumb', () => {
+    const css = renderProtoStyleTokenCss(['translate-x-0', 'data-[checked]:translate-x-5']);
+
+    expect(css).toContain('--pui-translate-x: 0px;');
+    expect(css).toContain(':where([data-pui-style~="data-[checked]:translate-x-5"])[data-checked]');
+    expect(css).toContain('--pui-translate-x: 1.25rem;');
+    expect(css).not.toContain('Unsupported Proto UI style tokens');
+  });
+
   it('renders Hover Card positioning, popover, shadow, and directional motion utilities', () => {
     const css = renderProtoStyleTokenCss([
       'bg-popover',

@@ -101,8 +101,14 @@ try {
   for (const [host, component] of [
     ['react', 'shadcn-button'],
     ['react', 'base-button'],
+    ['react', 'shadcn-switch'],
+    ['react', 'shadcn-dialog'],
     ['vue', 'shadcn-button'],
+    ['vue', 'shadcn-switch'],
+    ['vue', 'shadcn-dialog'],
     ['wc', 'shadcn-button'],
+    ['wc', 'shadcn-switch'],
+    ['wc', 'shadcn-dialog'],
   ]) {
     run(process.execPath, [cli, 'add', host, component, '--no-install', '--no-interactive'], {
       cwd: consumerDir,
@@ -215,6 +221,8 @@ function verifyGeneratedConsumer(root) {
     '@proto.ui/adapter-web-component',
     'shadcn-button',
     'base-button',
+    'shadcn-switch',
+    'shadcn-dialog',
   ]) {
     assert(config.includes(expected), `generated config is missing ${expected}`);
   }
@@ -234,6 +242,8 @@ function verifyGeneratedConsumer(root) {
     'createReactAdapter(React)',
     'export const ShadcnButton = adapt(shadcnButton)',
     'export const BaseButton = adapt(button)',
+    'export const ShadcnSwitch = React.forwardRef',
+    'export const ShadcnDialogContent = React.forwardRef',
     "from '@proto.ui/prototypes-shadcn/button'",
     "from '@proto.ui/prototypes-base/button'",
   ]) {
@@ -245,8 +255,24 @@ function verifyGeneratedConsumer(root) {
     'generated Vue facade is missing ShadcnButton'
   );
   assert(
+    vue.includes('export const ShadcnSwitch = Vue.defineComponent'),
+    'generated Vue facade is missing the Switch preset'
+  );
+  assert(
+    vue.includes('export const ShadcnDialogContent = Vue.defineComponent'),
+    'generated Vue facade is missing the Dialog Content preset'
+  );
+  assert(
     wc.includes('AdaptToWebComponent(shadcnButton'),
     'generated Web Component facade is missing ShadcnButton'
+  );
+  assert(
+    wc.includes('export class ShadcnSwitchElement extends ShadcnSwitchRootElement'),
+    'generated Web Component facade is missing the Switch preset'
+  );
+  assert(
+    wc.includes('export class ShadcnDialogContentElement extends ShadcnDialogContentRawElement'),
+    'generated Web Component facade is missing the Dialog Content preset'
   );
   for (const expected of [
     'ShadcnButton as ReactShadcnButton',

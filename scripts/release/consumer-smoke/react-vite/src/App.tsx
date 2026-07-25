@@ -14,8 +14,7 @@ import {
   ShadcnSelectRoot,
   ShadcnSelectTrigger,
   ShadcnSelectValue,
-  ShadcnSwitchRoot,
-  ShadcnSwitchThumb,
+  ShadcnSwitch,
 } from '../proto-ui/components/react';
 
 export function App() {
@@ -32,9 +31,7 @@ export function App() {
         Save preference
       </ShadcnButton>
 
-      <ShadcnSwitchRoot defaultChecked className="consumer-switch">
-        <ShadcnSwitchThumb />
-      </ShadcnSwitchRoot>
+      <ShadcnSwitch defaultChecked className="consumer-switch" />
 
       <ShadcnSelectRoot defaultOpen defaultValue="comfortable">
         <ShadcnSelectTrigger className="consumer-select-trigger">

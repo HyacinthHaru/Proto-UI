@@ -25,9 +25,19 @@ const switchThumb = definePrototype<ShadcnSwitchThumbProps, ShadcnSwitchThumbExp
     // P-SHADCN-SWITCH-THUMB-BASE-INHERITANCE,
     // P-SHADCN-SWITCH-THUMB-CURRENT-BASE-DEVIATIONS,
     // P-SHADCN-SWITCH-THUMB-CONTEXT-INDICATOR
-    asSwitchThumb();
+    const switchState = asSwitchThumb().stateHandles;
+    if (!switchState) {
+      throw new Error(
+        '[shadcn-switch-thumb] asSwitchThumb must project Switch thumb state handles.'
+      );
+    }
+    const { checked } = switchState;
     // P-SHADCN-SWITCH-THUMB-CURRENT-VISUAL-SURFACE
     def.feedback.style.use(tw(THUMB_TOKENS));
+    def.rule({
+      when: (w) => w.state(checked).eq(true),
+      intent: (i) => i.feedback.style.use(tw('translate-x-5')),
+    });
   },
 });
 

@@ -26,7 +26,8 @@ import { GlobalRegistrator } from '@happy-dom/global-registrator';
 GlobalRegistrator.register();
 
 const Vue = await import('vue');
-const { ShadcnButton } = await import('./proto-ui/components/vue/index.ts');
+const { ShadcnButton, ShadcnDialogContent, ShadcnDialogRoot, ShadcnSwitch } =
+  await import('./proto-ui/components/vue/index.ts');
 
 const flush = () => new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -69,4 +70,32 @@ if (!host.textContent || !host.textContent.includes('click')) {
   throw new Error('vue smoke: Button host did not render slot text; host=' + host.outerHTML);
 }
 
-console.log('vue smoke ok | ' + host.outerHTML.length + 'B');
+const presetContainer = document.createElement('div');
+document.body.appendChild(presetContainer);
+const presetApp = Vue.createApp({
+  render: () =>
+    Vue.h('div', null, [
+      Vue.h(ShadcnSwitch, { defaultChecked: true, class: 'consumer-switch' }),
+      Vue.h(ShadcnDialogRoot, { defaultOpen: true }, () => [
+        Vue.h(ShadcnDialogContent, { class: 'consumer-dialog-content' }),
+      ]),
+    ]),
+});
+presetApp.mount(presetContainer);
+await flush();
+
+const switchRoot = presetContainer.querySelector('.consumer-switch');
+const switchThumb = switchRoot?.firstElementChild;
+if (
+  switchRoot?.getAttribute('aria-checked') !== 'true' ||
+  !switchThumb?.getAttribute('data-pui-style')?.includes('data-[checked]:translate-x-5') ||
+  !switchThumb.hasAttribute('data-checked')
+) {
+  throw new Error('vue smoke: Switch preset did not mount a state-driven default Thumb');
+}
+const closeIcon = document.body.querySelector('.consumer-dialog-content [aria-label="Close"]');
+if (!closeIcon) {
+  throw new Error('vue smoke: Dialog Content preset did not mount its default CloseIcon');
+}
+
+console.log('vue smoke ok | Button + Switch preset + Dialog CloseIcon preset');
