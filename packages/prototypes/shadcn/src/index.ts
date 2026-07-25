@@ -2,7 +2,9 @@ export { default as button } from './button';
 export { default as shadcnButton } from './button';
 export {
   default as componentPresets,
+  shadcnDialogComponentPreset,
   shadcnComponentPresets,
+  shadcnSwitchComponentPreset,
   type ShadcnComponentPresetRecipe,
 } from './component-presets';
 export { default as toggle } from './toggle';

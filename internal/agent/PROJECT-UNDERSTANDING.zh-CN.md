@@ -6,15 +6,17 @@
 
 ## 快照身份
 
-| 项目 | 值 |
-| --- | --- |
-| 当前 spec 版本 | `0.2.0-rc.5` |
-| Release channel | `prerelease` |
-| Version entity | [`V-PROTO-UI-0005`](../../spec/versions/V-PROTO-UI-0005.yaml) |
-| 工作区实体数 | 434 |
-| Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:72415a55f61b41e059ae9701ae9a130ff37c064030a70d6e7f0bef38c159f991` |
-| 已发布 release snapshot digest | `sha256:21152b5b6fd27ac2dbffd4bffe71ba0f376c532ccf3d7d074ed3fda846c758d8` |
+| 项目                        | 值                                                            |
+| --------------------------- | ------------------------------------------------------------- |
+| 当前 spec 版本              | `0.2.0-rc.5`                                                  |
+| Release channel             | `prerelease`                                                  |
+| Version entity              | [`V-PROTO-UI-0005`](../../spec/versions/V-PROTO-UI-0005.yaml) |
+| 工作区实体数                | 434                                                           |
+| Workspace validation issues | 0                                                             |
+
+<<<<<<< HEAD | 工作区快照指纹 | `sha256:72415a55f61b41e059ae9701ae9a130ff37c064030a70d6e7f0bef38c159f991` | ======= | 工作区快照指纹 | `sha256:56e7ea946d22150a8aa221cc53d8c786edc9227c3ffcb6ad9a1bdc5a369cc430` |
+
+> > > > > > > origin/main | 已发布 release snapshot digest | `sha256:21152b5b6fd27ac2dbffd4bffe71ba0f376c532ccf3d7d074ed3fda846c758d8` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
 

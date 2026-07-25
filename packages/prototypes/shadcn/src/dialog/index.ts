@@ -56,3 +56,4 @@ export { default as shadcnDialogClose } from './close.proto';
 export { default as shadcnDialogCloseIcon } from './close-icon.proto';
 export { default as shadcnDialogHeader } from './header.proto';
 export { default as shadcnDialogFooter } from './footer.proto';
+export { default as componentPreset, shadcnDialogComponentPreset } from './preset';

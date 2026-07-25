@@ -18,8 +18,8 @@ criteria:
       en: CloseIcon must project an X icon, the accessible name `Close`, and independent state-driven visual feedback including a visible focus-visible ring, positioning its 16px X surface at `top-4 right-4` under the pinned upstream baseline.
   - id: P-SHADCN-DIALOG-CLOSE-ICON-PRESET
     text:
-      zh-CN: Prototype library 的 `component-presets` surface 必须声明 Content/CloseIcon identity 与替换策略，CLI Content preset 在未提供 close 时物化 CloseIcon，并允许兼容替换或显式关闭，同时保留 raw Content facade；recipe 不得声明视觉 tokens。CloseIcon 只能在 Dialog parent context 已建立后连接，禁止以 `CONTEXT_PROVIDER_MISSING` 失败后重挂载来恢复。
-      en: The prototype library's `component-presets` surface must declare Content and CloseIcon identity and replacement policy. The CLI Content preset materializes CloseIcon when no close is provided, allows compatible replacement or explicit omission, and retains a raw Content facade; the recipe must not declare visual tokens. CloseIcon may connect only after its Dialog parent context exists and must not recover from `CONTEXT_PROVIDER_MISSING` by remounting.
+      zh-CN: Prototype library 必须在 Dialog 组件目录的 preset recipe 中声明 Content/CloseIcon identity、`direct-child` placement 与替换策略，并通过 `component-presets` 聚合 surface 提供给 CLI。CLI Content preset 在未提供 close 时物化 CloseIcon，并允许兼容替换或显式关闭，同时保留 raw Content facade；recipe 不得声明视觉 tokens。CloseIcon 只能在 Dialog parent context 已建立后连接，禁止以 `CONTEXT_PROVIDER_MISSING` 失败后重挂载来恢复。
+      en: The prototype library must declare Content and CloseIcon identity, `direct-child` placement, and replacement policy in a preset recipe colocated with the Dialog component and expose it through the aggregate `component-presets` surface. The CLI Content preset materializes CloseIcon when no close is provided, allows compatible replacement or explicit omission, and retains a raw Content facade; the recipe must not declare visual tokens. CloseIcon may connect only after its Dialog parent context exists and must not recover from `CONTEXT_PROVIDER_MISSING` by remounting.
     dependsOn:
       decisions:
         - id: D-COMPONENT-PRESET-MATERIALIZATION-0001
@@ -27,7 +27,7 @@ criteria:
 sources:
   - path: internal/records/2026-07-25-rc4-dialog-close-icon-and-switch-trial-regressions.zh-CN.md
   - path: packages/prototypes/shadcn/src/dialog/close-icon.proto.ts
-  - path: packages/prototypes/shadcn/src/component-presets.ts
+  - path: packages/prototypes/shadcn/src/dialog/preset.ts
   - path: packages/prototypes/shadcn/test/dialog.test.ts
   - path: packages/cli/src/services/codegen.ts
   - path: packages/cli/test/cli.test.ts

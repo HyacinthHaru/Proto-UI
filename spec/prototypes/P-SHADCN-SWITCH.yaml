@@ -81,8 +81,8 @@ criteria:
       decisions: [D-AS-CHILD-OMISSION-0001]
   - id: P-SHADCN-SWITCH-COMPONENT-PRESET
     text:
-      zh-CN: Prototype library 必须在 `component-presets` surface 声明 Root/Thumb identity 与替换策略，CLI 只消费受检查的生成投影并在保留 raw Root/Thumb facades 的同时生成 `ShadcnSwitch` convenience preset；未提供 Thumb 时物化一个同适配器默认 Thumb，显式兼容 Thumb 必须替换默认值，显式关闭必须不物化 Thumb，且所有候选解析必须先于该 part 挂载并在 Root context 已建立后连接。Preset recipe 不得声明或覆盖视觉 tokens。
-      en: The prototype library must declare Root and Thumb identity and replacement policy through its `component-presets` surface, while the CLI consumes only a checked generated projection and generates the `ShadcnSwitch` convenience preset alongside raw Root and Thumb facades. An absent Thumb materializes one same-adapter default Thumb, an explicit compatible Thumb replaces it, explicit omission materializes no Thumb, and all candidates must resolve before that part mounts and connect after the Root context exists. The preset recipe must neither declare nor override visual tokens.
+      zh-CN: Prototype library 必须在 Switch 组件目录的 preset recipe 中声明 Root/Thumb identity、`direct-child` placement 与替换策略，并通过 `component-presets` 聚合 surface 提供给 CLI；CLI 只消费受检查的生成投影并在保留 raw Root/Thumb facades 的同时生成 `ShadcnSwitch` convenience preset。未提供 Thumb 时物化一个同适配器默认 Thumb，显式兼容 Thumb 必须替换默认值，显式关闭必须不物化 Thumb，且所有候选解析必须先于该 part 挂载并在 Root context 已建立后连接。Preset recipe 不得声明或覆盖视觉 tokens。
+      en: The prototype library must declare Root and Thumb identity, `direct-child` placement, and replacement policy in a preset recipe colocated with the Switch component and expose it through the aggregate `component-presets` surface. The CLI consumes only a checked generated projection and generates the `ShadcnSwitch` convenience preset alongside raw Root and Thumb facades. An absent Thumb materializes one same-adapter default Thumb, an explicit compatible Thumb replaces it, explicit omission materializes no Thumb, and all candidates must resolve before that part mounts and connect after the Root context exists. The preset recipe must neither declare nor override visual tokens.
     dependsOn:
       decisions:
         - id: D-COMPONENT-PRESET-MATERIALIZATION-0001
@@ -107,7 +107,7 @@ sources:
   - path: internal/records/2026-07-25-rc4-dialog-close-icon-and-switch-trial-regressions.zh-CN.md
   - path: packages/prototypes/shadcn/src/switch/root.proto.ts
   - path: packages/prototypes/shadcn/src/switch/types.ts
-  - path: packages/prototypes/shadcn/src/component-presets.ts
+  - path: packages/prototypes/shadcn/src/switch/preset.ts
   - path: packages/prototypes/shadcn/test/switch.test.ts
   - path: packages/cli/src/services/codegen.ts
   - path: packages/cli/test/cli.test.ts

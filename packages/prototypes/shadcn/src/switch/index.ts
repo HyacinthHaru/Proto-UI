@@ -14,3 +14,4 @@ export type {
 export { switchRoot, switchThumb };
 export { default as shadcnSwitchRoot } from './root.proto';
 export { default as shadcnSwitchThumb } from './thumb.proto';
+export { default as componentPreset, shadcnSwitchComponentPreset } from './preset';

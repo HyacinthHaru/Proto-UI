@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { shadcnComponentPresets } from '../src/component-presets';
+import { shadcnDialogComponentPreset } from '../src/dialog/preset';
+import { shadcnSwitchComponentPreset } from '../src/switch/preset';
 
 describe('prototypes/shadcn: component preset recipes', () => {
-  it('owns composition identity without owning prototype visual tokens', () => {
-    expect(shadcnComponentPresets['shadcn-switch']).toEqual({
+  it('aggregates component-local recipes without owning prototype visual tokens', () => {
+    expect(shadcnSwitchComponentPreset).toEqual({
       kind: 'replaceable-default-part',
+      placement: 'direct-child',
       exportName: 'ShadcnSwitch',
       rootPrototype: 'shadcnSwitchRoot',
       defaultPartPrototype: 'shadcnSwitchThumb',
@@ -12,9 +15,11 @@ describe('prototypes/shadcn: component preset recipes', () => {
       elementName: 'proto-ui-shadcn-switch',
       omissionAttribute: 'data-pui-no-default-thumb',
     });
-    expect(shadcnComponentPresets['shadcn-dialog'].defaultPartPrototype).toBe(
-      'shadcnDialogCloseIcon'
-    );
+    expect(shadcnDialogComponentPreset.defaultPartPrototype).toBe('shadcnDialogCloseIcon');
+    expect(shadcnComponentPresets).toEqual({
+      'shadcn-switch': shadcnSwitchComponentPreset,
+      'shadcn-dialog': shadcnDialogComponentPreset,
+    });
     expect(JSON.stringify(shadcnComponentPresets)).not.toMatch(
       /className|style|token|translate|padding/
     );

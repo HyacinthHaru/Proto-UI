@@ -20,6 +20,7 @@ export interface ComponentEntry {
 
 export interface ComponentPreset {
   readonly kind: 'replaceable-default-part';
+  readonly placement: 'direct-child';
   readonly exportName: string;
   readonly rootExport: string;
   readonly defaultPartExport: string;
@@ -31,6 +32,7 @@ export interface ComponentPreset {
 
 interface ComponentPresetRecipe {
   readonly kind: 'replaceable-default-part';
+  readonly placement: 'direct-child';
   readonly exportName: string;
   readonly rootPrototype: string;
   readonly defaultPartPrototype: string;
@@ -103,6 +105,7 @@ function resolveComponentPreset(
   }
   return {
     kind: recipe.kind,
+    placement: recipe.placement,
     exportName: recipe.exportName,
     rootExport: root.reactExport,
     defaultPartExport: defaultPart.reactExport,
