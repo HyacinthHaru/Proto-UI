@@ -10,8 +10,8 @@ This page showcases the draft Brutalist design-language prototypes: zero radius,
 
 {/_ Popover/dialog content is portaled to <body>, outside the per-demo theme wrappers below. These page-level variables keep portaled surfaces on the Neo-Brutalist palette (light panel + black border + hard shadow). _/}
 
-<style
-  set:html={`:root { --pui-main: #ffd23f; --pui-main-foreground: #000000; --pui-secondary-background: #ffffff; --pui-destructive: #ff6b6b; --pui-overlay: rgba(0, 0, 0, 0.75); }`}
+<Fragment
+  set:html={`<style>:root{--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-secondary-background:#ffffff;--pui-destructive:#ff6b6b;--pui-overlay:rgba(0,0,0,.75)}</style>`}
 />
 ## Light Mode ### Button
 <div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
