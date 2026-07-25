@@ -8,7 +8,7 @@ const THUMB_TOKENS = [
   'size-5',
   'rounded-none',
   'border-2',
-  'border-black',
+  'border-foreground',
   'bg-main',
   'shadow-[3px_3px_0_0_var(--pui-foreground)]',
   'translate-x-0',

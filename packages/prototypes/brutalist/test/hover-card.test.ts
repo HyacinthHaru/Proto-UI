@@ -43,7 +43,7 @@ describe('prototypes/brutalist: hover-card', () => {
     expect(styleContains(trigger, 'rounded-none')).toBe(true);
     expect(styleContains(content, 'rounded-none')).toBe(true);
     expect(styleContains(content, 'border-2')).toBe(true);
-    expect(styleContains(content, 'shadow-[8px_8px_0_0_var(--pui-foreground)]')).toBe(true);
+    expect(styleContains(content, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
     expect(styleContains(content, 'bg-secondary-background')).toBe(true);
     expect(styleContains(content, 'rounded-md')).toBe(false);
     expect(styleContains(content, 'shadow-md')).toBe(false);

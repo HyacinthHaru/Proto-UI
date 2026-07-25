@@ -38,11 +38,11 @@ describe('prototypes/brutalist: tabs', () => {
     await Promise.resolve();
 
     expect(styleContains(list, 'rounded-none')).toBe(true);
-    expect(styleContains(list, 'shadow-[5px_5px_0_0_var(--pui-foreground)]')).toBe(true);
+    expect(styleContains(list, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
     expect(styleContains(triggerA, 'rounded-none')).toBe(true);
     expect(styleContains(triggerA, 'data-[selected]:bg-main')).toBe(true);
     expect(styleContains(contentA, 'rounded-none')).toBe(true);
-    expect(styleContains(contentA, 'shadow-[8px_8px_0_0_var(--pui-foreground)]')).toBe(true);
+    expect(styleContains(contentA, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
     expect(root.getExposes().value.get()).toBe('a');
     expect(triggerA.getExposes().selected.get()).toBe(true);
 

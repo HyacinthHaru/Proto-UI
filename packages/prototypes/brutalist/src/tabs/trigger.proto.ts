@@ -42,7 +42,9 @@ const tabsTrigger = definePrototype<BrutalistTabsTriggerProps, BrutalistTabsTrig
       when: (w) => w.state(selected).eq(true),
       intent: (i) =>
         i.feedback.style.use(
-          tw('bg-main text-main-foreground border-black shadow-[3px_3px_0_0_var(--pui-foreground)]')
+          tw(
+            'bg-main text-main-foreground border-foreground shadow-[3px_3px_0_0_var(--pui-foreground)]'
+          )
         ),
     });
     def.rule({
@@ -50,7 +52,7 @@ const tabsTrigger = definePrototype<BrutalistTabsTriggerProps, BrutalistTabsTrig
       intent: (i) =>
         i.feedback.style.use(
           tw(
-            'bg-background border-black -translate-x-0.5 -translate-y-0.5 shadow-[3px_3px_0_0_var(--pui-foreground)]'
+            'bg-background border-foreground -translate-x-px -translate-y-px shadow-[4px_4px_0_0_var(--pui-foreground)]'
           )
         ),
     });

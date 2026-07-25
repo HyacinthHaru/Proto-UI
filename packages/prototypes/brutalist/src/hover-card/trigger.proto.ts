@@ -6,14 +6,14 @@ const TRIGGER_BASE_TOKENS = [
   'inline-flex',
   'rounded-none',
   'border-2',
-  'border-black',
+  'border-foreground',
   'bg-main',
   'px-3',
   'py-1.5',
   'font-bold',
   'uppercase',
   'text-main-foreground',
-  'shadow-[5px_5px_0_0_var(--pui-foreground)]',
+  'shadow-[3px_3px_0_0_var(--pui-foreground)]',
   'outline-none',
 ].join(' ');
 
@@ -40,7 +40,7 @@ const hoverCardTrigger = definePrototype<
       when: (w) => w.state(hovered).eq(true),
       intent: (i) =>
         i.feedback.style.use(
-          tw('-translate-x-0.5 -translate-y-0.5 shadow-[8px_8px_0_0_var(--pui-foreground)]')
+          tw('-translate-x-px -translate-y-px shadow-[4px_4px_0_0_var(--pui-foreground)]')
         ),
     });
 

@@ -61,10 +61,10 @@ describe('prototypes/brutalist: button', () => {
     let tokens = controller.getRuleStyleTokens();
     expect(tokens).toContain('rounded-none');
     expect(tokens).toContain('border-2');
-    expect(tokens).toContain('border-black');
+    expect(tokens).toContain('border-foreground');
     expect(tokens).toContain('bg-main');
     expect(tokens).toContain('text-main-foreground');
-    expect(tokens).toContain('shadow-[5px_5px_0_0_var(--pui-foreground)]');
+    expect(tokens).toContain('shadow-[3px_3px_0_0_var(--pui-foreground)]');
     expect(tokens).toContain('h-10');
 
     rawPropsRef.current = { variant: 'destructive', size: 'lg', disabled: true };
@@ -95,14 +95,14 @@ describe('prototypes/brutalist: button', () => {
 
     rootTarget.dispatchEvent(new CustomEvent('pointer.enter'));
     let tokens = controller.getRuleStyleTokens();
-    expect(tokens).toContain('shadow-[8px_8px_0_0_var(--pui-foreground)]');
-    expect(tokens).toContain('-translate-x-0.5');
-    expect(tokens).toContain('-translate-y-0.5');
+    expect(tokens).toContain('shadow-[4px_4px_0_0_var(--pui-foreground)]');
+    expect(tokens).toContain('-translate-x-px');
+    expect(tokens).toContain('-translate-y-px');
 
     rootTarget.dispatchEvent(new CustomEvent('pointer.down'));
     tokens = controller.getRuleStyleTokens();
-    expect(tokens).toContain('translate-x-[5px]');
-    expect(tokens).toContain('translate-y-[5px]');
+    expect(tokens).toContain('translate-x-px');
+    expect(tokens).toContain('translate-y-px');
     expect(tokens).toContain('shadow-none');
 
     rawPropsRef.current = { variant: 'default', size: 'default', disabled: true };

@@ -134,6 +134,17 @@ export const BRUTALIST_THEME_CSS = `:root {
     --accent-foreground: var(--main-foreground);
     --selection: #000000;
     --selection-foreground: #f4f1ea;
+    --canary: #FEF08A;
+    --canary-foreground: #000000;
+    --mint: #A7F3D0;
+    --mint-foreground: #000000;
+    --lavender: #DDD6FE;
+    --lavender-foreground: #000000;
+    --coral: #FECDD3;
+    --coral-foreground: #000000;
+    --sky: #BAE6FD;
+    --sky-foreground: #000000;
+    --radius-sm: 2px;
   }
 
   :root.dark,
@@ -163,5 +174,15 @@ export const BRUTALIST_THEME_CSS = `:root {
     --accent-foreground: var(--main-foreground);
     --selection: #f4f1ea;
     --selection-foreground: #1c1914;
+    --canary: #FEF08A;
+    --canary-foreground: #000000;
+    --mint: #A7F3D0;
+    --mint-foreground: #000000;
+    --lavender: #DDD6FE;
+    --lavender-foreground: #000000;
+    --coral: #FECDD3;
+    --coral-foreground: #000000;
+    --sky: #BAE6FD;
+    --sky-foreground: #000000;
   }
   `;

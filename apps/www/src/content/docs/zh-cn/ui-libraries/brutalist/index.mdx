@@ -5,99 +5,98 @@ description: '基于 Proto UI Base 原型实现的 Neo-Brutalist 风格原型库
 ---
 
 import { PrototypePreviewer } from '@/components/PrototypePreviewer';
+import BrutalistPageStyle from '@/components/BrutalistPageStyle.astro';
 
 当前页面展示 draft Brutalist design-language prototypes：零圆角、黑色边框、硬偏移阴影，以及显式 Light/Dark 主题变量。
 
-{/_ 弹层/对话框内容会被 portal 到 <body>，脱离下方每个 demo 的主题 wrapper。这些页面级变量保证 portaled 浮层继续使用 Neo-Brutalist 配色（浅色面板 + 黑色边框 + 硬阴影）。 _/}
+{/* 弹层/对话框内容会被 portal 到 <body>，脱离下方每个 demo 的主题 wrapper。这些页面级变量保证 portaled 浮层继续使用 Neo-Brutalist 配色（浅色面板 + 黑色边框 + 硬阴影）。 */}
 
-<Fragment
-  set:html={`<style>:root{--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-secondary-background:#ffffff;--pui-destructive:#ff6b6b;--pui-overlay:rgba(0,0,0,.75)}</style>`}
-/>
+<BrutalistPageStyle />
 ## Light Mode ### Button
-<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
   <PrototypePreviewer demoId="demo-brutalist-button" initialRuntime="wc" />
 </div>
 ### Toggle
-<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
   <PrototypePreviewer demoId="demo-brutalist-toggle" initialRuntime="wc" />
 </div>
 ### Switch
-<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
   <PrototypePreviewer demoId="demo-brutalist-switch" initialRuntime="wc" />
 </div>
 ### Tabs
-<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
   <PrototypePreviewer demoId="demo-brutalist-tabs" initialRuntime="wc" />
 </div>
 ### Hover Card
-<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
   <PrototypePreviewer demoId="demo-brutalist-hover-card" initialRuntime="wc" />
 </div>
 ### Dialog
-<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
   <PrototypePreviewer demoId="demo-brutalist-dialog" initialRuntime="wc" />
 </div>
 ### Dropdown Menu
-<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
   <PrototypePreviewer demoId="demo-brutalist-dropdown-menu" initialRuntime="wc" />
 </div>
 ### Select
-<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;">
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
   <PrototypePreviewer demoId="demo-brutalist-select" initialRuntime="wc" />
 </div>
 ## Dark Mode ### Button
 <div
   data-theme="dark"
-  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
 >
   <PrototypePreviewer demoId="demo-brutalist-button" initialRuntime="wc" />
 </div>
 ### Toggle
 <div
   data-theme="dark"
-  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
 >
   <PrototypePreviewer demoId="demo-brutalist-toggle" initialRuntime="wc" />
 </div>
 ### Switch
 <div
   data-theme="dark"
-  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
 >
   <PrototypePreviewer demoId="demo-brutalist-switch" initialRuntime="wc" />
 </div>
 ### Tabs
 <div
   data-theme="dark"
-  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
 >
   <PrototypePreviewer demoId="demo-brutalist-tabs" initialRuntime="wc" />
 </div>
 ### Hover Card
 <div
   data-theme="dark"
-  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
 >
   <PrototypePreviewer demoId="demo-brutalist-hover-card" initialRuntime="wc" />
 </div>
 ### Dialog
 <div
   data-theme="dark"
-  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
 >
   <PrototypePreviewer demoId="demo-brutalist-dialog" initialRuntime="wc" />
 </div>
 ### Dropdown Menu
 <div
   data-theme="dark"
-  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
 >
   <PrototypePreviewer demoId="demo-brutalist-dropdown-menu" initialRuntime="wc" />
 </div>
 ### Select
 <div
   data-theme="dark"
-  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid #000;border-radius:0;box-shadow:8px 8px 0 0 #000;padding:1rem;margin:1rem 0 2rem;"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
 >
   <PrototypePreviewer demoId="demo-brutalist-select" initialRuntime="wc" />
 </div>

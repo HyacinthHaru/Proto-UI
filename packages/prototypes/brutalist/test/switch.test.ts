@@ -20,7 +20,7 @@ describe('prototypes/brutalist: switch', () => {
 
     expect(styleContains(root, 'rounded-none')).toBe(true);
     expect(styleContains(root, 'border-2')).toBe(true);
-    expect(styleContains(root, 'shadow-[5px_5px_0_0_var(--pui-foreground)]')).toBe(true);
+    expect(styleContains(root, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
     expect(styleContains(thumb, 'rounded-none')).toBe(true);
     expect(styleContains(thumb, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
 

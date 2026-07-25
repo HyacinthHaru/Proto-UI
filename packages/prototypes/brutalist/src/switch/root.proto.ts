@@ -12,11 +12,11 @@ const ROOT_BASE_TOKENS = [
   'items-center',
   'rounded-none',
   'border-2',
-  'border-black',
+  'border-foreground',
   'bg-secondary-background',
   'pl-0.5',
   'pr-5',
-  'shadow-[5px_5px_0_0_var(--pui-foreground)]',
+  'shadow-[3px_3px_0_0_var(--pui-foreground)]',
   'outline-none',
   'select-none',
 ].join(' ');

@@ -54,6 +54,16 @@ const colorVars = new Set([
   'ring',
   'secondary',
   'secondary-foreground',
+  'canary',
+  'canary-foreground',
+  'mint',
+  'mint-foreground',
+  'lavender',
+  'lavender-foreground',
+  'coral',
+  'coral-foreground',
+  'sky',
+  'sky-foreground',
 ]);
 
 const staticUtilities: Record<string, string[]> = {
@@ -135,9 +145,11 @@ const staticUtilities: Record<string, string[]> = {
   'border-b-2': ['border-bottom-width: 2px;', 'border-bottom-style: solid;'],
   'border-t-2': ['border-top-width: 2px;', 'border-top-style: solid;'],
   'border-black': ['border-color: #000;'],
+  'border-foreground': ['border-color: var(--pui-foreground);'],
   'border-transparent': ['border-color: transparent;'],
   'bg-transparent': ['background-color: transparent;'],
   'bg-black': ['background-color: #000;'],
+  'bg-foreground': ['background-color: var(--pui-foreground);'],
   'inset-0': ['inset: 0px;'],
   'bottom-0': ['bottom: 0px;'],
   'bottom-full': ['bottom: 100%;'],
@@ -162,23 +174,17 @@ const staticUtilities: Record<string, string[]> = {
     ...composedShadow(),
   ],
   'shadow-[3px_3px_0_0_#000]': ['--pui-shadow: 3px 3px 0 0 #000;', ...composedShadow()],
-  'shadow-[5px_5px_0_0_#000]': ['--pui-shadow: 5px 5px 0 0 #000;', ...composedShadow()],
-  'shadow-[8px_8px_0_0_#000]': ['--pui-shadow: 8px 8px 0 0 #000;', ...composedShadow()],
-  'shadow-[-5px_5px_0_0_#000]': ['--pui-shadow: -5px 5px 0 0 #000;', ...composedShadow()],
+  'shadow-[-3px_3px_0_0_#000]': ['--pui-shadow: -3px 3px 0 0 #000;', ...composedShadow()],
   'shadow-[3px_3px_0_0_var(--pui-foreground)]': [
     '--pui-shadow: 3px 3px 0 0 var(--pui-foreground);',
     ...composedShadow(),
   ],
-  'shadow-[5px_5px_0_0_var(--pui-foreground)]': [
-    '--pui-shadow: 5px 5px 0 0 var(--pui-foreground);',
+  'shadow-[4px_4px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 4px 4px 0 0 var(--pui-foreground);',
     ...composedShadow(),
   ],
-  'shadow-[8px_8px_0_0_var(--pui-foreground)]': [
-    '--pui-shadow: 8px 8px 0 0 var(--pui-foreground);',
-    ...composedShadow(),
-  ],
-  'shadow-[-5px_5px_0_0_var(--pui-foreground)]': [
-    '--pui-shadow: -5px 5px 0 0 var(--pui-foreground);',
+  'shadow-[-3px_3px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: -3px 3px 0 0 var(--pui-foreground);',
     ...composedShadow(),
   ],
   'shadow-none': ['--pui-shadow: 0 0 #0000;', ...composedShadow()],
@@ -316,8 +322,8 @@ export function renderPrefixedThemeCss(input: string): string {
       '$1',
       '    --pui-radius-xl: calc(var(--pui-radius) + 4px);',
       '    --pui-radius-lg: var(--pui-radius);',
-      '    --pui-radius-md: calc(var(--pui-radius) - 2px);',
-      '    --pui-radius-sm: calc(var(--pui-radius) - 4px);',
+      '    --pui-radius-md: max(calc(var(--pui-radius) - 2px), 0px);',
+      '    --pui-radius-sm: max(calc(var(--pui-radius) - 4px), 0px);',
     ].join('\n')
   );
 
@@ -445,10 +451,9 @@ function renderTransformUtility(utility: string): string[] | null {
   if (utility === 'translate-x-0') return ['--pui-translate-x: 0px;', transformValue()];
   if (utility === 'translate-y-0') return ['--pui-translate-y: 0px;', transformValue()];
   if (utility === 'translate-y-px') return ['--pui-translate-y: 1px;', transformValue()];
-  if (utility === '-translate-x-0.5') return ['--pui-translate-x: -0.125rem;', transformValue()];
-  if (utility === '-translate-y-0.5') return ['--pui-translate-y: -0.125rem;', transformValue()];
-  if (utility === 'translate-x-[5px]') return ['--pui-translate-x: 5px;', transformValue()];
-  if (utility === 'translate-y-[5px]') return ['--pui-translate-y: 5px;', transformValue()];
+  if (utility === 'translate-x-px') return ['--pui-translate-x: 1px;', transformValue()];
+  if (utility === '-translate-x-px') return ['--pui-translate-x: -1px;', transformValue()];
+  if (utility === '-translate-y-px') return ['--pui-translate-y: -1px;', transformValue()];
 
   const scaleMatch = utility.match(/^scale-\[(.+)\]$/);
   if (scaleMatch)

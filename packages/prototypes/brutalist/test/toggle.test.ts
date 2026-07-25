@@ -83,7 +83,7 @@ describe('prototypes/brutalist: toggle', () => {
     let tokens = controller.getRuleStyleTokens();
     expect(tokens).toContain('rounded-none');
     expect(tokens).toContain('border-2');
-    expect(tokens).toContain('shadow-[5px_5px_0_0_var(--pui-foreground)]');
+    expect(tokens).toContain('shadow-[3px_3px_0_0_var(--pui-foreground)]');
     expect(tokens).toContain('h-10');
 
     rootTarget.dispatchEvent(new CustomEvent('press.commit'));

@@ -5,7 +5,7 @@ const dialogHeader = definePrototype({
   name: 'brutalist-dialog-header',
   setup(def) {
     def.anatomy.claim(DIALOG_FAMILY, { role: 'header' });
-    def.feedback.style.use(tw('grid gap-1 border-b-2 border-black pb-3 text-left'));
+    def.feedback.style.use(tw('grid gap-1 border-b-2 border-foreground pb-3 text-left'));
     return (renderer) => renderer.r.slot();
   },
 });
