@@ -1,0 +1,27 @@
+id: P-BRUTALIST-TEXTAREA
+kind: prototype
+status: draft
+since: 0.2.0-rc.6
+summary: Brutalist Textarea 是 Base Textarea 值与焦点协议的方角硬阴影多行输入样式增量。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests: [T-BRUTALIST-TEXTAREA]
+  dependsOn: [P-BASE-TEXTAREA]
+  refines: []
+  conflictsWith: []
+implementation:
+  - packages/prototypes/brutalist/src/textarea/root.proto.ts
+  - packages/prototypes/brutalist/src/textarea/index.ts
+criteria:
+  - id: P-BRUTALIST-TEXTAREA-INHERIT-BASE
+    statement: Root calls asTextareaRoot and preserves Base multiline value, change, disabled, focus-visible, name, placeholder, and rows semantics.
+  - id: P-BRUTALIST-TEXTAREA-GRAMMAR
+    statement: Textarea uses square geometry, two-pixel ink border, paper fill, mono text, minimum height, vertical resize, and a three-pixel hard shadow.
+  - id: P-BRUTALIST-TEXTAREA-COMPOSITION
+    statement: Explicit composition works without presets and combines with Field and Composer rather than duplicating their labels, errors, or submit lifecycle.
+revisions:
+  - date: 2026-07-25
+    note: Added Brutalist Textarea for ChatUI composer and SaaS long-form entry.
