@@ -1,0 +1,23 @@
+---
+title: 'Brutalist Switch'
+description: 'Mechanical Neo-Brutalist switch states and interaction contract'
+---
+
+import { PrototypePreviewer } from '@/components/PrototypePreviewer';
+import BrutalistPageStyle from '@/components/BrutalistPageStyle.astro';
+
+<BrutalistPageStyle />
+
+# Switch
+
+The housing stays fixed. The square thumb is the actuator.
+
+- **Off:** paper track and ink thumb.
+- **On:** electric-blue track and acid-yellow thumb; position remains the primary checked signal.
+- **Pressed:** the thumb advances toward the pending direction by `1px` and compresses horizontally. Release restores its full shape.
+- **Focus:** hard offset outline.
+- **Disabled:** structure remains visible at reduced emphasis.
+
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-foreground:#000;--pui-border:#000;--pui-electric-blue:#2563EB;--pui-acid-yellow:#EFFF00;background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);box-shadow:3px 3px 0 var(--pui-foreground);padding:1rem;">
+  <PrototypePreviewer demoId="demo-brutalist-switch" initialRuntime="wc" />
+</div>

@@ -1,0 +1,37 @@
+---
+title: 'Brutalist Design Contract'
+description: 'Normative visual and interaction grammar implemented by the draft Brutalist prototype family'
+---
+
+# Brutalist Design Contract
+
+This documentation projects the draft `P-BRUTALIST-*` catalog entities. Base contracts remain authoritative for semantics, keyboard behavior, ARIA, and command wiring.
+
+## Geometry
+
+- Controls and surfaces use square corners.
+- Compact chips and badges may use the `2px` small radius.
+- Borders are `2px`, solid, and use the current ink/foreground color.
+
+## Depth and motion
+
+| State   | Translation  | Hard shadow |
+| ------- | ------------ | ----------- |
+| Rest    | none         | `3px 3px`   |
+| Hover   | `-1px, -1px` | `4px 4px`   |
+| Pressed | `1px, 1px`   | none        |
+
+Moving-part controls keep the housing fixed when that produces a clearer physical model. The Switch therefore compresses and advances its thumb while pressed.
+
+## Color
+
+The base is paper plus ink. Electric blue and acid yellow mark decisive selected/action state; destructive coral/red marks warning and active press. Colors are flat and high-saturation: no gradient, transparency-based glass, or soft glow.
+
+Position, labels, checked state, and geometry remain primary signals. Color is supplementary.
+
+## Accessibility
+
+- Focus uses a visible hard outline with offset.
+- Disabled controls preserve borders and geometry while reducing emphasis.
+- Interactive targets retain accessible names and Base keyboard behavior.
+- Portaled Dialog, Select, HoverCard, and DropdownMenu surfaces inherit page-level theme variables.
