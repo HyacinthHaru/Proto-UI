@@ -408,4 +408,61 @@ describe('adapter-web-component: dialog overlay', () => {
     root.remove();
     document.body.style.overflow = '';
   });
+
+  it('treats nested dialog-close and button triggers as one focus-scope target', async () => {
+    registerDialogWcs();
+
+    const root = document.createElement('wc-base-dialog-root') as any;
+    const trigger = document.createElement('wc-base-dialog-trigger') as any;
+    const content = document.createElement('wc-base-dialog-content') as any;
+    const cancel = document.createElement('wc-base-dialog-close') as any;
+    const cancelButton = document.createElement('wc-base-button') as any;
+    const confirm = document.createElement('wc-base-dialog-close') as any;
+    const confirmButton = document.createElement('wc-base-button') as any;
+
+    cancelButton.textContent = 'Cancel';
+    confirmButton.textContent = 'Confirm';
+    cancel.appendChild(cancelButton);
+    confirm.appendChild(confirmButton);
+    content.appendChild(cancel);
+    content.appendChild(confirm);
+    root.appendChild(trigger);
+    root.appendChild(content);
+    document.body.appendChild(root);
+
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    trigger.focus();
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(cancel.tabIndex).toBe(-1);
+    expect(cancel.hasAttribute('role')).toBe(false);
+    expect(document.activeElement).toBe(cancelButton);
+    expect(cancelButton.getExposes().focusVisible.get()).toBe(true);
+
+    cancelButton.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(document.activeElement).toBe(confirmButton);
+    expect(confirmButton.getExposes().focusVisible.get()).toBe(true);
+
+    confirmButton.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    await completeTransitions(content);
+    expect(content.hasAttribute('data-pui-view-detached')).toBe(true);
+    expect(document.activeElement).toBe(trigger);
+
+    root.remove();
+    document.body.style.overflow = '';
+  });
 });

@@ -16,9 +16,9 @@ cases:
       ]
     expectation: dialog-layout-parts-claim-anatomy-without-owning-actions
   - id: T-SHADCN-DIALOG-LAYOUT-0001-CASE-CLOSE-ICON
-    title: CloseIcon remains an accessible independent close-command prototype
+    title: CloseIcon remains an accessible focus-visible close-command prototype aligned to the pinned top-right position
     covers: [P-SHADCN-DIALOG-CLOSE-ICON-BASE-INHERITANCE, P-SHADCN-DIALOG-CLOSE-ICON-SURFACE]
-    expectation: dialog-close-icon-renders-and-closes-through-base-command
+    expectation: dialog-close-icon-renders-closes-and-materializes-visible-focus-ring-through-base-command
   - id: T-SHADCN-DIALOG-LAYOUT-0001-CASE-PRESET
     title: generated Content facades connect a replaceable default CloseIcon after Dialog context exists
     covers: [P-SHADCN-DIALOG-CLOSE-ICON-PRESET, D-COMPONENT-PRESET-MATERIALIZATION-0001-F]
@@ -36,6 +36,13 @@ implementations:
     kind: module-test
     status: passing
     path: packages/cli/test/cli.test.ts
+    required: true
+    consumesCases: [T-SHADCN-DIALOG-LAYOUT-0001-CASE-PRESET]
+    exercises: [P-SHADCN-DIALOG-CLOSE-ICON]
+  - id: prototypes-shadcn-dialog-content-preset-recipe
+    kind: module-test
+    status: passing
+    path: packages/prototypes/shadcn/test/component-presets.test.ts
     required: true
     consumesCases: [T-SHADCN-DIALOG-LAYOUT-0001-CASE-PRESET]
     exercises: [P-SHADCN-DIALOG-CLOSE-ICON]

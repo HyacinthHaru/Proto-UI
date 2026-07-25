@@ -36,7 +36,9 @@ async function mountAndAssert(label: string) {
   const switchThumb = switchRoot?.firstElementChild;
   assert(switchThumb?.hasAttribute('data-checked'), `${label}: Switch Thumb state is missing`);
   assert(
-    switchThumb?.getAttribute('data-pui-style')?.includes('data-[checked]:translate-x-5'),
+    switchThumb
+      ?.getAttribute('data-pui-style')
+      ?.includes('data-[checked]:translate-x-[calc(100%_-_2px)]'),
     `${label}: Switch Thumb checked translation is missing`
   );
   await React.act(async () => {

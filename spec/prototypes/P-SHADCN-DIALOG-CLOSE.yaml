@@ -59,8 +59,8 @@ criteria:
   - id: P-SHADCN-DIALOG-CLOSE-COMPOSITION-BOUNDARY
     text:
       {
-        zh-CN: Button 视觉必须由显式嵌套 Button 提供，并依 trigger-group 规则只保留一个宿主 focus/a11y surface。,
-        en: Button visuals must come from an explicitly nested Button and retain one host focus and accessibility surface under trigger-group rules.,
+        zh-CN: Button 视觉必须由显式嵌套 Button 提供，并依 trigger-group 规则只保留一个宿主 focus/a11y surface；focus scope 必须把该 group 视为一个导航成员并让最内层 Button 呈现 focusVisible feedback。,
+        en: Button visuals must come from an explicitly nested Button and retain one host focus and accessibility surface under trigger-group rules; a focus scope must count the group as one navigation member and let the innermost Button present focusVisible feedback.,
       }
   - id: P-SHADCN-DIALOG-CLOSE-DEFAULT-X-SEPARATION
     text:

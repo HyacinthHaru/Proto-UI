@@ -449,6 +449,16 @@ function resolveKnownAsHookStateHandles(node) {
     return new Map([['open', 'data-[open]']]);
   }
 
+  if (hookName === 'asDialogTrigger' || hookName === 'asDialogClose') {
+    return new Map([
+      ['disabled', 'data-[disabled]'],
+      ['hovered', 'data-[hovered]'],
+      ['focused', 'data-[focused]'],
+      ['focusVisible', 'data-[focus-visible]'],
+      ['pressed', 'data-[pressed]'],
+    ]);
+  }
+
   return null;
 }
 

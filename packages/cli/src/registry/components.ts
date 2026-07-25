@@ -1,3 +1,5 @@
+import { SHADCN_COMPONENT_PRESET_RECIPES } from './shadcn-component-presets.generated.js';
+
 export interface ComponentItem {
   prototypeImport: string;
   reactExport: string;
@@ -17,14 +19,24 @@ export interface ComponentEntry {
 }
 
 export interface ComponentPreset {
-  kind: 'replaceable-default-part';
-  exportName: string;
-  rootExport: string;
-  defaultPartExport: string;
-  defaultPartElementName: string;
-  inputName: string;
-  elementName: string;
-  omissionAttribute: string;
+  readonly kind: 'replaceable-default-part';
+  readonly exportName: string;
+  readonly rootExport: string;
+  readonly defaultPartExport: string;
+  readonly defaultPartElementName: string;
+  readonly inputName: string;
+  readonly elementName: string;
+  readonly omissionAttribute: string;
+}
+
+interface ComponentPresetRecipe {
+  readonly kind: 'replaceable-default-part';
+  readonly exportName: string;
+  readonly rootPrototype: string;
+  readonly defaultPartPrototype: string;
+  readonly inputName: string;
+  readonly elementName: string;
+  readonly omissionAttribute: string;
 }
 
 function defineSimple(
@@ -58,22 +70,46 @@ function defineCompound(
   packageName: string,
   importPath: string,
   parts: { prototypeImport: string; exportBaseName: string; elementName: string }[],
-  options: { stylePreset?: string | null; preset?: ComponentPreset } = {}
+  options: { stylePreset?: string | null; preset?: ComponentPresetRecipe } = {}
 ): ComponentEntry {
+  const items = parts.map((part) =>
+    createItem({
+      prototypeImport: part.prototypeImport,
+      exportBaseName: part.exportBaseName,
+      elementName: part.elementName,
+    })
+  );
   return {
     id,
     label,
     packageName,
     importPath,
     stylePreset: options.stylePreset ?? null,
-    items: parts.map((part) =>
-      createItem({
-        prototypeImport: part.prototypeImport,
-        exportBaseName: part.exportBaseName,
-        elementName: part.elementName,
-      })
-    ),
-    preset: options.preset,
+    items,
+    preset: options.preset ? resolveComponentPreset(items, options.preset) : undefined,
+  };
+}
+
+function resolveComponentPreset(
+  items: ComponentItem[],
+  recipe: ComponentPresetRecipe
+): ComponentPreset {
+  const root = items.find((item) => item.prototypeImport === recipe.rootPrototype);
+  const defaultPart = items.find((item) => item.prototypeImport === recipe.defaultPartPrototype);
+  if (!root || !defaultPart) {
+    throw new Error(
+      `[component-registry] preset ${recipe.exportName} references prototypes missing from its component entry.`
+    );
+  }
+  return {
+    kind: recipe.kind,
+    exportName: recipe.exportName,
+    rootExport: root.reactExport,
+    defaultPartExport: defaultPart.reactExport,
+    defaultPartElementName: defaultPart.elementName,
+    inputName: recipe.inputName,
+    elementName: recipe.elementName,
+    omissionAttribute: recipe.omissionAttribute,
   };
 }
 
@@ -110,7 +146,7 @@ const shadcnCompound = (
   id: string,
   label: string,
   parts: { prototypeImport: string; exportBaseName: string; elementName: string }[],
-  preset?: ComponentPreset
+  preset?: ComponentPresetRecipe
 ) =>
   defineCompound(
     id,
@@ -388,16 +424,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
         elementName: 'proto-ui-shadcn-switch-thumb',
       },
     ],
-    {
-      kind: 'replaceable-default-part',
-      exportName: 'ShadcnSwitch',
-      rootExport: 'ShadcnSwitchRoot',
-      defaultPartExport: 'ShadcnSwitchThumb',
-      defaultPartElementName: 'proto-ui-shadcn-switch-thumb',
-      inputName: 'thumb',
-      elementName: 'proto-ui-shadcn-switch',
-      omissionAttribute: 'data-pui-no-default-thumb',
-    }
+    SHADCN_COMPONENT_PRESET_RECIPES['shadcn-switch']
   ),
 
   'shadcn-tabs': shadcnCompound('shadcn-tabs', 'shadcn Tabs', [
@@ -547,16 +574,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
         elementName: 'proto-ui-shadcn-dialog-footer',
       },
     ],
-    {
-      kind: 'replaceable-default-part',
-      exportName: 'ShadcnDialogContent',
-      rootExport: 'ShadcnDialogContentRaw',
-      defaultPartExport: 'ShadcnDialogCloseIcon',
-      defaultPartElementName: 'proto-ui-shadcn-dialog-close-icon',
-      inputName: 'close',
-      elementName: 'proto-ui-shadcn-dialog-content',
-      omissionAttribute: 'data-pui-no-default-close',
-    }
+    SHADCN_COMPONENT_PRESET_RECIPES['shadcn-dialog']
   ),
 
   'base-button': base('base-button', 'base Button', 'button', 'BaseButton'),

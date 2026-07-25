@@ -103,6 +103,7 @@ const createTreeHost = (
     globalTarget: FocusTarget;
     parents: Map<unknown, unknown | null>;
     focused: string[];
+    dispatchHostFocus?: boolean;
   }
 ): RuntimeHost<PropsBaseType> => ({
   prototypeName: name,
@@ -126,6 +127,9 @@ const createTreeHost = (
         FOCUS_REQUEST_FOCUS_CAP,
         (nextTarget: FocusTarget) => {
           options.focused.push(nextTarget.id);
+          if (options.dispatchHostFocus) {
+            nextTarget.dispatchEvent(new Event('host:focus'));
+          }
         },
       ],
     ]);
@@ -955,6 +959,65 @@ describe('runtime contract: focus (v0)', () => {
     expect(scope.isActive()).toBe(true);
     expect(scopeExec.caps.getPort<FocusPort>('focus')?.getFacts().active).toBe(true);
 
+    scope.deactivate();
+  });
+
+  it('FOCUS-0805: trapped Tab marks the synchronously focused target as keyboard-visible', () => {
+    let scope!: FocusScopeHandle<PropsBaseType>;
+
+    const Scope = definePrototype({
+      name: 'x-focus-0805-scope',
+      setup() {
+        scope = asFocusScope<PropsBaseType>();
+        scope.configure({ trap: true, loop: true });
+        return (r) => r.el('div', 'scope');
+      },
+    });
+    const Item = definePrototype({
+      name: 'x-focus-0805-item',
+      setup() {
+        asFocusable<PropsBaseType>();
+        return (r) => r.el('button', 'item');
+      },
+    });
+
+    const order = new Map<string, number>([
+      ['scope', 0],
+      ['first', 1],
+      ['second', 2],
+    ]);
+    const globalTarget = new FocusTarget('global', new Map());
+    const targets = {
+      scope: new FocusTarget('scope', order),
+      first: new FocusTarget('first', order),
+      second: new FocusTarget('second', order),
+    };
+    const parents = new Map<unknown, unknown | null>([
+      [targets.scope, null],
+      [targets.first, targets.scope],
+      [targets.second, targets.scope],
+    ]);
+    const focused: string[] = [];
+    const hostOptions = { globalTarget, parents, focused, dispatchHostFocus: true };
+
+    executeWithHost(Scope as any, createTreeHost(Scope.name, targets.scope, hostOptions) as any);
+    executeWithHost(
+      Item as any,
+      createTreeHost(`${Item.name}-first`, targets.first, hostOptions) as any
+    );
+    const secondExec = executeWithHost(
+      Item as any,
+      createTreeHost(`${Item.name}-second`, targets.second, hostOptions) as any
+    );
+
+    scope.activate();
+    globalTarget.dispatchEvent(new CustomEvent('key.down', { detail: { key: 'Tab' } }));
+
+    expect(focused).toEqual(['first', 'second']);
+    expect(secondExec.caps.getPort<FocusPort>('focus')?.getFacts()).toMatchObject({
+      focused: true,
+      focusVisible: true,
+    });
     scope.deactivate();
   });
 

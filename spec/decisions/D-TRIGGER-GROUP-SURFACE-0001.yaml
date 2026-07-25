@@ -8,8 +8,10 @@ statement:
   zh-CN: >-
     连续嵌套且均声明 `asTrigger()` 的 prototype instances 必须形成同一个 trigger group。最外层连续 trigger 继续作为 behavior owner 汇集 activation/event route；默认最内层连续 trigger 作为 surface owner，承担唯一宿主 focus target 与 accessibility semantic object projection。`asTrigger` 只建立可供 Event、Focus 与 A11y 消费的 group ownership，不反向吞并这些 domain；Focus 可以让 group 成员观察共享 interaction facts，但不得投射多个宿主 focus target，A11y 也不得为同一 trigger group 投射多个 control semantic objects。
 
+
   en: >-
     Directly and continuously nested prototype instances that declare `asTrigger()` form one trigger group. The outermost continuous trigger remains the behavior owner that collects the activation and event route, while the innermost continuous trigger is the default surface owner that carries the sole host focus target and accessibility semantic-object projection. `asTrigger` establishes group ownership for Event, Focus, and A11y to consume without absorbing those domains. Focus may let group members observe shared interaction facts but must not project multiple host focus targets, and A11y must not project multiple control semantic objects for one trigger group.
+
 
 criteria:
   - id: D-TRIGGER-GROUP-SURFACE-0001-A
@@ -22,8 +24,8 @@ criteria:
       en: Event must continue merging the group activation route into the behavior owner and must not regress to per-instance activation because of surface projection.
   - id: D-TRIGGER-GROUP-SURFACE-0001-C
     text:
-      zh-CN: Focus 必须为 trigger group 投射至多一个宿主 focus target；group 成员可以共享 focused、focusVisible 等事实以驱动各自 feedback。
-      en: Focus must project at most one host focus target for a trigger group; group members may share facts such as focused and focusVisible for their own feedback.
+      zh-CN: Focus 必须为 trigger group 投射至多一个宿主 focus target，并在 focus scope/roving 导航中把共享同一宿主 target 的 group 视为一个成员且优先最内层 surface owner；group 成员可以共享 focused、focusVisible 等事实以驱动各自 feedback。
+      en: Focus must project at most one host focus target for a trigger group, treat group members that share that host target as one focus-scope or roving-navigation member, and prefer the innermost surface owner; group members may share facts such as focused and focusVisible for their own feedback.
   - id: D-TRIGGER-GROUP-SURFACE-0001-D
     text:
       zh-CN: A11y 必须为 trigger group 投射至多一个 control semantic object；相同 role/action 可以合并，不兼容声明必须诊断而不是产生重复 controls。
@@ -32,12 +34,23 @@ criteria:
     text:
       zh-CN: Trigger group ownership 必须保持 domain-neutral；Event、Focus 与 A11y 消费 ownership，但 `asTrigger` module 不得直接实现这些 domain 的完整策略。
       en: Trigger-group ownership must remain domain-neutral; Event, Focus, and A11y consume the ownership, while the asTrigger module must not directly implement the full policy of those domains.
+  - id: D-TRIGGER-GROUP-SURFACE-0001-F
+    text:
+      zh-CN: Event 的语义 activation listeners 必须汇聚到默认最内层 surface 的 event target，再由最外层 behavior owner 消费；`host:*` listeners 必须留在各实例自己的宿主 root，避免嵌套 Button 吞掉 Trigger/Close 的原生 focus 与 blur 观察。
+      en: Event semantic activation listeners must converge on the default innermost surface event target for consumption by the outermost behavior owner; `host:*` listeners must remain on each instance's own host root so a nested Button does not absorb the Trigger or Close native focus and blur observations.
+  - id: D-TRIGGER-GROUP-SURFACE-0001-G
+    text:
+      zh-CN: Trigger ancestry 必须识别规范 hook identity `as-trigger` 或已建立的 logical trigger mark，不得依赖旧的非规范 `asTrigger` trace spelling；pointer 与 keyboard activation 必须落入同一 behavior owner。
+      en: Trigger ancestry must recognize the canonical `as-trigger` hook identity or an established logical trigger mark and must not depend on the legacy non-canonical `asTrigger` trace spelling; pointer and keyboard activation must reach the same behavior owner.
 sources:
   - path: internal/records/2026-07-22-trigger-surface-and-component-preset.zh-CN.md
   - path: spec/contracts/C-AS-TRIGGER-0001.yaml
   - path: spec/contracts/C-FOCUS-0001.yaml
   - path: spec/contracts/C-A11Y-0001.yaml
   - path: packages/adapters/base/src/platform/instance-tree.ts
+  - path: packages/modules/as-trigger/src/impl.ts
+  - path: packages/modules/event/src/impl.ts
+  - path: packages/modules/focus/src/center.ts
 relates:
   contracts: [C-AS-TRIGGER-0001, C-FOCUS-0001, C-FOCUS-0002, C-A11Y-0001]
   decisions: [D-AS-CHILD-OMISSION-0001, D-A11Y-SEMANTIC-DOMAIN-0001]
@@ -46,4 +59,7 @@ revisions:
   - version: 0.2.0-rc.3
     change: introduced
     summary: Separated outer behavior ownership from the single inner host interaction surface for continuous trigger groups.
+  - version: 0.2.0-rc.5
+    change: clarified
+    summary: Distinguished semantic surface routing from instance-local host events and required canonical as-trigger ancestry recognition.
 tags: [as-trigger, event, focus, a11y, interaction-surface, composition]

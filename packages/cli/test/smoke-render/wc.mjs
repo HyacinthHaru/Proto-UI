@@ -31,7 +31,11 @@ const switchThumb = switchElement.firstElementChild;
 if (switchThumb?.localName !== 'proto-ui-shadcn-switch-thumb') {
   throw new Error('wc smoke: Switch preset did not materialize its default Thumb');
 }
-if (!switchThumb.getAttribute('data-pui-style')?.includes('data-[checked]:translate-x-5')) {
+if (
+  !switchThumb
+    .getAttribute('data-pui-style')
+    ?.includes('data-[checked]:translate-x-[calc(100%_-_2px)]')
+) {
   throw new Error('wc smoke: Switch Thumb is missing its checked translation token');
 }
 switchElement.dispatchEvent(new MouseEvent('click', { bubbles: true }));

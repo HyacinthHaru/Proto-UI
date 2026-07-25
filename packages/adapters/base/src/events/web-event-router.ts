@@ -20,10 +20,12 @@ type Listener = {
 };
 
 const payloadStateByNativeEvent = new WeakMap<object, Record<PropertyKey, unknown>>();
+const activeRouterByRoot = new WeakMap<HTMLElement, object>();
 
 export function createWebProtoEventRouter(opt: {
   rootEl: HTMLElement;
   instanceToken?: object;
+  resolveEventRouteOwner?: (target: EventTarget | null) => object | null;
   globalEl?: EventTarget; // window by default
   isEnabled: () => boolean; // bridge to eventGate
 }) {
@@ -33,6 +35,9 @@ export function createWebProtoEventRouter(opt: {
 
   const rootEl = opt.rootEl;
   const globalEl = opt.globalEl ?? window;
+  const routerIdentity = {};
+  activeRouterByRoot.set(rootEl, routerIdentity);
+  const isEnabled = () => activeRouterByRoot.get(rootEl) === routerIdentity && opt.isEnabled();
   let suppressFollowupDirectClick = false;
 
   // --- helper: emit proto event to proto bus ---
@@ -41,15 +46,26 @@ export function createWebProtoEventRouter(opt: {
     target.dispatchEvent(ev);
   }
 
-  function emitPressCommitOnce(native: KeyboardEvent) {
+  function emitPressCommitOnce(native: Event, suppressDirectClick = false) {
     if (hasPressCommitBeenEmittedForRoot(native)) return;
     markPressCommitEmittedForRoot(native);
-    suppressFollowupDirectClick = true;
+    if (suppressDirectClick) suppressFollowupDirectClick = true;
     emit(protoRootBus, 'press.commit', native);
   }
 
   function isCommitKey(key: string) {
     return key === 'Enter' || key === ' ';
+  }
+
+  function isNativeMouseClick(event: Event): event is MouseEvent {
+    const candidate = event as MouseEvent;
+    return (
+      event.type === 'click' &&
+      typeof candidate.detail === 'number' &&
+      typeof candidate.clientX === 'number' &&
+      typeof candidate.clientY === 'number' &&
+      typeof candidate.button === 'number'
+    );
   }
 
   function isWithinRoot(target: EventTarget | null) {
@@ -119,6 +135,21 @@ export function createWebProtoEventRouter(opt: {
     native: Event,
     options?: { includeActiveFallback?: boolean }
   ): object | HTMLElement | null {
+    if (opt.resolveEventRouteOwner) {
+      if (typeof native.composedPath === 'function') {
+        for (const entry of native.composedPath()) {
+          const owner = opt.resolveEventRouteOwner(entry);
+          if (owner) return owner;
+        }
+      }
+      const targetOwner = opt.resolveEventRouteOwner(native.target);
+      if (targetOwner) return targetOwner;
+      if (options?.includeActiveFallback !== false) {
+        const active = typeof document !== 'undefined' ? document.activeElement : null;
+        const activeOwner = opt.resolveEventRouteOwner(active);
+        if (activeOwner) return activeOwner;
+      }
+    }
     if (typeof native.composedPath === 'function') {
       for (const entry of native.composedPath()) {
         const owner = getNearestTriggerOwner(entry);
@@ -166,21 +197,21 @@ export function createWebProtoEventRouter(opt: {
     return shouldRouteToCurrentRoot(native, options);
   }
 
-  type KeyboardEventWithSymbols = KeyboardEvent & Record<symbol, Set<EventTarget> | undefined>;
+  type EventWithSymbols = Event & Record<symbol, Set<EventTarget> | undefined>;
 
-  function getPressCommitEmittedRoots(native: KeyboardEvent): Set<EventTarget> {
-    const seen = (native as KeyboardEventWithSymbols)[PRESS_COMMIT_EMITTED_ROOTS];
+  function getPressCommitEmittedRoots(native: Event): Set<EventTarget> {
+    const seen = (native as EventWithSymbols)[PRESS_COMMIT_EMITTED_ROOTS];
     if (seen instanceof Set) return seen;
     const next = new Set<EventTarget>();
-    (native as KeyboardEventWithSymbols)[PRESS_COMMIT_EMITTED_ROOTS] = next;
+    (native as EventWithSymbols)[PRESS_COMMIT_EMITTED_ROOTS] = next;
     return next;
   }
 
-  function hasPressCommitBeenEmittedForRoot(native: KeyboardEvent) {
+  function hasPressCommitBeenEmittedForRoot(native: Event) {
     return getPressCommitEmittedRoots(native).has(rootEl);
   }
 
-  function markPressCommitEmittedForRoot(native: KeyboardEvent) {
+  function markPressCommitEmittedForRoot(native: Event) {
     getPressCommitEmittedRoots(native).add(rootEl);
   }
 
@@ -211,38 +242,38 @@ export function createWebProtoEventRouter(opt: {
   // pointer -> pointer.*
   unsubs.push(
     listen(rootEl, 'pointerdown', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       suppressFollowupDirectClick = false;
       emit(protoRootBus, 'pointer.down', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointermove', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       emit(protoRootBus, 'pointer.move', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointerup', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       emit(protoRootBus, 'pointer.up', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointercancel', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       emit(protoRootBus, 'pointer.cancel', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointerenter', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       emit(protoRootBus, 'pointer.enter', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointerleave', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       emit(protoRootBus, 'pointer.leave', e);
     })
   );
@@ -250,7 +281,7 @@ export function createWebProtoEventRouter(opt: {
   // portal fallback: globally mounted nodes do not bubble pointer events to rootEl
   unsubs.push(
     listen(globalEl, 'pointerdown', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       suppressFollowupDirectClick = false;
       emit(protoRootBus, 'pointer.down', e);
@@ -259,7 +290,7 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'pointermove', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       emit(protoRootBus, 'pointer.move', e);
     })
@@ -267,7 +298,7 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'pointerup', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       emit(protoRootBus, 'pointer.up', e);
     })
@@ -275,7 +306,7 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'pointercancel', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       emit(protoRootBus, 'pointer.cancel', e);
     })
@@ -284,7 +315,7 @@ export function createWebProtoEventRouter(opt: {
   // key -> key.* (global)
   unsubs.push(
     listen(globalEl, 'keydown', (e: KeyboardEvent) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       emit(protoGlobalBus, 'key.down', e);
       if (shouldRouteToCurrentRoot(e)) {
         emit(protoRootBus, 'key.down', e);
@@ -294,26 +325,26 @@ export function createWebProtoEventRouter(opt: {
         return;
       }
       if (shouldRouteToCurrentRoot(e)) {
-        emitPressCommitOnce(e);
+        emitPressCommitOnce(e, true);
         return;
       }
       if (!isWithinRoot(e.target)) return;
       if (!hasFocusedDescendant()) return;
-      emitPressCommitOnce(e);
+      emitPressCommitOnce(e, true);
     })
   );
 
   unsubs.push(
     listen(rootEl, 'keydown', (e: KeyboardEvent) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       if (!isCommitKey(e.key)) return;
-      emitPressCommitOnce(e);
+      emitPressCommitOnce(e, true);
     })
   );
 
   unsubs.push(
     listen(globalEl, 'keyup', (e: KeyboardEvent) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       emit(protoGlobalBus, 'key.up', e);
       if (shouldRouteToCurrentRoot(e)) {
         emit(protoRootBus, 'key.up', e);
@@ -326,8 +357,8 @@ export function createWebProtoEventRouter(opt: {
   // 避免组件暴露的合成 click 事件（如 asButton）导致重复 toggle。
   unsubs.push(
     listen(rootEl, 'click', (e) => {
-      if (!opt.isEnabled()) return;
-      if (!(e instanceof MouseEvent)) return;
+      if (!isEnabled()) return;
+      if (!isNativeMouseClick(e)) return;
       if (!shouldRouteToCurrentRoot(e)) return;
       if (shouldSuppressFollowupClick(e)) return;
       suppressFollowupDirectClick = false;
@@ -337,8 +368,8 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'click', (e) => {
-      if (!opt.isEnabled()) return;
-      if (!(e instanceof MouseEvent)) return;
+      if (!isEnabled()) return;
+      if (!isNativeMouseClick(e)) return;
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       if (shouldSuppressFollowupClick(e)) return;
       suppressFollowupDirectClick = false;
@@ -349,14 +380,14 @@ export function createWebProtoEventRouter(opt: {
   // contextmenu -> context.menu
   unsubs.push(
     listen(rootEl, 'contextmenu', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       emit(protoRootBus, 'context.menu', e);
     })
   );
 
   unsubs.push(
     listen(globalEl, 'contextmenu', (e) => {
-      if (!opt.isEnabled()) return;
+      if (!isEnabled()) return;
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       emit(protoRootBus, 'context.menu', e);
     })
@@ -369,14 +400,14 @@ export function createWebProtoEventRouter(opt: {
     protoBus: protoRootBus,
     // hostTarget：先工作假设= rootEl；未来可以换成更准确的 host 专用 target
     hostTarget: rootEl,
-    isEnabled: opt.isEnabled,
+    isEnabled,
     // 注：rootProxy 不做“解释”，只做“路由 + gating”
   });
 
   const globalProxy = createProxyTarget({
     protoBus: protoGlobalBus,
     hostTarget: globalEl,
-    isEnabled: opt.isEnabled,
+    isEnabled,
   });
 
   return {
@@ -385,6 +416,7 @@ export function createWebProtoEventRouter(opt: {
     globalTarget: globalProxy as EventTarget,
 
     dispose() {
+      if (activeRouterByRoot.get(rootEl) === routerIdentity) activeRouterByRoot.delete(rootEl);
       for (const u of unsubs.splice(0)) u();
       rootProxy.__dispose?.();
       globalProxy.__dispose?.();

@@ -33,6 +33,7 @@ import { createDefaultMetaGetter } from './platform/meta';
 import {
   createLogicalInstance,
   bindLogicalEventTarget,
+  getLogicalEventRouteSurfaceForTarget,
   markProtoInstance,
   unbindProtoInstance,
   unbindLogicalEventTarget,
@@ -284,6 +285,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         const router = createWebProtoEventRouter({
           rootEl: thisEl,
           instanceToken: this._instanceToken,
+          resolveEventRouteOwner: getLogicalEventRouteSurfaceForTarget,
           globalEl: window,
           isEnabled: () => eventGate.isEnabled?.() ?? true,
         });

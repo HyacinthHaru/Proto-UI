@@ -208,6 +208,7 @@ describe('PrototypePreviewer demo-renderer / wc', () => {
     await settle();
 
     const trigger = host.querySelector('wc-shadcn-dialog-trigger') as HTMLElement | null;
+    const triggerButton = trigger?.querySelector('wc-shadcn-button') as HTMLElement | null;
     const content = host.querySelector('wc-shadcn-dialog-content') as HTMLElement | null;
     const mask = host.querySelector('wc-shadcn-dialog-mask') as HTMLElement | null;
     const close = host.querySelector('wc-shadcn-dialog-close') as HTMLElement | null;
@@ -215,14 +216,29 @@ describe('PrototypePreviewer demo-renderer / wc', () => {
     const closeIcon = host.querySelector('wc-shadcn-dialog-close-icon') as HTMLElement | null;
 
     expect(trigger).not.toBeNull();
+    expect(triggerButton).not.toBeNull();
     expect(content).not.toBeNull();
     expect(close).not.toBeNull();
     expect(closeButton).not.toBeNull();
     expect(closeIcon).not.toBeNull();
     expect(content?.hasAttribute('data-pui-view-detached')).toBe(true);
+    expect(trigger?.hasAttribute('data-pui-style')).toBe(false);
+    expect(trigger?.tabIndex).toBe(-1);
+    expect(triggerButton?.tabIndex).toBe(0);
 
-    trigger?.focus();
-    trigger?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    triggerButton?.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    triggerButton?.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
+    triggerButton?.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }));
+    await settle();
+
+    expect(styleContains(content, 'hidden')).toBe(false);
+
+    closeButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await settle();
+    await completeTransitions(mask, content);
+
+    triggerButton?.focus();
+    triggerButton?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     await settle();
 
     expect(styleContains(content, 'hidden')).toBe(false);

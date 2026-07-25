@@ -70,6 +70,12 @@ export type EventPort = ModulePort & {
   redirectRoot(target: EventTarget): void;
 
   /**
+   * Setup-only: redirect semantic root events while keeping `host:*` bindings
+   * attached to the instance's own host target.
+   */
+  redirectSemanticRoot(target: EventTarget): void;
+
+  /**
    * Runtime-owned dispatch entry for module-facing callbacks.
    * Runtime calls this inside callback scope before prototype-author dispatch.
    */

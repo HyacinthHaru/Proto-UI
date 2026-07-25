@@ -76,7 +76,7 @@ describe('runtime contract: asTrigger (v0)', () => {
     expect(childTarget[Symbol.for('@proto.ui/as-trigger/confirm-owner')]).toBe(true);
   });
 
-  it('AS-TRIGGER-0100: when parent is trigger, redirect root target to parent', () => {
+  it('AS-TRIGGER-0100: when parent is trigger, redirect semantic events while retaining self host events', () => {
     const parentInstance = {};
     const childInstance = {};
     const parentTarget = new FakeTarget();
@@ -89,7 +89,7 @@ describe('runtime contract: asTrigger (v0)', () => {
     } as any;
 
     Object.defineProperty(parentProto, '__asHooks', {
-      get: () => [{ name: 'asTrigger', order: 0, privileged: true }],
+      get: () => [{ name: 'as-trigger', order: 0, privileged: true }],
       enumerable: false,
       configurable: false,
     });
@@ -98,6 +98,7 @@ describe('runtime contract: asTrigger (v0)', () => {
       name: 'x-as-trigger-0100',
       setup(def) {
         asTrigger();
+        def.event.on('press.commit', () => {});
         def.event.on('host:click' as any, () => {});
         return (r) => r.el('div', 'ok');
       },
@@ -128,11 +129,11 @@ describe('runtime contract: asTrigger (v0)', () => {
     executeWithHost(P as any, host as any);
 
     expect(parentTarget.logs).toEqual(['add']);
-    expect(childTarget.logs).toEqual([]);
+    expect(childTarget.logs).toEqual(['add']);
     expect(routeOwners.get(childInstance)).toBe(parentInstance);
   });
 
-  it('AS-TRIGGER-0150: multi-level trigger chain redirects to outermost trigger', () => {
+  it('AS-TRIGGER-0150: multi-level trigger chain redirects semantic events to the outermost trigger', () => {
     const grandInstance = {};
     const parentInstance = {};
     const childInstance = {};
@@ -145,12 +146,12 @@ describe('runtime contract: asTrigger (v0)', () => {
     const parentProto: Prototype = { name: 'x-parent-trigger', setup() {} } as any;
 
     Object.defineProperty(grandProto, '__asHooks', {
-      get: () => [{ name: 'asTrigger', order: 0, privileged: true }],
+      get: () => [{ name: 'as-trigger', order: 0, privileged: true }],
       enumerable: false,
       configurable: false,
     });
     Object.defineProperty(parentProto, '__asHooks', {
-      get: () => [{ name: 'asTrigger', order: 0, privileged: true }],
+      get: () => [{ name: 'as-trigger', order: 0, privileged: true }],
       enumerable: false,
       configurable: false,
     });
@@ -159,6 +160,7 @@ describe('runtime contract: asTrigger (v0)', () => {
       name: 'x-as-trigger-0150',
       setup(def) {
         asTrigger();
+        def.event.on('press.commit', () => {});
         def.event.on('host:click' as any, () => {});
         return (r) => r.el('div', 'ok');
       },
@@ -202,7 +204,7 @@ describe('runtime contract: asTrigger (v0)', () => {
 
     expect(grandTarget.logs).toEqual(['add']);
     expect(parentTarget.logs).toEqual([]);
-    expect(childTarget.logs).toEqual([]);
+    expect(childTarget.logs).toEqual(['add']);
     expect(routeOwners.get(childInstance)).toBe(grandInstance);
   });
 

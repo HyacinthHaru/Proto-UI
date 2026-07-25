@@ -35,7 +35,8 @@ describe('prototypes/shadcn: switch', () => {
     expect(styleContains(root, 'data-[checked]:pl-5')).toBe(false);
     expect(styleContains(thumb, 'size-5')).toBe(true);
     expect(styleContains(thumb, 'translate-x-0')).toBe(true);
-    expect(styleContains(thumb, 'data-[checked]:translate-x-5')).toBe(true);
+    expect(styleContains(thumb, 'ring-offset-0')).toBe(true);
+    expect(styleContains(thumb, 'data-[checked]:translate-x-[calc(100%_-_2px)]')).toBe(true);
     expect(thumb.hasAttribute('data-checked')).toBe(true);
 
     root.remove();
@@ -61,6 +62,7 @@ describe('prototypes/shadcn: switch', () => {
     expect(styleContains(root, 'data-[focus-visible]:ring-3')).toBe(true);
     expect(styleContains(root, 'data-[focus-visible]:ring-ring/50')).toBe(true);
     expect(styleContains(root, 'data-[focus-visible]:ring-offset-2')).toBe(true);
+    expect(thumb.hasAttribute('data-focus-visible')).toBe(false);
 
     root.remove();
     await Promise.resolve();

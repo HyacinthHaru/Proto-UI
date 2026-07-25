@@ -54,6 +54,13 @@ implementations:
     required: true
     consumesCases: [T-SHADCN-SWITCH-0001-CASE-COMPONENT-PRESET]
     exercises: [P-SHADCN-SWITCH]
+  - id: prototypes-shadcn-switch-component-preset-recipe
+    kind: module-test
+    status: passing
+    path: packages/prototypes/shadcn/test/component-presets.test.ts
+    required: true
+    consumesCases: [T-SHADCN-SWITCH-0001-CASE-COMPONENT-PRESET]
+    exercises: [P-SHADCN-SWITCH]
   - id: release-packed-cli-switch-component-preset
     kind: workspace-check
     status: passing

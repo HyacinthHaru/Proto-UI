@@ -53,6 +53,31 @@ describe('WC router: createWebProtoEventRouter', () => {
     router.dispose();
   });
 
+  it('keeps only the latest router active for one host root', () => {
+    const rootEl = document.createElement('div');
+    const first = createWebProtoEventRouter({
+      rootEl,
+      globalEl: window,
+      isEnabled: () => true,
+    });
+    const second = createWebProtoEventRouter({
+      rootEl,
+      globalEl: window,
+      isEnabled: () => true,
+    });
+    let firstCalls = 0;
+    let secondCalls = 0;
+    first.rootTarget.addEventListener('press.commit', () => firstCalls++);
+    second.rootTarget.addEventListener('press.commit', () => secondCalls++);
+
+    rootEl.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }));
+
+    expect(firstCalls).toBe(0);
+    expect(secondCalls).toBe(1);
+    first.dispose();
+    second.dispose();
+  });
+
   it('keydown Enter within root => global key.down AND root press.commit', async () => {
     const rootEl = document.createElement('div');
     document.body.appendChild(rootEl);

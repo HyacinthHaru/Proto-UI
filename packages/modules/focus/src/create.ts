@@ -884,6 +884,8 @@ class FocusModuleImpl extends ModuleBase {
 
   private requestNativeFocusDirect(options?: FocusRequestOptions): FocusRequestOutcome {
     if (!this.focusableDeclared || this.focusableConfig.disabled) return 'rejected';
+    if (options?.reason === 'keyboard') this.keyboardModality = true;
+    else if (options?.reason === 'pointer') this.keyboardModality = false;
     const target = this.getRootTarget();
     if (!target || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) {
       this.queuePendingFocus(options, false);

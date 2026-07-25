@@ -994,6 +994,24 @@ importers:
 
   packages/types: {}
 
+  packages/web-conformance:
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.0
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.2.0
+        version: 19.2.3(@types/react@19.2.14)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.6
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.6(react@19.2.6)
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.31(typescript@5.9.3)
+
 packages:
 
   '@astrojs/check@0.9.8':

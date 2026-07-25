@@ -88,7 +88,9 @@ const switchRoot = presetContainer.querySelector('.consumer-switch');
 const switchThumb = switchRoot?.firstElementChild;
 if (
   switchRoot?.getAttribute('aria-checked') !== 'true' ||
-  !switchThumb?.getAttribute('data-pui-style')?.includes('data-[checked]:translate-x-5') ||
+  !switchThumb
+    ?.getAttribute('data-pui-style')
+    ?.includes('data-[checked]:translate-x-[calc(100%_-_2px)]') ||
   !switchThumb.hasAttribute('data-checked')
 ) {
   throw new Error('vue smoke: Switch preset did not mount a state-driven default Thumb');

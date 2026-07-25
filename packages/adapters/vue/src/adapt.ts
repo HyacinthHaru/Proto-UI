@@ -32,6 +32,7 @@ import {
   bindLogicalParent,
   bindLogicalEventTarget,
   createLogicalInstance,
+  getLogicalEventRouteSurfaceForTarget,
   markProtoInstance,
   unbindProtoInstance,
   unbindLogicalEventTarget,
@@ -325,6 +326,7 @@ export function createVueAdapter(runtime: VueRuntime) {
           const router = createWebProtoEventRouter({
             rootEl,
             instanceToken,
+            resolveEventRouteOwner: getLogicalEventRouteSurfaceForTarget,
             globalEl: typeof window === 'undefined' ? rootEl : window,
             isEnabled: () => eventGate.isEnabled?.() ?? true,
           });

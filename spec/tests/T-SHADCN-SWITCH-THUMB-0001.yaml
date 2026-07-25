@@ -16,9 +16,9 @@ cases:
       ]
     expectation: shadcn-switch-thumb-direct-entry-inherits-as-switch-thumb
   - id: T-SHADCN-SWITCH-THUMB-0001-CASE-CONTEXT-AND-VISUALS
-    title: Thumb follows same-domain Root checked state and projects its current visual surface
+    title: Thumb follows same-domain Root checked state with symmetric end gaps and isolated focus-ring variables
     covers: [P-SHADCN-SWITCH-THUMB-CONTEXT-INDICATOR, P-SHADCN-SWITCH-THUMB-CURRENT-VISUAL-SURFACE]
-    expectation: shadcn-switch-thumb-follows-root-and-translates-from-inherited-checked-state
+    expectation: shadcn-switch-thumb-follows-root-translates-symmetrically-and-does-not-inherit-root-ring
   - id: T-SHADCN-SWITCH-THUMB-0001-CASE-COMPATIBILITY-SUBSET
     title: upstream internal composition and remaining token gaps stay outside the passing claim
     covers: [P-SHADCN-SWITCH-THUMB-COMPATIBILITY-SUBSET]

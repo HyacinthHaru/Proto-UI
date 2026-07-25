@@ -1,5 +1,10 @@
 export { default as button } from './button';
 export { default as shadcnButton } from './button';
+export {
+  default as componentPresets,
+  shadcnComponentPresets,
+  type ShadcnComponentPresetRecipe,
+} from './component-presets';
 export { default as toggle } from './toggle';
 export { default as shadcnToggle } from './toggle';
 export { switchRoot, switchThumb } from './switch';

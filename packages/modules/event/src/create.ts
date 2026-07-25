@@ -37,6 +37,7 @@ export function createEventModule(ctx: ModuleFactoryArgs): EventModule {
           requestDefaultActionPrevented: (ev, options) =>
             impl.requestDefaultActionPrevented(ev, options),
           redirectRoot: (target) => impl.redirectRoot(target),
+          redirectSemanticRoot: (target) => impl.redirectSemanticRoot(target),
           dispatchInternal: (id, ev) => impl.dispatchInternal(id, ev),
         },
       };

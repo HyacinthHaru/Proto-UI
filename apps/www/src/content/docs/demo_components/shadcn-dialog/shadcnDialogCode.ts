@@ -4,8 +4,10 @@ import type { RuntimeId } from '@/components/PrototypePreviewer/runtimes/registr
 export const codeMap: Record<RuntimeId, Record<string, string>> = {
   wc: {
     'demo-shadcn-dialog': formatCode(`
-<wc-shadcn-dialog-root id="profile-dialog" class="relative inline-flex items-start">
-  <wc-shadcn-dialog-trigger>Open Dialog</wc-shadcn-dialog-trigger>
+<wc-shadcn-dialog-root class="relative inline-flex items-start">
+  <wc-shadcn-dialog-trigger>
+    <wc-shadcn-button>Open Dialog</wc-shadcn-button>
+  </wc-shadcn-dialog-trigger>
   <wc-shadcn-dialog-mask></wc-shadcn-dialog-mask>
   <wc-shadcn-dialog-content>
     <wc-shadcn-dialog-header>
@@ -18,22 +20,16 @@ export const codeMap: Record<RuntimeId, Record<string, string>> = {
       <wc-shadcn-dialog-close>
         <wc-shadcn-button variant="outline">Cancel</wc-shadcn-button>
       </wc-shadcn-dialog-close>
-      <wc-shadcn-button id="save-profile">Save changes</wc-shadcn-button>
+      <wc-shadcn-dialog-close>
+        <wc-shadcn-button>Save changes</wc-shadcn-button>
+      </wc-shadcn-dialog-close>
     </wc-shadcn-dialog-footer>
   </wc-shadcn-dialog-content>
 </wc-shadcn-dialog-root>
-
-<script>
-  const dialog = document.querySelector('#profile-dialog');
-  document.querySelector('#save-profile')?.addEventListener('click', () => {
-    dialog?.getExposes().close('save');
-  });
-</script>
     `),
   },
   react: {
     'demo-shadcn-dialog': formatCode(`
-import { useRef, type ComponentRef } from 'react';
 import {
   ShadcnButton,
   ShadcnDialogRoot,
@@ -48,11 +44,11 @@ import {
 } from '@prototype-libs/shadcn';
 
 export function DemoShadcnDialogDemo() {
-  const dialogRef = useRef<ComponentRef<typeof ShadcnDialogRoot>>(null);
-
   return (
-    <ShadcnDialogRoot ref={dialogRef} className="relative inline-flex items-start">
-      <ShadcnDialogTrigger>Open Dialog</ShadcnDialogTrigger>
+    <ShadcnDialogRoot className="relative inline-flex items-start">
+      <ShadcnDialogTrigger>
+        <ShadcnButton>Open Dialog</ShadcnButton>
+      </ShadcnDialogTrigger>
       <ShadcnDialogMask />
       <ShadcnDialogContent>
         <ShadcnDialogHeader>
@@ -65,9 +61,9 @@ export function DemoShadcnDialogDemo() {
           <ShadcnDialogClose>
             <ShadcnButton variant="outline">Cancel</ShadcnButton>
           </ShadcnDialogClose>
-          <ShadcnButton onClick={() => dialogRef.current?.getExposes().close('save')}>
-            Save changes
-          </ShadcnButton>
+          <ShadcnDialogClose>
+            <ShadcnButton>Save changes</ShadcnButton>
+          </ShadcnDialogClose>
         </ShadcnDialogFooter>
       </ShadcnDialogContent>
     </ShadcnDialogRoot>
@@ -78,7 +74,6 @@ export function DemoShadcnDialogDemo() {
   vue: {
     'demo-shadcn-dialog': formatCode(`
 <script setup lang="ts">
-import { useTemplateRef } from 'vue';
 import {
   ShadcnButton,
   ShadcnDialogRoot,
@@ -92,16 +87,13 @@ import {
   ShadcnDialogClose,
 } from '@prototype-libs/shadcn';
 
-const dialog = useTemplateRef<InstanceType<typeof ShadcnDialogRoot>>('dialog');
-
-function save() {
-  dialog.value?.getExposes().close('save');
-}
 </script>
 
 <template>
-  <ShadcnDialogRoot ref="dialog" class="relative inline-flex items-start">
-    <ShadcnDialogTrigger>Open Dialog</ShadcnDialogTrigger>
+  <ShadcnDialogRoot class="relative inline-flex items-start">
+    <ShadcnDialogTrigger>
+      <ShadcnButton>Open Dialog</ShadcnButton>
+    </ShadcnDialogTrigger>
     <ShadcnDialogMask />
     <ShadcnDialogContent>
       <ShadcnDialogHeader>
@@ -114,7 +106,9 @@ function save() {
         <ShadcnDialogClose>
           <ShadcnButton variant="outline">Cancel</ShadcnButton>
         </ShadcnDialogClose>
-        <ShadcnButton @click="save">Save changes</ShadcnButton>
+        <ShadcnDialogClose>
+          <ShadcnButton>Save changes</ShadcnButton>
+        </ShadcnDialogClose>
       </ShadcnDialogFooter>
     </ShadcnDialogContent>
   </ShadcnDialogRoot>

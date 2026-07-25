@@ -115,6 +115,7 @@ const staticUtilities: Record<string, string[]> = {
   'slide-in-from-right-2': ['--pui-translate-x: 0.5rem;'],
   'slide-in-from-top-2': ['--pui-translate-y: -0.5rem;'],
   'transition-all': ['transition-property: all;'],
+  'transition-opacity': ['transition-property: opacity;'],
   'transition-none': ['transition-property: none;'],
   'transition-colors': [
     'transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;',
@@ -157,11 +158,14 @@ const staticUtilities: Record<string, string[]> = {
   'right-0': ['right: 0px;'],
   'right-full': ['right: 100%;'],
   'top-auto': ['top: auto;'],
+  'opacity-70': ['opacity: 0.7;'],
+  'opacity-100': ['opacity: 1;'],
   'opacity-50': ['opacity: 0.5;'],
   'ring-inset': ['--pui-ring-inset: inset;'],
   'ring-0': ['--pui-ring-width: 0px;', ...ringShadow()],
   'ring-2': ['--pui-ring-width: 2px;', ...ringShadow()],
   'ring-3': ['--pui-ring-width: 3px;', ...ringShadow()],
+  'ring-offset-0': ['--pui-ring-offset-width: 0px;'],
   'ring-offset-2': ['--pui-ring-offset-width: 2px;'],
   'ring-offset-background': ['--pui-ring-offset-color: var(--pui-background);'],
   'shadow-xs': ['--pui-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);', ...composedShadow()],
@@ -411,6 +415,7 @@ function renderSpacingUtility(utility: string): string[] | null {
   if (kind === 'ml') return [`margin-left: ${value};`];
   if (kind === 'mr') return [`margin-right: ${value};`];
   if (kind === 'top') return [`top: ${value};`];
+  if (kind === 'right') return [`right: ${value};`];
   if (kind === 'left') return [`left: ${value};`];
   if (kind === 'right') return [`right: ${value};`];
   return null;
@@ -566,7 +571,7 @@ function splitVariants(token: string): string[] {
 function spacingValue(raw: string): string | null {
   if (raw === 'full') return '100%';
   if (raw === '1/2') return '50%';
-  if (raw.startsWith('[') && raw.endsWith(']')) return raw.slice(1, -1);
+  if (raw.startsWith('[') && raw.endsWith(']')) return raw.slice(1, -1).replaceAll('_', ' ');
   return spacing[raw] ?? null;
 }
 

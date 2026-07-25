@@ -78,7 +78,14 @@ export class AsTriggerModuleImpl extends ModuleBase {
       if (!curProto) break;
 
       const trace = (curProto as any).__asHooks as Array<{ name?: string }>;
-      const hasTrigger = Array.isArray(trace) ? trace.some((e) => e?.name === 'asTrigger') : false;
+      const hasTriggerMark =
+        !!cur &&
+        (typeof cur === 'object' || typeof cur === 'function') &&
+        !!(cur as Record<symbol, unknown>)[TRIGGER_OWNER_MARK];
+      const hasTriggerTrace = Array.isArray(trace)
+        ? trace.some((e) => e?.name === 'as-trigger' || e?.name === 'asTrigger')
+        : false;
+      const hasTrigger = hasTriggerMark || hasTriggerTrace;
 
       if (!hasTrigger) break;
 
@@ -98,16 +105,15 @@ export class AsTriggerModuleImpl extends ModuleBase {
       (self as any)[TRIGGER_OWNER_MARK] = lastTrigger ?? true;
     }
 
-    if (!lastTrigger) return;
-
     const eventTarget = this.caps.has(AS_TRIGGER_GET_EVENT_TARGET_CAP)
-      ? this.caps.get(AS_TRIGGER_GET_EVENT_TARGET_CAP)(lastTrigger)
-      : (lastTrigger as EventTarget);
+      ? (this.caps.get(AS_TRIGGER_GET_EVENT_TARGET_CAP)(self) ??
+        (lastTrigger ? this.caps.get(AS_TRIGGER_GET_EVENT_TARGET_CAP)(lastTrigger) : null))
+      : (self as EventTarget);
     if (!eventTarget) {
       throw capUnavailable(AS_TRIGGER_GET_EVENT_TARGET_CAP.id, {
         prototypeName: this.prototypeName,
       });
     }
-    this.eventPort.redirectRoot(eventTarget);
+    this.eventPort.redirectSemanticRoot(eventTarget);
   }
 }

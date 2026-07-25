@@ -7,7 +7,13 @@ export default {
       {
         kind: 'proto',
         prototypeId: 'shadcn-dialog-trigger',
-        children: ['Open Dialog'],
+        children: [
+          {
+            kind: 'proto',
+            prototypeId: 'shadcn-button',
+            children: ['Open Dialog'],
+          },
+        ],
       },
       {
         kind: 'proto',

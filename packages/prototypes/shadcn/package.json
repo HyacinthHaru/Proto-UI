@@ -30,6 +30,10 @@
       "types": "./src/button/index.ts",
       "default": "./src/button/index.ts"
     },
+    "./component-presets": {
+      "types": "./src/component-presets.ts",
+      "default": "./src/component-presets.ts"
+    },
     "./dialog": {
       "types": "./src/dialog/index.ts",
       "default": "./src/dialog/index.ts"

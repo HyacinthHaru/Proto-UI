@@ -76,7 +76,7 @@ describe('prototypes/shadcn: dialog', () => {
     await Promise.resolve();
     await Promise.resolve();
 
-    expect(styleContains(trigger, 'rounded-lg')).toBe(true);
+    expect(trigger.getAttribute('data-pui-style')).toBeNull();
     expect(content.hasAttribute('data-pui-view-detached')).toBe(true);
     expect(mask.hasAttribute('data-pui-view-detached')).toBe(true);
 
@@ -109,6 +109,10 @@ describe('prototypes/shadcn: dialog', () => {
     expect(styleContains(closeIcon, 'absolute')).toBe(true);
     expect(closeIcon.querySelector('svg')).not.toBeNull();
     expect(closeIcon.getAttribute('aria-label')).toBe('Close');
+    expect(styleContains(closeIcon, 'right-4')).toBe(true);
+    expect(styleContains(closeIcon, 'top-4')).toBe(true);
+    expect(styleContains(closeIcon, 'opacity-70')).toBe(true);
+    expect(styleContains(closeIcon, 'size-8')).toBe(false);
     expect(document.activeElement).toBe(close);
 
     close.dispatchEvent(new MouseEvent('click', { bubbles: true }));

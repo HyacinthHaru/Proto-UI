@@ -12,6 +12,7 @@ const THUMB_TOKENS = [
   'border-border/50',
   'shadow-lg',
   'ring-0',
+  'ring-offset-0',
   'transition-all',
   'duration-200',
   'ease-in-out',
@@ -36,7 +37,7 @@ const switchThumb = definePrototype<ShadcnSwitchThumbProps, ShadcnSwitchThumbExp
     def.feedback.style.use(tw(THUMB_TOKENS));
     def.rule({
       when: (w) => w.state(checked).eq(true),
-      intent: (i) => i.feedback.style.use(tw('translate-x-5')),
+      intent: (i) => i.feedback.style.use(tw('translate-x-[calc(100%_-_2px)]')),
     });
     def.rule({
       when: (w) => w.state(pressed).eq(true),

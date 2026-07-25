@@ -107,11 +107,18 @@ describe('proto style css renderer', () => {
   });
 
   it('renders state-driven spacing translations used by the Switch thumb', () => {
-    const css = renderProtoStyleTokenCss(['translate-x-0', 'data-[checked]:translate-x-5']);
+    const css = renderProtoStyleTokenCss([
+      'translate-x-0',
+      'data-[checked]:translate-x-[calc(100%_-_2px)]',
+      'ring-offset-0',
+    ]);
 
     expect(css).toContain('--pui-translate-x: 0px;');
-    expect(css).toContain(':where([data-pui-style~="data-[checked]:translate-x-5"])[data-checked]');
-    expect(css).toContain('--pui-translate-x: 1.25rem;');
+    expect(css).toContain(
+      ':where([data-pui-style~="data-[checked]:translate-x-[calc(100%_-_2px)]"])[data-checked]'
+    );
+    expect(css).toContain('--pui-translate-x: calc(100% - 2px);');
+    expect(css).toContain('--pui-ring-offset-width: 0px;');
     expect(css).not.toContain('Unsupported Proto UI style tokens');
   });
 

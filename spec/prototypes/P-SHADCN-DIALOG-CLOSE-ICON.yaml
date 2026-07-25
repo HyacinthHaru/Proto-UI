@@ -14,12 +14,12 @@ criteria:
       en: CloseIcon must call `asDialogClose()` and retain close-request, disabled, focus, and accessibility command semantics.
   - id: P-SHADCN-DIALOG-CLOSE-ICON-SURFACE
     text:
-      zh-CN: CloseIcon 必须投射 X icon、`Close` accessible name 以及独立的 state-driven visual feedback。
-      en: CloseIcon must project an X icon, the accessible name `Close`, and independent state-driven visual feedback.
+      zh-CN: CloseIcon 必须投射 X icon、`Close` accessible name 以及包含可见 focus-visible ring 的独立 state-driven visual feedback，并按固定 upstream baseline 使用 `top-4 right-4` 放置其 16px X surface。
+      en: CloseIcon must project an X icon, the accessible name `Close`, and independent state-driven visual feedback including a visible focus-visible ring, positioning its 16px X surface at `top-4 right-4` under the pinned upstream baseline.
   - id: P-SHADCN-DIALOG-CLOSE-ICON-PRESET
     text:
-      zh-CN: CLI Content preset 必须在未提供 close 时物化 CloseIcon，并允许兼容替换或显式关闭，同时保留 raw Content facade；CloseIcon 只能在 Dialog parent context 已建立后连接，禁止以 `CONTEXT_PROVIDER_MISSING` 失败后重挂载来恢复。
-      en: The CLI Content preset must materialize CloseIcon when no close is provided, allow compatible replacement or explicit omission, and retain a raw Content facade; CloseIcon may connect only after its Dialog parent context exists and must not recover from `CONTEXT_PROVIDER_MISSING` by remounting.
+      zh-CN: Prototype library 的 `component-presets` surface 必须声明 Content/CloseIcon identity 与替换策略，CLI Content preset 在未提供 close 时物化 CloseIcon，并允许兼容替换或显式关闭，同时保留 raw Content facade；recipe 不得声明视觉 tokens。CloseIcon 只能在 Dialog parent context 已建立后连接，禁止以 `CONTEXT_PROVIDER_MISSING` 失败后重挂载来恢复。
+      en: The prototype library's `component-presets` surface must declare Content and CloseIcon identity and replacement policy. The CLI Content preset materializes CloseIcon when no close is provided, allows compatible replacement or explicit omission, and retains a raw Content facade; the recipe must not declare visual tokens. CloseIcon may connect only after its Dialog parent context exists and must not recover from `CONTEXT_PROVIDER_MISSING` by remounting.
     dependsOn:
       decisions:
         - id: D-COMPONENT-PRESET-MATERIALIZATION-0001
@@ -27,9 +27,12 @@ criteria:
 sources:
   - path: internal/records/2026-07-25-rc4-dialog-close-icon-and-switch-trial-regressions.zh-CN.md
   - path: packages/prototypes/shadcn/src/dialog/close-icon.proto.ts
+  - path: packages/prototypes/shadcn/src/component-presets.ts
   - path: packages/prototypes/shadcn/test/dialog.test.ts
   - path: packages/cli/src/services/codegen.ts
   - path: packages/cli/test/cli.test.ts
+  - path: https://github.com/shadcn-ui/ui/blob/f31ed81983653919dd4fe77aee4b4859f610f1dc/apps/v4/registry/new-york-v4/ui/dialog.tsx
+    label: shadcn/ui v4 new-york Dialog Content close baseline
 inherits:
   prototypes:
     - id: P-BASE-DIALOG-CLOSE
@@ -44,5 +47,5 @@ revisions:
     summary: Added the independent accessible X close surface and preset mapping.
   - version: 0.2.0-rc.5
     change: revised
-    summary: Required the generated default CloseIcon to connect only after its Dialog parent context exists.
+    summary: Required context-safe preset connection, pinned placement, and a generated visible focus ring for the default CloseIcon.
 tags: [prototype, shadcn, dialog, close, icon, preset]

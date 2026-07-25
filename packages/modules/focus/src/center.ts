@@ -173,7 +173,27 @@ export class FocusCenter {
       if (focusable.disabled) return false;
       return this.isDescendantOf(entry, scope);
     });
-    return members.sort((a, b) => this.compareEntries(a, b));
+    return this.dedupeSharedHostTargets(members.sort((a, b) => this.compareEntries(a, b)));
+  }
+
+  private dedupeSharedHostTargets(entries: FocusCenterEntry[]): FocusCenterEntry[] {
+    const deduped: FocusCenterEntry[] = [];
+    for (const entry of entries) {
+      const target = entry.getRootTarget();
+      const existingIndex = target
+        ? deduped.findIndex((candidate) => candidate.getRootTarget() === target)
+        : -1;
+      if (existingIndex < 0) {
+        deduped.push(entry);
+        continue;
+      }
+
+      const existing = deduped[existingIndex]!;
+      if (this.isDescendantOf(entry, existing)) {
+        deduped[existingIndex] = entry;
+      }
+    }
+    return deduped;
   }
 
   private requestFocusAllowed(entry: FocusCenterEntry): boolean {
@@ -369,7 +389,7 @@ export class FocusCenter {
       return resolved === provider.instance;
     });
 
-    return members.sort((a, b) => this.compareEntries(a, b));
+    return this.dedupeSharedHostTargets(members.sort((a, b) => this.compareEntries(a, b)));
   }
 
   focusInRoving(

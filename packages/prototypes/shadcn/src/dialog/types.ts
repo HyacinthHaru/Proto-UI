@@ -25,9 +25,7 @@ export type ShadcnDialogRootProps = DialogRootProps;
 export type ShadcnDialogRootExposes = DialogRootExposes;
 export type ShadcnDialogRootAsHookContract = DialogRootAsHookContract;
 
-export type ShadcnDialogTriggerProps = DialogTriggerProps & {
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
-};
+export type ShadcnDialogTriggerProps = DialogTriggerProps;
 export type ShadcnDialogTriggerExposes = DialogTriggerExposes;
 export type ShadcnDialogTriggerAsHookContract = DialogTriggerAsHookContract;
 

@@ -12,16 +12,17 @@ const dialogCloseIcon = definePrototype<ShadcnDialogCloseProps, ShadcnDialogClos
     def.a11y.name('Close');
     def.feedback.style.use(
       tw(
-        'absolute right-0 top-4 inline-flex size-8 items-center justify-center rounded-sm transition-all outline-none'
+        'absolute right-4 top-4 inline-flex items-center justify-center rounded-sm opacity-70 transition-opacity outline-none ring-offset-0'
       )
     );
     def.rule({
       when: (w) => w.state(hovered).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-muted')),
+      intent: (i) => i.feedback.style.use(tw('opacity-100')),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),
-      intent: (i) => i.feedback.style.use(tw('ring-3 ring-ring/50')),
+      intent: (i) =>
+        i.feedback.style.use(tw('ring-2 ring-ring ring-offset-2 ring-offset-background')),
     });
     def.rule({
       when: (w) => w.state(disabled).eq(true),

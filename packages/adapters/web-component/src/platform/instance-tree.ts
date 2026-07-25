@@ -15,6 +15,7 @@ export const {
   getLogicalPrototype,
   setLogicalEventRouteOwner,
   getLogicalEventRouteOwner,
+  getLogicalEventRouteSurfaceForTarget,
   getLogicalTriggerSurfaceOwner,
   getLogicalTriggerSurfaceRoot,
   subscribeLogicalTriggerSurface,

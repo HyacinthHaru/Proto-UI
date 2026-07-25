@@ -77,6 +77,7 @@ export class EventModuleImpl extends ModuleBase {
   private readonly prototypeName: string;
 
   private overriddenRootTarget: EventTarget | null = null;
+  private overriddenSemanticRootTarget: EventTarget | null = null;
 
   private lastDispatch: EventDispatch | null = null;
   private isBound = false;
@@ -152,6 +153,17 @@ export class EventModuleImpl extends ModuleBase {
       });
     }
     this.overriddenRootTarget = target;
+  }
+
+  redirectSemanticRoot(target: EventTarget) {
+    this.ensureSetup('def.event.redirectSemanticRoot');
+    if (!isEventTargetLike(target)) {
+      throw illegalEventArg(`[Event] redirectSemanticRoot() requires an EventTarget-like object.`, {
+        prototypeName: this.prototypeName,
+        target,
+      });
+    }
+    this.overriddenSemanticRootTarget = target;
   }
 
   on(type: EventTypeV0, options?: any): EventListenerToken {
@@ -275,13 +287,7 @@ export class EventModuleImpl extends ModuleBase {
       ? this.caps.get(EVENT_GLOBAL_TARGET_CAP)
       : undefined;
 
-    const root = this.overriddenRootTarget ?? rootGetter?.() ?? null;
-
-    if (needsRoot && !root) {
-      throw illegalEventTarget(`[Event] root target unavailable during bind().`, {
-        prototypeName: this.prototypeName,
-      });
-    }
+    const root = rootGetter?.() ?? null;
 
     const global = needsGlobal ? (globalGetter?.() ?? null) : null;
     if (needsGlobal && !global) {
@@ -292,9 +298,20 @@ export class EventModuleImpl extends ModuleBase {
 
     this.lastDispatch = dispatch;
 
-    this.kernel.bindAll(dispatch, (kind) =>
-      kind === 'root' ? (root as EventTarget) : (global as EventTarget)
-    );
+    this.kernel.bindAll(dispatch, (kind, type) => {
+      if (kind === 'global') return global as EventTarget;
+      const target =
+        this.overriddenRootTarget ??
+        (String(type).startsWith('host:') ? null : this.overriddenSemanticRootTarget) ??
+        root;
+      if (!target) {
+        throw illegalEventTarget(`[Event] root target unavailable during bind().`, {
+          prototypeName: this.prototypeName,
+          type,
+        });
+      }
+      return target;
+    });
     this.isBound = true;
   }
 

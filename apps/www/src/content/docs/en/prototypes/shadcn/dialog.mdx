@@ -18,7 +18,7 @@ import PrototypePreviewer from '@/components/PrototypePreviewer/PrototypePreview
 The shadcn dialog family provides the styled building blocks for modal dialogs.
 
 - **shadcn-dialog-root**: Holds the `open` state and provides context to all child parts.
-- **shadcn-dialog-trigger**: Opens or toggles the dialog on click.
+- **shadcn-dialog-trigger**: An unstyled semantic trigger. Nest a Button inside it when a button surface should open the dialog.
 - **shadcn-dialog-mask**: Renders the backdrop mask and follows the open state for enter/leave transitions.
 - **shadcn-dialog-content**: Handles focus trapping, overlay dismissal strategies (ESC, outside press), and enter/leave transitions. The generated convenience facade appends a replaceable default CloseIcon.
 - **shadcn-dialog-content-raw**: The generated raw facade without preset materialization.
@@ -32,5 +32,7 @@ The shadcn dialog family provides the styled building blocks for modal dialogs.
 Pass `alert` to `shadcn-dialog-content` to turn it into an alert dialog: it disables outside-press dismissal while keeping ESC close.
 
 The generated Content preset distinguishes three states. With no override, it creates a CloseIcon. A direct CloseIcon child (or React `close` prop / Vue `#close` slot) replaces that default. React `close={null}`, an empty Vue `#close` slot, or Web Component `data-pui-no-default-close` explicitly omits it. Use `ShadcnDialogContentRaw` when no preset behavior is wanted.
+
+Preset recipes are authored by the prototype library in `packages/prototypes/shadcn/src/component-presets.ts`. They declare component/part identity and replacement policy only; they do not contain visual tokens. The CLI consumes a checked generated projection and remains responsible for host-specific materialization.
 
 Dialog does not prescribe a Confirm or Save action. For validation or persistence, keep an ordinary Button and call `dialogRef.current?.getExposes().close('save')` after the operation succeeds. Adapter refs expose scoped methods directly, so callers do not need to enter an internal callback scope manually.

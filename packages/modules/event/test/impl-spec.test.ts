@@ -11,7 +11,7 @@ function makeDispatch() {
 }
 
 describe('EventModuleImpl (contract-ish)', () => {
-  it('setup-only: on/onGlobal/off/redirectRoot/token.desc throw after setup', () => {
+  it('setup-only: on/onGlobal/off/redirectRoot/redirectSemanticRoot/token.desc throw after setup', () => {
     const root = new FakeEventTarget();
     const sys = createSysCaps();
 
@@ -32,6 +32,7 @@ describe('EventModuleImpl (contract-ish)', () => {
     expect(() => impl.onGlobal('key.down' as any)).toThrow();
     expect(() => impl.off(t as any)).toThrow();
     expect(() => (impl as any).redirectRoot(root as any)).toThrow();
+    expect(() => (impl as any).redirectSemanticRoot(root as any)).toThrow();
     expect(() => t.desc('x')).toThrow();
   });
 
@@ -175,6 +176,31 @@ describe('EventModuleImpl (contract-ish)', () => {
     expect(rootA.count('press.commit')).toBe(0);
     expect(rootB.count('press.commit')).toBe(1);
     expect(global.count('key.down')).toBe(1);
+  });
+
+  it('redirectSemanticRoot(): semantic bindings move while host bindings stay local', () => {
+    const local = new FakeEventTarget();
+    const semantic = new FakeEventTarget();
+    const sys = createSysCaps();
+    const caps = makeCaps({
+      sys,
+      getRootTarget: () => local as any,
+      getGlobalTarget: () => local as any,
+    });
+    const impl = new EventModuleImpl(caps, 'p-x');
+
+    sys.__setExecPhase('setup');
+    impl.redirectSemanticRoot(semantic as any);
+    impl.on('press.commit' as any);
+    impl.on('host:focus' as any);
+
+    sys.__setExecPhase('callback');
+    impl.bind(makeDispatch().dispatch);
+
+    expect(semantic.count('press.commit')).toBe(1);
+    expect(semantic.count('host:focus')).toBe(0);
+    expect(local.count('press.commit')).toBe(0);
+    expect(local.count('host:focus')).toBe(1);
   });
 
   it('unmounted phase triggers cleanupAll()', () => {

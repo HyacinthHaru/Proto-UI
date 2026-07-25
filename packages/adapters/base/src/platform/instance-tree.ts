@@ -124,14 +124,17 @@ export function createInstanceTreeMarkers(
   const INSTANCE_BY_TOKEN = new WeakMap<LogicalInstanceToken, HTMLElement>();
   const PROTO_BY_TOKEN = new WeakMap<LogicalInstanceToken, Prototype<any>>();
   const PARENT_BY_TOKEN = new WeakMap<LogicalInstanceToken, LogicalInstanceToken>();
+  const CHILDREN_BY_TOKEN = new WeakMap<LogicalInstanceToken, Set<LogicalInstanceToken>>();
   const ROUTE_OWNER_BY_TOKEN = new WeakMap<LogicalInstanceToken, LogicalInstanceToken>();
   const EVENT_TARGET_BY_TOKEN = new WeakMap<LogicalInstanceToken, DynamicEventTarget>();
+  const BOUND_EVENT_TARGET_BY_TOKEN = new WeakMap<LogicalInstanceToken, EventTarget>();
   const TRIGGER_MEMBERS_BY_OWNER = new WeakMap<LogicalInstanceToken, Set<LogicalInstanceToken>>();
   const TRIGGER_SURFACE_BY_OWNER = new WeakMap<LogicalInstanceToken, LogicalInstanceToken>();
   const TRIGGER_SURFACE_LISTENERS = new WeakMap<LogicalInstanceToken, Set<() => void>>();
   const TRIGGER_TOKENS = new WeakSet<LogicalInstanceToken>();
 
   function notifyTriggerSurface(owner: LogicalInstanceToken): void {
+    syncTriggerGroupEventTargets(owner);
     const members = TRIGGER_MEMBERS_BY_OWNER.get(owner);
     if (!members) return;
     const surface = TRIGGER_SURFACE_BY_OWNER.get(owner);
@@ -139,6 +142,12 @@ export function createInstanceTreeMarkers(
       const memberRoot = INSTANCE_BY_TOKEN.get(member);
       if (memberRoot && member !== surface) options.releaseTriggerSurface?.(memberRoot);
       for (const listener of TRIGGER_SURFACE_LISTENERS.get(member) ?? []) listener();
+    }
+  }
+
+  function syncTriggerGroupEventTargets(owner: LogicalInstanceToken): void {
+    for (const member of TRIGGER_MEMBERS_BY_OWNER.get(owner) ?? []) {
+      syncLogicalEventTarget(member);
     }
   }
 
@@ -181,8 +190,10 @@ export function createInstanceTreeMarkers(
     }
   }
 
-  function unregisterTriggerMember(token: LogicalInstanceToken): void {
-    const owner = ROUTE_OWNER_BY_TOKEN.get(token) ?? token;
+  function unregisterTriggerMember(
+    token: LogicalInstanceToken,
+    owner: LogicalInstanceToken = ROUTE_OWNER_BY_TOKEN.get(token) ?? token
+  ): void {
     const members = TRIGGER_MEMBERS_BY_OWNER.get(owner);
     if (!members?.delete(token)) return;
     if (TRIGGER_SURFACE_BY_OWNER.get(owner) !== token) return;
@@ -193,6 +204,68 @@ export function createInstanceTreeMarkers(
     const fallback = connected.at(-1) ?? Array.from(members).at(-1) ?? owner;
     TRIGGER_SURFACE_BY_OWNER.set(owner, fallback);
     notifyTriggerSurface(owner);
+  }
+
+  function syncLogicalEventTarget(token: LogicalInstanceToken): void {
+    const bridge = getLogicalEventTarget(token) as DynamicEventTarget;
+    const owner = ROUTE_OWNER_BY_TOKEN.get(token) ?? token;
+    const surface = TRIGGER_SURFACE_BY_OWNER.get(owner) ?? owner;
+    if (surface !== token) {
+      bridge.setTarget(getLogicalEventTarget(surface));
+      return;
+    }
+    bridge.setTarget(BOUND_EVENT_TARGET_BY_TOKEN.get(token) ?? null);
+  }
+
+  function updateTriggerRouteOwner(token: LogicalInstanceToken, owner: LogicalInstanceToken): void {
+    const previousOwner = ROUTE_OWNER_BY_TOKEN.get(token) ?? token;
+    if (previousOwner !== owner) unregisterTriggerMember(token, previousOwner);
+    ROUTE_OWNER_BY_TOKEN.set(token, owner);
+    TRIGGER_TOKENS.add(token);
+    registerTriggerMember(token, owner, true);
+    (token as Record<symbol, unknown>)[TRIGGER_OWNER_MARK] = owner;
+    projectRouteOwner(token);
+    syncLogicalEventTarget(token);
+    notifyTriggerSurface(owner);
+  }
+
+  function recomputeTriggerRoute(token: LogicalInstanceToken): void {
+    if (!TRIGGER_TOKENS.has(token)) return;
+    let owner = token;
+    let parent = PARENT_BY_TOKEN.get(token);
+    while (parent && TRIGGER_TOKENS.has(parent)) {
+      owner = parent;
+      parent = PARENT_BY_TOKEN.get(parent);
+    }
+    updateTriggerRouteOwner(token, owner);
+  }
+
+  function recomputeTriggerBranch(token: LogicalInstanceToken): void {
+    recomputeTriggerRoute(token);
+    for (const child of CHILDREN_BY_TOKEN.get(token) ?? []) {
+      recomputeTriggerBranch(child);
+    }
+  }
+
+  function setLogicalParentInternal(
+    token: LogicalInstanceToken,
+    parent: LogicalInstanceToken | null
+  ): void {
+    const previous = PARENT_BY_TOKEN.get(token);
+    if (previous === parent || (!previous && !parent)) return;
+    if (previous) CHILDREN_BY_TOKEN.get(previous)?.delete(token);
+    if (parent) {
+      PARENT_BY_TOKEN.set(token, parent);
+      let children = CHILDREN_BY_TOKEN.get(parent);
+      if (!children) {
+        children = new Set();
+        CHILDREN_BY_TOKEN.set(parent, children);
+      }
+      children.add(token);
+    } else {
+      PARENT_BY_TOKEN.delete(token);
+    }
+    recomputeTriggerBranch(token);
   }
 
   function projectRouteOwner(token: LogicalInstanceToken): void {
@@ -217,8 +290,7 @@ export function createInstanceTreeMarkers(
     token: LogicalInstanceToken,
     parent: LogicalInstanceToken | null
   ): void {
-    if (parent) PARENT_BY_TOKEN.set(token, parent);
-    else PARENT_BY_TOKEN.delete(token);
+    setLogicalParentInternal(token, parent);
   }
 
   function markProtoInstance(
@@ -241,7 +313,14 @@ export function createInstanceTreeMarkers(
 
     const parentRoot = getProtoParent(el);
     const parentToken = parentRoot ? TOKEN_BY_INSTANCE.get(parentRoot) : undefined;
-    if (parentToken) PARENT_BY_TOKEN.set(token, parentToken);
+    if (parentToken) setLogicalParentInternal(token, parentToken);
+    for (const descendant of el.querySelectorAll<HTMLElement>('*')) {
+      const descendantToken = TOKEN_BY_INSTANCE.get(descendant);
+      if (!descendantToken) continue;
+      const nearestParent = getProtoParent(descendant);
+      if (nearestParent !== el) continue;
+      setLogicalParentInternal(descendantToken, token);
+    }
     return token;
   }
 
@@ -260,12 +339,8 @@ export function createInstanceTreeMarkers(
     token: LogicalInstanceToken,
     owner: LogicalInstanceToken
   ): void {
-    ROUTE_OWNER_BY_TOKEN.set(token, owner);
-    TRIGGER_TOKENS.add(token);
-    registerTriggerMember(token, owner, true);
-    (token as Record<symbol, unknown>)[TRIGGER_OWNER_MARK] = owner;
-    projectRouteOwner(token);
-    notifyTriggerSurface(owner);
+    updateTriggerRouteOwner(token, owner);
+    for (const child of CHILDREN_BY_TOKEN.get(token) ?? []) recomputeTriggerBranch(child);
     queueMicrotask(() => {
       notifyTriggerSurface(owner);
       queueMicrotask(() => notifyTriggerSurface(owner));
@@ -274,6 +349,39 @@ export function createInstanceTreeMarkers(
 
   function getLogicalEventRouteOwner(token: LogicalInstanceToken): LogicalInstanceToken {
     return ROUTE_OWNER_BY_TOKEN.get(token) ?? token;
+  }
+
+  function getLogicalEventRouteSurfaceForTarget(
+    target: EventTarget | null
+  ): LogicalInstanceToken | null {
+    let cur: Node | null = target instanceof Node ? target : null;
+    const visited = new Set<Node>();
+    while (cur) {
+      if (visited.has(cur)) return null;
+      visited.add(cur);
+
+      if (typeof ShadowRoot !== 'undefined' && cur instanceof ShadowRoot) {
+        cur = cur.host;
+        continue;
+      }
+
+      if (cur instanceof HTMLElement) {
+        const token = TOKEN_BY_INSTANCE.get(cur);
+        if (token) {
+          const owner = ROUTE_OWNER_BY_TOKEN.get(token) ?? token;
+          return TRIGGER_SURFACE_BY_OWNER.get(owner) ?? token;
+        }
+
+        const linkedParent = readProtoParentMark(cur) ?? PROTO_PARENT_BY_INSTANCE.get(cur) ?? null;
+        if (linkedParent && linkedParent !== cur) {
+          cur = linkedParent;
+          continue;
+        }
+      }
+
+      cur = cur.parentNode;
+    }
+    return null;
   }
 
   function getLogicalTriggerSurfaceOwner(token: LogicalInstanceToken): LogicalInstanceToken {
@@ -308,13 +416,16 @@ export function createInstanceTreeMarkers(
   }
 
   function bindLogicalEventTarget(token: LogicalInstanceToken, target: EventTarget): void {
-    (getLogicalEventTarget(token) as DynamicEventTarget).setTarget(target);
+    BOUND_EVENT_TARGET_BY_TOKEN.set(token, target);
+    syncLogicalEventTarget(token);
   }
 
   function unbindLogicalEventTarget(token: LogicalInstanceToken, target?: EventTarget): void {
     const bridge = EVENT_TARGET_BY_TOKEN.get(token);
-    if (!bridge || (target && bridge.getTarget() !== target)) return;
-    bridge.setTarget(null);
+    const bound = BOUND_EVENT_TARGET_BY_TOKEN.get(token);
+    if (!bridge || (target && bound !== target)) return;
+    BOUND_EVENT_TARGET_BY_TOKEN.delete(token);
+    syncLogicalEventTarget(token);
   }
 
   const PROTO_PARENT_BY_INSTANCE = new WeakMap<HTMLElement, HTMLElement>();
@@ -332,8 +443,7 @@ export function createInstanceTreeMarkers(
     if (!token) return;
     const parentRoot = parent ? (isProtoInstance(parent) ? parent : getProtoParent(parent)) : null;
     const parentToken = parentRoot ? TOKEN_BY_INSTANCE.get(parentRoot) : undefined;
-    if (parentToken) PARENT_BY_TOKEN.set(token, parentToken);
-    else PARENT_BY_TOKEN.delete(token);
+    setLogicalParentInternal(token, parentToken ?? null);
   }
 
   /** Removes a temporary host projection without changing logical ownership. */
@@ -404,6 +514,7 @@ export function createInstanceTreeMarkers(
     getLogicalPrototype,
     setLogicalEventRouteOwner,
     getLogicalEventRouteOwner,
+    getLogicalEventRouteSurfaceForTarget,
     getLogicalTriggerSurfaceOwner,
     getLogicalTriggerSurfaceRoot,
     subscribeLogicalTriggerSurface,

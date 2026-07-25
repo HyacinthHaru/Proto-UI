@@ -1,31 +1,27 @@
 id: P-SHADCN-DIALOG-TRIGGER
 type: prototype
-title: Shadcn Dialog Trigger inherits Base command behavior and adds button variants
+title: Shadcn Dialog Trigger inherits Base command behavior without a prescribed visual surface
 status: draft
 since: 0.2.0-rc.0
-summary: Shadcn Dialog Trigger inherits Base open command, disabled gating, request, and accessibility behavior and adds six visual variants and current interaction styling.
+summary: Shadcn Dialog Trigger remains an unstyled semantic trigger so callers can compose the intended Button or other interaction surface explicitly.
 statement:
   zh-CN: >-
-    Shadcn Dialog Trigger 是 `P-BASE-DIALOG-TRIGGER` 之上的 direct part，保留 command、disabled、open request 与 a11y，并增加六种 button-like `variant`、基础 surface 及 inherited/a11y state-driven feedback。upstream DialogTrigger 本身不提供这些默认 styles；`asChild` 明确不提供。
+    Shadcn Dialog Trigger 是 `P-BASE-DIALOG-TRIGGER` 之上的无样式 direct part，保留 command、disabled、open request 与 a11y behavior，但不声明 Button variant 或视觉 tokens。需要 Button 外观时必须显式嵌套 Button，并依 trigger-group 规则只形成一个宿主 focus/a11y surface；upstream `asChild` 仍明确不提供。
 
 
   en: >-
-    Shadcn Dialog Trigger is a direct part over `P-BASE-DIALOG-TRIGGER`. It retains command, disabled, open-request, and accessibility behavior while adding six button-like `variant` values, a base surface, and feedback driven by inherited and accessibility state. Upstream DialogTrigger itself provides no such default styles; `asChild` is explicitly unavailable.
+    Shadcn Dialog Trigger is an unstyled direct part over `P-BASE-DIALOG-TRIGGER`. It retains command, disabled, open-request, and accessibility behavior without declaring Button variants or visual tokens. A Button appearance must be composed through an explicit nested Button and form one host focus and accessibility surface under trigger-group rules; upstream `asChild` remains explicitly unavailable.
 
 
 criteria:
   - id: P-SHADCN-DIALOG-TRIGGER-UPSTREAM-IDENTITY
     text:
-      {
-        zh-CN: Trigger 必须沿用固定 Dialog revision/path 并明确其非官方 projection 身份。,
-        en: Trigger must use the pinned Dialog revision and path and identify its unofficial projection status.,
-      }
+      zh-CN: Trigger 必须沿用固定 Dialog revision/path 并明确其非官方 projection 身份。
+      en: Trigger must use the pinned Dialog revision and path and identify its unofficial projection status.
   - id: P-SHADCN-DIALOG-TRIGGER-BASE-INHERITANCE
     text:
-      {
-        zh-CN: '`shadcn-dialog-trigger` 必须继承 `P-BASE-DIALOG-TRIGGER` 并调用 `asDialogTrigger()`。',
-        en: '`shadcn-dialog-trigger` must inherit `P-BASE-DIALOG-TRIGGER` and call `asDialogTrigger()`.',
-      }
+      zh-CN: '`shadcn-dialog-trigger` 必须继承 `P-BASE-DIALOG-TRIGGER` 并调用 `asDialogTrigger()`。'
+      en: '`shadcn-dialog-trigger` must inherit `P-BASE-DIALOG-TRIGGER` and call `asDialogTrigger()`.'
     references:
       prototypes:
         - id: P-BASE-DIALOG-TRIGGER
@@ -38,113 +34,66 @@ criteria:
             ]
   - id: P-SHADCN-DIALOG-TRIGGER-CURRENT-BASE-DEVIATIONS
     text:
-      {
-        zh-CN: 当前实现不反转 inherited command、disabled、request 或 a11y guarantee；props/styles 是视觉增量。,
-        en: The current implementation reverses no inherited command,
-        disabled,
-        request,
-        or accessibility guarantee; props and styles are visual deltas.,
-      }
+      zh-CN: 当前实现不反转 inherited command、disabled、request 或 a11y guarantee，也不添加视觉增量。
+      en: The current implementation reverses no inherited command, disabled, request, or accessibility guarantee and adds no visual delta.
   - id: P-SHADCN-DIALOG-TRIGGER-DIRECT-ENTRY
     text:
-      {
-        zh-CN: 当前 Trigger protocol 以 `shadcn-dialog-trigger` direct prototype 公开。,
-        en: The current Trigger protocol is exposed as the `shadcn-dialog-trigger` direct prototype.,
-      }
-  - id: P-SHADCN-DIALOG-TRIGGER-VARIANT-PROP
+      zh-CN: 当前 Trigger protocol 以 `shadcn-dialog-trigger` direct prototype 公开。
+      en: The current Trigger protocol is exposed as the `shadcn-dialog-trigger` direct prototype.
+  - id: P-SHADCN-DIALOG-TRIGGER-UNSTYLED-SURFACE
     text:
-      {
-        zh-CN: variant 必须提供 default/destructive/outline/secondary/ghost/link、默认 default，并投射对应 surface。,
-        en: Variant must provide default,
-        destructive,
-        outline,
-        secondary,
-        ghost,
-        and link,
-        default to default,
-        and project the corresponding surface.,
-      }
-  - id: P-SHADCN-DIALOG-TRIGGER-CURRENT-VISUAL-SURFACE
+      zh-CN: Trigger 不得声明 Button variant 或默认视觉 tokens；需要视觉 control 时必须显式组合 Button 或其他 trigger prototype。
+      en: Trigger must declare neither Button variants nor default visual tokens; a visual control requires an explicitly composed Button or another trigger prototype.
+  - id: P-SHADCN-DIALOG-TRIGGER-COMPOSITION-BOUNDARY
     text:
-      {
-        zh-CN: Trigger 必须提供当前 compact button layout、border、typography、transition 与 outline tokens。,
-        en: Trigger must provide the current compact-button layout,
-        border,
-        typography,
-        transition,
-        and outline tokens.,
-      }
-  - id: P-SHADCN-DIALOG-TRIGGER-STATE-DRIVEN-STYLES
-    text:
-      {
-        zh-CN: focusVisible、pressed、hovered、expanded、invalid 与 disabled visuals 必须从 inherited 或 accessibility state 派生。,
-        en: FocusVisible,
-        pressed,
-        hovered,
-        expanded,
-        invalid,
-        and disabled visuals must derive from inherited or accessibility state.,
-      }
+      zh-CN: 显式嵌套 trigger 必须依 `D-TRIGGER-GROUP-SURFACE-0001` 只参与一次 focus-scope 导航、只投射一个宿主 focus/a11y surface，并让 pointer 与 keyboard activation 都打开同一个 Dialog behavior owner；关闭后必须恢复到该交互 surface。
+      en: An explicitly nested trigger must participate only once in focus-scope navigation, project one host focus and accessibility surface, route both pointer and keyboard activation to the same Dialog behavior owner, and receive restored focus after close under `D-TRIGGER-GROUP-SURFACE-0001`.
+    dependsOn:
+      decisions:
+        - id: D-TRIGGER-GROUP-SURFACE-0001
+          since: 0.2.0-rc.3
   - id: P-SHADCN-DIALOG-TRIGGER-COMPATIBILITY-SUBSET
     text:
-      {
-        zh-CN: 当前 variant/surface 之外的 upstream forwarding 差异集中在唯一 open question。,
-        en: Upstream forwarding differences beyond current variants and surface are centralized in one open question.,
-      }
+      zh-CN: 当前只对齐 upstream Trigger 的透明语义 wrapper；native/data-slot forwarding 差异仍在 compatibility question 内。
+      en: The current surface aligns only with upstream Trigger's transparent semantic wrapper; native and data-slot forwarding differences remain in the compatibility question.
   - id: P-SHADCN-DIALOG-TRIGGER-AS-CHILD-OMISSION
     text:
-      {
-        zh-CN: upstream Trigger props 中的 `asChild` 依共享决策省略。,
-        en: Upstream Trigger `asChild` is omitted under the shared decision.,
-      }
-    dependsOn: { decisions: [D-AS-CHILD-OMISSION-0001] }
+      zh-CN: upstream Trigger props 中的 `asChild` 依共享决策省略。
+      en: Upstream Trigger `asChild` is omitted under the shared decision.
+    dependsOn:
+      decisions: [D-AS-CHILD-OMISSION-0001]
 openQuestions:
   - id: P-SHADCN-DIALOG-TRIGGER-Q-UPSTREAM-DIFFERENCES
     question:
-      {
-        zh-CN: Trigger 的 button-like defaults 与 upstream transparent wrapper 应如何定位？,
-        en: How should Trigger's button-like defaults relate to the upstream transparent wrapper?,
-      }
+      zh-CN: 在不提供 `asChild` 的前提下，Trigger 还应支持哪些 upstream forwarding 能力？
+      en: Without providing `asChild`, which upstream forwarding capabilities should Trigger still support?
     context:
-      {
-        zh-CN: intentional deviation 是省略 `asChild`。upstream 只添加 data-slot 并转发 props；当前六 variant 与 state styles 是额外设计，且未通过继承 `P-SHADCN-BUTTON` 获得。className/native/data-slot forwarding、与 Button visual convention 的同步责任均待评审。,
-        en: The intentional deviation is omission of `asChild`. Upstream only adds data-slot and forwards props; current six variants and state styles are extra design and are not inherited from `P-SHADCN-BUTTON`. Forwarding and responsibility for synchronizing Button visual conventions remain under review.,
-      }
+      zh-CN: Button-like defaults 已移除；剩余差异集中在 className/native/data-slot forwarding 与宿主组合 ergonomics，具体能力在实现与测试前不得扩大 passing guarantee。
+      en: Button-like defaults have been removed. Remaining differences concern className, native and data-slot forwarding, and host composition ergonomics; the passing guarantee must not expand before implementation and tests.
     blocks: [shadcn dialog trigger parity roadmap]
 sources:
   - path: packages/prototypes/shadcn/src/dialog/trigger.proto.ts
   - path: packages/prototypes/shadcn/test/dialog.test.ts
+  - path: internal/records/2026-07-25-switch-dialog-prototype-quality-and-preset-management.zh-CN.md
   - path: https://github.com/shadcn-ui/ui/blob/f31ed81983653919dd4fe77aee4b4859f610f1dc/apps/v4/registry/new-york-v4/ui/dialog.tsx
     label: shadcn/ui v4 new-york DialogTrigger pinned baseline
 dependsOn:
-  contracts:
+  contracts: [C-AS-HOOK-0001]
+  decisions:
     [
-      C-AS-HOOK-0001,
-      C-PROPS-0001,
-      C-PROPS-0003,
-      C-RULE-WHEN-0002,
-      C-RULE-INTENT-FEEDBACK-STYLE-0001,
+      D-PROTOTYPE-ENTITY-NAMING-0001,
+      D-AS-CHILD-OMISSION-0001,
+      { id: D-TRIGGER-GROUP-SURFACE-0001, since: 0.2.0-rc.3 },
     ]
-  decisions: [D-PROTOTYPE-ENTITY-NAMING-0001, D-AS-CHILD-OMISSION-0001]
   prototypes: [P-SHADCN-DIALOG]
 inherits:
   prototypes:
-    [
-      {
-        id: P-BASE-DIALOG-TRIGGER,
-        note: Default inherited dialog-open command protocol; explicit setup-time negative patches must be declared.,
-      },
-    ]
-verifies: { tests: [T-SHADCN-DIALOG-TRIGGER-0001] }
+    - id: P-BASE-DIALOG-TRIGGER
+      note: Default inherited dialog-open command protocol; explicit setup-time negative patches must be declared.
+verifies:
+  tests: [T-SHADCN-DIALOG-TRIGGER-0001]
 revisions:
-  [
-    {
-      version: 0.2.0-rc.0,
-      change: introduced,
-      summary: Introduced Shadcn Dialog Trigger delta cataloging with button variants,
-      state styles,
-      asChild omission,
-      and centralized differences.,
-    },
-  ]
-tags: [prototype, shadcn, dialog, trigger, upstream-derived, delta, compatibility, visual]
+  - version: 0.2.0-rc.0
+    change: introduced
+    summary: Introduced Shadcn Dialog Trigger delta cataloging with button variants, state styles, asChild omission, and centralized differences.
+tags: [prototype, shadcn, dialog, trigger, upstream-derived, delta, compatibility, semantic]

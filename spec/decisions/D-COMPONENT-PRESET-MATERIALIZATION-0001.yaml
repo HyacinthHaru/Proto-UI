@@ -32,8 +32,8 @@ criteria:
       en: Automatic replacement only needs to recognize named preset inputs or statically identifiable direct parts; the materializer must not guess about descendants hidden inside opaque user components.
   - id: D-COMPONENT-PRESET-MATERIALIZATION-0001-E
     text:
-      zh-CN: Convenience preset 与 raw Root/part facades 必须同时保留，且 preset 产物必须通过对应 anatomy family/profile validation。
-      en: The convenience preset and raw Root/part facades must coexist, and preset output must pass the corresponding anatomy family or profile validation.
+      zh-CN: Convenience preset 与 raw Root/part facades 必须同时保留，且 preset 产物必须通过对应 anatomy family/profile validation。Prototype-library-authored recipe 只声明组合 identity 与替换策略，不得携带视觉 tokens；CLI 内的宿主 materialization 配置必须是该 recipe 的受检查生成投影，不得成为第二套手写真相。
+      en: The convenience preset and raw Root/part facades must coexist, and preset output must pass the corresponding anatomy family or profile validation. A prototype-library-authored recipe declares only composition identity and replacement policy and must not carry visual tokens; host materialization configuration in the CLI must be a checked generated projection of that recipe rather than a second handwritten source of truth.
   - id: D-COMPONENT-PRESET-MATERIALIZATION-0001-F
     text:
       zh-CN: 若宿主生命周期不允许在 constructor 中安全创建默认 part，materializer 可以先建立 Root runtime/context 再连接已解析的默认 part；不得让默认 part 先连接后再补建其 parent context，也不得通过失败后重挂载来恢复。
@@ -43,6 +43,8 @@ sources:
   - path: internal/records/2026-07-25-rc4-dialog-close-icon-and-switch-trial-regressions.zh-CN.md
   - path: spec/contracts/C-ANATOMY-0001.yaml
   - path: spec/contracts/C-ANATOMY-0010.yaml
+  - path: packages/prototypes/shadcn/src/component-presets.ts
+  - path: packages/cli/src/registry/shadcn-component-presets.generated.ts
   - path: packages/cli/src/registry/components.ts
   - path: packages/cli/src/services/codegen.ts
 relates:

@@ -36,6 +36,12 @@ describe('adapter-vue: nested trigger routing', () => {
     expect(roots[1]!.tabIndex).toBe(0);
     expect(roots[1]!.getAttribute('role')).toBe('button');
 
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    roots[1]!.focus();
+    await flushVue();
+    expect(roots[1]!.hasAttribute('data-focus-visible')).toBe(true);
+    expect(roots[0]!.hasAttribute('data-focus-visible')).toBe(false);
+
     roots[1]!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await flushVue();
 

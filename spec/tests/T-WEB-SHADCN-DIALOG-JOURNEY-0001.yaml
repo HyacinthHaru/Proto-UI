@@ -1,0 +1,80 @@
+id: T-WEB-SHADCN-DIALOG-JOURNEY-0001
+type: test
+title: Shared Web adapter Shadcn Dialog interaction journey
+status: draft
+since: 0.2.0-rc.5
+summary: Runs the exact Demo Matrix Shadcn Dialog composition through one DOM-based pointer, keyboard, focus-loop, close, restore, and re-entry journey for every official Web adapter.
+cases:
+  - id: T-WEB-SHADCN-DIALOG-JOURNEY-0001-CASE-SHARED-DOM
+    title: Every official Web adapter completes the same Dialog DOM interaction journey
+    covers:
+      - P-SHADCN-DIALOG-TRIGGER-COMPOSITION-BOUNDARY
+      - P-SHADCN-DIALOG-CLOSE-COMPOSITION-BOUNDARY
+      - P-SHADCN-DIALOG-CLOSE-ICON-SURFACE
+      - D-TRIGGER-GROUP-SURFACE-0001-F
+      - D-TRIGGER-GROUP-SURFACE-0001-G
+      - C-AS-FOCUS-SCOPE-0002-D
+      - C-AS-FOCUS-SCOPE-0002-G
+      - C-AS-FOCUS-SCOPE-0002-H
+      - C-AS-FOCUS-SCOPE-0002-I
+    expectation: wc-react-and-vue-pass-one-real-demo-dom-journey-without-duplicate-focus-surfaces-or-page-focus-loss
+    notes:
+      - Shared Web host observations are a necessary but insufficient signal of cross-host semantic consistency because an adapter also supplies the host capabilities being observed.
+      - The journey deliberately consumes the website demo definition instead of reconstructing a simplified adapter-specific fixture.
+implementations:
+  - id: web-conformance-shadcn-dialog-wc
+    kind: adapter-test
+    status: passing
+    path: packages/web-conformance/test/shadcn-dialog.journey.test.ts
+    required: true
+    consumesCases: [T-WEB-SHADCN-DIALOG-JOURNEY-0001-CASE-SHARED-DOM]
+    exercises: [P-SHADCN-DIALOG-TRIGGER, P-SHADCN-DIALOG-CLOSE, P-SHADCN-DIALOG-CLOSE-ICON]
+    notes:
+      - The wc parameter is mandatory in the shared official Web adapter matrix.
+  - id: web-conformance-shadcn-dialog-react
+    kind: adapter-test
+    status: passing
+    path: packages/web-conformance/test/shadcn-dialog.journey.test.ts
+    required: true
+    consumesCases: [T-WEB-SHADCN-DIALOG-JOURNEY-0001-CASE-SHARED-DOM]
+    exercises: [P-SHADCN-DIALOG-TRIGGER, P-SHADCN-DIALOG-CLOSE, P-SHADCN-DIALOG-CLOSE-ICON]
+    notes:
+      - The react parameter is mandatory in the shared official Web adapter matrix.
+  - id: web-conformance-shadcn-dialog-vue
+    kind: adapter-test
+    status: passing
+    path: packages/web-conformance/test/shadcn-dialog.journey.test.ts
+    required: true
+    consumesCases: [T-WEB-SHADCN-DIALOG-JOURNEY-0001-CASE-SHARED-DOM]
+    exercises: [P-SHADCN-DIALOG-TRIGGER, P-SHADCN-DIALOG-CLOSE, P-SHADCN-DIALOG-CLOSE-ICON]
+    notes:
+      - The vue parameter is mandatory in the shared official Web adapter matrix.
+verifies:
+  contracts:
+    - id: C-AS-FOCUS-SCOPE-0002
+      anchors:
+        - C-AS-FOCUS-SCOPE-0002-D
+        - C-AS-FOCUS-SCOPE-0002-G
+        - C-AS-FOCUS-SCOPE-0002-H
+        - C-AS-FOCUS-SCOPE-0002-I
+  decisions:
+    - id: D-TRIGGER-GROUP-SURFACE-0001
+      anchors:
+        - D-TRIGGER-GROUP-SURFACE-0001-F
+        - D-TRIGGER-GROUP-SURFACE-0001-G
+  prototypes:
+    - id: P-SHADCN-DIALOG-TRIGGER
+      anchors: [P-SHADCN-DIALOG-TRIGGER-COMPOSITION-BOUNDARY]
+    - id: P-SHADCN-DIALOG-CLOSE
+      anchors: [P-SHADCN-DIALOG-CLOSE-COMPOSITION-BOUNDARY]
+    - id: P-SHADCN-DIALOG-CLOSE-ICON
+      anchors: [P-SHADCN-DIALOG-CLOSE-ICON-SURFACE]
+exercises:
+  prototypes:
+    - P-SHADCN-DIALOG-CONTENT
+    - P-SHADCN-BUTTON
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Added the first shared scenario-level DOM conformance journey required for WC, React, and Vue.
+tags: [web, adapter, conformance, journey, e2e, shadcn, dialog, focus]

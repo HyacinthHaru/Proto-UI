@@ -103,11 +103,14 @@ export class EventKernel {
     return false;
   }
 
-  bindAll(dispatch: EventDispatch, getTarget: (kind: TargetKind) => EventTarget) {
+  bindAll(
+    dispatch: EventDispatch,
+    getTarget: (kind: TargetKind, type: EventTypeV0) => EventTarget
+  ) {
     for (const r of this.regs) {
       if (r.wrapper && r.boundTarget) continue;
 
-      const target = getTarget(r.kind);
+      const target = getTarget(r.kind, r.type);
       const wrapper = (ev: any) => dispatch(r.id, ev);
 
       target.addEventListener(r.type as any, wrapper as any, r.options as any);

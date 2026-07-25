@@ -190,6 +190,49 @@ describe('contract: adapter-web-component / event router mapping (v0)', () => {
     parent.remove();
   });
 
+  it('routes a nested native click by the logical event owner resolver', () => {
+    const parent = document.createElement('div');
+    const child = document.createElement('button');
+    const childLabel = document.createTextNode('Open');
+    const parentToken = {};
+    const childToken = {};
+    child.appendChild(childLabel);
+    parent.appendChild(child);
+    document.body.appendChild(parent);
+
+    const resolveEventRouteOwner = (target: EventTarget | null) => {
+      if (target === childLabel || target === child) return childToken;
+      if (target === parent) return parentToken;
+      return null;
+    };
+    const parentRouter = createWebProtoEventRouter({
+      rootEl: parent,
+      instanceToken: parentToken,
+      resolveEventRouteOwner,
+      globalEl: window,
+      isEnabled: () => true,
+    });
+    const childRouter = createWebProtoEventRouter({
+      rootEl: child,
+      instanceToken: childToken,
+      resolveEventRouteOwner,
+      globalEl: window,
+      isEnabled: () => true,
+    });
+    let parentCalls = 0;
+    let childCalls = 0;
+    parentRouter.rootTarget.addEventListener('press.commit', () => parentCalls++);
+    childRouter.rootTarget.addEventListener('press.commit', () => childCalls++);
+
+    child.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true, detail: 1 }));
+
+    expect(parentCalls).toBe(0);
+    expect(childCalls).toBe(1);
+    parentRouter.dispose();
+    childRouter.dispose();
+    parent.remove();
+  });
+
   it('isEnabled gate: disabled => MUST NOT emit', async () => {
     const el = document.createElement('div');
     const global = new EventTarget();

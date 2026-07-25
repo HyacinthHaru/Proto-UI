@@ -42,6 +42,7 @@ describe('adapter-base: logical instance tree', () => {
     const secondTarget = new EventTarget();
     const listener = vi.fn();
 
+    tree.setLogicalEventRouteOwner(parent, parent);
     tree.setLogicalEventRouteOwner(child, parent);
     const routeTarget = tree.getLogicalEventTarget(parent);
     routeTarget.addEventListener('press.commit', listener);
@@ -49,16 +50,16 @@ describe('adapter-base: logical instance tree', () => {
     firstTarget.dispatchEvent(new Event('press.commit'));
     expect(listener).not.toHaveBeenCalled();
 
-    tree.bindLogicalEventTarget(parent, firstTarget);
+    tree.bindLogicalEventTarget(child, firstTarget);
     firstTarget.dispatchEvent(new Event('press.commit'));
     expect(listener).toHaveBeenCalledOnce();
 
-    tree.bindLogicalEventTarget(parent, secondTarget);
+    tree.bindLogicalEventTarget(child, secondTarget);
     firstTarget.dispatchEvent(new Event('press.commit'));
     secondTarget.dispatchEvent(new Event('press.commit'));
     expect(listener).toHaveBeenCalledTimes(2);
 
-    tree.unbindLogicalEventTarget(parent, secondTarget);
+    tree.unbindLogicalEventTarget(child, secondTarget);
     secondTarget.dispatchEvent(new Event('press.commit'));
     expect(listener).toHaveBeenCalledTimes(2);
   });
@@ -97,5 +98,30 @@ describe('adapter-base: logical instance tree', () => {
     expect(tree.getLogicalTriggerSurfaceOwner(parent)).toBe(child);
     expect(tree.getLogicalTriggerSurfaceRoot(parent)).toBe(childRoot);
     expect(listener).toHaveBeenCalled();
+  });
+
+  it('reconciles a child trigger when its parent host materializes later', () => {
+    const tree = createInstanceTreeMarkers('@proto.ui/test/late-trigger-parent-tree');
+    const parent = tree.createLogicalInstance({ name: 'parent', setup: () => undefined });
+    const child = tree.createLogicalInstance({ name: 'child', setup: () => undefined });
+    const parentRoot = document.createElement('div');
+    const childRoot = document.createElement('button') as unknown as HTMLElement &
+      Record<symbol, unknown>;
+    const childLabel = document.createTextNode('Open');
+    const ownerMark = Symbol.for('@proto.ui/as-trigger/confirm-owner');
+
+    childRoot.appendChild(childLabel);
+    parentRoot.appendChild(childRoot);
+    tree.markProtoInstance(childRoot, { name: 'child', setup: () => undefined }, child);
+    tree.setLogicalEventRouteOwner(child, child);
+    tree.markProtoInstance(parentRoot, { name: 'parent', setup: () => undefined }, parent);
+    tree.setLogicalEventRouteOwner(parent, parent);
+
+    expect(tree.getLogicalParent(child)).toBe(parent);
+    expect(tree.getLogicalEventRouteOwner(child)).toBe(parent);
+    expect(tree.getLogicalEventRouteSurfaceForTarget(childRoot)).toBe(child);
+    expect(tree.getLogicalEventRouteSurfaceForTarget(childLabel)).toBe(child);
+    expect(tree.getLogicalTriggerSurfaceOwner(parent)).toBe(child);
+    expect(childRoot[ownerMark]).toBe(parent);
   });
 });
