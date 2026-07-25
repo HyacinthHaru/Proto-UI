@@ -42,18 +42,14 @@ const tabsTrigger = definePrototype<BrutalistTabsTriggerProps, BrutalistTabsTrig
       when: (w) => w.state(selected).eq(true),
       intent: (i) =>
         i.feedback.style.use(
-          tw(
-            'bg-main text-main-foreground border-foreground shadow-[3px_3px_0_0_var(--pui-foreground)]'
-          )
+          tw('bg-main text-main-foreground border-black shadow-[3px_3px_0_0_#000]')
         ),
     });
     def.rule({
       when: (w) => w.all(w.state(hovered).eq(true), w.state(selected).eq(false)),
       intent: (i) =>
         i.feedback.style.use(
-          tw(
-            'bg-background border-foreground -translate-x-px -translate-y-px shadow-[4px_4px_0_0_var(--pui-foreground)]'
-          )
+          tw('bg-background border-black -translate-x-px -translate-y-px shadow-[4px_4px_0_0_#000]')
         ),
     });
     def.rule({

@@ -417,7 +417,7 @@ describe('@proto.ui/cli', () => {
     );
 
     expect(config.styles.preset).toBe('brutalist');
-    expect(theme).toContain('--pui-background: #f4f1ea');
+    expect(theme).toContain('--pui-background: #f5f5f5');
     expect(theme).toContain(':root.dark');
     expect(theme).toContain('--pui-canary: #FEF08A');
     expect(theme).toContain('--pui-mint: #A7F3D0');

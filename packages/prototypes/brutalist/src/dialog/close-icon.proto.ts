@@ -12,13 +12,12 @@ const dialogCloseIcon = definePrototype<BrutalistDialogCloseProps, BrutalistDial
     def.a11y.name('Close');
     def.feedback.style.use(
       tw(
-        'absolute right-4 top-4 inline-flex size-9 items-center justify-center rounded-none border-2 border-foreground bg-canary text-foreground shadow-[3px_3px_0_0_var(--pui-foreground)] outline-none transition-none'
+        'absolute right-4 top-4 inline-flex size-9 items-center justify-center rounded-none border-2 border-black bg-canary text-foreground shadow-[3px_3px_0_0_#000] outline-none transition-none'
       )
     );
     def.rule({
       when: (w) => w.state(hovered).eq(true),
-      intent: (i) =>
-        i.feedback.style.use(tw('bg-coral shadow-[4px_4px_0_0_var(--pui-foreground)]')),
+      intent: (i) => i.feedback.style.use(tw('bg-coral shadow-[4px_4px_0_0_#000]')),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),

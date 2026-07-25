@@ -70,7 +70,7 @@ describe('prototypes/brutalist: dialog', () => {
     expect(styleContains(mask, 'backdrop-blur')).toBe(false);
     expect(styleContains(content, 'rounded-none')).toBe(true);
     expect(styleContains(content, 'border-2')).toBe(true);
-    expect(styleContains(content, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
+    expect(styleContains(content, 'shadow-[3px_3px_0_0_#000]')).toBe(true);
     expect(styleContains(content, 'rounded-lg')).toBe(false);
     expect(styleContains(content, 'shadow-lg')).toBe(false);
   });

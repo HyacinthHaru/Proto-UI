@@ -65,15 +65,16 @@ function setupSwitchRoot(def: DefHandle<SwitchRootProps, SwitchRootExposes>): vo
   def.context.provide(SWITCH_CONTEXT, {
     checked: false,
     disabled: false,
+    pressed: false,
   });
 
   let controlled = false;
 
   const publishContext = (run: any) => {
-    // P-BASE-SWITCH-CONTEXT-SYNC, P-BASE-SWITCH-PART-CONTEXT-CONSUME
     run.context.update(SWITCH_CONTEXT, {
       checked: !!checked.get(),
       disabled: !!disabled.get(),
+      pressed: !!pressed.get(),
     });
   };
 
@@ -131,26 +132,31 @@ function setupSwitchRoot(def: DefHandle<SwitchRootProps, SwitchRootExposes>): vo
   });
 
   // P-BASE-SWITCH-POINTER-HOVER
-  def.event.on('pointer.enter', () => {
+  def.event.on('pointer.enter', (run) => {
     if (disabled.get()) return;
     hovered.set(true, 'reason: switch root pointer.enter => hovered');
+    publishContext(run);
   });
-  def.event.on('pointer.leave', () => {
+  def.event.on('pointer.leave', (run) => {
     hovered.set(false, 'reason: switch root pointer.leave => hovered');
     pressed.set(false, 'reason: switch root pointer.leave => pressed');
+    publishContext(run);
   });
-  def.event.on('pointer.cancel', () => {
+  def.event.on('pointer.cancel', (run) => {
     hovered.set(false, 'reason: switch root pointer.cancel => hovered');
     pressed.set(false, 'reason: switch root pointer.cancel => pressed');
+    publishContext(run);
   });
 
   // P-BASE-SWITCH-PRESS-LIFECYCLE
-  def.event.on('pointer.down', () => {
+  def.event.on('pointer.down', (run) => {
     if (disabled.get()) return;
     pressed.set(true, 'reason: switch root pointer.down => pressed');
+    publishContext(run);
   });
-  def.event.on('pointer.up', () => {
+  def.event.on('pointer.up', (run) => {
     pressed.set(false, 'reason: switch root pointer.up => pressed');
+    publishContext(run);
   });
 
   // P-BASE-SWITCH-ACTIVATION-FLIPS-CHECKED, P-BASE-SWITCH-DISABLED-SUPPRESS-ACTIVATION

@@ -10,7 +10,7 @@ const TRIGGER_TOKENS = [
   'justify-center',
   'rounded-none',
   'border-2',
-  'border-foreground',
+  'border-black',
   'bg-sky',
   'text-sky-foreground',
   'font-bold',
@@ -22,7 +22,7 @@ const TRIGGER_TOKENS = [
   'h-10',
   'gap-2',
   'px-4',
-  'shadow-[3px_3px_0_0_var(--pui-foreground)]',
+  'shadow-[3px_3px_0_0_#000]',
 ].join(' ');
 
 const dialogTrigger = definePrototype<BrutalistDialogTriggerProps, BrutalistDialogTriggerExposes>({
@@ -37,9 +37,7 @@ const dialogTrigger = definePrototype<BrutalistDialogTriggerProps, BrutalistDial
     def.rule({
       when: (w) => w.state(hovered).eq(true),
       intent: (i) =>
-        i.feedback.style.use(
-          tw('-translate-x-px -translate-y-px shadow-[4px_4px_0_0_var(--pui-foreground)]')
-        ),
+        i.feedback.style.use(tw('-translate-x-px -translate-y-px shadow-[4px_4px_0_0_#000]')),
     });
     def.rule({
       when: (w) => w.state(pressed).eq(true),

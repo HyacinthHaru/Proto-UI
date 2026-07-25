@@ -174,6 +174,8 @@ const staticUtilities: Record<string, string[]> = {
     ...composedShadow(),
   ],
   'shadow-[3px_3px_0_0_#000]': ['--pui-shadow: 3px 3px 0 0 #000;', ...composedShadow()],
+  'shadow-[4px_4px_0_0_#000]': ['--pui-shadow: 4px 4px 0 0 #000;', ...composedShadow()],
+  'shadow-[6px_6px_0_0_#000]': ['--pui-shadow: 6px 6px 0 0 #000;', ...composedShadow()],
   'shadow-[-3px_3px_0_0_#000]': ['--pui-shadow: -3px 3px 0 0 #000;', ...composedShadow()],
   'shadow-[3px_3px_0_0_var(--pui-foreground)]': [
     '--pui-shadow: 3px 3px 0 0 var(--pui-foreground);',

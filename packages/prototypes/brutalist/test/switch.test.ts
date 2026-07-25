@@ -20,9 +20,9 @@ describe('prototypes/brutalist: switch', () => {
 
     expect(styleContains(root, 'rounded-none')).toBe(true);
     expect(styleContains(root, 'border-2')).toBe(true);
-    expect(styleContains(root, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
+    expect(styleContains(root, 'shadow-[3px_3px_0_0_#000]')).toBe(true);
     expect(styleContains(thumb, 'rounded-none')).toBe(true);
-    expect(styleContains(thumb, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
+    expect(styleContains(thumb, 'shadow-[3px_3px_0_0_#000]')).toBe(true);
 
     root.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await Promise.resolve();
@@ -36,6 +36,18 @@ describe('prototypes/brutalist: switch', () => {
     expect(styleContains(root, 'pr-5')).toBe(true);
     expect(styleContains(root, 'data-[checked]:pl-5')).toBe(true);
     expect(styleContains(root, 'data-[checked]:pr-0.5')).toBe(true);
+
+    root.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(thumb.getExposes().pressed.get()).toBe(true);
+    expect(styleContains(thumb, 'data-[pressed]:translate-x-px')).toBe(true);
+    expect(styleContains(thumb, 'data-[pressed]:translate-y-px')).toBe(true);
+    expect(styleContains(thumb, 'data-[pressed]:shadow-none')).toBe(true);
+    root.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(thumb.getExposes().pressed.get()).toBe(false);
 
     root.remove();
     await Promise.resolve();

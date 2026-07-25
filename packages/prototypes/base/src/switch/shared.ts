@@ -3,6 +3,7 @@ import { createAnatomyFamily, createContextKey } from '@proto.ui/core';
 export type SwitchContextValue = {
   checked: boolean;
   disabled: boolean;
+  pressed: boolean;
 };
 
 // P-BASE-SWITCH-ANATOMY-FAMILY, P-BASE-SWITCH-FAMILY-ROLES

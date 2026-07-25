@@ -11,16 +11,16 @@
 | 当前 spec 版本 | `0.2.0-rc.5` |
 | Release channel | `prerelease` |
 | Version entity | [`V-PROTO-UI-0005`](../../spec/versions/V-PROTO-UI-0005.yaml) |
-| 工作区实体数 | 393 |
+| 工作区实体数 | 433 |
 | Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:df2049e4b972a54679e4032823064904ba5e306e2f90085f3cc4b1ee7f90febf` |
+| 工作区快照指纹 | `sha256:e3e9d15b4c53e45ee3065ef5c569398a7f818d6a4f631803d38da32fb3c89f2e` |
 | 已发布 release snapshot digest | `sha256:21152b5b6fd27ac2dbffd4bffe71ba0f376c532ccf3d7d074ed3fda846c758d8` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
 
 ## 阅读与权威边界
 
-当前快照包含 39 个 active、349 个 draft、5 个 deprecated、0 个 removed 实体。
+当前快照包含 39 个 active、389 个 draft、5 个 deprecated、0 个 removed 实体。
 
 - `active` 可以作为当前稳定保证读取。
 - `draft` 是已进入正式目录的当前方向，但不能包装为稳定公共承诺。
@@ -65,23 +65,24 @@ flowchart LR
 | `prototype` | 92 | 0 | 92 | 0 | 92 | 92 | 32 |
 | `module` | 5 | 1 | 4 | 0 | 0 | 0 | 0 |
 | `host-cap` | 4 | 0 | 4 | 0 | 2 | 2 | 0 |
-| `test` | 120 | 12 | 108 | 0 | 0 | 0 | 4 |
+| `test` | 129 | 12 | 117 | 0 | 0 | 0 | 4 |
 | `version` | 5 | 5 | 0 | 0 | 5 | 5 | 0 |
 
 ### 实体级关系分布
 
 | Relation     | 边数 |
 | ------------ | ---: |
-| `relates`    |  222 |
-| `dependsOn`  |  772 |
-| `inherits`   |   28 |
+| `relates`    |  226 |
+| `dependsOn`  |  860 |
+| `inherits`   |   56 |
 | `references` |    7 |
 | `refines`    |   18 |
 | `satisfies`  |   27 |
-
-<<<<<<< HEAD | `verifies` | 354 | ======= | `verifies` | 294 |
-
-> > > > > > > origin/main | `explains` | 36 | | `exercises` | 198 | | `requires` | 4 | | `owns` | 1 |
+| `verifies`   |  356 |
+| `explains`   |   36 |
+| `exercises`  |  198 |
+| `requires`   |    4 |
+| `owns`       |    1 |
 
 关系统计只计算实体顶层 relation；criterion 内的 `dependsOn` 和 `references` 仍保留在各实体源文件中。
 
@@ -736,21 +737,18 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Status    | 数量 |
 | --------- | ---: |
 | `active`  |   18 |
-| `passing` |  261 |
+| `passing` |  271 |
 | `planned` |   14 |
 
 ### Implementation 类型
 
-| Kind           | 数量 |
-| -------------- | ---: |
-| `adapter-test` |   73 |
-| `fixture`      |   17 |
-| `module-test`  |  133 |
-| `runtime-test` |   70 |
-
-<<<<<<< HEAD | `workspace-check` | 8 | ======= | `workspace-check` | 9 |
-
-> > > > > > > origin/main
+| Kind              | 数量 |
+| ----------------- | ---: |
+| `adapter-test`    |   73 |
+| `fixture`         |   17 |
+| `module-test`     |  133 |
+| `runtime-test`    |   70 |
+| `workspace-check` |   10 |
 
 ### Test entities
 
@@ -1204,7 +1202,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 
 ## 十一、当前快照的结构性限制
 
-- 349/393 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
+- 389/433 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
 - 当前只有 5 个 Module 与 4 个 Host Capability 实体；不要据此推断实现中只有这些能力。
 - Adapter 与 Compiler 尚无一级实体类型，因此宿主 profile、支持矩阵和 translation-layer 权衡仍可能主要存在于实现、旧契约和 records。
 - 生成器只验证 schema 与关系完整性，不验证网站内容、README、package exports 或运行时代码与实体完全一致。

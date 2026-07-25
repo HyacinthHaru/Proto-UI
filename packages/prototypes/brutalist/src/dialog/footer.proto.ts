@@ -6,7 +6,7 @@ const dialogFooter = definePrototype({
   setup(def) {
     def.anatomy.claim(DIALOG_FAMILY, { role: 'footer' });
     def.feedback.style.use(
-      tw('flex flex-col-reverse gap-2 border-t-2 border-foreground pt-3 justify-end')
+      tw('flex flex-col-reverse gap-2 border-t-2 border-black pt-3 justify-end')
     );
     return (renderer) => renderer.r.slot();
   },

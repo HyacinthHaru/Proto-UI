@@ -38,7 +38,7 @@ describe('prototypes/brutalist: dropdown', () => {
     expect(styleContains(trigger, 'rounded-none')).toBe(true);
     expect(styleContains(content, 'rounded-none')).toBe(true);
     expect(styleContains(content, 'border-2')).toBe(true);
-    expect(styleContains(content, 'shadow-[3px_3px_0_0_var(--pui-foreground)]')).toBe(true);
+    expect(styleContains(content, 'shadow-[3px_3px_0_0_#000]')).toBe(true);
     item.dispatchEvent(new CustomEvent('pointer.enter'));
     await flush();
     expect(styleContains(item, 'rounded-none')).toBe(true);

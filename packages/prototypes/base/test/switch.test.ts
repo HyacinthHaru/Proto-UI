@@ -252,6 +252,16 @@ describe('prototypes/base: switch', () => {
     expect(secondThumbExposes.isChecked()).toBe(true);
     expect(firstThumbExposes.checked.get()).toBe(true);
 
+    root.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(firstThumbExposes.pressed.get()).toBe(true);
+    expect(secondThumbExposes.pressed.get()).toBe(true);
+    root.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(firstThumbExposes.pressed.get()).toBe(false);
+    expect(secondThumbExposes.pressed.get()).toBe(false);
     root.remove();
     await Promise.resolve();
   });

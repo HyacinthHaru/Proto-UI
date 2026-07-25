@@ -37,12 +37,15 @@ export interface SwitchThumbProps {}
 
 export type SwitchThumbExposes = {
   checked: ExposeState<boolean>;
+  pressed: ExposeState<boolean>;
   isChecked: ExposeMethod<() => boolean | null>;
+  isPressed: ExposeMethod<() => boolean | null>;
 };
 
 export type SwitchThumbStateHandles = {
   checked: State<boolean>;
   disabled: State<boolean>;
+  pressed: State<boolean>;
 };
 
 export type SwitchThumbAsHookContract = {

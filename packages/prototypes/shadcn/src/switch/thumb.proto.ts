@@ -31,12 +31,16 @@ const switchThumb = definePrototype<ShadcnSwitchThumbProps, ShadcnSwitchThumbExp
         '[shadcn-switch-thumb] asSwitchThumb must project Switch thumb state handles.'
       );
     }
-    const { checked } = switchState;
+    const { checked, pressed } = switchState;
     // P-SHADCN-SWITCH-THUMB-CURRENT-VISUAL-SURFACE
     def.feedback.style.use(tw(THUMB_TOKENS));
     def.rule({
       when: (w) => w.state(checked).eq(true),
       intent: (i) => i.feedback.style.use(tw('translate-x-5')),
+    });
+    def.rule({
+      when: (w) => w.state(pressed).eq(true),
+      intent: (i) => i.feedback.style.use(tw('scale-[0.95]')),
     });
   },
 });

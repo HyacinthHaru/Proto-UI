@@ -11,16 +11,23 @@ function setupSwitchThumb(def: DefHandle<SwitchThumbProps, SwitchThumbExposes>):
   const checked = def.state.bool('checked', false);
   // P-BASE-SWITCH-THUMB-DERIVED-DISABLED
   const disabled = def.state.bool('disabled', false);
-
+  // P-BASE-SWITCH-THUMB-DERIVED-PRESSED
+  const pressed = def.state.bool('pressed', false);
   def.expose.state('checked', checked);
+  def.expose.state('pressed', pressed);
 
   def.expose.method('isChecked', () => {
     return checked.get();
   });
 
+  def.expose.method('isPressed', () => {
+    return pressed.get();
+  });
+
   const syncContext = (next: SwitchContextValue) => {
     checked.set(!!next.checked, 'reason: switch thumb context checked sync');
     disabled.set(!!next.disabled, 'reason: switch thumb context disabled sync');
+    pressed.set(!!next.pressed, 'reason: switch thumb context pressed sync');
   };
 
   // P-BASE-SWITCH-THUMB-CONTEXT-SUBSCRIBE, P-BASE-SWITCH-THUMB-CONTEXT-REQUIRED

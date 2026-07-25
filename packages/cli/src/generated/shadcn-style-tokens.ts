@@ -186,6 +186,7 @@ export const SHADCN_STYLE_TOKENS: string[] = [
   'rounded-md',
   'rounded-sm',
   'rounded-xl',
+  'scale-[0.95]',
   'scale-[0.98]',
   'scale-[0.99]',
   'select-none',

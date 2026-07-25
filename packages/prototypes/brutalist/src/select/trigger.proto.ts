@@ -42,7 +42,7 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     // P-BRUTALIST-SELECT-TRIGGER-CURRENT-VISUAL-SURFACE
     def.feedback.style.use(
       tw(
-        'flex items-center justify-between gap-2 rounded-none border-2 border-foreground bg-secondary-background px-3 py-2 text-sm whitespace-nowrap shadow-[3px_3px_0_0_var(--pui-foreground)] outline-none select-none'
+        'flex items-center justify-between gap-2 rounded-none border-2 border-black bg-secondary-background px-3 py-2 text-sm whitespace-nowrap shadow-[3px_3px_0_0_#000] outline-none select-none'
       )
     );
     // P-BRUTALIST-SELECT-TRIGGER-STATE-DRIVEN-STYLES
@@ -61,9 +61,7 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     def.rule({
       when: (w) => w.state(hovered).eq(true),
       intent: (i) =>
-        i.feedback.style.use(
-          tw('-translate-x-px -translate-y-px shadow-[4px_4px_0_0_var(--pui-foreground)]')
-        ),
+        i.feedback.style.use(tw('-translate-x-px -translate-y-px shadow-[4px_4px_0_0_#000]')),
     });
     def.rule({
       when: (w) => w.state(pressed).eq(true),
