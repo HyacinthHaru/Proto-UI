@@ -1,0 +1,32 @@
+id: T-BRUTALIST-CARD
+kind: test
+status: draft
+since: 0.2.0-rc.6
+summary: 验证 Brutalist Card 七个 parts 继承 Base anatomy 并投影粗野主义容器层级。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests: []
+  dependsOn: [P-BRUTALIST-CARD]
+  refines: []
+  conflictsWith: []
+target:
+  - packages/prototypes/brutalist/src/card/root.proto.ts
+  - packages/prototypes/brutalist/src/card/header.proto.ts
+  - packages/prototypes/brutalist/src/card/title.proto.ts
+  - packages/prototypes/brutalist/src/card/description.proto.ts
+  - packages/prototypes/brutalist/src/card/action.proto.ts
+  - packages/prototypes/brutalist/src/card/content.proto.ts
+  - packages/prototypes/brutalist/src/card/footer.proto.ts
+implementation:
+  - packages/prototypes/brutalist/test/card.test.ts
+criteria:
+  - id: T-BRUTALIST-CARD-PART-STYLES
+    statement: Executable coverage verifies root hard-surface tokens and distinct header, title, description, action, content, and footer layout tokens.
+  - id: T-BRUTALIST-CARD-BASE-ANATOMY
+    statement: Executable coverage verifies the rendered root preserves the Base Card group semantics.
+revisions:
+  - date: 2026-07-25
+    note: Added executable Card anatomy and style coverage.

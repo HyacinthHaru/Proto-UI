@@ -1,0 +1,35 @@
+id: P-BRUTALIST-CARD
+kind: prototype
+status: draft
+since: 0.2.0-rc.6
+summary: Brutalist Card 是 Base Card 七个 anatomy parts 的方角硬阴影容器样式增量。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests: [T-BRUTALIST-CARD]
+  dependsOn: [P-BASE-CARD]
+  refines: []
+  conflictsWith: []
+implementation:
+  - packages/prototypes/brutalist/src/card/root.proto.ts
+  - packages/prototypes/brutalist/src/card/header.proto.ts
+  - packages/prototypes/brutalist/src/card/title.proto.ts
+  - packages/prototypes/brutalist/src/card/description.proto.ts
+  - packages/prototypes/brutalist/src/card/action.proto.ts
+  - packages/prototypes/brutalist/src/card/content.proto.ts
+  - packages/prototypes/brutalist/src/card/footer.proto.ts
+  - packages/prototypes/brutalist/src/card/index.ts
+criteria:
+  - id: P-BRUTALIST-CARD-INHERIT-BASE
+    statement: Every Card part calls the matching Base Card asHook and preserves Base anatomy and slot semantics.
+  - id: P-BRUTALIST-CARD-SURFACE
+    statement: Root uses a square paper surface, two-pixel ink border, and six-pixel hard shadow with no rounded, gradient, glass, or soft-shadow treatment.
+  - id: P-BRUTALIST-CARD-HIERARCHY
+    statement: Header, content, action, and footer remain explicitly composable; title and description use bold display and mono supporting typography without moving structure into the styled layer.
+  - id: P-BRUTALIST-CARD-COMPOSITION
+    statement: Explicit seven-part anatomy composition works without any component preset artifact.
+revisions:
+  - date: 2026-07-25
+    note: Added the Brutalist Card contract for ChatUI panels and SaaS surfaces.
