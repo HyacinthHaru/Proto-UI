@@ -170,6 +170,7 @@ export const BRUTALIST_STYLE_TOKENS: string[] = [
   'text-left',
   'text-main-foreground',
   'text-muted-foreground',
+  'text-sky-foreground',
   'text-sm',
   'text-xs',
   'top-1/2',
