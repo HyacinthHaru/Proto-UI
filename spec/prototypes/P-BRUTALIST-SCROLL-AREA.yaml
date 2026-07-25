@@ -1,0 +1,33 @@
+id: P-BRUTALIST-SCROLL-AREA
+kind: prototype
+status: draft
+since: 0.2.0-rc.6
+summary: Brutalist Scroll Area 是 Base 滚动上下文与几何协议的方角高对比样式增量。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests: [T-BRUTALIST-SCROLL-AREA]
+  dependsOn: [P-BASE-SCROLL-AREA]
+  refines: []
+  conflictsWith: []
+implementation:
+  - packages/prototypes/brutalist/src/scroll-area/root.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/viewport.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/scrollbar.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/thumb.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/corner.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/index.ts
+criteria:
+  - id: P-BRUTALIST-SCROLL-AREA-INHERIT-BASE
+    statement: Every part calls the matching Base Scroll Area asHook; Base remains owner of scroll offsets, viewport metrics, thumb geometry, orientation, and pointer drag behavior.
+  - id: P-BRUTALIST-SCROLL-AREA-GRAMMAR
+    statement: Root and viewport are square paper surfaces while scrollbar, thumb, and corner use high-contrast Lavender/ink geometry and two-pixel separators.
+  - id: P-BRUTALIST-SCROLL-AREA-ORIENTATION
+    statement: Vertical and horizontal scrollbar layouts derive from Base orientation state rather than host-specific selectors or duplicated runtime state.
+  - id: P-BRUTALIST-SCROLL-AREA-COMPOSITION
+    statement: Explicit five-part anatomy composition works without component presets for ChatUI conversation, history, and sidebar panes.
+revisions:
+  - date: 2026-07-25
+    note: Added Brutalist Scroll Area for cross-library ChatUI scrolling surfaces.

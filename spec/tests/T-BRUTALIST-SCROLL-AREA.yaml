@@ -1,0 +1,29 @@
+id: T-BRUTALIST-SCROLL-AREA
+kind: test
+status: draft
+since: 0.2.0-rc.6
+summary: 验证 Brutalist Scroll Area 五个 parts 继承 Base 滚动 anatomy 并投影 orientation-driven token。
+relations:
+  supersedes: []
+  supersededBy: []
+  governedBy: []
+  implements: []
+  tests: []
+  dependsOn: [P-BRUTALIST-SCROLL-AREA]
+  refines: []
+  conflictsWith: []
+target:
+  - packages/prototypes/brutalist/src/scroll-area/root.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/viewport.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/scrollbar.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/thumb.proto.ts
+  - packages/prototypes/brutalist/src/scroll-area/corner.proto.ts
+implementation: [packages/prototypes/brutalist/test/scroll-area.test.ts]
+criteria:
+  - id: T-BRUTALIST-SCROLL-AREA-PARTS
+    statement: Executable coverage verifies root, viewport, scrollbar, thumb, and corner feedback tokens.
+  - id: T-BRUTALIST-SCROLL-AREA-ORIENTATION
+    statement: Executable coverage verifies Base orientation exposure and horizontal/vertical scrollbar rule tokens.
+revisions:
+  - date: 2026-07-25
+    note: Added executable Scroll Area style and orientation coverage.
