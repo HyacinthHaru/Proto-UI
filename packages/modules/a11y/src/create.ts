@@ -205,14 +205,16 @@ class A11yModuleImpl extends ModuleBase {
     }
 
     const tree = this.ir.tree
-      ? {
-          hidden: isState(this.ir.tree.hidden)
-            ? (this.ir.tree.hidden.get() as boolean)
-            : this.ir.tree.hidden,
-          mergeChildren: isState(this.ir.tree.mergeChildren)
-            ? (this.ir.tree.mergeChildren.get() as boolean)
-            : this.ir.tree.mergeChildren,
-        }
+      ? Object.fromEntries(
+          Object.entries({
+            hidden: isState(this.ir.tree.hidden)
+              ? (this.ir.tree.hidden.get() as boolean)
+              : this.ir.tree.hidden,
+            mergeChildren: isState(this.ir.tree.mergeChildren)
+              ? (this.ir.tree.mergeChildren.get() as boolean)
+              : this.ir.tree.mergeChildren,
+          }).filter(([, value]) => typeof value !== 'undefined')
+        )
       : undefined;
 
     return {

@@ -76,18 +76,28 @@ const staticUtilities: Record<string, string[]> = {
   grid: ['display: grid;'],
   hidden: ['display: none;'],
   'flex-col': ['flex-direction: column;'],
+  'flex-row': ['flex-direction: row;'],
+  'flex-1': ['flex: 1 1 0%;'],
   'flex-col-reverse': ['flex-direction: column-reverse;'],
   'items-center': ['align-items: center;'],
   'items-start': ['align-items: flex-start;'],
+  'items-end': ['align-items: flex-end;'],
   'justify-center': ['justify-content: center;'],
   'justify-between': ['justify-content: space-between;'],
   'justify-end': ['justify-content: flex-end;'],
   'shrink-0': ['flex-shrink: 0;'],
+  'self-start': ['align-self: flex-start;'],
   'pointer-events-none': ['pointer-events: none;'],
+  'cursor-not-allowed': ['cursor: not-allowed;'],
   'cursor-default': ['cursor: default;'],
   'cursor-pointer': ['cursor: pointer;'],
   'select-none': ['user-select: none;'],
   'outline-none': ['outline: 2px solid transparent;', 'outline-offset: 2px;'],
+  'aspect-square': ['aspect-ratio: 1 / 1;'],
+  'overflow-auto': ['overflow: auto;'],
+  'touch-none': ['touch-action: none;'],
+  'object-cover': ['object-fit: cover;'],
+  'fill-foreground': ['fill: var(--pui-foreground);'],
   'overflow-hidden': ['overflow: hidden;'],
   'overflow-x-hidden': ['overflow-x: hidden;'],
   'overflow-y-auto': ['overflow-y: auto;'],
@@ -124,6 +134,8 @@ const staticUtilities: Record<string, string[]> = {
   'duration-200': ['transition-duration: 200ms;', '--pui-animation-duration: 200ms;'],
   'ease-in-out': ['transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);'],
   'font-medium': ['font-weight: 500;'],
+  'font-black': ['font-weight: 900;'],
+  'font-heading': ['font-family: var(--pui-font-heading, ui-sans-serif, system-ui, sans-serif);'],
   'font-semibold': ['font-weight: 600;'],
   'font-bold': ['font-weight: 700;'],
   'font-mono': [
@@ -131,6 +143,7 @@ const staticUtilities: Record<string, string[]> = {
   ],
   uppercase: ['text-transform: uppercase;'],
   'leading-6': ['line-height: 1.5rem;'],
+  'leading-relaxed': ['line-height: 1.625;'],
   'leading-none': ['line-height: 1;'],
   'tracking-tight': ['letter-spacing: -0.025em;'],
   'text-left': ['text-align: left;'],
@@ -139,18 +152,31 @@ const staticUtilities: Record<string, string[]> = {
   'text-base': ['font-size: 1rem;', 'line-height: 1.5rem;'],
   'text-lg': ['font-size: 1.125rem;', 'line-height: 1.75rem;'],
   'text-[0.8rem]': ['font-size: 0.8rem;'],
+  'text-xl': ['font-size: 1.25rem;', 'line-height: 1.75rem;'],
   underline: ['text-decoration-line: underline;'],
   'underline-offset-4': ['text-underline-offset: 4px;'],
   border: ['border-width: 1px;', 'border-style: solid;'],
   'border-2': ['border-width: 2px;', 'border-style: solid;'],
   'border-b-2': ['border-bottom-width: 2px;', 'border-bottom-style: solid;'],
   'border-t-2': ['border-top-width: 2px;', 'border-top-style: solid;'],
+  'border-b': ['border-bottom-width: 1px;', 'border-bottom-style: solid;'],
+  'border-l-2': ['border-left-width: 2px;', 'border-left-style: solid;'],
+  'border-ink': ['border-color: var(--pui-foreground);'],
   'border-black': ['border-color: #000;'],
   'border-foreground': ['border-color: var(--pui-foreground);'],
   'border-transparent': ['border-color: transparent;'],
   'bg-transparent': ['background-color: transparent;'],
   'bg-black': ['background-color: #000;'],
   'bg-foreground': ['background-color: var(--pui-foreground);'],
+  'bg-canvas': ['background-color: var(--pui-background);'],
+  'bg-paper': ['background-color: var(--pui-background);'],
+  'bg-card': ['background-color: var(--pui-card);'],
+  'bg-gray-100': ['background-color: #f3f4f6;'],
+  'bg-gray-200': ['background-color: #e5e7eb;'],
+  'bg-yellow-300': ['background-color: #fde047;'],
+  'text-ink': ['color: var(--pui-foreground);'],
+  'text-card-foreground': ['color: var(--pui-card-foreground);'],
+  'text-gray-500': ['color: #6b7280;'],
   'inset-0': ['inset: 0px;'],
   'bottom-0': ['bottom: 0px;'],
   'bottom-full': ['bottom: 100%;'],
@@ -169,6 +195,7 @@ const staticUtilities: Record<string, string[]> = {
   'ring-offset-2': ['--pui-ring-offset-width: 2px;'],
   'ring-offset-background': ['--pui-ring-offset-color: var(--pui-background);'],
   'shadow-xs': ['--pui-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);', ...composedShadow()],
+  'shadow-sm': ['--pui-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);', ...composedShadow()],
   'shadow-md': [
     '--pui-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);',
     ...composedShadow(),
@@ -181,6 +208,10 @@ const staticUtilities: Record<string, string[]> = {
   'shadow-[4px_4px_0_0_#000]': ['--pui-shadow: 4px 4px 0 0 #000;', ...composedShadow()],
   'shadow-[6px_6px_0_0_#000]': ['--pui-shadow: 6px 6px 0 0 #000;', ...composedShadow()],
   'shadow-[-3px_3px_0_0_#000]': ['--pui-shadow: -3px 3px 0 0 #000;', ...composedShadow()],
+  'shadow-[2px_2px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 2px 2px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
   'shadow-[3px_3px_0_0_var(--pui-foreground)]': [
     '--pui-shadow: 3px 3px 0 0 var(--pui-foreground);',
     ...composedShadow(),
@@ -189,15 +220,23 @@ const staticUtilities: Record<string, string[]> = {
     '--pui-shadow: 4px 4px 0 0 var(--pui-foreground);',
     ...composedShadow(),
   ],
+  'shadow-[6px_6px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 6px 6px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
   'shadow-[-3px_3px_0_0_var(--pui-foreground)]': [
     '--pui-shadow: -3px 3px 0 0 var(--pui-foreground);',
     ...composedShadow(),
   ],
   'shadow-none': ['--pui-shadow: 0 0 #0000;', ...composedShadow()],
+  'shadow-hard': ['--pui-shadow: 2px 2px 0 0 var(--pui-foreground);', ...composedShadow()],
   'backdrop-blur-xs': ['backdrop-filter: blur(4px);'],
   'z-40': ['z-index: 40;'],
   'z-50': ['z-index: 50;'],
   'max-w-lg': ['max-width: 32rem;'],
+  'max-w-[75%]': ['max-width: 75%;'],
+  'ml-auto': ['margin-left: auto;'],
+  'w-fit': ['width: fit-content;'],
   peer: [],
   'group/button': [],
   'group/toggle': [],
@@ -522,6 +561,7 @@ function applyVariant(selector: string, variant: string): string[] {
   if (variant === 'active') return [`${selector}:active`];
   if (variant === 'disabled') return [`${selector}:disabled`];
   if (variant === 'focus-visible') return [`${selector}:focus-visible`];
+  if (variant === 'placeholder') return [`${selector}::placeholder`];
 
   const notDataMatch = variant.match(/^not-\[data-([a-zA-Z0-9-]+)\]$/);
   if (notDataMatch) {
@@ -539,7 +579,7 @@ function applyVariant(selector: string, variant: string): string[] {
     const eq = body.indexOf('=');
     if (eq >= 0) {
       const name = body.slice(0, eq);
-      const value = body.slice(eq + 1);
+      const value = body.slice(eq + 1).replace(/^['\"]|['\"]$/g, '');
       return [`${selector}[data-${name}='${escapeCssString(value)}']`];
     }
     return [`${selector}[data-${body}]`];
