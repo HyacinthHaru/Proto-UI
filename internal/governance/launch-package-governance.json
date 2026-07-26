@@ -15,7 +15,6 @@
     "@proto.ui/adapter-base",
     "@proto.ui/core",
     "@proto.ui/hooks",
-    "@proto.ui/prototypes-brutalist",
     "@proto.ui/types"
   ],
   "internalOrDependencyDirectedPackages": [
