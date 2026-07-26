@@ -6,7 +6,8 @@ export type TooltipInteractionReason =
   | 'trigger.focus'
   | 'trigger.blur'
   | 'content.pointerenter'
-  | 'content.pointerleave';
+  | 'content.pointerleave'
+  | 'escape';
 
 export type TooltipContextValue = {
   open: boolean;
@@ -54,6 +55,28 @@ export function requestTooltipOpen(run: any, nextOpen: boolean, reason: string):
       open: prev.controlled ? prev.open : nextOpen,
       requestedOpen: nextOpen,
       requestReason: reason,
+      requestVersion: prev.requestVersion + 1,
+    }));
+    return true;
+  } catch (error) {
+    if ((error as { code?: string })?.code === 'CONTEXT_DISCONNECTED') return false;
+    throw error;
+  }
+}
+
+/** Escape dismisses open content and clears sticky pointer/focus intent so close sticks. */
+export function dismissTooltipFromEscape(run: any): boolean {
+  try {
+    run.context.update(TOOLTIP_CONTEXT, (prev: TooltipContextValue) => ({
+      ...prev,
+      triggerHovered: false,
+      triggerFocused: false,
+      contentHovered: false,
+      interactionReason: 'escape',
+      interactionVersion: prev.interactionVersion + 1,
+      open: prev.controlled ? prev.open : false,
+      requestedOpen: false,
+      requestReason: 'escape',
       requestVersion: prev.requestVersion + 1,
     }));
     return true;

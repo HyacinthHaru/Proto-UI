@@ -1,7 +1,12 @@
 import { defineAsHook, definePrototype, tw, type DefHandle } from '@proto.ui/core';
 import { asOverlay } from '@proto.ui/hooks';
 import { asTransition } from '../tools';
-import { TOOLTIP_CONTEXT, TOOLTIP_FAMILY, updateTooltipInteraction } from './shared';
+import {
+  dismissTooltipFromEscape,
+  TOOLTIP_CONTEXT,
+  TOOLTIP_FAMILY,
+  updateTooltipInteraction,
+} from './shared';
 import type {
   TooltipContentAsHookContract,
   TooltipContentExposes,
@@ -108,12 +113,16 @@ function setupTooltipContent(def: DefHandle<TooltipContentProps, TooltipContentE
   def.context.subscribe(TOOLTIP_CONTEXT, (_run, next) => {
     updateOpen(next.open, 'reason: tooltip context sync => content open');
   });
+  const store: { run: any | null } = { run: null };
+
   def.lifecycle.onCreated((run) => {
+    store.run = run;
     syncPosition(run);
     const ctx = run.context.read(TOOLTIP_CONTEXT);
     updateOpen(ctx.open, 'reason: lifecycle.onCreated => tooltip content open sync');
   });
   def.lifecycle.onMounted((run) => {
+    store.run = run;
     const trigger = run.anatomy.partsOf(TOOLTIP_FAMILY, 'trigger')[0] ?? null;
     if (trigger) overlay.registerAnchorPart(trigger);
     syncPosition(run);
@@ -121,7 +130,19 @@ function setupTooltipContent(def: DefHandle<TooltipContentProps, TooltipContentE
     updateOpen(ctx.open, 'reason: lifecycle.onMounted => tooltip content open sync');
   });
   def.lifecycle.onUnmounted(() => {
+    store.run = null;
     hovered.set(false, 'reason: tooltip content unmounted => hovered false');
+  });
+
+  // Bridge overlay Escape dismiss into Tooltip owner open state (dropdown pattern).
+  overlay.open.watch((_ctx, event) => {
+    if (event.type !== 'next' || event.next || event.reason !== 'escape') return;
+    const run = store.run;
+    if (!run) return;
+    const ctx = run.context.read(TOOLTIP_CONTEXT);
+    if (!ctx.open) return;
+    dismissTooltipFromEscape(run);
+    if (ctx.controlled) overlay.openOverlay('controlled.sync');
   });
 
   def.event.on('pointer.enter', (run) => {

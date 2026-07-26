@@ -143,4 +143,31 @@ describe('prototypes/base: tooltip', () => {
     await advance(0);
     expect(root.getExposes().open.get()).toBe(false);
   });
+
+  it('closes on Escape method path and allows fresh reopen', async () => {
+    vi.useFakeTimers();
+    const { root, trigger, content } = createTooltip({ delayDuration: 0, closeDelay: 0 });
+    const requests: any[] = [];
+    root.addEventListener('openChange', (event: Event) => {
+      requests.push((event as CustomEvent).detail);
+    });
+    await flushViewReconciliation();
+
+    trigger.dispatchEvent(new Event('pointerenter'));
+    await advance(0);
+    await completeTransition(content);
+    expect(root.getExposes().open.get()).toBe(true);
+
+    root.getExposes().close('escape');
+    await advance(0);
+    expect(requests.at(-1)).toEqual(expect.objectContaining({ open: false, reason: 'escape' }));
+    // uncontrolled close method should clear open
+    expect(root.getExposes().open.get()).toBe(false);
+
+    trigger.dispatchEvent(new Event('pointerleave'));
+    trigger.dispatchEvent(new Event('pointerenter'));
+    await advance(0);
+    expect(root.getExposes().open.get()).toBe(true);
+    expect(content.getExposes().open.get()).toBe(true);
+  });
 });
