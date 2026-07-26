@@ -6,7 +6,6 @@ export * from './as-focus-roving';
 export * from './as-focusable';
 export * from './as-focus-scope';
 export * from './as-hit-participation';
-export * from './as-native-control';
 export * from './as-overlay';
 export * from './as-trigger';
 export * from './collection/use-collection';

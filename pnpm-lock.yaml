@@ -229,9 +229,6 @@ importers:
       '@proto.ui/module-hit-participation':
         specifier: workspace:*
         version: link:../../modules/hit-participation
-      '@proto.ui/module-native-control':
-        specifier: workspace:*
-        version: link:../../modules/native-control
       '@proto.ui/module-overlay':
         specifier: workspace:*
         version: link:../../modules/overlay
@@ -314,9 +311,6 @@ importers:
       '@proto.ui/module-hit-participation':
         specifier: workspace:*
         version: link:../../modules/hit-participation
-      '@proto.ui/module-native-control':
-        specifier: workspace:*
-        version: link:../../modules/native-control
       '@proto.ui/module-overlay':
         specifier: workspace:*
         version: link:../../modules/overlay
@@ -390,9 +384,6 @@ importers:
       '@proto.ui/module-hit-participation':
         specifier: workspace:*
         version: link:../../modules/hit-participation
-      '@proto.ui/module-native-control':
-        specifier: workspace:*
-        version: link:../../modules/native-control
       '@proto.ui/module-overlay':
         specifier: workspace:*
         version: link:../../modules/overlay
@@ -451,9 +442,6 @@ importers:
       '@proto.ui/module-collection':
         specifier: workspace:*
         version: link:../modules/collection
-      '@proto.ui/module-native-control':
-        specifier: workspace:*
-        version: link:../modules/native-control
       '@proto.ui/types':
         specifier: workspace:*
         version: link:../types
@@ -624,18 +612,6 @@ importers:
         version: link:../../types
 
   packages/modules/hit-participation:
-    dependencies:
-      '@proto.ui/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@proto.ui/module-base':
-        specifier: workspace:*
-        version: link:../base
-      '@proto.ui/types':
-        specifier: workspace:*
-        version: link:../../types
-
-  packages/modules/native-control:
     dependencies:
       '@proto.ui/core':
         specifier: workspace:*
@@ -953,9 +929,6 @@ importers:
       '@proto.ui/module-hit-participation':
         specifier: workspace:*
         version: link:../modules/hit-participation
-      '@proto.ui/module-native-control':
-        specifier: workspace:*
-        version: link:../modules/native-control
       '@proto.ui/module-overlay':
         specifier: workspace:*
         version: link:../modules/overlay

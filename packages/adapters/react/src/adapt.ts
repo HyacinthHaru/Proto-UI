@@ -1,4 +1,4 @@
-import { getModuleDeclaration, type Prototype } from '@proto.ui/core';
+import type { Prototype } from '@proto.ui/core';
 import type {
   CommitSignal,
   RuntimeCheckpoint,
@@ -17,7 +17,6 @@ import {
   scheduleAfterWebLayout,
 } from '@proto.ui/adapter-base';
 import type { ExposeStateWebMode } from '@proto.ui/module-expose-state-web';
-import { NATIVE_CONTROL_DECLARATION } from '@proto.ui/module-native-control';
 import {
   createZIndexOverlayLayerScheduler,
   type OverlayPort,
@@ -141,13 +140,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
     const getMeta = opt.getMeta ?? createDefaultMetaGetter();
     const exposeStateWebMode = opt.exposeStateWebMode;
     const autoUpdate = opt.autoUpdateOnPropsChange ?? true;
-    const nativeControl = getModuleDeclaration(proto, NATIVE_CONTROL_DECLARATION)?.config;
-    if (nativeControl && opt.rootTag && opt.rootTag !== nativeControl.target.localName) {
-      throw new Error(
-        `[React Adapter] native-control declaration conflicts with rootTag: ${opt.rootTag}`
-      );
-    }
-    const rootTag = nativeControl?.target.localName ?? opt.rootTag ?? 'div';
+    const rootTag = opt.rootTag ?? 'div';
     const hasCustomOverlayLayerConfig =
       !!opt.overlayLayer &&
       (typeof opt.overlayLayer.baseZIndex !== 'undefined' ||

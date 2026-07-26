@@ -23,7 +23,6 @@
     "@proto.ui/module-hit-participation": "workspace:*",
     "@proto.ui/module-overlay": "workspace:*",
     "@proto.ui/module-positioning": "workspace:*",
-    "@proto.ui/module-native-control": "workspace:*",
     "@proto.ui/module-rule-expose-state-web": "workspace:*",
     "@proto.ui/module-rule-meta": "workspace:*",
     "@proto.ui/module-test-sys": "workspace:*"

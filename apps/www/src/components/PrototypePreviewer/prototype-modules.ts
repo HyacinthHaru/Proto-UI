@@ -428,15 +428,6 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('../../../../../packages/prototypes/brutalist/src/card/footer.proto');
     registerPrototype('brutalist-card-footer', mod.BrutalistCardFooter);
   },
-  'brutalist-input-root': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/input/root.proto');
-    registerPrototype('brutalist-input-root', mod.BrutalistInputRoot);
-  },
-  'brutalist-textarea-root': async () => {
-    const mod =
-      await import('../../../../../packages/prototypes/brutalist/src/textarea/root.proto');
-    registerPrototype('brutalist-textarea-root', mod.BrutalistTextareaRoot);
-  },
   'brutalist-separator-root': async () => {
     const mod =
       await import('../../../../../packages/prototypes/brutalist/src/separator/root.proto');

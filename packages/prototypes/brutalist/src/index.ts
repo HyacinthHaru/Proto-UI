@@ -90,8 +90,6 @@ export * from './separator';
 export * from './avatar';
 export * from './badge';
 export * from './card';
-export * from './input';
-export * from './textarea';
 export * from './skeleton';
 export * from './scroll-area';
 export * from './tooltip';

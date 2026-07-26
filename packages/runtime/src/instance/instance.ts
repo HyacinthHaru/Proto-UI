@@ -29,7 +29,6 @@ import { OverlayModuleDef } from '@proto.ui/module-overlay';
 import { PositioningModuleDef } from '@proto.ui/module-positioning';
 import { PresenceModuleDef } from '@proto.ui/module-presence';
 import { __RUN_TEST_SYS, TestSysModuleDef, type TestSysPort } from '@proto.ui/module-test-sys';
-import { NativeControlModuleDef } from '@proto.ui/module-native-control';
 
 import type { ModuleOrchestrator } from '../orchestrator/module-orchestrator';
 import { RuntimeModuleOrchestrator } from '../orchestrator/module-orchestrator';
@@ -67,36 +66,32 @@ export function createRuntimeInstance<P extends PropsBaseType>(
   let phaseRef: ExecPhase = 'unknown';
   const getPhase = () => phaseRef;
 
-  const moduleHub = new RuntimeModuleOrchestrator(
-    { prototypeName: proto.name, declarations: proto.modules, getPhase },
-    [
-      AsTriggerModuleDef,
-      RuleModuleDef,
-      RuleMetaModuleDef,
-      FeedbackModuleDef,
-      PropsModuleDef,
-      EventModuleDef,
-      ExposeModuleDef,
-      AnatomyModuleDef,
-      ExposeStateModuleDef,
-      ExposeStateWebModuleDef,
-      RuleExposeStateWebModuleDef,
-      StateModuleDef,
-      StateInteractionModuleDef,
-      StateAccessibilityModuleDef,
-      A11yModuleDef,
-      CollectionModuleDef,
-      ContextModuleDef,
-      FocusModuleDef,
-      NativeControlModuleDef,
-      BoundaryModuleDef,
-      HitParticipationModuleDef,
-      PositioningModuleDef,
-      OverlayModuleDef,
-      PresenceModuleDef,
-      TestSysModuleDef,
-    ]
-  );
+  const moduleHub = new RuntimeModuleOrchestrator({ prototypeName: proto.name, getPhase }, [
+    AsTriggerModuleDef,
+    RuleModuleDef,
+    RuleMetaModuleDef,
+    FeedbackModuleDef,
+    PropsModuleDef,
+    EventModuleDef,
+    ExposeModuleDef,
+    AnatomyModuleDef,
+    ExposeStateModuleDef,
+    ExposeStateWebModuleDef,
+    RuleExposeStateWebModuleDef,
+    StateModuleDef,
+    StateInteractionModuleDef,
+    StateAccessibilityModuleDef,
+    A11yModuleDef,
+    CollectionModuleDef,
+    ContextModuleDef,
+    FocusModuleDef,
+    BoundaryModuleDef,
+    HitParticipationModuleDef,
+    PositioningModuleDef,
+    OverlayModuleDef,
+    PresenceModuleDef,
+    TestSysModuleDef,
+  ]);
 
   opt?.onModulesReady?.(moduleHub);
 

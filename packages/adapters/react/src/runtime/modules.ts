@@ -64,11 +64,6 @@ import {
 import { RAW_PROPS_SOURCE_CAP } from '@proto.ui/module-props';
 import { RULE_EXPOSE_STATE_WEB_NATIVE_VARIANT_POLICY_CAP } from '@proto.ui/module-rule-expose-state-web';
 import { RULE_META_GET_CAP } from '@proto.ui/module-rule-meta';
-import {
-  createWebNativeControlHost,
-  NATIVE_CONTROL_HOST_CAP,
-  NATIVE_CONTROL_RUN_IN_CALLBACK_CAP,
-} from '@proto.ui/module-native-control';
 import type { PropsBaseType } from '@proto.ui/types';
 
 import {
@@ -215,14 +210,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     };
   };
 
-  const physicalControl = () =>
-    args.getCurrentElement() as HTMLInputElement | HTMLTextAreaElement | null;
-
   return createCapsWiring()
-    .use('native-control', [
-      [NATIVE_CONTROL_HOST_CAP, createWebNativeControlHost(physicalControl)],
-      [NATIVE_CONTROL_RUN_IN_CALLBACK_CAP, args.runInCallbackScope],
-    ])
     .use('props', [[RAW_PROPS_SOURCE_CAP, rawPropsSource]])
     .use('feedback', [[EFFECTS_CAP, effectsPort]])
     .use('a11y', [

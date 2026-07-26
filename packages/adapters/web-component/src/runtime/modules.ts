@@ -65,12 +65,6 @@ import {
   ANCHORED_POSITION_HOST_CAP,
   createFloatingUiAnchoredPositionHost,
 } from '@proto.ui/module-positioning';
-import {
-  createWebNativeControlHost,
-  NATIVE_CONTROL_HOST_CAP,
-  NATIVE_CONTROL_RUN_IN_CALLBACK_CAP,
-  type WebNativeControl,
-} from '@proto.ui/module-native-control';
 import { type RawPropsSource, RAW_PROPS_SOURCE_CAP } from '@proto.ui/module-props';
 import { RULE_EXPOSE_STATE_WEB_NATIVE_VARIANT_POLICY_CAP } from '@proto.ui/module-rule-expose-state-web';
 import { RULE_META_GET_CAP } from '@proto.ui/module-rule-meta';
@@ -122,7 +116,6 @@ type WebComponentOwnerModulesArgs<Props extends PropsBaseType> = {
   el: HTMLElement;
   instanceToken: LogicalInstanceToken;
   rawPropsSource: RawPropsSource<Props>;
-  nativeControlTarget: WebNativeControl | null;
   getMeta: (key: string) => unknown;
   exposeStateWebMode?: {
     allowContinuousAttr?: boolean;
@@ -139,7 +132,6 @@ export function createWebComponentOwnerModules<Props extends PropsBaseType>(
 ) {
   const { el, instanceToken, rawPropsSource, getMeta, setExposes } = args;
   const getTriggerSurface = () => {
-    if (args.nativeControlTarget) return args.nativeControlTarget;
     const target = getLogicalTriggerSurfaceRoot(instanceToken);
     const surface = resolveWebComponentTriggerSurface(el, target);
     return surface?.isConnected ? surface : null;
@@ -152,16 +144,7 @@ export function createWebComponentOwnerModules<Props extends PropsBaseType>(
   queueMicrotask(() => queueMicrotask(normalizeOwnedSurface));
   // The custom element is the persistent owner shell, so semantic and
   // expose-state projection remain valid while its internal view is absent.
-  const physicalControl = () => args.nativeControlTarget;
-
   return createCapsWiring()
-    .use('native-control', [
-      [
-        NATIVE_CONTROL_HOST_CAP,
-        createWebNativeControlHost(physicalControl, { stopPropagation: true }),
-      ],
-      [NATIVE_CONTROL_RUN_IN_CALLBACK_CAP, args.runInCallbackScope],
-    ])
     .use('props', [[RAW_PROPS_SOURCE_CAP, rawPropsSource]])
     .use('a11y', [
       [
@@ -254,7 +237,6 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   };
   rawPropsSource: RawPropsSource<Props>;
   effectsPort: EffectsPort;
-  nativeControlTarget: WebNativeControl | null;
   getMeta: (key: string) => unknown;
   exposeStateWebMode?: {
     allowContinuousAttr?: boolean;
@@ -297,24 +279,15 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       offSurface();
     };
   };
-  const physicalControl = () => args.nativeControlTarget;
 
   return createCapsWiring()
-    .use('native-control', [
-      [
-        NATIVE_CONTROL_HOST_CAP,
-        createWebNativeControlHost(physicalControl, { stopPropagation: true }),
-      ],
-      [NATIVE_CONTROL_RUN_IN_CALLBACK_CAP, args.runInCallbackScope],
-    ])
     .use('props', [[RAW_PROPS_SOURCE_CAP, rawPropsSource]])
     .use('feedback', [[EFFECTS_CAP, effectsPort]])
     .use('a11y', [
       [
         A11Y_PROJECT_CAP,
-        createWebA11yProjector(
-          () => physicalControl() ?? getConnectedTriggerSurface(),
-          (listener) => subscribeLogicalTriggerSurface(instanceToken, listener)
+        createWebA11yProjector(getConnectedTriggerSurface, (listener) =>
+          subscribeLogicalTriggerSurface(instanceToken, listener)
         ),
       ],
     ])
@@ -346,12 +319,12 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       [FOCUS_INSTANCE_TOKEN_CAP, instanceToken],
       [FOCUS_PARENT_CAP, (inst: unknown) => getLogicalParent(inst as LogicalInstanceToken)],
       [FOCUS_TARGET_READY_CAP, subscribeFocusTarget],
-      [FOCUS_ROOT_TARGET_CAP, () => physicalControl() ?? getTriggerSurface()],
+      [FOCUS_ROOT_TARGET_CAP, getTriggerSurface],
       [FOCUS_IS_NATIVELY_FOCUSABLE_CAP, (target: HTMLElement) => isNativelyFocusable(target)],
       [
         FOCUS_SET_FOCUSABLE_CAP,
         (target: HTMLElement, enabled: boolean) => {
-          const surface = physicalControl() ?? getLogicalTriggerSurfaceRoot(instanceToken);
+          const surface = getLogicalTriggerSurfaceRoot(instanceToken);
           target.tabIndex = enabled && (!surface || surface === target) ? 0 : -1;
         },
       ],

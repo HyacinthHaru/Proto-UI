@@ -1,5 +1,5 @@
 // packages/adapters/web-component/src/adapt.ts
-import { getModuleDeclaration, type Prototype } from '@proto.ui/core';
+import type { Prototype } from '@proto.ui/core';
 import { PropsBaseType } from '@proto.ui/types';
 
 import { type RawPropsSource } from '@proto.ui/module-props';
@@ -19,7 +19,6 @@ import {
   type OverlayLayerScheduler,
   type OverlayZIndexLayerSchedulerOptions,
 } from '@proto.ui/module-overlay';
-import { NATIVE_CONTROL_DECLARATION, type WebNativeControl } from '@proto.ui/module-native-control';
 
 import { bindController, getElementProps, setElementProps, unbindController } from './props';
 import { SlotProjector } from './slot-projector';
@@ -96,7 +95,6 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
   const register = opt.register ?? true;
   const tagName = opt.registerAs ?? proto.name;
   assertKebabCase(tagName);
-  const nativeControl = getModuleDeclaration(proto, NATIVE_CONTROL_DECLARATION)?.config;
 
   const shadow = opt.shadow ?? false;
   const getProps = opt.getProps ?? (() => ({}) as Partial<Props>);
@@ -132,7 +130,6 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     private _root: Element | ShadowRoot;
     private _slotProjector: SlotProjector | null = null;
     private _hostDisplay: HostDisplayController | null = null;
-    private _nativeControlTarget: WebNativeControl | null = null;
 
     private _applier: ReturnType<typeof createOwnedTwTokenApplier> | null = null;
     private _exposes: Record<string, unknown> = {};
@@ -140,27 +137,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     constructor() {
       super();
       this._root = shadow ? (this.attachShadow({ mode: 'open' }) as ShadowRoot) : this;
-      if (nativeControl) {
-        this._nativeControlTarget = document.createElement(nativeControl.target.localName);
-      }
       this._instanceToken = createLogicalInstance(proto as Prototype<any>);
       markProtoInstance(this, proto as Prototype<any>, this._instanceToken);
-    }
-
-    override focus(options?: FocusOptions): void {
-      if (this._nativeControlTarget) {
-        this._nativeControlTarget.focus(options);
-        return;
-      }
-      super.focus(options);
-    }
-
-    override blur(): void {
-      if (this._nativeControlTarget) {
-        this._nativeControlTarget.blur();
-        return;
-      }
-      super.blur();
     }
 
     connectedCallback() {
@@ -268,7 +246,6 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           root: thisRoot,
           schedule,
           rawPropsSource,
-          nativeControlTarget: this._nativeControlTarget,
           wiring,
           eventGate: {
             enable: () => currentEventGate?.enable(),
@@ -313,7 +290,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           isEnabled: () => eventGate.isEnabled?.() ?? true,
         });
         bindLogicalEventTarget(this._instanceToken, router.rootTarget);
-        const applier = createOwnedTwTokenApplier(this._nativeControlTarget ?? thisEl, {
+        const applier = createOwnedTwTokenApplier(thisEl, {
           onChange: () => {
             this._hostDisplay?.sync();
           },
@@ -346,7 +323,6 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             rawPropsSource,
             effectsPort: createWebEffectsPort(applier),
             getMeta,
-            nativeControlTarget: this._nativeControlTarget,
             exposeStateWebMode,
             setExposes,
             runInCallbackScope,
@@ -415,7 +391,6 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         instanceToken: this._instanceToken,
         rawPropsSource,
         getMeta,
-        nativeControlTarget: this._nativeControlTarget,
         exposeStateWebMode,
         setExposes,
         runInCallbackScope,

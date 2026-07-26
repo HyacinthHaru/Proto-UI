@@ -6,7 +6,6 @@ import type {
   ModuleFacade,
   MountPhase,
   ProtoPhase,
-  PrototypeModuleDeclaration,
 } from '@proto.ui/core';
 import { SYS_CAP, type SystemCaps, type ExecPhase, CapsVault } from '@proto.ui/module-base';
 
@@ -44,17 +43,9 @@ export class RuntimeModuleOrchestrator implements ModuleOrchestrator {
   private callbackCtx: unknown = undefined;
   private afterCallbackTasks: Array<() => void> = [];
 
-  constructor(
-    init: {
-      prototypeName: string;
-      declarations?: readonly PrototypeModuleDeclaration[];
-      getPhase: () => ExecPhase;
-    },
-    modules: ModuleDecl[]
-  ) {
+  constructor(init: { prototypeName: string; getPhase: () => ExecPhase }, modules: ModuleDecl[]) {
     this.prototypeName = init.prototypeName;
     this.getExecPhase = init.getPhase;
-    const declarations = Object.freeze((init.declarations ?? []).slice());
 
     const fail = (msg: string) => {
       throw new Error(`[Runtime] ${msg}`);
@@ -133,7 +124,7 @@ export class RuntimeModuleOrchestrator implements ModuleOrchestrator {
       // create module (caps passed as view only)
       const deps = this.createDepsAccess(m.name, graph.depsByName.get(m.name)!);
       const module: AnyModule = m.create({
-        init: { prototypeName: this.prototypeName, declarations },
+        init: { prototypeName: this.prototypeName },
         caps: vault as unknown as CapsVaultView,
         deps,
       });
