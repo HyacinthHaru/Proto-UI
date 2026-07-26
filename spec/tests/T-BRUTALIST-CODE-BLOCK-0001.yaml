@@ -1,0 +1,36 @@
+id: T-BRUTALIST-CODE-BLOCK-0001
+type: test
+title: P-BRUTALIST-CODE-BLOCK tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers Brutalist Code Block visual grammar.
+cases:
+  - id: T-BRUTALIST-CODE-BLOCK-0001-CASE-1
+    title: Brutalist Code Block visual grammar
+    covers:
+      - P-BRUTALIST-CODE-BLOCK-CATALOGED
+    expectation: pass
+implementations:
+  - id: p-brutalist-code-block-impl
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/code-block.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-CODE-BLOCK-0001-CASE-1
+    exercises: &id001
+      - P-BRUTALIST-CODE-BLOCK
+      - P-BRUTALIST-CODE-BLOCK-HEADER
+      - P-BRUTALIST-CODE-BLOCK-CONTENT
+      - P-BASE-CODE-BLOCK
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-CODE-BLOCK
+exercises:
+  prototypes: *id001
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added Brutalist Code Block tests.
+tags:
+  - test

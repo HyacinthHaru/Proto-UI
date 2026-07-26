@@ -6,3 +6,5 @@ export type {
   BrutalistButtonSize,
   BrutalistButtonVariant,
 } from './button';
+export * from './message';
+export * from './code-block';

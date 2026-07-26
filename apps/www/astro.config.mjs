@@ -328,6 +328,21 @@ export default defineConfig({
                   translations: { en: 'Design Contract', 'zh-CN': '设计合约' },
                   slug: 'ui-libraries/brutalist/design-contract',
                 },
+                {
+                  label: 'Button',
+                  translations: { en: 'Button', 'zh-CN': 'Button' },
+                  slug: 'ui-libraries/brutalist/components/button',
+                },
+                {
+                  label: 'Message',
+                  translations: { en: 'Message', 'zh-CN': 'Message' },
+                  slug: 'ui-libraries/brutalist/components/message',
+                },
+                {
+                  label: 'Code Block',
+                  translations: { en: 'Code Block', 'zh-CN': 'Code Block' },
+                  slug: 'ui-libraries/brutalist/components/code-block',
+                },
               ],
             },
           ],

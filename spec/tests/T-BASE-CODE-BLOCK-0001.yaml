@@ -1,0 +1,35 @@
+id: T-BASE-CODE-BLOCK-0001
+type: test
+title: P-BASE-CODE-BLOCK tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers Base Code Block cataloged surface.
+cases:
+  - id: T-BASE-CODE-BLOCK-0001-CASE-1
+    title: Base Code Block parts exist
+    covers:
+      - P-BASE-CODE-BLOCK-CATALOGED
+    expectation: pass
+implementations:
+  - id: p-base-code-block-impl
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/src/code-block/index.ts
+    required: true
+    consumesCases:
+      - T-BASE-CODE-BLOCK-0001-CASE-1
+    exercises: &id001
+      - P-BASE-CODE-BLOCK
+      - P-BASE-CODE-BLOCK-HEADER
+      - P-BASE-CODE-BLOCK-CONTENT
+verifies:
+  prototypes:
+    - id: P-BASE-CODE-BLOCK
+exercises:
+  prototypes: *id001
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added Base Code Block catalog coverage.
+tags:
+  - test

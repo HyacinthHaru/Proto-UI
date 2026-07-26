@@ -171,6 +171,21 @@ const brutalist = (id: string, label: string, prototypeImport: string, exportBas
     { stylePreset: 'brutalist' }
   );
 
+const brutalistCompound = (
+  id: string,
+  label: string,
+  parts: { prototypeImport: string; exportBaseName: string; elementName: string }[],
+  preset?: ComponentPresetRecipe
+) =>
+  defineCompound(
+    id,
+    label,
+    '@proto.ui/prototypes-brutalist',
+    `@proto.ui/prototypes-brutalist/${id.slice('brutalist-'.length)}`,
+    parts,
+    { stylePreset: 'brutalist', preset }
+  );
+
 const base = (id: string, label: string, prototypeImport: string, exportBaseName: string) =>
   defineSimple(
     id,
@@ -201,6 +216,29 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     'brutalistButton',
     'BrutalistButton'
   ),
+  'brutalist-message': brutalist(
+    'brutalist-message',
+    'Brutalist Message',
+    'BrutalistMessageRoot',
+    'BrutalistMessageRoot'
+  ),
+  'brutalist-code-block': brutalistCompound('brutalist-code-block', 'Brutalist Code Block', [
+    {
+      prototypeImport: 'BrutalistCodeBlockRoot',
+      exportBaseName: 'BrutalistCodeBlockRoot',
+      elementName: 'proto-ui-brutalist-code-block-root',
+    },
+    {
+      prototypeImport: 'BrutalistCodeBlockHeader',
+      exportBaseName: 'BrutalistCodeBlockHeader',
+      elementName: 'proto-ui-brutalist-code-block-header',
+    },
+    {
+      prototypeImport: 'BrutalistCodeBlockContent',
+      exportBaseName: 'BrutalistCodeBlockContent',
+      elementName: 'proto-ui-brutalist-code-block-content',
+    },
+  ]),
 
   'shadcn-button': shadcn('shadcn-button', 'shadcn Button', 'shadcnButton', 'ShadcnButton'),
   'shadcn-toggle': shadcn('shadcn-toggle', 'shadcn Toggle', 'shadcnToggle', 'ShadcnToggle'),

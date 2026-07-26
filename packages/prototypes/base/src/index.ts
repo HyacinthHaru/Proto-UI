@@ -17,3 +17,7 @@ export { default as dropdown } from './dropdown';
 export { default as select } from './select';
 export { default as hoverCard } from './hover-card';
 export { default as dialog } from './dialog';
+export * from './message';
+export { default as messageRoot } from './message';
+export * from './code-block';
+export { default as codeBlockRoot } from './code-block';

@@ -1,0 +1,34 @@
+id: T-BRUTALIST-MESSAGE-0001
+type: test
+title: P-BRUTALIST-MESSAGE tests
+status: draft
+since: 0.2.0-rc.5
+summary: Covers P-BRUTALIST-MESSAGE behavior and visual grammar.
+cases:
+  - id: T-BRUTALIST-MESSAGE-0001-CASE-1
+    title: P-BRUTALIST-MESSAGE works
+    covers:
+      - P-BRUTALIST-MESSAGE-CATALOGED
+    expectation: pass
+implementations:
+  - id: p-brutalist-message-impl
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/message.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-MESSAGE-0001-CASE-1
+    exercises: &id001
+      - P-BRUTALIST-MESSAGE
+      - P-BASE-MESSAGE
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-MESSAGE
+exercises:
+  prototypes: *id001
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Added P-BRUTALIST-MESSAGE tests.
+tags:
+  - test

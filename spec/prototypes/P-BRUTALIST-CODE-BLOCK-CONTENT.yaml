@@ -1,0 +1,20 @@
+id: P-BRUTALIST-CODE-BLOCK-CONTENT
+type: prototype
+title: Brutalist Code Block Content
+status: draft
+since: 0.2.0-rc.6
+summary: Brutalist Code Block content projection.
+sources:
+  - path: packages/prototypes/brutalist/src/code-block/content.proto.ts
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Introduced brutalist code-block content.
+tags:
+  - prototype
+verifies:
+  tests:
+    - T-BRUTALIST-CODE-BLOCK-0001
+inherits:
+  prototypes:
+    - id: P-BASE-CODE-BLOCK-CONTENT
