@@ -1,0 +1,57 @@
+id: T-BRUTALIST-TOOLTIP-0001
+type: test
+title: Brutalist Tooltip visual contract tests
+status: draft
+since: 0.2.0-rc.5
+summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist tooltip.
+cases:
+  - id: T-BRUTALIST-TOOLTIP-0001-CASE-1
+    title: P-BRUTALIST-TOOLTIP retains Base semantics and projects the Brutalist visual grammar
+    covers:
+      - P-BRUTALIST-TOOLTIP-VISUAL-GRAMMAR
+      - P-BRUTALIST-TOOLTIP-TESTED-SURFACE
+    expectation: p-brutalist-tooltip-visual-contract
+implementations:
+  - id: prototypes-brutalist-tooltip-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/tooltip.test.ts
+    required: true
+    consumesCases:
+      - T-BRUTALIST-TOOLTIP-0001-CASE-1
+    exercises:
+      - P-BASE-TOOLTIP
+      - P-BASE-TOOLTIP-ARROW
+      - P-BASE-TOOLTIP-CONTENT
+      - P-BASE-TOOLTIP-PORTAL
+      - P-BASE-TOOLTIP-TRIGGER
+      - P-BRUTALIST-TOOLTIP
+      - P-BRUTALIST-TOOLTIP-ARROW
+      - P-BRUTALIST-TOOLTIP-CONTENT
+      - P-BRUTALIST-TOOLTIP-PORTAL
+      - P-BRUTALIST-TOOLTIP-TRIGGER
+verifies:
+  prototypes:
+    - id: P-BRUTALIST-TOOLTIP
+exercises:
+  prototypes:
+    - P-BASE-TOOLTIP
+    - P-BASE-TOOLTIP-ARROW
+    - P-BASE-TOOLTIP-CONTENT
+    - P-BASE-TOOLTIP-PORTAL
+    - P-BASE-TOOLTIP-TRIGGER
+    - P-BRUTALIST-TOOLTIP
+    - P-BRUTALIST-TOOLTIP-ARROW
+    - P-BRUTALIST-TOOLTIP-CONTENT
+    - P-BRUTALIST-TOOLTIP-PORTAL
+    - P-BRUTALIST-TOOLTIP-TRIGGER
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Added draft Brutalist tooltip prototype coverage.
+tags:
+  - test
+  - brutalist
+  - neo-brutalist
+  - visual
+  - tooltip
