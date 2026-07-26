@@ -65,7 +65,7 @@ describe('adapter-web-component native control', () => {
     input.value = 'edited';
     input.dispatchEvent(new InputEvent('input', { bubbles: true }));
     expect(moduleInputValues).toEqual(['edited']);
-    expect(seen).toHaveLength(1);
+    expect(seen).toHaveLength(0);
 
     shell.remove();
     await flush();

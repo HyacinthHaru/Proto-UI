@@ -1,0 +1,46 @@
+id: T-BASE-INPUT-0001
+type: test
+title: Base Input protocol behavior tests
+status: draft
+since: 0.2.0-rc.5
+summary: Web Component integration coverage for Base Input real-host editing, value ownership, events, and native property projection.
+cases:
+  - id: T-BASE-INPUT-0001-CASE-REAL-EDITING
+    title: A real input host edits uncontrolled value and emits input/change proposals
+    covers:
+      - P-BASE-INPUT-REAL-HOST-EDITING
+      - P-BASE-INPUT-EVENTS
+    expectation: real-input-edit-updates-uncontrolled-value-and-emits-proposals
+  - id: T-BASE-INPUT-0001-CASE-CONTROLLED
+    title: Controlled value remains authoritative after an edit proposal
+    covers:
+      - P-BASE-INPUT-CONTROLLED-VALUE
+    expectation: controlled-input-reports-proposal-then-restores-prop-value
+  - id: T-BASE-INPUT-0001-CASE-PROJECTION
+    title: Single-line native properties project to the physical input
+    covers:
+      - P-BASE-INPUT-HOST-PROJECTION
+    expectation: supported-single-line-properties-project-through-native-control
+  - id: T-BASE-INPUT-0001-CASE-FOCUS
+    title: Input uses the Native Control physical focus target
+    covers:
+      - P-BASE-INPUT-FOCUS
+    expectation: focus-and-blur-target-the-physical-input
+exercises:
+  prototypes:
+    - P-BASE-INPUT
+  modules:
+    - M-NATIVE-CONTROL-0001
+  hostCaps:
+    - HC-NATIVE-CONTROL-0001
+sources:
+  - path: packages/prototypes/base/test/input.test.ts
+  - path: packages/adapters/web-component/test/focus.test.ts
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Added executable Base Input protocol coverage.
+tags:
+  - base
+  - input
+  - test

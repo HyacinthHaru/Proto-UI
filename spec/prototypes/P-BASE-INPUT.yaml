@@ -1,27 +1,52 @@
 id: P-BASE-INPUT
 type: prototype
-title: Base Input  protocol
+title: Base Input protocol
 status: draft
 since: 0.2.0-rc.5
-summary: Base Input  protocol for the Proto UI framework.
+summary: Base Input defines a business-neutral single-line editing protocol over Native Control.
 statement:
-  en: Base Input  protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Input  protocol。该 draft entity 编目协议面。
+  zh-CN: >-
+    Base Input 拥有单行 value/defaultValue、controlled/uncontrolled、disabled、readOnly、required、name、type、placeholder、autoComplete、minLength/maxLength、focus 与 input/change proposal 语义，并通过 Native Control host protocol 映射为真实 input control。
+
+  en: >-
+    Base Input owns single-line value/defaultValue, controlled/uncontrolled, disabled, readOnly, required, name, type, placeholder, autoComplete, minLength/maxLength, focus, and input/change proposal semantics, mapped to a real input control through the Native Control host protocol.
+
 criteria:
-  - id: P-BASE-INPUT-CATALOGED
+  - id: P-BASE-INPUT-REAL-HOST-EDITING
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      zh-CN: Input Root 必须通过 Native Control 映射为真实单行 input，并保留原生编辑行为。
+      en: Input Root must map through Native Control to a real single-line input while preserving native editing behavior.
+  - id: P-BASE-INPUT-CONTROLLED-VALUE
+    text:
+      zh-CN: Controlled value 必须报告编辑 proposal 但保持 prop value 权威；uncontrolled defaultValue 必须在编辑后更新 logical value。
+      en: A controlled value must report edit proposals while the prop value remains authoritative; an uncontrolled defaultValue must update the logical value after editing.
+  - id: P-BASE-INPUT-HOST-PROJECTION
+    text:
+      zh-CN: disabled、readOnly、required、name、type、placeholder、autoComplete、minLength 与 maxLength 必须通过 Native Control patch 投影。
+      en: disabled, readOnly, required, name, type, placeholder, autoComplete, minLength, and maxLength must project through a Native Control patch.
+  - id: P-BASE-INPUT-EVENTS
+    text:
+      zh-CN: input 与 change 必须携带当前 proposal value，且不得把受控 proposal 静默写入 authoritative state。
+      en: input and change must carry the current proposed value and must not silently write a controlled proposal into authoritative state.
+  - id: P-BASE-INPUT-FOCUS
+    text:
+      zh-CN: focus 与 blur 必须定向到真实 input；disabled 时 focus request 必须被拒绝。
+      en: focus and blur must target the real input, and focus requests must be rejected while disabled.
+satisfies:
+  contracts:
+    - C-NATIVE-CONTROL-0001
+verifies:
+  tests:
+    - T-BASE-INPUT-0001
 sources:
   - path: packages/prototypes/base/src/input/root.proto.ts
+  - path: packages/prototypes/base/src/input/types.ts
 revisions:
   - version: 0.2.0-rc.5
-    change: introduced
-    summary: Introduced base input  protocol.
+    change: rewritten
+    summary: Rewrote Base Input over the Native Control host protocol.
 tags:
   - prototype
   - base
   - input
-verifies:
-  tests:
-    - T-BRUTALIST-INPUT-0001
+  - native-control

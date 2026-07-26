@@ -8,20 +8,22 @@ import type {
 export type WebNativeControl = HTMLInputElement | HTMLTextAreaElement;
 
 export function createWebNativeControlHost(
-  getTarget: () => WebNativeControl | null
+  getTarget: () => WebNativeControl | null,
+  options: Readonly<{ stopPropagation?: boolean }> = {}
 ): NativeControlHost {
   return {
     attach(connection) {
       const target = getTarget();
       if (!target) throw new Error('[NativeControl] physical web control target is unavailable.');
-      return attachTarget(target, connection);
+      return attachTarget(target, connection, options);
     },
   };
 }
 
 function attachTarget(
   target: WebNativeControl,
-  connection: NativeControlHostConnection
+  connection: NativeControlHostConnection,
+  options: Readonly<{ stopPropagation?: boolean }>
 ): NativeControlHostLease {
   let patch = connection.patch;
   let composing = false;
@@ -29,6 +31,7 @@ function attachTarget(
 
   const emit = (event: Event) => {
     if (disposed) return;
+    if (options.stopPropagation) event.stopPropagation();
     const type = event.type as NativeControlEvent['type'];
     if (type === 'compositionstart') composing = true;
     if (type === 'compositionend') composing = false;

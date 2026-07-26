@@ -156,7 +156,10 @@ export function createWebComponentOwnerModules<Props extends PropsBaseType>(
 
   return createCapsWiring()
     .use('native-control', [
-      [NATIVE_CONTROL_HOST_CAP, createWebNativeControlHost(physicalControl)],
+      [
+        NATIVE_CONTROL_HOST_CAP,
+        createWebNativeControlHost(physicalControl, { stopPropagation: true }),
+      ],
       [NATIVE_CONTROL_RUN_IN_CALLBACK_CAP, args.runInCallbackScope],
     ])
     .use('props', [[RAW_PROPS_SOURCE_CAP, rawPropsSource]])
@@ -298,7 +301,10 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
 
   return createCapsWiring()
     .use('native-control', [
-      [NATIVE_CONTROL_HOST_CAP, createWebNativeControlHost(physicalControl)],
+      [
+        NATIVE_CONTROL_HOST_CAP,
+        createWebNativeControlHost(physicalControl, { stopPropagation: true }),
+      ],
       [NATIVE_CONTROL_RUN_IN_CALLBACK_CAP, args.runInCallbackScope],
     ])
     .use('props', [[RAW_PROPS_SOURCE_CAP, rawPropsSource]])

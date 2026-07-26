@@ -164,10 +164,10 @@ export class NativeControlModuleImpl extends ModuleBase {
       for (const listener of this.listeners) {
         if (listener.type === event.type) listener.callback(run, event);
       }
+      if (this.patch.valueMode !== 'controlled' || event.composing) return;
+      const restore = () => this.syncLease();
+      if (this.sys.deferAfterCallback) this.sys.deferAfterCallback(restore);
+      else queueMicrotask(restore);
     });
-    if (this.patch.valueMode !== 'controlled' || event.composing) return;
-    const restore = () => this.syncLease();
-    if (this.sys.deferAfterCallback) this.sys.deferAfterCallback(restore);
-    else queueMicrotask(restore);
   }
 }
