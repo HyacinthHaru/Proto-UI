@@ -5,11 +5,49 @@ import type { TemplateChildren } from './spec';
 import type { BorrowedStateHandle, State } from './state';
 import { getActiveAsHookContext } from './internal';
 
+const MODULE_DECLARATION_TOKEN_BRAND = Symbol('@proto.ui/module-declaration-token');
+
+export type ModuleDeclarationToken<Config> = Readonly<{
+  id: string;
+  readonly __type?: Config;
+  readonly [MODULE_DECLARATION_TOKEN_BRAND]: true;
+}>;
+
+export type PrototypeModuleDeclaration<Config = unknown> = Readonly<{
+  id: string;
+  token: ModuleDeclarationToken<Config>;
+  config: Readonly<Config>;
+}>;
+
+export function moduleDeclaration<Config>(id: string): ModuleDeclarationToken<Config> {
+  if (typeof id !== 'string' || id.trim().length === 0) {
+    throw new Error(`[Prototype] module declaration token id must be a non-empty string.`);
+  }
+  return Object.freeze({
+    id,
+    [MODULE_DECLARATION_TOKEN_BRAND]: true as const,
+  }) as ModuleDeclarationToken<Config>;
+}
+
+export function declareModule<Config>(
+  token: ModuleDeclarationToken<Config>,
+  config: Config
+): PrototypeModuleDeclaration<Config> {
+  if (token?.[MODULE_DECLARATION_TOKEN_BRAND] !== true) {
+    throw new Error(`[Prototype] declareModule() expects a ModuleDeclarationToken.`);
+  }
+  const frozenConfig =
+    config !== null && typeof config === 'object' ? Object.freeze(config) : config;
+  return Object.freeze({ id: token.id, token, config: frozenConfig as Readonly<Config> });
+}
+
 export interface Prototype<
   Props extends PropsBaseType = PropsBaseType,
   Exposes = Record<string, unknown>,
 > {
   name: string;
+  modules?: readonly PrototypeModuleDeclaration[];
+
   setup: (def: DefHandle<Props, Exposes>) => RenderFn | void;
 }
 
@@ -237,6 +275,15 @@ function normalizeAsHookRender(value: RenderFn | void): RenderFn | undefined {
   return typeof value === 'function' ? value : undefined;
 }
 
+export function getModuleDeclaration<Config>(
+  proto: Pick<Prototype, 'modules'>,
+  token: ModuleDeclarationToken<Config>
+): PrototypeModuleDeclaration<Config> | undefined {
+  return proto.modules?.find((declaration) => declaration.id === token.id) as
+    | PrototypeModuleDeclaration<Config>
+    | undefined;
+}
+
 /** Thin wrapper: stabilize author-facing entry & improve inference */
 export function definePrototype<P extends PropsBaseType, E = Record<string, unknown>>(
   proto: Prototype<P, E>
@@ -250,6 +297,15 @@ export function definePrototype<P extends PropsBaseType, E = Record<string, unkn
   if (typeof proto.setup !== 'function') {
     throw new Error(`[Prototype] setup must be a function.`);
   }
+  const declarations = proto.modules ?? [];
+  const ids = new Set<string>();
+  for (const declaration of declarations) {
+    if (ids.has(declaration.id)) {
+      throw new Error(`[Prototype] duplicate module declaration id: ${declaration.id}`);
+    }
+    ids.add(declaration.id);
+  }
+  proto.modules = Object.freeze(declarations.slice());
   return proto;
 }
 

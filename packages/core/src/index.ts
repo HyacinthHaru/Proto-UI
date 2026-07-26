@@ -19,5 +19,6 @@ export * from './overlay';
 export * from './positioning';
 export * from './collection';
 export * from './delay';
+export * from './native-control';
 
 export * from './caps';

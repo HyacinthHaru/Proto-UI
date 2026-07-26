@@ -1,0 +1,50 @@
+id: T-NATIVE-CONTROL-0001
+type: test
+title: Native Control declaration, module, and Web bridge tests
+status: draft
+since: 0.2.0-rc.5
+summary: Focused contract coverage for static declarations, value reconciliation, portable property projection, event normalization, and lease cleanup.
+cases:
+  - id: T-NATIVE-CONTROL-0001-CASE-STATIC-DECLARATION
+    title: Static module declarations are immutable, typed, and duplicate-safe
+    covers:
+      - C-NATIVE-CONTROL-0001-A
+      - C-NATIVE-CONTROL-0001-F
+    expectation: static-declaration-is-readable-before-render-without-template-expansion
+  - id: T-NATIVE-CONTROL-0001-CASE-PORTABLE-PROJECTION
+    title: Portable patches project to a physical Web control
+    covers:
+      - C-NATIVE-CONTROL-0001-B
+    expectation: portable-patch-projects-supported-native-control-properties
+  - id: T-NATIVE-CONTROL-0001-CASE-EVENTS-AND-VALUES
+    title: Native events normalize while controlled and uncontrolled values reconcile
+    covers:
+      - C-NATIVE-CONTROL-0001-C
+      - C-NATIVE-CONTROL-0001-D
+    expectation: normalized-events-drive-logical-value-before-controlled-restoration
+  - id: T-NATIVE-CONTROL-0001-CASE-LEASE-CLEANUP
+    title: Detach and disposal revoke the physical host lease
+    covers:
+      - C-NATIVE-CONTROL-0001-E
+    expectation: physical-listeners-and-target-references-are-lease-bounded
+exercises:
+  modules:
+    - M-NATIVE-CONTROL-0001
+  hostCaps:
+    - HC-NATIVE-CONTROL-0001
+sources:
+  - path: packages/core/test/contract/prototype.module-declarations.v0.contract.test.ts
+  - path: packages/modules/native-control/test/impl-spec.test.ts
+  - path: packages/modules/native-control/test/web.test.ts
+  - path: packages/runtime/test/contract/native-control.v0.contract.test.ts
+  - path: packages/adapters/react/test/native-control.integration.test.ts
+  - path: packages/adapters/vue/test/native-control.integration.test.ts
+  - path: packages/adapters/web-component/test/native-control.integration.test.ts
+  - path: packages/adapters/web-component/test/focus.test.ts
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Added focused Native Control protocol coverage.
+tags:
+  - native-control
+  - test

@@ -65,6 +65,118 @@ For every family with a demo page: reuse the Hub `pr323-dev` process, open the r
 
 ---
 
+## Task 0: Native Control host protocol prerequisite
+
+**Why this prerequisite exists:** `C-TEMPLATE-0001` keeps the adapter-owned Root Node outside template output, while `C-TEMPLATE-0002` and `C-TEMPLATE-0003` keep Template v0 structural and style-only. A real Input therefore cannot project native control properties or editing events through `TemplateProps`. The approved solution is a business-neutral host capability; Template v0 remains unchanged.
+
+**Phase 1 scope:**
+
+- A static, typed, unique module declaration on `Prototype` lets adapters select the physical control before the first render. The declaration is authored once and reused by concrete styled prototypes; applications never configure Input through adapter `rootTag` options.
+- The Native Control module owns adapter-independent patches, normalized `input`/`change`/composition events, deferred controlled-value reconciliation, uncontrolled dirty-value retention, and mount-epoch host leases.
+- React and Vue map the declared control to their native Root Node. Web Component retains its custom-element Root Node and creates one adapter-owned inner native control outside Template children.
+- Focus, a11y, and style projection target the physical native control. The custom-element shell remains the component and event ownership root.
+- Phase 1 supports `value`, `defaultValue`, `disabled`, `readOnly`, `required`, `fieldName`, `controlType`, `placeholder`, `autoComplete`, `minLength`, `maxLength`, `rows`, and `wrap`.
+
+**Explicit non-goals:** ElementInternals form association, form submission/validation/reset/restore, delegated labels, FileList/multiple/accept, and Form-family coordination belong to a separate `C-FORM-ASSOCIATED-CONTROL-*` slice. Phase 1 must not claim Web Component form participation.
+
+**Protocol entities:**
+
+- Create: `spec/contracts/C-NATIVE-CONTROL-0001.yaml`
+- Create: `spec/host-caps/HC-NATIVE-CONTROL-0001.yaml`
+- Create: `spec/modules/M-NATIVE-CONTROL-0001.yaml`
+- Create: `spec/tests/T-NATIVE-CONTROL-0001.yaml`
+
+**Core/runtime files:**
+
+- Modify: `packages/core/src/prototype.ts`
+- Modify: `packages/core/src/module/types.ts`
+- Modify: `packages/core/src/index.ts`
+- Create: `packages/core/src/native-control.ts`
+- Modify: `packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts`
+- Modify: `packages/runtime/src/instance/instance.ts`
+- Modify: `packages/runtime/package.json`
+- Test: `packages/core/test/contract/prototype.module-declarations.v0.contract.test.ts`
+- Test: `packages/runtime/test/contract/native-control.v0.contract.test.ts`
+
+**Native Control module and hook:**
+
+- Create: `packages/modules/native-control/package.json`
+- Create: `packages/modules/native-control/src/{index,caps,types,create,impl,web}.ts`
+- Test: `packages/modules/native-control/test/impl-spec.test.ts`
+- Create: `packages/hooks/src/as-native-control.ts`
+- Modify: `packages/hooks/src/index.ts`
+- Modify: `packages/hooks/package.json`
+
+**Adapter files:**
+
+- Modify: `packages/adapters/{react,vue,web-component}/src/adapt.ts`
+- Modify: `packages/adapters/{react,vue,web-component}/src/runtime/modules.ts`
+- Modify: `packages/adapters/web-component/src/runtime/session.ts` only where needed to preserve adapter-owned control infrastructure across template commits.
+- Modify: `packages/adapters/{react,vue,web-component}/package.json`
+- Test: `packages/adapters/{react,vue,web-component}/test/native-control.integration.test.ts`
+
+- [ ] **Step 1: RED — write module declaration and Native Control behavior tests**
+
+Cover fail-fast duplicate declaration IDs, immutable lookup, setup-only singleton declaration, callback-only synchronization, absent host-cap retention, lease replacement/disposal, controlled proposal then deferred restore, uncontrolled dirty-value retention across view epochs, IME-safe reconciliation, distinct change delivery, and terminal cleanup.
+
+- [ ] **Step 2: RED — write adapter integration tests**
+
+Prove React/Vue materialize the declared native root; Web Component keeps the custom-element Root Node and owns exactly one inner native target; all adapters project Phase 1 properties and normalize each native event once; focus/a11y/style point to the physical target; teardown revokes listeners. Keep all existing Template contract tests unchanged.
+
+- [ ] **Step 3: Verify RED**
+
+```bash
+corepack pnpm@10.32.1 exec vitest run \
+  packages/core/test/contract/prototype.module-declarations.v0.contract.test.ts \
+  packages/modules/native-control/test/impl-spec.test.ts \
+  packages/runtime/test/contract/native-control.v0.contract.test.ts \
+  packages/adapters/react/test/native-control.integration.test.ts \
+  packages/adapters/vue/test/native-control.integration.test.ts \
+  packages/adapters/web-component/test/native-control.integration.test.ts
+```
+
+Expected: FAIL because static module declarations, the Native Control module/capability, and adapter bridges do not exist.
+
+- [ ] **Step 4: Implement static module declarations**
+
+Add separate `ModuleDeclarationToken<T>` and `PrototypeModuleDeclaration<T>` types rather than reusing dynamic `CapToken`. Core exports `moduleDeclaration(tokenId)`, `declareModule(token, config)`, and `getModuleDeclaration(prototype, token)`. `definePrototype()` must freeze declarations and reject duplicate token IDs. Runtime copies the immutable declaration view into `ModuleInit`; adapters use the same lookup helper before the first render.
+
+- [ ] **Step 5: Implement the Native Control module and hook**
+
+The module retains the latest logical patch, value mode, uncontrolled dirty value, listener registrations, and composition state. Adapter caps lease only physical targets/listeners. Controlled restoration runs after the outermost callback and waits for `compositionend`; equal value writes do not disturb selection. `asNativeControl()` is privileged and fails when the matching static declaration is absent.
+
+- [ ] **Step 6: Implement adapter bridges**
+
+React/Vue derive their physical root from the prototype declaration and reject conflicting `rootTag`. Web Component creates the native target as adapter-owned host infrastructure, never as a Template Node. Inner native events must not leak and then re-emit as duplicates. No adapter spreads arbitrary prototype props onto DOM nodes.
+
+- [ ] **Step 7: GREEN — run focused tests and catalog validation**
+
+```bash
+corepack pnpm@10.32.1 exec vitest run \
+  packages/core/test/contract/prototype.module-declarations.v0.contract.test.ts \
+  packages/modules/native-control/test/impl-spec.test.ts \
+  packages/runtime/test/contract/native-control.v0.contract.test.ts \
+  packages/adapters/react/test/native-control.integration.test.ts \
+  packages/adapters/vue/test/native-control.integration.test.ts \
+  packages/adapters/web-component/test/native-control.integration.test.ts \
+  packages/core/test/contract/template.authoring-fixture.v0.contract.test.ts \
+  packages/core/test/contract/template.renderer-primitives.v0.contract.test.ts \
+  packages/adapters/web-component/test/commit.test.ts \
+  && corepack pnpm@10.32.1 check:prototype-catalog
+```
+
+Expected: exit 0. The unchanged Template tests prove the prerequisite did not widen Template v0.
+
+- [ ] **Step 8: Commit and push**
+
+```bash
+git add packages/core packages/modules/native-control packages/hooks packages/runtime packages/adapters spec pnpm-lock.yaml docs/superpowers/plans/2026-07-26-avatar-onward-full-rewrite.md
+git commit -m "feat: add native control host protocol"
+git push
+```
+
+---
+
 ## Task 1: Input Base protocol
 
 **Files:**

@@ -95,6 +95,16 @@ Base 不允许拥有：
 
 ## 6. 各族语义边界
 
+### Native Control host prerequisite
+
+Input、Textarea 与后续附件输入需要真实原生控件，但现有 Template v0 依据 `C-TEMPLATE-0001` 只描述 adapter-owned Root Node 的 children，并依据 `C-TEMPLATE-0002`、`C-TEMPLATE-0003` 保持结构化且仅允许 style。不得为了表单原子给普通 Template Node 增加 attributes、properties、events 或 component channels。
+
+批准新增业务中立的 Native Control host protocol：prototype 通过静态、类型化且 token ID 唯一的 module declaration 描述所需 physical control；adapter 必须在首次 render 前读取相同 declaration。Native Control module 管理 property patch、标准化 input/change/composition、受控值的 callback 后回写、非受控 dirty value 保留和 view lease；Template v0 不变。
+
+React/Vue 将声明的 control 映射为 native Root Node；Web Component 保留 custom-element Root Node，并创建一个不属于 Template children 的 adapter-owned inner native control。focus、a11y 与 style 定向到 physical control，custom-element shell 继续承担组件、事件和生命周期所有权。应用调用 adapter 时不得为 Input 重复传入 `rootTag` 或 native-control 配置。
+
+本前置切片不宣称 Web Component 的 form association。ElementInternals、form value/validity、submit/reset/restore、delegated label 与 FileList 等能力必须形成独立 `C-FORM-ASSOCIATED-CONTROL-*` 协议后再实现；不得用 hidden input fallback 伪造完整语义。
+
 ### Input
 
 单行编辑协议。Root 映射为真实 input host；支持 value/defaultValue、controlled/uncontrolled、disabled、readOnly、required、name、type、placeholder、autoComplete、minLength/maxLength。Base 负责 input/change、focus、value 与 host translation；不覆盖 IME、选择区、粘贴和原生编辑。label、description、error 属于外部 Field/InputGroup 组合。
