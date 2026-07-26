@@ -1,0 +1,36 @@
+---
+title: 'Brutalist Library'
+desp: 'Contributor-authored Neo-Brutalist style family built on Proto UI Base'
+description: 'Contributor-authored Neo-Brutalist style family built on Proto UI Base'
+---
+
+import { PrototypePreviewer } from '@/components/PrototypePreviewer';
+import BrutalistPageStyle from '@/components/BrutalistPageStyle.astro';
+
+Brutalist is a contributor-authored Neo-Brutalist style family for Proto UI. It is inspired by the broader Neo-Brutalist visual language—square geometry, strong borders, flat fills, hard offset shadows, abrupt movement, and high-contrast typography—but it is not a compatibility layer for a named third-party component system.
+
+This foundation slice includes the shared visual grammar, light/dark theme variables, CLI style preset support, and the Button projection as the reference family. Additional families are introduced through separate focused PRs.
+
+<BrutalistPageStyle />
+
+## Light theme
+
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
+  <PrototypePreviewer demoId="demo-brutalist-button" initialRuntime="wc" />
+</div>
+
+## Dark theme
+
+<div
+  data-theme="dark"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
+>
+  <PrototypePreviewer demoId="demo-brutalist-button" initialRuntime="wc" />
+</div>
+
+## Status
+
+- Provenance: contributor-authored Proto UI style family, with general Neo-Brutalist visual references only.
+- Semantics: Button inherits Base Button behavior; this slice adds only visual projection.
+- Package surface: `@proto.ui/prototypes-brutalist` and `@proto.ui/prototypes-brutalist/button`.
+- Maintenance: the contributor maintains the initial split sequence; release inclusion and long-term ownership remain subject to Proto UI governance.
