@@ -17,6 +17,8 @@ import {
   DEFAULT_TOKENS_IMPORT,
   SHADCN_STYLE_TOKENS,
   SHADCN_THEME_CSS,
+  BRUTALIST_STYLE_TOKENS,
+  BRUTALIST_THEME_CSS,
 } from './type.js';
 import {
   renderPrefixedThemeCss,
@@ -195,6 +197,7 @@ async function promptPrototypesKey() {
       initial: 0,
       choices: [
         { title: 'shadcn-style', value: 'shadcn' },
+        { title: 'brutalist-style', value: 'brutalist' },
         { title: 'Skip (configure later)', value: '' },
       ],
     },
@@ -267,7 +270,7 @@ async function runInit(args) {
     stylesDir,
     styles: {
       enabled: !skipStyles,
-      preset: !skipStyles ? DEFAULT_THEME_NAME : null,
+      preset: !skipStyles ? prototypesKey || DEFAULT_THEME_NAME : null,
     },
     adapter: adapterPackage,
     prototypeLibraries: prototypePackages,
@@ -281,7 +284,7 @@ async function runInit(args) {
   );
 
   if (!skipStyles) {
-    await runPreset(DEFAULT_THEME_NAME, ['--styles-dir', stylesDir]);
+    await runPreset(prototypesKey || DEFAULT_THEME_NAME, ['--styles-dir', stylesDir]);
   } else {
     console.log('[proto-ui] init: skipped style preset generation');
   }
@@ -363,9 +366,9 @@ function formatPmInstallLine(pm, pkg, dev) {
 async function runPreset(themeName, args) {
   const options = parseOptions(args);
   const normalizedTheme = themeName.toLowerCase();
-  if (normalizedTheme !== DEFAULT_THEME_NAME) {
+  if (normalizedTheme !== DEFAULT_THEME_NAME && normalizedTheme !== 'brutalist') {
     throw new Error(
-      `unsupported theme "${themeName}". currently supported: ${DEFAULT_THEME_NAME}.`
+      `unsupported theme "${themeName}". currently supported: ${DEFAULT_THEME_NAME}, brutalist.`
     );
   }
   const stylesDir = options['styles-dir'] ?? './src/styles';
@@ -379,7 +382,9 @@ async function runPreset(themeName, args) {
 
   const tokensOutputFile = path.resolve(process.cwd(), tokensOut);
   await ensureDirectory(tokensOutputFile);
-  await fs.writeFile(tokensOutputFile, renderTokenCss(SHADCN_STYLE_TOKENS), 'utf8');
+  const presetTokens =
+    normalizedTheme === 'brutalist' ? BRUTALIST_STYLE_TOKENS : SHADCN_STYLE_TOKENS;
+  await fs.writeFile(tokensOutputFile, renderTokenCss(presetTokens), 'utf8');
   console.log(`[proto-ui] tokens(preset): wrote ${relativeToCwd(tokensOutputFile)}`);
 
   await runGenerateTheme([normalizedTheme, '--out', themeOut]);
@@ -445,8 +450,12 @@ async function runGenerateTheme(args) {
   let css = '';
   if (normalizedName === DEFAULT_THEME_NAME) {
     css = renderPrefixedThemeCss(SHADCN_THEME_CSS);
+  } else if (normalizedName === 'brutalist') {
+    css = renderPrefixedThemeCss(BRUTALIST_THEME_CSS);
   } else {
-    throw new Error(`unsupported theme "${name}". currently supported: ${DEFAULT_THEME_NAME}.`);
+    throw new Error(
+      `unsupported theme "${name}". currently supported: ${DEFAULT_THEME_NAME}, brutalist.`
+    );
   }
 
   await ensureDirectory(outputFile);
