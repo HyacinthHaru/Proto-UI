@@ -17,3 +17,5 @@ export { default as dropdown } from './dropdown';
 export { default as select } from './select';
 export { default as hoverCard } from './hover-card';
 export { default as dialog } from './dialog';
+export * from './scroll-area';
+export { default as scrollAreaRoot } from './scroll-area';

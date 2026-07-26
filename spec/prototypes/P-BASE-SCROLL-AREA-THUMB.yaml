@@ -1,0 +1,27 @@
+id: P-BASE-SCROLL-AREA-THUMB
+type: prototype
+title: Base Scroll Area Thumb protocol
+status: draft
+since: 0.2.0-rc.5
+summary: Base Scroll Area Thumb protocol for the Proto UI framework.
+statement:
+  en: Base Scroll Area Thumb protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Base Scroll Area Thumb protocol。该 draft entity 编目协议面。
+criteria:
+  - id: P-BASE-SCROLL-AREA-THUMB-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/base/src/scroll-area/thumb.proto.ts
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Introduced base scroll area thumb protocol.
+tags:
+  - prototype
+  - base
+  - scroll_area
+verifies:
+  tests:
+    - T-BRUTALIST-SCROLL-AREA-0001
