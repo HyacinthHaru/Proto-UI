@@ -1,27 +1,51 @@
 id: P-BASE-TEXTAREA
 type: prototype
-title: Base Textarea  protocol
+title: Base Textarea protocol
 status: draft
 since: 0.2.0-rc.5
-summary: Base Textarea  protocol for the Proto UI framework.
+summary: Base Textarea defines business-neutral multi-line editing over Native Control.
 statement:
-  en: Base Textarea  protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Textarea  protocol。该 draft entity 编目协议面。
+  zh-CN: >-
+    Base Textarea 拥有多行 value/defaultValue、controlled/uncontrolled、disabled、readOnly、required、name、placeholder、autoComplete、minLength/maxLength、rows、wrap、focus 与 input/change proposal 语义，并保留原生换行与 IME composition。
+
+  en: >-
+    Base Textarea owns multi-line value/defaultValue, controlled/uncontrolled, disabled, readOnly, required, name, placeholder, autoComplete, minLength/maxLength, rows, wrap, focus, and input/change proposal semantics while preserving native line breaks and IME composition.
+
 criteria:
-  - id: P-BASE-TEXTAREA-CATALOGED
+  - id: P-BASE-TEXTAREA-REAL-HOST-EDITING
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      zh-CN: Textarea Root 必须映射为真实 textarea 并保留多行编辑、selection、换行与滚动行为。
+      en: Textarea Root must map to a real textarea and preserve multi-line editing, selection, line breaks, and scrolling.
+  - id: P-BASE-TEXTAREA-CONTROLLED-VALUE
+    text:
+      zh-CN: Controlled value 必须在 composition 结束后恢复且报告 proposal；uncontrolled edit 必须更新 logical value。
+      en: Controlled value must restore after composition while reporting the proposal; uncontrolled edits must update logical value.
+  - id: P-BASE-TEXTAREA-HOST-PROJECTION
+    text:
+      zh-CN: rows、wrap 及通用 editable properties 必须通过 Native Control patch 投影。
+      en: rows, wrap, and shared editable properties must project through a Native Control patch.
+  - id: P-BASE-TEXTAREA-NATIVE-KEYBOARD
+    text:
+      zh-CN: Enter 必须保留为原生换行，不得被 Base 转换为 submit。
+      en: Enter must remain a native line break and must not be converted to submit by Base.
+  - id: P-BASE-TEXTAREA-NO-RESIZE-POLICY
+    text:
+      zh-CN: Base 不得定义 resize 视觉策略；resize 属于 styled/host policy。
+      en: Base must not define a visual resize policy; resize belongs to styled or host policy.
+satisfies:
+  contracts:
+    - C-NATIVE-CONTROL-0001
+verifies:
+  tests:
+    - T-BASE-TEXTAREA-0001
 sources:
   - path: packages/prototypes/base/src/textarea/root.proto.ts
+  - path: packages/prototypes/base/src/textarea/types.ts
 revisions:
   - version: 0.2.0-rc.5
-    change: introduced
-    summary: Introduced base textarea  protocol.
+    change: rewritten
+    summary: Rewrote Base Textarea over Native Control.
 tags:
   - prototype
   - base
   - textarea
-verifies:
-  tests:
-    - T-BRUTALIST-TEXTAREA-0001
