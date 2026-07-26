@@ -8,21 +8,92 @@ import ts from 'typescript';
 export async function collectProtoStyleTokens(root) {
   const files = await collectSourceFiles(root);
   const tokens = new Set();
+  const moduleCache = new Map();
 
   for (const file of files) {
-    const sourceText = await fs.readFile(file, 'utf8');
-    const sourceFile = ts.createSourceFile(
-      file,
-      sourceText,
-      ts.ScriptTarget.Latest,
-      true,
-      scriptKindForFile(file)
-    );
+    const sourceFile = await parseSourceFile(file);
     const scope = createScope();
+    await applyImportBindings(file, sourceFile, scope, moduleCache, []);
     walk(sourceFile, scope, tokens);
   }
 
   return Array.from(tokens).sort();
+}
+
+async function parseSourceFile(file) {
+  const sourceText = await fs.readFile(file, 'utf8');
+  return ts.createSourceFile(
+    file,
+    sourceText,
+    ts.ScriptTarget.Latest,
+    true,
+    scriptKindForFile(file)
+  );
+}
+
+// Named imports from relative modules (e.g. a local style.ts holding shared
+// token constants) are resolved so cross-file token constants stay visible
+// to tw(...) calls and rule intent extraction.
+async function applyImportBindings(file, sourceFile, scope, moduleCache, stack) {
+  for (const stmt of sourceFile.statements) {
+    if (!ts.isImportDeclaration(stmt)) continue;
+    const specifier = stmt.moduleSpecifier;
+    if (!ts.isStringLiteralLike(specifier)) continue;
+    if (!specifier.text.startsWith('.')) continue;
+    const resolved = await resolveModuleFile(path.dirname(file), specifier.text);
+    if (!resolved || stack.includes(resolved)) continue;
+    const clause = stmt.importClause;
+    if (!clause?.namedBindings || !ts.isNamedImports(clause.namedBindings)) continue;
+    const bindings = await loadModuleBindings(resolved, moduleCache, stack);
+    for (const element of clause.namedBindings.elements) {
+      const importedName = (element.propertyName ?? element.name).text;
+      const value = bindings.get(importedName);
+      if (value) scope.bindings.set(element.name.text, value);
+    }
+  }
+}
+
+async function resolveModuleFile(dir, specifier) {
+  const base = path.resolve(dir, specifier);
+  const candidates = [
+    base,
+    `${base}.ts`,
+    `${base}.tsx`,
+    `${base}.mts`,
+    `${base}.js`,
+    `${base}.mjs`,
+    path.join(base, 'index.ts'),
+    path.join(base, 'index.tsx'),
+    path.join(base, 'index.js'),
+  ];
+  for (const candidate of candidates) {
+    try {
+      const stat = await fs.stat(candidate);
+      if (stat.isFile()) return candidate;
+    } catch {
+      // try the next candidate
+    }
+  }
+  return null;
+}
+
+async function loadModuleBindings(file, moduleCache, stack) {
+  const cached = moduleCache.get(file);
+  if (cached) return cached;
+  // Insert before recursing so circular imports terminate.
+  const bindings = new Map();
+  moduleCache.set(file, bindings);
+  const sourceFile = await parseSourceFile(file);
+  const scope = createScope();
+  await applyImportBindings(file, sourceFile, scope, moduleCache, [...stack, file]);
+  for (const stmt of sourceFile.statements) {
+    if (!ts.isVariableStatement(stmt)) continue;
+    for (const decl of stmt.declarationList.declarations) {
+      registerDeclaration(decl, scope);
+    }
+  }
+  for (const [name, value] of scope.bindings) bindings.set(name, value);
+  return bindings;
 }
 function createScope(parent = null) {
   return { parent, bindings: new Map() };
@@ -115,6 +186,16 @@ function registerDeclaration(decl, scope) {
 function resolveExpression(node, scope) {
   if (ts.isStringLiteralLike(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
     return asStringValue([node.text]);
+  }
+
+  if (ts.isTemplateExpression(node)) {
+    const parts = [node.head.text];
+    for (const span of node.templateSpans) {
+      const value = resolveExpression(span.expression, scope);
+      if (value.single == null) return emptyValue();
+      parts.push(value.single, span.literal.text);
+    }
+    return asStringValue([parts.join('')]);
   }
 
   if (ts.isArrayLiteralExpression(node)) {
@@ -277,13 +358,43 @@ function resolveKnownAsHookStateHandles(node) {
   if (!ts.isCallExpression(node) || !ts.isIdentifier(node.expression)) return null;
 
   const hookName = node.expression.text;
+  const COMMAND_STATE_VARIANTS = [
+    ['disabled', 'data-[disabled]'],
+    ['hovered', 'data-[hovered]'],
+    ['focused', 'data-[focused]'],
+    ['focusVisible', 'data-[focus-visible]'],
+    ['pressed', 'data-[pressed]'],
+  ];
+
+  if (
+    hookName === 'asDialogTrigger' ||
+    hookName === 'asDialogClose' ||
+    hookName === 'asDropdownTrigger' ||
+    hookName === 'asSelectTrigger' ||
+    hookName === 'asHoverCardTrigger'
+  ) {
+    return new Map(COMMAND_STATE_VARIANTS);
+  }
+
+  if (hookName === 'asDropdownItem') {
+    return new Map([...COMMAND_STATE_VARIANTS, ['active', 'data-[active]']]);
+  }
+
+  if (hookName === 'asSelectItem') {
+    return new Map([
+      ...COMMAND_STATE_VARIANTS,
+      ['active', 'data-[active]'],
+      ['selected', 'data-[selected]'],
+    ]);
+  }
+
   if (hookName === 'asButton') {
     return new Map([
       ['disabled', 'data-[disabled]'],
-      ['hovered', 'hover'],
+      ['hovered', 'data-[hovered]'],
       ['focused', 'data-[focused]'],
+      ['pressed', 'data-[pressed]'],
       ['focusVisible', 'data-[focus-visible]'],
-      ['pressed', 'active'],
     ]);
   }
 

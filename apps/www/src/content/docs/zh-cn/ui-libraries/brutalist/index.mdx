@@ -1,0 +1,36 @@
+---
+title: 'Brutalist 原型库'
+desp: '贡献者原创、基于 Proto UI Base 的 Neo-Brutalist 风格原型库'
+description: '贡献者原创、基于 Proto UI Base 的 Neo-Brutalist 风格原型库'
+---
+
+import { PrototypePreviewer } from '@/components/PrototypePreviewer';
+import BrutalistPageStyle from '@/components/BrutalistPageStyle.astro';
+
+Brutalist 是 Proto UI 的贡献者原创 Neo-Brutalist 风格原型库。它参考的是广义 Neo-Brutalist 视觉语言：方角几何、强边框、平涂填色、硬偏移阴影、直接的运动方式和高对比排版；它不是对任何特定第三方组件系统的兼容层。
+
+本基础切片只包含共享视觉语法、Light/Dark 主题变量、CLI style preset 支持，以及作为参考实现的 Button projection。其他 family 将通过独立小 PR 引入。
+
+<BrutalistPageStyle />
+
+## Light 主题
+
+<div style="--pui-radius:0;--pui-background:#f4f1ea;--pui-secondary-background:#ffffff;--pui-foreground:#000000;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#000000;--pui-overlay:rgba(0,0,0,.75);background:#f4f1ea;color:#000;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;">
+  <PrototypePreviewer demoId="demo-brutalist-button" initialRuntime="wc" />
+</div>
+
+## Dark 主题
+
+<div
+  data-theme="dark"
+  style="--pui-radius:0;--pui-background:#1c1914;--pui-secondary-background:#2a241c;--pui-foreground:#f4f1ea;--pui-main:#ffd23f;--pui-main-foreground:#000000;--pui-destructive:#ff6b6b;--pui-border:#000000;--pui-ring:#f4f1ea;--pui-overlay:rgba(0,0,0,.85);background:#1c1914;color:#f4f1ea;border:2px solid var(--pui-foreground);border-radius:0;box-shadow:3px 3px 0 0 var(--pui-foreground);padding:1rem;margin:1rem 0 2rem;"
+>
+  <PrototypePreviewer demoId="demo-brutalist-button" initialRuntime="wc" />
+</div>
+
+## 状态
+
+- 来源：贡献者原创 Proto UI style family，仅使用一般 Neo-Brutalist 视觉参考。
+- 语义：Button 继承 Base Button 行为；本切片只做视觉投影。
+- 包入口：`@proto.ui/prototypes-brutalist` 与 `@proto.ui/prototypes-brutalist/button`。
+- 维护：贡献者负责初始拆分序列；是否进入 release 及长期所有权由 Proto UI governance 决定。
