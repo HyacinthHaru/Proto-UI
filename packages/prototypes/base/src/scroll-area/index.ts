@@ -23,7 +23,15 @@ export type {
   ScrollAreaViewportStateHandles,
 } from './types';
 
-export { SCROLL_AREA_FAMILY } from './shared';
+export {
+  EMPTY_SCROLL_METRICS,
+  SCROLL_AREA_CONTEXT,
+  SCROLL_AREA_FAMILY,
+  publishScrollMetrics,
+  requestScrollPosition,
+} from './shared';
+export type { ScrollAreaContextValue, ScrollAreaMetrics } from './shared';
+
 export { asScrollAreaRoot, default as scrollAreaRoot } from './root.proto';
 export { asScrollAreaViewport, default as scrollAreaViewport } from './viewport.proto';
 export { asScrollAreaScrollbar, default as scrollAreaScrollbar } from './scrollbar.proto';

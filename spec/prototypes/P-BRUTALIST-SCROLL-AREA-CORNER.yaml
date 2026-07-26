@@ -2,7 +2,7 @@ id: P-BRUTALIST-SCROLL-AREA-CORNER
 type: prototype
 title: Brutalist Scroll Area Corner protocol
 status: draft
-since: 0.2.0-rc.5
+since: 0.2.0-rc.6
 summary: Brutalist Scroll Area Corner protocol for the Proto UI framework.
 statement:
   en: Brutalist Scroll Area Corner protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/brutalist/src/scroll-area/corner.proto.ts
 revisions:
-  - version: 0.2.0-rc.5
+  - version: 0.2.0-rc.6
     change: introduced
     summary: Introduced brutalist scroll area corner protocol.
 tags:

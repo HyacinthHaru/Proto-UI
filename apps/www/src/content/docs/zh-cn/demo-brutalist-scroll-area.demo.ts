@@ -2,7 +2,7 @@ export default {
   type: 'demo',
   root: {
     kind: 'box',
-    className: 'flex gap-5',
+    className: 'h-48 w-80',
     children: [
       {
         kind: 'proto',

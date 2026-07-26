@@ -8,15 +8,16 @@ Provides a design-language foundation on top of Proto UI Base: square geometry, 
 
 This package is not owned by or claimed to be compatible with a named third-party component system. It uses only general Neo-Brutalist visual references.
 
-## Foundation scope
+## Current shipped families
 
-This slice intentionally includes only:
+This package currently includes:
 
 - shared Brutalist style tokens and theme grammar;
-- the reference Brutalist Button projection over Base Button;
-- package and CLI style-preset integration.
+- package and CLI style-preset integration;
+- Button as the reference family;
+- Scroll Area visual projection over Base Scroll Area metrics/thumb behavior.
 
-Additional prototype families are split into focused follow-up PRs.
+Additional prototype families continue to land through focused split PRs under incubation #323.
 
 ## Family import
 

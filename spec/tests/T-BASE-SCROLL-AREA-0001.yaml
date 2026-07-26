@@ -1,0 +1,58 @@
+id: T-BASE-SCROLL-AREA-0001
+type: test
+title: Base Scroll Area metrics and thumb contract tests
+status: draft
+since: 0.2.0-rc.6
+summary: Covers Base Scroll Area viewport metrics publication and thumb drag scroll requests.
+cases:
+  - id: T-BASE-SCROLL-AREA-0001-CASE-METRICS
+    title: Viewport publishes scroll metrics on host scroll
+    covers:
+      - P-BASE-SCROLL-AREA-CATALOGED
+    expectation: viewport-metrics-publish-on-scroll
+  - id: T-BASE-SCROLL-AREA-0001-CASE-THUMB-RATIO
+    title: Thumb size and offset ratios derive from metrics
+    covers:
+      - P-BASE-SCROLL-AREA-CATALOGED
+    expectation: thumb-ratios-derive-from-metrics
+  - id: T-BASE-SCROLL-AREA-0001-CASE-THUMB-DRAG
+    title: Thumb pointer drag requests scroll position changes
+    covers:
+      - P-BASE-SCROLL-AREA-CATALOGED
+    expectation: thumb-drag-requests-scroll-position
+implementations:
+  - id: prototypes-base-scroll-area-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/scroll-area.test.ts
+    required: true
+    consumesCases:
+      - T-BASE-SCROLL-AREA-0001-CASE-METRICS
+      - T-BASE-SCROLL-AREA-0001-CASE-THUMB-RATIO
+      - T-BASE-SCROLL-AREA-0001-CASE-THUMB-DRAG
+    exercises:
+      - P-BASE-SCROLL-AREA
+      - P-BASE-SCROLL-AREA-VIEWPORT
+      - P-BASE-SCROLL-AREA-SCROLLBAR
+      - P-BASE-SCROLL-AREA-THUMB
+      - P-BASE-SCROLL-AREA-CORNER
+sources:
+  - path: packages/prototypes/base/test/scroll-area.test.ts
+  - path: packages/prototypes/base/src/scroll-area/viewport.proto.ts
+  - path: packages/prototypes/base/src/scroll-area/thumb.proto.ts
+exercises:
+  prototypes:
+    - P-BASE-SCROLL-AREA
+    - P-BASE-SCROLL-AREA-VIEWPORT
+    - P-BASE-SCROLL-AREA-SCROLLBAR
+    - P-BASE-SCROLL-AREA-THUMB
+    - P-BASE-SCROLL-AREA-CORNER
+revisions:
+  - version: 0.2.0-rc.6
+    change: introduced
+    summary: Added Base Scroll Area metrics and thumb behavior coverage.
+tags:
+  - prototype
+  - base
+  - scroll-area
+  - test

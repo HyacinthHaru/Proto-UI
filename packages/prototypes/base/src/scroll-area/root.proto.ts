@@ -1,5 +1,10 @@
 import { defineAsHook, definePrototype, type DefHandle } from '@proto.ui/core';
-import { SCROLL_AREA_FAMILY } from './shared';
+import {
+  EMPTY_SCROLL_METRICS,
+  SCROLL_AREA_CONTEXT,
+  SCROLL_AREA_FAMILY,
+  type ScrollAreaContextValue,
+} from './shared';
 import type {
   ScrollAreaRootAsHookContract,
   ScrollAreaRootExposes,
@@ -8,11 +13,16 @@ import type {
 
 function setupScrollAreaRoot(def: DefHandle<ScrollAreaRootProps, ScrollAreaRootExposes>): void {
   def.anatomy.claim(SCROLL_AREA_FAMILY, { role: 'root' });
+  const initial: ScrollAreaContextValue = {
+    metrics: { ...EMPTY_SCROLL_METRICS },
+    metricsVersion: 0,
+    requestScrollTop: null,
+    requestScrollLeft: null,
+    requestVersion: 0,
+    requestReason: null,
+  };
+  def.context.provide(SCROLL_AREA_CONTEXT, initial);
 }
-
-/*
- * P-BASE-SCROLL-AREA-ROOT-NO-BEHAVIOR: absence of event, state, and focus syntax is the implementation.
- */
 
 export const asScrollAreaRoot = defineAsHook<
   ScrollAreaRootProps,

@@ -2,7 +2,7 @@ id: P-BASE-SCROLL-AREA-VIEWPORT
 type: prototype
 title: Base Scroll Area Viewport protocol
 status: draft
-since: 0.2.0-rc.5
+since: 0.2.0-rc.6
 summary: Base Scroll Area Viewport protocol for the Proto UI framework.
 statement:
   en: Base Scroll Area Viewport protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/base/src/scroll-area/viewport.proto.ts
 revisions:
-  - version: 0.2.0-rc.5
+  - version: 0.2.0-rc.6
     change: introduced
     summary: Introduced base scroll area viewport protocol.
 tags:
@@ -24,4 +24,4 @@ tags:
   - scroll_area
 verifies:
   tests:
-    - T-BRUTALIST-SCROLL-AREA-0001
+    - T-BASE-SCROLL-AREA-0001

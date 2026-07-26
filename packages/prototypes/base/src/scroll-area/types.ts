@@ -1,4 +1,4 @@
-import { ExposeState, State } from '@proto.ui/core';
+import type { ExposeState, State } from '@proto.ui/core';
 
 export interface ScrollAreaRootProps {}
 
@@ -10,11 +10,27 @@ export type ScrollAreaRootAsHookContract = {};
 
 export interface ScrollAreaViewportProps {}
 
-export type ScrollAreaViewportExposes = {};
+export type ScrollAreaViewportExposes = {
+  scrollTop: ExposeState<number>;
+  scrollLeft: ExposeState<number>;
+  scrollHeight: ExposeState<number>;
+  scrollWidth: ExposeState<number>;
+  clientHeight: ExposeState<number>;
+  clientWidth: ExposeState<number>;
+};
 
-export type ScrollAreaViewportStateHandles = {};
+export type ScrollAreaViewportStateHandles = {
+  scrollTop: State<number>;
+  scrollLeft: State<number>;
+  scrollHeight: State<number>;
+  scrollWidth: State<number>;
+  clientHeight: State<number>;
+  clientWidth: State<number>;
+};
 
-export type ScrollAreaViewportAsHookContract = {};
+export type ScrollAreaViewportAsHookContract = {
+  state: ScrollAreaViewportStateHandles;
+};
 
 export interface ScrollAreaScrollbarProps {
   orientation?: 'horizontal' | 'vertical';
@@ -34,11 +50,19 @@ export type ScrollAreaScrollbarAsHookContract = {
 
 export interface ScrollAreaThumbProps {}
 
-export type ScrollAreaThumbExposes = {};
+export type ScrollAreaThumbExposes = {
+  sizeRatio: ExposeState<number>;
+  offsetRatio: ExposeState<number>;
+};
 
-export type ScrollAreaThumbStateHandles = {};
+export type ScrollAreaThumbStateHandles = {
+  sizeRatio: State<number>;
+  offsetRatio: State<number>;
+};
 
-export type ScrollAreaThumbAsHookContract = {};
+export type ScrollAreaThumbAsHookContract = {
+  state: ScrollAreaThumbStateHandles;
+};
 
 export interface ScrollAreaCornerProps {}
 
