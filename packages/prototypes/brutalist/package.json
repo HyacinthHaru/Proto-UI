@@ -1,0 +1,47 @@
+{
+  "name": "@proto.ui/prototypes-brutalist",
+  "version": "0.2.0-rc.6",
+  "private": false,
+  "type": "module",
+  "sideEffects": false,
+  "dependencies": {
+    "@proto.ui/core": "workspace:*",
+    "@proto.ui/prototypes-base": "workspace:*"
+  },
+  "devDependencies": {
+    "@proto.ui/module-as-trigger": "workspace:*",
+    "@proto.ui/module-event": "workspace:*",
+    "@proto.ui/module-rule-meta": "workspace:*",
+    "@proto.ui/runtime": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./button": {
+      "types": "./src/button/index.ts",
+      "default": "./src/button/index.ts"
+    }
+  },
+  "description": "Neo-Brutalist Proto UI prototype library foundation and reference Button projection.",
+  "license": "MIT",
+  "homepage": "https://github.com/Proto-UI/Proto-UI/tree/main/packages/prototypes/brutalist",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Proto-UI/Proto-UI.git",
+    "directory": "packages/prototypes/brutalist"
+  },
+  "bugs": {
+    "url": "https://github.com/Proto-UI/Proto-UI/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "proto-ui",
+    "prototype-library",
+    "brutalist",
+    "neo-brutalist"
+  ]
+}

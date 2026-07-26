@@ -93,9 +93,9 @@ export async function runAddCommand(argv: string[]): Promise<void> {
     `[proto-ui] add: generated ${relativeToCwd(paths.componentsDir, cwd)} for ${host}/${componentEntry.id}`
   );
 
-  if (componentEntry.stylePreset === 'shadcn' && nextConfig.styles?.enabled === false) {
+  if (componentEntry.stylePreset && nextConfig.styles?.enabled === false) {
     console.log(
-      '[proto-ui] add: note that this component expects the shadcn style preset, but styles are disabled in proto-ui/config.json'
+      `[proto-ui] add: note that this component expects the ${componentEntry.stylePreset} style preset, but styles are disabled in proto-ui/config.json`
     );
   }
 }

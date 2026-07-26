@@ -108,6 +108,9 @@ importers:
       '@proto.ui/prototypes-base':
         specifier: workspace:*
         version: link:../../packages/prototypes/base
+      '@proto.ui/prototypes-brutalist':
+        specifier: workspace:*
+        version: link:../../packages/prototypes/brutalist
       '@proto.ui/prototypes-lucide':
         specifier: workspace:*
         version: link:../../packages/prototypes/lucide
@@ -815,6 +818,28 @@ importers:
       '@proto.ui/module-focus':
         specifier: workspace:*
         version: link:../../modules/focus
+      '@proto.ui/runtime':
+        specifier: workspace:*
+        version: link:../../runtime
+
+  packages/prototypes/brutalist:
+    dependencies:
+      '@proto.ui/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@proto.ui/prototypes-base':
+        specifier: workspace:*
+        version: link:../base
+    devDependencies:
+      '@proto.ui/module-as-trigger':
+        specifier: workspace:*
+        version: link:../../modules/as-trigger
+      '@proto.ui/module-event':
+        specifier: workspace:*
+        version: link:../../modules/event
+      '@proto.ui/module-rule-meta':
+        specifier: workspace:*
+        version: link:../../modules/rule-meta
       '@proto.ui/runtime':
         specifier: workspace:*
         version: link:../../runtime
