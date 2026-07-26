@@ -24,6 +24,11 @@
       "types": "./dist/button/index.d.ts",
       "import": "./dist/button/index.js",
       "default": "./dist/button/index.js"
+    },
+    "./scroll-area": {
+      "types": "./dist/scroll-area/index.d.ts",
+      "import": "./dist/scroll-area/index.js",
+      "default": "./dist/scroll-area/index.js"
     }
   },
   "description": "Neo-Brutalist Proto UI prototype library foundation and reference Button projection.",

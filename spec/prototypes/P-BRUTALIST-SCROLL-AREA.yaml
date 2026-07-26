@@ -1,0 +1,35 @@
+id: P-BRUTALIST-SCROLL-AREA
+type: prototype
+title: Brutalist Scroll Area  protocol
+status: draft
+since: 0.2.0-rc.5
+summary: Brutalist Scroll Area  protocol for the Proto UI framework.
+statement:
+  en: Brutalist Scroll Area  protocol. This draft entity catalogs the protocol surface.
+  zh-CN: Brutalist Scroll Area  protocol。该 draft entity 编目协议面。
+criteria:
+  - id: P-BRUTALIST-SCROLL-AREA-CATALOGED
+    text:
+      en: The protocol is cataloged for traceability.
+      zh-CN: 该协议已编目以便追溯。
+sources:
+  - path: packages/prototypes/brutalist/src/scroll-area/root.proto.ts
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Introduced brutalist scroll area  protocol.
+tags:
+  - prototype
+  - brutalist
+  - scroll_area
+inherits:
+  prototypes:
+    - id: P-BASE-SCROLL-AREA
+dependsOn:
+  contracts:
+    - C-CORE-SYNTAX-0003
+    - C-AS-HOOK-0001
+    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+verifies:
+  tests:
+    - T-BRUTALIST-SCROLL-AREA-0001

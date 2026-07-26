@@ -6,3 +6,4 @@ export type {
   BrutalistButtonSize,
   BrutalistButtonVariant,
 } from './button';
+export * from './scroll-area';
