@@ -332,11 +332,6 @@ export default defineConfig({
                   slug: 'ui-libraries/brutalist/components/message',
                 },
                 {
-                  label: 'Composer',
-                  translations: { en: 'Composer', 'zh-CN': 'Composer' },
-                  slug: 'ui-libraries/brutalist/components/composer',
-                },
-                {
                   label: 'Code Block',
                   translations: { en: 'Code Block', 'zh-CN': 'Code Block' },
                   slug: 'ui-libraries/brutalist/components/code-block',

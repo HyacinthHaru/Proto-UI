@@ -8,7 +8,6 @@ import baseHoverCardDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-
 import baseDropdownDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-base-dropdown-menu.demo';
 import { assertDemoSpec } from '../../../../apps/www/src/components/PrototypePreviewer/demo-types';
 import brutalistMessageDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-message.demo';
-import brutalistComposerDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-composer.demo';
 import brutalistCodeBlockDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-code-block.demo';
 import brutalistAvatarDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-avatar.demo';
 import brutalistBadgeDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-badge.demo';
@@ -273,7 +272,6 @@ describe('PrototypePreviewer demo-renderer / wc', () => {
       brutalistScrollAreaDemo,
       brutalistTooltipDemo,
       brutalistMessageDemo,
-      brutalistComposerDemo,
       brutalistCodeBlockDemo,
     ];
 

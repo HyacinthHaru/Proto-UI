@@ -491,26 +491,6 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('../../../../../packages/prototypes/brutalist/src/message/root.proto');
     registerPrototype('brutalist-message-root', mod.BrutalistMessageRoot);
   },
-  'brutalist-composer-root': async () => {
-    const mod =
-      await import('../../../../../packages/prototypes/brutalist/src/composer/root.proto');
-    registerPrototype('brutalist-composer-root', mod.default);
-  },
-  'brutalist-composer-input': async () => {
-    const mod =
-      await import('../../../../../packages/prototypes/brutalist/src/composer/input.proto');
-    registerPrototype('brutalist-composer-input', mod.default);
-  },
-  'brutalist-composer-actions': async () => {
-    const mod =
-      await import('../../../../../packages/prototypes/brutalist/src/composer/actions.proto');
-    registerPrototype('brutalist-composer-actions', mod.default);
-  },
-  'brutalist-composer-send-button': async () => {
-    const mod =
-      await import('../../../../../packages/prototypes/brutalist/src/composer/send-button.proto');
-    registerPrototype('brutalist-composer-send-button', mod.default);
-  },
   'brutalist-code-block-root': async () => {
     const mod =
       await import('../../../../../packages/prototypes/brutalist/src/code-block/root.proto');
