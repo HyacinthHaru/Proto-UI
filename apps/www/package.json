@@ -29,6 +29,7 @@
     "@proto.ui/prototypes-base": "workspace:*",
     "@proto.ui/prototypes-lucide": "workspace:*",
     "@proto.ui/prototypes-shadcn": "workspace:*",
+    "@proto.ui/prototypes-brutalist": "workspace:*",
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",

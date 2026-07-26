@@ -15,6 +15,10 @@ export async function runInitCommand(argv: string[]): Promise<void> {
   const cwd = process.cwd();
   const rootDir = (options['root-dir'] as string | undefined) ?? DEFAULT_ROOT_DIR;
   const stylesDir = (options['styles-dir'] as string | undefined) ?? DEFAULT_STYLES_DIR;
+  const stylePreset = ((options.prototypes as string | undefined) ?? 'shadcn').toLowerCase();
+  if (!['shadcn', 'brutalist'].includes(stylePreset)) {
+    throw new Error(`unknown prototypes "${stylePreset}". supported: shadcn, brutalist`);
+  }
   const interactive =
     !isInteractiveDisabled(options) &&
     process.stdin.isTTY &&
@@ -40,6 +44,7 @@ export async function runInitCommand(argv: string[]): Promise<void> {
     stylesDir,
     stylesEnabled,
   });
+  if (stylesEnabled) nextConfig.styles.preset = stylePreset;
 
   const { config: existingConfig, paths } = await loadCliConfig(cwd, rootDir);
   const mergedConfig = existingConfig ? mergeConfig(existingConfig, nextConfig) : nextConfig;
@@ -56,7 +61,7 @@ export async function runInitCommand(argv: string[]): Promise<void> {
   );
 
   if (stylesEnabled) {
-    await runLegacyStyleCommand(['shadcn', '--styles-dir', stylesDir]);
+    await runLegacyStyleCommand([stylePreset, '--styles-dir', stylesDir]);
   } else {
     console.log('[proto-ui] init: skipped style preset generation');
   }

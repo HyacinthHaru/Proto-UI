@@ -24,6 +24,7 @@ const spacing: Record<string, string> = {
   '9': '2.25rem',
   '10': '2.5rem',
   '11': '2.75rem',
+  '12': '3rem',
   '32': '8rem',
   '64': '16rem',
   '28': '7rem',
@@ -42,6 +43,10 @@ const colorVars = new Set([
   'input',
   'muted',
   'muted-foreground',
+  'main',
+  'main-foreground',
+  'overlay',
+  'secondary-background',
   'primary',
   'primary-foreground',
   'popover',
@@ -49,6 +54,16 @@ const colorVars = new Set([
   'ring',
   'secondary',
   'secondary-foreground',
+  'canary',
+  'canary-foreground',
+  'mint',
+  'mint-foreground',
+  'lavender',
+  'lavender-foreground',
+  'coral',
+  'coral-foreground',
+  'sky',
+  'sky-foreground',
 ]);
 
 const staticUtilities: Record<string, string[]> = {
@@ -62,18 +77,29 @@ const staticUtilities: Record<string, string[]> = {
   grid: ['display: grid;'],
   hidden: ['display: none;'],
   'flex-col': ['flex-direction: column;'],
+  'flex-row': ['flex-direction: row;'],
+  'flex-col-reverse': ['flex-direction: column-reverse;'],
   'items-center': ['align-items: center;'],
   'items-start': ['align-items: flex-start;'],
+  'items-end': ['align-items: flex-end;'],
   'justify-center': ['justify-content: center;'],
   'justify-between': ['justify-content: space-between;'],
+  'justify-end': ['justify-content: flex-end;'],
   'shrink-0': ['flex-shrink: 0;'],
+  'self-start': ['align-self: flex-start;'],
   'pointer-events-none': ['pointer-events: none;'],
+  'cursor-not-allowed': ['cursor: not-allowed;'],
   'cursor-default': ['cursor: default;'],
   'cursor-pointer': ['cursor: pointer;'],
   'select-none': ['user-select: none;'],
   'outline-none': ['outline: 2px solid transparent;', 'outline-offset: 2px;'],
   'outline-1': ['outline-style: solid;', 'outline-width: 1px;'],
   'outline-ring': ['outline-color: var(--pui-ring);'],
+  'aspect-square': ['aspect-ratio: 1 / 1;'],
+  'overflow-auto': ['overflow: auto;'],
+  'touch-none': ['touch-action: none;'],
+  'object-cover': ['object-fit: cover;'],
+  'fill-foreground': ['fill: var(--pui-foreground);'],
   'overflow-hidden': ['overflow: hidden;'],
   'overflow-x-hidden': ['overflow-x: hidden;'],
   'overflow-y-auto': ['overflow-y: auto;'],
@@ -110,19 +136,49 @@ const staticUtilities: Record<string, string[]> = {
   'duration-200': ['transition-duration: 200ms;', '--pui-animation-duration: 200ms;'],
   'ease-in-out': ['transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);'],
   'font-medium': ['font-weight: 500;'],
+  'font-black': ['font-weight: 900;'],
+  'font-heading': ['font-family: var(--pui-font-heading, ui-sans-serif, system-ui, sans-serif);'],
   'font-semibold': ['font-weight: 600;'],
+  'font-bold': ['font-weight: 700;'],
+  'font-mono': [
+    'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;',
+  ],
+  uppercase: ['text-transform: uppercase;'],
   'leading-6': ['line-height: 1.5rem;'],
+  'leading-relaxed': ['line-height: 1.625;'],
   'leading-none': ['line-height: 1;'],
   'tracking-tight': ['letter-spacing: -0.025em;'],
   'text-left': ['text-align: left;'],
+  'text-xs': ['font-size: 0.75rem;', 'line-height: 1rem;'],
   'text-sm': ['font-size: 0.875rem;', 'line-height: 1.25rem;'],
+  'text-base': ['font-size: 1rem;', 'line-height: 1.5rem;'],
   'text-lg': ['font-size: 1.125rem;', 'line-height: 1.75rem;'],
   'text-[0.8rem]': ['font-size: 0.8rem;'],
+  'text-xl': ['font-size: 1.25rem;', 'line-height: 1.75rem;'],
   underline: ['text-decoration-line: underline;'],
   'underline-offset-4': ['text-underline-offset: 4px;'],
   border: ['border-width: 1px;', 'border-style: solid;'],
+  'border-2': ['border-width: 2px;', 'border-style: solid;'],
+  'border-b-2': ['border-bottom-width: 2px;', 'border-bottom-style: solid;'],
+  'border-t-2': ['border-top-width: 2px;', 'border-top-style: solid;'],
+  'border-b': ['border-bottom-width: 1px;', 'border-bottom-style: solid;'],
+  'border-l-2': ['border-left-width: 2px;', 'border-left-style: solid;'],
+  'border-ink': ['border-color: var(--pui-foreground);'],
+  'border-black': ['border-color: #000;'],
+  'border-foreground': ['border-color: var(--pui-foreground);'],
   'border-transparent': ['border-color: transparent;'],
   'bg-transparent': ['background-color: transparent;'],
+  'bg-black': ['background-color: #000;'],
+  'bg-foreground': ['background-color: var(--pui-foreground);'],
+  'bg-canvas': ['background-color: var(--pui-background);'],
+  'bg-paper': ['background-color: var(--pui-background);'],
+  'bg-card': ['background-color: var(--pui-card);'],
+  'bg-gray-100': ['background-color: #f3f4f6;'],
+  'bg-gray-200': ['background-color: #e5e7eb;'],
+  'bg-yellow-300': ['background-color: #fde047;'],
+  'text-ink': ['color: var(--pui-foreground);'],
+  'text-card-foreground': ['color: var(--pui-card-foreground);'],
+  'text-gray-500': ['color: #6b7280;'],
   'inset-0': ['inset: 0px;'],
   'bottom-0': ['bottom: 0px;'],
   'bottom-full': ['bottom: 100%;'],
@@ -153,13 +209,45 @@ const staticUtilities: Record<string, string[]> = {
     '--pui-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);',
     ...composedShadow(),
   ],
+  'shadow-[3px_3px_0_0_#000]': ['--pui-shadow: 3px 3px 0 0 #000;', ...composedShadow()],
+  'shadow-[4px_4px_0_0_#000]': ['--pui-shadow: 4px 4px 0 0 #000;', ...composedShadow()],
+  'shadow-[6px_6px_0_0_#000]': ['--pui-shadow: 6px 6px 0 0 #000;', ...composedShadow()],
+  'shadow-[-3px_3px_0_0_#000]': ['--pui-shadow: -3px 3px 0 0 #000;', ...composedShadow()],
+  'shadow-[2px_2px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 2px 2px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
+  'shadow-[3px_3px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 3px 3px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
+  'shadow-[4px_4px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 4px 4px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
+  'shadow-[6px_6px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: 6px 6px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
+  'shadow-[-3px_3px_0_0_var(--pui-foreground)]': [
+    '--pui-shadow: -3px 3px 0 0 var(--pui-foreground);',
+    ...composedShadow(),
+  ],
+  'shadow-none': ['--pui-shadow: 0 0 #0000;', ...composedShadow()],
+  'shadow-hard': ['--pui-shadow: 2px 2px 0 0 var(--pui-foreground);', ...composedShadow()],
   'backdrop-blur-xs': ['backdrop-filter: blur(4px);'],
   'z-40': ['z-index: 40;'],
   'z-50': ['z-index: 50;'],
   'max-w-lg': ['max-width: 32rem;'],
+  'max-w-[75%]': ['max-width: 75%;'],
+  'ml-auto': ['margin-left: auto;'],
+  'w-fit': ['width: fit-content;'],
   peer: [],
   'group/button': [],
   'group/toggle': [],
+  'group/brutalist-dialog-trigger': [],
+  'group/brutalist-button': [],
+  'group/brutalist-toggle': [],
 };
 
 export function renderProtoStyleTokenCss(tokens: string[]): string {
@@ -284,8 +372,8 @@ export function renderPrefixedThemeCss(input: string): string {
       '$1',
       '    --pui-radius-xl: calc(var(--pui-radius) + 4px);',
       '    --pui-radius-lg: var(--pui-radius);',
-      '    --pui-radius-md: calc(var(--pui-radius) - 2px);',
-      '    --pui-radius-sm: calc(var(--pui-radius) - 4px);',
+      '    --pui-radius-md: max(calc(var(--pui-radius) - 2px), 0px);',
+      '    --pui-radius-sm: max(calc(var(--pui-radius) - 4px), 0px);',
     ].join('\n')
   );
 
@@ -345,7 +433,7 @@ function renderUtility(utility: string): string[] | null {
 
 function renderSpacingUtility(utility: string): string[] | null {
   const spacingMatch = utility.match(
-    /^(gap|h|w|min-h|min-w|max-h|size|p|px|py|pl|pr|mt|mb|ml|mr|top|right|left)-(.+)$/
+    /^(gap|h|w|min-h|min-w|max-h|size|p|px|py|pl|pr|pt|pb|mt|mb|ml|mr|top|left|right)-(.+)$/
   );
   if (!spacingMatch) return null;
   const [, kind, rawValue] = spacingMatch;
@@ -364,6 +452,8 @@ function renderSpacingUtility(utility: string): string[] | null {
   if (kind === 'py') return [`padding-block: ${value};`];
   if (kind === 'pl') return [`padding-left: ${value};`];
   if (kind === 'pr') return [`padding-right: ${value};`];
+  if (kind === 'pt') return [`padding-top: ${value};`];
+  if (kind === 'pb') return [`padding-bottom: ${value};`];
   if (kind === 'mt') return [`margin-top: ${value};`];
   if (kind === 'mb') return [`margin-bottom: ${value};`];
   if (kind === 'ml') return [`margin-left: ${value};`];
@@ -393,6 +483,7 @@ function renderColorUtility(utility: string): string[] | null {
 }
 
 function renderRoundedUtility(utility: string): string[] | null {
+  if (utility === 'rounded-none') return ['border-radius: 0;'];
   if (utility === 'rounded-full') return ['border-radius: 9999px;'];
   if (utility === 'rounded-xl') return ['border-radius: var(--pui-radius-xl);'];
   if (utility === 'rounded-lg') return ['border-radius: var(--pui-radius-lg);'];
@@ -410,6 +501,9 @@ function renderTransformUtility(utility: string): string[] | null {
   if (utility === 'translate-x-0') return ['--pui-translate-x: 0px;', transformValue()];
   if (utility === 'translate-y-0') return ['--pui-translate-y: 0px;', transformValue()];
   if (utility === 'translate-y-px') return ['--pui-translate-y: 1px;', transformValue()];
+  if (utility === 'translate-x-px') return ['--pui-translate-x: 1px;', transformValue()];
+  if (utility === '-translate-x-px') return ['--pui-translate-x: -1px;', transformValue()];
+  if (utility === '-translate-y-px') return ['--pui-translate-y: -1px;', transformValue()];
 
   const translateMatch = utility.match(/^translate-(x|y)-(.+)$/);
   if (translateMatch) {
@@ -471,6 +565,7 @@ function applyVariant(selector: string, variant: string): string[] {
   if (variant === 'active') return [`${selector}:active`];
   if (variant === 'disabled') return [`${selector}:disabled`];
   if (variant === 'focus-visible') return [`${selector}:focus-visible`];
+  if (variant === 'placeholder') return [`${selector}::placeholder`];
 
   const notDataMatch = variant.match(/^not-\[data-([a-zA-Z0-9-]+)\]$/);
   if (notDataMatch) {
@@ -488,7 +583,7 @@ function applyVariant(selector: string, variant: string): string[] {
     const eq = body.indexOf('=');
     if (eq >= 0) {
       const name = body.slice(0, eq);
-      const value = body.slice(eq + 1);
+      const value = body.slice(eq + 1).replace(/^['\"]|['\"]$/g, '');
       return [`${selector}[data-${name}='${escapeCssString(value)}']`];
     }
     return [`${selector}[data-${body}]`];

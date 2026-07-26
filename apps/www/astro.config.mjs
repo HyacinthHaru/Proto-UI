@@ -314,6 +314,22 @@ export default defineConfig({
                 },
               ],
             },
+            {
+              label: 'Brutalist',
+              translations: { en: 'Brutalist', 'zh-CN': 'Brutalist' },
+              items: [
+                {
+                  label: 'Overview',
+                  translations: { en: 'Overview', 'zh-CN': '概览' },
+                  slug: 'ui-libraries/brutalist',
+                },
+                {
+                  label: 'Design Contract',
+                  translations: { en: 'Design Contract', 'zh-CN': '设计合约' },
+                  slug: 'ui-libraries/brutalist/design-contract',
+                },
+              ],
+            },
           ],
         },
         {
@@ -594,6 +610,7 @@ export default defineConfig({
         '@proto.ui/adapter-web-component',
         '@proto.ui/prototypes-base',
         '@proto.ui/prototypes-shadcn',
+        '@proto.ui/prototypes-brutalist',
         '@proto.ui/hooks',
         '@proto.ui/module-overlay',
         '@proto.ui/module-presence',

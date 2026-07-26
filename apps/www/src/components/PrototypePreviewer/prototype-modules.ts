@@ -31,6 +31,10 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('../../../../../packages/prototypes/shadcn/src/button/index');
     registerPrototype('shadcn-button', mod.default);
   },
+  'brutalist-button': async () => {
+    const mod = await import('../../../../../packages/prototypes/brutalist/src/button/index');
+    registerPrototype('brutalist-button', mod.default);
+  },
   'shadcn-toggle': async () => {
     const mod = await import('../../../../../packages/prototypes/shadcn/src/toggle/index');
     registerPrototype('shadcn-toggle', mod.default);

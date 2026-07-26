@@ -7,6 +7,7 @@ export const ADAPTER_PACKAGES = {
 
 export const PROTOTYPE_PACKAGES = {
   shadcn: '@proto.ui/prototypes-shadcn',
+  brutalist: '@proto.ui/prototypes-brutalist',
 };
 
 export const CLI_PACKAGE = '@proto.ui/cli';
@@ -15,6 +16,7 @@ export const DEFAULT_THEME_NAME = 'shadcn';
 export const DEFAULT_THEME_IMPORT = './shadcn-theme.css';
 export const DEFAULT_TOKENS_IMPORT = './proto-ui-tokens.generated.css';
 export { SHADCN_STYLE_TOKENS } from '../generated/shadcn-style-tokens.js';
+export { BRUTALIST_STYLE_TOKENS } from '../generated/brutalist-style-tokens.js';
 
 export const SHADCN_THEME_CSS = `:root {
     --radius: 0.625rem;
@@ -94,13 +96,85 @@ export const SHADCN_THEME_CSS = `:root {
     --sidebar-accent-foreground: lab(98.26% 0 0);
     --sidebar-border: lab(100% 0 0 / 0.1);
     --sidebar-ring: lab(34.924% 0 0);
-    --surface: lab(7.22637% -0.0000149012 0);
-    --surface-foreground: lab(66.128% -0.0000298023 0.0000119209);
-    --code: var(--surface);
-    --code-foreground: var(--surface-foreground);
-    --code-highlight: lab(15.32% 0 0);
-    --code-number: lab(67.52% -0.0000298023 0);
-    --selection: lab(90.952% 0 -0.0000119209);
-    --selection-foreground: lab(7.78201% -0.0000149012 0);
+  }
+  `;
+
+export const BRUTALIST_THEME_CSS = `:root {
+    --radius: 0;
+    --radius-sm: 2px;
+    --background: #f5f5f5;
+    --foreground: #171717;
+    --secondary-background: #ffffff;
+    --main: #fef08a;
+    --main-foreground: #000000;
+    --destructive: #fecdd3;
+    --destructive-foreground: #000000;
+    --border: #000000;
+    --input: #000000;
+    --ring: #ddd6fe;
+    --overlay: rgba(0, 0, 0, 0.75);
+    --card: #ffffff;
+    --card-foreground: #171717;
+    --popover: #ffffff;
+    --popover-foreground: #171717;
+    --primary: #fef08a;
+    --primary-foreground: #000000;
+    --secondary: #ddd6fe;
+    --secondary-foreground: #000000;
+    --muted: #e5e5e5;
+    --muted-foreground: #525252;
+    --accent: #bae6fd;
+    --accent-foreground: #000000;
+    --selection: #f4f1ea;
+    --selection-foreground: #1c1914;
+    --canary: #FEF08A;
+    --canary-foreground: #000000;
+    --mint: #A7F3D0;
+    --mint-foreground: #000000;
+    --lavender: #DDD6FE;
+    --lavender-foreground: #000000;
+    --coral: #FECDD3;
+    --coral-foreground: #000000;
+    --sky: #BAE6FD;
+    --sky-foreground: #000000;
+  }
+
+  :root.dark,
+  :root[data-theme='dark'] {
+    --background: #171717;
+    --foreground: #f5f5f5;
+    --secondary-background: #262626;
+    --main: #fef08a;
+    --main-foreground: #000000;
+    --destructive: #fecdd3;
+    --destructive-foreground: #000000;
+    --border: #000000;
+    --input: #000000;
+    --ring: #ddd6fe;
+    --overlay: rgba(0, 0, 0, 0.85);
+    --card: #262626;
+    --card-foreground: #f5f5f5;
+    --popover: #262626;
+    --popover-foreground: #f5f5f5;
+    --primary: #fef08a;
+    --primary-foreground: #000000;
+    --secondary: #ddd6fe;
+    --secondary-foreground: #000000;
+    --muted: #404040;
+    --muted-foreground: #d4d4d4;
+    --accent: #bae6fd;
+    --accent-foreground: #000000;
+    --selection: #f4f1ea;
+    --selection-foreground: #1c1914;
+    --canary: #FEF08A;
+    --canary-foreground: #000000;
+    --mint: #A7F3D0;
+    --mint-foreground: #000000;
+    --lavender: #DDD6FE;
+    --lavender-foreground: #000000;
+    --coral: #FECDD3;
+    --coral-foreground: #000000;
+    --sky: #BAE6FD;
+    --sky-foreground: #000000;
   }
   `;
