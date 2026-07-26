@@ -27,8 +27,8 @@ export type A11yRelationSpec = {
 };
 
 export type A11yTreeBehavior = {
-  hidden?: boolean;
-  mergeChildren?: boolean;
+  hidden?: boolean | State<boolean>;
+  mergeChildren?: boolean | State<boolean>;
 };
 
 export type A11ySemanticObjectSnapshot = {

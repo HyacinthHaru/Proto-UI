@@ -10,21 +10,14 @@ export type {
 } from './types';
 
 function setupSkeletonRoot(def: DefHandle<SkeletonRootProps, SkeletonRootExposes>): void {
-  // No props, no state — purely decorative placeholder
+  def.a11y.tree({ hidden: true });
 }
 
 export const asSkeletonRoot = defineAsHook<
   SkeletonRootProps,
   SkeletonRootExposes,
   SkeletonRootAsHookContract
->({
-  name: 'as-skeleton-root',
-  setup: setupSkeletonRoot,
-});
+>({ name: 'as-skeleton-root', setup: setupSkeletonRoot });
 
-const skeletonRoot = definePrototype({
-  name: 'base-skeleton-root',
-  setup: setupSkeletonRoot,
-});
-
+const skeletonRoot = definePrototype({ name: 'base-skeleton-root', setup: setupSkeletonRoot });
 export default skeletonRoot;

@@ -1,27 +1,36 @@
 id: P-BASE-SKELETON
 type: prototype
-title: Base Skeleton  protocol
+title: Base Skeleton protocol
 status: draft
 since: 0.2.0-rc.5
-summary: Base Skeleton  protocol for the Proto UI framework.
+summary: Base Skeleton is a purely visual placeholder hidden from accessibility and interaction surfaces.
 statement:
-  en: Base Skeleton  protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Skeleton  protocol。该 draft entity 编目协议面。
+  zh-CN: Base Skeleton 必须默认为 aria-hidden 的纯视觉占位；不得自行发布 loading/status、props、state、event 或 focus 语义。动画与 reduced-motion 属于 styled policy。
+  en: Base Skeleton must be an aria-hidden visual placeholder by default and must not publish loading/status, props, state, event, or focus semantics. Animation and reduced-motion belong to styled policy.
 criteria:
-  - id: P-BASE-SKELETON-CATALOGED
+  - id: P-BASE-SKELETON-HIDDEN
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      zh-CN: Skeleton 必须以 aria-hidden=true 隐藏于 accessibility tree。
+      en: Skeleton must be hidden from the accessibility tree with aria-hidden=true.
+  - id: P-BASE-SKELETON-NO-ANNOUNCEMENT
+    text:
+      zh-CN: Skeleton 不得声明 status role、aria-busy 或 loading 文本。
+      en: Skeleton must declare no status role, aria-busy, or loading text.
+  - id: P-BASE-SKELETON-NO-INTERACTION
+    text:
+      zh-CN: Skeleton 不得拥有 props、state、event、focus 或 command 通路。
+      en: Skeleton must own no props, state, event, focus, or command channels.
+  - id: P-BASE-SKELETON-STYLED-MOTION
+    text:
+      zh-CN: 动画与 reduced-motion 策略仅属于 styled layer。
+      en: Animation and reduced-motion policy belong only to the styled layer.
+verifies:
+  tests: [T-BASE-SKELETON-0001]
 sources:
   - path: packages/prototypes/base/src/skeleton/root.proto.ts
+  - path: packages/prototypes/base/src/skeleton/types.ts
 revisions:
   - version: 0.2.0-rc.5
-    change: introduced
-    summary: Introduced base skeleton  protocol.
-tags:
-  - prototype
-  - base
-  - skeleton
-verifies:
-  tests:
-    - T-BRUTALIST-SKELETON-0001
+    change: rewritten
+    summary: Rewrote Skeleton as a hidden visual-only protocol.
+tags: [prototype, base, skeleton]

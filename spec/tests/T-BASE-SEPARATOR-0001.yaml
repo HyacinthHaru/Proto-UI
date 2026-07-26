@@ -1,0 +1,25 @@
+id: T-BASE-SEPARATOR-0001
+type: test
+title: Base Separator behavior tests
+status: draft
+since: 0.2.0-rc.5
+summary: Web Component coverage for decorative hiding, semantic orientation, and non-interaction.
+cases:
+  - id: T-BASE-SEPARATOR-0001-CASE-DECORATIVE
+    title: Decorative Separator is hidden and role-free
+    covers: [P-BASE-SEPARATOR-DECORATIVE, P-BASE-SEPARATOR-NO-INTERACTION]
+    expectation: decorative-separator-hidden-without-focus
+  - id: T-BASE-SEPARATOR-0001-CASE-SEMANTIC
+    title: Semantic Separator exposes role and vertical orientation
+    covers:
+      [P-BASE-SEPARATOR-ORIENTATION, P-BASE-SEPARATOR-SEMANTIC, P-BASE-SEPARATOR-NO-INTERACTION]
+    expectation: semantic-separator-projects-role-and-orientation
+exercises:
+  prototypes: [P-BASE-SEPARATOR]
+sources:
+  - path: packages/prototypes/base/test/separator.test.ts
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Added executable Separator protocol coverage.
+tags: [base, separator, test]

@@ -1,7 +1,9 @@
-import { ExposeState, State } from '@proto.ui/core';
+import type { ExposeState, State } from '@proto.ui/core';
+
+export type SeparatorOrientation = 'horizontal' | 'vertical';
 
 export interface SeparatorRootProps {
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: SeparatorOrientation;
   decorative?: boolean;
 }
 
@@ -12,8 +14,7 @@ export type SeparatorRootExposes = {
 
 export type SeparatorRootStateHandles = {
   orientation: State<string>;
+  decorative: State<boolean>;
 };
 
-export type SeparatorRootAsHookContract = {
-  state: SeparatorRootStateHandles;
-};
+export type SeparatorRootAsHookContract = { state: SeparatorRootStateHandles };

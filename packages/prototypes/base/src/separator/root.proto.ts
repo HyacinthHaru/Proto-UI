@@ -7,6 +7,7 @@ import type {
 } from './types';
 
 export type {
+  SeparatorOrientation,
   SeparatorRootProps,
   SeparatorRootExposes,
   SeparatorRootStateHandles,
@@ -20,41 +21,35 @@ function setupSeparatorRoot(def: DefHandle<SeparatorRootProps, SeparatorRootExpo
   });
   def.props.setDefaults({ orientation: 'horizontal', decorative: true });
 
-  const orientation = def.state.string('orientation', 'horizontal');
-  def.expose.state('orientation', orientation);
-
+  const orientation = def.state.string('orientation', 'horizontal', {
+    options: ['horizontal', 'vertical'],
+  });
   const decorative = def.state.bool('decorative', true);
+  const role = def.state.string('role', '');
+  const hidden = def.state.bool('hidden', true);
+  def.expose.state('orientation', orientation);
   def.expose.state('decorative', decorative);
+  def.a11y.role(role);
+  def.a11y.state('orientation', orientation);
+  def.a11y.tree({ hidden });
 
-  def.a11y.role('separator');
-
-  def.lifecycle.onCreated((run) => {
-    orientation.set(
-      run.props.get().orientation ?? 'horizontal',
-      'reason: separator init orientation'
-    );
-    decorative.set(run.props.get().decorative ?? true, 'reason: separator init decorative');
-  });
-  def.props.watch(['orientation'], (_run, next) => {
-    orientation.set(next.orientation ?? 'horizontal', 'reason: separator prop orientation');
-  });
-  def.props.watch(['decorative'], (_run, next) => {
-    decorative.set(next.decorative ?? true, 'reason: separator prop decorative');
-  });
+  const sync = (props: Readonly<SeparatorRootProps>) => {
+    const nextOrientation = props.orientation ?? 'horizontal';
+    const nextDecorative = props.decorative ?? true;
+    orientation.set(nextOrientation, 'reason: separator orientation');
+    decorative.set(nextDecorative, 'reason: separator decorative');
+    role.set(nextDecorative ? '' : 'separator', 'reason: separator role');
+    hidden.set(nextDecorative, 'reason: separator hidden');
+  };
+  def.lifecycle.onCreated((run) => sync(run.props.get()));
+  def.props.watchAll((_run, next) => sync(next));
 }
 
 export const asSeparatorRoot = defineAsHook<
   SeparatorRootProps,
   SeparatorRootExposes,
   SeparatorRootAsHookContract
->({
-  name: 'as-separator-root',
-  setup: setupSeparatorRoot,
-});
+>({ name: 'as-separator-root', setup: setupSeparatorRoot });
 
-const separatorRoot = definePrototype({
-  name: 'base-separator-root',
-  setup: setupSeparatorRoot,
-});
-
+const separatorRoot = definePrototype({ name: 'base-separator-root', setup: setupSeparatorRoot });
 export default separatorRoot;

@@ -1,27 +1,36 @@
 id: P-BASE-SEPARATOR
 type: prototype
-title: Base Separator  protocol
+title: Base Separator protocol
 status: draft
 since: 0.2.0-rc.5
-summary: Base Separator  protocol for the Proto UI framework.
+summary: Base Separator defines orientation and decorative accessibility semantics without interaction.
 statement:
-  en: Base Separator  protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Separator  protocol。该 draft entity 编目协议面。
+  zh-CN: Base Separator 仅拥有 horizontal/vertical orientation 与 decorative 语义；decorative 默认隐藏于 accessibility tree，semantic 模式暴露 separator role 与 aria-orientation。
+  en: Base Separator owns only horizontal/vertical orientation and decorative semantics; decorative mode is hidden from the accessibility tree by default, while semantic mode exposes separator role and aria-orientation.
 criteria:
-  - id: P-BASE-SEPARATOR-CATALOGED
+  - id: P-BASE-SEPARATOR-ORIENTATION
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      zh-CN: orientation 必须默认为 horizontal 并支持 vertical。
+      en: orientation must default to horizontal and support vertical.
+  - id: P-BASE-SEPARATOR-DECORATIVE
+    text:
+      zh-CN: decorative=true 必须隐藏于 accessibility tree 且不暴露 separator role。
+      en: decorative=true must be hidden from the accessibility tree and expose no separator role.
+  - id: P-BASE-SEPARATOR-SEMANTIC
+    text:
+      zh-CN: decorative=false 必须暴露 separator role 与对应 aria-orientation。
+      en: decorative=false must expose separator role and the corresponding aria-orientation.
+  - id: P-BASE-SEPARATOR-NO-INTERACTION
+    text:
+      zh-CN: Separator 不得声明 focus、event 或 command 通路。
+      en: Separator must declare no focus, event, or command channels.
+verifies:
+  tests: [T-BASE-SEPARATOR-0001]
 sources:
   - path: packages/prototypes/base/src/separator/root.proto.ts
+  - path: packages/prototypes/base/src/separator/types.ts
 revisions:
   - version: 0.2.0-rc.5
-    change: introduced
-    summary: Introduced base separator  protocol.
-tags:
-  - prototype
-  - base
-  - separator
-verifies:
-  tests:
-    - T-BRUTALIST-SEPARATOR-0001
+    change: rewritten
+    summary: Rewrote Separator as a minimal accessibility protocol.
+tags: [prototype, base, separator]

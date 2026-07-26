@@ -1,0 +1,24 @@
+id: T-BASE-SKELETON-0001
+type: test
+title: Base Skeleton behavior tests
+status: draft
+since: 0.2.0-rc.5
+summary: Web Component coverage for Skeleton accessibility hiding and absence of fake interaction or loading semantics.
+cases:
+  - id: T-BASE-SKELETON-0001-CASE-VISUAL-ONLY
+    title: Skeleton is aria-hidden without status, busy, or focus semantics
+    covers:
+      - P-BASE-SKELETON-HIDDEN
+      - P-BASE-SKELETON-NO-ANNOUNCEMENT
+      - P-BASE-SKELETON-NO-INTERACTION
+      - P-BASE-SKELETON-STYLED-MOTION
+    expectation: skeleton-hidden-without-fake-loading-or-interaction
+exercises:
+  prototypes: [P-BASE-SKELETON]
+sources:
+  - path: packages/prototypes/base/test/skeleton.test.ts
+revisions:
+  - version: 0.2.0-rc.5
+    change: introduced
+    summary: Added executable Skeleton protocol coverage.
+tags: [base, skeleton, test]
