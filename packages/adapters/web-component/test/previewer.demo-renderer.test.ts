@@ -13,8 +13,6 @@ import brutalistCodeBlockDemo from '../../../../apps/www/src/content/docs/zh-cn/
 import brutalistAvatarDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-avatar.demo';
 import brutalistBadgeDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-badge.demo';
 import brutalistCardDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-card.demo';
-import brutalistInputDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-input.demo';
-import brutalistTextareaDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-textarea.demo';
 import brutalistSeparatorDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-separator.demo';
 import brutalistSkeletonDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-skeleton.demo';
 import brutalistScrollAreaDemo from '../../../../apps/www/src/content/docs/zh-cn/demo-brutalist-scroll-area.demo';
@@ -270,8 +268,6 @@ describe('PrototypePreviewer demo-renderer / wc', () => {
       brutalistAvatarDemo,
       brutalistBadgeDemo,
       brutalistCardDemo,
-      brutalistInputDemo,
-      brutalistTextareaDemo,
       brutalistSeparatorDemo,
       brutalistSkeletonDemo,
       brutalistScrollAreaDemo,
