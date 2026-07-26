@@ -24,6 +24,11 @@
       "types": "./dist/button/index.d.ts",
       "import": "./dist/button/index.js",
       "default": "./dist/button/index.js"
+    },
+    "./tooltip": {
+      "types": "./dist/tooltip/index.d.ts",
+      "import": "./dist/tooltip/index.js",
+      "default": "./dist/tooltip/index.js"
     }
   },
   "description": "Neo-Brutalist Proto UI prototype library foundation and reference Button projection.",

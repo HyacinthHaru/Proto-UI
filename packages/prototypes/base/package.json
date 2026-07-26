@@ -81,6 +81,11 @@
       "types": "./dist/transition/index.d.ts",
       "import": "./dist/transition/index.js",
       "default": "./dist/transition/index.js"
+    },
+    "./tooltip": {
+      "types": "./dist/tooltip/index.d.ts",
+      "import": "./dist/tooltip/index.js",
+      "default": "./dist/tooltip/index.js"
     }
   },
   "description": "Base Proto UI prototype library for reusable interaction prototypes.",

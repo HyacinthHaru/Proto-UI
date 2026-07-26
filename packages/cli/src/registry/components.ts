@@ -171,6 +171,21 @@ const brutalist = (id: string, label: string, prototypeImport: string, exportBas
     { stylePreset: 'brutalist' }
   );
 
+const brutalistCompound = (
+  id: string,
+  label: string,
+  parts: { prototypeImport: string; exportBaseName: string; elementName: string }[],
+  preset?: ComponentPresetRecipe
+) =>
+  defineCompound(
+    id,
+    label,
+    '@proto.ui/prototypes-brutalist',
+    `@proto.ui/prototypes-brutalist/${id.slice('brutalist-'.length)}`,
+    parts,
+    { stylePreset: 'brutalist', preset }
+  );
+
 const base = (id: string, label: string, prototypeImport: string, exportBaseName: string) =>
   defineSimple(
     id,
@@ -201,6 +216,33 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     'brutalistButton',
     'BrutalistButton'
   ),
+  'brutalist-tooltip': brutalistCompound('brutalist-tooltip', 'Brutalist Tooltip', [
+    {
+      prototypeImport: 'BrutalistTooltipRoot',
+      exportBaseName: 'BrutalistTooltipRoot',
+      elementName: 'proto-ui-brutalist-tooltip-root',
+    },
+    {
+      prototypeImport: 'BrutalistTooltipTrigger',
+      exportBaseName: 'BrutalistTooltipTrigger',
+      elementName: 'proto-ui-brutalist-tooltip-trigger',
+    },
+    {
+      prototypeImport: 'BrutalistTooltipPortal',
+      exportBaseName: 'BrutalistTooltipPortal',
+      elementName: 'proto-ui-brutalist-tooltip-portal',
+    },
+    {
+      prototypeImport: 'BrutalistTooltipContent',
+      exportBaseName: 'BrutalistTooltipContent',
+      elementName: 'proto-ui-brutalist-tooltip-content',
+    },
+    {
+      prototypeImport: 'BrutalistTooltipArrow',
+      exportBaseName: 'BrutalistTooltipArrow',
+      elementName: 'proto-ui-brutalist-tooltip-arrow',
+    },
+  ]),
 
   'shadcn-button': shadcn('shadcn-button', 'shadcn Button', 'shadcnButton', 'ShadcnButton'),
   'shadcn-toggle': shadcn('shadcn-toggle', 'shadcn Toggle', 'shadcnToggle', 'ShadcnToggle'),

@@ -328,6 +328,16 @@ export default defineConfig({
                   translations: { en: 'Design Contract', 'zh-CN': '设计合约' },
                   slug: 'ui-libraries/brutalist/design-contract',
                 },
+                {
+                  label: 'Button',
+                  translations: { en: 'Button', 'zh-CN': 'Button' },
+                  slug: 'ui-libraries/brutalist/components/button',
+                },
+                {
+                  label: 'Tooltip',
+                  translations: { en: 'Tooltip', 'zh-CN': 'Tooltip' },
+                  slug: 'ui-libraries/brutalist/components/tooltip',
+                },
               ],
             },
           ],
