@@ -1,5 +1,6 @@
 import { defineAsHook, definePrototype, type DefHandle } from '@proto.ui/core';
-import { TOOLTIP_FAMILY } from './shared';
+import { asFocusable } from '@proto.ui/hooks';
+import { TOOLTIP_CONTEXT, TOOLTIP_FAMILY, updateTooltipInteraction } from './shared';
 import type {
   TooltipTriggerAsHookContract,
   TooltipTriggerExposes,
@@ -8,11 +9,63 @@ import type {
 
 function setupTooltipTrigger(def: DefHandle<TooltipTriggerProps, TooltipTriggerExposes>): void {
   def.anatomy.claim(TOOLTIP_FAMILY, { role: 'trigger' });
-}
 
-/*
- * P-BASE-TOOLTIP-TRIGGER-NO-BEHAVIOR: absence of event, state, and focus syntax is the implementation.
- */
+  def.props.define({ disabled: { type: 'boolean', empty: 'fallback' } });
+  def.props.setDefaults({ disabled: false });
+
+  const disabled = def.state.bool('disabled', false);
+  const hovered = def.state.bool('hovered', false);
+  const focusable = asFocusable<TooltipTriggerProps>();
+  focusable.configure({ disabled: false });
+  const focused = focusable.focused;
+  const focusVisible = focusable.focusVisible;
+
+  def.expose.state('disabled', disabled);
+  def.expose.state('hovered', hovered);
+  def.expose.state('focused', focused);
+  def.expose.state('focusVisible', focusVisible);
+  def.expose.method('focusSelf', (options) => {
+    if (!disabled.get()) focusable.focusSelf(options);
+  });
+
+  const syncDisabled = (run: any) => {
+    const ctx = run.context.read(TOOLTIP_CONTEXT);
+    const nextDisabled = !!run.props.get().disabled || ctx.disabled;
+    disabled.set(nextDisabled, 'reason: tooltip trigger disabled sync');
+    focusable.setDisabled(nextDisabled);
+    if (!nextDisabled) return;
+    hovered.set(false, 'reason: tooltip trigger disabled => hovered false');
+    if (!ctx.triggerHovered && !ctx.triggerFocused) return;
+    updateTooltipInteraction(
+      run,
+      { triggerHovered: false, triggerFocused: false },
+      'trigger.pointerleave'
+    );
+  };
+
+  def.context.subscribe(TOOLTIP_CONTEXT, (run) => syncDisabled(run));
+  def.props.watch(['disabled'], (run) => syncDisabled(run));
+  def.lifecycle.onCreated((run) => syncDisabled(run));
+
+  def.event.on('pointer.enter', (run) => {
+    if (disabled.get()) return;
+    hovered.set(true, 'reason: tooltip trigger pointer.enter');
+    updateTooltipInteraction(run, { triggerHovered: true }, 'trigger.pointerenter');
+  });
+  def.event.on('pointer.leave', (run) => {
+    hovered.set(false, 'reason: tooltip trigger pointer.leave');
+    updateTooltipInteraction(run, { triggerHovered: false }, 'trigger.pointerleave');
+  });
+
+  focused.watch((run, event) => {
+    if (event.type !== 'next') return;
+    updateTooltipInteraction(
+      run,
+      { triggerFocused: event.next },
+      event.next ? 'trigger.focus' : 'trigger.blur'
+    );
+  });
+}
 
 export const asTooltipTrigger = defineAsHook<
   TooltipTriggerProps,

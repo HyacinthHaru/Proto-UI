@@ -1,12 +1,14 @@
 import tooltipRoot from './root.proto';
 
 export type {
+  TooltipAlign,
   TooltipArrowAsHookContract,
   TooltipArrowExposes,
   TooltipArrowProps,
   TooltipArrowStateHandles,
   TooltipContentAsHookContract,
   TooltipContentExposes,
+  TooltipContentHandles,
   TooltipContentProps,
   TooltipContentStateHandles,
   TooltipPortalAsHookContract,
@@ -17,13 +19,15 @@ export type {
   TooltipRootExposes,
   TooltipRootProps,
   TooltipRootStateHandles,
+  TooltipSide,
   TooltipTriggerAsHookContract,
   TooltipTriggerExposes,
   TooltipTriggerProps,
   TooltipTriggerStateHandles,
 } from './types';
 
-export { TOOLTIP_FAMILY } from './shared';
+export { TOOLTIP_CONTEXT, TOOLTIP_FAMILY } from './shared';
+export type { TooltipContextValue, TooltipInteractionReason } from './shared';
 export { asTooltipRoot, default as tooltipRoot } from './root.proto';
 export { asTooltipTrigger, default as tooltipTrigger } from './trigger.proto';
 export { asTooltipPortal, default as tooltipPortal } from './portal.proto';
