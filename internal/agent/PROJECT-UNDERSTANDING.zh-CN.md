@@ -11,16 +11,16 @@
 | 当前 spec 版本 | `0.2.0-rc.7` |
 | Release channel | `prerelease` |
 | Version entity | [`V-PROTO-UI-0007`](../../spec/versions/V-PROTO-UI-0007.yaml) |
-| 工作区实体数 | 411 |
+| 工作区实体数 | 412 |
 | Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:caa0a921e7bcb95e5dbe7e22510ed474b572846d527d0d29b321e23f3351fd66` |
+| 工作区快照指纹 | `sha256:eb9a92d08a646dff51a6826311330f3a97ed6f961f39fa6d8a28afd6ecf778e2` |
 | 已发布 release snapshot digest | `未记录` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
 
 ## 阅读与权威边界
 
-当前快照包含 40 个 active、366 个 draft、5 个 deprecated、0 个 removed 实体。
+当前快照包含 40 个 active、367 个 draft、5 个 deprecated、0 个 removed 实体。
 
 - `active` 可以作为当前稳定保证读取。
 - `draft` 是已进入正式目录的当前方向，但不能包装为稳定公共承诺。
@@ -59,7 +59,7 @@ flowchart LR
 
 | 类型 | 总数 | active | draft | deprecated | 有 statement | 有 criteria | 有 open questions |
 | --- | --: | --: | --: | --: | --: | --: | --: |
-| `knowledge` | 5 | 0 | 5 | 0 | 5 | 5 | 0 |
+| `knowledge` | 6 | 0 | 6 | 0 | 6 | 6 | 0 |
 | `decision` | 49 | 6 | 41 | 2 | 34 | 19 | 3 |
 | `contract` | 144 | 15 | 126 | 3 | 141 | 141 | 22 |
 | `prototype` | 73 | 0 | 73 | 0 | 73 | 73 | 32 |
@@ -72,7 +72,7 @@ flowchart LR
 
 | Relation     | 边数 |
 | ------------ | ---: |
-| `relates`    |  226 |
+| `relates`    |  228 |
 | `dependsOn`  |  790 |
 | `inherits`   |   34 |
 | `references` |    7 |
@@ -89,6 +89,17 @@ flowchart LR
 ## 二、知识基础
 
 Knowledge 实体提供跨领域概念模型。Agent 在修改具体 API 或行为前，应先确认相关术语在这里的含义。
+
+### [`K-BRUTALIST-0001`](../../spec/knowledge/K-BRUTALIST-0001.yaml) The Brutalist style family is a Proto UI-maintained Neo-Brutalist design language, not a third-party compatibility target
+
+- 状态：`draft`；since：`0.2.0-rc.7`；criteria：1
+- 摘要：The Brutalist style family under `@proto.ui/prototypes-brutalist` is a contributor-authored Proto UI design-language projection. It is not a clone, compatibility wrapper, or certified integration of any third-party Neo-Brutalist design system, and must not claim third-party upstream ownership or certification.
+
+本仓库中的 Brutalist prototype 是 Proto UI 贡献者自行创作并维护的 Neo-Brutalist design-language 投射。不得将其描述或呈现为任何外部 Neo-Brutalist 设计系统的移植、克隆、兼容包装或认证集成，也不得声称 第三方上游所有权。
+
+关键准则：
+
+- `K-BRUTALIST-0001-A`：Brutalist style family 的 spec 实体、文档与 package 元数据必须 将其描述为 Proto UI 维护的 design-language 投射，不得声称第三方 上游所有权、认证或兼容目标地位。
 
 ### [`K-COMPONENT-ACTOR-0001`](../../spec/knowledge/K-COMPONENT-ACTOR-0001.yaml) Component interaction targets define actor identities
 
@@ -475,7 +486,7 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 
 | Entity | 状态 | 标题 | 继承 | Anatomy | Criteria | 关联 T |
 | --- | --- | --- | --- | --- | --: | --: |
-| [`P-BRUTALIST-BUTTON`](../../spec/prototypes/P-BRUTALIST-BUTTON.yaml) | `draft` | Brutalist Button inherits Base Button and layers a dual-theme Neo-Brutalist visual API | `P-BASE-BUTTON` | — | 3 | 3 |
+| [`P-BRUTALIST-BUTTON`](../../spec/prototypes/P-BRUTALIST-BUTTON.yaml) | `draft` | Brutalist Button inherits Base Button and layers a Neo-Brutalist visual API | `P-BASE-BUTTON` | — | 11 | 3 |
 | [`P-BRUTALIST-TOOLTIP`](../../spec/prototypes/P-BRUTALIST-TOOLTIP.yaml) | `draft` | Brutalist Tooltip protocol | `P-BASE-TOOLTIP` | — | 1 | 2 |
 | [`P-BRUTALIST-TOOLTIP-ARROW`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-ARROW.yaml) | `draft` | Brutalist Tooltip Arrow protocol | `P-BASE-TOOLTIP-ARROW` | — | 1 | 1 |
 | [`P-BRUTALIST-TOOLTIP-CONTENT`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-CONTENT.yaml) | `draft` | Brutalist Tooltip Content protocol | `P-BASE-TOOLTIP-CONTENT` | — | 1 | 1 |
@@ -718,7 +729,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Status    | 数量 |
 | --------- | ---: |
 | `active`  |   18 |
-| `passing` |  277 |
+| `passing` |  278 |
 | `planned` |   14 |
 
 ### Implementation 类型
@@ -727,7 +738,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | ----------------- | ---: |
 | `adapter-test`    |   81 |
 | `fixture`         |   17 |
-| `module-test`     |  130 |
+| `module-test`     |  131 |
 | `runtime-test`    |   71 |
 | `workspace-check` |   10 |
 
@@ -832,14 +843,14 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 
 | Entity | 状态 | 标题 | Cases | Implementations | Verifies | Exercises |
 | --- | --- | --- | --: | --- | --- | --- |
-| [`T-BRUTALIST-BUTTON-0001`](../../spec/tests/T-BRUTALIST-BUTTON-0001.yaml) | `draft` | Brutalist Button dual-theme visual contract tests | 1 | `passing` 1 | `P-BRUTALIST-BUTTON` | `P-BASE-BUTTON`<br>`P-BRUTALIST-BUTTON` |
+| [`T-BRUTALIST-BUTTON-0001`](../../spec/tests/T-BRUTALIST-BUTTON-0001.yaml) | `draft` | Brutalist Button visual contract and public API tests | 9 | `passing` 2 | `P-BRUTALIST-BUTTON` | `P-BASE-BUTTON`<br>`P-BRUTALIST-BUTTON` |
 | [`T-BRUTALIST-TOOLTIP-0001`](../../spec/tests/T-BRUTALIST-TOOLTIP-0001.yaml) | `draft` | Brutalist Tooltip visual contract tests | 1 | `passing` 1 | `P-BRUTALIST-TOOLTIP` | `P-BASE-TOOLTIP`<br>`P-BASE-TOOLTIP-ARROW`<br>`P-BASE-TOOLTIP-CONTENT`<br>`P-BASE-TOOLTIP-PORTAL`<br>`P-BASE-TOOLTIP-TRIGGER`<br>`P-BRUTALIST-TOOLTIP`<br>`P-BRUTALIST-TOOLTIP-ARROW`<br>`P-BRUTALIST-TOOLTIP-CONTENT`<br>`P-BRUTALIST-TOOLTIP-PORTAL`<br>`P-BRUTALIST-TOOLTIP-TRIGGER` |
 
 ### CLI（2）
 
 | Entity | 状态 | 标题 | Cases | Implementations | Verifies | Exercises |
 | --- | --- | --- | --: | --- | --- | --- |
-| [`T-CLI-BRUTALIST-PRESET-CLOSURE-0001`](../../spec/tests/T-CLI-BRUTALIST-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Brutalist preset source-closure tests | 3 | `passing` 2 | `D-CLI-BRUTALIST-PRESET-CLOSURE-0001` | `P-BRUTALIST-BUTTON` |
+| [`T-CLI-BRUTALIST-PRESET-CLOSURE-0001`](../../spec/tests/T-CLI-BRUTALIST-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Brutalist preset source-closure tests | 2 | `passing` 2 | `D-CLI-BRUTALIST-PRESET-CLOSURE-0001` | `P-BRUTALIST-BUTTON` |
 | [`T-CLI-SHADCN-PRESET-CLOSURE-0001`](../../spec/tests/T-CLI-SHADCN-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Shadcn preset source-closure tests | 3 | `passing` 3 | `D-CLI-SHADCN-PRESET-CLOSURE-0001` | `P-SHADCN-DIALOG-CONTENT`<br>`P-SHADCN-DIALOG-MASK` |
 
 ### COLLECTION（1）
@@ -1206,7 +1217,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 
 ## 十一、当前快照的结构性限制
 
-- 366/411 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
+- 367/412 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
 - 当前只有 5 个 Module 与 4 个 Host Capability 实体；不要据此推断实现中只有这些能力。
 - Adapter 与 Compiler 尚无一级实体类型，因此宿主 profile、支持矩阵和 translation-layer 权衡仍可能主要存在于实现、旧契约和 records。
 - 生成器只验证 schema 与关系完整性，不验证网站内容、README、package exports 或运行时代码与实体完全一致。

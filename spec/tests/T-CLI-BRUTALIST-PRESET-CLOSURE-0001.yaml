@@ -2,8 +2,8 @@ id: T-CLI-BRUTALIST-PRESET-CLOSURE-0001
 type: test
 title: CLI Brutalist preset source-closure tests
 status: draft
-since: 0.2.0-rc.6
-summary: Covers generated Brutalist style token manifest freshness and CLI init/add behavior for the Brutalist style preset and package registry.
+since: 0.2.0-rc.7
+summary: Covers generated Brutalist style token manifest freshness and the CLI `init --prototypes brutalist` CSS-only preset (no `add` Brutalist component facade path).
 cases:
   - id: T-CLI-BRUTALIST-PRESET-CLOSURE-0001-CASE-GENERATED-MANIFEST
     title: generated Brutalist token manifest stays current with official source scan
@@ -13,10 +13,6 @@ cases:
     title: init with Brutalist writes prefixed light/dark theme and token CSS
     covers: [D-CLI-BRUTALIST-PRESET-CLOSURE-0001-B, D-CLI-BRUTALIST-PRESET-CLOSURE-0001-C]
     expectation: brutalist-init-writes-theme-and-token-css
-  - id: T-CLI-BRUTALIST-PRESET-CLOSURE-0001-CASE-REGISTRY
-    title: add can generate a Brutalist component facade from the registry
-    covers: [D-CLI-BRUTALIST-PRESET-CLOSURE-0001-B]
-    expectation: brutalist-registry-add-generates-facade
 implementations:
   - id: cli-brutalist-preset-stale-check
     kind: workspace-check
@@ -24,20 +20,20 @@ implementations:
     path: scripts/styles/generate-brutalist-style-tokens.ts
     required: true
     consumesCases: [T-CLI-BRUTALIST-PRESET-CLOSURE-0001-CASE-GENERATED-MANIFEST]
-  - id: cli-brutalist-init-add-tests
+  - id: cli-brutalist-init-test
     kind: module-test
     status: passing
     path: packages/cli/test/cli.test.ts
     required: true
     consumesCases:
       - T-CLI-BRUTALIST-PRESET-CLOSURE-0001-CASE-INIT-PRESET
-      - T-CLI-BRUTALIST-PRESET-CLOSURE-0001-CASE-REGISTRY
 verifies:
   decisions: [D-CLI-BRUTALIST-PRESET-CLOSURE-0001]
 exercises:
   prototypes: [P-BRUTALIST-BUTTON]
 revisions:
-  - version: 0.2.0-rc.6
-    change: updated
-    summary: Updated since and version to rc.6 for split PR A; scoped to Button-only foundation.
-tags: [test, cli, brutalist, style, preset, tokens]
+  - version: 0.2.0-rc.7
+    change: introduced
+    summary: >-
+      Introduced draft CLI Brutalist preset closure coverage on the rc.7 release train (Button-only foundation). Not present in the immutable rc.6 snapshot.
+

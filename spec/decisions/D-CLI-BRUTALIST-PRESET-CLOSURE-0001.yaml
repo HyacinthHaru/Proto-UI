@@ -2,7 +2,7 @@ id: D-CLI-BRUTALIST-PRESET-CLOSURE-0001
 type: decision
 title: CLI Brutalist preset is a generated closure of official prototype style tokens
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.7
 summary: The CLI carries an install-time Brutalist token preset for first-run and offline use, generated deterministically from official Brutalist prototype sources instead of maintained as an independent token list.
 statement:
   en: >-
@@ -28,6 +28,7 @@ criteria:
       zh-CN: 生成的 Brutalist theme CSS 必须包含 Light 与 Dark theme 变量，并保持 Proto UI prefixed CSS variable 输出。
 sources:
   - path: docs/superpowers/specs/2026-07-24-brutalist-design-system-design.md
+  - path: internal/records/2026-07-27-brutalist-button-foundation-review.zh-CN.md
   - path: scripts/styles/generate-brutalist-style-tokens.ts
   - path: packages/cli/src/generated/brutalist-style-tokens.ts
   - path: packages/cli/src/services/prototype-style-tokens.ts
@@ -40,7 +41,8 @@ relates:
 verifies:
   tests: [T-CLI-BRUTALIST-PRESET-CLOSURE-0001]
 revisions:
-  - version: 0.2.0-rc.6
-    change: updated
-    summary: Updated since and version to rc.6 for split PR A; scoped to Button-only foundation.
-tags: [cli, brutalist, style, preset, tokens, generator]
+  - version: 0.2.0-rc.7
+    change: introduced
+    summary: >-
+      Introduced the decision scoping the CLI Brutalist CSS-only preset closure on the rc.7 release train (Button-only foundation). Not present in the immutable rc.6 snapshot.
+

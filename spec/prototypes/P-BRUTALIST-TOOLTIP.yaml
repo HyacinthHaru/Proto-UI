@@ -2,7 +2,7 @@ id: P-BRUTALIST-TOOLTIP
 type: prototype
 title: Brutalist Tooltip  protocol
 status: draft
-since: 0.2.0-rc.5
+since: 0.2.0-rc.7
 summary: Brutalist Tooltip  protocol for the Proto UI framework.
 statement:
   en: Brutalist Tooltip  protocol. This draft entity catalogs the protocol surface.
@@ -15,7 +15,7 @@ criteria:
 sources:
   - path: packages/prototypes/brutalist/src/tooltip/root.proto.ts
 revisions:
-  - version: 0.2.0-rc.5
+  - version: 0.2.0-rc.7
     change: introduced
     summary: Introduced brutalist tooltip  protocol.
 tags:
