@@ -831,6 +831,12 @@ importers:
         specifier: workspace:*
         version: link:../base
     devDependencies:
+      '@proto.ui/adapter-web-component':
+        specifier: workspace:*
+        version: link:../../adapters/web-component
+      '@proto.ui/cli':
+        specifier: workspace:*
+        version: link:../../cli
       '@proto.ui/module-as-trigger':
         specifier: workspace:*
         version: link:../../modules/as-trigger
