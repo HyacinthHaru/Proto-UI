@@ -17,13 +17,24 @@ AdaptToWebComponent(BrutalistScrollAreaCorner as any);
 
 describe('prototypes/brutalist: scroll-area', () => {
   it('projects the Brutalist visual grammar', async () => {
-    const el = document.createElement('brutalist-scroll-area-root') as any;
-    document.body.appendChild(el);
+    const root = document.createElement('brutalist-scroll-area-root') as any;
+    const viewport = document.createElement('brutalist-scroll-area-viewport') as any;
+    const scrollbar = document.createElement('brutalist-scroll-area-scrollbar') as any;
+    const thumb = document.createElement('brutalist-scroll-area-thumb') as any;
+    const corner = document.createElement('brutalist-scroll-area-corner') as any;
+    scrollbar.appendChild(thumb);
+    root.append(viewport, scrollbar, corner);
+    document.body.appendChild(root);
     await Promise.resolve();
     await Promise.resolve();
-    expect(styleContains(el, 'rounded-none')).toBe(true);
-    expect(styleContains(el, 'border-2')).toBe(true);
 
-    el.remove();
+    expect(styleContains(root, 'rounded-none')).toBe(true);
+    expect(styleContains(root, 'border-2')).toBe(true);
+    expect(styleContains(root, 'overflow-hidden')).toBe(true);
+    expect(styleContains(viewport, 'overflow-auto')).toBe(true);
+    expect(styleContains(scrollbar, 'bg-lavender')).toBe(true);
+    expect(styleContains(thumb, 'bg-foreground')).toBe(true);
+
+    root.remove();
   });
 });

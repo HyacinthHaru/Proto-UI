@@ -2,7 +2,7 @@ export default {
   type: 'demo',
   root: {
     kind: 'box',
-    className: 'flex gap-5',
+    className: 'h-full w-full',
     children: [
       {
         kind: 'proto',
@@ -14,7 +14,7 @@ export default {
             children: [
               {
                 kind: 'box',
-                className: 'flex flex-col gap-2 p-3',
+                className: 'flex flex-col gap-2 p-3 text-sm',
                 children: [
                   'Scrollable conversation content.',
                   'Row 2',
