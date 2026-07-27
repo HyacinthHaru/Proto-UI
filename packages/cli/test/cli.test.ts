@@ -434,34 +434,6 @@ describe('@proto.ui/cli', () => {
     expect(theme).toContain('--pui-radius-sm: 2px');
   });
 
-  it('adds the Brutalist Button React facade without installing packages', async () => {
-    const cwd = await createTempProject('pui-cli-add-brutalist', {
-      name: 'pui-cli-add-brutalist',
-      private: true,
-      dependencies: {
-        react: '^19.0.0',
-        'react-dom': '^19.0.0',
-      },
-    });
-
-    expect(runCli(cwd, ['init', '--no-interactive', '--no-styles']).status).toBe(0);
-    const result = runCli(cwd, ['add', 'react', 'brutalist-button', '--no-install']);
-
-    expect(result.status).toBe(0);
-    expect(result.stdout).toContain(`@proto.ui/prototypes-brutalist@${cliVersion}`);
-    const reactIndex = await fs.readFile(
-      path.join(cwd, 'proto-ui/components/react/index.ts'),
-      'utf8'
-    );
-    const config = JSON.parse(await fs.readFile(path.join(cwd, 'proto-ui/config.json'), 'utf8'));
-
-    expect(reactIndex).toContain(
-      `import { brutalistButton } from '@proto.ui/prototypes-brutalist/button';`
-    );
-    expect(reactIndex).toContain(`export const BrutalistButton = adapt(brutalistButton);`);
-    expect(config.components.react).toEqual(['brutalist-button']);
-  });
-
   it('fails fast when the required React runtime is missing', async () => {
     const cwd = await createTempProject('pui-cli-missing-runtime', {
       name: 'pui-cli-missing-runtime',

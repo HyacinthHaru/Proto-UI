@@ -2,7 +2,7 @@ id: T-BRUTALIST-MESSAGE-0001
 type: test
 title: P-BRUTALIST-MESSAGE tests
 status: draft
-since: 0.2.0-rc.5
+since: 0.2.0-rc.7
 summary: Covers P-BRUTALIST-MESSAGE behavior and visual grammar.
 cases:
   - id: T-BRUTALIST-MESSAGE-0001-CASE-1
@@ -27,7 +27,7 @@ verifies:
 exercises:
   prototypes: *id001
 revisions:
-  - version: 0.2.0-rc.5
+  - version: 0.2.0-rc.7
     change: introduced
     summary: Added P-BRUTALIST-MESSAGE tests.
 tags:

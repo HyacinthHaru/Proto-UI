@@ -2,12 +2,12 @@ id: P-BRUTALIST-MESSAGE
 type: prototype
 title: Brutalist Message
 status: draft
-since: 0.2.0-rc.5
+since: 0.2.0-rc.7
 summary: Brutalist Message protocol.
 sources:
   - path: packages/prototypes/brutalist/src/message/root.proto.ts
 revisions:
-  - version: 0.2.0-rc.5
+  - version: 0.2.0-rc.7
     change: introduced
     summary: Introduced brutalist message.
 tags:

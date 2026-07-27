@@ -2,12 +2,12 @@ id: P-BRUTALIST-CODE-BLOCK-HEADER
 type: prototype
 title: Brutalist Code Block Header
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.7
 summary: Brutalist Code Block header projection.
 sources:
   - path: packages/prototypes/brutalist/src/code-block/header.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.7
     change: introduced
     summary: Introduced brutalist code-block header.
 tags:

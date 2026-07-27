@@ -2,12 +2,12 @@ id: P-BASE-CODE-BLOCK-CONTENT
 type: prototype
 title: Base Code Block Content
 status: draft
-since: 0.2.0-rc.6
+since: 0.2.0-rc.7
 summary: Base Code Block content protocol.
 sources:
   - path: packages/prototypes/base/src/code-block/content.proto.ts
 revisions:
-  - version: 0.2.0-rc.6
+  - version: 0.2.0-rc.7
     change: introduced
     summary: Introduced base code-block content.
 tags:

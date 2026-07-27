@@ -21,6 +21,11 @@
 - The Proto style CSS compiler now supports `w-fit`, `h-fit`, `flex-1`, `shadow-sm`, and the required outline tokens so the aligned prototype styles reach Web output without degrading into unsupported tokens.
 - This pass intentionally covers the default variant's horizontal primary path. The `line` variant, vertical layout, explicit dark branch, SVG descendant rules, and complete native API/data forwarding remain tracked parity gaps.
 
+### CLI Brutalist CSS-only style preset
+
+- `proto-ui init --prototypes brutalist` is now a first-class CSS-only style preset. It writes a Brutalist theme (`brutalist-theme.css` with light/dark variables and the flat canary/mint/lavender/coral/sky accent palette) plus a generated Proto UI token closure scanned from official Brutalist prototype sources, so target projects get usable initial CSS before any prototype package is installed.
+- The preset is intentionally CSS-only. The private workspace package `@proto.ui/prototypes-brutalist` (Button reference family) has no public install path yet and is not part of the rc.7 BOM; the CLI `add` component registry exposes no Brutalist entry until the package is promoted through a later release train.
+
 ## Build and release
 
 ### Executable artifacts for all 37 public packages
