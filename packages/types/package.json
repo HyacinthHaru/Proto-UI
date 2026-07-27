@@ -1,6 +1,6 @@
 {
   "name": "@proto.ui/types",
-  "version": "0.2.0-rc.6",
+  "version": "0.2.0-rc.7",
   "private": false,
   "type": "module",
   "main": "./dist/index.js",
