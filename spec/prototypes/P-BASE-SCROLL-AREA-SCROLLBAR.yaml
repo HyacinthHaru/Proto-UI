@@ -18,6 +18,9 @@ revisions:
   - version: 0.2.0-rc.6
     change: introduced
     summary: Introduced base scroll area scrollbar protocol.
+verifies:
+  tests:
+    - T-BRUTALIST-SCROLL-AREA-0001
 tags:
   - prototype
   - base
