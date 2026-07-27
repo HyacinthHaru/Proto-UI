@@ -43,7 +43,6 @@ export const BRUTALIST_STYLE_TOKENS: string[] = [
   'h-10',
   'h-12',
   'h-4',
-  'h-48',
   'h-9',
   'h-full',
   'inline-flex',
@@ -83,7 +82,6 @@ export const BRUTALIST_STYLE_TOKENS: string[] = [
   'translate-y-px',
   'uppercase',
   'w-4',
-  'w-80',
   'w-full',
   'whitespace-nowrap',
 ];
