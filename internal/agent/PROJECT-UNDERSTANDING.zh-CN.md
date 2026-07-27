@@ -8,19 +8,19 @@
 
 | 项目 | 值 |
 | --- | --- |
-| 当前 spec 版本 | `0.2.0-rc.6` |
+| 当前 spec 版本 | `0.2.0-rc.7` |
 | Release channel | `prerelease` |
-| Version entity | [`V-PROTO-UI-0006`](../../spec/versions/V-PROTO-UI-0006.yaml) |
-| 工作区实体数 | 395 |
+| Version entity | [`V-PROTO-UI-0007`](../../spec/versions/V-PROTO-UI-0007.yaml) |
+| 工作区实体数 | 411 |
 | Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:3a962ac304dc0bf18e84fbacb01ee6c55b315aaa2abb10e30e2723ee2ed8d779` |
-| 已发布 release snapshot digest | `sha256:ccec6ecd79b276f67eac15ae3d4e153dc03f2e2ae975498b20dd4aa6e6d28a13` |
+| 工作区快照指纹 | `sha256:4ea1311ccca9e432421d6ec10c0508a292a7e1ea4dccdd9de85f3b4d3498ab66` |
+| 已发布 release snapshot digest | `未记录` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
 
 ## 阅读与权威边界
 
-当前快照包含 40 个 active、350 个 draft、5 个 deprecated、0 个 removed 实体。
+当前快照包含 40 个 active、366 个 draft、5 个 deprecated、0 个 removed 实体。
 
 - `active` 可以作为当前稳定保证读取。
 - `draft` 是已进入正式目录的当前方向，但不能包装为稳定公共承诺。
@@ -60,27 +60,27 @@ flowchart LR
 | 类型 | 总数 | active | draft | deprecated | 有 statement | 有 criteria | 有 open questions |
 | --- | --: | --: | --: | --: | --: | --: | --: |
 | `knowledge` | 5 | 0 | 5 | 0 | 5 | 5 | 0 |
-| `decision` | 48 | 6 | 40 | 2 | 33 | 18 | 3 |
+| `decision` | 49 | 6 | 41 | 2 | 34 | 19 | 3 |
 | `contract` | 144 | 15 | 126 | 3 | 141 | 141 | 22 |
-| `prototype` | 62 | 0 | 62 | 0 | 62 | 62 | 32 |
+| `prototype` | 73 | 0 | 73 | 0 | 73 | 73 | 32 |
 | `module` | 5 | 1 | 4 | 0 | 0 | 0 | 0 |
 | `host-cap` | 4 | 0 | 4 | 0 | 2 | 2 | 0 |
-| `test` | 121 | 12 | 109 | 0 | 0 | 0 | 4 |
-| `version` | 6 | 6 | 0 | 0 | 6 | 6 | 0 |
+| `test` | 124 | 12 | 112 | 0 | 0 | 0 | 4 |
+| `version` | 7 | 6 | 1 | 0 | 7 | 7 | 0 |
 
 ### 实体级关系分布
 
 | Relation     | 边数 |
 | ------------ | ---: |
-| `relates`    |  223 |
-| `dependsOn`  |  771 |
-| `inherits`   |   28 |
+| `relates`    |  226 |
+| `dependsOn`  |  790 |
+| `inherits`   |   34 |
 | `references` |    7 |
 | `refines`    |   18 |
 | `satisfies`  |   27 |
-| `verifies`   |  300 |
+| `verifies`   |  315 |
 | `explains`   |   36 |
-| `exercises`  |  168 |
+| `exercises`  |  181 |
 | `requires`   |    4 |
 | `owns`       |    1 |
 
@@ -430,11 +430,11 @@ Contract 是规范性规则的主要载体。下表按 ID 的主领域聚合；�
 
 Prototype 实体描述官方协议身份，而不是某个框架组件的偶然实现。Base 通常表达基础协议，Shadcn 等 design-language 实体可通过 `inherits.prototypes` 表达继承与差异。
 
-### BASE（31）
+### BASE（36）
 
 | Entity | 状态 | 标题 | 继承 | Anatomy | Criteria | 关联 T |
 | --- | --- | --- | --- | --- | --: | --: |
-| [`P-BASE-BUTTON`](../../spec/prototypes/P-BASE-BUTTON.yaml) | `draft` | Base Button is a focusable command control | — | — | 30 | 2 |
+| [`P-BASE-BUTTON`](../../spec/prototypes/P-BASE-BUTTON.yaml) | `draft` | Base Button is a focusable command control | — | — | 30 | 3 |
 | [`P-BASE-CHECKBOX`](../../spec/prototypes/P-BASE-CHECKBOX.yaml) | `draft` | Base Checkbox is a checked input control with optional mixed display state | — | 2 roles / 0 profiles | 52 | 2 |
 | [`P-BASE-CHECKBOX-INDICATOR`](../../spec/prototypes/P-BASE-CHECKBOX-INDICATOR.yaml) | `draft` | Base Checkbox Indicator is a context-driven checkbox indicator | — | — | 17 | 2 |
 | [`P-BASE-DIALOG`](../../spec/prototypes/P-BASE-DIALOG.yaml) | `draft` | Base Dialog is a root-owned modal dialog protocol | — | 9 roles / 0 profiles | 10 | 3 |
@@ -464,7 +464,23 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 | [`P-BASE-TABS-LIST`](../../spec/prototypes/P-BASE-TABS-LIST.yaml) | `draft` | Base Tabs List is the tab trigger collection and roving focus container | — | — | 16 | 4 |
 | [`P-BASE-TABS-TRIGGER`](../../spec/prototypes/P-BASE-TABS-TRIGGER.yaml) | `draft` | Base Tabs Trigger is a value-matched tab activation item | — | — | 27 | 4 |
 | [`P-BASE-TOGGLE`](../../spec/prototypes/P-BASE-TOGGLE.yaml) | `draft` | Base Toggle is a button-like persistent active control | — | — | 37 | 3 |
+| [`P-BASE-TOOLTIP`](../../spec/prototypes/P-BASE-TOOLTIP.yaml) | `draft` | Base Tooltip protocol | — | — | 1 | 1 |
+| [`P-BASE-TOOLTIP-ARROW`](../../spec/prototypes/P-BASE-TOOLTIP-ARROW.yaml) | `draft` | Base Tooltip Arrow protocol | — | — | 1 | 1 |
+| [`P-BASE-TOOLTIP-CONTENT`](../../spec/prototypes/P-BASE-TOOLTIP-CONTENT.yaml) | `draft` | Base Tooltip Content protocol | — | — | 1 | 1 |
+| [`P-BASE-TOOLTIP-PORTAL`](../../spec/prototypes/P-BASE-TOOLTIP-PORTAL.yaml) | `draft` | Base Tooltip Portal protocol | — | — | 1 | 1 |
+| [`P-BASE-TOOLTIP-TRIGGER`](../../spec/prototypes/P-BASE-TOOLTIP-TRIGGER.yaml) | `draft` | Base Tooltip Trigger protocol | — | — | 1 | 1 |
 | [`P-BASE-TRANSITION`](../../spec/prototypes/P-BASE-TRANSITION.yaml) | `draft` | Base Transition governs host-neutral perceptual presence | — | — | 12 | 2 |
+
+### BRUTALIST（6）
+
+| Entity | 状态 | 标题 | 继承 | Anatomy | Criteria | 关联 T |
+| --- | --- | --- | --- | --- | --: | --: |
+| [`P-BRUTALIST-BUTTON`](../../spec/prototypes/P-BRUTALIST-BUTTON.yaml) | `draft` | Brutalist Button inherits Base Button and layers a dual-theme Neo-Brutalist visual API | `P-BASE-BUTTON` | — | 3 | 3 |
+| [`P-BRUTALIST-TOOLTIP`](../../spec/prototypes/P-BRUTALIST-TOOLTIP.yaml) | `draft` | Brutalist Tooltip protocol | `P-BASE-TOOLTIP` | — | 1 | 2 |
+| [`P-BRUTALIST-TOOLTIP-ARROW`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-ARROW.yaml) | `draft` | Brutalist Tooltip Arrow protocol | `P-BASE-TOOLTIP-ARROW` | — | 1 | 1 |
+| [`P-BRUTALIST-TOOLTIP-CONTENT`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-CONTENT.yaml) | `draft` | Brutalist Tooltip Content protocol | `P-BASE-TOOLTIP-CONTENT` | — | 1 | 1 |
+| [`P-BRUTALIST-TOOLTIP-PORTAL`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-PORTAL.yaml) | `draft` | Brutalist Tooltip Portal protocol | `P-BASE-TOOLTIP-PORTAL` | — | 1 | 1 |
+| [`P-BRUTALIST-TOOLTIP-TRIGGER`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-TRIGGER.yaml) | `draft` | Brutalist Tooltip Trigger protocol | `P-BASE-TOOLTIP-TRIGGER` | — | 1 | 1 |
 
 ### LUCIDE（1）
 
@@ -501,10 +517,10 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 | [`P-SHADCN-SELECT-VALUE`](../../spec/prototypes/P-SHADCN-SELECT-VALUE.yaml) | `draft` | Shadcn Select Value inherits Base display derivation and renders the current text | `P-BASE-SELECT-VALUE` | — | 7 | 2 |
 | [`P-SHADCN-SWITCH`](../../spec/prototypes/P-SHADCN-SWITCH.yaml) | `draft` | Shadcn Switch Root inherits Base Switch and adds the current track surface | `P-BASE-SWITCH` | — | 9 | 2 |
 | [`P-SHADCN-SWITCH-THUMB`](../../spec/prototypes/P-SHADCN-SWITCH-THUMB.yaml) | `draft` | Shadcn Switch Thumb inherits the Base indicator and adds its current visual surface | `P-BASE-SWITCH-THUMB` | — | 7 | 2 |
-| [`P-SHADCN-TABS`](../../spec/prototypes/P-SHADCN-TABS.yaml) | `draft` | Shadcn Tabs Root inherits Base Tabs and projects the pinned v4 default layout | `P-BASE-TABS` | — | 7 | 2 |
-| [`P-SHADCN-TABS-CONTENT`](../../spec/prototypes/P-SHADCN-TABS-CONTENT.yaml) | `draft` | Shadcn Tabs Content inherits Base Tabs Content and projects the pinned v4 panel surface | `P-BASE-TABS-CONTENT` | — | 8 | 2 |
-| [`P-SHADCN-TABS-LIST`](../../spec/prototypes/P-SHADCN-TABS-LIST.yaml) | `draft` | Shadcn Tabs List inherits Base Tabs List and projects the pinned v4 default surface | `P-BASE-TABS-LIST` | — | 7 | 2 |
-| [`P-SHADCN-TABS-TRIGGER`](../../spec/prototypes/P-SHADCN-TABS-TRIGGER.yaml) | `draft` | Shadcn Tabs Trigger inherits Base Tabs Trigger and projects pinned v4 default styling | `P-BASE-TABS-TRIGGER` | — | 8 | 2 |
+| [`P-SHADCN-TABS`](../../spec/prototypes/P-SHADCN-TABS.yaml) | `draft` | Shadcn Tabs Root inherits Base Tabs and adds the current layout surface | `P-BASE-TABS` | — | 7 | 2 |
+| [`P-SHADCN-TABS-CONTENT`](../../spec/prototypes/P-SHADCN-TABS-CONTENT.yaml) | `draft` | Shadcn Tabs Content inherits Base Tabs Content and adds the current panel surface | `P-BASE-TABS-CONTENT` | — | 8 | 2 |
+| [`P-SHADCN-TABS-LIST`](../../spec/prototypes/P-SHADCN-TABS-LIST.yaml) | `draft` | Shadcn Tabs List inherits Base Tabs List and adds the current collection surface | `P-BASE-TABS-LIST` | — | 7 | 2 |
+| [`P-SHADCN-TABS-TRIGGER`](../../spec/prototypes/P-SHADCN-TABS-TRIGGER.yaml) | `draft` | Shadcn Tabs Trigger inherits Base Tabs Trigger and adds current tab styling | `P-BASE-TABS-TRIGGER` | — | 8 | 2 |
 | [`P-SHADCN-TOGGLE`](../../spec/prototypes/P-SHADCN-TOGGLE.yaml) | `draft` | Shadcn Toggle inherits Base Toggle and layers a pinned visual API subset | `P-BASE-TOGGLE` | — | 9 | 2 |
 
 ## 五、Module 与 Host Capability
@@ -583,10 +599,11 @@ Decision 实体固定已经稳定下来的设计与治理选择。它们解释�
 | [`D-BASE-PROTOTYPE-INDEPENDENCE-0001`](../../spec/decisions/D-BASE-PROTOTYPE-INDEPENDENCE-0001.yaml) | `draft` | Base prototypes stay independently consumable | 4 | Base prototype protocols should stay independently consumable; shared hooks with protocol names must serve their owning prototype protocol rather than becoming cross-prototype substrate. |
 | [`D-BASE-TABS-L1-MATERIALIZATION-0001`](../../spec/decisions/D-BASE-TABS-L1-MATERIALIZATION-0001.yaml) | `active` | Base Tabs Content defaults to lazy L1 materialization | 0 | Inactive Base Tabs Content will default to no view, detach on exit, and preserve its Proto instance; keepMounted remains the explicit full-view retention option. |
 
-### CLI（1）
+### CLI（2）
 
 | Entity | 状态 | 标题 | Criteria | 摘要 |
 | --- | --- | --- | --: | --- |
+| [`D-CLI-BRUTALIST-PRESET-CLOSURE-0001`](../../spec/decisions/D-CLI-BRUTALIST-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Brutalist preset is a generated closure of official prototype style tokens | 3 | The CLI carries an install-time Brutalist token preset for first-run and offline use, generated deterministically from official Brutalist prototype sources instead of maintained as an independent token list. |
 | [`D-CLI-SHADCN-PRESET-CLOSURE-0001`](../../spec/decisions/D-CLI-SHADCN-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Shadcn preset is a generated closure of official prototype style tokens | 3 | The CLI keeps an install-time Shadcn token preset for first-run and offline use, but generates that manifest deterministically from official Shadcn prototype sources instead of maintaining an independent token list. |
 
 ### COLLECTION（1）
@@ -701,7 +718,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Status    | 数量 |
 | --------- | ---: |
 | `active`  |   18 |
-| `passing` |  273 |
+| `passing` |  277 |
 | `planned` |   14 |
 
 ### Implementation 类型
@@ -710,9 +727,9 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | ----------------- | ---: |
 | `adapter-test`    |   81 |
 | `fixture`         |   17 |
-| `module-test`     |  127 |
+| `module-test`     |  130 |
 | `runtime-test`    |   71 |
-| `workspace-check` |    9 |
+| `workspace-check` |   10 |
 
 ### Test entities
 
@@ -811,10 +828,18 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | --- | --- | --- | --: | --- | --- | --- |
 | [`T-BOUNDARY-0001`](../../spec/tests/T-BOUNDARY-0001.yaml) | `draft` | Boundary observation, classification, stacking, and cleanup tests | 7 | `passing` 2 | `C-BOUNDARY-0001` | — |
 
-### CLI（1）
+### BRUTALIST（2）
 
 | Entity | 状态 | 标题 | Cases | Implementations | Verifies | Exercises |
 | --- | --- | --- | --: | --- | --- | --- |
+| [`T-BRUTALIST-BUTTON-0001`](../../spec/tests/T-BRUTALIST-BUTTON-0001.yaml) | `draft` | Brutalist Button dual-theme visual contract tests | 1 | `passing` 1 | `P-BRUTALIST-BUTTON` | `P-BASE-BUTTON`<br>`P-BRUTALIST-BUTTON` |
+| [`T-BRUTALIST-TOOLTIP-0001`](../../spec/tests/T-BRUTALIST-TOOLTIP-0001.yaml) | `draft` | Brutalist Tooltip visual contract tests | 1 | `passing` 1 | `P-BRUTALIST-TOOLTIP` | `P-BASE-TOOLTIP`<br>`P-BASE-TOOLTIP-ARROW`<br>`P-BASE-TOOLTIP-CONTENT`<br>`P-BASE-TOOLTIP-PORTAL`<br>`P-BASE-TOOLTIP-TRIGGER`<br>`P-BRUTALIST-TOOLTIP`<br>`P-BRUTALIST-TOOLTIP-ARROW`<br>`P-BRUTALIST-TOOLTIP-CONTENT`<br>`P-BRUTALIST-TOOLTIP-PORTAL`<br>`P-BRUTALIST-TOOLTIP-TRIGGER` |
+
+### CLI（2）
+
+| Entity | 状态 | 标题 | Cases | Implementations | Verifies | Exercises |
+| --- | --- | --- | --: | --- | --- | --- |
+| [`T-CLI-BRUTALIST-PRESET-CLOSURE-0001`](../../spec/tests/T-CLI-BRUTALIST-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Brutalist preset source-closure tests | 3 | `passing` 2 | `D-CLI-BRUTALIST-PRESET-CLOSURE-0001` | `P-BRUTALIST-BUTTON` |
 | [`T-CLI-SHADCN-PRESET-CLOSURE-0001`](../../spec/tests/T-CLI-SHADCN-PRESET-CLOSURE-0001.yaml) | `draft` | CLI Shadcn preset source-closure tests | 3 | `passing` 3 | `D-CLI-SHADCN-PRESET-CLOSURE-0001` | `P-SHADCN-DIALOG-CONTENT`<br>`P-SHADCN-DIALOG-MASK` |
 
 ### COLLECTION（1）
@@ -1058,6 +1083,20 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Commit          | `e4243850e0d9ad0dce3e9d6e099ca70bc2df0b27`                                |
 | Snapshot digest | `sha256:ccec6ecd79b276f67eac15ae3d4e153dc03f2e2ae975498b20dd4aa6e6d28a13` |
 
+### [`V-PROTO-UI-0007`](../../spec/versions/V-PROTO-UI-0007.yaml) Proto UI 0.2.0-rc.7
+
+| Field           | Value                        |
+| --------------- | ---------------------------- |
+| Entity status   | `draft`                      |
+| Version         | `0.2.0-rc.7`                 |
+| Channel         | `prerelease`                 |
+| Git tag         | `v0.2.0-rc.7`                |
+| npm dist-tag    | `next`                       |
+| Package policy  | `exact` / `public-@proto.ui` |
+| Published at    | `—`                          |
+| Commit          | `—`                          |
+| Snapshot digest | `—`                          |
+
 ## 九、显式 Open Questions
 
 当前实体共声明 76 个 open question。它们是已知断口，不应由 Agent 静默补全。
@@ -1167,7 +1206,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 
 ## 十一、当前快照的结构性限制
 
-- 350/395 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
+- 366/411 个实体仍为 draft；catalog 广度不能直接解释为稳定度。
 - 当前只有 5 个 Module 与 4 个 Host Capability 实体；不要据此推断实现中只有这些能力。
 - Adapter 与 Compiler 尚无一级实体类型，因此宿主 profile、支持矩阵和 translation-layer 权衡仍可能主要存在于实现、旧契约和 records。
 - 生成器只验证 schema 与关系完整性，不验证网站内容、README、package exports 或运行时代码与实体完全一致。
