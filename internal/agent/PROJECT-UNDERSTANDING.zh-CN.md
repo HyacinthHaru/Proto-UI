@@ -13,7 +13,7 @@
 | Version entity | [`V-PROTO-UI-0007`](../../spec/versions/V-PROTO-UI-0007.yaml) |
 | 工作区实体数 | 412 |
 | Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:69a9bf9add8d8114ccc1a6780063a336f11ba4a681144234db1c78371eb2401e` |
+| 工作区快照指纹 | `sha256:dd35a591ed6165282c2ac470db181f75345a881b1475b6004893e1a096d31131` |
 | 已发布 release snapshot digest | `未记录` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
@@ -517,10 +517,10 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 | [`P-SHADCN-SELECT-VALUE`](../../spec/prototypes/P-SHADCN-SELECT-VALUE.yaml) | `draft` | Shadcn Select Value inherits Base display derivation and renders the current text | `P-BASE-SELECT-VALUE` | — | 7 | 2 |
 | [`P-SHADCN-SWITCH`](../../spec/prototypes/P-SHADCN-SWITCH.yaml) | `draft` | Shadcn Switch Root inherits Base Switch and adds the current track surface | `P-BASE-SWITCH` | — | 9 | 2 |
 | [`P-SHADCN-SWITCH-THUMB`](../../spec/prototypes/P-SHADCN-SWITCH-THUMB.yaml) | `draft` | Shadcn Switch Thumb inherits the Base indicator and adds its current visual surface | `P-BASE-SWITCH-THUMB` | — | 7 | 2 |
-| [`P-SHADCN-TABS`](../../spec/prototypes/P-SHADCN-TABS.yaml) | `draft` | Shadcn Tabs Root inherits Base Tabs and adds the current layout surface | `P-BASE-TABS` | — | 7 | 2 |
-| [`P-SHADCN-TABS-CONTENT`](../../spec/prototypes/P-SHADCN-TABS-CONTENT.yaml) | `draft` | Shadcn Tabs Content inherits Base Tabs Content and adds the current panel surface | `P-BASE-TABS-CONTENT` | — | 8 | 2 |
-| [`P-SHADCN-TABS-LIST`](../../spec/prototypes/P-SHADCN-TABS-LIST.yaml) | `draft` | Shadcn Tabs List inherits Base Tabs List and adds the current collection surface | `P-BASE-TABS-LIST` | — | 7 | 2 |
-| [`P-SHADCN-TABS-TRIGGER`](../../spec/prototypes/P-SHADCN-TABS-TRIGGER.yaml) | `draft` | Shadcn Tabs Trigger inherits Base Tabs Trigger and adds current tab styling | `P-BASE-TABS-TRIGGER` | — | 8 | 2 |
+| [`P-SHADCN-TABS`](../../spec/prototypes/P-SHADCN-TABS.yaml) | `draft` | Shadcn Tabs Root inherits Base Tabs and projects the pinned v4 default layout | `P-BASE-TABS` | — | 7 | 2 |
+| [`P-SHADCN-TABS-CONTENT`](../../spec/prototypes/P-SHADCN-TABS-CONTENT.yaml) | `draft` | Shadcn Tabs Content inherits Base Tabs Content and projects the pinned v4 panel surface | `P-BASE-TABS-CONTENT` | — | 8 | 2 |
+| [`P-SHADCN-TABS-LIST`](../../spec/prototypes/P-SHADCN-TABS-LIST.yaml) | `draft` | Shadcn Tabs List inherits Base Tabs List and projects the pinned v4 default surface | `P-BASE-TABS-LIST` | — | 7 | 2 |
+| [`P-SHADCN-TABS-TRIGGER`](../../spec/prototypes/P-SHADCN-TABS-TRIGGER.yaml) | `draft` | Shadcn Tabs Trigger inherits Base Tabs Trigger and projects pinned v4 default styling | `P-BASE-TABS-TRIGGER` | — | 8 | 2 |
 | [`P-SHADCN-TOGGLE`](../../spec/prototypes/P-SHADCN-TOGGLE.yaml) | `draft` | Shadcn Toggle inherits Base Toggle and layers a pinned visual API subset | `P-BASE-TOGGLE` | — | 9 | 2 |
 
 ## 五、Module 与 Host Capability
