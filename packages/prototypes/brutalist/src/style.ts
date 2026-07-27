@@ -1,14 +1,20 @@
 export const BRUTALIST_FOCUS_TOKENS =
   'outline-none ring-2 ring-ring ring-offset-2 ring-offset-background';
 
-export const BRUTALIST_CONTROL_TOKENS = [
+/** Shared structure without fill colors — fills come from paired variant/color rules. */
+export const BRUTALIST_STRUCTURE_TOKENS = [
   'rounded-none',
   'border-2',
   'border-black',
   'shadow-[3px_3px_0_0_#000]',
+  'font-mono',
+].join(' ');
+
+/** Default control shell: structure + theme-paired surface fill. */
+export const BRUTALIST_CONTROL_TOKENS = [
+  BRUTALIST_STRUCTURE_TOKENS,
   'bg-secondary-background',
   'text-foreground',
-  'font-mono',
 ].join(' ');
 
 export const BRUTALIST_PANEL_TOKENS = [
