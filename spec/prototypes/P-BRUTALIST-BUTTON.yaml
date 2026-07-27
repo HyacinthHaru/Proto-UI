@@ -1,34 +1,130 @@
 id: P-BRUTALIST-BUTTON
 type: prototype
-title: Brutalist Button inherits Base Button and layers a dual-theme Neo-Brutalist visual API
+title: Brutalist Button inherits Base Button and layers a Neo-Brutalist visual API
 status: draft
-since: 0.2.0-rc.3
-summary: Brutalist Button inherits Base Button and layers a dual-theme Neo-Brutalist visual API. The current passing claim is limited to Base inheritance where declared, square Neo-Brutalist styling, hard black borders and shadows, and light/dark theme-compatible token surfaces covered by tests.
+since: 0.2.0-rc.7
+summary: >-
+  Brutalist Button inherits Base Button interaction semantics and projects a style-family visual API: solid/surface/destructive fills, constrained accent colors with paired foregrounds, square geometry, hard offset shadows, and live theme-compatible surface tokens.
+
+
 statement:
   en: >-
-    Brutalist Button inherits Base Button and layers a dual-theme Neo-Brutalist visual API. This draft Proto UI-maintained design-language projection keeps inherited Base protocol semantics where an inherited prototype is declared and adds only visual/style behavior: zero radius, black structural borders, hard offset shadows, flat fills, and dual light/dark theme compatibility.
+    Brutalist Button is a draft Proto UI-maintained Neo-Brutalist design-language projection over Base Button. It preserves inherited Base protocol semantics where an inherited prototype is declared and adds only visual/style behavior: zero radius, black structural borders, hard offset shadows, flat paired fills, a constrained accent color API, and Light/Dark theme compatibility through CSS variables for theme-dependent surfaces.
 
 
   zh-CN: >-
-    Brutalist Button inherits Base Button and layers a dual-theme Neo-Brutalist visual API。该 draft Proto UI 维护的 design-language 投射在声明继承关系的位置保留 Base protocol 语义，仅增加视觉/style 行为：零圆角、黑色结构边框、硬偏移阴影、平面填充以及 Light/Dark 主题兼容 token 表面。
+    Brutalist Button 是 Proto UI 维护的 draft Neo-Brutalist design-language 投射， 建立在 Base Button 之上。在声明继承关系的位置保留 Base protocol 语义，仅增加 视觉/style 行为：零圆角、黑色结构边框、硬偏移阴影、成对平面填充、受限强调色 API，以及通过 CSS 变量实现的 Light/Dark 主题兼容表面。
 
 
 criteria:
-  - id: P-BRUTALIST-BUTTON-DESIGN-LANGUAGE-IDENTITY
+  - id: P-BRUTALIST-BUTTON-BASE-INHERITANCE
     text:
-      en: The prototype is a Proto UI-maintained Neo-Brutalist design-language projection and must not claim third-party upstream ownership or certification.
-      zh-CN: 该 prototype 是 Proto UI 维护的 Neo-Brutalist design-language 投射，不得声称第三方上游所有权或认证。
+      en: >-
+        The prototype must inherit Base Button through `asButton()` once and must not redefine Base click, press, hover, focus, or disabled protocol semantics. Visual projection may only consume the projected state handles.
+
+
+      zh-CN: >-
+        该 prototype 必须通过 `asButton()` 一次性继承 Base Button，不得重定义 Base 的 click、press、hover、focus 或 disabled 协议语义；视觉投射只能消费投影出的 state handles。
+
+
+  - id: P-BRUTALIST-BUTTON-ENTRY
+    text:
+      en: The direct prototype entry name is `brutalist-button` and is the only public Button entry in this foundation slice.
+      zh-CN: 直接 prototype 入口名为 `brutalist-button`，且是本 foundation 切片中唯一公开的 Button 入口。
+  - id: P-BRUTALIST-BUTTON-VARIANT-PROP
+    text:
+      en: >-
+        Public `variant` is the enum `solid | surface | destructive` with default `solid`. `solid` is the accent fill role; `surface` is the paper/panel fill; `destructive` is the warning fill. There is no `outline` variant because every Brutalist control already carries a structural 2px outline.
+
+
+      zh-CN: >-
+        公开 `variant` 为枚举 `solid | surface | destructive`，默认 `solid`。 `solid` 为强调填充，`surface` 为纸面/面板填充，`destructive` 为警告填充。 不提供 `outline`，因为每个 Brutalist 控件本身已带 2px 结构描边。
+
+
+  - id: P-BRUTALIST-BUTTON-COLOR-PROP
+    text:
+      en: >-
+        Public `color` is the enum `main | mint | lavender | coral | sky` with default `main`. It applies only when `variant` is `solid` and selects a fixed accent pair from the Brutalist palette.
+
+
+      zh-CN: >-
+        公开 `color` 为枚举 `main | mint | lavender | coral | sky`，默认 `main`。 仅在 `variant` 为 `solid` 时生效，并从 Brutalist 调色板选择固定强调色对。
+
+
+  - id: P-BRUTALIST-BUTTON-SIZE-PROP
+    text:
+      en: Public `size` is the enum `default | sm | lg | icon` with default `default`.
+      zh-CN: 公开 `size` 为枚举 `default | sm | lg | icon`，默认 `default`。
+  - id: P-BRUTALIST-BUTTON-DEFAULTS
+    text:
+      en: >-
+        When `variant`, `color`, `size`, or `disabled` are omitted or removed after mount, the prototype must restore `solid`, `main`, `default`, and `false` respectively.
+
+
+      zh-CN: >-
+        当 `variant`、`color`、`size` 或 `disabled` 缺省或在挂载后被移除时，prototype 必须分别恢复为 `solid`、`main`、`default` 与 `false`。
+
+
+  - id: P-BRUTALIST-BUTTON-PAIR-INVARIANT
+    text:
+      en: >-
+        Every fill must co-select its intended foreground token. Solid accents use `bg-{color}` with `text-{color}-foreground`; surface uses `bg-secondary-background` with `text-foreground`; destructive uses `bg-destructive` with `text-destructive-foreground`. No rule may replace a fill's foreground with a theme-global text token independently of its background.
+
+
+      zh-CN: >-
+        每一种填充必须同时选择其对应的前景 token。solid 强调色使用 `bg-{color}` 与 `text-{color}-foreground`；surface 使用 `bg-secondary-background` 与 `text-foreground`；destructive 使用 `bg-destructive` 与 `text-destructive-foreground`。任何规则都不得在脱离背景的情况下用主题全局 文本 token 覆盖填充前景。
+
+
+  - id: P-BRUTALIST-BUTTON-INTERACTION
+    text:
+      en: >-
+        Hover lifts the control (`-1px,-1px` with deeper hard shadow). Press translates into the shadow axis and clears the shadow. Focus-visible applies a hard ring with offset. Disabled reduces emphasis with `opacity-50` and `pointer-events-none` while preserving geometry and the active fill pair.
+
+
+      zh-CN: >-
+        Hover 抬升控件（`-1px,-1px` 并加深硬阴影）。Press 沿阴影轴压入并清除阴影。 Focus-visible 使用带 offset 的硬 ring。Disabled 以 `opacity-50` 与 `pointer-events-none` 降低强调，同时保留几何与当前填充色对。
+
+
   - id: P-BRUTALIST-BUTTON-VISUAL-GRAMMAR
     text:
-      en: The prototype visual surface must preserve square corners, black structural borders, hard zero-blur offset shadows, and flat theme-token fills without gradients, glass, rounded cards, or soft elevation.
-      zh-CN: 该 prototype 视觉表面必须保持直角、黑色结构边框、零模糊硬偏移阴影和平面主题 token 填充，不得使用渐变、玻璃拟态、圆角卡片或柔和高度阴影。
-  - id: P-BRUTALIST-BUTTON-TESTED-SURFACE
+      en: >-
+        The visual surface must preserve square corners, black structural borders, hard zero-blur offset shadows, and flat theme-token fills without gradients, glass, rounded cards, or soft elevation.
+
+
+      zh-CN: >-
+        视觉表面必须保持直角、黑色结构边框、零模糊硬偏移阴影和平面主题 token 填充， 不得使用渐变、玻璃拟态、圆角卡片或柔和高度阴影。
+
+
+  - id: P-BRUTALIST-BUTTON-LIGHT-DARK
     text:
-      en: The current passing guarantee is limited to the behavior and visual tokens exercised by the corresponding Brutalist prototype test entity.
-      zh-CN: 当前 passing guarantee 仅限对应 Brutalist prototype test entity 覆盖的行为与视觉 token。
+      en: >-
+        Solid accent pairs are theme-invariant: accent backgrounds keep black foreground tokens in both Light and Dark host themes. Surface and destructive fills resolve through CSS variables so their concrete colors follow the active host theme while preserving the pair invariant.
+
+
+      zh-CN: >-
+        solid 强调色对在主题间不变：强调背景在 Light 与 Dark 宿主主题下都保持黑色 前景 token。surface 与 destructive 通过 CSS 变量解析，使具体颜色跟随宿主 主题，同时保持色对不变量。
+
+
+  - id: P-BRUTALIST-BUTTON-LIVE-THEME
+    text:
+      en: >-
+        When the active host theme changes after the Button is mounted, theme-dependent surfaces (those that resolve through Brutalist CSS variables such as `--pui-secondary-background` and `--pui-foreground`) must repaint without requiring pointer interaction. Disabled controls must also repaint under the same host-theme transition. The supported mechanism is host-theme-driven CSS variable resolution; a `colorScheme` meta or `prefers-color-scheme` path is not part of this criterion.
+
+
+      zh-CN: >-
+        当 Brutalist Button 已挂载后活动宿主主题发生变化时，主题相关表面（经 Brutalist CSS 变量如 `--pui-secondary-background` 与 `--pui-foreground` 解析的表面）必须在无需指针交互的情况下重绘；Disabled 控件在相同宿主主题切换下也必须重绘。支持机制为宿主主题驱动的 CSS 变量解析；`colorScheme` meta 或 `prefers-color-scheme` 路径不属于本准则。
+
+
 sources:
   - path: packages/prototypes/brutalist/src/button/button.proto.ts
+  - path: packages/prototypes/brutalist/src/button/types.ts
+  - path: packages/prototypes/brutalist/test/button-live-theme.test.ts
+  - path: packages/prototypes/brutalist/src/style.ts
   - path: packages/prototypes/brutalist/test/button.test.ts
+  - path: docs/superpowers/specs/2026-07-24-brutalist-design-system-design.md
+  - path: internal/records/2026-07-27-brutalist-button-foundation-review.zh-CN.md
+relates:
+  knowledge: [K-BRUTALIST-0001]
 dependsOn:
   contracts: [C-CORE-SYNTAX-0003, C-AS-HOOK-0001, C-RULE-INTENT-FEEDBACK-STYLE-0001]
 inherits:
@@ -36,7 +132,10 @@ inherits:
     - id: P-BASE-BUTTON
 verifies: { tests: [T-BRUTALIST-BUTTON-0001] }
 revisions:
-  - version: 0.2.0-rc.3
+  - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced the draft Brutalist design-language projection for this prototype surface.
+    summary: >-
+      Introduced the draft Neo-Brutalist Button projection as the reference family of the Brutalist style foundation slice on the rc.7 release train (redesigned public API: solid/surface/destructive + accent color, paired foreground invariant, live theme behavior). Not present in the immutable rc.6 snapshot.
+
+
 tags: [prototype, brutalist, neo-brutalist, visual, delta, button]

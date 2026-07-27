@@ -1,19 +1,21 @@
 import { definePrototype, tw } from '@proto.ui/core';
 import { asButton } from '@proto.ui/prototypes-base/button';
 import {
-  BRUTALIST_CONTROL_TOKENS,
   BRUTALIST_DISABLED_TOKENS,
   BRUTALIST_FOCUS_TOKENS,
   BRUTALIST_HOVER_LIFT_TOKENS,
   BRUTALIST_PRESS_TOKENS,
+  BRUTALIST_STRUCTURE_TOKENS,
 } from '../style';
 import type {
+  BrutalistButtonColor,
   BrutalistButtonExposes,
   BrutalistButtonProps,
   BrutalistButtonSize,
   BrutalistButtonVariant,
 } from './types';
 
+// P-BRUTALIST-BUTTON-VISUAL-GRAMMAR
 const BUTTON_BASE_TOKENS = [
   'group/brutalist-button',
   'inline-flex',
@@ -26,17 +28,34 @@ const BUTTON_BASE_TOKENS = [
   'font-bold',
   'uppercase',
   'tracking-tight',
-  BRUTALIST_CONTROL_TOKENS,
+  BRUTALIST_STRUCTURE_TOKENS,
 ].join(' ');
 
-const VARIANT_TOKENS: Record<BrutalistButtonVariant, string> = {
-  default: `${BRUTALIST_CONTROL_TOKENS} bg-main text-main-foreground`,
-  outline: `${BRUTALIST_CONTROL_TOKENS} bg-secondary-background text-foreground`,
-  secondary: `${BRUTALIST_CONTROL_TOKENS} bg-background text-foreground`,
-  destructive: `${BRUTALIST_CONTROL_TOKENS} bg-destructive text-main-foreground`,
-  reverse: `${BRUTALIST_CONTROL_TOKENS} bg-foreground text-background shadow-[-3px_3px_0_0_#000]`,
+/**
+ * Solid accent pairs. Background and foreground are always co-selected.
+ * Accent foreground stays ink (`*-foreground` = black) in both Light and Dark.
+ * P-BRUTALIST-BUTTON-COLOR-PROP, P-BRUTALIST-BUTTON-PAIR-INVARIANT
+ */
+const SOLID_COLOR_TOKENS: Record<BrutalistButtonColor, string> = {
+  main: `${BRUTALIST_STRUCTURE_TOKENS} bg-main text-main-foreground`,
+  mint: `${BRUTALIST_STRUCTURE_TOKENS} bg-mint text-mint-foreground`,
+  lavender: `${BRUTALIST_STRUCTURE_TOKENS} bg-lavender text-lavender-foreground`,
+  coral: `${BRUTALIST_STRUCTURE_TOKENS} bg-coral text-coral-foreground`,
+  sky: `${BRUTALIST_STRUCTURE_TOKENS} bg-sky text-sky-foreground`,
 };
 
+/**
+ * Non-accent fill roles. Surface uses theme CSS variables so a host theme change
+ * updates mounted controls without a pointer refresh.
+ * P-BRUTALIST-BUTTON-VARIANT-PROP, P-BRUTALIST-BUTTON-PAIR-INVARIANT,
+ * P-BRUTALIST-BUTTON-LIVE-THEME
+ */
+const VARIANT_FILL_TOKENS: Record<Exclude<BrutalistButtonVariant, 'solid'>, string> = {
+  surface: `${BRUTALIST_STRUCTURE_TOKENS} bg-secondary-background text-foreground`,
+  destructive: `${BRUTALIST_STRUCTURE_TOKENS} bg-destructive text-destructive-foreground`,
+};
+
+// P-BRUTALIST-BUTTON-SIZE-PROP
 const SIZE_TOKENS: Record<BrutalistButtonSize, string> = {
   default: 'h-10 px-4 text-sm',
   sm: 'h-9 px-3 text-xs',
@@ -45,19 +64,34 @@ const SIZE_TOKENS: Record<BrutalistButtonSize, string> = {
 };
 
 const button = definePrototype<BrutalistButtonProps, BrutalistButtonExposes>({
+  // P-BRUTALIST-BUTTON-ENTRY
   name: 'brutalist-button',
   setup(def) {
+    // P-BRUTALIST-BUTTON-VARIANT-PROP, P-BRUTALIST-BUTTON-COLOR-PROP, P-BRUTALIST-BUTTON-SIZE-PROP
     def.props.define({
       variant: {
         type: 'enum',
         empty: 'fallback',
-        options: ['default', 'outline', 'secondary', 'destructive', 'reverse'],
+        options: ['solid', 'surface', 'destructive'],
+      },
+      color: {
+        type: 'enum',
+        empty: 'fallback',
+        options: ['main', 'mint', 'lavender', 'coral', 'sky'],
       },
       size: { type: 'enum', empty: 'fallback', options: ['default', 'sm', 'lg', 'icon'] },
+      // P-BRUTALIST-BUTTON-BASE-INHERITANCE (disabled from Base Button)
       disabled: { type: 'boolean', empty: 'fallback' },
     });
-    def.props.setDefaults({ variant: 'default', size: 'default', disabled: false });
+    // P-BRUTALIST-BUTTON-DEFAULTS
+    def.props.setDefaults({
+      variant: 'solid',
+      color: 'main',
+      size: 'default',
+      disabled: false,
+    });
 
+    // P-BRUTALIST-BUTTON-BASE-INHERITANCE
     const buttonState = asButton().stateHandles;
     if (!buttonState) {
       throw new Error('[brutalist-button] asButton must project Button state handles.');
@@ -66,13 +100,25 @@ const button = definePrototype<BrutalistButtonProps, BrutalistButtonExposes>({
 
     def.feedback.style.use(tw(BUTTON_BASE_TOKENS));
 
-    (Object.keys(VARIANT_TOKENS) as BrutalistButtonVariant[]).forEach((variant) => {
+    // P-BRUTALIST-BUTTON-COLOR-PROP — solid + color pairs
+    (Object.keys(SOLID_COLOR_TOKENS) as BrutalistButtonColor[]).forEach((color) => {
       def.rule({
-        when: (w) => w.prop('variant').eq(variant),
-        intent: (i) => i.feedback.style.use(tw(VARIANT_TOKENS[variant])),
+        when: (w) => w.all(w.prop('variant').eq('solid'), w.prop('color').eq(color)),
+        intent: (i) => i.feedback.style.use(tw(SOLID_COLOR_TOKENS[color])),
       });
     });
 
+    // P-BRUTALIST-BUTTON-VARIANT-PROP — surface / destructive fills
+    (Object.keys(VARIANT_FILL_TOKENS) as Array<keyof typeof VARIANT_FILL_TOKENS>).forEach(
+      (variant) => {
+        def.rule({
+          when: (w) => w.prop('variant').eq(variant),
+          intent: (i) => i.feedback.style.use(tw(VARIANT_FILL_TOKENS[variant])),
+        });
+      }
+    );
+
+    // P-BRUTALIST-BUTTON-SIZE-PROP
     (Object.keys(SIZE_TOKENS) as BrutalistButtonSize[]).forEach((size) => {
       def.rule({
         when: (w) => w.prop('size').eq(size),
@@ -80,32 +126,38 @@ const button = definePrototype<BrutalistButtonProps, BrutalistButtonExposes>({
       });
     });
 
+    // P-BRUTALIST-BUTTON-INTERACTION — hover lift
     def.rule({
       when: (w) => w.state(hovered).eq(true),
       intent: (i) => i.feedback.style.use(tw(BRUTALIST_HOVER_LIFT_TOKENS)),
     });
+    // P-BRUTALIST-BUTTON-INTERACTION — press snap
     def.rule({
       when: (w) => w.state(pressed).eq(true),
       intent: (i) => i.feedback.style.use(tw(BRUTALIST_PRESS_TOKENS)),
     });
+    // P-BRUTALIST-BUTTON-INTERACTION — focus-visible ring
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),
       intent: (i) => i.feedback.style.use(tw(BRUTALIST_FOCUS_TOKENS)),
     });
+    // P-BRUTALIST-BUTTON-INTERACTION — disabled
     def.rule({
       when: (w) => w.state(disabled).eq(true),
       intent: (i) => i.feedback.style.use(tw(BRUTALIST_DISABLED_TOKENS)),
     });
-    def.rule({
-      when: (w) => w.meta('colorScheme').eq('dark'),
-      intent: (i) => i.feedback.style.use(tw('text-foreground ring-ring')),
-    });
+
+    // Intentionally no blanket dark `text-foreground` override.
+    // P-BRUTALIST-BUTTON-PAIR-INVARIANT, P-BRUTALIST-BUTTON-LIGHT-DARK:
+    // accent pairs are theme-invariant; surface/destructive use CSS variables so a
+    // host theme change repaints mounted controls without pointer interaction.
   },
 });
 
 export type {
-  BrutalistButtonProps,
+  BrutalistButtonColor,
   BrutalistButtonExposes,
+  BrutalistButtonProps,
   BrutalistButtonSize,
   BrutalistButtonVariant,
 };

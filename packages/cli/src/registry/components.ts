@@ -210,12 +210,6 @@ const baseCompound = (
   );
 
 export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
-  'brutalist-button': brutalist(
-    'brutalist-button',
-    'Brutalist Button',
-    'brutalistButton',
-    'BrutalistButton'
-  ),
   'brutalist-tooltip': brutalistCompound('brutalist-tooltip', 'Brutalist Tooltip', [
     {
       prototypeImport: 'BrutalistTooltipRoot',
