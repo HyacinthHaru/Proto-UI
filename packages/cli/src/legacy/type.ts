@@ -96,6 +96,14 @@ export const SHADCN_THEME_CSS = `:root {
     --sidebar-accent-foreground: lab(98.26% 0 0);
     --sidebar-border: lab(100% 0 0 / 0.1);
     --sidebar-ring: lab(34.924% 0 0);
+    --surface: lab(7.22637% -0.0000149012 0);
+    --surface-foreground: lab(66.128% -0.0000298023 0.0000119209);
+    --code: var(--surface);
+    --code-foreground: var(--surface-foreground);
+    --code-highlight: lab(15.32% 0 0);
+    --code-number: lab(67.52% -0.0000298023 0);
+    --selection: lab(90.952% 0 -0.0000119209);
+    --selection-foreground: lab(7.78201% -0.0000149012 0);
   }
   `;
 

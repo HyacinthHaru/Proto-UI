@@ -7,12 +7,12 @@ export default {
       {
         kind: 'proto',
         prototypeId: 'brutalist-tooltip-root',
-        props: { delayDuration: 100 },
+        props: { delayDuration: 0, closeDelay: 100 },
         children: [
           {
             kind: 'proto',
             prototypeId: 'brutalist-tooltip-trigger',
-            children: ['Hover me'],
+            children: ['Hover or focus me'],
           },
           {
             kind: 'proto',
@@ -22,7 +22,7 @@ export default {
                 kind: 'proto',
                 prototypeId: 'brutalist-tooltip-content',
                 children: [
-                  'Tooltip content',
+                  'Interactive tooltip content',
                   { kind: 'proto', prototypeId: 'brutalist-tooltip-arrow' },
                 ],
               },

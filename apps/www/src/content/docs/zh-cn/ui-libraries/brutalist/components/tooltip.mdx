@@ -9,9 +9,9 @@ import BrutalistPageStyle from '@/components/BrutalistPageStyle.astro';
 
 <BrutalistPageStyle />
 
-Brutalist Tooltip 保留 Base open state、hover/focus routing、delay、escape、portal ownership、positioning 与 arrow geometry。只有 Content 和 Arrow 获得视觉 feedback。
+Base Tooltip 现在持有 controlled/uncontrolled open state、可取消 open/close delay、disabled handling、Trigger pointer/focus intent、Content hover bridge、稳定的 `role="tooltip"`/`aria-describedby` linkage 与 Escape dismissal。Content 消费 non-modal Overlay 与 Transition，完成 fixed、Trigger-anchored portal positioning 和 presence。
 
-用于 ChatUI 和密集 SaaS 表面中无可见标签的 icon action。Tooltip 补充 accessible name，不能替代它。
+显式 Portal part 仍是 logical anatomy carrier；renderer portaling 由 Content 持有。Arrow 仍是 visual-only slotted carrier，不持有 shape、geometry、side、collision 或 positioning behavior。Brutalist 继承 Base protocol，只为 Content 与 Arrow 增加 feedback style。Hover 或 focus Preview Trigger 即可打开 Tooltip。Tooltip 只补充 accessible name，不能替代它。
 
 <div style="--pui-background:#f4f1ea;--pui-foreground:#000;background:#f4f1ea;color:#000;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:2rem;">
   <PrototypePreviewer demoId="demo-brutalist-tooltip" initialRuntime="wc" />

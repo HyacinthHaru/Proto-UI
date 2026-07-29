@@ -2,12 +2,14 @@ import {
   defineAsHook,
   definePrototype,
   delay,
-  type DefHandle,
   type DelayTask,
+  type DefHandle,
+  type RunHandle,
 } from '@proto.ui/core';
 import { useOpenState } from '../tools';
 import {
   deriveTooltipInteractionOpen,
+  createTooltipRootId,
   requestTooltipOpen,
   TOOLTIP_CONTEXT,
   TOOLTIP_FAMILY,
@@ -41,6 +43,7 @@ function sameContext(a: TooltipContextValue, b: TooltipContextValue): boolean {
 }
 
 function setupTooltipRoot(def: DefHandle<TooltipRootProps, TooltipRootExposes>): void {
+  const rootId = createTooltipRootId();
   def.anatomy.claim(TOOLTIP_FAMILY, { role: 'root' });
 
   def.props.define({
@@ -58,6 +61,7 @@ function setupTooltipRoot(def: DefHandle<TooltipRootProps, TooltipRootExposes>):
   });
 
   const initialContext: TooltipContextValue = {
+    rootId,
     open: false,
     controlled: false,
     disabled: false,
@@ -98,7 +102,7 @@ function setupTooltipRoot(def: DefHandle<TooltipRootProps, TooltipRootExposes>):
     pendingIntent = null;
   };
 
-  const syncContext = (run: any) => {
+  const syncContext = (run: RunHandle<TooltipRootProps>) => {
     const next = { ...snapshot, open: open?.get() ?? false };
     snapshot = next;
     if (sameContext(published, next)) return;
@@ -106,7 +110,11 @@ function setupTooltipRoot(def: DefHandle<TooltipRootProps, TooltipRootExposes>):
     run.context.update(TOOLTIP_CONTEXT, next);
   };
 
-  const scheduleInteractionRequest = (run: any, nextOpen: boolean, reason: string) => {
+  const scheduleInteractionRequest = (
+    run: RunHandle<TooltipRootProps>,
+    nextOpen: boolean,
+    reason: string
+  ) => {
     cancelPending();
     if (snapshot.disabled || nextOpen === (open?.get() ?? false)) return;
     const duration = nextOpen ? snapshot.delayDuration : snapshot.closeDelay;

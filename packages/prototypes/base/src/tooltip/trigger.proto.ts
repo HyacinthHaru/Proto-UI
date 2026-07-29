@@ -1,6 +1,12 @@
-import { defineAsHook, definePrototype, type DefHandle } from '@proto.ui/core';
+import { defineAsHook, definePrototype, type DefHandle, type RunHandle } from '@proto.ui/core';
 import { asFocusable } from '@proto.ui/hooks';
-import { TOOLTIP_CONTEXT, TOOLTIP_FAMILY, updateTooltipInteraction } from './shared';
+import {
+  createTooltipContentId,
+  TOOLTIP_CONTEXT,
+  TOOLTIP_FAMILY,
+  updateTooltipInteraction,
+  type TooltipContextValue,
+} from './shared';
 import type {
   TooltipTriggerAsHookContract,
   TooltipTriggerExposes,
@@ -19,6 +25,8 @@ function setupTooltipTrigger(def: DefHandle<TooltipTriggerProps, TooltipTriggerE
   focusable.configure({ disabled: false });
   const focused = focusable.focused;
   const focusVisible = focusable.focusVisible;
+  const describedBy = def.state.string('tooltipContentId', '');
+  def.a11y.relation('describedBy', { target: describedBy });
 
   def.expose.state('disabled', disabled);
   def.expose.state('hovered', hovered);
@@ -28,11 +36,11 @@ function setupTooltipTrigger(def: DefHandle<TooltipTriggerProps, TooltipTriggerE
     if (!disabled.get()) focusable.focusSelf(options);
   });
 
-  const syncDisabled = (run: any) => {
-    const ctx = run.context.read(TOOLTIP_CONTEXT);
+  const syncContext = (run: RunHandle<TooltipTriggerProps>, ctx: TooltipContextValue) => {
     const nextDisabled = !!run.props.get().disabled || ctx.disabled;
     disabled.set(nextDisabled, 'reason: tooltip trigger disabled sync');
     focusable.setDisabled(nextDisabled);
+    describedBy.set(createTooltipContentId(ctx.rootId), 'reason: tooltip trigger describedBy sync');
     if (!nextDisabled) return;
     hovered.set(false, 'reason: tooltip trigger disabled => hovered false');
     if (!ctx.triggerHovered && !ctx.triggerFocused) return;
@@ -43,9 +51,9 @@ function setupTooltipTrigger(def: DefHandle<TooltipTriggerProps, TooltipTriggerE
     );
   };
 
-  def.context.subscribe(TOOLTIP_CONTEXT, (run) => syncDisabled(run));
-  def.props.watch(['disabled'], (run) => syncDisabled(run));
-  def.lifecycle.onCreated((run) => syncDisabled(run));
+  def.context.subscribe(TOOLTIP_CONTEXT, (run, next) => syncContext(run, next));
+  def.props.watch(['disabled'], (run) => syncContext(run, run.context.read(TOOLTIP_CONTEXT)));
+  def.lifecycle.onCreated((run) => syncContext(run, run.context.read(TOOLTIP_CONTEXT)));
 
   def.event.on('pointer.enter', (run) => {
     if (disabled.get()) return;

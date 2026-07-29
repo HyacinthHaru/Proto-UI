@@ -36,23 +36,23 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     registerPrototype('brutalist-button', mod.default);
   },
   'brutalist-tooltip-root': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/tooltip/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/tooltip');
     registerPrototype('brutalist-tooltip-root', mod.BrutalistTooltipRoot);
   },
   'brutalist-tooltip-trigger': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/tooltip/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/tooltip');
     registerPrototype('brutalist-tooltip-trigger', mod.BrutalistTooltipTrigger);
   },
   'brutalist-tooltip-portal': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/tooltip/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/tooltip');
     registerPrototype('brutalist-tooltip-portal', mod.BrutalistTooltipPortal);
   },
   'brutalist-tooltip-content': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/tooltip/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/tooltip');
     registerPrototype('brutalist-tooltip-content', mod.BrutalistTooltipContent);
   },
   'brutalist-tooltip-arrow': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/tooltip/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/tooltip');
     registerPrototype('brutalist-tooltip-arrow', mod.BrutalistTooltipArrow);
   },
   'shadcn-toggle': async () => {

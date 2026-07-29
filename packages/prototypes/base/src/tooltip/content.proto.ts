@@ -1,11 +1,13 @@
-import { defineAsHook, definePrototype, tw, type DefHandle } from '@proto.ui/core';
+import { defineAsHook, definePrototype, tw, type DefHandle, type RunHandle } from '@proto.ui/core';
 import { asOverlay } from '@proto.ui/hooks';
 import { asTransition } from '../tools';
 import {
   dismissTooltipFromEscape,
+  createTooltipContentId,
   TOOLTIP_CONTEXT,
   TOOLTIP_FAMILY,
   updateTooltipInteraction,
+  type TooltipContextValue,
 } from './shared';
 import type {
   TooltipContentAsHookContract,
@@ -22,11 +24,15 @@ function projectTooltipContentHandle(
   if (!open || !asTransitionHandle) {
     throw new Error('[as-tooltip-content] missing captured Tooltip or Transition handles.');
   }
-  return { stateHandles: { open }, asTransition: asTransitionHandle as any };
+  return { stateHandles: { open }, asTransition: asTransitionHandle };
 }
 
 function setupTooltipContent(def: DefHandle<TooltipContentProps, TooltipContentExposes>): void {
   def.anatomy.claim(TOOLTIP_FAMILY, { role: 'content' });
+  const contentId = def.state.string('tooltipContentId', '');
+  const role = def.state.string('tooltipRole', 'tooltip');
+  def.a11y.id(contentId);
+  def.a11y.role(role);
   def.props.define({
     side: {
       type: 'enum',
@@ -91,7 +97,7 @@ function setupTooltipContent(def: DefHandle<TooltipContentProps, TooltipContentE
     else overlay.close(reason);
   };
 
-  const syncPosition = (run: any) => {
+  const syncPosition = (run: RunHandle<TooltipContentProps>) => {
     const props = run.props.get();
     overlay.updatePosition({
       placement: props.side,
@@ -110,16 +116,18 @@ function setupTooltipContent(def: DefHandle<TooltipContentProps, TooltipContentE
     (run) => syncPosition(run)
   );
 
-  def.context.subscribe(TOOLTIP_CONTEXT, (_run, next) => {
+  const syncContext = (next: TooltipContextValue) => {
+    contentId.set(createTooltipContentId(next.rootId), 'reason: tooltip content identity sync');
     updateOpen(next.open, 'reason: tooltip context sync => content open');
-  });
-  const store: { run: any | null } = { run: null };
+  };
+  def.context.subscribe(TOOLTIP_CONTEXT, (_run, next) => syncContext(next));
+  const store: { run: RunHandle<TooltipContentProps> | null } = { run: null };
 
   def.lifecycle.onCreated((run) => {
     store.run = run;
     syncPosition(run);
     const ctx = run.context.read(TOOLTIP_CONTEXT);
-    updateOpen(ctx.open, 'reason: lifecycle.onCreated => tooltip content open sync');
+    syncContext(ctx);
   });
   def.lifecycle.onMounted((run) => {
     store.run = run;
@@ -127,7 +135,7 @@ function setupTooltipContent(def: DefHandle<TooltipContentProps, TooltipContentE
     if (trigger) overlay.registerAnchorPart(trigger);
     syncPosition(run);
     const ctx = run.context.read(TOOLTIP_CONTEXT);
-    updateOpen(ctx.open, 'reason: lifecycle.onMounted => tooltip content open sync');
+    syncContext(ctx);
   });
   def.lifecycle.onUnmounted(() => {
     store.run = null;
@@ -170,8 +178,7 @@ export const asTooltipContent = defineAsHook<
   setup: setupTooltipContent,
   projectHandle: projectTooltipContentHandle,
 });
-
-const tooltipContent = definePrototype({
+const tooltipContent = definePrototype<TooltipContentProps, TooltipContentExposes>({
   name: 'base-tooltip-content',
   setup(def) {
     setupTooltipContent(def);

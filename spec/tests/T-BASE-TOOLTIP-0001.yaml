@@ -1,0 +1,98 @@
+id: T-BASE-TOOLTIP-0001
+type: test
+title: Base Tooltip interaction and accessibility contract tests
+status: draft
+since: 0.2.0-rc.7
+summary: Covers Root ownership, cancellable delays, pointer and focus intent, controlled requests, Content hover bridging, Tooltip semantics, Overlay Escape dismissal, and five-part anatomy.
+cases:
+  - id: T-BASE-TOOLTIP-0001-CASE-DELAYS
+    title: Trigger pointer intent opens and closes after configured delays
+    covers:
+      - P-BASE-TOOLTIP-ROOT-OWNER
+      - P-BASE-TOOLTIP-DELAYS
+      - P-BASE-TOOLTIP-OPEN-CHANGE
+      - P-BASE-TOOLTIP-TRIGGER-INTERACTION
+    expectation: pointer-enter-and-leave-honor-open-and-close-delays
+  - id: T-BASE-TOOLTIP-0001-CASE-HOVER-BRIDGE
+    title: Content hover bridges pointer movement from Trigger
+    covers:
+      - P-BASE-TOOLTIP-DELAYS
+      - P-BASE-TOOLTIP-CONTENT-HOVER-BRIDGE
+    expectation: content-hover-keeps-tooltip-open-until-content-leave
+  - id: T-BASE-TOOLTIP-0001-CASE-CONTROLLED
+    title: Controlled requests preserve owner open
+    covers:
+      - P-BASE-TOOLTIP-ROOT-OWNER
+      - P-BASE-TOOLTIP-CONTROLLED-OWNER
+      - P-BASE-TOOLTIP-OPEN-CHANGE
+    expectation: controlled-tooltip-emits-request-without-replacing-owner-open
+  - id: T-BASE-TOOLTIP-0001-CASE-FOCUS-DISABLED
+    title: Focus intent opens while disabled interaction is rejected
+    covers:
+      - P-BASE-TOOLTIP-TRIGGER-INTERACTION
+      - P-BASE-TOOLTIP-TRIGGER-DISABLED
+    expectation: focus-opens-and-disabled-trigger-rejects-new-intent
+  - id: T-BASE-TOOLTIP-0001-CASE-A11Y
+    title: Trigger describes stable Tooltip Content identity
+    covers:
+      - P-BASE-TOOLTIP-A11Y-LINKAGE
+      - P-BASE-TOOLTIP-TRIGGER-A11Y
+      - P-BASE-TOOLTIP-CONTENT-A11Y
+    expectation: content-projects-tooltip-role-and-trigger-describes-content-id
+  - id: T-BASE-TOOLTIP-0001-CASE-ESCAPE
+    title: Overlay Escape dismissal closes through Root ownership
+    covers:
+      - P-BASE-TOOLTIP-CONTENT-OVERLAY-PRESENCE
+      - P-BASE-TOOLTIP-CONTENT-ESCAPE
+      - P-BASE-TOOLTIP-OPEN-CHANGE
+    expectation: global-escape-closes-overlay-and-emits-root-request
+implementations:
+  - id: prototypes-base-tooltip-behavior
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/tooltip.test.ts
+    required: true
+    consumesCases:
+      - T-BASE-TOOLTIP-0001-CASE-DELAYS
+      - T-BASE-TOOLTIP-0001-CASE-HOVER-BRIDGE
+      - T-BASE-TOOLTIP-0001-CASE-CONTROLLED
+      - T-BASE-TOOLTIP-0001-CASE-FOCUS-DISABLED
+      - T-BASE-TOOLTIP-0001-CASE-A11Y
+      - T-BASE-TOOLTIP-0001-CASE-ESCAPE
+    exercises:
+      - P-BASE-TOOLTIP
+      - P-BASE-TOOLTIP-TRIGGER
+      - P-BASE-TOOLTIP-PORTAL
+      - P-BASE-TOOLTIP-CONTENT
+      - P-BASE-TOOLTIP-ARROW
+verifies:
+  prototypes:
+    - id: P-BASE-TOOLTIP
+      anchors:
+        - P-BASE-TOOLTIP-ROOT-OWNER
+        - P-BASE-TOOLTIP-DELAYS
+        - P-BASE-TOOLTIP-CONTROLLED-OWNER
+        - P-BASE-TOOLTIP-A11Y-LINKAGE
+    - id: P-BASE-TOOLTIP-TRIGGER
+      anchors:
+        - P-BASE-TOOLTIP-TRIGGER-INTERACTION
+        - P-BASE-TOOLTIP-TRIGGER-DISABLED
+        - P-BASE-TOOLTIP-TRIGGER-A11Y
+    - id: P-BASE-TOOLTIP-CONTENT
+      anchors:
+        - P-BASE-TOOLTIP-CONTENT-OVERLAY-PRESENCE
+        - P-BASE-TOOLTIP-CONTENT-HOVER-BRIDGE
+        - P-BASE-TOOLTIP-CONTENT-A11Y
+        - P-BASE-TOOLTIP-CONTENT-ESCAPE
+exercises:
+  prototypes:
+    - P-BASE-TOOLTIP
+    - P-BASE-TOOLTIP-TRIGGER
+    - P-BASE-TOOLTIP-PORTAL
+    - P-BASE-TOOLTIP-CONTENT
+    - P-BASE-TOOLTIP-ARROW
+revisions:
+  - version: 0.2.0-rc.7
+    change: introduced
+    summary: Added typed Base Tooltip interaction, accessibility, presence, and real Escape coverage.
+tags: [prototype, base, tooltip, interaction, overlay, a11y, test]

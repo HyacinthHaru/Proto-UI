@@ -1,27 +1,24 @@
 id: P-BASE-TOOLTIP-ARROW
 type: prototype
-title: Base Tooltip Arrow protocol
+title: Base Tooltip Arrow anatomy part
 status: draft
 since: 0.2.0-rc.7
-summary: Base Tooltip Arrow protocol for the Proto UI framework.
+summary: Arrow is an optional slotted anatomy carrier without geometry or positioning behavior.
 statement:
-  en: Base Tooltip Arrow protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Tooltip Arrow protocol。该 draft entity 编目协议面。
+  en: Arrow claims the optional arrow role and renders its slot, but owns no geometry, side, alignment, collision, or positioning behavior.
+  zh-CN: Arrow claim 可选的 arrow role 并 render slot，但不持有 geometry、side、alignment、collision 或 positioning behavior。
 criteria:
-  - id: P-BASE-TOOLTIP-ARROW-CATALOGED
+  - id: P-BASE-TOOLTIP-ARROW-ANATOMY-ONLY
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      en: Arrow must claim the arrow role, render its slot, and expose no props, state, events, geometry, side, alignment, collision, or positioning behavior in this shell slice.
+      zh-CN: 在本 shell 切片中，Arrow 必须 claim arrow role、render slot，且不得 expose props、state、events、geometry、side、alignment、collision 或 positioning behavior。
 sources:
   - path: packages/prototypes/base/src/tooltip/arrow.proto.ts
+  - path: packages/prototypes/base/src/tooltip/types.ts
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced base tooltip arrow protocol.
-tags:
-  - prototype
-  - base
-  - tooltip
+    summary: Introduced the behaviorless slotted Tooltip Arrow anatomy part.
+tags: [prototype, base, tooltip, arrow, anatomy]
 verifies:
-  tests:
-    - T-BRUTALIST-TOOLTIP-0001
+  tests: [T-BRUTALIST-TOOLTIP-0001]

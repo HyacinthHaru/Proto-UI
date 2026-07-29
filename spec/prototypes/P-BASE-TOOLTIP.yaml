@@ -1,27 +1,61 @@
 id: P-BASE-TOOLTIP
 type: prototype
-title: Base Tooltip  protocol
+title: Base Tooltip delayed supplementary description protocol
 status: draft
 since: 0.2.0-rc.7
-summary: Base Tooltip  protocol for the Proto UI framework.
+summary: Base Tooltip is a five-part non-modal protocol whose Root owns visibility, delays, disabled state, requests, stable Content identity, and shared interaction context.
 statement:
-  en: Base Tooltip  protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Tooltip  protocol。该 draft entity 编目协议面。
+  en: Base Tooltip supplements a Trigger with short descriptive Content. Root owns controlled or uncontrolled open, cancellable open and close delays, disabled state, stable Content identity, and openChange requests. Trigger publishes pointer and focus intent; Content owns non-modal Overlay presence, renderer portaling, Trigger-anchored positioning, a content-hover bridge, Tooltip semantics, and Escape dismissal. Portal remains a logical anatomy carrier and Arrow remains behaviorless.
+  zh-CN: Base Tooltip 以简短 Content 补充 Trigger。Root 持有 controlled/uncontrolled open、可取消 open/close delay、disabled state、稳定 Content identity 与 openChange request。Trigger 发布 pointer/focus intent；Content 持有 non-modal Overlay presence、renderer portaling、Trigger-anchored positioning、content-hover bridge、Tooltip semantics 与 Escape dismissal。Portal 仍是 logical anatomy carrier，Arrow 仍无 behavior。
+anatomy:
+  family: base-tooltip
+  roles:
+    root: { cardinality: { min: 1, max: 1 } }
+    trigger: { cardinality: { min: 1, max: 1 } }
+    portal: { cardinality: { min: 0, max: 1 } }
+    content: { cardinality: { min: 0, max: 1 } }
+    arrow: { cardinality: { min: 0, max: 1 } }
 criteria:
-  - id: P-BASE-TOOLTIP-CATALOGED
+  - id: P-BASE-TOOLTIP-FIVE-PART-ANATOMY
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      en: Root must claim the base-tooltip family; Trigger is required, while Portal, Content, and Arrow are optional and at most one each, with Root containing Trigger and Portal, Portal containing Content, and Content containing Arrow.
+      zh-CN: Root 必须 claim base-tooltip family；Trigger 必需，Portal、Content、Arrow 可选且最多各一个；Root contains Trigger 与 Portal，Portal contains Content，Content contains Arrow。
+  - id: P-BASE-TOOLTIP-ROOT-OWNER
+    text:
+      en: Root must own open, controlled ownership, disabled state, delay configuration, interaction intent, stable Content identity, and request sequencing.
+      zh-CN: Root 必须持有 open、controlled ownership、disabled state、delay configuration、interaction intent、稳定 Content identity 与 request sequencing。
+  - id: P-BASE-TOOLTIP-DELAYS
+    text:
+      en: Root must schedule open and close requests through cancellable runtime delay tasks using delayDuration and closeDelay, and reverse intent must cancel obsolete work.
+      zh-CN: Root 必须通过可取消 runtime delay task，按 delayDuration 与 closeDelay 调度 open/close request；反向 intent 必须取消过时任务。
+  - id: P-BASE-TOOLTIP-OPEN-CHANGE
+    text:
+      en: Trigger, Content, Escape, and Root methods must enter one openChange request channel carrying requested open and reason.
+      zh-CN: Trigger、Content、Escape 与 Root methods 必须进入同一 openChange request channel，并携带 requested open 与 reason。
+  - id: P-BASE-TOOLTIP-CONTROLLED-OWNER
+    text:
+      en: Controlled Tooltip must retain owner-provided open after a request until a new open prop arrives; uncontrolled Tooltip may apply the request locally.
+      zh-CN: Controlled Tooltip 发出 request 后必须保留 owner 提供的 open，直到新的 open prop 到达；uncontrolled Tooltip 可以本地应用 request。
+  - id: P-BASE-TOOLTIP-A11Y-LINKAGE
+    text:
+      en: Root must publish a stable Content identity so Trigger can describe Content and Content can project the same id with tooltip role when materialized.
+      zh-CN: Root 必须发布稳定 Content identity，使 Trigger 可以 describe Content，且 Content materialize 后以 tooltip role 投射同一 id。
 sources:
+  - path: packages/prototypes/base/src/tooltip/shared.ts
   - path: packages/prototypes/base/src/tooltip/root.proto.ts
+    sections:
+      - setupTooltipRoot
+      - asTooltipRoot
+      - base-tooltip-root
+  - path: packages/prototypes/base/src/tooltip/types.ts
+  - path: packages/prototypes/base/test/tooltip.test.ts
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced base tooltip  protocol.
-tags:
-  - prototype
-  - base
-  - tooltip
+    summary: Introduced the five-part Tooltip anatomy shell.
+  - version: 0.2.0-rc.7
+    change: refined
+    summary: Added delayed interaction ownership, controlled requests, stable a11y linkage, and Content-owned Overlay behavior.
+tags: [prototype, base, tooltip, anatomy, interaction, overlay, a11y]
 verifies:
-  tests:
-    - T-BRUTALIST-TOOLTIP-0001
+  tests: [T-BASE-TOOLTIP-0001, T-BRUTALIST-TOOLTIP-0001]

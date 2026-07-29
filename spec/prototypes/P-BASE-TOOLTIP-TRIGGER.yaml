@@ -1,27 +1,36 @@
 id: P-BASE-TOOLTIP-TRIGGER
 type: prototype
-title: Base Tooltip Trigger protocol
+title: Base Tooltip Trigger publishes pointer and focus intent
 status: draft
 since: 0.2.0-rc.7
-summary: Base Tooltip Trigger protocol for the Proto UI framework.
+summary: Trigger is the required focusable description anchor that publishes interaction intent without owning Tooltip visibility.
 statement:
-  en: Base Tooltip Trigger protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Tooltip Trigger protocol。该 draft entity 编目协议面。
+  en: Trigger claims the required trigger role, derives effective disabled from own and Root props, exposes focus and hover facts, publishes pointer/focus intent to Root, and describes the stable Content identity. It does not own open.
+  zh-CN: Trigger claim 必需的 trigger role，从自身与 Root props 派生 effective disabled，expose focus/hover facts，向 Root 发布 pointer/focus intent，并 describe 稳定 Content identity；它不持有 open。
 criteria:
-  - id: P-BASE-TOOLTIP-TRIGGER-CATALOGED
+  - id: P-BASE-TOOLTIP-TRIGGER-INTERACTION
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      en: Enabled pointer enter/leave and focus/blur must publish interaction intent to Root; Trigger must expose disabled, hovered, focused, focusVisible, and focusSelf.
+      zh-CN: Enabled pointer enter/leave 与 focus/blur 必须向 Root 发布 interaction intent；Trigger 必须 expose disabled、hovered、focused、focusVisible 与 focusSelf。
+  - id: P-BASE-TOOLTIP-TRIGGER-DISABLED
+    text:
+      en: Own or Root disabled must reject new pointer and focus intent, clear current Trigger intent, and reject focusSelf.
+      zh-CN: own 或 Root disabled 必须拒绝新的 pointer/focus intent、清除当前 Trigger intent，并拒绝 focusSelf。
+  - id: P-BASE-TOOLTIP-TRIGGER-A11Y
+    text:
+      en: Trigger must project describedBy to the stable Content identity while preserving the host control's own accessible name and activation semantics.
+      zh-CN: Trigger 必须把 describedBy 投射到稳定 Content identity，同时保留 host control 自身的 accessible name 与 activation semantics。
 sources:
   - path: packages/prototypes/base/src/tooltip/trigger.proto.ts
+  - path: packages/prototypes/base/src/tooltip/types.ts
+  - path: packages/prototypes/base/test/tooltip.test.ts
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced base tooltip trigger protocol.
-tags:
-  - prototype
-  - base
-  - tooltip
+    summary: Introduced the Tooltip Trigger anatomy part.
+  - version: 0.2.0-rc.7
+    change: refined
+    summary: Added focus/pointer intent, effective disabled handling, exposed interaction facts, and Content description linkage.
+tags: [prototype, base, tooltip, trigger, interaction, focus, a11y]
 verifies:
-  tests:
-    - T-BRUTALIST-TOOLTIP-0001
+  tests: [T-BASE-TOOLTIP-0001, T-BRUTALIST-TOOLTIP-0001]
