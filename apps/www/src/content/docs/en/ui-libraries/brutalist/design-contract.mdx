@@ -27,6 +27,8 @@ The base palette is paper plus ink. Flat accent colors carry semantic emphasis: 
 
 Position, labels, geometry, and state are primary signals; color is supplementary.
 
+Each accent fill is shipped as a fixed background/foreground pair (for example `bg-main` with `text-main-foreground`). Accent foregrounds stay ink in both Light and Dark. Theme-dependent surfaces such as paper panels resolve through CSS variables so a host theme change repaints mounted controls without a pointer refresh.
+
 ## Accessibility
 
 - Focus uses a visible hard outline with offset.

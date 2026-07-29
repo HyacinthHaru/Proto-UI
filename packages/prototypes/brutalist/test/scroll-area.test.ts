@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import { styleContains } from '../../test-utils/style';
-import { AdaptToWebComponent } from '@proto.ui/adapter-web-component';
 import {
   BrutalistScrollAreaRoot,
   BrutalistScrollAreaViewport,
@@ -9,32 +9,67 @@ import {
   BrutalistScrollAreaCorner,
 } from '../src/scroll-area';
 
-AdaptToWebComponent(BrutalistScrollAreaRoot as any);
-AdaptToWebComponent(BrutalistScrollAreaViewport as any);
-AdaptToWebComponent(BrutalistScrollAreaScrollbar as any);
-AdaptToWebComponent(BrutalistScrollAreaThumb as any);
-AdaptToWebComponent(BrutalistScrollAreaCorner as any);
+const ScrollAreaRootElement = AdaptToWebComponent(BrutalistScrollAreaRoot);
+const ScrollAreaViewportElement = AdaptToWebComponent(BrutalistScrollAreaViewport);
+const ScrollAreaScrollbarElement = AdaptToWebComponent(BrutalistScrollAreaScrollbar);
+const ScrollAreaThumbElement = AdaptToWebComponent(BrutalistScrollAreaThumb);
+const ScrollAreaCornerElement = AdaptToWebComponent(BrutalistScrollAreaCorner);
+
+async function flushViewReconciliation(): Promise<void> {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+}
 
 describe('prototypes/brutalist: scroll-area', () => {
-  it('projects the Brutalist visual grammar', async () => {
-    const root = document.createElement('brutalist-scroll-area-root') as any;
-    const viewport = document.createElement('brutalist-scroll-area-viewport') as any;
-    const scrollbar = document.createElement('brutalist-scroll-area-scrollbar') as any;
-    const thumb = document.createElement('brutalist-scroll-area-thumb') as any;
-    const corner = document.createElement('brutalist-scroll-area-corner') as any;
+  it('projects the five-part Base anatomy as a consumer-sized visual shell', async () => {
+    const root = new ScrollAreaRootElement();
+    const viewport = new ScrollAreaViewportElement();
+    const scrollbar = new ScrollAreaScrollbarElement();
+    const thumb = new ScrollAreaThumbElement();
+    const corner = new ScrollAreaCornerElement();
     scrollbar.appendChild(thumb);
     root.append(viewport, scrollbar, corner);
     document.body.appendChild(root);
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushViewReconciliation();
 
+    expect(styleContains(root, 'h-full')).toBe(true);
+    expect(styleContains(root, 'w-full')).toBe(true);
     expect(styleContains(root, 'rounded-none')).toBe(true);
     expect(styleContains(root, 'border-2')).toBe(true);
     expect(styleContains(root, 'overflow-hidden')).toBe(true);
     expect(styleContains(viewport, 'overflow-auto')).toBe(true);
     expect(styleContains(scrollbar, 'bg-lavender')).toBe(true);
+    expect(styleContains(scrollbar, 'border-l-2')).toBe(true);
+    expect(styleContains(scrollbar, 'absolute')).toBe(true);
+    expect(styleContains(scrollbar, 'inset-0')).toBe(true);
+    expect(styleContains(scrollbar, 'left-auto')).toBe(true);
     expect(styleContains(thumb, 'bg-foreground')).toBe(true);
+    expect(styleContains(corner, 'bg-foreground')).toBe(true);
+    expect(styleContains(corner, 'absolute')).toBe(true);
+    expect(styleContains(corner, 'bottom-0')).toBe(true);
+    expect(styleContains(corner, 'right-0')).toBe(true);
+    expect(styleContains(corner, 'h-4')).toBe(true);
+    expect(styleContains(corner, 'w-4')).toBe(true);
 
     root.remove();
+  });
+
+  it('projects the horizontal scrollbar geometry without adding behavior', async () => {
+    const scrollbar = new ScrollAreaScrollbarElement();
+    setElementProps(scrollbar, { orientation: 'horizontal' });
+    document.body.appendChild(scrollbar);
+    await flushViewReconciliation();
+
+    expect(styleContains(scrollbar, 'h-4')).toBe(true);
+    expect(styleContains(scrollbar, 'w-full')).toBe(true);
+    expect(styleContains(scrollbar, 'flex-col')).toBe(true);
+    expect(styleContains(scrollbar, 'border-t-2')).toBe(true);
+    expect(styleContains(scrollbar, 'absolute')).toBe(true);
+    expect(styleContains(scrollbar, 'inset-0')).toBe(true);
+    expect(styleContains(scrollbar, 'top-auto')).toBe(true);
+    expect(scrollbar.getExposes().orientation.get()).toBe('horizontal');
+
+    scrollbar.remove();
   });
 });

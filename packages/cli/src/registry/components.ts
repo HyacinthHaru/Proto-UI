@@ -160,32 +160,6 @@ const shadcnCompound = (
     { stylePreset: 'shadcn', preset }
   );
 
-const brutalist = (id: string, label: string, prototypeImport: string, exportBaseName: string) =>
-  defineSimple(
-    id,
-    label,
-    '@proto.ui/prototypes-brutalist',
-    `@proto.ui/prototypes-brutalist/${id.slice('brutalist-'.length)}`,
-    prototypeImport,
-    exportBaseName,
-    { stylePreset: 'brutalist' }
-  );
-
-const brutalistCompound = (
-  id: string,
-  label: string,
-  parts: { prototypeImport: string; exportBaseName: string; elementName: string }[],
-  preset?: ComponentPresetRecipe
-) =>
-  defineCompound(
-    id,
-    label,
-    '@proto.ui/prototypes-brutalist',
-    `@proto.ui/prototypes-brutalist/${id.slice('brutalist-'.length)}`,
-    parts,
-    { stylePreset: 'brutalist', preset }
-  );
-
 const base = (id: string, label: string, prototypeImport: string, exportBaseName: string) =>
   defineSimple(
     id,
@@ -210,34 +184,6 @@ const baseCompound = (
   );
 
 export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
-  'brutalist-scroll-area': brutalistCompound('brutalist-scroll-area', 'Brutalist Scroll Area', [
-    {
-      prototypeImport: 'BrutalistScrollAreaRoot',
-      exportBaseName: 'BrutalistScrollAreaRoot',
-      elementName: 'proto-ui-brutalist-scroll-area-root',
-    },
-    {
-      prototypeImport: 'BrutalistScrollAreaViewport',
-      exportBaseName: 'BrutalistScrollAreaViewport',
-      elementName: 'proto-ui-brutalist-scroll-area-viewport',
-    },
-    {
-      prototypeImport: 'BrutalistScrollAreaScrollbar',
-      exportBaseName: 'BrutalistScrollAreaScrollbar',
-      elementName: 'proto-ui-brutalist-scroll-area-scrollbar',
-    },
-    {
-      prototypeImport: 'BrutalistScrollAreaThumb',
-      exportBaseName: 'BrutalistScrollAreaThumb',
-      elementName: 'proto-ui-brutalist-scroll-area-thumb',
-    },
-    {
-      prototypeImport: 'BrutalistScrollAreaCorner',
-      exportBaseName: 'BrutalistScrollAreaCorner',
-      elementName: 'proto-ui-brutalist-scroll-area-corner',
-    },
-  ]),
-
   'shadcn-button': shadcn('shadcn-button', 'shadcn Button', 'shadcnButton', 'ShadcnButton'),
   'shadcn-toggle': shadcn('shadcn-toggle', 'shadcn Toggle', 'shadcnToggle', 'ShadcnToggle'),
 

@@ -31,9 +31,9 @@
   },
   "keywords": [
     "proto-ui",
-    "cli",
-    "components",
-    "tokens"
+    "proto",
+    "ui",
+    "cli"
   ],
   "scripts": {
     "build": "node ../../scripts/build/public-packages.mjs --package @proto.ui/cli",

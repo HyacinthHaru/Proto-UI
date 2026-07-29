@@ -26,6 +26,11 @@
 - `proto-ui init --prototypes brutalist` is now a first-class CSS-only style preset. It writes a Brutalist theme (`brutalist-theme.css` with light/dark variables and the flat canary/mint/lavender/coral/sky accent palette) plus a generated Proto UI token closure scanned from official Brutalist prototype sources, so target projects get usable initial CSS before any prototype package is installed.
 - The preset is intentionally CSS-only. The private workspace package `@proto.ui/prototypes-brutalist` (Button reference family) has no public install path yet and is not part of the rc.7 BOM; the CLI `add` component registry exposes no Brutalist entry until the package is promoted through a later release train.
 
+### Private Brutalist Scroll Area shell candidate
+
+- The private `@proto.ui/prototypes-brutalist` workspace now carries a five-part Scroll Area visual shell over Base Root, Viewport, Scrollbar, Thumb, and Corner anatomy, with focused bilingual docs and preview evidence.
+- This shell remains a non-launch commitment: the package stays private at `0.0.0`, remains outside the rc.7 BOM, exposes no public `proto-ui add` entry, and defers portable metrics and thumb dragging to a separate behavior PR.
+
 ## Build and release
 
 ### Executable artifacts for all 37 public packages

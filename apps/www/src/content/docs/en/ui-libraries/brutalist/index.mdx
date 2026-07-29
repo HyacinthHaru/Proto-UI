@@ -9,7 +9,7 @@ import BrutalistPageStyle from '@/components/BrutalistPageStyle.astro';
 
 Brutalist is a contributor-authored Neo-Brutalist style family for Proto UI. It is inspired by the broader Neo-Brutalist visual language—square geometry, strong borders, flat fills, hard offset shadows, abrupt movement, and high-contrast typography—but it is not a compatibility layer for a named third-party component system.
 
-This foundation slice includes the shared visual grammar, light/dark theme variables, CLI style preset support, and the Button projection as the reference family. Additional families are introduced through separate focused PRs.
+This focused slice retains the shared visual grammar, light/dark theme variables, CLI style preset, and reference Button projection, then adds a Scroll Area visual shell over Base anatomy. The package remains private on rc.7; behavior expansion stays in a separate follow-up PR.
 
 <BrutalistPageStyle />
 
@@ -31,6 +31,7 @@ This foundation slice includes the shared visual grammar, light/dark theme varia
 ## Status
 
 - Provenance: contributor-authored Proto UI style family, with general Neo-Brutalist visual references only.
-- Semantics: Button inherits Base Button behavior; this slice adds only visual projection.
-- Package surface: `@proto.ui/prototypes-brutalist` and `@proto.ui/prototypes-brutalist/button`.
+- Semantics: Button inherits Base Button behavior; Scroll Area retains Base anatomy and adds only a visual shell in this slice.
+- Release status: private workspace package (`0.0.0`); does not rewrite published rc.6 evidence and has no public `proto-ui add` entries.
+- Package surface: private workspace source entries `@proto.ui/prototypes-brutalist`, `/button`, and `/scroll-area`.
 - Maintenance: the contributor maintains the initial split sequence; release inclusion and long-term ownership remain subject to Proto UI governance.

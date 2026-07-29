@@ -8,7 +8,7 @@ export const BrutalistScrollAreaCorner = definePrototype<
   name: 'brutalist-scroll-area-corner',
   setup(def) {
     asScrollAreaCorner();
-    def.feedback.style.use(tw('bg-foreground'));
+    def.feedback.style.use(tw('absolute bottom-0 right-0 h-4 w-4 bg-foreground'));
     return (renderer) => [renderer.r.slot()];
   },
 });

@@ -329,14 +329,10 @@ export default defineConfig({
                   slug: 'ui-libraries/brutalist/design-contract',
                 },
                 {
-                  label: 'Button',
-                  translations: { en: 'Button', 'zh-CN': 'Button' },
-                  slug: 'ui-libraries/brutalist/components/button',
-                },
-                {
                   label: 'Scroll Area',
                   translations: { en: 'Scroll Area', 'zh-CN': 'Scroll Area' },
                   slug: 'ui-libraries/brutalist/components/scroll-area',
+                  badge: inProgressBadge,
                 },
               ],
             },

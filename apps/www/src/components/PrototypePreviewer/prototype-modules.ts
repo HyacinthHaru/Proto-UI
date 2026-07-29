@@ -36,23 +36,23 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     registerPrototype('brutalist-button', mod.default);
   },
   'brutalist-scroll-area-root': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/scroll-area/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/scroll-area');
     registerPrototype('brutalist-scroll-area-root', mod.BrutalistScrollAreaRoot);
   },
   'brutalist-scroll-area-viewport': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/scroll-area/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/scroll-area');
     registerPrototype('brutalist-scroll-area-viewport', mod.BrutalistScrollAreaViewport);
   },
   'brutalist-scroll-area-scrollbar': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/scroll-area/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/scroll-area');
     registerPrototype('brutalist-scroll-area-scrollbar', mod.BrutalistScrollAreaScrollbar);
   },
   'brutalist-scroll-area-thumb': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/scroll-area/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/scroll-area');
     registerPrototype('brutalist-scroll-area-thumb', mod.BrutalistScrollAreaThumb);
   },
   'brutalist-scroll-area-corner': async () => {
-    const mod = await import('../../../../../packages/prototypes/brutalist/src/scroll-area/index');
+    const mod = await import('@proto.ui/prototypes-brutalist/scroll-area');
     registerPrototype('brutalist-scroll-area-corner', mod.BrutalistScrollAreaCorner);
   },
   'shadcn-toggle': async () => {

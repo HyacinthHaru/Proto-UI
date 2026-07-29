@@ -13,7 +13,7 @@
 | Version entity | [`V-PROTO-UI-0007`](../../spec/versions/V-PROTO-UI-0007.yaml) |
 | 工作区实体数 | 412 |
 | Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:65fb353001e688216131c4cf801d9c2275de153b364a0fbed8b823a8952e0d78` |
+| 工作区快照指纹 | `sha256:0bb403dd43765bf8049a2591af597ca42dece10444298b037e5e7e25f51e8e70` |
 | 已发布 release snapshot digest | `未记录` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
@@ -462,7 +462,7 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 | [`P-BASE-HOVER-CARD`](../../spec/prototypes/P-BASE-HOVER-CARD.yaml) | `draft` | Base Hover Card is a delayed link-preview protocol | — | 3 roles / 0 profiles | 12 | 3 |
 | [`P-BASE-HOVER-CARD-CONTENT`](../../spec/prototypes/P-BASE-HOVER-CARD-CONTENT.yaml) | `draft` | Base Hover Card Content is a transitional non-modal preview surface | — | — | 11 | 3 |
 | [`P-BASE-HOVER-CARD-TRIGGER`](../../spec/prototypes/P-BASE-HOVER-CARD-TRIGGER.yaml) | `draft` | Base Hover Card Trigger publishes preview intent | — | — | 6 | 3 |
-| [`P-BASE-SCROLL-AREA`](../../spec/prototypes/P-BASE-SCROLL-AREA.yaml) | `draft` | Base Scroll Area protocol | — | — | 1 | 1 |
+| [`P-BASE-SCROLL-AREA`](../../spec/prototypes/P-BASE-SCROLL-AREA.yaml) | `draft` | Base Scroll Area protocol | — | — | 2 | 1 |
 | [`P-BASE-SCROLL-AREA-CORNER`](../../spec/prototypes/P-BASE-SCROLL-AREA-CORNER.yaml) | `draft` | Base Scroll Area Corner protocol | — | — | 1 | 1 |
 | [`P-BASE-SCROLL-AREA-SCROLLBAR`](../../spec/prototypes/P-BASE-SCROLL-AREA-SCROLLBAR.yaml) | `draft` | Base Scroll Area Scrollbar protocol | — | — | 1 | 1 |
 | [`P-BASE-SCROLL-AREA-THUMB`](../../spec/prototypes/P-BASE-SCROLL-AREA-THUMB.yaml) | `draft` | Base Scroll Area Thumb protocol | — | — | 1 | 1 |
@@ -487,7 +487,7 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 | Entity | 状态 | 标题 | 继承 | Anatomy | Criteria | 关联 T |
 | --- | --- | --- | --- | --- | --: | --: |
 | [`P-BRUTALIST-BUTTON`](../../spec/prototypes/P-BRUTALIST-BUTTON.yaml) | `draft` | Brutalist Button inherits Base Button and layers a Neo-Brutalist visual API | `P-BASE-BUTTON` | — | 11 | 3 |
-| [`P-BRUTALIST-SCROLL-AREA`](../../spec/prototypes/P-BRUTALIST-SCROLL-AREA.yaml) | `draft` | Brutalist Scroll Area protocol | `P-BASE-SCROLL-AREA` | — | 1 | 2 |
+| [`P-BRUTALIST-SCROLL-AREA`](../../spec/prototypes/P-BRUTALIST-SCROLL-AREA.yaml) | `draft` | Brutalist Scroll Area protocol | `P-BASE-SCROLL-AREA` | — | 2 | 2 |
 | [`P-BRUTALIST-SCROLL-AREA-CORNER`](../../spec/prototypes/P-BRUTALIST-SCROLL-AREA-CORNER.yaml) | `draft` | Brutalist Scroll Area Corner protocol | `P-BASE-SCROLL-AREA-CORNER` | — | 1 | 1 |
 | [`P-BRUTALIST-SCROLL-AREA-SCROLLBAR`](../../spec/prototypes/P-BRUTALIST-SCROLL-AREA-SCROLLBAR.yaml) | `draft` | Brutalist Scroll Area Scrollbar protocol | `P-BASE-SCROLL-AREA-SCROLLBAR` | — | 1 | 1 |
 | [`P-BRUTALIST-SCROLL-AREA-THUMB`](../../spec/prototypes/P-BRUTALIST-SCROLL-AREA-THUMB.yaml) | `draft` | Brutalist Scroll Area Thumb protocol | `P-BASE-SCROLL-AREA-THUMB` | — | 1 | 1 |
@@ -844,7 +844,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Entity | 状态 | 标题 | Cases | Implementations | Verifies | Exercises |
 | --- | --- | --- | --: | --- | --- | --- |
 | [`T-BRUTALIST-BUTTON-0001`](../../spec/tests/T-BRUTALIST-BUTTON-0001.yaml) | `draft` | Brutalist Button visual contract and public API tests | 9 | `passing` 2 | `P-BRUTALIST-BUTTON` | `P-BASE-BUTTON`<br>`P-BRUTALIST-BUTTON` |
-| [`T-BRUTALIST-SCROLL-AREA-0001`](../../spec/tests/T-BRUTALIST-SCROLL-AREA-0001.yaml) | `draft` | Brutalist Scroll Area visual contract tests | 1 | `passing` 1 | `P-BRUTALIST-SCROLL-AREA` | `P-BASE-SCROLL-AREA`<br>`P-BASE-SCROLL-AREA-CORNER`<br>`P-BASE-SCROLL-AREA-SCROLLBAR`<br>`P-BASE-SCROLL-AREA-THUMB`<br>`P-BASE-SCROLL-AREA-VIEWPORT`<br>`P-BRUTALIST-SCROLL-AREA`<br>`P-BRUTALIST-SCROLL-AREA-CORNER`<br>`P-BRUTALIST-SCROLL-AREA-SCROLLBAR`<br>`P-BRUTALIST-SCROLL-AREA-THUMB`<br>`P-BRUTALIST-SCROLL-AREA-VIEWPORT` |
+| [`T-BRUTALIST-SCROLL-AREA-0001`](../../spec/tests/T-BRUTALIST-SCROLL-AREA-0001.yaml) | `draft` | Brutalist Scroll Area visual contract tests | 2 | `passing` 1 | `P-BRUTALIST-SCROLL-AREA` | `P-BASE-SCROLL-AREA`<br>`P-BASE-SCROLL-AREA-CORNER`<br>`P-BASE-SCROLL-AREA-SCROLLBAR`<br>`P-BASE-SCROLL-AREA-THUMB`<br>`P-BASE-SCROLL-AREA-VIEWPORT`<br>`P-BRUTALIST-SCROLL-AREA`<br>`P-BRUTALIST-SCROLL-AREA-CORNER`<br>`P-BRUTALIST-SCROLL-AREA-SCROLLBAR`<br>`P-BRUTALIST-SCROLL-AREA-THUMB`<br>`P-BRUTALIST-SCROLL-AREA-VIEWPORT` |
 
 ### CLI（2）
 
