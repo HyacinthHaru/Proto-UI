@@ -1,22 +1,10 @@
-import { ExposeState, State } from '@proto.ui/core';
+export interface TooltipRootProps {}
 
-export interface TooltipRootProps {
-  open?: boolean;
-  defaultOpen?: boolean;
-  delayDuration?: number;
-}
+export type TooltipRootExposes = {};
 
-export type TooltipRootExposes = {
-  open: ExposeState<boolean>;
-};
+export type TooltipRootStateHandles = {};
 
-export type TooltipRootStateHandles = {
-  open: State<boolean>;
-};
-
-export type TooltipRootAsHookContract = {
-  state: TooltipRootStateHandles;
-};
+export type TooltipRootAsHookContract = {};
 
 export interface TooltipTriggerProps {}
 

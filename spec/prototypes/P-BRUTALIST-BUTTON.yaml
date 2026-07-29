@@ -137,5 +137,4 @@ revisions:
     summary: >-
       Introduced the draft Neo-Brutalist Button projection as the reference family of the Brutalist style foundation slice on the rc.7 release train (redesigned public API: solid/surface/destructive + accent color, paired foreground invariant, live theme behavior). Not present in the immutable rc.6 snapshot.
 
-
 tags: [prototype, brutalist, neo-brutalist, visual, delta, button]

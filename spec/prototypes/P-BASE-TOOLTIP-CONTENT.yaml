@@ -1,27 +1,24 @@
 id: P-BASE-TOOLTIP-CONTENT
 type: prototype
-title: Base Tooltip Content protocol
+title: Base Tooltip Content anatomy part
 status: draft
 since: 0.2.0-rc.7
-summary: Base Tooltip Content protocol for the Proto UI framework.
+summary: Content is an optional slotted anatomy carrier without tooltip semantics or runtime behavior.
 statement:
-  en: Base Tooltip Content protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Tooltip Content protocol。该 draft entity 编目协议面。
+  en: Content claims the optional content role and renders its slot, but owns no visibility, naming, accessibility, dismissal, presence, portal, or positioning behavior.
+  zh-CN: Content claim 可选的 content role 并 render slot，但不持有 visibility、naming、accessibility、dismissal、presence、portal 或 positioning behavior。
 criteria:
-  - id: P-BASE-TOOLTIP-CONTENT-CATALOGED
+  - id: P-BASE-TOOLTIP-CONTENT-ANATOMY-ONLY
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      en: Content must claim the content role, render its slot, and expose no props, state, events, accessibility, dismissal, presence, portal, or positioning behavior in this shell slice.
+      zh-CN: 在本 shell 切片中，Content 必须 claim content role、render slot，且不得 expose props、state、events、accessibility、dismissal、presence、portal 或 positioning behavior。
 sources:
   - path: packages/prototypes/base/src/tooltip/content.proto.ts
+  - path: packages/prototypes/base/src/tooltip/types.ts
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced base tooltip content protocol.
-tags:
-  - prototype
-  - base
-  - tooltip
+    summary: Introduced the behaviorless slotted Tooltip Content anatomy part.
+tags: [prototype, base, tooltip, content, anatomy]
 verifies:
-  tests:
-    - T-BRUTALIST-TOOLTIP-0001
+  tests: [T-BRUTALIST-TOOLTIP-0001]

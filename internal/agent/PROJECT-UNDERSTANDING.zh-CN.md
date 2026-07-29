@@ -13,7 +13,7 @@
 | Version entity | [`V-PROTO-UI-0007`](../../spec/versions/V-PROTO-UI-0007.yaml) |
 | 工作区实体数 | 412 |
 | Workspace validation issues | 0 |
-| 工作区快照指纹 | `sha256:eb9a92d08a646dff51a6826311330f3a97ed6f961f39fa6d8a28afd6ecf778e2` |
+| 工作区快照指纹 | `sha256:7f2bbe6215afe928c4b3ef9caa63b19b6e94d90194e11297f0d27bb1b2cc6b6a` |
 | 已发布 release snapshot digest | `未记录` |
 
 工作区快照指纹来自按 ID 排序、按当前版本过滤后的实体内容。它用于判断本文是否与当前检出版本一致；它不替代 `V-*` 中记录的不可变发布快照 digest。
@@ -73,7 +73,7 @@ flowchart LR
 | Relation     | 边数 |
 | ------------ | ---: |
 | `relates`    |  228 |
-| `dependsOn`  |  790 |
+| `dependsOn`  |  788 |
 | `inherits`   |   34 |
 | `references` |    7 |
 | `refines`    |   18 |
@@ -475,11 +475,11 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 | [`P-BASE-TABS-LIST`](../../spec/prototypes/P-BASE-TABS-LIST.yaml) | `draft` | Base Tabs List is the tab trigger collection and roving focus container | — | — | 16 | 4 |
 | [`P-BASE-TABS-TRIGGER`](../../spec/prototypes/P-BASE-TABS-TRIGGER.yaml) | `draft` | Base Tabs Trigger is a value-matched tab activation item | — | — | 27 | 4 |
 | [`P-BASE-TOGGLE`](../../spec/prototypes/P-BASE-TOGGLE.yaml) | `draft` | Base Toggle is a button-like persistent active control | — | — | 37 | 3 |
-| [`P-BASE-TOOLTIP`](../../spec/prototypes/P-BASE-TOOLTIP.yaml) | `draft` | Base Tooltip protocol | — | — | 1 | 1 |
-| [`P-BASE-TOOLTIP-ARROW`](../../spec/prototypes/P-BASE-TOOLTIP-ARROW.yaml) | `draft` | Base Tooltip Arrow protocol | — | — | 1 | 1 |
-| [`P-BASE-TOOLTIP-CONTENT`](../../spec/prototypes/P-BASE-TOOLTIP-CONTENT.yaml) | `draft` | Base Tooltip Content protocol | — | — | 1 | 1 |
-| [`P-BASE-TOOLTIP-PORTAL`](../../spec/prototypes/P-BASE-TOOLTIP-PORTAL.yaml) | `draft` | Base Tooltip Portal protocol | — | — | 1 | 1 |
-| [`P-BASE-TOOLTIP-TRIGGER`](../../spec/prototypes/P-BASE-TOOLTIP-TRIGGER.yaml) | `draft` | Base Tooltip Trigger protocol | — | — | 1 | 1 |
+| [`P-BASE-TOOLTIP`](../../spec/prototypes/P-BASE-TOOLTIP.yaml) | `draft` | Base Tooltip static anatomy shell | — | 5 roles / 0 profiles | 2 | 1 |
+| [`P-BASE-TOOLTIP-ARROW`](../../spec/prototypes/P-BASE-TOOLTIP-ARROW.yaml) | `draft` | Base Tooltip Arrow anatomy part | — | — | 1 | 1 |
+| [`P-BASE-TOOLTIP-CONTENT`](../../spec/prototypes/P-BASE-TOOLTIP-CONTENT.yaml) | `draft` | Base Tooltip Content anatomy part | — | — | 1 | 1 |
+| [`P-BASE-TOOLTIP-PORTAL`](../../spec/prototypes/P-BASE-TOOLTIP-PORTAL.yaml) | `draft` | Base Tooltip Portal anatomy part | — | — | 1 | 1 |
+| [`P-BASE-TOOLTIP-TRIGGER`](../../spec/prototypes/P-BASE-TOOLTIP-TRIGGER.yaml) | `draft` | Base Tooltip Trigger anatomy part | — | — | 1 | 1 |
 | [`P-BASE-TRANSITION`](../../spec/prototypes/P-BASE-TRANSITION.yaml) | `draft` | Base Transition governs host-neutral perceptual presence | — | — | 12 | 2 |
 
 ### BRUTALIST（6）
@@ -487,11 +487,11 @@ Prototype 实体描述官方协议身份，而不是某个框架组件的偶然�
 | Entity | 状态 | 标题 | 继承 | Anatomy | Criteria | 关联 T |
 | --- | --- | --- | --- | --- | --: | --: |
 | [`P-BRUTALIST-BUTTON`](../../spec/prototypes/P-BRUTALIST-BUTTON.yaml) | `draft` | Brutalist Button inherits Base Button and layers a Neo-Brutalist visual API | `P-BASE-BUTTON` | — | 11 | 3 |
-| [`P-BRUTALIST-TOOLTIP`](../../spec/prototypes/P-BRUTALIST-TOOLTIP.yaml) | `draft` | Brutalist Tooltip protocol | `P-BASE-TOOLTIP` | — | 1 | 2 |
-| [`P-BRUTALIST-TOOLTIP-ARROW`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-ARROW.yaml) | `draft` | Brutalist Tooltip Arrow protocol | `P-BASE-TOOLTIP-ARROW` | — | 1 | 1 |
-| [`P-BRUTALIST-TOOLTIP-CONTENT`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-CONTENT.yaml) | `draft` | Brutalist Tooltip Content protocol | `P-BASE-TOOLTIP-CONTENT` | — | 1 | 1 |
-| [`P-BRUTALIST-TOOLTIP-PORTAL`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-PORTAL.yaml) | `draft` | Brutalist Tooltip Portal protocol | `P-BASE-TOOLTIP-PORTAL` | — | 1 | 1 |
-| [`P-BRUTALIST-TOOLTIP-TRIGGER`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-TRIGGER.yaml) | `draft` | Brutalist Tooltip Trigger protocol | `P-BASE-TOOLTIP-TRIGGER` | — | 1 | 1 |
+| [`P-BRUTALIST-TOOLTIP`](../../spec/prototypes/P-BRUTALIST-TOOLTIP.yaml) | `draft` | Brutalist Tooltip static visual shell | `P-BASE-TOOLTIP` | — | 3 | 2 |
+| [`P-BRUTALIST-TOOLTIP-ARROW`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-ARROW.yaml) | `draft` | Brutalist Tooltip Arrow visual projection | `P-BASE-TOOLTIP-ARROW` | — | 1 | 1 |
+| [`P-BRUTALIST-TOOLTIP-CONTENT`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-CONTENT.yaml) | `draft` | Brutalist Tooltip Content visual projection | `P-BASE-TOOLTIP-CONTENT` | — | 2 | 1 |
+| [`P-BRUTALIST-TOOLTIP-PORTAL`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-PORTAL.yaml) | `draft` | Brutalist Tooltip Portal projection | `P-BASE-TOOLTIP-PORTAL` | — | 1 | 1 |
+| [`P-BRUTALIST-TOOLTIP-TRIGGER`](../../spec/prototypes/P-BRUTALIST-TOOLTIP-TRIGGER.yaml) | `draft` | Brutalist Tooltip Trigger projection | `P-BASE-TOOLTIP-TRIGGER` | — | 1 | 1 |
 
 ### LUCIDE（1）
 
@@ -844,7 +844,7 @@ Test 实体连接可寻址 case、被验证的实体准则和仓库中的 execut
 | Entity | 状态 | 标题 | Cases | Implementations | Verifies | Exercises |
 | --- | --- | --- | --: | --- | --- | --- |
 | [`T-BRUTALIST-BUTTON-0001`](../../spec/tests/T-BRUTALIST-BUTTON-0001.yaml) | `draft` | Brutalist Button visual contract and public API tests | 9 | `passing` 2 | `P-BRUTALIST-BUTTON` | `P-BASE-BUTTON`<br>`P-BRUTALIST-BUTTON` |
-| [`T-BRUTALIST-TOOLTIP-0001`](../../spec/tests/T-BRUTALIST-TOOLTIP-0001.yaml) | `draft` | Brutalist Tooltip visual contract tests | 1 | `passing` 1 | `P-BRUTALIST-TOOLTIP` | `P-BASE-TOOLTIP`<br>`P-BASE-TOOLTIP-ARROW`<br>`P-BASE-TOOLTIP-CONTENT`<br>`P-BASE-TOOLTIP-PORTAL`<br>`P-BASE-TOOLTIP-TRIGGER`<br>`P-BRUTALIST-TOOLTIP`<br>`P-BRUTALIST-TOOLTIP-ARROW`<br>`P-BRUTALIST-TOOLTIP-CONTENT`<br>`P-BRUTALIST-TOOLTIP-PORTAL`<br>`P-BRUTALIST-TOOLTIP-TRIGGER` |
+| [`T-BRUTALIST-TOOLTIP-0001`](../../spec/tests/T-BRUTALIST-TOOLTIP-0001.yaml) | `draft` | Brutalist Tooltip static shell contract test | 1 | `passing` 1 | `P-BRUTALIST-TOOLTIP` | `P-BASE-TOOLTIP`<br>`P-BASE-TOOLTIP-TRIGGER`<br>`P-BASE-TOOLTIP-PORTAL`<br>`P-BASE-TOOLTIP-CONTENT`<br>`P-BASE-TOOLTIP-ARROW`<br>`P-BRUTALIST-TOOLTIP`<br>`P-BRUTALIST-TOOLTIP-TRIGGER`<br>`P-BRUTALIST-TOOLTIP-PORTAL`<br>`P-BRUTALIST-TOOLTIP-CONTENT`<br>`P-BRUTALIST-TOOLTIP-ARROW` |
 
 ### CLI（2）
 

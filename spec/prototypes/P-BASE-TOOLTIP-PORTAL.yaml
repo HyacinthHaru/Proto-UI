@@ -1,27 +1,24 @@
 id: P-BASE-TOOLTIP-PORTAL
 type: prototype
-title: Base Tooltip Portal protocol
+title: Base Tooltip Portal anatomy part
 status: draft
 since: 0.2.0-rc.7
-summary: Base Tooltip Portal protocol for the Proto UI framework.
+summary: Portal is an optional logical anatomy carrier and does not yet move a view.
 statement:
-  en: Base Tooltip Portal protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Tooltip Portal protocol。该 draft entity 编目协议面。
+  en: Portal claims the optional portal role and provides direct and authored asHook entries without renderer portal ownership, overlay, presence, or positioning behavior.
+  zh-CN: Portal claim 可选的 portal role，并提供 direct 与 authored asHook entries；不包含 renderer portal ownership、overlay、presence 或 positioning behavior。
 criteria:
-  - id: P-BASE-TOOLTIP-PORTAL-CATALOGED
+  - id: P-BASE-TOOLTIP-PORTAL-ANATOMY-ONLY
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      en: Portal must claim the portal role and expose no props, state, events, renderer portal, overlay, presence, or positioning behavior in this shell slice.
+      zh-CN: 在本 shell 切片中，Portal 必须 claim portal role，且不得 expose props、state、events、renderer portal、overlay、presence 或 positioning behavior。
 sources:
   - path: packages/prototypes/base/src/tooltip/portal.proto.ts
+  - path: packages/prototypes/base/src/tooltip/types.ts
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced base tooltip portal protocol.
-tags:
-  - prototype
-  - base
-  - tooltip
+    summary: Introduced the behaviorless Tooltip Portal anatomy part.
+tags: [prototype, base, tooltip, portal, anatomy]
 verifies:
-  tests:
-    - T-BRUTALIST-TOOLTIP-0001
+  tests: [T-BRUTALIST-TOOLTIP-0001]

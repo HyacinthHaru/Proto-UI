@@ -1,27 +1,41 @@
 id: P-BASE-TOOLTIP
 type: prototype
-title: Base Tooltip  protocol
+title: Base Tooltip static anatomy shell
 status: draft
 since: 0.2.0-rc.7
-summary: Base Tooltip  protocol for the Proto UI framework.
+summary: Base Tooltip defines a five-part anatomy shell without visibility, interaction, overlay, or positioning behavior.
 statement:
-  en: Base Tooltip  protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Tooltip  protocol。该 draft entity 编目协议面。
+  en: Base Tooltip currently defines only Root, Trigger, Portal, Content, and Arrow anatomy plus authored asHook entries. Root owns the anatomy domain but no open state, props, events, methods, focus, delay, presence, portal, or positioning behavior.
+  zh-CN: Base Tooltip 当前只定义 Root、Trigger、Portal、Content、Arrow anatomy 与 authored asHook entries。Root 只持有 anatomy domain，不持有 open state、props、events、methods、focus、delay、presence、portal 或 positioning behavior。
+anatomy:
+  family: base-tooltip
+  roles:
+    root: { cardinality: { min: 1, max: 1 } }
+    trigger: { cardinality: { min: 1, max: 1 } }
+    portal: { cardinality: { min: 0, max: 1 } }
+    content: { cardinality: { min: 0, max: 1 } }
+    arrow: { cardinality: { min: 0, max: 1 } }
 criteria:
-  - id: P-BASE-TOOLTIP-CATALOGED
+  - id: P-BASE-TOOLTIP-FIVE-PART-ANATOMY
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      en: Root must claim the base-tooltip family; Trigger is required, while Portal, Content, and Arrow are optional and at most one each, with Root containing Trigger and Portal, Portal containing Content, and Content containing Arrow.
+      zh-CN: Root 必须 claim base-tooltip family；Trigger 必需，Portal、Content、Arrow 可选且最多各一个；Root contains Trigger 与 Portal，Portal contains Content，Content contains Arrow。
+  - id: P-BASE-TOOLTIP-ROOT-NO-BEHAVIOR
+    text:
+      en: Root must expose no props, state, events, methods, focus, delay, visibility, overlay, portal, presence, or positioning behavior in this shell slice.
+      zh-CN: 在本 shell 切片中，Root 不得 expose props、state、events、methods、focus、delay、visibility、overlay、portal、presence 或 positioning behavior。
 sources:
+  - path: packages/prototypes/base/src/tooltip/shared.ts
   - path: packages/prototypes/base/src/tooltip/root.proto.ts
+    sections:
+      - setupTooltipRoot
+      - asTooltipRoot
+      - base-tooltip-root
+  - path: packages/prototypes/base/src/tooltip/types.ts
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced base tooltip  protocol.
-tags:
-  - prototype
-  - base
-  - tooltip
+    summary: Introduced a behaviorless five-part Tooltip anatomy shell.
+tags: [prototype, base, tooltip, anatomy, shell]
 verifies:
-  tests:
-    - T-BRUTALIST-TOOLTIP-0001
+  tests: [T-BRUTALIST-TOOLTIP-0001]

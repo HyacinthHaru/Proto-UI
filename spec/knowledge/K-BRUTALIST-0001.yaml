@@ -6,15 +6,12 @@ since: 0.2.0-rc.7
 summary: >-
   The Brutalist style family under `@proto.ui/prototypes-brutalist` is a contributor-authored Proto UI design-language projection. It is not a clone, compatibility wrapper, or certified integration of any third-party Neo-Brutalist design system, and must not claim third-party upstream ownership or certification.
 
-
 statement:
   en: >-
     The Brutalist prototypes in this repository are Proto UI's own Neo-Brutalist design-language projection, authored and maintained by Proto UI contributors for this project. They must not be described or represented as a port, clone, compatibility wrapper, or certified integration of an external Neo-Brutalist design system, and must not claim third-party upstream ownership.
 
-
   zh-CN: >-
     本仓库中的 Brutalist prototype 是 Proto UI 贡献者自行创作并维护的 Neo-Brutalist design-language 投射。不得将其描述或呈现为任何外部 Neo-Brutalist 设计系统的移植、克隆、兼容包装或认证集成，也不得声称 第三方上游所有权。
-
 
 criteria:
   - id: K-BRUTALIST-0001-A
@@ -22,10 +19,8 @@ criteria:
       en: >-
         Spec entities, docs, and package metadata for the Brutalist style family must describe it as a Proto UI-maintained design-language projection and must not assert third-party upstream ownership, certification, or compatibility-target status.
 
-
       zh-CN: >-
         Brutalist style family 的 spec 实体、文档与 package 元数据必须 将其描述为 Proto UI 维护的 design-language 投射，不得声称第三方 上游所有权、认证或兼容目标地位。
-
 
 sources:
   - path: docs/superpowers/specs/2026-07-24-brutalist-design-system-design.md
@@ -39,6 +34,5 @@ revisions:
     change: introduced
     summary: >-
       Extracted the Brutalist design-language provenance statement from the runtime prototype criteria into a knowledge entity, since provenance is not established by a runtime test. Introduced on the rc.7 release train; not present in the immutable rc.6 snapshot.
-
 
 tags: [knowledge, brutalist, neo-brutalist, design-language, provenance, identity]

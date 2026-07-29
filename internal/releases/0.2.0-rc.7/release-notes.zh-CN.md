@@ -20,7 +20,6 @@
 - Content 回归 `flex-1 outline-none` 的无装饰内容承载角色，不再由 Tabs 原型强制生成 border、background、padding 和 shadow；需要卡片面板的用法应在消费端内容中显式组合。
 - Proto style CSS 编译器新增 `w-fit`、`h-fit`、`flex-1`、`shadow-sm` 与 outline 相关 token 支持，确保上述原型样式可进入 Web 产物而不会退化为 unsupported token。
 - 本轮只收敛默认 variant 的横向主路径；`line` variant、垂直布局、显式 dark 分支、SVG 后代规则与完整原生 API/data forwarding 仍保留为后续 parity gap。
-
 ### CLI Brutalist CSS-only style preset
 
 - `proto-ui init --prototypes brutalist` 现在是一等 CSS-only style preset。它会写出 Brutalist 主题（`brutalist-theme.css`，包含 Light/Dark 变量与扁平 canary/mint/lavender/coral/sky 强调调色板），以及从官方 Brutalist prototype 源码扫描生成的 Proto UI token closure，使目标项目在尚未安装任何 prototype package 之前即可获得可用初始 CSS。

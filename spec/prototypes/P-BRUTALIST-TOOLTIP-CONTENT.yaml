@@ -1,35 +1,31 @@
 id: P-BRUTALIST-TOOLTIP-CONTENT
 type: prototype
-title: Brutalist Tooltip Content protocol
+title: Brutalist Tooltip Content visual projection
 status: draft
 since: 0.2.0-rc.7
-summary: Brutalist Tooltip Content protocol for the Proto UI framework.
+summary: Brutalist Content projects a square high-contrast paper-and-ink surface over Base Content.
 statement:
-  en: Brutalist Tooltip Content protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Brutalist Tooltip Content protocol。该 draft entity 编目协议面。
+  en: 'Brutalist Content consumes Base Content and adds only feedback style: square geometry, a 2px foreground border, foreground fill, inverse text, mono bold uppercase type, compact spacing, and a hard 4px foreground shadow.'
+  zh-CN: 'Brutalist Content 消费 Base Content，只增加 feedback style：方形 geometry、2px foreground border、foreground fill、inverse text、mono bold uppercase type、紧凑 spacing 与 4px foreground hard shadow。'
 criteria:
-  - id: P-BRUTALIST-TOOLTIP-CONTENT-CATALOGED
+  - id: P-BRUTALIST-TOOLTIP-CONTENT-VISUAL-GRAMMAR
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
-sources:
-  - path: packages/prototypes/brutalist/src/tooltip/content.proto.ts
+      en: 'Content must include rounded-none, border-2 border-foreground, bg-foreground, text-background, font-mono font-bold uppercase text-xs, px-3 py-2, z-50, and shadow-[4px_4px_0_0_var(--pui-foreground)].'
+      zh-CN: 'Content 必须包含 rounded-none、border-2 border-foreground、bg-foreground、text-background、font-mono font-bold uppercase text-xs、px-3 py-2、z-50 与 shadow-[4px_4px_0_0_var(--pui-foreground)]。'
+
+  - id: P-BRUTALIST-TOOLTIP-CONTENT-NO-BEHAVIOR
+    text:
+      en: Content must not add visibility, accessibility, dismissal, presence, portal, or positioning behavior.
+      zh-CN: Content 不得增加 visibility、accessibility、dismissal、presence、portal 或 positioning behavior。
+sources: [{ path: packages/prototypes/brutalist/src/tooltip/content.proto.ts }]
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced brutalist tooltip content protocol.
-tags:
-  - prototype
-  - brutalist
-  - tooltip
+    summary: Introduced the static Brutalist Tooltip Content visual projection.
+tags: [prototype, brutalist, tooltip, content, visual]
 inherits:
-  prototypes:
-    - id: P-BASE-TOOLTIP-CONTENT
+  prototypes: [{ id: P-BASE-TOOLTIP-CONTENT }]
 dependsOn:
-  contracts:
-    - C-CORE-SYNTAX-0003
-    - C-AS-HOOK-0001
-    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+  contracts: [C-CORE-SYNTAX-0003, C-AS-HOOK-0001, C-RULE-INTENT-FEEDBACK-STYLE-0001]
 verifies:
-  tests:
-    - T-BRUTALIST-TOOLTIP-0001
+  tests: [T-BRUTALIST-TOOLTIP-0001]

@@ -1,35 +1,26 @@
 id: P-BRUTALIST-TOOLTIP-TRIGGER
 type: prototype
-title: Brutalist Tooltip Trigger protocol
+title: Brutalist Tooltip Trigger projection
 status: draft
 since: 0.2.0-rc.7
-summary: Brutalist Tooltip Trigger protocol for the Proto UI framework.
+summary: Brutalist Trigger is an unstyled projection of the Base Trigger anatomy part.
 statement:
-  en: Brutalist Tooltip Trigger protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Brutalist Tooltip Trigger protocol。该 draft entity 编目协议面。
+  en: Brutalist Trigger consumes Base Trigger and adds no props, state, events, behavior, accessibility semantics, or feedback style.
+  zh-CN: Brutalist Trigger 消费 Base Trigger，不增加 props、state、events、behavior、accessibility semantics 或 feedback style。
 criteria:
-  - id: P-BRUTALIST-TOOLTIP-TRIGGER-CATALOGED
+  - id: P-BRUTALIST-TOOLTIP-TRIGGER-PURE-INHERITANCE
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
-sources:
-  - path: packages/prototypes/brutalist/src/tooltip/trigger.proto.ts
+      en: Trigger must consume asTooltipTrigger and add no protocol or style surface.
+      zh-CN: Trigger 必须消费 asTooltipTrigger，且不增加 protocol 或 style surface。
+sources: [{ path: packages/prototypes/brutalist/src/tooltip/trigger.proto.ts }]
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Introduced brutalist tooltip trigger protocol.
-tags:
-  - prototype
-  - brutalist
-  - tooltip
+    summary: Introduced the unstyled Brutalist Tooltip Trigger projection.
+tags: [prototype, brutalist, tooltip, trigger]
 inherits:
-  prototypes:
-    - id: P-BASE-TOOLTIP-TRIGGER
+  prototypes: [{ id: P-BASE-TOOLTIP-TRIGGER }]
 dependsOn:
-  contracts:
-    - C-CORE-SYNTAX-0003
-    - C-AS-HOOK-0001
-    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+  contracts: [C-CORE-SYNTAX-0003, C-AS-HOOK-0001]
 verifies:
-  tests:
-    - T-BRUTALIST-TOOLTIP-0001
+  tests: [T-BRUTALIST-TOOLTIP-0001]

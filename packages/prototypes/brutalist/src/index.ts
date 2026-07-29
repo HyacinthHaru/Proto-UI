@@ -1,6 +1,7 @@
 export * from './style';
 export { default as button, default as brutalistButton } from './button';
 export type {
+  BrutalistButtonColor,
   BrutalistButtonExposes,
   BrutalistButtonProps,
   BrutalistButtonSize,

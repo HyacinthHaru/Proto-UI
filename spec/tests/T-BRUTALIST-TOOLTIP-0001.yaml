@@ -1,57 +1,62 @@
 id: T-BRUTALIST-TOOLTIP-0001
 type: test
-title: Brutalist Tooltip visual contract tests
+title: Brutalist Tooltip static shell contract test
 status: draft
 since: 0.2.0-rc.7
-summary: Covers the current tested Neo-Brutalist visual grammar and Base-inherited runtime behavior for brutalist tooltip.
+summary: Verifies typed five-part Base inheritance, empty behavior exposes, Content grammar, and Arrow fill for the static Brutalist Tooltip shell.
 cases:
   - id: T-BRUTALIST-TOOLTIP-0001-CASE-1
-    title: P-BRUTALIST-TOOLTIP retains Base semantics and projects the Brutalist visual grammar
+    title: Five-part anatomy remains behaviorless while Content and Arrow project the visual grammar
     covers:
-      - P-BRUTALIST-TOOLTIP-VISUAL-GRAMMAR
-      - P-BRUTALIST-TOOLTIP-TESTED-SURFACE
-    expectation: p-brutalist-tooltip-visual-contract
+      - P-BASE-TOOLTIP-FIVE-PART-ANATOMY
+      - P-BASE-TOOLTIP-ROOT-NO-BEHAVIOR
+      - P-BASE-TOOLTIP-TRIGGER-ANATOMY-ONLY
+      - P-BASE-TOOLTIP-PORTAL-ANATOMY-ONLY
+      - P-BASE-TOOLTIP-CONTENT-ANATOMY-ONLY
+      - P-BASE-TOOLTIP-ARROW-ANATOMY-ONLY
+      - P-BRUTALIST-TOOLTIP-FIVE-PART-INHERITANCE
+      - P-BRUTALIST-TOOLTIP-STATIC-BOUNDARY
+      - P-BRUTALIST-TOOLTIP-VISUAL-SCOPE
+      - P-BRUTALIST-TOOLTIP-TRIGGER-PURE-INHERITANCE
+      - P-BRUTALIST-TOOLTIP-PORTAL-PURE-INHERITANCE
+      - P-BRUTALIST-TOOLTIP-CONTENT-VISUAL-GRAMMAR
+      - P-BRUTALIST-TOOLTIP-CONTENT-NO-BEHAVIOR
+      - P-BRUTALIST-TOOLTIP-ARROW-FOREGROUND-FILL
+    expectation: Typed Web Component constructors mount Root, Trigger, Portal, Content, and Arrow with empty expose objects; Content carries the exact Brutalist surface tokens and Arrow carries fill-foreground.
 implementations:
-  - id: prototypes-brutalist-tooltip-contract
+  - id: prototypes-brutalist-tooltip-static-shell
     kind: module-test
     status: passing
     path: packages/prototypes/brutalist/test/tooltip.test.ts
     required: true
-    consumesCases:
-      - T-BRUTALIST-TOOLTIP-0001-CASE-1
+    consumesCases: [T-BRUTALIST-TOOLTIP-0001-CASE-1]
     exercises:
       - P-BASE-TOOLTIP
-      - P-BASE-TOOLTIP-ARROW
-      - P-BASE-TOOLTIP-CONTENT
-      - P-BASE-TOOLTIP-PORTAL
       - P-BASE-TOOLTIP-TRIGGER
+      - P-BASE-TOOLTIP-PORTAL
+      - P-BASE-TOOLTIP-CONTENT
+      - P-BASE-TOOLTIP-ARROW
       - P-BRUTALIST-TOOLTIP
-      - P-BRUTALIST-TOOLTIP-ARROW
-      - P-BRUTALIST-TOOLTIP-CONTENT
-      - P-BRUTALIST-TOOLTIP-PORTAL
       - P-BRUTALIST-TOOLTIP-TRIGGER
+      - P-BRUTALIST-TOOLTIP-PORTAL
+      - P-BRUTALIST-TOOLTIP-CONTENT
+      - P-BRUTALIST-TOOLTIP-ARROW
 verifies:
-  prototypes:
-    - id: P-BRUTALIST-TOOLTIP
+  prototypes: [{ id: P-BRUTALIST-TOOLTIP }]
 exercises:
   prototypes:
     - P-BASE-TOOLTIP
-    - P-BASE-TOOLTIP-ARROW
-    - P-BASE-TOOLTIP-CONTENT
-    - P-BASE-TOOLTIP-PORTAL
     - P-BASE-TOOLTIP-TRIGGER
+    - P-BASE-TOOLTIP-PORTAL
+    - P-BASE-TOOLTIP-CONTENT
+    - P-BASE-TOOLTIP-ARROW
     - P-BRUTALIST-TOOLTIP
-    - P-BRUTALIST-TOOLTIP-ARROW
-    - P-BRUTALIST-TOOLTIP-CONTENT
-    - P-BRUTALIST-TOOLTIP-PORTAL
     - P-BRUTALIST-TOOLTIP-TRIGGER
+    - P-BRUTALIST-TOOLTIP-PORTAL
+    - P-BRUTALIST-TOOLTIP-CONTENT
+    - P-BRUTALIST-TOOLTIP-ARROW
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
-    summary: Added draft Brutalist tooltip prototype coverage.
-tags:
-  - test
-  - brutalist
-  - neo-brutalist
-  - visual
-  - tooltip
+    summary: Added typed static Tooltip anatomy and visual projection coverage.
+tags: [test, brutalist, neo-brutalist, visual, tooltip, anatomy, shell]
