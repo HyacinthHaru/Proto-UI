@@ -26,6 +26,11 @@
 - `proto-ui init --prototypes brutalist` 现在是一等 CSS-only style preset。它会写出 Brutalist 主题（`brutalist-theme.css`，包含 Light/Dark 变量与扁平 canary/mint/lavender/coral/sky 强调调色板），以及从官方 Brutalist prototype 源码扫描生成的 Proto UI token closure，使目标项目在尚未安装任何 prototype package 之前即可获得可用初始 CSS。
 - 该 preset 故意为 CSS-only。私有 workspace package `@proto.ui/prototypes-brutalist`（Button reference family）暂无公开安装路径，且不在 rc.7 BOM 中；在该 package 经过后续 release train 公开发布之前，CLI `add` 组件注册表中不会暴露任何 Brutalist 条目。
 
+### 私有 Brutalist Scroll Area shell 候选
+
+- 私有 workspace package `@proto.ui/prototypes-brutalist` 现包含基于 Base Root、Viewport、Scrollbar、Thumb 与 Corner anatomy 的五 part Scroll Area 视觉 shell，并提供聚焦双语文档与 preview evidence。
+- Base 现发布 host-derived metrics 与精确的双向 Thumb ratio，并将可用 Thumb travel 上的 pointer drag 映射为经过 clamp 的 scroll request。私有 Brutalist shell 仍为 `0.0.0` non-launch commitment，不进入 rc.7 BOM 或公开 `proto-ui add`；成比例的连续 Thumb styling 继续等待 adapter-neutral projection mechanism。
+
 ## 构建与发布
 
 ### 37 个公开 package 交付可执行产物

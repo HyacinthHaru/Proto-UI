@@ -4,6 +4,7 @@ import {
   SCROLL_AREA_CONTEXT,
   SCROLL_AREA_FAMILY,
   type ScrollAreaContextValue,
+  type ScrollAreaMetrics,
 } from './shared';
 import type {
   ScrollAreaThumbAsHookContract,
@@ -11,23 +12,73 @@ import type {
   ScrollAreaThumbProps,
 } from './types';
 
+type ScrollAreaOrientation = 'horizontal' | 'vertical';
+
+type PointerPoint = {
+  clientX: number;
+  clientY: number;
+  pointerId?: number;
+};
+
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
+function readNumber(value: unknown): number | undefined {
+  return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
+}
+
+function readRecord(value: unknown): Record<string, unknown> | null {
+  return value !== null && typeof value === 'object' ? (value as Record<string, unknown>) : null;
+}
+
+function readPointerPoint(event: unknown): PointerPoint {
+  const payload = readRecord(event);
+  const detail = readRecord(payload?.detail) ?? payload;
+  const native = readRecord(detail?.nativeEvent) ?? detail;
+  const pointerId = readNumber(native?.pointerId) ?? readNumber(detail?.pointerId);
+  return {
+    clientX: readNumber(native?.clientX) ?? readNumber(detail?.clientX) ?? 0,
+    clientY: readNumber(native?.clientY) ?? readNumber(detail?.clientY) ?? 0,
+    ...(pointerId === undefined ? {} : { pointerId }),
+  };
+}
+
+function axisValues(metrics: ScrollAreaMetrics, orientation: ScrollAreaOrientation) {
+  if (orientation === 'vertical') {
+    return {
+      client: metrics.clientHeight,
+      scroll: metrics.scrollTop,
+      scrollSize: metrics.scrollHeight,
+    };
+  }
+  return {
+    client: metrics.clientWidth,
+    scroll: metrics.scrollLeft,
+    scrollSize: metrics.scrollWidth,
+  };
+}
+
 function setupScrollAreaThumb(def: DefHandle<ScrollAreaThumbProps, ScrollAreaThumbExposes>): void {
   def.anatomy.claim(SCROLL_AREA_FAMILY, { role: 'thumb' });
+  def.props.define({
+    orientation: { type: 'enum', empty: 'fallback', options: ['horizontal', 'vertical'] },
+  });
+  def.props.setDefaults({ orientation: 'vertical' });
 
   const sizeRatio = def.state.numberDiscrete('sizeRatio', 1);
   const offsetRatio = def.state.numberDiscrete('offsetRatio', 0);
+  const orientation = def.state.enum('orientation', 'vertical', {
+    options: ['horizontal', 'vertical'] as const,
+  });
   def.expose.state('sizeRatio', sizeRatio);
   def.expose.state('offsetRatio', offsetRatio);
+  def.expose.state('orientation', orientation);
 
   let dragging = false;
   let dragStartClient = 0;
   let dragStartScroll = 0;
-  let orientation: 'vertical' | 'horizontal' = 'vertical';
-  let metrics = {
+  let metrics: ScrollAreaMetrics = {
     scrollTop: 0,
     scrollLeft: 0,
     scrollHeight: 0,
@@ -36,19 +87,16 @@ function setupScrollAreaThumb(def: DefHandle<ScrollAreaThumbProps, ScrollAreaThu
     clientWidth: 0,
   };
 
-  const syncFromMetrics = (next: ScrollAreaContextValue['metrics']) => {
+  const syncFromMetrics = (next: ScrollAreaMetrics) => {
     metrics = { ...next };
-    if (orientation === 'vertical') {
-      const max = Math.max(next.scrollHeight - next.clientHeight, 0);
-      const ratio = next.scrollHeight > 0 ? next.clientHeight / next.scrollHeight : 1;
-      sizeRatio.set(clamp(ratio, 0.1, 1), 'reason: scroll-area thumb sizeRatio');
-      offsetRatio.set(max > 0 ? next.scrollTop / max : 0, 'reason: scroll-area thumb offsetRatio');
-      return;
-    }
-    const max = Math.max(next.scrollWidth - next.clientWidth, 0);
-    const ratio = next.scrollWidth > 0 ? next.clientWidth / next.scrollWidth : 1;
-    sizeRatio.set(clamp(ratio, 0.1, 1), 'reason: scroll-area thumb sizeRatio');
-    offsetRatio.set(max > 0 ? next.scrollLeft / max : 0, 'reason: scroll-area thumb offsetRatio');
+    const axis = axisValues(next, orientation.get());
+    const maxScroll = Math.max(axis.scrollSize - axis.client, 0);
+    const nextSize = axis.scrollSize > 0 ? axis.client / axis.scrollSize : 1;
+    sizeRatio.set(clamp(nextSize, 0, 1), 'reason: scroll-area thumb sizeRatio');
+    offsetRatio.set(
+      maxScroll > 0 ? clamp(axis.scroll / maxScroll, 0, 1) : 0,
+      'reason: scroll-area thumb offsetRatio'
+    );
   };
 
   def.context.subscribe(SCROLL_AREA_CONTEXT, (_run, next: ScrollAreaContextValue) => {
@@ -56,62 +104,56 @@ function setupScrollAreaThumb(def: DefHandle<ScrollAreaThumbProps, ScrollAreaThu
   });
 
   def.lifecycle.onCreated((run) => {
-    // Infer orientation from parent scrollbar if present via prop inheritance is projection-owned.
-    // Default vertical; projections can still style independently.
-    const ctx = run.context.read(SCROLL_AREA_CONTEXT);
-    syncFromMetrics(ctx.metrics);
+    orientation.set(
+      run.props.get().orientation ?? 'vertical',
+      'reason: scroll-area thumb init orientation'
+    );
+    syncFromMetrics(run.context.read(SCROLL_AREA_CONTEXT).metrics);
   });
 
-  // Parent scrollbar orientation is not directly readable here without extra context.
-  // Keep vertical as default protocol; horizontal thumb drag uses clientX when orientation state
-  // is later extended. For v1 tests and demos we drive vertical.
-  orientation = 'vertical';
+  def.props.watch(['orientation'], (_run, next) => {
+    orientation.set(next.orientation ?? 'vertical', 'reason: scroll-area thumb prop orientation');
+    syncFromMetrics(metrics);
+  });
 
-  const readPointerPoint = (ev: any) => {
-    // Adapter router payload: CustomEvent.detail { nativeEvent, ... }.
-    // Host-free unit tests may dispatch CustomEvent/Event directly.
-    const detail = ev?.detail ?? ev ?? {};
-    const native = detail?.nativeEvent ?? detail;
-    return {
-      clientX: Number(native?.clientX ?? detail?.clientX ?? 0),
-      clientY: Number(native?.clientY ?? detail?.clientY ?? 0),
-      pointerId: native?.pointerId ?? detail?.pointerId,
-    };
-  };
-
-  def.event.on('pointer.down', (run, ev: any) => {
+  def.event.on('pointer.down', (run, event) => {
     dragging = true;
-    const point = readPointerPoint(ev);
-    dragStartClient = orientation === 'vertical' ? point.clientY : point.clientX;
-    dragStartScroll = orientation === 'vertical' ? metrics.scrollTop : metrics.scrollLeft;
-    // best-effort pointer capture when host exists
-    const host = run.host?.get?.() as HTMLElement | undefined;
-    const pointerId = point.pointerId;
-    if (host && typeof pointerId === 'number' && host.setPointerCapture) {
+    const point = readPointerPoint(event);
+    const currentOrientation = orientation.get();
+    const axis = axisValues(metrics, currentOrientation);
+    dragStartClient = currentOrientation === 'vertical' ? point.clientY : point.clientX;
+    dragStartScroll = axis.scroll;
+    const host = run.host?.get();
+    if (host instanceof HTMLElement && point.pointerId !== undefined && host.setPointerCapture) {
       try {
-        host.setPointerCapture(pointerId);
+        host.setPointerCapture(point.pointerId);
       } catch {
-        // ignore
+        // Pointer capture is best-effort across adapters and test DOMs.
       }
     }
   });
 
-  def.event.on('pointer.move', (run, ev: any) => {
+  def.event.on('pointer.move', (run, event) => {
     if (!dragging) return;
-    const point = readPointerPoint(ev);
-    const client = orientation === 'vertical' ? point.clientY : point.clientX;
-    const delta = client - dragStartClient;
-    if (orientation === 'vertical') {
-      const track = Math.max(metrics.clientHeight, 1);
-      const max = Math.max(metrics.scrollHeight - metrics.clientHeight, 0);
-      const next = clamp(dragStartScroll + (delta / track) * metrics.scrollHeight, 0, max);
-      requestScrollPosition(run, { scrollTop: next }, 'thumb.pointermove');
-      return;
-    }
-    const track = Math.max(metrics.clientWidth, 1);
-    const max = Math.max(metrics.scrollWidth - metrics.clientWidth, 0);
-    const next = clamp(dragStartScroll + (delta / track) * metrics.scrollWidth, 0, max);
-    requestScrollPosition(run, { scrollLeft: next }, 'thumb.pointermove');
+    const point = readPointerPoint(event);
+    const currentOrientation = orientation.get();
+    const axis = axisValues(metrics, currentOrientation);
+    const client = currentOrientation === 'vertical' ? point.clientY : point.clientX;
+    const maxScroll = Math.max(axis.scrollSize - axis.client, 0);
+    const thumbTravel = Math.max(axis.client * (1 - sizeRatio.get()), 0);
+    const nextScroll =
+      thumbTravel > 0
+        ? clamp(
+            dragStartScroll + ((client - dragStartClient) / thumbTravel) * maxScroll,
+            0,
+            maxScroll
+          )
+        : 0;
+    requestScrollPosition(
+      run,
+      currentOrientation === 'vertical' ? { scrollTop: nextScroll } : { scrollLeft: nextScroll },
+      'thumb.pointermove'
+    );
   });
 
   const endDrag = () => {

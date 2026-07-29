@@ -1,4 +1,4 @@
-import { defineAsHook, definePrototype, tw, type DefHandle } from '@proto.ui/core';
+import { defineAsHook, definePrototype, tw, type DefHandle, type RunHandle } from '@proto.ui/core';
 import {
   publishScrollMetrics,
   SCROLL_AREA_CONTEXT,
@@ -47,7 +47,7 @@ function setupScrollAreaViewport(
 
   let lastRequestVersion = 0;
 
-  const applyMetrics = (run: any, metrics: ScrollAreaMetrics) => {
+  const applyMetrics = (run: RunHandle<ScrollAreaViewportProps>, metrics: ScrollAreaMetrics) => {
     scrollTop.set(metrics.scrollTop, 'reason: scroll-area viewport metrics scrollTop');
     scrollLeft.set(metrics.scrollLeft, 'reason: scroll-area viewport metrics scrollLeft');
     scrollHeight.set(metrics.scrollHeight, 'reason: scroll-area viewport metrics scrollHeight');
@@ -57,14 +57,14 @@ function setupScrollAreaViewport(
     publishScrollMetrics(run, metrics);
   };
 
-  const refreshFromHost = (run: any) => {
+  const refreshFromHost = (run: RunHandle<ScrollAreaViewportProps>) => {
     const hostEl = (run.host?.get?.() as HTMLElement | null) ?? null;
     if (!hostEl) return;
     applyMetrics(run, readMetrics(hostEl));
   };
 
-  // Host-bound scroll is routed into callback scope by the adapter event router.
-  def.event.on('host:scroll' as any, (run) => {
+  // Host-bound scroll is lazily bound and disposed by the adapter event router.
+  def.event.on('host:scroll', (run) => {
     refreshFromHost(run);
   });
 

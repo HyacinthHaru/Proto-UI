@@ -13,7 +13,7 @@ Adapter package intended to be used together with Proto UI prototypes and the sh
 ## Install
 
 ```bash
-npm install @proto.ui/adapter-web-component@0.0.1
+npm install @proto.ui/adapter-web-component@0.2.0-rc.7
 ```
 
 ## Internal Structure
@@ -29,18 +29,29 @@ npm install @proto.ui/adapter-web-component@0.0.1
 - `src/runtime/`
 - `src/slot-projector.ts`
 - `src/style.ts`
+- `src/types.ts`
 
 ## Related Internal Packages
 
 - `@proto.ui/adapter-base`
 - `@proto.ui/core`
+- `@proto.ui/hooks`
+- `@proto.ui/module-a11y`
+- `@proto.ui/module-anatomy`
+- `@proto.ui/module-as-trigger`
+- `@proto.ui/module-boundary`
 - `@proto.ui/module-context`
 - `@proto.ui/module-event`
-- `@proto.ui/module-expose`
 - `@proto.ui/module-expose-state`
 - `@proto.ui/module-expose-state-web`
 - `@proto.ui/module-feedback`
+- `@proto.ui/module-focus`
+- `@proto.ui/module-hit-participation`
+- `@proto.ui/module-overlay`
+- `@proto.ui/module-positioning`
 - `@proto.ui/module-props`
+- `@proto.ui/module-rule-expose-state-web`
+- `@proto.ui/module-rule-meta`
 - `@proto.ui/module-test-sys`
 - `@proto.ui/runtime`
 - `@proto.ui/types`

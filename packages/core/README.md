@@ -13,20 +13,28 @@ Core package for defining prototypes, handles, template primitives, and protocol
 ## Install
 
 ```bash
-npm install @proto.ui/core@0.0.1
+npm install @proto.ui/core@0.2.0-rc.7
 ```
 
 ## Internal Structure
 
+- `src/a11y.ts`
 - `src/anatomy.ts`
+- `src/boundary.ts`
 - `src/caps/`
+- `src/collection.ts`
+- `src/context.ts`
+- `src/delay.ts`
 - `src/effects/`
 - `src/errors/`
 - `src/focus.ts`
 - `src/handles.ts`
+- `src/hit-participation.ts`
 - `src/index.ts`
+- `src/internal.ts`
 - `src/module/`
 - `src/overlay.ts`
+- `src/positioning.ts`
 - `src/prototype.ts`
 - `src/spec/`
 - `src/state.ts`

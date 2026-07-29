@@ -1,4 +1,5 @@
-import { createAnatomyFamily, createContextKey } from '@proto.ui/core';
+import { createAnatomyFamily, createContextKey, type RunHandle } from '@proto.ui/core';
+import type { PropsBaseType } from '@proto.ui/types';
 
 export type ScrollAreaMetrics = {
   scrollTop: number;
@@ -28,17 +29,15 @@ export const EMPTY_SCROLL_METRICS: ScrollAreaMetrics = {
 };
 
 export function requestScrollPosition(
-  run: any,
+  run: RunHandle<PropsBaseType>,
   patch: { scrollTop?: number; scrollLeft?: number },
   reason: string
 ): boolean {
   try {
-    run.context.update(SCROLL_AREA_CONTEXT, (prev: ScrollAreaContextValue) => ({
+    run.context.update(SCROLL_AREA_CONTEXT, (prev) => ({
       ...prev,
-      requestScrollTop:
-        typeof patch.scrollTop === 'number' ? patch.scrollTop : prev.requestScrollTop,
-      requestScrollLeft:
-        typeof patch.scrollLeft === 'number' ? patch.scrollLeft : prev.requestScrollLeft,
+      requestScrollTop: typeof patch.scrollTop === 'number' ? patch.scrollTop : null,
+      requestScrollLeft: typeof patch.scrollLeft === 'number' ? patch.scrollLeft : null,
       requestVersion: prev.requestVersion + 1,
       requestReason: reason,
     }));
@@ -49,9 +48,12 @@ export function requestScrollPosition(
   }
 }
 
-export function publishScrollMetrics(run: any, metrics: ScrollAreaMetrics): boolean {
+export function publishScrollMetrics(
+  run: RunHandle<PropsBaseType>,
+  metrics: ScrollAreaMetrics
+): boolean {
   try {
-    run.context.update(SCROLL_AREA_CONTEXT, (prev: ScrollAreaContextValue) => ({
+    run.context.update(SCROLL_AREA_CONTEXT, (prev) => ({
       ...prev,
       metrics: { ...metrics },
       metricsVersion: prev.metricsVersion + 1,

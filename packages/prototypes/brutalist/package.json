@@ -26,9 +26,14 @@
       "types": "./src/button/index.ts",
       "import": "./src/button/index.ts",
       "default": "./src/button/index.ts"
+    },
+    "./scroll-area": {
+      "types": "./src/scroll-area/index.ts",
+      "import": "./src/scroll-area/index.ts",
+      "default": "./src/scroll-area/index.ts"
     }
   },
-  "description": "Neo-Brutalist Proto UI prototype library foundation and reference Button projection.",
+  "description": "Private Neo-Brutalist Proto UI foundation with Button and Scroll Area projections.",
   "license": "MIT",
   "homepage": "https://github.com/Proto-UI/Proto-UI/tree/main/packages/prototypes/brutalist",
   "repository": {

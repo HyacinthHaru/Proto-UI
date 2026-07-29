@@ -9,9 +9,9 @@ import BrutalistPageStyle from '@/components/BrutalistPageStyle.astro';
 
 <BrutalistPageStyle />
 
-Brutalist Scroll Area 继承 Base 的 viewport metrics、orientation、thumb 几何比例、原生 overflow 滚动，以及 thumb 拖拽产生的 scroll 请求。样式族只叠加方形纸面与高对比 Lavender/ink 滚动控件。
+Base Scroll Area 现发布 viewport metrics、精确且感知 orientation 的 Thumb ratio，以及经过 clamp 的 Thumb drag scroll request；原生 overflow 仍由 host 拥有。Brutalist family 叠加方形纸面与高对比 Lavender/ink 控件。
 
-适用于 ChatUI 会话历史、列表、命令结果、日志与密集 SaaS 面板。外层布局必须给 Root 明确尺寸。
+当前私有 shell 尚未将连续 ratio 投影为成比例的 Thumb size 或 offset；这需要 adapter-neutral continuous-style projection。当前 preview 用于原生滚动与协议 evidence，外围 layout 必须给 Root 明确尺寸。
 
 <div style="--pui-background:#f4f1ea;--pui-foreground:#000;--pui-lavender:#DDD6FE;background:#f4f1ea;color:#000;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:1rem;">
   <div style="height:12rem;width:20rem;">

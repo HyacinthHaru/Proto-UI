@@ -64,7 +64,13 @@ export default {
             kind: 'proto',
             prototypeId: 'brutalist-scroll-area-scrollbar',
             props: { orientation: 'vertical' },
-            children: [{ kind: 'proto', prototypeId: 'brutalist-scroll-area-thumb' }],
+            children: [
+              {
+                kind: 'proto',
+                prototypeId: 'brutalist-scroll-area-thumb',
+                props: { orientation: 'vertical' },
+              },
+            ],
           },
           { kind: 'proto', prototypeId: 'brutalist-scroll-area-corner' },
         ],

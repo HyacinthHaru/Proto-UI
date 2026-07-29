@@ -3,23 +3,26 @@ type: test
 title: Base Scroll Area metrics and thumb contract tests
 status: draft
 since: 0.2.0-rc.7
-summary: Covers Base Scroll Area viewport metrics publication and thumb drag scroll requests.
+summary: Covers host-derived metrics, exact bidirectional Thumb ratios, bounded drag mapping, and drag termination.
 cases:
   - id: T-BASE-SCROLL-AREA-0001-CASE-METRICS
-    title: Viewport publishes scroll metrics on host scroll
+    title: Viewport publishes all host scroll and client metrics
     covers:
-      - P-BASE-SCROLL-AREA-CATALOGED
-    expectation: viewport-metrics-publish-on-scroll
+      - P-BASE-SCROLL-AREA-VIEWPORT-METRICS
+      - P-BASE-SCROLL-AREA-VIEWPORT-REQUEST
+    expectation: viewport-host-metrics-and-versioned-request
   - id: T-BASE-SCROLL-AREA-0001-CASE-THUMB-RATIO
-    title: Thumb size and offset ratios derive from metrics
+    title: Thumb ratios are exact and finite in both orientations
     covers:
-      - P-BASE-SCROLL-AREA-CATALOGED
-    expectation: thumb-ratios-derive-from-metrics
+      - P-BASE-SCROLL-AREA-BEHAVIOR-BOUNDARY
+      - P-BASE-SCROLL-AREA-THUMB-RATIOS
+    expectation: thumb-exact-bidirectional-ratios
   - id: T-BASE-SCROLL-AREA-0001-CASE-THUMB-DRAG
-    title: Thumb pointer drag requests scroll position changes
+    title: Thumb drag maps available travel to clamped axis requests and terminates
     covers:
-      - P-BASE-SCROLL-AREA-CATALOGED
-    expectation: thumb-drag-requests-scroll-position
+      - P-BASE-SCROLL-AREA-BEHAVIOR-BOUNDARY
+      - P-BASE-SCROLL-AREA-THUMB-DRAG
+    expectation: thumb-bidirectional-bounded-drag
 implementations:
   - id: prototypes-base-scroll-area-contract
     kind: module-test
@@ -33,9 +36,7 @@ implementations:
     exercises:
       - P-BASE-SCROLL-AREA
       - P-BASE-SCROLL-AREA-VIEWPORT
-      - P-BASE-SCROLL-AREA-SCROLLBAR
       - P-BASE-SCROLL-AREA-THUMB
-      - P-BASE-SCROLL-AREA-CORNER
 sources:
   - path: packages/prototypes/base/test/scroll-area.test.ts
   - path: packages/prototypes/base/src/scroll-area/viewport.proto.ts
@@ -44,9 +45,7 @@ exercises:
   prototypes:
     - P-BASE-SCROLL-AREA
     - P-BASE-SCROLL-AREA-VIEWPORT
-    - P-BASE-SCROLL-AREA-SCROLLBAR
     - P-BASE-SCROLL-AREA-THUMB
-    - P-BASE-SCROLL-AREA-CORNER
 revisions:
   - version: 0.2.0-rc.7
     change: introduced

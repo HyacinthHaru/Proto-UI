@@ -48,16 +48,20 @@ export type ScrollAreaScrollbarAsHookContract = {
   state: ScrollAreaScrollbarStateHandles;
 };
 
-export interface ScrollAreaThumbProps {}
+export interface ScrollAreaThumbProps {
+  orientation?: 'horizontal' | 'vertical';
+}
 
 export type ScrollAreaThumbExposes = {
   sizeRatio: ExposeState<number>;
   offsetRatio: ExposeState<number>;
+  orientation: ExposeState<'horizontal' | 'vertical'>;
 };
 
 export type ScrollAreaThumbStateHandles = {
   sizeRatio: State<number>;
   offsetRatio: State<number>;
+  orientation: State<'horizontal' | 'vertical'>;
 };
 
 export type ScrollAreaThumbAsHookContract = {

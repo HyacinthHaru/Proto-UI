@@ -3,25 +3,29 @@ type: prototype
 title: Base Scroll Area Thumb protocol
 status: draft
 since: 0.2.0-rc.7
-summary: Base Scroll Area Thumb protocol for the Proto UI framework.
+summary: Orientation-aware Thumb geometry and bounded pointer-drag scroll requests.
 statement:
-  en: Base Scroll Area Thumb protocol. This draft entity catalogs the protocol surface.
-  zh-CN: Base Scroll Area Thumb protocol。该 draft entity 编目协议面。
+  en: Base Scroll Area Thumb derives exact size/offset ratios from Viewport metrics and maps pointer movement over available thumb travel to a clamped scroll request on its explicit axis.
+  zh-CN: Base Scroll Area Thumb 根据 Viewport metrics 推导精确 size/offset ratio，并将可用 thumb travel 上的 pointer movement 映射为显式轴上的 clamp scroll request。
 criteria:
-  - id: P-BASE-SCROLL-AREA-THUMB-CATALOGED
+  - id: P-BASE-SCROLL-AREA-THUMB-RATIOS
     text:
-      en: The protocol is cataloged for traceability.
-      zh-CN: 该协议已编目以便追溯。
+      en: '`sizeRatio` equals client size divided by scroll size and `offsetRatio` equals scroll offset divided by maximum scroll for the selected orientation, each clamped to `[0,1]`; zero scroll size yields `1` and `0` respectively.'
+      zh-CN: '对选定 orientation，`sizeRatio` 等于 client size 除以 scroll size，`offsetRatio` 等于 scroll offset 除以最大 scroll，二者均 clamp 到 `[0,1]`；scroll size 为零时分别为 `1` 与 `0`。'
+  - id: P-BASE-SCROLL-AREA-THUMB-DRAG
+    text:
+      en: 'Pointer drag maps movement over `clientSize × (1 - sizeRatio)` to the corresponding scroll range, clamps requests to both bounds, uses `clientY/scrollTop` vertically and `clientX/scrollLeft` horizontally, and ends on pointer up, cancel, or unmount.'
+      zh-CN: 'Pointer drag 将 `clientSize × (1 - sizeRatio)` 上的移动映射到对应 scroll range，请求在两端 clamp；纵向使用 `clientY/scrollTop`，横向使用 `clientX/scrollLeft`，并在 pointer up、cancel 或 unmount 时结束。'
 sources:
   - path: packages/prototypes/base/src/scroll-area/thumb.proto.ts
 revisions:
   - version: 0.2.0-rc.7
     change: introduced
     summary: Introduced base scroll area thumb protocol.
+verifies:
+  tests:
+    - T-BASE-SCROLL-AREA-0001
 tags:
   - prototype
   - base
   - scroll_area
-verifies:
-  tests:
-    - T-BASE-SCROLL-AREA-0001

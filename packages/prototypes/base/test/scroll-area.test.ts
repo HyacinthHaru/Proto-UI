@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { AdaptToWebComponent } from '@proto.ui/adapter-web-component';
+import {
+  AdaptToWebComponent,
+  setElementProps,
+  type WebComponentAdapterElement,
+} from '@proto.ui/adapter-web-component';
 import {
   scrollAreaRoot,
   scrollAreaScrollbar,
@@ -7,10 +11,22 @@ import {
   scrollAreaViewport,
 } from '../src/scroll-area';
 
-AdaptToWebComponent(scrollAreaRoot as any);
-AdaptToWebComponent(scrollAreaViewport as any);
-AdaptToWebComponent(scrollAreaScrollbar as any);
-AdaptToWebComponent(scrollAreaThumb as any);
+const ScrollAreaRootElement = AdaptToWebComponent(scrollAreaRoot);
+const ScrollAreaViewportElement = AdaptToWebComponent(scrollAreaViewport);
+const ScrollAreaScrollbarElement = AdaptToWebComponent(scrollAreaScrollbar);
+const ScrollAreaThumbElement = AdaptToWebComponent(scrollAreaThumb);
+
+type ViewportElement = WebComponentAdapterElement<typeof scrollAreaViewport>;
+type ThumbElement = WebComponentAdapterElement<typeof scrollAreaThumb>;
+
+type MutableMetrics = {
+  clientHeight: number;
+  clientWidth: number;
+  scrollHeight: number;
+  scrollWidth: number;
+  scrollTop?: number;
+  scrollLeft?: number;
+};
 
 async function flush(): Promise<void> {
   await Promise.resolve();
@@ -18,17 +34,9 @@ async function flush(): Promise<void> {
   await Promise.resolve();
 }
 
-function mockViewportMetrics(
-  viewport: HTMLElement,
-  metrics: {
-    clientHeight: number;
-    clientWidth: number;
-    scrollHeight: number;
-    scrollWidth: number;
-  }
-) {
-  let scrollTop = 0;
-  let scrollLeft = 0;
+function mockViewportMetrics(viewport: ViewportElement, metrics: MutableMetrics): void {
+  let scrollTop = metrics.scrollTop ?? 0;
+  let scrollLeft = metrics.scrollLeft ?? 0;
   Object.defineProperties(viewport, {
     clientHeight: { configurable: true, get: () => metrics.clientHeight },
     clientWidth: { configurable: true, get: () => metrics.clientWidth },
@@ -51,24 +59,38 @@ function mockViewportMetrics(
   });
 }
 
-function createScrollArea() {
-  const root = document.createElement('base-scroll-area-root') as any;
-  const viewport = document.createElement('base-scroll-area-viewport') as any;
-  const scrollbar = document.createElement('base-scroll-area-scrollbar') as any;
-  const thumb = document.createElement('base-scroll-area-thumb') as any;
-  mockViewportMetrics(viewport, {
+function pointerEvent(type: string, point: { clientX?: number; clientY?: number }): Event {
+  return Object.assign(new Event(type, { bubbles: true }), point);
+}
+
+function createScrollArea(
+  orientation: 'horizontal' | 'vertical' = 'vertical',
+  metrics: MutableMetrics = {
     clientHeight: 100,
-    clientWidth: 100,
+    clientWidth: 120,
     scrollHeight: 400,
-    scrollWidth: 100,
-  });
-  const content = document.createElement('div');
-  content.style.height = '400px';
-  viewport.appendChild(content);
+    scrollWidth: 600,
+  }
+): {
+  viewport: ViewportElement;
+  thumb: ThumbElement;
+} {
+  const root = new ScrollAreaRootElement();
+  const viewport = new ScrollAreaViewportElement();
+  const scrollbar = new ScrollAreaScrollbarElement();
+  const thumb = new ScrollAreaThumbElement();
+  setElementProps(scrollbar, { orientation });
+  setElementProps(thumb, { orientation });
+  mockViewportMetrics(viewport, metrics);
   scrollbar.appendChild(thumb);
   root.append(viewport, scrollbar);
   document.body.appendChild(root);
-  return { root, viewport, scrollbar, thumb, content };
+  return { viewport, thumb };
+}
+
+async function publishMetrics(viewport: ViewportElement): Promise<void> {
+  viewport.dispatchEvent(new Event('scroll'));
+  await flush();
 }
 
 afterEach(async () => {
@@ -76,57 +98,119 @@ afterEach(async () => {
   await flush();
 });
 
-describe('prototypes/base: scroll-area', () => {
-  it('publishes viewport metrics on scroll', async () => {
-    const { viewport } = createScrollArea();
+describe('prototypes/base: scroll-area behavior', () => {
+  it('publishes all viewport metrics from the host scroll surface', async () => {
+    const { viewport } = createScrollArea('vertical', {
+      clientHeight: 100,
+      clientWidth: 120,
+      scrollHeight: 400,
+      scrollWidth: 600,
+      scrollTop: 40,
+      scrollLeft: 30,
+    });
     await flush();
-    viewport.dispatchEvent(new Event('scroll', { bubbles: false }));
-    await flush();
+    await publishMetrics(viewport);
 
-    expect(viewport.getExposes().clientHeight.get()).toBe(100);
-    expect(viewport.getExposes().scrollHeight.get()).toBe(400);
+    const exposes = viewport.getExposes();
+    expect(exposes.clientHeight.get()).toBe(100);
+    expect(exposes.clientWidth.get()).toBe(120);
+    expect(exposes.scrollHeight.get()).toBe(400);
+    expect(exposes.scrollWidth.get()).toBe(600);
+    expect(exposes.scrollTop.get()).toBe(40);
+    expect(exposes.scrollLeft.get()).toBe(30);
+  });
+
+  it.each([['vertical', 0.25, 0.5] as const, ['horizontal', 0.2, 0.25] as const])(
+    'derives exact %s thumb size and offset ratios',
+    async (orientation, size, offset) => {
+      const { viewport, thumb } = createScrollArea(orientation, {
+        clientHeight: 100,
+        clientWidth: 120,
+        scrollHeight: 400,
+        scrollWidth: 600,
+        scrollTop: 150,
+        scrollLeft: 120,
+      });
+      await flush();
+      await publishMetrics(viewport);
+
+      expect(thumb.getExposes().sizeRatio.get()).toBe(size);
+      expect(thumb.getExposes().offsetRatio.get()).toBe(offset);
+    }
+  );
+
+  it('keeps zero-size metrics finite and stable', async () => {
+    const { viewport, thumb } = createScrollArea('vertical', {
+      clientHeight: 0,
+      clientWidth: 0,
+      scrollHeight: 0,
+      scrollWidth: 0,
+    });
+    await flush();
+    await publishMetrics(viewport);
+
+    expect(thumb.getExposes().sizeRatio.get()).toBe(1);
+    expect(thumb.getExposes().offsetRatio.get()).toBe(0);
+  });
+
+  it.each([
+    ['vertical', 'scrollTop', 'clientY', 25, 100] as const,
+    ['horizontal', 'scrollLeft', 'clientX', 24, 120] as const,
+  ])(
+    'maps %s drag travel to the corresponding scroll range',
+    async (orientation, scrollKey, clientKey, delta, expected) => {
+      const { viewport, thumb } = createScrollArea(orientation);
+      await flush();
+      await publishMetrics(viewport);
+
+      thumb.dispatchEvent(pointerEvent('pointerdown', { [clientKey]: 10 }));
+      thumb.dispatchEvent(pointerEvent('pointermove', { [clientKey]: 10 + delta }));
+      await flush();
+
+      expect(viewport.getExposes()[scrollKey].get()).toBe(expected);
+    }
+  );
+
+  it('does not replay an omitted axis from an older drag request', async () => {
+    const { viewport, thumb } = createScrollArea('vertical');
+    await flush();
+    await publishMetrics(viewport);
+
+    thumb.dispatchEvent(pointerEvent('pointerdown', { clientY: 10 }));
+    thumb.dispatchEvent(pointerEvent('pointermove', { clientY: 35 }));
+    thumb.dispatchEvent(pointerEvent('pointerup', { clientY: 35 }));
+    await flush();
+    expect(viewport.scrollTop).toBe(100);
 
     viewport.scrollTop = 40;
-    viewport.dispatchEvent(new Event('scroll', { bubbles: false }));
+    await publishMetrics(viewport);
+    setElementProps(thumb, { orientation: 'horizontal' });
     await flush();
-    expect(viewport.getExposes().scrollTop.get()).toBe(40);
+    thumb.dispatchEvent(pointerEvent('pointerdown', { clientX: 10 }));
+    thumb.dispatchEvent(pointerEvent('pointermove', { clientX: 34 }));
+    await flush();
+
+    expect(viewport.scrollTop).toBe(40);
+    expect(viewport.scrollLeft).toBe(120);
   });
 
-  it('updates thumb ratios from metrics', async () => {
-    const { viewport, thumb } = createScrollArea();
+  it('clamps drag requests and stops applying movement after pointer up', async () => {
+    const { viewport, thumb } = createScrollArea('vertical');
     await flush();
-    viewport.dispatchEvent(new Event('scroll', { bubbles: false }));
-    await flush();
+    await publishMetrics(viewport);
 
-    const size = thumb.getExposes().sizeRatio.get();
-    expect(size).toBeGreaterThan(0);
-    expect(size).toBeLessThanOrEqual(1);
+    thumb.dispatchEvent(pointerEvent('pointerdown', { clientY: 50 }));
+    thumb.dispatchEvent(pointerEvent('pointermove', { clientY: 500 }));
+    await flush();
+    expect(viewport.getExposes().scrollTop.get()).toBe(300);
 
-    viewport.scrollTop = 50;
-    viewport.dispatchEvent(new Event('scroll', { bubbles: false }));
+    thumb.dispatchEvent(pointerEvent('pointermove', { clientY: -500 }));
     await flush();
-    expect(thumb.getExposes().offsetRatio.get()).toBeGreaterThan(0);
-  });
+    expect(viewport.getExposes().scrollTop.get()).toBe(0);
 
-  it('thumb pointer drag requests scroll position changes', async () => {
-    const { viewport, thumb } = createScrollArea();
+    thumb.dispatchEvent(pointerEvent('pointerup', { clientY: -500 }));
+    thumb.dispatchEvent(pointerEvent('pointermove', { clientY: 50 }));
     await flush();
-    viewport.dispatchEvent(new Event('scroll', { bubbles: false }));
-    await flush();
-
-    thumb.dispatchEvent(
-      Object.assign(new Event('pointerdown', { bubbles: true }), {
-        clientY: 10,
-        pointerId: 1,
-      })
-    );
-    thumb.dispatchEvent(
-      Object.assign(new Event('pointermove', { bubbles: true }), {
-        clientY: 40,
-        pointerId: 1,
-      })
-    );
-    await flush();
-    expect(viewport.getExposes().scrollTop.get()).toBeGreaterThan(0);
+    expect(viewport.getExposes().scrollTop.get()).toBe(0);
   });
 });
