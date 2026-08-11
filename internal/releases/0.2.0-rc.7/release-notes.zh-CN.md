@@ -97,7 +97,7 @@
 - 完整工作区测试通过：280 个测试文件、1,244 个测试通过，另有 3 个按设计跳过的文件与 34 个 todo case。工作区与文档类型检查覆盖 134 个 Astro 文件，错误、警告和提示均为 0；catalog 统计为 117 个 declaration、160 个 static authoring entry、116 个已编目的 P entity、0 个 known debt file 与 1 个 dynamic factory file。
 - 40 个公开 package 均通过生产构建、export target 校验、原生 Node ESM import smoke、staging 与 `npm publish --dry-run`。React tarball consumer 实际使用 36/40 个打包产物，CLI multi-host consumer 使用 38/40 个；生产文档构建产出 190 个页面，其中 188 个进入 Pagefind。
 - 已在浏览器中对构建后的 Brutalist Textarea showcase 进行 Web Component、React 与 Vue 三适配器实测。每个适配器均只挂载一个原生 textarea；路由保留原生属性与可访问 label/help 关联，支持非受控编辑，并呈现方角薰衣草紫/ink、纵向 resize 与硬阴影视觉表面。
-- 集成 release rehearsal 已通过 release identity/assets、catalog、types、release tests、runtime tests、spec snapshot 生成、launch-governance scan、全部 40 个公开 registry identity、package staging、两个 tarball consumer 与生产文档构建。`@proto.ui/module-text-control` 和 `@proto.ui/prototypes-brutalist` 当前只能解析到非发布 bootstrap identity。公开 registry preflight 无法检查 package-scoped Trusted Publisher 设置，因此维护者必须在正式发布前确认这些私有绑定。
+- 集成 release rehearsal 已顺序通过 release identity/assets、catalog、types、release tests、runtime tests、spec snapshot 生成、8-package launch-governance scan、40/40 registry identity readiness、package build 与 publish dry-run、React/CLI tarball consumer、生产文档构建、manifest 检查和 Agent 文档校验。`@proto.ui/module-text-control` 现已可解析到 deprecated、code-free 的 `0.0.0-bootstrap.0` identity，并已为受保护发布 workflow 配置 package-scoped Trusted Publisher。
 - Demo Matrix 开发路由实测同时挂载 45 个 demo、135 个 previewer，Web Component、React 与 Vue 各 45 个；生产构建的 190 个页面、sitemap 与 Pagefind index 均不包含其中英文 Demo Matrix 路由。新增的 development-only 与三 adapter 并排 policy 已进入 41 条 release tests。
 - 公开 Brutalist library overview 已在真实 Chromium 中完成 14/14 preview 初始化验证，其中包含 Badge 与 Card，且没有 console、page 或 request error。
 
@@ -108,4 +108,4 @@
 
 ## 仍待发布准备
 
-- 本草案不代表 rc.7 已可安装。激活前需先确认每个新 bootstrap identity 的 package-scoped Trusted Publisher 设置，从已评审的 merge commit 重跑完整 release rehearsal，再建立不可变 spec snapshot、Git tag、GitHub prerelease 并执行 npm publication。
+- 本草案不代表 rc.7 已可安装。激活前仍需评审并合入准备 PR，从合入后的 `main` commit 重跑受保护 publication workflow，发布完整 40-package 集合，再建立并核对不可变 spec snapshot、Git tag、GitHub prerelease、npm `next` 状态与 publication evidence。
