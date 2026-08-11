@@ -1,6 +1,6 @@
-# Proto UI 0.2.0-rc.7 (Draft)
+# Proto UI 0.2.0-rc.7
 
-> These notes track candidate changes after `0.2.0-rc.6` that are intended for rc.7. `0.2.0-rc.7` has not been published. Exact package versions, the BOM, Git tag, GitHub prerelease, and immutable spec snapshot must be established and verified separately by the release-train preparation.
+> Published on August 11, 2026 under the npm `next` channel. All 40 public packages, the `v0.2.0-rc.7` tag, the GitHub prerelease, and the immutable spec snapshot share this exact release identity.
 
 ## Fixed and hardened
 
@@ -44,7 +44,7 @@
 ### CLI Brutalist preset and public prototype package
 
 - `proto-ui init --prototypes brutalist` is a first-class CSS-only style preset. It writes a Brutalist theme (`brutalist-theme.css` with light/dark variables and the flat canary/mint/lavender/coral/sky accent palette) plus a generated Proto UI token closure scanned from official Brutalist prototype sources.
-- `@proto.ui/prototypes-brutalist` is now a public `0.2.0-rc.7` draft package in the 40-package BOM. Its exported family subpaths and generated `proto-ui add` entries cover the admitted Button, Badge, Card, Toggle, Switch, Tabs, Hover Card, Dropdown, Select, Dialog, Scroll Area, Separator, Skeleton, and Textarea surfaces. This release-candidate state is not represented as already published.
+- `@proto.ui/prototypes-brutalist` is now published as a public `0.2.0-rc.7` package in the 40-package BOM. Its exported family subpaths and generated `proto-ui add` entries cover the admitted Button, Badge, Card, Toggle, Switch, Tabs, Hover Card, Dropdown, Select, Dialog, Scroll Area, Separator, Skeleton, and Textarea surfaces.
 
 ### Separator protocol and Skeleton visual prototype
 
@@ -97,7 +97,7 @@
 - The complete workspace suite passes with 280 test files and 1,244 tests, plus 3 intentionally skipped files and 34 todo cases. Workspace and documentation type checks cover 134 Astro files with zero errors, warnings, or hints; the catalog reports 117 declarations, 160 static authoring entries, 116 cataloged P entities, zero known debt files, and one dynamic factory file.
 - All 40 public packages pass production build, export-target validation, native Node ESM import smoke, staging, and `npm publish --dry-run`. The React tarball consumer uses 36/40 packed packages, the CLI multi-host consumer uses 38/40, and the production documentation build emits 190 pages with 188 indexed by Pagefind.
 - The built Brutalist Textarea showcase was exercised in a browser across Web Component, React, and Vue. Each adapter mounts one native textarea; the route preserves native properties and accessible label/help relations, accepts uncontrolled editing, and renders the square lavender/ink, vertical-resize, hard-shadow surface.
-- The integrated release rehearsal passes release identity/assets, catalog, types, release tests, runtime tests, spec snapshot generation, launch-governance scan, all 40 public registry identities, package staging, both tarball consumers, and the production documentation build. `@proto.ui/module-text-control` and `@proto.ui/prototypes-brutalist` resolve only at non-release bootstrap identities. Public registry preflight cannot inspect package-scoped Trusted Publisher settings, so maintainers must confirm those private bindings before publication.
+- The integrated release rehearsal passes release identity/assets, catalog, types, release tests, runtime tests, spec snapshot generation, launch-governance scan, all 40 public registry identities, package staging, both tarball consumers, and the production documentation build. The protected release workflow then published all 40 exact versions through their package-scoped Trusted Publishers; registry verification confirms every package at `0.2.0-rc.7` with `next` and integrity evidence.
 - The development Demo Matrix was verified with 45 demos and 135 simultaneously mounted previewers, 45 each for Web Component, React, and Vue. Its English and Chinese routes are absent from the 190-page production build, sitemap, and Pagefind index; the development-only and three-adapter side-by-side policies are now covered by the 41 release tests.
 - The public Brutalist library overview was exercised in real Chromium with 14/14 previews initialized, including Badge and Card, with no console, page, or request errors.
 
@@ -106,6 +106,6 @@
 - Consumers that use public package exports do not need to change their imports, but runtime resolution now targets compiled `.js` and type resolution targets `.d.ts`. Non-public usage that imports package-internal `src/*.ts` paths or assumes source/tests are present in the npm payload is not a compatibility guarantee.
 - Custom host integrations should migrate to the trigger-group capability names. Deprecated route-owner aliases are transitional only.
 
-## Release preparation still required
+## Still under validation
 
-- This draft does not mean rc.7 is installable. Before activation, confirm package-scoped Trusted Publisher settings for every newly bootstrapped identity, rerun the complete release rehearsal from the reviewed merge commit, and then establish the immutable spec snapshot, Git tag, GitHub prerelease, and npm publication.
+- Additional installation, runtime, CSS, accessibility, bundle, composition, and API findings from post-publication `0.2.0-rc.7` trials will enter a later release train.

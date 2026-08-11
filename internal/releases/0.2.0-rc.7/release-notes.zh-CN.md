@@ -1,6 +1,6 @@
-# Proto UI 0.2.0-rc.7（草案）
+# Proto UI 0.2.0-rc.7
 
-> 本文记录 `0.2.0-rc.6` 之后拟进入 rc.7 的候选变化。`0.2.0-rc.7` 尚未发布；精确 package 版本、BOM、Git tag、GitHub prerelease 与不可变 spec snapshot 需要由后续 release-train preparation 单独建立并验证。
+> 已于 2026 年 8 月 11 日通过 npm `next` channel 发布。全部 40 个公开 package、`v0.2.0-rc.7` tag、GitHub prerelease 与不可变 spec snapshot 共享这一精确发行身份。
 
 ## 已修正与加固
 
@@ -44,7 +44,7 @@
 ### CLI Brutalist preset 与公开原型 package
 
 - `proto-ui init --prototypes brutalist` 是一等 CSS-only style preset。它会写出 Brutalist 主题（`brutalist-theme.css`，包含 Light/Dark 变量与扁平 canary/mint/lavender/coral/sky 强调调色板），以及从官方 Brutalist prototype 源码扫描生成的 Proto UI token closure。
-- `@proto.ui/prototypes-brutalist` 现已作为公开 `0.2.0-rc.7` 草案 package 进入 40-package BOM。其导出的 family subpath 与生成的 `proto-ui add` 条目覆盖已准入的 Button、Badge、Card、Toggle、Switch、Tabs、Hover Card、Dropdown、Select、Dialog、Scroll Area、Separator、Skeleton 与 Textarea surface；此 release-candidate 状态不代表已经发布。
+- `@proto.ui/prototypes-brutalist` 已作为公开 `0.2.0-rc.7` package 发布并进入 40-package BOM。其导出的 family subpath 与生成的 `proto-ui add` 条目覆盖已准入的 Button、Badge、Card、Toggle、Switch、Tabs、Hover Card、Dropdown、Select、Dialog、Scroll Area、Separator、Skeleton 与 Textarea surface。
 
 ### Separator 协议与 Skeleton 视觉原型
 
@@ -97,7 +97,7 @@
 - 完整工作区测试通过：280 个测试文件、1,244 个测试通过，另有 3 个按设计跳过的文件与 34 个 todo case。工作区与文档类型检查覆盖 134 个 Astro 文件，错误、警告和提示均为 0；catalog 统计为 117 个 declaration、160 个 static authoring entry、116 个已编目的 P entity、0 个 known debt file 与 1 个 dynamic factory file。
 - 40 个公开 package 均通过生产构建、export target 校验、原生 Node ESM import smoke、staging 与 `npm publish --dry-run`。React tarball consumer 实际使用 36/40 个打包产物，CLI multi-host consumer 使用 38/40 个；生产文档构建产出 190 个页面，其中 188 个进入 Pagefind。
 - 已在浏览器中对构建后的 Brutalist Textarea showcase 进行 Web Component、React 与 Vue 三适配器实测。每个适配器均只挂载一个原生 textarea；路由保留原生属性与可访问 label/help 关联，支持非受控编辑，并呈现方角薰衣草紫/ink、纵向 resize 与硬阴影视觉表面。
-- 集成 release rehearsal 已通过 release identity/assets、catalog、types、release tests、runtime tests、spec snapshot 生成、launch-governance scan、全部 40 个公开 registry identity、package staging、两个 tarball consumer 与生产文档构建。`@proto.ui/module-text-control` 和 `@proto.ui/prototypes-brutalist` 当前只能解析到非发布 bootstrap identity。公开 registry preflight 无法检查 package-scoped Trusted Publisher 设置，因此维护者必须在正式发布前确认这些私有绑定。
+- 集成 release rehearsal 已通过 release identity/assets、catalog、types、release tests、runtime tests、spec snapshot 生成、launch-governance scan、全部 40 个公开 registry identity、package staging、两个 tarball consumer 与生产文档构建。受保护发布 workflow 随后通过 package-scoped Trusted Publisher 发布了全部 40 个精确版本；registry 复核确认每个 package 均存在 `0.2.0-rc.7`、`next` 指向该版本且具备 integrity 证据。
 - Demo Matrix 开发路由实测同时挂载 45 个 demo、135 个 previewer，Web Component、React 与 Vue 各 45 个；生产构建的 190 个页面、sitemap 与 Pagefind index 均不包含其中英文 Demo Matrix 路由。新增的 development-only 与三 adapter 并排 policy 已进入 41 条 release tests。
 - 公开 Brutalist library overview 已在真实 Chromium 中完成 14/14 preview 初始化验证，其中包含 Badge 与 Card，且没有 console、page 或 request error。
 
@@ -106,6 +106,6 @@
 - 通过公开 package exports 使用 Proto UI 的消费者无需更改导入方式，但运行时现在会解析到已编译的 `.js`，类型解析到 `.d.ts`。依赖 package 内部 `src/*.ts` 路径或假定 npm payload 包含源码/测试的非公开用法不属于兼容保证。
 - 自定义 host integration 应迁移到 trigger-group capability 命名；deprecated route-owner alias 仅用于过渡。
 
-## 仍待发布准备
+## 仍在验证
 
-- 本草案不代表 rc.7 已可安装。激活前需先确认每个新 bootstrap identity 的 package-scoped Trusted Publisher 设置，从已评审的 merge commit 重跑完整 release rehearsal，再建立不可变 spec snapshot、Git tag、GitHub prerelease 并执行 npm publication。
+- `0.2.0-rc.7` 发布后试用继续发现的安装、运行时、CSS、a11y、bundle、组合与 API 问题将进入后续 release train。
