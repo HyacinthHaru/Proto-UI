@@ -671,6 +671,8 @@ export default defineConfig({
         PageTitle: './src/components/override/PageTitle.astro',
         MarkdownContent: './src/components/override/MarkdownContent.astro',
         LanguageSelect: './src/components/override/LanguageSelect.astro',
+        MobileMenuToggle: './src/components/override/MobileMenuToggle.astro',
+        MobileMenuFooter: './src/components/override/MobileMenuFooter.astro',
       },
     }),
     mdx(),

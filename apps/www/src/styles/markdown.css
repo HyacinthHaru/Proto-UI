@@ -1,6 +1,6 @@
 @layer components {
   .main-pane {
-    @apply w-full;
+    @apply w-full min-w-0;
   }
 
   main[data-pagefind-body] {
@@ -41,7 +41,10 @@
   }
 
   main[data-pagefind-body] table {
-    @apply mt-6 w-full text-sm border border-border rounded-lg overflow-hidden bg-background;
+    @apply mt-6 w-full text-sm border border-border rounded-lg bg-background;
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
     border-collapse: separate;
     border-spacing: 0;
   }
@@ -115,6 +118,19 @@
   /* 仅对行内 code 应用样式，排除 pre>code 代码块（如 Shiki 高亮），避免暗色模式下黑色矩形 */
   main[data-pagefind-body] :not(pre) > code {
     @apply bg-muted relative rounded-sm px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+  }
+
+  main[data-pagefind-body] :not(pre) > code {
+    overflow-wrap: anywhere;
+  }
+
+  main[data-pagefind-body] pre,
+  main[data-pagefind-body] .expressive-code {
+    max-width: 100%;
+  }
+
+  main[data-pagefind-body] pre {
+    overflow-x: auto;
   }
 
   main[data-pagefind-body] hr {
@@ -212,8 +228,8 @@
 
     main[data-pagefind-body]
       .enhanced-image-wrapper:has(.enhanced-image[src$='/diagrams/information-flow-model.svg']) {
-      width: calc(100vw - 4rem);
-      max-width: calc(100vw - 4rem);
+      width: 100%;
+      max-width: 100%;
       margin-inline: 0;
     }
 

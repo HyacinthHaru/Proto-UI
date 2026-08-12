@@ -1,0 +1,147 @@
+<starlight-menu-button class="print:hidden">
+  <button
+    type="button"
+    aria-expanded="false"
+    aria-label={Astro.locals.t('menuButton.accessibleLabel')}
+    aria-controls="starlight__sidebar"
+  >
+    <svg class="open-menu" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+    <svg class="close-menu" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m6 6 12 12M18 6 6 18"></path>
+    </svg>
+  </button>
+</starlight-menu-button>
+
+<script>
+  class ProtoUiMobileMenuButton extends HTMLElement {
+    private button: HTMLButtonElement | null = null;
+    private readonly desktopMedia = window.matchMedia('(min-width: 50rem)');
+    private initialized = false;
+
+    private readonly handleClick = () => {
+      this.setExpanded(this.getAttribute('aria-expanded') !== 'true');
+    };
+
+    private readonly handleKeydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && this.getAttribute('aria-expanded') === 'true') {
+        this.setExpanded(false);
+        this.button?.focus();
+      }
+    };
+
+    private readonly handleViewportChange = (event: MediaQueryListEvent) => {
+      if (event.matches) this.setExpanded(false);
+    };
+
+    connectedCallback() {
+      if (this.initialized) return;
+      this.button = this.querySelector('button');
+      if (!this.button) return;
+
+      this.initialized = true;
+      this.button.addEventListener('click', this.handleClick);
+      document.addEventListener('keydown', this.handleKeydown);
+      this.desktopMedia.addEventListener('change', this.handleViewportChange);
+      this.setExpanded(false);
+    }
+
+    disconnectedCallback() {
+      this.button?.removeEventListener('click', this.handleClick);
+      document.removeEventListener('keydown', this.handleKeydown);
+      this.desktopMedia.removeEventListener('change', this.handleViewportChange);
+      if (this.getAttribute('aria-expanded') === 'true') {
+        document.body.removeAttribute('data-mobile-menu-expanded');
+      }
+      this.initialized = false;
+    }
+
+    private setExpanded(expanded: boolean) {
+      const value = String(expanded);
+      this.setAttribute('aria-expanded', value);
+      this.button?.setAttribute('aria-expanded', value);
+      document.body.toggleAttribute('data-mobile-menu-expanded', expanded);
+    }
+  }
+
+  if (!customElements.get('starlight-menu-button')) {
+    customElements.define('starlight-menu-button', ProtoUiMobileMenuButton);
+  }
+</script>
+
+<style>
+  @layer components {
+    starlight-menu-button {
+      display: block;
+    }
+
+    button {
+      position: fixed;
+      inset-block-start: calc((var(--header-height) - 2.5rem) / 2);
+      inset-inline-end: 0.75rem;
+      z-index: 60;
+      display: flex;
+      width: 2.5rem;
+      height: 2.5rem;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 1px solid var(--color-border);
+      border-radius: 0.5rem;
+      background: var(--color-foreground);
+      color: var(--color-background);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: color-mix(in oklab, var(--color-foreground) 88%, var(--color-background));
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--color-ring);
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    [aria-expanded='true'] button {
+      background: var(--color-muted);
+      color: var(--color-foreground);
+      box-shadow: none;
+    }
+
+    [aria-expanded='true'] .open-menu,
+    :not([aria-expanded='true']) .close-menu {
+      display: none !important;
+    }
+
+    @media (min-width: 50rem) {
+      starlight-menu-button {
+        display: none;
+      }
+    }
+  }
+</style>
+
+<style is:global>
+  @layer components {
+    body[data-mobile-menu-expanded] {
+      overflow: hidden;
+    }
+
+    @media (min-width: 50rem) {
+      body[data-mobile-menu-expanded] {
+        overflow: auto;
+      }
+    }
+  }
+</style>

@@ -1,47 +1,100 @@
 ---
-import MobileMenuToggle from '@astrojs/starlight/components/MobileMenuToggle.astro';
+import MobileMenuToggle from './MobileMenuToggle.astro';
 import '../../styles/global.css';
 
 const { hasSidebar } = Astro.locals.starlightRoute;
 ---
 
 <div
-  class="bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] [--header-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)]"
+  class="page-shell bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] [--header-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)]"
 >
-  <div class="bg-background container-wrapper flex flex-1 flex-col px-2">
-    <header class="bg-background sticky top-0 z-50 w-full"><slot name="header" /></header>
-    <div
-      class="bg-background group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex w-full 3xl:fixed:container 3xl:fixed:px-3 min-h-min flex-1 items-start px-0 [--sidebar-width:220px] [--top-spacing:0] lg:grid lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] lg:[--sidebar-width:240px] lg:[--top-spacing:calc(var(--spacing)*4)]"
-    >
-      {
-        hasSidebar && (
-          <>
-            <nav
-              class="no-scrollbar overflow-scroll text-sidebar-foreground w-(--sidebar-width) flex-col sticky top-[calc(var(--header-height)+1px)] z-30 hidden h-[calc(100svh-var(--header-height))] bg-transparent lg:flex"
-              aria-label={Astro.locals.t('sidebarNav.accessibleLabel')}
-            >
-              <MobileMenuToggle />
-              <div id="starlight__sidebar" class="sidebar-pane">
-                <div class="sidebar-content sl-flex">
-                  <slot name="sidebar" />
-                </div>
-              </div>
-            </nav>
-            <div class="main-frame">
-              <slot />
-            </div>
-          </>
-        )
-      }
-    </div>
+  <header class="shell-header bg-background sticky top-0 z-50 w-full">
+    <slot name="header" />
+  </header>
+  <div
+    class="shell-layout bg-background 3xl:fixed:container 3xl:fixed:px-3 [--sidebar-width:220px] lg:[--sidebar-width:240px]"
+  >
     {
-      !hasSidebar && (
-        <div class="main-frame">
-          <slot />
-        </div>
+      hasSidebar && (
+        <nav
+          class="sidebar-nav no-scrollbar text-sidebar-foreground"
+          aria-label={Astro.locals.t('sidebarNav.accessibleLabel')}
+        >
+          <MobileMenuToggle />
+          <div id="starlight__sidebar" class="sidebar-pane">
+            <div class="sidebar-content">
+              <slot name="sidebar" />
+            </div>
+          </div>
+        </nav>
       )
     }
+    <div class="main-frame">
+      <slot />
+    </div>
   </div>
 </div>
 
-<style></style>
+<noscript>
+  <style is:inline>
+    @media (max-width: 49.999rem) {
+      starlight-menu-button {
+        display: none !important;
+      }
+
+      .shell-layout {
+        display: block !important;
+      }
+
+      .sidebar-nav,
+      .sidebar-pane {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        visibility: visible !important;
+      }
+    }
+  </style>
+</noscript>
+
+<style>
+  @layer components {
+    .page-shell {
+      width: 100%;
+      min-width: 0;
+      min-height: 100vh;
+    }
+
+    .shell-layout {
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      align-items: flex-start;
+    }
+
+    .sidebar-nav {
+      width: 0;
+      min-width: 0;
+    }
+
+    .main-frame {
+      width: 100%;
+      min-width: 0;
+    }
+
+    @media (min-width: 50rem) {
+      .shell-layout {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      }
+
+      .sidebar-nav {
+        position: sticky;
+        inset-block-start: var(--header-height);
+        width: var(--sidebar-width);
+        height: calc(100svh - var(--header-height));
+        overflow-y: auto;
+      }
+    }
+  }
+</style>

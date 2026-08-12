@@ -34,10 +34,8 @@ localeOptions.forEach((opt) => {
 });
 ---
 
-<div class="language-select-wrapper relative inline-flex items-center">
-  <label class="sr-only" for="language-select">选择语言 / Select Language</label>
+<div class="language-select-wrapper relative inline-flex items-center" data-language-select>
   <select
-    id="language-select"
     class="language-select appearance-none inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all outline-none h-8 rounded-md gap-1.5 px-3 pr-8 cursor-pointer bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
     aria-label="选择语言 / Select Language"
     autocomplete="off"
@@ -69,6 +67,61 @@ localeOptions.forEach((opt) => {
       stroke-linecap="round"
       stroke-linejoin="round"></path>
   </svg>
+  <script is:inline>
+    (function () {
+      var script = document.currentScript;
+      var root = script && script.parentElement;
+      var select = root && root.querySelector('select');
+      if (!(select instanceof HTMLSelectElement) || select.dataset.languageSelectReady === 'true')
+        return;
+
+      select.dataset.languageSelectReady = 'true';
+      var storageKey = 'preferred-locale';
+      var currentLocale = select.dataset.currentLocale || '';
+      var localePaths = {};
+
+      try {
+        localePaths = JSON.parse(select.dataset.localePaths || '{}');
+      } catch (error) {
+        console.error('[Language Select] Failed to parse locale paths:', error);
+        return;
+      }
+
+      function setPreference(locale) {
+        try {
+          localStorage.setItem(storageKey, locale);
+        } catch (error) {}
+
+        var expires = new Date();
+        expires.setFullYear(expires.getFullYear() + 1);
+        document.cookie =
+          'preferred-locale=' +
+          encodeURIComponent(locale) +
+          '; path=/; expires=' +
+          expires.toUTCString() +
+          '; SameSite=Lax';
+      }
+
+      function getCookieValue(name) {
+        var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[1]) : '';
+      }
+
+      select.addEventListener('change', function () {
+        var newLocale = select.value;
+        var newPath = localePaths[newLocale];
+        if (newPath && newLocale && newLocale !== currentLocale) {
+          setPreference(newLocale);
+          window.location.pathname = newPath;
+        }
+      });
+
+      try {
+        var stored = localStorage.getItem(storageKey);
+        if (stored && stored !== getCookieValue(storageKey)) setPreference(stored);
+      } catch (error) {}
+    })();
+  </script>
 </div>
 
 <style>
@@ -102,71 +155,3 @@ localeOptions.forEach((opt) => {
     }
   }
 </style>
-
-<script is:inline>
-  (function () {
-    const STORAGE_KEY = 'preferred-locale';
-
-    function setPreference(locale) {
-      try {
-        localStorage.setItem(STORAGE_KEY, locale);
-      } catch (e) {
-        // ignore storage errors (e.g. private mode)
-      }
-
-      // Save user's language preference to Cookie (valid for 1 year)
-      const expires = new Date();
-      expires.setFullYear(expires.getFullYear() + 1);
-      document.cookie = `preferred-locale=${locale}; path=/; expires=${expires.toUTCString()}; SameSite=Lax`;
-    }
-
-    function getCookieValue(name) {
-      const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-      return match ? decodeURIComponent(match[1]) : '';
-    }
-
-    function initLanguageSelect() {
-      const select = document.getElementById('language-select');
-      if (!select) return;
-
-      const currentLocale = select.dataset.currentLocale || '';
-      let localePaths = {};
-      try {
-        localePaths = JSON.parse(select.dataset.localePaths || '{}');
-      } catch (e) {
-        console.error('[Language Select] Failed to parse locale paths:', e);
-        return;
-      }
-
-      function handleLanguageChange() {
-        const newLocale = select.value;
-        const newPath = localePaths[newLocale];
-
-        if (newPath && newLocale && newLocale !== currentLocale) {
-          setPreference(newLocale);
-          console.log('[Language Switch] Saved locale preference:', newLocale);
-          window.location.pathname = newPath;
-        }
-      }
-
-      // If localStorage has a preferred locale, keep cookie in sync
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored && stored !== getCookieValue(STORAGE_KEY)) {
-          setPreference(stored);
-        }
-      } catch (e) {
-        // ignore storage errors
-      }
-
-      select.addEventListener('change', handleLanguageChange);
-    }
-
-    // Ensure DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initLanguageSelect);
-    } else {
-      initLanguageSelect();
-    }
-  })();
-</script>

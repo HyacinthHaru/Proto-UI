@@ -1,0 +1,42 @@
+---
+import AdapterSelect from './AdapterSelect.astro';
+import LanguageSelect from './LanguageSelect.astro';
+import SocialIcons from './SocialIcons.astro';
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<div class="mobile-preferences">
+  <div class="mobile-preferences__social">
+    <SocialIcons />
+  </div>
+  <div class="mobile-preferences__controls">
+    <ThemeToggle />
+    <LanguageSelect />
+    <AdapterSelect />
+  </div>
+</div>
+
+<style>
+  @layer components {
+    .mobile-preferences {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      padding: 1rem 0 0.5rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .mobile-preferences__social,
+    .mobile-preferences__controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .mobile-preferences__controls {
+      justify-content: space-between;
+    }
+  }
+</style>
