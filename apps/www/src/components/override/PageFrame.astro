@@ -1,6 +1,5 @@
 ---
 import MobileMenuToggle from './MobileMenuToggle.astro';
-import '../../styles/global.css';
 
 const { hasSidebar } = Astro.locals.starlightRoute;
 ---
@@ -12,7 +11,10 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     <slot name="header" />
   </header>
   <div
-    class="shell-layout bg-background 3xl:fixed:container 3xl:fixed:px-3 [--sidebar-width:220px] lg:[--sidebar-width:240px]"
+    class:list={[
+      'shell-layout bg-background 3xl:fixed:container 3xl:fixed:px-3 [--sidebar-width:220px] lg:[--sidebar-width:240px]',
+      hasSidebar && 'has-sidebar',
+    ]}
   >
     {
       hasSidebar && (
@@ -85,6 +87,10 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     @media (min-width: 50rem) {
       .shell-layout {
         display: grid;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .shell-layout.has-sidebar {
         grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
       }
 

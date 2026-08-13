@@ -75,6 +75,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Proto UI',
+      customCss: ['./src/styles/global.css'],
 
       defaultLocale: 'zh-cn',
       locales: {
