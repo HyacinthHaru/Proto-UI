@@ -4,7 +4,35 @@ description: 'Verify the Proto UI onboarding flow with the exact 0.2.0-rc.7 rele
 ---
 
 import DocStageNotice from '@/components/DocStageNotice.astro';
+import CodeExample from '@/components/CodeExample.astro';
 import { Aside } from '@astrojs/starlight/components';
+
+export const multiHostFiles = /** @type {const} */ ({
+  react: [
+    {
+      name: 'install.sh',
+      lang: 'bash',
+      code: 'npx @proto.ui/cli@0.2.0-rc.7 add react shadcn-button',
+    },
+    {
+      name: 'Demo.tsx',
+      lang: 'tsx',
+      code: "import { ShadcnButton } from '../proto-ui/components/react';",
+    },
+  ],
+  wc: [
+    {
+      name: 'install.sh',
+      lang: 'bash',
+      code: 'npx @proto.ui/cli@0.2.0-rc.7 add wc shadcn-button',
+    },
+    {
+      name: 'main.ts',
+      lang: 'typescript',
+      code: "import { ShadcnButtonElement } from '../proto-ui/components/wc';",
+    },
+  ],
+});
 
 <DocStageNotice
   tone="amber"
@@ -147,22 +175,11 @@ import { ShadcnButton, ShadcnDialogRoot, ShadcnToggle } from '../proto-ui/compon
 
 If the same project needs both React and Web Components, add them separately:
 
-```bash
-npx @proto.ui/cli@0.2.0-rc.7 add react shadcn-button
-npx @proto.ui/cli@0.2.0-rc.7 add wc shadcn-button
-```
+React components are exported from the React host entry.
 
-React components are exported from the React host entry:
+Web Component constructors are exported from the Web Component host entry.
 
-```tsx
-import { ShadcnButton } from '../proto-ui/components/react';
-```
-
-Web Component constructors are exported from the Web Component host entry:
-
-```ts
-import { ShadcnButtonElement } from '../proto-ui/components/wc';
-```
+<CodeExample files={multiHostFiles} initialHost="react" label="React and Web Component setup" />
 
 `proto-ui/components/index.ts` also re-exports host-prefixed or explicit names to avoid naming conflicts when multiple hosts are used in the same project.
 

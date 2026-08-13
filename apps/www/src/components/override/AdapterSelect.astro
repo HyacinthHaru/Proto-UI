@@ -1,7 +1,12 @@
 ---
-export const PREFERRED_KEY = 'preferred-prototypes-adapter';
 import { AdapterIds } from '../PrototypePreviewer/runtimes/registry';
-export const DEFAULT_ADAPTER = 'wc';
+import {
+  DEFAULT_ADAPTER,
+  PREFERRED_ADAPTER_EVENT,
+  PREFERRED_ADAPTER_KEY,
+} from '../adapter-preference';
+
+const controlId = `adapter-select-${Math.random().toString(36).slice(2)}`;
 
 // 适配器选项
 const options = [
@@ -11,34 +16,55 @@ const options = [
 ];
 ---
 
-<div class="adapter-select-wrapper relative inline-flex items-center">
-  <label class="sr-only" for="adapter-select">选择适配器</label>
+<div class="adapter-select-wrapper relative inline-flex items-center" data-adapter-select>
+  <label class="sr-only" for={controlId}>选择适配器</label>
   <select
-    id="adapter-select"
+    id={controlId}
     class="adapter-select appearance-none inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all outline-none h-8 rounded-md gap-1.5 px-3 pr-8 cursor-pointer bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
     aria-label="选择适配器"
     autocomplete="off"
   >
     {options.map((opt) => <option value={opt.value}>{opt.label}</option>)}
   </select>
-  <script is:inline define:vars={{ PREFERRED_KEY, DEFAULT_ADAPTER, AdapterIds }}>
+  <script
+    is:inline
+    define:vars={{
+      PREFERRED_ADAPTER_KEY,
+      PREFERRED_ADAPTER_EVENT,
+      DEFAULT_ADAPTER,
+      AdapterIds,
+    }}
+  >
     (function () {
-      var select = document.getElementById('adapter-select');
-      if (!select) return;
+      var script = document.currentScript;
+      var root = script && script.closest('[data-adapter-select]');
+      var select = root && root.querySelector('select');
+      if (!select || select.dataset.adapterSelectInit === '1') return;
+      select.dataset.adapterSelectInit = '1';
 
       try {
-        let SelectedAdapter = localStorage.getItem(PREFERRED_KEY);
-        if (SelectedAdapter && AdapterIds.indexOf(SelectedAdapter) !== -1)
-          select.value = SelectedAdapter;
-      } catch (e) {}
+        var storedAdapter = localStorage.getItem(PREFERRED_ADAPTER_KEY);
+        select.value =
+          storedAdapter && AdapterIds.indexOf(storedAdapter) !== -1
+            ? storedAdapter
+            : DEFAULT_ADAPTER;
+      } catch (e) {
+        select.value = DEFAULT_ADAPTER;
+      }
 
       select.addEventListener('change', function () {
+        if (AdapterIds.indexOf(select.value) === -1) return;
         try {
-          localStorage.setItem(PREFERRED_KEY, select.value);
+          localStorage.setItem(PREFERRED_ADAPTER_KEY, select.value);
         } catch (e) {}
         document.dispatchEvent(
-          new CustomEvent('proto-adapter:change', { detail: { adapter: select.value } })
+          new CustomEvent(PREFERRED_ADAPTER_EVENT, { detail: { adapter: select.value } })
         );
+      });
+
+      document.addEventListener(PREFERRED_ADAPTER_EVENT, function (event) {
+        var adapter = event && event.detail && event.detail.adapter;
+        if (AdapterIds.indexOf(adapter) !== -1) select.value = adapter;
       });
     })();
   </script>
