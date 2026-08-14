@@ -1,11 +1,4 @@
 ---
-import { AdapterIds } from '../PrototypePreviewer/runtimes/registry';
-import {
-  DEFAULT_ADAPTER,
-  PREFERRED_ADAPTER_EVENT,
-  PREFERRED_ADAPTER_KEY,
-} from '../adapter-preference';
-
 const controlId = `adapter-select-${Math.random().toString(36).slice(2)}`;
 
 // 适配器选项
@@ -26,47 +19,11 @@ const options = [
   >
     {options.map((opt) => <option value={opt.value}>{opt.label}</option>)}
   </select>
-  <script
-    is:inline
-    define:vars={{
-      PREFERRED_ADAPTER_KEY,
-      PREFERRED_ADAPTER_EVENT,
-      DEFAULT_ADAPTER,
-      AdapterIds,
-    }}
-  >
-    (function () {
-      var script = document.currentScript;
-      var root = script && script.closest('[data-adapter-select]');
-      var select = root && root.querySelector('select');
-      if (!select || select.dataset.adapterSelectInit === '1') return;
-      select.dataset.adapterSelectInit = '1';
+  <script>
+    import { initAdapterSelects } from '../adapter-preference';
 
-      try {
-        var storedAdapter = localStorage.getItem(PREFERRED_ADAPTER_KEY);
-        select.value =
-          storedAdapter && AdapterIds.indexOf(storedAdapter) !== -1
-            ? storedAdapter
-            : DEFAULT_ADAPTER;
-      } catch (e) {
-        select.value = DEFAULT_ADAPTER;
-      }
-
-      select.addEventListener('change', function () {
-        if (AdapterIds.indexOf(select.value) === -1) return;
-        try {
-          localStorage.setItem(PREFERRED_ADAPTER_KEY, select.value);
-        } catch (e) {}
-        document.dispatchEvent(
-          new CustomEvent(PREFERRED_ADAPTER_EVENT, { detail: { adapter: select.value } })
-        );
-      });
-
-      document.addEventListener(PREFERRED_ADAPTER_EVENT, function (event) {
-        var adapter = event && event.detail && event.detail.adapter;
-        if (AdapterIds.indexOf(adapter) !== -1) select.value = adapter;
-      });
-    })();
+    initAdapterSelects(document);
+    document.addEventListener('astro:page-load', () => initAdapterSelects(document));
   </script>
   <svg
     class="adapter-select-arrow absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-foreground opacity-60 transition-opacity w-4 h-4"
