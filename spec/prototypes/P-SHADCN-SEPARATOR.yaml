@@ -2,7 +2,7 @@ id: P-SHADCN-SEPARATOR
 type: prototype
 title: Shadcn Separator Root inherits Base Separator and adds the current rule surface
 status: draft
-since: 0.2.0
+since: 0.3.0
 summary: Shadcn Separator Root is an unofficial Proto UI-maintained projection that inherits Base Separator orientation and decorative semantics and adds the currently implemented border-colored hairline surface.
 statement:
   zh-CN: >-
@@ -47,8 +47,8 @@ criteria:
       contracts: [C-RULE-INTENT-FEEDBACK-STYLE-0001]
   - id: P-SHADCN-SEPARATOR-STATE-DRIVEN-GEOMETRY
     text:
-      zh-CN: horizontal 必须投影 1px 高度与满宽，vertical 必须投影满高与 1px 宽度，且两者都必须从继承的 canonical orientation state 派生，不得建立第二套 orientation truth。
-      en: Horizontal must project a 1px height with full width and vertical must project full height with a 1px width; both must derive from the inherited canonical orientation state and must not establish a second orientation source of truth.
+      zh-CN: horizontal 必须投影 1px 高度与满宽，vertical 必须投影满高与 1px 宽度。两条 rule 必须以继承的 canonical orientation state handle 为条件，不得建立第二套 orientation truth，也不得依赖宿主 data attribute；具体 attribute 降级方式由 Adapter 拥有，不属于本投影的 guarantee。
+      en: Horizontal must project a 1px height with full width and vertical must project full height with a 1px width. Both rules must be conditioned on the inherited canonical orientation state handle, must not establish a second orientation source of truth, and must not depend on a host data attribute; the concrete attribute lowering is owned by the Adapter and is not a guarantee of this projection.
     dependsOn:
       contracts: [C-RULE-WHEN-0002, C-RULE-INTENT-FEEDBACK-STYLE-0001]
     references:
@@ -118,7 +118,7 @@ inherits:
       note: Default inherited protocol; explicit setup-time negative-patch criteria may override individual guarantees.
 verifies: { tests: [T-SHADCN-SEPARATOR-0001] }
 revisions:
-  - version: 0.2.0
+  - version: 0.3.0
     change: introduced
     summary: Introduced the Shadcn Separator projection with Base inheritance, restated contentless renderer, and centralized upstream differences.
 tags: [prototype, shadcn, separator, root, upstream-derived, delta, compatibility, visual]
