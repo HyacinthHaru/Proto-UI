@@ -2,7 +2,7 @@ id: P-SHADCN-SEPARATOR
 type: prototype
 title: Shadcn Separator Root inherits Base Separator and adds the current rule surface
 status: draft
-since: 0.3.0
+since: 0.3.0-alpha.0
 summary: Shadcn Separator Root is an unofficial Proto UI-maintained projection that inherits Base Separator orientation and decorative semantics and adds the currently implemented border-colored hairline surface.
 statement:
   zh-CN: >-
@@ -118,7 +118,7 @@ inherits:
       note: Default inherited protocol; explicit setup-time negative-patch criteria may override individual guarantees.
 verifies: { tests: [T-SHADCN-SEPARATOR-0001] }
 revisions:
-  - version: 0.3.0
+  - version: 0.3.0-alpha.0
     change: introduced
     summary: Introduced the Shadcn Separator projection with Base inheritance, restated contentless renderer, and centralized upstream differences.
 tags: [prototype, shadcn, separator, root, upstream-derived, delta, compatibility, visual]

@@ -2,7 +2,7 @@ id: T-SHADCN-SEPARATOR-0001
 type: test
 title: Shadcn Separator Root delta protocol contract tests
 status: draft
-since: 0.3.0
+since: 0.3.0-alpha.0
 summary: Covers Separator Root identity, Base inheritance, orientation-driven geometry, the restated contentless renderer, and its passive boundary.
 cases:
   - id: T-SHADCN-SEPARATOR-0001-CASE-EXPORTS
@@ -59,7 +59,7 @@ verifies:
 exercises:
   prototypes: *id001
 revisions:
-  - version: 0.3.0
+  - version: 0.3.0-alpha.0
     change: introduced
     summary: Added draft Shadcn Separator projection coverage.
 tags: [test, shadcn, separator, visual, compatibility]
