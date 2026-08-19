@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import ts from 'typescript';
 
-import { canonicalizeLoweredVariants } from '../generated/lowered-variant-order';
+import { canonicalizeLoweredVariants } from '../generated/lowered-variant-order.js';
 
 export async function collectProtoStyleTokens(root) {
   const files = await collectSourceFiles(root);
