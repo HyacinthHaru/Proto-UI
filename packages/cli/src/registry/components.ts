@@ -218,6 +218,13 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     'ShadcnSeparatorRoot'
   ),
 
+  'shadcn-textarea': shadcn(
+    'shadcn-textarea',
+    'shadcn Textarea',
+    'shadcnTextareaRoot',
+    'ShadcnTextareaRoot'
+  ),
+
   'shadcn-switch': shadcnCompound(
     'shadcn-switch',
     'shadcn Switch',

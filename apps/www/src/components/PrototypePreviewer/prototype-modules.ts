@@ -466,6 +466,10 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('../../../../../packages/prototypes/shadcn/src/dialog/header.proto');
     registerPrototype('shadcn-dialog-header', mod.default);
   },
+  'shadcn-textarea-root': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/textarea');
+    registerPrototype('shadcn-textarea-root', mod.default);
+  },
   'shadcn-dialog-footer': async () => {
     const mod = await import('../../../../../packages/prototypes/shadcn/src/dialog/footer.proto');
     registerPrototype('shadcn-dialog-footer', mod.default);

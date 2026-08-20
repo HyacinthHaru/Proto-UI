@@ -64,11 +64,6 @@ const inProgressBadge = {
   class:
     'text-xs px-1.5 h-4.5 rounded-full bg-amber-100 text-amber-900 dark:bg-amber-900 dark:text-amber-100',
 };
-const prereleaseBadge = {
-  text: 'RC',
-  class:
-    'text-xs px-1.5 h-4.5 rounded-full bg-violet-100 text-violet-900 dark:bg-violet-900 dark:text-violet-100',
-};
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.proto-ui.com',
@@ -168,15 +163,6 @@ export default defineConfig({
                 'zh-CN': '快速开始',
               },
               slug: 'start-here/quick-start',
-            },
-            {
-              label: '0.2 RC 试用',
-              translations: {
-                en: '0.2 RC Trial',
-                'zh-CN': '0.2 RC 试用',
-              },
-              slug: 'start-here/rc-trial',
-              badge: prereleaseBadge,
             },
           ],
         },
@@ -337,6 +323,11 @@ export default defineConfig({
                   label: 'Toggle',
                   translations: { en: 'Toggle', 'zh-CN': 'Toggle' },
                   slug: 'ui-libraries/shadcn/toggle',
+                },
+                {
+                  label: 'Textarea',
+                  translations: { en: 'Textarea', 'zh-CN': 'Textarea' },
+                  slug: 'ui-libraries/shadcn/textarea',
                 },
               ],
             },
