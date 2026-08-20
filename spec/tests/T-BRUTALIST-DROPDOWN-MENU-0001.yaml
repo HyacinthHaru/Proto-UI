@@ -79,6 +79,7 @@ implementations:
       - P-BRUTALIST-DROPDOWN-MENU
       - P-BRUTALIST-DROPDOWN-MENU-CONTENT
       - P-BRUTALIST-DROPDOWN-MENU-ITEM
+      - P-BRUTALIST-DROPDOWN-MENU-TRIGGER
   - id: prototypes-brutalist-theme-destructive-ink-contrast
     kind: module-test
     status: passing
@@ -92,10 +93,11 @@ implementations:
       - >-
         Measures the resting ink against `secondary-background`, the fill the resting row keeps, in both themes. Asserting the token name alone would pass again if the value returned to the `destructive` fill, which measured 1.41 to 1 on Light paper.
 
+
       - >-
         Also asserts that the `destructive` fill itself stays under the body-text floor on Light paper, so the fill and the ink cannot quietly collapse back into one token.
 
-      - P-BRUTALIST-DROPDOWN-MENU-TRIGGER
+
 verifies:
   prototypes:
     - id: P-BRUTALIST-DROPDOWN-MENU
