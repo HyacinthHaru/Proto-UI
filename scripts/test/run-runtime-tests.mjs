@@ -10,6 +10,7 @@ import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRuntimeTestPlan } from './runtime-test-plan.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 // Astro dev compiles a route on first request, so a suite probing a cold route
@@ -23,7 +24,7 @@ const READY_ROUTES = [
 ];
 const READY_TIMEOUT_MS = 180_000;
 
-const vitestArgs = process.argv.slice(2);
+const testPlan = createRuntimeTestPlan(process.argv.slice(2));
 let devServer = null;
 let serverOutput = '';
 let shuttingDown = false;
@@ -121,7 +122,7 @@ async function stopServer() {
   }
 }
 
-async function runVitest(baseUrl) {
+async function runVitest(args, baseUrl) {
   return new Promise((resolve, reject) => {
     // spawn() does not go through a shell, so resolve the workspace binary
     // rather than relying on node_modules/.bin being on PATH.
@@ -131,9 +132,10 @@ async function runVitest(baseUrl) {
       '.bin',
       process.platform === 'win32' ? 'vitest.cmd' : 'vitest'
     );
-    const child = spawn(vitestBin, ['run', ...vitestArgs], {
+    const env = baseUrl ? { ...process.env, PROTO_UI_BROWSER_BASE_URL: baseUrl } : process.env;
+    const child = spawn(vitestBin, ['run', ...args], {
       cwd: root,
-      env: { ...process.env, PROTO_UI_BROWSER_BASE_URL: baseUrl },
+      env,
       stdio: 'inherit',
     });
     child.on('error', reject);
@@ -151,11 +153,16 @@ for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
   });
 }
 
-let exitCode = 1;
+let exitCode = 0;
 try {
-  const baseUrl = await startServer();
-  console.log(`[test:runtime] sharing ${baseUrl} across the browser suites`);
-  exitCode = await runVitest(baseUrl);
+  for (const phase of testPlan) {
+    const baseUrl = phase.needsServer ? await startServer() : undefined;
+    if (baseUrl) {
+      console.log(`[test:runtime] sharing ${baseUrl} across the browser suites`);
+    }
+    exitCode = await runVitest(phase.args, baseUrl);
+    if (exitCode !== 0) break;
+  }
 } catch (error) {
   console.error(`[test:runtime] ${error instanceof Error ? error.message : String(error)}`);
   exitCode = 1;
