@@ -25,6 +25,7 @@ const DEFAULT_RUNTIME_OPTIONS: RuntimeOption[] = [
   { id: 'wc', label: 'Web Components' },
   { id: 'react', label: 'React' },
   { id: 'vue', label: 'Vue' },
+  { id: 'vue2', label: 'Vue 2' },
 ];
 
 export function initHomeDemoPreviewer(root: HTMLElement) {

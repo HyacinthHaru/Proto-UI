@@ -1,10 +1,12 @@
 import { setElementProps } from '@proto.ui/adapter-web-component';
 import { createReactAdapter, type ReactRuntime } from '@proto.ui/adapter-react';
 import { createVueAdapter, type VueRuntime as AdapterVueRuntime } from '@proto.ui/adapter-vue';
+import { createVue2Adapter } from '@proto.ui/adapter-vue2';
 import type { Prototype } from '@proto.ui/core';
 import { getPrototype } from './registry';
 import { loadReact } from './runtimes/react-runtime';
 import { loadVue } from './runtimes/vue-runtime';
+import { loadVue2, toVue2ComponentData, toVue2Runtime } from './runtimes/vue2-runtime';
 import type { DemoChild, DemoRenderOptions, DemoRenderResult, DemoRuntimeApi } from './demo-types';
 import { ensurePreviewWcRegistered } from './wc-registry';
 
@@ -289,6 +291,7 @@ async function renderDemoReact(opt: DemoRenderOptions): Promise<DemoRenderResult
 }
 
 const vueApps = new WeakMap<HTMLElement, { unmount: () => void }>();
+const vue2Apps = new WeakMap<HTMLElement, { $destroy: () => void; $forceUpdate?: () => void }>();
 
 async function renderDemoVue(opt: DemoRenderOptions): Promise<DemoRenderResult> {
   const { host, demo } = opt;
@@ -408,8 +411,160 @@ async function renderDemoVue(opt: DemoRenderOptions): Promise<DemoRenderResult> 
   };
 }
 
+async function renderDemoVue2(opt: DemoRenderOptions): Promise<DemoRenderResult> {
+  const { host, demo } = opt;
+
+  const Vue = await loadVue2();
+  const adapter = createVue2Adapter(toVue2Runtime(Vue));
+
+  const existingApp = vue2Apps.get(host);
+  if (existingApp) {
+    existingApp.$destroy();
+    vue2Apps.delete(host);
+  }
+  host.innerHTML = '';
+
+  const componentRefs = new Map<string, DemoInstance>();
+  const componentRefNames = new Set<string>();
+  const propsMap = ((Vue as any).observable ? (Vue as any).observable({}) : {}) as Record<
+    string,
+    Record<string, unknown>
+  >;
+
+  function setReactive(target: Record<string, unknown>, key: string, value: unknown) {
+    if (typeof Vue.set === 'function') Vue.set(target, key, value);
+    else target[key] = value;
+  }
+
+  function initProps(node: DemoChild) {
+    if (typeof node === 'string' || node.kind === 'text') return;
+    if (node.kind === 'proto' && node.ref) {
+      setReactive(propsMap, node.ref, { ...(node.props ?? {}) });
+    }
+    for (const child of node.children ?? []) initProps(child);
+  }
+  initProps(demo.root);
+
+  function renderNode(node: DemoChild, h: any): any {
+    if (typeof node === 'string') return node;
+    if (node.kind === 'text') return node.text;
+    if (node.kind === 'box') {
+      const kids = (node.children ?? []).map((child) => renderNode(child, h));
+      return h(
+        'div',
+        {
+          class: node.className,
+          attrs: {
+            'data-demo-ref': node.ref,
+          },
+        },
+        kids
+      );
+    }
+
+    const proto = getPrototype(node.prototypeId);
+    const scopedCache = getScopedComponentCache(vueComponentCache, adapter);
+    let Component = scopedCache.get(node.prototypeId);
+    if (!Component) {
+      Component = adapter(proto as Prototype<PropsBaseType>);
+      scopedCache.set(node.prototypeId, Component);
+    }
+    const kids = (node.children ?? []).map((child) => renderNode(child, h));
+    const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
+    if (node.ref) {
+      componentRefNames.add(node.ref);
+      Object.assign(mergedProps, propsMap[node.ref] ?? {});
+      mergedProps['data-demo-ref'] = node.ref;
+    }
+    if (node.className) mergedProps.surfaceClass = node.className;
+    if (node.surfaceStyle) mergedProps.surfaceStyle = node.surfaceStyle;
+
+    const data = toVue2ComponentData(mergedProps);
+    if (node.ref) data.ref = node.ref;
+    return h(Component, data, kids);
+  }
+
+  function refreshComponentRefs(rootVm: any) {
+    for (const ref of componentRefNames) {
+      const value = rootVm.$refs?.[ref];
+      const inst = Array.isArray(value) ? value[0] : value;
+      if (inst) componentRefs.set(ref, inst as DemoInstance);
+      else componentRefs.delete(ref);
+    }
+  }
+
+  const Root = Vue.extend({
+    render(h: any) {
+      return renderNode(demo.root, h);
+    },
+  });
+
+  const app = new Root().$mount();
+  host.appendChild(app.$el);
+  vue2Apps.set(host, app);
+
+  await nextVue2(Vue);
+  await new Promise((resolve) => requestAnimationFrame(resolve));
+  refreshComponentRefs(app);
+  const refs = collectDemoRefs(host);
+
+  const api: DemoRuntimeApi = {
+    call(ref, path, ...args) {
+      refreshComponentRefs(app);
+      const inst = componentRefs.get(ref);
+      if (!inst) return;
+      const exposes = inst.getExposes?.() ?? {};
+      const fn = resolvePath(exposes, path);
+      if (typeof fn !== 'function') return;
+      const result = callInScope(inst, () => fn(...args));
+      inst.update?.();
+      return result;
+    },
+    getExposes(ref) {
+      refreshComponentRefs(app);
+      const inst = componentRefs.get(ref);
+      return inst?.getExposes?.();
+    },
+    setProps(ref, next) {
+      if (!propsMap[ref]) setReactive(propsMap, ref, {});
+      for (const [key, value] of Object.entries(next)) {
+        setReactive(propsMap[ref], key, value);
+      }
+      app.$forceUpdate?.();
+      void nextVue2(Vue).then(() => {
+        refreshComponentRefs(app);
+        componentRefs.get(ref)?.update?.();
+      });
+    },
+  };
+
+  const cleanup = demo.setup?.({ host, refs, api });
+
+  return {
+    destroy: () => {
+      if (typeof cleanup === 'function') cleanup();
+      const a = vue2Apps.get(host);
+      if (a) {
+        a.$destroy();
+        vue2Apps.delete(host);
+      }
+      host.innerHTML = '';
+    },
+  };
+}
+
+function nextVue2(Vue: { nextTick: (fn?: () => void) => Promise<void> | void }) {
+  return new Promise<void>((resolve) => {
+    const maybePromise = Vue.nextTick(resolve);
+    if (maybePromise && typeof (maybePromise as Promise<void>).then === 'function') {
+      void (maybePromise as Promise<void>).then(resolve);
+    }
+  });
+}
+
 export async function renderDemo(opt: DemoRenderOptions): Promise<DemoRenderResult> {
   if (opt.runtime === 'react') return renderDemoReact(opt);
   if (opt.runtime === 'vue') return renderDemoVue(opt);
+  if (opt.runtime === 'vue2') return renderDemoVue2(opt);
   return renderDemoWc(opt);
 }

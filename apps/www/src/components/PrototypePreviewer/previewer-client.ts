@@ -62,6 +62,7 @@ export function initPreviewer(options: PreviewerOptions) {
             wc: 'Web Components',
             react: 'React',
             vue: 'Vue',
+            vue2: 'Vue 2',
           } as Record<string, string>
         )[id] || id;
       if (id === initialRuntime) opt.selected = true;

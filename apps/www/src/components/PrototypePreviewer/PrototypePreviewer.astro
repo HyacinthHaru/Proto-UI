@@ -6,7 +6,7 @@ import CodePanel from './CodePanel.astro';
 import { highlightCode, type CodeLang } from './code-highlight';
 
 function codeLangForRuntime(runtime: RuntimeId): CodeLang {
-  if (runtime === 'vue') return 'vue';
+  if (runtime === 'vue' || runtime === 'vue2') return 'vue';
   if (runtime === 'react') return 'tsx';
   return 'html';
 }
@@ -69,7 +69,7 @@ const codeMapModules = import.meta.glob('../../content/docs/demo_components/**/*
 
 function findCodeMapForDemo(targetDemoId: string): Partial<Record<RuntimeId, string>> | undefined {
   for (const mod of Object.values(codeMapModules)) {
-    const map = (mod as { codeMap?: Record<RuntimeId, Record<string, string>> }).codeMap;
+    const map = (mod as { codeMap?: Partial<Record<RuntimeId, Record<string, string>>> }).codeMap;
     if (!map) continue;
     const hasDemo = Object.values(map).some((runtimeMap) => targetDemoId in runtimeMap);
     if (!hasDemo) continue;
