@@ -218,4 +218,43 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).toContain('flex');
     expect(tokens).toContain('duration-150');
   });
+  it('lowers checkbox mixed and guarded dark conditions into the closure', async () => {
+    await writeFile(
+      path.join(dir, 'box.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        "import { asCheckboxRoot } from '@proto.ui/prototypes-base/checkbox';",
+        '',
+        'const box = definePrototype({',
+        "  name: 'styled-checkbox',",
+        '  setup(def) {',
+        '    const { checked, indeterminate } = asCheckboxRoot().stateHandles;',
+        '    def.rule({',
+        '      when: (w) => w.state(indeterminate).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+        '    });',
+        '    def.rule({',
+        '      when: (w) =>',
+        '        w.all(',
+        "          w.meta('colorScheme').eq('dark'),",
+        '          w.state(checked).eq(false),',
+        '          w.state(indeterminate).eq(false)',
+        '        ),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-input/30')),",
+        '    });',
+        '  },',
+        '});',
+        'export default box;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+
+    // Without the checkbox entries in the hook table neither rule contributes a
+    // variant, and the tint reaches the closure as a plain `dark:` token that
+    // also covers the filled box.
+    expect(tokens).toContain('data-[indeterminate]:bg-primary');
+    expect(tokens).toContain('dark:not-[data-checked]:not-[data-indeterminate]:bg-input/30');
+    expect(tokens).not.toContain('dark:bg-input/30');
+  });
 });

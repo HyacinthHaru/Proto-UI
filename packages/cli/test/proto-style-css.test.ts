@@ -76,6 +76,17 @@ describe('proto style css renderer', () => {
     expect(css).not.toContain('Unsupported Proto UI style tokens');
   });
 
+  it('renders the exact box and glyph geometry used by Shadcn Checkbox', () => {
+    const css = renderProtoStyleTokenCss(['rounded-[4px]', 'size-4', 'size-3.5']);
+
+    // The theme-derived `rounded-sm` is 6px and `size-3` is 12px. On a 16px box
+    // both are visible, so the projection needs these two exact values.
+    expect(css).toContain('border-radius: 4px;');
+    expect(css).toContain('width: 0.875rem;');
+    expect(css).toContain('height: 0.875rem;');
+    expect(css).not.toContain('Unsupported Proto UI style tokens');
+  });
+
   it('renders directional separator borders in the theme foreground', () => {
     const css = renderProtoStyleTokenCss(['border-b-2', 'border-t-2', 'border-foreground']);
 

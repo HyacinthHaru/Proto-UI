@@ -514,6 +514,14 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('../../../../../packages/prototypes/shadcn/src/dialog/header.proto');
     registerPrototype('shadcn-dialog-header', mod.default);
   },
+  'shadcn-checkbox-root': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/checkbox');
+    registerPrototype('shadcn-checkbox-root', mod.shadcnCheckboxRoot);
+  },
+  'shadcn-checkbox-indicator': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/checkbox');
+    registerPrototype('shadcn-checkbox-indicator', mod.shadcnCheckboxIndicator);
+  },
   'shadcn-textarea-root': async () => {
     const mod = await import('@proto.ui/prototypes-shadcn/textarea');
     registerPrototype('shadcn-textarea-root', mod.default);

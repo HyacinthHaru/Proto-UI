@@ -17,6 +17,7 @@ const spacing: Record<string, string> = {
   '2': '0.5rem',
   '2.5': '0.625rem',
   '3': '0.75rem',
+  '3.5': '0.875rem',
   '4': '1rem',
   '5': '1.25rem',
   '6': '1.5rem',
@@ -499,6 +500,7 @@ function renderRoundedUtility(utility: string): string[] | null {
   if (utility === 'rounded-lg') return ['border-radius: var(--pui-radius-lg);'];
   if (utility === 'rounded-md') return ['border-radius: var(--pui-radius-md);'];
   if (utility === 'rounded-sm') return ['border-radius: var(--pui-radius-sm);'];
+  if (utility === 'rounded-[4px]') return ['border-radius: 4px;'];
   if (utility === 'rounded-[min(var(--radius-md),12px)]') {
     return ['border-radius: min(var(--pui-radius-md), 12px);'];
   }

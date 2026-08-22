@@ -225,6 +225,24 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     'ShadcnTextareaRoot'
   ),
 
+  'shadcn-checkbox': shadcnCompound(
+    'shadcn-checkbox',
+    'shadcn Checkbox',
+    [
+      {
+        prototypeImport: 'shadcnCheckboxRoot',
+        exportBaseName: 'ShadcnCheckboxRoot',
+        elementName: 'proto-ui-shadcn-checkbox-root',
+      },
+      {
+        prototypeImport: 'shadcnCheckboxIndicator',
+        exportBaseName: 'ShadcnCheckboxIndicator',
+        elementName: 'proto-ui-shadcn-checkbox-indicator',
+      },
+    ],
+    SHADCN_COMPONENT_PRESET_RECIPES['shadcn-checkbox']
+  ),
+
   'shadcn-switch': shadcnCompound(
     'shadcn-switch',
     'shadcn Switch',

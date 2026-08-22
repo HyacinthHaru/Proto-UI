@@ -336,6 +336,11 @@ export default defineConfig({
                   slug: 'ui-libraries/shadcn/button',
                 },
                 {
+                  label: 'Checkbox',
+                  translations: { en: 'Checkbox', 'zh-CN': 'Checkbox' },
+                  slug: 'ui-libraries/shadcn/checkbox',
+                },
+                {
                   label: 'Dialog',
                   translations: { en: 'Dialog', 'zh-CN': 'Dialog' },
                   slug: 'ui-libraries/shadcn/dialog',
