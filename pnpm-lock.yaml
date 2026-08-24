@@ -153,6 +153,9 @@ importers:
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.1.0
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.31(typescript@5.9.3)
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.8

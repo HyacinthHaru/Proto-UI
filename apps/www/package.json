@@ -40,7 +40,8 @@
     "shiki": "^3.22.0",
     "tailwindcss": "^4.1.11",
     "remark-directive": "^4.0.0",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "^5.0.0",
+    "vue": "^3.5.13"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",

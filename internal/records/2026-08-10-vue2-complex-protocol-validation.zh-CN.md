@@ -33,6 +33,8 @@
 
 Scroll 的真实 geometry/拖动、Overlay 的 anchored positioning 与焦点 trap 依赖布局、焦点和 pointer capture，happy-dom 单测不能充分证明。它们目前不是“不可转换”，但必须在 Vue2.6 浏览器环境增加交互验收后才能提升为已验证能力。
 
-### 文档示例覆盖
+### 文档示例覆盖（历史，已被后续隔离决定取代）
 
-Select、Button、Tabs 的文档 code map 已提供 Vue2 Adapter 示例，对应 Previewer 允许选择 `vue2`。Dialog、HoverCard、Tooltip、Transition、Textarea 等复合 demo 可以通过首页 Demo Matrix 的 Vue2 runtime 运行，但其文档 code map 尚未提供可展示的 Vue2 示例，因此文档页暂不公开 Vue2 选项，避免切换后沿用上一种 runtime 的代码片段。
+本段保存 2026-08-10 当时的文档接入观察，不再表示当前公开网站边界。当时 Select、Button、Tabs 的文档 code map 已提供 Vue2 Adapter 示例，对应 Previewer 曾允许选择 `vue2`；Dialog、HoverCard、Tooltip、Transition、Textarea 等复合 demo 也曾计划通过首页 Demo Matrix 的 Vue2 runtime 运行。
+
+后续 `2026-08-22-vue2-pr-462-review-followup.zh-CN.md`、`2026-08-23-vue2-internal-runtime-isolation.zh-CN.md` 与 `2026-08-24-vue2-pr-462-remediation-scope.zh-CN.md` 已取代这项公开接入方向。当前公开 `AdapterIds`、首页 Previewer、全局 Adapter Select、公开文档与共享 Web conformance matrix 均不包含 Vue 2；Vue 2 runtime 只允许由 internal Demo Matrix 显式启用。前文的 adapter 测试观察仍是非规范实现证据，不构成 official Adapter profile 或发布承诺。
