@@ -1,5 +1,6 @@
 import type { RuntimeAPI } from './registry';
 import { createVue2Adapter, type Vue2Runtime as AdapterVue2Runtime } from '@proto.ui/adapter-vue2';
+import { claimHostMount, releaseHostMount } from './host-mount';
 
 const VUE2_SOURCE = 'https://esm.sh/vue@2.6.14';
 
@@ -78,39 +79,32 @@ type Vue2Vm = {
   $el: Element;
 };
 
-const vue2Apps = new WeakMap<HTMLElement, Vue2Vm>();
+export function createVue2Runtime(load = loadVue2): RuntimeAPI {
+  return {
+    id: 'vue2',
+    label: 'Vue 2',
 
-export const runtime: RuntimeAPI = {
-  id: 'vue2',
-  label: 'Vue 2',
+    async mount(host, prototype, options) {
+      const lease = claimHostMount(host);
+      const Vue = await load();
+      if (!lease.isCurrent()) return;
 
-  async mount(host, prototype, options) {
-    const existingApp = vue2Apps.get(host);
-    if (existingApp) {
-      existingApp.$destroy();
-      vue2Apps.delete(host);
-    }
+      const Component = createVue2Adapter(toVue2Runtime(Vue))(prototype);
+      const Root = Vue.extend({
+        render(h: any) {
+          return h(Component, toVue2ComponentData(options?.props ?? {}));
+        },
+      });
 
-    host.innerHTML = '';
-    const Vue = await loadVue2();
-    const Component = createVue2Adapter(toVue2Runtime(Vue))(prototype);
-    const Root = Vue.extend({
-      render(h: any) {
-        return h(Component, toVue2ComponentData(options?.props ?? {}));
-      },
-    });
+      const vm = new Root().$mount() as Vue2Vm;
+      if (!lease.commit(() => vm.$destroy())) return;
+      host.appendChild(vm.$el);
+    },
 
-    const vm = new Root().$mount() as Vue2Vm;
-    host.appendChild(vm.$el);
-    vue2Apps.set(host, vm);
-  },
+    unmount(host) {
+      releaseHostMount(host);
+    },
+  };
+}
 
-  async unmount(host) {
-    const app = vue2Apps.get(host);
-    if (app) {
-      app.$destroy();
-      vue2Apps.delete(host);
-    }
-    host.innerHTML = '';
-  },
-};
+export const runtime = createVue2Runtime();

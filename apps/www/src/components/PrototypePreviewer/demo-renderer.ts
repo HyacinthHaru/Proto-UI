@@ -7,18 +7,26 @@ import { getPrototype } from './registry';
 import { loadReact } from './runtimes/react-runtime';
 import { loadVue } from './runtimes/vue-runtime';
 import { loadVue2, toVue2ComponentData, toVue2Runtime } from './runtimes/vue2-runtime';
+import { claimHostMount, type HostMountLease } from './runtimes/host-mount';
 import type { DemoChild, DemoRenderOptions, DemoRenderResult, DemoRuntimeApi } from './demo-types';
 import { ensurePreviewWcRegistered } from './wc-registry';
 
 type PropsBaseType = Record<string, unknown>;
 
-const reactRoots = new WeakMap<
-  HTMLElement,
-  { unmount: () => void; render: (el: unknown) => void }
->();
 const reactComponentCache = new WeakMap<object, Map<string, any>>();
 const vueComponentCache = new WeakMap<object, Map<string, any>>();
 const wcSurfaceProps = new WeakMap<HTMLElement, Record<string, unknown>>();
+
+const EMPTY_DEMO_RENDER: DemoRenderResult = { destroy: () => {} };
+
+function ownsLease(opt: DemoRenderOptions, lease: HostMountLease): boolean {
+  return lease.isCurrent() && opt.isCurrent?.() !== false;
+}
+
+function abandonLease(lease: HostMountLease): DemoRenderResult {
+  lease.release();
+  return EMPTY_DEMO_RENDER;
+}
 
 function getScopedComponentCache<T extends object>(
   cache: WeakMap<object, Map<string, T>>,
@@ -114,9 +122,11 @@ function resolvePath(obj: unknown, path: string): unknown {
   }, obj);
 }
 
-async function renderDemoWc(opt: DemoRenderOptions): Promise<DemoRenderResult> {
+async function renderDemoWc(
+  opt: DemoRenderOptions,
+  lease: HostMountLease
+): Promise<DemoRenderResult> {
   const { host, demo } = opt;
-  host.innerHTML = '';
   const instances: HTMLElement[] = [];
   renderDemoNodeWc(demo.root, host, instances);
 
@@ -143,37 +153,42 @@ async function renderDemoWc(opt: DemoRenderOptions): Promise<DemoRenderResult> {
     },
   };
 
-  const cleanup = demo.setup?.({ host, refs, api });
+  let cleanup = demo.setup?.({ host, refs, api });
 
-  return {
-    destroy: () => {
+  if (
+    !lease.commit(() => {
       if (typeof cleanup === 'function') cleanup();
+      cleanup = undefined;
       // A globally mounted overlay is no longer a physical descendant of the
       // preview host. Remove every rendered instance explicitly so portaled
       // parts disconnect and dispose together with their logical demo tree.
       for (let index = instances.length - 1; index >= 0; index -= 1) {
         instances[index]?.remove();
       }
-      host.innerHTML = '';
+    })
+  ) {
+    return EMPTY_DEMO_RENDER;
+  }
+
+  return {
+    destroy: () => {
+      lease.release();
     },
   };
 }
 
-async function renderDemoReact(opt: DemoRenderOptions): Promise<DemoRenderResult> {
+async function renderDemoReact(
+  opt: DemoRenderOptions,
+  lease: HostMountLease
+): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
   const { React, ReactDOM } = await loadReact();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createReactAdapter({
     ...React,
     createPortal: ReactDOM.createPortal,
   } as unknown as ReactRuntime);
-
-  const existingRoot = reactRoots.get(host);
-  if (existingRoot) {
-    existingRoot.unmount();
-    reactRoots.delete(host);
-  }
-  host.innerHTML = '';
 
   const componentRefs = new Map<string, DemoInstance>();
   const propsMap = new Map<string, Record<string, unknown>>();
@@ -226,7 +241,16 @@ async function renderDemoReact(opt: DemoRenderOptions): Promise<DemoRenderResult
       createRoot(el: HTMLElement): { render: (el: unknown) => void; unmount: () => void };
     }
   ).createRoot(host);
-  reactRoots.set(host, root);
+  let cleanup: void | (() => void);
+  if (
+    !lease.commit(() => {
+      if (typeof cleanup === 'function') cleanup();
+      cleanup = undefined;
+      root.unmount();
+    })
+  ) {
+    return EMPTY_DEMO_RENDER;
+  }
 
   const flushReact = <T>(fn: () => T): T => {
     const flushSync = (ReactDOM as { flushSync?: <R>(callback: () => R) => R }).flushSync;
@@ -243,6 +267,7 @@ async function renderDemoReact(opt: DemoRenderOptions): Promise<DemoRenderResult
   flushReact(() => root.render(renderTree()));
 
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const refs = collectDemoRefs(host);
 
   const api: DemoRuntimeApi = {
@@ -275,36 +300,24 @@ async function renderDemoReact(opt: DemoRenderOptions): Promise<DemoRenderResult
     },
   };
 
-  const cleanup = demo.setup?.({ host, refs, api });
+  cleanup = demo.setup?.({ host, refs, api });
 
   return {
     destroy: () => {
-      if (typeof cleanup === 'function') cleanup();
-      const r = reactRoots.get(host);
-      if (r) {
-        r.unmount();
-        reactRoots.delete(host);
-      }
-      host.innerHTML = '';
+      lease.release();
     },
   };
 }
 
-const vueApps = new WeakMap<HTMLElement, { unmount: () => void }>();
-const vue2Apps = new WeakMap<HTMLElement, { $destroy: () => void; $forceUpdate?: () => void }>();
-
-async function renderDemoVue(opt: DemoRenderOptions): Promise<DemoRenderResult> {
+async function renderDemoVue(
+  opt: DemoRenderOptions,
+  lease: HostMountLease
+): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
   const Vue = await loadVue();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createVueAdapter(Vue as unknown as AdapterVueRuntime);
-
-  const existingApp = vueApps.get(host);
-  if (existingApp) {
-    existingApp.unmount();
-    vueApps.delete(host);
-  }
-  host.innerHTML = '';
 
   const componentRefs = new Map<string, DemoInstance>();
   const propsMap = Vue.reactive<Record<string, Record<string, unknown>>>({});
@@ -366,9 +379,19 @@ async function renderDemoVue(opt: DemoRenderOptions): Promise<DemoRenderResult> 
   });
 
   app.mount(host);
-  vueApps.set(host, app);
+  let cleanup: void | (() => void);
+  if (
+    !lease.commit(() => {
+      if (typeof cleanup === 'function') cleanup();
+      cleanup = undefined;
+      app.unmount();
+    })
+  ) {
+    return EMPTY_DEMO_RENDER;
+  }
 
   await new Promise((resolve) => requestAnimationFrame(resolve));
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const refs = collectDemoRefs(host);
 
   const api: DemoRuntimeApi = {
@@ -396,33 +419,24 @@ async function renderDemoVue(opt: DemoRenderOptions): Promise<DemoRenderResult> 
     },
   };
 
-  const cleanup = demo.setup?.({ host, refs, api });
+  cleanup = demo.setup?.({ host, refs, api });
 
   return {
     destroy: () => {
-      if (typeof cleanup === 'function') cleanup();
-      const a = vueApps.get(host);
-      if (a) {
-        a.unmount();
-        vueApps.delete(host);
-      }
-      host.innerHTML = '';
+      lease.release();
     },
   };
 }
 
-async function renderDemoVue2(opt: DemoRenderOptions): Promise<DemoRenderResult> {
+async function renderDemoVue2(
+  opt: DemoRenderOptions,
+  lease: HostMountLease
+): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
   const Vue = await loadVue2();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createVue2Adapter(toVue2Runtime(Vue));
-
-  const existingApp = vue2Apps.get(host);
-  if (existingApp) {
-    existingApp.$destroy();
-    vue2Apps.delete(host);
-  }
-  host.innerHTML = '';
 
   const componentRefs = new Map<string, DemoInstance>();
   const componentRefNames = new Set<string>();
@@ -501,10 +515,20 @@ async function renderDemoVue2(opt: DemoRenderOptions): Promise<DemoRenderResult>
 
   const app = new Root().$mount();
   host.appendChild(app.$el);
-  vue2Apps.set(host, app);
+  let cleanup: void | (() => void);
+  if (
+    !lease.commit(() => {
+      if (typeof cleanup === 'function') cleanup();
+      cleanup = undefined;
+      app.$destroy();
+    })
+  ) {
+    return EMPTY_DEMO_RENDER;
+  }
 
   await nextVue2(Vue);
   await new Promise((resolve) => requestAnimationFrame(resolve));
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   refreshComponentRefs(app);
   const refs = collectDemoRefs(host);
 
@@ -538,17 +562,11 @@ async function renderDemoVue2(opt: DemoRenderOptions): Promise<DemoRenderResult>
     },
   };
 
-  const cleanup = demo.setup?.({ host, refs, api });
+  cleanup = demo.setup?.({ host, refs, api });
 
   return {
     destroy: () => {
-      if (typeof cleanup === 'function') cleanup();
-      const a = vue2Apps.get(host);
-      if (a) {
-        a.$destroy();
-        vue2Apps.delete(host);
-      }
-      host.innerHTML = '';
+      lease.release();
     },
   };
 }
@@ -563,8 +581,10 @@ function nextVue2(Vue: { nextTick: (fn?: () => void) => Promise<void> | void }) 
 }
 
 export async function renderDemo(opt: DemoRenderOptions): Promise<DemoRenderResult> {
-  if (opt.runtime === 'react') return renderDemoReact(opt);
-  if (opt.runtime === 'vue') return renderDemoVue(opt);
-  if (opt.runtime === 'vue2') return renderDemoVue2(opt);
-  return renderDemoWc(opt);
+  if (opt.isCurrent?.() === false) return EMPTY_DEMO_RENDER;
+  const lease = claimHostMount(opt.host);
+  if (opt.runtime === 'react') return renderDemoReact(opt, lease);
+  if (opt.runtime === 'vue') return renderDemoVue(opt, lease);
+  if (opt.runtime === 'vue2') return renderDemoVue2(opt, lease);
+  return renderDemoWc(opt, lease);
 }

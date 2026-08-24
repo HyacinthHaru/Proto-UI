@@ -21,6 +21,7 @@
     "@proto.ui/module-context": "workspace:*",
     "@proto.ui/module-feedback": "workspace:*",
     "@proto.ui/module-event": "workspace:*",
+    "@proto.ui/module-expose-event": "workspace:*",
     "@proto.ui/module-expose-state": "workspace:*",
     "@proto.ui/module-expose-state-web": "workspace:*",
     "@proto.ui/module-focus": "workspace:*",
@@ -35,7 +36,7 @@
   },
   "devDependencies": {
     "@proto.ui/prototypes-base": "workspace:*",
-    "vue": "^2.6.14"
+    "vue": "2.6.14"
   },
   "peerDependencies": {
     "vue": ">=2.6.0 <2.7"

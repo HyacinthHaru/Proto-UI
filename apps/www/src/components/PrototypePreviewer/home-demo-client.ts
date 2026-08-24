@@ -25,7 +25,6 @@ const DEFAULT_RUNTIME_OPTIONS: RuntimeOption[] = [
   { id: 'wc', label: 'Web Components' },
   { id: 'react', label: 'React' },
   { id: 'vue', label: 'Vue' },
-  { id: 'vue2', label: 'Vue 2' },
 ];
 
 export function initHomeDemoPreviewer(root: HTMLElement) {
@@ -104,10 +103,14 @@ export function initHomeDemoPreviewer(root: HTMLElement) {
         runtime,
         demo,
         host: hostEl,
+        isCurrent: () => !destroyed && currentVersion === version,
       });
+
+      if (destroyed || currentVersion !== version) return;
 
       active = { runtime, demoId, destroy };
     } catch (error) {
+      if (destroyed || currentVersion !== version) return;
       hostEl.innerHTML = '';
       const pre = document.createElement('pre');
       pre.textContent =

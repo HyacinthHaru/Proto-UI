@@ -1,7 +1,6 @@
 ---
-import type { RuntimeId } from './runtimes/registry';
+import { AdapterIds, InternalAdapterIds, type RuntimeId } from './runtimes/registry';
 import AdapterSelect from '../override/AdapterSelect.astro';
-import { AdapterIds } from './runtimes/registry';
 import CodePanel from './CodePanel.astro';
 import { highlightCode, type CodeLang } from './code-highlight';
 
@@ -25,6 +24,8 @@ interface Props {
   hasCode?: boolean;
   codePanel?: boolean;
   lazy?: boolean; // 进入视口附近后再加载 demo 与原型模块
+  /** Allows internal validation pages to opt into runtimes outside the public adapter set. */
+  allowExperimentalRuntimes?: boolean;
 }
 
 function assertJsonLike(value: unknown, path: string[] = []) {
@@ -97,11 +98,20 @@ const {
   hasCode = false,
   codePanel = true,
   lazy = false,
+  allowExperimentalRuntimes = false,
 } = Astro.props;
 
+const permittedRuntimes = allowExperimentalRuntimes ? InternalAdapterIds : AdapterIds;
+const supportedRuntimes = runtimes.filter((runtime) =>
+  (permittedRuntimes as readonly RuntimeId[]).includes(runtime)
+);
+const effectiveRuntimes = supportedRuntimes.length ? supportedRuntimes : [...permittedRuntimes];
+const effectiveInitialRuntime = effectiveRuntimes.includes(initialRuntime)
+  ? initialRuntime
+  : effectiveRuntimes[0]!;
 const autoCodeMap = demoId && codePanel ? findCodeMapForDemo(demoId) : undefined;
 const effectiveHasCode = codePanel && (hasCode || !!autoCodeMap || !!codeSnippet);
-const effectiveCode = autoCodeMap ? autoCodeMap[initialRuntime] : codeSnippet;
+const effectiveCode = autoCodeMap ? autoCodeMap[effectiveInitialRuntime] : codeSnippet;
 
 const highlights: Record<string, string> = {};
 if (autoCodeMap) {
@@ -128,9 +138,9 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
   data-previewer-id={rid}
   data-prototype-id={prototypeId || ''}
   data-demo-id={demoId || ''}
-  data-initial-runtime={initialRuntime}
+  data-initial-runtime={effectiveInitialRuntime}
   data-props={JSON.stringify(protoProps)}
-  data-runtimes={JSON.stringify(runtimes)}
+  data-runtimes={JSON.stringify(effectiveRuntimes)}
   data-loader={loader || ''}
   data-code-map={autoCodeMap ? JSON.stringify(autoCodeMap) : ''}
   data-code-highlights={Object.keys(highlights).length ? JSON.stringify(highlights) : ''}
@@ -161,7 +171,11 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
     </div>
   </div>
 
-  {effectiveHasCode && <CodePanel code={effectiveCode} lang={codeLangForRuntime(initialRuntime)} />}
+  {
+    effectiveHasCode && (
+      <CodePanel code={effectiveCode} lang={codeLangForRuntime(effectiveInitialRuntime)} />
+    )
+  }
 
   <style>
     .proto-previewer {

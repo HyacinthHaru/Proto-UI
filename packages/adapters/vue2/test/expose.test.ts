@@ -93,4 +93,30 @@ describe('adapter-vue2: expose', () => {
 
     mounted.unmount();
   });
+
+  it('keeps exposed callables stable and invalidates held callables after destroy', async () => {
+    const proto: Prototype = {
+      name: 'vue2-expose-terminal-disposal',
+      setup(def) {
+        def.expose.value('controls', {
+          ping: () => 'pong',
+        });
+        return (r) => [r.el('div', 'ok')];
+      },
+    };
+
+    const mounted = createMountedVue2Adapter(proto);
+    await flushVue2();
+
+    const first = mounted.vm.getExposes().controls as { ping(): string };
+    const second = mounted.vm.getExposes().controls as { ping(): string };
+    const ping = first.ping;
+
+    expect(second.ping).toBe(ping);
+    expect(ping()).toBe('pong');
+
+    mounted.unmount();
+
+    expect(() => ping()).toThrow(/terminal disposal/);
+  });
 });

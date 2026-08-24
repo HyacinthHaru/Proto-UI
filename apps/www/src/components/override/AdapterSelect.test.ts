@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { initAdapterSelects } from '../adapter-preference';
+import { initAdapterSelects, isRuntimeId } from '../adapter-preference';
 
 const adapterSelect = (id: string) => `
   <div data-adapter-select>
@@ -13,6 +13,11 @@ const adapterSelect = (id: string) => `
 `;
 
 describe('documentation adapter selector', () => {
+  it('does not present the internal-only Vue 2 runtime', () => {
+    expect(isRuntimeId('vue2')).toBe(false);
+    expect(isRuntimeId('vue')).toBe(true);
+  });
+
   beforeEach(() => {
     localStorage.clear();
     document.body.innerHTML = `${adapterSelect('adapter-desktop')}${adapterSelect('adapter-mobile')}`;

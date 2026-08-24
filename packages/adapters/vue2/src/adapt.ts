@@ -105,6 +105,7 @@ type Vue2InternalState<Props extends PropsBaseType> = {
   eventGate: ReturnType<typeof createEventGate> | null;
   exposes: Record<string, unknown>;
   invoke: ((fn: () => void) => void) | null;
+  scopedExposesReader: ReturnType<typeof createScopedExposesReader>;
   pendingCommit: boolean;
   pendingSignal: CommitSignal | null;
   viewReady: boolean;
@@ -191,37 +192,42 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
           })
         : sharedOverlayLayerScheduler);
 
-    const createState = (): Vue2InternalState<Props> => ({
-      proto,
-      initOptions: {
-        schedule,
-        getMeta,
-        onLifecycleCheckpoint: opt.diagnostics?.onLifecycleCheckpoint,
-        onLifecycleEvent: opt.diagnostics?.onLifecycleEvent,
-        exposeStateWebMode,
-        scrollProjection,
-        overlayLayerScheduler,
-      },
-      instanceToken: createLogicalInstance(proto as Prototype<any>),
-      owner: createViewEpochOwner<Props>({ prototypeName: proto.name }),
-      rawPropsSource: null,
-      controller: null,
-      eventGate: null,
-      exposes: {},
-      invoke: null,
-      pendingCommit: false,
-      pendingSignal: null,
-      viewReady: false,
-      viewDisposed: false,
-      lastHostProps: null,
-      subs: new Set(),
-      hostSession: null,
-      boundRoot: null,
-      lastInitRoot: null,
-      focusTargetReadyListeners: new Set(),
-      focusTargetRetryScheduled: false,
-      propWatchDisposer: null,
-    });
+    const createState = (): Vue2InternalState<Props> => {
+      const state = {
+        proto,
+        initOptions: {
+          schedule,
+          getMeta,
+          onLifecycleCheckpoint: opt.diagnostics?.onLifecycleCheckpoint,
+          onLifecycleEvent: opt.diagnostics?.onLifecycleEvent,
+          exposeStateWebMode,
+          scrollProjection,
+          overlayLayerScheduler,
+        },
+        instanceToken: createLogicalInstance(proto as Prototype<any>),
+        owner: createViewEpochOwner<Props>({ prototypeName: proto.name }),
+        rawPropsSource: null,
+        controller: null,
+        eventGate: null,
+        exposes: {},
+        invoke: null,
+        scopedExposesReader: null as unknown as ReturnType<typeof createScopedExposesReader>,
+        pendingCommit: false,
+        pendingSignal: null,
+        viewReady: false,
+        viewDisposed: false,
+        lastHostProps: null,
+        subs: new Set(),
+        hostSession: null,
+        boundRoot: null,
+        lastInitRoot: null,
+        focusTargetReadyListeners: new Set(),
+        focusTargetRetryScheduled: false,
+        propWatchDisposer: null,
+      } as Vue2InternalState<Props>;
+      state.scopedExposesReader = createScopedExposesReader(() => state.invoke);
+      return state;
+    };
 
     const options: Vue2ComponentOptions<TProto> = {
       name: toVue2ComponentName(proto.name),
@@ -306,6 +312,8 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
               afterVueCommit(runtime, vm, () => finishPendingCommit(vm));
             },
             onAfterUnmount: () => {
+              state.scopedExposesReader.invalidate();
+              state.invoke = null;
               state.hostSession = null;
               state.controller = null;
               state.exposes = {};
@@ -408,6 +416,8 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
         const state = getState<Props>(this);
         state.propWatchDisposer?.();
         state.propWatchDisposer = null;
+        state.scopedExposesReader.invalidate();
+        state.invoke = null;
         void state.owner.dispose();
         state.lastInitRoot = null;
       },
@@ -417,8 +427,7 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
         },
         getExposes() {
           const state = getState<Props>(this);
-          const scopedExposesReader = createScopedExposesReader(() => state.invoke);
-          return scopedExposesReader.read(state.exposes ?? {}) as ProtoAdapterExposes<TProto>;
+          return state.scopedExposesReader.read(state.exposes ?? {}) as ProtoAdapterExposes<TProto>;
         },
         invokeInCallbackScope(fn: () => void) {
           getState<Props>(this).invoke?.(fn);
@@ -640,6 +649,8 @@ function initSession<Props extends PropsBaseType>(
         onLifecycleCheckpoint: targetOptions.onLifecycleCheckpoint,
         onLifecycleEvent: targetOptions.onLifecycleEvent,
         onAfterUnmount: () => {
+          state.scopedExposesReader.invalidate();
+          state.invoke = null;
           state.hostSession = null;
           state.controller = null;
           state.exposes = {};

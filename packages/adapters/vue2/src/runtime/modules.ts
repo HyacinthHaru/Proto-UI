@@ -31,11 +31,11 @@ import { EFFECTS_CAP } from '@proto.ui/module-feedback';
 import {
   EVENT_CANCEL_DEFAULT_ACTION_CAP,
   type EventDefaultActionCancelRequest,
-  EVENT_EMIT_CAP,
   EVENT_GLOBAL_TARGET_CAP,
   EVENT_ROOT_TARGET_CAP,
 } from '@proto.ui/module-event';
-import { EXPOSE_STATE_SET_EXPOSES_CAP } from '@proto.ui/module-expose-state';
+import { EXPOSE_EVENT_SINK_CAP } from '@proto.ui/module-expose-event';
+import { EXPOSES_RECORD_SINK_CAP } from '@proto.ui/module-expose-state';
 import {
   FOCUS_BLUR_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
@@ -140,7 +140,7 @@ export function createVue2OwnerModules<Props extends PropsBaseType>(
 
   return createCapsWiring()
     .use('props', [[RAW_PROPS_SOURCE_CAP, rawPropsSource]])
-    .use('event', [[EVENT_EMIT_CAP, emit]])
+    .use('expose-event', [[EXPOSE_EVENT_SINK_CAP, emit]])
     .use('focus', [
       [FOCUS_INSTANCE_TOKEN_CAP, instanceToken],
       [FOCUS_PARENT_CAP, (inst: unknown) => getLogicalParent(inst as LogicalInstanceToken)],
@@ -148,7 +148,7 @@ export function createVue2OwnerModules<Props extends PropsBaseType>(
     ])
     .use('expose-state', [
       [
-        EXPOSE_STATE_SET_EXPOSES_CAP,
+        EXPOSES_RECORD_SINK_CAP,
         (record: Record<string, unknown>) => {
           setExposes(record ?? {});
         },
@@ -268,8 +268,8 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
           }
         },
       ],
-      [EVENT_EMIT_CAP, emit],
     ])
+    .use('expose-event', [[EXPOSE_EVENT_SINK_CAP, emit]])
     .use('focus', [
       [FOCUS_INSTANCE_TOKEN_CAP, instanceToken],
       [FOCUS_PARENT_CAP, (inst: unknown) => getLogicalParent(inst as LogicalInstanceToken)],
@@ -278,9 +278,9 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
       [FOCUS_IS_NATIVELY_FOCUSABLE_CAP, isNativelyFocusable],
       [
         FOCUS_SET_FOCUSABLE_CAP,
-        (target: HTMLElement, enabled: boolean) => {
+        (target: HTMLElement, enabled: boolean, options?: { programmatic?: boolean }) => {
           const surface = getLogicalTriggerSurfaceRoot(instanceToken);
-          target.tabIndex = enabled && (!surface || surface === target) ? 0 : -1;
+          projectFocusable(target, enabled && (!surface || surface === target), options);
         },
       ],
       [
@@ -307,7 +307,7 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
     ])
     .use('expose-state', [
       [
-        EXPOSE_STATE_SET_EXPOSES_CAP,
+        EXPOSES_RECORD_SINK_CAP,
         (record: Record<string, unknown>) => {
           setExposes(record ?? {});
         },
@@ -402,4 +402,18 @@ function isNativelyFocusable(el: HTMLElement): boolean {
     return el.hasAttribute('href');
   }
   return false;
+}
+
+function projectFocusable(
+  target: HTMLElement,
+  enabled: boolean,
+  options?: { programmatic?: boolean }
+): void {
+  if (enabled) {
+    target.setAttribute('tabindex', '0');
+  } else if (options?.programmatic || isNativelyFocusable(target)) {
+    target.setAttribute('tabindex', '-1');
+  } else {
+    target.removeAttribute('tabindex');
+  }
 }

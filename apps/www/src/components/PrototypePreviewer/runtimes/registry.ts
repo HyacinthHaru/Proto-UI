@@ -1,6 +1,11 @@
 // src/components/PrototypePreviewer/runtimes/registry.ts
 export type RuntimeId = 'wc' | 'react' | 'vue' | 'vue2';
-export const AdapterIds = ['wc', 'react', 'vue', 'vue2'];
+/** Runtimes presented as supported adapters in public website surfaces. */
+export const AdapterIds = ['wc', 'react', 'vue'] as const;
+export type PublicRuntimeId = (typeof AdapterIds)[number];
+
+/** Additional runtime(s) available only to internal validation surfaces. */
+export const InternalAdapterIds = [...AdapterIds, 'vue2'] as const satisfies readonly RuntimeId[];
 export type RuntimeAPI = {
   id: RuntimeId;
   label: string;
