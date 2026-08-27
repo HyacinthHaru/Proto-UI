@@ -649,7 +649,7 @@ export function authorizeReviewSubmission({
   assert(RECOMMENDATIONS.includes(recommendedAction), 'recommendedAction is invalid');
   const explicitCurrentUser =
     executionMode === 'human-assisted' &&
-    executionModeSource === 'current-user' &&
+    ['current-user', 'active-human-loop'].includes(executionModeSource) &&
     authorizationId === 'explicit-current-user';
   const standingAuthorization = policy?.reviewSubmissionAuthorizations?.find(
     (authorization) => authorization.id === authorizationId

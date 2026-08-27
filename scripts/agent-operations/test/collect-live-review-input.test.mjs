@@ -26,6 +26,7 @@ function payload(overrides = {}) {
         pullRequest: {
           state: 'OPEN',
           isDraft: false,
+          changedFiles: changedFiles.length,
           body: 'Bounded target',
           baseRefOid: sha('a'),
           headRefOid: sha('b'),
@@ -206,6 +207,15 @@ test('live collector fails closed on pagination truncation for every connection'
   }
 });
 
+test('live collector fails closed when the REST changed-file list is incomplete', () => {
+  const truncated = payload();
+  truncated.data.repository.pullRequest.changedFiles = changedFiles.length + 1;
+  assert.throws(
+    () => buildLiveReviewInput(truncated, 'github.com:Proto-UI/Proto-UI', 487, [], changedFiles),
+    /changed-file collection is incomplete/
+  );
+});
+
 test('live collector passes external evidence through verbatim and validates its shape', () => {
   const evidence = [
     { kind: 'artifact', locator: 'https://example.com/a.txt', digest: 'd'.repeat(64) },
@@ -297,5 +307,29 @@ test('check context normalization matches both connection node kinds', () => {
       completedAt: '2026-08-23T06:00:00Z',
       detailsUrl: null,
     }
+  );
+});
+
+test('live check summary accepts neutral terminal conclusions but not pending checks', () => {
+  const successCompatible = ['SUCCESS', 'SKIPPED', 'NEUTRAL'].map((conclusion) => ({
+    name: conclusion.toLowerCase(),
+    status: 'COMPLETED',
+    conclusion,
+    completedAt: '2026-08-23T06:00:00Z',
+    detailsUrl: null,
+  }));
+  assert.equal(summarizeLiveChecks(successCompatible), 'success');
+  assert.equal(
+    summarizeLiveChecks([
+      ...successCompatible,
+      {
+        name: 'pending',
+        status: 'IN_PROGRESS',
+        conclusion: null,
+        completedAt: null,
+        detailsUrl: null,
+      },
+    ]),
+    'unknown'
   );
 });

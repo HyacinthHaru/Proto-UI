@@ -10,6 +10,7 @@ const FAILED_CONCLUSIONS = new Set([
   'CANCELLED',
   'STARTUP_FAILURE',
 ]);
+const SUCCESSFUL_CONCLUSIONS = new Set(['SUCCESS', 'SKIPPED', 'NEUTRAL']);
 
 // GitHub GraphQL schema facts (verified against the live schema):
 // - PullRequestReviewThread has no updatedAt; the latest comment updatedAt is authoritative.
@@ -22,6 +23,7 @@ query($owner: String!, $name: String!, $number: Int!) {
     pullRequest(number: $number) {
       state
       isDraft
+      changedFiles
       body
       baseRefOid
       headRefOid
@@ -105,7 +107,7 @@ export function summarizeLiveChecks(checks) {
   if (!Array.isArray(checks) || checks.length === 0) return 'unknown';
   if (checks.some((check) => FAILED_CONCLUSIONS.has(check.conclusion))) return 'failure';
   const allGreen = checks.every(
-    (check) => check.status === 'COMPLETED' && check.conclusion === 'SUCCESS'
+    (check) => check.status === 'COMPLETED' && SUCCESSFUL_CONCLUSIONS.has(check.conclusion)
   );
   return allGreen ? 'success' : 'unknown';
 }
@@ -140,6 +142,13 @@ export function buildLiveReviewInput(
   if (!pullRequestPayload) throw new Error('live pull-request payload is incomplete');
   if (!payload?.data?.viewer?.login || !payload?.data?.repository?.viewerPermission) {
     throw new Error('live viewer identity or permission is unavailable');
+  }
+  if (
+    !Number.isInteger(pullRequestPayload.changedFiles) ||
+    pullRequestPayload.changedFiles < 1 ||
+    changedFilePayload.length !== pullRequestPayload.changedFiles
+  ) {
+    throw new Error('live changed-file collection is incomplete');
   }
 
   assertNoTruncation(

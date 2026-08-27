@@ -513,6 +513,10 @@ test('review submission applies explicit and scheduled standing authorization wi
   assert.equal(authorizeReviewSubmission({ ...base, credentialCanReview: false }).allowed, false);
   assert.equal(authorizeReviewSubmission(base).allowed, true);
   assert.equal(
+    authorizeReviewSubmission({ ...base, executionModeSource: 'active-human-loop' }).allowed,
+    true
+  );
+  assert.equal(
     authorizeReviewSubmission({
       ...base,
       reviewer: 'contributor',
