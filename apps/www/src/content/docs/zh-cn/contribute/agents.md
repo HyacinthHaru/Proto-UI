@@ -35,7 +35,7 @@ pnpm agent:assess:self-result -- --challenge <challenge.json> --response <respon
 
 推荐链路是 `pui-dev -> pui-orient -> pui-pr -> pui-trace -> 必要时 pui-validate -> 新上下文 pui-review`。
 
-Review packet 要写明仓库、PR、base/head SHA、review class、精确输入 digest、范围、相关实体、验证、发现、限制、未知项和人类闸门。这个 digest 必须从 PR 状态、draft 状态、当前与重命名前 changed-file 路径、body、commits、已有 reviews、PR 顶层 conversation comments、replies、threads、checks 和外部证据的 v2 规范化快照重新计算，不能信任调用方填写的十六进制字符串。验证要记录实际命令与结果，以及没有运行的检查和原因；增量复核必须通过 `priorPacketDigest` 绑定上一份 packet，并核对仓库、PR、prior head 和每个 finding 的真实状态转换；未绑定或对不上的 reconciliation 一律校验失败。出现新提交后，旧 packet 就过期；同一 head 上 review、顶层评论、回复、thread、checks、changed files 或证据变化也会生成新的输入 digest，完全没有变化的 packet 才是重复。Packet 校验与提交预检还会重新核对模式、review class 上限、最强允许建议和必填限制。CI 通过只是证据，不代表批准。测评不会派生批准，Agent 也不能批准自己的工作。
+Review packet 要写明仓库、PR、base ref name、base/head SHA、review class、精确输入 digest、范围、相关实体、验证、发现、限制、未知项和人类闸门。这个 digest 必须从 PR 状态、draft 状态、base ref name、当前与重命名前 changed-file 路径、body、commits、已有 reviews、PR 顶层 conversation comments、replies、threads、checks 和外部证据的 v2 规范化快照重新计算，不能信任调用方填写的十六进制字符串。验证要记录实际命令与结果，以及没有运行的检查和原因；增量复核必须通过 `priorPacketDigest` 绑定上一份 packet，并核对仓库、PR、prior head 和每个 finding 的真实状态转换；未绑定或对不上的 reconciliation 一律校验失败。出现新提交或 base retargeting 后，旧 packet 就过期；同一 head 上 review、顶层评论、回复、thread、checks、changed files 或证据变化也会生成新的输入 digest，完全没有变化的 packet 才是重复。Packet 校验与提交预检还会重新核对模式、review class 上限、最强允许建议和必填限制。CI 通过只是证据，不代表批准。测评不会派生批准，Agent 也不能批准自己的工作。
 
 自治 review classes 从事实与 CI 开始，逐步覆盖文档与链接、测试、bounded regression、受治理实现切片、跨域语义，以及治理或发布证据。在 `human-assisted` 模式中，这些类别只调整复核深度和限制说明，不会挡住用户要求的 review。
 

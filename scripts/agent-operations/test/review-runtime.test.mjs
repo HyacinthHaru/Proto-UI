@@ -37,6 +37,7 @@ function reviewInput(overrides = {}) {
     pullRequest: 487,
     pullRequestState: 'OPEN',
     isDraft: false,
+    baseRefName: 'main',
     baseSha: sha('a'),
     headSha: sha('b'),
     pullRequestBody: 'Bounded review target',
@@ -807,6 +808,12 @@ test('submission preflight re-collects live canonical input and rejects drift an
   });
   assert.throws(
     () => authorizeReviewSubmission({ ...base, liveInput: driftedLiveInput }),
+    /live canonical review input does not match/
+  );
+
+  const retargetedLiveInput = reviewInput({ baseRefName: 'release' });
+  assert.throws(
+    () => authorizeReviewSubmission({ ...base, liveInput: retargetedLiveInput }),
     /live canonical review input does not match/
   );
 

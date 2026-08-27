@@ -24,6 +24,7 @@ try {
         schemaVersion: live.input.schemaVersion,
         pullRequestState: live.input.pullRequestState,
         isDraft: live.input.isDraft,
+        baseRefName: live.input.baseRefName,
         baseSha: live.input.baseSha,
         headSha: live.input.headSha,
         changedFiles: live.input.changedFiles.length,

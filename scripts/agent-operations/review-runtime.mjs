@@ -101,6 +101,7 @@ export function validateReviewInputSnapshot(input) {
       'pullRequest',
       'pullRequestState',
       'isDraft',
+      'baseRefName',
       'baseSha',
       'headSha',
       'pullRequestBody',
@@ -127,6 +128,10 @@ export function validateReviewInputSnapshot(input) {
   );
   assert(PULL_REQUEST_STATES.has(input.pullRequestState), 'review input PR state is invalid');
   assert(typeof input.isDraft === 'boolean', 'review input draft state is invalid');
+  assert(
+    typeof input.baseRefName === 'string' && input.baseRefName.length > 0,
+    'review input base ref name is invalid'
+  );
   assert(SHA.test(input.baseSha) && SHA.test(input.headSha), 'review input SHAs are invalid');
   assert(typeof input.pullRequestBody === 'string', 'review input PR body is invalid');
   validateInputItems(

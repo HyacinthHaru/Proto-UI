@@ -37,7 +37,7 @@ The Codex desktop task `proto-ui` is separate from the Phase A GitHub Actions wo
 
 The intended future scope would allow complete, finding-backed `REQUEST_CHANGES`, and `APPROVE` only for a clean packet with successful live checks when no current or previous changed-file path identifies a YAML entity under the nine `spec/**` entity collections. That scope is not executable authority until repository-and-task-bound runtime identity is implemented and reviewed.
 
-The pending authorization does not change `.github/workflows/agent-operations-shadow.yml`, `policy.yaml`, or the Phase A token boundary. It does not authorize `COMMENT` reviews, merge, ready-for-review, close, labels, assignment, publication, release, access, secrets, or rulesets. The separately human-authorized `submit-review` path binds PR state, revision, changed files, existing reviews, top-level conversation comments, threaded discussions, checks, viewer identity, author identity, permission, and canonical input digest. Its Review API write carries `commit_id` equal to the reviewed packet head and verifies that value in the receipt. A stale, incomplete, duplicate, self-authored, draft, closed, permission-unknown, or commit-mismatched target fails closed.
+The pending authorization does not change `.github/workflows/agent-operations-shadow.yml`, `policy.yaml`, or the Phase A token boundary. It does not authorize `COMMENT` reviews, merge, ready-for-review, close, labels, assignment, publication, release, access, secrets, or rulesets. The separately human-authorized `submit-review` path binds PR state, base ref name, revision, changed files, existing reviews, top-level conversation comments, threaded discussions, checks, viewer identity, author identity, permission, and canonical input digest. Its Review API write carries `commit_id` equal to the reviewed packet head and verifies that value in the receipt. A stale, retargeted, incomplete, duplicate, self-authored, draft, closed, permission-unknown, or commit-mismatched target fails closed.
 
 ## Execution boundary
 
@@ -84,7 +84,7 @@ When a gate is required, one decision packet must state the observed fact, recom
 - `schemas/capability-challenge.schema.json`: dynamic assessment challenge contract.
 - `schemas/capability-response.schema.json`: evidence-backed answer contract without a score or answer key.
 - `schemas/capability-self-result.schema.json`: deterministic unsigned U0-C4 local task-fit result.
-- `schemas/review-input.schema.json`: canonical v2 PR state, changed-file, review, top-level conversation comment, threaded discussion, check, and evidence snapshot used for review hashing and spec-entity classification.
+- `schemas/review-input.schema.json`: canonical v2 PR state, base ref name, changed-file, review, top-level conversation comment, threaded discussion, check, and evidence snapshot used for review hashing and spec-entity classification.
 - `schemas/review-packet.schema.json`: revision-bound local review evidence contract.
 - `fixtures/**`: positive and negative replay controls.
 - `scripts/agent-operations/collect-github-state.mjs`: bounded, sanitizing GitHub snapshot collector.

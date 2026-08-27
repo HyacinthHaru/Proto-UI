@@ -25,6 +25,7 @@ query($owner: String!, $name: String!, $number: Int!) {
       isDraft
       changedFiles
       body
+      baseRefName
       baseRefOid
       headRefOid
       author { login }
@@ -206,6 +207,7 @@ export function buildLiveReviewInput(
     pullRequest,
     pullRequestState: pullRequestPayload.state,
     isDraft: pullRequestPayload.isDraft,
+    baseRefName: pullRequestPayload.baseRefName,
     baseSha: pullRequestPayload.baseRefOid,
     headSha: pullRequestPayload.headRefOid,
     pullRequestBody: pullRequestPayload.body ?? '',

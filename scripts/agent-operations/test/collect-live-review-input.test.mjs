@@ -29,6 +29,7 @@ function payload(overrides = {}) {
           isDraft: false,
           changedFiles: changedFiles.length,
           body: 'Bounded target',
+          baseRefName: 'main',
           baseRefOid: sha('a'),
           headRefOid: sha('b'),
           author: { login: 'contributor' },
@@ -127,6 +128,7 @@ test('live collector builds a complete canonical input from the GraphQL payload'
   assert.equal(result.input.commits.length, 1);
   assert.equal(result.input.pullRequestState, 'OPEN');
   assert.equal(result.input.isDraft, false);
+  assert.equal(result.input.baseRefName, 'main');
   assert.deepEqual(result.input.changedFiles, [
     { path: 'packages/core/src/index.ts', previousPath: null, status: 'modified' },
     {

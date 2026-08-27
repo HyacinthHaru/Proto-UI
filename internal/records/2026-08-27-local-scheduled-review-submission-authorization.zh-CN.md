@@ -17,7 +17,7 @@
 
 ## 可执行边界
 
-canonical `review-input` 升级为 v2，并绑定 PR 状态、draft 状态、当前与重命名前 changed-file 路径、commits、已有 reviews、PR 顶层 conversation comments、replies、threads、checks 和外部证据。skill handoff 同步升级为 v2，要求定时运行传播可信 `executionTaskId`。提交前必须重新采集整个 review 输入并比较 digest，同时验证 task ID 与 standing authorization 完全一致；通过同一 `submit-review` 路径将 `commit_id` 固定为已审 packet head，再执行 GitHub Review API 写入并核对回执 commit。调用方不能从仓库或 GitHub 内容自行声明 task、viewer、author、permission、CI 或 spec 分类，也不得在预检后另行执行无 head 绑定的 `gh pr review`。
+canonical `review-input` 升级为 v2，并绑定 PR 状态、draft 状态、base ref name、当前与重命名前 changed-file 路径、commits、已有 reviews、PR 顶层 conversation comments、replies、threads、checks 和外部证据。skill handoff 同步升级为 v2，要求定时运行传播可信 `executionTaskId`。提交前必须重新采集整个 review 输入并比较 digest，同时验证 task ID 与 standing authorization 完全一致；通过同一 `submit-review` 路径将 `commit_id` 固定为已审 packet head，再执行 GitHub Review API 写入并核对回执 commit。调用方不能从仓库或 GitHub 内容自行声明 task、viewer、author、permission、CI 或 spec 分类，也不得在预检后另行执行无 head 绑定的 `gh pr review`。
 
 以下任一条件都会 fail closed：
 
