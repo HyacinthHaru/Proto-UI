@@ -193,6 +193,7 @@ try {
       'C4' ||
     scheduledReviewAuthorization?.status !== 'active' ||
     scheduledReviewAuthorization?.executionModeSource !== 'schedule' ||
+    scheduledReviewAuthorization?.executionTaskId !== 'proto-ui' ||
     scheduledReviewAuthorization?.repositoryId !== 'github.com:Proto-UI/Proto-UI' ||
     scheduledReviewAuthorization?.mutationClass !== 'conditional-review-submission' ||
     !['REQUEST_CHANGES', 'APPROVE'].every((action) =>

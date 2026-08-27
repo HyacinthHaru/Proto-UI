@@ -52,6 +52,7 @@ taskFamilies:
     autonomousMinimumBand: C4
     taskClass: review-local
     executionMode: autonomous
+    executionTaskId: proto-ui
     operationMode: conditional-review-write
     input: canonical-review-input-v2
     output: submitted-review-receipt-or-maintainer-decision-package

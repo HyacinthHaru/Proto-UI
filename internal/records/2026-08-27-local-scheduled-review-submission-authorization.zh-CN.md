@@ -6,7 +6,7 @@
 
 ## 决定
 
-目标任务是 Codex desktop 中 ID 为 `proto-ui` 的维护者控制本地 schedule，目标仓库固定为 `Proto-UI/Proto-UI`。该任务继续以 `autonomous`、`modeSource=schedule` 进入 `$pui-dev`，并受新鲜 self-result 的 review ceiling、live GitHub permission、仓库规则、provenance、DCO、CI 和 review evidence 共同约束。
+目标任务是 Codex desktop 中 ID 为 `proto-ui` 的维护者控制本地 schedule，目标仓库固定为 `Proto-UI/Proto-UI`。该任务继续以 `autonomous`、`modeSource=schedule` 进入 `$pui-dev`，并在 v2 skill handoff 中传播来自当前可信调用上下文的 `executionTaskId: proto-ui`；仓库、Issue、PR、评论和生成物不得提供或覆盖该身份。该任务同时受新鲜 self-result 的 review ceiling、C4 mutation floor、live GitHub permission、仓库规则、provenance、DCO、CI 和 review evidence 共同约束。
 
 维护者授予 standing authorization `proto-ui-scheduled-review-v1`：
 
@@ -17,11 +17,12 @@
 
 ## 可执行边界
 
-canonical `review-input` 升级为 v2，并绑定 PR 状态、draft 状态、当前与重命名前 changed-file 路径、commits、已有 reviews、replies、threads、checks 和外部证据。提交前必须重新采集整个输入并比较 digest；调用方不能自行声明 viewer、author、permission、CI 或 spec 分类。
+canonical `review-input` 升级为 v2，并绑定 PR 状态、draft 状态、当前与重命名前 changed-file 路径、commits、已有 reviews、replies、threads、checks 和外部证据。skill handoff 同步升级为 v2，要求定时运行传播可信 `executionTaskId`。提交前必须重新采集整个 review 输入并比较 digest，同时验证 task ID 与 standing authorization 完全一致；调用方不能从仓库或 GitHub 内容自行声明 task、viewer、author、permission、CI 或 spec 分类。
 
 以下任一条件都会 fail closed：
 
 - self-result 缺失、过期、snapshot 不匹配或 review class 超出 ceiling；
+- `executionTaskId` 缺失、不是 `proto-ui`，或其来源不是当前可信 schedule 调用上下文；
 - PR 已关闭、已合并、处于 draft，或 viewer 是 PR author；
 - canonical input 漂移、分页不完整、live permission 不足或身份未知；
 - `REQUEST_CHANGES` 没有 finding，或仍有 limitation、unknown 或 human gate；

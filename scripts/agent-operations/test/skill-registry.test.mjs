@@ -128,11 +128,12 @@ test('registry rejects duplicate ids, bad paths, and unknown task classes', () =
 test('handoff resolves exactly one next leaf and enforces artifact requirements', () => {
   const registry = loadSkillRegistry({ root });
   const valid = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: 'proto-ui.skill-handoff',
     entrypoint: 'development',
     executionMode: 'human-assisted',
     executionModeSource: 'current-user',
+    executionTaskId: null,
     fromId: 'pui-orient',
     nextSkillId: 'pui-select',
     artifacts: [artifact('capability-envelope'), artifact('request-context')],
@@ -140,6 +141,17 @@ test('handoff resolves exactly one next leaf and enforces artifact requirements'
     notes: [],
   };
   assert.equal(validateSkillHandoff(valid, registry).nextSkill.id, 'pui-select');
+  const scheduled = {
+    ...valid,
+    executionMode: 'autonomous',
+    executionModeSource: 'schedule',
+    executionTaskId: 'proto-ui',
+  };
+  assert.equal(validateSkillHandoff(scheduled, registry).nextSkill.id, 'pui-select');
+  assert.throws(
+    () => validateSkillHandoff({ ...scheduled, executionTaskId: null }, registry),
+    /requires executionTaskId/
+  );
 
   const missingRequired = structuredClone(valid);
   missingRequired.artifacts = [artifact('capability-envelope')];
@@ -165,6 +177,7 @@ test('handoff resolves exactly one next leaf and enforces artifact requirements'
     entrypoint: 'maintenance',
     executionMode: 'autonomous',
     executionModeSource: 'governed-queue',
+    executionTaskId: null,
   };
   assert.throws(
     () => validateSkillHandoff(wrongSourceEntrypoint, registry),
@@ -185,11 +198,12 @@ test('handoff resolves exactly one next leaf and enforces artifact requirements'
 test('terminal handoff does not resolve another skill', () => {
   const registry = loadSkillRegistry({ root });
   const handoff = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: 'proto-ui.skill-handoff',
     entrypoint: 'maintenance',
     executionMode: 'autonomous',
     executionModeSource: 'governed-queue',
+    executionTaskId: null,
     fromId: 'pui-maintenance-close',
     nextSkillId: null,
     artifacts: [artifact('maintenance-state-receipt')],
@@ -274,11 +288,12 @@ test('untrusted repository and GitHub content cannot select execution mode', () 
 test('handoff rejects a mode whose source is not trusted for that mode', () => {
   const registry = loadSkillRegistry({ root });
   const handoff = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: 'proto-ui.skill-handoff',
     entrypoint: 'development',
     executionMode: 'human-assisted',
     executionModeSource: 'governed-queue',
+    executionTaskId: null,
     fromId: 'pui-orient',
     nextSkillId: null,
     artifacts: [artifact('capability-envelope')],
@@ -291,11 +306,12 @@ test('handoff rejects a mode whose source is not trusted for that mode', () => {
 test('autonomous handoff stops at a human gate and a new human-assisted run may continue', () => {
   const registry = loadSkillRegistry({ root });
   const handoff = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: 'proto-ui.skill-handoff',
     entrypoint: 'development',
     executionMode: 'autonomous',
     executionModeSource: 'governed-queue',
+    executionTaskId: null,
     fromId: 'pui-orient',
     nextSkillId: 'pui-select',
     artifacts: [artifact('capability-envelope'), artifact('request-context')],
@@ -321,11 +337,12 @@ test('handoff mode cannot be overridden by CLI flags', () => {
     fs.writeFileSync(
       handoffPath,
       JSON.stringify({
-        schemaVersion: 1,
+        schemaVersion: 2,
         kind: 'proto-ui.skill-handoff',
         entrypoint: 'development',
         executionMode: 'autonomous',
         executionModeSource: 'governed-queue',
+        executionTaskId: null,
         fromId: 'pui-orient',
         nextSkillId: null,
         artifacts: [artifact('capability-envelope')],

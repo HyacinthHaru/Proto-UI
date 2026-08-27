@@ -154,6 +154,7 @@ reviewSubmissionAuthorizations:
     status: active
     executionMode: autonomous
     executionModeSource: schedule
+    executionTaskId: proto-ui
     repositoryId: github.com:Proto-UI/Proto-UI
     mutationClass: conditional-review-submission
     allowedRecommendations: [REQUEST_CHANGES, APPROVE]

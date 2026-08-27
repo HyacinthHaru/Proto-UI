@@ -502,6 +502,7 @@ test('review submission applies explicit and scheduled standing authorization wi
     liveInput: structuredClone(input),
     executionMode: 'human-assisted',
     executionModeSource: 'current-user',
+    executionTaskId: null,
     authorizationId: 'explicit-current-user',
     policy,
     credentialCanReview: true,
@@ -590,6 +591,7 @@ test('review submission applies explicit and scheduled standing authorization wi
     ...base,
     executionMode: 'autonomous',
     executionModeSource: 'schedule',
+    executionTaskId: 'proto-ui',
     authorizationId: 'proto-ui-scheduled-review-v1',
     selfAssessment: assessment('C4', Object.keys(policy.reviewClasses)),
   };
@@ -600,6 +602,14 @@ test('review submission applies explicit and scheduled standing authorization wi
   assert.equal(requestChanges.allowed, true);
   assert.equal(requestChanges.recommendedAction, 'REQUEST_CHANGES');
   assert.equal(authorizeReviewSubmission(scheduledBase).allowed, true);
+  assert.equal(
+    authorizeReviewSubmission({ ...scheduledBase, executionTaskId: 'another-schedule' }).allowed,
+    false
+  );
+  assert.equal(
+    authorizeReviewSubmission({ ...scheduledBase, executionTaskId: null }).allowed,
+    false
+  );
   const reviewEligibleC3 = assessment('C3', [
     'review-facts-and-ci',
     'review-docs-and-links',
@@ -729,6 +739,7 @@ test('submission preflight re-collects live canonical input and rejects drift an
     liveInput: structuredClone(input),
     executionMode: 'human-assisted',
     executionModeSource: 'current-user',
+    executionTaskId: null,
     authorizationId: 'explicit-current-user',
     policy,
     credentialCanReview: true,
@@ -930,11 +941,12 @@ test('agent:review CLI validates and inspects the same packet contract used by t
     writeFileSync(
       handoffPath,
       JSON.stringify({
-        schemaVersion: 1,
+        schemaVersion: 2,
         kind: 'proto-ui.skill-handoff',
         entrypoint: 'development',
         executionMode: 'human-assisted',
         executionModeSource: 'current-user',
+        executionTaskId: null,
         fromId: 'pui-validate',
         nextSkillId: 'pui-review',
         artifacts: [

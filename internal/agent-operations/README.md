@@ -33,7 +33,7 @@ The live GitHub repository remains the source for Issue and pull-request state. 
 
 ## Maintainer-controlled local review schedule
 
-The Codex desktop task `proto-ui` is separate from the Phase A GitHub Actions workflow. It runs in the maintainer's local project and uses the standing authorization `proto-ui-scheduled-review-v1`. After a fresh eligible `pui-review`, it may submit `REQUEST_CHANGES` when a complete packet contains at least one finding and no human gate. It may submit `APPROVE` only when the packet is clean, live checks succeed, and no current or previous changed-file path identifies a YAML entity under the nine `spec/**` entity collections. An otherwise approvable spec-entity change is sent to the maintainer for human review without an approval submission.
+The Codex desktop task `proto-ui` is separate from the Phase A GitHub Actions workflow. It runs in the maintainer's local project and uses the standing authorization `proto-ui-scheduled-review-v1`. Its v2 skill handoff must propagate the trusted `executionTaskId: proto-ui`; a different, missing, or repository-supplied task identity fails closed. After a fresh eligible `pui-review` and an independent C4 mutation-floor check, it may submit `REQUEST_CHANGES` when a complete packet contains at least one finding and no human gate. It may submit `APPROVE` only when the packet is clean, live checks succeed, and no current or previous changed-file path identifies a YAML entity under the nine `spec/**` entity collections. An otherwise approvable spec-entity change is sent to the maintainer for human review without an approval submission.
 
 This exception does not change `.github/workflows/agent-operations-shadow.yml`, `policy.yaml`, or the Phase A token boundary. It does not authorize `COMMENT` reviews, merge, ready-for-review, close, labels, assignment, publication, release, access, secrets, or rulesets. The live preflight binds PR state, revision, changed files, existing reviews, discussions, checks, viewer identity, author identity, permission, and canonical input digest. A stale, incomplete, duplicate, self-authored, draft, closed, or permission-unknown target fails closed.
 
@@ -74,7 +74,7 @@ When a gate is required, one decision packet must state the observed fact, recom
 - `autonomous-tasks.yaml`: recurring-task status, capability, inputs, outputs, and stop conditions.
 - `autonomous-tasks.md`: human-readable deployment boundary for recurring Agent work.
 - `skills.yaml`: lazy-loaded ordinary development and maintenance skill transitions.
-- `schemas/skill-handoff.schema.json`: one-leaf handoff contract used by the resolver.
+- `schemas/skill-handoff.schema.json`: v2 one-leaf handoff contract, including propagated execution-task identity, used by the resolver.
 - `capability-policy.yaml`: execution modes, local comprehension bands, autonomous ceilings, and human gates.
 - `capability-rubric.yaml`: public philosophical anchors for unsigned self-assessment; it contains no repository answer key.
 - `contributor-agents.md`: readable policy for ordinary Contributor Agents.

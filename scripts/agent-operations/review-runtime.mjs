@@ -623,6 +623,7 @@ export function authorizeReviewSubmission({
   liveInput,
   executionMode,
   executionModeSource,
+  executionTaskId,
   authorizationId,
   policy,
   selfAssessment,
@@ -661,6 +662,7 @@ export function authorizeReviewSubmission({
     standingAuthorization?.status === 'active' &&
     standingAuthorization?.executionMode === 'autonomous' &&
     standingAuthorization?.executionModeSource === 'schedule' &&
+    standingAuthorization?.executionTaskId === executionTaskId &&
     standingAuthorization?.repositoryId === packet.repositoryId &&
     standingAuthorization?.allowedRecommendations?.includes(recommendedAction);
   if (!explicitCurrentUser && !standingScheduledReview) {

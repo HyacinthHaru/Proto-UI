@@ -226,6 +226,7 @@ try {
       liveInput: live.input,
       executionMode: execution.handoff.executionMode,
       executionModeSource: execution.handoff.executionModeSource,
+      executionTaskId: execution.handoff.executionTaskId,
       authorizationId: args.get('--authorization'),
       policy,
       selfAssessment: execution.selfAssessment,
