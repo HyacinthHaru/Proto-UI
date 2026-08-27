@@ -189,9 +189,12 @@ try {
     parsedPolicy.reviewClasses?.['review-governance-and-release-evidence']
       ?.autonomousMinimumBand !== 'C4' ||
     parsedPolicy.mutationClasses?.['conditional-review-submission']?.externalWrite !== true ||
+    parsedPolicy.mutationClasses?.['conditional-review-submission']?.autonomousMinimumBand !==
+      'C4' ||
     scheduledReviewAuthorization?.status !== 'active' ||
     scheduledReviewAuthorization?.executionModeSource !== 'schedule' ||
     scheduledReviewAuthorization?.repositoryId !== 'github.com:Proto-UI/Proto-UI' ||
+    scheduledReviewAuthorization?.mutationClass !== 'conditional-review-submission' ||
     !['REQUEST_CHANGES', 'APPROVE'].every((action) =>
       scheduledReviewAuthorization?.allowedRecommendations?.includes(action)
     ) ||

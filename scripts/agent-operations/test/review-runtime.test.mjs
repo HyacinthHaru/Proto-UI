@@ -591,6 +591,7 @@ test('review submission applies explicit and scheduled standing authorization wi
     executionMode: 'autonomous',
     executionModeSource: 'schedule',
     authorizationId: 'proto-ui-scheduled-review-v1',
+    selfAssessment: assessment('C4', Object.keys(policy.reviewClasses)),
   };
   const requestChanges = authorizeReviewSubmission({
     ...scheduledBase,
@@ -599,6 +600,40 @@ test('review submission applies explicit and scheduled standing authorization wi
   assert.equal(requestChanges.allowed, true);
   assert.equal(requestChanges.recommendedAction, 'REQUEST_CHANGES');
   assert.equal(authorizeReviewSubmission(scheduledBase).allowed, true);
+  const reviewEligibleC3 = assessment('C3', [
+    'review-facts-and-ci',
+    'review-docs-and-links',
+    'review-tests',
+    'review-bounded-regression',
+    'review-governed-implementation-slice',
+  ]);
+  assert.equal(
+    evaluateReviewEligibility({
+      executionMode: 'autonomous',
+      selfAssessment: reviewEligibleC3,
+      reviewClass: scheduledBase.packet.reviewClass,
+      policy,
+    }).eligible,
+    true
+  );
+  assert.equal(
+    authorizeReviewSubmission({
+      ...scheduledBase,
+      selfAssessment: reviewEligibleC3,
+    }).allowed,
+    false
+  );
+  assert.equal(
+    authorizeReviewSubmission({ ...scheduledBase, selfAssessment: null }).allowed,
+    false
+  );
+  assert.equal(
+    authorizeReviewSubmission({
+      ...scheduledBase,
+      selfAssessment: { ...scheduledBase.selfAssessment, fresh: false },
+    }).allowed,
+    false
+  );
   assert.equal(
     authorizeReviewSubmission({ ...scheduledBase, executionModeSource: 'governed-queue' }).allowed,
     false

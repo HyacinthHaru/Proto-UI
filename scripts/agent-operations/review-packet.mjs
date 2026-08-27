@@ -127,7 +127,7 @@ function validateExecution(args, packet, policy) {
     policy,
   });
   validateReviewPacketEligibility(packet, eligibility, handoff.executionMode);
-  return { handoff, eligibility };
+  return { handoff, eligibility, selfAssessment };
 }
 
 try {
@@ -228,6 +228,7 @@ try {
       executionModeSource: execution.handoff.executionModeSource,
       authorizationId: args.get('--authorization'),
       policy,
+      selfAssessment: execution.selfAssessment,
       credentialCanReview: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
       reviewer: live.viewerLogin,
       pullRequestAuthor: live.authorLogin,

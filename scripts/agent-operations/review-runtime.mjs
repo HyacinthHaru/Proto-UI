@@ -625,6 +625,7 @@ export function authorizeReviewSubmission({
   executionModeSource,
   authorizationId,
   policy,
+  selfAssessment,
   credentialCanReview,
   reviewer,
   pullRequestAuthor,
@@ -664,6 +665,23 @@ export function authorizeReviewSubmission({
     standingAuthorization?.allowedRecommendations?.includes(recommendedAction);
   if (!explicitCurrentUser && !standingScheduledReview) {
     return { allowed: false, reason: 'review submission authorization is unavailable' };
+  }
+  if (standingScheduledReview) {
+    const mutationClass = standingAuthorization.mutationClass;
+    const requiredBand = policy?.mutationClasses?.[mutationClass]?.autonomousMinimumBand;
+    assert(BANDS.includes(requiredBand), 'standing authorization mutation class is invalid');
+    const assessedBand = selfAssessment?.capability?.band ?? 'U0';
+    const mutationEligible =
+      selfAssessment?.fresh === true &&
+      selfAssessment?.validated === true &&
+      BANDS.includes(assessedBand) &&
+      BANDS.indexOf(assessedBand) >= BANDS.indexOf(requiredBand);
+    if (!mutationEligible) {
+      return {
+        allowed: false,
+        reason: `standing authorization requires a fresh validated ${requiredBand} assessment for ${mutationClass}`,
+      };
+    }
   }
   if (!credentialCanReview)
     return { allowed: false, reason: 'live credential cannot submit reviews' };

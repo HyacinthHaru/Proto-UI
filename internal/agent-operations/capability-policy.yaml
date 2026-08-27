@@ -155,6 +155,7 @@ reviewSubmissionAuthorizations:
     executionMode: autonomous
     executionModeSource: schedule
     repositoryId: github.com:Proto-UI/Proto-UI
+    mutationClass: conditional-review-submission
     allowedRecommendations: [REQUEST_CHANGES, APPROVE]
     requestChangesRequires: [finding, complete-evidence, no-human-gate, live-preflight]
     approveRequires:
