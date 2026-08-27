@@ -33,7 +33,7 @@ Repository policy requires the relevant CI evidence before merge. GitHub ruleset
 
 ## Agent Operations Shadow workflow (`agent-operations-shadow.yml`)
 
-This daily or manually dispatched Phase A experiment collects a bounded snapshot of open Issues and pull requests, runs a read-only structured analysis when `OPENAI_API_KEY` is configured, validates the result, and uploads the input and report with 14-day retention. If the key is absent, the workflow preserves only the bounded input snapshot.
+This Phase A experiment runs hourly at minute 17 UTC or by maintainer manual dispatch. It collects a bounded snapshot of open Issues and pull requests, runs a read-only structured analysis when `OPENAI_API_KEY` is configured, validates the result, and uploads the input and report with 14-day retention. If the key is absent, the workflow preserves only the bounded input snapshot. Hourly is the current automatic trigger; event-driven invocation is intended future architecture and is not deployed or evidenced by this repository state.
 
 The workflow has read-only `contents`, `issues`, and `pull-requests` permissions, disables persisted checkout credentials, and runs Codex with the `:read-only` permission profile and `drop-sudo`. It does not run from pull-request events, post comments, change labels, create branches or pull requests, or authorize integration. Any future GitHub write permission requires a separate reviewed policy change and an explicit maintainer decision under `internal/agent-operations/**`.
 
@@ -46,8 +46,8 @@ Five workflows implement the private Poppy/Cloudflare preview boundary:
 | Workflow | Trigger | Permissions / external boundary |
 | --- | --- | --- |
 | `poppy-preview-build.yml` | `pull_request` and trusted `workflow_dispatch` bootstrap | `contents: read`; no repository or external deployment secrets; builds the exact PR head and uploads an untrusted artifact plus an Actions-controlled head binding. |
-| `poppy-preview-bootstrap.yml` | trusted default-branch installation/update or manual dispatch | `actions: write`, `contents: read`, `pull-requests: read`; enumerates live PRs and dispatches the secret-free build with an exact expected head. |
-| `poppy-preview-deploy.yml` | completed build `workflow_run` | trusted default-branch code with `actions: read`, `contents: read`, `pull-requests: write`; validates live PR/head/workflow/artifacts, sanitizes without executing contributor code, deploys to Cloudflare, reports lifecycle to private Poppy, and updates one sticky comment. |
+| `poppy-preview-bootstrap.yml` | trusted default-branch installation/update (`push` only) | `actions: write`, `contents: write`, `pull-requests: read`; enumerates live PRs, dispatches secret-free exact-head builds, then emits `poppy_preview_build_completed` repository-dispatch events. |
+| `poppy-preview-deploy.yml` | completed build `workflow_run` or `poppy_preview_build_completed` `repository_dispatch` | platform-selected default-branch code with `actions: read`, `contents: read`, `pull-requests: write`; no manual dispatch entry; validates live PR/head/workflow/artifacts, sanitizes without executing contributor code, deploys to Cloudflare, reports lifecycle to private Poppy, and updates one sticky comment. |
 | `poppy-preview-close.yml` | `pull_request_target: closed` | trusted default-branch cleanup with `contents: read`, `pull-requests: write`; deletes the per-PR Cloudflare project and reports Closed to Poppy. |
 | `poppy-preview-security.yml` | preview-workflow/integration changes on PR or `main` | read-only Node 22 evidence lane; runs the focused sanitizer/Worker/lifecycle/browser tests, pinned-checksum actionlint, and byte-for-byte installed/template workflow lockstep. It is repository CI evidence but is **not currently configured as a platform-required status check**. |
 

@@ -2,8 +2,10 @@ name: Poppy preview deploy
 
 on:
   workflow_run:
-    workflows: ["Poppy preview build"]
+    workflows: ['Poppy preview build']
     types: [completed]
+  repository_dispatch:
+    types: [poppy_preview_build_completed]
 
 # workflow_run executes from the trusted default branch. Never check out the
 # pull-request head in this workflow and never execute anything from its artifact.
@@ -16,10 +18,8 @@ jobs:
   resolve-deploy:
     name: Bind the successful build to a live pull request
     if: >-
-      (github.event.workflow_run.event == 'pull_request' ||
-      github.event.workflow_run.event == 'workflow_dispatch') &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.repository.full_name == github.repository
+      (github.event_name == 'repository_dispatch' && github.event.client_payload.build_succeeded == true) || ((github.event.workflow_run.event == 'pull_request' || github.event.workflow_run.event == 'workflow_dispatch') && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.repository.full_name == github.repository)
+
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -37,7 +37,7 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const runId = Number(context.payload.workflow_run.id);
+            const runId = Number(context.payload.workflow_run?.id || context.payload.client_payload?.build_run_id);
             const expectedRepo = `${owner}/${repo}`;
             const { data: run } = await github.rest.actions.getWorkflowRun({
               owner, repo, run_id: runId,
@@ -96,10 +96,8 @@ jobs:
   report-failed-build:
     name: Report a failed PR build
     if: >-
-      (github.event.workflow_run.event == 'pull_request' ||
-      github.event.workflow_run.event == 'workflow_dispatch') &&
-      github.event.workflow_run.conclusion != 'success' &&
-      github.event.workflow_run.repository.full_name == github.repository
+      (github.event_name == 'repository_dispatch' && github.event.client_payload.build_succeeded != true) || ((github.event.workflow_run.event == 'pull_request' || github.event.workflow_run.event == 'workflow_dispatch') && github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.repository.full_name == github.repository)
+
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -121,7 +119,7 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const runId = Number(context.payload.workflow_run.id);
+            const runId = Number(context.payload.workflow_run?.id || context.payload.client_payload?.build_run_id);
             const { data: run } = await github.rest.actions.getWorkflowRun({
               owner, repo, run_id: runId,
             });
@@ -192,8 +190,8 @@ jobs:
           PREVIEW_AUTHOR: ${{ steps.resolve.outputs.author_login }}
           PREVIEW_AUTHOR_ID: ${{ steps.resolve.outputs.author_id }}
           PREVIEW_PROJECT: ${{ steps.resolve.outputs.project }}
-          PREVIEW_ORIGIN: ""
-          PREVIEW_DEPLOYMENT_ID: ""
+          PREVIEW_ORIGIN: ''
+          PREVIEW_DEPLOYMENT_ID: ''
           PREVIEW_RUN_ID: ${{ steps.resolve.outputs.run_id }}
           PREVIEW_RUN_ATTEMPT: ${{ steps.resolve.outputs.run_attempt }}
         shell: bash
@@ -207,7 +205,7 @@ jobs:
           PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
           PREVIEW_SHA: ${{ steps.resolve.outputs.head_sha }}
           PREVIEW_PROJECT: ${{ steps.resolve.outputs.project }}
-          PREVIEW_ORIGIN: ""
+          PREVIEW_ORIGIN: ''
           PREVIEW_STATUS: failed
           PREVIEW_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ steps.resolve.outputs.run_id }}
         shell: bash
@@ -247,7 +245,7 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const runId = Number(context.payload.workflow_run.id);
+            const runId = Number(context.payload.workflow_run?.id || context.payload.client_payload?.build_run_id);
             const expectedRepo = `${owner}/${repo}`;
 
             const { data: run } = await github.rest.actions.getWorkflowRun({
@@ -336,8 +334,8 @@ jobs:
           PREVIEW_AUTHOR: ${{ steps.resolve.outputs.author_login }}
           PREVIEW_AUTHOR_ID: ${{ steps.resolve.outputs.author_id }}
           PREVIEW_PROJECT: ${{ steps.resolve.outputs.project }}
-          PREVIEW_ORIGIN: ""
-          PREVIEW_DEPLOYMENT_ID: ""
+          PREVIEW_ORIGIN: ''
+          PREVIEW_DEPLOYMENT_ID: ''
           PREVIEW_RUN_ID: ${{ steps.resolve.outputs.run_id }}
           PREVIEW_RUN_ATTEMPT: ${{ steps.resolve.outputs.run_attempt }}
         shell: bash
@@ -425,13 +423,32 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           PREVIEW_PROJECT: ${{ steps.resolve.outputs.project }}
           PREVIEW_SHA: ${{ steps.resolve.outputs.head_sha }}
-          PREVIEW_DEPLOY_MARKER: "Poppy preview PR #${{ steps.resolve.outputs.pr }} run ${{ steps.resolve.outputs.run_id }} attempt ${{ steps.resolve.outputs.run_attempt }}"
+          PREVIEW_DEPLOY_MARKER: 'Poppy preview PR #${{ steps.resolve.outputs.pr }} run ${{ steps.resolve.outputs.run_id }} attempt ${{ steps.resolve.outputs.run_attempt }}'
         shell: bash
         run: node integrations/proto-ui-preview/scripts/cloudflare-pages.mjs latest "$PREVIEW_PROJECT" "$PREVIEW_SHA" "$PREVIEW_DEPLOY_MARKER"
 
+      - name: Verify the deployed Pages assets are reachable
+        if: steps.publish.outputs.exit_code == '0' && steps.deployed.outcome == 'success'
+        id: assets-ready
+        env:
+          PREVIEW_ORIGIN: ${{ steps.deployed.outputs.origin }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for _ in {1..12}; do
+            status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+              --max-time 10 "$PREVIEW_ORIGIN/__poppy/assets-ready" || true)"
+            if [ "$status" = 204 ]; then exit 0; fi
+            sleep 5
+          done
+          echo "Pages asset readiness probe did not become healthy" >&2
+          exit 1
+
       - name: Report the ready deployment to Poppy
         id: ready
-        if: always() && steps.publish.outputs.exit_code == '0' && steps.deployed.outcome == 'success'
+        if: >-
+          always() && steps.publish.outputs.exit_code == '0' && steps.deployed.outcome == 'success' && steps.assets-ready.outcome == 'success'
+
         env:
           POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
           PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
@@ -448,9 +465,8 @@ jobs:
 
       - name: Report a failed deployment to Poppy
         if: >-
-          always() && steps.resolve.outputs.pr != '' &&
-          (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' ||
-          steps.ready.outcome != 'success')
+          always() && steps.resolve.outputs.pr != '' && (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' || steps.assets-ready.outcome != 'success' || steps.ready.outcome != 'success')
+
         env:
           POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
           PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
@@ -458,8 +474,8 @@ jobs:
           PREVIEW_AUTHOR: ${{ steps.resolve.outputs.author_login }}
           PREVIEW_AUTHOR_ID: ${{ steps.resolve.outputs.author_id }}
           PREVIEW_PROJECT: ${{ steps.resolve.outputs.project }}
-          PREVIEW_ORIGIN: ""
-          PREVIEW_DEPLOYMENT_ID: ""
+          PREVIEW_ORIGIN: ''
+          PREVIEW_DEPLOYMENT_ID: ''
           PREVIEW_RUN_ID: ${{ steps.resolve.outputs.run_id }}
           PREVIEW_RUN_ATTEMPT: ${{ steps.resolve.outputs.run_attempt }}
         shell: bash
@@ -481,8 +497,7 @@ jobs:
 
       - name: Fail the workflow when publishing failed
         if: >-
-          always() &&
-          (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' ||
-          steps.ready.outcome != 'success')
+          always() && (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' || steps.assets-ready.outcome != 'success' || steps.ready.outcome != 'success')
+
         shell: bash
         run: exit 1
