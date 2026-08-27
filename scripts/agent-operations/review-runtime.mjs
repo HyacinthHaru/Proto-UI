@@ -255,6 +255,7 @@ export function validateReviewInputSnapshot(input) {
   for (const [items, key, label] of [
     [input.commits, (item) => item.sha, 'commit SHA'],
     [input.reviews, (item) => item.id, 'review id'],
+    [input.comments, (item) => item.id, 'comment id'],
     [input.replies, (item) => item.id, 'reply id'],
     [input.threads, (item) => item.id, 'thread id'],
   ]) {
@@ -276,6 +277,7 @@ function canonicalReviewInput(input) {
     'changedFiles',
     'commits',
     'reviews',
+    'comments',
     'replies',
     'threads',
     'checks',

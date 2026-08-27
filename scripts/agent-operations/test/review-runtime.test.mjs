@@ -189,6 +189,35 @@ test('review packet binds revision and input state and supports incremental reco
   );
 });
 
+test('canonical review input is insensitive to top-level comment connection order', () => {
+  const first = reviewInput({
+    comments: [
+      {
+        id: 'IC_2',
+        author: 'maintainer',
+        body: 'Second comment',
+        updatedAt: '2026-08-23T02:00:00.000Z',
+      },
+      {
+        id: 'IC_1',
+        author: 'contributor',
+        body: 'First comment',
+        updatedAt: '2026-08-23T01:00:00.000Z',
+      },
+    ],
+  });
+  const reversed = reviewInput({ comments: [...first.comments].reverse() });
+
+  assert.equal(computeReviewInputDigest(first), computeReviewInputDigest(reversed));
+  assert.throws(
+    () =>
+      validateReviewInputSnapshot(
+        reviewInput({ comments: [first.comments[0], first.comments[0]] })
+      ),
+    /duplicates comment id/
+  );
+});
+
 test('review input v2 binds changed files and classifies only spec entity YAML paths', () => {
   const ordinary = reviewInput();
   assert.equal(reviewChangesSpecEntities(ordinary), false);
