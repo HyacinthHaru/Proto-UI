@@ -13,6 +13,7 @@ import {
   decideReviewRun,
   evaluateReviewEligibility,
   inspectReviewRevision,
+  reviewChangesSpecEntities,
   reviewPacketKey,
   validateReviewInputSnapshot,
   validateReviewPacket,
@@ -30,14 +31,24 @@ const digest = (letter) => letter.repeat(64);
 
 function reviewInput(overrides = {}) {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: 'proto-ui.review-input',
     repositoryId: 'github.com:Proto-UI/Proto-UI',
     pullRequest: 487,
+    pullRequestState: 'OPEN',
+    isDraft: false,
     baseSha: sha('a'),
     headSha: sha('b'),
     pullRequestBody: 'Bounded review target',
+    changedFiles: [
+      {
+        path: 'packages/core/src/index.ts',
+        previousPath: null,
+        status: 'modified',
+      },
+    ],
     commits: [{ sha: sha('b'), message: 'Bounded change' }],
+    reviews: [],
     replies: [],
     threads: [],
     checks: [
@@ -174,6 +185,57 @@ test('review packet binds revision and input state and supports incremental reco
   assert.notEqual(
     computeReviewInputDigest(reordered),
     computeReviewInputDigest({ ...reordered, pullRequestBody: 'Changed body' })
+  );
+});
+
+test('review input v2 binds changed files and classifies only spec entity YAML paths', () => {
+  const ordinary = reviewInput();
+  assert.equal(reviewChangesSpecEntities(ordinary), false);
+  assert.equal(
+    reviewChangesSpecEntities(
+      reviewInput({
+        changedFiles: [
+          { path: 'spec/contracts/C-EXAMPLE-0001.yaml', previousPath: null, status: 'added' },
+        ],
+      })
+    ),
+    true
+  );
+  assert.equal(
+    reviewChangesSpecEntities(
+      reviewInput({
+        changedFiles: [
+          {
+            path: 'internal/records/moved.md',
+            previousPath: 'spec/decisions/D-EXAMPLE-0001.yaml',
+            status: 'renamed',
+          },
+        ],
+      })
+    ),
+    true
+  );
+  assert.equal(
+    reviewChangesSpecEntities(
+      reviewInput({
+        changedFiles: [{ path: 'spec/README.md', previousPath: null, status: 'modified' }],
+      })
+    ),
+    false
+  );
+  assert.notEqual(
+    computeReviewInputDigest(ordinary),
+    computeReviewInputDigest(
+      reviewInput({
+        changedFiles: [
+          { path: 'packages/runtime/src/index.ts', previousPath: null, status: 'added' },
+        ],
+      })
+    )
+  );
+  assert.throws(
+    () => validateReviewInputSnapshot({ ...ordinary, schemaVersion: 1 }),
+    /schemaVersion/
   );
 });
 
@@ -386,8 +448,8 @@ test('human-assisted review remains open while autonomous review obeys the exact
     policy,
   });
   assert.equal(bounded.eligible, true);
-  assert.equal(bounded.maximumRecommendation, 'REQUEST_CHANGES');
-  assert.equal(bounded.approvalDecisionRequired, true);
+  assert.equal(bounded.maximumRecommendation, 'APPROVE');
+  assert.equal(bounded.approvalDecisionRequired, 'when-spec-entities-change');
   assert.equal(
     evaluateReviewEligibility({
       executionMode: 'autonomous',
@@ -425,53 +487,197 @@ test('human-assisted review remains open while autonomous review obeys the exact
   );
 });
 
-test('review submission needs live authorization and never derives approval from assessment or CI', () => {
+test('review submission applies explicit and scheduled standing authorization without deriving approval from CI alone', () => {
   const input = reviewInput();
   const base = {
-    packet: packet({ recommendedAction: 'APPROVE' }, input),
+    packet: packet(
+      {
+        limitations: [],
+        humanGates: [],
+        recommendedAction: 'APPROVE',
+      },
+      input
+    ),
     input,
     liveInput: structuredClone(input),
     executionMode: 'human-assisted',
+    executionModeSource: 'current-user',
+    authorizationId: 'explicit-current-user',
+    policy,
     credentialCanReview: true,
     reviewer: 'agent',
     pullRequestAuthor: 'contributor',
     ciConclusion: 'success',
   };
-  assert.equal(authorizeReviewSubmission({ ...base, explicitAuthorization: false }).allowed, false);
-  assert.equal(
-    authorizeReviewSubmission({ ...base, explicitAuthorization: true, credentialCanReview: false })
-      .allowed,
-    false
-  );
-  assert.equal(authorizeReviewSubmission({ ...base, explicitAuthorization: true }).allowed, false);
+  assert.equal(authorizeReviewSubmission({ ...base, authorizationId: 'wrong' }).allowed, false);
+  assert.equal(authorizeReviewSubmission({ ...base, credentialCanReview: false }).allowed, false);
+  assert.equal(authorizeReviewSubmission(base).allowed, true);
   assert.equal(
     authorizeReviewSubmission({
       ...base,
-      explicitAuthorization: true,
       reviewer: 'contributor',
       pullRequestAuthor: 'contributor',
-      packet: packet({ recommendedAction: 'REQUEST_CHANGES', limitations: [] }, input),
+      packet: packet(
+        {
+          findings: [
+            {
+              id: 'F-1',
+              severity: 'P1',
+              confidence: 'high',
+              file: 'src/a.ts',
+              line: 1,
+              authority: 'governed rule',
+              observed: 'broken',
+              expected: 'working',
+              impact: 'regression',
+              fix: 'repair',
+            },
+          ],
+          limitations: [],
+          unknowns: [],
+          humanGates: [],
+          recommendedAction: 'REQUEST_CHANGES',
+          reconciliation: {
+            priorReviewedHeadSha: null,
+            priorPacketDigest: null,
+            resolvedFindingIds: [],
+            openFindingIds: [],
+            newFindingIds: ['F-1'],
+          },
+        },
+        input
+      ),
     }).allowed,
     false
   );
-  const allowed = authorizeReviewSubmission({
+  assert.equal(authorizeReviewSubmission({ ...base, ciConclusion: 'failure' }).allowed, false);
+
+  const requestChangesPacket = packet(
+    {
+      findings: [
+        {
+          id: 'F-2',
+          severity: 'P1',
+          confidence: 'high',
+          file: 'src/b.ts',
+          line: 2,
+          authority: 'governed rule',
+          observed: 'broken',
+          expected: 'working',
+          impact: 'regression',
+          fix: 'repair',
+        },
+      ],
+      limitations: [],
+      unknowns: [],
+      humanGates: [],
+      recommendedAction: 'REQUEST_CHANGES',
+      reconciliation: {
+        priorReviewedHeadSha: null,
+        priorPacketDigest: null,
+        resolvedFindingIds: [],
+        openFindingIds: [],
+        newFindingIds: ['F-2'],
+      },
+    },
+    input
+  );
+  const scheduledBase = {
     ...base,
-    explicitAuthorization: true,
-    ciConclusion: 'failure',
-    packet: packet({ recommendedAction: 'COMMENT', limitations: [] }, input),
+    executionMode: 'autonomous',
+    executionModeSource: 'schedule',
+    authorizationId: 'proto-ui-scheduled-review-v1',
+  };
+  const requestChanges = authorizeReviewSubmission({
+    ...scheduledBase,
+    packet: requestChangesPacket,
   });
-  assert.equal(allowed.allowed, true);
-  assert.equal(allowed.recommendedAction, 'COMMENT');
-  const greenComment = authorizeReviewSubmission({
-    ...base,
-    explicitAuthorization: true,
-    ciConclusion: 'success',
-    packet: packet({ recommendedAction: 'COMMENT', limitations: [] }, input),
-  });
-  assert.equal(greenComment.recommendedAction, 'COMMENT');
+  assert.equal(requestChanges.allowed, true);
+  assert.equal(requestChanges.recommendedAction, 'REQUEST_CHANGES');
+  assert.equal(authorizeReviewSubmission(scheduledBase).allowed, true);
   assert.equal(
-    authorizeReviewSubmission({ ...base, executionMode: 'autonomous', explicitAuthorization: true })
-      .allowed,
+    authorizeReviewSubmission({ ...scheduledBase, executionModeSource: 'governed-queue' }).allowed,
+    false
+  );
+
+  const duplicateInput = reviewInput({
+    reviews: [
+      {
+        id: 'PRR_existing',
+        author: 'agent',
+        state: 'APPROVED',
+        commitSha: sha('b'),
+        submittedAt: '2026-08-23T03:00:00.000Z',
+        body: 'Already approved',
+      },
+    ],
+  });
+  const duplicateApproval = authorizeReviewSubmission({
+    ...scheduledBase,
+    input: duplicateInput,
+    liveInput: structuredClone(duplicateInput),
+    packet: packet(
+      { limitations: [], humanGates: [], recommendedAction: 'APPROVE' },
+      duplicateInput
+    ),
+  });
+  assert.equal(duplicateApproval.allowed, false);
+  assert.equal(duplicateApproval.duplicate, true);
+
+  const specInput = reviewInput({
+    changedFiles: [
+      { path: 'spec/contracts/C-EXAMPLE-0001.yaml', previousPath: null, status: 'modified' },
+    ],
+  });
+  const specApproval = authorizeReviewSubmission({
+    ...scheduledBase,
+    input: specInput,
+    liveInput: structuredClone(specInput),
+    packet: packet(
+      {
+        limitations: [],
+        humanGates: ['pull-request-approval'],
+        recommendedAction: 'APPROVE',
+      },
+      specInput
+    ),
+  });
+  assert.equal(specApproval.allowed, false);
+  assert.equal(specApproval.humanReviewRequired, true);
+  assert.equal(
+    authorizeReviewSubmission({
+      ...base,
+      input: specInput,
+      liveInput: structuredClone(specInput),
+      packet: packet(
+        {
+          limitations: [],
+          humanGates: ['pull-request-approval'],
+          recommendedAction: 'APPROVE',
+        },
+        specInput
+      ),
+    }).allowed,
+    true
+  );
+
+  assert.equal(
+    authorizeReviewSubmission({
+      ...scheduledBase,
+      packet: packet({ limitations: [], humanGates: [], recommendedAction: 'COMMENT' }, input),
+    }).allowed,
+    false
+  );
+  assert.equal(
+    authorizeReviewSubmission({
+      ...scheduledBase,
+      input: reviewInput({ isDraft: true }),
+      liveInput: reviewInput({ isDraft: true }),
+      packet: packet(
+        { limitations: [], humanGates: [], recommendedAction: 'APPROVE' },
+        reviewInput({ isDraft: true })
+      ),
+    }).allowed,
     false
   );
 });
@@ -483,7 +689,9 @@ test('submission preflight re-collects live canonical input and rejects drift an
     input,
     liveInput: structuredClone(input),
     executionMode: 'human-assisted',
-    explicitAuthorization: true,
+    executionModeSource: 'current-user',
+    authorizationId: 'explicit-current-user',
+    policy,
     credentialCanReview: true,
     reviewer: 'agent',
     pullRequestAuthor: 'contributor',
@@ -632,6 +840,42 @@ test('review input validation accepts nullable check details links but rejects e
   assert.doesNotThrow(() => validateReviewInputSnapshot(withCheck(null)));
   assert.throws(() => validateReviewInputSnapshot(withCheck('')), /check detailsUrl/);
   assert.throws(() => validateReviewInputSnapshot(withCheck(undefined)), /check detailsUrl/);
+});
+
+test('review input validation rejects malformed changed-file and review identity state', () => {
+  assert.throws(
+    () => validateReviewInputSnapshot(reviewInput({ changedFiles: [] })),
+    /changedFiles/
+  );
+  assert.throws(
+    () =>
+      validateReviewInputSnapshot(
+        reviewInput({
+          changedFiles: [
+            { path: '../spec/contracts/C-X.yaml', previousPath: null, status: 'added' },
+          ],
+        })
+      ),
+    /changed file path/
+  );
+  assert.throws(
+    () =>
+      validateReviewInputSnapshot(
+        reviewInput({
+          reviews: [
+            {
+              id: 'r1',
+              author: 'reviewer',
+              state: 'APPROVED',
+              commitSha: 'short',
+              submittedAt: '2026-08-23T00:00:00Z',
+              body: '',
+            },
+          ],
+        })
+      ),
+    /commitSha/
+  );
 });
 
 test('agent:review CLI validates and inspects the same packet contract used by the skill', () => {

@@ -20,6 +20,18 @@ const RECOMMENDATION_RANK = new Map([
   ['REQUEST_CHANGES', 2],
   ['APPROVE', 3],
 ]);
+const PULL_REQUEST_STATES = new Set(['OPEN', 'CLOSED', 'MERGED']);
+const CHANGED_FILE_STATUSES = new Set([
+  'added',
+  'removed',
+  'modified',
+  'renamed',
+  'copied',
+  'changed',
+  'unchanged',
+]);
+const SPEC_ENTITY_PATH =
+  /^spec\/(contracts|prototypes|modules|adapters|decisions|host-caps|tests|versions|knowledge)\/[^/]+\.yaml$/;
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -87,10 +99,14 @@ export function validateReviewInputSnapshot(input) {
       'kind',
       'repositoryId',
       'pullRequest',
+      'pullRequestState',
+      'isDraft',
       'baseSha',
       'headSha',
       'pullRequestBody',
+      'changedFiles',
       'commits',
+      'reviews',
       'replies',
       'threads',
       'checks',
@@ -98,7 +114,7 @@ export function validateReviewInputSnapshot(input) {
     ],
     'review input'
   );
-  assert(input.schemaVersion === 1, 'review input schemaVersion is invalid');
+  assert(input.schemaVersion === 2, 'review input schemaVersion is invalid');
   assert(input.kind === 'proto-ui.review-input', 'review input kind is invalid');
   assert(
     typeof input.repositoryId === 'string' && input.repositoryId.length > 3,
@@ -108,12 +124,53 @@ export function validateReviewInputSnapshot(input) {
     Number.isInteger(input.pullRequest) && input.pullRequest > 0,
     'review input PR is invalid'
   );
+  assert(PULL_REQUEST_STATES.has(input.pullRequestState), 'review input PR state is invalid');
+  assert(typeof input.isDraft === 'boolean', 'review input draft state is invalid');
   assert(SHA.test(input.baseSha) && SHA.test(input.headSha), 'review input SHAs are invalid');
   assert(typeof input.pullRequestBody === 'string', 'review input PR body is invalid');
+  validateInputItems(
+    input.changedFiles,
+    ['path', 'previousPath', 'status'],
+    'review input changedFiles',
+    (item) => {
+      for (const [field, value] of [
+        ['path', item.path],
+        ['previousPath', item.previousPath],
+      ]) {
+        if (field === 'previousPath' && value === null) continue;
+        assert(
+          typeof value === 'string' &&
+            value.length > 0 &&
+            !value.startsWith('/') &&
+            !value.includes('\\') &&
+            !value.split('/').includes('..'),
+          `changed file ${field} is invalid`
+        );
+      }
+      assert(CHANGED_FILE_STATUSES.has(item.status), 'changed file status is invalid');
+    }
+  );
+  assert(input.changedFiles.length > 0, 'review input changedFiles must not be empty');
   validateInputItems(input.commits, ['sha', 'message'], 'review input commits', (item) => {
     assert(SHA.test(item.sha), 'review input commit SHA is invalid');
     assert(typeof item.message === 'string', 'review input commit message is invalid');
   });
+  validateInputItems(
+    input.reviews,
+    ['id', 'author', 'state', 'commitSha', 'submittedAt', 'body'],
+    'review input reviews',
+    (item) => {
+      for (const field of ['id', 'author', 'state']) {
+        assert(
+          typeof item[field] === 'string' && item[field].length > 0,
+          `review ${field} is invalid`
+        );
+      }
+      assert(item.commitSha === null || SHA.test(item.commitSha), 'review commitSha is invalid');
+      validateTimestamp(item.submittedAt, 'review submittedAt', { nullable: true });
+      assert(typeof item.body === 'string', 'review body is invalid');
+    }
+  );
   validateInputItems(
     input.replies,
     ['id', 'threadId', 'updatedAt', 'author', 'body'],
@@ -181,6 +238,7 @@ export function validateReviewInputSnapshot(input) {
   );
   for (const [items, key, label] of [
     [input.commits, (item) => item.sha, 'commit SHA'],
+    [input.reviews, (item) => item.id, 'review id'],
     [input.replies, (item) => item.id, 'reply id'],
     [input.threads, (item) => item.id, 'thread id'],
   ]) {
@@ -198,7 +256,15 @@ function canonicalReviewInput(input) {
     const rightKey = JSON.stringify(canonicalJson(right));
     return leftKey < rightKey ? -1 : leftKey > rightKey ? 1 : 0;
   };
-  for (const field of ['commits', 'replies', 'threads', 'checks', 'externalEvidence']) {
+  for (const field of [
+    'changedFiles',
+    'commits',
+    'reviews',
+    'replies',
+    'threads',
+    'checks',
+    'externalEvidence',
+  ]) {
     clone[field].sort(compareCanonical);
   }
   return clone;
@@ -206,6 +272,15 @@ function canonicalReviewInput(input) {
 
 export function computeReviewInputDigest(input) {
   return digest(canonicalReviewInput(input));
+}
+
+export function reviewChangesSpecEntities(input) {
+  validateReviewInputSnapshot(input);
+  return input.changedFiles.some(
+    (file) =>
+      SPEC_ENTITY_PATH.test(file.path) ||
+      (file.previousPath !== null && SPEC_ENTITY_PATH.test(file.previousPath))
+  );
 }
 
 function validateValidation(validation) {
@@ -492,7 +567,7 @@ export function evaluateReviewEligibility({ executionMode, selfAssessment, revie
     return {
       eligible: true,
       reviewDepth: withinSelfAssessedDepth ? 'full' : 'partial',
-      maximumRecommendation: withinSelfAssessedDepth ? 'REQUEST_CHANGES' : 'ABSTAIN',
+      maximumRecommendation: withinSelfAssessedDepth ? 'APPROVE' : 'ABSTAIN',
       limitationRequired: !withinSelfAssessedDepth,
       approvalDecisionRequired: true,
     };
@@ -505,9 +580,9 @@ export function evaluateReviewEligibility({ executionMode, selfAssessment, revie
   return {
     eligible,
     reviewDepth: eligible ? 'full' : 'none',
-    maximumRecommendation: eligible ? 'REQUEST_CHANGES' : 'ABSTAIN',
+    maximumRecommendation: eligible ? 'APPROVE' : 'ABSTAIN',
     limitationRequired: !eligible,
-    approvalDecisionRequired: true,
+    approvalDecisionRequired: 'when-spec-entities-change',
   };
 }
 
@@ -547,16 +622,15 @@ export function authorizeReviewSubmission({
   input,
   liveInput,
   executionMode,
-  explicitAuthorization,
+  executionModeSource,
+  authorizationId,
+  policy,
   credentialCanReview,
   reviewer,
   pullRequestAuthor,
   ciConclusion,
 }) {
   assert(['human-assisted', 'autonomous'].includes(executionMode), 'execution mode is invalid');
-  if (executionMode === 'autonomous') {
-    return { allowed: false, reason: 'review submission requires a new human-assisted run' };
-  }
   validateReviewPacket(packet, input);
   verifyLiveReviewInput(packet, liveInput);
   const revision = inspectReviewRevision(packet, input, liveInput.headSha, null, liveInput.baseSha);
@@ -573,15 +647,95 @@ export function authorizeReviewSubmission({
   );
   const recommendedAction = packet.recommendedAction;
   assert(RECOMMENDATIONS.includes(recommendedAction), 'recommendedAction is invalid');
-  if (!explicitAuthorization)
-    return { allowed: false, reason: 'current user authorization is required' };
+  const explicitCurrentUser =
+    executionMode === 'human-assisted' &&
+    executionModeSource === 'current-user' &&
+    authorizationId === 'explicit-current-user';
+  const standingAuthorization = policy?.reviewSubmissionAuthorizations?.find(
+    (authorization) => authorization.id === authorizationId
+  );
+  const standingScheduledReview =
+    executionMode === 'autonomous' &&
+    executionModeSource === 'schedule' &&
+    standingAuthorization?.status === 'active' &&
+    standingAuthorization?.executionMode === 'autonomous' &&
+    standingAuthorization?.executionModeSource === 'schedule' &&
+    standingAuthorization?.repositoryId === packet.repositoryId &&
+    standingAuthorization?.allowedRecommendations?.includes(recommendedAction);
+  if (!explicitCurrentUser && !standingScheduledReview) {
+    return { allowed: false, reason: 'review submission authorization is unavailable' };
+  }
   if (!credentialCanReview)
     return { allowed: false, reason: 'live credential cannot submit reviews' };
-  if (recommendedAction === 'APPROVE') {
-    return { allowed: false, reason: 'pull-request approval is a human gate' };
+  if (liveInput.pullRequestState !== 'OPEN') {
+    return { allowed: false, reason: 'pull request is not open' };
   }
-  if (reviewer === pullRequestAuthor && recommendedAction === 'REQUEST_CHANGES') {
+  if (liveInput.isDraft) return { allowed: false, reason: 'draft pull request is not reviewable' };
+  if (
+    reviewer === pullRequestAuthor &&
+    ['APPROVE', 'REQUEST_CHANGES'].includes(recommendedAction)
+  ) {
     return { allowed: false, reason: 'an Agent cannot issue a disposition on its own work' };
+  }
+  if (recommendedAction === 'ABSTAIN') {
+    return { allowed: false, reason: 'ABSTAIN is not a GitHub review submission' };
+  }
+  if (standingScheduledReview && recommendedAction === 'COMMENT') {
+    return { allowed: false, reason: 'standing schedule authorization excludes COMMENT reviews' };
+  }
+  if (
+    liveInput.reviews.some(
+      (review) =>
+        review.author === reviewer &&
+        review.commitSha === liveInput.headSha &&
+        review.state ===
+          { APPROVE: 'APPROVED', REQUEST_CHANGES: 'CHANGES_REQUESTED', COMMENT: 'COMMENTED' }[
+            recommendedAction
+          ]
+    )
+  ) {
+    return {
+      allowed: false,
+      duplicate: true,
+      reason: 'the live head already has the same review disposition from this reviewer',
+      recommendedAction,
+    };
+  }
+  if (recommendedAction === 'REQUEST_CHANGES') {
+    if (packet.findings.length === 0) {
+      return { allowed: false, reason: 'REQUEST_CHANGES requires at least one finding' };
+    }
+    if (
+      packet.limitations.length > 0 ||
+      packet.unknowns.length > 0 ||
+      packet.humanGates.length > 0
+    ) {
+      return { allowed: false, reason: 'REQUEST_CHANGES evidence is incomplete or human-gated' };
+    }
+  }
+  if (recommendedAction === 'APPROVE') {
+    if (standingScheduledReview && reviewChangesSpecEntities(liveInput)) {
+      return {
+        allowed: false,
+        humanReviewRequired: true,
+        reason: 'spec entity changes require maintainer review before APPROVE',
+        recommendedAction,
+      };
+    }
+    const unresolvedHumanGates = explicitCurrentUser
+      ? packet.humanGates.filter((gate) => gate !== 'pull-request-approval')
+      : packet.humanGates;
+    if (
+      packet.findings.length > 0 ||
+      packet.limitations.length > 0 ||
+      packet.unknowns.length > 0 ||
+      unresolvedHumanGates.length > 0
+    ) {
+      return { allowed: false, reason: 'APPROVE requires a complete clean review packet' };
+    }
+    if (ciConclusion !== 'success') {
+      return { allowed: false, reason: 'APPROVE requires successful live checks' };
+    }
   }
   return {
     allowed: true,

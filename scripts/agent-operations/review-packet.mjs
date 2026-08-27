@@ -28,7 +28,7 @@ function usage() {
     '  pnpm agent:review -- validate --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>]',
     '  pnpm agent:review -- inspect --packet <packet.json> --input <review-input.json> --handoff <handoff.json> --current-base <sha> --current-head <sha> [--assessment <result.json>] [--prior-head <sha>] [--seen-keys <comma-separated>] [--prior-packet <prior-packet.json>]',
     '  pnpm agent:review -- eligibility --handoff <handoff.json> --review-class <class> [--assessment <result.json>]',
-    '  pnpm agent:review -- authorize-submission --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>] [--external-evidence-file <evidence.json>] --authorization explicit-current-user',
+    '  pnpm agent:review -- authorize-submission --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>] [--external-evidence-file <evidence.json>] --authorization <explicit-current-user|proto-ui-scheduled-review-v1>',
     '',
     'authorize-submission re-collects the canonical review input live from GitHub and derives the viewer identity, pull-request author, credential permission, and CI conclusion from that live context; caller-provided identities are never accepted. externalEvidence cannot be re-collected live: pass the exact recorded array with --external-evidence-file, otherwise a packet recorded with external evidence fails the digest check.',
     '',
@@ -208,43 +208,31 @@ try {
       new URL('../../internal/agent-operations/capability-policy.yaml', import.meta.url)
     );
     const execution = validateExecution(args, packet, policy);
-    if (execution.handoff.executionMode === 'human-assisted') {
-      const externalEvidencePath = args.get('--external-evidence-file');
-      let externalEvidence = [];
-      if (externalEvidencePath) {
-        const parsed = JSON.parse(fs.readFileSync(externalEvidencePath, 'utf8'));
-        if (!Array.isArray(parsed)) {
-          throw new Error('--external-evidence-file must contain a JSON array');
-        }
-        externalEvidence = parsed;
+    const externalEvidencePath = args.get('--external-evidence-file');
+    let externalEvidence = [];
+    if (externalEvidencePath) {
+      const parsed = JSON.parse(fs.readFileSync(externalEvidencePath, 'utf8'));
+      if (!Array.isArray(parsed)) {
+        throw new Error('--external-evidence-file must contain a JSON array');
       }
-      const live = collectLiveReviewInput(packet.repositoryId, packet.pullRequest, {
-        externalEvidence,
-      });
-      output = authorizeReviewSubmission({
-        packet,
-        input,
-        liveInput: live.input,
-        executionMode: execution.handoff.executionMode,
-        explicitAuthorization: args.get('--authorization') === 'explicit-current-user',
-        credentialCanReview: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
-        reviewer: live.viewerLogin,
-        pullRequestAuthor: live.authorLogin,
-        ciConclusion: summarizeLiveChecks(live.input.checks),
-      });
-    } else {
-      output = authorizeReviewSubmission({
-        packet,
-        input,
-        liveInput: null,
-        executionMode: 'autonomous',
-        explicitAuthorization: args.get('--authorization') === 'explicit-current-user',
-        credentialCanReview: false,
-        reviewer: '',
-        pullRequestAuthor: '',
-        ciConclusion: 'unknown',
-      });
+      externalEvidence = parsed;
     }
+    const live = collectLiveReviewInput(packet.repositoryId, packet.pullRequest, {
+      externalEvidence,
+    });
+    output = authorizeReviewSubmission({
+      packet,
+      input,
+      liveInput: live.input,
+      executionMode: execution.handoff.executionMode,
+      executionModeSource: execution.handoff.executionModeSource,
+      authorizationId: args.get('--authorization'),
+      policy,
+      credentialCanReview: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
+      reviewer: live.viewerLogin,
+      pullRequestAuthor: live.authorLogin,
+      ciConclusion: summarizeLiveChecks(live.input.checks),
+    });
   }
   process.stdout.write(`${JSON.stringify(output, null, 2)}\n`);
 } catch (error) {

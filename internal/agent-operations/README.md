@@ -31,6 +31,12 @@ The RepoSteward portfolio trial is narrower than the scheduled native shadow wor
 
 The live GitHub repository remains the source for Issue and pull-request state. Phase A artifacts are experimental observations with bounded retention, not a second issue tracker.
 
+## Maintainer-controlled local review schedule
+
+The Codex desktop task `proto-ui` is separate from the Phase A GitHub Actions workflow. It runs in the maintainer's local project and uses the standing authorization `proto-ui-scheduled-review-v1`. After a fresh eligible `pui-review`, it may submit `REQUEST_CHANGES` when a complete packet contains at least one finding and no human gate. It may submit `APPROVE` only when the packet is clean, live checks succeed, and no current or previous changed-file path identifies a YAML entity under the nine `spec/**` entity collections. An otherwise approvable spec-entity change is sent to the maintainer for human review without an approval submission.
+
+This exception does not change `.github/workflows/agent-operations-shadow.yml`, `policy.yaml`, or the Phase A token boundary. It does not authorize `COMMENT` reviews, merge, ready-for-review, close, labels, assignment, publication, release, access, secrets, or rulesets. The live preflight binds PR state, revision, changed files, existing reviews, discussions, checks, viewer identity, author identity, permission, and canonical input digest. A stale, incomplete, duplicate, self-authored, draft, closed, or permission-unknown target fails closed.
+
 ## Execution boundary
 
 The hourly scheduled and manually dispatched workflow in `.github/workflows/agent-operations-shadow.yml` uses this sequence:
@@ -76,7 +82,7 @@ When a gate is required, one decision packet must state the observed fact, recom
 - `schemas/capability-challenge.schema.json`: dynamic assessment challenge contract.
 - `schemas/capability-response.schema.json`: evidence-backed answer contract without a score or answer key.
 - `schemas/capability-self-result.schema.json`: deterministic unsigned U0-C4 local task-fit result.
-- `schemas/review-input.schema.json`: canonical body, revision, discussion, check, and evidence snapshot used for review hashing.
+- `schemas/review-input.schema.json`: canonical v2 PR state, changed-file, review, discussion, check, and evidence snapshot used for review hashing and spec-entity classification.
 - `schemas/review-packet.schema.json`: revision-bound local review evidence contract.
 - `fixtures/**`: positive and negative replay controls.
 - `scripts/agent-operations/collect-github-state.mjs`: bounded, sanitizing GitHub snapshot collector.
@@ -104,4 +110,4 @@ corepack pnpm@10.32.1 agent:review -- validate --packet <packet.json> --input <r
 
 ## Graduation rule
 
-Phase A must not gain GitHub write permissions merely because the workflow runs successfully. Moving to assistive writes requires a separate reviewed change with recorded shadow evidence, zero unauthorized or duplicate mutations, complete human-gate recall on the gold fixtures, and an explicit maintainer decision defining the newly allowed action set.
+Phase A must not gain GitHub write permissions merely because the workflow runs successfully. Moving that workflow to assistive writes requires a separate reviewed change with recorded shadow evidence, zero unauthorized or duplicate mutations, complete human-gate recall on the gold fixtures, and an explicit maintainer decision defining the newly allowed action set. The local `proto-ui` exception is separately authorized and cannot be used to widen the Phase A workflow.

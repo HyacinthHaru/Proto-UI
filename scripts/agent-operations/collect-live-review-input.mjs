@@ -20,12 +20,18 @@ query($owner: String!, $name: String!, $number: Int!) {
   repository(owner: $owner, name: $name) {
     viewerPermission
     pullRequest(number: $number) {
+      state
+      isDraft
       body
       baseRefOid
       headRefOid
       author { login }
       commits(first: 100) {
         nodes { commit { oid messageHeadline } }
+        pageInfo { hasNextPage }
+      }
+      reviews(first: 100) {
+        nodes { id author { login } state commit { oid } submittedAt body }
         pageInfo { hasNextPage }
       }
       reviewThreads(first: 100) {
@@ -123,7 +129,13 @@ function latestThreadUpdate(thread) {
   return updates.sort().at(-1);
 }
 
-export function buildLiveReviewInput(payload, repositoryId, pullRequest, externalEvidence) {
+export function buildLiveReviewInput(
+  payload,
+  repositoryId,
+  pullRequest,
+  externalEvidence,
+  changedFilePayload
+) {
   const pullRequestPayload = payload?.data?.repository?.pullRequest;
   if (!pullRequestPayload) throw new Error('live pull-request payload is incomplete');
   if (!payload?.data?.viewer?.login || !payload?.data?.repository?.viewerPermission) {
@@ -134,6 +146,11 @@ export function buildLiveReviewInput(payload, repositoryId, pullRequest, externa
     pullRequestPayload.commits?.nodes,
     pullRequestPayload.commits?.pageInfo,
     'commits'
+  );
+  assertNoTruncation(
+    pullRequestPayload.reviews?.nodes,
+    pullRequestPayload.reviews?.pageInfo,
+    'reviews'
   );
   assertNoTruncation(
     pullRequestPayload.reviewThreads?.nodes,
@@ -165,16 +182,31 @@ export function buildLiveReviewInput(payload, repositoryId, pullRequest, externa
   const checks = (checkContexts?.nodes ?? []).map(normalizeCheck);
 
   const input = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: 'proto-ui.review-input',
     repositoryId,
     pullRequest,
+    pullRequestState: pullRequestPayload.state,
+    isDraft: pullRequestPayload.isDraft,
     baseSha: pullRequestPayload.baseRefOid,
     headSha: pullRequestPayload.headRefOid,
     pullRequestBody: pullRequestPayload.body ?? '',
+    changedFiles: changedFilePayload.map((file) => ({
+      path: file.filename,
+      previousPath: file.previous_filename ?? null,
+      status: file.status,
+    })),
     commits: (pullRequestPayload.commits?.nodes ?? []).map((node) => ({
       sha: node.commit.oid,
       message: node.commit.messageHeadline ?? '',
+    })),
+    reviews: (pullRequestPayload.reviews?.nodes ?? []).map((review) => ({
+      id: review.id,
+      author: review.author?.login ?? 'ghost',
+      state: review.state,
+      commitSha: review.commit?.oid ?? null,
+      submittedAt: review.submittedAt ?? null,
+      body: review.body ?? '',
     })),
     replies,
     threads,
@@ -208,5 +240,15 @@ export function collectLiveReviewInput(repositoryId, pullRequest, options = {}) 
   if (raw.errors?.length) {
     throw new Error(`live review-input collection failed: ${raw.errors[0].message}`);
   }
-  return buildLiveReviewInput(raw, repositoryId, pullRequest, externalEvidence);
+  const filePages = ghJson([
+    'api',
+    '--paginate',
+    '--slurp',
+    `repos/${owner}/${name}/pulls/${pullRequest}/files?per_page=100`,
+  ]);
+  if (!Array.isArray(filePages) || !filePages.every(Array.isArray)) {
+    throw new Error('live changed-file collection is malformed');
+  }
+  const changedFiles = filePages.flat();
+  return buildLiveReviewInput(raw, repositoryId, pullRequest, externalEvidence, changedFiles);
 }
