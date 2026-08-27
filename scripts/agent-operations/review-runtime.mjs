@@ -623,7 +623,6 @@ export function authorizeReviewSubmission({
   liveInput,
   executionMode,
   executionModeSource,
-  executionTaskId,
   authorizationId,
   policy,
   selfAssessment,
@@ -656,34 +655,22 @@ export function authorizeReviewSubmission({
   const standingAuthorization = policy?.reviewSubmissionAuthorizations?.find(
     (authorization) => authorization.id === authorizationId
   );
-  const standingScheduledReview =
+  const pendingScheduledReview =
     executionMode === 'autonomous' &&
     executionModeSource === 'schedule' &&
-    standingAuthorization?.status === 'active' &&
-    standingAuthorization?.executionMode === 'autonomous' &&
-    standingAuthorization?.executionModeSource === 'schedule' &&
-    standingAuthorization?.executionTaskId === executionTaskId &&
-    standingAuthorization?.repositoryId === packet.repositoryId &&
-    standingAuthorization?.allowedRecommendations?.includes(recommendedAction);
-  if (!explicitCurrentUser && !standingScheduledReview) {
-    return { allowed: false, reason: 'review submission authorization is unavailable' };
+    standingAuthorization?.status === 'pending-runtime-identity';
+  if (pendingScheduledReview) {
+    return {
+      allowed: false,
+      humanReviewRequired: true,
+      reason: 'scheduled review submission awaits trusted runtime identity',
+      recommendedAction,
+    };
   }
-  if (standingScheduledReview) {
-    const mutationClass = standingAuthorization.mutationClass;
-    const requiredBand = policy?.mutationClasses?.[mutationClass]?.autonomousMinimumBand;
-    assert(BANDS.includes(requiredBand), 'standing authorization mutation class is invalid');
-    const assessedBand = selfAssessment?.capability?.band ?? 'U0';
-    const mutationEligible =
-      selfAssessment?.fresh === true &&
-      selfAssessment?.validated === true &&
-      BANDS.includes(assessedBand) &&
-      BANDS.indexOf(assessedBand) >= BANDS.indexOf(requiredBand);
-    if (!mutationEligible) {
-      return {
-        allowed: false,
-        reason: `standing authorization requires a fresh validated ${requiredBand} assessment for ${mutationClass}`,
-      };
-    }
+  // No autonomous review-write path may become active until the runtime can prove
+  // a repository-and-task-bound identity at this submission boundary.
+  if (!explicitCurrentUser) {
+    return { allowed: false, reason: 'review submission authorization is unavailable' };
   }
   if (!credentialCanReview)
     return { allowed: false, reason: 'live credential cannot submit reviews' };
@@ -699,9 +686,6 @@ export function authorizeReviewSubmission({
   }
   if (recommendedAction === 'ABSTAIN') {
     return { allowed: false, reason: 'ABSTAIN is not a GitHub review submission' };
-  }
-  if (standingScheduledReview && recommendedAction === 'COMMENT') {
-    return { allowed: false, reason: 'standing schedule authorization excludes COMMENT reviews' };
   }
   if (
     liveInput.reviews.some(
@@ -734,17 +718,9 @@ export function authorizeReviewSubmission({
     }
   }
   if (recommendedAction === 'APPROVE') {
-    if (standingScheduledReview && reviewChangesSpecEntities(liveInput)) {
-      return {
-        allowed: false,
-        humanReviewRequired: true,
-        reason: 'spec entity changes require maintainer review before APPROVE',
-        recommendedAction,
-      };
-    }
-    const unresolvedHumanGates = explicitCurrentUser
-      ? packet.humanGates.filter((gate) => gate !== 'pull-request-approval')
-      : packet.humanGates;
+    const unresolvedHumanGates = packet.humanGates.filter(
+      (gate) => gate !== 'pull-request-approval'
+    );
     if (
       packet.findings.length > 0 ||
       packet.limitations.length > 0 ||

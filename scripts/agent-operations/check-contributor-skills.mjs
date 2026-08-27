@@ -191,9 +191,9 @@ try {
     parsedPolicy.mutationClasses?.['conditional-review-submission']?.externalWrite !== true ||
     parsedPolicy.mutationClasses?.['conditional-review-submission']?.autonomousMinimumBand !==
       'C4' ||
-    scheduledReviewAuthorization?.status !== 'active' ||
+    scheduledReviewAuthorization?.status !== 'pending-runtime-identity' ||
+    scheduledReviewAuthorization?.blockedBy !== 'repository-and-task-bound-runtime-identity' ||
     scheduledReviewAuthorization?.executionModeSource !== 'schedule' ||
-    scheduledReviewAuthorization?.executionTaskId !== 'proto-ui' ||
     scheduledReviewAuthorization?.repositoryId !== 'github.com:Proto-UI/Proto-UI' ||
     scheduledReviewAuthorization?.mutationClass !== 'conditional-review-submission' ||
     !['REQUEST_CHANGES', 'APPROVE'].every((action) =>

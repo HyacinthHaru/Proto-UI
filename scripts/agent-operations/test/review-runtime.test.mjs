@@ -487,7 +487,7 @@ test('human-assisted review remains open while autonomous review obeys the exact
   );
 });
 
-test('review submission applies explicit and scheduled standing authorization without deriving approval from CI alone', () => {
+test('review submission preserves explicit authorization and fails closed while scheduled runtime identity is pending', () => {
   const input = reviewInput();
   const base = {
     packet: packet(
@@ -502,7 +502,6 @@ test('review submission applies explicit and scheduled standing authorization wi
     liveInput: structuredClone(input),
     executionMode: 'human-assisted',
     executionModeSource: 'current-user',
-    executionTaskId: null,
     authorizationId: 'explicit-current-user',
     policy,
     credentialCanReview: true,
@@ -591,6 +590,7 @@ test('review submission applies explicit and scheduled standing authorization wi
     ...base,
     executionMode: 'autonomous',
     executionModeSource: 'schedule',
+    // Public task and authorization identifiers are caller-controlled evidence, not identity.
     executionTaskId: 'proto-ui',
     authorizationId: 'proto-ui-scheduled-review-v1',
     selfAssessment: assessment('C4', Object.keys(policy.reviewClasses)),
@@ -599,17 +599,33 @@ test('review submission applies explicit and scheduled standing authorization wi
     ...scheduledBase,
     packet: requestChangesPacket,
   });
-  assert.equal(requestChanges.allowed, true);
+  assert.equal(requestChanges.allowed, false);
+  assert.equal(requestChanges.humanReviewRequired, true);
+  assert.equal(
+    requestChanges.reason,
+    'scheduled review submission awaits trusted runtime identity'
+  );
   assert.equal(requestChanges.recommendedAction, 'REQUEST_CHANGES');
-  assert.equal(authorizeReviewSubmission(scheduledBase).allowed, true);
+  const scheduledApproval = authorizeReviewSubmission(scheduledBase);
+  assert.equal(scheduledApproval.allowed, false);
+  assert.equal(scheduledApproval.humanReviewRequired, true);
   assert.equal(
-    authorizeReviewSubmission({ ...scheduledBase, executionTaskId: 'another-schedule' }).allowed,
-    false
+    scheduledApproval.reason,
+    'scheduled review submission awaits trusted runtime identity'
   );
-  assert.equal(
-    authorizeReviewSubmission({ ...scheduledBase, executionTaskId: null }).allowed,
-    false
+  assert.equal(scheduledApproval.recommendedAction, 'APPROVE');
+  const forgedActivePolicy = structuredClone(policy);
+  const forgedActiveAuthorization = forgedActivePolicy.reviewSubmissionAuthorizations.find(
+    (authorization) => authorization.id === 'proto-ui-scheduled-review-v1'
   );
+  forgedActiveAuthorization.status = 'active';
+  delete forgedActiveAuthorization.blockedBy;
+  const forgedActiveApproval = authorizeReviewSubmission({
+    ...scheduledBase,
+    policy: forgedActivePolicy,
+  });
+  assert.equal(forgedActiveApproval.allowed, false);
+  assert.equal(forgedActiveApproval.reason, 'review submission authorization is unavailable');
   const reviewEligibleC3 = assessment('C3', [
     'review-facts-and-ci',
     'review-docs-and-links',
@@ -671,7 +687,7 @@ test('review submission applies explicit and scheduled standing authorization wi
     ),
   });
   assert.equal(duplicateApproval.allowed, false);
-  assert.equal(duplicateApproval.duplicate, true);
+  assert.equal(duplicateApproval.humanReviewRequired, true);
 
   const specInput = reviewInput({
     changedFiles: [
@@ -739,7 +755,6 @@ test('submission preflight re-collects live canonical input and rejects drift an
     liveInput: structuredClone(input),
     executionMode: 'human-assisted',
     executionModeSource: 'current-user',
-    executionTaskId: null,
     authorizationId: 'explicit-current-user',
     policy,
     credentialCanReview: true,
@@ -941,12 +956,11 @@ test('agent:review CLI validates and inspects the same packet contract used by t
     writeFileSync(
       handoffPath,
       JSON.stringify({
-        schemaVersion: 2,
+        schemaVersion: 1,
         kind: 'proto-ui.skill-handoff',
         entrypoint: 'development',
         executionMode: 'human-assisted',
         executionModeSource: 'current-user',
-        executionTaskId: null,
         fromId: 'pui-validate',
         nextSkillId: 'pui-review',
         artifacts: [

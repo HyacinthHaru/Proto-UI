@@ -33,9 +33,11 @@ The live GitHub repository remains the source for Issue and pull-request state. 
 
 ## Maintainer-controlled local review schedule
 
-The Codex desktop task `proto-ui` is separate from the Phase A GitHub Actions workflow. It runs in the maintainer's local project and uses the standing authorization `proto-ui-scheduled-review-v1`. Its v2 skill handoff must propagate the trusted `executionTaskId: proto-ui`; a different, missing, or repository-supplied task identity fails closed. After a fresh eligible `pui-review` and an independent C4 mutation-floor check, it may submit `REQUEST_CHANGES` when a complete packet contains at least one finding and no human gate. It may submit `APPROVE` only when the packet is clean, live checks succeed, and no current or previous changed-file path identifies a YAML entity under the nine `spec/**` entity collections. An otherwise approvable spec-entity change is sent to the maintainer for human review without an approval submission.
+The Codex desktop task `proto-ui` is separate from the Phase A GitHub Actions workflow. It runs in the maintainer's local project and records the intended standing scope `proto-ui-scheduled-review-v1`, whose status is `pending-runtime-identity`. Codex does not currently expose a task/run identity that can be verified at the submission boundary, and a caller-provided task ID is not proof. The task therefore remains read-only: it may produce a fresh review and a maintainer decision package, but every `REQUEST_CHANGES` or `APPROVE` recommendation must be sent to the maintainer rather than submitted to GitHub.
 
-This exception does not change `.github/workflows/agent-operations-shadow.yml`, `policy.yaml`, or the Phase A token boundary. It does not authorize `COMMENT` reviews, merge, ready-for-review, close, labels, assignment, publication, release, access, secrets, or rulesets. The live preflight binds PR state, revision, changed files, existing reviews, discussions, checks, viewer identity, author identity, permission, and canonical input digest. A stale, incomplete, duplicate, self-authored, draft, closed, or permission-unknown target fails closed.
+The intended future scope would allow complete, finding-backed `REQUEST_CHANGES`, and `APPROVE` only for a clean packet with successful live checks when no current or previous changed-file path identifies a YAML entity under the nine `spec/**` entity collections. That scope is not executable authority until repository-and-task-bound runtime identity is implemented and reviewed.
+
+The pending authorization does not change `.github/workflows/agent-operations-shadow.yml`, `policy.yaml`, or the Phase A token boundary. It does not authorize `COMMENT` reviews, merge, ready-for-review, close, labels, assignment, publication, release, access, secrets, or rulesets. Human-assisted submission preflight still binds PR state, revision, changed files, existing reviews, discussions, checks, viewer identity, author identity, permission, and canonical input digest. A stale, incomplete, duplicate, self-authored, draft, closed, or permission-unknown target fails closed.
 
 ## Execution boundary
 
@@ -74,7 +76,7 @@ When a gate is required, one decision packet must state the observed fact, recom
 - `autonomous-tasks.yaml`: recurring-task status, capability, inputs, outputs, and stop conditions.
 - `autonomous-tasks.md`: human-readable deployment boundary for recurring Agent work.
 - `skills.yaml`: lazy-loaded ordinary development and maintenance skill transitions.
-- `schemas/skill-handoff.schema.json`: v2 one-leaf handoff contract, including propagated execution-task identity, used by the resolver.
+- `schemas/skill-handoff.schema.json`: strict one-leaf handoff contract used by the resolver.
 - `capability-policy.yaml`: execution modes, local comprehension bands, autonomous ceilings, and human gates.
 - `capability-rubric.yaml`: public philosophical anchors for unsigned self-assessment; it contains no repository answer key.
 - `contributor-agents.md`: readable policy for ordinary Contributor Agents.
@@ -110,4 +112,4 @@ corepack pnpm@10.32.1 agent:review -- validate --packet <packet.json> --input <r
 
 ## Graduation rule
 
-Phase A must not gain GitHub write permissions merely because the workflow runs successfully. Moving that workflow to assistive writes requires a separate reviewed change with recorded shadow evidence, zero unauthorized or duplicate mutations, complete human-gate recall on the gold fixtures, and an explicit maintainer decision defining the newly allowed action set. The local `proto-ui` exception is separately authorized and cannot be used to widen the Phase A workflow.
+Phase A must not gain GitHub write permissions merely because the workflow runs successfully. Moving that workflow to assistive writes requires a separate reviewed change with recorded shadow evidence, zero unauthorized or duplicate mutations, complete human-gate recall on the gold fixtures, and an explicit maintainer decision defining the newly allowed action set. The pending local `proto-ui` authorization intent cannot be used to widen the Phase A workflow.

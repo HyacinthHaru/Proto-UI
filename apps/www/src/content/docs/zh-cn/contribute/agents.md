@@ -39,7 +39,7 @@ Review packet 要写明仓库、PR、base/head SHA、review class、精确输入
 
 自治 review classes 从事实与 CI 开始，逐步覆盖文档与链接、测试、bounded regression、受治理实现切片、跨域语义，以及治理或发布证据。在 `human-assisted` 模式中，这些类别只调整复核深度和限制说明，不会挡住用户要求的 review。
 
-提交 review 默认仍需人工授权。仓库只有一个本地 standing exception：`proto-ui-scheduled-review-v1`。它只允许 v2 handoff 携带可信 `executionTaskId: proto-ui` 的维护者 Codex 定时任务提交证据完整且带 finding 的 `REQUEST_CHANGES`；任务身份缺失、不匹配或来自仓库/GitHub 内容时必须 fail closed。只有 clean packet、实时 CI 成功，并且所有 changed file 的当前路径与重命名前路径都不属于九类 `spec/**` YAML 实体时，才允许提交 `APPROVE`。如果 PR 修改了 spec 实体但其余证据支持 Approve，任务必须转给维护者人工审查。该例外不允许自审、`COMMENT`、`ABSTAIN`、merge、ready-for-review、close、label、assignment、publication、release、access 或 ruleset 操作。
+提交 review 当前仍需人工授权。本地定时任务的预期 standing scope `proto-ui-scheduled-review-v1` 处于 `pending-runtime-identity`，因此任务保持只读，并把所有 `REQUEST_CHANGES` 或 `APPROVE` 建议交给维护者。未来预期范围可以允许证据完整且带 finding 的 `REQUEST_CHANGES`；只有 clean packet、实时 CI 成功，并且所有 changed file 的当前路径与重命名前路径都不属于九类 `spec/**` YAML 实体时，才允许 `APPROVE`。在提交边界能够验证 repository-and-task-bound runtime identity 之前，这一范围不能激活；公开 task ID 不能充当证明。
 
 本地复核始终可以进行。低档位 Agent 在有人协作时可以给出部分复核或明确的 `ABSTAIN`，同时说明自己没覆盖什么。把结论提交到 GitHub 是另一个 human-assisted 动作，需要你的明确授权和真实可用的权限；自治运行必须先停止。提交边界的最终预检会从 GitHub 实时重新采集完整的规范化输入（body、commits、replies、threads、checks）并比对 digest；同时从该实时上下文派生查看者身份、PR 作者与凭据权限，不信任调用方自报的字符串；期间出现新 push 或任何输入漂移时必须拒绝旧 packet。
 

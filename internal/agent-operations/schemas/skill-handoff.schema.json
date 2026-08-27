@@ -10,7 +10,6 @@
     "entrypoint",
     "executionMode",
     "executionModeSource",
-    "executionTaskId",
     "fromId",
     "nextSkillId",
     "artifacts",
@@ -18,7 +17,7 @@
     "notes"
   ],
   "properties": {
-    "schemaVersion": { "const": 2 },
+    "schemaVersion": { "const": 1 },
     "kind": { "const": "proto-ui.skill-handoff" },
     "entrypoint": { "enum": ["development", "maintenance"] },
     "executionMode": { "enum": ["human-assisted", "autonomous"] },
@@ -30,9 +29,6 @@
         "schedule",
         "governed-queue"
       ]
-    },
-    "executionTaskId": {
-      "oneOf": [{ "type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$" }, { "type": "null" }]
     },
     "fromId": { "type": "string", "pattern": "^pui-[a-z0-9-]+$" },
     "nextSkillId": {

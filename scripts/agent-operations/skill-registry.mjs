@@ -213,7 +213,6 @@ export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
       'entrypoint',
       'executionMode',
       'executionModeSource',
-      'executionTaskId',
       'fromId',
       'nextSkillId',
       'artifacts',
@@ -222,18 +221,11 @@ export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
     ],
     'handoff'
   );
-  assert(handoff.schemaVersion === 2, 'handoff.schemaVersion must be 2');
+  assert(handoff.schemaVersion === 1, 'handoff.schemaVersion must be 1');
   assert(handoff.kind === 'proto-ui.skill-handoff', 'handoff.kind is invalid');
   assert(Object.hasOwn(registry.entrypoints, handoff.entrypoint), 'handoff.entrypoint is invalid');
   assert(EXECUTION_MODES.includes(handoff.executionMode), 'handoff.executionMode is invalid');
   establishExecutionMode(handoff.executionMode, handoff.executionModeSource);
-  assert(
-    handoff.executionTaskId === null || /^[a-z][a-z0-9-]{0,63}$/.test(handoff.executionTaskId),
-    'handoff.executionTaskId is invalid'
-  );
-  if (handoff.executionModeSource === 'schedule') {
-    assert(handoff.executionTaskId !== null, 'scheduled handoff requires executionTaskId');
-  }
   assert(ID.test(handoff.fromId ?? ''), 'handoff.fromId is invalid');
   const fromLeaf = registry.byId.get(handoff.fromId);
   const expectedEntrypoint = registry.entrypoints[handoff.entrypoint];
