@@ -176,6 +176,9 @@ try {
   const parsedPolicy = loadCapabilityPolicy(
     resolve(root, 'internal/agent-operations/capability-policy.yaml')
   );
+  const scheduledReviewAuthorization = parsedPolicy.reviewSubmissionAuthorizations?.find(
+    (authorization) => authorization.id === 'proto-ui-scheduled-review-v1'
+  );
   if (
     parsedPolicy.bands?.C1?.minimumDimensionScore !== 1 ||
     !parsedPolicy.bands?.C1?.taskClasses?.includes('review-local') ||
@@ -185,7 +188,19 @@ try {
     parsedPolicy.reviewClasses?.['review-bounded-regression']?.autonomousMinimumBand !== 'C2' ||
     parsedPolicy.reviewClasses?.['review-governance-and-release-evidence']
       ?.autonomousMinimumBand !== 'C4' ||
+    parsedPolicy.mutationClasses?.['conditional-review-submission']?.externalWrite !== true ||
+    parsedPolicy.mutationClasses?.['conditional-review-submission']?.autonomousMinimumBand !==
+      'C4' ||
+    scheduledReviewAuthorization?.status !== 'pending-runtime-identity' ||
+    scheduledReviewAuthorization?.blockedBy !== 'repository-and-task-bound-runtime-identity' ||
+    scheduledReviewAuthorization?.executionModeSource !== 'schedule' ||
+    scheduledReviewAuthorization?.repositoryId !== 'github.com:Proto-UI/Proto-UI' ||
+    scheduledReviewAuthorization?.mutationClass !== 'conditional-review-submission' ||
+    !['REQUEST_CHANGES', 'APPROVE'].every((action) =>
+      scheduledReviewAuthorization?.allowedRecommendations?.includes(action)
+    ) ||
     ![
+      'finding-disposition',
       'semantic-admission',
       'ownership-decision',
       'scope-or-compatibility-tradeoff',

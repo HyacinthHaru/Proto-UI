@@ -1,5 +1,6 @@
 import process from 'node:process';
 import { collectLiveReviewInput, summarizeLiveChecks } from './collect-live-review-input.mjs';
+import { reviewChangesSpecEntities } from './review-runtime.mjs';
 
 function usage() {
   return 'Usage: node scripts/agent-operations/smoke-live-review-input.mjs -- <repositoryId> <pullRequest>';
@@ -20,9 +21,17 @@ try {
         ok: true,
         repositoryId,
         pullRequest,
+        schemaVersion: live.input.schemaVersion,
+        pullRequestState: live.input.pullRequestState,
+        isDraft: live.input.isDraft,
+        baseRefName: live.input.baseRefName,
         baseSha: live.input.baseSha,
         headSha: live.input.headSha,
+        changedFiles: live.input.changedFiles.length,
+        changesSpecEntities: reviewChangesSpecEntities(live.input),
         commits: live.input.commits.length,
+        reviews: live.input.reviews.length,
+        comments: live.input.comments.length,
         replies: live.input.replies.length,
         threads: live.input.threads.length,
         checks: live.input.checks.length,

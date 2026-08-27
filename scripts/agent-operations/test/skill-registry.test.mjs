@@ -140,7 +140,6 @@ test('handoff resolves exactly one next leaf and enforces artifact requirements'
     notes: [],
   };
   assert.equal(validateSkillHandoff(valid, registry).nextSkill.id, 'pui-select');
-
   const missingRequired = structuredClone(valid);
   missingRequired.artifacts = [artifact('capability-envelope')];
   assert.throws(() => validateSkillHandoff(missingRequired, registry), /lacks artifact required/);

@@ -10,6 +10,7 @@ const FAILED_CONCLUSIONS = new Set([
   'CANCELLED',
   'STARTUP_FAILURE',
 ]);
+const SUCCESSFUL_CONCLUSIONS = new Set(['SUCCESS', 'SKIPPED', 'NEUTRAL']);
 
 // GitHub GraphQL schema facts (verified against the live schema):
 // - PullRequestReviewThread has no updatedAt; the latest comment updatedAt is authoritative.
@@ -20,12 +21,24 @@ query($owner: String!, $name: String!, $number: Int!) {
   repository(owner: $owner, name: $name) {
     viewerPermission
     pullRequest(number: $number) {
+      state
+      isDraft
+      changedFiles
       body
+      baseRefName
       baseRefOid
       headRefOid
       author { login }
       commits(first: 100) {
         nodes { commit { oid messageHeadline } }
+        pageInfo { hasNextPage }
+      }
+      reviews(first: 100) {
+        nodes { id author { login } state commit { oid } submittedAt body }
+        pageInfo { hasNextPage }
+      }
+      comments(first: 100) {
+        nodes { id author { login } body updatedAt }
         pageInfo { hasNextPage }
       }
       reviewThreads(first: 100) {
@@ -99,12 +112,12 @@ export function summarizeLiveChecks(checks) {
   if (!Array.isArray(checks) || checks.length === 0) return 'unknown';
   if (checks.some((check) => FAILED_CONCLUSIONS.has(check.conclusion))) return 'failure';
   const allGreen = checks.every(
-    (check) => check.status === 'COMPLETED' && check.conclusion === 'SUCCESS'
+    (check) => check.status === 'COMPLETED' && SUCCESSFUL_CONCLUSIONS.has(check.conclusion)
   );
   return allGreen ? 'success' : 'unknown';
 }
 
-function parseRepositoryId(repositoryId) {
+export function parseRepositoryId(repositoryId) {
   const match = repositoryId.match(/^github\.com:([^/]+)\/([^/]+)$/);
   if (!match) throw new Error('review submission requires a github.com repositoryId');
   const [, owner, name] = match;
@@ -123,17 +136,40 @@ function latestThreadUpdate(thread) {
   return updates.sort().at(-1);
 }
 
-export function buildLiveReviewInput(payload, repositoryId, pullRequest, externalEvidence) {
+export function buildLiveReviewInput(
+  payload,
+  repositoryId,
+  pullRequest,
+  externalEvidence,
+  changedFilePayload
+) {
   const pullRequestPayload = payload?.data?.repository?.pullRequest;
   if (!pullRequestPayload) throw new Error('live pull-request payload is incomplete');
   if (!payload?.data?.viewer?.login || !payload?.data?.repository?.viewerPermission) {
     throw new Error('live viewer identity or permission is unavailable');
+  }
+  if (
+    !Number.isInteger(pullRequestPayload.changedFiles) ||
+    pullRequestPayload.changedFiles < 1 ||
+    changedFilePayload.length !== pullRequestPayload.changedFiles
+  ) {
+    throw new Error('live changed-file collection is incomplete');
   }
 
   assertNoTruncation(
     pullRequestPayload.commits?.nodes,
     pullRequestPayload.commits?.pageInfo,
     'commits'
+  );
+  assertNoTruncation(
+    pullRequestPayload.reviews?.nodes,
+    pullRequestPayload.reviews?.pageInfo,
+    'reviews'
+  );
+  assertNoTruncation(
+    pullRequestPayload.comments?.nodes,
+    pullRequestPayload.comments?.pageInfo,
+    'pull-request comments'
   );
   assertNoTruncation(
     pullRequestPayload.reviewThreads?.nodes,
@@ -165,16 +201,38 @@ export function buildLiveReviewInput(payload, repositoryId, pullRequest, externa
   const checks = (checkContexts?.nodes ?? []).map(normalizeCheck);
 
   const input = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: 'proto-ui.review-input',
     repositoryId,
     pullRequest,
+    pullRequestState: pullRequestPayload.state,
+    isDraft: pullRequestPayload.isDraft,
+    baseRefName: pullRequestPayload.baseRefName,
     baseSha: pullRequestPayload.baseRefOid,
     headSha: pullRequestPayload.headRefOid,
     pullRequestBody: pullRequestPayload.body ?? '',
+    changedFiles: changedFilePayload.map((file) => ({
+      path: file.filename,
+      previousPath: file.previous_filename ?? null,
+      status: file.status,
+    })),
     commits: (pullRequestPayload.commits?.nodes ?? []).map((node) => ({
       sha: node.commit.oid,
       message: node.commit.messageHeadline ?? '',
+    })),
+    reviews: (pullRequestPayload.reviews?.nodes ?? []).map((review) => ({
+      id: review.id,
+      author: review.author?.login ?? 'ghost',
+      state: review.state,
+      commitSha: review.commit?.oid ?? null,
+      submittedAt: review.submittedAt ?? null,
+      body: review.body ?? '',
+    })),
+    comments: (pullRequestPayload.comments?.nodes ?? []).map((comment) => ({
+      id: comment.id,
+      author: comment.author?.login ?? 'ghost',
+      body: comment.body ?? '',
+      updatedAt: comment.updatedAt,
     })),
     replies,
     threads,
@@ -187,6 +245,62 @@ export function buildLiveReviewInput(payload, repositoryId, pullRequest, externa
     viewerLogin: payload.data.viewer.login,
     viewerPermission: payload.data.repository.viewerPermission,
     authorLogin: pullRequestPayload.author?.login,
+  };
+}
+
+export function submitGitHubReview(
+  repositoryId,
+  pullRequest,
+  { commitId, event, body },
+  runner = execFileSync
+) {
+  const { owner, name } = parseRepositoryId(repositoryId);
+  if (!Number.isInteger(pullRequest) || pullRequest < 1) {
+    throw new Error('review submission pull request is invalid');
+  }
+  if (!/^[a-f0-9]{40,64}$/.test(commitId)) {
+    throw new Error('review submission commit id is invalid');
+  }
+  if (!['APPROVE', 'REQUEST_CHANGES', 'COMMENT'].includes(event)) {
+    throw new Error('review submission event is invalid');
+  }
+  if (typeof body !== 'string') throw new Error('review submission body is invalid');
+
+  const response = JSON.parse(
+    runner(
+      'gh',
+      [
+        'api',
+        '--method',
+        'POST',
+        `repos/${owner}/${name}/pulls/${pullRequest}/reviews`,
+        '--input',
+        '-',
+      ],
+      {
+        encoding: 'utf8',
+        input: JSON.stringify({ commit_id: commitId, event, body }),
+        stdio: ['pipe', 'pipe', 'pipe'],
+      }
+    )
+  );
+  if (response.commit_id !== commitId) {
+    throw new Error('submitted review commit does not match the inspected head');
+  }
+  const expectedState = {
+    APPROVE: 'APPROVED',
+    REQUEST_CHANGES: 'CHANGES_REQUESTED',
+    COMMENT: 'COMMENTED',
+  }[event];
+  if (!['number', 'string'].includes(typeof response.id) || response.state !== expectedState) {
+    throw new Error('submitted review receipt is incomplete or has an unexpected state');
+  }
+  return {
+    id: String(response.id),
+    nodeId: response.node_id ?? null,
+    state: response.state,
+    commitId: response.commit_id,
+    url: response.html_url ?? null,
   };
 }
 
@@ -208,5 +322,15 @@ export function collectLiveReviewInput(repositoryId, pullRequest, options = {}) 
   if (raw.errors?.length) {
     throw new Error(`live review-input collection failed: ${raw.errors[0].message}`);
   }
-  return buildLiveReviewInput(raw, repositoryId, pullRequest, externalEvidence);
+  const filePages = ghJson([
+    'api',
+    '--paginate',
+    '--slurp',
+    `repos/${owner}/${name}/pulls/${pullRequest}/files?per_page=100`,
+  ]);
+  if (!Array.isArray(filePages) || !filePages.every(Array.isArray)) {
+    throw new Error('live changed-file collection is malformed');
+  }
+  const changedFiles = filePages.flat();
+  return buildLiveReviewInput(raw, repositoryId, pullRequest, externalEvidence, changedFiles);
 }

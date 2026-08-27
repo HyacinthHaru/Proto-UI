@@ -4,10 +4,19 @@ import {
   assertNoTruncation,
   buildLiveReviewInput,
   normalizeCheck,
+  submitGitHubReview,
   summarizeLiveChecks,
 } from '../collect-live-review-input.mjs';
 
 const sha = (letter) => letter.repeat(40);
+const changedFiles = [
+  { filename: 'packages/core/src/index.ts', previous_filename: null, status: 'modified' },
+  {
+    filename: 'internal/records/moved.md',
+    previous_filename: 'spec/decisions/D-OLD-0001.yaml',
+    status: 'renamed',
+  },
+];
 
 function payload(overrides = {}) {
   return {
@@ -16,12 +25,40 @@ function payload(overrides = {}) {
       repository: {
         viewerPermission: 'WRITE',
         pullRequest: {
+          state: 'OPEN',
+          isDraft: false,
+          changedFiles: changedFiles.length,
           body: 'Bounded target',
+          baseRefName: 'main',
           baseRefOid: sha('a'),
           headRefOid: sha('b'),
           author: { login: 'contributor' },
           commits: {
             nodes: [{ commit: { oid: sha('b'), messageHeadline: 'Bounded change' } }],
+            pageInfo: { hasNextPage: false },
+          },
+          reviews: {
+            nodes: [
+              {
+                id: 'PRR_review_1',
+                author: { login: 'earlier-reviewer' },
+                state: 'COMMENTED',
+                commit: { oid: sha('b') },
+                submittedAt: '2026-08-23T05:00:00Z',
+                body: 'Earlier review',
+              },
+            ],
+            pageInfo: { hasNextPage: false },
+          },
+          comments: {
+            nodes: [
+              {
+                id: 'IC_comment_2001',
+                author: { login: 'maintainer' },
+                body: 'Top-level conversation note',
+                updatedAt: '2026-08-23T05:30:00Z',
+              },
+            ],
             pageInfo: { hasNextPage: false },
           },
           reviewThreads: {
@@ -78,11 +115,37 @@ function payload(overrides = {}) {
 }
 
 test('live collector builds a complete canonical input from the GraphQL payload', () => {
-  const result = buildLiveReviewInput(payload(), 'github.com:Proto-UI/Proto-UI', 487, []);
+  const result = buildLiveReviewInput(
+    payload(),
+    'github.com:Proto-UI/Proto-UI',
+    487,
+    [],
+    changedFiles
+  );
   assert.equal(result.viewerLogin, 'reviewer');
   assert.equal(result.viewerPermission, 'WRITE');
   assert.equal(result.authorLogin, 'contributor');
   assert.equal(result.input.commits.length, 1);
+  assert.equal(result.input.pullRequestState, 'OPEN');
+  assert.equal(result.input.isDraft, false);
+  assert.equal(result.input.baseRefName, 'main');
+  assert.deepEqual(result.input.changedFiles, [
+    { path: 'packages/core/src/index.ts', previousPath: null, status: 'modified' },
+    {
+      path: 'internal/records/moved.md',
+      previousPath: 'spec/decisions/D-OLD-0001.yaml',
+      status: 'renamed',
+    },
+  ]);
+  assert.equal(result.input.reviews[0].author, 'earlier-reviewer');
+  assert.deepEqual(result.input.comments, [
+    {
+      id: 'IC_comment_2001',
+      author: 'maintainer',
+      body: 'Top-level conversation note',
+      updatedAt: '2026-08-23T05:30:00Z',
+    },
+  ]);
   assert.equal(result.input.replies.length, 1);
   assert.equal(result.input.replies[0].id, '1001');
   assert.equal(result.input.replies[0].threadId, 'PRR_kwT1');
@@ -104,14 +167,20 @@ test('live collector derives thread time from comments and never fabricates time
     body: 'Later note',
     updatedAt: '2026-08-23T07:00:00Z',
   });
-  const result = buildLiveReviewInput(threaded, 'github.com:Proto-UI/Proto-UI', 487, []);
+  const result = buildLiveReviewInput(
+    threaded,
+    'github.com:Proto-UI/Proto-UI',
+    487,
+    [],
+    changedFiles
+  );
   assert.equal(result.input.threads[0].updatedAt, '2026-08-23T07:00:00Z');
   assert.equal(result.input.replies.length, 2);
 
   const empty = payload();
   empty.data.repository.pullRequest.reviewThreads.nodes[0].comments.nodes = [];
   assert.throws(
-    () => buildLiveReviewInput(empty, 'github.com:Proto-UI/Proto-UI', 487, []),
+    () => buildLiveReviewInput(empty, 'github.com:Proto-UI/Proto-UI', 487, [], changedFiles),
     /no comment timestamps/
   );
 });
@@ -119,9 +188,21 @@ test('live collector derives thread time from comments and never fabricates time
 test('live collector fails closed on pagination truncation for every connection', () => {
   for (const [label, mutate] of [
     [
+      'reviews',
+      (p) => {
+        p.data.repository.pullRequest.reviews.pageInfo.hasNextPage = true;
+      },
+    ],
+    [
       'commits',
       (p) => {
         p.data.repository.pullRequest.commits.pageInfo.hasNextPage = true;
+      },
+    ],
+    [
+      'pull-request comments',
+      (p) => {
+        p.data.repository.pullRequest.comments.pageInfo.hasNextPage = true;
       },
     ],
     [
@@ -146,7 +227,7 @@ test('live collector fails closed on pagination truncation for every connection'
     const truncated = payload();
     mutate(truncated);
     assert.throws(
-      () => buildLiveReviewInput(truncated, 'github.com:Proto-UI/Proto-UI', 487, []),
+      () => buildLiveReviewInput(truncated, 'github.com:Proto-UI/Proto-UI', 487, [], changedFiles),
       /exceeds one page/,
       `${label} truncation must fail closed`
     );
@@ -154,18 +235,98 @@ test('live collector fails closed on pagination truncation for every connection'
   }
 });
 
+test('review submission binds the GitHub Review API write to the inspected commit', () => {
+  const calls = [];
+  const result = submitGitHubReview(
+    'github.com:Proto-UI/Proto-UI',
+    487,
+    {
+      commitId: sha('b'),
+      event: 'APPROVE',
+      body: '',
+    },
+    (command, args, options) => {
+      calls.push({ command, args, options });
+      return JSON.stringify({
+        id: 1234,
+        node_id: 'PRR_review_2',
+        state: 'APPROVED',
+        commit_id: sha('b'),
+        html_url: 'https://github.com/Proto-UI/Proto-UI/pull/487#pullrequestreview-1234',
+      });
+    }
+  );
+
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].command, 'gh');
+  assert.deepEqual(calls[0].args.slice(0, 5), [
+    'api',
+    '--method',
+    'POST',
+    'repos/Proto-UI/Proto-UI/pulls/487/reviews',
+    '--input',
+  ]);
+  assert.deepEqual(JSON.parse(calls[0].options.input), {
+    commit_id: sha('b'),
+    event: 'APPROVE',
+    body: '',
+  });
+  assert.equal(result.commitId, sha('b'));
+  assert.equal(result.state, 'APPROVED');
+
+  assert.throws(
+    () =>
+      submitGitHubReview(
+        'github.com:Proto-UI/Proto-UI',
+        487,
+        { commitId: sha('b'), event: 'APPROVE', body: '' },
+        () => JSON.stringify({ id: 1234, state: 'APPROVED', commit_id: sha('c') })
+      ),
+    /does not match the inspected head/
+  );
+  assert.throws(
+    () =>
+      submitGitHubReview(
+        'github.com:Proto-UI/Proto-UI',
+        487,
+        { commitId: sha('b'), event: 'APPROVE', body: '' },
+        () => JSON.stringify({ id: 1234, state: 'COMMENTED', commit_id: sha('b') })
+      ),
+    /unexpected state/
+  );
+});
+
+test('live collector fails closed when the REST changed-file list is incomplete', () => {
+  const truncated = payload();
+  truncated.data.repository.pullRequest.changedFiles = changedFiles.length + 1;
+  assert.throws(
+    () => buildLiveReviewInput(truncated, 'github.com:Proto-UI/Proto-UI', 487, [], changedFiles),
+    /changed-file collection is incomplete/
+  );
+});
+
 test('live collector passes external evidence through verbatim and validates its shape', () => {
   const evidence = [
     { kind: 'artifact', locator: 'https://example.com/a.txt', digest: 'd'.repeat(64) },
   ];
-  const result = buildLiveReviewInput(payload(), 'github.com:Proto-UI/Proto-UI', 487, evidence);
+  const result = buildLiveReviewInput(
+    payload(),
+    'github.com:Proto-UI/Proto-UI',
+    487,
+    evidence,
+    changedFiles
+  );
   assert.deepEqual(result.input.externalEvidence, evidence);
 
   assert.throws(
     () =>
-      buildLiveReviewInput(payload(), 'github.com:Proto-UI/Proto-UI', 487, [
-        { kind: 'artifact', locator: 'https://example.com/a.txt', digest: 'short' },
-      ]),
+      buildLiveReviewInput(
+        payload(),
+        'github.com:Proto-UI/Proto-UI',
+        487,
+        [{ kind: 'artifact', locator: 'https://example.com/a.txt', digest: 'short' }],
+        changedFiles
+      ),
     /external evidence digest/
   );
 });
@@ -189,7 +350,13 @@ test('live collector accepts nullable check detail links from both context kinds
       createdAt: '2026-08-23T06:00:00Z',
     },
   ];
-  const result = buildLiveReviewInput(nullableUrls, 'github.com:Proto-UI/Proto-UI', 487, []);
+  const result = buildLiveReviewInput(
+    nullableUrls,
+    'github.com:Proto-UI/Proto-UI',
+    487,
+    [],
+    changedFiles
+  );
   assert.equal(result.input.checks.length, 2);
   assert.equal(result.input.checks[0].detailsUrl, null);
   assert.equal(result.input.checks[1].detailsUrl, null);
@@ -229,5 +396,29 @@ test('check context normalization matches both connection node kinds', () => {
       completedAt: '2026-08-23T06:00:00Z',
       detailsUrl: null,
     }
+  );
+});
+
+test('live check summary accepts neutral terminal conclusions but not pending checks', () => {
+  const successCompatible = ['SUCCESS', 'SKIPPED', 'NEUTRAL'].map((conclusion) => ({
+    name: conclusion.toLowerCase(),
+    status: 'COMPLETED',
+    conclusion,
+    completedAt: '2026-08-23T06:00:00Z',
+    detailsUrl: null,
+  }));
+  assert.equal(summarizeLiveChecks(successCompatible), 'success');
+  assert.equal(
+    summarizeLiveChecks([
+      ...successCompatible,
+      {
+        name: 'pending',
+        status: 'IN_PROGRESS',
+        conclusion: null,
+        completedAt: null,
+        detailsUrl: null,
+      },
+    ]),
+    'unknown'
   );
 });

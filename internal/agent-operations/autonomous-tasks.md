@@ -8,6 +8,8 @@ The Issue and pull-request observers run as a read-only shadow workflow on a sch
 
 The pull-request portfolio observer is a narrower manual trial of an external engine. Its errors remain part of the result. It cannot prepare, repair, submit, approve, or merge a pull request.
 
+The maintainer also operates one local Codex scheduled task for `Proto-UI/Proto-UI`. It is not the repository Phase A workflow. The intended standing scope `proto-ui-scheduled-review-v1` is `pending-runtime-identity` because Codex does not currently provide repository-verifiable task/run identity. The task stays read-only and turns every `REQUEST_CHANGES` or `APPROVE` recommendation into a maintainer decision package. Its intended future scope would allow complete, finding-backed `REQUEST_CHANGES`, and `APPROVE` only for a clean, green PR whose canonical changed-file set contains no current or previous path for a YAML entity in the nine `spec/**` entity collections. That intent is not currently executable authority.
+
 Autonomous maintenance is still a manual protocol. `pui-mission` defines the candidate-to-frozen transition. A maintainer currently freezes one mission and starts each fresh Agent context outside an autonomous controller. There is no scheduler, callback service, or globally atomic lease service for that state machine, so competing runners and automatic external writes remain unavailable.
 
 ## What is only a candidate
@@ -31,7 +33,7 @@ A recurring Agent task needs more than a cron expression. It must have:
 - a callback or ledger update that is idempotent;
 - an owner who can disable it and inspect its residual risk.
 
-Local state cannot coordinate separate clones or runners. Until a global atomic consumer or service-side idempotency mechanism exists, recurring external writes remain read-only. Local autonomous work may proceed inside its fresh self-assessed ceiling, frozen scope, and current lease. High-risk work, semantic decisions, integration, publication, access, secrets, and repository rules always stop for a human.
+Local state cannot coordinate separate clones or runners or prove which desktop task invoked a repository command. Recurring external writes therefore remain read-only. Activating scheduled review writes requires repository-and-task-bound runtime identity in addition to live canonical reconciliation and replay protection. High-risk work, semantic decisions, integration, publication, access, secrets, and repository rules always stop for a human.
 
 ## Maintenance transition
 
