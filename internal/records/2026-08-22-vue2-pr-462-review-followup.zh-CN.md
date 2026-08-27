@@ -2,6 +2,8 @@
 
 > Internal record. Not normative. 本记录保存 PR #462 的审查处理决定；稳定语义仍以 `spec/**` 与适用的 adapter contract 为准。
 
+> 2026-08-26 注：本文保存 2026-08-22 当时的隔离决定；后续 official Adapter admission 见 `2026-08-26-vue2-official-adapter-admission.zh-CN.md`。
+
 ## 当前定位
 
 `@proto.ui/adapter-vue2` 继续是 `private: true` 且 `protoUi.release.scan: false` 的 Vue 2.6 feasibility package。它不是正式网站 adapter，也不在共享 Web conformance matrix 的保证范围内。

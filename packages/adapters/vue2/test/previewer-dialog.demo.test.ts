@@ -29,8 +29,13 @@ async function settleVue2() {
 async function waitForText(root: ParentNode, text: string, present: boolean, timeoutMs = 1_000) {
   const startedAt = Date.now();
   while (Date.now() - startedAt < timeoutMs) {
-    const found = Array.from(root.querySelectorAll<HTMLElement>('[data-pui-root]')).some(
-      (element) => element.textContent?.includes(text)
+    const found = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-pui-root][role="dialog"]')
+    ).some(
+      (element) =>
+        element.textContent?.includes(text) &&
+        !element.hasAttribute('data-pui-view-detached') &&
+        !['closed', 'leaving'].includes(element.getAttribute('data-transition-state') ?? '')
     );
     if (found === present) return true;
     await new Promise<void>((resolve) => setTimeout(resolve, 10));
@@ -77,8 +82,12 @@ describe('PrototypePreviewer demo-renderer / vue2 dialog', () => {
       expect(await waitForText(document.body, 'Confirm Action', true)).toBe(true);
 
       const content = Array.from(
-        document.body.querySelectorAll<HTMLElement>('[data-pui-root]')
-      ).find((element) => element.textContent?.includes('Confirm Action'));
+        document.body.querySelectorAll<HTMLElement>('[data-pui-root][role="dialog"]')
+      ).find(
+        (element) =>
+          element.textContent?.includes('Confirm Action') &&
+          !element.hasAttribute('data-pui-view-detached')
+      );
       expect(content).toBeDefined();
       expect(host.contains(content ?? null)).toBe(false);
 

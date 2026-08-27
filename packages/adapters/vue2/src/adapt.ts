@@ -15,6 +15,7 @@ import {
   createViewEpochOwner,
   createWebProtoEventRouter,
   installViewVisibilityRule,
+  PUI_VIEW_DETACHED_ATTR,
   PUI_VIEW_PENDING_ATTR,
   type ProtoAdapterExposes,
   type ProtoAdapterProps,
@@ -28,6 +29,7 @@ import {
 import {
   createZIndexOverlayLayerScheduler,
   type OverlayLayerScheduler,
+  type OverlayPort,
   type OverlayZIndexLayerSchedulerOptions,
 } from '@proto.ui/module-overlay';
 import type { RawPropsSource } from '@proto.ui/module-props';
@@ -110,6 +112,9 @@ type Vue2InternalState<Props extends PropsBaseType> = {
   pendingSignal: CommitSignal | null;
   viewReady: boolean;
   viewDisposed: boolean;
+  terminalDisposed: boolean;
+  activationVersion: number;
+  hostActive: boolean;
   lastHostProps: Readonly<Record<string, unknown>> | null;
   subs: Set<() => void>;
   hostSession: ReturnType<typeof createVue2HostSession<Props>> | null;
@@ -216,6 +221,9 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
         pendingSignal: null,
         viewReady: false,
         viewDisposed: false,
+        terminalDisposed: false,
+        activationVersion: 0,
+        hostActive: true,
         lastHostProps: null,
         subs: new Set(),
         hostSession: null,
@@ -362,13 +370,15 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
       mounted() {
         const rootEl = getRootElement(this);
         if (rootEl) installViewVisibilityRule(rootEl.ownerDocument);
-        initSession(runtime, this, proto, {
-          schedule,
-          getMeta,
-          exposeStateWebMode,
-          scrollProjection,
-          overlayLayerScheduler,
-        });
+        if ((this as any).__puiShouldExist) {
+          initSession(runtime, this, proto, {
+            schedule,
+            getMeta,
+            exposeStateWebMode,
+            scrollProjection,
+            overlayLayerScheduler,
+          });
+        }
         afterVueCommit(runtime, this, () => notifyFocusTargetReady(this));
       },
       updated() {
@@ -395,18 +405,24 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
         });
       },
       activated() {
-        afterVueCommit(runtime, this, () =>
+        const state = getState<Props>(this);
+        state.hostActive = true;
+        const activationVersion = ++state.activationVersion;
+        afterVueCommit(runtime, this, () => {
+          if (state.terminalDisposed || activationVersion !== state.activationVersion) return;
           initSession(runtime, this, proto, {
             schedule,
             getMeta,
             exposeStateWebMode,
             scrollProjection,
             overlayLayerScheduler,
-          })
-        );
+          });
+        });
       },
       deactivated() {
         const state = getState<Props>(this);
+        state.hostActive = false;
+        state.activationVersion += 1;
         setViewReady(this, false);
         getRootElement(this)?.setAttribute(PUI_VIEW_PENDING_ATTR, '');
         if (state.owner.hasView) void state.owner.detachView();
@@ -414,6 +430,8 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
       },
       beforeDestroy() {
         const state = getState<Props>(this);
+        state.terminalDisposed = true;
+        state.activationVersion += 1;
         state.propWatchDisposer?.();
         state.propWatchDisposer = null;
         state.scopedExposesReader.invalidate();
@@ -434,13 +452,22 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
         },
       },
       render(h: Vue2CreateElement) {
-        if (!(this as any).__puiShouldExist) return (h as any)();
         const state = getState<Props>(this);
+        const present = !!(this as any).__puiShouldExist;
+        const overlayPort = state.owner.session?.caps.getPort<OverlayPort>('overlay');
+        // Keep closed overlay hosts and authored children mounted so collection
+        // items can register before the first open. The shared detached rule
+        // removes the subtree from paint, accessibility, and tab order.
+        const detached = !present && overlayPort?.hasPresenceBinding() === true;
+        if (!present && !detached) return (h as any)();
+
         const slotNodes = normalizeSlotNodes((this.$slots ?? {}).default);
         const renderRuntime = { h };
-        const rendered = renderTemplateToVue2(renderRuntime, (this as any).__puiRenderChildren, {
-          slot: slotNodes,
-        });
+        const rendered = present
+          ? renderTemplateToVue2(renderRuntime, (this as any).__puiRenderChildren, {
+              slot: slotNodes,
+            })
+          : slotNodes;
         const rootChildren = normalizeVue2Children(rendered);
         const attrs = this.$attrs ?? {};
 
@@ -464,6 +491,7 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
             ]),
             attrs: {
               'data-pui-root': '',
+              [PUI_VIEW_DETACHED_ATTR]: detached ? '' : undefined,
               [PUI_VIEW_PENDING_ATTR]: state.viewReady ? undefined : '',
               'data-pui-style': serializeStyleTokens((this as any).__puiHostTokens ?? []),
               'data-demo-ref': attrs['data-demo-ref'] as string | undefined,
@@ -506,6 +534,7 @@ function collectAdapterInput<Props extends PropsBaseType>(
 
 function setShouldExist(runtime: Vue2Runtime, vm: any, present: boolean) {
   const state = getState(vm);
+  if (state.terminalDisposed) return;
   const prev = !!vm.__puiShouldExist;
   setVmField(vm, '__puiShouldExist', present);
   if (present) {
@@ -519,6 +548,7 @@ function setShouldExist(runtime: Vue2Runtime, vm: any, present: boolean) {
   }
   state.eventGate?.disable?.();
   if (state.owner.hasView) void state.owner.detachView();
+  state.lastInitRoot = null;
   setVmField(vm, '__puiHostTokens', []);
   setViewReady(vm, false);
 }
@@ -538,6 +568,7 @@ function initSession<Props extends PropsBaseType>(
   } | null
 ) {
   const state = getState<Props>(vm);
+  if (state.terminalDisposed || !state.hostActive) return;
   const rootEl = getRootElement(vm);
   if (!rootEl || rootEl === state.lastInitRoot) return;
   if (!state.rawPropsSource) return;
@@ -601,7 +632,8 @@ function initSession<Props extends PropsBaseType>(
       }
       fn();
     },
-    isViewReady: () => state.viewReady,
+    isViewReady: () =>
+      state.viewReady && !getRootElement(vm)?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
     getCurrentElement: () => getRootElement(vm),
     subscribeTargetReady: (listener) => {
       state.focusTargetReadyListeners.add(listener);

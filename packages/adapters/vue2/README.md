@@ -1,20 +1,32 @@
 # @proto.ui/adapter-vue2
 
-Draft package boundary for a Vue 2.6-first Proto UI adapter.
+Translates Proto UI prototypes into Vue 2.6 component options for the official Vue 2 Web Adapter profile.
 
 ## Status
 
-This package remains private while the Vue 2.6 feasibility path is being validated. The documentation website may load it only in internal validation surfaces; this is neither a published package guarantee nor a replacement for `@proto.ui/adapter-vue`.
+The repository treats this as a public package beginning with `0.3.0-alpha.0`. Its governed profile is `A-VUE-2-0001`, targeting Vue `>=2.6.0 <2.7` on the Web platform.
 
-## Scope
+The package cannot be installed from npm until the `@proto.ui/adapter-vue2` registry identity is created and the release workflow publishes it. Repository readiness does not imply that publication has happened.
 
-- Target Vue 2.6 first.
-- Keep Vue runtime injection through an adapter factory.
-- Do not rely on Vue 2.7 Composition API in the first implementation pass.
-- Validate adapter behavior and internal website previews before promoting the npm distribution surface.
+## Usage
+
+Inject the Vue 2 runtime and adapt a Proto UI prototype:
+
+```ts
+import Vue from 'vue';
+import { createVue2Adapter } from '@proto.ui/adapter-vue2';
+
+const adapt = createVue2Adapter(Vue);
+const Component = adapt(prototype);
+```
+
+The Adapter uses Vue 2 options lifecycle and `render(h)` APIs; it does not require the Vue 2.7 Composition API. `@proto.ui/adapter-vue` remains the separate Vue 3 Adapter.
 
 ## References
 
-- `internal/records/2026-08-05-vue2-adapter-feasibility.zh-CN.md`
-- `internal/contracts/adapter-vue/adapter-vue.v0.md`
-- `packages/adapters/vue`
+- `spec/adapters/A-VUE-2-0001.yaml`
+- `internal/records/2026-08-26-vue2-official-adapter-admission.zh-CN.md`
+
+## License
+
+MIT

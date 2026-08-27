@@ -1,5 +1,10 @@
 ---
-import { AdapterIds, InternalAdapterIds, type RuntimeId } from './runtimes/registry';
+import {
+  AdapterIds,
+  InternalAdapterIds,
+  selectRuntimeIds,
+  type RuntimeId,
+} from './runtimes/registry';
 import AdapterSelect from '../override/AdapterSelect.astro';
 import CodePanel from './CodePanel.astro';
 import { highlightCode, type CodeLang } from './code-highlight';
@@ -17,7 +22,7 @@ interface Props {
   props?: Record<string, unknown>; // 传给原型适配后组件的 props
   class?: string;
   toolbar?: boolean; // 是否渲染运行时切换 UI，默认 true
-  runtimes?: RuntimeId[]; // 可选的运行时列表，默认 ['wc','react','vue']
+  runtimes?: RuntimeId[]; // 可选的运行时列表，默认使用全部 public AdapterIds
   loader?: string; // 动态导入路径，例如 './demo-inline'
   /** 可选：展示的代码片段，提供后显示 Preview | Code 标签页 */
   code?: string;
@@ -92,7 +97,7 @@ const {
   props: protoProps = {},
   class: className = '',
   toolbar = true,
-  runtimes = AdapterIds,
+  runtimes,
   loader,
   code: codeSnippet,
   hasCode = false,
@@ -102,10 +107,7 @@ const {
 } = Astro.props;
 
 const permittedRuntimes = allowExperimentalRuntimes ? InternalAdapterIds : AdapterIds;
-const supportedRuntimes = runtimes.filter((runtime) =>
-  (permittedRuntimes as readonly RuntimeId[]).includes(runtime)
-);
-const effectiveRuntimes = supportedRuntimes.length ? supportedRuntimes : [...permittedRuntimes];
+const effectiveRuntimes = selectRuntimeIds(runtimes, permittedRuntimes);
 const effectiveInitialRuntime = effectiveRuntimes.includes(initialRuntime)
   ? initialRuntime
   : effectiveRuntimes[0]!;
@@ -281,7 +283,7 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
 
   <script>
     import type { RuntimeId } from './runtimes/registry';
-    const defaultRuntimeIds: RuntimeId[] = ['wc', 'react', 'vue'];
+    const defaultRuntimeIds: RuntimeId[] = ['wc', 'react', 'vue', 'vue2'];
 
     async function mount(root: HTMLElement) {
       if (root.dataset.inited === '1' || root.dataset.mounting === '1') return;

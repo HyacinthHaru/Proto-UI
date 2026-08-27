@@ -68,6 +68,7 @@ describe('adapter-vue2: expose', () => {
   });
 
   it('invokes exposed control methods in callback scope', async () => {
+    let renders = 0;
     const proto: Prototype = {
       name: 'vue2-expose-controls',
       setup(def) {
@@ -76,7 +77,10 @@ describe('adapter-vue2: expose', () => {
         def.expose.value('controls', {
           run: () => phase.set('running', 'reason: test.controls.run'),
         });
-        return (r) => [r.el('div', 'ok')];
+        return (r) => {
+          renders += 1;
+          return [r.el('div', String(renders))];
+        };
       },
     };
 
@@ -84,12 +88,22 @@ describe('adapter-vue2: expose', () => {
     await flushVue2();
 
     expect(typeof mounted.vm.invokeInCallbackScope).toBe('function');
-    expect(mounted.vm.getExposes().phase.get()).toBe('idle');
+    const phase = mounted.vm.getExposes().phase;
+    expect(phase.get()).toBe('idle');
+    expect(phase.spec).toMatchObject({ kind: 'enum' });
+    expect(typeof phase.subscribe).toBe('function');
+    expect(phase.set).toBeUndefined();
 
     mounted.vm.getExposes().controls.run();
     await flushVue2();
 
     expect(mounted.vm.getExposes().phase.get()).toBe('running');
+    expect(renders).toBe(1);
+
+    mounted.vm.update();
+    await flushVue2();
+    expect(renders).toBe(2);
+    expect(mounted.vm.getExposes().phase).toBe(phase);
 
     mounted.unmount();
   });

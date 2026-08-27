@@ -37,4 +37,4 @@ Scroll 的真实 geometry/拖动、Overlay 的 anchored positioning 与焦点 tr
 
 本段保存 2026-08-10 当时的文档接入观察，不再表示当前公开网站边界。当时 Select、Button、Tabs 的文档 code map 已提供 Vue2 Adapter 示例，对应 Previewer 曾允许选择 `vue2`；Dialog、HoverCard、Tooltip、Transition、Textarea 等复合 demo 也曾计划通过首页 Demo Matrix 的 Vue2 runtime 运行。
 
-后续 `2026-08-22-vue2-pr-462-review-followup.zh-CN.md`、`2026-08-23-vue2-internal-runtime-isolation.zh-CN.md` 与 `2026-08-24-vue2-pr-462-remediation-scope.zh-CN.md` 已取代这项公开接入方向。当前公开 `AdapterIds`、首页 Previewer、全局 Adapter Select、公开文档与共享 Web conformance matrix 均不包含 Vue 2；Vue 2 runtime 只允许由 internal Demo Matrix 显式启用。前文的 adapter 测试观察仍是非规范实现证据，不构成 official Adapter profile 或发布承诺。
+`2026-08-22-vue2-pr-462-review-followup.zh-CN.md`、`2026-08-23-vue2-internal-runtime-isolation.zh-CN.md` 与 `2026-08-24-vue2-pr-462-remediation-scope.zh-CN.md` 随后记录了隔离阶段。2026-08-26 的后续 admission 已由 `2026-08-26-vue2-official-adapter-admission.zh-CN.md` 取代该隔离方向；稳定范围以 `A-VUE-2-0001` 为准。
