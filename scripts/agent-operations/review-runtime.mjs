@@ -107,6 +107,7 @@ export function validateReviewInputSnapshot(input) {
       'changedFiles',
       'commits',
       'reviews',
+      'comments',
       'replies',
       'threads',
       'checks',
@@ -169,6 +170,21 @@ export function validateReviewInputSnapshot(input) {
       assert(item.commitSha === null || SHA.test(item.commitSha), 'review commitSha is invalid');
       validateTimestamp(item.submittedAt, 'review submittedAt', { nullable: true });
       assert(typeof item.body === 'string', 'review body is invalid');
+    }
+  );
+  validateInputItems(
+    input.comments,
+    ['id', 'author', 'body', 'updatedAt'],
+    'review input comments',
+    (item) => {
+      for (const field of ['id', 'author']) {
+        assert(
+          typeof item[field] === 'string' && item[field].length > 0,
+          `comment ${field} is invalid`
+        );
+      }
+      assert(typeof item.body === 'string', 'comment body is invalid');
+      validateTimestamp(item.updatedAt, 'comment updatedAt');
     }
   );
   validateInputItems(

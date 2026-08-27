@@ -18,7 +18,11 @@ import {
   validateReviewPacketEligibility,
   verifyReconciliation,
 } from './review-runtime.mjs';
-import { collectLiveReviewInput, summarizeLiveChecks } from './collect-live-review-input.mjs';
+import {
+  collectLiveReviewInput,
+  submitGitHubReview,
+  summarizeLiveChecks,
+} from './collect-live-review-input.mjs';
 import { loadSkillRegistry, skillRegistryRoot, validateSkillHandoff } from './skill-registry.mjs';
 
 function usage() {
@@ -28,15 +32,15 @@ function usage() {
     '  pnpm agent:review -- validate --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>]',
     '  pnpm agent:review -- inspect --packet <packet.json> --input <review-input.json> --handoff <handoff.json> --current-base <sha> --current-head <sha> [--assessment <result.json>] [--prior-head <sha>] [--seen-keys <comma-separated>] [--prior-packet <prior-packet.json>]',
     '  pnpm agent:review -- eligibility --handoff <handoff.json> --review-class <class> [--assessment <result.json>]',
-    '  pnpm agent:review -- authorize-submission --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>] [--external-evidence-file <evidence.json>] --authorization <explicit-current-user|proto-ui-scheduled-review-v1>',
+    '  pnpm agent:review -- submit-review --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>] [--external-evidence-file <evidence.json>] --authorization <explicit-current-user|proto-ui-scheduled-review-v1>',
     '',
-    'authorize-submission re-collects the canonical review input live from GitHub and derives the viewer identity, pull-request author, credential permission, and CI conclusion from that live context; caller-provided identities are never accepted. externalEvidence cannot be re-collected live: pass the exact recorded array with --external-evidence-file, otherwise a packet recorded with external evidence fails the digest check.',
+    'submit-review re-collects the canonical review input live from GitHub, derives the viewer identity, pull-request author, credential permission, and CI conclusion, and performs the Review API write with commit_id bound to the packet head. Caller-provided identities are never accepted. externalEvidence cannot be re-collected live: pass the exact recorded array with --external-evidence-file, otherwise a packet recorded with external evidence fails the digest check.',
     '',
     '  pnpm agent:review:smoke -- <repositoryId> <pullRequest>   # exercise the live collector against the real GitHub GraphQL schema',
   ].join('\n');
 }
 
-const COMMANDS = ['input-digest', 'validate', 'inspect', 'eligibility', 'authorize-submission'];
+const COMMANDS = ['input-digest', 'validate', 'inspect', 'eligibility', 'submit-review'];
 const ALLOWED_OPTIONS = new Map([
   ['input-digest', new Set(['--input'])],
   ['validate', new Set(['--packet', '--input', '--handoff', '--assessment'])],
@@ -56,7 +60,7 @@ const ALLOWED_OPTIONS = new Map([
   ],
   ['eligibility', new Set(['--handoff', '--review-class', '--assessment'])],
   [
-    'authorize-submission',
+    'submit-review',
     new Set([
       '--packet',
       '--input',
@@ -128,6 +132,19 @@ function validateExecution(args, packet, policy) {
   });
   validateReviewPacketEligibility(packet, eligibility, handoff.executionMode);
   return { handoff, eligibility, selfAssessment };
+}
+
+function renderReviewBody(packet) {
+  const prefix = `Reviewed exact head \`${packet.headSha}\`.`;
+  if (packet.findings.length === 0) return prefix;
+  return [
+    prefix,
+    '',
+    ...packet.findings.map(
+      (finding) =>
+        `- **[${finding.severity}] ${finding.id}** (${finding.file}:${finding.line}) ${finding.observed} Expected: ${finding.expected} Fix: ${finding.fix}`
+    ),
+  ].join('\n');
 }
 
 try {
@@ -220,7 +237,7 @@ try {
     const live = collectLiveReviewInput(packet.repositoryId, packet.pullRequest, {
       externalEvidence,
     });
-    output = authorizeReviewSubmission({
+    const authorization = authorizeReviewSubmission({
       packet,
       input,
       liveInput: live.input,
@@ -234,6 +251,20 @@ try {
       pullRequestAuthor: live.authorLogin,
       ciConclusion: summarizeLiveChecks(live.input.checks),
     });
+    if (!authorization.allowed) {
+      output = authorization;
+    } else {
+      const receipt = submitGitHubReview(packet.repositoryId, packet.pullRequest, {
+        commitId: packet.headSha,
+        event: authorization.recommendedAction,
+        body: renderReviewBody(packet),
+      });
+      output = {
+        ...authorization,
+        submitted: true,
+        receipt,
+      };
+    }
   }
   process.stdout.write(`${JSON.stringify(output, null, 2)}\n`);
 } catch (error) {

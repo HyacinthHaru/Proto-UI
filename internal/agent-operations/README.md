@@ -37,7 +37,7 @@ The Codex desktop task `proto-ui` is separate from the Phase A GitHub Actions wo
 
 The intended future scope would allow complete, finding-backed `REQUEST_CHANGES`, and `APPROVE` only for a clean packet with successful live checks when no current or previous changed-file path identifies a YAML entity under the nine `spec/**` entity collections. That scope is not executable authority until repository-and-task-bound runtime identity is implemented and reviewed.
 
-The pending authorization does not change `.github/workflows/agent-operations-shadow.yml`, `policy.yaml`, or the Phase A token boundary. It does not authorize `COMMENT` reviews, merge, ready-for-review, close, labels, assignment, publication, release, access, secrets, or rulesets. Human-assisted submission preflight still binds PR state, revision, changed files, existing reviews, discussions, checks, viewer identity, author identity, permission, and canonical input digest. A stale, incomplete, duplicate, self-authored, draft, closed, or permission-unknown target fails closed.
+The pending authorization does not change `.github/workflows/agent-operations-shadow.yml`, `policy.yaml`, or the Phase A token boundary. It does not authorize `COMMENT` reviews, merge, ready-for-review, close, labels, assignment, publication, release, access, secrets, or rulesets. The separately human-authorized `submit-review` path binds PR state, revision, changed files, existing reviews, top-level conversation comments, threaded discussions, checks, viewer identity, author identity, permission, and canonical input digest. Its Review API write carries `commit_id` equal to the reviewed packet head and verifies that value in the receipt. A stale, incomplete, duplicate, self-authored, draft, closed, permission-unknown, or commit-mismatched target fails closed.
 
 ## Execution boundary
 
@@ -84,7 +84,7 @@ When a gate is required, one decision packet must state the observed fact, recom
 - `schemas/capability-challenge.schema.json`: dynamic assessment challenge contract.
 - `schemas/capability-response.schema.json`: evidence-backed answer contract without a score or answer key.
 - `schemas/capability-self-result.schema.json`: deterministic unsigned U0-C4 local task-fit result.
-- `schemas/review-input.schema.json`: canonical v2 PR state, changed-file, review, discussion, check, and evidence snapshot used for review hashing and spec-entity classification.
+- `schemas/review-input.schema.json`: canonical v2 PR state, changed-file, review, top-level conversation comment, threaded discussion, check, and evidence snapshot used for review hashing and spec-entity classification.
 - `schemas/review-packet.schema.json`: revision-bound local review evidence contract.
 - `fixtures/**`: positive and negative replay controls.
 - `scripts/agent-operations/collect-github-state.mjs`: bounded, sanitizing GitHub snapshot collector.
@@ -97,7 +97,7 @@ When a gate is required, one decision packet must state the observed fact, recom
 - `scripts/agent-operations/derive-self-assessment.mjs`: unsigned U0-C4 task-fit result derivation.
 - `scripts/agent-operations/review-runtime.mjs`: canonical review-input hashing, packet binding, prior-packet reconciliation binding, strict schema-matched validation, and submission checks.
 - `scripts/agent-operations/collect-live-review-input.mjs`: live GitHub collection of the canonical review input plus viewer identity, permission, and CI state at the submission boundary.
-- `scripts/agent-operations/review-packet.mjs`: CLI used by `pui-review` to hash input, validate, inspect, classify, and preflight a review packet against its handoff; submission preflight re-collects the canonical input live and derives identities from that context.
+- `scripts/agent-operations/review-packet.mjs`: CLI used by `pui-review` to hash input, validate, inspect, classify, and submit a review packet against its handoff; `submit-review` re-collects the canonical input live, derives identities from that context, and performs one Review API write bound to the packet head through `commit_id`.
 - `.github/workflows/reposteward-portfolio-shadow.yml`: manual, read-only RepoSteward portfolio trial pinned to the registered external commit.
 
 Run:
@@ -108,6 +108,7 @@ corepack pnpm@10.32.1 agent:assess
 corepack pnpm@10.32.1 agent:skill -- pui-orient --mode human-assisted --mode-source current-user
 corepack pnpm@10.32.1 agent:review -- input-digest --input <review-input.json>
 corepack pnpm@10.32.1 agent:review -- validate --packet <packet.json> --input <review-input.json> --handoff <handoff.json>
+corepack pnpm@10.32.1 agent:review -- submit-review --packet <packet.json> --input <review-input.json> --handoff <handoff.json> --authorization explicit-current-user
 ```
 
 ## Graduation rule

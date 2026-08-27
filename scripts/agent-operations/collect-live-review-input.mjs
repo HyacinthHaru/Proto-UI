@@ -36,6 +36,10 @@ query($owner: String!, $name: String!, $number: Int!) {
         nodes { id author { login } state commit { oid } submittedAt body }
         pageInfo { hasNextPage }
       }
+      comments(first: 100) {
+        nodes { id author { login } body updatedAt }
+        pageInfo { hasNextPage }
+      }
       reviewThreads(first: 100) {
         nodes {
           id
@@ -112,7 +116,7 @@ export function summarizeLiveChecks(checks) {
   return allGreen ? 'success' : 'unknown';
 }
 
-function parseRepositoryId(repositoryId) {
+export function parseRepositoryId(repositoryId) {
   const match = repositoryId.match(/^github\.com:([^/]+)\/([^/]+)$/);
   if (!match) throw new Error('review submission requires a github.com repositoryId');
   const [, owner, name] = match;
@@ -160,6 +164,11 @@ export function buildLiveReviewInput(
     pullRequestPayload.reviews?.nodes,
     pullRequestPayload.reviews?.pageInfo,
     'reviews'
+  );
+  assertNoTruncation(
+    pullRequestPayload.comments?.nodes,
+    pullRequestPayload.comments?.pageInfo,
+    'pull-request comments'
   );
   assertNoTruncation(
     pullRequestPayload.reviewThreads?.nodes,
@@ -217,6 +226,12 @@ export function buildLiveReviewInput(
       submittedAt: review.submittedAt ?? null,
       body: review.body ?? '',
     })),
+    comments: (pullRequestPayload.comments?.nodes ?? []).map((comment) => ({
+      id: comment.id,
+      author: comment.author?.login ?? 'ghost',
+      body: comment.body ?? '',
+      updatedAt: comment.updatedAt,
+    })),
     replies,
     threads,
     checks,
@@ -228,6 +243,62 @@ export function buildLiveReviewInput(
     viewerLogin: payload.data.viewer.login,
     viewerPermission: payload.data.repository.viewerPermission,
     authorLogin: pullRequestPayload.author?.login,
+  };
+}
+
+export function submitGitHubReview(
+  repositoryId,
+  pullRequest,
+  { commitId, event, body },
+  runner = execFileSync
+) {
+  const { owner, name } = parseRepositoryId(repositoryId);
+  if (!Number.isInteger(pullRequest) || pullRequest < 1) {
+    throw new Error('review submission pull request is invalid');
+  }
+  if (!/^[a-f0-9]{40,64}$/.test(commitId)) {
+    throw new Error('review submission commit id is invalid');
+  }
+  if (!['APPROVE', 'REQUEST_CHANGES', 'COMMENT'].includes(event)) {
+    throw new Error('review submission event is invalid');
+  }
+  if (typeof body !== 'string') throw new Error('review submission body is invalid');
+
+  const response = JSON.parse(
+    runner(
+      'gh',
+      [
+        'api',
+        '--method',
+        'POST',
+        `repos/${owner}/${name}/pulls/${pullRequest}/reviews`,
+        '--input',
+        '-',
+      ],
+      {
+        encoding: 'utf8',
+        input: JSON.stringify({ commit_id: commitId, event, body }),
+        stdio: ['pipe', 'pipe', 'pipe'],
+      }
+    )
+  );
+  if (response.commit_id !== commitId) {
+    throw new Error('submitted review commit does not match the inspected head');
+  }
+  const expectedState = {
+    APPROVE: 'APPROVED',
+    REQUEST_CHANGES: 'CHANGES_REQUESTED',
+    COMMENT: 'COMMENTED',
+  }[event];
+  if (!['number', 'string'].includes(typeof response.id) || response.state !== expectedState) {
+    throw new Error('submitted review receipt is incomplete or has an unexpected state');
+  }
+  return {
+    id: String(response.id),
+    nodeId: response.node_id ?? null,
+    state: response.state,
+    commitId: response.commit_id,
+    url: response.html_url ?? null,
   };
 }
 

@@ -30,6 +30,7 @@ try {
         changesSpecEntities: reviewChangesSpecEntities(live.input),
         commits: live.input.commits.length,
         reviews: live.input.reviews.length,
+        comments: live.input.comments.length,
         replies: live.input.replies.length,
         threads: live.input.threads.length,
         checks: live.input.checks.length,

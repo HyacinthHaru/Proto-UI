@@ -49,6 +49,7 @@ function reviewInput(overrides = {}) {
     ],
     commits: [{ sha: sha('b'), message: 'Bounded change' }],
     reviews: [],
+    comments: [],
     replies: [],
     threads: [],
     checks: [
@@ -779,6 +780,21 @@ test('submission preflight re-collects live canonical input and rejects drift an
     () => authorizeReviewSubmission({ ...base, liveInput: driftedLiveInput }),
     /live canonical review input does not match/
   );
+
+  const topLevelCommentDrift = reviewInput({
+    comments: [
+      {
+        id: '2001',
+        updatedAt: '2026-08-23T01:30:00.000Z',
+        author: 'maintainer',
+        body: 'New top-level question on the same head',
+      },
+    ],
+  });
+  assert.throws(
+    () => authorizeReviewSubmission({ ...base, liveInput: topLevelCommentDrift }),
+    /live canonical review input does not match/
+  );
   assert.equal(verifyLiveReviewInput(base.packet, base.liveInput), true);
   assert.throws(
     () => verifyLiveReviewInput(base.packet, driftedLiveInput),
@@ -1066,7 +1082,7 @@ test('agent:review CLI validates and inspects the same packet contract used by t
           process.execPath,
           [
             command,
-            'authorize-submission',
+            'submit-review',
             '--packet',
             packetPath,
             '--input',

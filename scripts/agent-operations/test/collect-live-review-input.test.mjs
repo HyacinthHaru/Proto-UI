@@ -4,6 +4,7 @@ import {
   assertNoTruncation,
   buildLiveReviewInput,
   normalizeCheck,
+  submitGitHubReview,
   summarizeLiveChecks,
 } from '../collect-live-review-input.mjs';
 
@@ -44,6 +45,17 @@ function payload(overrides = {}) {
                 commit: { oid: sha('b') },
                 submittedAt: '2026-08-23T05:00:00Z',
                 body: 'Earlier review',
+              },
+            ],
+            pageInfo: { hasNextPage: false },
+          },
+          comments: {
+            nodes: [
+              {
+                id: 'IC_comment_2001',
+                author: { login: 'maintainer' },
+                body: 'Top-level conversation note',
+                updatedAt: '2026-08-23T05:30:00Z',
               },
             ],
             pageInfo: { hasNextPage: false },
@@ -124,6 +136,14 @@ test('live collector builds a complete canonical input from the GraphQL payload'
     },
   ]);
   assert.equal(result.input.reviews[0].author, 'earlier-reviewer');
+  assert.deepEqual(result.input.comments, [
+    {
+      id: 'IC_comment_2001',
+      author: 'maintainer',
+      body: 'Top-level conversation note',
+      updatedAt: '2026-08-23T05:30:00Z',
+    },
+  ]);
   assert.equal(result.input.replies.length, 1);
   assert.equal(result.input.replies[0].id, '1001');
   assert.equal(result.input.replies[0].threadId, 'PRR_kwT1');
@@ -178,6 +198,12 @@ test('live collector fails closed on pagination truncation for every connection'
       },
     ],
     [
+      'pull-request comments',
+      (p) => {
+        p.data.repository.pullRequest.comments.pageInfo.hasNextPage = true;
+      },
+    ],
+    [
       'review threads',
       (p) => {
         p.data.repository.pullRequest.reviewThreads.pageInfo.hasNextPage = true;
@@ -205,6 +231,67 @@ test('live collector fails closed on pagination truncation for every connection'
     );
     assert.throws(() => assertNoTruncation(undefined, { hasNextPage: true }, label), /malformed/);
   }
+});
+
+test('review submission binds the GitHub Review API write to the inspected commit', () => {
+  const calls = [];
+  const result = submitGitHubReview(
+    'github.com:Proto-UI/Proto-UI',
+    487,
+    {
+      commitId: sha('b'),
+      event: 'APPROVE',
+      body: '',
+    },
+    (command, args, options) => {
+      calls.push({ command, args, options });
+      return JSON.stringify({
+        id: 1234,
+        node_id: 'PRR_review_2',
+        state: 'APPROVED',
+        commit_id: sha('b'),
+        html_url: 'https://github.com/Proto-UI/Proto-UI/pull/487#pullrequestreview-1234',
+      });
+    }
+  );
+
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].command, 'gh');
+  assert.deepEqual(calls[0].args.slice(0, 5), [
+    'api',
+    '--method',
+    'POST',
+    'repos/Proto-UI/Proto-UI/pulls/487/reviews',
+    '--input',
+  ]);
+  assert.deepEqual(JSON.parse(calls[0].options.input), {
+    commit_id: sha('b'),
+    event: 'APPROVE',
+    body: '',
+  });
+  assert.equal(result.commitId, sha('b'));
+  assert.equal(result.state, 'APPROVED');
+
+  assert.throws(
+    () =>
+      submitGitHubReview(
+        'github.com:Proto-UI/Proto-UI',
+        487,
+        { commitId: sha('b'), event: 'APPROVE', body: '' },
+        () => JSON.stringify({ id: 1234, state: 'APPROVED', commit_id: sha('c') })
+      ),
+    /does not match the inspected head/
+  );
+  assert.throws(
+    () =>
+      submitGitHubReview(
+        'github.com:Proto-UI/Proto-UI',
+        487,
+        { commitId: sha('b'), event: 'APPROVE', body: '' },
+        () => JSON.stringify({ id: 1234, state: 'COMMENTED', commit_id: sha('b') })
+      ),
+    /unexpected state/
+  );
 });
 
 test('live collector fails closed when the REST changed-file list is incomplete', () => {
