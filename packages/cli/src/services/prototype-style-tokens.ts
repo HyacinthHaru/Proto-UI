@@ -376,10 +376,15 @@ function resolveKnownAsHookStateHandles(node) {
     hookName === 'asDialogTrigger' ||
     hookName === 'asDialogClose' ||
     hookName === 'asDropdownTrigger' ||
-    hookName === 'asSelectTrigger' ||
     hookName === 'asHoverCardTrigger'
   ) {
     return new Map(COMMAND_STATE_VARIANTS);
+  }
+
+  if (hookName === 'asSelectTrigger') {
+    // Select Trigger is the one command surface that also reports whether it is
+    // still showing its placeholder.
+    return new Map([...COMMAND_STATE_VARIANTS, ['placeholder', 'data-[placeholder]']]);
   }
 
   if (hookName === 'asDropdownItem') {
@@ -511,6 +516,22 @@ function resolveKnownAsHookStateHandles(node) {
   }
 
   return null;
+}
+
+/**
+ * Asks the same resolver the extractor uses, so a coverage gate cannot drift by
+ * keeping its own copy of the hook list. Returns null when the hook has no
+ * entry, which is exactly the case where a rule keyed on its state handles
+ * silently produces no variant token.
+ */
+export function loweredHookStates(hookName) {
+  const probe = ts.factory.createCallExpression(
+    ts.factory.createIdentifier(hookName),
+    undefined,
+    []
+  );
+  const resolved = resolveKnownAsHookStateHandles(probe);
+  return resolved ? new Map(resolved) : null;
 }
 
 function collectRuleVariantTokens(node, scope, tokens) {
