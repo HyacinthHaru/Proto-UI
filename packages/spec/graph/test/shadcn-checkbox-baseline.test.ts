@@ -33,12 +33,22 @@ describe('shadcn Checkbox baseline text', () => {
     }
     // The per-item conclusions are the whole point of the separation: which
     // parts of the later recipe this projection adopts, and which it does not.
-    expect(context.en).toContain('byte-identical between the pinned revision and current upstream');
+    // The compared revision must stay pinned. A floating "current upstream"
+    // claim cannot be reconstructed once that branch moves.
+    expect(context.en).toContain('63c1308d112b6b1205d86244a156cca1abef5087');
+    expect(context.en).not.toContain('current upstream main');
+    expect(context['zh-CN']).toContain('63c1308d112b6b1205d86244a156cca1abef5087');
     expect(context.en).toContain('style-maia.css');
     expect(context.en).toContain('centers with `flex items-center justify-center`');
     expect(context.en).toContain('`rounded-[6px]` is not adopted');
     expect(context['zh-CN']).toContain('逐字节相同');
     expect(context['zh-CN']).toContain('`rounded-[6px]` 未被采用');
+
+    // The centering mechanism has one settled classification. It must not read
+    // as an adoption in one sentence and a remaining gap in the next.
+    expect(context.en).toContain('intentional adoption of the later official recipe');
+    expect(context.en).not.toMatch(/gaps include[^.]*centering mechanism/);
+    expect(context['zh-CN']).toContain('有意采用较新官方 recipe');
 
     const indicator = workspace.entities.find(
       (candidate) => candidate.id === 'P-SHADCN-CHECKBOX-INDICATOR'
@@ -47,9 +57,10 @@ describe('shadcn Checkbox baseline text', () => {
     if (!indicatorContext || typeof indicatorContext === 'string') {
       throw new Error('the Indicator compatibility question must have bilingual context');
     }
-    // The centering mechanism was recorded as a parity gap before this was
-    // measured; the retraction must not silently disappear.
-    expect(indicatorContext.en).toContain('no longer recorded as a parity gap');
-    expect(indicatorContext['zh-CN']).toContain('不再记为 parity gap');
+    // Same settled classification on the owning entity, not merely a retraction.
+    expect(indicatorContext.en).toContain(
+      'intentional adoption of the later official recipe rather than a parity gap'
+    );
+    expect(indicatorContext['zh-CN']).toContain('有意采用较新官方 recipe');
   });
 });
