@@ -21,6 +21,7 @@ const TABS_ROUTE = '/en/ui-libraries/brutalist/components/tabs/';
 const SCROLL_AREA_ROUTE = '/en/ui-libraries/brutalist/components/scroll-area/';
 const TEXTAREA_ROUTE = '/en/ui-libraries/brutalist/components/textarea/';
 const DROPDOWN_ROUTE = '/en/ui-libraries/brutalist/components/dropdown-menu/';
+const BUTTON_ROUTE = '/en/ui-libraries/brutalist/components/button/';
 const GEOMETRY_EPSILON = 0.5;
 
 const COLOR_SCHEMES = ['light', 'dark'] as const;
@@ -411,6 +412,70 @@ async function viewportRing(page: Page): Promise<ViewportRing> {
       scrollLeft: viewport.scrollLeft,
     };
   });
+}
+
+/** Every Button fill this suite reads, paired with the theme variable it names. */
+const BUTTON_FILLS = {
+  solidMain: ['--pui-main', '--pui-main-foreground'],
+  surface: ['--pui-secondary-background', '--pui-foreground'],
+  destructive: ['--pui-destructive', '--pui-destructive-foreground'],
+  disabledSolid: ['--pui-main', '--pui-main-foreground'],
+  disabledSurface: ['--pui-secondary-background', '--pui-foreground'],
+} as const;
+
+type ButtonFill = {
+  background: string;
+  color: string;
+  opacity: string;
+  variables: { background: string; color: string };
+  hovered: boolean;
+  pressed: boolean;
+};
+
+/**
+ * Reads each Button fill and the `:root` value of the variable it names through
+ * the same 1x1 canvas, so a theme hex and a computed `rgb()` compare as painted
+ * rather than as text. Comparing the pair is what "resolves through the theme
+ * variable" means; comparing two schemes only proves the surface moved.
+ */
+async function buttonFills(page: Page): Promise<Record<keyof typeof BUTTON_FILLS, ButtonFill>> {
+  return page.evaluate((fills) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    if (!context) throw new Error('Canvas 2D context is required to resolve painted colours.');
+
+    const paint = (color: string): string => {
+      context.clearRect(0, 0, 1, 1);
+      context.fillStyle = '#000';
+      context.fillStyle = color;
+      context.fillRect(0, 0, 1, 1);
+      return Array.from(context.getImageData(0, 0, 1, 1).data).join(',');
+    };
+
+    const rootStyle = getComputedStyle(document.documentElement);
+    const result: Record<string, unknown> = {};
+    for (const [ref, [backgroundVar, colorVar]] of Object.entries(fills)) {
+      const element = document.querySelector<HTMLElement>(
+        `[data-previewer-id] [data-demo-ref="${ref}"]`
+      );
+      if (!element) throw new Error(`The Brutalist Button demo must render ${ref}.`);
+      const style = getComputedStyle(element);
+      result[ref] = {
+        background: paint(style.backgroundColor),
+        color: paint(style.color),
+        opacity: style.opacity,
+        variables: {
+          background: paint(rootStyle.getPropertyValue(backgroundVar).trim()),
+          color: paint(rootStyle.getPropertyValue(colorVar).trim()),
+        },
+        hovered: element.hasAttribute('data-hovered'),
+        pressed: element.hasAttribute('data-pressed'),
+      };
+    }
+    return result as Record<string, ButtonFill>;
+  }, BUTTON_FILLS);
 }
 
 beforeAll(async () => {
@@ -865,6 +930,84 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
             { timeout: 10_000 }
           );
         }
+      }
+    } finally {
+      await context.close();
+    }
+  }, 240_000);
+
+  it('repaints theme-following Button fills on a host theme change in all runtimes', async () => {
+    const { context, page, previewer } = await openRoute(BUTTON_ROUTE, {
+      width: 1440,
+      height: 900,
+    });
+
+    try {
+      for (const runtime of RUNTIMES) {
+        await selectRuntime(page, previewer, runtime, '[data-demo-ref="surface"]', 1);
+        // Park the pointer off the demo: a repaint that needed a hover to land
+        // would otherwise pass here and fail for a reader who never moves.
+        await page.mouse.move(0, 0);
+
+        const painted: Record<
+          ColorScheme,
+          Record<keyof typeof BUTTON_FILLS, ButtonFill>
+        > = {} as never;
+        for (const scheme of COLOR_SCHEMES) {
+          await applyColorScheme(page, scheme);
+          const fills = await buttonFills(page);
+          painted[scheme] = fills;
+
+          for (const [ref, fill] of Object.entries(fills)) {
+            const label = `${runtime}/${scheme}/${ref}`;
+            // Each fill is the theme variable it names, not a copy of the value
+            // that variable happened to hold when the control mounted.
+            expect(fill.background, `${label}/background`).toBe(fill.variables.background);
+            expect(fill.color, `${label}/color`).toBe(fill.variables.color);
+            expect(fill.hovered, `${label}/hovered`).toBe(false);
+            expect(fill.pressed, `${label}/pressed`).toBe(false);
+          }
+
+          // Disabled lowers emphasis without leaving the theme: same pair as the
+          // enabled control of the same variant, at half opacity.
+          expect(fills.disabledSurface.background, `${runtime}/${scheme}/disabled-pair`).toBe(
+            fills.surface.background
+          );
+          expect(fills.disabledSurface.color, `${runtime}/${scheme}/disabled-ink`).toBe(
+            fills.surface.color
+          );
+          expect(fills.disabledSurface.opacity, `${runtime}/${scheme}/disabled-opacity`).toBe(
+            '0.5'
+          );
+        }
+
+        // Surface is the fill this family moves between schemes; if the theme
+        // ever collapsed, every assertion above would still hold.
+        expect(painted.dark.surface.background, `${runtime}/surface-moves`).not.toBe(
+          painted.light.surface.background
+        );
+        expect(painted.dark.disabledSurface.background, `${runtime}/disabled-moves`).not.toBe(
+          painted.light.disabledSurface.background
+        );
+        // Accent pairs are theme-invariant, enabled and disabled alike.
+        expect(painted.dark.solidMain.background, `${runtime}/accent-invariant`).toBe(
+          painted.light.solidMain.background
+        );
+        expect(painted.dark.solidMain.color, `${runtime}/accent-ink-invariant`).toBe(
+          painted.light.solidMain.color
+        );
+        expect(painted.dark.disabledSolid.background, `${runtime}/disabled-accent`).toBe(
+          painted.light.disabledSolid.background
+        );
+
+        // Back to the scheme this runtime started in, so the repaint is proven
+        // to run both ways rather than only into Dark.
+        await applyColorScheme(page, 'light');
+        const restored = await buttonFills(page);
+        expect(restored.surface.background, `${runtime}/restored`).toBe(
+          painted.light.surface.background
+        );
+        expect(restored.surface.color, `${runtime}/restored-ink`).toBe(painted.light.surface.color);
       }
     } finally {
       await context.close();
