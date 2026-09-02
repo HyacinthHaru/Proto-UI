@@ -6,8 +6,13 @@ export type HookStateUsage = {
 };
 
 export type UnresolvedStateRead = {
-  /** Source text of the `w.state(...)` argument the scanner could not resolve. */
+  /** Source text of the part the scanner could not resolve. */
   expression: string;
+  /**
+   * `subject` — the `w.state(...)` argument did not trace to a hook handle.
+   * `comparison` — the right-hand side is not a form the extractor lowers.
+   */
+  reason: 'subject' | 'comparison';
 };
 
 export type RuleStateScan = {
@@ -70,6 +75,10 @@ function introducesScope(node: ts.Node): boolean {
  *   - any `w.prop(...)` dependency, which the runtime refuses outright;
  *   - an `any(...)` condition, which the runtime does not decompose;
  *   - a condition whose variants are all negative, which both sides skip.
+ *
+ * A comparison the extractor does not lower is not one of those: the scanner
+ * cannot tell whether the rule wanted a static entry, so it reports the leaf
+ * rather than deciding for itself.
  */
 export function scanRuleStateReads(
   sourceText: string,
@@ -189,7 +198,28 @@ export function scanRuleStateReads(
     return null;
   };
 
-  type Leaf = { usage: HookStateUsage | 'local' | null; text: string; positive: boolean };
+  /**
+   * The extractor's `resolveStateEqVariant` lowers exactly three right-hand
+   * sides: the two boolean keywords, and a string literal whose text is a legal
+   * data-attribute value. `null` means the extractor produces no variant, which
+   * the scanner reports rather than reading as covered.
+   */
+  const comparisonOf = (node: ts.Expression | undefined): 'positive' | 'negative' | null => {
+    if (!node) return null;
+    if (node.kind === ts.SyntaxKind.TrueKeyword) return 'positive';
+    if (node.kind === ts.SyntaxKind.FalseKeyword) return 'negative';
+    if (ts.isStringLiteralLike(node) && /^[a-zA-Z0-9_-]+$/.test(node.text)) return 'positive';
+    return null;
+  };
+
+  type Leaf = {
+    usage: HookStateUsage | 'local' | null;
+    /** The `w.state(...)` argument. */
+    subject: string;
+    /** The whole `w.state(...).eq(...)` leaf. */
+    text: string;
+    comparison: 'positive' | 'negative' | null;
+  };
 
   const analyzeRule = (config: ts.ObjectLiteralExpression, scope: Scope): void => {
     const when = config.properties.find(
@@ -219,11 +249,11 @@ export function scanRuleStateReads(
             receiver.expression.name.text === 'state' &&
             receiver.arguments.length === 1
           ) {
-            const literal = node.arguments[0];
             leaves.push({
               usage: readState(receiver.arguments[0], scope),
-              text: receiver.arguments[0].getText(source),
-              positive: literal?.kind !== ts.SyntaxKind.FalseKeyword,
+              subject: receiver.arguments[0].getText(source),
+              text: node.getText(source),
+              comparison: comparisonOf(node.arguments[0]),
             });
           }
         }
@@ -232,13 +262,20 @@ export function scanRuleStateReads(
     };
     visitCondition(when.initializer);
 
-    const lowerable = !hasProp && !hasAny && (hasMeta || leaves.some((leaf) => leaf.positive));
+    // An unlowerable comparison counts here too: only an all-negative condition
+    // is provably skipped by both sides.
+    const lowerable =
+      !hasProp && !hasAny && (hasMeta || leaves.some((leaf) => leaf.comparison !== 'negative'));
     if (!lowerable) return;
 
     for (const leaf of leaves) {
+      if (!leaf.comparison) {
+        unresolved.push({ expression: leaf.text, reason: 'comparison' });
+        continue;
+      }
       if (leaf.usage === 'local') continue;
       if (leaf.usage) usages.push(leaf.usage);
-      else unresolved.push({ expression: leaf.text });
+      else unresolved.push({ expression: leaf.subject, reason: 'subject' });
     }
   };
 

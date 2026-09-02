@@ -1,14 +1,46 @@
-import { readFile } from 'node:fs/promises';
-import { glob } from 'node:fs/promises';
+import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 import { scanRuleStateReads } from '../src/services/lowered-hook-coverage';
-import { loweredHookStates } from '../src/services/prototype-style-tokens';
+import {
+  collectProtoStyleTokens,
+  collectSourceFiles,
+  loweredHookStates,
+} from '../src/services/prototype-style-tokens';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
-const PROTOTYPE_GLOB = 'packages/prototypes/*/src/**/*.proto.ts';
+const PROTOTYPE_PACKAGES = path.join(REPO_ROOT, 'packages/prototypes');
+
+/**
+ * The same file set the extractor reads, taken from the extractor itself. A
+ * private glob here would be free to be narrower than production, which is the
+ * blind spot this gate exists to remove.
+ */
+async function prototypeSourceFiles(): Promise<string[]> {
+  const packages = await readdir(PROTOTYPE_PACKAGES, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of packages) {
+    if (!entry.isDirectory()) continue;
+    const src = path.join(PROTOTYPE_PACKAGES, entry.name, 'src');
+    try {
+      files.push(...((await collectSourceFiles(src)) as string[]));
+    } catch {
+      // A prototype package without a src directory contributes nothing.
+    }
+  }
+  return files;
+}
+
+/**
+ * The scanner only reports a `rule(...)` call, so a file whose text has no such
+ * call cannot produce a usage or an unresolved read. Skipping the parse for
+ * those keeps the set identical to production while not building a TypeScript
+ * AST for every type and index module under `src`.
+ */
+const RULE_CALL = /\brule\s*\(/;
 
 const rule = (condition: string) => `def.rule({ when: (w) => ${condition}, intent: () => {} });`;
 
@@ -43,7 +75,30 @@ describe('lowered hook coverage', () => {
     const scan = scanRuleStateReads(source);
 
     expect(scan.usages).toEqual([]);
-    expect(scan.unresolved).toEqual([{ expression: 'handles.checked' }]);
+    expect(scan.unresolved).toEqual([{ expression: 'handles.checked', reason: 'subject' }]);
+  });
+
+  it('reports a comparison the extractor does not lower', () => {
+    // `resolveStateEqVariant` lowers the two boolean keywords and a string
+    // literal. A number or a bound identifier produces no variant, so counting
+    // these as covered would hide exactly the rules that emit nothing.
+    const numeric = `const { step } = asSelectItem().stateHandles;\n${rule('w.state(step).eq(1)')}`;
+    const identifier = `const { checked } = asCheckboxRoot().stateHandles;\n${rule('w.state(checked).eq(ENABLED)')}`;
+    const enumString = `const { orientation } = asSeparatorRoot().stateHandles;\n${rule("w.state(orientation).eq('vertical')")}`;
+
+    expect(scanRuleStateReads(numeric).usages).toEqual([]);
+    expect(scanRuleStateReads(numeric).unresolved).toEqual([
+      { expression: 'w.state(step).eq(1)', reason: 'comparison' },
+    ]);
+    expect(scanRuleStateReads(identifier).usages).toEqual([]);
+    expect(scanRuleStateReads(identifier).unresolved).toEqual([
+      { expression: 'w.state(checked).eq(ENABLED)', reason: 'comparison' },
+    ]);
+    // The string form the extractor does lower stays covered.
+    expect(scanRuleStateReads(enumString).usages).toEqual([
+      { hook: 'asSeparatorRoot', state: 'orientation' },
+    ]);
+    expect(scanRuleStateReads(enumString).unresolved).toEqual([]);
   });
 
   it('keeps each scope its own hook identity when a name is shadowed', () => {
@@ -104,16 +159,73 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('scans every source extension the extractor accepts', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      // Not `.proto.ts`, and not `.ts` at all. The old glob saw neither.
+      await writeFile(
+        path.join(dir, 'widget.proto.mts'),
+        'const { checked } = asCheckboxRoot().stateHandles;\ndef.rule({ when: (w) => w.state(checked).eq(true), intent: () => {} });\n'
+      );
+      await writeFile(path.join(dir, 'notes.md'), 'not a source file');
+
+      const files = await collectSourceFiles(dir);
+      expect(files.map((file: string) => path.basename(file))).toEqual(['widget.proto.mts']);
+      expect(scanRuleStateReads(await readFile(files[0], 'utf8'), files[0]).usages).toEqual([
+        { hook: 'asCheckboxRoot', state: 'checked' },
+      ]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('lowers a state bound as a terminal handle leaf end to end', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          "import { asCheckboxRoot } from '@proto.ui/prototypes-base/checkbox';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          '    const checked = asCheckboxRoot().stateHandles.checked;',
+          '    def.rule({',
+          '      when: (w) => w.state(checked).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      // The gate calls this shape covered; the extractor has to agree.
+      expect(await collectProtoStyleTokens(dir)).toContain('data-[checked]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
   it('resolves every hook state a shipped rule condition reads', async () => {
     const found: Array<{ file: string; hook: string; state: string }> = [];
     const blind: string[] = [];
 
-    for await (const entry of glob(PROTOTYPE_GLOB, { cwd: REPO_ROOT })) {
-      const file = String(entry);
-      const scan = scanRuleStateReads(await readFile(path.join(REPO_ROOT, file), 'utf8'), file);
+    let scanned = 0;
+    for (const absolute of await prototypeSourceFiles()) {
+      const file = path.relative(REPO_ROOT, absolute);
+      const text = await readFile(absolute, 'utf8');
+      if (!RULE_CALL.test(text)) continue;
+      scanned += 1;
+      const scan = scanRuleStateReads(text, file);
       for (const usage of scan.usages) found.push({ file, ...usage });
-      for (const miss of scan.unresolved) blind.push(`${file}: ${miss.expression}`);
+      for (const miss of scan.unresolved) blind.push(`${file}: ${miss.reason} ${miss.expression}`);
     }
+
+    expect(scanned, 'files carrying a rule call').toBeGreaterThan(40);
 
     expect(found.length).toBeGreaterThan(30);
     // The two-step shape must be reached in the shipped tree, not just fixtures.
@@ -135,5 +247,18 @@ describe('lowered hook coverage', () => {
       missing.map(({ file, hook, state }) => `${file}: ${hook}().${state}`),
       'rule conditions whose hook state the extractor cannot lower'
     ).toEqual([]);
-  });
+
+    // A string comparison only lowers against a `data-[x]` variant. Every table
+    // entry is one today; if that stops being true, the scanner's string form
+    // would start counting rules the extractor drops.
+    const unshaped = found.filter(({ hook, state }) => {
+      const variant = loweredHookStates(hook)?.get(state) as string | undefined;
+      return !variant || !/^data-\[[a-zA-Z0-9-]+\]$/.test(variant);
+    });
+
+    expect(
+      unshaped.map(({ hook, state }) => `${hook}().${state}`),
+      'hook states whose variant a string comparison could not lower'
+    ).toEqual([]);
+  }, 60_000);
 });

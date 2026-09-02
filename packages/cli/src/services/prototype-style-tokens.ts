@@ -239,6 +239,15 @@ function resolveExpression(node, scope) {
     }
   }
 
+  // `asHook().stateHandles.checked` bound straight to a name. Without this the
+  // leaf resolves to nothing and `w.state(checked)` emits no variant, while the
+  // same read through a destructure or through the bag resolves fine.
+  if (ts.isPropertyAccessExpression(node)) {
+    const owner = resolveExpression(node.expression, scope);
+    const semantic = owner.semanticMap?.get(node.name.text);
+    if (semantic) return asSemanticValue(semantic);
+  }
+
   if (
     ts.isParenthesizedExpression(node) ||
     ts.isAsExpression(node) ||
@@ -781,7 +790,11 @@ function scriptKindForFile(file) {
   return ts.ScriptKind.TS;
 }
 
-async function collectSourceFiles(dir) {
+/**
+ * Every file the token extractor reads under a root. Exported so a coverage
+ * scan can walk the same set instead of keeping its own narrower glob.
+ */
+export async function collectSourceFiles(dir) {
   const out = [];
   const entries = await fs.readdir(dir, { withFileTypes: true });
   for (const entry of entries) {
