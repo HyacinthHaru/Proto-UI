@@ -6,9 +6,11 @@
 
 这些稿件不是 canonical 白皮书正文、Spec 实体、稳定保证或公共发布候选。它们保存的是本轮讨论已经走通的论证、例子和编辑选择，接下来仍会由维护者集中重写、重新打字、调整措辞并补充插图。
 
-## 蓝图接受基线
+## 蓝图依赖与待定接受
 
-本检查点建立在 PR #572 的 blueprint-only 精确 head `345eaa5d6052f91466bf9f3d0ef2c4d63d0534d0` 之后。维护者已在 [PR #572 的接受记录](https://github.com/Proto-UI/Proto-UI/pull/572#issuecomment-5506059799) 中明确接受：
+本检查点以 PR #572 的 blueprint-only 分支为前置依赖。创建本检查点时引用的 base head 是 `345eaa5d6052f91466bf9f3d0ef2c4d63d0534d0`；后续修订、审查与整合状态应以 PR #572 的实时记录为准。
+
+[PR #572 中由 `guangliang2019` 发布的 authoring decision](https://github.com/Proto-UI/Proto-UI/pull/572#issuecomment-5506059799) 记录了 PR 作者希望采用的写作约束，但它不是独立维护者 review 或 approval，也不能证明 #572 已经获得仓库接受。本检查点中的六章初稿按照该待审蓝图组织，具体采用了：
 
 - “序章 + 三部七章 + 结语”的当前结构；
 - 第一部的交互主体、information channel 与 Component/Prototype 边界主线；
@@ -17,7 +19,7 @@
 - Switch 贯穿、Select 与 Scroll Area 定点扩展的例子权重；
 - 证据成熟度、negative boundary、章节 bridge 与非 Web 证据边界。
 
-因此本 PR 只在已经接受的 authoring blueprint 上归档初稿，不改变蓝图，也不把初稿中的表达自动升级成新的项目语义。
+因此本 PR 只归档与待审蓝图对照的协作初稿，不改变蓝图，也不把初稿中的表达自动升级成新的项目语义。它不能先于 #572 合入；只有 #572 经独立审查并整合后，本 PR 才能更新 base、重新核对精确差异和证据，并接受新一轮审查。
 
 ## 当前初稿
 
@@ -30,7 +32,7 @@
 | II-5 翻译层 | 解释 Host artifact、Module / Host Capability、翻译形式、结果与证据 | `2026-09-02-whitepaper-part-two-chapter-5-initial-draft.zh-CN.md` |
 | II-6 一致性的边界 | 说明 Prototype 先决定不变量，realization context 再决定比较强度 | `2026-09-02-whitepaper-part-two-chapter-6-initial-draft.zh-CN.md` |
 
-第二部三章已经按最新蓝图完成职责拆分：
+第二部三章当前按照 #572 的待审职责边界组织：
 
 - II-4 只把 information channel 补成接近可执行的 Prototype，不展开 Rule、`asHook`、Focus、Accessibility 或具体句柄 API；
 - II-5 同时承担 Host artifact、Module / Host Capability、Adapter / Compiler / hybrid、faithful / degradation / unsupported 和 evidence state，避免把翻译工程简化成语法转换；
@@ -68,7 +70,7 @@ PR #550 中 `cyjin-yl` 完成的旧页面 claim inventory、阅读顺序、术�
 - 英文 conceptual-parity 版本；
 - 公共白皮书替换、迁移、发布或独立出版安排。
 
-下一步先按已接受蓝图起草 III-7，再回写序章与结语。完整中文初稿形成后，维护者才进入集中人工打磨；公共投影、英文版本、插图和 publication 仍分别接受后续审阅。
+后续写作协作可以继续参考 #572 的待审蓝图起草 III-7，再回写序章与结语，但不能把这种写作使用表述成仓库接受。完整中文初稿形成后，维护者才进入集中人工打磨；公共投影、英文版本、插图和 publication 仍分别接受后续审阅。
 
 ## 明确不授权
 
