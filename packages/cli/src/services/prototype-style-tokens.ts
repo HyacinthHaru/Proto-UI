@@ -482,7 +482,11 @@ function resolveKnownAsHookStateHandles(node) {
     ]);
   }
 
-  if (hookName === 'asDialogMask' || hookName === 'asDialogContent') {
+  if (
+    hookName === 'asDialogMask' ||
+    hookName === 'asDialogContent' ||
+    hookName === 'asHoverCardContent'
+  ) {
     return new Map([['open', 'data-[open]']]);
   }
 
