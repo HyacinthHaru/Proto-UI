@@ -10,6 +10,34 @@ const PINNED_BASELINE = 'f31ed81983653919dd4fe77aee4b4859f610f1dc';
 const COMPARED_REVISION = '63c1308d112b6b1205d86244a156cca1abef5087';
 /** The later official recipe adopted as visual-source evidence. */
 const ADOPTED_RECIPE = '1773ecfeeb4a04366978d353e69b5c7ded78dcb2';
+/** The maintainer ruling that fixed the box radius. */
+const RADIUS_RULING = 'issues/379#issuecomment-5376886742';
+
+/**
+ * Every intentional deviation, by a phrase that names it in each locale. The
+ * inventory is a named set rather than a total, so classifying another one
+ * cannot leave a stale count behind — which is what this list guards.
+ */
+const INTENTIONAL_DEVIATIONS: Array<{ en: string; 'zh-CN': string }> = [
+  { en: '`asChild` is omitted', 'zh-CN': '`asChild` 依' },
+  {
+    en: '`aria-invalid:*` presentations are not implemented',
+    'zh-CN': '`aria-invalid:*` 呈现不实现',
+  },
+  { en: 'Upstream `peer` is not published', 'zh-CN': 'upstream 的 `peer` 不发布' },
+  {
+    en: 'Upstream `text-current` is not implemented',
+    'zh-CN': 'upstream 的 `text-current` 不实现',
+  },
+  {
+    en: 'The indeterminate presentation is added by this projection',
+    'zh-CN': 'indeterminate 呈现是本投射新增的',
+  },
+  {
+    en: 'ownership difference is recorded as an intentional deviation',
+    'zh-CN': '所有者差异记为有意偏离',
+  },
+];
 
 /** Every revision the comparison depends on must appear as a cited source. */
 function sourcePaths(entity: { sources?: Array<{ path: string }> } | undefined): string {
@@ -92,5 +120,45 @@ describe('shadcn Checkbox baseline text', () => {
     // The mechanism is adopted but its owner is not; both halves must survive.
     expect(indicatorContext.en).toContain('The owner does differ');
     expect(indicatorContext['zh-CN']).toContain('所有者');
+  });
+
+  it('names every intentional deviation instead of counting them', async () => {
+    const workspace = await loadSpecWorkspaceFromDirectory(SPEC_DIR);
+    const entity = workspace.entities.find((candidate) => candidate.id === 'P-SHADCN-CHECKBOX');
+    const context = entity?.openQuestions?.[0]?.context;
+    if (!context || typeof context === 'string') {
+      throw new Error('the compatibility open question must have bilingual context');
+    }
+
+    // A numeric total goes stale the moment another deviation is classified,
+    // and leaves the authoritative inventory contradicting its own list.
+    expect(context.en).not.toMatch(
+      /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+intentional deviations\b/i
+    );
+    expect(context['zh-CN']).not.toMatch(/有意偏离有[一二三四五六七八九十百零\d]+项/);
+
+    for (const deviation of INTENTIONAL_DEVIATIONS) {
+      expect(context.en, `en inventory must name: ${deviation.en}`).toContain(deviation.en);
+      expect(context['zh-CN'], `zh-CN inventory must name: ${deviation['zh-CN']}`).toContain(
+        deviation['zh-CN']
+      );
+    }
+  });
+
+  it('binds the radius decision to a reconstructible ruling', async () => {
+    const workspace = await loadSpecWorkspaceFromDirectory(SPEC_DIR);
+    const entity = workspace.entities.find((candidate) => candidate.id === 'P-SHADCN-CHECKBOX');
+    const context = entity?.openQuestions?.[0]?.context;
+    if (!context || typeof context === 'string') {
+      throw new Error('the compatibility open question must have bilingual context');
+    }
+
+    // Not adopting `rounded-[6px]` is a decision with an owner. Naming "the
+    // issue ruling" without an identifier cannot be reconstructed by a reader.
+    expect(context.en).toContain(RADIUS_RULING);
+    expect(context['zh-CN']).toContain(RADIUS_RULING);
+    expect(context.en).not.toContain('per the issue ruling');
+    expect(context['zh-CN']).not.toContain('按 issue 裁决');
+    expect(sourcePaths(entity as never)).toContain(RADIUS_RULING);
   });
 });
