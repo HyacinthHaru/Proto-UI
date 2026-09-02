@@ -6,11 +6,11 @@
 
 这些稿件不是 canonical 白皮书正文、Spec 实体、稳定保证或公共发布候选。它们保存的是本轮讨论已经走通的论证、例子和编辑选择，接下来仍会由维护者集中重写、重新打字、调整措辞并补充插图。
 
-## 蓝图依赖与待定接受
+## 蓝图依赖与已整合状态
 
-本检查点以 PR #572 的 blueprint-only 分支为前置依赖。创建本检查点时引用的 base head 是 `345eaa5d6052f91466bf9f3d0ef2c4d63d0534d0`；后续修订、审查与整合状态应以 PR #572 的实时记录为准。
+本检查点最初以 PR #572 的 blueprint-only 分支为前置依赖。创建本检查点时引用的 base head 是 `345eaa5d6052f91466bf9f3d0ef2c4d63d0534d0`；该历史事实保持不变。
 
-[PR #572 中由 `guangliang2019` 发布的 authoring decision](https://github.com/Proto-UI/Proto-UI/pull/572#issuecomment-5506059799) 记录了 PR 作者希望采用的写作约束，但它不是独立维护者 review 或 approval，也不能证明 #572 已经获得仓库接受。本检查点中的六章初稿按照该待审蓝图组织，具体采用了：
+PR #572 后续已完成独立审查并于 2026-09-02 合入 `main`，整合提交为 `837677e857edb5e457ca9fa6915e066782d7eef6`。本检查点中的六章初稿按该已整合蓝图组织，具体采用了：
 
 - “序章 + 三部七章 + 结语”的当前结构；
 - 第一部的交互主体、information channel 与 Component/Prototype 边界主线；
@@ -19,7 +19,9 @@
 - Switch 贯穿、Select 与 Scroll Area 定点扩展的例子权重；
 - 证据成熟度、negative boundary、章节 bridge 与非 Web 证据边界。
 
-因此本 PR 只归档与待审蓝图对照的协作初稿，不改变蓝图，也不把初稿中的表达自动升级成新的项目语义。它不能先于 #572 合入；只有 #572 经独立审查并整合后，本 PR 才能更新 base、重新核对精确差异和证据，并接受新一轮审查。
+此处引用的 [PR #572 authoring decision](https://github.com/Proto-UI/Proto-UI/pull/572#issuecomment-5506059799) 仍只是作者在起草阶段记录的写作约束，不是 maintainer acceptance；蓝图已经整合这一事实以 PR 的独立审查与合并记录为准。
+
+因此本 PR 只归档与已整合蓝图对照的协作初稿，不改变蓝图，也不把初稿中的表达自动升级成新的项目语义。当前 PR 已 retarget 到 `main`，整合前置条件已满足；后续审查应针对 main-based 精确差异和当前 head。
 
 ## 当前初稿
 
