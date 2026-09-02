@@ -59,28 +59,159 @@
 
 ### 第二部 · 第四章：通路之外的语义
 
-第四章应把 State、Anatomy 与 Lifecycle 放在同一条推导线上：
+**Reader question**
 
-- State 保存一个 Component 在前后交互之间持续存在的内部事实；
-- Anatomy 说明多个独立 Prototype 怎样形成可识别的 compound structure；
-- Lifecycle 说明这些事实、结构和通路义务何时被计划、运行和结束；
-- `setup` 与持续 `runtime` 的分离是时间模型的主要推进。
+如果 information channel 已经组织了 Component 与外界的关系，为什么一份 Prototype 仍然不能只靠这些通路运行？
 
-因此不再保留原蓝图中的独立 Lifecycle 章节。Rule、`asHook`、Focus、Accessibility、`meta` 和具体 `def` / `run` API 也不因篇幅合并而进入本章主线。
+**一句话主张**
+
+Information channel 只说明信息在参与者之间怎样交换；State、Anatomy 与 Lifecycle 分别补上内部连续性、复合结构和时间秩序，使 Prototype 接近可执行，同时不把 Host 的状态方案、组件组装和 framework lifecycle 写成跨技术本体。
+
+**继承前提**
+
+第一部已经把 Component 视为交互主体，用 information channel 描述其外部关系，并用参与者关系划定独立 Prototype 边界；但这些结论尚未说明内部事实怎样持续、多个独立 part 怎样属于同一 family，以及语义何时成立。
+
+**推导动作**
+
+1. 回到 Switch 的通路关系图，指出 Event、Feedback、Props、Expose 与 Context 能说明信息从哪里来、到哪里去，却没有地方保存当前 `checked`。
+2. 用 State 表达一个 Component 在前后交互之间持续存在的内部事实；同时明确 State 的变化不会自动决定 Feedback、Expose 或 Context 怎样更新。
+3. 从第三章拆出的 Switch Root/Thumb 与 Select parts 推导 Anatomy：它声明 family、role、relation 与结构范围，但不创建 part、不替 Maker 组合 UI，也不替 Context 交换信息。
+4. 引入 Lifecycle，说明 State、Anatomy part 和通路义务都需要时间秩序；重点区分一次 `setup` 与持续到 dispose complete 的 `runtime`，并说明暂时 detached 不等于 instance 已销毁。
+5. 用一份 TypeScript 风格 Switch 教学伪代码串起 Props 声明、State、Anatomy、Event、Expose、Context、Feedback 与 Lifecycle，使“接近可执行”成为可观察推进，而不是停在概念列表。
+6. 用一次 activation 收束：Root 保存或请求新的 `checked`，显式发出 outward signal、更新 Context 并请求 Feedback；Thumb 接收 Context 后只保存派生展示事实。
+
+**例子推进**
+
+- Switch 是主例：Root 是 `checked` 的 value owner，Thumb 是同一 Anatomy family 的独立 part，并通过 Context 获得派生事实；伪代码不得在 Root 内创建 Thumb。
+- Select 只用于说明复杂 family：Root、Trigger、Content 与 Item 可以拥有稳定结构身份，但真实组合仍由 Maker、上层系统与 Host 建立。
+- 不在本章引入第三个完整组件案例。
+
+**证据状态**
+
+- maintainer theory direction：WPD-05、WPD-06 与本轮 State/Anatomy/Lifecycle 合章决定；
+- draft：`C-STATE-0001`、`C-ANATOMY-0001`、`C-LIFECYCLE-0001`、`K-PROTOTYPE-COMPOSITION-0001` 及其适用的后续 criteria；
+- current implementation/test evidence：Switch Root/Thumb 的 State、Anatomy、Context、Lifecycle 与 RuntimeSession 局部证据；
+- teaching projection：本章伪代码只演示已经介绍的语义，不是稳定 Core API 或完整官方 Switch source；
+- current limitation：这些 draft entities 和 Web-heavy evidence 不能证明所有 Host 已有完整映射。
+
+**最强反驳**
+
+State、结构树和 lifecycle 都是现有框架早已提供的实现工具；把它们写进 Prototype 只会重新发明一个更抽象、能力更弱的框架。
+
+**本章必须正面承认**
+
+Host 的状态、结构和生命周期机制仍然真实且必要。Proto UI 不要求所有技术采用同一实现，而只表达保持交互主体所需的可移植事实、结构身份和相对时间义务；具体 Host 无法映射时，边界留给翻译层报告。
+
+**Negative boundary**
+
+- 不把本章写成完整语法或句柄参考；
+- 不展开 Rule、`asHook`、Focus、Accessibility、`meta` 或具体 `def` / `run` API；
+- 不把 Anatomy 写成 Prototype composer、assembler、实例注册表或 Context 的替代品；
+- 不声称 State 变化会隐式完成 render、Feedback refresh、Context update 或 Expose emission；
+- 不把 `setup` 等同于编译期、模块加载期或任意 framework hook；
+- 不把一次 Host view unmount/detach 自动等同于 Component disposal；
+- 不因合并章节而承诺所有 Adapter 的完整 Lifecycle 符合性。
+
+**插图机会**
+
+优先使用一张时间与语义分层图：上方是一次 `setup` → 持续 `runtime` → dispose complete，下方将 Switch 的 State owner、Anatomy Root/Thumb 与通路更新放到相应阶段。若图面过载，Anatomy family 关系改用旁侧小图，不再增加独立概念总览。
+
+**通向下章的 bridge**
+
+至此，Prototype 已经能够表达外部关系、内部事实、复合结构和时间秩序；但 React、Flutter、Qt 等 Host 并不会直接执行这些义务。下一章需要说明谁负责把它们变成具体技术中的产物。
+
+**私有 source / entity map**
+
+- `internal/records/2026-08-28-whitepaper-rewrite-maintainer-decisions.zh-CN.md` WPD-05、WPD-06；
+- `C-STATE-0001`、`C-ANATOMY-0001`、`C-LIFECYCLE-0001` 及适用后续 criteria；
+- `K-PROTOTYPE-COMPOSITION-0001`（draft）；
+- `P-BASE-SWITCH`、`P-BASE-SWITCH-THUMB` 与对应 Tests；
+- `P-BASE-SELECT*` 只用于复杂 family 例子；
+- 旧 `execution-semantics.md` 只作历史解释来源。
+
+**相对篇幅约束**
+
+权重为 16，是全篇第三重的章节。State、Anatomy、Lifecycle 必须形成一条连续推导；Switch 伪代码用于证明模型已经接近可执行，但不得扩张成 API 教程或逐行实现说明。
 
 ### 第二部 · 第五章：翻译层
 
-第五章应承担以下职责：
+**Reader question**
 
-- 定义 Prototype、Host 与 Host artifact 的区别；
-- 用 Module 与 Host Capability 解释翻译工程如何拆成可复用语义责任与 Host 对接点；
-- 区分 Adapter、Compiler 与 hybrid；
-- 区分表示形式变化与交互语义损失；
-- 引入 faithful、authorized bounded degradation 与 unsupported；
-- 区分 translation form、capability realization、conformance outcome 与 evidence state；
-- 要求在最早可靠边界报告 degradation 或 inability，并让结论绑定到具体证据范围。
+有了接近可执行的 Prototype，怎样把它落到 React、Flutter、Qt 或其他 Host，而不为每种技术重新建造一套边界模糊的跨端框架？
 
-因此第六章不得重新解释 Module、Host Capability、翻译形式、三种结果或 evidence state。第五章判断的是“一次翻译是否履行义务”；第六章比较的是“两个 realization 在什么条件下应当相同到什么程度”。
+**一句话主张**
+
+翻译层负责把 Prototype 及其所需语义义务降低到目标 Host：Module 复用可移植责任，Host Capability 定义最小对接点，Adapter、Compiler 与 hybrid 决定实现形式；无论采用哪种形式，翻译都必须说明 Host artifact、能力边界、语义结果和证据。
+
+**继承前提**
+
+按照第四章的计划职责，Prototype 将具备外部通路、内部事实、复合结构和时间义务，同时明确这些语义不决定 Host 怎样管理状态、创建结构、调度 lifecycle 或生成最终产物。
+
+**推导动作**
+
+1. 区分 Prototype、Host 与 Host artifact：Prototype 描述跨技术身份和义务，Host 提供具体结构、输入、生命周期和渲染条件，Host artifact 是翻译后在目标技术中真实存在的实例、代码、类、绑定或组合产物。
+2. 从“每个翻译器是否要重写全部逻辑”的工程风险出发，引入 Module 与 Host Capability。Module 封装可复用语义责任；只有需要 Host 事实或动作时才提出最小 Capability，它们不与前文概念机械一一对应。
+3. 用 Context 的 instance token 与 logical parent 需求说明相近 Host 可以共享 Module 逻辑，同时用 State/Lifecycle 反例说明并非所有语义都需要 Host Capability 或独立 Module。
+4. 区分 Adapter、Compiler 与 hybrid：Adapter 是当前受治理的 runtime 主路径，Compiler 是未来静态形式，hybrid 可以拆分静态与动态责任；翻译形式不能自动推出性能、保真度或原生质量。
+5. 区分表示形式变化与语义损失，并定义 faithful、authorized bounded degradation 与 unsupported。关键义务缺失不能被其他维度的高保真抵消，只有 Prototype、Contract 或受治理 profile 可以授权有边界降级。
+6. 展开四条正交轴：translation form、capability realization、conformance outcome 与 evidence state；禁止用 `native`、package 存在、通过率或 Compiler 身份替代符合性结论。
+7. 要求在最早可靠边界报告 degradation 或 inability，并把结论绑定到具体义务、Host/profile、runtime range 和证据范围。
+
+**例子推进**
+
+- Context 是模块化例子：不同 Host 可以用不同 token/parent 机制提供相同最小事实，不需要重写 Context 的全部查找与订阅语义；该例只说明工程切面，不声称 Context Module/Host Capability 已完整 catalog。
+- Scroll Area 是主要扩展：Host 保留滚动 engine、physics 与 geometry，Prototype 只表达 portable logical surface、facts、requests 与经过授权的 projection；Web `overflow`、Flutter controller 或 Qt widget 都不是跨 Host 本体。
+- Switch 用一句回扣：相同 outward signal 可以在 React 中成为 callback，在 Web Component 中成为 `CustomEvent`，API 形式不同并不自动构成语义损失。
+- Terminal UI 只作 bounded degradation thought experiment，不能写成当前 official profile 或已验证实现。
+
+**证据状态**
+
+- maintainer theory direction：WPD-08；
+- active：`D-ADAPTER-PROFILE-0001` 与 current official Web Adapter identities 已编目的局部 slice；
+- draft/current implementation evidence：现有 Module、Host Capability、Adapter 与 Scroll 纵向切片，读取各自 lifecycle 和关系后使用；
+- governance gap：通用 conformance outcome/diagnostic schema、完整 capability matrix 与若干 Module/Host Capability identity 尚未全部 catalog；
+- future/hypothetical：Compiler 产品、Qt、Flutter、TUI 与一般非 Web Host；uncataloged 不等于 supported，也不等于 unsupported。
+
+**最强反驳**
+
+异质 Host 的能力、输入、结构和渲染模型差异过大；即使拆成 Module 与 Host Capability，每个翻译器最终仍可能接近重新实现一个跨端框架，所谓共享语义只会退化成空洞最低公分母。
+
+**本章必须正面承认**
+
+翻译层仍然可能昂贵，而且有些 Prototype/Host 组合确实会 unsupported。Proto UI 不承诺任意组合都能落地；它只尝试复用能够成立的语义责任，并让支持、合法损失、拒绝和未知都成为可说明、可验证的结果。
+
+**Negative boundary**
+
+- 不把 Module 列表或 Host Capability checklist 当作翻译器已经正确的证明；
+- 不把 Adapter package、测试文件或 abstract Host 名称自动当作支持证据；
+- 不把 `native` realization 自动等同于 faithful，也不把 emulated 自动等同于低保真；
+- 不因采用 Compiler 就承诺性能、保真度、“更原生”或无 runtime；
+- 不让翻译器自行授权 degradation，也不以其他维度高保真抵消 identity-critical 义务缺失；
+- 不声称任意 Prototype library 接入 Proto UI 后已经自动获得可靠 accessibility；
+- 不把当前 Web-family evidence 外推为 Qt、Flutter、TUI 或一般非 Web Host 的符合性证明；
+- 不在本章建立完整 outcome schema、capability matrix 或编译器设计。
+
+**插图机会**
+
+主图展示 `Prototype / Modules → translation layer → Host Capabilities → Host artifacts`，并标出 Adapter/Compiler/hybrid 是翻译形式而非质量等级。若篇幅允许，再用一张四轴表说明 translation form、capability realization、conformance outcome 与 evidence state 不能互相替代。
+
+**通向下章的 bridge**
+
+翻译层可以回答一次 realization 履行了哪些义务、发生了何种损失、证据覆盖到哪里；但它还没有回答两个不同 realization 之间应当一致到行为、结构还是像素。第六章只处理这项条件比较。
+
+**私有 source / entity map**
+
+- `internal/records/2026-08-28-whitepaper-rewrite-maintainer-decisions.zh-CN.md` WPD-08；
+- `D-ADAPTER-PROFILE-0001`（active）与 current official `A-*` Web profiles；
+- current Module/Host Capability entities 与 executable evidence，按实际 lifecycle 使用；
+- Context implementation 只作模块化示意，不据此宣称完整 catalog identity；
+- `K-SCROLL-0001`、`C-SCROLL-0001`、`M-SCROLL-0001`、`HC-SCROLL-SURFACE-0001`、`P-BASE-SCROLL-AREA*` 与相关 Tests；
+- `internal/records/2026-07-29-scroll-area-boundary-and-host-projection.zh-CN.md`；
+- 旧 `translation-layer.md` 只作历史来源。
+
+**相对篇幅约束**
+
+权重为 18，是全篇最重的一章。篇幅优先用于“为什么翻译可被拆分、怎样诚实描述结果与证据”，而不是罗列 Adapter API、Module inventory 或未来 Compiler 设计；第六章不得重复本章术语教程。
 
 ## 4. 第二部 · 第六章：一致性的条件
 
