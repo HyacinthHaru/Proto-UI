@@ -366,6 +366,54 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('follows a handle written into the container before the exposure', () => {
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'controls.ready = second;',
+      "def.expose.state('visible', controls.ready);",
+      "def.rule({ when: (w) => w.state(second).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('leaves a member write after the exposure out of it', () => {
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      "def.expose.state('visible', controls.ready);",
+      'controls.ready = second;',
+      "def.rule({ when: (w) => w.state(first).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('normalizes a state named after an inherited object key', () => {
+    // The official-name table is a plain object literal, so `constructor` must
+    // not resolve to the function it inherits.
+    const source = [
+      "const flag = def.state.bool('constructor', false);",
+      "def.expose.state('visible', flag);",
+      "def.rule({ when: (w) => w.state(flag).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+
+    expect(scanRuleStateReads(source).exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'constructor' },
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.

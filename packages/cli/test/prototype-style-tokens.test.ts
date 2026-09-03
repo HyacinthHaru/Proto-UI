@@ -3,7 +3,11 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { OFFICIAL_EXPOSED_STATE_NAMES } from '../../modules/expose-state-web/src/utils';
+import {
+  createExposeStateWebNameMap,
+  createExposeStateWebNativeVariantPolicy,
+  OFFICIAL_EXPOSED_STATE_NAMES,
+} from '../../modules/expose-state-web/src/utils';
 import { collectProtoStyleTokens } from '../src/services/prototype-style-tokens';
 
 describe('collectProtoStyleTokens', () => {
@@ -1117,5 +1121,172 @@ describe('collectProtoStyleTokens', () => {
     // variant, and the ring reaches the closure unconditional.
     expect(tokens).toContain('data-[focus-visible]:ring-2');
     expect(tokens).toContain('data-[focus-visible]:ring-inset');
+  });
+  it('lowers an owned interaction semantic to its native variant', async () => {
+    // `buildSemanticVariant` runs before the attribute, so the optimizer emits
+    // `hover:` and nothing ever renders `data-[hovered]:`.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const hovered = def.state.bool('@interaction/hovered', false);",
+        "    def.expose.state('hovered', hovered);",
+        '    def.rule({',
+        '      when: (w) => w.state(hovered).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('hover:bg-accent');
+    expect(tokens).not.toContain('data-[hovered]:bg-accent');
+  });
+
+  it('keeps the attribute for an official semantic the policy refuses', async () => {
+    // `@interaction/disabled` has a native variant the Web policy rejects, and
+    // `@accessibility/checked` has none at all; both stay on the attribute.
+    expect(createExposeStateWebNativeVariantPolicy({ semantic: '@interaction/hovered' })).toBe(
+      true
+    );
+    expect(createExposeStateWebNativeVariantPolicy({ semantic: '@interaction/pressed' })).toBe(
+      true
+    );
+    expect(createExposeStateWebNativeVariantPolicy({ semantic: '@interaction/disabled' })).toBe(
+      false
+    );
+
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const off = def.state.bool('@interaction/disabled', false);",
+        "    const ticked = def.state.bool('@accessibility/checked', false);",
+        "    def.expose.state('off', off);",
+        "    def.expose.state('ticked', ticked);",
+        '    def.rule({',
+        '      when: (w) => w.state(off).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('opacity-50')),",
+        '    });',
+        '    def.rule({',
+        '      when: (w) => w.state(ticked).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[disabled]:opacity-50');
+    expect(tokens).toContain('data-[checked]:bg-accent');
+  });
+
+  it('follows a handle written into the container before the exposure', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    const controls = { ready: first };',
+        '    controls.ready = second;',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(second).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+  });
+
+  it('leaves a member write after the exposure out of it', async () => {
+    // The exposure captured the member as it read, so the later write moves
+    // nothing; only the handle in effect at the call has a variant.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    const controls = { ready: first };',
+        "    def.expose.state('visible', controls.ready);",
+        '    controls.ready = second;',
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '    def.rule({',
+        '      when: (w) => w.state(second).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-muted')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[second-flag]:bg-muted');
+  });
+
+  it('normalizes a state named after an inherited object key', async () => {
+    // The official-name table is a plain object literal, so `constructor` must
+    // not resolve to the function it inherits.
+    expect(createExposeStateWebNameMap('constructor').dataAttr).toBe('data-constructor');
+
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('constructor', false);",
+        "    def.expose.state('constructor', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[constructor]:bg-accent');
   });
 });

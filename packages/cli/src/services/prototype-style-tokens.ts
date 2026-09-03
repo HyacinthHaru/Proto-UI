@@ -382,6 +382,17 @@ function memberOwner(node) {
     : null;
 }
 
+/** The member a `x.name` or `x['name']` write names, if it is static. */
+function memberName(node) {
+  const target = unwrapTransparent(node);
+  if (ts.isPropertyAccessExpression(target)) return target.name.text;
+  if (ts.isElementAccessExpression(target)) {
+    const argument = target.argumentExpression;
+    return argument && ts.isStringLiteralLike(argument) ? argument.text : null;
+  }
+  return null;
+}
+
 function resolveDeclaredStateName(initializer, scope) {
   const node = unwrapTransparent(initializer);
   if (!ts.isCallExpression(node)) return null;
@@ -425,10 +436,28 @@ const OFFICIAL_EXPOSED_STATE_NAMES = Object.freeze({
   '@accessibility/current': 'current',
 });
 
+/**
+ * The variant the Web optimizer emits for an official semantic instead of its
+ * attribute. `buildVariant` consults `buildSemanticVariant` first, so an owned
+ * `@interaction/hovered` lowers to `hover:`; every other official semantic
+ * either has no native variant or is refused by the adapter's native-variant
+ * policy and falls back to `data-[…]`, which is what `resolveSemanticBinding`
+ * already returns for the matching `fromInteraction` name.
+ */
+const OFFICIAL_NATIVE_VARIANTS = Object.freeze({
+  '@interaction/hovered': 'hover',
+  '@interaction/pressed': 'active',
+});
+
+/** Both tables inherit `Object.prototype`, so `constructor` is not an entry. */
+function officialEntry(table, key) {
+  return Object.hasOwn(table, key) ? table[key] : null;
+}
+
 function exposedDataAttributeName(key) {
   // The runtime maps an official semantic before it normalizes anything, so
   // `@accessibility/checked` is `data-checked`, not `data-accessibility-checked`.
-  const official = OFFICIAL_EXPOSED_STATE_NAMES[key];
+  const official = officialEntry(OFFICIAL_EXPOSED_STATE_NAMES, key);
   if (official) return official;
   return key
     .trim()
@@ -518,10 +547,19 @@ function collectExposures(root) {
   };
 
   // Scoped like every other binding: a nested `controls` must not answer for
-  // an outer one of the same name.
+  // an outer one of the same name. Members carry positions for the same reason
+  // aliases do: `controls.ready = second` retargets the member from there on.
   const objectMembers = new Map();
 
-  const resolveHandleIdentifier = (node, chain) => {
+  const recordMember = (owner, base, key, target, at) => {
+    const scoped = objectMembers.get(owner) ?? new Map();
+    const members = scoped.get(base) ?? new Map();
+    members.set(key, [...(members.get(key) ?? []), { target, at }]);
+    scoped.set(base, members);
+    objectMembers.set(owner, scoped);
+  };
+
+  const resolveHandleIdentifier = (node, chain, at) => {
     const value = unwrapExpression(node);
     if (ts.isIdentifier(value)) return value.text;
     const owner = memberOwner(value);
@@ -531,8 +569,11 @@ function collectExposures(root) {
     for (const scope of chain) {
       const members = objectMembers.get(scope)?.get(base.text);
       if (!members) continue;
-      for (const [key, target] of members) {
-        if (memberIs(value, key)) return target;
+      for (const [key, edges] of members) {
+        if (!memberIs(value, key)) continue;
+        const visible = edges.filter((edge) => edge.at <= at);
+        if (visible.length === 0) return null;
+        return visible.reduce((latest, edge) => (edge.at > latest.at ? edge : latest)).target;
       }
       return null;
     }
@@ -561,25 +602,42 @@ function collectExposures(root) {
       if (node.initializer) {
         const literal = unwrapExpression(node.initializer);
         if (ts.isObjectLiteralExpression(literal)) {
-          const members = new Map();
+          const at = node.getStart();
           for (const property of literal.properties) {
             if (ts.isShorthandPropertyAssignment(property)) {
-              members.set(property.name.text, property.name.text);
+              recordMember(owner, node.name.text, property.name.text, property.name.text, at);
             } else if (
               ts.isPropertyAssignment(property) &&
               (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
             ) {
               const value = unwrapExpression(property.initializer);
-              if (ts.isIdentifier(value)) members.set(property.name.text, value.text);
+              if (ts.isIdentifier(value)) {
+                recordMember(owner, node.name.text, property.name.text, value.text, at);
+              }
             }
           }
-          const scoped = objectMembers.get(owner) ?? new Map();
-          scoped.set(node.name.text, members);
-          objectMembers.set(owner, scoped);
         }
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
         }
+      }
+    }
+    // Writing through the container moves the handle the same way, so the
+    // member the exposure reads is the one assigned last before it.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))
+    ) {
+      const base = unwrapExpression(memberOwner(node.left) ?? node.left);
+      const member = memberName(node.left);
+      const value = unwrapExpression(node.right);
+      if (ts.isIdentifier(base) && member !== null && ts.isIdentifier(value)) {
+        const owner =
+          [...nextChain, root].find((candidate) => declaredIn.get(candidate)?.has(base.text)) ??
+          nextChain[0] ??
+          root;
+        recordMember(owner, base.text, member, value.text, node.getStart());
       }
     }
     // A plain reassignment moves the handle just as a declaration does.
@@ -607,7 +665,8 @@ function collectExposures(root) {
         namesExpose(unwrapExpression(node.expression)))
     ) {
       const [nameArg, handleArg] = node.arguments;
-      const handle = handleArg && resolveHandleIdentifier(handleArg, [...nextChain, root]);
+      const handle =
+        handleArg && resolveHandleIdentifier(handleArg, [...nextChain, root], node.getStart());
       if (nameArg && handle) {
         exposures.push({
           handle,
@@ -686,7 +745,12 @@ function applyExposure(name, binding, scope, exposures) {
   // leaves no safe selector to emit; the expose key would be the wrong one.
   if (binding.stateName === UNKNOWN_STATE_NAME) return binding;
   const exposedKey = ts.isStringLiteralLike(key) ? key.text : resolveExpression(key, scope).single;
-  const attribute = exposedDataAttributeName(binding.stateName ?? exposedKey ?? '');
+  const declared = binding.stateName ?? exposedKey ?? '';
+  // An owned state may carry an official semantic itself, and the optimizer
+  // lowers that to a native variant before it ever reaches the attribute.
+  const native = officialEntry(OFFICIAL_NATIVE_VARIANTS, declared);
+  if (native) return { ...binding, semantic: native };
+  const attribute = exposedDataAttributeName(declared);
   if (!attribute) return binding;
   return { ...binding, semantic: `data-[${attribute}]` };
 }

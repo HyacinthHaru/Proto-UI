@@ -151,7 +151,10 @@ export function scanRuleStateReads(
    */
   /** The same normalization `createExposeStateWebNameMap` applies. */
   const exposedDataAttributeName = (key: string): string =>
-    OFFICIAL_EXPOSED_STATE_NAMES[key] ??
+    // The table inherits `Object.prototype`, so `constructor` is not an entry.
+    (Object.hasOwn(OFFICIAL_EXPOSED_STATE_NAMES, key)
+      ? OFFICIAL_EXPOSED_STATE_NAMES[key]
+      : undefined) ??
     key
       .trim()
       .replace(/\s+/g, '-')
@@ -187,7 +190,24 @@ export function scanRuleStateReads(
     }
     return null;
   };
-  const objectMembers = new Map<ts.Node, Map<string, Map<string, string>>>();
+  // Members carry positions for the same reason aliases do: a write through the
+  // container retargets the member from there on.
+  type MemberEdge = { target: string; at: number };
+  const objectMembers = new Map<ts.Node, Map<string, Map<string, MemberEdge[]>>>();
+
+  const recordMember = (
+    owner: ts.Node,
+    base: string,
+    key: string,
+    target: string,
+    at: number
+  ): void => {
+    const scoped = objectMembers.get(owner) ?? new Map<string, Map<string, MemberEdge[]>>();
+    const members = scoped.get(base) ?? new Map<string, MemberEdge[]>();
+    members.set(key, [...(members.get(key) ?? []), { target, at }]);
+    scoped.set(base, members);
+    objectMembers.set(owner, scoped);
+  };
 
   /** Every handle an initializer may name; a conditional contributes both. */
   const aliasTargets = (node: ts.Node): string[] => {
@@ -199,7 +219,7 @@ export function scanRuleStateReads(
     return [];
   };
 
-  const resolveHandleIdentifier = (node: ts.Node, chain: ts.Node[]): string | null => {
+  const resolveHandleIdentifier = (node: ts.Node, chain: ts.Node[], at: number): string | null => {
     const value = unwrap(node);
     if (ts.isIdentifier(value)) return value.text;
     const owner = ownerOf(value);
@@ -209,8 +229,11 @@ export function scanRuleStateReads(
     for (const scope of chain) {
       const members = objectMembers.get(scope)?.get(base.text);
       if (!members) continue;
-      for (const [key, target] of members) {
-        if (memberNamed(value, key)) return target;
+      for (const [key, edges] of members) {
+        if (!memberNamed(value, key)) continue;
+        const visible = edges.filter((edge) => edge.at <= at);
+        if (visible.length === 0) return null;
+        return visible.reduce((latest, edge) => (edge.at > latest.at ? edge : latest)).target;
       }
       return null;
     }
@@ -240,6 +263,17 @@ export function scanRuleStateReads(
       : null;
   };
 
+  /** The member a `x.name` or `x['name']` write names, if it is static. */
+  const memberNameOf = (node: ts.Node): string | null => {
+    const target = unwrap(node);
+    if (ts.isPropertyAccessExpression(target)) return target.name.text;
+    if (ts.isElementAccessExpression(target)) {
+      const argument = target.argumentExpression;
+      return argument && ts.isStringLiteralLike(argument) ? argument.text : null;
+    }
+    return null;
+  };
+
   const collectExposedKeys = (node: ts.Node, chain: ts.Node[]): void => {
     const nextChain = introducesScope(node) ? [node, ...chain] : chain;
     if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name)) {
@@ -262,25 +296,42 @@ export function scanRuleStateReads(
       if (node.initializer) {
         const literal = unwrap(node.initializer);
         if (ts.isObjectLiteralExpression(literal)) {
-          const members = new Map<string, string>();
+          const at = node.getStart();
           for (const property of literal.properties) {
             if (ts.isShorthandPropertyAssignment(property)) {
-              members.set(property.name.text, property.name.text);
+              recordMember(owner, node.name.text, property.name.text, property.name.text, at);
             } else if (
               ts.isPropertyAssignment(property) &&
               (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
             ) {
               const value = unwrap(property.initializer);
-              if (ts.isIdentifier(value)) members.set(property.name.text, value.text);
+              if (ts.isIdentifier(value)) {
+                recordMember(owner, node.name.text, property.name.text, value.text, at);
+              }
             }
           }
-          const scopedMembers = objectMembers.get(owner) ?? new Map<string, Map<string, string>>();
-          scopedMembers.set(node.name.text, members);
-          objectMembers.set(owner, scopedMembers);
         }
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
         }
+      }
+    }
+    // Writing through the container moves the handle the same way, so the
+    // member the exposure reads is the one assigned last before it.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))
+    ) {
+      const base = unwrap(ownerOf(node.left) ?? node.left);
+      const member = memberNameOf(node.left);
+      const value = unwrap(node.right);
+      if (ts.isIdentifier(base) && member !== null && ts.isIdentifier(value)) {
+        const memberOwnerScope =
+          [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(base.text)) ??
+          nextChain[0] ??
+          source;
+        recordMember(memberOwnerScope, base.text, member, value.text, node.getStart());
       }
     }
     // A plain reassignment moves the handle just as a declaration does.
@@ -309,7 +360,8 @@ export function scanRuleStateReads(
       const exposesDirectly = memberNamed(callee, 'expose');
       if (exposesState || exposesDirectly) {
         const [nameArg, handleArg] = node.arguments;
-        const handle = handleArg && resolveHandleIdentifier(handleArg, [...nextChain, source]);
+        const handle =
+          handleArg && resolveHandleIdentifier(handleArg, [...nextChain, source], node.getStart());
         if (nameArg && handle) {
           rawExposures.push({
             handle,

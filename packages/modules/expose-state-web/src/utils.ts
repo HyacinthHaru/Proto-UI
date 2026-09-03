@@ -20,7 +20,11 @@ export const OFFICIAL_EXPOSED_STATE_NAMES: Readonly<Record<string, string>> = Ob
 });
 
 function mapOfficialSemanticName(semantic: string): string | null {
-  return OFFICIAL_EXPOSED_STATE_NAMES[semantic] ?? null;
+  // The table inherits `Object.prototype`, so a semantic spelled `constructor`
+  // or `toString` would otherwise resolve to the inherited function.
+  return Object.hasOwn(OFFICIAL_EXPOSED_STATE_NAMES, semantic)
+    ? OFFICIAL_EXPOSED_STATE_NAMES[semantic]
+    : null;
 }
 
 export function createExposeStateWebNameMap(semantic: string) {
