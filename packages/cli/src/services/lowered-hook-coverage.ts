@@ -359,9 +359,14 @@ export function scanRuleStateReads(
   ): boolean => {
     const inner = unwrap(node) as ts.Expression;
     if (ts.isStringLiteralLike(inner) || ts.isNoSubstitutionTemplateLiteral(inner)) return true;
+    // `resolveExpression` requires each substitution to carry a single value;
+    // a conditional resolves to several strings and the template is dropped,
+    // while the runtime receives one concrete token.
     if (ts.isTemplateExpression(inner))
-      return inner.templateSpans.every((span) =>
-        resolvableTokenArgument(span.expression, scope, seen)
+      return inner.templateSpans.every(
+        (span) =>
+          singleValuedTokenArgument(span.expression, scope) &&
+          resolvableTokenArgument(span.expression, scope, seen)
       );
     if (ts.isArrayLiteralExpression(inner))
       return inner.elements.every((element) => resolvableTokenArgument(element, scope, seen));
@@ -418,6 +423,19 @@ export function scanRuleStateReads(
     // Dot access resolves through `semanticMap` only, which holds hook state
     // handles rather than tokens. An ordinary token object is a `map`, so
     // `tw(TOKENS.active)` yields nothing while the runtime lowers the real one.
+    return false;
+  };
+
+  /** Shapes `resolveExpression` gives a single value rather than a set. */
+  const singleValuedTokenArgument = (node: ts.Expression, scope: Scope): boolean => {
+    const inner = unwrap(node) as ts.Expression;
+    if (ts.isStringLiteralLike(inner) || ts.isNoSubstitutionTemplateLiteral(inner)) return true;
+    if (ts.isTemplateExpression(inner)) return true;
+    if (ts.isIdentifier(inner)) {
+      const binding = lookup(scope, inner.text);
+      if (binding?.kind === 'token') return singleValuedTokenArgument(binding.initializer, scope);
+      return binding?.kind === 'tokenImport';
+    }
     return false;
   };
 
@@ -528,6 +546,7 @@ export function scanRuleStateReads(
     let hasMeta = false;
     let aliasedBuilder = false;
     let branchedCondition = false;
+    let helperCondition = false;
     const builderParameter = parameterName(when.initializer);
     // `({ state }) => state(x).eq(true)` gives the builder no name to anchor on,
     // and `analyzeWhenVariants` reads a property access, so it emits no selector.
@@ -565,6 +584,18 @@ export function scanRuleStateReads(
         // invoked, so an unrelated call in a block-bodied callback is not a
         // dependency and must not make the rule look dynamic.
         const onBuilder = builderParameter !== null && chainBase(node) === builderParameter;
+        // `w.all(w.state(a).eq(true), other(w))` — the runtime executes the
+        // helper and lowers whatever it returns, while a source walk sees only
+        // what is written here. The extractor has the same limit, so a helper
+        // in a condition position is a blind spot rather than a leaf.
+        if (onBuilder && (member === 'all' || member === 'any')) {
+          for (const argument of node.arguments) {
+            const inner = unwrap(argument);
+            if (ts.isCallExpression(inner) && ts.isIdentifier(inner.expression)) {
+              helperCondition = true;
+            }
+          }
+        }
         if (onBuilder && !LOWERABLE_MEMBERS.has(member)) hasForeignDep = true;
         if (onBuilder && member === 'any') hasAny = true;
 
@@ -576,6 +607,7 @@ export function scanRuleStateReads(
           if (ts.isCallExpression(receiver) && ts.isIdentifier(receiver.expression)) {
             aliasedBuilder = true;
           }
+
           // `extractConditions` lowers exactly one meta comparison: colorScheme
           // against `dark`. Any other meta pair keeps the rule on the runtime
           // plan, so treating every meta dependency as lowerable would demand a
@@ -621,7 +653,15 @@ export function scanRuleStateReads(
 
     // An unlowerable comparison counts here too: only an all-negative condition
     // is provably skipped by both sides.
-    if (aliasedBuilder || branchedCondition) {
+    // A callback whose whole body is a helper call is the same blind spot.
+    const bodyIsHelperCall = (() => {
+      const fn = unwrap(when.initializer);
+      if (!ts.isArrowFunction(fn) || ts.isBlock(fn.body)) return false;
+      const body = unwrap(fn.body);
+      return ts.isCallExpression(body) && ts.isIdentifier(body.expression);
+    })();
+
+    if (aliasedBuilder || branchedCondition || helperCondition || bodyIsHelperCall) {
       unresolved.push({ expression: when.initializer.getText(source), reason: 'condition' });
       return;
     }

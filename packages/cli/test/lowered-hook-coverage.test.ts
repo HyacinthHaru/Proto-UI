@@ -522,6 +522,40 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('reports a condition a helper call contributes to', () => {
+    // The runtime executes `other(w)` and lowers whatever it returns; a source
+    // walk sees only what is written here, and so does the extractor.
+    const handles = 'const { checked, indeterminate } = asCheckboxRoot().stateHandles;';
+    const use = "(i) => i.feedback.style.use(tw('bg-primary'))";
+    const helper = `const other = (w) => w.state(indeterminate).eq(true);`;
+
+    const nested = `${helper}\n${handles}\ndef.rule({ when: (w) => w.all(w.state(checked).eq(true), other(w)), intent: ${use} });`;
+    expect(scanRuleStateReads(nested).usages).toEqual([]);
+    expect(scanRuleStateReads(nested).unresolved.map((miss) => miss.reason)).toEqual(['condition']);
+
+    const whole = `${helper}\n${handles}\ndef.rule({ when: (w) => other(w), intent: ${use} });`;
+    expect(scanRuleStateReads(whole).usages).toEqual([]);
+    expect(scanRuleStateReads(whole).unresolved.map((miss) => miss.reason)).toEqual(['condition']);
+  });
+
+  it('requires each template substitution to carry one value', () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const when = '(w) => w.state(checked).eq(true)';
+    const use = (arg: string) => `(i) => i.feedback.style.use(tw(${arg}))`;
+
+    // `resolveExpression` needs a single value per substitution.
+    const single = `const shade = 'primary';\n${handles}\ndef.rule({ when: ${when}, intent: ${use('`bg-${shade}`')} });`;
+    expect(scanRuleStateReads(single).usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+    ]);
+
+    // A conditional resolves to several strings, so the extractor drops the
+    // template while the runtime receives one concrete token.
+    const branched = `const shade = flag ? 'primary' : 'secondary';\n${handles}\ndef.rule({ when: ${when}, intent: ${use('`bg-${shade}`')} });`;
+    expect(scanRuleStateReads(branched).usages).toEqual([]);
+    expect(scanRuleStateReads(branched).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
   it('skips rules the runtime keeps on the runtime plan', () => {
     const withProp = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.prop('side').eq('top'))")}`;
     // `isStateMetaDeps` refuses every dependency kind but state and meta, so a
