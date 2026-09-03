@@ -83,13 +83,12 @@ openQuestions:
         Reading runtime input such as props and context during render is necessary for template construction; `renderer.read.context` and anatomy reads now exist and are covered by `prototype.render-syntax.v0.contract.test.ts`, so the read surface is no longer a gap. The real tradeoff is write APIs: excluding write APIs from render-time `run` may block some use cases, while including them may trigger watchers and re-enter update flow before the current update completes, with risks similar to calling `run.update()` during render.
 
 
-    blocks:
-      - C-LIFECYCLE-0003-C
 revisions:
   - version: 0.3.0-alpha.0
     change: revised
     summary: >-
-      Recorded the render read surface as implemented rather than an implementation gap, and narrowed the write-surface question to the criterion it still blocks. `prototype.render-syntax.v0.contract.test.ts` reads props, context, and anatomy during render and asserts that `renderer.update` is unavailable there, which settles the read and re-entry criteria; whether render-time `run` should carry write APIs stays open, and only that question still bears on module APIs not triggering render.
+      Recorded the render read surface as implemented rather than an implementation gap, and released the criteria the write-surface question blocked. `prototype.render-syntax.v0.contract.test.ts` reads props, context, and anatomy during render and asserts that `renderer.update` is unavailable there, which settles the read and re-entry criteria. Whether render-time `run` should carry write APIs stays open, but it decides no criterion here: module APIs must not trigger render or commit under either answer, and `T-LIFECYCLE-0002` already records passing evidence for that.
+
 
   - version: 0.1.0
     change: introduced

@@ -67,7 +67,9 @@ function resolves(value: string, requireFile = false): boolean {
   // A directory is never tracked by name, so only file evidence is checked
   // against the commit.
   if (!statSync(real).isFile()) return true;
-  return TRACKED_FILES.has(path.relative(REPO_ROOT, real));
+  // `git ls-files` reports slash-separated index paths on every platform, while
+  // `path.relative` uses the host separator; this suite runs on Windows too.
+  return TRACKED_FILES.has(path.relative(REPO_ROOT, real).split(path.sep).join('/'));
 }
 
 /**
