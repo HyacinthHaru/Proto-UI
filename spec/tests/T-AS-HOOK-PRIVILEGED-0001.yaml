@@ -73,6 +73,9 @@ verifies:
         - C-AS-HOOK-PRIVILEGED-0001-C
         - C-AS-HOOK-PRIVILEGED-0001-D
 revisions:
+  - version: 0.3.0-alpha.0
+    change: strengthened
+    summary: Recorded the rollback-boundary case as a planned workspace check, because the criterion is a contract declaration a runtime test cannot observe.
   - version: 0.1.0
     change: introduced
     summary: Added privileged asHook test mapping through focus, boundary, overlay, and hit-participation runtime tests.

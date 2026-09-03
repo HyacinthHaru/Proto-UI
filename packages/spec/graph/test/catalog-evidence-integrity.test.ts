@@ -1,6 +1,6 @@
 import { loadSpecWorkspaceFromDirectory } from '@proto.ui/spec-engine/node';
 import { describe, expect, it } from 'vitest';
-import { existsSync } from 'node:fs';
+import { existsSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 
 const REPO_ROOT = process.cwd();
@@ -26,14 +26,27 @@ function isRepositoryPath(value: string | undefined): value is string {
  * would otherwise be validated against whatever sits beside the checkout, so
  * the result would depend on the machine rather than on the catalog.
  */
-function resolves(value: string): boolean {
-  // An absolute path resolves inside the author's checkout and nowhere else, so
-  // a catalog entry carrying one would pass here and fail in CI.
+function contained(candidate: string): boolean {
+  const relative = path.relative(REPO_ROOT, candidate);
+  return !relative.startsWith('..') && !path.isAbsolute(relative);
+}
+
+/**
+ * Resolves under the repository only, and against the real target.
+ *
+ * An absolute path resolves inside its author's checkout and nowhere else. A
+ * traversal reads whatever sits beside the checkout. A symlink can be lexically
+ * contained while pointing outside it. All three make the result depend on the
+ * machine rather than on the catalog. `requireFile` additionally rejects a
+ * directory, which exists but is not executable evidence.
+ */
+function resolves(value: string, requireFile = false): boolean {
   if (path.isAbsolute(value)) return false;
   const candidate = path.resolve(REPO_ROOT, value);
-  const relative = path.relative(REPO_ROOT, candidate);
-  if (relative.startsWith('..') || path.isAbsolute(relative)) return false;
-  return existsSync(candidate);
+  if (!contained(candidate) || !existsSync(candidate)) return false;
+  const real = realpathSync(candidate);
+  if (!contained(real)) return false;
+  return requireFile ? statSync(real).isFile() : true;
 }
 
 /**
@@ -64,9 +77,13 @@ export function collectEvidenceGaps(entities: readonly Entity[]): {
 
     for (const implementation of entity.implementations ?? []) {
       if (implementation.status && DECLARED_ABSENT.has(implementation.status)) continue;
-      if (!isRepositoryPath(implementation.path)) continue;
-      if (!resolves(implementation.path)) {
-        missingImplementations.push(`${entity.id}: ${implementation.id} -> ${implementation.path}`);
+      // An implementation that claims current evidence has to name a file in
+      // this repository. Skipping an absent or remote path would let it satisfy
+      // the case-consumption invariant below with no executable behind it.
+      if (!isRepositoryPath(implementation.path) || !resolves(implementation.path, true)) {
+        missingImplementations.push(
+          `${entity.id}: ${implementation.id} -> ${implementation.path ?? '(no path)'}`
+        );
       }
     }
 
@@ -133,6 +150,22 @@ describe('catalog evidence integrity', () => {
             status: 'passing',
             consumesCases: ['C-FIXTURE-0001-CASE-E'],
           },
+          // A directory exists but is not executable evidence.
+          {
+            id: 'directory',
+            path: 'packages',
+            status: 'passing',
+            consumesCases: ['C-FIXTURE-0001-CASE-F'],
+          },
+          // No path at all, and a remote one: neither names a repository file,
+          // so neither may satisfy the case-consumption invariant unchallenged.
+          { id: 'pathless', status: 'passing', consumesCases: ['C-FIXTURE-0001-CASE-G'] },
+          {
+            id: 'remote',
+            path: 'https://example.test/suite.ts',
+            status: 'passing',
+            consumesCases: ['C-FIXTURE-0001-CASE-H'],
+          },
         ],
         cases: [
           { id: 'C-FIXTURE-0001-CASE-A' },
@@ -140,6 +173,9 @@ describe('catalog evidence integrity', () => {
           { id: 'C-FIXTURE-0001-CASE-C' },
           { id: 'C-FIXTURE-0001-CASE-D' },
           { id: 'C-FIXTURE-0001-CASE-E' },
+          { id: 'C-FIXTURE-0001-CASE-F' },
+          { id: 'C-FIXTURE-0001-CASE-G' },
+          { id: 'C-FIXTURE-0001-CASE-H' },
           { id: 'C-FIXTURE-0001-CASE-ORPHAN' },
         ],
       },
@@ -154,6 +190,9 @@ describe('catalog evidence integrity', () => {
       'C-FIXTURE-0001: absent -> packages/nothing-here.test.ts',
       'C-FIXTURE-0001: gap -> packages/never-written.test.ts',
       'C-FIXTURE-0001: escapes -> ../package.json',
+      'C-FIXTURE-0001: directory -> packages',
+      'C-FIXTURE-0001: pathless -> (no path)',
+      'C-FIXTURE-0001: remote -> https://example.test/suite.ts',
     ]);
     expect(gaps.orphanCases).toEqual(['C-FIXTURE-0001: C-FIXTURE-0001-CASE-ORPHAN']);
   });

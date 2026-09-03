@@ -115,6 +115,9 @@ verifies:
         - A-WEB-COMPONENT-0001-H
 revisions:
   - version: 0.3.0-alpha.0
+    change: strengthened
+    summary: Bound the update-revision case to the React, Vue, and Web Component lifecycle-events tests, which already assert a shared epoch and revision.
+  - version: 0.3.0-alpha.0
     change: implemented
     summary: Added structured lifecycle event evidence for the official Vue 2 Adapter.
   - version: 0.2.0-rc.7
