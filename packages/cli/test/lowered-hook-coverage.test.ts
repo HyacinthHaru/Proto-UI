@@ -162,18 +162,18 @@ describe('lowered hook coverage', () => {
     // `resolveStateEqVariant` lowers the two boolean keywords and a string
     // literal. A number or a bound identifier produces no variant, so counting
     // these as covered would hide exactly the rules that emit nothing.
-    const numeric = `const { step } = asSelectItem().stateHandles;\n${rule('w.state(step).eq(1)')}`;
-    const identifier = `const { checked } = asCheckboxRoot().stateHandles;\n${rule('w.state(checked).eq(ENABLED)')}`;
+    const identifierOnly = `const { checked } = asCheckboxRoot().stateHandles;\n${rule('w.state(checked).eq(ENABLED)')}`;
+
     const enumString = `const { orientation } = asSeparatorRoot().stateHandles;\n${rule("w.state(orientation).eq('vertical')")}`;
 
-    expect(scanRuleStateReads(numeric).usages).toEqual([]);
-    expect(scanRuleStateReads(numeric).unresolved).toEqual([
-      { expression: 'w.state(step).eq(1)', reason: 'comparison' },
-    ]);
-    expect(scanRuleStateReads(identifier).usages).toEqual([]);
-    expect(scanRuleStateReads(identifier).unresolved).toEqual([
+    expect(scanRuleStateReads(identifierOnly).usages).toEqual([]);
+    expect(scanRuleStateReads(identifierOnly).unresolved).toEqual([
       { expression: 'w.state(checked).eq(ENABLED)', reason: 'comparison' },
     ]);
+
+    // A numeric literal does lower, for `number.discrete` bindings.
+    const numeric = `const { step } = asSelectItem().stateHandles;\n${rule('w.state(step).eq(1)')}`;
+    expect(scanRuleStateReads(numeric).unresolved).toEqual([]);
     // The string form the extractor does lower stays covered.
     expect(scanRuleStateReads(enumString).usages).toEqual([
       { hook: 'asSeparatorRoot', state: 'orientation' },

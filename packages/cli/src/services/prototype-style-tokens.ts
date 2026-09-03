@@ -350,11 +350,17 @@ function resolveDeclaredStateName(node, scope) {
   if (!ts.isPropertyAccessExpression(owner) || owner.name.text !== 'state') return null;
   const first = node.arguments[0];
   if (!first) return null;
-  // The name may be a constant the runtime resolves to a real string.
-  return ts.isStringLiteralLike(first)
+  // The name may be a constant the runtime resolves to a real string. A name
+  // this cannot evaluate is still a name at runtime, so it is reported as
+  // unknown rather than absent — the expose key must not stand in for it.
+  const resolved = ts.isStringLiteralLike(first)
     ? first.text
-    : (resolveExpression(first, scope).single ?? null);
+    : resolveExpression(first, scope).single;
+  return resolved ?? UNKNOWN_STATE_NAME;
 }
+
+/** A `def.state.*` declaration whose name the extractor cannot evaluate. */
+const UNKNOWN_STATE_NAME = Symbol('unknown-state-name');
 
 /**
  * The same normalization `createExposeStateWebNameMap` applies to an
@@ -382,7 +388,9 @@ function exposedDataAttributeName(key) {
  * Aliases are followed because two references to one handle carry one state id.
  */
 function collectExposures(root) {
-  const aliases = new Map();
+  // Alias edges are keyed by the function they were declared in, so two setups
+  // in one file may each bind the same alias name without colliding.
+  const aliasesByScope = new Map();
   const exposures = [];
 
   const unwrapExpression = (node) =>
@@ -419,36 +427,51 @@ function collectExposures(root) {
     return false;
   };
 
-  const visit = (node) => {
+  const visit = (node, chain) => {
+    const nextChain = ts.isFunctionLike(node) ? [node, ...chain] : chain;
     if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
       const initializer = unwrapExpression(node.initializer);
-      if (ts.isIdentifier(initializer)) aliases.set(node.name.text, initializer.text);
+      if (ts.isIdentifier(initializer)) {
+        const owner = nextChain[0] ?? root;
+        if (!aliasesByScope.has(owner)) aliasesByScope.set(owner, new Map());
+        aliasesByScope.get(owner).set(node.name.text, initializer.text);
+      }
     }
     if (ts.isCallExpression(node) && namesExposeState(unwrapExpression(node.expression))) {
       const [nameArg, handleArg] = node.arguments;
       const handle = handleArg && unwrapExpression(handleArg);
       if (nameArg && handle && ts.isIdentifier(handle)) {
-        exposures.push({ handle: handle.text, key: nameArg });
+        exposures.push({ handle: handle.text, key: nameArg, chain: [...nextChain, root] });
       }
     }
-    ts.forEachChild(node, visit);
+    ts.forEachChild(node, (child) => visit(child, nextChain));
   };
-  visit(root);
+  visit(root, []);
 
-  const rootName = (name) => {
+  const lookupAlias = (name, chain) => {
+    for (const owner of chain) {
+      const scoped = aliasesByScope.get(owner);
+      if (scoped?.has(name)) return scoped.get(name);
+    }
+    return null;
+  };
+
+  const rootName = (name, chain) => {
     const seen = new Set();
     let current = name;
-    while (aliases.has(current) && !seen.has(current)) {
+    for (;;) {
+      if (seen.has(current)) return current;
       seen.add(current);
-      current = aliases.get(current);
+      const next = lookupAlias(current, chain);
+      if (!next) return current;
+      current = next;
     }
-    return current;
   };
 
   const byHandle = new Map();
-  for (const { handle, key } of exposures) {
+  for (const { handle, key, chain } of exposures) {
     // Both the alias and the handle it names carry the same state id.
-    for (const name of new Set([handle, rootName(handle)])) {
+    for (const name of new Set([handle, rootName(handle, chain)])) {
       if (!byHandle.has(name)) byHandle.set(name, key);
     }
   }
@@ -465,6 +488,9 @@ function applyExposure(name, binding, scope, exposures) {
   if (!exposures || binding.semantic) return binding;
   const key = exposures.get(name);
   if (!key) return binding;
+  // `__stateSemantic` wins at runtime, so a declared name this cannot read
+  // leaves no safe selector to emit; the expose key would be the wrong one.
+  if (binding.stateName === UNKNOWN_STATE_NAME) return binding;
   const exposedKey = ts.isStringLiteralLike(key) ? key.text : resolveExpression(key, scope).single;
   const attribute = exposedDataAttributeName(binding.stateName ?? exposedKey ?? '');
   if (!attribute) return binding;
@@ -813,6 +839,13 @@ function resolveStateEqVariant(semantic, expected) {
   if (ts.isStringLiteralLike(expected)) {
     const match = semantic.match(/^data-\[([a-zA-Z0-9-]+)\]$/);
     if (!match || !/^[a-zA-Z0-9_-]+$/.test(expected.text)) return null;
+    return `data-[${match[1]}=${expected.text}]`;
+  }
+  // `number.discrete` bindings lower by stringifying the literal, the same way
+  // enum and string bindings do.
+  if (ts.isNumericLiteral(expected)) {
+    const match = semantic.match(/^data-\[([a-zA-Z0-9-]+)\]$/);
+    if (!match) return null;
     return `data-[${match[1]}=${expected.text}]`;
   }
   return null;

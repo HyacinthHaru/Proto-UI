@@ -368,6 +368,8 @@ export function scanRuleStateReads(
     if (node.kind === ts.SyntaxKind.TrueKeyword) return 'positive';
     if (node.kind === ts.SyntaxKind.FalseKeyword) return 'negative';
     if (ts.isStringLiteralLike(node) && /^[a-zA-Z0-9_-]+$/.test(node.text)) return 'positive';
+    // `number.discrete` bindings lower by stringifying the literal.
+    if (ts.isNumericLiteral(node)) return 'positive';
     return null;
   };
 

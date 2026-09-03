@@ -465,6 +465,95 @@ describe('collectProtoStyleTokens', () => {
     }
   });
 
+  it('keeps sibling alias names apart', async () => {
+    // Two setups in one file may each bind `publicFlag`; a file-wide alias map
+    // would attribute the first exposure to the second handle.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'export const first = definePrototype({',
+        "  name: 'first',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('firstFlag', false);",
+        '    const publicFlag = flag;',
+        "    def.expose.state('visible', publicFlag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export const second = definePrototype({',
+        "  name: 'second',",
+        '  setup(def) {',
+        "    const other = def.state.bool('secondFlag', false);",
+        '    const publicFlag = other;',
+        "    def.expose.state('shown', publicFlag);",
+        '  },',
+        '});',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[first-flag]:bg-accent');
+  });
+
+  it('emits nothing for a declared name it cannot evaluate', async () => {
+    // `__stateSemantic` is the call's result at runtime and takes precedence,
+    // so the expose key would be the wrong selector rather than a safe default.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        "import { makeStateName } from './names';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        '    const flag = def.state.bool(makeStateName(), false);',
+        "    def.expose.state('visible', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).not.toContain('data-[visible]:bg-accent');
+  });
+
+  it('lowers a discrete-number comparison on an exposed state', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const step = def.state.numberDiscrete('step', 0);",
+        "    def.expose.state('step', step);",
+        '    def.rule({',
+        '      when: (w) => w.state(step).eq(1),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    // The Web runtime stringifies the literal the way it does for enums.
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[step=1]:bg-accent');
+  });
+
   it('keeps every binding a legal redeclaration installs', async () => {
     // The exposure pre-pass must not flatten sequential declaration scope.
     await writeFile(
