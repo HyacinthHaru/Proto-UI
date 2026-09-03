@@ -34,11 +34,11 @@ function resolves(value: string): boolean {
 }
 
 /**
- * Statuses that say the evidence does not exist yet. `SPEC_TEST_IMPLEMENTATION_STATUSES`
- * carries both, so an entry using either records a gap rather than claiming a
- * file. Every other status asserts current evidence.
+ * The one status that declares a future target rather than current evidence.
+ * `missing` is deliberately not exempt: whether it carries no-file semantics is
+ * a schema and lifecycle question, not something this check may decide.
  */
-const DECLARED_ABSENT: ReadonlySet<string> = new Set(['planned', 'missing']);
+const DECLARED_ABSENT: ReadonlySet<string> = new Set(['planned']);
 
 /**
  * Reports the citations that do not resolve and the cases nothing consumes.
@@ -106,14 +106,16 @@ describe('catalog evidence integrity', () => {
             status: 'passing',
             consumesCases: ['C-FIXTURE-0001-CASE-B'],
           },
-          // `planned` and `missing` both name a file that does not exist, which
-          // is what they mean; neither is a broken citation.
+          // `planned` names a file that has not been written yet, which is what
+          // planned means; it is not a broken citation.
           {
             id: 'later',
             path: 'packages/not-written-yet.test.ts',
             status: 'planned',
             consumesCases: ['C-FIXTURE-0001-CASE-C'],
           },
+          // `missing` is a real status, and it is not exempt: only `planned`
+          // is a declared future target under the current boundary.
           {
             id: 'gap',
             path: 'packages/never-written.test.ts',
@@ -144,6 +146,7 @@ describe('catalog evidence integrity', () => {
     ]);
     expect(gaps.missingImplementations).toEqual([
       'C-FIXTURE-0001: absent -> packages/nothing-here.test.ts',
+      'C-FIXTURE-0001: gap -> packages/never-written.test.ts',
       'C-FIXTURE-0001: escapes -> ../package.json',
     ]);
     expect(gaps.orphanCases).toEqual(['C-FIXTURE-0001: C-FIXTURE-0001-CASE-ORPHAN']);
