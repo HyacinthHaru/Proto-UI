@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import { OFFICIAL_EXPOSED_STATE_NAMES } from '../../modules/expose-state-web/src/utils';
 import { collectProtoStyleTokens } from '../src/services/prototype-style-tokens';
 
 describe('collectProtoStyleTokens', () => {
@@ -930,6 +931,109 @@ describe('collectProtoStyleTokens', () => {
     const tokens = await collectProtoStyleTokens(dir);
     expect(tokens).toContain('data-[first-flag]:bg-accent');
     expect(tokens).not.toContain('data-[second-flag]:bg-muted');
+  });
+
+  it('mirrors the official exposed-state names the Web projection uses', async () => {
+    // The extractor duplicates this map to stay free of runtime dependencies,
+    // so the copy has to be provably identical.
+    const { readFile } = await import('node:fs/promises');
+    const source = await readFile(
+      path.join(process.cwd(), 'packages/cli/src/services/prototype-style-tokens.ts'),
+      'utf8'
+    );
+    const block = source.match(
+      /const OFFICIAL_EXPOSED_STATE_NAMES = Object\.freeze\(\{([\s\S]*?)\}\);/
+    );
+    if (!block) throw new Error('the extractor must carry an official-name map');
+
+    const mirrored: Record<string, string> = {};
+    for (const [, key, value] of block[1].matchAll(/'([^']+)':\s*'([^']+)'/g)) {
+      mirrored[key] = value;
+    }
+    expect(mirrored).toEqual({ ...OFFICIAL_EXPOSED_STATE_NAMES });
+  });
+
+  it('maps an official semantic before normalizing the name', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('@accessibility/checked', false);",
+        "    def.expose.state('visible', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[checked]:bg-accent');
+    expect(tokens).not.toContain('data-[accessibility-checked]:bg-accent');
+  });
+
+  it('keeps a shadowed object from answering for an outer one', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    const controls = { ready: first };',
+        '    {',
+        '      const controls = { ready: second };',
+        '      void controls;',
+        '    }',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[first-flag]:bg-accent');
+  });
+
+  it('registers a declaration under single-statement control flow', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    if (true) var flag = def.state.bool('gated', false);",
+        "    def.expose.state('gated', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[gated]:bg-accent');
   });
 
   it('serializes a discrete number the way the runtime does', async () => {

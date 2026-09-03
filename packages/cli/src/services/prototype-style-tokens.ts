@@ -127,6 +127,17 @@ function walk(node, scope, tokens, exposures) {
     return;
   }
 
+  if (ts.isVariableStatement(node)) {
+    // A declaration under single-statement control flow — `if (x) var f = …` —
+    // is reached here rather than through a statement list, and the runtime
+    // executes it just the same.
+    for (const decl of node.declarationList.declarations) {
+      registerDeclaration(decl, scope, exposures);
+      if (decl.initializer) walk(decl.initializer, scope, tokens, exposures);
+    }
+    return;
+  }
+
   if (
     ts.isCallExpression(node) &&
     ts.isIdentifier(node.expression) &&
@@ -394,7 +405,31 @@ const UNKNOWN_STATE_NAME = Symbol('unknown-state-name');
  * The same normalization `createExposeStateWebNameMap` applies to an
  * unannotated exposed key before it becomes a data attribute.
  */
+/**
+ * Mirrors `OFFICIAL_EXPOSED_STATE_NAMES` in `@proto.ui/module-expose-state-web`.
+ * Duplicated rather than imported so this analyzer stays free of runtime
+ * dependencies; `prototype-style-tokens.test.ts` asserts the two are identical.
+ */
+const OFFICIAL_EXPOSED_STATE_NAMES = Object.freeze({
+  '@interaction/disabled': 'disabled',
+  '@interaction/hovered': 'hovered',
+  '@interaction/pressed': 'pressed',
+  '@interaction/focused': 'focused',
+  '@focus/focused': 'focused',
+  '@interaction/focusVisible': 'focus-visible',
+  '@focus/focusVisible': 'focus-visible',
+  '@accessibility/expanded': 'expanded',
+  '@accessibility/invalid': 'invalid',
+  '@accessibility/selected': 'selected',
+  '@accessibility/checked': 'checked',
+  '@accessibility/current': 'current',
+});
+
 function exposedDataAttributeName(key) {
+  // The runtime maps an official semantic before it normalizes anything, so
+  // `@accessibility/checked` is `data-checked`, not `data-accessibility-checked`.
+  const official = OFFICIAL_EXPOSED_STATE_NAMES[key];
+  if (official) return official;
   return key
     .trim()
     .replace(/\s+/g, '-')
@@ -482,19 +517,24 @@ function collectExposures(root) {
     return [];
   };
 
+  // Scoped like every other binding: a nested `controls` must not answer for
+  // an outer one of the same name.
   const objectMembers = new Map();
 
-  const resolveHandleIdentifier = (node) => {
+  const resolveHandleIdentifier = (node, chain) => {
     const value = unwrapExpression(node);
     if (ts.isIdentifier(value)) return value.text;
     const owner = memberOwner(value);
     if (!owner) return null;
     const base = unwrapExpression(owner);
     if (!ts.isIdentifier(base)) return null;
-    const members = objectMembers.get(base.text);
-    if (!members) return null;
-    for (const [key, target] of members) {
-      if (memberIs(value, key)) return target;
+    for (const scope of chain) {
+      const members = objectMembers.get(scope)?.get(base.text);
+      if (!members) continue;
+      for (const [key, target] of members) {
+        if (memberIs(value, key)) return target;
+      }
+      return null;
     }
     return null;
   };
@@ -533,7 +573,9 @@ function collectExposures(root) {
               if (ts.isIdentifier(value)) members.set(property.name.text, value.text);
             }
           }
-          objectMembers.set(node.name.text, members);
+          const scoped = objectMembers.get(owner) ?? new Map();
+          scoped.set(node.name.text, members);
+          objectMembers.set(owner, scoped);
         }
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
@@ -565,7 +607,7 @@ function collectExposures(root) {
         namesExpose(unwrapExpression(node.expression)))
     ) {
       const [nameArg, handleArg] = node.arguments;
-      const handle = handleArg && resolveHandleIdentifier(handleArg);
+      const handle = handleArg && resolveHandleIdentifier(handleArg, [...nextChain, root]);
       if (nameArg && handle) {
         exposures.push({
           handle,

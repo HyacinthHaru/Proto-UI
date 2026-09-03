@@ -2,6 +2,25 @@ import { readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
 
+/**
+ * Mirrors `OFFICIAL_EXPOSED_STATE_NAMES` in `@proto.ui/module-expose-state-web`,
+ * which the Web projection maps before it normalizes anything.
+ */
+const OFFICIAL_EXPOSED_STATE_NAMES: Readonly<Record<string, string>> = Object.freeze({
+  '@interaction/disabled': 'disabled',
+  '@interaction/hovered': 'hovered',
+  '@interaction/pressed': 'pressed',
+  '@interaction/focused': 'focused',
+  '@focus/focused': 'focused',
+  '@interaction/focusVisible': 'focus-visible',
+  '@focus/focusVisible': 'focus-visible',
+  '@accessibility/expanded': 'expanded',
+  '@accessibility/invalid': 'invalid',
+  '@accessibility/selected': 'selected',
+  '@accessibility/checked': 'checked',
+  '@accessibility/current': 'current',
+});
+
 export type HookStateUsage = {
   hook: string;
   state: string;
@@ -132,6 +151,7 @@ export function scanRuleStateReads(
    */
   /** The same normalization `createExposeStateWebNameMap` applies. */
   const exposedDataAttributeName = (key: string): string =>
+    OFFICIAL_EXPOSED_STATE_NAMES[key] ??
     key
       .trim()
       .replace(/\s+/g, '-')
@@ -154,7 +174,20 @@ export function scanRuleStateReads(
   type AliasEdge = { owner: ts.Node; name: string; target: string; at: number };
   const aliasEdges: AliasEdge[] = [];
   const declaredIn = new Map<ts.Node, Set<string>>();
-  const objectMembers = new Map<string, Map<string, string>>();
+
+  /** A statically known string, following one hop through a local constant. */
+  const constantStringValue = (node: ts.Node, scope: Scope): string | null => {
+    const value = unwrap(node);
+    if (ts.isStringLiteralLike(value) || ts.isNoSubstitutionTemplateLiteral(value)) {
+      return value.text;
+    }
+    if (ts.isIdentifier(value)) {
+      const binding = lookup(scope, value.text);
+      if (binding?.kind === 'token') return constantStringValue(binding.initializer, scope);
+    }
+    return null;
+  };
+  const objectMembers = new Map<ts.Node, Map<string, Map<string, string>>>();
 
   /** Every handle an initializer may name; a conditional contributes both. */
   const aliasTargets = (node: ts.Node): string[] => {
@@ -166,17 +199,20 @@ export function scanRuleStateReads(
     return [];
   };
 
-  const resolveHandleIdentifier = (node: ts.Node): string | null => {
+  const resolveHandleIdentifier = (node: ts.Node, chain: ts.Node[]): string | null => {
     const value = unwrap(node);
     if (ts.isIdentifier(value)) return value.text;
     const owner = ownerOf(value);
     if (!owner) return null;
     const base = unwrap(owner);
     if (!ts.isIdentifier(base)) return null;
-    const members = objectMembers.get(base.text);
-    if (!members) return null;
-    for (const [key, target] of members) {
-      if (memberNamed(value, key)) return target;
+    for (const scope of chain) {
+      const members = objectMembers.get(scope)?.get(base.text);
+      if (!members) continue;
+      for (const [key, target] of members) {
+        if (memberNamed(value, key)) return target;
+      }
+      return null;
     }
     return null;
   };
@@ -238,7 +274,9 @@ export function scanRuleStateReads(
               if (ts.isIdentifier(value)) members.set(property.name.text, value.text);
             }
           }
-          objectMembers.set(node.name.text, members);
+          const scopedMembers = objectMembers.get(owner) ?? new Map<string, Map<string, string>>();
+          scopedMembers.set(node.name.text, members);
+          objectMembers.set(owner, scopedMembers);
         }
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
@@ -271,7 +309,7 @@ export function scanRuleStateReads(
       const exposesDirectly = memberNamed(callee, 'expose');
       if (exposesState || exposesDirectly) {
         const [nameArg, handleArg] = node.arguments;
-        const handle = handleArg && resolveHandleIdentifier(handleArg);
+        const handle = handleArg && resolveHandleIdentifier(handleArg, [...nextChain, source]);
         if (nameArg && handle) {
           rawExposures.push({
             handle,
@@ -417,10 +455,9 @@ export function scanRuleStateReads(
         kind: 'localState',
         // `null` means the declaration exists but its runtime name cannot be
         // read here, which is not the same as having no declaration at all.
-        declaredAs:
-          declaredArgument && ts.isStringLiteralLike(declaredArgument)
-            ? declaredArgument.text
-            : null,
+        // A constant the extractor resolves has to resolve here too, or the
+        // gate reports a blind spot production does not have.
+        declaredAs: declaredArgument ? constantStringValue(declaredArgument, scope) : null,
         exposedAs: exposureFor(declaration.name.text, scope),
       });
       return;

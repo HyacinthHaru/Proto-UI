@@ -337,6 +337,35 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('accepts a constant-backed declared name the extractor resolves', () => {
+    // Production resolves this constant, so reporting it unresolved would fail
+    // the gate on code the extractor handles correctly.
+    const source = [
+      "const name = 'hidden';",
+      'const flag = def.state.bool(name, false);',
+      "def.expose.state('visible', flag);",
+      "def.rule({ when: (w) => w.state(flag).eq(true), intent: (i) => i.feedback.style.use(tw('hidden')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'hidden' },
+    ]);
+  });
+
+  it('maps an official semantic before normalizing the name', () => {
+    const source = [
+      "const flag = def.state.bool('@accessibility/checked', false);",
+      "def.expose.state('visible', flag);",
+      "def.rule({ when: (w) => w.state(flag).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+
+    expect(scanRuleStateReads(source).exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'checked' },
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
