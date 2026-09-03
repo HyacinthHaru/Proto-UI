@@ -410,10 +410,14 @@ export function scanRuleStateReads(
       }
       return false;
     }
-    if (ts.isPropertyAccessExpression(inner) || ts.isElementAccessExpression(inner)) {
-      // A member is only reachable if its owner is.
+    if (ts.isElementAccessExpression(inner)) {
+      // A member is only reachable if its owner is. Element access is the form
+      // `resolveExpression` reads a token map through.
       return resolvableTokenArgument(inner.expression, scope, seen);
     }
+    // Dot access resolves through `semanticMap` only, which holds hook state
+    // handles rather than tokens. An ordinary token object is a `map`, so
+    // `tw(TOKENS.active)` yields nothing while the runtime lowers the real one.
     return false;
   };
 
@@ -422,25 +426,45 @@ export function scanRuleStateReads(
    * extractable. `tw` is variadic and `collectTwTokens` reads all of them, so
    * one resolvable argument cannot vouch for the rest.
    */
-  const yieldsExtractableTokens = (node: ts.Node, scope: Scope): boolean => {
-    const calls: ts.CallExpression[] = [];
+  const yieldsExtractableTokens = (
+    node: ts.Node,
+    scope: Scope,
+    intentParameter: string | null
+  ): boolean => {
+    // Only the handles actually handed to `feedback.style.use` carry tokens the
+    // variant prefixes. A `tw(...)` sitting elsewhere in the intent is read by
+    // the extractor's own walk and would otherwise vouch for a handle it has
+    // nothing to do with.
+    const handles: ts.Expression[] = [];
     const collect = (current: ts.Node): void => {
       if (
         ts.isCallExpression(current) &&
-        ts.isIdentifier(current.expression) &&
-        current.expression.text === 'tw'
+        intentParameter !== null &&
+        chainBase(current) === intentParameter &&
+        memberChain(current).join('.') === 'feedback.style.use'
       ) {
-        calls.push(current);
+        handles.push(...current.arguments);
       }
       ts.forEachChild(current, collect);
     };
     collect(node);
-    if (calls.length === 0) return false;
-    return calls.every(
-      (call) =>
+    if (handles.length === 0) return false;
+
+    return handles.every((handle) => {
+      const call = unwrap(handle);
+      if (
+        !ts.isCallExpression(call) ||
+        !ts.isIdentifier(call.expression) ||
+        call.expression.text !== 'tw'
+      ) {
+        // A pre-bound handle gives `collectTwTokens` no call to read.
+        return false;
+      }
+      return (
         call.arguments.length > 0 &&
         call.arguments.every((argument) => resolvableTokenArgument(argument, scope))
-    );
+      );
+    });
   };
 
   /** The identifier a member chain bottoms out at, if it is one. */
@@ -523,9 +547,15 @@ export function scanRuleStateReads(
       // Only one branch reaches the returned expression at runtime, so the
       // runtime lowers one condition while a walk over the source sees both and
       // the extractor combines them into a selector nothing matches.
+      const CONTROL_FLOW_OPERATORS = new Set<ts.SyntaxKind>([
+        ts.SyntaxKind.CommaToken,
+        ts.SyntaxKind.AmpersandAmpersandToken,
+        ts.SyntaxKind.BarBarToken,
+        ts.SyntaxKind.QuestionQuestionToken,
+      ]);
       if (
         ts.isConditionalExpression(node) ||
-        (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.CommaToken)
+        (ts.isBinaryExpression(node) && CONTROL_FLOW_OPERATORS.has(node.operatorToken.kind))
       ) {
         branchedCondition = true;
       }
@@ -628,7 +658,7 @@ export function scanRuleStateReads(
       inspectIntent(intent.initializer);
       if (nonStyleOperation) return;
 
-      if (!yieldsExtractableTokens(intent.initializer, scope)) {
+      if (!yieldsExtractableTokens(intent.initializer, scope, intentParameter)) {
         unresolved.push({ expression: intent.getText(source), reason: 'intent' });
         return;
       }

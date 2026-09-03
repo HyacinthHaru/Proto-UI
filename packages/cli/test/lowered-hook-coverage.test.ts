@@ -473,6 +473,55 @@ describe('lowered hook coverage', () => {
     expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
   });
 
+  it('reads a token map only the way the extractor can', () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const when = '(w) => w.state(checked).eq(true)';
+    const map = "const TOKENS = { active: 'bg-primary' };";
+    const usage = { hook: 'asCheckboxRoot', state: 'checked' };
+
+    // `resolveExpression` reads a token object through element access; dot
+    // access resolves through `semanticMap`, which holds state handles.
+    const element = `${map}\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS['active'])) });`;
+    expect(scanRuleStateReads(element).usages).toEqual([usage]);
+
+    const dotted = `${map}\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS.active)) });`;
+    expect(scanRuleStateReads(dotted).usages).toEqual([]);
+    expect(scanRuleStateReads(dotted).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('does not let an unrelated tw call vouch for a pre-bound handle', () => {
+    // The variant prefixes what `feedback.style.use` receives. A `tw(...)`
+    // elsewhere in the intent has nothing to do with it.
+    const source = [
+      "const muted = tw('text-muted-foreground');",
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      'def.rule({',
+      '  when: (w) => w.state(checked).eq(true),',
+      "  intent: (i) => { i.feedback.style.use(muted); tw('bg-dummy'); },",
+      '});',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('reports a condition whose operator picks one operand', () => {
+    // `&&` returns the second expression, so the runtime lowers `data-[b]` while
+    // a source walk sees both and the extractor combines them.
+    const handles = 'const { checked, indeterminate } = asCheckboxRoot().stateHandles;';
+    const use = "(i) => i.feedback.style.use(tw('bg-primary'))";
+    for (const operator of ['&&', '||', '??']) {
+      const source = `${handles}\ndef.rule({ when: (w) => w.state(checked).eq(true) ${operator} w.state(indeterminate).eq(true), intent: ${use} });`;
+      const scan = scanRuleStateReads(source);
+      expect(scan.usages, operator).toEqual([]);
+      expect(
+        scan.unresolved.map((miss) => miss.reason),
+        operator
+      ).toEqual(['condition']);
+    }
+  });
+
   it('skips rules the runtime keeps on the runtime plan', () => {
     const withProp = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.prop('side').eq('top'))")}`;
     // `isStateMetaDeps` refuses every dependency kind but state and meta, so a
