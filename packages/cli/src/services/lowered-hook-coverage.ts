@@ -190,6 +190,22 @@ export function scanRuleStateReads(
         });
       }
     }
+    // A plain reassignment moves the handle just as a declaration does.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isIdentifier(node.left)
+    ) {
+      const value = unwrap(node.right);
+      if (ts.isIdentifier(value)) {
+        aliasEdges.push({
+          owner: nextChain[0] ?? source,
+          name: node.left.text,
+          target: value.text,
+          at: node.getStart(),
+        });
+      }
+    }
     if (ts.isCallExpression(node)) {
       const callee = unwrap(node.expression);
       const owner = ownerOf(callee);

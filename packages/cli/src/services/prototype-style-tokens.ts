@@ -452,6 +452,22 @@ function collectExposures(root) {
         });
       }
     }
+    // A plain reassignment moves the handle just as a declaration does.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isIdentifier(node.left)
+    ) {
+      const value = unwrapExpression(node.right);
+      if (ts.isIdentifier(value)) {
+        aliasEdges.push({
+          owner: nextChain[0] ?? root,
+          name: node.left.text,
+          target: value.text,
+          at: node.getStart(),
+        });
+      }
+    }
     if (
       ts.isCallExpression(node) &&
       (namesExposeState(unwrapExpression(node.expression)) ||
