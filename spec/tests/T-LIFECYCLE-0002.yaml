@@ -120,6 +120,24 @@ implementations:
       - T-LIFECYCLE-0002-CASE-MODULE-APIS-NO-IMPLICIT-RENDER
     notes:
       - Web Component adapter coverage verifies props re-provision dispatch behavior without implicit render.
+  - id: runtime-lifecycle-render-input-isolation
+    kind: runtime-test
+    status: planned
+    path: packages/runtime/test/contract/lifecycle.render-input-isolation.v0.contract.test.ts
+    required: true
+    consumesCases:
+      - T-LIFECYCLE-0002-CASE-RENDER-RUNTIME-INPUT
+    notes:
+      - Planned because the nearest current evidence, `state-basic.v0.contract.test.ts`, proves that a mounted set does not re-render until an explicit update. That is the absence of an automatic render, not a read during render that provably does not re-enter the update flow.
+  - id: runtime-lifecycle-coalesced-update
+    kind: runtime-test
+    status: planned
+    path: packages/runtime/test/contract/lifecycle.coalesced-update.v0.contract.test.ts
+    required: true
+    consumesCases:
+      - T-LIFECYCLE-0002-CASE-COALESCED-UPDATE
+    notes:
+      - Planned because the case is executable only for runtimes that coalesce, and this entity records that the current implementation does not.
 verifies:
   contracts:
     - id: C-LIFECYCLE-0003

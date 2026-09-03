@@ -83,6 +83,15 @@ implementations:
     required: true
     consumesCases:
       - T-LIFECYCLE-0003-CASE-ADAPTER-EVENT-TRACE
+  - id: runtime-lifecycle-update-revision
+    kind: runtime-test
+    status: planned
+    path: packages/runtime/test/contract/lifecycle.update-revision.v1.contract.test.ts
+    required: true
+    consumesCases:
+      - T-LIFECYCLE-0003-CASE-UPDATE-REVISION
+    notes:
+      - Planned because the session contract asserts a mount epoch and never a revision; the word does not appear in it.
 verifies:
   contracts:
     - id: C-LIFECYCLE-0004

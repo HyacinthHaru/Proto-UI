@@ -54,6 +54,15 @@ implementations:
     consumesCases:
       - T-AS-HOOK-PRIVILEGED-0001-CASE-PORT-CAPABILITY
       - T-AS-HOOK-PRIVILEGED-0001-CASE-TRACE
+  - id: runtime-privileged-rollback-boundary
+    kind: runtime-test
+    status: planned
+    path: packages/runtime/test/contract/as-hook.privileged-rollback.v0.contract.test.ts
+    required: true
+    consumesCases:
+      - T-AS-HOOK-PRIVILEGED-0001-CASE-ROLLBACK-BOUNDARY
+    notes:
+      - Planned because none of the four privileged contract tests asserts a restricted or omitted rollback; the word does not appear in any of them.
 verifies:
   contracts:
     - id: C-AS-HOOK-PRIVILEGED-0001

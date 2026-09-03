@@ -34,9 +34,10 @@ sources:
   - path: packages/hooks/src/collection/use-collection-item.ts
     sections:
       - useCollectionItem
-  - path: packages/prototypes/base/src/behaviors/use-focus-roving.ts
+  - path: packages/hooks/src/as-focus-roving.ts
     sections:
-      - useFocusRoving
+      - asFocusRoving
+  - path: internal/records/2026-07-06-use-focus-roving-deprecation.zh-CN.md
 revisions:
   - version: 0.1.0
     change: introduced

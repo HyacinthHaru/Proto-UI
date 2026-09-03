@@ -53,6 +53,9 @@ implementations:
       - T-RULE-WHEN-0002-CASE-PROPS-DEPS
       - T-RULE-WHEN-0002-CASE-STATE-DEPS
       - T-RULE-WHEN-0002-CASE-CONTEXT-DEPS
+      - T-RULE-WHEN-0002-CASE-META-DEFERRED
+    notes:
+      - The meta case is planned rather than passing because no executable guard currently proves the deferred boundary. The decision record states it; nothing asserts it.
 verifies:
   contracts:
     - id: C-RULE-WHEN-0002
