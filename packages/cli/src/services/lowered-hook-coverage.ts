@@ -140,24 +140,6 @@ export function scanRuleStateReads(
       .replace(/^-+|-+$/g, '')
       .toLowerCase();
 
-  const exposedKeys = new Map<string, string>();
-  const collectExposedKeys = (node: ts.Node): void => {
-    if (
-      ts.isCallExpression(node) &&
-      ts.isPropertyAccessExpression(node.expression) &&
-      node.expression.name.text === 'state' &&
-      ts.isPropertyAccessExpression(node.expression.expression) &&
-      node.expression.expression.name.text === 'expose'
-    ) {
-      const [nameArg, handleArg] = node.arguments;
-      if (nameArg && handleArg && ts.isStringLiteralLike(nameArg) && ts.isIdentifier(handleArg)) {
-        exposedKeys.set(handleArg.text, nameArg.text);
-      }
-    }
-    ts.forEachChild(node, collectExposedKeys);
-  };
-  collectExposedKeys(source);
-
   const unwrap = (node: ts.Node): ts.Node =>
     ts.isNonNullExpression(node) ||
     ts.isParenthesizedExpression(node) ||
@@ -165,6 +147,66 @@ export function scanRuleStateReads(
     ts.isTypeAssertionExpression(node)
       ? unwrap(node.expression)
       : node;
+
+  const exposedKeys = new Map<string, string>();
+  const aliasOf = new Map<string, string>();
+  const rawExposures: Array<{ handle: string; key: ts.Expression }> = [];
+
+  const memberNamed = (node: ts.Node, name: string): boolean => {
+    const target = unwrap(node);
+    if (ts.isPropertyAccessExpression(target)) return target.name.text === name;
+    if (ts.isElementAccessExpression(target)) {
+      const argument = target.argumentExpression;
+      return Boolean(argument) && ts.isStringLiteralLike(argument) && argument.text === name;
+    }
+    return false;
+  };
+
+  const ownerOf = (node: ts.Node): ts.Node | null => {
+    const target = unwrap(node);
+    return ts.isPropertyAccessExpression(target) || ts.isElementAccessExpression(target)
+      ? target.expression
+      : null;
+  };
+
+  const collectExposedKeys = (node: ts.Node): void => {
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
+      const initializer = unwrap(node.initializer);
+      if (ts.isIdentifier(initializer)) aliasOf.set(node.name.text, initializer.text);
+    }
+    if (ts.isCallExpression(node)) {
+      const callee = unwrap(node.expression);
+      const owner = ownerOf(callee);
+      if (memberNamed(callee, 'state') && owner && memberNamed(owner, 'expose')) {
+        const [nameArg, handleArg] = node.arguments;
+        const handle = handleArg && unwrap(handleArg);
+        if (nameArg && handle && ts.isIdentifier(handle)) {
+          rawExposures.push({ handle: handle.text, key: nameArg });
+        }
+      }
+    }
+    ts.forEachChild(node, collectExposedKeys);
+  };
+  collectExposedKeys(source);
+
+  const aliasRoot = (name: string): string => {
+    const seen = new Set<string>();
+    let current = name;
+    while (aliasOf.has(current) && !seen.has(current)) {
+      seen.add(current);
+      current = aliasOf.get(current) as string;
+    }
+    return current;
+  };
+
+  for (const { handle, key } of rawExposures) {
+    // A key the scanner cannot read still means the state is exposed, and the
+    // attribute comes from the declared name anyway.
+    const text = ts.isStringLiteralLike(key) ? key.text : '';
+    for (const name of new Set([handle, aliasRoot(handle)])) {
+      if (!exposedKeys.has(name)) exposedKeys.set(name, text);
+    }
+  }
 
   const hookOfCall = (node: ts.Node): string | null => {
     const call = unwrap(node);
@@ -297,7 +339,7 @@ export function scanRuleStateReads(
       const binding = lookup(scope, argument.text);
       if (binding?.kind === 'handle') return { hook: binding.hook, state: binding.state };
       if (binding?.kind === 'localState') {
-        if (!binding.exposedAs) return 'local';
+        if (binding.exposedAs === undefined) return 'local';
         return {
           exposedLocal: {
             state: argument.text,

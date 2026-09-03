@@ -422,6 +422,75 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).not.toContain('data-[is-hot]:bg-accent');
   });
 
+  it('registers an exposure however it is written', async () => {
+    // Each of these reaches the same runtime exposure, so each must lower.
+    const shapes: Record<string, string[]> = {
+      wrapped: ["    def.expose.state('visible', flag as never);"],
+      elementAccess: ["    def.expose['state']('visible', flag);"],
+      aliased: ['    const publicFlag = flag;', "    def.expose.state('visible', publicFlag);"],
+      nested: ['    if (enabled) {', "      def.expose.state('visible', flag);", '    }'],
+      constantName: [],
+    };
+
+    for (const [label, exposeLines] of Object.entries(shapes)) {
+      const declaration =
+        label === 'constantName'
+          ? [
+              "    const name = 'internalFlag';",
+              '    const flag = def.state.bool(name, false);',
+              "    def.expose.state('visible', flag);",
+            ]
+          : ["    const flag = def.state.bool('internalFlag', false);", ...exposeLines];
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          ...declaration,
+          '    def.rule({',
+          '      when: (w) => w.state(flag).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      expect(await collectProtoStyleTokens(dir), label).toContain('data-[internal-flag]:bg-accent');
+    }
+  });
+
+  it('keeps every binding a legal redeclaration installs', async () => {
+    // The exposure pre-pass must not flatten sequential declaration scope.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    var T = 'bg-red';",
+        '    def.feedback.style.use(tw(T));',
+        "    var T = 'bg-blue';",
+        '    def.feedback.style.use(tw(T));',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('bg-red');
+    expect(tokens).toContain('bg-blue');
+  });
+
   it('lowers the Scroll Area Viewport focus condition into the closure', async () => {
     await writeFile(
       path.join(dir, 'surface.proto.ts'),

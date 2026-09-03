@@ -16,7 +16,7 @@ export async function collectProtoStyleTokens(root) {
     const sourceFile = await parseSourceFile(file);
     const scope = createScope();
     await applyImportBindings(file, sourceFile, scope, moduleCache, []);
-    walk(sourceFile, scope, tokens);
+    walk(sourceFile, scope, tokens, collectExposures(sourceFile));
   }
 
   return Array.from(tokens).sort();
@@ -91,7 +91,8 @@ async function loadModuleBindings(file, moduleCache, stack) {
   for (const stmt of sourceFile.statements) {
     if (!ts.isVariableStatement(stmt)) continue;
     for (const decl of stmt.declarationList.declarations) {
-      registerDeclaration(decl, scope);
+      // An imported module holds token constants, not this component's states.
+      registerDeclaration(decl, scope, undefined);
     }
   }
   for (const [name, value] of scope.bindings) bindings.set(name, value);
@@ -101,32 +102,28 @@ function createScope(parent = null) {
   return { parent, bindings: new Map() };
 }
 
-function walk(node, scope, tokens) {
+function walk(node, scope, tokens, exposures) {
   if (createsScope(node)) {
     const nextScope = createScope(scope);
 
     if (hasStatements(node)) {
-      // Declarations first, then every exposure, then the rules. The runtime
-      // builds its exposed-state map after setup returns, so a rule written
-      // above the expose call is still lowered with the attribute.
-      for (const stmt of node.statements) {
-        if (!ts.isVariableStatement(stmt)) continue;
-        for (const decl of stmt.declarationList.declarations) registerDeclaration(decl, nextScope);
-      }
-      for (const stmt of node.statements) registerExposedState(stmt, nextScope);
+      // Sequential, so a legal redeclaration still registers each binding for
+      // the statements that follow it. Exposures need no ordering because they
+      // are collected from the whole source before the walk begins.
       for (const stmt of node.statements) {
         if (ts.isVariableStatement(stmt)) {
           for (const decl of stmt.declarationList.declarations) {
-            if (decl.initializer) walk(decl.initializer, nextScope, tokens);
+            registerDeclaration(decl, nextScope, exposures);
+            if (decl.initializer) walk(decl.initializer, nextScope, tokens, exposures);
           }
           continue;
         }
-        walk(stmt, nextScope, tokens);
+        walk(stmt, nextScope, tokens, exposures);
       }
       return;
     }
 
-    ts.forEachChild(node, (child) => walk(child, nextScope, tokens));
+    ts.forEachChild(node, (child) => walk(child, nextScope, tokens, exposures));
     return;
   }
 
@@ -144,10 +141,10 @@ function walk(node, scope, tokens) {
   }
 
   if (ts.isCallExpression(node) && isPropertyNamed(node.expression, 'rule')) {
-    collectRuleVariantTokens(node, scope, tokens);
+    collectRuleVariantTokens(node, scope, tokens, exposures);
   }
 
-  ts.forEachChild(node, (child) => walk(child, scope, tokens));
+  ts.forEachChild(node, (child) => walk(child, scope, tokens, exposures));
 }
 
 function createsScope(node) {
@@ -166,11 +163,12 @@ function hasStatements(node) {
   return ts.isSourceFile(node) || ts.isBlock(node) || ts.isModuleBlock(node);
 }
 
-function registerDeclaration(decl, scope) {
+function registerDeclaration(decl, scope, exposures) {
   if (!decl.initializer) return;
 
   if (ts.isIdentifier(decl.name)) {
-    scope.bindings.set(decl.name.text, resolveBinding(decl.initializer, scope));
+    const binding = resolveBinding(decl.initializer, scope);
+    scope.bindings.set(decl.name.text, applyExposure(decl.name.text, binding, scope, exposures));
     return;
   }
 
@@ -334,7 +332,7 @@ function lookup(name, scope) {
 function resolveBinding(node, scope) {
   const semantic = resolveSemanticBinding(node);
   const value = resolveExpression(node, scope);
-  const declared = resolveDeclaredStateName(node);
+  const declared = resolveDeclaredStateName(node, scope);
   const withName = declared ? { ...value, stateName: declared } : value;
   return semantic ? { ...withName, semantic } : withName;
 }
@@ -345,13 +343,17 @@ function resolveBinding(node, scope) {
  * before it would fall back to the expose key, so this is the name the Web
  * attribute comes from.
  */
-function resolveDeclaredStateName(node) {
+function resolveDeclaredStateName(node, scope) {
   if (!ts.isCallExpression(node)) return null;
   if (!ts.isPropertyAccessExpression(node.expression)) return null;
   const owner = node.expression.expression;
   if (!ts.isPropertyAccessExpression(owner) || owner.name.text !== 'state') return null;
   const first = node.arguments[0];
-  return first && ts.isStringLiteralLike(first) ? first.text : null;
+  if (!first) return null;
+  // The name may be a constant the runtime resolves to a real string.
+  return ts.isStringLiteralLike(first)
+    ? first.text
+    : (resolveExpression(first, scope).single ?? null);
 }
 
 /**
@@ -371,37 +373,102 @@ function exposedDataAttributeName(key) {
 }
 
 /**
- * `def.expose.state('hidden', hidden)` is what gives a prototype-owned state a
- * host attribute, so it is also what tells the extractor the selector. Without
- * it a `def.state.bool` handle has no semantic, the rule contributes a bare
- * token, and the variant the Web runtime lowers has no CSS.
+ * Every `def.expose.state(key, handle)` in a source, resolved to the handle it
+ * ultimately names.
  *
- * The exposed key is a fallback only: a handle that already carries an official
- * semantic keeps it, which is the precedence `createExposeStateWebNameMap` uses
- * when it maps an official semantic before falling back to the key.
+ * Exposure is component-wide at runtime rather than block-scoped, and the
+ * exposed-state map is built after setup returns, so neither the block a call
+ * sits in nor its position relative to a rule decides whether the rule lowers.
+ * Aliases are followed because two references to one handle carry one state id.
  */
-function registerExposedState(statement, scope) {
-  if (!ts.isExpressionStatement(statement)) return;
-  const call = statement.expression;
-  if (!ts.isCallExpression(call)) return;
-  if (!ts.isPropertyAccessExpression(call.expression)) return;
-  if (!isPropertyAccessChain(call.expression, ['expose', 'state'])) return;
-  const [nameArg, handleArg] = call.arguments;
-  if (!nameArg || !handleArg) return;
-  if (!ts.isIdentifier(handleArg)) return;
-  // The key may be a constant the runtime resolves to a real string.
-  const exposedKey = ts.isStringLiteralLike(nameArg)
-    ? nameArg.text
-    : resolveExpression(nameArg, scope).single;
-  if (!exposedKey) return;
-  const existing = lookup(handleArg.text, scope);
-  if (existing.semantic) return;
-  // The runtime maps `__stateSemantic` — the declared name — before it falls
-  // back to the expose key, so exposing `internalFlag` as `visible` still
-  // produces `data-internal-flag`.
-  const attribute = exposedDataAttributeName(existing.stateName ?? exposedKey);
-  if (!attribute) return;
-  scope.bindings.set(handleArg.text, { ...existing, semantic: `data-[${attribute}]` });
+function collectExposures(root) {
+  const aliases = new Map();
+  const exposures = [];
+
+  const unwrapExpression = (node) =>
+    ts.isParenthesizedExpression(node) ||
+    ts.isAsExpression(node) ||
+    ts.isTypeAssertionExpression(node) ||
+    ts.isNonNullExpression(node)
+      ? unwrapExpression(node.expression)
+      : node;
+
+  const namesExposeState = (callee) => {
+    if (ts.isPropertyAccessExpression(callee)) {
+      return callee.name.text === 'state' && namesExposeOwner(callee.expression);
+    }
+    if (ts.isElementAccessExpression(callee)) {
+      const argument = callee.argumentExpression;
+      return (
+        Boolean(argument) &&
+        ts.isStringLiteralLike(argument) &&
+        argument.text === 'state' &&
+        namesExposeOwner(callee.expression)
+      );
+    }
+    return false;
+  };
+
+  const namesExposeOwner = (node) => {
+    const owner = unwrapExpression(node);
+    if (ts.isPropertyAccessExpression(owner)) return owner.name.text === 'expose';
+    if (ts.isElementAccessExpression(owner)) {
+      const argument = owner.argumentExpression;
+      return Boolean(argument) && ts.isStringLiteralLike(argument) && argument.text === 'expose';
+    }
+    return false;
+  };
+
+  const visit = (node) => {
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
+      const initializer = unwrapExpression(node.initializer);
+      if (ts.isIdentifier(initializer)) aliases.set(node.name.text, initializer.text);
+    }
+    if (ts.isCallExpression(node) && namesExposeState(unwrapExpression(node.expression))) {
+      const [nameArg, handleArg] = node.arguments;
+      const handle = handleArg && unwrapExpression(handleArg);
+      if (nameArg && handle && ts.isIdentifier(handle)) {
+        exposures.push({ handle: handle.text, key: nameArg });
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(root);
+
+  const rootName = (name) => {
+    const seen = new Set();
+    let current = name;
+    while (aliases.has(current) && !seen.has(current)) {
+      seen.add(current);
+      current = aliases.get(current);
+    }
+    return current;
+  };
+
+  const byHandle = new Map();
+  for (const { handle, key } of exposures) {
+    // Both the alias and the handle it names carry the same state id.
+    for (const name of new Set([handle, rootName(handle)])) {
+      if (!byHandle.has(name)) byHandle.set(name, key);
+    }
+  }
+  return byHandle;
+}
+
+/**
+ * The Web attribute comes from `__stateSemantic` — the declared name — and only
+ * falls back to the expose key, so a state exposed under a different key still
+ * lowers to its declared name. A handle that already carries an official
+ * semantic keeps it, which is the same precedence the runtime applies.
+ */
+function applyExposure(name, binding, scope, exposures) {
+  if (!exposures || binding.semantic) return binding;
+  const key = exposures.get(name);
+  if (!key) return binding;
+  const exposedKey = ts.isStringLiteralLike(key) ? key.text : resolveExpression(key, scope).single;
+  const attribute = exposedDataAttributeName(binding.stateName ?? exposedKey ?? '');
+  if (!attribute) return binding;
+  return { ...binding, semantic: `data-[${attribute}]` };
 }
 
 function resolveSemanticBinding(node) {
@@ -624,7 +691,7 @@ export function loweredHookStates(hookName) {
   return resolved ? new Map(resolved) : null;
 }
 
-function collectRuleVariantTokens(node, scope, tokens) {
+function collectRuleVariantTokens(node, scope, tokens, exposures) {
   const config = node.arguments[0];
   if (!config || !ts.isObjectLiteralExpression(config)) return;
 
@@ -646,7 +713,7 @@ function collectRuleVariantTokens(node, scope, tokens) {
   const variants = analyzeWhenVariants(whenProp.initializer, scope);
   if (variants.length === 0) return;
 
-  const intentTokens = collectTwTokens(intentProp.initializer, scope);
+  const intentTokens = collectTwTokens(intentProp.initializer, scope, exposures);
   for (const token of intentTokens) {
     tokens.add(`${variants.join(':')}:${token}`);
   }
@@ -760,7 +827,7 @@ function isNegativeDataVariant(variant) {
   return /^not-\[data-[a-zA-Z0-9-]+\]$/.test(variant);
 }
 
-function collectTwTokens(node, scope) {
+function collectTwTokens(node, scope, exposures) {
   const found = new Set();
 
   visit(node, scope);
@@ -771,14 +838,9 @@ function collectTwTokens(node, scope) {
       const nextScope = createScope(currentScope);
       if (hasStatements(current)) {
         for (const stmt of current.statements) {
-          if (!ts.isVariableStatement(stmt)) continue;
-          for (const decl of stmt.declarationList.declarations)
-            registerDeclaration(decl, nextScope);
-        }
-        for (const stmt of current.statements) registerExposedState(stmt, nextScope);
-        for (const stmt of current.statements) {
           if (ts.isVariableStatement(stmt)) {
             for (const decl of stmt.declarationList.declarations) {
+              registerDeclaration(decl, nextScope, exposures);
               if (decl.initializer) visit(decl.initializer, nextScope);
             }
             continue;
