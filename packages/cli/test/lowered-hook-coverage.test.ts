@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
+import { createExposeStateWebNameMap } from '../../modules/expose-state-web/src/utils';
 import { scanRuleStateReads } from '../src/services/lowered-hook-coverage';
 import {
   collectProtoStyleTokens,
@@ -48,6 +49,13 @@ const RULE_CALL = /\brule\b/;
 /** A real intent: the variant is a prefix on tokens, so a stub yields nothing. */
 const rule = (condition: string) =>
   `def.rule({ when: (w) => ${condition}, intent: (i) => i.feedback.style.use(tw('bg-primary')) });`;
+
+/**
+ * What the normalized attribute has to satisfy: `data-<attribute>` is writable
+ * and `[data-<attribute>]` selects it. A leading digit satisfies both, so an
+ * identifier rule here would add a naming restriction no contract states.
+ */
+const SELECTABLE_ATTRIBUTE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe('lowered hook coverage', () => {
   it('follows every binding shape a prototype uses to reach a state handle', () => {
@@ -162,18 +170,18 @@ describe('lowered hook coverage', () => {
     // `resolveStateEqVariant` lowers the two boolean keywords and a string
     // literal. A number or a bound identifier produces no variant, so counting
     // these as covered would hide exactly the rules that emit nothing.
-    const numeric = `const { step } = asSelectItem().stateHandles;\n${rule('w.state(step).eq(1)')}`;
-    const identifier = `const { checked } = asCheckboxRoot().stateHandles;\n${rule('w.state(checked).eq(ENABLED)')}`;
+    const identifierOnly = `const { checked } = asCheckboxRoot().stateHandles;\n${rule('w.state(checked).eq(ENABLED)')}`;
+
     const enumString = `const { orientation } = asSeparatorRoot().stateHandles;\n${rule("w.state(orientation).eq('vertical')")}`;
 
-    expect(scanRuleStateReads(numeric).usages).toEqual([]);
-    expect(scanRuleStateReads(numeric).unresolved).toEqual([
-      { expression: 'w.state(step).eq(1)', reason: 'comparison' },
-    ]);
-    expect(scanRuleStateReads(identifier).usages).toEqual([]);
-    expect(scanRuleStateReads(identifier).unresolved).toEqual([
+    expect(scanRuleStateReads(identifierOnly).usages).toEqual([]);
+    expect(scanRuleStateReads(identifierOnly).unresolved).toEqual([
       { expression: 'w.state(checked).eq(ENABLED)', reason: 'comparison' },
     ]);
+
+    // A numeric literal does lower, for `number.discrete` bindings.
+    const numeric = `const { step } = asSelectItem().stateHandles;\n${rule('w.state(step).eq(1)')}`;
+    expect(scanRuleStateReads(numeric).unresolved).toEqual([]);
     // The string form the extractor does lower stays covered.
     expect(scanRuleStateReads(enumString).usages).toEqual([
       { hook: 'asSeparatorRoot', state: 'orientation' },
@@ -214,6 +222,741 @@ describe('lowered hook coverage', () => {
       { hook: 'asCheckboxRoot', state: 'checked' },
       { hook: 'asToggle', state: 'active' },
     ]);
+  });
+
+  it('reports an exposed prototype-owned state instead of skipping it', () => {
+    // Exposing the state is what gives it a host attribute, so the Web runtime
+    // lowers rules on it. Skipping the read would leave the gate green while
+    // the extractor had no selector to emit.
+    const source = [
+      "const hidden = def.state.bool('hidden', true);",
+      "def.expose.state('hidden', hidden);",
+      "def.rule({ when: (w) => w.state(hidden).eq(true), intent: (i) => i.feedback.style.use(tw('hidden')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'hidden', exposedAs: 'hidden', attribute: 'hidden' },
+    ]);
+  });
+
+  it('keeps sibling scopes from sharing an exposure', () => {
+    // A file-wide map would attribute the first exposure to the second handle.
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      'function first(def) {',
+      "  const flag = def.state.bool('firstFlag', false);",
+      '  const publicFlag = flag;',
+      "  def.expose.state('a', publicFlag);",
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+      'function second(def) {',
+      "  const other = def.state.bool('secondFlag', false);",
+      '  const publicFlag = other;',
+      "  def.expose.state('b', publicFlag);",
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'a', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('resolves each alias hop where that hop was created', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'var current = first;',
+      'const publicFlag = current;',
+      'var current = second;',
+      "def.expose.state('visible', publicFlag);",
+      `def.rule({ when: (w) => w.state(first).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('follows an alias reassigned before the exposure', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let publicFlag = first;',
+      'publicFlag = second;',
+      "def.expose.state('visible', publicFlag);",
+      `def.rule({ when: (w) => w.state(second).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('sees an alias reassigned inside a nested block', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let publicFlag = first;',
+      '{',
+      '  publicFlag = second;',
+      '}',
+      "def.expose.state('visible', publicFlag);",
+      `def.rule({ when: (w) => w.state(second).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it("does not let one prototype's exposure reach a sibling's same-named state", () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      'function exposedSetup(def) {',
+      "  const flag = def.state.bool('firstFlag', false);",
+      "  def.expose.state('visible', flag);",
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+      'function internalSetup(def) {',
+      "  const flag = def.state.bool('secondFlag', false);",
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    // Only the exposed one; the sibling's rule stays on the runtime plan.
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('accepts a constant-backed declared name the extractor resolves', () => {
+    // Production resolves this constant, so reporting it unresolved would fail
+    // the gate on code the extractor handles correctly.
+    const source = [
+      "const name = 'hidden';",
+      'const flag = def.state.bool(name, false);',
+      "def.expose.state('visible', flag);",
+      "def.rule({ when: (w) => w.state(flag).eq(true), intent: (i) => i.feedback.style.use(tw('hidden')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'hidden' },
+    ]);
+  });
+
+  it('maps an official semantic before normalizing the name', () => {
+    const source = [
+      "const flag = def.state.bool('@accessibility/checked', false);",
+      "def.expose.state('visible', flag);",
+      "def.rule({ when: (w) => w.state(flag).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+
+    expect(scanRuleStateReads(source).exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'checked' },
+    ]);
+  });
+
+  it('follows a handle written into the container before the exposure', () => {
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'controls.ready = second;',
+      "def.expose.state('visible', controls.ready);",
+      "def.rule({ when: (w) => w.state(second).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('leaves a member write after the exposure out of it', () => {
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      "def.expose.state('visible', controls.ready);",
+      'controls.ready = second;',
+      "def.rule({ when: (w) => w.state(first).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('normalizes a state named after an inherited object key', () => {
+    // The official-name table is a plain object literal, so `constructor` must
+    // not resolve to the function it inherits.
+    const source = [
+      "const flag = def.state.bool('constructor', false);",
+      "def.expose.state('visible', flag);",
+      "def.rule({ when: (w) => w.state(flag).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+
+    expect(scanRuleStateReads(source).exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'constructor' },
+    ]);
+  });
+
+  it('keeps a plain alias of an exposed local resolvable', () => {
+    // Production resolves the alias, so a token binding here would report a
+    // blind spot the extractor does not have.
+    const source = [
+      "const hidden = def.state.bool('hidden', true);",
+      "def.expose.state('hidden', hidden);",
+      'const alias = hidden;',
+      "def.rule({ when: (w) => w.state(alias).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'alias', exposedAs: 'hidden', attribute: 'hidden' },
+    ]);
+  });
+
+  it('replaces the member table when a whole container is assigned', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let controls = { ready: first };',
+      'controls = { ready: second };',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(second).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('gives both branches of a conditional member write an attribute', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'controls.ready = enabled ? first : second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(first).eq(true), intent: ${use} });`,
+      `def.rule({ when: (w) => w.state(second).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('reads a member at the position it was written', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let current = first;',
+      'const controls = { ready: current };',
+      'current = second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(first).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('keeps the earlier handle when a write may be skipped', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let current = first;',
+      'if (enabled) current = second;',
+      "def.expose.state('visible', current);",
+      `def.rule({ when: (w) => w.state(first).eq(true), intent: ${use} });`,
+      `def.rule({ when: (w) => w.state(second).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('hoists a nested var redeclaration the rule reads', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      'function setup(def) {',
+      "  const first = def.state.bool('firstFlag', false);",
+      "  const second = def.state.bool('secondFlag', false);",
+      '  var current = first;',
+      '  {',
+      '    var current = second;',
+      '  }',
+      "  def.expose.state('visible', current);",
+      `  def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'current', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('accepts an element-access state declaration the extractor reads', () => {
+    // Production resolves `def.state['bool'](…)`, so reporting it unresolved
+    // would fail the gate on code the extractor handles correctly.
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state['bool']('internalFlag', false);",
+      "def.expose.state('visible', flag);",
+      `def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'internal-flag' },
+    ]);
+  });
+
+  it('admits every attribute the Web projection can actually write', () => {
+    // The repository tree carries no digit-leading state, so the gate's own
+    // predicate is asserted here rather than only through the shipped scan.
+    for (const attribute of ['1st', 'hidden', 'focus-visible', 'a1', '2-of-3']) {
+      expect(SELECTABLE_ATTRIBUTE.test(attribute), attribute).toBe(true);
+      expect(createExposeStateWebNameMap(attribute).dataAttr, attribute).toBe(`data-${attribute}`);
+    }
+    for (const attribute of ['', '-leading', 'trailing-', 'double--hyphen', 'Upper', 'has space']) {
+      expect(SELECTABLE_ATTRIBUTE.test(attribute), attribute).toBe(false);
+    }
+  });
+
+  it('accepts an attribute that starts with a digit', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state.bool('1st', false);",
+      "def.expose.state('1st', flag);",
+      `def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([{ state: 'flag', exposedAs: '1st', attribute: '1st' }]);
+  });
+
+  it('reports every state a skippable alias may reach', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let current = first;',
+      'if (enabled) current = second;',
+      "def.expose.state('visible', current);",
+      `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'current', exposedAs: 'visible', attribute: 'second-flag' },
+      { state: 'current', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('reads a state handle held in a plain container', () => {
+    // Production resolves the member, so reporting it unresolved would fail the
+    // gate on code the extractor lowers correctly.
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state.bool('internalFlag', false);",
+      'const controls = { ready: flag };',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'internal-flag' },
+    ]);
+  });
+
+  it('reads a destructured handle the rule uses by its alias', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, container] of [
+      ['object literal', 'const { ready: publicFlag } = { ready: flag };'],
+      ['array literal', 'const [publicFlag] = [flag];'],
+      [
+        'container variable',
+        'const controls = { ready: flag };\nconst { ready: publicFlag } = controls;',
+      ],
+    ] as const) {
+      const source = [
+        "const flag = def.state.bool('internalFlag', false);",
+        container,
+        "def.expose.state('visible', publicFlag);",
+        `def.rule({ when: (w) => w.state(publicFlag).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals, label).toEqual([
+        { state: 'publicFlag', exposedAs: 'visible', attribute: 'internal-flag' },
+      ]);
+    }
+  });
+
+  it('reports both branches of a conditional alias', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const current = enabled ? first : second;',
+      "def.expose.state('visible', current);",
+      `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'current', exposedAs: 'visible', attribute: 'first-flag' },
+      { state: 'current', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('resolves an alias target where the alias was written', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      'function setup(def) {',
+      "  const flag = def.state.bool('outerFlag', false);",
+      '  const current = flag;',
+      '  {',
+      "    const flag = def.state.bool('innerFlag', false);",
+      '    void flag;',
+      "    def.expose.state('visible', current);",
+      '  }',
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'outer-flag' },
+    ]);
+  });
+
+  it('reads a container member the rule uses after a write', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, write, read] of [
+      ['property access', 'controls.ready = second;', 'controls.ready'],
+      ['element access', "controls['ready'] = second;", "controls['ready']"],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        'const controls = { ready: first };',
+        write,
+        `def.expose.state('visible', ${read});`,
+        `def.rule({ when: (w) => w.state(${read}).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals, label).toEqual([
+        { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+      ]);
+    }
+  });
+
+  it('keeps the earlier member when the write may be skipped', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'if (enabled) controls.ready = second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals.map((local) => local.attribute).sort()).toEqual([
+      'first-flag',
+      'second-flag',
+    ]);
+  });
+
+  it('follows a member written through an alias of the container', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'const alias = controls;',
+      'alias.ready = second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('keeps both members when the alias write may be skipped', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'const alias = controls;',
+      'if (enabled) alias.ready = second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals.map((local) => local.attribute).sort()).toEqual([
+      'first-flag',
+      'second-flag',
+    ]);
+  });
+
+  it('keeps the earlier handle when the write is inside a callback', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let flag = first;',
+      "def.on('refresh', () => { flag = second; });",
+      "def.expose.state('visible', flag);",
+      `def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals.map((local) => local.attribute).sort()).toEqual([
+      'first-flag',
+      'second-flag',
+    ]);
+  });
+
+  it('treats an immediately invoked write as ordered', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let flag = first;',
+      '(() => { flag = second; })();',
+      "def.expose.state('visible', flag);",
+      `def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('accepts an intent reading a container that also holds a handle', () => {
+    // The extractor emits `bg-red` and `data-[internal-flag]:bg-red` for this,
+    // so reporting the intent unresolved reds the gate on working code.
+    const source = [
+      "const flag = def.state.bool('internalFlag', false);",
+      "def.expose.state('visible', flag);",
+      "const controls = { ready: flag, className: 'bg-red' };",
+      'def.rule({',
+      '  when: (w) => w.state(controls.ready).eq(true),',
+      "  intent: (i) => i.feedback.style.use(tw(controls['className'])),",
+      '});',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'internal-flag' },
+    ]);
+  });
+
+  it('keeps the earlier handle across an async or generator IIFE', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, iife] of [
+      ['async', '(async () => { await 0; current = second; })();'],
+      ['generator', '(function* () { current = second; })();'],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        'let current = first;',
+        iife,
+        "def.expose.state('visible', current);",
+        `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals.map((local) => local.attribute).sort(), label).toEqual([
+        'first-flag',
+        'second-flag',
+      ]);
+    }
+  });
+
+  it('keeps the earlier handle when an IIFE may not reach the write', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, iife] of [
+      ['early return', '(() => { return; current = second; })();'],
+      ['early throw', "(() => { throw new Error('x'); current = second; })();"],
+      ['conditional return', '(() => { if (enabled) return; current = second; })();'],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        'let current = first;',
+        iife,
+        "def.expose.state('visible', current);",
+        `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals.map((local) => local.attribute).sort(), label).toEqual([
+        'first-flag',
+        'second-flag',
+      ]);
+    }
+  });
+
+  it('keeps the earlier member across a callback, two objects, or an unreadable key', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, lines, read] of [
+      [
+        'callback write',
+        [
+          'const controls = { ready: first };',
+          "def.on('refresh', () => { controls.ready = second; });",
+        ],
+        'controls.ready',
+      ],
+      [
+        'either of two objects',
+        [
+          'const controlsA = { ready: first };',
+          'const controlsB = { ready: first };',
+          'const alias = enabled ? controlsA : controlsB;',
+          'alias.ready = second;',
+        ],
+        'controlsA.ready',
+      ],
+      [
+        'unreadable key',
+        ['const controls = { ready: first };', "const key = 'ready';", 'controls[key] = second;'],
+        'controls.ready',
+      ],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        ...lines,
+        `def.expose.state('visible', ${read});`,
+        `def.rule({ when: (w) => w.state(${read}).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals.map((local) => local.attribute).sort(), label).toEqual([
+        'first-flag',
+        'second-flag',
+      ]);
+    }
+  });
+
+  it('measures a member write against the container, not the alias', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, block, expected] of [
+      [
+        'alias inside a callback',
+        "def.on('refresh', () => { const alias = controls; alias.ready = second; });",
+        ['first-flag', 'second-flag'],
+      ],
+      [
+        'alias in a plain block',
+        '{ const alias = controls; alias.ready = second; }',
+        ['second-flag'],
+      ],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        'const controls = { ready: first };',
+        block,
+        "def.expose.state('visible', controls.ready);",
+        `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals.map((local) => local.attribute).sort(), label).toEqual([
+        ...expected,
+      ]);
+    }
+  });
+
+  it('reports an exposed state whose declared name it cannot read', () => {
+    // The extractor emits nothing for this, so certifying the expose key would
+    // be the fail-closed mismatch this gate exists to prevent.
+    const source = [
+      'const flag = def.state.bool(makeStateName(), false);',
+      "def.expose.state('visible', flag);",
+      "def.rule({ when: (w) => w.state(flag).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.exposedLocals).toEqual([]);
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
   });
 
   it('treats a prototype-owned state as neither a hook pair nor a blind spot', () => {
@@ -358,17 +1101,68 @@ describe('lowered hook coverage', () => {
     expect(scan.usages).toEqual([{ hook: 'asCheckboxRoot', state: 'checked' }]);
   });
 
-  it('reports a handle bound where the extractor never registers it', () => {
-    // The extractor registers declarations while iterating the variable
-    // statements of a scope, so a loop initializer never reaches it.
+  it('follows a handle bound by a loop initializer', () => {
+    // Production registers a loop initializer in the loop's own scope, so
+    // reporting this would be a blind spot the extractor does not have.
     const source = [
       'for (const state = asCheckboxRoot().stateHandles; once; )',
       "  def.rule({ when: (w) => w.state(state.checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
     ].join('\n');
     const scan = scanRuleStateReads(source);
 
-    expect(scan.usages).toEqual([]);
-    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.usages).toEqual([{ hook: 'asCheckboxRoot', state: 'checked' }]);
+  });
+
+  it('binds a loop initializer inside the loop, not over the outer name', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state.bool('outerFlag', false);",
+      "for (let flag = def.state.bool('innerFlag', false); once; ) {",
+      "  def.expose.state('visible', flag);",
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'inner-flag' },
+    ]);
+  });
+
+  it('follows a reassigned alias the rule itself reads', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let current = first;',
+      'current = second;',
+      "def.expose.state('visible', current);",
+      `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'current', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('follows a handle aliased through a binding pattern', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state.bool('internalFlag', false);",
+      'const { ready: publicFlag } = { ready: flag };',
+      "def.expose.state('visible', publicFlag);",
+      `def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'internal-flag' },
+    ]);
   });
 
   it('reports a condition only one branch of which reaches the runtime', () => {
@@ -637,6 +1431,8 @@ describe('lowered hook coverage', () => {
   it('resolves every hook state a shipped rule condition reads', async () => {
     const found: Array<{ file: string; hook: string; state: string }> = [];
     const blind: string[] = [];
+    const exposed: Array<{ file: string; state: string; exposedAs: string; attribute: string }> =
+      [];
 
     let scanned = 0;
     for (const absolute of await prototypeSourceFiles()) {
@@ -647,9 +1443,20 @@ describe('lowered hook coverage', () => {
       const scan = scanRuleStateReads(text, file);
       for (const usage of scan.usages) found.push({ file, ...usage });
       for (const miss of scan.unresolved) blind.push(`${file}: ${miss.reason} ${miss.expression}`);
+      for (const local of scan.exposedLocals) exposed.push({ file, ...local });
     }
 
     expect(scanned, 'files carrying a rule call').toBeGreaterThan(40);
+
+    // Every exposed prototype-owned state a rule reads has to name an attribute
+    // the extractor can emit, or the runtime lowers a variant with no CSS.
+    // `C-EXPOSE-0004-A` admits any non-empty key, and both analyzers normalize
+    // it, so the normalized attribute is what has to be usable — not the key.
+    expect(
+      exposed.filter(({ attribute }) => !SELECTABLE_ATTRIBUTE.test(attribute)),
+      'exposed states whose attribute cannot be written as a data selector'
+    ).toEqual([]);
+    expect(exposed.length, 'exposed prototype-owned states read by a rule').toBeGreaterThan(0);
 
     expect(found.length).toBeGreaterThan(30);
     // The two-step shape must be reached in the shipped tree, not just fixtures.

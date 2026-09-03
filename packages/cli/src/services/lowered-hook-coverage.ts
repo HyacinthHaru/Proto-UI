@@ -2,6 +2,25 @@ import { readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
 
+/**
+ * Mirrors `OFFICIAL_EXPOSED_STATE_NAMES` in `@proto.ui/module-expose-state-web`,
+ * which the Web projection maps before it normalizes anything.
+ */
+const OFFICIAL_EXPOSED_STATE_NAMES: Readonly<Record<string, string>> = Object.freeze({
+  '@interaction/disabled': 'disabled',
+  '@interaction/hovered': 'hovered',
+  '@interaction/pressed': 'pressed',
+  '@interaction/focused': 'focused',
+  '@focus/focused': 'focused',
+  '@interaction/focusVisible': 'focus-visible',
+  '@focus/focusVisible': 'focus-visible',
+  '@accessibility/expanded': 'expanded',
+  '@accessibility/invalid': 'invalid',
+  '@accessibility/selected': 'selected',
+  '@accessibility/checked': 'checked',
+  '@accessibility/current': 'current',
+});
+
 export type HookStateUsage = {
   hook: string;
   state: string;
@@ -23,6 +42,19 @@ export type UnresolvedStateRead = {
   reason: 'subject' | 'comparison' | 'intent' | 'spec' | 'condition';
 };
 
+export type ExposedLocalUsage = {
+  /** The name the prototype declared the state under. */
+  state: string;
+  /** The public key it is exposed as. */
+  exposedAs: string;
+  /**
+   * The attribute the Web runtime will use. `ExposeStateWebModuleImpl` maps the
+   * declared name — the state's `__stateSemantic` — before it falls back to the
+   * expose key, so this is derived from the declaration, not the key.
+   */
+  attribute: string;
+};
+
 export type RuleStateScan = {
   /** Reads traced to a hook and state the extractor must be able to resolve. */
   usages: HookStateUsage[];
@@ -34,16 +66,32 @@ export type RuleStateScan = {
    * static extractor is most likely to be silently missing the same rule.
    */
   unresolved: UnresolvedStateRead[];
+  /**
+   * Reads of a prototype-owned state that is exposed, and therefore lowered by
+   * the Web runtime to a `data-` attribute. These are not hook pairs, so they
+   * are reported separately rather than pretending they came from an `asHook`.
+   */
+  exposedLocals: ExposedLocalUsage[];
 };
+
+type LocalStateBinding = { kind: 'localState'; declaredAs: string | null; exposedAs?: string };
 
 type Binding =
   | { kind: 'hookResult'; hook: string }
   | { kind: 'handleBag'; hook: string }
   | { kind: 'handle'; hook: string; state: string }
   /** `def.state.bool(...)` — owned by the prototype, not borrowed from a hook. */
-  | { kind: 'localState' }
+  | (LocalStateBinding & {
+      /** Handles the name may still hold because a write may be skipped. */
+      alternatives?: LocalStateBinding[];
+    })
   /** A value a `tw(...)` argument may name, resolved where it was declared. */
-  | { kind: 'token'; initializer: ts.Expression }
+  | {
+      kind: 'token';
+      initializer: ts.Expression;
+      /** Members written after the declaration, latest candidates first. */
+      members?: Map<string, ts.Expression[]>;
+    }
   /** A named import; only a relative one is something the extractor follows. */
   | { kind: 'tokenImport'; specifier: string; imported: string; from?: string }
   /** A parameter: it shadows an outer name and its origin is not recoverable. */
@@ -52,12 +100,195 @@ type Binding =
 type Scope = {
   parent: Scope | null;
   bindings: Map<string, Binding>;
+  /** The node that created this scope, used to resolve exposures lexically. */
+  node: ts.Node | null;
 };
 
 function lookup(scope: Scope | null, name: string): Binding | null {
   for (let current = scope; current; current = current.parent) {
     const binding = current.bindings.get(name);
     if (binding) return binding;
+  }
+  return null;
+}
+
+/**
+ * Whether a write may be skipped at runtime. A branch the source decides
+ * statically executes exactly as written; anything else has to keep whatever
+ * the name held before it.
+ */
+function isConditionallyReached(node: ts.Node): boolean {
+  for (
+    let child: ts.Node = node, parent = node.parent;
+    parent;
+    child = parent, parent = parent.parent
+  ) {
+    if (ts.isFunctionLike(parent)) return false;
+    if (ts.isIfStatement(parent)) {
+      if (child === parent.expression) continue;
+      if (child === parent.thenStatement && parent.expression.kind === ts.SyntaxKind.TrueKeyword) {
+        continue;
+      }
+      if (child === parent.elseStatement && parent.expression.kind === ts.SyntaxKind.FalseKeyword) {
+        continue;
+      }
+      return true;
+    }
+    if (ts.isConditionalExpression(parent)) {
+      if (child !== parent.condition) return true;
+      continue;
+    }
+    if (
+      ts.isSwitchStatement(parent) ||
+      ts.isCaseBlock(parent) ||
+      ts.isCaseClause(parent) ||
+      ts.isDefaultClause(parent) ||
+      ts.isTryStatement(parent) ||
+      ts.isCatchClause(parent)
+    ) {
+      return true;
+    }
+    if (
+      ts.isForStatement(parent) ||
+      ts.isForOfStatement(parent) ||
+      ts.isForInStatement(parent) ||
+      ts.isWhileStatement(parent)
+    ) {
+      if (child === parent.statement) return true;
+      continue;
+    }
+    if (ts.isBinaryExpression(parent)) {
+      const operator = parent.operatorToken.kind;
+      const shortCircuits =
+        operator === ts.SyntaxKind.AmpersandAmpersandToken ||
+        operator === ts.SyntaxKind.BarBarToken ||
+        operator === ts.SyntaxKind.QuestionQuestionToken;
+      if (shortCircuits && child === parent.right) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Every edge at the latest position at or before `at`, plus everything an
+ * earlier position still contributes because the later write may be skipped.
+ */
+function visibleEdges<T extends { at: number; conditional?: boolean }>(
+  edges: T[],
+  at: number
+): T[] {
+  const candidates = edges.filter((edge) => edge.at <= at);
+  if (candidates.length === 0) return [];
+  const positions = [...new Set(candidates.map((edge) => edge.at))].sort((a, b) => b - a);
+  const selected: T[] = [];
+  for (const position of positions) {
+    const group = candidates.filter((edge) => edge.at === position);
+    selected.push(...group);
+    if (!group.every((edge) => edge.conditional)) break;
+  }
+  return selected;
+}
+
+function enclosingFunction(node: ts.Node | null): ts.Node | null {
+  return node ? (ts.findAncestor(node, (candidate) => ts.isFunctionLike(candidate)) ?? null) : null;
+}
+
+/**
+ * `(() => { … })()` runs where it is written, so its writes are ordered. An
+ * async function may suspend before the write and a generator does not run its
+ * body on the call at all, so neither is ordered however it is invoked.
+ */
+function runsInPlace(fn: ts.Node): boolean {
+  const declaration = fn as ts.FunctionLikeDeclaration;
+  if (declaration.asteriskToken) return false;
+  if (declaration.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword)) {
+    return false;
+  }
+  let node: ts.Node = fn;
+  while (node.parent && ts.isParenthesizedExpression(node.parent)) node = node.parent;
+  return Boolean(
+    node.parent && ts.isCallExpression(node.parent) && node.parent.expression === node
+  );
+}
+
+/**
+ * A write inside a callback has not run when a later `def.rule` registers, so
+ * the name may still hold what it held before.
+ */
+/**
+ * Whether a statement may hand control somewhere else before finishing. Nested
+ * functions are skipped: their `return` belongs to them, not to this sequence.
+ */
+function mayCompleteAbruptly(node: ts.Node): boolean {
+  let found = false;
+  const visit = (current: ts.Node): void => {
+    if (found || ts.isFunctionLike(current)) return;
+    if (
+      ts.isReturnStatement(current) ||
+      ts.isThrowStatement(current) ||
+      ts.isBreakStatement(current) ||
+      ts.isContinueStatement(current)
+    ) {
+      found = true;
+      return;
+    }
+    ts.forEachChild(current, visit);
+  };
+  visit(node);
+  return found;
+}
+
+/**
+ * Whether a write is guaranteed to have run by the time `boundary` returns.
+ * Being called synchronously proves the function starts, not that this write is
+ * reached.
+ */
+function reachedInPlace(node: ts.Node, boundary: ts.Node): boolean {
+  let child: ts.Node = node;
+  for (let parent = node.parent; parent; child = parent, parent = parent.parent) {
+    if (ts.isBlock(parent) || ts.isCaseClause(parent) || ts.isDefaultClause(parent)) {
+      for (const statement of parent.statements) {
+        if (statement === child) break;
+        if (mayCompleteAbruptly(statement)) return false;
+      }
+    }
+    if (parent === boundary) break;
+  }
+  return true;
+}
+
+function isDeferredWrite(node: ts.Node, readFunction: ts.Node | null): boolean {
+  const writing = enclosingFunction(node);
+  if (writing === readFunction) return false;
+  if (!writing || !runsInPlace(writing)) return true;
+  return !reachedInPlace(node, writing);
+}
+
+/** `var` binds to the function however deeply the declaration is nested. */
+function functionScope(scope: Scope): Scope {
+  for (let current: Scope | null = scope; current; current = current.parent) {
+    const node = current.node;
+    if (!node || !current.parent) return current;
+    if (ts.isSourceFile(node) || ts.isFunctionLike(node)) return current;
+    if (node.parent && ts.isFunctionLike(node.parent)) return current;
+  }
+  return scope;
+}
+
+function isVarList(list: ts.Node): boolean {
+  return (
+    ts.isVariableDeclarationList(list) && !(list.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const))
+  );
+}
+
+function isLoopStatement(node: ts.Node): boolean {
+  return ts.isForStatement(node) || ts.isForOfStatement(node) || ts.isForInStatement(node);
+}
+
+/** The scope a name is already bound in, so an assignment does not shadow it. */
+function scopeBinding(scope: Scope, name: string): Scope | null {
+  for (let current: Scope | null = scope; current; current = current.parent) {
+    if (current.bindings.has(name)) return current;
   }
   return null;
 }
@@ -102,6 +333,28 @@ export function scanRuleStateReads(
   const source = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true);
   const usages: HookStateUsage[] = [];
   const unresolved: UnresolvedStateRead[] = [];
+  const exposedLocals: ExposedLocalUsage[] = [];
+
+  /**
+   * `def.expose.state('hidden', hidden)` by handle name. The Web runtime turns
+   * the exposed key into a `data-` attribute and lowers rules on that state, so
+   * an exposed local is not the same as a purely internal one.
+   */
+  /** The same normalization `createExposeStateWebNameMap` applies. */
+  const exposedDataAttributeName = (key: string): string =>
+    // The table inherits `Object.prototype`, so `constructor` is not an entry.
+    (Object.hasOwn(OFFICIAL_EXPOSED_STATE_NAMES, key)
+      ? OFFICIAL_EXPOSED_STATE_NAMES[key]
+      : undefined) ??
+    key
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/\./g, '-')
+      .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+      .replace(/[^a-zA-Z0-9-]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase();
 
   const unwrap = (node: ts.Node): ts.Node =>
     ts.isNonNullExpression(node) ||
@@ -110,6 +363,469 @@ export function scanRuleStateReads(
     ts.isTypeAssertionExpression(node)
       ? unwrap(node.expression)
       : node;
+
+  const exposedKeys = new Map<ts.Node, Map<string, string>>();
+  type AliasEdge = {
+    owner: ts.Node;
+    name: string;
+    target: string;
+    at: number;
+    conditional: boolean;
+    chain: ts.Node[];
+    node: ts.Node;
+  };
+  const aliasEdges: AliasEdge[] = [];
+  const declaredIn = new Map<ts.Node, Set<string>>();
+
+  /** A statically known string, following one hop through a local constant. */
+  const constantStringValue = (node: ts.Node, scope: Scope): string | null => {
+    const value = unwrap(node);
+    if (ts.isStringLiteralLike(value) || ts.isNoSubstitutionTemplateLiteral(value)) {
+      return value.text;
+    }
+    if (ts.isIdentifier(value)) {
+      const binding = lookup(scope, value.text);
+      if (binding?.kind === 'token') return constantStringValue(binding.initializer, scope);
+    }
+    return null;
+  };
+  // Members carry positions for the same reason aliases do: a write through the
+  // container retargets the member from there on.
+  type MemberEdge = { target: string; at: number; conditional: boolean };
+  const objectMembers = new Map<ts.Node, Map<string, Map<string, MemberEdge[]>>>();
+
+  /** Every member an object literal names, at the position it was written. */
+  const recordObjectLiteral = (
+    owner: ts.Node,
+    base: string,
+    literal: ts.ObjectLiteralExpression,
+    at: number,
+    conditional: boolean
+  ): void => {
+    for (const property of literal.properties) {
+      if (ts.isShorthandPropertyAssignment(property)) {
+        recordMember(owner, base, property.name.text, property.name.text, at, conditional);
+      } else if (
+        ts.isPropertyAssignment(property) &&
+        (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
+      ) {
+        for (const target of aliasTargets(property.initializer)) {
+          recordMember(owner, base, property.name.text, target, at, conditional);
+        }
+      }
+    }
+  };
+
+  /**
+   * `const alias = controls` names one object, so a member written through
+   * either name lands on the same table. A base that may be two different
+   * objects is left as itself: there is no single table to move.
+   */
+  const containerRoots = (
+    name: string,
+    chain: ts.Node[],
+    at: number,
+    seen = new Set<string>()
+  ): string[] => {
+    if (seen.has(name)) return [name];
+    for (const owner of chain) {
+      const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
+      if (candidates.length === 0) continue;
+      const visible = visibleEdges(candidates, at);
+      if (visible.length === 0) return [name];
+      const next = new Set([...seen, name]);
+      // A base that may be either of two objects writes to both tables.
+      return [
+        ...new Set(
+          visible.flatMap((edge) => containerRoots(edge.target, edge.chain ?? chain, edge.at, next))
+        ),
+      ];
+    }
+    return [name];
+  };
+
+  const recordMember = (
+    owner: ts.Node,
+    base: string,
+    key: string,
+    target: string,
+    at: number,
+    conditional: boolean
+  ): void => {
+    const scoped = objectMembers.get(owner) ?? new Map<string, Map<string, MemberEdge[]>>();
+    const members = scoped.get(base) ?? new Map<string, MemberEdge[]>();
+    members.set(key, [...(members.get(key) ?? []), { target, at, conditional }]);
+    scoped.set(base, members);
+    objectMembers.set(owner, scoped);
+  };
+
+  /** Every handle an initializer may name; a conditional contributes both. */
+  const aliasTargets = (node: ts.Node): string[] => {
+    const value = unwrap(node);
+    if (ts.isIdentifier(value)) return [value.text];
+    if (ts.isConditionalExpression(value)) {
+      return [...aliasTargets(value.whenTrue), ...aliasTargets(value.whenFalse)];
+    }
+    return [];
+  };
+
+  /** The identifier member `key` of an initializer names, if it names one. */
+  const memberTargetName = (
+    initializer: ts.Node,
+    key: string,
+    chain: ts.Node[],
+    at: number
+  ): { target: string; at: number } | null => {
+    const value = unwrap(initializer);
+    if (ts.isObjectLiteralExpression(value)) {
+      for (const property of value.properties) {
+        if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) {
+          return { target: key, at };
+        }
+        if (
+          ts.isPropertyAssignment(property) &&
+          (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
+          property.name.text === key
+        ) {
+          const assigned = unwrap(property.initializer);
+          return ts.isIdentifier(assigned) ? { target: assigned.text, at } : null;
+        }
+      }
+      return null;
+    }
+    if (!ts.isIdentifier(value)) return null;
+    const [container] = containerRoots(value.text, chain, at);
+    for (const scope of chain) {
+      const members = objectMembers.get(scope)?.get(container);
+      if (!members) continue;
+      const edges = members.get(key);
+      if (!edges) return null;
+      const visible = visibleEdges(edges, at);
+      // A pattern binds one name, so several candidates leave it ambiguous.
+      return visible.length === 1 ? { target: visible[0].target, at: visible[0].at } : null;
+    }
+    return null;
+  };
+
+  /**
+   * The handle each name in a binding pattern ends up on. A pattern aliases the
+   * same state object a plain `const publicFlag = flag` does.
+   */
+  const patternTargets = (
+    name: ts.BindingName,
+    initializer: ts.Node,
+    chain: ts.Node[],
+    at: number
+  ): Array<{ name: string; target: string; at: number }> => {
+    const out: Array<{ name: string; target: string; at: number }> = [];
+    if (ts.isObjectBindingPattern(name)) {
+      for (const element of name.elements) {
+        if (!ts.isIdentifier(element.name) || element.dotDotDotToken) continue;
+        const property = element.propertyName ?? element.name;
+        const key =
+          ts.isIdentifier(property) || ts.isStringLiteralLike(property) ? property.text : null;
+        if (!key) continue;
+        const resolved = memberTargetName(initializer, key, chain, at);
+        if (resolved) out.push({ name: element.name.text, ...resolved });
+      }
+      return out;
+    }
+    if (!ts.isArrayBindingPattern(name)) return out;
+    const values = unwrap(initializer);
+    if (!ts.isArrayLiteralExpression(values)) return out;
+    name.elements.forEach((element, index) => {
+      if (ts.isOmittedExpression(element)) return;
+      if (!ts.isIdentifier(element.name) || element.dotDotDotToken) return;
+      const value = values.elements[index] && unwrap(values.elements[index]);
+      if (value && ts.isIdentifier(value)) {
+        out.push({ name: element.name.text, target: value.text, at });
+      }
+    });
+    return out;
+  };
+
+  /**
+   * The handles an expose argument may name, each with the position its own
+   * edge was written at: a member captured whatever its target named then.
+   */
+  const resolveHandleNames = (
+    node: ts.Node,
+    chain: ts.Node[],
+    at: number
+  ): Array<{ name: string; at: number }> => {
+    const value = unwrap(node);
+    if (ts.isIdentifier(value)) return [{ name: value.text, at }];
+    const owner = ownerOf(value);
+    if (!owner) return [];
+    const base = unwrap(owner);
+    if (!ts.isIdentifier(base)) return [];
+    const out: Array<{ name: string; at: number }> = [];
+    for (const container of containerRoots(base.text, chain, at)) {
+      for (const scope of chain) {
+        const members = objectMembers.get(scope)?.get(container);
+        if (!members) continue;
+        for (const [key, edges] of members) {
+          if (!memberNamed(value, key)) continue;
+          out.push(...visibleEdges(edges, at).map((edge) => ({ name: edge.target, at: edge.at })));
+        }
+        break;
+      }
+    }
+    return out;
+  };
+  const rawExposures: Array<{
+    handles: Array<{ name: string; at: number }>;
+    key: ts.Expression;
+    chain: ts.Node[];
+  }> = [];
+
+  const memberNamed = (node: ts.Node, name: string): boolean => {
+    const target = unwrap(node);
+    if (ts.isPropertyAccessExpression(target)) return target.name.text === name;
+    if (ts.isElementAccessExpression(target)) {
+      const argument = target.argumentExpression;
+      return Boolean(argument) && ts.isStringLiteralLike(argument) && argument.text === name;
+    }
+    return false;
+  };
+
+  const ownerOf = (node: ts.Node): ts.Node | null => {
+    const target = unwrap(node);
+    return ts.isPropertyAccessExpression(target) || ts.isElementAccessExpression(target)
+      ? target.expression
+      : null;
+  };
+
+  /** The member a `x.name` or `x['name']` write names, if it is static. */
+  const memberNameOf = (node: ts.Node): string | null => {
+    const target = unwrap(node);
+    if (ts.isPropertyAccessExpression(target)) return target.name.text;
+    if (ts.isElementAccessExpression(target)) {
+      const argument = target.argumentExpression;
+      return argument && ts.isStringLiteralLike(argument) ? argument.text : null;
+    }
+    return null;
+  };
+
+  const collectExposedKeys = (node: ts.Node, chain: ts.Node[]): void => {
+    const nextChain = introducesScope(node) ? [node, ...chain] : chain;
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name)) {
+      // `var` binds to the enclosing function however deeply it is nested.
+      const isVar =
+        ts.isVariableDeclarationList(node.parent) &&
+        !(node.parent.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const));
+      const enclosingFunction = isVar
+        ? ts.findAncestor(node, (candidate): candidate is ts.FunctionLikeDeclaration =>
+            ts.isFunctionLike(candidate)
+          )
+        : undefined;
+      const enclosingBody = enclosingFunction?.body;
+      const owner =
+        (enclosingBody && nextChain.includes(enclosingBody) ? enclosingBody : nextChain[0]) ??
+        source;
+      const names = declaredIn.get(owner) ?? new Set<string>();
+      names.add(node.name.text);
+      declaredIn.set(owner, names);
+      if (node.initializer) {
+        const literal = unwrap(node.initializer);
+        const conditional = isConditionallyReached(node);
+        if (ts.isObjectLiteralExpression(literal)) {
+          recordObjectLiteral(owner, node.name.text, literal, node.getStart(), conditional);
+        }
+        for (const target of aliasTargets(node.initializer)) {
+          aliasEdges.push({
+            owner,
+            name: node.name.text,
+            target,
+            at: node.getStart(),
+            conditional,
+            chain: [...nextChain, source],
+            node,
+          });
+        }
+      }
+    }
+    if (
+      ts.isVariableDeclaration(node) &&
+      !ts.isIdentifier(node.name) &&
+      node.initializer &&
+      nextChain.length > 0
+    ) {
+      const patternOwner = nextChain[0] ?? source;
+      const at = node.getStart();
+      const conditional = isConditionallyReached(node);
+      for (const alias of patternTargets(node.name, node.initializer, nextChain, at)) {
+        const names = declaredIn.get(patternOwner) ?? new Set<string>();
+        names.add(alias.name);
+        declaredIn.set(patternOwner, names);
+        aliasEdges.push({
+          owner: patternOwner,
+          name: alias.name,
+          target: alias.target,
+          at: alias.at,
+          conditional,
+          chain: [...nextChain, source],
+          node,
+        });
+      }
+    }
+    // Writing through the container moves the handle the same way, so the
+    // member the exposure reads is the one assigned last before it.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))
+    ) {
+      const base = unwrap(ownerOf(node.left) ?? node.left);
+      const member = memberNameOf(node.left);
+      if (ts.isIdentifier(base)) {
+        const chain = [...nextChain, source];
+        const at = node.getStart();
+        const containers = containerRoots(base.text, chain, at);
+        const declaring =
+          chain.find((candidate) => declaredIn.get(candidate)?.has(containers[0])) ?? null;
+        const conditional =
+          isConditionallyReached(node) ||
+          isDeferredWrite(node, enclosingFunction(declaring)) ||
+          containers.length > 1 ||
+          member === null;
+        for (const container of containers) {
+          const memberOwnerScope =
+            chain.find((candidate) => declaredIn.get(candidate)?.has(container)) ??
+            nextChain[0] ??
+            source;
+          const keys =
+            member === null
+              ? [...(objectMembers.get(memberOwnerScope)?.get(container)?.keys() ?? [])]
+              : [member];
+          for (const key of keys) {
+            for (const target of aliasTargets(node.right)) {
+              recordMember(memberOwnerScope, container, key, target, at, conditional);
+            }
+          }
+        }
+      }
+    }
+    // A plain reassignment moves the handle just as a declaration does.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isIdentifier(node.left)
+    ) {
+      // An assignment does not declare, so it belongs to whichever scope owns
+      // the binding; otherwise a reassignment inside a nested block would be
+      // invisible to an exposure written outside it.
+      const left = node.left.text;
+      const assignOwner =
+        [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(left)) ??
+        nextChain[0] ??
+        source;
+      const conditional = isConditionallyReached(node);
+      const replacement = unwrap(node.right);
+      if (ts.isObjectLiteralExpression(replacement)) {
+        recordObjectLiteral(assignOwner, left, replacement, node.getStart(), conditional);
+      }
+      for (const target of aliasTargets(node.right)) {
+        aliasEdges.push({
+          owner: assignOwner,
+          name: left,
+          target,
+          at: node.getStart(),
+          conditional,
+          chain: [...nextChain, source],
+          node,
+        });
+      }
+    }
+    if (ts.isCallExpression(node)) {
+      const callee = unwrap(node.expression);
+      const owner = ownerOf(callee);
+      const exposesState = memberNamed(callee, 'state') && owner && memberNamed(owner, 'expose');
+      // `def.expose('ready', state)` wraps a state handle too.
+      const exposesDirectly = memberNamed(callee, 'expose');
+      if (exposesState || exposesDirectly) {
+        const [nameArg, handleArg] = node.arguments;
+        const handles = handleArg
+          ? resolveHandleNames(handleArg, [...nextChain, source], node.getStart())
+          : [];
+        if (nameArg && handles.length > 0) {
+          rawExposures.push({ handles, key: nameArg, chain: [...nextChain, source] });
+        }
+      }
+    }
+    ts.forEachChild(node, (child) => collectExposedKeys(child, nextChain));
+  };
+  collectExposedKeys(source, []);
+
+  // Fans out rather than picking one edge, so a conditional alias gives every
+  // candidate handle its variant.
+  const aliasRoots = (
+    name: string,
+    chain: ts.Node[],
+    at: number,
+    seen = new Set<string>()
+  ): Array<{ name: string; chain: ts.Node[] }> => {
+    if (seen.has(name)) return [{ name, chain }];
+    // A write in another function is unordered against this read, so it adds a
+    // candidate rather than replacing one.
+    const readFunction = enclosingFunction(chain[0] ?? null);
+    const ordered = (edge: AliasEdge): AliasEdge =>
+      edge.conditional || !edge.node || !isDeferredWrite(edge.node, readFunction)
+        ? edge
+        : { ...edge, conditional: true };
+    let found: AliasEdge[] = [];
+    for (const owner of chain) {
+      const candidates = aliasEdges
+        .filter((edge) => edge.owner === owner && edge.name === name)
+        .map(ordered);
+      if (candidates.length === 0) continue;
+      found = visibleEdges(candidates, at);
+      break;
+    }
+    if (found.length === 0) return [{ name, chain }];
+    const next = new Set([...seen, name]);
+    // An alias captured its target where the alias was written, so a name the
+    // exposure site shadows must not answer for it.
+    return found.flatMap((edge) => aliasRoots(edge.target, edge.chain ?? chain, edge.at, next));
+  };
+
+  // An exposure names a binding, and a binding lives in one scope. Writing it
+  // across the whole chain would let a sibling prototype reusing the same local
+  // name inherit an exposure its own runtime never registers.
+  const declaringScope = (name: string, chain: ts.Node[]): ts.Node | undefined =>
+    chain.find((candidate) => declaredIn.get(candidate)?.has(name)) ?? chain[chain.length - 1];
+
+  for (const { handles, key, chain } of rawExposures) {
+    // A key the scanner cannot read still means the state is exposed, and the
+    // attribute comes from the declared name anyway.
+    const text = ts.isStringLiteralLike(key) ? key.text : '';
+    const named = handles.flatMap((handle) => [
+      { name: handle.name, chain },
+      ...aliasRoots(handle.name, chain, handle.at),
+    ]);
+    const seen = new Set<string>();
+    for (const entry of named) {
+      const owner = declaringScope(entry.name, entry.chain);
+      if (!owner) continue;
+      const identity = `${entry.name}\u0000${owner.pos}`;
+      if (seen.has(identity)) continue;
+      seen.add(identity);
+      const scoped = exposedKeys.get(owner) ?? new Map<string, string>();
+      if (!scoped.has(entry.name)) scoped.set(entry.name, text);
+      exposedKeys.set(owner, scoped);
+    }
+  }
+
+  /** The exposure visible from a scope chain, nearest scope first. */
+  const exposureFor = (name: string, scope: Scope): string | undefined => {
+    for (let current: Scope | null = scope; current; current = current.parent) {
+      if (!current.node) continue;
+      const scoped = exposedKeys.get(current.node);
+      const found = scoped?.get(name);
+      if (found !== undefined) return found;
+    }
+    return undefined;
+  };
 
   const hookOfCall = (node: ts.Node): string | null => {
     const call = unwrap(node);
@@ -139,13 +855,57 @@ export function scanRuleStateReads(
     scope.bindings.set(name, binding);
   };
 
-  const declareFromInitializer = (declaration: ts.VariableDeclaration, scope: Scope): void => {
-    if (!declaration.initializer) return;
-    const bag = bagHook(declaration.initializer, scope);
+  /**
+   * A write the source may skip leaves the name on either handle, and the
+   * runtime lowers whichever it holds, so a conditional reassignment keeps the
+   * binding it replaces as an alternative instead of discarding it.
+   */
+  const declareConditionally = (
+    scope: Scope,
+    name: string,
+    node: ts.Node,
+    lookupScope: Scope,
+    initializer: ts.Expression
+  ): void => {
+    const previous = scope.bindings.get(name);
+    declareValue(node as ts.BindingName, initializer, scope, lookupScope);
+    const next = scope.bindings.get(name);
+    const uncertain =
+      isConditionallyReached(initializer.parent) ||
+      isDeferredWrite(initializer, enclosingFunction(scope.node));
+    if (!uncertain || !previous || !next) return;
+    if (next.kind !== 'localState' || previous.kind !== 'localState') return;
+    // Alternatives are flat: a candidate carries no candidates of its own.
+    const bare = (binding: LocalStateBinding): LocalStateBinding => ({
+      kind: 'localState',
+      declaredAs: binding.declaredAs,
+      exposedAs: binding.exposedAs,
+    });
+    const kept = [bare(previous), ...(previous.alternatives ?? [])].filter(
+      (candidate) => candidate.declaredAs !== next.declaredAs
+    );
+    if (kept.length > 0) {
+      declare(scope, name, { ...next, alternatives: [...(next.alternatives ?? []), ...kept] });
+    }
+  };
+
+  /**
+   * Binds `name` to whatever `initializer` names. A declaration and a plain
+   * reassignment reach the same runtime handle, so both come through here; the
+   * assignment declares in the scope that already owns the name while still
+   * resolving its right-hand side where it was written.
+   */
+  const declareValue = (
+    name: ts.BindingName,
+    initializer: ts.Expression,
+    scope: Scope,
+    lookupScope: Scope = scope
+  ): void => {
+    const bag = bagHook(initializer, lookupScope);
 
     if (bag) {
-      if (ts.isObjectBindingPattern(declaration.name)) {
-        for (const element of declaration.name.elements) {
+      if (ts.isObjectBindingPattern(name)) {
+        for (const element of name.elements) {
           const property = element.propertyName ?? element.name;
           if (ts.isIdentifier(element.name) && ts.isIdentifier(property)) {
             declare(scope, element.name.text, {
@@ -155,52 +915,134 @@ export function scanRuleStateReads(
             });
           }
         }
-      } else if (ts.isIdentifier(declaration.name)) {
-        declare(scope, declaration.name.text, { kind: 'handleBag', hook: bag });
+      } else if (ts.isIdentifier(name)) {
+        declare(scope, name.text, { kind: 'handleBag', hook: bag });
+      }
+      return;
+    }
+
+    // `const current = enabled ? first : second` — the runtime keeps one branch
+    // and it carries its own declared name, so both candidates are retained.
+    const chosen = unwrap(initializer);
+    if (ts.isConditionalExpression(chosen) && ts.isIdentifier(name)) {
+      // Each branch is bound into a throwaway scope so this reads exactly what
+      // the same expression would name on its own.
+      const branches = [chosen.whenTrue, chosen.whenFalse].map((branch) => {
+        const probe: Scope = { parent: lookupScope, bindings: new Map(), node: lookupScope.node };
+        declareValue(name, branch, probe, lookupScope);
+        return probe.bindings.get(name.text);
+      });
+      const locals = branches.filter(
+        (binding): binding is Binding & { kind: 'localState' } => binding?.kind === 'localState'
+      );
+      if (locals.length === branches.length && locals.length > 0) {
+        const [head, ...rest] = locals;
+        const bare = (binding: LocalStateBinding): LocalStateBinding => ({
+          kind: 'localState',
+          declaredAs: binding.declaredAs,
+          exposedAs: binding.exposedAs,
+        });
+        declare(scope, name.text, {
+          ...head,
+          exposedAs: exposureFor(name.text, scope) ?? head.exposedAs,
+          alternatives: rest
+            .map(bare)
+            .filter((candidate) => candidate.declaredAs !== head.declaredAs),
+        });
+        return;
+      }
+    }
+
+    // `const { ready: publicFlag } = { ready: flag }` and `const [publicFlag] =
+    // [flag]` name the same handle a plain alias does.
+    if (ts.isObjectBindingPattern(name) || ts.isArrayBindingPattern(name)) {
+      const bound: Array<{ target: ts.Identifier; key: string }> = [];
+      if (ts.isObjectBindingPattern(name)) {
+        for (const element of name.elements) {
+          if (!ts.isIdentifier(element.name) || element.dotDotDotToken) continue;
+          const property = element.propertyName ?? element.name;
+          if (!ts.isIdentifier(property) && !ts.isStringLiteralLike(property)) continue;
+          bound.push({ target: element.name, key: property.text });
+        }
+      } else {
+        name.elements.forEach((element, index) => {
+          if (ts.isOmittedExpression(element)) return;
+          if (!ts.isIdentifier(element.name) || element.dotDotDotToken) return;
+          bound.push({ target: element.name, key: String(index) });
+        });
+      }
+      for (const { target, key } of bound) {
+        const held = containerMembers(initializer, key, lookupScope);
+        // A pattern binds one name, so several candidates leave it ambiguous.
+        if (held.length === 1) declareValue(target, held[0], scope, lookupScope);
       }
       return;
     }
 
     // `const checked = asHook().stateHandles.checked` and `= bag.checked`
-    const initializer = unwrap(declaration.initializer);
-    if (ts.isPropertyAccessExpression(initializer) && ts.isIdentifier(declaration.name)) {
-      const owner = bagHook(initializer.expression, scope);
+    const value = unwrap(initializer);
+    if (ts.isPropertyAccessExpression(value) && ts.isIdentifier(name)) {
+      const owner = bagHook(value.expression, lookupScope);
       if (owner) {
-        declare(scope, declaration.name.text, {
+        declare(scope, name.text, {
           kind: 'handle',
           hook: owner,
-          state: initializer.name.text,
+          state: value.name.text,
         });
         return;
       }
     }
 
     // `const hidden = def.state.bool('hidden', true)` — a prototype-owned state.
+    // Production reads the member name statically, so `def.state['bool'](…)`
+    // reaches the same declaration and must not be reported unresolved.
+    const stateOwner = ts.isCallExpression(value) ? ownerOf(unwrap(value.expression)) : null;
     if (
-      ts.isCallExpression(initializer) &&
-      ts.isPropertyAccessExpression(initializer.expression) &&
-      ts.isPropertyAccessExpression(initializer.expression.expression) &&
-      initializer.expression.expression.name.text === 'state' &&
-      ts.isIdentifier(declaration.name)
+      ts.isCallExpression(value) &&
+      stateOwner &&
+      memberNamed(stateOwner, 'state') &&
+      ts.isIdentifier(name)
     ) {
-      declare(scope, declaration.name.text, { kind: 'localState' });
+      const declaredArgument = value.arguments[0];
+      declare(scope, name.text, {
+        kind: 'localState',
+        // `null` means the declaration exists but its runtime name cannot be
+        // read here, which is not the same as having no declaration at all.
+        // A constant the extractor resolves has to resolve here too, or the
+        // gate reports a blind spot production does not have.
+        declaredAs: declaredArgument ? constantStringValue(declaredArgument, lookupScope) : null,
+        exposedAs: exposureFor(name.text, scope),
+      });
       return;
     }
 
-    const hook = hookOfCall(declaration.initializer);
-    if (hook && ts.isIdentifier(declaration.name)) {
-      declare(scope, declaration.name.text, { kind: 'hookResult', hook });
+    const hook = hookOfCall(initializer);
+    if (hook && ts.isIdentifier(name)) {
+      declare(scope, name.text, { kind: 'hookResult', hook });
       return;
+    }
+
+    // `let current = first` names the same handle `first` does, and production
+    // resolves the alias, so a rule reading the alias is not a blind spot.
+    if (ts.isIdentifier(value) && ts.isIdentifier(name)) {
+      const aliased = lookup(lookupScope, value.text);
+      if (aliased && aliased.kind !== 'token' && aliased.kind !== 'tokenImport') {
+        declare(
+          scope,
+          name.text,
+          aliased.kind === 'localState'
+            ? { ...aliased, exposedAs: exposureFor(name.text, scope) ?? aliased.exposedAs }
+            : aliased
+        );
+        return;
+      }
     }
 
     // Anything else a name can hold is a candidate token value. Keeping it in
     // the same scope chain means two blocks may each declare `TOKENS` without
     // either becoming ambiguous, which is what the extractor's scopes do.
-    if (ts.isIdentifier(declaration.name)) {
-      declare(scope, declaration.name.text, {
-        kind: 'token',
-        initializer: declaration.initializer,
-      });
+    if (ts.isIdentifier(name)) {
+      declare(scope, name.text, { kind: 'token', initializer });
     }
   };
 
@@ -225,19 +1067,159 @@ export function scanRuleStateReads(
    * `'local'` means traced to a prototype-owned state, which needs no hook
    * entry and must not be reported either way.
    */
-  const readState = (node: ts.Node, scope: Scope): HookStateUsage | 'local' | null => {
+  type StateRead = HookStateUsage | { exposedLocal: ExposedLocalUsage } | 'local';
+
+  const localStateRead = (binding: LocalStateBinding, state: string): StateRead | null => {
+    if (binding.exposedAs === undefined) return 'local';
+    // The runtime attribute comes from the declared name. If that name is not
+    // statically readable the extractor emits nothing, so substituting the
+    // expose key here would certify a selector that never exists.
+    if (binding.declaredAs === null) return null;
+    return {
+      exposedLocal: {
+        state,
+        exposedAs: binding.exposedAs,
+        attribute: exposedDataAttributeName(binding.declaredAs),
+      },
+    };
+  };
+
+  /**
+   * Every state a `w.state(...)` read may reach. `null` means untraceable; a
+   * name whose write may be skipped reaches more than one, and production emits
+   * a selector for each.
+   */
+  const readState = (node: ts.Node, scope: Scope): StateRead[] | null => {
     const argument = unwrap(node);
     if (ts.isIdentifier(argument)) {
       const binding = lookup(scope, argument.text);
-      if (binding?.kind === 'handle') return { hook: binding.hook, state: binding.state };
-      if (binding?.kind === 'localState') return 'local';
+      if (binding?.kind === 'handle') return [{ hook: binding.hook, state: binding.state }];
+      if (binding?.kind === 'localState') {
+        const reads = [binding, ...(binding.alternatives ?? [])].map((candidate) =>
+          localStateRead(candidate, argument.text)
+        );
+        return reads.some((read) => read === null) ? null : (reads as StateRead[]);
+      }
       return null;
     }
-    if (ts.isPropertyAccessExpression(argument)) {
-      const owner = bagHook(argument.expression, scope);
-      if (owner) return { hook: owner, state: argument.name.text };
+    if (ts.isPropertyAccessExpression(argument) || ts.isElementAccessExpression(argument)) {
+      if (ts.isPropertyAccessExpression(argument)) {
+        const owner = bagHook(argument.expression, scope);
+        if (owner) return [{ hook: owner, state: argument.name.text }];
+      }
+      // `const controls = { ready: flag }` — production reads the container the
+      // same way it reads an `asHook` bag, so this is not a blind spot.
+      const held = memberOfHandleObject(argument, scope);
+      if (held.length === 0) return null;
+      const reads = held.map((expression) => readState(expression, scope));
+      return reads.some((read) => read === null) ? null : (reads.flat() as StateRead[]);
     }
     return null;
+  };
+
+  /**
+   * The expression a statically known container holds under `key`. An array
+   * index is its position, which is what a positional pattern binds. Following
+   * a name is bounded so a self-referential constant cannot loop.
+   */
+  const containerMembers = (
+    node: ts.Node,
+    key: string,
+    scope: Scope,
+    seen = new Set<string>()
+  ): ts.Expression[] => {
+    const value = unwrap(node);
+    if (ts.isObjectLiteralExpression(value)) {
+      for (const property of value.properties) {
+        if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) {
+          return [property.name];
+        }
+        if (
+          ts.isPropertyAssignment(property) &&
+          (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
+          property.name.text === key
+        ) {
+          return [property.initializer];
+        }
+      }
+      return [];
+    }
+    if (ts.isArrayLiteralExpression(value)) {
+      const index = Number(key);
+      if (!Number.isInteger(index) || index < 0) return [];
+      const element = value.elements[index];
+      return element && !ts.isOmittedExpression(element) ? [element] : [];
+    }
+    if (ts.isConditionalExpression(value)) {
+      // Either object may be the one written through, so both answer.
+      return [
+        ...containerMembers(value.whenTrue, key, scope, seen),
+        ...containerMembers(value.whenFalse, key, scope, seen),
+      ];
+    }
+    if (ts.isIdentifier(value) && !seen.has(value.text)) {
+      const binding = lookup(scope, value.text);
+      if (binding?.kind === 'token') {
+        // A write through the container replaces what the declaration named.
+        const written = binding.members?.get(key);
+        if (written && written.length > 0) return written;
+        return containerMembers(binding.initializer, key, scope, new Set([...seen, value.text]));
+      }
+    }
+    return [];
+  };
+
+  /** The members a container's declaration names, for an unreadable write key. */
+  const containerKeys = (node: ts.Node, scope: Scope, seen = new Set<string>()): string[] => {
+    const value = unwrap(node);
+    if (ts.isObjectLiteralExpression(value)) {
+      return value.properties.flatMap((property) =>
+        ts.isShorthandPropertyAssignment(property) ||
+        (ts.isPropertyAssignment(property) &&
+          (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)))
+          ? [(property.name as ts.Identifier | ts.StringLiteral).text]
+          : []
+      );
+    }
+    if (ts.isArrayLiteralExpression(value)) return value.elements.map((_, index) => String(index));
+    if (ts.isIdentifier(value) && !seen.has(value.text)) {
+      const binding = lookup(scope, value.text);
+      if (binding?.kind === 'token') {
+        return containerKeys(binding.initializer, scope, new Set([...seen, value.text]));
+      }
+    }
+    return [];
+  };
+
+  /** Every binding a base expression may name, following a conditional. */
+  const containerBindings = (
+    node: ts.Node,
+    scope: Scope,
+    seen = new Set<string>()
+  ): Array<{ scope: Scope; name: string }> => {
+    const value = unwrap(node);
+    if (ts.isConditionalExpression(value)) {
+      return [
+        ...containerBindings(value.whenTrue, scope, seen),
+        ...containerBindings(value.whenFalse, scope, seen),
+      ];
+    }
+    if (!ts.isIdentifier(value) || seen.has(value.text)) return [];
+    const owner = scopeBinding(scope, value.text);
+    const held = owner?.bindings.get(value.text);
+    if (!owner || held?.kind !== 'token') return [];
+    const initializer = unwrap(held.initializer);
+    if (ts.isIdentifier(initializer) || ts.isConditionalExpression(initializer)) {
+      const next = containerBindings(initializer, scope, new Set([...seen, value.text]));
+      if (next.length > 0) return next;
+    }
+    return [{ scope: owner, name: value.text }];
+  };
+
+  const memberOfHandleObject = (node: ts.Node, scope: Scope): ts.Expression[] => {
+    const owner = ownerOf(node);
+    const key = memberNameOf(node);
+    return owner && key !== null ? containerMembers(owner, key, scope) : [];
   };
 
   /**
@@ -251,6 +1233,16 @@ export function scanRuleStateReads(
     if (node.kind === ts.SyntaxKind.TrueKeyword) return 'positive';
     if (node.kind === ts.SyntaxKind.FalseKeyword) return 'negative';
     if (ts.isStringLiteralLike(node) && /^[a-zA-Z0-9_-]+$/.test(node.text)) return 'positive';
+    // `number.discrete` bindings lower by stringifying the literal, and `-1`
+    // parses as a prefix unary expression rather than a numeric literal.
+    if (ts.isNumericLiteral(node)) return 'positive';
+    if (
+      ts.isPrefixUnaryExpression(node) &&
+      (node.operator === ts.SyntaxKind.MinusToken || node.operator === ts.SyntaxKind.PlusToken) &&
+      ts.isNumericLiteral(node.operand)
+    ) {
+      return 'positive';
+    }
     return null;
   };
 
@@ -305,7 +1297,7 @@ export function scanRuleStateReads(
   const moduleRootScope = (module: ts.SourceFile): Scope => {
     const cached = moduleScopes.get(module);
     if (cached) return cached;
-    const scope: Scope = { parent: null, bindings: new Map() };
+    const scope: Scope = { parent: null, bindings: new Map(), node: null };
     // Insert before filling so a cycle of relative modules terminates.
     moduleScopes.set(module, scope);
     for (const statement of module.statements) {
@@ -371,11 +1363,20 @@ export function scanRuleStateReads(
     if (ts.isArrayLiteralExpression(inner))
       return inner.elements.every((element) => resolvableTokenArgument(element, scope, seen));
     if (ts.isObjectLiteralExpression(inner))
-      return inner.properties.every(
-        (property) =>
-          ts.isPropertyAssignment(property) &&
-          resolvableTokenArgument(property.initializer, scope, seen)
-      );
+      return inner.properties.every((property) => {
+        // A property holding a state handle is not token data. Production reads
+        // the container for handles and tokens at once and takes strings only
+        // where they exist, so such a property does not stop the read.
+        if (ts.isShorthandPropertyAssignment(property)) {
+          return (
+            readState(property.name, scope) !== null ||
+            resolvableTokenArgument(property.name, scope, seen)
+          );
+        }
+        if (!ts.isPropertyAssignment(property)) return false;
+        if (readState(property.initializer, scope) !== null) return true;
+        return resolvableTokenArgument(property.initializer, scope, seen);
+      });
     if (ts.isConditionalExpression(inner))
       return (
         resolvableTokenArgument(inner.whenTrue, scope, seen) &&
@@ -513,7 +1514,7 @@ export function scanRuleStateReads(
   };
 
   type Leaf = {
-    usage: HookStateUsage | 'local' | null;
+    usages: StateRead[] | null;
     /** The `w.state(...)` argument. */
     subject: string;
     /** The whole `w.state(...).eq(...)` leaf. */
@@ -639,7 +1640,7 @@ export function scanRuleStateReads(
             receiver.arguments.length === 1
           ) {
             leaves.push({
-              usage: readState(receiver.arguments[0], scope),
+              usages: readState(receiver.arguments[0], scope),
               subject: receiver.arguments[0].getText(source),
               text: node.getText(source),
               comparison: comparisonOf(node.arguments[0]),
@@ -709,20 +1710,26 @@ export function scanRuleStateReads(
         unresolved.push({ expression: leaf.text, reason: 'comparison' });
         continue;
       }
-      if (leaf.usage === 'local') continue;
-      if (leaf.usage) usages.push(leaf.usage);
-      else unresolved.push({ expression: leaf.subject, reason: 'subject' });
+      if (!leaf.usages) {
+        unresolved.push({ expression: leaf.subject, reason: 'subject' });
+        continue;
+      }
+      for (const read of leaf.usages) {
+        if (read === 'local') continue;
+        if ('exposedLocal' in read) {
+          exposedLocals.push(read.exposedLocal);
+          continue;
+        }
+        usages.push(read);
+      }
     }
   };
 
   const visit = (node: ts.Node, scope: Scope): void => {
     const current = introducesScope(node)
-      ? { parent: scope, bindings: new Map<string, Binding>() }
+      ? { parent: scope, bindings: new Map<string, Binding>(), node }
       : scope;
 
-    // The extractor registers declarations while iterating the variable
-    // statements of a statement-bearing scope, so a loop initializer or a
-    // catch binding never reaches it.
     // A parameter shadows whatever the enclosing scopes bound to that name. Its
     // own origin cannot be recovered from the source, so it resolves to nothing
     // rather than falling through to an outer handle of the same name.
@@ -733,14 +1740,74 @@ export function scanRuleStateReads(
       }
     }
 
+    // A statement, or a loop initializer, which production registers in the
+    // loop's own scope. A catch binding still reaches neither.
     if (
       ts.isVariableDeclaration(node) &&
       node.parent &&
       ts.isVariableDeclarationList(node.parent) &&
       node.parent.parent &&
-      ts.isVariableStatement(node.parent.parent)
+      (ts.isVariableStatement(node.parent.parent) || isLoopStatement(node.parent.parent))
     ) {
-      declareFromInitializer(node, current);
+      // `var` is one function-scoped binding however deeply it is nested, which
+      // is where production registers it too.
+      const owner = isVarList(node.parent) ? functionScope(current) : current;
+      if (node.initializer) declareValue(node.name, node.initializer, owner, current);
+    }
+
+    // Writing through the container moves the member for every read after it.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))
+    ) {
+      const base = unwrap(ownerOf(node.left) ?? node.left);
+      const member = memberNameOf(node.left);
+      if (ts.isIdentifier(base) || ts.isConditionalExpression(base)) {
+        // An alias of the container is the same object, so the write lands on
+        // the binding that actually holds the literal — on each of them when
+        // the base may be either of two objects.
+        const targets = containerBindings(base, current);
+        for (const target of targets) {
+          const container = target.scope.bindings.get(target.name);
+          if (container?.kind !== 'token') continue;
+          // The declaring scope, not this one: inside a callback the write
+          // would otherwise be compared against itself and always look ordered.
+          const uncertain =
+            isConditionallyReached(node) ||
+            isDeferredWrite(node, enclosingFunction(target.scope.node)) ||
+            targets.length > 1 ||
+            member === null;
+          const keys =
+            member === null
+              ? [
+                  ...new Set([
+                    ...(container.members?.keys() ?? []),
+                    ...containerKeys(container.initializer, current),
+                  ]),
+                ]
+              : [member];
+          const members = new Map(container.members ?? []);
+          for (const key of keys) {
+            // Before the first write the member still lives in the declaration.
+            const previous =
+              container.members?.get(key) ?? containerMembers(container.initializer, key, current);
+            members.set(key, [node.right, ...(uncertain ? previous : [])]);
+          }
+          declare(target.scope, target.name, { ...container, members });
+        }
+      }
+    }
+
+    // A reassignment moves the handle for every read that follows it.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isIdentifier(node.left)
+    ) {
+      const name = node.left.text;
+      const owner = scopeBinding(current, name) ?? current;
+      declareConditionally(owner, name, node.left, current, node.right);
     }
 
     if (
@@ -767,9 +1834,9 @@ export function scanRuleStateReads(
     ts.forEachChild(node, (child) => visit(child, current));
   };
 
-  const rootScope: Scope = { parent: null, bindings: new Map() };
+  const rootScope: Scope = { parent: null, bindings: new Map(), node: source };
   declareImports(rootScope);
   visit(source, rootScope);
 
-  return { usages, unresolved };
+  return { usages, unresolved, exposedLocals };
 }
