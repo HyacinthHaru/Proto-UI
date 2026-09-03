@@ -154,6 +154,32 @@ export function scanRuleStateReads(
   type AliasEdge = { owner: ts.Node; name: string; target: string; at: number };
   const aliasEdges: AliasEdge[] = [];
   const declaredIn = new Map<ts.Node, Set<string>>();
+  const objectMembers = new Map<string, Map<string, string>>();
+
+  /** Every handle an initializer may name; a conditional contributes both. */
+  const aliasTargets = (node: ts.Node): string[] => {
+    const value = unwrap(node);
+    if (ts.isIdentifier(value)) return [value.text];
+    if (ts.isConditionalExpression(value)) {
+      return [...aliasTargets(value.whenTrue), ...aliasTargets(value.whenFalse)];
+    }
+    return [];
+  };
+
+  const resolveHandleIdentifier = (node: ts.Node): string | null => {
+    const value = unwrap(node);
+    if (ts.isIdentifier(value)) return value.text;
+    const owner = ownerOf(value);
+    if (!owner) return null;
+    const base = unwrap(owner);
+    if (!ts.isIdentifier(base)) return null;
+    const members = objectMembers.get(base.text);
+    if (!members) return null;
+    for (const [key, target] of members) {
+      if (memberNamed(value, key)) return target;
+    }
+    return null;
+  };
   const rawExposures: Array<{
     handle: string;
     key: ts.Expression;
@@ -181,19 +207,41 @@ export function scanRuleStateReads(
   const collectExposedKeys = (node: ts.Node, chain: ts.Node[]): void => {
     const nextChain = introducesScope(node) ? [node, ...chain] : chain;
     if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name)) {
-      const owner = nextChain[0] ?? source;
+      // `var` binds to the enclosing function however deeply it is nested.
+      const isVar =
+        ts.isVariableDeclarationList(node.parent) &&
+        !(node.parent.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const));
+      const enclosingFunction = isVar
+        ? ts.findAncestor(node, (candidate): candidate is ts.FunctionLikeDeclaration =>
+            ts.isFunctionLike(candidate)
+          )
+        : undefined;
+      const enclosingBody = enclosingFunction?.body;
+      const owner =
+        (enclosingBody && nextChain.includes(enclosingBody) ? enclosingBody : nextChain[0]) ??
+        source;
       const names = declaredIn.get(owner) ?? new Set<string>();
       names.add(node.name.text);
       declaredIn.set(owner, names);
       if (node.initializer) {
-        const initializer = unwrap(node.initializer);
-        if (ts.isIdentifier(initializer)) {
-          aliasEdges.push({
-            owner,
-            name: node.name.text,
-            target: initializer.text,
-            at: node.getStart(),
-          });
+        const literal = unwrap(node.initializer);
+        if (ts.isObjectLiteralExpression(literal)) {
+          const members = new Map<string, string>();
+          for (const property of literal.properties) {
+            if (ts.isShorthandPropertyAssignment(property)) {
+              members.set(property.name.text, property.name.text);
+            } else if (
+              ts.isPropertyAssignment(property) &&
+              (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
+            ) {
+              const value = unwrap(property.initializer);
+              if (ts.isIdentifier(value)) members.set(property.name.text, value.text);
+            }
+          }
+          objectMembers.set(node.name.text, members);
+        }
+        for (const target of aliasTargets(node.initializer)) {
+          aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
         }
       }
     }
@@ -203,17 +251,16 @@ export function scanRuleStateReads(
       node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
       ts.isIdentifier(node.left)
     ) {
-      const value = unwrap(node.right);
-      if (ts.isIdentifier(value)) {
-        // An assignment does not declare, so it belongs to whichever scope owns
-        // the binding; otherwise a reassignment inside a nested block would be
-        // invisible to an exposure written outside it.
-        const left = node.left.text;
-        const owner =
-          [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(left)) ??
-          nextChain[0] ??
-          source;
-        aliasEdges.push({ owner, name: left, target: value.text, at: node.getStart() });
+      // An assignment does not declare, so it belongs to whichever scope owns
+      // the binding; otherwise a reassignment inside a nested block would be
+      // invisible to an exposure written outside it.
+      const left = node.left.text;
+      const assignOwner =
+        [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(left)) ??
+        nextChain[0] ??
+        source;
+      for (const target of aliasTargets(node.right)) {
+        aliasEdges.push({ owner: assignOwner, name: left, target, at: node.getStart() });
       }
     }
     if (ts.isCallExpression(node)) {
@@ -224,10 +271,10 @@ export function scanRuleStateReads(
       const exposesDirectly = memberNamed(callee, 'expose');
       if (exposesState || exposesDirectly) {
         const [nameArg, handleArg] = node.arguments;
-        const handle = handleArg && unwrap(handleArg);
-        if (nameArg && handle && ts.isIdentifier(handle)) {
+        const handle = handleArg && resolveHandleIdentifier(handleArg);
+        if (nameArg && handle) {
           rawExposures.push({
-            handle: handle.text,
+            handle,
             key: nameArg,
             chain: [...nextChain, source],
             at: node.getStart(),
@@ -239,39 +286,35 @@ export function scanRuleStateReads(
   };
   collectExposedKeys(source, []);
 
-  const aliasRoot = (name: string, chain: ts.Node[], at: number): string => {
-    const seen = new Set<string>();
-    let current = name;
-    // Each hop resolves where that edge was created, not where the exposure was
-    // written, so a later redeclaration of an intermediate name cannot retarget
-    // an alias that had already captured its value.
-    let cursor = at;
-    for (;;) {
-      if (seen.has(current)) return current;
-      seen.add(current);
-      let found: AliasEdge | null = null;
-      for (const owner of chain) {
-        let best: AliasEdge | null = null;
-        for (const edge of aliasEdges) {
-          if (edge.owner !== owner || edge.name !== current || edge.at > cursor) continue;
-          if (!best || edge.at > best.at) best = edge;
-        }
-        if (best) {
-          found = best;
-          break;
-        }
-      }
-      if (!found) return current;
-      current = found.target;
-      cursor = found.at;
+  // Fans out rather than picking one edge, so a conditional alias gives every
+  // candidate handle its variant.
+  const aliasRoots = (
+    name: string,
+    chain: ts.Node[],
+    at: number,
+    seen = new Set<string>()
+  ): string[] => {
+    if (seen.has(name)) return [name];
+    let found: AliasEdge[] = [];
+    for (const owner of chain) {
+      const candidates = aliasEdges.filter(
+        (edge) => edge.owner === owner && edge.name === name && edge.at <= at
+      );
+      if (candidates.length === 0) continue;
+      const latest = Math.max(...candidates.map((edge) => edge.at));
+      found = candidates.filter((edge) => edge.at === latest);
+      break;
     }
+    if (found.length === 0) return [name];
+    const next = new Set([...seen, name]);
+    return found.flatMap((edge) => aliasRoots(edge.target, chain, edge.at, next));
   };
 
   for (const { handle, key, chain, at } of rawExposures) {
     // A key the scanner cannot read still means the state is exposed, and the
     // attribute comes from the declared name anyway.
     const text = ts.isStringLiteralLike(key) ? key.text : '';
-    for (const name of new Set([handle, aliasRoot(handle, chain, at)])) {
+    for (const name of new Set([handle, ...aliasRoots(handle, chain, at)])) {
       for (const owner of chain) {
         const scoped = exposedKeys.get(owner) ?? new Map<string, string>();
         if (!scoped.has(name)) scoped.set(name, text);
