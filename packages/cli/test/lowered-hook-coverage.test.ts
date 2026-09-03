@@ -229,7 +229,9 @@ describe('lowered hook coverage', () => {
 
     expect(scan.usages).toEqual([]);
     expect(scan.unresolved).toEqual([]);
-    expect(scan.exposedLocals).toEqual([{ state: 'hidden', exposedAs: 'hidden' }]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'hidden', exposedAs: 'hidden', attribute: 'hidden' },
+    ]);
   });
 
   it('treats a prototype-owned state as neither a hook pair nor a blind spot', () => {
@@ -653,7 +655,8 @@ describe('lowered hook coverage', () => {
   it('resolves every hook state a shipped rule condition reads', async () => {
     const found: Array<{ file: string; hook: string; state: string }> = [];
     const blind: string[] = [];
-    const exposed: Array<{ file: string; state: string; exposedAs: string }> = [];
+    const exposed: Array<{ file: string; state: string; exposedAs: string; attribute: string }> =
+      [];
 
     let scanned = 0;
     for (const absolute of await prototypeSourceFiles()) {
@@ -671,9 +674,11 @@ describe('lowered hook coverage', () => {
 
     // Every exposed prototype-owned state a rule reads has to name an attribute
     // the extractor can emit, or the runtime lowers a variant with no CSS.
+    // `C-EXPOSE-0004-A` admits any non-empty key, and both analyzers normalize
+    // it, so the normalized attribute is what has to be usable — not the key.
     expect(
-      exposed.filter(({ exposedAs }) => !/^[a-zA-Z][a-zA-Z0-9]*$/.test(exposedAs)),
-      'exposed states whose key cannot become a data attribute'
+      exposed.filter(({ attribute }) => !/^[a-z][a-z0-9-]*$/.test(attribute)),
+      'exposed states whose attribute cannot be written as a data selector'
     ).toEqual([]);
     expect(exposed.length, 'exposed prototype-owned states read by a rule').toBeGreaterThan(0);
 

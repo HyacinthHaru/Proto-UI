@@ -26,8 +26,14 @@ export type UnresolvedStateRead = {
 export type ExposedLocalUsage = {
   /** The name the prototype declared the state under. */
   state: string;
-  /** The public key it is exposed as, which the Web runtime turns into an attribute. */
+  /** The public key it is exposed as. */
   exposedAs: string;
+  /**
+   * The attribute the Web runtime will use. `ExposeStateWebModuleImpl` maps the
+   * declared name — the state's `__stateSemantic` — before it falls back to the
+   * expose key, so this is derived from the declaration, not the key.
+   */
+  attribute: string;
 };
 
 export type RuleStateScan = {
@@ -54,7 +60,7 @@ type Binding =
   | { kind: 'handleBag'; hook: string }
   | { kind: 'handle'; hook: string; state: string }
   /** `def.state.bool(...)` — owned by the prototype, not borrowed from a hook. */
-  | { kind: 'localState'; exposedAs?: string }
+  | { kind: 'localState'; declaredAs?: string; exposedAs?: string }
   /** A value a `tw(...)` argument may name, resolved where it was declared. */
   | { kind: 'token'; initializer: ts.Expression }
   /** A named import; only a relative one is something the extractor follows. */
@@ -122,6 +128,18 @@ export function scanRuleStateReads(
    * the exposed key into a `data-` attribute and lowers rules on that state, so
    * an exposed local is not the same as a purely internal one.
    */
+  /** The same normalization `createExposeStateWebNameMap` applies. */
+  const exposedDataAttributeName = (key: string): string =>
+    key
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/\./g, '-')
+      .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+      .replace(/[^a-zA-Z0-9-]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase();
+
   const exposedKeys = new Map<string, string>();
   const collectExposedKeys = (node: ts.Node): void => {
     if (
@@ -220,8 +238,13 @@ export function scanRuleStateReads(
       initializer.expression.expression.name.text === 'state' &&
       ts.isIdentifier(declaration.name)
     ) {
+      const declaredArgument = initializer.arguments[0];
       declare(scope, declaration.name.text, {
         kind: 'localState',
+        declaredAs:
+          declaredArgument && ts.isStringLiteralLike(declaredArgument)
+            ? declaredArgument.text
+            : undefined,
         exposedAs: exposedKeys.get(declaration.name.text),
       });
       return;
@@ -274,9 +297,14 @@ export function scanRuleStateReads(
       const binding = lookup(scope, argument.text);
       if (binding?.kind === 'handle') return { hook: binding.hook, state: binding.state };
       if (binding?.kind === 'localState') {
-        return binding.exposedAs
-          ? { exposedLocal: { state: argument.text, exposedAs: binding.exposedAs } }
-          : 'local';
+        if (!binding.exposedAs) return 'local';
+        return {
+          exposedLocal: {
+            state: argument.text,
+            exposedAs: binding.exposedAs,
+            attribute: exposedDataAttributeName(binding.declaredAs ?? binding.exposedAs),
+          },
+        };
       }
       return null;
     }

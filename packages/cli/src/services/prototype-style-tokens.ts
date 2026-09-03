@@ -106,15 +106,21 @@ function walk(node, scope, tokens) {
     const nextScope = createScope(scope);
 
     if (hasStatements(node)) {
+      // Declarations first, then every exposure, then the rules. The runtime
+      // builds its exposed-state map after setup returns, so a rule written
+      // above the expose call is still lowered with the attribute.
+      for (const stmt of node.statements) {
+        if (!ts.isVariableStatement(stmt)) continue;
+        for (const decl of stmt.declarationList.declarations) registerDeclaration(decl, nextScope);
+      }
+      for (const stmt of node.statements) registerExposedState(stmt, nextScope);
       for (const stmt of node.statements) {
         if (ts.isVariableStatement(stmt)) {
           for (const decl of stmt.declarationList.declarations) {
-            registerDeclaration(decl, nextScope);
             if (decl.initializer) walk(decl.initializer, nextScope, tokens);
           }
           continue;
         }
-        registerExposedState(stmt, nextScope);
         walk(stmt, nextScope, tokens);
       }
       return;
@@ -328,7 +334,24 @@ function lookup(name, scope) {
 function resolveBinding(node, scope) {
   const semantic = resolveSemanticBinding(node);
   const value = resolveExpression(node, scope);
-  return semantic ? { ...value, semantic } : value;
+  const declared = resolveDeclaredStateName(node);
+  const withName = declared ? { ...value, stateName: declared } : value;
+  return semantic ? { ...withName, semantic } : withName;
+}
+
+/**
+ * `def.state.bool('hidden', …)` — the name the prototype declared. `StateKernel`
+ * stores it as `__stateSemantic`, and `ExposeStateWebModuleImpl` maps that
+ * before it would fall back to the expose key, so this is the name the Web
+ * attribute comes from.
+ */
+function resolveDeclaredStateName(node) {
+  if (!ts.isCallExpression(node)) return null;
+  if (!ts.isPropertyAccessExpression(node.expression)) return null;
+  const owner = node.expression.expression;
+  if (!ts.isPropertyAccessExpression(owner) || owner.name.text !== 'state') return null;
+  const first = node.arguments[0];
+  return first && ts.isStringLiteralLike(first) ? first.text : null;
 }
 
 /**
@@ -365,11 +388,19 @@ function registerExposedState(statement, scope) {
   if (!isPropertyAccessChain(call.expression, ['expose', 'state'])) return;
   const [nameArg, handleArg] = call.arguments;
   if (!nameArg || !handleArg) return;
-  if (!ts.isStringLiteralLike(nameArg) || !ts.isIdentifier(handleArg)) return;
-  const attribute = exposedDataAttributeName(nameArg.text);
-  if (!attribute) return;
+  if (!ts.isIdentifier(handleArg)) return;
+  // The key may be a constant the runtime resolves to a real string.
+  const exposedKey = ts.isStringLiteralLike(nameArg)
+    ? nameArg.text
+    : resolveExpression(nameArg, scope).single;
+  if (!exposedKey) return;
   const existing = lookup(handleArg.text, scope);
   if (existing.semantic) return;
+  // The runtime maps `__stateSemantic` — the declared name — before it falls
+  // back to the expose key, so exposing `internalFlag` as `visible` still
+  // produces `data-internal-flag`.
+  const attribute = exposedDataAttributeName(existing.stateName ?? exposedKey);
+  if (!attribute) return;
   scope.bindings.set(handleArg.text, { ...existing, semantic: `data-[${attribute}]` });
 }
 
@@ -740,14 +771,18 @@ function collectTwTokens(node, scope) {
       const nextScope = createScope(currentScope);
       if (hasStatements(current)) {
         for (const stmt of current.statements) {
+          if (!ts.isVariableStatement(stmt)) continue;
+          for (const decl of stmt.declarationList.declarations)
+            registerDeclaration(decl, nextScope);
+        }
+        for (const stmt of current.statements) registerExposedState(stmt, nextScope);
+        for (const stmt of current.statements) {
           if (ts.isVariableStatement(stmt)) {
             for (const decl of stmt.declarationList.declarations) {
-              registerDeclaration(decl, nextScope);
               if (decl.initializer) visit(decl.initializer, nextScope);
             }
             continue;
           }
-          registerExposedState(stmt, nextScope);
           visit(stmt, nextScope);
         }
         return;

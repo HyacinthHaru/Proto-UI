@@ -311,6 +311,88 @@ describe('collectProtoStyleTokens', () => {
     expect(await collectProtoStyleTokens(dir)).toContain('data-[drag-over]:bg-accent');
   });
 
+  it('uses the declared state name rather than the expose key', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('internalFlag', false);",
+        // `StateKernel` stores the declared name as `__stateSemantic`, and
+        // `ExposeStateWebModuleImpl` maps that before the expose key.
+        "    def.expose.state('visible', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[internal-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[visible]:bg-accent');
+  });
+
+  it('registers an exposure declared after the rule that reads it', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const hidden = def.state.bool('hidden', true);",
+        '    def.rule({',
+        '      when: (w) => w.state(hidden).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('hidden')),",
+        '    });',
+        // The runtime builds its exposed-state map after setup returns, so
+        // source order does not decide whether the rule lowers.
+        "    def.expose.state('hidden', hidden);",
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[hidden]:hidden');
+  });
+
+  it('resolves a constant expose key', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const key = 'hidden';",
+        "    const hidden = def.state.bool('hidden', true);",
+        '    def.expose.state(key, hidden);',
+        '    def.rule({',
+        '      when: (w) => w.state(hidden).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('hidden')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[hidden]:hidden');
+  });
+
   it('keeps an official semantic when the state is exposed under another key', async () => {
     await writeFile(
       path.join(dir, 'widget.proto.ts'),
