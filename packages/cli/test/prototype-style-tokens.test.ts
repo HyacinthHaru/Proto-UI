@@ -671,6 +671,67 @@ describe('collectProtoStyleTokens', () => {
     expect(await collectProtoStyleTokens(dir)).toContain('data-[step=-1]:bg-accent');
   });
 
+  it('resolves each alias hop where that hop was created', async () => {
+    // `publicFlag` captured `current` while `current` still meant `first`; a
+    // later `var current = second` must not retarget the exposure.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    var current = first;',
+        '    const publicFlag = current;',
+        '    var current = second;',
+        "    def.expose.state('visible', publicFlag);",
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[second-flag]:bg-accent');
+  });
+
+  it('serializes a discrete number the way the runtime does', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const step = def.state.numberDiscrete('step', 0);",
+        "    def.expose.state('step', step);",
+        // The runtime lowers with `String(literal)`, and `String(-0)` is `0`.
+        '    def.rule({',
+        '      when: (w) => w.state(step).eq(-0),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[step=0]:bg-accent');
+    expect(tokens).not.toContain('data-[step=-0]:bg-accent');
+  });
+
   it('keeps every binding a legal redeclaration installs', async () => {
     // The exposure pre-pass must not flatten sequential declaration scope.
     await writeFile(

@@ -482,20 +482,25 @@ function collectExposures(root) {
         if (edge.owner !== owner || edge.name !== name || edge.at > at) continue;
         if (!best || edge.at > best.at) best = edge;
       }
-      if (best) return best.target;
+      if (best) return best;
     }
     return null;
   };
 
+  // Each hop resolves where that edge was created, not where the exposure was
+  // written: an alias captured its target at its own initialization, so a later
+  // redeclaration of the intermediate name cannot retarget it.
   const rootName = (name, chain, at) => {
     const seen = new Set();
     let current = name;
+    let cursor = at;
     for (;;) {
       if (seen.has(current)) return current;
       seen.add(current);
-      const next = lookupAlias(current, chain, at);
-      if (!next) return current;
-      current = next;
+      const edge = lookupAlias(current, chain, cursor);
+      if (!edge) return current;
+      current = edge.target;
+      cursor = edge.at;
     }
   };
 
@@ -885,13 +890,17 @@ function resolveStateEqVariant(semantic, expected) {
 
 /** `-1` parses as a prefix unary expression rather than a numeric literal. */
 function signedNumericText(node) {
-  if (ts.isNumericLiteral(node)) return node.text;
+  // The runtime lowers with `String(literal)`, so the canonical value is what
+  // the selector must carry — `-0` projects as `0`, not `-0`.
+  const canonical = (value) => (Number.isFinite(value) ? String(value) : null);
+  if (ts.isNumericLiteral(node)) return canonical(Number(node.text));
   if (
     ts.isPrefixUnaryExpression(node) &&
     (node.operator === ts.SyntaxKind.MinusToken || node.operator === ts.SyntaxKind.PlusToken) &&
     ts.isNumericLiteral(node.operand)
   ) {
-    return node.operator === ts.SyntaxKind.MinusToken ? `-${node.operand.text}` : node.operand.text;
+    const magnitude = Number(node.operand.text);
+    return canonical(node.operator === ts.SyntaxKind.MinusToken ? -magnitude : magnitude);
   }
   return null;
 }

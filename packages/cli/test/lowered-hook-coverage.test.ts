@@ -258,6 +258,25 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('resolves each alias hop where that hop was created', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'var current = first;',
+      'const publicFlag = current;',
+      'var current = second;',
+      "def.expose.state('visible', publicFlag);",
+      `def.rule({ when: (w) => w.state(first).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.

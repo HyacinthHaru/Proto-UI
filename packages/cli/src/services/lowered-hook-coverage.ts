@@ -216,24 +216,28 @@ export function scanRuleStateReads(
   const aliasRoot = (name: string, chain: ts.Node[], at: number): string => {
     const seen = new Set<string>();
     let current = name;
+    // Each hop resolves where that edge was created, not where the exposure was
+    // written, so a later redeclaration of an intermediate name cannot retarget
+    // an alias that had already captured its value.
+    let cursor = at;
     for (;;) {
       if (seen.has(current)) return current;
       seen.add(current);
-      // The edge in effect where the exposure was written, nearest scope first.
-      let next: string | undefined;
+      let found: AliasEdge | null = null;
       for (const owner of chain) {
         let best: AliasEdge | null = null;
         for (const edge of aliasEdges) {
-          if (edge.owner !== owner || edge.name !== current || edge.at > at) continue;
+          if (edge.owner !== owner || edge.name !== current || edge.at > cursor) continue;
           if (!best || edge.at > best.at) best = edge;
         }
         if (best) {
-          next = best.target;
+          found = best;
           break;
         }
       }
-      if (next === undefined) return current;
-      current = next;
+      if (!found) return current;
+      current = found.target;
+      cursor = found.at;
     }
   };
 
