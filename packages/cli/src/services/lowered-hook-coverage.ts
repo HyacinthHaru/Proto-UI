@@ -193,8 +193,17 @@ function enclosingFunction(node: ts.Node | null): ts.Node | null {
   return node ? (ts.findAncestor(node, (candidate) => ts.isFunctionLike(candidate)) ?? null) : null;
 }
 
-/** `(() => { … })()` runs where it is written, so its writes are ordered. */
-function isImmediatelyInvoked(fn: ts.Node): boolean {
+/**
+ * `(() => { … })()` runs where it is written, so its writes are ordered. An
+ * async function may suspend before the write and a generator does not run its
+ * body on the call at all, so neither is ordered however it is invoked.
+ */
+function runsInPlace(fn: ts.Node): boolean {
+  const declaration = fn as ts.FunctionLikeDeclaration;
+  if (declaration.asteriskToken) return false;
+  if (declaration.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword)) {
+    return false;
+  }
   let node: ts.Node = fn;
   while (node.parent && ts.isParenthesizedExpression(node.parent)) node = node.parent;
   return Boolean(
@@ -209,7 +218,7 @@ function isImmediatelyInvoked(fn: ts.Node): boolean {
 function isDeferredWrite(node: ts.Node, readFunction: ts.Node | null): boolean {
   const writing = enclosingFunction(node);
   if (writing === readFunction) return false;
-  return !(writing && isImmediatelyInvoked(writing));
+  return !(writing && runsInPlace(writing));
 }
 
 /** `var` binds to the function however deeply the declaration is nested. */
