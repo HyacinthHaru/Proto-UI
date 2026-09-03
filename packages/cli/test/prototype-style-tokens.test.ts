@@ -2261,4 +2261,55 @@ describe('collectProtoStyleTokens', () => {
       expect(tokens, label).toContain('data-[second-flag]:bg-accent');
     }
   });
+  it('measures a member write against the container, not the alias', async () => {
+    // The alias is declared inside the callback, so its declaring scope is the
+    // callback itself and the write would look ordered against itself. What
+    // decides is the lifetime of the object being mutated.
+    for (const [label, block, keepsFirst] of [
+      [
+        'alias inside a callback',
+        [
+          "def.on('refresh', () => {",
+          '  const alias = controls;',
+          '  alias.ready = second;',
+          '});',
+        ],
+        true,
+      ],
+      [
+        'alias in a plain block',
+        ['{', '  const alias = controls;', '  alias.ready = second;', '}'],
+        false,
+      ],
+    ] as const) {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          "    const first = def.state.bool('firstFlag', false);",
+          "    const second = def.state.bool('secondFlag', false);",
+          '    const controls = { ready: first };',
+          ...block.map((line) => `    ${line}`),
+          "    def.expose.state('visible', controls.ready);",
+          '    def.rule({',
+          '      when: (w) => w.state(controls.ready).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens, label).toContain('data-[second-flag]:bg-accent');
+      if (keepsFirst) expect(tokens, label).toContain('data-[first-flag]:bg-accent');
+      else expect(tokens, label).not.toContain('data-[first-flag]:bg-accent');
+    }
+  });
 });

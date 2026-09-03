@@ -913,6 +913,37 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('measures a member write against the container, not the alias', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, block, expected] of [
+      [
+        'alias inside a callback',
+        "def.on('refresh', () => { const alias = controls; alias.ready = second; });",
+        ['first-flag', 'second-flag'],
+      ],
+      [
+        'alias in a plain block',
+        '{ const alias = controls; alias.ready = second; }',
+        ['second-flag'],
+      ],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        'const controls = { ready: first };',
+        block,
+        "def.expose.state('visible', controls.ready);",
+        `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals.map((local) => local.attribute).sort(), label).toEqual([
+        ...expected,
+      ]);
+    }
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.

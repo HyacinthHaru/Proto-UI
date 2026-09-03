@@ -216,6 +216,24 @@ function readMemberSemantics(node, scope) {
   return memberSemantics(resolveExpression(owner, scope).semanticMap?.get(name));
 }
 
+/**
+ * The outermost scope holding this exact container value. An alias and the
+ * container are one object, so the object's lifetime — not the alias's
+ * declaration — decides whether a write through it has run.
+ */
+function scopeOwningValue(value, scope) {
+  let owning = null;
+  for (let current = scope; current; current = current.parent) {
+    for (const held of current.bindings.values()) {
+      if (held === value) {
+        owning = current;
+        break;
+      }
+    }
+  }
+  return owning;
+}
+
 /** The scope a name is already bound in, so an assignment does not shadow it. */
 function scopeDeclaring(name, scope) {
   for (let current = scope; current; current = current.parent) {
@@ -289,9 +307,10 @@ function walk(node, scope, tokens, exposures) {
       const written = bindingSemantics(resolveBinding(node.right, scope));
       for (const container of targets) {
         if (written.length === 0) break;
-        // The declaring scope, not this one: inside a callback the write would
-        // otherwise be compared against itself and always look ordered.
-        const declaring = scopeDeclaring(base.text, scope);
+        // The scope that owns the container object, not the one that declares
+        // the name written through: an alias declared inside a callback would
+        // otherwise make the write look ordered against itself.
+        const declaring = scopeOwningValue(container, scope) ?? scopeDeclaring(base.text, scope);
         const uncertain =
           isConditionallyReached(node) ||
           isDeferredWrite(node, enclosingFunction(declaring?.node ?? null)) ||
