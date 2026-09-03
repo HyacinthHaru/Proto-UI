@@ -18,6 +18,7 @@ relates:
     - C-AS-HOOK-0001
   decisions:
     - D-AS-HOOK-PRIVILEGED-NO-ARG-MIGRATION-0001
+    - D-USE-FOCUS-ROVING-DEPRECATION-0001
 sources:
   - path: packages/core/src/prototype.ts
     sections:

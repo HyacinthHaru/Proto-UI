@@ -27,6 +27,9 @@ function isRepositoryPath(value: string | undefined): value is string {
  * the result would depend on the machine rather than on the catalog.
  */
 function resolves(value: string): boolean {
+  // An absolute path resolves inside the author's checkout and nowhere else, so
+  // a catalog entry carrying one would pass here and fail in CI.
+  if (path.isAbsolute(value)) return false;
   const candidate = path.resolve(REPO_ROOT, value);
   const relative = path.relative(REPO_ROOT, candidate);
   if (relative.startsWith('..') || path.isAbsolute(relative)) return false;
@@ -90,6 +93,8 @@ describe('catalog evidence integrity', () => {
           // Exists beside most checkouts; a traversal must not satisfy a
           // repository-scoped citation.
           { path: '../package.json' },
+          // Exists in this checkout and nowhere else.
+          { path: path.join(REPO_ROOT, 'package.json') },
           // A citation outside the repository is not this check's to resolve.
           { path: 'https://www.w3.org/TR/wai-aria-1.2/' },
         ],
@@ -143,6 +148,7 @@ describe('catalog evidence integrity', () => {
     expect(gaps.missingSources).toEqual([
       'C-FIXTURE-0001: spec/nothing-here.md',
       'C-FIXTURE-0001: ../package.json',
+      `C-FIXTURE-0001: ${path.join(REPO_ROOT, 'package.json')}`,
     ]);
     expect(gaps.missingImplementations).toEqual([
       'C-FIXTURE-0001: absent -> packages/nothing-here.test.ts',
