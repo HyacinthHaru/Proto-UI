@@ -571,17 +571,68 @@ describe('lowered hook coverage', () => {
     expect(scan.usages).toEqual([{ hook: 'asCheckboxRoot', state: 'checked' }]);
   });
 
-  it('reports a handle bound where the extractor never registers it', () => {
-    // The extractor registers declarations while iterating the variable
-    // statements of a scope, so a loop initializer never reaches it.
+  it('follows a handle bound by a loop initializer', () => {
+    // Production registers a loop initializer in the loop's own scope, so
+    // reporting this would be a blind spot the extractor does not have.
     const source = [
       'for (const state = asCheckboxRoot().stateHandles; once; )',
       "  def.rule({ when: (w) => w.state(state.checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
     ].join('\n');
     const scan = scanRuleStateReads(source);
 
-    expect(scan.usages).toEqual([]);
-    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.usages).toEqual([{ hook: 'asCheckboxRoot', state: 'checked' }]);
+  });
+
+  it('binds a loop initializer inside the loop, not over the outer name', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state.bool('outerFlag', false);",
+      "for (let flag = def.state.bool('innerFlag', false); once; ) {",
+      "  def.expose.state('visible', flag);",
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'inner-flag' },
+    ]);
+  });
+
+  it('follows a reassigned alias the rule itself reads', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let current = first;',
+      'current = second;',
+      "def.expose.state('visible', current);",
+      `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'current', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('follows a handle aliased through a binding pattern', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state.bool('internalFlag', false);",
+      'const { ready: publicFlag } = { ready: flag };',
+      "def.expose.state('visible', publicFlag);",
+      `def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'internal-flag' },
+    ]);
   });
 
   it('reports a condition only one branch of which reaches the runtime', () => {

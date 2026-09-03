@@ -102,6 +102,18 @@ function lookup(scope: Scope | null, name: string): Binding | null {
   return null;
 }
 
+function isLoopStatement(node: ts.Node): boolean {
+  return ts.isForStatement(node) || ts.isForOfStatement(node) || ts.isForInStatement(node);
+}
+
+/** The scope a name is already bound in, so an assignment does not shadow it. */
+function scopeBinding(scope: Scope, name: string): Scope | null {
+  for (let current: Scope | null = scope; current; current = current.parent) {
+    if (current.bindings.has(name)) return current;
+  }
+  return null;
+}
+
 function introducesScope(node: ts.Node): boolean {
   return (
     ts.isSourceFile(node) ||
@@ -219,6 +231,78 @@ export function scanRuleStateReads(
     return [];
   };
 
+  /** The identifier member `key` of an initializer names, if it names one. */
+  const memberTargetName = (
+    initializer: ts.Node,
+    key: string,
+    chain: ts.Node[],
+    at: number
+  ): string | null => {
+    const value = unwrap(initializer);
+    if (ts.isObjectLiteralExpression(value)) {
+      for (const property of value.properties) {
+        if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) return key;
+        if (
+          ts.isPropertyAssignment(property) &&
+          (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
+          property.name.text === key
+        ) {
+          const assigned = unwrap(property.initializer);
+          return ts.isIdentifier(assigned) ? assigned.text : null;
+        }
+      }
+      return null;
+    }
+    if (!ts.isIdentifier(value)) return null;
+    for (const scope of chain) {
+      const members = objectMembers.get(scope)?.get(value.text);
+      if (!members) continue;
+      const edges = members.get(key);
+      if (!edges) return null;
+      const visible = edges.filter((edge) => edge.at <= at);
+      if (visible.length === 0) return null;
+      return visible.reduce((latest, edge) => (edge.at > latest.at ? edge : latest)).target;
+    }
+    return null;
+  };
+
+  /**
+   * The handle each name in a binding pattern ends up on. A pattern aliases the
+   * same state object a plain `const publicFlag = flag` does.
+   */
+  const patternTargets = (
+    name: ts.BindingName,
+    initializer: ts.Node,
+    chain: ts.Node[],
+    at: number
+  ): Array<{ name: string; target: string }> => {
+    const out: Array<{ name: string; target: string }> = [];
+    if (ts.isObjectBindingPattern(name)) {
+      for (const element of name.elements) {
+        if (!ts.isIdentifier(element.name) || element.dotDotDotToken) continue;
+        const property = element.propertyName ?? element.name;
+        const key =
+          ts.isIdentifier(property) || ts.isStringLiteralLike(property) ? property.text : null;
+        if (!key) continue;
+        const target = memberTargetName(initializer, key, chain, at);
+        if (target) out.push({ name: element.name.text, target });
+      }
+      return out;
+    }
+    if (!ts.isArrayBindingPattern(name)) return out;
+    const values = unwrap(initializer);
+    if (!ts.isArrayLiteralExpression(values)) return out;
+    name.elements.forEach((element, index) => {
+      if (ts.isOmittedExpression(element)) return;
+      if (!ts.isIdentifier(element.name) || element.dotDotDotToken) return;
+      const value = values.elements[index] && unwrap(values.elements[index]);
+      if (value && ts.isIdentifier(value)) {
+        out.push({ name: element.name.text, target: value.text });
+      }
+    });
+    return out;
+  };
+
   const resolveHandleIdentifier = (node: ts.Node, chain: ts.Node[], at: number): string | null => {
     const value = unwrap(node);
     if (ts.isIdentifier(value)) return value.text;
@@ -314,6 +398,21 @@ export function scanRuleStateReads(
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
         }
+      }
+    }
+    if (
+      ts.isVariableDeclaration(node) &&
+      !ts.isIdentifier(node.name) &&
+      node.initializer &&
+      nextChain.length > 0
+    ) {
+      const patternOwner = nextChain[0] ?? source;
+      const at = node.getStart();
+      for (const alias of patternTargets(node.name, node.initializer, nextChain, at)) {
+        const names = declaredIn.get(patternOwner) ?? new Set<string>();
+        names.add(alias.name);
+        declaredIn.set(patternOwner, names);
+        aliasEdges.push({ owner: patternOwner, name: alias.name, target: alias.target, at });
       }
     }
     // Writing through the container moves the handle the same way, so the
@@ -458,13 +557,23 @@ export function scanRuleStateReads(
     scope.bindings.set(name, binding);
   };
 
-  const declareFromInitializer = (declaration: ts.VariableDeclaration, scope: Scope): void => {
-    if (!declaration.initializer) return;
-    const bag = bagHook(declaration.initializer, scope);
+  /**
+   * Binds `name` to whatever `initializer` names. A declaration and a plain
+   * reassignment reach the same runtime handle, so both come through here; the
+   * assignment declares in the scope that already owns the name while still
+   * resolving its right-hand side where it was written.
+   */
+  const declareValue = (
+    name: ts.BindingName,
+    initializer: ts.Expression,
+    scope: Scope,
+    lookupScope: Scope = scope
+  ): void => {
+    const bag = bagHook(initializer, lookupScope);
 
     if (bag) {
-      if (ts.isObjectBindingPattern(declaration.name)) {
-        for (const element of declaration.name.elements) {
+      if (ts.isObjectBindingPattern(name)) {
+        for (const element of name.elements) {
           const property = element.propertyName ?? element.name;
           if (ts.isIdentifier(element.name) && ts.isIdentifier(property)) {
             declare(scope, element.name.text, {
@@ -474,21 +583,21 @@ export function scanRuleStateReads(
             });
           }
         }
-      } else if (ts.isIdentifier(declaration.name)) {
-        declare(scope, declaration.name.text, { kind: 'handleBag', hook: bag });
+      } else if (ts.isIdentifier(name)) {
+        declare(scope, name.text, { kind: 'handleBag', hook: bag });
       }
       return;
     }
 
     // `const checked = asHook().stateHandles.checked` and `= bag.checked`
-    const initializer = unwrap(declaration.initializer);
-    if (ts.isPropertyAccessExpression(initializer) && ts.isIdentifier(declaration.name)) {
-      const owner = bagHook(initializer.expression, scope);
+    const value = unwrap(initializer);
+    if (ts.isPropertyAccessExpression(value) && ts.isIdentifier(name)) {
+      const owner = bagHook(value.expression, lookupScope);
       if (owner) {
-        declare(scope, declaration.name.text, {
+        declare(scope, name.text, {
           kind: 'handle',
           hook: owner,
-          state: initializer.name.text,
+          state: value.name.text,
         });
         return;
       }
@@ -496,39 +605,52 @@ export function scanRuleStateReads(
 
     // `const hidden = def.state.bool('hidden', true)` — a prototype-owned state.
     if (
-      ts.isCallExpression(initializer) &&
-      ts.isPropertyAccessExpression(initializer.expression) &&
-      ts.isPropertyAccessExpression(initializer.expression.expression) &&
-      initializer.expression.expression.name.text === 'state' &&
-      ts.isIdentifier(declaration.name)
+      ts.isCallExpression(value) &&
+      ts.isPropertyAccessExpression(value.expression) &&
+      ts.isPropertyAccessExpression(value.expression.expression) &&
+      value.expression.expression.name.text === 'state' &&
+      ts.isIdentifier(name)
     ) {
-      const declaredArgument = initializer.arguments[0];
-      declare(scope, declaration.name.text, {
+      const declaredArgument = value.arguments[0];
+      declare(scope, name.text, {
         kind: 'localState',
         // `null` means the declaration exists but its runtime name cannot be
         // read here, which is not the same as having no declaration at all.
         // A constant the extractor resolves has to resolve here too, or the
         // gate reports a blind spot production does not have.
-        declaredAs: declaredArgument ? constantStringValue(declaredArgument, scope) : null,
-        exposedAs: exposureFor(declaration.name.text, scope),
+        declaredAs: declaredArgument ? constantStringValue(declaredArgument, lookupScope) : null,
+        exposedAs: exposureFor(name.text, scope),
       });
       return;
     }
 
-    const hook = hookOfCall(declaration.initializer);
-    if (hook && ts.isIdentifier(declaration.name)) {
-      declare(scope, declaration.name.text, { kind: 'hookResult', hook });
+    const hook = hookOfCall(initializer);
+    if (hook && ts.isIdentifier(name)) {
+      declare(scope, name.text, { kind: 'hookResult', hook });
       return;
+    }
+
+    // `let current = first` names the same handle `first` does, and production
+    // resolves the alias, so a rule reading the alias is not a blind spot.
+    if (ts.isIdentifier(value) && ts.isIdentifier(name)) {
+      const aliased = lookup(lookupScope, value.text);
+      if (aliased && aliased.kind !== 'token' && aliased.kind !== 'tokenImport') {
+        declare(
+          scope,
+          name.text,
+          aliased.kind === 'localState'
+            ? { ...aliased, exposedAs: exposureFor(name.text, scope) ?? aliased.exposedAs }
+            : aliased
+        );
+        return;
+      }
     }
 
     // Anything else a name can hold is a candidate token value. Keeping it in
     // the same scope chain means two blocks may each declare `TOKENS` without
     // either becoming ambiguous, which is what the extractor's scopes do.
-    if (ts.isIdentifier(declaration.name)) {
-      declare(scope, declaration.name.text, {
-        kind: 'token',
-        initializer: declaration.initializer,
-      });
+    if (ts.isIdentifier(name)) {
+      declare(scope, name.text, { kind: 'token', initializer });
     }
   };
 
@@ -1078,9 +1200,6 @@ export function scanRuleStateReads(
       ? { parent: scope, bindings: new Map<string, Binding>(), node }
       : scope;
 
-    // The extractor registers declarations while iterating the variable
-    // statements of a statement-bearing scope, so a loop initializer or a
-    // catch binding never reaches it.
     // A parameter shadows whatever the enclosing scopes bound to that name. Its
     // own origin cannot be recovered from the source, so it resolves to nothing
     // rather than falling through to an outer handle of the same name.
@@ -1091,14 +1210,27 @@ export function scanRuleStateReads(
       }
     }
 
+    // A statement, or a loop initializer, which production registers in the
+    // loop's own scope. A catch binding still reaches neither.
     if (
       ts.isVariableDeclaration(node) &&
       node.parent &&
       ts.isVariableDeclarationList(node.parent) &&
       node.parent.parent &&
-      ts.isVariableStatement(node.parent.parent)
+      (ts.isVariableStatement(node.parent.parent) || isLoopStatement(node.parent.parent))
     ) {
-      declareFromInitializer(node, current);
+      if (node.initializer) declareValue(node.name, node.initializer, current);
+    }
+
+    // A reassignment moves the handle for every read that follows it.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isIdentifier(node.left)
+    ) {
+      const name = node.left.text;
+      const owner = scopeBinding(current, name) ?? current;
+      declareValue(node.left, node.right, owner, current);
     }
 
     if (

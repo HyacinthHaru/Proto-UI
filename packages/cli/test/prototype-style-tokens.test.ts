@@ -1289,4 +1289,174 @@ describe('collectProtoStyleTokens', () => {
 
     expect(await collectProtoStyleTokens(dir)).toContain('data-[constructor]:bg-accent');
   });
+  it('negates a native interaction variant through its attribute', async () => {
+    // `buildSemanticVariant` only answers a true comparison, so the optimizer
+    // falls back to `not-[data-hovered]` and still removes the rule. Emitting
+    // only the positive condition would apply the style while hovered.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const hovered = def.state.bool('@interaction/hovered', false);",
+        "    const other = def.state.bool('otherFlag', false);",
+        "    def.expose.state('hovered', hovered);",
+        "    def.expose.state('other', other);",
+        '    def.rule({',
+        '      when: (w) => w.all(w.state(hovered).eq(false), w.state(other).eq(true)),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[other-flag]:not-[data-hovered]:bg-accent');
+  });
+
+  it('negates a hook-sourced native variant the same way', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const hovered = def.state.fromInteraction('hovered');",
+        "    const pressed = def.state.fromInteraction('pressed');",
+        '    def.rule({',
+        '      when: (w) => w.all(w.state(hovered).eq(false), w.state(pressed).eq(true)),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('active:not-[data-hovered]:bg-accent');
+  });
+
+  it('binds a loop initializer inside the loop, not over the outer name', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('outerFlag', false);",
+        '    void flag;',
+        "    for (let flag = def.state.bool('innerFlag', false); once; ) {",
+        "      def.expose.state('visible', flag);",
+        '      def.rule({',
+        '        when: (w) => w.state(flag).eq(true),',
+        "        intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '      });',
+        '    }',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[inner-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[outer-flag]:bg-accent');
+  });
+
+  it('follows a reassigned alias the rule itself reads', async () => {
+    // The exposure prepass already followed the assignment; the ordinary walk
+    // left the alias frozen at its declaration.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let current = first;',
+        '    current = second;',
+        "    def.expose.state('visible', current);",
+        '    def.rule({',
+        '      when: (w) => w.state(current).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[first-flag]:bg-accent');
+  });
+
+  it('follows a handle aliased through a binding pattern', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('internalFlag', false);",
+        '    const { ready: publicFlag } = { ready: flag };',
+        "    def.expose.state('visible', publicFlag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[internal-flag]:bg-accent');
+  });
+
+  it('follows a handle aliased through an array pattern', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('internalFlag', false);",
+        '    const [publicFlag] = [flag];',
+        "    def.expose.state('visible', publicFlag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[internal-flag]:bg-accent');
+  });
 });

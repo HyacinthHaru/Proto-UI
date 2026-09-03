@@ -102,9 +102,22 @@ function createScope(parent = null, node = null) {
   return { parent, bindings: new Map(), node };
 }
 
+/** The scope a name is already bound in, so an assignment does not shadow it. */
+function scopeDeclaring(name, scope) {
+  for (let current = scope; current; current = current.parent) {
+    if (current.bindings.has(name)) return current;
+  }
+  return null;
+}
+
 function walk(node, scope, tokens, exposures) {
   if (createsScope(node)) {
     const nextScope = createScope(scope, node);
+
+    // Registered before the body is walked, the same order the loop runs in.
+    for (const decl of loopInitializerDeclarations(node)) {
+      registerDeclaration(decl, nextScope, exposures);
+    }
 
     if (hasStatements(node)) {
       // Sequential, so a legal redeclaration still registers each binding for
@@ -139,6 +152,21 @@ function walk(node, scope, tokens, exposures) {
   }
 
   if (
+    ts.isBinaryExpression(node) &&
+    node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+    ts.isIdentifier(node.left)
+  ) {
+    // A reassignment moves the handle for every read that follows it, so the
+    // binding has to move with it rather than stay at its declaration.
+    walk(node.right, scope, tokens, exposures);
+    const name = node.left.text;
+    const owner = scopeDeclaring(name, scope) ?? scope;
+    const binding = resolveBinding(node.right, scope);
+    owner.bindings.set(name, applyExposure(name, binding, owner, exposures));
+    return;
+  }
+
+  if (
     ts.isCallExpression(node) &&
     ts.isIdentifier(node.expression) &&
     node.expression.text === 'tw'
@@ -166,8 +194,21 @@ function createsScope(node) {
     ts.isCaseBlock(node) ||
     ts.isFunctionDeclaration(node) ||
     ts.isFunctionExpression(node) ||
-    ts.isArrowFunction(node)
+    ts.isArrowFunction(node) ||
+    // A loop initializer binds in the loop's own scope, so a name it shadows
+    // must not answer for the body.
+    isLoopStatement(node)
   );
+}
+
+function isLoopStatement(node) {
+  return ts.isForStatement(node) || ts.isForOfStatement(node) || ts.isForInStatement(node);
+}
+
+/** The declarations a loop initializer introduces, if it declares anything. */
+function loopInitializerDeclarations(node) {
+  const initializer = isLoopStatement(node) ? node.initializer : undefined;
+  return initializer && ts.isVariableDeclarationList(initializer) ? initializer.declarations : [];
 }
 
 function hasStatements(node) {
@@ -559,6 +600,70 @@ function collectExposures(root) {
     objectMembers.set(owner, scoped);
   };
 
+  /** The identifier member `key` of an initializer names, if it names one. */
+  const memberTargetName = (initializer, key, chain, at) => {
+    const value = unwrapExpression(initializer);
+    if (ts.isObjectLiteralExpression(value)) {
+      for (const property of value.properties) {
+        if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) {
+          return key;
+        }
+        if (
+          ts.isPropertyAssignment(property) &&
+          (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
+          property.name.text === key
+        ) {
+          const assigned = unwrapExpression(property.initializer);
+          return ts.isIdentifier(assigned) ? assigned.text : null;
+        }
+      }
+      return null;
+    }
+    if (!ts.isIdentifier(value)) return null;
+    for (const scope of chain) {
+      const members = objectMembers.get(scope)?.get(value.text);
+      if (!members) continue;
+      const edges = members.get(key);
+      if (!edges) return null;
+      const visible = edges.filter((edge) => edge.at <= at);
+      if (visible.length === 0) return null;
+      return visible.reduce((latest, edge) => (edge.at > latest.at ? edge : latest)).target;
+    }
+    return null;
+  };
+
+  /**
+   * The handle each name in a binding pattern ends up on. A pattern aliases the
+   * same state object a plain `const publicFlag = flag` does, so it has to
+   * create the same edge.
+   */
+  const patternTargets = (name, initializer, chain, at) => {
+    const out = [];
+    if (ts.isObjectBindingPattern(name)) {
+      for (const element of name.elements) {
+        if (!ts.isIdentifier(element.name) || element.dotDotDotToken) continue;
+        const key = element.propertyName
+          ? getPropertyName(element.propertyName)
+          : element.name.text;
+        if (!key) continue;
+        const target = memberTargetName(initializer, key, chain, at);
+        if (target) out.push({ name: element.name.text, target });
+      }
+      return out;
+    }
+    if (!ts.isArrayBindingPattern(name)) return out;
+    const values = unwrapExpression(initializer);
+    if (!ts.isArrayLiteralExpression(values)) return out;
+    name.elements.forEach((element, index) => {
+      if (ts.isOmittedExpression(element)) return;
+      if (!ts.isIdentifier(element.name) || element.dotDotDotToken) return;
+      const value = values.elements[index] && unwrapExpression(values.elements[index]);
+      if (value && ts.isIdentifier(value))
+        out.push({ name: element.name.text, target: value.text });
+    });
+    return out;
+  };
+
   const resolveHandleIdentifier = (node, chain, at) => {
     const value = unwrapExpression(node);
     if (ts.isIdentifier(value)) return value.text;
@@ -620,6 +725,20 @@ function collectExposures(root) {
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
         }
+      }
+    }
+    if (
+      ts.isVariableDeclaration(node) &&
+      !ts.isIdentifier(node.name) &&
+      node.initializer &&
+      nextChain.length > 0
+    ) {
+      const owner = nextChain[0] ?? root;
+      const at = node.getStart();
+      for (const { name, target } of patternTargets(node.name, node.initializer, nextChain, at)) {
+        if (!declaredIn.has(owner)) declaredIn.set(owner, new Set());
+        declaredIn.get(owner).add(name);
+        aliasEdges.push({ owner, name, target, at });
       }
     }
     // Writing through the container moves the handle the same way, so the
@@ -1089,13 +1208,23 @@ function resolveStateHandleSemantic(node, scope) {
   return owner.semanticMap?.get(node.name.text) ?? null;
 }
 
+/**
+ * `buildSemanticVariant` takes a native variant only for a true comparison, so
+ * every other comparison falls back to the attribute the same binding carries.
+ */
+const NATIVE_VARIANT_ATTRIBUTES = Object.freeze({
+  hover: 'data-[hovered]',
+  active: 'data-[pressed]',
+});
+
 function resolveStateEqVariant(semantic, expected) {
   if (!semantic) return null;
   if (!expected) return null;
   if (expected.kind === ts.SyntaxKind.TrueKeyword) return semantic;
-  if (expected.kind === ts.SyntaxKind.FalseKeyword) return negateDataVariant(semantic);
+  const attribute = officialEntry(NATIVE_VARIANT_ATTRIBUTES, semantic) ?? semantic;
+  if (expected.kind === ts.SyntaxKind.FalseKeyword) return negateDataVariant(attribute);
   if (ts.isStringLiteralLike(expected)) {
-    const match = semantic.match(/^data-\[([a-zA-Z0-9-]+)\]$/);
+    const match = attribute.match(/^data-\[([a-zA-Z0-9-]+)\]$/);
     if (!match || !/^[a-zA-Z0-9_-]+$/.test(expected.text)) return null;
     return `data-[${match[1]}=${expected.text}]`;
   }
@@ -1103,7 +1232,7 @@ function resolveStateEqVariant(semantic, expected) {
   // enum and string bindings do.
   const numeric = signedNumericText(expected);
   if (numeric !== null) {
-    const match = semantic.match(/^data-\[([a-zA-Z0-9-]+)\]$/);
+    const match = attribute.match(/^data-\[([a-zA-Z0-9-]+)\]$/);
     if (!match) return null;
     return `data-[${match[1]}=${numeric}]`;
   }
