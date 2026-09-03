@@ -60,7 +60,7 @@ type Binding =
   | { kind: 'handleBag'; hook: string }
   | { kind: 'handle'; hook: string; state: string }
   /** `def.state.bool(...)` — owned by the prototype, not borrowed from a hook. */
-  | { kind: 'localState'; declaredAs?: string; exposedAs?: string }
+  | { kind: 'localState'; declaredAs: string | null; exposedAs?: string }
   /** A value a `tw(...)` argument may name, resolved where it was declared. */
   | { kind: 'token'; initializer: ts.Expression }
   /** A named import; only a relative one is something the extractor follows. */
@@ -71,6 +71,8 @@ type Binding =
 type Scope = {
   parent: Scope | null;
   bindings: Map<string, Binding>;
+  /** The node that created this scope, used to resolve exposures lexically. */
+  node: ts.Node | null;
 };
 
 function lookup(scope: Scope | null, name: string): Binding | null {
@@ -148,9 +150,9 @@ export function scanRuleStateReads(
       ? unwrap(node.expression)
       : node;
 
-  const exposedKeys = new Map<string, string>();
-  const aliasOf = new Map<string, string>();
-  const rawExposures: Array<{ handle: string; key: ts.Expression }> = [];
+  const exposedKeys = new Map<ts.Node, Map<string, string>>();
+  const aliasOf = new Map<ts.Node, Map<string, string>>();
+  const rawExposures: Array<{ handle: string; key: ts.Expression; chain: ts.Node[] }> = [];
 
   const memberNamed = (node: ts.Node, name: string): boolean => {
     const target = unwrap(node);
@@ -169,10 +171,16 @@ export function scanRuleStateReads(
       : null;
   };
 
-  const collectExposedKeys = (node: ts.Node): void => {
+  const collectExposedKeys = (node: ts.Node, chain: ts.Node[]): void => {
+    const nextChain = introducesScope(node) ? [node, ...chain] : chain;
     if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
       const initializer = unwrap(node.initializer);
-      if (ts.isIdentifier(initializer)) aliasOf.set(node.name.text, initializer.text);
+      if (ts.isIdentifier(initializer)) {
+        const owner = nextChain[0] ?? source;
+        const scoped = aliasOf.get(owner) ?? new Map<string, string>();
+        scoped.set(node.name.text, initializer.text);
+        aliasOf.set(owner, scoped);
+      }
     }
     if (ts.isCallExpression(node)) {
       const callee = unwrap(node.expression);
@@ -181,32 +189,53 @@ export function scanRuleStateReads(
         const [nameArg, handleArg] = node.arguments;
         const handle = handleArg && unwrap(handleArg);
         if (nameArg && handle && ts.isIdentifier(handle)) {
-          rawExposures.push({ handle: handle.text, key: nameArg });
+          rawExposures.push({ handle: handle.text, key: nameArg, chain: [...nextChain, source] });
         }
       }
     }
-    ts.forEachChild(node, collectExposedKeys);
+    ts.forEachChild(node, (child) => collectExposedKeys(child, nextChain));
   };
-  collectExposedKeys(source);
+  collectExposedKeys(source, []);
 
-  const aliasRoot = (name: string): string => {
+  const aliasRoot = (name: string, chain: ts.Node[]): string => {
     const seen = new Set<string>();
     let current = name;
-    while (aliasOf.has(current) && !seen.has(current)) {
+    for (;;) {
+      if (seen.has(current)) return current;
       seen.add(current);
-      current = aliasOf.get(current) as string;
+      let next: string | undefined;
+      for (const owner of chain) {
+        next = aliasOf.get(owner)?.get(current);
+        if (next !== undefined) break;
+      }
+      if (next === undefined) return current;
+      current = next;
     }
-    return current;
   };
 
-  for (const { handle, key } of rawExposures) {
+  for (const { handle, key, chain } of rawExposures) {
     // A key the scanner cannot read still means the state is exposed, and the
     // attribute comes from the declared name anyway.
     const text = ts.isStringLiteralLike(key) ? key.text : '';
-    for (const name of new Set([handle, aliasRoot(handle)])) {
-      if (!exposedKeys.has(name)) exposedKeys.set(name, text);
+    for (const name of new Set([handle, aliasRoot(handle, chain)])) {
+      for (const owner of chain) {
+        const scoped = exposedKeys.get(owner) ?? new Map<string, string>();
+        if (!scoped.has(name)) scoped.set(name, text);
+        exposedKeys.set(owner, scoped);
+      }
     }
   }
+
+  /** The exposure visible from a scope chain, nearest scope first. */
+  const exposureFor = (name: string, scope: Scope): string | undefined => {
+    for (let current: Scope | null = scope; current; current = current.parent) {
+      if (!current.node) continue;
+      const scoped = exposedKeys.get(current.node);
+      const found = scoped?.get(name);
+      if (found !== undefined) return found;
+    }
+    return undefined;
+  };
 
   const hookOfCall = (node: ts.Node): string | null => {
     const call = unwrap(node);
@@ -283,11 +312,13 @@ export function scanRuleStateReads(
       const declaredArgument = initializer.arguments[0];
       declare(scope, declaration.name.text, {
         kind: 'localState',
+        // `null` means the declaration exists but its runtime name cannot be
+        // read here, which is not the same as having no declaration at all.
         declaredAs:
           declaredArgument && ts.isStringLiteralLike(declaredArgument)
             ? declaredArgument.text
-            : undefined,
-        exposedAs: exposedKeys.get(declaration.name.text),
+            : null,
+        exposedAs: exposureFor(declaration.name.text, scope),
       });
       return;
     }
@@ -340,11 +371,15 @@ export function scanRuleStateReads(
       if (binding?.kind === 'handle') return { hook: binding.hook, state: binding.state };
       if (binding?.kind === 'localState') {
         if (binding.exposedAs === undefined) return 'local';
+        // The runtime attribute comes from the declared name. If that name is
+        // not statically readable the extractor emits nothing, so substituting
+        // the expose key here would certify a selector that never exists.
+        if (binding.declaredAs === null) return null;
         return {
           exposedLocal: {
             state: argument.text,
             exposedAs: binding.exposedAs,
-            attribute: exposedDataAttributeName(binding.declaredAs ?? binding.exposedAs),
+            attribute: exposedDataAttributeName(binding.declaredAs),
           },
         };
       }
@@ -424,7 +459,7 @@ export function scanRuleStateReads(
   const moduleRootScope = (module: ts.SourceFile): Scope => {
     const cached = moduleScopes.get(module);
     if (cached) return cached;
-    const scope: Scope = { parent: null, bindings: new Map() };
+    const scope: Scope = { parent: null, bindings: new Map(), node: null };
     // Insert before filling so a cycle of relative modules terminates.
     moduleScopes.set(module, scope);
     for (const statement of module.statements) {
@@ -840,7 +875,7 @@ export function scanRuleStateReads(
 
   const visit = (node: ts.Node, scope: Scope): void => {
     const current = introducesScope(node)
-      ? { parent: scope, bindings: new Map<string, Binding>() }
+      ? { parent: scope, bindings: new Map<string, Binding>(), node }
       : scope;
 
     // The extractor registers declarations while iterating the variable
@@ -890,7 +925,7 @@ export function scanRuleStateReads(
     ts.forEachChild(node, (child) => visit(child, current));
   };
 
-  const rootScope: Scope = { parent: null, bindings: new Map() };
+  const rootScope: Scope = { parent: null, bindings: new Map(), node: source };
   declareImports(rootScope);
   visit(source, rootScope);
 

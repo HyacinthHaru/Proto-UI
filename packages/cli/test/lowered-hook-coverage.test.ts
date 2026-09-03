@@ -234,6 +234,45 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('keeps sibling scopes from sharing an exposure', () => {
+    // A file-wide map would attribute the first exposure to the second handle.
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      'function first(def) {',
+      "  const flag = def.state.bool('firstFlag', false);",
+      '  const publicFlag = flag;',
+      "  def.expose.state('a', publicFlag);",
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+      'function second(def) {',
+      "  const other = def.state.bool('secondFlag', false);",
+      '  const publicFlag = other;',
+      "  def.expose.state('b', publicFlag);",
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'a', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('reports an exposed state whose declared name it cannot read', () => {
+    // The extractor emits nothing for this, so certifying the expose key would
+    // be the fail-closed mismatch this gate exists to prevent.
+    const source = [
+      'const flag = def.state.bool(makeStateName(), false);',
+      "def.expose.state('visible', flag);",
+      "def.rule({ when: (w) => w.state(flag).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.exposedLocals).toEqual([]);
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
+  });
+
   it('treats a prototype-owned state as neither a hook pair nor a blind spot', () => {
     // Base prototypes declare their own states and key rules on them. Those need
     // no resolver entry, so they must not be reported as a hook pair, and they

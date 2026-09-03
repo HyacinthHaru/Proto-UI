@@ -554,6 +554,41 @@ describe('collectProtoStyleTokens', () => {
     expect(await collectProtoStyleTokens(dir)).toContain('data-[step=1]:bg-accent');
   });
 
+  it('keeps sibling blocks from sharing an alias', async () => {
+    // Two blocks in one setup may legally reuse `publicFlag` for different
+    // handles; a function-scoped map would let the later one overwrite.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    {',
+        '      const publicFlag = first;',
+        "      def.expose.state('a', publicFlag);",
+        '    }',
+        '    {',
+        '      const publicFlag = second;',
+        "      def.expose.state('b', publicFlag);",
+        '    }',
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[first-flag]:bg-accent');
+  });
+
   it('keeps every binding a legal redeclaration installs', async () => {
     // The exposure pre-pass must not flatten sequential declaration scope.
     await writeFile(

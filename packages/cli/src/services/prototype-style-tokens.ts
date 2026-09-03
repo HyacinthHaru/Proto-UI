@@ -388,8 +388,8 @@ function exposedDataAttributeName(key) {
  * Aliases are followed because two references to one handle carry one state id.
  */
 function collectExposures(root) {
-  // Alias edges are keyed by the function they were declared in, so two setups
-  // in one file may each bind the same alias name without colliding.
+  // Alias edges are keyed by the scope they were declared in, so two sibling
+  // scopes may each bind the same alias name without colliding.
   const aliasesByScope = new Map();
   const exposures = [];
 
@@ -428,7 +428,9 @@ function collectExposures(root) {
   };
 
   const visit = (node, chain) => {
-    const nextChain = ts.isFunctionLike(node) ? [node, ...chain] : chain;
+    // Every scope the extractor itself creates, so two sibling blocks in one
+    // setup may reuse an alias name without either edge overwriting the other.
+    const nextChain = createsScope(node) ? [node, ...chain] : chain;
     if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
       const initializer = unwrapExpression(node.initializer);
       if (ts.isIdentifier(initializer)) {
