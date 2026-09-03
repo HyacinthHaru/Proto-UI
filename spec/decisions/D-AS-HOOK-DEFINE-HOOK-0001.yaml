@@ -40,6 +40,9 @@ sources:
       - asFocusRoving
   - path: internal/records/2026-07-06-use-focus-roving-deprecation.zh-CN.md
 revisions:
+  - version: 0.3.0-alpha.0
+    change: revised
+    summary: Recorded `useFocusRoving` as a historical member of the use-style set, replaced by `asFocusRoving`, and related the decision that catalogs that migration.
   - version: 0.1.0
     change: introduced
     summary: Recorded `defineHook` / useHook naming and API shape as unresolved.

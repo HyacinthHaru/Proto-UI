@@ -153,7 +153,7 @@ revisions:
     summary: Bound the render-input and coalescing cases to the tests that already prove them, and retired the coalescing gap, which the runtime closed.
   - version: 0.1.0
     change: introduced
-    summary: Added explicit update flow test mapping and preserved a future gap for async host profiles.
+    summary: Added explicit update flow test mapping and preserved future gaps for async host profiles and update coalescing.
 tags:
   - lifecycle
   - update

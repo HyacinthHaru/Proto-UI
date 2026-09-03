@@ -16,9 +16,14 @@ type Entity = {
   cases?: Case[];
 };
 
-/** A citation outside the repository is evidence this check cannot resolve. */
+/**
+ * A remote citation is evidence this check cannot resolve, and only a portable
+ * scheme counts as remote. `file:` names a path on one machine, so it is not
+ * auditable from another checkout and must be treated as a repository path,
+ * where the absolute-path rule then rejects it.
+ */
 function isRepositoryPath(value: string | undefined): value is string {
-  return typeof value === 'string' && !/^[a-z][a-z0-9+.-]*:\/\//i.test(value);
+  return typeof value === 'string' && !/^https?:\/\//i.test(value);
 }
 
 /**
@@ -112,8 +117,10 @@ describe('catalog evidence integrity', () => {
           { path: '../package.json' },
           // Exists in this checkout and nowhere else.
           { path: path.join(REPO_ROOT, 'package.json') },
-          // A citation outside the repository is not this check's to resolve.
+          // A portable remote citation is not this check's to resolve.
           { path: 'https://www.w3.org/TR/wai-aria-1.2/' },
+          // A machine-local URL is not auditable from another checkout.
+          { path: 'file:///home/alice/evidence.md' },
         ],
         implementations: [
           {
@@ -185,6 +192,7 @@ describe('catalog evidence integrity', () => {
       'C-FIXTURE-0001: spec/nothing-here.md',
       'C-FIXTURE-0001: ../package.json',
       `C-FIXTURE-0001: ${path.join(REPO_ROOT, 'package.json')}`,
+      'C-FIXTURE-0001: file:///home/alice/evidence.md',
     ]);
     expect(gaps.missingImplementations).toEqual([
       'C-FIXTURE-0001: absent -> packages/nothing-here.test.ts',
