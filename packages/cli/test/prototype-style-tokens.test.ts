@@ -894,6 +894,44 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).not.toContain('data-[visible]:bg-accent');
   });
 
+  it("does not let one prototype's exposure reach a sibling's same-named state", async () => {
+    // A sibling that independently declares `flag` and never exposes it must
+    // keep its rule on the runtime plan.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'export const exposed = definePrototype({',
+        "  name: 'exposed',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('firstFlag', false);",
+        "    def.expose.state('visible', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export const internal = definePrototype({',
+        "  name: 'internal',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('secondFlag', false);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-muted')),",
+        '    });',
+        '  },',
+        '});',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[second-flag]:bg-muted');
+  });
+
   it('serializes a discrete number the way the runtime does', async () => {
     await writeFile(
       path.join(dir, 'widget.proto.ts'),

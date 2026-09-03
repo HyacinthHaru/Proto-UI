@@ -315,6 +315,28 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it("does not let one prototype's exposure reach a sibling's same-named state", () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      'function exposedSetup(def) {',
+      "  const flag = def.state.bool('firstFlag', false);",
+      "  def.expose.state('visible', flag);",
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+      'function internalSetup(def) {',
+      "  const flag = def.state.bool('secondFlag', false);",
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    // Only the exposed one; the sibling's rule stays on the runtime plan.
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.

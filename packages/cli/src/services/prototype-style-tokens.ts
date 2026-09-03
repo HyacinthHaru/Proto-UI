@@ -98,13 +98,13 @@ async function loadModuleBindings(file, moduleCache, stack) {
   for (const [name, value] of scope.bindings) bindings.set(name, value);
   return bindings;
 }
-function createScope(parent = null) {
-  return { parent, bindings: new Map() };
+function createScope(parent = null, node = null) {
+  return { parent, bindings: new Map(), node };
 }
 
 function walk(node, scope, tokens, exposures) {
   if (createsScope(node)) {
-    const nextScope = createScope(scope);
+    const nextScope = createScope(scope, node);
 
     if (hasStatements(node)) {
       // Sequential, so a legal redeclaration still registers each binding for
@@ -607,14 +607,24 @@ function collectExposures(root) {
     return edges.flatMap((edge) => rootNames(edge.target, chain, edge.at, next));
   };
 
-  const byHandle = new Map();
+  // An exposure names a binding, and a binding lives in one scope. Recording it
+  // by name alone would let a sibling prototype that reuses the same local name
+  // inherit an exposure its own runtime never registers.
+  const declaringScope = (name, chain) =>
+    chain.find((candidate) => declaredIn.get(candidate)?.has(name)) ?? chain[chain.length - 1];
+
+  const byScope = new Map();
   for (const { handle, key, chain, at } of exposures) {
     // Both the alias and the handle it names carry the same state id.
     for (const name of new Set([handle, ...rootNames(handle, chain, at)])) {
-      if (!byHandle.has(name)) byHandle.set(name, key);
+      const owner = declaringScope(name, chain);
+      if (!owner) continue;
+      const scoped = byScope.get(owner) ?? new Map();
+      if (!scoped.has(name)) scoped.set(name, key);
+      byScope.set(owner, scoped);
     }
   }
-  return byHandle;
+  return byScope;
 }
 
 /**
@@ -625,7 +635,10 @@ function collectExposures(root) {
  */
 function applyExposure(name, binding, scope, exposures) {
   if (!exposures || binding.semantic) return binding;
-  const key = exposures.get(name);
+  let key;
+  for (let current = scope; current && key === undefined; current = current.parent) {
+    if (current.node) key = exposures.get(current.node)?.get(name);
+  }
   if (!key) return binding;
   // `__stateSemantic` wins at runtime, so a declared name this cannot read
   // leaves no safe selector to emit; the expose key would be the wrong one.
@@ -1025,7 +1038,7 @@ function collectTwTokens(node, scope, exposures) {
 
   function visit(current, currentScope) {
     if (createsScope(current)) {
-      const nextScope = createScope(currentScope);
+      const nextScope = createScope(currentScope, current);
       if (hasStatements(current)) {
         for (const stmt of current.statements) {
           if (ts.isVariableStatement(stmt)) {

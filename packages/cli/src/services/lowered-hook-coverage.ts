@@ -310,16 +310,22 @@ export function scanRuleStateReads(
     return found.flatMap((edge) => aliasRoots(edge.target, chain, edge.at, next));
   };
 
+  // An exposure names a binding, and a binding lives in one scope. Writing it
+  // across the whole chain would let a sibling prototype reusing the same local
+  // name inherit an exposure its own runtime never registers.
+  const declaringScope = (name: string, chain: ts.Node[]): ts.Node | undefined =>
+    chain.find((candidate) => declaredIn.get(candidate)?.has(name)) ?? chain[chain.length - 1];
+
   for (const { handle, key, chain, at } of rawExposures) {
     // A key the scanner cannot read still means the state is exposed, and the
     // attribute comes from the declared name anyway.
     const text = ts.isStringLiteralLike(key) ? key.text : '';
     for (const name of new Set([handle, ...aliasRoots(handle, chain, at)])) {
-      for (const owner of chain) {
-        const scoped = exposedKeys.get(owner) ?? new Map<string, string>();
-        if (!scoped.has(name)) scoped.set(name, text);
-        exposedKeys.set(owner, scoped);
-      }
+      const owner = declaringScope(name, chain);
+      if (!owner) continue;
+      const scoped = exposedKeys.get(owner) ?? new Map<string, string>();
+      if (!scoped.has(name)) scoped.set(name, text);
+      exposedKeys.set(owner, scoped);
     }
   }
 
