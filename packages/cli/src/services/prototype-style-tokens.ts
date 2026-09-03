@@ -279,19 +279,34 @@ function walk(node, scope, tokens, exposures) {
     walk(node.right, scope, tokens, exposures);
     const base = unwrapTransparent(memberOwner(node.left) ?? node.left);
     const member = memberName(node.left);
-    if (ts.isIdentifier(base) && member !== null) {
+    if (ts.isIdentifier(base)) {
       // `const alias = controls` names the same object, and both bindings hold
       // the one resolved value, so the member moves on that value rather than
       // on a copy rebound to whichever name the write happened to use.
-      const container = resolveExpression(base, scope);
+      const resolved = resolveExpression(base, scope);
+      // A base that may be either of two objects writes to both tables.
+      const targets = resolved?.containers ?? (resolved ? [resolved] : []);
       const written = bindingSemantics(resolveBinding(node.right, scope));
-      if (container && written.length > 0) {
-        const previous = memberSemantics(container.semanticMap?.get(member));
+      for (const container of targets) {
+        if (written.length === 0) break;
+        // The declaring scope, not this one: inside a callback the write would
+        // otherwise be compared against itself and always look ordered.
+        const declaring = scopeDeclaring(base.text, scope);
         const uncertain =
-          isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(scope.node));
-        const kept = uncertain ? previous.filter((candidate) => !written.includes(candidate)) : [];
+          isConditionallyReached(node) ||
+          isDeferredWrite(node, enclosingFunction(declaring?.node ?? null)) ||
+          targets.length > 1 ||
+          // A key this cannot read may name any member the container has.
+          member === null;
         if (!container.semanticMap) container.semanticMap = new Map();
-        container.semanticMap.set(member, [...written, ...kept]);
+        const keys = member === null ? [...container.semanticMap.keys()] : [member];
+        for (const key of keys) {
+          const previous = memberSemantics(container.semanticMap.get(key));
+          const kept = uncertain
+            ? previous.filter((candidate) => !written.includes(candidate))
+            : [];
+          container.semanticMap.set(key, [...written, ...kept]);
+        }
       }
     }
     return;
@@ -587,6 +602,10 @@ function resolveBinding(node, scope) {
     if (semantics.length > 0) {
       return { ...branches[0], semantic: semantics[0], alternatives: semantics.slice(1) };
     }
+    // Neither branch is a handle, but the name may still be either object, so
+    // it carries both and a member write through it reaches both tables.
+    const containers = branches.filter((branch) => branch.semanticMap);
+    if (containers.length > 0) return { ...branches[0], containers };
   }
 
   const semantic = resolveSemanticBinding(node);
@@ -890,18 +909,27 @@ function collectExposures(root) {
    * either name lands on the same table. A base that may be two different
    * objects is left as itself: there is no single table to move.
    */
-  const containerRoot = (name, chain, at, seen = new Set()) => {
-    if (seen.has(name)) return name;
+  const containerRoots = (name, chain, at, seen = new Set()) => {
+    if (seen.has(name)) return [name];
     for (const owner of chain) {
       const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
       if (candidates.length === 0) continue;
       const visible = visibleEdges(candidates, at);
-      if (visible.length !== 1) return name;
-      const [edge] = visible;
-      return containerRoot(edge.target, edge.chain ?? chain, edge.at, new Set([...seen, name]));
+      if (visible.length === 0) return [name];
+      const next = new Set([...seen, name]);
+      // A base that may be either of two objects writes to both tables, and
+      // reads consult both; recording under the alias would reach neither.
+      return [
+        ...new Set(
+          visible.flatMap((edge) => containerRoots(edge.target, edge.chain ?? chain, edge.at, next))
+        ),
+      ];
     }
-    return name;
+    return [name];
   };
+
+  const declaringScopeNode = (chain, name) =>
+    chain.find((candidate) => declaredIn.get(candidate)?.has(name)) ?? null;
 
   const recordMember = (owner, base, key, target, at, conditional) => {
     const scoped = objectMembers.get(owner) ?? new Map();
@@ -931,7 +959,7 @@ function collectExposures(root) {
       return null;
     }
     if (!ts.isIdentifier(value)) return null;
-    const container = containerRoot(value.text, chain, at);
+    const [container] = containerRoots(value.text, chain, at);
     for (const scope of chain) {
       const members = objectMembers.get(scope)?.get(container);
       if (!members) continue;
@@ -988,17 +1016,19 @@ function collectExposures(root) {
     if (!owner) return [];
     const base = unwrapExpression(owner);
     if (!ts.isIdentifier(base)) return [];
-    const container = containerRoot(base.text, chain, at);
-    for (const scope of chain) {
-      const members = objectMembers.get(scope)?.get(container);
-      if (!members) continue;
-      for (const [key, edges] of members) {
-        if (!memberIs(value, key)) continue;
-        return visibleEdges(edges, at).map((edge) => ({ name: edge.target, at: edge.at }));
+    const out = [];
+    for (const container of containerRoots(base.text, chain, at)) {
+      for (const scope of chain) {
+        const members = objectMembers.get(scope)?.get(container);
+        if (!members) continue;
+        for (const [key, edges] of members) {
+          if (!memberIs(value, key)) continue;
+          out.push(...visibleEdges(edges, at).map((edge) => ({ name: edge.target, at: edge.at })));
+        }
+        break;
       }
-      return [];
     }
-    return [];
+    return out;
   };
 
   const visit = (node, chain) => {
@@ -1073,16 +1103,33 @@ function collectExposures(root) {
     ) {
       const base = unwrapExpression(memberOwner(node.left) ?? node.left);
       const member = memberName(node.left);
-      if (ts.isIdentifier(base) && member !== null) {
+      if (ts.isIdentifier(base)) {
         const chain = [...nextChain, root];
-        const container = containerRoot(base.text, chain, node.getStart());
-        const owner =
-          chain.find((candidate) => declaredIn.get(candidate)?.has(container)) ??
-          nextChain[0] ??
-          root;
-        const conditional = isConditionallyReached(node);
-        for (const target of aliasTargets(node.right)) {
-          recordMember(owner, container, member, target, node.getStart(), conditional);
+        const at = node.getStart();
+        const containers = containerRoots(base.text, chain, at);
+        // A write the source may skip, one that has not run, one that may land
+        // on either of two objects, or one whose key is not statically known:
+        // in each case the member may still hold what it held before.
+        const conditional =
+          isConditionallyReached(node) ||
+          isDeferredWrite(node, enclosingFunction(declaringScopeNode(chain, containers[0]))) ||
+          containers.length > 1 ||
+          member === null;
+        for (const container of containers) {
+          const owner =
+            chain.find((candidate) => declaredIn.get(candidate)?.has(container)) ??
+            nextChain[0] ??
+            root;
+          // An unreadable key may be any member the container already has.
+          const keys =
+            member === null
+              ? [...(objectMembers.get(owner)?.get(container)?.keys() ?? [])]
+              : [member];
+          for (const key of keys) {
+            for (const target of aliasTargets(node.right)) {
+              recordMember(owner, container, key, target, at, conditional);
+            }
+          }
         }
       }
     }

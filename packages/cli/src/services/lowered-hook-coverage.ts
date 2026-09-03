@@ -421,22 +421,27 @@ export function scanRuleStateReads(
    * either name lands on the same table. A base that may be two different
    * objects is left as itself: there is no single table to move.
    */
-  const containerRoot = (
+  const containerRoots = (
     name: string,
     chain: ts.Node[],
     at: number,
     seen = new Set<string>()
-  ): string => {
-    if (seen.has(name)) return name;
+  ): string[] => {
+    if (seen.has(name)) return [name];
     for (const owner of chain) {
       const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
       if (candidates.length === 0) continue;
       const visible = visibleEdges(candidates, at);
-      if (visible.length !== 1) return name;
-      const [edge] = visible;
-      return containerRoot(edge.target, edge.chain ?? chain, edge.at, new Set([...seen, name]));
+      if (visible.length === 0) return [name];
+      const next = new Set([...seen, name]);
+      // A base that may be either of two objects writes to both tables.
+      return [
+        ...new Set(
+          visible.flatMap((edge) => containerRoots(edge.target, edge.chain ?? chain, edge.at, next))
+        ),
+      ];
     }
-    return name;
+    return [name];
   };
 
   const recordMember = (
@@ -489,7 +494,7 @@ export function scanRuleStateReads(
       return null;
     }
     if (!ts.isIdentifier(value)) return null;
-    const container = containerRoot(value.text, chain, at);
+    const [container] = containerRoots(value.text, chain, at);
     for (const scope of chain) {
       const members = objectMembers.get(scope)?.get(container);
       if (!members) continue;
@@ -554,17 +559,19 @@ export function scanRuleStateReads(
     if (!owner) return [];
     const base = unwrap(owner);
     if (!ts.isIdentifier(base)) return [];
-    const container = containerRoot(base.text, chain, at);
-    for (const scope of chain) {
-      const members = objectMembers.get(scope)?.get(container);
-      if (!members) continue;
-      for (const [key, edges] of members) {
-        if (!memberNamed(value, key)) continue;
-        return visibleEdges(edges, at).map((edge) => ({ name: edge.target, at: edge.at }));
+    const out: Array<{ name: string; at: number }> = [];
+    for (const container of containerRoots(base.text, chain, at)) {
+      for (const scope of chain) {
+        const members = objectMembers.get(scope)?.get(container);
+        if (!members) continue;
+        for (const [key, edges] of members) {
+          if (!memberNamed(value, key)) continue;
+          out.push(...visibleEdges(edges, at).map((edge) => ({ name: edge.target, at: edge.at })));
+        }
+        break;
       }
-      return [];
     }
-    return [];
+    return out;
   };
   const rawExposures: Array<{
     handles: Array<{ name: string; at: number }>;
@@ -671,16 +678,31 @@ export function scanRuleStateReads(
     ) {
       const base = unwrap(ownerOf(node.left) ?? node.left);
       const member = memberNameOf(node.left);
-      if (ts.isIdentifier(base) && member !== null) {
+      if (ts.isIdentifier(base)) {
         const chain = [...nextChain, source];
-        const container = containerRoot(base.text, chain, node.getStart());
-        const memberOwnerScope =
-          chain.find((candidate) => declaredIn.get(candidate)?.has(container)) ??
-          nextChain[0] ??
-          source;
-        const conditional = isConditionallyReached(node);
-        for (const target of aliasTargets(node.right)) {
-          recordMember(memberOwnerScope, container, member, target, node.getStart(), conditional);
+        const at = node.getStart();
+        const containers = containerRoots(base.text, chain, at);
+        const declaring =
+          chain.find((candidate) => declaredIn.get(candidate)?.has(containers[0])) ?? null;
+        const conditional =
+          isConditionallyReached(node) ||
+          isDeferredWrite(node, enclosingFunction(declaring)) ||
+          containers.length > 1 ||
+          member === null;
+        for (const container of containers) {
+          const memberOwnerScope =
+            chain.find((candidate) => declaredIn.get(candidate)?.has(container)) ??
+            nextChain[0] ??
+            source;
+          const keys =
+            member === null
+              ? [...(objectMembers.get(memberOwnerScope)?.get(container)?.keys() ?? [])]
+              : [member];
+          for (const key of keys) {
+            for (const target of aliasTargets(node.right)) {
+              recordMember(memberOwnerScope, container, key, target, at, conditional);
+            }
+          }
         }
       }
     }
@@ -1128,6 +1150,13 @@ export function scanRuleStateReads(
       const element = value.elements[index];
       return element && !ts.isOmittedExpression(element) ? [element] : [];
     }
+    if (ts.isConditionalExpression(value)) {
+      // Either object may be the one written through, so both answer.
+      return [
+        ...containerMembers(value.whenTrue, key, scope, seen),
+        ...containerMembers(value.whenFalse, key, scope, seen),
+      ];
+    }
     if (ts.isIdentifier(value) && !seen.has(value.text)) {
       const binding = lookup(scope, value.text);
       if (binding?.kind === 'token') {
@@ -1138,6 +1167,53 @@ export function scanRuleStateReads(
       }
     }
     return [];
+  };
+
+  /** The members a container's declaration names, for an unreadable write key. */
+  const containerKeys = (node: ts.Node, scope: Scope, seen = new Set<string>()): string[] => {
+    const value = unwrap(node);
+    if (ts.isObjectLiteralExpression(value)) {
+      return value.properties.flatMap((property) =>
+        ts.isShorthandPropertyAssignment(property) ||
+        (ts.isPropertyAssignment(property) &&
+          (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)))
+          ? [(property.name as ts.Identifier | ts.StringLiteral).text]
+          : []
+      );
+    }
+    if (ts.isArrayLiteralExpression(value)) return value.elements.map((_, index) => String(index));
+    if (ts.isIdentifier(value) && !seen.has(value.text)) {
+      const binding = lookup(scope, value.text);
+      if (binding?.kind === 'token') {
+        return containerKeys(binding.initializer, scope, new Set([...seen, value.text]));
+      }
+    }
+    return [];
+  };
+
+  /** Every binding a base expression may name, following a conditional. */
+  const containerBindings = (
+    node: ts.Node,
+    scope: Scope,
+    seen = new Set<string>()
+  ): Array<{ scope: Scope; name: string }> => {
+    const value = unwrap(node);
+    if (ts.isConditionalExpression(value)) {
+      return [
+        ...containerBindings(value.whenTrue, scope, seen),
+        ...containerBindings(value.whenFalse, scope, seen),
+      ];
+    }
+    if (!ts.isIdentifier(value) || seen.has(value.text)) return [];
+    const owner = scopeBinding(scope, value.text);
+    const held = owner?.bindings.get(value.text);
+    if (!owner || held?.kind !== 'token') return [];
+    const initializer = unwrap(held.initializer);
+    if (ts.isIdentifier(initializer) || ts.isConditionalExpression(initializer)) {
+      const next = containerBindings(initializer, scope, new Set([...seen, value.text]));
+      if (next.length > 0) return next;
+    }
+    return [{ scope: owner, name: value.text }];
   };
 
   const memberOfHandleObject = (node: ts.Node, scope: Scope): ts.Expression[] => {
@@ -1687,30 +1763,38 @@ export function scanRuleStateReads(
     ) {
       const base = unwrap(ownerOf(node.left) ?? node.left);
       const member = memberNameOf(node.left);
-      if (ts.isIdentifier(base) && member !== null) {
+      if (ts.isIdentifier(base) || ts.isConditionalExpression(base)) {
         // An alias of the container is the same object, so the write lands on
-        // the binding that actually holds the literal.
-        let name = base.text;
-        for (let hop = 0; hop < 8; hop += 1) {
-          const held = lookup(current, name);
-          if (held?.kind !== 'token') break;
-          const initializer = unwrap(held.initializer);
-          if (!ts.isIdentifier(initializer)) break;
-          name = initializer.text;
-        }
-        const owner = scopeBinding(current, name) ?? current;
-        const container = owner.bindings.get(name);
-        if (container?.kind === 'token') {
-          // Before the first write the member still lives in the declaration.
-          const previous =
-            container.members?.get(member) ??
-            containerMembers(container.initializer, member, current);
+        // the binding that actually holds the literal — on each of them when
+        // the base may be either of two objects.
+        const targets = containerBindings(base, current);
+        for (const target of targets) {
+          const container = target.scope.bindings.get(target.name);
+          if (container?.kind !== 'token') continue;
+          // The declaring scope, not this one: inside a callback the write
+          // would otherwise be compared against itself and always look ordered.
           const uncertain =
-            isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(current.node));
-          const kept = uncertain ? previous : [];
+            isConditionallyReached(node) ||
+            isDeferredWrite(node, enclosingFunction(target.scope.node)) ||
+            targets.length > 1 ||
+            member === null;
+          const keys =
+            member === null
+              ? [
+                  ...new Set([
+                    ...(container.members?.keys() ?? []),
+                    ...containerKeys(container.initializer, current),
+                  ]),
+                ]
+              : [member];
           const members = new Map(container.members ?? []);
-          members.set(member, [node.right, ...kept]);
-          declare(owner, name, { ...container, members });
+          for (const key of keys) {
+            // Before the first write the member still lives in the declaration.
+            const previous =
+              container.members?.get(key) ?? containerMembers(container.initializer, key, current);
+            members.set(key, [node.right, ...(uncertain ? previous : [])]);
+          }
+          declare(target.scope, target.name, { ...container, members });
         }
       }
     }

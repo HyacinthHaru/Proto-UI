@@ -869,6 +869,50 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('keeps the earlier member across a callback, two objects, or an unreadable key', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, lines, read] of [
+      [
+        'callback write',
+        [
+          'const controls = { ready: first };',
+          "def.on('refresh', () => { controls.ready = second; });",
+        ],
+        'controls.ready',
+      ],
+      [
+        'either of two objects',
+        [
+          'const controlsA = { ready: first };',
+          'const controlsB = { ready: first };',
+          'const alias = enabled ? controlsA : controlsB;',
+          'alias.ready = second;',
+        ],
+        'controlsA.ready',
+      ],
+      [
+        'unreadable key',
+        ['const controls = { ready: first };', "const key = 'ready';", 'controls[key] = second;'],
+        'controls.ready',
+      ],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        ...lines,
+        `def.expose.state('visible', ${read});`,
+        `def.rule({ when: (w) => w.state(${read}).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals.map((local) => local.attribute).sort(), label).toEqual([
+        'first-flag',
+        'second-flag',
+      ]);
+    }
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
