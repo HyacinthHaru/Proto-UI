@@ -291,6 +291,7 @@ export function scanRuleStateReads(
     target: string;
     at: number;
     conditional: boolean;
+    chain: ts.Node[];
   };
   const aliasEdges: AliasEdge[] = [];
   const declaredIn = new Map<ts.Node, Set<string>>();
@@ -525,6 +526,7 @@ export function scanRuleStateReads(
             target,
             at: node.getStart(),
             conditional,
+            chain: [...nextChain, source],
           });
         }
       }
@@ -548,6 +550,7 @@ export function scanRuleStateReads(
           target: alias.target,
           at: alias.at,
           conditional,
+          chain: [...nextChain, source],
         });
       }
     }
@@ -597,6 +600,7 @@ export function scanRuleStateReads(
           target,
           at: node.getStart(),
           conditional,
+          chain: [...nextChain, source],
         });
       }
     }
@@ -627,8 +631,8 @@ export function scanRuleStateReads(
     chain: ts.Node[],
     at: number,
     seen = new Set<string>()
-  ): string[] => {
-    if (seen.has(name)) return [name];
+  ): Array<{ name: string; chain: ts.Node[] }> => {
+    if (seen.has(name)) return [{ name, chain }];
     let found: AliasEdge[] = [];
     for (const owner of chain) {
       const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
@@ -636,9 +640,11 @@ export function scanRuleStateReads(
       found = visibleEdges(candidates, at);
       break;
     }
-    if (found.length === 0) return [name];
+    if (found.length === 0) return [{ name, chain }];
     const next = new Set([...seen, name]);
-    return found.flatMap((edge) => aliasRoots(edge.target, chain, edge.at, next));
+    // An alias captured its target where the alias was written, so a name the
+    // exposure site shadows must not answer for it.
+    return found.flatMap((edge) => aliasRoots(edge.target, edge.chain ?? chain, edge.at, next));
   };
 
   // An exposure names a binding, and a binding lives in one scope. Writing it
@@ -651,13 +657,19 @@ export function scanRuleStateReads(
     // A key the scanner cannot read still means the state is exposed, and the
     // attribute comes from the declared name anyway.
     const text = ts.isStringLiteralLike(key) ? key.text : '';
-    for (const name of new Set(
-      handles.flatMap((handle) => [handle.name, ...aliasRoots(handle.name, chain, handle.at)])
-    )) {
-      const owner = declaringScope(name, chain);
+    const named = handles.flatMap((handle) => [
+      { name: handle.name, chain },
+      ...aliasRoots(handle.name, chain, handle.at),
+    ]);
+    const seen = new Set<string>();
+    for (const entry of named) {
+      const owner = declaringScope(entry.name, entry.chain);
       if (!owner) continue;
+      const identity = `${entry.name}\u0000${owner.pos}`;
+      if (seen.has(identity)) continue;
+      seen.add(identity);
       const scoped = exposedKeys.get(owner) ?? new Map<string, string>();
-      if (!scoped.has(name)) scoped.set(name, text);
+      if (!scoped.has(entry.name)) scoped.set(entry.name, text);
       exposedKeys.set(owner, scoped);
     }
   }
@@ -762,6 +774,38 @@ export function scanRuleStateReads(
         declare(scope, name.text, { kind: 'handleBag', hook: bag });
       }
       return;
+    }
+
+    // `const current = enabled ? first : second` — the runtime keeps one branch
+    // and it carries its own declared name, so both candidates are retained.
+    const chosen = unwrap(initializer);
+    if (ts.isConditionalExpression(chosen) && ts.isIdentifier(name)) {
+      // Each branch is bound into a throwaway scope so this reads exactly what
+      // the same expression would name on its own.
+      const branches = [chosen.whenTrue, chosen.whenFalse].map((branch) => {
+        const probe: Scope = { parent: lookupScope, bindings: new Map(), node: lookupScope.node };
+        declareValue(name, branch, probe, lookupScope);
+        return probe.bindings.get(name.text);
+      });
+      const locals = branches.filter(
+        (binding): binding is Binding & { kind: 'localState' } => binding?.kind === 'localState'
+      );
+      if (locals.length === branches.length && locals.length > 0) {
+        const [head, ...rest] = locals;
+        const bare = (binding: LocalStateBinding): LocalStateBinding => ({
+          kind: 'localState',
+          declaredAs: binding.declaredAs,
+          exposedAs: binding.exposedAs,
+        });
+        declare(scope, name.text, {
+          ...head,
+          exposedAs: exposureFor(name.text, scope) ?? head.exposedAs,
+          alternatives: rest
+            .map(bare)
+            .filter((candidate) => candidate.declaredAs !== head.declaredAs),
+        });
+        return;
+      }
     }
 
     // `const { ready: publicFlag } = { ready: flag }` and `const [publicFlag] =

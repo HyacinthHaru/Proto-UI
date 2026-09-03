@@ -307,30 +307,29 @@ function resolveExpression(node, scope) {
     return asStringValue([parts.join('')]);
   }
 
-  // `const [publicFlag] = [flag]` — the index is the member name. Checked
-  // before the token-array reading below, which needs every element to be a
-  // string and so gives up on an array holding a handle.
+  // The index is the member name a positional pattern binds, and an array may
+  // hold tokens and handles at once, so both are read in one pass.
   if (ts.isArrayLiteralExpression(node)) {
     const semantics = new Map();
+    const parts = [];
+    let readsAsTokens = true;
     node.elements.forEach((element, index) => {
-      if (ts.isOmittedExpression(element)) return;
+      if (ts.isOmittedExpression(element)) {
+        readsAsTokens = false;
+        return;
+      }
       const held = resolveBinding(element, scope);
       if (held.semantic) semantics.set(String(index), held.semantic);
+      if (held.single) parts.push(held.single);
+      else readsAsTokens = false;
     });
-    if (semantics.size > 0) return asSemanticMapValue(semantics);
-  }
-
-  if (ts.isArrayLiteralExpression(node)) {
-    const parts = [];
-    for (const element of node.elements) {
-      const value = resolveExpression(element, scope);
-      if (!value.single) return emptyValue();
-      parts.push(value.single);
-    }
     // Keep the element list: a comma-joined string cannot tell an element
     // boundary from a comma inside an arbitrary token such as
     // `transition-[color,box-shadow]`.
-    return { ...asStringValue([parts.join(',')]), elements: parts };
+    const value = readsAsTokens
+      ? { ...asStringValue([parts.join(',')]), elements: parts }
+      : emptyValue();
+    return semantics.size > 0 ? { ...value, semanticMap: semantics } : value;
   }
 
   if (
@@ -352,23 +351,6 @@ function resolveExpression(node, scope) {
 
   // `const controls = { ready: flag }` — a plain container of handles reads the
   // same way an `asHook` bag does, so `w.state(controls.ready)` has a variant.
-  if (ts.isObjectLiteralExpression(node)) {
-    const semantics = new Map();
-    for (const property of node.properties) {
-      if (ts.isShorthandPropertyAssignment(property)) {
-        const held = resolveBinding(property.name, scope);
-        if (held.semantic) semantics.set(property.name.text, held.semantic);
-        continue;
-      }
-      if (!ts.isPropertyAssignment(property)) continue;
-      const key = getPropertyName(property.name);
-      if (!key) continue;
-      const held = resolveBinding(property.initializer, scope);
-      if (held.semantic) semantics.set(key, held.semantic);
-    }
-    if (semantics.size > 0) return asSemanticMapValue(semantics);
-  }
-
   if (ts.isPropertyAccessExpression(node) && node.name.text === 'stateHandles') {
     const stateHandles = resolveKnownAsHookStateHandles(node.expression);
     if (stateHandles) return asSemanticMapValue(stateHandles);
@@ -398,20 +380,28 @@ function resolveExpression(node, scope) {
     return resolveExpression(node.expression, scope);
   }
 
+  // A container may hold token data and state handles at once — reading it for
+  // one must not discard the other. `const controls = { ready: flag, className:
+  // 'bg-red' }` has to answer both `w.state(controls.ready)` and
+  // `tw(controls.className)`.
   if (ts.isObjectLiteralExpression(node)) {
     const entries = new Map();
+    const semantics = new Map();
     for (const prop of node.properties) {
       if (ts.isPropertyAssignment(prop)) {
         const key = getPropertyName(prop.name);
         if (!key) continue;
-        const value = resolveExpression(prop.initializer, scope);
-        if (value.strings.length > 0) entries.set(key, value.strings);
+        const held = resolveBinding(prop.initializer, scope);
+        if (held.strings.length > 0) entries.set(key, held.strings);
+        if (held.semantic) semantics.set(key, held.semantic);
       } else if (ts.isShorthandPropertyAssignment(prop)) {
-        const value = lookup(prop.name.text, scope);
-        if (value.strings.length > 0) entries.set(prop.name.text, value.strings);
+        const held = lookup(prop.name.text, scope);
+        if (held.strings.length > 0) entries.set(prop.name.text, held.strings);
+        if (held.semantic) semantics.set(prop.name.text, held.semantic);
       }
     }
-    return asMapValue(entries);
+    const value = asMapValue(entries);
+    return semantics.size > 0 ? { ...value, semanticMap: semantics } : value;
   }
 
   if (ts.isElementAccessExpression(node)) {
@@ -464,6 +454,21 @@ function lookup(name, scope) {
 }
 
 function resolveBinding(node, scope) {
+  const inner = unwrapTransparent(node);
+  // The runtime keeps one branch, and whichever it keeps carries its own
+  // declared name, so both candidates need a selector and neither may fall
+  // back to the expose key.
+  if (ts.isConditionalExpression(inner)) {
+    const branches = [
+      resolveBinding(inner.whenTrue, scope),
+      resolveBinding(inner.whenFalse, scope),
+    ];
+    const semantics = [...new Set(branches.flatMap(bindingSemantics))];
+    if (semantics.length > 0) {
+      return { ...branches[0], semantic: semantics[0], alternatives: semantics.slice(1) };
+    }
+  }
+
   const semantic = resolveSemanticBinding(node);
   const value = resolveExpression(node, scope);
   const declared = resolveDeclaredStateName(node, scope);
@@ -888,6 +893,7 @@ function collectExposures(root) {
             target,
             at: node.getStart(),
             conditional,
+            chain: [...nextChain, root],
           });
         }
       }
@@ -912,6 +918,7 @@ function collectExposures(root) {
           target: alias.target,
           at: alias.at,
           conditional,
+          chain: [...nextChain, root],
         });
       }
     }
@@ -954,7 +961,14 @@ function collectExposures(root) {
         recordObjectLiteral(owner, node.left.text, replacement, node.getStart(), conditional);
       }
       for (const target of aliasTargets(node.right)) {
-        aliasEdges.push({ owner, name: node.left.text, target, at: node.getStart(), conditional });
+        aliasEdges.push({
+          owner,
+          name: node.left.text,
+          target,
+          at: node.getStart(),
+          conditional,
+          chain: [...nextChain, root],
+        });
       }
     }
     if (
@@ -994,11 +1008,13 @@ function collectExposures(root) {
   // A conditional alias records one edge per branch, so resolution fans out
   // rather than picking one: whichever handle the runtime selects has a variant.
   const rootNames = (name, chain, at, seen = new Set()) => {
-    if (seen.has(name)) return [name];
+    if (seen.has(name)) return [{ name, chain }];
     const edges = lookupAliases(name, chain, at);
-    if (edges.length === 0) return [name];
+    if (edges.length === 0) return [{ name, chain }];
     const next = new Set([...seen, name]);
-    return edges.flatMap((edge) => rootNames(edge.target, chain, edge.at, next));
+    // An alias captured its target where the alias was written, so a name the
+    // exposure site shadows must not answer for it.
+    return edges.flatMap((edge) => rootNames(edge.target, edge.chain ?? chain, edge.at, next));
   };
 
   // An exposure names a binding, and a binding lives in one scope. Recording it
@@ -1010,13 +1026,19 @@ function collectExposures(root) {
   const byScope = new Map();
   for (const { handles, key, chain } of exposures) {
     // Both the alias and the handle it names carry the same state id.
-    for (const name of new Set(
-      handles.flatMap((handle) => [handle.name, ...rootNames(handle.name, chain, handle.at)])
-    )) {
-      const owner = declaringScope(name, chain);
+    const named = handles.flatMap((handle) => [
+      { name: handle.name, chain },
+      ...rootNames(handle.name, chain, handle.at),
+    ]);
+    const seen = new Set();
+    for (const entry of named) {
+      const owner = declaringScope(entry.name, entry.chain);
       if (!owner) continue;
+      const identity = `${entry.name}\u0000${owner.pos}`;
+      if (seen.has(identity)) continue;
+      seen.add(identity);
       const scoped = byScope.get(owner) ?? new Map();
-      if (!scoped.has(name)) scoped.set(name, key);
+      if (!scoped.has(entry.name)) scoped.set(entry.name, key);
       byScope.set(owner, scoped);
     }
   }

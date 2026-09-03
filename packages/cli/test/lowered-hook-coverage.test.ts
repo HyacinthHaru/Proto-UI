@@ -642,6 +642,46 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('reports both branches of a conditional alias', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const current = enabled ? first : second;',
+      "def.expose.state('visible', current);",
+      `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'current', exposedAs: 'visible', attribute: 'first-flag' },
+      { state: 'current', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('resolves an alias target where the alias was written', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      'function setup(def) {',
+      "  const flag = def.state.bool('outerFlag', false);",
+      '  const current = flag;',
+      '  {',
+      "    const flag = def.state.bool('innerFlag', false);",
+      '    void flag;',
+      "    def.expose.state('visible', current);",
+      '  }',
+      `  def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'outer-flag' },
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
