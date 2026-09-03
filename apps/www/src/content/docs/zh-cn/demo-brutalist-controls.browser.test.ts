@@ -25,6 +25,7 @@ const SWITCH_ROUTE = '/en/ui-libraries/brutalist/components/switch/';
 const TABS_ROUTE = '/en/ui-libraries/brutalist/components/tabs/';
 const SCROLL_AREA_ROUTE = '/en/ui-libraries/brutalist/components/scroll-area/';
 const TEXTAREA_ROUTE = '/en/ui-libraries/brutalist/components/textarea/';
+const TOOLTIP_ROUTE = '/en/ui-libraries/brutalist/components/tooltip/';
 const DROPDOWN_ROUTE = '/en/ui-libraries/brutalist/components/dropdown-menu/';
 const BUTTON_ROUTE = '/en/ui-libraries/brutalist/components/button/';
 const GEOMETRY_EPSILON = 0.5;
@@ -667,6 +668,177 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
           GEOMETRY_EPSILON
         );
         await page.mouse.up();
+      }
+    } finally {
+      await context.close();
+    }
+  }, 90_000);
+
+  it('composes the transparent Tooltip Group across Web Components, React, and Vue', async () => {
+    const { context, page, previewer } = await openRoute(TOOLTIP_ROUTE, {
+      width: 1440,
+      height: 900,
+    });
+
+    const expectTooltipPaint = async (
+      tooltip: Locator,
+      expectedText: string,
+      frame: string
+    ): Promise<void> => {
+      const paint = await tooltip.evaluate((element) => {
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return {
+          text: element.textContent,
+          tabIndex: (element as HTMLElement).tabIndex,
+          interactive: element.querySelectorAll('a,button,input,select,textarea,[tabindex]').length,
+          borderRadius: style.borderRadius,
+          borderWidth: style.borderTopWidth,
+          borderColor: style.borderTopColor,
+          backgroundColor: style.backgroundColor,
+          color: style.color,
+          boxShadow: style.boxShadow,
+          fontFamily: style.fontFamily,
+          fontSize: style.fontSize,
+          fontWeight: style.fontWeight,
+          textTransform: style.textTransform,
+          paddingInline: style.paddingInline,
+          paddingBlock: style.paddingBlock,
+          width: rect.width,
+          height: rect.height,
+        };
+      });
+      expect(paint.text, frame).toContain(expectedText);
+      expect(paint.tabIndex, frame).toBe(-1);
+      expect(paint.interactive, frame).toBe(0);
+      expect(paint.borderRadius, frame).toBe('0px');
+      expect(paint.borderWidth, frame).toBe('2px');
+      // The preview frame and the renderer-owned body portal must resolve one shared theme.
+      const resolved = await page.evaluate(() => {
+        const boundary = document.querySelector('[data-brutalist-tooltip-theme-boundary]');
+        if (!(boundary instanceof HTMLElement)) {
+          throw new Error('The Tooltip page must expose its shared theme boundary.');
+        }
+        const readPaint = (parent: HTMLElement) => {
+          const probe = document.createElement('div');
+          probe.style.color = 'var(--pui-foreground)';
+          probe.style.backgroundColor = 'var(--pui-background)';
+          parent.appendChild(probe);
+          const style = getComputedStyle(probe);
+          const result = {
+            foreground: style.color,
+            background: style.backgroundColor,
+          };
+          probe.remove();
+          return result;
+        };
+        return {
+          boundary: readPaint(boundary),
+          portal: readPaint(document.body),
+        };
+      });
+      expect(resolved.boundary, frame).toEqual(resolved.portal);
+      expect(paint.backgroundColor, frame).toBe(resolved.boundary.foreground);
+      expect(paint.color, frame).toBe(resolved.boundary.background);
+      expect(paint.borderColor, frame).toBe(resolved.boundary.foreground);
+      expect(paint.boxShadow, frame).toContain('4px 4px 0px');
+      expect(paint.fontFamily.toLowerCase(), frame).toContain('mono');
+      expect(paint.fontSize, frame).toBe('12px');
+      expect(Number(paint.fontWeight), frame).toBeGreaterThanOrEqual(700);
+      expect(paint.textTransform, frame).toBe('uppercase');
+      expect(paint.paddingInline, frame).toBe('12px');
+      expect(paint.paddingBlock, frame).toBe('8px');
+      expect(paint.width, frame).toBeGreaterThan(20);
+      expect(paint.height, frame).toBeGreaterThan(20);
+    };
+
+    try {
+      expect(
+        await previewer
+          .locator('select.adapter-select option')
+          .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value))
+      ).toEqual([...RUNTIMES]);
+      for (const runtime of RUNTIMES) {
+        await applyColorScheme(page, 'light');
+        await selectRuntime(page, previewer, runtime, '[data-pui-root]', 7);
+        const roots = previewer.locator('[data-pui-root]');
+        expect(await roots.count(), runtime).toBe(7);
+        expect(await roots.nth(0).getAttribute('data-pui-root'), runtime).toBe('');
+        const firstTrigger = roots.filter({ hasText: 'Hover or focus for details' }).last();
+        const secondTrigger = roots.filter({ hasText: 'Move to the second trigger' }).last();
+        await expect.poll(() => page.getByRole('tooltip').count(), { message: runtime }).toBe(0);
+
+        await firstTrigger.hover();
+        await page.waitForTimeout(100);
+        expect(await page.getByRole('tooltip').count(), `${runtime}/cold-delay`).toBe(0);
+        const firstTooltip = page
+          .getByRole('tooltip')
+          .filter({ hasText: 'Portable Base behavior, Brutalist visual grammar' });
+        await expect.poll(() => firstTooltip.count(), { message: runtime }).toBe(1);
+        await expectTooltipPaint(
+          firstTooltip,
+          'Portable Base behavior, Brutalist visual grammar',
+          `${runtime}/light`
+        );
+        await applyColorScheme(page, 'dark');
+        await expectTooltipPaint(
+          firstTooltip,
+          'Portable Base behavior, Brutalist visual grammar',
+          `${runtime}/dark-repaint`
+        );
+        const firstTooltipId = await firstTooltip.getAttribute('id');
+        expect(firstTooltipId, runtime).toBeTruthy();
+        expect(
+          (await firstTrigger.getAttribute('aria-describedby'))?.split(/\s+/),
+          runtime
+        ).toContain(firstTooltipId);
+
+        // The Group is warm after the first owner closes, so the sibling opens without the cold delay.
+        await secondTrigger.hover();
+        const secondTooltip = page
+          .getByRole('tooltip')
+          .filter({ hasText: 'Group preserves the shared warm-delay domain' });
+        await expect
+          .poll(
+            async () => ({
+              second: await secondTooltip.count(),
+              first: await firstTooltip.count(),
+              total: await page.getByRole('tooltip').count(),
+              firstOwnsDescription:
+                (await firstTrigger.getAttribute('aria-describedby'))
+                  ?.split(/\s+/)
+                  .includes(firstTooltipId!) ?? false,
+            }),
+            { message: `${runtime}/warm-owner-handoff`, timeout: 300, interval: 25 }
+          )
+          .toEqual({ second: 1, first: 0, total: 1, firstOwnsDescription: false });
+        await expectTooltipPaint(
+          secondTooltip,
+          'Group preserves the shared warm-delay domain',
+          `${runtime}/dark-warm-owner`
+        );
+
+        const secondTooltipId = await secondTooltip.getAttribute('id');
+        expect(secondTooltipId, runtime).toBeTruthy();
+        expect(
+          (await secondTrigger.getAttribute('aria-describedby'))?.split(/\s+/),
+          runtime
+        ).toContain(secondTooltipId);
+
+        // Closing the final owner must unmount Content and remove its owned IDREF token.
+        await page.mouse.move(0, 0);
+        await expect
+          .poll(
+            async () => ({
+              total: await page.getByRole('tooltip').count(),
+              secondOwnsDescription:
+                (await secondTrigger.getAttribute('aria-describedby'))
+                  ?.split(/\s+/)
+                  .includes(secondTooltipId!) ?? false,
+            }),
+            { message: `${runtime}/final-owner-teardown` }
+          )
+          .toEqual({ total: 0, secondOwnsDescription: false });
       }
     } finally {
       await context.close();
