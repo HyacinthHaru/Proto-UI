@@ -24,6 +24,7 @@ const READY_ROUTES = [
   '/en/ui-libraries/brutalist/components/button/',
   '/en/ui-libraries/brutalist/components/switch/',
   '/en/ui-libraries/brutalist/components/tabs/',
+  '/en/ui-libraries/brutalist/components/tooltip/',
   '/en/ui-libraries/brutalist/components/select/',
   '/en/ui-libraries/shadcn/checkbox/',
   '/en/ui-libraries/shadcn/dropdown-menu/',

@@ -753,15 +753,16 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
     };
 
     try {
-      expect(
-        await previewer
-          .locator('select.adapter-select option')
-          .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value))
-      ).toEqual([...RUNTIMES]);
+      // Choosing each declared runtime is the evidence: `selectRuntime` waits
+      // for `[data-adapter-select-root].dataset.value` to equal it before the
+      // host is accepted. Reading an option inventory would retest the
+      // previewer's own Select, whose items exist only while it is open.
       for (const runtime of RUNTIMES) {
         await applyColorScheme(page, 'light');
         await selectRuntime(page, previewer, runtime, '[data-pui-root]', 7);
-        const roots = previewer.locator('[data-pui-root]');
+        // Scoped to the rendered host: the previewer chrome is Proto UI too, so
+        // a previewer-wide count is not evidence about this demo.
+        const roots = previewer.locator('.host [data-pui-root]');
         expect(await roots.count(), runtime).toBe(7);
         expect(await roots.nth(0).getAttribute('data-pui-root'), runtime).toBe('');
         const firstTrigger = roots.filter({ hasText: 'Hover or focus for details' }).last();
