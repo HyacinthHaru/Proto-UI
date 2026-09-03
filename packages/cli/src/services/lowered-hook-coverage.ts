@@ -207,6 +207,27 @@ export function scanRuleStateReads(
   type MemberEdge = { target: string; at: number };
   const objectMembers = new Map<ts.Node, Map<string, Map<string, MemberEdge[]>>>();
 
+  /** Every member an object literal names, at the position it was written. */
+  const recordObjectLiteral = (
+    owner: ts.Node,
+    base: string,
+    literal: ts.ObjectLiteralExpression,
+    at: number
+  ): void => {
+    for (const property of literal.properties) {
+      if (ts.isShorthandPropertyAssignment(property)) {
+        recordMember(owner, base, property.name.text, property.name.text, at);
+      } else if (
+        ts.isPropertyAssignment(property) &&
+        (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
+      ) {
+        for (const target of aliasTargets(property.initializer)) {
+          recordMember(owner, base, property.name.text, target, at);
+        }
+      }
+    }
+  };
+
   const recordMember = (
     owner: ts.Node,
     base: string,
@@ -259,9 +280,9 @@ export function scanRuleStateReads(
       if (!members) continue;
       const edges = members.get(key);
       if (!edges) return null;
-      const visible = edges.filter((edge) => edge.at <= at);
-      if (visible.length === 0) return null;
-      return visible.reduce((latest, edge) => (edge.at > latest.at ? edge : latest)).target;
+      const targets = latestTargets(edges, at);
+      // A pattern binds one name, so a conditional member leaves it ambiguous.
+      return targets.length === 1 ? targets[0] : null;
     }
     return null;
   };
@@ -303,28 +324,35 @@ export function scanRuleStateReads(
     return out;
   };
 
-  const resolveHandleIdentifier = (node: ts.Node, chain: ts.Node[], at: number): string | null => {
+  /** Every edge written at the latest position at or before `at`. */
+  const latestTargets = (edges: MemberEdge[], at: number): string[] => {
+    const visible = edges.filter((edge) => edge.at <= at);
+    if (visible.length === 0) return [];
+    const latest = Math.max(...visible.map((edge) => edge.at));
+    return visible.filter((edge) => edge.at === latest).map((edge) => edge.target);
+  };
+
+  /** The handles an expose argument may name; a conditional member gives both. */
+  const resolveHandleNames = (node: ts.Node, chain: ts.Node[], at: number): string[] => {
     const value = unwrap(node);
-    if (ts.isIdentifier(value)) return value.text;
+    if (ts.isIdentifier(value)) return [value.text];
     const owner = ownerOf(value);
-    if (!owner) return null;
+    if (!owner) return [];
     const base = unwrap(owner);
-    if (!ts.isIdentifier(base)) return null;
+    if (!ts.isIdentifier(base)) return [];
     for (const scope of chain) {
       const members = objectMembers.get(scope)?.get(base.text);
       if (!members) continue;
       for (const [key, edges] of members) {
         if (!memberNamed(value, key)) continue;
-        const visible = edges.filter((edge) => edge.at <= at);
-        if (visible.length === 0) return null;
-        return visible.reduce((latest, edge) => (edge.at > latest.at ? edge : latest)).target;
+        return latestTargets(edges, at);
       }
-      return null;
+      return [];
     }
-    return null;
+    return [];
   };
   const rawExposures: Array<{
-    handle: string;
+    handles: string[];
     key: ts.Expression;
     chain: ts.Node[];
     at: number;
@@ -380,20 +408,7 @@ export function scanRuleStateReads(
       if (node.initializer) {
         const literal = unwrap(node.initializer);
         if (ts.isObjectLiteralExpression(literal)) {
-          const at = node.getStart();
-          for (const property of literal.properties) {
-            if (ts.isShorthandPropertyAssignment(property)) {
-              recordMember(owner, node.name.text, property.name.text, property.name.text, at);
-            } else if (
-              ts.isPropertyAssignment(property) &&
-              (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
-            ) {
-              const value = unwrap(property.initializer);
-              if (ts.isIdentifier(value)) {
-                recordMember(owner, node.name.text, property.name.text, value.text, at);
-              }
-            }
-          }
+          recordObjectLiteral(owner, node.name.text, literal, node.getStart());
         }
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
@@ -424,13 +439,14 @@ export function scanRuleStateReads(
     ) {
       const base = unwrap(ownerOf(node.left) ?? node.left);
       const member = memberNameOf(node.left);
-      const value = unwrap(node.right);
-      if (ts.isIdentifier(base) && member !== null && ts.isIdentifier(value)) {
+      if (ts.isIdentifier(base) && member !== null) {
         const memberOwnerScope =
           [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(base.text)) ??
           nextChain[0] ??
           source;
-        recordMember(memberOwnerScope, base.text, member, value.text, node.getStart());
+        for (const target of aliasTargets(node.right)) {
+          recordMember(memberOwnerScope, base.text, member, target, node.getStart());
+        }
       }
     }
     // A plain reassignment moves the handle just as a declaration does.
@@ -447,6 +463,10 @@ export function scanRuleStateReads(
         [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(left)) ??
         nextChain[0] ??
         source;
+      const replacement = unwrap(node.right);
+      if (ts.isObjectLiteralExpression(replacement)) {
+        recordObjectLiteral(assignOwner, left, replacement, node.getStart());
+      }
       for (const target of aliasTargets(node.right)) {
         aliasEdges.push({ owner: assignOwner, name: left, target, at: node.getStart() });
       }
@@ -459,11 +479,12 @@ export function scanRuleStateReads(
       const exposesDirectly = memberNamed(callee, 'expose');
       if (exposesState || exposesDirectly) {
         const [nameArg, handleArg] = node.arguments;
-        const handle =
-          handleArg && resolveHandleIdentifier(handleArg, [...nextChain, source], node.getStart());
-        if (nameArg && handle) {
+        const handles = handleArg
+          ? resolveHandleNames(handleArg, [...nextChain, source], node.getStart())
+          : [];
+        if (nameArg && handles.length > 0) {
           rawExposures.push({
-            handle,
+            handles,
             key: nameArg,
             chain: [...nextChain, source],
             at: node.getStart(),
@@ -505,11 +526,13 @@ export function scanRuleStateReads(
   const declaringScope = (name: string, chain: ts.Node[]): ts.Node | undefined =>
     chain.find((candidate) => declaredIn.get(candidate)?.has(name)) ?? chain[chain.length - 1];
 
-  for (const { handle, key, chain, at } of rawExposures) {
+  for (const { handles, key, chain, at } of rawExposures) {
     // A key the scanner cannot read still means the state is exposed, and the
     // attribute comes from the declared name anyway.
     const text = ts.isStringLiteralLike(key) ? key.text : '';
-    for (const name of new Set([handle, ...aliasRoots(handle, chain, at)])) {
+    for (const name of new Set(
+      handles.flatMap((handle) => [handle, ...aliasRoots(handle, chain, at)])
+    )) {
       const owner = declaringScope(name, chain);
       if (!owner) continue;
       const scoped = exposedKeys.get(owner) ?? new Map<string, string>();

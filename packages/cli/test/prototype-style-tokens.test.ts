@@ -1459,4 +1459,68 @@ describe('collectProtoStyleTokens', () => {
 
     expect(await collectProtoStyleTokens(dir)).toContain('data-[internal-flag]:bg-accent');
   });
+  it('replaces the member table when a whole container is assigned', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let controls = { ready: first };',
+        '    controls = { ready: second };',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(second).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[second-flag]:bg-accent');
+  });
+
+  it('gives both branches of a conditional member write a variant', async () => {
+    // The runtime picks one at the expose call; over-approximating gives each
+    // candidate its variant, while recording neither leaves the chosen one
+    // without CSS.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    const controls = { ready: first };',
+        '    controls.ready = enabled ? first : second;',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-muted')),",
+        '    });',
+        '    def.rule({',
+        '      when: (w) => w.state(second).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-muted');
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+  });
 });

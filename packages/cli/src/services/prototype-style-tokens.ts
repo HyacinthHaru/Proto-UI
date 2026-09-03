@@ -592,6 +592,22 @@ function collectExposures(root) {
   // aliases do: `controls.ready = second` retargets the member from there on.
   const objectMembers = new Map();
 
+  /** Every member an object literal names, at the position it was written. */
+  const recordObjectLiteral = (owner, base, literal, at) => {
+    for (const property of literal.properties) {
+      if (ts.isShorthandPropertyAssignment(property)) {
+        recordMember(owner, base, property.name.text, property.name.text, at);
+      } else if (
+        ts.isPropertyAssignment(property) &&
+        (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
+      ) {
+        for (const target of aliasTargets(property.initializer)) {
+          recordMember(owner, base, property.name.text, target, at);
+        }
+      }
+    }
+  };
+
   const recordMember = (owner, base, key, target, at) => {
     const scoped = objectMembers.get(owner) ?? new Map();
     const members = scoped.get(base) ?? new Map();
@@ -625,9 +641,9 @@ function collectExposures(root) {
       if (!members) continue;
       const edges = members.get(key);
       if (!edges) return null;
-      const visible = edges.filter((edge) => edge.at <= at);
-      if (visible.length === 0) return null;
-      return visible.reduce((latest, edge) => (edge.at > latest.at ? edge : latest)).target;
+      const targets = latestTargets(edges, at);
+      // A pattern binds one name, so a conditional member leaves it ambiguous.
+      return targets.length === 1 ? targets[0] : null;
     }
     return null;
   };
@@ -664,25 +680,36 @@ function collectExposures(root) {
     return out;
   };
 
-  const resolveHandleIdentifier = (node, chain, at) => {
+  /** Every edge written at the latest position at or before `at`. */
+  const latestTargets = (edges, at) => {
+    const visible = edges.filter((edge) => edge.at <= at);
+    if (visible.length === 0) return [];
+    const latest = Math.max(...visible.map((edge) => edge.at));
+    return visible.filter((edge) => edge.at === latest).map((edge) => edge.target);
+  };
+
+  /**
+   * The handles an expose argument may name. A conditional member selects one
+   * at runtime, so both are returned for the same reason `aliasTargets` fans
+   * out: whichever the runtime picks has to have a variant.
+   */
+  const resolveHandleNames = (node, chain, at) => {
     const value = unwrapExpression(node);
-    if (ts.isIdentifier(value)) return value.text;
+    if (ts.isIdentifier(value)) return [value.text];
     const owner = memberOwner(value);
-    if (!owner) return null;
+    if (!owner) return [];
     const base = unwrapExpression(owner);
-    if (!ts.isIdentifier(base)) return null;
+    if (!ts.isIdentifier(base)) return [];
     for (const scope of chain) {
       const members = objectMembers.get(scope)?.get(base.text);
       if (!members) continue;
       for (const [key, edges] of members) {
         if (!memberIs(value, key)) continue;
-        const visible = edges.filter((edge) => edge.at <= at);
-        if (visible.length === 0) return null;
-        return visible.reduce((latest, edge) => (edge.at > latest.at ? edge : latest)).target;
+        return latestTargets(edges, at);
       }
-      return null;
+      return [];
     }
-    return null;
+    return [];
   };
 
   const visit = (node, chain) => {
@@ -707,20 +734,7 @@ function collectExposures(root) {
       if (node.initializer) {
         const literal = unwrapExpression(node.initializer);
         if (ts.isObjectLiteralExpression(literal)) {
-          const at = node.getStart();
-          for (const property of literal.properties) {
-            if (ts.isShorthandPropertyAssignment(property)) {
-              recordMember(owner, node.name.text, property.name.text, property.name.text, at);
-            } else if (
-              ts.isPropertyAssignment(property) &&
-              (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
-            ) {
-              const value = unwrapExpression(property.initializer);
-              if (ts.isIdentifier(value)) {
-                recordMember(owner, node.name.text, property.name.text, value.text, at);
-              }
-            }
-          }
+          recordObjectLiteral(owner, node.name.text, literal, node.getStart());
         }
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
@@ -750,13 +764,14 @@ function collectExposures(root) {
     ) {
       const base = unwrapExpression(memberOwner(node.left) ?? node.left);
       const member = memberName(node.left);
-      const value = unwrapExpression(node.right);
-      if (ts.isIdentifier(base) && member !== null && ts.isIdentifier(value)) {
+      if (ts.isIdentifier(base) && member !== null) {
         const owner =
           [...nextChain, root].find((candidate) => declaredIn.get(candidate)?.has(base.text)) ??
           nextChain[0] ??
           root;
-        recordMember(owner, base.text, member, value.text, node.getStart());
+        for (const target of aliasTargets(node.right)) {
+          recordMember(owner, base.text, member, target, node.getStart());
+        }
       }
     }
     // A plain reassignment moves the handle just as a declaration does.
@@ -772,6 +787,10 @@ function collectExposures(root) {
         [...nextChain, root].find((candidate) => declaredIn.get(candidate)?.has(node.left.text)) ??
         nextChain[0] ??
         root;
+      const replacement = unwrapExpression(node.right);
+      if (ts.isObjectLiteralExpression(replacement)) {
+        recordObjectLiteral(owner, node.left.text, replacement, node.getStart());
+      }
       for (const target of aliasTargets(node.right)) {
         aliasEdges.push({ owner, name: node.left.text, target, at: node.getStart() });
       }
@@ -784,11 +803,12 @@ function collectExposures(root) {
         namesExpose(unwrapExpression(node.expression)))
     ) {
       const [nameArg, handleArg] = node.arguments;
-      const handle =
-        handleArg && resolveHandleIdentifier(handleArg, [...nextChain, root], node.getStart());
-      if (nameArg && handle) {
+      const handles = handleArg
+        ? resolveHandleNames(handleArg, [...nextChain, root], node.getStart())
+        : [];
+      if (nameArg && handles.length > 0) {
         exposures.push({
-          handle,
+          handles,
           key: nameArg,
           chain: [...nextChain, root],
           at: node.getStart(),
@@ -834,9 +854,11 @@ function collectExposures(root) {
     chain.find((candidate) => declaredIn.get(candidate)?.has(name)) ?? chain[chain.length - 1];
 
   const byScope = new Map();
-  for (const { handle, key, chain, at } of exposures) {
+  for (const { handles, key, chain, at } of exposures) {
     // Both the alias and the handle it names carry the same state id.
-    for (const name of new Set([handle, ...rootNames(handle, chain, at)])) {
+    for (const name of new Set(
+      handles.flatMap((handle) => [handle, ...rootNames(handle, chain, at)])
+    )) {
       const owner = declaringScope(name, chain);
       if (!owner) continue;
       const scoped = byScope.get(owner) ?? new Map();

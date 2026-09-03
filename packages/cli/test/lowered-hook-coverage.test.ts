@@ -414,6 +414,61 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('keeps a plain alias of an exposed local resolvable', () => {
+    // Production resolves the alias, so a token binding here would report a
+    // blind spot the extractor does not have.
+    const source = [
+      "const hidden = def.state.bool('hidden', true);",
+      "def.expose.state('hidden', hidden);",
+      'const alias = hidden;',
+      "def.rule({ when: (w) => w.state(alias).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'alias', exposedAs: 'hidden', attribute: 'hidden' },
+    ]);
+  });
+
+  it('replaces the member table when a whole container is assigned', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let controls = { ready: first };',
+      'controls = { ready: second };',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(second).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('gives both branches of a conditional member write an attribute', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'controls.ready = enabled ? first : second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(first).eq(true), intent: ${use} });`,
+      `def.rule({ when: (w) => w.state(second).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
