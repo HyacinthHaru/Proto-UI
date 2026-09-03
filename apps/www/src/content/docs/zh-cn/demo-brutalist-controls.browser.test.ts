@@ -444,21 +444,23 @@ type ButtonFill = {
  * variable" means; comparing two schemes only proves the surface moved.
  */
 /**
- * Sets the documentation host theme the way the site's own control does and
- * leaves the media preference alone.
+ * Switches the host theme through the site's own control surface.
  *
  * `P-BRUTALIST-BUTTON-LIVE-THEME` names host-theme-driven CSS variable
  * resolution as the supported mechanism and puts `prefers-color-scheme`
- * outside the criterion, so driving this case with `emulateMedia` would let a
- * Button written entirely in media queries satisfy it. The Brutalist theme
- * selects Dark on `:root.dark, :root[data-theme='dark'], .dark,
- * [data-theme='dark']` and never on a media query, so both are set here.
+ * outside the criterion, so `emulateMedia` would let a Button written entirely
+ * in media queries satisfy this case. Calling `StarlightTheme.set` rather than
+ * writing attributes means the case exercises the exact signal the documentation
+ * theme toggle emits: `data-theme` and `color-scheme` on the root, and nothing
+ * else. Setting a `.dark` class here as well would keep the case green if the
+ * `:root[data-theme='dark']` selector broke, which is the selector the real
+ * toggle depends on.
  */
 async function applyHostTheme(page: Page, scheme: ColorScheme): Promise<void> {
   await page.evaluate((next) => {
-    const root = document.documentElement;
-    root.dataset.theme = next;
-    root.classList.toggle('dark', next === 'dark');
+    const host = window as unknown as { StarlightTheme?: { set(theme: string): void } };
+    if (!host.StarlightTheme) throw new Error('The documentation theme provider must be present.');
+    host.StarlightTheme.set(next);
   }, scheme);
   await page.waitForFunction((next) => document.documentElement.dataset.theme === next, scheme, {
     timeout: 10_000,
@@ -466,20 +468,30 @@ async function applyHostTheme(page: Page, scheme: ColorScheme): Promise<void> {
 }
 
 /**
- * Overrides one theme variable on the host scope with a value in neither
- * palette, so a surface that merely happens to match the Dark palette cannot
- * pass. Nothing but variable resolution can follow this.
+ * Overrides every theme variable this case reads, each with a value in no
+ * palette and distinct from the others, so a pair that is hard-coded to the
+ * current Light or Dark values cannot pass and no fill can satisfy the check by
+ * following a variable it does not name.
  */
-const CANARY_SURFACE = 'rgb(1, 2, 3)';
+const CANARY_VALUES: Record<string, string> = {
+  '--pui-main': 'rgb(1, 2, 3)',
+  '--pui-main-foreground': 'rgb(4, 5, 6)',
+  '--pui-secondary-background': 'rgb(7, 8, 9)',
+  '--pui-foreground': 'rgb(10, 11, 12)',
+  '--pui-destructive': 'rgb(13, 14, 15)',
+  '--pui-destructive-foreground': 'rgb(16, 17, 18)',
+};
 
-async function applyCanarySurface(page: Page, on: boolean): Promise<void> {
+async function applyCanaryTheme(page: Page, on: boolean): Promise<void> {
   await page.evaluate(
-    ({ enabled, canary }) => {
+    ({ enabled, values }) => {
       const root = document.documentElement;
-      if (enabled) root.style.setProperty('--pui-secondary-background', canary);
-      else root.style.removeProperty('--pui-secondary-background');
+      for (const [name, value] of Object.entries(values)) {
+        if (enabled) root.style.setProperty(name, value);
+        else root.style.removeProperty(name);
+      }
     },
-    { enabled: on, canary: CANARY_SURFACE }
+    { enabled: on, values: CANARY_VALUES }
   );
 }
 
@@ -1005,6 +1017,17 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         > = {} as never;
         for (const scheme of COLOR_SCHEMES) {
           await applyHostTheme(page, scheme);
+
+          const rootSignal = await page.evaluate(() => ({
+            theme: document.documentElement.dataset.theme,
+            darkClass: document.documentElement.classList.contains('dark'),
+          }));
+          expect(rootSignal.theme, `${runtime}/${scheme}/host-signal`).toBe(scheme);
+          // The documentation toggle sets no class. If this case set one, a
+          // broken `:root[data-theme='dark']` selector would still look healthy
+          // here while the real toggle left mounted Buttons in Light.
+          expect(rootSignal.darkClass, `${runtime}/${scheme}/no-class-signal`).toBe(false);
+
           const fills = await buttonFills(page);
           painted[scheme] = fills;
 
@@ -1059,25 +1082,26 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         );
         expect(restored.surface.color, `${runtime}/restored-ink`).toBe(painted.light.surface.color);
 
-        // The two schemes above are both palettes a media-query implementation
-        // could hard-code. This value is in neither, so following it is only
-        // possible by resolving the variable the surface names.
-        await applyCanarySurface(page, true);
+        // Both schemes above are palettes an implementation could hard-code.
+        // Every variable this case reads is now moved to a value in neither, and
+        // each to a different one, so a fill can only match by resolving the
+        // variable it names.
+        await applyCanaryTheme(page, true);
         const canary = await buttonFills(page);
-        expect(canary.surface.background, `${runtime}/canary`).toBe(
-          canary.surface.variables.background
-        );
-        expect(canary.surface.background, `${runtime}/canary-moved`).not.toBe(
-          painted.light.surface.background
-        );
-        expect(canary.disabledSurface.background, `${runtime}/canary-disabled`).toBe(
-          canary.surface.background
-        );
-        // Accent fills name a different variable and must not follow it.
-        expect(canary.solidMain.background, `${runtime}/canary-accent`).toBe(
-          painted.light.solidMain.background
-        );
-        await applyCanarySurface(page, false);
+        for (const [ref, fill] of Object.entries(canary)) {
+          const label = `${runtime}/canary/${ref}`;
+          expect(fill.background, `${label}/background`).toBe(fill.variables.background);
+          expect(fill.color, `${label}/color`).toBe(fill.variables.color);
+          // Every canary differs from both palettes, so a hard-coded pair fails
+          // here even though it satisfied both schemes.
+          expect(fill.background, `${label}/moved`).not.toBe(
+            painted.light[ref as keyof typeof BUTTON_FILLS].background
+          );
+          expect(fill.color, `${label}/ink-moved`).not.toBe(
+            painted.light[ref as keyof typeof BUTTON_FILLS].color
+          );
+        }
+        await applyCanaryTheme(page, false);
       }
     } finally {
       await context.close();
