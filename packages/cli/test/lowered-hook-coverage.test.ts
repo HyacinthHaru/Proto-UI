@@ -27,8 +27,10 @@ async function prototypeSourceFiles(): Promise<string[]> {
     const src = path.join(PROTOTYPE_PACKAGES, entry.name, 'src');
     try {
       files.push(...((await collectSourceFiles(src)) as string[]));
-    } catch {
-      // A prototype package without a src directory contributes nothing.
+    } catch (error) {
+      // A package without a src directory contributes nothing. Any other
+      // traversal failure would silently drop a whole package from the gate.
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
     }
   }
   return files;
@@ -283,15 +285,71 @@ describe('lowered hook coverage', () => {
     expect(scanRuleStateReads(opaque).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
   });
 
+  it('requires every intent token handle to be one the extractor can resolve', () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const when = '(w) => w.state(checked).eq(true)';
+    const usage = { hook: 'asCheckboxRoot', state: 'checked' };
+
+    // Resolvable: a local constant and a named import from a relative module,
+    // which is all `applyImportBindings` follows.
+    const local = `const TOKENS = 'bg-primary';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
+    const relative = `import { TOKENS } from './style';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
+    for (const source of [local, relative]) {
+      expect(scanRuleStateReads(source).usages).toEqual([usage]);
+      expect(scanRuleStateReads(source).unresolved).toEqual([]);
+    }
+
+    // Not resolvable: the extractor ignores non-relative specifiers, so this
+    // yields no tokens while the runtime receives the real handle.
+    const packaged = `import { TOKENS } from '@proto.ui/tokens';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
+    expect(scanRuleStateReads(packaged).usages).toEqual([]);
+    expect(scanRuleStateReads(packaged).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+
+    // A mixed intent: the extractable handle must not vouch for the opaque one,
+    // because the runtime prefixes both and only one gets CSS.
+    const mixed = `${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw('bg-ok'), tw(getRuleTokens())) });`;
+    expect(scanRuleStateReads(mixed).usages).toEqual([]);
+    expect(scanRuleStateReads(mixed).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('reports a handle bound where the extractor never registers it', () => {
+    // The extractor registers declarations while iterating the variable
+    // statements of a scope, so a loop initializer never reaches it.
+    const source = [
+      'for (const state = asCheckboxRoot().stateHandles; once; )',
+      "  def.rule({ when: (w) => w.state(state.checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
+  });
+
+  it('reports a condition only one branch of which reaches the runtime', () => {
+    // The runtime lowers the selected branch; a source walk sees both and the
+    // extractor combines them into a selector nothing matches.
+    const source = [
+      'const { checked, indeterminate } = asCheckboxRoot().stateHandles;',
+      "def.rule({ when: (w) => (choose ? w.state(checked).eq(true) : w.state(indeterminate).eq(true)), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['condition']);
+  });
+
   it('skips rules the runtime keeps on the runtime plan', () => {
     const withProp = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.prop('side').eq('top'))")}`;
     // `isStateMetaDeps` refuses every dependency kind but state and meta, so a
     // context dependency keeps the rule on the runtime plan exactly like a prop.
     const withContext = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.ctx(SIDE).eq('top'))")}`;
+    // `extractConditions` lowers `colorScheme === 'dark'` and no other meta
+    // pair, so this one stays on the runtime plan and needs no mapping.
+    const otherMeta = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.meta('colorScheme').eq('light'))")}`;
     const allNegative = `const s = asSelectContent().stateHandles;\n${rule('w.state(s.open).eq(false)')}`;
     const anyCondition = `const s = asSelectItem().stateHandles;\n${rule('w.any(w.state(s.active).eq(true), w.state(s.hovered).eq(true))')}`;
 
-    for (const source of [withProp, withContext, allNegative, anyCondition]) {
+    for (const source of [withProp, withContext, otherMeta, allNegative, anyCondition]) {
       const scan = scanRuleStateReads(source);
       expect(scan.usages).toEqual([]);
       expect(scan.unresolved).toEqual([]);
