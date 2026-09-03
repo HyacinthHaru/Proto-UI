@@ -468,14 +468,18 @@ async function applyHostTheme(page: Page, scheme: ColorScheme): Promise<void> {
 }
 
 /**
- * Overrides every theme variable this case reads, each with a value in no
- * palette and distinct from the others, so a pair that is hard-coded to the
- * current Light or Dark values cannot pass and no fill can satisfy the check by
+ * Overrides the theme variables `P-BRUTALIST-BUTTON-LIGHT-DARK` requires the
+ * surface and destructive fills to resolve through, each with a value in no
+ * palette and distinct from the others, so a pair hard-coded to the current
+ * Light or Dark values cannot pass and no fill can satisfy the check by
  * following a variable it does not name.
+ *
+ * The solid accent variables are deliberately absent. That criterion asks solid
+ * pairs to be theme-invariant and asks for variable resolution from surface and
+ * destructive only, so a conforming projection may materialize the accent pair
+ * as fixed colours. Canarying it would fail that projection for conforming.
  */
 const CANARY_VALUES: Record<string, string> = {
-  '--pui-main': 'rgb(1, 2, 3)',
-  '--pui-main-foreground': 'rgb(4, 5, 6)',
   '--pui-secondary-background': 'rgb(7, 8, 9)',
   '--pui-foreground': 'rgb(10, 11, 12)',
   '--pui-destructive': 'rgb(13, 14, 15)',
@@ -1089,17 +1093,23 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         await applyCanaryTheme(page, true);
         const canary = await buttonFills(page);
         for (const [ref, fill] of Object.entries(canary)) {
+          const key = ref as keyof typeof BUTTON_FILLS;
           const label = `${runtime}/canary/${ref}`;
-          expect(fill.background, `${label}/background`).toBe(fill.variables.background);
-          expect(fill.color, `${label}/color`).toBe(fill.variables.color);
-          // Every canary differs from both palettes, so a hard-coded pair fails
-          // here even though it satisfied both schemes.
-          expect(fill.background, `${label}/moved`).not.toBe(
-            painted.light[ref as keyof typeof BUTTON_FILLS].background
-          );
-          expect(fill.color, `${label}/ink-moved`).not.toBe(
-            painted.light[ref as keyof typeof BUTTON_FILLS].color
-          );
+          const [backgroundVar] = BUTTON_FILLS[key];
+          if (backgroundVar in CANARY_VALUES) {
+            // A theme-following fill has to land on the moved variable. A pair
+            // hard-coded to a value both palettes share satisfies both schemes
+            // and fails here, which is the whole point of the canary.
+            expect(fill.background, `${label}/background`).toBe(fill.variables.background);
+            expect(fill.color, `${label}/color`).toBe(fill.variables.color);
+            expect(fill.background, `${label}/moved`).not.toBe(painted.light[key].background);
+            expect(fill.color, `${label}/ink-moved`).not.toBe(painted.light[key].color);
+            continue;
+          }
+          // A fixed accent pair owns no theme variable to follow, so moving the
+          // surface and destructive variables must leave it exactly where it was.
+          expect(fill.background, `${label}/fixed`).toBe(painted.light[key].background);
+          expect(fill.color, `${label}/fixed-ink`).toBe(painted.light[key].color);
         }
         await applyCanaryTheme(page, false);
       }
