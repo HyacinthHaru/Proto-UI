@@ -647,6 +647,16 @@ function analyzeWhenVariants(node, scope) {
 }
 
 function resolveStateHandleSemantic(node, scope) {
+  // `w.state(checked!)` and its `as`/parenthesized equivalents name the same
+  // handle as the bare identifier.
+  if (
+    ts.isNonNullExpression(node) ||
+    ts.isParenthesizedExpression(node) ||
+    ts.isAsExpression(node) ||
+    ts.isTypeAssertionExpression(node)
+  ) {
+    return resolveStateHandleSemantic(node.expression, scope);
+  }
   if (ts.isIdentifier(node)) return lookup(node.text, scope).semantic ?? null;
   if (!ts.isPropertyAccessExpression(node)) return null;
 

@@ -42,7 +42,9 @@ async function prototypeSourceFiles(): Promise<string[]> {
  */
 const RULE_CALL = /\brule\s*\(/;
 
-const rule = (condition: string) => `def.rule({ when: (w) => ${condition}, intent: () => {} });`;
+/** A real intent: the variant is a prefix on tokens, so a stub yields nothing. */
+const rule = (condition: string) =>
+  `def.rule({ when: (w) => ${condition}, intent: (i) => i.feedback.style.use(tw('bg-primary')) });`;
 
 describe('lowered hook coverage', () => {
   it('follows every binding shape a prototype uses to reach a state handle', () => {
@@ -82,7 +84,7 @@ describe('lowered hook coverage', () => {
     // The extractor resolves this key through `getPropertyName`, so a quoted
     // rule still lowers. A scanner that skipped it would leave the rule out of
     // both results and keep the gate green on a missing hook entry.
-    const quoted = `const { checked } = asCheckboxRoot().stateHandles;\ndef.rule({ 'when': (w) => w.state(checked).eq(true), intent: () => {} });`;
+    const quoted = `const { checked } = asCheckboxRoot().stateHandles;\ndef.rule({ 'when': (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });`;
 
     expect(scanRuleStateReads(quoted).usages).toEqual([
       { hook: 'asCheckboxRoot', state: 'checked' },
@@ -107,6 +109,37 @@ describe('lowered hook coverage', () => {
           '    const state = asCheckboxRoot().stateHandles!;',
           '    def.rule({',
           '      when: (w) => w.state(state.checked).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      expect(await collectProtoStyleTokens(dir)).toContain('data-[checked]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('lowers a non-null asserted state argument end to end', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          "import { asCheckboxRoot } from '@proto.ui/prototypes-base/checkbox';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          '    const { checked } = asCheckboxRoot().stateHandles;',
+          '    def.rule({',
+          // The scanner unwraps this; the resolver had to learn to as well.
+          '      when: (w) => w.state(checked!).eq(true),',
           "      intent: (i) => i.feedback.style.use(tw('bg-primary')),",
           '    });',
           '  },',
@@ -191,12 +224,43 @@ describe('lowered hook coverage', () => {
     expect(scan.unresolved).toEqual([]);
   });
 
+  it('reports a rule whose intent hands over a pre-bound token handle', () => {
+    // `collectTwTokens` reads a `tw(...)` call. A handle bound elsewhere leaves
+    // the closure nothing to prefix, so the rendered variant has no CSS even
+    // though the condition itself lowers.
+    const source = [
+      "const muted = tw('text-muted-foreground');",
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      'def.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(muted) });',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('reports a rule handed a binding instead of an object literal', () => {
+    // The runtime lowers this; the extractor reads object literals only. Before
+    // it was reported, the invocation was skipped and left no trace either way.
+    const source = [
+      "const spec = { when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) };",
+      'def.rule(spec);',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['spec']);
+  });
+
   it('skips rules the runtime keeps on the runtime plan', () => {
     const withProp = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.prop('side').eq('top'))")}`;
+    // `isStateMetaDeps` refuses every dependency kind but state and meta, so a
+    // context dependency keeps the rule on the runtime plan exactly like a prop.
+    const withContext = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.ctx(SIDE).eq('top'))")}`;
     const allNegative = `const s = asSelectContent().stateHandles;\n${rule('w.state(s.open).eq(false)')}`;
     const anyCondition = `const s = asSelectItem().stateHandles;\n${rule('w.any(w.state(s.active).eq(true), w.state(s.hovered).eq(true))')}`;
 
-    for (const source of [withProp, allNegative, anyCondition]) {
+    for (const source of [withProp, withContext, allNegative, anyCondition]) {
       const scan = scanRuleStateReads(source);
       expect(scan.usages).toEqual([]);
       expect(scan.unresolved).toEqual([]);
@@ -209,7 +273,7 @@ describe('lowered hook coverage', () => {
       // Not `.proto.ts`, and not `.ts` at all. The old glob saw neither.
       await writeFile(
         path.join(dir, 'widget.proto.mts'),
-        'const { checked } = asCheckboxRoot().stateHandles;\ndef.rule({ when: (w) => w.state(checked).eq(true), intent: () => {} });\n'
+        "const { checked } = asCheckboxRoot().stateHandles;\ndef.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });\n"
       );
       await writeFile(path.join(dir, 'notes.md'), 'not a source file');
 

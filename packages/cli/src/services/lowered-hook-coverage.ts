@@ -11,8 +11,12 @@ export type UnresolvedStateRead = {
   /**
    * `subject` — the `w.state(...)` argument did not trace to a hook handle.
    * `comparison` — the right-hand side is not a form the extractor lowers.
+   * `intent` — the intent carries no `tw(...)` the extractor can read, so the
+   *   rule has no token for a variant to prefix.
+   * `spec` — the rule was not given as an object literal, which neither
+   *   analyzer reads.
    */
-  reason: 'subject' | 'comparison';
+  reason: 'subject' | 'comparison' | 'intent' | 'spec';
 };
 
 export type RuleStateScan = {
@@ -72,7 +76,8 @@ function introducesScope(node: ts.Node): boolean {
  *
  * A rule is skipped when the runtime would keep it on the runtime plan anyway,
  * because a pair the runtime never lowers needs no static entry:
- *   - any `w.prop(...)` dependency, which the runtime refuses outright;
+ *   - any dependency the runtime's `isStateMetaDeps` refuses, which is every
+ *     kind but `state` and `meta` — `prop` and `ctx` alike;
  *   - an `any(...)` condition, which the runtime does not decompose;
  *   - a condition whose variants are all negative, which both sides skip.
  *
@@ -212,6 +217,20 @@ export function scanRuleStateReads(
     return null;
   };
 
+  /** Matches `getPropertyName` in the extractor, which accepts a quoted key. */
+  const propertyName = (name: ts.PropertyName): string | null =>
+    ts.isIdentifier(name) || ts.isStringLiteralLike(name) ? name.text : null;
+
+  const hasTwCall = (node: ts.Node): boolean => {
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === 'tw'
+    )
+      return true;
+    return ts.forEachChild(node, hasTwCall) ?? false;
+  };
+
   type Leaf = {
     usage: HookStateUsage | 'local' | null;
     /** The `w.state(...)` argument. */
@@ -222,26 +241,30 @@ export function scanRuleStateReads(
   };
 
   const analyzeRule = (config: ts.ObjectLiteralExpression, scope: Scope): void => {
-    // The extractor reads this key through `getPropertyName`, which accepts a
-    // quoted name as well as an identifier. Requiring an identifier here would
-    // let a quoted rule pass the gate while the extractor still lowers it.
-    const propertyName = (name: ts.PropertyName): string | null =>
-      ts.isIdentifier(name) || ts.isStringLiteralLike(name) ? name.text : null;
-
     const when = config.properties.find(
       (property) => ts.isPropertyAssignment(property) && propertyName(property.name) === 'when'
     );
     if (!when || !ts.isPropertyAssignment(when)) return;
 
     const leaves: Leaf[] = [];
-    let hasProp = false;
+    let hasForeignDep = false;
     let hasAny = false;
     let hasMeta = false;
+
+    /**
+     * Everything the two lowering paths understand. `isStateMetaDeps` accepts
+     * only `state` and `meta` dependencies and `extractConditions` only `eq`
+     * and `all`, so anything else keeps the rule on the runtime plan. Naming
+     * what is understood rather than what is refused means a builder method
+     * added later defaults to not lowerable instead of being silently assumed
+     * static.
+     */
+    const LOWERABLE_MEMBERS = new Set(['all', 'any', 'eq', 'state', 'meta']);
 
     const visitCondition = (node: ts.Node): void => {
       if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
         const member = node.expression.name.text;
-        if (member === 'prop') hasProp = true;
+        if (!LOWERABLE_MEMBERS.has(member)) hasForeignDep = true;
         if (member === 'any') hasAny = true;
         if (member === 'meta') hasMeta = true;
         if (member === 'eq') {
@@ -268,8 +291,21 @@ export function scanRuleStateReads(
     // An unlowerable comparison counts here too: only an all-negative condition
     // is provably skipped by both sides.
     const lowerable =
-      !hasProp && !hasAny && (hasMeta || leaves.some((leaf) => leaf.comparison !== 'negative'));
+      !hasForeignDep &&
+      !hasAny &&
+      (hasMeta || leaves.some((leaf) => leaf.comparison !== 'negative'));
     if (!lowerable) return;
+
+    // The variant is a prefix on the tokens the intent yields. `collectTwTokens`
+    // reads a `tw(...)` call, so an intent that passes a pre-bound handle gives
+    // the closure nothing to prefix and the rendered variant has no CSS.
+    const intent = config.properties.find(
+      (property) => ts.isPropertyAssignment(property) && propertyName(property.name) === 'intent'
+    );
+    if (intent && ts.isPropertyAssignment(intent) && !hasTwCall(intent.initializer)) {
+      unresolved.push({ expression: intent.getText(source), reason: 'intent' });
+      return;
+    }
 
     for (const leaf of leaves) {
       if (!leaf.comparison) {
@@ -293,10 +329,14 @@ export function scanRuleStateReads(
       ts.isCallExpression(node) &&
       ts.isPropertyAccessExpression(node.expression) &&
       node.expression.name.text === 'rule' &&
-      node.arguments.length >= 1 &&
-      ts.isObjectLiteralExpression(node.arguments[0])
+      node.arguments.length >= 1
     ) {
-      analyzeRule(node.arguments[0], current);
+      const spec = unwrap(node.arguments[0]);
+      if (ts.isObjectLiteralExpression(spec)) analyzeRule(spec, current);
+      // The extractor reads an object literal only. A rule handed a binding is
+      // lowered by the runtime and dropped by the extractor, so it is a blind
+      // spot rather than something to skip.
+      else unresolved.push({ expression: node.getText(source), reason: 'spec' });
     }
 
     ts.forEachChild(node, (child) => visit(child, current));
