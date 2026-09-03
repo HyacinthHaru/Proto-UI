@@ -258,6 +258,88 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).not.toContain('dark:bg-input/30');
   });
 
+  it('lowers a rule on an exposed prototype-owned state', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const hidden = def.state.bool('hidden', true);",
+        // The expose call is what gives the state a host attribute, so it is
+        // also what tells the extractor the selector.
+        "    def.expose.state('hidden', hidden);",
+        '    def.rule({',
+        '      when: (w) => w.state(hidden).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('hidden')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[hidden]:hidden');
+  });
+
+  it('normalizes an exposed key the way the Web runtime does', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const dragOver = def.state.bool('dragOver', false);",
+        "    def.expose.state('dragOver', dragOver);",
+        '    def.rule({',
+        '      when: (w) => w.state(dragOver).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    // `createExposeStateWebNameMap` kebab-cases an unannotated key.
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[drag-over]:bg-accent');
+  });
+
+  it('keeps an official semantic when the state is exposed under another key', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const hovered = def.state.fromInteraction('hovered');",
+        // The runtime maps the official semantic before it would fall back to
+        // the exposed key, so the key must not win here either.
+        "    def.expose.state('isHot', hovered);",
+        '    def.rule({',
+        '      when: (w) => w.state(hovered).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('hover:bg-accent');
+    expect(tokens).not.toContain('data-[is-hot]:bg-accent');
+  });
+
   it('lowers the Scroll Area Viewport focus condition into the closure', async () => {
     await writeFile(
       path.join(dir, 'surface.proto.ts'),

@@ -114,6 +114,7 @@ function walk(node, scope, tokens) {
           }
           continue;
         }
+        registerExposedState(stmt, nextScope);
         walk(stmt, nextScope, tokens);
       }
       return;
@@ -328,6 +329,48 @@ function resolveBinding(node, scope) {
   const semantic = resolveSemanticBinding(node);
   const value = resolveExpression(node, scope);
   return semantic ? { ...value, semantic } : value;
+}
+
+/**
+ * The same normalization `createExposeStateWebNameMap` applies to an
+ * unannotated exposed key before it becomes a data attribute.
+ */
+function exposedDataAttributeName(key) {
+  return key
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/\./g, '-')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/[^a-zA-Z0-9-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase();
+}
+
+/**
+ * `def.expose.state('hidden', hidden)` is what gives a prototype-owned state a
+ * host attribute, so it is also what tells the extractor the selector. Without
+ * it a `def.state.bool` handle has no semantic, the rule contributes a bare
+ * token, and the variant the Web runtime lowers has no CSS.
+ *
+ * The exposed key is a fallback only: a handle that already carries an official
+ * semantic keeps it, which is the precedence `createExposeStateWebNameMap` uses
+ * when it maps an official semantic before falling back to the key.
+ */
+function registerExposedState(statement, scope) {
+  if (!ts.isExpressionStatement(statement)) return;
+  const call = statement.expression;
+  if (!ts.isCallExpression(call)) return;
+  if (!ts.isPropertyAccessExpression(call.expression)) return;
+  if (!isPropertyAccessChain(call.expression, ['expose', 'state'])) return;
+  const [nameArg, handleArg] = call.arguments;
+  if (!nameArg || !handleArg) return;
+  if (!ts.isStringLiteralLike(nameArg) || !ts.isIdentifier(handleArg)) return;
+  const attribute = exposedDataAttributeName(nameArg.text);
+  if (!attribute) return;
+  const existing = lookup(handleArg.text, scope);
+  if (existing.semantic) return;
+  scope.bindings.set(handleArg.text, { ...existing, semantic: `data-[${attribute}]` });
 }
 
 function resolveSemanticBinding(node) {
@@ -704,6 +747,7 @@ function collectTwTokens(node, scope) {
             }
             continue;
           }
+          registerExposedState(stmt, nextScope);
           visit(stmt, nextScope);
         }
         return;

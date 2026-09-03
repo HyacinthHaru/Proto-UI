@@ -216,6 +216,22 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('reports an exposed prototype-owned state instead of skipping it', () => {
+    // Exposing the state is what gives it a host attribute, so the Web runtime
+    // lowers rules on it. Skipping the read would leave the gate green while
+    // the extractor had no selector to emit.
+    const source = [
+      "const hidden = def.state.bool('hidden', true);",
+      "def.expose.state('hidden', hidden);",
+      "def.rule({ when: (w) => w.state(hidden).eq(true), intent: (i) => i.feedback.style.use(tw('hidden')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([{ state: 'hidden', exposedAs: 'hidden' }]);
+  });
+
   it('treats a prototype-owned state as neither a hook pair nor a blind spot', () => {
     // Base prototypes declare their own states and key rules on them. Those need
     // no resolver entry, so they must not be reported as a hook pair, and they
@@ -637,6 +653,7 @@ describe('lowered hook coverage', () => {
   it('resolves every hook state a shipped rule condition reads', async () => {
     const found: Array<{ file: string; hook: string; state: string }> = [];
     const blind: string[] = [];
+    const exposed: Array<{ file: string; state: string; exposedAs: string }> = [];
 
     let scanned = 0;
     for (const absolute of await prototypeSourceFiles()) {
@@ -647,9 +664,18 @@ describe('lowered hook coverage', () => {
       const scan = scanRuleStateReads(text, file);
       for (const usage of scan.usages) found.push({ file, ...usage });
       for (const miss of scan.unresolved) blind.push(`${file}: ${miss.reason} ${miss.expression}`);
+      for (const local of scan.exposedLocals) exposed.push({ file, ...local });
     }
 
     expect(scanned, 'files carrying a rule call').toBeGreaterThan(40);
+
+    // Every exposed prototype-owned state a rule reads has to name an attribute
+    // the extractor can emit, or the runtime lowers a variant with no CSS.
+    expect(
+      exposed.filter(({ exposedAs }) => !/^[a-zA-Z][a-zA-Z0-9]*$/.test(exposedAs)),
+      'exposed states whose key cannot become a data attribute'
+    ).toEqual([]);
+    expect(exposed.length, 'exposed prototype-owned states read by a rule').toBeGreaterThan(0);
 
     expect(found.length).toBeGreaterThan(30);
     // The two-step shape must be reached in the shipped tree, not just fixtures.

@@ -23,6 +23,13 @@ export type UnresolvedStateRead = {
   reason: 'subject' | 'comparison' | 'intent' | 'spec' | 'condition';
 };
 
+export type ExposedLocalUsage = {
+  /** The name the prototype declared the state under. */
+  state: string;
+  /** The public key it is exposed as, which the Web runtime turns into an attribute. */
+  exposedAs: string;
+};
+
 export type RuleStateScan = {
   /** Reads traced to a hook and state the extractor must be able to resolve. */
   usages: HookStateUsage[];
@@ -34,6 +41,12 @@ export type RuleStateScan = {
    * static extractor is most likely to be silently missing the same rule.
    */
   unresolved: UnresolvedStateRead[];
+  /**
+   * Reads of a prototype-owned state that is exposed, and therefore lowered by
+   * the Web runtime to a `data-` attribute. These are not hook pairs, so they
+   * are reported separately rather than pretending they came from an `asHook`.
+   */
+  exposedLocals: ExposedLocalUsage[];
 };
 
 type Binding =
@@ -41,7 +54,7 @@ type Binding =
   | { kind: 'handleBag'; hook: string }
   | { kind: 'handle'; hook: string; state: string }
   /** `def.state.bool(...)` — owned by the prototype, not borrowed from a hook. */
-  | { kind: 'localState' }
+  | { kind: 'localState'; exposedAs?: string }
   /** A value a `tw(...)` argument may name, resolved where it was declared. */
   | { kind: 'token'; initializer: ts.Expression }
   /** A named import; only a relative one is something the extractor follows. */
@@ -102,6 +115,30 @@ export function scanRuleStateReads(
   const source = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true);
   const usages: HookStateUsage[] = [];
   const unresolved: UnresolvedStateRead[] = [];
+  const exposedLocals: ExposedLocalUsage[] = [];
+
+  /**
+   * `def.expose.state('hidden', hidden)` by handle name. The Web runtime turns
+   * the exposed key into a `data-` attribute and lowers rules on that state, so
+   * an exposed local is not the same as a purely internal one.
+   */
+  const exposedKeys = new Map<string, string>();
+  const collectExposedKeys = (node: ts.Node): void => {
+    if (
+      ts.isCallExpression(node) &&
+      ts.isPropertyAccessExpression(node.expression) &&
+      node.expression.name.text === 'state' &&
+      ts.isPropertyAccessExpression(node.expression.expression) &&
+      node.expression.expression.name.text === 'expose'
+    ) {
+      const [nameArg, handleArg] = node.arguments;
+      if (nameArg && handleArg && ts.isStringLiteralLike(nameArg) && ts.isIdentifier(handleArg)) {
+        exposedKeys.set(handleArg.text, nameArg.text);
+      }
+    }
+    ts.forEachChild(node, collectExposedKeys);
+  };
+  collectExposedKeys(source);
 
   const unwrap = (node: ts.Node): ts.Node =>
     ts.isNonNullExpression(node) ||
@@ -183,7 +220,10 @@ export function scanRuleStateReads(
       initializer.expression.expression.name.text === 'state' &&
       ts.isIdentifier(declaration.name)
     ) {
-      declare(scope, declaration.name.text, { kind: 'localState' });
+      declare(scope, declaration.name.text, {
+        kind: 'localState',
+        exposedAs: exposedKeys.get(declaration.name.text),
+      });
       return;
     }
 
@@ -225,12 +265,19 @@ export function scanRuleStateReads(
    * `'local'` means traced to a prototype-owned state, which needs no hook
    * entry and must not be reported either way.
    */
-  const readState = (node: ts.Node, scope: Scope): HookStateUsage | 'local' | null => {
+  const readState = (
+    node: ts.Node,
+    scope: Scope
+  ): HookStateUsage | { exposedLocal: ExposedLocalUsage } | 'local' | null => {
     const argument = unwrap(node);
     if (ts.isIdentifier(argument)) {
       const binding = lookup(scope, argument.text);
       if (binding?.kind === 'handle') return { hook: binding.hook, state: binding.state };
-      if (binding?.kind === 'localState') return 'local';
+      if (binding?.kind === 'localState') {
+        return binding.exposedAs
+          ? { exposedLocal: { state: argument.text, exposedAs: binding.exposedAs } }
+          : 'local';
+      }
       return null;
     }
     if (ts.isPropertyAccessExpression(argument)) {
@@ -513,7 +560,7 @@ export function scanRuleStateReads(
   };
 
   type Leaf = {
-    usage: HookStateUsage | 'local' | null;
+    usage: HookStateUsage | { exposedLocal: ExposedLocalUsage } | 'local' | null;
     /** The `w.state(...)` argument. */
     subject: string;
     /** The whole `w.state(...).eq(...)` leaf. */
@@ -710,6 +757,10 @@ export function scanRuleStateReads(
         continue;
       }
       if (leaf.usage === 'local') continue;
+      if (leaf.usage && 'exposedLocal' in leaf.usage) {
+        exposedLocals.push(leaf.usage.exposedLocal);
+        continue;
+      }
       if (leaf.usage) usages.push(leaf.usage);
       else unresolved.push({ expression: leaf.subject, reason: 'subject' });
     }
@@ -771,5 +822,5 @@ export function scanRuleStateReads(
   declareImports(rootScope);
   visit(source, rootScope);
 
-  return { usages, unresolved };
+  return { usages, unresolved, exposedLocals };
 }
