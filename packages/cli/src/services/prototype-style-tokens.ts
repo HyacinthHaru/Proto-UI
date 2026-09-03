@@ -388,9 +388,10 @@ function exposedDataAttributeName(key) {
  * Aliases are followed because two references to one handle carry one state id.
  */
 function collectExposures(root) {
-  // Alias edges are keyed by the scope they were declared in, so two sibling
-  // scopes may each bind the same alias name without colliding.
-  const aliasesByScope = new Map();
+  // Alias edges carry their scope and source position, so two sibling scopes
+  // may bind the same name and a later redeclaration cannot rewrite what an
+  // earlier expose call captured.
+  const aliasEdges = [];
   const exposures = [];
 
   const unwrapExpression = (node) =>
@@ -417,6 +418,15 @@ function collectExposures(root) {
     return false;
   };
 
+  const namesExpose = (callee) => {
+    if (ts.isPropertyAccessExpression(callee)) return callee.name.text === 'expose';
+    if (ts.isElementAccessExpression(callee)) {
+      const argument = callee.argumentExpression;
+      return Boolean(argument) && ts.isStringLiteralLike(argument) && argument.text === 'expose';
+    }
+    return false;
+  };
+
   const namesExposeOwner = (node) => {
     const owner = unwrapExpression(node);
     if (ts.isPropertyAccessExpression(owner)) return owner.name.text === 'expose';
@@ -434,46 +444,65 @@ function collectExposures(root) {
     if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
       const initializer = unwrapExpression(node.initializer);
       if (ts.isIdentifier(initializer)) {
-        const owner = nextChain[0] ?? root;
-        if (!aliasesByScope.has(owner)) aliasesByScope.set(owner, new Map());
-        aliasesByScope.get(owner).set(node.name.text, initializer.text);
+        aliasEdges.push({
+          owner: nextChain[0] ?? root,
+          name: node.name.text,
+          target: initializer.text,
+          at: node.getStart(),
+        });
       }
     }
-    if (ts.isCallExpression(node) && namesExposeState(unwrapExpression(node.expression))) {
+    if (
+      ts.isCallExpression(node) &&
+      (namesExposeState(unwrapExpression(node.expression)) ||
+        // `def.expose('ready', state)` — the generic entry wraps a state handle,
+        // so the Web optimizer lowers rules on it just the same.
+        namesExpose(unwrapExpression(node.expression)))
+    ) {
       const [nameArg, handleArg] = node.arguments;
       const handle = handleArg && unwrapExpression(handleArg);
       if (nameArg && handle && ts.isIdentifier(handle)) {
-        exposures.push({ handle: handle.text, key: nameArg, chain: [...nextChain, root] });
+        exposures.push({
+          handle: handle.text,
+          key: nameArg,
+          chain: [...nextChain, root],
+          at: node.getStart(),
+        });
       }
     }
     ts.forEachChild(node, (child) => visit(child, nextChain));
   };
   visit(root, []);
 
-  const lookupAlias = (name, chain) => {
+  // The edge in effect where the exposure was written, nearest scope first.
+  const lookupAlias = (name, chain, at) => {
     for (const owner of chain) {
-      const scoped = aliasesByScope.get(owner);
-      if (scoped?.has(name)) return scoped.get(name);
+      let best = null;
+      for (const edge of aliasEdges) {
+        if (edge.owner !== owner || edge.name !== name || edge.at > at) continue;
+        if (!best || edge.at > best.at) best = edge;
+      }
+      if (best) return best.target;
     }
     return null;
   };
 
-  const rootName = (name, chain) => {
+  const rootName = (name, chain, at) => {
     const seen = new Set();
     let current = name;
     for (;;) {
       if (seen.has(current)) return current;
       seen.add(current);
-      const next = lookupAlias(current, chain);
+      const next = lookupAlias(current, chain, at);
       if (!next) return current;
       current = next;
     }
   };
 
   const byHandle = new Map();
-  for (const { handle, key, chain } of exposures) {
+  for (const { handle, key, chain, at } of exposures) {
     // Both the alias and the handle it names carry the same state id.
-    for (const name of new Set([handle, rootName(handle, chain)])) {
+    for (const name of new Set([handle, rootName(handle, chain, at)])) {
       if (!byHandle.has(name)) byHandle.set(name, key);
     }
   }
@@ -845,10 +874,24 @@ function resolveStateEqVariant(semantic, expected) {
   }
   // `number.discrete` bindings lower by stringifying the literal, the same way
   // enum and string bindings do.
-  if (ts.isNumericLiteral(expected)) {
+  const numeric = signedNumericText(expected);
+  if (numeric !== null) {
     const match = semantic.match(/^data-\[([a-zA-Z0-9-]+)\]$/);
     if (!match) return null;
-    return `data-[${match[1]}=${expected.text}]`;
+    return `data-[${match[1]}=${numeric}]`;
+  }
+  return null;
+}
+
+/** `-1` parses as a prefix unary expression rather than a numeric literal. */
+function signedNumericText(node) {
+  if (ts.isNumericLiteral(node)) return node.text;
+  if (
+    ts.isPrefixUnaryExpression(node) &&
+    (node.operator === ts.SyntaxKind.MinusToken || node.operator === ts.SyntaxKind.PlusToken) &&
+    ts.isNumericLiteral(node.operand)
+  ) {
+    return node.operator === ts.SyntaxKind.MinusToken ? `-${node.operand.text}` : node.operand.text;
   }
   return null;
 }

@@ -151,8 +151,14 @@ export function scanRuleStateReads(
       : node;
 
   const exposedKeys = new Map<ts.Node, Map<string, string>>();
-  const aliasOf = new Map<ts.Node, Map<string, string>>();
-  const rawExposures: Array<{ handle: string; key: ts.Expression; chain: ts.Node[] }> = [];
+  type AliasEdge = { owner: ts.Node; name: string; target: string; at: number };
+  const aliasEdges: AliasEdge[] = [];
+  const rawExposures: Array<{
+    handle: string;
+    key: ts.Expression;
+    chain: ts.Node[];
+    at: number;
+  }> = [];
 
   const memberNamed = (node: ts.Node, name: string): boolean => {
     const target = unwrap(node);
@@ -176,20 +182,30 @@ export function scanRuleStateReads(
     if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
       const initializer = unwrap(node.initializer);
       if (ts.isIdentifier(initializer)) {
-        const owner = nextChain[0] ?? source;
-        const scoped = aliasOf.get(owner) ?? new Map<string, string>();
-        scoped.set(node.name.text, initializer.text);
-        aliasOf.set(owner, scoped);
+        aliasEdges.push({
+          owner: nextChain[0] ?? source,
+          name: node.name.text,
+          target: initializer.text,
+          at: node.getStart(),
+        });
       }
     }
     if (ts.isCallExpression(node)) {
       const callee = unwrap(node.expression);
       const owner = ownerOf(callee);
-      if (memberNamed(callee, 'state') && owner && memberNamed(owner, 'expose')) {
+      const exposesState = memberNamed(callee, 'state') && owner && memberNamed(owner, 'expose');
+      // `def.expose('ready', state)` wraps a state handle too.
+      const exposesDirectly = memberNamed(callee, 'expose');
+      if (exposesState || exposesDirectly) {
         const [nameArg, handleArg] = node.arguments;
         const handle = handleArg && unwrap(handleArg);
         if (nameArg && handle && ts.isIdentifier(handle)) {
-          rawExposures.push({ handle: handle.text, key: nameArg, chain: [...nextChain, source] });
+          rawExposures.push({
+            handle: handle.text,
+            key: nameArg,
+            chain: [...nextChain, source],
+            at: node.getStart(),
+          });
         }
       }
     }
@@ -197,27 +213,35 @@ export function scanRuleStateReads(
   };
   collectExposedKeys(source, []);
 
-  const aliasRoot = (name: string, chain: ts.Node[]): string => {
+  const aliasRoot = (name: string, chain: ts.Node[], at: number): string => {
     const seen = new Set<string>();
     let current = name;
     for (;;) {
       if (seen.has(current)) return current;
       seen.add(current);
+      // The edge in effect where the exposure was written, nearest scope first.
       let next: string | undefined;
       for (const owner of chain) {
-        next = aliasOf.get(owner)?.get(current);
-        if (next !== undefined) break;
+        let best: AliasEdge | null = null;
+        for (const edge of aliasEdges) {
+          if (edge.owner !== owner || edge.name !== current || edge.at > at) continue;
+          if (!best || edge.at > best.at) best = edge;
+        }
+        if (best) {
+          next = best.target;
+          break;
+        }
       }
       if (next === undefined) return current;
       current = next;
     }
   };
 
-  for (const { handle, key, chain } of rawExposures) {
+  for (const { handle, key, chain, at } of rawExposures) {
     // A key the scanner cannot read still means the state is exposed, and the
     // attribute comes from the declared name anyway.
     const text = ts.isStringLiteralLike(key) ? key.text : '';
-    for (const name of new Set([handle, aliasRoot(handle, chain)])) {
+    for (const name of new Set([handle, aliasRoot(handle, chain, at)])) {
       for (const owner of chain) {
         const scoped = exposedKeys.get(owner) ?? new Map<string, string>();
         if (!scoped.has(name)) scoped.set(name, text);
@@ -403,8 +427,16 @@ export function scanRuleStateReads(
     if (node.kind === ts.SyntaxKind.TrueKeyword) return 'positive';
     if (node.kind === ts.SyntaxKind.FalseKeyword) return 'negative';
     if (ts.isStringLiteralLike(node) && /^[a-zA-Z0-9_-]+$/.test(node.text)) return 'positive';
-    // `number.discrete` bindings lower by stringifying the literal.
+    // `number.discrete` bindings lower by stringifying the literal, and `-1`
+    // parses as a prefix unary expression rather than a numeric literal.
     if (ts.isNumericLiteral(node)) return 'positive';
+    if (
+      ts.isPrefixUnaryExpression(node) &&
+      (node.operator === ts.SyntaxKind.MinusToken || node.operator === ts.SyntaxKind.PlusToken) &&
+      ts.isNumericLiteral(node.operand)
+    ) {
+      return 'positive';
+    }
     return null;
   };
 

@@ -589,6 +589,88 @@ describe('collectProtoStyleTokens', () => {
     expect(await collectProtoStyleTokens(dir)).toContain('data-[first-flag]:bg-accent');
   });
 
+  it('keeps an exposure bound to the alias in effect where it was written', async () => {
+    // The runtime captured `first` at the expose call; a later `var` rebinding
+    // must not retarget it.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    var publicFlag = first;',
+        "    def.expose.state('visible', publicFlag);",
+        '    var publicFlag = second;',
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[first-flag]:bg-accent');
+  });
+
+  it('lowers a state exposed through the generic entry', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const ready = def.state.bool('ready', false);",
+        // `ExposeStateModuleImpl` recognizes a state handle here as well.
+        "    def.expose('ready', ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(ready).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[ready]:bg-accent');
+  });
+
+  it('lowers a signed discrete-number comparison', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const step = def.state.numberDiscrete('step', 0);",
+        "    def.expose.state('step', step);",
+        // `-1` parses as a prefix unary expression, not a numeric literal.
+        '    def.rule({',
+        '      when: (w) => w.state(step).eq(-1),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[step=-1]:bg-accent');
+  });
+
   it('keeps every binding a legal redeclaration installs', async () => {
     // The exposure pre-pass must not flatten sequential declaration scope.
     await writeFile(
