@@ -5,6 +5,11 @@ status: draft
 since: 0.3.0-alpha.0
 summary: Covers Checkbox Root and Indicator identity, Base inheritance, the five required presentations, the guarded dark tint, derived glyph selection, and the slice boundary.
 cases:
+  - id: T-SHADCN-CHECKBOX-0001-CASE-COMPATIBILITY-RECORD
+    title: The compatibility record keeps the pinned baseline apart from the adopted recipe and names its deviations
+    covers:
+      [P-SHADCN-CHECKBOX-COMPATIBILITY-SUBSET, P-SHADCN-CHECKBOX-INDICATOR-COMPATIBILITY-SUBSET]
+    expectation: shadcn-checkbox-compatibility-record-stays-reconstructible
   - id: T-SHADCN-CHECKBOX-0001-CASE-EXPORTS
     title: Root and Indicator are direct unofficial projections reachable through exact package entries
     covers:
@@ -106,6 +111,18 @@ implementations:
       - Positive tests cover only the current Proto UI guarantee; asChild omission, aria-invalid presentation, the omitted peer hook, and remaining parity gaps are bounded by the decision, declared surface, and centralized compatibility questions.
       - The web-state case asserts Adapter lowering of the six condition-driven rules on the Web Component host. Host attribute form is evidence for that lowering, not a portable guarantee; the portable surface stays the inherited checked, indeterminate, disabled, and focus state handles.
       - The absence case asserts portable facts only. Indicator publishes no focus handle, no event, no a11y control syntax, and no way to write what it derives; the web `tabIndex` value is deliberately not written as a cross-host contract.
+  - id: spec-shadcn-checkbox-compatibility-record
+    kind: workspace-check
+    status: passing
+    path: packages/spec/graph/test/shadcn-checkbox-baseline.test.ts
+    required: true
+    consumesCases: [T-SHADCN-CHECKBOX-0001-CASE-COMPATIBILITY-RECORD]
+    exercises: *id001
+    notes:
+      - Reads the loaded entities rather than the YAML text, so a claim that survives parsing but contradicts itself still fails.
+      - Asserts both compared upstream revisions in each locale and in each entity's source ledger, because a comparison bound to a floating branch cannot be reconstructed once that branch moves.
+      - Asserts the intentional deviations are named individually and that no numeric total appears in either locale; a total goes stale the moment another deviation is classified.
+      - Asserts the radius decision names the ruling comment that fixed it, so the choice is reachable rather than resting on an unnamed authority.
   - id: prototypes-shadcn-checkbox-browser
     kind: runtime-test
     status: passing
