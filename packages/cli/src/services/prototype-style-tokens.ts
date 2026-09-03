@@ -102,6 +102,31 @@ function createScope(parent = null, node = null) {
   return { parent, bindings: new Map(), node };
 }
 
+function enclosingFunction(node) {
+  return node ? (ts.findAncestor(node, (candidate) => ts.isFunctionLike(candidate)) ?? null) : null;
+}
+
+/** `(() => { … })()` runs where it is written, so its writes are ordered. */
+function isImmediatelyInvoked(fn) {
+  let node = fn;
+  while (node.parent && ts.isParenthesizedExpression(node.parent)) node = node.parent;
+  return Boolean(
+    node.parent && ts.isCallExpression(node.parent) && node.parent.expression === node
+  );
+}
+
+/**
+ * A write inside a callback has not run when a later `def.rule` registers, so
+ * the name may still hold what it held before. This is the same
+ * over-approximation the conditional path applies, in time rather than in name
+ * resolution.
+ */
+function isDeferredWrite(node, readFunction) {
+  const writing = enclosingFunction(node);
+  if (writing === readFunction) return false;
+  return !(writing && isImmediatelyInvoked(writing));
+}
+
 /** `var` binds to the function however deeply the declaration is nested. */
 function functionScope(scope) {
   for (let current = scope; current; current = current.parent) {
@@ -212,9 +237,9 @@ function walk(node, scope, tokens, exposures) {
       const written = bindingSemantics(resolveBinding(node.right, scope));
       if (container && written.length > 0) {
         const previous = memberSemantics(container.semanticMap?.get(member));
-        const kept = isConditionallyReached(node)
-          ? previous.filter((candidate) => !written.includes(candidate))
-          : [];
+        const uncertain =
+          isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(scope.node));
+        const kept = uncertain ? previous.filter((candidate) => !written.includes(candidate)) : [];
         if (!container.semanticMap) container.semanticMap = new Map();
         container.semanticMap.set(member, [...written, ...kept]);
       }
@@ -234,12 +259,14 @@ function walk(node, scope, tokens, exposures) {
     const owner = scopeDeclaring(name, scope) ?? scope;
     const previous = owner.bindings.get(name);
     const binding = applyExposure(name, resolveBinding(node.right, scope), owner, exposures);
-    // A write the source may skip leaves the name on either handle, and the
-    // runtime lowers whichever it holds, so both need a selector.
+    // A write the source may skip, or one that has not run yet, leaves the name
+    // on either handle, and the runtime lowers whichever it holds.
     const kept = bindingSemantics(previous).filter((candidate) => candidate !== binding.semantic);
+    const uncertain =
+      isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(owner.node));
     owner.bindings.set(
       name,
-      isConditionallyReached(node) && kept.length > 0
+      uncertain && kept.length > 0
         ? { ...binding, alternatives: [...new Set([...(binding.alternatives ?? []), ...kept])] }
         : binding
     );
@@ -957,6 +984,7 @@ function collectExposures(root) {
             at: node.getStart(),
             conditional,
             chain: [...nextChain, root],
+            node,
           });
         }
       }
@@ -982,6 +1010,7 @@ function collectExposures(root) {
           at: alias.at,
           conditional,
           chain: [...nextChain, root],
+          node,
         });
       }
     }
@@ -1033,6 +1062,7 @@ function collectExposures(root) {
           at: node.getStart(),
           conditional,
           chain: [...nextChain, root],
+          node,
         });
       }
     }
@@ -1059,8 +1089,17 @@ function collectExposures(root) {
   // Every edge written at the latest position at or before `at`, nearest scope
   // first. A conditional contributes several edges at one position.
   const lookupAliases = (name, chain, at) => {
+    // A write in another function is unordered against this read, so it adds a
+    // candidate rather than replacing one.
+    const readFunction = enclosingFunction(chain[0] ?? null);
+    const ordered = (edge) =>
+      edge.conditional || !edge.node || !isDeferredWrite(edge.node, readFunction)
+        ? edge
+        : { ...edge, conditional: true };
     for (const owner of chain) {
-      const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
+      const candidates = aliasEdges
+        .filter((edge) => edge.owner === owner && edge.name === name)
+        .map(ordered);
       if (candidates.length === 0) continue;
       return visibleEdges(candidates, at);
     }

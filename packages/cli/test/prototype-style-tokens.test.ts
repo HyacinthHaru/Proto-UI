@@ -2064,4 +2064,71 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).toContain('data-[first-flag]:bg-accent');
     expect(tokens).toContain('data-[second-flag]:bg-accent');
   });
+  it('keeps the earlier handle when the write is inside a callback', async () => {
+    // The callback has not run when `def.rule` registers, so the runtime lowers
+    // the handle the name still holds; the closure has to carry both.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let flag = first;',
+        "    def.on('refresh', () => {",
+        '      flag = second;',
+        '    });',
+        "    def.expose.state('visible', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-accent');
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+  });
+
+  it('treats an immediately invoked write as ordered', async () => {
+    // An IIFE runs where it is written, so the earlier handle is gone and a
+    // variant for it would be dead CSS the runtime can never match.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let flag = first;',
+        '    (() => {',
+        '      flag = second;',
+        '    })();',
+        "    def.expose.state('visible', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[first-flag]:bg-accent');
+  });
 });

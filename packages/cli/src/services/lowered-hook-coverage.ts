@@ -189,6 +189,29 @@ function visibleEdges<T extends { at: number; conditional?: boolean }>(
   return selected;
 }
 
+function enclosingFunction(node: ts.Node | null): ts.Node | null {
+  return node ? (ts.findAncestor(node, (candidate) => ts.isFunctionLike(candidate)) ?? null) : null;
+}
+
+/** `(() => { … })()` runs where it is written, so its writes are ordered. */
+function isImmediatelyInvoked(fn: ts.Node): boolean {
+  let node: ts.Node = fn;
+  while (node.parent && ts.isParenthesizedExpression(node.parent)) node = node.parent;
+  return Boolean(
+    node.parent && ts.isCallExpression(node.parent) && node.parent.expression === node
+  );
+}
+
+/**
+ * A write inside a callback has not run when a later `def.rule` registers, so
+ * the name may still hold what it held before.
+ */
+function isDeferredWrite(node: ts.Node, readFunction: ts.Node | null): boolean {
+  const writing = enclosingFunction(node);
+  if (writing === readFunction) return false;
+  return !(writing && isImmediatelyInvoked(writing));
+}
+
 /** `var` binds to the function however deeply the declaration is nested. */
 function functionScope(scope: Scope): Scope {
   for (let current: Scope | null = scope; current; current = current.parent) {
@@ -297,6 +320,7 @@ export function scanRuleStateReads(
     at: number;
     conditional: boolean;
     chain: ts.Node[];
+    node: ts.Node;
   };
   const aliasEdges: AliasEdge[] = [];
   const declaredIn = new Map<ts.Node, Set<string>>();
@@ -557,6 +581,7 @@ export function scanRuleStateReads(
             at: node.getStart(),
             conditional,
             chain: [...nextChain, source],
+            node,
           });
         }
       }
@@ -581,6 +606,7 @@ export function scanRuleStateReads(
           at: alias.at,
           conditional,
           chain: [...nextChain, source],
+          node,
         });
       }
     }
@@ -633,6 +659,7 @@ export function scanRuleStateReads(
           at: node.getStart(),
           conditional,
           chain: [...nextChain, source],
+          node,
         });
       }
     }
@@ -665,9 +692,18 @@ export function scanRuleStateReads(
     seen = new Set<string>()
   ): Array<{ name: string; chain: ts.Node[] }> => {
     if (seen.has(name)) return [{ name, chain }];
+    // A write in another function is unordered against this read, so it adds a
+    // candidate rather than replacing one.
+    const readFunction = enclosingFunction(chain[0] ?? null);
+    const ordered = (edge: AliasEdge): AliasEdge =>
+      edge.conditional || !edge.node || !isDeferredWrite(edge.node, readFunction)
+        ? edge
+        : { ...edge, conditional: true };
     let found: AliasEdge[] = [];
     for (const owner of chain) {
-      const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
+      const candidates = aliasEdges
+        .filter((edge) => edge.owner === owner && edge.name === name)
+        .map(ordered);
       if (candidates.length === 0) continue;
       found = visibleEdges(candidates, at);
       break;
@@ -760,7 +796,10 @@ export function scanRuleStateReads(
     const previous = scope.bindings.get(name);
     declareValue(node as ts.BindingName, initializer, scope, lookupScope);
     const next = scope.bindings.get(name);
-    if (!isConditionallyReached(initializer.parent) || !previous || !next) return;
+    const uncertain =
+      isConditionallyReached(initializer.parent) ||
+      isDeferredWrite(initializer, enclosingFunction(scope.node));
+    if (!uncertain || !previous || !next) return;
     if (next.kind !== 'localState' || previous.kind !== 'localState') return;
     // Alternatives are flat: a candidate carries no candidates of its own.
     const bare = (binding: LocalStateBinding): LocalStateBinding => ({
@@ -1196,11 +1235,20 @@ export function scanRuleStateReads(
     if (ts.isArrayLiteralExpression(inner))
       return inner.elements.every((element) => resolvableTokenArgument(element, scope, seen));
     if (ts.isObjectLiteralExpression(inner))
-      return inner.properties.every(
-        (property) =>
-          ts.isPropertyAssignment(property) &&
-          resolvableTokenArgument(property.initializer, scope, seen)
-      );
+      return inner.properties.every((property) => {
+        // A property holding a state handle is not token data. Production reads
+        // the container for handles and tokens at once and takes strings only
+        // where they exist, so such a property does not stop the read.
+        if (ts.isShorthandPropertyAssignment(property)) {
+          return (
+            readState(property.name, scope) !== null ||
+            resolvableTokenArgument(property.name, scope, seen)
+          );
+        }
+        if (!ts.isPropertyAssignment(property)) return false;
+        if (readState(property.initializer, scope) !== null) return true;
+        return resolvableTokenArgument(property.initializer, scope, seen);
+      });
     if (ts.isConditionalExpression(inner))
       return (
         resolvableTokenArgument(inner.whenTrue, scope, seen) &&
@@ -1605,7 +1653,9 @@ export function scanRuleStateReads(
           const previous =
             container.members?.get(member) ??
             containerMembers(container.initializer, member, current);
-          const kept = isConditionallyReached(node) ? previous : [];
+          const uncertain =
+            isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(current.node));
+          const kept = uncertain ? previous : [];
           const members = new Map(container.members ?? []);
           members.set(member, [node.right, ...kept]);
           declare(owner, name, { ...container, members });
