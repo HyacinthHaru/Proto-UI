@@ -251,7 +251,10 @@ function resolveExpression(node, scope) {
   if (
     ts.isParenthesizedExpression(node) ||
     ts.isAsExpression(node) ||
-    ts.isTypeAssertionExpression(node)
+    ts.isTypeAssertionExpression(node) ||
+    // `asHook().stateHandles!` — the bag is optional on the hook result type,
+    // so authors reach it through a non-null assertion.
+    ts.isNonNullExpression(node)
   ) {
     return resolveExpression(node.expression, scope);
   }

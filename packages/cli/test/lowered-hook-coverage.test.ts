@@ -78,6 +78,50 @@ describe('lowered hook coverage', () => {
     expect(scan.unresolved).toEqual([{ expression: 'handles.checked', reason: 'subject' }]);
   });
 
+  it('reads a rule whose when key is quoted', () => {
+    // The extractor resolves this key through `getPropertyName`, so a quoted
+    // rule still lowers. A scanner that skipped it would leave the rule out of
+    // both results and keep the gate green on a missing hook entry.
+    const quoted = `const { checked } = asCheckboxRoot().stateHandles;\ndef.rule({ 'when': (w) => w.state(checked).eq(true), intent: () => {} });`;
+
+    expect(scanRuleStateReads(quoted).usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+    ]);
+    expect(scanRuleStateReads(quoted).unresolved).toEqual([]);
+  });
+
+  it('lowers a state reached through a non-null assertion end to end', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          "import { asCheckboxRoot } from '@proto.ui/prototypes-base/checkbox';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          // `stateHandles` is optional on the hook result, so this is how an
+          // author reaches it without a guard.
+          '    const state = asCheckboxRoot().stateHandles!;',
+          '    def.rule({',
+          '      when: (w) => w.state(state.checked).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      expect(await collectProtoStyleTokens(dir)).toContain('data-[checked]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
   it('reports a comparison the extractor does not lower', () => {
     // `resolveStateEqVariant` lowers the two boolean keywords and a string
     // literal. A number or a bound identifier produces no variant, so counting

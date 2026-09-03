@@ -222,11 +222,14 @@ export function scanRuleStateReads(
   };
 
   const analyzeRule = (config: ts.ObjectLiteralExpression, scope: Scope): void => {
+    // The extractor reads this key through `getPropertyName`, which accepts a
+    // quoted name as well as an identifier. Requiring an identifier here would
+    // let a quoted rule pass the gate while the extractor still lowers it.
+    const propertyName = (name: ts.PropertyName): string | null =>
+      ts.isIdentifier(name) || ts.isStringLiteralLike(name) ? name.text : null;
+
     const when = config.properties.find(
-      (property) =>
-        ts.isPropertyAssignment(property) &&
-        ts.isIdentifier(property.name) &&
-        property.name.text === 'when'
+      (property) => ts.isPropertyAssignment(property) && propertyName(property.name) === 'when'
     );
     if (!when || !ts.isPropertyAssignment(when)) return;
 
