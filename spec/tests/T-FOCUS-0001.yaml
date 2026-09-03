@@ -103,6 +103,7 @@ implementations:
     path: packages/runtime/test/contract/focus.v0.contract.test.ts
     required: true
     consumesCases:
+      - T-FOCUS-0001-CASE-FOCUS-VISIBLE-NATIVE-EQUALITY
       - T-FOCUS-0001-CASE-FOCUSABLE-ONCE
       - T-FOCUS-0001-CASE-SCOPE-ONCE
       - T-FOCUS-0001-CASE-SETUP-ONLY
@@ -134,6 +135,7 @@ implementations:
     path: packages/adapters/react/test/focus.test.ts
     required: false
     consumesCases:
+      - T-FOCUS-0001-CASE-FOCUS-VISIBLE-NATIVE-EQUALITY
       - T-FOCUS-0001-CASE-UNIQUE-OWNER
   - id: adapter-vue-focus-unique-owner
     kind: adapter-test
@@ -141,6 +143,7 @@ implementations:
     path: packages/adapters/vue/test/focus.test.ts
     required: false
     consumesCases:
+      - T-FOCUS-0001-CASE-FOCUS-VISIBLE-NATIVE-EQUALITY
       - T-FOCUS-0001-CASE-UNIQUE-OWNER
   - id: prototypes-base-tabs-nav-participation
     kind: module-test
@@ -149,16 +152,6 @@ implementations:
     required: true
     consumesCases:
       - T-FOCUS-0001-CASE-NAV-PARTICIPATION
-  - id: runtime-focus-visible-native-equality
-    kind: runtime-test
-    status: planned
-    path: packages/runtime/test/contract/focus.visible-native-equality.v0.contract.test.ts
-    required: true
-    consumesCases:
-      - T-FOCUS-0001-CASE-FOCUS-VISIBLE-NATIVE-EQUALITY
-    notes:
-      - Planned because the focus contract sets `focusVisible` in its facts snapshots without comparing it to the host native result, and no adapter test asserts the modality fallback half of the claim.
-      - The documentation browser suites do compare a projected `focusVisible` against `:focus-visible` on the Textarea, but under their own Textarea entities and only for the measurable half. That is adjacent evidence, not this case.
 verifies:
   contracts:
     - id: C-FOCUS-0001

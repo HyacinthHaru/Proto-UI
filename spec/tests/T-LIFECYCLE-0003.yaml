@@ -61,6 +61,7 @@ implementations:
     path: packages/adapters/react/test/contract/lifecycle-events.v1.contract.test.ts
     required: true
     consumesCases:
+      - T-LIFECYCLE-0003-CASE-UPDATE-REVISION
       - T-LIFECYCLE-0003-CASE-ADAPTER-EVENT-TRACE
   - id: adapter-vue-lifecycle-events
     kind: adapter-test
@@ -68,6 +69,7 @@ implementations:
     path: packages/adapters/vue/test/contract/lifecycle-events.v1.contract.test.ts
     required: true
     consumesCases:
+      - T-LIFECYCLE-0003-CASE-UPDATE-REVISION
       - T-LIFECYCLE-0003-CASE-ADAPTER-EVENT-TRACE
   - id: adapter-vue2-lifecycle-events
     kind: adapter-test
@@ -82,16 +84,8 @@ implementations:
     path: packages/adapters/web-component/test/contract/lifecycle-events.v1.contract.test.ts
     required: true
     consumesCases:
-      - T-LIFECYCLE-0003-CASE-ADAPTER-EVENT-TRACE
-  - id: runtime-lifecycle-update-revision
-    kind: runtime-test
-    status: planned
-    path: packages/runtime/test/contract/lifecycle.update-revision.v1.contract.test.ts
-    required: true
-    consumesCases:
       - T-LIFECYCLE-0003-CASE-UPDATE-REVISION
-    notes:
-      - Planned because the session contract asserts a mount epoch and never a revision; the word does not appear in it.
+      - T-LIFECYCLE-0003-CASE-ADAPTER-EVENT-TRACE
 verifies:
   contracts:
     - id: C-LIFECYCLE-0004

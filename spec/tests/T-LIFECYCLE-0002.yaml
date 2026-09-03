@@ -120,24 +120,24 @@ implementations:
       - T-LIFECYCLE-0002-CASE-MODULE-APIS-NO-IMPLICIT-RENDER
     notes:
       - Web Component adapter coverage verifies props re-provision dispatch behavior without implicit render.
-  - id: runtime-lifecycle-render-input-isolation
+  - id: runtime-render-reads-runtime-input
     kind: runtime-test
-    status: planned
-    path: packages/runtime/test/contract/lifecycle.render-input-isolation.v0.contract.test.ts
+    status: passing
+    path: packages/runtime/test/contract/prototype.render-syntax.v0.contract.test.ts
     required: true
     consumesCases:
       - T-LIFECYCLE-0002-CASE-RENDER-RUNTIME-INPUT
     notes:
-      - Planned because the nearest current evidence, `state-basic.v0.contract.test.ts`, proves that a mounted set does not re-render until an explicit update. That is the absence of an automatic render, not a read during render that provably does not re-enter the update flow.
+      - This test reads props, context, and anatomy during render, asserts that `renderer.update` is unavailable there, and completes exactly one commit. `T-CORE-SYNTAX-0001` already maps it to `C-LIFECYCLE-0003-D` and `C-LIFECYCLE-0003-E`, which is what this case covers.
   - id: runtime-lifecycle-coalesced-update
     kind: runtime-test
-    status: planned
-    path: packages/runtime/test/contract/lifecycle.coalesced-update.v0.contract.test.ts
+    status: passing
+    path: packages/runtime/test/contract/lifecycle.session.transitions.v1.contract.test.ts
     required: true
     consumesCases:
       - T-LIFECYCLE-0002-CASE-COALESCED-UPDATE
     notes:
-      - Planned because the case is executable only for runtimes that coalesce, and this entity records that the current implementation does not.
+      - The case titled `coalesces update intents while one update commit is in flight` drives three update intents during an in-flight commit and asserts two completed `updated` callbacks at revisions 1 and 2.
 verifies:
   contracts:
     - id: C-LIFECYCLE-0003
