@@ -102,6 +102,100 @@ function lookup(scope: Scope | null, name: string): Binding | null {
   return null;
 }
 
+/**
+ * Whether a write may be skipped at runtime. A branch the source decides
+ * statically executes exactly as written; anything else has to keep whatever
+ * the name held before it.
+ */
+function isConditionallyReached(node: ts.Node): boolean {
+  for (
+    let child: ts.Node = node, parent = node.parent;
+    parent;
+    child = parent, parent = parent.parent
+  ) {
+    if (ts.isFunctionLike(parent)) return false;
+    if (ts.isIfStatement(parent)) {
+      if (child === parent.expression) continue;
+      if (child === parent.thenStatement && parent.expression.kind === ts.SyntaxKind.TrueKeyword) {
+        continue;
+      }
+      if (child === parent.elseStatement && parent.expression.kind === ts.SyntaxKind.FalseKeyword) {
+        continue;
+      }
+      return true;
+    }
+    if (ts.isConditionalExpression(parent)) {
+      if (child !== parent.condition) return true;
+      continue;
+    }
+    if (
+      ts.isSwitchStatement(parent) ||
+      ts.isCaseBlock(parent) ||
+      ts.isCaseClause(parent) ||
+      ts.isDefaultClause(parent) ||
+      ts.isTryStatement(parent) ||
+      ts.isCatchClause(parent)
+    ) {
+      return true;
+    }
+    if (
+      ts.isForStatement(parent) ||
+      ts.isForOfStatement(parent) ||
+      ts.isForInStatement(parent) ||
+      ts.isWhileStatement(parent)
+    ) {
+      if (child === parent.statement) return true;
+      continue;
+    }
+    if (ts.isBinaryExpression(parent)) {
+      const operator = parent.operatorToken.kind;
+      const shortCircuits =
+        operator === ts.SyntaxKind.AmpersandAmpersandToken ||
+        operator === ts.SyntaxKind.BarBarToken ||
+        operator === ts.SyntaxKind.QuestionQuestionToken;
+      if (shortCircuits && child === parent.right) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Every edge at the latest position at or before `at`, plus everything an
+ * earlier position still contributes because the later write may be skipped.
+ */
+function visibleEdges<T extends { at: number; conditional?: boolean }>(
+  edges: T[],
+  at: number
+): T[] {
+  const candidates = edges.filter((edge) => edge.at <= at);
+  if (candidates.length === 0) return [];
+  const positions = [...new Set(candidates.map((edge) => edge.at))].sort((a, b) => b - a);
+  const selected: T[] = [];
+  for (const position of positions) {
+    const group = candidates.filter((edge) => edge.at === position);
+    selected.push(...group);
+    if (!group.every((edge) => edge.conditional)) break;
+  }
+  return selected;
+}
+
+/** `var` binds to the function however deeply the declaration is nested. */
+function functionScope(scope: Scope): Scope {
+  for (let current: Scope | null = scope; current; current = current.parent) {
+    const node = current.node;
+    if (!node || !current.parent) return current;
+    if (ts.isSourceFile(node) || ts.isFunctionLike(node)) return current;
+    if (node.parent && ts.isFunctionLike(node.parent)) return current;
+  }
+  return scope;
+}
+
+function isVarList(list: ts.Node): boolean {
+  return (
+    ts.isVariableDeclarationList(list) && !(list.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const))
+  );
+}
+
 function isLoopStatement(node: ts.Node): boolean {
   return ts.isForStatement(node) || ts.isForOfStatement(node) || ts.isForInStatement(node);
 }
@@ -186,7 +280,13 @@ export function scanRuleStateReads(
       : node;
 
   const exposedKeys = new Map<ts.Node, Map<string, string>>();
-  type AliasEdge = { owner: ts.Node; name: string; target: string; at: number };
+  type AliasEdge = {
+    owner: ts.Node;
+    name: string;
+    target: string;
+    at: number;
+    conditional: boolean;
+  };
   const aliasEdges: AliasEdge[] = [];
   const declaredIn = new Map<ts.Node, Set<string>>();
 
@@ -204,7 +304,7 @@ export function scanRuleStateReads(
   };
   // Members carry positions for the same reason aliases do: a write through the
   // container retargets the member from there on.
-  type MemberEdge = { target: string; at: number };
+  type MemberEdge = { target: string; at: number; conditional: boolean };
   const objectMembers = new Map<ts.Node, Map<string, Map<string, MemberEdge[]>>>();
 
   /** Every member an object literal names, at the position it was written. */
@@ -212,17 +312,18 @@ export function scanRuleStateReads(
     owner: ts.Node,
     base: string,
     literal: ts.ObjectLiteralExpression,
-    at: number
+    at: number,
+    conditional: boolean
   ): void => {
     for (const property of literal.properties) {
       if (ts.isShorthandPropertyAssignment(property)) {
-        recordMember(owner, base, property.name.text, property.name.text, at);
+        recordMember(owner, base, property.name.text, property.name.text, at, conditional);
       } else if (
         ts.isPropertyAssignment(property) &&
         (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
       ) {
         for (const target of aliasTargets(property.initializer)) {
-          recordMember(owner, base, property.name.text, target, at);
+          recordMember(owner, base, property.name.text, target, at, conditional);
         }
       }
     }
@@ -233,11 +334,12 @@ export function scanRuleStateReads(
     base: string,
     key: string,
     target: string,
-    at: number
+    at: number,
+    conditional: boolean
   ): void => {
     const scoped = objectMembers.get(owner) ?? new Map<string, Map<string, MemberEdge[]>>();
     const members = scoped.get(base) ?? new Map<string, MemberEdge[]>();
-    members.set(key, [...(members.get(key) ?? []), { target, at }]);
+    members.set(key, [...(members.get(key) ?? []), { target, at, conditional }]);
     scoped.set(base, members);
     objectMembers.set(owner, scoped);
   };
@@ -258,18 +360,20 @@ export function scanRuleStateReads(
     key: string,
     chain: ts.Node[],
     at: number
-  ): string | null => {
+  ): { target: string; at: number } | null => {
     const value = unwrap(initializer);
     if (ts.isObjectLiteralExpression(value)) {
       for (const property of value.properties) {
-        if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) return key;
+        if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) {
+          return { target: key, at };
+        }
         if (
           ts.isPropertyAssignment(property) &&
           (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
           property.name.text === key
         ) {
           const assigned = unwrap(property.initializer);
-          return ts.isIdentifier(assigned) ? assigned.text : null;
+          return ts.isIdentifier(assigned) ? { target: assigned.text, at } : null;
         }
       }
       return null;
@@ -280,9 +384,9 @@ export function scanRuleStateReads(
       if (!members) continue;
       const edges = members.get(key);
       if (!edges) return null;
-      const targets = latestTargets(edges, at);
-      // A pattern binds one name, so a conditional member leaves it ambiguous.
-      return targets.length === 1 ? targets[0] : null;
+      const visible = visibleEdges(edges, at);
+      // A pattern binds one name, so several candidates leave it ambiguous.
+      return visible.length === 1 ? { target: visible[0].target, at: visible[0].at } : null;
     }
     return null;
   };
@@ -296,8 +400,8 @@ export function scanRuleStateReads(
     initializer: ts.Node,
     chain: ts.Node[],
     at: number
-  ): Array<{ name: string; target: string }> => {
-    const out: Array<{ name: string; target: string }> = [];
+  ): Array<{ name: string; target: string; at: number }> => {
+    const out: Array<{ name: string; target: string; at: number }> = [];
     if (ts.isObjectBindingPattern(name)) {
       for (const element of name.elements) {
         if (!ts.isIdentifier(element.name) || element.dotDotDotToken) continue;
@@ -305,8 +409,8 @@ export function scanRuleStateReads(
         const key =
           ts.isIdentifier(property) || ts.isStringLiteralLike(property) ? property.text : null;
         if (!key) continue;
-        const target = memberTargetName(initializer, key, chain, at);
-        if (target) out.push({ name: element.name.text, target });
+        const resolved = memberTargetName(initializer, key, chain, at);
+        if (resolved) out.push({ name: element.name.text, ...resolved });
       }
       return out;
     }
@@ -318,24 +422,23 @@ export function scanRuleStateReads(
       if (!ts.isIdentifier(element.name) || element.dotDotDotToken) return;
       const value = values.elements[index] && unwrap(values.elements[index]);
       if (value && ts.isIdentifier(value)) {
-        out.push({ name: element.name.text, target: value.text });
+        out.push({ name: element.name.text, target: value.text, at });
       }
     });
     return out;
   };
 
-  /** Every edge written at the latest position at or before `at`. */
-  const latestTargets = (edges: MemberEdge[], at: number): string[] => {
-    const visible = edges.filter((edge) => edge.at <= at);
-    if (visible.length === 0) return [];
-    const latest = Math.max(...visible.map((edge) => edge.at));
-    return visible.filter((edge) => edge.at === latest).map((edge) => edge.target);
-  };
-
-  /** The handles an expose argument may name; a conditional member gives both. */
-  const resolveHandleNames = (node: ts.Node, chain: ts.Node[], at: number): string[] => {
+  /**
+   * The handles an expose argument may name, each with the position its own
+   * edge was written at: a member captured whatever its target named then.
+   */
+  const resolveHandleNames = (
+    node: ts.Node,
+    chain: ts.Node[],
+    at: number
+  ): Array<{ name: string; at: number }> => {
     const value = unwrap(node);
-    if (ts.isIdentifier(value)) return [value.text];
+    if (ts.isIdentifier(value)) return [{ name: value.text, at }];
     const owner = ownerOf(value);
     if (!owner) return [];
     const base = unwrap(owner);
@@ -345,17 +448,16 @@ export function scanRuleStateReads(
       if (!members) continue;
       for (const [key, edges] of members) {
         if (!memberNamed(value, key)) continue;
-        return latestTargets(edges, at);
+        return visibleEdges(edges, at).map((edge) => ({ name: edge.target, at: edge.at }));
       }
       return [];
     }
     return [];
   };
   const rawExposures: Array<{
-    handles: string[];
+    handles: Array<{ name: string; at: number }>;
     key: ts.Expression;
     chain: ts.Node[];
-    at: number;
   }> = [];
 
   const memberNamed = (node: ts.Node, name: string): boolean => {
@@ -407,11 +509,18 @@ export function scanRuleStateReads(
       declaredIn.set(owner, names);
       if (node.initializer) {
         const literal = unwrap(node.initializer);
+        const conditional = isConditionallyReached(node);
         if (ts.isObjectLiteralExpression(literal)) {
-          recordObjectLiteral(owner, node.name.text, literal, node.getStart());
+          recordObjectLiteral(owner, node.name.text, literal, node.getStart(), conditional);
         }
         for (const target of aliasTargets(node.initializer)) {
-          aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
+          aliasEdges.push({
+            owner,
+            name: node.name.text,
+            target,
+            at: node.getStart(),
+            conditional,
+          });
         }
       }
     }
@@ -423,11 +532,18 @@ export function scanRuleStateReads(
     ) {
       const patternOwner = nextChain[0] ?? source;
       const at = node.getStart();
+      const conditional = isConditionallyReached(node);
       for (const alias of patternTargets(node.name, node.initializer, nextChain, at)) {
         const names = declaredIn.get(patternOwner) ?? new Set<string>();
         names.add(alias.name);
         declaredIn.set(patternOwner, names);
-        aliasEdges.push({ owner: patternOwner, name: alias.name, target: alias.target, at });
+        aliasEdges.push({
+          owner: patternOwner,
+          name: alias.name,
+          target: alias.target,
+          at: alias.at,
+          conditional,
+        });
       }
     }
     // Writing through the container moves the handle the same way, so the
@@ -444,8 +560,9 @@ export function scanRuleStateReads(
           [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(base.text)) ??
           nextChain[0] ??
           source;
+        const conditional = isConditionallyReached(node);
         for (const target of aliasTargets(node.right)) {
-          recordMember(memberOwnerScope, base.text, member, target, node.getStart());
+          recordMember(memberOwnerScope, base.text, member, target, node.getStart(), conditional);
         }
       }
     }
@@ -463,12 +580,19 @@ export function scanRuleStateReads(
         [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(left)) ??
         nextChain[0] ??
         source;
+      const conditional = isConditionallyReached(node);
       const replacement = unwrap(node.right);
       if (ts.isObjectLiteralExpression(replacement)) {
-        recordObjectLiteral(assignOwner, left, replacement, node.getStart());
+        recordObjectLiteral(assignOwner, left, replacement, node.getStart(), conditional);
       }
       for (const target of aliasTargets(node.right)) {
-        aliasEdges.push({ owner: assignOwner, name: left, target, at: node.getStart() });
+        aliasEdges.push({
+          owner: assignOwner,
+          name: left,
+          target,
+          at: node.getStart(),
+          conditional,
+        });
       }
     }
     if (ts.isCallExpression(node)) {
@@ -483,12 +607,7 @@ export function scanRuleStateReads(
           ? resolveHandleNames(handleArg, [...nextChain, source], node.getStart())
           : [];
         if (nameArg && handles.length > 0) {
-          rawExposures.push({
-            handles,
-            key: nameArg,
-            chain: [...nextChain, source],
-            at: node.getStart(),
-          });
+          rawExposures.push({ handles, key: nameArg, chain: [...nextChain, source] });
         }
       }
     }
@@ -507,12 +626,9 @@ export function scanRuleStateReads(
     if (seen.has(name)) return [name];
     let found: AliasEdge[] = [];
     for (const owner of chain) {
-      const candidates = aliasEdges.filter(
-        (edge) => edge.owner === owner && edge.name === name && edge.at <= at
-      );
+      const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
       if (candidates.length === 0) continue;
-      const latest = Math.max(...candidates.map((edge) => edge.at));
-      found = candidates.filter((edge) => edge.at === latest);
+      found = visibleEdges(candidates, at);
       break;
     }
     if (found.length === 0) return [name];
@@ -526,12 +642,12 @@ export function scanRuleStateReads(
   const declaringScope = (name: string, chain: ts.Node[]): ts.Node | undefined =>
     chain.find((candidate) => declaredIn.get(candidate)?.has(name)) ?? chain[chain.length - 1];
 
-  for (const { handles, key, chain, at } of rawExposures) {
+  for (const { handles, key, chain } of rawExposures) {
     // A key the scanner cannot read still means the state is exposed, and the
     // attribute comes from the declared name anyway.
     const text = ts.isStringLiteralLike(key) ? key.text : '';
     for (const name of new Set(
-      handles.flatMap((handle) => [handle, ...aliasRoots(handle, chain, at)])
+      handles.flatMap((handle) => [handle.name, ...aliasRoots(handle.name, chain, handle.at)])
     )) {
       const owner = declaringScope(name, chain);
       if (!owner) continue;
@@ -627,11 +743,13 @@ export function scanRuleStateReads(
     }
 
     // `const hidden = def.state.bool('hidden', true)` — a prototype-owned state.
+    // Production reads the member name statically, so `def.state['bool'](…)`
+    // reaches the same declaration and must not be reported unresolved.
+    const stateOwner = ts.isCallExpression(value) ? ownerOf(unwrap(value.expression)) : null;
     if (
       ts.isCallExpression(value) &&
-      ts.isPropertyAccessExpression(value.expression) &&
-      ts.isPropertyAccessExpression(value.expression.expression) &&
-      value.expression.expression.name.text === 'state' &&
+      stateOwner &&
+      memberNamed(stateOwner, 'state') &&
       ts.isIdentifier(name)
     ) {
       const declaredArgument = value.arguments[0];
@@ -1242,7 +1360,10 @@ export function scanRuleStateReads(
       node.parent.parent &&
       (ts.isVariableStatement(node.parent.parent) || isLoopStatement(node.parent.parent))
     ) {
-      if (node.initializer) declareValue(node.name, node.initializer, current);
+      // `var` is one function-scoped binding however deeply it is nested, which
+      // is where production registers it too.
+      const owner = isVarList(node.parent) ? functionScope(current) : current;
+      if (node.initializer) declareValue(node.name, node.initializer, owner, current);
     }
 
     // A reassignment moves the handle for every read that follows it.

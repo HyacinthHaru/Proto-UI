@@ -102,6 +102,25 @@ function createScope(parent = null, node = null) {
   return { parent, bindings: new Map(), node };
 }
 
+/** `var` binds to the function however deeply the declaration is nested. */
+function functionScope(scope) {
+  for (let current = scope; current; current = current.parent) {
+    const node = current.node;
+    // The variable environment is a function body, the function itself when it
+    // has an expression body, or the module.
+    if (!node || !current.parent) return current;
+    if (ts.isSourceFile(node) || ts.isFunctionLike(node)) return current;
+    if (node.parent && ts.isFunctionLike(node.parent)) return current;
+  }
+  return scope;
+}
+
+function isVarList(list) {
+  return (
+    ts.isVariableDeclarationList(list) && !(list.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const))
+  );
+}
+
 /** The scope a name is already bound in, so an assignment does not shadow it. */
 function scopeDeclaring(name, scope) {
   for (let current = scope; current; current = current.parent) {
@@ -125,8 +144,11 @@ function walk(node, scope, tokens, exposures) {
       // are collected from the whole source before the walk begins.
       for (const stmt of node.statements) {
         if (ts.isVariableStatement(stmt)) {
+          // `var` is one function-scoped binding however deeply it is nested,
+          // so a nested redeclaration is the same binding seen from outside.
+          const owner = isVarList(stmt.declarationList) ? functionScope(nextScope) : nextScope;
           for (const decl of stmt.declarationList.declarations) {
-            registerDeclaration(decl, nextScope, exposures);
+            registerDeclaration(decl, owner, exposures);
             if (decl.initializer) walk(decl.initializer, nextScope, tokens, exposures);
           }
           continue;
@@ -144,8 +166,9 @@ function walk(node, scope, tokens, exposures) {
     // A declaration under single-statement control flow — `if (x) var f = …` —
     // is reached here rather than through a statement list, and the runtime
     // executes it just the same.
+    const owner = isVarList(node.declarationList) ? functionScope(scope) : scope;
     for (const decl of node.declarationList.declarations) {
-      registerDeclaration(decl, scope, exposures);
+      registerDeclaration(decl, owner, exposures);
       if (decl.initializer) walk(decl.initializer, scope, tokens, exposures);
     }
     return;
@@ -520,6 +543,76 @@ function exposedDataAttributeName(key) {
  * sits in nor its position relative to a rule decides whether the rule lowers.
  * Aliases are followed because two references to one handle carry one state id.
  */
+/**
+ * Whether a write may be skipped at runtime. A branch the source decides
+ * statically executes exactly as written; anything else has to keep whatever
+ * the name held before it, because the runtime may take the other path.
+ */
+function isConditionallyReached(node) {
+  for (let child = node, parent = node.parent; parent; child = parent, parent = parent.parent) {
+    if (ts.isFunctionLike(parent)) return false;
+    if (ts.isIfStatement(parent)) {
+      if (child === parent.expression) continue;
+      if (child === parent.thenStatement && parent.expression.kind === ts.SyntaxKind.TrueKeyword) {
+        continue;
+      }
+      if (child === parent.elseStatement && parent.expression.kind === ts.SyntaxKind.FalseKeyword) {
+        continue;
+      }
+      return true;
+    }
+    if (ts.isConditionalExpression(parent)) {
+      if (child !== parent.condition) return true;
+      continue;
+    }
+    if (
+      ts.isSwitchStatement(parent) ||
+      ts.isCaseBlock(parent) ||
+      ts.isCaseClause(parent) ||
+      ts.isDefaultClause(parent) ||
+      ts.isTryStatement(parent) ||
+      ts.isCatchClause(parent)
+    ) {
+      return true;
+    }
+    if (
+      ts.isForStatement(parent) ||
+      ts.isForOfStatement(parent) ||
+      ts.isForInStatement(parent) ||
+      ts.isWhileStatement(parent)
+    ) {
+      if (child === parent.statement) return true;
+      continue;
+    }
+    if (ts.isBinaryExpression(parent)) {
+      const operator = parent.operatorToken.kind;
+      const shortCircuits =
+        operator === ts.SyntaxKind.AmpersandAmpersandToken ||
+        operator === ts.SyntaxKind.BarBarToken ||
+        operator === ts.SyntaxKind.QuestionQuestionToken;
+      if (shortCircuits && child === parent.right) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Every edge at the latest position at or before `at`, plus everything an
+ * earlier position still contributes because the later write may be skipped.
+ */
+function visibleEdges(edges, at) {
+  const candidates = edges.filter((edge) => edge.at <= at);
+  if (candidates.length === 0) return [];
+  const positions = [...new Set(candidates.map((edge) => edge.at))].sort((a, b) => b - a);
+  const selected = [];
+  for (const position of positions) {
+    const group = candidates.filter((edge) => edge.at === position);
+    selected.push(...group);
+    if (!group.every((edge) => edge.conditional)) break;
+  }
+  return selected;
+}
+
 function collectExposures(root) {
   // Alias edges carry their scope and source position, so two sibling scopes
   // may bind the same name and a later redeclaration cannot rewrite what an
@@ -593,25 +686,25 @@ function collectExposures(root) {
   const objectMembers = new Map();
 
   /** Every member an object literal names, at the position it was written. */
-  const recordObjectLiteral = (owner, base, literal, at) => {
+  const recordObjectLiteral = (owner, base, literal, at, conditional) => {
     for (const property of literal.properties) {
       if (ts.isShorthandPropertyAssignment(property)) {
-        recordMember(owner, base, property.name.text, property.name.text, at);
+        recordMember(owner, base, property.name.text, property.name.text, at, conditional);
       } else if (
         ts.isPropertyAssignment(property) &&
         (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name))
       ) {
         for (const target of aliasTargets(property.initializer)) {
-          recordMember(owner, base, property.name.text, target, at);
+          recordMember(owner, base, property.name.text, target, at, conditional);
         }
       }
     }
   };
 
-  const recordMember = (owner, base, key, target, at) => {
+  const recordMember = (owner, base, key, target, at, conditional) => {
     const scoped = objectMembers.get(owner) ?? new Map();
     const members = scoped.get(base) ?? new Map();
-    members.set(key, [...(members.get(key) ?? []), { target, at }]);
+    members.set(key, [...(members.get(key) ?? []), { target, at, conditional }]);
     scoped.set(base, members);
     objectMembers.set(owner, scoped);
   };
@@ -622,7 +715,7 @@ function collectExposures(root) {
     if (ts.isObjectLiteralExpression(value)) {
       for (const property of value.properties) {
         if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) {
-          return key;
+          return { target: key, at };
         }
         if (
           ts.isPropertyAssignment(property) &&
@@ -630,7 +723,7 @@ function collectExposures(root) {
           property.name.text === key
         ) {
           const assigned = unwrapExpression(property.initializer);
-          return ts.isIdentifier(assigned) ? assigned.text : null;
+          return ts.isIdentifier(assigned) ? { target: assigned.text, at } : null;
         }
       }
       return null;
@@ -641,9 +734,9 @@ function collectExposures(root) {
       if (!members) continue;
       const edges = members.get(key);
       if (!edges) return null;
-      const targets = latestTargets(edges, at);
-      // A pattern binds one name, so a conditional member leaves it ambiguous.
-      return targets.length === 1 ? targets[0] : null;
+      const visible = visibleEdges(edges, at);
+      // A pattern binds one name, so several candidates leave it ambiguous.
+      return visible.length === 1 ? { target: visible[0].target, at: visible[0].at } : null;
     }
     return null;
   };
@@ -662,8 +755,8 @@ function collectExposures(root) {
           ? getPropertyName(element.propertyName)
           : element.name.text;
         if (!key) continue;
-        const target = memberTargetName(initializer, key, chain, at);
-        if (target) out.push({ name: element.name.text, target });
+        const resolved = memberTargetName(initializer, key, chain, at);
+        if (resolved) out.push({ name: element.name.text, ...resolved });
       }
       return out;
     }
@@ -675,27 +768,19 @@ function collectExposures(root) {
       if (!ts.isIdentifier(element.name) || element.dotDotDotToken) return;
       const value = values.elements[index] && unwrapExpression(values.elements[index]);
       if (value && ts.isIdentifier(value))
-        out.push({ name: element.name.text, target: value.text });
+        out.push({ name: element.name.text, target: value.text, at });
     });
     return out;
   };
 
-  /** Every edge written at the latest position at or before `at`. */
-  const latestTargets = (edges, at) => {
-    const visible = edges.filter((edge) => edge.at <= at);
-    if (visible.length === 0) return [];
-    const latest = Math.max(...visible.map((edge) => edge.at));
-    return visible.filter((edge) => edge.at === latest).map((edge) => edge.target);
-  };
-
   /**
-   * The handles an expose argument may name. A conditional member selects one
-   * at runtime, so both are returned for the same reason `aliasTargets` fans
-   * out: whichever the runtime picks has to have a variant.
+   * The handles an expose argument may name, each with the position its own
+   * edge was written at: a member captured whatever its target named then, not
+   * what that name was reassigned to later.
    */
   const resolveHandleNames = (node, chain, at) => {
     const value = unwrapExpression(node);
-    if (ts.isIdentifier(value)) return [value.text];
+    if (ts.isIdentifier(value)) return [{ name: value.text, at }];
     const owner = memberOwner(value);
     if (!owner) return [];
     const base = unwrapExpression(owner);
@@ -705,7 +790,7 @@ function collectExposures(root) {
       if (!members) continue;
       for (const [key, edges] of members) {
         if (!memberIs(value, key)) continue;
-        return latestTargets(edges, at);
+        return visibleEdges(edges, at).map((edge) => ({ name: edge.target, at: edge.at }));
       }
       return [];
     }
@@ -733,11 +818,18 @@ function collectExposures(root) {
       declaredIn.get(owner).add(node.name.text);
       if (node.initializer) {
         const literal = unwrapExpression(node.initializer);
+        const conditional = isConditionallyReached(node);
         if (ts.isObjectLiteralExpression(literal)) {
-          recordObjectLiteral(owner, node.name.text, literal, node.getStart());
+          recordObjectLiteral(owner, node.name.text, literal, node.getStart(), conditional);
         }
         for (const target of aliasTargets(node.initializer)) {
-          aliasEdges.push({ owner, name: node.name.text, target, at: node.getStart() });
+          aliasEdges.push({
+            owner,
+            name: node.name.text,
+            target,
+            at: node.getStart(),
+            conditional,
+          });
         }
       }
     }
@@ -749,10 +841,19 @@ function collectExposures(root) {
     ) {
       const owner = nextChain[0] ?? root;
       const at = node.getStart();
-      for (const { name, target } of patternTargets(node.name, node.initializer, nextChain, at)) {
+      const conditional = isConditionallyReached(node);
+      for (const alias of patternTargets(node.name, node.initializer, nextChain, at)) {
         if (!declaredIn.has(owner)) declaredIn.set(owner, new Set());
-        declaredIn.get(owner).add(name);
-        aliasEdges.push({ owner, name, target, at });
+        declaredIn.get(owner).add(alias.name);
+        // The edge sits where the member was written, so following it resolves
+        // the target as it stood then.
+        aliasEdges.push({
+          owner,
+          name: alias.name,
+          target: alias.target,
+          at: alias.at,
+          conditional,
+        });
       }
     }
     // Writing through the container moves the handle the same way, so the
@@ -769,8 +870,9 @@ function collectExposures(root) {
           [...nextChain, root].find((candidate) => declaredIn.get(candidate)?.has(base.text)) ??
           nextChain[0] ??
           root;
+        const conditional = isConditionallyReached(node);
         for (const target of aliasTargets(node.right)) {
-          recordMember(owner, base.text, member, target, node.getStart());
+          recordMember(owner, base.text, member, target, node.getStart(), conditional);
         }
       }
     }
@@ -787,12 +889,13 @@ function collectExposures(root) {
         [...nextChain, root].find((candidate) => declaredIn.get(candidate)?.has(node.left.text)) ??
         nextChain[0] ??
         root;
+      const conditional = isConditionallyReached(node);
       const replacement = unwrapExpression(node.right);
       if (ts.isObjectLiteralExpression(replacement)) {
-        recordObjectLiteral(owner, node.left.text, replacement, node.getStart());
+        recordObjectLiteral(owner, node.left.text, replacement, node.getStart(), conditional);
       }
       for (const target of aliasTargets(node.right)) {
-        aliasEdges.push({ owner, name: node.left.text, target, at: node.getStart() });
+        aliasEdges.push({ owner, name: node.left.text, target, at: node.getStart(), conditional });
       }
     }
     if (
@@ -807,12 +910,7 @@ function collectExposures(root) {
         ? resolveHandleNames(handleArg, [...nextChain, root], node.getStart())
         : [];
       if (nameArg && handles.length > 0) {
-        exposures.push({
-          handles,
-          key: nameArg,
-          chain: [...nextChain, root],
-          at: node.getStart(),
-        });
+        exposures.push({ handles, key: nameArg, chain: [...nextChain, root] });
       }
     }
     ts.forEachChild(node, (child) => visit(child, nextChain));
@@ -824,12 +922,9 @@ function collectExposures(root) {
   // first. A conditional contributes several edges at one position.
   const lookupAliases = (name, chain, at) => {
     for (const owner of chain) {
-      const candidates = aliasEdges.filter(
-        (edge) => edge.owner === owner && edge.name === name && edge.at <= at
-      );
+      const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
       if (candidates.length === 0) continue;
-      const latest = Math.max(...candidates.map((edge) => edge.at));
-      return candidates.filter((edge) => edge.at === latest);
+      return visibleEdges(candidates, at);
     }
     return [];
   };
@@ -854,10 +949,10 @@ function collectExposures(root) {
     chain.find((candidate) => declaredIn.get(candidate)?.has(name)) ?? chain[chain.length - 1];
 
   const byScope = new Map();
-  for (const { handles, key, chain, at } of exposures) {
+  for (const { handles, key, chain } of exposures) {
     // Both the alias and the handle it names carry the same state id.
     for (const name of new Set(
-      handles.flatMap((handle) => [handle, ...rootNames(handle, chain, at)])
+      handles.flatMap((handle) => [handle.name, ...rootNames(handle.name, chain, handle.at)])
     )) {
       const owner = declaringScope(name, chain);
       if (!owner) continue;

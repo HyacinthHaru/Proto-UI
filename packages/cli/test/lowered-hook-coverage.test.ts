@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
+import { createExposeStateWebNameMap } from '../../modules/expose-state-web/src/utils';
 import { scanRuleStateReads } from '../src/services/lowered-hook-coverage';
 import {
   collectProtoStyleTokens,
@@ -48,6 +49,13 @@ const RULE_CALL = /\brule\b/;
 /** A real intent: the variant is a prefix on tokens, so a stub yields nothing. */
 const rule = (condition: string) =>
   `def.rule({ when: (w) => ${condition}, intent: (i) => i.feedback.style.use(tw('bg-primary')) });`;
+
+/**
+ * What the normalized attribute has to satisfy: `data-<attribute>` is writable
+ * and `[data-<attribute>]` selects it. A leading digit satisfies both, so an
+ * identifier rule here would add a naming restriction no contract states.
+ */
+const SELECTABLE_ATTRIBUTE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe('lowered hook coverage', () => {
   it('follows every binding shape a prototype uses to reach a state handle', () => {
@@ -467,6 +475,109 @@ describe('lowered hook coverage', () => {
       { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
       { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
     ]);
+  });
+
+  it('reads a member at the position it was written', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let current = first;',
+      'const controls = { ready: current };',
+      'current = second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(first).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('keeps the earlier handle when a write may be skipped', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let current = first;',
+      'if (enabled) current = second;',
+      "def.expose.state('visible', current);",
+      `def.rule({ when: (w) => w.state(first).eq(true), intent: ${use} });`,
+      `def.rule({ when: (w) => w.state(second).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'first', exposedAs: 'visible', attribute: 'first-flag' },
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('hoists a nested var redeclaration the rule reads', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      'function setup(def) {',
+      "  const first = def.state.bool('firstFlag', false);",
+      "  const second = def.state.bool('secondFlag', false);",
+      '  var current = first;',
+      '  {',
+      '    var current = second;',
+      '  }',
+      "  def.expose.state('visible', current);",
+      `  def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'current', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('accepts an element-access state declaration the extractor reads', () => {
+    // Production resolves `def.state['bool'](…)`, so reporting it unresolved
+    // would fail the gate on code the extractor handles correctly.
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state['bool']('internalFlag', false);",
+      "def.expose.state('visible', flag);",
+      `def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'internal-flag' },
+    ]);
+  });
+
+  it('admits every attribute the Web projection can actually write', () => {
+    // The repository tree carries no digit-leading state, so the gate's own
+    // predicate is asserted here rather than only through the shipped scan.
+    for (const attribute of ['1st', 'hidden', 'focus-visible', 'a1', '2-of-3']) {
+      expect(SELECTABLE_ATTRIBUTE.test(attribute), attribute).toBe(true);
+      expect(createExposeStateWebNameMap(attribute).dataAttr, attribute).toBe(`data-${attribute}`);
+    }
+    for (const attribute of ['', '-leading', 'trailing-', 'double--hyphen', 'Upper', 'has space']) {
+      expect(SELECTABLE_ATTRIBUTE.test(attribute), attribute).toBe(false);
+    }
+  });
+
+  it('accepts an attribute that starts with a digit', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state.bool('1st', false);",
+      "def.expose.state('1st', flag);",
+      `def.rule({ when: (w) => w.state(flag).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([{ state: 'flag', exposedAs: '1st', attribute: '1st' }]);
   });
 
   it('reports an exposed state whose declared name it cannot read', () => {
@@ -978,7 +1089,7 @@ describe('lowered hook coverage', () => {
     // `C-EXPOSE-0004-A` admits any non-empty key, and both analyzers normalize
     // it, so the normalized attribute is what has to be usable — not the key.
     expect(
-      exposed.filter(({ attribute }) => !/^[a-z][a-z0-9-]*$/.test(attribute)),
+      exposed.filter(({ attribute }) => !SELECTABLE_ATTRIBUTE.test(attribute)),
       'exposed states whose attribute cannot be written as a data selector'
     ).toEqual([]);
     expect(exposed.length, 'exposed prototype-owned states read by a rule').toBeGreaterThan(0);

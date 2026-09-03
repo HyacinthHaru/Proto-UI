@@ -1523,4 +1523,169 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).toContain('data-[first-flag]:bg-muted');
     expect(tokens).toContain('data-[second-flag]:bg-accent');
   });
+  it('reads a member at the position it was written', async () => {
+    // The object captured whatever `current` named then; a later reassignment
+    // moves the alias, not what the container already holds.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let current = first;',
+        '    const controls = { ready: current };',
+        '    current = second;',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[first-flag]:bg-accent');
+  });
+
+  it('keeps the earlier handle when a write may be skipped', async () => {
+    // The runtime takes one path; whichever it takes, that rule is optimized
+    // away, so both candidates need a variant.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let current = first;',
+        '    if (enabled) current = second;',
+        "    def.expose.state('visible', current);",
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-muted')),",
+        '    });',
+        '    def.rule({',
+        '      when: (w) => w.state(second).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-muted');
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+  });
+
+  it('drops the earlier handle when the branch is statically taken', async () => {
+    // `if (true)` executes exactly as written, so retaining the earlier handle
+    // would emit a variant for a state the runtime never exposes.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let current = first;',
+        '    if (true) current = second;',
+        "    def.expose.state('visible', current);",
+        '    def.rule({',
+        '      when: (w) => w.state(first).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-muted')),",
+        '    });',
+        '    def.rule({',
+        '      when: (w) => w.state(second).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[first-flag]:bg-muted');
+  });
+
+  it('hoists a nested var redeclaration the rule reads', async () => {
+    // One function-scoped binding, so the block's declaration is the same one
+    // the statements after it see.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    var current = first;',
+        '    {',
+        '      var current = second;',
+        '    }',
+        "    def.expose.state('visible', current);",
+        '    def.rule({',
+        '      when: (w) => w.state(current).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[first-flag]:bg-accent');
+  });
+
+  it('normalizes a state name that starts with a digit', async () => {
+    // `createExposeStateWebNameMap('1st')` is `data-1st`, and `[data-1st]` is a
+    // legal attribute selector, so nothing here may reject it.
+    expect(createExposeStateWebNameMap('1st').dataAttr).toBe('data-1st');
+
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('1st', false);",
+        "    def.expose.state('1st', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[1st]:bg-accent');
+  });
 });
