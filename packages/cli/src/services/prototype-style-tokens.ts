@@ -239,10 +239,22 @@ function resolveExpression(node, scope) {
     }
   }
 
+  // `asHook().stateHandles.checked` bound straight to a name. Without this the
+  // leaf resolves to nothing and `w.state(checked)` emits no variant, while the
+  // same read through a destructure or through the bag resolves fine.
+  if (ts.isPropertyAccessExpression(node)) {
+    const owner = resolveExpression(node.expression, scope);
+    const semantic = owner.semanticMap?.get(node.name.text);
+    if (semantic) return asSemanticValue(semantic);
+  }
+
   if (
     ts.isParenthesizedExpression(node) ||
     ts.isAsExpression(node) ||
-    ts.isTypeAssertionExpression(node)
+    ts.isTypeAssertionExpression(node) ||
+    // `asHook().stateHandles!` — the bag is optional on the hook result type,
+    // so authors reach it through a non-null assertion.
+    ts.isNonNullExpression(node)
   ) {
     return resolveExpression(node.expression, scope);
   }
@@ -376,10 +388,15 @@ function resolveKnownAsHookStateHandles(node) {
     hookName === 'asDialogTrigger' ||
     hookName === 'asDialogClose' ||
     hookName === 'asDropdownTrigger' ||
-    hookName === 'asSelectTrigger' ||
     hookName === 'asHoverCardTrigger'
   ) {
     return new Map(COMMAND_STATE_VARIANTS);
+  }
+
+  if (hookName === 'asSelectTrigger') {
+    // Select Trigger is the one command surface that also reports whether it is
+    // still showing its placeholder.
+    return new Map([...COMMAND_STATE_VARIANTS, ['placeholder', 'data-[placeholder]']]);
   }
 
   if (hookName === 'asDropdownItem') {
@@ -477,7 +494,11 @@ function resolveKnownAsHookStateHandles(node) {
     ]);
   }
 
-  if (hookName === 'asDialogMask' || hookName === 'asDialogContent') {
+  if (
+    hookName === 'asDialogMask' ||
+    hookName === 'asDialogContent' ||
+    hookName === 'asHoverCardContent'
+  ) {
     return new Map([['open', 'data-[open]']]);
   }
 
@@ -511,6 +532,22 @@ function resolveKnownAsHookStateHandles(node) {
   }
 
   return null;
+}
+
+/**
+ * Asks the same resolver the extractor uses, so a coverage gate cannot drift by
+ * keeping its own copy of the hook list. Returns null when the hook has no
+ * entry, which is exactly the case where a rule keyed on its state handles
+ * silently produces no variant token.
+ */
+export function loweredHookStates(hookName) {
+  const probe = ts.factory.createCallExpression(
+    ts.factory.createIdentifier(hookName),
+    undefined,
+    []
+  );
+  const resolved = resolveKnownAsHookStateHandles(probe);
+  return resolved ? new Map(resolved) : null;
 }
 
 function collectRuleVariantTokens(node, scope, tokens) {
@@ -610,6 +647,16 @@ function analyzeWhenVariants(node, scope) {
 }
 
 function resolveStateHandleSemantic(node, scope) {
+  // `w.state(checked!)` and its `as`/parenthesized equivalents name the same
+  // handle as the bare identifier.
+  if (
+    ts.isNonNullExpression(node) ||
+    ts.isParenthesizedExpression(node) ||
+    ts.isAsExpression(node) ||
+    ts.isTypeAssertionExpression(node)
+  ) {
+    return resolveStateHandleSemantic(node.expression, scope);
+  }
   if (ts.isIdentifier(node)) return lookup(node.text, scope).semantic ?? null;
   if (!ts.isPropertyAccessExpression(node)) return null;
 
@@ -756,7 +803,11 @@ function scriptKindForFile(file) {
   return ts.ScriptKind.TS;
 }
 
-async function collectSourceFiles(dir) {
+/**
+ * Every file the token extractor reads under a root. Exported so a coverage
+ * scan can walk the same set instead of keeping its own narrower glob.
+ */
+export async function collectSourceFiles(dir) {
   const out = [];
   const entries = await fs.readdir(dir, { withFileTypes: true });
   for (const entry of entries) {

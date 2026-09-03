@@ -1,0 +1,688 @@
+import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { describe, expect, it } from 'vitest';
+
+import { scanRuleStateReads } from '../src/services/lowered-hook-coverage';
+import {
+  collectProtoStyleTokens,
+  collectSourceFiles,
+  loweredHookStates,
+} from '../src/services/prototype-style-tokens';
+
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+const PROTOTYPE_PACKAGES = path.join(REPO_ROOT, 'packages/prototypes');
+
+/**
+ * The same file set the extractor reads, taken from the extractor itself. A
+ * private glob here would be free to be narrower than production, which is the
+ * blind spot this gate exists to remove.
+ */
+async function prototypeSourceFiles(): Promise<string[]> {
+  const packages = await readdir(PROTOTYPE_PACKAGES, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of packages) {
+    if (!entry.isDirectory()) continue;
+    const src = path.join(PROTOTYPE_PACKAGES, entry.name, 'src');
+    try {
+      files.push(...((await collectSourceFiles(src)) as string[]));
+    } catch (error) {
+      // A package without a src directory contributes nothing. Any other
+      // traversal failure would silently drop a whole package from the gate.
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    }
+  }
+  return files;
+}
+
+/**
+ * A `rule` call's callee is named `rule`, so a file whose text lacks that word
+ * cannot contain one however the call is punctuated — `def.rule?.({})` and
+ * `def.rule /* note *\/ ({})` both keep it. Matching the word rather than the
+ * call shape keeps the scanned set identical to production while not building a
+ * TypeScript AST for every type and index module under `src`.
+ */
+const RULE_CALL = /\brule\b/;
+
+/** A real intent: the variant is a prefix on tokens, so a stub yields nothing. */
+const rule = (condition: string) =>
+  `def.rule({ when: (w) => ${condition}, intent: (i) => i.feedback.style.use(tw('bg-primary')) });`;
+
+describe('lowered hook coverage', () => {
+  it('follows every binding shape a prototype uses to reach a state handle', () => {
+    const shapes = {
+      destructured: `const { checked } = asCheckboxRoot().stateHandles;\n${rule('w.state(checked).eq(true)')}`,
+      viaBag: `const s = asSelectTrigger().stateHandles;\nconst { placeholder } = s;\n${rule('w.state(placeholder).eq(true)')}`,
+      viaHookResult: `const h = asTextareaRoot();\nconst s = h.stateHandles;\n${rule('w.state(s.focusVisible).eq(true)')}`,
+      chained: `const checked = asCheckboxRoot().stateHandles.checked;\n${rule('w.state(checked).eq(true)')}`,
+    };
+
+    expect(scanRuleStateReads(shapes.destructured).usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+    ]);
+    expect(scanRuleStateReads(shapes.viaBag).usages).toEqual([
+      { hook: 'asSelectTrigger', state: 'placeholder' },
+    ]);
+    expect(scanRuleStateReads(shapes.viaHookResult).usages).toEqual([
+      { hook: 'asTextareaRoot', state: 'focusVisible' },
+    ]);
+    expect(scanRuleStateReads(shapes.chained).usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+    ]);
+  });
+
+  it('reports a lowerable read it cannot trace instead of dropping it', () => {
+    // A shape the scanner does not model. Before this was first-class, the leaf
+    // vanished from the results and the gate stayed green while both the
+    // extractor and the scan were blind to the same rule.
+    const source = `const handles = pickHandles();\n${rule('w.state(handles.checked).eq(true)')}`;
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved).toEqual([{ expression: 'handles.checked', reason: 'subject' }]);
+  });
+
+  it('reads a rule whose when key is quoted', () => {
+    // The extractor resolves this key through `getPropertyName`, so a quoted
+    // rule still lowers. A scanner that skipped it would leave the rule out of
+    // both results and keep the gate green on a missing hook entry.
+    const quoted = `const { checked } = asCheckboxRoot().stateHandles;\ndef.rule({ 'when': (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });`;
+
+    expect(scanRuleStateReads(quoted).usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+    ]);
+    expect(scanRuleStateReads(quoted).unresolved).toEqual([]);
+  });
+
+  it('lowers a state reached through a non-null assertion end to end', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          "import { asCheckboxRoot } from '@proto.ui/prototypes-base/checkbox';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          // `stateHandles` is optional on the hook result, so this is how an
+          // author reaches it without a guard.
+          '    const state = asCheckboxRoot().stateHandles!;',
+          '    def.rule({',
+          '      when: (w) => w.state(state.checked).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      expect(await collectProtoStyleTokens(dir)).toContain('data-[checked]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('lowers a non-null asserted state argument end to end', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          "import { asCheckboxRoot } from '@proto.ui/prototypes-base/checkbox';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          '    const { checked } = asCheckboxRoot().stateHandles;',
+          '    def.rule({',
+          // The scanner unwraps this; the resolver had to learn to as well.
+          '      when: (w) => w.state(checked!).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      expect(await collectProtoStyleTokens(dir)).toContain('data-[checked]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('reports a comparison the extractor does not lower', () => {
+    // `resolveStateEqVariant` lowers the two boolean keywords and a string
+    // literal. A number or a bound identifier produces no variant, so counting
+    // these as covered would hide exactly the rules that emit nothing.
+    const numeric = `const { step } = asSelectItem().stateHandles;\n${rule('w.state(step).eq(1)')}`;
+    const identifier = `const { checked } = asCheckboxRoot().stateHandles;\n${rule('w.state(checked).eq(ENABLED)')}`;
+    const enumString = `const { orientation } = asSeparatorRoot().stateHandles;\n${rule("w.state(orientation).eq('vertical')")}`;
+
+    expect(scanRuleStateReads(numeric).usages).toEqual([]);
+    expect(scanRuleStateReads(numeric).unresolved).toEqual([
+      { expression: 'w.state(step).eq(1)', reason: 'comparison' },
+    ]);
+    expect(scanRuleStateReads(identifier).usages).toEqual([]);
+    expect(scanRuleStateReads(identifier).unresolved).toEqual([
+      { expression: 'w.state(checked).eq(ENABLED)', reason: 'comparison' },
+    ]);
+    // The string form the extractor does lower stays covered.
+    expect(scanRuleStateReads(enumString).usages).toEqual([
+      { hook: 'asSeparatorRoot', state: 'orientation' },
+    ]);
+    expect(scanRuleStateReads(enumString).unresolved).toEqual([]);
+  });
+
+  it('keeps each scope its own hook identity when a name is shadowed', () => {
+    // The outer rule must stay asCheckboxRoot even though an inner block binds
+    // the same identifier to a different hook.
+    const nested = [
+      'const state = asCheckboxRoot().stateHandles;',
+      '{',
+      '  const state = asSelectTrigger().stateHandles;',
+      `  ${rule('w.state(state.placeholder).eq(true)')}`,
+      '}',
+      rule('w.state(state.checked).eq(true)'),
+    ].join('\n');
+
+    expect(scanRuleStateReads(nested).usages).toEqual([
+      { hook: 'asSelectTrigger', state: 'placeholder' },
+      { hook: 'asCheckboxRoot', state: 'checked' },
+    ]);
+
+    // Sibling scopes must not leak into one another either.
+    const siblings = [
+      'function a() {',
+      '  const state = asCheckboxRoot().stateHandles;',
+      `  ${rule('w.state(state.checked).eq(true)')}`,
+      '}',
+      'function b() {',
+      '  const state = asToggle().stateHandles;',
+      `  ${rule('w.state(state.active).eq(true)')}`,
+      '}',
+    ].join('\n');
+
+    expect(scanRuleStateReads(siblings).usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+      { hook: 'asToggle', state: 'active' },
+    ]);
+  });
+
+  it('treats a prototype-owned state as neither a hook pair nor a blind spot', () => {
+    // Base prototypes declare their own states and key rules on them. Those need
+    // no resolver entry, so they must not be reported as a hook pair, and they
+    // must not trip the fail-closed check either.
+    const source = `const hidden = def.state.bool('hidden', true);\n${rule('w.state(hidden).eq(true)')}`;
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved).toEqual([]);
+  });
+
+  it('reports a rule whose intent hands over a pre-bound token handle', () => {
+    // `collectTwTokens` reads a `tw(...)` call. A handle bound elsewhere leaves
+    // the closure nothing to prefix, so the rendered variant has no CSS even
+    // though the condition itself lowers.
+    const source = [
+      "const muted = tw('text-muted-foreground');",
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      'def.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(muted) });',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('reports a rule handed a binding instead of an object literal', () => {
+    // The runtime lowers this; the extractor reads object literals only. Before
+    // it was reported, the invocation was skipped and left no trace either way.
+    const source = [
+      "const spec = { when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) };",
+      'def.rule(spec);',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['spec']);
+  });
+
+  it('reports rule shapes neither analyzer reads', () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const body = '(w) => w.state(checked).eq(true)';
+    const use = "(i) => i.feedback.style.use(tw('bg-primary'))";
+
+    // Valid specs the runtime calls normally. Both the extractor and this
+    // scanner read plain property assignments, so silence would be fail-open.
+    const shorthand = `${handles}\nconst when = ${body};\nconst intent = ${use};\ndef.rule({ when, intent });`;
+    const method = `${handles}\ndef.rule({ when: ${body}, intent(i) { return i.feedback.style.use(tw('bg-primary')); } });`;
+
+    for (const source of [shorthand, method]) {
+      expect(scanRuleStateReads(source).usages).toEqual([]);
+      expect(scanRuleStateReads(source).unresolved.map((miss) => miss.reason)).toEqual(['spec']);
+    }
+
+    // An aliased builder member: the runtime records the dependency, the
+    // extractor's selector analysis reads a property access and emits nothing.
+    const aliased = `${handles}\ndef.rule({ when: ({ state }) => state(checked).eq(true), intent: ${use} });`;
+    expect(scanRuleStateReads(aliased).usages).toEqual([]);
+    expect(scanRuleStateReads(aliased).unresolved.map((miss) => miss.reason)).toEqual([
+      'condition',
+    ]);
+
+    // A `tw(...)` the extractor cannot resolve yields no token for the variant
+    // to prefix, so the rendered selector would have no CSS.
+    const opaque = `${handles}\ndef.rule({ when: ${body}, intent: (i) => i.feedback.style.use(tw(getRuleTokens())) });`;
+    expect(scanRuleStateReads(opaque).usages).toEqual([]);
+    expect(scanRuleStateReads(opaque).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('requires every intent token handle to be one the extractor can resolve', async () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const when = '(w) => w.state(checked).eq(true)';
+    const usage = { hook: 'asCheckboxRoot', state: 'checked' };
+
+    // Resolvable: a local constant.
+    const local = `const TOKENS = 'bg-primary';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
+    expect(scanRuleStateReads(local).usages).toEqual([usage]);
+    expect(scanRuleStateReads(local).unresolved).toEqual([]);
+
+    // A relative import is judged by the module's own initializer, the way the
+    // extractor loads it — not by the fact that the specifier was relative.
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      const widget = path.join(dir, 'widget.proto.ts');
+      const body = (name: string) =>
+        `import { ${name} } from './style';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(${name})) });`;
+      await writeFile(
+        path.join(dir, 'style.ts'),
+        [
+          "export const LITERAL_TOKENS = 'bg-primary';",
+          'export const COMPUTED_TOKENS = getTokens();',
+        ].join('\n')
+      );
+
+      const literal = scanRuleStateReads(body('LITERAL_TOKENS'), widget);
+      expect(literal.usages).toEqual([usage]);
+      expect(literal.unresolved).toEqual([]);
+
+      // The extractor loads this module and resolves the call to nothing, so
+      // accepting it because the import was relative would be fail-open.
+      const computed = scanRuleStateReads(body('COMPUTED_TOKENS'), widget);
+      expect(computed.usages).toEqual([]);
+      expect(computed.unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+
+    // `applyImportBindings` skips non-relative specifiers entirely.
+    const packaged = `import { TOKENS } from '@proto.ui/tokens';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
+    expect(scanRuleStateReads(packaged).usages).toEqual([]);
+    expect(scanRuleStateReads(packaged).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+
+    // `tw` is variadic and the extractor reads every argument, so one
+    // resolvable argument cannot vouch for the rest of the same call.
+    const variadic = `${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw('bg-ok', getRuleTokens())) });`;
+    expect(scanRuleStateReads(variadic).usages).toEqual([]);
+    expect(scanRuleStateReads(variadic).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+
+    // A mixed intent: the extractable handle must not vouch for the opaque one,
+    // because the runtime prefixes both and only one gets CSS.
+    const mixed = `${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw('bg-ok'), tw(getRuleTokens())) });`;
+    expect(scanRuleStateReads(mixed).usages).toEqual([]);
+    expect(scanRuleStateReads(mixed).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('ignores an unrelated call in a block-bodied condition', () => {
+    // The runtime dependency set holds the builder operations invoked, so an
+    // unrelated call does not make the rule dynamic — and must not let the
+    // state read escape the gate unchecked.
+    const source = [
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      'def.rule({',
+      '  when: (w) => { metrics.record(); return w.state(checked).eq(true); },',
+      "  intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+      '});',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.usages).toEqual([{ hook: 'asCheckboxRoot', state: 'checked' }]);
+  });
+
+  it('reports a handle bound where the extractor never registers it', () => {
+    // The extractor registers declarations while iterating the variable
+    // statements of a scope, so a loop initializer never reaches it.
+    const source = [
+      'for (const state = asCheckboxRoot().stateHandles; once; )',
+      "  def.rule({ when: (w) => w.state(state.checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
+  });
+
+  it('reports a condition only one branch of which reaches the runtime', () => {
+    // The runtime lowers the selected branch; a source walk sees both and the
+    // extractor combines them into a selector nothing matches.
+    const source = [
+      'const { checked, indeterminate } = asCheckboxRoot().stateHandles;',
+      "def.rule({ when: (w) => (choose ? w.state(checked).eq(true) : w.state(indeterminate).eq(true)), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['condition']);
+  });
+
+  it('keeps a name declared in two disjoint scopes resolvable in each', () => {
+    // A file-wide map called this ambiguous and blocked both rules. The
+    // extractor gives each scope its own binding.
+    const source = [
+      'function a() {',
+      "  const TOKENS = 'bg-a';",
+      '  const { checked } = asCheckboxRoot().stateHandles;',
+      '  def.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw(TOKENS)) });',
+      '}',
+      'function b() {',
+      "  const TOKENS = 'bg-b';",
+      '  const { indeterminate } = asCheckboxRoot().stateHandles;',
+      '  def.rule({ when: (w) => w.state(indeterminate).eq(true), intent: (i) => i.feedback.style.use(tw(TOKENS)) });',
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+      { hook: 'asCheckboxRoot', state: 'indeterminate' },
+    ]);
+  });
+
+  it('follows a token through a chain of relative modules and stops at a bound separator', async () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const when = '(w) => w.state(checked).eq(true)';
+    const usage = { hook: 'asCheckboxRoot', state: 'checked' };
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+
+    try {
+      const widget = path.join(dir, 'widget.proto.ts');
+      // `loadModuleBindings` applies a module's own relative imports before
+      // resolving its exports, so this chain is extractable in production.
+      await writeFile(path.join(dir, 'base.ts'), "export const BASE = 'bg-primary';");
+      await writeFile(
+        path.join(dir, 'style.ts'),
+        ["import { BASE } from './base';", 'export const TOKENS = BASE;'].join('\n')
+      );
+
+      const chained = `import { TOKENS } from './style';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
+      const scan = scanRuleStateReads(chained, widget);
+      expect(scan.unresolved).toEqual([]);
+      expect(scan.usages).toEqual([usage]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+
+    // `resolveJoinCall` reads a literal separator and otherwise falls back to
+    // `,`, while the runtime joins on the real value — so the two disagree.
+    const literalSeparator = `${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(['bg-a', 'text-b'].join(' '))) });`;
+    expect(scanRuleStateReads(literalSeparator).usages).toEqual([usage]);
+
+    const boundSeparator = `const SEP = ' ';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(['bg-a', 'text-b'].join(SEP))) });`;
+    expect(scanRuleStateReads(boundSeparator).usages).toEqual([]);
+    expect(scanRuleStateReads(boundSeparator).unresolved.map((miss) => miss.reason)).toEqual([
+      'intent',
+    ]);
+  });
+
+  it('reports a rule reached through element access', () => {
+    // The production walk matches a property access, so this reaches the same
+    // runtime API and emits no variant.
+    const source = [
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      "def['rule']({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['spec']);
+  });
+
+  it('lets a parameter shadow an outer state handle', () => {
+    // Falling through to the outer binding would approve `data-[checked]` for a
+    // rule the runtime compiles against something else entirely.
+    const source = [
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      'const { open } = asSelectContent().stateHandles;',
+      'function add(checked = open) {',
+      "  def.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
+  });
+
+  it('reads a token map only the way the extractor can', () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const when = '(w) => w.state(checked).eq(true)';
+    const map = "const TOKENS = { active: 'bg-primary' };";
+    const usage = { hook: 'asCheckboxRoot', state: 'checked' };
+
+    // `resolveExpression` reads a token object through element access; dot
+    // access resolves through `semanticMap`, which holds state handles.
+    const element = `${map}\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS['active'])) });`;
+    expect(scanRuleStateReads(element).usages).toEqual([usage]);
+
+    const dotted = `${map}\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS.active)) });`;
+    expect(scanRuleStateReads(dotted).usages).toEqual([]);
+    expect(scanRuleStateReads(dotted).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('does not let an unrelated tw call vouch for a pre-bound handle', () => {
+    // The variant prefixes what `feedback.style.use` receives. A `tw(...)`
+    // elsewhere in the intent has nothing to do with it.
+    const source = [
+      "const muted = tw('text-muted-foreground');",
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      'def.rule({',
+      '  when: (w) => w.state(checked).eq(true),',
+      "  intent: (i) => { i.feedback.style.use(muted); tw('bg-dummy'); },",
+      '});',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('reports a condition whose operator picks one operand', () => {
+    // `&&` returns the second expression, so the runtime lowers `data-[b]` while
+    // a source walk sees both and the extractor combines them.
+    const handles = 'const { checked, indeterminate } = asCheckboxRoot().stateHandles;';
+    const use = "(i) => i.feedback.style.use(tw('bg-primary'))";
+    for (const operator of ['&&', '||', '??']) {
+      const source = `${handles}\ndef.rule({ when: (w) => w.state(checked).eq(true) ${operator} w.state(indeterminate).eq(true), intent: ${use} });`;
+      const scan = scanRuleStateReads(source);
+      expect(scan.usages, operator).toEqual([]);
+      expect(
+        scan.unresolved.map((miss) => miss.reason),
+        operator
+      ).toEqual(['condition']);
+    }
+  });
+
+  it('reports a condition a helper call contributes to', () => {
+    // The runtime executes `other(w)` and lowers whatever it returns; a source
+    // walk sees only what is written here, and so does the extractor.
+    const handles = 'const { checked, indeterminate } = asCheckboxRoot().stateHandles;';
+    const use = "(i) => i.feedback.style.use(tw('bg-primary'))";
+    const helper = `const other = (w) => w.state(indeterminate).eq(true);`;
+
+    const nested = `${helper}\n${handles}\ndef.rule({ when: (w) => w.all(w.state(checked).eq(true), other(w)), intent: ${use} });`;
+    expect(scanRuleStateReads(nested).usages).toEqual([]);
+    expect(scanRuleStateReads(nested).unresolved.map((miss) => miss.reason)).toEqual(['condition']);
+
+    const whole = `${helper}\n${handles}\ndef.rule({ when: (w) => other(w), intent: ${use} });`;
+    expect(scanRuleStateReads(whole).usages).toEqual([]);
+    expect(scanRuleStateReads(whole).unresolved.map((miss) => miss.reason)).toEqual(['condition']);
+  });
+
+  it('requires each template substitution to carry one value', () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const when = '(w) => w.state(checked).eq(true)';
+    const use = (arg: string) => `(i) => i.feedback.style.use(tw(${arg}))`;
+
+    // `resolveExpression` needs a single value per substitution.
+    const single = `const shade = 'primary';\n${handles}\ndef.rule({ when: ${when}, intent: ${use('`bg-${shade}`')} });`;
+    expect(scanRuleStateReads(single).usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+    ]);
+
+    // A conditional resolves to several strings, so the extractor drops the
+    // template while the runtime receives one concrete token.
+    const branched = `const shade = flag ? 'primary' : 'secondary';\n${handles}\ndef.rule({ when: ${when}, intent: ${use('`bg-${shade}`')} });`;
+    expect(scanRuleStateReads(branched).usages).toEqual([]);
+    expect(scanRuleStateReads(branched).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('skips rules the runtime keeps on the runtime plan', () => {
+    const withProp = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.prop('side').eq('top'))")}`;
+    // `isStateMetaDeps` refuses every dependency kind but state and meta, so a
+    // context dependency keeps the rule on the runtime plan exactly like a prop.
+    const withContext = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.ctx(SIDE).eq('top'))")}`;
+    // `extractConditions` lowers `colorScheme === 'dark'` and no other meta
+    // pair, so this one stays on the runtime plan and needs no mapping.
+    const otherMeta = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.meta('colorScheme').eq('light'))")}`;
+    // The runtime abandons lowering at the first op that is not a style use.
+    const mixedIntent = `const s = asSelectContent().stateHandles;\nconst local = def.state.bool('local', false);\ndef.rule({ when: (w) => w.state(s.open).eq(true), intent: (i) => { i.feedback.style.use(tw('bg-primary')); i.state(local).be(true); } });`;
+    const allNegative = `const s = asSelectContent().stateHandles;\n${rule('w.state(s.open).eq(false)')}`;
+    const anyCondition = `const s = asSelectItem().stateHandles;\n${rule('w.any(w.state(s.active).eq(true), w.state(s.hovered).eq(true))')}`;
+
+    for (const source of [
+      withProp,
+      withContext,
+      otherMeta,
+      mixedIntent,
+      allNegative,
+      anyCondition,
+    ]) {
+      const scan = scanRuleStateReads(source);
+      expect(scan.usages).toEqual([]);
+      expect(scan.unresolved).toEqual([]);
+    }
+  });
+
+  it('scans every source extension the extractor accepts', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      // Not `.proto.ts`, and not `.ts` at all. The old glob saw neither.
+      await writeFile(
+        path.join(dir, 'widget.proto.mts'),
+        "const { checked } = asCheckboxRoot().stateHandles;\ndef.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });\n"
+      );
+      await writeFile(path.join(dir, 'notes.md'), 'not a source file');
+
+      const files = await collectSourceFiles(dir);
+      expect(files.map((file: string) => path.basename(file))).toEqual(['widget.proto.mts']);
+      expect(scanRuleStateReads(await readFile(files[0], 'utf8'), files[0]).usages).toEqual([
+        { hook: 'asCheckboxRoot', state: 'checked' },
+      ]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('lowers a state bound as a terminal handle leaf end to end', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          "import { asCheckboxRoot } from '@proto.ui/prototypes-base/checkbox';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          '    const checked = asCheckboxRoot().stateHandles.checked;',
+          '    def.rule({',
+          '      when: (w) => w.state(checked).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      // The gate calls this shape covered; the extractor has to agree.
+      expect(await collectProtoStyleTokens(dir)).toContain('data-[checked]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('resolves every hook state a shipped rule condition reads', async () => {
+    const found: Array<{ file: string; hook: string; state: string }> = [];
+    const blind: string[] = [];
+
+    let scanned = 0;
+    for (const absolute of await prototypeSourceFiles()) {
+      const file = path.relative(REPO_ROOT, absolute);
+      const text = await readFile(absolute, 'utf8');
+      if (!RULE_CALL.test(text)) continue;
+      scanned += 1;
+      const scan = scanRuleStateReads(text, file);
+      for (const usage of scan.usages) found.push({ file, ...usage });
+      for (const miss of scan.unresolved) blind.push(`${file}: ${miss.reason} ${miss.expression}`);
+    }
+
+    expect(scanned, 'files carrying a rule call').toBeGreaterThan(40);
+
+    expect(found.length).toBeGreaterThan(30);
+    // The two-step shape must be reached in the shipped tree, not just fixtures.
+    expect(found).toContainEqual({
+      file: 'packages/prototypes/brutalist/src/textarea/root.proto.ts',
+      hook: 'asTextareaRoot',
+      state: 'focusVisible',
+    });
+
+    // Fail closed: a shape the scanner cannot trace is a gate failure.
+    expect(blind, 'lowerable rule states the scanner could not trace').toEqual([]);
+
+    const missing = found.filter(({ hook, state }) => {
+      const states = loweredHookStates(hook);
+      return !states || !states.has(state);
+    });
+
+    expect(
+      missing.map(({ file, hook, state }) => `${file}: ${hook}().${state}`),
+      'rule conditions whose hook state the extractor cannot lower'
+    ).toEqual([]);
+
+    // A string comparison only lowers against a `data-[x]` variant. Every table
+    // entry is one today; if that stops being true, the scanner's string form
+    // would start counting rules the extractor drops.
+    const unshaped = found.filter(({ hook, state }) => {
+      const variant = loweredHookStates(hook)?.get(state) as string | undefined;
+      return !variant || !/^data-\[[a-zA-Z0-9-]+\]$/.test(variant);
+    });
+
+    expect(
+      unshaped.map(({ hook, state }) => `${hook}().${state}`),
+      'hook states whose variant a string comparison could not lower'
+    ).toEqual([]);
+  }, 60_000);
+});
