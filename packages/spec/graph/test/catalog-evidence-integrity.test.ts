@@ -1,5 +1,6 @@
 import { loadSpecWorkspaceFromDirectory } from '@proto.ui/spec-engine/node';
 import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { existsSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 
@@ -31,6 +32,17 @@ function isRepositoryPath(value: string | undefined): value is string {
  * would otherwise be validated against whatever sits beside the checkout, so
  * the result would depend on the machine rather than on the catalog.
  */
+/**
+ * Everything the commit carries. A generated or ignored file can exist in one
+ * checkout and not in another, so resolving on disk is not enough to call it
+ * repository evidence.
+ */
+const TRACKED_FILES: ReadonlySet<string> = new Set(
+  execFileSync('git', ['ls-files', '-z'], { cwd: REPO_ROOT, encoding: 'utf8', maxBuffer: 1 << 28 })
+    .split('\0')
+    .filter(Boolean)
+);
+
 function contained(candidate: string): boolean {
   const relative = path.relative(REPO_ROOT, candidate);
   return !relative.startsWith('..') && !path.isAbsolute(relative);
@@ -51,7 +63,11 @@ function resolves(value: string, requireFile = false): boolean {
   if (!contained(candidate) || !existsSync(candidate)) return false;
   const real = realpathSync(candidate);
   if (!contained(real)) return false;
-  return requireFile ? statSync(real).isFile() : true;
+  if (requireFile && !statSync(real).isFile()) return false;
+  // A directory is never tracked by name, so only file evidence is checked
+  // against the commit.
+  if (!statSync(real).isFile()) return true;
+  return TRACKED_FILES.has(path.relative(REPO_ROOT, real));
 }
 
 /**
@@ -117,6 +133,9 @@ describe('catalog evidence integrity', () => {
           { path: '../package.json' },
           // Exists in this checkout and nowhere else.
           { path: path.join(REPO_ROOT, 'package.json') },
+          // Generated and Git-ignored: present for its author, absent from a
+          // fresh checkout.
+          { path: 'internal/agent/PROJECT-UNDERSTANDING.zh-CN.md' },
           // A portable remote citation is not this check's to resolve.
           { path: 'https://www.w3.org/TR/wai-aria-1.2/' },
           // A machine-local URL is not auditable from another checkout.
@@ -192,6 +211,7 @@ describe('catalog evidence integrity', () => {
       'C-FIXTURE-0001: spec/nothing-here.md',
       'C-FIXTURE-0001: ../package.json',
       `C-FIXTURE-0001: ${path.join(REPO_ROOT, 'package.json')}`,
+      'C-FIXTURE-0001: internal/agent/PROJECT-UNDERSTANDING.zh-CN.md',
       'C-FIXTURE-0001: file:///home/alice/evidence.md',
     ]);
     expect(gaps.missingImplementations).toEqual([
