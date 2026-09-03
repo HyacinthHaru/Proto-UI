@@ -1781,4 +1781,64 @@ describe('collectProtoStyleTokens', () => {
 
     expect(await collectProtoStyleTokens(dir)).toContain('data-[internal-flag]:bg-accent');
   });
+  it('reads a destructured handle the rule uses by its alias', async () => {
+    // The prepass already traced the pattern for the exposure; the rule reads
+    // the alias, so the alias itself has to carry the state semantic.
+    for (const [label, container] of [
+      ['object literal', 'const { ready: publicFlag } = { ready: flag };'],
+      ['array literal', 'const [publicFlag] = [flag];'],
+      [
+        'container variable',
+        'const controls = { ready: flag };\n    const { ready: publicFlag } = controls;',
+      ],
+    ] as const) {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          "    const flag = def.state.bool('internalFlag', false);",
+          `    ${container}`,
+          "    def.expose.state('visible', publicFlag);",
+          '    def.rule({',
+          '      when: (w) => w.state(publicFlag).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      expect(await collectProtoStyleTokens(dir), label).toContain('data-[internal-flag]:bg-accent');
+    }
+  });
+
+  it('still reads a joined token array as tokens', async () => {
+    // The handle-array reading runs first, so an array holding no handle has to
+    // fall through to the element list `join` depends on.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    def.feedback.style.use(tw(['bg-accent', 'text-sm'].join(' ')));",
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('bg-accent');
+    expect(tokens).toContain('text-sm');
+  });
 });

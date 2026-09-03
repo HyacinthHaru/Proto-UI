@@ -617,6 +617,31 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('reads a destructured handle the rule uses by its alias', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, container] of [
+      ['object literal', 'const { ready: publicFlag } = { ready: flag };'],
+      ['array literal', 'const [publicFlag] = [flag];'],
+      [
+        'container variable',
+        'const controls = { ready: flag };\nconst { ready: publicFlag } = controls;',
+      ],
+    ] as const) {
+      const source = [
+        "const flag = def.state.bool('internalFlag', false);",
+        container,
+        "def.expose.state('visible', publicFlag);",
+        `def.rule({ when: (w) => w.state(publicFlag).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals, label).toEqual([
+        { state: 'publicFlag', exposedAs: 'visible', attribute: 'internal-flag' },
+      ]);
+    }
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.

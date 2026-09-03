@@ -764,6 +764,31 @@ export function scanRuleStateReads(
       return;
     }
 
+    // `const { ready: publicFlag } = { ready: flag }` and `const [publicFlag] =
+    // [flag]` name the same handle a plain alias does.
+    if (ts.isObjectBindingPattern(name) || ts.isArrayBindingPattern(name)) {
+      const bound: Array<{ target: ts.Identifier; key: string }> = [];
+      if (ts.isObjectBindingPattern(name)) {
+        for (const element of name.elements) {
+          if (!ts.isIdentifier(element.name) || element.dotDotDotToken) continue;
+          const property = element.propertyName ?? element.name;
+          if (!ts.isIdentifier(property) && !ts.isStringLiteralLike(property)) continue;
+          bound.push({ target: element.name, key: property.text });
+        }
+      } else {
+        name.elements.forEach((element, index) => {
+          if (ts.isOmittedExpression(element)) return;
+          if (!ts.isIdentifier(element.name) || element.dotDotDotToken) return;
+          bound.push({ target: element.name, key: String(index) });
+        });
+      }
+      for (const { target, key } of bound) {
+        const held = containerMember(initializer, key, lookupScope);
+        if (held) declareValue(target, held, scope, lookupScope);
+      }
+      return;
+    }
+
     // `const checked = asHook().stateHandles.checked` and `= bag.checked`
     const value = unwrap(initializer);
     if (ts.isPropertyAccessExpression(value) && ts.isIdentifier(name)) {
@@ -898,31 +923,52 @@ export function scanRuleStateReads(
     return null;
   };
 
-  /** The expression a plain object member holds, if the object is statically known. */
-  const memberOfHandleObject = (
-    node: ts.PropertyAccessExpression,
-    scope: Scope
+  /**
+   * The expression a statically known container holds under `key`. An array
+   * index is its position, which is what a positional pattern binds. Following
+   * a name is bounded so a self-referential constant cannot loop.
+   */
+  const containerMember = (
+    node: ts.Node,
+    key: string,
+    scope: Scope,
+    seen = new Set<string>()
   ): ts.Expression | null => {
-    const owner = unwrap(node.expression);
-    if (!ts.isIdentifier(owner)) return null;
-    const binding = lookup(scope, owner.text);
-    if (binding?.kind !== 'token') return null;
-    const literal = unwrap(binding.initializer);
-    if (!ts.isObjectLiteralExpression(literal)) return null;
-    for (const property of literal.properties) {
-      if (ts.isShorthandPropertyAssignment(property) && property.name.text === node.name.text) {
-        return property.name;
+    const value = unwrap(node);
+    if (ts.isObjectLiteralExpression(value)) {
+      for (const property of value.properties) {
+        if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) {
+          return property.name;
+        }
+        if (
+          ts.isPropertyAssignment(property) &&
+          (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
+          property.name.text === key
+        ) {
+          return property.initializer;
+        }
       }
-      if (
-        ts.isPropertyAssignment(property) &&
-        (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
-        property.name.text === node.name.text
-      ) {
-        return property.initializer;
+      return null;
+    }
+    if (ts.isArrayLiteralExpression(value)) {
+      const index = Number(key);
+      if (!Number.isInteger(index) || index < 0) return null;
+      const element = value.elements[index];
+      return element && !ts.isOmittedExpression(element) ? element : null;
+    }
+    if (ts.isIdentifier(value) && !seen.has(value.text)) {
+      const binding = lookup(scope, value.text);
+      if (binding?.kind === 'token') {
+        return containerMember(binding.initializer, key, scope, new Set([...seen, value.text]));
       }
     }
     return null;
   };
+
+  const memberOfHandleObject = (
+    node: ts.PropertyAccessExpression,
+    scope: Scope
+  ): ts.Expression | null => containerMember(node.expression, node.name.text, scope);
 
   /**
    * The extractor's `resolveStateEqVariant` lowers exactly three right-hand

@@ -262,6 +262,18 @@ function registerDeclaration(decl, scope, exposures) {
     return;
   }
 
+  if (ts.isArrayBindingPattern(decl.name)) {
+    const value = resolveBinding(decl.initializer, scope);
+    if (!value.semanticMap) return;
+
+    decl.name.elements.forEach((element, index) => {
+      if (ts.isOmittedExpression(element) || !ts.isIdentifier(element.name)) return;
+      const semantic = value.semanticMap.get(String(index));
+      if (semantic) scope.bindings.set(element.name.text, asSemanticValue(semantic));
+    });
+    return;
+  }
+
   if (ts.isObjectBindingPattern(decl.name)) {
     const value = resolveBinding(decl.initializer, scope);
     if (!value.semanticMap) return;
@@ -293,6 +305,19 @@ function resolveExpression(node, scope) {
       parts.push(value.single, span.literal.text);
     }
     return asStringValue([parts.join('')]);
+  }
+
+  // `const [publicFlag] = [flag]` — the index is the member name. Checked
+  // before the token-array reading below, which needs every element to be a
+  // string and so gives up on an array holding a handle.
+  if (ts.isArrayLiteralExpression(node)) {
+    const semantics = new Map();
+    node.elements.forEach((element, index) => {
+      if (ts.isOmittedExpression(element)) return;
+      const held = resolveBinding(element, scope);
+      if (held.semantic) semantics.set(String(index), held.semantic);
+    });
+    if (semantics.size > 0) return asSemanticMapValue(semantics);
   }
 
   if (ts.isArrayLiteralExpression(node)) {
