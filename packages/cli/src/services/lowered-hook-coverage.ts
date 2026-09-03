@@ -13,10 +13,12 @@ export type UnresolvedStateRead = {
    * `comparison` — the right-hand side is not a form the extractor lowers.
    * `intent` — the intent carries no `tw(...)` the extractor can read, so the
    *   rule has no token for a variant to prefix.
-   * `spec` — the rule was not given as an object literal, which neither
-   *   analyzer reads.
+   * `spec` — the rule was not given as an object literal, or its `when` and
+   *   `intent` were not plain property assignments, which neither analyzer reads.
+   * `condition` — the condition is shaped in a way the extractor's selector
+   *   analysis does not recognize, such as an aliased builder call.
    */
-  reason: 'subject' | 'comparison' | 'intent' | 'spec';
+  reason: 'subject' | 'comparison' | 'intent' | 'spec' | 'condition';
 };
 
 export type RuleStateScan = {
@@ -221,14 +223,43 @@ export function scanRuleStateReads(
   const propertyName = (name: ts.PropertyName): string | null =>
     ts.isIdentifier(name) || ts.isStringLiteralLike(name) ? name.text : null;
 
-  const hasTwCall = (node: ts.Node): boolean => {
+  /**
+   * Argument shapes `resolveExpression` can turn into tokens. A `tw(...)` whose
+   * argument is an arbitrary call — `tw(getRuleTokens())` — names a real token
+   * set at runtime and yields nothing to the extractor, so the rendered variant
+   * would have no CSS.
+   */
+  const resolvableTokenArgument = (node: ts.Expression): boolean => {
+    const inner = unwrap(node) as ts.Expression;
+    if (ts.isStringLiteralLike(inner) || ts.isNoSubstitutionTemplateLiteral(inner)) return true;
+    if (ts.isTemplateExpression(inner))
+      return inner.templateSpans.every((span) => resolvableTokenArgument(span.expression));
+    if (ts.isArrayLiteralExpression(inner))
+      return inner.elements.every((element) => resolvableTokenArgument(element));
+    if (ts.isIdentifier(inner) || ts.isPropertyAccessExpression(inner)) return true;
+    if (ts.isElementAccessExpression(inner)) return true;
+    if (ts.isConditionalExpression(inner))
+      return resolvableTokenArgument(inner.whenTrue) && resolvableTokenArgument(inner.whenFalse);
+    // `[...].join(' ')` is the one call form the extractor resolves.
+    if (
+      ts.isCallExpression(inner) &&
+      ts.isPropertyAccessExpression(inner.expression) &&
+      inner.expression.name.text === 'join'
+    )
+      return resolvableTokenArgument(inner.expression.expression);
+    return false;
+  };
+
+  const yieldsExtractableTokens = (node: ts.Node): boolean => {
     if (
       ts.isCallExpression(node) &&
       ts.isIdentifier(node.expression) &&
       node.expression.text === 'tw'
-    )
-      return true;
-    return ts.forEachChild(node, hasTwCall) ?? false;
+    ) {
+      const argument = node.arguments[0];
+      return Boolean(argument) && resolvableTokenArgument(argument);
+    }
+    return ts.forEachChild(node, yieldsExtractableTokens) ?? false;
   };
 
   type Leaf = {
@@ -241,6 +272,19 @@ export function scanRuleStateReads(
   };
 
   const analyzeRule = (config: ts.ObjectLiteralExpression, scope: Scope): void => {
+    // `{ when, intent }` and `{ when() {} }` are valid specs the runtime calls
+    // normally, while both `collectRuleVariantTokens` and this scanner read
+    // plain property assignments only. Skipping them would leave no trace.
+    const shorthand = config.properties.find(
+      (property) =>
+        (ts.isShorthandPropertyAssignment(property) || ts.isMethodDeclaration(property)) &&
+        (propertyName(property.name) === 'when' || propertyName(property.name) === 'intent')
+    );
+    if (shorthand) {
+      unresolved.push({ expression: config.getText(source), reason: 'spec' });
+      return;
+    }
+
     const when = config.properties.find(
       (property) => ts.isPropertyAssignment(property) && propertyName(property.name) === 'when'
     );
@@ -250,6 +294,7 @@ export function scanRuleStateReads(
     let hasForeignDep = false;
     let hasAny = false;
     let hasMeta = false;
+    let aliasedBuilder = false;
 
     /**
      * Everything the two lowering paths understand. `isStateMetaDeps` accepts
@@ -269,6 +314,12 @@ export function scanRuleStateReads(
         if (member === 'meta') hasMeta = true;
         if (member === 'eq') {
           const receiver = unwrap(node.expression.expression);
+          // `when: ({ state }) => state(x).eq(true)` calls an aliased builder
+          // member. `analyzeWhenVariants` reads a property access, so it emits
+          // no selector while the runtime records the dependency normally.
+          if (ts.isCallExpression(receiver) && ts.isIdentifier(receiver.expression)) {
+            aliasedBuilder = true;
+          }
           if (
             ts.isCallExpression(receiver) &&
             ts.isPropertyAccessExpression(receiver.expression) &&
@@ -290,6 +341,11 @@ export function scanRuleStateReads(
 
     // An unlowerable comparison counts here too: only an all-negative condition
     // is provably skipped by both sides.
+    if (aliasedBuilder) {
+      unresolved.push({ expression: when.initializer.getText(source), reason: 'condition' });
+      return;
+    }
+
     const lowerable =
       !hasForeignDep &&
       !hasAny &&
@@ -302,7 +358,7 @@ export function scanRuleStateReads(
     const intent = config.properties.find(
       (property) => ts.isPropertyAssignment(property) && propertyName(property.name) === 'intent'
     );
-    if (intent && ts.isPropertyAssignment(intent) && !hasTwCall(intent.initializer)) {
+    if (intent && ts.isPropertyAssignment(intent) && !yieldsExtractableTokens(intent.initializer)) {
       unresolved.push({ expression: intent.getText(source), reason: 'intent' });
       return;
     }

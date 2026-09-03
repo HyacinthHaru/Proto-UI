@@ -35,12 +35,13 @@ async function prototypeSourceFiles(): Promise<string[]> {
 }
 
 /**
- * The scanner only reports a `rule(...)` call, so a file whose text has no such
- * call cannot produce a usage or an unresolved read. Skipping the parse for
- * those keeps the set identical to production while not building a TypeScript
- * AST for every type and index module under `src`.
+ * A `rule` call's callee is named `rule`, so a file whose text lacks that word
+ * cannot contain one however the call is punctuated — `def.rule?.({})` and
+ * `def.rule /* note *\/ ({})` both keep it. Matching the word rather than the
+ * call shape keeps the scanned set identical to production while not building a
+ * TypeScript AST for every type and index module under `src`.
  */
-const RULE_CALL = /\brule\s*\(/;
+const RULE_CALL = /\brule\b/;
 
 /** A real intent: the variant is a prefix on tokens, so a stub yields nothing. */
 const rule = (condition: string) =>
@@ -250,6 +251,36 @@ describe('lowered hook coverage', () => {
 
     expect(scan.usages).toEqual([]);
     expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['spec']);
+  });
+
+  it('reports rule shapes neither analyzer reads', () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const body = '(w) => w.state(checked).eq(true)';
+    const use = "(i) => i.feedback.style.use(tw('bg-primary'))";
+
+    // Valid specs the runtime calls normally. Both the extractor and this
+    // scanner read plain property assignments, so silence would be fail-open.
+    const shorthand = `${handles}\nconst when = ${body};\nconst intent = ${use};\ndef.rule({ when, intent });`;
+    const method = `${handles}\ndef.rule({ when: ${body}, intent(i) { return i.feedback.style.use(tw('bg-primary')); } });`;
+
+    for (const source of [shorthand, method]) {
+      expect(scanRuleStateReads(source).usages).toEqual([]);
+      expect(scanRuleStateReads(source).unresolved.map((miss) => miss.reason)).toEqual(['spec']);
+    }
+
+    // An aliased builder member: the runtime records the dependency, the
+    // extractor's selector analysis reads a property access and emits nothing.
+    const aliased = `${handles}\ndef.rule({ when: ({ state }) => state(checked).eq(true), intent: ${use} });`;
+    expect(scanRuleStateReads(aliased).usages).toEqual([]);
+    expect(scanRuleStateReads(aliased).unresolved.map((miss) => miss.reason)).toEqual([
+      'condition',
+    ]);
+
+    // A `tw(...)` the extractor cannot resolve yields no token for the variant
+    // to prefix, so the rendered selector would have no CSS.
+    const opaque = `${handles}\ndef.rule({ when: ${body}, intent: (i) => i.feedback.style.use(tw(getRuleTokens())) });`;
+    expect(scanRuleStateReads(opaque).usages).toEqual([]);
+    expect(scanRuleStateReads(opaque).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
   });
 
   it('skips rules the runtime keeps on the runtime plan', () => {
