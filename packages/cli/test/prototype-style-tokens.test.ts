@@ -2001,4 +2001,67 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).toContain('data-[first-flag]:bg-accent');
     expect(tokens).toContain('data-[second-flag]:bg-accent');
   });
+  it('follows a member written through an alias of the container', async () => {
+    // `alias` and `controls` are one object at runtime, so a write through
+    // either has to move the member a read through the other sees.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    const controls = { ready: first };',
+        '    const alias = controls;',
+        '    alias.ready = second;',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(controls.ready).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[first-flag]:bg-accent');
+  });
+
+  it('keeps both members when the alias write may be skipped', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    const controls = { ready: first };',
+        '    const alias = controls;',
+        '    if (enabled) alias.ready = second;',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(controls.ready).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-accent');
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+  });
 });

@@ -205,17 +205,18 @@ function walk(node, scope, tokens, exposures) {
     const base = unwrapTransparent(memberOwner(node.left) ?? node.left);
     const member = memberName(node.left);
     if (ts.isIdentifier(base) && member !== null) {
-      const owner = scopeDeclaring(base.text, scope) ?? scope;
-      const container = owner.bindings.get(base.text);
+      // `const alias = controls` names the same object, and both bindings hold
+      // the one resolved value, so the member moves on that value rather than
+      // on a copy rebound to whichever name the write happened to use.
+      const container = resolveExpression(base, scope);
       const written = bindingSemantics(resolveBinding(node.right, scope));
       if (container && written.length > 0) {
         const previous = memberSemantics(container.semanticMap?.get(member));
         const kept = isConditionallyReached(node)
           ? previous.filter((candidate) => !written.includes(candidate))
           : [];
-        const semanticMap = new Map(container.semanticMap ?? []);
-        semanticMap.set(member, [...written, ...kept]);
-        owner.bindings.set(base.text, { ...container, semanticMap });
+        if (!container.semanticMap) container.semanticMap = new Map();
+        container.semanticMap.set(member, [...written, ...kept]);
       }
     }
     return;
@@ -807,6 +808,24 @@ function collectExposures(root) {
     }
   };
 
+  /**
+   * `const alias = controls` names one object, so a member written through
+   * either name lands on the same table. A base that may be two different
+   * objects is left as itself: there is no single table to move.
+   */
+  const containerRoot = (name, chain, at, seen = new Set()) => {
+    if (seen.has(name)) return name;
+    for (const owner of chain) {
+      const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
+      if (candidates.length === 0) continue;
+      const visible = visibleEdges(candidates, at);
+      if (visible.length !== 1) return name;
+      const [edge] = visible;
+      return containerRoot(edge.target, edge.chain ?? chain, edge.at, new Set([...seen, name]));
+    }
+    return name;
+  };
+
   const recordMember = (owner, base, key, target, at, conditional) => {
     const scoped = objectMembers.get(owner) ?? new Map();
     const members = scoped.get(base) ?? new Map();
@@ -835,8 +854,9 @@ function collectExposures(root) {
       return null;
     }
     if (!ts.isIdentifier(value)) return null;
+    const container = containerRoot(value.text, chain, at);
     for (const scope of chain) {
-      const members = objectMembers.get(scope)?.get(value.text);
+      const members = objectMembers.get(scope)?.get(container);
       if (!members) continue;
       const edges = members.get(key);
       if (!edges) return null;
@@ -891,8 +911,9 @@ function collectExposures(root) {
     if (!owner) return [];
     const base = unwrapExpression(owner);
     if (!ts.isIdentifier(base)) return [];
+    const container = containerRoot(base.text, chain, at);
     for (const scope of chain) {
-      const members = objectMembers.get(scope)?.get(base.text);
+      const members = objectMembers.get(scope)?.get(container);
       if (!members) continue;
       for (const [key, edges] of members) {
         if (!memberIs(value, key)) continue;
@@ -974,13 +995,15 @@ function collectExposures(root) {
       const base = unwrapExpression(memberOwner(node.left) ?? node.left);
       const member = memberName(node.left);
       if (ts.isIdentifier(base) && member !== null) {
+        const chain = [...nextChain, root];
+        const container = containerRoot(base.text, chain, node.getStart());
         const owner =
-          [...nextChain, root].find((candidate) => declaredIn.get(candidate)?.has(base.text)) ??
+          chain.find((candidate) => declaredIn.get(candidate)?.has(container)) ??
           nextChain[0] ??
           root;
         const conditional = isConditionallyReached(node);
         for (const target of aliasTargets(node.right)) {
-          recordMember(owner, base.text, member, target, node.getStart(), conditional);
+          recordMember(owner, container, member, target, node.getStart(), conditional);
         }
       }
     }

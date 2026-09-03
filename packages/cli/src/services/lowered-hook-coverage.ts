@@ -340,6 +340,29 @@ export function scanRuleStateReads(
     }
   };
 
+  /**
+   * `const alias = controls` names one object, so a member written through
+   * either name lands on the same table. A base that may be two different
+   * objects is left as itself: there is no single table to move.
+   */
+  const containerRoot = (
+    name: string,
+    chain: ts.Node[],
+    at: number,
+    seen = new Set<string>()
+  ): string => {
+    if (seen.has(name)) return name;
+    for (const owner of chain) {
+      const candidates = aliasEdges.filter((edge) => edge.owner === owner && edge.name === name);
+      if (candidates.length === 0) continue;
+      const visible = visibleEdges(candidates, at);
+      if (visible.length !== 1) return name;
+      const [edge] = visible;
+      return containerRoot(edge.target, edge.chain ?? chain, edge.at, new Set([...seen, name]));
+    }
+    return name;
+  };
+
   const recordMember = (
     owner: ts.Node,
     base: string,
@@ -390,8 +413,9 @@ export function scanRuleStateReads(
       return null;
     }
     if (!ts.isIdentifier(value)) return null;
+    const container = containerRoot(value.text, chain, at);
     for (const scope of chain) {
-      const members = objectMembers.get(scope)?.get(value.text);
+      const members = objectMembers.get(scope)?.get(container);
       if (!members) continue;
       const edges = members.get(key);
       if (!edges) return null;
@@ -454,8 +478,9 @@ export function scanRuleStateReads(
     if (!owner) return [];
     const base = unwrap(owner);
     if (!ts.isIdentifier(base)) return [];
+    const container = containerRoot(base.text, chain, at);
     for (const scope of chain) {
-      const members = objectMembers.get(scope)?.get(base.text);
+      const members = objectMembers.get(scope)?.get(container);
       if (!members) continue;
       for (const [key, edges] of members) {
         if (!memberNamed(value, key)) continue;
@@ -569,13 +594,15 @@ export function scanRuleStateReads(
       const base = unwrap(ownerOf(node.left) ?? node.left);
       const member = memberNameOf(node.left);
       if (ts.isIdentifier(base) && member !== null) {
+        const chain = [...nextChain, source];
+        const container = containerRoot(base.text, chain, node.getStart());
         const memberOwnerScope =
-          [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(base.text)) ??
+          chain.find((candidate) => declaredIn.get(candidate)?.has(container)) ??
           nextChain[0] ??
           source;
         const conditional = isConditionallyReached(node);
         for (const target of aliasTargets(node.right)) {
-          recordMember(memberOwnerScope, base.text, member, target, node.getStart(), conditional);
+          recordMember(memberOwnerScope, container, member, target, node.getStart(), conditional);
         }
       }
     }
@@ -1561,8 +1588,18 @@ export function scanRuleStateReads(
       const base = unwrap(ownerOf(node.left) ?? node.left);
       const member = memberNameOf(node.left);
       if (ts.isIdentifier(base) && member !== null) {
-        const owner = scopeBinding(current, base.text) ?? current;
-        const container = owner.bindings.get(base.text);
+        // An alias of the container is the same object, so the write lands on
+        // the binding that actually holds the literal.
+        let name = base.text;
+        for (let hop = 0; hop < 8; hop += 1) {
+          const held = lookup(current, name);
+          if (held?.kind !== 'token') break;
+          const initializer = unwrap(held.initializer);
+          if (!ts.isIdentifier(initializer)) break;
+          name = initializer.text;
+        }
+        const owner = scopeBinding(current, name) ?? current;
+        const container = owner.bindings.get(name);
         if (container?.kind === 'token') {
           // Before the first write the member still lives in the declaration.
           const previous =
@@ -1571,7 +1608,7 @@ export function scanRuleStateReads(
           const kept = isConditionallyReached(node) ? previous : [];
           const members = new Map(container.members ?? []);
           members.set(member, [node.right, ...kept]);
-          declare(owner, base.text, { ...container, members });
+          declare(owner, name, { ...container, members });
         }
       }
     }

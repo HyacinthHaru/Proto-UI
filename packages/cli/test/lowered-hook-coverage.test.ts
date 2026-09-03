@@ -724,6 +724,45 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('follows a member written through an alias of the container', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'const alias = controls;',
+      'alias.ready = second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+    ]);
+  });
+
+  it('keeps both members when the alias write may be skipped', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'const alias = controls;',
+      'if (enabled) alias.ready = second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals.map((local) => local.attribute).sort()).toEqual([
+      'first-flag',
+      'second-flag',
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
