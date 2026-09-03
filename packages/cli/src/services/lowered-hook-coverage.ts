@@ -153,6 +153,7 @@ export function scanRuleStateReads(
   const exposedKeys = new Map<ts.Node, Map<string, string>>();
   type AliasEdge = { owner: ts.Node; name: string; target: string; at: number };
   const aliasEdges: AliasEdge[] = [];
+  const declaredIn = new Map<ts.Node, Set<string>>();
   const rawExposures: Array<{
     handle: string;
     key: ts.Expression;
@@ -179,15 +180,21 @@ export function scanRuleStateReads(
 
   const collectExposedKeys = (node: ts.Node, chain: ts.Node[]): void => {
     const nextChain = introducesScope(node) ? [node, ...chain] : chain;
-    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
-      const initializer = unwrap(node.initializer);
-      if (ts.isIdentifier(initializer)) {
-        aliasEdges.push({
-          owner: nextChain[0] ?? source,
-          name: node.name.text,
-          target: initializer.text,
-          at: node.getStart(),
-        });
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name)) {
+      const owner = nextChain[0] ?? source;
+      const names = declaredIn.get(owner) ?? new Set<string>();
+      names.add(node.name.text);
+      declaredIn.set(owner, names);
+      if (node.initializer) {
+        const initializer = unwrap(node.initializer);
+        if (ts.isIdentifier(initializer)) {
+          aliasEdges.push({
+            owner,
+            name: node.name.text,
+            target: initializer.text,
+            at: node.getStart(),
+          });
+        }
       }
     }
     // A plain reassignment moves the handle just as a declaration does.
@@ -198,12 +205,15 @@ export function scanRuleStateReads(
     ) {
       const value = unwrap(node.right);
       if (ts.isIdentifier(value)) {
-        aliasEdges.push({
-          owner: nextChain[0] ?? source,
-          name: node.left.text,
-          target: value.text,
-          at: node.getStart(),
-        });
+        // An assignment does not declare, so it belongs to whichever scope owns
+        // the binding; otherwise a reassignment inside a nested block would be
+        // invisible to an exposure written outside it.
+        const left = node.left.text;
+        const owner =
+          [...nextChain, source].find((candidate) => declaredIn.get(candidate)?.has(left)) ??
+          nextChain[0] ??
+          source;
+        aliasEdges.push({ owner, name: left, target: value.text, at: node.getStart() });
       }
     }
     if (ts.isCallExpression(node)) {

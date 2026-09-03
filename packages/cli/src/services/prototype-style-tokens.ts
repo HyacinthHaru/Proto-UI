@@ -343,7 +343,18 @@ function resolveBinding(node, scope) {
  * before it would fall back to the expose key, so this is the name the Web
  * attribute comes from.
  */
-function resolveDeclaredStateName(node, scope) {
+/** Parentheses, `as`, and non-null assertions name the same expression. */
+function unwrapTransparent(node) {
+  return ts.isParenthesizedExpression(node) ||
+    ts.isAsExpression(node) ||
+    ts.isTypeAssertionExpression(node) ||
+    ts.isNonNullExpression(node)
+    ? unwrapTransparent(node.expression)
+    : node;
+}
+
+function resolveDeclaredStateName(initializer, scope) {
+  const node = unwrapTransparent(initializer);
   if (!ts.isCallExpression(node)) return null;
   if (!ts.isPropertyAccessExpression(node.expression)) return null;
   const owner = node.expression.expression;
@@ -392,6 +403,7 @@ function collectExposures(root) {
   // may bind the same name and a later redeclaration cannot rewrite what an
   // earlier expose call captured.
   const aliasEdges = [];
+  const declaredIn = new Map();
   const exposures = [];
 
   const unwrapExpression = (node) =>
@@ -441,15 +453,20 @@ function collectExposures(root) {
     // Every scope the extractor itself creates, so two sibling blocks in one
     // setup may reuse an alias name without either edge overwriting the other.
     const nextChain = createsScope(node) ? [node, ...chain] : chain;
-    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
-      const initializer = unwrapExpression(node.initializer);
-      if (ts.isIdentifier(initializer)) {
-        aliasEdges.push({
-          owner: nextChain[0] ?? root,
-          name: node.name.text,
-          target: initializer.text,
-          at: node.getStart(),
-        });
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name)) {
+      const owner = nextChain[0] ?? root;
+      if (!declaredIn.has(owner)) declaredIn.set(owner, new Set());
+      declaredIn.get(owner).add(node.name.text);
+      if (node.initializer) {
+        const initializer = unwrapExpression(node.initializer);
+        if (ts.isIdentifier(initializer)) {
+          aliasEdges.push({
+            owner,
+            name: node.name.text,
+            target: initializer.text,
+            at: node.getStart(),
+          });
+        }
       }
     }
     // A plain reassignment moves the handle just as a declaration does.
@@ -460,12 +477,16 @@ function collectExposures(root) {
     ) {
       const value = unwrapExpression(node.right);
       if (ts.isIdentifier(value)) {
-        aliasEdges.push({
-          owner: nextChain[0] ?? root,
-          name: node.left.text,
-          target: value.text,
-          at: node.getStart(),
-        });
+        // An assignment does not declare, so it belongs to whichever scope
+        // owns the binding — otherwise a reassignment inside a nested block
+        // would be invisible to an exposure written outside it.
+        const owner =
+          [...nextChain, root].find((candidate) =>
+            declaredIn.get(candidate)?.has(node.left.text)
+          ) ??
+          nextChain[0] ??
+          root;
+        aliasEdges.push({ owner, name: node.left.text, target: value.text, at: node.getStart() });
       }
     }
     if (

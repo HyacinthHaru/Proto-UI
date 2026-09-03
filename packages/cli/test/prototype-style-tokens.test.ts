@@ -734,6 +734,65 @@ describe('collectProtoStyleTokens', () => {
     expect(await collectProtoStyleTokens(dir)).toContain('data-[second-flag]:bg-accent');
   });
 
+  it('reads the declared name through a wrapped initializer', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = (def.state.bool('internalFlag', false)) as never;",
+        "    def.expose.state('visible', flag);",
+        '    def.rule({',
+        '      when: (w) => w.state(flag).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[internal-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[visible]:bg-accent');
+  });
+
+  it('sees an alias reassigned inside a nested block', async () => {
+    // The assignment targets the outer binding, so an exposure written after
+    // the block has to see it.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let publicFlag = first;',
+        '    {',
+        '      publicFlag = second;',
+        '    }',
+        "    def.expose.state('visible', publicFlag);",
+        '    def.rule({',
+        '      when: (w) => w.state(second).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[second-flag]:bg-accent');
+  });
+
   it('serializes a discrete number the way the runtime does', async () => {
     await writeFile(
       path.join(dir, 'widget.proto.ts'),
