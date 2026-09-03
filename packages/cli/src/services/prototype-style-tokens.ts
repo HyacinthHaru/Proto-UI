@@ -121,6 +121,12 @@ function isVarList(list) {
   );
 }
 
+/** Every semantic a binding may stand for, the declared one first. */
+function bindingSemantics(binding) {
+  if (!binding) return [];
+  return [binding.semantic, ...(binding.alternatives ?? [])].filter(Boolean);
+}
+
 /** The scope a name is already bound in, so an assignment does not shadow it. */
 function scopeDeclaring(name, scope) {
   for (let current = scope; current; current = current.parent) {
@@ -184,8 +190,17 @@ function walk(node, scope, tokens, exposures) {
     walk(node.right, scope, tokens, exposures);
     const name = node.left.text;
     const owner = scopeDeclaring(name, scope) ?? scope;
-    const binding = resolveBinding(node.right, scope);
-    owner.bindings.set(name, applyExposure(name, binding, owner, exposures));
+    const previous = owner.bindings.get(name);
+    const binding = applyExposure(name, resolveBinding(node.right, scope), owner, exposures);
+    // A write the source may skip leaves the name on either handle, and the
+    // runtime lowers whichever it holds, so both need a selector.
+    const kept = bindingSemantics(previous).filter((candidate) => candidate !== binding.semantic);
+    owner.bindings.set(
+      name,
+      isConditionallyReached(node) && kept.length > 0
+        ? { ...binding, alternatives: [...new Set([...(binding.alternatives ?? []), ...kept])] }
+        : binding
+    );
     return;
   }
 
@@ -308,6 +323,25 @@ function resolveExpression(node, scope) {
   if (ts.isCallExpression(node)) {
     const stateHandles = resolveKnownAsHookStateHandles(node);
     if (stateHandles) return asSemanticMapValue(stateHandles);
+  }
+
+  // `const controls = { ready: flag }` — a plain container of handles reads the
+  // same way an `asHook` bag does, so `w.state(controls.ready)` has a variant.
+  if (ts.isObjectLiteralExpression(node)) {
+    const semantics = new Map();
+    for (const property of node.properties) {
+      if (ts.isShorthandPropertyAssignment(property)) {
+        const held = resolveBinding(property.name, scope);
+        if (held.semantic) semantics.set(property.name.text, held.semantic);
+        continue;
+      }
+      if (!ts.isPropertyAssignment(property)) continue;
+      const key = getPropertyName(property.name);
+      if (!key) continue;
+      const held = resolveBinding(property.initializer, scope);
+      if (held.semantic) semantics.set(key, held.semantic);
+    }
+    if (semantics.size > 0) return asSemanticMapValue(semantics);
   }
 
   if (ts.isPropertyAccessExpression(node) && node.name.text === 'stateHandles') {
@@ -1230,22 +1264,32 @@ function collectRuleVariantTokens(node, scope, tokens, exposures) {
     return;
   }
 
-  const variants = analyzeWhenVariants(whenProp.initializer, scope);
-  if (variants.length === 0) return;
+  const chains = analyzeWhenVariants(whenProp.initializer, scope);
+  if (chains.length === 0) return;
 
   const intentTokens = collectTwTokens(intentProp.initializer, scope, exposures);
-  for (const token of intentTokens) {
-    tokens.add(`${variants.join(':')}:${token}`);
+  for (const chain of chains) {
+    const prefix = chain.join(':');
+    for (const token of intentTokens) tokens.add(`${prefix}:${token}`);
   }
 }
 
+/**
+ * Every selector chain the rule may lower to. A condition whose handle is not
+ * statically single-valued contributes one alternative per candidate, and the
+ * runtime takes exactly one of them, so each combination needs its own tokens.
+ */
 function analyzeWhenVariants(node, scope) {
-  const out = new Set();
+  const groups = [];
 
   visit(node);
-  const variants = canonicalizeLoweredVariants(Array.from(out));
-  if (variants.length > 0 && variants.every(isNegativeDataVariant)) return [];
-  return variants;
+  let chains = [[]];
+  for (const group of groups) {
+    chains = chains.flatMap((chain) => group.map((variant) => [...chain, variant]));
+  }
+  return chains
+    .map((chain) => canonicalizeLoweredVariants(chain))
+    .filter((chain) => chain.length > 0 && !chain.every(isNegativeDataVariant));
 
   function visit(current) {
     if (ts.isArrowFunction(current) || ts.isFunctionExpression(current)) {
@@ -1278,9 +1322,10 @@ function analyzeWhenVariants(node, scope) {
             const firstArg = subject.arguments[0];
             const expected = current.arguments[0];
             if (firstArg) {
-              const semantic = resolveStateHandleSemantic(firstArg, scope);
-              const variant = resolveStateEqVariant(semantic, expected);
-              if (variant) out.add(variant);
+              const variants = resolveStateHandleSemantics(firstArg, scope)
+                .map((semantic) => resolveStateEqVariant(semantic, expected))
+                .filter(Boolean);
+              if (variants.length > 0) groups.push([...new Set(variants)]);
             }
             return;
           }
@@ -1296,7 +1341,7 @@ function analyzeWhenVariants(node, scope) {
               key.text === 'colorScheme' &&
               value.text === 'dark'
             ) {
-              out.add('dark');
+              groups.push(['dark']);
             }
           }
         }
@@ -1333,6 +1378,16 @@ const NATIVE_VARIANT_ATTRIBUTES = Object.freeze({
   hover: 'data-[hovered]',
   active: 'data-[pressed]',
 });
+
+/** Every semantic a `w.state(x)` argument may stand for. */
+function resolveStateHandleSemantics(node, scope) {
+  if (ts.isIdentifier(node)) {
+    const semantics = bindingSemantics(lookup(node.text, scope));
+    if (semantics.length > 0) return semantics;
+  }
+  const single = resolveStateHandleSemantic(node, scope);
+  return single ? [single] : [];
+}
 
 function resolveStateEqVariant(semantic, expected) {
   if (!semantic) return null;

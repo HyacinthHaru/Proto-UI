@@ -74,12 +74,17 @@ export type RuleStateScan = {
   exposedLocals: ExposedLocalUsage[];
 };
 
+type LocalStateBinding = { kind: 'localState'; declaredAs: string | null; exposedAs?: string };
+
 type Binding =
   | { kind: 'hookResult'; hook: string }
   | { kind: 'handleBag'; hook: string }
   | { kind: 'handle'; hook: string; state: string }
   /** `def.state.bool(...)` — owned by the prototype, not borrowed from a hook. */
-  | { kind: 'localState'; declaredAs: string | null; exposedAs?: string }
+  | (LocalStateBinding & {
+      /** Handles the name may still hold because a write may be skipped. */
+      alternatives?: LocalStateBinding[];
+    })
   /** A value a `tw(...)` argument may name, resolved where it was declared. */
   | { kind: 'token'; initializer: ts.Expression }
   /** A named import; only a relative one is something the extractor follows. */
@@ -697,6 +702,37 @@ export function scanRuleStateReads(
   };
 
   /**
+   * A write the source may skip leaves the name on either handle, and the
+   * runtime lowers whichever it holds, so a conditional reassignment keeps the
+   * binding it replaces as an alternative instead of discarding it.
+   */
+  const declareConditionally = (
+    scope: Scope,
+    name: string,
+    node: ts.Node,
+    lookupScope: Scope,
+    initializer: ts.Expression
+  ): void => {
+    const previous = scope.bindings.get(name);
+    declareValue(node as ts.BindingName, initializer, scope, lookupScope);
+    const next = scope.bindings.get(name);
+    if (!isConditionallyReached(initializer.parent) || !previous || !next) return;
+    if (next.kind !== 'localState' || previous.kind !== 'localState') return;
+    // Alternatives are flat: a candidate carries no candidates of its own.
+    const bare = (binding: LocalStateBinding): LocalStateBinding => ({
+      kind: 'localState',
+      declaredAs: binding.declaredAs,
+      exposedAs: binding.exposedAs,
+    });
+    const kept = [bare(previous), ...(previous.alternatives ?? [])].filter(
+      (candidate) => candidate.declaredAs !== next.declaredAs
+    );
+    if (kept.length > 0) {
+      declare(scope, name, { ...next, alternatives: [...(next.alternatives ?? []), ...kept] });
+    }
+  };
+
+  /**
    * Binds `name` to whatever `initializer` names. A declaration and a plain
    * reassignment reach the same runtime handle, so both come through here; the
    * assignment declares in the scope that already owns the name while still
@@ -816,33 +852,74 @@ export function scanRuleStateReads(
    * `'local'` means traced to a prototype-owned state, which needs no hook
    * entry and must not be reported either way.
    */
-  const readState = (
-    node: ts.Node,
-    scope: Scope
-  ): HookStateUsage | { exposedLocal: ExposedLocalUsage } | 'local' | null => {
+  type StateRead = HookStateUsage | { exposedLocal: ExposedLocalUsage } | 'local';
+
+  const localStateRead = (binding: LocalStateBinding, state: string): StateRead | null => {
+    if (binding.exposedAs === undefined) return 'local';
+    // The runtime attribute comes from the declared name. If that name is not
+    // statically readable the extractor emits nothing, so substituting the
+    // expose key here would certify a selector that never exists.
+    if (binding.declaredAs === null) return null;
+    return {
+      exposedLocal: {
+        state,
+        exposedAs: binding.exposedAs,
+        attribute: exposedDataAttributeName(binding.declaredAs),
+      },
+    };
+  };
+
+  /**
+   * Every state a `w.state(...)` read may reach. `null` means untraceable; a
+   * name whose write may be skipped reaches more than one, and production emits
+   * a selector for each.
+   */
+  const readState = (node: ts.Node, scope: Scope): StateRead[] | null => {
     const argument = unwrap(node);
     if (ts.isIdentifier(argument)) {
       const binding = lookup(scope, argument.text);
-      if (binding?.kind === 'handle') return { hook: binding.hook, state: binding.state };
+      if (binding?.kind === 'handle') return [{ hook: binding.hook, state: binding.state }];
       if (binding?.kind === 'localState') {
-        if (binding.exposedAs === undefined) return 'local';
-        // The runtime attribute comes from the declared name. If that name is
-        // not statically readable the extractor emits nothing, so substituting
-        // the expose key here would certify a selector that never exists.
-        if (binding.declaredAs === null) return null;
-        return {
-          exposedLocal: {
-            state: argument.text,
-            exposedAs: binding.exposedAs,
-            attribute: exposedDataAttributeName(binding.declaredAs),
-          },
-        };
+        const reads = [binding, ...(binding.alternatives ?? [])].map((candidate) =>
+          localStateRead(candidate, argument.text)
+        );
+        return reads.some((read) => read === null) ? null : (reads as StateRead[]);
       }
       return null;
     }
     if (ts.isPropertyAccessExpression(argument)) {
       const owner = bagHook(argument.expression, scope);
-      if (owner) return { hook: owner, state: argument.name.text };
+      if (owner) return [{ hook: owner, state: argument.name.text }];
+      // `const controls = { ready: flag }` — production reads the container the
+      // same way it reads an `asHook` bag, so this is not a blind spot.
+      const held = memberOfHandleObject(argument, scope);
+      if (held) return readState(held, scope);
+    }
+    return null;
+  };
+
+  /** The expression a plain object member holds, if the object is statically known. */
+  const memberOfHandleObject = (
+    node: ts.PropertyAccessExpression,
+    scope: Scope
+  ): ts.Expression | null => {
+    const owner = unwrap(node.expression);
+    if (!ts.isIdentifier(owner)) return null;
+    const binding = lookup(scope, owner.text);
+    if (binding?.kind !== 'token') return null;
+    const literal = unwrap(binding.initializer);
+    if (!ts.isObjectLiteralExpression(literal)) return null;
+    for (const property of literal.properties) {
+      if (ts.isShorthandPropertyAssignment(property) && property.name.text === node.name.text) {
+        return property.name;
+      }
+      if (
+        ts.isPropertyAssignment(property) &&
+        (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
+        property.name.text === node.name.text
+      ) {
+        return property.initializer;
+      }
     }
     return null;
   };
@@ -1130,7 +1207,7 @@ export function scanRuleStateReads(
   };
 
   type Leaf = {
-    usage: HookStateUsage | { exposedLocal: ExposedLocalUsage } | 'local' | null;
+    usages: StateRead[] | null;
     /** The `w.state(...)` argument. */
     subject: string;
     /** The whole `w.state(...).eq(...)` leaf. */
@@ -1256,7 +1333,7 @@ export function scanRuleStateReads(
             receiver.arguments.length === 1
           ) {
             leaves.push({
-              usage: readState(receiver.arguments[0], scope),
+              usages: readState(receiver.arguments[0], scope),
               subject: receiver.arguments[0].getText(source),
               text: node.getText(source),
               comparison: comparisonOf(node.arguments[0]),
@@ -1326,13 +1403,18 @@ export function scanRuleStateReads(
         unresolved.push({ expression: leaf.text, reason: 'comparison' });
         continue;
       }
-      if (leaf.usage === 'local') continue;
-      if (leaf.usage && 'exposedLocal' in leaf.usage) {
-        exposedLocals.push(leaf.usage.exposedLocal);
+      if (!leaf.usages) {
+        unresolved.push({ expression: leaf.subject, reason: 'subject' });
         continue;
       }
-      if (leaf.usage) usages.push(leaf.usage);
-      else unresolved.push({ expression: leaf.subject, reason: 'subject' });
+      for (const read of leaf.usages) {
+        if (read === 'local') continue;
+        if ('exposedLocal' in read) {
+          exposedLocals.push(read.exposedLocal);
+          continue;
+        }
+        usages.push(read);
+      }
     }
   };
 
@@ -1374,7 +1456,7 @@ export function scanRuleStateReads(
     ) {
       const name = node.left.text;
       const owner = scopeBinding(current, name) ?? current;
-      declareValue(node.left, node.right, owner, current);
+      declareConditionally(owner, name, node.left, current, node.right);
     }
 
     if (

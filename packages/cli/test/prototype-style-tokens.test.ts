@@ -1688,4 +1688,97 @@ describe('collectProtoStyleTokens', () => {
 
     expect(await collectProtoStyleTokens(dir)).toContain('data-[1st]:bg-accent');
   });
+  it('gives a rule reading a skippable alias both selectors', async () => {
+    // The exposure already covered both handles; the rule read did not, so an
+    // `enabled === false` build lowered to a variant the closure never carried.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let current = first;',
+        '    if (enabled) current = second;',
+        "    def.expose.state('visible', current);",
+        '    def.rule({',
+        '      when: (w) => w.state(current).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-accent');
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+  });
+
+  it('combines a skippable alias with the other conditions of its rule', async () => {
+    // One selector per combination the runtime may take, not one selector
+    // carrying both alternatives at once.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        "    const other = def.state.bool('otherFlag', false);",
+        '    let current = first;',
+        '    if (enabled) current = second;',
+        "    def.expose.state('visible', current);",
+        "    def.expose.state('other', other);",
+        '    def.rule({',
+        '      when: (w) => w.all(w.state(current).eq(true), w.state(other).eq(true)),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:data-[other-flag]:bg-accent');
+    expect(tokens).toContain('data-[other-flag]:data-[second-flag]:bg-accent');
+  });
+
+  it('reads a state handle held in a plain container', async () => {
+    // The exposure already resolved through the member; the rule read has to
+    // reach the same handle or the optimized rule has no CSS.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const flag = def.state.bool('internalFlag', false);",
+        '    const controls = { ready: flag };',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(controls.ready).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[internal-flag]:bg-accent');
+  });
 });

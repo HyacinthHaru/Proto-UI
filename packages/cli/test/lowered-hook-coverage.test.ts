@@ -580,6 +580,43 @@ describe('lowered hook coverage', () => {
     expect(scan.exposedLocals).toEqual([{ state: 'flag', exposedAs: '1st', attribute: '1st' }]);
   });
 
+  it('reports every state a skippable alias may reach', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let current = first;',
+      'if (enabled) current = second;',
+      "def.expose.state('visible', current);",
+      `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'current', exposedAs: 'visible', attribute: 'second-flag' },
+      { state: 'current', exposedAs: 'visible', attribute: 'first-flag' },
+    ]);
+  });
+
+  it('reads a state handle held in a plain container', () => {
+    // Production resolves the member, so reporting it unresolved would fail the
+    // gate on code the extractor lowers correctly.
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const flag = def.state.bool('internalFlag', false);",
+      'const controls = { ready: flag };',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals).toEqual([
+      { state: 'flag', exposedAs: 'visible', attribute: 'internal-flag' },
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
