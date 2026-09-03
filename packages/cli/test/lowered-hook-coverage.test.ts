@@ -408,6 +408,71 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('follows a token through a chain of relative modules and stops at a bound separator', async () => {
+    const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
+    const when = '(w) => w.state(checked).eq(true)';
+    const usage = { hook: 'asCheckboxRoot', state: 'checked' };
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+
+    try {
+      const widget = path.join(dir, 'widget.proto.ts');
+      // `loadModuleBindings` applies a module's own relative imports before
+      // resolving its exports, so this chain is extractable in production.
+      await writeFile(path.join(dir, 'base.ts'), "export const BASE = 'bg-primary';");
+      await writeFile(
+        path.join(dir, 'style.ts'),
+        ["import { BASE } from './base';", 'export const TOKENS = BASE;'].join('\n')
+      );
+
+      const chained = `import { TOKENS } from './style';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
+      const scan = scanRuleStateReads(chained, widget);
+      expect(scan.unresolved).toEqual([]);
+      expect(scan.usages).toEqual([usage]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+
+    // `resolveJoinCall` reads a literal separator and otherwise falls back to
+    // `,`, while the runtime joins on the real value — so the two disagree.
+    const literalSeparator = `${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(['bg-a', 'text-b'].join(' '))) });`;
+    expect(scanRuleStateReads(literalSeparator).usages).toEqual([usage]);
+
+    const boundSeparator = `const SEP = ' ';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(['bg-a', 'text-b'].join(SEP))) });`;
+    expect(scanRuleStateReads(boundSeparator).usages).toEqual([]);
+    expect(scanRuleStateReads(boundSeparator).unresolved.map((miss) => miss.reason)).toEqual([
+      'intent',
+    ]);
+  });
+
+  it('reports a rule reached through element access', () => {
+    // The production walk matches a property access, so this reaches the same
+    // runtime API and emits no variant.
+    const source = [
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      "def['rule']({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['spec']);
+  });
+
+  it('lets a parameter shadow an outer state handle', () => {
+    // Falling through to the outer binding would approve `data-[checked]` for a
+    // rule the runtime compiles against something else entirely.
+    const source = [
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      'const { open } = asSelectContent().stateHandles;',
+      'function add(checked = open) {',
+      "  def.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
+  });
+
   it('skips rules the runtime keeps on the runtime plan', () => {
     const withProp = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.prop('side').eq('top'))")}`;
     // `isStateMetaDeps` refuses every dependency kind but state and meta, so a

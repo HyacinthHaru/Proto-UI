@@ -45,7 +45,9 @@ type Binding =
   /** A value a `tw(...)` argument may name, resolved where it was declared. */
   | { kind: 'token'; initializer: ts.Expression }
   /** A named import; only a relative one is something the extractor follows. */
-  | { kind: 'tokenImport'; specifier: string; imported: string };
+  | { kind: 'tokenImport'; specifier: string; imported: string; from?: string }
+  /** A parameter: it shadows an outer name and its origin is not recoverable. */
+  | { kind: 'opaque' };
 
 type Scope = {
   parent: Scope | null;
@@ -263,9 +265,9 @@ export function scanRuleStateReads(
    */
   const moduleCache = new Map<string, ts.SourceFile | null>();
 
-  const loadRelativeModule = (specifier: string): ts.SourceFile | null => {
+  const loadRelativeModule = (specifier: string, from = fileName): ts.SourceFile | null => {
     if (!specifier.startsWith('.')) return null;
-    const base = path.resolve(path.dirname(fileName), specifier);
+    const base = path.resolve(path.dirname(from), specifier);
     const cached = moduleCache.get(base);
     if (cached !== undefined) return cached;
     const candidates = [
@@ -296,6 +298,41 @@ export function scanRuleStateReads(
     }
     moduleCache.set(base, null);
     return null;
+  };
+
+  const moduleScopes = new Map<ts.SourceFile, Scope>();
+
+  const moduleRootScope = (module: ts.SourceFile): Scope => {
+    const cached = moduleScopes.get(module);
+    if (cached) return cached;
+    const scope: Scope = { parent: null, bindings: new Map() };
+    // Insert before filling so a cycle of relative modules terminates.
+    moduleScopes.set(module, scope);
+    for (const statement of module.statements) {
+      if (ts.isImportDeclaration(statement) && ts.isStringLiteralLike(statement.moduleSpecifier)) {
+        const named = statement.importClause?.namedBindings;
+        if (named && ts.isNamedImports(named)) {
+          for (const element of named.elements) {
+            scope.bindings.set(element.name.text, {
+              kind: 'tokenImport',
+              specifier: statement.moduleSpecifier.text,
+              imported: (element.propertyName ?? element.name).text,
+              from: module.fileName,
+            });
+          }
+        }
+        continue;
+      }
+      if (!ts.isVariableStatement(statement)) continue;
+      for (const declaration of statement.declarationList.declarations) {
+        if (!ts.isIdentifier(declaration.name) || !declaration.initializer) continue;
+        scope.bindings.set(declaration.name.text, {
+          kind: 'token',
+          initializer: declaration.initializer,
+        });
+      }
+    }
+    return scope;
   };
 
   const exportedInitializer = (module: ts.SourceFile, name: string): ts.Expression | null => {
@@ -339,13 +376,22 @@ export function scanRuleStateReads(
         resolvableTokenArgument(inner.whenTrue, scope, seen) &&
         resolvableTokenArgument(inner.whenFalse, scope, seen)
       );
-    // `[...].join(' ')` is the one call form the extractor resolves.
+    // `[...].join(' ')` is the one call form the extractor resolves, and
+    // `resolveJoinCall` reads only a literal separator — anything else falls
+    // back to `,` there while the runtime joins on the real value.
     if (
       ts.isCallExpression(inner) &&
       ts.isPropertyAccessExpression(inner.expression) &&
       inner.expression.name.text === 'join'
-    )
+    ) {
+      const separator = inner.arguments[0];
+      const readableSeparator =
+        separator === undefined ||
+        ts.isStringLiteralLike(separator) ||
+        ts.isNoSubstitutionTemplateLiteral(separator);
+      if (!readableSeparator) return false;
       return resolvableTokenArgument(inner.expression.expression, scope, seen);
+    }
     if (ts.isIdentifier(inner)) {
       if (seen.has(inner.text)) return false;
       const binding = lookup(scope, inner.text);
@@ -353,24 +399,14 @@ export function scanRuleStateReads(
       if (binding?.kind === 'token')
         return resolvableTokenArgument(binding.initializer, scope, next);
       if (binding?.kind === 'tokenImport') {
-        const module = loadRelativeModule(binding.specifier);
+        const module = loadRelativeModule(binding.specifier, binding.from ?? fileName);
         if (!module) return false;
         const initializer = exportedInitializer(module, binding.imported);
         if (!initializer) return false;
-        // Resolve the export in its own module's root scope, which is what the
-        // extractor does when it walks the imported file.
-        const moduleScope: Scope = { parent: null, bindings: new Map() };
-        for (const statement of module.statements) {
-          if (!ts.isVariableStatement(statement)) continue;
-          for (const declaration of statement.declarationList.declarations) {
-            if (!ts.isIdentifier(declaration.name) || !declaration.initializer) continue;
-            moduleScope.bindings.set(declaration.name.text, {
-              kind: 'token',
-              initializer: declaration.initializer,
-            });
-          }
-        }
-        return resolvableTokenArgument(initializer, moduleScope, next);
+        // `loadModuleBindings` applies the module's own relative imports before
+        // resolving its exports, so a token re-exported through a chain of
+        // relative modules is extractable and must not read as opaque here.
+        return resolvableTokenArgument(initializer, moduleRootScope(module), next);
       }
       return false;
     }
@@ -617,6 +653,16 @@ export function scanRuleStateReads(
     // The extractor registers declarations while iterating the variable
     // statements of a statement-bearing scope, so a loop initializer or a
     // catch binding never reaches it.
+    // A parameter shadows whatever the enclosing scopes bound to that name. Its
+    // own origin cannot be recovered from the source, so it resolves to nothing
+    // rather than falling through to an outer handle of the same name.
+    if (ts.isFunctionLike(node)) {
+      for (const parameter of node.parameters) {
+        if (ts.isIdentifier(parameter.name))
+          declare(current, parameter.name.text, { kind: 'opaque' });
+      }
+    }
+
     if (
       ts.isVariableDeclaration(node) &&
       node.parent &&
@@ -629,12 +675,19 @@ export function scanRuleStateReads(
 
     if (
       ts.isCallExpression(node) &&
-      ts.isPropertyAccessExpression(node.expression) &&
-      node.expression.name.text === 'rule' &&
+      ((ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === 'rule') ||
+        (ts.isElementAccessExpression(node.expression) &&
+          node.expression.argumentExpression &&
+          ts.isStringLiteralLike(node.expression.argumentExpression) &&
+          node.expression.argumentExpression.text === 'rule')) &&
       node.arguments.length >= 1
     ) {
       const spec = unwrap(node.arguments[0]);
-      if (ts.isObjectLiteralExpression(spec)) analyzeRule(spec, current);
+      // The production walk matches a property access only, so `def['rule'](…)`
+      // reaches the same runtime API and emits no variant. It is a blind spot
+      // whatever the argument looks like.
+      const viaElementAccess = ts.isElementAccessExpression(node.expression);
+      if (!viaElementAccess && ts.isObjectLiteralExpression(spec)) analyzeRule(spec, current);
       // The extractor reads an object literal only. A rule handed a binding is
       // lowered by the runtime and dropped by the extractor, so it is a blind
       // spot rather than something to skip.
