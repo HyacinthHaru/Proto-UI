@@ -11,7 +11,12 @@ import {
   type Page,
 } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { choosePreviewRuntime, runtimeSelectTrigger } from './browser-harness';
+import {
+  RUNTIMES as EVERY_RUNTIME,
+  choosePreviewRuntime,
+  runtimeSelectTrigger,
+  selectRuntime as selectRuntimeIncludingVue2,
+} from './browser-harness';
 
 const RUNTIMES = ['wc', 'react', 'vue'] as const;
 type RuntimeId = (typeof RUNTIMES)[number];
@@ -438,6 +443,46 @@ type ButtonFill = {
  * rather than as text. Comparing the pair is what "resolves through the theme
  * variable" means; comparing two schemes only proves the surface moved.
  */
+/**
+ * Sets the documentation host theme the way the site's own control does and
+ * leaves the media preference alone.
+ *
+ * `P-BRUTALIST-BUTTON-LIVE-THEME` names host-theme-driven CSS variable
+ * resolution as the supported mechanism and puts `prefers-color-scheme`
+ * outside the criterion, so driving this case with `emulateMedia` would let a
+ * Button written entirely in media queries satisfy it. The Brutalist theme
+ * selects Dark on `:root.dark, :root[data-theme='dark'], .dark,
+ * [data-theme='dark']` and never on a media query, so both are set here.
+ */
+async function applyHostTheme(page: Page, scheme: ColorScheme): Promise<void> {
+  await page.evaluate((next) => {
+    const root = document.documentElement;
+    root.dataset.theme = next;
+    root.classList.toggle('dark', next === 'dark');
+  }, scheme);
+  await page.waitForFunction((next) => document.documentElement.dataset.theme === next, scheme, {
+    timeout: 10_000,
+  });
+}
+
+/**
+ * Overrides one theme variable on the host scope with a value in neither
+ * palette, so a surface that merely happens to match the Dark palette cannot
+ * pass. Nothing but variable resolution can follow this.
+ */
+const CANARY_SURFACE = 'rgb(1, 2, 3)';
+
+async function applyCanarySurface(page: Page, on: boolean): Promise<void> {
+  await page.evaluate(
+    ({ enabled, canary }) => {
+      const root = document.documentElement;
+      if (enabled) root.style.setProperty('--pui-secondary-background', canary);
+      else root.style.removeProperty('--pui-secondary-background');
+    },
+    { enabled: on, canary: CANARY_SURFACE }
+  );
+}
+
 async function buttonFills(page: Page): Promise<Record<keyof typeof BUTTON_FILLS, ButtonFill>> {
   return page.evaluate((fills) => {
     const canvas = document.createElement('canvas');
@@ -943,8 +988,13 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
     });
 
     try {
-      for (const runtime of RUNTIMES) {
-        await selectRuntime(page, previewer, runtime, '[data-demo-ref="surface"]', 1);
+      // Pinned for the whole case, and never changed again. Dark is then reached
+      // only through the host theme, so a media-query implementation cannot
+      // satisfy any measurement below.
+      await page.emulateMedia({ colorScheme: 'light' });
+
+      for (const runtime of EVERY_RUNTIME) {
+        await selectRuntimeIncludingVue2(page, previewer, runtime, '[data-demo-ref="surface"]', 1);
         // Park the pointer off the demo: a repaint that needed a hover to land
         // would otherwise pass here and fail for a reader who never moves.
         await page.mouse.move(0, 0);
@@ -954,7 +1004,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
           Record<keyof typeof BUTTON_FILLS, ButtonFill>
         > = {} as never;
         for (const scheme of COLOR_SCHEMES) {
-          await applyColorScheme(page, scheme);
+          await applyHostTheme(page, scheme);
           const fills = await buttonFills(page);
           painted[scheme] = fills;
 
@@ -1002,12 +1052,32 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
 
         // Back to the scheme this runtime started in, so the repaint is proven
         // to run both ways rather than only into Dark.
-        await applyColorScheme(page, 'light');
+        await applyHostTheme(page, 'light');
         const restored = await buttonFills(page);
         expect(restored.surface.background, `${runtime}/restored`).toBe(
           painted.light.surface.background
         );
         expect(restored.surface.color, `${runtime}/restored-ink`).toBe(painted.light.surface.color);
+
+        // The two schemes above are both palettes a media-query implementation
+        // could hard-code. This value is in neither, so following it is only
+        // possible by resolving the variable the surface names.
+        await applyCanarySurface(page, true);
+        const canary = await buttonFills(page);
+        expect(canary.surface.background, `${runtime}/canary`).toBe(
+          canary.surface.variables.background
+        );
+        expect(canary.surface.background, `${runtime}/canary-moved`).not.toBe(
+          painted.light.surface.background
+        );
+        expect(canary.disabledSurface.background, `${runtime}/canary-disabled`).toBe(
+          canary.surface.background
+        );
+        // Accent fills name a different variable and must not follow it.
+        expect(canary.solidMain.background, `${runtime}/canary-accent`).toBe(
+          painted.light.solidMain.background
+        );
+        await applyCanarySurface(page, false);
       }
     } finally {
       await context.close();
