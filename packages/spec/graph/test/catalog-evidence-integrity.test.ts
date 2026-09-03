@@ -21,9 +21,24 @@ function isRepositoryPath(value: string | undefined): value is string {
   return typeof value === 'string' && !/^[a-z][a-z0-9+.-]*:\/\//i.test(value);
 }
 
+/**
+ * Resolves under the repository only. A traversal such as `../shared/x.ts`
+ * would otherwise be validated against whatever sits beside the checkout, so
+ * the result would depend on the machine rather than on the catalog.
+ */
 function resolves(value: string): boolean {
-  return existsSync(path.join(REPO_ROOT, value));
+  const candidate = path.resolve(REPO_ROOT, value);
+  const relative = path.relative(REPO_ROOT, candidate);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) return false;
+  return existsSync(candidate);
 }
+
+/**
+ * Statuses that say the evidence does not exist yet. `SPEC_TEST_IMPLEMENTATION_STATUSES`
+ * carries both, so an entry using either records a gap rather than claiming a
+ * file. Every other status asserts current evidence.
+ */
+const DECLARED_ABSENT: ReadonlySet<string> = new Set(['planned', 'missing']);
 
 /**
  * Reports the citations that do not resolve and the cases nothing consumes.
@@ -45,9 +60,7 @@ export function collectEvidenceGaps(entities: readonly Entity[]): {
     }
 
     for (const implementation of entity.implementations ?? []) {
-      // A planned implementation is a declared intent, not a claim that a file
-      // exists. Every other status asserts current evidence.
-      if (implementation.status === 'planned') continue;
+      if (implementation.status && DECLARED_ABSENT.has(implementation.status)) continue;
       if (!isRepositoryPath(implementation.path)) continue;
       if (!resolves(implementation.path)) {
         missingImplementations.push(`${entity.id}: ${implementation.id} -> ${implementation.path}`);
@@ -74,6 +87,9 @@ describe('catalog evidence integrity', () => {
         sources: [
           { path: 'package.json' },
           { path: 'spec/nothing-here.md' },
+          // Exists beside most checkouts; a traversal must not satisfy a
+          // repository-scoped citation.
+          { path: '../package.json' },
           // A citation outside the repository is not this check's to resolve.
           { path: 'https://www.w3.org/TR/wai-aria-1.2/' },
         ],
@@ -90,27 +106,45 @@ describe('catalog evidence integrity', () => {
             status: 'passing',
             consumesCases: ['C-FIXTURE-0001-CASE-B'],
           },
-          // Planned names a file that has not been written yet, which is what
-          // planned means; it must not be read as a missing artefact.
+          // `planned` and `missing` both name a file that does not exist, which
+          // is what they mean; neither is a broken citation.
           {
             id: 'later',
             path: 'packages/not-written-yet.test.ts',
             status: 'planned',
             consumesCases: ['C-FIXTURE-0001-CASE-C'],
           },
+          {
+            id: 'gap',
+            path: 'packages/never-written.test.ts',
+            status: 'missing',
+            consumesCases: ['C-FIXTURE-0001-CASE-D'],
+          },
+          {
+            id: 'escapes',
+            path: '../package.json',
+            status: 'passing',
+            consumesCases: ['C-FIXTURE-0001-CASE-E'],
+          },
         ],
         cases: [
           { id: 'C-FIXTURE-0001-CASE-A' },
           { id: 'C-FIXTURE-0001-CASE-B' },
           { id: 'C-FIXTURE-0001-CASE-C' },
+          { id: 'C-FIXTURE-0001-CASE-D' },
+          { id: 'C-FIXTURE-0001-CASE-E' },
           { id: 'C-FIXTURE-0001-CASE-ORPHAN' },
         ],
       },
     ]);
 
-    expect(gaps.missingSources).toEqual(['C-FIXTURE-0001: spec/nothing-here.md']);
+    expect(gaps.missingSources).toEqual([
+      'C-FIXTURE-0001: spec/nothing-here.md',
+      'C-FIXTURE-0001: ../package.json',
+    ]);
     expect(gaps.missingImplementations).toEqual([
       'C-FIXTURE-0001: absent -> packages/nothing-here.test.ts',
+      'C-FIXTURE-0001: escapes -> ../package.json',
     ]);
     expect(gaps.orphanCases).toEqual(['C-FIXTURE-0001: C-FIXTURE-0001-CASE-ORPHAN']);
   });
