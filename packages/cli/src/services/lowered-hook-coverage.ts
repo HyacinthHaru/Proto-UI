@@ -1,3 +1,5 @@
+import { readFileSync, statSync } from 'node:fs';
+import path from 'node:path';
 import ts from 'typescript';
 
 export type HookStateUsage = {
@@ -39,7 +41,11 @@ type Binding =
   | { kind: 'handleBag'; hook: string }
   | { kind: 'handle'; hook: string; state: string }
   /** `def.state.bool(...)` — owned by the prototype, not borrowed from a hook. */
-  | { kind: 'localState' };
+  | { kind: 'localState' }
+  /** A value a `tw(...)` argument may name, resolved where it was declared. */
+  | { kind: 'token'; initializer: ts.Expression }
+  /** A named import; only a relative one is something the extractor follows. */
+  | { kind: 'tokenImport'; specifier: string; imported: string };
 
 type Scope = {
   parent: Scope | null;
@@ -182,6 +188,33 @@ export function scanRuleStateReads(
     const hook = hookOfCall(declaration.initializer);
     if (hook && ts.isIdentifier(declaration.name)) {
       declare(scope, declaration.name.text, { kind: 'hookResult', hook });
+      return;
+    }
+
+    // Anything else a name can hold is a candidate token value. Keeping it in
+    // the same scope chain means two blocks may each declare `TOKENS` without
+    // either becoming ambiguous, which is what the extractor's scopes do.
+    if (ts.isIdentifier(declaration.name)) {
+      declare(scope, declaration.name.text, {
+        kind: 'token',
+        initializer: declaration.initializer,
+      });
+    }
+  };
+
+  const declareImports = (scope: Scope): void => {
+    for (const statement of source.statements) {
+      if (!ts.isImportDeclaration(statement)) continue;
+      if (!ts.isStringLiteralLike(statement.moduleSpecifier)) continue;
+      const bindings = statement.importClause?.namedBindings;
+      if (!bindings || !ts.isNamedImports(bindings)) continue;
+      for (const element of bindings.elements) {
+        declare(scope, element.name.text, {
+          kind: 'tokenImport',
+          specifier: statement.moduleSpecifier.text,
+          imported: (element.propertyName ?? element.name).text,
+        });
+      }
     }
   };
 
@@ -224,60 +257,87 @@ export function scanRuleStateReads(
     ts.isIdentifier(name) || ts.isStringLiteralLike(name) ? name.text : null;
 
   /**
-   * Names the extractor could resolve in this file: a `const` declared in a
-   * variable statement, or a named import from a relative module.
-   * `applyImportBindings` ignores non-relative specifiers, so a token constant
-   * imported from a package yields nothing however valid it is at runtime.
+   * Reads a relative module the way `resolveModuleFile` does, so an imported
+   * token constant is judged by its own initializer rather than by the fact
+   * that the import was relative. A module this cannot read fails closed.
    */
-  const resolvableNames = new Map<string, ts.Expression | 'relative-import'>();
-  const shadowedNames = new Set<string>();
+  const moduleCache = new Map<string, ts.SourceFile | null>();
 
-  const collectResolvableNames = (node: ts.Node): void => {
-    if (ts.isImportDeclaration(node) && ts.isStringLiteralLike(node.moduleSpecifier)) {
-      const clause = node.importClause;
-      if (node.moduleSpecifier.text.startsWith('.') && clause?.namedBindings) {
-        if (ts.isNamedImports(clause.namedBindings)) {
-          for (const element of clause.namedBindings.elements) {
-            resolvableNames.set(element.name.text, 'relative-import');
-          }
-        }
+  const loadRelativeModule = (specifier: string): ts.SourceFile | null => {
+    if (!specifier.startsWith('.')) return null;
+    const base = path.resolve(path.dirname(fileName), specifier);
+    const cached = moduleCache.get(base);
+    if (cached !== undefined) return cached;
+    const candidates = [
+      base,
+      `${base}.ts`,
+      `${base}.tsx`,
+      `${base}.mts`,
+      `${base}.js`,
+      `${base}.mjs`,
+      path.join(base, 'index.ts'),
+      path.join(base, 'index.tsx'),
+      path.join(base, 'index.js'),
+    ];
+    for (const candidate of candidates) {
+      try {
+        if (!statSync(candidate).isFile()) continue;
+      } catch {
+        continue;
       }
+      const loaded = ts.createSourceFile(
+        candidate,
+        readFileSync(candidate, 'utf8'),
+        ts.ScriptTarget.Latest,
+        true
+      );
+      moduleCache.set(base, loaded);
+      return loaded;
     }
-    if (ts.isVariableStatement(node)) {
-      for (const declaration of node.declarationList.declarations) {
-        if (!ts.isIdentifier(declaration.name) || !declaration.initializer) continue;
-        // A name declared twice cannot be resolved from text alone, so it fails
-        // closed rather than picking one of them.
-        if (resolvableNames.has(declaration.name.text)) shadowedNames.add(declaration.name.text);
-        resolvableNames.set(declaration.name.text, declaration.initializer);
-      }
-    }
-    ts.forEachChild(node, collectResolvableNames);
+    moduleCache.set(base, null);
+    return null;
   };
-  collectResolvableNames(source);
+
+  const exportedInitializer = (module: ts.SourceFile, name: string): ts.Expression | null => {
+    for (const statement of module.statements) {
+      if (!ts.isVariableStatement(statement)) continue;
+      for (const declaration of statement.declarationList.declarations) {
+        if (!ts.isIdentifier(declaration.name) || declaration.name.text !== name) continue;
+        return declaration.initializer ?? null;
+      }
+    }
+    return null;
+  };
 
   /**
-   * Argument shapes `resolveExpression` turns into tokens. A `tw(...)` whose
-   * argument the extractor cannot resolve — an arbitrary call, or a name it has
-   * no binding for — names a real token set at runtime and yields nothing to
-   * the closure, so the rendered variant would have no CSS.
+   * Argument shapes `resolveExpression` turns into tokens. A `tw(...)` argument
+   * the extractor cannot resolve — an arbitrary call, or a name whose value it
+   * cannot reach — names a real token set at runtime and yields nothing to the
+   * closure, so the rendered variant would have no CSS.
    */
-  const resolvableTokenArgument = (node: ts.Expression, seen = new Set<string>()): boolean => {
+  const resolvableTokenArgument = (
+    node: ts.Expression,
+    scope: Scope,
+    seen = new Set<string>()
+  ): boolean => {
     const inner = unwrap(node) as ts.Expression;
     if (ts.isStringLiteralLike(inner) || ts.isNoSubstitutionTemplateLiteral(inner)) return true;
     if (ts.isTemplateExpression(inner))
-      return inner.templateSpans.every((span) => resolvableTokenArgument(span.expression, seen));
+      return inner.templateSpans.every((span) =>
+        resolvableTokenArgument(span.expression, scope, seen)
+      );
     if (ts.isArrayLiteralExpression(inner))
-      return inner.elements.every((element) => resolvableTokenArgument(element, seen));
+      return inner.elements.every((element) => resolvableTokenArgument(element, scope, seen));
     if (ts.isObjectLiteralExpression(inner))
       return inner.properties.every(
         (property) =>
-          ts.isPropertyAssignment(property) && resolvableTokenArgument(property.initializer, seen)
+          ts.isPropertyAssignment(property) &&
+          resolvableTokenArgument(property.initializer, scope, seen)
       );
     if (ts.isConditionalExpression(inner))
       return (
-        resolvableTokenArgument(inner.whenTrue, seen) &&
-        resolvableTokenArgument(inner.whenFalse, seen)
+        resolvableTokenArgument(inner.whenTrue, scope, seen) &&
+        resolvableTokenArgument(inner.whenFalse, scope, seen)
       );
     // `[...].join(' ')` is the one call form the extractor resolves.
     if (
@@ -285,28 +345,48 @@ export function scanRuleStateReads(
       ts.isPropertyAccessExpression(inner.expression) &&
       inner.expression.name.text === 'join'
     )
-      return resolvableTokenArgument(inner.expression.expression, seen);
+      return resolvableTokenArgument(inner.expression.expression, scope, seen);
     if (ts.isIdentifier(inner)) {
-      if (shadowedNames.has(inner.text) || seen.has(inner.text)) return false;
-      const bound = resolvableNames.get(inner.text);
-      if (!bound) return false;
-      if (bound === 'relative-import') return true;
-      return resolvableTokenArgument(bound, new Set([...seen, inner.text]));
+      if (seen.has(inner.text)) return false;
+      const binding = lookup(scope, inner.text);
+      const next = new Set([...seen, inner.text]);
+      if (binding?.kind === 'token')
+        return resolvableTokenArgument(binding.initializer, scope, next);
+      if (binding?.kind === 'tokenImport') {
+        const module = loadRelativeModule(binding.specifier);
+        if (!module) return false;
+        const initializer = exportedInitializer(module, binding.imported);
+        if (!initializer) return false;
+        // Resolve the export in its own module's root scope, which is what the
+        // extractor does when it walks the imported file.
+        const moduleScope: Scope = { parent: null, bindings: new Map() };
+        for (const statement of module.statements) {
+          if (!ts.isVariableStatement(statement)) continue;
+          for (const declaration of statement.declarationList.declarations) {
+            if (!ts.isIdentifier(declaration.name) || !declaration.initializer) continue;
+            moduleScope.bindings.set(declaration.name.text, {
+              kind: 'token',
+              initializer: declaration.initializer,
+            });
+          }
+        }
+        return resolvableTokenArgument(initializer, moduleScope, next);
+      }
+      return false;
     }
     if (ts.isPropertyAccessExpression(inner) || ts.isElementAccessExpression(inner)) {
-      // A member is only reachable if its owner is, and an owner the extractor
-      // cannot resolve gives the member nothing to come from.
-      return resolvableTokenArgument(inner.expression, seen);
+      // A member is only reachable if its owner is.
+      return resolvableTokenArgument(inner.expression, scope, seen);
     }
     return false;
   };
 
   /**
-   * Every `tw(...)` in the intent has to be extractable, not just one. The
-   * runtime prefixes each handle with the variant; a mixed intent leaves the
-   * opaque handle's tokens with no CSS while the extractable one looks fine.
+   * Every `tw(...)` in the intent, and every argument of each, has to be
+   * extractable. `tw` is variadic and `collectTwTokens` reads all of them, so
+   * one resolvable argument cannot vouch for the rest.
    */
-  const yieldsExtractableTokens = (node: ts.Node): boolean => {
+  const yieldsExtractableTokens = (node: ts.Node, scope: Scope): boolean => {
     const calls: ts.CallExpression[] = [];
     const collect = (current: ts.Node): void => {
       if (
@@ -321,8 +401,37 @@ export function scanRuleStateReads(
     collect(node);
     if (calls.length === 0) return false;
     return calls.every(
-      (call) => call.arguments.length > 0 && resolvableTokenArgument(call.arguments[0])
+      (call) =>
+        call.arguments.length > 0 &&
+        call.arguments.every((argument) => resolvableTokenArgument(argument, scope))
     );
+  };
+
+  /** The identifier a member chain bottoms out at, if it is one. */
+  const chainBase = (node: ts.Node): string | null => {
+    let current = unwrap(node);
+    while (ts.isPropertyAccessExpression(current) || ts.isCallExpression(current)) {
+      current = unwrap(ts.isCallExpression(current) ? current.expression : current.expression);
+    }
+    return ts.isIdentifier(current) ? current.text : null;
+  };
+
+  /** The member chain of a call, e.g. `feedback.style.use`. */
+  const memberChain = (node: ts.CallExpression): string[] => {
+    const parts: string[] = [];
+    let current: ts.Node = unwrap(node.expression);
+    while (ts.isPropertyAccessExpression(current)) {
+      parts.unshift(current.name.text);
+      current = unwrap(current.expression);
+    }
+    return parts;
+  };
+
+  const parameterName = (node: ts.Node): string | null => {
+    const fn = unwrap(node);
+    if (!ts.isArrowFunction(fn) && !ts.isFunctionExpression(fn)) return null;
+    const first = fn.parameters[0];
+    return first && ts.isIdentifier(first.name) ? first.name.text : null;
   };
 
   type Leaf = {
@@ -359,6 +468,10 @@ export function scanRuleStateReads(
     let hasMeta = false;
     let aliasedBuilder = false;
     let branchedCondition = false;
+    const builderParameter = parameterName(when.initializer);
+    // `({ state }) => state(x).eq(true)` gives the builder no name to anchor on,
+    // and `analyzeWhenVariants` reads a property access, so it emits no selector.
+    if (builderParameter === null) aliasedBuilder = true;
 
     /**
      * Everything the two lowering paths understand. `isStateMetaDeps` accepts
@@ -382,10 +495,14 @@ export function scanRuleStateReads(
       }
       if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
         const member = node.expression.name.text;
-        if (!LOWERABLE_MEMBERS.has(member)) hasForeignDep = true;
-        if (member === 'any') hasAny = true;
+        // The runtime's dependency set holds the builder operations actually
+        // invoked, so an unrelated call in a block-bodied callback is not a
+        // dependency and must not make the rule look dynamic.
+        const onBuilder = builderParameter !== null && chainBase(node) === builderParameter;
+        if (onBuilder && !LOWERABLE_MEMBERS.has(member)) hasForeignDep = true;
+        if (onBuilder && member === 'any') hasAny = true;
 
-        if (member === 'eq') {
+        if (onBuilder && member === 'eq') {
           const receiver = unwrap(node.expression.expression);
           // `when: ({ state }) => state(x).eq(true)` calls an aliased builder
           // member. `analyzeWhenVariants` reads a property access, so it emits
@@ -455,9 +572,30 @@ export function scanRuleStateReads(
     const intent = config.properties.find(
       (property) => ts.isPropertyAssignment(property) && propertyName(property.name) === 'intent'
     );
-    if (intent && ts.isPropertyAssignment(intent) && !yieldsExtractableTokens(intent.initializer)) {
-      unresolved.push({ expression: intent.getText(source), reason: 'intent' });
-      return;
+    if (intent && ts.isPropertyAssignment(intent)) {
+      // The runtime abandons a candidate as soon as an intent op is not
+      // `feedback.style.use`, so a mixed intent stays on the runtime plan and
+      // needs no static mapping. Demanding one would fail a valid prototype.
+      const intentParameter = parameterName(intent.initializer);
+      let nonStyleOperation = false;
+      const inspectIntent = (node: ts.Node): void => {
+        if (
+          ts.isCallExpression(node) &&
+          intentParameter !== null &&
+          chainBase(node) === intentParameter &&
+          memberChain(node).join('.') !== 'feedback.style.use'
+        ) {
+          nonStyleOperation = true;
+        }
+        ts.forEachChild(node, inspectIntent);
+      };
+      inspectIntent(intent.initializer);
+      if (nonStyleOperation) return;
+
+      if (!yieldsExtractableTokens(intent.initializer, scope)) {
+        unresolved.push({ expression: intent.getText(source), reason: 'intent' });
+        return;
+      }
     }
 
     for (const leaf of leaves) {
@@ -506,7 +644,9 @@ export function scanRuleStateReads(
     ts.forEachChild(node, (child) => visit(child, current));
   };
 
-  visit(source, { parent: null, bindings: new Map() });
+  const rootScope: Scope = { parent: null, bindings: new Map() };
+  declareImports(rootScope);
+  visit(source, rootScope);
 
   return { usages, unresolved };
 }

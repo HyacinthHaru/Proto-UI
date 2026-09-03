@@ -285,31 +285,77 @@ describe('lowered hook coverage', () => {
     expect(scanRuleStateReads(opaque).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
   });
 
-  it('requires every intent token handle to be one the extractor can resolve', () => {
+  it('requires every intent token handle to be one the extractor can resolve', async () => {
     const handles = 'const { checked } = asCheckboxRoot().stateHandles;';
     const when = '(w) => w.state(checked).eq(true)';
     const usage = { hook: 'asCheckboxRoot', state: 'checked' };
 
-    // Resolvable: a local constant and a named import from a relative module,
-    // which is all `applyImportBindings` follows.
+    // Resolvable: a local constant.
     const local = `const TOKENS = 'bg-primary';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
-    const relative = `import { TOKENS } from './style';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
-    for (const source of [local, relative]) {
-      expect(scanRuleStateReads(source).usages).toEqual([usage]);
-      expect(scanRuleStateReads(source).unresolved).toEqual([]);
+    expect(scanRuleStateReads(local).usages).toEqual([usage]);
+    expect(scanRuleStateReads(local).unresolved).toEqual([]);
+
+    // A relative import is judged by the module's own initializer, the way the
+    // extractor loads it — not by the fact that the specifier was relative.
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-coverage-'));
+    try {
+      const widget = path.join(dir, 'widget.proto.ts');
+      const body = (name: string) =>
+        `import { ${name} } from './style';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(${name})) });`;
+      await writeFile(
+        path.join(dir, 'style.ts'),
+        [
+          "export const LITERAL_TOKENS = 'bg-primary';",
+          'export const COMPUTED_TOKENS = getTokens();',
+        ].join('\n')
+      );
+
+      const literal = scanRuleStateReads(body('LITERAL_TOKENS'), widget);
+      expect(literal.usages).toEqual([usage]);
+      expect(literal.unresolved).toEqual([]);
+
+      // The extractor loads this module and resolves the call to nothing, so
+      // accepting it because the import was relative would be fail-open.
+      const computed = scanRuleStateReads(body('COMPUTED_TOKENS'), widget);
+      expect(computed.usages).toEqual([]);
+      expect(computed.unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
     }
 
-    // Not resolvable: the extractor ignores non-relative specifiers, so this
-    // yields no tokens while the runtime receives the real handle.
+    // `applyImportBindings` skips non-relative specifiers entirely.
     const packaged = `import { TOKENS } from '@proto.ui/tokens';\n${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw(TOKENS)) });`;
     expect(scanRuleStateReads(packaged).usages).toEqual([]);
     expect(scanRuleStateReads(packaged).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+
+    // `tw` is variadic and the extractor reads every argument, so one
+    // resolvable argument cannot vouch for the rest of the same call.
+    const variadic = `${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw('bg-ok', getRuleTokens())) });`;
+    expect(scanRuleStateReads(variadic).usages).toEqual([]);
+    expect(scanRuleStateReads(variadic).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
 
     // A mixed intent: the extractable handle must not vouch for the opaque one,
     // because the runtime prefixes both and only one gets CSS.
     const mixed = `${handles}\ndef.rule({ when: ${when}, intent: (i) => i.feedback.style.use(tw('bg-ok'), tw(getRuleTokens())) });`;
     expect(scanRuleStateReads(mixed).usages).toEqual([]);
     expect(scanRuleStateReads(mixed).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
+  });
+
+  it('ignores an unrelated call in a block-bodied condition', () => {
+    // The runtime dependency set holds the builder operations invoked, so an
+    // unrelated call does not make the rule dynamic — and must not let the
+    // state read escape the gate unchecked.
+    const source = [
+      'const { checked } = asCheckboxRoot().stateHandles;',
+      'def.rule({',
+      '  when: (w) => { metrics.record(); return w.state(checked).eq(true); },',
+      "  intent: (i) => i.feedback.style.use(tw('bg-primary')),",
+      '});',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.usages).toEqual([{ hook: 'asCheckboxRoot', state: 'checked' }]);
   });
 
   it('reports a handle bound where the extractor never registers it', () => {
@@ -338,6 +384,30 @@ describe('lowered hook coverage', () => {
     expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['condition']);
   });
 
+  it('keeps a name declared in two disjoint scopes resolvable in each', () => {
+    // A file-wide map called this ambiguous and blocked both rules. The
+    // extractor gives each scope its own binding.
+    const source = [
+      'function a() {',
+      "  const TOKENS = 'bg-a';",
+      '  const { checked } = asCheckboxRoot().stateHandles;',
+      '  def.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(tw(TOKENS)) });',
+      '}',
+      'function b() {',
+      "  const TOKENS = 'bg-b';",
+      '  const { indeterminate } = asCheckboxRoot().stateHandles;',
+      '  def.rule({ when: (w) => w.state(indeterminate).eq(true), intent: (i) => i.feedback.style.use(tw(TOKENS)) });',
+      '}',
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.usages).toEqual([
+      { hook: 'asCheckboxRoot', state: 'checked' },
+      { hook: 'asCheckboxRoot', state: 'indeterminate' },
+    ]);
+  });
+
   it('skips rules the runtime keeps on the runtime plan', () => {
     const withProp = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.prop('side').eq('top'))")}`;
     // `isStateMetaDeps` refuses every dependency kind but state and meta, so a
@@ -346,10 +416,19 @@ describe('lowered hook coverage', () => {
     // `extractConditions` lowers `colorScheme === 'dark'` and no other meta
     // pair, so this one stays on the runtime plan and needs no mapping.
     const otherMeta = `const s = asSelectContent().stateHandles;\n${rule("w.all(w.state(s.open).eq(true), w.meta('colorScheme').eq('light'))")}`;
+    // The runtime abandons lowering at the first op that is not a style use.
+    const mixedIntent = `const s = asSelectContent().stateHandles;\nconst local = def.state.bool('local', false);\ndef.rule({ when: (w) => w.state(s.open).eq(true), intent: (i) => { i.feedback.style.use(tw('bg-primary')); i.state(local).be(true); } });`;
     const allNegative = `const s = asSelectContent().stateHandles;\n${rule('w.state(s.open).eq(false)')}`;
     const anyCondition = `const s = asSelectItem().stateHandles;\n${rule('w.any(w.state(s.active).eq(true), w.state(s.hovered).eq(true))')}`;
 
-    for (const source of [withProp, withContext, otherMeta, allNegative, anyCondition]) {
+    for (const source of [
+      withProp,
+      withContext,
+      otherMeta,
+      mixedIntent,
+      allNegative,
+      anyCondition,
+    ]) {
       const scan = scanRuleStateReads(source);
       expect(scan.usages).toEqual([]);
       expect(scan.unresolved).toEqual([]);
