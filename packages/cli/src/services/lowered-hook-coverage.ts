@@ -215,10 +215,53 @@ function runsInPlace(fn: ts.Node): boolean {
  * A write inside a callback has not run when a later `def.rule` registers, so
  * the name may still hold what it held before.
  */
+/**
+ * Whether a statement may hand control somewhere else before finishing. Nested
+ * functions are skipped: their `return` belongs to them, not to this sequence.
+ */
+function mayCompleteAbruptly(node: ts.Node): boolean {
+  let found = false;
+  const visit = (current: ts.Node): void => {
+    if (found || ts.isFunctionLike(current)) return;
+    if (
+      ts.isReturnStatement(current) ||
+      ts.isThrowStatement(current) ||
+      ts.isBreakStatement(current) ||
+      ts.isContinueStatement(current)
+    ) {
+      found = true;
+      return;
+    }
+    ts.forEachChild(current, visit);
+  };
+  visit(node);
+  return found;
+}
+
+/**
+ * Whether a write is guaranteed to have run by the time `boundary` returns.
+ * Being called synchronously proves the function starts, not that this write is
+ * reached.
+ */
+function reachedInPlace(node: ts.Node, boundary: ts.Node): boolean {
+  let child: ts.Node = node;
+  for (let parent = node.parent; parent; child = parent, parent = parent.parent) {
+    if (ts.isBlock(parent) || ts.isCaseClause(parent) || ts.isDefaultClause(parent)) {
+      for (const statement of parent.statements) {
+        if (statement === child) break;
+        if (mayCompleteAbruptly(statement)) return false;
+      }
+    }
+    if (parent === boundary) break;
+  }
+  return true;
+}
+
 function isDeferredWrite(node: ts.Node, readFunction: ts.Node | null): boolean {
   const writing = enclosingFunction(node);
   if (writing === readFunction) return false;
-  return !(writing && runsInPlace(writing));
+  if (!writing || !runsInPlace(writing)) return true;
+  return !reachedInPlace(node, writing);
 }
 
 /** `var` binds to the function however deeply the declaration is nested. */

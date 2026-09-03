@@ -127,10 +127,54 @@ function runsInPlace(fn) {
  * over-approximation the conditional path applies, in time rather than in name
  * resolution.
  */
+/**
+ * Whether a statement may hand control somewhere else before finishing. Nested
+ * functions are skipped: their `return` belongs to them, not to this sequence.
+ */
+function mayCompleteAbruptly(node) {
+  let found = false;
+  const visit = (current) => {
+    if (found || ts.isFunctionLike(current)) return;
+    if (
+      ts.isReturnStatement(current) ||
+      ts.isThrowStatement(current) ||
+      ts.isBreakStatement(current) ||
+      ts.isContinueStatement(current)
+    ) {
+      found = true;
+      return;
+    }
+    ts.forEachChild(current, visit);
+  };
+  visit(node);
+  return found;
+}
+
+/**
+ * Whether a write is guaranteed to have run by the time `boundary` returns.
+ * Being called synchronously proves the function starts, not that this write is
+ * reached, so any earlier statement that may complete abruptly leaves it
+ * unproven and the earlier handle stays a candidate.
+ */
+function reachedInPlace(node, boundary) {
+  let child = node;
+  for (let parent = node.parent; parent; child = parent, parent = parent.parent) {
+    if (ts.isBlock(parent) || ts.isCaseClause(parent) || ts.isDefaultClause(parent)) {
+      for (const statement of parent.statements) {
+        if (statement === child) break;
+        if (mayCompleteAbruptly(statement)) return false;
+      }
+    }
+    if (parent === boundary) break;
+  }
+  return true;
+}
+
 function isDeferredWrite(node, readFunction) {
   const writing = enclosingFunction(node);
   if (writing === readFunction) return false;
-  return !(writing && runsInPlace(writing));
+  if (!writing || !runsInPlace(writing)) return true;
+  return !reachedInPlace(node, writing);
 }
 
 /** `var` binds to the function however deeply the declaration is nested. */

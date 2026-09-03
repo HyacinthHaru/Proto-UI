@@ -2168,4 +2168,43 @@ describe('collectProtoStyleTokens', () => {
       expect(tokens, label).toContain('data-[second-flag]:bg-accent');
     }
   });
+  it('keeps the earlier handle when an IIFE may not reach the write', async () => {
+    // Running in place proves the function starts, not that this write runs.
+    for (const [label, iife] of [
+      ['early return', ['(() => {', '  return;', '  current = second;', '})();']],
+      ['early throw', ['(() => {', "  throw new Error('x');", '  current = second;', '})();']],
+      [
+        'conditional return',
+        ['(() => {', '  if (enabled) return;', '  current = second;', '})();'],
+      ],
+    ] as const) {
+      await writeFile(
+        path.join(dir, 'widget.proto.ts'),
+        [
+          "import { definePrototype, tw } from '@proto.ui/core';",
+          '',
+          'const widget = definePrototype({',
+          "  name: 'widget',",
+          '  setup(def) {',
+          "    const first = def.state.bool('firstFlag', false);",
+          "    const second = def.state.bool('secondFlag', false);",
+          '    let current = first;',
+          ...iife.map((line) => `    ${line}`),
+          "    def.expose.state('visible', current);",
+          '    def.rule({',
+          '      when: (w) => w.state(current).eq(true),',
+          "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+          '    });',
+          '  },',
+          '});',
+          '',
+          'export default widget;',
+        ].join('\n')
+      );
+
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens, label).toContain('data-[first-flag]:bg-accent');
+      expect(tokens, label).toContain('data-[second-flag]:bg-accent');
+    }
+  });
 });

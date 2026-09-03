@@ -844,6 +844,31 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('keeps the earlier handle when an IIFE may not reach the write', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, iife] of [
+      ['early return', '(() => { return; current = second; })();'],
+      ['early throw', "(() => { throw new Error('x'); current = second; })();"],
+      ['conditional return', '(() => { if (enabled) return; current = second; })();'],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        'let current = first;',
+        iife,
+        "def.expose.state('visible', current);",
+        `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals.map((local) => local.attribute).sort(), label).toEqual([
+        'first-flag',
+        'second-flag',
+      ]);
+    }
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
