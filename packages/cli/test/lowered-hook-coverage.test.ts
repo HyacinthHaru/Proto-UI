@@ -682,6 +682,48 @@ describe('lowered hook coverage', () => {
     ]);
   });
 
+  it('reads a container member the rule uses after a write', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, write, read] of [
+      ['property access', 'controls.ready = second;', 'controls.ready'],
+      ['element access', "controls['ready'] = second;", "controls['ready']"],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        'const controls = { ready: first };',
+        write,
+        `def.expose.state('visible', ${read});`,
+        `def.rule({ when: (w) => w.state(${read}).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals, label).toEqual([
+        { state: 'second', exposedAs: 'visible', attribute: 'second-flag' },
+      ]);
+    }
+  });
+
+  it('keeps the earlier member when the write may be skipped', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'const controls = { ready: first };',
+      'if (enabled) controls.ready = second;',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals.map((local) => local.attribute).sort()).toEqual([
+      'first-flag',
+      'second-flag',
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.

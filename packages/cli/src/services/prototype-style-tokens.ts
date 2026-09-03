@@ -127,6 +127,20 @@ function bindingSemantics(binding) {
   return [binding.semantic, ...(binding.alternatives ?? [])].filter(Boolean);
 }
 
+/** A member entry holds one semantic, or several once a write may be skipped. */
+function memberSemantics(entry) {
+  if (!entry) return [];
+  return Array.isArray(entry) ? entry.filter(Boolean) : [entry];
+}
+
+/** The member entry a `x.name` or `x['name']` read names, if the owner has one. */
+function readMemberSemantics(node, scope) {
+  const owner = memberOwner(node);
+  const name = memberName(node);
+  if (!owner || name === null) return [];
+  return memberSemantics(resolveExpression(owner, scope).semanticMap?.get(name));
+}
+
 /** The scope a name is already bound in, so an assignment does not shadow it. */
 function scopeDeclaring(name, scope) {
   for (let current = scope; current; current = current.parent) {
@@ -176,6 +190,33 @@ function walk(node, scope, tokens, exposures) {
     for (const decl of node.declarationList.declarations) {
       registerDeclaration(decl, owner, exposures);
       if (decl.initializer) walk(decl.initializer, scope, tokens, exposures);
+    }
+    return;
+  }
+
+  if (
+    ts.isBinaryExpression(node) &&
+    node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+    (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))
+  ) {
+    // Writing through the container moves the member for every read that
+    // follows, so the rule side has to see it the way the exposure does.
+    walk(node.right, scope, tokens, exposures);
+    const base = unwrapTransparent(memberOwner(node.left) ?? node.left);
+    const member = memberName(node.left);
+    if (ts.isIdentifier(base) && member !== null) {
+      const owner = scopeDeclaring(base.text, scope) ?? scope;
+      const container = owner.bindings.get(base.text);
+      const written = bindingSemantics(resolveBinding(node.right, scope));
+      if (container && written.length > 0) {
+        const previous = memberSemantics(container.semanticMap?.get(member));
+        const kept = isConditionallyReached(node)
+          ? previous.filter((candidate) => !written.includes(candidate))
+          : [];
+        const semanticMap = new Map(container.semanticMap ?? []);
+        semanticMap.set(member, [...written, ...kept]);
+        owner.bindings.set(base.text, { ...container, semanticMap });
+      }
     }
     return;
   }
@@ -363,10 +404,11 @@ function resolveExpression(node, scope) {
   // `asHook().stateHandles.checked` bound straight to a name. Without this the
   // leaf resolves to nothing and `w.state(checked)` emits no variant, while the
   // same read through a destructure or through the bag resolves fine.
-  if (ts.isPropertyAccessExpression(node)) {
-    const owner = resolveExpression(node.expression, scope);
-    const semantic = owner.semanticMap?.get(node.name.text);
-    if (semantic) return asSemanticValue(semantic);
+  if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
+    const semantics = readMemberSemantics(node, scope);
+    if (semantics.length > 0) {
+      return { ...asSemanticValue(semantics[0]), alternatives: semantics.slice(1) };
+    }
   }
 
   if (
@@ -1411,10 +1453,7 @@ function resolveStateHandleSemantic(node, scope) {
     return resolveStateHandleSemantic(node.expression, scope);
   }
   if (ts.isIdentifier(node)) return lookup(node.text, scope).semantic ?? null;
-  if (!ts.isPropertyAccessExpression(node)) return null;
-
-  const owner = resolveExpression(node.expression, scope);
-  return owner.semanticMap?.get(node.name.text) ?? null;
+  return readMemberSemantics(node, scope)[0] ?? null;
 }
 
 /**
@@ -1428,10 +1467,13 @@ const NATIVE_VARIANT_ATTRIBUTES = Object.freeze({
 
 /** Every semantic a `w.state(x)` argument may stand for. */
 function resolveStateHandleSemantics(node, scope) {
-  if (ts.isIdentifier(node)) {
-    const semantics = bindingSemantics(lookup(node.text, scope));
+  const inner = unwrapTransparent(node);
+  if (ts.isIdentifier(inner)) {
+    const semantics = bindingSemantics(lookup(inner.text, scope));
     if (semantics.length > 0) return semantics;
   }
+  const members = readMemberSemantics(inner, scope);
+  if (members.length > 0) return members;
   const single = resolveStateHandleSemantic(node, scope);
   return single ? [single] : [];
 }

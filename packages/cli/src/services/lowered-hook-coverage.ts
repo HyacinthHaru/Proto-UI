@@ -86,7 +86,12 @@ type Binding =
       alternatives?: LocalStateBinding[];
     })
   /** A value a `tw(...)` argument may name, resolved where it was declared. */
-  | { kind: 'token'; initializer: ts.Expression }
+  | {
+      kind: 'token';
+      initializer: ts.Expression;
+      /** Members written after the declaration, latest candidates first. */
+      members?: Map<string, ts.Expression[]>;
+    }
   /** A named import; only a relative one is something the extractor follows. */
   | { kind: 'tokenImport'; specifier: string; imported: string; from?: string }
   /** A parameter: it shadows an outer name and its origin is not recoverable. */
@@ -827,8 +832,9 @@ export function scanRuleStateReads(
         });
       }
       for (const { target, key } of bound) {
-        const held = containerMember(initializer, key, lookupScope);
-        if (held) declareValue(target, held, scope, lookupScope);
+        const held = containerMembers(initializer, key, lookupScope);
+        // A pattern binds one name, so several candidates leave it ambiguous.
+        if (held.length === 1) declareValue(target, held[0], scope, lookupScope);
       }
       return;
     }
@@ -956,13 +962,17 @@ export function scanRuleStateReads(
       }
       return null;
     }
-    if (ts.isPropertyAccessExpression(argument)) {
-      const owner = bagHook(argument.expression, scope);
-      if (owner) return [{ hook: owner, state: argument.name.text }];
+    if (ts.isPropertyAccessExpression(argument) || ts.isElementAccessExpression(argument)) {
+      if (ts.isPropertyAccessExpression(argument)) {
+        const owner = bagHook(argument.expression, scope);
+        if (owner) return [{ hook: owner, state: argument.name.text }];
+      }
       // `const controls = { ready: flag }` — production reads the container the
       // same way it reads an `asHook` bag, so this is not a blind spot.
       const held = memberOfHandleObject(argument, scope);
-      if (held) return readState(held, scope);
+      if (held.length === 0) return null;
+      const reads = held.map((expression) => readState(expression, scope));
+      return reads.some((read) => read === null) ? null : (reads.flat() as StateRead[]);
     }
     return null;
   };
@@ -972,47 +982,51 @@ export function scanRuleStateReads(
    * index is its position, which is what a positional pattern binds. Following
    * a name is bounded so a self-referential constant cannot loop.
    */
-  const containerMember = (
+  const containerMembers = (
     node: ts.Node,
     key: string,
     scope: Scope,
     seen = new Set<string>()
-  ): ts.Expression | null => {
+  ): ts.Expression[] => {
     const value = unwrap(node);
     if (ts.isObjectLiteralExpression(value)) {
       for (const property of value.properties) {
         if (ts.isShorthandPropertyAssignment(property) && property.name.text === key) {
-          return property.name;
+          return [property.name];
         }
         if (
           ts.isPropertyAssignment(property) &&
           (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
           property.name.text === key
         ) {
-          return property.initializer;
+          return [property.initializer];
         }
       }
-      return null;
+      return [];
     }
     if (ts.isArrayLiteralExpression(value)) {
       const index = Number(key);
-      if (!Number.isInteger(index) || index < 0) return null;
+      if (!Number.isInteger(index) || index < 0) return [];
       const element = value.elements[index];
-      return element && !ts.isOmittedExpression(element) ? element : null;
+      return element && !ts.isOmittedExpression(element) ? [element] : [];
     }
     if (ts.isIdentifier(value) && !seen.has(value.text)) {
       const binding = lookup(scope, value.text);
       if (binding?.kind === 'token') {
-        return containerMember(binding.initializer, key, scope, new Set([...seen, value.text]));
+        // A write through the container replaces what the declaration named.
+        const written = binding.members?.get(key);
+        if (written && written.length > 0) return written;
+        return containerMembers(binding.initializer, key, scope, new Set([...seen, value.text]));
       }
     }
-    return null;
+    return [];
   };
 
-  const memberOfHandleObject = (
-    node: ts.PropertyAccessExpression,
-    scope: Scope
-  ): ts.Expression | null => containerMember(node.expression, node.name.text, scope);
+  const memberOfHandleObject = (node: ts.Node, scope: Scope): ts.Expression[] => {
+    const owner = ownerOf(node);
+    const key = memberNameOf(node);
+    return owner && key !== null ? containerMembers(owner, key, scope) : [];
+  };
 
   /**
    * The extractor's `resolveStateEqVariant` lowers exactly three right-hand
@@ -1536,6 +1550,30 @@ export function scanRuleStateReads(
       // is where production registers it too.
       const owner = isVarList(node.parent) ? functionScope(current) : current;
       if (node.initializer) declareValue(node.name, node.initializer, owner, current);
+    }
+
+    // Writing through the container moves the member for every read after it.
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))
+    ) {
+      const base = unwrap(ownerOf(node.left) ?? node.left);
+      const member = memberNameOf(node.left);
+      if (ts.isIdentifier(base) && member !== null) {
+        const owner = scopeBinding(current, base.text) ?? current;
+        const container = owner.bindings.get(base.text);
+        if (container?.kind === 'token') {
+          // Before the first write the member still lives in the declaration.
+          const previous =
+            container.members?.get(member) ??
+            containerMembers(container.initializer, member, current);
+          const kept = isConditionallyReached(node) ? previous : [];
+          const members = new Map(container.members ?? []);
+          members.set(member, [node.right, ...kept]);
+          declare(owner, base.text, { ...container, members });
+        }
+      }
     }
 
     // A reassignment moves the handle for every read that follows it.
