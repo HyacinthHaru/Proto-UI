@@ -115,6 +115,10 @@ describe('shadcn Checkbox baseline text', () => {
     const indicatorSources = sourcePaths(indicator as never);
     expect(indicatorSources).toContain(PINNED_BASELINE);
     expect(indicatorSources).toContain(COMPARED_REVISION);
+    // The Indicator's centering classification rests on the later recipe, so
+    // that revision has to be reachable from this entity's own ledger, not only
+    // from the Root's.
+    expect(indicatorSources).toContain(ADOPTED_RECIPE);
     expect(indicatorContext.en).toContain(PINNED_BASELINE);
 
     // The mechanism is adopted but its owner is not; both halves must survive.
