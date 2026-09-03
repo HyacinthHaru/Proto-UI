@@ -213,7 +213,11 @@ function readMemberSemantics(node, scope) {
   const owner = memberOwner(node);
   const name = memberName(node);
   if (!owner || name === null) return [];
-  return memberSemantics(resolveExpression(owner, scope).semanticMap?.get(name));
+  const resolved = resolveExpression(owner, scope);
+  // A name that may be either of two objects answers for both, and a container
+  // that replaced another conditionally still answers for what it replaced.
+  const values = resolved.containers ?? [resolved];
+  return [...new Set(values.flatMap((value) => memberSemantics(value.semanticMap?.get(name))))];
 }
 
 /**
@@ -348,12 +352,17 @@ function walk(node, scope, tokens, exposures) {
     const kept = bindingSemantics(previous).filter((candidate) => candidate !== binding.semantic);
     const uncertain =
       isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(owner.node));
-    owner.bindings.set(
-      name,
-      uncertain && kept.length > 0
-        ? { ...binding, alternatives: [...new Set([...(binding.alternatives ?? []), ...kept])] }
-        : binding
-    );
+    let next = binding;
+    if (uncertain && kept.length > 0) {
+      next = { ...next, alternatives: [...new Set([...(next.alternatives ?? []), ...kept])] };
+    }
+    // Replacing a container keeps its members too: on the branch the source may
+    // not take, the name still holds the object it held before.
+    if (uncertain && previous && (previous.semanticMap || previous.containers)) {
+      const held = [...(next.containers ?? [next]), ...(previous.containers ?? [previous])];
+      next = { ...next, containers: [...new Set(held)] };
+    }
+    owner.bindings.set(name, next);
     return;
   }
 
@@ -908,6 +917,19 @@ function collectExposures(root) {
   const objectMembers = new Map();
 
   /** Every member an object literal names, at the position it was written. */
+  /**
+   * Every object literal an initializer may yield. A conditional selects one at
+   * runtime, so both are recorded for the same reason `aliasTargets` fans out.
+   */
+  const objectLiteralTargets = (node) => {
+    const value = unwrapExpression(node);
+    if (ts.isObjectLiteralExpression(value)) return [value];
+    if (ts.isConditionalExpression(value)) {
+      return [...objectLiteralTargets(value.whenTrue), ...objectLiteralTargets(value.whenFalse)];
+    }
+    return [];
+  };
+
   const recordObjectLiteral = (owner, base, literal, at, conditional) => {
     for (const property of literal.properties) {
       if (ts.isShorthandPropertyAssignment(property)) {
@@ -1072,9 +1094,17 @@ function collectExposures(root) {
       if (node.initializer) {
         const literal = unwrapExpression(node.initializer);
         const conditional = isConditionallyReached(node);
-        if (ts.isObjectLiteralExpression(literal)) {
-          recordObjectLiteral(owner, node.name.text, literal, node.getStart(), conditional);
+        const literals = objectLiteralTargets(node.initializer);
+        for (const held of literals) {
+          recordObjectLiteral(
+            owner,
+            node.name.text,
+            held,
+            node.getStart(),
+            conditional || literals.length > 1
+          );
         }
+        void literal;
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({
             owner,
@@ -1166,9 +1196,17 @@ function collectExposures(root) {
         nextChain[0] ??
         root;
       const conditional = isConditionallyReached(node);
-      const replacement = unwrapExpression(node.right);
-      if (ts.isObjectLiteralExpression(replacement)) {
-        recordObjectLiteral(owner, node.left.text, replacement, node.getStart(), conditional);
+      const replacements = objectLiteralTargets(node.right);
+      for (const replacement of replacements) {
+        recordObjectLiteral(
+          owner,
+          node.left.text,
+          replacement,
+          node.getStart(),
+          // Either literal may be the one the runtime took, and the name may
+          // still hold the container it replaced.
+          conditional || replacements.length > 1
+        );
       }
       for (const target of aliasTargets(node.right)) {
         aliasEdges.push({

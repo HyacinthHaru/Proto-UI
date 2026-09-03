@@ -91,6 +91,8 @@ type Binding =
       initializer: ts.Expression;
       /** Members written after the declaration, latest candidates first. */
       members?: Map<string, ts.Expression[]>;
+      /** Containers the name may still hold because a write may be skipped. */
+      alternates?: ts.Expression[];
     }
   /** A named import; only a relative one is something the extractor follows. */
   | { kind: 'tokenImport'; specifier: string; imported: string; from?: string }
@@ -394,6 +396,19 @@ export function scanRuleStateReads(
   type MemberEdge = { target: string; at: number; conditional: boolean };
   const objectMembers = new Map<ts.Node, Map<string, Map<string, MemberEdge[]>>>();
 
+  /**
+   * Every object literal an initializer may yield. A conditional selects one at
+   * runtime, so both are recorded for the same reason `aliasTargets` fans out.
+   */
+  const objectLiteralTargets = (node: ts.Node): ts.ObjectLiteralExpression[] => {
+    const value = unwrap(node);
+    if (ts.isObjectLiteralExpression(value)) return [value];
+    if (ts.isConditionalExpression(value)) {
+      return [...objectLiteralTargets(value.whenTrue), ...objectLiteralTargets(value.whenFalse)];
+    }
+    return [];
+  };
+
   /** Every member an object literal names, at the position it was written. */
   const recordObjectLiteral = (
     owner: ts.Node,
@@ -627,10 +642,16 @@ export function scanRuleStateReads(
       names.add(node.name.text);
       declaredIn.set(owner, names);
       if (node.initializer) {
-        const literal = unwrap(node.initializer);
         const conditional = isConditionallyReached(node);
-        if (ts.isObjectLiteralExpression(literal)) {
-          recordObjectLiteral(owner, node.name.text, literal, node.getStart(), conditional);
+        const literals = objectLiteralTargets(node.initializer);
+        for (const literal of literals) {
+          recordObjectLiteral(
+            owner,
+            node.name.text,
+            literal,
+            node.getStart(),
+            conditional || literals.length > 1
+          );
         }
         for (const target of aliasTargets(node.initializer)) {
           aliasEdges.push({
@@ -721,9 +742,17 @@ export function scanRuleStateReads(
         nextChain[0] ??
         source;
       const conditional = isConditionallyReached(node);
-      const replacement = unwrap(node.right);
-      if (ts.isObjectLiteralExpression(replacement)) {
-        recordObjectLiteral(assignOwner, left, replacement, node.getStart(), conditional);
+      const replacements = objectLiteralTargets(node.right);
+      for (const replacement of replacements) {
+        recordObjectLiteral(
+          assignOwner,
+          left,
+          replacement,
+          node.getStart(),
+          // Either literal may be the one the runtime took, and the name may
+          // still hold the container it replaced.
+          conditional || replacements.length > 1
+        );
       }
       for (const target of aliasTargets(node.right)) {
         aliasEdges.push({
@@ -1163,7 +1192,11 @@ export function scanRuleStateReads(
         // A write through the container replaces what the declaration named.
         const written = binding.members?.get(key);
         if (written && written.length > 0) return written;
-        return containerMembers(binding.initializer, key, scope, new Set([...seen, value.text]));
+        const next = new Set([...seen, value.text]);
+        // A container that replaced another conditionally still answers for it.
+        return [binding.initializer, ...(binding.alternates ?? [])].flatMap((held) =>
+          containerMembers(held, key, scope, next)
+        );
       }
     }
     return [];
@@ -1807,7 +1840,21 @@ export function scanRuleStateReads(
     ) {
       const name = node.left.text;
       const owner = scopeBinding(current, name) ?? current;
+      const replaced = owner.bindings.get(name);
       declareConditionally(owner, name, node.left, current, node.right);
+      const next = owner.bindings.get(name);
+      const uncertain =
+        isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(owner.node));
+      if (uncertain && replaced?.kind === 'token' && next?.kind === 'token') {
+        declare(owner, name, {
+          ...next,
+          alternates: [
+            ...(next.alternates ?? []),
+            replaced.initializer,
+            ...(replaced.alternates ?? []),
+          ],
+        });
+      }
     }
 
     if (

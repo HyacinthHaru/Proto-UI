@@ -2312,4 +2312,67 @@ describe('collectProtoStyleTokens', () => {
       else expect(tokens, label).not.toContain('data-[first-flag]:bg-accent');
     }
   });
+  it('keeps the replaced container when the replacement may be skipped', async () => {
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        '    let controls = { ready: first };',
+        '    if (enabled) controls = { ready: second };',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(controls.ready).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[first-flag]:bg-accent');
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+  });
+
+  it('reads both containers a conditional replacement may install', async () => {
+    // The assignment itself always runs, so the replaced container is gone and
+    // only the two the conditional may install have variants.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        "    const third = def.state.bool('thirdFlag', false);",
+        '    let controls = { ready: first };',
+        '    controls = enabled ? { ready: second } : { ready: third };',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(controls.ready).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+    expect(tokens).toContain('data-[third-flag]:bg-accent');
+    expect(tokens).not.toContain('data-[first-flag]:bg-accent');
+  });
 });

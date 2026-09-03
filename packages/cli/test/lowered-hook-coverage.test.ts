@@ -944,6 +944,45 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('keeps the replaced container when the replacement may be skipped', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      'let controls = { ready: first };',
+      'if (enabled) controls = { ready: second };',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals.map((local) => local.attribute).sort()).toEqual([
+      'first-flag',
+      'second-flag',
+    ]);
+  });
+
+  it('reads both containers a conditional replacement may install', () => {
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const first = def.state.bool('firstFlag', false);",
+      "const second = def.state.bool('secondFlag', false);",
+      "const third = def.state.bool('thirdFlag', false);",
+      'let controls = { ready: first };',
+      'controls = enabled ? { ready: second } : { ready: third };',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.unresolved).toEqual([]);
+    expect(scan.exposedLocals.map((local) => local.attribute).sort()).toEqual([
+      'second-flag',
+      'third-flag',
+    ]);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
