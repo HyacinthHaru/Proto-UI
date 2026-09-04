@@ -996,12 +996,23 @@ export function scanRuleStateReads(
           declaredAs: binding.declaredAs,
           exposedAs: binding.exposedAs,
         });
+        // A branch may itself be a conditional, so its own alternatives are
+        // lifted here; `head.alternatives` would otherwise be overwritten by
+        // this key and `bare` would strip the rest's.
+        const seen = new Set([head.declaredAs]);
+        const alternatives: LocalStateBinding[] = [];
+        for (const candidate of [
+          ...(head.alternatives ?? []),
+          ...rest.flatMap((branch) => [bare(branch), ...(branch.alternatives ?? [])]),
+        ]) {
+          if (seen.has(candidate.declaredAs)) continue;
+          seen.add(candidate.declaredAs);
+          alternatives.push(bare(candidate));
+        }
         declare(scope, name.text, {
           ...head,
           exposedAs: exposureFor(name.text, scope) ?? head.exposedAs,
-          alternatives: rest
-            .map(bare)
-            .filter((candidate) => candidate.declaredAs !== head.declaredAs),
+          alternatives,
         });
         return;
       }

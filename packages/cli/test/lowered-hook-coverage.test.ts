@@ -1085,6 +1085,33 @@ describe('lowered hook coverage', () => {
     expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
   });
 
+  it('reports every leaf of a nested local-state conditional', () => {
+    // The gate is the oracle for the extractor, so a blind spot here would let
+    // a future extractor regression on this shape through unnoticed.
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    for (const [label, initializer] of [
+      ['nested on the left', 'a ? (b ? first : second) : third'],
+      ['nested on the right', 'a ? third : (b ? first : second)'],
+    ] as const) {
+      const source = [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        "const third = def.state.bool('thirdFlag', false);",
+        `const current = ${initializer};`,
+        "def.expose.state('visible', current);",
+        `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+
+      expect(scan.unresolved, label).toEqual([]);
+      expect(scan.exposedLocals.map((local) => local.attribute).sort(), label).toEqual([
+        'first-flag',
+        'second-flag',
+        'third-flag',
+      ]);
+    }
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.
