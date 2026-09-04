@@ -1091,7 +1091,7 @@ describe('lowered hook coverage', () => {
     const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
     for (const [label, initializer] of [
       ['nested on the left', 'a ? (b ? first : second) : third'],
-      ['nested on the right', 'a ? third : (b ? first : second)'],
+      ['nested on the right', 'a ? first : (b ? second : third)'],
     ] as const) {
       const source = [
         "const first = def.state.bool('firstFlag', false);",
@@ -1110,6 +1110,22 @@ describe('lowered hook coverage', () => {
         'third-flag',
       ]);
     }
+
+    // The ordinary two-branch merge is unchanged.
+    const flat = scanRuleStateReads(
+      [
+        "const first = def.state.bool('firstFlag', false);",
+        "const second = def.state.bool('secondFlag', false);",
+        'const current = a ? first : second;',
+        "def.expose.state('visible', current);",
+        `def.rule({ when: (w) => w.state(current).eq(true), intent: ${use} });`,
+      ].join('\n')
+    );
+    expect(flat.unresolved).toEqual([]);
+    expect(flat.exposedLocals.map((local) => local.attribute).sort()).toEqual([
+      'first-flag',
+      'second-flag',
+    ]);
   });
 
   it('reports an exposed state whose declared name it cannot read', () => {
