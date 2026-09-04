@@ -963,12 +963,13 @@ function collectExposures(root) {
       if (visible.length === 0) return [name];
       const next = new Set([...seen, name]);
       // A base that may be either of two objects writes to both tables, and
-      // reads consult both; recording under the alias would reach neither.
-      return [
-        ...new Set(
-          visible.flatMap((edge) => containerRoots(edge.target, edge.chain ?? chain, edge.at, next))
-        ),
-      ];
+      // reads consult both; recording under the alias would reach neither. If
+      // every edge out of the name may not have been taken, the name's own
+      // table stays a candidate — a literal branch was recorded under it.
+      const roots = visible.flatMap((edge) =>
+        containerRoots(edge.target, edge.chain ?? chain, edge.at, next)
+      );
+      return [...new Set(visible.every((edge) => edge.conditional) ? [name, ...roots] : roots)];
     }
     return [name];
   };
@@ -1201,6 +1202,9 @@ function collectExposures(root) {
         root;
       const conditional = isConditionallyReached(node);
       const replacements = objectLiteralTargets(node.right);
+      // A conditional may mix a literal with a name; when it can yield more
+      // than one value neither outcome is certain.
+      const valueCount = replacements.length + aliasTargets(node.right).length;
       for (const replacement of replacements) {
         recordObjectLiteral(
           owner,
@@ -1209,7 +1213,7 @@ function collectExposures(root) {
           node.getStart(),
           // Either literal may be the one the runtime took, and the name may
           // still hold the container it replaced.
-          conditional || replacements.length > 1
+          conditional || valueCount > 1
         );
       }
       for (const target of aliasTargets(node.right)) {
@@ -1218,7 +1222,7 @@ function collectExposures(root) {
           name: node.left.text,
           target,
           at: node.getStart(),
-          conditional,
+          conditional: conditional || valueCount > 1,
           chain: [...nextChain, root],
           node,
         });

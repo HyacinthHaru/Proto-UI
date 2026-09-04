@@ -449,12 +449,14 @@ export function scanRuleStateReads(
       const visible = visibleEdges(candidates, at);
       if (visible.length === 0) return [name];
       const next = new Set([...seen, name]);
-      // A base that may be either of two objects writes to both tables.
-      return [
-        ...new Set(
-          visible.flatMap((edge) => containerRoots(edge.target, edge.chain ?? chain, edge.at, next))
-        ),
-      ];
+      // A base that may be either of two objects writes to both tables, and
+      // reads consult both; recording under the alias would reach neither. If
+      // every edge out of the name may not have been taken, the name's own
+      // table stays a candidate — a literal branch was recorded under it.
+      const roots = visible.flatMap((edge) =>
+        containerRoots(edge.target, edge.chain ?? chain, edge.at, next)
+      );
+      return [...new Set(visible.every((edge) => edge.conditional) ? [name, ...roots] : roots)];
     }
     return [name];
   };
@@ -743,6 +745,9 @@ export function scanRuleStateReads(
         source;
       const conditional = isConditionallyReached(node);
       const replacements = objectLiteralTargets(node.right);
+      // A conditional may mix a literal with a name; when it can yield more
+      // than one value neither outcome is certain.
+      const valueCount = replacements.length + aliasTargets(node.right).length;
       for (const replacement of replacements) {
         recordObjectLiteral(
           assignOwner,
@@ -751,7 +756,7 @@ export function scanRuleStateReads(
           node.getStart(),
           // Either literal may be the one the runtime took, and the name may
           // still hold the container it replaced.
-          conditional || replacements.length > 1
+          conditional || valueCount > 1
         );
       }
       for (const target of aliasTargets(node.right)) {
@@ -760,7 +765,7 @@ export function scanRuleStateReads(
           name: left,
           target,
           at: node.getStart(),
-          conditional,
+          conditional: conditional || valueCount > 1,
           chain: [...nextChain, source],
           node,
         });
@@ -1822,9 +1827,13 @@ export function scanRuleStateReads(
               : [member];
           const members = new Map(container.members ?? []);
           for (const key of keys) {
-            // Before the first write the member still lives in the declaration.
+            // Before the first write the member still lives in the declaration —
+            // or in a container this one replaced but may not have.
             const previous =
-              container.members?.get(key) ?? containerMembers(container.initializer, key, current);
+              container.members?.get(key) ??
+              [container.initializer, ...(container.alternates ?? [])].flatMap((held) =>
+                containerMembers(held, key, current)
+              );
             members.set(key, [node.right, ...(uncertain ? previous : [])]);
           }
           declare(target.scope, target.name, { ...container, members });
@@ -1846,8 +1855,16 @@ export function scanRuleStateReads(
       const uncertain =
         isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(owner.node));
       if (uncertain && replaced?.kind === 'token' && next?.kind === 'token') {
+        // Members written into the replaced container are candidates too; its
+        // initializer alone does not carry them.
+        const members = new Map(next.members ?? []);
+        for (const [key, held] of replaced.members ?? []) {
+          const kept = members.get(key) ?? containerMembers(next.initializer, key, current);
+          members.set(key, [...kept, ...held]);
+        }
         declare(owner, name, {
           ...next,
+          ...(members.size > 0 ? { members } : {}),
           alternates: [
             ...(next.alternates ?? []),
             replaced.initializer,

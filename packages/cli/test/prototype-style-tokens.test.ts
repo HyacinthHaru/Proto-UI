@@ -2407,4 +2407,37 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).toContain('data-[second-flag]:bg-accent');
     expect(tokens).toContain('data-[third-flag]:bg-accent');
   });
+  it('keeps the literal branch of a mixed conditional replacement', async () => {
+    // `enabled ? { … } : otherControls` yields two values, so following the
+    // name edge alone abandons the table the literal branch was recorded under.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const first = def.state.bool('firstFlag', false);",
+        "    const second = def.state.bool('secondFlag', false);",
+        "    const third = def.state.bool('thirdFlag', false);",
+        '    const otherControls = { ready: third };',
+        '    let controls = { ready: first };',
+        '    controls = enabled ? { ready: second } : otherControls;',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(controls.ready).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    const tokens = await collectProtoStyleTokens(dir);
+    expect(tokens).toContain('data-[second-flag]:bg-accent');
+    expect(tokens).toContain('data-[third-flag]:bg-accent');
+  });
 });
