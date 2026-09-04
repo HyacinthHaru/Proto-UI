@@ -93,6 +93,11 @@ type Binding =
       members?: Map<string, ts.Expression[]>;
       /** Containers the name may still hold because a write may be skipped. */
       alternates?: ts.Expression[];
+      /**
+       * Some branch of this container's value is not a form the scanner can
+       * resolve, so its member set is known to be incomplete.
+       */
+      opaque?: boolean;
     }
   /** A named import; only a relative one is something the extractor follows. */
   | { kind: 'tokenImport'; specifier: string; imported: string; from?: string }
@@ -264,6 +269,20 @@ function isDeferredWrite(node: ts.Node, readFunction: ts.Node | null): boolean {
   if (writing === readFunction) return false;
   if (!writing || !runsInPlace(writing)) return true;
   return !reachedInPlace(node, writing);
+}
+
+/** Every runtime branch of a conditional, whether or not this recognizes it. */
+function conditionalLeafCount(node: ts.Node): number {
+  const value =
+    ts.isParenthesizedExpression(node) ||
+    ts.isAsExpression(node) ||
+    ts.isTypeAssertionExpression(node) ||
+    ts.isNonNullExpression(node)
+      ? conditionalLeafCount(node.expression)
+      : null;
+  if (value !== null) return value;
+  if (!ts.isConditionalExpression(node)) return 1;
+  return conditionalLeafCount(node.whenTrue) + conditionalLeafCount(node.whenFalse);
 }
 
 /** `var` binds to the function however deeply the declaration is nested. */
@@ -747,7 +766,8 @@ export function scanRuleStateReads(
       const replacements = objectLiteralTargets(node.right);
       // A conditional may mix a literal with a name; when it can yield more
       // than one value neither outcome is certain.
-      const valueCount = replacements.length + aliasTargets(node.right).length;
+      // Every branch counts, not only the ones this recognizes.
+      const valueCount = conditionalLeafCount(node.right);
       for (const replacement of replacements) {
         recordObjectLiteral(
           assignOwner,
@@ -1076,7 +1096,16 @@ export function scanRuleStateReads(
     // the same scope chain means two blocks may each declare `TOKENS` without
     // either becoming ambiguous, which is what the extractor's scopes do.
     if (ts.isIdentifier(name)) {
-      declare(scope, name.text, { kind: 'token', initializer });
+      // A conditional whose branches are only partly recognized would otherwise
+      // read as if the recognized ones were all of them.
+      const recognized =
+        objectLiteralTargets(initializer).length + aliasTargets(initializer).length;
+      const partial = recognized > 0 && recognized < conditionalLeafCount(initializer);
+      declare(scope, name.text, {
+        kind: 'token',
+        initializer,
+        ...(partial ? { opaque: true } : {}),
+      });
     }
   };
 
@@ -1143,6 +1172,10 @@ export function scanRuleStateReads(
       }
       // `const controls = { ready: flag }` — production reads the container the
       // same way it reads an `asHook` bag, so this is not a blind spot.
+      // A container with an unresolvable branch is: certifying the members it
+      // does show would vouch for a set the runtime can step outside of.
+      const owner = ownerOf(argument);
+      if (owner && containerIsOpaque(owner, scope)) return null;
       const held = memberOfHandleObject(argument, scope);
       if (held.length === 0) return null;
       const reads = held.map((expression) => readState(expression, scope));
@@ -1252,6 +1285,25 @@ export function scanRuleStateReads(
       if (next.length > 0) return next;
     }
     return [{ scope: owner, name: value.text }];
+  };
+
+  /** Whether any container this base may name has an unresolvable branch. */
+  const containerIsOpaque = (node: ts.Node, scope: Scope, seen = new Set<string>()): boolean => {
+    const value = unwrap(node);
+    if (ts.isConditionalExpression(value)) {
+      return (
+        containerIsOpaque(value.whenTrue, scope, seen) ||
+        containerIsOpaque(value.whenFalse, scope, seen)
+      );
+    }
+    if (!ts.isIdentifier(value) || seen.has(value.text)) return false;
+    const binding = lookup(scope, value.text);
+    if (binding?.kind !== 'token') return false;
+    if (binding.opaque) return true;
+    const next = new Set([...seen, value.text]);
+    return [binding.initializer, ...(binding.alternates ?? [])].some((held) =>
+      containerIsOpaque(held, scope, next)
+    );
   };
 
   const memberOfHandleObject = (node: ts.Node, scope: Scope): ts.Expression[] => {

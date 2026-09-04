@@ -1065,6 +1065,26 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('refuses to certify a container with an unresolvable branch', () => {
+    // `enabled ? { … } : makeControls()` can leave the member on a handle this
+    // never sees. Certifying the branch it does see would vouch for a set the
+    // runtime can step outside of, so the shape has to go unresolved instead.
+    const use = "(i) => i.feedback.style.use(tw('bg-accent'))";
+    const source = [
+      "const second = def.state.bool('secondFlag', false);",
+      "const third = def.state.bool('thirdFlag', false);",
+      'const makeControls = () => ({ ready: third });',
+      'let controls = { ready: second };',
+      'controls = enabled ? { ready: second } : makeControls();',
+      "def.expose.state('visible', controls.ready);",
+      `def.rule({ when: (w) => w.state(controls.ready).eq(true), intent: ${use} });`,
+    ].join('\n');
+    const scan = scanRuleStateReads(source);
+
+    expect(scan.exposedLocals).toEqual([]);
+    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['subject']);
+  });
+
   it('reports an exposed state whose declared name it cannot read', () => {
     // The extractor emits nothing for this, so certifying the expose key would
     // be the fail-closed mismatch this gate exists to prevent.

@@ -2440,4 +2440,35 @@ describe('collectProtoStyleTokens', () => {
     expect(tokens).toContain('data-[second-flag]:bg-accent');
     expect(tokens).toContain('data-[third-flag]:bg-accent');
   });
+  it('still emits what it can prove when a conditional branch is opaque', async () => {
+    // The extractor cannot see through `makeControls()`, so it emits the branch
+    // it can prove and the coverage gate refuses to certify the shape at all —
+    // that pairing is what keeps the unseen branch from shipping without CSS.
+    await writeFile(
+      path.join(dir, 'widget.proto.ts'),
+      [
+        "import { definePrototype, tw } from '@proto.ui/core';",
+        '',
+        'const widget = definePrototype({',
+        "  name: 'widget',",
+        '  setup(def) {',
+        "    const second = def.state.bool('secondFlag', false);",
+        "    const third = def.state.bool('thirdFlag', false);",
+        '    const makeControls = () => ({ ready: third });',
+        '    let controls = { ready: second };',
+        '    controls = enabled ? { ready: second } : makeControls();',
+        "    def.expose.state('visible', controls.ready);",
+        '    def.rule({',
+        '      when: (w) => w.state(controls.ready).eq(true),',
+        "      intent: (i) => i.feedback.style.use(tw('bg-accent')),",
+        '    });',
+        '  },',
+        '});',
+        '',
+        'export default widget;',
+      ].join('\n')
+    );
+
+    expect(await collectProtoStyleTokens(dir)).toContain('data-[second-flag]:bg-accent');
+  });
 });

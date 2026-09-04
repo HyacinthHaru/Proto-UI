@@ -196,6 +196,13 @@ function isVarList(list) {
   );
 }
 
+/** Every runtime branch of a conditional, whether or not this recognizes it. */
+function conditionalLeafCount(node) {
+  const value = unwrapTransparent(node);
+  if (!ts.isConditionalExpression(value)) return 1;
+  return conditionalLeafCount(value.whenTrue) + conditionalLeafCount(value.whenFalse);
+}
+
 /** Every semantic a binding may stand for, the declared one first. */
 function bindingSemantics(binding) {
   if (!binding) return [];
@@ -1204,7 +1211,9 @@ function collectExposures(root) {
       const replacements = objectLiteralTargets(node.right);
       // A conditional may mix a literal with a name; when it can yield more
       // than one value neither outcome is certain.
-      const valueCount = replacements.length + aliasTargets(node.right).length;
+      // Every branch counts, not only the ones this recognizes: an
+      // unrecognized branch is still a value the name may end up holding.
+      const valueCount = conditionalLeafCount(node.right);
       for (const replacement of replacements) {
         recordObjectLiteral(
           owner,
