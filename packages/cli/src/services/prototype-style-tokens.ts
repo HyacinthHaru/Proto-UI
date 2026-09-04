@@ -632,7 +632,11 @@ function resolveBinding(node, scope) {
     }
     // Neither branch is a handle, but the name may still be either object, so
     // it carries both and a member write through it reaches both tables.
-    const containers = branches.filter((branch) => branch.semanticMap);
+    // Flattened, because a branch may itself be a conditional: the candidates
+    // are the leaves the runtime can land on, not the composites above them.
+    const containers = branches.flatMap(
+      (branch) => branch.containers ?? (branch.semanticMap ? [branch] : [])
+    );
     if (containers.length > 0) return { ...branches[0], containers };
   }
 
