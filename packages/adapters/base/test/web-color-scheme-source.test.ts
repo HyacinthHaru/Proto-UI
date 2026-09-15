@@ -46,7 +46,7 @@ function createHost() {
   };
 }
 
-function subscribe(invalidate = vi.fn()) {
+function subscribe(invalidate: () => void = vi.fn()) {
   const getter = createDefaultWebMetaGetter();
   const source = createDefaultWebColorSchemeSource(getter)!;
   const off = source.subscribe(invalidate);
@@ -167,6 +167,35 @@ describe('default Web color scheme source', () => {
     await Promise.resolve();
     expect(first.invalidate).toHaveBeenCalledTimes(1);
     expect(second.invalidate).toHaveBeenCalledTimes(2);
+  });
+
+  it('continues notifying active subscribers while surfacing each callback failure', () => {
+    const host = createHost();
+    const microtasks: (() => void)[] = [];
+    vi.stubGlobal('queueMicrotask', (callback: () => void) => microtasks.push(callback));
+    const firstError = new Error('first consumer failed');
+    const secondError = new Error('second consumer failed');
+    subscribe(() => {
+      throw firstError;
+    });
+    subscribe(() => {
+      throw secondError;
+    });
+    const healthy = subscribe();
+
+    for (const dark of [true, false]) {
+      host.setDark(dark);
+      const reported: unknown[] = [];
+      while (microtasks.length) {
+        try {
+          microtasks.shift()!();
+        } catch (error) {
+          reported.push(error);
+        }
+      }
+      expect(healthy.invalidate).toHaveBeenCalledTimes(dark ? 1 : 2);
+      expect(reported).toEqual([firstError, secondError]);
+    }
   });
 
   it('invalidates queued and late callbacks after final release and reconnects freshly', async () => {

@@ -24,6 +24,7 @@ cases:
     expectation: one-service-per-document-final-release-and-generation-safe-batches
     notes:
       - The controlled observer/MQL host proves resource ownership and notifications, not browser painting or separate bundle uniqueness.
+      - Throwing subscribers do not prevent later active subscribers from receiving the same or later theme changes; each original callback error remains observable from a queued task.
   - id: T-RULE-COLOR-SCHEME-0001-CASE-SOURCE-AVAILABILITY
     title: Missing DOM observation withholds the source and missing MQL retains markers
     covers: [C-RULE-COLOR-SCHEME-0001-F, HC-COLOR-SCHEME-INVALIDATION-0001-E]
@@ -129,7 +130,7 @@ implementations:
       - T-RULE-COLOR-SCHEME-0001-CASE-SOURCE-RESOURCES
       - T-RULE-COLOR-SCHEME-0001-CASE-SOURCE-AVAILABILITY
     notes:
-      - Seven controlled-host tests cover the default service; no actual computed-style claim.
+      - Eight controlled-host tests cover the default service; no actual computed-style claim.
   - id: rule-owner
     kind: runtime-test
     status: passing

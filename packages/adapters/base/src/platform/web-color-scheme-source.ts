@@ -30,7 +30,14 @@ function createDocumentSource(doc: Document) {
             if (nextValue === lastValue) return;
             lastValue = nextValue;
             for (const entry of [...listeners]) {
-              if (listeners.has(entry)) entry.invalidate();
+              if (!listeners.has(entry)) continue;
+              try {
+                entry.invalidate();
+              } catch (error) {
+                queueMicrotask(() => {
+                  throw error;
+                });
+              }
             }
           });
         };

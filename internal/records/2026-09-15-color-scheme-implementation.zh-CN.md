@@ -53,3 +53,11 @@ corepack pnpm@10.32.1 exec vitest run apps/www/test/color-scheme.browser.test.ts
 完整 `corepack pnpm@10.32.1 test` 已通过：468 个非浏览器测试文件、2,228 项测试通过，另有原有 3 个 skipped 文件 / 34 项 TODO；19 个浏览器测试文件、90 项测试通过；发布脚本 52 项测试通过。完整类型检查含 202 个 Astro 文件，零错误、警告或提示；43 个公共包构建、43 个 manifest 和全部 package budget 检查通过。WC gzip 为 75,655 / 76,000 bytes，未提高预算。Spec 23 个文件 / 150 项测试、authoring、prototype catalog 和 Agent projection 检查通过。
 
 首次完整测试在 Agent assessment helper 读取超过 1 MiB 的未提交 binary diff 时触发 `ENOBUFS`，尚未进入产品测试。将同一候选保存为本地签名提交、保持工作区干净后，原完整命令通过；没有修改该工具或跳过检查。独立本地增量审查为 partial / ABSTAIN：资源释放、首帧/目标替换和实际配方三项证据缺口已在声明范围内解决，React 初始化差异已归因于基线。该审查不替代平台 review 或稳定化准入；所有新实体保持 draft。
+
+## PR 审查后的订阅者异常隔离
+
+[#653 审查](https://github.com/Proto-UI/Proto-UI/pull/653#discussion_r4012842045)指出，较早订阅者抛错会中断共享 source 的广播，使后续正常订阅者收不到主题变化。新增回归先复现正常订阅者调用次数为零；修复仅在逐订阅调用处隔离异常，继续原批次中仍活动的订阅，并将每个原异常分别在 microtask 中重新抛出。没有吞错、聚合或重试订阅者，也不扩展其它模块的异常策略。Source 测试由 7 项增至 8 项，相关 Source / Runtime / 四 Adapter 共 36 项 focused 测试通过。
+
+原 8 项真实浏览器 case 重跑通过，并复看四运行时的暗色截图。额外 Chromium 检查中，两个抛错订阅者在 dark、light 两轮变化分别进入原生 `pageerror` 通道，共四个预期错误；后续正常订阅者两轮均收到通知，等待 CSS 过渡完成后的 WC Button 分别为 `/20`、`/10`，全部释放后 observer/MQL 归零。完整类型检查、43 个包构建、manifest 和 budget 再次通过，WC gzip 为 75,664 / 76,000 bytes。
+
+修复后完整 `corepack pnpm@10.32.1 test` 通过：468 个非浏览器文件 / 2,229 项测试、19 个浏览器文件 / 90 项测试、52 项发布脚本测试；原有 3 个 skipped 文件 / 34 项 TODO 保留。独立增量审查未留下未解决问题，结论仍为 partial / ABSTAIN。
