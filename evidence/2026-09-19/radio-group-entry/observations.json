@@ -1,0 +1,1281 @@
+{
+  "browser": "153.0.8010.48",
+  "results": [
+    {
+      "controlled": false,
+      "value": "a",
+      "frames": [
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        }
+      ],
+      "afterTab": {
+        "value": "a",
+        "count": 3,
+        "items": [
+          {
+            "value": "a",
+            "checked": "true",
+            "tabIndex": 0,
+            "focused": true
+          },
+          {
+            "value": "b",
+            "checked": "false",
+            "tabIndex": -1,
+            "focused": false
+          },
+          {
+            "value": "c",
+            "checked": "false",
+            "tabIndex": -1,
+            "focused": false
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "controlled": false,
+      "value": "b",
+      "frames": [
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        }
+      ],
+      "afterTab": {
+        "value": "b",
+        "count": 3,
+        "items": [
+          {
+            "value": "a",
+            "checked": "false",
+            "tabIndex": 0,
+            "focused": true
+          },
+          {
+            "value": "b",
+            "checked": "true",
+            "tabIndex": -1,
+            "focused": false
+          },
+          {
+            "value": "c",
+            "checked": "false",
+            "tabIndex": -1,
+            "focused": false
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "controlled": true,
+      "value": "a",
+      "frames": [
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "a",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "true",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        }
+      ],
+      "afterTab": {
+        "value": "a",
+        "count": 3,
+        "items": [
+          {
+            "value": "a",
+            "checked": "true",
+            "tabIndex": 0,
+            "focused": true
+          },
+          {
+            "value": "b",
+            "checked": "false",
+            "tabIndex": -1,
+            "focused": false
+          },
+          {
+            "value": "c",
+            "checked": "false",
+            "tabIndex": -1,
+            "focused": false
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "controlled": true,
+      "value": "b",
+      "frames": [
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        },
+        {
+          "value": "b",
+          "count": 3,
+          "items": [
+            {
+              "value": "a",
+              "checked": "false",
+              "tabIndex": 0,
+              "focused": false
+            },
+            {
+              "value": "b",
+              "checked": "true",
+              "tabIndex": -1,
+              "focused": false
+            },
+            {
+              "value": "c",
+              "checked": "false",
+              "tabIndex": -1,
+              "focused": false
+            }
+          ]
+        }
+      ],
+      "afterTab": {
+        "value": "b",
+        "count": 3,
+        "items": [
+          {
+            "value": "a",
+            "checked": "false",
+            "tabIndex": 0,
+            "focused": true
+          },
+          {
+            "value": "b",
+            "checked": "true",
+            "tabIndex": -1,
+            "focused": false
+          },
+          {
+            "value": "c",
+            "checked": "false",
+            "tabIndex": -1,
+            "focused": false
+          }
+        ]
+      },
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font: 16px system-ui;
+        margin: 32px;
+        color: #171717;
+        background: white;
+      }
+      main {
+        padding: 24px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        width: 440px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 18px;
+      }
+      button {
+        font: inherit;
+        margin-bottom: 16px;
+      }
+      #mount > [role='radiogroup'] {
+        display: grid;
+        gap: 8px;
+        padding: 5px;
+      }
+      .choice {
+        display: block;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+      }
+      .choice[data-checked] {
+        background: #eee;
+        border-color: #171717;
+      }
+      .choice:focus-visible {
+        outline: 3px solid #15803d;
+        outline-offset: 2px;
+      }
+      p {
+        margin: 12px 0 0;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Base Radio Group · initial entry</h1>
+      <button id="start">Tab from here</button>
+      <div id="mount"></div>
+      <p id="value"></p>
+    </main>
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>
