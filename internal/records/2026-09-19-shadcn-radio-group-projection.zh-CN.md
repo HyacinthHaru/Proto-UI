@@ -58,3 +58,20 @@ Root 使用 `grid gap-3`。Item 提供 16px 圆形边框、primary 前景、focu
 本轮只重跑了修改后的 browser suite，不把上一轮完整 `pnpm test` 的退出码 1 改记为通过。T 实体继续将完整 browser implementation 标为非 passing，同时分别记录已执行的初始入口失败与独立交互通过。Base 前置修复的范围决定仍未到达。
 
 另外以 Node 22 直接消费本地构建后的包根及 `@proto.ui/prototypes-shadcn/radio-group`，确认实际解析到 `dist`、subpath 精确六个 runtime exports、同一入口内的大小写别名指向相同 Prototype，以及三 part 名称一致。此项未使用源码 alias，也不声明 tarball 或 registry 消费验证。
+
+## 同日后续：安装 tarball 后的 CLI 消费
+
+以候选 `a7f231b71604055af162730aa3b04450e21805bc` 的实际源码运行既有 release pack 路径，构建并暂存 43 个 tarball。临时消费者安装的是其中 40 个包构成的声明依赖闭包，所有 Proto UI 包都解析到本地 tarball；未安装的三个包是 adapter-vue2、prototypes-brutalist 和 prototypes-lucide。此过程没有发布到 registry。
+
+在临时项目执行真实 CLI init/add，生成 React、Vue、WC 的三个 Radio Group facade parts，再以 Vite 6.4.1 构建生产页面并由 Chromium 153.0.8010.48 执行。三个 host 均通过具名三 Item group、受控 value 从 `b` 到 `a`、checked 从 `[false,true,false]` 到 `[true,false,false]`、两个显式 Indicator 的实际 opacity 从 `[0,1]` 到 `[1,0]`、disabled facts 及第三项不自动注入 Indicator 的检查，均无 page error。六张前后组件截图已检查；这项消费夹具保留直接文本 children，不替代网站中规范布局、焦点、主题及窄屏的完整交互证据。三个 host 的初始 tabindex 仍为 `[0,-1,-1]`，没有把打包成功记成首次入口通过。
+
+这轮检查还保留了两类环境差异：
+
+- 扩展既有 release consumer smoke 的临时脚本在 React/Vue 的 happy-dom 检查通过，但 WC 报 `base-radio-group-item` provider missing，整体退出码为 1。消费者虽然固定 global-registrator 20.11.0，其传递依赖实际解析到 happy-dom 20.14.5；仓库 Vitest 使用 15.11.7。完全不含 Proto UI 的同一三层离线 customElements 树接入控制实测：15.11.7 与 Chromium 都按 Root → Item → Indicator 调用 connectedCallback，20.14.5 则按 Indicator → Item → Root。源码中的递归连接顺序差异与 provider 尚未建立的错误吻合，但完整 Proto provider 注册/订阅过程未逐次 instrument，也未修复该模拟器。真实 Chromium 中相同的 WC 构造顺序成功，不能覆盖掉模拟器的原始失败。
+- 临时多 host Vite dev driver 关闭了 HMR。首次发现 React 依赖时，React 出现 `no active setup context`；之后新发现 Vue Adapter 时，失败转移至 Vue，WC/React 已通过。全部依赖发现完成后，相同脚本、断言及缓存的三个 host 都通过；生产 bundle 的三个 host 也独立通过。当前安装树没有重复的 core/runtime/context 包，最终可达缓存仅发现一份 AsHook stack 定义，不能据错误字符串宣布存在持久重复 core。原失败、增量优化期间的环境混合假说和 warm-cache 成功分别保留，不声明冷启动问题已定位或修复。已有 #663 涉及 Windows/Astro production-source 的类似字符串，尚不能认定同根因。
+
+这些结果补充包消费与执行环境的证据，没有改变 Base、依赖版本、CLI 生成结果或规范期望，也没有重新分类此前完整 `pnpm test` 的失败。
+
+[公开证据包](https://github.com/HyacinthHaru/Proto-UI/tree/980cd72335db1a07dedd69c5857522abf0dc9b8d/evidence/2026-09-19/radio-group-projection)保存于独立证据分支，包含 22 张原始组件截图、观测、保留的失败、可移植复现入口及 SHA-256 清单。准备入口随后实际创建了新的 40 包消费者，production capture 与三个连接顺序 probe 均成功执行；六张新 production PNG 与保存的原图逐字节一致。可移植 helper 的 dev 模式没有在这一轮重新执行。
+
+独立本地审查核对了范围、来源、格式归一化和完整性；提交后，全部 56 个公开文件均通过匿名下载与逐字节回读验证。[进展评论](https://github.com/Proto-UI/Proto-UI/issues/662#issuecomment-5742434829)已补充到 #662，明确保持 partial、首次入口失败及既有 Base 前置范围请求，不声明产品接受或合并完成。
