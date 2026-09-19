@@ -46,3 +46,15 @@ Root 使用 `grid gap-3`。Item 提供 16px 圆形边框、primary 前景、focu
 | 完整 `pnpm test` 尝试 | 非浏览器 477 文件 / 2,359 项通过，原有 3 skipped 文件 / 34 TODO 保留；浏览器 23 文件 / 107 项通过，新增 Radio Group 的 1 文件 / 4 项初始入口断言失败。整体退出码 1。 |
 
 浏览器的后续键盘、pointer、主题与窄屏 journey 仍需在入口前置问题解决后完整执行，不据已有挂载和初始样式观察宣称这些路径通过。完整交付、独立审查和合并尚未完成。
+
+## 同日后续：独立执行交互与视觉路径
+
+首轮完整测试之后，将每个 runtime 的初始入口与后续交互拆成两个 required case，共八个 case。初始入口仍在任何 Item 输入之前严格要求 non-first selected Item 为 tabindex=0，没有重排 demo、注入焦点或改写期望。交互 case 先真实点击 Default、Comfortable，并分别等待 Root expose 的实际值变化，再验证原生 Shift+Tab/Tab 重入，因此不能替代首次入口证据。
+
+2026-09-19 20:20（Asia/Shanghai）的 focused browser 执行结果是四个初始入口失败、四个独立交互通过。通过路径实际执行了双轴方向键及 Home/End、空组 Tab/Enter 不选与 Space 选择、pointer down 与外部 release 不提交、成功 release 提交、item/group disabled、light/dark 切换，以及 320px 窄屏。负断言等待 demo 的 observer/rAF 投影边界后，同时检查 checked facts 和显示值，避免尚未更新的旧文本造成假绿。四个 runtime 均无 page error。
+
+实际测量为 16px Item、8px SVG、12px gap、150ms color/box-shadow transition、键盘焦点的 3px ring，dark input 背景 alpha 为 0.045；主题与宽度变化保留已经选择的 value。截图改为包含 preview 的真实 padding，避免把内容边界外的 focus ring 截掉；窄屏先居中滚动，让整个卡片与值读数进入截图，未改组件样式或隐藏页面元素。
+
+本轮只重跑了修改后的 browser suite，不把上一轮完整 `pnpm test` 的退出码 1 改记为通过。T 实体继续将完整 browser implementation 标为非 passing，同时分别记录已执行的初始入口失败与独立交互通过。Base 前置修复的范围决定仍未到达。
+
+另外以 Node 22 直接消费本地构建后的包根及 `@proto.ui/prototypes-shadcn/radio-group`，确认实际解析到 `dist`、subpath 精确六个 runtime exports、同一入口内的大小写别名指向相同 Prototype，以及三 part 名称一致。此项未使用源码 alias，也不声明 tarball 或 registry 消费验证。

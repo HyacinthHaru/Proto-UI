@@ -82,17 +82,36 @@ async function clickCenter(page: Page, target: Locator) {
   await page.mouse.click(rect.x + rect.width / 2, rect.y + rect.height / 2);
 }
 
+async function waitForValueProjection(page: Page) {
+  // The demo observes checked attributes and publishes its value label on rAF.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+      )
+  );
+}
+
 describe.sequential('Shadcn Radio Group public browser acceptance', () => {
-  it.each(RUNTIMES)(
-    '%s projects selection, focus, disabled and theme states through the real family',
-    async (runtime) => {
+  it.each(
+    RUNTIMES.flatMap((runtime) =>
+      ['initial-entry', 'interaction'].map((scenario) => ({ runtime, scenario }))
+    )
+  )(
+    '$runtime $scenario projects selection, focus, disabled and theme states through the real family',
+    async ({ runtime, scenario }) => {
       const context = await browser.newContext({
         viewport: { width: 1280, height: 1000 },
         colorScheme: 'light',
       });
       const page = await context.newPage();
       const errors: string[] = [];
-      const observations: Record<string, unknown> = { runtime, browser: browser.version() };
+      const observations: Record<string, unknown> = {
+        runtime,
+        scenario,
+        browser: browser.version(),
+      };
+      const evidenceKey = `${runtime}-${scenario}`;
       page.on('pageerror', (error) => errors.push(error.message));
       try {
         await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
@@ -119,18 +138,39 @@ describe.sequential('Shadcn Radio Group public browser acceptance', () => {
         await expect
           .poll(() => value.textContent(), { message: `${runtime}: initial exposed value` })
           .toBe('Value: comfortable');
-        await expect
-          .poll(async () => (await itemState(selected)).tabIndex, {
-            message: `${runtime}: non-first selected Item must be the initial Tab entry`,
-          })
-          .toBe(0);
+        if (scenario === 'initial-entry') {
+          // P-BASE-RADIO-GROUP-FOCUS-ENTRY: no Item input may establish current
+          // before verifying the initially selected, non-first Tab entry.
+          await expect
+            .poll(async () => (await itemState(selected)).tabIndex, {
+              message: `${runtime}: non-first selected Item must be the initial Tab entry`,
+            })
+            .toBe(0);
+          expect(
+            await Promise.all(
+              [first, selected, compact].map(async (item) => (await itemState(item)).tabIndex)
+            )
+          ).toEqual([-1, 0, -1]);
+          await content.getByText('Density preference', { exact: true }).click();
+          await page.keyboard.press('Tab');
+          await expect.poll(async () => (await itemState(selected)).focused).toBe(true);
+          expect(await value.textContent()).toBe('Value: comfortable');
+          observations.focus = await itemState(selected);
+          observations.errors = errors;
+          expect(errors).toEqual([]);
+          await preview.screenshot({ path: path.join(evidenceDir, `${evidenceKey}.png`) });
+          await writeFile(
+            path.join(evidenceDir, `${evidenceKey}.json`),
+            JSON.stringify(observations, null, 2)
+          );
+          return;
+        }
 
         // P-SHADCN-RADIO-GROUP* visual and passive-part criteria; Base owns
         // checked/effective-disabled, the single entry and accessible names.
         const initial = await Promise.all([first, selected, compact].map(itemState));
         observations.light = initial;
         expect(initial.map((item) => item.checked)).toEqual(['false', 'true', 'false']);
-        expect(initial.map((item) => item.tabIndex)).toEqual([-1, 0, -1]);
         expect(initial.map((item) => item.dotOpacity)).toEqual(['0', '1', '0']);
         expect(await density.evaluate((element) => getComputedStyle(element).rowGap)).toBe('12px');
         for (const item of initial) {
@@ -161,10 +201,26 @@ describe.sequential('Shadcn Radio Group public browser acceptance', () => {
         expect(await disabled.locator('[role="radio"][tabindex="0"]').count()).toBe(0);
         expect(await disabled.locator('[role="radio"][aria-checked="true"]').count()).toBe(1);
         expect(await content.locator('input').count()).toBe(0);
-        await content.screenshot({ path: path.join(evidenceDir, `${runtime}-light.png`) });
+        await preview.screenshot({ path: path.join(evidenceDir, `${evidenceKey}-light.png`) });
 
-        // Click a non-focusable heading, then use a real Tab for group entry.
-        await content.getByText('Density preference', { exact: true }).click();
+        // Independent interaction evidence starts from real pointer selections;
+        // the separate initial-entry case remains required and unmodified.
+        await clickCenter(page, first);
+        await expect.poll(() => value.textContent()).toBe('Value: default');
+        await clickCenter(page, selected);
+        await expect.poll(() => value.textContent()).toBe('Value: comfortable');
+        expect(
+          await Promise.all(
+            [first, selected, compact].map(async (item) => (await itemState(item)).tabIndex)
+          )
+        ).toEqual([-1, 0, -1]);
+
+        // Leave the clicked Item with native input, then re-enter with Tab.
+        await expect.poll(async () => (await itemState(selected)).focused).toBe(true);
+        await page.keyboard.press('Shift+Tab');
+        await expect
+          .poll(() => density.evaluate((element) => element.contains(document.activeElement)))
+          .toBe(false);
         await page.keyboard.press('Tab');
         await expect.poll(async () => (await itemState(selected)).focused).toBe(true);
         await expect.poll(async () => (await itemState(selected)).focusVisible).toBe(true);
@@ -172,7 +228,7 @@ describe.sequential('Shadcn Radio Group public browser acceptance', () => {
           .poll(async () => (await itemState(selected)).shadow)
           .toMatch(/0px 0px 0px 3px/);
         observations.focus = await itemState(selected);
-        await content.screenshot({ path: path.join(evidenceDir, `${runtime}-focus.png`) });
+        await preview.screenshot({ path: path.join(evidenceDir, `${evidenceKey}-focus.png`) });
 
         for (const [key, next] of [
           ['ArrowRight', 'default'],
@@ -188,20 +244,53 @@ describe.sequential('Shadcn Radio Group public browser acceptance', () => {
           expect(await density.locator('[role="radio"][tabindex="0"]').count()).toBe(1);
         }
 
+        // P-BASE-RADIO-GROUP-ITEM activation: Tab and Enter leave an empty
+        // group unselected; Space requests selection of its focused Item.
+        const emptyFirst = empty.getByRole('radio', { name: 'Default', exact: true });
+        await page.keyboard.press('Tab');
+        await expect.poll(async () => (await itemState(emptyFirst)).focused).toBe(true);
+        await page.keyboard.press('Enter');
+        await waitForValueProjection(page);
+        expect(await empty.locator('[role="radio"][aria-checked="true"]').count()).toBe(0);
+        await page.keyboard.press('Space');
+        await expect.poll(() => emptyFirst.getAttribute('aria-checked')).toBe('true');
+        expect(await empty.locator('[role="radio"][aria-checked="true"]').count()).toBe(1);
+        expect(await value.textContent()).toBe('Value: comfortable');
+        observations.emptySelection = await itemState(emptyFirst);
+
         // Base selection commits on release, not on down or an outside release.
         const rect = await first.boundingBox();
         if (!rect) throw new Error('Default radio has no visible geometry.');
         await page.mouse.move(rect.x + rect.width / 2, rect.y + rect.height / 2);
         await page.mouse.down();
+        await waitForValueProjection(page);
         expect(await value.textContent()).toBe('Value: comfortable');
+        expect(
+          await density
+            .getByRole('radio')
+            .evaluateAll((items) => items.map((item) => item.getAttribute('aria-checked')))
+        ).toEqual(['false', 'true', 'false']);
         await page.mouse.move(rect.x + 60, rect.y + rect.height / 2);
         await page.mouse.up();
+        await waitForValueProjection(page);
         expect(await value.textContent()).toBe('Value: comfortable');
+        expect(
+          await density
+            .getByRole('radio')
+            .evaluateAll((items) => items.map((item) => item.getAttribute('aria-checked')))
+        ).toEqual(['false', 'true', 'false']);
         await clickCenter(page, first);
         await expect.poll(() => value.textContent()).toBe('Value: default');
         await clickCenter(page, compact);
+        await waitForValueProjection(page);
         expect(await value.textContent()).toBe('Value: default');
+        expect(
+          await density
+            .getByRole('radio')
+            .evaluateAll((items) => items.map((item) => item.getAttribute('aria-checked')))
+        ).toEqual(['true', 'false', 'false']);
         await clickCenter(page, disabled.getByRole('radio', { name: 'Default', exact: true }));
+        await waitForValueProjection(page);
         expect(
           await disabled
             .getByRole('radio', { name: 'Comfortable', exact: true })
@@ -219,10 +308,10 @@ describe.sequential('Shadcn Radio Group public browser acceptance', () => {
             (item) => item.dotOpacity
           )
         ).toEqual(['1', '0', '0']);
-        await content.screenshot({ path: path.join(evidenceDir, `${runtime}-dark.png`) });
+        await preview.screenshot({ path: path.join(evidenceDir, `${evidenceKey}-dark.png`) });
 
         await page.setViewportSize({ width: 320, height: 900 });
-        await content.scrollIntoViewIfNeeded();
+        await preview.evaluate((element) => element.scrollIntoView({ block: 'center' }));
         await expect
           .poll(() => page.evaluate(() => document.documentElement.scrollWidth))
           .toBeLessThanOrEqual(321);
@@ -232,25 +321,25 @@ describe.sequential('Shadcn Radio Group public browser acceptance', () => {
           1
         );
         expect(await value.textContent()).toBe('Value: default');
-        await content.screenshot({ path: path.join(evidenceDir, `${runtime}-narrow.png`) });
+        await preview.screenshot({ path: path.join(evidenceDir, `${evidenceKey}-narrow.png`) });
         await applyColorScheme(page, 'light');
         await expect.poll(async () => alpha((await itemState(first)).background)).toBe(0);
         expect(await value.textContent()).toBe('Value: default');
         expect(errors).toEqual([]);
         observations.errors = errors;
         await writeFile(
-          path.join(evidenceDir, `${runtime}.json`),
+          path.join(evidenceDir, `${evidenceKey}.json`),
           JSON.stringify(observations, null, 2)
         );
       } catch (error) {
         observations.errors = errors;
         observations.failure = String(error);
         await writeFile(
-          path.join(evidenceDir, `${runtime}-failure.json`),
+          path.join(evidenceDir, `${evidenceKey}-failure.json`),
           JSON.stringify(observations, null, 2)
         );
         await page.screenshot({
-          path: path.join(evidenceDir, `${runtime}-failure.png`),
+          path: path.join(evidenceDir, `${evidenceKey}-failure.png`),
           fullPage: true,
         });
         throw new Error(`${String(error)}\nBrowser errors: ${errors.join('\n')}`, { cause: error });

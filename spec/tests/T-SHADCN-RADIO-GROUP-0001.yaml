@@ -136,7 +136,8 @@ implementations:
     consumesCases: [T-SHADCN-RADIO-GROUP-0001-CASE-BROWSER]
     exercises: *radio-group-prototypes
     notes:
-      - Executed WC, React, Vue and Vue 2 public-page runs fail the non-first-selected initial Tab-entry assertion. This required acceptance implementation is not passing, and later browser assertions are not counted as executed evidence.
+      - Eight required public-page cases separate initial entry from subsequent interaction in WC, React, Vue and Vue 2. All four non-first-selected initial Tab-entry cases still fail; the complete browser implementation is not passing.
+      - Four independent interaction cases pass after real pointer selections establish current. Executed evidence includes native Shift+Tab/Tab re-entry, both arrow axes and Home/End, empty-group Tab/Enter no-selection and Space selection, pointer cancellation and commit, disabled controls, computed geometry and focus feedback, light/dark changes and a 320px layout. These results do not satisfy the separate initial-entry cases.
       - A separate clean-baseline WC reproduction at 3b756f450e7505e834629e2aef67f7b29afa94e7 confirms the unchanged Base entry mismatch; the bounded prerequisite is tracked at https://github.com/Proto-UI/Proto-UI/issues/662#issuecomment-5741460931. The selected-or-first expectation remains unchanged.
 verifies:
   prototypes:
