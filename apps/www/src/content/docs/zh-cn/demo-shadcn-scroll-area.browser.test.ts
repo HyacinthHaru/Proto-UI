@@ -64,8 +64,7 @@ describe.sequential('shadcn Scroll Area browser acceptance', () => {
               document.querySelectorAll('[data-previewer-id] wc-shadcn-select-item')
             ).some(
               (item) =>
-                item.getBoundingClientRect().width > 0 &&
-                item.getBoundingClientRect().height > 0
+                item.getBoundingClientRect().width > 0 && item.getBoundingClientRect().height > 0
             ),
           undefined,
           { timeout: 10_000 }
