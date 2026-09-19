@@ -1,0 +1,5 @@
+{
+  "host": "happy-dom",
+  "version": "20.14.5",
+  "order": ["probe-indicator", "probe-item", "probe-root"]
+}

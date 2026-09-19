@@ -1,0 +1,12 @@
+8:52:43 PM [vite] (client) ✨ new dependencies optimized: @proto.ui/adapter-vue
+8:52:43 PM [vite] (client) ✨ optimized dependencies changed. reloading
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 15000ms exceeded.
+    at <anonymous> (<TASK>/radio-tarball-browser.mts:29:14) {
+  name: 'TimeoutError'
+}
+
+Node.js v22.23.2

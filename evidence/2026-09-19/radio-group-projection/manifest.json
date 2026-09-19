@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "candidate": "a7f231b71604055af162730aa3b04450e21805bc",
+  "base": "3b756f450e7505e834629e2aef67f7b29afa94e7",
+  "evidenceBranchStartingHead": "cd4cede77dcd9f30011e5466dd54f8a920514c48",
+  "captureDate": "2026-09-19",
+  "disposition": {
+    "preview": "4 required initial-entry failures; 4 independent interaction passes",
+    "consumer": "3 production hosts pass bounded mount/controlled-update/Indicator/CSS observations; initial entry separate",
+    "environment": "happy-dom20.14.5 child-first differs from15.11.7 andChrome; dev discovery failures followed by warm success, no cold-start guarantee"
+  },
+  "pngCount": 22,
+  "normalization": "All 22 PNG bytes preserved. Observation JSON values preserved with repository Prettier whitespace formatting; two happy-dom records also normalize module paths and record inspected versions. Logs have documented machine-path replacements and trailing-whitespace normalization. No private prompts/configuration/dependencies/build outputs included. Manifest excludes itself.",
+  "portableHelperExecution": "After preparation, prepare-consumer, production capture for WC/React/Vue and all three connection-order probes exited 0; all six new production PNGs match retained captures byte-for-byte. See validation/portable-validation.json. Portable dev mode was not executed in this validation round.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 18793,
+      "sha256": "26a168e93ad03b0073a07419a9d2d0ddba45a04fcd2ddf094f136c55f6c9f052"
+    },
+    {
+      "path": "consumer/package-closure.json",
+      "bytes": 11847,
+      "sha256": "50484bd9796fd28553dc378648ca2ea1442bab5f30c4e19a88824425c57c8a62"
+    },
+    {
+      "path": "consumer/production.json",
+      "bytes": 2096,
+      "sha256": "dacae712bfc3bd858bdfcc1c8ac806c49d32accd1556291e792535e71ede003d",
+      "sourceFile": "radio-tarball-production.json",
+      "sourceSha256": "0a893e1fb66fa3dc7767fec58108fde46db4fc724c160bc149f2e98e8a6efc28",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "consumer/radio-tarball-production-react-initial.png",
+      "bytes": 3642,
+      "sha256": "acd5d0d28a4ca94e0d160367cf0cddbf8695ff08ab0d27fcdfe91688c233b009",
+      "sourceFile": "radio-tarball-production-react-initial.png",
+      "sourceSha256": "acd5d0d28a4ca94e0d160367cf0cddbf8695ff08ab0d27fcdfe91688c233b009",
+      "transformation": "none",
+      "dimensions": {
+        "width": 330,
+        "height": 172
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "consumer/radio-tarball-production-react-updated.png",
+      "bytes": 3638,
+      "sha256": "fb7b3cfa07f4652042cd7d7417796d87f26f1ff1050ab628d3aa5e181899a6e4",
+      "sourceFile": "radio-tarball-production-react-updated.png",
+      "sourceSha256": "fb7b3cfa07f4652042cd7d7417796d87f26f1ff1050ab628d3aa5e181899a6e4",
+      "transformation": "none",
+      "dimensions": {
+        "width": 330,
+        "height": 172
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "consumer/radio-tarball-production-vue-initial.png",
+      "bytes": 3271,
+      "sha256": "ffb5e4ec91c18527ec935ebf748b998da73f432b5c673d27f6f0689ada2e11ed",
+      "sourceFile": "radio-tarball-production-vue-initial.png",
+      "sourceSha256": "ffb5e4ec91c18527ec935ebf748b998da73f432b5c673d27f6f0689ada2e11ed",
+      "transformation": "none",
+      "dimensions": {
+        "width": 330,
+        "height": 172
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "consumer/radio-tarball-production-vue-updated.png",
+      "bytes": 3274,
+      "sha256": "f29a4b33884a39d7ae4fb3ba9042a8be945c40c69e4b0c6b67d8b2cddc9a7d80",
+      "sourceFile": "radio-tarball-production-vue-updated.png",
+      "sourceSha256": "f29a4b33884a39d7ae4fb3ba9042a8be945c40c69e4b0c6b67d8b2cddc9a7d80",
+      "transformation": "none",
+      "dimensions": {
+        "width": 330,
+        "height": 172
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "consumer/radio-tarball-production-wc-initial.png",
+      "bytes": 3190,
+      "sha256": "c48c0b5500c3282fee12d2a1aef1b7b21557a8e7a7de99c51d33b9bcf657224b",
+      "sourceFile": "radio-tarball-production-wc-initial.png",
+      "sourceSha256": "c48c0b5500c3282fee12d2a1aef1b7b21557a8e7a7de99c51d33b9bcf657224b",
+      "transformation": "none",
+      "dimensions": {
+        "width": 330,
+        "height": 172
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "consumer/radio-tarball-production-wc-updated.png",
+      "bytes": 3192,
+      "sha256": "09e636fb63bb9773e26b43b421f359a1bb6c1b509cfb9547b9b7bb4f7fb11d02",
+      "sourceFile": "radio-tarball-production-wc-updated.png",
+      "sourceSha256": "09e636fb63bb9773e26b43b421f359a1bb6c1b509cfb9547b9b7bb4f7fb11d02",
+      "transformation": "none",
+      "dimensions": {
+        "width": 330,
+        "height": 172
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "environment/custom-element-order-chromium.json",
+      "bytes": 188,
+      "sha256": "b99e8b41fa3b35ecf2444669e7fc81a5cf92c7d0b3d1604100ac80d8b964158a",
+      "sourceFile": "custom-element-order-chromium.json",
+      "sourceSha256": "48fb6b0cf10f186967b9543143cc711f37cd98119a9628ea46539e6f0069304c",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "environment/custom-element-order-consumer.json",
+      "bytes": 149,
+      "sha256": "fa39a043339525589d619c9828c2a41213898a59d09c956f79703180db71938b",
+      "sourceFile": "custom-element-order-consumer.json",
+      "sourceSha256": "0ea4f4b42c2033a94628dbb1fe648d257267a33395da7743a9d4b20d5b14b783",
+      "transformation": "Only module path normalized; installed version added from inspected package.json. Order unchanged.; repository Prettier whitespace formatting"
+    },
+    {
+      "path": "environment/custom-element-order-workspace.json",
+      "bytes": 150,
+      "sha256": "331074131823b6455d23e7bd2e01d6d73697757e89aa845a7cccfc8f428ad553",
+      "sourceFile": "custom-element-order-workspace.json",
+      "sourceSha256": "cfe26379dc5e52375e6d2a9428103f1af22ea80c2d1dc9db07c70fc33421d0f1",
+      "transformation": "Only module path normalized; installed version added from inspected package.json. Order unchanged.; repository Prettier whitespace formatting"
+    },
+    {
+      "path": "environment/dev-first-failure.json",
+      "bytes": 838,
+      "sha256": "232952409115f34636c8d994b922bf36ebc21d118231cfddc8afcfc56f7619ca",
+      "sourceFile": "radio-tarball-browser-dev-optimizer-failure.json",
+      "sourceSha256": "9820ae99eeeb9f334ad81b7ca47fd0ee71809fb1ed70fa8a88fc5df3b6204600",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "environment/dev-vue-discovery-failure.json",
+      "bytes": 1505,
+      "sha256": "49fe92235c5dd2d4e9565bd86c115f3271455a1ebad20fa7633b9cf170ce0179",
+      "sourceFile": "radio-tarball-browser-vue-discovery-failure.json",
+      "sourceSha256": "0db75d3630f7cc4c2b52ffbac1dda8c83aee293fde7296040a97347f42fcb4fe",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "environment/dev-warm.json",
+      "bytes": 2063,
+      "sha256": "e5aad0b9bd9f14d3f2dd82fc1b0bdd68c874b54392ad9c51cddf7d55df5b18ab",
+      "sourceFile": "radio-tarball-browser.json",
+      "sourceSha256": "13fe64dbafab47a1c1d80922121789a829b7ca01f4089722f33e860f742e3228",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "logs/consumer-production.log",
+      "bytes": 4350,
+      "sha256": "e5ea08095fea9cade3a10f40203f3815dcad34efe42ecf9b9a6a04b628174101",
+      "sourceFile": "radio-tarball-production.log",
+      "sourceSha256": "e5ea08095fea9cade3a10f40203f3815dcad34efe42ecf9b9a6a04b628174101",
+      "transformation": "Machine-specific absolute paths replaced with documented placeholders; failure/results unchanged.; trailing whitespace and redundant final blank lines removed"
+    },
+    {
+      "path": "logs/consumer-smoke.log",
+      "bytes": 12965,
+      "sha256": "d5079c385b003c6f31d239d0d00ca0484247b6c87071af4366b409713890b378",
+      "sourceFile": "radio-tarball-consumer.log",
+      "sourceSha256": "75ed10ecfeb7d18b0b4f3fa1b9b327d92fbd631dbedc6ba19920e30f0cfed7ae",
+      "transformation": "Machine-specific absolute paths replaced with documented placeholders; failure/results unchanged.; trailing whitespace and redundant final blank lines removed"
+    },
+    {
+      "path": "logs/dev-first.log",
+      "bytes": 576,
+      "sha256": "2b2fe63991f21d0a888c40c369423ff04c525871acd5f0e83e34762cb21817c4",
+      "sourceFile": "radio-tarball-browser-three-hosts.log",
+      "sourceSha256": "2e8a660c7d45a9ef77fbdefcb6286ac3d053128ec3ad7b20e1b3e373eb10ba21",
+      "transformation": "Machine-specific absolute paths replaced with documented placeholders; failure/results unchanged.; trailing whitespace and redundant final blank lines removed"
+    },
+    {
+      "path": "logs/dev-vue-discovery.log",
+      "bytes": 379,
+      "sha256": "e216813dc320a7d62283fc95c16f7d60318f6f24b218bde59b221fe12ef7c381",
+      "sourceFile": "radio-tarball-browser-dev-rerun.log",
+      "sourceSha256": "4e0015478e324e9e8bbbd5869d777616608438d22e15f8d442c49e37f43b480c",
+      "transformation": "Machine-specific absolute paths replaced with documented placeholders; failure/results unchanged.; trailing whitespace and redundant final blank lines removed"
+    },
+    {
+      "path": "logs/dev-warm.log",
+      "bytes": 2975,
+      "sha256": "e23656411a59fc8929236b880f40b291153451bc709c4b6d02be21bc7334dccd",
+      "sourceFile": "radio-tarball-browser-dev-warm.log",
+      "sourceSha256": "e23656411a59fc8929236b880f40b291153451bc709c4b6d02be21bc7334dccd",
+      "transformation": "Machine-specific absolute paths replaced with documented placeholders; failure/results unchanged.; trailing whitespace and redundant final blank lines removed"
+    },
+    {
+      "path": "logs/preview-browser.log",
+      "bytes": 3727,
+      "sha256": "0cb7f83909c3c256a50bf7b517ab689f59360e82a615ff378b1a069d89838136",
+      "sourceFile": "radio-browser-complete-journeys.log",
+      "sourceSha256": "bb4c8fe94d42db65bcd7de8df5d53486007a836e7d2f467d4dae26ec03fe5294",
+      "transformation": "Machine-specific absolute paths replaced with documented placeholders; failure/results unchanged.; trailing whitespace and redundant final blank lines removed"
+    },
+    {
+      "path": "preview/react-initial-entry-failure.json",
+      "bytes": 2611,
+      "sha256": "8f605306930ee4b616abca9079da0a40c8a39cb8d0c1a3bcf186bb68fad47ecc",
+      "sourceFile": "react-initial-entry-failure.json",
+      "sourceSha256": "22b0564cd7d93d884306292d5d409d43bd241ab3771e8fdc876f22ef6dba58df",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "preview/react-interaction-dark.png",
+      "bytes": 21359,
+      "sha256": "eaea5987b3d603acb600643d75548d8124421f5617f02a27836af5163d142925",
+      "sourceFile": "react-interaction-dark.png",
+      "sourceSha256": "eaea5987b3d603acb600643d75548d8124421f5617f02a27836af5163d142925",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/react-interaction-focus.png",
+      "bytes": 22227,
+      "sha256": "861c6d4b8e16771da9efbb28b44b7abc0b9897d26a4f8e22df2df33970ae1fcc",
+      "sourceFile": "react-interaction-focus.png",
+      "sourceSha256": "861c6d4b8e16771da9efbb28b44b7abc0b9897d26a4f8e22df2df33970ae1fcc",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/react-interaction-light.png",
+      "bytes": 22098,
+      "sha256": "a0a40d76a524678fc1002b79b4ffb5ee599a99279b7bb32d759571a133a84316",
+      "sourceFile": "react-interaction-light.png",
+      "sourceSha256": "a0a40d76a524678fc1002b79b4ffb5ee599a99279b7bb32d759571a133a84316",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/react-interaction-narrow.png",
+      "bytes": 23595,
+      "sha256": "b24f274202fa5a70afeaadc818c28a604d404fe3caca0c1ecb92f37b59825192",
+      "sourceFile": "react-interaction-narrow.png",
+      "sourceSha256": "b24f274202fa5a70afeaadc818c28a604d404fe3caca0c1ecb92f37b59825192",
+      "transformation": "none",
+      "dimensions": {
+        "width": 256,
+        "height": 517
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/react-interaction.json",
+      "bytes": 9458,
+      "sha256": "681cd8b6bda8283f56268912f7aab966ef2521e2da05e96dfacc485d71319d4e",
+      "sourceFile": "react-interaction.json",
+      "sourceSha256": "94775bd1b625793a5b1b888b3a862386a3cf385c2e3159c5b7b3f8b867437098",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "preview/vue-initial-entry-failure.json",
+      "bytes": 2609,
+      "sha256": "8088b7fd6c436dceb34dba5d11d732487a698ec949e812feaf45efadfe3b53b9",
+      "sourceFile": "vue-initial-entry-failure.json",
+      "sourceSha256": "e2e1acd6db6bf82c9aa79433d32af1e7ae829a6e5bb82fbf2c664da08791a2b7",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "preview/vue-interaction-dark.png",
+      "bytes": 21077,
+      "sha256": "6f69f2bddcf9be4ed8412dddf85a0044e6741935da9013ac743fb8cd9c90325a",
+      "sourceFile": "vue-interaction-dark.png",
+      "sourceSha256": "6f69f2bddcf9be4ed8412dddf85a0044e6741935da9013ac743fb8cd9c90325a",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/vue-interaction-focus.png",
+      "bytes": 21936,
+      "sha256": "38b1960d2df960ced3126d97e4bc1a460ba4f0636919a1f6ef98534f9311bef4",
+      "sourceFile": "vue-interaction-focus.png",
+      "sourceSha256": "38b1960d2df960ced3126d97e4bc1a460ba4f0636919a1f6ef98534f9311bef4",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/vue-interaction-light.png",
+      "bytes": 21811,
+      "sha256": "bbab2dfac581de464e70d8759a00e048b708d0a6cc4812c905cb9977a75bdc2a",
+      "sourceFile": "vue-interaction-light.png",
+      "sourceSha256": "bbab2dfac581de464e70d8759a00e048b708d0a6cc4812c905cb9977a75bdc2a",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/vue-interaction-narrow.png",
+      "bytes": 23322,
+      "sha256": "e660ab36b0e5d0d57030a722fee6d5c2ac057e9b1c644c6ea95687bdc1efd42a",
+      "sourceFile": "vue-interaction-narrow.png",
+      "sourceSha256": "e660ab36b0e5d0d57030a722fee6d5c2ac057e9b1c644c6ea95687bdc1efd42a",
+      "transformation": "none",
+      "dimensions": {
+        "width": 256,
+        "height": 517
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/vue-interaction.json",
+      "bytes": 9454,
+      "sha256": "af8f572eb7855413238d6cb97918782f35b9a3002c94e70f113b9a47ff68ae9a",
+      "sourceFile": "vue-interaction.json",
+      "sourceSha256": "75622075df098c2e18156ae80fb004e58c7a1f282765c9c1a215e47643a3b4ad",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "preview/vue2-initial-entry-failure.json",
+      "bytes": 2610,
+      "sha256": "8d4d9c86246f8838970f4631fe123d1fa49fb195d5e9b361cb74f9eb1d95123f",
+      "sourceFile": "vue2-initial-entry-failure.json",
+      "sourceSha256": "dac18a1bf9604cc4bcb9b7fc7bf75e4ff1293c484143070492a61a7d2c04c4ec",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "preview/vue2-interaction-dark.png",
+      "bytes": 21274,
+      "sha256": "c0a4843e8ced0a2c7d03f25cde4b915e5df44640df06f387566e3372f19235b2",
+      "sourceFile": "vue2-interaction-dark.png",
+      "sourceSha256": "c0a4843e8ced0a2c7d03f25cde4b915e5df44640df06f387566e3372f19235b2",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/vue2-interaction-focus.png",
+      "bytes": 22122,
+      "sha256": "da99715fa09939edf86af4fd038a9516d7015f34a365768f7b2ebf7a3d4f9c1f",
+      "sourceFile": "vue2-interaction-focus.png",
+      "sourceSha256": "da99715fa09939edf86af4fd038a9516d7015f34a365768f7b2ebf7a3d4f9c1f",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/vue2-interaction-light.png",
+      "bytes": 21990,
+      "sha256": "ccf0fd6e72de9e843ce22089b71b8f2b208c7bd3b53b02b40e92e0f3dc86bf4d",
+      "sourceFile": "vue2-interaction-light.png",
+      "sourceSha256": "ccf0fd6e72de9e843ce22089b71b8f2b208c7bd3b53b02b40e92e0f3dc86bf4d",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/vue2-interaction-narrow.png",
+      "bytes": 23487,
+      "sha256": "722e24a2ebb4be5627affda4141423f622a80c493cd4952d5a6c03f9e7605821",
+      "sourceFile": "vue2-interaction-narrow.png",
+      "sourceSha256": "722e24a2ebb4be5627affda4141423f622a80c493cd4952d5a6c03f9e7605821",
+      "transformation": "none",
+      "dimensions": {
+        "width": 256,
+        "height": 517
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/vue2-interaction.json",
+      "bytes": 9455,
+      "sha256": "240c920303f0f034523ae32cad86536243385a4d64d18f047887b6a37d990d38",
+      "sourceFile": "vue2-interaction.json",
+      "sourceSha256": "066afa60829bb8e825a38bde5a6ec513512966f5c7cf6d522fd893f7337d349f",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "preview/wc-initial-entry-failure.json",
+      "bytes": 2608,
+      "sha256": "5ded1e821656264737fb1a97d38cf577591ce0840878638fe812adc58137ebe0",
+      "sourceFile": "wc-initial-entry-failure.json",
+      "sourceSha256": "c87bec10750958c73a80af5aa406474a48795ebd41f84e36fb29a3f38907b210",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "preview/wc-interaction-dark.png",
+      "bytes": 22731,
+      "sha256": "e79010c7180455bed91dee7f1a0c6701eaf6af81488039f0b4febd98967e2c54",
+      "sourceFile": "wc-interaction-dark.png",
+      "sourceSha256": "e79010c7180455bed91dee7f1a0c6701eaf6af81488039f0b4febd98967e2c54",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/wc-interaction-focus.png",
+      "bytes": 23432,
+      "sha256": "07fd3e90b5b767e408e38c5d52fe7921516882d1c312be41b911e1dce6796e46",
+      "sourceFile": "wc-interaction-focus.png",
+      "sourceSha256": "07fd3e90b5b767e408e38c5d52fe7921516882d1c312be41b911e1dce6796e46",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/wc-interaction-light.png",
+      "bytes": 23397,
+      "sha256": "d84b0937d250c6060484725833fe59f9ffd5e0ca5d88df4deb827ff21754e5d6",
+      "sourceFile": "wc-interaction-light.png",
+      "sourceSha256": "d84b0937d250c6060484725833fe59f9ffd5e0ca5d88df4deb827ff21754e5d6",
+      "transformation": "none",
+      "dimensions": {
+        "width": 672,
+        "height": 273
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/wc-interaction-narrow.png",
+      "bytes": 24622,
+      "sha256": "c98abdef689697671c2bb365b77e741899bafa6631babe93505ced72f6b0075e",
+      "sourceFile": "wc-interaction-narrow.png",
+      "sourceSha256": "c98abdef689697671c2bb365b77e741899bafa6631babe93505ced72f6b0075e",
+      "transformation": "none",
+      "dimensions": {
+        "width": 256,
+        "height": 517
+      },
+      "imageBytesUnchanged": true
+    },
+    {
+      "path": "preview/wc-interaction.json",
+      "bytes": 9456,
+      "sha256": "212deb31816e47ae47e0146c1444a1583568af25273b528a28d4ee61f0f27dca",
+      "sourceFile": "wc-interaction.json",
+      "sourceSha256": "064f8eb890a9c2bc392637fc577b0393b04493dcbfbbe49861eee60ce59f867d",
+      "transformation": "repository Prettier whitespace formatting"
+    },
+    {
+      "path": "reproduce/capture-consumer.mts",
+      "bytes": 6022,
+      "sha256": "db28520cd7beccd062af0c8788332a377695a61f0203f7d73f09ed960df77da0"
+    },
+    {
+      "path": "reproduce/index.html",
+      "bytes": 566,
+      "sha256": "fcba891fb1b0d0cb99c48056b1f99e9fb9ae39f7adcec78c90b115e4a38ce737",
+      "sourceFile": "index.html",
+      "sourceSha256": "d1a90db6f1f1e7d9bbb0fe1b5be906dae54c7e30f79ec06f5cd75aa442ad120f",
+      "transformation": "none"
+    },
+    {
+      "path": "reproduce/prepare-consumer.mjs",
+      "bytes": 5189,
+      "sha256": "ceccdb01ee4b0ac96dde2f528ad52626df702e1addd556e3cb90e9bf727e5716"
+    },
+    {
+      "path": "reproduce/probe-element-order.mts",
+      "bytes": 2320,
+      "sha256": "3cbf4246864718aa774c423bbf7bcb4db5d47ef7a8e53082dd7d63b702e8eecc"
+    },
+    {
+      "path": "reproduce/radio-browser.ts",
+      "bytes": 3506,
+      "sha256": "ef341f58267583a43118d36a63427083c49d18af86d5276d9f59758eefedc376",
+      "sourceFile": "radio-browser.ts",
+      "sourceSha256": "2119a9cbc86bb64ea4a77c7c940676c35b338aa28ea29b008248d3f32f5c6fe9",
+      "transformation": "none"
+    },
+    {
+      "path": "validation/portable-order-chromium.json",
+      "bytes": 188,
+      "sha256": "b99e8b41fa3b35ecf2444669e7fc81a5cf92c7d0b3d1604100ac80d8b964158a",
+      "transformation": "repository Prettier whitespace formatting",
+      "sourceSha256": "b054e219d08b16e3135c8ca25e8b091f4b688ea825b40c26617a91960a9a3d42",
+      "origin": "Portable validation executed after original packet preparation"
+    },
+    {
+      "path": "validation/portable-order-consumer.json",
+      "bytes": 110,
+      "sha256": "2fb918feaca6a178ba1a45e0f584258972b9e568fb94a5724dc61f3732bd4dd2",
+      "transformation": "repository Prettier whitespace formatting",
+      "sourceSha256": "99339cbf129cd5174f1e1365aa1a67515f2da1ebdfb7ca6d229eafead8bef2b9",
+      "origin": "Portable validation executed after original packet preparation"
+    },
+    {
+      "path": "validation/portable-order-workspace.json",
+      "bytes": 110,
+      "sha256": "df36e9b142c898167137fb53045f9c8fec2fb096cfb24b515229d54b48a3ae79",
+      "transformation": "repository Prettier whitespace formatting",
+      "sourceSha256": "5c939491872f18faf9273009f55c61a7fe64816d7d9af297c7f5362066831d14",
+      "origin": "Portable validation executed after original packet preparation"
+    },
+    {
+      "path": "validation/portable-production.json",
+      "bytes": 2105,
+      "sha256": "4b4cac07d7e8e508e8ac3b0703be904b6d70b8b4123970244ccd1eb0c0036f1c",
+      "transformation": "repository Prettier whitespace formatting",
+      "sourceSha256": "2e086c437a685e749a9f6d66733de0d4829919935f0f1a8fd6a23b5736db3564",
+      "origin": "Portable validation executed after original packet preparation"
+    },
+    {
+      "path": "validation/portable-validation.json",
+      "bytes": 2502,
+      "sha256": "51ad136db128f7389c7d569cee333321d422c1f25994e87600c22acebb3dc02f",
+      "transformation": "repository Prettier whitespace formatting",
+      "sourceSha256": "39aa230b6ddfcf3d753dbf31e95241b060914be13ffbc264f0da41e2d2a825f4",
+      "origin": "Portable validation executed after original packet preparation"
+    }
+  ]
+}

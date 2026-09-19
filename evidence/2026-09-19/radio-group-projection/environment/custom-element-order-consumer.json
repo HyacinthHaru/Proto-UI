@@ -1,0 +1,5 @@
+{
+  "module": "<CONSUMER>/node_modules/happy-dom/lib/index.js",
+  "order": ["probe-indicator", "probe-item", "probe-root"],
+  "version": "20.14.5"
+}

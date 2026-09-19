@@ -1,0 +1,5 @@
+{
+  "module": "<WORKSPACE>/node_modules/happy-dom/lib/index.js",
+  "order": ["probe-root", "probe-item", "probe-indicator"],
+  "version": "15.11.7"
+}

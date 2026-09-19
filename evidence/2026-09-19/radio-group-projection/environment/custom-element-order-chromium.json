@@ -1,0 +1,5 @@
+{
+  "browser": "153.0.8010.48",
+  "order": ["probe-root", "probe-item", "probe-indicator"],
+  "scope": "Native custom-element connection order only; no Proto UI implementation injected"
+}

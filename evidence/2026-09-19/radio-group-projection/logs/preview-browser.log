@@ -1,0 +1,57 @@
+
+ RUN  v2.1.9 <REPO>
+
+stdout | apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts
+Shadcn Radio Group browser evidence: <PREVIEW_CAPTURE>
+
+ ❯ apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts (8 tests | 4 failed) 53904ms
+   × Shadcn Radio Group public browser acceptance > 'wc' 'initial-entry' projects selection, focus, disabled and theme states through the real family 2574ms
+     → Error: Matcher did not succeed in 1000ms
+Browser errors:
+   ✓ Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family 2161ms
+   × Shadcn Radio Group public browser acceptance > 'react' 'initial-entry' projects selection, focus, disabled and theme states through the real family 3729ms
+     → Error: Matcher did not succeed in 1000ms
+Browser errors:
+   ✓ Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family 2649ms
+   × Shadcn Radio Group public browser acceptance > 'vue' 'initial-entry' projects selection, focus, disabled and theme states through the real family 4098ms
+     → Error: Matcher did not succeed in 1000ms
+Browser errors:
+   ✓ Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family 3019ms
+   × Shadcn Radio Group public browser acceptance > 'vue2' 'initial-entry' projects selection, focus, disabled and theme states through the real family 3449ms
+     → Error: Matcher did not succeed in 1000ms
+Browser errors:
+   ✓ Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family 2800ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'wc' 'initial-entry' projects selection, focus, disabled and theme states through the real family
+ FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'react' 'initial-entry' projects selection, focus, disabled and theme states through the real family
+ FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'vue' 'initial-entry' projects selection, focus, disabled and theme states through the real family
+ FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'vue2' 'initial-entry' projects selection, focus, disabled and theme states through the real family
+Error: Error: Matcher did not succeed in 1000ms
+Browser errors:
+ ❯ apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts:345:15
+    343|           fullPage: true,
+    344|         });
+    345|         throw new Error(`${String(error)}\nBrowser errors: ${errors.jo…
+       |               ^
+    346|       } finally {
+    347|         await context.close();
+
+Caused by: Error: Matcher did not succeed in 1000ms
+ ❯ apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts:148:14
+
+Caused by: AssertionError: wc: non-first selected Item must be the initial Tab entry: expected -1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ -1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 4 passed (8)
+   Start at  20:20:15
+   Duration  54.22s (transform 32ms, setup 0ms, collect 196ms, tests 53.90s, environment 0ms, prepare 28ms)

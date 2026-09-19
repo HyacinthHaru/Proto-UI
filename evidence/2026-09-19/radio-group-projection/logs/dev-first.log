@@ -1,0 +1,14 @@
+8:45:09 PM [vite] (client) ✨ new dependencies optimized: react, react-dom/client, vue
+8:45:09 PM [vite] (client) ✨ optimized dependencies changed. reloading
+8:45:09 PM [vite] (client) ✨ new dependencies optimized: @proto.ui/adapter-react, @proto.ui/prototypes-base/button
+8:45:09 PM [vite] (client) ✨ optimized dependencies changed. reloading
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 15000ms exceeded.
+    at <anonymous> (<TASK>/radio-tarball-browser.mts:29:14) {
+  name: 'TimeoutError'
+}
+
+Node.js v22.23.2

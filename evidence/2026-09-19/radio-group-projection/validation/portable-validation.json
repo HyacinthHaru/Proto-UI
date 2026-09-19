@@ -1,0 +1,75 @@
+{
+  "candidate": "a7f231b71604055af162730aa3b04450e21805bc",
+  "date": "2026-09-19",
+  "scope": "Portable entry points executed after packet preparation; this supplements the original captures, without changing overall partial acceptance",
+  "commands": [
+    {
+      "entry": "reproduce/prepare-consumer.mjs",
+      "inputs": "candidate checkout, original43-package pack directory, new disposable consumer",
+      "exit": 0
+    },
+    {
+      "entry": "reproduce/capture-consumer.mts --mode production",
+      "inputs": "candidate checkout, new installed consumer, separate output directory",
+      "exit": 0,
+      "runtimes": ["wc", "react", "vue"]
+    },
+    {
+      "entry": "reproduce/probe-element-order.mts",
+      "inputs": [
+        "workspace happy-dom15.11.7",
+        "consumer happy-dom20.14.5",
+        "native Chromium153.0.8010.48"
+      ],
+      "exits": [0, 0, 0]
+    }
+  ],
+  "packages": {
+    "packed": 43,
+    "installedProtoUi": 40,
+    "protoUiRegistryResolutions": 0,
+    "releaseVersion": "0.3.0-alpha.0"
+  },
+  "pngReadback": [
+    {
+      "runtime": "wc",
+      "state": "initial",
+      "byteIdenticalToRetainedCapture": true,
+      "sha256": "c48c0b5500c3282fee12d2a1aef1b7b21557a8e7a7de99c51d33b9bcf657224b"
+    },
+    {
+      "runtime": "wc",
+      "state": "updated",
+      "byteIdenticalToRetainedCapture": true,
+      "sha256": "09e636fb63bb9773e26b43b421f359a1bb6c1b509cfb9547b9b7bb4f7fb11d02"
+    },
+    {
+      "runtime": "react",
+      "state": "initial",
+      "byteIdenticalToRetainedCapture": true,
+      "sha256": "acd5d0d28a4ca94e0d160367cf0cddbf8695ff08ab0d27fcdfe91688c233b009"
+    },
+    {
+      "runtime": "react",
+      "state": "updated",
+      "byteIdenticalToRetainedCapture": true,
+      "sha256": "fb7b3cfa07f4652042cd7d7417796d87f26f1ff1050ab628d3aa5e181899a6e4"
+    },
+    {
+      "runtime": "vue",
+      "state": "initial",
+      "byteIdenticalToRetainedCapture": true,
+      "sha256": "ffb5e4ec91c18527ec935ebf748b998da73f432b5c673d27f6f0689ada2e11ed"
+    },
+    {
+      "runtime": "vue",
+      "state": "updated",
+      "byteIdenticalToRetainedCapture": true,
+      "sha256": "f29a4b33884a39d7ae4fb3ba9042a8be945c40c69e4b0c6b67d8b2cddc9a7d80"
+    }
+  ],
+  "limitations": [
+    "Portable dev mode was not executed in this validation round; original local-driver dev failures and warm success remain in environment/ and logs/",
+    "No initial-entry acceptance, full tarball interaction, SSR, Vue2 CLI or simulated-host repair is claimed"
+  ]
+}

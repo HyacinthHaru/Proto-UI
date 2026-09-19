@@ -1,0 +1,187 @@
+{
+  "wc": {
+    "initial": {
+      "runtime": "wc",
+      "groupLabel": "Packed Radio Group",
+      "count": 3,
+      "checked": [
+        "false",
+        "true",
+        "false"
+      ],
+      "tabIndex": [
+        0,
+        -1,
+        -1
+      ],
+      "svgCounts": [
+        1,
+        1,
+        0
+      ],
+      "dotOpacity": [
+        "0",
+        "1"
+      ],
+      "disabled": [
+        "false",
+        "false",
+        "true"
+      ]
+    },
+    "updated": {
+      "runtime": "wc",
+      "groupLabel": "Packed Radio Group",
+      "count": 3,
+      "checked": [
+        "true",
+        "false",
+        "false"
+      ],
+      "tabIndex": [
+        0,
+        -1,
+        -1
+      ],
+      "svgCounts": [
+        1,
+        1,
+        0
+      ],
+      "dotOpacity": [
+        "1",
+        "0"
+      ],
+      "disabled": [
+        "false",
+        "false",
+        "true"
+      ]
+    },
+    "errors": []
+  },
+  "react": {
+    "initial": {
+      "runtime": "react",
+      "groupLabel": "Packed Radio Group",
+      "count": 3,
+      "checked": [
+        "false",
+        "true",
+        "false"
+      ],
+      "tabIndex": [
+        0,
+        -1,
+        -1
+      ],
+      "svgCounts": [
+        1,
+        1,
+        0
+      ],
+      "dotOpacity": [
+        "0",
+        "1"
+      ],
+      "disabled": [
+        "false",
+        "false",
+        "true"
+      ]
+    },
+    "updated": {
+      "runtime": "react",
+      "groupLabel": "Packed Radio Group",
+      "count": 3,
+      "checked": [
+        "true",
+        "false",
+        "false"
+      ],
+      "tabIndex": [
+        0,
+        -1,
+        -1
+      ],
+      "svgCounts": [
+        1,
+        1,
+        0
+      ],
+      "dotOpacity": [
+        "1",
+        "0"
+      ],
+      "disabled": [
+        "false",
+        "false",
+        "true"
+      ]
+    },
+    "errors": []
+  },
+  "vue": {
+    "initial": {
+      "runtime": "vue",
+      "groupLabel": "Packed Radio Group",
+      "count": 3,
+      "checked": [
+        "false",
+        "true",
+        "false"
+      ],
+      "tabIndex": [
+        0,
+        -1,
+        -1
+      ],
+      "svgCounts": [
+        1,
+        1,
+        0
+      ],
+      "dotOpacity": [
+        "0",
+        "1"
+      ],
+      "disabled": [
+        "false",
+        "false",
+        "true"
+      ]
+    },
+    "updated": {
+      "runtime": "vue",
+      "groupLabel": "Packed Radio Group",
+      "count": 3,
+      "checked": [
+        "true",
+        "false",
+        "false"
+      ],
+      "tabIndex": [
+        0,
+        -1,
+        -1
+      ],
+      "svgCounts": [
+        1,
+        1,
+        0
+      ],
+      "dotOpacity": [
+        "1",
+        "0"
+      ],
+      "disabled": [
+        "false",
+        "false",
+        "true"
+      ]
+    },
+    "errors": []
+  },
+  "browser": "153.0.8010.48",
+  "scope": "Real Chromium in WC/React/Vue using installed tarballs and unedited CLI facades; WC retains the detached construction order. Initial-entry acceptance remains separate."
+}

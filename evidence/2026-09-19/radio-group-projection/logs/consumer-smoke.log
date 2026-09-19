@@ -1,0 +1,297 @@
+Staged 43 packages into <CONSUMER_LAB>/release
+
+Prerequisite builds:
+- public-package-build: exit code 0
+
+- @proto.ui/cli
+  stage: <CONSUMER_LAB>/release/proto.ui__cli
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-cli-0.3.0-alpha.0.tgz
+- @proto.ui/core
+  stage: <CONSUMER_LAB>/release/proto.ui__core
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-core-0.3.0-alpha.0.tgz
+- @proto.ui/module-base
+  stage: <CONSUMER_LAB>/release/proto.ui__module-base
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-base-0.3.0-alpha.0.tgz
+- @proto.ui/module-expose
+  stage: <CONSUMER_LAB>/release/proto.ui__module-expose
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-expose-0.3.0-alpha.0.tgz
+- @proto.ui/module-anatomy
+  stage: <CONSUMER_LAB>/release/proto.ui__module-anatomy
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-anatomy-0.3.0-alpha.0.tgz
+- @proto.ui/module-feedback
+  stage: <CONSUMER_LAB>/release/proto.ui__module-feedback
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-feedback-0.3.0-alpha.0.tgz
+- @proto.ui/module-positioning
+  stage: <CONSUMER_LAB>/release/proto.ui__module-positioning
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-positioning-0.3.0-alpha.0.tgz
+- @proto.ui/prototypes-lucide
+  stage: <CONSUMER_LAB>/release/proto.ui__prototypes-lucide
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-prototypes-lucide-0.3.0-alpha.0.tgz
+- @proto.ui/types
+  stage: <CONSUMER_LAB>/release/proto.ui__types
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-types-0.3.0-alpha.0.tgz
+- @proto.ui/module-collection
+  stage: <CONSUMER_LAB>/release/proto.ui__module-collection
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-collection-0.3.0-alpha.0.tgz
+- @proto.ui/hooks
+  stage: <CONSUMER_LAB>/release/proto.ui__hooks
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-hooks-0.3.0-alpha.0.tgz
+- @proto.ui/module-context
+  stage: <CONSUMER_LAB>/release/proto.ui__module-context
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-context-0.3.0-alpha.0.tgz
+- @proto.ui/module-expose-event
+  stage: <CONSUMER_LAB>/release/proto.ui__module-expose-event
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-expose-event-0.3.0-alpha.0.tgz
+- @proto.ui/module-event
+  stage: <CONSUMER_LAB>/release/proto.ui__module-event
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-event-0.3.0-alpha.0.tgz
+- @proto.ui/module-as-trigger
+  stage: <CONSUMER_LAB>/release/proto.ui__module-as-trigger
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-as-trigger-0.3.0-alpha.0.tgz
+- @proto.ui/module-boundary
+  stage: <CONSUMER_LAB>/release/proto.ui__module-boundary
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-boundary-0.3.0-alpha.0.tgz
+- @proto.ui/module-hit-participation
+  stage: <CONSUMER_LAB>/release/proto.ui__module-hit-participation
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-hit-participation-0.3.0-alpha.0.tgz
+- @proto.ui/module-image-view
+  stage: <CONSUMER_LAB>/release/proto.ui__module-image-view
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-image-view-0.3.0-alpha.0.tgz
+- @proto.ui/module-overlay
+  stage: <CONSUMER_LAB>/release/proto.ui__module-overlay
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-overlay-0.3.0-alpha.0.tgz
+- @proto.ui/module-presence
+  stage: <CONSUMER_LAB>/release/proto.ui__module-presence
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-presence-0.3.0-alpha.0.tgz
+- @proto.ui/module-props
+  stage: <CONSUMER_LAB>/release/proto.ui__module-props
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-props-0.3.0-alpha.0.tgz
+- @proto.ui/module-state
+  stage: <CONSUMER_LAB>/release/proto.ui__module-state
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-state-0.3.0-alpha.0.tgz
+- @proto.ui/module-a11y
+  stage: <CONSUMER_LAB>/release/proto.ui__module-a11y
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-a11y-0.3.0-alpha.0.tgz
+- @proto.ui/module-expose-state
+  stage: <CONSUMER_LAB>/release/proto.ui__module-expose-state
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-expose-state-0.3.0-alpha.0.tgz
+- @proto.ui/module-expose-state-web
+  stage: <CONSUMER_LAB>/release/proto.ui__module-expose-state-web
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-expose-state-web-0.3.0-alpha.0.tgz
+- @proto.ui/module-focus
+  stage: <CONSUMER_LAB>/release/proto.ui__module-focus
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-focus-0.3.0-alpha.0.tgz
+- @proto.ui/module-rule
+  stage: <CONSUMER_LAB>/release/proto.ui__module-rule
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-rule-0.3.0-alpha.0.tgz
+- @proto.ui/module-rule-expose-state-web
+  stage: <CONSUMER_LAB>/release/proto.ui__module-rule-expose-state-web
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-rule-expose-state-web-0.3.0-alpha.0.tgz
+- @proto.ui/module-rule-meta
+  stage: <CONSUMER_LAB>/release/proto.ui__module-rule-meta
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-rule-meta-0.3.0-alpha.0.tgz
+- @proto.ui/module-scroll
+  stage: <CONSUMER_LAB>/release/proto.ui__module-scroll
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-scroll-0.3.0-alpha.0.tgz
+- @proto.ui/module-state-accessibility
+  stage: <CONSUMER_LAB>/release/proto.ui__module-state-accessibility
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-state-accessibility-0.3.0-alpha.0.tgz
+- @proto.ui/module-state-interaction
+  stage: <CONSUMER_LAB>/release/proto.ui__module-state-interaction
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-state-interaction-0.3.0-alpha.0.tgz
+- @proto.ui/module-test-sys
+  stage: <CONSUMER_LAB>/release/proto.ui__module-test-sys
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-test-sys-0.3.0-alpha.0.tgz
+- @proto.ui/module-text-control
+  stage: <CONSUMER_LAB>/release/proto.ui__module-text-control
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-text-control-0.3.0-alpha.0.tgz
+- @proto.ui/prototypes-base
+  stage: <CONSUMER_LAB>/release/proto.ui__prototypes-base
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-prototypes-base-0.3.0-alpha.0.tgz
+- @proto.ui/prototypes-brutalist
+  stage: <CONSUMER_LAB>/release/proto.ui__prototypes-brutalist
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-prototypes-brutalist-0.3.0-alpha.0.tgz
+- @proto.ui/prototypes-shadcn
+  stage: <CONSUMER_LAB>/release/proto.ui__prototypes-shadcn
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-prototypes-shadcn-0.3.0-alpha.0.tgz
+- @proto.ui/runtime
+  stage: <CONSUMER_LAB>/release/proto.ui__runtime
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-runtime-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-base
+  stage: <CONSUMER_LAB>/release/proto.ui__adapter-base
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-base-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-react
+  stage: <CONSUMER_LAB>/release/proto.ui__adapter-react
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-react-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-vue
+  stage: <CONSUMER_LAB>/release/proto.ui__adapter-vue
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-vue-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-vue2
+  stage: <CONSUMER_LAB>/release/proto.ui__adapter-vue2
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-vue2-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-web-component
+  stage: <CONSUMER_LAB>/release/proto.ui__adapter-web-component
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-web-component-0.3.0-alpha.0.tgz
+
+Next step from repo root: cd <REPO>
+
+added 88 packages in 11s
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.27.7 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+[proto-ui] init: wrote proto-ui/config.json
+[proto-ui] init: ensured proto-ui/components, proto-ui/adapters, proto-ui/prototypes
+[proto-ui] tokens(preset): wrote src/styles/proto-ui-tokens.generated.css
+[proto-ui] theme(shadcn): wrote src/styles/shadcn-theme.css
+[proto-ui] style: wrote src/styles/proto-ui-style.css
+[proto-ui] setup(shadcn): completed tokens + theme + proto-ui style in ./src/styles
+[proto-ui] add: generated proto-ui/components for react/shadcn-button
+[proto-ui] add: generated proto-ui/components for react/base-button
+[proto-ui] add: generated proto-ui/components for react/base-image
+[proto-ui] add: generated proto-ui/components for react/shadcn-switch
+[proto-ui] add: generated proto-ui/components for react/shadcn-dialog
+[proto-ui] add: generated proto-ui/components for react/shadcn-radio-group
+[proto-ui] add: generated proto-ui/components for vue/shadcn-button
+[proto-ui] add: generated proto-ui/components for vue/base-image
+[proto-ui] add: generated proto-ui/components for vue/shadcn-switch
+[proto-ui] add: generated proto-ui/components for vue/shadcn-dialog
+[proto-ui] add: generated proto-ui/components for vue/shadcn-radio-group
+[proto-ui] add: generated proto-ui/components for wc/shadcn-button
+[proto-ui] add: generated proto-ui/components for wc/base-image
+[proto-ui] add: generated proto-ui/components for wc/shadcn-switch
+[proto-ui] add: generated proto-ui/components for wc/shadcn-dialog
+[proto-ui] add: generated proto-ui/components for wc/shadcn-radio-group
+react smoke ok | shadcn=586B base=134B + Base Image
+react installed Radio Group facade: mount, controlled update, explicit Indicator and token closure passed
+[Vue warn]: Non-function value encountered for default slot. Prefer function slots for better performance.
+  at <Proto(shadcnSwitchRoot) defaultChecked=true class="consumer-switch" ref=Ref< null > >
+  at <ShadcnSwitch defaultChecked=true class="consumer-switch" >
+  at <App>
+[Vue warn]: Non-function value encountered for default slot. Prefer function slots for better performance.
+  at <Proto(shadcnDialogContent) class="consumer-dialog-content" ref=Ref< null > >
+  at <ShadcnDialogContent class="consumer-dialog-content" >
+  at <Proto(shadcnDialogRoot) defaultOpen=true >
+  at <App>
+vue smoke ok | Button + Switch preset + Dialog CloseIcon preset + Base Image
+vue installed Radio Group facade: mount, controlled update, explicit Indicator and token closure passed
+wc smoke ok | Button + Switch preset + Dialog CloseIcon preset + Base Image, instance tagName=PROTO-UI-SHADCN-BUTTON
+file://<CONSUMER>/node_modules/@proto.ui/module-context/dist/impl.js:13
+    const err = new Error(message);
+                ^
+
+Error: [Context] provider missing for key: base-radio-group-item
+    at contextError (file://<CONSUMER>/node_modules/@proto.ui/module-context/dist/impl.js:13:17)
+    at ContextModuleImpl.subscribe (file://<CONSUMER>/node_modules/@proto.ui/module-context/dist/impl.js:90:19)
+    at Object.subscribe (file://<CONSUMER>/node_modules/@proto.ui/module-context/dist/create.js:17:50)
+    at Object.subscribe (file://<CONSUMER>/node_modules/@proto.ui/runtime/dist/kernel/handles/def.js:252:37)
+    at Object.setupRadioGroupIndicator [as setup] (file://<CONSUMER>/node_modules/@proto.ui/prototypes-base/dist/radio-group/indicator.proto.js:14:17)
+    at caller (file://<CONSUMER>/node_modules/@proto.ui/core/dist/prototype.js:132:29)
+    at Object.setup (file://<CONSUMER>/node_modules/@proto.ui/prototypes-shadcn/dist/radio-group/indicator.proto.js:6:23)
+    at createKernel (file://<CONSUMER>/node_modules/@proto.ui/runtime/dist/kernel/kernel.js:28:29)
+    at createRuntimeInstance (file://<CONSUMER>/node_modules/@proto.ui/runtime/dist/instance/instance.js:70:20)
+    at createRuntimeSession (file://<CONSUMER>/node_modules/@proto.ui/runtime/dist/instance/session.js:11:18) {
+  code: 'CONTEXT_PROVIDER_MISSING'
+}
+
+Node.js v22.23.2
+release consumer smoke failed; artifacts kept at <CONSUMER_LAB>
+Radio Group tarball consumer artifacts: <CONSUMER_LAB>
+file://<TASK>/radio-consumer-smoke.mjs:306
+    throw new Error(`${command} ${commandArgs.join(' ')} exited with ${result.status}`);
+          ^
+
+Error: <TOOLCHAIN>/node_modules/node/bin/node --import tsx ./wc.mjs exited with 1
+    at run (file://<TASK>/radio-consumer-smoke.mjs:306:11)
+    at file://<TASK>/radio-consumer-smoke.mjs:142:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+Node.js v22.23.2
