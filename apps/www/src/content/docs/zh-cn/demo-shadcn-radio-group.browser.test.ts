@@ -1,0 +1,263 @@
+// @vitest-environment node
+
+import { mkdtemp, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import type { Browser, Locator, Page } from 'playwright-core';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import {
+  RUNTIMES,
+  applyColorScheme,
+  launchBrowser,
+  selectRuntime,
+  startServer,
+  stopServer,
+} from './browser-harness';
+
+const ROUTE = '/zh-cn/ui-libraries/shadcn/radio-group/';
+let browser: Browser;
+let baseUrl = '';
+let evidenceDir = '';
+
+beforeAll(async () => {
+  evidenceDir = await mkdtemp(path.join(tmpdir(), 'proto-shadcn-radio-group-'));
+  baseUrl = await startServer(ROUTE);
+  browser = await launchBrowser();
+  console.log(`Shadcn Radio Group browser evidence: ${evidenceDir}`);
+}, 180_000);
+
+afterAll(async () => {
+  try {
+    await browser?.close();
+  } finally {
+    await stopServer();
+  }
+}, 60_000);
+
+async function itemState(item: Locator) {
+  return item.evaluate((element) => {
+    const indicator = element.querySelector<HTMLElement>('[data-pui-root]')!;
+    const svg = indicator.querySelector('svg')!;
+    const style = getComputedStyle(element);
+    const rect = element.getBoundingClientRect();
+    const dot = svg.getBoundingClientRect();
+    return {
+      checked: element.getAttribute('aria-checked'),
+      disabled: element.getAttribute('aria-disabled'),
+      tabIndex: (element as HTMLElement).tabIndex,
+      focused: element === document.activeElement,
+      focusVisible: element.matches(':focus-visible'),
+      width: rect.width,
+      height: rect.height,
+      radius: style.borderTopLeftRadius,
+      borderWidth: style.borderTopWidth,
+      background: style.backgroundColor,
+      opacity: style.opacity,
+      cursor: style.cursor,
+      shadow: style.boxShadow,
+      transition: style.transitionProperty,
+      duration: style.transitionDuration,
+      dotOpacity: getComputedStyle(indicator).opacity,
+      dotWidth: dot.width,
+      dotHeight: dot.height,
+      centerX: dot.x + dot.width / 2 - (rect.x + rect.width / 2),
+      centerY: dot.y + dot.height / 2 - (rect.y + rect.height / 2),
+      glyphHidden: svg.getAttribute('aria-hidden'),
+      indicatorRole: indicator.getAttribute('role'),
+      indicatorTabIndex: indicator.getAttribute('tabindex'),
+      indicatorControls: indicator.querySelectorAll('a,button,input,select,textarea,[tabindex]')
+        .length,
+    };
+  });
+}
+
+function alpha(color: string): number {
+  const value = /\/\s*([\d.]+)\)/.exec(color)?.[1] ?? /rgba\(.*?,\s*([\d.]+)\)/.exec(color)?.[1];
+  return value === undefined ? 1 : Number(value);
+}
+
+async function clickCenter(page: Page, target: Locator) {
+  const rect = await target.boundingBox();
+  if (!rect) throw new Error('Radio choice has no visible geometry.');
+  await page.mouse.click(rect.x + rect.width / 2, rect.y + rect.height / 2);
+}
+
+describe.sequential('Shadcn Radio Group public browser acceptance', () => {
+  it.each(RUNTIMES)(
+    '%s projects selection, focus, disabled and theme states through the real family',
+    async (runtime) => {
+      const context = await browser.newContext({
+        viewport: { width: 1280, height: 1000 },
+        colorScheme: 'light',
+      });
+      const page = await context.newPage();
+      const errors: string[] = [];
+      const observations: Record<string, unknown> = { runtime, browser: browser.version() };
+      page.on('pageerror', (error) => errors.push(error.message));
+      try {
+        await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
+        const preview = page.locator('[data-previewer-id]').first();
+        await selectRuntime(page, preview, runtime, '[role="radiogroup"]', 3);
+        await page.keyboard.press('Escape');
+        await expect.poll(() => page.getByRole('option').count()).toBe(0);
+        expect(await preview.getAttribute('data-projection-mode')).toBe('fixed-family');
+        expect(await preview.getAttribute('data-projection-family')).toBe('shadcn');
+        expect(await preview.getAttribute('data-projection-component')).toBe('radio-group');
+
+        const content = preview.locator('[data-projection-content]');
+        const density = content.getByRole('radiogroup', { name: 'Density preference' });
+        const empty = content.getByRole('radiogroup', { name: 'No initial selection' });
+        const disabled = content.getByRole('radiogroup', { name: 'Disabled group' });
+        const first = density.getByRole('radio', { name: 'Default', exact: true });
+        const selected = density.getByRole('radio', { name: 'Comfortable', exact: true });
+        const compact = density.getByRole('radio', { name: 'Compact (disabled)', exact: true });
+        const value = content.locator('[data-demo-ref="selectedValue"]');
+        observations.entry = {
+          value: await value.textContent(),
+          items: await Promise.all([first, selected, compact].map(itemState)),
+        };
+        await expect
+          .poll(() => value.textContent(), { message: `${runtime}: initial exposed value` })
+          .toBe('Value: comfortable');
+        await expect
+          .poll(async () => (await itemState(selected)).tabIndex, {
+            message: `${runtime}: non-first selected Item must be the initial Tab entry`,
+          })
+          .toBe(0);
+
+        // P-SHADCN-RADIO-GROUP* visual and passive-part criteria; Base owns
+        // checked/effective-disabled, the single entry and accessible names.
+        const initial = await Promise.all([first, selected, compact].map(itemState));
+        observations.light = initial;
+        expect(initial.map((item) => item.checked)).toEqual(['false', 'true', 'false']);
+        expect(initial.map((item) => item.tabIndex)).toEqual([-1, 0, -1]);
+        expect(initial.map((item) => item.dotOpacity)).toEqual(['0', '1', '0']);
+        expect(await density.evaluate((element) => getComputedStyle(element).rowGap)).toBe('12px');
+        for (const item of initial) {
+          expect(item.width).toBeCloseTo(16, 1);
+          expect(item.height).toBeCloseTo(16, 1);
+          expect(Number.parseFloat(item.radius)).toBeGreaterThanOrEqual(8);
+          expect(item.borderWidth).toBe('1px');
+          expect(item.dotWidth).toBeCloseTo(8, 1);
+          expect(item.dotHeight).toBeCloseTo(8, 1);
+          expect(Math.abs(item.centerX)).toBeLessThanOrEqual(0.5);
+          expect(Math.abs(item.centerY)).toBeLessThanOrEqual(0.5);
+          expect(item.glyphHidden).toBe('true');
+          expect(item.indicatorRole).toBeNull();
+          expect(item.indicatorTabIndex).toBeNull();
+          expect(item.indicatorControls).toBe(0);
+          expect(alpha(item.background)).toBe(0);
+          expect(item.transition).toBe('color, box-shadow');
+          expect(item.duration).toBe('0.15s');
+        }
+        expect(initial[2]).toMatchObject({
+          disabled: 'true',
+          opacity: '0.5',
+          cursor: 'not-allowed',
+        });
+        expect(await empty.locator('[role="radio"][aria-checked="true"]').count()).toBe(0);
+        expect(await empty.locator('[role="radio"][tabindex="0"]').count()).toBe(1);
+        expect(await disabled.locator('[role="radio"][aria-disabled="true"]').count()).toBe(3);
+        expect(await disabled.locator('[role="radio"][tabindex="0"]').count()).toBe(0);
+        expect(await disabled.locator('[role="radio"][aria-checked="true"]').count()).toBe(1);
+        expect(await content.locator('input').count()).toBe(0);
+        await content.screenshot({ path: path.join(evidenceDir, `${runtime}-light.png`) });
+
+        // Click a non-focusable heading, then use a real Tab for group entry.
+        await content.getByText('Density preference', { exact: true }).click();
+        await page.keyboard.press('Tab');
+        await expect.poll(async () => (await itemState(selected)).focused).toBe(true);
+        await expect.poll(async () => (await itemState(selected)).focusVisible).toBe(true);
+        await expect
+          .poll(async () => (await itemState(selected)).shadow)
+          .toMatch(/0px 0px 0px 3px/);
+        observations.focus = await itemState(selected);
+        await content.screenshot({ path: path.join(evidenceDir, `${runtime}-focus.png`) });
+
+        for (const [key, next] of [
+          ['ArrowRight', 'default'],
+          ['End', 'comfortable'],
+          ['Home', 'default'],
+          ['ArrowLeft', 'comfortable'],
+          ['ArrowDown', 'default'],
+          ['ArrowUp', 'comfortable'],
+        ]) {
+          await page.keyboard.press(key!);
+          await expect.poll(() => value.textContent()).toBe(`Value: ${next}`);
+          expect(await density.locator('[role="radio"][aria-checked="true"]').count()).toBe(1);
+          expect(await density.locator('[role="radio"][tabindex="0"]').count()).toBe(1);
+        }
+
+        // Base selection commits on release, not on down or an outside release.
+        const rect = await first.boundingBox();
+        if (!rect) throw new Error('Default radio has no visible geometry.');
+        await page.mouse.move(rect.x + rect.width / 2, rect.y + rect.height / 2);
+        await page.mouse.down();
+        expect(await value.textContent()).toBe('Value: comfortable');
+        await page.mouse.move(rect.x + 60, rect.y + rect.height / 2);
+        await page.mouse.up();
+        expect(await value.textContent()).toBe('Value: comfortable');
+        await clickCenter(page, first);
+        await expect.poll(() => value.textContent()).toBe('Value: default');
+        await clickCenter(page, compact);
+        expect(await value.textContent()).toBe('Value: default');
+        await clickCenter(page, disabled.getByRole('radio', { name: 'Default', exact: true }));
+        expect(
+          await disabled
+            .getByRole('radio', { name: 'Comfortable', exact: true })
+            .getAttribute('aria-checked')
+        ).toBe('true');
+
+        await applyColorScheme(page, 'dark');
+        await expect
+          .poll(async () => alpha((await itemState(first)).background))
+          .toBeCloseTo(0.045, 3);
+        expect(await value.textContent()).toBe('Value: default');
+        observations.dark = await Promise.all([first, selected, compact].map(itemState));
+        expect(
+          (observations.dark as Awaited<ReturnType<typeof itemState>>[]).map(
+            (item) => item.dotOpacity
+          )
+        ).toEqual(['1', '0', '0']);
+        await content.screenshot({ path: path.join(evidenceDir, `${runtime}-dark.png`) });
+
+        await page.setViewportSize({ width: 320, height: 900 });
+        await content.scrollIntoViewIfNeeded();
+        await expect
+          .poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+          .toBeLessThanOrEqual(321);
+        observations.narrow = await itemState(first);
+        expect((observations.narrow as Awaited<ReturnType<typeof itemState>>).width).toBeCloseTo(
+          16,
+          1
+        );
+        expect(await value.textContent()).toBe('Value: default');
+        await content.screenshot({ path: path.join(evidenceDir, `${runtime}-narrow.png`) });
+        await applyColorScheme(page, 'light');
+        await expect.poll(async () => alpha((await itemState(first)).background)).toBe(0);
+        expect(await value.textContent()).toBe('Value: default');
+        expect(errors).toEqual([]);
+        observations.errors = errors;
+        await writeFile(
+          path.join(evidenceDir, `${runtime}.json`),
+          JSON.stringify(observations, null, 2)
+        );
+      } catch (error) {
+        observations.errors = errors;
+        observations.failure = String(error);
+        await writeFile(
+          path.join(evidenceDir, `${runtime}-failure.json`),
+          JSON.stringify(observations, null, 2)
+        );
+        await page.screenshot({
+          path: path.join(evidenceDir, `${runtime}-failure.png`),
+          fullPage: true,
+        });
+        throw new Error(`${String(error)}\nBrowser errors: ${errors.join('\n')}`, { cause: error });
+      } finally {
+        await context.close();
+      }
+    },
+    120_000
+  );
+});
