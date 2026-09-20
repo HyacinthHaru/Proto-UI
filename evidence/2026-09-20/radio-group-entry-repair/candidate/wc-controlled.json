@@ -1,0 +1,102 @@
+{
+  "runtime": "wc",
+  "mode": "controlled",
+  "browser": "153.0.8010.48",
+  "initial": {
+    "value": "b",
+    "changes": [],
+    "items": [
+      {
+        "label": "Alpha",
+        "checked": "false",
+        "tabIndex": -1,
+        "focused": false
+      },
+      {
+        "label": "Beta",
+        "checked": "true",
+        "tabIndex": 0,
+        "focused": false
+      },
+      {
+        "label": "Gamma",
+        "checked": "false",
+        "tabIndex": -1,
+        "focused": false
+      }
+    ]
+  },
+  "tab": {
+    "value": "b",
+    "changes": [],
+    "items": [
+      {
+        "label": "Alpha",
+        "checked": "false",
+        "tabIndex": -1,
+        "focused": false
+      },
+      {
+        "label": "Beta",
+        "checked": "true",
+        "tabIndex": 0,
+        "focused": true
+      },
+      {
+        "label": "Gamma",
+        "checked": "false",
+        "tabIndex": -1,
+        "focused": false
+      }
+    ]
+  },
+  "reverseTab": {
+    "value": "b",
+    "changes": [],
+    "items": [
+      {
+        "label": "Alpha",
+        "checked": "false",
+        "tabIndex": -1,
+        "focused": false
+      },
+      {
+        "label": "Beta",
+        "checked": "true",
+        "tabIndex": 0,
+        "focused": true
+      },
+      {
+        "label": "Gamma",
+        "checked": "false",
+        "tabIndex": -1,
+        "focused": false
+      }
+    ]
+  },
+  "after": {
+    "value": "c",
+    "changes": [],
+    "items": [
+      {
+        "label": "Alpha",
+        "checked": "false",
+        "tabIndex": -1,
+        "focused": false
+      },
+      {
+        "label": "Beta",
+        "checked": "false",
+        "tabIndex": 0,
+        "focused": true
+      },
+      {
+        "label": "Gamma",
+        "checked": "true",
+        "tabIndex": -1,
+        "focused": false
+      }
+    ]
+  },
+  "errors": []
+}
