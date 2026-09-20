@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 env:
-  PUI_SOURCE_REF: 0fefe7433209992d2ec47e009d934bc5a925e83d
+  PUI_SOURCE_REF: b6e260ed3c8e42668b68b3e76a6ea04743178382
   PUI_VARIANT: candidate
 
 jobs:
