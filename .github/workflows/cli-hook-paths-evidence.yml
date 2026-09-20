@@ -1,0 +1,95 @@
+name: CLI hook paths Windows evidence
+
+on:
+  push:
+    branches: [codex/cli-hook-paths-evidence]
+    paths: [.github/workflows/cli-hook-paths-evidence.yml]
+
+permissions:
+  contents: read
+
+env:
+  PUI_SOURCE_REF: 424cc6405049fe74d5bf5f53d428017827c01632
+  PUI_VARIANT: baseline
+
+jobs:
+  windows-coverage:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.PUI_SOURCE_REF }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.2
+      - name: Install frozen workspace dependencies
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.32.1 --activate
+          corepack pnpm@10.32.1 install --frozen-lockfile
+      - name: Record native path and scanner observations
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force .validation-660 | Out-Null
+          @'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          import { execFileSync } from 'node:child_process';
+          import path from 'node:path';
+          import { pathToFileURL } from 'node:url';
+          import { createHash } from 'node:crypto';
+          const root = process.cwd();
+          const test = 'packages/cli/test/lowered-hook-coverage.test.ts';
+          const expectedFile = 'packages/prototypes/brutalist/src/textarea/root.proto.ts';
+          const absolute = path.join(root, ...expectedFile.split('/'));
+          const relative = path.relative(root, absolute);
+          const { scanRuleStateReads } = await import(pathToFileURL(path.join(root, 'packages/cli/src/services/lowered-hook-coverage.ts')).href);
+          const scan = scanRuleStateReads(readFileSync(absolute, 'utf8'), relative);
+          const source = readFileSync(path.join(root, test), 'utf8');
+          const result = {
+            head: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+            platform: process.platform, node: process.version, separator: path.sep,
+            nativeRelative: relative, expectedFile, nativeMatchesFixture: relative === expectedFile,
+            canonicalRelative: relative.split(path.sep).join('/'),
+            fileAssignment: source.split(/\r?\n/).find(line => line.includes('const file = path.relative')),
+            testSha256: createHash('sha256').update(source).digest('hex'),
+            targetUsages: scan.usages, unresolved: scan.unresolved,
+          };
+          writeFileSync('.validation-660/observations.json', JSON.stringify(result, null, 2) + '\n');
+          '@ | node --import tsx --input-type=module
+      - name: Execute unchanged coverage assertions and verify the expected outcome
+        shell: pwsh
+        run: |
+          corepack pnpm@10.32.1 exec vitest run packages/cli/test/lowered-hook-coverage.test.ts --maxWorkers=1 --minWorkers=1 --no-file-parallelism --reporter=json --outputFile=.validation-660/result.json *> .validation-660/test.log
+          $env:PUI_GATE_EXIT = "$LASTEXITCODE"
+          @'
+          import assert from 'node:assert/strict';
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const result = JSON.parse(readFileSync('.validation-660/result.json', 'utf8'));
+          const observations = JSON.parse(readFileSync('.validation-660/observations.json', 'utf8'));
+          const failed = result.testResults.flatMap(file => file.assertionResults).filter(test => test.status === 'failed');
+          const baseline = process.env.PUI_VARIANT === 'baseline';
+          const exit = Number(process.env.PUI_GATE_EXIT);
+          const receipt = { variant: process.env.PUI_VARIANT, sourceRef: process.env.PUI_SOURCE_REF, exitCode: exit, total: result.numTotalTests, passed: result.numPassedTests, failed: result.numFailedTests, failures: failed };
+          writeFileSync('.validation-660/receipt.json', JSON.stringify(receipt, null, 2) + '\n');
+          assert.equal(observations.platform, 'win32');
+          assert.equal(observations.head, process.env.PUI_SOURCE_REF);
+          assert.equal(exit, baseline ? 1 : 0);
+          assert.equal(failed.length, baseline ? 1 : 0);
+          assert.equal(result.numFailedTests, baseline ? 1 : 0);
+          assert(result.numTotalTests > 30);
+          if (baseline) {
+            assert(failed[0].fullName.endsWith('resolves every hook state a shipped rule condition reads'));
+            assert(failed[0].failureMessages.join('\n').includes('to deep equally contain'));
+            assert.equal(observations.nativeMatchesFixture, false);
+          }
+          '@ | node --input-type=module
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cli-hook-paths-${{ env.PUI_VARIANT }}-${{ github.run_id }}
+          path: .validation-660/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30
