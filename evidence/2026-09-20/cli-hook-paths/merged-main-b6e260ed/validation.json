@@ -1,0 +1,56 @@
+{
+  "sourceHead": "b6e260ed3c8e42668b68b3e76a6ea04743178382",
+  "mergedMain": "c473eae3fe6b66354f5e689fcc1d01241946ed7f",
+  "productDiff": {
+    "files": 1,
+    "additions": 1,
+    "deletions": 1,
+    "path": "packages/cli/test/lowered-hook-coverage.test.ts"
+  },
+  "focused": {
+    "passed": 158,
+    "exit": 0
+  },
+  "types": {
+    "astroFiles": 230,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0,
+    "exit": 0
+  },
+  "fullTest": {
+    "command": "corepack pnpm@10.32.1 test",
+    "exit": 0,
+    "vitestFirstStage": {
+      "filesPassed": 485,
+      "filesSkipped": 3,
+      "testsPassed": 2551,
+      "todo": 34,
+      "note": "This stage also executes the new real-Chromium Scroll end-follow suite."
+    },
+    "dedicatedBrowserStage": {
+      "filesPassed": 26,
+      "testsPassed": 136
+    },
+    "seconds": 781.8
+  },
+  "nativeWindows": {
+    "run": 35520174449,
+    "sourceHead": "b6e260ed3c8e42668b68b3e76a6ea04743178382",
+    "platform": "win32",
+    "node": "v22.23.2",
+    "pnpm": "10.32.1",
+    "passed": 75,
+    "failed": 0,
+    "exit": 0,
+    "sourceBinding": "source-binding.json"
+  },
+  "visualInspection": "visual-regression/inspection.json",
+  "integrationGate": {
+    "state": "not complete",
+    "run": 35520133770,
+    "packageBuildJob": 106102692354,
+    "failure": "Same canonical React/Vue whole-entry size failures and exact output hashes as mainc473eae3; separate maintainer dependency673 pending review/merge.",
+    "independentApproval": "pending at currenthead; prior0fef maintainer comment is not an approval ofb6."
+  }
+}

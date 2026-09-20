@@ -1,0 +1,12 @@
+{
+  "head": "b6e260ed3c8e42668b68b3e76a6ea04743178382",
+  "run": 35520174449,
+  "workflowHead": "378429c5404c9e9910975450790be03a8f49ff4e",
+  "testGitBlobSha256": "74a87de6737853aa8fac9fb9e660753a1fa1172a3439c8e6f2ed00f94bbd1047",
+  "nativeWindowsTestSha256": "dfc0d435d3bf39ca07cd6bf0b1eec608a6b214fc2102d3313cbc60185359eada",
+  "gitBlobCRLFSha256": "dfc0d435d3bf39ca07cd6bf0b1eec608a6b214fc2102d3313cbc60185359eada",
+  "nativeCRLFMatchesCommittedSource": true,
+  "testAssertionsUnchanged": true,
+  "passed": 75,
+  "failed": 0
+}

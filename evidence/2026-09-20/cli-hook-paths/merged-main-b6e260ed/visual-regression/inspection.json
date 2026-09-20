@@ -1,0 +1,25 @@
+{
+  "sourceHead": "b6e260ed3c8e42668b68b3e76a6ea04743178382",
+  "sourceTest": "apps/www/test/color-scheme.browser.test.ts",
+  "execution": "Current full pnpm test, real Chromium; suite reports8passed",
+  "inspection": "Each original capture was opened and visually inspected. Selected WC checked dark, React light, Vue portal and Vue2 dark surfaces show legible labels, intact controls, appropriate recorded checked/unchecked appearance, and no clipping or new visual finding in these samples.",
+  "scope": "Unchanged-product visual regression samples; not a reproduction of the internal Windows filename defect and not complete accessibility/contrast certification.",
+  "images": [
+    {
+      "file": "wc-checked-dark.png",
+      "sha256": "65ab610b227ec7b363a24dc79faea90931be731c5e5b6c9057343878448cbbcb"
+    },
+    {
+      "file": "react-light.png",
+      "sha256": "f11f7d6be2a23695a4514963dbb8bb56bf54e2e36a3e80285b940ef96d271fad"
+    },
+    {
+      "file": "vue-portal.png",
+      "sha256": "ae3ce0f25d0a2fe86478ee896a838ab3a00fbdeb47230dcb346bcf8c7e6b359a"
+    },
+    {
+      "file": "vue2-dark.png",
+      "sha256": "bf9d0476aec40f3ba3b98ecf91de02048bc4d67e1326f9e3e92bee2e07a5e086"
+    }
+  ]
+}
