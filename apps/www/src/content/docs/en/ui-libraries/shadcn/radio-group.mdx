@@ -11,7 +11,7 @@ Radio Group contains Root, Item, and Indicator. Base owns the selected value, it
 
 ## Compose the three parts
 
-Import `shadcnRadioGroupRoot`, `shadcnRadioGroupItem`, and `shadcnRadioGroupIndicator` from `@proto.ui/prototypes-shadcn/radio-group`, then adapt them to your runtime. The root package also exports these objects and their PascalCase aliases. `proto-ui add react shadcn-radio-group` generates the three React facades; `vue` and `wc` are supported CLI targets too.
+Import `shadcnRadioGroupRoot`, `shadcnRadioGroupItem`, and `shadcnRadioGroupIndicator` from `@proto.ui/prototypes-shadcn/radio-group`, then adapt them to your runtime. The root package also exports these objects and their PascalCase aliases. `proto-ui add react shadcn-radio-group` generates the three React facades; `vue`, `vue2`, and `wc` are supported CLI targets too.
 
 Each Item belongs to its nearest Root. Put an Indicator inside each Item whose selected dot should appear. Indicator is an explicit, optional, repeatable part; the CLI does not insert a hidden default part. Its SVG is decorative and creates no extra radio or tab stop.
 
@@ -29,7 +29,7 @@ An uncontrolled Root accepts selection and emits `valueChange`. With `value` sup
 
 Tab into the first group: the selected enabled Item is its entry point. Arrow keys move and select, wrapping across enabled Items; Home and End reach the first and last enabled choices. The disabled Item is skipped. Space selects a focused Item; Enter does not. A successful primary pointer release selects, while a cancelled press does not.
 
-Compare the initially empty group and the disabled group, then repeat in Web Components, React, and Vue. The normal control is 16px with an 8px decorative glyph box. Keyboard focus adds a three-pixel ring; only color and box-shadow transition, over 150ms. Changing the website theme changes the input tint without changing selection.
+Compare the initially empty group and the disabled group, then repeat in Web Components, React, Vue, and Vue 2. The normal control is 16px with an 8px decorative glyph box. Keyboard focus adds a three-pixel ring; only color and box-shadow transition, over 150ms. Changing the website theme changes the input tint without changing selection.
 
 ## Comparison and scope
 

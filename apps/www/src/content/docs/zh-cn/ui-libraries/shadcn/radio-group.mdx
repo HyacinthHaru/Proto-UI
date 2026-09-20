@@ -11,7 +11,7 @@ Radio Group 包含 Root、Item 和 Indicator。Base 拥有选中值、Item 顺�
 
 ## 组合三个部分
 
-从 `@proto.ui/prototypes-shadcn/radio-group` 导入 `shadcnRadioGroupRoot`、`shadcnRadioGroupItem` 和 `shadcnRadioGroupIndicator`，再适配到所用运行时。包根也导出这些对象及其 PascalCase 别名。`proto-ui add react shadcn-radio-group` 会生成三个 React facade；CLI 同时支持 `vue` 和 `wc` 目标。
+从 `@proto.ui/prototypes-shadcn/radio-group` 导入 `shadcnRadioGroupRoot`、`shadcnRadioGroupItem` 和 `shadcnRadioGroupIndicator`，再适配到所用运行时。包根也导出这些对象及其 PascalCase 别名。`proto-ui add react shadcn-radio-group` 会生成三个 React facade；CLI 同时支持 `vue`、`vue2` 和 `wc` 目标。
 
 每个 Item 属于最近的 Root。需要显示选中圆点时，在 Item 内显式放置 Indicator。Indicator 可省略，也可重复放置；CLI 不会暗中插入默认 part。它的 SVG 仅作装饰，不增加 radio 对象或 tab stop。
 
@@ -29,7 +29,7 @@ Radio Group 包含 Root、Item 和 Indicator。Base 拥有选中值、Item 顺�
 
 按 Tab 进入第一组：选中且启用的 Item 是入口。方向键移动并选择，循环经过启用的 Item；Home 和 End 到达首尾启用项，禁用项被跳过。Space 选择当前聚焦项，Enter 不选择。成功的 primary pointer 释放会选择，取消的按压不会选择。
 
-比较初始未选组和整组禁用的状态，再在 Web Components、React 和 Vue 中重复。控件为 16px，装饰 glyph box 为 8px；键盘焦点增加 3px ring，只有 color 与 box-shadow 使用 150ms 过渡。切换网站主题会改变 input 底色，不改变选中值。
+比较初始未选组和整组禁用的状态，再在 Web Components、React、Vue 和 Vue 2 中重复。控件为 16px，装饰 glyph box 为 8px；键盘焦点增加 3px ring，只有 color 与 box-shadow 使用 150ms 过渡。切换网站主题会改变 input 底色，不改变选中值。
 
 ## 比较来源与范围
 
