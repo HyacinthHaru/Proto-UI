@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 env:
-  PUI_SOURCE_REF: 424cc6405049fe74d5bf5f53d428017827c01632
-  PUI_VARIANT: baseline
+  PUI_SOURCE_REF: 0fefe7433209992d2ec47e009d934bc5a925e83d
+  PUI_VARIANT: candidate
 
 jobs:
   windows-coverage:
