@@ -67,7 +67,7 @@ cases:
     notes:
       - The passing unit path covers empty or first-selected entry and current choices established by programmatic focus or navigation. It does not verify initial Tab entry when the initially selected Item is not first.
   - id: T-SHADCN-RADIO-GROUP-0001-CASE-BROWSER
-    title: Real package previews render and interact across Web Component React and Vue in both themes and narrow layouts
+    title: Real package previews render and interact across Web Component React Vue and Vue 2 in both themes and narrow layouts
     covers:
       - P-SHADCN-RADIO-GROUP-CURRENT-VISUAL-SURFACE
       - P-SHADCN-RADIO-GROUP-OWNERSHIP-BOUNDARY
@@ -98,7 +98,7 @@ implementations:
       - P-SHADCN-RADIO-GROUP-ITEM
       - P-SHADCN-RADIO-GROUP-INDICATOR
     notes:
-      - Eight unit tests pass for their Runtime setup and WC Adapter observables; the non-first-selected initial Tab-entry browser failure is outside these executed assertions and remains unresolved.
+      - Eight unit tests pass for their Runtime setup and WC Adapter observables; non-first-selected initial Tab entry is verified separately by the browser implementation.
   - id: cli-shadcn-radio-group-facade
     kind: workspace-check
     status: passing
@@ -130,15 +130,14 @@ implementations:
       - Production-source traversal checks that the inherited Item and Indicator states read by shipped Rule conditions resolve to lowerable data variants; this is not rendered-state evidence.
   - id: www-shadcn-radio-group-browser
     kind: adapter-test
-    status: planned
+    status: passing
     path: apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts
     required: true
     consumesCases: [T-SHADCN-RADIO-GROUP-0001-CASE-BROWSER]
     exercises: *radio-group-prototypes
     notes:
-      - Eight required public-page cases separate initial entry from subsequent interaction in WC, React, Vue and Vue 2. All four non-first-selected initial Tab-entry cases still fail; the complete browser implementation is not passing.
-      - Four independent interaction cases pass after real pointer selections establish current. Executed evidence includes native Shift+Tab/Tab re-entry, both arrow axes and Home/End, empty-group Tab/Enter no-selection and Space selection, pointer cancellation and commit, disabled controls, computed geometry and focus feedback, light/dark changes and a 320px layout. These results do not satisfy the separate initial-entry cases.
-      - A separate clean-baseline WC reproduction at 3b756f450e7505e834629e2aef67f7b29afa94e7 confirms the unchanged Base entry mismatch; the bounded prerequisite is tracked at https://github.com/Proto-UI/Proto-UI/issues/662#issuecomment-5741460931. The selected-or-first expectation remains unchanged.
+      - All eight required public-page cases pass in WC, React, Vue and Vue 2 after consuming the independently reviewed Base entry repair in https://github.com/Proto-UI/Proto-UI/pull/669. The four non-first-selected initial-entry cases retain their pre-input tabindex and native Tab assertions.
+      - Four separate interaction cases pass after real pointer selections establish current. Executed evidence includes native Shift+Tab/Tab re-entry, both arrow axes and Home/End, empty-group Tab/Enter no-selection and Space selection, pointer cancellation and commit, disabled controls, computed geometry and focus feedback, light/dark changes and a 320px layout. These public previews do not establish external tarball-consumer acceptance.
 verifies:
   prototypes:
     - P-SHADCN-RADIO-GROUP
