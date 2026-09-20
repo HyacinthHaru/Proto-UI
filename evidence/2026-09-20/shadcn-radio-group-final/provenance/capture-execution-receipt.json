@@ -1,0 +1,23 @@
+{
+  "command": [
+    "corepack",
+    "pnpm@10.32.1",
+    "exec",
+    "tsx",
+    "<packet>/reproduce/capture-consumer.mts",
+    "--repo",
+    "<checkout>",
+    "--prepared",
+    "<packet>/run-final",
+    "--out",
+    "<packet>/run-final/results"
+  ],
+  "startedAt": "2026-09-20T09:41:26.441400+00:00",
+  "helperSha256": "216802bb9dc7b7be3e6ba8f74646c94e6e90fc356fbb9759d37842e29709f5a6",
+  "sourceHead": "465b498de2f391b504ced1b857dff7c44b036c3b",
+  "log": "<packet>/capture-465b498d.log",
+  "exitCode": 0,
+  "finishedAt": "2026-09-20T09:41:36.876924+00:00",
+  "headAfter": "465b498de2f391b504ced1b857dff7c44b036c3b",
+  "worktreeAfter": ""
+}

@@ -1,0 +1,148 @@
+{
+  "placeholders": {
+    "<web-consumer>": "prepared run directory/web-consumer",
+    "<vue2-consumer>": "prepared run directory/vue2-consumer",
+    "<checkout>": "source checkout",
+    "<packet>": "local pack/consumer runner directory",
+    "<validation>": "local command log directory",
+    "<preview>": "final full-suite public-preview capture directory",
+    "<node-toolchain>": "local Node 22 tool installation"
+  },
+  "files": [
+    {
+      "file": "consumer/vue-uncontrolled.json",
+      "originalSha256": "de6e4605ee0618c9e398b608476d2b17e5b6db52c9260d84c21aa576a194a308",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumer/vue2-controlled.json",
+      "originalSha256": "a28b86575cd3253f0279be805f868d55a382e1675a75374e47a6e01dc803d316",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumer/react-controlled.json",
+      "originalSha256": "9a545af0eacb9ec467d8661da9f8b7a387eb0e0b2fd6dc1c9b00ea319bf6436b",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumer/wc-controlled.json",
+      "originalSha256": "a04092ad8cf28e1025c05a015f139aacdde8635773361488abb317f54def3672",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumer/wc-uncontrolled.json",
+      "originalSha256": "1f26a80c96e55b207fd233b7610b73d606cf8daeced15c5e28c06667b262e002",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumer/vue-controlled.json",
+      "originalSha256": "2cd7b263f5fdc2b79e0f5009cf2a38d0410e18efeb0aac75ceafa518daafa1b9",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumer/consumer-results.json",
+      "originalSha256": "fe8ea6bce28029bfbc72e93b6d91b1de7a462af2de1a9a54159e3620da91b8ef",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumer/react-uncontrolled.json",
+      "originalSha256": "5d69413242d6dbf4f843824ef8c8ed1172fd54b91ecdf97f4a420d1fbd658b17",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumer/vue2-uncontrolled.json",
+      "originalSha256": "b682bfa64c5faa5aabd264c0f1830eada4b41324e694a588012da9d6d4f110ca",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "provenance/pack-production-receipt.json",
+      "originalSha256": "af1fa65d8afd2748f17d454606f3e04b3c459259256db1615b904ffe0257302f",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "provenance/prepare-execution-receipt.json",
+      "originalSha256": "ac1584ad76399bd463df50c2471c168aaf4bb86c3b6376d48d2ffdafef54edf0",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "provenance/capture-execution-receipt.json",
+      "originalSha256": "e6b94223bde18b7a0203982a612f760df5aa653db891aebd6b66b52283f41a1f",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "provenance/root-provenance-reconciliation.json",
+      "originalSha256": "5b6eee8a19892d743e180146175b7b0c4ba9f8fde67d7d8cf32a51b9c390538c",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "provenance/root-visual-and-case-review.json",
+      "originalSha256": "8a37b4c4cb6cd9197ab71a60305b9f0037fc4b667c173fffdf30e9d9807d94fd",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved. An unrelated internal execution-administration note was omitted; no measured result or finding was removed."
+    },
+    {
+      "file": "provenance/preparation-receipt.json",
+      "originalSha256": "ece0d69aac5763fe21d497cfdf121618918296150eff8ecd89174eee81818ea7",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumers/web-consumer/package.json",
+      "originalSha256": "c1d41d710740b8a51bc6aa136a0d81f952003b0578645d8251468e16348a3e21",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumers/web-consumer/package-lock.json",
+      "originalSha256": "ef432bb15f97830223f2e4d617626a2196ac0956975135e0ee0c95fe30d79831",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumers/vue2-consumer/package.json",
+      "originalSha256": "8417d90c20cb40c980e4cfa77e07fd36a65e0a31064ad9d19816d2bc3e962363",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "consumers/vue2-consumer/package-lock.json",
+      "originalSha256": "492ebdc9ee0258e7d208d2848ddb9ca04d7953c8f7c7cdcfcfc04f02df1c4d50",
+      "normalization": "Local paths replaced by documented placeholders; measured data and file hashes preserved."
+    },
+    {
+      "file": "preview/react-initial-entry.json",
+      "originalSha256": "bf0112bcbd753c92e09b9c6cf8b3b9fdd0c652bbbd789d3235cb801bd0607f01",
+      "normalization": "Local capture paths replaced by <preview>; observed values preserved."
+    },
+    {
+      "file": "preview/react-interaction.json",
+      "originalSha256": "686c03fcf522c89c31663c9322bb2e7c7f3b5225652c0f490fb0a4d81db70730",
+      "normalization": "Local capture paths replaced by <preview>; observed values preserved."
+    },
+    {
+      "file": "preview/vue-initial-entry.json",
+      "originalSha256": "e0b66912d1823c8807508efdc4861c53f5c5ec9756df128be5884fc316f353a9",
+      "normalization": "Local capture paths replaced by <preview>; observed values preserved."
+    },
+    {
+      "file": "preview/vue-interaction.json",
+      "originalSha256": "f7cd0cc352207c0bfa18c11528cd8d5158c6986f5ad9184a2f733e9194de680c",
+      "normalization": "Local capture paths replaced by <preview>; observed values preserved."
+    },
+    {
+      "file": "preview/vue2-initial-entry.json",
+      "originalSha256": "5e95454a0a3353e61db5d6e222856e307b8c799bbafd587aae63e947969b371f",
+      "normalization": "Local capture paths replaced by <preview>; observed values preserved."
+    },
+    {
+      "file": "preview/vue2-interaction.json",
+      "originalSha256": "394b3bef806d0c2fd61718685ae4bbcb12376f21fabf0840fec1f35ddb30f0a6",
+      "normalization": "Local capture paths replaced by <preview>; observed values preserved."
+    },
+    {
+      "file": "preview/wc-initial-entry.json",
+      "originalSha256": "daed9ebd6d43eebaf360cf19cae1c5b20d53ae235efdb093a6018d126c51bf1d",
+      "normalization": "Local capture paths replaced by <preview>; observed values preserved."
+    },
+    {
+      "file": "preview/wc-interaction.json",
+      "originalSha256": "f9c0b640e6f4f5697e3c8c3ae57afe086e432fa1775c1c89561b561a0b2561bc",
+      "normalization": "Local capture paths replaced by <preview>; observed values preserved."
+    }
+  ]
+}

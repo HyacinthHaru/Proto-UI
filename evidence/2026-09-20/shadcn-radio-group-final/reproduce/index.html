@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" class="light" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Packed Shadcn Radio Group</title>
+    <style>
+      body {
+        font:
+          16px system-ui,
+          sans-serif;
+        margin: 16px;
+        color: var(--pui-foreground);
+        background: var(--pui-background);
+      }
+      main {
+        box-sizing: border-box;
+        margin: 24px auto;
+        padding: 24px;
+        border: 1px solid var(--pui-border);
+        max-width: 420px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 12px;
+      }
+      #scenario {
+        font-size: 13px;
+      }
+      button {
+        margin: 20px 0;
+        padding: 6px 10px;
+      }
+      .choice-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 24px;
+      }
+      .choice-row > span {
+        font-size: 14px;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Packed CLI consumer</h1>
+      <p id="scenario"></p>
+      <button id="before">Before the group</button>
+      <div id="mount"></div>
+      <button id="after">After the group</button>
+    </main>
+    <script type="module" src="/radio-browser.ts"></script>
+  </body>
+</html>

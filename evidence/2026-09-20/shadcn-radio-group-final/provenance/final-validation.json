@@ -1,0 +1,106 @@
+{
+  "sourceHead": "24644469773ee7a67bd3097a8b2e5342b7ec4efc",
+  "base": "e7961001af1d313b1518be694f866b0e98337b0d",
+  "recordedAt": "2026-09-20T11:05:51.827231+00:00",
+  "checks": [
+    {
+      "command": ["corepack", "pnpm@10.32.1", "check:types"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T10:43:11.446639+00:00",
+      "endedAt": "2026-09-20T10:43:31.813928+00:00",
+      "sourceUnchanged": true
+    },
+    {
+      "command": ["corepack", "pnpm@10.32.1", "test"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T10:43:31.863374+00:00",
+      "endedAt": "2026-09-20T10:55:44.887508+00:00",
+      "sourceUnchanged": true
+    },
+    {
+      "command": ["corepack", "pnpm@10.32.1", "check:package-manifests"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T10:55:44.981337+00:00",
+      "endedAt": "2026-09-20T10:55:45.178577+00:00",
+      "sourceUnchanged": true
+    },
+    {
+      "command": [
+        "node",
+        "scripts/release/publish.mjs",
+        "--pack",
+        "--out-dir",
+        "<packet>/release-24644469"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T10:55:45.219025+00:00",
+      "endedAt": "2026-09-20T10:56:25.798776+00:00",
+      "sourceUnchanged": true
+    },
+    {
+      "command": ["corepack", "pnpm@10.32.1", "check:package-budgets"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T10:56:25.848779+00:00",
+      "endedAt": "2026-09-20T10:56:26.538754+00:00",
+      "sourceUnchanged": true
+    },
+    {
+      "command": ["corepack", "pnpm@10.32.1", "docs:build"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T10:56:26.583828+00:00",
+      "endedAt": "2026-09-20T10:56:43.775547+00:00",
+      "sourceUnchanged": true
+    },
+    {
+      "command": ["corepack", "pnpm@10.32.1", "release:smoke:react"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T10:56:43.838549+00:00",
+      "endedAt": "2026-09-20T10:57:43.035432+00:00",
+      "sourceUnchanged": true
+    },
+    {
+      "command": ["corepack", "pnpm@10.32.1", "release:smoke:cli"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T10:57:43.119229+00:00",
+      "endedAt": "2026-09-20T10:58:41.101995+00:00",
+      "sourceUnchanged": true
+    }
+  ],
+  "results": {
+    "nonBrowserTests": 2391,
+    "nonBrowserFiles": 479,
+    "existingTodoTests": 34,
+    "existingSkippedFiles": 3,
+    "browserTests": 136,
+    "browserFiles": 26,
+    "typesAstroFiles": 229,
+    "typeDiagnostics": 0,
+    "docsPages": 245,
+    "packagesBuiltAndPacked": 43,
+    "budgetChecks": 9,
+    "standardReactConsumerPackages": 38,
+    "standardCliConsumerPackages": 40,
+    "standardVue2ConsumerPackages": 38
+  },
+  "sourcePreview": {
+    "cases": 8,
+    "runtimeScenarios": "WC/React/Vue/Vue2 x initial-entry/interaction",
+    "capturedAtHead": "24644469773ee7a67bd3097a8b2e5342b7ec4efc",
+    "images": 20,
+    "finalVisualReview": "12 byte-identical previously inspected frames; root inspected remaining8"
+  },
+  "installedConsumer": {
+    "cases": 8,
+    "runtimeScenarios": "WC/React/Vue/Vue2 x controlled/uncontrolled",
+    "packProducerHead": "465b498de2f391b504ced1b857dff7c44b036c3b",
+    "finalTarballsByteIdentical": 43,
+    "imagesIndividuallyInspectedByRoot": 32
+  },
+  "limits": [
+    "draft semantic identities remain draft; no activation or release acceptance",
+    "local candidate tarballs, no npm publication",
+    "existing Base disabled-to-enabled gap and blur/reentry policy retain the separately scoped #669 boundary",
+    "old HappyDOM20 and cold Vite discovery failures are historical, not reclassified",
+    "no SSR/non-Web/all-browser claim"
+  ]
+}

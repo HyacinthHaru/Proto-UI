@@ -1,0 +1,21 @@
+{
+  "command": [
+    "node",
+    "<packet>/reproduce/prepare-consumer.mjs",
+    "--repo",
+    "<checkout>",
+    "--head",
+    "465b498de2f391b504ced1b857dff7c44b036c3b",
+    "--release",
+    "<packet>/release-465b498d",
+    "--out",
+    "<packet>/run-final"
+  ],
+  "startedAt": "2026-09-20T09:40:09.934513+00:00",
+  "helperSha256": "4fdd6da2a78934adc749a766d958bc9bf167beb8a0635a4e2a77148effa8a0b7",
+  "log": "<packet>/prepare-465b498d.log",
+  "exitCode": 0,
+  "finishedAt": "2026-09-20T09:40:19.800474+00:00",
+  "headAfter": "465b498de2f391b504ced1b857dff7c44b036c3b",
+  "worktreeAfter": ""
+}

@@ -1,0 +1,109 @@
+{
+  "head": "24644469773ee7a67bd3097a8b2e5342b7ec4efc",
+  "directory": "<preview>",
+  "pngCount": 20,
+  "jsonCount": 8,
+  "images": [
+    {
+      "name": "react-initial-entry.png",
+      "sha256": "b28b2ddc33d465d227d2a391e138b8e9cdf5e88b113ba9a5c748b27641cc1960",
+      "identicalToInspectedFocused": false
+    },
+    {
+      "name": "react-interaction-dark.png",
+      "sha256": "4fb5d5af6bec66f21d97d76e14b77d0ea5aadc53fa59a33b5cfade747c2d9c38",
+      "identicalToInspectedFocused": false
+    },
+    {
+      "name": "react-interaction-focus.png",
+      "sha256": "861c6d4b8e16771da9efbb28b44b7abc0b9897d26a4f8e22df2df33970ae1fcc",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "react-interaction-light.png",
+      "sha256": "9f091e606cc8d2cd19b4ac477f74c75e0595c18c8c0543716a8234374c2d8e5b",
+      "identicalToInspectedFocused": false
+    },
+    {
+      "name": "react-interaction-narrow.png",
+      "sha256": "5f6ba4faf3e6ff9324f464e9df692c7b1af598160601afc421327cdc61f0c234",
+      "identicalToInspectedFocused": false
+    },
+    {
+      "name": "vue-initial-entry.png",
+      "sha256": "056ec80cd400204562b968fe916ed292c11478ecc791ca0ffacb87eb4e7adf06",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "vue-interaction-dark.png",
+      "sha256": "841a6f306c16f3f3ec7cf5bf3ad6fd60d538e14305b99fec87d9535928da59a2",
+      "identicalToInspectedFocused": false
+    },
+    {
+      "name": "vue-interaction-focus.png",
+      "sha256": "38b1960d2df960ced3126d97e4bc1a460ba4f0636919a1f6ef98534f9311bef4",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "vue-interaction-light.png",
+      "sha256": "e6f33e75eb9c555e73a4a8e882192d4282457da1097cb2d4084da5392e47eeb3",
+      "identicalToInspectedFocused": false
+    },
+    {
+      "name": "vue-interaction-narrow.png",
+      "sha256": "0e0aaff4839257fff591a0852686a9fd7e936dabe1160bd09d4c2a9e6763e08e",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "vue2-initial-entry.png",
+      "sha256": "724a7181e7647b1e8945489c763c570cdffa1ea79f768326ca4f8a371f7d2f1f",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "vue2-interaction-dark.png",
+      "sha256": "2730242ced9c5b83d99e5cde8d4ed4a6d2a364850067c3d8d4e750e9c05bf463",
+      "identicalToInspectedFocused": false
+    },
+    {
+      "name": "vue2-interaction-focus.png",
+      "sha256": "da99715fa09939edf86af4fd038a9516d7015f34a365768f7b2ebf7a3d4f9c1f",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "vue2-interaction-light.png",
+      "sha256": "cbb93c7b7a69d7d0609ef5c08ad52cd653d8db5d82e9d82434933a0beaeea1b5",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "vue2-interaction-narrow.png",
+      "sha256": "bacf380389bbc719f55e2cc7f561f64b8a3ba425891b4a60faf3d721d1a332bb",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "wc-initial-entry.png",
+      "sha256": "2ebf66b4550b42f3332abd640ea7d77edc9c13370d7260d65562ee4e70cfac34",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "wc-interaction-dark.png",
+      "sha256": "e523f8c3841339919ef8d77ceb6e0a33721e3561250cb466941808e3064f4568",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "wc-interaction-focus.png",
+      "sha256": "07fd3e90b5b767e408e38c5d52fe7921516882d1c312be41b911e1dce6796e46",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "wc-interaction-light.png",
+      "sha256": "d84b0937d250c6060484725833fe59f9ffd5e0ca5d88df4deb827ff21754e5d6",
+      "identicalToInspectedFocused": true
+    },
+    {
+      "name": "wc-interaction-narrow.png",
+      "sha256": "f358e5c77536677c0b86abfa11c6af94fc6706d28dbee37501a078bcd9fa2505",
+      "identicalToInspectedFocused": false
+    }
+  ],
+  "visualReview": "Twelve PNGs are byte-identical to the focused set fully inspected by the contributing Agent; root independently inspected all eight changed final PNGs. No new visual finding."
+}

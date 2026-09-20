@@ -1,0 +1,254 @@
+{
+  "inspectedAt": "2026-09-20T10:45:34.823521+00:00",
+  "sourceHead": "465b498de2f391b504ced1b857dff7c44b036c3b",
+  "cases": [
+    {
+      "runtime": "wc",
+      "mode": "controlled",
+      "status": "passed",
+      "initialTabIndex": [-1, 0, -1],
+      "nativeTabFocus": [false, true, false],
+      "updatedValue": "b",
+      "updatedFocus": [true, false, false],
+      "changes": ["a"]
+    },
+    {
+      "runtime": "wc",
+      "mode": "uncontrolled",
+      "status": "passed",
+      "initialTabIndex": [-1, 0, -1],
+      "nativeTabFocus": [false, true, false],
+      "updatedValue": "a",
+      "updatedFocus": [true, false, false],
+      "changes": ["a"]
+    },
+    {
+      "runtime": "react",
+      "mode": "controlled",
+      "status": "passed",
+      "initialTabIndex": [-1, 0, -1],
+      "nativeTabFocus": [false, true, false],
+      "updatedValue": "b",
+      "updatedFocus": [true, false, false],
+      "changes": ["a"]
+    },
+    {
+      "runtime": "react",
+      "mode": "uncontrolled",
+      "status": "passed",
+      "initialTabIndex": [-1, 0, -1],
+      "nativeTabFocus": [false, true, false],
+      "updatedValue": "a",
+      "updatedFocus": [true, false, false],
+      "changes": ["a"]
+    },
+    {
+      "runtime": "vue",
+      "mode": "controlled",
+      "status": "passed",
+      "initialTabIndex": [-1, 0, -1],
+      "nativeTabFocus": [false, true, false],
+      "updatedValue": "b",
+      "updatedFocus": [true, false, false],
+      "changes": ["a"]
+    },
+    {
+      "runtime": "vue",
+      "mode": "uncontrolled",
+      "status": "passed",
+      "initialTabIndex": [-1, 0, -1],
+      "nativeTabFocus": [false, true, false],
+      "updatedValue": "a",
+      "updatedFocus": [true, false, false],
+      "changes": ["a"]
+    },
+    {
+      "runtime": "vue2",
+      "mode": "controlled",
+      "status": "passed",
+      "initialTabIndex": [-1, 0, -1],
+      "nativeTabFocus": [false, true, false],
+      "updatedValue": "b",
+      "updatedFocus": [true, false, false],
+      "changes": ["a"]
+    },
+    {
+      "runtime": "vue2",
+      "mode": "uncontrolled",
+      "status": "passed",
+      "initialTabIndex": [-1, 0, -1],
+      "nativeTabFocus": [false, true, false],
+      "updatedValue": "a",
+      "updatedFocus": [true, false, false],
+      "changes": ["a"]
+    }
+  ],
+  "images": [
+    {
+      "file": "react-controlled-dark.png",
+      "sha256": "6366e97c56ff8f39e0432a234f5e9b888531940fb22dc6e025691ecd5b9d7be2",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "react-controlled-narrow.png",
+      "sha256": "ccbcb25571437590336693651de4feaa8c0e39ef4d836b176f80691b1ba601a5",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "react-controlled-tab.png",
+      "sha256": "27225823fff921c7aa3ef9e0399a10240cf76b8374ba7d0e52286d7c513d1ef5",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "react-controlled-updated.png",
+      "sha256": "f02e3b1c950a3bff0a0488969e8548d19a40ba70154433dfe53b136180e01d64",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "react-uncontrolled-dark.png",
+      "sha256": "81120d14a2c5fbd21176be121f6efc2271595e7bba3cfa7058e7472439773fc1",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "react-uncontrolled-narrow.png",
+      "sha256": "23560a71e2b0c292404438dcc14314219ed11ca19dc57be46773c14bc4bb5894",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "react-uncontrolled-tab.png",
+      "sha256": "21457cc3cf43e03d2c4fd168709df99096404b87cb0125f33e9afed997fd3d5a",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "react-uncontrolled-updated.png",
+      "sha256": "eb858478913d6a1cff2ad2d86372f689de6b8f74fba571d5a38e9d8bcf8d7ffe",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue-controlled-dark.png",
+      "sha256": "84a9b3b54ef247424f0ae37c792b46cf4daf0cd1bfc4f5597f507952fe684ff2",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue-controlled-narrow.png",
+      "sha256": "06d69731b0be492f1c35b8ecae7be1044c8ad685413db854c37cbc2ad554d60d",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue-controlled-tab.png",
+      "sha256": "26ce6ac01efba4091ad6e549b1a509b8d4b137168e6a7f7fc82efee875ebd792",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue-controlled-updated.png",
+      "sha256": "ae38c701803fb45e584b0267b63af36733039ddffaed6793623d20fdb71f58cb",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue-uncontrolled-dark.png",
+      "sha256": "da9047b1d8955a79a51837efeabc8d033e6f357c9107c4e12faf719372745c5b",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue-uncontrolled-narrow.png",
+      "sha256": "91bf2ff58d1dc48c985456303017c1fec4ba3f6fd113a5915a260c20554ff917",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue-uncontrolled-tab.png",
+      "sha256": "1073f84ea323fdb51823a0c2cc0e6b4b06a686bb15d17907ba418747ea0e1f96",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue-uncontrolled-updated.png",
+      "sha256": "54bf59b85e7514d1ae839f8bca7721d4e44d8590ed0877d0b917821d2827e32a",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue2-controlled-dark.png",
+      "sha256": "ccff701136a9462668b9c2e2272263f91cba4895ef39f662332cdaa0f520d2f0",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue2-controlled-narrow.png",
+      "sha256": "134d5e5adc75bd5af6886c9cfc45438555d9e573f2f819cd1cc437020f874d16",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue2-controlled-tab.png",
+      "sha256": "a8bfe95a178111c0a721ce6c511e7a91784d4dc5ae0692396eb7fa6b0eb99c1c",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue2-controlled-updated.png",
+      "sha256": "a0cb812d7d43fccf92ff306b7cc36f2433ac6af9b0012e72aec787daac0d6a67",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue2-uncontrolled-dark.png",
+      "sha256": "b07162b68ccf7c75a7fbe374da84beb6d33ec7cff6e4902f047680db6a8c1a6b",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue2-uncontrolled-narrow.png",
+      "sha256": "be0a32340b021d299cfdb5dc90d825b47071115ba6e50a09475f0d5ec276339b",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue2-uncontrolled-tab.png",
+      "sha256": "2d530063a93ebc160d2b54a23924e3a4cdde29d126c2485f07c76ded28d31269",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "vue2-uncontrolled-updated.png",
+      "sha256": "82531042058b2844c27932a6cb53f9734f597bf0d2f425abc046838716c9d597",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "wc-controlled-dark.png",
+      "sha256": "dfc778f0ee8e2704d86afbc9b03ca66864a5a19872f0e33d9e62d4d355e34175",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "wc-controlled-narrow.png",
+      "sha256": "77312d2f751dad630eaf68d41113813dc03e6915349c2fb382503a30f309446c",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "wc-controlled-tab.png",
+      "sha256": "372e22dc27dc6c7a249c65804cd6b15563a1637901cab00159fba8c75f6aa58a",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "wc-controlled-updated.png",
+      "sha256": "f00ac798f33ef44aa7047709ca8858869ceeeed28270b377564ecf02f79cc753",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "wc-uncontrolled-dark.png",
+      "sha256": "9cc118b12feaf16d206e836e9b109294b414c17e5c0fd5f6fb2ee6e156829c8f",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "wc-uncontrolled-narrow.png",
+      "sha256": "934787a660386dcfa378999befaedfea7cda5e7b7a3411ffb4f1daf6956d8cfc",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "wc-uncontrolled-tab.png",
+      "sha256": "6eefa9568b7a98d4f6a688ad9e2ad91f190ea6f6a69b151eb2532f986359a53c",
+      "visuallyInspectedBy": "root"
+    },
+    {
+      "file": "wc-uncontrolled-updated.png",
+      "sha256": "fb8818c83540d0d18cc4c02579789783dcf9f337b2db416cde7d969621f5d827",
+      "visuallyInspectedBy": "root"
+    }
+  ],
+  "visualFindings": [],
+  "notes": [
+    "All 32 original PNGs inspected individually; selected dots, focus transfer, themes, disabled no-Indicator part and narrow layout remain visible and unclipped.",
+    "Controlled updated frames preserve Alpha focus while Beta is selected; uncontrolled frames move both to Alpha.",
+    "Transient computed shadows during the existing CSS transition are recorded as observed, not reclassified as settled endpoints."
+  ]
+}

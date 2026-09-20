@@ -1,0 +1,464 @@
+{
+  "consumerId": "web",
+  "runtime": "wc",
+  "mode": "controlled",
+  "errors": [],
+  "externalRequests": [],
+  "initial": {
+    "runtime": "wc",
+    "mode": "controlled",
+    "value": "b",
+    "changes": [],
+    "count": 3,
+    "groupLabel": "Packed Radio Group",
+    "checked": ["false", "true", "false"],
+    "tabIndex": [-1, 0, -1],
+    "focused": [false, false, false],
+    "disabled": ["false", "false", "true"],
+    "svgCounts": [1, 1, 0],
+    "dotOpacity": ["0", "1"],
+    "itemBoxes": [
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 189
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 225
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 261
+      }
+    ],
+    "glyphBoxes": [
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 193
+      },
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 229
+      }
+    ],
+    "backgrounds": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"],
+    "shadows": [
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    ],
+    "gap": "12px",
+    "overflow": false
+  },
+  "tab": {
+    "runtime": "wc",
+    "mode": "controlled",
+    "value": "b",
+    "changes": [],
+    "count": 3,
+    "groupLabel": "Packed Radio Group",
+    "checked": ["false", "true", "false"],
+    "tabIndex": [-1, 0, -1],
+    "focused": [false, true, false],
+    "disabled": ["false", "false", "true"],
+    "svgCounts": [1, 1, 0],
+    "dotOpacity": ["0", "1"],
+    "itemBoxes": [
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 189
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 225
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 261
+      }
+    ],
+    "glyphBoxes": [
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 193
+      },
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 229
+      }
+    ],
+    "backgrounds": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"],
+    "shadows": [
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "lab(100 0 0) 0px 0px 0px 0px, oklab(0.707999 -0.00000712276 0.0000166297 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    ],
+    "gap": "12px",
+    "overflow": false
+  },
+  "reverseTab": {
+    "runtime": "wc",
+    "mode": "controlled",
+    "value": "b",
+    "changes": [],
+    "count": 3,
+    "groupLabel": "Packed Radio Group",
+    "checked": ["false", "true", "false"],
+    "tabIndex": [-1, 0, -1],
+    "focused": [false, true, false],
+    "disabled": ["false", "false", "true"],
+    "svgCounts": [1, 1, 0],
+    "dotOpacity": ["0", "1"],
+    "itemBoxes": [
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 189
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 225
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 261
+      }
+    ],
+    "glyphBoxes": [
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 193
+      },
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 229
+      }
+    ],
+    "backgrounds": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"],
+    "shadows": [
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "lab(100 0 0) 0px 0px 0px 0px, oklab(0.707999 -0.00000712276 0.0000166297 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    ],
+    "gap": "12px",
+    "overflow": false
+  },
+  "requested": {
+    "runtime": "wc",
+    "mode": "controlled",
+    "value": "b",
+    "changes": ["a"],
+    "count": 3,
+    "groupLabel": "Packed Radio Group",
+    "checked": ["false", "true", "false"],
+    "tabIndex": [0, -1, -1],
+    "focused": [true, false, false],
+    "disabled": ["false", "false", "true"],
+    "svgCounts": [1, 1, 0],
+    "dotOpacity": ["0", "1"],
+    "itemBoxes": [
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 189
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 225
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 261
+      }
+    ],
+    "glyphBoxes": [
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 193
+      },
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 229
+      }
+    ],
+    "backgrounds": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"],
+    "shadows": [
+      "oklab(0 0 0 / 0) 0px 0px 0px 0px, oklab(0 0 0 / 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "oklab(0.999998 -0.00000980496 0.0000234246) 0px 0px 0px 0px, oklab(0.707999 -0.00000712276 0.0000166297 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    ],
+    "gap": "12px",
+    "overflow": false
+  },
+  "accepted": {
+    "runtime": "wc",
+    "mode": "controlled",
+    "value": "a",
+    "changes": ["a"],
+    "count": 3,
+    "groupLabel": "Packed Radio Group",
+    "checked": ["true", "false", "false"],
+    "tabIndex": [0, -1, -1],
+    "focused": [true, false, false],
+    "disabled": ["false", "false", "true"],
+    "svgCounts": [1, 1, 0],
+    "dotOpacity": ["1", "0"],
+    "itemBoxes": [
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 189
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 225
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 261
+      }
+    ],
+    "glyphBoxes": [
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 193
+      },
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 229
+      }
+    ],
+    "backgrounds": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"],
+    "shadows": [
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.03295) 0px 0px 0px 0px, oklab(0.707999 -0.00000712276 0.0000166297 / 0.016475) 0px 0px 0px 0.09885px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.96705) 0px 0px 0px 0px, oklab(0.707999 -0.00000712276 0.0000166297 / 0.483525) 0px 0px 0px 2.90115px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    ],
+    "gap": "12px",
+    "overflow": false
+  },
+  "updated": {
+    "runtime": "wc",
+    "mode": "controlled",
+    "value": "b",
+    "changes": ["a"],
+    "count": 3,
+    "groupLabel": "Packed Radio Group",
+    "checked": ["false", "true", "false"],
+    "tabIndex": [0, -1, -1],
+    "focused": [true, false, false],
+    "disabled": ["false", "false", "true"],
+    "svgCounts": [1, 1, 0],
+    "dotOpacity": ["0", "1"],
+    "itemBoxes": [
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 189
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 225
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 261
+      }
+    ],
+    "glyphBoxes": [
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 193
+      },
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 229
+      }
+    ],
+    "backgrounds": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"],
+    "shadows": [
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.457252) 0px 0px 0px 0px, oklab(0.707999 -0.00000712276 0.0000166297 / 0.228626) 0px 0px 0px 1.37176px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.542748) 0px 0px 0px 0px, oklab(0.707999 -0.00000712276 0.0000166297 / 0.271374) 0px 0px 0px 1.62824px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    ],
+    "gap": "12px",
+    "overflow": false
+  },
+  "dark": {
+    "runtime": "wc",
+    "mode": "controlled",
+    "value": "b",
+    "changes": ["a"],
+    "count": 3,
+    "groupLabel": "Packed Radio Group",
+    "checked": ["false", "true", "false"],
+    "tabIndex": [0, -1, -1],
+    "focused": [true, false, false],
+    "disabled": ["false", "false", "true"],
+    "svgCounts": [1, 1, 0],
+    "dotOpacity": ["0", "1"],
+    "itemBoxes": [
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 189
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 225
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 175,
+        "y": 261
+      }
+    ],
+    "glyphBoxes": [
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 193
+      },
+      {
+        "width": 8,
+        "height": 8,
+        "x": 179,
+        "y": 229
+      }
+    ],
+    "backgrounds": [
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.045)",
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.045)",
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.045)"
+    ],
+    "shadows": [
+      "oklab(0.971075 -0.00000952193 0.0000227474 / 0.969814) 0px 0px 0px 0px, oklab(0.702857 -0.00000706126 0.0000165057 / 0.484907) 0px 0px 0px 2.90944px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    ],
+    "gap": "12px",
+    "overflow": false
+  },
+  "narrow": {
+    "runtime": "wc",
+    "mode": "controlled",
+    "value": "b",
+    "changes": ["a"],
+    "count": 3,
+    "groupLabel": "Packed Radio Group",
+    "checked": ["false", "true", "false"],
+    "tabIndex": [0, -1, -1],
+    "focused": [true, false, false],
+    "disabled": ["false", "false", "true"],
+    "svgCounts": [1, 1, 0],
+    "dotOpacity": ["0", "1"],
+    "itemBoxes": [
+      {
+        "width": 16,
+        "height": 16,
+        "x": 41,
+        "y": 189
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 41,
+        "y": 225
+      },
+      {
+        "width": 16,
+        "height": 16,
+        "x": 41,
+        "y": 261
+      }
+    ],
+    "glyphBoxes": [
+      {
+        "width": 8,
+        "height": 8,
+        "x": 45,
+        "y": 193
+      },
+      {
+        "width": 8,
+        "height": 8,
+        "x": 45,
+        "y": 229
+      }
+    ],
+    "backgrounds": [
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.045)",
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.045)",
+      "oklab(0.999998 -0.00000980496 0.0000234246 / 0.045)"
+    ],
+    "shadows": [
+      "oklab(0.150805 -0.00000149477 0.00000354084 / 0.999781) 0px 0px 0px 0px, oklab(0.557031 -0.00000531716 0.0000129889 / 0.499891) 0px 0px 0px 2.99934px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+    ],
+    "gap": "12px",
+    "overflow": false
+  },
+  "status": "passed"
+}
