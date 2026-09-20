@@ -3,7 +3,7 @@ type: test
 title: Shadcn Radio Group inheritance, public surface and rendered presentation tests
 status: draft
 lifecycleRationale: This evidence map accompanies the draft three-part Shadcn projection. Pending executions remain planned; successful runs establish only their declared package, Web Adapter and browser scopes, not stable admission or non-Web conformance.
-since: 0.3.0-alpha.0
+since: 0.3.0-alpha.1
 summary: Covers exact inherited APIs and package entries, visual rule tokens, controlled and uncontrolled selection, effective disabled, roving focus, nearest-domain isolation and passive repeatable Indicators; browser evidence separately verifies actual rendered presentation.
 cases:
   - id: T-SHADCN-RADIO-GROUP-0001-CASE-PUBLIC-SURFACE
@@ -147,7 +147,7 @@ verifies:
 exercises:
   prototypes: *radio-group-prototypes
 revisions:
-  - version: 0.3.0-alpha.0
+  - version: 0.3.0-alpha.1
     change: introduced
     summary: Added the draft Shadcn Radio Group evidence map for inherited behavior, exact surfaces and separate rendered verification.
 tags: [test, shadcn, radio-group, projection, interaction, focus, accessibility]

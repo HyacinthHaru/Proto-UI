@@ -3,7 +3,7 @@ type: prototype
 title: Shadcn Radio Group Indicator displays passive Base checked feedback
 status: draft
 lifecycleRationale: The explicit optional Indicator projects draft Base Item-derived facts. Its decorative glyph and visibility evidence support this presentation slice without creating or activating a new interaction, focus or accessibility owner.
-since: 0.3.0-alpha.0
+since: 0.3.0-alpha.1
 summary: Shadcn Radio Group Indicator consumes the nearest Item's checked and effective-disabled facts and presents one decorative circular glyph without owning selection or presence.
 statement:
   en: Indicator is an explicit, optional and repeatable Base Item child. It keeps the nearest Item's read-only derived facts and renders a decorative circle whose opacity follows checked through Rule; it introduces no new state or presence owner.
@@ -42,7 +42,7 @@ relates:
 verifies:
   tests: [T-SHADCN-RADIO-GROUP-0001]
 revisions:
-  - version: 0.3.0-alpha.0
+  - version: 0.3.0-alpha.1
     change: introduced
     summary: Introduced explicit passive Shadcn Indicators with Item-derived checked opacity and decorative circular glyphs.
 tags: [prototype, shadcn, radio-group, indicator, passive, visual]

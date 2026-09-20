@@ -3,7 +3,7 @@ type: prototype
 title: Shadcn Radio Group Item presents the Base radio choice
 status: draft
 lifecycleRationale: This circular Item presentation consumes draft Base selection, disabled and focus facts. Rendered and executable evidence remains scoped to the reviewed Web projection and does not admit additional form or interaction semantics.
-since: 0.3.0-alpha.0
+since: 0.3.0-alpha.1
 summary: Shadcn Radio Group Item retains the nearest Base Root's selection and roving-focus protocol and adds a circular surface, focus ring, dark tint and disabled presentation.
 statement:
   en: Item remains a Base radio choice that derives checked and effective disabled from its nearest Root. Its visual rules consume inherited facts without controlling value, activation, keyboard navigation or accessibility.
@@ -46,7 +46,7 @@ dependsOn:
 verifies:
   tests: [T-SHADCN-RADIO-GROUP-0001]
 revisions:
-  - version: 0.3.0-alpha.0
+  - version: 0.3.0-alpha.1
     change: introduced
     summary: Introduced the circular Shadcn Item surface with inherited focus and effective-disabled feedback.
 tags: [prototype, shadcn, radio-group, item, focus, disabled, visual]

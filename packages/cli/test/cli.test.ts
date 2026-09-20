@@ -233,7 +233,7 @@ describe('@proto.ui/cli', () => {
     expect(entry.items).toHaveLength(3);
     expect(entry.preset).toBeUndefined();
 
-    for (const adapter of ['react', 'vue', 'wc'] as const) {
+    for (const adapter of ['react', 'vue', 'vue2', 'wc'] as const) {
       const source = renderHostIndex(adapter, ['shadcn-radio-group']);
       expect(source).toContain("from '@proto.ui/prototypes-shadcn/radio-group'");
       for (const part of entry.items) expect(source).toContain(part.prototypeImport);
