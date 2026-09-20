@@ -1,0 +1,277 @@
+{
+  "authority": "spec/README.md:34,63-79,143-156; draft P-BASE-CHECKBOX/Indicator reverse case anchors; current existing positive-path OR boundary",
+  "scope": "Synthetic schema-valid entity fixtures executed through candidate engine; path strings are recorded evidence, not an actual Test execution/admission claim",
+  "checks": 27,
+  "observations": [
+    {
+      "label": "forward: narrow A",
+      "selected": "0.2.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "forward: out-of-scope required B",
+      "selected": "0.2.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "forward: Test exercises restores candidate required B",
+      "selected": "0.2.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": ["T-REVIEW-0001#impl-b is planned."],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "forward: expired Test exercises",
+      "selected": "0.3.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "forward: implementation exercises independent of expired Test exercises",
+      "selected": "0.3.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": ["T-REVIEW-0001#impl-b is planned."],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "forward: direct exercise without case still diagnostic",
+      "selected": "0.3.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": ["T-REVIEW-0001#impl-b is planned."],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "reverse: narrow A",
+      "selected": "0.2.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "reverse: out-of-scope required B",
+      "selected": "0.2.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "reverse: Test exercises restores candidate required B",
+      "selected": "0.2.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": ["T-REVIEW-0001#impl-b is planned."],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "reverse: expired Test exercises",
+      "selected": "0.3.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "reverse: implementation exercises independent of expired Test exercises",
+      "selected": "0.3.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": ["T-REVIEW-0001#impl-b is planned."],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "reverse: direct exercise without case still diagnostic",
+      "selected": "0.3.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": ["T-REVIEW-0001#impl-b is planned."],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "required-evidence-incomplete"]
+    },
+    {
+      "label": "Forward A and future reverse B stay independent",
+      "selected": "0.2.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "Applicable forward A and reverse B union",
+      "selected": "0.3.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": [],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "Expired forward A leaves only reverse B",
+      "selected": "0.4.0",
+      "evidence": ["impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-A"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "forward: duplicate ID future scope cannot widen current",
+      "selected": "0.2.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "forward: applicable repeated scopes union",
+      "selected": "0.3.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": [],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "forward: repeated scopes expire",
+      "selected": "0.4.0",
+      "evidence": [],
+      "criterionGaps": ["C-REVIEW-0001-A", "C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-invalid-criterion", "case-invalid-criterion"]
+    },
+    {
+      "label": "forward: empty anchors whole-target",
+      "selected": "0.2.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": [],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "forward: absent anchors whole-target",
+      "selected": "0.2.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": [],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "reverse: duplicate ID future scope cannot widen current",
+      "selected": "0.2.0",
+      "evidence": ["impl-a"],
+      "criterionGaps": ["C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "reverse: applicable repeated scopes union",
+      "selected": "0.3.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": [],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "reverse: repeated scopes expire",
+      "selected": "0.4.0",
+      "evidence": [],
+      "criterionGaps": ["C-REVIEW-0001-A", "C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-invalid-criterion", "case-invalid-criterion"]
+    },
+    {
+      "label": "reverse: empty anchors whole-target",
+      "selected": "0.2.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": [],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "reverse: absent anchors whole-target",
+      "selected": "0.2.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": [],
+      "requiredGaps": [],
+      "pathGaps": [],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": []
+    },
+    {
+      "label": "In-scope pathless passing remains candidate with path gap",
+      "selected": "0.2.0",
+      "evidence": ["impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-A", "C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": ["T-REVIEW-0001#impl-b has no executable path."],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "evidence-needs-path"]
+    },
+    {
+      "label": "Exercises-only candidate cannot verify either criterion",
+      "selected": "0.2.0",
+      "evidence": ["impl-a", "impl-b"],
+      "criterionGaps": ["C-REVIEW-0001-A", "C-REVIEW-0001-B"],
+      "requiredGaps": [],
+      "pathGaps": ["T-REVIEW-0001#impl-b has no executable path."],
+      "testEvidence": ["impl-a", "impl-b"],
+      "testGaps": ["case-needs-evidence", "evidence-needs-path"]
+    }
+  ]
+}

@@ -1,0 +1,345 @@
+{
+  "version": "0.3.0-alpha.1",
+  "loaderIssues": [],
+  "rowCount": 613,
+  "changedRows": 5,
+  "unchangedSummary": {
+    "entities": 613,
+    "drafts": 568,
+    "reviewedDrafts": 0,
+    "legacyActive": 45,
+    "unclassifiedBlocks": 118
+  },
+  "changes": [
+    {
+      "entityId": "C-STATE-INTERACTION-0002",
+      "status": "deprecated",
+      "evidenceRemoved": [],
+      "evidenceAdded": [],
+      "gapsAdded": [
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "C-STATE-INTERACTION-0002",
+          "message": "C-STATE-INTERACTION-0002-G has no mapped implementation declared passing."
+        }
+      ],
+      "gapsRemoved": []
+    },
+    {
+      "entityId": "P-BASE-CHECKBOX",
+      "status": "draft",
+      "evidenceRemoved": [],
+      "evidenceAdded": [],
+      "gapsAdded": [
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-AUTHORING-ENTRIES has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-PROTOCOL-INDEPENDENCE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-ROOT-SEMANTIC-OWNER has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-PROP-CHECKED has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-CONTROLLED-CHECKED has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-PROP-DISABLED has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-PROP-NO-EVENT-CALLBACK has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-CONTROLLED-EMITS-NEXT has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-DISABLED-EXPOSE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-DISABLED-SUPPRESS-ACTIVATION has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-DISABLED-CLEAR-TRANSIENT has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-POINTER-HOVER has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-FOCUSABLE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-REQUEST-FOCUS has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-DISABLED-REJECT-FOCUS has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-PRESS-LIFECYCLE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-KEYBOARD-SPACE-ACTIVATION has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-KEYBOARD-ENTER-NOT-ACTIVATION has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-CHECKBOX",
+          "message": "P-BASE-CHECKBOX-KEYBOARD-SPACE-PREVENT-DEFAULT has no mapped implementation declared passing."
+        }
+      ],
+      "gapsRemoved": []
+    },
+    {
+      "entityId": "P-BASE-TABS-CONTENT",
+      "status": "draft",
+      "evidenceRemoved": [],
+      "evidenceAdded": [],
+      "gapsAdded": [
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-ROLE-PANEL has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-AUTHORING-ENTRIES has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-PROTOCOL-DEPENDENCY has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-CLAIM-ROLE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-SAME-DOMAIN has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-PROP-VALUE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-CONTEXT-CONSUME has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-CURRENT-EXPOSE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-DEFAULT-L1-DETACH has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-A11Y-ROLE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-CONTENT",
+          "message": "P-BASE-TABS-CONTENT-A11Y-HIDDEN has no mapped implementation declared passing."
+        }
+      ],
+      "gapsRemoved": []
+    },
+    {
+      "entityId": "P-BASE-TABS-LIST",
+      "status": "draft",
+      "evidenceRemoved": [],
+      "evidenceAdded": [],
+      "gapsAdded": [
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-ROLE-COLLECTION has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-CLAIM-ROLE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-SAME-DOMAIN has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-CONTEXT-CONSUME has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-SKIP-DISABLED has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-HOME-END has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-PROP-LOOP has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-A11Y-ROLE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-LIST",
+          "message": "P-BASE-TABS-LIST-PROP-A11Y-LABEL has no mapped implementation declared passing."
+        }
+      ],
+      "gapsRemoved": []
+    },
+    {
+      "entityId": "P-BASE-TABS-TRIGGER",
+      "status": "draft",
+      "evidenceRemoved": [],
+      "evidenceAdded": [],
+      "gapsAdded": [
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-ROLE-TAB has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-AUTHORING-ENTRIES has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-PROTOCOL-DEPENDENCY has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-PROP-VALUE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-PROP-DISABLED has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-CONTEXT-CONSUME has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-SELECTED-EXPOSE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-DISABLED-EXPOSE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-INTERACTION-STATES has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-FOCUSABLE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-COLLECTION-ITEM has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-ACTIVATION-REQUESTS-SELECTION has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-DISABLED-SUPPRESS-ACTIVATION has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-CLICK-SIGNAL has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-A11Y-ROLE has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-A11Y-SELECTED has no mapped implementation declared passing."
+        },
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "P-BASE-TABS-TRIGGER",
+          "message": "P-BASE-TABS-TRIGGER-A11Y-DISABLED has no mapped implementation declared passing."
+        }
+      ],
+      "gapsRemoved": []
+    }
+  ]
+}

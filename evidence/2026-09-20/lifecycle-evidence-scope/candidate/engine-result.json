@@ -1,0 +1,87 @@
+{
+  "basis": "candidate",
+  "type": "Schema-valid synthetic fixtures, real loader/report/authoring; the fixture file is a path-resolution sentinel, not product conformance evidence.",
+  "sourceHashes": {
+    "packages/spec/schema/src/index.ts": "fb16f9b58f172a28036e768de63c0483a1cf9a2bc6606f1a632ebcf1a12523d0",
+    "packages/spec/engine/src/index.ts": "1832a2fc6a6e9a08ca1ac451cb1de51b87a46c06d42ba3efe08baad60e9a6a18",
+    "packages/spec/engine/src/node.ts": "8f39e603dcb8ab8234e32a0541bbb439aef4ee028ffd1e04e1c3e68eb0ddb014",
+    "packages/spec/engine/src/lifecycle.ts": "b71205a8689f4c4e9eed36638b7b873594bec4a31a74003ba8094c2e241e9a79"
+  },
+  "anchors": {
+    "fixture": {
+      "declaredAnchor": "C-AUDIT-0001-A",
+      "outOfScopeCoveredCriterion": "C-AUDIT-0001-B"
+    },
+    "withoutB": {
+      "loaderIssues": [],
+      "mappingIssues": [],
+      "candidateGaps": [
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "C-AUDIT-0001",
+          "message": "C-AUDIT-0001-B has no mapped implementation declared passing."
+        }
+      ],
+      "authoringIssues": [
+        "C-AUDIT-0001: admission criterion-needs-evidence: C-AUDIT-0001-B has no mapped implementation declared passing."
+      ],
+      "candidateSources": [],
+      "rowEvidence": [
+        {
+          "testId": "T-AUDIT-0001",
+          "implementationId": "declared",
+          "status": "passing",
+          "required": true,
+          "path": "evidence.test.ts"
+        }
+      ]
+    },
+    "mismatch": {
+      "loaderIssues": [],
+      "mappingIssues": [],
+      "candidateGaps": [
+        {
+          "code": "criterion-needs-evidence",
+          "entityId": "C-AUDIT-0001",
+          "message": "C-AUDIT-0001-B has no mapped implementation declared passing."
+        }
+      ],
+      "authoringIssues": [
+        "C-AUDIT-0001: admission criterion-needs-evidence: C-AUDIT-0001-B has no mapped implementation declared passing."
+      ],
+      "candidateSources": [],
+      "rowEvidence": [
+        {
+          "testId": "T-AUDIT-0001",
+          "implementationId": "declared",
+          "status": "passing",
+          "required": true,
+          "path": "evidence.test.ts"
+        }
+      ]
+    },
+    "matching": {
+      "loaderIssues": [],
+      "mappingIssues": [],
+      "candidateGaps": [],
+      "authoringIssues": [],
+      "candidateSources": [],
+      "rowEvidence": [
+        {
+          "testId": "T-AUDIT-0001",
+          "implementationId": "declared",
+          "status": "passing",
+          "required": true,
+          "path": "evidence.test.ts"
+        },
+        {
+          "testId": "T-AUDIT-0002",
+          "implementationId": "declared",
+          "status": "passing",
+          "required": true,
+          "path": "evidence.test.ts"
+        }
+      ]
+    }
+  }
+}
