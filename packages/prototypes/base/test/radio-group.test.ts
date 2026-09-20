@@ -401,6 +401,40 @@ describe('prototypes/base: radio group', () => {
     }
   );
 
+  it.each([
+    { method: 'focusFirst', value: 'a', current: 0, next: 'b' },
+    { method: 'focusSelected', value: 'b', current: 1, next: 'c' },
+    { method: 'focusLast', value: 'c', current: 2, next: 'a' },
+  ] as const)('retains current established by Root $method', async (scenario) => {
+    const root = rootElement();
+    const items = ['a', 'b', 'c'].map((value) => itemElement(value));
+    const changes: string[] = [];
+    root.addEventListener('valueChange', (event) => {
+      changes.push((event as CustomEvent<{ value: string }>).detail.value);
+    });
+    setElementProps(root, { value: scenario.value });
+    root.append(...items);
+    document.body.append(root);
+    await flushReconciliation();
+
+    root.getExposes()[scenario.method]();
+    await flushReconciliation();
+    expect(document.activeElement).toBe(items[scenario.current]);
+    expect(root.getExposes().value.get()).toBe(scenario.value);
+
+    setElementProps(root, { value: scenario.next, a11yLabel: 'Updated group name' });
+    await flushReconciliation();
+    expect(root.getExposes().value.get()).toBe(scenario.next);
+    expect(document.activeElement).toBe(items[scenario.current]);
+    expect(items.map((item) => item.tabIndex)).toEqual(
+      items.map((_, index) => (index === scenario.current ? 0 : -1))
+    );
+    expect(items.map((item) => item.getExposes().checked.get())).toEqual(
+      items.map((item) => item.textContent === scenario.next)
+    );
+    expect(changes).toEqual([]);
+  });
+
   it('discards explicit current when its item becomes disabled or leaves the collection', async () => {
     const root = rootElement();
     const itemA = itemElement('a');

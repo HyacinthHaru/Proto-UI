@@ -79,7 +79,7 @@ implementations:
       - Uses real prototype runtime instances and host-rendered accessibility projections.
       - Public-surface and deferred-boundary criteria are protected by exact key and absence assertions.
       - Initial entry covers non-first controlled/default selection, empty/unmatched and disabled-selected fallback, and late registration.
-      - Explicit current covers same-current focusSelf, navigation, accepted requests, controlled updates, reordering, removal, and Item disablement without synthetic valueChange.
+      - Explicit current covers same-current Item and Root focus methods, navigation, accepted requests, controlled updates, reordering, removal, and Item disablement without synthetic valueChange.
   - id: browser-base-radio-group-initial-entry
     kind: adapter-test
     status: passing
@@ -90,7 +90,7 @@ implementations:
     exercises: [P-BASE-RADIO-GROUP, P-BASE-RADIO-GROUP-ITEM]
     notes:
       - Uses real Base exports through WC, React, Vue, and Vue 2 with native Tab and Shift+Tab input.
-      - Covers non-first controlled/default selected entry and controlled value updates without focus stealing; fallback and structural coverage remain in the owner-level tests.
+      - Covers non-first controlled/default selected entry and controlled value updates retaining native focus and the current Tab entry; fallback and structural coverage remain in the owner-level tests.
   - id: adapter-web-component-radio-group-contract
     kind: adapter-test
     status: passing

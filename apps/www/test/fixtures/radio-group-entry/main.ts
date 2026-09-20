@@ -4,7 +4,7 @@ import * as Vue from 'vue';
 import Vue2 from '../../../../../packages/adapters/vue2/node_modules/vue';
 import { createReactAdapter } from '@proto.ui/adapter-react';
 import { createVueAdapter, type VueRuntime } from '@proto.ui/adapter-vue';
-import { createVue2Adapter } from '@proto.ui/adapter-vue2';
+import { createVue2Adapter, type Vue2CreateElement } from '@proto.ui/adapter-vue2';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import { radioGroupRoot, radioGroupItem } from '@proto.ui/prototypes-base/radio-group';
 import {
@@ -108,7 +108,7 @@ if (runtime === 'wc') {
   const Root = adapt(radioGroupRoot);
   const Item = adapt(radioGroupItem);
   const vm = new Vue2({
-    render(h) {
+    render(h: Vue2CreateElement) {
       return h(
         Root,
         { ...toVue2ComponentData({ ...rootProps(), onValueChange }), ref: 'root' },

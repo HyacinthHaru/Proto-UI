@@ -103,6 +103,7 @@ describe.sequential('Base Radio Group native initial entry', () => {
                 items: [{ checked: 'false' }, { checked: 'false' }, { checked: 'true' }],
               });
             expect((await read()).items.map((item) => item.focused)).toEqual([false, true, false]);
+            expect((await read()).items.map((item) => item.tabIndex)).toEqual([-1, 0, -1]);
             expect((await read()).changes).toEqual([]);
           } else {
             await page.keyboard.press('ArrowRight');
