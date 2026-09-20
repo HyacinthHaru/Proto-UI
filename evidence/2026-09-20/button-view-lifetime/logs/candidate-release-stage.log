@@ -1,0 +1,269 @@
+
+> proto-ui@ release:stage <WORKTREE>
+> node scripts/release/publish.mjs --dry-run
+
+Staged 43 packages into <TEMP_ARTIFACT>
+
+Prerequisite builds:
+- public-package-build: exit code 0
+
+- @proto.ui/cli
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/core
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-base
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-expose
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-anatomy
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-feedback
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-positioning
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/prototypes-lucide
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/types
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-collection
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/hooks
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-context
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-expose-event
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-event
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-as-trigger
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-boundary
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-hit-participation
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-image-view
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-overlay
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-presence
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-props
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-state
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-a11y
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-expose-state
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-expose-state-web
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-focus
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-rule
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-rule-expose-state-web
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-rule-meta
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-scroll
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-state-accessibility
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-state-interaction
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-test-sys
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/module-text-control
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/prototypes-base
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/prototypes-brutalist
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/prototypes-shadcn
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/runtime
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/adapter-base
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/adapter-react
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/adapter-vue
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/adapter-vue2
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+- @proto.ui/adapter-web-component
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  npm publish exit code: 0
+  npm publish attempt: 1/3
+
+Next step from repo root: cd <WORKTREE>

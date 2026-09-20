@@ -1,0 +1,20 @@
+
+ RUN  v2.1.9 <WORKTREE>
+
+stdout | apps/www/test/button-view-lifetime.browser.test.ts
+Button view lifetime evidence: <TEMP_ARTIFACT>
+
+ ✓ apps/www/test/button-view-lifetime.browser.test.ts (8 tests) 11079ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation 1385ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/react clears revoked input without phantom activation 1165ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/vue clears revoked input without phantom activation 1151ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation 1149ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation 1331ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/react clears revoked input without phantom activation 1335ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/vue clears revoked input without phantom activation 1343ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation 1614ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  08:15:06
+   Duration  11.42s (transform 24ms, setup 0ms, collect 220ms, tests 11.08s, environment 0ms, prepare 26ms)

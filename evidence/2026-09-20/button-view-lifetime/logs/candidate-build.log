@@ -1,0 +1,48 @@
+
+> proto-ui@ build:packages <WORKTREE>
+> node scripts/build/public-packages.mjs
+
+[build:packages] @proto.ui/types 332ms 12 files
+[build:packages] @proto.ui/core 489ms 74 files
+[build:packages] @proto.ui/module-base 354ms 14 files
+[build:packages] @proto.ui/module-expose 360ms 12 files
+[build:packages] @proto.ui/module-state 382ms 10 files
+[build:packages] @proto.ui/module-expose-state 390ms 10 files
+[build:packages] @proto.ui/module-anatomy 434ms 14 files
+[build:packages] @proto.ui/module-collection 348ms 6 files
+[build:packages] @proto.ui/hooks 385ms 36 files
+[build:packages] @proto.ui/module-a11y 402ms 10 files
+[build:packages] @proto.ui/module-expose-event 349ms 12 files
+[build:packages] @proto.ui/module-event 400ms 14 files
+[build:packages] @proto.ui/module-as-trigger 360ms 10 files
+[build:packages] @proto.ui/module-boundary 424ms 12 files
+[build:packages] @proto.ui/module-context 392ms 12 files
+[build:packages] @proto.ui/module-expose-state-web 382ms 12 files
+[build:packages] @proto.ui/module-feedback 357ms 8 files
+[build:packages] @proto.ui/module-focus 447ms 10 files
+[build:packages] @proto.ui/module-hit-participation 383ms 12 files
+[build:packages] @proto.ui/module-image-view 410ms 12 files
+[build:packages] @proto.ui/module-positioning 380ms 12 files
+[build:packages] @proto.ui/module-overlay 417ms 16 files
+[build:packages] @proto.ui/module-presence 369ms 10 files
+[build:packages] @proto.ui/module-props 430ms 18 files
+[build:packages] @proto.ui/module-rule 403ms 16 files
+[build:packages] @proto.ui/module-rule-expose-state-web 382ms 10 files
+[build:packages] @proto.ui/module-rule-meta 365ms 8 files
+[build:packages] @proto.ui/module-scroll 429ms 14 files
+[build:packages] @proto.ui/module-state-accessibility 340ms 6 files
+[build:packages] @proto.ui/module-state-interaction 350ms 6 files
+[build:packages] @proto.ui/module-test-sys 343ms 8 files
+[build:packages] @proto.ui/module-text-control 401ms 14 files
+[build:packages] @proto.ui/runtime 560ms 58 files
+[build:packages] @proto.ui/adapter-base 541ms 40 files
+[build:packages] @proto.ui/adapter-react 578ms 18 files
+[build:packages] @proto.ui/adapter-vue 618ms 18 files
+[build:packages] @proto.ui/adapter-vue2 582ms 18 files
+[build:packages] @proto.ui/adapter-web-component 634ms 30 files
+[build:packages] @proto.ui/cli 578ms 48 files
+[build:packages] @proto.ui/prototypes-base 1355ms 214 files
+[build:packages] @proto.ui/prototypes-brutalist 1069ms 166 files
+[build:packages] @proto.ui/prototypes-lucide 6033ms 6812 files
+[build:packages] @proto.ui/prototypes-shadcn 996ms 148 files
+[build:packages] complete: 43/43 public packages

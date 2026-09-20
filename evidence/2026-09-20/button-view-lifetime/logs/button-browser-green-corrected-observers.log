@@ -1,0 +1,44 @@
+
+ RUN  v2.1.9 <WORKTREE>
+
+stdout | apps/www/test/button-view-lifetime.browser.test.ts
+Button view lifetime evidence: <TEMP_ARTIFACT>
+
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts (8 tests | 2 failed) 11969ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation 1537ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/react clears revoked input without phantom activation 1198ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/vue clears revoked input without phantom activation 1199ms
+   × Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation 1206ms
+     → expected [ …(2) ] to have a length of 3 but got 2
+   ✓ Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation 1395ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/react clears revoked input without phantom activation 1392ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/vue clears revoked input without phantom activation 1374ms
+   × Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation 1701ms
+     → expected [ …(2) ] to have a length of 3 but got 2
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation
+AssertionError: expected [ …(2) ] to have a length of 3 but got 2
+
+- Expected
++ Received
+
+- 3
++ 2
+
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts:187:43
+    185|           expect(terminal.stats.clicks).toBe(3);
+    186|           expect(terminal.stats.setups).toBe(1);
+    187|           expect(terminal.stats.unmounts).toHaveLength(3);
+       |                                           ^
+    188|           expect(terminal.stats.unmounts).toEqual(
+    189|             Array(3).fill({ pressed: false, hovered: false })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  08:12:31
+   Duration  12.39s (transform 35ms, setup 0ms, collect 273ms, tests 11.97s, environment 0ms, prepare 35ms)

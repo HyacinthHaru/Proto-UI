@@ -1,0 +1,9 @@
+
+ RUN  v2.1.9 <WORKTREE>
+
+ ✓ packages/prototypes/base/test/button-view-lifetime.test.ts (8 tests) 27ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  08:19:40
+   Duration  795ms (transform 360ms, setup 0ms, collect 505ms, tests 27ms, environment 124ms, prepare 32ms)

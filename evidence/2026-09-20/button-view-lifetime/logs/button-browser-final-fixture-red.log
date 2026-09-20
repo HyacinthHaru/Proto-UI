@@ -1,0 +1,72 @@
+
+ RUN  v2.1.9 <WORKTREE>
+
+stdout | apps/www/test/button-view-lifetime.browser.test.ts
+Button view lifetime evidence: <TEMP_ARTIFACT>
+
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts (8 tests | 8 failed) 7626ms
+   × Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation 1016ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > brutalist/react clears revoked input without phantom activation 726ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > brutalist/vue clears revoked input without phantom activation 675ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation 688ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation 870ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > shadcn/react clears revoked input without phantom activation 865ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > shadcn/vue clears revoked input without phantom activation 873ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation 1000ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/react clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/vue clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/react clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/vue clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation
+AssertionError: expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  Object {
+    "clicks": 0,
+-   "hovered": false,
+-   "pressed": false,
++   "hovered": true,
++   "pressed": true,
+    "sameHandles": true,
+    "setups": 1,
+  }
+
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts:132:36
+    130|           observations.inputs = await page.evaluate(() => (window as a…
+    131|           await capture('remounted');
+    132|           expect(await read(page)).toMatchObject({
+       |                                    ^
+    133|             pressed: false,
+    134|             hovered: false,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  08:14:58
+   Duration  8.00s (transform 31ms, setup 0ms, collect 237ms, tests 7.63s, environment 0ms, prepare 27ms)

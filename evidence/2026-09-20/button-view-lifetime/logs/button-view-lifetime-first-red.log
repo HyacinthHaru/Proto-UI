@@ -1,0 +1,45 @@
+
+ RUN  v2.1.9 <WORKTREE>
+
+ ❯ packages/prototypes/base/test/button-view-lifetime.test.ts (8 tests | 4 failed) 26ms
+   × prototypes/base: Button view lifetime > direct ends press and hover on detach without replacing logical state 12ms
+     → press must end with its view: expected { pressed: true, hovered: true } to deeply equal { pressed: false, hovered: false }
+   × prototypes/base: Button view lifetime > asHook ends press and hover on detach without replacing logical state 2ms
+     → press must end with its view: expected { pressed: true, hovered: true } to deeply equal { pressed: false, hovered: false }
+   × prototypes/base: Button view lifetime > shadcn ends press and hover on detach without replacing logical state 3ms
+     → press must end with its view: expected { pressed: true, hovered: true } to deeply equal { pressed: false, hovered: false }
+   × prototypes/base: Button view lifetime > brutalist ends press and hover on detach without replacing logical state 3ms
+     → press must end with its view: expected { pressed: true, hovered: true } to deeply equal { pressed: false, hovered: false }
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/prototypes/base/test/button-view-lifetime.test.ts > prototypes/base: Button view lifetime > direct ends press and hover on detach without replacing logical state
+ FAIL  packages/prototypes/base/test/button-view-lifetime.test.ts > prototypes/base: Button view lifetime > asHook ends press and hover on detach without replacing logical state
+ FAIL  packages/prototypes/base/test/button-view-lifetime.test.ts > prototypes/base: Button view lifetime > shadcn ends press and hover on detach without replacing logical state
+ FAIL  packages/prototypes/base/test/button-view-lifetime.test.ts > prototypes/base: Button view lifetime > brutalist ends press and hover on detach without replacing logical state
+AssertionError: press must end with its view: expected { pressed: true, hovered: true } to deeply equal { pressed: false, hovered: false }
+
+- Expected
++ Received
+
+  Object {
+-   "hovered": false,
+-   "pressed": false,
++   "hovered": true,
++   "pressed": true,
+  }
+
+ ❯ packages/prototypes/base/test/button-view-lifetime.test.ts:149:67
+    147|           expect(ctx.exposes.disabled.get()).toBe(false);
+    148|           expect(ctx.clicks).toEqual([]);
+    149|           expect(detachedFacts, `${mode} must end with its view`).toEq…
+       |                                                                   ^
+    150|             pressed: false,
+    151|             hovered: false,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 4 passed (8)
+   Start at  08:05:25
+   Duration  634ms (transform 265ms, setup 0ms, collect 355ms, tests 26ms, environment 130ms, prepare 25ms)

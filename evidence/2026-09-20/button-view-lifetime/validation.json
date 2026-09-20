@@ -1,0 +1,132 @@
+{
+  "issue": "https://github.com/Proto-UI/Proto-UI/issues/650",
+  "baseline": "650895ec12fca740a9e716f96913d0f5e3963e8d",
+  "candidateCommit": "4eb1c0292ea6d7985e3e1d696e241f46f7ac48cc",
+  "sourceFiles": {
+    "apps/www/test/button-view-lifetime.browser.test.ts": "6c3a9635471f08e05b1dd2b61112d5ee642b49431d164014a633d0861a2b2d16",
+    "apps/www/test/fixtures/button-view-lifetime/index.html": "e7b313915f8563cb6d7b5c64975e72189c3c5392da8c9095e1df88a69b30d5e6",
+    "apps/www/test/fixtures/button-view-lifetime/main.ts": "328a823edf25a6cf501199c61c6c0f9849bd2f9845cff1263db9bd7e530f6190",
+    "apps/www/test/fixtures/button-view-lifetime/vite.config.ts": "0d8c14487e50e89d3a27ecb96b21cbf901d351c3ec43bcec7e4acd70d99b5cd2",
+    "packages/prototypes/base/src/button/button.proto.ts": "95c28746d28f4bdc1371e55acb01cda9e58377eb884c3eb619325cc905c887da",
+    "packages/prototypes/base/test/button-view-lifetime.test.ts": "dfbebc6540ec97feab4ec541582e61ab6385089c02a8e5b110e863221694e854",
+    "scripts/test/runtime-test-plan.mjs": "ea489ebb8c17a242984c277a599ad82540905b58d67a1a1165465cf1cf7a8a10",
+    "spec/tests/T-BASE-BUTTON-0001.yaml": "7cf4c937382ce0f7186682249f9f9aa5941e52601a0bc9dc43aef5f555730235"
+  },
+  "results": [
+    {
+      "log": "candidate-types.log",
+      "command": ["corepack", "pnpm@10.32.1", "check:types"],
+      "exitCode": 0,
+      "seconds": 21.39
+    },
+    {
+      "log": "candidate-full-test.log",
+      "command": ["corepack", "pnpm@10.32.1", "test"],
+      "exitCode": 0,
+      "seconds": 632.06
+    },
+    {
+      "log": "candidate-build.log",
+      "command": ["corepack", "pnpm@10.32.1", "build:packages"],
+      "exitCode": 0,
+      "seconds": 26.2
+    },
+    {
+      "log": "candidate-manifests.log",
+      "command": ["corepack", "pnpm@10.32.1", "check:package-manifests"],
+      "exitCode": 0,
+      "seconds": 0.17
+    },
+    {
+      "log": "candidate-budgets.log",
+      "command": ["corepack", "pnpm@10.32.1", "check:package-budgets"],
+      "exitCode": 0,
+      "seconds": 0.54
+    },
+    {
+      "log": "candidate-docs-build.log",
+      "command": ["corepack", "pnpm@10.32.1", "docs:build"],
+      "exitCode": 0,
+      "seconds": 16.92
+    },
+    {
+      "log": "candidate-agent-doc-current.log",
+      "command": ["corepack", "pnpm@10.32.1", "check:agent-doc"],
+      "exitCode": 0,
+      "seconds": 1.14
+    },
+    {
+      "log": "candidate-diff-check.log",
+      "command": ["git", "diff", "HEAD", "--check"],
+      "exitCode": 0,
+      "seconds": 0.04
+    },
+    {
+      "log": "candidate-release-scan.json",
+      "command": ["corepack", "pnpm@10.32.1", "-s", "release:scan", "--", "--json"],
+      "exitCode": 0,
+      "seconds": 0.26,
+      "packageCount": 49,
+      "selectedCount": 43,
+      "offenders": []
+    },
+    {
+      "log": "candidate-release-stage.log",
+      "command": ["corepack", "pnpm@10.32.1", "release:stage"],
+      "exitCode": 0,
+      "seconds": 83.42
+    },
+    {
+      "log": "candidate-consumer-react.log",
+      "command": ["corepack", "pnpm@10.32.1", "release:smoke:react"],
+      "exitCode": 0,
+      "seconds": 53.94
+    },
+    {
+      "log": "candidate-consumer-cli.log",
+      "command": ["corepack", "pnpm@10.32.1", "release:smoke:cli"],
+      "exitCode": 0,
+      "seconds": 48.75
+    }
+  ],
+  "runtimeCounts": {
+    "nonBrowserFilesPassed": 478,
+    "nonBrowserTestsPassed": 2362,
+    "existingSkippedFiles": 3,
+    "existingTodos": 34,
+    "browserFilesPassed": 24,
+    "browserTestsPassed": 115
+  },
+  "docs": {
+    "astroFilesChecked": 224,
+    "diagnostics": {
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0
+    },
+    "pagesBuilt": 243
+  },
+  "packages": {
+    "build": 43,
+    "manifests": 43,
+    "budgets": "all nine enforced entries pass; two additional diagnostics measured",
+    "reactConsumer": "38/43 packed packages, passed",
+    "cliConsumer": "40/43 packed packages, React/Vue/WC smoke passed"
+  },
+  "focused": "25 existing/new Button tests passed; final owned-type file8 and tsc passed; native final pair8red/8green",
+  "finalBrowserPair": {
+    "baselineExit": 1,
+    "candidateExit": 0,
+    "baseProductSha256": "2a285938735de574ce8c7e517282200bc02356acbb2e0d17ba13c79f6e6d970c",
+    "candidateProductSha256": "95c28746d28f4bdc1371e55acb01cda9e58377eb884c3eb619325cc905c887da",
+    "browserTestSha256": "6c3a9635471f08e05b1dd2b61112d5ee642b49431d164014a633d0861a2b2d16"
+  },
+  "unitTypeCorrection": {
+    "description": "State<string> corrected to actual OwnedStateHandle<string>; two erased type lines only, no assertion or execution changes.",
+    "originalTestSha256": "16facdc61ed1fdaed902afa5717f128ddfe4ab71915e2bf48fd2c8c13d561e1e",
+    "finalTestSha256": "dfbebc6540ec97feab4ec541582e61ab6385089c02a8e5b110e863221694e854",
+    "finalFocusedTests": 8,
+    "workspaceTypesExitCode": 0
+  },
+  "provenance": "Existing MIT repository source; AI-assisted implementation and evidence; independent local read-only review, no maintainer acceptance claimed."
+}

@@ -1,0 +1,17 @@
+
+> proto-ui@ check:types <WORKTREE>
+> corepack pnpm@10.32.1 -s check:types:workspace && corepack pnpm@10.32.1 -s check:types:docs
+
+[build:packages] @proto.ui/cli 602ms 48 files
+[build:packages] complete: 1/43 public packages
+[proto-ui] theme(shadcn): wrote src/styles/shadcn-theme.css
+[proto-ui] tokens: wrote 399 tokens -> src/styles/proto-ui-tokens.generated.css
+[proto-ui] style: wrote src/styles/proto-ui-style.css
+08:21:26 [content] Syncing content
+08:21:27 [content] Synced content
+08:21:27 [types] Generated 1.52s
+08:21:27 [check] Getting diagnostics for Astro files in <WORKTREE>/apps/www...
+Result (224 files):
+- 0 errors
+- 0 warnings
+- 0 hints

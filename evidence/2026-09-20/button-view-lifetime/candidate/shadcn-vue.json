@@ -1,0 +1,259 @@
+{
+  "family": "shadcn",
+  "runtime": "vue",
+  "browser": "153.0.8010.48",
+  "initial": {
+    "state": {
+      "pressed": false,
+      "hovered": false,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": true,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 1
+      }
+    },
+    "paint": {
+      "background": "lab(7.78201 -0.0000149012 0)",
+      "transform": "none",
+      "shadow": "none"
+    }
+  },
+  "pressed": {
+    "state": {
+      "pressed": true,
+      "hovered": true,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": true,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 1
+      }
+    },
+    "paint": {
+      "background": "oklab(0.205 -0.00000207871 0.00000478327 / 0.8)",
+      "transform": "matrix(1, 0, 0, 1, 0, 1)",
+      "shadow": "none"
+    }
+  },
+  "detached": {
+    "pressed": false,
+    "hovered": false,
+    "disabled": false,
+    "focusVisible": false,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 0,
+    "phase": {
+      "phase": "detached",
+      "epoch": 1
+    }
+  },
+  "remounted": {
+    "state": {
+      "pressed": false,
+      "hovered": false,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": false,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 2
+      }
+    },
+    "paint": {
+      "background": "lab(7.78201 -0.0000149012 0)",
+      "transform": "none",
+      "shadow": "none"
+    }
+  },
+  "inputs": [
+    {
+      "type": "pointerdown",
+      "trusted": true,
+      "buttons": 1,
+      "target": "probe"
+    },
+    {
+      "type": "pointerup",
+      "trusted": true,
+      "buttons": 0,
+      "target": null
+    }
+  ],
+  "hoverRemounted": {
+    "pressed": false,
+    "hovered": false,
+    "disabled": false,
+    "focusVisible": false,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 0,
+    "phase": {
+      "phase": "mounted",
+      "epoch": 3
+    }
+  },
+  "keyboard": {
+    "pressed": false,
+    "hovered": false,
+    "disabled": false,
+    "focusVisible": true,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 3,
+    "phase": {
+      "phase": "mounted",
+      "epoch": 3
+    }
+  },
+  "disabled": {
+    "pressed": false,
+    "hovered": false,
+    "disabled": true,
+    "focusVisible": false,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 3,
+    "phase": {
+      "phase": "mounted",
+      "epoch": 3
+    }
+  },
+  "terminal": {
+    "stats": {
+      "setups": 1,
+      "clicks": 3,
+      "phases": [
+        {
+          "phase": "mounting",
+          "epoch": 1
+        },
+        {
+          "phase": "mounted",
+          "epoch": 1
+        },
+        {
+          "phase": "unmounting",
+          "epoch": 1
+        },
+        {
+          "phase": "detached",
+          "epoch": 1
+        },
+        {
+          "phase": "mounting",
+          "epoch": 2
+        },
+        {
+          "phase": "mounted",
+          "epoch": 2
+        },
+        {
+          "phase": "unmounting",
+          "epoch": 2
+        },
+        {
+          "phase": "detached",
+          "epoch": 2
+        },
+        {
+          "phase": "mounting",
+          "epoch": 3
+        },
+        {
+          "phase": "mounted",
+          "epoch": 3
+        },
+        {
+          "phase": "unmounting",
+          "epoch": 3
+        },
+        {
+          "phase": "detached",
+          "epoch": 3
+        }
+      ],
+      "unmounts": 3,
+      "disposed": true
+    },
+    "inputs": [
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": "probe"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": "probe"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": "probe"
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": "probe"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": "probe"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": null
+      }
+    ]
+  },
+  "errors": []
+}

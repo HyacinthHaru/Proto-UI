@@ -1,0 +1,71 @@
+
+ RUN  v2.1.9 <WORKTREE>
+
+stdout | apps/www/test/button-view-lifetime.browser.test.ts
+Button view lifetime evidence: <TEMP_ARTIFACT>
+
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts (8 tests | 4 failed) 11957ms
+   × Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation 2182ms
+     → Matcher did not succeed in 1000ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/react clears revoked input without phantom activation 1160ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/vue clears revoked input without phantom activation 1132ms
+   × Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation 1142ms
+     → expected [ …(2) ] to have a length of 3 but got 2
+   × Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation 1835ms
+     → Matcher did not succeed in 1000ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/react clears revoked input without phantom activation 1102ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/vue clears revoked input without phantom activation 1104ms
+   × Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation 1366ms
+     → expected [ …(2) ] to have a length of 3 but got 2
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation
+Error: Matcher did not succeed in 1000ms
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts:150:47
+    148|
+    149|           await button.click();
+    150|           await expect.poll(() => read(page)).toMatchObject({ pressed:…
+       |                                               ^
+    151|           await page.locator('#entry').click();
+    152|           await page.keyboard.press('Tab');
+
+Caused by: AssertionError: expected { pressed: false, hovered: true, …(7) } to match object { pressed: false, clicks: 1 }
+(9 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  Object {
+-   "clicks": 1,
++   "clicks": 2,
+    "pressed": false,
+  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation
+AssertionError: expected [ …(2) ] to have a length of 3 but got 2
+
+- Expected
++ Received
+
+- 3
++ 2
+
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts:186:43
+    184|           expect(terminal.stats.clicks).toBe(3);
+    185|           expect(terminal.stats.setups).toBe(1);
+    186|           expect(terminal.stats.unmounts).toHaveLength(3);
+       |                                           ^
+    187|           expect(terminal.stats.unmounts).toEqual(
+    188|             Array(3).fill({ pressed: false, hovered: false })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 4 passed (8)
+   Start at  08:10:24
+   Duration  12.34s (transform 36ms, setup 0ms, collect 251ms, tests 11.96s, environment 0ms, prepare 32ms)

@@ -1,0 +1,97 @@
+{
+  "family": "shadcn",
+  "runtime": "react",
+  "browser": "153.0.8010.48",
+  "initial": {
+    "state": {
+      "pressed": false,
+      "hovered": false,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": true,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 1
+      }
+    },
+    "paint": {
+      "background": "lab(7.78201 -0.0000149012 0)",
+      "transform": "none",
+      "shadow": "none"
+    }
+  },
+  "pressed": {
+    "state": {
+      "pressed": true,
+      "hovered": true,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": true,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 1
+      }
+    },
+    "paint": {
+      "background": "oklab(0.205 -0.00000207871 0.00000478327 / 0.8)",
+      "transform": "matrix(1, 0, 0, 1, 0, 1)",
+      "shadow": "none"
+    }
+  },
+  "detached": {
+    "pressed": true,
+    "hovered": true,
+    "disabled": false,
+    "focusVisible": false,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 0,
+    "phase": {
+      "phase": "detached",
+      "epoch": 1
+    }
+  },
+  "remounted": {
+    "state": {
+      "pressed": true,
+      "hovered": true,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": false,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 2
+      }
+    },
+    "paint": {
+      "background": "oklab(0.205 -0.00000207871 0.00000478327 / 0.8)",
+      "transform": "matrix(1, 0, 0, 1, 0, 1)",
+      "shadow": "none"
+    }
+  },
+  "inputs": [
+    {
+      "type": "pointerdown",
+      "trusted": true,
+      "buttons": 1,
+      "target": "probe"
+    },
+    {
+      "type": "pointerup",
+      "trusted": true,
+      "buttons": 0,
+      "target": null
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,259 @@
+{
+  "family": "brutalist",
+  "runtime": "react",
+  "browser": "153.0.8010.48",
+  "initial": {
+    "state": {
+      "pressed": false,
+      "hovered": false,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": true,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 1
+      }
+    },
+    "paint": {
+      "background": "rgb(254, 240, 138)",
+      "transform": "none",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 3px 3px 0px 0px"
+    }
+  },
+  "pressed": {
+    "state": {
+      "pressed": true,
+      "hovered": true,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": true,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 1
+      }
+    },
+    "paint": {
+      "background": "rgb(254, 240, 138)",
+      "transform": "matrix(1, 0, 0, 1, 1, 1)",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    }
+  },
+  "detached": {
+    "pressed": false,
+    "hovered": false,
+    "disabled": false,
+    "focusVisible": false,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 0,
+    "phase": {
+      "phase": "detached",
+      "epoch": 1
+    }
+  },
+  "remounted": {
+    "state": {
+      "pressed": false,
+      "hovered": false,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": false,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 2
+      }
+    },
+    "paint": {
+      "background": "rgb(254, 240, 138)",
+      "transform": "none",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 3px 3px 0px 0px"
+    }
+  },
+  "inputs": [
+    {
+      "type": "pointerdown",
+      "trusted": true,
+      "buttons": 1,
+      "target": "probe"
+    },
+    {
+      "type": "pointerup",
+      "trusted": true,
+      "buttons": 0,
+      "target": null
+    }
+  ],
+  "hoverRemounted": {
+    "pressed": false,
+    "hovered": false,
+    "disabled": false,
+    "focusVisible": false,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 0,
+    "phase": {
+      "phase": "mounted",
+      "epoch": 3
+    }
+  },
+  "keyboard": {
+    "pressed": false,
+    "hovered": false,
+    "disabled": false,
+    "focusVisible": true,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 3,
+    "phase": {
+      "phase": "mounted",
+      "epoch": 3
+    }
+  },
+  "disabled": {
+    "pressed": false,
+    "hovered": false,
+    "disabled": true,
+    "focusVisible": false,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 3,
+    "phase": {
+      "phase": "mounted",
+      "epoch": 3
+    }
+  },
+  "terminal": {
+    "stats": {
+      "setups": 1,
+      "clicks": 3,
+      "phases": [
+        {
+          "phase": "mounting",
+          "epoch": 1
+        },
+        {
+          "phase": "mounted",
+          "epoch": 1
+        },
+        {
+          "phase": "unmounting",
+          "epoch": 1
+        },
+        {
+          "phase": "detached",
+          "epoch": 1
+        },
+        {
+          "phase": "mounting",
+          "epoch": 2
+        },
+        {
+          "phase": "mounted",
+          "epoch": 2
+        },
+        {
+          "phase": "unmounting",
+          "epoch": 2
+        },
+        {
+          "phase": "detached",
+          "epoch": 2
+        },
+        {
+          "phase": "mounting",
+          "epoch": 3
+        },
+        {
+          "phase": "mounted",
+          "epoch": 3
+        },
+        {
+          "phase": "unmounting",
+          "epoch": 3
+        },
+        {
+          "phase": "detached",
+          "epoch": 3
+        }
+      ],
+      "unmounts": 3,
+      "disposed": true
+    },
+    "inputs": [
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": "probe"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": "probe"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": "probe"
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": null
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": "probe"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": null
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "buttons": 1,
+        "target": "probe"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "buttons": 0,
+        "target": null
+      }
+    ]
+  },
+  "errors": []
+}

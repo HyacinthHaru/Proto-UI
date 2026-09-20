@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 1,
+  "issue": "https://github.com/Proto-UI/Proto-UI/issues/650",
+  "baseline": "650895ec12fca740a9e716f96913d0f5e3963e8d",
+  "candidate": "4eb1c0292ea6d7985e3e1d696e241f46f7ac48cc",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6559,
+      "sha256": "ab6405d5ed45929f4f175012b360c5a8a0db3d7c260055abd0b3d782dd420e91"
+    },
+    {
+      "path": "baseline/brutalist-react-remounted.png",
+      "bytes": 17445,
+      "sha256": "69d828f305db52ceef14b19db0233f9f5ea54dd3202aa1dfaad6d194bc83745d"
+    },
+    {
+      "path": "baseline/brutalist-react.json",
+      "bytes": 2164,
+      "sha256": "c607e9d6f08dbc81a11e21876c9ba2afaa82b05fda0b10909145ea9b69bc0dac"
+    },
+    {
+      "path": "baseline/brutalist-vue-remounted.png",
+      "bytes": 17361,
+      "sha256": "94aeb3de4a1bb1004e269bf21c24f7d60478cb9cee75ee5365dac6e8284bc6c4"
+    },
+    {
+      "path": "baseline/brutalist-vue.json",
+      "bytes": 2162,
+      "sha256": "49747173355751749f6be21e8959d13ec18bdf08de00a93dbd16d17109c0e0ec"
+    },
+    {
+      "path": "baseline/brutalist-vue2-remounted.png",
+      "bytes": 17532,
+      "sha256": "82f2354a5ff34a96ef47d53faabe8541dbbad016a6904af95af64f4e0e4054fe"
+    },
+    {
+      "path": "baseline/brutalist-vue2.json",
+      "bytes": 2163,
+      "sha256": "15bc60722e54e461e9d6de0517703c09081bb42c6b34fe2186a9c7b32e859d19"
+    },
+    {
+      "path": "baseline/brutalist-wc-detached.png",
+      "bytes": 17152,
+      "sha256": "e48b854b25f68bc3ee9a19bcfe2c5fbc25ce33bfc3dbd56d437f776b9da666a4"
+    },
+    {
+      "path": "baseline/brutalist-wc-initial.png",
+      "bytes": 17221,
+      "sha256": "015161579f89fd6b5cb989883312063adad85dfe915971abf0eba88bfc60dd11"
+    },
+    {
+      "path": "baseline/brutalist-wc-pressed.png",
+      "bytes": 17438,
+      "sha256": "8375bc396c1b0b5281e9828a99638c5a8539da0c08430888db02ccb1df840f23"
+    },
+    {
+      "path": "baseline/brutalist-wc-remounted.png",
+      "bytes": 17438,
+      "sha256": "8375bc396c1b0b5281e9828a99638c5a8539da0c08430888db02ccb1df840f23"
+    },
+    {
+      "path": "baseline/brutalist-wc.json",
+      "bytes": 2159,
+      "sha256": "cd8ec2fb91546aa1777efef2a7efa9c682e4f8d37c1298a2185521d11ccdab62"
+    },
+    {
+      "path": "baseline/shadcn-react-remounted.png",
+      "bytes": 18349,
+      "sha256": "fd4ac3fdb17c1282e253c3410ad106c73f61b9c40c63abc25abecf2170a255df"
+    },
+    {
+      "path": "baseline/shadcn-react.json",
+      "bytes": 1945,
+      "sha256": "9872b290dd87d9fb231be4938e7acff844950e50f7566dc143c20292b07e231d"
+    },
+    {
+      "path": "baseline/shadcn-vue-remounted.png",
+      "bytes": 18413,
+      "sha256": "d15ce52b67f33565f95937e452dc1cc0a018e40a831e2661701c4fe889d38214"
+    },
+    {
+      "path": "baseline/shadcn-vue.json",
+      "bytes": 1943,
+      "sha256": "1d5ecd23a63cd709e83b4b81bee4fda90b3a3a4211c589e8b77ab112cedd82a8"
+    },
+    {
+      "path": "baseline/shadcn-vue2-remounted.png",
+      "bytes": 18599,
+      "sha256": "9705a848199529be38397657207a53ca2c8065ba2916da035f425d452b5cb311"
+    },
+    {
+      "path": "baseline/shadcn-vue2.json",
+      "bytes": 1944,
+      "sha256": "eb906354de02745ff21ec17c55716d4fb6f3d5436ab9c366744bbf35a081fc98"
+    },
+    {
+      "path": "baseline/shadcn-wc-detached.png",
+      "bytes": 17168,
+      "sha256": "9988e28619d03e934413a2306ce50f2f1b1d7c82c2996f3e687261b97e2c45ef"
+    },
+    {
+      "path": "baseline/shadcn-wc-initial.png",
+      "bytes": 17226,
+      "sha256": "aaacc1f36653d56ca24ac48bf0f6bec7e3812f287f40aaeedf7df5fefd030f8c"
+    },
+    {
+      "path": "baseline/shadcn-wc-pressed.png",
+      "bytes": 18373,
+      "sha256": "2531eda3acbb4aa66bcb5cc1972480da401c96d14fdae4a79b71838e46bf080e"
+    },
+    {
+      "path": "baseline/shadcn-wc-remounted.png",
+      "bytes": 18373,
+      "sha256": "2531eda3acbb4aa66bcb5cc1972480da401c96d14fdae4a79b71838e46bf080e"
+    },
+    {
+      "path": "baseline/shadcn-wc.json",
+      "bytes": 1940,
+      "sha256": "5619ad81253565714347e322b632d2f54b744901816e534f095c171f8f5e5c09"
+    },
+    {
+      "path": "candidate/brutalist-react-keyboard-focus.png",
+      "bytes": 17273,
+      "sha256": "6f97929bbfb76aadc578293b24c7c3892cf0646d0b4d7a5ddf08ad8fb9556c36"
+    },
+    {
+      "path": "candidate/brutalist-react-remounted.png",
+      "bytes": 17230,
+      "sha256": "3fe2c7bebde416b05f8039d887aaffcea94895e845b5a27b5322ef91ed3a276b"
+    },
+    {
+      "path": "candidate/brutalist-react.json",
+      "bytes": 5167,
+      "sha256": "abb7ae07ef62872b243af09782e5fe197e40daceae7d63c55cd6e5d8c365476b"
+    },
+    {
+      "path": "candidate/brutalist-vue-keyboard-focus.png",
+      "bytes": 17188,
+      "sha256": "a5d2ec9086e56c3dbaa4ce191bbfbc8596f6d1721759c6f3468900c1200450f7"
+    },
+    {
+      "path": "candidate/brutalist-vue-remounted.png",
+      "bytes": 17145,
+      "sha256": "769d9d27fd9c45bc6c6f34115d777de7db0205246cee8292d4a9bb64f48fab2c"
+    },
+    {
+      "path": "candidate/brutalist-vue.json",
+      "bytes": 5165,
+      "sha256": "da85c4a06e630f627c37fd063617ad488b672d698f258634cf3fee3cce489cb4"
+    },
+    {
+      "path": "candidate/brutalist-vue2-keyboard-focus.png",
+      "bytes": 17363,
+      "sha256": "0bc1a2114fbacb3b81bc0d4e23ec858efd5912a4a80a70b53179422c988d5edb"
+    },
+    {
+      "path": "candidate/brutalist-vue2-remounted.png",
+      "bytes": 17315,
+      "sha256": "90b8a2d782a0f20eca406307cb4d3343620380ee588a064d3dac5c70aa3eaf83"
+    },
+    {
+      "path": "candidate/brutalist-vue2.json",
+      "bytes": 5166,
+      "sha256": "d3531f8a1a8805fd4326b2a2d0e931d484c8b980be6b03d758484863909599bf"
+    },
+    {
+      "path": "candidate/brutalist-wc-detached.png",
+      "bytes": 17152,
+      "sha256": "e48b854b25f68bc3ee9a19bcfe2c5fbc25ce33bfc3dbd56d437f776b9da666a4"
+    },
+    {
+      "path": "candidate/brutalist-wc-initial.png",
+      "bytes": 17221,
+      "sha256": "015161579f89fd6b5cb989883312063adad85dfe915971abf0eba88bfc60dd11"
+    },
+    {
+      "path": "candidate/brutalist-wc-keyboard-focus.png",
+      "bytes": 17267,
+      "sha256": "795f5cd634ba193a9e4c926ab9e457a97c1cdd05fc2b1d535bcc09e6b481beec"
+    },
+    {
+      "path": "candidate/brutalist-wc-pressed.png",
+      "bytes": 17438,
+      "sha256": "8375bc396c1b0b5281e9828a99638c5a8539da0c08430888db02ccb1df840f23"
+    },
+    {
+      "path": "candidate/brutalist-wc-remounted.png",
+      "bytes": 17221,
+      "sha256": "015161579f89fd6b5cb989883312063adad85dfe915971abf0eba88bfc60dd11"
+    },
+    {
+      "path": "candidate/brutalist-wc.json",
+      "bytes": 5159,
+      "sha256": "5dd5b5bd63b611fb07f56b06ed8ef7d22698e8cbf713b89035cc98bb79762305"
+    },
+    {
+      "path": "candidate/shadcn-react-keyboard-focus.png",
+      "bytes": 17901,
+      "sha256": "e738f1781deab3139e34574f2fd9fb4c8697ab4e3da94d107fceb68777b5dd03"
+    },
+    {
+      "path": "candidate/shadcn-react-remounted.png",
+      "bytes": 17199,
+      "sha256": "88153e011bd8049fe82360ce1739fd5ee18c7ad886a45e02cb62cf6771fa1e7c"
+    },
+    {
+      "path": "candidate/shadcn-react.json",
+      "bytes": 4933,
+      "sha256": "b0e6769451256615d13a32d2a981e14151d04c46f1c248fe03499f18a494e0ba"
+    },
+    {
+      "path": "candidate/shadcn-vue-keyboard-focus.png",
+      "bytes": 17899,
+      "sha256": "8da6c27c4f3f02d7009d9b5954bc1466ebf93902c07f725e8dfa04c123083551"
+    },
+    {
+      "path": "candidate/shadcn-vue-remounted.png",
+      "bytes": 17265,
+      "sha256": "e64c743047b0b6f019673910e5f27469c32e53f8ddfc8f53bec22ef50a8d6996"
+    },
+    {
+      "path": "candidate/shadcn-vue.json",
+      "bytes": 4931,
+      "sha256": "71001c62439ec01a01f8491e009a89ed5da1fb75eff887e057b6f430ac8b0199"
+    },
+    {
+      "path": "candidate/shadcn-vue2-keyboard-focus.png",
+      "bytes": 18079,
+      "sha256": "d71d9c3161a6fe8d7419e1bc878eb5ba6d6c7081fbe9aa8082fc785fd55ae14b"
+    },
+    {
+      "path": "candidate/shadcn-vue2-remounted.png",
+      "bytes": 17448,
+      "sha256": "a2f14dcb28666f8ae69b831aa568bcfaeaeeda0dd457c284414a4e3981b02e72"
+    },
+    {
+      "path": "candidate/shadcn-vue2.json",
+      "bytes": 4932,
+      "sha256": "3cb522cd38b6d3b76e7ab5d88724580b999008aa749b07ae19e87f0e958f1cb6"
+    },
+    {
+      "path": "candidate/shadcn-wc-detached.png",
+      "bytes": 17168,
+      "sha256": "9988e28619d03e934413a2306ce50f2f1b1d7c82c2996f3e687261b97e2c45ef"
+    },
+    {
+      "path": "candidate/shadcn-wc-initial.png",
+      "bytes": 17226,
+      "sha256": "aaacc1f36653d56ca24ac48bf0f6bec7e3812f287f40aaeedf7df5fefd030f8c"
+    },
+    {
+      "path": "candidate/shadcn-wc-keyboard-focus.png",
+      "bytes": 17859,
+      "sha256": "cf62ea2aa4aca70f7f0ce4239eb2426ee5f72f4111b69c4a84d5ba8523196df2"
+    },
+    {
+      "path": "candidate/shadcn-wc-pressed.png",
+      "bytes": 18373,
+      "sha256": "2531eda3acbb4aa66bcb5cc1972480da401c96d14fdae4a79b71838e46bf080e"
+    },
+    {
+      "path": "candidate/shadcn-wc-remounted.png",
+      "bytes": 17226,
+      "sha256": "aaacc1f36653d56ca24ac48bf0f6bec7e3812f287f40aaeedf7df5fefd030f8c"
+    },
+    {
+      "path": "candidate/shadcn-wc.json",
+      "bytes": 4925,
+      "sha256": "d4ab65bb611f1b820d7d17d382284dd854301a9d61eab57d69f84fe5788f20bd"
+    },
+    {
+      "path": "candidate-release-scan.json",
+      "bytes": 44588,
+      "sha256": "5659ca4e3ac1ec17375914a4a9988f7a41724fd0c40bf60b4e9dd92b35c824d4"
+    },
+    {
+      "path": "logs/button-browser-final-fixture-green.log",
+      "bytes": 1463,
+      "sha256": "bfc5d469c5ce998c0e1d32fb4fbc96359c2de6a7d8dd5325556677cb053fd40a"
+    },
+    {
+      "path": "logs/button-browser-final-fixture-red.log",
+      "bytes": 4991,
+      "sha256": "0d5ffa17ad7bfc385e1799412cf548da06c2a74d381408f2282d2906a3597046"
+    },
+    {
+      "path": "logs/button-browser-green-attempt.log",
+      "bytes": 3833,
+      "sha256": "c0179b8c59db8faa5f42b3572b4127398f331bda7a57a99d4e00c80c50d83474"
+    },
+    {
+      "path": "logs/button-browser-green-corrected-observers.log",
+      "bytes": 2641,
+      "sha256": "b1bd0b72ded5eb0c0e60e4f2ca040dfe59f5aee4dcd843055b8d165fd8143649"
+    },
+    {
+      "path": "logs/button-browser-red-corrected-selector.log",
+      "bytes": 4990,
+      "sha256": "91cba6d8bcb30694ffe2e37b458b41f7df6a86235f1a3c6117e6955f502ad1ff"
+    },
+    {
+      "path": "logs/button-browser-red.log",
+      "bytes": 5378,
+      "sha256": "aaae203ea802b72a7469c363b85daaab2e3310a5e3002cf14f81efe1ae7e128a"
+    },
+    {
+      "path": "logs/button-view-lifetime-first-red.log",
+      "bytes": 2868,
+      "sha256": "db9218638135b61ffe88df9f5e002b451ec4131b32478cd7850fdb7e430704d1"
+    },
+    {
+      "path": "logs/button-view-lifetime-focused-green.log",
+      "bytes": 578,
+      "sha256": "5d08d6b52e431de5fad214d8711d6f1e99cfaf27cb847ce14ef755e1865b1e09"
+    },
+    {
+      "path": "logs/button-view-lifetime-owned-type-green.log",
+      "bytes": 288,
+      "sha256": "35c89c020592b06993ebf0aed97f46efc0a8307a4fe6e8e9c7633d6f25f96949"
+    },
+    {
+      "path": "logs/button-view-lifetime-owned-type-tsc.log",
+      "bytes": 88,
+      "sha256": "0fec42fb417889e040cd4a8855c31bfd78666e4d781448136a78ca96ebcaa381"
+    },
+    {
+      "path": "logs/candidate-agent-doc-current.log",
+      "bytes": 195,
+      "sha256": "5b86fa5a8d957fa581788b2d8e3d836fd49cacacae48dc48ac39c8e2683ccbf4"
+    },
+    {
+      "path": "logs/candidate-budgets.log",
+      "bytes": 1730,
+      "sha256": "e130846b893034c164541d2d99f0e9446e08c0601e4f9d13699dfaaffbff8bed"
+    },
+    {
+      "path": "logs/candidate-build.log",
+      "bytes": 2619,
+      "sha256": "e45af67b63864386a47389cd9d4044462de4ac748e48e9b08c5bac26cb2a6535"
+    },
+    {
+      "path": "logs/candidate-consumer-cli.log",
+      "bytes": 9712,
+      "sha256": "4ff27ba70104ac69e7f794daa9ffbae59230b1e937542c74438af27ffcda3d53"
+    },
+    {
+      "path": "logs/candidate-consumer-react.log",
+      "bytes": 12551,
+      "sha256": "6a3be2249e9e72bd4f0cdb6f1a9cdd092a9f292254b7a9e956fb0947463725f2"
+    },
+    {
+      "path": "logs/candidate-diff-check.log",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "logs/candidate-docs-build.log",
+      "bytes": 270480,
+      "sha256": "df0d866f5743f4fb0be1419f4492844975205373d78852859aa88d0c096951de"
+    },
+    {
+      "path": "logs/candidate-full-test.log",
+      "bytes": 106224,
+      "sha256": "53f6b802cc7c2f17aca8da7601cac2ab8fa12458f4b77b789c422d8a4302d6ec"
+    },
+    {
+      "path": "logs/candidate-manifests.log",
+      "bytes": 132,
+      "sha256": "2cd101039cc8eced25253b225bf6342f868d5bb7053795b17ff7ea70acbd9dbc"
+    },
+    {
+      "path": "logs/candidate-release-stage.log",
+      "bytes": 6710,
+      "sha256": "e15fd98a99383f44c7c1d4a4c68f3283044de3d3c487f63011d782d00fd0441b"
+    },
+    {
+      "path": "logs/candidate-types.log",
+      "bytes": 654,
+      "sha256": "7a32506bc01c117b61d1c34aedeebe5354ea08c0d0a4151d46085258bd9c33a6"
+    },
+    {
+      "path": "reproduce/button-view-lifetime.browser.test.ts",
+      "bytes": 8671,
+      "sha256": "6c3a9635471f08e05b1dd2b61112d5ee642b49431d164014a633d0861a2b2d16"
+    },
+    {
+      "path": "reproduce/button-view-lifetime.test.ts",
+      "bytes": 8235,
+      "sha256": "dfbebc6540ec97feab4ec541582e61ab6385089c02a8e5b110e863221694e854"
+    },
+    {
+      "path": "reproduce/index.html",
+      "bytes": 1347,
+      "sha256": "e7b313915f8563cb6d7b5c64975e72189c3c5392da8c9095e1df88a69b30d5e6"
+    },
+    {
+      "path": "reproduce/main.ts",
+      "bytes": 7965,
+      "sha256": "328a823edf25a6cf501199c61c6c0f9849bd2f9845cff1263db9bd7e530f6190"
+    },
+    {
+      "path": "reproduce/vite.config.ts",
+      "bytes": 1878,
+      "sha256": "0d8c14487e50e89d3a27ecb96b21cbf901d351c3ec43bcec7e4acd70d99b5cd2"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 4971,
+      "sha256": "46079df490c880dc1a977eaa7ff953032c23885215c46d675c61c2da81ffaf24"
+    }
+  ],
+  "imageHandling": "36 original PNG byte streams; all inspected directly or by exact-byte equivalence to an inspected original.",
+  "observationHandling": "16 JSON records retain measured values; repository formatter may normalize whitespace.",
+  "logHandling": "Text logs normalize local paths, terminal formatting and trailing whitespace; final and calibration runs remain separate.",
+  "scope": "Source-resolved Chromium evidence and executed local checks; independent platform review and merge remain pending."
+}

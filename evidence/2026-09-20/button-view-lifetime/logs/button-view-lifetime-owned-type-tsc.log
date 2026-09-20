@@ -1,0 +1,3 @@
+
+> proto-ui@ check:types:workspace <WORKTREE>
+> tsc -p tsconfig.workspace.json --noEmit

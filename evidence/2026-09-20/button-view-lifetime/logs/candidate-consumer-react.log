@@ -1,0 +1,300 @@
+
+> proto-ui@ release:smoke:react <WORKTREE>
+> node scripts/release/consumer-smoke-react.mjs
+
+Staged 43 packages into <TEMP_ARTIFACT>
+
+Prerequisite builds:
+- public-package-build: exit code 0
+
+- @proto.ui/cli
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-cli-0.3.0-alpha.0.tgz
+- @proto.ui/core
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-core-0.3.0-alpha.0.tgz
+- @proto.ui/module-base
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-base-0.3.0-alpha.0.tgz
+- @proto.ui/module-expose
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-expose-0.3.0-alpha.0.tgz
+- @proto.ui/module-anatomy
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-anatomy-0.3.0-alpha.0.tgz
+- @proto.ui/module-feedback
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-feedback-0.3.0-alpha.0.tgz
+- @proto.ui/module-positioning
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-positioning-0.3.0-alpha.0.tgz
+- @proto.ui/prototypes-lucide
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-prototypes-lucide-0.3.0-alpha.0.tgz
+- @proto.ui/types
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-types-0.3.0-alpha.0.tgz
+- @proto.ui/module-collection
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-collection-0.3.0-alpha.0.tgz
+- @proto.ui/hooks
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-hooks-0.3.0-alpha.0.tgz
+- @proto.ui/module-context
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-context-0.3.0-alpha.0.tgz
+- @proto.ui/module-expose-event
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-expose-event-0.3.0-alpha.0.tgz
+- @proto.ui/module-event
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-event-0.3.0-alpha.0.tgz
+- @proto.ui/module-as-trigger
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-as-trigger-0.3.0-alpha.0.tgz
+- @proto.ui/module-boundary
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-boundary-0.3.0-alpha.0.tgz
+- @proto.ui/module-hit-participation
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-hit-participation-0.3.0-alpha.0.tgz
+- @proto.ui/module-image-view
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-image-view-0.3.0-alpha.0.tgz
+- @proto.ui/module-overlay
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-overlay-0.3.0-alpha.0.tgz
+- @proto.ui/module-presence
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-presence-0.3.0-alpha.0.tgz
+- @proto.ui/module-props
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-props-0.3.0-alpha.0.tgz
+- @proto.ui/module-state
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-state-0.3.0-alpha.0.tgz
+- @proto.ui/module-a11y
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-a11y-0.3.0-alpha.0.tgz
+- @proto.ui/module-expose-state
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-expose-state-0.3.0-alpha.0.tgz
+- @proto.ui/module-expose-state-web
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-expose-state-web-0.3.0-alpha.0.tgz
+- @proto.ui/module-focus
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-focus-0.3.0-alpha.0.tgz
+- @proto.ui/module-rule
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-rule-0.3.0-alpha.0.tgz
+- @proto.ui/module-rule-expose-state-web
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-rule-expose-state-web-0.3.0-alpha.0.tgz
+- @proto.ui/module-rule-meta
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-rule-meta-0.3.0-alpha.0.tgz
+- @proto.ui/module-scroll
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-scroll-0.3.0-alpha.0.tgz
+- @proto.ui/module-state-accessibility
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-state-accessibility-0.3.0-alpha.0.tgz
+- @proto.ui/module-state-interaction
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-state-interaction-0.3.0-alpha.0.tgz
+- @proto.ui/module-test-sys
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-test-sys-0.3.0-alpha.0.tgz
+- @proto.ui/module-text-control
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-module-text-control-0.3.0-alpha.0.tgz
+- @proto.ui/prototypes-base
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-prototypes-base-0.3.0-alpha.0.tgz
+- @proto.ui/prototypes-brutalist
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-prototypes-brutalist-0.3.0-alpha.0.tgz
+- @proto.ui/prototypes-shadcn
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-prototypes-shadcn-0.3.0-alpha.0.tgz
+- @proto.ui/runtime
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-runtime-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-base
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-base-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-react
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-react-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-vue
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-vue-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-vue2
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-vue2-0.3.0-alpha.0.tgz
+- @proto.ui/adapter-web-component
+  stage: <TEMP_ARTIFACT>
+  build exit code: 0
+  build diagnostics: 0
+  tarball: proto.ui-adapter-web-component-0.3.0-alpha.0.tgz
+
+Next step from repo root: cd <WORKTREE>
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "package-manager-strict". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "manage-package-manager-versions". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+added 79 packages in 10s
+[proto-ui] init: wrote proto-ui/config.json
+[proto-ui] init: ensured proto-ui/components, proto-ui/adapters, proto-ui/prototypes
+[proto-ui] init: skipped style preset generation
+[proto-ui] add: generated proto-ui/components for react/shadcn-button
+[proto-ui] add: styles are disabled; provide the complete shadcn --pui-* token set for shadcn-button
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "package-manager-strict". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "manage-package-manager-versions". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> proto-ui-react-consumer-smoke@0.0.0 build:button-boundary
+> vite build --config vite.button-boundary.mjs
+
+vite v6.4.1 building for production...
+transforming...
+✓ 297 modules transformed.
+rendering chunks...
+Button family boundary: 2 prototype modules, Base/Shadcn Button only
+computing gzip size...
+dist-button-boundary/button-boundary.html                  0.35 kB │ gzip:   0.25 kB
+dist-button-boundary/assets/button-boundary-CaogaFEJ.js  513.34 kB │ gzip: 145.92 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 567ms
+[proto-ui] add: generated proto-ui/components for react/shadcn-switch
+[proto-ui] add: styles are disabled; provide the complete shadcn --pui-* token set for shadcn-switch
+[proto-ui] add: generated proto-ui/components for react/shadcn-select
+[proto-ui] add: styles are disabled; provide the complete shadcn --pui-* token set for shadcn-select
+[proto-ui] add: generated proto-ui/components for react/shadcn-dialog
+[proto-ui] add: styles are disabled; provide the complete shadcn --pui-* token set for shadcn-dialog
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "package-manager-strict". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "manage-package-manager-versions". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> proto-ui-react-consumer-smoke@0.0.0 build
+> tsc --noEmit && vite build
+
+vite v6.4.1 building for production...
+transforming...
+✓ 354 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  0.34 kB │ gzip:   0.24 kB
+dist/assets/index-TNXNgrJp.js  574.50 kB │ gzip: 160.70 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 626ms
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "package-manager-strict". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "manage-package-manager-versions". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> proto-ui-react-consumer-smoke@0.0.0 smoke
+> node --import tsx ./smoke.tsx
+
+react consumer runtime smoke ok | Button + Switch + Select + Dialog + async + remount
+release consumer smoke: react ok (38/43 packed packages consumed)

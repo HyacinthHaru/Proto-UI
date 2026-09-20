@@ -1,0 +1,13 @@
+
+ RUN  v2.1.9 <WORKTREE>
+
+ ✓ packages/prototypes/brutalist/test/button.test.ts (8 tests) 18ms
+ ✓ packages/prototypes/base/test/button-view-lifetime.test.ts (8 tests) 23ms
+ ✓ packages/prototypes/base/test/as-button.test.ts (3 tests) 12ms
+ ✓ packages/prototypes/brutalist/test/button-live-theme.test.ts (3 tests) 54ms
+ ✓ packages/prototypes/shadcn/test/button.test.ts (3 tests) 13ms
+
+ Test Files  5 passed (5)
+      Tests  25 passed (25)
+   Start at  08:11:40
+   Duration  1.68s (transform 362ms, setup 0ms, collect 677ms, tests 120ms, environment 409ms, prepare 109ms)

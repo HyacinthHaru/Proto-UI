@@ -1,0 +1,1871 @@
+
+> proto-ui@ test <WORKTREE>
+> corepack pnpm@10.32.1 -s check:release-version && corepack pnpm@10.32.1 -s release:assets:check && corepack pnpm@10.32.1 -s check:styles:preset && corepack pnpm@10.32.1 -s check:styles:variant-order && corepack pnpm@10.32.1 -s check:component-presets && corepack pnpm@10.32.1 -s check:prototype-catalog && corepack pnpm@10.32.1 -s check:agent-operations && corepack pnpm@10.32.1 -s test:public-docs && corepack pnpm@10.32.1 -s test:release && corepack pnpm@10.32.1 -s test:types && corepack pnpm@10.32.1 -s test:runtime
+
+check-version-governance: 0.3.0-alpha.0, 43 public packages, 9 V entity
+check-release-assets: 0.3.0-alpha.0, 43 packages, release notes present
+Shadcn preset token manifest is current (272 tokens).
+Brutalist preset token and theme manifests are current (249 tokens).
+Lowered variant order is identical in 2 consumers.
+[component-presets] generated CLI projection is current
+[prototype-catalog] 140 declaration files, 188 static authoring entries, 139 cataloged P entities, 0 known debt files, 1 dynamic factory files.
+[prototype-catalog] OK
+[agent-operations] OK
+[contributor-skills] OK: 38 skills, 36 lazy leaves
+TAP version 13
+# Subtest: response template is challenge-bound and intentionally incomplete
+ok 1 - response template is challenge-bound and intentionally incomplete
+  ---
+  duration_ms: 1.677125
+  type: 'test'
+  ...
+# Subtest: self scores derive the full unsigned U0-C4 autonomous recommendation
+ok 2 - self scores derive the full unsigned U0-C4 autonomous recommendation
+  ---
+  duration_ms: 1.38725
+  type: 'test'
+  ...
+# Subtest: bundle stdin validates a response and derives a deterministic self result
+ok 3 - bundle stdin validates a response and derives a deterministic self result
+  ---
+  duration_ms: 146.087791
+  type: 'test'
+  ...
+# Subtest: bundle file input follows the same deterministic validation path
+ok 4 - bundle file input follows the same deterministic validation path
+  ---
+  duration_ms: 40
+  type: 'test'
+  ...
+# Subtest: self evaluation rejects an uncataloged critical failure
+ok 5 - self evaluation rejects an uncataloged critical failure
+  ---
+  duration_ms: 0.317542
+  type: 'test'
+  ...
+# Subtest: self-result verification rejects forged bands, task classes, and digests
+ok 6 - self-result verification rejects forged bands, task classes, and digests
+  ---
+  duration_ms: 0.944208
+  type: 'test'
+  ...
+# Subtest: assessment freshness survives bounded worktree edits but not authority or runtime drift
+ok 7 - assessment freshness survives bounded worktree edits but not authority or runtime drift
+  ---
+  duration_ms: 0.451667
+  type: 'test'
+  ...
+# Subtest: live collector builds a complete canonical input from the GraphQL payload
+ok 8 - live collector builds a complete canonical input from the GraphQL payload
+  ---
+  duration_ms: 1.843541
+  type: 'test'
+  ...
+# Subtest: live collector derives thread time from comments and never fabricates timestamps
+ok 9 - live collector derives thread time from comments and never fabricates timestamps
+  ---
+  duration_ms: 0.340167
+  type: 'test'
+  ...
+# Subtest: live collector fails closed on pagination truncation for every connection
+ok 10 - live collector fails closed on pagination truncation for every connection
+  ---
+  duration_ms: 0.220834
+  type: 'test'
+  ...
+# Subtest: review submission binds the GitHub Review API write to the inspected commit
+ok 11 - review submission binds the GitHub Review API write to the inspected commit
+  ---
+  duration_ms: 0.261333
+  type: 'test'
+  ...
+# Subtest: pull-request merge binds GitHub integration to the inspected exact head
+ok 12 - pull-request merge binds GitHub integration to the inspected exact head
+  ---
+  duration_ms: 0.203875
+  type: 'test'
+  ...
+# Subtest: live collector fails closed when the REST changed-file list is incomplete
+ok 13 - live collector fails closed when the REST changed-file list is incomplete
+  ---
+  duration_ms: 0.064125
+  type: 'test'
+  ...
+# Subtest: live collector passes external evidence through verbatim and validates its shape
+ok 14 - live collector passes external evidence through verbatim and validates its shape
+  ---
+  duration_ms: 0.26275
+  type: 'test'
+  ...
+# Subtest: live collector accepts nullable check links without treating them as trusted CI evidence
+ok 15 - live collector accepts nullable check links without treating them as trusted CI evidence
+  ---
+  duration_ms: 0.210666
+  type: 'test'
+  ...
+# Subtest: live collector reads checks from the exact head commit when headRef target rollup is absent
+ok 16 - live collector reads checks from the exact head commit when headRef target rollup is absent
+  ---
+  duration_ms: 0.279416
+  type: 'test'
+  ...
+# Subtest: live collector fails closed when the collected final commit is not the pull-request head
+ok 17 - live collector fails closed when the collected final commit is not the pull-request head
+  ---
+  duration_ms: 0.337167
+  type: 'test'
+  ...
+# Subtest: check context normalization matches both connection node kinds
+ok 18 - check context normalization matches both connection node kinds
+  ---
+  duration_ms: 0.093125
+  type: 'test'
+  ...
+# Subtest: live check summary accepts neutral terminal conclusions but not pending checks
+ok 19 - live check summary accepts neutral terminal conclusions but not pending checks
+  ---
+  duration_ms: 0.093
+  type: 'test'
+  ...
+# Subtest: external success cannot substitute for trusted repository CI evidence
+ok 20 - external success cannot substitute for trusted repository CI evidence
+  ---
+  duration_ms: 0.066667
+  type: 'test'
+  ...
+# Subtest: standing authorization permits an exact-head merge after independent approval
+ok 21 - standing authorization permits an exact-head merge after independent approval
+  ---
+  duration_ms: 3.067458
+  type: 'test'
+  ...
+# Subtest: merge authorization fails closed on unresolved review, CI, state, or permission
+ok 22 - merge authorization fails closed on unresolved review, CI, state, or permission
+  ---
+  duration_ms: 2.416958
+  type: 'test'
+  ...
+# Subtest: an active change request remains effective across heads until its reviewer supersedes it
+ok 23 - an active change request remains effective across heads until its reviewer supersedes it
+  ---
+  duration_ms: 5.813041
+  type: 'test'
+  ...
+# Subtest: spec changes may be mechanically merged only after an independent exact-head approval
+ok 24 - spec changes may be mechanically merged only after an independent exact-head approval
+  ---
+  duration_ms: 0.430916
+  type: 'test'
+  ...
+# Subtest: merge requires a published Agent evidence receipt and a v2 packet
+ok 25 - merge requires a published Agent evidence receipt and a v2 packet
+  ---
+  duration_ms: 1.285333
+  type: 'test'
+  ...
+# Subtest: sanitizes HTML comments and control characters while bounding untrusted text
+ok 26 - sanitizes HTML comments and control characters while bounding untrusted text
+  ---
+  duration_ms: 0.964041
+  type: 'test'
+  ...
+# Subtest: builds a combined, bounded snapshot without duplicating pull requests as issues
+ok 27 - builds a combined, bounded snapshot without duplicating pull requests as issues
+  ---
+  duration_ms: 9.944042
+  type: 'test'
+  ...
+# Subtest: rejects a report that claims a write or a mismatched snapshot identity
+ok 28 - rejects a report that claims a write or a mismatched snapshot identity
+  ---
+  duration_ms: 0.388875
+  type: 'test'
+  ...
+# Subtest: accepts an explicitly incomplete snapshot and preserves its observable limits
+ok 29 - accepts an explicitly incomplete snapshot and preserves its observable limits
+  ---
+  duration_ms: 2.284291
+  type: 'test'
+  ...
+# Subtest: preserves and checks an expected snapshot digest without treating mismatch as a write
+ok 30 - preserves and checks an expected snapshot digest without treating mismatch as a write
+  ---
+  duration_ms: 0.234792
+  type: 'test'
+  ...
+# Subtest: rejects a complete claim when an incomplete pull request remains
+ok 31 - rejects a complete claim when an incomplete pull request remains
+  ---
+  duration_ms: 0.070583
+  type: 'test'
+  ...
+# Subtest: rejects an engine commit that differs from the registered supply-chain pin
+ok 32 - rejects an engine commit that differs from the registered supply-chain pin
+  ---
+  duration_ms: 0.190084
+  type: 'test'
+  ...
+# Subtest: review packets cannot silently omit public Agent evidence
+ok 33 - review packets cannot silently omit public Agent evidence
+  ---
+  duration_ms: 1.192
+  type: 'test'
+  ...
+# Subtest: review rendering preserves evidence even when the finding list is empty
+ok 34 - review rendering preserves evidence even when the finding list is empty
+  ---
+  duration_ms: 1.057792
+  type: 'test'
+  ...
+# Subtest: evidence validates head and debt without an image-presence submission gate
+ok 35 - evidence validates head and debt without an image-presence submission gate
+  ---
+  duration_ms: 2.520542
+  type: 'test'
+  ...
+# Subtest: review packet binds revision and input state and supports incremental reconciliation
+ok 36 - review packet binds revision and input state and supports incremental reconciliation
+  ---
+  duration_ms: 1.606875
+  type: 'test'
+  ...
+# Subtest: canonical review input is insensitive to top-level comment connection order
+ok 37 - canonical review input is insensitive to top-level comment connection order
+  ---
+  duration_ms: 0.226084
+  type: 'test'
+  ...
+# Subtest: review input v3 binds changed files and check provenance while classifying spec entities
+ok 38 - review input v3 binds changed files and check provenance while classifying spec entities
+  ---
+  duration_ms: 0.231333
+  type: 'test'
+  ...
+# Subtest: review packet requires real scope, evidence accounting, and finding reconciliation
+ok 39 - review packet requires real scope, evidence accounting, and finding reconciliation
+  ---
+  duration_ms: 1.130375
+  type: 'test'
+  ...
+# Subtest: human-assisted review remains open while autonomous review obeys the exact class ceiling
+ok 40 - human-assisted review remains open while autonomous review obeys the exact class ceiling
+  ---
+  duration_ms: 0.87325
+  type: 'test'
+  ...
+# Subtest: review submission preserves explicit authorization and activates the bounded scheduled scope
+ok 41 - review submission preserves explicit authorization and activates the bounded scheduled scope
+  ---
+  duration_ms: 4.444042
+  type: 'test'
+  ...
+# Subtest: an active scheduled standing authorization can submit an exact-head review disposition
+ok 42 - an active scheduled standing authorization can submit an exact-head review disposition
+  ---
+  duration_ms: 0.494333
+  type: 'test'
+  ...
+# Subtest: submission preflight re-collects live canonical input and rejects drift and forged identities
+ok 43 - submission preflight re-collects live canonical input and rejects drift and forged identities
+  ---
+  duration_ms: 0.889583
+  type: 'test'
+  ...
+# Subtest: runtime validation matches the review-packet JSON Schema for types and timestamps
+ok 44 - runtime validation matches the review-packet JSON Schema for types and timestamps
+  ---
+  duration_ms: 1.0965
+  type: 'test'
+  ...
+# Subtest: review input validation accepts nullable check details links but rejects empty ones
+ok 45 - review input validation accepts nullable check details links but rejects empty ones
+  ---
+  duration_ms: 0.085958
+  type: 'test'
+  ...
+# Subtest: review input validation rejects malformed changed-file and review identity state
+ok 46 - review input validation rejects malformed changed-file and review identity state
+  ---
+  duration_ms: 0.083583
+  type: 'test'
+  ...
+# Subtest: agent:review CLI validates and inspects the same packet contract used by the skill
+ok 47 - agent:review CLI validates and inspects the same packet contract used by the skill
+  ---
+  duration_ms: 317.632291
+  type: 'test'
+  ...
+# Subtest: legacy schema v1 packets ingest without evidence but cannot carry dispositions
+ok 48 - legacy schema v1 packets ingest without evidence but cannot carry dispositions
+  ---
+  duration_ms: 0.653167
+  type: 'test'
+  ...
+# [agent:skill] Usage: pnpm agent:skill -- <leaf-id> --mode human-assisted|autonomous --mode-source <trusted-source> [--assessment <result.json>] | --handoff <handoff.json> [--assessment <result.json>]
+# [agent:skill] Usage: pnpm agent:skill -- <leaf-id> --mode human-assisted|autonomous --mode-source <trusted-source> [--assessment <result.json>] | --handoff <handoff.json> [--assessment <result.json>]
+# Subtest: claim and evidence publication route only with the separate evidence and authorization artifacts
+ok 49 - claim and evidence publication route only with the separate evidence and authorization artifacts
+  ---
+  duration_ms: 19.618875
+  type: 'test'
+  ...
+# Subtest: registry resolves one deterministic lazy leaf
+ok 50 - registry resolves one deterministic lazy leaf
+  ---
+  duration_ms: 12.092917
+  type: 'test'
+  ...
+# Subtest: agent:skill CLI emits deterministic machine-readable resolution
+ok 51 - agent:skill CLI emits deterministic machine-readable resolution
+  ---
+  duration_ms: 120.395041
+  type: 'test'
+  ...
+# Subtest: agent:skill CLI requires autonomous non-bootstrap transitions to arrive by handoff
+ok 52 - agent:skill CLI requires autonomous non-bootstrap transitions to arrive by handoff
+  ---
+  duration_ms: 101.443542
+  type: 'test'
+  ...
+# Subtest: human-assisted CLI routes complex implementation, review, and integration without an assessment file
+ok 53 - human-assisted CLI routes complex implementation, review, and integration without an assessment file
+  ---
+  duration_ms: 165.768167
+  type: 'test'
+  ...
+# Subtest: registry rejects duplicate ids, bad paths, and unknown task classes
+ok 54 - registry rejects duplicate ids, bad paths, and unknown task classes
+  ---
+  duration_ms: 9.15025
+  type: 'test'
+  ...
+# Subtest: handoff resolves exactly one next leaf and enforces artifact requirements
+ok 55 - handoff resolves exactly one next leaf and enforces artifact requirements
+  ---
+  duration_ms: 6.038542
+  type: 'test'
+  ...
+# Subtest: terminal handoff does not resolve another skill
+ok 56 - terminal handoff does not resolve another skill
+  ---
+  duration_ms: 6.339625
+  type: 'test'
+  ...
+# Subtest: a review handoff can route one separately authorized exact-head integration
+ok 57 - a review handoff can route one separately authorized exact-head integration
+  ---
+  duration_ms: 5.611708
+  type: 'test'
+  ...
+# Subtest: human-assisted work is not blocked by a low self-assessment
+ok 58 - human-assisted work is not blocked by a low self-assessment
+  ---
+  duration_ms: 5.245209
+  type: 'test'
+  ...
+# Subtest: autonomous work enforces the fresh self-assessed leaf ceiling
+ok 59 - autonomous work enforces the fresh self-assessed leaf ceiling
+  ---
+  duration_ms: 5.184708
+  type: 'test'
+  ...
+# Subtest: untrusted repository and GitHub content cannot select execution mode
+ok 60 - untrusted repository and GitHub content cannot select execution mode
+  ---
+  duration_ms: 0.129667
+  type: 'test'
+  ...
+# Subtest: handoff rejects a mode whose source is not trusted for that mode
+ok 61 - handoff rejects a mode whose source is not trusted for that mode
+  ---
+  duration_ms: 5.022834
+  type: 'test'
+  ...
+# Subtest: autonomous handoff stops at a human gate and a new human-assisted run may continue
+ok 62 - autonomous handoff stops at a human gate and a new human-assisted run may continue
+  ---
+  duration_ms: 4.462584
+  type: 'test'
+  ...
+# Subtest: handoff mode cannot be overridden by CLI flags
+ok 63 - handoff mode cannot be overridden by CLI flags
+  ---
+  duration_ms: 40.706042
+  type: 'test'
+  ...
+# Subtest: schedules, queues, and standing text cannot impersonate an active human loop
+ok 64 - schedules, queues, and standing text cannot impersonate an active human loop
+  ---
+  duration_ms: 0.084292
+  type: 'test'
+  ...
+1..64
+# tests 64
+# suites 0
+# pass 64
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 571.399125
+TAP version 13
+# Subtest: a stale current RC install claim fails while an archived page passes
+ok 1 - a stale current RC install claim fails while an archived page passes
+  ---
+  duration_ms: 4.272
+  type: 'test'
+  ...
+# Subtest: a current prerelease claim fails even when its core differs from stable
+ok 2 - a current prerelease claim fails even when its core differs from stable
+  ---
+  duration_ms: 0.657125
+  type: 'test'
+  ...
+# Subtest: an explicitly draft workspace train is not a current release claim
+ok 3 - an explicitly draft workspace train is not a current release claim
+  ---
+  duration_ms: 0.184833
+  type: 'test'
+  ...
+# Subtest: both bilingual repository landing pages are current release projections
+ok 4 - both bilingual repository landing pages are current release projections
+  ---
+  duration_ms: 0.08475
+  type: 'test'
+  ...
+# Subtest: a missing localized primary route reports the exact locale and slug
+ok 5 - a missing localized primary route reports the exact locale and slug
+  ---
+  duration_ms: 0.817
+  type: 'test'
+  ...
+# Subtest: an unclassified released family gap points to catalog remediation
+ok 6 - an unclassified released family gap points to catalog remediation
+  ---
+  duration_ms: 0.257209
+  type: 'test'
+  ...
+# Subtest: a released family missing from overview and sidebar fails both projections
+ok 7 - a released family missing from overview and sidebar fails both projections
+  ---
+  duration_ms: 0.256334
+  type: 'test'
+  ...
+# Subtest: a released family with the wrong overview href fails the link projection
+ok 8 - a released family with the wrong overview href fails the link projection
+  ---
+  duration_ms: 3.356959
+  type: 'test'
+  ...
+# Subtest: reasoned non-component and overview-only exports pass intentionally
+ok 9 - reasoned non-component and overview-only exports pass intentionally
+  ---
+  duration_ms: 0.286833
+  type: 'test'
+  ...
+# Subtest: public scaffolding reports the source file and marker
+ok 10 - public scaffolding reports the source file and marker
+  ---
+  duration_ms: 0.821667
+  type: 'test'
+  ...
+# Subtest: public spec lifecycle guides expose the activation-history boundary
+ok 11 - public spec lifecycle guides expose the activation-history boundary
+  ---
+  duration_ms: 0.162083
+  type: 'test'
+  ...
+# Subtest: all 16 legacy whitepaper routes retain every section fragment ("\\n")
+ok 12 - all 16 legacy whitepaper routes retain every section fragment ("\\n")
+  ---
+  duration_ms: 385.205417
+  type: 'test'
+  ...
+# Subtest: moved-topic notices point to existing sections in the same locale ("\\n")
+ok 13 - moved-topic notices point to existing sections in the same locale ("\\n")
+  ---
+  duration_ms: 0.6735
+  type: 'test'
+  ...
+# Subtest: all 16 legacy whitepaper routes retain every section fragment ("\\r\\n")
+ok 14 - all 16 legacy whitepaper routes retain every section fragment ("\\r\\n")
+  ---
+  duration_ms: 251.678
+  type: 'test'
+  ...
+# Subtest: moved-topic notices point to existing sections in the same locale ("\\r\\n")
+ok 15 - moved-topic notices point to existing sections in the same locale ("\\r\\n")
+  ---
+  duration_ms: 0.277167
+  type: 'test'
+  ...
+# Subtest: static redirects preserve query and fragment with a no-script fallback
+ok 16 - static redirects preserve query and fragment with a no-script fallback
+  ---
+  duration_ms: 18.900917
+  type: 'test'
+  ...
+# Subtest: the configured Markdown pipeline preserves bilingual diagram buttons and authored captions ("\\n")
+ok 17 - the configured Markdown pipeline preserves bilingual diagram buttons and authored captions ("\\n")
+  ---
+  duration_ms: 164.960417
+  type: 'test'
+  ...
+# Subtest: the configured Markdown pipeline preserves bilingual diagram buttons and authored captions ("\\r\\n")
+ok 18 - the configured Markdown pipeline preserves bilingual diagram buttons and authored captions ("\\r\\n")
+  ---
+  duration_ms: 108.9695
+  type: 'test'
+  ...
+# Subtest: the image enhancer skips parsed diagram-button subtrees and still enhances ordinary images
+ok 19 - the image enhancer skips parsed diagram-button subtrees and still enhances ordinary images
+  ---
+  duration_ms: 0.917625
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 834.416208
+TAP version 13
+# Subtest: check passes when all public @proto.ui packages exactly match VERSION
+ok 1 - check passes when all public @proto.ui packages exactly match VERSION
+  ---
+  duration_ms: 44.033292
+  type: 'test'
+  ...
+# Subtest: check fails when patches differ even if minor matches
+ok 2 - check fails when patches differ even if minor matches
+  ---
+  duration_ms: 41.548792
+  type: 'test'
+  ...
+# Subtest: check fails when any package is on a different minor
+ok 3 - check fails when any package is on a different minor
+  ---
+  duration_ms: 32.328708
+  type: 'test'
+  ...
+# Subtest: check supports exact prerelease lockstep
+ok 4 - check supports exact prerelease lockstep
+  ---
+  duration_ms: 37.580083
+  type: 'test'
+  ...
+# Subtest: check fails when a package still sits on pre-VERSION minor
+ok 5 - check fails when a package still sits on pre-VERSION minor
+  ---
+  duration_ms: 40.882917
+  type: 'test'
+  ...
+# Subtest: check ignores non-@proto.ui packages
+ok 6 - check ignores non-@proto.ui packages
+  ---
+  duration_ms: 28.657709
+  type: 'test'
+  ...
+# Subtest: registry readiness reports public package identities and encodes scoped names
+ok 7 - registry readiness reports public package identities and encodes scoped names
+  ---
+  duration_ms: 2.402875
+  type: 'test'
+  ...
+# Subtest: registry readiness permits a sole deprecated bootstrap version to retain latest
+ok 8 - registry readiness permits a sole deprecated bootstrap version to retain latest
+  ---
+  duration_ms: 0.446709
+  type: 'test'
+  ...
+# Subtest: registry readiness rejects forbidden bootstrap registry states
+ok 9 - registry readiness rejects forbidden bootstrap registry states
+  ---
+  duration_ms: 10.109458
+  type: 'test'
+  ...
+# Subtest: registry readiness fails closed when public registry metadata cannot establish tag state
+ok 10 - registry readiness fails closed when public registry metadata cannot establish tag state
+  ---
+  duration_ms: 0.1815
+  type: 'test'
+  ...
+# Subtest: registry readiness distinguishes missing identities from registry failures
+ok 11 - registry readiness distinguishes missing identities from registry failures
+  ---
+  duration_ms: 0.333041
+  type: 'test'
+  ...
+# Subtest: registry readiness records transport failures without treating packages as missing
+ok 12 - registry readiness records transport failures without treating packages as missing
+  ---
+  duration_ms: 0.106833
+  type: 'test'
+  ...
+# Subtest: registry readiness arguments validate timeout and registry values
+ok 13 - registry readiness arguments validate timeout and registry values
+  ---
+  duration_ms: 0.278875
+  type: 'test'
+  ...
+# Subtest: global version governance accepts one exact draft release train
+ok 14 - global version governance accepts one exact draft release train
+  ---
+  duration_ms: 58.252458
+  type: 'test'
+  ...
+# Subtest: global version governance rejects package patch autonomy
+ok 15 - global version governance rejects package patch autonomy
+  ---
+  duration_ms: 53.731208
+  type: 'test'
+  ...
+# Subtest: global version governance rejects undeclared 0.2 spec versions
+ok 16 - global version governance rejects undeclared 0.2 spec versions
+  ---
+  duration_ms: 52.942334
+  type: 'test'
+  ...
+# Subtest: global version governance rejects undeclared activeSince versions
+ok 17 - global version governance rejects undeclared activeSince versions
+  ---
+  duration_ms: 48.296958
+  type: 'test'
+  ...
+# Subtest: global version governance rejects duplicate V identities
+ok 18 - global version governance rejects duplicate V identities
+  ---
+  duration_ms: 50.510333
+  type: 'test'
+  ...
+# Subtest: global version governance rejects active V entities without evidence
+ok 19 - global version governance rejects active V entities without evidence
+  ---
+  duration_ms: 44.201625
+  type: 'test'
+  ...
+# Subtest: Demo Matrix remains development-only documentation
+ok 20 - Demo Matrix remains development-only documentation
+  ---
+  duration_ms: 6.269458
+  type: 'test'
+  ...
+# Subtest: Demo Matrix renders every adapter column and identifies unavailable Image support
+ok 21 - Demo Matrix renders every adapter column and identifies unavailable Image support
+  ---
+  duration_ms: 1.1625
+  type: 'test'
+  ...
+# Subtest: Demo Matrix layout and accessibility claims have browser-level coverage
+ok 22 - Demo Matrix layout and accessibility claims have browser-level coverage
+  ---
+  duration_ms: 0.852667
+  type: 'test'
+  ...
+# Subtest: release lifecycle CLI distinguishes scoped review from full-inventory completion
+ok 23 - release lifecycle CLI distinguishes scoped review from full-inventory completion
+  ---
+  duration_ms: 2771.911667
+  type: 'test'
+  ...
+# Subtest: release lifecycle reports are reproducible and require a declared version
+ok 24 - release lifecycle reports are reproducible and require a declared version
+  ---
+  duration_ms: 2475.389709
+  type: 'test'
+  ...
+# Subtest: release preparation and changed-entity CI invoke the lifecycle tools
+ok 25 - release preparation and changed-entity CI invoke the lifecycle tools
+  ---
+  duration_ms: 7.716042
+  type: 'test'
+  ...
+# Subtest: authoring preserves identities across deletion, replacement, and file moves
+ok 26 - authoring preserves identities across deletion, replacement, and file moves
+  ---
+  duration_ms: 165949.202583
+  type: 'test'
+  ...
+# Subtest: prototype packages expose side-effect-free family entry points
+ok 27 - prototype packages expose side-effect-free family entry points
+  ---
+  duration_ms: 1.814125
+  type: 'test'
+  ...
+# Subtest: Brutalist Tooltip exports only the reviewed root and family subpath
+ok 28 - Brutalist Tooltip exports only the reviewed root and family subpath
+  ---
+  duration_ms: 0.33
+  type: 'test'
+  ...
+# Subtest: built Brutalist Tooltip root and subpath expose the exact four entries
+ok 29 - built Brutalist Tooltip root and subpath expose the exact four entries
+  ---
+  duration_ms: 7157.175208
+  type: 'test'
+  ...
+# Subtest: Base component families do not import sibling component families
+ok 30 - Base component families do not import sibling component families
+  ---
+  duration_ms: 3.322292
+  type: 'test'
+  ...
+# Subtest: Shadcn families depend only on their corresponding Base family
+ok 31 - Shadcn families depend only on their corresponding Base family
+  ---
+  duration_ms: 3.915333
+  type: 'test'
+  ...
+# Subtest: partial recovery is an explicit release argument
+ok 32 - partial recovery is an explicit release argument
+  ---
+  duration_ms: 0.991875
+  type: 'test'
+  ...
+# Subtest: tarball packing is an explicit release argument
+ok 33 - tarball packing is an explicit release argument
+  ---
+  duration_ms: 0.242167
+  type: 'test'
+  ...
+# Subtest: workspace dependencies use exact package versions in published manifests
+ok 34 - workspace dependencies use exact package versions in published manifests
+  ---
+  duration_ms: 0.971958
+  type: 'test'
+  ...
+# Subtest: declared package-local third-party notices enter the published tarball
+ok 35 - declared package-local third-party notices enter the published tarball
+  ---
+  duration_ms: 3.447667
+  type: 'test'
+  ...
+# Subtest: preserved README metadata accepts current dependencies and conceptual extras
+ok 36 - preserved README metadata accepts current dependencies and conceptual extras
+  ---
+  duration_ms: 0.557041
+  type: 'test'
+  ...
+# Subtest: preserved README metadata rejects a stale install version
+ok 37 - preserved README metadata rejects a stale install version
+  ---
+  duration_ms: 0.196041
+  type: 'test'
+  ...
+# Subtest: preserved README metadata rejects omitted production dependencies
+ok 38 - preserved README metadata rejects omitted production dependencies
+  ---
+  duration_ms: 0.312875
+  type: 'test'
+  ...
+# Subtest: all current preserved READMEs retain their manifest metadata
+ok 39 - all current preserved READMEs retain their manifest metadata
+  ---
+  duration_ms: 1.685042
+  type: 'test'
+  ...
+# Subtest: stamp resets cross-minor packages to VERSION
+ok 40 - stamp resets cross-minor packages to VERSION
+  ---
+  duration_ms: 37.39225
+  type: 'test'
+  ...
+# Subtest: stamp resets same-minor patches to the exact VERSION
+ok 41 - stamp resets same-minor patches to the exact VERSION
+  ---
+  duration_ms: 39.546833
+  type: 'test'
+  ...
+# Subtest: stamp aligns public packages to a prerelease VERSION
+ok 42 - stamp aligns public packages to a prerelease VERSION
+  ---
+  duration_ms: 34.808833
+  type: 'test'
+  ...
+# Subtest: stamp is idempotent when run twice
+ok 43 - stamp is idempotent when run twice
+  ---
+  duration_ms: 68.412375
+  type: 'test'
+  ...
+# Subtest: stamp does not touch workspace:* dep entries
+ok 44 - stamp does not touch workspace:* dep entries
+  ---
+  duration_ms: 29.918042
+  type: 'test'
+  ...
+# Subtest: stamp ignores non-@proto.ui packages
+ok 45 - stamp ignores non-@proto.ui packages
+  ---
+  duration_ms: 30.578708
+  type: 'test'
+  ...
+# Subtest: readVersion parses MAJOR.MINOR.PATCH
+ok 46 - readVersion parses MAJOR.MINOR.PATCH
+  ---
+  duration_ms: 1.822333
+  type: 'test'
+  ...
+# Subtest: readVersion parses prerelease versions
+ok 47 - readVersion parses prerelease versions
+  ---
+  duration_ms: 0.995416
+  type: 'test'
+  ...
+# Subtest: readVersion trims trailing whitespace
+ok 48 - readVersion trims trailing whitespace
+  ---
+  duration_ms: 0.802834
+  type: 'test'
+  ...
+# Subtest: readVersion throws on malformed VERSION
+ok 49 - readVersion throws on malformed VERSION
+  ---
+  duration_ms: 1.725125
+  type: 'test'
+  ...
+# Subtest: findProtoPackages discovers nested @proto.ui packages and skips others
+ok 50 - findProtoPackages discovers nested @proto.ui packages and skips others
+  ---
+  duration_ms: 8.145
+  type: 'test'
+  ...
+# Subtest: findProtoPackages excludes private @proto.ui implementation packages
+ok 51 - findProtoPackages excludes private @proto.ui implementation packages
+  ---
+  duration_ms: 1.715334
+  type: 'test'
+  ...
+# Subtest: findProtoPackages reports the manifest path when JSON is malformed
+ok 52 - findProtoPackages reports the manifest path when JSON is malformed
+  ---
+  duration_ms: 1.356291
+  type: 'test'
+  ...
+1..52
+# tests 52
+# suites 0
+# pass 52
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 171280.800333
+[types] checking type contracts...
+[types] OK
+TAP version 13
+# Subtest: runtime test plan
+    # Subtest: preserves focused Vitest arguments without starting the documentation server
+    ok 1 - preserves focused Vitest arguments without starting the documentation server
+      ---
+      duration_ms: 0.446209
+      type: 'test'
+      ...
+    # Subtest: isolates browser suites behind one shared documentation server in a full run
+    ok 2 - isolates browser suites behind one shared documentation server in a full run
+      ---
+      duration_ms: 0.137834
+      type: 'test'
+      ...
+    1..2
+ok 1 - runtime test plan
+  ---
+  duration_ms: 0.976083
+  type: 'suite'
+  ...
+1..1
+# tests 2
+# suites 1
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 33.466042
+
+ RUN  v2.1.9 <WORKTREE>
+
+ ✓ apps/www/src/components/PrototypePreviewer/projection-scope.test.ts (29 tests) 282ms
+ ✓ packages/modules/scroll/test/web-scroll-host.test.ts (12 tests) 20ms
+ ✓ apps/www/src/components/PrototypePreviewer/projection-composition.test.ts (18 tests) 258ms
+ ✓ apps/www/src/components/PrototypePreviewer/projection-families.test.ts (9 tests) 8ms
+ ✓ packages/cli/test/prototype-style-tokens.test.ts (82 tests) 439ms
+ ✓ apps/www/src/components/PrototypePreviewer/projection-materializer.test.ts (6 tests) 125ms
+ ✓ packages/runtime/test/contract/focus.v0.contract.test.ts (23 tests) 43ms
+ ✓ packages/prototypes/base/test/as-transition.test.ts (29 tests) 86ms
+ ✓ packages/runtime/test/contract/as-hook.v0.contract.test.ts (21 tests) 63ms
+ ✓ packages/modules/text-control/test/web.test.ts (22 tests) 18ms
+ ✓ packages/cli/test/lowered-hook-coverage.test.ts (75 tests) 1345ms
+   ✓ lowered hook coverage > resolves every hook state a shipped rule condition reads 1229ms
+ ✓ packages/runtime/test/contract/focus-roving.v0.contract.test.ts (9 tests) 29ms
+ ✓ packages/spec/fixtures/test/lifecycle-readiness.test.ts (88 tests) 1532ms
+   ✓ ordinary lifecycle reporting > proves the real A11y relationship slice remains draft while the rest remains unreviewed 1406ms
+ ✓ packages/spec/fixtures/test/table-structure-reference.test.ts (9 tests) 7ms
+ ✓ packages/prototypes/base/test/tabs.test.ts (10 tests) 164ms
+ ✓ packages/modules/anatomy/test/impl-spec.test.ts (11 tests) 13ms
+ ✓ packages/modules/event/test/impl-spec.test.ts (18 tests) 9ms
+ ✓ packages/prototypes/base/test/dialog.test.ts (12 tests) 144ms
+ ✓ packages/runtime/test/contract/a11y.v0.contract.test.ts (37 tests) 35ms
+ ✓ packages/runtime/test/contract/anatomy.order.v0.contract.test.ts (5 tests) 21ms
+ ✓ packages/prototypes/base/test/radio-group.test.ts (12 tests) 124ms
+ ✓ packages/prototypes/base/test/select.test.ts (17 tests) 415ms
+ ✓ apps/www/src/components/PrototypePreviewer/home-demo-client.test.ts (17 tests) 1342ms
+ ✓ apps/www/src/components/PrototypePreviewer/projected-previewer-client.test.ts (19 tests) 1382ms
+ ✓ packages/prototypes/brutalist/test/dialog.test.ts (6 tests) 213ms
+ ✓ packages/prototypes/base/test/dropdown.test.ts (20 tests) 429ms
+ ✓ packages/prototypes/shadcn/test/scroll-area.test.ts (5 tests) 122ms
+ ✓ packages/modules/event/test/contract/event-module.v0.contract.test.ts (16 tests) 9ms
+ ✓ packages/prototypes/base/test/checkbox.test.ts (8 tests) 59ms
+ ✓ packages/modules/image-view/test/impl-spec.test.ts (11 tests) 12ms
+ ✓ packages/runtime/test/contract/boundary.v0.contract.test.ts (11 tests) 27ms
+ ✓ packages/adapters/web-component/test/text-control.integration.test.ts (5 tests) 55ms
+ ✓ packages/cli/test/proto-style-css.test.ts (22 tests) 5ms
+ ✓ packages/prototypes/shadcn/test/checkbox.test.ts (12 tests) 164ms
+ ✓ packages/modules/text-control/test/impl-spec.test.ts (10 tests) 10ms
+ ✓ packages/adapters/web-component/test/dialog-overlay.test.ts (8 tests) 228ms
+ ✓ packages/prototypes/brutalist/test/scroll-area.test.ts (9 tests) 107ms
+ ✓ packages/runtime/test/contract/overlay.v0.contract.test.ts (10 tests) 18ms
+ ✓ packages/adapters/base/test/instance-tree.test.ts (13 tests) 10ms
+ ✓ packages/modules/context/test/contract/context.with-tree.v0.contract.test.ts (10 tests) 4ms
+ ✓ packages/prototypes/brutalist/test/dropdown.test.ts (7 tests) 192ms
+ ✓ packages/prototypes/base/test/switch.test.ts (6 tests) 56ms
+ ✓ packages/runtime/test/contract/rule.color-scheme-lifecycle.contract.test.ts (11 tests) 21ms
+ ✓ packages/prototypes/brutalist/test/toggle.test.ts (10 tests) 31ms
+ ✓ packages/prototypes/brutalist/test/select.test.ts (7 tests) 176ms
+ ✓ packages/adapters/web-component/test/contract/rule.expose-state-web.optimize.v0.contract.test.ts (9 tests) 77ms
+ ✓ packages/runtime/test/contract/props-integration.v0.contract.test.ts (5 tests) 16ms
+ ✓ packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts (6 tests) 72ms
+stderr | apps/www/src/components/PrototypePreviewer/previewer-client.test.ts > PrototypePreviewer adapter preference synchronization > clears the active runtime before a failed remount
+Error: vue2 failed
+    at Object.<anonymous> (<WORKTREE>/apps/www/src/components/PrototypePreviewer/previewer-client.test.ts:316:32)
+    at Object.mockCall (file://<WORKTREE>/node_modules/.pnpm/@vitest+spy@2.1.9/node_modules/@vitest/spy/dist/index.js:61:17)
+    at Object.spy [as mount] (file://<WORKTREE>/node_modules/.pnpm/tinyspy@3.0.2/node_modules/tinyspy/dist/index.js:45:80)
+    at Object.mount (<WORKTREE>/apps/www/src/components/PrototypePreviewer/previewer-client.test.ts:24:37)
+    at switchTo (<WORKTREE>/apps/www/src/components/PrototypePreviewer/previewer-client.ts:252:17)
+
+ ✓ apps/www/src/components/PrototypePreviewer/previewer-client.test.ts (10 tests) 903ms
+ ✓ packages/prototypes/base/test/textarea.test.ts (7 tests) 39ms
+ ✓ packages/modules/context/test/catalog-boundary.test.ts (12 tests) 10ms
+ ✓ packages/adapters/web-component/test/previewer.demo-renderer.test.ts (6 tests) 244ms
+ ✓ packages/prototypes/brutalist/test/tabs.test.ts (6 tests) 164ms
+ ✓ packages/adapters/vue/test/radio-group.test.ts (1 test) 123ms
+ ✓ packages/adapters/react/test/radio-group.test.ts (1 test) 146ms
+ ✓ packages/modules/state/test/port.v0.test.ts (9 tests) 5ms
+ ✓ packages/runtime/test/contract/hit-participation.v0.contract.test.ts (7 tests) 19ms
+ ✓ packages/adapters/web-component/test/contract/event.router.mapping.v0.contract.test.ts (11 tests) 14ms
+ ✓ packages/compositions/chatui/test/message.test.ts (18 tests) 45ms
+ ✓ packages/prototypes/brutalist/test/button.test.ts (8 tests) 26ms
+ ✓ packages/adapters/web-component/test/radio-group.test.ts (1 test) 83ms
+ ✓ packages/runtime/test/contract/dropdown-menu.v0.contract.test.ts (4 tests) 49ms
+ ✓ apps/www/test/proto-concept.test.ts (8 tests) 202ms
+ ✓ packages/adapters/base/test/web-color-scheme-source.test.ts (8 tests) 12ms
+ ✓ packages/modules/image-view/test/web.test.ts (9 tests) 7ms
+ ✓ apps/www/src/components/code-example-client.test.ts (7 tests) 21ms
+ ✓ packages/modules/props/test/contract/resolved-watchers.v0.contract.test.ts (10 tests) 4ms
+ ✓ packages/modules/props/test/contract/watch-raw.v0.contract.test.ts (8 tests) 4ms
+ ✓ packages/prototypes/base/test/scroll-area.test.ts (8 tests) 76ms
+ ✓ packages/modules/expose-state/test/impl-spec.test.ts (9 tests) 7ms
+ ✓ packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts (5 tests) 20ms
+ ✓ packages/prototypes/shadcn/test/tooltip.test.ts (5 tests) 169ms
+stdout | packages/web-conformance/test/shadcn-dialog.journey.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/modules/props/test/contract/watch-resolved.v0.contract.test.ts (8 tests) 8ms
+ ✓ packages/prototypes/base/test/use-collection.test.ts (2 tests) 15ms
+ ✓ packages/modules/props/test/contract/define-merge.v0.contract.test.ts (9 tests) 4ms
+ ✓ packages/prototypes/base/test/tooltip.test.ts (7 tests) 162ms
+ ✓ packages/prototypes/base/test/hover-card.test.ts (6 tests) 173ms
+ ✓ packages/runtime/test/contract/state.semantic.v0.contract.test.ts (8 tests) 17ms
+ ✓ packages/prototypes/base/test/button-view-lifetime.test.ts (8 tests) 39ms
+ ✓ apps/www/src/components/site-shadcn-controls.test.ts (9 tests) 133ms
+ ✓ packages/prototypes/shadcn/test/tabs.test.ts (4 tests) 81ms
+ ✓ packages/runtime/test/contract/as-trigger.v0.contract.test.ts (4 tests) 15ms
+ ✓ apps/www/src/components/PrototypePreviewer/projection-theme.test.ts (8 tests) 123ms
+ ✓ packages/prototypes/base/test/as-button.test.ts (3 tests) 17ms
+ ✓ packages/spec/graph/test/catalog-evidence-integrity.test.ts (3 tests) 2779ms
+   ✓ catalog evidence integrity > leaves no cited evidence path unresolved across the catalog 1618ms
+   ✓ catalog evidence integrity > leaves no declared case without an implementation that consumes it 1158ms
+ ✓ packages/prototypes/base/test/input.test.ts (6 tests) 39ms
+ ✓ packages/prototypes/brutalist/test/hover-card.test.ts (3 tests) 94ms
+ ✓ packages/prototypes/base/test/toggle.test.ts (4 tests) 21ms
+ ✓ packages/runtime/test/contract/overlay.escape.contract.test.ts (6 tests) 28ms
+ ✓ packages/prototypes/brutalist/test/checkbox.test.ts (4 tests) 106ms
+ ✓ packages/runtime/test/contract/prototype.render-syntax.v0.contract.test.ts (6 tests) 12ms
+ ✓ packages/prototypes/shadcn/test/select.test.ts (5 tests) 190ms
+ ✓ packages/spec/fixtures/test/workspace-relations.test.ts (4 tests) 49ms
+ ✓ packages/modules/props/test/props.test.ts (15 tests) 4ms
+ ✓ packages/prototypes/base/test/image.test.ts (4 tests) 24ms
+ ✓ packages/adapters/vue/test/dialog.test.ts (7 tests) 122ms
+ ✓ packages/adapters/react/test/message-composition.test.ts (1 test) 143ms
+ ✓ packages/modules/rule/test/catalog-boundary.test.ts (5 tests) 5ms
+ ✓ packages/runtime/test/contract/lifecycle-with-host.v0.contract.test.ts (5 tests) 13ms
+ ✓ packages/modules/props/test/contract/resolve-fallback.v0.contract.test.ts (7 tests) 4ms
+ ✓ packages/adapters/web-component/test/image-view.integration.test.ts (2 tests) 97ms
+ ✓ apps/www/src/components/PrototypePreviewer/code-panel-client.test.ts (7 tests) 17ms
+ ✓ packages/adapters/vue/test/message-composition.test.ts (1 test) 90ms
+ ✓ packages/modules/anatomy/test/contract/anatomy-order.v0.contract.test.ts (3 tests) 3ms
+ ✓ packages/adapters/web-component/test/router.spec.test.ts (7 tests) 6ms
+ ✓ packages/modules/feedback/test/catalog-boundary.test.ts (5 tests) 10ms
+ ✓ packages/runtime/test/contract/state-basic.v0.contract.test.ts (4 tests) 21ms
+ ✓ packages/compositions/chatui/test/code-block.test.ts (9 tests) 43ms
+ ✓ packages/web-conformance/test/shadcn-dialog.journey.test.ts (4 tests) 3071ms
+   ✓ Web adapter conformance / Shadcn Dialog keyboard journey > wc completes the shared DOM interaction scenario 793ms
+   ✓ Web adapter conformance / Shadcn Dialog keyboard journey > react completes the shared DOM interaction scenario 783ms
+   ✓ Web adapter conformance / Shadcn Dialog keyboard journey > vue completes the shared DOM interaction scenario 765ms
+   ✓ Web adapter conformance / Shadcn Dialog keyboard journey > vue2 completes the shared DOM interaction scenario 705ms
+stdout | packages/adapters/vue2/test/overlay-portal-ownership.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/overlay-portal-ownership.test.ts (3 tests) 95ms
+ ✓ packages/adapters/base/test/contract/expose-record.v0.contract.test.ts (10 tests) 8ms
+ ✓ packages/adapters/web-component/test/message-composition.test.ts (1 test) 88ms
+stdout | packages/web-conformance/test/shadcn-select-controlled-value.journey.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/react/test/text-control.integration.test.ts (4 tests) 36ms
+ ✓ packages/spec/graph/test/shadcn-checkbox-baseline.test.ts (3 tests) 3542ms
+   ✓ shadcn Checkbox baseline text > keeps the pinned baseline and the later adopted recipe distinguishable 1280ms
+   ✓ shadcn Checkbox baseline text > names every intentional deviation instead of counting them 1072ms
+   ✓ shadcn Checkbox baseline text > binds the radius decision to a reconstructible ruling 1189ms
+ ✓ packages/prototypes/brutalist/test/switch.test.ts (5 tests) 69ms
+ ✓ packages/runtime/test/contract/delay.v0.contract.test.ts (7 tests) 19ms
+ ✓ packages/modules/positioning/test/floating-ui-host.test.ts (4 tests) 30ms
+ ✓ packages/runtime/test/contract/lifecycle.session.transitions.v1.contract.test.ts (5 tests) 16ms
+ ✓ packages/adapters/react/test/dialog.test.ts (7 tests) 75ms
+ ✓ packages/web-conformance/test/shadcn-select-controlled-value.journey.test.ts (4 tests) 247ms
+ ✓ packages/adapters/web-component/test/lifecycle-view-intent.test.ts (3 tests) 59ms
+ ✓ packages/spec/fixtures/test/adapter-profile-schema.test.ts (6 tests) 1528ms
+   ✓ adapter profile schema > keeps official profile targets aligned with package metadata and the Props/Event/State/Expose slices 1506ms
+ ✓ packages/spec/fixtures/test/version-release-schema.test.ts (13 tests) 16ms
+stdout | packages/adapters/vue2/test/catalog-conformance.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/catalog-conformance.test.ts (3 tests) 46ms
+ ✓ packages/prototypes/shadcn/test/dialog.test.ts (2 tests) 86ms
+ ✓ packages/prototypes/shadcn/test/button.test.ts (3 tests) 33ms
+ ✓ packages/modules/anatomy/test/catalog-boundary.test.ts (3 tests) 31ms
+ ✓ packages/prototypes/brutalist/test/button-live-theme.test.ts (3 tests) 127ms
+ ✓ packages/adapters/vue/test/focus.test.ts (5 tests) 59ms
+ ✓ packages/modules/rule-expose-state-web/test/catalog-boundary.test.ts (4 tests) 4ms
+ ✓ packages/prototypes/shadcn/test/textarea.test.ts (6 tests) 73ms
+ ✓ packages/adapters/base/test/web-move-gesture-host.test.ts (3 tests) 11ms
+ ✓ packages/core/test/contract/prototype.module-declarations.v0.contract.test.ts (10 tests) 4ms
+ ✓ packages/adapters/react/test/view-reveal-style.integration.test.ts (2 tests) 41ms
+ ✓ packages/runtime/test/contract/feedback.style.runtime-patch.v0.contract.test.ts (5 tests) 20ms
+ ✓ packages/runtime/test/contract/rule.color-scheme.contract.test.ts (1 test) 17ms
+stdout | packages/web-conformance/test/brutalist-scroll-area-move.journey.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/runtime/test/contract/run-props-wiring.v0.contract.test.ts (2 tests) 9ms
+ ✓ packages/adapters/base/test/hit-participation-host-bridge.test.ts (9 tests) 5ms
+ ✓ packages/runtime/test/contract/lifecycle.view-intent.v1.contract.test.ts (6 tests) 23ms
+ ✓ packages/adapters/web-component/test/code-block-composition.test.ts (2 tests) 56ms
+ ✓ packages/modules/props/test/contract/fallback-resolution.v0.contract.test.ts (9 tests) 8ms
+ ✓ packages/adapters/vue/test/expose-state-web.test.ts (7 tests) 62ms
+ ✓ packages/modules/scroll/test/context-scope.test.ts (6 tests) 5ms
+ ✓ packages/web-conformance/test/brutalist-scroll-area-move.journey.test.ts (4 tests) 221ms
+ ✓ packages/adapters/web-component/test/contract/expose-state-web.v0.contract.test.ts (7 tests) 39ms
+ ✓ packages/prototypes/brutalist/test/tooltip.test.ts (4 tests) 166ms
+ ✓ packages/runtime/test/contract/lifecycle.session.v1.contract.test.ts (3 tests) 13ms
+ ✓ packages/runtime/test/contract/lifecycle.checkpoints.v0.contract.test.ts (4 tests) 18ms
+ ✓ packages/cli/test/cli.test.ts (27 tests) 12614ms
+   ✓ @proto.ui/cli > initializes proto-ui workspace and default style files 773ms
+   ✓ @proto.ui/cli > renders the official prototype token set without unsupported-token comments 6667ms
+   ✓ @proto.ui/cli > rejects the removed tailwindcss command with an explicit migration message 349ms
+   ✓ @proto.ui/cli > initializes with the Brutalist prototype and style preset when requested 449ms
+   ✓ @proto.ui/cli > rejects Brutalist add under the Shadcn preset without mutating project state 426ms
+   ✓ @proto.ui/cli > adds Brutalist under the matching enabled preset 439ms
+   ✓ @proto.ui/cli > rejects a missing enabled preset before mutating project state 457ms
+ ✓ packages/modules/expose-state-web/test/catalog-boundary.test.ts (4 tests) 9ms
+ ✓ packages/adapters/react/test/expose-state-web.test.ts (7 tests) 70ms
+ ✓ packages/adapters/vue/test/text-control.integration.test.ts (3 tests) 42ms
+ ✓ packages/adapters/vue/test/previewer-transition-command.demo.test.ts (2 tests) 96ms
+ ✓ packages/prototypes/brutalist/test/card.test.ts (5 tests) 60ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-controls.test.ts (3 tests) 3ms
+ ✓ packages/adapters/react/test/focus.test.ts (4 tests) 42ms
+ ✓ packages/prototypes/brutalist/test/textarea.test.ts (3 tests) 42ms
+ ✓ packages/adapters/vue/test/framework-contract.test.ts (5 tests) 36ms
+ ✓ packages/adapters/react/test/select.test.ts (2 tests) 118ms
+ ✓ packages/adapters/web-component/test/focus.test.ts (5 tests) 52ms
+ ✓ packages/adapters/base/test/view-epoch-owner.test.ts (4 tests) 7ms
+ ✓ packages/adapters/web-component/test/slot-light-dom.test.ts (6 tests) 59ms
+ ✓ packages/adapters/base/test/host-wiring.test.ts (5 tests) 8ms
+ ✓ packages/prototypes/brutalist/test/theme.test.ts (6 tests) 4ms
+ ✓ packages/modules/presence/test/impl.test.ts (7 tests) 6ms
+ ✓ packages/prototypes/shadcn/test/separator.test.ts (6 tests) 54ms
+ ✓ packages/prototypes/base/test/separator.test.ts (4 tests) 67ms
+ ✓ packages/modules/focus/test/center.test.ts (3 tests) 5ms
+ ✓ packages/runtime/test/with-host-presence.test.ts (2 tests) 29ms
+ ✓ packages/modules/expose-event/test/impl-spec.test.ts (4 tests) 8ms
+ ✓ packages/prototypes/base/test/live-region.test.ts (6 tests) 36ms
+ ✓ packages/adapters/web-component/test/contract/lifecycle-wc-adapter.v0.contract.test.ts (5 tests) 56ms
+stdout | packages/adapters/vue2/test/textarea.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/react/test/transition-command-closed-enter.test.ts (3 tests) 35ms
+ ✓ packages/runtime/test/contract/as-accessible.contract.test.ts (3 tests) 15ms
+ ✓ packages/adapters/web-component/test/host-display.test.ts (5 tests) 41ms
+ ✓ packages/prototypes/shadcn/test/dropdown.test.ts (4 tests) 131ms
+ ✓ packages/adapters/vue2/test/textarea.integration.test.ts (2 tests) 37ms
+ ✓ packages/adapters/vue/test/image-view.integration.test.ts (2 tests) 46ms
+ ✓ packages/prototypes/shadcn/test/toggle.test.ts (1 test) 46ms
+ ✓ packages/modules/positioning/test/lease-generation.test.ts (5 tests) 5ms
+stdout | packages/adapters/vue2/test/expose.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/runtime/test/contract/rule.setup-cancellation.contract.test.ts (2 tests) 12ms
+ ✓ packages/adapters/react/test/lifecycle-view-intent.test.ts (1 test) 22ms
+ ✓ packages/adapters/vue/test/previewer-dialog.demo.test.ts (1 test) 423ms
+   ✓ PrototypePreviewer demo-renderer / vue dialog > opens again after a portaled dialog closes and detaches 422ms
+ ✓ packages/adapters/web-component/test/contract/expose.basic.v0.contract.test.ts (5 tests) 38ms
+ ✓ packages/adapters/vue/test/lifecycle-view-intent.test.ts (1 test) 33ms
+ ✓ packages/adapters/vue2/test/expose.test.ts (5 tests) 52ms
+ ✓ packages/runtime/test/contract/exec-phase-guard.v0.contract.test.ts (2 tests) 35ms
+ ✓ packages/runtime/test/contract/state-phase-guards.v0.contract.test.ts (2 tests) 17ms
+ ✓ packages/modules/expose/test/impl-spec.test.ts (8 tests) 7ms
+ ✓ packages/adapters/web-component/test/feedback-style.test.ts (6 tests) 8ms
+ ✓ packages/modules/props/test/contract/host-source.v0.contract.test.ts (3 tests) 3ms
+stdout | packages/adapters/vue2/test/previewer-runtime-data.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/previewer-runtime-data.test.ts (3 tests) 8ms
+ ✓ packages/modules/props/test/contract/props.meta.empty-accept.v0.contract.test.ts (4 tests) 3ms
+ ✓ packages/prototypes/base/test/async-region.test.ts (5 tests) 30ms
+ ✓ packages/adapters/web-component/test/contract/sys-lifecycle.v0.contract.test.ts (3 tests) 26ms
+ ✓ packages/prototypes/shadcn/test/switch.test.ts (4 tests) 112ms
+ ✓ packages/runtime/test/contract/expose-event.v0.contract.test.ts (4 tests) 11ms
+ ✓ packages/prototypes/brutalist/test/badge.test.ts (4 tests) 46ms
+ ✓ packages/core/test/contract/template.authoring-fixture.v0.contract.test.ts (4 tests) 3ms
+ ✓ packages/adapters/vue/test/select.test.ts (1 test) 141ms
+stdout | packages/adapters/vue2/test/previewer-dialog.demo.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/runtime/test/deps-order.test.ts (4 tests) 5ms
+stdout | packages/adapters/vue2/test/code-block-composition.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/code-block-composition.test.ts (1 test) 56ms
+stdout | packages/adapters/vue2/test/lifecycle.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/prototypes/shadcn/test/hover-card.test.ts (2 tests) 69ms
+ ✓ packages/adapters/vue2/test/lifecycle.test.ts (3 tests) 43ms
+ ✓ packages/adapters/react/test/image-view.integration.test.ts (1 test) 36ms
+ ✓ packages/runtime/test/contract/context-lifecycle.v1.contract.test.ts (1 test) 15ms
+ ✓ packages/modules/overlay/test/modal-lock.test.ts (5 tests) 9ms
+ ✓ packages/adapters/vue2/test/previewer-dialog.demo.test.ts (1 test) 207ms
+ ✓ apps/www/src/components/PrototypePreviewer/demo-renderer.test.ts (2 tests) 7ms
+ ✓ packages/adapters/vue2/test/types.test.ts (3 tests) 2ms
+ ✓ packages/adapters/vue/test/expose.test.ts (4 tests) 45ms
+ ✓ packages/adapters/react/test/transition-controlled-demo-remount.test.ts (1 test) 7ms
+ ✓ packages/adapters/react/test/expose.test.ts (4 tests) 39ms
+ ✓ packages/adapters/vue/test/tabs.test.ts (1 test) 110ms
+ ✓ packages/runtime/test/contract/collection.catalog.contract.test.ts (1 test) 15ms
+ ✓ packages/adapters/react/test/code-block-composition.test.ts (1 test) 59ms
+ ✓ packages/modules/props/test/contract/resolved-snapshot-shape.v0.contract.test.ts (5 tests) 6ms
+ ✓ packages/adapters/react/test/lifecycle-repeatable-mount.test.ts (1 test) 33ms
+ ✓ packages/runtime/test/contract/lifecycle.registration.v0.contract.test.ts (1 test) 21ms
+ ✓ packages/adapters/base/test/contract/event-target-requirements.v0.contract.test.ts (3 tests) 16ms
+ ✓ packages/adapters/base/test/boundary-host-bridge.test.ts (6 tests) 4ms
+ ✓ packages/adapters/react/test/framework-contract.test.ts (5 tests) 28ms
+ ✓ packages/adapters/vue/test/transition-command-closed-enter.test.ts (2 tests) 50ms
+stdout | packages/adapters/vue2/test/contract/props-normalization.v0.contract.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+stdout | packages/adapters/vue2/test/event.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/event.test.ts (3 tests) 49ms
+ ✓ packages/adapters/vue2/test/contract/props-normalization.v0.contract.test.ts (2 tests) 51ms
+ ✓ packages/prototypes/base/test/use-open-state.test.ts (3 tests) 20ms
+ ✓ packages/adapters/vue/test/code-block-composition.test.ts (1 test) 69ms
+stdout | packages/adapters/vue2/test/select.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/select.test.ts (1 test) 128ms
+ ✓ packages/adapters/react/test/previewer.demo-renderer.test.ts (1 test) 240ms
+ ✓ packages/adapters/vue/test/types.test.ts (4 tests) 9ms
+ ✓ packages/prototypes/base/test/use-escape-key.test.ts (3 tests) 16ms
+ ✓ packages/modules/a11y/test/web.test.ts (2 tests) 5ms
+ ✓ packages/adapters/web-component/test/expose-state-web.integration.test.ts (3 tests) 77ms
+stdout | packages/adapters/vue2/test/image-view.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/base/test/overlay-layer-scheduler.test.ts (4 tests) 5ms
+ ✓ packages/runtime/test/contract/anatomy.catalog-lifecycle.contract.test.ts (1 test) 13ms
+ ✓ packages/adapters/vue2/test/image-view.integration.test.ts (2 tests) 37ms
+ ✓ packages/adapters/web-component/test/commit.test.ts (5 tests) 32ms
+ ✓ packages/adapters/web-component/test/event-gate.order.strict.test.ts (1 test) 221ms
+ ✓ packages/adapters/react/test/contract/props-normalization.v0.contract.test.ts (2 tests) 34ms
+ ✓ packages/core/test/text-control-line-mode.test.ts (7 tests) 3ms
+ ✓ packages/runtime/test/contract/rule.props-style.smoke.v0.contract.test.ts (2 tests) 15ms
+stdout | packages/adapters/vue2/test/focus.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue/test/contract/props-normalization.v0.contract.test.ts (2 tests) 37ms
+ ✓ packages/adapters/vue2/test/focus.test.ts (3 tests) 38ms
+ ✓ packages/adapters/web-component/test/tabs.test.ts (1 test) 78ms
+ ✓ packages/runtime/test/contract/rule.lifecycle-catalog.contract.test.ts (1 test) 13ms
+ ✓ packages/adapters/web-component/test/contract/event.router.host-bound.v0.contract.test.ts (3 tests) 6ms
+ ✓ packages/adapters/vue/test/context-anatomy.test.ts (2 tests) 42ms
+ ✓ apps/www/src/components/PrototypeLibraryOverview.test.ts (2 tests) 23ms
+ ✓ apps/www/src/components/adapter-preference.test.ts (2 tests) 10ms
+ ✓ packages/core/test/contract/feedback.style.runtime-patch.v0.contract.test.ts (5 tests) 6ms
+ ✓ packages/adapters/web-component/test/scroll.test.ts (1 test) 25ms
+stdout | packages/adapters/vue2/test/tabs.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/tabs.test.ts (1 test) 69ms
+stdout | apps/www/src/components/override/LanguageSelect.test.ts > documentation language selector > binds every rendered selector instance exactly once
+[Language Switch] Saved locale preference: zh-cn
+
+ ✓ apps/www/src/components/override/LanguageSelect.test.ts (1 test) 13ms
+ ✓ packages/adapters/react/test/types.test.ts (3 tests) 2ms
+ ✓ packages/modules/state/test/kernel.v0.test.ts (4 tests) 3ms
+ ✓ packages/spec/fixtures/test/anatomy-schema.test.ts (4 tests) 5ms
+ ✓ packages/prototypes/brutalist/test/skeleton.test.ts (2 tests) 21ms
+ ✓ packages/compositions/chatui/test/ownership-boundary.test.ts (6 tests) 6ms
+ ✓ packages/compositions/chatui/test/private-boundary.test.ts (3 tests) 3ms
+ ✓ packages/adapters/react/test/tabs.test.ts (1 test) 131ms
+ ✓ packages/modules/collection/test/catalog-boundary.test.ts (1 test) 5ms
+ ✓ packages/modules/scroll/test/session-lifetime.test.ts (1 test) 3ms
+ ✓ packages/core/test/contract/feedback.style.v0.contract.test.ts (4 tests) 3ms
+ ✓ packages/spec/fixtures/test/context-fixtures.test.ts (2 tests) 2992ms
+   ✓ spec fixtures: context > keeps context identity and scope fixtures aligned with T-CONTEXT-0001 1600ms
+   ✓ spec fixtures: context > keeps context runtime surface fixtures aligned with T-CONTEXT-0002 1391ms
+ ✓ packages/adapters/react/test/context-anatomy.test.ts (2 tests) 25ms
+ ✓ packages/spec/fixtures/test/expose-fixtures.test.ts (3 tests) 4236ms
+   ✓ spec fixtures: expose > keeps expose surface fixtures aligned with T-EXPOSE-0001 1586ms
+   ✓ spec fixtures: expose > keeps expose event fixtures aligned with T-EXPOSE-EVENT-0001 1244ms
+   ✓ spec fixtures: expose > keeps expose-state fixtures aligned with T-EXPOSE-STATE-0001 1405ms
+ ✓ packages/prototypes/brutalist/test/separator.test.ts (2 tests) 33ms
+ ✓ packages/adapters/react/test/nested-trigger.integration.test.ts (1 test) 103ms
+ ✓ packages/adapters/react/test/contract/lifecycle-events.v1.contract.test.ts (1 test) 34ms
+stdout | packages/adapters/vue2/test/a11y-heading-level.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/web-component/test/contract/lifecycle-events.v1.contract.test.ts (1 test) 26ms
+ ✓ packages/adapters/web-component/test/contract/template.adapter-boundary.v0.contract.test.ts (3 tests) 3ms
+ ✓ packages/adapters/web-component/test/contract/event.router.proto.v0.contract.test.ts (3 tests) 3ms
+ ✓ packages/modules/overlay/test/resource-lifetime.test.ts (1 test) 4ms
+ ✓ packages/adapters/vue/test/previewer-demo.test.ts (1 test) 31ms
+ ✓ packages/adapters/vue2/test/a11y-heading-level.integration.test.ts (1 test) 38ms
+ ✓ packages/adapters/vue/test/a11y-heading-level.integration.test.ts (1 test) 75ms
+stdout | packages/adapters/vue2/test/previewer-demo.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/react/test/contract/lifecycle-checkpoints.v0.contract.test.ts (1 test) 36ms
+ ✓ packages/prototypes/lucide/test/icon.test.ts (7 tests) 15ms
+ ✓ packages/adapters/web-component/test/contract/lifecycle-checkpoints.v0.contract.test.ts (1 test) 21ms
+ ✓ packages/runtime/test/contract/rule-expose-state-web.catalog.contract.test.ts (1 test) 16ms
+ ✓ packages/adapters/vue/test/contract/lifecycle-events.v1.contract.test.ts (1 test) 24ms
+ ✓ packages/adapters/web-component/test/props-reprovide.test.ts (2 tests) 31ms
+ ✓ packages/adapters/vue2/test/previewer-demo.test.ts (1 test) 78ms
+ ✓ packages/adapters/web-component/test/contract/props-normalization.v0.contract.test.ts (1 test) 33ms
+ ✓ packages/adapters/vue/test/contract/lifecycle-checkpoints.v0.contract.test.ts (1 test) 30ms
+ ✓ packages/modules/positioning/test/module-lifetime.test.ts (1 test) 4ms
+ ✓ packages/spec/fixtures/test/prototype-render-syntax.test.ts (1 test) 1191ms
+   ✓ spec fixtures: prototype render syntax > stays aligned with T-CORE-SYNTAX-0001 and covered contracts 1191ms
+stdout | packages/adapters/vue2/test/dialog.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/dialog.test.ts (1 test) 69ms
+ ✓ packages/adapters/react/test/a11y-heading-level.integration.test.ts (1 test) 23ms
+ ✓ packages/adapters/base/test/feedback-effects-conformance.test.ts (4 tests) 7ms
+ ✓ packages/adapters/react/test/ref-props-stability.integration.test.ts (1 test) 123ms
+ ✓ packages/adapters/base/test/view-visibility.test.ts (2 tests) 13ms
+ ✓ packages/core/test/feedback/semantic-merge.test.ts (8 tests) 3ms
+ ✓ packages/runtime/test/contract/expose-state.v0.contract.test.ts (1 test) 10ms
+ ✓ packages/adapters/web-component/test/contract/anatomy.runtime-access.v0.contract.test.ts (1 test) 41ms
+ ✓ packages/adapters/web-component/test/types.test.ts (1 test) 2ms
+ ✓ apps/www/src/components/PrototypePreviewer/runtimes/host-mount.test.ts (3 tests) 7ms
+ ✓ packages/adapters/vue/test/hover-card.test.ts (1 test) 96ms
+ ✓ packages/adapters/web-component/test/template-props-style.test.ts (3 tests) 22ms
+ ✓ packages/adapters/vue/test/nested-trigger.integration.test.ts (1 test) 36ms
+ ✓ packages/adapters/web-component/test/event-gate.effectiveness.test.ts (1 test) 32ms
+ ✓ packages/spec/fixtures/test/template-authoring.test.ts (1 test) 1802ms
+   ✓ spec fixtures: template authoring > stays aligned with T-TEMPLATE-0001 and covered contracts 1802ms
+ ✓ packages/spec/fixtures/test/lifecycle-callback-order.test.ts (1 test) 1772ms
+   ✓ spec fixtures: lifecycle callback order > stays aligned with T-LIFECYCLE-0001 and C-LIFECYCLE-0002 1771ms
+ ✓ packages/spec/fixtures/test/json-value-boundary.test.ts (1 test) 1858ms
+   ✓ spec fixtures: JSON props value boundary > stays aligned with T-PROPS-0001 and C-PROPS-0003 1857ms
+stdout | packages/adapters/vue2/test/hover-card.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/hover-card.test.ts (1 test) 175ms
+ ✓ apps/www/src/components/override/ThemeProvider.test.ts (1 test) 11ms
+ ✓ packages/adapters/base/test/web-preferences.test.ts (4 tests) 4ms
+ ✓ packages/runtime/test/contract/hit-participation.catalog-lifecycle.contract.test.ts (1 test) 14ms
+ ✓ packages/prototypes/base/test/overlay-dismissal.test.ts (2 tests) 103ms
+ ✓ packages/spec/fixtures/test/feedback-style-runtime-patch.test.ts (1 test) 1731ms
+   ✓ spec fixtures: feedback style runtime patch > stays aligned with T-FEEDBACK-STYLE-0002 1731ms
+ ✓ packages/runtime/test/contract/expose-state-web.catalog.contract.test.ts (1 test) 12ms
+ ✓ packages/spec/fixtures/test/feedback-style-authoring.test.ts (1 test) 1601ms
+   ✓ spec fixtures: feedback style authoring > stays aligned with T-FEEDBACK-STYLE-0001 1601ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-base-textarea.test.ts (1 test) 4ms
+ ✓ packages/runtime/test/contract/state-lifecycle.v1.contract.test.ts (1 test) 18ms
+ ✓ packages/spec/graph/test/adapter-profile.test.ts (1 test) 4ms
+ ✓ packages/adapters/web-component/test/surface-projection.test.ts (1 test) 8ms
+ ✓ packages/modules/props/test/contract/define-json-value-boundary.v0.contract.test.ts (36 tests) 6ms
+ ✓ packages/adapters/vue/test/lifecycle-keep-alive.test.ts (1 test) 31ms
+stdout | packages/adapters/vue2/test/scroll-area.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue/test/expose-event.test.ts (2 tests) 61ms
+ ✓ apps/www/src/components/override/AdapterSelect.test.ts (2 tests) 14ms
+ ✓ packages/adapters/vue2/test/scroll-area.test.ts (1 test) 89ms
+ ✓ packages/adapters/react/test/hover-card.test.ts (1 test) 64ms
+ ✓ packages/core/test/svg-primitives.test.ts (4 tests) 4ms
+ ✓ packages/modules/props/test/contract/resolved-json-value-boundary.v0.contract.test.ts (20 tests) 8ms
+ ✓ packages/spec/fixtures/test/event-type-payload.test.ts (1 test) 1861ms
+   ✓ spec fixtures: event type and payload > stays aligned with T-EVENT-0002 and covered contracts 1860ms
+ ✓ packages/adapters/react/test/expose-event.test.ts (2 tests) 25ms
+ ✓ packages/adapters/web-component/test/expose.test.ts (2 tests) 41ms
+ ✓ packages/spec/fixtures/test/event-registration.test.ts (1 test) 2000ms
+   ✓ spec fixtures: event registration > stays aligned with T-EVENT-0001 and covered contracts 1999ms
+ ✓ packages/adapters/react/test/overlay-portal-ownership.test.ts (1 test) 4ms
+ ✓ packages/adapters/web-component/test/contract/lifecycle.disposal-boundary.v0.contract.test.ts (1 test) 50ms
+ ✓ packages/adapters/web-component/test/contract/rule.state-style.v0.contract.test.ts (1 test) 48ms
+ ✓ packages/compositions/chatui/test/message-ownership-boundary.test.ts (4 tests) 13ms
+ ✓ packages/adapters/vue/test/event.test.ts (2 tests) 81ms
+ ✓ packages/adapters/vue/test/overlay-portal-ownership.test.ts (1 test) 4ms
+ ✓ packages/cli/test/lowered-variant-order.test.ts (4 tests) 25ms
+ ✓ packages/adapters/vue/test/contract/props-host-source.v0.contract.test.ts (1 test) 57ms
+ ✓ packages/spec/fixtures/test/prototype-inheritance-schema.test.ts (3 tests) 8ms
+ ✓ packages/runtime/test/contract/feedback.style.setup-only.v0.contract.test.ts (2 tests) 26ms
+ ✓ packages/core/test/contract/anatomy-family.v0.contract.test.ts (3 tests) 4ms
+ ✓ packages/runtime/test/contract/expose-lifecycle.v1.contract.test.ts (1 test) 15ms
+ ✓ packages/core/test/feedback/recorder.test.ts (4 tests) 3ms
+ ✓ packages/runtime/test/contract/rule.meta.v0.contract.test.ts (1 test) 14ms
+ ✓ packages/adapters/vue/test/previewer-textarea.demo.test.ts (1 test) 137ms
+ ✓ packages/adapters/react/test/event.test.ts (2 tests) 36ms
+ ✓ packages/adapters/web-component/test/reconnect-move.test.ts (1 test) 32ms
+ ✓ packages/adapters/web-component/test/contract/props-host-source.v0.contract.test.ts (1 test) 55ms
+stdout | packages/adapters/vue2/test/expose-state-web.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue/test/event-routing.test.ts (2 tests) 34ms
+ ✓ packages/adapters/vue2/test/expose-state-web.integration.test.ts (2 tests) 63ms
+ ✓ packages/adapters/web-component/test/state-no-auto-render.v0.test.ts (1 test) 20ms
+ ✓ packages/adapters/react/test/collection.integration.test.ts (1 test) 118ms
+ ✓ packages/adapters/web-component/test/contract/context.state-sync.v0.contract.test.ts (1 test) 48ms
+stdout | packages/adapters/vue2/test/focus-catalog.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/focus-catalog.integration.test.ts (18 tests) 184ms
+ ✓ packages/adapters/web-component/test/contract/context.basic.v0.contract.test.ts (1 test) 33ms
+ ✓ packages/runtime/test/contract/lifecycle.update-order.strict.v0.contract.test.ts (1 test) 12ms
+ ✓ packages/runtime/test/contract/event-no-registrations.v0.contract.test.ts (1 test) 13ms
+stdout | packages/adapters/vue2/test/boundary.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+stdout | packages/adapters/vue2/test/props-update.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/props-update.test.ts (1 test) 27ms
+ ✓ packages/adapters/vue2/test/boundary.integration.test.ts (3 tests) 73ms
+stdout | packages/adapters/vue2/test/feedback.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/feedback.integration.test.ts (1 test) 46ms
+ ✓ packages/prototypes/shadcn/test/component-presets.test.ts (1 test) 2ms
+stdout | packages/adapters/vue2/test/trigger.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+stdout | packages/adapters/vue2/test/positioning.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+stdout | packages/adapters/vue2/test/collection.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/trigger.integration.test.ts (1 test) 53ms
+ ✓ packages/adapters/vue2/test/positioning.integration.test.ts (1 test) 50ms
+ ✓ packages/spec/graph/test/shadcn-dropdown-evidence.test.ts (1 test) 1830ms
+   ✓ shadcn Dropdown Item evidence text > preserves the complete parsed destructive evidence boundary 1829ms
+ ✓ packages/adapters/vue2/test/collection.integration.test.ts (1 test) 119ms
+stdout | packages/adapters/vue2/test/rule-state-style.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/web-component/test/contract/event.router.gate.v0.contract.test.ts (2 tests) 5ms
+ ✓ packages/adapters/react/test/rule-props-style.test.ts (1 test) 31ms
+stdout | packages/adapters/vue2/test/overlay-catalog.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/rule-state-style.test.ts (1 test) 47ms
+ ✓ packages/adapters/vue2/test/overlay-catalog.integration.test.ts (4 tests) 118ms
+stdout | packages/adapters/vue2/test/scroll-catalog.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/runtime/test/contract/module-declarations.v0.contract.test.ts (1 test) 3ms
+stdout | packages/adapters/vue2/test/anatomy.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/scroll-catalog.integration.test.ts (1 test) 50ms
+ ✓ packages/adapters/vue/test/rule-state-style.test.ts (1 test) 80ms
+ ✓ packages/adapters/vue2/test/anatomy.integration.test.ts (1 test) 118ms
+ ✓ packages/spec/graph/test/radio-group-release-history.test.ts (1 test) 1617ms
+   ✓ Radio Group release-history boundary > keeps the active rc.7 snapshot identity immutable and introduces Radio Group in 0.3 1616ms
+ ✓ packages/adapters/vue/test/collection.integration.test.ts (1 test) 152ms
+ ✓ packages/adapters/base/test/public-types.test.ts (2 tests) 1ms
+stdout | packages/adapters/vue2/test/context.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/react/test/color-scheme.integration.test.ts (4 tests) 164ms
+ ✓ packages/adapters/react/test/expose-state-web.integration.test.ts (2 tests) 115ms
+ ✓ packages/adapters/vue2/test/context.integration.test.ts (1 test) 119ms
+stdout | packages/adapters/vue2/test/contract/props-host-source.v0.contract.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/contract/props-host-source.v0.contract.test.ts (1 test) 51ms
+ ✓ packages/adapters/react/test/lifecycle-strict-replay.test.ts (1 test) 30ms
+ ✓ packages/adapters/web-component/test/contract/feedback.style.apply-to-host.v0.contract.test.ts (1 test) 25ms
+ ✓ packages/adapters/react/test/focus-catalog.integration.test.ts (18 tests) 248ms
+ ✓ packages/adapters/react/test/boundary.integration.test.ts (3 tests) 70ms
+ ✓ packages/adapters/base/test/layout-ready.test.ts (2 tests) 10ms
+ ✓ packages/adapters/react/test/feedback.integration.test.ts (1 test) 98ms
+ ✓ packages/adapters/base/test/host-surface-projection.test.ts (2 tests) 5ms
+ ✓ packages/adapters/react/test/trigger.integration.test.ts (1 test) 121ms
+ ✓ packages/adapters/react/test/positioning.integration.test.ts (1 test) 115ms
+stdout | packages/adapters/vue2/test/color-scheme.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/react/test/anatomy.integration.test.ts (1 test) 85ms
+stdout | packages/adapters/vue2/test/hit.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/color-scheme.integration.test.ts (4 tests) 104ms
+ ✓ packages/adapters/vue2/test/hit.integration.test.ts (2 tests) 63ms
+ ✓ packages/adapters/react/test/scroll-catalog.integration.test.ts (1 test) 50ms
+ ✓ packages/adapters/react/test/overlay-catalog.integration.test.ts (4 tests) 119ms
+ ✓ packages/adapters/react/test/context.integration.test.ts (1 test) 108ms
+ ✓ packages/adapters/web-component/test/collection.integration.test.ts (1 test) 183ms
+ ✓ packages/adapters/web-component/test/contract/event.disabled.after-unmount.v0.contract.test.ts (1 test) 29ms
+ ✓ packages/adapters/web-component/test/contract/event.router.dispose.v0.contract.test.ts (2 tests) 4ms
+ ✓ packages/core/test/contract/template.renderer-primitives.v0.contract.test.ts (3 tests) 2ms
+stdout | packages/adapters/vue2/test/feedback-style.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/spec/graph/test/prototype-inheritance.test.ts (1 test) 12ms
+ ✓ packages/adapters/vue2/test/feedback-style.test.ts (1 test) 30ms
+ ✓ apps/www/src/components/PrototypePreviewer/runtimes/registry.test.ts (3 tests) 4ms
+ ✓ packages/adapters/react/test/feedback-style.test.ts (1 test) 33ms
+ ✓ packages/adapters/react/test/rule-expose-state-web.integration.test.ts (1 test) 101ms
+ ✓ packages/adapters/web-component/test/contract/resolved-snapshot-shape.v0.contract.test.ts (4 tests) 43ms
+ ✓ packages/adapters/react/test/rule.integration.test.ts (1 test) 81ms
+ ✓ packages/adapters/vue/test/feedback-style.test.ts (1 test) 41ms
+ ✓ packages/adapters/vue/test/color-scheme.integration.test.ts (4 tests) 108ms
+ ✓ packages/adapters/web-component/test/contract/props-json-value-boundary.v0.contract.test.ts (38 tests) 167ms
+ ✓ packages/runtime/test/contract/lifecycle.domain.cp0.v0.contract.test.ts (1 test) 12ms
+ ✓ packages/adapters/vue/test/contract/props-json-value-boundary.v0.contract.test.ts (38 tests) 111ms
+ ✓ packages/adapters/vue/test/contract/resolved-snapshot-shape.v0.contract.test.ts (4 tests) 61ms
+ ✓ packages/adapters/vue/test/expose-state-web.integration.test.ts (2 tests) 70ms
+ ✓ packages/adapters/react/test/hit.integration.test.ts (2 tests) 96ms
+ ✓ packages/adapters/vue/test/feedback.integration.test.ts (1 test) 50ms
+ ✓ packages/adapters/vue/test/boundary.integration.test.ts (3 tests) 65ms
+ ✓ packages/adapters/vue/test/trigger.integration.test.ts (1 test) 49ms
+ ✓ packages/adapters/vue/test/focus-catalog.integration.test.ts (18 tests) 147ms
+ ✓ packages/modules/scroll/test/projection.test.ts (2 tests) 3ms
+stdout | packages/adapters/vue2/test/rule-expose-state-web.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/web-component/test/contract/template.slot.protocol.v0.contract.test.ts (2 tests) 5ms
+ ✓ packages/adapters/vue/test/positioning.integration.test.ts (1 test) 48ms
+ ✓ packages/adapters/vue2/test/rule-expose-state-web.integration.test.ts (1 test) 79ms
+ ✓ packages/adapters/base/test/adapter-host-delay.test.ts (1 test) 19ms
+ ✓ packages/adapters/vue/test/overlay-catalog.integration.test.ts (4 tests) 84ms
+ ✓ packages/adapters/web-component/test/color-scheme.integration.test.ts (4 tests) 114ms
+ ✓ packages/adapters/vue/test/scroll-catalog.integration.test.ts (1 test) 56ms
+ ✓ packages/adapters/vue/test/anatomy.integration.test.ts (1 test) 163ms
+ ✓ packages/core/test/contract/prototype.definition.v0.contract.test.ts (1 test) 3ms
+ ✓ packages/adapters/base/test/event-gate.test.ts (2 tests) 4ms
+stdout | packages/adapters/vue2/test/rule.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/react/test/template-svg.test.ts (1 test) 3ms
+stdout | packages/adapters/vue2/test/slot.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/rule.integration.test.ts (1 test) 59ms
+ ✓ packages/adapters/base/test/adapter-host.test.ts (1 test) 13ms
+ ✓ packages/adapters/vue2/test/slot.test.ts (1 test) 36ms
+ ✓ packages/adapters/vue/test/context.integration.test.ts (1 test) 89ms
+ ✓ packages/adapters/vue/test/scroll.test.ts (1 test) 52ms
+ ✓ packages/adapters/vue/test/contract/state-runtime.v0.contract.test.ts (1 test) 37ms
+ ✓ packages/adapters/web-component/test/contract/event.router.remove.precise.v0.contract.test.ts (1 test) 5ms
+ ✓ packages/adapters/vue/test/template-svg.test.ts (1 test) 4ms
+ ✓ packages/adapters/web-component/test/contract/event.router.dual-path.v0.contract.test.ts (1 test) 4ms
+ ✓ packages/adapters/react/test/scroll.test.ts (1 test) 22ms
+ ✓ packages/adapters/vue/test/rule-expose-state-web.integration.test.ts (1 test) 52ms
+ ✓ packages/adapters/web-component/test/focus-catalog.integration.test.ts (18 tests) 85ms
+ ✓ packages/adapters/web-component/test/rule-expose-state-web.integration.test.ts (1 test) 51ms
+ ✓ packages/adapters/react/test/contract/state-runtime.v0.contract.test.ts (1 test) 41ms
+ ✓ packages/adapters/web-component/test/boundary.integration.test.ts (3 tests) 91ms
+ ✓ packages/adapters/vue/test/rule.integration.test.ts (1 test) 82ms
+ ✓ packages/adapters/web-component/test/feedback.integration.test.ts (1 test) 54ms
+ ✓ packages/adapters/web-component/test/trigger.integration.test.ts (1 test) 48ms
+ ✓ packages/adapters/web-component/test/positioning.integration.test.ts (1 test) 47ms
+ ✓ packages/adapters/web-component/test/anatomy.integration.test.ts (1 test) 62ms
+ ✓ packages/adapters/vue/test/hit.integration.test.ts (2 tests) 58ms
+ ✓ packages/adapters/web-component/test/rule.integration.test.ts (1 test) 37ms
+ ✓ packages/adapters/web-component/test/overlay-catalog.integration.test.ts (4 tests) 76ms
+ ✓ packages/adapters/web-component/test/scroll-catalog.integration.test.ts (1 test) 36ms
+ ✓ packages/adapters/vue/test/slot.test.ts (1 test) 36ms
+ ✓ packages/adapters/vue/test/lifecycle.test.ts (1 test) 59ms
+ ✓ packages/cli/test/ring-offset-default.test.ts (2 tests) 3ms
+ ✓ packages/adapters/react/test/event-routing.test.ts (1 test) 31ms
+ ✓ packages/adapters/web-component/test/contract/event.router.host.v0.contract.test.ts (1 test) 4ms
+ ✓ packages/adapters/web-component/test/context.integration.test.ts (1 test) 68ms
+ ✓ packages/adapters/base/test/contract/event-default-action.v0.contract.test.ts (2 tests) 4ms
+ ✓ packages/adapters/react/test/lifecycle.test.ts (1 test) 20ms
+ ✓ packages/adapters/web-component/test/contract/event.router.extension.v0.contract.test.ts (1 test) 4ms
+ ✓ packages/adapters/web-component/test/contract/event.router.no-dedupe.v0.contract.test.ts (1 test) 4ms
+ ✓ packages/adapters/web-component/test/contract/commit.full-rebuild.v0.contract.test.ts (1 test) 3ms
+ ✓ packages/adapters/web-component/test/hit.integration.test.ts (2 tests) 47ms
+ ✓ packages/adapters/web-component/test/contract/template.no-prototype-composition.v0.contract.test.ts (1 test) 2ms
+ ✓ packages/core/test/reserved-slot.test.ts (2 tests) 3ms
+ ✓ packages/core/test/contract/context-key.v0.contract.test.ts (1 test) 1ms
+ ✓ packages/adapters/web-component/test/contract/template.slot.illegal-shape.v0.contract.test.ts (2 tests) 3ms
+ ✓ packages/adapters/react/test/contract/props-host-source.v0.contract.test.ts (1 test) 49ms
+ ↓ packages/runtime/test/contract/rule.matrix.intent.v0.contract.test.ts (11 tests | 11 skipped)
+ ✓ packages/adapters/react/test/slot.test.ts (1 test) 41ms
+ ↓ packages/runtime/test/contract/rule.matrix.combine.v0.contract.test.ts (12 tests | 12 skipped)
+ ↓ packages/runtime/test/contract/rule.matrix.when.v0.contract.test.ts (11 tests | 11 skipped)
+ ✓ packages/adapters/web-component/test/contract/slot-shadow-dom.v0.contract.test.ts (1 test) 22ms
+ ✓ packages/adapters/base/test/teardown.test.ts (1 test) 1ms
+ ✓ packages/core/test/contract/template.slot.contract.test.ts (1 test) 1ms
+ ✓ packages/core/test/contract/template.normalize.contract.test.ts (13 tests) 4ms
+ ✓ packages/adapters/react/test/contract/props-json-value-boundary.v0.contract.test.ts (38 tests) 84ms
+ ✓ packages/adapters/react/test/contract/resolved-snapshot-shape.v0.contract.test.ts (4 tests) 32ms
+ ✓ packages/adapters/web-component/test/contract/template.slot.multi.v0.contract.test.ts (1 test) 2ms
+ ✓ packages/adapters/web-component/test/contract/slot-light-dom.v0.contract.test.ts (5 tests) 31ms
+
+ Test Files  478 passed | 3 skipped (481)
+      Tests  2362 passed | 34 todo (2396)
+   Start at  08:24:35
+   Duration  38.65s (transform 12.47s, setup 0ms, collect 112.66s, tests 78.48s, environment 71.50s, prepare 19.91s)
+
+[test:runtime] sharing http://127.0.0.1:58084 across the browser suites
+
+ RUN  v2.1.9 <WORKTREE>
+
+ ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts (10 tests) 45554ms
+   ✓ Brutalist control documentation browser regressions > gives every Switch a non-empty accessible name in all runtimes 4734ms
+   ✓ Brutalist control documentation browser regressions > keeps the Tabs Root bounds stable across selection in all runtimes 2932ms
+   ✓ Brutalist control documentation browser regressions > keeps Dropdown placement fixed while Trigger hover and press transforms change 5027ms
+   ✓ Brutalist control documentation browser regressions > composes the transparent Tooltip Group across Web Components, React, and Vue 5401ms
+   ✓ Brutalist control documentation browser regressions > contains Scroll Area and its scrollbar at 320px without document overflow 2658ms
+   ✓ Brutalist control documentation browser regressions > projects one native WC Textarea focus target and its Brutalist ring by modality 1437ms
+   ✓ Brutalist control documentation browser regressions > keeps Textarea demo controls and logs readable in both themes and all runtimes 3556ms
+   ✓ Brutalist control documentation browser regressions > contains the Textarea demo at 320px without document overflow 2892ms
+   ✓ Brutalist control documentation browser regressions > rings the focused Scroll Area inside its own box, in both themes and all runtimes 3016ms
+   ✓ Brutalist control documentation browser regressions > repaints theme-following Button fills on a host theme change in all runtimes 4738ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts (6 tests) 46940ms
+   ✓ remaining Brutalist component browser coverage > projects Badge tones with passive square hard-shadow surfaces 4048ms
+   ✓ remaining Brutalist component browser coverage > projects Card Root as a passive square paper panel with four regions 3442ms
+   ✓ remaining Brutalist component browser coverage > keeps Separator orientation and two-pixel hard-line geometry across themes 6855ms
+   ✓ remaining Brutalist component browser coverage > keeps Skeleton contentless, hidden, and dimensioned by its consumer 3479ms
+   ✓ remaining Brutalist component browser coverage > projects Toggle active, disabled, and click state with hard frames 3387ms
+   ✓ remaining Brutalist component browser coverage > opens Hover Card from pointer and focus while preserving square trigger and panel surfaces 9032ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts (9 tests) 46769ms
+   ✓ Prototype style closure without Website CSS > keeps Website theme defaults below consumer layers when Starlight declares first 715ms
+   ✓ Prototype style closure without Website CSS > activates distinct Light and Dark token endpoints 1835ms
+   ✓ Prototype style closure without Website CSS > keeps Textarea and Button presentation closed in light mode 3170ms
+   ✓ Prototype style closure without Website CSS > resolves Hover Card paint from Prototype tokens in light mode 1147ms
+   ✓ Prototype style closure without Website CSS > round-trips Hover Card closed and open endpoints in light mode 3443ms
+   ✓ Prototype style closure without Website CSS > keeps Textarea and Button presentation closed in dark mode 3121ms
+   ✓ Prototype style closure without Website CSS > resolves Hover Card paint from Prototype tokens in dark mode 1172ms
+   ✓ Prototype style closure without Website CSS > round-trips Hover Card closed and open endpoints in dark mode 3455ms
+ ✓ apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts (5 tests) 12528ms
+   ✓ Homepage Prototype projection scope > commits one coherent generation across four Runtimes and both projection lanes 3713ms
+   ✓ Homepage Prototype projection scope > projects one WC component slot at a time with exact lane-owned Select fingerprints 1979ms
+   ✓ Homepage Prototype projection scope > closes portaled Select presentation over the lane theme without mutating Website tokens 2736ms
+   ✓ Homepage Prototype projection scope > restores semantic control focus and disconnects the replaced generation portal 1711ms
+   ✓ Homepage Prototype projection scope > atomically seals an open child portal during programmatic lane and Runtime switches 1881ms
+stdout | apps/www/test/color-scheme.browser.test.ts
+Color scheme browser evidence: <TEMP_ARTIFACT>
+
+ ✓ apps/www/test/color-scheme.browser.test.ts (8 tests) 18335ms
+   ✓ default-document colorScheme browser contract > wc paints without interaction and preserves the accepted lifetime 4444ms
+   ✓ default-document colorScheme browser contract > react paints without interaction and preserves the accepted lifetime 3825ms
+   ✓ default-document colorScheme browser contract > vue paints without interaction and preserves the accepted lifetime 3700ms
+   ✓ default-document colorScheme browser contract > vue2 paints without interaction and preserves the accepted lifetime 3667ms
+   ✓ default-document colorScheme browser contract > wc reveals the initial dark recipe 516ms
+   ✓ default-document colorScheme browser contract > react reveals the initial dark recipe 519ms
+   ✓ default-document colorScheme browser contract > vue reveals the initial dark recipe 522ms
+   ✓ default-document colorScheme browser contract > vue2 reveals the initial dark recipe 503ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts (5 tests) 18795ms
+   ✓ Base control documentation browser regressions > keeps Textarea demo output surfaces readable in both themes and all runtimes 2964ms
+   ✓ Base control documentation browser regressions > gives a tab stop only to the Viewport that can scroll, in all runtimes 2583ms
+   ✓ Base control documentation browser regressions > follows content between scrollable and not, in all runtimes 2840ms
+   ✓ Base control documentation browser regressions > separates keyboard entry from pointer entry on the Viewport, in all runtimes 3827ms
+   ✓ Base control documentation browser regressions > keeps keyboard and wheel scrolling on the Viewport, in all runtimes 5955ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts (5 tests) 47324ms
+   ✓ shadcn control documentation browser regressions > transitions only colour and box-shadow at the upstream duration and easing 3157ms
+   ✓ shadcn control documentation browser regressions > animates the focus ring in and out wherever focus reaches the projection 7488ms
+   ✓ shadcn control documentation browser regressions > repaints the Textarea colorScheme surface across light-dark-light in all runtimes 3393ms
+   ✓ shadcn control documentation browser regressions > paints the dark tint on the unfilled box only, in all runtimes 3298ms
+   ✓ shadcn control documentation browser regressions > gives each Checkbox one focusable control and keeps the glyph unnamed 3539ms
+ ✓ apps/workspace/test/lifecycle.browser.test.ts (6 tests) 10827ms
+   ✓ Workspace lifecycle review projection > shows the actual remain-draft slice and version boundaries at 1440px 2387ms
+   ✓ Workspace lifecycle review projection > shows the actual remain-draft slice and version boundaries at 390px 2178ms
+   ✓ Workspace lifecycle review projection > does not display a valid disposition when report input is rejected 477ms
+   ✓ Workspace lifecycle review projection > withholds an invalid generated catalog independently of per-version plan validity 896ms
+   ✓ Workspace lifecycle review projection > keeps conflicting membership dispositions unreviewed in the workspace 978ms
+   ✓ Workspace lifecycle review projection > keeps conflicting slice ID dispositions unreviewed in the workspace 1005ms
+ ✓ apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts (3 tests) 6696ms
+   ✓ Homepage Runtime demobox browser smoke > remounts locally and follows the global adapter preference across all runtimes 2443ms
+   ✓ Homepage Runtime demobox browser smoke > reveals React only after complete dark-mode style projection 1551ms
+   ✓ Homepage Runtime demobox browser smoke > uses compact Shadcn geometry, press feedback, and a separate WASM research lane 2197ms
+ ✓ apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts (7 tests) 6483ms
+   ✓ code-surface dogfood matrix (#630, #420, #568) > shares tokens, palette, controls and scroll at 1440px/light 924ms
+   ✓ code-surface dogfood matrix (#630, #420, #568) > shares tokens, palette, controls and scroll at 1440px/dark 765ms
+   ✓ code-surface dogfood matrix (#630, #420, #568) > shares tokens, palette, controls and scroll at 390px/light 765ms
+   ✓ code-surface dogfood matrix (#630, #420, #568) > shares tokens, palette, controls and scroll at 390px/dark 775ms
+   ✓ code-surface dogfood matrix (#630, #420, #568) > shares tokens, palette, controls and scroll at 320px/light 733ms
+   ✓ code-surface dogfood matrix (#630, #420, #568) > shares tokens, palette, controls and scroll at 320px/dark 757ms
+   ✓ code-surface dogfood matrix (#630, #420, #568) > retains CodeExample and install tokens across navigation and Astro reinitialization 1260ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts (1 test) 6318ms
+   ✓ Brutalist Checkbox browser acceptance > renders state, contrast, focus, and one accessible control in every public runtime 5801ms
+ ✓ apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts (6 tests) 11291ms
+   ✓ documentation content-flow browser regression > keeps prose and PrototypePreviewer rhythm scoped at 1440px 1817ms
+   ✓ documentation content-flow browser regression > keeps prose and code-block rhythm scoped at 1440px 1787ms
+   ✓ documentation content-flow browser regression > keeps prose and PrototypePreviewer rhythm scoped at 390px 1733ms
+   ✓ documentation content-flow browser regression > keeps prose and code-block rhythm scoped at 390px 1754ms
+   ✓ documentation content-flow browser regression > keeps prose and PrototypePreviewer rhythm scoped at 320px 1810ms
+   ✓ documentation content-flow browser regression > keeps prose and code-block rhythm scoped at 320px 1752ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts (1 test) 5338ms
+   ✓ shadcn Scroll Area browser acceptance > renders exact oriented chrome around one host-owned two-axis surface in every runtime 4822ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts (4 tests) 12294ms
+   ✓ Website Demo Matrix browser smoke > mounts every supported demo and names the unimplemented Image adapter 3040ms
+   ✓ Website Demo Matrix browser smoke > keeps the matrix readable at 320px 2007ms
+   ✓ Website Demo Matrix browser smoke > keeps the matrix readable at 390px 2104ms
+   ✓ Website Demo Matrix browser smoke > moves focus into the Base Dialog content in every runtime 4574ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts (3 tests) 5988ms
+   ✓ Brutalist Button browser regressions > preserves visual and interaction projections in wc 1418ms
+   ✓ Brutalist Button browser regressions > preserves visual and interaction projections in react 1887ms
+   ✓ Brutalist Button browser regressions > preserves visual and interaction projections in vue 2142ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts (2 tests) 9380ms
+   ✓ composed style isolation browser regressions > paints the focus ring on the focused Switch and not on its thumb 3905ms
+   ✓ composed style isolation browser regressions > scales the pressed Switch once, not again on its thumb 4852ms
+stdout | apps/www/test/message-composition.browser.test.ts
+Private Message browser evidence: <TEMP_ARTIFACT>
+
+ ✓ apps/www/test/message-composition.browser.test.ts (6 tests) 3886ms
+   ✓ private Message composition browser acceptance > 'wc' at 1280 preserves App ownership and renders the accepted recipe 679ms
+   ✓ private Message composition browser acceptance > 'wc' at 390 preserves App ownership and renders the accepted recipe 466ms
+   ✓ private Message composition browser acceptance > 'react' at 1280 preserves App ownership and renders the accepted recipe 583ms
+   ✓ private Message composition browser acceptance > 'react' at 390 preserves App ownership and renders the accepted recipe 615ms
+   ✓ private Message composition browser acceptance > 'vue' at 1280 preserves App ownership and renders the accepted recipe 463ms
+   ✓ private Message composition browser acceptance > 'vue' at 390 preserves App ownership and renders the accepted recipe 453ms
+stdout | apps/www/test/button-view-lifetime.browser.test.ts
+Button view lifetime evidence: <TEMP_ARTIFACT>
+
+ ✓ apps/www/test/button-view-lifetime.browser.test.ts (8 tests) 10609ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation 1314ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/react clears revoked input without phantom activation 1120ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/vue clears revoked input without phantom activation 1079ms
+   ✓ Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation 1077ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation 1296ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/react clears revoked input without phantom activation 1274ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/vue clears revoked input without phantom activation 1275ms
+   ✓ Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation 1621ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts (1 test) 6610ms
+   ✓ Brutalist Dialog overlay geometry > covers the viewport and centres the hard-shadowed panel in all runtimes 6093ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-base-image.browser.test.ts (13 tests) 45642ms
+   ✓ Base Image public consumer browser evidence > wc projects fit, a11y, and resource transitions in light at 1280px 1924ms
+   ✓ Base Image public consumer browser evidence > wc projects fit, a11y, and resource transitions in light at 390px 1841ms
+   ✓ Base Image public consumer browser evidence > wc projects fit, a11y, and resource transitions in dark at 1280px 1843ms
+   ✓ Base Image public consumer browser evidence > wc projects fit, a11y, and resource transitions in dark at 390px 1851ms
+   ✓ Base Image public consumer browser evidence > react projects fit, a11y, and resource transitions in light at 1280px 2320ms
+   ✓ Base Image public consumer browser evidence > react projects fit, a11y, and resource transitions in light at 390px 2082ms
+   ✓ Base Image public consumer browser evidence > react projects fit, a11y, and resource transitions in dark at 1280px 2251ms
+   ✓ Base Image public consumer browser evidence > react projects fit, a11y, and resource transitions in dark at 390px 2318ms
+   ✓ Base Image public consumer browser evidence > vue projects fit, a11y, and resource transitions in light at 1280px 2383ms
+   ✓ Base Image public consumer browser evidence > vue projects fit, a11y, and resource transitions in light at 390px 2372ms
+   ✓ Base Image public consumer browser evidence > vue projects fit, a11y, and resource transitions in dark at 1280px 2598ms
+   ✓ Base Image public consumer browser evidence > vue projects fit, a11y, and resource transitions in dark at 390px 2448ms
+   ✓ Base Image public consumer browser evidence > keeps the Chinese page on the same three-adapter public demo 2780ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts (1 test) 4816ms
+   ✓ shadcn Tooltip browser acceptance > renders state feedback and a supplementary body portal in every public runtime 4306ms
+ ✓ apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts (2 tests) 808ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts (2 tests) 10809ms
+   ✓ Select first paint with the popup never opened > shows the authored label in every runtime 5309ms
+   ✓ Select first paint with the popup never opened > keeps the closed content mounted and marked detached in every runtime 4924ms
+ ✓ apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts (1 test) 4345ms
+   ✓ ring offset browser regressions > uses the dark control surface when the prototype omits an offset colour 3826ms
+
+ Test Files  24 passed (24)
+      Tests  115 passed (115)
+   Start at  08:25:23
+   Duration  404.50s (transform 224ms, setup 0ms, collect 3.73s, tests 398.39s, environment 2ms, prepare 576ms)

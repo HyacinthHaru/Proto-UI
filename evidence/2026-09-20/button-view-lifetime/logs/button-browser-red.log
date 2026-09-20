@@ -1,0 +1,99 @@
+
+ RUN  v2.1.9 <WORKTREE>
+
+stdout | apps/www/test/button-view-lifetime.browser.test.ts
+Button view lifetime evidence: <TEMP_ARTIFACT>
+
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts (8 tests | 8 failed) 185429ms
+   × Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation 1084ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > brutalist/react clears revoked input without phantom activation 30328ms
+     → locator.evaluate: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-button="probe"]')
+
+   × Button transient facts follow the retained view lifetime > brutalist/vue clears revoked input without phantom activation 30326ms
+     → locator.evaluate: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-button="probe"]')
+
+   × Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation 30317ms
+     → locator.evaluate: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-button="probe"]')
+
+   × Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation 709ms
+     → expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+   × Button transient facts follow the retained view lifetime > shadcn/react clears revoked input without phantom activation 30319ms
+     → locator.evaluate: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-button="probe"]')
+
+   × Button transient facts follow the retained view lifetime > shadcn/vue clears revoked input without phantom activation 30371ms
+     → locator.evaluate: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-button="probe"]')
+
+   × Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation 30512ms
+     → locator.evaluate: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-button="probe"]')
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/wc clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/wc clears revoked input without phantom activation
+AssertionError: expected { pressed: true, hovered: true, …(7) } to match object { Object (pressed, hovered, ...) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  Object {
+    "clicks": 0,
+-   "hovered": false,
+-   "pressed": false,
++   "hovered": true,
++   "pressed": true,
+    "sameHandles": true,
+    "setups": 1,
+  }
+
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts:130:36
+    128|           observations.remounted = { state: await read(page), paint: a…
+    129|           await capture('remounted');
+    130|           expect(await read(page)).toMatchObject({
+       |                                    ^
+    131|             pressed: false,
+    132|             hovered: false,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/react clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/vue clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > brutalist/vue2 clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/react clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/vue clears revoked input without phantom activation
+ FAIL  apps/www/test/button-view-lifetime.browser.test.ts > Button transient facts follow the retained view lifetime > shadcn/vue2 clears revoked input without phantom activation
+TimeoutError: locator.evaluate: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-button="probe"]')
+
+ ❯ paint apps/www/test/button-view-lifetime.browser.test.ts:58:17
+     56| const read = (page: Page) => page.evaluate(() => (window as any).butto…
+     57| async function paint(button: Locator) {
+     58|   return button.evaluate((element) => {
+       |                 ^
+     59|     const style = getComputedStyle(element);
+     60|     return {
+ ❯ apps/www/test/button-view-lifetime.browser.test.ts:115:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  08:05:22
+   Duration  185.80s (transform 27ms, setup 0ms, collect 237ms, tests 185.43s, environment 0ms, prepare 27ms)

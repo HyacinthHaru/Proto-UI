@@ -1,0 +1,97 @@
+{
+  "family": "brutalist",
+  "runtime": "vue2",
+  "browser": "153.0.8010.48",
+  "initial": {
+    "state": {
+      "pressed": false,
+      "hovered": false,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": true,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 1
+      }
+    },
+    "paint": {
+      "background": "rgb(254, 240, 138)",
+      "transform": "none",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 3px 3px 0px 0px"
+    }
+  },
+  "pressed": {
+    "state": {
+      "pressed": true,
+      "hovered": true,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": true,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 1
+      }
+    },
+    "paint": {
+      "background": "rgb(254, 240, 138)",
+      "transform": "matrix(1, 0, 0, 1, 1, 1)",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    }
+  },
+  "detached": {
+    "pressed": true,
+    "hovered": true,
+    "disabled": false,
+    "focusVisible": false,
+    "sameHandles": true,
+    "sameNode": false,
+    "setups": 1,
+    "clicks": 0,
+    "phase": {
+      "phase": "detached",
+      "epoch": 1
+    }
+  },
+  "remounted": {
+    "state": {
+      "pressed": true,
+      "hovered": true,
+      "disabled": false,
+      "focusVisible": false,
+      "sameHandles": true,
+      "sameNode": false,
+      "setups": 1,
+      "clicks": 0,
+      "phase": {
+        "phase": "mounted",
+        "epoch": 2
+      }
+    },
+    "paint": {
+      "background": "rgb(254, 240, 138)",
+      "transform": "matrix(1, 0, 0, 1, 1, 1)",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    }
+  },
+  "inputs": [
+    {
+      "type": "pointerdown",
+      "trusted": true,
+      "buttons": 1,
+      "target": "probe"
+    },
+    {
+      "type": "pointerup",
+      "trusted": true,
+      "buttons": 0,
+      "target": null
+    }
+  ],
+  "errors": []
+}

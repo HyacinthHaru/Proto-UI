@@ -1,0 +1,5 @@
+
+> proto-ui@ check:package-manifests <WORKTREE>
+> node scripts/build/sync-public-manifests.mjs --check
+
+checked 43 public manifests
