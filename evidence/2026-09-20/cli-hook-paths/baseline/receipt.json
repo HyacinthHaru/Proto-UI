@@ -1,0 +1,21 @@
+{
+  "variant": "baseline",
+  "sourceRef": "424cc6405049fe74d5bf5f53d428017827c01632",
+  "exitCode": 1,
+  "total": 75,
+  "passed": 74,
+  "failed": 1,
+  "failures": [
+    {
+      "ancestorTitles": ["lowered hook coverage"],
+      "fullName": "lowered hook coverage resolves every hook state a shipped rule condition reads",
+      "status": "failed",
+      "title": "resolves every hook state a shipped rule condition reads",
+      "duration": 1479.5749,
+      "failureMessages": [
+        "AssertionError: expected [ Array(134) ] to deep equally contain { …(3) }\n    at D:\\a\\Proto-UI\\Proto-UI\\packages\\cli\\test\\lowered-hook-coverage.test.ts:1647:19\n    at file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/vitest@2.1.9_@types+node@25_de4da5643ad2e81dd4fdee2f8af424ea/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/vitest@2.1.9_@types+node@25_de4da5643ad2e81dd4fdee2f8af424ea/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file:///D:/a/Proto-UI/Proto-UI/node_modules/.pnpm/vitest@2.1.9_@types+node@25_de4da5643ad2e81dd4fdee2f8af424ea/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+      ],
+      "meta": {}
+    }
+  ]
+}

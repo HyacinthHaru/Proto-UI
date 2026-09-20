@@ -1,0 +1,715 @@
+{
+  "numTotalTestSuites": 2,
+  "numPassedTestSuites": 2,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 75,
+  "numPassedTests": 75,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1789912299141,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage follows every binding shape a prototype uses to reach a state handle",
+          "status": "passed",
+          "title": "follows every binding shape a prototype uses to reach a state handle",
+          "duration": 24.382299999999987,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports a lowerable read it cannot trace instead of dropping it",
+          "status": "passed",
+          "title": "reports a lowerable read it cannot trace instead of dropping it",
+          "duration": 2.5910999999998694,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reads a rule whose when key is quoted",
+          "status": "passed",
+          "title": "reads a rule whose when key is quoted",
+          "duration": 2.9069999999999254,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage lowers a state reached through a non-null assertion end to end",
+          "status": "passed",
+          "title": "lowers a state reached through a non-null assertion end to end",
+          "duration": 15.958000000000084,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage lowers a non-null asserted state argument end to end",
+          "status": "passed",
+          "title": "lowers a non-null asserted state argument end to end",
+          "duration": 6,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports a comparison the extractor does not lower",
+          "status": "passed",
+          "title": "reports a comparison the extractor does not lower",
+          "duration": 7.236499999999978,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps each scope its own hook identity when a name is shadowed",
+          "status": "passed",
+          "title": "keeps each scope its own hook identity when a name is shadowed",
+          "duration": 5.687400000000025,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports an exposed prototype-owned state instead of skipping it",
+          "status": "passed",
+          "title": "reports an exposed prototype-owned state instead of skipping it",
+          "duration": 2.220700000000079,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps sibling scopes from sharing an exposure",
+          "status": "passed",
+          "title": "keeps sibling scopes from sharing an exposure",
+          "duration": 3.44419999999991,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage resolves each alias hop where that hop was created",
+          "status": "passed",
+          "title": "resolves each alias hop where that hop was created",
+          "duration": 3.1561000000001513,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage follows an alias reassigned before the exposure",
+          "status": "passed",
+          "title": "follows an alias reassigned before the exposure",
+          "duration": 2.579400000000078,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage sees an alias reassigned inside a nested block",
+          "status": "passed",
+          "title": "sees an alias reassigned inside a nested block",
+          "duration": 2.4782000000000153,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage does not let one prototype's exposure reach a sibling's same-named state",
+          "status": "passed",
+          "title": "does not let one prototype's exposure reach a sibling's same-named state",
+          "duration": 4.104399999999941,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage accepts a constant-backed declared name the extractor resolves",
+          "status": "passed",
+          "title": "accepts a constant-backed declared name the extractor resolves",
+          "duration": 2.0532000000000608,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage maps an official semantic before normalizing the name",
+          "status": "passed",
+          "title": "maps an official semantic before normalizing the name",
+          "duration": 1.7191000000000258,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage follows a handle written into the container before the exposure",
+          "status": "passed",
+          "title": "follows a handle written into the container before the exposure",
+          "duration": 2.4681000000000495,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage leaves a member write after the exposure out of it",
+          "status": "passed",
+          "title": "leaves a member write after the exposure out of it",
+          "duration": 2.018299999999954,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage normalizes a state named after an inherited object key",
+          "status": "passed",
+          "title": "normalizes a state named after an inherited object key",
+          "duration": 1.2989999999999782,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps a plain alias of an exposed local resolvable",
+          "status": "passed",
+          "title": "keeps a plain alias of an exposed local resolvable",
+          "duration": 1.412900000000036,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage replaces the member table when a whole container is assigned",
+          "status": "passed",
+          "title": "replaces the member table when a whole container is assigned",
+          "duration": 1.9919999999999618,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage gives both branches of a conditional member write an attribute",
+          "status": "passed",
+          "title": "gives both branches of a conditional member write an attribute",
+          "duration": 2.9846000000000004,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reads a member at the position it was written",
+          "status": "passed",
+          "title": "reads a member at the position it was written",
+          "duration": 1.988399999999956,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps the earlier handle when a write may be skipped",
+          "status": "passed",
+          "title": "keeps the earlier handle when a write may be skipped",
+          "duration": 2.7701999999999316,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage hoists a nested var redeclaration the rule reads",
+          "status": "passed",
+          "title": "hoists a nested var redeclaration the rule reads",
+          "duration": 2.816699999999855,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage accepts an element-access state declaration the extractor reads",
+          "status": "passed",
+          "title": "accepts an element-access state declaration the extractor reads",
+          "duration": 2.1847999999999956,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage admits every attribute the Web projection can actually write",
+          "status": "passed",
+          "title": "admits every attribute the Web projection can actually write",
+          "duration": 0.9998000000000502,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage accepts an attribute that starts with a digit",
+          "status": "passed",
+          "title": "accepts an attribute that starts with a digit",
+          "duration": 1.3231000000000677,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports every state a skippable alias may reach",
+          "status": "passed",
+          "title": "reports every state a skippable alias may reach",
+          "duration": 3.1481999999998607,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reads a state handle held in a plain container",
+          "status": "passed",
+          "title": "reads a state handle held in a plain container",
+          "duration": 3.2591999999999643,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reads a destructured handle the rule uses by its alias",
+          "status": "passed",
+          "title": "reads a destructured handle the rule uses by its alias",
+          "duration": 7.110000000000127,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports both branches of a conditional alias",
+          "status": "passed",
+          "title": "reports both branches of a conditional alias",
+          "duration": 2.6142999999999574,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage resolves an alias target where the alias was written",
+          "status": "passed",
+          "title": "resolves an alias target where the alias was written",
+          "duration": 1.8940000000000055,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reads a container member the rule uses after a write",
+          "status": "passed",
+          "title": "reads a container member the rule uses after a write",
+          "duration": 4.753699999999981,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps the earlier member when the write may be skipped",
+          "status": "passed",
+          "title": "keeps the earlier member when the write may be skipped",
+          "duration": 3.139599999999973,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage follows a member written through an alias of the container",
+          "status": "passed",
+          "title": "follows a member written through an alias of the container",
+          "duration": 2.7079000000001088,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps both members when the alias write may be skipped",
+          "status": "passed",
+          "title": "keeps both members when the alias write may be skipped",
+          "duration": 2.2101000000000113,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps the earlier handle when the write is inside a callback",
+          "status": "passed",
+          "title": "keeps the earlier handle when the write is inside a callback",
+          "duration": 3.223700000000008,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage treats an immediately invoked write as ordered",
+          "status": "passed",
+          "title": "treats an immediately invoked write as ordered",
+          "duration": 2.0802000000001044,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage accepts an intent reading a container that also holds a handle",
+          "status": "passed",
+          "title": "accepts an intent reading a container that also holds a handle",
+          "duration": 2.0222000000001117,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps the earlier handle across an async or generator IIFE",
+          "status": "passed",
+          "title": "keeps the earlier handle across an async or generator IIFE",
+          "duration": 5.234200000000101,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps the earlier handle when an IIFE may not reach the write",
+          "status": "passed",
+          "title": "keeps the earlier handle when an IIFE may not reach the write",
+          "duration": 6.591799999999921,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps the earlier member across a callback, two objects, or an unreadable key",
+          "status": "passed",
+          "title": "keeps the earlier member across a callback, two objects, or an unreadable key",
+          "duration": 11.08569999999986,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage measures a member write against the container, not the alias",
+          "status": "passed",
+          "title": "measures a member write against the container, not the alias",
+          "duration": 3.9565999999999804,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps the replaced container when the replacement may be skipped",
+          "status": "passed",
+          "title": "keeps the replaced container when the replacement may be skipped",
+          "duration": 1.9632999999998901,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reads both containers a conditional replacement may install",
+          "status": "passed",
+          "title": "reads both containers a conditional replacement may install",
+          "duration": 2.1758000000002085,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reaches every leaf of a nested conditional replacement",
+          "status": "passed",
+          "title": "reaches every leaf of a nested conditional replacement",
+          "duration": 2.2264000000000124,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps the literal branch of a mixed conditional replacement",
+          "status": "passed",
+          "title": "keeps the literal branch of a mixed conditional replacement",
+          "duration": 2.721499999999878,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage records every candidate when a member write meets a skippable replacement",
+          "status": "passed",
+          "title": "records every candidate when a member write meets a skippable replacement",
+          "duration": 4.924800000000005,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage refuses to certify a container with an unresolvable branch",
+          "status": "passed",
+          "title": "refuses to certify a container with an unresolvable branch",
+          "duration": 2.7353999999997995,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports every leaf of a nested local-state conditional",
+          "status": "passed",
+          "title": "reports every leaf of a nested local-state conditional",
+          "duration": 5.205199999999877,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports an exposed state whose declared name it cannot read",
+          "status": "passed",
+          "title": "reports an exposed state whose declared name it cannot read",
+          "duration": 1.175499999999829,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage treats a prototype-owned state as neither a hook pair nor a blind spot",
+          "status": "passed",
+          "title": "treats a prototype-owned state as neither a hook pair nor a blind spot",
+          "duration": 1.065599999999904,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports a rule whose intent hands over a pre-bound token handle",
+          "status": "passed",
+          "title": "reports a rule whose intent hands over a pre-bound token handle",
+          "duration": 1.13579999999979,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports a rule handed a binding instead of an object literal",
+          "status": "passed",
+          "title": "reports a rule handed a binding instead of an object literal",
+          "duration": 0.9579999999998563,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports rule shapes neither analyzer reads",
+          "status": "passed",
+          "title": "reports rule shapes neither analyzer reads",
+          "duration": 10.24720000000002,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage requires every intent token handle to be one the extractor can resolve",
+          "status": "passed",
+          "title": "requires every intent token handle to be one the extractor can resolve",
+          "duration": 43.75109999999995,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage ignores an unrelated call in a block-bodied condition",
+          "status": "passed",
+          "title": "ignores an unrelated call in a block-bodied condition",
+          "duration": 1.5226999999999862,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage follows a handle bound by a loop initializer",
+          "status": "passed",
+          "title": "follows a handle bound by a loop initializer",
+          "duration": 1.6791000000000622,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage binds a loop initializer inside the loop, not over the outer name",
+          "status": "passed",
+          "title": "binds a loop initializer inside the loop, not over the outer name",
+          "duration": 2.2835000000000036,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage follows a reassigned alias the rule itself reads",
+          "status": "passed",
+          "title": "follows a reassigned alias the rule itself reads",
+          "duration": 2.228599999999915,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage follows a handle aliased through a binding pattern",
+          "status": "passed",
+          "title": "follows a handle aliased through a binding pattern",
+          "duration": 1.7265999999999622,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports a condition only one branch of which reaches the runtime",
+          "status": "passed",
+          "title": "reports a condition only one branch of which reaches the runtime",
+          "duration": 1.7308000000000447,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage keeps a name declared in two disjoint scopes resolvable in each",
+          "status": "passed",
+          "title": "keeps a name declared in two disjoint scopes resolvable in each",
+          "duration": 2.9518000000000484,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage follows a token through a chain of relative modules and stops at a bound separator",
+          "status": "passed",
+          "title": "follows a token through a chain of relative modules and stops at a bound separator",
+          "duration": 11.879500000000007,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports a rule reached through element access",
+          "status": "passed",
+          "title": "reports a rule reached through element access",
+          "duration": 1.5752999999999702,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage lets a parameter shadow an outer state handle",
+          "status": "passed",
+          "title": "lets a parameter shadow an outer state handle",
+          "duration": 2.0189000000000306,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reads a token map only the way the extractor can",
+          "status": "passed",
+          "title": "reads a token map only the way the extractor can",
+          "duration": 5.716600000000199,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage does not let an unrelated tw call vouch for a pre-bound handle",
+          "status": "passed",
+          "title": "does not let an unrelated tw call vouch for a pre-bound handle",
+          "duration": 2.326699999999846,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports a condition whose operator picks one operand",
+          "status": "passed",
+          "title": "reports a condition whose operator picks one operand",
+          "duration": 5.798199999999952,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage reports a condition a helper call contributes to",
+          "status": "passed",
+          "title": "reports a condition a helper call contributes to",
+          "duration": 5.931699999999864,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage requires each template substitution to carry one value",
+          "status": "passed",
+          "title": "requires each template substitution to carry one value",
+          "duration": 4.776600000000144,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage skips rules the runtime keeps on the runtime plan",
+          "status": "passed",
+          "title": "skips rules the runtime keeps on the runtime plan",
+          "duration": 5.856500000000096,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage scans every source extension the extractor accepts",
+          "status": "passed",
+          "title": "scans every source extension the extractor accepts",
+          "duration": 6.027899999999818,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage lowers a state bound as a terminal handle leaf end to end",
+          "status": "passed",
+          "title": "lowers a state bound as a terminal handle leaf end to end",
+          "duration": 5.040299999999888,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["lowered hook coverage"],
+          "fullName": "lowered hook coverage resolves every hook state a shipped rule condition reads",
+          "status": "passed",
+          "title": "resolves every hook state a shipped rule condition reads",
+          "duration": 1566.0379999999998,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1789912300744,
+      "endTime": 1789912302638.038,
+      "status": "passed",
+      "message": "",
+      "name": "D:/a/Proto-UI/Proto-UI/packages/cli/test/lowered-hook-coverage.test.ts"
+    }
+  ]
+}

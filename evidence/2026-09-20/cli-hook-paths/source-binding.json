@@ -1,0 +1,55 @@
+{
+  "initialReadback": "Direct LF-versus-CRLF byte-hash assertion failed; both exact Git blobs were then independently converted to the observed native checkout form and matched. No source/test assertion was changed to resolve this evidence-format difference.",
+  "rows": [
+    {
+      "variant": "baseline",
+      "head": "424cc6405049fe74d5bf5f53d428017827c01632",
+      "gitBlobSha256": "687c1be9409e18f857c1fa2f327aa9bb1021ea1494da303029890741645b02e3",
+      "nativeCheckoutSha256": "489f83fa2d1ab79d11905b9101c5e7384b0511a5c10d839b355ec255fab23f3d",
+      "checkoutTransform": "LF Git blob -> Windows CRLF; exact SHA-256 equality established",
+      "fileAssignment": "      const file = path.relative(REPO_ROOT, absolute);",
+      "targetUsages": [
+        {
+          "hook": "asTextareaRoot",
+          "state": "focusVisible"
+        },
+        {
+          "hook": "asTextareaRoot",
+          "state": "disabled"
+        }
+      ],
+      "unresolved": [],
+      "tests": {
+        "exitCode": 1,
+        "total": 75,
+        "passed": 74,
+        "failed": 1
+      }
+    },
+    {
+      "variant": "candidate",
+      "head": "0fefe7433209992d2ec47e009d934bc5a925e83d",
+      "gitBlobSha256": "74a87de6737853aa8fac9fb9e660753a1fa1172a3439c8e6f2ed00f94bbd1047",
+      "nativeCheckoutSha256": "dfc0d435d3bf39ca07cd6bf0b1eec608a6b214fc2102d3313cbc60185359eada",
+      "checkoutTransform": "LF Git blob -> Windows CRLF; exact SHA-256 equality established",
+      "fileAssignment": "      const file = path.relative(REPO_ROOT, absolute).split(path.sep).join('/');",
+      "targetUsages": [
+        {
+          "hook": "asTextareaRoot",
+          "state": "focusVisible"
+        },
+        {
+          "hook": "asTextareaRoot",
+          "state": "disabled"
+        }
+      ],
+      "unresolved": [],
+      "tests": {
+        "exitCode": 0,
+        "total": 75,
+        "passed": 75,
+        "failed": 0
+      }
+    }
+  ]
+}

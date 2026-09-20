@@ -1,0 +1,50 @@
+{
+  "head": "0fefe7433209992d2ec47e009d934bc5a925e83d",
+  "base": "424cc6405049fe74d5bf5f53d428017827c01632",
+  "productDiff": "One line in packages/cli/test/lowered-hook-coverage.test.ts; assertions retained.",
+  "checks": [
+    {
+      "command": ["corepack", "pnpm@10.32.1", "check:types"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T13:56:07.297876+00:00",
+      "endedAt": "2026-09-20T13:56:29.712517+00:00",
+      "unchangedHead": true,
+      "worktreeClean": true
+    },
+    {
+      "command": ["corepack", "pnpm@10.32.1", "test"],
+      "exitCode": 0,
+      "startedAt": "2026-09-20T13:56:29.776329+00:00",
+      "endedAt": "2026-09-20T14:09:27.082697+00:00",
+      "unchangedHead": true,
+      "worktreeClean": true
+    }
+  ],
+  "results": {
+    "nonBrowserPassed": 2391,
+    "existingTodo": 34,
+    "nonBrowserFilesPassed": 479,
+    "existingSkippedFiles": 3,
+    "browserPassed": 136,
+    "browserFilesPassed": 26,
+    "astroTypeFiles": 229,
+    "typeDiagnostics": 0,
+    "focusedScannerExtractorPassed": 158,
+    "nativeWindowsBaseline": {
+      "passed": 74,
+      "failed": 1,
+      "exitCode": 1
+    },
+    "nativeWindowsCandidate": {
+      "passed": 75,
+      "failed": 0,
+      "exitCode": 0
+    }
+  },
+  "visualScope": "Four original Chrome component captures independently opened and inspected; no new visual finding. No visible UI defect is attributed to the Windows metadata mismatch.",
+  "notRun": [
+    "Additional package builds/registry consumers: no package implementation or export change.",
+    "Windows browser/real OS IME: outside this test-comparison repair."
+  ],
+  "platformNote": "An inherited unchanged RepoSteward fork workflow returned failure with zero jobs; gh describes a likely workflow-file issue. Its cause was not further diagnosed and it is not counted as an execution of this coverage suite."
+}

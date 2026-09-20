@@ -1,0 +1,35 @@
+{
+  "sourceHead": "0fefe7433209992d2ec47e009d934bc5a925e83d",
+  "suite": "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+  "scope": "Four real component captures sampled from the required full-repository browser run; unchanged-product visual regression, not a reproduction of the internal Windows path defect.",
+  "observedAt": "2026-09-20T14:09:20.947795+00:00",
+  "findings": [],
+  "observations": [
+    "WC selected Item has visible unclipped focus ring.",
+    "React dark surfaces and checked/disabled contrast render.",
+    "Vue narrow layout has readable labels and no clipping.",
+    "Vue2 initial selected second Item remains checked and focused."
+  ],
+  "images": [
+    {
+      "file": "wc-interaction-focus.png",
+      "sha256": "07fd3e90b5b767e408e38c5d52fe7921516882d1c312be41b911e1dce6796e46",
+      "visuallyInspected": true
+    },
+    {
+      "file": "react-interaction-dark.png",
+      "sha256": "d8598b3f9b2bcdd8a4161e3f77ba43c649027cd107d4733eed1741727d3bbc8b",
+      "visuallyInspected": true
+    },
+    {
+      "file": "vue-interaction-narrow.png",
+      "sha256": "0e0aaff4839257fff591a0852686a9fd7e936dabe1160bd09d4c2a9e6763e08e",
+      "visuallyInspected": true
+    },
+    {
+      "file": "vue2-initial-entry.png",
+      "sha256": "7d3c291f3335af55f1144460d6c48a681a0043defff12220591c28caa12af27f",
+      "visuallyInspected": true
+    }
+  ]
+}

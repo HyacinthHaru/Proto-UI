@@ -1,0 +1,23 @@
+{
+  "head": "424cc6405049fe74d5bf5f53d428017827c01632",
+  "platform": "darwin",
+  "node": "v22.23.2",
+  "separator": "/",
+  "nativeRelative": "packages/prototypes/brutalist/src/textarea/root.proto.ts",
+  "expectedFile": "packages/prototypes/brutalist/src/textarea/root.proto.ts",
+  "nativeMatchesFixture": true,
+  "canonicalRelative": "packages/prototypes/brutalist/src/textarea/root.proto.ts",
+  "fileAssignment": "      const file = path.relative(REPO_ROOT, absolute);",
+  "testSha256": "687c1be9409e18f857c1fa2f327aa9bb1021ea1494da303029890741645b02e3",
+  "targetUsages": [
+    {
+      "hook": "asTextareaRoot",
+      "state": "focusVisible"
+    },
+    {
+      "hook": "asTextareaRoot",
+      "state": "disabled"
+    }
+  ],
+  "unresolved": []
+}

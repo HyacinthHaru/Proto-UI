@@ -1,0 +1,23 @@
+{
+  "head": "0fefe7433209992d2ec47e009d934bc5a925e83d",
+  "platform": "win32",
+  "node": "v22.23.2",
+  "separator": "\\",
+  "nativeRelative": "packages\\prototypes\\brutalist\\src\\textarea\\root.proto.ts",
+  "expectedFile": "packages/prototypes/brutalist/src/textarea/root.proto.ts",
+  "nativeMatchesFixture": false,
+  "canonicalRelative": "packages/prototypes/brutalist/src/textarea/root.proto.ts",
+  "fileAssignment": "      const file = path.relative(REPO_ROOT, absolute).split(path.sep).join('/');",
+  "testSha256": "dfc0d435d3bf39ca07cd6bf0b1eec608a6b214fc2102d3313cbc60185359eada",
+  "targetUsages": [
+    {
+      "hook": "asTextareaRoot",
+      "state": "focusVisible"
+    },
+    {
+      "hook": "asTextareaRoot",
+      "state": "disabled"
+    }
+  ],
+  "unresolved": []
+}
