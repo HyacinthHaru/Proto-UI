@@ -1,0 +1,109 @@
+name: Website Windows built-preview evidence
+
+on:
+  push:
+    branches: [codex/www-source-paths-evidence]
+    paths:
+      - .github/workflows/www-preview-evidence.yml
+      - evidence/validation/www-source-paths/**
+
+permissions:
+  contents: read
+
+env:
+  PUI_SOURCE_REPOSITORY: Proto-UI/Proto-UI
+  PUI_SOURCE_REF: 9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f
+  PUI_VARIANT: baseline
+
+jobs:
+  windows-preview:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: harness
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.PUI_SOURCE_REPOSITORY }}
+          ref: ${{ env.PUI_SOURCE_REF }}
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.2
+      - name: Install exact workspace dependencies and record source
+        shell: pwsh
+        working-directory: source
+        run: |
+          New-Item -ItemType Directory -Force ../reports | Out-Null
+          corepack enable
+          corepack prepare pnpm@10.32.1 --activate
+          corepack pnpm@10.32.1 --version
+          corepack pnpm@10.32.1 install --frozen-lockfile
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node ../harness/evidence/validation/www-source-paths/source-receipt.mjs "$PWD" ../reports/source-before.json
+      - name: Ordinary production build
+        shell: pwsh
+        working-directory: source
+        run: |
+          corepack pnpm@10.32.1 --filter apps-www build *> ../reports/ordinary-build.log
+          if ($LASTEXITCODE -ne 0) { Get-Content ../reports/ordinary-build.log; exit $LASTEXITCODE }
+          node ../harness/evidence/validation/www-source-paths/asset-manifest.mjs "$PWD" ../reports/ordinary-assets.json
+      - name: Run identical desired-behavior browser assertions
+        id: probe
+        continue-on-error: true
+        shell: pwsh
+        working-directory: source
+        run: |
+          node ../harness/evidence/validation/www-source-paths/run-preview.mjs "$PWD" ../reports/browser *> ../reports/browser-run.log
+          $puiProbeExit = $LASTEXITCODE
+          Get-Content ../reports/browser-run.log
+          exit $puiProbeExit
+      - name: Verify the source checkout remained unchanged
+        shell: pwsh
+        working-directory: source
+        run: |
+          node ../harness/evidence/validation/www-source-paths/source-receipt.mjs "$PWD" ../reports/source-after.json
+      - name: Verify the recorded baseline or candidate outcome
+        shell: pwsh
+        working-directory: source
+        run: |
+          @'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          const source = JSON.parse(fs.readFileSync('../reports/source-before.json', 'utf8'));
+          const after = JSON.parse(fs.readFileSync('../reports/source-after.json', 'utf8'));
+          const result = JSON.parse(fs.readFileSync('../reports/browser/report.json', 'utf8'));
+          const execution = JSON.parse(fs.readFileSync('../reports/browser/probe-exit.json', 'utf8'));
+          assert.equal(source.platform, 'win32');
+          assert.equal(source.head, process.env.PUI_SOURCE_REF);
+          assert.equal(after.head, source.head);
+          assert.deepEqual(after.inputs, source.inputs);
+          assert.equal(result.source.head, source.head);
+          assert.deepEqual(result.fatalErrors, []);
+          const asHookErrors = result.pageErrors.filter(error => error.message.includes('[AsHook] no active setup context'));
+          const baseline = process.env.PUI_VARIANT === 'baseline';
+          const receipt = { variant: process.env.PUI_VARIANT, source: source.head, desiredBehaviorExitCode: execution.exitCode, desiredBehaviorPassed: result.passed, checks: result.checks.length, failedChecks: result.summary.failedChecks, asHookErrors: asHookErrors.length, pageErrors: result.pageErrors.length, observedRuntimes: result.summary.observedDialogRuntimes };
+          fs.writeFileSync('../reports/receipt.json', JSON.stringify(receipt, null, 2) + '\n');
+          if (baseline) {
+            assert.equal(execution.exitCode, 1);
+            assert.equal(result.passed, false);
+            assert(asHookErrors.length > 0, 'Baseline must fail for the reported setup-context reason');
+            assert(result.samples.some(sample => sample.runtime === 'wc' && sample.stage === 'open'));
+            assert(result.checks.some(check => check.runtime === 'wc' && check.name === 'Content aria-modal is true' && !check.passed));
+          } else {
+            assert.equal(execution.exitCode, 0);
+            assert.equal(result.passed, true);
+            assert.equal(asHookErrors.length, 0);
+          }
+          console.log(JSON.stringify(receipt, null, 2));
+          '@ | node --input-type=module
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: www-preview-${{ env.PUI_VARIANT }}-${{ github.run_id }}
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 30
