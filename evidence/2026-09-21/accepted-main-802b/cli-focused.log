@@ -1,0 +1,12 @@
+
+ RUN  v2.1.9 <checkout>
+
+ ✓ packages/cli/test/prototype-style-tokens.test.ts (83 tests) 403ms
+ ✓ packages/cli/test/lowered-hook-coverage.test.ts (75 tests) 856ms
+   ✓ lowered hook coverage > resolves every hook state a shipped rule condition reads 694ms
+
+ Test Files  2 passed (2)
+      Tests  158 passed (158)
+   Start at  18:52:30
+   Duration  2.44s (transform 263ms, setup 0ms, collect 1.18s, tests 1.26s, environment 574ms, prepare 697ms)
+

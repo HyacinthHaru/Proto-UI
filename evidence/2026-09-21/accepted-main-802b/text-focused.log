@@ -1,0 +1,24 @@
+
+ RUN  v2.1.9 <checkout>
+
+ ✓ packages/modules/text-control/test/web.test.ts (22 tests) 17ms
+ ✓ packages/modules/text-control/test/impl-spec.test.ts (25 tests) 17ms
+stdout | packages/adapters/vue2/test/textarea.integration.test.ts
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ packages/adapters/vue2/test/textarea.integration.test.ts (2 tests) 38ms
+ ✓ packages/adapters/react/test/text-control.integration.test.ts (4 tests) 31ms
+ ✓ packages/adapters/web-component/test/text-control.integration.test.ts (5 tests) 53ms
+ ✓ packages/prototypes/base/test/textarea.test.ts (7 tests) 54ms
+ ✓ packages/prototypes/base/test/input.test.ts (6 tests) 52ms
+ ✓ packages/adapters/vue/test/text-control.integration.test.ts (3 tests) 39ms
+
+ Test Files  8 passed (8)
+      Tests  74 passed (74)
+   Start at  18:52:30
+   Duration  2.27s (transform 1.29s, setup 0ms, collect 7.36s, tests 301ms, environment 2.08s, prepare 1.40s)
+
