@@ -14,6 +14,7 @@ env:
   PUI_SOURCE_REPOSITORY: Proto-UI/Proto-UI
   PUI_SOURCE_REF: 9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f
   PUI_VARIANT: baseline
+  PUI_CAPTURE: graph
 
 jobs:
   windows-preview:
@@ -50,8 +51,9 @@ jobs:
         run: |
           corepack pnpm@10.32.1 --filter apps-www build *> ../reports/ordinary-build.log
           if ($LASTEXITCODE -ne 0) { Get-Content ../reports/ordinary-build.log; exit $LASTEXITCODE }
-          node ../harness/evidence/validation/www-source-paths/asset-manifest.mjs "$PWD" ../reports/ordinary-assets.json
+          node ../harness/evidence/validation/www-source-paths/snapshot-assets.mjs "$PWD" ../reports/ordinary
       - name: Run identical desired-behavior browser assertions
+        if: env.PUI_CAPTURE != 'graph'
         id: probe
         continue-on-error: true
         shell: pwsh
@@ -61,12 +63,26 @@ jobs:
           $puiProbeExit = $LASTEXITCODE
           Get-Content ../reports/browser-run.log
           exit $puiProbeExit
+      - name: Capture the separate source-module graph and compare assets
+        shell: pwsh
+        working-directory: source
+        run: |
+          node ../harness/evidence/validation/www-source-paths/build-observed.mjs "$PWD" ../reports/graph *> ../reports/observed-build.log
+          if ($LASTEXITCODE -ne 0) { Get-Content ../reports/observed-build.log; exit $LASTEXITCODE }
+          node ../harness/evidence/validation/www-source-paths/snapshot-assets.mjs "$PWD" ../reports/observed
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node ../harness/evidence/validation/www-source-paths/compare-assets.mjs ../reports/ordinary/assets.json ../reports/observed/assets.json ../reports/asset-comparison.json
+          $puiComparisonExit = $LASTEXITCODE
+          if ($puiComparisonExit -gt 1) { exit $puiComparisonExit }
+          if ($puiComparisonExit -eq 1) { Write-Output 'Asset mismatch retained: graph output is a separate diagnostic variant.' }
+          exit 0
       - name: Verify the source checkout remained unchanged
         shell: pwsh
         working-directory: source
         run: |
           node ../harness/evidence/validation/www-source-paths/source-receipt.mjs "$PWD" ../reports/source-after.json
       - name: Verify the recorded baseline or candidate outcome
+        if: env.PUI_CAPTURE != 'graph'
         shell: pwsh
         working-directory: source
         run: |

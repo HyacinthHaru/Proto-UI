@@ -28,3 +28,9 @@ Output:
 Inspect every PNG before publication. Source paths or tool stack traces may require sanitization before upload; raw artifacts are local evidence, not automatically public material. Binding this probe to a genuine native Windows runner remains required to call its result Windows evidence.
 
 The unchanged runner passed a POSIX normal control at clean `9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f` on 2026-09-21 23:19 UTC: Node 22.23.2, macOS arm64, Chrome 153.0.8010.53, Playwright 1.58.2, 1440×1000. All 58 checks passed with zero page/console errors, and WC/React/Vue actually mounted and completed native open/Cancel. All ten resulting PNGs were visually inspected. Raw results and scope are in `posix-baseline/`; this control does not establish the Windows defect or its repair.
+
+## Separate build-graph diagnostic
+
+The native baseline run uses the ordinary production build and browser probe. A subsequent `PUI_CAPTURE=graph` run skips that browser journey and inspects the unchanged source in a separate diagnostic build. `build-observed.mjs` uses Astro's public build API with the normal discovered config and one read-only Vite observer; it records SSR and client graphs separately, precise Core internal IDs, physical files, importers and retained module lengths. Separate SSR/client instances are not duplicate client context stores.
+
+`snapshot-assets.mjs` preserves emitted JS/CSS bytes, while `compare-assets.mjs` compares exact asset paths, sizes and hashes. A mismatch remains in its receipt and the output is described as a diagnostic variant. POSIX controls showed seven chunks can differ even between two ordinary builds through minified export alias ordering; one observed build matched a subsequent ordinary build across all 1,945 assets. This does not establish universal deterministic equality. Full ordinary browser evidence remains required for a candidate.
