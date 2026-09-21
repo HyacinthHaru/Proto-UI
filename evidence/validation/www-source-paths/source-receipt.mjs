@@ -35,6 +35,7 @@ const result = {
   head: git('rev-parse', 'HEAD').toString().trim(),
   tree: git('rev-parse', 'HEAD^{tree}').toString().trim(),
   status: git('status', '--short').toString(),
+  workingTreeDiff: git('diff', '--no-ext-diff').toString(),
   platform: process.platform,
   node: process.version,
   separator: path.sep,
