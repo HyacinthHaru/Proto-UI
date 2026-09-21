@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>Runtime update epoch — actual React evidence</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f5f6f8;
+        color: #192331;
+        font:
+          16px system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 1160px;
+        margin: 42px auto;
+        padding: 0 24px;
+      }
+      h1 {
+        font-size: 30px;
+        margin: 9px 0 12px;
+      }
+      p {
+        line-height: 1.6;
+      }
+      small,
+      .muted {
+        color: #586777;
+      }
+      header .tag {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        color: #35666a;
+      }
+      .panel {
+        background: white;
+        border: 1px solid #d4dce5;
+        border-radius: 12px;
+        padding: 22px;
+        margin: 24px 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1.3fr;
+        gap: 24px;
+      }
+      .label {
+        font-size: 13px;
+        color: #586777;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .value {
+        font-size: 42px;
+        font-weight: 650;
+        margin: 12px 0;
+      }
+      #actual {
+        min-height: 110px;
+        padding: 1px 24px;
+        background: #eaf3f6;
+        border-left: 5px solid #317281;
+        border-radius: 5px;
+      }
+      #actual p {
+        font-size: 36px;
+        font-weight: 600;
+        margin: 20px 0;
+      }
+      .stats {
+        display: flex;
+        gap: 38px;
+        margin-top: 18px;
+      }
+      .stats strong {
+        display: block;
+        font-size: 22px;
+        margin-top: 7px;
+      }
+      button {
+        padding: 10px 15px;
+        background: #173f4c;
+        color: #fff;
+        border: 0;
+        border-radius: 6px;
+        font: inherit;
+        margin: 0 10px 6px 0;
+        cursor: pointer;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+      th,
+      td {
+        padding: 12px 9px;
+        text-align: left;
+        border-bottom: 1px solid #e0e5eb;
+      }
+      th {
+        color: #586777;
+        font-weight: 500;
+      }
+      .foot {
+        font-size: 13px;
+        word-break: break-all;
+      }
+      h2 {
+        font-size: 18px;
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="tag">
+          Executed official React Adapter · controlled synchronous Activity sequence
+        </div>
+        <h1>The replacement view must accept its own update</h1>
+        <div id="source" class="muted"></div>
+        <p>
+          One Proto instance, two view epochs. The first update is followed by a React Activity hide
+          and reveal in the same event turn. The panel below is the actual component rendered by the
+          official Adapter.
+        </p>
+      </header>
+      <div>
+        <button id="crossing">Run cross-epoch sequence</button
+        ><button id="coalescing">Run same-epoch control</button>
+      </div>
+      <section class="panel grid">
+        <div>
+          <div class="label">Logical State value · measured</div>
+          <div id="logical" class="value"></div>
+          <div class="label">Current Runtime mount phase</div>
+          <p id="phase"></p>
+        </div>
+        <div>
+          <div class="label">Actual React DOM · Runtime template output</div>
+          <div id="actual"></div>
+          <div class="stats">
+            <div><span class="label">Runtime renders</span><strong id="renders"></strong></div>
+            <div><span class="label">Updated callbacks</span><strong id="updated"></strong></div>
+          </div>
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Measured sequence</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Action / observation boundary</th>
+              <th>Phase / epoch</th>
+              <th>State</th>
+              <th>DOM text</th>
+              <th>Renders</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody id="steps"></tbody>
+        </table>
+      </section>
+      <p class="muted">
+        Activity and flushSync are real React APIs. The harness chooses their order; this is not a
+        claim about arbitrary user timing, every Adapter, or a permanent Activity hide. No timer,
+        retry, consumer recovery update, or product-private state override is used.
+      </p>
+      <p id="source-hash" class="muted foot"></p>
+    </main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

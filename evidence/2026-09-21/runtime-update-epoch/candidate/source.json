@@ -1,0 +1,7 @@
+{
+  "label": "candidate-head",
+  "commit": "53e4205cc29256ce13f6ca9927f132d0e9180043",
+  "sessionSha256": "8af8d4246442353a8f424e7ba5a34e1fd60e8ab4d8122be39ac8cdc9ad2a1e16",
+  "adapterSha256": "59cb4dfc86eee1fe9b6f4c0e05c158bc7f5d1e643fe4aed2fcf1e9c1e83f2f5d",
+  "fixtureSha256": "375d5ab2ff64f16b76efeb899caafc646c22e61a79a110a70fe8c30401a2c799"
+}

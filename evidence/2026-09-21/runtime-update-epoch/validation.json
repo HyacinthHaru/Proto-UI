@@ -1,0 +1,137 @@
+{
+  "head": "53e4205cc29256ce13f6ca9927f132d0e9180043",
+  "base": "67d4dc86be5d196815e3d2192c3cd0cbcfd2b935",
+  "tree": "dc7ebd52ba8be073c5828282416870197490011c",
+  "sourceInputs": {
+    "baseline": {
+      "totalInputs": 262,
+      "repositoryBlobsMatched": 248,
+      "commit": "67d4dc86be5d196815e3d2192c3cd0cbcfd2b935"
+    },
+    "candidate": {
+      "totalInputs": 262,
+      "repositoryBlobsMatched": 248,
+      "commit": "53e4205cc29256ce13f6ca9927f132d0e9180043"
+    }
+  },
+  "harnessHashes": {
+    "fixture.ts": "375d5ab2ff64f16b76efeb899caafc646c22e61a79a110a70fe8c30401a2c799",
+    "index.html": "6d2e5a285b4f440437ab28bc1933f5c78b565193c222f3b96a990b31b66a0438",
+    "build.mjs": "3e9ba873131ca9f0170288ec260ea1b985bde4629577987715f1d22fe3b4495f",
+    "run.mjs": "65aeb7d513d155c446bf2cdd16acc8f203e8e4e1271a19bb085fb74ebf181e55"
+  },
+  "reviewedFiles": [
+    {
+      "path": "packages/runtime/src/instance/session.ts",
+      "gitBlob": "393c2d5b4789397352fecce0c55eb26cd7fa947a",
+      "sha256": "8af8d4246442353a8f424e7ba5a34e1fd60e8ab4d8122be39ac8cdc9ad2a1e16"
+    },
+    {
+      "path": "packages/runtime/test/contract/lifecycle.session.update-epoch.v1.contract.test.ts",
+      "gitBlob": "6aed53cf44ae6d1f29550397e0cb2dd625e1f9b3",
+      "sha256": "4d524515a763256eac739dfa665a893631cbe02ee0c323c89728127c89328743"
+    },
+    {
+      "path": "packages/adapters/react/test/contract/update-epoch.v1.contract.test.ts",
+      "gitBlob": "69e33ea6f17fa46e921c588be7789a395968049f",
+      "sha256": "4a8a2c375f29ddb3e95c5adf6a8fe857eaf33833066ba38cac0369691912075f"
+    },
+    {
+      "path": "spec/tests/T-LIFECYCLE-0005.yaml",
+      "gitBlob": "661382f5c23db78cebcd599a4dadc7783b7b8fa0",
+      "sha256": "612314f51a7a7c7a4198d5477b387b8468b053df6c54dc77f4db7ee9553fa81d"
+    }
+  ],
+  "review": {
+    "class": "independent local agent, human-assisted unassessed/advisory",
+    "disposition": "partial/ABSTAIN; not a GitHub approval",
+    "openConcreteFindings": 0,
+    "resolved": [
+      "R647-01: ActivityProps.children typing, final types pass",
+      "R647-02: same-epoch deferred exception queued intent retained; independent differential probe equals baseline"
+    ]
+  },
+  "validation": [
+    {
+      "name": "regression-final",
+      "command": [
+        "corepack",
+        "pnpm@10.32.1",
+        "exec",
+        "vitest",
+        "run",
+        "packages/runtime/test/contract/lifecycle.session.update-epoch.v1.contract.test.ts",
+        "packages/runtime/test/contract/lifecycle.session.transitions.v1.contract.test.ts",
+        "packages/runtime/test/contract/lifecycle.view-intent.v1.contract.test.ts",
+        "packages/adapters/react/test/contract/update-epoch.v1.contract.test.ts"
+      ],
+      "exitCode": 0,
+      "start": "2026-09-21T14:36:59.907115+00:00",
+      "end": "2026-09-21T14:37:01.328964+00:00",
+      "log": "regression-final.log"
+    },
+    {
+      "name": "build-final",
+      "command": ["corepack", "pnpm@10.32.1", "build:packages"],
+      "exitCode": 0,
+      "start": "2026-09-21T14:37:01.329423+00:00",
+      "end": "2026-09-21T14:37:29.993105+00:00",
+      "log": "build-final.log"
+    },
+    {
+      "name": "budgets-final",
+      "command": ["corepack", "pnpm@10.32.1", "check:package-budgets", "--", "--json"],
+      "exitCode": 0,
+      "start": "2026-09-21T14:37:29.993499+00:00",
+      "end": "2026-09-21T14:37:30.594256+00:00",
+      "log": "budgets-final.log"
+    },
+    {
+      "name": "types-final",
+      "command": ["corepack", "pnpm@10.32.1", "check:types"],
+      "exitCode": 0,
+      "start": "2026-09-21T14:37:30.594530+00:00",
+      "end": "2026-09-21T14:37:53.193446+00:00",
+      "log": "types-final.log"
+    },
+    {
+      "name": "full-test",
+      "command": ["corepack", "pnpm@10.32.1", "test"],
+      "exitCode": 1,
+      "start": "2026-09-21T14:37:53.194159+00:00",
+      "end": "2026-09-21T14:53:47.570676+00:00",
+      "log": "full-test.log"
+    },
+    {
+      "name": "full-test-rerun",
+      "command": ["corepack", "pnpm@10.32.1", "test"],
+      "exitCode": 1,
+      "start": "2026-09-21T14:55:56.905003+00:00",
+      "end": "2026-09-21T15:02:32.320386+00:00",
+      "log": "full-test-rerun.log",
+      "reason": "Initial run passed all2580+136cases but one afterAll hook exceeded60000ms; isolated unchanged suite then passed8cases and teardown. Same full command/assertions/timeout retried without concurrent agent browser jobs."
+    },
+    {
+      "name": "full-test-bounded",
+      "command": ["corepack", "pnpm@10.32.1", "test"],
+      "environment": {
+        "VITEST_MAX_THREADS": "2",
+        "VITEST_MIN_THREADS": "1",
+        "VITEST_MAX_FORKS": "2",
+        "VITEST_MIN_FORKS": "1"
+      },
+      "exitCode": 0,
+      "start": "2026-09-21T15:05:32.953877+00:00",
+      "end": "2026-09-21T15:20:56.329265+00:00",
+      "log": "full-test-bounded.log",
+      "reason": "Full-scope rerun with at most2Vitestworkers after timeouts in two default-concurrency runs; unchanged browser serialization and assertions."
+    }
+  ],
+  "limitations": [
+    "React19 same-turn Activity on Chrome; no permanent hiding, React18 or other Adapter race claim",
+    "Explicit old ack delivery belongs to Runtime fixture, not React browser fixture",
+    "Runtime gzip60000/60000; no budget headroom",
+    "No independent maintainer approval or trusted PR CI claimed here"
+  ],
+  "logRedactions": "Only local workspace/evidence/temporary paths replaced; original logs retained locally."
+}

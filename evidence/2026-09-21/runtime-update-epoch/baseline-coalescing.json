@@ -1,0 +1,222 @@
+{
+  "date": "2026-09-21T15:23:58.543Z",
+  "browser": "153.0.8010.48",
+  "node": "v22.23.2",
+  "scenario": "coalescing",
+  "result": {
+    "result": {
+      "step": "2 · React commits and drains queued update",
+      "phase": "mounted",
+      "epoch": 1,
+      "state": 2,
+      "renderedText": "Count 2",
+      "calls": {
+        "setup": 1,
+        "created": 1,
+        "mounted": 1,
+        "unmounted": 0,
+        "updated": 2,
+        "disposed": 0,
+        "render": 3
+      },
+      "updateEvents": [
+        {
+          "type": "update.render",
+          "epoch": 1,
+          "revision": 1
+        },
+        {
+          "type": "update.commit.done",
+          "epoch": 1,
+          "revision": 1
+        },
+        {
+          "type": "update.updated",
+          "epoch": 1,
+          "revision": 1
+        },
+        {
+          "type": "update.render",
+          "epoch": 1,
+          "revision": 2
+        },
+        {
+          "type": "update.commit.done",
+          "epoch": 1,
+          "revision": 2
+        },
+        {
+          "type": "update.updated",
+          "epoch": 1,
+          "revision": 2
+        }
+      ]
+    },
+    "trace": [
+      {
+        "type": "instance.setup.exit"
+      },
+      {
+        "type": "instance.phase",
+        "phase": "alive"
+      },
+      {
+        "type": "instance.created"
+      },
+      {
+        "type": "mount.phase",
+        "phase": "mounting",
+        "epoch": 1
+      },
+      {
+        "type": "mount.render",
+        "epoch": 1
+      },
+      {
+        "type": "mount.commit.start",
+        "epoch": 1
+      },
+      {
+        "type": "mount.commit.done",
+        "epoch": 1
+      },
+      {
+        "type": "mount.phase",
+        "phase": "mounted",
+        "epoch": 1
+      },
+      {
+        "type": "mount.mounted",
+        "epoch": 1
+      },
+      {
+        "type": "update.render",
+        "epoch": 1,
+        "revision": 1
+      },
+      {
+        "type": "update.commit.done",
+        "epoch": 1,
+        "revision": 1
+      },
+      {
+        "type": "update.updated",
+        "epoch": 1,
+        "revision": 1
+      },
+      {
+        "type": "update.render",
+        "epoch": 1,
+        "revision": 2
+      },
+      {
+        "type": "update.commit.done",
+        "epoch": 1,
+        "revision": 2
+      },
+      {
+        "type": "update.updated",
+        "epoch": 1,
+        "revision": 2
+      }
+    ],
+    "measurements": [
+      {
+        "step": "0 · initial mount",
+        "phase": "mounted",
+        "epoch": 1,
+        "state": 0,
+        "renderedText": "Count 0",
+        "calls": {
+          "setup": 1,
+          "created": 1,
+          "mounted": 1,
+          "unmounted": 0,
+          "updated": 0,
+          "disposed": 0,
+          "render": 1
+        },
+        "updateEvents": []
+      },
+      {
+        "step": "1 · two updates before React commit",
+        "phase": "mounted",
+        "epoch": 1,
+        "state": 2,
+        "renderedText": "Count 0",
+        "calls": {
+          "setup": 1,
+          "created": 1,
+          "mounted": 1,
+          "unmounted": 0,
+          "updated": 0,
+          "disposed": 0,
+          "render": 2
+        },
+        "updateEvents": [
+          {
+            "type": "update.render",
+            "epoch": 1,
+            "revision": 1
+          }
+        ]
+      },
+      {
+        "step": "2 · React commits and drains queued update",
+        "phase": "mounted",
+        "epoch": 1,
+        "state": 2,
+        "renderedText": "Count 2",
+        "calls": {
+          "setup": 1,
+          "created": 1,
+          "mounted": 1,
+          "unmounted": 0,
+          "updated": 2,
+          "disposed": 0,
+          "render": 3
+        },
+        "updateEvents": [
+          {
+            "type": "update.render",
+            "epoch": 1,
+            "revision": 1
+          },
+          {
+            "type": "update.commit.done",
+            "epoch": 1,
+            "revision": 1
+          },
+          {
+            "type": "update.updated",
+            "epoch": 1,
+            "revision": 1
+          },
+          {
+            "type": "update.render",
+            "epoch": 1,
+            "revision": 2
+          },
+          {
+            "type": "update.commit.done",
+            "epoch": 1,
+            "revision": 2
+          },
+          {
+            "type": "update.updated",
+            "epoch": 1,
+            "revision": 2
+          }
+        ]
+      }
+    ],
+    "source": {
+      "label": "baseline",
+      "commit": "67d4dc86be5d196815e3d2192c3cd0cbcfd2b935",
+      "sessionSha256": "f8ce887c7eeae160f13ce8fdf40415caa1bd1dc52014450bace873227e432d9a",
+      "adapterSha256": "59cb4dfc86eee1fe9b6f4c0e05c158bc7f5d1e643fe4aed2fcf1e9c1e83f2f5d",
+      "fixtureSha256": "375d5ab2ff64f16b76efeb899caafc646c22e61a79a110a70fe8c30401a2c799"
+    }
+  },
+  "errors": []
+}

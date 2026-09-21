@@ -1,0 +1,36 @@
+{
+  "head": "53e4205cc29256ce13f6ca9927f132d0e9180043",
+  "inputCount": 262,
+  "differences": [
+    {
+      "path": "evidence-metadata/<define:EVIDENCE_SOURCE>",
+      "before": {
+        "path": "evidence-metadata/<define:EVIDENCE_SOURCE>",
+        "sha256": "836f87e6a344d9f51fa7fade997633566ef12ea65588ba5623a2f6f1267e8260",
+        "gitBlob": "ffa159c6d04d3e24fa4926f84da6ab8597e33e27",
+        "bytes": 321
+      },
+      "after": {
+        "path": "evidence-metadata/<define:EVIDENCE_SOURCE>",
+        "sha256": "95d5327002017858aa632dbffebfc2ef0e4cad827d4824d85e7f81532a8dea56",
+        "gitBlob": "dedde70d80440509451cd126b8c1ac4c7422c442",
+        "bytes": 327
+      }
+    },
+    {
+      "path": "packages/runtime/src/instance/session.ts",
+      "before": {
+        "path": "packages/runtime/src/instance/session.ts",
+        "sha256": "f8ce887c7eeae160f13ce8fdf40415caa1bd1dc52014450bace873227e432d9a",
+        "gitBlob": "dd3dc4de075045e100c1d8b154935b084cfe8382",
+        "bytes": 15771
+      },
+      "after": {
+        "path": "packages/runtime/src/instance/session.ts",
+        "sha256": "8af8d4246442353a8f424e7ba5a34e1fd60e8ab4d8122be39ac8cdc9ad2a1e16",
+        "gitBlob": "393c2d5b4789397352fecce0c55eb26cd7fa947a",
+        "bytes": 15891
+      }
+    }
+  ]
+}
