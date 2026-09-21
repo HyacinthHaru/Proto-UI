@@ -1,0 +1,12 @@
+
+ RUN  v2.1.9 <workspace>
+
+ ✓ packages/spec/fixtures/test/context-fixtures.test.ts (2 tests) 996ms
+   ✓ spec fixtures: context > keeps context identity and scope fixtures aligned with T-CONTEXT-0001 555ms
+   ✓ spec fixtures: context > keeps context runtime surface fixtures aligned with T-CONTEXT-0002 441ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  23:04:53
+   Duration  1.50s (transform 60ms, setup 0ms, collect 110ms, tests 996ms, environment 121ms, prepare 43ms)
+

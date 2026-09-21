@@ -1,0 +1,9 @@
+
+> proto-ui@ check:types <workspace>
+> corepack pnpm@10.32.1 -s check:types:workspace && corepack pnpm@10.32.1 -s check:types:docs
+
+packages/adapters/react/test/contract/update-epoch.v1.contract.test.ts(39,50): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type '{ mode: "visible" | "hidden"; }' is not assignable to parameter of type 'Attributes & ActivityProps'.
+      Property 'children' is missing in type '{ mode: "visible" | "hidden"; }' but required in type 'ActivityProps'.
+ ELIFECYCLE  Command failed with exit code 2.

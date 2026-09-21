@@ -1,0 +1,13 @@
+
+ RUN  v2.1.9 <workspace>
+
+ ✓ packages/runtime/test/contract/lifecycle.view-intent.v1.contract.test.ts (6 tests) 12ms
+ ✓ packages/runtime/test/contract/lifecycle.session.transitions.v1.contract.test.ts (5 tests) 14ms
+ ✓ packages/runtime/test/contract/lifecycle.session.update-epoch.v1.contract.test.ts (13 tests) 24ms
+ ✓ packages/adapters/react/test/contract/update-epoch.v1.contract.test.ts (1 test) 34ms
+
+ Test Files  4 passed (4)
+      Tests  25 passed (25)
+   Start at  22:37:00
+   Duration  916ms (transform 529ms, setup 0ms, collect 1.92s, tests 85ms, environment 488ms, prepare 195ms)
+
