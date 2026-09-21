@@ -1,0 +1,297 @@
+{
+  "newHead": "0f9bb761b0de92fd0b78dc0730727ca39202651e",
+  "capturedHead": "488f70cdd86bef0109eb3faab8fc4cfe0e86f95c",
+  "capturePacket": "https://github.com/HyacinthHaru/Proto-UI/tree/17de37147d07095e56e561b2629ebea5fe3a5517/evidence/2026-09-21/text-control-composition-lease",
+  "bundleSha256": "a7b8bc91bc58ae054afbeb092e6964cf9f43f272fe7858315be9f57fccf5e2c0",
+  "inputs": [
+    {
+      "path": "harness/api-entry.ts",
+      "sha256": "d0a4dec391e0b299172a19a9888f610b95d3e2ec5a7079c3d3dbb88c3e9ef8c4",
+      "matched": true,
+      "source": "immutable fixture from earlier packet"
+    },
+    {
+      "path": "packages/core/src/a11y.ts",
+      "sha256": "8923021a1c8c49a35c19f2ff5f2f1ea2706e5925d56fb32a9b2141f60dc166e3",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/anatomy.ts",
+      "sha256": "7223692e13cd0374df56bd0a4c00fc5f37ef8b10ef6e97e10fc1aaa8960ea5aa",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/boundary.ts",
+      "sha256": "a392049b24da8cbb6dfb8f10be30775b6f71b5056de2e0accebdc92907565d1a",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/caps/host.ts",
+      "sha256": "b2542e965a6c0f548003662f931b505f063118cd4036cfbabf27767462e9e81d",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/caps/index.ts",
+      "sha256": "a0833fa73b44034da91bff352029f01181427cdb21fdc3be50fdbf7bafa387ef",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/caps/token.ts",
+      "sha256": "f1e92dece196a380477006d905f5b2abc528f8eba41caa7aeaee1edf88e9df79",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/collection.ts",
+      "sha256": "a4a451c037b2114c7f9c94c814c2f09abc584890e24004d55e8b49fe8792c4bc",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/context.ts",
+      "sha256": "5a6d275535a3e5f93ea6b2bc03a6514fa7d641abfe87e9b1768a3645400089f6",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/delay.ts",
+      "sha256": "b2111d833c7d46e48e06a4816eb1b8638afccb1b98cd630b1e36aea611b8dbfe",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/effects/index.ts",
+      "sha256": "d5c19655468e29f60c871b21e73af8ebc653f736e7123ade916f22c4a5f80ce5",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/effects/types.ts",
+      "sha256": "dcaeed5ba405406d18ad15e7c86e9a1f76fa2e988b719b5f733e7b6fed75c471",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/errors/codes.ts",
+      "sha256": "1e35e7e6a995ef0b484ea4fb3852f2aaa8579340316f15e27ff4d048d567268f",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/errors/index.ts",
+      "sha256": "652c62a961d7e676deda59136735193f362515d55132038ea572724e4b3f4b9d",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/focus.ts",
+      "sha256": "89d1e1b610b3897c84634838578a3f6e4f5dfea3824f49231ae33748adc8799e",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/handles.ts",
+      "sha256": "95851dbd4ce52d62af3490a5993e19fcab99eaa680c9c878e99656622e7db0b9",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/hit-participation.ts",
+      "sha256": "4e1e44326d78770f6d313a3b1111bd45819b8db05d4ab449faaa3494f59fda5a",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/image-view.ts",
+      "sha256": "3a6df9612b0982a50ec02d2544342dc88d431ea91a49d5207704cbc723a18673",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/index.ts",
+      "sha256": "b0b4d9798bb3ce5f49996d3f90d5142077e87e19d03a6c5dc0ea13974e5ff4b8",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/internal.ts",
+      "sha256": "363b2d4e0ac7bdd9b456de51023a75f619ba2523353ac92b6be01e12af73aa5b",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/module/index.ts",
+      "sha256": "d5c19655468e29f60c871b21e73af8ebc653f736e7123ade916f22c4a5f80ce5",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/module/types.ts",
+      "sha256": "07feee9d49bd7ae7e78cf2329edb6ded3d8b909c9a4c261ae8fc04df26a912df",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/move.ts",
+      "sha256": "687aaae99a4ba094eb902a458c3498c2970dd533cb74678d1f5a91135cc89d8a",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/overlay.ts",
+      "sha256": "a713d8fcf91e00aa86a5e03e1bfcd3fd8de8eddedf488f21edf391b124f408e1",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/positioning.ts",
+      "sha256": "a14297e9a4371fd3dfe79a7f8b11b7c6fd7d6f8dca7484ede25bce129b32838f",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/prototype.ts",
+      "sha256": "794efec380ce58f26e1bd74ce2dfdcac9736d24a33e0b5bb7ae7ee920d7da6d7",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/scroll.ts",
+      "sha256": "67d032447e3d770556a8d13429d741139bd6bebb533965aed7b309046e5a15d1",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/index.ts",
+      "sha256": "5615a1d8614eafa79cd3c245317d433208f81262bc2bf19d153e460f5d1105a3",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/recorder.ts",
+      "sha256": "5a6c723155ce26b746d2c75cabb828102ce4dcd901f43626b854cf0ee0c91ad8",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/semantic-merge.ts",
+      "sha256": "947adb660843ff197b2d835d1edf09537f295ad42cccbf067bee80f60d641314",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/style.ts",
+      "sha256": "d2ec966a7372c1ecb471c3fded7dfbaf97b9edcbad91cb5d05fa2a0ea578e805",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/tokens.ts",
+      "sha256": "b51f7ddba5795603950e01ba6ad2a9fe2be6abfdfd450ae33e6221824e325af3",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/spec/index.ts",
+      "sha256": "094d8c91a2f36cc1fa90ca23b6beec64fc044a43137b362dcfe047179ada703e",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/spec/template.ts",
+      "sha256": "a59a8533b56cf7d96a23ccf68fe38691a1e35c7792154d2ed603e962e551e9d5",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/state.ts",
+      "sha256": "0fce9b198cdfe44fadf007a26a124c014074a2cbaa22d3a45ca853410c1d71ad",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/core/src/text-control.ts",
+      "sha256": "6e2cefc197fdbccc7b50311feec19aab142d1ef489ccad18f34ecd57e2d84f80",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/base/src/caps-vault/index.ts",
+      "sha256": "3e64fc4b576da3e4a74218d06869a78b8e1e78b6f5b4789914e301ebf735b9b9",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/base/src/caps-vault/types.ts",
+      "sha256": "e19f1ce8abba3432a118024489b7a754ad14d8f91f323efc49c0c2911c96d2ba",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/base/src/caps-vault/vault.ts",
+      "sha256": "0736e692a09b29fffb8a880e4a4a3b34264cdea4ffe4d7083ba52af41ca968f5",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/base/src/create-module.ts",
+      "sha256": "8f29431c5b6560b9de4e35c6ba24fb901a45e2c1e77063d70e68d854a83d90f7",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/base/src/index.ts",
+      "sha256": "bf5d827278552b0898c45f9bafbc47275801d6171d19105eeddf35f92190640b",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/base/src/module-base.ts",
+      "sha256": "61af0eadc4c89a5d70fc6d55e5003b4619b031ac89b362cd2fd0bd9046bc172c",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/base/src/system-caps.ts",
+      "sha256": "617dd095a7b276b832909cc1e9c4c9095da3345083aae14aadd8554479bc6250",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/text-control/src/caps.ts",
+      "sha256": "cd9089e837f0ffc595d5fdbcdd7d49a73ea9aaa6a39ff600c2e48a9bb95df7ab",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/text-control/src/create.ts",
+      "sha256": "17337759367b35dc6a763498b64c31c98898f77599e4a1dc90b4fcbd293308f2",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/text-control/src/declaration.ts",
+      "sha256": "962e448395294088600d23fac73da518298a89ee060768cb2a709f2c4043198c",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/text-control/src/impl.ts",
+      "sha256": "8dc5625b5c2ed867aa70fe57a604d0e5626d8b07b37fc84665df29faf63a1407",
+      "matched": true,
+      "source": "git blob at new head"
+    },
+    {
+      "path": "packages/modules/text-control/src/web.ts",
+      "sha256": "53e83857f29b45027975763d468d47fb34b60f770035e6653a8afe593ed242f6",
+      "matched": true,
+      "source": "git blob at new head"
+    }
+  ],
+  "reuseBoundary": "All47repository bundle input hashes and1fixture input equal recorded capture. Existing6scenario109assertion syntheticChromium evidence is reused; screenshots retain their original488f70cd caption. No newOSIME/Adapterjourney claims. Newhead fullCI is separate."
+}

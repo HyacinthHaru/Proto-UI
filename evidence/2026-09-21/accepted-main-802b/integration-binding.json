@@ -1,0 +1,85 @@
+{
+  "observedAt": "2026-09-21T10:52:30.171311+00:00",
+  "mainApproval": "https://github.com/Proto-UI/Proto-UI/pull/673#pullrequestreview-5265617643",
+  "branches": [
+    {
+      "pr": 672,
+      "oldHead": "b6e260ed3c8e42668b68b3e76a6ea04743178382",
+      "head": "6b4a6c7f21cc6018b2412b5c0f4a1467ed3b6e82",
+      "main": "802b3c2cde64d8c8ff6728930097789fefa98eec",
+      "acceptedMainDeltaEqualsBranchDelta": true,
+      "changedFromValidatedHead": [
+        "internal/records/2026-09-20-adapter-budget-direct-reference-shadow-combined.zh-CN.md",
+        "scripts/analysis/package-budgets.mjs"
+      ],
+      "relativeMainFiles": ["packages/cli/test/lowered-hook-coverage.test.ts"],
+      "sourceTrees": {
+        "packages": {
+          "before": "16e44108b166551e53665fb9fbada7a8d71e7c31",
+          "after": "16e44108b166551e53665fb9fbada7a8d71e7c31"
+        },
+        "apps": {
+          "before": "32010f676c9fadefdda71dec2eacf94e8952caba",
+          "after": "32010f676c9fadefdda71dec2eacf94e8952caba"
+        },
+        "spec": {
+          "before": "85b723bd3b85a72cf8820bd7aa8adc8a1db73484",
+          "after": "85b723bd3b85a72cf8820bd7aa8adc8a1db73484"
+        },
+        "pnpm-lock.yaml": {
+          "before": "74491f43af3430be1ef1c9bd4639b0f498a42144",
+          "after": "74491f43af3430be1ef1c9bd4639b0f498a42144"
+        },
+        "scripts/test": {
+          "before": "29637a8cd451711263c501905a884ce986e5d9ce",
+          "after": "29637a8cd451711263c501905a884ce986e5d9ce"
+        }
+      },
+      "signature": "G hyacinth@haru.ac",
+      "identity": "HyacinthHaru <hyacinth@haru.ac> | HyacinthHaru <hyacinth@haru.ac>",
+      "message": "Merge main\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>"
+    },
+    {
+      "pr": 680,
+      "oldHead": "488f70cdd86bef0109eb3faab8fc4cfe0e86f95c",
+      "head": "0f9bb761b0de92fd0b78dc0730727ca39202651e",
+      "main": "802b3c2cde64d8c8ff6728930097789fefa98eec",
+      "acceptedMainDeltaEqualsBranchDelta": true,
+      "changedFromValidatedHead": [
+        "internal/records/2026-09-20-adapter-budget-direct-reference-shadow-combined.zh-CN.md",
+        "scripts/analysis/package-budgets.mjs"
+      ],
+      "relativeMainFiles": [
+        "packages/modules/text-control/src/impl.ts",
+        "packages/modules/text-control/test/impl-spec.test.ts",
+        "spec/tests/T-TEXT-CONTROL-0001.yaml"
+      ],
+      "sourceTrees": {
+        "packages": {
+          "before": "be94a7f8f654614b4a04908a59164e477c2a2042",
+          "after": "be94a7f8f654614b4a04908a59164e477c2a2042"
+        },
+        "apps": {
+          "before": "32010f676c9fadefdda71dec2eacf94e8952caba",
+          "after": "32010f676c9fadefdda71dec2eacf94e8952caba"
+        },
+        "spec": {
+          "before": "db3a8bfb3cc5f028031a41e8d649640b740fb88d",
+          "after": "db3a8bfb3cc5f028031a41e8d649640b740fb88d"
+        },
+        "pnpm-lock.yaml": {
+          "before": "74491f43af3430be1ef1c9bd4639b0f498a42144",
+          "after": "74491f43af3430be1ef1c9bd4639b0f498a42144"
+        },
+        "scripts/test": {
+          "before": "29637a8cd451711263c501905a884ce986e5d9ce",
+          "after": "29637a8cd451711263c501905a884ce986e5d9ce"
+        }
+      },
+      "signature": "G hyacinth@haru.ac",
+      "identity": "HyacinthHaru <hyacinth@haru.ac> | HyacinthHaru <hyacinth@haru.ac>",
+      "message": "Merge main\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>"
+    }
+  ],
+  "verificationPlan": "Fresh focused tests and all9 budget gates on each new head; native Windows75 on672; full trusted repositoryCI on both exactheads. Reuse old localfull/type/browser evidence only where source trees/input hashes are strictly equal, with original capturehead explicitly retained."
+}

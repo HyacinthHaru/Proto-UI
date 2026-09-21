@@ -1,0 +1,26 @@
+[
+  {
+    "pr": 672,
+    "head": "6b4a6c7f21cc6018b2412b5c0f4a1467ed3b6e82",
+    "ciCheckout": "2937aed0db73eb052f45007ad70e734287ffc699",
+    "ciTree": "a4578f56706be39d519812f3c9d53786755ac454",
+    "candidateTree": "a4578f56706be39d519812f3c9d53786755ac454",
+    "equal": true,
+    "packageJob": 106305751564,
+    "packageJobConclusion": "success",
+    "all9BudgetSizesAndHashesEqualLocal": true,
+    "all9BudgetsPass": true
+  },
+  {
+    "pr": 680,
+    "head": "0f9bb761b0de92fd0b78dc0730727ca39202651e",
+    "ciCheckout": "c1a9be9c855f3a5443eadecf4e920078402a8bef",
+    "ciTree": "61f11bc5e5cc8bce0e19c3b1049f0d27ab01b2e4",
+    "candidateTree": "61f11bc5e5cc8bce0e19c3b1049f0d27ab01b2e4",
+    "equal": true,
+    "packageJob": 106305733206,
+    "packageJobConclusion": "success",
+    "all9BudgetSizesAndHashesEqualLocal": true,
+    "all9BudgetsPass": true
+  }
+]

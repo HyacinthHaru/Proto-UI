@@ -1,0 +1,13 @@
+{
+  "head": "6b4a6c7f21cc6018b2412b5c0f4a1467ed3b6e82",
+  "run": 35591179151,
+  "workflowHead": "741d93287fe1ccdfdb96caf82fc6c25e3a92fdfb",
+  "testGitBlobSha256": "74a87de6737853aa8fac9fb9e660753a1fa1172a3439c8e6f2ed00f94bbd1047",
+  "nativeWindowsTestSha256": "dfc0d435d3bf39ca07cd6bf0b1eec608a6b214fc2102d3313cbc60185359eada",
+  "gitBlobCRLFSha256": "dfc0d435d3bf39ca07cd6bf0b1eec608a6b214fc2102d3313cbc60185359eada",
+  "nativeCRLFMatchesCommittedSource": true,
+  "passed": 75,
+  "failed": 0,
+  "exitCode": 0,
+  "scannerBoundary": "Originalscanrange/assertionspreserved; nativebackslashrelative and canonicalforwardslashprojection observed."
+}
