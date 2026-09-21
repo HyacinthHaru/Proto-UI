@@ -1,0 +1,88 @@
+{
+  "baseline": {
+    "sourceSha": "c473eae3fe6b66354f5e689fcc1d01241946ed7f",
+    "measurementCheckoutSha": "b6e260ed3c8e42668b68b3e76a6ea04743178382",
+    "binding": "The b6e260ed branch changes only a CLI test relative to c473eae3. Runtime/Adapter minified hashes match canonical c473 job106089855845.",
+    "file": "budgets-baseline.json"
+  },
+  "candidate": {
+    "file": "budgets.json",
+    "sourceBranch": "codex/text-control-composition-lease"
+  },
+  "environmentEqual": true,
+  "measurements": [
+    {
+      "name": "lucide/icons/x",
+      "baseline": 1734,
+      "candidate": 1734,
+      "delta": 0,
+      "ceiling": 3000,
+      "candidatePass": true
+    },
+    {
+      "name": "lucide root",
+      "baseline": 635820,
+      "candidate": 635820,
+      "delta": 0,
+      "ceiling": 700000,
+      "candidatePass": true
+    },
+    {
+      "name": "core root",
+      "baseline": 4894,
+      "candidate": 4894,
+      "delta": 0,
+      "ceiling": 6000,
+      "candidatePass": true
+    },
+    {
+      "name": "runtime root",
+      "baseline": 59974,
+      "candidate": 59973,
+      "delta": -1,
+      "ceiling": 60000,
+      "candidatePass": true
+    },
+    {
+      "name": "adapter-react root",
+      "baseline": 79385,
+      "candidate": 79389,
+      "delta": 4,
+      "ceiling": 78500,
+      "candidatePass": false
+    },
+    {
+      "name": "adapter-vue root",
+      "baseline": 79133,
+      "candidate": 79136,
+      "delta": 3,
+      "ceiling": 78500,
+      "candidatePass": false
+    },
+    {
+      "name": "adapter-web-component root",
+      "baseline": 82574,
+      "candidate": 82576,
+      "delta": 2,
+      "ceiling": 89000,
+      "candidatePass": true
+    },
+    {
+      "name": "prototypes-base/button",
+      "baseline": 3780,
+      "candidate": 3780,
+      "delta": 0,
+      "ceiling": 6000,
+      "candidatePass": true
+    },
+    {
+      "name": "prototypes-shadcn/button",
+      "baseline": 4625,
+      "candidate": 4625,
+      "delta": 0,
+      "ceiling": 7000,
+      "candidatePass": true
+    }
+  ],
+  "blocker": "Only the pre-existing React/Vue root budget failures remain. PR #673 is awaiting independent maintainer approval and actual merge. No budget edited in this contribution."
+}
