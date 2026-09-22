@@ -1226,3 +1226,93 @@ describe('part-relationship identity observation ownership', () => {
     }
   );
 });
+
+describe('pending live identity at view revocation', () => {
+  const flush = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+  const cases = [false, true].flatMap((explicit) =>
+    [false, true].flatMap((deliver) =>
+      ['detach', 'replace'].map((boundary) => ({ explicit, deliver, boundary }))
+    )
+  );
+
+  it.each(cases)(
+    'PUI-549-REVIEW-PENDING-ID-DETACH: explicit=$explicit delivery=$deliver boundary=$boundary',
+    async ({ explicit, deliver, boundary }) => {
+      const doc = document.implementation.createHTMLDocument('pending-live-id');
+      const original = doc.createElement('section'),
+        source = doc.createElement('button');
+      doc.body.append(source, original);
+      const registry = createWebA11yProjectionRegistry();
+      const ref = createA11ySemanticObjectRef();
+      const slot = targetSlot(original);
+      const target = createWebA11yProjector(slot.get, slot.subscribe, registry);
+      const dependent = createWebA11yProjector(source, undefined, registry);
+      const snapshot = {
+        ...semanticSnapshot(ref),
+        viewEpoch: 1,
+        ...(explicit ? { id: 'proto-id' } : {}),
+      };
+      let current = original;
+      try {
+        target(snapshot);
+        dependent(semanticSnapshot(createA11ySemanticObjectRef(), { controls: [ref] }));
+        await flush();
+        original.id = 'host-later';
+        if (deliver) await flush();
+        if (boundary === 'detach') {
+          target.detach?.();
+          target.reactivate?.();
+          target({ ...snapshot, viewEpoch: 2 });
+        } else {
+          current = doc.createElement('section');
+          original.replaceWith(current);
+          slot.set(current);
+        }
+        expect(current.id).toBe('host-later');
+        expect(source.getAttribute('aria-controls')).toBe('host-later');
+        await flush();
+        expect(current.id).toBe('host-later');
+        expect(source.getAttribute('aria-controls')).toBe('host-later');
+      } finally {
+        target.dispose?.();
+        dependent.dispose?.();
+      }
+    }
+  );
+
+  it.each([false, true])(
+    'preserves and fails closed on an ID written after detach, explicit=%s',
+    async (explicit) => {
+      const doc = document.implementation.createHTMLDocument('detached-author-id');
+      const element = doc.createElement('section'),
+        source = doc.createElement('button');
+      doc.body.append(source, element);
+      const registry = createWebA11yProjectionRegistry();
+      const ref = createA11ySemanticObjectRef();
+      const target = createWebA11yProjector(element, undefined, registry);
+      const dependent = createWebA11yProjector(source, undefined, registry);
+      const snapshot = {
+        ...semanticSnapshot(ref),
+        viewEpoch: 1,
+        ...(explicit ? { id: 'proto-id' } : {}),
+      };
+      try {
+        target(snapshot);
+        dependent(semanticSnapshot(createA11ySemanticObjectRef(), { controls: [ref] }));
+        await flush();
+        target.detach?.();
+        element.id = 'detached-author';
+        target.reactivate?.();
+        target({ ...snapshot, viewEpoch: 2 });
+        expect(element.id).toBe('detached-author');
+        expect(source.hasAttribute('aria-controls')).toBe(false);
+        await flush();
+        expect(element.id).toBe('detached-author');
+        expect(source.hasAttribute('aria-controls')).toBe(false);
+      } finally {
+        target.dispose?.();
+        dependent.dispose?.();
+      }
+    }
+  );
+});

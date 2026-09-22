@@ -706,7 +706,7 @@ export function createWebA11yProjectionRegistry(
     // State can project again before MutationObserver delivery. Classify the
     // current identity before replaying scalars or selecting a reservation.
     const identityChanged =
-      !bindingReplaced &&
+      !refChanged &&
       !reactivating &&
       snapshot.viewEpoch !== undefined &&
       reconcileIdentityChange(record, pendingIdWrites);
@@ -855,6 +855,9 @@ export function createWebA11yProjectionRegistry(
       let needsReplay = false;
       const detach = (removeOwned = false) => {
         if (record.disposed || record.detached) return;
+        if (record.snapshot?.viewEpoch !== undefined) {
+          reconcileIdentityChange(record, pendingIdWrites);
+        }
         const affectedRef = record.objectRef;
         unobserve(record);
         const releasedIdRefs = releaseScalarAttributes(record, removeOwned);
