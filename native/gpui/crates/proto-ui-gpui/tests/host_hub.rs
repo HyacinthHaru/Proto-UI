@@ -89,6 +89,7 @@ impl Hub {
                     )]),
                     root_style: StyleRefinement::default(),
                     theme: None,
+                    parent: None,
                 },
                 cx,
             );

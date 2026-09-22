@@ -51,7 +51,7 @@ use std::rc::Rc;
 use gpui::prelude::*;
 use gpui::{
     accesskit, canvas, div, AccessibleAction, AnyElement, App, Bounds, Context, DispatchPhase, Div,
-    ElementId, FocusHandle, GlobalElementId, InspectorElementId, KeyDownEvent, KeyUpEvent,
+    ElementId, Empty, FocusHandle, GlobalElementId, InspectorElementId, KeyDownEvent, KeyUpEvent,
     LayoutId, MouseButton, MouseDownEvent, MouseExitEvent, MouseMoveEvent, MouseUpEvent, Pixels,
     SharedString, Stateful, StyleRefinement, Subscription, Text, Window,
 };
@@ -89,6 +89,11 @@ pub enum SurfaceChild {
     /// Boxed: a surface carries a whole style, and text is a handle.
     Surface(Box<SurfaceNode>),
     Text(SharedString),
+    /// Another session's instance, rendered here: a part the host places in
+    /// a slot of the instance it belongs to. The hub replaces it with that
+    /// session's surfaces when it publishes, and drops it while that session
+    /// has none.
+    Session(SessionId),
 }
 
 impl From<SurfaceNode> for SurfaceChild {
@@ -102,8 +107,21 @@ impl SurfaceNode {
     pub fn child_surfaces(&self) -> impl Iterator<Item = &SurfaceNode> {
         self.children.iter().filter_map(|child| match child {
             SurfaceChild::Surface(surface) => Some(surface.as_ref()),
-            SurfaceChild::Text(_) => None,
+            SurfaceChild::Text(_) | SurfaceChild::Session(_) => None,
         })
+    }
+
+    /// The sessions placed anywhere beneath this surface.
+    pub fn placed_sessions(&self) -> Vec<SessionId> {
+        let mut placed = Vec::new();
+        for child in &self.children {
+            match child {
+                SurfaceChild::Surface(surface) => placed.extend(surface.placed_sessions()),
+                SurfaceChild::Session(session) => placed.push(session.clone()),
+                SurfaceChild::Text(_) => {}
+            }
+        }
+        placed
     }
 }
 
@@ -128,6 +146,8 @@ pub struct InputBridge {
     /// rather than dropped: a Prototype would never have seen them, and
     /// knowing which ones arrived is how the key table grows.
     unmapped_keys: Vec<String>,
+    /// For each session that is a trigger, the session anchoring its group.
+    trigger_anchor: HashMap<SessionId, SessionId>,
 }
 
 impl InputBridge {
@@ -142,6 +162,16 @@ impl InputBridge {
 
     pub fn remove_session(&mut self, session_id: &str) {
         self.router.remove_session(session_id);
+        self.trigger_anchor.remove(session_id);
+    }
+
+    /// Records whether a session is a trigger, and which session anchors its
+    /// group if it is.
+    pub fn set_trigger_anchor(&mut self, session_id: &str, anchor: Option<SessionId>) {
+        match anchor {
+            Some(anchor) => self.trigger_anchor.insert(session_id.to_string(), anchor),
+            None => self.trigger_anchor.remove(session_id),
+        };
     }
 
     /// Takes every sample routed since the last call, in routing order.
@@ -190,10 +220,28 @@ impl InputBridge {
         }
     }
 
+    /// Who owns an input on these surfaces, as the Web router decides it.
+    ///
+    /// `resolveOwningTrigger` first: the nearest trigger on the path owns the
+    /// input for its group, so a click on a Switch's thumb belongs to the
+    /// Switch. Without a trigger, `resolveOwningProtoInstance`: the innermost
+    /// instance owns it.
+    ///
+    /// A group's input goes to the group's anchor. For a lone trigger that is
+    /// the trigger itself, as in the Web. A group of several triggers routes
+    /// differently there: to its deepest member, whose router every member
+    /// shares. No Prototype this host runs forms such a group yet.
     fn target(&self, physical: Vec<SurfaceId>) -> Target {
-        let owner = physical
-            .first()
-            .and_then(|innermost| self.owner_of.get(innermost))
+        let trigger = physical.iter().find_map(|surface| {
+            let session = self.owner_of.get(surface)?;
+            self.trigger_anchor.get(session)
+        });
+        let owner = trigger
+            .or_else(|| {
+                physical
+                    .first()
+                    .and_then(|innermost| self.owner_of.get(innermost))
+            })
             .map_or(RouteOwner::Unowned, |session| {
                 RouteOwner::Session(session.clone())
             });
@@ -608,6 +656,8 @@ fn render_surface(surface: &SurfaceNode, bridge: &Rc<RefCell<InputBridge>>) -> A
                 text.clone(),
             )
             .into_any_element(),
+            // Only a session with nothing to show yet is still a placeholder.
+            SurfaceChild::Session(_) => Empty.into_any_element(),
         }
     }));
     match &surface.a11y {

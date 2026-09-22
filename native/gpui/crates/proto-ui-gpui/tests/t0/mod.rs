@@ -91,6 +91,7 @@ impl Fixture {
                     )]),
                     root_style: StyleRefinement::default(),
                     theme: None,
+                    parent: None,
                 },
                 cx,
             );

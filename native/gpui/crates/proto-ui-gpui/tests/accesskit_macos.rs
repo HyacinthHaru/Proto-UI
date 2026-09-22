@@ -109,6 +109,7 @@ mod macos {
             )]),
             root_style: StyleRefinement::default(),
             theme: None,
+            parent: None,
         }
     }
 

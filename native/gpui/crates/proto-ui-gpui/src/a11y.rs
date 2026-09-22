@@ -35,7 +35,8 @@ pub struct A11yProjection {
 /// A fact in a snapshot that the projection does not carry.
 #[derive(Debug, Clone, PartialEq)]
 pub enum A11yIssue {
-    /// The snapshot names no role, so there is nothing to report it as.
+    /// The snapshot carries facts but names no role, so there is nothing to
+    /// report them as.
     NoRole,
     /// A role this layer does not map. Nothing about the object is reported.
     Role(String),
@@ -53,9 +54,12 @@ pub enum A11yIssue {
 /// Projects a snapshot, returning what it could not carry alongside it.
 ///
 /// Without a projection the object is not reported at all, and the only
-/// issue is the one that prevented it.
+/// issue is the one that prevented it. A snapshot with no role and nothing
+/// else in it, as a presentational part sends, is not an issue: there is
+/// nothing to report.
 pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11yIssue>) {
     let role = match snapshot.role.as_deref() {
+        None if is_empty(snapshot) => return (None, Vec::new()),
         None => return (None, vec![A11yIssue::NoRole]),
         Some(name) => match role(name) {
             Some(role) => role,
@@ -118,6 +122,14 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
         activatable,
     };
     (Some(projection), issues)
+}
+
+fn is_empty(snapshot: &A11ySnapshotWire) -> bool {
+    snapshot.name.is_none()
+        && snapshot.states.is_empty()
+        && snapshot.actions.is_empty()
+        && snapshot.relations.values().all(Value::is_null)
+        && snapshot.level.is_none()
 }
 
 /// The AccessKit role for a Proto UI role.
