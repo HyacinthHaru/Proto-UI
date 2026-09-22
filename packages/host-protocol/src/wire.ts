@@ -159,7 +159,17 @@ export function assertWireValue<T>(value: T, path = ''): T {
     seen.add(object);
 
     if (Array.isArray(object)) {
-      object.forEach((entry, index) => visit(entry, `${currentPath}[${index}]`));
+      // Index-based iteration on purpose: forEach skips sparse holes, which
+      // would let a hole reach a consumer that iterates with for...of and
+      // dereferences undefined. JSON has no hole, so a hole is never a
+      // faithful wire value.
+      for (let index = 0; index < object.length; index += 1) {
+        const entryPath = `${currentPath}[${index}]`;
+        if (!Object.prototype.hasOwnProperty.call(object, index)) {
+          throw new WireBoundaryError(entryPath, 'sparse array holes cannot cross the boundary');
+        }
+        visit(object[index], entryPath);
+      }
     } else {
       if (!isPlainObject(object)) {
         throw new WireBoundaryError(

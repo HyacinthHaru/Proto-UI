@@ -229,6 +229,24 @@ export function createHostSessionModel(sessionId: SessionId): HostSessionModel {
       // Validate the complete plan before touching any host resource.
       const planIds = new Set<LeaseId>();
       for (const registration of transaction.events.registrations) {
+        // Defence in depth: the wire guard already rejects holes and
+        // non-records, so a malformed entry here means a caller bypassed it.
+        // Answer with a bounded result instead of an implementation throw.
+        if (
+          !registration ||
+          typeof registration !== 'object' ||
+          typeof registration.leaseId !== 'string' ||
+          registration.leaseId.length === 0 ||
+          (registration.scope !== 'root' && registration.scope !== 'global') ||
+          typeof registration.type !== 'string' ||
+          registration.type.length === 0
+        ) {
+          return ack(transaction, 'failed', [
+            diagnose('malformed-registration', 'an Event registration is not a complete record', {
+              index: transaction.events.registrations.indexOf(registration),
+            }),
+          ]);
+        }
         if (planIds.has(registration.leaseId)) {
           return ack(transaction, 'failed', [
             diagnose('duplicate-lease', 'a plan cannot register one lease id twice', {
