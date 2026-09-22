@@ -1,0 +1,5185 @@
+{
+  "startedAt": "2026-09-22T00:04:23.950Z",
+  "url": "http://127.0.0.1:51673/en/ui-libraries/base/dialog/",
+  "environment": {
+    "node": "v22.23.2",
+    "platform": "darwin",
+    "arch": "arm64",
+    "os": "25.6.0",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "playwright": "1.58.2",
+    "chromeExecutable": "Google Chrome",
+    "browser": "153.0.8010.53"
+  },
+  "scope": {
+    "primary": "Initial Web Component Base Dialog on the ordinary built docs route",
+    "supplementary": "Native View code Button; native runtime Select; React and Vue Dialog if the public control reaches them",
+    "excluded": "Vue 2, other browsers, complete accessibility/focus/keyboard matrix, dev-server optimization and historical ddac15da reproduction",
+    "input": "Playwright native pointer clicks; passive input observer records isTrusted. No synthetic dispatch, DOM/CSS state injection, exposed-method invocation or private Core flags.",
+    "waiting": "Navigation load, visible controls, and observed transition/detach/overflow conditions; no sleep or forced animation completion."
+  },
+  "checks": [
+    {
+      "runtime": "wc",
+      "name": "HTTP 200",
+      "passed": true,
+      "observed": 200
+    },
+    {
+      "runtime": "wc",
+      "name": "served HTML equals local production artifact",
+      "passed": true,
+      "observed": {
+        "builtHtmlHash": "34093aeb72f1c5771d31144ed6b780ef4f96e494afc605112585aec066300aa5",
+        "servedHtmlHash": "34093aeb72f1c5771d31144ed6b780ef4f96e494afc605112585aec066300aa5"
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "initial content is closed",
+      "passed": true,
+      "observed": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-pui-view-detached": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "initial mask is closed",
+      "passed": true,
+      "observed": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-pui-view-detached": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "initial path is WC",
+      "passed": true,
+      "observed": "WC-BASE-DIALOG-ROOT"
+    },
+    {
+      "runtime": "wc",
+      "name": "native open action completed",
+      "passed": true,
+      "observed": true
+    },
+    {
+      "runtime": "wc",
+      "name": "trusted native opening pointer observed",
+      "passed": true,
+      "observed": "Passive document capture"
+    },
+    {
+      "runtime": "wc",
+      "name": "Content visible and entered",
+      "passed": true,
+      "observed": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "entered",
+          "data-open": "",
+          "data-is-present": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "id": "pui-dialog-1-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-1-description",
+          "aria-labelledby": "pui-dialog-1-title",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "Content role is dialog",
+      "passed": true,
+      "observed": "dialog"
+    },
+    {
+      "runtime": "wc",
+      "name": "Content aria-modal is true",
+      "passed": true,
+      "observed": "true"
+    },
+    {
+      "runtime": "wc",
+      "name": "Mask visible and entered",
+      "passed": true,
+      "observed": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "Mask presence holds body scroll lock",
+      "passed": true,
+      "observed": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "native close action completed",
+      "passed": true,
+      "observed": true
+    },
+    {
+      "runtime": "wc",
+      "name": "trusted native closing pointer observed",
+      "passed": true,
+      "observed": "Passive document capture"
+    },
+    {
+      "runtime": "wc",
+      "name": "Content is no longer visible",
+      "passed": true,
+      "observed": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "closed",
+          "style": "",
+          "data-pui-view-detached": "",
+          "id": "pui-dialog-1-content",
+          "role": "dialog",
+          "aria-modal": "true"
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "0",
+          "pointerEvents": "none",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "0.96"
+        }
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "Mask is no longer visible",
+      "passed": true,
+      "observed": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "closed",
+          "style": "",
+          "data-pui-view-detached": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "0",
+          "pointerEvents": "none",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "original body overflow value and priority restored",
+      "passed": true,
+      "observed": {
+        "initial": {
+          "overflow": "",
+          "overflowPriority": "",
+          "computedOverflow": "visible",
+          "paddingRight": "",
+          "paddingRightPriority": ""
+        },
+        "closed": {
+          "overflow": "",
+          "overflowPriority": "",
+          "computedOverflow": "visible",
+          "paddingRight": "",
+          "paddingRightPriority": ""
+        }
+      }
+    },
+    {
+      "runtime": "wc",
+      "name": "no page errors",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "runtime": "wc",
+      "name": "no console errors",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "runtime": "react",
+      "name": "HTTP 200",
+      "passed": true,
+      "observed": 200
+    },
+    {
+      "runtime": "react",
+      "name": "served HTML equals local production artifact",
+      "passed": true,
+      "observed": {
+        "builtHtmlHash": "34093aeb72f1c5771d31144ed6b780ef4f96e494afc605112585aec066300aa5",
+        "servedHtmlHash": "34093aeb72f1c5771d31144ed6b780ef4f96e494afc605112585aec066300aa5"
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "representative Shadcn Button works",
+      "passed": true,
+      "observed": "View code click and data-code-expanded"
+    },
+    {
+      "runtime": "react",
+      "name": "requested runtime was actually mounted",
+      "passed": true,
+      "observed": "Native runtime control selection and host identity"
+    },
+    {
+      "runtime": "react",
+      "name": "initial content is closed",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "initial mask is closed",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "native open action completed",
+      "passed": true,
+      "observed": true
+    },
+    {
+      "runtime": "react",
+      "name": "trusted native opening pointer observed",
+      "passed": true,
+      "observed": "Passive document capture"
+    },
+    {
+      "runtime": "react",
+      "name": "Content visible and entered",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "data-transition-state": "entered",
+          "data-open": "",
+          "id": "pui-dialog-2-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-2-description",
+          "aria-labelledby": "pui-dialog-2-title",
+          "data-is-present": "",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "Content role is dialog",
+      "passed": true,
+      "observed": "dialog"
+    },
+    {
+      "runtime": "react",
+      "name": "Content aria-modal is true",
+      "passed": true,
+      "observed": "true"
+    },
+    {
+      "runtime": "react",
+      "name": "Mask visible and entered",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "Mask presence holds body scroll lock",
+      "passed": true,
+      "observed": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "native close action completed",
+      "passed": true,
+      "observed": true
+    },
+    {
+      "runtime": "react",
+      "name": "trusted native closing pointer observed",
+      "passed": true,
+      "observed": "Passive document capture"
+    },
+    {
+      "runtime": "react",
+      "name": "Content is no longer visible",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "Mask is no longer visible",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "original body overflow value and priority restored",
+      "passed": true,
+      "observed": {
+        "initial": {
+          "overflow": "",
+          "overflowPriority": "",
+          "computedOverflow": "visible",
+          "paddingRight": "",
+          "paddingRightPriority": ""
+        },
+        "closed": {
+          "overflow": "",
+          "overflowPriority": "",
+          "computedOverflow": "visible",
+          "paddingRight": "",
+          "paddingRightPriority": ""
+        }
+      }
+    },
+    {
+      "runtime": "react",
+      "name": "no page errors",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "runtime": "react",
+      "name": "no console errors",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "runtime": "vue",
+      "name": "HTTP 200",
+      "passed": true,
+      "observed": 200
+    },
+    {
+      "runtime": "vue",
+      "name": "served HTML equals local production artifact",
+      "passed": true,
+      "observed": {
+        "builtHtmlHash": "34093aeb72f1c5771d31144ed6b780ef4f96e494afc605112585aec066300aa5",
+        "servedHtmlHash": "34093aeb72f1c5771d31144ed6b780ef4f96e494afc605112585aec066300aa5"
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "requested runtime was actually mounted",
+      "passed": true,
+      "observed": "Native runtime control selection and host identity"
+    },
+    {
+      "runtime": "vue",
+      "name": "initial content is closed",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "initial mask is closed",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "native open action completed",
+      "passed": true,
+      "observed": true
+    },
+    {
+      "runtime": "vue",
+      "name": "trusted native opening pointer observed",
+      "passed": true,
+      "observed": "Passive document capture"
+    },
+    {
+      "runtime": "vue",
+      "name": "Content visible and entered",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "data-transition-state": "entered",
+          "data-open": "",
+          "id": "pui-dialog-2-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-2-description",
+          "aria-labelledby": "pui-dialog-2-title",
+          "data-is-present": "",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "Content role is dialog",
+      "passed": true,
+      "observed": "dialog"
+    },
+    {
+      "runtime": "vue",
+      "name": "Content aria-modal is true",
+      "passed": true,
+      "observed": "true"
+    },
+    {
+      "runtime": "vue",
+      "name": "Mask visible and entered",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "Mask presence holds body scroll lock",
+      "passed": true,
+      "observed": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "native close action completed",
+      "passed": true,
+      "observed": true
+    },
+    {
+      "runtime": "vue",
+      "name": "trusted native closing pointer observed",
+      "passed": true,
+      "observed": "Passive document capture"
+    },
+    {
+      "runtime": "vue",
+      "name": "Content is no longer visible",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "Mask is no longer visible",
+      "passed": true,
+      "observed": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "original body overflow value and priority restored",
+      "passed": true,
+      "observed": {
+        "initial": {
+          "overflow": "",
+          "overflowPriority": "",
+          "computedOverflow": "visible",
+          "paddingRight": "",
+          "paddingRightPriority": ""
+        },
+        "closed": {
+          "overflow": "",
+          "overflowPriority": "",
+          "computedOverflow": "visible",
+          "paddingRight": "",
+          "paddingRightPriority": ""
+        }
+      }
+    },
+    {
+      "runtime": "vue",
+      "name": "no page errors",
+      "passed": true,
+      "observed": []
+    },
+    {
+      "runtime": "vue",
+      "name": "no console errors",
+      "passed": true,
+      "observed": []
+    }
+  ],
+  "actions": [
+    {
+      "runtime": "wc",
+      "name": "complete route probe",
+      "startedAt": "2026-09-22T00:04:24.834Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:26.047Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "load built route",
+      "startedAt": "2026-09-22T00:04:25.029Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:25.206Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "initial WC trigger is visible",
+      "startedAt": "2026-09-22T00:04:25.206Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:25.272Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "capture initial",
+      "startedAt": "2026-09-22T00:04:25.310Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:25.366Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "native Open Dialog click",
+      "startedAt": "2026-09-22T00:04:25.366Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:25.397Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "wait for entered Content and Mask with modal lock",
+      "startedAt": "2026-09-22T00:04:25.400Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:25.707Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "capture open",
+      "startedAt": "2026-09-22T00:04:25.712Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:25.759Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "native Cancel click",
+      "startedAt": "2026-09-22T00:04:25.759Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:25.776Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "wait for leave/detach and overflow restoration",
+      "startedAt": "2026-09-22T00:04:25.777Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:25.991Z"
+    },
+    {
+      "runtime": "wc",
+      "name": "capture closed",
+      "startedAt": "2026-09-22T00:04:25.997Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:26.042Z"
+    },
+    {
+      "runtime": "react",
+      "name": "complete route probe",
+      "startedAt": "2026-09-22T00:04:26.048Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:28.524Z"
+    },
+    {
+      "runtime": "react",
+      "name": "load built route",
+      "startedAt": "2026-09-22T00:04:26.185Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:26.348Z"
+    },
+    {
+      "runtime": "react",
+      "name": "initial WC trigger is visible",
+      "startedAt": "2026-09-22T00:04:26.348Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:26.428Z"
+    },
+    {
+      "runtime": "react",
+      "name": "native View code Button expands code",
+      "startedAt": "2026-09-22T00:04:26.428Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:26.467Z"
+    },
+    {
+      "runtime": "react",
+      "name": "capture site-button",
+      "startedAt": "2026-09-22T00:04:26.469Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:26.517Z"
+    },
+    {
+      "runtime": "react",
+      "name": "native Select reaches requested runtime",
+      "startedAt": "2026-09-22T00:04:26.517Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:27.765Z"
+    },
+    {
+      "runtime": "react",
+      "name": "capture initial",
+      "startedAt": "2026-09-22T00:04:27.797Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:27.838Z"
+    },
+    {
+      "runtime": "react",
+      "name": "native Open Dialog click",
+      "startedAt": "2026-09-22T00:04:27.838Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:27.867Z"
+    },
+    {
+      "runtime": "react",
+      "name": "wait for entered Content and Mask with modal lock",
+      "startedAt": "2026-09-22T00:04:27.868Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:28.194Z"
+    },
+    {
+      "runtime": "react",
+      "name": "capture open",
+      "startedAt": "2026-09-22T00:04:28.199Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:28.236Z"
+    },
+    {
+      "runtime": "react",
+      "name": "native Cancel click",
+      "startedAt": "2026-09-22T00:04:28.236Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:28.265Z"
+    },
+    {
+      "runtime": "react",
+      "name": "wait for leave/detach and overflow restoration",
+      "startedAt": "2026-09-22T00:04:28.266Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:28.478Z"
+    },
+    {
+      "runtime": "react",
+      "name": "capture closed",
+      "startedAt": "2026-09-22T00:04:28.482Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:28.521Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "complete route probe",
+      "startedAt": "2026-09-22T00:04:28.525Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:31.400Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "load built route",
+      "startedAt": "2026-09-22T00:04:28.666Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:28.824Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "initial WC trigger is visible",
+      "startedAt": "2026-09-22T00:04:28.824Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:28.891Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "native Select reaches requested runtime",
+      "startedAt": "2026-09-22T00:04:28.891Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:30.638Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "capture initial",
+      "startedAt": "2026-09-22T00:04:30.676Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:30.718Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "native Open Dialog click",
+      "startedAt": "2026-09-22T00:04:30.718Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:30.752Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "wait for entered Content and Mask with modal lock",
+      "startedAt": "2026-09-22T00:04:30.753Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:31.059Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "capture open",
+      "startedAt": "2026-09-22T00:04:31.066Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:31.126Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "native Cancel click",
+      "startedAt": "2026-09-22T00:04:31.126Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:31.145Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "wait for leave/detach and overflow restoration",
+      "startedAt": "2026-09-22T00:04:31.146Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:31.357Z"
+    },
+    {
+      "runtime": "vue",
+      "name": "capture closed",
+      "startedAt": "2026-09-22T00:04:31.359Z",
+      "passed": true,
+      "finishedAt": "2026-09-22T00:04:31.396Z"
+    }
+  ],
+  "samples": [
+    {
+      "runtime": "wc",
+      "stage": "initial",
+      "observedAt": "2026-09-22T00:04:25.310Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open DialogConfirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "hostRootTag": "WC-BASE-DIALOG-ROOT"
+      },
+      "selectedRuntime": "wc",
+      "body": {
+        "overflow": "",
+        "overflowPriority": "",
+        "computedOverflow": "visible",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "WC-BASE-DIALOG-TRIGGER",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-1-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-pui-view-detached": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "mask": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-pui-view-detached": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "BODY",
+        "text": "Skip to content   const e=document.querySelector(\"starlight-menu-button\"),a=e?.querySelector(\"button\");if(e&&a){const t=()=>{a.setAttribute(\"aria-expanded\",e.getAttribute(\"aria-expanded\")===\"true\"?\"true\":\"false\")},r=(n=!1)=>{e.setAttribute(\"aria-expanded\",\"false\"),document.body.removeAttribute(\"data-mobile-menu-expanded\"),t(),n&&a.focus()},u=window.matchMedia(\"(min-width: 64rem)\"),d=()=>{u.matches",
+        "attributes": {
+          "class": "astro-f2gcikuq"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1249
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js"
+      ]
+    },
+    {
+      "runtime": "wc",
+      "stage": "after-open-input",
+      "observedAt": "2026-09-22T00:04:25.400Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open Dialog",
+        "hostRootTag": "WC-BASE-DIALOG-ROOT"
+      },
+      "selectedRuntime": "wc",
+      "body": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "WC-BASE-DIALOG-TRIGGER",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "data-hovered": "",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "true",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-1-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "entering",
+          "data-open": "",
+          "data-is-present": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "id": "pui-dialog-1-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-1-description",
+          "aria-labelledby": "pui-dialog-1-title",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      },
+      "mask": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "entering",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "WC-BASE-DIALOG-CLOSE",
+        "text": "Cancel",
+        "attributes": {
+          "class": "px-4 py-2 text-sm font-medium rounded border cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "data-pui-a11y-actions": "activate",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 742.671875,
+          "y": 531,
+          "width": 79.359375,
+          "height": 38
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": true,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js"
+      ]
+    },
+    {
+      "runtime": "wc",
+      "stage": "open",
+      "observedAt": "2026-09-22T00:04:25.711Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open Dialog",
+        "hostRootTag": "WC-BASE-DIALOG-ROOT"
+      },
+      "selectedRuntime": "wc",
+      "body": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "WC-BASE-DIALOG-TRIGGER",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "true",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-1-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "entered",
+          "data-open": "",
+          "data-is-present": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "id": "pui-dialog-1-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-1-description",
+          "aria-labelledby": "pui-dialog-1-title",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      },
+      "mask": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "WC-BASE-DIALOG-CLOSE",
+        "text": "Cancel",
+        "attributes": {
+          "class": "px-4 py-2 text-sm font-medium rounded border cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "data-pui-a11y-actions": "activate",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 742.671875,
+          "y": 531,
+          "width": 79.359375,
+          "height": 38
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": true,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js"
+      ]
+    },
+    {
+      "runtime": "wc",
+      "stage": "after-close-input",
+      "observedAt": "2026-09-22T00:04:25.777Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open Dialog",
+        "hostRootTag": "WC-BASE-DIALOG-ROOT"
+      },
+      "selectedRuntime": "wc",
+      "body": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "WC-BASE-DIALOG-TRIGGER",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-1-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "leaving",
+          "data-is-present": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "id": "pui-dialog-1-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-1-description",
+          "aria-labelledby": "pui-dialog-1-title",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "none",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      },
+      "mask": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "leaving",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "none",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "WC-BASE-DIALOG-TRIGGER",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-1-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js"
+      ]
+    },
+    {
+      "runtime": "wc",
+      "stage": "closed",
+      "observedAt": "2026-09-22T00:04:25.997Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open DialogConfirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "hostRootTag": "WC-BASE-DIALOG-ROOT"
+      },
+      "selectedRuntime": "wc",
+      "body": {
+        "overflow": "",
+        "overflowPriority": "",
+        "computedOverflow": "visible",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "WC-BASE-DIALOG-TRIGGER",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-1-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "closed",
+          "style": "",
+          "data-pui-view-detached": "",
+          "id": "pui-dialog-1-content",
+          "role": "dialog",
+          "aria-modal": "true"
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "0",
+          "pointerEvents": "none",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "0.96"
+        }
+      },
+      "mask": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-transition-state": "closed",
+          "style": "",
+          "data-pui-view-detached": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "0",
+          "pointerEvents": "none",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "WC-BASE-DIALOG-TRIGGER",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-1-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js"
+      ]
+    },
+    {
+      "runtime": "react",
+      "stage": "site-button",
+      "observedAt": "2026-09-22T00:04:26.469Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open DialogConfirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "hostRootTag": "WC-BASE-DIALOG-ROOT"
+      },
+      "selectedRuntime": "wc",
+      "body": {
+        "overflow": "",
+        "overflowPriority": "",
+        "computedOverflow": "visible",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "WC-BASE-DIALOG-TRIGGER",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none pui-host-root",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-1-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "WC-BASE-DIALOG-CONTENT",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl pui-host-root",
+          "data-pui-root": "",
+          "data-pui-view-detached": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "mask": {
+        "tag": "WC-BASE-DIALOG-MASK",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50 pui-host-root",
+          "data-pui-root": "",
+          "data-pui-view-detached": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "BODY",
+        "text": "Skip to content   const e=document.querySelector(\"starlight-menu-button\"),a=e?.querySelector(\"button\");if(e&&a){const t=()=>{a.setAttribute(\"aria-expanded\",e.getAttribute(\"aria-expanded\")===\"true\"?\"true\":\"false\")},r=(n=!1)=>{e.setAttribute(\"aria-expanded\",\"false\"),document.body.removeAttribute(\"data-mobile-menu-expanded\"),t(),n&&a.focus()},u=window.matchMedia(\"(min-width: 64rem)\"),d=()=>{u.matches",
+        "attributes": {
+          "class": "astro-f2gcikuq"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1321
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js"
+      ]
+    },
+    {
+      "runtime": "react",
+      "stage": "initial",
+      "observedAt": "2026-09-22T00:04:27.797Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open DialogConfirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "react",
+      "body": {
+        "overflow": "",
+        "overflowPriority": "",
+        "computedOverflow": "visible",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "BODY",
+        "text": "Skip to content   const e=document.querySelector(\"starlight-menu-button\"),a=e?.querySelector(\"button\");if(e&&a){const t=()=>{a.setAttribute(\"aria-expanded\",e.getAttribute(\"aria-expanded\")===\"true\"?\"true\":\"false\")},r=(n=!1)=>{e.setAttribute(\"aria-expanded\",\"false\"),document.body.removeAttribute(\"data-mobile-menu-expanded\"),t(),n&&a.focus()},u=window.matchMedia(\"(min-width: 64rem)\"),d=()=>{u.matches",
+        "attributes": {
+          "class": "astro-f2gcikuq"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1249
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/react-dom@18",
+        "https://esm.sh/react@18",
+        "https://esm.sh/react@18.3.1/es2022/react.mjs",
+        "https://esm.sh/scheduler@%5E0.23.2?target=es2022",
+        "https://esm.sh/react-dom@18.3.1/es2022/react-dom.mjs",
+        "https://esm.sh/scheduler@0.23.2/es2022/scheduler.mjs"
+      ]
+    },
+    {
+      "runtime": "react",
+      "stage": "after-open-input",
+      "observedAt": "2026-09-22T00:04:27.868Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open DialogConfirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "react",
+      "body": {
+        "overflow": "",
+        "overflowPriority": "",
+        "computedOverflow": "visible",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "data-hovered": "",
+          "data-focused": "",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "true",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "data-hovered": "",
+          "data-focused": "",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "true",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/react-dom@18",
+        "https://esm.sh/react@18",
+        "https://esm.sh/react@18.3.1/es2022/react.mjs",
+        "https://esm.sh/scheduler@%5E0.23.2?target=es2022",
+        "https://esm.sh/react-dom@18.3.1/es2022/react-dom.mjs",
+        "https://esm.sh/scheduler@0.23.2/es2022/scheduler.mjs"
+      ]
+    },
+    {
+      "runtime": "react",
+      "stage": "open",
+      "observedAt": "2026-09-22T00:04:28.199Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open Dialog",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "react",
+      "body": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "true",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "data-transition-state": "entered",
+          "data-open": "",
+          "id": "pui-dialog-2-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-2-description",
+          "aria-labelledby": "pui-dialog-2-title",
+          "data-is-present": "",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "DIV",
+        "text": "Cancel",
+        "attributes": {
+          "class": "px-4 py-2 text-sm font-medium rounded border cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "data-pui-a11y-actions": "activate",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 742.671875,
+          "y": 531,
+          "width": 79.359375,
+          "height": 38
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": true,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/react-dom@18",
+        "https://esm.sh/react@18",
+        "https://esm.sh/react@18.3.1/es2022/react.mjs",
+        "https://esm.sh/scheduler@%5E0.23.2?target=es2022",
+        "https://esm.sh/react-dom@18.3.1/es2022/react-dom.mjs",
+        "https://esm.sh/scheduler@0.23.2/es2022/scheduler.mjs"
+      ]
+    },
+    {
+      "runtime": "react",
+      "stage": "after-close-input",
+      "observedAt": "2026-09-22T00:04:28.266Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open Dialog",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "react",
+      "body": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "data-transition-state": "leaving",
+          "id": "pui-dialog-2-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-2-description",
+          "aria-labelledby": "pui-dialog-2-title",
+          "data-is-present": "",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "none",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0",
+          "data-transition-state": "leaving",
+          "data-is-present": "",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "none",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/react-dom@18",
+        "https://esm.sh/react@18",
+        "https://esm.sh/react@18.3.1/es2022/react.mjs",
+        "https://esm.sh/scheduler@%5E0.23.2?target=es2022",
+        "https://esm.sh/react-dom@18.3.1/es2022/react-dom.mjs",
+        "https://esm.sh/scheduler@0.23.2/es2022/scheduler.mjs"
+      ]
+    },
+    {
+      "runtime": "react",
+      "stage": "closed",
+      "observedAt": "2026-09-22T00:04:28.482Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open DialogConfirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "react",
+      "body": {
+        "overflow": "",
+        "overflowPriority": "",
+        "computedOverflow": "visible",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/react-dom@18",
+        "https://esm.sh/react@18",
+        "https://esm.sh/react@18.3.1/es2022/react.mjs",
+        "https://esm.sh/scheduler@%5E0.23.2?target=es2022",
+        "https://esm.sh/react-dom@18.3.1/es2022/react-dom.mjs",
+        "https://esm.sh/scheduler@0.23.2/es2022/scheduler.mjs"
+      ]
+    },
+    {
+      "runtime": "vue",
+      "stage": "initial",
+      "observedAt": "2026-09-22T00:04:30.676Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open DialogConfirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "vue",
+      "body": {
+        "overflow": "",
+        "overflowPriority": "",
+        "computedOverflow": "visible",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "BODY",
+        "text": "Skip to content   const e=document.querySelector(\"starlight-menu-button\"),a=e?.querySelector(\"button\");if(e&&a){const t=()=>{a.setAttribute(\"aria-expanded\",e.getAttribute(\"aria-expanded\")===\"true\"?\"true\":\"false\")},r=(n=!1)=>{e.setAttribute(\"aria-expanded\",\"false\"),document.body.removeAttribute(\"data-mobile-menu-expanded\"),t(),n&&a.focus()},u=window.matchMedia(\"(min-width: 64rem)\"),d=()=>{u.matches",
+        "attributes": {
+          "class": "astro-f2gcikuq"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1249
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/vue@3",
+        "https://esm.sh/@vue/runtime-dom@3.5.43/es2022/runtime-dom.mjs",
+        "https://esm.sh/vue@3.5.43/es2022/vue.mjs",
+        "https://esm.sh/@vue/runtime-core@3.5.43/es2022/runtime-core.mjs",
+        "https://esm.sh/@vue/shared@3.5.43/es2022/shared.mjs",
+        "https://esm.sh/@vue/reactivity@3.5.43/es2022/reactivity.mjs"
+      ]
+    },
+    {
+      "runtime": "vue",
+      "stage": "after-open-input",
+      "observedAt": "2026-09-22T00:04:30.753Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open Dialog",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "vue",
+      "body": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "data-hovered": "",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "true",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "data-transition-state": "entering",
+          "data-open": "",
+          "id": "pui-dialog-2-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-2-description",
+          "aria-labelledby": "pui-dialog-2-title",
+          "data-is-present": "",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0",
+          "data-transition-state": "entering",
+          "data-is-present": "",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "DIV",
+        "text": "Cancel",
+        "attributes": {
+          "class": "px-4 py-2 text-sm font-medium rounded border cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "data-pui-a11y-actions": "activate",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 742.671875,
+          "y": 531,
+          "width": 79.359375,
+          "height": 38
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": true,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/vue@3",
+        "https://esm.sh/@vue/runtime-dom@3.5.43/es2022/runtime-dom.mjs",
+        "https://esm.sh/vue@3.5.43/es2022/vue.mjs",
+        "https://esm.sh/@vue/runtime-core@3.5.43/es2022/runtime-core.mjs",
+        "https://esm.sh/@vue/shared@3.5.43/es2022/shared.mjs",
+        "https://esm.sh/@vue/reactivity@3.5.43/es2022/reactivity.mjs"
+      ]
+    },
+    {
+      "runtime": "vue",
+      "stage": "open",
+      "observedAt": "2026-09-22T00:04:31.066Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open Dialog",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "vue",
+      "body": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "true",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "data-transition-state": "entered",
+          "data-open": "",
+          "id": "pui-dialog-2-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-2-description",
+          "aria-labelledby": "pui-dialog-2-title",
+          "data-is-present": "",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "DIV",
+        "text": "Cancel",
+        "attributes": {
+          "class": "px-4 py-2 text-sm font-medium rounded border cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "data-pui-a11y-actions": "activate",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 742.671875,
+          "y": 531,
+          "width": 79.359375,
+          "height": 38
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": true,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/vue@3",
+        "https://esm.sh/@vue/runtime-dom@3.5.43/es2022/runtime-dom.mjs",
+        "https://esm.sh/vue@3.5.43/es2022/vue.mjs",
+        "https://esm.sh/@vue/runtime-core@3.5.43/es2022/runtime-core.mjs",
+        "https://esm.sh/@vue/shared@3.5.43/es2022/shared.mjs",
+        "https://esm.sh/@vue/reactivity@3.5.43/es2022/reactivity.mjs"
+      ]
+    },
+    {
+      "runtime": "vue",
+      "stage": "after-close-input",
+      "observedAt": "2026-09-22T00:04:31.146Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open Dialog",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "vue",
+      "body": {
+        "overflow": "hidden",
+        "overflowPriority": "",
+        "computedOverflow": "hidden",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-style": "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          "data-transition-state": "leaving",
+          "id": "pui-dialog-2-content",
+          "role": "dialog",
+          "aria-modal": "true",
+          "aria-describedby": "pui-dialog-2-description",
+          "aria-labelledby": "pui-dialog-2-title",
+          "data-is-present": "",
+          "style": "z-index: 11011;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 496,
+          "y": 406,
+          "width": 448,
+          "height": 188
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "none",
+          "position": "fixed",
+          "zIndex": "11011",
+          "overflow": "visible",
+          "scale": "1"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0",
+          "data-transition-state": "leaving",
+          "data-is-present": "",
+          "style": "z-index: 11000;"
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1000
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "none",
+          "position": "fixed",
+          "zIndex": "11000",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/vue@3",
+        "https://esm.sh/@vue/runtime-dom@3.5.43/es2022/runtime-dom.mjs",
+        "https://esm.sh/vue@3.5.43/es2022/vue.mjs",
+        "https://esm.sh/@vue/runtime-core@3.5.43/es2022/runtime-core.mjs",
+        "https://esm.sh/@vue/shared@3.5.43/es2022/shared.mjs",
+        "https://esm.sh/@vue/reactivity@3.5.43/es2022/reactivity.mjs"
+      ]
+    },
+    {
+      "runtime": "vue",
+      "stage": "closed",
+      "observedAt": "2026-09-22T00:04:31.359Z",
+      "readyState": "complete",
+      "preview": {
+        "demoId": "demo-base-dialog",
+        "initialRuntime": "wc",
+        "availableRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "hostText": "Open DialogConfirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "hostRootTag": "DIV"
+      },
+      "selectedRuntime": "vue",
+      "body": {
+        "overflow": "",
+        "overflowPriority": "",
+        "computedOverflow": "visible",
+        "paddingRight": "",
+        "paddingRightPriority": ""
+      },
+      "trigger": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "content": {
+        "tag": "DIV",
+        "text": "Confirm ActionAre you sure you want to proceed? This action cannot be undone.CancelConfirm",
+        "attributes": {
+          "class": "base-dialog-demo-content w-full max-w-md rounded-lg border bg-white p-6 shadow-xl",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "mask": {
+        "tag": "DIV",
+        "text": "",
+        "attributes": {
+          "class": "base-dialog-demo-mask bg-black/50",
+          "data-pui-root": "",
+          "data-pui-view-detached": "",
+          "data-pui-view-pending": ""
+        },
+        "connected": true,
+        "detached": true,
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "computed": {
+          "display": "none",
+          "visibility": "hidden",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focus": {
+        "tag": "DIV",
+        "text": "Open Dialog",
+        "attributes": {
+          "class": "rounded border px-3 py-1.5 cursor-pointer select-none",
+          "data-pui-root": "",
+          "tabindex": "0",
+          "role": "button",
+          "aria-disabled": "false",
+          "aria-expanded": "false",
+          "aria-haspopup": "dialog",
+          "data-pui-a11y-actions": "activate",
+          "aria-controls": "pui-dialog-2-content",
+          "data-focused": ""
+        },
+        "connected": true,
+        "detached": false,
+        "visible": true,
+        "rect": {
+          "x": 640.8125,
+          "y": 356.8125,
+          "width": 110.375,
+          "height": 38.375
+        },
+        "computed": {
+          "display": "block",
+          "visibility": "visible",
+          "opacity": "1",
+          "pointerEvents": "auto",
+          "position": "static",
+          "zIndex": "auto",
+          "overflow": "visible",
+          "scale": "none"
+        }
+      },
+      "focusInsideContent": false,
+      "resources": [
+        "http://127.0.0.1:51673/_astro/page.B1D-nYk3.js",
+        "http://127.0.0.1:51673/_astro/Search.astro_astro_type_script_index_0_lang.CYUTzoau.js",
+        "http://127.0.0.1:51673/_astro/ThemeToggle.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/LanguageSelect.astro_astro_type_script_index_0_lang.DKHRsErF.js",
+        "http://127.0.0.1:51673/_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+        "http://127.0.0.1:51673/_astro/TableOfContents.astro_astro_type_script_index_0_lang.9jarATFN.js",
+        "http://127.0.0.1:51673/_astro/CodePanel.astro_astro_type_script_index_0_lang.CX0Outbr.js",
+        "http://127.0.0.1:51673/_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+        "http://127.0.0.1:51673/_astro/preload-helper.BlTxHScW.js",
+        "http://127.0.0.1:51673/_astro/site-shadcn-controls.DpzJ9VNB.js",
+        "http://127.0.0.1:51673/_astro/adapt.B1J8vIjo.js",
+        "http://127.0.0.1:51673/_astro/as-accessible.DpJEITGz.js",
+        "http://127.0.0.1:51673/_astro/button.proto.DKrlX92K.js",
+        "http://127.0.0.1:51673/_astro/index.yQvYcklL.js",
+        "http://127.0.0.1:51673/_astro/privileged.DwgS2NQd.js",
+        "http://127.0.0.1:51673/_astro/as-focusable.JE921XH7.js",
+        "http://127.0.0.1:51673/_astro/as-trigger.CLhQ9h8_.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Co9BRStD.js",
+        "http://127.0.0.1:51673/_astro/root.proto.D8gpeY-b.js",
+        "http://127.0.0.1:51673/_astro/as-collection.DTCbuCVa.js",
+        "http://127.0.0.1:51673/_astro/shared.Cl5Qn7r6.js",
+        "http://127.0.0.1:51673/_astro/context.D4ekBfl1.js",
+        "http://127.0.0.1:51673/_astro/use-open-state.C3vK9F2G.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DGV-o9R9.js",
+        "http://127.0.0.1:51673/_astro/value.proto.k7yX2c_m.js",
+        "http://127.0.0.1:51673/_astro/value.proto.tJ2W5TJv.js",
+        "http://127.0.0.1:51673/_astro/command.ChH0z-lC.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.CDFTfwHw.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cb3RN9Um.js",
+        "http://127.0.0.1:51673/_astro/content.proto.DC4EdvkE.js",
+        "http://127.0.0.1:51673/_astro/delay.XS-C7ERi.js",
+        "http://127.0.0.1:51673/_astro/as-focus-scope.CdTiTfRJ.js",
+        "http://127.0.0.1:51673/_astro/as-focus-roving.D39lqxd0.js",
+        "http://127.0.0.1:51673/_astro/as-overlay.DQzrxV3A.js",
+        "http://127.0.0.1:51673/_astro/use-typeahead-navigation.C0ucFnXE.js",
+        "http://127.0.0.1:51673/_astro/as-transition.proto.C_C8Lbum.js",
+        "http://127.0.0.1:51673/_astro/item.proto.D9mOmFgB.js",
+        "http://127.0.0.1:51673/_astro/item.proto.EuGxwYWL.js",
+        "http://127.0.0.1:51673/_astro/as-collection-item.B-iJMvkW.js",
+        "http://127.0.0.1:51673/_astro/adapter-preference.DEZ8hD5O.js",
+        "http://127.0.0.1:51673/_astro/code-panel-client.JJ5a3lXJ.js",
+        "http://127.0.0.1:51673/_astro/previewer-client.aBTynnxD.js",
+        "http://127.0.0.1:51673/_astro/prototype-modules.CdYdol3m.js",
+        "http://127.0.0.1:51673/_astro/host-mount.exuUMkB_.js",
+        "http://127.0.0.1:51673/_astro/vue-runtime.C666oZ2o.js",
+        "http://127.0.0.1:51673/_astro/react-runtime.Da8fPka7.js",
+        "http://127.0.0.1:51673/_astro/vue2-runtime.BSbekim8.js",
+        "http://127.0.0.1:51673/_astro/wc-registry.Bjlq51jF.js",
+        "http://127.0.0.1:51673/_astro/projection-scope.BFocqYpo.js",
+        "http://127.0.0.1:51673/_astro/demo-base-dialog.demo.DjdVVa8E.js",
+        "http://127.0.0.1:51673/pagefind/pagefind.js",
+        "http://127.0.0.1:51673/_astro/root.proto.Bu8QriGQ.js",
+        "http://127.0.0.1:51673/_astro/shared.Cvhefjx3.js",
+        "http://127.0.0.1:51673/_astro/command.D2VhJ7GN.js",
+        "http://127.0.0.1:51673/_astro/trigger.proto.DeF6-c7b.js",
+        "http://127.0.0.1:51673/_astro/overlay.proto.BiNLbDsE.js",
+        "http://127.0.0.1:51673/_astro/content.proto.Cr8zh2vT.js",
+        "http://127.0.0.1:51673/_astro/title.proto.DJWNvxSU.js",
+        "http://127.0.0.1:51673/_astro/description.proto.DYYg25mv.js",
+        "http://127.0.0.1:51673/_astro/close.proto.Dm5hP6nI.js",
+        "http://127.0.0.1:51673/_astro/ui-core.5vfW5kUq.js",
+        "https://esm.sh/vue@3",
+        "https://esm.sh/@vue/runtime-dom@3.5.43/es2022/runtime-dom.mjs",
+        "https://esm.sh/vue@3.5.43/es2022/vue.mjs",
+        "https://esm.sh/@vue/runtime-core@3.5.43/es2022/runtime-core.mjs",
+        "https://esm.sh/@vue/shared@3.5.43/es2022/shared.mjs",
+        "https://esm.sh/@vue/reactivity@3.5.43/es2022/reactivity.mjs"
+      ]
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "failedRequests": [
+    {
+      "runtime": "wc",
+      "phase": "navigation",
+      "url": "http://127.0.0.1:51673/pagefind/pagefind.js",
+      "failure": {
+        "errorText": "net::ERR_ABORTED"
+      }
+    },
+    {
+      "runtime": "react",
+      "phase": "navigation",
+      "url": "http://127.0.0.1:51673/pagefind/pagefind.js",
+      "failure": {
+        "errorText": "net::ERR_ABORTED"
+      }
+    },
+    {
+      "runtime": "vue",
+      "phase": "navigation",
+      "url": "http://127.0.0.1:51673/pagefind/pagefind.js",
+      "failure": {
+        "errorText": "net::ERR_ABORTED"
+      }
+    }
+  ],
+  "httpErrors": [],
+  "nativeInputs": [
+    {
+      "runtime": "wc",
+      "phase": "open",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "WC-BASE-DIALOG-TRIGGER",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "wc",
+      "phase": "open",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "WC-BASE-DIALOG-TRIGGER",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "wc",
+      "phase": "open",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "WC-BASE-DIALOG-TRIGGER",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "wc",
+      "phase": "close",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "WC-BASE-DIALOG-CLOSE",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782.3499755859375,
+      "clientY": 550
+    },
+    {
+      "runtime": "wc",
+      "phase": "close",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "WC-BASE-DIALOG-CLOSE",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782.3499755859375,
+      "clientY": 550
+    },
+    {
+      "runtime": "wc",
+      "phase": "close",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "WC-BASE-DIALOG-CLOSE",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782,
+      "clientY": 550
+    },
+    {
+      "runtime": "react",
+      "phase": "site-button",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-BUTTON",
+      "text": "View code",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 549
+    },
+    {
+      "runtime": "react",
+      "phase": "site-button",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-BUTTON",
+      "text": "View code",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 549
+    },
+    {
+      "runtime": "react",
+      "phase": "site-button",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-BUTTON",
+      "text": "View code",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 549
+    },
+    {
+      "runtime": "react",
+      "phase": "site-button",
+      "type": "click",
+      "isTrusted": false,
+      "tag": "WC-SHADCN-BUTTON",
+      "text": "View code"
+    },
+    {
+      "runtime": "react",
+      "phase": "runtime-selection",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-TRIGGER",
+      "text": "Web Components",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518.510009765625,
+      "clientY": 223
+    },
+    {
+      "runtime": "react",
+      "phase": "runtime-selection",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-TRIGGER",
+      "text": "Web Components",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518.510009765625,
+      "clientY": 223
+    },
+    {
+      "runtime": "react",
+      "phase": "runtime-selection",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-TRIGGER",
+      "text": "Web Components",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518,
+      "clientY": 223
+    },
+    {
+      "runtime": "react",
+      "phase": "runtime-selection",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-ITEM",
+      "text": "React",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518.510009765625,
+      "clientY": 296
+    },
+    {
+      "runtime": "react",
+      "phase": "runtime-selection",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-ITEM",
+      "text": "React",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518.510009765625,
+      "clientY": 296
+    },
+    {
+      "runtime": "react",
+      "phase": "runtime-selection",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-ITEM",
+      "text": "React",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518,
+      "clientY": 296
+    },
+    {
+      "runtime": "react",
+      "phase": "open",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "react",
+      "phase": "open",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "react",
+      "phase": "open",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "react",
+      "phase": "close",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782.3499755859375,
+      "clientY": 550
+    },
+    {
+      "runtime": "react",
+      "phase": "close",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782.3499755859375,
+      "clientY": 550
+    },
+    {
+      "runtime": "react",
+      "phase": "close",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782,
+      "clientY": 550
+    },
+    {
+      "runtime": "vue",
+      "phase": "runtime-selection",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-TRIGGER",
+      "text": "Web Components",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518.510009765625,
+      "clientY": 223
+    },
+    {
+      "runtime": "vue",
+      "phase": "runtime-selection",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-TRIGGER",
+      "text": "Web Components",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518.510009765625,
+      "clientY": 223
+    },
+    {
+      "runtime": "vue",
+      "phase": "runtime-selection",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-TRIGGER",
+      "text": "Web Components",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518,
+      "clientY": 223
+    },
+    {
+      "runtime": "vue",
+      "phase": "runtime-selection",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-ITEM",
+      "text": "Vue",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518.510009765625,
+      "clientY": 328
+    },
+    {
+      "runtime": "vue",
+      "phase": "runtime-selection",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-ITEM",
+      "text": "Vue",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518.510009765625,
+      "clientY": 328
+    },
+    {
+      "runtime": "vue",
+      "phase": "runtime-selection",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "WC-SHADCN-SELECT-ITEM",
+      "text": "Vue",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 518,
+      "clientY": 328
+    },
+    {
+      "runtime": "vue",
+      "phase": "open",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "vue",
+      "phase": "open",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "vue",
+      "phase": "open",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Open Dialog",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 696,
+      "clientY": 376
+    },
+    {
+      "runtime": "vue",
+      "phase": "close",
+      "type": "pointerdown",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782.3499755859375,
+      "clientY": 550
+    },
+    {
+      "runtime": "vue",
+      "phase": "close",
+      "type": "pointerup",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782.3499755859375,
+      "clientY": 550
+    },
+    {
+      "runtime": "vue",
+      "phase": "close",
+      "type": "click",
+      "isTrusted": true,
+      "tag": "DIV",
+      "text": "Cancel",
+      "pointerType": "mouse",
+      "button": 0,
+      "clientX": 782,
+      "clientY": 550
+    }
+  ],
+  "fatalErrors": [],
+  "artifacts": [
+    "wc-initial.png",
+    "wc-open.png",
+    "wc-closed.png",
+    "react-site-button.png",
+    "react-initial.png",
+    "react-open.png",
+    "react-closed.png",
+    "vue-initial.png",
+    "vue-open.png",
+    "vue-closed.png"
+  ],
+  "source": {
+    "head": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+    "workingTree": "",
+    "hashes": {
+      "apps/www/astro.config.mjs": "a9d6816c2f70d2120d972b400f5d481c85b4ae7afd2f0e7f73fc295a4581c612",
+      "pnpm-lock.yaml": "dfe48fa241d1506e84741f59b86a7a9eaa76a3c2b15d653d3f88990c14e011d9",
+      "apps/www/src/content/docs/zh-cn/demo-base-dialog.demo.ts": "be27e18ed10e1c317fe80d5cf423e9d10f68a5160157167de425a1fe5698ed9b",
+      "apps/www/src/content/docs/en/ui-libraries/base/dialog.mdx": "a051c00f20ce682703149ebe4e00c2a496b427f5b747505cbeaefaa09210a2d2"
+    }
+  },
+  "runnerSha256": "b60948d88b3aaec413e95ee1b5a8bf7347bb445220b7b7f0f1860aa2e96cbed1",
+  "builtHtmlSha256": "34093aeb72f1c5771d31144ed6b780ef4f96e494afc605112585aec066300aa5",
+  "finishedAt": "2026-09-22T00:04:31.526Z",
+  "passed": true,
+  "summary": {
+    "checks": 58,
+    "failedChecks": [],
+    "failedActions": [],
+    "pageErrors": 0,
+    "consoleErrors": 0,
+    "observedDialogRuntimes": ["wc", "react", "vue"]
+  }
+}

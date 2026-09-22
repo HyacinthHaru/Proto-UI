@@ -1,0 +1,11 @@
+{
+  "variant": "candidate",
+  "source": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+  "desiredBehaviorExitCode": 0,
+  "desiredBehaviorPassed": true,
+  "checks": 58,
+  "failedChecks": [],
+  "asHookErrors": 0,
+  "pageErrors": 0,
+  "observedRuntimes": ["wc", "react", "vue"]
+}

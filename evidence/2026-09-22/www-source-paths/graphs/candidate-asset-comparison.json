@@ -1,0 +1,82 @@
+{
+  "leftPath": "../reports/ordinary/assets.json",
+  "rightPath": "../reports/observed/assets.json",
+  "leftCount": 1945,
+  "rightCount": 1945,
+  "literalEquality": false,
+  "leftDifferent": [
+    {
+      "path": "_astro/adapter-preference.CwjgafIB.js",
+      "bytes": 2978,
+      "sha256": "33c58a151665606ca3337a03ba46278849401982dd6e377a658be0a0e951b984"
+    },
+    {
+      "path": "_astro/AdapterSelect.astro_astro_type_script_index_0_lang.B6eGwQ3N.js",
+      "bytes": 1245,
+      "sha256": "06e223f31d78648debc66177c1ac3ab5e8cf3733a83f068f57b1d662da693dff"
+    },
+    {
+      "path": "_astro/CodeExample.astro_astro_type_script_index_0_lang.CistDuuU.js",
+      "bytes": 3356,
+      "sha256": "0f00961d2569cb1c078c19c159fa32d1289c5dcfa06c78a9b55599fb6f091edf"
+    },
+    {
+      "path": "_astro/HomeDemoPreviewer.astro_astro_type_script_index_0_lang.D5dvbfmB.js",
+      "bytes": 8419,
+      "sha256": "ccfb1933a59cd805e2bcb8555936699e0397ce1df52175b0a6d01306c7f042b7"
+    },
+    {
+      "path": "_astro/previewer-client.DN_uGQAN.js",
+      "bytes": 11656,
+      "sha256": "922bc4901bf35908c1482fff50ada861643532699a888cd33d28c5abf949c0c0"
+    },
+    {
+      "path": "_astro/projection-scope.B2GgU02L.js",
+      "bytes": 52933,
+      "sha256": "9d8271754dda0a3e215728e8cb3fda9f37d3778e2b47bb8a0120b911a26fe173"
+    },
+    {
+      "path": "_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C4suw3pz.js",
+      "bytes": 3132,
+      "sha256": "2cbec4fc8a5a66d3682b5b52c051d05fe6dc994435c75eb68ebc15caa96c7f97"
+    }
+  ],
+  "rightDifferent": [
+    {
+      "path": "_astro/adapter-preference.DEZ8hD5O.js",
+      "bytes": 2978,
+      "sha256": "a52f566fb8a9a838e1333fb31014982f09ff8a26a1fb9f3382d4b9ce61d9bb90"
+    },
+    {
+      "path": "_astro/AdapterSelect.astro_astro_type_script_index_0_lang.DvuFZmA6.js",
+      "bytes": 1245,
+      "sha256": "9528d752aa914c3caf4d8f11d15b1efb21ee1fbf7ce1c9357cf81005c281b4ed"
+    },
+    {
+      "path": "_astro/CodeExample.astro_astro_type_script_index_0_lang.DTdnmIdu.js",
+      "bytes": 3356,
+      "sha256": "1dfc897f936bde22437ac9378fb6624ba3d720063c67e0fdd60e40add3077910"
+    },
+    {
+      "path": "_astro/HomeDemoPreviewer.astro_astro_type_script_index_0_lang.BzchHPS-.js",
+      "bytes": 8419,
+      "sha256": "86b8a6b1ba20526905c094d010d967644ab0f45fe78433b613b8b4e9045ee6a2"
+    },
+    {
+      "path": "_astro/previewer-client.aBTynnxD.js",
+      "bytes": 11656,
+      "sha256": "d87d7edca3b2100c768172f9db1b569eea710818fa17215ea6c3a540c5fa3797"
+    },
+    {
+      "path": "_astro/projection-scope.BFocqYpo.js",
+      "bytes": 52933,
+      "sha256": "dafe696f90ecc057381e3d2ace29bd2a3c7df3d208ce209d3ee66e722dee7ea8"
+    },
+    {
+      "path": "_astro/PrototypePreviewer.astro_astro_type_script_index_0_lang.C5WCtKNW.js",
+      "bytes": 3132,
+      "sha256": "20582c24064146ed96cf801a909b3889c91af032e4e9685e994e6a238f4dd0fe"
+    }
+  ],
+  "method": "Exact path, byte count and SHA-256 comparison. No filename, export-alias, hash or code normalization."
+}

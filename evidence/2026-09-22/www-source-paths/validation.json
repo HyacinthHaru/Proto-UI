@@ -1,0 +1,86 @@
+{
+  "head": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+  "base": "9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f",
+  "completedAt": "2026-09-22T00:19:23.963281+00:00",
+  "focused": {
+    "baseline": {
+      "passed": 1,
+      "failed": 1
+    },
+    "candidate": {
+      "passed": 2,
+      "failed": 0
+    },
+    "nativeWindowsCandidate": {
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "ordinaryDocsBuild": {
+    "pages": 245,
+    "exitCode": 0
+  },
+  "posixBrowser": {
+    "checksPassed": 58,
+    "pageErrors": 0,
+    "runtimes": ["wc", "react", "vue"]
+  },
+  "windows": {
+    "baselineRun": 35669329935,
+    "baselineGraphRun": 35669782343,
+    "candidateRun": 35670310173,
+    "candidateChecksPassed": 58,
+    "candidatePageErrors": 0,
+    "contextIDs": {
+      "baselineRetainedClient": 2,
+      "candidateRetainedClient": 1
+    },
+    "diagnosticDifferentAssets": 7,
+    "affectedChunkExactlyMatchesOrdinary": true,
+    "cssAssetsUnchanged": 10
+  },
+  "publicPackageBuild": {
+    "built": 43,
+    "total": 43,
+    "exitCode": 0
+  },
+  "types": {
+    "files": 231,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0,
+    "exitCode": 0
+  },
+  "fullTest": {
+    "exitCode": 0,
+    "mainPhase": {
+      "passedTests": 2582,
+      "existingTodo": 34,
+      "passedFiles": 488,
+      "skippedFiles": 3,
+      "includesRealChromiumScroll": true
+    },
+    "separateBrowserPhase": {
+      "passedFiles": 26,
+      "passedTests": 136
+    },
+    "environment": {
+      "VITEST_MAX_THREADS": "2",
+      "VITEST_MIN_THREADS": "1",
+      "VITEST_MAX_FORKS": "2",
+      "VITEST_MIN_FORKS": "1"
+    },
+    "testSelection": "unchanged default two-stage plan; no CLI test filters or timeout changes"
+  },
+  "budgets": {
+    "command": "corepack pnpm@10.32.1 check:package-budgets",
+    "exitCode": 0,
+    "passed": 9,
+    "runtimeGzip": 60000,
+    "runtimeLimit": 60000,
+    "runtimeMargin": 0
+  },
+  "worktreeClean": true,
+  "review": "independent final local source/evidence reconciliation: no open findings; partial/ABSTAIN, not a GitHub approval",
+  "requiredCI": "upstream PR not created yet; default trusted CI still required"
+}

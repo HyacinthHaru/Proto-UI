@@ -1,0 +1,30 @@
+
+ RUN  v2.1.9 <candidate-checkout>
+
+ ❯ apps/www/test/proto-ui-source.test.ts (2 tests | 1 failed) 5ms
+   × website workspace source IDs > uses the canonical Core context ID on Windows 3ms
+     → expected 'C:\proto-ui\packages\core\src\interna…' to be 'C:/proto-ui/packages/core/src/interna…' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/test/proto-ui-source.test.ts > website workspace source IDs > uses the canonical Core context ID on Windows
+AssertionError: expected 'C:\proto-ui\packages\core\src\interna…' to be 'C:/proto-ui/packages/core/src/interna…' // Object.is equality
+
+Expected: "C:/proto-ui/packages/core/src/internal.ts"
+Received: "C:\proto-ui\packages\core\src\internal.ts"
+
+ ❯ apps/www/test/proto-ui-source.test.ts:33:18
+     31|       }) as { resolveId: (id: string) => string | null };
+     32|       const id = sourcePlugin.resolveId('@proto.ui/core/internal');
+     33|       expect(id).toBe(`${root.replaceAll('\\', '/')}/packages/core/src…
+       |                  ^
+     34|     });
+     35|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  07:58:53
+   Duration  217ms (transform 21ms, setup 0ms, collect 13ms, tests 5ms, environment 0ms, prepare 42ms)
+

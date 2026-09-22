@@ -1,0 +1,63 @@
+{
+  "observedAt": "2026-09-22T00:07:03.092Z",
+  "head": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+  "tree": "37a1f1b90a2b9c18eb295efaae10357182a073f2",
+  "status": " M apps/www/src/styles/proto-ui-style.css\n",
+  "workingTreeDiff": "",
+  "platform": "win32",
+  "node": "v22.23.2",
+  "separator": "\\",
+  "inputs": [
+    {
+      "path": "apps/www/astro.config.mjs",
+      "gitBlob": "bf013f898680e3032de38c1d9ac0aa4a52075978",
+      "nativeSha256": "31f070776b6c4242eaa5e9411c37864c8881d39b476d09fadd8c78740a1ec0cf",
+      "committedSha256": "a9d6816c2f70d2120d972b400f5d481c85b4ae7afd2f0e7f73fc295a4581c612",
+      "nativeBytes": 37630,
+      "committedBytes": 36669,
+      "lfNormalizedExactlyMatches": true
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "gitBlob": "74491f43af3430be1ef1c9bd4639b0f498a42144",
+      "nativeSha256": "b2325b5a0dcd2ca554e43f44e12f5d0aa04939121eae76d5d2b1bb9686a97a38",
+      "committedSha256": "dfe48fa241d1506e84741f59b86a7a9eaa76a3c2b15d653d3f88990c14e011d9",
+      "nativeBytes": 259619,
+      "committedBytes": 251795,
+      "lfNormalizedExactlyMatches": true
+    },
+    {
+      "path": "packages/core/src/internal.ts",
+      "gitBlob": "f9ccaaf206fa23ea5a9a0440b7abec14b3710f7b",
+      "nativeSha256": "348d1eb412e65492e1a81d0fbc2a8a94bf3e76f5346485f52de0d34a077a3b73",
+      "committedSha256": "363b2d4e0ac7bdd9b456de51023a75f619ba2523353ac92b6be01e12af73aa5b",
+      "nativeBytes": 1741,
+      "committedBytes": 1683,
+      "lfNormalizedExactlyMatches": true
+    },
+    {
+      "path": "packages/core/src/prototype.ts",
+      "gitBlob": "1aa237c937fe732801d997c03f4463cc48c852c2",
+      "nativeSha256": "85513074402b13fddd16cb9dfb07c84bc7e4e599fa801c89175d319e8e473168",
+      "committedSha256": "794efec380ce58f26e1bd74ce2dfdcac9736d24a33e0b5bb7ae7ee920d7da6d7",
+      "nativeBytes": 17563,
+      "committedBytes": 17051,
+      "lfNormalizedExactlyMatches": true
+    },
+    {
+      "path": "packages/runtime/src/instance/instance.ts",
+      "gitBlob": "980201ca9d8c6643bb2971372e6151ca03a5dc47",
+      "nativeSha256": "abd2295f5a2f272c0ee5a4057f1e38281001130236a3fe0d27324bc8e8088ee5",
+      "committedSha256": "81504d497b48ee85c0ca0d19b3544b9cd32da14f1717c1798d18a43dffa97e24",
+      "nativeBytes": 6862,
+      "committedBytes": 6673,
+      "lfNormalizedExactlyMatches": true
+    }
+  ],
+  "generatedStyle": {
+    "path": "apps/www/src/styles/proto-ui-style.css",
+    "nativeSha256": "446d2249e0672bdee7ddf77de55c7a8f2140adfb60c41d13ec0183d5f7199d88",
+    "committedSha256": "446d2249e0672bdee7ddf77de55c7a8f2140adfb60c41d13ec0183d5f7199d88",
+    "lfNormalizedExactlyMatches": true
+  }
+}

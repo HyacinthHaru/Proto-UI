@@ -1,0 +1,18 @@
+
+ RUN  v2.1.9 <candidate-checkout>
+
+ ❯ apps/www/test/proto-ui-source.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/test/proto-ui-source.test.ts [ apps/www/test/proto-ui-source.test.ts ]
+Error: Failed to load url ./src/utils/rehype-scrollable-tables.js (resolved id: ./src/utils/rehype-scrollable-tables.js) in <candidate-checkout>/apps/www/astro.config.mjs. Does the file exist?
+ ❯ loadAndTransform node_modules/.pnpm/vite@5.4.21_@types+node@25.6.2_lightningcss@1.32.0/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  07:56:56
+   Duration  1.14s (transform 184ms, setup 0ms, collect 0ms, tests 0ms, environment 0ms, prepare 44ms)
+

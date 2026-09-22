@@ -1,0 +1,169 @@
+{
+  "source": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+  "run": 35670310173,
+  "workflowHead": "d5b71f60fa1cc7186cf544f20ea49d7f8f716939",
+  "baselineRun": 35669329935,
+  "sameProbeBytesAfterCheckoutConversion": true,
+  "checks": 58,
+  "failedChecks": 0,
+  "pageErrors": 0,
+  "consoleErrors": 0,
+  "actuallyMountedRuntimes": ["wc", "react", "vue"],
+  "clientRetainedIds": [
+    {
+      "id": "D:/a/Proto-UI/Proto-UI/source/packages/core/src/internal.ts",
+      "physicalPath": "D:\\a\\Proto-UI\\Proto-UI\\source\\packages\\core\\src\\internal.ts",
+      "sourceSha256": "348d1eb412e65492e1a81d0fbc2a8a94bf3e76f5346485f52de0d34a077a3b73",
+      "isIncluded": true,
+      "importers": [
+        "D:/a/Proto-UI/Proto-UI/source/packages/core/src/delay.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/core/src/prototype.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/hooks/src/privileged.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/runtime/src/instance/execute/callback-scope.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/runtime/src/instance/instance.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/runtime/src/kernel/as-hook.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/runtime/src/kernel/handles/def.ts"
+      ],
+      "dynamicImporters": [],
+      "renderedIn": [
+        {
+          "chunk": "_astro/adapt.B1J8vIjo.js",
+          "isEntry": false,
+          "isDynamicEntry": false,
+          "imports": [],
+          "dynamicImports": [],
+          "renderedLength": 878,
+          "originalLength": 1741,
+          "renderedExports": [
+            "enterActiveAsHookContext",
+            "exitActiveAsHookContext",
+            "getActiveAsHookContext",
+            "enterActiveRuntimeDelayContext",
+            "exitActiveRuntimeDelayContext",
+            "getActiveRuntimeDelayContext",
+            "bindAsHookRuntime",
+            "getAsHookRuntime"
+          ],
+          "removedExports": [],
+          "renderedCodeSha256": "c2fd0570ca06ce54b77ed69b9ac86715cd4e65136b3ee50ab1069002dd6e752f"
+        }
+      ],
+      "retained": true
+    }
+  ],
+  "contextChunk": {
+    "path": "_astro/adapt.B1J8vIjo.js",
+    "bytes": 332424,
+    "sha256": "6b31b6dd5381e48b3f27851f3e7c81cd9f619e351b2b87755019ec47ee8d8462"
+  },
+  "contextChunkExactlyMatchesOrdinaryBrowserBuild": true,
+  "diagnosticVariantDifferentAssets": 7,
+  "baselineCandidateCSSAssetsExactlyIdentical": 10,
+  "generatedStyleSourceExactlyMatchesGitLF": true,
+  "requestFailuresRetained": [
+    {
+      "runtime": "wc",
+      "phase": "navigation",
+      "url": "http://127.0.0.1:59134/pagefind/pagefind.js",
+      "failure": {
+        "errorText": "net::ERR_ABORTED"
+      }
+    },
+    {
+      "runtime": "react",
+      "phase": "navigation",
+      "url": "http://127.0.0.1:59134/pagefind/pagefind.js",
+      "failure": {
+        "errorText": "net::ERR_ABORTED"
+      }
+    },
+    {
+      "runtime": "vue",
+      "phase": "navigation",
+      "url": "http://127.0.0.1:59134/pagefind/pagefind.js",
+      "failure": {
+        "errorText": "net::ERR_ABORTED"
+      }
+    }
+  ],
+  "environment": {
+    "node": "v22.23.2",
+    "platform": "win32",
+    "arch": "x64",
+    "os": "10.0.26100",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "playwright": "1.58.2",
+    "chromeExecutable": "chrome.exe",
+    "browser": "152.0.7977.83"
+  },
+  "visualInspection": {
+    "observer": "root",
+    "viewedAt": "2026-09-22T00:11:34.281075+00:00",
+    "images": [
+      {
+        "name": "react-closed.png",
+        "sha256": "d160cd6453c9e640dbf656d9bffaeac791dc09b70be9b8b0b08c2e06f8c1cca0"
+      },
+      {
+        "name": "react-initial.png",
+        "sha256": "4bba2eb37f3118e3b3f2381198920d96dda8fed11e6df271517bd1f273680179"
+      },
+      {
+        "name": "react-open.png",
+        "sha256": "485724cd961fdf5be6d61662199fe4cfa439bb8e1392df55e7213292a5dc3acd"
+      },
+      {
+        "name": "react-site-button.png",
+        "sha256": "42dd4081373e1fe6fc4f496114f72bf0a2c5f1c3cce82727c4789270158fdc0d"
+      },
+      {
+        "name": "vue-closed.png",
+        "sha256": "5db930142e5a1a8cc6b4bf427c979a2e8ac438e406b66c7f4519b88b68515441"
+      },
+      {
+        "name": "vue-initial.png",
+        "sha256": "5db930142e5a1a8cc6b4bf427c979a2e8ac438e406b66c7f4519b88b68515441"
+      },
+      {
+        "name": "vue-open.png",
+        "sha256": "e4e7b57827c585c12b8c4e00eef2843e84acfb242f06f52c4d16eb791628f9b3"
+      },
+      {
+        "name": "wc-closed.png",
+        "sha256": "dd627b2e8bc3340d4a9ff9ad959366492219e114a9af32cbeb5a5a3ac90005f7"
+      },
+      {
+        "name": "wc-initial.png",
+        "sha256": "f7122384722c726db589aa1a1914cb4e08d45ed361d26292d1239bc3c502e1db"
+      },
+      {
+        "name": "wc-open.png",
+        "sha256": "763b83096769f9ce2896768e6f705db79fabfeb5a6333453816ab901683e5d78"
+      }
+    ],
+    "observations": "WC/React/Vue initial and closed states have no overlay; after native Open Dialog each renders centered Content over a viewport Mask. Runtime selectors and View code visibly work. Images are actual component captures."
+  },
+  "inputProvenance": {
+    "recordedEvents": 34,
+    "trusted": 33,
+    "untrusted": [
+      {
+        "runtime": "react",
+        "phase": "site-button",
+        "type": "click",
+        "isTrusted": false,
+        "tag": "WC-SHADCN-BUTTON",
+        "text": "View code"
+      }
+    ],
+    "interpretation": "The runner only initiates locator.click pointer input. View code records trusted pointerdown/up/click followed by the existing Button outward CustomEvent(click), dispatched by the Web Component Adapter. The passive observer records both; not every captured event is trusted.",
+    "sources": [
+      "packages/prototypes/base/src/button/button.proto.ts:128",
+      "packages/adapters/web-component/src/runtime/modules.ts:381",
+      "apps/www/src/components/site-shadcn-controls.ts:41"
+    ]
+  }
+}

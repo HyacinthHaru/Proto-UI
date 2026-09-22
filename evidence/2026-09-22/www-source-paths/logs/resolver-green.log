@@ -1,0 +1,10 @@
+
+ RUN  v2.1.9 <candidate-checkout>
+
+ ✓ apps/www/test/proto-ui-source.test.ts (2 tests) 3ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  08:00:47
+   Duration  228ms (transform 21ms, setup 0ms, collect 13ms, tests 3ms, environment 0ms, prepare 35ms)
+

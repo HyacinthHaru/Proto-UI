@@ -1,0 +1,231 @@
+{
+  "kind": "local-independent-review-report",
+  "reportVersion": 2,
+  "stage": "final local evidence reconciliation; formal acceptance pending",
+  "observedAt": "2026-09-22T00:23:13.292420+00:00",
+  "repository": "github.com:Proto-UI/Proto-UI",
+  "worktree": "<candidate-checkout>",
+  "base": "9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f",
+  "head": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+  "tree": "37a1f1b90a2b9c18eb295efaae10357182a073f2",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "reviewClass": "review-bounded-regression",
+  "reviewDepth": "partial",
+  "recommendedAction": "ABSTAIN",
+  "submittable": false,
+  "canonicalReviewPacketValidated": false,
+  "scope": [
+    "One-line native-filesystem-to-module-ID path normalization in apps/www/astro.config.mjs",
+    "Portable source-resolver regression in apps/www/test/proto-ui-source.test.ts",
+    "Read-only binding review of supplied baseline and newly available candidate evidence"
+  ],
+  "findings": [],
+  "conclusions": [
+    "No actionable correctness or scope defect found in the two-file exact-head diff.",
+    "The fix preserves native fs.existsSync(sourcePath) and changes only the returned module ID. POSIX separators remain unchanged; Windows native backslashes become slash-separated IDs, matching the observed Core-relative-import identity.",
+    "The test executes the real configured prefix, resolver function, and plugin object from astro.config.mjs; it does not copy the normalization implementation into the test. The current Vite plugins array includes that same object.",
+    "The VM retains host path.join, real repository URL, real fs.readFileSync, real manifest existence checks, and actual packages/core/package.json exports. It stubs the final path.resolve and source-existence boundary to model native POSIX/Windows results without pretending to run native Windows.",
+    "The Windows expected value requires forward slashes and the mock returns backslashes. The normalization therefore cannot be supplied accidentally by the mocked path resolver. Recorded unchanged assertions fail on baseline Windows and pass on candidate; POSIX passes in both logs.",
+    "Source extraction is coupled to two local config markers. Current markers bound the complete resolver/plugin block; a missing start or moved end normally yields a ReferenceError or SyntaxError, not silent success. This small maintenance coupling is not an actionable defect in this bounded change.",
+    "path.resolve ignores its arguments in the fixture, so this test alone does not verify export-target mapping, general filesystem semantics, plugin registration, actual Vite/Rollup canonicalization, or native production behavior. Those are honest fixture boundaries and are covered separately where acceptance requires them.",
+    "C-AS-HOOK-0001, C-AS-HOOK-0002, P-BASE-DIALOG-CONTENT, and P-BASE-DIALOG-MASK are draft at the reviewed head. The change restores the website realization without changing those semantics or claiming lifecycle promotion.",
+    "No Core context/global singleton workaround, AsHook setup escape, dependency change, global dedupe policy, API/export change, generated-file change, or unrelated modification appears in the exact diff."
+  ],
+  "observedEvidence": {
+    "localBinding": "All seven source digests in initial input.json match; both changed files match candidate SHA-256 and exact-head Git blobs; candidate.diff matches the exact base..head range.",
+    "commit": "Author/committer HyacinthHaru <hyacinth@haru.ac>; DCO trailer present; git verify-commit exited 0 with a good SSH ED25519 signature.",
+    "focusedRegression": "Inspected resolver-red.log (POSIX pass, Windows assertion fail) and resolver-green.log (2 passed); did not rerun these tests.",
+    "baseline": "Inspected supplied Windows ordinary/root binding: 45 AsHook errors per fresh page; only WC mounted. React/Vue attempt labels do not prove those hosts mounted. Client diagnostic retains two spellings of the same Core file/source hash in the same affected chunk, which is bound to the failing ordinary build.",
+    "candidateWindows": "Final ordinary-build/browser records bind head 28eccdb24efb76faa9d6f43a4f8aefbe157860ef. Receipt and raw report record 58/58 checks, exit 0, 0 AsHook/page/console errors, and actual WC/React/Vue mount paths. The reviewer read artifacts but did not execute the browser.",
+    "candidateGraph": "2-client.json records exactly one retained Core internal ID with all 8 exports and renderedLength 878. Ordinary and diagnostic _astro/adapt.B1J8vIjo.js independently hashed equal: 332424 bytes, SHA-256 6b31b6dd5381e48b3f27851f3e7c81cd9f619e351b2b87755019ec47ee8d8462.",
+    "candidateGraphVariant": "The whole ordinary and diagnostic asset sets are not equal: each has seven different entries. Graph evidence remains a separately labeled diagnostic variant; SSR is not added to the client duplicate count.",
+    "generatedStyle": "Independently compared the baseline ordinary asset manifest to candidate ordinary manifest: all 10 CSS asset entries match exactly. Candidate CSS files match their manifest SHA-256 values. Source-after generated style native SHA-256 equals committed LF SHA-256; workingTreeDiff is empty. Final product worktree is clean.",
+    "requestFailures": "Raw candidate browser report retains three navigation-phase pagefind/pagefind.js net::ERR_ABORTED entries. These are not page/console errors; no all-network-success claim is made.",
+    "posixAndBuildCommands": "Exact-head commands.json entries and raw logs agree: docs build produced 245 pages; POSIX browser passed 58/58 with actual WC/React/Vue and no page/console errors; public-package build completed 43/43; workspace/docs type check exited 0 and Astro reported 231 files, 0 errors, 0 warnings, 0 hints.",
+    "fullTest": "Completed exact-head corepack pnpm@10.32.1 test, exit 0, with the unchanged default two-stage runtime plan. Main phase: 488 passed files, 3 existing skipped files, 2582 passed tests, 34 TODO. The main phase includes six real Chromium Scroll tests and both resolver cases. Separate browser phase: 26 passed files, 136 passed tests. The reviewer read commands.json and raw log summaries; no rerun.",
+    "visuals": "Root records inspection of all 10 candidate component PNGs. This reviewer independently matched all 10 file SHA-256 values to that record, but did not visually open the PNGs and does not claim independent visual acceptance.",
+    "nativeInputs": "Raw passive capture has 34 events: 33 trusted and one untrusted site-button click. Read product Button run.expose.emit(click), the WC Adapter CustomEvent sink, and the site consumer comment documenting native MouseEvent followed by outward CustomEvent. The data does not claim all captured events trusted.",
+    "testSelection": "commands.json invokes pnpm test without extra CLI args; the only recorded environment overrides are VITEST_MAX_THREADS=2, VITEST_MIN_THREADS=1, VITEST_MAX_FORKS=2, VITEST_MIN_FORKS=1. The unchanged runtime-test-plan.mjs performs its built-in main-phase exclusions and then the sequential 26-suite browser phase. No task-specific CLI selection or timeout change.",
+    "budgets": "Raw candidate/budgets.log records 9 PASS budgets. Runtime gzip is exactly 60000/60000 bytes, margin 0. Receipt records exit 0. DIAGNOSTIC consumer sizes remain diagnostic; no budget increase is present in the diff.",
+    "sourceCheckoutBinding": "Independently read exact-head Git blobs for config, lockfile, Core internal/prototype, and Runtime instance. All five committed SHA-256 values match both Windows source-before/source-after; converting those exact Git LF bytes to CRLF reproduces every recorded Windows native SHA-256.",
+    "worktree": "Fresh git rev-parse confirms head 28eccdb24efb76faa9d6f43a4f8aefbe157860ef and tree 37a1f1b90a2b9c18eb295efaae10357182a073f2; git status --short empty; range remains the same two files, 37 insertions and 1 deletion."
+  },
+  "routing": {
+    "orient": "resolved without block; envelope and orient handoff saved",
+    "handoffValidation": "independent-orient-handoff.json passed routing validation",
+    "eligibility": {
+      "eligible": true,
+      "reviewDepth": "partial",
+      "maximumRecommendation": "ABSTAIN",
+      "limitationRequired": true,
+      "approvalDecisionRequired": true
+    },
+    "canonicalInputDigest": "exit 1: supplied input.json is a local manifest, not canonical PR v3. No PR exists and no PR fields were invented. Formal packet validate/inspect cannot apply.",
+    "finalEligibility": "Rechecked review-bounded-regression eligibility: eligible true, partial, maximum ABSTAIN, limitation required. No canonical packet was created, validated, inspected, or submitted."
+  },
+  "limitations": [
+    "Local independent source/evidence reconciliation only, not a formal GitHub approval or canonical validated review packet.",
+    "Comprehension unassessed and advisory; current eligibility remains partial/ABSTAIN.",
+    "No tests, builds, native browser execution, GitHub actions, or product/evidence mutations performed by this reviewer; only existing artifacts were read and own disposable reports saved.",
+    "Native diagnostics remain a separate variant with seven differing whole-build asset entries; only the affected context chunk is independently byte-bound to the ordinary browser build. Separate SSR and client graphs are not summed as duplicates.",
+    "The resolver regression models its final native-path boundary; it does not independently verify all export-target mapping, plugin registration, or host filesystem semantics.",
+    "The main full-test phase includes real Chromium Scroll; it is not accurately described as wholly non-browser.",
+    "Runtime budget passes with zero remaining gzip margin.",
+    "Three navigation-phase pagefind ERR_ABORTED requests are retained; zero page/console errors is not an all-network-success claim.",
+    "PNG visual observations are attributed to root; this reviewer checked bytes/provenance only.",
+    "The Windows browser probe scope excludes Vue 2, other browsers, the full keyboard/focus/accessibility matrix, dev optimizer diagnosis, and historical ddac15da reproduction. The complete repository test run has its own separately reported broader scope.",
+    "Public final evidence was prepared but not yet pushed at the delegated final-review checkpoint. No live PR, trusted exact-head PR CI, maintainer approval, or merge was inspected or claimed."
+  ],
+  "validationPending": [],
+  "reconciliation": {
+    "priorReport": "<local-evidence>/review/independent-review-initial.json",
+    "priorReportSha256": "2c675de526ac9dad7fd016229581f2d4aa772f49ee2b92e40780b6300a116bd8",
+    "priorReviewedHead": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+    "sameHead": true,
+    "resolvedFindingIds": [],
+    "openFindingIds": [],
+    "newFindingIds": [],
+    "resolvedEvidenceItems": [
+      "Final Windows ordinary/browser/graph binding",
+      "Full default pnpm test completion",
+      "Final command/receipt reconciliation",
+      "CSS/CRLF/PNG provenance verification"
+    ],
+    "remaining": "Public presentation and formal repository acceptance remain pending; there were no initial code findings to resolve."
+  },
+  "sources": [
+    {
+      "path": "<local-evidence>/review/input.json",
+      "sha256": "cdaa587d1bcde735d8067109c96017e9b55114ce8e090ca84470a8c99f3caf96"
+    },
+    {
+      "path": "<local-evidence>/review/candidate.diff",
+      "sha256": "eea2275ffa6308b7b6eae278f7b729bb0b4b557babed02ee96846bd797d3cfd4"
+    },
+    {
+      "path": "<local-evidence>/review/commit.txt",
+      "sha256": "1b37b5f03c0e24c3e310ea16e8ad90f952dc76a2f9be4306b1c2d8d8191fd994"
+    },
+    {
+      "path": "<local-evidence>/authority-map.json",
+      "sha256": "e5566555cbdb719b5e2b0335de0abecc94f5307e82444df059e1404946022cbf"
+    },
+    {
+      "path": "<local-evidence>/candidate-change.json",
+      "sha256": "195519da6d171e3481d66440a6a54f7ff457e493d73a4a03d85ade2c2dc73738"
+    },
+    {
+      "path": "<local-evidence>/evidence-report-in-progress.json",
+      "sha256": "65b868dbfa24f187806c95592d16551234f9ff34dc232cacdc8d8a55baac7b96"
+    },
+    {
+      "path": "<local-evidence>/resolver-red.log",
+      "sha256": "281ec1767f78d261060f8cd52adf03d53dd31e6c430970f7e6b93c4a88ccdeca"
+    },
+    {
+      "path": "<local-evidence>/resolver-green.log",
+      "sha256": "4fac80bed3d150053c4db00b4b5b9e26e58bc6c8192bb7c3079c6bf35f10df05"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-baseline/root-verification.json",
+      "sha256": "85920f2f7756f9a7cf4391de2a38b1d672a7c030446a96ee7b24201c8598699d"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-graph-baseline/root-cause-binding.json",
+      "sha256": "758b6e0fe523dd9f94e773a04f6fe9134355ba02b644a97308dbac954a6b5854"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/receipt.json",
+      "sha256": "e5492d50a6b655e2354ca106f9b15c231815a7729bb598008504f3b6ddb3ad4b"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/source-before.json",
+      "sha256": "8a3a41e1450f9e30807b657e7f1f87803a4c8f809c885d365c06cb86839bc345"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/source-after.json",
+      "sha256": "99ef07710be4808a09c1e577bbf0308005a8ffe97c56089ac04a6536730c2d17"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/browser/report.json",
+      "sha256": "a60ea1d1b2167cccc2ca33de603373e2de48fdf568ed5db7bed2fa89a89da42a"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/graph/2-client.json",
+      "sha256": "ef416cedbd014ca783b9602ea8381326e5014f8be7cc16625423de01dfcbfc70"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/asset-comparison.json",
+      "sha256": "9ea2efb958592442ddebf921aae39586039cbe98b6632e83839eff351a200b59"
+    },
+    {
+      "path": "<local-evidence>/candidate/commands.json",
+      "sha256": "1837df417abd0c3cd235f812da19a4c82b086fb04cb1f9011194d30ac217bc66"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/browser/native-inputs.json",
+      "sha256": "ef5f6ba2b21a42b5f4169a0648bfe0667bf0d42f36fec7d25b1edb6d8b4b9346"
+    },
+    {
+      "path": "<local-evidence>/review/independent-review-initial.json",
+      "sha256": "2c675de526ac9dad7fd016229581f2d4aa772f49ee2b92e40780b6300a116bd8"
+    },
+    {
+      "path": "<local-evidence>/validation-receipt.json",
+      "sha256": "da11df96b57574b65f0cb9ca34044dfa94628d7398d4dc5a6a188fd83cbb366f"
+    },
+    {
+      "path": "<local-evidence>/evidence-report.json",
+      "sha256": "e7f75cf71ee4405faf221e58fd807ca3fe024195254ca2e46c9b3c9d5f8da9f6"
+    },
+    {
+      "path": "<local-evidence>/candidate/full-test.log",
+      "sha256": "41e24af6d6ca9bcd9a081fa02d09af6ac31c5e7f943d3d49ad6d01135e33be04"
+    },
+    {
+      "path": "<local-evidence>/candidate/docs-build.log",
+      "sha256": "5b3e780fc16fb0dd4da0b2ef160375e608a23c04e28d66de6c4f8c3447275825"
+    },
+    {
+      "path": "<local-evidence>/candidate/public-packages.log",
+      "sha256": "a43eb1ca7d3fe629bc1464866a2f91854600fdce8c7b9ecdf150a3a1a52c9906"
+    },
+    {
+      "path": "<local-evidence>/candidate/types.log",
+      "sha256": "28d745b63d01f6a3aabf86b5aa520b1c32ed02a3031bcfff97b77f58a6a30836"
+    },
+    {
+      "path": "<local-evidence>/candidate/budgets.log",
+      "sha256": "21f1465902e378f59fe7f26d20bbb689644b3240ba835ac007b6791be6d7edc4"
+    },
+    {
+      "path": "<local-evidence>/candidate/browser/report.json",
+      "sha256": "b0b5c4fea52883930ad4e82daf441b40d1d32e7ba6a6e5a4a90dfebf9d824fb4"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/root-verification.json",
+      "sha256": "4a70882fae697bf8590aadeb95e9657b1d3e92f2fd943c5e89502fb021b7f52c"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/resolver-test.log",
+      "sha256": "96ee29542d01e926a40d88f1632d79ae026741b43c98a5745f8ab1ee1a10a515"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-baseline/ordinary-assets.json",
+      "sha256": "de0cdc7aa272ee6f351c7d0999e336ddc4d4df81517f045bc7e9f5f737f9f6fb"
+    },
+    {
+      "path": "<local-evidence>/native-preview/windows-candidate/ordinary/assets.json",
+      "sha256": "f0bd2010927ac1b76324c5474c158c4831844f8df5cda1462659d5be55ea795f"
+    }
+  ],
+  "newFindings": [],
+  "localEvidenceReconciled": true,
+  "formalAcceptanceComplete": false,
+  "remainingAcceptanceGates": [
+    "Verified public evidence publication",
+    "PR creation and trusted exact-head upstream CI",
+    "Independent maintainer approval and separately authorized actual merge"
+  ]
+}

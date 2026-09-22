@@ -1,0 +1,441 @@
+{
+  "source": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+  "baseline": "9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f",
+  "files": [
+    {
+      "path": "LICENSE-Floating-UI.txt",
+      "bytes": 1089,
+      "sha256": "0e4c9a9b6c71019cbbea3bdc20b01223110a9035700f9c960c8fcbf78c2325ce"
+    },
+    {
+      "path": "LICENSE-Proto-UI.txt",
+      "bytes": 1078,
+      "sha256": "7b6e3e65736b51f976b8443bca2cc9796e010b1e8a4dfff7316240681e0ebf66"
+    },
+    {
+      "path": "README.md",
+      "bytes": 12223,
+      "sha256": "c88eb139bdb3ea4b3d77896c4f0d5e3fa308479f32afd6903c7e8c854a1c8edd"
+    },
+    {
+      "path": "graphs/baseline-adapt.CK8Rsqlm.js.txt",
+      "bytes": 332495,
+      "sha256": "6ff72004016f0a86ff1dc73dfbe91eb9f1b074ba570c7432ff792ff6d364ebb3"
+    },
+    {
+      "path": "graphs/baseline-asset-comparison.json",
+      "bytes": 3015,
+      "sha256": "589b49e66c8043b3a729e238399711abcb9a73aaccd735ae0d0f1a6b0b8f180e"
+    },
+    {
+      "path": "graphs/baseline-binding.json",
+      "bytes": 3548,
+      "sha256": "d060a1215adeb608c35ccc84aec77b48651255283a9428e4086b6a4c4e66846d"
+    },
+    {
+      "path": "graphs/baseline-client-context.json",
+      "bytes": 20403,
+      "sha256": "b15209888d150a371917a4cb94ce7362cd56a82e6ebd22abb90eaf7775805ce5"
+    },
+    {
+      "path": "graphs/candidate-adapt.B1J8vIjo.js.txt",
+      "bytes": 332424,
+      "sha256": "6b31b6dd5381e48b3f27851f3e7c81cd9f619e351b2b87755019ec47ee8d8462"
+    },
+    {
+      "path": "graphs/candidate-asset-comparison.json",
+      "bytes": 3015,
+      "sha256": "9ea2efb958592442ddebf921aae39586039cbe98b6632e83839eff351a200b59"
+    },
+    {
+      "path": "graphs/candidate-client-context.json",
+      "bytes": 19204,
+      "sha256": "ba7b77e159db63616c9051dc5113a3b1d0babbf13035cee12f47c5f3fd397bae"
+    },
+    {
+      "path": "graphs/posix-export-alias-diff.txt",
+      "bytes": 206,
+      "sha256": "d7b5f7a64aa97ba3e8e9fcf2a1b9a2c514b47d4ba656b7f11be8c0ec9b982dad"
+    },
+    {
+      "path": "graphs/posix-observer-controls.json",
+      "bytes": 3255,
+      "sha256": "6cf7cbb8d354f1372543ed4740473f398fead4a03da06a34b046d83ad6fbadc4"
+    },
+    {
+      "path": "logs/local-budgets.log",
+      "bytes": 1740,
+      "sha256": "5fe154088808dc89cfe4262022dacca6074224a2d512ecad4520038b754870e4"
+    },
+    {
+      "path": "logs/local-docs-build.log",
+      "bytes": 271043,
+      "sha256": "30e7eaf20460be8dad50837b09817bbcbe5f6246e6ba10c923ed509e1029979e"
+    },
+    {
+      "path": "logs/local-full-test.log",
+      "bytes": 111739,
+      "sha256": "97fb8da431f59928729ddcc9a62d3337100b1146da29cd7bec2d9f03d309144c"
+    },
+    {
+      "path": "logs/local-public-packages.log",
+      "bytes": 2630,
+      "sha256": "1ddde192224b07ef4d31174b54ef546a9498bcd0b24854d84e2eced3393d5504"
+    },
+    {
+      "path": "logs/local-types.log",
+      "bytes": 676,
+      "sha256": "5379feb55b09aed9bc152347bf8c77bfb8099fd0596487dcdf4713fadc3fd95a"
+    },
+    {
+      "path": "logs/resolver-green.log",
+      "bytes": 272,
+      "sha256": "24440de9273fcd146d6e8d474c684c9c8cff918ffe9c738e7ea98f89c00c636a"
+    },
+    {
+      "path": "logs/resolver-red-attempt1.log",
+      "bytes": 836,
+      "sha256": "d67b0d6d1ce4d910b580da62d79a6be4c5d99d710b5f751ff8a9fd34dbcc5b30"
+    },
+    {
+      "path": "logs/resolver-red.log",
+      "bytes": 1363,
+      "sha256": "36c7fa80a3f6c07a9664aa91e7b75b30707a9ca84ada97ea7e5960ea471174e8"
+    },
+    {
+      "path": "logs/windows-baseline-browser.log",
+      "bytes": 1073,
+      "sha256": "99a7e8773d7899effe05a65278f5dcab630d5d5b12459badde2e3b6d5cf760bd"
+    },
+    {
+      "path": "logs/windows-baseline-build.log",
+      "bytes": 273505,
+      "sha256": "cd4af64c895fcbf341915752c4a5e658cd0b7dacf31409835d5fc7d03aab6b48"
+    },
+    {
+      "path": "logs/windows-candidate-browser.log",
+      "bytes": 289,
+      "sha256": "a48aa2ab6a13945c29a9683a0df392ff86f0bbc6f9dff3202c7137e0f38b3088"
+    },
+    {
+      "path": "logs/windows-candidate-build.log",
+      "bytes": 273474,
+      "sha256": "00642c4a7806c5afc170590b016a54f215a007beafe58f1e2d54cb4092d12a8d"
+    },
+    {
+      "path": "logs/windows-candidate-resolver.log",
+      "bytes": 291,
+      "sha256": "9064746562b7d3371105ddecda7e83030a43118453d1346b1a9f6f16911eb98f"
+    },
+    {
+      "path": "posix/baseline/react-closed.png",
+      "bytes": 125858,
+      "sha256": "8abbfdfdcac0bbdf25d27cc491e99aefe9648370e0f0295b837fa572b6ffa792"
+    },
+    {
+      "path": "posix/baseline/react-initial.png",
+      "bytes": 125858,
+      "sha256": "8abbfdfdcac0bbdf25d27cc491e99aefe9648370e0f0295b837fa572b6ffa792"
+    },
+    {
+      "path": "posix/baseline/react-open.png",
+      "bytes": 127547,
+      "sha256": "dd87a387cdd2e1778e9f269f0486cb51da2344173c6df69b1762b6d3799568ec"
+    },
+    {
+      "path": "posix/baseline/react-site-button.png",
+      "bytes": 145151,
+      "sha256": "1cb02a0286e199b992a40199175adcae01475beadf8ac1b2581f9beb537f7f14"
+    },
+    {
+      "path": "posix/baseline/report.json",
+      "bytes": 189302,
+      "sha256": "109c5770ede7878abf8a0b80da86669790772a7e13e269ca53c38ae9ea078b13"
+    },
+    {
+      "path": "posix/baseline/vue-closed.png",
+      "bytes": 125762,
+      "sha256": "bb7e55ebb4e00530073be1fda81347a848c177ad7545a43a80277131b282ab7d"
+    },
+    {
+      "path": "posix/baseline/vue-initial.png",
+      "bytes": 125762,
+      "sha256": "bb7e55ebb4e00530073be1fda81347a848c177ad7545a43a80277131b282ab7d"
+    },
+    {
+      "path": "posix/baseline/vue-open.png",
+      "bytes": 127034,
+      "sha256": "4bcc8c7c084984c21fc4f4b2ad15f794e36ad5d4794dd837c84eb3d198fc30c4"
+    },
+    {
+      "path": "posix/baseline/wc-closed.png",
+      "bytes": 136047,
+      "sha256": "760f40ed4ea964910d8a8b79dc938145a0e1d43450de21c0c08cf99813c9dab0"
+    },
+    {
+      "path": "posix/baseline/wc-initial.png",
+      "bytes": 136034,
+      "sha256": "44b99ea90ccbf94dba6a11575d7ab341ea8f3ca76fe108e24dbc40da70924a4b"
+    },
+    {
+      "path": "posix/baseline/wc-open.png",
+      "bytes": 130070,
+      "sha256": "e83d79283c557c893a0bea6ac189d7f2f35867f725b7963665e4bdc944c15dfd"
+    },
+    {
+      "path": "posix/candidate/react-closed.png",
+      "bytes": 125858,
+      "sha256": "8abbfdfdcac0bbdf25d27cc491e99aefe9648370e0f0295b837fa572b6ffa792"
+    },
+    {
+      "path": "posix/candidate/react-initial.png",
+      "bytes": 125858,
+      "sha256": "8abbfdfdcac0bbdf25d27cc491e99aefe9648370e0f0295b837fa572b6ffa792"
+    },
+    {
+      "path": "posix/candidate/react-open.png",
+      "bytes": 127547,
+      "sha256": "dd87a387cdd2e1778e9f269f0486cb51da2344173c6df69b1762b6d3799568ec"
+    },
+    {
+      "path": "posix/candidate/react-site-button.png",
+      "bytes": 145151,
+      "sha256": "1cb02a0286e199b992a40199175adcae01475beadf8ac1b2581f9beb537f7f14"
+    },
+    {
+      "path": "posix/candidate/report.json",
+      "bytes": 189248,
+      "sha256": "a8df5243ad9f1058037b68702c52dc77a6df40f29c4d2607bf1db8266246e1a1"
+    },
+    {
+      "path": "posix/candidate/vue-closed.png",
+      "bytes": 125762,
+      "sha256": "bb7e55ebb4e00530073be1fda81347a848c177ad7545a43a80277131b282ab7d"
+    },
+    {
+      "path": "posix/candidate/vue-initial.png",
+      "bytes": 125762,
+      "sha256": "bb7e55ebb4e00530073be1fda81347a848c177ad7545a43a80277131b282ab7d"
+    },
+    {
+      "path": "posix/candidate/vue-open.png",
+      "bytes": 127034,
+      "sha256": "4bcc8c7c084984c21fc4f4b2ad15f794e36ad5d4794dd837c84eb3d198fc30c4"
+    },
+    {
+      "path": "posix/candidate/wc-closed.png",
+      "bytes": 136047,
+      "sha256": "760f40ed4ea964910d8a8b79dc938145a0e1d43450de21c0c08cf99813c9dab0"
+    },
+    {
+      "path": "posix/candidate/wc-initial.png",
+      "bytes": 136034,
+      "sha256": "44b99ea90ccbf94dba6a11575d7ab341ea8f3ca76fe108e24dbc40da70924a4b"
+    },
+    {
+      "path": "posix/candidate/wc-open.png",
+      "bytes": 130070,
+      "sha256": "e83d79283c557c893a0bea6ac189d7f2f35867f725b7963665e4bdc944c15dfd"
+    },
+    {
+      "path": "publication-transforms.json",
+      "bytes": 23552,
+      "sha256": "ced517f2dc3a3ca47eb6c427beac4026d86096ae7c566d0537b88fbaf17097ef"
+    },
+    {
+      "path": "review/independent-local-review-final.json",
+      "bytes": 16734,
+      "sha256": "dc802af829685a4dc0685103cc2f012d07b0196f73c82ddccf63916d85a36506"
+    },
+    {
+      "path": "review/independent-local-review-final.md",
+      "bytes": 4340,
+      "sha256": "0f0c5d44b9d2f44ada3cf220eb238b826f68fc52ade8ea5619745e66a9c51026"
+    },
+    {
+      "path": "review/independent-local-review.md",
+      "bytes": 2540,
+      "sha256": "a8b4c986e33e330d955d8584027d390e17ed8955abf2b5b5fe9f6ce14098c88d"
+    },
+    {
+      "path": "validation-commands.json",
+      "bytes": 2102,
+      "sha256": "3854f28f1f05dd20004efaef891343cce436e127c18174aad80590d5cd45c583"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 2122,
+      "sha256": "c87e89af6758e6dfa7451ef1c0f2f17691c5b6b5328e858059c8c228558d9702"
+    },
+    {
+      "path": "windows/baseline/console-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "windows/baseline/native-inputs.json",
+      "bytes": 3840,
+      "sha256": "9e38d4e07de366b1fd385bce0e862fb8eac09d473ea34bd5863f1f9a0247a4db"
+    },
+    {
+      "path": "windows/baseline/page-errors.json",
+      "bytes": 127974,
+      "sha256": "0d7df4d5d5b545dd3f3434893eae8720c7cdc2edd4cf07d116a29c7dc5c3ba3f"
+    },
+    {
+      "path": "windows/baseline/probe-exit.json",
+      "bytes": 20,
+      "sha256": "01614b0e7bf86220a2287c6fd76f9b3a5c06913c2e0762c9eb3958c397f0bbee"
+    },
+    {
+      "path": "windows/baseline/react-runtime-unavailable.png",
+      "bytes": 95700,
+      "sha256": "22c4461979c64d00c2f7696a5d672f594732016637b288c60b290a5c091cfaa7"
+    },
+    {
+      "path": "windows/baseline/react-site-button.png",
+      "bytes": 95481,
+      "sha256": "27ea7d5aba657309eb181cf4d35f8fc88dd287b2a6d9de8e701094ef5809e5a2"
+    },
+    {
+      "path": "windows/baseline/receipt.json",
+      "bytes": 771,
+      "sha256": "69305f79cf9831b457b362960e8f94274496cefa3f148725f5379d72999be6e2"
+    },
+    {
+      "path": "windows/baseline/report.json",
+      "bytes": 356950,
+      "sha256": "143a5667d3d5df2868c3b72d566913116fbc7033922f8ae2a42a832b6bc8478f"
+    },
+    {
+      "path": "windows/baseline/root-verification.json",
+      "bytes": 2033,
+      "sha256": "1e858f38c5b52f13817042f525d202b4b6673d06a70594b1dfe3002e3c034aae"
+    },
+    {
+      "path": "windows/baseline/source-after.json",
+      "bytes": 2310,
+      "sha256": "cff5c66447bbf46e194245ebd9a58fe12f5b56446b73f07bdb8c6f8c7f99b1e2"
+    },
+    {
+      "path": "windows/baseline/source-before.json",
+      "bytes": 2267,
+      "sha256": "f54eab5d7b1f78e7c0b20c3bfeda1320c8ee22b68b16a4a5c7b04eae7c3aee0e"
+    },
+    {
+      "path": "windows/baseline/vue-runtime-unavailable.png",
+      "bytes": 95700,
+      "sha256": "22c4461979c64d00c2f7696a5d672f594732016637b288c60b290a5c091cfaa7"
+    },
+    {
+      "path": "windows/baseline/wc-closed.png",
+      "bytes": 95505,
+      "sha256": "68769342b6d808fe5101d7272c7d8feaa9c9d6b597aa666313f38f9848d5a9e2"
+    },
+    {
+      "path": "windows/baseline/wc-initial.png",
+      "bytes": 95549,
+      "sha256": "e440976d7381fb5c585f3e95c21ebad2fb385b2b5a6f3751b81656f6ba1b5de5"
+    },
+    {
+      "path": "windows/baseline/wc-open.png",
+      "bytes": 95505,
+      "sha256": "68769342b6d808fe5101d7272c7d8feaa9c9d6b597aa666313f38f9848d5a9e2"
+    },
+    {
+      "path": "windows/candidate/console-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "windows/candidate/native-inputs.json",
+      "bytes": 8473,
+      "sha256": "ef5f6ba2b21a42b5f4169a0648bfe0667bf0d42f36fec7d25b1edb6d8b4b9346"
+    },
+    {
+      "path": "windows/candidate/page-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "windows/candidate/probe-exit.json",
+      "bytes": 20,
+      "sha256": "ff8ae5796bcef71911ff9c5c3eaea341819c471f669549e252b830106edd4305"
+    },
+    {
+      "path": "windows/candidate/react-closed.png",
+      "bytes": 84447,
+      "sha256": "d160cd6453c9e640dbf656d9bffaeac791dc09b70be9b8b0b08c2e06f8c1cca0"
+    },
+    {
+      "path": "windows/candidate/react-initial.png",
+      "bytes": 84434,
+      "sha256": "4bba2eb37f3118e3b3f2381198920d96dda8fed11e6df271517bd1f273680179"
+    },
+    {
+      "path": "windows/candidate/react-open.png",
+      "bytes": 90915,
+      "sha256": "485724cd961fdf5be6d61662199fe4cfa439bb8e1392df55e7213292a5dc3acd"
+    },
+    {
+      "path": "windows/candidate/react-site-button.png",
+      "bytes": 90813,
+      "sha256": "42dd4081373e1fe6fc4f496114f72bf0a2c5f1c3cce82727c4789270158fdc0d"
+    },
+    {
+      "path": "windows/candidate/receipt.json",
+      "bytes": 274,
+      "sha256": "06670e9061fbf96359fb4a7ae2a73150267b1f4ef16e14954e4b3d73598505cb"
+    },
+    {
+      "path": "windows/candidate/report.json",
+      "bytes": 189360,
+      "sha256": "bf7bc74279b047b2fe48721e43cac838cf64661e977c42ae995d9600359d226a"
+    },
+    {
+      "path": "windows/candidate/root-verification.json",
+      "bytes": 5898,
+      "sha256": "6a4cffa80e0099833b5929aded4413ffecbde61dcf92d6e0e2081abed976df81"
+    },
+    {
+      "path": "windows/candidate/source-after.json",
+      "bytes": 2634,
+      "sha256": "99ef07710be4808a09c1e577bbf0308005a8ffe97c56089ac04a6536730c2d17"
+    },
+    {
+      "path": "windows/candidate/source-before.json",
+      "bytes": 2591,
+      "sha256": "8a3a41e1450f9e30807b657e7f1f87803a4c8f809c885d365c06cb86839bc345"
+    },
+    {
+      "path": "windows/candidate/vue-closed.png",
+      "bytes": 83880,
+      "sha256": "5db930142e5a1a8cc6b4bf427c979a2e8ac438e406b66c7f4519b88b68515441"
+    },
+    {
+      "path": "windows/candidate/vue-initial.png",
+      "bytes": 83880,
+      "sha256": "5db930142e5a1a8cc6b4bf427c979a2e8ac438e406b66c7f4519b88b68515441"
+    },
+    {
+      "path": "windows/candidate/vue-open.png",
+      "bytes": 90481,
+      "sha256": "e4e7b57827c585c12b8c4e00eef2843e84acfb242f06f52c4d16eb791628f9b3"
+    },
+    {
+      "path": "windows/candidate/wc-closed.png",
+      "bytes": 90633,
+      "sha256": "dd627b2e8bc3340d4a9ff9ad959366492219e114a9af32cbeb5a5a3ac90005f7"
+    },
+    {
+      "path": "windows/candidate/wc-initial.png",
+      "bytes": 90670,
+      "sha256": "f7122384722c726db589aa1a1914cb4e08d45ed361d26292d1239bc3c502e1db"
+    },
+    {
+      "path": "windows/candidate/wc-open.png",
+      "bytes": 92893,
+      "sha256": "763b83096769f9ce2896768e6f705db79fabfeb5a6333453816ab901683e5d78"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "observedAt": "2026-09-21T23:59:51.439041+00:00",
+  "source": "9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f",
+  "run": 35669329935,
+  "workflowHead": "3e1b6688de3a592507e390ad64c077254b2baa77",
+  "workflowSucceededBecause": "the expected native Windows product failure was captured; not a product pass",
+  "probeExit": 1,
+  "checks": 30,
+  "failedChecks": 13,
+  "errorsByFreshPage": {
+    "wc": 45,
+    "react": 45,
+    "vue": 45
+  },
+  "requestedRuntimeLabelsDoNotProveMount": ["react", "vue"],
+  "observedRuntimes": ["wc"],
+  "sourceStatus": "M apps/www/src/styles/proto-ui-style.css",
+  "runnerCommittedLFToWindowsCRLFHashExactlyMatches": true,
+  "visualInspection": [
+    {
+      "name": "react-runtime-unavailable.png",
+      "sha256": "22c4461979c64d00c2f7696a5d672f594732016637b288c60b290a5c091cfaa7",
+      "viewedBy": "root"
+    },
+    {
+      "name": "react-site-button.png",
+      "sha256": "27ea7d5aba657309eb181cf4d35f8fc88dd287b2a6d9de8e701094ef5809e5a2",
+      "viewedBy": "root"
+    },
+    {
+      "name": "vue-runtime-unavailable.png",
+      "sha256": "22c4461979c64d00c2f7696a5d672f594732016637b288c60b290a5c091cfaa7",
+      "viewedBy": "root"
+    },
+    {
+      "name": "wc-closed.png",
+      "sha256": "68769342b6d808fe5101d7272c7d8feaa9c9d6b597aa666313f38f9848d5a9e2",
+      "viewedBy": "root"
+    },
+    {
+      "name": "wc-initial.png",
+      "sha256": "e440976d7381fb5c585f3e95c21ebad2fb385b2b5a6f3751b81656f6ba1b5de5",
+      "viewedBy": "root"
+    },
+    {
+      "name": "wc-open.png",
+      "sha256": "68769342b6d808fe5101d7272c7d8feaa9c9d6b597aa666313f38f9848d5a9e2",
+      "viewedBy": "root"
+    }
+  ],
+  "visualObservations": "The initial WC Content is incorrectly visible inline, selectors expose uninitialized options, and native open/Cancel do not produce the intended portal/Mask transition. React/Vue selection remained unavailable. No screenshot proves those hosts mounted.",
+  "generatedStyleDebt": "Ordinary Windows generation modified proto-ui-style.css; separate graph run retains its diff."
+}

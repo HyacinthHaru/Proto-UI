@@ -1,0 +1,86 @@
+{
+  "source": "9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f",
+  "ordinaryBrowserRun": 35669329935,
+  "diagnosticRun": 35669782343,
+  "clientRetainedIds": [
+    {
+      "id": "D:/a/Proto-UI/Proto-UI/source/packages/core/src/internal.ts",
+      "physicalPath": "D:\\a\\Proto-UI\\Proto-UI\\source\\packages\\core\\src\\internal.ts",
+      "sourceSha256": "348d1eb412e65492e1a81d0fbc2a8a94bf3e76f5346485f52de0d34a077a3b73",
+      "isIncluded": true,
+      "importers": [
+        "D:/a/Proto-UI/Proto-UI/source/packages/core/src/delay.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/core/src/prototype.ts"
+      ],
+      "dynamicImporters": [],
+      "renderedIn": [
+        {
+          "chunk": "_astro/adapt.CK8Rsqlm.js",
+          "isEntry": false,
+          "isDynamicEntry": false,
+          "imports": [],
+          "dynamicImports": [],
+          "renderedLength": 352,
+          "originalLength": 1741,
+          "renderedExports": ["getActiveAsHookContext", "getActiveRuntimeDelayContext"],
+          "removedExports": [
+            "enterActiveAsHookContext",
+            "exitActiveAsHookContext",
+            "enterActiveRuntimeDelayContext",
+            "exitActiveRuntimeDelayContext",
+            "bindAsHookRuntime",
+            "getAsHookRuntime"
+          ],
+          "renderedCodeSha256": "bc4df90eadef3e7ba1c311b02bb8439108458f6940a28edd426607ac268b6a9d"
+        }
+      ],
+      "retained": true
+    },
+    {
+      "id": "D:\\a\\Proto-UI\\Proto-UI\\source\\packages\\core\\src\\internal.ts",
+      "physicalPath": "D:\\a\\Proto-UI\\Proto-UI\\source\\packages\\core\\src\\internal.ts",
+      "sourceSha256": "348d1eb412e65492e1a81d0fbc2a8a94bf3e76f5346485f52de0d34a077a3b73",
+      "isIncluded": true,
+      "importers": [
+        "D:/a/Proto-UI/Proto-UI/source/packages/hooks/src/privileged.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/runtime/src/instance/execute/callback-scope.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/runtime/src/instance/instance.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/runtime/src/kernel/as-hook.ts",
+        "D:/a/Proto-UI/Proto-UI/source/packages/runtime/src/kernel/handles/def.ts"
+      ],
+      "dynamicImporters": [],
+      "renderedIn": [
+        {
+          "chunk": "_astro/adapt.CK8Rsqlm.js",
+          "isEntry": false,
+          "isDynamicEntry": false,
+          "imports": [],
+          "dynamicImports": [],
+          "renderedLength": 630,
+          "originalLength": 1741,
+          "renderedExports": [
+            "enterActiveAsHookContext",
+            "exitActiveAsHookContext",
+            "getActiveAsHookContext",
+            "enterActiveRuntimeDelayContext",
+            "bindAsHookRuntime",
+            "getAsHookRuntime"
+          ],
+          "removedExports": ["exitActiveRuntimeDelayContext", "getActiveRuntimeDelayContext"],
+          "renderedCodeSha256": "1ea6ca300714d7c613e121428310d013f240dbc342ac41cc97f59276f070a35f"
+        }
+      ],
+      "retained": true
+    }
+  ],
+  "samePhysicalFileAndSourceHash": true,
+  "contextChunk": {
+    "path": "_astro/adapt.CK8Rsqlm.js",
+    "bytes": 332495,
+    "sha256": "6ff72004016f0a86ff1dc73dfbe91eb9f1b074ba570c7432ff792ff6d364ebb3"
+  },
+  "contextChunkExactlyMatchesOriginalFailingBrowserBuild": true,
+  "wholeDiagnosticBuild": "separate variant: seven unrelated chunk entries differ; full equality is false",
+  "ssrNotCountedAsClientDuplicate": true,
+  "generatedStyle": "source-after status showed modified generated CSS, but git diff was empty; no substantive generated CSS diff established"
+}

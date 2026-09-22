@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checks": 58,
+  "failedChecks": [],
+  "failedActions": [],
+  "pageErrors": 0,
+  "consoleErrors": 0,
+  "observedDialogRuntimes": [
+    "wc",
+    "react",
+    "vue"
+  ],
+  "fatalErrors": [],
+  "outputDir": "D:\\a\\Proto-UI\\Proto-UI\\reports\\browser"
+}

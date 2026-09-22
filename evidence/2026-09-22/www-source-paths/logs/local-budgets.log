@@ -1,0 +1,16 @@
+
+> proto-ui@ check:package-budgets <candidate-checkout>
+> node scripts/analysis/package-budgets.mjs
+
+[package-budgets] {"node":"v22.23.2","zlib":"1.3.1-e00f703","esbuild":"0.25.12","platform":"darwin","arch":"arm64"}
+PASS lucide/icons/x: 1734 / 3000 gzip bytes; minified=4669 sha256=a57c0a935611fbf8d6779954a2100377efea9afd07d8eacbc4e11ca262fd0c2e
+PASS lucide root: 635820 / 700000 gzip bytes; minified=4082850 sha256=b3c1de783d0da55654e474e6b9334d1d6012b9b2ff4aed12b14b70b2ae4974f5
+PASS core root: 4894 / 6000 gzip bytes; minified=15514 sha256=08f0ba5dec5232d659753541c1b71fac338bb5b64e131a88cd32b0a27126309d
+PASS runtime root: 60000 / 60000 gzip bytes; minified=239913 sha256=ac798197516a9e8629f75c4705f6eff0a0125edb9faf9b52ce0a33d8a0a1b8a7
+PASS adapter-react root: 79422 / 83000 gzip bytes; minified=301206 sha256=7ae5f362c7cb20e850c0a9fb3699fd10ecff4bc97e6b12752cf396fedd47f2cf
+PASS adapter-vue root: 79163 / 82500 gzip bytes; minified=299915 sha256=53719c92eeb52b27084f7a46105d4bd950770ab4c2735d6eb08810cb29bb71bc
+PASS adapter-web-component root: 82611 / 97000 gzip bytes; minified=313025 sha256=eee16fa150522b36f08c783ba6e4d9b1f27729b381fc370fa687bed7e38fa71e
+PASS prototypes-base/button: 3780 / 6000 gzip bytes; minified=12787 sha256=5304d27469dda21fc696727ec5f5a40020790d920008420fd5df7044ce79fb10
+PASS prototypes-shadcn/button: 4625 / 7000 gzip bytes; minified=16420 sha256=d8594a1a7e3643881f5b4e898a4567104399697c9ae3bbe78440195cc3bd3efc
+DIAGNOSTIC consumer light-dom button: 86697 gzip bytes; minified=329175 sha256=2ca76b9fdde317bb3086b149fd3de730cfc1e88337cbc4df6fd21a20d1e095d1
+DIAGNOSTIC consumer direct-shadow button: 86701 gzip bytes; minified=329186 sha256=1ba17da489db653f0b411bc03d1e91c34f0a06ebb328619a18353ad392dde642

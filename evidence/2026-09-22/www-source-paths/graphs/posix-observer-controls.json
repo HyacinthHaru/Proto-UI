@@ -1,0 +1,78 @@
+{
+  "scope": "Disposable diagnostic construction and POSIX output-equivalence investigation; no product repair or Windows claim",
+  "baseline": "9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f",
+  "productWorktreeClean": true,
+  "builds": [
+    {
+      "label": "ordinary-a",
+      "cwd": "<candidate-checkout>",
+      "command": "PATH=<Node22 tooling> corepack pnpm@10.32.1 docs:build",
+      "exitCode": 0,
+      "log": "<local-evidence>/graph-diagnostic/ordinary-a.log"
+    },
+    {
+      "label": "inline-observed",
+      "cwd": "<candidate-checkout>",
+      "command": "PATH=<Node22 tooling> node <local-evidence>/graph-diagnostic/build-observed.mjs <candidate-checkout> <local-evidence>/graph-diagnostic/inline-observed/graph",
+      "exitCode": 0,
+      "log": "<local-evidence>/graph-diagnostic/inline-observed.log"
+    },
+    {
+      "label": "ordinary-b",
+      "cwd": "<candidate-checkout>",
+      "command": "PATH=<Node22 tooling> corepack pnpm@10.32.1 docs:build",
+      "exitCode": 0,
+      "log": "<local-evidence>/graph-diagnostic/ordinary-b.log"
+    }
+  ],
+  "literalComparisons": [
+    {
+      "left": "ordinary-a",
+      "right": "inline-observed",
+      "equal": false,
+      "identical": 1938,
+      "total": 1945,
+      "receipt": "<local-evidence>/graph-diagnostic/pair-a-inline-receipt.json"
+    },
+    {
+      "left": "ordinary-a",
+      "right": "ordinary-b",
+      "equal": false,
+      "identical": 1938,
+      "total": 1945,
+      "receipt": "<local-evidence>/graph-diagnostic/pair-a-b-receipt.json"
+    },
+    {
+      "left": "inline-observed",
+      "right": "ordinary-b",
+      "equal": true,
+      "identical": 1945,
+      "total": 1945,
+      "receipt": "<local-evidence>/graph-diagnostic/pair-inline-b-receipt.json"
+    }
+  ],
+  "measuredFirstDifference": "adapter-preference minified export aliases m/I swap a/c; six importing chunks propagate alias and hashed-filename differences. Same difference occurs across two ordinary docs:build commands.",
+  "causeBoundary": "Ordinary build variability is demonstrated. The exact discovery/timing source of differing export insertion order was not instrumented. An external config wrapper is not necessary.",
+  "neutralityClaim": "One entire observer output is exactly equal to the subsequent ordinary output. Deterministic literal equality of every paired build is not proven. Keep failed comparisons and label unmatched diagnostic outputs separately.",
+  "coreClient": {
+    "ids": 1,
+    "retainedIds": 1,
+    "chunk": "_astro/adapt.B1J8vIjo.js",
+    "renderedLength": 878,
+    "sourceSha256": "363b2d4e0ac7bdd9b456de51023a75f619ba2523353ac92b6be01e12af73aa5b",
+    "chunkIdenticalAcrossAllThree": true
+  },
+  "coreSSR": {
+    "ids": 1,
+    "retainedIds": 1,
+    "renderedLength": 346,
+    "retainedExports": ["getActiveAsHookContext", "getActiveRuntimeDelayContext"],
+    "countsTowardClientDuplicates": false
+  },
+  "newHelpers": [
+    "<local-evidence>/graph-diagnostic/build-observed.mjs",
+    "<local-evidence>/graph-diagnostic/snapshot-assets.mjs",
+    "<local-evidence>/graph-diagnostic/compare-assets.mjs"
+  ],
+  "remaining": "Native Windows ordinary baseline is root-owned. A Windows diagnostic run and its exact equality/variant disposition are not established here."
+}

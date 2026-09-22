@@ -1,0 +1,62 @@
+[
+  {
+    "label": "docs-build",
+    "source": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+    "command": ["corepack", "pnpm@10.32.1", "docs:build"],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-22T00:04:07.287831+00:00",
+    "log": "<local-evidence>/candidate/docs-build.log",
+    "exitCode": 0,
+    "finishedAt": "2026-09-22T00:04:22.873631+00:00"
+  },
+  {
+    "label": "posix-browser",
+    "source": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+    "command": [
+      "node",
+      "<evidence-checkout>/evidence/validation/www-source-paths/run-preview.mjs",
+      "<candidate-checkout>",
+      "<local-evidence>/candidate/browser"
+    ],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-22T00:04:22.874096+00:00",
+    "log": "<local-evidence>/candidate/posix-browser.log",
+    "exitCode": 0,
+    "finishedAt": "2026-09-22T00:04:31.561524+00:00"
+  },
+  {
+    "label": "public-packages",
+    "source": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+    "command": ["corepack", "pnpm@10.32.1", "build:packages"],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-22T00:04:31.561783+00:00",
+    "log": "<local-evidence>/candidate/public-packages.log",
+    "exitCode": 0,
+    "finishedAt": "2026-09-22T00:04:59.009709+00:00"
+  },
+  {
+    "label": "types",
+    "source": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+    "command": ["corepack", "pnpm@10.32.1", "check:types"],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-22T00:04:59.010015+00:00",
+    "log": "<local-evidence>/candidate/types.log",
+    "exitCode": 0,
+    "finishedAt": "2026-09-22T00:05:18.778932+00:00"
+  },
+  {
+    "label": "full-test",
+    "source": "28eccdb24efb76faa9d6f43a4f8aefbe157860ef",
+    "command": ["corepack", "pnpm@10.32.1", "test"],
+    "environmentOverrides": {
+      "VITEST_MAX_THREADS": "2",
+      "VITEST_MIN_THREADS": "1",
+      "VITEST_MAX_FORKS": "2",
+      "VITEST_MIN_FORKS": "1"
+    },
+    "startedAt": "2026-09-22T00:05:18.779311+00:00",
+    "log": "<local-evidence>/candidate/full-test.log",
+    "exitCode": 0,
+    "finishedAt": "2026-09-22T00:16:58.358613+00:00"
+  }
+]

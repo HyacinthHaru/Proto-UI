@@ -1,0 +1,33 @@
+{
+  "passed": false,
+  "checks": 30,
+  "failedChecks": [
+    "wc: initial content is closed",
+    "wc: Content visible and entered",
+    "wc: Content role is dialog",
+    "wc: Content aria-modal is true",
+    "wc: Mask visible and entered",
+    "wc: Mask presence holds body scroll lock",
+    "wc: Content is no longer visible",
+    "wc: no page errors",
+    "react: representative Shadcn Button works",
+    "react: requested runtime was actually mounted",
+    "react: no page errors",
+    "vue: requested runtime was actually mounted",
+    "vue: no page errors"
+  ],
+  "failedActions": [
+    "wc: wait for entered Content and Mask with modal lock",
+    "wc: wait for leave/detach and overflow restoration",
+    "react: native View code Button expands code",
+    "react: native Select reaches requested runtime",
+    "vue: native Select reaches requested runtime"
+  ],
+  "pageErrors": 135,
+  "consoleErrors": 0,
+  "observedDialogRuntimes": [
+    "wc"
+  ],
+  "fatalErrors": [],
+  "outputDir": "D:\\a\\Proto-UI\\Proto-UI\\reports\\browser"
+}

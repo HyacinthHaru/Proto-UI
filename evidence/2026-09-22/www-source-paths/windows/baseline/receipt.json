@@ -1,0 +1,25 @@
+{
+  "variant": "baseline",
+  "source": "9eb93e9ba96fe1f88e9dade194fa838fbdc2c18f",
+  "desiredBehaviorExitCode": 1,
+  "desiredBehaviorPassed": false,
+  "checks": 30,
+  "failedChecks": [
+    "wc: initial content is closed",
+    "wc: Content visible and entered",
+    "wc: Content role is dialog",
+    "wc: Content aria-modal is true",
+    "wc: Mask visible and entered",
+    "wc: Mask presence holds body scroll lock",
+    "wc: Content is no longer visible",
+    "wc: no page errors",
+    "react: representative Shadcn Button works",
+    "react: requested runtime was actually mounted",
+    "react: no page errors",
+    "vue: requested runtime was actually mounted",
+    "vue: no page errors"
+  ],
+  "asHookErrors": 135,
+  "pageErrors": 135,
+  "observedRuntimes": ["wc"]
+}
