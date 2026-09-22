@@ -31,6 +31,7 @@ use serde_json::json;
 
 use crate::host::{ProtoHostView, SurfaceChild, SurfaceNode};
 use crate::input::{SessionRoute, SurfaceId};
+use crate::style::StyleIssue;
 use crate::template::{build, parse, BuildContext, BuildIssue};
 
 /// What the host application decides about one instance it opens.
@@ -86,6 +87,12 @@ pub enum HubNote {
         session_id: SessionId,
         status: String,
     },
+    /// An accessibility snapshot for a view other than the installed one.
+    SnapshotRefused {
+        session_id: SessionId,
+        view_epoch: u64,
+        installed: Option<u64>,
+    },
 }
 
 /// Session state the hub keeps inside the host view.
@@ -118,6 +125,39 @@ fn diagnostic(code: &str, message: impl Into<String>) -> HostDiagnostic {
         code: code.to_string(),
         message: message.into(),
         data: None,
+    }
+}
+
+/// A build issue as the diagnostic the peer receives with its refusal.
+fn issue_diagnostic(issue: &BuildIssue) -> HostDiagnostic {
+    let (code, surface, detail) = match issue {
+        BuildIssue::SvgNotRendered { surface, tag } => {
+            ("svg-not-rendered", surface, json!({ "tag": tag }))
+        }
+        BuildIssue::Style { surface, issue } => {
+            let detail = match issue {
+                StyleIssue::UnknownToken(token) => json!({ "unknownToken": token }),
+                StyleIssue::UnresolvedVariable { property, variable } => {
+                    json!({ "property": property, "unresolvedVariable": variable })
+                }
+                StyleIssue::SubstitutionTooDeep { property } => {
+                    json!({ "property": property, "substitution": "too-deep" })
+                }
+                StyleIssue::Unmapped {
+                    property,
+                    value,
+                    reason,
+                } => {
+                    json!({ "property": property, "value": value, "reason": format!("{reason:?}") })
+                }
+            };
+            ("style-not-rendered", surface, detail)
+        }
+    };
+    HostDiagnostic {
+        code: code.to_string(),
+        message: format!("the host cannot render `{surface}` faithfully"),
+        data: Some(json!({ "surface": surface, "detail": detail })),
     }
 }
 
@@ -240,11 +280,24 @@ impl ProtoHostView {
                     }));
             }
             PeerToHostMessage::A11ySnapshot(snapshot) => {
-                if let Some(session) = self.hub.session_mut(&snapshot.session_id) {
-                    session.a11y = snapshot.snapshot;
-                } else {
+                let Some(session) = self.hub.session_mut(&snapshot.session_id) else {
                     self.note_unknown(&snapshot.session_id, "a11y.snapshot");
+                    return;
+                };
+                // A snapshot describes one view. The host shows the view it
+                // installed last, so only a snapshot for that epoch applies; a
+                // late one from a retired view must not overwrite, or with
+                // `null` clear, the snapshot of the view on screen.
+                let installed = session.model.snapshot().current_epoch;
+                if installed != Some(snapshot.view_epoch) {
+                    self.hub.notes.push(HubNote::SnapshotRefused {
+                        session_id: snapshot.session_id,
+                        view_epoch: snapshot.view_epoch,
+                        installed,
+                    });
+                    return;
                 }
+                session.a11y = snapshot.snapshot;
             }
             PeerToHostMessage::ExposeDescriptor(descriptor) => {
                 if let Some(session) = self.hub.session_mut(&descriptor.session_id) {
@@ -374,13 +427,6 @@ impl ProtoHostView {
         };
 
         let session = self.hub.session_mut(&session_id).expect("checked above");
-        let ack = session
-            .model
-            .install_projection(&transaction, &InstallOptions::default());
-        if ack.status != ProjectionAckStatus::Applied {
-            return ack;
-        }
-
         let (root, issues) = build(
             &template,
             BuildContext {
@@ -392,16 +438,38 @@ impl ProtoHostView {
                 slots: &session.config.slots,
             },
         );
-        session.surface = Some(root);
-        if let Some(a11y) = transaction.a11y {
-            session.a11y = Some(a11y);
+        // A projection the host cannot render faithfully is refused whole,
+        // before the model allocates anything and before anything is shown.
+        // No governed rule lets a host drop an SVG or a style declaration and
+        // still call the projection applied, so every build issue counts.
+        if !issues.is_empty() {
+            let diagnostics = issues.iter().map(issue_diagnostic).collect();
+            self.hub
+                .notes
+                .extend(issues.into_iter().map(|issue| HubNote::Build {
+                    session_id: session_id.clone(),
+                    issue,
+                }));
+            return ProjectionAck {
+                session_id: transaction.session_id.clone(),
+                view_epoch: transaction.view_epoch,
+                commit_id: transaction.commit_id,
+                status: ProjectionAckStatus::Unsupported,
+                ready_surfaces: Vec::new(),
+                diagnostics,
+            };
         }
-        self.hub
-            .notes
-            .extend(issues.into_iter().map(|issue| HubNote::Build {
-                session_id: session_id.clone(),
-                issue,
-            }));
+
+        let ack = session
+            .model
+            .install_projection(&transaction, &InstallOptions::default());
+        if ack.status != ProjectionAckStatus::Applied {
+            return ack;
+        }
+        session.surface = Some(root);
+        // The installed view's own snapshot, which may be `null`: a new view
+        // does not inherit the old one's.
+        session.a11y = transaction.a11y;
         self.publish_surfaces(window, cx);
         ack
     }

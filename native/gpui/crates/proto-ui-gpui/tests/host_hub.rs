@@ -444,3 +444,192 @@ fn a_focus_request_for_another_target_is_rejected(cx: &mut TestAppContext) {
         .expect("a focus.result");
     assert_eq!(status, FocusResultStatus::Rejected);
 }
+
+/// A remount of the recorded projection at the next view epoch, with fresh
+/// lease ids (a real peer allocates new ones) and a snapshot named `name`.
+fn remount_named(name: &str) -> ProjectionTransaction {
+    let mut remount = recorded_transaction();
+    remount.view_epoch += 1;
+    remount.commit_id = 1;
+    for registration in &mut remount.events.registrations {
+        registration.lease_id = registration
+            .lease_id
+            .take()
+            .map(|id| format!("{id}:remount"));
+    }
+    let mut a11y = remount
+        .a11y
+        .take()
+        .expect("the recording carries a snapshot");
+    a11y.name = Some(proto_ui_host_protocol::wire::A11yNameWire::Text { value: name.into() });
+    remount.a11y = Some(a11y);
+    remount
+}
+
+fn snapshot_name(hub: &mut Hub) -> Option<String> {
+    hub.window
+        .update(&mut hub.cx, |view, _, _| {
+            view.a11y_snapshot(SESSION)
+                .and_then(|snapshot| match &snapshot.name {
+                    Some(proto_ui_host_protocol::wire::A11yNameWire::Text { value }) => {
+                        Some(value.clone())
+                    }
+                    _ => None,
+                })
+        })
+        .expect("the view reads")
+}
+
+#[gpui::test]
+fn a_snapshot_from_a_retired_view_does_not_overwrite_the_installed_one(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.receive(recorded());
+    let remount = remount_named("E2");
+    let (view_epoch, commit_id) = (remount.view_epoch, remount.commit_id);
+    hub.receive([
+        peer(json!({ "kind": "projection.install", "transaction": remount })),
+        peer(json!({
+            "kind": "projection.activate",
+            "sessionId": SESSION,
+            "viewEpoch": view_epoch,
+            "commitId": commit_id
+        })),
+    ]);
+    hub.notes();
+    assert_eq!(snapshot_name(&mut hub).as_deref(), Some("E2"));
+
+    // A late snapshot, then a late retraction, both from the retired view.
+    let retired = view_epoch - 1;
+    let mut stale = recorded_transaction().a11y.expect("a snapshot");
+    stale.name = Some(proto_ui_host_protocol::wire::A11yNameWire::Text { value: "E1".into() });
+    hub.receive([
+        peer(json!({
+            "kind": "a11y.snapshot",
+            "sessionId": SESSION,
+            "viewEpoch": retired,
+            "snapshot": stale
+        })),
+        peer(json!({ "kind": "a11y.snapshot", "sessionId": SESSION, "viewEpoch": retired, "snapshot": null })),
+    ]);
+    assert_eq!(
+        snapshot_name(&mut hub).as_deref(),
+        Some("E2"),
+        "the installed view stays authoritative"
+    );
+    let refused = hub
+        .notes()
+        .into_iter()
+        .filter(|note| {
+            matches!(
+                note,
+                HubNote::SnapshotRefused { view_epoch, installed, .. }
+                    if *view_epoch == retired && *installed == Some(view_epoch_after(retired))
+            )
+        })
+        .count();
+    assert_eq!(refused, 2);
+
+    // A snapshot for the installed view still applies.
+    let mut current = recorded_transaction().a11y.expect("a snapshot");
+    current.name = Some(proto_ui_host_protocol::wire::A11yNameWire::Text {
+        value: "E2 again".into(),
+    });
+    hub.receive([peer(json!({
+        "kind": "a11y.snapshot",
+        "sessionId": SESSION,
+        "viewEpoch": view_epoch,
+        "snapshot": current
+    }))]);
+    assert_eq!(snapshot_name(&mut hub).as_deref(), Some("E2 again"));
+}
+
+fn view_epoch_after(epoch: u64) -> u64 {
+    epoch + 1
+}
+
+/// Installs the recorded projection with `template` in place of its own and
+/// returns the acknowledgement.
+fn install_with_template(
+    hub: &mut Hub,
+    template: Value,
+) -> proto_ui_host_protocol::wire::ProjectionAck {
+    let mut transaction = recorded_transaction();
+    transaction.template = template;
+    let (view_epoch, commit_id) = (transaction.view_epoch, transaction.commit_id);
+    hub.receive([
+        peer(json!({ "kind": "projection.install", "transaction": transaction })),
+        peer(json!({
+            "kind": "projection.activate",
+            "sessionId": SESSION,
+            "viewEpoch": view_epoch,
+            "commitId": commit_id
+        })),
+    ]);
+    hub.outbox()
+        .into_iter()
+        .find_map(|message| match message {
+            HostToPeerMessage::ProjectionAck(ack) => Some(ack.ack),
+            _ => None,
+        })
+        .expect("an acknowledgement")
+}
+
+#[gpui::test]
+fn a_projection_with_an_svg_the_host_cannot_draw_is_refused_not_applied(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.outbox();
+    let ack = install_with_template(
+        &mut hub,
+        json!({
+            "kind": "root",
+            "children": [
+                { "kind": "slot", "ref": "slot-default" },
+                { "kind": "svg", "tag": "svg", "props": {}, "children": [] }
+            ]
+        }),
+    );
+    assert_eq!(ack.status, ProjectionAckStatus::Unsupported);
+    assert!(ack.ready_surfaces.is_empty());
+    assert_eq!(ack.diagnostics[0].code, "svg-not-rendered");
+
+    // Nothing was installed for the peer to activate, and nothing is shown.
+    assert!(hub
+        .notes()
+        .iter()
+        .any(|note| matches!(note, HubNote::ActivationRefused { .. })));
+    hub.click();
+    assert!(samples(&hub.outbox()).is_empty());
+}
+
+#[gpui::test]
+fn a_projection_with_a_style_the_host_cannot_resolve_is_refused_not_applied(
+    cx: &mut TestAppContext,
+) {
+    // The session has no design language, so `bg-background` cannot resolve
+    // its theme variable. Painting the element without it would be a guess.
+    let mut hub = Hub::open(cx);
+    hub.outbox();
+    let ack = install_with_template(
+        &mut hub,
+        json!({
+            "kind": "root",
+            "children": [{
+                "kind": "element",
+                "type": "span",
+                "style": { "kind": "tw", "tokens": ["bg-background"] },
+                "children": [{ "kind": "slot", "ref": "slot-default" }]
+            }]
+        }),
+    );
+    assert_eq!(ack.status, ProjectionAckStatus::Unsupported);
+    assert_eq!(ack.diagnostics[0].code, "style-not-rendered");
+    assert_eq!(
+        ack.diagnostics[0]
+            .data
+            .as_ref()
+            .and_then(|data| data["detail"]["property"].as_str()),
+        Some("background-color")
+    );
+    hub.click();
+    assert!(samples(&hub.outbox()).is_empty());
+}
