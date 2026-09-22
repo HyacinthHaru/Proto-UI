@@ -254,6 +254,9 @@ pub struct A11ySnapshotMessage {
     pub snapshot: Option<A11ySnapshotWire>,
 }
 
+/// Ends a session, and before it every session opened inside it, so that no
+/// instance outlives the one it belongs to. The peer reports
+/// `session.disposed` for each, a part before the instance it belongs to.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionDispose {

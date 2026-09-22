@@ -174,6 +174,11 @@ export type A11ySnapshotMessage = {
   readonly snapshot: A11ySnapshotWire | null;
 };
 
+/**
+ * Ends a session, and before it every session opened inside it, so that no
+ * instance outlives the one it belongs to. The peer reports `session.disposed`
+ * for each, a part before the instance it belongs to.
+ */
 export type SessionDisposeMessage = {
   readonly kind: 'session.dispose';
   readonly sessionId: SessionId;
