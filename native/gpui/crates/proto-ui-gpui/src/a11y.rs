@@ -13,7 +13,7 @@
 //! same reason a role this layer does not map leaves the object unreported
 //! instead of reporting it under a nearby role.
 
-use gpui::{Role, SharedString};
+use gpui::{Role, SharedString, Toggled};
 use proto_ui_host_protocol::wire::{A11yNameWire, A11ySnapshotWire};
 use serde_json::Value;
 
@@ -25,6 +25,8 @@ pub struct A11yProjection {
     /// the content: AccessKit names a button from the text beneath it.
     pub label: Option<SharedString>,
     pub disabled: bool,
+    /// Whether a toggle button is on, when the object is one.
+    pub toggled: Option<Toggled>,
     /// Whether assistive technology may activate the object. It asks through
     /// AccessKit's default action, and the host treats that as a click.
     pub activatable: bool,
@@ -68,9 +70,18 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
     };
 
     let mut disabled = false;
+    let mut toggled = None;
     for (name, value) in &snapshot.states {
         match (name.as_str(), value) {
             ("disabled", Value::Bool(value)) => disabled = *value,
+            // `pressed` makes a button a toggle button, on or off.
+            ("pressed", Value::Bool(value)) => {
+                toggled = Some(if *value {
+                    Toggled::True
+                } else {
+                    Toggled::False
+                })
+            }
             _ => issues.push(A11yIssue::State {
                 name: name.clone(),
                 value: value.clone(),
@@ -103,6 +114,7 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
         role,
         label,
         disabled,
+        toggled,
         activatable,
     };
     (Some(projection), issues)
