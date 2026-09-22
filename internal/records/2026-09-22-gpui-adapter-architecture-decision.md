@@ -236,7 +236,18 @@ Inside a wave the only reordering rule is capability closure: a family starts af
 
 ## GPUI-on-WASM lane
 
-Hard constraint (owner Q4): mainstream Chrome and Firefox releases from the last five years must run the artifact. Measured on 2026-09-22 that floor is roughly Chrome 94 and Firefox 92 (September 2021); it rolls forward monthly.
+Hard constraint (owner Q4): mainstream Chrome and Firefox releases from the last five years must run the artifact.
+
+The floor is a date rule, not a fixed version pair. For an evaluation date `D`, the supported set is every major stable release whose own release date is on or after `D - 5 years`, and the floor is the oldest release in that set. Stating it this way lets the floor roll without re-deciding it, and it is the rule an admission review should re-apply rather than reusing a number recorded here.
+
+Applied at this record's date, `D = 2026-09-22` gives a cutoff of 2021-09-22:
+
+| Browser | Floor at this date | Release date | Nearest excluded major                       |
+| ------- | ------------------ | ------------ | -------------------------------------------- |
+| Chrome  | 95                 | 2021-10-19   | 94 (2021-09-21, one day before the cutoff)   |
+| Firefox | 93                 | 2021-10-05   | 92 (2021-09-07, two weeks before the cutoff) |
+
+Chrome 94 and Firefox 92 both fall outside this window, so neither is part of the constraint; an earlier draft of this record named them and understated the floor. The derived admission criteria below are tied to the corrected floor: WebGPU shipped in Chrome 113 (May 2023) and Firefox 141 (July 2025), so at Chrome 95 / Firefox 93 a WebGL2 path is mandatory regardless of how the cutoff rolls, and the same holds for the single-threaded requirement, which is driven by deployment headers rather than by browser version.
 
 Derived admission criteria, all required:
 
