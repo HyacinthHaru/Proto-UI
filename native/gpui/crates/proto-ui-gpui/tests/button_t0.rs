@@ -217,3 +217,31 @@ fn disposal_ends_the_session_on_both_sides(cx: &mut TestAppContext) {
         .iter()
         .all(|message| !matches!(message, HostToPeerMessage::InputSample(_))));
 }
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn tab_moves_focus_from_one_button_to_the_next_and_back(cx: &mut TestAppContext) {
+    // Tab's default action runs in the host; each Button learns of it from
+    // the focus facts that follow, as it learns of any focus change.
+    const FIRST: &str = "t0-first";
+    const SECOND: &str = "t0-second";
+    let mut fixture = Fixture::start_all(
+        cx,
+        vec![
+            Session::labelled(FIRST, "base-button", "One", WireRecord::new()),
+            Session::labelled(SECOND, "base-button", "Two", WireRecord::new()),
+        ],
+    );
+
+    fixture.cx.simulate_keystrokes("tab");
+    fixture.session_state_becomes(FIRST, "focused", json!(true));
+
+    // The blur is reported before the focus, in the order a browser uses.
+    fixture.cx.simulate_keystrokes("tab");
+    fixture.session_state_becomes(FIRST, "focused", json!(false));
+    fixture.session_state_becomes(SECOND, "focused", json!(true));
+
+    fixture.cx.simulate_keystrokes("shift-tab");
+    fixture.session_state_becomes(SECOND, "focused", json!(false));
+    fixture.session_state_becomes(FIRST, "focused", json!(true));
+}
