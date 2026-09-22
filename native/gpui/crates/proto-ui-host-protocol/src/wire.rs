@@ -112,10 +112,22 @@ pub struct A11ySnapshotWire {
     pub name: Option<A11yNameWire>,
     #[serde(default)]
     pub states: serde_json::Map<String, Value>,
+    /// Actions the object exposes, such as `activate`, each naming the event
+    /// its invocation dispatches. The host needs these to project platform
+    /// accessibility actions; without the field they were dropped on read.
+    #[serde(default)]
+    pub actions: std::collections::BTreeMap<String, A11yActionWire>,
     #[serde(default)]
     pub relations: serde_json::Map<String, Value>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub level: Option<u8>,
+}
+
+/// One accessibility action on a snapshot.
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct A11yActionWire {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub event: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
