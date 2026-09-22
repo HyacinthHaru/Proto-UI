@@ -34,7 +34,7 @@ describe('gpui peer: stdio process', () => {
     expect(hello.kind).toBe('peer.hello');
     if (hello.kind !== 'peer.hello') return;
     expect(hello.peer.name).toBe(PEER_NAME);
-    expect(hello.bundle.entries).toEqual(['base-button']);
+    expect(hello.bundle.entries).toEqual(['base-button', 'base-toggle']);
   });
 
   it('opens a session by bundle key and mounts it', async () => {
