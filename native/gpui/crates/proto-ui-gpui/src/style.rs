@@ -130,21 +130,21 @@ fn apply(
             }
             style.flex_grow = Some(grow);
             style.flex_shrink = Some(shrink);
-            style.flex_basis = Some(to_length(length(basis)?));
+            style.flex_basis = Some(to_length(length(basis)?)?);
         }
         "position" => match value {
             "relative" | "static" => style.position = Some(Position::Relative),
             "absolute" | "fixed" => style.position = Some(Position::Absolute),
             _ => return Err(Unmapped::UnsupportedValue),
         },
-        "width" => style.size.width = Some(to_length(length(value)?)),
-        "height" => style.size.height = Some(to_length(length(value)?)),
-        "min-width" => style.min_size.width = Some(to_length(length(value)?)),
-        "min-height" => style.min_size.height = Some(to_length(length(value)?)),
-        "max-width" => style.max_size.width = Some(to_length(length(value)?)),
-        "max-height" => style.max_size.height = Some(to_length(length(value)?)),
+        "width" => style.size.width = Some(to_length(length(value)?)?),
+        "height" => style.size.height = Some(to_length(length(value)?)?),
+        "min-width" => style.min_size.width = Some(to_length(length(value)?)?),
+        "min-height" => style.min_size.height = Some(to_length(length(value)?)?),
+        "max-width" => style.max_size.width = Some(to_length(length(value)?)?),
+        "max-height" => style.max_size.height = Some(to_length(length(value)?)?),
         "top" | "right" | "bottom" | "left" => {
-            let edge = to_length(length(value)?);
+            let edge = to_length(length(value)?)?;
             match property {
                 "top" => style.inset.top = Some(edge),
                 "right" => style.inset.right = Some(edge),
@@ -153,7 +153,7 @@ fn apply(
             }
         }
         "inset" => {
-            let edge = to_length(length(value)?);
+            let edge = to_length(length(value)?)?;
             style.inset.top = Some(edge);
             style.inset.right = Some(edge);
             style.inset.bottom = Some(edge);
@@ -321,22 +321,24 @@ fn to_hsla(rgba: proto_ui_style::Rgba) -> Hsla {
 
 /// A percentage becomes a fraction; GPUI resolves it against the parent, which
 /// is the basis this layer deliberately does not assume.
-fn to_length(dimension: Dimension) -> Length {
-    Length::Definite(to_definite_lossy(dimension))
+fn to_length(dimension: Dimension) -> Result<Length, Unmapped> {
+    to_definite(dimension).map(Length::Definite)
 }
 
+/// GPUI's `DefiniteLength` is an absolute length or a fraction of the parent,
+/// never the sum of the two. A mixed value such as `calc(100% - 1px)` has no
+/// exact GPUI form, so it is reported rather than truncated: dropping either
+/// part changes the geometry while the declaration claims to have applied.
 fn to_definite(dimension: Dimension) -> Result<DefiniteLength, Unmapped> {
-    Ok(to_definite_lossy(dimension))
-}
-
-fn to_definite_lossy(dimension: Dimension) -> DefiniteLength {
     if dimension.is_absolute() {
-        DefiniteLength::Absolute(AbsoluteLength::Pixels(px(dimension.px)))
-    } else {
-        // A mixed `calc(100% - 1px)` has no GPUI representation; the pixel part
-        // is dropped and the caller sees it through the recorded value.
-        DefiniteLength::Fraction(dimension.percent / 100.0)
+        return Ok(DefiniteLength::Absolute(AbsoluteLength::Pixels(px(
+            dimension.px,
+        ))));
     }
+    if dimension.px != 0.0 {
+        return Err(Unmapped::UnsupportedValue);
+    }
+    Ok(DefiniteLength::Fraction(dimension.percent / 100.0))
 }
 
 fn to_absolute(dimension: Dimension) -> Result<AbsoluteLength, Unmapped> {
