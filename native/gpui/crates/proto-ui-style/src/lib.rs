@@ -29,9 +29,11 @@
 //! which is composition of the resolved result, not a second merge policy.
 
 pub mod color;
+pub mod length;
 pub mod theme;
 
 pub use color::{parse as parse_color, ColorError, ColorValue, Rgba};
+pub use length::{evaluate as evaluate_length, Dimension, LengthContext, LengthError};
 
 pub use theme::{themes, ColorScheme, Substitution, Theme, ThemeCatalog};
 
