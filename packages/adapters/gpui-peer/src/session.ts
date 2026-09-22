@@ -570,10 +570,16 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
       commitId: ack.commitId,
     });
     activated = true;
+    // Readiness is a fact of the current projection, not a latch. A later
+    // commit whose acknowledgement omits the surface withdraws it, and Focus
+    // must go back to retaining requests rather than reporting them applied
+    // (HC-FOCUS-TARGET-0001-C).
     const readyNow = ack.readySurfaces.includes('proto-surface');
-    if (readyNow && !targetReady) {
-      targetReady = true;
-      hostSession?.invokeInCallbackScope(notifyTargetReady);
+    if (readyNow !== targetReady) {
+      targetReady = readyNow;
+      // Only gaining readiness can let a retained request succeed; losing it
+      // just closes the gate, so subscribers are notified on that edge alone.
+      if (readyNow) hostSession?.invokeInCallbackScope(notifyTargetReady);
     }
   };
 
@@ -616,6 +622,10 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     setProps(props) {
       raw = { ...props };
       hostSession?.controller.applyRawProps(raw as any);
+      // The host has no other way to ask for a re-render, so a props push is
+      // also the request to reflect them. This produces a new commit in the
+      // current epoch rather than a new epoch.
+      hostSession?.controller.update();
     },
     handle(message) {
       if (!acceptingInbound) return;

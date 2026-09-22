@@ -25,7 +25,8 @@ export class ScriptedHost {
     readonly sessionId: string,
     private readonly options: {
       readonly autoAck?: boolean;
-      readonly readySurfaces?: readonly string[];
+      /** A list, or a per-commit function, so readiness can be withdrawn. */
+      readonly readySurfaces?: readonly string[] | ((commitId: number) => readonly string[]);
       readonly applyFocus?: boolean;
     } = {}
   ) {
@@ -105,9 +106,16 @@ export class ScriptedHost {
       ack: {
         ...ack,
         ...(override?.status ? { status: override.status } : {}),
-        readySurfaces: override?.readySurfaces ?? this.options.readySurfaces ?? ack.readySurfaces,
+        readySurfaces:
+          override?.readySurfaces ?? this.readySurfacesFor(pending.commitId, ack.readySurfaces),
       },
     });
+  }
+
+  private readySurfacesFor(commitId: number, fallback: readonly string[]): readonly string[] {
+    const configured = this.options.readySurfaces;
+    if (configured === undefined) return fallback;
+    return typeof configured === 'function' ? configured(commitId) : configured;
   }
 
   /** Delivers one native input sample through the model to every live lease. */

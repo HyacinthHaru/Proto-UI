@@ -229,3 +229,75 @@ describe('gpui peer: lifecycle', () => {
     await peer.dispose();
   });
 });
+
+describe('gpui peer: readiness follows the current projection', () => {
+  it('withdraws readiness when a newer commit is not ready, then retries the retained request', async () => {
+    // Commit 2's acknowledgement omits the surface: the host applied the
+    // projection but the view is not ready for interaction yet.
+    const host = new ScriptedHost(SESSION, {
+      readySurfaces: (commitId) => (commitId === 2 ? [] : ['proto-surface']),
+    });
+    const peer = createPeerSession({
+      sessionId: SESSION,
+      instanceId: INSTANCE,
+      prototype: button,
+      props: {},
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+    });
+    host.bind((message) => peer.handle(message));
+
+    await peer.mount();
+    expect(peer.snapshot()).toMatchObject({ commitId: 1, targetReady: true });
+
+    // A props push re-renders in the same epoch; the host answers not ready.
+    peer.setProps({});
+    expect(peer.snapshot()).toMatchObject({ commitId: 2, viewEpoch: 1, targetReady: false });
+
+    const beforeRequest = host.of('focus.request').length;
+    host.send({
+      kind: 'expose.call',
+      sessionId: SESSION,
+      callId: 'call-1',
+      name: 'focusSelf',
+      args: [],
+    });
+    // Not ready: no new host request is produced and no fact is fabricated.
+    expect(host.of('focus.request')).toHaveLength(beforeRequest);
+    expect(host.exposeState('focused')).toBe(false);
+
+    // Readiness returns on the next commit; the retained request is retried.
+    peer.setProps({});
+    expect(peer.snapshot()).toMatchObject({ commitId: 3, viewEpoch: 1, targetReady: true });
+    expect(host.of('focus.request').length).toBe(beforeRequest + 1);
+    expect(host.of('focus.request').at(-1)).toMatchObject({
+      target: 'focus-root',
+      action: 'focus',
+    });
+    expect(host.exposeState('focused')).toBe(true);
+
+    await peer.dispose();
+  });
+
+  it('keeps a props push in the same epoch rather than starting a new one', async () => {
+    const { host, peer } = createHarness();
+    await peer.mount();
+
+    peer.setProps({ disabled: true });
+    peer.setProps({ disabled: false });
+
+    const installs = host.of('projection.install').map((message) => ({
+      viewEpoch: message.transaction.viewEpoch,
+      commitId: message.transaction.commitId,
+    }));
+    expect(installs).toEqual([
+      { viewEpoch: 1, commitId: 1 },
+      { viewEpoch: 1, commitId: 2 },
+      { viewEpoch: 1, commitId: 3 },
+    ]);
+    // Each commit is activated for its own commit id, never a previous one.
+    expect(host.of('projection.activate').map((message) => message.commitId)).toEqual([1, 2, 3]);
+
+    await peer.dispose();
+  });
+});
