@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { WireRecord } from '@proto.ui/host-protocol';
+import type { PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
 import button from '@proto.ui/prototypes-base/button';
 import toggle from '@proto.ui/prototypes-base/toggle';
 import { switchRoot, switchThumb } from '@proto.ui/prototypes-base/switch';
@@ -350,7 +350,8 @@ describe('gpui peer: instances composed into one another', () => {
   function open(
     sessionId: string,
     prototype: Parameters<typeof createPeerSession>[0]['prototype'],
-    parent?: PeerSession
+    parent?: PeerSession,
+    sent?: PeerToHostMessage[]
   ) {
     const host = new ScriptedHost(sessionId);
     const peer = createPeerSession({
@@ -358,7 +359,10 @@ describe('gpui peer: instances composed into one another', () => {
       instanceId: `${sessionId}:instance`,
       prototype,
       props: {},
-      send: (message) => host.receive(message),
+      send: (message) => {
+        sent?.push(message);
+        host.receive(message);
+      },
       schedule: (task) => task(),
       parent,
     });
@@ -394,6 +398,36 @@ describe('gpui peer: instances composed into one another', () => {
 
     await thumb.peer.dispose();
     await root.peer.dispose();
+  });
+
+  it('ends the thumb before the root when the root ends first', async () => {
+    const sent: PeerToHostMessage[] = [];
+    const root = open('switch-root', switchRoot, undefined, sent);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer, sent);
+    await thumb.peer.mount();
+
+    await root.peer.dispose();
+    expect(
+      sent.flatMap((message) => (message.kind === 'session.disposed' ? [message.sessionId] : []))
+    ).toEqual(['switch-thumb', 'switch-root']);
+    // The ended root is no longer an instance anything can belong to.
+    expect(() => open('switch-thumb-2', switchThumb, root.peer)).toThrow(/switch-root has ended/);
+  });
+
+  it('keeps the root running when its thumb ends first', async () => {
+    const root = open('switch-root', switchRoot);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer);
+    await thumb.peer.mount();
+
+    await thumb.peer.dispose();
+    root.host.input('press.commit');
+    expect(root.host.exposeState('checked')).toBe(true);
+
+    await root.peer.dispose();
+    expect(thumb.host.of('session.disposed')).toHaveLength(1);
+    expect(root.host.of('session.disposed')).toHaveLength(1);
   });
 
   it('cannot set a thumb up without the root it belongs to', () => {

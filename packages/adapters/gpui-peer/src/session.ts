@@ -107,6 +107,7 @@ export type PeerSession = {
   mount(): Promise<void>;
   setProps(props: WireRecord): void;
   handle(message: HostToPeerMessage): void;
+  /** Ends the session, after every session opened inside it, the latest first. */
   dispose(): Promise<void>;
   snapshot(): PeerSessionSnapshot;
 };
@@ -142,6 +143,9 @@ type InstanceRecord = {
  */
 const instances = new WeakMap<object, InstanceRecord>();
 
+/** The sessions opened inside each instance, by its token, in opening order. */
+const openedInside = new WeakMap<object, Set<PeerSession>>();
+
 function recordOf(instance: unknown): InstanceRecord | undefined {
   return instance !== null && typeof instance === 'object' ? instances.get(instance) : undefined;
 }
@@ -152,6 +156,11 @@ const prototypeOf = (instance: unknown): Prototype<any> | null =>
 
 export function createPeerSession(args: PeerSessionArgs): PeerSession {
   const { sessionId, instanceId, prototype, send } = args;
+  // An ended instance keeps no context, anatomy domain or trigger group to
+  // belong to.
+  if (args.parent && !recordOf(args.parent.token)) {
+    throw new Error(`session ${args.parent.sessionId} has ended; nothing opens inside it`);
+  }
   const schedule = args.schedule ?? ((task: () => void) => queueMicrotask(task));
 
   let raw: Record<string, unknown> = { ...args.props };
@@ -673,7 +682,7 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     if (scopes.has('root')) rootBus.dispatchEvent(event);
   };
 
-  return {
+  const peerSession: PeerSession = {
     sessionId,
     token: instanceToken,
     mount: () => hostSession!.mount(),
@@ -747,6 +756,10 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     async dispose() {
       if (!acceptingInbound) return;
       acceptingInbound = false;
+      // No instance outlives the one it belongs to.
+      for (const inside of [...(openedInside.get(instanceToken) ?? [])].reverse()) {
+        await inside.dispose();
+      }
       for (const off of exposeUnsubscribes) off();
       exposeUnsubscribes = [];
       exposesReader.invalidate();
@@ -755,6 +768,9 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
       await hostSession?.dispose();
       flushReleases();
       disposed = true;
+      // An ended instance is no one's parent, prototype or trigger anchor.
+      instances.delete(instanceToken);
+      if (args.parent) openedInside.get(args.parent.token)?.delete(peerSession);
       send({ kind: 'session.disposed', sessionId });
     },
     snapshot() {
@@ -773,4 +789,10 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
       };
     },
   };
+  if (args.parent) {
+    const inside = openedInside.get(args.parent.token) ?? new Set<PeerSession>();
+    inside.add(peerSession);
+    openedInside.set(args.parent.token, inside);
+  }
+  return peerSession;
 }

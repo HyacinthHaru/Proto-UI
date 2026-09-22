@@ -42,7 +42,11 @@ export function createPeerProcess(options: PeerProcessOptions): PeerProcess {
   // it.
   let queue: Promise<void> = Promise.resolve();
 
-  const send = (message: PeerToHostMessage) => options.write(encodeFrame(message));
+  const send = (message: PeerToHostMessage) => {
+    // A session also ends with the one it was opened inside.
+    if (message.kind === 'session.disposed') sessions.delete(message.sessionId);
+    options.write(encodeFrame(message));
+  };
   const diagnose = (sessionId: string | null, code: string, message: string) =>
     send({ kind: 'diagnostic', sessionId, diagnostic: { code, message } });
 

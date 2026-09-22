@@ -164,4 +164,43 @@ describe('gpui peer: stdio process', () => {
       status: 'ok',
     });
   });
+
+  it('ends the parts opened inside a session with it, innermost first', async () => {
+    const { peer, send, received } = harness();
+    const open = (sessionId: string, prototypeKey: string, parentSessionId?: string) =>
+      send({
+        kind: 'session.open',
+        sessionId,
+        instanceId: `${sessionId}:instance`,
+        prototypeKey,
+        props: {},
+        ...(parentSessionId ? { parentSessionId } : {}),
+      });
+    open('root', 'base-switch-root');
+    open('thumb', 'base-switch-thumb', 'root');
+    send({ kind: 'session.dispose', sessionId: 'root' });
+    await peer.idle();
+    expect(
+      received.flatMap((message) =>
+        message.kind === 'session.disposed' ? [message.sessionId] : []
+      )
+    ).toEqual(['thumb', 'root']);
+
+    // Neither is open any more, so nothing reaches or opens inside them.
+    send({ kind: 'props.set', sessionId: 'thumb', props: {} });
+    await peer.idle();
+    expect(received.at(-1)).toMatchObject({
+      kind: 'diagnostic',
+      sessionId: 'thumb',
+      diagnostic: { code: 'unknown-session' },
+    });
+    open('thumb-2', 'base-switch-thumb', 'root');
+    await peer.idle();
+    expect(
+      received.find((m) => m.kind === 'session.opened' && m.sessionId === 'thumb-2')
+    ).toMatchObject({
+      status: 'failed',
+      diagnostics: [{ code: 'unknown-parent' }],
+    });
+  });
 });
