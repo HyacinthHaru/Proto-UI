@@ -212,6 +212,7 @@ impl ProtoHostView {
                 instance_id: config.instance_id.clone(),
                 prototype_key: config.prototype_key.clone(),
                 props: config.props.clone(),
+                parent_session_id: None,
             }));
         let root_id = format!("{session_id}/proto-surface");
         self.hub.sessions.push((

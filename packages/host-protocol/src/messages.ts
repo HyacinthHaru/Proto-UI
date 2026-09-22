@@ -54,6 +54,12 @@ export type SessionOpenMessage = {
   readonly instanceId: InstanceId;
   readonly prototypeKey: string;
   readonly props: WireRecord;
+  /**
+   * The open session whose instance this one belongs to, such as a Switch for
+   * its thumb. The host composes the instance tree; the peer resolves context,
+   * anatomy and trigger lookups through it. Absent for a top-level instance.
+   */
+  readonly parentSessionId?: SessionId;
 };
 
 export type SessionOpenedMessage = {
