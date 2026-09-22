@@ -569,6 +569,7 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
           { ref: FOCUS_ROOT_REF, sequential: focusSequential, programmatic: focusProgrammatic },
         ],
       },
+      style: [],
       a11y: latestA11y,
     };
     a11yDirtyDuringCommit = false;

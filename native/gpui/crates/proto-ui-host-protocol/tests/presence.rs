@@ -77,6 +77,7 @@ fn an_omitted_part_of_a_projection_is_refused() {
         &["transaction", "slots"],
         &["transaction", "events"],
         &["transaction", "focus"],
+        &["transaction", "style"],
         &["transaction", "a11y"],
         &["transaction", "slots", "slots"],
         &["transaction", "events", "registrations"],

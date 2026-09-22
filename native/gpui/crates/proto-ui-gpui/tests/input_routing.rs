@@ -610,6 +610,7 @@ fn routed_samples_are_accepted_by_the_host_session_model() {
         "template": { "kind": "root", "children": [] },
         "slots": { "slots": [] },
         "focus": { "targets": [] },
+        "style": [],
         "a11y": null,
         "events": {
             "registrations": [

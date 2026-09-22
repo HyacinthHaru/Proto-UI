@@ -144,6 +144,7 @@ export const PEER_TO_HOST_EXAMPLES: ExamplesByKind<PeerToHostMessage> = {
         },
         focus: { targets: [{ ref: 'focus-root', sequential: true, programmatic: true }] },
         // Optional snapshot fields absent here and present in `a11y.snapshot`.
+        style: ['inline-flex', 'items-center', 'rounded-md'],
         a11y: { semanticObjectId: 'button-1', states: {}, actions: {}, relations: {} },
       },
     },
@@ -159,6 +160,7 @@ export const PEER_TO_HOST_EXAMPLES: ExamplesByKind<PeerToHostMessage> = {
         slots: { slots: [] },
         events: { registrations: [] },
         focus: { targets: [] },
+        style: [],
         a11y: null,
       },
     },
@@ -218,6 +220,11 @@ export const PEER_TO_HOST_EXAMPLES: ExamplesByKind<PeerToHostMessage> = {
       value: null,
       diagnostics: [],
     },
+  ],
+  'style.apply': [
+    { kind: 'style.apply', sessionId: 's-1', viewEpoch: 1, tokens: ['inline-flex', 'opacity-50'] },
+    // An empty list clears the feedback style.
+    { kind: 'style.apply', sessionId: 's-1', viewEpoch: 1, tokens: [] },
   ],
   'a11y.snapshot': [
     {
