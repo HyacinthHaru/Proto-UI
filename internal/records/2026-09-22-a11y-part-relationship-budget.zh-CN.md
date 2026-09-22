@@ -6,7 +6,7 @@
 
 维护者对 #688 准确 head `868d3adbd22fae98b8e33ea58a9f3353158c506d` 的 [review 5274632674](https://github.com/Proto-UI/Proto-UI/pull/688#pullrequestreview-5274632674) 未提出独立源码正确性阻碍，但正式结论为 **CHANGES_REQUESTED**。该 head 的可信 CI 在三个包预算上失败。修复条件是降低体积，或先合入单独审查、合理归因的预算事务，再同步接受后的 main、通过新准确 head 的完整 CI、转 Ready 并复审；不得在功能 PR 内直接提高上限来消除自己的红色门禁。
 
-本提案采用 [#654 已接受的数值事务流程](https://github.com/Proto-UI/Proto-UI/issues/654#issuecomment-5677625733)，只调整 Runtime、React、Vue 三个 whole-entry 上限并记录归因。它不是已发生的预算批准，不替代 #688 的独立 review，也不关闭 #549。阈值只有经独立审查并实际合入后，才成为功能分支可以同步的 main 状态。
+本提案采用 [#654 已接受的数值事务流程](https://github.com/Proto-UI/Proto-UI/issues/654#issuecomment-5677625733)，数值部分只调整 Runtime、React、Vue 三个 whole-entry 上限并记录归因。它不是已发生的预算批准，不替代 #688 的独立 review，也不关闭 #549。阈值只有经独立审查并实际合入后，才成为功能分支可以同步的 main 状态。
 
 ## Canonical before / after
 
@@ -58,6 +58,14 @@
 本次数值按 500-byte 边界取整，并保留至少 500 bytes 的小幅余量；635～907 bytes 也处于已接受 #675 记录采用的约 0.5～1.5 KB 范围。这里是本事务的可复核选择，不是今后能力可自动增长或自动涨预算的一般授权。
 
 WC 在 main / feature 分别为 85,908 / 88,554，维持既有 97,000 上限；lucide icon/root、Core、Base Button、shadcn Button 五项也均通过，其上限不变。whole-entry 阻塞机制、测量算法、external boundary、两个非阻塞 consumer diagnostics 及其他六项 ceiling 全部保留。
+
+## 预算事务自身的 CI 覆盖
+
+#689 初始 head `d0977f03c1d8e5c6a31552ecd4ae8c8ce39ec508` 的 [run 35699734276](https://github.com/Proto-UI/Proto-UI/actions/runs/35699734276) 保留为失败记录：主阶段 2,597 项通过；独立浏览器阶段 136 项通过、1 项失败。失败是 Demo Matrix 首次访问发现 61 个 `[Preview Error]`，日志没有具体错误文本。同套件后续三项通过；全新本地 checkout 的原四项测试和有界原生页面对照未复现，不能据此断言根因或称为 flake。
+
+[review 5275480727](https://github.com/Proto-UI/Proto-UI/pull/689#pullrequestreview-5275480727) 还指出该脚本/记录事务选中了零个公开包，导致预算作业跳过。因此补上 `scripts/analysis/package-budgets.mjs` 的精确全局构建输入匹配，让预算脚本变更选择全部公开包并执行既有 pinned CI whole-entry 门禁。回归同时保留无关记录/analysis 不选包、普通 package 的依赖和反向消费者选择；workflow、测量算法、其他上限及失败退出行为不变。
+
+Demo Matrix 的零错误断言现在附带失败 previewer 的 demo、runtime、ID 与完整文本，保留原判断和超时，便于新的可信作业记录实际原因。这是诊断信息补充，不是已证实的页面缺陷修复。新准确 head 仍须取得实际执行预算命令且成功的仓库 CI，不能用本地对照或旧作业的跳过替代。
 
 ## 接受与后续边界
 
