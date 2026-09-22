@@ -101,10 +101,25 @@ export function createWebA11yProjectionRegistry(
   const reservedIdsByRef = new Map<A11ySemanticObjectRef, Map<Document, IdReservation>>();
   const scalarAttributeRefs = new WeakMap<HTMLElement, Map<string, ScalarOwnership>>();
   const relationOwnerships = new WeakMap<HTMLElement, Map<string, RelationOwnership>>();
+  const pendingIdWrites = new WeakMap<HTMLElement, string | null>();
+  const logicalIdentities = new Map<
+    A11ySemanticObjectRef,
+    { projectors: number; supersededId?: string | null }
+  >();
+  const releaseLogicalIdentity = (ref: A11ySemanticObjectRef | null) => {
+    if (!ref) return;
+    const identity = logicalIdentities.get(ref);
+    if (identity && --identity.projectors === 0) logicalIdentities.delete(ref);
+  };
   const documentObservers = new Map<
     Document,
     { observer: MutationObserver; records: Set<WebProjectorRecord> }
   >();
+  const rememberIdWrite = (target: HTMLElement) => {
+    if (target.isConnected && documentObservers.has(target.ownerDocument)) {
+      pendingIdWrites.set(target, target.getAttribute('id'));
+    } else pendingIdWrites.delete(target);
+  };
 
   const unobserve = (record: WebProjectorRecord) => {
     const document = record.observedDocument;
@@ -127,14 +142,32 @@ export function createWebA11yProjectionRegistry(
       const records = new Set<WebProjectorRecord>();
       const Observer = document.defaultView?.MutationObserver ?? globalThis.MutationObserver;
       if (!Observer) return;
-      const observer = new Observer(() => {
+      const observer = new Observer((mutations) => {
+        const ownedWrites = new Map<HTMLElement, string | null>();
+        for (const mutation of mutations) {
+          if (mutation.type !== 'attributes' || mutation.attributeName !== 'id') continue;
+          const target = mutation.target as HTMLElement;
+          if (!pendingIdWrites.has(target)) continue;
+          ownedWrites.set(target, pendingIdWrites.get(target)!);
+          pendingIdWrites.delete(target);
+        }
         const refs = new Set<A11ySemanticObjectRef>();
         for (const owner of [...records]) {
           if (!owner.snapshot || owner.disposed || owner.detached) continue;
           // Host ID writes and duplicate IDs outside the relationship are
           // host facts, not protocol State changes. Recheck before the next paint.
           if ((owner.target?.id || null) !== owner.lastTargetId) {
-            update(owner, owner.snapshot, true);
+            const target = owner.target!;
+            const current = target.getAttribute('id');
+            const scalar = scalarAttributeRefs.get(target)?.get('id');
+            if (
+              (ownedWrites.has(target) && ownedWrites.get(target) === current) ||
+              (scalar && scalar.projectedValue === current)
+            ) {
+              owner.lastTargetId = target.id || null;
+            } else {
+              reconcileHostId(owner);
+            }
           }
           if (owner.objectRef) refs.add(owner.objectRef);
         }
@@ -180,6 +213,7 @@ export function createWebA11yProjectionRegistry(
       if (next !== current) {
         if (next === null) target.removeAttribute(attr);
         else target.setAttribute(attr, next);
+        if (attr === 'id') rememberIdWrite(target);
       }
       ownership.projectedValue = next;
     }
@@ -204,6 +238,11 @@ export function createWebA11yProjectionRegistry(
     affectedIdRefs?: Set<A11ySemanticObjectRef>
   ) => {
     const attributes = projectedScalarAttributes(snapshot, false);
+    const identity = logicalIdentities.get(snapshot.objectRef);
+    if (snapshot.viewEpoch !== undefined && identity?.supersededId !== undefined) {
+      if (identity.supersededId === snapshot.id) attributes.delete('id');
+      else delete identity.supersededId;
+    }
     // An explicit id takes over the physical target's generated ownership, not a host baseline.
     if (attributes.has('id')) {
       const reservation = reservedIdsByDocument.get(target.ownerDocument)?.get(target.id);
@@ -258,6 +297,7 @@ export function createWebA11yProjectionRegistry(
     if (target && record.reservedId && target.id === record.reservedId) {
       if (record.ownedIdBaseline === null) target.removeAttribute('id');
       else target.setAttribute('id', record.ownedIdBaseline);
+      rememberIdWrite(target);
     }
     record.ownedIdTarget = null;
     record.ownedIdBaseline = null;
@@ -441,6 +481,7 @@ export function createWebA11yProjectionRegistry(
       if (!target.id) {
         record.ownedIdBaseline = target.getAttribute('id');
         target.id = record.reservedId;
+        rememberIdWrite(target);
         record.ownedIdTarget = target;
       }
       const refReservations = reservedIdsByRef.get(objectRef);
@@ -465,6 +506,7 @@ export function createWebA11yProjectionRegistry(
     }
     record.ownedIdBaseline = target.getAttribute('id');
     target.id = candidate;
+    rememberIdWrite(target);
     record.ownedIdTarget = target;
     reserveId(record, candidate);
     return candidate;
@@ -600,6 +642,26 @@ export function createWebA11yProjectionRegistry(
     for (const source of affected) reconcileSource(source);
   };
 
+  const reconcileHostId = (record: WebProjectorRecord) => {
+    const { target, objectRef, snapshot } = record;
+    if (!target || !objectRef || !snapshot) return;
+    // An observed host write is not a new semantic declaration. Withdraw the
+    // old lease before adopting the author value, without replaying cached scalars.
+    for (const source of dependentSourcesByRef.get(objectRef) ?? []) {
+      for (const [key, relation] of Object.entries(source.snapshot?.relations ?? {})) {
+        if (Array.isArray(relation) && relation.includes(objectRef)) clearProjection(source, key);
+      }
+    }
+    if (snapshot.id !== undefined) {
+      logicalIdentities.get(objectRef)!.supersededId = snapshot.id;
+      if (record.scalarAttributes.has('id')) releaseScalarAttribute(record, 'id');
+    }
+    releaseReservation(record);
+    const id = target.id || null;
+    if (id && idIsAvailable(target.ownerDocument, id, target, objectRef)) reserveId(record, id);
+    record.lastTargetId = id;
+  };
+
   const update = (
     record: WebProjectorRecord,
     snapshot: A11ySemanticObjectSnapshot,
@@ -618,6 +680,12 @@ export function createWebA11yProjectionRegistry(
     const targetChanged = nextTarget !== record.target;
     const documentChanged = nextDocument !== record.targetDocument;
     const refChanged = snapshot.objectRef !== record.objectRef;
+    if (refChanged) {
+      releaseLogicalIdentity(record.objectRef);
+      const identity = logicalIdentities.get(snapshot.objectRef) ?? { projectors: 0 };
+      identity.projectors += 1;
+      logicalIdentities.set(snapshot.objectRef, identity);
+    }
     const previousSnapshot = record.snapshot;
     const previousRef = record.objectRef;
     const previousTargetId = record.lastTargetId;
@@ -642,6 +710,17 @@ export function createWebA11yProjectionRegistry(
     record.targetDocument = nextDocument;
     record.snapshot = snapshot;
     record.objectRef = snapshot.objectRef;
+    if (
+      (bindingReplaced || reactivating) &&
+      snapshot.viewEpoch !== undefined &&
+      snapshot.id !== undefined &&
+      nextTarget?.id &&
+      nextTarget.id !== snapshot.id
+    ) {
+      // A materialized view's authored identity is not ours to overwrite with
+      // a setup declaration or a cached declaration from the previous view.
+      logicalIdentities.get(snapshot.objectRef)!.supersededId = snapshot.id;
+    }
     if (structuredChanged) updateDependencies(record, snapshot);
     if (nextTarget) {
       const indexed = recordsByRef.get(snapshot.objectRef) ?? new Set<WebProjectorRecord>();
@@ -655,6 +734,7 @@ export function createWebA11yProjectionRegistry(
       );
       // Registry ownership already released old values; skip stateless snapshot cleanup.
       applySnapshot(nextTarget, snapshot, undefined, attributes, false);
+      if (attributes.has('id')) rememberIdWrite(nextTarget);
       // Transfer a retained logical reservation before the Module retires the
       // previous view projector. Reciprocal peers may still be publishing their
       // new epoch snapshots, so their IDREF lookup cannot own this handoff.
@@ -794,6 +874,7 @@ export function createWebA11yProjectionRegistry(
         const releasedIdRefs = record.detached ? releaseScalarAttributes(record, true) : undefined;
         if (!record.detached) detach(true);
         record.disposed = true;
+        releaseLogicalIdentity(record.objectRef);
         releaseReservation(record);
         record.snapshot = null;
         record.target = null;

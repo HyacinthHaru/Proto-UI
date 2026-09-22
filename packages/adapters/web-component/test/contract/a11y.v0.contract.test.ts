@@ -300,7 +300,7 @@ describe('contract: adapter-web-component / a11y projection (v0)', () => {
 });
 
 let partFixtureId = 0;
-function createPartElements(targetId?: string, baseline?: string) {
+function createPartElements(targetId?: string, baseline?: string, explicitTargetId?: string) {
   const suffix = ++partFixtureId;
   const family = createAnatomyFamily(`wc-part-${suffix}`, {
     roles: {
@@ -323,6 +323,7 @@ function createPartElements(targetId?: string, baseline?: string) {
         const key = def.state.string('match', 'protocol/key');
         const accessible = asAccessible();
         accessible.part(family, { key });
+        if (role === 'target' && explicitTargetId) accessible.id(explicitTargetId);
         accessible.role(role === 'source' ? 'button' : 'region');
         accessible.relation(role === 'source' ? 'controls' : 'labelledBy', {
           target: { kind: 'part', family, role: role === 'source' ? 'target' : 'source', key },
@@ -351,6 +352,38 @@ const flushPartView = async () => {
 };
 
 describe('contract: adapter-web-component / same-domain part relationships', () => {
+  it('T-A11Y-PART-RELATIONSHIP-0001-CASE-HOST-ID-OWNERSHIP: adopts an authored identity before applying an explicit declaration', async () => {
+    const { root, source, target } = createPartElements('author-initial', undefined, 'proto-id');
+    try {
+      expect(target.id).toBe('author-initial');
+      expect(source.getAttribute('aria-controls')).toBe('author-initial');
+    } finally {
+      root.remove();
+      await flushPartView();
+    }
+  });
+
+  it('T-A11Y-PART-RELATIONSHIP-0001-CASE-HOST-ID-OWNERSHIP: a later authored id supersedes an unchanged explicit declaration', async () => {
+    const { root, source, target } = createPartElements(undefined, undefined, 'proto-id');
+    try {
+      expect(source.getAttribute('aria-controls')).toBe('proto-id');
+      target.id = 'author-later';
+      await flushPartView();
+      expect(target.id).toBe('author-later');
+      expect(source.getAttribute('aria-controls')).toBe('author-later');
+      setElementProps(target, { present: false });
+      await flushPartView();
+      expect(target.id).toBe('author-later');
+      setElementProps(target, { present: true });
+      await flushPartView();
+      expect(target.id).toBe('author-later');
+      expect(source.getAttribute('aria-controls')).toBe('author-later');
+    } finally {
+      root.remove();
+      await flushPartView();
+    }
+  });
+
   it('T-A11Y-PART-RELATIONSHIP-0001-CASE-VIEW-EPOCH-LIFECYCLE: retains identity and withdraws source contributions before detach', async () => {
     const { root, source, target } = createPartElements('host-panel', 'host-caption');
     try {
