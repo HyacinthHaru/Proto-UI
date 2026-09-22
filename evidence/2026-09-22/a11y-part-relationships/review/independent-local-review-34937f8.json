@@ -1,0 +1,238 @@
+{
+  "kind": "proto-ui.local-pre-pr-review",
+  "schemaVersion": 1,
+  "canonicalPacket": false,
+  "repository": "Proto-UI/Proto-UI",
+  "pullRequest": null,
+  "head": "34937f8e0cc0cd4feed67a69bea30ffa4355f79c",
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "tree": "6ae9015704e133d8c79b9d227bd1768966ae19ed",
+  "observedAt": "2026-09-22T04:27:17.724Z",
+  "executionMode": "human-assisted",
+  "reviewClass": "review-cross-domain-semantics",
+  "reviewDepth": "partial",
+  "recommendation": "ABSTAIN",
+  "findings": [
+    {
+      "id": "PUI-549-REVIEW-PENDING-ID-DETACH",
+      "severity": "P2",
+      "confidence": "high",
+      "status": "open",
+      "path": "packages/modules/a11y/src/web.ts",
+      "line": 856,
+      "relatedLines": [709, 717, 865],
+      "authority": [
+        "C-A11Y-PART-RELATIONSHIP-0001-J",
+        "C-A11Y-PART-RELATIONSHIP-0001-E",
+        "C-A11Y-PART-RELATIONSHIP-0001-K"
+      ],
+      "trigger": "The host changes the ID of a live target, then detaches that view or replaces the same-epoch physical target before MutationObserver delivery.",
+      "observed": "Detach unobserves before consuming the pending live identity difference, retains the old reservation, and records the new physical ID as lastTargetId. After rematerialization the valid current host-later ID conflicts with the stale old reservation, so controls stays absent indefinitely. The same-epoch replacement branch also skips identity classification for the old binding and restores the old ID onto a blank successor. Both generated and explicit identity variants reproduce; delivering the observer before the same transition is a passing control.",
+      "expected": "Consume the pending live host-ID transition before retiring its current physical binding, invalidate the old reservation, and retain the newly adopted identity through a valid rematerialization/replacement. An ID introduced only after detach remains a distinct rematerialization-conflict case that must fail closed.",
+      "impact": "Valid relations fail to recover after L1, or a same-epoch successor revives a stale logical identity, depending only on observation scheduling.",
+      "fix": "Reuse identity provenance reconciliation before unobserving/detaching and before releasing a replaced old physical binding, while preserving the independent-owner and truly-detached authored-conflict rules.",
+      "evidence": ["repro-id-detach-34937f8.json", "repro-id-replacement-34937f8.json"]
+    }
+  ],
+  "reviewedPaths": [
+    "apps/www/src/content/docs/en/ui-libraries/base/tabs.mdx",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/base/tabs.mdx",
+    "internal/releases/0.3.0-alpha.1/lifecycle-dispositions.json",
+    "internal/releases/0.3.0-alpha.1/package-bom.json",
+    "packages/adapters/react/src/runtime/modules.ts",
+    "packages/adapters/react/test/tabs.test.ts",
+    "packages/adapters/vue/src/adapt.ts",
+    "packages/adapters/vue/src/runtime/modules.ts",
+    "packages/adapters/vue/test/tabs.test.ts",
+    "packages/adapters/vue2/src/runtime/modules.ts",
+    "packages/adapters/vue2/test/tabs.test.ts",
+    "packages/adapters/web-component/src/adapt.ts",
+    "packages/adapters/web-component/src/runtime/modules.ts",
+    "packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts",
+    "packages/core/src/a11y.ts",
+    "packages/modules/a11y/README.md",
+    "packages/modules/a11y/package.json",
+    "packages/modules/a11y/src/caps.ts",
+    "packages/modules/a11y/src/create.ts",
+    "packages/modules/a11y/src/part-relationships.ts",
+    "packages/modules/a11y/src/types.ts",
+    "packages/modules/a11y/src/web.ts",
+    "packages/modules/a11y/test/part-relationships.test.ts",
+    "packages/modules/a11y/test/web-reference.test.ts",
+    "packages/modules/anatomy/src/impl.ts",
+    "packages/modules/table-structure/src/create.ts",
+    "packages/prototypes/base/src/tabs/content.proto.ts",
+    "packages/prototypes/base/src/tabs/root.proto.ts",
+    "packages/prototypes/base/src/tabs/shared.ts",
+    "packages/prototypes/base/src/tabs/trigger.proto.ts",
+    "packages/prototypes/base/test/tabs.test.ts",
+    "packages/runtime/src/instance/session.ts",
+    "packages/runtime/test/contract/a11y.v0.contract.test.ts",
+    "packages/spec/fixtures/test/lifecycle-readiness.test.ts",
+    "pnpm-lock.yaml",
+    "scripts/release/test/lifecycle-readiness.test.mjs",
+    "spec/contracts/C-A11Y-0001.yaml",
+    "spec/contracts/C-A11Y-PART-RELATIONSHIP-0001.yaml",
+    "spec/host-caps/HC-A11Y-0001.yaml",
+    "spec/modules/M-A11Y-0001.yaml",
+    "spec/modules/M-ANATOMY-0001.yaml",
+    "spec/prototypes/P-BASE-TABS-CONTENT.yaml",
+    "spec/prototypes/P-BASE-TABS-TRIGGER.yaml",
+    "spec/prototypes/P-BASE-TABS.yaml",
+    "spec/tests/T-A11Y-PART-RELATIONSHIP-0001.yaml"
+  ],
+  "validation": {
+    "executed": [
+      "Exact-head source/diff inspection",
+      "Original 3 + replay-before-delivery 2 independent built-dist repro variants: 5 passing",
+      "Pending host-ID versus L1 detach: generated/explicit failed before delivery; equivalent observer-first controls pass",
+      "Pending host-ID versus same-epoch physical replacement: generated/explicit retain stale identity before delivery; equivalent observer-first controls pass",
+      "Read upstream Table boundary guard plus the actual Runtime regression and red execution log; guard is limited to never-declared role=null",
+      "Read candidate and main9d package-budget JSON evidence"
+    ],
+    "notExecuted": [
+      "No heavy build or full test runner",
+      "No native-browser execution in this review",
+      "No canonical PR packet: no PR exists"
+    ]
+  },
+  "evidenceDebt": [
+    {
+      "kind": "verification",
+      "missing": "PUI-549-REVIEW-PENDING-ID-DETACH",
+      "reason": "Executed lifecycle-transition interleavings expose stale identity handling.",
+      "nextAction": "Root remediation and exact-head reconciliation."
+    },
+    {
+      "kind": "verification",
+      "missing": "Package budget acceptance and final full exact-head validation",
+      "reason": "Three documented candidate budgets fail and root full validation remains ongoing.",
+      "nextAction": "Preserve gate; do not adjust budgets without authorization."
+    },
+    {
+      "kind": "verification",
+      "missing": "Actual-browser same-epoch physical binding replacement",
+      "reason": "Local provider/simulation proof does not establish the unexecuted browser K scenario.",
+      "nextAction": "Execute or retain explicit scope limitation."
+    },
+    {
+      "kind": "publication",
+      "missing": "Verified public visual uploads",
+      "reason": "Read-only review has not verified uploads.",
+      "nextAction": "Authorized root publication and link verification."
+    }
+  ],
+  "limitations": [
+    "This is a local technical report, intentionally not a canonical v2 PR review packet. The v3 input schema requires a real PR; none exists.",
+    "Assessment remains unassessed/advisory; partial/ABSTAIN is mandatory for this local class.",
+    "Happy DOM evidence is a host simulation using the actual built projector; no native browser observation is claimed.",
+    "All relevant C/M/HC/P/T draft status remains unchanged; review and passing tests do not admit stable semantics."
+  ],
+  "humanGates": [
+    "Independent maintainer exact-head approval",
+    "Required trusted CI and resolved review threads",
+    "Actual merge",
+    "Separate stable semantic admission"
+  ],
+  "artifactHashes": [
+    {
+      "path": "repro-explicit-part-id-34937f8-replay-before-delivery.json",
+      "sha256": "496ff10414ca81c0ed21b34708684695bf014cf9f621c341693feed0a5878ff2"
+    },
+    {
+      "path": "repro-explicit-part-id-34937f8.json",
+      "sha256": "719b677b11a63445843a23adb2a26006611d759f7b12ca4d7eb939f6f29b3cba"
+    },
+    {
+      "path": "repro-explicit-part-id-34937f8.mjs",
+      "sha256": "1df0c75fb57b0eb4b31ae6003073ce2196a35c1909c37c68b8e04902ec89085a"
+    },
+    {
+      "path": "repro-generated-part-id-control-34937f8.json",
+      "sha256": "511ecd82f36321fa0f80219a2002a9e069b0ccbd88d52f6d787b0257dd138d24"
+    },
+    {
+      "path": "repro-id-detach-34937f8.json",
+      "sha256": "6a6bf7ac716a1018a601abb4ae0be09575747a76a5eb32a109c9f50c9304eef1"
+    },
+    {
+      "path": "repro-id-detach-34937f8.mjs",
+      "sha256": "9633e3c64c88109bae5f0dc1660af21c9f5a8bdd2566aacfeeb30b7afb39692c"
+    },
+    {
+      "path": "repro-id-replacement-34937f8.json",
+      "sha256": "274984159f071c25134173c7fdc036efcf084594c7d7a8de8efcfa24f3c1ef79"
+    },
+    {
+      "path": "repro-id-replacement-34937f8.mjs",
+      "sha256": "53a2688195904c3aea68dd2d2c15c256f4933ef4341d0c4bc0e986d621c89ace"
+    },
+    {
+      "path": "repro-independent-id-writer-34937f8-replay-before-delivery.json",
+      "sha256": "9e49a00433eda8ac553eebe2f94b3f77179dbb90a05f0f99cc218ae277bdcc92"
+    },
+    {
+      "path": "repro-independent-id-writer-34937f8.json",
+      "sha256": "bb09e1c0c652ad2060946123818ed60405143273d5206cd3c064555eb80e54ab"
+    },
+    {
+      "path": "repro-results-34937f8.json",
+      "sha256": "a749f7b9270f67a1890337dd9263f1355d0712966d8d8fb0be658b36d51647bb"
+    }
+  ],
+  "priorReviewedHead": "83e7bd1e6481efdb637d47b54ca5b3a5249f8c65",
+  "incrementalPaths": [
+    "packages/modules/a11y/src/web.ts",
+    "packages/modules/a11y/test/web-reference.test.ts",
+    "packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts"
+  ],
+  "reconciliation": {
+    "resolvedFindingIds": [
+      "PUI-549-REVIEW-LIVE-EXPLICIT-ID",
+      "PUI-549-REVIEW-INDEPENDENT-ID-WRITER"
+    ],
+    "openFindingIds": [],
+    "newFindingIds": ["PUI-549-REVIEW-PENDING-ID-DETACH"]
+  },
+  "originalAcceptedBase": "b6c641bb7d88269dba4170ed739f29202514e7c5",
+  "incrementalScope": [
+    "83e7bd1 to 34937f8 A11y identity fixes and focused coverage",
+    "Accepted upstream Table merge overlap only at Anatomy port names, A11y projection and undeclared Table cleanup boundary",
+    "One-line Table role-null cleanup guard; do not attribute the upstream Table feature to this contribution"
+  ],
+  "resolvedFindings": [
+    {
+      "id": "PUI-549-REVIEW-LIVE-EXPLICIT-ID",
+      "status": "resolved",
+      "evidence": "repro-results-34937f8.json: original and before-delivery replay sequences pass at this head"
+    },
+    {
+      "id": "PUI-549-REVIEW-INDEPENDENT-ID-WRITER",
+      "status": "resolved",
+      "evidence": "repro-results-34937f8.json: original and before-delivery replay sequences pass at this head"
+    }
+  ],
+  "budgetGate": {
+    "kind": "verification-and-maintainer-gate",
+    "status": "failed",
+    "baseline": "main9d JSON passes all 9",
+    "candidate": [
+      {
+        "name": "runtime",
+        "actual": 65852,
+        "limit": 64000
+      },
+      {
+        "name": "react",
+        "actual": 85338,
+        "limit": 83500
+      },
+      {
+        "name": "vue",
+        "actual": 85081,
+        "limit": 83500
+      }
+    ],
+    "action": "No limit change authorized; cannot claim complete validation."
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "kind": "local-test-fixture-readonly-review",
+  "runtimeHead": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+  "uncommittedFile": "apps/workspace/test/lifecycle.browser.test.ts",
+  "gitBlob": "a0d75a50a2d745f08057e810f1ed7fe5ab2aea7e",
+  "sha256": "99c32f7894ce41b388903f61ca40d12e4065b184cf177be8050aeea5e6f15930",
+  "observedAt": "2026-09-22T05:05:53.848Z",
+  "findings": [],
+  "recommendation": "ABSTAIN",
+  "reviewDepth": "partial",
+  "currentCatalog": {
+    "reviewedDrafts": 11,
+    "status": "draft",
+    "disposition": "remain-draft",
+    "requiredPassing": 6,
+    "activationBlockers": 1,
+    "gaps": ["An open question explicitly blocks activation."]
+  },
+  "conflictScenarios": [
+    {
+      "conflict": "membership",
+      "reviewedDrafts": 0,
+      "selectedDisposition": null,
+      "selectedIsUnreviewed": true,
+      "issues": [
+        "C-A11Y-0001 occurs in more than one disposition entry.",
+        "C-A11Y-PART-RELATIONSHIP-0001 occurs in more than one disposition entry.",
+        "M-A11Y-0001 occurs in more than one disposition entry.",
+        "M-ANATOMY-0001 occurs in more than one disposition entry.",
+        "HC-A11Y-0001 occurs in more than one disposition entry.",
+        "P-BASE-TABS occurs in more than one disposition entry.",
+        "P-BASE-TABS-TRIGGER occurs in more than one disposition entry.",
+        "P-BASE-TABS-CONTENT occurs in more than one disposition entry.",
+        "T-A11Y-PART-RELATIONSHIP-0001 occurs in more than one disposition entry."
+      ]
+    },
+    {
+      "conflict": "slice ID",
+      "reviewedDrafts": 0,
+      "selectedDisposition": null,
+      "selectedIsUnreviewed": true,
+      "issues": ["Duplicate slice a11y-part-relationship-implementation."]
+    }
+  ],
+  "coverageNotes": [
+    "Existing browser invalid-plan, invalid-catalog, version-boundary and unknown activation-provenance assertions are unchanged.",
+    "Conflict input selects the exact slice containing the target test and then isolates it; both selected-target dispositions are rejected, not merely an unrelated first slice.",
+    "The live-catalog case now exercises the six passing mappings; deliberate planned/incomplete admission rejection remains in scripts/release/test/lifecycle-readiness.test.mjs and lifecycle engine fixtures.",
+    "No browser, heavy test or build executed; this is direct read-only lifecycle report evaluation and code inspection."
+  ],
+  "priorFindings": [
+    {
+      "id": "PUI-549-REVIEW-LIVE-EXPLICIT-ID",
+      "status": "resolved"
+    },
+    {
+      "id": "PUI-549-REVIEW-INDEPENDENT-ID-WRITER",
+      "status": "resolved"
+    },
+    {
+      "id": "PUI-549-REVIEW-PENDING-ID-DETACH",
+      "status": "resolved"
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "head": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+  "tree": "1cd9e6e5201a77366bef0daf0f3b4e2634e7dc89",
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "files": [
+    {
+      "path": "apps/workspace/test/lifecycle.browser.test.ts",
+      "blob": "a0d75a50a2d745f08057e810f1ed7fe5ab2aea7e",
+      "sha256": "99c32f7894ce41b388903f61ca40d12e4065b184cf177be8050aeea5e6f15930"
+    },
+    {
+      "path": "apps/www/src/content/docs/en/ui-libraries/base/tabs.mdx",
+      "blob": "3728be3801667d4eb9110bd2291d3a5d7b275d33",
+      "sha256": "7e57cc36f9ebcdc37790fae6ca651d044c34e71d2c3539c72bdc867b81951474"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/ui-libraries/base/tabs.mdx",
+      "blob": "0d8b8f739d8b618261c005b95067f3bf44505a12",
+      "sha256": "953cc7348f450873873675775c9f4e52ebfea0b67b27891cf80f83229dd5c9b8"
+    },
+    {
+      "path": "internal/releases/0.3.0-alpha.1/lifecycle-dispositions.json",
+      "blob": "d085be89922f481148ccb0dffd9ec2444ae2b659",
+      "sha256": "22d1f32f98ce57ad8faec6ed9a17aa9cf6ce303b8d88ad1d8fa1fc4b7262d82e"
+    },
+    {
+      "path": "internal/releases/0.3.0-alpha.1/package-bom.json",
+      "blob": "79cf7f1633216a19383031ae2eee4bf1d1a48884",
+      "sha256": "28c415e1a33efc7492b9f68ef833099631615581b4f566eba38a9e1907119035"
+    },
+    {
+      "path": "packages/adapters/react/src/runtime/modules.ts",
+      "blob": "ccaac42e7a581c86ca034e24a30097b667cbc7cf",
+      "sha256": "41bed311d4cc3f047826cb1669b14901d9865cb2eac77cf87da82432275a7a39"
+    },
+    {
+      "path": "packages/adapters/react/test/tabs.test.ts",
+      "blob": "6f8e6d020d2a3e2cdc0021e69d9f25c28c1e5a1a",
+      "sha256": "4b0fb5c7ea6682bccf0437b0fa1cbf06666e875dcdc0bdf068de4430a3e766d7"
+    },
+    {
+      "path": "packages/adapters/vue/src/adapt.ts",
+      "blob": "ed7ae1dedb64926dbd7e7deb974ed5aea05de5e5",
+      "sha256": "e8748a7061fc9e187aa6400a5795995faff65cb307106daa5480e4e1306a882e"
+    },
+    {
+      "path": "packages/adapters/vue/src/runtime/modules.ts",
+      "blob": "ee4487610d1f4ed9048a403a953fe6bac1347733",
+      "sha256": "b2bb135701dab6ff8d22075993decb0f530ef429cf940bf15d6ed6be1e99fae0"
+    },
+    {
+      "path": "packages/adapters/vue/test/tabs.test.ts",
+      "blob": "82fb025dd257ee112589c2ae5cb803d28fd57775",
+      "sha256": "802a18838127b56138cb70fbe382b9f2e70b08084f9cdabc0304a2a105e5e845"
+    },
+    {
+      "path": "packages/adapters/vue2/src/runtime/modules.ts",
+      "blob": "f62c5cec867af4a164849191d77075695cb1cb53",
+      "sha256": "497f84270aacec0eb8aa91d0d1f52a47b8a58498b04e751d41f26d0330b11845"
+    },
+    {
+      "path": "packages/adapters/vue2/test/tabs.test.ts",
+      "blob": "830dd57aa1112e2b77128378939d60e9f42a74a6",
+      "sha256": "2038d531049878d3d23eb69a530e8c29e8ae84607dfc1234f45fc7a94fd04c76"
+    },
+    {
+      "path": "packages/adapters/web-component/src/adapt.ts",
+      "blob": "764cafb9750224ac183097a4fc2e9faa06007a59",
+      "sha256": "4748b2616c13625586e1adb292c16d73adda1bd0820f35f0d8b7ef5c3b6f8d03"
+    },
+    {
+      "path": "packages/adapters/web-component/src/runtime/modules.ts",
+      "blob": "33ee0ac32be8196904eccf9cfba1b6ce223516af",
+      "sha256": "7a4e53f84527b3ac3fef795d5a6fd1aca36484cb7bfcc4c2c9ea74b3f1f36fa0"
+    },
+    {
+      "path": "packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts",
+      "blob": "6d09f7ee8490c88776444196ecbecd03863d9ed3",
+      "sha256": "0020a986738acc7b77efc21b09811ceef8c41708b3b2af4be42c2a78b05cb813"
+    },
+    {
+      "path": "packages/core/src/a11y.ts",
+      "blob": "61f8c727d5d1c11ce812a7f095917cdd0218fee9",
+      "sha256": "4b17aeabca846b72e813a717d356077f5445ce09cc55711e496bd389dae9d72e"
+    },
+    {
+      "path": "packages/modules/a11y/README.md",
+      "blob": "90a7d2645320b7f48cdf7d854810489fb94b1bd5",
+      "sha256": "a29cfbbbe9002b4620fd13f137fc003ae6fdf769cf6d375371b26f7e22e47e95"
+    },
+    {
+      "path": "packages/modules/a11y/package.json",
+      "blob": "b4fca772543ecb71f0c8046db9ac4fa591a7781c",
+      "sha256": "d14e280f05a8c8d37883e17fc40771c28ab4be6f454aee7373a6455de96b37e4"
+    },
+    {
+      "path": "packages/modules/a11y/src/caps.ts",
+      "blob": "6a2d9cba8b5e7dd2842b2b5c52ef7e3c1d45f6ad",
+      "sha256": "405b2f2a1a9a90a5dc4c90674950bf3949b9abc2333ae5574444989480a2d27b"
+    },
+    {
+      "path": "packages/modules/a11y/src/create.ts",
+      "blob": "e4cbcc6c966cb3bd62b1ceefbe7a212ce1e0b4fb",
+      "sha256": "8b2b65e649d25cd679e2122e9a8289c3ab139a6f68e968c7d73fbddf00f27064"
+    },
+    {
+      "path": "packages/modules/a11y/src/part-relationships.ts",
+      "blob": "6bd3bd73be697749b4a360ebb2480e8c8fd4e97f",
+      "sha256": "32325520f7ec8bab5a6d49af1daa7102392fc086556026804c52ae35adcc4d12"
+    },
+    {
+      "path": "packages/modules/a11y/src/types.ts",
+      "blob": "0e69f30372214f2bb15c1949864b3585d7a2de3d",
+      "sha256": "a911b5e1f36472c3993276f2ba9f3c84eaad3af078af051b7fc07b16e006d033"
+    },
+    {
+      "path": "packages/modules/a11y/src/web.ts",
+      "blob": "50b77dc816a98708247fdc89390ef783425c023e",
+      "sha256": "4c3bf103d8036b8d8d131e240f202a241fb7fc355691fced86f2cf4f97cde4b7"
+    },
+    {
+      "path": "packages/modules/a11y/test/part-relationships.test.ts",
+      "blob": "22046da2bdbe4b5e8516beb1f356055e4a42a54a",
+      "sha256": "c9cbe1c76f78751e07784f37fa4f8dad51586bd71ad146a3a0ffd1d0dd803acd"
+    },
+    {
+      "path": "packages/modules/a11y/test/web-reference.test.ts",
+      "blob": "17bc34334ffa68f67562d6b3c8e18dac3fd214a8",
+      "sha256": "fc6d0c8953982bfc11a2ef79708413c06835f423f6253f3d1bcece58458e36f3"
+    },
+    {
+      "path": "packages/modules/anatomy/src/impl.ts",
+      "blob": "2cef51bd1767f3151e51cfdb314e43a1bc3696d1",
+      "sha256": "7c2a6152beb0a24be86fbaa7ae3ffe056a1e630335d90f737fcd13347e6abdcc"
+    },
+    {
+      "path": "packages/modules/table-structure/src/create.ts",
+      "blob": "6731fc0d26c9c884742340dd837a577784b58842",
+      "sha256": "7e8bb2665658e013f9cd5ef4e3b58fc3b717929aa36f4aff45c49d63a2d60afa"
+    },
+    {
+      "path": "packages/prototypes/base/src/tabs/content.proto.ts",
+      "blob": "fc4b1bd360bec77652e38d521893340000f02c5b",
+      "sha256": "0d5ca5a50ac36b4ca0ae10f9cdbb03d0f68db0bdb23729a4dd0b942964a143e7"
+    },
+    {
+      "path": "packages/prototypes/base/src/tabs/root.proto.ts",
+      "blob": "7e8a28e60bb729b7c2b611907bd318f341d5581d",
+      "sha256": "8f28713071ec7eecb2cc29940c43d833cfe4a412f651c97f632dda3eeff5a091"
+    },
+    {
+      "path": "packages/prototypes/base/src/tabs/shared.ts",
+      "blob": "3b7c6a3875ec7ad46d7463b4e61b28d7ba9d2d84",
+      "sha256": "2f795d8d32f92760a22e819677959cd90686b7ec212dd5b7e7e2c00068266df8"
+    },
+    {
+      "path": "packages/prototypes/base/src/tabs/trigger.proto.ts",
+      "blob": "dd9c9c37f8c89f446ee0ea6c3e02c467eab69a12",
+      "sha256": "3ebaffb5c9603ba4c3690572d28b82d40f03a367d2d45babf62428730fedd0f4"
+    },
+    {
+      "path": "packages/prototypes/base/test/tabs.test.ts",
+      "blob": "d8911150e2d8b0dbfcd197db5d7a055811906452",
+      "sha256": "f995e46b890f253601af530a103fc161139c5456c220c45efe0cfaef2f2a9de2"
+    },
+    {
+      "path": "packages/runtime/src/instance/session.ts",
+      "blob": "57155e23908620ab928143b2bcc7b501cf00878f",
+      "sha256": "d37b08333a27c34e2cc0d9f4f092478472bf279735f6309912cf1902a1722c90"
+    },
+    {
+      "path": "packages/runtime/test/contract/a11y.v0.contract.test.ts",
+      "blob": "e8c593b811c7d11d172047dbec8446b504995f51",
+      "sha256": "6955e34667ead6faafb6e674066651e0782db83d6d9a56838f3171dbf60f5918"
+    },
+    {
+      "path": "packages/spec/fixtures/test/lifecycle-readiness.test.ts",
+      "blob": "55ea6c2a808026ccdb60e340afa1d8f927f02080",
+      "sha256": "254c7c783627ec5ca067ad3cccb4becc5f733907205417b56c6c76dc3591adc9"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "blob": "65b6e93f4ceb1f61d74989b970b805e6e9b0dc2e",
+      "sha256": "3a77401258623c453545ea6a3238fe05b522afb99c813f2c1bb018468c25b6bd"
+    },
+    {
+      "path": "scripts/release/test/lifecycle-readiness.test.mjs",
+      "blob": "d02054481913dcf8cddd41696b45bcff0f8a9748",
+      "sha256": "d9c140e1f60475ea49e9d48e2a882cc40cd28eed8fa226a791b215d75e34a6be"
+    },
+    {
+      "path": "spec/contracts/C-A11Y-0001.yaml",
+      "blob": "e68a7dd7ecc3d2fd7704e9667e8bc5b667c19480",
+      "sha256": "a28c576ad1a7c5f867a850cae48d06e63765128c97d2372fc71c7ab868786be4"
+    },
+    {
+      "path": "spec/contracts/C-A11Y-PART-RELATIONSHIP-0001.yaml",
+      "blob": "9ead7de5c5a21a85722de7095547496edac1b221",
+      "sha256": "a51076a191d6609a3e974d297d5eefb8f79105ef1b6a908f405b8281f6cfffe3"
+    },
+    {
+      "path": "spec/host-caps/HC-A11Y-0001.yaml",
+      "blob": "2860a2df9a74ddf18497d8e09099e01454511b48",
+      "sha256": "9f6e88a549551dceb3958968c8c78b2c0d00a04a8dc811dc3e739b3f2ce26dc4"
+    },
+    {
+      "path": "spec/modules/M-A11Y-0001.yaml",
+      "blob": "ff04f604b06d6f9b014c6e30600336629f5fbf77",
+      "sha256": "3eaae9dfbf54c843d176ae53beb6dfb5649fd940a2b53bc577a12c8e33d51469"
+    },
+    {
+      "path": "spec/modules/M-ANATOMY-0001.yaml",
+      "blob": "c4053493ebb1fc907427a52251a09b9c442f5306",
+      "sha256": "ef7e5265bac5ac88a85f8b3938b89a34307d3b1e5b4c44e657119a1478294ddc"
+    },
+    {
+      "path": "spec/prototypes/P-BASE-TABS-CONTENT.yaml",
+      "blob": "65b14275f0ffcd30e8ad2cba71c6f3b02545bcc8",
+      "sha256": "4a1d1a7e74ed60bc21bd6a6883f0e52221dcb36ae27500fdc098c340571d11a5"
+    },
+    {
+      "path": "spec/prototypes/P-BASE-TABS-TRIGGER.yaml",
+      "blob": "0d95d2052f1b35e4c81573c117733409c54d51a1",
+      "sha256": "1e79af05f12d575b722da0c951dd47268a0e17b27d4d3c76310f725088fc252b"
+    },
+    {
+      "path": "spec/prototypes/P-BASE-TABS.yaml",
+      "blob": "6e758811d380f4a2d876d9d0e6d8a11b5da42226",
+      "sha256": "45a157edb149abdb382333aea6860b9793c534b9e1da5068aa818d0f561b1420"
+    },
+    {
+      "path": "spec/tests/T-A11Y-PART-RELATIONSHIP-0001.yaml",
+      "blob": "b691180194cb1d4e698652fb51169cc1bda7dc4b",
+      "sha256": "03e3a8ec57cf661d33f30376bbb797d544b857290c895fe51bef0de6ba43e420"
+    }
+  ],
+  "incrementFromFd9": ["apps/workspace/test/lifecycle.browser.test.ts"],
+  "review": "review/workspace-lifecycle-fixture-review.json",
+  "focused": "workspace-lifecycle-final.log",
+  "focusedExitCode": 0
+}

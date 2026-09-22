@@ -1,0 +1,77 @@
+{
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "commits": [
+    {
+      "commit": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+      "author": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "committer": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "body": "test(workspace): update relationship lifecycle fixtures\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+      "verificationExitCode": 0,
+      "sshVerification": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "valid": true
+    },
+    {
+      "commit": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+      "author": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "committer": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "body": "fix(a11y): reconcile identity before view revocation\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+      "verificationExitCode": 0,
+      "sshVerification": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "valid": true
+    },
+    {
+      "commit": "34937f8e0cc0cd4feed67a69bea30ffa4355f79c",
+      "author": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "committer": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "body": "fix(a11y): retain identity through same-tick projection\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+      "verificationExitCode": 0,
+      "sshVerification": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "valid": true
+    },
+    {
+      "commit": "925a646415e90c3f728bf4c800ae36e9df103877",
+      "author": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "committer": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "body": "merge: sync accepted main\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+      "verificationExitCode": 0,
+      "sshVerification": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "valid": true
+    },
+    {
+      "commit": "83e7bd1e6481efdb637d47b54ca5b3a5249f8c65",
+      "author": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "committer": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "body": "fix(a11y): preserve observed identity ownership\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+      "verificationExitCode": 0,
+      "sshVerification": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "valid": true
+    },
+    {
+      "commit": "8202853c45eb1e3d4f4f7efb29b69471435dea39",
+      "author": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "committer": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "body": "test(spec): update relationship admission fixtures\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+      "verificationExitCode": 0,
+      "sshVerification": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "valid": true
+    },
+    {
+      "commit": "f2a873487ffb8591b16e06093939c90d29105c1b",
+      "author": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "committer": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "body": "chore: sync package BOM\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+      "verificationExitCode": 0,
+      "sshVerification": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "valid": true
+    },
+    {
+      "commit": "87ff65cb556dfaa71ea13202b327d895707abd75",
+      "author": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "committer": ["HyacinthHaru", "hyacinth@haru.ac"],
+      "body": "feat(a11y): project same-domain part relationships\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+      "verificationExitCode": 0,
+      "sshVerification": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "valid": true
+    }
+  ]
+}

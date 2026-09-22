@@ -1,0 +1,25 @@
+{
+  "reviewer": "root coding agent",
+  "method": "Each of12 PNGs read through view_image; no composites or image editing.",
+  "captures": [
+    "en-1440-initial.png",
+    "en-1440-prose.png",
+    "en-1440-selected.png",
+    "en-390-initial.png",
+    "en-390-prose.png",
+    "en-390-selected.png",
+    "zh-cn-1440-initial.png",
+    "zh-cn-1440-prose.png",
+    "zh-cn-1440-selected.png",
+    "zh-cn-390-initial.png",
+    "zh-cn-390-prose.png",
+    "zh-cn-390-selected.png"
+  ],
+  "observations": [
+    "Both locale routes render the built WC Tabs demo at1440px and390px.",
+    "Account settings changes to Security settings after native click; disabled Billing remains visually muted.",
+    "No horizontal overflow or console/page errors were observed.",
+    "Prose screenshots show viewport excerpts only; the Chinese heading lookup did not match the mixed-language heading, so Chinese prose captures show the page introduction, not the new paragraph. The updated text presence was checked in DOM, not asserted from these two screenshots.",
+    "Four Pagefind request aborts retained; this is not all-network-success or complete accessibility coverage."
+  ]
+}

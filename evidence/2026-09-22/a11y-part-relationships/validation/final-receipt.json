@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "candidateHead": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+  "candidateTree": "1cd9e6e5201a77366bef0daf0f3b4e2634e7dc89",
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "observedAt": "2026-09-22T05:25:12.131015+00:00",
+  "environment": {
+    "node": "22.23.2",
+    "pnpm": "10.32.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "fullTest": {
+    "command": "corepack pnpm@10.32.1 test",
+    "environmentOverrides": {
+      "VITEST_MAX_THREADS": "2",
+      "VITEST_MIN_THREADS": "1",
+      "VITEST_MAX_FORKS": "2",
+      "VITEST_MIN_FORKS": "1"
+    },
+    "cliFilters": [],
+    "timeoutEdits": false,
+    "exitCode": 0,
+    "log": "test-full-868-5.log",
+    "main": {
+      "filesPassed": 492,
+      "filesSkipped": 3,
+      "testsPassed": 2647,
+      "todo": 34,
+      "includesRealChromiumScroll": true
+    },
+    "browser": {
+      "filesPassed": 27,
+      "testsPassed": 137,
+      "serial": true
+    },
+    "specIncluded": {
+      "filesPassed": 23,
+      "testsPassed": 152
+    },
+    "defaultCi": false
+  },
+  "focused": {
+    "feature": {
+      "head": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+      "filesPassed": 12,
+      "testsPassed": 170,
+      "log": "pending-identity-focused.log"
+    },
+    "workspaceFixture": {
+      "committedBlob": "a0d75a50a2d745f08057e810f1ed7fe5ab2aea7e",
+      "testsPassed": 7,
+      "log": "workspace-lifecycle-final.log",
+      "exitCode": 0
+    }
+  },
+  "types": {
+    "full": {
+      "head": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+      "workspacePassed": true,
+      "astroFiles": 232,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0,
+      "log": "types-fd9-final.log",
+      "exitCode": 0
+    },
+    "workspaceAfterOnlyTestDelta": {
+      "head": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+      "exitCode": 0,
+      "log": "types-workspace-868-final.log"
+    }
+  },
+  "publicPackages": {
+    "head": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+    "selectedCount": 44,
+    "packageCount": 44,
+    "completed": true,
+    "log": "build-packages-868-final.log",
+    "completionEvidence": "build:packages complete:44/44, emitted after every synchronous package build; subsequent workspace check also exited0"
+  },
+  "docs": {
+    "pages": 245,
+    "log": "docs-build-fd9-final.log",
+    "buildStartedHead": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+    "buildFinishedHead": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+    "onlyConcurrentDelta": "Workspace browser test, outside docs build inputs",
+    "exitCode": 0,
+    "preview": "docs-preview/results.json",
+    "previewExitCode": 0,
+    "pageConsoleErrors": 0,
+    "pagefindAborts": 4
+  },
+  "authoring": {
+    "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+    "changedCatalogInputs": 9,
+    "exitCode": 0,
+    "log": "spec-authoring-main9d-final.log"
+  },
+  "nativeEvidence": {
+    "actualRunHead": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+    "rebindTo": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+    "trackedInputRecords": 1731,
+    "distinctTrackedInputs": 314,
+    "differences": 0,
+    "tabsAndGenericChecks": 106,
+    "ownershipChecks": 218,
+    "finalPngInspected": 57,
+    "ownershipAxDomAcross4Heads": 300,
+    "trackedOnlyEquivalence": "reports/final-868-input-equivalence.json"
+  },
+  "budget": {
+    "mainPass": 9,
+    "candidatePass": 6,
+    "candidateFail": 3,
+    "actualMeasuredHead": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+    "sourceEquivalentTo": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+    "measurement": "budget-fd9-final.json",
+    "limitsChanged": false,
+    "overall": "FAIL; independent maintainer disposition required"
+  },
+  "independentLocalReview": {
+    "report": "review/independent-source-review-868d3adbd.json",
+    "unresolvedConcreteFindings": 0,
+    "classification": "unassessed human-assisted partial/ABSTAIN",
+    "githubApproval": false
+  },
+  "pastAttempts": [
+    {
+      "log": "test-full-final.log",
+      "result": "BOM pre-suite failure; fixed via generator"
+    },
+    {
+      "log": "test-full-final-2.log",
+      "result": "release CLI52pass2obsolete fixture failures; fixed"
+    },
+    {
+      "log": "test-full-main9d-3.log",
+      "result": "349 main2637passed/34TODO; interrupted during browser before concrete ownership repair; not a full pass"
+    },
+    {
+      "log": "test-full-fd9-4.log",
+      "result": "main2647pass/34TODO; browser133pass4Workspace catalog-fixture failures; fixed in868"
+    }
+  ],
+  "remaining": [
+    "Independent budget treatment",
+    "Trusted repository exact-head CI",
+    "Independent maintainer acceptance and resolved threads",
+    "Actual merge and issue closure audit"
+  ],
+  "overall": "Functional local validation complete; budget gate failed; not approved or merged"
+}

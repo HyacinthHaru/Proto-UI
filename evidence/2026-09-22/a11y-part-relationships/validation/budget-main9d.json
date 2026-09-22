@@ -1,0 +1,108 @@
+{
+  "environment": {
+    "node": "v22.23.2",
+    "zlib": "1.3.1-e00f703",
+    "esbuild": "0.25.12",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "results": [
+    {
+      "name": "lucide/icons/x",
+      "entry": "packages/prototypes/lucide/src/icons/x.ts",
+      "minifiedBytes": 4669,
+      "minifiedSha256": "a57c0a935611fbf8d6779954a2100377efea9afd07d8eacbc4e11ca262fd0c2e",
+      "gzipBytes": 1734,
+      "budget": 3000,
+      "pass": true
+    },
+    {
+      "name": "lucide root",
+      "entry": "packages/prototypes/lucide/src/index.ts",
+      "minifiedBytes": 4082850,
+      "minifiedSha256": "b3c1de783d0da55654e474e6b9334d1d6012b9b2ff4aed12b14b70b2ae4974f5",
+      "gzipBytes": 635820,
+      "budget": 700000,
+      "pass": true
+    },
+    {
+      "name": "core root",
+      "entry": "packages/core/src/index.ts",
+      "minifiedBytes": 15514,
+      "minifiedSha256": "08f0ba5dec5232d659753541c1b71fac338bb5b64e131a88cd32b0a27126309d",
+      "gzipBytes": 4894,
+      "budget": 6000,
+      "pass": true
+    },
+    {
+      "name": "runtime root",
+      "entry": "packages/runtime/src/index.ts",
+      "minifiedBytes": 252198,
+      "minifiedSha256": "fa390cd0799e48130fabd7da8a2a2d1095c5c20010c2eecedf33d654af1a92a4",
+      "gzipBytes": 63228,
+      "budget": 64000,
+      "pass": true
+    },
+    {
+      "name": "adapter-react root",
+      "entry": "packages/adapters/react/src/index.ts",
+      "minifiedBytes": 313491,
+      "minifiedSha256": "f6d78b86a28703fa8ee5c3dd18a056424396897e2b4b2c5a59fd2fe237aa9e35",
+      "gzipBytes": 82758,
+      "budget": 83500,
+      "pass": true
+    },
+    {
+      "name": "adapter-vue root",
+      "entry": "packages/adapters/vue/src/index.ts",
+      "minifiedBytes": 312200,
+      "minifiedSha256": "afa0650dc04bd113b9396e254528b7c422751914d866c210c0870b6f4847df4f",
+      "gzipBytes": 82480,
+      "budget": 83500,
+      "pass": true
+    },
+    {
+      "name": "adapter-web-component root",
+      "entry": "packages/adapters/web-component/src/index.ts",
+      "minifiedBytes": 325310,
+      "minifiedSha256": "bf8479aa3d85724e7edc1a018aa5edfc1f4518b54d83472919055326f33cad22",
+      "gzipBytes": 85908,
+      "budget": 97000,
+      "pass": true
+    },
+    {
+      "name": "prototypes-base/button",
+      "entry": "packages/prototypes/base/src/button/index.ts",
+      "minifiedBytes": 12787,
+      "minifiedSha256": "35a5f08a3d6d26de086b0e3826b08161ca3627c6ffdd6dfcbabc62c3e3861e2f",
+      "gzipBytes": 3780,
+      "budget": 6000,
+      "pass": true
+    },
+    {
+      "name": "prototypes-shadcn/button",
+      "entry": "packages/prototypes/shadcn/src/button/index.ts",
+      "minifiedBytes": 16420,
+      "minifiedSha256": "d6c4c0dded61c424dd5dbce0eab44c3cf640a39f3b9a299b7d8fd0d6476a6735",
+      "gzipBytes": 4626,
+      "budget": 7000,
+      "pass": true
+    }
+  ],
+  "diagnostics": [
+    {
+      "name": "consumer light-dom button",
+      "entry": "scripts/analysis/fixtures/consumer-light-button.ts",
+      "minifiedBytes": 341460,
+      "minifiedSha256": "a74ed192f4c77e23c084922f8b9240d14758eea5ab42b0cc86cd61069ddd868e",
+      "gzipBytes": 90011
+    },
+    {
+      "name": "consumer direct-shadow button",
+      "entry": "scripts/analysis/fixtures/consumer-shadow-button.ts",
+      "minifiedBytes": 341471,
+      "minifiedSha256": "adc3ef9657a7b151e105781f0815bb559d19e96de82e166d36f7636b050f6a3f",
+      "gzipBytes": 90015
+    }
+  ]
+}

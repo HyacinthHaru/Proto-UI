@@ -1,0 +1,14 @@
+{
+  "head": "34937f8e0cc0cd4feed67a69bea30ffa4355f79c",
+  "status": "agent-interrupted after completed main stage; browser stage incomplete",
+  "reason": "Independent review confirmed PUI-549-REVIEW-PENDING-ID-DETACH while the immutable candidate was being tested. Stop before editing source, retain output, then rerun full command on the corrected head.",
+  "completedMainTests": 2637,
+  "existingTodo": 34,
+  "workerLimits": {
+    "maxThreads": 2,
+    "minThreads": 1,
+    "maxForks": 2,
+    "minForks": 1
+  },
+  "pid": 23276
+}

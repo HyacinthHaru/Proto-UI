@@ -1,0 +1,51 @@
+{
+  "kind": "proto-ui.local-source-review-reconciliation",
+  "schemaVersion": 1,
+  "canonicalPacket": false,
+  "pullRequest": null,
+  "head": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+  "tree": "1cd9e6e5201a77366bef0daf0f3b4e2634e7dc89",
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "priorReviewedHead": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+  "observedAt": "2026-09-22T05:11:09.884Z",
+  "executionMode": "human-assisted",
+  "reviewClass": "review-cross-domain-semantics",
+  "reviewDepth": "partial",
+  "recommendation": "ABSTAIN",
+  "codeFindings": [],
+  "reconciliation": {
+    "resolvedFindingIds": [
+      "PUI-549-REVIEW-LIVE-EXPLICIT-ID",
+      "PUI-549-REVIEW-INDEPENDENT-ID-WRITER",
+      "PUI-549-REVIEW-PENDING-ID-DETACH"
+    ],
+    "openFindingIds": [],
+    "newFindingIds": []
+  },
+  "onlyDelta": {
+    "path": "apps/workspace/test/lifecycle.browser.test.ts",
+    "gitBlob": "a0d75a50a2d745f08057e810f1ed7fe5ab2aea7e",
+    "sha256": "99c32f7894ce41b388903f61ca40d12e4065b184cf177be8050aeea5e6f15930",
+    "matchesIndependentlyReviewedFixture": true
+  },
+  "preservedSourceConclusion": "All Runtime, Module, provider, Prototype, spec and other product bytes are unchanged from fd9fc6b4; the independent 15-scenario findings reconciliation carries to this head by exact Git blob identity.",
+  "testDeltaConclusion": "Zero concrete findings in the reviewed test delta. It accurately keeps implemented mappings draft, retains the activation block, and rejects the selected target under both membership and slice-ID conflicts.",
+  "reports": [
+    "<evidence-root>/review/independent-local-review-fd9fc6b4.json",
+    "<evidence-root>/review/workspace-lifecycle-fixture-review.json",
+    "<evidence-root>/review/repro-results-fd9fc6b4.json"
+  ],
+  "validation": [
+    "git diff --name-only fd9fc6b4..868d3adbd proves a single test-file delta",
+    "Signed-commit test blob and SHA256 exactly equal the previously reviewed unstaged fixture",
+    "git diff --check passed; worktree was clean at observation",
+    "No new heavy tests/builds/browser work executed; root exact868 full test is in progress"
+  ],
+  "unresolvedBoundaries": [
+    "Exact868 complete validation receipt pending",
+    "Package budget failures remain separate from source finding resolution",
+    "Published evidence review has not started in this reconciliation",
+    "No canonical PR input because no PR exists",
+    "Independent maintainer approval, required CI, actual merge and stable admission remain separate gates"
+  ]
+}

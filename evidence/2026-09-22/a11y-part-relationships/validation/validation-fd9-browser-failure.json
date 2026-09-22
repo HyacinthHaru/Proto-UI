@@ -1,0 +1,20 @@
+{
+  "candidate": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+  "command": "VITEST_MAX_THREADS=2 VITEST_MIN_THREADS=1 VITEST_MAX_FORKS=2 VITEST_MIN_FORKS=1 corepack pnpm@10.32.1 test",
+  "exitCode": 1,
+  "main": {
+    "filesPassed": 492,
+    "filesSkipped": 3,
+    "testsPassed": 2647,
+    "todo": 34
+  },
+  "browser": {
+    "filesPassed": 26,
+    "filesFailed": 1,
+    "testsPassed": 133,
+    "testsFailed": 4
+  },
+  "log": "test-full-fd9-4.log",
+  "cause": "Workspace lifecycle browser fixtures still require planned mappings and the old global disposition count; actual catalog records six passing mappings and retains draft lifecycle.",
+  "next": "Update only obsolete Workspace assertions and conflicting fixture targeting; preserve independent admission and version-boundary assertions."
+}

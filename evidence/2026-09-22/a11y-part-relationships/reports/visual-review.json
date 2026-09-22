@@ -1,0 +1,341 @@
+{
+  "reviewedAt": "2026-09-22T02:27:02.446900+00:00",
+  "count": 67,
+  "files": [
+    {
+      "path": "baseline-control/retained_control-after-A.png",
+      "sha256": "3138651d602147c5b8a3c81801f4cdb43e8fec56e7598b27c01b8e6148003e25",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-control/retained_control-after-B.png",
+      "sha256": "b22de0fd773363e0cf700afa30167a65895ce40cf0b9f92d0099d266ecfae998",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-control/retained_control-initial.png",
+      "sha256": "3138651d602147c5b8a3c81801f4cdb43e8fec56e7598b27c01b8e6148003e25",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/collision-after-B.png",
+      "sha256": "d9ab9969e4850527be586a71265773101b3988b833d9e9b7c0e61743c14c885d",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/collision-initial.png",
+      "sha256": "3ed4b988f2de3edb16deb9088c73a76c56ecd5fc21861e2c8f9cc6150101c647",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/duplicate-initial.png",
+      "sha256": "a972a312ecd89ee01638a45233679458d4126599b8df1a8c8b506909f8dde8f1",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/lazy-after-A.png",
+      "sha256": "df478126ed6a3c6a6ce43957de7d4e17dcf595bfb6250aaf0e144b99a3fb4211",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/lazy-after-B.png",
+      "sha256": "a530ce827171b0ce036f2398872ea6f2d000f6d362acf3b824d87b39ca72c03c",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/lazy-initial.png",
+      "sha256": "df478126ed6a3c6a6ce43957de7d4e17dcf595bfb6250aaf0e144b99a3fb4211",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/missing-after-B.png",
+      "sha256": "329289fb0a0db2bce9e2869eedea3f7d5472855b11d6754c80052e1830600c23",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/missing-initial.png",
+      "sha256": "e8db6ada7ed889e5414c6bfeb9a1f0ac4ae3a7125ad361b21e0ea21f917838b5",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/retained_control-after-A.png",
+      "sha256": "6d138a6b0ccdbd710762490aba7f05b21a1bd899592126d46051691ed651e889",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/retained_control-after-B.png",
+      "sha256": "4b7df1f6cf1bc4c5214f9da123ebbc3f66348c9cdffac976a1b929aeaa435a79",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react/retained_control-initial.png",
+      "sha256": "6d138a6b0ccdbd710762490aba7f05b21a1bd899592126d46051691ed651e889",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react-control/retained_control-after-A.png",
+      "sha256": "6d138a6b0ccdbd710762490aba7f05b21a1bd899592126d46051691ed651e889",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react-control/retained_control-after-B.png",
+      "sha256": "4b7df1f6cf1bc4c5214f9da123ebbc3f66348c9cdffac976a1b929aeaa435a79",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-react-control/retained_control-initial.png",
+      "sha256": "6d138a6b0ccdbd710762490aba7f05b21a1bd899592126d46051691ed651e889",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/collision-after-B.png",
+      "sha256": "f95f83bb79536577da10671e1c2c42833e8263773183c0eb48c4f0fd47516c33",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/collision-initial.png",
+      "sha256": "fe07f5935299be1463afb1868ebbf3e550b5b8514f624c296958bf173fdb2f6f",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/duplicate-initial.png",
+      "sha256": "359798980bdb2299ab25e1399520496387f9c8c31d85f675e6d5908f1ae6f304",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/lazy-after-A.png",
+      "sha256": "817571ef3078ece60df7506277f355e86e5d8795ddf26a4715c19a2ca74f5b6f",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/lazy-after-B.png",
+      "sha256": "efadf343fd96dbbbd091bc78e7e27e697d2613cbc743a49f364c87afab7ed86a",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/lazy-initial.png",
+      "sha256": "817571ef3078ece60df7506277f355e86e5d8795ddf26a4715c19a2ca74f5b6f",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/missing-after-B.png",
+      "sha256": "0614c41b4dff253c59d27a414cc1678906712d9012457ba99c653718ea2469e4",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/missing-initial.png",
+      "sha256": "9ae9b3383e41e273f2f832b696de267ef59351e343d1739726f966ba06f5d555",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/retained_control-after-A.png",
+      "sha256": "b280516191e6ec7d579a59f51b7a1141083366b438e6787b84d0a9cfcd5048be",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/retained_control-after-B.png",
+      "sha256": "e0afd0edf5cc658e17bd813b759dfdf75f7f6b87e297fe7344f195cb627b83fd",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue/retained_control-initial.png",
+      "sha256": "b280516191e6ec7d579a59f51b7a1141083366b438e6787b84d0a9cfcd5048be",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue-control/retained_control-after-A.png",
+      "sha256": "b280516191e6ec7d579a59f51b7a1141083366b438e6787b84d0a9cfcd5048be",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue-control/retained_control-after-B.png",
+      "sha256": "e0afd0edf5cc658e17bd813b759dfdf75f7f6b87e297fe7344f195cb627b83fd",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue-control/retained_control-initial.png",
+      "sha256": "b280516191e6ec7d579a59f51b7a1141083366b438e6787b84d0a9cfcd5048be",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/collision-after-B.png",
+      "sha256": "43bd5963bcb5fd4392e99b413435b04d8990c265a611438a15faf0f1eb6e1d49",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/collision-initial.png",
+      "sha256": "8363d90679e1bb24750d4b53ca6488b86fcfe689bff28c31ed56aea6c1ce4244",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/duplicate-initial.png",
+      "sha256": "b89fef8e86af4c8ce039b03b82c0ab9388523eaaba5475a1eb8ebe1ce2e0d695",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/lazy-after-A.png",
+      "sha256": "db129d1d11ca4371c1f152eefa269881e3cf70d29ea2c03678d66f51c9c6902e",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/lazy-after-B.png",
+      "sha256": "ee5529be94ac41feba19a0bbd62f89e481417c77bef3da6560ed3381e4fb2086",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/lazy-initial.png",
+      "sha256": "db129d1d11ca4371c1f152eefa269881e3cf70d29ea2c03678d66f51c9c6902e",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/missing-after-B.png",
+      "sha256": "f78b313e516f57ca6cf0aa10fdc62fb8c0a417d630f57352ada86af2513ddd08",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/missing-initial.png",
+      "sha256": "3774db2f8e74fc72d58d2a8d3a5798dcae65cab73ffb2ed62672b93a0fccc168",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/retained_control-after-A.png",
+      "sha256": "05ef2d074e7f09ad906713468169d13374b875f0a6d821466b6568e0023d496f",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/retained_control-after-B.png",
+      "sha256": "c5bc9e0617af174d8dc860c96bdbb2ef0c974ac3e1f8c961b169e75616d8811b",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2/retained_control-initial.png",
+      "sha256": "05ef2d074e7f09ad906713468169d13374b875f0a6d821466b6568e0023d496f",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2-control/retained_control-after-A.png",
+      "sha256": "05ef2d074e7f09ad906713468169d13374b875f0a6d821466b6568e0023d496f",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2-control/retained_control-after-B.png",
+      "sha256": "c5bc9e0617af174d8dc860c96bdbb2ef0c974ac3e1f8c961b169e75616d8811b",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-vue2-control/retained_control-initial.png",
+      "sha256": "05ef2d074e7f09ad906713468169d13374b875f0a6d821466b6568e0023d496f",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/collision-after-B.png",
+      "sha256": "1968ed26768dc8bf90bd51f00066812b4ba7528559363aae29a1e293cc3b95d3",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/collision-initial.png",
+      "sha256": "7379ef6ab96db6ace1e887727642156f86d08a5095b5078c5735a0c2d892c7e7",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/duplicate-initial.png",
+      "sha256": "ca3a57e70d9a883b44c13e3f9e0e5b9a4d7e7025c84f1744c69739d23b89cd36",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/lazy-after-A.png",
+      "sha256": "5baecc975da66a559e02ab6c31c1fc52641d9337d5667751029bf7bac7cda9a4",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/lazy-after-B.png",
+      "sha256": "201ce6715c862974f76979a13328604182b739690d941fa8029b98d7faf90250",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/lazy-initial.png",
+      "sha256": "5baecc975da66a559e02ab6c31c1fc52641d9337d5667751029bf7bac7cda9a4",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/missing-after-B.png",
+      "sha256": "4fc6cac545fdf51d74ca439b304c0d8b91c3c4f3acd54303fd319c9c3eaadce3",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/missing-initial.png",
+      "sha256": "afc6f54f845825f90ebe33fe74c1fd7cd6d8f74c6a794104c27fb92503e7e521",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/retained_control-after-A.png",
+      "sha256": "3138651d602147c5b8a3c81801f4cdb43e8fec56e7598b27c01b8e6148003e25",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/retained_control-after-B.png",
+      "sha256": "b22de0fd773363e0cf700afa30167a65895ce40cf0b9f92d0099d266ecfae998",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc/retained_control-initial.png",
+      "sha256": "3138651d602147c5b8a3c81801f4cdb43e8fec56e7598b27c01b8e6148003e25",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/collision-after-B.png",
+      "sha256": "1968ed26768dc8bf90bd51f00066812b4ba7528559363aae29a1e293cc3b95d3",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/collision-initial.png",
+      "sha256": "7379ef6ab96db6ace1e887727642156f86d08a5095b5078c5735a0c2d892c7e7",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/duplicate-initial.png",
+      "sha256": "ca3a57e70d9a883b44c13e3f9e0e5b9a4d7e7025c84f1744c69739d23b89cd36",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/lazy-after-A.png",
+      "sha256": "5baecc975da66a559e02ab6c31c1fc52641d9337d5667751029bf7bac7cda9a4",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/lazy-after-B.png",
+      "sha256": "201ce6715c862974f76979a13328604182b739690d941fa8029b98d7faf90250",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/lazy-initial.png",
+      "sha256": "5baecc975da66a559e02ab6c31c1fc52641d9337d5667751029bf7bac7cda9a4",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/missing-after-B.png",
+      "sha256": "4fc6cac545fdf51d74ca439b304c0d8b91c3c4f3acd54303fd319c9c3eaadce3",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/missing-initial.png",
+      "sha256": "afc6f54f845825f90ebe33fe74c1fd7cd6d8f74c6a794104c27fb92503e7e521",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/retained_control-after-A.png",
+      "sha256": "3138651d602147c5b8a3c81801f4cdb43e8fec56e7598b27c01b8e6148003e25",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/retained_control-after-B.png",
+      "sha256": "b22de0fd773363e0cf700afa30167a65895ce40cf0b9f92d0099d266ecfae998",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    },
+    {
+      "path": "baseline-wc-v2/retained_control-initial.png",
+      "sha256": "3138651d602147c5b8a3c81801f4cdb43e8fec56e7598b27c01b8e6148003e25",
+      "review": "individually opened with view_image; actual component state legible and no clipping observed"
+    }
+  ]
+}

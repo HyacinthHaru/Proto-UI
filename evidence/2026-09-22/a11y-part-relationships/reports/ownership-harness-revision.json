@@ -1,0 +1,19 @@
+{
+  "changes": "Added 10 pending-ID revocation ordering cases through actual WC provider, with observer-first and truly-detached conflict controls. The original eight cases and assertions are unchanged. Added provenance tree field. All four native runs used identical final files.",
+  "files": [
+    {
+      "name": "ownership-fixture.ts",
+      "preparedOnlySha256": "7577d3d2651e504a57dd1ed0563c1fdfd2ef0b6267aedbfb323a20f89313ef77",
+      "executedSha256": "8bba1539e49b0a96a955497a19e09e70508d69ed3a92c923d8d34e1f8c11b673",
+      "archivedExecutedSha256": "8bba1539e49b0a96a955497a19e09e70508d69ed3a92c923d8d34e1f8c11b673"
+    },
+    {
+      "name": "ownership-probe.mjs",
+      "preparedOnlySha256": "fc88bbf580d3b3a804cb91c87c4b868e416dfb603ee6cb290c4eae19d508ab5e",
+      "executedSha256": "4232dc135571594e591ceedb84548c41dd04f8b01e90fa9ab0a62b6b4260a1ed",
+      "archivedExecutedSha256": "4232dc135571594e591ceedb84548c41dd04f8b01e90fa9ab0a62b6b4260a1ed"
+    }
+  ],
+  "oldTabsGenericProtectedFilesChecked": 112,
+  "oldTabsGenericMismatches": []
+}

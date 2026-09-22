@@ -1,0 +1,518 @@
+[
+  {
+    "adapter": "wc",
+    "directory": "baseline-wc-v2",
+    "head": "b0ed0f5580663ec27c9e9df5e4faad21e59a3d9c",
+    "status": "",
+    "node": "v22.23.2",
+    "chrome": "153.0.8010.53",
+    "frameworks": {},
+    "passes": 16,
+    "failures": 5,
+    "pageErrors": 0,
+    "consoleWarningsErrors": 0,
+    "scenarios": 5,
+    "traceLimitReached": false,
+    "screenshots": 11,
+    "lifecycleSamples": [
+      {
+        "seq": 39,
+        "time": 31.40000009536743,
+        "event": {
+          "type": "mount.commit.start",
+          "epoch": 1
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": null,
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": false,
+        "targetDisplay": "block",
+        "targetVisibility": "visible"
+      },
+      {
+        "seq": 40,
+        "time": 31.40000009536743,
+        "event": {
+          "type": "mount.commit.done",
+          "epoch": 1
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": null,
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": false,
+        "targetDisplay": "block",
+        "targetVisibility": "visible"
+      },
+      {
+        "seq": 67,
+        "time": 130.70000004768372,
+        "event": {
+          "type": "unmount.begin",
+          "epoch": 1
+        },
+        "root": {
+          "value": "b"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": "pui-tabs-1-content-a",
+        "targetConnected": true,
+        "targetDetached": true,
+        "targetPending": false,
+        "targetDisplay": "none",
+        "targetVisibility": "visible"
+      },
+      {
+        "seq": 69,
+        "time": 130.90000009536743,
+        "event": {
+          "type": "unmount.done",
+          "epoch": 1
+        },
+        "root": {
+          "value": "b"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": "pui-tabs-1-content-a",
+        "targetConnected": true,
+        "targetDetached": true,
+        "targetPending": false,
+        "targetDisplay": "none",
+        "targetVisibility": "visible"
+      },
+      {
+        "seq": 111,
+        "time": 211.5,
+        "event": {
+          "type": "mount.commit.start",
+          "epoch": 2
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": "pui-tabs-1-content-a",
+        "targetConnected": true,
+        "targetDetached": true,
+        "targetPending": false,
+        "targetDisplay": "none",
+        "targetVisibility": "visible"
+      },
+      {
+        "seq": 112,
+        "time": 211.5,
+        "event": {
+          "type": "mount.commit.done",
+          "epoch": 2
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": "pui-tabs-1-content-a",
+        "targetConnected": true,
+        "targetDetached": true,
+        "targetPending": false,
+        "targetDisplay": "none",
+        "targetVisibility": "visible"
+      }
+    ]
+  },
+  {
+    "adapter": "react",
+    "directory": "baseline-react",
+    "head": "b0ed0f5580663ec27c9e9df5e4faad21e59a3d9c",
+    "status": "",
+    "node": "v22.23.2",
+    "chrome": "153.0.8010.53",
+    "frameworks": {
+      "react": "19.2.6",
+      "vue": "3.5.31",
+      "vue2": "2.6.14"
+    },
+    "passes": 16,
+    "failures": 5,
+    "pageErrors": 0,
+    "consoleWarningsErrors": 0,
+    "scenarios": 5,
+    "traceLimitReached": false,
+    "screenshots": 11,
+    "lifecycleSamples": [
+      {
+        "seq": 27,
+        "time": 76.20000004768372,
+        "event": {
+          "type": "mount.commit.start",
+          "epoch": 1
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": null,
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      },
+      {
+        "seq": 28,
+        "time": 76.30000007152557,
+        "event": {
+          "type": "mount.commit.done",
+          "epoch": 1
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": null,
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      },
+      {
+        "seq": 72,
+        "time": 183.39999997615814,
+        "event": {
+          "type": "unmount.begin",
+          "epoch": 1
+        },
+        "root": {
+          "value": "b"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": false,
+        "targetDetached": false,
+        "targetPending": false,
+        "targetDisplay": null,
+        "targetVisibility": null
+      },
+      {
+        "seq": 74,
+        "time": 183.70000004768372,
+        "event": {
+          "type": "unmount.done",
+          "epoch": 1
+        },
+        "root": {
+          "value": "b"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": false,
+        "targetDetached": true,
+        "targetPending": false,
+        "targetDisplay": null,
+        "targetVisibility": null
+      },
+      {
+        "seq": 114,
+        "time": 266.3000000715256,
+        "event": {
+          "type": "mount.commit.start",
+          "epoch": 2
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      },
+      {
+        "seq": 119,
+        "time": 266.60000002384186,
+        "event": {
+          "type": "mount.commit.done",
+          "epoch": 2
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      }
+    ]
+  },
+  {
+    "adapter": "vue",
+    "directory": "baseline-vue",
+    "head": "b0ed0f5580663ec27c9e9df5e4faad21e59a3d9c",
+    "status": "",
+    "node": "v22.23.2",
+    "chrome": "153.0.8010.53",
+    "frameworks": {
+      "react": "19.2.6",
+      "vue": "3.5.31",
+      "vue2": "2.6.14"
+    },
+    "passes": 16,
+    "failures": 5,
+    "pageErrors": 0,
+    "consoleWarningsErrors": 0,
+    "scenarios": 5,
+    "traceLimitReached": false,
+    "screenshots": 11,
+    "lifecycleSamples": [
+      {
+        "seq": 24,
+        "time": 73.19999992847443,
+        "event": {
+          "type": "mount.commit.start",
+          "epoch": 1
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": null,
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      },
+      {
+        "seq": 42,
+        "time": 78.19999992847443,
+        "event": {
+          "type": "mount.commit.done",
+          "epoch": 1
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": null,
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": false,
+        "targetDisplay": "block",
+        "targetVisibility": "visible"
+      },
+      {
+        "seq": 69,
+        "time": 180.79999995231628,
+        "event": {
+          "type": "unmount.begin",
+          "epoch": 1
+        },
+        "root": {
+          "value": "b"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": false,
+        "targetDetached": false,
+        "targetPending": false,
+        "targetDisplay": null,
+        "targetVisibility": null
+      },
+      {
+        "seq": 71,
+        "time": 180.89999997615814,
+        "event": {
+          "type": "unmount.done",
+          "epoch": 1
+        },
+        "root": {
+          "value": "b"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": false,
+        "targetDetached": true,
+        "targetPending": false,
+        "targetDisplay": null,
+        "targetVisibility": null
+      },
+      {
+        "seq": 118,
+        "time": 262.1999999284744,
+        "event": {
+          "type": "mount.commit.start",
+          "epoch": 2
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      },
+      {
+        "seq": 119,
+        "time": 262.1999999284744,
+        "event": {
+          "type": "mount.commit.done",
+          "epoch": 2
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": false,
+        "targetDisplay": "block",
+        "targetVisibility": "visible"
+      }
+    ]
+  },
+  {
+    "adapter": "vue2",
+    "directory": "baseline-vue2",
+    "head": "b0ed0f5580663ec27c9e9df5e4faad21e59a3d9c",
+    "status": "",
+    "node": "v22.23.2",
+    "chrome": "153.0.8010.53",
+    "frameworks": {
+      "react": "19.2.6",
+      "vue": "3.5.31",
+      "vue2": "2.6.14"
+    },
+    "passes": 16,
+    "failures": 5,
+    "pageErrors": 0,
+    "consoleWarningsErrors": 0,
+    "scenarios": 5,
+    "traceLimitReached": false,
+    "screenshots": 11,
+    "lifecycleSamples": [
+      {
+        "seq": 23,
+        "time": 69.29999995231628,
+        "event": {
+          "type": "mount.commit.start",
+          "epoch": 1
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": null,
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      },
+      {
+        "seq": 41,
+        "time": 73.69999992847443,
+        "event": {
+          "type": "mount.commit.done",
+          "epoch": 1
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": null,
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      },
+      {
+        "seq": 66,
+        "time": 183.19999992847443,
+        "event": {
+          "type": "unmount.begin",
+          "epoch": 1
+        },
+        "root": {
+          "value": "b"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": "pui-tabs-1-content-a",
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": false,
+        "targetDisplay": "none",
+        "targetVisibility": "visible"
+      },
+      {
+        "seq": 68,
+        "time": 183.39999997615814,
+        "event": {
+          "type": "unmount.done",
+          "epoch": 1
+        },
+        "root": {
+          "value": "b"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": "pui-tabs-1-content-a",
+        "targetConnected": true,
+        "targetDetached": true,
+        "targetPending": false,
+        "targetDisplay": "none",
+        "targetVisibility": "visible"
+      },
+      {
+        "seq": 114,
+        "time": 265.10000002384186,
+        "event": {
+          "type": "mount.commit.start",
+          "epoch": 2
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      },
+      {
+        "seq": 116,
+        "time": 265.1999999284744,
+        "event": {
+          "type": "mount.commit.done",
+          "epoch": 2
+        },
+        "root": {
+          "value": "a"
+        },
+        "sourceControls": "pui-tabs-1-content-a",
+        "targetId": null,
+        "targetConnected": true,
+        "targetDetached": false,
+        "targetPending": true,
+        "targetDisplay": "block",
+        "targetVisibility": "hidden"
+      }
+    ]
+  }
+]

@@ -1,0 +1,231 @@
+{
+  "kind": "proto-ui.local-pre-pr-review",
+  "schemaVersion": 1,
+  "canonicalPacket": false,
+  "repository": "Proto-UI/Proto-UI",
+  "pullRequest": null,
+  "head": "fd9fc6b4aa46b2ad18b4ffd685448d36d2ba9ea2",
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "tree": "978bb562be172cc6903fb038e85bc80e0034f574",
+  "observedAt": "2026-09-22T04:40:22.288Z",
+  "executionMode": "human-assisted",
+  "reviewClass": "review-cross-domain-semantics",
+  "reviewDepth": "partial",
+  "recommendation": "ABSTAIN",
+  "findings": [],
+  "reviewedPaths": [
+    "apps/www/src/content/docs/en/ui-libraries/base/tabs.mdx",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/base/tabs.mdx",
+    "internal/releases/0.3.0-alpha.1/lifecycle-dispositions.json",
+    "internal/releases/0.3.0-alpha.1/package-bom.json",
+    "packages/adapters/react/src/runtime/modules.ts",
+    "packages/adapters/react/test/tabs.test.ts",
+    "packages/adapters/vue/src/adapt.ts",
+    "packages/adapters/vue/src/runtime/modules.ts",
+    "packages/adapters/vue/test/tabs.test.ts",
+    "packages/adapters/vue2/src/runtime/modules.ts",
+    "packages/adapters/vue2/test/tabs.test.ts",
+    "packages/adapters/web-component/src/adapt.ts",
+    "packages/adapters/web-component/src/runtime/modules.ts",
+    "packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts",
+    "packages/core/src/a11y.ts",
+    "packages/modules/a11y/README.md",
+    "packages/modules/a11y/package.json",
+    "packages/modules/a11y/src/caps.ts",
+    "packages/modules/a11y/src/create.ts",
+    "packages/modules/a11y/src/part-relationships.ts",
+    "packages/modules/a11y/src/types.ts",
+    "packages/modules/a11y/src/web.ts",
+    "packages/modules/a11y/test/part-relationships.test.ts",
+    "packages/modules/a11y/test/web-reference.test.ts",
+    "packages/modules/anatomy/src/impl.ts",
+    "packages/modules/table-structure/src/create.ts",
+    "packages/prototypes/base/src/tabs/content.proto.ts",
+    "packages/prototypes/base/src/tabs/root.proto.ts",
+    "packages/prototypes/base/src/tabs/shared.ts",
+    "packages/prototypes/base/src/tabs/trigger.proto.ts",
+    "packages/prototypes/base/test/tabs.test.ts",
+    "packages/runtime/src/instance/session.ts",
+    "packages/runtime/test/contract/a11y.v0.contract.test.ts",
+    "packages/spec/fixtures/test/lifecycle-readiness.test.ts",
+    "pnpm-lock.yaml",
+    "scripts/release/test/lifecycle-readiness.test.mjs",
+    "spec/contracts/C-A11Y-0001.yaml",
+    "spec/contracts/C-A11Y-PART-RELATIONSHIP-0001.yaml",
+    "spec/host-caps/HC-A11Y-0001.yaml",
+    "spec/modules/M-A11Y-0001.yaml",
+    "spec/modules/M-ANATOMY-0001.yaml",
+    "spec/prototypes/P-BASE-TABS-CONTENT.yaml",
+    "spec/prototypes/P-BASE-TABS-TRIGGER.yaml",
+    "spec/prototypes/P-BASE-TABS.yaml",
+    "spec/tests/T-A11Y-PART-RELATIONSHIP-0001.yaml"
+  ],
+  "validation": {
+    "executed": [
+      "Read exact signed-head/tree and clean worktree, full 2-file incremental diff and surrounding identity ownership paths",
+      "Ran original three repros plus the two before-observer State replays: 5 pass",
+      "Ran generated/explicit x observer-first/pending detach: 4 pass",
+      "Ran generated/explicit x observer-first/pending same-epoch physical replacement: 4 pass",
+      "Ran truly-after-detach authored identity conflicts: 2 expected fail-closed results pass",
+      "Read root pending-identity-focused.log: 12 files, 170 tests passed",
+      "Read root workspace-types log: tsc invocation with no error output; root reports command success",
+      "Read prior 349 full-test log and interruption receipt: 2637 main tests and 34 TODO, browser phase explicitly interrupted",
+      "git diff --check for 34937f8..fd9fc6b4 passed"
+    ],
+    "notExecuted": [
+      "No heavy build/test runner in this review",
+      "No native-browser execution of the new identity schedules",
+      "No full fd9 test suite independently run or claimed complete",
+      "No canonical v3 PR input, packet validation or GitHub disposition because no PR exists"
+    ]
+  },
+  "evidenceDebt": [
+    {
+      "kind": "verification",
+      "missing": "Latest complete exact-head validation and budget disposition",
+      "reason": "Latest focused evidence is available; the previous full run was interrupted and the last inspected budget measurement failed three limits.",
+      "nextAction": "Root completes current validation and preserves the authorized budget decision gate."
+    },
+    {
+      "kind": "verification",
+      "missing": "Actual-browser same-epoch physical binding replacement and current-head evidence binding",
+      "reason": "The local provider and Happy DOM scenarios verify bounded behavior, but do not replace the unexecuted browser K scenario or final browser receipts.",
+      "nextAction": "Execute the required browser observation or retain explicit scope limitation."
+    },
+    {
+      "kind": "publication",
+      "missing": "Verified public evidence uploads",
+      "reason": "No uploads verified by this read-only review.",
+      "nextAction": "Authorized root publication and link verification."
+    }
+  ],
+  "limitations": [
+    "Local partial/ABSTAIN technical review only; no canonical PR packet exists and no PR number was invented.",
+    "Review eligibility remains unassessed/advisory; no approval or integration authority is inferred.",
+    "Independent repros use actual built projector code with Happy DOM MutationObserver, not native-browser timing evidence.",
+    "The root command logs were inspected as evidence, not presented as commands independently rerun here.",
+    "All relevant lifecycle declarations remain governed by their existing status; resolving findings does not admit stable semantics."
+  ],
+  "humanGates": [
+    "Independent maintainer exact-head approval",
+    "Required trusted CI and resolved review threads",
+    "Actual merge",
+    "Separate stable semantic admission"
+  ],
+  "artifactHashes": [
+    {
+      "path": "repro-explicit-part-id-fd9fc6b4-replay-before-delivery.json",
+      "sha256": "679c91a66d12815a26846ce9c53cb888e8df46a25ca8f0594f10ff9054053904"
+    },
+    {
+      "path": "repro-explicit-part-id-fd9fc6b4.json",
+      "sha256": "42dc6534a88ced739e71a53428d05557cad3a37c23a575787521b0081a6f1e85"
+    },
+    {
+      "path": "repro-explicit-part-id-fd9fc6b4.mjs",
+      "sha256": "46db49db79b093ac6133de85963182c1385b74ad5f5bba80bb30b568db44641a"
+    },
+    {
+      "path": "repro-generated-part-id-control-fd9fc6b4.json",
+      "sha256": "8ee2a1cf6989fe1d3fd468075bc88fd0a567bb60cfd466c136cf96a85b0981f8"
+    },
+    {
+      "path": "repro-id-after-detach-fd9fc6b4.json",
+      "sha256": "9288ee500a8abb317c28276055d2f4cac017f7d2fdf8459c538de7219b3f3a27"
+    },
+    {
+      "path": "repro-id-after-detach-fd9fc6b4.mjs",
+      "sha256": "48946cf246b468e86c8f7dae61c17d2f08223557cb6030d5c655918d76b33261"
+    },
+    {
+      "path": "repro-id-detach-fd9fc6b4.json",
+      "sha256": "4a2eb89f89008bccb7b833e1f125b65576657a3076ffffa7433008e4362ac031"
+    },
+    {
+      "path": "repro-id-detach-fd9fc6b4.mjs",
+      "sha256": "b65a9b521d0422422ab35b3f8a61d153a6aff2810ae58653249179a9518c1761"
+    },
+    {
+      "path": "repro-id-replacement-fd9fc6b4.json",
+      "sha256": "4e52ff575633745e0669326a83920ccdc9490a83a9329ba873d0dce3098f3e02"
+    },
+    {
+      "path": "repro-id-replacement-fd9fc6b4.mjs",
+      "sha256": "bf01ed92f93fc96e55fdc41f5f76b52ddc748bc5aaf3436047e49dcbd3eb200b"
+    },
+    {
+      "path": "repro-independent-id-writer-fd9fc6b4-replay-before-delivery.json",
+      "sha256": "8066535f983be3e89cdb430bd55b4597c0ce8836f4081d6762add09477051439"
+    },
+    {
+      "path": "repro-independent-id-writer-fd9fc6b4.json",
+      "sha256": "63971a90ea6cc108e361fde2e0915c916dd9545b4019289e86ed7eede71dbf2b"
+    },
+    {
+      "path": "repro-results-fd9fc6b4.json",
+      "sha256": "a1d0131f6eed9a47c50e6e11479da6b63a29f101e5c9af74ea87e608647e79f8"
+    }
+  ],
+  "priorReviewedHead": "34937f8e0cc0cd4feed67a69bea30ffa4355f79c",
+  "incrementalPaths": [
+    "packages/modules/a11y/src/web.ts",
+    "packages/modules/a11y/test/web-reference.test.ts"
+  ],
+  "reconciliation": {
+    "resolvedFindingIds": [
+      "PUI-549-REVIEW-LIVE-EXPLICIT-ID",
+      "PUI-549-REVIEW-INDEPENDENT-ID-WRITER",
+      "PUI-549-REVIEW-PENDING-ID-DETACH"
+    ],
+    "openFindingIds": [],
+    "newFindingIds": []
+  },
+  "originalAcceptedBase": "b6c641bb7d88269dba4170ed739f29202514e7c5",
+  "incrementalScope": [
+    "34937f8..fd9fc6b4: web.ts pre-revocation identity classification and 10 directly related regression combinations",
+    "Reconcile all 3 previously established independent finding IDs; no new full Table feature review"
+  ],
+  "resolvedFindings": [
+    {
+      "id": "PUI-549-REVIEW-LIVE-EXPLICIT-ID",
+      "status": "resolved",
+      "evidence": "repro-results-fd9fc6b4.json; 15 independently asserted built-dist scenarios pass at this head"
+    },
+    {
+      "id": "PUI-549-REVIEW-INDEPENDENT-ID-WRITER",
+      "status": "resolved",
+      "evidence": "repro-results-fd9fc6b4.json; 15 independently asserted built-dist scenarios pass at this head"
+    },
+    {
+      "id": "PUI-549-REVIEW-PENDING-ID-DETACH",
+      "status": "resolved",
+      "evidence": "repro-results-fd9fc6b4.json; 15 independently asserted built-dist scenarios pass at this head"
+    }
+  ],
+  "budgetGate": {
+    "kind": "verification-and-maintainer-gate",
+    "status": "failed",
+    "baseline": "main9d JSON passes all 9",
+    "candidate": [
+      {
+        "name": "runtime",
+        "actual": 65852,
+        "limit": 64000
+      },
+      {
+        "name": "react",
+        "actual": 85338,
+        "limit": 83500
+      },
+      {
+        "name": "vue",
+        "actual": 85081,
+        "limit": 83500
+      }
+    ],
+    "action": "No limit change authorized; cannot claim complete validation.",
+    "lastMeasuredHead": "34937f8e0cc0cd4feed67a69bea30ffa4355f79c",
+    "latestHeadMeasurement": "Not independently inspected for fd9; prior three failures remain an unresolved gate, not a reason to change thresholds."
+  },
+  "conclusion": "No remaining concrete code finding within this exact-head bounded review. Partial/ABSTAIN remains because canonical PR context, complete current validation and budget gates are not satisfied."
+}

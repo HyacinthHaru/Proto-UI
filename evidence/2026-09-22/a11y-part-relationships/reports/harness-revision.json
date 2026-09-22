@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-09-22T03:45:56.485Z",
+  "status": "prepared; no browser execution after revision; awaiting root run authorization",
+  "productModified": false,
+  "browserRun": false,
+  "preparationRepositoryHead": "8202853c45eb1e3d4f4f7efb29b69471435dea39",
+  "formatter": {
+    "version": "3.8.1",
+    "config": ".prettierrc",
+    "configSha256": "e7835f5220f445791624fb5542481bef2f0dad438eea2990a5911175cf30f995"
+  },
+  "files": [
+    {
+      "name": "tabs-probe.mjs",
+      "archive": "harness-v1/tabs-probe.mjs",
+      "beforeSha256": "239a90661c8fbb46e5f494d54b8ba9f88a058a94f46eb8b9378a580bc04b7182",
+      "afterSha256": "6c3c6f406d6af64263cc9f725f7f3d4ff7a03e33db375b87500f01df44457d38",
+      "change": "formatting only",
+      "behaviorAstUnchangedAfterRemovingNewMetadata": true
+    },
+    {
+      "name": "tabs-fixture.ts",
+      "archive": "harness-v1/tabs-fixture.ts",
+      "beforeSha256": "5a95e35638194ed79295b167207ee21730e867885ed69fb8887a30c62cd696b2",
+      "afterSha256": "ded4e7a31ec4bd8f0374e15b0b9e32893dcb44b860cd2b8bcdf786b5a3f69765",
+      "change": "formatting only",
+      "behaviorAstUnchangedAfterRemovingNewMetadata": true
+    },
+    {
+      "name": "framework-tabs-fixture.ts",
+      "archive": "harness-v1/framework-tabs-fixture.ts",
+      "beforeSha256": "fec97a0922dd4c6a3e3db1352bea5ecca65712d9dab939a397fb3012e8e5b4a5",
+      "afterSha256": "4a9669318f67a4905f6c988b1b026f45fa11e84499910135699af55669f07819",
+      "change": "formatting only",
+      "behaviorAstUnchangedAfterRemovingNewMetadata": true
+    },
+    {
+      "name": "part-probe.mjs",
+      "archive": "harness-v1/part-probe.mjs",
+      "beforeSha256": "f791edf61973352432bd94c400cf539ef550ea9f33e8b99a1e6540335b07f0a3",
+      "afterSha256": "b441b4190125250e9b3550dee2f10d4b6d44c3c416476dc5e4723b4fd2f8e764",
+      "change": "formatting plus output-only assertion authority metadata",
+      "behaviorAstUnchangedAfterRemovingNewMetadata": true
+    },
+    {
+      "name": "part-fixture.ts",
+      "archive": "harness-v1/part-fixture.ts",
+      "beforeSha256": "f36f86e363268b38be359d2abd85c6b83ddaafd85a992c01052f838335e812a9",
+      "afterSha256": "62dae30c130d7bf2e8d5fad090a4b2ba73a1795ecd2f67270fe7af4404063314",
+      "change": "formatting only",
+      "behaviorAstUnchangedAfterRemovingNewMetadata": true
+    }
+  ],
+  "historicalCoverage": {
+    "runs": 19,
+    "unmatchedHarnessHashes": [],
+    "legacyDriver": "harness-v1/legacy-tabs-initial/tabs-probe.mjs",
+    "legacyDriverSha256": "614d6be7d6556a3651553627df182c195f848c7e7a929a60439327c145755465",
+    "provenanceIndex": "harness-v1/executed-provenance-index.json",
+    "restorationNote": "The earlier WC-only driver was reconstructed from the known later delta and exactly matched its two recorded execution hashes before archiving."
+  },
+  "attribution": {
+    "authorityEntity": "C-A11Y-PART-RELATIONSHIP-0001",
+    "authorityPath": "spec/contracts/C-A11Y-PART-RELATIONSHIP-0001.yaml",
+    "authoritySourceSha256": "a51076a191d6609a3e974d297d5eefb8f79105ef1b6a908f405b8281f6cfffe3",
+    "behavioralAssertions": 20,
+    "fixtureExecutionControls": 2,
+    "allAnchorsExist": true,
+    "assertionAuthorities": {
+      "first-domain-pair": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-C", "C-A11Y-PART-RELATIONSHIP-0001-E"]
+      },
+      "opposite-order-second-domain-pair": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-C", "C-A11Y-PART-RELATIONSHIP-0001-E"]
+      },
+      "distinct-domains-distinct-identities": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-C", "C-A11Y-PART-RELATIONSHIP-0001-J"]
+      },
+      "sourceA-portable-key": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-B"]
+      },
+      "targetA-portable-key": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-B"]
+      },
+      "sourceB-portable-key": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-B"]
+      },
+      "targetB-portable-key": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-B"]
+      },
+      "target-L1-withdraws": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-D"]
+      },
+      "target-L1-retains-identity": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-D", "C-A11Y-PART-RELATIONSHIP-0001-E"]
+      },
+      "source-L1-withdraws": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-D"]
+      },
+      "source-L1-retains-identity": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-D", "C-A11Y-PART-RELATIONSHIP-0001-E"]
+      },
+      "one-sided-rekey-closes-both": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-C", "C-A11Y-PART-RELATIONSHIP-0001-G"]
+      },
+      "matching-rekey-recovers": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-C", "C-A11Y-PART-RELATIONSHIP-0001-G"]
+      },
+      "domain-move-invalidates-old-domain": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-C", "C-A11Y-PART-RELATIONSHIP-0001-G"]
+      },
+      "matching-domain-move-recovers": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-C", "C-A11Y-PART-RELATIONSHIP-0001-G"]
+      },
+      "other-pair-unchanged": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-C"]
+      },
+      "live-authored-ID-rebind": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-J"]
+      },
+      "live-ID-collision-closes": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-J"]
+      },
+      "removed-collision-recovers": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-J"]
+      },
+      "terminal-withdraws-preserves-author-ID": {
+        "kind": "contract-criteria",
+        "anchors": ["C-A11Y-PART-RELATIONSHIP-0001-F", "C-A11Y-PART-RELATIONSHIP-0001-J"]
+      },
+      "page-errors": {
+        "kind": "fixture-execution-control",
+        "anchors": [],
+        "statement": "This fixture recorded no uncaught page errors for its listed authored inputs; it asserts no general Proto UI exception policy."
+      },
+      "console-warning-errors": {
+        "kind": "fixture-execution-control",
+        "anchors": [],
+        "statement": "This fixture recorded no console warnings or errors for its listed authored inputs; it does not require every Proto UI operation to remain silent or succeed."
+      }
+    },
+    "limits": "Anchors identify expected behavior, not full-criterion proof; execution controls do not assert general exception or silence policy."
+  },
+  "readme": {
+    "path": "README.md",
+    "sha256": "aed92bddfa146468a0e0404e52442b8914329ef6bb6e90ce45b23f07f6a79043",
+    "changes": [
+      "portable public run paths and archive provenance",
+      "public export names resolved to TypeScript source, not installed package claims",
+      "App native controls invoke public props/host operations; no product activation or OS routing claim",
+      "host ID changes reconcile through MutationObserver, not synchronous setter interception",
+      "prepared revision has not run; old evidence is not rebound"
+    ]
+  },
+  "staticVerification": {
+    "parser": "TypeScript 5.9.3",
+    "normalization": "Syntax tree without trivia, full SourceFile text, redundant parentheses, new constant attribution map and its one added check-output field",
+    "normalizedBehaviorAstMatchesArchive": true,
+    "newGenericCheckOutputField": "authority",
+    "predicatesActionOrderAndWaitsUnchanged": true,
+    "protectedExecutionFiles": 112,
+    "protectedExecutionFilesChanged": [],
+    "prettierCheck": "passed for all five scripts and README"
+  }
+}

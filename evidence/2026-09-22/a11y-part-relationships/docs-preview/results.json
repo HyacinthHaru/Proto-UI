@@ -1,0 +1,240 @@
+{
+  "head": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+  "browser": "153.0.8010.53",
+  "scope": "Built Base Tabs documentation in both locales, desktop/mobile; WC preview only. No full keyboard, focus or accessibility claim.",
+  "captures": [
+    {
+      "locale": "en",
+      "width": 1440,
+      "route": "/en/ui-libraries/base/tabs/",
+      "before": [
+        {
+          "text": "Account",
+          "selected": "true",
+          "controls": "pui-a11y-2"
+        },
+        {
+          "text": "Security",
+          "selected": "false",
+          "controls": null
+        },
+        {
+          "text": "Billing",
+          "selected": "false",
+          "controls": null
+        }
+      ],
+      "after": [
+        {
+          "text": "Account",
+          "selected": "false",
+          "controls": null
+        },
+        {
+          "text": "Security",
+          "selected": "true",
+          "controls": "pui-a11y-4"
+        },
+        {
+          "text": "Billing",
+          "selected": "false",
+          "controls": null
+        }
+      ],
+      "errors": [],
+      "requests": [
+        {
+          "url": "http://127.0.0.1:57016/pagefind/pagefind.js",
+          "reason": "net::ERR_ABORTED"
+        }
+      ],
+      "events": [
+        {
+          "trusted": true,
+          "target": "WC-BASE-TABS-TRIGGER"
+        },
+        {
+          "trusted": false,
+          "target": "WC-BASE-TABS-TRIGGER"
+        }
+      ],
+      "overflow": 0,
+      "htmlSha256": "abef83b1cf19de859cb333796d11dc04120527c4788f62fd82f3233cd5ffa487"
+    },
+    {
+      "locale": "en",
+      "width": 390,
+      "route": "/en/ui-libraries/base/tabs/",
+      "before": [
+        {
+          "text": "Account",
+          "selected": "true",
+          "controls": "pui-a11y-2"
+        },
+        {
+          "text": "Security",
+          "selected": "false",
+          "controls": null
+        },
+        {
+          "text": "Billing",
+          "selected": "false",
+          "controls": null
+        }
+      ],
+      "after": [
+        {
+          "text": "Account",
+          "selected": "false",
+          "controls": null
+        },
+        {
+          "text": "Security",
+          "selected": "true",
+          "controls": "pui-a11y-4"
+        },
+        {
+          "text": "Billing",
+          "selected": "false",
+          "controls": null
+        }
+      ],
+      "errors": [],
+      "requests": [
+        {
+          "url": "http://127.0.0.1:57016/pagefind/pagefind.js",
+          "reason": "net::ERR_ABORTED"
+        }
+      ],
+      "events": [
+        {
+          "trusted": true,
+          "target": "WC-BASE-TABS-TRIGGER"
+        },
+        {
+          "trusted": false,
+          "target": "WC-BASE-TABS-TRIGGER"
+        }
+      ],
+      "overflow": 0,
+      "htmlSha256": "abef83b1cf19de859cb333796d11dc04120527c4788f62fd82f3233cd5ffa487"
+    },
+    {
+      "locale": "zh-cn",
+      "width": 1440,
+      "route": "/zh-cn/ui-libraries/base/tabs/",
+      "before": [
+        {
+          "text": "Account",
+          "selected": "true",
+          "controls": "pui-a11y-2"
+        },
+        {
+          "text": "Security",
+          "selected": "false",
+          "controls": null
+        },
+        {
+          "text": "Billing",
+          "selected": "false",
+          "controls": null
+        }
+      ],
+      "after": [
+        {
+          "text": "Account",
+          "selected": "false",
+          "controls": null
+        },
+        {
+          "text": "Security",
+          "selected": "true",
+          "controls": "pui-a11y-4"
+        },
+        {
+          "text": "Billing",
+          "selected": "false",
+          "controls": null
+        }
+      ],
+      "errors": [],
+      "requests": [
+        {
+          "url": "http://127.0.0.1:57016/pagefind/pagefind.js",
+          "reason": "net::ERR_ABORTED"
+        }
+      ],
+      "events": [
+        {
+          "trusted": true,
+          "target": "WC-BASE-TABS-TRIGGER"
+        },
+        {
+          "trusted": false,
+          "target": "WC-BASE-TABS-TRIGGER"
+        }
+      ],
+      "overflow": 0,
+      "htmlSha256": "2dbac97035c5e66dedff78e710b4401b53ede82d10b7ce8631266d9ff24b783a"
+    },
+    {
+      "locale": "zh-cn",
+      "width": 390,
+      "route": "/zh-cn/ui-libraries/base/tabs/",
+      "before": [
+        {
+          "text": "Account",
+          "selected": "true",
+          "controls": "pui-a11y-2"
+        },
+        {
+          "text": "Security",
+          "selected": "false",
+          "controls": null
+        },
+        {
+          "text": "Billing",
+          "selected": "false",
+          "controls": null
+        }
+      ],
+      "after": [
+        {
+          "text": "Account",
+          "selected": "false",
+          "controls": null
+        },
+        {
+          "text": "Security",
+          "selected": "true",
+          "controls": "pui-a11y-4"
+        },
+        {
+          "text": "Billing",
+          "selected": "false",
+          "controls": null
+        }
+      ],
+      "errors": [],
+      "requests": [
+        {
+          "url": "http://127.0.0.1:57016/pagefind/pagefind.js",
+          "reason": "net::ERR_ABORTED"
+        }
+      ],
+      "events": [
+        {
+          "trusted": true,
+          "target": "WC-BASE-TABS-TRIGGER"
+        },
+        {
+          "trusted": false,
+          "target": "WC-BASE-TABS-TRIGGER"
+        }
+      ],
+      "overflow": 0,
+      "htmlSha256": "2dbac97035c5e66dedff78e710b4401b53ede82d10b7ce8631266d9ff24b783a"
+    }
+  ],
+  "finishedAt": "2026-09-22T05:09:02.224Z"
+}

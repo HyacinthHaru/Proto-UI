@@ -1,0 +1,164 @@
+{
+  "kind": "proto-ui.local-pre-pr-review",
+  "schemaVersion": 1,
+  "canonicalPacket": false,
+  "repository": "Proto-UI/Proto-UI",
+  "pullRequest": null,
+  "head": "8202853c45eb1e3d4f4f7efb29b69471435dea39",
+  "base": "b6c641bb7d88269dba4170ed739f29202514e7c5",
+  "tree": "155c8684ce0843f1a7d1bd29f070197fcbe20008",
+  "observedAt": "2026-09-22T03:41:44.177Z",
+  "executionMode": "human-assisted",
+  "reviewClass": "review-cross-domain-semantics",
+  "reviewDepth": "partial",
+  "recommendation": "ABSTAIN",
+  "findings": [
+    {
+      "id": "PUI-549-REVIEW-LIVE-EXPLICIT-ID",
+      "severity": "P2",
+      "confidence": "high",
+      "path": "packages/modules/a11y/src/web.ts",
+      "line": 137,
+      "authority": ["C-A11Y-PART-RELATIONSHIP-0001-J"],
+      "trigger": "A structured part target also has an explicit A11y snapshot.id; the host changes target.id while the binding stays live.",
+      "observed": "The newly installed document observer calls update with the cached semantic snapshot. Scalar reacquisition and applySnapshot at lines 650–657 restore snapshot.id over the new host id before reservation reconciliation. Measured proto-id -> host-later -> proto-id after MutationObserver delivery, without a manual projector call.",
+      "expected": "Preserve the host-authored new value; withdraw the previous dependent contribution and perform collision checks before adopting or rebinding.",
+      "impact": "The host-authored current identity is erased while the relation continues pointing to the old identity. Existing authored labels or external references to the new ID break.",
+      "fix": "Separate observed host identity reconciliation from stale scalar snapshot replay and cover the explicit-A11y-ID plus structured-part combination.",
+      "evidence": ["repro-explicit-part-id.json", "repro-generated-part-id-control.json"],
+      "status": "open"
+    },
+    {
+      "id": "PUI-549-REVIEW-INDEPENDENT-ID-WRITER",
+      "severity": "P2",
+      "confidence": "high",
+      "path": "packages/modules/a11y/src/web.ts",
+      "line": 136,
+      "authority": ["C-A11Y-0001-O", "C-A11Y-0001-P", "C-A11Y-PART-RELATIONSHIP-0001-J"],
+      "trigger": "A generated-ID structured-part target shares its physical element with another logical projector that declares a different explicit ID.",
+      "observed": "The writer synchronously produces the required fail-closed controls=null, but the new document observer later treats the independent scalar write as host-authored identity and reselects the generated owner reservation. Measured original pui-a11y-1 -> independent-id, controls null -> independent-id after observer delivery. Disposing the writer then retains independent-id rather than recovering pui-a11y-1.",
+      "expected": "Preserve independent scalar ownership while keeping the original generated reservation unavailable during a different-ID takeover; writer release should recover the original identity as governed by existing PUI-625-GENERATED-ID-SURVIVOR-RELEASE coverage (web-reference.test.ts:675–721).",
+      "impact": "Independent projector ownership is conflated with host authorship and a logical target silently changes its retained identity, breaking the existing direct-reference compatibility boundary.",
+      "fix": "Exclude current independent scalar-owned ID values from host-authored mutation rebinding; retain the old logical reservation until the independent writer releases it.",
+      "evidence": ["repro-independent-id-writer.json"],
+      "status": "open"
+    }
+  ],
+  "reviewedPaths": [
+    "apps/www/src/content/docs/en/ui-libraries/base/tabs.mdx",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/base/tabs.mdx",
+    "internal/releases/0.3.0-alpha.1/lifecycle-dispositions.json",
+    "internal/releases/0.3.0-alpha.1/package-bom.json",
+    "packages/adapters/react/src/runtime/modules.ts",
+    "packages/adapters/react/test/tabs.test.ts",
+    "packages/adapters/vue/src/adapt.ts",
+    "packages/adapters/vue/src/runtime/modules.ts",
+    "packages/adapters/vue/test/tabs.test.ts",
+    "packages/adapters/vue2/src/runtime/modules.ts",
+    "packages/adapters/vue2/test/tabs.test.ts",
+    "packages/adapters/web-component/src/adapt.ts",
+    "packages/adapters/web-component/src/runtime/modules.ts",
+    "packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts",
+    "packages/core/src/a11y.ts",
+    "packages/modules/a11y/README.md",
+    "packages/modules/a11y/package.json",
+    "packages/modules/a11y/src/caps.ts",
+    "packages/modules/a11y/src/create.ts",
+    "packages/modules/a11y/src/part-relationships.ts",
+    "packages/modules/a11y/src/types.ts",
+    "packages/modules/a11y/src/web.ts",
+    "packages/modules/a11y/test/part-relationships.test.ts",
+    "packages/modules/a11y/test/web-reference.test.ts",
+    "packages/modules/anatomy/src/impl.ts",
+    "packages/modules/anatomy/src/types.ts",
+    "packages/prototypes/base/src/tabs/content.proto.ts",
+    "packages/prototypes/base/src/tabs/root.proto.ts",
+    "packages/prototypes/base/src/tabs/shared.ts",
+    "packages/prototypes/base/src/tabs/trigger.proto.ts",
+    "packages/prototypes/base/test/tabs.test.ts",
+    "packages/runtime/src/instance/session.ts",
+    "packages/runtime/test/contract/a11y.v0.contract.test.ts",
+    "packages/spec/fixtures/test/lifecycle-readiness.test.ts",
+    "pnpm-lock.yaml",
+    "scripts/release/test/lifecycle-readiness.test.mjs",
+    "spec/contracts/C-A11Y-0001.yaml",
+    "spec/contracts/C-A11Y-PART-RELATIONSHIP-0001.yaml",
+    "spec/host-caps/HC-A11Y-0001.yaml",
+    "spec/modules/M-A11Y-0001.yaml",
+    "spec/modules/M-ANATOMY-0001.yaml",
+    "spec/prototypes/P-BASE-TABS-CONTENT.yaml",
+    "spec/prototypes/P-BASE-TABS-TRIGGER.yaml",
+    "spec/prototypes/P-BASE-TABS.yaml",
+    "spec/tests/T-A11Y-PART-RELATIONSHIP-0001.yaml"
+  ],
+  "validation": {
+    "executed": [
+      "Read the complete applicable relationship A–K contract, C-A11Y-0001, Anatomy domain/boundary, lifecycle intent, relevant decision and record",
+      "Read actual changed-file diff and full A11y owner/matcher/projector bodies plus connected adapter lifecycle paths",
+      "Executed three lightweight built-dist Happy DOM MutationObserver scenarios; source/dist hashes and measurements are in the named JSON files",
+      "Validated orient-to-review skill handoff; review eligibility permits partial/ABSTAIN only"
+    ],
+    "notExecuted": [
+      "No heavy test/build/browser runner launched while root validation was active",
+      "No native-browser reproduction of these new ownership findings",
+      "No canonical PR digest/packet validation because no PR exists",
+      "No GitHub disposition or formal acceptance"
+    ]
+  },
+  "evidenceDebt": [
+    {
+      "kind": "verification",
+      "missing": "New observer ownership defects remain open",
+      "reason": "Executed local simulation demonstrates concrete divergence from owned identity behavior.",
+      "nextAction": "Root remediation followed by new exact-head source and focused runtime evidence review."
+    },
+    {
+      "kind": "verification",
+      "missing": "Final complete exact-head validation and browser receipts",
+      "reason": "Root validation is ongoing and later commits require reconciliation.",
+      "nextAction": "Read final logs and reconcile any code changes."
+    },
+    {
+      "kind": "verification",
+      "missing": "Actual-browser same-epoch physical binding replacement",
+      "reason": "Existing WC provider test covers synchronous provider rebinding, but recorded browser scenarios do not execute K physical replacement.",
+      "nextAction": "Retain explicit review limit or execute the missing accepted scenario."
+    },
+    {
+      "kind": "publication",
+      "missing": "Verified public evidence uploads",
+      "reason": "Local source/runtime/browser artifacts may support specific claims but no upload was verified in this read-only review.",
+      "nextAction": "Root prepares authorized publication and verifies links."
+    }
+  ],
+  "limitations": [
+    "This is a local technical report, intentionally not a canonical v2 PR review packet. The v3 input schema requires a real PR; none exists.",
+    "Assessment remains unassessed/advisory; partial/ABSTAIN is mandatory for this local class.",
+    "Happy DOM evidence is a host simulation using the actual built projector; no native browser observation is claimed.",
+    "All relevant C/M/HC/P/T draft status remains unchanged; review and passing tests do not admit stable semantics."
+  ],
+  "humanGates": [
+    "Independent maintainer exact-head approval",
+    "Required trusted CI and resolved review threads",
+    "Actual merge",
+    "Separate stable semantic admission"
+  ],
+  "artifactHashes": [
+    {
+      "path": "repro-explicit-part-id.json",
+      "sha256": "b877616dbee6235d39955b7530691c203e52212009ef4ec945f59c0c9ab3af29"
+    },
+    {
+      "path": "repro-explicit-part-id.mjs",
+      "sha256": "ff4b05743d116374d2e72117f8938586de21d7733f9c3d84021f1a07db84e454"
+    },
+    {
+      "path": "repro-generated-part-id-control.json",
+      "sha256": "76c0a7c5396dbbf8680ba11cece2464a191d2aafc1511c1971202148965df064"
+    },
+    {
+      "path": "repro-independent-id-writer.json",
+      "sha256": "4b4ea776cef467377030bfb9b952bdc9eab2b9694aeb8f5bdbc56aa469b0ca36"
+    }
+  ]
+}
