@@ -96,7 +96,12 @@ export type InstallOptions = {
 export type HostSessionModel = {
   readonly sessionId: SessionId;
   installProjection(transaction: ProjectionTransaction, options?: InstallOptions): ProjectionAck;
-  activate(viewEpoch: ViewEpoch): ActivationResult;
+  /**
+   * Activation is commit-qualified. A projection is installed inactive and
+   * only the exact commit that was acknowledged may be activated, so a
+   * delayed activation cannot make a newer projection live.
+   */
+  activate(viewEpoch: ViewEpoch, commitId: CommitId): ActivationResult;
   releaseLeases(leaseIds: readonly LeaseId[]): ReleaseResult;
   deliver(sample: InputSample): DeliveryResult;
   requestDefaultActionPrevention(
@@ -162,8 +167,9 @@ export function createHostSessionModel(sessionId: SessionId): HostSessionModel {
 
   const liveLeases = () => [...leases.values()].filter((lease) => !lease.released);
 
-  const pruneBefore = (viewEpoch: ViewEpoch, commitId: CommitId) => {
+  const pruneBefore = (viewEpoch: ViewEpoch, commitId: CommitId, keep: ReadonlySet<LeaseId>) => {
     for (const lease of liveLeases()) {
+      if (keep.has(lease.leaseId)) continue;
       const older =
         lease.viewEpoch < viewEpoch || (lease.viewEpoch === viewEpoch && lease.commitId < commitId);
       if (!older) continue;
@@ -226,8 +232,11 @@ export function createHostSessionModel(sessionId: SessionId): HostSessionModel {
         ]);
       }
 
-      // Validate the complete plan before touching any host resource.
+      // Validate the complete plan before touching any host resource. A lease
+      // that is still live in the same epoch with the same scope and type is
+      // carried over; every other reuse of a lease id is rejected.
       const planIds = new Set<LeaseId>();
+      const carried = new Set<LeaseId>();
       for (const registration of transaction.events.registrations) {
         // Defence in depth: the wire guard already rejects holes and
         // non-records, so a malformed entry here means a caller bypassed it.
@@ -255,15 +264,27 @@ export function createHostSessionModel(sessionId: SessionId): HostSessionModel {
           ]);
         }
         planIds.add(registration.leaseId);
-        if (seenLeaseIds.has(registration.leaseId)) {
+        const existing = leases.get(registration.leaseId);
+        const continues =
+          existing !== undefined &&
+          !existing.released &&
+          existing.viewEpoch === transaction.viewEpoch &&
+          existing.scope === registration.scope &&
+          existing.type === registration.type;
+        if (continues) {
+          carried.add(registration.leaseId);
+          continue;
+        }
+        if (existing !== undefined || seenLeaseIds.has(registration.leaseId)) {
           return ack(transaction, 'failed', [
-            diagnose('lease-reuse', 'lease ids are never reused within a session', {
+            diagnose('lease-reuse', 'a retired lease id is never reused within a session', {
               leaseId: registration.leaseId,
             }),
           ]);
         }
       }
       for (const registration of transaction.events.registrations) {
+        if (carried.has(registration.leaseId)) continue;
         if (options.failAllocation?.(registration)) {
           return ack(transaction, 'failed', [
             diagnose(
@@ -277,16 +298,24 @@ export function createHostSessionModel(sessionId: SessionId): HostSessionModel {
         }
       }
 
-      // Apply: prune superseded records, then install the new plan inactive.
-      pruneBefore(transaction.viewEpoch, transaction.commitId);
+      // Apply: prune superseded records, carry continuing leases into the new
+      // commit, and install every new lease inactive. A new epoch always
+      // starts inactive; a same-epoch commit keeps its carried leases live.
+      const sameEpoch = currentEpoch === transaction.viewEpoch;
+      pruneBefore(transaction.viewEpoch, transaction.commitId, carried);
       currentEpoch = transaction.viewEpoch;
       currentCommit = transaction.commitId;
-      activeEpoch = null;
+      if (!sameEpoch) activeEpoch = null;
       instanceId = transaction.instanceId;
-      focusTargets = [...transaction.focus.targets];
+      focusTargets = transaction.focus.targets.map((target) => target.ref);
       slots = [...transaction.slots.slots];
       if (transaction.a11y) semanticObjectId = transaction.a11y.semanticObjectId;
       for (const registration of transaction.events.registrations) {
+        const existing = leases.get(registration.leaseId);
+        if (existing && carried.has(registration.leaseId)) {
+          existing.commitId = transaction.commitId;
+          continue;
+        }
         seenLeaseIds.add(registration.leaseId);
         leases.set(registration.leaseId, {
           leaseId: registration.leaseId,
@@ -301,10 +330,15 @@ export function createHostSessionModel(sessionId: SessionId): HostSessionModel {
       return ack(transaction, 'applied', [], [PROTO_SURFACE, ...slots]);
     },
 
-    activate(viewEpoch) {
+    activate(viewEpoch, commitId) {
       if (phase === 'disposed') return { status: 'disposed' };
       if (currentEpoch === null || viewEpoch > currentEpoch) return { status: 'not-installed' };
       if (viewEpoch < currentEpoch) return { status: 'stale' };
+      // Same epoch: only the installed commit may be activated. Without this
+      // a late activation for an earlier commit would activate the current
+      // commit's leases, including ones the earlier commit never saw.
+      if (currentCommit === null || commitId > currentCommit) return { status: 'not-installed' };
+      if (commitId < currentCommit) return { status: 'stale' };
       const currentLeases = liveLeases().filter((lease) => lease.commitId === currentCommit);
       if (activeEpoch === viewEpoch && currentLeases.every((lease) => lease.active)) {
         return { status: 'already-active' };
