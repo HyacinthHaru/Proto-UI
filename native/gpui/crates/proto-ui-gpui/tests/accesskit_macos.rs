@@ -3,7 +3,8 @@
 //!
 //! GPUI's test platform never starts AccessKit, so the headless suites cannot
 //! see what the host reports. This opens a real window with `gpui_platform`,
-//! replays Base Button and Base Toggle sessions the real peer recorded, and
+//! replays Base Button, Base Toggle and Base Switch sessions the real peer
+//! recorded, and
 //! asks macOS what is there, with the `NSAccessibility` calls a screen reader
 //! makes. It then presses them the way a screen reader does and checks what
 //! the host sends the peer.
@@ -58,6 +59,10 @@ mod macos {
     const DISABLED: &str = "button-disabled";
     const TOGGLE_OFF: &str = "toggle-inactive";
     const TOGGLE_ON: &str = "toggle-active";
+    const SWITCH_OFF: &str = "switch-root";
+    const SWITCH_OFF_THUMB: &str = "switch-thumb";
+    const SWITCH_ON: &str = "switch-checked";
+    const SWITCH_ON_THUMB: &str = "switch-checked-thumb";
     /// Long enough for AccessKit's action channel to reach the foreground.
     const SETTLE: Duration = Duration::from_millis(200);
 
@@ -99,18 +104,52 @@ mod macos {
     }
 
     fn config(session: &str, prototype_key: &str, label: &str) -> SessionConfig {
+        composed(
+            session,
+            prototype_key,
+            vec![SurfaceChild::Text(label.to_string().into())],
+            None,
+        )
+    }
+
+    /// An instance whose default slot holds `content`, opened inside `parent`.
+    fn composed(
+        session: &str,
+        prototype_key: &str,
+        content: Vec<SurfaceChild>,
+        parent: Option<&str>,
+    ) -> SessionConfig {
         SessionConfig {
             instance_id: format!("{session}:instance"),
             prototype_key: prototype_key.into(),
             props: WireRecord::new(),
-            slots: HashMap::from([(
-                "slot-default".to_string(),
-                vec![SurfaceChild::Text(label.to_string().into())],
-            )]),
+            slots: HashMap::from([("slot-default".to_string(), content)]),
             root_style: StyleRefinement::default(),
             theme: None,
-            parent: None,
+            parent: parent.map(Into::into),
         }
+    }
+
+    /// A Switch labelled `label`, with its thumb in the default slot.
+    fn switch(session: &str, thumb: &str, label: &str) -> [(String, SessionConfig); 2] {
+        [
+            (
+                session.to_string(),
+                composed(
+                    session,
+                    "base-switch-root",
+                    vec![
+                        SurfaceChild::Session(thumb.into()),
+                        SurfaceChild::Text(label.to_string().into()),
+                    ],
+                    None,
+                ),
+            ),
+            (
+                thumb.to_string(),
+                composed(thumb, "base-switch-thumb", Vec::new(), Some(session)),
+            ),
+        ]
     }
 
     // --- NSAccessibility, as a screen reader asks it ------------------------
@@ -298,7 +337,13 @@ mod macos {
             let (toggle_off_messages, toggle_off_commit) =
                 recorded("base-toggle-session.json", "inactive");
             let (toggle_on_messages, _) = recorded("base-toggle-session.json", "active");
-            let bounds = Bounds::centered(None, size(px(300.), px(120.)), cx);
+            let (switch_off_messages, switch_off_commit) =
+                recorded("base-switch-session.json", "root");
+            let (switch_off_thumb_messages, _) = recorded("base-switch-session.json", "thumb");
+            let (switch_on_messages, _) = recorded("base-switch-session.json", "checked");
+            let (switch_on_thumb_messages, _) =
+                recorded("base-switch-session.json", "checkedThumb");
+            let bounds = Bounds::centered(None, size(px(300.), px(300.)), cx);
             let window = cx
                 .open_window(
                     WindowOptions {
@@ -325,6 +370,12 @@ mod macos {
                                 config(TOGGLE_ON, "base-toggle", "Italic"),
                                 cx,
                             );
+                            for (session, config) in switch(SWITCH_OFF, SWITCH_OFF_THUMB, "Wi-Fi")
+                                .into_iter()
+                                .chain(switch(SWITCH_ON, SWITCH_ON_THUMB, "Bluetooth"))
+                            {
+                                view.open_session(session, config, cx);
+                            }
                             view
                         })
                     },
@@ -338,6 +389,10 @@ mod macos {
                         .chain(disabled_messages)
                         .chain(toggle_off_messages)
                         .chain(toggle_on_messages)
+                        .chain(switch_off_messages)
+                        .chain(switch_off_thumb_messages)
+                        .chain(switch_on_messages)
+                        .chain(switch_on_thumb_messages)
                     {
                         view.receive(message, window, cx);
                     }
@@ -395,7 +450,11 @@ mod macos {
 
                 // A Toggle is a toggle button: macOS reports a checkbox with the
                 // toggle subrole, and its value says whether it is on.
-                let toggles = run.with_role("AXCheckBox", cx);
+                let toggles: Vec<Seen> = run
+                    .with_role("AXCheckBox", cx)
+                    .into_iter()
+                    .filter(|seen| seen.subrole.as_deref() == Some("AXToggle"))
+                    .collect();
                 let reported: Vec<(Option<String>, Option<String>, Option<i64>)> = toggles
                     .iter()
                     .map(|seen| (seen.title.clone(), seen.subrole.clone(), seen.number))
@@ -415,6 +474,35 @@ mod macos {
                     "a screen reader's press commits the Toggle on its own lease",
                     accepted
                         && commits == vec![(TOGGLE_OFF.to_string(), toggle_off_commit.clone())],
+                    (accepted, &commits),
+                );
+
+                // A Switch is a checkbox with the switch subrole. AccessKit does
+                // not name a switch from its content, so the host names it.
+                let switches: Vec<Seen> = run
+                    .with_role("AXCheckBox", cx)
+                    .into_iter()
+                    .filter(|seen| seen.subrole.as_deref() == Some("AXSwitch"))
+                    .collect();
+                let reported: Vec<(Option<String>, Option<i64>)> = switches
+                    .iter()
+                    .map(|seen| (seen.title.clone(), seen.number))
+                    .collect();
+                run.check(
+                    "both Switches are reported as switches named by their content, off and on",
+                    reported
+                        == vec![
+                            (Some("Wi-Fi".into()), Some(0)),
+                            (Some("Bluetooth".into()), Some(1)),
+                        ],
+                    &reported,
+                );
+                let accepted = run.press(&switches[0], cx).await;
+                let commits = run.commits(cx);
+                run.check(
+                    "a screen reader's press commits the Switch on its own lease",
+                    accepted
+                        && commits == vec![(SWITCH_OFF.to_string(), switch_off_commit.clone())],
                     (accepted, &commits),
                 );
 
