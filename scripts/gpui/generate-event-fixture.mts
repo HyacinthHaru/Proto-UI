@@ -31,7 +31,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { CORE_EVENT_TYPES, OPTIONAL_EVENT_TYPES } from '../../packages/types/src/event';
-import { EVENT_TYPE_PAYLOAD_CASES } from '../../packages/spec/fixtures/src/event/type-payload';
+import {
+  EVENT_TYPE_PAYLOAD_CASES,
+  type EventTypePayloadCase,
+} from '../../packages/spec/fixtures/src/event/type-payload';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const DEFAULT_OUT = path.join(ROOT, 'native/gpui/fixtures/event-types.json');
@@ -78,7 +81,10 @@ function assertImplCopyAgrees(where: string): void {
 function conformanceTypes(): { accepted: string[]; rejected: string[] } {
   const accepted = new Set<string>();
   const rejected = new Set<string>();
-  for (const testCase of EVENT_TYPE_PAYLOAD_CASES) {
+  // Widened to the declared case type: the tuple is `as const`, and only some
+  // of its members carry `rejectedTypes`.
+  const cases: readonly EventTypePayloadCase[] = EVENT_TYPE_PAYLOAD_CASES;
+  for (const testCase of cases) {
     for (const type of testCase.acceptedTypes) accepted.add(type);
     for (const type of testCase.rejectedTypes ?? []) rejected.add(type);
   }
