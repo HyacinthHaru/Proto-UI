@@ -244,10 +244,9 @@ pub struct ExposeResult {
 pub struct A11ySnapshotMessage {
     pub session_id: SessionId,
     pub view_epoch: ViewEpoch,
-    /// Required and nullable on the wire: `null` retracts the snapshot. It is
-    /// always written, as `null` rather than omitted, because the TypeScript
-    /// type does not make it optional. (Reading is more lenient: serde takes a
-    /// missing `Option` field as `None`.)
+    /// Required and nullable: `null` retracts the snapshot, and a message
+    /// without the field is malformed rather than a retraction.
+    #[serde(deserialize_with = "crate::wire::required_nullable")]
     pub snapshot: Option<A11ySnapshotWire>,
 }
 
@@ -273,8 +272,10 @@ pub struct Lifecycle {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Diagnostic {
-    /// `null` for a diagnostic that belongs to no session. Written as `null`
-    /// rather than omitted, like `snapshot` above.
+    /// `null` for a diagnostic that belongs to no session. Required, like
+    /// `snapshot` above: an omitted field is malformed, not a sessionless
+    /// diagnostic.
+    #[serde(deserialize_with = "crate::wire::required_nullable")]
     pub session_id: Option<SessionId>,
     pub diagnostic: HostDiagnostic,
 }
