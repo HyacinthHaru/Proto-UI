@@ -29,6 +29,7 @@ use proto_ui_host_protocol::wire::{
 use proto_ui_style::Theme;
 use serde_json::{json, Value};
 
+use crate::a11y::{project, A11yIssue, A11yProjection};
 use crate::host::{ProtoHostView, SurfaceChild, SurfaceNode};
 use crate::input::{SessionRoute, SurfaceId};
 use crate::style::StyleIssue;
@@ -57,6 +58,8 @@ struct HubSession {
     surface: Option<SurfaceNode>,
     /// The accessibility snapshot the peer last sent for this session.
     a11y: Option<A11ySnapshotWire>,
+    /// What of that snapshot the root reports to accessibility.
+    projection: Option<A11yProjection>,
     /// The Expose states as the peer last reported them.
     states: WireRecord,
 }
@@ -106,6 +109,12 @@ pub enum HubNote {
         session_id: SessionId,
         view_epoch: u64,
         installed: Option<u64>,
+    },
+    /// A fact in an accessibility snapshot the host does not project. What it
+    /// can project, it still does.
+    A11y {
+        session_id: SessionId,
+        issue: A11yIssue,
     },
 }
 
@@ -214,6 +223,7 @@ impl ProtoHostView {
                 focus: cx.focus_handle(),
                 surface: None,
                 a11y: None,
+                projection: None,
                 states: WireRecord::new(),
             },
         ));
@@ -347,7 +357,12 @@ impl ProtoHostView {
                     });
                     return;
                 }
+                let (projection, issues) =
+                    snapshot.snapshot.as_ref().map(project).unwrap_or_default();
                 session.a11y = snapshot.snapshot;
+                session.projection = projection;
+                self.note_a11y(&snapshot.session_id, issues);
+                self.publish_surfaces(window, cx);
             }
             PeerToHostMessage::ExposeDescriptor(descriptor) => {
                 if let Some(session) = self.hub.session_mut(&descriptor.session_id) {
@@ -458,6 +473,11 @@ impl ProtoHostView {
         self.hub.session(session_id)?.a11y.as_ref()
     }
 
+    /// What a session's root reports to accessibility.
+    pub fn a11y_projection(&self, session_id: &str) -> Option<&A11yProjection> {
+        self.hub.session(session_id)?.projection.as_ref()
+    }
+
     /// Validates, installs and renders one projection.
     ///
     /// The template is parsed before the model allocates anything: a
@@ -529,7 +549,10 @@ impl ProtoHostView {
         session.surface = Some(root);
         // The installed view's own snapshot, which may be `null`: a new view
         // does not inherit the old one's.
+        let (projection, issues) = transaction.a11y.as_ref().map(project).unwrap_or_default();
         session.a11y = transaction.a11y;
+        session.projection = projection;
+        self.note_a11y(&session_id, issues);
         self.publish_surfaces(window, cx);
         ack
     }
@@ -545,16 +568,30 @@ impl ProtoHostView {
         }
     }
 
-    /// Renders every session's surfaces, in the order they were opened.
+    /// Renders every session's surfaces, in the order they were opened, each
+    /// root carrying the instance's current accessibility projection.
     fn publish_surfaces(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         self.surfaces = self
             .hub
             .sessions
             .iter()
-            .filter_map(|(_, session)| session.surface.clone())
+            .filter_map(|(_, session)| {
+                let mut root = session.surface.clone()?;
+                root.a11y = session.projection.clone();
+                Some(root)
+            })
             .collect();
         self.subscribe_focus(window, cx);
         cx.notify();
+    }
+
+    fn note_a11y(&mut self, session_id: &str, issues: Vec<A11yIssue>) {
+        self.hub
+            .notes
+            .extend(issues.into_iter().map(|issue| HubNote::A11y {
+                session_id: session_id.to_string(),
+                issue,
+            }));
     }
 
     fn note_unknown(&mut self, session_id: &str, kind: &str) {
