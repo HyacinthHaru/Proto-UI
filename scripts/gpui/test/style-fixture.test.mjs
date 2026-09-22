@@ -12,19 +12,22 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const SCRIPT = path.join(ROOT, 'scripts/gpui/generate-style-fixture.mts');
 const FIXTURE = path.join(ROOT, 'native/gpui/fixtures/style-tokens.json');
+const THEME = path.join(ROOT, 'native/gpui/fixtures/theme-tokens.json');
 const TSX = path.join(ROOT, 'node_modules/.bin/tsx');
 
-function runCheck(fixture) {
-  return spawnSync(TSX, [SCRIPT, '--check', '--fixture', fixture], {
+function runCheck(fixture, theme = THEME) {
+  return spawnSync(TSX, [SCRIPT, '--check', '--fixture', fixture, '--theme-fixture', theme], {
     cwd: ROOT,
     encoding: 'utf8',
   });
 }
 
-test('the committed fixture is current', () => {
+test('the committed fixtures are current', () => {
   const result = runCheck(FIXTURE);
   assert.equal(result.status, 0, result.stderr || result.stdout);
-  assert.match(result.stdout, /current: \d+ compiled/);
+  // Both fixtures are reported, so a silently skipped one would show up here.
+  assert.match(result.stdout, /\d+ compiled, \d+ without declarations .* current/);
+  assert.match(result.stdout, /themes current/);
 });
 
 test('a stale fixture fails the check', () => {
@@ -48,4 +51,19 @@ test('a missing fixture fails the check', () => {
   const result = runCheck(path.join(dir, 'absent.json'));
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /missing/);
+});
+
+test('a stale theme fixture fails the check', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'proto-ui-theme-fixture-'));
+  const copy = path.join(dir, 'theme-tokens.json');
+  copyFileSync(THEME, copy);
+  assert.equal(runCheck(FIXTURE, copy).status, 0, 'an untouched copy must still pass');
+
+  const corrupted = JSON.parse(readFileSync(copy, 'utf8'));
+  corrupted.themes.shadcn.light['--pui-background'] = 'rebeccapurple';
+  writeFileSync(copy, `${JSON.stringify(corrupted, null, 2)}\n`);
+
+  const result = runCheck(FIXTURE, copy);
+  assert.notEqual(result.status, 0, 'a stale theme fixture must fail');
+  assert.match(result.stderr, /theme-tokens\.json is stale/);
 });
