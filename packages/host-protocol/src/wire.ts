@@ -33,8 +33,16 @@ export type EventBindingPlan = {
   readonly registrations: readonly EventRegistration[];
 };
 
+export type FocusTargetPlan = {
+  readonly ref: FocusTargetRef;
+  /** Participates in host sequential (Tab) navigation. */
+  readonly sequential: boolean;
+  /** May receive programmatic focus even when not sequential. */
+  readonly programmatic: boolean;
+};
+
 export type FocusPlan = {
-  readonly targets: readonly FocusTargetRef[];
+  readonly targets: readonly FocusTargetPlan[];
 };
 
 export type SlotPlan = {

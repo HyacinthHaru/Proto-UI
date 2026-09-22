@@ -25,7 +25,7 @@ function transaction(overrides: Partial<ProjectionTransaction> = {}): Projection
     template: { type: 'proto-surface', children: [{ kind: 'slot' }] },
     slots: { slots: ['slot-default'] },
     events: { registrations: [registration('lease-a'), registration('lease-b', 'pointer.down')] },
-    focus: { targets: ['focus-root'] },
+    focus: { targets: [{ ref: 'focus-root', sequential: true, programmatic: true }] },
     a11y: {
       semanticObjectId: 'object-1',
       role: 'button',
@@ -164,36 +164,50 @@ describe('host session model: stale rejection, pruning, retained state', () => {
     expect(model.snapshot().currentEpoch).toBe(2);
   });
 
-  it('a newer commit in the same epoch prunes the previous plan and installs inactive', () => {
+  it('a newer commit in the same epoch carries live leases, prunes dropped ones, and installs new ones inactive', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
     model.activate(1);
 
     const next = model.installProjection(
-      transaction({ commitId: 2, events: { registrations: [registration('lease-c')] } })
+      transaction({
+        commitId: 2,
+        events: { registrations: [registration('lease-a'), registration('lease-c')] },
+      })
     );
     expect(next.status).toBe('applied');
 
     const leases = Object.fromEntries(
       model
         .snapshot()
-        .leases.map((lease) => [lease.leaseId, { active: lease.active, released: lease.released }])
+        .leases.map((lease) => [
+          lease.leaseId,
+          { active: lease.active, released: lease.released, commitId: lease.commitId },
+        ])
     );
     expect(leases).toEqual({
-      'lease-a': { active: false, released: true },
-      'lease-b': { active: false, released: true },
-      'lease-c': { active: false, released: false },
+      'lease-a': { active: true, released: false, commitId: 2 },
+      'lease-b': { active: false, released: true, commitId: 1 },
+      'lease-c': { active: false, released: false, commitId: 2 },
     });
 
-    expect(model.deliver(sample({ leaseIds: ['lease-c'] }))).toEqual({
+    // Carried leases keep delivering; the new lease waits for activation.
+    expect(model.deliver(sample({ leaseIds: ['lease-a'] }))).toEqual({
+      status: 'delivered',
+      leaseIds: ['lease-a'],
+    });
+    expect(model.deliver(sample({ sampleId: 'sample-2', leaseIds: ['lease-c'] }))).toEqual({
       status: 'rejected',
-      reason: 'inactive-epoch',
+      reason: 'no-active-lease',
     });
     expect(model.activate(1)).toEqual({ status: 'activated' });
-    expect(model.deliver(sample({ leaseIds: ['lease-a', 'lease-c'] }))).toEqual({
+    expect(
+      model.deliver(sample({ sampleId: 'sample-3', leaseIds: ['lease-b', 'lease-c'] }))
+    ).toEqual({
       status: 'delivered',
       leaseIds: ['lease-c'],
     });
+    expect(model.activate(1)).toEqual({ status: 'already-active' });
   });
 
   it('a new epoch prunes the old epoch and rejects its late samples', () => {
@@ -301,15 +315,29 @@ describe('host session model: transactional plans and lease release', () => {
     expect(duplicate.diagnostics[0]?.code).toBe('duplicate-lease');
 
     expect(model.installProjection(transaction()).status).toBe('applied');
-    const reuse = model.installProjection(
+    const crossEpoch = model.installProjection(
       transaction({
         viewEpoch: 2,
         commitId: 1,
         events: { registrations: [registration('lease-a')] },
       })
     );
-    expect(reuse.status).toBe('failed');
-    expect(reuse.diagnostics[0]?.code).toBe('lease-reuse');
+    expect(crossEpoch.status).toBe('failed');
+    expect(crossEpoch.diagnostics[0]?.code).toBe('lease-reuse');
+
+    // A carried lease must keep its scope and type; a released id is retired.
+    const retyped = model.installProjection(
+      transaction({ commitId: 2, events: { registrations: [registration('lease-a', 'key.down')] } })
+    );
+    expect(retyped.status).toBe('failed');
+    expect(retyped.diagnostics[0]?.code).toBe('lease-reuse');
+    model.releaseLeases(['lease-a']);
+    const retired = model.installProjection(
+      transaction({ commitId: 2, events: { registrations: [registration('lease-a')] } })
+    );
+    expect(retired.status).toBe('failed');
+    expect(retired.diagnostics[0]?.code).toBe('lease-reuse');
+    expect(model.snapshot().currentCommit).toBe(1);
   });
 
   it('releases leases idempotently and gates delivery immediately', () => {
