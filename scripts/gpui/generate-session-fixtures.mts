@@ -76,6 +76,13 @@ const RECORDINGS: readonly Recording[] = [
     sessions: {
       root: { id: 'switch-root', prototype: switchRoot, props: {} },
       thumb: { id: 'switch-thumb', prototype: switchThumb, props: {}, parent: 'root' },
+      checked: { id: 'switch-checked', prototype: switchRoot, props: { defaultChecked: true } },
+      checkedThumb: {
+        id: 'switch-checked-thumb',
+        prototype: switchThumb,
+        props: {},
+        parent: 'checked',
+      },
     },
   },
 ];
