@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
+import { definePrototype, tw } from '@proto.ui/core';
 import type { PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
 import button from '@proto.ui/prototypes-base/button';
 import toggle from '@proto.ui/prototypes-base/toggle';
@@ -434,5 +435,60 @@ describe('gpui peer: instances composed into one another', () => {
     // Setup runs as the session is created, and the thumb's context has no
     // provider to subscribe to.
     expect(() => open('switch-thumb', switchThumb)).toThrow(/provider missing/);
+  });
+});
+
+describe('gpui peer: feedback style', () => {
+  // A Prototype of the test's own, hidden while it is off, as an inactive
+  // Tabs panel is.
+  const panel = definePrototype({
+    name: 'test-feedback-panel',
+    setup(def) {
+      const on = def.state.bool('on', false);
+      def.feedback.style.use(tw('rounded-md'));
+      def.rule({
+        when: (w) => w.state(on).eq(false),
+        intent: (i) => i.feedback.style.use(tw('hidden')),
+      });
+      def.event.on('press.commit', () => {
+        on.set(!on.get(), 'reason: test panel press.commit');
+      });
+    },
+  });
+
+  it('carries the root style on the projection, then sends each change whole', async () => {
+    const host = new ScriptedHost(SESSION);
+    const peer = createPeerSession({
+      sessionId: SESSION,
+      instanceId: INSTANCE,
+      prototype: panel,
+      props: {},
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+    });
+    host.bind((message) => peer.handle(message));
+    await peer.mount();
+
+    // The first frame's style arrives with the projection, not after it.
+    expect(host.last('projection.install')?.transaction.style).toEqual(['rounded-md', 'hidden']);
+    expect(host.of('style.apply')).toHaveLength(0);
+
+    // Each change is the whole list, not a difference from the last one.
+    host.input('press.commit');
+    expect(host.last('style.apply')?.tokens).toEqual(['rounded-md']);
+    host.input('press.commit');
+    expect(host.last('style.apply')?.tokens).toEqual(['rounded-md', 'hidden']);
+    expect(host.of('style.apply')).toHaveLength(2);
+
+    await peer.dispose();
+  });
+
+  it('sends nothing for a Prototype with no feedback style', async () => {
+    const { host, peer } = createHarness();
+    await peer.mount();
+    expect(host.last('projection.install')?.transaction.style).toEqual([]);
+    host.input('press.commit');
+    expect(host.of('style.apply')).toHaveLength(0);
+    await peer.dispose();
   });
 });

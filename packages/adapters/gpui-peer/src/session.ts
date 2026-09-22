@@ -6,9 +6,12 @@ import {
 } from '@proto.ui/adapter-base';
 import {
   isA11ySemanticObjectRef,
+  mergeTwTokensV0,
   type A11ySemanticObjectSnapshot,
+  type EffectsPort,
   type FocusRequestOptions,
   type Prototype,
+  type StyleHandle,
   type TemplateChildren,
 } from '@proto.ui/core';
 import type { ModuleWiring, RuntimeLifecycleEvent } from '@proto.ui/runtime';
@@ -33,6 +36,7 @@ import {
   EVENT_ROOT_TARGET_CAP,
 } from '@proto.ui/module-event';
 import { EXPOSE_EVENT_SINK_CAP } from '@proto.ui/module-expose-event';
+import { EFFECTS_CAP } from '@proto.ui/module-feedback';
 import {
   EXPOSES_RECORD_SINK_CAP,
   isExposeStateExternalHandle,
@@ -306,6 +310,38 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     };
   };
 
+  // ---------------------------------------------------------------------
+  // Feedback: the instance root's merged token list, whole each time.
+  // ---------------------------------------------------------------------
+  // Inside a commit, and before the first one, the latest list rides on the
+  // projection, so a view shows its style from its first frame. After that a
+  // change is sent as it is flushed; one that changes nothing is not sent.
+  let latestStyle: readonly string[] = [];
+  let queuedStyle: StyleHandle | null = null;
+
+  const flushStyle = () => {
+    const handle = queuedStyle;
+    if (!handle) return;
+    queuedStyle = null;
+    // The same merge the Web effects port applies before it writes.
+    const tokens = handle.kind === 'tw' ? mergeTwTokensV0([...handle.tokens]).tokens : [];
+    if (tokens.length === latestStyle.length && tokens.every((t, i) => t === latestStyle[i])) {
+      return;
+    }
+    latestStyle = tokens;
+    if (flushingCommit || !viewInstalled || disposed) return;
+    send({ kind: 'style.apply', sessionId, viewEpoch, tokens: [...latestStyle] });
+  };
+
+  const effects: EffectsPort = {
+    queueStyle(handle) {
+      // A newer result replaces a pending one (HC-FEEDBACK-STYLE-SINK-0001-A).
+      queuedStyle = handle;
+    },
+    requestFlush: flushStyle,
+    flushNow: flushStyle,
+  };
+
   const projector: A11yProjector = Object.assign(
     (snapshot: A11ySemanticObjectSnapshot) => {
       latestA11y = toA11yWire(snapshot);
@@ -450,6 +486,7 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     ]);
     wiring.attach('expose-state', [[EXPOSES_RECORD_SINK_CAP, publishExposes]]);
     wiring.attach('a11y', [[A11Y_PROJECT_CAP, projector]]);
+    wiring.attach('feedback', [[EFFECTS_CAP, effects]]);
     wiring.attach('as-trigger', [
       [AS_TRIGGER_INSTANCE_CAP, instanceToken],
       [AS_TRIGGER_PARENT_CAP, parentOf],
@@ -569,7 +606,7 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
           { ref: FOCUS_ROOT_REF, sequential: focusSequential, programmatic: focusProgrammatic },
         ],
       },
-      style: [],
+      style: [...latestStyle],
       a11y: latestA11y,
     };
     a11yDirtyDuringCommit = false;
