@@ -17,7 +17,7 @@
 mod t0;
 
 use gpui::prelude::*;
-use gpui::{div, px, StyleRefinement, TestAppContext};
+use gpui::{div, px, Modifiers, MouseButton, StyleRefinement, TestAppContext};
 use proto_ui_gpui::host::SurfaceChild;
 use proto_ui_gpui::hub::ExposedSignal;
 use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
@@ -58,6 +58,10 @@ fn switch(root_props: Value) -> Vec<Session> {
             root_style: sized(20., 20.),
         },
     ]
+}
+
+fn exposed(fixture: &mut Fixture, session: &str, name: &str) -> Option<Value> {
+    fixture.with_view(|view| view.exposed_states(session)?.get(name).cloned())
 }
 
 fn checked_change(checked: bool) -> ExposedSignal {
@@ -126,4 +130,94 @@ fn ending_the_root_ends_its_thumb_first(cx: &mut TestAppContext) {
         .with_view(|view| view.take_outbox())
         .iter()
         .any(|message| matches!(message, HostToPeerMessage::SessionDispose(_))));
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn space_and_enter_flip_the_focused_switch(cx: &mut TestAppContext) {
+    let mut fixture = Fixture::start_all(cx, switch(json!({})));
+    fixture.with_view(|view| view.call_exposed(ROOT, "focusSelf", Vec::new()));
+    fixture.session_state_becomes(ROOT, "focused", json!(true));
+
+    // Space commits before the key press reaches the Switch, which then asks
+    // the host not to run Space's default action for that very press.
+    fixture.cx.simulate_keystrokes("space");
+    let seen = fixture.pump_until(|message| {
+        matches!(message, PeerToHostMessage::DefaultActionPrevent(prevent)
+            if prevent.request.reason.as_deref() == Some("switch.space-activation"))
+    });
+    let Some(PeerToHostMessage::DefaultActionPrevent(prevent)) = seen.last() else {
+        unreachable!("pumped until a prevention")
+    };
+    assert!(fixture.sent.iter().any(|message| matches!(
+        message,
+        HostToPeerMessage::InputSample(input)
+            if input.sample.sample_id == prevent.request.sample_id
+                && input.sample.kind == "key.down"
+                && input.sample.key.as_deref() == Some(" ")
+    )));
+    // The thumb heard about it during the commit, before the key press.
+    assert_eq!(exposed(&mut fixture, ROOT, "checked"), Some(json!(true)));
+    assert_eq!(exposed(&mut fixture, THUMB, "checked"), Some(json!(true)));
+
+    // Enter is optional for a Switch; the router commits on it, and the
+    // Switch then follows the same rules as any activation.
+    fixture.cx.simulate_keystrokes("enter");
+    fixture.session_state_becomes(ROOT, "checked", json!(false));
+    fixture.session_state_becomes(THUMB, "checked", json!(false));
+    fixture.settle();
+    assert_eq!(
+        *fixture.heard.borrow(),
+        [checked_change(true), checked_change(false)]
+    );
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn a_disabled_switch_neither_flips_nor_announces(cx: &mut TestAppContext) {
+    let mut fixture = Fixture::start_all(cx, switch(json!({ "disabled": true })));
+    fixture.click(ON_THUMB);
+    fixture.settle();
+
+    // The host delivered the commit to the Switch; the Switch declined it.
+    assert!(fixture.sent.iter().any(|message| matches!(
+        message,
+        HostToPeerMessage::InputSample(input)
+            if input.session_id == ROOT && input.sample.kind == "press.commit"
+    )));
+    assert!(fixture.heard.borrow().is_empty());
+    assert_eq!(exposed(&mut fixture, ROOT, "checked"), Some(json!(false)));
+    assert_eq!(exposed(&mut fixture, THUMB, "checked"), Some(json!(false)));
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn hover_and_press_are_transient_and_disabling_clears_them(cx: &mut TestAppContext) {
+    let mut fixture = Fixture::start_all(cx, switch(json!({ "defaultChecked": true })));
+    let on = Fixture::at(ON_THUMB);
+    fixture
+        .cx
+        .simulate_mouse_move(on, None, Modifiers::default());
+    fixture.session_state_becomes(ROOT, "hovered", json!(true));
+    fixture
+        .cx
+        .simulate_mouse_down(on, MouseButton::Left, Modifiers::default());
+    fixture.session_state_becomes(ROOT, "pressed", json!(true));
+
+    // Disabled mid-press: the transient states clear and `checked` stays.
+    fixture.with_view(|view| view.set_props(ROOT, props(json!({ "disabled": true }))));
+    fixture.session_state_becomes(ROOT, "disabled", json!(true));
+    fixture.settle();
+    assert_eq!(exposed(&mut fixture, ROOT, "hovered"), Some(json!(false)));
+    assert_eq!(exposed(&mut fixture, ROOT, "pressed"), Some(json!(false)));
+    assert_eq!(exposed(&mut fixture, ROOT, "checked"), Some(json!(true)));
+
+    // The release completes the click, and the disabled Switch declines it.
+    fixture
+        .cx
+        .simulate_mouse_up(on, MouseButton::Left, Modifiers::default());
+    fixture.settle();
+    assert!(fixture.heard.borrow().is_empty());
+    assert_eq!(exposed(&mut fixture, ROOT, "checked"), Some(json!(true)));
+    assert_eq!(exposed(&mut fixture, THUMB, "checked"), Some(json!(true)));
 }
