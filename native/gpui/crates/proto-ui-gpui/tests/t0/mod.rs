@@ -30,14 +30,36 @@ pub const ON_ROOT: (f32, f32) = (5., 5.);
 /// Outside it.
 pub const OFF_ROOT: (f32, f32) = (250., 80.);
 
-/// The one instance a fixture opens.
+/// An instance a fixture opens.
 pub struct Session {
     pub id: &'static str,
     /// The bundle entry the peer runs, such as `base-button`.
     pub prototype_key: &'static str,
-    /// The text the host puts in the default slot.
-    pub label: &'static str,
     pub props: WireRecord,
+    /// What the host puts in the default slot: text, or another session.
+    pub content: Vec<SurfaceChild>,
+    /// The session this one opens inside. It must be opened first.
+    pub parent: Option<&'static str>,
+    pub root_style: StyleRefinement,
+}
+
+impl Session {
+    /// A top-level instance with a text label in its default slot.
+    pub fn labelled(
+        id: &'static str,
+        prototype_key: &'static str,
+        label: &'static str,
+        props: WireRecord,
+    ) -> Self {
+        Self {
+            id,
+            prototype_key,
+            props,
+            content: vec![SurfaceChild::Text(label.into())],
+            parent: None,
+            root_style: StyleRefinement::default(),
+        }
+    }
 }
 
 fn repository_root() -> PathBuf {
@@ -48,6 +70,7 @@ fn repository_root() -> PathBuf {
 }
 
 pub struct Fixture {
+    /// The first session opened, which the fixture's own calls address.
     pub session: &'static str,
     pub peer: PeerProcess,
     pub window: WindowHandle<ProtoHostView>,
@@ -62,6 +85,12 @@ impl Fixture {
     /// Starts the peer, opens the session in a GPUI window, and pumps
     /// messages until the peer has activated its first projection.
     pub fn start(cx: &mut TestAppContext, session: Session) -> Self {
+        Self::start_all(cx, vec![session])
+    }
+
+    /// Starts the peer, opens every session in order in one GPUI window, and
+    /// pumps messages until the peer has activated a projection for each.
+    pub fn start_all(cx: &mut TestAppContext, sessions: Vec<Session>) -> Self {
         let root = repository_root();
         let mut command = Command::new(root.join("node_modules/.bin/tsx"));
         command
@@ -70,31 +99,26 @@ impl Fixture {
         let peer = PeerProcess::spawn(command).expect("the peer starts; run `pnpm install` first");
 
         let bridge = Rc::new(RefCell::new(InputBridge::new()));
-        let Session {
-            id,
-            prototype_key,
-            label,
-            props,
-        } = session;
+        let first = sessions.first().expect("at least one session").id;
+        let mut pending: Vec<&'static str> = sessions.iter().map(|session| session.id).collect();
         let window = cx.open_window(size(px(300.), px(100.)), move |window, cx| {
             let mut view = ProtoHostView::new(bridge, Vec::new(), window, cx);
             window.focus(view.focus_handle(), cx);
-            view.open_session(
-                id,
-                SessionConfig {
-                    instance_id: format!("{id}:instance"),
-                    prototype_key: prototype_key.into(),
-                    props,
-                    slots: HashMap::from([(
-                        "slot-default".to_string(),
-                        vec![SurfaceChild::Text(label.into())],
-                    )]),
-                    root_style: StyleRefinement::default(),
-                    theme: None,
-                    parent: None,
-                },
-                cx,
-            );
+            for session in sessions {
+                view.open_session(
+                    session.id,
+                    SessionConfig {
+                        instance_id: format!("{}:instance", session.id),
+                        prototype_key: session.prototype_key.into(),
+                        props: session.props,
+                        slots: HashMap::from([("slot-default".to_string(), session.content)]),
+                        root_style: session.root_style,
+                        theme: None,
+                        parent: session.parent.map(Into::into),
+                    },
+                    cx,
+                );
+            }
             view
         });
         window
@@ -103,7 +127,7 @@ impl Fixture {
         cx.run_until_parked();
 
         let mut fixture = Self {
-            session: id,
+            session: first,
             peer,
             window,
             cx: VisualTestContext::from_window(AnyWindowHandle::from(window), cx),
@@ -112,7 +136,13 @@ impl Fixture {
         };
         fixture.listen();
         fixture.draw();
-        fixture.pump_until(|message| matches!(message, PeerToHostMessage::ProjectionActivate(_)));
+        while !pending.is_empty() {
+            let seen = fixture
+                .pump_until(|message| matches!(message, PeerToHostMessage::ProjectionActivate(_)));
+            if let Some(PeerToHostMessage::ProjectionActivate(activate)) = seen.last() {
+                pending.retain(|id| *id != activate.session_id);
+            }
+        }
         fixture
     }
 
@@ -184,6 +214,15 @@ impl Fixture {
         self.pump_until(|message| {
             matches!(message, PeerToHostMessage::ExposeState(state)
                 if state.name == name && state.value == value)
+        });
+    }
+
+    /// Pumps until the peer reports an Expose state with this value for one
+    /// particular session, when the fixture opened several.
+    pub fn session_state_becomes(&mut self, session: &str, name: &str, value: Value) {
+        self.pump_until(|message| {
+            matches!(message, PeerToHostMessage::ExposeState(state)
+                if state.session_id == session && state.name == name && state.value == value)
         });
     }
 

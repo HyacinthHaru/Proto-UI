@@ -25,12 +25,7 @@ use t0::{Fixture, Session, OFF_ROOT as OFF_BUTTON, ON_ROOT as ON_BUTTON};
 const SESSION: &str = "t0-button";
 
 fn button() -> Session {
-    Session {
-        id: SESSION,
-        prototype_key: "base-button",
-        label: "Save",
-        props: WireRecord::new(),
-    }
+    Session::labelled(SESSION, "base-button", "Save", WireRecord::new())
 }
 
 /// The Button's `click` event, which carries no payload.
