@@ -3,10 +3,10 @@
 //!
 //! GPUI's test platform never starts AccessKit, so the headless suites cannot
 //! see what the host reports. This opens a real window with `gpui_platform`,
-//! replays the two Base Button sessions the real peer recorded, and asks
-//! macOS what is there, with the `NSAccessibility` calls a screen reader
-//! makes. It then presses the Button the way a screen reader does and checks
-//! what the host sends the peer.
+//! replays Base Button and Base Toggle sessions the real peer recorded, and
+//! asks macOS what is there, with the `NSAccessibility` calls a screen reader
+//! makes. It then presses them the way a screen reader does and checks what
+//! the host sends the peer.
 //!
 //! The calls go to this process's own window, so no accessibility permission
 //! is involved. Frames are drawn by hand: macOS does not draw a window nobody
@@ -56,14 +56,17 @@ mod macos {
 
     const ENABLED: &str = "button-enabled";
     const DISABLED: &str = "button-disabled";
+    const TOGGLE_OFF: &str = "toggle-inactive";
+    const TOGGLE_ON: &str = "toggle-active";
     /// Long enough for AccessKit's action channel to reach the foreground.
     const SETTLE: Duration = Duration::from_millis(200);
 
     /// The peer's recorded messages for one session, and the lease ids its
     /// projection registered for `press.commit` on the root.
-    fn recorded(session: &str) -> (Vec<PeerToHostMessage>, Vec<String>) {
-        let path =
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/base-button-session.json");
+    fn recorded(fixture: &str, session: &str) -> (Vec<PeerToHostMessage>, Vec<String>) {
+        let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../fixtures")
+            .join(fixture);
         let fixture: Value =
             serde_json::from_str(&fs::read_to_string(path).expect("the fixture reads"))
                 .expect("the fixture parses");
@@ -95,10 +98,10 @@ mod macos {
         (messages, commit_leases)
     }
 
-    fn config(session: &str, label: &str) -> SessionConfig {
+    fn config(session: &str, prototype_key: &str, label: &str) -> SessionConfig {
         SessionConfig {
             instance_id: format!("{session}:instance"),
-            prototype_key: "base-button".into(),
+            prototype_key: prototype_key.into(),
             props: WireRecord::new(),
             slots: HashMap::from([(
                 "slot-default".to_string(),
@@ -140,6 +143,16 @@ mod macos {
     }
 
     /// # Safety
+    /// `object` is null or a live object.
+    unsafe fn number(object: *mut AnyObject) -> Option<i64> {
+        if object.is_null() {
+            return None;
+        }
+        let is_number: bool = msg_send![object, isKindOfClass: objc2::class!(NSNumber)];
+        is_number.then(|| msg_send![object, longLongValue])
+    }
+
+    /// # Safety
     /// `object` is a live object implementing `NSAccessibility`.
     unsafe fn children(object: *mut AnyObject) -> Vec<*mut AnyObject> {
         let array: *mut AnyObject = msg_send![object, accessibilityChildren];
@@ -156,8 +169,11 @@ mod macos {
     #[derive(Debug, Clone, PartialEq)]
     struct Seen {
         role: Option<String>,
+        subrole: Option<String>,
         title: Option<String>,
         enabled: bool,
+        /// The value, when it is a number, as a checkbox's is.
+        number: Option<i64>,
         object: *mut AnyObject,
     }
 
@@ -168,14 +184,19 @@ mod macos {
     unsafe fn walk(object: *mut AnyObject, depth: usize, into: &mut Vec<(usize, Seen)>) {
         for child in children(object) {
             let role: *mut AnyObject = msg_send![child, accessibilityRole];
+            let subrole: *mut AnyObject = msg_send![child, accessibilitySubrole];
             let title: *mut AnyObject = msg_send![child, accessibilityTitle];
             let enabled: bool = msg_send![child, isAccessibilityEnabled];
+            let value: *mut AnyObject = msg_send![child, accessibilityValue];
+            let number = number(value);
             into.push((
                 depth,
                 Seen {
                     role: string(role),
+                    subrole: string(subrole),
                     title: string(title),
                     enabled,
+                    number,
                     object: child,
                 },
             ));
@@ -212,11 +233,12 @@ mod macos {
             .expect("the window reads")
         }
 
-        fn buttons(&self, cx: &mut AsyncApp) -> Vec<Seen> {
+        /// Every object with this role, in tree order.
+        fn with_role(&self, role: &str, cx: &mut AsyncApp) -> Vec<Seen> {
             self.tree(cx)
                 .into_iter()
                 .map(|(_, seen)| seen)
-                .filter(|seen| seen.role.as_deref() == Some("AXButton"))
+                .filter(|seen| seen.role.as_deref() == Some(role))
                 .collect()
         }
 
@@ -230,7 +252,8 @@ mod macos {
             accepted
         }
 
-        /// The `press.commit` samples the host would send the peer now.
+        /// The `press.commit` samples the host would send the peer now, with
+        /// the session and the leases each one reaches.
         fn commits(&self, cx: &mut AsyncApp) -> Vec<(String, Vec<String>)> {
             self.window
                 .update(cx, |view, _, _| view.take_outbox())
@@ -268,8 +291,12 @@ mod macos {
         });
 
         gpui_platform::application().run(|cx: &mut App| {
-            let (enabled_messages, enabled_commit) = recorded("enabled");
-            let (disabled_messages, _) = recorded("disabled");
+            let (enabled_messages, enabled_commit) =
+                recorded("base-button-session.json", "enabled");
+            let (disabled_messages, _) = recorded("base-button-session.json", "disabled");
+            let (toggle_off_messages, toggle_off_commit) =
+                recorded("base-toggle-session.json", "inactive");
+            let (toggle_on_messages, _) = recorded("base-toggle-session.json", "active");
             let bounds = Bounds::centered(None, size(px(300.), px(120.)), cx);
             let window = cx
                 .open_window(
@@ -281,8 +308,22 @@ mod macos {
                         cx.new(|cx| {
                             let bridge = Rc::new(RefCell::new(InputBridge::new()));
                             let mut view = ProtoHostView::new(bridge, Vec::new(), window, cx);
-                            view.open_session(ENABLED, config(ENABLED, "Save"), cx);
-                            view.open_session(DISABLED, config(DISABLED, "Delete"), cx);
+                            view.open_session(ENABLED, config(ENABLED, "base-button", "Save"), cx);
+                            view.open_session(
+                                DISABLED,
+                                config(DISABLED, "base-button", "Delete"),
+                                cx,
+                            );
+                            view.open_session(
+                                TOGGLE_OFF,
+                                config(TOGGLE_OFF, "base-toggle", "Bold"),
+                                cx,
+                            );
+                            view.open_session(
+                                TOGGLE_ON,
+                                config(TOGGLE_ON, "base-toggle", "Italic"),
+                                cx,
+                            );
                             view
                         })
                     },
@@ -291,7 +332,12 @@ mod macos {
 
             window
                 .update(cx, |view, window, cx| {
-                    for message in enabled_messages.into_iter().chain(disabled_messages) {
+                    for message in enabled_messages
+                        .into_iter()
+                        .chain(disabled_messages)
+                        .chain(toggle_off_messages)
+                        .chain(toggle_on_messages)
+                    {
                         view.receive(message, window, cx);
                     }
                     view.take_outbox();
@@ -314,16 +360,24 @@ mod macos {
                 println!("accessibility tree, as macOS reports it:");
                 for (depth, seen) in run.tree(cx) {
                     println!(
-                        "  {:indent$}{} title={:?} enabled={}",
+                        "  {:indent$}{}{} title={:?} enabled={}{}",
                         "",
                         seen.role.as_deref().unwrap_or("?"),
+                        seen.subrole
+                            .as_deref()
+                            .filter(|subrole| *subrole != "AXUnknown")
+                            .map(|subrole| format!("/{subrole}"))
+                            .unwrap_or_default(),
                         seen.title,
                         seen.enabled,
+                        seen.number
+                            .map(|number| format!(" value={number}"))
+                            .unwrap_or_default(),
                         indent = depth * 2
                     );
                 }
 
-                let buttons = run.buttons(cx);
+                let buttons = run.with_role("AXButton", cx);
                 let reported: Vec<(Option<String>, bool)> = buttons
                     .iter()
                     .map(|seen| (seen.title.clone(), seen.enabled))
@@ -336,6 +390,31 @@ mod macos {
                             (Some("Delete".to_string()), false),
                         ],
                     &reported,
+                );
+
+                // A Toggle is a toggle button: macOS reports a checkbox with the
+                // toggle subrole, and its value says whether it is on.
+                let toggles = run.with_role("AXCheckBox", cx);
+                let reported: Vec<(Option<String>, Option<String>, Option<i64>)> = toggles
+                    .iter()
+                    .map(|seen| (seen.title.clone(), seen.subrole.clone(), seen.number))
+                    .collect();
+                run.check(
+                    "both Toggles are reported as toggle buttons, off and on",
+                    reported
+                        == vec![
+                            (Some("Bold".into()), Some("AXToggle".into()), Some(0)),
+                            (Some("Italic".into()), Some("AXToggle".into()), Some(1)),
+                        ],
+                    &reported,
+                );
+                let accepted = run.press(&toggles[0], cx).await;
+                let commits = run.commits(cx);
+                run.check(
+                    "a screen reader's press commits the Toggle on its own lease",
+                    accepted
+                        && commits == vec![(TOGGLE_OFF.to_string(), toggle_off_commit.clone())],
+                    (accepted, &commits),
                 );
 
                 let accepted = run.press(&buttons[0], cx).await;
@@ -377,7 +456,7 @@ mod macos {
                 );
 
                 run.draw(cx);
-                let buttons = run.buttons(cx);
+                let buttons = run.with_role("AXButton", cx);
                 let accepted = run.press(&buttons[0], cx).await;
                 let after_key = run.commits(cx);
                 run.check(
