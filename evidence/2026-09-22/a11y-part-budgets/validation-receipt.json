@@ -1,0 +1,70 @@
+{
+  "head": "d0977f03c1d8e5c6a31552ecd4ae8c8ce39ec508",
+  "tree": "6ae154f327697df17c91a41f7ed1199ec330fffd",
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "observedAt": "2026-09-22T07:15:52.524107+00:00",
+  "scope": "Standalone two-file budget proposal; feature868 remains unchanged and still fails its accepted budgets",
+  "fullTest": {
+    "command": "corepack pnpm@10.32.1 test",
+    "workerEnvironment": {
+      "VITEST_MAX_THREADS": 2,
+      "VITEST_MIN_THREADS": 1,
+      "VITEST_MAX_FORKS": 2,
+      "VITEST_MIN_FORKS": 1
+    },
+    "cliSelection": null,
+    "timeoutChanged": false,
+    "exitCode": 0,
+    "main": {
+      "filesPassed": 491,
+      "filesSkipped": 3,
+      "testsPassed": 2597,
+      "todo": 34,
+      "includesRealChromiumScroll": true
+    },
+    "browser": {
+      "filesPassed": 27,
+      "testsPassed": 137
+    },
+    "log": "budget-test-full-d097.log.gz",
+    "defaultTrustedCI": false
+  },
+  "mainUnderProposedScript": {
+    "passed": 9,
+    "artifactSizesAndHashesEqualCanonicalMain": true
+  },
+  "disposableFeatureComposition": {
+    "tree": "a6abc811b7d3655e92b8df003107f609ae530078",
+    "passed": 9,
+    "allArtifactSizesAndHashesEqualCanonicalFeature": true,
+    "onlyTwoProposalPathsDiffer": true,
+    "featurePublishedBranchTouched": false,
+    "probeRemovedWithoutForce": true
+  },
+  "scriptInvariants": {
+    "threeNumericChangesOnly": true,
+    "otherSixCeilingsUnchanged": true,
+    "allOtherExecutableCodeUnchanged": true
+  },
+  "agentOperations": {
+    "testsPassed": 64,
+    "exitCode": 0
+  },
+  "agentDocumentation": "generated and check mode passed; ignored projection not committed",
+  "affectedPackagePlan": {
+    "total": 44,
+    "selected": 0,
+    "notAClaimOfCanonicalExecution": true
+  },
+  "independentLocalReview": {
+    "reviewedBlobsEqualCommit": true,
+    "concreteFindings": 0,
+    "classification": "unassessed human-assisted partial/ABSTAIN",
+    "notBudgetApproval": true
+  },
+  "remaining": [
+    "public proposal publication and canonical CI",
+    "independent maintainer acceptance and actual merge",
+    "feature synchronization, complete exact-head CI,Ready,re-review and actual merge"
+  ]
+}

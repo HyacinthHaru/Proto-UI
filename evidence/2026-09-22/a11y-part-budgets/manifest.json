@@ -1,0 +1,96 @@
+{
+  "head": "d0977f03c1d8e5c6a31552ecd4ae8c8ce39ec508",
+  "note": "Manifest excludes itself; archival closure bytes are unchanged and independently manifested inside the archive. Other text paths are redacted with original/redacted hashes recorded; final published bytes are hashed here.",
+  "files": [
+    {
+      "path": "LICENSE.txt",
+      "bytes": 1078,
+      "sha256": "7b6e3e65736b51f976b8443bca2cc9796e010b1e8a4dfff7316240681e0ebf66"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6874,
+      "sha256": "91fe1a3672821629cafd9976810a3213f83fda66bae7ed6a43c17d0fb87454ae"
+    },
+    {
+      "path": "budget-agent-doc.log.gz",
+      "bytes": 282,
+      "sha256": "fe364f65695ff0388df6f35159632fc5c2780ab5a52ee01b5928f781cb6bb88b"
+    },
+    {
+      "path": "budget-agent-operations.log.gz",
+      "bytes": 3397,
+      "sha256": "77d534876cb9a574a6f506eaad0228796fd979a64b9a660ca7b01cd64dac8f38"
+    },
+    {
+      "path": "budget-application-probe-receipt.json",
+      "bytes": 3577,
+      "sha256": "d1312352515765aa84f6c0a765e01fedc21e93196327a89712c15076745d5b80"
+    },
+    {
+      "path": "budget-candidate-committed.json",
+      "bytes": 911,
+      "sha256": "b4ed8b0beb8f4132eeab294e5f60ed9ad9f47a7e407f7836dbd81f5dc5ffd03e"
+    },
+    {
+      "path": "budget-package-plan.log.gz",
+      "bytes": 187,
+      "sha256": "774a5ff1b2e991909d80b6e99f7eca7309b7784bd2fa1531f9158b953849f7b5"
+    },
+    {
+      "path": "budget-proposal-feature-measurement.json",
+      "bytes": 3395,
+      "sha256": "037a4b982ea1fdcd3bcf178050da140f861b2f2a60c1a4dafb5aec0662f6eeb4"
+    },
+    {
+      "path": "budget-proposal-main-measurement.json",
+      "bytes": 3395,
+      "sha256": "7e6b5bd6b00729e1a76e9a9a2f296514caae0adad28e90afcce901e4295cedf2"
+    },
+    {
+      "path": "budget-script-invariants.json",
+      "bytes": 493,
+      "sha256": "98eb537df2eb2b216260ade21333f464fb6ce028e6856e7e85b17c2b9d744691"
+    },
+    {
+      "path": "budget-test-full-d097.log.gz",
+      "bytes": 18200,
+      "sha256": "ba4362b2c2ba06575b157a4f900ec148b78cc5083ddc6d90831ef755204558e9"
+    },
+    {
+      "path": "ci-package-binding.json",
+      "bytes": 3131,
+      "sha256": "71d0e147c017ed6ee5b615c57337ef31d029a66be85a1f62c3396b5726b2ccc6"
+    },
+    {
+      "path": "closure-audit.tar.gz",
+      "bytes": 296803,
+      "sha256": "1c33a0390c2ef5ea71e5a7965245bea5484cd2afea1e43a907012bf8f7e1aea8"
+    },
+    {
+      "path": "independent-local-review.json",
+      "bytes": 5794,
+      "sha256": "dc4290d7cf9830ca8719965b19659e2c803c128cca149a02ed1f5428017cd312"
+    },
+    {
+      "path": "main9d-ci-package-binding.json",
+      "bytes": 2572,
+      "sha256": "4dadbd705936be602a3b17078f11c5ecc030162f44a04646d67d2fc8d0d94634"
+    },
+    {
+      "path": "main9d-ci-package.log.gz",
+      "bytes": 10443,
+      "sha256": "51287369a508f05d3b84434f70cee2d8a2a13d60300db9bb791c3f66b66e0930"
+    },
+    {
+      "path": "publication-map.json",
+      "bytes": 11276,
+      "sha256": "a5a935d47af7375e75952624a181bc0408917450f64edc8a737e922b9443582b"
+    },
+    {
+      "path": "validation-receipt.json",
+      "bytes": 2170,
+      "sha256": "0747503ed2845648d9df9054f3d448ab52587aef6e5fb4a00a51bfa2f23f8b85"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "head": "d0977f03c1d8e5c6a31552ecd4ae8c8ce39ec508",
+  "tree": "6ae154f327697df17c91a41f7ed1199ec330fffd",
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "worktree": "<budget-root>",
+  "branch": "codex/a11y-part-budgets",
+  "files": [
+    {
+      "path": "internal/records/2026-09-22-a11y-part-relationship-budget.zh-CN.md",
+      "blob": "2ee228b88d72dad4fa09e1aa1c00c44208ca1300",
+      "sha256": "adc89669607134a19b23b83ad38be9e118b40b1ab9de092ae0678e8ad5134c7d"
+    },
+    {
+      "path": "scripts/analysis/package-budgets.mjs",
+      "blob": "00c56b93132fb9c63bcfa50d6ae776279a91748f",
+      "sha256": "42a701716befd7a3280df1ee3a9b60ec72622c70351b99f78ba5dd7a343eed4f"
+    }
+  ],
+  "scope": "Separate numeric proposal supporting #549/#688; not adopted or merged; feature head remains868d3adbd",
+  "independentReview": "review/budget-proposal-staged-review.json",
+  "reviewedBlobsEqual": true
+}

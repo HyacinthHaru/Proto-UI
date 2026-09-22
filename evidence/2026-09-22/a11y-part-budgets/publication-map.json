@@ -1,0 +1,230 @@
+{
+  "note": "Machine paths in top-level receipts/logs are redacted; all numbers, Git identities and hashes are preserved. The closure archive contains the exact parameterized runner that was executed, its report, metadata and own manifest. Final top-level formatting is accounted for by the publication manifest.",
+  "files": [
+    {
+      "source": "budget-candidate-committed.json",
+      "published": "budget-candidate-committed.json",
+      "rawSha256": "dfd65b9b60a5d2b1694692b2a290bf57d13f62abffa89480be700ac5b95ebd86",
+      "redactedSha256": "b4ed8b0beb8f4132eeab294e5f60ed9ad9f47a7e407f7836dbd81f5dc5ffd03e"
+    },
+    {
+      "source": "main9d-ci-package-binding.json",
+      "published": "main9d-ci-package-binding.json",
+      "rawSha256": "4dadbd705936be602a3b17078f11c5ecc030162f44a04646d67d2fc8d0d94634",
+      "redactedSha256": "4dadbd705936be602a3b17078f11c5ecc030162f44a04646d67d2fc8d0d94634"
+    },
+    {
+      "source": "ci-package-binding.json",
+      "published": "ci-package-binding.json",
+      "rawSha256": "71d0e147c017ed6ee5b615c57337ef31d029a66be85a1f62c3396b5726b2ccc6",
+      "redactedSha256": "71d0e147c017ed6ee5b615c57337ef31d029a66be85a1f62c3396b5726b2ccc6"
+    },
+    {
+      "source": "budget-proposal-main-measurement.json",
+      "published": "budget-proposal-main-measurement.json",
+      "rawSha256": "7e6b5bd6b00729e1a76e9a9a2f296514caae0adad28e90afcce901e4295cedf2",
+      "redactedSha256": "7e6b5bd6b00729e1a76e9a9a2f296514caae0adad28e90afcce901e4295cedf2"
+    },
+    {
+      "source": "budget-proposal-feature-measurement.json",
+      "published": "budget-proposal-feature-measurement.json",
+      "rawSha256": "037a4b982ea1fdcd3bcf178050da140f861b2f2a60c1a4dafb5aec0662f6eeb4",
+      "redactedSha256": "037a4b982ea1fdcd3bcf178050da140f861b2f2a60c1a4dafb5aec0662f6eeb4"
+    },
+    {
+      "source": "budget-application-probe-receipt.json",
+      "published": "budget-application-probe-receipt.json",
+      "rawSha256": "d1312352515765aa84f6c0a765e01fedc21e93196327a89712c15076745d5b80",
+      "redactedSha256": "d1312352515765aa84f6c0a765e01fedc21e93196327a89712c15076745d5b80"
+    },
+    {
+      "source": "budget-script-invariants.json",
+      "published": "budget-script-invariants.json",
+      "rawSha256": "98eb537df2eb2b216260ade21333f464fb6ce028e6856e7e85b17c2b9d744691",
+      "redactedSha256": "98eb537df2eb2b216260ade21333f464fb6ce028e6856e7e85b17c2b9d744691"
+    },
+    {
+      "source": "review/budget-proposal-staged-review.json",
+      "published": "independent-local-review.json",
+      "rawSha256": "5c880d71d9c04b892eb35e03df07f289ea93774c613a271a218cd4cd5543a4be",
+      "redactedSha256": "dc4290d7cf9830ca8719965b19659e2c803c128cca149a02ed1f5428017cd312"
+    },
+    {
+      "source": "main9d-ci-package.log",
+      "published": "main9d-ci-package.log.gz",
+      "rawSha256": "c3072d5fb96a69c3cb2814e8602ec3febf3ff8df21680e6aefce7623996efff1",
+      "redactedSha256": "c3072d5fb96a69c3cb2814e8602ec3febf3ff8df21680e6aefce7623996efff1"
+    },
+    {
+      "source": "budget-agent-doc.log",
+      "published": "budget-agent-doc.log.gz",
+      "rawSha256": "c3625f9cf4b43cb05d1d1a92d87df77a160a57be5e57db783950f4d7e5506afd",
+      "redactedSha256": "d4313e56af4208123fec4b2ab0d33610d129d175fe38ee72223d7fe8c68d8ab8"
+    },
+    {
+      "source": "budget-agent-operations.log",
+      "published": "budget-agent-operations.log.gz",
+      "rawSha256": "ad1e12c61c0f3c122a0683d0232f6a1f249d07f09882899d213f742fd3162232",
+      "redactedSha256": "f12ea87ddbd0f893536e71620dc7ab9bad4fb55569ba6bf562bb8f3dff94dc96"
+    },
+    {
+      "source": "budget-package-plan.log",
+      "published": "budget-package-plan.log.gz",
+      "rawSha256": "fa9fd45120b4cfe7a7c8db23308b933c2fb97e01eedf119d660b12e374f348f5",
+      "redactedSha256": "9b6ed4d840cd12da6c31fd7f7996259f3164b2e008a8e85cd4b59e66e140cd57"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/MANIFEST.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "MANIFEST.json",
+      "sha256": "12853d51f5883f4afd1de34d313cc5e3cf2e1494ae79a3005aa9c83af63380f8",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/README.md",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "README.md",
+      "sha256": "3404db07a68faf4cf1be6bf920d056a0efef1b43d0252572a1d856125e41677c",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/REPORT.md",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "REPORT.md",
+      "sha256": "4c652067efe980da70afd9c3e3d6efb66ad42ccff620bc6ec0785c50225631db",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/diagnose.mjs",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "diagnose.mjs",
+      "sha256": "7eac4ab8ffbe38e7b46b2326890e67dc78415c1b975a72f03083acf92959aca6",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/attribution.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/attribution.json",
+      "sha256": "d4e91f4da6f8afa046cf03b59d0815f8683b9fad9799b790d021d080909bb940",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/candidate868-a11y-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/candidate868-a11y-metafile.json",
+      "sha256": "f42184b1f430e9a95187ff60d5ace9a41e8d0027e22cc92fac28fc623815d1e5",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/candidate868-core-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/candidate868-core-metafile.json",
+      "sha256": "f239b2b1ea90ad0ab70acd377ce02ff77acad8a0ca56c3d4061b8bfd941aa944",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/candidate868-react-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/candidate868-react-metafile.json",
+      "sha256": "0ef814f014f7c5f8128794d79d0cb17147dc094a5ce66e61041d8403ef99066a",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/candidate868-runtime-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/candidate868-runtime-metafile.json",
+      "sha256": "8b0840a05d67bc1c159f47c9d5b3b746f25618a56fda06a5d30dbdbc00debbba",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/candidate868-vue-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/candidate868-vue-metafile.json",
+      "sha256": "a958ab5647cbc95e48232b484bab16fb927865e5a172f837282fbaedd08450c3",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/candidate868-wc-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/candidate868-wc-metafile.json",
+      "sha256": "531bc0cdbacf672c40661e8de535a31d8af2128ea676844b8d5fba6e3db28426",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/canonical-ci-comparison.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/canonical-ci-comparison.json",
+      "sha256": "04071b04e58b6425a1811b4fc41dbee4c8ca771ab38c1f4e26f1db790c1e2ab9",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/main9d-a11y-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/main9d-a11y-metafile.json",
+      "sha256": "e086a30c96140496f8b263bc882102019ba1902190497ad96414c5e21aa007f8",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/main9d-core-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/main9d-core-metafile.json",
+      "sha256": "c06ece10daf5bfd1242f7d0173beca68b4d56a21e5bdf356d16d592d15416010",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/main9d-react-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/main9d-react-metafile.json",
+      "sha256": "0fad8843cec0144bf8870e218cbb8a8b52efe210247163c7e5c1a4758c92cb90",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/main9d-runtime-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/main9d-runtime-metafile.json",
+      "sha256": "e07ab4d3154caab9fea7849641164f6eedfc79822d2c687790030f47bb3bffea",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/main9d-vue-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/main9d-vue-metafile.json",
+      "sha256": "fe7b8742ec2244de2bd133a280465df3494656a38132694ee9f29ca2c3aa41d2",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/main9d-wc-metafile.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/main9d-wc-metafile.json",
+      "sha256": "52bf9c8a5813c3abccae7a4256559e5b990d941c481dd3583c4c605df9dd5673",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/measurements.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/measurements.json",
+      "sha256": "925c9854718dbb5c83b0cf0db6fceb3f155f6b632ad2e0bc7176ea24540d54fd",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/original-preservation-manifest.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/original-preservation-manifest.json",
+      "sha256": "14edf6055beff1bc87033cb93ed9e2990b9934ebe62dfbf5e9846da1efcff951",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-closure-audit/public-runner/evidence/parameterized-runner-equivalence.json",
+      "published": "closure-audit.tar.gz",
+      "archiveMember": "evidence/parameterized-runner-equivalence.json",
+      "sha256": "0f0b83b389ebd239174b595c2cb6abf85684e73fbb29e1795445c091d225701f",
+      "transformation": "verbatim public audit bytes"
+    },
+    {
+      "source": "budget-test-full-d097.log",
+      "published": "budget-test-full-d097.log.gz",
+      "rawSha256": "af1709276ef92d096c313ef1c6dfc64b29e469906a841d2db452c49a4bf6a14a",
+      "redactedSha256": "48e682c5e7b90198ac329899a02b7340fb861d6f8689204f48160544d23a8c7b"
+    }
+  ]
+}

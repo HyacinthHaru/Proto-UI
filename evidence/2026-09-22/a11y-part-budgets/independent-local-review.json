@@ -1,0 +1,131 @@
+{
+  "kind": "local-staged-budget-proposal-review",
+  "schemaVersion": 1,
+  "observedAt": "2026-09-22T06:50:11.307Z",
+  "worktree": "<budget-root>",
+  "branch": "codex/a11y-part-budgets",
+  "base": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+  "baseTree": "f13ed6ae2b83ed8825ba16c647c1acc80db9fe10",
+  "featureHeadUnchanged": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+  "stagedBlobs": [
+    {
+      "path": "internal/records/2026-09-22-a11y-part-relationship-budget.zh-CN.md",
+      "gitBlob": "2ee228b88d72dad4fa09e1aa1c00c44208ca1300",
+      "sha256": "adc89669607134a19b23b83ad38be9e118b40b1ab9de092ae0678e8ad5134c7d"
+    },
+    {
+      "path": "scripts/analysis/package-budgets.mjs",
+      "gitBlob": "00c56b93132fb9c63bcfa50d6ae776279a91748f",
+      "sha256": "42a701716befd7a3280df1ee3a9b60ec72622c70351b99f78ba5dd7a343eed4f"
+    }
+  ],
+  "executionMode": "human-assisted",
+  "reviewDepth": "partial",
+  "recommendation": "ABSTAIN",
+  "budgetApproval": false,
+  "canonicalPacket": false,
+  "findings": [],
+  "scopeConclusion": "Only the two stated staged files differ. No hidden algorithm, external-boundary, diagnostic, failure-condition or unrelated feature-code change was found. Restoring only the three numeric literals and removing line comments makes the staged executable script equal to accepted main.",
+  "arithmetic": [
+    {
+      "entry": "runtime root",
+      "existingCap": 64000,
+      "proposedCap": 66500,
+      "canonicalMain": 63228,
+      "canonicalFeature": 65865,
+      "growth": 2637,
+      "headroom": 635
+    },
+    {
+      "entry": "adapter-react root",
+      "existingCap": 83500,
+      "proposedCap": 86000,
+      "canonicalMain": 82758,
+      "canonicalFeature": 85351,
+      "growth": 2593,
+      "headroom": 649
+    },
+    {
+      "entry": "adapter-vue root",
+      "existingCap": 83500,
+      "proposedCap": 86000,
+      "canonicalMain": 82480,
+      "canonicalFeature": 85093,
+      "growth": 2613,
+      "headroom": 907
+    }
+  ],
+  "canonicalEvidence": {
+    "main": {
+      "run": 35683310407,
+      "job": 106604782868,
+      "head": "9d9552bbe0bc747e9b7f2f1ff6f6db3414086424",
+      "event": "push",
+      "conclusion": "success",
+      "liveMetadataInspected": true,
+      "rawCheckoutLogMatches": true,
+      "nineMeasurementsEqualLocal": true
+    },
+    "feature": {
+      "run": 35691550964,
+      "job": 106629473832,
+      "head": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+      "checkout": "daa2c683a76d39758214f39f8bb67d6a136de924",
+      "tree": "1cd9e6e5201a77366bef0daf0f3b4e2634e7dc89",
+      "checkoutTreeEqualsFeature": true,
+      "nineMeasurementsEqualLocal": true,
+      "conclusion": "failure at three budgets; build44/44 and manifests44 passed"
+    },
+    "toolchain": "Both canonical jobs report Node22.23.2/zlib1.3.1-e00f703/esbuild0.25.12/linux-x64. Local Darwin-arm64 observations match all nine artifact sizes/hashes; they do not override CI."
+  },
+  "attribution": {
+    "metafilesInspected": 12,
+    "measurementOptions": "Existing measure options and external derivation, plus metafile:true only.",
+    "newAffectedClosureInput": "packages/modules/a11y/src/part-relationships.ts",
+    "removedInputs": 0,
+    "duplicatePhysicalInputs": 0,
+    "distOrOutsideRootInputs": 0,
+    "newExternalImports": 0,
+    "dominantMinifiedShare": {
+      "runtime": 98.1,
+      "react": 96.9,
+      "vue": 96.3,
+      "wc": 95.5
+    },
+    "gzipAdditivityClaim": false,
+    "anatomy": "Standalone A11y has zero Anatomy inputs before/after; each Runtime/Adapter root retains the same seven Anatomy inputs.",
+    "limit": "No concrete accidental closure/duplicate category finding; this is not proof of a theoretical minimum implementation."
+  },
+  "policy": {
+    "review5274632674": {
+      "liveVerified": true,
+      "state": "CHANGES_REQUESTED",
+      "commit": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+      "requiredSequence": "Reduce size or separately reviewed/justified budget transaction first; synchronize accepted main, complete resulting exact-head CI, move Ready and request re-review; no inline feature ceiling increase."
+    },
+    "decision654": "Keeps the whole-entry blocking gate; requires canonical before/after, accepted-capability attribution, headroom, and toolchain isolation; no automatic increase.",
+    "precedent675": "Merged independently approved numeric transaction and roughly0.5–1.5KB bounded headroom are accurately presented as precedent, not approval of this proposal.",
+    "recordBoundary": "Explicitly unaccepted; no stable lifecycle admission, Issue closure, #652 growth absorption or feature review substitution."
+  },
+  "validation": {
+    "performed": [
+      "Read staged diff/full script/record and exact staged blob identities",
+      "Read654decision/comments and675merged proposal/reviews/record",
+      "Read live688review and canonical main run/job metadata",
+      "Parsed canonical main/feature raw budget logs and compared all nine gzip/minified/hash/status values to local receipts",
+      "Independently recomputed metafile input-set/attribution ratios and verified recorded metafile hashes",
+      "Checked saved proposed-script-on-main measurement: nine passing gates with unchanged minified/gzip/hash artifacts",
+      "git diff --cached --check passed; no unstaged files or feature-head edits"
+    ],
+    "notPerformed": [
+      "No new bundling/build/test/browser run",
+      "No GitHub Review or write",
+      "No budget acceptance or merge approval"
+    ]
+  },
+  "remainingGates": [
+    "Independent maintainer acceptance of the numeric choice and actual budget-transaction merge",
+    "Feature branch synchronization with accepted main and resulting exact-head full required CI",
+    "Ready conversion and independent exact-head feature re-review as requested"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "nineEntries": true,
+  "changes": [
+    {
+      "name": "runtime root",
+      "before": 64000,
+      "after": 66500
+    },
+    {
+      "name": "adapter-react root",
+      "before": 83500,
+      "after": 86000
+    },
+    {
+      "name": "adapter-vue root",
+      "before": 83500,
+      "after": 86000
+    }
+  ],
+  "otherSixCeilingsUnchanged": true,
+  "codeIdenticalAfterRestoringThreeNumbersAndRemovingComments": true,
+  "scope": "one-off proposal verification; no committed mirror test"
+}
