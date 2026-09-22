@@ -24,6 +24,10 @@ pub enum Unmapped {
     UnknownProperty,
     /// A value this layer does not understand for a property it does know.
     UnsupportedValue,
+    /// The value is `currentColor`, which resolves against the inherited text
+    /// colour. This layer receives one surface's declarations and has no
+    /// inherited colour, so the caller substitutes it before mapping.
+    NeedsInheritedColor,
     /// A custom property that only exists to feed a composed value such as the
     /// ring or the transform, and is consumed by the property it feeds.
     ComposedInput,
@@ -67,8 +71,7 @@ pub fn map(resolved: &ResolvedStyle, context: LengthContext) -> MappedStyle {
             continue;
         }
 
-        let outcome = apply(style, property, value, context);
-        if let Some(reason) = outcome {
+        if let Err(reason) = apply(style, property, value, context) {
             mapped
                 .unmapped
                 .push((property.clone(), value.clone(), reason));
@@ -78,18 +81,23 @@ pub fn map(resolved: &ResolvedStyle, context: LengthContext) -> MappedStyle {
     mapped
 }
 
+/// `Err` carries why the declaration did not reach the refinement.
+///
+/// The result type matters: an earlier version returned `Option<Unmapped>` and
+/// used `?` on the parse helpers, so a value that failed to parse returned
+/// `None` — which that signature read as success. A declaration could then be
+/// silently skipped while reporting that it had been applied.
 fn apply(
     style: &mut StyleRefinement,
     property: &str,
     value: &str,
     context: LengthContext,
-) -> Option<Unmapped> {
-    let length = |raw: &str| evaluate_length(raw, context).ok();
+) -> Result<(), Unmapped> {
+    let length = |raw: &str| evaluate_length(raw, context).map_err(|_| Unmapped::UnsupportedValue);
     let color = |raw: &str| match parse_color(raw) {
-        Ok(ColorValue::Rgba(rgba)) => Some(to_hsla(rgba)),
-        // `currentColor` needs the inherited text colour, which this layer
-        // does not receive; the caller resolves it before mapping.
-        _ => None,
+        Ok(ColorValue::Rgba(rgba)) => Ok(to_hsla(rgba)),
+        Ok(ColorValue::CurrentColor) => Err(Unmapped::NeedsInheritedColor),
+        Err(_) => Err(Unmapped::UnsupportedValue),
     };
 
     match property {
@@ -98,7 +106,7 @@ fn apply(
             "block" | "inline-block" => style.display = Some(Display::Block),
             "grid" => style.display = Some(Display::Grid),
             "none" => style.display = Some(Display::None),
-            _ => return Some(Unmapped::UnsupportedValue),
+            _ => return Err(Unmapped::UnsupportedValue),
         },
         // GPUI borders are always solid, so the declaration is satisfied by
         // the border width alone; any other style would change the paint.
@@ -108,26 +116,26 @@ fn apply(
         | "border-bottom-style"
         | "border-left-style" => {
             if value != "solid" {
-                return Some(Unmapped::UnsupportedValue);
+                return Err(Unmapped::UnsupportedValue);
             }
         }
         "flex" => {
             // Only the `<grow> <shrink> <basis>` long form appears.
             let mut parts = value.split_whitespace();
-            let grow: f32 = parts.next()?.parse().ok()?;
-            let shrink: f32 = parts.next()?.parse().ok()?;
-            let basis = parts.next()?;
+            let grow: f32 = parse_part(parts.next())?;
+            let shrink: f32 = parse_part(parts.next())?;
+            let basis = parts.next().ok_or(Unmapped::UnsupportedValue)?;
             if parts.next().is_some() {
-                return Some(Unmapped::UnsupportedValue);
+                return Err(Unmapped::UnsupportedValue);
             }
             style.flex_grow = Some(grow);
             style.flex_shrink = Some(shrink);
-            style.flex_basis = Some(to_length(evaluate_length(basis, context).ok()?));
+            style.flex_basis = Some(to_length(length(basis)?));
         }
         "position" => match value {
             "relative" | "static" => style.position = Some(Position::Relative),
             "absolute" | "fixed" => style.position = Some(Position::Absolute),
-            _ => return Some(Unmapped::UnsupportedValue),
+            _ => return Err(Unmapped::UnsupportedValue),
         },
         "width" => style.size.width = Some(to_length(length(value)?)),
         "height" => style.size.height = Some(to_length(length(value)?)),
@@ -209,9 +217,17 @@ fn apply(
         "background-color" => style.background = Some(Fill::Color(color(value)?.into())),
         "color" => style.text.color = Some(color(value)?),
         "font-size" => style.text.font_size = Some(to_absolute(length(value)?)?),
-        "line-height" => style.text.line_height = Some(to_definite(length(value)?)?),
+        "line-height" => {
+            // A unitless line-height multiplies the font size. GPUI resolves
+            // `DefiniteLength::Fraction` against the font size in exactly this
+            // position (`Style::line_height_in_pixels`), so the two agree.
+            style.text.line_height = Some(match value.parse::<f32>() {
+                Ok(multiple) => DefiniteLength::Fraction(multiple),
+                Err(_) => to_definite(length(value)?)?,
+            });
+        }
         "font-weight" => {
-            let weight: f32 = value.parse().ok()?;
+            let weight: f32 = value.parse().map_err(|_| Unmapped::UnsupportedValue)?;
             style.text.font_weight = Some(gpui::FontWeight(weight));
         }
         "font-family" => {
@@ -219,10 +235,17 @@ fn apply(
             // family it actually has, so the whole string crosses unchanged.
             style.text.font_family = Some(value.to_string().into());
         }
-        "opacity" => style.opacity = Some(value.parse().ok()?),
+        "opacity" => style.opacity = Some(value.parse().map_err(|_| Unmapped::UnsupportedValue)?),
         "aspect-ratio" => {
-            let (width, height) = value.split_once('/')?;
-            let ratio = width.trim().parse::<f32>().ok()? / height.trim().parse::<f32>().ok()?;
+            let (width, height) = value.split_once('/').ok_or(Unmapped::UnsupportedValue)?;
+            let ratio = width
+                .trim()
+                .parse::<f32>()
+                .map_err(|_| Unmapped::UnsupportedValue)?
+                / height
+                    .trim()
+                    .parse::<f32>()
+                    .map_err(|_| Unmapped::UnsupportedValue)?;
             style.aspect_ratio = Some(ratio);
         }
         "flex-direction" => match value {
@@ -230,7 +253,7 @@ fn apply(
             "column" => style.flex_direction = Some(FlexDirection::Column),
             "row-reverse" => style.flex_direction = Some(FlexDirection::RowReverse),
             "column-reverse" => style.flex_direction = Some(FlexDirection::ColumnReverse),
-            _ => return Some(Unmapped::UnsupportedValue),
+            _ => return Err(Unmapped::UnsupportedValue),
         },
         "align-items" => match value {
             "center" => style.align_items = Some(AlignItems::Center),
@@ -238,7 +261,7 @@ fn apply(
             "flex-end" | "end" => style.align_items = Some(AlignItems::FlexEnd),
             "baseline" => style.align_items = Some(AlignItems::Baseline),
             "stretch" => style.align_items = Some(AlignItems::Stretch),
-            _ => return Some(Unmapped::UnsupportedValue),
+            _ => return Err(Unmapped::UnsupportedValue),
         },
         "justify-content" => match value {
             "center" => style.justify_content = Some(JustifyContent::Center),
@@ -246,15 +269,17 @@ fn apply(
             "flex-end" | "end" => style.justify_content = Some(JustifyContent::End),
             "space-between" => style.justify_content = Some(JustifyContent::SpaceBetween),
             "space-around" => style.justify_content = Some(JustifyContent::SpaceAround),
-            _ => return Some(Unmapped::UnsupportedValue),
+            _ => return Err(Unmapped::UnsupportedValue),
         },
-        "flex-shrink" => style.flex_shrink = Some(value.parse().ok()?),
+        "flex-shrink" => {
+            style.flex_shrink = Some(value.parse().map_err(|_| Unmapped::UnsupportedValue)?)
+        }
         "overflow-x" | "overflow-y" | "overflow" => {
             let overflow = match value {
                 "visible" => Overflow::Visible,
                 "hidden" | "clip" => Overflow::Hidden,
                 "auto" | "scroll" => Overflow::Scroll,
-                _ => return Some(Unmapped::UnsupportedValue),
+                _ => return Err(Unmapped::UnsupportedValue),
             };
             if property != "overflow-y" {
                 style.overflow.x = Some(overflow);
@@ -269,13 +294,19 @@ fn apply(
                 "default" => CursorStyle::Arrow,
                 "not-allowed" => CursorStyle::OperationNotAllowed,
                 "text" => CursorStyle::IBeam,
-                _ => return Some(Unmapped::UnsupportedValue),
+                _ => return Err(Unmapped::UnsupportedValue),
             };
             style.mouse_cursor = Some(cursor);
         }
-        _ => return Some(Unmapped::UnknownProperty),
+        _ => return Err(Unmapped::UnknownProperty),
     }
-    None
+    Ok(())
+}
+
+fn parse_part(part: Option<&str>) -> Result<f32, Unmapped> {
+    part.ok_or(Unmapped::UnsupportedValue)?
+        .parse()
+        .map_err(|_| Unmapped::UnsupportedValue)
 }
 
 fn to_hsla(rgba: proto_ui_style::Rgba) -> Hsla {
@@ -294,8 +325,8 @@ fn to_length(dimension: Dimension) -> Length {
     Length::Definite(to_definite_lossy(dimension))
 }
 
-fn to_definite(dimension: Dimension) -> Option<DefiniteLength> {
-    Some(to_definite_lossy(dimension))
+fn to_definite(dimension: Dimension) -> Result<DefiniteLength, Unmapped> {
+    Ok(to_definite_lossy(dimension))
 }
 
 fn to_definite_lossy(dimension: Dimension) -> DefiniteLength {
@@ -308,8 +339,10 @@ fn to_definite_lossy(dimension: Dimension) -> DefiniteLength {
     }
 }
 
-fn to_absolute(dimension: Dimension) -> Option<AbsoluteLength> {
+fn to_absolute(dimension: Dimension) -> Result<AbsoluteLength, Unmapped> {
     dimension
         .is_absolute()
         .then(|| AbsoluteLength::Pixels(px(dimension.px)))
+        // A percentage has no absolute form; GPUI needs one here.
+        .ok_or(Unmapped::UnsupportedValue)
 }

@@ -140,7 +140,7 @@ fn reports_a_property_it_cannot_express() {
     assert!(!mapped.is_complete());
 }
 
-/// The inventory of what still has to be mapped.
+/// The inventory of properties this layer does not implement at all.
 ///
 /// Every entry here is deliberate, not an oversight: each needs work beyond a
 /// property assignment, and each is named in the plan as its own slice.
@@ -180,9 +180,109 @@ const EXPECTED_UNMAPPED: [&str; 28] = [
     "white-space",
 ];
 
+/// The inventory of values a property this layer *does* implement cannot take.
+///
+/// This is a separate list from the property inventory on purpose. `width` is
+/// mapped; `width: fit-content` is not. Recording the pair keeps the property
+/// inventory from claiming that `width` never reaches a surface.
+const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 4] = [
+    (
+        "width",
+        "fit-content",
+        "GPUI's `Length` is definite-or-auto and has no content-driven form. \
+         Whether `Auto` is close enough is a pixel-gate question, so this \
+         records the gap rather than guessing at a substitute.",
+    ),
+    (
+        "color",
+        "currentColor",
+        "Resolves against the inherited text colour, which a single surface's \
+         declarations do not carry. Reported as `NeedsInheritedColor` so the \
+         caller can substitute and re-map.",
+    ),
+    (
+        "border-radius",
+        "max(calc(0 - 2px), 0px)",
+        "Brutalist's `--radius` is `0px`, so `rounded-md` substitutes to an \
+         addition mixing a plain number with a length. That is invalid CSS, \
+         and a browser drops the declaration too.",
+    ),
+    (
+        "border-radius",
+        "min(max(calc(0 - 2px), 0px), 12px)",
+        "The arbitrary-value form of the same Brutalist substitution.",
+    ),
+];
+
+/// The end of the Brutalist radius chain, followed through every layer.
+///
+/// `rounded-md` records `max(calc(var(--radius) - 2px), 0px)`; the Brutalist
+/// theme substitutes `--radius` with `0px`; the result subtracts a length from
+/// a plain number, which CSS rejects. The web baseline drops the declaration,
+/// so the mapped surface must carry no radius rather than an invented one.
+#[test]
+fn brutalist_radius_substitution_reaches_the_map_as_invalid() {
+    let resolved = resolve(&["rounded-md"], "brutalist");
+    assert_eq!(
+        resolved
+            .declarations
+            .get("border-radius")
+            .map(String::as_str),
+        Some("max(calc(0 - 2px), 0px)"),
+        "the theme should have substituted --radius before the map sees it"
+    );
+
+    let mapped = map(&resolved, LengthContext::default());
+    assert!(
+        mapped.refinement.corner_radii.top_left.is_none(),
+        "an invalid declaration must not paint a radius"
+    );
+    assert!(mapped.unmapped.iter().any(|(property, value, reason)| {
+        property == "border-radius"
+            && value == "max(calc(0 - 2px), 0px)"
+            && *reason == Unmapped::UnsupportedValue
+    }));
+
+    // Shadcn's `--radius` is non-zero, so the same token does paint there.
+    // Without this the assertion above would pass for the wrong reason.
+    let shadcn = map(
+        &resolve(&["rounded-md"], "shadcn"),
+        LengthContext::default(),
+    );
+    assert!(
+        shadcn.refinement.corner_radii.top_left.is_some(),
+        "the same token must still map where the substitution is valid"
+    );
+}
+
+#[test]
+fn a_unitless_line_height_multiplies_the_font_size() {
+    let mapped = map(
+        &resolve(&["leading-none"], "shadcn"),
+        LengthContext::default(),
+    );
+    assert_eq!(
+        mapped.refinement.text.line_height,
+        Some(DefiniteLength::Fraction(1.0))
+    );
+    assert!(mapped.is_complete());
+}
+
+#[test]
+fn current_color_asks_the_caller_for_the_inherited_colour() {
+    let mapped = map(
+        &resolve(&["text-current"], "shadcn"),
+        LengthContext::default(),
+    );
+    assert!(mapped.unmapped.iter().any(
+        |(property, _, reason)| property == "color" && *reason == Unmapped::NeedsInheritedColor
+    ));
+}
+
 #[test]
 fn every_token_maps_or_appears_in_the_inventory() {
     let mut unmapped: BTreeSet<String> = BTreeSet::new();
+    let mut unmapped_values: BTreeSet<(String, String)> = BTreeSet::new();
     let mut mapped_count = 0usize;
 
     for language in themes().names() {
@@ -199,8 +299,20 @@ fn every_token_maps_or_appears_in_the_inventory() {
             }
             let mapped = map(&resolved, LengthContext::default());
             mapped_count += mapped.refinement.padding.left.is_some() as usize;
-            for property in mapped.unmapped_properties() {
-                unmapped.insert(property.to_string());
+            for (property, value, reason) in &mapped.unmapped {
+                match reason {
+                    Unmapped::UnknownProperty => {
+                        unmapped.insert(property.clone());
+                    }
+                    // A property that is mapped but cannot take this value is
+                    // a value-level gap, recorded with the value that caused it.
+                    Unmapped::UnsupportedValue | Unmapped::NeedsInheritedColor => {
+                        unmapped_values.insert((property.clone(), value.clone()));
+                    }
+                    // A custom property feeding a composed value belongs to
+                    // neither inventory: the property it feeds carries the gap.
+                    Unmapped::ComposedInput => {}
+                }
             }
         }
     }
@@ -217,6 +329,24 @@ fn every_token_maps_or_appears_in_the_inventory() {
         gone.is_empty(),
         "these are now mapped and should leave the inventory: {gone:?}"
     );
+    let expected_values: BTreeSet<(String, String)> = EXPECTED_UNMAPPED_VALUES
+        .iter()
+        .map(|(property, value, _)| (property.to_string(), value.to_string()))
+        .collect();
+    let unexpected_values: Vec<&(String, String)> =
+        unmapped_values.difference(&expected_values).collect();
+    let gone_values: Vec<&(String, String)> =
+        expected_values.difference(&unmapped_values).collect();
+
+    assert!(
+        unexpected_values.is_empty(),
+        "a value stopped mapping or is newly present: {unexpected_values:?}"
+    );
+    assert!(
+        gone_values.is_empty(),
+        "these values now map and should leave the inventory: {gone_values:?}"
+    );
+
     // Guards against the loop finding nothing, which would make this vacuous.
     assert!(mapped_count > 0, "no token produced a mapped padding");
 }
