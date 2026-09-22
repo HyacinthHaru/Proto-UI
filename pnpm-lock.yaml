@@ -604,6 +604,8 @@ importers:
         specifier: workspace:*
         version: link:../types
 
+  packages/host-protocol: {}
+
   packages/modules/a11y:
     dependencies:
       '@proto.ui/core':
