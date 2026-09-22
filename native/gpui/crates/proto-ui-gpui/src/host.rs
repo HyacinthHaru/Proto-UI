@@ -24,6 +24,16 @@
 //! is focused the host keeps focus on its own root, which plays the part
 //! `document.body` plays in a browser: key presses still arrive, reach every
 //! global lease, and reach no root lease.
+//!
+//! # Focus facts
+//!
+//! The Focus module learns about focus from `host:focus` and `host:blur` on
+//! its root, not from `nav.focus`. A session's focus target is its root
+//! surface, the one opaque target the peer declares as `focus-root`. When GPUI
+//! focus moves the host compares the focused surface before and after, and
+//! reports the blur before the focus, in the order a browser dispatches them.
+//! GPUI's per-handle focus callbacks are only the trigger for that comparison:
+//! several of them fire for one change, in an order that is not guaranteed.
 
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -33,8 +43,9 @@ use gpui::prelude::*;
 use gpui::{
     canvas, div, AnyElement, Context, DispatchPhase, ElementId, FocusHandle, KeyDownEvent,
     KeyUpEvent, MouseButton, MouseDownEvent, MouseExitEvent, MouseMoveEvent, MouseUpEvent,
-    StyleRefinement, Window,
+    StyleRefinement, Subscription, Window,
 };
+use proto_ui_host_protocol::event_type::{EventType, ExtensionEvent};
 use proto_ui_host_protocol::wire::SessionId;
 
 use crate::input::{
@@ -62,7 +73,11 @@ pub struct InputBridge {
     collected: Vec<SurfaceId>,
     owner_of: HashMap<SurfaceId, SessionId>,
     parent_of: HashMap<SurfaceId, SurfaceId>,
+    /// Each session's root surface: the outermost surface it renders.
+    root_of: HashMap<SessionId, SurfaceId>,
     focusable: Vec<(FocusHandle, SurfaceId)>,
+    /// The surface that held focus when focus was last compared.
+    focused: Option<SurfaceId>,
     /// The hit path of the primary button's press, for the click that may
     /// follow its release.
     pressed_primary: Option<Vec<SurfaceId>>,
@@ -100,14 +115,25 @@ impl InputBridge {
     fn index(&mut self, surfaces: &[SurfaceNode]) {
         self.owner_of.clear();
         self.parent_of.clear();
+        self.root_of.clear();
         self.focusable.clear();
-        let mut pending: Vec<(&SurfaceNode, Option<&SurfaceId>)> =
-            surfaces.iter().map(|surface| (surface, None)).collect();
+        // Reversed so the stack visits surfaces in document order, which makes
+        // the first root recorded for a session the outermost one.
+        let mut pending: Vec<(&SurfaceNode, Option<&SurfaceNode>)> = surfaces
+            .iter()
+            .rev()
+            .map(|surface| (surface, None))
+            .collect();
         while let Some((surface, parent)) = pending.pop() {
             self.owner_of
                 .insert(surface.id.clone(), surface.session.clone());
             if let Some(parent) = parent {
-                self.parent_of.insert(surface.id.clone(), parent.clone());
+                self.parent_of.insert(surface.id.clone(), parent.id.clone());
+            }
+            if parent.is_none_or(|parent| parent.session != surface.session) {
+                self.root_of
+                    .entry(surface.session.clone())
+                    .or_insert_with(|| surface.id.clone());
             }
             if let Some(focus) = &surface.focus {
                 self.focusable.push((focus.clone(), surface.id.clone()));
@@ -116,7 +142,8 @@ impl InputBridge {
                 surface
                     .children
                     .iter()
-                    .map(|child| (child, Some(&surface.id))),
+                    .rev()
+                    .map(|child| (child, Some(surface))),
             );
         }
     }
@@ -145,6 +172,53 @@ impl InputBridge {
             physical.push(parent.clone());
         }
         self.target(physical)
+    }
+
+    /// Compares the focused surface with the last one seen, and reports the
+    /// change as `host:blur` on the old surface followed by `host:focus` on
+    /// the new one.
+    ///
+    /// Focus moving to something that is not a surface, such as an embedded
+    /// GPUI text field inside one, blurs the surface: a browser fires `blur`
+    /// on an element when focus moves to one of its descendants.
+    ///
+    /// An inactive window holds no focus here, although GPUI keeps its focused
+    /// handle. A browser fires `blur` on the focused element when its window
+    /// loses activation and `focus` when it regains it, and GPUI calls the
+    /// focus callbacks at exactly those moments.
+    fn sync_focus(&mut self, window: &Window) {
+        let now = window
+            .is_window_active()
+            .then(|| {
+                self.focusable
+                    .iter()
+                    .find(|(handle, _)| handle.is_focused(window))
+                    .map(|(_, surface)| surface.clone())
+            })
+            .flatten();
+        if now == self.focused {
+            return;
+        }
+        let before = std::mem::replace(&mut self.focused, now.clone());
+        if let Some(surface) = before {
+            self.route(HostInput::HostEvent {
+                surface,
+                event: host_event("host:blur"),
+            });
+        }
+        if let Some(surface) = now {
+            self.route(HostInput::HostEvent {
+                surface,
+                event: host_event("host:focus"),
+            });
+        }
+    }
+
+    fn focus_handle_of(&self, surface: &SurfaceId) -> Option<FocusHandle> {
+        self.focusable
+            .iter()
+            .find(|(_, candidate)| candidate == surface)
+            .map(|(handle, _)| handle.clone())
     }
 
     fn route(&mut self, input: HostInput) {
@@ -232,6 +306,38 @@ impl InputBridge {
     }
 }
 
+fn host_event(name: &str) -> ExtensionEvent {
+    match EventType::parse(name) {
+        Ok(EventType::Extension(event)) => event,
+        other => unreachable!("`{name}` is a host event type, got {other:?}"),
+    }
+}
+
+/// The focus target the peer declares for a session: its root surface.
+pub const FOCUS_ROOT_REF: &str = "focus-root";
+
+/// What a `focus.request` asks for.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FocusAction {
+    Focus,
+    Blur,
+}
+
+/// The `focus.result` status for a request, as the wire spells it:
+/// `applied`, `not-ready` or `rejected`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FocusRequestStatus {
+    /// Focus is where the request asked for it.
+    Applied,
+    /// The session's surface is not rendered yet. The peer keeps the request
+    /// and retries when the target becomes ready (`HC-FOCUS-TARGET-0001-C`).
+    NotReady,
+    /// The target is not one this session declares, cannot take focus, or
+    /// GPUI did not move focus to it. Never reported as applied: a focus
+    /// request that did not land must say so (`HC-FOCUS-TARGET-0001-B`).
+    Rejected,
+}
+
 /// The surfaces two innermost-first paths share, innermost first.
 fn common_ancestors(a: &[SurfaceId], b: &[SurfaceId]) -> Vec<SurfaceId> {
     let mut common: Vec<SurfaceId> = a
@@ -251,18 +357,89 @@ pub struct ProtoHostView {
     bridge: Rc<RefCell<InputBridge>>,
     surfaces: Vec<SurfaceNode>,
     focus: FocusHandle,
+    focus_subscriptions: Vec<Subscription>,
 }
 
 impl ProtoHostView {
     pub fn new(
         bridge: Rc<RefCell<InputBridge>>,
         surfaces: Vec<SurfaceNode>,
+        window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
-        Self {
+        let mut view = Self {
             bridge,
             surfaces,
             focus: cx.focus_handle(),
+            focus_subscriptions: Vec::new(),
+        };
+        view.subscribe_focus(window, cx);
+        view
+    }
+
+    /// Watches every focusable surface, and the host root, for focus moving.
+    fn subscribe_focus(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        let mut handles = vec![self.focus.clone()];
+        let mut pending: Vec<&SurfaceNode> = self.surfaces.iter().collect();
+        while let Some(surface) = pending.pop() {
+            handles.extend(surface.focus.clone());
+            pending.extend(surface.children.iter());
+        }
+        self.focus_subscriptions = handles
+            .iter()
+            .flat_map(|handle| {
+                [
+                    cx.on_focus(handle, window, |view, window, _| {
+                        view.bridge.borrow_mut().sync_focus(window)
+                    }),
+                    cx.on_blur(handle, window, |view, window, _| {
+                        view.bridge.borrow_mut().sync_focus(window)
+                    }),
+                ]
+            })
+            .collect();
+    }
+
+    /// Applies a `focus.request` to the session's focus target.
+    ///
+    /// Blurring moves focus to the host root rather than to nothing, so that
+    /// key presses keep arriving, as they do at `document.body` in a browser.
+    pub fn request_focus(
+        &mut self,
+        session_id: &str,
+        target: &str,
+        action: FocusAction,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> FocusRequestStatus {
+        if target != FOCUS_ROOT_REF {
+            return FocusRequestStatus::Rejected;
+        }
+        let handle = {
+            let bridge = self.bridge.borrow();
+            let Some(root) = bridge.root_of.get(session_id) else {
+                return FocusRequestStatus::NotReady;
+            };
+            let Some(handle) = bridge.focus_handle_of(root) else {
+                return FocusRequestStatus::Rejected;
+            };
+            handle
+        };
+        match action {
+            FocusAction::Focus => {
+                window.focus(&handle, cx);
+                if handle.is_focused(window) {
+                    FocusRequestStatus::Applied
+                } else {
+                    FocusRequestStatus::Rejected
+                }
+            }
+            FocusAction::Blur => {
+                if handle.is_focused(window) {
+                    window.focus(&self.focus, cx);
+                }
+                FocusRequestStatus::Applied
+            }
         }
     }
 
@@ -271,8 +448,14 @@ impl ProtoHostView {
         &self.focus
     }
 
-    pub fn set_surfaces(&mut self, surfaces: Vec<SurfaceNode>, cx: &mut Context<Self>) {
+    pub fn set_surfaces(
+        &mut self,
+        surfaces: Vec<SurfaceNode>,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
         self.surfaces = surfaces;
+        self.subscribe_focus(window, cx);
         cx.notify();
     }
 }

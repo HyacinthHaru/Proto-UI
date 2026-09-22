@@ -133,7 +133,7 @@ impl Host {
 
         let view_bridge = bridge.clone();
         let window = cx.open_window(size(px(400.), px(300.)), move |window, cx| {
-            let view = ProtoHostView::new(view_bridge, surfaces, cx);
+            let view = ProtoHostView::new(view_bridge, surfaces, window, cx);
             window.focus(view.focus_handle(), cx);
             view
         });
