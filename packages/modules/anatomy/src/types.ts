@@ -42,6 +42,8 @@ export type AnatomyPort = ModulePort & {
   resolvePartTarget(part: AnatomyPartView): unknown | null;
   /** Opaque root-claim identity for bounded module-internal family coordination. */
   resolveDomainScope(family: AnatomyFamily): unknown | null;
+  /** The current instance's structural claim; no host or relationship registry access. */
+  getSelfRole(family: AnatomyFamily): string | null;
   /** Module-internal structural query scoped to one already resolved family domain. */
   descendantsOf(
     family: AnatomyFamily,

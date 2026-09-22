@@ -72,6 +72,8 @@ type WebProjectorRecord = {
   reservedId: string | null;
   reservedDocument: Document | null;
   ownedIdTarget: HTMLElement | null;
+  ownedIdBaseline: string | null;
+  observedDocument: Document | null;
   lastTargetId: string | null;
   dependencyRefs: Set<A11ySemanticObjectRef>;
   projections: Map<string, RelationProjection>;
@@ -99,6 +101,57 @@ export function createWebA11yProjectionRegistry(
   const reservedIdsByRef = new Map<A11ySemanticObjectRef, Map<Document, IdReservation>>();
   const scalarAttributeRefs = new WeakMap<HTMLElement, Map<string, ScalarOwnership>>();
   const relationOwnerships = new WeakMap<HTMLElement, Map<string, RelationOwnership>>();
+  const documentObservers = new Map<
+    Document,
+    { observer: MutationObserver; records: Set<WebProjectorRecord> }
+  >();
+
+  const unobserve = (record: WebProjectorRecord) => {
+    const document = record.observedDocument;
+    if (!document) return;
+    record.observedDocument = null;
+    const entry = documentObservers.get(document)!;
+    entry.records.delete(record);
+    if (entry.records.size) return;
+    entry.observer.disconnect();
+    documentObservers.delete(document);
+  };
+
+  const observe = (record: WebProjectorRecord) => {
+    if (record.snapshot?.viewEpoch === undefined) return;
+    const document = record.target?.ownerDocument;
+    if (!document || record.observedDocument === document) return;
+    unobserve(record);
+    let entry = documentObservers.get(document);
+    if (!entry) {
+      const records = new Set<WebProjectorRecord>();
+      const Observer = document.defaultView?.MutationObserver ?? globalThis.MutationObserver;
+      if (!Observer) return;
+      const observer = new Observer(() => {
+        const refs = new Set<A11ySemanticObjectRef>();
+        for (const owner of [...records]) {
+          if (!owner.snapshot || owner.disposed || owner.detached) continue;
+          // Host ID writes and duplicate IDs outside the relationship are
+          // host facts, not protocol State changes. Recheck before the next paint.
+          if ((owner.target?.id || null) !== owner.lastTargetId) {
+            update(owner, owner.snapshot, true);
+          }
+          if (owner.objectRef) refs.add(owner.objectRef);
+        }
+        reconcileDependents(refs);
+      });
+      observer.observe(document, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        attributeFilter: ['id'],
+      });
+      entry = { observer, records };
+      documentObservers.set(document, entry);
+    }
+    entry.records.add(record);
+    record.observedDocument = document;
+  };
 
   const releaseScalarAttribute = (record: WebProjectorRecord, attr: string) => {
     const target = record.target;
@@ -202,9 +255,12 @@ export function createWebA11yProjectionRegistry(
 
   const releaseOwnedId = (record: WebProjectorRecord) => {
     const target = record.ownedIdTarget;
-    if (target && record.reservedId && target.id === record.reservedId)
-      target.removeAttribute('id');
+    if (target && record.reservedId && target.id === record.reservedId) {
+      if (record.ownedIdBaseline === null) target.removeAttribute('id');
+      else target.setAttribute('id', record.ownedIdBaseline);
+    }
     record.ownedIdTarget = null;
+    record.ownedIdBaseline = null;
   };
 
   const releaseReservation = (record: WebProjectorRecord) => {
@@ -309,6 +365,11 @@ export function createWebA11yProjectionRegistry(
     previous: A11ySemanticObjectSnapshot | null,
     next: A11ySemanticObjectSnapshot
   ) => {
+    if (
+      previous?.viewEpoch !== next.viewEpoch ||
+      previous?.partRelationships !== next.partRelationships
+    )
+      return true;
     for (const key of Object.keys(ARIA_RELATION_ATTRS)) {
       const previousRelation = previous?.relations[key];
       const nextRelation = next.relations[key];
@@ -378,6 +439,7 @@ export function createWebA11yProjectionRegistry(
       if (target.id && target.id !== record.reservedId) return null;
       if (!idIsAvailable(document, record.reservedId, target, objectRef)) return null;
       if (!target.id) {
+        record.ownedIdBaseline = target.getAttribute('id');
         target.id = record.reservedId;
         record.ownedIdTarget = target;
       }
@@ -401,6 +463,7 @@ export function createWebA11yProjectionRegistry(
     while (!idIsAvailable(document, candidate, target, objectRef)) {
       candidate = `${idPrefix}-${nextId++}`;
     }
+    record.ownedIdBaseline = target.getAttribute('id');
     target.id = candidate;
     record.ownedIdTarget = target;
     reserveId(record, candidate);
@@ -409,16 +472,26 @@ export function createWebA11yProjectionRegistry(
 
   const resolveTargets = (
     source: WebProjectorRecord,
-    refs: readonly A11ySemanticObjectRef[]
+    refs: readonly A11ySemanticObjectRef[],
+    key: string
   ): readonly string[] | null => {
     if (!source.target || refs.length === 0) return null;
+    const lease = source.snapshot?.partRelationships?.find((part) => part.relation === key);
+    if (
+      lease &&
+      (lease.source !== source.objectRef || lease.sourceEpoch !== source.snapshot?.viewEpoch)
+    ) {
+      return null;
+    }
     const ids: string[] = [];
     const seen = new Set<A11ySemanticObjectRef>();
     for (const ref of refs) {
       if (seen.has(ref)) continue;
       seen.add(ref);
       const candidates = [...(recordsByRef.get(ref) ?? [])].filter(
-        (record) => record.target?.ownerDocument === source.target?.ownerDocument
+        (record) =>
+          record.target?.ownerDocument === source.target?.ownerDocument &&
+          (!lease || (lease.target === ref && lease.targetEpoch === record.snapshot?.viewEpoch))
       );
       if (candidates.length !== 1) return null;
       const id = ensureTargetId(candidates[0]!);
@@ -500,7 +573,7 @@ export function createWebA11yProjectionRegistry(
         if (!Array.isArray(relation)) continue;
         active.add(key);
         const refs = relation.filter(isA11ySemanticObjectRef);
-        const tokens = refs.length === relation.length ? resolveTargets(record, refs) : null;
+        const tokens = refs.length === relation.length ? resolveTargets(record, refs, key) : null;
         applyRelationProjection(
           record,
           key,
@@ -530,9 +603,16 @@ export function createWebA11yProjectionRegistry(
   const update = (
     record: WebProjectorRecord,
     snapshot: A11ySemanticObjectSnapshot,
-    forceStructured = false
+    forceStructured = false,
+    reactivating = false
   ) => {
     if (record.disposed || record.detached) return;
+    if (
+      snapshot.viewEpoch !== undefined &&
+      record.snapshot?.viewEpoch !== undefined &&
+      snapshot.viewEpoch < record.snapshot.viewEpoch
+    )
+      return;
     const nextTarget = record.getTarget();
     const nextDocument = nextTarget?.ownerDocument ?? record.targetDocument;
     const targetChanged = nextTarget !== record.target;
@@ -547,6 +627,7 @@ export function createWebA11yProjectionRegistry(
 
     const releasedIdRefs = releaseScalarAttributes(record);
     if (bindingReplaced) {
+      unobserve(record);
       clearProjections(record);
       unindex(record);
       releaseOwnedId(record);
@@ -574,6 +655,17 @@ export function createWebA11yProjectionRegistry(
       );
       // Registry ownership already released old values; skip stateless snapshot cleanup.
       applySnapshot(nextTarget, snapshot, undefined, attributes, false);
+      // Transfer a retained logical reservation before the Module retires the
+      // previous view projector. Reciprocal peers may still be publishing their
+      // new epoch snapshots, so their IDREF lookup cannot own this handoff.
+      if (
+        (bindingReplaced || reactivating) &&
+        snapshot.viewEpoch !== undefined &&
+        reservedIdsByRef.get(snapshot.objectRef)?.has(nextDocument!)
+      ) {
+        ensureTargetId(record);
+      }
+      observe(record);
       for (const [key, attr] of Object.entries(ARIA_RELATION_ATTRS)) {
         if (!Object.prototype.hasOwnProperty.call(snapshot.relations, key)) continue;
         const relation = snapshot.relations[key];
@@ -593,6 +685,7 @@ export function createWebA11yProjectionRegistry(
     const currentTargetId = nextTarget?.id || null;
     if (
       !targetChanged &&
+      !reactivating &&
       record.reservedId &&
       nextTarget &&
       currentTargetId !== previousTargetId &&
@@ -609,7 +702,10 @@ export function createWebA11yProjectionRegistry(
       }
     }
     const bindingChanged =
-      forceStructured || bindingReplaced || currentTargetId !== previousTargetId;
+      forceStructured ||
+      bindingReplaced ||
+      currentTargetId !== previousTargetId ||
+      previousSnapshot?.viewEpoch !== snapshot.viewEpoch;
     record.lastTargetId = currentTargetId;
     if (structuredChanged) reconcileSource(record);
     const currentIdRefs =
@@ -638,6 +734,8 @@ export function createWebA11yProjectionRegistry(
         reservedId: null,
         reservedDocument: null,
         ownedIdTarget: null,
+        ownedIdBaseline: null,
+        observedDocument: null,
         lastTargetId: null,
         scalarAttributes: new Map(),
         dependencyRefs: new Set(),
@@ -653,6 +751,7 @@ export function createWebA11yProjectionRegistry(
       const detach = (removeOwned = false) => {
         if (record.disposed || record.detached) return;
         const affectedRef = record.objectRef;
+        unobserve(record);
         const releasedIdRefs = releaseScalarAttributes(record, removeOwned);
         record.detached = true;
         unsubscribe?.();
@@ -661,6 +760,7 @@ export function createWebA11yProjectionRegistry(
         removeDependencies(record);
         unindex(record);
         releaseOwnedId(record);
+        record.lastTargetId = record.target?.id || null;
         if (affectedRef || releasedIdRefs) {
           const affectedRefs = new Set(releasedIdRefs);
           if (affectedRef) affectedRefs.add(affectedRef);
@@ -671,10 +771,11 @@ export function createWebA11yProjectionRegistry(
         if (record.disposed || record.detached) return;
         const replay = needsReplay;
         needsReplay = false;
-        update(record, snapshot, replay);
+        update(record, snapshot, replay, replay);
         if (!unsubscribe) unsubscribe = subscribeTargetChange?.(onTargetChange);
       };
       projector.detach = detach;
+      projector.isBound = () => !record.disposed && !record.detached && record.target !== null;
       projector.reactivate = () => {
         if (record.disposed || !record.detached) return;
         record.detached = false;

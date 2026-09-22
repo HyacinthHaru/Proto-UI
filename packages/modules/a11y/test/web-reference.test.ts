@@ -1061,3 +1061,31 @@ describe('Web A11y opaque semantic-object references', () => {
     }
   );
 });
+
+describe('part-relationship host observation', () => {
+  it('releases document observation on view detach and terminal disposal', () => {
+    // C-A11Y-PART-RELATIONSHIP-0001-F/K
+    const doc = document.implementation.createHTMLDocument('part-observer-lifetime');
+    const target = doc.createElement('div');
+    doc.body.append(target);
+    const registry = createWebA11yProjectionRegistry();
+    const disconnect = vi.spyOn(MutationObserver.prototype, 'disconnect');
+    const projector = createWebA11yProjector(target, undefined, registry);
+    const snapshot = { ...semanticSnapshot(createA11ySemanticObjectRef()), viewEpoch: 1 };
+    try {
+      projector(snapshot);
+      expect(disconnect).not.toHaveBeenCalled();
+      projector.detach?.();
+      expect(disconnect).toHaveBeenCalledTimes(1);
+      projector.reactivate?.();
+      projector({ ...snapshot, viewEpoch: 2 });
+      projector.dispose?.();
+      expect(disconnect).toHaveBeenCalledTimes(2);
+      projector.dispose?.();
+      expect(disconnect).toHaveBeenCalledTimes(2);
+    } finally {
+      projector.dispose?.();
+      disconnect.mockRestore();
+    }
+  });
+});

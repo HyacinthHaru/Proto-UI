@@ -461,7 +461,13 @@ export class AnatomyModuleImpl extends ModuleBase {
       return claim?.getRootTarget(claim.instance) ?? null;
     },
     resolveDomainScope: (family: AnatomyFamily): unknown | null =>
-      this.resolveCurrentDomain(family, false).rootInstance,
+      this.caps.has(ANATOMY_INSTANCE_TOKEN_CAP)
+        ? this.resolveCurrentDomain(family, false).rootInstance
+        : null,
+    getSelfRole: (family: AnatomyFamily): string | null =>
+      this.caps.has(ANATOMY_INSTANCE_TOKEN_CAP)
+        ? (CENTER.getClaim(this.getSelfToken(), family)?.role ?? null)
+        : null,
     descendantsOf: (
       family: AnatomyFamily,
       ancestor: AnatomyPartView,
