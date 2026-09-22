@@ -293,7 +293,7 @@ class A11yModuleImpl extends ModuleBase {
       relationships.push({
         family,
         scope: this.anatomyPort?.resolveDomainScope(family) ?? null,
-        role: this.anatomyPort?.getSelfRole(family) ?? null,
+        role: this.anatomyPort?.resolveSelfRole(family) ?? null,
         relation,
         targetRole: role,
         key: resolvePartKey(key),
@@ -320,7 +320,7 @@ class A11yModuleImpl extends ModuleBase {
     if (this.anatomyPort) {
       for (const family of families) {
         if (this.familyWatchOffs.has(family)) continue;
-        if (!this.anatomyPort.getSelfRole(family)) continue;
+        if (!this.anatomyPort.resolveSelfRole(family)) continue;
         const orderOff = this.anatomyPort.subscribeOrder(family, () => this.applyProjection());
         const targetOff = this.anatomyPort.subscribeTargets(family, () => this.applyProjection());
         this.familyWatchOffs.set(family, () => {
@@ -339,7 +339,7 @@ class A11yModuleImpl extends ModuleBase {
       parts: [...this.ir.parts].map(([family, part]) => ({
         family,
         scope: this.anatomyPort?.resolveDomainScope(family) ?? null,
-        role: this.anatomyPort?.getSelfRole(family) ?? null,
+        role: this.anatomyPort?.resolveSelfRole(family) ?? null,
         key: resolvePartKey(part.key),
       })),
       relationships,
