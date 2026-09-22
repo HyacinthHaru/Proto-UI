@@ -1162,3 +1162,28 @@ describe('runtime contract: same-domain A11y part relationships', () => {
     }
   });
 });
+
+it('undeclared semantic modules preserve authored A11y relationships across L1 detach', async () => {
+  // C-A11Y-0001-DECLARATION-LIFETIME; C-A11Y-PART-RELATIONSHIP-0001-H.
+  const ctx = createHost();
+  const session = createRuntimeSession(
+    definePrototype({
+      name: 'non-table-a11y-label',
+      setup() {
+        asAccessible().relation('labelledBy', { target: 'authored-label' });
+      },
+    }),
+    ctx.host
+  );
+  const port = session.caps.getPort<A11yPort>('a11y')!;
+  try {
+    await session.mount();
+    expect(port.getSnapshot().relations.labelledBy).toBe('authored-label');
+    await session.unmount();
+    expect(port.getSnapshot().relations.labelledBy).toBe('authored-label');
+    await session.mount();
+    expect(ctx.snapshots.at(-1)?.relations.labelledBy).toBe('authored-label');
+  } finally {
+    await session.dispose();
+  }
+});

@@ -1134,47 +1134,56 @@ describe('part-relationship host observation', () => {
 describe('part-relationship identity observation ownership', () => {
   const flush = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
-  it('PUI-549-REVIEW-LIVE-EXPLICIT-ID: preserves an author rewrite over cached explicit identity', async () => {
-    const doc = document.implementation.createHTMLDocument('part-explicit-id');
-    const target = doc.createElement('div'),
-      source = doc.createElement('button');
-    doc.body.append(source, target);
-    const registry = createWebA11yProjectionRegistry();
-    const ref = createA11ySemanticObjectRef();
-    const snapshot = { ...semanticSnapshot(ref), viewEpoch: 1, id: 'proto-id' };
-    const projector = createWebA11yProjector(target, undefined, registry);
-    const dependent = createWebA11yProjector(source, undefined, registry);
-    try {
-      projector(snapshot);
-      dependent(semanticSnapshot(createA11ySemanticObjectRef(), { controls: [ref] }));
-      await flush();
-      expect(target.id).toBe('proto-id');
-      target.id = 'host-later';
-      await flush();
-      expect(target.id).toBe('host-later');
-      expect(source.getAttribute('aria-controls')).toBe('host-later');
-      projector({ ...snapshot, states: { busy: true } });
-      expect(target.id).toBe('host-later');
-      projector.detach?.();
-      expect(target.id).toBe('host-later');
-      projector.reactivate?.();
-      projector({ ...snapshot, viewEpoch: 2 });
-      expect(target.id).toBe('host-later');
-      expect(source.getAttribute('aria-controls')).toBe('host-later');
-      projector({ ...snapshot, viewEpoch: 2, id: 'new-proto-id' });
-      expect(target.id).toBe('new-proto-id');
-      expect(source.getAttribute('aria-controls')).toBe('new-proto-id');
-      projector.dispose?.();
-      expect(target.id).toBe('host-later');
-    } finally {
-      projector.dispose?.();
-      dependent.dispose?.();
+  it.each([false, true])(
+    'PUI-549-REVIEW-LIVE-EXPLICIT-ID: preserves an author rewrite, replay before delivery=%s',
+    async (replayBeforeDelivery) => {
+      const doc = document.implementation.createHTMLDocument('part-explicit-id');
+      const target = doc.createElement('div'),
+        source = doc.createElement('button');
+      doc.body.append(source, target);
+      const registry = createWebA11yProjectionRegistry();
+      const ref = createA11ySemanticObjectRef();
+      const snapshot = { ...semanticSnapshot(ref), viewEpoch: 1, id: 'proto-id' };
+      const projector = createWebA11yProjector(target, undefined, registry);
+      const dependent = createWebA11yProjector(source, undefined, registry);
+      try {
+        projector(snapshot);
+        dependent(semanticSnapshot(createA11ySemanticObjectRef(), { controls: [ref] }));
+        await flush();
+        expect(target.id).toBe('proto-id');
+        target.id = 'host-later';
+        if (replayBeforeDelivery) projector({ ...snapshot, states: { busy: true } });
+        await flush();
+        expect(target.id).toBe('host-later');
+        expect(source.getAttribute('aria-controls')).toBe('host-later');
+        projector({ ...snapshot, states: { busy: true } });
+        expect(target.id).toBe('host-later');
+        projector.detach?.();
+        expect(target.id).toBe('host-later');
+        projector.reactivate?.();
+        projector({ ...snapshot, viewEpoch: 2 });
+        expect(target.id).toBe('host-later');
+        expect(source.getAttribute('aria-controls')).toBe('host-later');
+        projector({ ...snapshot, viewEpoch: 2, id: 'new-proto-id' });
+        expect(target.id).toBe('new-proto-id');
+        expect(source.getAttribute('aria-controls')).toBe('new-proto-id');
+        projector.dispose?.();
+        expect(target.id).toBe('host-later');
+      } finally {
+        projector.dispose?.();
+        dependent.dispose?.();
+      }
     }
-  });
+  );
 
-  it.each([true, false])(
-    'PUI-549-REVIEW-INDEPENDENT-ID-WRITER: retains the reservation with dependent present=%s',
-    async (present) => {
+  it.each([
+    { present: true, replay: false },
+    { present: false, replay: false },
+    { present: true, replay: true },
+    { present: false, replay: true },
+  ])(
+    'PUI-549-REVIEW-INDEPENDENT-ID-WRITER: dependent present=$present, replay before delivery=$replay',
+    async ({ present, replay }) => {
       const doc = document.implementation.createHTMLDocument('part-id-writer');
       const target = doc.createElement('div'),
         source = doc.createElement('button');
@@ -1192,6 +1201,7 @@ describe('part-relationship identity observation ownership', () => {
         const id = target.id;
         await flush();
         writer({ ...semanticSnapshot(createA11ySemanticObjectRef()), id: 'independent-id' });
+        if (replay) generator({ ...semanticSnapshot(ref), viewEpoch: 1, states: { busy: true } });
         expect(source.hasAttribute('aria-controls')).toBe(false);
         await flush();
         expect(target.id).toBe('independent-id');

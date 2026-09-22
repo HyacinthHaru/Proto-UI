@@ -165,19 +165,7 @@ export function createWebA11yProjectionRegistry(
           if (!owner.snapshot || owner.disposed || owner.detached) continue;
           // Host ID writes and duplicate IDs outside the relationship are
           // host facts, not protocol State changes. Recheck before the next paint.
-          if ((owner.target?.id || null) !== owner.lastTargetId) {
-            const target = owner.target!;
-            const current = target.getAttribute('id');
-            const scalar = scalarAttributeRefs.get(target)?.get('id');
-            if (
-              (ownedWrites.has(target) && ownedWrites.get(target) === current) ||
-              (scalar && scalar.projectedValue === current)
-            ) {
-              owner.lastTargetId = target.id || null;
-            } else {
-              reconcileHostId(owner);
-            }
-          }
+          reconcileIdentityChange(owner, ownedWrites);
           if (owner.objectRef) refs.add(owner.objectRef);
         }
         reconcileDependents(refs);
@@ -671,6 +659,23 @@ export function createWebA11yProjectionRegistry(
     record.lastTargetId = id;
   };
 
+  const reconcileIdentityChange = (
+    record: WebProjectorRecord,
+    ownedWrites: Pick<WeakMap<HTMLElement, string | null>, 'has' | 'get'>
+  ): boolean => {
+    const target = record.target;
+    if (!target || (target.id || null) === record.lastTargetId) return false;
+    const current = target.getAttribute('id');
+    const scalar = scalarAttributeRefs.get(target)?.get('id');
+    if (
+      (ownedWrites.has(target) && ownedWrites.get(target) === current) ||
+      (scalar && scalar.projectedValue === current)
+    ) {
+      record.lastTargetId = target.id || null;
+    } else reconcileHostId(record);
+    return true;
+  };
+
   const update = (
     record: WebProjectorRecord,
     snapshot: A11ySemanticObjectSnapshot,
@@ -697,10 +702,20 @@ export function createWebA11yProjectionRegistry(
     }
     const previousSnapshot = record.snapshot;
     const previousRef = record.objectRef;
-    const previousTargetId = record.lastTargetId;
     const bindingReplaced = targetChanged || documentChanged || refChanged;
+    // State can project again before MutationObserver delivery. Classify the
+    // current identity before replaying scalars or selecting a reservation.
+    const identityChanged =
+      !bindingReplaced &&
+      !reactivating &&
+      snapshot.viewEpoch !== undefined &&
+      reconcileIdentityChange(record, pendingIdWrites);
+    const previousTargetId = record.lastTargetId;
     const structuredChanged =
-      forceStructured || bindingReplaced || structuredRelationsChanged(previousSnapshot, snapshot);
+      forceStructured ||
+      bindingReplaced ||
+      identityChanged ||
+      structuredRelationsChanged(previousSnapshot, snapshot);
 
     const releasedIdRefs = releaseScalarAttributes(record);
     if (bindingReplaced) {
@@ -793,6 +808,7 @@ export function createWebA11yProjectionRegistry(
     const bindingChanged =
       forceStructured ||
       bindingReplaced ||
+      identityChanged ||
       currentTargetId !== previousTargetId ||
       previousSnapshot?.viewEpoch !== snapshot.viewEpoch;
     record.lastTargetId = currentTargetId;
