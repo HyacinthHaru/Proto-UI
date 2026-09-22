@@ -105,6 +105,39 @@ impl Window {
             .expect("the view drains")
     }
 
+    /// The sample a session was sent for a key press, from the outbox.
+    fn key_sample(&mut self, session: &str, key: &str) -> String {
+        self.outbox()
+            .into_iter()
+            .find_map(|message| match message {
+                HostToPeerMessage::InputSample(input)
+                    if input.session_id == session
+                        && input.sample.kind == "key.down"
+                        && input.sample.key.as_deref() == Some(key) =>
+                {
+                    Some(input.sample.sample_id)
+                }
+                _ => None,
+            })
+            .expect("the key was sent to the session")
+    }
+
+    /// The peer asks the host not to run a sample's default action. Returns
+    /// what the hub noted.
+    fn prevent(&mut self, session: &str, sample_id: &str) -> Vec<HubNote> {
+        let prevent: PeerToHostMessage = serde_json::from_value(json!({
+            "kind": "default-action.prevent",
+            "request": { "sessionId": session, "sampleId": sample_id, "reason": "test" },
+        }))
+        .expect("a prevention");
+        self.window
+            .update(&mut self.cx, |view, window, cx| {
+                view.receive(prevent, window, cx);
+                view.take_notes()
+            })
+            .expect("the view receives")
+    }
+
     /// Presses a key and returns the sessions told they gained focus.
     fn press(&mut self, keystroke: &str) -> Vec<String> {
         self.cx.simulate_keystrokes(keystroke);
@@ -136,37 +169,39 @@ fn a_prevention_that_arrives_after_tab_moved_focus_is_late(cx: &mut TestAppConte
     window.cx.simulate_keystrokes("tab");
     window.draw();
     // The Tab reached the Button's global key lease before focus moved.
-    let tab = window
-        .outbox()
-        .into_iter()
-        .find_map(|message| match message {
-            HostToPeerMessage::InputSample(input)
-                if input.session_id == ENABLED
-                    && input.sample.kind == "key.down"
-                    && input.sample.key.as_deref() == Some("Tab") =>
-            {
-                Some(input.sample.sample_id)
-            }
-            _ => None,
-        })
-        .expect("the Tab was sent to the Button");
+    let tab = window.key_sample(ENABLED, "Tab");
 
-    let prevent: PeerToHostMessage = serde_json::from_value(json!({
-        "kind": "default-action.prevent",
-        "request": { "sessionId": ENABLED, "sampleId": tab, "reason": "test" },
-    }))
-    .expect("a prevention");
-    let notes = window
-        .window
-        .update(&mut window.cx, |view, window, cx| {
-            view.receive(prevent, window, cx);
-            view.take_notes()
-        })
-        .expect("the view receives");
+    let notes = window.prevent(ENABLED, &tab);
     assert!(notes.contains(&HubNote::LatePrevention {
         session_id: ENABLED.into(),
         sample_id: tab,
     }));
+}
+
+#[gpui::test]
+fn a_prevention_stays_late_however_much_input_follows_it(cx: &mut TestAppContext) {
+    let mut window = Window::open(cx);
+    window.cx.simulate_keystrokes("a");
+    let letter = window.key_sample(ENABLED, "a");
+    window.cx.simulate_keystrokes("tab");
+    window.draw();
+    let tab = window.key_sample(ENABLED, "Tab");
+    // Far more Tab presses than any peer lags behind, each running its
+    // default action, before the peer answers the first two presses.
+    for _ in 0..100 {
+        window.press("tab");
+    }
+
+    let notes = window.prevent(ENABLED, &tab);
+    assert!(notes.contains(&HubNote::LatePrevention {
+        session_id: ENABLED.into(),
+        sample_id: tab,
+    }));
+    // A key with no default action is still in time.
+    let notes = window.prevent(ENABLED, &letter);
+    assert!(!notes
+        .iter()
+        .any(|note| matches!(note, HubNote::LatePrevention { .. })));
 }
 
 #[gpui::test]

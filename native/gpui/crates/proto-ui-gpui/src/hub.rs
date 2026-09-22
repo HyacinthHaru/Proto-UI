@@ -24,7 +24,7 @@ use proto_ui_host_protocol::model::{
 };
 use proto_ui_host_protocol::wire::{
     A11ySnapshotWire, HostDiagnostic, InputSample, InstanceId, ProjectionAck, ProjectionAckStatus,
-    ProjectionTransaction, SessionId,
+    ProjectionTransaction, SampleId, SessionId,
 };
 use proto_ui_style::length::LengthContext;
 use proto_ui_style::Theme;
@@ -72,6 +72,10 @@ struct HubSession {
     focus_programmatic: bool,
     /// The Expose states as the peer last reported them.
     states: WireRecord,
+    /// Delivered samples whose host default action already ran, until a
+    /// prevention decides them. A prevention for one of them is late
+    /// whenever it arrives.
+    default_ran: HashSet<SampleId>,
 }
 
 /// A signal an instance emitted outward, for the host application.
@@ -301,6 +305,7 @@ impl ProtoHostView {
                 feedback: StyleRefinement::default(),
                 focus_programmatic: false,
                 states: WireRecord::new(),
+                default_ran: HashSet::new(),
             },
         ));
     }
@@ -391,10 +396,7 @@ impl ProtoHostView {
                 };
                 // The only default action this host runs is Tab's, and it
                 // runs at once; a prevention for any other input is in time.
-                let in_time = !self
-                    .bridge
-                    .borrow()
-                    .default_already_ran(&prevent.request.sample_id);
+                let in_time = !session.default_ran.remove(&prevent.request.sample_id);
                 let status = session
                     .model
                     .request_default_action_prevention(&prevent.request, in_time);
@@ -565,6 +567,9 @@ impl ProtoHostView {
             };
             match session.model.deliver(&routed.sample) {
                 DeliveryResult::Delivered { lease_ids } => {
+                    if routed.default_ran {
+                        session.default_ran.insert(routed.sample.sample_id.clone());
+                    }
                     self.hub
                         .outbox
                         .push(HostToPeerMessage::InputSample(InputSampleMessage {

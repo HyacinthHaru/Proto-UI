@@ -215,6 +215,9 @@ impl SessionRoute {
 pub struct Routed {
     pub session_id: SessionId,
     pub sample: InputSample,
+    /// Whether the host already ran its own default action for the input.
+    /// The router runs none; the host marks the input it acts on.
+    pub default_ran: bool,
 }
 
 struct SessionState {
@@ -683,6 +686,7 @@ impl Routing {
                         shift_key: modifiers.map(|modifiers| modifiers.shift),
                         repeat,
                     },
+                    default_ran: false,
                 }
             })
             .collect()
