@@ -96,7 +96,12 @@ export type InstallOptions = {
 export type HostSessionModel = {
   readonly sessionId: SessionId;
   installProjection(transaction: ProjectionTransaction, options?: InstallOptions): ProjectionAck;
-  activate(viewEpoch: ViewEpoch): ActivationResult;
+  /**
+   * Activation is commit-qualified. A projection is installed inactive and
+   * only the exact commit that was acknowledged may be activated, so a
+   * delayed activation cannot make a newer projection live.
+   */
+  activate(viewEpoch: ViewEpoch, commitId: CommitId): ActivationResult;
   releaseLeases(leaseIds: readonly LeaseId[]): ReleaseResult;
   deliver(sample: InputSample): DeliveryResult;
   requestDefaultActionPrevention(
@@ -325,10 +330,15 @@ export function createHostSessionModel(sessionId: SessionId): HostSessionModel {
       return ack(transaction, 'applied', [], [PROTO_SURFACE, ...slots]);
     },
 
-    activate(viewEpoch) {
+    activate(viewEpoch, commitId) {
       if (phase === 'disposed') return { status: 'disposed' };
       if (currentEpoch === null || viewEpoch > currentEpoch) return { status: 'not-installed' };
       if (viewEpoch < currentEpoch) return { status: 'stale' };
+      // Same epoch: only the installed commit may be activated. Without this
+      // a late activation for an earlier commit would activate the current
+      // commit's leases, including ones the earlier commit never saw.
+      if (currentCommit === null || commitId > currentCommit) return { status: 'not-installed' };
+      if (commitId < currentCommit) return { status: 'stale' };
       const currentLeases = liveLeases().filter((lease) => lease.commitId === currentCommit);
       if (activeEpoch === viewEpoch && currentLeases.every((lease) => lease.active)) {
         return { status: 'already-active' };

@@ -105,16 +105,16 @@ describe('host session model: install inactive, then activate', () => {
 
     expect(model.deliver(sample())).toEqual({ status: 'rejected', reason: 'inactive-epoch' });
 
-    expect(model.activate(1)).toEqual({ status: 'activated' });
+    expect(model.activate(1, 1)).toEqual({ status: 'activated' });
     expect(model.deliver(sample())).toEqual({ status: 'delivered', leaseIds: ['lease-a'] });
-    expect(model.activate(1)).toEqual({ status: 'already-active' });
-    expect(model.activate(2)).toEqual({ status: 'not-installed' });
+    expect(model.activate(1, 1)).toEqual({ status: 'already-active' });
+    expect(model.activate(2, 1)).toEqual({ status: 'not-installed' });
   });
 
   it('delivers only to active leases whose registered type matches the sample', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
-    model.activate(1);
+    model.activate(1, 1);
 
     expect(model.deliver(sample({ leaseIds: ['lease-b'] }))).toEqual({
       status: 'rejected',
@@ -132,7 +132,7 @@ describe('host session model: stale rejection, pruning, retained state', () => {
   it('rejects older epochs and commits without touching installed state', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
-    model.activate(1);
+    model.activate(1, 1);
     expect(
       model.installProjection(
         transaction({
@@ -167,7 +167,7 @@ describe('host session model: stale rejection, pruning, retained state', () => {
   it('a newer commit in the same epoch carries live leases, prunes dropped ones, and installs new ones inactive', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
-    model.activate(1);
+    model.activate(1, 1);
 
     const next = model.installProjection(
       transaction({
@@ -200,20 +200,20 @@ describe('host session model: stale rejection, pruning, retained state', () => {
       status: 'rejected',
       reason: 'no-active-lease',
     });
-    expect(model.activate(1)).toEqual({ status: 'activated' });
+    expect(model.activate(1, 2)).toEqual({ status: 'activated' });
     expect(
       model.deliver(sample({ sampleId: 'sample-3', leaseIds: ['lease-b', 'lease-c'] }))
     ).toEqual({
       status: 'delivered',
       leaseIds: ['lease-c'],
     });
-    expect(model.activate(1)).toEqual({ status: 'already-active' });
+    expect(model.activate(1, 2)).toEqual({ status: 'already-active' });
   });
 
   it('a new epoch prunes the old epoch and rejects its late samples', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
-    model.activate(1);
+    model.activate(1, 1);
     model.installProjection(
       transaction({
         viewEpoch: 2,
@@ -221,7 +221,7 @@ describe('host session model: stale rejection, pruning, retained state', () => {
         events: { registrations: [registration('lease-c')] },
       })
     );
-    model.activate(2);
+    model.activate(2, 1);
 
     expect(model.snapshot().leases.find((lease) => lease.leaseId === 'lease-a')?.released).toBe(
       true
@@ -269,7 +269,7 @@ describe('host session model: transactional plans and lease release', () => {
   it('installs nothing when any allocation fails and keeps the previous epoch current', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
-    model.activate(1);
+    model.activate(1, 1);
 
     const failed = model.installProjection(
       transaction({
@@ -343,7 +343,7 @@ describe('host session model: transactional plans and lease release', () => {
   it('releases leases idempotently and gates delivery immediately', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
-    model.activate(1);
+    model.activate(1, 1);
 
     expect(model.releaseLeases(['lease-a', 'lease-missing'])).toEqual({
       released: ['lease-a'],
@@ -369,7 +369,7 @@ describe('host session model: sample identity and default action', () => {
   it('deduplicates sample identity and bounds default-action decisions to one window', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
-    model.activate(1);
+    model.activate(1, 1);
 
     expect(model.deliver(sample())).toEqual({ status: 'delivered', leaseIds: ['lease-a'] });
     expect(model.deliver(sample())).toEqual({ status: 'rejected', reason: 'duplicate-sample' });
@@ -413,7 +413,7 @@ describe('host session model: terminal disposal', () => {
   it('releases every lease exactly once and rejects every later message', () => {
     const model = createHostSessionModel(SESSION);
     model.installProjection(transaction());
-    model.activate(1);
+    model.activate(1, 1);
     model.deliver(sample());
 
     expect(model.dispose()).toEqual({
@@ -430,7 +430,7 @@ describe('host session model: terminal disposal', () => {
     const late = model.installProjection(transaction({ viewEpoch: 2, commitId: 1 }));
     expect(late.status).toBe('failed');
     expect(late.diagnostics[0]?.code).toBe('session-disposed');
-    expect(model.activate(1)).toEqual({ status: 'disposed' });
+    expect(model.activate(1, 1)).toEqual({ status: 'disposed' });
     expect(model.deliver(sample({ sampleId: 'sample-3' }))).toEqual({
       status: 'rejected',
       reason: 'disposed',
@@ -485,5 +485,76 @@ describe('host session model: malformed plans stay bounded', () => {
       expect(model.snapshot().leases, label).toEqual([]);
       expect(model.snapshot().currentEpoch, label).toBeNull();
     }
+  });
+});
+
+describe('host session model: activation is commit-qualified', () => {
+  it('a delayed activation for an earlier commit cannot activate the current one', () => {
+    const model = createHostSessionModel(SESSION);
+    model.installProjection(transaction());
+    // A second commit lands in the same epoch before the peer's activation for
+    // the first one arrives. It carries lease-a and adds lease-c.
+    expect(
+      model.installProjection(
+        transaction({
+          commitId: 2,
+          events: { registrations: [registration('lease-a'), registration('lease-c', 'key.down')] },
+        })
+      ).status
+    ).toBe('applied');
+
+    // The late activation names commit 1. It must not make commit 2 live.
+    expect(model.activate(1, 1)).toEqual({ status: 'stale' });
+    expect(model.snapshot().leases.filter((lease) => lease.active)).toEqual([]);
+    expect(model.snapshot().activeEpoch).toBeNull();
+    expect(model.deliver(sample())).toEqual({ status: 'rejected', reason: 'inactive-epoch' });
+
+    // Activation for the exact installed commit still succeeds.
+    expect(model.activate(1, 2)).toEqual({ status: 'activated' });
+    expect(
+      model
+        .snapshot()
+        .leases.filter((lease) => lease.active)
+        .map((lease) => lease.leaseId)
+    ).toEqual(['lease-a', 'lease-c']);
+  });
+
+  it('an activation for a commit that was never installed is not installed', () => {
+    const model = createHostSessionModel(SESSION);
+    model.installProjection(transaction());
+
+    expect(model.activate(1, 2)).toEqual({ status: 'not-installed' });
+    expect(model.activate(2, 1)).toEqual({ status: 'not-installed' });
+    expect(model.snapshot().activeEpoch).toBeNull();
+    expect(model.activate(1, 1)).toEqual({ status: 'activated' });
+  });
+
+  it('keeps an epoch activated across a same-epoch commit only for the leases that commit installed', () => {
+    const model = createHostSessionModel(SESSION);
+    model.installProjection(transaction());
+    model.activate(1, 1);
+    expect(model.deliver(sample())).toEqual({ status: 'delivered', leaseIds: ['lease-a'] });
+
+    model.installProjection(
+      transaction({
+        commitId: 2,
+        events: { registrations: [registration('lease-a'), registration('lease-c', 'key.down')] },
+      })
+    );
+    // The carried lease keeps delivering; the new one waits for the activation
+    // of its own commit rather than inheriting the previous one.
+    expect(model.deliver(sample({ sampleId: 'sample-2' }))).toEqual({
+      status: 'delivered',
+      leaseIds: ['lease-a'],
+    });
+    expect(
+      model.deliver(sample({ sampleId: 'sample-3', type: 'key.down', leaseIds: ['lease-c'] }))
+    ).toEqual({ status: 'rejected', reason: 'no-active-lease' });
+
+    expect(model.activate(1, 1)).toEqual({ status: 'stale' });
+    expect(model.activate(1, 2)).toEqual({ status: 'activated' });
+    expect(
+      model.deliver(sample({ sampleId: 'sample-4', type: 'key.down', leaseIds: ['lease-c'] }))
+    ).toEqual({ status: 'delivered', leaseIds: ['lease-c'] });
   });
 });
