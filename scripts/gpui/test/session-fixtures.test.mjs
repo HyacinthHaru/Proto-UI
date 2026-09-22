@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const SCRIPT = path.join(ROOT, 'scripts/gpui/generate-session-fixtures.mts');
 const FIXTURES = path.join(ROOT, 'native/gpui/fixtures');
-const FILES = ['base-button-session.json', 'base-toggle-session.json'];
+const FILES = ['base-button-session.json', 'base-toggle-session.json', 'base-switch-session.json'];
 const TSX = path.join(ROOT, 'node_modules/.bin/tsx');
 
 function runCheck(dir = FIXTURES) {
@@ -39,6 +39,10 @@ test('the committed recordings are current', () => {
   assert.match(
     result.stdout,
     /base-toggle-session\.json is current \(inactive: \d+ messages, active: \d+ messages, disabled: \d+ messages\)/
+  );
+  assert.match(
+    result.stdout,
+    /base-switch-session\.json is current \(root: \d+ messages, thumb: \d+ messages\)/
   );
 });
 

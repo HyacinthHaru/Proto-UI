@@ -21,10 +21,11 @@ import { fileURLToPath } from 'node:url';
 
 import type { Prototype } from '@proto.ui/core';
 import button from '@proto.ui/prototypes-base/button';
+import { switchRoot, switchThumb } from '@proto.ui/prototypes-base/switch';
 import toggle from '@proto.ui/prototypes-base/toggle';
 import type { PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
 
-import { createPeerSession } from '../../packages/adapters/gpui-peer/src/session';
+import { createPeerSession, type PeerSession } from '../../packages/adapters/gpui-peer/src/session';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const DEFAULT_DIR = path.join(ROOT, 'native/gpui/fixtures');
@@ -32,13 +33,20 @@ const DEFAULT_DIR = path.join(ROOT, 'native/gpui/fixtures');
 /** The surface the peer waits for before it treats its focus target as ready. */
 const READY_SURFACE = 'proto-surface';
 
+type SessionSpec = {
+  readonly id: string;
+  readonly prototype: Prototype<any>;
+  readonly props: WireRecord;
+  /** The session, by name, that this one opens inside. It is recorded first. */
+  readonly parent?: string;
+};
+
 type Recording = {
   readonly file: string;
   readonly name: string;
   readonly module: string;
-  readonly prototype: Prototype<any>;
-  /** Each session's id and the props it opens with, by the name tests use. */
-  readonly sessions: { readonly [name: string]: readonly [sessionId: string, WireRecord] };
+  /** Each session, by the name tests use, in the order they open. */
+  readonly sessions: { readonly [name: string]: SessionSpec };
 };
 
 const RECORDINGS: readonly Recording[] = [
@@ -46,38 +54,49 @@ const RECORDINGS: readonly Recording[] = [
     file: 'base-button-session.json',
     name: 'Base Button',
     module: '@proto.ui/prototypes-base/button',
-    prototype: button,
     sessions: {
-      enabled: ['button-enabled', {}],
-      disabled: ['button-disabled', { disabled: true }],
+      enabled: { id: 'button-enabled', prototype: button, props: {} },
+      disabled: { id: 'button-disabled', prototype: button, props: { disabled: true } },
     },
   },
   {
     file: 'base-toggle-session.json',
     name: 'Base Toggle',
     module: '@proto.ui/prototypes-base/toggle',
-    prototype: toggle,
     sessions: {
-      inactive: ['toggle-inactive', {}],
-      active: ['toggle-active', { defaultActive: true }],
-      disabled: ['toggle-disabled', { disabled: true }],
+      inactive: { id: 'toggle-inactive', prototype: toggle, props: {} },
+      active: { id: 'toggle-active', prototype: toggle, props: { defaultActive: true } },
+      disabled: { id: 'toggle-disabled', prototype: toggle, props: { disabled: true } },
+    },
+  },
+  {
+    file: 'base-switch-session.json',
+    name: 'Base Switch',
+    module: '@proto.ui/prototypes-base/switch',
+    sessions: {
+      root: { id: 'switch-root', prototype: switchRoot, props: {} },
+      thumb: { id: 'switch-thumb', prototype: switchThumb, props: {}, parent: 'root' },
     },
   },
 ];
 
-/** Runs one session to its first activation and returns everything the peer sent. */
+/**
+ * Runs one session to its first activation and returns everything the peer
+ * sent, with the session itself for any that open inside it.
+ */
 async function record(
-  prototype: Prototype<any>,
-  sessionId: string,
-  props: WireRecord
-): Promise<PeerToHostMessage[]> {
+  spec: SessionSpec,
+  parent: PeerSession | undefined
+): Promise<{ sent: PeerToHostMessage[]; peer: PeerSession }> {
+  const sessionId = spec.id;
   const sent: PeerToHostMessage[] = [];
   const pending: Array<() => void> = [];
-  const peer = createPeerSession({
+  const peer: PeerSession = createPeerSession({
     sessionId,
     instanceId: `${sessionId}:instance`,
-    prototype,
-    props,
+    prototype: spec.prototype,
+    props: spec.props,
+    parent,
     send: (message) => {
       sent.push(message);
       if (message.kind !== 'projection.install') return;
@@ -101,7 +120,7 @@ async function record(
   });
   await peer.mount();
   while (pending.length > 0) pending.shift()!();
-  return sent;
+  return { sent, peer };
 }
 
 function optionPath(argv: readonly string[], flag: string, fallback: string): string {
@@ -135,8 +154,15 @@ export async function main(argv: readonly string[] = process.argv.slice(2)): Pro
   const dir = optionPath(argv, '--dir', DEFAULT_DIR);
   for (const recording of RECORDINGS) {
     const sessions: { [name: string]: PeerToHostMessage[] } = {};
-    for (const [name, [sessionId, props]] of Object.entries(recording.sessions)) {
-      sessions[name] = await record(recording.prototype, sessionId, props);
+    const opened: { [name: string]: PeerSession } = {};
+    for (const [name, spec] of Object.entries(recording.sessions)) {
+      const parent = spec.parent === undefined ? undefined : opened[spec.parent];
+      if (spec.parent !== undefined && !parent) {
+        throw new Error(`${recording.name}: ${name} opens inside ${spec.parent}, recorded later`);
+      }
+      const { sent, peer } = await record(spec, parent);
+      sessions[name] = sent;
+      opened[name] = peer;
     }
     const fixture = {
       note:
