@@ -12,7 +12,7 @@
 
 mod t0;
 
-use gpui::{TestAppContext, Toggled};
+use gpui::{Modifiers, MouseButton, TestAppContext, Toggled};
 use proto_ui_gpui::hub::ExposedSignal;
 use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
 use serde_json::{json, Value};
@@ -165,4 +165,38 @@ fn space_and_enter_flip_the_focused_toggle(cx: &mut TestAppContext) {
         *fixture.heard.borrow(),
         [active_change(true), active_change(false)]
     );
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn hover_and_press_are_transient_and_disabling_clears_them(cx: &mut TestAppContext) {
+    let mut fixture = Fixture::start(cx, toggle(json!({ "defaultActive": true })));
+    let on = Fixture::at(ON_ROOT);
+    fixture
+        .cx
+        .simulate_mouse_move(on, None, Modifiers::default());
+    fixture.state_becomes("hovered", json!(true));
+    fixture
+        .cx
+        .simulate_mouse_down(on, MouseButton::Left, Modifiers::default());
+    fixture.state_becomes("pressed", json!(true));
+
+    // Disabled mid-press: the transient states clear, and `active` does not
+    // move, because disabling is not an activation.
+    fixture.with_view(|view| view.set_props(SESSION, props(json!({ "disabled": true }))));
+    fixture.state_becomes("disabled", json!(true));
+    fixture.settle();
+    assert_eq!(exposed(&mut fixture, "hovered"), Some(json!(false)));
+    assert_eq!(exposed(&mut fixture, "pressed"), Some(json!(false)));
+    assert_eq!(exposed(&mut fixture, "active"), Some(json!(true)));
+
+    // The release completes the click the press began, and the disabled
+    // Toggle declines it.
+    fixture
+        .cx
+        .simulate_mouse_up(on, MouseButton::Left, Modifiers::default());
+    fixture.settle();
+    assert!(fixture.heard.borrow().is_empty());
+    assert_eq!(exposed(&mut fixture, "active"), Some(json!(true)));
+    assert_eq!(toggled(&mut fixture), Some(Toggled::True));
 }
