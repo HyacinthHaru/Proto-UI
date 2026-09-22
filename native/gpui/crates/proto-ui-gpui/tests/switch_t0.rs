@@ -5,7 +5,8 @@
 //! The peer links them: the thumb subscribes to the root's context, and the
 //! root reports itself a trigger. The evidence is what both instances report
 //! back: the root's `checked` state and `checkedChange` event, and the
-//! thumb's `checked` state, which it only learns through context.
+//! thumb's `checked` state, which it only learns through context. When the
+//! root ends, the thumb ends first.
 //!
 //! Ignored by default because it starts Node and needs the repository's
 //! `node_modules` (`pnpm install`). The `rust-interop` CI job installs both
@@ -19,7 +20,7 @@ use gpui::prelude::*;
 use gpui::{div, px, StyleRefinement, TestAppContext};
 use proto_ui_gpui::host::SurfaceChild;
 use proto_ui_gpui::hub::ExposedSignal;
-use proto_ui_host_protocol::messages::WireRecord;
+use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
 use serde_json::{json, Value};
 use t0::{Fixture, Session};
 
@@ -98,4 +99,31 @@ fn the_thumb_follows_a_checked_state_its_owner_sets(cx: &mut TestAppContext) {
     // Set from outside, not activated: nothing is announced.
     fixture.settle();
     assert!(fixture.heard.borrow().is_empty());
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn ending_the_root_ends_its_thumb_first(cx: &mut TestAppContext) {
+    let mut fixture = Fixture::start_all(cx, switch(json!({})));
+
+    fixture.with_view(|view| view.dispose_session(ROOT));
+    let seen = fixture.pump_until(|message| {
+        matches!(message, PeerToHostMessage::SessionDisposed(ended) if ended.session_id == ROOT)
+    });
+    let ended: Vec<&str> = seen
+        .iter()
+        .filter_map(|message| match message {
+            PeerToHostMessage::SessionDisposed(ended) => Some(ended.session_id.as_str()),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(ended, [THUMB, ROOT]);
+    assert!(fixture
+        .with_view(|view| view.rendered_sessions())
+        .is_empty());
+    // Nothing was left for the host to end on the peer's behalf.
+    assert!(!fixture
+        .with_view(|view| view.take_outbox())
+        .iter()
+        .any(|message| matches!(message, HostToPeerMessage::SessionDispose(_))));
 }

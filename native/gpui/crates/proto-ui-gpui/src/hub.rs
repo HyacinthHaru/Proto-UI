@@ -147,6 +147,27 @@ impl HostHub {
             .find(|(id, _)| id == session_id)
             .map(|(_, session)| session)
     }
+
+    /// Every session opened inside `session_id`, directly or not, each one
+    /// before the session it was opened inside.
+    fn opened_inside(&self, session_id: &str) -> Vec<SessionId> {
+        let mut found: Vec<SessionId> = Vec::new();
+        let mut pending = vec![session_id.to_string()];
+        while let Some(outer) = pending.pop() {
+            for (id, session) in &self.sessions {
+                if session.config.parent.as_deref() == Some(outer.as_str())
+                    && id != session_id
+                    && !found.contains(id)
+                {
+                    found.push(id.clone());
+                    pending.push(id.clone());
+                }
+            }
+        }
+        // A session is found only after the one it was opened inside.
+        found.reverse();
+        found
+    }
 }
 
 /// Replaces each session placed beneath `surface` with that session's
@@ -290,8 +311,9 @@ impl ProtoHostView {
         call_id
     }
 
-    /// Asks the peer to end a session. Its surfaces stay until the peer
-    /// reports `session.disposed`, which is when the host tears them down.
+    /// Asks the peer to end a session, and before it every session opened
+    /// inside it. Their surfaces stay until the peer reports each one
+    /// `session.disposed`, which is when the host tears it down.
     pub fn dispose_session(&mut self, session_id: &str) {
         self.hub
             .outbox
@@ -421,19 +443,24 @@ impl ProtoHostView {
                 }
             }
             PeerToHostMessage::SessionDisposed(disposed) => {
-                if let Some(index) = self
-                    .hub
-                    .sessions
-                    .iter()
-                    .position(|(id, _)| *id == disposed.session_id)
-                {
-                    let (_, mut session) = self.hub.sessions.remove(index);
-                    session.model.dispose();
-                    self.bridge
-                        .borrow_mut()
-                        .remove_session(&disposed.session_id);
-                    self.publish_surfaces(window, cx);
+                if self.hub.session(&disposed.session_id).is_none() {
+                    return;
                 }
+                // No instance outlives the one it belongs to. The peer reports
+                // the sessions opened inside this one ended first; any it has
+                // not, the host ends here and asks the peer to end as well.
+                let inside = self.hub.opened_inside(&disposed.session_id);
+                for session_id in &inside {
+                    self.hub
+                        .outbox
+                        .push(HostToPeerMessage::SessionDispose(SessionDispose {
+                            session_id: session_id.clone(),
+                        }));
+                }
+                for session_id in inside.iter().chain([&disposed.session_id]) {
+                    self.end_session(session_id);
+                }
+                self.publish_surfaces(window, cx);
             }
             PeerToHostMessage::Diagnostic(message) => {
                 self.hub.notes.push(HubNote::PeerDiagnostic {
@@ -512,6 +539,35 @@ impl ProtoHostView {
     /// What a session's root reports to accessibility.
     pub fn a11y_projection(&self, session_id: &str) -> Option<&A11yProjection> {
         self.hub.session(session_id)?.projection.as_ref()
+    }
+
+    /// The sessions whose surfaces the view renders, in document order.
+    pub fn rendered_sessions(&self) -> Vec<SessionId> {
+        let mut sessions: Vec<SessionId> = Vec::new();
+        let mut pending: Vec<&SurfaceNode> = self.surfaces.iter().rev().collect();
+        while let Some(surface) = pending.pop() {
+            if !sessions.contains(&surface.session) {
+                sessions.push(surface.session.clone());
+            }
+            let children: Vec<&SurfaceNode> = surface.child_surfaces().collect();
+            pending.extend(children.into_iter().rev());
+        }
+        sessions
+    }
+
+    /// Forgets a session: its model, its surfaces and its route.
+    fn end_session(&mut self, session_id: &str) {
+        let Some(index) = self
+            .hub
+            .sessions
+            .iter()
+            .position(|(id, _)| id == session_id)
+        else {
+            return;
+        };
+        let (_, mut session) = self.hub.sessions.remove(index);
+        session.model.dispose();
+        self.bridge.borrow_mut().remove_session(session_id);
     }
 
     /// Validates, installs and renders one projection.

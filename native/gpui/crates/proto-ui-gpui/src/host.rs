@@ -165,6 +165,11 @@ impl InputBridge {
         self.trigger_anchor.remove(session_id);
     }
 
+    /// The session anchoring a trigger's group, if the session is a trigger.
+    pub fn trigger_anchor(&self, session_id: &str) -> Option<&SessionId> {
+        self.trigger_anchor.get(session_id)
+    }
+
     /// Records whether a session is a trigger, and which session anchors its
     /// group if it is.
     pub fn set_trigger_anchor(&mut self, session_id: &str, anchor: Option<SessionId>) {

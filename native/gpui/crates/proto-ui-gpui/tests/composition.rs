@@ -4,8 +4,8 @@
 //! The host decides where an instance renders: the root places the thumb in
 //! its slot. The peer decides who it belongs to: the thumb opens inside the
 //! root, and the root reports itself a trigger. These cases check the host's
-//! half of that: the thumb renders inside the root, and a click on it belongs
-//! to the root.
+//! half of that: the thumb renders inside the root, a click on it belongs to
+//! the root, and the thumb ends no later than the root it belongs to.
 //!
 //! Layout, in window coordinates:
 //!
@@ -27,8 +27,10 @@ use gpui::{
 };
 use proto_ui_gpui::host::{InputBridge, ProtoHostView, SurfaceChild};
 use proto_ui_gpui::hub::SessionConfig;
-use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
-use serde_json::Value;
+use proto_ui_host_protocol::messages::{
+    HostToPeerMessage, PeerToHostMessage, SessionDisposed, WireRecord,
+};
+use serde_json::{json, Value};
 
 const ROOT: &str = "switch-root";
 const THUMB: &str = "switch-thumb";
@@ -79,16 +81,24 @@ fn sized(width: f32, height: f32) -> StyleRefinement {
     element.style().clone()
 }
 
+fn ended(session: &str) -> PeerToHostMessage {
+    PeerToHostMessage::SessionDisposed(SessionDisposed {
+        session_id: session.into(),
+    })
+}
+
 struct Composed {
     window: WindowHandle<ProtoHostView>,
     cx: VisualTestContext,
+    bridge: Rc<RefCell<InputBridge>>,
 }
 
 impl Composed {
     fn open(cx: &mut TestAppContext) -> Self {
         let bridge = Rc::new(RefCell::new(InputBridge::new()));
+        let shared = bridge.clone();
         let window = cx.open_window(size(px(300.), px(100.)), move |window, cx| {
-            let mut view = ProtoHostView::new(bridge, Vec::new(), window, cx);
+            let mut view = ProtoHostView::new(shared, Vec::new(), window, cx);
             window.focus(view.focus_handle(), cx);
             view.open_session(
                 ROOT,
@@ -128,6 +138,7 @@ impl Composed {
         let mut composed = Self {
             window,
             cx: VisualTestContext::from_window(AnyWindowHandle::from(window), cx),
+            bridge,
         };
         composed.draw();
         composed
@@ -152,6 +163,31 @@ impl Composed {
         self.window
             .update(&mut self.cx, |view, _, _| view.take_outbox())
             .expect("the view drains")
+    }
+
+    /// The sessions the host asks the peer to end, from the outbox.
+    fn ends_requested(&mut self) -> Vec<String> {
+        self.outbox()
+            .into_iter()
+            .filter_map(|message| match message {
+                HostToPeerMessage::SessionDispose(dispose) => Some(dispose.session_id),
+                _ => None,
+            })
+            .collect()
+    }
+
+    fn rendered(&mut self) -> Vec<String> {
+        self.window
+            .update(&mut self.cx, |view, _, _| view.rendered_sessions())
+            .expect("the view reads")
+    }
+
+    fn is_open(&mut self, session: &str) -> bool {
+        self.window
+            .update(&mut self.cx, |view, _, _| {
+                view.exposed_states(session).is_some()
+            })
+            .expect("the view reads")
     }
 
     /// `(session, leases)` for each commit a click at `at` sends the peer.
@@ -232,4 +268,65 @@ fn without_its_trigger_plan_the_root_would_lose_the_thumbs_clicks(cx: &mut TestA
         composed.commits_on_click(ON_ROOT_ONLY),
         [(ROOT.to_string(), root_commit_leases())]
     );
+}
+
+#[gpui::test]
+fn ending_the_root_ends_its_thumb_first(cx: &mut TestAppContext) {
+    let mut composed = Composed::open(cx);
+    composed.receive(peer(recorded("root")));
+    composed.receive(peer(recorded("thumb")));
+    assert_eq!(composed.rendered(), [ROOT, THUMB]);
+    composed.outbox();
+
+    composed
+        .window
+        .update(&mut composed.cx, |view, _, _| view.dispose_session(ROOT))
+        .expect("the view disposes");
+    // One request: the peer ends the thumb first, and reports it first.
+    assert_eq!(composed.ends_requested(), [ROOT]);
+    composed.receive(vec![ended(THUMB)]);
+    assert_eq!(composed.rendered(), [ROOT]);
+    composed.receive(vec![ended(ROOT)]);
+    assert!(composed.rendered().is_empty());
+    assert!(composed.ends_requested().is_empty());
+}
+
+#[gpui::test]
+fn a_root_reported_ended_first_takes_its_thumb_with_it(cx: &mut TestAppContext) {
+    // The thumb joins the root's trigger group here, so a thumb left behind
+    // would route its input to a root that is gone.
+    let mut thumb = recorded("thumb");
+    for message in &mut thumb {
+        if message["kind"] == "projection.install" {
+            message["transaction"]["events"]["trigger"] = json!({ "anchor": ROOT });
+        }
+    }
+    let mut composed = Composed::open(cx);
+    composed.receive(peer(recorded("root")));
+    composed.receive(peer(thumb));
+    assert_eq!(
+        composed
+            .bridge
+            .borrow()
+            .trigger_anchor(THUMB)
+            .map(String::as_str),
+        Some(ROOT)
+    );
+    composed.outbox();
+
+    // A peer that reports the root ended while the thumb it holds is open.
+    composed.receive(vec![ended(ROOT)]);
+
+    // The thumb ends with it, and the host asks the peer to end it as well.
+    assert_eq!(composed.ends_requested(), [THUMB]);
+    // Not promoted to the top level, not open, and not routed to the root's
+    // group.
+    assert!(composed.rendered().is_empty());
+    assert!(!composed.is_open(THUMB));
+    assert_eq!(composed.bridge.borrow().trigger_anchor(THUMB), None);
+    assert!(composed.commits_on_click(ON_THUMB).is_empty());
+    // The peer's own report of the thumb, arriving later, changes nothing.
+    composed.receive(vec![ended(THUMB)]);
+    assert!(composed.rendered().is_empty());
+    assert!(composed.ends_requested().is_empty());
 }
