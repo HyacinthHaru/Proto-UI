@@ -1,0 +1,26 @@
+{
+  "head": "868d3adbd22fae98b8e33ea58a9f3353158c506d",
+  "run": 35691550964,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2454,
+      "sha256": "e72ea00195cad2cc687c851c46459fc7878a03aa6b348ff220acb0ecca15e362"
+    },
+    {
+      "path": "ci-final-receipt.json",
+      "bytes": 6229,
+      "sha256": "67f3e8612779227c6d3e9167e787ded96f49d47fe4b0cc16f30c93026226d49f"
+    },
+    {
+      "path": "ci-package.log.gz",
+      "bytes": 10532,
+      "sha256": "2b4fdc5adc3e9a804b73ee22c346a64495e6017f95b1a982ee6ab1094cfa4d76"
+    },
+    {
+      "path": "ci-test.log.gz",
+      "bytes": 45027,
+      "sha256": "ffb35645d2a7789bf487740a0ad26b6c49b6edfa716fe0a0a038c90ef6c14080"
+    }
+  ]
+}
