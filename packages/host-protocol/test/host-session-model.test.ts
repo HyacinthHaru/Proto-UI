@@ -420,3 +420,42 @@ describe('host session model: terminal disposal', () => {
     });
   });
 });
+
+describe('host session model: malformed plans stay bounded', () => {
+  it('answers a sparse registration list with a failed acknowledgement', () => {
+    const model = createHostSessionModel(SESSION);
+    const sparse = new Array(1) as EventRegistration[];
+
+    const result = model.installProjection(transaction({ events: { registrations: sparse } }));
+
+    expect(result.status).toBe('failed');
+    expect(result.diagnostics[0]?.code).toBe('wire-boundary');
+    expect(result.diagnostics[0]?.data).toEqual({ path: 'events.registrations[0]' });
+    expect(model.snapshot().currentEpoch).toBeNull();
+    expect(model.snapshot().leases).toEqual([]);
+
+    // The session stays usable: a well-formed plan still installs.
+    expect(model.installProjection(transaction()).status).toBe('applied');
+  });
+
+  it('rejects an incomplete registration record without allocating anything', () => {
+    const cases: readonly [string, unknown][] = [
+      ['missing leaseId', { scope: 'root', type: 'press.commit' }],
+      ['empty leaseId', { leaseId: '', scope: 'root', type: 'press.commit' }],
+      ['unknown scope', { leaseId: 'lease-z', scope: 'window', type: 'press.commit' }],
+      ['missing type', { leaseId: 'lease-z', scope: 'root' }],
+      ['null entry', null],
+    ];
+
+    for (const [label, entry] of cases) {
+      const model = createHostSessionModel(SESSION);
+      const result = model.installProjection(
+        transaction({ events: { registrations: [entry as EventRegistration] } })
+      );
+      expect(result.status, label).toBe('failed');
+      expect(result.diagnostics[0]?.code, label).toBe('malformed-registration');
+      expect(model.snapshot().leases, label).toEqual([]);
+      expect(model.snapshot().currentEpoch, label).toBeNull();
+    }
+  });
+});

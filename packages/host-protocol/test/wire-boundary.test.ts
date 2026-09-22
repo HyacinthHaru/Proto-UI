@@ -51,3 +51,28 @@ describe('wire boundary', () => {
     expect(() => assertWireValue({ first: shared, second: shared })).not.toThrow();
   });
 });
+
+describe('wire boundary: sparse arrays', () => {
+  it('rejects a hole with its exact path instead of skipping it', () => {
+    const sparse: unknown[] = new Array(2);
+    sparse[1] = 'present';
+    let caught: unknown;
+    try {
+      assertWireValue({ registrations: sparse });
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBeInstanceOf(WireBoundaryError);
+    expect((caught as WireBoundaryError).path).toBe('registrations[0]');
+    expect((caught as WireBoundaryError).message).toMatch(/sparse array holes/);
+
+    // A deleted slot is the same defect reached a different way.
+    const deleted = ['a', 'b'];
+    delete (deleted as Record<number, unknown>)[0];
+    expect(() => assertWireValue(deleted)).toThrow(/sparse array holes/);
+
+    // A dense array with the same values stays valid.
+    expect(() => assertWireValue([undefined])).toThrow(/undefined/);
+    expect(assertWireValue(['a', 'b'])).toEqual(['a', 'b']);
+  });
+});
