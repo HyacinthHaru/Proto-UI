@@ -21,11 +21,14 @@ use serde_json::Value;
 #[derive(Debug, Clone, PartialEq)]
 pub struct A11yProjection {
     pub role: Role,
-    /// The name the Prototype gives as text. `None` when the name comes from
-    /// the content: AccessKit names a button from the text beneath it.
+    /// The name the Prototype gives as text.
     pub label: Option<SharedString>,
+    /// Whether the name comes from the text beneath the object. AccessKit
+    /// derives it for some roles; for the rest the host supplies it, see
+    /// [`names_from_descendants`].
+    pub name_from_content: bool,
     pub disabled: bool,
-    /// Whether a toggle button is on, when the object is one.
+    /// Whether a toggle button or a switch is on, when the object is one.
     pub toggled: Option<Toggled>,
     /// Whether assistive technology may activate the object. It asks through
     /// AccessKit's default action, and the host treats that as a click.
@@ -68,9 +71,10 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
     };
 
     let mut issues = Vec::new();
-    let label = match &snapshot.name {
-        Some(A11yNameWire::Text { value }) => Some(SharedString::from(value.clone())),
-        Some(A11yNameWire::Content) | None => None,
+    let (label, name_from_content) = match &snapshot.name {
+        Some(A11yNameWire::Text { value }) => (Some(SharedString::from(value.clone())), false),
+        Some(A11yNameWire::Content) => (None, true),
+        None => (None, false),
     };
 
     let mut disabled = false;
@@ -78,8 +82,9 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
     for (name, value) in &snapshot.states {
         match (name.as_str(), value) {
             ("disabled", Value::Bool(value)) => disabled = *value,
-            // `pressed` makes a button a toggle button, on or off.
-            ("pressed", Value::Bool(value)) => {
+            // `pressed` makes a button a toggle button, on or off; `checked`
+            // says whether a switch is on.
+            ("pressed" | "checked", Value::Bool(value)) => {
                 toggled = Some(if *value {
                     Toggled::True
                 } else {
@@ -117,6 +122,7 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
     let projection = A11yProjection {
         role,
         label,
+        name_from_content,
         disabled,
         toggled,
         activatable,
@@ -136,6 +142,28 @@ fn is_empty(snapshot: &A11ySnapshotWire) -> bool {
 fn role(name: &str) -> Option<Role> {
     match name {
         "button" => Some(Role::Button),
+        "switch" => Some(Role::Switch),
         _ => None,
     }
+}
+
+/// Whether AccessKit names an object with this role from the labels beneath
+/// it when it has no label of its own.
+///
+/// ARIA names more roles from their content than AccessKit does: a switch's
+/// name comes from its content, but AccessKit leaves a switch unnamed. For
+/// those roles the host computes the name from the text itself. The list is
+/// `accesskit_consumer`'s `labelled_by`.
+pub fn names_from_descendants(role: Role) -> bool {
+    matches!(
+        role,
+        Role::Button
+            | Role::CheckBox
+            | Role::DefaultButton
+            | Role::Link
+            | Role::MenuItem
+            | Role::MenuItemCheckBox
+            | Role::MenuItemRadio
+            | Role::RadioButton
+    )
 }

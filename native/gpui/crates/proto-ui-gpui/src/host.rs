@@ -58,7 +58,7 @@ use gpui::{
 use proto_ui_host_protocol::event_type::{EventType, ExtensionEvent};
 use proto_ui_host_protocol::wire::SessionId;
 
-use crate::a11y::A11yProjection;
+use crate::a11y::{names_from_descendants, A11yProjection};
 use crate::input::{
     HostInput, InputRouter, PointerPhase, RouteOwner, Routed, SessionRoute, SurfaceId, Target,
 };
@@ -109,6 +109,28 @@ impl SurfaceNode {
             SurfaceChild::Surface(surface) => Some(surface.as_ref()),
             SurfaceChild::Text(_) | SurfaceChild::Session(_) => None,
         })
+    }
+
+    /// The text beneath this surface, in document order, one space between
+    /// separate pieces: what an accessible name computed from content reads.
+    pub fn text_content(&self) -> String {
+        fn collect(surface: &SurfaceNode, into: &mut Vec<String>) {
+            for child in &surface.children {
+                match child {
+                    SurfaceChild::Surface(inner) => collect(inner, into),
+                    SurfaceChild::Text(text) => {
+                        let text = text.trim();
+                        if !text.is_empty() {
+                            into.push(text.to_string());
+                        }
+                    }
+                    SurfaceChild::Session(_) => {}
+                }
+            }
+        }
+        let mut pieces = Vec::new();
+        collect(self, &mut pieces);
+        pieces.join(" ")
     }
 
     /// The sessions placed anywhere beneath this surface.
@@ -641,6 +663,13 @@ fn render_surface(surface: &SurfaceNode, bridge: &Rc<RefCell<InputBridge>>) -> A
         element = element.role(a11y.role);
         if let Some(label) = &a11y.label {
             element = element.aria_label(label.clone());
+        } else if a11y.name_from_content && !names_from_descendants(a11y.role) {
+            // AccessKit does not name this role from the text beneath it, so
+            // the host reads the text and names it.
+            let text = surface.text_content();
+            if !text.is_empty() {
+                element = element.aria_label(text);
+            }
         }
         if let Some(toggled) = a11y.toggled {
             element = element.aria_toggled(toggled);
