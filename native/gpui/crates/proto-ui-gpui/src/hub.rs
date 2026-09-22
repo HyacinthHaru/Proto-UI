@@ -14,7 +14,7 @@
 
 use std::collections::{HashMap, HashSet};
 
-use gpui::{Context, EventEmitter, FocusHandle, StyleRefinement, Window};
+use gpui::{Context, EventEmitter, FocusHandle, Refineable, StyleRefinement, Window};
 use proto_ui_host_protocol::messages::{
     ExposeCall, FocusResult, HostToPeerMessage, InputSampleMessage, OpenStatus, PeerToHostMessage,
     ProjectionAckMessage, PropsSet, SessionDispose, SessionOpen, WireRecord,
@@ -26,13 +26,14 @@ use proto_ui_host_protocol::wire::{
     A11ySnapshotWire, HostDiagnostic, InputSample, InstanceId, ProjectionAck, ProjectionAckStatus,
     ProjectionTransaction, SessionId,
 };
+use proto_ui_style::length::LengthContext;
 use proto_ui_style::Theme;
 use serde_json::{json, Value};
 
 use crate::a11y::{project, A11yIssue, A11yProjection};
 use crate::host::{ProtoHostView, SurfaceChild, SurfaceNode};
 use crate::input::{SessionRoute, SurfaceId};
-use crate::style::StyleIssue;
+use crate::style::{style_for_tokens, StyleIssue};
 use crate::template::{build, parse, BuildContext, BuildIssue};
 
 /// What the host application decides about one instance it opens.
@@ -65,6 +66,8 @@ struct HubSession {
     a11y: Option<A11ySnapshotWire>,
     /// What of that snapshot the root reports to accessibility.
     projection: Option<A11yProjection>,
+    /// The root's feedback style, as the Prototype last set it.
+    feedback: StyleRefinement,
     /// The Expose states as the peer last reported them.
     states: WireRecord,
 }
@@ -111,6 +114,12 @@ pub enum HubNote {
     },
     /// An accessibility snapshot for a view other than the installed one.
     SnapshotRefused {
+        session_id: SessionId,
+        view_epoch: u64,
+        installed: Option<u64>,
+    },
+    /// A feedback style for a view other than the installed one.
+    StyleRefused {
         session_id: SessionId,
         view_epoch: u64,
         installed: Option<u64>,
@@ -281,6 +290,7 @@ impl ProtoHostView {
                 surface: None,
                 a11y: None,
                 projection: None,
+                feedback: StyleRefinement::default(),
                 states: WireRecord::new(),
             },
         ));
@@ -422,6 +432,45 @@ impl ProtoHostView {
                 self.note_a11y(&snapshot.session_id, issues);
                 self.publish_surfaces(window, cx);
             }
+            PeerToHostMessage::StyleApply(style) => {
+                let Some(session) = self.hub.session_mut(&style.session_id) else {
+                    self.note_unknown(&style.session_id, "style.apply");
+                    return;
+                };
+                // Like a snapshot, a style belongs to one view.
+                let installed = session.model.snapshot().current_epoch;
+                if installed != Some(style.view_epoch) {
+                    self.hub.notes.push(HubNote::StyleRefused {
+                        session_id: style.session_id,
+                        view_epoch: style.view_epoch,
+                        installed,
+                    });
+                    return;
+                }
+                let resolved = style_for_tokens(
+                    style.tokens.iter().map(String::as_str),
+                    session.config.theme,
+                    LengthContext::default(),
+                );
+                if resolved.issues.is_empty() {
+                    session.feedback = resolved.refinement;
+                    self.publish_surfaces(window, cx);
+                    return;
+                }
+                // There is no acknowledgement to refuse it with, so the view
+                // keeps the last style it could show whole, and the host
+                // notes why.
+                let surface = session.root_id.clone();
+                self.hub
+                    .notes
+                    .extend(resolved.issues.into_iter().map(|issue| HubNote::Build {
+                        session_id: style.session_id.clone(),
+                        issue: BuildIssue::Style {
+                            surface: surface.clone(),
+                            issue,
+                        },
+                    }));
+            }
             PeerToHostMessage::ExposeDescriptor(descriptor) => {
                 if let Some(session) = self.hub.session_mut(&descriptor.session_id) {
                     session.states = descriptor.states;
@@ -483,8 +532,7 @@ impl ProtoHostView {
             // nothing on the host depends on them yet.
             PeerToHostMessage::PeerHello(_)
             | PeerToHostMessage::Lifecycle(_)
-            | PeerToHostMessage::ExposeResult(_)
-            | PeerToHostMessage::StyleApply(_) => {}
+            | PeerToHostMessage::ExposeResult(_) => {}
         }
     }
 
@@ -600,7 +648,7 @@ impl ProtoHostView {
         };
 
         let session = self.hub.session_mut(&session_id).expect("checked above");
-        let (root, issues) = build(
+        let (root, mut issues) = build(
             &template,
             BuildContext {
                 session_id: &session_id,
@@ -611,6 +659,17 @@ impl ProtoHostView {
                 slots: &session.config.slots,
             },
         );
+        // The root's feedback style is part of the view, so a token the host
+        // cannot render refuses the projection as a template token does.
+        let feedback = style_for_tokens(
+            transaction.style.iter().map(String::as_str),
+            session.config.theme,
+            LengthContext::default(),
+        );
+        issues.extend(feedback.issues.into_iter().map(|issue| BuildIssue::Style {
+            surface: session.root_id.clone(),
+            issue,
+        }));
         // A projection the host cannot render faithfully is refused whole,
         // before the model allocates anything and before anything is shown.
         // No governed rule lets a host drop an SVG or a style declaration and
@@ -640,6 +699,7 @@ impl ProtoHostView {
             return ack;
         }
         session.surface = Some(root);
+        session.feedback = feedback.refinement;
         // The installed view's own snapshot, which may be `null`: a new view
         // does not inherit the old one's.
         let (projection, issues) = transaction.a11y.as_ref().map(project).unwrap_or_default();
@@ -684,6 +744,12 @@ impl ProtoHostView {
             .filter_map(|(id, session)| {
                 let mut root = session.surface.clone()?;
                 root.a11y = session.projection.clone();
+                // The Prototype's feedback style first, then the application's
+                // own root style over it: the consumer wins, as it does over
+                // the Web's `@layer proto-ui` (C-PROTOTYPE-STYLE-CLOSURE-0001).
+                let mut style = session.feedback.clone();
+                style.refine(&session.config.root_style);
+                root.style = style;
                 Some((id.as_str(), root))
             })
             .collect();

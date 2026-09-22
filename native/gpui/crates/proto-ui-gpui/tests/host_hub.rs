@@ -11,8 +11,9 @@ use std::fs;
 use std::path::Path;
 use std::rc::Rc;
 
+use gpui::prelude::*;
 use gpui::{
-    point, px, size, AnyWindowHandle, Modifiers, MouseButton, StyleRefinement, TestAppContext,
+    div, point, px, size, AnyWindowHandle, Modifiers, MouseButton, StyleRefinement, TestAppContext,
     VisualTestContext, WindowHandle,
 };
 use proto_ui_gpui::a11y::A11yIssue;
@@ -73,6 +74,11 @@ struct Hub {
 
 impl Hub {
     fn open(cx: &mut TestAppContext) -> Self {
+        Self::open_with_root_style(cx, StyleRefinement::default())
+    }
+
+    /// Opens the session with the application's own style for its root.
+    fn open_with_root_style(cx: &mut TestAppContext, root_style: StyleRefinement) -> Self {
         let bridge = Rc::new(RefCell::new(InputBridge::new()));
         let window = cx.open_window(size(px(300.), px(100.)), move |window, cx| {
             let mut view = ProtoHostView::new(bridge, Vec::new(), window, cx);
@@ -87,7 +93,7 @@ impl Hub {
                         "slot-default".to_string(),
                         vec![SurfaceChild::Text("Save".into())],
                     )]),
-                    root_style: StyleRefinement::default(),
+                    root_style,
                     theme: None,
                     parent: None,
                 },
@@ -733,4 +739,120 @@ fn a_projection_with_a_style_the_host_cannot_resolve_is_refused_not_applied(
     );
     hub.click();
     assert!(samples(&hub.outbox()).is_empty());
+}
+
+/// The recording, its projection wearing `tokens` as the root's feedback style.
+fn recorded_with_style(tokens: &[&str]) -> Vec<PeerToHostMessage> {
+    recorded()
+        .into_iter()
+        .map(|message| match message {
+            PeerToHostMessage::ProjectionInstall(mut install) => {
+                install.transaction.style = tokens.iter().map(ToString::to_string).collect();
+                PeerToHostMessage::ProjectionInstall(install)
+            }
+            other => other,
+        })
+        .collect()
+}
+
+fn style_apply(view_epoch: u64, tokens: &[&str]) -> PeerToHostMessage {
+    peer(json!({
+        "kind": "style.apply",
+        "sessionId": SESSION,
+        "viewEpoch": view_epoch,
+        "tokens": tokens,
+    }))
+}
+
+/// Whether a click on the Button reaches it as a commit.
+fn commits_on_click(hub: &mut Hub) -> bool {
+    hub.outbox();
+    hub.click();
+    samples(&hub.outbox())
+        .iter()
+        .any(|(kind, _)| kind == "press.commit")
+}
+
+#[gpui::test]
+fn a_hidden_feedback_style_takes_the_instance_out_until_it_is_cleared(cx: &mut TestAppContext) {
+    // The style arrives with the projection: the first frame is hidden.
+    let mut hub = Hub::open(cx);
+    hub.receive(recorded_with_style(&["hidden"]));
+    assert!(!commits_on_click(&mut hub));
+
+    // The Prototype clears it outside a commit; the view shows again.
+    hub.receive([style_apply(recorded_transaction().view_epoch, &[])]);
+    assert!(commits_on_click(&mut hub));
+}
+
+#[gpui::test]
+fn the_applications_root_style_wins_over_the_feedback_style(cx: &mut TestAppContext) {
+    // The consumer's style is layered over the Prototype's, as the Web's
+    // `@layer proto-ui` puts the Prototype under every consumer rule.
+    let mut shown = div().block();
+    let mut hub = Hub::open_with_root_style(cx, shown.style().clone());
+    hub.receive(recorded_with_style(&["hidden"]));
+    assert!(commits_on_click(&mut hub));
+}
+
+#[gpui::test]
+fn a_feedback_style_for_another_view_is_refused(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.receive(recorded_with_style(&["hidden"]));
+    hub.notes();
+    let installed = recorded_transaction().view_epoch;
+    hub.receive([style_apply(installed + 1, &[])]);
+
+    assert!(hub.notes().contains(&HubNote::StyleRefused {
+        session_id: SESSION.into(),
+        view_epoch: installed + 1,
+        installed: Some(installed),
+    }));
+    assert!(
+        !commits_on_click(&mut hub),
+        "the installed view keeps its style"
+    );
+}
+
+#[gpui::test]
+fn a_feedback_style_the_host_cannot_render_leaves_the_last_one_in_place(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.receive(recorded_with_style(&["hidden"]));
+    hub.notes();
+    hub.receive([style_apply(
+        recorded_transaction().view_epoch,
+        &["not-a-proto-token"],
+    )]);
+
+    // There is no acknowledgement to refuse it with: the host notes why, and
+    // the view keeps the last style it could show whole.
+    assert!(hub
+        .notes()
+        .iter()
+        .any(|note| matches!(note, HubNote::Build { session_id, .. } if session_id == SESSION)));
+    assert!(!commits_on_click(&mut hub));
+}
+
+#[gpui::test]
+fn a_projection_whose_feedback_style_the_host_cannot_render_is_refused(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.outbox();
+    hub.receive(recorded_with_style(&["not-a-proto-token"]));
+    let ack = hub
+        .outbox()
+        .into_iter()
+        .find_map(|message| match message {
+            HostToPeerMessage::ProjectionAck(ack) => Some(ack.ack),
+            _ => None,
+        })
+        .expect("an acknowledgement");
+    assert_eq!(ack.status, ProjectionAckStatus::Unsupported);
+    assert_eq!(ack.diagnostics[0].code, "style-not-rendered");
+    assert_eq!(
+        ack.diagnostics[0]
+            .data
+            .as_ref()
+            .and_then(|data| data["surface"].as_str()),
+        Some(format!("{SESSION}/proto-surface").as_str())
+    );
 }
