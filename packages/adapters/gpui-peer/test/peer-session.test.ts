@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import type { WireRecord } from '@proto.ui/host-protocol';
 import button from '@proto.ui/prototypes-base/button';
 import toggle from '@proto.ui/prototypes-base/toggle';
+import { switchRoot, switchThumb } from '@proto.ui/prototypes-base/switch';
 
 import { createPeerSession, type PeerSession } from '../src/session';
 import { ScriptedHost } from './scripted-host';
@@ -342,5 +343,62 @@ describe('gpui peer: Base Toggle', () => {
       ['activeChange', { active: false }],
     ]);
     await peer.dispose();
+  });
+});
+
+describe('gpui peer: instances composed into one another', () => {
+  function open(
+    sessionId: string,
+    prototype: Parameters<typeof createPeerSession>[0]['prototype'],
+    parent?: PeerSession
+  ) {
+    const host = new ScriptedHost(sessionId);
+    const peer = createPeerSession({
+      sessionId,
+      instanceId: `${sessionId}:instance`,
+      prototype,
+      props: {},
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+      parent,
+    });
+    host.bind((message) => peer.handle(message));
+    return { host, peer };
+  }
+
+  it('lets a Switch thumb follow its root through context', async () => {
+    const root = open('switch-root', switchRoot);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer);
+    await thumb.peer.mount();
+    expect(thumb.host.exposeState('checked')).toBe(false);
+
+    root.host.input('press.commit');
+    expect(root.host.exposeState('checked')).toBe(true);
+    expect(thumb.host.exposeState('checked')).toBe(true);
+
+    await thumb.peer.dispose();
+    await root.peer.dispose();
+  });
+
+  it('names the trigger group an instance belongs to, and none for a part that is not one', async () => {
+    const root = open('switch-root', switchRoot);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer);
+    await thumb.peer.mount();
+
+    expect(root.host.last('projection.install')?.transaction.events.trigger).toEqual({
+      anchor: 'switch-root',
+    });
+    expect(thumb.host.last('projection.install')?.transaction.events.trigger).toBeUndefined();
+
+    await thumb.peer.dispose();
+    await root.peer.dispose();
+  });
+
+  it('cannot set a thumb up without the root it belongs to', () => {
+    // Setup runs as the session is created, and the thumb's context has no
+    // provider to subscribe to.
+    expect(() => open('switch-thumb', switchThumb)).toThrow(/provider missing/);
   });
 });

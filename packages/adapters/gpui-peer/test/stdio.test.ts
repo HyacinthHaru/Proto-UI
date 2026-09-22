@@ -34,7 +34,12 @@ describe('gpui peer: stdio process', () => {
     expect(hello.kind).toBe('peer.hello');
     if (hello.kind !== 'peer.hello') return;
     expect(hello.peer.name).toBe(PEER_NAME);
-    expect(hello.bundle.entries).toEqual(['base-button', 'base-toggle']);
+    expect(hello.bundle.entries).toEqual([
+      'base-button',
+      'base-toggle',
+      'base-switch-root',
+      'base-switch-thumb',
+    ]);
   });
 
   it('opens a session by bundle key and mounts it', async () => {
@@ -115,6 +120,48 @@ describe('gpui peer: stdio process', () => {
     expect(received.at(-1)).toMatchObject({
       kind: 'diagnostic',
       diagnostic: { code: 'unknown-session' },
+    });
+  });
+
+  it('opens a part inside the instance it belongs to, and refuses one whose parent is not open', async () => {
+    const { peer, send, received } = harness();
+    const part = (sessionId: string, parentSessionId: string): HostToPeerMessage => ({
+      kind: 'session.open',
+      sessionId,
+      instanceId: `${sessionId}:instance`,
+      prototypeKey: 'base-switch-thumb',
+      props: {},
+      parentSessionId,
+    });
+    send(part('orphan', 'nobody'));
+    await peer.idle();
+    expect(
+      received.find((m) => m.kind === 'session.opened' && m.sessionId === 'orphan')
+    ).toMatchObject({
+      status: 'failed',
+      diagnostics: [{ code: 'unknown-parent' }],
+    });
+
+    // Inside an instance that provides nothing the thumb needs, its setup fails.
+    send(OPEN);
+    await peer.idle();
+    send(part('stray', 's-1'));
+    await peer.idle();
+    expect(
+      received.find((m) => m.kind === 'session.opened' && m.sessionId === 'stray')
+    ).toMatchObject({
+      status: 'failed',
+      diagnostics: [{ code: 'setup-failed' }],
+    });
+
+    send({ ...OPEN, sessionId: 'root', prototypeKey: 'base-switch-root' });
+    await peer.idle();
+    send(part('thumb', 'root'));
+    await peer.idle();
+    expect(
+      received.find((m) => m.kind === 'session.opened' && m.sessionId === 'thumb')
+    ).toMatchObject({
+      status: 'ok',
     });
   });
 });

@@ -19,6 +19,7 @@
     "@proto.ui/core": "workspace:*",
     "@proto.ui/host-protocol": "workspace:*",
     "@proto.ui/module-a11y": "workspace:*",
+    "@proto.ui/module-anatomy": "workspace:*",
     "@proto.ui/module-as-trigger": "workspace:*",
     "@proto.ui/module-context": "workspace:*",
     "@proto.ui/module-event": "workspace:*",

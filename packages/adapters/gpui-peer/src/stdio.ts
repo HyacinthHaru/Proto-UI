@@ -88,13 +88,46 @@ export function createPeerProcess(options: PeerProcessOptions): PeerProcess {
           });
           return;
         }
-        const opened = createPeerSession({
-          sessionId: message.sessionId,
-          instanceId: message.instanceId,
-          prototype: await load(),
-          props: message.props,
-          send,
-        });
+        // A part opens inside the instance it belongs to, which must be open.
+        const parent =
+          message.parentSessionId === undefined ? undefined : sessions.get(message.parentSessionId);
+        if (message.parentSessionId !== undefined && !parent) {
+          send({
+            kind: 'session.opened',
+            sessionId: message.sessionId,
+            status: 'failed',
+            diagnostics: [
+              {
+                code: 'unknown-parent',
+                message: `no open session ${message.parentSessionId} to open inside`,
+              },
+            ],
+          });
+          return;
+        }
+        const prototype = await load();
+        let opened: PeerSession;
+        try {
+          opened = createPeerSession({
+            sessionId: message.sessionId,
+            instanceId: message.instanceId,
+            prototype,
+            props: message.props,
+            send,
+            parent,
+          });
+        } catch (error) {
+          // Setup runs as the instance is created. A part opened inside an
+          // instance that provides nothing it needs fails here, and the host
+          // hears so instead of waiting for a session that will never open.
+          send({
+            kind: 'session.opened',
+            sessionId: message.sessionId,
+            status: 'failed',
+            diagnostics: [{ code: 'setup-failed', message: String(error) }],
+          });
+          return;
+        }
         sessions.set(message.sessionId, opened);
         send({
           kind: 'session.opened',

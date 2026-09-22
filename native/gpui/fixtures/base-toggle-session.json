@@ -195,7 +195,10 @@
                 "scope": "root",
                 "type": "press.commit"
               }
-            ]
+            ],
+            "trigger": {
+              "anchor": "toggle-inactive"
+            }
           },
           "focus": {
             "targets": [
@@ -431,7 +434,10 @@
                 "scope": "root",
                 "type": "press.commit"
               }
-            ]
+            ],
+            "trigger": {
+              "anchor": "toggle-active"
+            }
           },
           "focus": {
             "targets": [
@@ -667,7 +673,10 @@
                 "scope": "root",
                 "type": "press.commit"
               }
-            ]
+            ],
+            "trigger": {
+              "anchor": "toggle-disabled"
+            }
           },
           "focus": {
             "targets": [

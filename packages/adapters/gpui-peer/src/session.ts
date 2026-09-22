@@ -14,6 +14,11 @@ import {
 import type { ModuleWiring, RuntimeLifecycleEvent } from '@proto.ui/runtime';
 import { A11Y_PROJECT_CAP, type A11yProjector } from '@proto.ui/module-a11y';
 import {
+  ANATOMY_GET_PROTO_CAP,
+  ANATOMY_INSTANCE_TOKEN_CAP,
+  ANATOMY_PARENT_CAP,
+} from '@proto.ui/module-anatomy';
+import {
   AS_TRIGGER_GET_GROUP_EVENT_TARGET_CAP,
   AS_TRIGGER_GET_PROTO_CAP,
   AS_TRIGGER_INSTANCE_CAP,
@@ -69,6 +74,12 @@ export type PeerSessionArgs = {
   readonly instanceId: string;
   readonly prototype: Prototype<any>;
   readonly props: WireRecord;
+  /**
+   * The session whose instance this one belongs to, such as a Switch for its
+   * thumb. It must already be mounted: the instance resolves its context,
+   * anatomy domain and trigger group through it during setup.
+   */
+  readonly parent?: PeerSession;
   readonly send: (message: PeerToHostMessage) => void;
   readonly schedule?: (task: () => void) => void;
 };
@@ -91,6 +102,8 @@ export type PeerSessionSnapshot = {
 
 export type PeerSession = {
   readonly sessionId: string;
+  /** The instance's opaque identity, shared by every module that asks for one. */
+  readonly token: object;
   mount(): Promise<void>;
   setProps(props: WireRecord): void;
   handle(message: HostToPeerMessage): void;
@@ -114,6 +127,28 @@ function toWireValue(
     throw error;
   }
 }
+
+/** What the peer knows about an instance, by its token. */
+type InstanceRecord = {
+  readonly sessionId: string;
+  readonly prototype: Prototype<any>;
+  readonly parent: object | null;
+};
+
+/**
+ * Every instance the peer runs in this realm. Sessions share a realm, as the
+ * Context module's providers do, so a lookup that walks up from one instance
+ * reaches the instances the host composed it into.
+ */
+const instances = new WeakMap<object, InstanceRecord>();
+
+function recordOf(instance: unknown): InstanceRecord | undefined {
+  return instance !== null && typeof instance === 'object' ? instances.get(instance) : undefined;
+}
+
+const parentOf = (instance: unknown): object | null => recordOf(instance)?.parent ?? null;
+const prototypeOf = (instance: unknown): Prototype<any> | null =>
+  recordOf(instance)?.prototype ?? null;
 
 export function createPeerSession(args: PeerSessionArgs): PeerSession {
   const { sessionId, instanceId, prototype, send } = args;
@@ -362,6 +397,9 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
   // Capability wiring, attached once the Runtime is ready (CP1).
   // ---------------------------------------------------------------------
   const instanceToken = Object.freeze({ instanceId });
+  instances.set(instanceToken, { sessionId, prototype, parent: args.parent?.token ?? null });
+  // The session of the trigger group's anchor, when this instance is a trigger.
+  let triggerAnchor: string | null = null;
 
   const attachCaps = (wiring: ModuleWiring) => {
     wiring.attach('event', [
@@ -405,18 +443,31 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     wiring.attach('a11y', [[A11Y_PROJECT_CAP, projector]]);
     wiring.attach('as-trigger', [
       [AS_TRIGGER_INSTANCE_CAP, instanceToken],
-      [AS_TRIGGER_PARENT_CAP, () => null],
-      [AS_TRIGGER_GET_PROTO_CAP, () => null],
-      [AS_TRIGGER_MERGE_GROUP_CAP, () => {}],
+      [AS_TRIGGER_PARENT_CAP, parentOf],
+      [AS_TRIGGER_GET_PROTO_CAP, prototypeOf],
+      [
+        AS_TRIGGER_MERGE_GROUP_CAP,
+        (member: unknown, anchor: unknown) => {
+          // Ancestors in the chain recorded their own anchor when they set up.
+          if (member === instanceToken) triggerAnchor = recordOf(anchor)?.sessionId ?? null;
+        },
+      ],
       [AS_TRIGGER_GET_GROUP_EVENT_TARGET_CAP, () => rootBus as unknown as EventTarget],
     ]);
     wiring.attach('context', [
       [CONTEXT_INSTANCE_TOKEN_CAP, instanceToken],
-      [CONTEXT_PARENT_CAP, () => null],
+      [CONTEXT_PARENT_CAP, parentOf],
+    ]);
+    // No root target and no order observer: parts keep the order they
+    // claimed in, which the Anatomy module falls back to (HC-ANATOMY-ORDER-0001).
+    wiring.attach('anatomy', [
+      [ANATOMY_INSTANCE_TOKEN_CAP, instanceToken],
+      [ANATOMY_PARENT_CAP, parentOf],
+      [ANATOMY_GET_PROTO_CAP, prototypeOf],
     ]);
     wiring.attach('focus', [
       [FOCUS_INSTANCE_TOKEN_CAP, instanceToken],
-      [FOCUS_PARENT_CAP, () => null],
+      [FOCUS_PARENT_CAP, parentOf],
       [
         FOCUS_ROOT_TARGET_CAP,
         () => (viewInstalled ? (focusTarget as unknown as HTMLElement) : null),
@@ -500,7 +551,10 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
       commitId,
       template: serialized.template,
       slots: { slots: serialized.slots },
-      events: { registrations: currentRegistrations() },
+      events: {
+        registrations: currentRegistrations(),
+        ...(triggerAnchor === null ? {} : { trigger: { anchor: triggerAnchor } }),
+      },
       focus: {
         targets: [
           { ref: FOCUS_ROOT_REF, sequential: focusSequential, programmatic: focusProgrammatic },
@@ -621,6 +675,7 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
 
   return {
     sessionId,
+    token: instanceToken,
     mount: () => hostSession!.mount(),
     setProps(props) {
       raw = { ...props };

@@ -193,7 +193,10 @@
                 "scope": "root",
                 "type": "press.commit"
               }
-            ]
+            ],
+            "trigger": {
+              "anchor": "button-enabled"
+            }
           },
           "focus": {
             "targets": [
@@ -426,7 +429,10 @@
                 "scope": "root",
                 "type": "press.commit"
               }
-            ]
+            ],
+            "trigger": {
+              "anchor": "button-disabled"
+            }
           },
           "focus": {
             "targets": [
