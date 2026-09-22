@@ -185,7 +185,7 @@ const EXPECTED_UNMAPPED: [&str; 28] = [
 /// This is a separate list from the property inventory on purpose. `width` is
 /// mapped; `width: fit-content` is not. Recording the pair keeps the property
 /// inventory from claiming that `width` never reaches a surface.
-const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 4] = [
+const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 5] = [
     (
         "width",
         "fit-content",
@@ -211,6 +211,15 @@ const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 4] = [
         "border-radius",
         "min(max(calc(0 - 2px), 0px), 12px)",
         "The arbitrary-value form of the same Brutalist substitution.",
+    ),
+    (
+        "height",
+        "calc(100% - 1px)",
+        "Shadcn Tabs Trigger (packages/prototypes/shadcn/src/tabs/trigger.proto.ts) \
+         sizes itself one pixel short of its list. GPUI's `DefiniteLength` is a \
+         length or a fraction, never their sum, so this has to be resolved \
+         against the parent's size at layout time. Before this was reported it \
+         was mapped as a plain 100%, one pixel too tall. The Tabs slice owns it.",
     ),
 ];
 
@@ -349,4 +358,83 @@ fn every_token_maps_or_appears_in_the_inventory() {
 
     // Guards against the loop finding nothing, which would make this vacuous.
     assert!(mapped_count > 0, "no token produced a mapped padding");
+}
+
+fn declared(pairs: &[(&str, &str)]) -> proto_ui_style::ResolvedStyle {
+    proto_ui_style::ResolvedStyle {
+        declarations: pairs
+            .iter()
+            .map(|(property, value)| (property.to_string(), value.to_string()))
+            .collect(),
+        unknown: Vec::new(),
+    }
+}
+
+#[test]
+fn a_mixed_percentage_and_length_is_reported_not_truncated() {
+    // Evaluation keeps both parts of `calc(100% - 1px)`. GPUI's
+    // `DefiniteLength` is a length or a fraction, never their sum, so mapping
+    // either part alone would move an edge while reporting success.
+    let cases = [
+        // Through `to_length`.
+        ("width", "calc(100% - 1px)"),
+        ("top", "calc(50% + 2px)"),
+        // Through `to_definite`.
+        ("padding-left", "calc(50% + 2px)"),
+        ("padding-block", "calc(10% - 1px)"),
+    ];
+    for (property, value) in cases {
+        let mapped = map(&declared(&[(property, value)]), LengthContext::default());
+        assert!(
+            mapped.unmapped.iter().any(|(p, v, reason)| p == property
+                && v == value
+                && *reason == Unmapped::UnsupportedValue),
+            "`{property}: {value}` must be reported, got {:?}",
+            mapped.unmapped
+        );
+        assert!(!mapped.is_complete());
+    }
+
+    // Nothing truncated reaches the refinement either.
+    let width = map(
+        &declared(&[("width", "calc(100% - 1px)")]),
+        LengthContext::default(),
+    );
+    assert_eq!(width.refinement.size.width, None);
+    let padding = map(
+        &declared(&[("padding-left", "calc(50% + 2px)")]),
+        LengthContext::default(),
+    );
+    assert_eq!(padding.refinement.padding.left, None);
+}
+
+#[test]
+fn a_pure_percentage_and_a_pure_length_still_map() {
+    // The guard is about sums. It must not catch either part on its own.
+    let mapped = map(
+        &declared(&[
+            ("width", "100%"),
+            ("padding-left", "1rem"),
+            ("top", "calc(0% + 4px)"),
+        ]),
+        LengthContext::default(),
+    );
+    assert!(mapped.is_complete(), "unexpected: {:?}", mapped.unmapped);
+    assert_eq!(
+        mapped.refinement.size.width,
+        Some(Length::Definite(DefiniteLength::Fraction(1.0)))
+    );
+    assert_eq!(
+        mapped.refinement.padding.left,
+        Some(DefiniteLength::Absolute(AbsoluteLength::Pixels(gpui::px(
+            16.
+        ))))
+    );
+    // A zero percentage contributes nothing, so this is a plain length.
+    assert_eq!(
+        mapped.refinement.inset.top,
+        Some(Length::Definite(DefiniteLength::Absolute(
+            AbsoluteLength::Pixels(gpui::px(4.))
+        )))
+    );
 }
