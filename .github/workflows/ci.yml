@@ -203,11 +203,23 @@ jobs:
 
       - name: Lint
         working-directory: native/gpui
-        run: cargo clippy --workspace --all-targets -- -D warnings
+        run: |
+          set -euo pipefail
+          cargo clippy --workspace --all-targets -- -D warnings
+          # The real-window test is behind a feature; lint it too.
+          cargo clippy -p proto-ui-gpui --features macos-accessibility-test --all-targets -- -D warnings
 
       - name: Test
         working-directory: native/gpui
         run: cargo test --workspace
+
+      - name: Base Button through macOS accessibility
+        # Opens a real window, so it is not part of `cargo test --workspace`.
+        working-directory: native/gpui
+        run: |
+          set -euo pipefail
+          cargo test -p proto-ui-gpui --features macos-accessibility-test --test accesskit_macos 2>&1 | tee accesskit.log
+          grep -Eq "test result: ok\. [1-9][0-9]* passed" accesskit.log
 
   rust-interop:
     # The real Rust host against the real Node peer. These tests are ignored
