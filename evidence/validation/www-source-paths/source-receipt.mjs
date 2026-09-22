@@ -30,6 +30,10 @@ const inputs = files.map((file) => {
     lfNormalizedExactlyMatches: true,
   };
 });
+const generatedStylePath = 'apps/www/src/styles/proto-ui-style.css';
+const generatedStyle = fs.readFileSync(path.join(root, generatedStylePath));
+const committedStyle = git('show', `HEAD:${generatedStylePath}`);
+const generatedStyleLf = Buffer.from(generatedStyle.toString('utf8').replaceAll('\r\n', '\n'));
 const result = {
   observedAt: new Date().toISOString(),
   head: git('rev-parse', 'HEAD').toString().trim(),
@@ -40,6 +44,12 @@ const result = {
   node: process.version,
   separator: path.sep,
   inputs,
+  generatedStyle: {
+    path: generatedStylePath,
+    nativeSha256: sha256(generatedStyle),
+    committedSha256: sha256(committedStyle),
+    lfNormalizedExactlyMatches: generatedStyleLf.equals(committedStyle),
+  },
 };
 fs.writeFileSync(output, `${JSON.stringify(result, null, 2)}\n`);
 console.log(
