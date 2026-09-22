@@ -28,7 +28,10 @@
 //! already-merged list. [`resolve_all`] still applies later-wins per property,
 //! which is composition of the resolved result, not a second merge policy.
 
+pub mod color;
 pub mod theme;
+
+pub use color::{parse as parse_color, ColorError, ColorValue, Rgba};
 
 pub use theme::{themes, ColorScheme, Substitution, Theme, ThemeCatalog};
 
@@ -109,6 +112,13 @@ impl StyleVocabulary {
     /// Tokens accepted but carrying no declarations.
     pub fn marker_count(&self) -> usize {
         self.markers.len()
+    }
+
+    /// Every token that carries declarations, for exhaustive checks.
+    pub fn tokens_with_declarations(
+        &self,
+    ) -> impl Iterator<Item = (&String, &BTreeMap<String, String>)> {
+        self.tokens.iter()
     }
 
     pub fn resolve(&self, token: &str) -> Resolution<'_> {
