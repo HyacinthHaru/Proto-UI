@@ -14,7 +14,7 @@
 
 use std::collections::HashMap;
 
-use gpui::{Context, FocusHandle, StyleRefinement, Window};
+use gpui::{Context, EventEmitter, FocusHandle, StyleRefinement, Window};
 use proto_ui_host_protocol::messages::{
     ExposeCall, FocusResult, HostToPeerMessage, InputSampleMessage, OpenStatus, PeerToHostMessage,
     ProjectionAckMessage, PropsSet, SessionDispose, SessionOpen, WireRecord,
@@ -60,6 +60,20 @@ struct HubSession {
     /// The Expose states as the peer last reported them.
     states: WireRecord,
 }
+
+/// A signal an instance emitted outward, for the host application.
+///
+/// The view emits it as it arrives, to whoever subscribes at that moment;
+/// with no subscriber it goes nowhere. A signal is an event, not a record:
+/// the host neither keeps nor replays it.
+#[derive(Debug, Clone, PartialEq)]
+pub struct ExposedSignal {
+    pub session_id: SessionId,
+    pub name: String,
+    pub payload: Value,
+}
+
+impl EventEmitter<ExposedSignal> for ProtoHostView {}
 
 /// Something the hub noticed that is not a message to send.
 #[derive(Debug, Clone, PartialEq)]
@@ -376,11 +390,21 @@ impl ProtoHostView {
                     diagnostic: message.diagnostic,
                 });
             }
-            // Handshake, lifecycle, signals and call results are the peer's
-            // own record; nothing on the host depends on them yet.
+            PeerToHostMessage::ExposeSignal(signal) => {
+                if self.hub.session(&signal.session_id).is_none() {
+                    self.note_unknown(&signal.session_id, "expose.signal");
+                    return;
+                }
+                cx.emit(ExposedSignal {
+                    session_id: signal.session_id,
+                    name: signal.name,
+                    payload: signal.payload,
+                });
+            }
+            // Handshake, lifecycle and call results are the peer's own record;
+            // nothing on the host depends on them yet.
             PeerToHostMessage::PeerHello(_)
             | PeerToHostMessage::Lifecycle(_)
-            | PeerToHostMessage::ExposeSignal(_)
             | PeerToHostMessage::ExposeResult(_) => {}
         }
     }

@@ -3,14 +3,15 @@
 //! Nothing here is scripted on either side. The peer runs the Base Button
 //! Prototype from its bundle; the host renders what the peer projects, turns
 //! real GPUI input into samples, and answers the peer's focus requests. The
-//! evidence is what the Prototype itself reports back: its Expose states.
+//! evidence is what the Prototype itself reports back: its Expose states and
+//! the events it emits.
 //!
 //! Ignored by default because it starts Node and needs the repository's
 //! `node_modules` (`pnpm install`), which the Rust CI jobs do not install:
 //!
 //!   cargo test -p proto-ui-gpui --test button_t0 -- --ignored
 
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::Command;
@@ -22,7 +23,7 @@ use gpui::{
     VisualTestContext, WindowHandle,
 };
 use proto_ui_gpui::host::{InputBridge, ProtoHostView, SurfaceChild};
-use proto_ui_gpui::hub::SessionConfig;
+use proto_ui_gpui::hub::{ExposedSignal, SessionConfig};
 use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
 use proto_ui_host_protocol::t0::{PeerError, PeerProcess};
 use serde_json::{json, Value};
@@ -45,6 +46,8 @@ struct Fixture {
     cx: VisualTestContext,
     /// Everything the host has sent the peer, in order.
     sent: Vec<HostToPeerMessage>,
+    /// Every signal the view emitted, as a subscribed application heard it.
+    heard: Rc<RefCell<Vec<ExposedSignal>>>,
 }
 
 impl Fixture {
@@ -89,7 +92,9 @@ impl Fixture {
             window,
             cx: VisualTestContext::from_window(AnyWindowHandle::from(window), cx),
             sent: Vec::new(),
+            heard: Rc::default(),
         };
+        fixture.listen();
         fixture.draw();
         fixture.pump_until(|message| matches!(message, PeerToHostMessage::ProjectionActivate(_)));
         fixture
@@ -97,6 +102,18 @@ impl Fixture {
 
     fn draw(&mut self) {
         self.cx.update(|window, cx| window.draw(cx).clear(cx));
+    }
+
+    /// Subscribes to the view the way a host application would.
+    fn listen(&mut self) {
+        let view = self.window.entity(&self.cx).expect("the view");
+        let heard = self.heard.clone();
+        self.cx.update(|_, cx| {
+            cx.subscribe(&view, move |_, signal: &ExposedSignal, _| {
+                heard.borrow_mut().push(signal.clone())
+            })
+            .detach();
+        });
     }
 
     fn with_view<R>(&mut self, f: impl FnOnce(&mut ProtoHostView) -> R) -> R {
@@ -151,8 +168,24 @@ impl Fixture {
         });
     }
 
+    /// Pumps until the peer reports the Prototype emitting `name`.
+    fn signal_arrives(&mut self, name: &str) {
+        self.pump_until(|message| {
+            matches!(message, PeerToHostMessage::ExposeSignal(signal) if signal.name == name)
+        });
+    }
+
     fn at((x, y): (f32, f32)) -> gpui::Point<gpui::Pixels> {
         point(px(x), px(y))
+    }
+}
+
+/// The Button's `click` event, which carries no payload.
+fn click() -> ExposedSignal {
+    ExposedSignal {
+        session_id: SESSION.into(),
+        name: "click".into(),
+        payload: Value::Null,
     }
 }
 
@@ -196,6 +229,67 @@ fn pressing_holds_the_button_pressed_until_release_and_commits_it(cx: &mut TestA
     assert!(fixture.sent.iter().any(|message| matches!(
         message,
         HostToPeerMessage::InputSample(input) if input.sample.kind == "press.commit"
+    )));
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn a_click_on_the_rendered_button_comes_back_as_its_click_signal(cx: &mut TestAppContext) {
+    // The host only reports the press. That it was a click is the
+    // Prototype's own conclusion, which it announces as its `click` event.
+    let mut fixture = Fixture::start(cx);
+    fixture.cx.simulate_mouse_down(
+        Fixture::at(ON_BUTTON),
+        MouseButton::Left,
+        Modifiers::default(),
+    );
+    fixture.cx.simulate_mouse_up(
+        Fixture::at(ON_BUTTON),
+        MouseButton::Left,
+        Modifiers::default(),
+    );
+    fixture.signal_arrives("click");
+
+    assert_eq!(*fixture.heard.borrow(), [click()]);
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn enter_and_space_on_the_focused_button_each_click_it_once(cx: &mut TestAppContext) {
+    let mut fixture = Fixture::start(cx);
+    fixture.with_view(|view| view.call_exposed(SESSION, "focusSelf", Vec::new()));
+    fixture.state_becomes("focused", json!(true));
+
+    fixture.cx.simulate_keystrokes("enter");
+    fixture.signal_arrives("click");
+
+    // Space also asks the host not to run the key's default action. Wait for
+    // both, in whichever order they come.
+    fixture.cx.simulate_keystrokes("space");
+    let clicked = Cell::new(false);
+    let prevented = RefCell::new(None);
+    fixture.pump_until(|message| {
+        match message {
+            PeerToHostMessage::ExposeSignal(signal) if signal.name == "click" => clicked.set(true),
+            PeerToHostMessage::DefaultActionPrevent(prevent)
+                if prevent.request.reason.as_deref() == Some("button.space-activation") =>
+            {
+                *prevented.borrow_mut() = Some(prevent.request.sample_id.clone());
+            }
+            _ => {}
+        }
+        clicked.get() && prevented.borrow().is_some()
+    });
+
+    assert_eq!(*fixture.heard.borrow(), [click(), click()]);
+    // The prevention names the sample it is about: the Space the host sent.
+    let prevented = prevented.into_inner().expect("a prevention request");
+    assert!(fixture.sent.iter().any(|message| matches!(
+        message,
+        HostToPeerMessage::InputSample(input)
+            if input.sample.sample_id == prevented
+                && input.sample.kind == "key.down"
+                && input.sample.key.as_deref() == Some(" ")
     )));
 }
 
