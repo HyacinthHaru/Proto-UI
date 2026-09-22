@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/proto-ui-host-protocol"]
+members = ["crates/proto-ui-host-protocol", "crates/proto-ui-style"]
 
 [workspace.package]
 edition = "2021"
