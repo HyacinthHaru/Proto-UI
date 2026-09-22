@@ -15,7 +15,9 @@ The decision record cited crates.io `gpui` 0.2.2, published 2025-10-22. That rel
 - the web platform for `wasm32-unknown-unknown`, merged 2026-02-26 in zed#50228;
 - AccessKit support in `gpui`, merged 2026-05-27 in zed#56065.
 
-A git revision is therefore required rather than preferred. Any revision at or after 2026-05-27 satisfies both; this one was chosen because it was `main` on the day of measurement.
+A git revision is therefore required rather than preferred. This one was chosen because it was `main` on the day of measurement, and the probes below verify it specifically.
+
+The merge dates bound when each capability entered upstream history; they do not make a later revision sufficient. A revision after 2026-05-27 may still revert, gate, rename or regress either capability, and this record verifies exactly one revision, not the set of all later ones. A re-pin must therefore re-check both capabilities on the revision it selects — at minimum that the accessibility API resolves and that the browser target still builds — rather than inferring them from a commit date. That is the same discipline the follow-up section already asks for at each conformance wave.
 
 ## What was measured
 
