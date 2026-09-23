@@ -26,11 +26,22 @@ function navigation(options: {
       ({ disabled: false, navParticipation: 'auto' }) as ReturnType<
         FocusCenterEntry['getFocusableConfig']
       >,
-    getScopeConfig: () =>
-      ({ entry: 'auto', emptyPolicy: 'none', loop: false }) as ReturnType<
-        FocusCenterEntry['getScopeConfig']
-      >,
-    getRovingConfig: () => ({ loop: false }) as ReturnType<FocusCenterEntry['getRovingConfig']>,
+    getScopeConfig: () => ({
+      trap: false,
+      loop: false,
+      navigation: 'tab',
+      orientation: 'vertical',
+      entry: 'first',
+      restore: 'none',
+      emptyPolicy: 'none',
+    }),
+    getRovingConfig: () => ({
+      loop: false,
+      navigation: 'none',
+      orientation: 'vertical',
+      entry: 'first',
+      selectOnFocus: false,
+    }),
     getFacts: () => ({ focused: false }) as ReturnType<FocusCenterEntry['getFacts']>,
     getRootTarget: () => null,
     orderTargets: options.orderTargets,
