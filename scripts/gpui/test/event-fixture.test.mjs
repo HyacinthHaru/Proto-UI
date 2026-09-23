@@ -96,3 +96,49 @@ process.stdout.write(JSON.stringify(keys));
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.deepEqual(JSON.parse(result.stdout), ['Enter', 'Escape', 'F6']);
 });
+test('conditional and loop joins preserve possible event-key aliases', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'proto-ui-event-key-branches-'));
+  const probe = path.join(dir, 'probe.mts');
+  writeFileSync(
+    probe,
+    `import { comparedKeysFromSources } from ${JSON.stringify(SCRIPT)};
+const keys = comparedKeysFromSources([{
+  fileName: 'branches.ts',
+  source: \`function onUnbraced(event, cond, other) {
+    let key = event.key;
+    if (cond) key = other;
+    if (key === 'Enter') return;
+  }
+  function onBraced(event, cond, other) {
+    let key = event.key;
+    if (cond) { key = other; }
+    if (key === 'Escape') return;
+  }
+  function onBracedAssignment(event, cond, other) {
+    let key = other;
+    if (cond) { key = event.key; }
+    if (key === 'End') return;
+  }
+  function onLoop(event, cond, other) {
+    let key = event.key;
+    while (cond) key = other;
+    if (key === 'Home') return;
+  }
+  function onShadowedAlias(state, event) {
+    let key = event.key;
+    {
+      let key = state.status;
+      if (key === 'pending') return;
+    }
+    if (key === 'ArrowLeft') return;
+  }
+  \`,
+}]);
+process.stdout.write(JSON.stringify(keys));
+`
+  );
+
+  const result = spawnSync(TSX, [probe], { cwd: ROOT, encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.deepEqual(JSON.parse(result.stdout), ['ArrowLeft', 'End', 'Enter', 'Escape', 'Home']);
+});

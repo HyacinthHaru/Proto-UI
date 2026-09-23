@@ -92,6 +92,35 @@ function bindAliases(
   }
 }
 
+function collectBindingNames(name: ts.BindingName, names: Set<string>): void {
+  if (ts.isIdentifier(name)) {
+    names.add(name.text);
+    return;
+  }
+  for (const element of name.elements) {
+    if (ts.isBindingElement(element)) collectBindingNames(element.name, names);
+  }
+}
+
+function collectBlockScopedNames(block: ts.Block): Set<string> {
+  const names = new Set<string>();
+  for (const statement of block.statements) {
+    if (
+      ts.isVariableStatement(statement) &&
+      (statement.declarationList.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const)) !== 0
+    ) {
+      for (const declaration of statement.declarationList.declarations) {
+        collectBindingNames(declaration.name, names);
+      }
+    } else if (ts.isFunctionDeclaration(statement) && statement.name) {
+      names.add(statement.name.text);
+    } else if (ts.isClassDeclaration(statement) && statement.name) {
+      names.add(statement.name.text);
+    }
+  }
+  return names;
+}
+
 /** Every string compared against an event key or a simple local alias. */
 export function comparedKeysFromSources(sources: readonly KeySource[]): string[] {
   const found = new Set<string>();
@@ -102,13 +131,40 @@ export function comparedKeysFromSources(sources: readonly KeySource[]): string[]
     ts.SyntaxKind.ExclamationEqualsEqualsToken,
   ]);
 
+  /** Joins paths as possible aliases: this completeness scan prefers false positives to misses. */
+  function mergeAliasPaths(target: Set<string>, ...paths: ReadonlySet<string>[]): void {
+    target.clear();
+    for (const path of paths) {
+      for (const alias of path) target.add(alias);
+    }
+  }
+
   for (const { fileName, source } of sources) {
     const sourceFile = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true);
 
     const visit = (node: ts.Node, aliases: Set<string>): void => {
-      if (ts.isSourceFile(node) || ts.isBlock(node)) {
+      if (ts.isSourceFile(node)) {
         const scopedAliases = new Set(aliases);
         for (const statement of node.statements) visit(statement, scopedAliases);
+        return;
+      }
+
+      if (ts.isBlock(node)) {
+        const blockScopedNames = collectBlockScopedNames(node);
+        const scopedAliases = new Set(aliases);
+        for (const statement of node.statements) visit(statement, scopedAliases);
+
+        // Assignments to outer variables flow out of a block; let/const
+        // bindings introduced in the block remain local. This distinction
+        // lets branch joins preserve possible aliases without leaking locals.
+        const mergedAliases = new Set<string>();
+        for (const alias of aliases) {
+          if (blockScopedNames.has(alias) || scopedAliases.has(alias)) mergedAliases.add(alias);
+        }
+        for (const alias of scopedAliases) {
+          if (!blockScopedNames.has(alias)) mergedAliases.add(alias);
+        }
+        mergeAliasPaths(aliases, mergedAliases);
         return;
       }
 
@@ -119,6 +175,41 @@ export function comparedKeysFromSources(sources: readonly KeySource[]): string[]
           if (parameter.initializer) visit(parameter.initializer, scopedAliases);
         }
         if ('body' in node && node.body) visit(node.body, scopedAliases);
+        return;
+      }
+
+      if (ts.isIfStatement(node)) {
+        visit(node.expression, aliases);
+        const afterCondition = new Set(aliases);
+        const thenAliases = new Set(afterCondition);
+        visit(node.thenStatement, thenAliases);
+
+        if (node.elseStatement) {
+          const elseAliases = new Set(afterCondition);
+          visit(node.elseStatement, elseAliases);
+          mergeAliasPaths(aliases, thenAliases, elseAliases);
+        } else {
+          // The branch may not run, so retain the incoming facts as a path.
+          mergeAliasPaths(aliases, afterCondition, thenAliases);
+        }
+        return;
+      }
+
+      if (ts.isIterationStatement(node, false)) {
+        const beforeLoop = new Set(aliases);
+        let possibleAliases = new Set(beforeLoop);
+        let changed = true;
+        while (changed) {
+          const iterationAliases = new Set(possibleAliases);
+          ts.forEachChild(node, (child) => visit(child, iterationAliases));
+          const joinedAliases = new Set(possibleAliases);
+          for (const alias of iterationAliases) joinedAliases.add(alias);
+          changed = joinedAliases.size !== possibleAliases.size;
+          possibleAliases = joinedAliases;
+        }
+        // Every loop can take its zero-iteration path, including do-while for
+        // this conservative scan; the base facts must never be discarded.
+        mergeAliasPaths(aliases, beforeLoop, possibleAliases);
         return;
       }
 
