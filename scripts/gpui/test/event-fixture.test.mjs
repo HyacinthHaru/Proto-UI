@@ -66,3 +66,33 @@ test('a drifted copy of the vocabulary fails before anything is written', () => 
   assert.notEqual(result.status, 0, 'a drifted copy must fail');
   assert.match(result.stderr, /CORE_EVENT_TYPES in .* has drifted/);
 });
+
+test('the key scan includes comparisons through local event-key aliases', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'proto-ui-event-key-alias-'));
+  const probe = path.join(dir, 'probe.mts');
+  writeFileSync(
+    probe,
+    `import { comparedKeysFromSources } from ${JSON.stringify(SCRIPT)};
+const keys = comparedKeysFromSources([{
+  fileName: 'aliases.ts',
+  source: \`function onKey(event) {
+    const key = event?.key;
+    const alias = key;
+    if (alias === 'F6') return;
+    if ('Enter' !== event.key) return;
+    const { key: destructured } = event;
+    if (destructured == 'Escape') return;
+  }
+  function onState(state) {
+    const key = state.status;
+    if (key === 'pending' || key === 'rejected') return;
+  }\`,
+}]);
+process.stdout.write(JSON.stringify(keys));
+`
+  );
+
+  const result = spawnSync(TSX, [probe], { cwd: ROOT, encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.deepEqual(JSON.parse(result.stdout), ['Enter', 'Escape', 'F6']);
+});

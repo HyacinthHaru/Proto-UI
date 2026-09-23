@@ -29,12 +29,134 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
+import * as ts from 'typescript';
 import { CORE_EVENT_TYPES, OPTIONAL_EVENT_TYPES } from '../../packages/types/src/event';
 import {
   EVENT_TYPE_PAYLOAD_CASES,
   type EventTypePayloadCase,
 } from '../../packages/spec/fixtures/src/event/type-payload';
+type KeySource = { fileName: string; source: string };
+
+function unwrapKeyExpression(expression: ts.Expression): ts.Expression {
+  let current = expression;
+  while (
+    ts.isParenthesizedExpression(current) ||
+    ts.isAsExpression(current) ||
+    ts.isNonNullExpression(current) ||
+    ts.isSatisfiesExpression(current)
+  ) {
+    current = current.expression;
+  }
+  return current;
+}
+
+function isKeyProperty(expression: ts.Expression): boolean {
+  const current = unwrapKeyExpression(expression);
+  return (
+    (ts.isPropertyAccessExpression(current) && current.name.text === 'key') ||
+    (ts.isElementAccessExpression(current) &&
+      current.argumentExpression !== undefined &&
+      ts.isStringLiteralLike(current.argumentExpression) &&
+      current.argumentExpression.text === 'key')
+  );
+}
+
+function isKeyValue(expression: ts.Expression, aliases: ReadonlySet<string>): boolean {
+  const current = unwrapKeyExpression(expression);
+  return isKeyProperty(current) || (ts.isIdentifier(current) && aliases.has(current.text));
+}
+
+function bindAliases(
+  name: ts.BindingName,
+  initializer: ts.Expression | undefined,
+  aliases: Set<string>
+): void {
+  if (ts.isIdentifier(name)) {
+    if (initializer && isKeyValue(initializer, aliases)) aliases.add(name.text);
+    else aliases.delete(name.text);
+    return;
+  }
+  if (ts.isObjectBindingPattern(name)) {
+    for (const element of name.elements) {
+      if (!ts.isIdentifier(element.name)) continue;
+      const property = element.propertyName ?? element.name;
+      if (
+        (ts.isIdentifier(property) || ts.isStringLiteralLike(property)) &&
+        property.text === 'key'
+      ) {
+        aliases.add(element.name.text);
+      } else {
+        aliases.delete(element.name.text);
+      }
+    }
+  }
+}
+
+/** Every string compared against an event key or a simple local alias. */
+export function comparedKeysFromSources(sources: readonly KeySource[]): string[] {
+  const found = new Set<string>();
+  const equalityOperators = new Set([
+    ts.SyntaxKind.EqualsEqualsToken,
+    ts.SyntaxKind.EqualsEqualsEqualsToken,
+    ts.SyntaxKind.ExclamationEqualsToken,
+    ts.SyntaxKind.ExclamationEqualsEqualsToken,
+  ]);
+
+  for (const { fileName, source } of sources) {
+    const sourceFile = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true);
+
+    const visit = (node: ts.Node, aliases: Set<string>): void => {
+      if (ts.isSourceFile(node) || ts.isBlock(node)) {
+        const scopedAliases = new Set(aliases);
+        for (const statement of node.statements) visit(statement, scopedAliases);
+        return;
+      }
+
+      if (ts.isFunctionLike(node)) {
+        const scopedAliases = new Set(aliases);
+        for (const parameter of node.parameters) {
+          bindAliases(parameter.name, undefined, scopedAliases);
+          if (parameter.initializer) visit(parameter.initializer, scopedAliases);
+        }
+        if ('body' in node && node.body) visit(node.body, scopedAliases);
+        return;
+      }
+
+      if (ts.isVariableDeclaration(node)) {
+        if (node.initializer) visit(node.initializer, aliases);
+        bindAliases(node.name, node.initializer, aliases);
+        return;
+      }
+
+      if (ts.isBinaryExpression(node)) {
+        if (equalityOperators.has(node.operatorToken.kind)) {
+          const left = unwrapKeyExpression(node.left);
+          const right = unwrapKeyExpression(node.right);
+          if (isKeyValue(left, aliases) && ts.isStringLiteralLike(right)) found.add(right.text);
+          if (isKeyValue(right, aliases) && ts.isStringLiteralLike(left)) found.add(left.text);
+        }
+
+        if (node.operatorToken.kind === ts.SyntaxKind.EqualsToken && ts.isIdentifier(node.left)) {
+          visit(node.right, aliases);
+          bindAliases(node.left, node.right, aliases);
+          return;
+        }
+      }
+
+      ts.forEachChild(node, (child) => visit(child, aliases));
+    };
+
+    visit(sourceFile, new Set());
+  }
+  return [...found].sort();
+}
+
+function comparedKeys(): string[] {
+  const sources = KEY_SCAN_ROOTS.flatMap((root) =>
+    sourceFiles(root).map((fileName) => ({ fileName, source: readFileSync(fileName, 'utf8') }))
+  );
+  return comparedKeysFromSources(sources);
+}
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const DEFAULT_OUT = path.join(ROOT, 'native/gpui/fixtures/event-types.json');
@@ -108,35 +230,6 @@ function sourceFiles(root: string): string[] {
     // pass: an empty result fails the completeness assertion downstream.
   }
   return found;
-}
-
-/**
- * Every string this repository compares a `key` property against.
- *
- * Intentionally a superset. Receivers vary too much to filter on
- * (`ev.key`, `ev?.key`, `detail?.key`, and a helper taking `{ key?: unknown }`
- * all appear), and filtering on the value would mean using the translation
- * table to decide what the table has to cover, which proves nothing.
- *
- * So the scan stays broad and the consumer classifies: every entry either
- * translates from a host key or is named as something other than keyboard
- * input. A new comparison appearing here then forces a decision instead of
- * passing silently.
- *
- * This is a sufficiency check on the translation table, not its source. The
- * table is the W3C UI Events key values, which a Web adapter passes through
- * untouched and which do not drift.
- */
-function comparedKeys(): string[] {
-  const pattern = /\.key\s*[!=]==\s*'([^']+)'/g;
-  const found = new Set<string>();
-  for (const root of KEY_SCAN_ROOTS) {
-    for (const file of sourceFiles(root)) {
-      const source = readFileSync(file, 'utf8');
-      for (const match of source.matchAll(pattern)) found.add(match[1]);
-    }
-  }
-  return [...found].sort();
 }
 
 /** The accepted and rejected type examples the spec fixture carries. */
