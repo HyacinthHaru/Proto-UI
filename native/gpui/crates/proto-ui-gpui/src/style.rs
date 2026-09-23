@@ -11,7 +11,7 @@
 
 use gpui::{
     px, AbsoluteLength, AlignItems, CursorStyle, DefiniteLength, Display, Fill, FlexDirection,
-    Hsla, JustifyContent, Length, Overflow, Position, StyleRefinement,
+    FontFallbacks, Hsla, JustifyContent, Length, Overflow, Position, StyleRefinement,
 };
 use proto_ui_style::color::{parse as parse_color, ColorValue};
 use proto_ui_style::length::{evaluate as evaluate_length, Dimension, LengthContext};
@@ -56,10 +56,22 @@ impl MappedStyle {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum InsetMode {
+    Inert,
+    Positioned,
+    Unsupported,
+}
+
 /// Maps one resolved declaration set.
 pub fn map(resolved: &ResolvedStyle, context: LengthContext) -> MappedStyle {
     let mut mapped = MappedStyle::default();
     let style = &mut mapped.refinement;
+    let inset_mode = match resolved.declarations.get("position").map(String::as_str) {
+        None | Some("static") => InsetMode::Inert,
+        Some("relative" | "absolute") => InsetMode::Positioned,
+        Some(_) => InsetMode::Unsupported,
+    };
 
     for (property, value) in &resolved.declarations {
         // Custom properties are inputs to a composed declaration that appears
@@ -71,7 +83,7 @@ pub fn map(resolved: &ResolvedStyle, context: LengthContext) -> MappedStyle {
             continue;
         }
 
-        if let Err(reason) = apply(style, property, value, context) {
+        if let Err(reason) = apply(style, property, value, context, inset_mode) {
             mapped
                 .unmapped
                 .push((property.clone(), value.clone(), reason));
@@ -92,6 +104,7 @@ fn apply(
     property: &str,
     value: &str,
     context: LengthContext,
+    inset_mode: InsetMode,
 ) -> Result<(), Unmapped> {
     let length = |raw: &str| evaluate_length(raw, context).map_err(|_| Unmapped::UnsupportedValue);
     let color = |raw: &str| match parse_color(raw) {
@@ -120,7 +133,9 @@ fn apply(
             }
         }
         "flex" => {
-            // Only the `<grow> <shrink> <basis>` long form appears.
+            // Only the `<grow> <shrink> <basis>` long form appears. Stage all
+            // conversions before mutating: an unsupported basis rejects the
+            // entire shorthand instead of leaking grow/shrink partial state.
             let mut parts = value.split_whitespace();
             let grow: f32 = parse_part(parts.next())?;
             let shrink: f32 = parse_part(parts.next())?;
@@ -128,13 +143,17 @@ fn apply(
             if parts.next().is_some() {
                 return Err(Unmapped::UnsupportedValue);
             }
+            let basis = to_length(length(basis)?)?;
             style.flex_grow = Some(grow);
             style.flex_shrink = Some(shrink);
-            style.flex_basis = Some(to_length(length(basis)?)?);
+            style.flex_basis = Some(basis);
         }
         "position" => match value {
-            "relative" | "static" => style.position = Some(Position::Relative),
-            "absolute" | "fixed" => style.position = Some(Position::Absolute),
+            "relative" => style.position = Some(Position::Relative),
+            "absolute" => style.position = Some(Position::Absolute),
+            // GPUI has no Static or viewport-Fixed variant; claiming either
+            // maps to Relative/Absolute changes containing-block behavior.
+            "static" | "fixed" => return Err(Unmapped::UnsupportedValue),
             _ => return Err(Unmapped::UnsupportedValue),
         },
         "width" => style.size.width = Some(to_length(length(value)?)?),
@@ -143,22 +162,31 @@ fn apply(
         "min-height" => style.min_size.height = Some(to_length(length(value)?)?),
         "max-width" => style.max_size.width = Some(to_length(length(value)?)?),
         "max-height" => style.max_size.height = Some(to_length(length(value)?)?),
-        "top" | "right" | "bottom" | "left" => {
-            let edge = to_length(length(value)?)?;
-            match property {
-                "top" => style.inset.top = Some(edge),
-                "right" => style.inset.right = Some(edge),
-                "bottom" => style.inset.bottom = Some(edge),
-                _ => style.inset.left = Some(edge),
+        "top" | "right" | "bottom" | "left" => match inset_mode {
+            // CSS insets have no effect under the default/static position.
+            InsetMode::Inert => {}
+            InsetMode::Unsupported => return Err(Unmapped::UnsupportedValue),
+            InsetMode::Positioned => {
+                let edge = to_length(length(value)?)?;
+                match property {
+                    "top" => style.inset.top = Some(edge),
+                    "right" => style.inset.right = Some(edge),
+                    "bottom" => style.inset.bottom = Some(edge),
+                    _ => style.inset.left = Some(edge),
+                }
             }
-        }
-        "inset" => {
-            let edge = to_length(length(value)?)?;
-            style.inset.top = Some(edge);
-            style.inset.right = Some(edge);
-            style.inset.bottom = Some(edge);
-            style.inset.left = Some(edge);
-        }
+        },
+        "inset" => match inset_mode {
+            InsetMode::Inert => {}
+            InsetMode::Unsupported => return Err(Unmapped::UnsupportedValue),
+            InsetMode::Positioned => {
+                let edge = to_length(length(value)?)?;
+                style.inset.top = Some(edge);
+                style.inset.right = Some(edge);
+                style.inset.bottom = Some(edge);
+                style.inset.left = Some(edge);
+            }
+        },
         "padding" => {
             let edge = to_definite(length(value)?)?;
             style.padding.top = Some(edge);
@@ -231,9 +259,14 @@ fn apply(
             style.text.font_weight = Some(gpui::FontWeight(weight));
         }
         "font-family" => {
-            // The recorded stack is a fallback list; the host picks the first
-            // family it actually has, so the whole string crosses unchanged.
-            style.text.font_family = Some(value.to_string().into());
+            let mut families = parse_font_families(value)?;
+            let primary = families.remove(0);
+            style.text.font_family = Some(primary.into());
+            style.text.font_fallbacks = if families.is_empty() {
+                None
+            } else {
+                Some(FontFallbacks::from_fonts(families))
+            };
         }
         "opacity" => style.opacity = Some(value.parse().map_err(|_| Unmapped::UnsupportedValue)?),
         "aspect-ratio" => {
@@ -277,7 +310,8 @@ fn apply(
         "overflow-x" | "overflow-y" | "overflow" => {
             let overflow = match value {
                 "visible" => Overflow::Visible,
-                "hidden" | "clip" => Overflow::Hidden,
+                "hidden" => Overflow::Hidden,
+                "clip" => Overflow::Clip,
                 "auto" | "scroll" => Overflow::Scroll,
                 _ => return Err(Unmapped::UnsupportedValue),
             };
@@ -307,6 +341,49 @@ fn parse_part(part: Option<&str>) -> Result<f32, Unmapped> {
     part.ok_or(Unmapped::UnsupportedValue)?
         .parse()
         .map_err(|_| Unmapped::UnsupportedValue)
+}
+
+fn parse_font_families(value: &str) -> Result<Vec<String>, Unmapped> {
+    let mut families = Vec::new();
+    let mut current = String::new();
+    let mut quote = None;
+
+    for character in value.chars() {
+        if let Some(delimiter) = quote {
+            if character == delimiter {
+                quote = None;
+            } else if character == '\\' {
+                // CSS escapes are outside the recorded fixture grammar.
+                return Err(Unmapped::UnsupportedValue);
+            } else {
+                current.push(character);
+            }
+        } else {
+            match character {
+                '\'' | '"' if current.trim().is_empty() => quote = Some(character),
+                '\'' | '"' => return Err(Unmapped::UnsupportedValue),
+                ',' => {
+                    let family = current.trim();
+                    if family.is_empty() {
+                        return Err(Unmapped::UnsupportedValue);
+                    }
+                    families.push(family.to_string());
+                    current.clear();
+                }
+                _ => current.push(character),
+            }
+        }
+    }
+
+    if quote.is_some() {
+        return Err(Unmapped::UnsupportedValue);
+    }
+    let family = current.trim();
+    if family.is_empty() {
+        return Err(Unmapped::UnsupportedValue);
+    }
+    families.push(family.to_string());
+    Ok(families)
 }
 
 fn to_hsla(rgba: proto_ui_style::Rgba) -> Hsla {
