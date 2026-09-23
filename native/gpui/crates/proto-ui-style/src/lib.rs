@@ -28,6 +28,10 @@
 //! already-merged list. [`resolve_all`] still applies later-wins per property,
 //! which is composition of the resolved result, not a second merge policy.
 
+pub mod theme;
+
+pub use theme::{themes, ColorScheme, Substitution, Theme, ThemeCatalog};
+
 use std::collections::BTreeMap;
 use std::sync::OnceLock;
 
