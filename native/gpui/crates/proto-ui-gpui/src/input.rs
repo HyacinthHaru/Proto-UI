@@ -36,7 +36,7 @@
 
 use std::collections::HashSet;
 
-use proto_ui_host_protocol::event_type::{CoreEvent, EventType, OptionalEvent};
+use proto_ui_host_protocol::event_type::{CoreEvent, EventType, ExtensionEvent, OptionalEvent};
 use proto_ui_host_protocol::model::{HostSessionSnapshot, SessionPhase};
 use proto_ui_host_protocol::wire::{EventScope, InputSample, LeaseId, SessionId, ViewEpoch};
 
@@ -128,6 +128,17 @@ pub enum HostInput {
         target: Target,
         fields: PortableKeyFields,
     },
+    /// A host-local event at one surface, such as `host:focus`.
+    ///
+    /// It reaches the root leases of that type on the session whose root is
+    /// that surface, and nothing else. It does not bubble: the Web router binds
+    /// a `host:*` listener on the root element itself, and `focus` and `blur`
+    /// do not bubble to it from descendants. It never reaches a global lease,
+    /// which the Web binds on the window rather than on any element.
+    HostEvent {
+        surface: SurfaceId,
+        event: ExtensionEvent,
+    },
 }
 
 /// A lease the router can deliver to.
@@ -211,6 +222,10 @@ enum Payload {
     Pointer(PortableModifiers),
     /// Key input also carries `key` and `repeat`.
     Key(PortableKeyFields),
+    /// A host event carries none of the portable fields. A focus change has no
+    /// key and no modifiers, and writing `false` for them would put a claim on
+    /// the wire the host never observed.
+    Host,
 }
 
 /// Routes host input to sessions.
@@ -287,6 +302,20 @@ impl InputRouter {
             }
             HostInput::KeyDown { target, fields } => self.key_down(target, fields, &mut routing),
             HostInput::KeyUp { target, fields } => self.key_up(target, fields, &mut routing),
+            HostInput::HostEvent { surface, event } => {
+                if let Some(index) = self
+                    .sessions
+                    .iter()
+                    .position(|state| &state.route.root == surface)
+                {
+                    routing.emit(
+                        &self.sessions[index].route,
+                        &EventType::Extension(event.clone()),
+                        &[EventScope::Root],
+                        &Payload::Host,
+                    );
+                }
+            }
         }
         routing.finish(&mut self.next_sample)
     }
@@ -598,10 +627,13 @@ impl Routing {
             .map(|(session_id, view_epoch, event, lease_ids, payload)| {
                 *next_sample += 1;
                 let (key, modifiers, repeat) = match payload {
-                    Payload::Pointer(modifiers) => (None, modifiers, None),
-                    Payload::Key(fields) => {
-                        (Some(fields.key), fields.modifiers, Some(fields.repeat))
-                    }
+                    Payload::Pointer(modifiers) => (None, Some(modifiers), None),
+                    Payload::Key(fields) => (
+                        Some(fields.key),
+                        Some(fields.modifiers),
+                        Some(fields.repeat),
+                    ),
+                    Payload::Host => (None, None, None),
                 };
                 Routed {
                     session_id,
@@ -611,10 +643,10 @@ impl Routing {
                         kind: event.as_str().to_string(),
                         lease_ids,
                         key,
-                        ctrl_key: Some(modifiers.ctrl),
-                        meta_key: Some(modifiers.meta),
-                        alt_key: Some(modifiers.alt),
-                        shift_key: Some(modifiers.shift),
+                        ctrl_key: modifiers.map(|modifiers| modifiers.ctrl),
+                        meta_key: modifiers.map(|modifiers| modifiers.meta),
+                        alt_key: modifiers.map(|modifiers| modifiers.alt),
+                        shift_key: modifiers.map(|modifiers| modifiers.shift),
                         repeat,
                     },
                 }

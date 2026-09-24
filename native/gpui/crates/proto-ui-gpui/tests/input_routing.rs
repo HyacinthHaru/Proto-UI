@@ -610,3 +610,47 @@ fn routed_samples_are_accepted_by_the_host_session_model() {
         }
     }
 }
+
+#[test]
+fn a_host_event_reaches_only_the_root_lease_of_the_session_rendering_that_surface() {
+    // A Web `host:*` root listener is bound on the root element itself, and
+    // `focus` does not bubble. So an event at the inner root reaches the inner
+    // session and not the outer one, a surface that is no session's root
+    // reaches nobody, and a global lease never hears it.
+    let focus = match EventType::parse("host:focus") {
+        Ok(EventType::Extension(event)) => event,
+        other => panic!("`host:focus` is a host event type, got {other:?}"),
+    };
+    let mut router = InputRouter::new();
+    for (id, root) in [("outer", "a"), ("inner", "b")] {
+        router.upsert_session(session(
+            id,
+            root,
+            vec![
+                lease(&format!("{id}-root"), EventScope::Root, "host:focus"),
+                lease(&format!("{id}-global"), EventScope::Global, "host:focus"),
+            ],
+        ));
+    }
+
+    let routed = router.route(&HostInput::HostEvent {
+        surface: "b".into(),
+        event: focus.clone(),
+    });
+    assert_eq!(
+        summary(&routed),
+        vec![entry("inner", "host:focus", &["inner-root"])]
+    );
+    let sample = &routed[0].sample;
+    assert_eq!(
+        (sample.key.clone(), sample.ctrl_key, sample.repeat),
+        (None, None, None)
+    );
+
+    assert!(router
+        .route(&HostInput::HostEvent {
+            surface: "part-of-b".into(),
+            event: focus,
+        })
+        .is_empty());
+}
