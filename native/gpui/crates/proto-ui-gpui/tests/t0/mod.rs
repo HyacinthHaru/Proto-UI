@@ -91,6 +91,17 @@ impl Fixture {
     /// Starts the peer, opens every session in order in one GPUI window, and
     /// pumps messages until the peer has activated a projection for each.
     pub fn start_all(cx: &mut TestAppContext, sessions: Vec<Session>) -> Self {
+        let viewed: Vec<&'static str> = sessions.iter().map(|session| session.id).collect();
+        Self::start_viewed(cx, sessions, &viewed)
+    }
+
+    /// Like [`Self::start_all`], but waits only for the sessions in `viewed`:
+    /// an instance whose view intent wants no view installs nothing.
+    pub fn start_viewed(
+        cx: &mut TestAppContext,
+        sessions: Vec<Session>,
+        viewed: &[&'static str],
+    ) -> Self {
         let root = repository_root();
         let mut command = Command::new(root.join("node_modules/.bin/tsx"));
         command
@@ -100,7 +111,7 @@ impl Fixture {
 
         let bridge = Rc::new(RefCell::new(InputBridge::new()));
         let first = sessions.first().expect("at least one session").id;
-        let mut pending: Vec<&'static str> = sessions.iter().map(|session| session.id).collect();
+        let mut pending: Vec<&'static str> = viewed.to_vec();
         let window = cx.open_window(size(px(300.), px(100.)), move |window, cx| {
             let mut view = ProtoHostView::new(bridge, Vec::new(), window, cx);
             window.focus(view.focus_handle(), cx);
