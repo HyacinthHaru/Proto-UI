@@ -296,6 +296,8 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
       : undefined;
     return {
       semanticObjectId: a11yIdOf(snapshot.objectRef),
+      // Relations name their targets by this id; an empty one names nothing.
+      ...(snapshot.id ? { id: snapshot.id } : {}),
       ...(snapshot.role ? { role: snapshot.role } : {}),
       ...(name ? { name } : {}),
       states,

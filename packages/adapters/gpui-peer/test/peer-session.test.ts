@@ -4,6 +4,7 @@ import type { PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
 import button from '@proto.ui/prototypes-base/button';
 import toggle from '@proto.ui/prototypes-base/toggle';
 import { switchRoot, switchThumb } from '@proto.ui/prototypes-base/switch';
+import { tabsContent, tabsRoot, tabsTrigger } from '@proto.ui/prototypes-base/tabs';
 
 import { createPeerSession, type PeerSession } from '../src/session';
 import { ScriptedHost } from './scripted-host';
@@ -429,6 +430,31 @@ describe('gpui peer: instances composed into one another', () => {
     await root.peer.dispose();
     expect(thumb.host.of('session.disposed')).toHaveLength(1);
     expect(root.host.of('session.disposed')).toHaveLength(1);
+  });
+
+  it('sends the ids a Tabs trigger and panel give themselves and name each other by', async () => {
+    const root = open('tabs-root', tabsRoot);
+    root.peer.setProps({ defaultValue: 'overview' });
+    await root.peer.mount();
+    const trigger = open('tabs-trigger', tabsTrigger, root.peer);
+    trigger.peer.setProps({ value: 'overview' });
+    await trigger.peer.mount();
+    const panel = open('tabs-panel', tabsContent, root.peer);
+    panel.peer.setProps({ value: 'overview' });
+    await panel.peer.mount();
+
+    const triggerA11y = trigger.host.lastA11y();
+    const panelA11y = panel.host.lastA11y();
+    expect(triggerA11y?.role).toBe('tab');
+    expect(panelA11y?.role).toBe('tabpanel');
+    expect(triggerA11y?.id).toMatch(/-trigger-overview$/);
+    expect(panelA11y?.id).toMatch(/-content-overview$/);
+    expect(triggerA11y?.relations.controls).toBe(panelA11y?.id);
+    expect(panelA11y?.relations.labelledBy).toBe(triggerA11y?.id);
+
+    await panel.peer.dispose();
+    await trigger.peer.dispose();
+    await root.peer.dispose();
   });
 
   it('cannot set a thumb up without the root it belongs to', () => {
