@@ -60,6 +60,7 @@ import {
   assertWireValue,
   type A11ySnapshotWire,
   type EventRegistration,
+  type FocusPlan,
   type HostDiagnostic,
   type HostToPeerMessage,
   type InputSample,
@@ -240,6 +241,11 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
   const focusTarget: FocusTargetObject = { ref: FOCUS_ROOT_REF };
   let focusSequential = false;
   let focusProgrammatic = false;
+  const focusPlan = (): FocusPlan => ({
+    targets: [
+      { ref: FOCUS_ROOT_REF, sequential: focusSequential, programmatic: focusProgrammatic },
+    ],
+  });
   let focusRequestCounter = 0;
   const readyListeners = new Set<() => void>();
 
@@ -531,8 +537,14 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
       [
         FOCUS_SET_FOCUSABLE_CAP,
         (_target: unknown, enabled: boolean, options?: { programmatic?: boolean }) => {
+          const programmatic = enabled || options?.programmatic === true;
+          if (enabled === focusSequential && programmatic === focusProgrammatic) return;
           focusSequential = enabled;
-          focusProgrammatic = enabled || options?.programmatic === true;
+          focusProgrammatic = programmatic;
+          // As with feedback style: a commit carries the plan, and a change
+          // outside one, as a roving group moving its tab stop, is sent alone.
+          if (flushingCommit || !viewInstalled || disposed) return;
+          send({ kind: 'focus.plan', sessionId, viewEpoch, focus: focusPlan() });
         },
       ],
       [FOCUS_RESOLVE_ENTRY_TARGET_CAP, (container: unknown) => container],
@@ -603,11 +615,7 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
         registrations: currentRegistrations(),
         ...(triggerAnchor === null ? {} : { trigger: { anchor: triggerAnchor } }),
       },
-      focus: {
-        targets: [
-          { ref: FOCUS_ROOT_REF, sequential: focusSequential, programmatic: focusProgrammatic },
-        ],
-      },
+      focus: focusPlan(),
       style: [...latestStyle],
       a11y: latestA11y,
     };

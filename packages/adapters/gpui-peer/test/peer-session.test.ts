@@ -4,7 +4,7 @@ import type { PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
 import button from '@proto.ui/prototypes-base/button';
 import toggle from '@proto.ui/prototypes-base/toggle';
 import { switchRoot, switchThumb } from '@proto.ui/prototypes-base/switch';
-import { tabsContent, tabsRoot, tabsTrigger } from '@proto.ui/prototypes-base/tabs';
+import { tabsContent, tabsList, tabsRoot, tabsTrigger } from '@proto.ui/prototypes-base/tabs';
 
 import { createPeerSession, type PeerSession } from '../src/session';
 import { ScriptedHost } from './scripted-host';
@@ -694,5 +694,57 @@ describe('gpui peer: view intent', () => {
     await settle();
     expect(views(host)).toEqual(['install 1']);
     await peer.dispose();
+  });
+});
+
+describe('gpui peer: focus plan', () => {
+  function open(
+    sessionId: string,
+    prototype: Parameters<typeof createPeerSession>[0]['prototype'],
+    props: WireRecord,
+    parent?: PeerSession
+  ) {
+    const host = new ScriptedHost(sessionId);
+    const peer = createPeerSession({
+      sessionId,
+      instanceId: `${sessionId}:instance`,
+      prototype,
+      props,
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+      parent,
+    });
+    host.bind((message) => peer.handle(message));
+    return { host, peer };
+  }
+
+  /** Whether the host was last told the root is a tab stop. */
+  const sequential = (host: ScriptedHost) =>
+    host.sent.flatMap((message) =>
+      message.kind === 'projection.install'
+        ? [message.transaction.focus.targets[0]?.sequential]
+        : message.kind === 'focus.plan'
+          ? [message.focus.targets[0]?.sequential]
+          : []
+    );
+
+  it('moves a Tabs list tab stop to the tab selected outside a commit', async () => {
+    const root = open('tabs-root', tabsRoot, { defaultValue: 'a' });
+    await root.peer.mount();
+    const list = open('tabs-list', tabsList, {}, root.peer);
+    await list.peer.mount();
+    const alpha = open('tab-a', tabsTrigger, { value: 'a' }, list.peer);
+    await alpha.peer.mount();
+    const beta = open('tab-b', tabsTrigger, { value: 'b' }, list.peer);
+    await beta.peer.mount();
+    // Mounting sends the plan with each projection, and nothing on its own.
+    expect(sequential(alpha.host)).toEqual([true]);
+    expect(sequential(beta.host)).toEqual([false]);
+
+    beta.host.input('press.commit');
+    expect(sequential(alpha.host)).toEqual([true, false]);
+    expect(sequential(beta.host)).toEqual([false, true]);
+
+    for (const { peer } of [beta, alpha, list, root]) await peer.dispose();
   });
 });
