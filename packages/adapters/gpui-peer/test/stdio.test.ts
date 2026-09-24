@@ -44,6 +44,7 @@ describe('gpui peer: stdio process', () => {
       'base-tabs-trigger',
       'base-tabs-content',
       'base-tabs-indicator',
+      'base-transition',
     ]);
   });
 

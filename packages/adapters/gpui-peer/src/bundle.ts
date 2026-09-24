@@ -31,6 +31,8 @@ export function createBaseBundle(): PrototypeBundle {
         import('@proto.ui/prototypes-base/tabs').then((m) => m.tabsContent),
       'base-tabs-indicator': () =>
         import('@proto.ui/prototypes-base/tabs').then((m) => m.tabsIndicator),
+      'base-transition': () =>
+        import('@proto.ui/prototypes-base/transition').then((m) => m.default),
     },
   };
 }
