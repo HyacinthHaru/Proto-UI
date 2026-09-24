@@ -5,6 +5,7 @@
 //! implementations replay. It has no GPUI dependency and performs no I/O.
 
 pub mod event_type;
+pub mod messages;
 pub mod model;
 pub mod wire;
 
@@ -17,8 +18,8 @@ pub use model::{
     RetainedLogicalState, SessionPhase,
 };
 pub use wire::{
-    A11yNameWire, A11ySnapshotWire, DefaultActionRequest, EventBindingPlan, EventRegistration,
-    EventScope, FocusPlan, FocusTargetPlan, HostDiagnostic, InputSample, ProjectionAck,
-    ProjectionAckStatus, ProjectionTransaction, RawEventRegistration, SlotPlan,
+    A11yActionWire, A11yNameWire, A11ySnapshotWire, DefaultActionRequest, EventBindingPlan,
+    EventRegistration, EventScope, FocusPlan, FocusTargetPlan, HostDiagnostic, InputSample,
+    ProjectionAck, ProjectionAckStatus, ProjectionTransaction, RawEventRegistration, SlotPlan,
     HOST_PROTOCOL_VERSION,
 };

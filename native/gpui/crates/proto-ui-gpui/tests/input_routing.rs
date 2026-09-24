@@ -576,6 +576,12 @@ fn routed_samples_are_accepted_by_the_host_session_model() {
         "instanceId": "button-1",
         "viewEpoch": 1,
         "commitId": 1,
+        // Every field the TypeScript type requires, including the nullable
+        // `a11y`: the wire refuses a transaction that omits one.
+        "template": { "kind": "root", "children": [] },
+        "slots": { "slots": [] },
+        "focus": { "targets": [] },
+        "a11y": null,
         "events": {
             "registrations": [
                 { "leaseId": "l-commit", "scope": "root", "type": "press.commit" },
