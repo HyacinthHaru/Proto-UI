@@ -12,8 +12,14 @@
 //! tells assistive technology something the Prototype never said. For the
 //! same reason a role this layer does not map leaves the object unreported
 //! instead of reporting it under a nearby role.
+//!
+//! Relations name other objects, which on this host are other sessions. GPUI's
+//! element builders at the pinned revision set no AccessKit relation, so a
+//! relation is carried only where it changes what is announced: `labelledBy`
+//! gives the object its name, which the hub resolves across sessions. Any other
+//! relation, such as a tab's `controls`, comes back as an issue.
 
-use gpui::{Role, SharedString, Toggled};
+use gpui::{Orientation, Role, SharedString, Toggled};
 use proto_ui_host_protocol::wire::{A11yNameWire, A11ySnapshotWire};
 use serde_json::Value;
 
@@ -30,9 +36,25 @@ pub struct A11yProjection {
     pub disabled: bool,
     /// Whether a toggle button or a switch is on, when the object is one.
     pub toggled: Option<Toggled>,
+    /// Whether a tab is the selected one, when the object says.
+    pub selected: Option<bool>,
+    /// Which way a tab list runs, when the object says.
+    pub orientation: Option<Orientation>,
+    /// The objects whose text names this one. The hub resolves them into
+    /// `label` when it publishes, because they live in other sessions.
+    pub labelled_by: Option<A11yReference>,
     /// Whether assistive technology may activate the object. It asks through
     /// AccessKit's default action, and the host treats that as a click.
     pub activatable: bool,
+}
+
+/// How a relation names its target objects.
+#[derive(Debug, Clone, PartialEq)]
+pub enum A11yReference {
+    /// By the id an object is given, as a string relation names it.
+    Id(String),
+    /// By semantic object, as a structured relation names them.
+    Objects(Vec<String>),
 }
 
 /// A fact in a snapshot that the projection does not carry.
@@ -79,9 +101,21 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
 
     let mut disabled = false;
     let mut toggled = None;
+    let mut selected = None;
+    let mut orientation = None;
     for (name, value) in &snapshot.states {
         match (name.as_str(), value) {
+            // A hidden object is not reported, whatever else it says.
+            ("hidden", Value::Bool(true)) => return (None, Vec::new()),
+            ("hidden", Value::Bool(false)) => {}
             ("disabled", Value::Bool(value)) => disabled = *value,
+            ("selected", Value::Bool(value)) => selected = Some(*value),
+            ("orientation", Value::String(value)) if value == "horizontal" => {
+                orientation = Some(Orientation::Horizontal)
+            }
+            ("orientation", Value::String(value)) if value == "vertical" => {
+                orientation = Some(Orientation::Vertical)
+            }
             // `pressed` makes a button a toggle button, on or off; `checked`
             // says whether a switch is on.
             ("pressed" | "checked", Value::Bool(value)) => {
@@ -109,14 +143,23 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
         }
     }
 
-    // A `null` relation is the absence of one, which needs no projection.
-    issues.extend(
-        snapshot
-            .relations
-            .iter()
-            .filter(|(_, target)| !target.is_null())
-            .map(|(name, _)| A11yIssue::Relation(name.clone())),
-    );
+    let mut labelled_by = None;
+    for (name, target) in &snapshot.relations {
+        match (name.as_str(), target) {
+            // A `null` relation is the absence of one, which needs no projection.
+            (_, Value::Null) => {}
+            ("labelledBy", Value::String(id)) => labelled_by = Some(A11yReference::Id(id.clone())),
+            ("labelledBy", Value::Array(objects)) if objects.iter().all(Value::is_string) => {
+                labelled_by = Some(A11yReference::Objects(
+                    objects
+                        .iter()
+                        .filter_map(|object| object.as_str().map(str::to_string))
+                        .collect(),
+                ))
+            }
+            _ => issues.push(A11yIssue::Relation(name.clone())),
+        }
+    }
     issues.extend(snapshot.level.map(A11yIssue::Level));
 
     let projection = A11yProjection {
@@ -125,6 +168,9 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
         name_from_content,
         disabled,
         toggled,
+        selected,
+        orientation,
+        labelled_by,
         activatable,
     };
     (Some(projection), issues)
@@ -143,6 +189,9 @@ fn role(name: &str) -> Option<Role> {
     match name {
         "button" => Some(Role::Button),
         "switch" => Some(Role::Switch),
+        "tablist" => Some(Role::TabList),
+        "tab" => Some(Role::Tab),
+        "tabpanel" => Some(Role::TabPanel),
         _ => None,
     }
 }

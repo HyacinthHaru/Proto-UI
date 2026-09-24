@@ -53,7 +53,7 @@ mod macos {
     use proto_ui_gpui::hub::SessionConfig;
     use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
     use raw_window_handle::{HasWindowHandle, RawWindowHandle};
-    use serde_json::Value;
+    use serde_json::{json, Value};
 
     const ENABLED: &str = "button-enabled";
     const DISABLED: &str = "button-disabled";
@@ -63,6 +63,10 @@ mod macos {
     const SWITCH_OFF_THUMB: &str = "switch-thumb";
     const SWITCH_ON: &str = "switch-checked";
     const SWITCH_ON_THUMB: &str = "switch-checked-thumb";
+    const TAB_LIST: &str = "tabs-list";
+    const TAB_ON: &str = "tab-overview";
+    const TAB_OFF: &str = "tab-settings";
+    const TAB_PANEL: &str = "tab-panel";
     /// Long enough for AccessKit's action channel to reach the foreground.
     const SETTLE: Duration = Duration::from_millis(200);
 
@@ -101,6 +105,44 @@ mod macos {
             })
             .expect("the recorded session installed a projection");
         (messages, commit_leases)
+    }
+
+    /// A Base Tabs part: the recorded Base Button projection installed as
+    /// `session`, then what the Tabs part says about itself.
+    fn tabs_part(session: &str, snapshot: Value) -> Vec<PeerToHostMessage> {
+        let path =
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/base-button-session.json");
+        let fixture: Value =
+            serde_json::from_str(&fs::read_to_string(path).expect("the fixture reads"))
+                .expect("the fixture parses");
+        let recorded = serde_json::to_string(&fixture["sessions"]["enabled"])
+            .expect("the recording writes")
+            .replace("\"button-enabled\"", &format!("\"{session}\""));
+        let mut messages: Vec<Value> =
+            serde_json::from_str(&recorded).expect("the recording reads");
+        messages.push(json!({
+            "kind": "a11y.snapshot",
+            "sessionId": session,
+            "viewEpoch": 1,
+            "snapshot": snapshot,
+        }));
+        messages
+            .into_iter()
+            .map(|message| serde_json::from_value(message).expect("a peer message"))
+            .collect()
+    }
+
+    /// What Base Tabs' trigger says about itself.
+    fn tab(value: &str, selected: bool) -> Value {
+        json!({
+            "semanticObjectId": format!("tab-{value}"),
+            "id": format!("pui-tabs-1-trigger-{value}"),
+            "role": "tab",
+            "name": { "kind": "content" },
+            "states": { "selected": selected, "disabled": false },
+            "actions": { "activate": { "event": "click" } },
+            "relations": { "controls": format!("pui-tabs-1-content-{value}") },
+        })
     }
 
     fn config(session: &str, prototype_key: &str, label: &str) -> SessionConfig {
@@ -343,6 +385,32 @@ mod macos {
             let (switch_on_messages, _) = recorded("base-switch-session.json", "checked");
             let (switch_on_thumb_messages, _) =
                 recorded("base-switch-session.json", "checkedThumb");
+            let tabs_messages: Vec<PeerToHostMessage> = tabs_part(
+                TAB_LIST,
+                json!({
+                    "semanticObjectId": "tab-list",
+                    "role": "tablist",
+                    "name": { "kind": "text", "value": "Sections" },
+                    "states": { "orientation": "horizontal" },
+                    "actions": {},
+                    "relations": {},
+                }),
+            )
+            .into_iter()
+            .chain(tabs_part(TAB_ON, tab("overview", true)))
+            .chain(tabs_part(TAB_OFF, tab("settings", false)))
+            .chain(tabs_part(
+                TAB_PANEL,
+                json!({
+                    "semanticObjectId": "tab-panel",
+                    "id": "pui-tabs-1-content-overview",
+                    "role": "tabpanel",
+                    "states": { "hidden": false },
+                    "actions": {},
+                    "relations": { "labelledBy": "pui-tabs-1-trigger-overview" },
+                }),
+            ))
+            .collect();
             let bounds = Bounds::centered(None, size(px(300.), px(300.)), cx);
             let window = cx
                 .open_window(
@@ -376,6 +444,16 @@ mod macos {
                             {
                                 view.open_session(session, config, cx);
                             }
+                            // Base Tabs parts, installed through the recorded
+                            // Button projection.
+                            for (session, label) in [
+                                (TAB_LIST, ""),
+                                (TAB_ON, "Overview"),
+                                (TAB_OFF, "Settings"),
+                                (TAB_PANEL, "Panel body"),
+                            ] {
+                                view.open_session(session, config(session, "base-button", label), cx);
+                            }
                             view
                         })
                     },
@@ -393,6 +471,7 @@ mod macos {
                         .chain(switch_off_thumb_messages)
                         .chain(switch_on_messages)
                         .chain(switch_on_thumb_messages)
+                        .chain(tabs_messages)
                     {
                         view.receive(message, window, cx);
                     }
@@ -497,6 +576,45 @@ mod macos {
                         ],
                     &reported,
                 );
+                // Base Tabs parts. AccessKit reports a tab as a radio button
+                // with the tab button subrole, its value saying whether it is
+                // the selected one; the host names it from its content.
+                let tabs: Vec<(Option<String>, Option<i64>)> = run
+                    .with_role("AXRadioButton", cx)
+                    .into_iter()
+                    .filter(|seen| seen.subrole.as_deref() == Some("AXTabButton"))
+                    .map(|seen| (seen.title, seen.number))
+                    .collect();
+                run.check(
+                    "both tabs are reported as tab buttons named by their content, selected and not",
+                    tabs == vec![
+                        (Some("Overview".into()), Some(1)),
+                        (Some("Settings".into()), Some(0)),
+                    ],
+                    &tabs,
+                );
+                let panels: Vec<Option<String>> = run
+                    .with_role("AXGroup", cx)
+                    .into_iter()
+                    .filter(|seen| seen.subrole.as_deref() == Some("AXTabPanel"))
+                    .map(|seen| seen.title)
+                    .collect();
+                run.check(
+                    "the tab panel is named by the tab that labels it, from another session",
+                    panels == vec![Some("Overview".into())],
+                    &panels,
+                );
+                let lists: Vec<Option<String>> = run
+                    .with_role("AXTabGroup", cx)
+                    .into_iter()
+                    .map(|seen| seen.title)
+                    .collect();
+                run.check(
+                    "the tab list is reported as a tab group with its name",
+                    lists == vec![Some("Sections".into())],
+                    &lists,
+                );
+
                 let accepted = run.press(&switches[0], cx).await;
                 let commits = run.commits(cx);
                 run.check(

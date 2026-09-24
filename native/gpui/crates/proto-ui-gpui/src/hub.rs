@@ -30,7 +30,7 @@ use proto_ui_style::length::LengthContext;
 use proto_ui_style::Theme;
 use serde_json::{json, Value};
 
-use crate::a11y::{project, A11yIssue, A11yProjection};
+use crate::a11y::{project, A11yIssue, A11yProjection, A11yReference};
 use crate::host::{ProtoHostView, SurfaceChild, SurfaceNode, FOCUS_ROOT_REF};
 use crate::input::{SessionRoute, SurfaceId};
 use crate::style::{style_for_tokens, StyleIssue};
@@ -167,6 +167,61 @@ impl HostHub {
             .iter()
             .find(|(id, _)| id == session_id)
             .map(|(_, session)| session)
+    }
+
+    /// What a session's root reports: its projection, named by the objects it
+    /// is labelled by when those are open.
+    ///
+    /// Each labelling object reads as its own text name, or else as the text
+    /// beneath it; the labels of a labelling object are not followed, as an
+    /// accessible name computation does not follow them. With no labelling
+    /// object open, the object keeps whatever name it has of its own.
+    fn reported(&self, session_id: &str) -> Option<A11yProjection> {
+        let mut projection = self.session(session_id)?.projection.clone()?;
+        if let Some(reference) = &projection.labelled_by {
+            let names: Vec<String> = self
+                .labelling(reference)
+                .into_iter()
+                .filter_map(|labelling| {
+                    let own = labelling
+                        .projection
+                        .as_ref()
+                        .and_then(|projection| projection.label.as_ref())
+                        .map(|label| label.to_string());
+                    let name =
+                        own.or_else(|| labelling.surface.as_ref().map(SurfaceNode::text_content))?;
+                    (!name.is_empty()).then_some(name)
+                })
+                .collect();
+            if !names.is_empty() {
+                projection.label = Some(names.join(" ").into());
+            }
+        }
+        Some(projection)
+    }
+
+    /// The open sessions a reference names, in the order it names them.
+    fn labelling(&self, reference: &A11yReference) -> Vec<&HubSession> {
+        let open = || self.sessions.iter().map(|(_, session)| session);
+        match reference {
+            A11yReference::Id(id) => open()
+                .find(|session| {
+                    session.a11y.as_ref().and_then(|a11y| a11y.id.as_deref()) == Some(id.as_str())
+                })
+                .into_iter()
+                .collect(),
+            A11yReference::Objects(objects) => objects
+                .iter()
+                .filter_map(|object| {
+                    open().find(|session| {
+                        session
+                            .a11y
+                            .as_ref()
+                            .is_some_and(|a11y| &a11y.semantic_object_id == object)
+                    })
+                })
+                .collect(),
+        }
     }
 
     /// Every session opened inside `session_id`, directly or not, each one
@@ -622,6 +677,12 @@ impl ProtoHostView {
         self.hub.session(session_id)?.projection.as_ref()
     }
 
+    /// What a session's root reports to accessibility, with the name it takes
+    /// from other sessions resolved.
+    pub fn reported_a11y(&self, session_id: &str) -> Option<A11yProjection> {
+        self.hub.reported(session_id)
+    }
+
     /// The sessions whose surfaces the view renders, in document order.
     pub fn rendered_sessions(&self) -> Vec<SessionId> {
         let mut sessions: Vec<SessionId> = Vec::new();
@@ -787,7 +848,7 @@ impl ProtoHostView {
             .iter()
             .filter_map(|(id, session)| {
                 let mut root = session.surface.clone()?;
-                root.a11y = session.projection.clone();
+                root.a11y = self.hub.reported(id);
                 // The Prototype's feedback style first, then the application's
                 // own root style over it: the consumer wins, as it does over
                 // the Web's `@layer proto-ui` (C-PROTOTYPE-STYLE-CLOSURE-0001).
