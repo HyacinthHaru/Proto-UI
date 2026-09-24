@@ -18,3 +18,5 @@ proto-ui-style = { path = "../proto-ui-style" }
 # every assertion here would be about the `StyleRefinement` we build rather
 # than about what GPUI does with it.
 gpui = { workspace = true, features = ["test-support"] }
+serde.workspace = true
+serde_json.workspace = true
