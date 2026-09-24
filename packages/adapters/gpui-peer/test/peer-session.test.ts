@@ -518,3 +518,94 @@ describe('gpui peer: feedback style', () => {
     await peer.dispose();
   });
 });
+
+describe('gpui peer: view intent', () => {
+  function open(
+    sessionId: string,
+    prototype: Parameters<typeof createPeerSession>[0]['prototype'],
+    props: WireRecord,
+    parent?: PeerSession
+  ) {
+    const host = new ScriptedHost(sessionId);
+    const peer = createPeerSession({
+      sessionId,
+      instanceId: `${sessionId}:instance`,
+      prototype,
+      props,
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+      parent,
+    });
+    host.bind((message) => peer.handle(message));
+    return { host, peer };
+  }
+
+  /** Lets reconciliation, which runs on its own promise chain, finish. */
+  const settle = async () => {
+    for (let turn = 0; turn < 20; turn++) await new Promise((resolve) => setTimeout(resolve, 0));
+  };
+
+  /** The views a session installed and detached, in order. */
+  const views = (host: ScriptedHost) =>
+    host.sent.flatMap((message) =>
+      message.kind === 'projection.install'
+        ? [`install ${message.transaction.viewEpoch}`]
+        : message.kind === 'projection.detach'
+          ? [`detach ${message.viewEpoch}`]
+          : []
+    );
+
+  it('gives only the current Tabs panel a view, and moves it as the value changes', async () => {
+    const root = open('tabs-root', tabsRoot, { value: 'overview' });
+    await root.peer.mount();
+    const overview = open('panel-overview', tabsContent, { value: 'overview' }, root.peer);
+    await overview.peer.mount();
+    const settings = open('panel-settings', tabsContent, { value: 'settings' }, root.peer);
+    await settings.peer.mount();
+    await settle();
+    // The inactive panel is detached from its creation, so it never renders.
+    expect(views(overview.host)).toEqual(['install 1']);
+    expect(views(settings.host)).toEqual([]);
+
+    root.peer.setProps({ value: 'settings' });
+    await settle();
+    expect(views(overview.host)).toEqual(['install 1', 'detach 1']);
+    expect(views(settings.host)).toEqual(['install 1']);
+    // Its listeners are released before the host hears that the view went.
+    const kinds = overview.host.sent.map((message) => message.kind);
+    expect(kinds.lastIndexOf('lease.release')).toBeLessThan(kinds.indexOf('projection.detach'));
+
+    root.peer.setProps({ value: 'overview' });
+    await settle();
+    // The view comes back in a new epoch; the instance itself was kept.
+    expect(views(overview.host)).toEqual(['install 1', 'detach 1', 'install 2']);
+    expect(views(settings.host)).toEqual(['install 1', 'detach 1']);
+    expect(overview.host.exposeState('current')).toBe(true);
+
+    await settings.peer.dispose();
+    await overview.peer.dispose();
+    await root.peer.dispose();
+    expect(views(settings.host)).toEqual(['install 1', 'detach 1']);
+    expect(settings.host.of('session.disposed')).toHaveLength(1);
+  });
+
+  it('does nothing for an intent that a newer one replaced', async () => {
+    const flicker = definePrototype({
+      name: 'test-view-flicker',
+      setup(def) {
+        def.event.on('press.commit', (run) => {
+          run.lifecycle.setPresent(false);
+          run.lifecycle.setPresent(true);
+        });
+        return (r) => r.el('div', 'flicker');
+      },
+    });
+    const { host, peer } = open('flicker', flicker, {});
+    await peer.mount();
+    await settle();
+    host.input('press.commit');
+    await settle();
+    expect(views(host)).toEqual(['install 1']);
+    await peer.dispose();
+  });
+});

@@ -649,6 +649,32 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     { initialMount: 'manual' }
   );
 
+  // Whether a view exists follows the instance's view intent (C-LIFECYCLE-0008).
+  // Once the host asks for the instance, each change of intent is reconciled
+  // in turn against the latest intent, so an intent a newer one superseded
+  // does nothing (-D). Detaching unmounts the view and keeps the instance
+  // (-E); the host hears which epoch went.
+  let started = false;
+  let viewMounted = false;
+  let reconciling: Promise<void> = Promise.resolve();
+  const reconcileView = (): Promise<void> => {
+    reconciling = reconciling.then(async () => {
+      if (!started || !acceptingInbound || !hostSession) return;
+      const { present } = hostSession.viewIntent.getSnapshot();
+      if (present && !viewMounted) {
+        viewMounted = true;
+        await hostSession.mount();
+      } else if (!present && viewMounted) {
+        viewMounted = false;
+        const detached = viewEpoch;
+        await hostSession.unmount();
+        if (acceptingInbound) send({ kind: 'projection.detach', sessionId, viewEpoch: detached });
+      }
+    });
+    return reconciling;
+  };
+  const offViewIntent = hostSession.viewIntent.subscribe(() => void reconcileView());
+
   const handleAck = (ack: ProjectionAck) => {
     if (
       !pendingAck ||
@@ -725,7 +751,12 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
   const peerSession: PeerSession = {
     sessionId,
     token: instanceToken,
-    mount: () => hostSession!.mount(),
+    mount() {
+      // Intent written while the instance was created applies before the
+      // first view does (-H).
+      started = true;
+      return reconcileView();
+    },
     setProps(props) {
       raw = { ...props };
       hostSession?.controller.applyRawProps(raw as any);
@@ -796,6 +827,8 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     async dispose() {
       if (!acceptingInbound) return;
       acceptingInbound = false;
+      offViewIntent();
+      await reconciling;
       // No instance outlives the one it belongs to.
       for (const inside of [...(openedInside.get(instanceToken) ?? [])].reverse()) {
         await inside.dispose();
