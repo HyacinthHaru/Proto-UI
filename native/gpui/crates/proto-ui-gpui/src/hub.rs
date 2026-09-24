@@ -14,10 +14,10 @@
 
 use std::collections::{HashMap, HashSet};
 
-use gpui::{Context, EventEmitter, FocusHandle, Refineable, StyleRefinement, Window};
+use gpui::{App, Context, EventEmitter, FocusHandle, Refineable, StyleRefinement, Window};
 use proto_ui_host_protocol::messages::{
-    ExposeCall, FocusResult, HostToPeerMessage, InputSampleMessage, OpenStatus, PeerToHostMessage,
-    ProjectionAckMessage, PropsSet, SessionDispose, SessionOpen, WireRecord,
+    ExposeCall, FocusResult, HostToPeerMessage, InputSampleMessage, MetaSet, OpenStatus,
+    PeerToHostMessage, ProjectionAckMessage, PropsSet, SessionDispose, SessionOpen, WireRecord,
 };
 use proto_ui_host_protocol::model::{
     ActivationStatus, DefaultActionStatus, DeliveryResult, DetachStatus, HostSessionModel,
@@ -166,6 +166,8 @@ pub struct HostHub {
     outbox: Vec<HostToPeerMessage>,
     notes: Vec<HubNote>,
     next_call: u64,
+    /// The environment the peer last heard.
+    meta: Option<WireRecord>,
 }
 
 impl HostHub {
@@ -366,6 +368,7 @@ impl ProtoHostView {
         cx: &mut Context<Self>,
     ) {
         let session_id = session_id.into();
+        self.send_meta(cx);
         self.hub
             .outbox
             .push(HostToPeerMessage::SessionOpen(SessionOpen {
@@ -392,6 +395,26 @@ impl ProtoHostView {
                 default_ran: HashSet::new(),
             },
         ));
+    }
+
+    /// Tells the peer the environment its rules read as meta, when it differs
+    /// from what the peer last heard. GPUI's reduce motion setting is the
+    /// `reducedMotion` a Transition shortens its waits for
+    /// (P-BASE-TRANSITION-REDUCED-MOTION).
+    pub(crate) fn send_meta(&mut self, cx: &App) {
+        let reduced = if cx.reduce_motion() {
+            "reduce"
+        } else {
+            "no-preference"
+        };
+        let meta = WireRecord::from_iter([("reducedMotion".to_string(), json!(reduced))]);
+        if self.hub.meta.as_ref() == Some(&meta) {
+            return;
+        }
+        self.hub.meta = Some(meta.clone());
+        self.hub
+            .outbox
+            .push(HostToPeerMessage::MetaSet(MetaSet { meta }));
     }
 
     /// Replaces a session's props. The peer re-renders, which arrives as a
