@@ -233,6 +233,7 @@ export const PEER_TO_HOST_EXAMPLES: ExamplesByKind<PeerToHostMessage> = {
       viewEpoch: 1,
       snapshot: {
         semanticObjectId: 'button-1',
+        id: 'save-button',
         role: 'button',
         name: { kind: 'text', value: 'Save' },
         states: { disabled: false, pressed: 'mixed' },
