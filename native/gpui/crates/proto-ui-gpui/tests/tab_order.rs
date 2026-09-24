@@ -226,3 +226,47 @@ fn the_host_does_not_focus_a_root_its_plan_keeps_out_of_focus(cx: &mut TestAppCo
         [FocusResultStatus::Applied, FocusResultStatus::Rejected]
     );
 }
+
+impl Window {
+    /// The peer tells the host a session's plan changed outside a commit.
+    fn plan(&mut self, session: &str, view_epoch: u64, sequential: bool) -> Vec<HubNote> {
+        let plan: PeerToHostMessage = serde_json::from_value(json!({
+            "kind": "focus.plan",
+            "sessionId": session,
+            "viewEpoch": view_epoch,
+            "focus": {
+                "targets": [{ "ref": "focus-root", "sequential": sequential, "programmatic": true }],
+            },
+        }))
+        .expect("a focus plan");
+        self.window
+            .update(&mut self.cx, |view, window, cx| {
+                view.receive(plan, window, cx);
+                view.take_notes()
+            })
+            .expect("the view receives")
+    }
+}
+
+#[gpui::test]
+fn a_plan_changed_outside_a_commit_moves_the_tab_stop(cx: &mut TestAppContext) {
+    let mut window = Window::open(cx);
+    assert!(window.plan(ENABLED, 1, false).is_empty());
+    window.draw();
+    // The enabled Button left the sequence; Tab starts at the Toggle.
+    assert_eq!(window.press("tab"), [TOGGLE]);
+
+    // A plan for a view that is not installed changes nothing.
+    let notes = window.plan(ENABLED, 2, true);
+    assert_eq!(
+        notes,
+        [HubNote::FocusPlanRefused {
+            session_id: ENABLED.into(),
+            view_epoch: 2,
+            installed: Some(1),
+        }]
+    );
+    window.draw();
+    // Still out of the sequence: from the Toggle, Tab has nowhere else to go.
+    assert!(window.press("tab").is_empty());
+}
