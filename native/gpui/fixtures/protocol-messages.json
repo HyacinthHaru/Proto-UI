@@ -17,6 +17,7 @@
       "session.opened",
       "projection.install",
       "projection.activate",
+      "projection.detach",
       "lease.release",
       "default-action.prevent",
       "focus.request",
@@ -269,6 +270,11 @@
       "sessionId": "s-1",
       "viewEpoch": 1,
       "commitId": 1
+    },
+    {
+      "kind": "projection.detach",
+      "sessionId": "s-1",
+      "viewEpoch": 1
     },
     {
       "kind": "lease.release",

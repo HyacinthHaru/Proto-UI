@@ -92,6 +92,17 @@ export type ProjectionActivateMessage = {
   readonly commitId: number;
 };
 
+/**
+ * The instance unmounted the view of `viewEpoch` because its view intent no
+ * longer wants one (C-LIFECYCLE-0008). The instance stays alive; a later
+ * `projection.install` with a greater epoch attaches a new view.
+ */
+export type ProjectionDetachMessage = {
+  readonly kind: 'projection.detach';
+  readonly sessionId: SessionId;
+  readonly viewEpoch: ViewEpoch;
+};
+
 export type LeaseReleaseMessage = {
   readonly kind: 'lease.release';
   readonly sessionId: SessionId;
@@ -227,6 +238,7 @@ export type PeerToHostMessage =
   | SessionOpenedMessage
   | ProjectionInstallMessage
   | ProjectionActivateMessage
+  | ProjectionDetachMessage
   | LeaseReleaseMessage
   | DefaultActionPreventMessage
   | FocusRequestMessage

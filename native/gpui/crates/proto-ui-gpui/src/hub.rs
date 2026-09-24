@@ -607,7 +607,8 @@ impl ProtoHostView {
             // nothing on the host depends on them yet.
             PeerToHostMessage::PeerHello(_)
             | PeerToHostMessage::Lifecycle(_)
-            | PeerToHostMessage::ExposeResult(_) => {}
+            | PeerToHostMessage::ExposeResult(_)
+            | PeerToHostMessage::ProjectionDetach(_) => {}
         }
     }
 

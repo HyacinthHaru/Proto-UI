@@ -168,6 +168,7 @@ export const PEER_TO_HOST_EXAMPLES: ExamplesByKind<PeerToHostMessage> = {
   'projection.activate': [
     { kind: 'projection.activate', sessionId: 's-1', viewEpoch: 1, commitId: 1 },
   ],
+  'projection.detach': [{ kind: 'projection.detach', sessionId: 's-1', viewEpoch: 1 }],
   'lease.release': [{ kind: 'lease.release', sessionId: 's-1', leaseIds: ['l-root'] }],
   'default-action.prevent': [
     {
