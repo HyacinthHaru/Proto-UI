@@ -54,6 +54,7 @@ import {
   FOCUS_SET_FOCUSABLE_CAP,
   FOCUS_TARGET_READY_CAP,
 } from '@proto.ui/module-focus';
+import { RULE_META_GET_CAP } from '@proto.ui/module-rule-meta';
 import {
   HOST_PROTOCOL_VERSION,
   WireBoundaryError,
@@ -87,6 +88,8 @@ export type PeerSessionArgs = {
   readonly parent?: PeerSession;
   readonly send: (message: PeerToHostMessage) => void;
   readonly schedule?: (task: () => void) => void;
+  /** Reads the environment the host reported, for rules to read as meta. */
+  readonly getMeta?: (key: string) => unknown;
 };
 
 export type PeerLeaseView = {
@@ -495,6 +498,7 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     wiring.attach('expose-state', [[EXPOSES_RECORD_SINK_CAP, publishExposes]]);
     wiring.attach('a11y', [[A11Y_PROJECT_CAP, projector]]);
     wiring.attach('feedback', [[EFFECTS_CAP, effects]]);
+    if (args.getMeta) wiring.attach('rule-meta', [[RULE_META_GET_CAP, args.getMeta]]);
     wiring.attach('as-trigger', [
       [AS_TRIGGER_INSTANCE_CAP, instanceToken],
       [AS_TRIGGER_PARENT_CAP, parentOf],

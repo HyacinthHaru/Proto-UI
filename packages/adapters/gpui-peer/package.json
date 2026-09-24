@@ -28,6 +28,7 @@
     "@proto.ui/module-expose-state": "workspace:*",
     "@proto.ui/module-feedback": "workspace:*",
     "@proto.ui/module-focus": "workspace:*",
+    "@proto.ui/module-rule-meta": "workspace:*",
     "@proto.ui/runtime": "workspace:*",
     "@proto.ui/types": "workspace:*"
   },

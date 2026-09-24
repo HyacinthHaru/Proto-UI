@@ -11,7 +11,7 @@
 import { format } from 'node:util';
 import { pathToFileURL } from 'node:url';
 
-import type { HostToPeerMessage, PeerToHostMessage } from '@proto.ui/host-protocol';
+import type { HostToPeerMessage, PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
 
 import { createBaseBundle, type PrototypeBundle } from './bundle';
 import { createPeerSession, type PeerSession } from './session';
@@ -36,6 +36,8 @@ export type PeerProcessOptions = {
 export function createPeerProcess(options: PeerProcessOptions): PeerProcess {
   const decoder = createFrameDecoder<HostToPeerMessage>();
   const sessions = new Map<string, PeerSession>();
+  // The environment the host last reported, which every session's rules read.
+  let meta: WireRecord = {};
   const log = options.log ?? (() => {});
   // Messages are handled strictly in arrival order. Opening a session awaits a
   // lazy import and a mount, and a message for that session must not overtake
@@ -71,7 +73,9 @@ export function createPeerProcess(options: PeerProcessOptions): PeerProcess {
   const handle = async (message: HostToPeerMessage): Promise<void> => {
     switch (message.kind) {
       case 'host.hello':
+        return;
       case 'meta.set':
+        meta = message.meta;
         return;
       case 'session.open': {
         if (sessions.has(message.sessionId)) {
@@ -120,6 +124,7 @@ export function createPeerProcess(options: PeerProcessOptions): PeerProcess {
             props: message.props,
             send,
             parent,
+            getMeta: (key) => meta[key],
           });
         } catch (error) {
           // Setup runs as the instance is created. A part opened inside an

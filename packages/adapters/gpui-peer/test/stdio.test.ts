@@ -209,4 +209,20 @@ describe('gpui peer: stdio process', () => {
       diagnostics: [{ code: 'unknown-parent' }],
     });
   });
+
+  it('lets every session read, as rule meta, the environment the host last set', async () => {
+    const { peer, send, received } = harness();
+    // Closed, with a minute-long enter that only reduced motion ends at once.
+    const props = (open: boolean) => ({ open, enterDuration: 60_000 });
+    send({ ...OPEN, prototypeKey: 'base-transition', props: props(false) } as HostToPeerMessage);
+    await peer.idle();
+    // Set after the session opened: the Prototype reads it when the phase starts.
+    send({ kind: 'meta.set', meta: { reducedMotion: 'reduce' } });
+    send({ kind: 'props.set', sessionId: 's-1', props: props(true) });
+    await peer.idle();
+    for (let turn = 0; turn < 20; turn++) await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(
+      received.flatMap((message) => (message.kind === 'expose.signal' ? [message.name] : []))
+    ).toEqual(['beforeEnter', 'afterEnter']);
+  });
 });
