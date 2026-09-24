@@ -35,6 +35,7 @@ export const HOST_TO_PEER_EXAMPLES: ExamplesByKind<HostToPeerMessage> = {
       features: ['focus', 'a11y'],
     },
   ],
+  'meta.set': [{ kind: 'meta.set', meta: { reducedMotion: 'reduce' } }],
   'session.open': [
     {
       kind: 'session.open',

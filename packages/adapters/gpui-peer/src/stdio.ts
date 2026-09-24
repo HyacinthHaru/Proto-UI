@@ -71,6 +71,7 @@ export function createPeerProcess(options: PeerProcessOptions): PeerProcess {
   const handle = async (message: HostToPeerMessage): Promise<void> => {
     switch (message.kind) {
       case 'host.hello':
+      case 'meta.set':
         return;
       case 'session.open': {
         if (sessions.has(message.sessionId)) {

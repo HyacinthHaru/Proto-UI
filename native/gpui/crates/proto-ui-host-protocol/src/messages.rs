@@ -72,6 +72,14 @@ pub struct PeerHello {
     pub features: Vec<String>,
 }
 
+/// The environment the host reports for rules to read as meta, such as
+/// `reducedMotion`. It replaces the environment sent before, whole; a key it
+/// omits reads as unset.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MetaSet {
+    pub meta: WireRecord,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionOpen {
@@ -349,6 +357,7 @@ envelopes!(
     /// A message the host sends to the peer.
     HostToPeerMessage {
         HostHello(HostHello) => "host.hello",
+        MetaSet(MetaSet) => "meta.set",
         SessionOpen(SessionOpen) => "session.open",
         PropsSet(PropsSet) => "props.set",
         ProjectionAck(ProjectionAckMessage) => "projection.ack",

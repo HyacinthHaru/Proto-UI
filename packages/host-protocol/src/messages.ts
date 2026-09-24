@@ -49,6 +49,16 @@ export type HostHelloMessage = {
   readonly features: readonly string[];
 };
 
+/**
+ * The environment the host reports for rules to read as meta, such as
+ * `reducedMotion`. It replaces the environment sent before, whole; a key it
+ * omits reads as unset.
+ */
+export type MetaSetMessage = {
+  readonly kind: 'meta.set';
+  readonly meta: WireRecord;
+};
+
 export type SessionOpenMessage = {
   readonly kind: 'session.open';
   readonly sessionId: SessionId;
@@ -237,6 +247,7 @@ export type DiagnosticMessage = {
 
 export type HostToPeerMessage =
   | HostHelloMessage
+  | MetaSetMessage
   | SessionOpenMessage
   | PropsSetMessage
   | ProjectionAckMessage

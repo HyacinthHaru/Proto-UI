@@ -4,6 +4,7 @@
   "kinds": {
     "hostToPeer": [
       "host.hello",
+      "meta.set",
       "session.open",
       "props.set",
       "projection.ack",
@@ -48,6 +49,12 @@
         "focus",
         "a11y"
       ]
+    },
+    {
+      "kind": "meta.set",
+      "meta": {
+        "reducedMotion": "reduce"
+      }
     },
     {
       "kind": "session.open",
