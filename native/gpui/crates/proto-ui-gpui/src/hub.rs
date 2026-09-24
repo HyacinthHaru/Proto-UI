@@ -20,7 +20,8 @@ use proto_ui_host_protocol::messages::{
     ProjectionAckMessage, PropsSet, SessionDispose, SessionOpen, WireRecord,
 };
 use proto_ui_host_protocol::model::{
-    ActivationStatus, DefaultActionStatus, DeliveryResult, HostSessionModel, InstallOptions,
+    ActivationStatus, DefaultActionStatus, DeliveryResult, DetachStatus, HostSessionModel,
+    InstallOptions,
 };
 use proto_ui_host_protocol::wire::{
     A11ySnapshotWire, HostDiagnostic, InputSample, InstanceId, ProjectionAck, ProjectionAckStatus,
@@ -116,6 +117,13 @@ pub enum HubNote {
     /// An activation the model did not accept.
     ActivationRefused {
         session_id: SessionId,
+        status: String,
+    },
+    /// A detached view other than the installed one: an older one, or one
+    /// that was never installed.
+    DetachRefused {
+        session_id: SessionId,
+        view_epoch: u64,
         status: String,
     },
     /// An accessibility snapshot for a view other than the installed one.
@@ -435,6 +443,29 @@ impl ProtoHostView {
                     }),
                 }
             }
+            PeerToHostMessage::ProjectionDetach(detach) => {
+                let Some(session) = self.hub.session_mut(&detach.session_id) else {
+                    self.note_unknown(&detach.session_id, "projection.detach");
+                    return;
+                };
+                let result = session.model.detach_view(detach.view_epoch);
+                if result.status != DetachStatus::Detached {
+                    self.hub.notes.push(HubNote::DetachRefused {
+                        session_id: detach.session_id,
+                        view_epoch: detach.view_epoch,
+                        status: format!("{:?}", result.status),
+                    });
+                    return;
+                }
+                // The instance lives on without a view (C-LIFECYCLE-0008-E):
+                // nothing of it is shown, reported or routed until a greater
+                // epoch installs another, so no empty shell stays visible (-J).
+                session.surface = None;
+                session.a11y = None;
+                session.projection = None;
+                self.refresh_route(&detach.session_id);
+                self.publish_surfaces(window, cx);
+            }
             PeerToHostMessage::LeaseRelease(release) => {
                 let Some(session) = self.hub.session_mut(&release.session_id) else {
                     self.note_unknown(&release.session_id, "lease.release");
@@ -607,8 +638,7 @@ impl ProtoHostView {
             // nothing on the host depends on them yet.
             PeerToHostMessage::PeerHello(_)
             | PeerToHostMessage::Lifecycle(_)
-            | PeerToHostMessage::ExposeResult(_)
-            | PeerToHostMessage::ProjectionDetach(_) => {}
+            | PeerToHostMessage::ExposeResult(_) => {}
         }
     }
 

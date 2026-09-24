@@ -856,3 +856,86 @@ fn a_projection_whose_feedback_style_the_host_cannot_render_is_refused(cx: &mut 
         Some(format!("{SESSION}/proto-surface").as_str())
     );
 }
+
+#[gpui::test]
+fn a_detached_view_leaves_the_window_until_a_greater_epoch_installs_another(
+    cx: &mut TestAppContext,
+) {
+    let mut hub = Hub::open(cx);
+    hub.receive(recorded());
+    let epoch = recorded_transaction().view_epoch;
+    hub.outbox();
+    hub.click();
+    assert!(
+        !samples(&hub.outbox()).is_empty(),
+        "the installed view hears input"
+    );
+
+    // The instance's view intent no longer wants a view.
+    hub.receive([peer(json!({
+        "kind": "projection.detach",
+        "sessionId": SESSION,
+        "viewEpoch": epoch,
+    }))]);
+    let read = |hub: &mut Hub| {
+        hub.window
+            .update(&mut hub.cx, |view, _, _| {
+                (view.rendered_sessions(), view.reported_a11y(SESSION))
+            })
+            .expect("the view reads")
+    };
+    assert_eq!(read(&mut hub), (Vec::<String>::new(), None));
+    hub.click();
+    assert!(samples(&hub.outbox()).is_empty(), "no view, no input");
+
+    // Nothing for the retired view brings it back.
+    let snapshot = recorded_transaction().a11y;
+    hub.receive([
+        peer(json!({
+            "kind": "a11y.snapshot",
+            "sessionId": SESSION,
+            "viewEpoch": epoch,
+            "snapshot": snapshot,
+        })),
+        peer(json!({
+            "kind": "projection.detach",
+            "sessionId": SESSION,
+            "viewEpoch": epoch,
+        })),
+    ]);
+    let notes = hub.notes();
+    assert!(notes.contains(&HubNote::DetachRefused {
+        session_id: SESSION.into(),
+        view_epoch: epoch,
+        status: "Stale".into(),
+    }));
+    assert!(notes.iter().any(
+        |note| matches!(note, HubNote::SnapshotRefused { view_epoch, .. } if *view_epoch == epoch)
+    ));
+    assert_eq!(read(&mut hub), (Vec::<String>::new(), None));
+
+    // A greater epoch attaches a new view to the same instance.
+    let remount = remount_named("Save");
+    let (view_epoch, commit_id) = (remount.view_epoch, remount.commit_id);
+    hub.receive([
+        peer(json!({ "kind": "projection.install", "transaction": remount })),
+        peer(json!({
+            "kind": "projection.activate",
+            "sessionId": SESSION,
+            "viewEpoch": view_epoch,
+            "commitId": commit_id,
+        })),
+    ]);
+    let (rendered, reported) = read(&mut hub);
+    assert_eq!(rendered, [SESSION]);
+    assert_eq!(
+        reported.map(|projection| projection.role),
+        Some(gpui::Role::Button)
+    );
+    hub.outbox();
+    hub.click();
+    assert!(
+        !samples(&hub.outbox()).is_empty(),
+        "the new view hears input"
+    );
+}
