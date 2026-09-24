@@ -40,7 +40,10 @@ describe('gpui peer: stdio process', () => {
       'base-switch-root',
       'base-switch-thumb',
       'base-tabs-root',
+      'base-tabs-list',
+      'base-tabs-trigger',
       'base-tabs-content',
+      'base-tabs-indicator',
     ]);
   });
 
