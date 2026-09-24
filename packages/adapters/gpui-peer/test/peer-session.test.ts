@@ -589,6 +589,93 @@ describe('gpui peer: view intent', () => {
     expect(settings.host.of('session.disposed')).toHaveLength(1);
   });
 
+  it('does not make live a view whose intent went while it attached', async () => {
+    const leaving = definePrototype({
+      name: 'test-view-leaving',
+      setup(def) {
+        def.lifecycle.onMounted((run) => run.lifecycle.setPresent(false));
+        return (r) => r.el('div', 'leaving');
+      },
+    });
+    // The host answers the install only after the view was detached again.
+    const host = new ScriptedHost('leaving', { autoAck: false });
+    const peer = createPeerSession({
+      sessionId: 'leaving',
+      instanceId: 'leaving:instance',
+      prototype: leaving,
+      props: {},
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+    });
+    host.bind((message) => peer.handle(message));
+    await peer.mount();
+    await settle();
+    host.acknowledge();
+    await settle();
+    expect(views(host)).toEqual(['install 1', 'detach 1']);
+    expect(host.of('projection.activate')).toHaveLength(0);
+    await peer.dispose();
+  });
+
+  it('does not report a detach that a newer intent superseded while it ran', async () => {
+    let returned = false;
+    const returning = definePrototype({
+      name: 'test-view-returning',
+      setup(def) {
+        def.props.define({ open: { type: 'boolean', empty: 'fallback' } });
+        def.props.setDefaults({ open: true });
+        def.props.watch(['open'], (run, next) => run.lifecycle.setPresent(!!next.open));
+        // Only the first unmount turns back; disposal must not.
+        def.lifecycle.onUnmounted((run) => {
+          if (returned) return;
+          returned = true;
+          run.lifecycle.setPresent(true);
+        });
+        return (r) => r.el('div', 'returning');
+      },
+    });
+    const { host, peer } = open('returning', returning, { open: true });
+    await peer.mount();
+    await settle();
+    peer.setProps({ open: false });
+    await settle();
+    // No detach: the view came back in a new epoch instead.
+    expect(views(host)).not.toContain('detach 1');
+    expect(views(host).at(-1)).toBe('install 2');
+    await peer.dispose();
+  });
+
+  it('keeps reconciling after an attach fails', async () => {
+    let failing = true;
+    const fragile = definePrototype({
+      name: 'test-view-fragile',
+      setup(def) {
+        def.props.define({ open: { type: 'boolean', empty: 'fallback' } });
+        def.props.setDefaults({ open: true });
+        def.props.watch(['open'], (run, next) => run.lifecycle.setPresent(!!next.open));
+        return (r) => {
+          if (failing) throw new Error('render failed');
+          return r.el('div', 'fragile');
+        };
+      },
+    });
+    const { host, peer } = open('fragile', fragile, { open: true });
+    await peer.mount();
+    await settle();
+    expect(views(host)).toEqual([]);
+    expect(host.of('diagnostic').map((message) => message.diagnostic.code)).toContain(
+      'view-reconcile-failed'
+    );
+
+    failing = false;
+    peer.setProps({ open: false });
+    peer.setProps({ open: true });
+    await settle();
+    expect(host.of('projection.install')).toHaveLength(1);
+    await expect(peer.dispose()).resolves.toBeUndefined();
+    expect(host.of('session.disposed')).toHaveLength(1);
+  });
+
   it('does nothing for an intent that a newer one replaced', async () => {
     const flicker = definePrototype({
       name: 'test-view-flicker',

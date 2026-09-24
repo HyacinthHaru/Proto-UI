@@ -660,15 +660,25 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
   const reconcileView = (): Promise<void> => {
     reconciling = reconciling.then(async () => {
       if (!started || !acceptingInbound || !hostSession) return;
-      const { present } = hostSession.viewIntent.getSnapshot();
-      if (present && !viewMounted) {
-        viewMounted = true;
-        await hostSession.mount();
-      } else if (!present && viewMounted) {
-        viewMounted = false;
-        const detached = viewEpoch;
-        await hostSession.unmount();
-        if (acceptingInbound) send({ kind: 'projection.detach', sessionId, viewEpoch: detached });
+      const { present, version } = hostSession.viewIntent.getSnapshot();
+      if (present === viewMounted) return;
+      try {
+        if (present) {
+          await hostSession.mount();
+        } else {
+          const detached = viewEpoch;
+          await hostSession.unmount();
+          // An intent that changed meanwhile queued its own reconciliation,
+          // which attaches a new view: this detach is superseded (-D).
+          if (acceptingInbound && hostSession.viewIntent.getSnapshot().version === version) {
+            send({ kind: 'projection.detach', sessionId, viewEpoch: detached });
+          }
+        }
+        viewMounted = present;
+      } catch (error) {
+        // A failed attach or detach leaves the queue usable for the next
+        // intent and for disposal.
+        diagnose('view-reconcile-failed', String(error));
       }
     });
     return reconciling;
@@ -695,6 +705,9 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
       });
       return;
     }
+    // A view whose intent went while it attached is detached next; it does
+    // not become live meanwhile (-D).
+    if (!hostSession?.viewIntent.getSnapshot().present) return;
     send({
       kind: 'projection.activate',
       sessionId,
