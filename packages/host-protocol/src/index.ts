@@ -35,6 +35,7 @@ export {
   type ActivationResult,
   type DefaultActionResult,
   type DeliveryResult,
+  type DetachResult,
   type DisposeResult,
   type HostSessionModel,
   type HostSessionSnapshot,
