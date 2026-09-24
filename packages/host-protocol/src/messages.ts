@@ -1,6 +1,7 @@
 import type {
   A11ySnapshotWire,
   DefaultActionRequest,
+  FocusPlan,
   FocusTargetRef,
   HostDiagnostic,
   InputSample,
@@ -186,6 +187,17 @@ export type A11ySnapshotMessage = {
 };
 
 /**
+ * The instance's focus plan changed outside a commit, as a roving group's
+ * selection moves its tab stop. It replaces the plan the view carried, whole.
+ */
+export type FocusPlanMessage = {
+  readonly kind: 'focus.plan';
+  readonly sessionId: SessionId;
+  readonly viewEpoch: ViewEpoch;
+  readonly focus: FocusPlan;
+};
+
+/**
  * The instance root's feedback style changed outside a commit, as a rule on
  * hover or press changes it. It replaces the style the view carried, whole.
  */
@@ -247,6 +259,7 @@ export type PeerToHostMessage =
   | ExposeSignalMessage
   | ExposeResultMessage
   | A11ySnapshotMessage
+  | FocusPlanMessage
   | StyleApplyMessage
   | SessionDisposedMessage
   | LifecycleMessage

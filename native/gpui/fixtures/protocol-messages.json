@@ -25,6 +25,7 @@
       "expose.state",
       "expose.signal",
       "expose.result",
+      "focus.plan",
       "style.apply",
       "a11y.snapshot",
       "session.disposed",
@@ -348,6 +349,20 @@
       "status": "ok",
       "value": null,
       "diagnostics": []
+    },
+    {
+      "kind": "focus.plan",
+      "sessionId": "s-1",
+      "viewEpoch": 1,
+      "focus": {
+        "targets": [
+          {
+            "ref": "focus-root",
+            "sequential": false,
+            "programmatic": true
+          }
+        ]
+      }
     },
     {
       "kind": "style.apply",

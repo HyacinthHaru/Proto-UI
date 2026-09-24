@@ -222,6 +222,14 @@ export const PEER_TO_HOST_EXAMPLES: ExamplesByKind<PeerToHostMessage> = {
       diagnostics: [],
     },
   ],
+  'focus.plan': [
+    {
+      kind: 'focus.plan',
+      sessionId: 's-1',
+      viewEpoch: 1,
+      focus: { targets: [{ ref: 'focus-root', sequential: false, programmatic: true }] },
+    },
+  ],
   'style.apply': [
     { kind: 'style.apply', sessionId: 's-1', viewEpoch: 1, tokens: ['inline-flex', 'opacity-50'] },
     // An empty list clears the feedback style.

@@ -15,8 +15,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
 use crate::wire::{
-    A11ySnapshotWire, CommitId, DefaultActionRequest, FocusTargetRef, HostDiagnostic, InputSample,
-    InstanceId, LeaseId, ProjectionAck, ProjectionTransaction, SessionId, ViewEpoch,
+    A11ySnapshotWire, CommitId, DefaultActionRequest, FocusPlan, FocusTargetRef, HostDiagnostic,
+    InputSample, InstanceId, LeaseId, ProjectionAck, ProjectionTransaction, SessionId, ViewEpoch,
 };
 
 /// A record of wire values, as `WireRecord` is on the TypeScript side.
@@ -253,6 +253,16 @@ pub struct ExposeResult {
     pub diagnostics: Vec<HostDiagnostic>,
 }
 
+/// The instance's focus plan changed outside a commit, as a roving group's
+/// selection moves its tab stop. It replaces the plan the view carried, whole.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FocusPlanMessage {
+    pub session_id: SessionId,
+    pub view_epoch: ViewEpoch,
+    pub focus: FocusPlan,
+}
+
 /// The instance root's feedback style changed outside a commit. It replaces
 /// the style the view carried, whole.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -367,6 +377,7 @@ envelopes!(
         ExposeSignal(ExposeSignal) => "expose.signal",
         ExposeResult(ExposeResult) => "expose.result",
         A11ySnapshot(A11ySnapshotMessage) => "a11y.snapshot",
+        FocusPlan(FocusPlanMessage) => "focus.plan",
         StyleApply(StyleApply) => "style.apply",
         SessionDisposed(SessionDisposed) => "session.disposed",
         Lifecycle(Lifecycle) => "lifecycle",
