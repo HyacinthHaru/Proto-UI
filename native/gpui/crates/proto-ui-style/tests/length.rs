@@ -85,6 +85,51 @@ fn evaluates_the_nested_forms_the_themes_produce() {
 }
 
 #[test]
+fn keeps_zero_number_type_inside_math_functions() {
+    for expression in ["calc(0)", "calc(0 + 0)", "min(0, 0)", "max(0, -0)"] {
+        assert!(
+            matches!(
+                evaluate(expression, LengthContext::default()),
+                Err(LengthError::Unsupported(_))
+            ),
+            "{expression} is a number, not a length"
+        );
+    }
+
+    // The legacy unitless zero exception applies only to the complete length
+    // token, not to an expression which happens to evaluate to zero.
+    assert_eq!(
+        evaluate("0", LengthContext::default()).unwrap(),
+        Dimension::ZERO
+    );
+    assert_eq!(
+        evaluate("-0", LengthContext::default()).unwrap(),
+        Dimension::ZERO
+    );
+}
+
+#[test]
+fn requires_whitespace_on_both_sides_of_calc_additive_operators() {
+    assert_eq!(px("calc(2px + 3px)"), 5.0);
+    assert_eq!(px("calc(2px\t+\n3px)"), 5.0);
+
+    for expression in [
+        "calc(2px+ 3px)",
+        "calc(2px +3px)",
+        "calc(2px- 3px)",
+        "calc(2px -3px)",
+    ] {
+        assert!(
+            matches!(
+                evaluate(expression, LengthContext::default()),
+                Err(LengthError::Malformed(_))
+            ),
+            "{expression} must have whitespace on both sides of + or -"
+        );
+    }
+}
+
+#[test]
 fn reports_what_it_cannot_answer_rather_than_guessing() {
     let context = LengthContext::default();
 

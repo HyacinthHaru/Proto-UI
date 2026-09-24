@@ -15,11 +15,11 @@ use proto_ui_gpui::style::map;
 use proto_ui_style::length::LengthContext;
 use proto_ui_style::{themes, vocabulary, ColorScheme, Substitution};
 
-/// The window every case lays out in.
-///
-/// Fixed rather than maximized: a percentage resolves against it, so a
-/// maximized window would make those assertions depend on the test display.
+/// A fixed window keeps the headless fixture independent of display size.
+/// The measured subject's parent is narrower so `w-full` can distinguish a
+/// parent-relative percentage from one incorrectly resolved to the viewport.
 const VIEWPORT: (f32, f32) = (400., 300.);
+const PARENT_WIDTH: f32 = 200.;
 
 fn resolve(tokens: &[&str], language: &str) -> proto_ui_style::ResolvedStyle {
     let theme = themes()
@@ -57,15 +57,15 @@ impl Render for Probe {
         // read back are that element's own layout box.
         *subject.style() = mapped.refinement;
 
-        // A flex row parent gives a percentage width a definite basis.
-        // `items_start` is load-bearing: the flex default is `stretch`, which
-        // would size the subject to the viewport on the cross axis and hide
-        // whatever the token actually asked for.
+        // The flex row gives percentages a definite 200px basis inside the
+        // 400px window. `items_start` prevents the default cross-axis stretch
+        // from hiding the height actually requested by the subject's token.
         div()
             .flex()
             .flex_row()
             .items_start()
             .size_full()
+            .w(px(PARENT_WIDTH))
             .child(subject)
     }
 }
@@ -108,10 +108,10 @@ fn an_absolute_size_token_lays_out_at_its_recorded_length(cx: &mut gpui::TestApp
 
 #[gpui::test]
 fn a_percentage_resolves_against_the_parent_not_the_viewport(cx: &mut gpui::TestAppContext) {
-    // The style crate keeps a percentage symbolic; GPUI resolves it during
-    // layout. This is the assertion that the hand-off actually happens.
+    // The style crate keeps the percentage symbolic. The parent is 200px
+    // inside a 400px viewport, so a viewport-relative implementation fails.
     let bounds = lay_out(cx, &["w-full"], "shadcn");
-    assert_eq!(bounds.size.width, px(VIEWPORT.0));
+    assert_eq!(bounds.size.width, px(PARENT_WIDTH));
 }
 
 #[gpui::test]
