@@ -95,9 +95,14 @@ pub fn evaluate(value: &str, context: LengthContext) -> Result<Dimension, Length
     }
     match result {
         Value::Length(dimension) => Ok(dimension),
-        // `0` is the one unitless length CSS accepts; any other bare number
-        // is a different kind of value, such as a font weight.
-        Value::Number(0.0) => Ok(Dimension::ZERO),
+        // CSS accepts a unitless zero only as a bare length token. Inside
+        // calc()/min()/max(), zero retains number type just like any other
+        // number, so checking the original top-level syntax is necessary.
+        Value::Number(number)
+            if number == 0.0 && text.parse::<f32>().is_ok_and(|literal| literal == 0.0) =>
+        {
+            Ok(Dimension::ZERO)
+        }
         Value::Number(_) => Err(LengthError::Unsupported(text.to_string())),
     }
 }
@@ -153,10 +158,12 @@ impl<'a> Parser<'a> {
         LengthError::InvalidArithmetic(self.original.to_string())
     }
 
-    fn skip_whitespace(&mut self) {
+    fn skip_whitespace(&mut self) -> bool {
+        let start = self.position;
         while self.input[self.position..].starts_with(char::is_whitespace) {
             self.position += 1;
         }
+        self.position != start
     }
 
     fn rest(&self) -> &'a str {
@@ -175,17 +182,22 @@ impl<'a> Parser<'a> {
     fn expression(&mut self) -> Result<Value, LengthError> {
         let mut left = self.term()?;
         loop {
-            self.skip_whitespace();
-            // CSS requires whitespace around + and -, which is also what keeps
-            // `-1px` from being read as a subtraction.
-            let operator = if self.rest().starts_with("+ ") {
+            let has_space_before = self.skip_whitespace();
+            let operator = if has_space_before
+                && self.rest().starts_with('+')
+                && self.rest()[1..].starts_with(char::is_whitespace)
+            {
                 '+'
-            } else if self.rest().starts_with("- ") {
+            } else if has_space_before
+                && self.rest().starts_with('-')
+                && self.rest()[1..].starts_with(char::is_whitespace)
+            {
                 '-'
             } else {
                 break;
             };
             self.position += 1;
+            self.skip_whitespace();
             let right = self.term()?;
             let sign = if operator == '+' { 1.0 } else { -1.0 };
             left = match (left, right) {
@@ -208,14 +220,22 @@ impl<'a> Parser<'a> {
     fn term(&mut self) -> Result<Value, LengthError> {
         let mut left = self.factor()?;
         loop {
+            let before_whitespace = self.position;
             self.skip_whitespace();
-            let operator = if self.eat("*") {
-                '*'
-            } else if self.eat("/") {
-                '/'
+            let operator = if self.rest().starts_with('*') {
+                Some('*')
+            } else if self.rest().starts_with('/') {
+                Some('/')
             } else {
+                None
+            };
+            let Some(operator) = operator else {
+                // Leave whitespace before a lower-precedence + or - for the
+                // expression parser, which must verify it precedes the token.
+                self.position = before_whitespace;
                 break;
             };
+            self.position += 1;
             let right = self.factor()?;
             left = match (operator, left, right) {
                 ('*', Value::Number(a), Value::Number(b)) => Value::Number(a * b),
