@@ -308,6 +308,13 @@ jobs:
           cargo test -p proto-ui-gpui --test tabs_t0 -- --ignored --test-threads=1 2>&1 | tee tabs_t0.log
           grep -Eq "test result: ok\. [1-9][0-9]* passed" tabs_t0.log
 
+      - name: Base Transition over T0 in a GPUI window
+        working-directory: native/gpui
+        run: |
+          set -euo pipefail
+          cargo test -p proto-ui-gpui --test transition_t0 -- --ignored --test-threads=1 2>&1 | tee transition_t0.log
+          grep -Eq "test result: ok\. [1-9][0-9]* passed" transition_t0.log
+
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
