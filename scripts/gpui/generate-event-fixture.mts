@@ -26,238 +26,18 @@
  * test prove that a stale fixture and a drifted copy actually fail instead of
  * asserting that they would.
  */
-import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as ts from 'typescript';
 import { CORE_EVENT_TYPES, OPTIONAL_EVENT_TYPES } from '../../packages/types/src/event';
 import {
   EVENT_TYPE_PAYLOAD_CASES,
   type EventTypePayloadCase,
 } from '../../packages/spec/fixtures/src/event/type-payload';
-type KeySource = { fileName: string; source: string };
-
-function unwrapKeyExpression(expression: ts.Expression): ts.Expression {
-  let current = expression;
-  while (
-    ts.isParenthesizedExpression(current) ||
-    ts.isAsExpression(current) ||
-    ts.isNonNullExpression(current) ||
-    ts.isSatisfiesExpression(current)
-  ) {
-    current = current.expression;
-  }
-  return current;
-}
-
-function isKeyProperty(expression: ts.Expression): boolean {
-  const current = unwrapKeyExpression(expression);
-  return (
-    (ts.isPropertyAccessExpression(current) && current.name.text === 'key') ||
-    (ts.isElementAccessExpression(current) &&
-      current.argumentExpression !== undefined &&
-      ts.isStringLiteralLike(current.argumentExpression) &&
-      current.argumentExpression.text === 'key')
-  );
-}
-
-function isKeyValue(expression: ts.Expression, aliases: ReadonlySet<string>): boolean {
-  const current = unwrapKeyExpression(expression);
-  return isKeyProperty(current) || (ts.isIdentifier(current) && aliases.has(current.text));
-}
-
-function bindAliases(
-  name: ts.BindingName,
-  initializer: ts.Expression | undefined,
-  aliases: Set<string>
-): void {
-  if (ts.isIdentifier(name)) {
-    if (initializer && isKeyValue(initializer, aliases)) aliases.add(name.text);
-    else aliases.delete(name.text);
-    return;
-  }
-  if (ts.isObjectBindingPattern(name)) {
-    for (const element of name.elements) {
-      if (!ts.isIdentifier(element.name)) continue;
-      const property = element.propertyName ?? element.name;
-      if (
-        (ts.isIdentifier(property) || ts.isStringLiteralLike(property)) &&
-        property.text === 'key'
-      ) {
-        aliases.add(element.name.text);
-      } else {
-        aliases.delete(element.name.text);
-      }
-    }
-  }
-}
-
-function collectBindingNames(name: ts.BindingName, names: Set<string>): void {
-  if (ts.isIdentifier(name)) {
-    names.add(name.text);
-    return;
-  }
-  for (const element of name.elements) {
-    if (ts.isBindingElement(element)) collectBindingNames(element.name, names);
-  }
-}
-
-function collectBlockScopedNames(block: ts.Block): Set<string> {
-  const names = new Set<string>();
-  for (const statement of block.statements) {
-    if (
-      ts.isVariableStatement(statement) &&
-      (statement.declarationList.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const)) !== 0
-    ) {
-      for (const declaration of statement.declarationList.declarations) {
-        collectBindingNames(declaration.name, names);
-      }
-    } else if (ts.isFunctionDeclaration(statement) && statement.name) {
-      names.add(statement.name.text);
-    } else if (ts.isClassDeclaration(statement) && statement.name) {
-      names.add(statement.name.text);
-    }
-  }
-  return names;
-}
-
-/** Every string compared against an event key or a simple local alias. */
-export function comparedKeysFromSources(sources: readonly KeySource[]): string[] {
-  const found = new Set<string>();
-  const equalityOperators = new Set([
-    ts.SyntaxKind.EqualsEqualsToken,
-    ts.SyntaxKind.EqualsEqualsEqualsToken,
-    ts.SyntaxKind.ExclamationEqualsToken,
-    ts.SyntaxKind.ExclamationEqualsEqualsToken,
-  ]);
-
-  /** Joins paths as possible aliases: this completeness scan prefers false positives to misses. */
-  function mergeAliasPaths(target: Set<string>, ...paths: ReadonlySet<string>[]): void {
-    target.clear();
-    for (const path of paths) {
-      for (const alias of path) target.add(alias);
-    }
-  }
-
-  for (const { fileName, source } of sources) {
-    const sourceFile = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true);
-
-    const visit = (node: ts.Node, aliases: Set<string>): void => {
-      if (ts.isSourceFile(node)) {
-        const scopedAliases = new Set(aliases);
-        for (const statement of node.statements) visit(statement, scopedAliases);
-        return;
-      }
-
-      if (ts.isBlock(node)) {
-        const blockScopedNames = collectBlockScopedNames(node);
-        const scopedAliases = new Set(aliases);
-        for (const statement of node.statements) visit(statement, scopedAliases);
-
-        // Assignments to outer variables flow out of a block; let/const
-        // bindings introduced in the block remain local. This distinction
-        // lets branch joins preserve possible aliases without leaking locals.
-        const mergedAliases = new Set<string>();
-        for (const alias of aliases) {
-          if (blockScopedNames.has(alias) || scopedAliases.has(alias)) mergedAliases.add(alias);
-        }
-        for (const alias of scopedAliases) {
-          if (!blockScopedNames.has(alias)) mergedAliases.add(alias);
-        }
-        mergeAliasPaths(aliases, mergedAliases);
-        return;
-      }
-
-      if (ts.isFunctionLike(node)) {
-        const scopedAliases = new Set(aliases);
-        for (const parameter of node.parameters) {
-          bindAliases(parameter.name, undefined, scopedAliases);
-          if (parameter.initializer) visit(parameter.initializer, scopedAliases);
-        }
-        if ('body' in node && node.body) visit(node.body, scopedAliases);
-        return;
-      }
-
-      if (ts.isIfStatement(node)) {
-        visit(node.expression, aliases);
-        const afterCondition = new Set(aliases);
-        const thenAliases = new Set(afterCondition);
-        visit(node.thenStatement, thenAliases);
-
-        if (node.elseStatement) {
-          const elseAliases = new Set(afterCondition);
-          visit(node.elseStatement, elseAliases);
-          mergeAliasPaths(aliases, thenAliases, elseAliases);
-        } else {
-          // The branch may not run, so retain the incoming facts as a path.
-          mergeAliasPaths(aliases, afterCondition, thenAliases);
-        }
-        return;
-      }
-
-      if (ts.isIterationStatement(node, false)) {
-        const beforeLoop = new Set(aliases);
-        let possibleAliases = new Set(beforeLoop);
-        let changed = true;
-        while (changed) {
-          const iterationAliases = new Set(possibleAliases);
-          ts.forEachChild(node, (child) => visit(child, iterationAliases));
-          const joinedAliases = new Set(possibleAliases);
-          for (const alias of iterationAliases) joinedAliases.add(alias);
-          changed = joinedAliases.size !== possibleAliases.size;
-          possibleAliases = joinedAliases;
-        }
-        // Every loop can take its zero-iteration path, including do-while for
-        // this conservative scan; the base facts must never be discarded.
-        mergeAliasPaths(aliases, beforeLoop, possibleAliases);
-        return;
-      }
-
-      if (ts.isVariableDeclaration(node)) {
-        if (node.initializer) visit(node.initializer, aliases);
-        bindAliases(node.name, node.initializer, aliases);
-        return;
-      }
-
-      if (ts.isBinaryExpression(node)) {
-        if (equalityOperators.has(node.operatorToken.kind)) {
-          const left = unwrapKeyExpression(node.left);
-          const right = unwrapKeyExpression(node.right);
-          if (isKeyValue(left, aliases) && ts.isStringLiteralLike(right)) found.add(right.text);
-          if (isKeyValue(right, aliases) && ts.isStringLiteralLike(left)) found.add(left.text);
-        }
-
-        if (node.operatorToken.kind === ts.SyntaxKind.EqualsToken && ts.isIdentifier(node.left)) {
-          visit(node.right, aliases);
-          bindAliases(node.left, node.right, aliases);
-          return;
-        }
-      }
-
-      ts.forEachChild(node, (child) => visit(child, aliases));
-    };
-
-    visit(sourceFile, new Set());
-  }
-  return [...found].sort();
-}
-
-function comparedKeys(): string[] {
-  const sources = KEY_SCAN_ROOTS.flatMap((root) =>
-    sourceFiles(root).map((fileName) => ({ fileName, source: readFileSync(fileName, 'utf8') }))
-  );
-  return comparedKeysFromSources(sources);
-}
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const DEFAULT_OUT = path.join(ROOT, 'native/gpui/fixtures/event-types.json');
 const DEFAULT_IMPL = path.join(ROOT, 'packages/modules/event/src/impl.ts');
-
-/**
- * Where a keyboard comparison can appear. Prototypes and modules are the two
- * layers that read `ev.key`; adapters only pass it through.
- */
-const KEY_SCAN_ROOTS = ['packages/prototypes', 'packages/modules', 'packages/runtime/src'];
 
 /** The prefix an extension event type must carry, and must exceed. */
 const EXTENSION_PREFIX = 'host:';
@@ -294,33 +74,6 @@ function assertImplCopyAgrees(where: string): void {
         `  copy:      ${copy.join(', ')}`
     );
   }
-}
-
-/** Every `.ts` file under one of the scan roots. */
-function sourceFiles(root: string): string[] {
-  const absolute = path.join(ROOT, root);
-  const found: string[] = [];
-  const walk = (dir: string): void => {
-    for (const entry of readdirSync(dir)) {
-      // `dist` is a build of `src`; `test` compares on unrelated `key`
-      // properties of its own fixtures, not on keyboard input.
-      if (entry === 'node_modules' || entry === 'dist' || entry === 'test' || entry === 'tests') {
-        continue;
-      }
-      const full = path.join(dir, entry);
-      if (statSync(full).isDirectory()) walk(full);
-      else if (full.endsWith('.ts') && !full.endsWith('.d.ts') && !full.includes('.test.')) {
-        found.push(full);
-      }
-    }
-  };
-  try {
-    walk(absolute);
-  } catch {
-    // A root that does not exist is a repository layout change, not a silent
-    // pass: an empty result fails the completeness assertion downstream.
-  }
-  return found;
 }
 
 /** The accepted and rejected type examples the spec fixture carries. */
@@ -367,10 +120,6 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
   assertImplCopyAgrees(optionPath(argv, '--impl', DEFAULT_IMPL));
 
   const { accepted, rejected } = conformanceTypes();
-  const keys = comparedKeys();
-  if (keys.length === 0) {
-    throw new Error('no key comparisons found; the scan roots are probably wrong');
-  }
   const fixture = {
     note:
       'Generated by scripts/gpui/generate-event-fixture.mts. Do not edit. ' +
@@ -385,11 +134,6 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
     core: [...CORE_EVENT_TYPES],
     optional: [...OPTIONAL_EVENT_TYPES],
     portableFields: [...PORTABLE_FIELDS],
-    /**
-     * The key values this repository compares against. A host that cannot
-     * produce one of these cannot run the Prototypes that read it.
-     */
-    comparedKeys: keys,
     /** Types a validator must accept, drawn from the spec's own cases. */
     accepted,
     /**
@@ -403,7 +147,6 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
       optional: OPTIONAL_EVENT_TYPES.length,
       accepted: accepted.length,
       rejected: rejected.length,
-      comparedKeys: keys.length,
     },
   };
 

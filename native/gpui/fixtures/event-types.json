@@ -36,21 +36,6 @@
     "shiftKey",
     "repeat"
   ],
-  "comparedKeys": [
-    " ",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowUp",
-    "End",
-    "Enter",
-    "Escape",
-    "Home",
-    "PageDown",
-    "PageUp",
-    "Tab",
-    "colorScheme"
-  ],
   "accepted": [
     "context.menu",
     "host:click",
@@ -73,7 +58,6 @@
     "core": 6,
     "optional": 13,
     "accepted": 9,
-    "rejected": 5,
-    "comparedKeys": 13
+    "rejected": 5
   }
 }

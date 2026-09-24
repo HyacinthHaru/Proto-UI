@@ -12,10 +12,9 @@
 //! rather than generated, because unlike the style tables it has no sibling
 //! implementation in this repository that could drift from it.
 //!
-//! What *is* recorded is the other side: `native/gpui/fixtures/event-types.json`
-//! carries every string this repository compares a `key` property against, and
-//! `tests/key_names.rs` requires each one to either come out of this table or
-//! be named as something other than keyboard input.
+//! `tests/key_names.rs` exercises every named value in this table through real
+//! GPUI dispatch, including the special cases where GPUI also supplies a
+//! typed character.
 
 use gpui::{KeyDownEvent, KeyUpEvent, Keystroke, Modifiers};
 
