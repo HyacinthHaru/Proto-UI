@@ -137,27 +137,22 @@ fn a_shifted_letter_reports_the_character_it_types(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
-fn a_platform_shortcut_reports_the_key_itself(cx: &mut TestAppContext) {
-    // With command held GPUI types no character, so `key_char` stays empty;
-    // the browser still reports `s` for cmd-s.
+fn a_control_shifted_printable_without_key_char_is_not_guessed(cx: &mut TestAppContext) {
+    // The pinned GPUI parser stores ctrl-shift-v as the lowercase physical
+    // spelling and does not provide the typed character. That is insufficient
+    // to reconstruct KeyboardEvent.key across layouts; do not emit `v`.
     let harness = Harness::open(cx);
-    let event = harness.press(cx, "cmd-s");
+    let event = harness.press(cx, "ctrl-shift-v");
+    assert_eq!(event.keystroke.key, "v");
     assert_eq!(event.keystroke.key_char, None);
-    let fields = from_key_down(&event).expect("cmd-s has a portable key");
-    assert_eq!(fields.key, "s");
-    assert_eq!(
-        fields.modifiers,
-        PortableModifiers {
-            ctrl: false,
-            meta: true,
-            alt: false,
-            shift: false,
-        }
-    );
+    assert!(event.keystroke.modifiers.control);
+    assert!(event.keystroke.modifiers.shift);
+    assert_eq!(portable_key(&event.keystroke), None);
+    assert!(from_key_down(&event).is_none());
 }
 
 #[gpui::test]
-fn each_modifier_crosses_under_the_name_the_browser_uses(cx: &mut TestAppContext) {
+fn modifier_flags_preserve_browser_meaning_even_when_key_is_unavailable(cx: &mut TestAppContext) {
     let harness = Harness::open(cx);
     for (chord, expected) in [
         (
@@ -190,13 +185,19 @@ fn each_modifier_crosses_under_the_name_the_browser_uses(cx: &mut TestAppContext
         ),
     ] {
         let event = harness.press(cx, chord);
-        let fields = from_key_down(&event).expect("the chord has a portable key");
-        assert_eq!(fields.modifiers, expected, "`{chord}`");
+        assert_eq!(
+            PortableModifiers::from(event.keystroke.modifiers),
+            expected,
+            "`{chord}`"
+        );
     }
-    // Shift-Tab is the one chord a Prototype reads directly: focus traversal
-    // backwards is `key === 'Tab' && shiftKey`.
+
+    // Shift-Tab is a named key, so it still produces a complete portable
+    // payload with both the key and its modifier.
     let back = harness.press(cx, "shift-tab");
-    assert_eq!(web_key(&back), "Tab");
+    let fields = from_key_down(&back).expect("Tab has a named portable spelling");
+    assert_eq!(fields.key, "Tab");
+    assert!(fields.modifiers.shift);
 }
 
 #[gpui::test]
@@ -266,16 +267,12 @@ struct EventFixture {
 /// Strings the repository compares a `key` property against that are not
 /// keyboard input. Each needs a reason; an unexplained entry is a key this
 /// host would silently fail to produce.
-const NOT_A_KEYBOARD_KEY: &[(&str, &str)] = &[
-    (
-        "colorScheme",
-        "the meta key of a Rule dependency, compared in packages/modules/rule-meta/src/create.ts",
-    ),
-    (
-        "undefined",
-        "the result of `typeof patch.key`, compared in packages/modules/focus/src/create.ts",
-    ),
-];
+// `typeof patch.key !== 'undefined'` is a property-presence check, not a comparison
+// against the value a keyboard event exposes as `key`.
+const NOT_A_KEYBOARD_KEY: &[(&str, &str)] = &[(
+    "colorScheme",
+    "the meta key of a Rule dependency, compared in packages/modules/rule-meta/src/create.ts",
+)];
 
 /// Keys whose consumers are known, so a scan that misses them is broken.
 ///
