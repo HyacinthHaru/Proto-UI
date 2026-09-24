@@ -3,9 +3,11 @@
 //! A lookup-table test would only prove the table agrees with itself. These
 //! tests dispatch through a GPUI window, including the simulated-input step
 //! that fills `key_char`, so the ordering traps in the translation (Enter
-//! arriving with `key_char == "\\n"`) are exercised the way they occur.
+//! arriving with `key_char == "\n"`) are exercised the way they occur.
 
 use std::cell::RefCell;
+use std::fs;
+use std::path::Path;
 use std::rc::Rc;
 
 use gpui::prelude::*;
@@ -16,6 +18,7 @@ use gpui::{
 use proto_ui_gpui::key::{
     from_key_down, from_key_up, named_key, portable_key, PortableModifiers, NAMED_KEYS,
 };
+use serde::Deserialize;
 
 /// Records every key event that reaches a focused element.
 struct KeyProbe {
@@ -134,27 +137,22 @@ fn a_shifted_letter_reports_the_character_it_types(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
-fn a_platform_shortcut_reports_the_key_itself(cx: &mut TestAppContext) {
-    // With command held GPUI types no character, so `key_char` stays empty;
-    // the browser still reports `s` for cmd-s.
+fn a_control_shifted_printable_without_key_char_is_not_guessed(cx: &mut TestAppContext) {
+    // The pinned GPUI parser stores ctrl-shift-v as the lowercase physical
+    // spelling and does not provide the typed character. That is insufficient
+    // to reconstruct KeyboardEvent.key across layouts; do not emit `v`.
     let harness = Harness::open(cx);
-    let event = harness.press(cx, "cmd-s");
+    let event = harness.press(cx, "ctrl-shift-v");
+    assert_eq!(event.keystroke.key, "v");
     assert_eq!(event.keystroke.key_char, None);
-    let fields = from_key_down(&event).expect("cmd-s has a portable key");
-    assert_eq!(fields.key, "s");
-    assert_eq!(
-        fields.modifiers,
-        PortableModifiers {
-            ctrl: false,
-            meta: true,
-            alt: false,
-            shift: false,
-        }
-    );
+    assert!(event.keystroke.modifiers.control);
+    assert!(event.keystroke.modifiers.shift);
+    assert_eq!(portable_key(&event.keystroke), None);
+    assert!(from_key_down(&event).is_none());
 }
 
 #[gpui::test]
-fn each_modifier_crosses_under_the_name_the_browser_uses(cx: &mut TestAppContext) {
+fn modifier_flags_preserve_browser_meaning_even_when_key_is_unavailable(cx: &mut TestAppContext) {
     let harness = Harness::open(cx);
     for (chord, expected) in [
         (
@@ -187,13 +185,19 @@ fn each_modifier_crosses_under_the_name_the_browser_uses(cx: &mut TestAppContext
         ),
     ] {
         let event = harness.press(cx, chord);
-        let fields = from_key_down(&event).expect("the chord has a portable key");
-        assert_eq!(fields.modifiers, expected, "`{chord}`");
+        assert_eq!(
+            PortableModifiers::from(event.keystroke.modifiers),
+            expected,
+            "`{chord}`"
+        );
     }
-    // Shift-Tab is the one chord a Prototype reads directly: focus traversal
-    // backwards is `key === 'Tab' && shiftKey`.
+
+    // Shift-Tab is a named key, so it still produces a complete portable
+    // payload with both the key and its modifier.
     let back = harness.press(cx, "shift-tab");
-    assert_eq!(web_key(&back), "Tab");
+    let fields = from_key_down(&back).expect("Tab has a named portable spelling");
+    assert_eq!(fields.key, "Tab");
+    assert!(fields.modifiers.shift);
 }
 
 #[gpui::test]
@@ -252,4 +256,74 @@ fn an_unknown_multi_character_key_is_reported_not_guessed() {
         key_char: None,
     };
     assert_eq!(portable_key(&keystroke), None);
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct EventFixture {
+    compared_keys: Vec<String>,
+}
+
+/// Strings the repository compares a `key` property against that are not
+/// keyboard input. Each needs a reason; an unexplained entry is a key this
+/// host would silently fail to produce.
+// `typeof patch.key !== 'undefined'` is a property-presence check, not a comparison
+// against the value a keyboard event exposes as `key`.
+const NOT_A_KEYBOARD_KEY: &[(&str, &str)] = &[(
+    "colorScheme",
+    "the meta key of a Rule dependency, compared in packages/modules/rule-meta/src/create.ts",
+)];
+
+/// Keys whose consumers are known, so a scan that misses them is broken.
+///
+/// The scan is a superset check, and a superset check passes vacuously when it
+/// finds too little. These are read by focus traversal, activation, dismissal
+/// and roving navigation respectively; the first scan written for this test
+/// missed `Enter` because it looked in the wrong directory.
+const MUST_BE_FOUND: &[&str] = &["Tab", "Enter", " ", "Escape", "ArrowDown", "Home", "End"];
+
+fn compared_keys() -> Vec<String> {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/event-types.json");
+    let text = fs::read_to_string(path).expect("the event fixture reads");
+    let fixture: EventFixture = serde_json::from_str(&text).expect("the event fixture parses");
+    fixture.compared_keys
+}
+
+#[gpui::test]
+fn every_key_a_prototype_compares_against_is_delivered_with_that_spelling(cx: &mut TestAppContext) {
+    let compared = compared_keys();
+    for required in MUST_BE_FOUND {
+        assert!(
+            compared.iter().any(|key| key == required),
+            "the scan did not find `{required}`; its roots are probably wrong"
+        );
+    }
+    for (entry, _) in NOT_A_KEYBOARD_KEY {
+        assert!(
+            compared.iter().any(|key| key == entry),
+            "`{entry}` is no longer compared anywhere; remove it from the list"
+        );
+    }
+
+    let harness = Harness::open(cx);
+    for key in &compared {
+        if NOT_A_KEYBOARD_KEY.iter().any(|(entry, _)| entry == key) {
+            continue;
+        }
+        // Find the GPUI name that should produce this web spelling, then
+        // press it for real and read back what a Prototype would receive.
+        let gpui_name = NAMED_KEYS
+            .iter()
+            .find(|(_, web)| web == key)
+            .map(|(gpui, _)| (*gpui).to_string())
+            .or_else(|| (key.chars().count() == 1).then(|| key.clone()))
+            .unwrap_or_else(|| {
+                panic!(
+                    "`{key}` is compared by a Prototype but no GPUI key produces it; \
+                     add it to the table or to NOT_A_KEYBOARD_KEY with a reason"
+                )
+            });
+        let event = harness.press(cx, &gpui_name);
+        assert_eq!(&web_key(&event), key, "pressing GPUI `{gpui_name}`");
+    }
 }

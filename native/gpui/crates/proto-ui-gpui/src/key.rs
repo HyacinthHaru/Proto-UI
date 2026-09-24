@@ -12,9 +12,10 @@
 //! rather than generated, because unlike the style tables it has no sibling
 //! implementation in this repository that could drift from it.
 //!
-//! `tests/key_names.rs` exercises every named value in this table through real
-//! GPUI dispatch, including the special cases where GPUI also supplies a
-//! typed character.
+//! What *is* recorded is the other side: `native/gpui/fixtures/event-types.json`
+//! carries every string this repository compares a `key` property against, and
+//! `tests/key_names.rs` requires each one to either come out of this table or
+//! be named as something other than keyboard input.
 
 use gpui::{KeyDownEvent, KeyUpEvent, Keystroke, Modifiers};
 
@@ -123,15 +124,10 @@ pub fn portable_key(keystroke: &Keystroke) -> Option<String> {
         }
     }
 
-    // A modifier combination clears `key_char` (there is no character for
-    // cmd-s), and the web still reports the key itself. Only a single
-    // character qualifies: a longer unnamed key is one this table has not
-    // heard of.
-    let mut characters = keystroke.key.chars();
-    match (characters.next(), characters.next()) {
-        (Some(single), None) => Some(single.to_string()),
-        _ => None,
-    }
+    // GPUI's raw key is a printed or ASCII-equivalent physical spelling, not
+    // necessarily the layout- and modifier-resolved character a browser uses.
+    // Without a typed character, this layer cannot faithfully name it.
+    None
 }
 
 /// The keyboard fields of a portable payload.
