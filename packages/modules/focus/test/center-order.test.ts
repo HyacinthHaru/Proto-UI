@@ -150,6 +150,7 @@ describe('FocusCenter host order', () => {
     ['an answer that leaves a target out', () => [targets.c, targets.a]],
     ['an answer that repeats a target', () => [targets.c, targets.c, targets.a]],
     ['an answer with a target not asked about', () => [targets.c, targets.a, { ref: 'x' }]],
+    ['an array-like answer of the right length', () => ({ length: 3 }) as unknown as object[]],
   ] as Array<[string, FocusOrderTargets | undefined]>)(
     'keeps registration order for the whole navigation with %s',
     (_, orderTargets) => {

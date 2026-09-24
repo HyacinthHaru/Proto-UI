@@ -513,10 +513,15 @@ export class FocusCenter {
   }
 }
 
-/** Whether `ordered` holds each of `targets` exactly once, and nothing else. */
-function isOrderOf(ordered: readonly object[], targets: readonly object[]): boolean {
-  if (ordered.length !== targets.length) return false;
-  const seen = new Set(ordered);
+/**
+ * Whether a host's answer is an array holding each of `targets` exactly once,
+ * and nothing else. The answer comes from outside the Module, so anything else
+ * it could be, such as an array-like object, fails here rather than throwing.
+ */
+function isOrderOf(ordered: unknown, targets: readonly object[]): ordered is readonly object[] {
+  if (!Array.isArray(ordered) || ordered.length !== targets.length) return false;
+  const seen = new Set<unknown>();
+  for (let index = 0; index < ordered.length; index++) seen.add(ordered[index]);
   return seen.size === targets.length && targets.every((target) => seen.has(target));
 }
 
