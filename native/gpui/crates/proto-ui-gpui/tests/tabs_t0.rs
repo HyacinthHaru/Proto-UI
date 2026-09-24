@@ -4,7 +4,7 @@
 //!
 //! The evidence is what the parts report back and what the host shows: which
 //! tab is selected, which panel has a view, what each part reports to
-//! accessibility, and which tab Tab reaches.
+//! accessibility, which tab Tab reaches, and what a key does to a focused tab.
 //!
 //! Ignored by default because it starts Node and needs the repository's
 //! `node_modules` (`pnpm install`). The `rust-interop` CI job installs both
@@ -17,7 +17,7 @@ mod t0;
 use gpui::prelude::*;
 use gpui::{div, px, Orientation, Role, StyleRefinement, TestAppContext};
 use proto_ui_gpui::host::SurfaceChild;
-use proto_ui_host_protocol::messages::{PeerToHostMessage, WireRecord};
+use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
 use serde_json::{json, Value};
 use t0::{Fixture, Session};
 
@@ -40,7 +40,7 @@ fn sized(width: f32, height: f32) -> StyleRefinement {
     element.style().clone()
 }
 
-fn tabs() -> Vec<Session> {
+fn tabs(root: Value) -> Vec<Session> {
     let part = |id, prototype_key, props, content, parent, root_style| Session {
         id,
         prototype_key,
@@ -54,7 +54,7 @@ fn tabs() -> Vec<Session> {
         Session {
             id: ROOT,
             prototype_key: "base-tabs-root",
-            props: props(json!({ "defaultValue": "alpha" })),
+            props: props(root),
             content: [LIST, PANEL_ALPHA, PANEL_BETA]
                 .map(|id| SurfaceChild::Session(id.into()))
                 .to_vec(),
@@ -115,14 +115,33 @@ fn tabs() -> Vec<Session> {
 }
 
 /// Every part but the panel of the tab that is not selected has a view.
-fn start(cx: &mut TestAppContext) -> Fixture {
+fn start(cx: &mut TestAppContext, root: Value) -> Fixture {
     let mut fixture = Fixture::start_viewed(
         cx,
-        tabs(),
+        tabs(root),
         &[ROOT, LIST, ALPHA, BETA, INDICATOR, PANEL_ALPHA],
     );
     fixture.settle();
     fixture
+}
+
+/// Pumps until the `from` panel has detached its view and `to` has
+/// activated one.
+fn switch_panels(fixture: &mut Fixture, from: &str, to: &str) {
+    let (mut detached, mut attached) = (false, false);
+    while !(detached && attached) {
+        let seen = fixture.pump_until(|message| match message {
+            PeerToHostMessage::ProjectionDetach(detach) => detach.session_id == from,
+            PeerToHostMessage::ProjectionActivate(activate) => activate.session_id == to,
+            _ => false,
+        });
+        match seen.last() {
+            Some(PeerToHostMessage::ProjectionDetach(_)) => detached = true,
+            Some(PeerToHostMessage::ProjectionActivate(_)) => attached = true,
+            _ => {}
+        }
+    }
+    fixture.settle();
 }
 
 fn exposed(fixture: &mut Fixture, session: &str, name: &str) -> Option<Value> {
@@ -132,7 +151,7 @@ fn exposed(fixture: &mut Fixture, session: &str, name: &str) -> Option<Value> {
 #[gpui::test]
 #[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
 fn the_selected_tab_shows_its_panel_and_every_part_reports_its_role(cx: &mut TestAppContext) {
-    let mut fixture = start(cx);
+    let mut fixture = start(cx, json!({ "defaultValue": "alpha" }));
     assert_eq!(
         fixture.with_view(|view| view.rendered_sessions()),
         [ROOT, LIST, ALPHA, BETA, INDICATOR, PANEL_ALPHA]
@@ -162,23 +181,10 @@ fn the_selected_tab_shows_its_panel_and_every_part_reports_its_role(cx: &mut Tes
 #[gpui::test]
 #[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
 fn a_click_selects_a_tab_and_moves_the_panel_view(cx: &mut TestAppContext) {
-    let mut fixture = start(cx);
+    let mut fixture = start(cx, json!({ "defaultValue": "alpha" }));
 
     fixture.click(ON_BETA);
-    let (mut detached, mut attached) = (false, false);
-    while !(detached && attached) {
-        let seen = fixture.pump_until(|message| match message {
-            PeerToHostMessage::ProjectionDetach(detach) => detach.session_id == PANEL_ALPHA,
-            PeerToHostMessage::ProjectionActivate(activate) => activate.session_id == PANEL_BETA,
-            _ => false,
-        });
-        match seen.last() {
-            Some(PeerToHostMessage::ProjectionDetach(_)) => detached = true,
-            Some(PeerToHostMessage::ProjectionActivate(_)) => attached = true,
-            _ => {}
-        }
-    }
-    fixture.settle();
+    switch_panels(&mut fixture, PANEL_ALPHA, PANEL_BETA);
 
     assert_eq!(exposed(&mut fixture, ALPHA, "selected"), Some(json!(false)));
     assert_eq!(exposed(&mut fixture, BETA, "selected"), Some(json!(true)));
@@ -198,7 +204,7 @@ fn a_click_selects_a_tab_and_moves_the_panel_view(cx: &mut TestAppContext) {
 #[gpui::test]
 #[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
 fn tab_reaches_the_selected_tab_and_not_the_other(cx: &mut TestAppContext) {
-    let mut fixture = start(cx);
+    let mut fixture = start(cx, json!({ "defaultValue": "alpha" }));
     fixture.click(ON_BETA);
     fixture.session_state_becomes(BETA, "selected", json!(true));
     fixture.settle();
@@ -210,4 +216,82 @@ fn tab_reaches_the_selected_tab_and_not_the_other(cx: &mut TestAppContext) {
         assert_eq!(exposed(&mut fixture, ALPHA, "focused"), Some(json!(false)));
     }
     assert_eq!(exposed(&mut fixture, BETA, "focused"), Some(json!(true)));
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn enter_and_space_select_the_focused_tab_and_space_is_prevented(cx: &mut TestAppContext) {
+    // Manual activation: focus alone selects nothing, so the key does.
+    let mut fixture = start(
+        cx,
+        json!({ "defaultValue": "alpha", "activationMode": "manual" }),
+    );
+    fixture.with_view(|view| view.call_exposed(BETA, "focusSelf", Vec::new()));
+    fixture.session_state_becomes(BETA, "focused", json!(true));
+    fixture.settle();
+    assert_eq!(exposed(&mut fixture, BETA, "selected"), Some(json!(false)));
+
+    fixture.cx.simulate_keystrokes("enter");
+    switch_panels(&mut fixture, PANEL_ALPHA, PANEL_BETA);
+    assert_eq!(exposed(&mut fixture, BETA, "selected"), Some(json!(true)));
+
+    // Space selects too, and the focused tab asks the host not to run
+    // Space's default action for that very key press.
+    fixture.with_view(|view| view.call_exposed(ALPHA, "focusSelf", Vec::new()));
+    fixture.session_state_becomes(ALPHA, "focused", json!(true));
+    fixture.cx.simulate_keystrokes("space");
+    // The press commits before the key press reaches the tab, so the panels
+    // may move before or after the prevention arrives.
+    let (mut prevention, mut detached, mut attached) = (None, false, false);
+    while prevention.is_none() || !detached || !attached {
+        let seen = fixture.pump_until(|message| match message {
+            PeerToHostMessage::DefaultActionPrevent(prevent) => {
+                prevent.request.reason.as_deref() == Some("tabs.space-activation")
+            }
+            PeerToHostMessage::ProjectionDetach(detach) => detach.session_id == PANEL_BETA,
+            PeerToHostMessage::ProjectionActivate(activate) => activate.session_id == PANEL_ALPHA,
+            _ => false,
+        });
+        match seen.last() {
+            Some(PeerToHostMessage::DefaultActionPrevent(prevent)) => {
+                prevention = Some(prevent.clone())
+            }
+            Some(PeerToHostMessage::ProjectionDetach(_)) => detached = true,
+            Some(PeerToHostMessage::ProjectionActivate(_)) => attached = true,
+            _ => {}
+        }
+    }
+    let prevent = prevention.expect("a prevention");
+    assert_eq!(prevent.request.session_id, ALPHA);
+    assert!(fixture.sent.iter().any(|message| matches!(
+        message,
+        HostToPeerMessage::InputSample(input)
+            if input.session_id == ALPHA
+                && input.sample.sample_id == prevent.request.sample_id
+                && input.sample.kind == "key.down"
+                && input.sample.key.as_deref() == Some(" ")
+    )));
+    fixture.settle();
+    assert_eq!(exposed(&mut fixture, ALPHA, "selected"), Some(json!(true)));
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn a_disabled_tab_is_neither_selected_nor_focused(cx: &mut TestAppContext) {
+    let mut fixture = start(cx, json!({ "defaultValue": "alpha" }));
+    fixture.with_view(|view| {
+        view.set_props(BETA, props(json!({ "value": "beta", "disabled": true })))
+    });
+    fixture.session_state_becomes(BETA, "disabled", json!(true));
+
+    fixture.click(ON_BETA);
+    fixture.with_view(|view| view.call_exposed(BETA, "focusSelf", Vec::new()));
+    fixture.settle();
+    assert_eq!(exposed(&mut fixture, BETA, "selected"), Some(json!(false)));
+    assert_eq!(exposed(&mut fixture, BETA, "focused"), Some(json!(false)));
+    assert_eq!(exposed(&mut fixture, ALPHA, "selected"), Some(json!(true)));
+    assert_eq!(
+        fixture.with_view(|view| view.rendered_sessions()),
+        [ROOT, LIST, ALPHA, BETA, INDICATOR, PANEL_ALPHA]
+    );
 }
