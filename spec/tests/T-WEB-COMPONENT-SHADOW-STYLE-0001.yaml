@@ -93,6 +93,11 @@ cases:
       - D-WEB-COMPONENT-SHADOW-STYLE-0001-A
       - D-WEB-COMPONENT-SHADOW-STYLE-0001-G
     expectation: validated-v1-artifact-installs-and-invalid-kind-version-environment-field-or-css-is-rejected
+  - id: T-WEB-COMPONENT-SHADOW-STYLE-0001-CASE-RECEIPT-TRUST-BOUNDARY
+    title: Plain-v1 receipts detect generated companion drift without authenticating arbitrary rewritten declarations
+    covers:
+      - D-WEB-COMPONENT-SHADOW-STYLE-0001-R
+    expectation: canonical-cross-boundary-recipes-fail-closed-while-other-recomputed-receipts-remain-only-self-consistency-evidence
   - id: T-WEB-COMPONENT-SHADOW-STYLE-0001-CASE-OWNER-LIFETIME
     title: Marker and stylesheet survive view epochs and are revoked by terminal owner disposal
     covers:
@@ -308,6 +313,15 @@ implementations:
       - T-WEB-COMPONENT-SHADOW-STYLE-0001-CASE-OWNER-LIFETIME
     exercises:
       - D-WEB-COMPONENT-SHADOW-STYLE-0001
+  - id: adapter-web-component-shadow-split-receipt-trust-boundary
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/web-component/test/shadow-split-effects.test.ts
+    required: true
+    consumesCases:
+      - T-WEB-COMPONENT-SHADOW-STYLE-0001-CASE-RECEIPT-TRUST-BOUNDARY
+    exercises:
+      - D-WEB-COMPONENT-SHADOW-STYLE-0001
   - id: adapter-web-component-boolean-shadow-compatibility
     kind: adapter-test
     status: passing
@@ -346,12 +360,14 @@ verifies:
         - D-WEB-COMPONENT-SHADOW-STYLE-0001-K
         - D-WEB-COMPONENT-SHADOW-STYLE-0001-L
         - D-WEB-COMPONENT-SHADOW-STYLE-0001-M
+        - D-WEB-COMPONENT-SHADOW-STYLE-0001-R
 exercises:
   adapters:
     - A-WEB-COMPONENT-0001
   contracts:
     - C-HOST-SURFACE-PROJECTION-0001
 sources:
+  - path: internal/records/2026-09-27-shadow-split-review-closeout-and-budget-attribution.zh-CN.md
   - path: scripts/analysis/shadow-split-public-browser.mjs
   - path: apps/www/src/components/PrototypePreviewer/ShadowSplitAcceptance.astro
   - path: scripts/analysis/shadow-split-input-browser.mjs
@@ -369,6 +385,9 @@ sources:
   - path: packages/adapters/web-component/test/shadow-style-artifact.test.ts
   - path: packages/adapters/web-component/test/types.test.ts
 revisions:
+  - version: 0.3.0-alpha.0
+    change: revised
+    summary: Added executable evidence for the trusted generated-companion and non-authenticating receipt boundary while retaining canonical checks for governed cross-boundary recipes.
   - version: 0.3.0-alpha.0
     change: revised
     summary: Added public Adapter teardown/reconnect race and native style/geometry evidence alongside the synchronous private generation harness.

@@ -36,6 +36,8 @@ The command generates document CSS and a same-closure ESM `.js`/`.d.ts` pair. Th
 import { protoShadowStyleArtifact } from './styles/proto-ui-shadow-style.generated.js';
 ```
 
+Treat that companion as generated, trusted same-source output. Its internal receipts detect stale or accidental edits but do not authenticate adversarial or independently authored CSS. Do not hand-edit declarations or recompute receipts; regenerate document CSS and the companion together. The consuming Adapter performs additional fail-closed checks only for the bounded recipes that cross the split boundary.
+
 It is a frozen, synchronous version-1 value with `kind`, `version`, `environment`, and `cssText`; no DOM or runtime renderer is required to import it. The declaration preserves literal ABI types and readonly fields. Use it as ESM (for direct Node imports, place it in a package with `"type": "module"`). No Promise, lazy loader, JSON import, or package-root builder API is introduced.
 
 `--shadow-out` requires an explicit `.js` path relative to the working directory, not to `--styles-dir`; its declaration replaces that suffix with `.d.ts`. Presets still generate their theme and entry CSS. Without the option, no companion is written; `init` and `add` do not generate one or select a split Adapter.

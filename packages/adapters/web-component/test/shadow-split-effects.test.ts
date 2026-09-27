@@ -369,6 +369,28 @@ describe('private Shadow split effects', () => {
     altered.dispose();
   });
 
+  it('treats recomputed non-sizing receipts as companion integrity, not canonical authentication', () => {
+    const { host, surface, effects, options } = setup(['block', 'bg-primary']);
+    effects.dispose();
+    const selector = `:host([${ROOT}~="bg-primary"]) > [${SURFACE}][data-pui-style~="bg-primary"]`;
+    const cssText = rewriteSplitRuleDeclarations(
+      options.artifact.cssText,
+      selector,
+      (declarations) => declarations.replace('background-color: var(--pui-primary);', 'color: red;')
+    );
+    expect(cssText).not.toBe(options.artifact.cssText);
+    const selfConsistent = createShadowSplitEffectsPort({
+      ...options,
+      artifact: { ...options.artifact, cssText },
+    });
+
+    expect(() => selfConsistent.queueStyle(effect(['block', 'bg-primary']))).not.toThrow();
+    selfConsistent.requestFlush();
+    expect(host.getAttribute(ROOT)).toBe('block bg-primary');
+    expect(surface.getAttribute('data-pui-style')).toContain('bg-primary');
+    selfConsistent.dispose();
+  });
+
   it('rejects receipts nested in an invalid list-form layer block', () => {
     const { host, surface, effects, options } = setup(['block', 'w-full']);
     effects.dispose();
