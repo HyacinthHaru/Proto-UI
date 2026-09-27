@@ -9,9 +9,9 @@
       "title": "[tracking] Maintain the v0.3 Prototype Coverage Matrix",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-31T21:43:41Z",
+      "updatedAt": "2026-09-27T00:53:27Z",
       "labels": ["F3 – Moderate", "area: prototypes", "documentation"],
-      "assignees": ["guangliang2019"],
+      "assignees": ["cyjin-yl", "guangliang2019"],
       "milestone": null,
       "owners": [
         "base input and brutalist maintainers",
@@ -137,7 +137,7 @@
       "title": "[tracking][dogfood] Build a full Agent Harness interface with Proto UI",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-27T18:17:52Z",
+      "updatedAt": "2026-09-18T10:52:22Z",
       "labels": [
         "F∞ – Needs Split",
         "advanced contribution",
@@ -157,7 +157,7 @@
       "title": "[dogfood][agent-harness] Build the first fixed-layout all-Proto Harness vertical slice",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-27T19:08:31Z",
+      "updatedAt": "2026-09-18T10:52:24Z",
       "labels": ["advanced contribution", "area: adapters", "area: prototypes", "enhancement"],
       "assignees": [],
       "milestone": null,
@@ -165,6 +165,7 @@
         "announcement-policy and harness implementers",
         "app highlighting infrastructure owner",
         "artifact workspace implementer",
+        "harness follow-tail implementer",
         "harness implementer",
         "harness implementer, with scroll catalog lifecycle respected",
         "input projection and harness maintainers"
@@ -232,29 +233,6 @@
       ]
     },
     {
-      "number": 519,
-      "nodeId": "I_kwDOMhQZjc8AAAABOKYsug",
-      "url": "https://github.com/Proto-UI/Proto-UI/issues/519",
-      "title": "[proposal][scroll] Define end-follow behavior for streaming and append-only surfaces",
-      "state": "OPEN",
-      "stateReason": null,
-      "updatedAt": "2026-09-04T17:32:19Z",
-      "labels": [
-        "advanced contribution",
-        "agent-ready",
-        "area: adapters",
-        "area: spec",
-        "enhancement"
-      ],
-      "assignees": [],
-      "milestone": null,
-      "owners": [
-        "collection/windowing maintainer",
-        "scroll anchor maintainer",
-        "scroll end-follow maintainer"
-      ]
-    },
-    {
       "number": 520,
       "nodeId": "I_kwDOMhQZjc8AAAABOKZARw",
       "url": "https://github.com/Proto-UI/Proto-UI/issues/520",
@@ -280,7 +258,7 @@
       "title": "[proposal][collection] Define windowed collection and virtual viewport semantics for long dynamic timelines",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-28T01:17:26Z",
+      "updatedAt": "2026-09-21T04:02:02Z",
       "labels": [
         "advanced contribution",
         "agent-ready",
@@ -320,7 +298,7 @@
       "title": "[proposal][tree] Define a hierarchical Tree family for files, plans, sessions, and subagents",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-09-04T17:38:42Z",
+      "updatedAt": "2026-09-21T03:23:27Z",
       "labels": [
         "advanced contribution",
         "agent-ready",
@@ -344,7 +322,7 @@
       "title": "[dogfood][agent-harness] Define app-local Tool Invocation and Approval Request prototypes",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-25T11:41:06Z",
+      "updatedAt": "2026-09-18T10:52:37Z",
       "labels": ["advanced contribution", "area: prototypes", "enhancement"],
       "assignees": [],
       "milestone": null,
@@ -357,7 +335,7 @@
       "title": "[dogfood][agent-harness] Define app-local Reasoning Trace, Run Status, and Agent Lane prototypes",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-25T11:41:40Z",
+      "updatedAt": "2026-09-18T10:52:39Z",
       "labels": ["advanced contribution", "area: prototypes", "enhancement"],
       "assignees": [],
       "milestone": null,
@@ -394,7 +372,7 @@
       "title": "[proposal][file-intake] Define a host-mediated file acquisition capability for pick, drop, and paste",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-28T01:17:55Z",
+      "updatedAt": "2026-09-18T10:52:32Z",
       "labels": [
         "advanced contribution",
         "agent-ready",
@@ -413,7 +391,7 @@
       "title": "[proposal][composition] Define an Attachment composition for Composer and Message surfaces",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-28T01:18:03Z",
+      "updatedAt": "2026-09-18T10:52:29Z",
       "labels": [
         "advanced contribution",
         "agent-ready",
@@ -435,7 +413,7 @@
       "title": "[dogfood][agent-harness] Build app-local Artifact Workspace and static Diff Review compositions",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-25T11:44:32Z",
+      "updatedAt": "2026-09-18T10:52:34Z",
       "labels": ["advanced contribution", "area: prototypes", "enhancement"],
       "assignees": [],
       "milestone": null,
@@ -454,7 +432,7 @@
       "title": "[research][terminal] Define the Terminal Surface boundary for later Agent Harness work",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-31T20:25:13Z",
+      "updatedAt": "2026-09-21T02:16:59Z",
       "labels": [
         "advanced contribution",
         "agent-ready",
@@ -465,25 +443,6 @@
       "assignees": [],
       "milestone": null,
       "owners": ["app/backend terminal infrastructure owner", "terminal research maintainer"]
-    },
-    {
-      "number": 531,
-      "nodeId": "I_kwDOMhQZjc8AAAABOKdMVQ",
-      "url": "https://github.com/Proto-UI/Proto-UI/issues/531",
-      "title": "[research][text-document] Define the editor/document surface boundary for later Agent Harness work",
-      "state": "OPEN",
-      "stateReason": null,
-      "updatedAt": "2026-08-31T20:23:25Z",
-      "labels": [
-        "advanced contribution",
-        "agent-ready",
-        "area: adapters",
-        "area: spec",
-        "enhancement"
-      ],
-      "assignees": [],
-      "milestone": null,
-      "owners": ["app editor infrastructure owner", "text document research maintainer"]
     },
     {
       "number": 532,
@@ -536,7 +495,7 @@
       "title": "[dogfood][agent-harness] Define app-local branch and checkpoint navigation",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-08-27T11:22:20Z",
+      "updatedAt": "2026-09-18T10:52:42Z",
       "labels": ["advanced contribution", "area: prototypes", "enhancement"],
       "assignees": [],
       "milestone": null,
@@ -572,7 +531,7 @@
       "title": "[dogfood][www] Govern inherited Expressive Code runtime controls",
       "state": "OPEN",
       "stateReason": null,
-      "updatedAt": "2026-09-04T17:24:28Z",
+      "updatedAt": "2026-09-16T15:30:20Z",
       "labels": [
         "advanced contribution",
         "area: adapters",
@@ -586,6 +545,38 @@
         "button/a11y domains and website documentation",
         "scroll/a11y domains and website documentation"
       ]
+    },
+    {
+      "number": 745,
+      "nodeId": "I_kwDOMhQZjc8AAAABTdsjMA",
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/745",
+      "title": "[follow-up][agent-harness] Project #531 editor boundary into the coverage matrix",
+      "state": "OPEN",
+      "stateReason": null,
+      "updatedAt": "2026-09-27T08:38:25Z",
+      "labels": ["F2 – Small", "advanced contribution", "docs", "enhancement"],
+      "assignees": [],
+      "milestone": null,
+      "owners": ["app editor infrastructure owner", "text document projection maintainer"]
+    },
+    {
+      "number": 746,
+      "nodeId": "I_kwDOMhQZjc8AAAABTd5CCg",
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/746",
+      "title": "[implementation][agent-harness] Compose follow-tail over Scroll end-follow",
+      "state": "OPEN",
+      "stateReason": null,
+      "updatedAt": "2026-09-27T09:05:49Z",
+      "labels": [
+        "F5 - Large",
+        "advanced contribution",
+        "area: adapters",
+        "area: prototypes",
+        "enhancement"
+      ],
+      "assignees": [],
+      "milestone": null,
+      "owners": ["harness follow-tail implementer"]
     }
   ],
   "pullRequests": [
