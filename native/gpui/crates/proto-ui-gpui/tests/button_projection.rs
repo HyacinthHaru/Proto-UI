@@ -215,7 +215,8 @@ fn an_element_takes_its_style_from_its_tokens() {
         "children": [{
             "kind": "element",
             "type": "span",
-            "style": { "kind": "tw", "tokens": ["h-9", "px-4"] },
+            // Positioned: this host cannot express CSS's static default.
+            "style": { "kind": "tw", "tokens": ["relative", "h-9", "px-4"] },
             "children": [{ "kind": "text", "value": "x" }]
         }]
     }))

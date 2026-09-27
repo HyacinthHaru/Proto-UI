@@ -5,6 +5,10 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, openRoute, startServer, stopServer } from './browser-harness';
 
 const ROUTE = '/en/ui-libraries/shadcn/dialog/';
+
+type PointerSample = { trusted: boolean; partial: boolean };
+type PointerSampleWindow = Window & { __nextPointerSample?: Promise<PointerSample> };
+
 let browser: Browser;
 let baseUrl = '';
 
@@ -73,31 +77,34 @@ describe('Shadcn Dialog partial view remount', () => {
           );
           continue;
         }
-        const [sample] = await Promise.all([
-          page.evaluate(
-            () =>
-              new Promise<{ trusted: boolean; partial: boolean }>((resolve) => {
-                document.addEventListener(
-                  'pointerdown',
-                  (event) => {
-                    const mask = document.querySelector('wc-shadcn-dialog-mask');
-                    const content = document.querySelector('wc-shadcn-dialog-content');
-                    resolve({
-                      trusted: event.isTrusted,
-                      partial: Boolean(
-                        mask?.hasAttribute('data-pui-view-detached') &&
-                        content &&
-                        !content.hasAttribute('data-pui-view-detached') &&
-                        content.getAttribute('data-transition-state') === 'leaving'
-                      ),
-                    });
-                  },
-                  { once: true, capture: true }
-                );
-              })
-          ),
-          page.mouse.click(point.x, point.y),
-        ]);
+        // Install the observer before the click, not alongside it. Sent together,
+        // the click could reach the page first; a `once` listener installed
+        // after it would then wait for a pointer sample that never comes.
+        await page.evaluate(() => {
+          (window as PointerSampleWindow).__nextPointerSample = new Promise((resolve) => {
+            document.addEventListener(
+              'pointerdown',
+              (event) => {
+                const mask = document.querySelector('wc-shadcn-dialog-mask');
+                const content = document.querySelector('wc-shadcn-dialog-content');
+                resolve({
+                  trusted: event.isTrusted,
+                  partial: Boolean(
+                    mask?.hasAttribute('data-pui-view-detached') &&
+                    content &&
+                    !content.hasAttribute('data-pui-view-detached') &&
+                    content.getAttribute('data-transition-state') === 'leaving'
+                  ),
+                });
+              },
+              { once: true, capture: true }
+            );
+          });
+        });
+        await page.mouse.click(point.x, point.y);
+        const sample = await page.evaluate(
+          () => (window as PointerSampleWindow).__nextPointerSample!
+        );
         expect(sample.trusted).toBe(true);
         hitPartialWindow = sample.partial;
         await page.waitForFunction(
