@@ -107,3 +107,12 @@ WC 专有增长的主要来源：
 - `check:package-budgets`：按上表预期失败五项；当前 main 对照九项全部通过。
 
 尚未在合并候选上执行完整根级 test/browser matrix、canonical Linux package build 或独立 review。没有降低 coverage、timeout，也没有迁移 self-hosted runner。
+
+## 执行后补充（2026-09-27）
+
+本节保留后续操作的实际结果，不改写上面的时间点记录：
+
+- 根级 `corepack pnpm@10.32.1 test` 的重跑中，非浏览器阶段通过（539 files、3,153 tests passed，34 todo）；浏览器完整阶段在 Codex 客户端更新中断。中断前有一条 Brutalist Tooltip Group 用例失败；之后完整重跑其所属 browser shard 2/4，11 files、55 tests 全通过，因此尚不能声称完整根级测试全绿。
+- PR #652 的 review-thread GraphQL 连接有多页。完整分页后查询到 13 个 unresolved threads；此前仅查询第一页所得“0 个 unresolved thread”是错误结论。本轮没有回复或 resolve 这些 inline threads。
+- 为信任边界收尾创建并推送了 signed-off commits `0ec7be814e7dd37d650ad26e9f670b4dd62d9ef0`（同步 `main@72a8e395`）和 `9bc440855caaefd81badbea22727f401d62a425c`（receipt 边界代码、spec、文档与回归）。新 head 的 GitHub Actions 已启动，仍待结果。
+- 本轮计划对最新 review 留言，只说明 plain-v1 trusted same-source companion 的选定边界、对应回归与验证；预算 gate、其它未解决线程和 `CHANGES_REQUESTED` 仍待后续独立处置。
