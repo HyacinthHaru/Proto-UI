@@ -3,7 +3,7 @@ type: test
 title: Table Structure decision, topology, header graph, and boundary evidence
 status: draft
 since: 0.3.0-alpha.0
-summary: Maps the Base Table admission and structural contract to executable host-neutral Module and Base evidence, bounded passing Web Component projection evidence, and planned React, Vue, and Vue 2 conformance paths.
+summary: Maps the Base Table admission and structural contract to executable host-neutral Module and Base evidence, with bounded passing Web DOM projection evidence for Web Component, React, Vue 3, and Vue 2. These cases do not certify assistive-technology behavior.
 cases:
   - id: T-TABLE-STRUCTURE-0001-CASE-INDEPENDENT-PROTOCOL
     title: Table Structure carries a two-dimensional header graph beyond Template anatomy
@@ -111,20 +111,26 @@ implementations:
     consumesCases: [T-TABLE-STRUCTURE-0001-CASE-A11Y-BOUNDARY]
   - id: adapter-react-table-contract
     kind: adapter-test
-    status: planned
+    status: passing
     path: packages/adapters/react/test/table.test.ts
     required: true
     consumesCases: [T-TABLE-STRUCTURE-0001-CASE-A11Y-BOUNDARY]
   - id: adapter-vue-table-contract
     kind: adapter-test
-    status: planned
+    status: passing
     path: packages/adapters/vue/test/table.test.ts
     required: true
     consumesCases: [T-TABLE-STRUCTURE-0001-CASE-A11Y-BOUNDARY]
   - id: adapter-vue2-table-contract
     kind: adapter-test
-    status: planned
+    status: passing
     path: packages/adapters/vue2/test/table.test.ts
+    required: true
+    consumesCases: [T-TABLE-STRUCTURE-0001-CASE-A11Y-BOUNDARY]
+  - id: public-table-four-adapter-browser
+    kind: adapter-test
+    status: passing
+    path: apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts
     required: true
     consumesCases: [T-TABLE-STRUCTURE-0001-CASE-A11Y-BOUNDARY]
 verifies:
@@ -168,6 +174,15 @@ verifies:
     - id: A-WEB-COMPONENT-0001
       since: 0.3.0-alpha.1
       anchors: [A-WEB-COMPONENT-0001-TABLE]
+    - id: A-REACT-18-19-0001
+      since: 0.3.0-alpha.1
+      anchors: [A-REACT-18-19-0001-TABLE]
+    - id: A-VUE-3-0001
+      since: 0.3.0-alpha.1
+      anchors: [A-VUE-3-0001-TABLE]
+    - id: A-VUE-2-0001
+      since: 0.3.0-alpha.1
+      anchors: [A-VUE-2-0001-TABLE]
   prototypes:
     - id: P-BASE-TABLE
       since: 0.3.0-alpha.1
@@ -206,6 +221,10 @@ sources:
     label: Issue 387 acceptance and implementation boundary
   - path: spec/adapters/A-WEB-COMPONENT-0001.yaml
   - path: packages/adapters/web-component/test/table.test.ts
+  - path: packages/adapters/react/test/table.test.ts
+  - path: packages/adapters/vue/test/table.test.ts
+  - path: packages/adapters/vue2/test/table.test.ts
+  - path: apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts
 revisions:
   - version: 0.3.0-alpha.0
     change: introduced
@@ -213,4 +232,10 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: Marked Checkpoint B Module and Base implementations passing with topology, nearest-domain, role mismatch, churn, diagnostics, cross-kind ordered relationships and fail-closed role cleanup; added bounded passing Web Component ARIA projection evidence while React, Vue and Vue 2 remain planned.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Added passing React, Vue 3, and Vue 2 Web DOM projection evidence for semantic roles, one-based topology and non-default column spans, caption naming, ordered opaque header references, and invalidation/recovery; explicitly excludes assistive-technology certification.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Added a passing public browser case that runs the same static Table demo through Web Components, React, Vue 3, and Vue 2 and verifies rendered Web roles, counts, coordinates, caption naming, and ordered header references; no assistive-technology certification is implied.
 tags: [table, structure, test, accessibility]

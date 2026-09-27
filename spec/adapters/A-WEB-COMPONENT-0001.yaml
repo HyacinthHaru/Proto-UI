@@ -200,6 +200,10 @@ supports:
       since: 0.3.0-alpha.0
       role: required-module
       note: Existing family/domain/order slice; no A11y relationship or new author query policy admission.
+    - id: M-A11Y-0001
+      since: 0.3.0-alpha.1
+      role: required-module
+      note: Standard Runtime installs the semantic-object projector; Table evidence covers same-domain opaque header refs and Web DOM projection, while broader A11y coverage remains bounded by T-A11Y-0001.
     - id: M-TABLE-STRUCTURE-0001
       since: 0.3.0-alpha.1
       role: required-module
@@ -254,6 +258,10 @@ supports:
       role: required-module
 provides:
   hostCaps:
+    - id: HC-A11Y-0001
+      since: 0.3.0-alpha.1
+      role: translated-capability
+      note: Web Component binds the bounded Table semantic-object graph to current Web DOM targets and clears owned attributes on invalidation; this does not certify assistive-technology behavior.
     - id: HC-COLOR-SCHEME-INVALIDATION-0001
       since: 0.3.0-alpha.0
       role: translated-capability
