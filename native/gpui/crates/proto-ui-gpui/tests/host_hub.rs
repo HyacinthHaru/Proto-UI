@@ -172,6 +172,60 @@ fn opening_a_session_asks_the_peer_to_run_the_prototype(cx: &mut TestAppContext)
 }
 
 #[gpui::test]
+fn opening_an_open_session_again_is_refused_and_leaves_nothing_behind(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.window
+        .update(&mut hub.cx, |view, _, cx| {
+            view.open_session(
+                SESSION,
+                SessionConfig {
+                    instance_id: "another:instance".into(),
+                    prototype_key: "base-toggle".into(),
+                    props: WireRecord::new(),
+                    slots: HashMap::new(),
+                    root_style: StyleRefinement::default(),
+                    theme: None,
+                },
+                cx,
+            )
+        })
+        .expect("the view updates");
+    // The peer hears of the first open only.
+    let opens: Vec<String> = hub
+        .outbox()
+        .into_iter()
+        .filter_map(|message| match message {
+            HostToPeerMessage::SessionOpen(open) => Some(open.prototype_key),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(opens, ["base-button"]);
+    assert_eq!(
+        hub.notes(),
+        [HubNote::SessionAlreadyOpen {
+            session_id: SESSION.into()
+        }]
+    );
+
+    // The open instance still takes its own projection.
+    hub.receive(recorded());
+    assert!(hub.outbox().into_iter().any(|message| matches!(
+        message,
+        HostToPeerMessage::ProjectionAck(ack) if ack.ack.status == ProjectionAckStatus::Applied
+    )));
+
+    // Once it is disposed, no second record is left to take its messages.
+    hub.receive([peer(
+        json!({ "kind": "session.disposed", "sessionId": SESSION }),
+    )]);
+    hub.receive(recorded());
+    assert!(hub.notes().contains(&HubNote::UnknownSession {
+        session_id: SESSION.into(),
+        kind: "projection.install".into(),
+    }));
+}
+
+#[gpui::test]
 fn the_recorded_install_is_acknowledged_with_the_surfaces_it_needs(cx: &mut TestAppContext) {
     let mut hub = Hub::open(cx);
     hub.outbox();

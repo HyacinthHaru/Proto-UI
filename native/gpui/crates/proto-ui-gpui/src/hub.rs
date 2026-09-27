@@ -82,6 +82,9 @@ pub enum HubNote {
     },
     /// A message about a session this hub never opened.
     UnknownSession { session_id: SessionId, kind: String },
+    /// An open for a session that is already open. The open one is left as
+    /// it is.
+    SessionAlreadyOpen { session_id: SessionId },
     /// An activation the model did not accept.
     ActivationRefused {
         session_id: SessionId,
@@ -181,6 +184,14 @@ impl ProtoHostView {
         cx: &mut Context<Self>,
     ) {
         let session_id = session_id.into();
+        // A session id names one instance: a second record under it would
+        // take messages meant for the first.
+        if self.hub.session(&session_id).is_some() {
+            self.hub
+                .notes
+                .push(HubNote::SessionAlreadyOpen { session_id });
+            return;
+        }
         self.hub
             .outbox
             .push(HostToPeerMessage::SessionOpen(SessionOpen {
