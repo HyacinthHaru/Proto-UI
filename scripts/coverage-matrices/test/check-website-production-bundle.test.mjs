@@ -335,6 +335,7 @@ test('allows Adapter modules only in the exact reviewed site-control bridge chun
     .find((candidate) => candidate.fileName === '_astro/site-shadcn-controls.js')
     .moduleIds.push(
       'packages/adapters/base/src/host/adapter-host.ts',
+      'packages/adapters/base/src/platform/focus-order.ts?used',
       'packages/adapters/web-component/src/adapt.ts?used'
     );
 
@@ -375,6 +376,25 @@ test('does not let the reviewed site-control bridge exempt a sibling Adapter chu
   assert.ok(
     collectWebsiteProductionBundleIssues({ graph }).some((issue) =>
       issue.includes('packages/adapters/web-component/src/runtime/session.ts')
+    )
+  );
+});
+
+test('does not exempt the reviewed Focus order module in a sibling chunk', () => {
+  const graph = graphFixture();
+  graph.chunks[0].imports.push('_astro/sibling-focus-order.js');
+  graph.chunks
+    .find((candidate) => candidate.fileName === '_astro/site-shadcn-controls.js')
+    .moduleIds.push('packages/adapters/base/src/platform/focus-order.ts?used');
+  graph.chunks.push(
+    chunk('_astro/sibling-focus-order.js', {
+      moduleIds: ['packages/adapters/base/src/platform/focus-order.ts?used'],
+    })
+  );
+
+  assert.ok(
+    collectWebsiteProductionBundleIssues({ graph }).some((issue) =>
+      issue.includes('packages/adapters/base/src/platform/focus-order.ts?used')
     )
   );
 });

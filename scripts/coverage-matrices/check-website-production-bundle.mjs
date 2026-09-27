@@ -43,6 +43,7 @@ const REVIEWED_WEBSITE_CONTROL_ADAPTER_MODULES = new Set([
   'packages/adapters/base/src/index.ts',
   'packages/adapters/base/src/lifecycle/teardown.ts',
   'packages/adapters/base/src/platform/focus-entry.ts',
+  'packages/adapters/base/src/platform/focus-order.ts',
   'packages/adapters/base/src/platform/instance-tree.ts',
   'packages/adapters/base/src/platform/layout-ready.ts',
   'packages/adapters/base/src/platform/web-color-scheme-source.ts',
