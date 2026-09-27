@@ -1,5 +1,7 @@
 # Same-domain part relationship 预算事务（#549 / #654）
 
+这是 2026-09-22 的提案与归因快照。#738 合入、#688 修复并同步后产生的当前数值见 [2026-09-27 对账](2026-09-27-a11y-part-relationship-budget-reconciliation.zh-CN.md)；下列原始测量不应被当作当前 headroom。
+
 ## 范围与状态
 
 #549 的完整 prerequisite 实现位于 #688。能力方向来自 [#388 Checkpoint A](https://github.com/Proto-UI/Proto-UI/issues/388#issuecomment-5378970491) 与已合入的 #553：structured family/domain/role/key carrier、精确匹配、view epoch 与 lease 生命周期、非破坏性 Web 身份及 IDREF ownership，以及 Tabs 迁移。C/M/HC/P/T 仍为 draft；本事务不授予稳定语义准入，也不交付 Disclosure、Collapsible 或 Accordion。
@@ -47,7 +49,7 @@
 
 本次有界检查未发现可明确删除的无关新增闭包或重复副本；这不证明实现已达到理论最小体积。把既有 ModuleDef/barrel 改为另一种交付架构是独立设计工作，不能冒称为已经证实的小修复。本提案不通过删减已接受的 A–K 语义来换取数字，也不把 gzip 字典共享造成的结果当成逐文件可加成本。
 
-## 提案上限与余量
+## 当时的提案上限与余量（2026-09-22）
 
 | 入口    | 当前上限 → 提案上限 | 功能 head 实测 |      提案余量 |
 | ------- | ------------------: | -------------: | ------------: |
@@ -55,7 +57,7 @@
 | React   | 83,500 → **86,000** |         85,351 | **649 bytes** |
 | Vue     | 83,500 → **86,000** |         85,093 | **907 bytes** |
 
-本次数值按 500-byte 边界取整，并保留至少 500 bytes 的小幅余量；635～907 bytes 也处于已接受 #675 记录采用的约 0.5～1.5 KB 范围。这里是本事务的可复核选择，不是今后能力可自动增长或自动涨预算的一般授权。
+当时的数值按 500-byte 边界取整，测得 635～907 bytes 余量，处于已接受 #675 记录采用的约 0.5～1.5 KB 范围。#738 后 React/Vue 已另行提高到 86,500，#688 新 head 的 Runtime 余量变为 479 bytes，不能沿用“至少 500 bytes”的历史结论；见上方当前对账。这里的历史数值不是今后能力可自动增长或自动涨预算的一般授权。
 
 WC 在 main / feature 分别为 85,908 / 88,554，维持既有 97,000 上限；lucide icon/root、Core、Base Button、shadcn Button 五项也均通过，其上限不变。whole-entry 阻塞机制、测量算法、external boundary、两个非阻塞 consumer diagnostics 及其他六项 ceiling 全部保留。
 

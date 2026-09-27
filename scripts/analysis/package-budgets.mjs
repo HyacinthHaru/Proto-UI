@@ -35,6 +35,8 @@ const cases = [
   // separate numeric transaction and closure attribution:
   // internal/records/2026-09-21-table-structure-runtime-budget.zh-CN.md
   // internal/records/2026-09-22-a11y-part-relationship-budget.zh-CN.md
+  // Current #738 + #688 exact-head reconciliation and 479-byte headroom:
+  // internal/records/2026-09-27-a11y-part-relationship-budget-reconciliation.zh-CN.md
   // Merged #738 proposal and combined #549 headroom:
   ['runtime root', 'packages/runtime/src/index.ts', 66_500],
   // #623 scroll end-follow, #625 direct-reference transport, and the earlier
