@@ -113,6 +113,24 @@ mod macos {
         (messages, commit_leases)
     }
 
+    /// A later snapshot of the enabled Button's installed view.
+    fn snapshot(disabled: bool, name: Value) -> PeerToHostMessage {
+        serde_json::from_value(json!({
+            "kind": "a11y.snapshot",
+            "sessionId": ENABLED,
+            "viewEpoch": 1,
+            "snapshot": {
+                "semanticObjectId": "button-enabled:a11y:1",
+                "role": "button",
+                "name": name,
+                "states": { "disabled": disabled },
+                "actions": { "activate": { "event": "click" } },
+                "relations": {},
+            },
+        }))
+        .expect("a snapshot message")
+    }
+
     /// A Base Tabs part: the recorded Base Button projection installed as
     /// `session`, then what the Tabs part says about itself.
     fn tabs_part(session: &str, snapshot: Value) -> Vec<PeerToHostMessage> {
@@ -805,6 +823,42 @@ mod macos {
                     "a screen reader's press after Enter still commits",
                     accepted && after_key == vec![(ENABLED.to_string(), enabled_commit.clone())],
                     (accepted, &after_key),
+                );
+
+                // The same live node through later snapshots of its view: what
+                // a snapshot takes back, the host takes back too.
+                let mut steps = Vec::new();
+                for (disabled, name, expected) in [
+                    (true, json!({ "kind": "content" }), (Some("Save"), false)),
+                    (false, json!({ "kind": "content" }), (Some("Save"), true)),
+                    (false, json!({ "kind": "text", "value": "A" }), (Some("A"), true)),
+                    (false, json!({ "kind": "text", "value": "B" }), (Some("B"), true)),
+                    (false, json!({ "kind": "content" }), (Some("Save"), true)),
+                ] {
+                    run.window
+                        .update(cx, |view, window, cx| {
+                            view.receive(snapshot(disabled, name), window, cx)
+                        })
+                        .expect("the view receives");
+                    run.draw(cx);
+                    let seen = run.with_role("AXButton", cx);
+                    steps.push(((seen[0].title.clone(), seen[0].enabled), expected));
+                }
+                run.check(
+                    "later snapshots disable, re-enable and rename the Button, then name it by its content again",
+                    steps.iter().all(|((title, enabled), (want_title, want_enabled))| {
+                        title.as_deref() == *want_title && enabled == want_enabled
+                    }),
+                    &steps,
+                );
+
+                let buttons = run.with_role("AXButton", cx);
+                let accepted = run.press(&buttons[0], cx).await;
+                let re_enabled = run.commits(cx);
+                run.check(
+                    "a press after the Button is re-enabled commits once",
+                    accepted && re_enabled == vec![(ENABLED.to_string(), enabled_commit.clone())],
+                    (accepted, &re_enabled),
                 );
 
                 // Pinned for upgrades of GPUI and AccessKit: the same slot text
