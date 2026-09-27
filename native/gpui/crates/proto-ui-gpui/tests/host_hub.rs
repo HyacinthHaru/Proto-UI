@@ -556,6 +556,37 @@ fn a_signal_is_emitted_as_it_arrives_and_never_kept(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
+fn a_signal_after_its_session_ended_is_noted_and_reaches_no_listener(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.receive(recorded());
+    let heard = hub.listen();
+    let click = peer(json!({
+        "kind": "expose.signal",
+        "sessionId": SESSION,
+        "name": "click",
+        "payload": null,
+    }));
+    hub.receive([click.clone()]);
+    assert_eq!(heard.borrow().len(), 1);
+
+    hub.receive([peer(
+        json!({ "kind": "session.disposed", "sessionId": SESSION }),
+    )]);
+    hub.notes();
+    // A late signal under the ended session's id is not the instance's any
+    // more.
+    hub.receive([click]);
+    assert_eq!(heard.borrow().len(), 1);
+    assert_eq!(
+        hub.notes(),
+        [HubNote::UnknownSession {
+            session_id: SESSION.into(),
+            kind: "expose.signal".into(),
+        }]
+    );
+}
+
+#[gpui::test]
 fn input_on_a_view_being_replaced_is_refused_until_the_new_one_activates(cx: &mut TestAppContext) {
     // The peer remounts: a new view epoch installs, and until the host
     // activates it the router still holds the old epoch's leases. Only the
