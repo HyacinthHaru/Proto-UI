@@ -35,6 +35,15 @@ export type FocusSetEntryFocusable = (
 
 export type FocusRunInCallback = (fn: () => void) => void;
 
+/**
+ * Orders the targets of one Focus navigation in host order.
+ *
+ * Returns every given target exactly once, as one total order, or `null` when
+ * the host cannot order this set; Focus then keeps registration order for the
+ * whole navigation. Targets are opaque host values.
+ */
+export type FocusOrderTargets = (targets: readonly object[]) => readonly object[] | null;
+
 export const FOCUS_ROOT_TARGET_CAP = cap<FocusRootTargetGetter>('@proto.ui/focus/getRootTarget');
 export const FOCUS_TARGET_READY_CAP = cap<FocusTargetReadySubscriber>(
   '@proto.ui/focus/subscribeTargetReady'
@@ -77,3 +86,5 @@ export const FOCUS_SAMPLE_SCOPE_TARGETS_CAP = cap<
     recentInsertionIndex?: number;
   }
 >('@proto.ui/focus/sampleScopeTargets');
+
+export const FOCUS_ORDER_CAP = cap<FocusOrderTargets>('@proto.ui/focus/orderTargets');
