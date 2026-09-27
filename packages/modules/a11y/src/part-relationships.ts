@@ -77,7 +77,7 @@ export function createA11yPartRelationshipRegistry() {
     const relationships = owner.input.relationships.map((declaration) => {
       const { family, scope, role, key, relation, targetRole } = declaration;
       const matches: Owner[] = [];
-      if (scope !== null && scope !== undefined && role && key !== null && key !== '') {
+      if (scope !== null && scope !== undefined && role && key) {
         for (const target of owners.values()) {
           for (const part of target.input.parts) {
             if (
@@ -92,7 +92,7 @@ export function createA11yPartRelationshipRegistry() {
       }
       if (scope === null || scope === undefined || !role) {
         diagnostics.push({ relation, code: 'missing-source' });
-      } else if (key === null || key === '') {
+      } else if (!key) {
         diagnostics.push({ relation, code: 'missing-key' });
       } else if (matches.length !== 1) {
         diagnostics.push({
@@ -127,7 +127,7 @@ export function createA11yPartRelationshipRegistry() {
     const failed = new Set<Owner>();
     const errors: unknown[] = [];
     try {
-      while (changed || [...pending].some((owner) => !failed.has(owner))) {
+      while (changed || pending.size) {
         changed = false;
         // Publish every new resolution before invoking a projection callback.
         for (const owner of owners.values()) {
@@ -141,25 +141,25 @@ export function createA11yPartRelationshipRegistry() {
           pending.add(owner);
         }
         for (const owner of pending) {
-          if (failed.has(owner)) continue;
           pending.delete(owner);
-          if (owners.get(owner.ref) === owner) {
-            try {
-              owner.notify();
-            } catch (error) {
-              failed.add(owner);
-              pending.add(owner);
-              errors.push(error);
-            }
+          if (failed.has(owner)) continue;
+          try {
+            if (owners.get(owner.ref) === owner) owner.notify();
+          } catch (error) {
+            failed.add(owner);
+            errors.push(error);
           }
           if (changed) break;
         }
       }
     } finally {
       publishing = false;
+      for (const owner of failed) {
+        if (owners.get(owner.ref) === owner) pending.add(owner);
+      }
     }
     if (errors.length === 1) throw errors[0];
-    if (errors.length > 1) throw new AggregateError(errors, 'A11y part projection failed');
+    if (errors.length > 1) throw new AggregateError(errors);
   };
 
   return {
