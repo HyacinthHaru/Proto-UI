@@ -173,6 +173,30 @@ describe('same-domain A11y part relationships', () => {
     expect(peer.getRelationships()[0]?.target).toBeNull();
   });
 
+  it('delivers peer withdrawal and retries a failed projector without a new tuple change', () => {
+    const f = fixture();
+    const notifyPeer = vi.fn();
+    const peer = f.registry.createOwner(createA11ySemanticObjectRef(), notifyPeer);
+    peer.update(f.sourceInput);
+    f.notify.mockClear();
+    notifyPeer.mockClear();
+    const failure = new Error('projector failed once');
+    f.notify.mockImplementationOnce(() => {
+      throw failure;
+    });
+
+    const detached = { ...f.targetInput, available: false };
+    expect(() => f.target.update(detached)).toThrow(failure);
+    expect(f.source.getRelationships()[0]?.target).toBeNull();
+    expect(peer.getRelationships()[0]?.target).toBeNull();
+    expect(notifyPeer).toHaveBeenCalledTimes(1);
+
+    // A failed owner must stay pending even when a later input is otherwise identical.
+    expect(() => f.target.update(detached)).not.toThrow();
+    expect(f.notify).toHaveBeenCalledTimes(2);
+    expect(notifyPeer).toHaveBeenCalledTimes(1);
+  });
+
   it('keeps diagnostics bounded and accepts exact keys without CSS or object-key interpretation', () => {
     const f = fixture();
     for (const key of ['__proto__', '[id="x"]', ' a ', 'a b']) {

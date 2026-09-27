@@ -69,6 +69,8 @@ export function createA11yPartRelationshipRegistry() {
   const owners = new Map<A11ySemanticObjectRef, Owner>();
   let publishing = false;
   let changed = false;
+  // Retain failed notifications across calls; resolution equality does not prove projection succeeded.
+  const pending = new Set<Owner>();
 
   const resolve = (owner: Owner): Resolution => {
     const diagnostics: A11yPartDiagnostic[] = [];
@@ -122,9 +124,10 @@ export function createA11yPartRelationshipRegistry() {
     changed = true;
     if (publishing) return;
     publishing = true;
-    const pending = new Set<Owner>();
+    const failed = new Set<Owner>();
+    const errors: unknown[] = [];
     try {
-      while (changed) {
+      while (changed || [...pending].some((owner) => !failed.has(owner))) {
         changed = false;
         // Publish every new resolution before invoking a projection callback.
         for (const owner of owners.values()) {
@@ -138,14 +141,25 @@ export function createA11yPartRelationshipRegistry() {
           pending.add(owner);
         }
         for (const owner of pending) {
+          if (failed.has(owner)) continue;
           pending.delete(owner);
-          if (owners.get(owner.ref) === owner) owner.notify();
+          if (owners.get(owner.ref) === owner) {
+            try {
+              owner.notify();
+            } catch (error) {
+              failed.add(owner);
+              pending.add(owner);
+              errors.push(error);
+            }
+          }
           if (changed) break;
         }
       }
     } finally {
       publishing = false;
     }
+    if (errors.length === 1) throw errors[0];
+    if (errors.length > 1) throw new AggregateError(errors, 'A11y part projection failed');
   };
 
   return {
@@ -167,8 +181,10 @@ export function createA11yPartRelationshipRegistry() {
             previous.available === snapshot.available &&
             sameList(previous.parts, snapshot.parts) &&
             sameList(previous.relationships, snapshot.relationships)
-          )
+          ) {
+            if (pending.size) publish();
             return;
+          }
           // Replacing the complete record atomically removes the old tuple and
           // installs the new one; observers cannot see membership in both.
           owner.input = {
@@ -184,6 +200,7 @@ export function createA11yPartRelationshipRegistry() {
         dispose() {
           if (owners.get(ref) !== owner) return;
           owners.delete(ref);
+          pending.delete(owner);
           owner.input = EMPTY_INPUT;
           owner.resolution = EMPTY_RESOLUTION;
           publish();
