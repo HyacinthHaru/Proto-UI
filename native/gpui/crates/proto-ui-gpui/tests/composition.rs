@@ -354,3 +354,37 @@ fn detaching_a_parent_view_does_not_promote_its_slot_session_to_the_window_root(
         composed.rendered()
     );
 }
+
+#[gpui::test]
+fn the_peer_hears_the_order_the_views_show_in_when_it_changes(cx: &mut TestAppContext) {
+    let orders = |outbox: Vec<HostToPeerMessage>| -> Vec<Vec<String>> {
+        outbox
+            .into_iter()
+            .filter_map(|message| match message {
+                HostToPeerMessage::ProjectionOrder(order) => Some(order.sessions),
+                _ => None,
+            })
+            .collect()
+    };
+    let mut composed = Composed::open(cx);
+    composed.receive(peer(recorded("root")));
+    composed.receive(peer(recorded("thumb")));
+    // The thumb shows inside the root, so it comes after it.
+    assert_eq!(
+        orders(composed.outbox()).last(),
+        Some(&vec![ROOT.to_string(), THUMB.to_string()])
+    );
+
+    // The views show again with nothing moved: nothing is sent again.
+    composed.receive(peer(vec![json!({
+        "kind": "style.apply",
+        "sessionId": ROOT,
+        "viewEpoch": 1,
+        "tokens": [],
+    })]));
+    assert!(orders(composed.outbox()).is_empty());
+
+    // The thumb ends, and the order changes once.
+    composed.receive(vec![ended(THUMB)]);
+    assert_eq!(orders(composed.outbox()), [vec![ROOT.to_string()]]);
+}
