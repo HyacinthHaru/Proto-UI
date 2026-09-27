@@ -73,6 +73,7 @@ export function createPeerProcess(options: PeerProcessOptions): PeerProcess {
   const handle = async (message: HostToPeerMessage): Promise<void> => {
     switch (message.kind) {
       case 'host.hello':
+      case 'projection.order':
         return;
       case 'meta.set':
         meta = message.meta;
