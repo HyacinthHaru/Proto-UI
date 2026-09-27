@@ -263,12 +263,10 @@ function selectChangedPackages(packages, base) {
 }
 
 export function selectAffectedPackages(packages, changedFiles) {
-  const globalChange = changedFiles.some(
-    (file) =>
-      file === 'scripts/analysis/package-budgets.mjs' ||
-      /^(package.json|pnpm-lock.yaml|tsconfig[^/]*\.json|scripts\/(build|release)\/|\.github\/)/.test(
-        file
-      )
+  const globalChange = changedFiles.some((file) =>
+    /^(package.json|pnpm-lock.yaml|tsconfig[^/]*\.json|scripts\/(build|release)\/|scripts\/analysis\/package-budgets\.mjs$|\.github\/)/.test(
+      file
+    )
   );
   if (globalChange) return new Set(packages.map((pkg) => pkg.name));
 
