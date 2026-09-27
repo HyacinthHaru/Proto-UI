@@ -4,7 +4,7 @@
  * Validate a Tailwind-flavored token for feedback v0.
  *
  * Forbidden:
- * - ':' (variants / pseudo / selector)
+ * - ':' (variants / pseudo / selector), except one allowlisted `selection:` prefix
  *
  * Allowed:
  * - arbitrary values in brackets: `w-[2px]`, `h-[var(--x)]`
@@ -32,6 +32,11 @@ export function assertTwTokenV0(token: string, ctx?: string): void {
   }
 
   if (token.includes(':')) {
+    const selectionPrefix = 'selection:';
+    if (token.startsWith(selectionPrefix) && !token.slice(selectionPrefix.length).includes(':')) {
+      assertTwTokenV0(token.slice(selectionPrefix.length), ctx);
+      return;
+    }
     throw new Error(`[feedback] invalid tw token${where}: forbidden character ":" in "${token}"`);
   }
 

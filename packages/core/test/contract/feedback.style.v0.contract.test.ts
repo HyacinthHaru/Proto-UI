@@ -43,11 +43,20 @@ describe('core: feedback.style v0 contract', () => {
     expect(outAfter).not.toContain('text-white');
   });
 
-  it('rejects forbidden token syntax (variant / selector injection) in v0', () => {
+  it('allows only the static text-selection pseudo-element variant in v0', () => {
     const r = new FeedbackStyleRecorder();
 
-    // ":" is forbidden (variants/pseudo/selectors)
+    r.use(tw('selection:bg-primary selection:text-primary-foreground'));
+    expect(r.export().tokens).toEqual([
+      'selection:bg-primary',
+      'selection:text-primary-foreground',
+    ]);
+
+    // Every other variant remains forbidden, including nested and chained selection variants.
     expect(() => r.use(tw('data-[disabled]:opacity-50'))).toThrow();
+    expect(() => r.use(tw('hover:selection:bg-primary'))).toThrow();
+    expect(() => r.use(tw('selection:hover:bg-primary'))).toThrow();
+    expect(() => r.use(tw('selection:data-[disabled]:opacity-50'))).toThrow();
     expect(() => r.use(tw('&:hover'))).toThrow();
   });
 

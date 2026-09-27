@@ -104,6 +104,28 @@ describe('@proto.ui/cli', () => {
     }
   });
 
+  it('registers Shadcn Input as a direct package component on every Web adapter', () => {
+    const input = COMPONENT_REGISTRY['shadcn-input'];
+    expect(input).toMatchObject({
+      packageName: '@proto.ui/prototypes-shadcn',
+      importPath: '@proto.ui/prototypes-shadcn/input',
+      stylePreset: 'shadcn',
+      items: [
+        {
+          prototypeImport: 'shadcnInputRoot',
+          reactExport: 'ShadcnInputRoot',
+          elementName: 'proto-ui-shadcn-input',
+        },
+      ],
+    });
+    for (const adapter of ['react', 'vue', 'vue2', 'wc'] as const) {
+      const source = renderHostIndex(adapter, ['shadcn-input']);
+      expect(source).toContain('@proto.ui/prototypes-shadcn/input');
+      expect(source).toContain('ShadcnInputRoot');
+      if (adapter === 'wc') expect(source).toContain('proto-ui-shadcn-input');
+    }
+  });
+
   it('registers the promoted Brutalist families and both Textarea projections', () => {
     const brutalistIds = Object.keys(COMPONENT_REGISTRY)
       .filter((id) => id.startsWith('brutalist-'))

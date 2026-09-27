@@ -14,6 +14,7 @@ export const SHARED_BASE_FAMILY_IDS = [
 export type SharedBaseFamilyId = (typeof SHARED_BASE_FAMILY_IDS)[number];
 export type ProjectionComponentId =
   | SharedBaseFamilyId
+  | 'input'
   | 'checkbox'
   | 'radio-group'
   | 'badge'
@@ -70,6 +71,7 @@ const REQUIRED_PART_IDS: Readonly<Record<ProjectionComponentId, readonly string[
     'footer',
   ],
   separator: ['root'],
+  input: ['root'],
   textarea: ['root'],
   checkbox: ['root', 'indicator'],
   'radio-group': ['root', 'item', 'indicator'],
@@ -287,6 +289,17 @@ const SHADCN_MANIFEST = {
         root: {
           basePrototypeId: 'P-BASE-TEXTAREA',
           prototypeId: 'shadcn-textarea-root',
+        },
+      },
+    },
+    input: {
+      baseFamilyId: 'P-BASE-INPUT',
+      recipeId: 'demo-shadcn-input',
+      recipePrototypeIds: ['shadcn-input-root'],
+      parts: {
+        root: {
+          basePrototypeId: 'P-BASE-INPUT',
+          prototypeId: 'shadcn-input-root',
         },
       },
     },
