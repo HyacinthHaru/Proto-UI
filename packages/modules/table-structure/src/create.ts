@@ -65,7 +65,9 @@ export class TableStructureModuleImpl extends ModuleBase {
       return;
     }
     if (phase === 'unmounting' || phase === 'detached') {
-      this.clearProjection();
+      // Only a Table part has a projection of its own to clear. Any other
+      // instance's relations are its Prototype's.
+      if (this.role) this.clearProjection();
       this.notifyRoot();
     }
   }
