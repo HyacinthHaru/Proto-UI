@@ -295,13 +295,13 @@ fn switching_away_and_straight_back_leaves_only_the_current_panel(cx: &mut TestA
         [ROOT, LIST, ALPHA, BETA, INDICATOR, PANEL_ALPHA]
     );
     assert_eq!(exposed(&mut fixture, BETA, "selected"), Some(json!(false)));
-    // The panel on screen reports from its current view.
-    assert_eq!(
-        fixture
-            .with_view(|view| view.reported_a11y(PANEL_ALPHA))
-            .map(|panel| panel.role),
-        Some(Role::TabPanel)
-    );
+    // The panel on screen reports from its current view, still named by its
+    // tab.
+    let panel = fixture
+        .with_view(|view| view.reported_a11y(PANEL_ALPHA))
+        .expect("the panel is reported");
+    assert_eq!(panel.role, Role::TabPanel);
+    assert_eq!(panel.label.as_deref(), Some("Alpha"));
 }
 
 #[gpui::test]
