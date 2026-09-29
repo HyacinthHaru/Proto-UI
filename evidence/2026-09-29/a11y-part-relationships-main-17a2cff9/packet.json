@@ -1,0 +1,46 @@
+{
+  "kind": "native-evidence-wrapper",
+  "scope": "Native refresh with separate exact-head local, CI and independent receipts; approval and actual merge remain pending",
+  "head": "17a2cff98080eb57f9070a6f45d89b58d3a72c3f",
+  "tree": "a46d21801fc0e32b1a3f807f9c567a44e1b08d63",
+  "actualStartedAt": "2026-09-29T15:10:41.067Z",
+  "actualFinishedAt": "2026-09-29T15:11:21.412Z",
+  "native": {
+    "checks": 324,
+    "passed": 324,
+    "pageErrors": 0,
+    "consoleWarningsAndErrors": 0,
+    "trustedClicks": 36,
+    "wcSemanticClicks": 6,
+    "individuallyViewedPNG": 57,
+    "AXCapturesReconciled": 132,
+    "AXMismatches": 0,
+    "distinctTrackedInputs": 315,
+    "sourceBindingMismatches": 0
+  },
+  "recordsArchive": "native-records.tar.gz",
+  "executionCodeArchive": "execution-code.tar.gz",
+  "images": "GALLERY.md",
+  "shaMap": "raw-public-sha-map.json",
+  "additionalReceipts": {
+    "localValidation": {
+      "archive": "validation-records.tar.gz",
+      "member": "validation/final-validation-receipt-17a2cff9.json"
+    },
+    "canonicalCI": {
+      "archive": "validation-records.tar.gz",
+      "member": "validation/ci-final-receipt-17a2cff9.json"
+    },
+    "independentReview": {
+      "archive": "validation-records.tar.gz",
+      "member": "validation/independent-17a2-final-review.zh-CN.md"
+    }
+  },
+  "additionalReceiptNote": "Raw snapshots stay head/time-bound; separate validation includes completed checks, retained failures and scoped limitations.",
+  "limits": [
+    "Chrome/macOS actual source-bundle journeys; not an installed-tarball or all-platform claim.",
+    "Ownership K is the actual WC capability-provider/internal host-contract fixture, not a full production journey in every adapter.",
+    "Seven T cases, six required paths, owning exception/resource tests and external human gates remain separate obligations.",
+    "No product edit, rerun, commit, push or GitHub write occurred during preparation."
+  ]
+}
