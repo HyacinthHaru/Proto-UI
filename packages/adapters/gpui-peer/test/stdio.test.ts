@@ -45,6 +45,8 @@ describe('gpui peer: stdio process', () => {
       'base-tabs-content',
       'base-tabs-indicator',
       'base-transition',
+      'base-checkbox-root',
+      'base-checkbox-indicator',
     ]);
   });
 

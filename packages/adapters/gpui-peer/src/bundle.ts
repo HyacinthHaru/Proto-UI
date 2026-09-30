@@ -33,6 +33,10 @@ export function createBaseBundle(): PrototypeBundle {
         import('@proto.ui/prototypes-base/tabs').then((m) => m.tabsIndicator),
       'base-transition': () =>
         import('@proto.ui/prototypes-base/transition').then((m) => m.default),
+      'base-checkbox-root': () =>
+        import('@proto.ui/prototypes-base/checkbox').then((m) => m.checkboxRoot),
+      'base-checkbox-indicator': () =>
+        import('@proto.ui/prototypes-base/checkbox').then((m) => m.checkboxIndicator),
     },
   };
 }

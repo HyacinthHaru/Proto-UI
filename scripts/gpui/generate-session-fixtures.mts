@@ -21,6 +21,7 @@ import { fileURLToPath } from 'node:url';
 
 import type { Prototype } from '@proto.ui/core';
 import button from '@proto.ui/prototypes-base/button';
+import { checkboxIndicator, checkboxRoot } from '@proto.ui/prototypes-base/checkbox';
 import { switchRoot, switchThumb } from '@proto.ui/prototypes-base/switch';
 import toggle from '@proto.ui/prototypes-base/toggle';
 import type { PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
@@ -82,6 +83,38 @@ const RECORDINGS: readonly Recording[] = [
         prototype: switchThumb,
         props: {},
         parent: 'checked',
+      },
+    },
+  },
+  {
+    file: 'base-checkbox-session.json',
+    name: 'Base Checkbox',
+    module: '@proto.ui/prototypes-base/checkbox',
+    sessions: {
+      root: { id: 'checkbox-root', prototype: checkboxRoot, props: {} },
+      indicator: {
+        id: 'checkbox-indicator',
+        prototype: checkboxIndicator,
+        props: {},
+        parent: 'root',
+      },
+      checked: { id: 'checkbox-checked', prototype: checkboxRoot, props: { defaultChecked: true } },
+      checkedIndicator: {
+        id: 'checkbox-checked-indicator',
+        prototype: checkboxIndicator,
+        props: {},
+        parent: 'checked',
+      },
+      mixed: {
+        id: 'checkbox-mixed',
+        prototype: checkboxRoot,
+        props: { defaultIndeterminate: true },
+      },
+      mixedIndicator: {
+        id: 'checkbox-mixed-indicator',
+        prototype: checkboxIndicator,
+        props: {},
+        parent: 'mixed',
       },
     },
   },

@@ -67,6 +67,12 @@ mod macos {
     const TAB_ON: &str = "tab-overview";
     const TAB_OFF: &str = "tab-settings";
     const TAB_PANEL: &str = "tab-panel";
+    const CHECKBOX_OFF: &str = "checkbox-root";
+    const CHECKBOX_OFF_INDICATOR: &str = "checkbox-indicator";
+    const CHECKBOX_ON: &str = "checkbox-checked";
+    const CHECKBOX_ON_INDICATOR: &str = "checkbox-checked-indicator";
+    const CHECKBOX_MIXED: &str = "checkbox-mixed";
+    const CHECKBOX_MIXED_INDICATOR: &str = "checkbox-mixed-indicator";
     /// Long enough for AccessKit's action channel to reach the foreground.
     const SETTLE: Duration = Duration::from_millis(200);
 
@@ -228,6 +234,33 @@ mod macos {
             (
                 thumb.to_string(),
                 composed(thumb, "base-switch-thumb", Vec::new(), Some(session)),
+            ),
+        ]
+    }
+
+    /// A Checkbox labelled `label`, with its indicator in the default slot.
+    fn checkbox(session: &str, indicator: &str, label: &str) -> [(String, SessionConfig); 2] {
+        [
+            (
+                session.to_string(),
+                composed(
+                    session,
+                    "base-checkbox-root",
+                    vec![
+                        SurfaceChild::Session(indicator.into()),
+                        SurfaceChild::Text(label.to_string().into()),
+                    ],
+                    None,
+                ),
+            ),
+            (
+                indicator.to_string(),
+                composed(
+                    indicator,
+                    "base-checkbox-indicator",
+                    Vec::new(),
+                    Some(session),
+                ),
             ),
         ]
     }
@@ -423,6 +456,22 @@ mod macos {
             let (switch_on_messages, _) = recorded("base-switch-session.json", "checked");
             let (switch_on_thumb_messages, _) =
                 recorded("base-switch-session.json", "checkedThumb");
+            let (checkbox_off_messages, checkbox_off_commit) =
+                recorded("base-checkbox-session.json", "root");
+            let checkbox_messages: Vec<PeerToHostMessage> = checkbox_off_messages
+                .into_iter()
+                .chain(
+                    [
+                        "indicator",
+                        "checked",
+                        "checkedIndicator",
+                        "mixed",
+                        "mixedIndicator",
+                    ]
+                    .into_iter()
+                    .flat_map(|session| recorded("base-checkbox-session.json", session).0),
+                )
+                .collect();
             let tabs_messages: Vec<PeerToHostMessage> = tabs_part(
                 TAB_LIST,
                 json!({
@@ -492,6 +541,18 @@ mod macos {
                             ] {
                                 view.open_session(session, config(session, "base-button", label), cx);
                             }
+                            for (session, config) in
+                                checkbox(CHECKBOX_OFF, CHECKBOX_OFF_INDICATOR, "Accept")
+                                    .into_iter()
+                                    .chain(checkbox(CHECKBOX_ON, CHECKBOX_ON_INDICATOR, "Subscribe"))
+                                    .chain(checkbox(
+                                        CHECKBOX_MIXED,
+                                        CHECKBOX_MIXED_INDICATOR,
+                                        "Select all",
+                                    ))
+                            {
+                                view.open_session(session, config, cx);
+                            }
                             view
                         })
                     },
@@ -510,6 +571,7 @@ mod macos {
                         .chain(switch_on_messages)
                         .chain(switch_on_thumb_messages)
                         .chain(tabs_messages)
+                        .chain(checkbox_messages)
                     {
                         view.receive(message, window, cx);
                     }
@@ -659,6 +721,41 @@ mod macos {
                     "a screen reader's press commits the Switch on its own lease",
                     accepted
                         && commits == vec![(SWITCH_OFF.to_string(), switch_off_commit.clone())],
+                    (accepted, &commits),
+                );
+
+                // A Checkbox is a checkbox with no subrole, named by AccessKit
+                // from its content. Pinned for upgrades: the host gives
+                // AccessKit a mixed state, and AccessKit's macOS adapter reports
+                // any toggled state as on or off, so mixed reads as checked.
+                let checkboxes: Vec<Seen> = run
+                    .with_role("AXCheckBox", cx)
+                    .into_iter()
+                    .filter(|seen| {
+                        !matches!(seen.subrole.as_deref(), Some("AXToggle" | "AXSwitch"))
+                    })
+                    .collect();
+                let reported: Vec<(Option<String>, Option<i64>)> = checkboxes
+                    .iter()
+                    .map(|seen| (seen.title.clone(), seen.number))
+                    .collect();
+                run.check(
+                    "the three Checkboxes are reported named by their content, mixed read as checked",
+                    reported
+                        == vec![
+                            (Some("Accept".into()), Some(0)),
+                            (Some("Subscribe".into()), Some(1)),
+                            (Some("Select all".into()), Some(1)),
+                        ],
+                    &reported,
+                );
+                let accepted = run.press(&checkboxes[0], cx).await;
+                let commits = run.commits(cx);
+                run.check(
+                    "a screen reader's press commits the Checkbox on its own lease",
+                    accepted
+                        && commits
+                            == vec![(CHECKBOX_OFF.to_string(), checkbox_off_commit.clone())],
                     (accepted, &commits),
                 );
 

@@ -103,6 +103,23 @@ fn the_recorded_switch_is_a_switch_on_or_off_named_by_its_content() {
 }
 
 #[test]
+fn the_recorded_checkbox_is_a_checkbox_unchecked_checked_or_mixed() {
+    let checkbox = |session: &str| {
+        let (projection, issues) = project(&recorded("base-checkbox-session.json", session));
+        assert!(issues.is_empty(), "{session}: {issues:?}");
+        projection.expect("a projection")
+    };
+    let unchecked = checkbox("root");
+    assert_eq!(unchecked.role, Role::CheckBox);
+    assert_eq!(unchecked.toggled, Some(Toggled::False));
+    // AccessKit names a checkbox from its content itself.
+    assert!(unchecked.name_from_content);
+    assert!(names_from_descendants(Role::CheckBox));
+    assert_eq!(checkbox("checked").toggled, Some(Toggled::True));
+    assert_eq!(checkbox("mixed").toggled, Some(Toggled::Mixed));
+}
+
+#[test]
 fn a_pressed_state_that_is_not_a_boolean_is_reported_not_guessed() {
     let (projection, issues) = project(&snapshot(json!({
         "semanticObjectId": "object",

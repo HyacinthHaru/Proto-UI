@@ -34,7 +34,8 @@ pub struct A11yProjection {
     /// [`names_from_descendants`].
     pub name_from_content: bool,
     pub disabled: bool,
-    /// Whether a toggle button or a switch is on, when the object is one.
+    /// Whether a toggle button, a switch or a checkbox is on, when the object
+    /// is one.
     pub toggled: Option<Toggled>,
     /// Whether a tab is the selected one, when the object says.
     pub selected: Option<bool>,
@@ -125,6 +126,10 @@ pub fn project(snapshot: &A11ySnapshotWire) -> (Option<A11yProjection>, Vec<A11y
                     Toggled::False
                 })
             }
+            // A checkbox says it as ARIA does, and may be mixed.
+            ("checked", Value::String(value)) if value == "true" => toggled = Some(Toggled::True),
+            ("checked", Value::String(value)) if value == "false" => toggled = Some(Toggled::False),
+            ("checked", Value::String(value)) if value == "mixed" => toggled = Some(Toggled::Mixed),
             _ => issues.push(A11yIssue::State {
                 name: name.clone(),
                 value: value.clone(),
@@ -192,6 +197,7 @@ fn role(name: &str) -> Option<Role> {
         "tablist" => Some(Role::TabList),
         "tab" => Some(Role::Tab),
         "tabpanel" => Some(Role::TabPanel),
+        "checkbox" => Some(Role::CheckBox),
         _ => None,
     }
 }
