@@ -301,6 +301,13 @@ jobs:
           cargo test -p proto-ui-gpui --test view_intent_t0 -- --ignored --test-threads=1 2>&1 | tee view_intent_t0.log
           grep -Eq "test result: ok\. [1-9][0-9]* passed" view_intent_t0.log
 
+      - name: Base Tabs over T0 in a GPUI window
+        working-directory: native/gpui
+        run: |
+          set -euo pipefail
+          cargo test -p proto-ui-gpui --test tabs_t0 -- --ignored --test-threads=1 2>&1 | tee tabs_t0.log
+          grep -Eq "test result: ok\. [1-9][0-9]* passed" tabs_t0.log
+
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20

@@ -24,8 +24,13 @@ export function createBaseBundle(): PrototypeBundle {
       'base-switch-thumb': () =>
         import('@proto.ui/prototypes-base/switch').then((m) => m.switchThumb),
       'base-tabs-root': () => import('@proto.ui/prototypes-base/tabs').then((m) => m.tabsRoot),
+      'base-tabs-list': () => import('@proto.ui/prototypes-base/tabs').then((m) => m.tabsList),
+      'base-tabs-trigger': () =>
+        import('@proto.ui/prototypes-base/tabs').then((m) => m.tabsTrigger),
       'base-tabs-content': () =>
         import('@proto.ui/prototypes-base/tabs').then((m) => m.tabsContent),
+      'base-tabs-indicator': () =>
+        import('@proto.ui/prototypes-base/tabs').then((m) => m.tabsIndicator),
     },
   };
 }

@@ -24,8 +24,8 @@ use proto_ui_host_protocol::model::{
     InstallOptions,
 };
 use proto_ui_host_protocol::wire::{
-    A11ySnapshotWire, HostDiagnostic, InputSample, InstanceId, ProjectionAck, ProjectionAckStatus,
-    ProjectionTransaction, SampleId, SessionId,
+    A11ySnapshotWire, FocusPlan, HostDiagnostic, InputSample, InstanceId, ProjectionAck,
+    ProjectionAckStatus, ProjectionTransaction, SampleId, SessionId,
 };
 use proto_ui_style::length::LengthContext;
 use proto_ui_style::Theme;
@@ -128,6 +128,12 @@ pub enum HubNote {
         session_id: SessionId,
         view_epoch: u64,
         status: String,
+    },
+    /// A focus plan for a view other than the installed one.
+    FocusPlanRefused {
+        session_id: SessionId,
+        view_epoch: u64,
+        installed: Option<u64>,
     },
     /// An accessibility snapshot for a view other than the installed one.
     SnapshotRefused {
@@ -288,6 +294,21 @@ fn place_sessions(
         })
         .collect();
     surface
+}
+
+/// Applies a view's focus plan: whether the root is a tab stop, and whether
+/// the host may focus it on request.
+fn apply_focus_plan(session: &mut HubSession, plan: &FocusPlan) {
+    let root_target = plan
+        .targets
+        .iter()
+        .find(|target| target.r#ref == FOCUS_ROOT_REF);
+    let sequential = root_target.is_some_and(|target| target.sequential);
+    session.focus_programmatic = root_target.is_some_and(|target| target.programmatic);
+    session.focus = session.focus.clone().tab_stop(sequential);
+    if let Some(root) = session.surface.as_mut() {
+        root.focus = root.focus.take().map(|focus| focus.tab_stop(sequential));
+    }
 }
 
 fn diagnostic(code: &str, message: impl Into<String>) -> HostDiagnostic {
@@ -478,6 +499,24 @@ impl ProtoHostView {
                 session.a11y = None;
                 session.projection = None;
                 self.refresh_route(&detach.session_id);
+                self.publish_surfaces(window, cx);
+            }
+            PeerToHostMessage::FocusPlan(update) => {
+                let Some(session) = self.hub.session_mut(&update.session_id) else {
+                    self.note_unknown(&update.session_id, "focus.plan");
+                    return;
+                };
+                // A plan describes one view, as a snapshot does.
+                let installed = session.model.snapshot().current_epoch;
+                if installed != Some(update.view_epoch) {
+                    self.hub.notes.push(HubNote::FocusPlanRefused {
+                        session_id: update.session_id,
+                        view_epoch: update.view_epoch,
+                        installed,
+                    });
+                    return;
+                }
+                apply_focus_plan(session, &update.focus);
                 self.publish_surfaces(window, cx);
             }
             PeerToHostMessage::LeaseRelease(release) => {
@@ -836,19 +875,8 @@ impl ProtoHostView {
         if ack.status != ProjectionAckStatus::Applied {
             return ack;
         }
-        // The focus plan decides whether the root is a tab stop, and whether
-        // the host may focus it on request.
-        let root_target = transaction
-            .focus
-            .targets
-            .iter()
-            .find(|target| target.r#ref == FOCUS_ROOT_REF);
-        let sequential = root_target.is_some_and(|target| target.sequential);
-        session.focus_programmatic = root_target.is_some_and(|target| target.programmatic);
-        session.focus = session.focus.clone().tab_stop(sequential);
-        let mut root = root;
-        root.focus = root.focus.map(|focus| focus.tab_stop(sequential));
         session.surface = Some(root);
+        apply_focus_plan(session, &transaction.focus);
         session.feedback = feedback.refinement;
         // The installed view's own snapshot, which may be `null`: a new view
         // does not inherit the old one's.
