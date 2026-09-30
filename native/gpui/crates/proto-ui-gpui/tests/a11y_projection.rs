@@ -7,16 +7,17 @@
 use std::fs;
 use std::path::Path;
 
-use gpui::Role;
+use gpui::{Role, Toggled};
 use proto_ui_gpui::a11y::{project, A11yIssue, A11yProjection};
 use proto_ui_host_protocol::messages::PeerToHostMessage;
 use proto_ui_host_protocol::wire::A11ySnapshotWire;
 use serde_json::{json, Value};
 
 /// The snapshot the peer installed with a recorded session's projection.
-fn recorded(session: &str) -> A11ySnapshotWire {
-    let path =
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/base-button-session.json");
+fn recorded(fixture: &str, session: &str) -> A11ySnapshotWire {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../fixtures")
+        .join(fixture);
     let fixture: Value =
         serde_json::from_str(&fs::read_to_string(path).expect("the fixture reads"))
             .expect("the fixture parses");
@@ -38,7 +39,7 @@ fn snapshot(value: Value) -> A11ySnapshotWire {
 
 #[test]
 fn the_recorded_button_is_a_button_named_by_its_content() {
-    let (projection, issues) = project(&recorded("enabled"));
+    let (projection, issues) = project(&recorded("base-button-session.json", "enabled"));
     assert_eq!(
         projection,
         Some(A11yProjection {
@@ -47,6 +48,7 @@ fn the_recorded_button_is_a_button_named_by_its_content() {
             // button from the text beneath it.
             label: None,
             disabled: false,
+            toggled: None,
             activatable: true,
         })
     );
@@ -55,13 +57,46 @@ fn the_recorded_button_is_a_button_named_by_its_content() {
 
 #[test]
 fn the_recorded_disabled_button_is_reported_disabled() {
-    let (projection, issues) = project(&recorded("disabled"));
+    let (projection, issues) = project(&recorded("base-button-session.json", "disabled"));
     let projection = projection.expect("a projection");
     assert!(projection.disabled);
     // Disabled is a state, not the absence of the action: the Prototype
     // decides what an activation of a disabled Button does.
     assert!(projection.activatable);
     assert!(issues.is_empty(), "{issues:?}");
+}
+
+#[test]
+fn the_recorded_toggle_is_a_toggle_button_on_or_off() {
+    let toggled = |session: &str| {
+        let (projection, issues) = project(&recorded("base-toggle-session.json", session));
+        assert!(issues.is_empty(), "{session}: {issues:?}");
+        let projection = projection.expect("a projection");
+        assert_eq!(projection.role, Role::Button);
+        (projection.toggled, projection.disabled)
+    };
+    assert_eq!(toggled("inactive"), (Some(Toggled::False), false));
+    assert_eq!(toggled("active"), (Some(Toggled::True), false));
+    assert_eq!(toggled("disabled"), (Some(Toggled::False), true));
+}
+
+#[test]
+fn a_pressed_state_that_is_not_a_boolean_is_reported_not_guessed() {
+    let (projection, issues) = project(&snapshot(json!({
+        "semanticObjectId": "object",
+        "role": "button",
+        "states": { "pressed": "mixed" },
+        "actions": {},
+        "relations": {},
+    })));
+    assert_eq!(projection.expect("a projection").toggled, None);
+    assert_eq!(
+        issues,
+        [A11yIssue::State {
+            name: "pressed".into(),
+            value: json!("mixed"),
+        }]
+    );
 }
 
 #[test]
@@ -109,7 +144,7 @@ fn facts_outside_the_mapping_are_named_and_the_rest_still_projects() {
     let (projection, issues) = project(&snapshot(json!({
         "semanticObjectId": "object",
         "role": "button",
-        "states": { "disabled": "yes", "pressed": true },
+        "states": { "disabled": "yes", "expanded": true },
         "actions": { "activate": { "event": "click" }, "expand": {} },
         "relations": { "controls": ["other"], "describedBy": null },
         "level": 2,
@@ -126,7 +161,7 @@ fn facts_outside_the_mapping_are_named_and_the_rest_still_projects() {
                 value: json!("yes"),
             },
             A11yIssue::State {
-                name: "pressed".into(),
+                name: "expanded".into(),
                 value: json!(true),
             },
             A11yIssue::Action("expand".into()),

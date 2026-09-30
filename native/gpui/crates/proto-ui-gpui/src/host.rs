@@ -589,6 +589,9 @@ fn render_surface(surface: &SurfaceNode, bridge: &Rc<RefCell<InputBridge>>) -> A
         if let Some(label) = &a11y.label {
             element = element.aria_label(label.clone());
         }
+        if let Some(toggled) = a11y.toggled {
+            element = element.aria_toggled(toggled);
+        }
         if a11y.activatable {
             let bridge = bridge.clone();
             let id = surface.id.clone();
