@@ -1,10 +1,11 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { definePrototype, tw } from '@proto.ui/core';
 import type { PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
 import button from '@proto.ui/prototypes-base/button';
 import toggle from '@proto.ui/prototypes-base/toggle';
 import { switchRoot, switchThumb } from '@proto.ui/prototypes-base/switch';
 import { tabsContent, tabsList, tabsRoot, tabsTrigger } from '@proto.ui/prototypes-base/tabs';
+import transition from '@proto.ui/prototypes-base/transition';
 
 import { createPeerSession, type PeerSession } from '../src/session';
 import { ScriptedHost } from './scripted-host';
@@ -820,5 +821,81 @@ describe('gpui peer: focus plan', () => {
     expect(sequential(beta.host)).toEqual([false, true]);
 
     for (const { peer } of [beta, alpha, list, root]) await peer.dispose();
+  });
+});
+
+describe('gpui peer: Base Transition timers', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  function open(props: WireRecord) {
+    const host = new ScriptedHost('transition');
+    const peer = createPeerSession({
+      sessionId: 'transition',
+      instanceId: 'transition:instance',
+      prototype: transition,
+      props,
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+    });
+    host.bind((message) => peer.handle(message));
+    return { host, peer };
+  }
+
+  const signals = (host: ScriptedHost) => host.of('expose.signal').map((message) => message.name);
+
+  const call = (peer: PeerSession, name: string) =>
+    peer.handle({ kind: 'expose.call', sessionId: 'transition', callId: name, name, args: [] });
+
+  it('lets no timer of an earlier leave end the leave that came after it', async () => {
+    const leaving = (open: boolean) => ({ open, leaveDuration: 1000, enterDuration: 1000 });
+    const { host, peer } = open(leaving(true));
+    await peer.mount();
+    await vi.advanceTimersByTimeAsync(0);
+    // Leave, turn back, and leave again before the first leave would end.
+    peer.setProps(leaving(false));
+    await vi.advanceTimersByTimeAsync(100);
+    peer.setProps(leaving(true));
+    await vi.advanceTimersByTimeAsync(100);
+    peer.setProps(leaving(false));
+
+    // Past where the first leave would have ended: nothing ends yet.
+    await vi.advanceTimersByTimeAsync(900);
+    expect(signals(host)).toEqual(['beforeLeave', 'beforeEnter', 'beforeLeave']);
+    expect(host.of('projection.detach')).toEqual([]);
+
+    // The second leave ends once, on its own time.
+    await vi.advanceTimersByTimeAsync(200);
+    expect(signals(host)).toEqual(['beforeLeave', 'beforeEnter', 'beforeLeave', 'afterLeave']);
+    expect(host.of('projection.detach')).toHaveLength(1);
+    await peer.dispose();
+  });
+
+  it('lets no timer end again an enter the host completed', async () => {
+    const { host, peer } = open({ defaultOpen: false, enterDuration: 1000 });
+    await peer.mount();
+    await vi.advanceTimersByTimeAsync(0);
+    call(peer, 'enter');
+    await vi.advanceTimersByTimeAsync(0);
+    call(peer, 'complete');
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(signals(host)).toEqual(['beforeEnter', 'afterEnter']);
+    await peer.dispose();
+  });
+
+  it('runs no timer of a phase its disposal cut short', async () => {
+    const { host, peer } = open({ open: true, leaveDuration: 1000 });
+    await peer.mount();
+    await vi.advanceTimersByTimeAsync(0);
+    peer.setProps({ open: false, leaveDuration: 1000 });
+    await vi.advanceTimersByTimeAsync(100);
+    await peer.dispose();
+    const sent = host.sent.length;
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(host.sent).toHaveLength(sent);
   });
 });
