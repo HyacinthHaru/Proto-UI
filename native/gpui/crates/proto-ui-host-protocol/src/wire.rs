@@ -129,6 +129,10 @@ pub enum A11yNameWire {
 #[serde(rename_all = "camelCase")]
 pub struct A11ySnapshotWire {
     pub semantic_object_id: SemanticObjectId,
+    /// The id the Prototype gives the object, which another object's relation
+    /// can name as its target. Absent when the Prototype gives none.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

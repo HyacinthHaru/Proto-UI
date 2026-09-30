@@ -7,8 +7,10 @@
 use std::fs;
 use std::path::Path;
 
-use gpui::{Role, Toggled};
-use proto_ui_gpui::a11y::{names_from_descendants, project, A11yIssue, A11yProjection};
+use gpui::{Orientation, Role, Toggled};
+use proto_ui_gpui::a11y::{
+    names_from_descendants, project, A11yIssue, A11yProjection, A11yReference,
+};
 use proto_ui_host_protocol::messages::PeerToHostMessage;
 use proto_ui_host_protocol::wire::A11ySnapshotWire;
 use serde_json::{json, Value};
@@ -50,6 +52,9 @@ fn the_recorded_button_is_a_button_named_by_its_content() {
             name_from_content: true,
             disabled: false,
             toggled: None,
+            selected: None,
+            orientation: None,
+            labelled_by: None,
             activatable: true,
         })
     );
@@ -136,13 +141,92 @@ fn a_text_name_becomes_the_label() {
 fn a_role_without_a_mapping_is_not_reported_as_anything_else() {
     let (projection, issues) = project(&snapshot(json!({
         "semanticObjectId": "object",
-        "role": "tab",
-        "states": { "selected": true },
+        "role": "slider",
+        "states": { "disabled": false },
         "actions": { "activate": { "event": "click" } },
         "relations": {},
     })));
     assert_eq!(projection, None);
-    assert_eq!(issues, [A11yIssue::Role("tab".into())]);
+    assert_eq!(issues, [A11yIssue::Role("slider".into())]);
+}
+
+#[test]
+fn a_tab_is_reported_selected_and_named_by_its_content() {
+    // What Base Tabs' trigger says about itself.
+    let (projection, issues) = project(&snapshot(json!({
+        "semanticObjectId": "trigger",
+        "id": "pui-tabs-1-trigger-overview",
+        "role": "tab",
+        "name": { "kind": "content" },
+        "states": { "selected": true, "disabled": false },
+        "actions": { "activate": { "event": "click" } },
+        "relations": { "controls": "pui-tabs-1-content-overview" },
+    })));
+    let projection = projection.expect("a tab is reported");
+    assert_eq!(projection.role, Role::Tab);
+    assert_eq!(projection.selected, Some(true));
+    assert!(projection.name_from_content);
+    assert!(projection.activatable);
+    // GPUI sets no AccessKit relation at the pin, so `controls` is not carried.
+    assert_eq!(issues, [A11yIssue::Relation("controls".into())]);
+}
+
+#[test]
+fn a_tab_list_says_which_way_it_runs() {
+    let list = |orientation: &str| {
+        snapshot(json!({
+            "semanticObjectId": "list",
+            "role": "tablist",
+            "name": { "kind": "text", "value": "Sections" },
+            "states": { "orientation": orientation },
+            "actions": {},
+            "relations": {},
+        }))
+    };
+    for (value, orientation) in [
+        ("horizontal", Orientation::Horizontal),
+        ("vertical", Orientation::Vertical),
+    ] {
+        let (projection, issues) = project(&list(value));
+        let projection = projection.expect("a tab list is reported");
+        assert_eq!(projection.role, Role::TabList);
+        assert_eq!(projection.orientation, Some(orientation));
+        assert!(issues.is_empty(), "{issues:?}");
+    }
+    let (projection, issues) = project(&list("diagonal"));
+    assert_eq!(projection.expect("still a tab list").orientation, None);
+    assert_eq!(
+        issues,
+        [A11yIssue::State {
+            name: "orientation".into(),
+            value: json!("diagonal"),
+        }]
+    );
+}
+
+#[test]
+fn a_tab_panel_is_labelled_by_its_tab_and_not_reported_while_hidden() {
+    // What Base Tabs' content says about itself.
+    let panel = |hidden: bool| {
+        snapshot(json!({
+            "semanticObjectId": "panel",
+            "id": "pui-tabs-1-content-overview",
+            "role": "tabpanel",
+            "states": { "hidden": hidden },
+            "actions": {},
+            "relations": { "labelledBy": "pui-tabs-1-trigger-overview" },
+        }))
+    };
+    let (projection, issues) = project(&panel(false));
+    let projection = projection.expect("a shown panel is reported");
+    assert_eq!(projection.role, Role::TabPanel);
+    assert_eq!(
+        projection.labelled_by,
+        Some(A11yReference::Id("pui-tabs-1-trigger-overview".into()))
+    );
+    assert!(issues.is_empty(), "{issues:?}");
+
+    assert_eq!(project(&panel(true)), (None, Vec::new()));
 }
 
 #[test]

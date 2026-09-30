@@ -718,6 +718,12 @@ fn render_surface(surface: &SurfaceNode, bridge: &Rc<RefCell<InputBridge>>) -> A
         if let Some(toggled) = a11y.toggled {
             element = element.aria_toggled(toggled);
         }
+        if let Some(selected) = a11y.selected {
+            element = element.aria_selected(selected);
+        }
+        if let Some(orientation) = a11y.orientation {
+            element = element.aria_orientation(orientation);
+        }
         if a11y.activatable {
             let bridge = bridge.clone();
             let id = surface.id.clone();

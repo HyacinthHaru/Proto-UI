@@ -66,6 +66,11 @@ export type A11yNameWire =
 
 export type A11ySnapshotWire = {
   readonly semanticObjectId: SemanticObjectId;
+  /**
+   * The id the Prototype gives the object, which another object's relation
+   * can name as its target. Absent when the Prototype gives none.
+   */
+  readonly id?: string;
   readonly role?: string;
   readonly name?: A11yNameWire;
   readonly states: { readonly [key: string]: WireValue };
