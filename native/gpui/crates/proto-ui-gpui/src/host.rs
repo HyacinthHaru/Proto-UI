@@ -172,6 +172,13 @@ pub struct InputBridge {
     trigger_anchor: HashMap<SessionId, SessionId>,
 }
 
+/// Which way Tab moves focus.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TabDirection {
+    Forward,
+    Backward,
+}
+
 impl InputBridge {
     pub fn new() -> Self {
         Self::default()
@@ -420,13 +427,34 @@ impl InputBridge {
         });
     }
 
-    fn key_down(&mut self, event: &KeyDownEvent, window: &Window) {
+    /// Routes a key press, and says whether the host's own default action for
+    /// it is sequential focus navigation.
+    ///
+    /// The host runs that default action at once. Over T0 the peer hears the
+    /// key only after it ran, so a Prototype cannot prevent it in time: the
+    /// action is emulated, and a prevention that arrives for it afterwards
+    /// is recorded as late rather than honoured.
+    fn key_down(&mut self, event: &KeyDownEvent, window: &Window) -> Option<TabDirection> {
         let Some(fields) = from_key_down(event) else {
             self.unmapped_keys.push(event.keystroke.key.clone());
-            return;
+            return None;
         };
+        let modifiers = fields.modifiers;
+        let tab = fields.key == "Tab" && !(modifiers.ctrl || modifiers.meta || modifiers.alt);
         let target = self.focused_target(window);
+        let routed_from = self.output.len();
         self.route(HostInput::KeyDown { target, fields });
+        if !tab {
+            return None;
+        }
+        for routed in &mut self.output[routed_from..] {
+            routed.default_ran = true;
+        }
+        Some(if modifiers.shift {
+            TabDirection::Backward
+        } else {
+            TabDirection::Forward
+        })
     }
 
     fn key_up(&mut self, event: &KeyUpEvent, window: &Window) {
@@ -553,6 +581,11 @@ impl ProtoHostView {
             handle
         };
         match action {
+            // A target the focus plan does not let the host focus stays
+            // unfocused, as `focus()` leaves a non-focusable element alone.
+            FocusAction::Focus if !self.focus_programmatic(session_id) => {
+                FocusResultStatus::Rejected
+            }
             FocusAction::Focus => {
                 window.focus(&handle, cx);
                 if handle.is_focused(window) {
@@ -599,7 +632,18 @@ impl Render for ProtoHostView {
             .relative()
             .size_full()
             // Capture phase: the host sees a key before any surface handles it.
-            .capture_key_down(move |event, window, _| down.borrow_mut().key_down(event, window))
+            .capture_key_down(move |event, window, cx| {
+                // Tab's default action is sequential focus navigation, over
+                // the instances whose focus plan makes them a tab stop. The
+                // bridge is released first: moving focus reports the change
+                // back through it.
+                let tab = down.borrow_mut().key_down(event, window);
+                match tab {
+                    Some(TabDirection::Forward) => window.focus_next(cx),
+                    Some(TabDirection::Backward) => window.focus_prev(cx),
+                    None => {}
+                }
+            })
             .capture_key_up(move |event, window, _| up.borrow_mut().key_up(event, window))
             // Painted before every surface, so its listeners are registered
             // first: first in the capture phase, last in the bubble phase.

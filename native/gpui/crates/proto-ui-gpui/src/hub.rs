@@ -20,18 +20,18 @@ use proto_ui_host_protocol::messages::{
     ProjectionAckMessage, PropsSet, SessionDispose, SessionOpen, WireRecord,
 };
 use proto_ui_host_protocol::model::{
-    ActivationStatus, DeliveryResult, HostSessionModel, InstallOptions,
+    ActivationStatus, DefaultActionStatus, DeliveryResult, HostSessionModel, InstallOptions,
 };
 use proto_ui_host_protocol::wire::{
     A11ySnapshotWire, HostDiagnostic, InputSample, InstanceId, ProjectionAck, ProjectionAckStatus,
-    ProjectionTransaction, SessionId,
+    ProjectionTransaction, SampleId, SessionId,
 };
 use proto_ui_style::length::LengthContext;
 use proto_ui_style::Theme;
 use serde_json::{json, Value};
 
 use crate::a11y::{project, A11yIssue, A11yProjection};
-use crate::host::{ProtoHostView, SurfaceChild, SurfaceNode};
+use crate::host::{ProtoHostView, SurfaceChild, SurfaceNode, FOCUS_ROOT_REF};
 use crate::input::{SessionRoute, SurfaceId};
 use crate::style::{style_for_tokens, StyleIssue};
 use crate::template::{build, parse, BuildContext, BuildIssue};
@@ -68,8 +68,14 @@ struct HubSession {
     projection: Option<A11yProjection>,
     /// The root's feedback style, as the Prototype last set it.
     feedback: StyleRefinement,
+    /// Whether the focus plan lets the host focus the root on request.
+    focus_programmatic: bool,
     /// The Expose states as the peer last reported them.
     states: WireRecord,
+    /// Delivered samples whose host default action already ran, until a
+    /// prevention decides them. A prevention for one of them is late
+    /// whenever it arrives.
+    default_ran: HashSet<SampleId>,
 }
 
 /// A signal an instance emitted outward, for the host application.
@@ -120,6 +126,12 @@ pub enum HubNote {
         session_id: SessionId,
         view_epoch: u64,
         installed: Option<u64>,
+    },
+    /// A default-action prevention that arrived after the host had already
+    /// run the default action, as a Tab over T0 does.
+    LatePrevention {
+        session_id: SessionId,
+        sample_id: String,
     },
     /// A feedback style for a view other than the installed one.
     StyleRefused {
@@ -302,7 +314,9 @@ impl ProtoHostView {
                 a11y: None,
                 projection: None,
                 feedback: StyleRefinement::default(),
+                focus_programmatic: false,
                 states: WireRecord::new(),
+                default_ran: HashSet::new(),
             },
         ));
     }
@@ -391,12 +405,18 @@ impl ProtoHostView {
                     self.note_unknown(&session_id, "default-action.prevent");
                     return;
                 };
-                // This host runs no default action for any input yet, so a
-                // prevention can never arrive too late to be honoured. The
-                // default-action slice makes this depend on the input.
-                session
+                // The only default action this host runs is Tab's, and it
+                // runs at once; a prevention for any other input is in time.
+                let in_time = !session.default_ran.remove(&prevent.request.sample_id);
+                let status = session
                     .model
-                    .request_default_action_prevention(&prevent.request, true);
+                    .request_default_action_prevention(&prevent.request, in_time);
+                if status == DefaultActionStatus::LatePrevention {
+                    self.hub.notes.push(HubNote::LatePrevention {
+                        session_id,
+                        sample_id: prevent.request.sample_id,
+                    });
+                }
             }
             PeerToHostMessage::FocusRequest(request) => {
                 if self.hub.session(&request.session_id).is_none() {
@@ -558,6 +578,9 @@ impl ProtoHostView {
             };
             match session.model.deliver(&routed.sample) {
                 DeliveryResult::Delivered { lease_ids } => {
+                    if routed.default_ran {
+                        session.default_ran.insert(routed.sample.sample_id.clone());
+                    }
                     self.hub
                         .outbox
                         .push(HostToPeerMessage::InputSample(InputSampleMessage {
@@ -594,6 +617,15 @@ impl ProtoHostView {
     /// The accessibility snapshot the peer last sent for a session.
     pub fn a11y_snapshot(&self, session_id: &str) -> Option<&A11ySnapshotWire> {
         self.hub.session(session_id)?.a11y.as_ref()
+    }
+
+    /// Whether the focus plan lets the host focus a session's root on request.
+    /// Surfaces the application renders without a session have no plan, and
+    /// nothing withholds their focus.
+    pub(crate) fn focus_programmatic(&self, session_id: &str) -> bool {
+        self.hub
+            .session(session_id)
+            .is_none_or(|session| session.focus_programmatic)
     }
 
     /// What a session's root reports to accessibility.
@@ -709,6 +741,18 @@ impl ProtoHostView {
         if ack.status != ProjectionAckStatus::Applied {
             return ack;
         }
+        // The focus plan decides whether the root is a tab stop, and whether
+        // the host may focus it on request.
+        let root_target = transaction
+            .focus
+            .targets
+            .iter()
+            .find(|target| target.r#ref == FOCUS_ROOT_REF);
+        let sequential = root_target.is_some_and(|target| target.sequential);
+        session.focus_programmatic = root_target.is_some_and(|target| target.programmatic);
+        session.focus = session.focus.clone().tab_stop(sequential);
+        let mut root = root;
+        root.focus = root.focus.map(|focus| focus.tab_stop(sequential));
         session.surface = Some(root);
         session.feedback = feedback.refinement;
         // The installed view's own snapshot, which may be `null`: a new view
