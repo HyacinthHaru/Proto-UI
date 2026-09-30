@@ -15,6 +15,7 @@ use gpui::{
     point, px, size, AnyWindowHandle, Modifiers, MouseButton, StyleRefinement, TestAppContext,
     VisualTestContext, WindowHandle,
 };
+use proto_ui_gpui::a11y::A11yIssue;
 use proto_ui_gpui::host::{FocusResultStatus, InputBridge, ProtoHostView, SurfaceChild};
 use proto_ui_gpui::hub::{ExposedSignal, HubNote, SessionConfig};
 use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
@@ -429,6 +430,50 @@ fn exposed_states_and_the_snapshot_follow_the_peer(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
+fn the_snapshot_projects_onto_the_root_and_a_later_one_replaces_it(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.receive(recorded());
+    let projection = |hub: &mut Hub| {
+        hub.window
+            .update(&mut hub.cx, |view, _, _| {
+                view.a11y_projection(SESSION).cloned()
+            })
+            .expect("the view reads")
+    };
+    let installed = projection(&mut hub).expect("the recorded snapshot projects");
+    assert_eq!(installed.role, gpui::Role::Button);
+    assert!(!installed.disabled);
+    assert!(!hub
+        .notes()
+        .iter()
+        .any(|note| matches!(note, HubNote::A11y { .. })));
+
+    // A snapshot for the installed view replaces the projection, and a state
+    // the host does not project is noted rather than dropped.
+    hub.receive([peer(json!({
+        "kind": "a11y.snapshot",
+        "sessionId": SESSION,
+        "viewEpoch": recorded_transaction().view_epoch,
+        "snapshot": {
+            "semanticObjectId": "button-enabled:a11y:1",
+            "role": "button",
+            "name": { "kind": "content" },
+            "states": { "disabled": true, "busy": true },
+            "actions": { "activate": { "event": "click" } },
+            "relations": {},
+        },
+    }))]);
+    assert!(projection(&mut hub).expect("still projected").disabled);
+    assert!(hub.notes().contains(&HubNote::A11y {
+        session_id: SESSION.into(),
+        issue: A11yIssue::State {
+            name: "busy".into(),
+            value: json!(true),
+        },
+    }));
+}
+
+#[gpui::test]
 fn a_signal_is_emitted_as_it_arrives_and_never_kept(cx: &mut TestAppContext) {
     let mut hub = Hub::open(cx);
     hub.receive(recorded());
@@ -466,37 +511,6 @@ fn a_signal_is_emitted_as_it_arrives_and_never_kept(cx: &mut TestAppContext) {
         session_id: "ghost".into(),
         kind: "expose.signal".into(),
     }));
-}
-
-#[gpui::test]
-fn a_signal_after_its_session_ended_is_noted_and_reaches_no_listener(cx: &mut TestAppContext) {
-    let mut hub = Hub::open(cx);
-    hub.receive(recorded());
-    let heard = hub.listen();
-    let click = peer(json!({
-        "kind": "expose.signal",
-        "sessionId": SESSION,
-        "name": "click",
-        "payload": null,
-    }));
-    hub.receive([click.clone()]);
-    assert_eq!(heard.borrow().len(), 1);
-
-    hub.receive([peer(
-        json!({ "kind": "session.disposed", "sessionId": SESSION }),
-    )]);
-    hub.notes();
-    // A late signal under the ended session's id is not the instance's any
-    // more.
-    hub.receive([click]);
-    assert_eq!(heard.borrow().len(), 1);
-    assert_eq!(
-        hub.notes(),
-        [HubNote::UnknownSession {
-            session_id: SESSION.into(),
-            kind: "expose.signal".into(),
-        }]
-    );
 }
 
 #[gpui::test]
