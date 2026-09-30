@@ -202,6 +202,7 @@ fn opening_an_open_session_again_is_refused_and_leaves_nothing_behind(cx: &mut T
                     slots: HashMap::new(),
                     root_style: StyleRefinement::default(),
                     theme: None,
+                    parent: None,
                 },
                 cx,
             )
