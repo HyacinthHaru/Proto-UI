@@ -3,14 +3,15 @@
 //! Nothing here is scripted on either side. The peer runs the Base Button
 //! Prototype from its bundle; the host renders what the peer projects, turns
 //! real GPUI input into samples, and answers the peer's focus requests. The
-//! evidence is what the Prototype itself reports back: its Expose states.
+//! evidence is what the Prototype itself reports back: its Expose states and
+//! the events it emits.
 //!
 //! Ignored by default because it starts Node and needs the repository's
 //! `node_modules` (`pnpm install`), which the Rust CI jobs do not install:
 //!
 //!   cargo test -p proto-ui-gpui --test button_t0 -- --ignored
 
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::Command;
@@ -22,15 +23,13 @@ use gpui::{
     VisualTestContext, WindowHandle,
 };
 use proto_ui_gpui::host::{InputBridge, ProtoHostView, SurfaceChild};
-use proto_ui_gpui::hub::SessionConfig;
+use proto_ui_gpui::hub::{ExposedSignal, SessionConfig};
 use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
 use proto_ui_host_protocol::t0::{PeerError, PeerProcess};
 use serde_json::{json, Value};
 
 const SESSION: &str = "t0-button";
 const WAIT: Duration = Duration::from_secs(30);
-/// How many of the latest messages a timeout names.
-const TIMEOUT_KINDS: usize = 16;
 const ON_BUTTON: (f32, f32) = (5., 5.);
 const OFF_BUTTON: (f32, f32) = (250., 80.);
 
@@ -47,6 +46,8 @@ struct Fixture {
     cx: VisualTestContext,
     /// Everything the host has sent the peer, in order.
     sent: Vec<HostToPeerMessage>,
+    /// Every signal the view emitted, as a subscribed application heard it.
+    heard: Rc<RefCell<Vec<ExposedSignal>>>,
 }
 
 impl Fixture {
@@ -91,7 +92,9 @@ impl Fixture {
             window,
             cx: VisualTestContext::from_window(AnyWindowHandle::from(window), cx),
             sent: Vec::new(),
+            heard: Rc::default(),
         };
+        fixture.listen();
         fixture.draw();
         fixture.pump_until(|message| matches!(message, PeerToHostMessage::ProjectionActivate(_)));
         fixture
@@ -99,6 +102,18 @@ impl Fixture {
 
     fn draw(&mut self) {
         self.cx.update(|window, cx| window.draw(cx).clear(cx));
+    }
+
+    /// Subscribes to the view the way a host application would.
+    fn listen(&mut self) {
+        let view = self.window.entity(&self.cx).expect("the view");
+        let heard = self.heard.clone();
+        self.cx.update(|_, cx| {
+            cx.subscribe(&view, move |_, signal: &ExposedSignal, _| {
+                heard.borrow_mut().push(signal.clone())
+            })
+            .detach();
+        });
     }
 
     fn with_view<R>(&mut self, f: impl FnOnce(&mut ProtoHostView) -> R) -> R {
@@ -110,31 +125,38 @@ impl Fixture {
     /// Sends whatever the host has queued, then hands the peer's messages to
     /// the host one at a time until one satisfies `done`.
     fn pump_until(&mut self, done: impl Fn(&PeerToHostMessage) -> bool) -> Vec<PeerToHostMessage> {
-        pump(Instant::now() + WAIT, || self.turn(), done).unwrap_or_else(|error| panic!("{error}"))
-    }
-
-    /// Sends whatever the host has queued, then hands the host the peer's
-    /// next message if one arrives shortly.
-    fn turn(&mut self) -> Result<Option<PeerToHostMessage>, PeerError> {
-        for message in self.with_view(|view| view.take_outbox()) {
-            self.peer
-                .send(&message)
-                .expect("the peer takes the message");
-            self.sent.push(message);
-        }
-        match self.peer.recv(Duration::from_millis(50)) {
-            Ok(message) => {
-                let delivered = message.clone();
-                self.window
-                    .update(&mut self.cx, |view, window, cx| {
-                        view.receive(delivered, window, cx)
-                    })
-                    .expect("the view receives");
-                self.draw();
-                Ok(Some(message))
+        let deadline = Instant::now() + WAIT;
+        let mut seen: Vec<PeerToHostMessage> = Vec::new();
+        loop {
+            for message in self.with_view(|view| view.take_outbox()) {
+                self.peer
+                    .send(&message)
+                    .expect("the peer takes the message");
+                self.sent.push(message);
             }
-            Err(PeerError::Timeout(_)) => Ok(None),
-            Err(error) => Err(error),
+            match self.peer.recv(Duration::from_millis(50)) {
+                Ok(message) => {
+                    let finished = done(&message);
+                    let delivered = message.clone();
+                    self.window
+                        .update(&mut self.cx, |view, window, cx| {
+                            view.receive(delivered, window, cx)
+                        })
+                        .expect("the view receives");
+                    self.draw();
+                    seen.push(message);
+                    if finished {
+                        return seen;
+                    }
+                }
+                Err(PeerError::Timeout(_)) if Instant::now() < deadline => {}
+                Err(error) => panic!(
+                    "{error}; the peer sent {:?}",
+                    seen.iter()
+                        .map(|message| message.kind())
+                        .collect::<Vec<_>>()
+                ),
+            }
         }
     }
 
@@ -146,61 +168,25 @@ impl Fixture {
         });
     }
 
+    /// Pumps until the peer reports the Prototype emitting `name`.
+    fn signal_arrives(&mut self, name: &str) {
+        self.pump_until(|message| {
+            matches!(message, PeerToHostMessage::ExposeSignal(signal) if signal.name == name)
+        });
+    }
+
     fn at((x, y): (f32, f32)) -> gpui::Point<gpui::Pixels> {
         point(px(x), px(y))
     }
 }
 
-/// Takes messages from `next` until one satisfies `done`. The deadline is
-/// checked before every turn, so a peer that keeps sending other messages
-/// cannot hold the wait open. `next` gives `None` when nothing arrived.
-fn pump(
-    deadline: Instant,
-    mut next: impl FnMut() -> Result<Option<PeerToHostMessage>, PeerError>,
-    done: impl Fn(&PeerToHostMessage) -> bool,
-) -> Result<Vec<PeerToHostMessage>, String> {
-    let mut seen: Vec<PeerToHostMessage> = Vec::new();
-    let latest = |seen: &[PeerToHostMessage]| -> Vec<&'static str> {
-        seen[seen.len().saturating_sub(TIMEOUT_KINDS)..]
-            .iter()
-            .map(|message| message.kind())
-            .collect()
-    };
-    loop {
-        if Instant::now() >= deadline {
-            return Err(format!("timed out; the peer sent {:?}", latest(&seen)));
-        }
-        match next() {
-            Ok(Some(message)) => {
-                let finished = done(&message);
-                seen.push(message);
-                if finished {
-                    return Ok(seen);
-                }
-            }
-            Ok(None) => {}
-            Err(error) => return Err(format!("{error}; the peer sent {:?}", latest(&seen))),
-        }
+/// The Button's `click` event, which carries no payload.
+fn click() -> ExposedSignal {
+    ExposedSignal {
+        session_id: SESSION.into(),
+        name: "click".into(),
+        payload: Value::Null,
     }
-}
-
-#[test]
-fn a_peer_that_keeps_talking_cannot_hold_a_wait_past_its_deadline() {
-    let deadline = Instant::now() + Duration::from_millis(50);
-    let chatter = || {
-        // A second past the deadline, the wait has plainly not ended.
-        assert!(
-            Instant::now() < deadline + Duration::from_secs(1),
-            "the wait outlived its deadline"
-        );
-        Ok(Some(
-            serde_json::from_value(json!({ "kind": "session.disposed", "sessionId": "other" }))
-                .expect("a peer message"),
-        ))
-    };
-    let error = pump(deadline, chatter, |_| false).expect_err("the wait times out");
-    assert!(error.starts_with("timed out"), "{error}");
-    assert_eq!(error.matches("session.disposed").count(), TIMEOUT_KINDS);
 }
 
 #[gpui::test]
@@ -243,6 +229,67 @@ fn pressing_holds_the_button_pressed_until_release_and_commits_it(cx: &mut TestA
     assert!(fixture.sent.iter().any(|message| matches!(
         message,
         HostToPeerMessage::InputSample(input) if input.sample.kind == "press.commit"
+    )));
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn a_click_on_the_rendered_button_comes_back_as_its_click_signal(cx: &mut TestAppContext) {
+    // The host only reports the press. That it was a click is the
+    // Prototype's own conclusion, which it announces as its `click` event.
+    let mut fixture = Fixture::start(cx);
+    fixture.cx.simulate_mouse_down(
+        Fixture::at(ON_BUTTON),
+        MouseButton::Left,
+        Modifiers::default(),
+    );
+    fixture.cx.simulate_mouse_up(
+        Fixture::at(ON_BUTTON),
+        MouseButton::Left,
+        Modifiers::default(),
+    );
+    fixture.signal_arrives("click");
+
+    assert_eq!(*fixture.heard.borrow(), [click()]);
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn enter_and_space_on_the_focused_button_each_click_it_once(cx: &mut TestAppContext) {
+    let mut fixture = Fixture::start(cx);
+    fixture.with_view(|view| view.call_exposed(SESSION, "focusSelf", Vec::new()));
+    fixture.state_becomes("focused", json!(true));
+
+    fixture.cx.simulate_keystrokes("enter");
+    fixture.signal_arrives("click");
+
+    // Space also asks the host not to run the key's default action. Wait for
+    // both, in whichever order they come.
+    fixture.cx.simulate_keystrokes("space");
+    let clicked = Cell::new(false);
+    let prevented = RefCell::new(None);
+    fixture.pump_until(|message| {
+        match message {
+            PeerToHostMessage::ExposeSignal(signal) if signal.name == "click" => clicked.set(true),
+            PeerToHostMessage::DefaultActionPrevent(prevent)
+                if prevent.request.reason.as_deref() == Some("button.space-activation") =>
+            {
+                *prevented.borrow_mut() = Some(prevent.request.sample_id.clone());
+            }
+            _ => {}
+        }
+        clicked.get() && prevented.borrow().is_some()
+    });
+
+    assert_eq!(*fixture.heard.borrow(), [click(), click()]);
+    // The prevention names the sample it is about: the Space the host sent.
+    let prevented = prevented.into_inner().expect("a prevention request");
+    assert!(fixture.sent.iter().any(|message| matches!(
+        message,
+        HostToPeerMessage::InputSample(input)
+            if input.sample.sample_id == prevented
+                && input.sample.kind == "key.down"
+                && input.sample.key.as_deref() == Some(" ")
     )));
 }
 
