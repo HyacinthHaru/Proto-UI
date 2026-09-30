@@ -3,7 +3,8 @@
 //!
 //! GPUI's test platform never starts AccessKit, so the headless suites cannot
 //! see what the host reports. This opens a real window with `gpui_platform`,
-//! replays Base Button and Base Toggle sessions the real peer recorded, and
+//! replays Base Button, Base Toggle and Base Switch sessions the real peer
+//! recorded, and
 //! asks macOS what is there, with the `NSAccessibility` calls a screen reader
 //! makes. It then presses them the way a screen reader does and checks what
 //! the host sends the peer.
@@ -52,12 +53,16 @@ mod macos {
     use proto_ui_gpui::hub::SessionConfig;
     use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
     use raw_window_handle::{HasWindowHandle, RawWindowHandle};
-    use serde_json::Value;
+    use serde_json::{json, Value};
 
     const ENABLED: &str = "button-enabled";
     const DISABLED: &str = "button-disabled";
     const TOGGLE_OFF: &str = "toggle-inactive";
     const TOGGLE_ON: &str = "toggle-active";
+    const SWITCH_OFF: &str = "switch-root";
+    const SWITCH_OFF_THUMB: &str = "switch-thumb";
+    const SWITCH_ON: &str = "switch-checked";
+    const SWITCH_ON_THUMB: &str = "switch-checked-thumb";
     /// Long enough for AccessKit's action channel to reach the foreground.
     const SETTLE: Duration = Duration::from_millis(200);
 
@@ -98,19 +103,91 @@ mod macos {
         (messages, commit_leases)
     }
 
+    /// A recorded session replayed as the session `to`, the name its
+    /// snapshots give it replaced by `name` when there is one.
+    fn replayed(
+        fixture: &str,
+        session: &str,
+        from: &str,
+        to: &str,
+        name: Option<&str>,
+    ) -> Vec<PeerToHostMessage> {
+        let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../fixtures")
+            .join(fixture);
+        let fixture: Value =
+            serde_json::from_str(&fs::read_to_string(path).expect("the fixture reads"))
+                .expect("the fixture parses");
+        let recorded = serde_json::to_string(&fixture["sessions"][session])
+            .expect("the recording writes")
+            .replace(&format!("\"{from}"), &format!("\"{to}"));
+        let mut messages: Vec<Value> =
+            serde_json::from_str(&recorded).expect("the recording reads");
+        if let Some(name) = name {
+            for message in &mut messages {
+                for pointer in ["/transaction/a11y", "/snapshot"] {
+                    if let Some(snapshot) = message
+                        .pointer_mut(pointer)
+                        .filter(|snapshot| snapshot.is_object())
+                    {
+                        snapshot["name"] = json!({ "kind": "text", "value": name });
+                    }
+                }
+            }
+        }
+        messages
+            .into_iter()
+            .map(|message| serde_json::from_value(message).expect("a peer message"))
+            .collect()
+    }
+
     fn config(session: &str, prototype_key: &str, label: &str) -> SessionConfig {
+        composed(
+            session,
+            prototype_key,
+            vec![SurfaceChild::Text(label.to_string().into())],
+            None,
+        )
+    }
+
+    /// An instance whose default slot holds `content`, opened inside `parent`.
+    fn composed(
+        session: &str,
+        prototype_key: &str,
+        content: Vec<SurfaceChild>,
+        parent: Option<&str>,
+    ) -> SessionConfig {
         SessionConfig {
             instance_id: format!("{session}:instance"),
             prototype_key: prototype_key.into(),
             props: WireRecord::new(),
-            slots: HashMap::from([(
-                "slot-default".to_string(),
-                vec![SurfaceChild::Text(label.to_string().into())],
-            )]),
+            slots: HashMap::from([("slot-default".to_string(), content)]),
             root_style: StyleRefinement::default(),
             theme: None,
-            parent: None,
+            parent: parent.map(Into::into),
         }
+    }
+
+    /// A Switch labelled `label`, with its thumb in the default slot.
+    fn switch(session: &str, thumb: &str, label: &str) -> [(String, SessionConfig); 2] {
+        [
+            (
+                session.to_string(),
+                composed(
+                    session,
+                    "base-switch-root",
+                    vec![
+                        SurfaceChild::Session(thumb.into()),
+                        SurfaceChild::Text(label.to_string().into()),
+                    ],
+                    None,
+                ),
+            ),
+            (
+                thumb.to_string(),
+                composed(thumb, "base-switch-thumb", Vec::new(), Some(session)),
+            ),
+        ]
     }
 
     // --- NSAccessibility, as a screen reader asks it ------------------------
@@ -298,7 +375,13 @@ mod macos {
             let (toggle_off_messages, toggle_off_commit) =
                 recorded("base-toggle-session.json", "inactive");
             let (toggle_on_messages, _) = recorded("base-toggle-session.json", "active");
-            let bounds = Bounds::centered(None, size(px(300.), px(120.)), cx);
+            let (switch_off_messages, switch_off_commit) =
+                recorded("base-switch-session.json", "root");
+            let (switch_off_thumb_messages, _) = recorded("base-switch-session.json", "thumb");
+            let (switch_on_messages, _) = recorded("base-switch-session.json", "checked");
+            let (switch_on_thumb_messages, _) =
+                recorded("base-switch-session.json", "checkedThumb");
+            let bounds = Bounds::centered(None, size(px(300.), px(300.)), cx);
             let window = cx
                 .open_window(
                     WindowOptions {
@@ -325,6 +408,12 @@ mod macos {
                                 config(TOGGLE_ON, "base-toggle", "Italic"),
                                 cx,
                             );
+                            for (session, config) in switch(SWITCH_OFF, SWITCH_OFF_THUMB, "Wi-Fi")
+                                .into_iter()
+                                .chain(switch(SWITCH_ON, SWITCH_ON_THUMB, "Bluetooth"))
+                            {
+                                view.open_session(session, config, cx);
+                            }
                             view
                         })
                     },
@@ -338,6 +427,10 @@ mod macos {
                         .chain(disabled_messages)
                         .chain(toggle_off_messages)
                         .chain(toggle_on_messages)
+                        .chain(switch_off_messages)
+                        .chain(switch_off_thumb_messages)
+                        .chain(switch_on_messages)
+                        .chain(switch_on_thumb_messages)
                     {
                         view.receive(message, window, cx);
                     }
@@ -395,7 +488,11 @@ mod macos {
 
                 // A Toggle is a toggle button: macOS reports a checkbox with the
                 // toggle subrole, and its value says whether it is on.
-                let toggles = run.with_role("AXCheckBox", cx);
+                let toggles: Vec<Seen> = run
+                    .with_role("AXCheckBox", cx)
+                    .into_iter()
+                    .filter(|seen| seen.subrole.as_deref() == Some("AXToggle"))
+                    .collect();
                 let reported: Vec<(Option<String>, Option<String>, Option<i64>)> = toggles
                     .iter()
                     .map(|seen| (seen.title.clone(), seen.subrole.clone(), seen.number))
@@ -415,6 +512,35 @@ mod macos {
                     "a screen reader's press commits the Toggle on its own lease",
                     accepted
                         && commits == vec![(TOGGLE_OFF.to_string(), toggle_off_commit.clone())],
+                    (accepted, &commits),
+                );
+
+                // A Switch is a checkbox with the switch subrole. AccessKit does
+                // not name a switch from its content, so the host names it.
+                let switches: Vec<Seen> = run
+                    .with_role("AXCheckBox", cx)
+                    .into_iter()
+                    .filter(|seen| seen.subrole.as_deref() == Some("AXSwitch"))
+                    .collect();
+                let reported: Vec<(Option<String>, Option<i64>)> = switches
+                    .iter()
+                    .map(|seen| (seen.title.clone(), seen.number))
+                    .collect();
+                run.check(
+                    "both Switches are reported as switches named by their content, off and on",
+                    reported
+                        == vec![
+                            (Some("Wi-Fi".into()), Some(0)),
+                            (Some("Bluetooth".into()), Some(1)),
+                        ],
+                    &reported,
+                );
+                let accepted = run.press(&switches[0], cx).await;
+                let commits = run.commits(cx);
+                run.check(
+                    "a screen reader's press commits the Switch on its own lease",
+                    accepted
+                        && commits == vec![(SWITCH_OFF.to_string(), switch_off_commit.clone())],
                     (accepted, &commits),
                 );
 
@@ -464,6 +590,66 @@ mod macos {
                     "a screen reader's press after Enter still commits",
                     accepted && after_key == vec![(ENABLED.to_string(), enabled_commit.clone())],
                     (accepted, &after_key),
+                );
+
+                // Pinned for upgrades of GPUI and AccessKit: the same slot text
+                // names a Button through AccessKit and a Switch through the
+                // host, once each, and a text name the Prototype gives wins
+                // over the content for both.
+                run.window
+                    .update(cx, |view, window, cx| {
+                        for (button, root, thumb, name) in [
+                            ("same-button", "same-switch", "same-switch-thumb", None),
+                            ("named-button", "named-switch", "named-switch-thumb", Some("Named")),
+                        ] {
+                            view.open_session(button, config(button, "base-button", "Same"), cx);
+                            for (session, config) in switch(root, thumb, "Same") {
+                                view.open_session(session, config, cx);
+                            }
+                            let button_messages =
+                                replayed("base-button-session.json", "enabled", ENABLED, button, name);
+                            let root_messages =
+                                replayed("base-switch-session.json", "root", SWITCH_OFF, root, name);
+                            let thumb_messages = replayed(
+                                "base-switch-session.json",
+                                "thumb",
+                                SWITCH_OFF_THUMB,
+                                thumb,
+                                None,
+                            );
+                            for message in button_messages
+                                .into_iter()
+                                .chain(root_messages)
+                                .chain(thumb_messages)
+                            {
+                                view.receive(message, window, cx);
+                            }
+                        }
+                        view.take_outbox();
+                    })
+                    .expect("the view opens more sessions");
+                run.draw(cx);
+                run.draw(cx);
+                let named: Vec<(Option<String>, Option<String>)> = run
+                    .tree(cx)
+                    .into_iter()
+                    .map(|(_, seen)| seen)
+                    .filter(|seen| matches!(seen.title.as_deref(), Some("Same" | "Named")))
+                    .map(|seen| (seen.role, seen.title))
+                    .collect();
+                let expected: Vec<(Option<String>, Option<String>)> = [
+                    ("AXButton", "Same"),
+                    ("AXCheckBox", "Same"),
+                    ("AXButton", "Named"),
+                    ("AXCheckBox", "Named"),
+                ]
+                .into_iter()
+                .map(|(role, title)| (Some(role.to_string()), Some(title.to_string())))
+                .collect();
+                run.check(
+                    "the same slot text names a Button and a Switch once each, and a text name wins",
+                    named == expected,
+                    &named,
                 );
 
                 println!("test result: ok. {} passed; 0 failed", run.passed);

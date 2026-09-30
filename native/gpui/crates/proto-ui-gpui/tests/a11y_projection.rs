@@ -8,7 +8,7 @@ use std::fs;
 use std::path::Path;
 
 use gpui::{Role, Toggled};
-use proto_ui_gpui::a11y::{project, A11yIssue, A11yProjection};
+use proto_ui_gpui::a11y::{names_from_descendants, project, A11yIssue, A11yProjection};
 use proto_ui_host_protocol::messages::PeerToHostMessage;
 use proto_ui_host_protocol::wire::A11ySnapshotWire;
 use serde_json::{json, Value};
@@ -47,6 +47,7 @@ fn the_recorded_button_is_a_button_named_by_its_content() {
             // `name: { kind: "content" }`: no label, so AccessKit names the
             // button from the text beneath it.
             label: None,
+            name_from_content: true,
             disabled: false,
             toggled: None,
             activatable: true,
@@ -81,6 +82,22 @@ fn the_recorded_toggle_is_a_toggle_button_on_or_off() {
 }
 
 #[test]
+fn the_recorded_switch_is_a_switch_on_or_off_named_by_its_content() {
+    let switch = |session: &str| {
+        let (projection, issues) = project(&recorded("base-switch-session.json", session));
+        assert!(issues.is_empty(), "{session}: {issues:?}");
+        projection.expect("a projection")
+    };
+    let off = switch("root");
+    assert_eq!(off.role, Role::Switch);
+    assert_eq!(off.toggled, Some(Toggled::False));
+    // AccessKit does not name a switch from its content, so the host will.
+    assert!(off.name_from_content);
+    assert!(!names_from_descendants(Role::Switch));
+    assert_eq!(switch("checked").toggled, Some(Toggled::True));
+}
+
+#[test]
 fn a_pressed_state_that_is_not_a_boolean_is_reported_not_guessed() {
     let (projection, issues) = project(&snapshot(json!({
         "semanticObjectId": "object",
@@ -111,6 +128,7 @@ fn a_text_name_becomes_the_label() {
     })));
     let projection = projection.expect("a projection");
     assert_eq!(projection.label.as_deref(), Some("Close dialog"));
+    assert!(!projection.name_from_content);
     assert!(!projection.activatable);
 }
 

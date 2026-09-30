@@ -42,7 +42,7 @@ test('the committed recordings are current', () => {
   );
   assert.match(
     result.stdout,
-    /base-switch-session\.json is current \(root: \d+ messages, thumb: \d+ messages\)/
+    /base-switch-session\.json is current \(root: \d+ messages, thumb: \d+ messages, checked: \d+ messages, checkedThumb: \d+ messages\)/
   );
 });
 
