@@ -244,6 +244,9 @@ importers:
       '@proto.ui/module-focus':
         specifier: workspace:*
         version: link:../../modules/focus
+      '@proto.ui/module-rule-meta':
+        specifier: workspace:*
+        version: link:../../modules/rule-meta
       '@proto.ui/runtime':
         specifier: workspace:*
         version: link:../../runtime

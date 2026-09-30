@@ -621,7 +621,10 @@ impl ProtoHostView {
 }
 
 impl Render for ProtoHostView {
-    fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        // GPUI redraws every window when the application changes its reduce
+        // motion setting, which is when the peer hears of it.
+        self.send_meta(cx);
         self.bridge.borrow_mut().index(&self.surfaces);
         let (down, up) = (self.bridge.clone(), self.bridge.clone());
         let mouse = self.bridge.clone();

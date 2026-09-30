@@ -5,6 +5,8 @@
 //! until the phase has ended and only then lets it go; the instance outlives
 //! its view, so its controls bring one back in a new epoch
 //! (P-BASE-TRANSITION-ENTER-SEQUENCING, P-BASE-TRANSITION-LEAVE-SEQUENCING).
+//! Under GPUI's reduce motion setting each phase ends at once, in the same
+//! order (P-BASE-TRANSITION-REDUCED-MOTION).
 //!
 //! Ignored by default because it starts Node and needs the repository's
 //! `node_modules` (`pnpm install`). The `rust-interop` CI job installs both
@@ -179,4 +181,33 @@ fn its_controls_outlive_its_view_and_the_host_may_end_a_phase(cx: &mut TestAppCo
     );
     fixture.settle();
     assert_eq!(rendered(&mut fixture), [TRANSITION]);
+}
+
+#[gpui::test]
+#[ignore = "starts the Node peer; needs `pnpm install`, run with --ignored"]
+fn under_reduced_motion_each_phase_ends_at_once(cx: &mut TestAppContext) {
+    // Minute-long phases: the fixture would give up waiting before either
+    // ended by its fallback.
+    let open =
+        |open: bool| props(json!({ "open": open, "enterDuration": 60000, "leaveDuration": 60000 }));
+    let mut fixture = Fixture::start_viewed(cx, vec![transition(Value::Object(open(false)))], &[]);
+    fixture.settle();
+    // The application turns the setting on after the session opened.
+    fixture.cx.update(|_, cx| cx.set_reduce_motion(true));
+    fixture.draw();
+
+    fixture.with_view(|view| view.set_props(TRANSITION, open(true)));
+    let seen = fixture.pump_until(|message| signal(message, "afterEnter"));
+    assert_eq!(
+        phases(&seen),
+        ["view 1", "beforeEnter", "entering", "entered", "afterEnter"]
+    );
+
+    fixture.with_view(|view| view.set_props(TRANSITION, open(false)));
+    let seen =
+        fixture.pump_until(|message| matches!(message, PeerToHostMessage::ProjectionDetach(_)));
+    assert_eq!(
+        phases(&seen),
+        ["beforeLeave", "leaving", "closed", "afterLeave", "detach 1"]
+    );
 }

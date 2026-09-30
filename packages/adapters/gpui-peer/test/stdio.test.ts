@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { HostToPeerMessage, PeerToHostMessage } from '@proto.ui/host-protocol';
 
 import { createBaseBundle } from '../src/bundle';
@@ -208,5 +208,81 @@ describe('gpui peer: stdio process', () => {
       status: 'failed',
       diagnostics: [{ code: 'unknown-parent' }],
     });
+  });
+
+  it('lets every session read, as rule meta, the environment the host last set', async () => {
+    const { peer, send, received } = harness();
+    // Closed, with a minute-long enter that only reduced motion ends at once.
+    const props = (open: boolean) => ({ open, enterDuration: 60_000 });
+    send({ ...OPEN, prototypeKey: 'base-transition', props: props(false) } as HostToPeerMessage);
+    await peer.idle();
+    // Set after the session opened: the Prototype reads it when the phase starts.
+    send({ kind: 'meta.set', meta: { reducedMotion: 'reduce' } });
+    send({ kind: 'props.set', sessionId: 's-1', props: props(true) });
+    await peer.idle();
+    for (let turn = 0; turn < 20; turn++) await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(
+      received.flatMap((message) => (message.kind === 'expose.signal' ? [message.name] : []))
+    ).toEqual(['beforeEnter', 'afterEnter']);
+  });
+
+  it('reads each change of the environment in the phases that start after it, in every session', async () => {
+    vi.useFakeTimers();
+    try {
+      const { peer, send, received } = harness();
+      const phases = (sessionId: string) =>
+        received.flatMap((message) =>
+          message.kind === 'expose.signal' && message.sessionId === sessionId ? [message.name] : []
+        );
+      const props = (open: boolean) => ({ open, enterDuration: 60_000, leaveDuration: 60_000 });
+      const run = async (ms: number) => {
+        await peer.idle();
+        await vi.advanceTimersByTimeAsync(ms);
+        await peer.idle();
+      };
+
+      // Reduced: an enter ends at once.
+      send({ kind: 'meta.set', meta: { reducedMotion: 'reduce' } });
+      send({ ...OPEN, prototypeKey: 'base-transition', props: props(false) } as HostToPeerMessage);
+      send({ kind: 'props.set', sessionId: 's-1', props: props(true) });
+      await run(0);
+      expect(phases('s-1')).toEqual(['beforeEnter', 'afterEnter']);
+
+      // No preference: the next phase waits its configured time. Reduced
+      // motion set while it waits does not cut short the wait it began with.
+      send({ kind: 'meta.set', meta: { reducedMotion: 'no-preference' } });
+      send({ kind: 'props.set', sessionId: 's-1', props: props(false) });
+      await run(0);
+      send({ kind: 'meta.set', meta: { reducedMotion: 'reduce' } });
+      await run(59_000);
+      expect(phases('s-1').at(-1)).toBe('beforeLeave');
+      await run(1_000);
+      expect(phases('s-1').at(-1)).toBe('afterLeave');
+
+      // An empty environment replaces the last one whole: no reduce is left.
+      send({ kind: 'meta.set', meta: {} });
+      send({ kind: 'props.set', sessionId: 's-1', props: props(true) });
+      await run(0);
+      expect(phases('s-1').at(-1)).toBe('beforeEnter');
+      await run(60_000);
+      expect(phases('s-1').at(-1)).toBe('afterEnter');
+
+      // A session opened now reads the same, latest environment as the old one.
+      send({ kind: 'meta.set', meta: { reducedMotion: 'reduce' } });
+      send({
+        ...OPEN,
+        sessionId: 's-2',
+        instanceId: 'transition-2',
+        prototypeKey: 'base-transition',
+        props: props(false),
+      } as HostToPeerMessage);
+      send({ kind: 'props.set', sessionId: 's-2', props: props(true) });
+      send({ kind: 'props.set', sessionId: 's-1', props: props(false) });
+      await run(0);
+      expect(phases('s-2')).toEqual(['beforeEnter', 'afterEnter']);
+      expect(phases('s-1').slice(-2)).toEqual(['beforeLeave', 'afterLeave']);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

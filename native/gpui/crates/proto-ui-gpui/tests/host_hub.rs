@@ -183,8 +183,9 @@ fn samples(outbox: &[HostToPeerMessage]) -> Vec<(String, Vec<String>)> {
 fn opening_a_session_asks_the_peer_to_run_the_prototype(cx: &mut TestAppContext) {
     let mut hub = Hub::open(cx);
     let outbox = hub.outbox();
-    assert_eq!(outbox.len(), 1);
-    match &outbox[0] {
+    // After the environment, see below.
+    assert_eq!(outbox.len(), 2);
+    match &outbox[1] {
         HostToPeerMessage::SessionOpen(open) => {
             assert_eq!(open.session_id, SESSION);
             assert_eq!(open.instance_id, format!("{SESSION}:instance"));
@@ -192,6 +193,37 @@ fn opening_a_session_asks_the_peer_to_run_the_prototype(cx: &mut TestAppContext)
         }
         other => panic!("expected session.open, got {}", other.kind()),
     }
+}
+
+/// Every environment in an outbox the hub told the peer its rules read.
+fn meta(outbox: &[HostToPeerMessage]) -> Vec<Value> {
+    outbox
+        .iter()
+        .filter_map(|message| match message {
+            HostToPeerMessage::MetaSet(set) => Some(Value::Object(set.meta.clone())),
+            _ => None,
+        })
+        .collect()
+}
+
+#[gpui::test]
+fn the_peer_hears_reduce_motion_before_the_first_session_and_when_it_changes(
+    cx: &mut TestAppContext,
+) {
+    let mut hub = Hub::open(cx);
+    let outbox = hub.outbox();
+    assert_eq!(outbox[0].kind(), "meta.set");
+    assert_eq!(meta(&outbox), [json!({ "reducedMotion": "no-preference" })]);
+
+    // The application changes the setting, and GPUI redraws the window.
+    hub.cx.update(|_, cx| cx.set_reduce_motion(true));
+    hub.draw();
+    assert_eq!(meta(&hub.outbox()), [json!({ "reducedMotion": "reduce" })]);
+    hub.draw();
+    assert!(
+        meta(&hub.outbox()).is_empty(),
+        "unchanged, it is not sent again"
+    );
 }
 
 #[gpui::test]
