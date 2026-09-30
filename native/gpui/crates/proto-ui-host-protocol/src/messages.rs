@@ -126,6 +126,16 @@ pub struct ProjectionActivate {
     pub commit_id: CommitId,
 }
 
+/// The instance unmounted the view of `view_epoch` because its view intent no
+/// longer wants one (C-LIFECYCLE-0008). The instance stays alive; a later
+/// `projection.install` with a greater epoch attaches a new view.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ProjectionDetach {
+    pub session_id: SessionId,
+    pub view_epoch: ViewEpoch,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LeaseRelease {
@@ -348,6 +358,7 @@ envelopes!(
         // times the size of any other message.
         ProjectionInstall(Box<ProjectionInstall>) => "projection.install",
         ProjectionActivate(ProjectionActivate) => "projection.activate",
+        ProjectionDetach(ProjectionDetach) => "projection.detach",
         LeaseRelease(LeaseRelease) => "lease.release",
         DefaultActionPrevent(DefaultActionPrevent) => "default-action.prevent",
         FocusRequest(FocusRequest) => "focus.request",

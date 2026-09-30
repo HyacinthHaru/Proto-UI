@@ -558,3 +558,215 @@ describe('gpui peer: feedback style', () => {
     await peer.dispose();
   });
 });
+
+describe('gpui peer: view intent', () => {
+  function open(
+    sessionId: string,
+    prototype: Parameters<typeof createPeerSession>[0]['prototype'],
+    props: WireRecord,
+    parent?: PeerSession
+  ) {
+    const host = new ScriptedHost(sessionId);
+    const peer = createPeerSession({
+      sessionId,
+      instanceId: `${sessionId}:instance`,
+      prototype,
+      props,
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+      parent,
+    });
+    host.bind((message) => peer.handle(message));
+    return { host, peer };
+  }
+
+  /** Lets reconciliation, which runs on its own promise chain, finish. */
+  const settle = async () => {
+    for (let turn = 0; turn < 20; turn++) await new Promise((resolve) => setTimeout(resolve, 0));
+  };
+
+  /** The views a session installed and detached, in order. */
+  const views = (host: ScriptedHost) =>
+    host.sent.flatMap((message) =>
+      message.kind === 'projection.install'
+        ? [`install ${message.transaction.viewEpoch}`]
+        : message.kind === 'projection.detach'
+          ? [`detach ${message.viewEpoch}`]
+          : []
+    );
+
+  it('gives only the current Tabs panel a view, and moves it as the value changes', async () => {
+    const root = open('tabs-root', tabsRoot, { value: 'overview' });
+    await root.peer.mount();
+    const overview = open('panel-overview', tabsContent, { value: 'overview' }, root.peer);
+    await overview.peer.mount();
+    const settings = open('panel-settings', tabsContent, { value: 'settings' }, root.peer);
+    await settings.peer.mount();
+    await settle();
+    // The inactive panel is detached from its creation, so it never renders.
+    expect(views(overview.host)).toEqual(['install 1']);
+    expect(views(settings.host)).toEqual([]);
+
+    root.peer.setProps({ value: 'settings' });
+    await settle();
+    expect(views(overview.host)).toEqual(['install 1', 'detach 1']);
+    expect(views(settings.host)).toEqual(['install 1']);
+    // Its listeners are released before the host hears that the view went.
+    const kinds = overview.host.sent.map((message) => message.kind);
+    expect(kinds.lastIndexOf('lease.release')).toBeLessThan(kinds.indexOf('projection.detach'));
+
+    root.peer.setProps({ value: 'overview' });
+    await settle();
+    // The view comes back in a new epoch; the instance itself was kept.
+    expect(views(overview.host)).toEqual(['install 1', 'detach 1', 'install 2']);
+    expect(views(settings.host)).toEqual(['install 1', 'detach 1']);
+    expect(overview.host.exposeState('current')).toBe(true);
+
+    await settings.peer.dispose();
+    await overview.peer.dispose();
+    await root.peer.dispose();
+    expect(views(settings.host)).toEqual(['install 1', 'detach 1']);
+    expect(settings.host.of('session.disposed')).toHaveLength(1);
+  });
+
+  it('does not make live a view whose intent went while it attached', async () => {
+    const leaving = definePrototype({
+      name: 'test-view-leaving',
+      setup(def) {
+        def.lifecycle.onMounted((run) => run.lifecycle.setPresent(false));
+        return (r) => r.el('div', 'leaving');
+      },
+    });
+    // The host answers the install only after the view was detached again.
+    const host = new ScriptedHost('leaving', { autoAck: false });
+    const peer = createPeerSession({
+      sessionId: 'leaving',
+      instanceId: 'leaving:instance',
+      prototype: leaving,
+      props: {},
+      send: (message) => host.receive(message),
+      schedule: (task) => task(),
+    });
+    host.bind((message) => peer.handle(message));
+    await peer.mount();
+    await settle();
+    host.acknowledge();
+    await settle();
+    expect(views(host)).toEqual(['install 1', 'detach 1']);
+    expect(host.of('projection.activate')).toHaveLength(0);
+    await peer.dispose();
+  });
+
+  it('does not report a detach that a newer intent superseded while it ran', async () => {
+    let returned = false;
+    const returning = definePrototype({
+      name: 'test-view-returning',
+      setup(def) {
+        def.props.define({ open: { type: 'boolean', empty: 'fallback' } });
+        def.props.setDefaults({ open: true });
+        def.props.watch(['open'], (run, next) => run.lifecycle.setPresent(!!next.open));
+        // Only the first unmount turns back; disposal must not.
+        def.lifecycle.onUnmounted((run) => {
+          if (returned) return;
+          returned = true;
+          run.lifecycle.setPresent(true);
+        });
+        return (r) => r.el('div', 'returning');
+      },
+    });
+    const { host, peer } = open('returning', returning, { open: true });
+    await peer.mount();
+    await settle();
+    peer.setProps({ open: false });
+    await settle();
+    // No detach: the view came back in a new epoch instead.
+    expect(views(host)).not.toContain('detach 1');
+    expect(views(host).at(-1)).toBe('install 2');
+    await peer.dispose();
+  });
+
+  it('reports the detach when the intent came back and went again while it ran', async () => {
+    let wavered = false;
+    const wavering = definePrototype({
+      name: 'test-view-wavering',
+      setup(def) {
+        def.props.define({ open: { type: 'boolean', empty: 'fallback' } });
+        def.props.setDefaults({ open: true });
+        def.props.watch(['open'], (run, next) => run.lifecycle.setPresent(!!next.open));
+        // Only the first unmount wavers; disposal must not.
+        def.lifecycle.onUnmounted((run) => {
+          if (wavered) return;
+          wavered = true;
+          run.lifecycle.setPresent(true);
+          run.lifecycle.setPresent(false);
+        });
+        return (r) => r.el('div', 'wavering');
+      },
+    });
+    const { host, peer } = open('wavering', wavering, { open: true });
+    await peer.mount();
+    await settle();
+    peer.setProps({ open: false });
+    await settle();
+    // Unwanted in the end: the host hears the old view go, once, and shows
+    // nothing.
+    expect(views(host).filter((view) => view === 'detach 1')).toHaveLength(1);
+    expect(host.model.snapshot().currentEpoch).toBeNull();
+    // The instance is alive: a view comes back in a new epoch.
+    peer.setProps({ open: true });
+    await settle();
+    expect(views(host).at(-1)).toBe('install 2');
+    await peer.dispose();
+  });
+
+  it('keeps reconciling after an attach fails', async () => {
+    let failing = true;
+    const fragile = definePrototype({
+      name: 'test-view-fragile',
+      setup(def) {
+        def.props.define({ open: { type: 'boolean', empty: 'fallback' } });
+        def.props.setDefaults({ open: true });
+        def.props.watch(['open'], (run, next) => run.lifecycle.setPresent(!!next.open));
+        return (r) => {
+          if (failing) throw new Error('render failed');
+          return r.el('div', 'fragile');
+        };
+      },
+    });
+    const { host, peer } = open('fragile', fragile, { open: true });
+    await peer.mount();
+    await settle();
+    expect(views(host)).toEqual([]);
+    expect(host.of('diagnostic').map((message) => message.diagnostic.code)).toContain(
+      'view-reconcile-failed'
+    );
+
+    failing = false;
+    peer.setProps({ open: false });
+    peer.setProps({ open: true });
+    await settle();
+    expect(host.of('projection.install')).toHaveLength(1);
+    await expect(peer.dispose()).resolves.toBeUndefined();
+    expect(host.of('session.disposed')).toHaveLength(1);
+  });
+
+  it('does nothing for an intent that a newer one replaced', async () => {
+    const flicker = definePrototype({
+      name: 'test-view-flicker',
+      setup(def) {
+        def.event.on('press.commit', (run) => {
+          run.lifecycle.setPresent(false);
+          run.lifecycle.setPresent(true);
+        });
+        return (r) => r.el('div', 'flicker');
+      },
+    });
+    const { host, peer } = open('flicker', flicker, {});
+    await peer.mount();
+    await settle();
+    host.input('press.commit');
+    await settle();
+    expect(views(host)).toEqual(['install 1']);
+    await peer.dispose();
+  });
+});

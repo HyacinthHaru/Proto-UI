@@ -39,6 +39,8 @@ describe('gpui peer: stdio process', () => {
       'base-toggle',
       'base-switch-root',
       'base-switch-thumb',
+      'base-tabs-root',
+      'base-tabs-content',
     ]);
   });
 

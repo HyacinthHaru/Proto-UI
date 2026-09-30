@@ -294,6 +294,13 @@ jobs:
           cargo test -p proto-ui-gpui --test switch_t0 -- --ignored --test-threads=1 2>&1 | tee switch_t0.log
           grep -Eq "test result: ok\. [1-9][0-9]* passed" switch_t0.log
 
+      - name: Base Tabs panels follow their view intent over T0
+        working-directory: native/gpui
+        run: |
+          set -euo pipefail
+          cargo test -p proto-ui-gpui --test view_intent_t0 -- --ignored --test-threads=1 2>&1 | tee view_intent_t0.log
+          grep -Eq "test result: ok\. [1-9][0-9]* passed" view_intent_t0.log
+
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20

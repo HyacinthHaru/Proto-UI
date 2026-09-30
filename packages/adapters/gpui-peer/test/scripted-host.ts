@@ -53,6 +53,9 @@ export class ScriptedHost {
         this.acknowledge();
         return;
       }
+      case 'projection.detach':
+        this.model.detachView(message.viewEpoch);
+        return;
       case 'projection.activate':
         // The peer names the exact commit it is activating; the model rejects
         // an activation that does not match the installed commit.
