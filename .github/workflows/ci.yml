@@ -287,6 +287,13 @@ jobs:
           cargo test -p proto-ui-gpui --test toggle_t0 -- --ignored --test-threads=1 2>&1 | tee toggle_t0.log
           grep -Eq "test result: ok\. [1-9][0-9]* passed" toggle_t0.log
 
+      - name: Base Switch over T0 in a GPUI window
+        working-directory: native/gpui
+        run: |
+          set -euo pipefail
+          cargo test -p proto-ui-gpui --test switch_t0 -- --ignored --test-threads=1 2>&1 | tee switch_t0.log
+          grep -Eq "test result: ok\. [1-9][0-9]* passed" switch_t0.log
+
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20

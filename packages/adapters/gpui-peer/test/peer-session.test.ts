@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { WireRecord } from '@proto.ui/host-protocol';
+import { definePrototype } from '@proto.ui/core';
+import type { PeerToHostMessage, WireRecord } from '@proto.ui/host-protocol';
 import button from '@proto.ui/prototypes-base/button';
 import toggle from '@proto.ui/prototypes-base/toggle';
+import { switchRoot, switchThumb } from '@proto.ui/prototypes-base/switch';
 
 import { createPeerSession, type PeerSession } from '../src/session';
 import { ScriptedHost } from './scripted-host';
@@ -342,5 +344,136 @@ describe('gpui peer: Base Toggle', () => {
       ['activeChange', { active: false }],
     ]);
     await peer.dispose();
+  });
+});
+
+describe('gpui peer: instances composed into one another', () => {
+  function open(
+    sessionId: string,
+    prototype: Parameters<typeof createPeerSession>[0]['prototype'],
+    parent?: PeerSession,
+    sent?: PeerToHostMessage[]
+  ) {
+    const host = new ScriptedHost(sessionId);
+    const peer = createPeerSession({
+      sessionId,
+      instanceId: `${sessionId}:instance`,
+      prototype,
+      props: {},
+      send: (message) => {
+        sent?.push(message);
+        host.receive(message);
+      },
+      schedule: (task) => task(),
+      parent,
+    });
+    host.bind((message) => peer.handle(message));
+    return { host, peer };
+  }
+
+  it('lets a Switch thumb follow its root through context', async () => {
+    const root = open('switch-root', switchRoot);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer);
+    await thumb.peer.mount();
+    expect(thumb.host.exposeState('checked')).toBe(false);
+
+    root.host.input('press.commit');
+    expect(root.host.exposeState('checked')).toBe(true);
+    expect(thumb.host.exposeState('checked')).toBe(true);
+
+    await thumb.peer.dispose();
+    await root.peer.dispose();
+  });
+
+  it('names the trigger group an instance belongs to, and none for a part that is not one', async () => {
+    const root = open('switch-root', switchRoot);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer);
+    await thumb.peer.mount();
+
+    expect(root.host.last('projection.install')?.transaction.events.trigger).toEqual({
+      anchor: 'switch-root',
+    });
+    expect(thumb.host.last('projection.install')?.transaction.events.trigger).toBeUndefined();
+
+    await thumb.peer.dispose();
+    await root.peer.dispose();
+  });
+
+  it('ends the thumb before the root when the root ends first', async () => {
+    const sent: PeerToHostMessage[] = [];
+    const root = open('switch-root', switchRoot, undefined, sent);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer, sent);
+    await thumb.peer.mount();
+
+    await root.peer.dispose();
+    expect(
+      sent.flatMap((message) => (message.kind === 'session.disposed' ? [message.sessionId] : []))
+    ).toEqual(['switch-thumb', 'switch-root']);
+    // The ended root is no longer an instance anything can belong to.
+    expect(() => open('switch-thumb-2', switchThumb, root.peer)).toThrow(/switch-root has ended/);
+  });
+
+  it('keeps the root running when its thumb ends first', async () => {
+    const root = open('switch-root', switchRoot);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer);
+    await thumb.peer.mount();
+
+    await thumb.peer.dispose();
+    root.host.input('press.commit');
+    expect(root.host.exposeState('checked')).toBe(true);
+
+    await root.peer.dispose();
+    expect(thumb.host.of('session.disposed')).toHaveLength(1);
+    expect(root.host.of('session.disposed')).toHaveLength(1);
+  });
+
+  it('ends the other parts and reports each failure when one part fails to end', async () => {
+    // A part whose teardown throws.
+    const failing = definePrototype({
+      name: 'failing-part',
+      setup(def) {
+        def.lifecycle.onBeforeDispose(() => {
+          throw new Error('teardown failed');
+        });
+        return (r) => r.slot();
+      },
+    });
+    const sent: PeerToHostMessage[] = [];
+    const root = open('switch-root', switchRoot, undefined, sent);
+    await root.peer.mount();
+    const thumb = open('switch-thumb', switchThumb, root.peer, sent);
+    await thumb.peer.mount();
+    const broken = open('broken-part', failing, root.peer, sent);
+    await broken.peer.mount();
+
+    const ending = root.peer.dispose();
+    await expect(ending).rejects.toThrow(/switch-root did not end/);
+    // The other part still ended; neither the failed part nor the root
+    // claims to have.
+    expect(
+      sent.flatMap((message) => (message.kind === 'session.disposed' ? [message.sessionId] : []))
+    ).toEqual(['switch-thumb']);
+    // Each failure is reported against the session it happened in.
+    expect(
+      sent.flatMap((message) =>
+        message.kind === 'diagnostic' && message.diagnostic.code === 'dispose-failed'
+          ? [message.sessionId]
+          : []
+      )
+    ).toEqual(['broken-part', 'switch-root']);
+    // The root released its host listeners all the same.
+    expect(root.peer.snapshot().leases).toEqual([]);
+    // Asking again is the same failed disposal, not a finished one.
+    expect(root.peer.dispose()).toBe(ending);
+  });
+
+  it('cannot set a thumb up without the root it belongs to', () => {
+    // Setup runs as the session is created, and the thumb's context has no
+    // provider to subscribe to.
+    expect(() => open('switch-thumb', switchThumb)).toThrow(/provider missing/);
   });
 });

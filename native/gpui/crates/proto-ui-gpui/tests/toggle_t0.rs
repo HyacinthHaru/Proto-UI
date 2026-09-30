@@ -25,12 +25,7 @@ fn props(value: Value) -> WireRecord {
 }
 
 fn toggle(initial: Value) -> Session {
-    Session {
-        id: SESSION,
-        prototype_key: "base-toggle",
-        label: "Bold",
-        props: props(initial),
-    }
+    Session::labelled(SESSION, "base-toggle", "Bold", props(initial))
 }
 
 /// `activeChange`, carrying the value the Toggle says it becomes.

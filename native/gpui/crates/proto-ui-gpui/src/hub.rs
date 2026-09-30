@@ -12,7 +12,7 @@
 //! outbox the caller drains after each turn, which keeps framing and process
 //! management a separate, replaceable concern.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use gpui::{Context, EventEmitter, FocusHandle, StyleRefinement, Window};
 use proto_ui_host_protocol::messages::{
@@ -47,6 +47,11 @@ pub struct SessionConfig {
     pub root_style: StyleRefinement,
     /// The design language's theme, or `None` for the Base family.
     pub theme: Option<&'static Theme>,
+    /// The session whose instance this one belongs to, such as a Switch for
+    /// its thumb. Open that one first: the peer links the instance to it as
+    /// it sets up. Where the instance renders is up to the slots: place it
+    /// with [`SurfaceChild::Session`].
+    pub parent: Option<SessionId>,
 }
 
 struct HubSession {
@@ -145,6 +150,57 @@ impl HostHub {
             .find(|(id, _)| id == session_id)
             .map(|(_, session)| session)
     }
+
+    /// Every session opened inside `session_id`, directly or not, each one
+    /// before the session it was opened inside.
+    fn opened_inside(&self, session_id: &str) -> Vec<SessionId> {
+        let mut found: Vec<SessionId> = Vec::new();
+        let mut pending = vec![session_id.to_string()];
+        while let Some(outer) = pending.pop() {
+            for (id, session) in &self.sessions {
+                if session.config.parent.as_deref() == Some(outer.as_str())
+                    && id != session_id
+                    && !found.contains(id)
+                {
+                    found.push(id.clone());
+                    pending.push(id.clone());
+                }
+            }
+        }
+        // A session is found only after the one it was opened inside.
+        found.reverse();
+        found
+    }
+}
+
+/// Replaces each session placed beneath `surface` with that session's
+/// surfaces, which may place more. `open` holds the sessions being placed,
+/// so a session placed inside itself is dropped rather than followed.
+fn place_sessions(
+    mut surface: SurfaceNode,
+    roots: &HashMap<&str, SurfaceNode>,
+    open: &mut Vec<SessionId>,
+) -> SurfaceNode {
+    surface.children = std::mem::take(&mut surface.children)
+        .into_iter()
+        .filter_map(|child| match child {
+            SurfaceChild::Surface(inner) => {
+                Some(SurfaceChild::from(place_sessions(*inner, roots, open)))
+            }
+            SurfaceChild::Session(session) => {
+                if open.contains(&session) {
+                    return None;
+                }
+                let root = roots.get(session.as_str())?.clone();
+                open.push(session);
+                let placed = place_sessions(root, roots, open);
+                open.pop();
+                Some(SurfaceChild::from(placed))
+            }
+            text @ SurfaceChild::Text(_) => Some(text),
+        })
+        .collect();
+    surface
 }
 
 fn diagnostic(code: &str, message: impl Into<String>) -> HostDiagnostic {
@@ -223,6 +279,7 @@ impl ProtoHostView {
                 instance_id: config.instance_id.clone(),
                 prototype_key: config.prototype_key.clone(),
                 props: config.props.clone(),
+                parent_session_id: config.parent.clone(),
             }));
         let root_id = format!("{session_id}/proto-surface");
         self.hub.sessions.push((
@@ -265,8 +322,9 @@ impl ProtoHostView {
         call_id
     }
 
-    /// Asks the peer to end a session. Its surfaces stay until the peer
-    /// reports `session.disposed`, which is when the host tears them down.
+    /// Asks the peer to end a session, and before it every session opened
+    /// inside it. Their surfaces stay until the peer reports each one
+    /// `session.disposed`, which is when the host tears it down.
     pub fn dispose_session(&mut self, session_id: &str) {
         self.hub
             .outbox
@@ -396,19 +454,24 @@ impl ProtoHostView {
                 }
             }
             PeerToHostMessage::SessionDisposed(disposed) => {
-                if let Some(index) = self
-                    .hub
-                    .sessions
-                    .iter()
-                    .position(|(id, _)| *id == disposed.session_id)
-                {
-                    let (_, mut session) = self.hub.sessions.remove(index);
-                    session.model.dispose();
-                    self.bridge
-                        .borrow_mut()
-                        .remove_session(&disposed.session_id);
-                    self.publish_surfaces(window, cx);
+                if self.hub.session(&disposed.session_id).is_none() {
+                    return;
                 }
+                // No instance outlives the one it belongs to. The peer reports
+                // the sessions opened inside this one ended first; any it has
+                // not, the host ends here and asks the peer to end as well.
+                let inside = self.hub.opened_inside(&disposed.session_id);
+                for session_id in &inside {
+                    self.hub
+                        .outbox
+                        .push(HostToPeerMessage::SessionDispose(SessionDispose {
+                            session_id: session_id.clone(),
+                        }));
+                }
+                for session_id in inside.iter().chain([&disposed.session_id]) {
+                    self.end_session(session_id);
+                }
+                self.publish_surfaces(window, cx);
             }
             PeerToHostMessage::Diagnostic(message) => {
                 self.hub.notes.push(HubNote::PeerDiagnostic {
@@ -489,6 +552,35 @@ impl ProtoHostView {
         self.hub.session(session_id)?.projection.as_ref()
     }
 
+    /// The sessions whose surfaces the view renders, in document order.
+    pub fn rendered_sessions(&self) -> Vec<SessionId> {
+        let mut sessions: Vec<SessionId> = Vec::new();
+        let mut pending: Vec<&SurfaceNode> = self.surfaces.iter().rev().collect();
+        while let Some(surface) = pending.pop() {
+            if !sessions.contains(&surface.session) {
+                sessions.push(surface.session.clone());
+            }
+            let children: Vec<&SurfaceNode> = surface.child_surfaces().collect();
+            pending.extend(children.into_iter().rev());
+        }
+        sessions
+    }
+
+    /// Forgets a session: its model, its surfaces and its route.
+    fn end_session(&mut self, session_id: &str) {
+        let Some(index) = self
+            .hub
+            .sessions
+            .iter()
+            .position(|(id, _)| id == session_id)
+        else {
+            return;
+        };
+        let (_, mut session) = self.hub.sessions.remove(index);
+        session.model.dispose();
+        self.bridge.borrow_mut().remove_session(session_id);
+    }
+
     /// Validates, installs and renders one projection.
     ///
     /// The template is parsed before the model allocates anything: a
@@ -564,6 +656,15 @@ impl ProtoHostView {
         session.a11y = transaction.a11y;
         session.projection = projection;
         self.note_a11y(&session_id, issues);
+        // A trigger owns input inside it on behalf of its group's anchor.
+        self.bridge.borrow_mut().set_trigger_anchor(
+            &session_id,
+            transaction
+                .events
+                .trigger
+                .as_ref()
+                .map(|trigger| trigger.anchor.clone()),
+        );
         self.publish_surfaces(window, cx);
         ack
     }
@@ -579,17 +680,35 @@ impl ProtoHostView {
         }
     }
 
-    /// Renders every session's surfaces, in the order they were opened, each
-    /// root carrying the instance's current accessibility projection.
+    /// Renders every session's surfaces, each root carrying the instance's
+    /// current accessibility projection.
+    ///
+    /// A session placed in another's slot renders there, inside the instance
+    /// it belongs to; the rest render at the top level, in the order they
+    /// were opened.
     fn publish_surfaces(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        let roots: HashMap<&str, SurfaceNode> = self
+            .hub
+            .sessions
+            .iter()
+            .filter_map(|(id, session)| {
+                let mut root = session.surface.clone()?;
+                root.a11y = session.projection.clone();
+                Some((id.as_str(), root))
+            })
+            .collect();
+        let placed: HashSet<SessionId> = roots
+            .values()
+            .flat_map(SurfaceNode::placed_sessions)
+            .collect();
         self.surfaces = self
             .hub
             .sessions
             .iter()
-            .filter_map(|(_, session)| {
-                let mut root = session.surface.clone()?;
-                root.a11y = session.projection.clone();
-                Some(root)
+            .filter(|(id, _)| !placed.contains(id))
+            .filter_map(|(id, _)| {
+                let root = roots.get(id.as_str())?.clone();
+                Some(place_sessions(root, &roots, &mut vec![id.clone()]))
             })
             .collect();
         self.subscribe_focus(window, cx);

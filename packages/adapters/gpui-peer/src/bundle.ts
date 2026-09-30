@@ -19,6 +19,10 @@ export function createBaseBundle(): PrototypeBundle {
     entries: {
       'base-button': () => import('@proto.ui/prototypes-base/button').then((m) => m.default),
       'base-toggle': () => import('@proto.ui/prototypes-base/toggle').then((m) => m.default),
+      'base-switch-root': () =>
+        import('@proto.ui/prototypes-base/switch').then((m) => m.switchRoot),
+      'base-switch-thumb': () =>
+        import('@proto.ui/prototypes-base/switch').then((m) => m.switchThumb),
     },
   };
 }

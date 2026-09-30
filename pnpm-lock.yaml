@@ -217,6 +217,9 @@ importers:
       '@proto.ui/module-a11y':
         specifier: workspace:*
         version: link:../../modules/a11y
+      '@proto.ui/module-anatomy':
+        specifier: workspace:*
+        version: link:../../modules/anatomy
       '@proto.ui/module-as-trigger':
         specifier: workspace:*
         version: link:../../modules/as-trigger

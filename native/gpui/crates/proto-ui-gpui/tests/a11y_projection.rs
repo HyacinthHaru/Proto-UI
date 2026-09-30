@@ -128,10 +128,18 @@ fn a_role_without_a_mapping_is_not_reported_as_anything_else() {
 }
 
 #[test]
-fn a_snapshot_without_a_role_is_not_reported() {
+fn a_part_with_no_semantics_is_not_reported_and_is_not_an_issue() {
+    // Base Switch's thumb is presentational: its snapshot carries nothing.
+    let (projection, issues) = project(&recorded("base-switch-session.json", "thumb"));
+    assert_eq!(projection, None);
+    assert!(issues.is_empty(), "{issues:?}");
+}
+
+#[test]
+fn facts_without_a_role_are_not_reported_and_say_why() {
     let (projection, issues) = project(&snapshot(json!({
         "semanticObjectId": "object",
-        "states": {},
+        "states": { "disabled": true },
         "actions": {},
         "relations": {},
     })));
