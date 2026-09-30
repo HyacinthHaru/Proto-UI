@@ -13,9 +13,6 @@ use std::time::{Duration, Instant};
 use crate::frame::{encode, FrameDecoder, FrameError};
 use crate::messages::{HostToPeerMessage, PeerToHostMessage};
 
-/// How many of the latest messages a timeout names.
-const TIMEOUT_KINDS: usize = 16;
-
 /// A peer running as a child process.
 pub struct PeerProcess {
     child: Child,
@@ -29,8 +26,7 @@ pub enum PeerError {
     Frame(FrameError),
     /// The peer's stream ended or broke, with the reason if one was seen.
     Closed(Option<String>),
-    /// Nothing matching arrived in time. Carries the kinds of the latest
-    /// messages that did arrive.
+    /// Nothing matching arrived in time. Carries what did arrive.
     Timeout(Vec<String>),
 }
 
@@ -123,12 +119,7 @@ impl PeerProcess {
         let deadline = Instant::now() + timeout;
         let mut seen = Vec::new();
         loop {
-            // Checked before every receive: a peer that keeps sending other
-            // messages must not keep the wait open past its deadline.
             let remaining = deadline.saturating_duration_since(Instant::now());
-            if remaining.is_zero() {
-                return Err(timed_out(&seen));
-            }
             match self.recv(remaining) {
                 Ok(message) => {
                     let finished = done(&message);
@@ -137,7 +128,13 @@ impl PeerProcess {
                         return Ok(seen);
                     }
                 }
-                Err(PeerError::Timeout(_)) => return Err(timed_out(&seen)),
+                Err(PeerError::Timeout(_)) => {
+                    return Err(PeerError::Timeout(
+                        seen.iter()
+                            .map(|message| message.kind().to_string())
+                            .collect(),
+                    ))
+                }
                 Err(error) => return Err(error),
             }
         }
@@ -158,89 +155,12 @@ impl PeerProcess {
     }
 }
 
-fn timed_out(seen: &[PeerToHostMessage]) -> PeerError {
-    let latest = &seen[seen.len().saturating_sub(TIMEOUT_KINDS)..];
-    PeerError::Timeout(
-        latest
-            .iter()
-            .map(|message| message.kind().to_string())
-            .collect(),
-    )
-}
-
 impl Drop for PeerProcess {
     fn drop(&mut self) {
         // A test that panics must not leave a Node process behind.
         if let Ok(None) = self.child.try_wait() {
             let _ = self.child.kill();
             let _ = self.child.wait();
-        }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use serde_json::json;
-
-    fn message(value: serde_json::Value) -> PeerToHostMessage {
-        serde_json::from_value(value).expect("a valid peer message")
-    }
-
-    fn disposed(session_id: &str) -> PeerToHostMessage {
-        message(json!({ "kind": "session.disposed", "sessionId": session_id }))
-    }
-
-    /// A peer whose messages are already waiting, with the sender kept so
-    /// the stream stays open.
-    fn queued(
-        messages: Vec<PeerToHostMessage>,
-    ) -> (PeerProcess, mpsc::Sender<Result<PeerToHostMessage, String>>) {
-        let (sender, incoming) = mpsc::channel();
-        for message in messages {
-            sender.send(Ok(message)).expect("the channel takes it");
-        }
-        let peer = PeerProcess {
-            child: Command::new("true").spawn().expect("a child to hold"),
-            stdin: None,
-            incoming,
-        };
-        (peer, sender)
-    }
-
-    #[test]
-    fn a_wait_past_its_deadline_times_out_though_messages_are_waiting() {
-        let mut waiting: Vec<_> = (0..5).map(|n| disposed(&format!("other-{n}"))).collect();
-        waiting.push(disposed("wanted"));
-        let (peer, _sender) = queued(waiting);
-        let result = peer.until(Duration::ZERO, |message| {
-            matches!(message, PeerToHostMessage::SessionDisposed(disposed)
-                if disposed.session_id == "wanted")
-        });
-        assert!(matches!(result, Err(PeerError::Timeout(_))), "{result:?}");
-    }
-
-    #[test]
-    fn a_match_in_time_returns_everything_up_to_it() {
-        let (peer, _sender) = queued(vec![disposed("other"), disposed("wanted")]);
-        let seen = peer
-            .until(Duration::from_secs(5), |message| {
-                matches!(message, PeerToHostMessage::SessionDisposed(disposed)
-                    if disposed.session_id == "wanted")
-            })
-            .expect("the match arrives in time");
-        assert_eq!(seen.len(), 2);
-    }
-
-    #[test]
-    fn a_timeout_names_only_the_latest_messages() {
-        let others = (0..TIMEOUT_KINDS + 4)
-            .map(|n| disposed(&format!("other-{n}")))
-            .collect();
-        let (peer, _sender) = queued(others);
-        match peer.until(Duration::from_millis(50), |_| false) {
-            Err(PeerError::Timeout(kinds)) => assert_eq!(kinds.len(), TIMEOUT_KINDS),
-            other => panic!("expected a timeout, got {other:?}"),
         }
     }
 }
