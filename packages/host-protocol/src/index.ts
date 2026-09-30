@@ -47,6 +47,7 @@ export {
 
 export type {
   A11ySnapshotMessage,
+  StyleApplyMessage,
   DefaultActionPreventMessage,
   DiagnosticMessage,
   ExposeCallMessage,

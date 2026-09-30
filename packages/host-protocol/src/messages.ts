@@ -175,6 +175,17 @@ export type A11ySnapshotMessage = {
 };
 
 /**
+ * The instance root's feedback style changed outside a commit, as a rule on
+ * hover or press changes it. It replaces the style the view carried, whole.
+ */
+export type StyleApplyMessage = {
+  readonly kind: 'style.apply';
+  readonly sessionId: SessionId;
+  readonly viewEpoch: ViewEpoch;
+  readonly tokens: readonly string[];
+};
+
+/**
  * Ends a session, and before it every session opened inside it, so that no
  * instance outlives the one it belongs to. The peer reports `session.disposed`
  * for each, a part before the instance it belongs to.
@@ -224,6 +235,7 @@ export type PeerToHostMessage =
   | ExposeSignalMessage
   | ExposeResultMessage
   | A11ySnapshotMessage
+  | StyleApplyMessage
   | SessionDisposedMessage
   | LifecycleMessage
   | DiagnosticMessage;

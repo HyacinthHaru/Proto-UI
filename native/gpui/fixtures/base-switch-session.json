@@ -209,6 +209,7 @@
               }
             ]
           },
+          "style": [],
           "a11y": {
             "semanticObjectId": "switch-root:a11y:1",
             "role": "switch",
@@ -368,6 +369,7 @@
               }
             ]
           },
+          "style": [],
           "a11y": {
             "semanticObjectId": "switch-thumb:a11y:1",
             "states": {},
@@ -596,6 +598,7 @@
               }
             ]
           },
+          "style": [],
           "a11y": {
             "semanticObjectId": "switch-checked:a11y:1",
             "role": "switch",
@@ -762,6 +765,7 @@
               }
             ]
           },
+          "style": [],
           "a11y": {
             "semanticObjectId": "switch-checked-thumb:a11y:1",
             "states": {},

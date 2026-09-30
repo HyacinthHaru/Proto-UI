@@ -162,6 +162,9 @@ pub struct ProjectionTransaction {
     pub slots: SlotPlan,
     pub events: EventBindingPlan,
     pub focus: FocusPlan,
+    /// The instance root's feedback style: the merged token list the
+    /// Prototype applies now, which may be empty.
+    pub style: Vec<String>,
     #[serde(deserialize_with = "required_nullable")]
     pub a11y: Option<A11ySnapshotWire>,
 }

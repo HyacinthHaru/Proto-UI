@@ -84,6 +84,12 @@ export type ProjectionTransaction = {
   readonly slots: SlotPlan;
   readonly events: EventBindingPlan;
   readonly focus: FocusPlan;
+  /**
+   * The instance root's feedback style: the merged token list the Prototype
+   * applies now, which may be empty. Every view carries it whole, so a view
+   * that replaces another shows its own style from its first frame.
+   */
+  readonly style: readonly string[];
   readonly a11y: A11ySnapshotWire | null;
 };
 

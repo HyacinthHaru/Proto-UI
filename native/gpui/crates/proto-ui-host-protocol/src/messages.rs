@@ -243,6 +243,16 @@ pub struct ExposeResult {
     pub diagnostics: Vec<HostDiagnostic>,
 }
 
+/// The instance root's feedback style changed outside a commit. It replaces
+/// the style the view carried, whole.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct StyleApply {
+    pub session_id: SessionId,
+    pub view_epoch: ViewEpoch,
+    pub tokens: Vec<String>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct A11ySnapshotMessage {
@@ -346,6 +356,7 @@ envelopes!(
         ExposeSignal(ExposeSignal) => "expose.signal",
         ExposeResult(ExposeResult) => "expose.result",
         A11ySnapshot(A11ySnapshotMessage) => "a11y.snapshot",
+        StyleApply(StyleApply) => "style.apply",
         SessionDisposed(SessionDisposed) => "session.disposed",
         Lifecycle(Lifecycle) => "lifecycle",
         Diagnostic(Diagnostic) => "diagnostic",

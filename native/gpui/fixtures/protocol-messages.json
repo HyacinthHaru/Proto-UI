@@ -24,6 +24,7 @@
       "expose.state",
       "expose.signal",
       "expose.result",
+      "style.apply",
       "a11y.snapshot",
       "session.disposed",
       "lifecycle",
@@ -228,6 +229,11 @@
             }
           ]
         },
+        "style": [
+          "inline-flex",
+          "items-center",
+          "rounded-md"
+        ],
         "a11y": {
           "semanticObjectId": "button-1",
           "states": {},
@@ -254,6 +260,7 @@
         "focus": {
           "targets": []
         },
+        "style": [],
         "a11y": null
       }
     },
@@ -335,6 +342,21 @@
       "status": "ok",
       "value": null,
       "diagnostics": []
+    },
+    {
+      "kind": "style.apply",
+      "sessionId": "s-1",
+      "viewEpoch": 1,
+      "tokens": [
+        "inline-flex",
+        "opacity-50"
+      ]
+    },
+    {
+      "kind": "style.apply",
+      "sessionId": "s-1",
+      "viewEpoch": 1,
+      "tokens": []
     },
     {
       "kind": "a11y.snapshot",
