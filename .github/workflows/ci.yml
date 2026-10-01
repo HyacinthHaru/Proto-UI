@@ -210,7 +210,8 @@ jobs:
         run: cargo test --workspace
 
   test:
-    runs-on: ubuntu-latest
+    # Linux memfd and the distro FFmpeg 6.1 line form the video evidence baseline.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       COVERAGE_BASE_REVISION: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.sha }}
@@ -263,6 +264,21 @@ jobs:
 
       - name: Install
         run: corepack pnpm@"${PROTO_PNPM_VERSION}" install --frozen-lockfile
+
+      - name: Install and identify the bounded video evidence toolchain
+        run: |
+          set -euo pipefail
+          /usr/bin/sudo /usr/bin/apt-get update
+          /usr/bin/sudo /usr/bin/apt-get install --no-install-recommends -y ffmpeg python3
+          /usr/bin/dpkg-query --show --showformat='${Package}=${Version}\n' ffmpeg python3
+          /usr/bin/python3 --version
+          /usr/bin/ffmpeg -version
+          /usr/bin/ffprobe -version
+          /usr/bin/ffmpeg -version | /usr/bin/grep -E '^ffmpeg version 6\.1\.'
+          /usr/bin/ffprobe -version | /usr/bin/grep -E '^ffprobe version 6\.1\.'
+          # Real fixture decoding proves fd seek/seal and codec capabilities;
+          # inventory or version strings alone do not satisfy this gate.
+          node --test scripts/coverage-matrices/test/decode-video-evidence.test.mjs
 
       - name: Public documentation gate and repository tests
         env:

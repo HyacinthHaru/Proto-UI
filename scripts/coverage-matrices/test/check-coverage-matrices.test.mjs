@@ -8384,7 +8384,7 @@ test('rejects MP4 marker strings without a video sample table', () => {
   );
 });
 
-test('accepts MP4 evidence with a complete video sample table', () => {
+test('rejects one-frame MP4 evidence despite a complete video sample table', () => {
   const root = createRoot();
   const implementationPath = 'apps/www/src/components/override/Search.astro';
   const websiteBindings = [[implementationPath, ['www.shell.search']]];
@@ -8454,9 +8454,10 @@ test('accepts MP4 evidence with a complete video sample table', () => {
   const videoPath = 'internal/website/evidence/s14/one-frame.mp4';
   writeVideoPromotionFixture(root, revision, websiteBindings, videoPath, video);
 
-  assert.deepEqual(validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) }), {
-    matrixCount: 2,
-  });
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /Multi-frame:.*bounded decoder unverified/
+  );
 });
 
 test('rejects WebM marker bytes without parsed track and block elements', () => {
@@ -8530,12 +8531,9 @@ test('rejects WebM marker bytes without parsed track and block elements', () => 
     validWebmPath,
     validWebm
   );
-  assert.deepEqual(
-    validateCoverageMatrices({
-      rootDir: structuredRoot,
-      ...promotionOptions(structuredRevision),
-    }),
-    { matrixCount: 2 }
+  assert.match(
+    validationMessage(structuredRoot, promotionOptions(structuredRevision)),
+    /Multi-frame:.*bounded decoder unverified/
   );
 });
 
@@ -9587,7 +9585,7 @@ function currentReviewPromotion() {
     artifact.sha256 = createHash('sha256').update(bytes).digest('hex');
     fs.writeFileSync(manifestPath, JSON.stringify(manifest));
   };
-  return { root, revision, replaceArtifact };
+  return { root, revision, replaceArtifact, websiteBindings };
 }
 
 test('current review: rejects out-of-palette indexed PNG pixels with valid CRC and digests', () => {
@@ -9844,4 +9842,96 @@ test('current review: image file byte limit is enforced before read and decode',
     validationMessage(root, promotionOptions(revision)),
     /Screenshot:.*recognized image/
   );
+});
+
+test('real decoded MP4 and WebM remain accepted through the complete evidence gate', () => {
+  for (const fixture of ['moov-at-end.mp4', 'colors.webm']) {
+    const { root, revision, websiteBindings } = currentReviewPromotion();
+    const bytes = fs.readFileSync(new URL(`./fixtures/video/${fixture}`, import.meta.url));
+    writeVideoPromotionFixture(
+      root,
+      revision,
+      websiteBindings,
+      `internal/website/evidence/s14/${fixture}`,
+      bytes
+    );
+    assert.deepEqual(validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) }), {
+      matrixCount: 2,
+    });
+  }
+});
+
+test('latest review: DOM receiver propagation includes shadow roots and fragments', () => {
+  for (const prefix of ['apps/www/src/components', 'apps/agent-harness/src/run']) {
+    for (const source of [
+      "document.querySelector('x-host')?.shadowRoot?.querySelector('button')?.focus();",
+      "const root = document.querySelector('x-host').shadowRoot; const button = root.querySelector('button'); button.ariaExpanded = 'true';",
+      "document.querySelector('x-host').attachShadow({mode:'open'}).querySelector('button').scrollIntoView();",
+      "document.querySelector('button').getRootNode().querySelector('input').select();",
+      "document.createDocumentFragment().querySelector('input').focus();",
+      "document.querySelector('template').content.querySelector('button').focus();",
+    ]) {
+      const root = createRoot();
+      const filename = path.join(root, prefix, 'ShadowReceiver.ts');
+      fs.mkdirSync(path.dirname(filename), { recursive: true });
+      fs.writeFileSync(filename, source);
+      writeValidMatrices(root);
+      assert.match(
+        validationMessage(root),
+        /interactive website source.*ShadowReceiver|Harness source.*ShadowReceiver.*forbidden interaction/
+      );
+    }
+  }
+});
+
+test('latest review: proven resource elements retain Object.assign initialization boundaries', () => {
+  for (const prefix of ['apps/www/src/components', 'apps/agent-harness/src/run']) {
+    for (const [source, expected] of [
+      [
+        "Object.assign(document.createElement('script'), {src:'https://cdn.example/runtime.js'});",
+        /external executable script.*runtime.js/,
+      ],
+      [
+        "const script = document.createElement('script'); Object.assign(script, {['src']: loaderUrl});",
+        /dynamic executable script/,
+      ],
+      [
+        "const script = Object.assign(document.createElement('script'), {async:true}); script.src='https://cdn.example/alias.js';",
+        /external executable script.*alias.js/,
+      ],
+      ["Object.assign(document.createElement('script'), options);", /dynamic executable script/],
+      [
+        "Object.assign(document.createElement('link'), {rel:'stylesheet',href:'https://cdn.example/theme.css'});",
+        /external stylesheet.*theme.css/,
+      ],
+      [
+        "Object.assign(document.createElement('link'), {...options});",
+        /dynamic stylesheet relation/,
+      ],
+    ]) {
+      const root = createRoot();
+      const filename = path.join(root, prefix, 'AssignResource.ts');
+      fs.mkdirSync(path.dirname(filename), { recursive: true });
+      fs.writeFileSync(filename, source);
+      writeValidMatrices(root);
+      assert.match(validationMessage(root), expected);
+    }
+  }
+});
+
+test('latest review: business roots and shadowed Object helpers remain outside DOM proof', () => {
+  for (const source of [
+    'const model = {shadowRoot:{querySelector(){return {focus(){}};}}}; model.shadowRoot.querySelector().focus();',
+    "const model={}; Object.assign(model,{src:'https://cdn.example/business'});",
+    "function business(Object) { Object.assign(document.createElement('script'),{src:'https://cdn.example/business'}); }",
+    "Object.assign(document.createElement('link'), {rel:'icon',href:'https://cdn.example/icon.ico'});",
+    "Object.assign(document.createElement('script'), {async:true});",
+  ]) {
+    const root = createRoot();
+    const filename = path.join(root, 'apps/www/src/components/BusinessAssign.ts');
+    fs.mkdirSync(path.dirname(filename), { recursive: true });
+    fs.writeFileSync(filename, source);
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
 });

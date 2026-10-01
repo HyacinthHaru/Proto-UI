@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import { decodeVideoEvidence } from './decode-video-evidence.mjs';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import { builtinModules, createRequire } from 'node:module';
@@ -90,7 +91,7 @@ const GOVERNED_DOM_STATE_PROPERTY_NAMES = new Set([
   'selectionStart',
   'value',
 ]);
-const DOM_ELEMENT_VALUED_PROPERTY_NAMES = new Set([
+const DOM_RECEIVER_VALUED_PROPERTY_NAMES = new Set([
   'firstElementChild',
   'lastElementChild',
   'parentElement',
@@ -98,6 +99,14 @@ const DOM_ELEMENT_VALUED_PROPERTY_NAMES = new Set([
   'offsetParent',
   'nextElementSibling',
   'previousElementSibling',
+  'firstChild',
+  'lastChild',
+  'nextSibling',
+  'previousSibling',
+  'shadowRoot',
+  'host',
+  'ownerDocument',
+  'content',
 ]);
 const DOGFOODED_EVIDENCE_LABELS = Object.freeze([
   'Build:',
@@ -1374,7 +1383,7 @@ function isDomAcquisitionCall(expression, sourceFile, receiverBindings, useNode,
   const calledMember = staticMemberAccess(candidate.expression);
   if (
     !calledMember ||
-    !/^(?:closest|createElement|createElementNS|elementFromPoint|getElementById|querySelector)$/u.test(
+    !/^(?:adoptNode|attachShadow|cloneNode|closest|createDocumentFragment|createElement|createElementNS|elementFromPoint|getElementById|getRootNode|importNode|querySelector)$/u.test(
       calledMember.name
     )
   ) {
@@ -1468,30 +1477,28 @@ function isDomReceiverExpression(
   if (isDomAcquisitionCall(candidate, sourceFile, receiverBindings, useNode, visitedBindings)) {
     return true;
   }
-  if (!ts.isPropertyAccessExpression(candidate)) return false;
-
-  const owner = unwrapTypeScriptExpression(candidate.expression);
+  const member = staticMemberAccess(candidate);
+  if (!member) return false;
+  const owner = unwrapTypeScriptExpression(member.receiver);
   if (
-    /^(?:body|documentElement|activeElement)$/u.test(candidate.name.text) &&
+    /^(?:body|documentElement|activeElement)$/u.test(member.name) &&
     ts.isIdentifier(owner) &&
     owner.text === 'document'
   ) {
     return true;
   }
   if (
-    /^(?:currentTarget|target)$/u.test(candidate.name.text) &&
+    /^(?:currentTarget|target)$/u.test(member.name) &&
     ts.isIdentifier(owner) &&
     /^(?:e|ev|event)$/u.test(owner.text)
   ) {
     return true;
   }
-  if (DOM_ELEMENT_VALUED_PROPERTY_NAMES.has(candidate.name.text)) {
+  if (DOM_RECEIVER_VALUED_PROPERTY_NAMES.has(member.name)) {
     return isDomReceiverExpression(owner, sourceFile, receiverBindings, useNode, visitedBindings);
   }
   return (
-    candidate.name.text === 'current' &&
-    ts.isIdentifier(owner) &&
-    /(?:Element|Node|Ref)$/u.test(owner.text)
+    member.name === 'current' && ts.isIdentifier(owner) && /(?:Element|Node|Ref)$/u.test(owner.text)
   );
 }
 
@@ -3690,6 +3697,9 @@ function scriptModuleSpecifiers(source, fileName) {
   const resourceElementCreation = (expression, useNode, tagName, visitedBindings = new Set()) => {
     const candidate = unwrapTypeScriptExpression(expression);
     if (isResourceElementCreation(candidate, tagName)) return candidate;
+    if (isGlobalObjectAssign(candidate, useNode) && candidate.arguments[0]) {
+      return resourceElementCreation(candidate.arguments[0], useNode, tagName, visitedBindings);
+    }
     if (!ts.isIdentifier(candidate)) return null;
     const bindings = scriptElementBindings.get(candidate.text) ?? [];
     const usePosition = useNode.getStart(sourceFile);
@@ -3805,6 +3815,67 @@ function scriptModuleSpecifiers(source, fileName) {
     }
     return false;
   };
+  const isGlobalObjectAssign = (expression, useNode) => {
+    if (!ts.isCallExpression(expression)) return false;
+    const member = staticMemberAccess(expression.expression);
+    if (member?.name !== 'assign') return false;
+    const owner = unwrapTypeScriptExpression(member.receiver);
+    if (ts.isIdentifier(owner))
+      return owner.text === 'Object' && !hasLocalBinding('Object', useNode);
+    const qualified = staticMemberAccess(owner);
+    return (
+      qualified?.name === 'Object' &&
+      ts.isIdentifier(qualified.receiver) &&
+      /^(?:globalThis|self|window)$/u.test(qualified.receiver.text) &&
+      !hasLocalBinding(qualified.receiver.text, useNode)
+    );
+  };
+  const inspectResourceAssignment = (node) => {
+    if (!isGlobalObjectAssign(node, node) || !node.arguments[0]) return;
+    const target = node.arguments[0];
+    const script = isScriptElementExpression(target, node);
+    const link = resourceElementCreation(target, node, 'link');
+    if (!script && !link) return;
+    const unknown = () => {
+      if (script) specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+      if (link) {
+        recordLinkMutation(target, 'rel', null, node);
+        recordLinkMutation(target, 'href', null, node);
+      }
+    };
+    for (const source of node.arguments.slice(1)) {
+      const object = unwrapTypeScriptExpression(source);
+      if (!ts.isObjectLiteralExpression(object)) {
+        unknown();
+        continue;
+      }
+      for (const property of object.properties) {
+        if (ts.isSpreadAssignment(property) || !property.name) {
+          unknown();
+          continue;
+        }
+        const name = ts.isComputedPropertyName(property.name)
+          ? unwrapTypeScriptExpression(property.name.expression)
+          : property.name;
+        const key =
+          (ts.isIdentifier(name) && !ts.isComputedPropertyName(property.name)) ||
+          ts.isStringLiteralLike(name)
+            ? name.text
+            : null;
+        if (key === null) {
+          unknown();
+          continue;
+        }
+        const value = ts.isPropertyAssignment(property)
+          ? property.initializer
+          : ts.isShorthandPropertyAssignment(property)
+            ? property.name
+            : null;
+        if (script && key === 'src') specifiers.push(scriptElementSourceSpecifier(value));
+        if (link) recordLinkMutation(target, key, value, node);
+      }
+    }
+  };
   const isGlobalNavigator = (expression, useNode) => {
     const candidate = unwrapTypeScriptExpression(expression);
     if (ts.isIdentifier(candidate))
@@ -3834,6 +3905,7 @@ function scriptModuleSpecifiers(source, fileName) {
       }
     }
     if (ts.isCallExpression(node)) {
+      inspectResourceAssignment(node);
       const calledMember = staticMemberAccess(node.expression);
       const attributeName = node.arguments[0];
       if (calledMember?.name === 'setAttribute') {
@@ -6051,292 +6123,6 @@ function validatedImageData(absolutePath) {
   return hasFrame ? decodedImageData(data) : null;
 }
 
-function hasVideoFileSignature(absolutePath) {
-  if (!fs.existsSync(absolutePath) || !fs.statSync(absolutePath).isFile()) return false;
-  const data = fs.readFileSync(absolutePath);
-  if (data.length < 16) return false;
-
-  if (data.subarray(0, 4).equals(Buffer.from('1a45dfa3', 'hex'))) {
-    const readEbmlSize = (offset) => {
-      if (offset >= data.length) return null;
-      const first = data[offset];
-      let length = 1;
-      while (length <= 8 && (first & (0x80 >> (length - 1))) === 0) length += 1;
-      if (length > 8 || offset + length > data.length) return null;
-      let value = BigInt(first & (0xff >> length));
-      for (let index = 1; index < length; index += 1) {
-        value = (value << 8n) | BigInt(data[offset + index]);
-      }
-      return value > BigInt(Number.MAX_SAFE_INTEGER) ? null : { length, value: Number(value) };
-    };
-    // Walk EBML master elements structurally: an element is accepted only when
-    // its declared size fits its parent, and SimpleBlock payloads must contain
-    // at least a track id and frame size header plus nonempty frame data.
-    const readElementId = (offset) => {
-      if (offset >= data.length) return null;
-      const first = data[offset];
-      if (first === 0) return null;
-      let length = 1;
-      while (length <= 4 && (first & (0x80 >> (length - 1))) === 0) length += 1;
-      if (length > 4 || offset + length > data.length) return null;
-      return { id: data.subarray(offset, offset + length), idLength: length };
-    };
-    const parseElement = (offset) => {
-      const elementId = readElementId(offset);
-      if (!elementId) return null;
-      const size = readEbmlSize(offset + elementId.idLength);
-      if (!size) return null;
-      const contentStart = offset + elementId.idLength + size.length;
-      if (contentStart + size.value > data.length) return null;
-      return { id: elementId.id, contentStart, contentEnd: contentStart + size.value };
-    };
-    const headerSize = readEbmlSize(4);
-    if (!headerSize) return false;
-    const segmentOffset = 4 + headerSize.length + headerSize.value;
-    if (
-      segmentOffset + 5 > data.length ||
-      !data.subarray(segmentOffset, segmentOffset + 4).equals(Buffer.from('18538067', 'hex'))
-    ) {
-      return false;
-    }
-    const segmentSize = readEbmlSize(segmentOffset + 4);
-    if (!segmentSize) return false;
-    const segmentStart = segmentOffset + 4 + segmentSize.length;
-    const segmentEnd = Math.min(data.length, segmentStart + segmentSize.value);
-    if (segmentEnd <= segmentStart) return false;
-
-    const tracksId = Buffer.from('1654ae6b', 'hex');
-    const trackEntryId = Buffer.from('ae', 'hex');
-    const clusterId = Buffer.from('1f43b675', 'hex');
-    const simpleBlockId = Buffer.from('a3', 'hex');
-    let offset = segmentStart;
-    let sawTrack = false;
-    while (offset < segmentEnd) {
-      const element = parseElement(offset);
-      if (!element) return false;
-      if (element.id.equals(tracksId)) {
-        let child = element.contentStart;
-        while (child < element.contentEnd) {
-          const trackEntry = parseElement(child);
-          if (!trackEntry) return false;
-          if (trackEntry.id.equals(trackEntryId)) sawTrack = true;
-          child = trackEntry.contentEnd;
-        }
-      }
-      if (element.id.equals(clusterId)) {
-        let child = element.contentStart;
-        while (child < element.contentEnd) {
-          const block = parseElement(child);
-          if (!block) return false;
-          if (block.id.equals(simpleBlockId) && block.contentEnd > block.contentStart + 3) {
-            return sawTrack;
-          }
-          child = block.contentEnd;
-        }
-      }
-      offset = element.contentEnd;
-    }
-    return false;
-  }
-
-  const readBoxes = (start, end) => {
-    const boxes = [];
-    let cursor = start;
-    while (cursor < end) {
-      if (cursor + 8 > end) return null;
-      let size = data.readUInt32BE(cursor);
-      const type = data.subarray(cursor + 4, cursor + 8).toString('ascii');
-      let headerSize = 8;
-      if (size === 1) {
-        if (cursor + 16 > end) return null;
-        const extendedSize = data.readBigUInt64BE(cursor + 8);
-        if (extendedSize > BigInt(Number.MAX_SAFE_INTEGER)) return null;
-        size = Number(extendedSize);
-        headerSize = 16;
-      } else if (size === 0) {
-        size = end - cursor;
-      }
-      if (type === 'uuid') headerSize += 16;
-      if (size < headerSize || cursor + size > end) return null;
-      boxes.push({ type, start: cursor + headerSize, end: cursor + size });
-      cursor += size;
-    }
-    return cursor === end ? boxes : null;
-  };
-  const topLevel = readBoxes(0, data.length);
-  if (!topLevel) return false;
-  const fileType = topLevel.find((box) => box.type === 'ftyp');
-  const movie = topLevel.find((box) => box.type === 'moov');
-  const mediaData = topLevel.filter((box) => box.type === 'mdat' && box.end > box.start);
-  if (
-    !fileType ||
-    fileType.end - fileType.start < 8 ||
-    (fileType.end - fileType.start - 8) % 4 !== 0 ||
-    !movie ||
-    mediaData.length === 0
-  ) {
-    return false;
-  }
-
-  const containsVideoSampleTable = (sampleTable) => {
-    const entries = readBoxes(sampleTable.start, sampleTable.end);
-    if (!entries) return false;
-    const sampleDescription = entries.find((box) => box.type === 'stsd');
-    const sampleTiming = entries.find((box) => box.type === 'stts');
-    const sampleToChunk = entries.find((box) => box.type === 'stsc');
-    const sampleSizes = entries.find((box) => box.type === 'stsz');
-    const chunkOffsetTables = entries.filter((box) => box.type === 'stco' || box.type === 'co64');
-    if (
-      !sampleDescription ||
-      !sampleTiming ||
-      !sampleToChunk ||
-      !sampleSizes ||
-      chunkOffsetTables.length !== 1
-    ) {
-      return false;
-    }
-
-    if (sampleDescription.end - sampleDescription.start < 8) return false;
-    const sampleDescriptionCount = data.readUInt32BE(sampleDescription.start + 4);
-    const sampleDescriptions = readBoxes(sampleDescription.start + 8, sampleDescription.end);
-    if (
-      sampleDescriptionCount === 0 ||
-      !sampleDescriptions ||
-      sampleDescriptions.length !== sampleDescriptionCount ||
-      sampleDescriptions.some((box) => box.end - box.start < 8)
-    ) {
-      return false;
-    }
-
-    if (sampleSizes.end - sampleSizes.start < 12) return false;
-    const constantSampleSize = data.readUInt32BE(sampleSizes.start + 4);
-    const sampleCount = data.readUInt32BE(sampleSizes.start + 8);
-    if (sampleCount === 0 || sampleCount > data.length) return false;
-    if (
-      constantSampleSize === 0 &&
-      sampleCount > Math.floor((sampleSizes.end - sampleSizes.start - 12) / 4)
-    ) {
-      return false;
-    }
-    const sampleSizeAt = (index) =>
-      constantSampleSize || data.readUInt32BE(sampleSizes.start + 12 + index * 4);
-
-    if (sampleTiming.end - sampleTiming.start < 8) return false;
-    const timingCount = data.readUInt32BE(sampleTiming.start + 4);
-    if (
-      timingCount === 0 ||
-      timingCount > Math.floor((sampleTiming.end - sampleTiming.start - 8) / 8)
-    ) {
-      return false;
-    }
-    let timedSamples = 0;
-    for (let index = 0; index < timingCount; index += 1) {
-      const entry = sampleTiming.start + 8 + index * 8;
-      const count = data.readUInt32BE(entry);
-      const delta = data.readUInt32BE(entry + 4);
-      if (count === 0 || delta === 0) return false;
-      timedSamples += count;
-      if (timedSamples > sampleCount) return false;
-    }
-    if (timedSamples !== sampleCount) return false;
-
-    if (sampleToChunk.end - sampleToChunk.start < 8) return false;
-    const sampleToChunkCount = data.readUInt32BE(sampleToChunk.start + 4);
-    if (
-      sampleToChunkCount === 0 ||
-      sampleToChunkCount > Math.floor((sampleToChunk.end - sampleToChunk.start - 8) / 12)
-    ) {
-      return false;
-    }
-    const sampleToChunkEntries = [];
-    for (let index = 0; index < sampleToChunkCount; index += 1) {
-      const entry = sampleToChunk.start + 8 + index * 12;
-      const firstChunk = data.readUInt32BE(entry);
-      const samplesPerChunk = data.readUInt32BE(entry + 4);
-      const sampleDescriptionIndex = data.readUInt32BE(entry + 8);
-      if (
-        firstChunk === 0 ||
-        (index === 0 && firstChunk !== 1) ||
-        (index > 0 && firstChunk <= sampleToChunkEntries[index - 1].firstChunk) ||
-        samplesPerChunk === 0 ||
-        sampleDescriptionIndex === 0 ||
-        sampleDescriptionIndex > sampleDescriptionCount
-      ) {
-        return false;
-      }
-      sampleToChunkEntries.push({ firstChunk, samplesPerChunk });
-    }
-
-    const chunkOffsetTable = chunkOffsetTables[0];
-    if (chunkOffsetTable.end - chunkOffsetTable.start < 8) return false;
-    const chunkCount = data.readUInt32BE(chunkOffsetTable.start + 4);
-    const offsetWidth = chunkOffsetTable.type === 'co64' ? 8 : 4;
-    if (
-      chunkCount === 0 ||
-      chunkCount > Math.floor((chunkOffsetTable.end - chunkOffsetTable.start - 8) / offsetWidth) ||
-      sampleToChunkEntries.some((entry) => entry.firstChunk > chunkCount)
-    ) {
-      return false;
-    }
-    const chunkOffsets = [];
-    for (let index = 0; index < chunkCount; index += 1) {
-      const entry = chunkOffsetTable.start + 8 + index * offsetWidth;
-      const offset =
-        offsetWidth === 8 ? data.readBigUInt64BE(entry) : BigInt(data.readUInt32BE(entry));
-      if (offset > BigInt(Number.MAX_SAFE_INTEGER)) return false;
-      chunkOffsets.push(Number(offset));
-    }
-
-    const sampleIsInsideMediaData = (offset, size) =>
-      size > 0 &&
-      Number.isSafeInteger(offset + size) &&
-      mediaData.some((box) => offset >= box.start && offset + size <= box.end);
-    let sampleIndex = 0;
-    let sampleToChunkIndex = 0;
-    for (let chunkIndex = 1; chunkIndex <= chunkCount; chunkIndex += 1) {
-      while (
-        sampleToChunkIndex + 1 < sampleToChunkEntries.length &&
-        sampleToChunkEntries[sampleToChunkIndex + 1].firstChunk <= chunkIndex
-      ) {
-        sampleToChunkIndex += 1;
-      }
-      const samplesPerChunk = sampleToChunkEntries[sampleToChunkIndex].samplesPerChunk;
-      if (sampleIndex + samplesPerChunk > sampleCount) return false;
-      let sampleOffset = chunkOffsets[chunkIndex - 1];
-      for (let index = 0; index < samplesPerChunk; index += 1) {
-        const sampleSize = sampleSizeAt(sampleIndex);
-        if (!sampleIsInsideMediaData(sampleOffset, sampleSize)) return false;
-        sampleOffset += sampleSize;
-        sampleIndex += 1;
-      }
-    }
-    return sampleIndex === sampleCount;
-  };
-
-  const movieEntries = readBoxes(movie.start, movie.end);
-  if (!movieEntries) return false;
-  for (const track of movieEntries.filter((box) => box.type === 'trak')) {
-    const trackEntries = readBoxes(track.start, track.end);
-    const media = trackEntries?.find((box) => box.type === 'mdia');
-    if (!media) continue;
-    const mediaEntries = readBoxes(media.start, media.end);
-    const handler = mediaEntries?.find((box) => box.type === 'hdlr');
-    const mediaInformation = mediaEntries?.find((box) => box.type === 'minf');
-    if (
-      !handler ||
-      handler.end - handler.start < 12 ||
-      data.toString('ascii', handler.start + 8, handler.start + 12) !== 'vide' ||
-      !mediaInformation
-    ) {
-      continue;
-    }
-    const mediaInformationEntries = readBoxes(mediaInformation.start, mediaInformation.end);
-    const sampleTable = mediaInformationEntries?.find((box) => box.type === 'stbl');
-    if (sampleTable && containsVideoSampleTable(sampleTable)) return true;
-  }
-  return false;
-}
-
 function canonicalFileWithinRoot(
   rootDir,
   repositoryPath,
@@ -6948,9 +6734,11 @@ function validateRetainedEvidenceArtifacts(record, context, rootDir, issues, mat
   for (const repositoryPath of artifactsByLabel.get('Multi-frame:') ?? []) {
     const absolutePath = path.resolve(rootDir, repositoryPath);
     if (/\.(?:mkv|mov|mp4|webm)$/i.test(repositoryPath)) {
-      if (!hasVideoFileSignature(absolutePath)) {
+      try {
+        decodeVideoEvidence(absolutePath);
+      } catch (error) {
         issues.push(
-          `${context}: Multi-frame: retained video artifact must be structurally valid and contain frame data: ${repositoryPath}`
+          `${context}: Multi-frame: retained video artifact must be structurally valid and contain frame data; bounded decoder unverified (${error.message}): ${repositoryPath}`
         );
       }
       continue;

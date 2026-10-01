@@ -1,0 +1,17 @@
+# Coverage matrix validation
+
+`node scripts/coverage-matrices/check-coverage-matrices.mjs` validates the retained matrices. `node --test scripts/coverage-matrices/test/*.test.mjs` exercises the negative controls. Source scanning is deliberately bounded static analysis, not an arbitrary runtime/data-flow proof; ordinary PR checks still need independent review when their checker, inputs or workflow change.
+
+## Retained raster and video evidence
+
+Raster validation captures a bounded immutable input, validates PNG structure and palette indices, and uses the already-declared Website `sharp` dependency to normalize/decode pixels. Multi-frame image manifests require distinct normalized pixel content with dimensions/channels bound to the digest; changed filenames, metadata or compression alone are insufficient.
+
+Video evidence requires the supported **Linux** verification environment: Node 22, Python 3 with Linux `memfd_create`/seals/resource limits, and FFmpeg/ffprobe with seekable `fd:` input. The validator uses `/usr/bin/python3`, `/usr/bin/ffmpeg`, and `/usr/bin/ffprobe` explicitly; pnpm/project PATH entries cannot replace them. CI uses Ubuntu 24.04's official FFmpeg **6.1.x** package line, records the exact distro/Python/FFmpeg versions, and must decode the retained real fixtures before the repository suite. A version string alone is not proof. The distro patch build can advance with security updates; this is a recorded baseline, not a claim of bit-for-bit immutable package installation. No decoder binary is bundled in the repository. Local prototype validation used FFmpeg 7.1.5; that does not replace the actual CI 6.1.x receipt.
+
+Missing Linux/kernel/Python/decoder support is reported as **unverified** and fails retained-video validation. The required fixture gate does not skip on an unsupported platform. Contributors using another OS can run this gate in the supported Linux environment; no native-platform execution is inferred.
+
+The decoder receives a sealed, seekable copy of bounded input through `fd:`. Only the `fd` input protocol is allowed, so nested file/network URLs are excluded. Both faststart and moov-at-end MP4/MOV layouts remain supported; WebM/MKV are also covered. Audio, subtitle and data streams are excluded from the chosen video stream's frame receipt.
+
+Current validator constraints are: 32 MiB input, 4,194,304 pixels/frame, 1,200 frames, 60 seconds metadata and decoded presentation span, 15 seconds per child wall time, 20 seconds CPU, 1 GiB child address space and 256 KiB result output. Exceeding a limit is unverified, never successful truncated-prefix validation. At least two fully decoded, content-distinct frames are required. These are resource/evidence constraints, not a Proto UI behavior guarantee or sufficient proof of the captured interaction's correctness. Before adoption, the retained Website evidence tree and documentation were audited: no accepted video files were present, and the matrix explicitly marked transition recordings missing. Future evidence outside these constraints needs an explicitly reviewed limit or format change rather than a weakened validation result.
+
+Primary references: [FFmpeg fd protocol](https://ffmpeg.org/ffmpeg-all.html#fd), [FFmpeg 6.1.1 protocol source](https://github.com/FFmpeg/FFmpeg/blob/n6.1.1/libavformat/file.c), [Python memfd](https://docs.python.org/3/library/os.html#os.memfd_create), and [Python resource limits](https://docs.python.org/3/library/resource.html#resource.setrlimit).
