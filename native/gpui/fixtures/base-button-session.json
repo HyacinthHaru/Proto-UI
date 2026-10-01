@@ -46,27 +46,6 @@
         }
       },
       {
-        "kind": "a11y.snapshot",
-        "sessionId": "button-enabled",
-        "viewEpoch": 0,
-        "snapshot": {
-          "semanticObjectId": "button-enabled:a11y:1",
-          "role": "button",
-          "name": {
-            "kind": "content"
-          },
-          "states": {
-            "disabled": false
-          },
-          "actions": {
-            "activate": {
-              "event": "click"
-            }
-          },
-          "relations": {}
-        }
-      },
-      {
         "kind": "lifecycle",
         "sessionId": "button-enabled",
         "event": {
@@ -297,27 +276,6 @@
         "sessionId": "button-disabled",
         "event": {
           "type": "instance.created"
-        }
-      },
-      {
-        "kind": "a11y.snapshot",
-        "sessionId": "button-disabled",
-        "viewEpoch": 0,
-        "snapshot": {
-          "semanticObjectId": "button-disabled:a11y:1",
-          "role": "button",
-          "name": {
-            "kind": "content"
-          },
-          "states": {
-            "disabled": true
-          },
-          "actions": {
-            "activate": {
-              "event": "click"
-            }
-          },
-          "relations": {}
         }
       },
       {
