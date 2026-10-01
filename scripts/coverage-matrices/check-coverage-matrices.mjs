@@ -3599,8 +3599,8 @@ function harnessProductionSourceSet(rootDir) {
 }
 
 function discoverHarnessForbiddenStateMachineSources(rootDir) {
-  const { sourceRoot, harnessSources } = harnessProductionSourceSet(rootDir);
-  return harnessSources
+  const { sourceRoot, candidates } = harnessProductionSourceSet(rootDir);
+  return candidates
     .filter((absolutePath) => /\.(?:html?|[cm]?[jt]sx?)$/i.test(absolutePath))
     .filter((absolutePath) => {
       const relativePath = path.relative(sourceRoot, absolutePath).replaceAll('\\', '/');
@@ -5546,8 +5546,9 @@ function reachableSourcePaths(
   root = process.cwd(),
   { promotionPackages = false } = {}
 ) {
+  const canonicalRoot = fs.realpathSync(root);
   const packageMetadata = new Set();
-  const promotionGlobBudget = { entries: 0, patterns: 0 };
+  const sourceGlobBudget = { entries: 0, patterns: 0 };
   const candidateByPath = new Map(
     candidates.map((candidate) => [path.resolve(candidate), candidate])
   );
@@ -5616,11 +5617,14 @@ function reachableSourcePaths(
       variants
         .map((candidate) => candidateByPath.get(candidate) ?? candidate)
         .filter((candidate) => {
-          if (rootRelative) {
-            const relative = path.relative(root, canonicalImportTarget(candidate));
-            if (relative.startsWith('..') || path.isAbsolute(relative))
-              throw new Error('Vite-root import resolves outside the repository');
-          }
+          const canonical = fs.existsSync(candidate)
+            ? fs.realpathSync(candidate)
+            : canonicalImportTarget(candidate);
+          const relative = path.relative(canonicalRoot, canonical);
+          if (relative.startsWith('..') || path.isAbsolute(relative))
+            throw new Error(
+              `${rootRelative ? 'Vite-root' : 'Source'} import resolves outside the repository`
+            );
           return fs.existsSync(candidate) && fs.statSync(candidate).isFile();
         }) ?? null
     );
@@ -5638,6 +5642,9 @@ function reachableSourcePaths(
   const visitedContexts = new Set();
   while (pending.length > 0) {
     const { sourcePath, viteRoot } = pending.pop();
+    const sourceRelative = path.relative(canonicalRoot, fs.realpathSync(sourcePath));
+    if (sourceRelative.startsWith('..') || path.isAbsolute(sourceRelative))
+      throw new Error('Source import resolves outside the repository');
     const contextKey = `${sourcePath}\0${viteRoot}`;
     if (visitedContexts.has(contextKey)) continue;
     if (promotionPackages && visitedContexts.size >= 500)
@@ -5655,7 +5662,8 @@ function reachableSourcePaths(
       for (const target of viteGlobTargets(root, relativeSourcePath, patterns, {
         aliasConfig,
         viteRoot,
-        ...(promotionPackages ? { packageRoot: root, globBudget: promotionGlobBudget } : {}),
+        packageRoot: root,
+        globBudget: sourceGlobBudget,
       })) {
         if (target.absolutePath) {
           reachable.add(target.absolutePath);
@@ -5919,6 +5927,18 @@ function discoverHarnessRawImports(rootDir) {
   const rawImports = [];
   for (const absolutePath of candidates) {
     const sourcePath = path.relative(rootDir, absolutePath).replaceAll('\\', '/');
+    if (/\.html?$/i.test(absolutePath)) {
+      for (const specifier of documentBaseSpecifiers(fs.readFileSync(absolutePath, 'utf8')))
+        rawImports.push({
+          sourcePath,
+          specifier,
+          category:
+            specifier === DYNAMIC_DOCUMENT_BASE_SPECIFIER
+              ? 'dynamic-document-base'
+              : 'external-document-base',
+          resolvedPath: null,
+        });
+    }
     for (const specifier of externalStylesheetSpecifiersForWebsiteSource(absolutePath)) {
       rawImports.push({
         sourcePath,
@@ -5968,6 +5988,15 @@ function discoverHarnessRawImports(rootDir) {
 
 function validateHarnessRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverHarnessRawImports(rootDir)) {
+    if (
+      rawImport.category === 'external-document-base' ||
+      rawImport.category === 'dynamic-document-base'
+    ) {
+      issues.push(
+        `${relativePath}: ${rawImport.category === 'external-document-base' ? `external document base href \`${rawImport.specifier}\`` : 'dynamic document base href'} in \`${rawImport.sourcePath}\` is not reviewed for Harness consumer-wall review`
+      );
+      continue;
+    }
     if (rawImport.category === 'external-stylesheet') {
       issues.push(
         `${relativePath}: external stylesheet \`${rawImport.specifier}\` in \`${rawImport.sourcePath}\` is not reviewed`

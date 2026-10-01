@@ -10751,3 +10751,108 @@ test('latest entry review: self-reference conditions, imports aliases and traver
     else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
   }
 });
+
+test('current Harness review: external document bases cannot remap relative resources', () => {
+  for (const file of ['apps/agent-harness/index.html', 'apps/agent-harness/public/route.html']) {
+    const root = createRoot();
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      '<base href="https://cdn.example/"><script src="./runtime.js"></script>'
+    );
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /external document base.*cdn.example/);
+  }
+});
+
+test('current Harness review: repository-local shared helpers keep the Harness ownership gate', () => {
+  const root = createRoot(),
+    entry = 'apps/agent-harness/src/Entry.ts',
+    helper = 'apps/shared/raw-focus.ts';
+  for (const file of [entry, helper])
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+  fs.writeFileSync(path.join(root, entry), "import '../../shared/raw-focus';");
+  fs.writeFileSync(path.join(root, helper), "document.querySelector('button').focus();");
+  writeValidMatrices(root);
+  assert.match(
+    validationMessage(root),
+    /Harness source `apps\/shared\/raw-focus.ts`.*forbidden interaction/
+  );
+});
+
+test('current Harness review: document-base controls cover external and dynamic values but retain local bases', () => {
+  for (const [base, reject] of [
+    ['https://cdn.example/', true],
+    ['//cdn.example/', true],
+    ['{{ resourceBase }}', true],
+    ['/local/', false],
+  ]) {
+    const root = createRoot(),
+      file = path.join(root, 'apps/agent-harness/index.html');
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, `<base href="${base}"><script src="./runtime.js"></script>`);
+    fs.writeFileSync(path.join(root, 'apps/agent-harness/runtime.js'), 'export const safe=true;');
+    writeValidMatrices(root);
+    if (reject) assert.match(validationMessage(root), /document base href/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('current Harness review: reachable shared helpers retain geometry and ARIA checks without business false positives', () => {
+  for (const [source, reject] of [
+    ["document.querySelector('button').ariaExpanded='true';", true],
+    ["document.querySelector('button').getBoundingClientRect();", true],
+    [
+      'const data={focus(){},getBoundingClientRect(){return {width:1}}};data.focus();data.getBoundingClientRect();',
+      false,
+    ],
+  ]) {
+    const root = createRoot(),
+      entry = 'apps/agent-harness/src/Entry.ts',
+      helper = 'apps/shared/helper.ts';
+    for (const file of [entry, helper])
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, entry), "import '../../shared/helper';");
+    fs.writeFileSync(path.join(root, helper), source);
+    writeValidMatrices(root);
+    if (reject)
+      assert.match(
+        validationMessage(root),
+        /Harness source `apps\/shared\/helper.ts`.*forbidden interaction/
+      );
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('current Harness review: cross-repository imports and symlinks are rejected before source bytes are read', () => {
+  for (const symlink of [false, true]) {
+    const root = createRoot(),
+      outside = createRoot(),
+      foreign = path.join(outside, 'foreign.ts'),
+      entry = path.join(root, 'apps/agent-harness/src/Entry.ts');
+    fs.mkdirSync(path.dirname(entry), { recursive: true });
+    fs.writeFileSync(foreign, 'export const privateFixture=true;');
+    const localLink = path.join(root, 'apps/agent-harness/src/foreign[1].ts');
+    if (symlink) fs.symlinkSync(foreign, localLink);
+    const specifier = symlink
+      ? './foreign[1].ts'
+      : path.relative(path.dirname(entry), foreign).replaceAll('\\', '/');
+    fs.writeFileSync(entry, `import ${JSON.stringify(specifier)};`);
+    writeValidMatrices(root);
+    const original = fs.readFileSync;
+    let readForeign = false;
+    fs.readFileSync = function (file, ...args) {
+      if (typeof file === 'string' && (file === foreign || file === localLink)) {
+        readForeign = true;
+        throw new Error('foreign bytes must not be read');
+      }
+      return original.call(this, file, ...args);
+    };
+    try {
+      assert.throws(() => validateCoverageMatrices({ rootDir: root }), /outside the repository/);
+      assert.equal(readForeign, false);
+    } finally {
+      fs.readFileSync = original;
+    }
+  }
+});
