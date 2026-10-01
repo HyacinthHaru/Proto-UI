@@ -1,0 +1,189 @@
+{
+  "status": "Exact-head evidence supplement; terminal repository CI success; maintainer approval and merge pending",
+  "preparedAt": "2026-10-01T19:28:57.919650+00:00",
+  "product": {
+    "head": "2b9529fb8236b6051128d857cf4a1309bed91b84",
+    "tree": "a6236e383f9e902c64f5a2356a7ccc39db10d4ae",
+    "parent": "8595a59165635be05cf83c610904859442cc58a8"
+  },
+  "sourceSelection": {
+    "originalAllowlistFiles": 104,
+    "additionalNamedFiles": 33,
+    "totalUniqueSourceFiles": 137,
+    "originalPNG": 4,
+    "additionalCandidatePNG": 1,
+    "totalPNG": 5,
+    "duplicateSourcesReused": 5,
+    "rawBytes": 49480432
+  },
+  "archive": {
+    "path": "records.tar.gz",
+    "bytes": 2047838,
+    "sha256": "9c587f974a4a1c0b0086d876e65ca6a45483eb477275c6ae5113f753bee89bc5",
+    "members": 133,
+    "sourceMembers": 132,
+    "memberManifest": "records/MEMBER-MANIFEST.json",
+    "uncompressedMemberBytes": 48845362
+  },
+  "priorImmutablePackets": [
+    {
+      "commit": "4916d8b9fa5ec9cc9c41bea247c7d410f492e680",
+      "url": "https://github.com/HyacinthHaru/Proto-UI/tree/4916d8b9fa5ec9cc9c41bea247c7d410f492e680/evidence/2026-09-29/a11y-part-relationships-main-17a2cff9",
+      "reuse": "Link only;old17a2 native/57PNG/budget origin retain actual source/date. Do not copy or relabel as8595 execution.",
+      "source": "existing evidence-commit-receipt.json"
+    },
+    {
+      "commit": "c3e9cfc44a1e286dae5ac5daa0fac48cf4a294ff",
+      "url": "https://github.com/HyacinthHaru/Proto-UI/tree/c3e9cfc44a1e286dae5ac5daa0fac48cf4a294ff/evidence/2026-10-01/a11y-gpui-composition",
+      "reuse": "Link only;f5 baseline and original17a2 fixture composition failure. New peer14-test red/control/green remains separate.",
+      "source": "existing composition-public-upload-verified.json"
+    }
+  ],
+  "historicalPendingInterpretation": [
+    {
+      "historical": "Inventory/receipts saying native candidate pending",
+      "currentEvidence": "records/projection-click-fix/native-control/execution-receipt.json",
+      "now": "Completed five-case native observer control; precommit candidate with diagnostic source, not uninstrumented committed test execution."
+    },
+    {
+      "historical": "Original diagnostic summary/receipt pending full rerun",
+      "currentEvidence": "records/full-test-8595-rerun-receipt.json",
+      "now": "Second unmodified 8595 full run failed; preserve both original full failures."
+    },
+    {
+      "historical": "Final head/CI pending in historical inventory or review",
+      "currentEvidence": "records/projection-click-fix/commit-receipt.json and final-binding-2b9529fb.json",
+      "now": "2b signed/pushed/source bound; final canonical run36912872501 has12/12 repository jobs success, main2720pass and browser137pass including original projection5. The terminal receipt and independent complete reconciliation supplement, not rewrite, historical pending snapshots."
+    }
+  ],
+  "claims": {
+    "gpui": "Pre-view non-null A11y IR is cached and included in projection.install; the early standalone pre-install snapshot is suppressed. Initial two-failure test included one invalid null-on-public-dispose premise; corrected same14 tests go1fail/13pass to14pass. No detach/null callback execution claim.",
+    "input": "One observed red native forced input targeted Button content DIV instead of the requested Switch option; no subsequent valueChange was observed in that buffer. Exact animation/flip/geometric cause remains unisolated. The one-line normal click restores actionability/hit checking without changing outcome predicates/timeouts.",
+    "focused": "Uninstrumented candidate full5-case test bytes equal the final2b test blob2dd3d4eb07a2e06e2cdce6144c5816cb2eb9d213/SHA0ccd09ca92bb3356ac4b123460573b46d6e35ebbe45fa77894b0e9a705eb2d35;5pass.",
+    "native": "Native comparison ran at19:11 on8595+saved candidate+separately hashed diagnostic patch. Saved candidate bytes bind to2b; actual executed instrumented test source does not equal the committed test. It observed18trusted clicks/7WC valueChange and matched Switch/Select option events;finalSelect image is a closing-fade frame.",
+    "historicalControls": "Preserve two full local failures, isolated4pass1fail, three earlier positive-only diagnostics, distinct labelled failures and both actual red scenes. Do not relabel scope-limited diagnostics as original complete acceptance.",
+    "review": "Local independent working/input review is partial/ABSTAIN,not GitHub approval or merge authorization."
+  },
+  "ci2b": {
+    "runId": 36912872501,
+    "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/36912872501",
+    "checkout": "88d102e8fede5f90b7209e280d44c2d7c50a1f9f",
+    "checkoutTreeEqualsProduct": true,
+    "statusBasis": "Terminal final run/test receipt and full logs supplied by root, plus separate complete independent local CI reconciliation; historical pending records retained unchanged.",
+    "package": {
+      "status": "passed",
+      "jobId": 110539726964,
+      "builds": "44/44",
+      "manifests": 44,
+      "budgetsPassed": 9,
+      "node": "22.23.3",
+      "binding": "records/projection-click-fix/ci-package-binding-2b9529fb.json"
+    },
+    "rustMacOS": {
+      "status": "passed",
+      "jobId": 110539621635,
+      "passed": 154,
+      "ignored": 1,
+      "binding": "records/projection-click-fix/ci-rust-macos-binding-2b9529fb.json"
+    },
+    "rustNodeInterop": {
+      "status": "passed",
+      "jobId": 110539621508,
+      "passed": 1,
+      "node": "22.23.2",
+      "binding": "records/projection-click-fix/ci-rust-interop-binding-2b9529fb.json"
+    },
+    "test": {
+      "status": "passed",
+      "jobId": 110539621264,
+      "node": "v22.23.3",
+      "main": {
+        "filesPassed": 499,
+        "filesSkipped": 3,
+        "testsPassed": 2720,
+        "todo": 34,
+        "includesActualChromiumScroll": true
+      },
+      "browser": {
+        "filesPassed": 27,
+        "testsPassed": 137,
+        "homepageProjectionFile": {
+          "tests": 5,
+          "passed": 5
+        }
+      },
+      "binding": "records/projection-click-fix/ci-final-receipt-2b9529fb.json",
+      "log": "records/projection-click-fix/ci-test-2b9529fb.log"
+    },
+    "wholeRun": {
+      "status": "success",
+      "repositoryJobsExecutedAndSucceeded": 12,
+      "runMetadata": "records/projection-click-fix/ci-final-run-2b9529fb.json"
+    },
+    "independentCompleteReconciliation": {
+      "path": "records/projection-click-fix/ci-complete-reconciliation-2b9529fb.json",
+      "rawSha256": "f77b7e92a56ebdad3d7933bd0476545e9a05ae6e4719eea31c1f01ddec9ec7e0",
+      "scope": "bounded independent local CI/source reconciliation; not a GitHub approval or merge"
+    }
+  },
+  "finalizationDebt": [
+    "Root final packet integrity/content review and any subsequent evidence-only publication",
+    "Final maintainer/platform approval and merge remain separate; local/CI success is not a review disposition"
+  ],
+  "images": [
+    {
+      "path": "screenshots/projection-scope-diagnostic/passive-captures/initial.png",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/initial.png",
+      "bytes": 98472,
+      "sha256": "bb9b09cd48fb6a3ca9aa59a4219392998eccee1356f04c381cc01155e638c199",
+      "verbatim": true,
+      "classification": "early positive diagnostic frame"
+    },
+    {
+      "path": "screenshots/projection-scope-diagnostic/passive-captures/success.png",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/success.png",
+      "bytes": 94748,
+      "sha256": "9d5cc6fd66a901da51f33f9827fe6d4b3f6be438be09fcae037c359c76219140",
+      "verbatim": true,
+      "classification": "early positive diagnostic frame"
+    },
+    {
+      "path": "screenshots/projection-scope-diagnostic/minimal-message-failure-capture/capture/failure.png",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/capture/failure.png",
+      "bytes": 96457,
+      "sha256": "9512195e233f62a2be3c3259fa2ddc43ad5e37d8cf207ee862a6bf2f32247887",
+      "verbatim": true,
+      "classification": "actual post-timeout failure"
+    },
+    {
+      "path": "screenshots/projection-scope-diagnostic/minimal-input-events/capture/failure.png",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/capture/failure.png",
+      "bytes": 102864,
+      "sha256": "257c18c37c7442fa2ec64b84f9da0bd5c1c3bb046b4f6a8d6660a50095fd0a88",
+      "verbatim": true,
+      "classification": "actual post-timeout failure"
+    },
+    {
+      "path": "screenshots/projection-click-fix/native-control/capture/success.png",
+      "sourceRelativePath": "projection-click-fix/native-control/capture/success.png",
+      "bytes": 94234,
+      "sha256": "ff0b9df18f23d321f081f5b3ce26b1c6f078f459d17bc21e4a131d65545b8e2a",
+      "verbatim": true,
+      "classification": "candidate positive closing-fade frame"
+    }
+  ],
+  "sourceCodePublication": "Any path-redacted diagnostic TS/MJS/config/diff is explicitly a transformed derivative,not the original executed bytes or a claimed runnable portable tool. Exact raw/public hashes are per source.",
+  "manifestFrozen": true,
+  "updatedAt": "2026-10-01T19:37:00.395734+00:00",
+  "requestParaphrase": "Complete the existing Issue #549 contribution and resolve the actual integration and validation issues encountered.",
+  "sourceBindingSummary": {
+    "head": "2b9529fb8236b6051128d857cf4a1309bed91b84",
+    "tree": "a6236e383f9e902c64f5a2356a7ccc39db10d4ae",
+    "netPathsVersusF5": 49,
+    "trackedWebInputsUnchanged": 315,
+    "oldFeatureNonFixtureFilesUnchanged": 46,
+    "gpuiFilesUnchanged": 3,
+    "receipt": "records/projection-click-fix/final-binding-2b9529fb.json"
+  },
+  "manifestMeaning": "Exact prepared bytes after terminal additions and formatting, for root review; not publication approval."
+}

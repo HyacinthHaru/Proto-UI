@@ -1,0 +1,2299 @@
+{
+  "stage": "Prepared final local snapshot for root review; terminal CI included; not published",
+  "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+  "entries": [
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "candidate-change.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 1159,
+      "rawSha256": "67fb50c886a9177fd75bf36c35dc91527e122e0ce8beff53b646ffd706d528ba",
+      "publicDestination": "records/candidate-change.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 1059,
+      "publishedSha256": "f4ffcf11b36377f7f1627c48b5bd997eb12c765ac22535e8be69d0c7742bb930",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "persistent_evidence_root": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "commit-receipt.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 1040,
+      "rawSha256": "a9c2ab7800d267b57cd15697ae0fff9c250994d0c1b3ff08467e89d091f4110d",
+      "publicDestination": "records/commit-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 1040,
+      "publishedSha256": "a9c2ab7800d267b57cd15697ae0fff9c250994d0c1b3ff08467e89d091f4110d",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "baseline-peer-tests-receipt.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 582,
+      "rawSha256": "ead95b8b4715ae66d4536ab274d66d0d77c26e338cfd2d3519dffe55f73307bc",
+      "publicDestination": "records/baseline-peer-tests-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 582,
+      "publishedSha256": "ead95b8b4715ae66d4536ab274d66d0d77c26e338cfd2d3519dffe55f73307bc",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "baseline-peer-tests.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 2142,
+      "rawSha256": "f0facdb3384760f4b01694c89d06191b0439b55893e2c9d3f0ef947f099e2165",
+      "publicDestination": "records/baseline-peer-tests.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 2097,
+      "publishedSha256": "55e1ed063321d302f0082df15df3054267e1852abfe6bbcad17564484cf50060",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "initial-peer-session.test.ts",
+      "group": "gpui-red-control-green",
+      "rawBytes": 12569,
+      "rawSha256": "3f21bc73c673e6669fd5a137a9750a679a86e6125f4b9f0613e81ef612081039",
+      "publicDestination": "records/initial-peer-session.test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 12569,
+      "publishedSha256": "3f21bc73c673e6669fd5a137a9750a679a86e6125f4b9f0613e81ef612081039",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "control-premise-correction.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 553,
+      "rawSha256": "a4a2a189c7db608e47f6ed465a6072b737d00a59d90f6140779d12a97a39891f",
+      "publicDestination": "records/control-premise-correction.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 553,
+      "publishedSha256": "a4a2a189c7db608e47f6ed465a6072b737d00a59d90f6140779d12a97a39891f",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "baseline-corrected-peer-tests-receipt.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 574,
+      "rawSha256": "b18533e55fc0bb51b8016a75bbc93cdf5f62fe71a50eb0fd0677b1aa7b8d41f1",
+      "publicDestination": "records/baseline-corrected-peer-tests-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 574,
+      "publishedSha256": "b18533e55fc0bb51b8016a75bbc93cdf5f62fe71a50eb0fd0677b1aa7b8d41f1",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "baseline-corrected-peer-tests.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 1286,
+      "rawSha256": "3eb97c944f4f3d536e2f7d14b87e836dd9ca00c16e7c38f1afacdb5626d8ea8b",
+      "publicDestination": "records/baseline-corrected-peer-tests.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 1241,
+      "publishedSha256": "f57f0a43962c7db274ec3762a67d44848e8cea1ce457e37f58c06bfb71a2ac55",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "candidate-peer-tests-receipt.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 560,
+      "rawSha256": "eccea8dad8124e526bb142cb14c6e79532541f905d5e374d8d7789d9e868913d",
+      "publicDestination": "records/candidate-peer-tests-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 560,
+      "publishedSha256": "eccea8dad8124e526bb142cb14c6e79532541f905d5e374d8d7789d9e868913d",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "candidate-peer-tests.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 337,
+      "rawSha256": "cdaf6272f76611e075625eedf652340732734febe1d1beee7b6d739b842c5106",
+      "publicDestination": "records/candidate-peer-tests.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 292,
+      "publishedSha256": "a631b280b15f7c05b99e89747d2d346a61d6972eee32b4c7fabc85ea3addf1c2",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "fixture-generation-receipt.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 804,
+      "rawSha256": "f066e9935f031907227e48818ff12baa94e198779d8a019afedc097a3f594f3c",
+      "publicDestination": "records/fixture-generation-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 759,
+      "publishedSha256": "1608036517e1d7a1205a9d320410a489cdd92f82747edcfd96d57031f3bff1d7",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "fixture-check.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 306,
+      "rawSha256": "8a26c0103470b2d72194c040c093c3fa4bae991f2c4ad4b98c9b27955fa665d8",
+      "publicDestination": "records/fixture-check.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 261,
+      "publishedSha256": "61063ee124d6279202558407f2a688d53a7346ff08d57206dac5fbc79ace6b74",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "fixture-tests.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 2934,
+      "rawSha256": "30df0648f86e68796c6879a3c92cc0d9d0c58ee3e44cbf542a7d471107aa9b6c",
+      "publicDestination": "records/fixture-tests.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 2889,
+      "publishedSha256": "cbcb0cc687bb5cd29c012f20cf433c3119eb0a1fb33d9030f88695321cdf4c08",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "types-receipt.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 302,
+      "rawSha256": "e9d8f0c6dfb2f1f7398f57f3311cf8029edff7d356b923121aa2ab37142c2122",
+      "publicDestination": "records/types-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 302,
+      "publishedSha256": "e9d8f0c6dfb2f1f7398f57f3311cf8029edff7d356b923121aa2ab37142c2122",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "types.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 833,
+      "rawSha256": "f56719029466d35323c9acf20791ce0ec82740b2017e0fd28fd2c814f55e47be",
+      "publicDestination": "records/types.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 743,
+      "publishedSha256": "e005c4220b691e1b1c4e09634139a50bf5c6a89fe09fd6dd629ea39b53090641",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "integration-validation-receipt.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 3304,
+      "rawSha256": "764ea8c8d215fc4fd474f1418b5ab2fcf22b84c71ea620916fd10a126bc46847",
+      "publicDestination": "records/integration-validation-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 3025,
+      "publishedSha256": "e4b02d9b223ba48c784f1e179e09aef89ada6e3a1c732e5651ae80f02d6520d4",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 6,
+        "cargo_home": 3
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "peer-and-protocol-tests.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 613,
+      "rawSha256": "3fd35a962a6c0623723b6ad0c47458fbda2f4895b8d0e4827f7e53b42d92a123",
+      "publicDestination": "records/peer-and-protocol-tests.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 568,
+      "publishedSha256": "c01ef33907b5e2626f3273198b10bd7c033d52a55b1f746edb03416f72d5abe8",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "rust-clippy.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 10872,
+      "rawSha256": "2749420a88c0db2e1c4c06596edeae7390113778592c9aad492dedeb4882f83f",
+      "publicDestination": "records/rust-clippy.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 10737,
+      "publishedSha256": "bea58b3b64ed2c404c43ff015906fc26a5b1c242a6d3dbf93975c58c90cedb1f",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 3
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "rust-workspace.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 17432,
+      "rawSha256": "9f163b2c45173061c251cba9d61dba89a68c06cb93a36f7d0ca6cb821038ac98",
+      "publicDestination": "records/rust-workspace.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 16247,
+      "publishedSha256": "b5e4d983f72322971c996cfe747a57d1d6fc49b93068ff12718d4961db8c2920",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 3,
+        "persistent_evidence_root": 21
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "rust-node-interop.log",
+      "group": "gpui-red-control-green",
+      "rawBytes": 801,
+      "rawSha256": "6ea0f04286b653f83934287f4478ea06397ab44ab74b53b0ca40940ff42405f2",
+      "publicDestination": "records/rust-node-interop.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 706,
+      "publishedSha256": "0c4a738730ffddf913142c4ba43e87e13684ac60a1889d15768eec0402020a0a",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1,
+        "persistent_evidence_root": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "independent-review/working-review.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 13391,
+      "rawSha256": "98ba1ddc6ec71798fed09527b26b7c863b824085241119f40058707ceea8f4ee",
+      "publicDestination": "records/independent-review/working-review.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 13244,
+      "publishedSha256": "385313a19b97a61f78e8383c0ed76a6c3f5d623d74d568ff9f0b6d3e4a4dcad6",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "private_source_reference_redaction": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "independent-review/final-binding-8595.json",
+      "group": "gpui-red-control-green",
+      "rawBytes": 2934,
+      "rawSha256": "da93efe9b1aaf28872837a303b37e6a0c9130e1312717c63b44a4944e96f195c",
+      "publicDestination": "records/independent-review/final-binding-8595.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2934,
+      "publishedSha256": "da93efe9b1aaf28872837a303b37e6a0c9130e1312717c63b44a4944e96f195c",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "ci-final-run-8595.json",
+      "group": "canonical-ci-8595",
+      "rawBytes": 31106,
+      "rawSha256": "d0b6f74fcc8c473138ddcdc3830e66ef4aba2bdd4b723fc488b4c869d6d993d7",
+      "publicDestination": "records/ci-final-run-8595.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 31106,
+      "publishedSha256": "d0b6f74fcc8c473138ddcdc3830e66ef4aba2bdd4b723fc488b4c869d6d993d7",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "ci-final-receipt-8595.json",
+      "group": "canonical-ci-8595",
+      "rawBytes": 2171,
+      "rawSha256": "d404be3e4712912aad313db0dada1cfbfa9936743096b6810253c25790285145",
+      "publicDestination": "records/ci-final-receipt-8595.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2171,
+      "publishedSha256": "d404be3e4712912aad313db0dada1cfbfa9936743096b6810253c25790285145",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "ci-test-8595.log",
+      "group": "canonical-ci-8595",
+      "rawBytes": 269691,
+      "rawSha256": "259f0baba70144ca940a25f64813c32f988efc3bf39dc2f90ebb1697c84b998f",
+      "publicDestination": "records/ci-test-8595.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 269468,
+      "publishedSha256": "b82306aa0ce4d79bcbd170ced5acf9bce8929ba941c0b8c370403102437be2df",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "ci_linux_workspace": 13,
+        "ci_toolcache": 1,
+        "ci_runner_home_linux": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "ci-rust-macos-8595.log",
+      "group": "canonical-ci-8595",
+      "rawBytes": 40122,
+      "rawSha256": "2af8d2df17f4e2e154f6735ee6e8ac09a2fc7112ea9c1b30970054d491c03af2",
+      "publicDestination": "records/ci-rust-macos-8595.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 39917,
+      "publishedSha256": "4d6bcf0dce97a7212b05b0c8b39d860d6feaaecc58468ace18bb61da673fd0dd",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "ci_macos_workspace": 13,
+        "homebrew": 27,
+        "ci_runner_home_macos": 7
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "ci-rust-interop-8595.log",
+      "group": "canonical-ci-8595",
+      "rawBytes": 20864,
+      "rawSha256": "7c45cce841ce9d20ef45945f4c3a5ed3408610a142f5210bfb7f9b6a6918e696",
+      "publicDestination": "records/ci-rust-interop-8595.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 20741,
+      "publishedSha256": "6c11a27135ae6671b7668885e647ec33629a5299afa3ffb735d079c94115f120",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "ci_macos_workspace": 9,
+        "homebrew": 27,
+        "ci_runner_home_macos": 8
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "ci-package-8595.log",
+      "group": "canonical-ci-8595",
+      "rawBytes": 48205,
+      "rawSha256": "6e9834fac6b26b4ee2028de7b1341edef72ec55163fcd006d0ca9d1ec61605e4",
+      "publicDestination": "records/ci-package-8595.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 48054,
+      "publishedSha256": "f4cf5bdb8f293b868b817b4fce1a2d9a4578bbec4b0b82cdfb05d6252a21ab24",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "ci_linux_workspace": 9,
+        "ci_toolcache": 1,
+        "ci_runner_home_linux": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "ci-package-checkout-8595.json",
+      "group": "canonical-ci-8595",
+      "rawBytes": 2817,
+      "rawSha256": "e80b37ed8024e8c021c1d2fccdec9a900e3752506fcffb4e90f58b7a8c6ec2c7",
+      "publicDestination": "records/ci-package-checkout-8595.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2817,
+      "publishedSha256": "e80b37ed8024e8c021c1d2fccdec9a900e3752506fcffb4e90f58b7a8c6ec2c7",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "ci-package-binding-8595.json",
+      "group": "canonical-ci-8595",
+      "rawBytes": 3292,
+      "rawSha256": "007b3c95e4d0c7e7d408af07d19443a654dc91c8e28f508047a389f0a869b51b",
+      "publicDestination": "records/ci-package-binding-8595.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 3292,
+      "publishedSha256": "007b3c95e4d0c7e7d408af07d19443a654dc91c8e28f508047a389f0a869b51b",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "independent-review/ci-reconciliation-8595.json",
+      "group": "canonical-ci-8595",
+      "rawBytes": 10682,
+      "rawSha256": "f8a3c2ff7714e90c3ea106ca1b3786bf439e9e401dd43e3cfb8a7a1fd64ca00d",
+      "publicDestination": "records/independent-review/ci-reconciliation-8595.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 10682,
+      "publishedSha256": "f8a3c2ff7714e90c3ea106ca1b3786bf439e9e401dd43e3cfb8a7a1fd64ca00d",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "full-test-8595-receipt.json",
+      "group": "local-full-and-original-file-failures",
+      "rawBytes": 538,
+      "rawSha256": "64acd1c24b6f5b8fd666e01386f7ba8f9003a52ed96dd52393bc07c8b15864c1",
+      "publicDestination": "records/full-test-8595-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 538,
+      "publishedSha256": "64acd1c24b6f5b8fd666e01386f7ba8f9003a52ed96dd52393bc07c8b15864c1",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "full-test-8595.log",
+      "group": "local-full-and-original-file-failures",
+      "rawBytes": 119694,
+      "rawSha256": "7876c8dbc7282ec62b4ebb63068f94b15d27085799ce94e17231e269e7f8eb23",
+      "publicDestination": "records/full-test-8595.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 119164,
+      "publishedSha256": "09b493dfd74908be443ed2de8b7c139217e326b4e2d3b59bb70b112883e4590c",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 8,
+        "host_temporary_root": 5
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "full-test-8595-rerun-receipt.json",
+      "group": "local-full-and-original-file-failures",
+      "rawBytes": 1223,
+      "rawSha256": "108def6d7770b41d59d2b8c7f970a982cea3af5e46eda6b2e824819fa24c9d69",
+      "publicDestination": "records/full-test-8595-rerun-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 1223,
+      "publishedSha256": "108def6d7770b41d59d2b8c7f970a982cea3af5e46eda6b2e824819fa24c9d69",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "full-test-8595-rerun.log",
+      "group": "local-full-and-original-file-failures",
+      "rawBytes": 119246,
+      "rawSha256": "596e74075894ca3f85b82e958ac535102a3b8aa4e1248cbfdd25751cfe02d0d7",
+      "publicDestination": "records/full-test-8595-rerun.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 118716,
+      "publishedSha256": "7c5bbd30e41cf5f6b93c0a49ebb42e4979110c54766312dba60463086cd37975",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 8,
+        "host_temporary_root": 5
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/full-retry-supplement.json",
+      "group": "local-full-and-original-file-failures",
+      "rawBytes": 2092,
+      "rawSha256": "c50412b97df8707c09e3acbe4de08466350d9507f04489786a8727a96a30bb97",
+      "publicDestination": "records/projection-scope-diagnostic/full-retry-supplement.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2092,
+      "publishedSha256": "c50412b97df8707c09e3acbe4de08466350d9507f04489786a8727a96a30bb97",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/unchanged-suite-receipt.json",
+      "group": "local-full-and-original-file-failures",
+      "rawBytes": 6875,
+      "rawSha256": "873cfec04aacdfb25ad4b3314d69a5afa49f238329e4535895bcd4921d272e33",
+      "publicDestination": "records/projection-scope-diagnostic/unchanged-suite-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 5371,
+      "publishedSha256": "a3579b0c95294e3d6df35f2da951ea4ad537a69d81a951b7c522597b92bdccf8",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "whole_PATH_value": 1,
+        "source_checkout": 1,
+        "persistent_evidence_root": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/unchanged-suite.log",
+      "group": "local-full-and-original-file-failures",
+      "rawBytes": 2477,
+      "rawSha256": "4118b0f326e6e388be90f660f57b3caa13526fdfe6b76f2ac9fe16f5e4820cc1",
+      "publicDestination": "records/projection-scope-diagnostic/unchanged-suite.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 2432,
+      "publishedSha256": "5918eab9afb3b999e0cff4987dac92794b782dbd7221746543f4490a7c7691c7",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-sequence-receipt.json",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 10128,
+      "rawSha256": "1435729712e7d897c2faad90831f003e0a729d795d11f4e2a60d1035d0845762",
+      "publicDestination": "records/projection-scope-diagnostic/passive-sequence-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 8184,
+      "publishedSha256": "d6dcf0489990fe35838fb2d73e7ae6d1a0fbf6fdfeafa17679baa6176bedb4b0",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "whole_PATH_value": 1,
+        "source_checkout": 3,
+        "persistent_evidence_root": 9
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-sequence.log",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 962,
+      "rawSha256": "9e10862efba231883a12fef159dc107b732633f74a73cefc1dcdba90e0bcd58c",
+      "publicDestination": "records/projection-scope-diagnostic/passive-sequence.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 917,
+      "publishedSha256": "95838ed0f42d1d9334ca643e145697af969a906a019ed85559f5a05d6043cd8a",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-case2.browser.test.ts",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 28674,
+      "rawSha256": "3eb6491458db90c9600de7e012429fbab0688d07415993b70f80c809bef64bfa",
+      "publicDestination": "records/projection-scope-diagnostic/passive-case2.browser.test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 28534,
+      "publishedSha256": "9fc74eae607e5093d8c6b3cf049b24792d6c58520e455881cfef0d6981bb26f4",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 2,
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-source.diff",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 5654,
+      "rawSha256": "64d27e493e5acaff15b9193b711c2b6e1af7426ffa97979dd50905259ada60b5",
+      "publicDestination": "records/projection-scope-diagnostic/passive-source.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 5514,
+      "publishedSha256": "9d2868ab1ab054e35b7da69ca02b358575c4ac84d124689b109284668e7b42c4",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 2,
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-vitest.config.ts",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 530,
+      "rawSha256": "70e1b5b050029cd37e5a5fd2e89cd2c627272f6cb4783f9604d66bb3c06a0f1d",
+      "publicDestination": "records/projection-scope-diagnostic/passive-vitest.config.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 345,
+      "publishedSha256": "9b5d7c5cbf7a7a6ec183beafa08e33e54b0a42764122db3385f03f0b3dc3da85",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 3,
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-observer.mjs",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 9348,
+      "rawSha256": "a5bef2495ef38676b0b60a80e38e0212c2351c97b09298a66b18aa601c270eaa",
+      "publicDestination": "records/projection-scope-diagnostic/passive-observer.mjs",
+      "container": "records.tar.gz",
+      "publishedBytes": 9348,
+      "publishedSha256": "a5bef2495ef38676b0b60a80e38e0212c2351c97b09298a66b18aa601c270eaa",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/initial-ax.json",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 203328,
+      "rawSha256": "7b4ff62ac340c6dad0917e598542955fb11e2cd7ef13842d694a40451f06db0b",
+      "publicDestination": "records/projection-scope-diagnostic/passive-captures/initial-ax.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 203328,
+      "publishedSha256": "7b4ff62ac340c6dad0917e598542955fb11e2cd7ef13842d694a40451f06db0b",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/initial-observations.json",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 3211859,
+      "rawSha256": "aeeee875765b24fe5906403689161e0bf28f9e27eb1e29592b7ed10957fc076b",
+      "publicDestination": "records/projection-scope-diagnostic/passive-captures/initial-observations.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 3167039,
+      "publishedSha256": "5c053e661f74db7b562df737f2b31d5b833122cf3bdc8e1bf71df34121058e49",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 996
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/initial.html",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 461035,
+      "rawSha256": "20d4735867c59c17058461924821ae86ee3c2b1bbb85c7b8cc24d67eba874298",
+      "publicDestination": "records/projection-scope-diagnostic/passive-captures/initial.html",
+      "container": "records.tar.gz",
+      "publishedBytes": 456580,
+      "publishedSha256": "354da5677360785517e0b9fbe2226375e9bbffe4a7dfb717e0db9370d1b55a82",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 99
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/initial.png",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 98472,
+      "rawSha256": "bb9b09cd48fb6a3ca9aa59a4219392998eccee1356f04c381cc01155e638c199",
+      "publicDestination": "screenshots/projection-scope-diagnostic/passive-captures/initial.png",
+      "container": "outer packet",
+      "publishedBytes": 98472,
+      "publishedSha256": "bb9b09cd48fb6a3ca9aa59a4219392998eccee1356f04c381cc01155e638c199",
+      "verbatim": true,
+      "transformation": "verbatim PNG",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/node-record.json",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 1818728,
+      "rawSha256": "cdbfc27f95a5ca1b3d0fab7de0ad087753f53aff679472aa2ca96e158e22926c",
+      "publicDestination": "records/projection-scope-diagnostic/passive-captures/node-record.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 1780703,
+      "publishedSha256": "7224a094d7a3ed4743fb2ecc7be6154e7689238c9f90068a214f900275d4e149",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 845
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/success-ax.json",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 203662,
+      "rawSha256": "10b65fa417c25a7ea32bd6169af9502eb472bc157ec5b607529b1df6df6f75a3",
+      "publicDestination": "records/projection-scope-diagnostic/passive-captures/success-ax.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 203662,
+      "publishedSha256": "10b65fa417c25a7ea32bd6169af9502eb472bc157ec5b607529b1df6df6f75a3",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/success-observations.json",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 38090048,
+      "rawSha256": "7f05838d30fdcd8845ae19daef8bd6c4a95450aa97efd4715527f9aedc835141",
+      "publicDestination": "records/projection-scope-diagnostic/passive-captures/success-observations.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 38043788,
+      "publishedSha256": "c0a2a42a83b35695d6be3728b8f396d3cf1a9fd4d6c151475ac228583d0d8921",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1028
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/success.html",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 433605,
+      "rawSha256": "bd1255d67576d5499114a34acd2b4ffff1b4e829b9d66408b3f089d8b5c7a108",
+      "publicDestination": "records/projection-scope-diagnostic/passive-captures/success.html",
+      "container": "records.tar.gz",
+      "publishedBytes": 429150,
+      "publishedSha256": "037dfaaada20da7e0dd462a2daac7e09e810834c34257db296fcd6fdfea701eb",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 99
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/passive-captures/success.png",
+      "group": "early-positive-diagnostic-1",
+      "rawBytes": 94748,
+      "rawSha256": "9d5cc6fd66a901da51f33f9827fe6d4b3f6be438be09fcae037c359c76219140",
+      "publicDestination": "screenshots/projection-scope-diagnostic/passive-captures/success.png",
+      "container": "outer packet",
+      "publishedBytes": 94748,
+      "publishedSha256": "9d5cc6fd66a901da51f33f9827fe6d4b3f6be438be09fcae037c359c76219140",
+      "verbatim": true,
+      "transformation": "verbatim PNG",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/failure-only/execution-receipt.json",
+      "group": "early-positive-diagnostic-2",
+      "rawBytes": 8411,
+      "rawSha256": "20124880af3c38afd2e3f47912281bf91cce3bff633b6734df639018878e5120",
+      "publicDestination": "records/projection-scope-diagnostic/failure-only/execution-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 6662,
+      "publishedSha256": "24f2600ed1a98dbf45924dd649f3dd4b5bd570e02ddd2a155948e16acff0530f",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "whole_PATH_value": 1,
+        "source_checkout": 2,
+        "persistent_evidence_root": 6
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/failure-only/run.log",
+      "group": "early-positive-diagnostic-2",
+      "rawBytes": 986,
+      "rawSha256": "1a989134d359ada57c66e497563903c0d8f02c2f6acaf50dfeaaf185807da59c",
+      "publicDestination": "records/projection-scope-diagnostic/failure-only/run.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 941,
+      "publishedSha256": "986d8aab3fc7c2dec02fd2372c7d2e123e1ede44e0f007355bda5294d636bb0e",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/failure-only/failure-only.browser.test.ts",
+      "group": "early-positive-diagnostic-2",
+      "rawBytes": 28459,
+      "rawSha256": "aa03f0850d35c894c9108269aacd99934696472f65d815698988bc6e5bf62263",
+      "publicDestination": "records/projection-scope-diagnostic/failure-only/failure-only.browser.test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 28319,
+      "publishedSha256": "82ce9ed8ab5b917d6856a4bb9ecd04059eaf06ee93ac7a8ea6779f29c4561af9",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 2,
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/failure-only/failure-observer.mjs",
+      "group": "early-positive-diagnostic-2",
+      "rawBytes": 6673,
+      "rawSha256": "f31e1dc19ebaf3968365245a60c449b7270f4bae1dd447fe5ddfd1c4381bb337",
+      "publicDestination": "records/projection-scope-diagnostic/failure-only/failure-observer.mjs",
+      "container": "records.tar.gz",
+      "publishedBytes": 6673,
+      "publishedSha256": "f31e1dc19ebaf3968365245a60c449b7270f4bae1dd447fe5ddfd1c4381bb337",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/failure-only/vitest.config.ts",
+      "group": "early-positive-diagnostic-2",
+      "rawBytes": 542,
+      "rawSha256": "f4511ac7089dad0e95c4b8b1e57dc8ac3500762ae20cf94072b852f53729d195",
+      "publicDestination": "records/projection-scope-diagnostic/failure-only/vitest.config.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 357,
+      "publishedSha256": "c595504eb3825507ea75f621a3a03bf2c0e8265f05f095ebad6b53db2762bb83",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 3,
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/failure-only/source.diff",
+      "group": "early-positive-diagnostic-2",
+      "rawBytes": 2855,
+      "rawSha256": "1dc006dad6a33effcc6df8622cc8dcf599e4e627dfec88f3250503613f42ba63",
+      "publicDestination": "records/projection-scope-diagnostic/failure-only/source.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 2715,
+      "publishedSha256": "9e7281d1933e260c637609ea71cf8fe3be452fbc35f1526a19d9c2620a6119fc",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 2,
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/failure-only/capture/success-observations.json",
+      "group": "early-positive-diagnostic-2",
+      "rawBytes": 282512,
+      "rawSha256": "1fa620c221e601107162f52b861f1de5f0c28fdbae98bec95ecc3ae24d45e9f3",
+      "publicDestination": "records/projection-scope-diagnostic/failure-only/capture/success-observations.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 282512,
+      "publishedSha256": "1fa620c221e601107162f52b861f1de5f0c28fdbae98bec95ecc3ae24d45e9f3",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/original-path-failure-capture/execution-receipt.json",
+      "group": "early-positive-diagnostic-3",
+      "rawBytes": 3862,
+      "rawSha256": "d4938d25c141c207f99d77f96003cda12ddf076c358d2cd9b305d2176d125afb",
+      "publicDestination": "records/projection-scope-diagnostic/original-path-failure-capture/execution-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2363,
+      "publishedSha256": "0572109b0a972e4fb55ab1d8f7a90fe83c0b4c3dc5a622aa92de6e00dde83fea",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "whole_PATH_value": 1,
+        "source_checkout": 2,
+        "persistent_evidence_root": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/original-path-failure-capture/run.log",
+      "group": "early-positive-diagnostic-3",
+      "rawBytes": 1309,
+      "rawSha256": "9f76e0a841a7944ef6b5581fdf6fb7ea537735e727e8f54ab5dd0f70d873b0e8",
+      "publicDestination": "records/projection-scope-diagnostic/original-path-failure-capture/run.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 1264,
+      "publishedSha256": "4ce05364938bc77a8c0698b890eedd4e08bf380c2c64415abaaf72b8453f2bb1",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/original-path-failure-capture/diagnostic-test.ts",
+      "group": "early-positive-diagnostic-3",
+      "rawBytes": 32191,
+      "rawSha256": "a40f2867a760ee00f19ac09ab743df3b10b790e4aeb539679baeda121827d413",
+      "publicDestination": "records/projection-scope-diagnostic/original-path-failure-capture/diagnostic-test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 32191,
+      "publishedSha256": "a40f2867a760ee00f19ac09ab743df3b10b790e4aeb539679baeda121827d413",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/original-path-failure-capture/source.diff",
+      "group": "early-positive-diagnostic-3",
+      "rawBytes": 6114,
+      "rawSha256": "c5b04aab849bc5d410bdccfc9c94d71e952b4ca2ea90853a53acd79b4792d6da",
+      "publicDestination": "records/projection-scope-diagnostic/original-path-failure-capture/source.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 6114,
+      "publishedSha256": "c5b04aab849bc5d410bdccfc9c94d71e952b4ca2ea90853a53acd79b4792d6da",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message/execution-receipt.json",
+      "group": "message-only-red",
+      "rawBytes": 4708,
+      "rawSha256": "4a142622d1debdb8bee28d2149bb634c6702b7775245fd24ccee484f7fc0b509",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message/execution-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 3259,
+      "publishedSha256": "15530bc1a2ee313a94b9ec140ccf31cd54f3b18cfcad06eb1bc5ca71245d8fd0",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "whole_PATH_value": 1,
+        "source_checkout": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message/run.log",
+      "group": "message-only-red",
+      "rawBytes": 2363,
+      "rawSha256": "bf18a1d4ad5a6a0cff08f20e42c2f5d69b435b31f619f3d64c1885384eeb633e",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message/run.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 2318,
+      "publishedSha256": "0bf4b63ec50d9edd385435f9822bc1fe846443f1052c15d0837b60ee6eddb527",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message/diagnostic-test.ts",
+      "group": "message-only-red",
+      "rawBytes": 27342,
+      "rawSha256": "7de40fd94110109d7461ce65498cde497cffdf97aa9fe3bd14f92cfe7343f6eb",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message/diagnostic-test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 27342,
+      "publishedSha256": "7de40fd94110109d7461ce65498cde497cffdf97aa9fe3bd14f92cfe7343f6eb",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message/source.diff",
+      "group": "message-only-red",
+      "rawBytes": 1438,
+      "rawSha256": "eb0036b885ac5d408b670caf97972436620feb632eeace0e3dd464ac351711ea",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message/source.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 1438,
+      "publishedSha256": "eb0036b885ac5d408b670caf97972436620feb632eeace0e3dd464ac351711ea",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message/poll-api-binding.json",
+      "group": "message-only-red",
+      "rawBytes": 966,
+      "rawSha256": "177fc40d7bac133ff9a549ad971a489ee2f62db59d0816d1f8d025f0c24afbd6",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message/poll-api-binding.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 966,
+      "publishedSha256": "177fc40d7bac133ff9a549ad971a489ee2f62db59d0816d1f8d025f0c24afbd6",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/execution-receipt.json",
+      "group": "late-terminal-select-red",
+      "rawBytes": 5994,
+      "rawSha256": "b1c9e3273ac6d7e649336c0c893aadb8f46508a792c0a042e15c5a348bb29861",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/execution-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 4540,
+      "publishedSha256": "ec4aee5a4f2f0d041ccb42d273c0e9e29bd92cd6b4cb358e3afc6f0f0d9c247f",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "whole_PATH_value": 1,
+        "source_checkout": 1,
+        "persistent_evidence_root": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/run.log",
+      "group": "late-terminal-select-red",
+      "rawBytes": 2326,
+      "rawSha256": "dfd77dad679e7e8a30ce0133a04f0f6186809bf7a02d9100ea10d5f2420c9760",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/run.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 2281,
+      "publishedSha256": "a1f8e7a746c4e39a9046b4631c3209db3fff74f05a18a920519a853168e05fab",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/diagnostic-test.ts",
+      "group": "late-terminal-select-red",
+      "rawBytes": 27907,
+      "rawSha256": "0844f97b1b423e7344da11bc8d2659794d8b9b5b4a34feb335867180bba281fa",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/diagnostic-test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 27857,
+      "publishedSha256": "b905a9df0c6dffc826fd1b6572542990875976c16cc4cad5225273a274b0d9a8",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/source.diff",
+      "group": "late-terminal-select-red",
+      "rawBytes": 2018,
+      "rawSha256": "e1891bd57bc6ae911dfac97d1d21d415745f79308caa0d84a6432ed40c9664ee",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/source.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 1968,
+      "publishedSha256": "f0c16110014e1f07db770ca2e0dbf3f757bd7c80d6d4752ae0abd8c884bf1389",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/capture-after-rejection.mjs",
+      "group": "late-terminal-select-red",
+      "rawBytes": 7188,
+      "rawSha256": "81925cf12859dd6750e1bb6f86e1df6eb05eaee31499ca47d3a3cc8193543633",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/capture-after-rejection.mjs",
+      "container": "records.tar.gz",
+      "publishedBytes": 7188,
+      "publishedSha256": "81925cf12859dd6750e1bb6f86e1df6eb05eaee31499ca47d3a3cc8193543633",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/capture/capture-timing.json",
+      "group": "late-terminal-select-red",
+      "rawBytes": 518,
+      "rawSha256": "9e8a91a79449e0f1ce6f8fc273adb40c19afb84810b1c46878c28359ba4387d2",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/capture/capture-timing.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 518,
+      "publishedSha256": "9e8a91a79449e0f1ce6f8fc273adb40c19afb84810b1c46878c28359ba4387d2",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/capture/failure-start.json",
+      "group": "late-terminal-select-red",
+      "rawBytes": 2482,
+      "rawSha256": "f72434754ad68980f9a3e5a46c68ce58a6b00a720f11498f8d66aa09b7c10e2d",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/capture/failure-start.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2032,
+      "publishedSha256": "de338a259188f9a0e38b29d5faee7bebb0d29c89b63d57b0dece2b2a96f07272",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 10
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/capture/failure-state.json",
+      "group": "late-terminal-select-red",
+      "rawBytes": 108279,
+      "rawSha256": "6e565f25c3468d4ef1fc87e4fa32c71cb1b2467120e6160ac96b7802f0c0dd31",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/capture/failure-state.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 107829,
+      "publishedSha256": "ed46e8bf7795925ebd2bddfe06fc9ee845f7d615d63afb62363f0f809a70c764",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 10
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/capture/failure.html",
+      "group": "late-terminal-select-red",
+      "rawBytes": 434991,
+      "rawSha256": "ce41c759bc262bd512b17e72dd1fc47846e94279d3885db341539cbc43050530",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/capture/failure.html",
+      "container": "records.tar.gz",
+      "publishedBytes": 430536,
+      "publishedSha256": "9f5793a08d2b72fb737a80e3638aa3fce6324cf8489eeefd4a8d30193098eeb2",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 99
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/capture/failure-ax.json",
+      "group": "late-terminal-select-red",
+      "rawBytes": 203032,
+      "rawSha256": "ab7a4df368b66d8032d37b624dbc405aa591731b2521f61ce24baecb3e5ae02b",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/capture/failure-ax.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 203032,
+      "publishedSha256": "ab7a4df368b66d8032d37b624dbc405aa591731b2521f61ce24baecb3e5ae02b",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/capture/failure.png",
+      "group": "late-terminal-select-red",
+      "rawBytes": 96457,
+      "rawSha256": "9512195e233f62a2be3c3259fa2ddc43ad5e37d8cf207ee862a6bf2f32247887",
+      "publicDestination": "screenshots/projection-scope-diagnostic/minimal-message-failure-capture/capture/failure.png",
+      "container": "outer packet",
+      "publishedBytes": 96457,
+      "publishedSha256": "9512195e233f62a2be3c3259fa2ddc43ad5e37d8cf207ee862a6bf2f32247887",
+      "verbatim": true,
+      "transformation": "verbatim PNG",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/root-visual-review.json",
+      "group": "late-terminal-select-red",
+      "rawBytes": 962,
+      "rawSha256": "6abf55938afc58e6a58b0e73cbbaad2265fd1980e08c4e59f083e6cdbac803c9",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-message-failure-capture/root-visual-review.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 962,
+      "publishedSha256": "6abf55938afc58e6a58b0e73cbbaad2265fd1980e08c4e59f083e6cdbac803c9",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/execution-receipt.json",
+      "group": "actual-input-switch-red",
+      "rawBytes": 5507,
+      "rawSha256": "b314535f80abc0f087f55e3da65e4a8a89a68c28c17a446181b28077f4162b1b",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/execution-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 4053,
+      "publishedSha256": "7d53aba3845a02666fb365490dc7231e75ed376486cba3ca1fac1130ad3e92c4",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "whole_PATH_value": 1,
+        "source_checkout": 1,
+        "persistent_evidence_root": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/run.log",
+      "group": "actual-input-switch-red",
+      "rawBytes": 2326,
+      "rawSha256": "bc95ffc79cd22b9e58af0eb67a700edcb6c2fc0291be3b59391d43ad9b6b2f82",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/run.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 2281,
+      "publishedSha256": "cd80bfc0bcc81ebd8a695ecb600602467d2b40cf316b9156e7c443f0f5aeee2f",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/diagnostic-test.ts",
+      "group": "actual-input-switch-red",
+      "rawBytes": 30031,
+      "rawSha256": "86b042b18ca5c77055f9ea5b173d6b15830307f014294a19acd70d717561a3de",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/diagnostic-test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 29981,
+      "publishedSha256": "d51aba04f3f634cfbf3fbec08e96a047d95e7af7ea196070117fe95cde3a1bb8",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/source.diff",
+      "group": "actual-input-switch-red",
+      "rawBytes": 4654,
+      "rawSha256": "afbb362001eb1cb872df7cbe6e0f977fd8071e606976b0cdcff0a15562abe0fa",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/source.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 4604,
+      "publishedSha256": "4c11c7abfb22c0cb3df38614fe960cfb427a9726ad3ee573b6d78a55a323e8be",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "persistent_evidence_root": 1
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/capture-after-rejection.mjs",
+      "group": "actual-input-switch-red",
+      "rawBytes": 7247,
+      "rawSha256": "8669d0c85efb1eef94a75528e473df4a104f0bd43228bbf9c12ed19b20c4e93d",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/capture-after-rejection.mjs",
+      "container": "records.tar.gz",
+      "publishedBytes": 7247,
+      "publishedSha256": "8669d0c85efb1eef94a75528e473df4a104f0bd43228bbf9c12ed19b20c4e93d",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/capture/capture-timing.json",
+      "group": "actual-input-switch-red",
+      "rawBytes": 518,
+      "rawSha256": "f545dac7fa4136858a0c72dbc6c5e0e48db68cbfcf503ab27b3be1ddc49726a7",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/capture/capture-timing.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 518,
+      "publishedSha256": "f545dac7fa4136858a0c72dbc6c5e0e48db68cbfcf503ab27b3be1ddc49726a7",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/capture/failure-start.json",
+      "group": "actual-input-switch-red",
+      "rawBytes": 2482,
+      "rawSha256": "c362280a3bf586cf7ad3a006508efc4796e8ea6af12a354bc716f9d2455862cb",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/capture/failure-start.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2032,
+      "publishedSha256": "7c98f1825d7b9c442d915878a65a879b2cf47377da6074ee5ebcd88a9d1ebc2c",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 10
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/capture/failure-state.json",
+      "group": "actual-input-switch-red",
+      "rawBytes": 234248,
+      "rawSha256": "48a5c42d1cee36b8060c0cee0ce84e7577511f34f1fce42c557668e7acb4edfd",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/capture/failure-state.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 233798,
+      "publishedSha256": "a3948871475e73b9bbd5959b8c8368c3f791762b5b19d4d2ca03d4789a5aa7c4",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 10
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/capture/failure.html",
+      "group": "actual-input-switch-red",
+      "rawBytes": 445570,
+      "rawSha256": "2e925d6a66e388abb957c6aab919514add4ac6c94a307e9807206e37e84f14b7",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/capture/failure.html",
+      "container": "records.tar.gz",
+      "publishedBytes": 441115,
+      "publishedSha256": "4bd3665c62f92aedac0014f32bd5445e220c7396d397c7ce0259e4b7a01aa33c",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 99
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/capture/failure-ax.json",
+      "group": "actual-input-switch-red",
+      "rawBytes": 211998,
+      "rawSha256": "f366a91874655d1b7a8d1227d86e4a21754cf8fed0d559ac097d8bed4fed40b6",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/capture/failure-ax.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 211998,
+      "publishedSha256": "f366a91874655d1b7a8d1227d86e4a21754cf8fed0d559ac097d8bed4fed40b6",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/capture/failure.png",
+      "group": "actual-input-switch-red",
+      "rawBytes": 102864,
+      "rawSha256": "257c18c37c7442fa2ec64b84f9da0bd5c1c3bb046b4f6a8d6660a50095fd0a88",
+      "publicDestination": "screenshots/projection-scope-diagnostic/minimal-input-events/capture/failure.png",
+      "container": "outer packet",
+      "publishedBytes": 102864,
+      "publishedSha256": "257c18c37c7442fa2ec64b84f9da0bd5c1c3bb046b4f6a8d6660a50095fd0a88",
+      "verbatim": true,
+      "transformation": "verbatim PNG",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/input-chain.json",
+      "group": "actual-input-switch-red",
+      "rawBytes": 20863,
+      "rawSha256": "870bf1c419b09fdfec40f4c995c6836d32ae3eb2943e71d71782e27cb392c760",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/input-chain.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 20863,
+      "publishedSha256": "870bf1c419b09fdfec40f4c995c6836d32ae3eb2943e71d71782e27cb392c760",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/report.md",
+      "group": "actual-input-switch-red",
+      "rawBytes": 3495,
+      "rawSha256": "2691e831eb88ee977bbe5fa35cfac57fafb44a7dd096f5b4cebc17f7b8f817d4",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/report.md",
+      "container": "records.tar.gz",
+      "publishedBytes": 3588,
+      "publishedSha256": "2ef6e98ef7c993697cd47127b8d949f65b3c16c717615d26ce6096e69f117710",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "published_relative_link_rewrite": 1,
+        "excluded_duplicate_summary_reference_rewrite": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/visual-review.json",
+      "group": "actual-input-switch-red",
+      "rawBytes": 2679,
+      "rawSha256": "9512ae3d84272aa8253493971ac9f11c50bc3b08f8b4a1312d11d433aa500034",
+      "publicDestination": "records/projection-scope-diagnostic/minimal-input-events/visual-review.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2679,
+      "publishedSha256": "9512ae3d84272aa8253493971ac9f11c50bc3b08f8b4a1312d11d433aa500034",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/candidate-change.json",
+      "group": "fixture-one-line-candidate",
+      "rawBytes": 1089,
+      "rawSha256": "82534ac02c5adc54488cbde4ebbc547c126abb9c60911086b65a52474f7cc49d",
+      "publicDestination": "records/projection-click-fix/candidate-change.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 1089,
+      "publishedSha256": "82534ac02c5adc54488cbde4ebbc547c126abb9c60911086b65a52474f7cc49d",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/baseline-test.ts",
+      "group": "fixture-one-line-candidate",
+      "rawBytes": 27150,
+      "rawSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "publicDestination": "records/projection-click-fix/baseline-test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 27150,
+      "publishedSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/candidate-test.ts",
+      "group": "fixture-one-line-candidate",
+      "rawBytes": 27135,
+      "rawSha256": "0ccd09ca92bb3356ac4b123460573b46d6e35ebbe45fa77894b0e9a705eb2d35",
+      "publicDestination": "records/projection-click-fix/candidate-test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 27135,
+      "publishedSha256": "0ccd09ca92bb3356ac4b123460573b46d6e35ebbe45fa77894b0e9a705eb2d35",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/source.diff",
+      "group": "fixture-one-line-candidate",
+      "rawBytes": 747,
+      "rawSha256": "b8e6f865678dc75b7ccc5f822f736a40d15a2778aaec0965a9fed2322bba1528",
+      "publicDestination": "records/projection-click-fix/source.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 747,
+      "publishedSha256": "b8e6f865678dc75b7ccc5f822f736a40d15a2778aaec0965a9fed2322bba1528",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/focused-receipt.json",
+      "group": "fixture-one-line-candidate",
+      "rawBytes": 808,
+      "rawSha256": "9a269c0b59c7a3651f4f426a1958234047721eed80a6c0451db805a5b2ab0f21",
+      "publicDestination": "records/projection-click-fix/focused-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 808,
+      "publishedSha256": "9a269c0b59c7a3651f4f426a1958234047721eed80a6c0451db805a5b2ab0f21",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/focused.log",
+      "group": "fixture-one-line-candidate",
+      "rawBytes": 1309,
+      "rawSha256": "da4f06b46036f05e799308f9f9f9a96cf56a79511d379326d7195b32c04ab032",
+      "publicDestination": "records/projection-click-fix/focused.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 1264,
+      "publishedSha256": "9d0c64035e24901bb37eb40f786b2637845ef580027d64eeee438e8211230b04",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/independent-working-review.json",
+      "group": "fixture-one-line-candidate",
+      "rawBytes": 4142,
+      "rawSha256": "6fd1743bad09feaecec0133bc5c74dab5562b05dedf0d004b2b503b17d03c915",
+      "publicDestination": "records/projection-click-fix/independent-working-review.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 3947,
+      "publishedSha256": "9bc923bd460afb5134f3649dad3e40ff0aa8d084565eb7d19da61ed67ebbc98e",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1,
+        "persistent_evidence_root": 3
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-input-evidence-review.json",
+      "group": "bounded-independent-input-and-harness-reconciliation",
+      "rawBytes": 26981,
+      "rawSha256": "2d739587292ef07e7ea0134cb0c537b8d14c8fe28592653dc4b1fad54c44e106",
+      "publicDestination": "records/projection-scope-input-evidence-review.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 26953,
+      "publishedSha256": "a573ab01ee742705ce0f4565fe3f8f7aa6dafce1bbace77383ddf4a731528209",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "exact_duplicate_reference_reuse": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-harness-comparison.json",
+      "group": "bounded-independent-input-and-harness-reconciliation",
+      "rawBytes": 12571,
+      "rawSha256": "3614b7984c150d6b44c480b4bdbdbc3471125af1a9d69d2db2f52947b8170b2b",
+      "publicDestination": "records/projection-scope-harness-comparison.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 11401,
+      "publishedSha256": "169381b07d80acb4a5bec5b24d35b9a6d8ed561d9d38c6db8a1c110b1b6c972f",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 6,
+        "persistent_evidence_root": 18
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/execution-receipt.json",
+      "group": "candidate-native-control",
+      "rawBytes": 4801,
+      "rawSha256": "c168009365451457c70b74f72c465e346d881ec4b2aa8a9de661a3e606709cc7",
+      "publicDestination": "records/projection-click-fix/native-control/execution-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 3347,
+      "publishedSha256": "fcb1b5f5c4f198b6bc2d84aefb42e459f9bfd98d6097c12235e8ea8dd2121dc0",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "whole_PATH_value": 1,
+        "source_checkout": 1,
+        "persistent_evidence_root": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/run.log",
+      "group": "candidate-native-control",
+      "rawBytes": 1309,
+      "rawSha256": "157f7ad5df2a5d2762f87ecef31c9f56d393f5c85964965e947cb2028b104a9c",
+      "publicDestination": "records/projection-click-fix/native-control/run.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 1264,
+      "publishedSha256": "2ae592337be204b46d46941f3b1a879da45b1c825c29833a93ee23b949e8d083",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/diagnostic-test.ts",
+      "group": "candidate-native-control",
+      "rawBytes": 30268,
+      "rawSha256": "13128b4021ff33ea8575960ad05ae8ad2e366e4707f62054d8666dbaefdb7428",
+      "publicDestination": "records/projection-click-fix/native-control/diagnostic-test.ts",
+      "container": "records.tar.gz",
+      "publishedBytes": 30168,
+      "publishedSha256": "a85236807b4b980045ff639237576eafddd0142475ca5d80dfa6b43ffe031dc0",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "persistent_evidence_root": 2
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/capture-after-rejection.mjs",
+      "group": "candidate-native-control",
+      "rawBytes": 9575,
+      "rawSha256": "0d5a8d0417934acb456b7e76847e26a9739c8ba46628562d69cc0906fb5b4a51",
+      "publicDestination": "records/projection-click-fix/native-control/capture-after-rejection.mjs",
+      "container": "records.tar.gz",
+      "publishedBytes": 9575,
+      "publishedSha256": "0d5a8d0417934acb456b7e76847e26a9739c8ba46628562d69cc0906fb5b4a51",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/source.diff",
+      "group": "candidate-native-control",
+      "rawBytes": 4904,
+      "rawSha256": "a885b77bde1f26a23049cc834a53fa582ad171c63491afeab755e0bec8ed7368",
+      "publicDestination": "records/projection-click-fix/native-control/source.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 4804,
+      "publishedSha256": "37a6566fd54253c88b99f1328d2a15357a1fa2f8d131face30348fedf673e044",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "persistent_evidence_root": 2
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/delta-from-red-control.diff",
+      "group": "candidate-native-control",
+      "rawBytes": 1469,
+      "rawSha256": "bdd1b334622134fd39e1d058f3ef11b07607ddb2e4056ddba921571be3b8baaf",
+      "publicDestination": "records/projection-click-fix/native-control/delta-from-red-control.diff",
+      "container": "records.tar.gz",
+      "publishedBytes": 1319,
+      "publishedSha256": "3e613a77a54221b7b2d02581acbcd4c2cae6c562b5b2b65b406cb6cf59644fad",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "persistent_evidence_root": 3
+      },
+      "executionLabel": "Redacted derivative of the actual executed source/diff. This derivative was not run and is not claimed runnable unchanged."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/summary.json",
+      "group": "candidate-native-control",
+      "rawBytes": 25824,
+      "rawSha256": "50fec2286039abf1cb490cfcf58db6d6065fc770c9aaa23af61f0e2023950f21",
+      "publicDestination": "records/projection-click-fix/native-control/summary.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 25824,
+      "publishedSha256": "50fec2286039abf1cb490cfcf58db6d6065fc770c9aaa23af61f0e2023950f21",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/report.md",
+      "group": "candidate-native-control",
+      "rawBytes": 2067,
+      "rawSha256": "2a8d93343494da77f841d865b7aa10dc3928dfcc60eaf58d082126f0b3518277",
+      "publicDestination": "records/projection-click-fix/native-control/report.md",
+      "container": "records.tar.gz",
+      "publishedBytes": 2124,
+      "publishedSha256": "be5de634fb1b1210cd39ed15667807443941f8c53d48486138051668b511b44e",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "published_relative_link_rewrite": 1
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/capture/positive-input-events.json",
+      "group": "candidate-native-control",
+      "rawBytes": 152186,
+      "rawSha256": "4174c554cc6b0e9c7abd04178ec7c36d1910e964cadd15277f270f039e5efbc8",
+      "publicDestination": "records/projection-click-fix/native-control/capture/positive-input-events.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 152186,
+      "publishedSha256": "4174c554cc6b0e9c7abd04178ec7c36d1910e964cadd15277f270f039e5efbc8",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/capture/success-state.json",
+      "group": "candidate-native-control",
+      "rawBytes": 804,
+      "rawSha256": "21d0f8a2cde60584fab399b92fb812b5acd3ca7513ec130d1a65510a80edc143",
+      "publicDestination": "records/projection-click-fix/native-control/capture/success-state.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 804,
+      "publishedSha256": "21d0f8a2cde60584fab399b92fb812b5acd3ca7513ec130d1a65510a80edc143",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/capture/success.html",
+      "group": "candidate-native-control",
+      "rawBytes": 433459,
+      "rawSha256": "86c6b76843145dedabda270988b011de93ec5cc97a61895230d0a45dc18941de",
+      "publicDestination": "records/projection-click-fix/native-control/capture/success.html",
+      "container": "records.tar.gz",
+      "publishedBytes": 429004,
+      "publishedSha256": "39f65e95a2fcbad8c348625829aa4a4e30ce8cd13172589d46540acc7694e0b4",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "source_checkout": 99
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/capture/success-ax.json",
+      "group": "candidate-native-control",
+      "rawBytes": 203538,
+      "rawSha256": "b261e5ea2243b988af60c406182fdc8e27314fbe731e003cc88c66617fade317",
+      "publicDestination": "records/projection-click-fix/native-control/capture/success-ax.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 203538,
+      "publishedSha256": "b261e5ea2243b988af60c406182fdc8e27314fbe731e003cc88c66617fade317",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/capture/success.png",
+      "group": "candidate-native-control",
+      "rawBytes": 94234,
+      "rawSha256": "ff0b9df18f23d321f081f5b3ce26b1c6f078f459d17bc21e4a131d65545b8e2a",
+      "publicDestination": "screenshots/projection-click-fix/native-control/capture/success.png",
+      "container": "outer packet",
+      "publishedBytes": 94234,
+      "publishedSha256": "ff0b9df18f23d321f081f5b3ce26b1c6f078f459d17bc21e4a131d65545b8e2a",
+      "verbatim": true,
+      "transformation": "verbatim PNG",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/capture/success-timing.json",
+      "group": "candidate-native-control",
+      "rawBytes": 303,
+      "rawSha256": "cf2dd8b943b0ea7d9cf766616bae2bd3e920ed5b90cab052c117bc15e010e88c",
+      "publicDestination": "records/projection-click-fix/native-control/capture/success-timing.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 303,
+      "publishedSha256": "cf2dd8b943b0ea7d9cf766616bae2bd3e920ed5b90cab052c117bc15e010e88c",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/final-binding-2b9529fb.json",
+      "group": "final-source-and-public-commit",
+      "rawBytes": 139364,
+      "rawSha256": "25004297feee50a58ae07af00323b0941b7057729575d559c75f346de3c00bc5",
+      "publicDestination": "records/projection-click-fix/final-binding-2b9529fb.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 139049,
+      "publishedSha256": "8055c526293a3389fa6715bfc4ae15d1a4e572d2e89834eaa1d34ede4cc7100f",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "exact_duplicate_reference_reuse": 1,
+        "persistent_evidence_root": 6
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/final-binding-2b9529fb.md",
+      "group": "final-source-and-public-commit",
+      "rawBytes": 2474,
+      "rawSha256": "ea9950472a92ba71b349278db89b6fe803d203f528905afaa8ff097d76bd220a",
+      "publicDestination": "records/projection-click-fix/final-binding-2b9529fb.md",
+      "container": "records.tar.gz",
+      "publishedBytes": 2474,
+      "publishedSha256": "ea9950472a92ba71b349278db89b6fe803d203f528905afaa8ff097d76bd220a",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/commit-receipt.json",
+      "group": "final-source-and-public-commit",
+      "rawBytes": 817,
+      "rawSha256": "509df4b5d7e3adf7d606bb85078e28f2286b1e57c5202ceeddd7ca4a5cebde4f",
+      "publicDestination": "records/projection-click-fix/commit-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 817,
+      "publishedSha256": "509df4b5d7e3adf7d606bb85078e28f2286b1e57c5202ceeddd7ca4a5cebde4f",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/commit.log",
+      "group": "final-source-and-public-commit",
+      "rawBytes": 788,
+      "rawSha256": "cd292d697d2fc349ac5ff2e0a705908e3482e0e6a6dfa1e36205b60b4b732660",
+      "publicDestination": "records/projection-click-fix/commit.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 788,
+      "publishedSha256": "cd292d697d2fc349ac5ff2e0a705908e3482e0e6a6dfa1e36205b60b4b732660",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/push-receipt.json",
+      "group": "final-source-and-public-commit",
+      "rawBytes": 468,
+      "rawSha256": "fdf2f4e6a77f2a50ea8229b5d037f2208fb7a5627dce0a093585f2f50d0e0ce7",
+      "publicDestination": "records/projection-click-fix/push-receipt.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 468,
+      "publishedSha256": "fdf2f4e6a77f2a50ea8229b5d037f2208fb7a5627dce0a093585f2f50d0e0ce7",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/push.log",
+      "group": "final-source-and-public-commit",
+      "rawBytes": 111,
+      "rawSha256": "4956e5163bb00122cdd8c83e10d71f625bbb49009bb9c1e6a4075a49ad7bb40a",
+      "publicDestination": "records/projection-click-fix/push.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 111,
+      "publishedSha256": "4956e5163bb00122cdd8c83e10d71f625bbb49009bb9c1e6a4075a49ad7bb40a",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/independent-working-review.zh-CN.md",
+      "group": "bounded-independent-review",
+      "rawBytes": 1562,
+      "rawSha256": "92cd95307398977c3be501cf0c7f31618d66b1260ff4a61709f79db6987e532a",
+      "publicDestination": "records/projection-click-fix/independent-working-review.zh-CN.md",
+      "container": "records.tar.gz",
+      "publishedBytes": 1562,
+      "publishedSha256": "92cd95307398977c3be501cf0c7f31618d66b1260ff4a61709f79db6987e532a",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-checkout-2b9529fb.json",
+      "group": "canonical-ci-2b-partial",
+      "rawBytes": 2817,
+      "rawSha256": "c52afc6b8588dfba12ebfd46c13ed05f9e84b0aaf07cb3ddf00bed23f43113e1",
+      "publicDestination": "records/projection-click-fix/ci-checkout-2b9529fb.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 2817,
+      "publishedSha256": "c52afc6b8588dfba12ebfd46c13ed05f9e84b0aaf07cb3ddf00bed23f43113e1",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-package-2b9529fb.log",
+      "group": "canonical-ci-2b-partial",
+      "rawBytes": 48116,
+      "rawSha256": "cff7414edc3ff6cd9add59d06610b983d4392914cbf123c09921c3933438fae0",
+      "publicDestination": "records/projection-click-fix/ci-package-2b9529fb.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 47965,
+      "publishedSha256": "8a60fe6fadd57a4fecae1e744a1dde8c942c612ea87a272dc40a6709f5d7928e",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "ci_linux_workspace": 9,
+        "ci_toolcache": 1,
+        "ci_runner_home_linux": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-package-binding-2b9529fb.json",
+      "group": "canonical-ci-2b-partial",
+      "rawBytes": 3552,
+      "rawSha256": "b2e6f0b737ad4f292ef65dbd145c1006f103d6b2b2352d11fb92255118ee9e13",
+      "publicDestination": "records/projection-click-fix/ci-package-binding-2b9529fb.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 3552,
+      "publishedSha256": "b2e6f0b737ad4f292ef65dbd145c1006f103d6b2b2352d11fb92255118ee9e13",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-rust-macos-2b9529fb.log",
+      "group": "canonical-ci-2b-partial",
+      "rawBytes": 40620,
+      "rawSha256": "e2ade3a756af465127ff393e6bc4de73413cf447010adc2aab7623a5aa8b865d",
+      "publicDestination": "records/projection-click-fix/ci-rust-macos-2b9529fb.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 40415,
+      "publishedSha256": "d33678a524a4665e1cd2510298095cde428472fa9acefde21d1e3cb053b7b6ec",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "ci_macos_workspace": 13,
+        "homebrew": 27,
+        "ci_runner_home_macos": 7
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-rust-macos-binding-2b9529fb.json",
+      "group": "canonical-ci-2b-partial",
+      "rawBytes": 380,
+      "rawSha256": "07e3c487ab24f4f7fdcc21166b4b007176794b9b43a75bc9ecda65c0e8a0676f",
+      "publicDestination": "records/projection-click-fix/ci-rust-macos-binding-2b9529fb.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 380,
+      "publishedSha256": "07e3c487ab24f4f7fdcc21166b4b007176794b9b43a75bc9ecda65c0e8a0676f",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-rust-interop-2b9529fb.log",
+      "group": "canonical-ci-2b-partial",
+      "rawBytes": 24501,
+      "rawSha256": "d86f4ce1d72671042594fab118548318ff1a7b59d5f539d481ede5393d434bf9",
+      "publicDestination": "records/projection-click-fix/ci-rust-interop-2b9529fb.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 24378,
+      "publishedSha256": "9bfc646f2bae5bae0134888e249b44b7aa9b21e427fc593b73e96c23f68121b5",
+      "verbatim": false,
+      "transformation": "known machine path/PATH/private-reference or exact-reference redaction; not the executed original source bytes",
+      "transformCounts": {
+        "ci_macos_workspace": 9,
+        "homebrew": 27,
+        "ci_runner_home_macos": 8
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-rust-interop-binding-2b9529fb.json",
+      "group": "canonical-ci-2b-partial",
+      "rawBytes": 378,
+      "rawSha256": "3021db9b02d38c41098da83a6172cebb9b08298018145b4482f00a062b93c06e",
+      "publicDestination": "records/projection-click-fix/ci-rust-interop-binding-2b9529fb.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 378,
+      "publishedSha256": "3021db9b02d38c41098da83a6172cebb9b08298018145b4482f00a062b93c06e",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-test-2b9529fb.log",
+      "group": "canonical-ci-2b-terminal-and-independent",
+      "rawBytes": 269529,
+      "rawSha256": "ffe5069ec2c97d6b7de7828a129b889f0a7f75c64ba8c84c3744c7823708629f",
+      "publicDestination": "records/projection-click-fix/ci-test-2b9529fb.log",
+      "container": "records.tar.gz",
+      "publishedBytes": 269306,
+      "publishedSha256": "6a7c27d6ae75933426103f085120b18910dd63ff7591c50c06845e0711df58bb",
+      "verbatim": false,
+      "transformation": "known machine path/PATH redaction only; historical source statements unchanged",
+      "transformCounts": {
+        "ci_linux_workspace": 13,
+        "ci_toolcache": 1,
+        "ci_runner_home_linux": 2
+      }
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-final-run-2b9529fb.json",
+      "group": "canonical-ci-2b-terminal-and-independent",
+      "rawBytes": 54479,
+      "rawSha256": "0970b67ace0267a3861584126bff0fb2092407804bd45351be78caac5b3ad377",
+      "publicDestination": "records/projection-click-fix/ci-final-run-2b9529fb.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 54479,
+      "publishedSha256": "0970b67ace0267a3861584126bff0fb2092407804bd45351be78caac5b3ad377",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-final-receipt-2b9529fb.json",
+      "group": "canonical-ci-2b-terminal-and-independent",
+      "rawBytes": 1316,
+      "rawSha256": "0a99c99fd4acb7c43194719102c17bc6e80d0de2c1ad98bb0aef0dd2c85e0ddf",
+      "publicDestination": "records/projection-click-fix/ci-final-receipt-2b9529fb.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 1316,
+      "publishedSha256": "0a99c99fd4acb7c43194719102c17bc6e80d0de2c1ad98bb0aef0dd2c85e0ddf",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-complete-reconciliation-2b9529fb.json",
+      "group": "canonical-ci-2b-terminal-and-independent",
+      "rawBytes": 15562,
+      "rawSha256": "f77b7e92a56ebdad3d7933bd0476545e9a05ae6e4719eea31c1f01ddec9ec7e0",
+      "publicDestination": "records/projection-click-fix/ci-complete-reconciliation-2b9529fb.json",
+      "container": "records.tar.gz",
+      "publishedBytes": 15562,
+      "publishedSha256": "f77b7e92a56ebdad3d7933bd0476545e9a05ae6e4719eea31c1f01ddec9ec7e0",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/ci-complete-reconciliation-2b9529fb.md",
+      "group": "canonical-ci-2b-terminal-and-independent",
+      "rawBytes": 2354,
+      "rawSha256": "edbf84dd1377e99d01543aab735866f6b03f5ccef5a6f3b58f8d573b3d578727",
+      "publicDestination": "records/projection-click-fix/ci-complete-reconciliation-2b9529fb.md",
+      "container": "records.tar.gz",
+      "publishedBytes": 2354,
+      "publishedSha256": "edbf84dd1377e99d01543aab735866f6b03f5ccef5a6f3b58f8d573b3d578727",
+      "verbatim": true,
+      "transformation": "verbatim source bytes",
+      "transformCounts": {}
+    }
+  ],
+  "duplicateSourceAliases": [
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/original-path-failure-capture/original-test.ts",
+      "rawBytes": 27150,
+      "rawSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "reusePublicDestination": "records/projection-click-fix/baseline-test.ts",
+      "publishedBytes": 27150,
+      "publishedSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "verbatim": true,
+      "transformation": "exact duplicate reused, then the documented public destination transformation",
+      "reason": "Exact duplicate original test; publish once and rewrite references."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message/original-test.ts",
+      "rawBytes": 27150,
+      "rawSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "reusePublicDestination": "records/projection-click-fix/baseline-test.ts",
+      "publishedBytes": 27150,
+      "publishedSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "verbatim": true,
+      "transformation": "exact duplicate reused, then the documented public destination transformation",
+      "reason": "Exact duplicate original test; publish once and rewrite references."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-message-failure-capture/original-test.ts",
+      "rawBytes": 27150,
+      "rawSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "reusePublicDestination": "records/projection-click-fix/baseline-test.ts",
+      "publishedBytes": 27150,
+      "publishedSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "verbatim": true,
+      "transformation": "exact duplicate reused, then the documented public destination transformation",
+      "reason": "Exact duplicate original test; publish once and rewrite references."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-scope-diagnostic/minimal-input-events/original-test.ts",
+      "rawBytes": 27150,
+      "rawSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "reusePublicDestination": "records/projection-click-fix/baseline-test.ts",
+      "publishedBytes": 27150,
+      "publishedSha256": "8eab04ced23a2d2f53e3cb50eca4b8da4d2a59bb13d31e2957414e028eb675c6",
+      "verbatim": true,
+      "transformation": "exact duplicate reused, then the documented public destination transformation",
+      "reason": "Exact duplicate original test; publish once and rewrite references."
+    },
+    {
+      "sourceBaseAlias": "PEER_SNAPSHOT_FIX",
+      "sourceRelativePath": "projection-click-fix/native-control/candidate-test.ts",
+      "rawBytes": 27135,
+      "rawSha256": "0ccd09ca92bb3356ac4b123460573b46d6e35ebbe45fa77894b0e9a705eb2d35",
+      "reusePublicDestination": "records/projection-click-fix/candidate-test.ts",
+      "publishedBytes": 27135,
+      "publishedSha256": "0ccd09ca92bb3356ac4b123460573b46d6e35ebbe45fa77894b0e9a705eb2d35",
+      "verbatim": true,
+      "transformation": "exact duplicate reused, then the documented public destination transformation",
+      "reason": "Exact duplicate saved candidate bytes; publish once."
+    }
+  ],
+  "transformCounts": {
+    "persistent_evidence_root": 89,
+    "source_checkout": 3485,
+    "cargo_home": 3,
+    "private_source_reference_redaction": 2,
+    "ci_linux_workspace": 44,
+    "ci_toolcache": 4,
+    "ci_runner_home_linux": 8,
+    "ci_macos_workspace": 44,
+    "homebrew": 108,
+    "ci_runner_home_macos": 30,
+    "host_temporary_root": 10,
+    "whole_PATH_value": 8,
+    "published_relative_link_rewrite": 2,
+    "excluded_duplicate_summary_reference_rewrite": 1,
+    "exact_duplicate_reference_reuse": 2
+  },
+  "publicAliasCategories": [
+    {
+      "category": "source_checkout",
+      "publicToken": "/__SOURCE_ROOT__"
+    },
+    {
+      "category": "composition_probe_checkout",
+      "publicToken": "/__PROBE_CHECKOUT__"
+    },
+    {
+      "category": "evidence_checkout",
+      "publicToken": "/__EVIDENCE_CHECKOUT__"
+    },
+    {
+      "category": "persistent_evidence_root",
+      "publicToken": "/__EVIDENCE_ROOT__"
+    },
+    {
+      "category": "task_toolchain",
+      "publicToken": "/__NODE_TOOLCHAIN__"
+    },
+    {
+      "category": "historical_evidence_root",
+      "publicToken": "/__HISTORICAL_EVIDENCE_ROOT__"
+    },
+    {
+      "category": "historical_toolchain",
+      "publicToken": "/__HISTORICAL_TOOLCHAIN__"
+    },
+    {
+      "category": "historical_audit_tools",
+      "publicToken": "/__LOCAL_AUDIT_TOOLS__"
+    },
+    {
+      "category": "ci_macos_workspace",
+      "publicToken": "/__CI_WORKSPACE__"
+    },
+    {
+      "category": "ci_linux_workspace",
+      "publicToken": "/__CI_WORKSPACE__"
+    },
+    {
+      "category": "local_primary_checkout",
+      "publicToken": "/__PRIMARY_CHECKOUT__"
+    },
+    {
+      "category": "cargo_home",
+      "publicToken": "/__CARGO_HOME__"
+    },
+    {
+      "category": "rustup_home",
+      "publicToken": "/__RUSTUP_HOME__"
+    },
+    {
+      "category": "chrome_executable",
+      "publicToken": "/__CHROME_EXECUTABLE__"
+    },
+    {
+      "category": "codex_app",
+      "publicToken": "/__CODEX_APP__"
+    },
+    {
+      "category": "homebrew",
+      "publicToken": "/__HOMEBREW__"
+    },
+    {
+      "category": "ci_toolcache",
+      "publicToken": "/__CI_TOOLCACHE__"
+    },
+    {
+      "category": "ci_runner_home_macos",
+      "publicToken": "/__CI_RUNNER_HOME__"
+    },
+    {
+      "category": "ci_runner_home_linux",
+      "publicToken": "/__CI_RUNNER_HOME__"
+    },
+    {
+      "category": "local_home",
+      "publicToken": "/__LOCAL_HOME__"
+    }
+  ],
+  "completePATHPolicy": "Complete PATH values are replaced by <REDACTED_LOCAL_PATH>. No original private prefixes are published in this map.",
+  "rawSourcePreservation": "All raw inputs read-only; SHA/bytes identify original executed/historical evidence. Published hashes identify exact staged bytes after the recorded transformations.",
+  "referencePolicy": "records/... names are archive members. screenshots/... files are packet exterior. Duplicate sources map to one member. Repository-relative implementation paths refer to the named Git source; private/local context records explicitly marked not distributed are excluded.",
+  "notDistributedMarkdownContextReferences": [
+    {
+      "source": "projection-scope-diagnostic/minimal-input-events/report.md",
+      "originalRelativeTarget": "summary.json",
+      "publishedReplacement": "../../../packet.json",
+      "disposition": "Duplicate local summary omitted; public link explicitly points to this packet wrapper."
+    }
+  ]
+}
