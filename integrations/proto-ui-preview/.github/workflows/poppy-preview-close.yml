@@ -87,7 +87,7 @@ jobs:
           PREVIEW_SHA: ${{ github.event.pull_request.head.sha }}
           PREVIEW_PROJECT: poppy-proto-ui-pr-${{ github.event.pull_request.number }}
           PREVIEW_ORIGIN: ''
-          PREVIEW_STATUS: ${{ vars.POPPY_CLOUDFLARE_MUTATIONS_ENABLED == 'true' && steps.cleanup.outcome == 'success' && steps.revoke-central.outcome == 'success' && steps.revoke-fallback.outcome != 'failure' && 'closed' || vars.POPPY_CLOUDFLARE_MUTATIONS_ENABLED != 'true' && steps.revoke-central.outcome == 'success' && steps.revoke-fallback.outcome != 'failure' && 'fallback-closed' || 'cleanup-failed' }}
+          PREVIEW_STATUS: ${{ vars.POPPY_CLOUDFLARE_MUTATIONS_ENABLED == 'true' && steps.cleanup.outcome == 'success' && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success') && 'closed' || vars.POPPY_CLOUDFLARE_MUTATIONS_ENABLED != 'true' && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success') && 'fallback-closed' || 'cleanup-failed' }}
           PREVIEW_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         shell: bash
         run: node integrations/proto-ui-preview/scripts/sticky-comment.mjs

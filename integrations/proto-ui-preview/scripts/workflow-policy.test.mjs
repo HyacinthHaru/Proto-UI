@@ -361,7 +361,10 @@ test('every fallback failure after Building converges to Failed, sticky state, a
 
   const shouldReportFailed = (outcomes) =>
     outcomes.live === 'success' && outcomes.ready !== 'success';
-  const shouldWriteComment = (outcomes) => outcomes.live === 'success';
+  const shouldWriteComment = (outcomes) =>
+    outcomes.live === 'success' &&
+    (outcomes.ready === 'success' ||
+      (outcomes.failed === 'success' && outcomes.failedCentral === 'success'));
   const shouldFailJob = (outcomes) =>
     [
       'live',
@@ -402,6 +405,7 @@ test('every fallback failure after Building converges to Failed, sticky state, a
     upload: 'skipped',
     ready: 'skipped',
     failed: 'success',
+    failedCentral: 'success',
   };
   assert.equal(
     shouldReportFailed(oversized),
@@ -417,7 +421,7 @@ test('every fallback failure after Building converges to Failed, sticky state, a
 
   const publicationSteps = ['building', 'download', 'archive', 'upload', 'ready'];
   for (const [failureIndex, boundary] of publicationSteps.entries()) {
-    const injected = { ...success, failed: 'success' };
+    const injected = { ...success, failed: 'success', failedCentral: 'success' };
     for (const skipped of publicationSteps.slice(failureIndex + 1)) injected[skipped] = 'skipped';
     injected[boundary] = 'failure';
     assert.equal(shouldReportFailed(injected), true, `${boundary} must trigger Failed`);
@@ -653,5 +657,148 @@ test('installed workflows remain byte-identical to reviewed templates', async (t
     );
     const root = await readFile(new URL(name, repositoryRoot), 'utf8');
     assert.equal(root, template, `${name} drifted from its reviewed template`);
+  }
+});
+
+test('publication failure paths revoke every configured owning plane before failure comments', () => {
+  for (const [start, end, ids] of [
+    ['  fallback-upload:', '  fallback-unavailable:', ['failed-central', 'failed']],
+    ['  deploy:', null, ['failed-central', 'failed-fallback']],
+  ]) {
+    const job = workflow.slice(workflow.indexOf(start), end ? workflow.indexOf(end) : undefined);
+    for (const id of ids) {
+      assert.match(job, new RegExp(`id: ${id}\\b`));
+    }
+    assert.match(job, /POPPY_CONTROL_PLANE: https:\/\/poppy-proto-ui\.chenyejin2004\.workers\.dev/);
+    assert.match(job, /POPPY_CONTROL_PLANE: \$\{\{ vars\.POPPY_PREVIEW_FALLBACK_ORIGIN \}\}/);
+    for (const id of ids) assert.match(job, new RegExp(`steps\\.${id}\\.outcome == 'success'`));
+  }
+});
+
+function conditionForStep(job, name) {
+  const start = job.indexOf(`      - name: ${name}\n`);
+  assert.ok(start >= 0, name);
+  const step = job.slice(
+    start,
+    job.indexOf('\n      - name:', start + 1) < 0
+      ? undefined
+      : job.indexOf('\n      - name:', start + 1)
+  );
+  const match = step.match(/^        if: (.+)$/m);
+  assert.ok(match, name);
+  const expression =
+    match[1] === '>-'
+      ? step
+          .slice(match.index + match[0].length)
+          .trimStart()
+          .split('\n')[0]
+      : match[1];
+  const source = expression.replace(
+    /steps\.([\w-]+)/g,
+    (_all, name) => `steps[${JSON.stringify(name)}]`
+  );
+  return (steps, vars) =>
+    Function('steps', 'vars', 'always', `return (${source});`)(steps, vars, () => true);
+}
+
+test('unavailable and failed-build comments require all revocation acknowledgements', () => {
+  for (const [start, end, name] of [
+    ['  fallback-unavailable:', '  deploy:', 'Maintain the sticky fallback comment'],
+    ['  report-failed-build:', '  fallback-upload:', 'Maintain the sticky failure comment'],
+  ]) {
+    const job = workflow.slice(workflow.indexOf(start), workflow.indexOf(end));
+    const allowed = conditionForStep(job, name);
+    const steps = {
+      resolve: { outputs: { report: 'true' } },
+      'revoke-central': { outcome: 'success' },
+      'revoke-fallback': { outcome: 'success' },
+    };
+    const vars = { POPPY_PREVIEW_FALLBACK_ORIGIN: 'https://fallback.example' };
+    assert.equal(allowed(steps, vars), true);
+    for (const target of ['revoke-central', 'revoke-fallback']) {
+      for (const outcome of ['failure', 'cancelled', 'skipped']) {
+        assert.equal(
+          allowed({ ...steps, [target]: { outcome } }, vars),
+          false,
+          `${name}: ${target} ${outcome}`
+        );
+      }
+    }
+    assert.equal(
+      allowed(
+        { ...steps, 'revoke-fallback': { outcome: 'skipped' } },
+        { POPPY_PREVIEW_FALLBACK_ORIGIN: '' }
+      ),
+      true
+    );
+  }
+});
+
+test('both publication comment predicates suppress failed revocation outcomes', () => {
+  for (const [start, end, name, failureIds] of [
+    [
+      '  fallback-upload:',
+      '  fallback-unavailable:',
+      'Maintain the sticky fallback comment',
+      ['failed-central', 'failed'],
+    ],
+    ['  deploy:', null, 'Maintain the sticky PR comment', ['failed-central', 'failed-fallback']],
+  ]) {
+    const job = workflow.slice(workflow.indexOf(start), end ? workflow.indexOf(end) : undefined);
+    const allowed = conditionForStep(job, name);
+    const steps = {
+      live: { outcome: 'success' },
+      resolve: { outputs: { pr: '596' } },
+      ready: { outcome: 'failure' },
+      'failed-central': { outcome: 'success' },
+      failed: { outcome: 'success' },
+      'failed-fallback': { outcome: 'success' },
+    };
+    const vars = { POPPY_PREVIEW_FALLBACK_ORIGIN: 'https://fallback.example' };
+    assert.equal(allowed(steps, vars), true);
+    for (const id of failureIds) {
+      for (const outcome of ['failure', 'cancelled', 'skipped']) {
+        assert.equal(
+          allowed({ ...steps, [id]: { outcome } }, vars),
+          false,
+          `${start}: ${id} ${outcome}`
+        );
+      }
+    }
+    assert.equal(
+      allowed(
+        {
+          ...steps,
+          ready: { outcome: 'success' },
+          'failed-central': { outcome: 'skipped' },
+          failed: { outcome: 'skipped' },
+          'failed-fallback': { outcome: 'skipped' },
+        },
+        vars
+      ),
+      true
+    );
+  }
+});
+
+test('cleanup cards treat every configured non-success revocation as cleanup-failed', () => {
+  const expression = close
+    .match(/PREVIEW_STATUS: \$\{\{ (.+) \}\}/)[1]
+    .replace(/steps\.([\w-]+)/g, (_all, name) => `steps[${JSON.stringify(name)}]`);
+  const status = Function('steps', 'vars', `return (${expression});`);
+  for (const mode of ['true', 'false']) {
+    const vars = {
+      POPPY_CLOUDFLARE_MUTATIONS_ENABLED: mode,
+      POPPY_PREVIEW_FALLBACK_ORIGIN: 'https://fallback.example',
+    };
+    const steps = {
+      cleanup: { outcome: 'success' },
+      'revoke-central': { outcome: 'success' },
+      'revoke-fallback': { outcome: 'success' },
+    };
+    assert.equal(status(steps, vars), mode === 'true' ? 'closed' : 'fallback-closed');
+    for (const outcome of ['failure', 'cancelled', 'skipped']) {
+      assert.equal(status({ ...steps, 'revoke-fallback': { outcome } }, vars), 'cleanup-failed');
+    }
   }
 });

@@ -235,7 +235,7 @@ jobs:
         run: node integrations/proto-ui-preview/scripts/report.mjs failed
 
       - name: Maintain the sticky failure comment
-        if: always() && steps.resolve.outputs.report == 'true'
+        if: always() && steps.resolve.outputs.report == 'true' && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success')
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -383,12 +383,35 @@ jobs:
         shell: bash
         run: node integrations/proto-ui-preview/scripts/report.mjs ready
 
+      - name: Report a failed fallback deployment to the central control plane
+        id: failed-central
+        if: >-
+          always() && steps.live.outcome == 'success' && steps.ready.outcome != 'success'
+
+
+        continue-on-error: true
+        env:
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_CONTROL_PLANE: https://poppy-proto-ui.chenyejin2004.workers.dev
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_AUTHOR: ${{ needs.resolve-deploy.outputs.author_login }}
+          PREVIEW_AUTHOR_ID: ${{ needs.resolve-deploy.outputs.author_id }}
+          PREVIEW_PROJECT: ${{ needs.resolve-deploy.outputs.project }}
+          PREVIEW_ORIGIN: ''
+          PREVIEW_DEPLOYMENT_ID: ''
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+        shell: bash
+        run: node integrations/proto-ui-preview/scripts/report.mjs failed
+
       - name: Report a failed fallback deployment to Poppy
         id: failed
         if: >-
           always() && steps.live.outcome == 'success' && steps.ready.outcome != 'success'
 
 
+        continue-on-error: true
         env:
           POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
@@ -410,7 +433,7 @@ jobs:
       # that may own it records the Failed lifecycle for this SHA.
       - name: Maintain the sticky fallback comment
         id: comment
-        if: always() && steps.live.outcome == 'success'
+        if: always() && steps.live.outcome == 'success' && (steps.ready.outcome == 'success' || (steps.failed-central.outcome == 'success' && steps.failed.outcome == 'success'))
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -426,7 +449,7 @@ jobs:
 
       - name: Fail the fallback job when publication did not converge
         if: >-
-          always() && (steps.live.outcome != 'success' || steps.size.outcome != 'success' || steps.building.outcome != 'success' || steps.download.outcome != 'success' || steps.archive.outcome != 'success' || steps.upload.outcome != 'success' || steps.final-live.outcome != 'success' || steps.ready.outcome != 'success' || (steps.ready.outcome != 'success' && steps.failed.outcome != 'success') || steps.comment.outcome != 'success')
+          always() && (steps.live.outcome != 'success' || steps.size.outcome != 'success' || steps.building.outcome != 'success' || steps.download.outcome != 'success' || steps.archive.outcome != 'success' || steps.upload.outcome != 'success' || steps.final-live.outcome != 'success' || steps.ready.outcome != 'success' || (steps.ready.outcome != 'success' && (steps.failed-central.outcome != 'success' || steps.failed.outcome != 'success')) || steps.comment.outcome != 'success')
 
 
         shell: bash
@@ -494,7 +517,7 @@ jobs:
       # that may own it records the Failed lifecycle for this SHA.
       - name: Maintain the sticky fallback comment
         id: comment
-        if: always()
+        if: always() && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success')
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -770,11 +793,37 @@ jobs:
         run: node integrations/proto-ui-preview/scripts/report.mjs ready
 
       - name: Report a failed deployment to Poppy
+        id: failed-central
         if: >-
           always() && steps.resolve.outputs.pr != '' && (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' || steps.assets-ready.outcome != 'success' || steps.ready.outcome != 'success')
 
 
+        continue-on-error: true
         env:
+          POPPY_CONTROL_PLANE: https://poppy-proto-ui.chenyejin2004.workers.dev
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
+          PREVIEW_SHA: ${{ steps.resolve.outputs.head_sha }}
+          PREVIEW_AUTHOR: ${{ steps.resolve.outputs.author_login }}
+          PREVIEW_AUTHOR_ID: ${{ steps.resolve.outputs.author_id }}
+          PREVIEW_PROJECT: ${{ steps.resolve.outputs.project }}
+          PREVIEW_ORIGIN: ''
+          PREVIEW_DEPLOYMENT_ID: ''
+          PREVIEW_RUN_ID: ${{ steps.resolve.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ steps.resolve.outputs.run_attempt }}
+        shell: bash
+        run: node integrations/proto-ui-preview/scripts/report.mjs failed
+
+      - name: Report a failed Pages deployment to the configured fallback control plane
+        id: failed-fallback
+        if: >-
+          always() && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != '' && steps.resolve.outputs.pr != '' && (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' || steps.assets-ready.outcome != 'success' || steps.ready.outcome != 'success')
+
+
+        continue-on-error: true
+        env:
+          POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
+          POPPY_PREVIEW_FALLBACK_MODE: 'true'
           POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
           PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
           PREVIEW_SHA: ${{ steps.resolve.outputs.head_sha }}
@@ -789,7 +838,7 @@ jobs:
         run: node integrations/proto-ui-preview/scripts/report.mjs failed
 
       - name: Maintain the sticky PR comment
-        if: always() && steps.resolve.outputs.pr != ''
+        if: always() && steps.resolve.outputs.pr != '' && (steps.ready.outcome == 'success' || (steps.failed-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.failed-fallback.outcome == 'success')))
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
