@@ -1374,7 +1374,9 @@ function isDomAcquisitionCall(expression, sourceFile, receiverBindings, useNode,
   const calledMember = staticMemberAccess(candidate.expression);
   if (
     !calledMember ||
-    !/^(?:closest|createElement|getElementById|querySelector)$/u.test(calledMember.name)
+    !/^(?:closest|createElement|createElementNS|elementFromPoint|getElementById|querySelector)$/u.test(
+      calledMember.name
+    )
   ) {
     return false;
   }
@@ -1402,7 +1404,7 @@ function isDomCollectionExpression(
     const calledMember = staticMemberAccess(candidate.expression);
     return Boolean(
       calledMember &&
-      /^(?:getElementsByClassName|getElementsByName|getElementsByTagName|getElementsByTagNameNS|querySelectorAll)$/u.test(
+      /^(?:elementsFromPoint|getElementsByClassName|getElementsByName|getElementsByTagName|getElementsByTagNameNS|querySelectorAll)$/u.test(
         calledMember.name
       ) &&
       isDomReceiverExpression(
@@ -4196,6 +4198,10 @@ function moduleSpecifiersForWebsiteSource(absolutePath) {
   }
   if (/\.html?$/i.test(absolutePath)) {
     return [
+      ...stylesheetLinkSpecifiers(content).filter(
+        (specifier) =>
+          !specifier.startsWith('<') && !/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(specifier)
+      ),
       ...externalScriptModuleSpecifiers(content).filter(
         (specifier) =>
           specifier !== DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER &&
@@ -4208,6 +4214,10 @@ function moduleSpecifiersForWebsiteSource(absolutePath) {
   }
   if (/\.(?:astro|vue|svelte)$/i.test(absolutePath)) {
     return [
+      ...stylesheetLinkSpecifiers(content).filter(
+        (specifier) =>
+          !specifier.startsWith('<') && !/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(specifier)
+      ),
       ...externalScriptModuleSpecifiers(content).filter(
         (specifier) =>
           specifier !== DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER &&
@@ -4628,6 +4638,8 @@ function inspectBarePackageForGuardedWebsiteImports(
   return inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAliasConfig, cache);
 }
 
+const PACKAGE_SOURCE_PATTERN = /\.(?:[cm]?[jt]sx?|css|less|s[ac]ss|astro|vue|svelte|html?)$/iu;
+
 function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAliasConfig, cache) {
   let packageRoot = path.dirname(entryPath);
   while (path.dirname(packageRoot) !== packageRoot) {
@@ -4710,9 +4722,20 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
     const base = path.resolve(path.dirname(sourcePath), classified);
     const variants = [
       base,
-      ...['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx', '.mts', '.cts'].map(
-        (extension) => `${base}${extension}`
-      ),
+      ...[
+        '.js',
+        '.jsx',
+        '.mjs',
+        '.cjs',
+        '.ts',
+        '.tsx',
+        '.mts',
+        '.cts',
+        '.css',
+        '.less',
+        '.scss',
+        '.sass',
+      ].map((extension) => `${base}${extension}`),
       ...['index.js', 'index.jsx', 'index.mjs', 'index.cjs', 'index.ts', 'index.tsx'].map((name) =>
         path.join(base, name)
       ),
@@ -4730,13 +4753,111 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
       }) ?? null
     );
   };
+  // https://nodejs.org/api/packages.html#subpath-imports: imports use package-root
+  // targets and exact/pattern keys. Inspect all conditions conservatively.
+  const resolvePackageImports = (specifier, sourcePath) => {
+    if (!specifier.startsWith('#')) return [specifier];
+    const mappings = manifest.imports;
+    if (!mappings || typeof mappings !== 'object') return null;
+    let mapping = Object.hasOwn(mappings, specifier) ? mappings[specifier] : undefined;
+    let substitution = null;
+    if (mapping === undefined) {
+      const matches = Object.keys(mappings)
+        .filter((key) => {
+          const parts = key.split('*');
+          return (
+            parts.length === 2 &&
+            specifier.startsWith(parts[0]) &&
+            specifier.endsWith(parts[1]) &&
+            specifier.length >= parts[0].length + parts[1].length
+          );
+        })
+        .sort(
+          (left, right) => right.indexOf('*') - left.indexOf('*') || right.length - left.length
+        );
+      if (matches.length === 0) return null;
+      const key = matches[0];
+      const [prefix, suffix] = key.split('*');
+      substitution = specifier.slice(prefix.length, specifier.length - suffix.length);
+      mapping = mappings[key];
+    }
+    const targets = [];
+    const visit = (node) => {
+      if (typeof node === 'string')
+        targets.push(substitution === null ? node : node.replaceAll('*', substitution));
+      else if (node && typeof node === 'object') Object.values(node).forEach(visit);
+    };
+    visit(mapping);
+    if (targets.length === 0) return null;
+    const resolved = [];
+    for (const target of targets) {
+      if (target.startsWith('./')) {
+        const absolute = path.resolve(packageRoot, target);
+        const relative = path.relative(packageRoot, absolute);
+        if (
+          relative.startsWith('..') ||
+          path.isAbsolute(relative) ||
+          !fs.existsSync(absolute) ||
+          !fs.statSync(absolute).isFile()
+        )
+          return null;
+        resolved.push(
+          relativeImportSpecifier(path.relative(rootDir, sourcePath), rootDir, absolute)
+        );
+      } else if (isNodeBuiltinSpecifier(target)) {
+        resolved.push(target);
+      } else if (
+        !target.startsWith('#') &&
+        !target.startsWith('/') &&
+        !target.startsWith('.') &&
+        !/^[a-z][a-z0-9+.-]*:/iu.test(target)
+      ) {
+        // Direct governed layers are classified below even when fixtures do not
+        // install them. Other mapped packages must actually resolve.
+        if (
+          !guardedWebsiteImport(
+            rootDir,
+            canonicalRootDir,
+            path.relative(rootDir, sourcePath),
+            target,
+            websiteAliasConfig
+          )
+        ) {
+          try {
+            createRequire(pathToFileURL(sourcePath)).resolve(target);
+          } catch {
+            return null;
+          }
+        }
+        dependencyNames.add(
+          target.startsWith('@') ? target.split('/').slice(0, 2).join('/') : target.split('/')[0]
+        );
+        resolved.push(target);
+      } else return null;
+    }
+    return resolved;
+  };
   const pending = [...exportTargets];
   const visited = new Set();
   while (pending.length > 0 && visited.size < 500) {
     const sourcePath = pending.pop();
-    if (visited.has(sourcePath) || !/\.[cm]?[jt]sx?$/iu.test(sourcePath)) continue;
+    if (visited.has(sourcePath) || !PACKAGE_SOURCE_PATTERN.test(sourcePath)) continue;
     visited.add(sourcePath);
-    for (const dependencySpecifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
+    const dependencySpecifiers = [];
+    for (const originalSpecifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
+      const mapped = resolvePackageImports(originalSpecifier, sourcePath);
+      if (mapped === null) {
+        const result = {
+          category: 'unresolved-package-entry',
+          resolvedPath: path.relative(rootDir, manifestPath).replaceAll('\\', '/'),
+          entryTarget: originalSpecifier,
+        };
+        cache.set(entryPath, result);
+        return result;
+      }
+      dependencySpecifiers.push(...mapped);
+    }
+    for (const dependencySpecifier of dependencySpecifiers) {
       const guarded = guardedWebsiteImport(
         rootDir,
         canonicalRootDir,
@@ -4782,7 +4903,9 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
       }
     }
   }
-  if (pending.some((candidate) => !visited.has(candidate) && /\.[cm]?[jt]sx?$/iu.test(candidate))) {
+  if (
+    pending.some((candidate) => !visited.has(candidate) && PACKAGE_SOURCE_PATTERN.test(candidate))
+  ) {
     const result = {
       category: 'incomplete-package-traversal',
       resolvedPath: path.relative(rootDir, packageRoot).replaceAll('\\', '/'),
@@ -5261,6 +5384,19 @@ function discoverHarnessRawImports(rootDir) {
   const rawImports = [];
   for (const absolutePath of candidates) {
     const sourcePath = path.relative(rootDir, absolutePath).replaceAll('\\', '/');
+    for (const specifier of externalStylesheetSpecifiersForWebsiteSource(absolutePath)) {
+      rawImports.push({
+        sourcePath,
+        specifier,
+        category:
+          specifier === DYNAMIC_STYLESHEET_REL_SPECIFIER
+            ? 'dynamic-stylesheet-relation'
+            : specifier === DYNAMIC_STYLESHEET_LINK_SPECIFIER
+              ? 'dynamic-stylesheet-link'
+              : 'external-stylesheet',
+        resolvedPath: null,
+      });
+    }
     for (let specifier of moduleSpecifiersForWebsiteSource(absolutePath)) {
       if (/\.html?$/i.test(absolutePath) && /^\/(?!\/)/u.test(specifier)) {
         const localPath = [
@@ -5553,7 +5689,19 @@ function pngCrc32(data) {
   return (crc ^ 0xffffffff) >>> 0;
 }
 
-function hasValidPngPixelStream(idatData, width, height, bitDepth, colorType, interlaceMethod) {
+const MAX_IMAGE_BYTES = 32 * 1024 * 1024;
+const MAX_IMAGE_PIXELS = 16 * 1024 * 1024;
+const MAX_DECODED_IMAGE_BYTES = 128 * 1024 * 1024;
+
+function hasValidPngPixelStream(
+  idatData,
+  width,
+  height,
+  bitDepth,
+  colorType,
+  interlaceMethod,
+  paletteSize
+) {
   let channels;
   let validBitDepth;
   switch (colorType) {
@@ -5580,7 +5728,7 @@ function hasValidPngPixelStream(idatData, width, height, bitDepth, colorType, in
     default:
       return false;
   }
-  if (!validBitDepth) return false;
+  if (!validBitDepth || width * height > MAX_IMAGE_PIXELS) return false;
 
   const passes =
     interlaceMethod === 0
@@ -5602,10 +5750,10 @@ function hasValidPngPixelStream(idatData, width, height, bitDepth, colorType, in
     if (passWidth === 0 || passHeight === 0) continue;
     const rowLength = 1 + Math.ceil((passWidth * channels * bitDepth) / 8);
     if (!Number.isSafeInteger(rowLength)) return false;
-    rowPlans.push({ rows: passHeight, rowLength });
+    rowPlans.push({ rows: passHeight, rowLength, width: passWidth });
     decodedByteLength += BigInt(passHeight) * BigInt(rowLength);
   }
-  if (decodedByteLength === 0n || decodedByteLength > BigInt(Number.MAX_SAFE_INTEGER)) {
+  if (decodedByteLength === 0n || decodedByteLength > BigInt(MAX_DECODED_IMAGE_BYTES)) {
     return false;
   }
 
@@ -5619,9 +5767,49 @@ function hasValidPngPixelStream(idatData, width, height, bitDepth, colorType, in
   if (decoded.length !== expectedByteLength) return false;
 
   let offset = 0;
-  for (const { rows, rowLength } of rowPlans) {
+  // https://www.w3.org/TR/png-3/#9Filters and #11PLTE: palette indexes
+  // must be checked after reconstruction. Decoders may recover invalid indexes
+  // as black pixels, which is insufficient for validating retained evidence.
+  for (const { rows, rowLength, width: passWidth } of rowPlans) {
+    let previous = Buffer.alloc(rowLength - 1);
     for (let row = 0; row < rows; row += 1) {
-      if (decoded[offset] > 4) return false;
+      const filter = decoded[offset];
+      if (filter > 4) return false;
+      if (colorType === 3) {
+        const reconstructed = Buffer.alloc(rowLength - 1);
+        for (let byte = 0; byte < reconstructed.length; byte += 1) {
+          const left = reconstructed[byte - 1] ?? 0;
+          const above = previous[byte];
+          const upperLeft = previous[byte - 1] ?? 0;
+          let predictor = 0;
+          if (filter === 1) predictor = left;
+          else if (filter === 2) predictor = above;
+          else if (filter === 3) predictor = Math.floor((left + above) / 2);
+          else if (filter === 4) {
+            const estimate = left + above - upperLeft;
+            const distances = [
+              Math.abs(estimate - left),
+              Math.abs(estimate - above),
+              Math.abs(estimate - upperLeft),
+            ];
+            predictor =
+              distances[0] <= distances[1] && distances[0] <= distances[2]
+                ? left
+                : distances[1] <= distances[2]
+                  ? above
+                  : upperLeft;
+          }
+          reconstructed[byte] = (decoded[offset + 1 + byte] + predictor) & 0xff;
+        }
+        for (let pixel = 0; pixel < passWidth; pixel += 1) {
+          const bit = pixel * bitDepth;
+          const index =
+            (reconstructed[Math.floor(bit / 8)] >> (8 - bitDepth - (bit % 8))) &
+            ((1 << bitDepth) - 1);
+          if (index >= paletteSize) return false;
+        }
+        previous = reconstructed;
+      }
       offset += rowLength;
     }
   }
@@ -5641,6 +5829,7 @@ function hasValidPngImageData(data) {
   let interlaceMethod = 0;
   let hasImageData = false;
   let hasPaletteChunk = false;
+  let paletteSize = 0;
   let hasIdatChunk = false;
   let idatSequenceEnded = false;
   let idatByteLength = 0;
@@ -5676,7 +5865,10 @@ function hasValidPngImageData(data) {
       if (interlaceMethod !== 0 && interlaceMethod !== 1) return false;
     }
     if (type === 'PLTE') {
-      if (hasIdatChunk || hasPaletteChunk || length === 0 || length % 3 !== 0) return false;
+      if (hasIdatChunk || hasPaletteChunk || length === 0 || length > 768 || length % 3 !== 0)
+        return false;
+      paletteSize = length / 3;
+      if (colorType === 3 && paletteSize > 2 ** bitDepth) return false;
       hasPaletteChunk = true;
     }
     if (type === 'IDAT') {
@@ -5699,7 +5891,8 @@ function hasValidPngImageData(data) {
         height,
         bitDepth,
         colorType,
-        interlaceMethod
+        interlaceMethod,
+        paletteSize
       );
     }
     offset = chunkEnd;
@@ -5708,37 +5901,97 @@ function hasValidPngImageData(data) {
   return false;
 }
 
-// `sharp` is a Website dependency; decode non-PNG raster streams off-process to keep validation synchronous.
+// `sharp` is an existing Website dependency. Decode immutable input bytes in a
+// bounded child; metadata/compression differences cannot manufacture a transition.
 const IMAGE_VALIDATION_SCRIPT = `
 const sharp = require(process.argv[1]);
-sharp(process.argv[2], { failOn: 'warning' }).stats().then(
-  () => {},
-  () => {
-    process.exitCode = 1;
-  }
-);
+const { createHash } = require('node:crypto');
+const data = require('node:fs').readFileSync(0);
+sharp.cache(false);
+sharp.concurrency(1);
+sharp(data, { failOn: 'warning', limitInputPixels: ${MAX_IMAGE_PIXELS}, sequentialRead: true })
+  .toColourspace('srgb').ensureAlpha().raw({ depth: 'ushort' }).toBuffer({ resolveWithObject: true }).then(
+    ({ data, info }) => {
+      if (data.length > ${MAX_DECODED_IMAGE_BYTES}) { process.exitCode = 1; return; }
+      process.stdout.write(JSON.stringify({ width: info.width, height: info.height, channels: info.channels, digest: createHash('sha256').update(data).digest('hex') }));
+    },
+    () => { process.exitCode = 1; }
+  );
 `;
 const requireFromWebsite = createRequire(new URL('../../apps/www/package.json', import.meta.url));
 
-function hasValidDecodedImageData(absolutePath) {
+function readBoundedImageBytes(absolutePath) {
+  let descriptor;
+  try {
+    descriptor = fs.openSync(absolutePath, 'r');
+    const stat = fs.fstatSync(descriptor);
+    if (!stat.isFile() || stat.size > MAX_IMAGE_BYTES) return null;
+    // The extra byte detects growth after fstat. Every read has a fixed bound;
+    // the same captured bytes feed structure checks, cache identity and decoder.
+    const data = Buffer.alloc(stat.size + 1);
+    let size = 0;
+    while (size < data.length) {
+      const count = fs.readSync(descriptor, data, size, data.length - size, null);
+      if (count === 0) break;
+      size += count;
+    }
+    return size > stat.size ? null : data.subarray(0, size);
+  } catch {
+    return null;
+  } finally {
+    if (descriptor !== undefined) fs.closeSync(descriptor);
+  }
+}
+
+const decodedImageCache = new Map();
+function decodedImageData(data) {
+  const digest = createHash('sha256').update(data).digest('hex');
+  if (decodedImageCache.has(digest)) return decodedImageCache.get(digest);
   let sharpEntry;
   try {
     sharpEntry = requireFromWebsite.resolve('sharp');
   } catch {
-    return false;
+    return null;
   }
-  const result = spawnSync(
-    process.execPath,
-    ['-e', IMAGE_VALIDATION_SCRIPT, sharpEntry, absolutePath],
-    { stdio: 'ignore', timeout: 15_000, windowsHide: true }
-  );
-  return result.error === undefined && result.status === 0;
+  const result = spawnSync(process.execPath, ['-e', IMAGE_VALIDATION_SCRIPT, sharpEntry], {
+    input: data,
+    encoding: 'utf8',
+    maxBuffer: 4096,
+    timeout: 15_000,
+    windowsHide: true,
+  });
+  let decoded = null;
+  if (result.error === undefined && result.status === 0) {
+    try {
+      const value = JSON.parse(result.stdout);
+      if (
+        Number.isSafeInteger(value.width) &&
+        value.width > 0 &&
+        Number.isSafeInteger(value.height) &&
+        value.height > 0 &&
+        value.width * value.height <= MAX_IMAGE_PIXELS &&
+        value.channels === 4 &&
+        /^[a-f0-9]{64}$/u.test(value.digest)
+      )
+        decoded = value;
+    } catch {
+      /* Decoder output must be complete and bounded. */
+    }
+  }
+  if (decodedImageCache.size >= 128)
+    decodedImageCache.delete(decodedImageCache.keys().next().value);
+  decodedImageCache.set(digest, decoded);
+  return decoded;
 }
 
 function hasImageFileSignature(absolutePath) {
-  if (!fs.existsSync(absolutePath) || !fs.statSync(absolutePath).isFile()) return false;
-  const data = fs.readFileSync(absolutePath);
-  if (hasValidPngImageData(data)) return true;
+  return validatedImageData(absolutePath) !== null;
+}
+
+function validatedImageData(absolutePath) {
+  const data = readBoundedImageBytes(absolutePath);
+  if (data === null) return null;
+  if (hasValidPngImageData(data)) return decodedImageData(data);
 
   if (
     data.length >= 14 &&
@@ -5747,7 +6000,7 @@ function hasImageFileSignature(absolutePath) {
     data.readUInt16LE(8) > 0 &&
     data.at(-1) === 0x3b
   ) {
-    return hasValidDecodedImageData(absolutePath);
+    return decodedImageData(data);
   }
 
   if (
@@ -5757,7 +6010,7 @@ function hasImageFileSignature(absolutePath) {
     data.readUInt32LE(4) + 8 === data.length &&
     /^(?:VP8 |VP8L|VP8X)$/u.test(data.subarray(12, 16).toString('ascii'))
   ) {
-    return hasValidDecodedImageData(absolutePath);
+    return decodedImageData(data);
   }
 
   if (
@@ -5767,20 +6020,20 @@ function hasImageFileSignature(absolutePath) {
     data.at(-2) !== 0xff ||
     data.at(-1) !== 0xd9
   ) {
-    return false;
+    return null;
   }
   let offset = 2;
   let hasFrame = false;
   while (offset + 3 < data.length - 2) {
-    if (data[offset] !== 0xff) return false;
+    if (data[offset] !== 0xff) return null;
     while (data[offset] === 0xff) offset += 1;
     const marker = data[offset];
     offset += 1;
     if (marker === 0xd9) break;
     if (marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) continue;
-    if (offset + 1 >= data.length) return false;
+    if (offset + 1 >= data.length) return null;
     const segmentLength = data.readUInt16BE(offset);
-    if (segmentLength < 2 || offset + segmentLength > data.length) return false;
+    if (segmentLength < 2 || offset + segmentLength > data.length) return null;
     if (
       ((marker >= 0xc0 && marker <= 0xc3) ||
         (marker >= 0xc5 && marker <= 0xc7) ||
@@ -5795,7 +6048,7 @@ function hasImageFileSignature(absolutePath) {
     offset += segmentLength;
     if (marker === 0xda) break;
   }
-  return hasFrame && hasValidDecodedImageData(absolutePath);
+  return hasFrame ? decodedImageData(data) : null;
 }
 
 function hasVideoFileSignature(absolutePath) {
@@ -6717,6 +6970,7 @@ function validateRetainedEvidenceArtifacts(record, context, rootDir, issues, mat
         continue;
       }
       const canonicalFrames = new Set();
+      const frameDigests = new Set();
       for (const frameEntry of manifest.frames) {
         const framePath = typeof frameEntry === 'string' ? frameEntry : frameEntry?.path;
         const canonicalFrame = canonicalFileWithinRoot(rootDir, framePath);
@@ -6729,11 +6983,19 @@ function validateRetainedEvidenceArtifacts(record, context, rootDir, issues, mat
         canonicalFrames.add(
           process.platform === 'win32' ? canonicalFrame.toLowerCase() : canonicalFrame
         );
-        if (!hasImageFileSignature(canonicalFrame)) {
+        const image = validatedImageData(canonicalFrame);
+        if (image)
+          frameDigests.add(`${image.width}x${image.height}:${image.channels}:${image.digest}`);
+        if (!image) {
           issues.push(
             `${context}: Multi-frame: JSON manifest frame must be a recognized image file: ${String(framePath)}`
           );
         }
+      }
+      if (frameDigests.size < 2) {
+        issues.push(
+          `${context}: Multi-frame: JSON manifest must retain at least two content-distinct frames: ${repositoryPath}`
+        );
       }
       if (canonicalFrames.size < 2) {
         issues.push(

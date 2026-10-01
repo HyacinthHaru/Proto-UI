@@ -40,13 +40,13 @@ function pngChunk(type, payload) {
   return Buffer.concat([length, typeAndPayload, crc]);
 }
 
-function indexedPng({ includePalette }) {
+function indexedPng({ includePalette, pixel = 0, bitDepth = 1 }) {
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(1, 0);
   ihdr.writeUInt32BE(1, 4);
-  ihdr.writeUInt8(1, 8);
+  ihdr.writeUInt8(bitDepth, 8);
   ihdr.writeUInt8(3, 9);
-  const scanline = zlib.deflateSync(Buffer.from([0x00, 0x00]));
+  const scanline = zlib.deflateSync(Buffer.from([0x00, pixel << (8 - bitDepth)]));
   const chunks = [
     Buffer.from('89504e470d0a1a0a', 'hex'),
     pngChunk('IHDR', ihdr),
@@ -431,7 +431,10 @@ function writeSelfHostedWebsiteArtifacts(
   );
   fs.writeFileSync(path.join(artifactRoot, 'home-desktop.png'), onePixelPng);
   fs.writeFileSync(path.join(artifactRoot, 'navigation-before.png'), onePixelPng);
-  fs.writeFileSync(path.join(artifactRoot, 'navigation-after.png'), onePixelPng);
+  fs.writeFileSync(
+    path.join(artifactRoot, 'navigation-after.png'),
+    indexedPng({ includePalette: true })
+  );
   fs.writeFileSync(
     path.join(artifactRoot, 'navigation-frames.json'),
     JSON.stringify({
@@ -9460,4 +9463,385 @@ test('follow-up review: unresolved declared Vite entries stay unverified', () =>
   fs.writeFileSync(source, "import 'missing-browser-entry';");
   writeValidMatrices(root);
   assert.match(validationMessage(root), /package entry target.*missing.js.*unverified/);
+});
+
+test('current review: follows hit-test and namespace acquisition receivers without business false positives', () => {
+  for (const prefix of ['apps/www/src/components', 'apps/agent-harness/src/run']) {
+    for (const source of [
+      'document.elementFromPoint(1, 2)?.focus();',
+      'const hit = document.elementFromPoint(1, 2); hit.ariaExpanded = "true";',
+      'const hits = document.elementsFromPoint(1, 2); hits[0]?.scrollIntoView();',
+      'document.createElementNS("http://www.w3.org/2000/svg", "svg").focus();',
+    ]) {
+      const root = createRoot();
+      const absolutePath = path.join(root, prefix, 'HitTest.ts');
+      fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+      fs.writeFileSync(absolutePath, source);
+      writeValidMatrices(root);
+      assert.match(
+        validationMessage(root),
+        /interactive website source.*HitTest|Harness source.*HitTest.*forbidden interaction/
+      );
+    }
+  }
+  const root = createRoot();
+  const source = path.join(root, 'apps/www/src/components/BusinessHitTest.ts');
+  fs.mkdirSync(path.dirname(source), { recursive: true });
+  fs.writeFileSync(
+    source,
+    'const model = { elementFromPoint() { return { focus() {} }; } }; model.elementFromPoint().focus();'
+  );
+  writeValidMatrices(root);
+  assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+});
+
+test('current review: scans package imports maps, including conditional and pattern targets', () => {
+  for (const [imports, imported] of [
+    [{ '#runtime': './runtime.js' }, '#runtime'],
+    [{ '#runtime': { browser: './runtime.js', default: './safe.cjs' } }, '#runtime'],
+    [{ '#internal/*': './*.js' }, '#internal/runtime'],
+    [{ '#runtime': '@proto.ui/runtime' }, '#runtime'],
+  ]) {
+    const root = createRoot();
+    const directory = path.join(root, 'node_modules/mapped-entry');
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name: 'mapped-entry', main: './entry.js', imports })
+    );
+    fs.writeFileSync(path.join(directory, 'entry.js'), `import '${imported}';`);
+    fs.writeFileSync(path.join(directory, 'runtime.js'), "import '@proto.ui/runtime';");
+    fs.writeFileSync(path.join(directory, 'safe.cjs'), 'module.exports = {};');
+    const source = path.join(root, 'apps/www/src/components/MappedEntry.ts');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, "import 'mapped-entry';");
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /raw Proto UI import `mapped-entry`.*MappedEntry.ts/);
+  }
+});
+
+test('current review: scans stylesheet package entries and relative nested imports', () => {
+  for (const extension of ['css', 'scss', 'sass', 'less']) {
+    const root = createRoot();
+    const directory = path.join(root, 'node_modules/style-entry');
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name: 'style-entry', main: `./entry.${extension}` })
+    );
+    fs.writeFileSync(
+      path.join(directory, `entry.${extension}`),
+      `@import './nested.${extension}';`
+    );
+    fs.writeFileSync(
+      path.join(directory, `nested.${extension}`),
+      "@import '@proto.ui/prototypes-shadcn/styles.css';"
+    );
+    const source = path.join(root, 'apps/www/src/styles/package.css');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, "@import 'style-entry';");
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /raw Proto UI import `style-entry`.*package.css/);
+  }
+});
+
+test('current review: collects Harness markup stylesheet relations and local targets', () => {
+  for (const relativePath of [
+    'apps/agent-harness/index.html',
+    'apps/agent-harness/public/styles.html',
+  ]) {
+    for (const [source, expected] of [
+      ['<link rel="stylesheet" href="https://cdn.example/ui.css">', /external stylesheet.*ui.css/],
+      ['<link rel="stylesheet" href={themeHref}>', /dynamic stylesheet source/],
+      ['<link rel={relation} href="https://cdn.example/ui.css">', /dynamic stylesheet relation/],
+      ['<link rel="stylesheet" href="/theme.css">', /raw Proto UI import.*prototypes-shadcn/],
+    ]) {
+      const root = createRoot();
+      const absolutePath = path.join(root, relativePath);
+      fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+      fs.writeFileSync(absolutePath, source);
+      const cssPath = path.join(root, 'apps/agent-harness/public/theme.css');
+      fs.mkdirSync(path.dirname(cssPath), { recursive: true });
+      fs.writeFileSync(cssPath, "@import '@proto.ui/prototypes-shadcn/styles.css';");
+      writeValidMatrices(root);
+      assert.match(validationMessage(root), expected);
+    }
+  }
+});
+
+function currentReviewPromotion() {
+  const root = createRoot();
+  const implementationPath = 'apps/www/src/components/override/Search.astro';
+  const websiteBindings = [[implementationPath, ['www.shell.search']]];
+  fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+  fs.writeFileSync(path.join(root, implementationPath), '<main>reviewed</main>');
+  writeValidMatrices(root, {}, {}, { websiteBindings });
+  const revision = commitFixtureRoot(root);
+  const { resultsPath } = writeSelfHostedPromotion(root, revision, { websiteBindings });
+  const replaceArtifact = (repositoryPath, bytes) => {
+    fs.writeFileSync(path.join(root, repositoryPath), bytes);
+    const manifestPath = path.join(root, resultsPath);
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    const artifact = manifest.artifacts.find((entry) => entry.path === repositoryPath);
+    artifact.size = bytes.length;
+    artifact.sha256 = createHash('sha256').update(bytes).digest('hex');
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+  };
+  return { root, revision, replaceArtifact };
+}
+
+test('current review: rejects out-of-palette indexed PNG pixels with valid CRC and digests', () => {
+  for (const bitDepth of [1, 2, 4, 8]) {
+    const { root, revision, replaceArtifact } = currentReviewPromotion();
+    replaceArtifact(
+      'internal/website/evidence/s14/home-desktop.png',
+      indexedPng({ includePalette: true, pixel: 1, bitDepth })
+    );
+    assert.match(
+      validationMessage(root, promotionOptions(revision)),
+      /Screenshot: retained artifact must be a recognized image file/
+    );
+  }
+});
+
+test('current review: duplicate bytes at different frame paths cannot prove a transition', () => {
+  const { root, revision, replaceArtifact } = currentReviewPromotion();
+  replaceArtifact(
+    'internal/website/evidence/s14/navigation-after.png',
+    fs.readFileSync(path.join(root, 'internal/website/evidence/s14/navigation-before.png'))
+  );
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /Multi-frame: JSON manifest must retain at least two content-distinct frames/
+  );
+});
+
+function indexedGridPng({ bitDepth, filter, interlaced, invalid, paletteSize = invalid ? 1 : 2 }) {
+  const width = 9,
+    height = 9;
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(width, 0);
+  header.writeUInt32BE(height, 4);
+  header[8] = bitDepth;
+  header[9] = 3;
+  header[12] = interlaced ? 1 : 0;
+  const passes = interlaced
+    ? [
+        [0, 0, 8, 8],
+        [4, 0, 8, 8],
+        [0, 4, 4, 8],
+        [2, 0, 4, 4],
+        [0, 2, 2, 4],
+        [1, 0, 2, 2],
+        [0, 1, 1, 2],
+      ]
+    : [[0, 0, 1, 1]];
+  const rows = [];
+  for (const [x, y, dx, dy] of passes) {
+    const xs = Array.from({ length: Math.ceil((width - x) / dx) }, (_, i) => x + i * dx);
+    let previous = Buffer.alloc(Math.ceil((xs.length * bitDepth) / 8));
+    for (let row = y; row < height; row += dy) {
+      const raw = Buffer.alloc(previous.length);
+      xs.forEach((column, index) => {
+        const value = (column + row) % 2;
+        raw[Math.floor((index * bitDepth) / 8)] |=
+          value << (8 - bitDepth - ((index * bitDepth) % 8));
+      });
+      const encoded = Buffer.alloc(raw.length + 1);
+      encoded[0] = filter;
+      for (let byte = 0; byte < raw.length; byte += 1) {
+        const left = raw[byte - 1] ?? 0,
+          above = previous[byte],
+          diagonal = previous[byte - 1] ?? 0;
+        let prediction = 0;
+        if (filter === 1) prediction = left;
+        if (filter === 2) prediction = above;
+        if (filter === 3) prediction = Math.floor((left + above) / 2);
+        if (filter === 4) {
+          const p = left + above - diagonal;
+          const candidates = [left, above, diagonal];
+          prediction = candidates.reduce((best, candidate) =>
+            Math.abs(p - candidate) < Math.abs(p - best) ? candidate : best
+          );
+        }
+        encoded[byte + 1] = (raw[byte] - prediction) & 255;
+      }
+      rows.push(encoded);
+      previous = raw;
+    }
+  }
+  const palette = Buffer.alloc(paletteSize * 3);
+  if (paletteSize > 1) palette[3] = 255;
+  return Buffer.concat([
+    Buffer.from('89504e470d0a1a0a', 'hex'),
+    pngChunk('IHDR', header),
+    pngChunk('PLTE', palette),
+    pngChunk('IDAT', zlib.deflateSync(Buffer.concat(rows))),
+    pngChunk('IEND', Buffer.alloc(0)),
+  ]);
+}
+
+test('current review: indexed PNG reconstruction covers all filters, bit depths and Adam7 passes', () => {
+  const { root, revision, replaceArtifact } = currentReviewPromotion();
+  for (const bitDepth of [1, 2, 4, 8]) {
+    for (const filter of [0, 1, 2, 3, 4]) {
+      for (const interlaced of [false, true]) {
+        for (const invalid of [false, true]) {
+          replaceArtifact(
+            'internal/website/evidence/s14/home-desktop.png',
+            indexedGridPng({ bitDepth, filter, interlaced, invalid })
+          );
+          const issues = collectCoverageMatrixIssues({
+            rootDir: root,
+            ...promotionOptions(revision),
+          });
+          if (invalid)
+            assert.ok(
+              issues.some((issue) => /Screenshot:.*recognized image/.test(issue)),
+              JSON.stringify({ bitDepth, filter, interlaced, issues })
+            );
+          else
+            assert.deepEqual(issues, [], JSON.stringify({ bitDepth, filter, interlaced, issues }));
+        }
+      }
+    }
+  }
+});
+
+test('current review: palette size and decompression resources fail closed', () => {
+  const { root, revision, replaceArtifact } = currentReviewPromotion();
+  const oversized = indexedGridPng({
+    bitDepth: 1,
+    filter: 0,
+    interlaced: false,
+    invalid: false,
+    paletteSize: 3,
+  });
+  replaceArtifact('internal/website/evidence/s14/home-desktop.png', oversized);
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /Screenshot:.*recognized image/
+  );
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(16 * 1024 * 1024 + 1, 0);
+  header.writeUInt32BE(1, 4);
+  header[8] = 8;
+  header[9] = 3;
+  const bomb = Buffer.concat([
+    Buffer.from('89504e470d0a1a0a', 'hex'),
+    pngChunk('IHDR', header),
+    pngChunk('PLTE', Buffer.from([0, 0, 0])),
+    pngChunk('IDAT', zlib.deflateSync(Buffer.from([0, 0]))),
+    pngChunk('IEND', Buffer.alloc(0)),
+  ]);
+  replaceArtifact('internal/website/evidence/s14/home-desktop.png', bomb);
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /Screenshot:.*recognized image/
+  );
+});
+
+test('current review: imports maps resolve from package root and reject unverified targets', () => {
+  for (const [target, expected] of [
+    ['./safe.js', null],
+    ['node:fs', null],
+    ['./missing.js', /package entry target.*unverified/],
+    ['missing-external-package', /package entry target.*unverified/],
+    ['../outside.js', /package entry target.*unverified/],
+    [null, /package entry target.*unverified/],
+  ]) {
+    const root = createRoot();
+    const directory = path.join(root, 'node_modules/root-map');
+    fs.mkdirSync(path.join(directory, 'nested'), { recursive: true });
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({
+        name: 'root-map',
+        main: './nested/entry.js',
+        imports: { '#mapped': target },
+      })
+    );
+    fs.writeFileSync(path.join(directory, 'nested/entry.js'), "import '#mapped';");
+    fs.writeFileSync(path.join(directory, 'safe.js'), 'export const label = "safe";');
+    const source = path.join(root, 'apps/www/src/components/RootMap.ts');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, "import 'root-map';");
+    writeValidMatrices(root);
+    if (expected) assert.match(validationMessage(root), expected);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('current review: harmless Harness icon and local styles remain valid', () => {
+  const root = createRoot();
+  const html = path.join(root, 'apps/agent-harness/index.html');
+  fs.mkdirSync(path.dirname(html), { recursive: true });
+  fs.writeFileSync(
+    html,
+    '<link rel="icon" href="https://cdn.example/icon.ico"><link rel="stylesheet" href="/theme.css">'
+  );
+  const css = path.join(root, 'apps/agent-harness/public/theme.css');
+  fs.mkdirSync(path.dirname(css), { recursive: true });
+  fs.writeFileSync(css, 'body { color: black; }');
+  writeValidMatrices(root);
+  assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+});
+
+test('current review: equal pixels with different PNG metadata do not prove a transition', () => {
+  const { root, revision, replaceArtifact } = currentReviewPromotion();
+  assert.doesNotThrow(() =>
+    validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+  );
+  const before = fs.readFileSync(
+    path.join(root, 'internal/website/evidence/s14/navigation-before.png')
+  );
+  const alternate = Buffer.concat([
+    before.subarray(0, -12),
+    pngChunk('tEXt', Buffer.from('Comment\0different encoding metadata')),
+    before.subarray(-12),
+  ]);
+  assert.notDeepEqual(before, alternate);
+  replaceArtifact('internal/website/evidence/s14/navigation-after.png', alternate);
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /Multi-frame: JSON manifest must retain at least two content-distinct frames/
+  );
+});
+
+test('current review: stylesheet package traversal includes extensionless and compiled markup targets', () => {
+  for (const [entry, text, suffix] of [
+    ['entry.css', "@import './nested';", 'css'],
+    ['entry.vue', "<style>@import './nested.css';</style>", 'css'],
+    ['entry.svelte', "<style>@import './nested.css';</style>", 'css'],
+  ]) {
+    const root = createRoot();
+    const directory = path.join(root, 'node_modules/compiled-entry');
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name: 'compiled-entry', main: `./${entry}` })
+    );
+    fs.writeFileSync(path.join(directory, entry), text);
+    fs.writeFileSync(
+      path.join(directory, `nested.${suffix}`),
+      "@import '@proto.ui/prototypes-shadcn/theme';"
+    );
+    const source = path.join(root, 'apps/www/src/components/CompiledEntry.ts');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, "import 'compiled-entry';");
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /raw Proto UI import `compiled-entry`/);
+  }
+});
+
+test('current review: image file byte limit is enforced before read and decode', () => {
+  const { root, revision } = currentReviewPromotion();
+  const filename = path.join(root, 'internal/website/evidence/s14/home-desktop.png');
+  const descriptor = fs.openSync(filename, 'w');
+  fs.ftruncateSync(descriptor, 32 * 1024 * 1024 + 1);
+  fs.closeSync(descriptor);
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /Screenshot:.*recognized image/
+  );
 });
