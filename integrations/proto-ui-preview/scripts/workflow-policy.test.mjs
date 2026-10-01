@@ -41,6 +41,48 @@ const security = await readFile(
   'utf8'
 );
 
+test('failed builds revoke both possible control planes regardless of the current mutation mode', () => {
+  const failed = workflow.slice(
+    workflow.indexOf('  report-failed-build:'),
+    workflow.indexOf('  fallback-upload:')
+  );
+  const central = failed.slice(
+    failed.indexOf('- name: Revoke the failed head on the central Poppy control plane'),
+    failed.indexOf('- name: Revoke the failed head on the configured fallback control plane')
+  );
+  const fallback = failed.slice(
+    failed.indexOf('- name: Revoke the failed head on the configured fallback control plane'),
+    failed.indexOf('- name: Maintain the sticky failure comment')
+  );
+  assert.match(central, /id: revoke-central/);
+  assert.match(central, /continue-on-error: true/);
+  assert.match(
+    central,
+    /POPPY_CONTROL_PLANE: https:\/\/poppy-proto-ui\.chenyejin2004\.workers\.dev/
+  );
+  assert.match(central, /if:.*steps\.resolve\.outputs\.report == 'true'/);
+  assert.doesNotMatch(central, /CLOUDFLARE_MUTATIONS_ENABLED/);
+  assert.match(fallback, /id: revoke-fallback/);
+  assert.match(fallback, /continue-on-error: true/);
+  assert.match(
+    fallback,
+    /if:.*always\(\).*steps\.resolve\.outputs\.report == 'true'.*POPPY_PREVIEW_FALLBACK_ORIGIN != ''/
+  );
+  assert.match(fallback, /POPPY_CONTROL_PLANE: \$\{\{ vars\.POPPY_PREVIEW_FALLBACK_ORIGIN \}\}/);
+  assert.match(fallback, /POPPY_PREVIEW_FALLBACK_MODE: 'true'/);
+  assert.doesNotMatch(fallback, /CLOUDFLARE_MUTATIONS_ENABLED/);
+  for (const step of [central, fallback]) {
+    assert.match(step, /PREVIEW_SHA: \$\{\{ steps\.resolve\.outputs\.head_sha \}\}/);
+    assert.match(step, /PREVIEW_RUN_ID: \$\{\{ steps\.resolve\.outputs\.run_id \}\}/);
+    assert.match(step, /PREVIEW_RUN_ATTEMPT: \$\{\{ steps\.resolve\.outputs\.run_attempt \}\}/);
+    assert.match(step, /report\.mjs failed/);
+  }
+  assert.match(
+    failed,
+    /always\(\).*steps\.resolve\.outputs\.report == 'true'.*steps\.revoke-central\.outcome != 'success'.*steps\.revoke-fallback\.outcome != 'success'/
+  );
+});
+
 test('Poppy revokes the previous ready state before Cloudflare publication', () => {
   const deployStart = workflow.indexOf('  deploy:');
   const deployWorkflow = workflow.slice(deployStart);
@@ -416,7 +458,7 @@ test('fallback lifecycle writers use one configured dcbot control plane', () => 
     workflow.indexOf('  report-failed-build:'),
     workflow.indexOf('  fallback-upload:')
   );
-  assert.match(
+  assert.doesNotMatch(
     failedBuild,
     new RegExp(selectedControlPlane.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
   );

@@ -118,9 +118,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    env:
-      POPPY_CONTROL_PLANE: ${{ vars.POPPY_CLOUDFLARE_MUTATIONS_ENABLED != 'true' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != '' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN || 'https://poppy-proto-ui.chenyejin2004.workers.dev' }}
-
     steps:
       - name: Check out trusted reporting code
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -198,11 +195,33 @@ jobs:
             core.setOutput("run_id", String(runId));
             core.setOutput("run_attempt", String(candidate.attempt));
 
-      - name: Revoke any older ready state for this head
+      - name: Revoke the failed head on the central Poppy control plane
+        id: revoke-central
         if: steps.resolve.outputs.report == 'true'
+        continue-on-error: true
         env:
           POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
-          POPPY_PREVIEW_FALLBACK_MODE: ${{ vars.POPPY_CLOUDFLARE_MUTATIONS_ENABLED != 'true' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != '' && 'true' || 'false' }}
+          POPPY_CONTROL_PLANE: https://poppy-proto-ui.chenyejin2004.workers.dev
+          PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
+          PREVIEW_SHA: ${{ steps.resolve.outputs.head_sha }}
+          PREVIEW_AUTHOR: ${{ steps.resolve.outputs.author_login }}
+          PREVIEW_AUTHOR_ID: ${{ steps.resolve.outputs.author_id }}
+          PREVIEW_PROJECT: ${{ steps.resolve.outputs.project }}
+          PREVIEW_ORIGIN: ''
+          PREVIEW_DEPLOYMENT_ID: ''
+          PREVIEW_RUN_ID: ${{ steps.resolve.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ steps.resolve.outputs.run_attempt }}
+        shell: bash
+        run: node integrations/proto-ui-preview/scripts/report.mjs failed
+
+      - name: Revoke the failed head on the configured fallback control plane
+        id: revoke-fallback
+        if: always() && steps.resolve.outputs.report == 'true' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != ''
+        continue-on-error: true
+        env:
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
+          POPPY_PREVIEW_FALLBACK_MODE: 'true'
           PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
           PREVIEW_SHA: ${{ steps.resolve.outputs.head_sha }}
           PREVIEW_AUTHOR: ${{ steps.resolve.outputs.author_login }}
@@ -216,7 +235,7 @@ jobs:
         run: node integrations/proto-ui-preview/scripts/report.mjs failed
 
       - name: Maintain the sticky failure comment
-        if: steps.resolve.outputs.report == 'true'
+        if: always() && steps.resolve.outputs.report == 'true'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -228,6 +247,14 @@ jobs:
           PREVIEW_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ steps.resolve.outputs.run_id }}
         shell: bash
         run: node integrations/proto-ui-preview/scripts/sticky-comment.mjs
+
+      - name: Fail when failed-build revocation did not converge
+        if: >-
+          always() && steps.resolve.outputs.report == 'true' && (steps.revoke-central.outcome != 'success' || (vars.POPPY_PREVIEW_FALLBACK_ORIGIN != '' && steps.revoke-fallback.outcome != 'success'))
+
+
+        shell: bash
+        run: exit 1
 
   fallback-upload:
     name: Publish Poppy artifact fallback

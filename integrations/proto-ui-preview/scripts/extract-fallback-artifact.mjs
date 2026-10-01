@@ -178,7 +178,6 @@ export function listBoundedEntries(bytes, limits = FALLBACK_LIMITS) {
 
     entries.push({ name, method, compressedSize, uncompressedSize, localHeaderOffset });
     if (entries.length > limits.maxFiles) fail(`artifact exceeds ${limits.maxFiles} files`);
-    if (uncompressedSize < 1) fail(`artifact file is empty: ${name}`);
     if (uncompressedSize > limits.maxFileBytes) {
       fail(`artifact file exceeds ${limits.maxFileBytes} bytes: ${name}`);
     }

@@ -87,6 +87,37 @@ test('materializes files under the target root with safe permissions', async (t)
   assert.equal(await readFile(path.join(target, 'nested/deep/file.txt'), 'utf8'), 'bounded');
 });
 
+test('preserves zero-byte stored and deflated regular assets within the same bounds', async (t) => {
+  const root = await mkdtemp(path.join(tmpdir(), 'poppy-empty-assets-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const zip = buildZip([
+    { name: 'empty.txt', content: Buffer.alloc(0) },
+    { name: 'assets/empty.css', content: Buffer.alloc(0), method: 8 },
+    { name: 'index.html', content: Buffer.from('ok') },
+  ]);
+  const files = extractBoundedZip(zip, smallLimits);
+  assert.equal(files.size, 3);
+  assert.equal(files.get('empty.txt').length, 0);
+  assert.equal(files.get('assets/empty.css').length, 0);
+  await materializeBoundedZip(zip, root, smallLimits);
+  assert.equal((await readFile(path.join(root, 'empty.txt'))).length, 0);
+  assert.equal((await readFile(path.join(root, 'assets/empty.css'))).length, 0);
+  assert.throws(
+    () => extractBoundedZip(zip, { ...smallLimits, maxFiles: 2 }),
+    /exceeds 2 files/,
+    'empty files still consume the file-count budget'
+  );
+  assert.throws(
+    () =>
+      extractBoundedZip(
+        buildZip([{ name: 'empty-link', content: Buffer.alloc(0), mode: 0o120777 }]),
+        smallLimits
+      ),
+    /link or special file/,
+    'empty symlinks remain forbidden'
+  );
+});
+
 test('rejects traversal, absolute, drive, backslash, and empty-segment names', () => {
   for (const name of ['../evil', '/evil', 'C:evil', 'a\\b', 'a//b', 'a/./b']) {
     const zip = buildZip([{ name, content: Buffer.from('x') }]);
