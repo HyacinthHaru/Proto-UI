@@ -212,7 +212,10 @@ jobs:
   test:
     # Linux memfd and the distro FFmpeg 6.1 line form the video evidence baseline.
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    # 913009ef: setup/real-decoder gate took 9m13s; the prior repository
+    # suite took 17m27s. Run 36889476980 exhausted the former 20m budget.
+    # This total-job allowance does not change decoder resource limits.
+    timeout-minutes: 30
     env:
       COVERAGE_BASE_REVISION: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.sha }}
       COVERAGE_HEAD_REVISION: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
