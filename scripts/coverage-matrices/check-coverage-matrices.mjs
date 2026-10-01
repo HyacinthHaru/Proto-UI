@@ -83,12 +83,31 @@ const NATIVE_EVENT_ATTRIBUTE_NAMES = collectNativeEventAttributeNames();
 const GOVERNED_DOM_STATE_PROPERTY_NAMES = new Set([
   ...collectAriaReflectionPropertyNames(),
   'checked',
+  'className',
+  'disabled',
+  'hidden',
+  'indeterminate',
+  'inert',
+  'open',
+  'selected',
+  'tabIndex',
   'scrollLeft',
   'scrollTop',
   'selectedIndex',
   'selectionDirection',
   'selectionEnd',
   'selectionStart',
+  'value',
+]);
+const GOVERNED_DOM_STATE_ATTRIBUTE_NAMES = new Set([
+  'checked',
+  'class',
+  'disabled',
+  'hidden',
+  'inert',
+  'open',
+  'selected',
+  'tabindex',
   'value',
 ]);
 const DOM_RECEIVER_VALUED_PROPERTY_NAMES = new Set([
@@ -1631,6 +1650,7 @@ function astContainsInteractiveRuntime(content, { harnessGeometry = false } = {}
           if (
             normalizedName === null ||
             normalizedName.startsWith('aria-') ||
+            GOVERNED_DOM_STATE_ATTRIBUTE_NAMES.has(normalizedName) ||
             NATIVE_EVENT_ATTRIBUTE_NAMES.has(normalizedName)
           ) {
             found = true;
@@ -3526,7 +3546,9 @@ function astContainsHarnessRenderOrEffectAction(content, absolutePath, visitedPa
       if (
         callbackIndexes.some(
           (index) =>
-            node.arguments[index] && executionPathContainsAgentAction(node.arguments[index])
+            node.arguments[index] &&
+            (isAgentActionExpression(node.arguments[index]) ||
+              executionPathContainsAgentAction(node.arguments[index]))
         )
       ) {
         found = true;
@@ -4332,6 +4354,118 @@ function containsProductionImportMap(content) {
       staticMarkupAttribute(openingTag, 'type')?.trim().toLowerCase() === 'importmap'
   );
 }
+// Reviewed production map in apps/www/astro.config.mjs. This is an exact URL
+// allowlist, not an assertion about immutable content at those remote URLs.
+const REVIEWED_ASTRO_IMPORTS = Object.freeze({
+  react: 'https://esm.sh/react@18',
+  'react-dom/client': 'https://esm.sh/react-dom@18/client',
+  vue: 'https://esm.sh/vue@3',
+});
+
+function astroHeadImportMapIssues(rootDir) {
+  const sourcePath = 'apps/www/astro.config.mjs';
+  const absolutePath = path.join(rootDir, sourcePath);
+  if (!fs.existsSync(absolutePath)) return [];
+  const issues = [];
+  const reject = (reason) =>
+    issues.push({
+      sourcePath,
+      specifier: '<config import map>',
+      category: 'unreviewed-config-import-map',
+      reason,
+    });
+  if (!fs.lstatSync(absolutePath).isFile() || fs.lstatSync(absolutePath).isSymbolicLink()) {
+    reject('config source is not a regular reviewed file');
+    return issues;
+  }
+  const sourceFile = ts.createSourceFile(
+    absolutePath,
+    fs.readFileSync(absolutePath, 'utf8'),
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.JS
+  );
+  const propertyName = (name) => {
+    if (ts.isComputedPropertyName(name)) {
+      const value = unwrapTypeScriptExpression(name.expression);
+      return ts.isStringLiteralLike(value) ? value.text : null;
+    }
+    return ts.isIdentifier(name) || ts.isStringLiteralLike(name) ? name.text : null;
+  };
+  const fields = (node) => {
+    const value = unwrapTypeScriptExpression(node);
+    if (!ts.isObjectLiteralExpression(value)) return null;
+    const result = new Map();
+    for (const property of value.properties) {
+      if (!ts.isPropertyAssignment(property)) return null;
+      const name = propertyName(property.name);
+      if (name === null || result.has(name)) return null;
+      result.set(name, unwrapTypeScriptExpression(property.initializer));
+    }
+    return result;
+  };
+  const literal = (node) => (node && ts.isStringLiteralLike(node) ? node.text : null);
+  let mapCount = 0;
+  const inspectHead = (node) => {
+    const head = unwrapTypeScriptExpression(node);
+    if (!ts.isArrayLiteralExpression(head))
+      return reject('dynamic head configuration is unverified');
+    for (const entry of head.elements) {
+      const item = fields(entry);
+      const tag = item && literal(item.get('tag'));
+      if (!tag) {
+        reject('dynamic head entry is unverified');
+        continue;
+      }
+      if (tag.toLowerCase() !== 'script') continue;
+      const attrs = item.has('attrs') ? fields(item.get('attrs')) : null;
+      const type = attrs && literal(attrs.get('type'))?.trim().toLowerCase();
+      if (type === 'application/json' || type === 'application/ld+json') continue;
+      if (type !== 'importmap') {
+        reject('unreviewed executable or dynamic head script');
+        continue;
+      }
+      mapCount += 1;
+      const content = literal(item.get('content'));
+      if (content === null || item.size !== 3 || attrs.size !== 1) {
+        reject('import map entry shape is unverified');
+        continue;
+      }
+      let map;
+      try {
+        map = JSON.parse(content);
+      } catch {
+        reject('import map JSON is invalid');
+        continue;
+      }
+      const imports = map && typeof map === 'object' && !Array.isArray(map) && map.imports;
+      if (
+        !imports ||
+        typeof imports !== 'object' ||
+        Array.isArray(imports) ||
+        Object.keys(map).length !== 1 ||
+        Object.keys(imports).length !== Object.keys(REVIEWED_ASTRO_IMPORTS).length ||
+        Object.entries(REVIEWED_ASTRO_IMPORTS).some(
+          ([key, value]) => !Object.hasOwn(imports, key) || imports[key] !== value
+        )
+      )
+        reject('import map does not match the exact reviewed mappings');
+    }
+  };
+  const visit = (node) => {
+    if (ts.isPropertyAssignment(node)) {
+      const name = propertyName(node.name);
+      if (name === 'head') inspectHead(node.initializer);
+      else if (name === null) reject('computed config field is unverified');
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  if (sourceFile.parseDiagnostics.length) reject('config syntax is unverified');
+  if (mapCount > 1) reject('multiple config import maps are unreviewed');
+  return issues;
+}
+
 function isExternalExecutableScriptSpecifier(specifier) {
   return /^(?:[a-z][a-z0-9+.-]*:|\/|\/\/)/iu.test(specifier);
 }
@@ -5727,7 +5861,7 @@ function discoverWebsiteRawImports(rootDir) {
   const candidates = [...new Set([...allCandidates, ...reachable])].filter(
     (absolutePath) => !isTestNamedSource(absolutePath) || reachable.has(absolutePath)
   );
-  const rawImports = [];
+  const rawImports = astroHeadImportMapIssues(rootDir);
   const bareInspectionCache = new Map();
   for (const absolutePath of candidates) {
     const sourcePath = path.relative(rootDir, absolutePath).replaceAll('\\', '/');
@@ -5845,6 +5979,13 @@ function discoverWebsiteRawImports(rootDir) {
 
 function validateWebsiteRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverWebsiteRawImports(rootDir)) {
+    if (rawImport.category === 'unreviewed-config-import-map') {
+      issues.push(
+        `${relativePath}: import map / head script in \`${rawImport.sourcePath}\` is unverified: ${rawImport.reason}`
+      );
+      continue;
+    }
+
     if (rawImport.category === 'incomplete-package-traversal') {
       issues.push(
         `${relativePath}: package traversal for \`${rawImport.specifier}\` in \`${rawImport.sourcePath}\` reached the 500-module bound; its closure remains unverified`

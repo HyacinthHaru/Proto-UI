@@ -10941,3 +10941,175 @@ test('fresh Harness review: ordinary data scripts and markup examples remain ine
   writeValidMatrices(root);
   assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
 });
+
+test('latest state review: native visibility and enablement writes enter the Harness gate', () => {
+  for (const assignment of [
+    'panel.hidden = !open;',
+    'panel.open = true;',
+    'panel.disabled = true;',
+    'panel.className = "closed";',
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/NativeState.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      `const panel=document.querySelector('section'); export const Surface=()=> <ProtoPanel onOpenChange={()=>{${assignment}}}/>;`
+    );
+    writeValidMatrices(root, {}, { Path: file });
+    assert.match(validationMessage(root), /forbidden interaction or DOM state machine/);
+  }
+});
+
+test('latest state review: direct Agent action callbacks in eager hooks are rejected', () => {
+  for (const call of [
+    'useMemo(actions.send, []);',
+    'useState(actions.send);',
+    'useReducer(actions.send, 0);',
+    'useReducer((state)=>state, 0, actions.send);',
+    'useSyncExternalStore(subscribe, actions.send);',
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/DirectCallback.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      `import {useMemo,useState,useReducer,useSyncExternalStore} from 'react'; import * as actions from './agent-actions'; export const Surface=()=>{${call}return <section/>;};`
+    );
+    writeValidMatrices(root, {}, { Path: file });
+    assert.match(validationMessage(root), /forbidden interaction or DOM state machine/);
+  }
+});
+
+test('latest state review: changed config-emitted import maps fail the consumer wall', () => {
+  const root = createRoot(),
+    file = path.join(root, 'apps/www/astro.config.mjs');
+  const reviewed = fs.readFileSync(
+    new URL('../../../apps/www/astro.config.mjs', import.meta.url),
+    'utf8'
+  );
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, reviewed);
+  writeValidMatrices(root);
+  assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  fs.writeFileSync(
+    file,
+    reviewed.replace(
+      '"react": "https://esm.sh/react@18"',
+      '"react": "https://cdn.example/unreviewed.js"'
+    )
+  );
+  assert.match(validationMessage(root), /import map.*(?:reviewed|unverified)/);
+});
+
+test('latest state controls: native properties and equivalent attribute forms remain bounded by DOM provenance', () => {
+  for (const action of [
+    ...[
+      'hidden',
+      'inert',
+      'open',
+      'disabled',
+      'selected',
+      'indeterminate',
+      'tabIndex',
+      'className',
+    ].map((name) => `panel.${name}=next;`),
+    'Object.assign(panel,{hidden:true,disabled:true});',
+    "panel.setAttribute('hidden','');",
+    "panel.removeAttribute('disabled');",
+    "panel.toggleAttribute('class');",
+  ]) {
+    for (const native of [true, false]) {
+      const root = createRoot(),
+        file = 'apps/agent-harness/src/run/StateControl.tsx';
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(
+        path.join(root, file),
+        `const panel=${native ? "document.querySelector('button')" : '{setAttribute(){},removeAttribute(){},toggleAttribute(){}}'}; export const Surface=()=> <ProtoPanel onOpenChange={()=>{${action}}}/>;`
+      );
+      writeValidMatrices(root, {}, { Path: file });
+      if (native) assert.match(validationMessage(root), /forbidden interaction/);
+      else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), action);
+    }
+  }
+});
+
+test('latest state controls: eager action aliases are rejected but deferred callbacks and business functions remain valid', () => {
+  for (const [setup, call, rejects] of [
+    [
+      "import {useMemo as memo} from 'react';import * as actions from './agent-actions';",
+      "memo(actions['send'],[]);",
+      true,
+    ],
+    [
+      "import * as React from 'react';import * as actions from './agent-actions';",
+      'React.useState(actions.send);',
+      true,
+    ],
+    [
+      "import {useCallback} from 'react';import * as actions from './agent-actions';",
+      'useCallback(actions.send,[]);',
+      false,
+    ],
+    [
+      "import {useMemo} from 'react';const business={send:()=>1};",
+      'useMemo(business.send,[]);',
+      false,
+    ],
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/CallbackControl.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      `${setup} export const Surface=()=>{${call}return <section/>;};`
+    );
+    writeValidMatrices(root, {}, { Path: file });
+    if (rejects) assert.match(validationMessage(root), /forbidden interaction/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('latest state controls: config import maps reject changed/missing/extra mappings and opaque shapes', () => {
+  const imports = {
+    react: 'https://esm.sh/react@18',
+    'react-dom/client': 'https://esm.sh/react-dom@18/client',
+    vue: 'https://esm.sh/vue@3',
+  };
+  const mapEntry = (value) =>
+    `{tag:'script',attrs:{type:'importmap'},content:${JSON.stringify(JSON.stringify(value))}}`;
+  const cases = [
+    [mapEntry({ imports }), false],
+    [mapEntry({ imports: { ...imports, react: 'https://cdn.example/changed.js' } }), true],
+    [mapEntry({ imports: { react: imports.react } }), true],
+    [mapEntry({ imports: { ...imports, extra: 'https://cdn.example/extra.js' } }), true],
+    [mapEntry({ imports, scopes: {} }), true],
+    ["{tag:'script',attrs:{type:'importmap'},content:JSON.stringify({imports:{}})}", true],
+    ["{tag:'script',attrs:{type:kind},content:'{}'}", true],
+    ['...dynamicHead', true],
+    [`${mapEntry({ imports })},${mapEntry({ imports })}`, true],
+    [
+      "{tag:'script',attrs:{type:'application/json'},content:'{}'},{tag:'meta',attrs:{name:'description',content:'ordinary metadata'}}",
+      false,
+    ],
+  ];
+  for (const [entry, rejects] of cases) {
+    const root = createRoot();
+    fs.writeFileSync(
+      path.join(root, 'apps/www/astro.config.mjs'),
+      `export default {head:[${entry}]};`
+    );
+    writeValidMatrices(root);
+    if (rejects) assert.match(validationMessage(root), /import map.*unverified/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+  for (const config of [
+    'export default {head:buildHead()};',
+    "const key='head';export default {[key]:[]};",
+  ]) {
+    const root = createRoot();
+    fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), config);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /import map.*unverified/);
+  }
+});
