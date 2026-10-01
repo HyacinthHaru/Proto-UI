@@ -1355,6 +1355,20 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
                   'name',
                   'form',
                   'checked',
+                  // Reflected constraint/default attributes can change
+                  // :required, :read-only, validity and placeholder styling
+                  // without input/change events or a resize.
+                  'required',
+                  'readonly',
+                  'min',
+                  'max',
+                  'step',
+                  'minlength',
+                  'maxlength',
+                  'pattern',
+                  'multiple',
+                  'value',
+                  'placeholder',
                   'id',
                   'class',
                   'style',

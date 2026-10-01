@@ -2639,6 +2639,63 @@ describe('Shadow closeout native boundaries', () => {
     }
   });
 
+  it.each([false, true])(
+    'reprojects required-attribute CSS eligibility (shadow: %s)',
+    async (shadow) => {
+      const page = await browser.newPage();
+      try {
+        await page.addScriptTag({ content: script });
+        const result = await page.evaluate(async (shadow) => {
+          const p = (window as any).Closeout;
+          const C = p.adapt(
+            p.define({
+              name: `closeout-constraint-entry-${shadow ? 'shadow' : 'light'}`,
+              setup() {
+                p.asFocusEntry().configure({ strategy: 'descendant-first', fallback: 'self' });
+                return (r: any) => r.slot();
+              },
+            }),
+            { shadow }
+          );
+          const host = new C();
+          const input = document.createElement('input');
+          input.className = 'entry-constraint-input';
+          input.setAttribute('tabindex', '-1');
+          const button = document.createElement('button');
+          button.textContent = 'Continue';
+          const style = document.createElement('style');
+          style.textContent = '.entry-constraint-input:required + button { visibility: hidden; }';
+          host.append(input, button);
+          document.body.append(style, host);
+          const frame = () =>
+            new Promise<void>((resolve) =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+            );
+          const sample = () => ({
+            required: input.matches(':required'),
+            visibility: getComputedStyle(button).visibility,
+            fallback: host.getAttribute('tabindex'),
+          });
+          await frame();
+          const initial = sample();
+          input.required = true;
+          await frame();
+          const constrained = sample();
+          input.required = false;
+          await frame();
+          return { initial, constrained, restored: sample() };
+        }, shadow);
+        expect(result).toEqual({
+          initial: { required: false, visibility: 'visible', fallback: null },
+          constrained: { required: true, visibility: 'hidden', fallback: '0' },
+          restored: { required: false, visibility: 'visible', fallback: null },
+        });
+      } finally {
+        await page.close();
+      }
+    }
+  );
+
   it('uses rendered Light DOM eligibility for descendant entry fallback', async () => {
     const page = await browser.newPage();
     try {

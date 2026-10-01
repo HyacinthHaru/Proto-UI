@@ -542,6 +542,54 @@ describe('WC live focus-entry resolver inputs', () => {
     expect(host.hasAttribute('tabindex')).toBe(hidden);
   });
 
+  it.each([
+    ['required', ''],
+    ['readonly', ''],
+    ['min', '1'],
+    ['max', '10'],
+    ['step', '2'],
+    ['minlength', '2'],
+    ['maxlength', '10'],
+    ['pattern', '[0-9]+'],
+    ['multiple', ''],
+    ['value', 'default'],
+    ['placeholder', 'hint'],
+  ])(
+    'resamples descendant constraint attribute %s in both directions',
+    async (attribute, value) => {
+      const host = panel(true);
+      const input = document.createElement('input');
+      input.setAttribute('tabindex', '-1');
+      const button = document.createElement('button');
+      host.append(input, button);
+      // Isolate attribute invalidation from Happy DOM's incomplete constraint
+      // styling with a controlled dependent visibility sample. The browser
+      // closeout case separately exercises the real :required selector.
+      const nativeGetComputedStyle = window.getComputedStyle.bind(window);
+      vi.spyOn(window, 'getComputedStyle').mockImplementation((element, pseudoElement) => {
+        const computed = nativeGetComputedStyle(element, pseudoElement);
+        if (element !== button) return computed;
+        return new Proxy(computed, {
+          get(target, property) {
+            if (property === 'visibility')
+              return input.hasAttribute(attribute) ? 'hidden' : 'visible';
+            return Reflect.get(target, property, target);
+          },
+        });
+      });
+      await settle();
+      expect(host.hasAttribute('tabindex')).toBe(false);
+
+      input.setAttribute(attribute, value);
+      await settle();
+      expect(host.tabIndex).toBe(0);
+
+      input.removeAttribute(attribute);
+      await settle();
+      expect(host.hasAttribute('tabindex')).toBe(false);
+    }
+  );
+
   it('reprojects when setCustomValidity changes selector-driven descendant eligibility', async () => {
     const host = panel(true);
     const input = document.createElement('input');
