@@ -2,6 +2,10 @@
 
 `node scripts/coverage-matrices/check-coverage-matrices.mjs` validates the retained matrices. `node --test scripts/coverage-matrices/test/*.test.mjs` exercises the negative controls. Source scanning is deliberately bounded static analysis, not an arbitrary runtime/data-flow proof; ordinary PR checks still need independent review when their checker, inputs or workflow change.
 
+## Static resource and dependency scope
+
+The resource collector currently covers direct property assignment, `setAttribute`, `Object.assign`, and unshadowed `Reflect.set` on statically proven script/link elements. Unknown resource property/value/spread inputs fail closed within those modeled forms; business objects and locally shadowed built-ins do not establish DOM provenance. This is not a proof of arbitrary JavaScript or factory aliases. Vite-root imports retain their application-root context through the evidence closure. Package-local Vite globs share the existing 500-module traversal budget. Their directory enumeration additionally uses single-entry buffered reads with a shared 10,000-entry budget, 64-component depth, 1,024-byte paths/patterns and 128 patterns per package inspection; over-budget, symlinked or outside-package trees are unverified. Exclusion patterns filter admitted matches without enumerating another tree. An unfinished queue is unverified, not a successful partial scan. Vite-root/public candidates form a conservative closure and canonical paths outside the repository are rejected.
+
 ## Retained raster and video evidence
 
 Raster validation captures a bounded immutable input, validates PNG structure and palette indices, and uses the already-declared Website `sharp` dependency to normalize/decode pixels. Multi-frame image manifests require distinct normalized pixel content with dimensions/channels bound to the digest; changed filenames, metadata or compression alone are insufficient.

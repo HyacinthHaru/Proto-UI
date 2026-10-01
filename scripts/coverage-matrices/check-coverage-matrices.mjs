@@ -3815,21 +3815,23 @@ function scriptModuleSpecifiers(source, fileName) {
     }
     return false;
   };
-  const isGlobalObjectAssign = (expression, useNode) => {
+  const isGlobalMethod = (expression, useNode, globalName, methodName) => {
     if (!ts.isCallExpression(expression)) return false;
     const member = staticMemberAccess(expression.expression);
-    if (member?.name !== 'assign') return false;
+    if (member?.name !== methodName) return false;
     const owner = unwrapTypeScriptExpression(member.receiver);
     if (ts.isIdentifier(owner))
-      return owner.text === 'Object' && !hasLocalBinding('Object', useNode);
+      return owner.text === globalName && !hasLocalBinding(globalName, useNode);
     const qualified = staticMemberAccess(owner);
     return (
-      qualified?.name === 'Object' &&
+      qualified?.name === globalName &&
       ts.isIdentifier(qualified.receiver) &&
       /^(?:globalThis|self|window)$/u.test(qualified.receiver.text) &&
       !hasLocalBinding(qualified.receiver.text, useNode)
     );
   };
+  const isGlobalObjectAssign = (expression, useNode) =>
+    isGlobalMethod(expression, useNode, 'Object', 'assign');
   const inspectResourceAssignment = (node) => {
     if (!isGlobalObjectAssign(node, node) || !node.arguments[0]) return;
     const target = node.arguments[0];
@@ -3876,6 +3878,29 @@ function scriptModuleSpecifiers(source, fileName) {
       }
     }
   };
+  const inspectReflectResourceMutation = (node) => {
+    if (!isGlobalMethod(node, node, 'Reflect', 'set') || !node.arguments[0]) return;
+    const target = node.arguments[0];
+    const script = isScriptElementExpression(target, node);
+    const link = resourceElementCreation(target, node, 'link');
+    if (!script && !link) return;
+    const argument = node.arguments[1] && unwrapTypeScriptExpression(node.arguments[1]);
+    const property = argument && ts.isStringLiteralLike(argument) ? argument.text : null;
+    if (script && (property === 'src' || property === null)) {
+      specifiers.push(
+        property === null
+          ? DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER
+          : scriptElementSourceSpecifier(node.arguments[2])
+      );
+    }
+    if (link) {
+      if (property !== null) recordLinkMutation(target, property, node.arguments[2], node);
+      else {
+        recordLinkMutation(target, 'rel', null, node);
+        recordLinkMutation(target, 'href', null, node);
+      }
+    }
+  };
   const isGlobalNavigator = (expression, useNode) => {
     const candidate = unwrapTypeScriptExpression(expression);
     if (ts.isIdentifier(candidate))
@@ -3895,6 +3920,16 @@ function scriptModuleSpecifiers(source, fileName) {
       node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
     ) {
       const assignedProperty = staticMemberAccess(node.left);
+      const assignedTarget = unwrapTypeScriptExpression(node.left);
+      if (!assignedProperty && ts.isElementAccessExpression(assignedTarget)) {
+        const receiver = assignedTarget.expression;
+        if (isScriptElementExpression(receiver, node))
+          specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+        if (resourceElementCreation(receiver, node, 'link')) {
+          recordLinkMutation(receiver, 'rel', null, node);
+          recordLinkMutation(receiver, 'href', null, node);
+        }
+      }
       if (assignedProperty)
         recordLinkMutation(assignedProperty.receiver, assignedProperty.name, node.right, node);
       if (
@@ -3906,6 +3941,7 @@ function scriptModuleSpecifiers(source, fileName) {
     }
     if (ts.isCallExpression(node)) {
       inspectResourceAssignment(node);
+      inspectReflectResourceMutation(node);
       const calledMember = staticMemberAccess(node.expression);
       const attributeName = node.arguments[0];
       if (calledMember?.name === 'setAttribute') {
@@ -3914,7 +3950,12 @@ function scriptModuleSpecifiers(source, fileName) {
             ? attributeName.text.toLowerCase()
             : null;
         if (property) recordLinkMutation(calledMember.receiver, property, node.arguments[1], node);
-        else recordLinkMutation(calledMember.receiver, 'rel', null, node);
+        else {
+          recordLinkMutation(calledMember.receiver, 'rel', null, node);
+          recordLinkMutation(calledMember.receiver, 'href', null, node);
+          if (isScriptElementExpression(calledMember.receiver, node))
+            specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+        }
       }
 
       const serviceWorker =
@@ -4451,10 +4492,73 @@ function canonicalImportTarget(absolutePath) {
   return path.join(fs.realpathSync(existing), ...suffix);
 }
 
-function viteGlobTargets(rootDir, sourcePath, patterns, { aliasConfig, viteRoot }) {
+// Package globs are admitted with iterative directory reads. A post-glob
+// module-count check cannot bound the work or allocation of fs.globSync itself.
+const PACKAGE_GLOB_LIMITS = Object.freeze({ entries: 10_000, depth: 64, pathBytes: 1024 });
+export function boundedPackageGlobTargets(
+  packageRoot,
+  absolutePattern,
+  budget = { entries: 0 },
+  limits = PACKAGE_GLOB_LIMITS
+) {
+  const unverified = (reason) => new Error(`package glob ${reason}; closure remains unverified`);
+  if (Buffer.byteLength(absolutePattern) > limits.pathBytes)
+    throw unverified('exceeds the path-byte bound');
+  const canonicalRoot = fs.realpathSync(packageRoot);
+  const assertInside = (candidate) => {
+    const relative = path.relative(canonicalRoot, canonicalImportTarget(candidate));
+    if (relative.startsWith('..') || path.isAbsolute(relative))
+      throw unverified('resolves outside its package');
+    if (relative.split(path.sep).length > limits.depth)
+      throw unverified('exceeds the directory-depth bound');
+    if (Buffer.byteLength(relative) > limits.pathBytes)
+      throw unverified('exceeds the path-byte bound');
+  };
+  // Start at the literal directory prefix rather than enumerate unrelated
+  // package trees. The first glob segment and everything below it stay bounded.
+  const segments = absolutePattern.split(path.sep);
+  const firstGlob = segments.findIndex((segment) => /[?*{}[\]]|[!+@]\(/u.test(segment));
+  const prefix =
+    firstGlob < 0
+      ? path.dirname(absolutePattern)
+      : segments.slice(0, firstGlob).join(path.sep) || path.parse(absolutePattern).root;
+  assertInside(prefix);
+  if (!fs.existsSync(prefix)) return [];
+  const matches = [];
+  const pending = [prefix];
+  while (pending.length > 0) {
+    const directory = pending.pop();
+    assertInside(directory);
+    const handle = fs.opendirSync(directory, { bufferSize: 1 });
+    try {
+      let entry;
+      while ((entry = handle.readSync()) !== null) {
+        if (++budget.entries > limits.entries)
+          throw unverified('exceeds the entry-enumeration bound');
+        const candidate = path.join(directory, entry.name);
+        assertInside(candidate);
+        // Do not follow aliases/cycles while claiming a complete package glob.
+        if (entry.isSymbolicLink()) throw unverified('contains an unsupported symlink');
+        if (entry.isDirectory()) pending.push(candidate);
+        else if (entry.isFile() && path.matchesGlob(candidate, absolutePattern))
+          matches.push(candidate);
+      }
+    } finally {
+      handle.closeSync();
+    }
+  }
+  return matches;
+}
+
+function viteGlobTargets(
+  rootDir,
+  sourcePath,
+  patterns,
+  { aliasConfig, viteRoot, packageRoot, globBudget }
+) {
   const sourceDirectory = path.dirname(path.resolve(rootDir, sourcePath));
   const targets = new Map();
-  const expandPattern = (authoredPattern) => {
+  const resolvePattern = (authoredPattern) => {
     const pattern = authoredPattern.startsWith('!') ? authoredPattern.slice(1) : authoredPattern;
     let absolutePattern = null;
     const aliasMatch = configuredAliasMatch(pattern, aliasConfig);
@@ -4465,8 +4569,18 @@ function viteGlobTargets(rootDir, sourcePath, patterns, { aliasConfig, viteRoot 
     } else if (pattern.startsWith('/')) {
       absolutePattern = path.resolve(viteRoot, `.${pattern}`);
     }
+    return absolutePattern;
+  };
+  if (
+    packageRoot &&
+    ((globBudget.patterns += patterns.length) > 128 ||
+      patterns.some((pattern) => Buffer.byteLength(pattern) > 1024))
+  )
+    throw new Error('package glob pattern bound exceeded; closure remains unverified');
+  const expandPattern = (authoredPattern) => {
+    const absolutePattern = resolvePattern(authoredPattern);
     if (!absolutePattern) return [];
-
+    if (packageRoot) return boundedPackageGlobTargets(packageRoot, absolutePattern, globBudget);
     return fs
       .globSync(absolutePattern.replaceAll('\\', '/'))
       .map((matchedPath) => path.resolve(matchedPath))
@@ -4480,7 +4594,13 @@ function viteGlobTargets(rootDir, sourcePath, patterns, { aliasConfig, viteRoot 
     }
   }
   for (const authoredPattern of negativePatterns) {
-    for (const matchedPath of expandPattern(authoredPattern)) {
+    const negativePattern = resolvePattern(authoredPattern);
+    const excluded = packageRoot
+      ? [...targets.keys()].filter(
+          (candidate) => negativePattern && path.matchesGlob(candidate, negativePattern)
+        )
+      : expandPattern(authoredPattern);
+    for (const matchedPath of excluded) {
       targets.delete(matchedPath);
     }
   }
@@ -4911,10 +5031,49 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
   };
   const pending = [...exportTargets];
   const visited = new Set();
+  const globBudget = { entries: 0, patterns: 0 };
   while (pending.length > 0 && visited.size < 500) {
     const sourcePath = pending.pop();
     if (visited.has(sourcePath) || !PACKAGE_SOURCE_PATTERN.test(sourcePath)) continue;
     visited.add(sourcePath);
+    try {
+      for (const patterns of viteGlobPatternGroupsForWebsiteSource(sourcePath)) {
+        for (const target of viteGlobTargets(
+          rootDir,
+          path.relative(rootDir, sourcePath),
+          patterns,
+          {
+            aliasConfig: websiteAliasConfig,
+            viteRoot: path.join(rootDir, 'apps', 'www'),
+            packageRoot,
+            globBudget,
+          }
+        )) {
+          const relative = path.relative(
+            canonicalImportTarget(packageRoot),
+            canonicalImportTarget(target.absolutePath)
+          );
+          if (relative.startsWith('..') || path.isAbsolute(relative)) {
+            const result = {
+              category: 'unresolved-package-entry',
+              resolvedPath: path.relative(rootDir, sourcePath).replaceAll('\\', '/'),
+              entryTarget: `glob:${target.authoredPattern}`,
+            };
+            cache.set(entryPath, result);
+            return result;
+          }
+          if (!visited.has(target.absolutePath)) pending.push(target.absolutePath);
+        }
+      }
+    } catch (error) {
+      const result = {
+        category: 'unresolved-package-entry',
+        resolvedPath: path.relative(rootDir, sourcePath).replaceAll('\\', '/'),
+        entryTarget: `glob:${error.message}`,
+      };
+      cache.set(entryPath, result);
+      return result;
+    }
     const dependencySpecifiers = [];
     for (const originalSpecifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
       const mapped = resolvePackageImports(originalSpecifier, sourcePath);
@@ -5136,14 +5295,28 @@ function reachableSourcePaths(
   const candidateByPath = new Map(
     candidates.map((candidate) => [path.resolve(candidate), candidate])
   );
-  const resolveLocalImport = (sourcePath, specifier) => {
+  const resolveLocalImport = (sourcePath, specifier, viteRoot) => {
     const classifiedSpecifier = importSpecifierWithoutViteSuffix(specifier);
     const aliasMatch = configuredAliasMatch(classifiedSpecifier, aliasConfig);
-    if (!classifiedSpecifier.startsWith('.') && !aliasMatch) return null;
-    const base = aliasMatch
-      ? path.resolve(aliasMatch.replacement, aliasMatch.suffix)
-      : path.resolve(path.dirname(sourcePath), classifiedSpecifier);
-    const variants = [
+    const rootRelative = /^\/(?!\/)/u.test(classifiedSpecifier);
+    if (!classifiedSpecifier.startsWith('.') && !aliasMatch && !rootRelative) return null;
+    const bases = aliasMatch
+      ? [path.resolve(aliasMatch.replacement, aliasMatch.suffix)]
+      : rootRelative
+        ? [
+            path.resolve(viteRoot, `.${classifiedSpecifier}`),
+            path.resolve(viteRoot, 'public', `.${classifiedSpecifier}`),
+          ]
+        : [path.resolve(path.dirname(sourcePath), classifiedSpecifier)];
+    if (
+      rootRelative &&
+      bases.some((base) => {
+        const relative = path.relative(root, base);
+        return relative.startsWith('..') || path.isAbsolute(relative);
+      })
+    )
+      throw new Error('Vite-root import escapes the repository');
+    const variants = bases.flatMap((base) => [
       base,
       ...[
         '.astro',
@@ -5172,36 +5345,52 @@ function reachableSourcePaths(
         'index.mts',
         'index.cts',
       ].map((indexName) => path.join(base, indexName)),
-    ];
+    ]);
     return (
       variants
         .map((candidate) => candidateByPath.get(candidate) ?? candidate)
-        .find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()) ?? null
+        .filter((candidate) => {
+          if (rootRelative) {
+            const relative = path.relative(root, canonicalImportTarget(candidate));
+            if (relative.startsWith('..') || path.isAbsolute(relative))
+              throw new Error('Vite-root import resolves outside the repository');
+          }
+          return fs.existsSync(candidate) && fs.statSync(candidate).isFile();
+        }) ?? null
     );
   };
   const reachable = new Set(candidates.filter((candidate) => !isTestNamedSource(candidate)));
-  const pending = [...reachable];
+  const pending = [...reachable].map((sourcePath) => ({
+    sourcePath,
+    viteRoot: path
+      .relative(root, sourcePath)
+      .replaceAll('\\', '/')
+      .startsWith('apps/agent-harness/')
+      ? path.join(root, 'apps', 'agent-harness')
+      : path.join(root, 'apps', 'www'),
+  }));
+  const visitedContexts = new Set();
   while (pending.length > 0) {
-    const sourcePath = pending.pop();
+    const { sourcePath, viteRoot } = pending.pop();
+    const contextKey = `${sourcePath}\0${viteRoot}`;
+    if (visitedContexts.has(contextKey)) continue;
+    visitedContexts.add(contextKey);
     for (const specifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
-      const target = resolveLocalImport(sourcePath, specifier);
-      if (target && !reachable.has(target)) {
+      const targets = resolveLocalImport(sourcePath, specifier, viteRoot);
+      for (const target of targets ?? []) {
         reachable.add(target);
-        pending.push(target);
+        pending.push({ sourcePath: target, viteRoot });
       }
     }
     const relativeSourcePath = path.relative(root, sourcePath).replaceAll('\\', '/');
-    const viteRoot = relativeSourcePath.startsWith('apps/www/')
-      ? path.join(root, 'apps', 'www')
-      : path.join(root, 'apps', 'agent-harness');
     for (const patterns of viteGlobPatternGroupsForWebsiteSource(sourcePath)) {
       for (const target of viteGlobTargets(root, relativeSourcePath, patterns, {
         aliasConfig,
         viteRoot,
       })) {
-        if (target.absolutePath && !reachable.has(target.absolutePath)) {
+        if (target.absolutePath) {
           reachable.add(target.absolutePath);
-          pending.push(target.absolutePath);
+          pending.push({ sourcePath: target.absolutePath, viteRoot });
         }
       }
     }

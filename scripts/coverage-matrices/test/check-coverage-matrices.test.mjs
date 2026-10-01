@@ -8,6 +8,7 @@ import zlib from 'node:zlib';
 import { afterEach, test } from 'node:test';
 import {
   MATRIX_CONFIGS,
+  boundedPackageGlobTargets,
   collectCoverageMatrixIssues,
   validateCoverageMatrices,
 } from '../check-coverage-matrices.mjs';
@@ -9934,4 +9935,295 @@ test('latest review: business roots and shadowed Object helpers remain outside D
     writeValidMatrices(root);
     assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
   }
+});
+
+test('closure review: Vite-root helper changes invalidate captured Website evidence', () => {
+  for (const specifier of ['/src/helper.ts', '/src/helper.ts?raw']) {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const helperPath = 'apps/www/src/helper.ts';
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      `---\nimport { label } from '${specifier}';\n---\n<main>{label}</main>`
+    );
+    fs.writeFileSync(path.join(root, helperPath), "export const label = 'captured';");
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    assert.doesNotThrow(() =>
+      validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+    );
+    fs.writeFileSync(path.join(root, helperPath), "export const label = 'changed';");
+    assert.match(
+      validationMessage(root, promotionOptions(revision)),
+      /promoted dependency `apps\/www\/src\/helper.ts` differs from evidence Commit/
+    );
+  }
+});
+
+test('closure review: Reflect.set resource mutations are checked without business false positives', () => {
+  for (const prefix of ['apps/www/src/components', 'apps/agent-harness/src/run']) {
+    for (const [source, expected] of [
+      [
+        "const script=document.createElement('script'); Reflect.set(script,'src','https://cdn.example/runtime.js');",
+        /external executable script.*runtime.js/,
+      ],
+      [
+        "Reflect.set(document.createElement('script'), property, value);",
+        /dynamic executable script/,
+      ],
+      [
+        "const link=document.createElement('link'); Reflect.set(link,'rel','stylesheet'); Reflect.set(link,'href','https://cdn.example/theme.css');",
+        /external stylesheet.*theme.css/,
+      ],
+      ["Reflect.set(document.createElement('link'), property, value);", /dynamic stylesheet/],
+    ]) {
+      const root = createRoot(),
+        filename = path.join(root, prefix, 'ReflectResource.ts');
+      fs.mkdirSync(path.dirname(filename), { recursive: true });
+      fs.writeFileSync(filename, source);
+      writeValidMatrices(root);
+      assert.match(validationMessage(root), expected);
+    }
+  }
+  for (const source of [
+    "Reflect.set({},'src','https://cdn.example/business');",
+    "function business(Reflect) { Reflect.set(document.createElement('script'),'src','https://cdn.example/business'); }",
+    "Reflect.set(document.createElement('script'),'async',true);",
+  ]) {
+    const root = createRoot(),
+      filename = path.join(root, 'apps/www/src/components/BusinessReflect.ts');
+    fs.mkdirSync(path.dirname(filename), { recursive: true });
+    fs.writeFileSync(filename, source);
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('closure review: package-local Vite globs enter the bounded dependency scan', () => {
+  for (const pattern of ["'./features/*.js'", "['./features/*.js','!./features/safe.js']"]) {
+    const root = createRoot(),
+      directory = path.join(root, 'node_modules/glob-entry');
+    fs.mkdirSync(path.join(directory, 'features'), { recursive: true });
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name: 'glob-entry', main: './entry.js' })
+    );
+    fs.writeFileSync(
+      path.join(directory, 'entry.js'),
+      `const modules=import.meta.glob(${pattern},{eager:true});`
+    );
+    fs.writeFileSync(path.join(directory, 'features/guarded.js'), "import '@proto.ui/runtime';");
+    fs.writeFileSync(path.join(directory, 'features/safe.js'), 'export const label="safe";');
+    const source = path.join(root, 'apps/www/src/components/GlobEntry.ts');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, "import 'glob-entry';");
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /raw Proto UI import `glob-entry`/);
+  }
+});
+
+test('closure review: Vite-root context survives a shared helper outside its app directory', () => {
+  const root = createRoot(),
+    implementationPath = 'apps/www/src/components/override/Search.astro';
+  const websiteBindings = [[implementationPath, ['www.shell.search']]];
+  fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+  fs.mkdirSync(path.join(root, 'shared'), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, implementationPath),
+    "---\nimport { label } from '../../../../../shared/bridge.ts';\n---\n<main>{label}</main>"
+  );
+  fs.writeFileSync(path.join(root, 'shared/bridge.ts'), "export { label } from '/src/helper.ts';");
+  fs.writeFileSync(path.join(root, 'apps/www/src/helper.ts'), "export const label='captured';");
+  writeValidMatrices(root, {}, {}, { websiteBindings });
+  const revision = commitFixtureRoot(root);
+  writeSelfHostedPromotion(root, revision, { websiteBindings });
+  assert.doesNotThrow(() =>
+    validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+  );
+  fs.writeFileSync(path.join(root, 'apps/www/src/helper.ts'), "export const label='changed';");
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /promoted dependency `apps\/www\/src\/helper.ts` differs/
+  );
+});
+
+test('closure review: Harness Vite-root imports include reachable test-named production code', () => {
+  const root = createRoot(),
+    entry = path.join(root, 'apps/agent-harness/index.html'),
+    helper = path.join(root, 'apps/agent-harness/src/reachable.test.ts');
+  fs.mkdirSync(path.dirname(helper), { recursive: true });
+  fs.writeFileSync(entry, '<script type="module" src="/src/reachable.test.ts"></script>');
+  fs.writeFileSync(helper, "document.querySelector('button').focus();");
+  writeValidMatrices(root);
+  assert.match(
+    validationMessage(root),
+    /Harness source `apps\/agent-harness\/src\/reachable.test.ts`.*forbidden interaction/
+  );
+});
+
+test('closure review: package glob exclusions and the 500-module bound remain effective', () => {
+  for (const mode of ['safe', 'excluded', 'large']) {
+    const root = createRoot(),
+      directory = path.join(root, 'node_modules/bounded-glob');
+    fs.mkdirSync(path.join(directory, 'features'), { recursive: true });
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name: 'bounded-glob', main: './entry.js' })
+    );
+    fs.writeFileSync(
+      path.join(directory, 'entry.js'),
+      `const all=import.meta.glob(${mode === 'excluded' ? "['./features/*.js','!./features/guarded.js']" : "'./features/*.js'"},{eager:true});`
+    );
+    for (let index = 0; index < (mode === 'large' ? 501 : 1); index += 1)
+      fs.writeFileSync(path.join(directory, `features/${index}.js`), 'export const safe=true;');
+    if (mode === 'excluded')
+      fs.writeFileSync(path.join(directory, 'features/guarded.js'), "import '@proto.ui/runtime';");
+    const source = path.join(root, 'apps/www/src/components/BoundedGlob.ts');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, "import 'bounded-glob';");
+    writeValidMatrices(root);
+    if (mode === 'large')
+      assert.match(validationMessage(root), /package traversal.*500.*unverified/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+for (const [label, source, expected] of [
+  [
+    'script computed assignment',
+    "const node=document.createElement('script'); node[property]=value;",
+    /dynamic executable script/,
+  ],
+  [
+    'script dynamic attribute',
+    "const node=document.createElement('script'); node.setAttribute(property,value);",
+    /dynamic executable script/,
+  ],
+  [
+    'link computed assignment',
+    "const node=document.createElement('link'); node[property]=value;",
+    /dynamic stylesheet/,
+  ],
+  [
+    'link dynamic attribute',
+    "const node=document.createElement('link'); node.setAttribute(property,value);",
+    /dynamic stylesheet/,
+  ],
+]) {
+  test(`closure review: ${label} cannot hide an unknown resource write`, () => {
+    const root = createRoot(),
+      filename = path.join(root, 'apps/www/src/components/ComputedResource.ts');
+    fs.mkdirSync(path.dirname(filename), { recursive: true });
+    fs.writeFileSync(filename, source);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), expected);
+  });
+}
+
+test('package glob enumeration stops at a small read budget before materializing the tree', () => {
+  const root = createRoot();
+  const packageRoot = path.join(root, 'small-package');
+  fs.mkdirSync(path.join(packageRoot, 'features/deep'), { recursive: true });
+  for (let index = 0; index < 8; index++)
+    fs.writeFileSync(path.join(packageRoot, `features/${index}.js`), 'export {};');
+  fs.writeFileSync(path.join(packageRoot, 'features/deep/nested.js'), 'export {};');
+  const budget = { entries: 0 };
+  assert.throws(
+    () =>
+      boundedPackageGlobTargets(packageRoot, path.join(packageRoot, 'features/**/*.js'), budget, {
+        entries: 3,
+        depth: 64,
+        pathBytes: 1024,
+      }),
+    /entry-enumeration bound.*unverified/
+  );
+  assert.equal(budget.entries, 4);
+  assert.equal(
+    boundedPackageGlobTargets(packageRoot, path.join(packageRoot, 'features/**/*.js')).length,
+    9
+  );
+  assert.throws(
+    () =>
+      boundedPackageGlobTargets(
+        packageRoot,
+        path.join(packageRoot, 'features/**/*.js'),
+        { entries: 0 },
+        { entries: 100, depth: 1, pathBytes: 1024 }
+      ),
+    /directory-depth bound.*unverified/
+  );
+});
+
+test('package glob rejects an external symlink and carries one budget across scans', () => {
+  const root = createRoot(),
+    packageRoot = path.join(root, 'glob-package'),
+    outside = path.join(root, 'outside');
+  fs.mkdirSync(packageRoot);
+  fs.mkdirSync(outside);
+  fs.writeFileSync(path.join(packageRoot, 'entry.js'), 'export {};');
+  const budget = { entries: 0 };
+  const limits = { entries: 1, depth: 64, pathBytes: 1024 };
+  assert.equal(
+    boundedPackageGlobTargets(packageRoot, path.join(packageRoot, '*.js'), budget, limits).length,
+    1
+  );
+  assert.throws(
+    () => boundedPackageGlobTargets(packageRoot, path.join(packageRoot, '*.js'), budget, limits),
+    /entry-enumeration bound/
+  );
+  fs.writeFileSync(path.join(outside, 'escaped.js'), 'export {};');
+  fs.symlinkSync(outside, path.join(packageRoot, 'escape'));
+  assert.throws(
+    () => boundedPackageGlobTargets(packageRoot, path.join(packageRoot, '**/*.js')),
+    /outside its package.*unverified/
+  );
+});
+
+test('closure review: Vite-root symlinks outside the repository never become verified', () => {
+  const root = createRoot(),
+    outside = createRoot();
+  const helper = path.join(outside, 'helper.test.ts');
+  fs.writeFileSync(helper, 'export const label="outside";');
+  const source = path.join(root, 'apps/www/src/components/RootLink.ts');
+  fs.mkdirSync(path.dirname(source), { recursive: true });
+  fs.symlinkSync(helper, path.join(root, 'apps/www/src/helper.test.ts'));
+  fs.writeFileSync(source, "import '/src/helper.test.ts';");
+  writeValidMatrices(root);
+  assert.throws(
+    () => validateCoverageMatrices({ rootDir: root }),
+    /outside the repository|symlink|outside.*root/
+  );
+});
+
+test('closure review: both Vite-root and public candidates stay in the conservative closure', () => {
+  const root = createRoot(),
+    entry = path.join(root, 'apps/agent-harness/index.html');
+  fs.mkdirSync(path.join(root, 'apps/agent-harness/public'), { recursive: true });
+  fs.writeFileSync(entry, '<script type="module" src="/helper.test.ts"></script>');
+  fs.writeFileSync(path.join(root, 'apps/agent-harness/helper.test.ts'), 'export const root=true;');
+  fs.writeFileSync(
+    path.join(root, 'apps/agent-harness/public/helper.test.ts'),
+    "document.querySelector('button').focus();"
+  );
+  writeValidMatrices(root);
+  assert.match(
+    validationMessage(root),
+    /Harness source `apps\/agent-harness\/public\/helper.test.ts`.*forbidden interaction/
+  );
+});
+
+test('package glob supports scoped literal roots and nested brace patterns', () => {
+  const root = createRoot(),
+    packageRoot = path.join(root, '@scope/library');
+  fs.mkdirSync(path.join(packageRoot, 'features/deep'), { recursive: true });
+  fs.writeFileSync(path.join(packageRoot, 'features/deep/a.js'), 'export {};');
+  fs.writeFileSync(path.join(packageRoot, 'features/deep/b.ts'), 'export {};');
+  fs.writeFileSync(path.join(packageRoot, 'features/deep/c.json'), '{}');
+  assert.equal(
+    boundedPackageGlobTargets(packageRoot, path.join(packageRoot, 'features/**/*.{js,ts}')).length,
+    2
+  );
 });
