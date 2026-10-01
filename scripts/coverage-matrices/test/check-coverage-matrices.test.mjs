@@ -11113,3 +11113,247 @@ test('latest state controls: config import maps reject changed/missing/extra map
     assert.match(validationMessage(root), /import map.*unverified/);
   }
 });
+
+test('review entry boundaries: shorthand Astro head does not bypass map validation', () => {
+  const root = createRoot();
+  fs.writeFileSync(
+    path.join(root, 'apps/www/astro.config.mjs'),
+    `const head=[{tag:'script',attrs:{type:'importmap'},content:'{"imports":{"react":"https://cdn.example/unreviewed.js"}}'}];export default {head};`
+  );
+  writeValidMatrices(root);
+  assert.match(validationMessage(root), /import map.*unverified/);
+});
+
+for (const kind of ['website', 'harness'])
+  test(`review entry boundaries: ${kind} JSX script sources are execution edges`, () => {
+    const root = createRoot();
+    const relativePath =
+      kind === 'website'
+        ? 'apps/www/src/components/JsxScript.tsx'
+        : 'apps/agent-harness/src/run/JsxScript.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, relativePath)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, relativePath),
+      'export const Script = () => <script async src="https://cdn.example/runtime.js" />;'
+    );
+    writeValidMatrices(root, {}, kind === 'harness' ? { Path: relativePath } : {}, {
+      websiteBindings: kind === 'website' ? [[relativePath, ['www.shell.primary-nav']]] : [],
+    });
+    assert.match(validationMessage(root), /external executable script.*cdn\.example/);
+  });
+
+for (const relativePath of [
+  'apps/www/src/content/docs/unreviewed.mdx',
+  'apps/www/public/unreviewed.html',
+])
+  test(`review entry boundaries: Website embeds are reviewed in ${relativePath}`, () => {
+    const root = createRoot();
+    fs.mkdirSync(path.dirname(path.join(root, relativePath)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, relativePath),
+      '<iframe src="https://preview.example/app"></iframe>'
+    );
+    writeValidMatrices(
+      root,
+      {},
+      {},
+      { websiteBindings: [[relativePath, ['www.shell.primary-nav']]] }
+    );
+    assert.match(validationMessage(root), /unreviewed.*(?:embed|preview)/);
+  });
+
+test('review entry boundaries: transport listeners are not DOM ownership', () => {
+  for (const expression of [
+    "new WebSocket('wss://api.example')",
+    "new EventSource('/events')",
+    "new BroadcastChannel('updates')",
+    'new AbortController().signal',
+    '{addEventListener(){}}',
+  ]) {
+    const root = createRoot();
+    const relativePath = 'apps/agent-harness/src/services/agent-service.ts';
+    fs.mkdirSync(path.dirname(path.join(root, relativePath)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, relativePath),
+      `const transport=${expression}; transport.addEventListener('message',receive);`
+    );
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), expression);
+  }
+});
+
+test('review entry boundaries: actual DOM listeners retain the ownership gate', () => {
+  const root = createRoot();
+  const relativePath = 'apps/agent-harness/src/run/DomListener.ts';
+  fs.mkdirSync(path.dirname(path.join(root, relativePath)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, relativePath),
+    "const button=document.querySelector('button');button.addEventListener('click',receive);"
+  );
+  writeValidMatrices(root, {}, { Path: relativePath });
+  assert.match(validationMessage(root), /forbidden interaction or DOM state machine/);
+});
+
+test('review entry controls: JSX scripts preserve inert/custom forms and fail closed on opaque executable sources', () => {
+  const cases = [
+    ['<script async src={"https://cdn.example/runtime.js"}/>', true],
+    ['<script async src={target}/>', true],
+    ['<script src="./runtime.js"/>', true],
+    ['<script {...props}/>', true],
+    ['<script type={kind} src="https://cdn.example/runtime.js"/>', true],
+    ['<script type="importmap">{"{}"}</script>', true],
+    ['<script dangerouslySetInnerHTML={{__html: source}}/>', true],
+    ['<script>{source}</script>', true],
+    ['<script type="application/json">{"{}"}</script>', false],
+    ['<script type="application/ld+json" src="https://data.example/value.json"/>', false],
+    ['<Script async src="https://business.example/value"/>', false],
+    ['<section>{"<script src=external>"}</section>', false],
+    ['<script/>', false],
+  ];
+  for (const kind of ['website', 'harness'])
+    for (const [markup, rejects] of cases) {
+      const root = createRoot();
+      const file =
+        kind === 'website'
+          ? 'apps/www/src/components/ScriptControl.tsx'
+          : 'apps/agent-harness/src/run/ScriptControl.tsx';
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(path.join(root, file), `export const Surface=()=>${markup};`);
+      writeValidMatrices(root, {}, kind === 'harness' ? { Path: file } : {}, {
+        websiteBindings: kind === 'website' ? [[file, ['www.shell.primary-nav']]] : [],
+      });
+      if (rejects)
+        assert.match(
+          validationMessage(root),
+          /(?:external|dynamic) executable script/,
+          `${kind}: ${markup}`
+        );
+      else
+        assert.doesNotThrow(
+          () => validateCoverageMatrices({ rootDir: root }),
+          `${kind}: ${markup}`
+        );
+    }
+});
+
+test('review entry controls: Website embed allowance binds exact path and immutable static content', () => {
+  const file = 'apps/www/src/pages/en/test/style-isolation.astro';
+  const real = fs.readFileSync(
+    new URL('../../../apps/www/src/pages/en/test/style-isolation.astro', import.meta.url),
+    'utf8'
+  );
+  const opening = real.slice(real.indexOf('<iframe'), real.indexOf('</iframe>'));
+  for (const [target, markup, rejects] of [
+    [file, `${opening}</iframe>`, false],
+    [
+      file,
+      `${opening.replace('Unstyled host control</button>', 'Changed baseline</button>')}</iframe>`,
+      true,
+    ],
+    [file, `${opening.replace('srcdoc=', 'src="https://preview.example" srcdoc=')}</iframe>`, true],
+    [file, `${opening}</iframe>${opening}</iframe>`, true],
+    ['apps/www/src/pages/en/test/copied.astro', `${opening}</iframe>`, true],
+  ]) {
+    const root = createRoot();
+    fs.mkdirSync(path.dirname(path.join(root, target)), { recursive: true });
+    fs.writeFileSync(path.join(root, target), markup);
+    writeValidMatrices(root, {}, {}, { websiteBindings: [[target, ['www.shell.primary-nav']]] });
+    if (rejects) assert.match(validationMessage(root), /unreviewed executable embed/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('review entry controls: Website native embeds cover markup and JSX with data/example controls', () => {
+  for (const [file, source, rejects] of [
+    ['apps/www/src/content/docs/embed.mdx', '<object data="https://preview.example"/>', true],
+    ['apps/www/public/embed.html', '<EMBED src="https://preview.example">', true],
+    [
+      'apps/www/src/components/Embed.tsx',
+      'export const Surface=()=> <iframe srcDoc={html}/>;',
+      true,
+    ],
+    [
+      'apps/www/src/components/Embed.tsx',
+      'export const Surface=()=> <webview src="https://preview.example"/>;',
+      true,
+    ],
+    [
+      'apps/www/src/content/docs/embed.mdx',
+      '<!-- <iframe src="external"></iframe> -->\n```html\n<iframe src="external"></iframe>\n```\n<script type="application/json">{"example":"<iframe>"}</script>\n<article>Static</article>',
+      false,
+    ],
+    [
+      'apps/www/public/embed.html',
+      '<!-- <iframe src="external"></iframe> --><script type="application/json">{"example":"<iframe>"}</script>',
+      false,
+    ],
+    ['apps/www/src/content/docs/embed.mdx', '<Iframe data="business"/>', false],
+    [
+      'apps/www/src/components/Embed.tsx',
+      'export const Surface=()=> <Iframe src="business"/>;',
+      false,
+    ],
+  ]) {
+    const root = createRoot();
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
+    if (rejects) assert.match(validationMessage(root), /unreviewed executable embed/, file);
+    else
+      assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), `${file}: ${source}`);
+  }
+});
+
+test('review entry controls: Harness listener classification follows known DOM acquisition and aliases', () => {
+  for (const [source, rejects] of [
+    ["document.addEventListener('click',receive);", true],
+    ["window.addEventListener('keydown',receive);", true],
+    [
+      "const el=document.querySelector('button');const alias=el;alias['addEventListener']('click',receive);",
+      true,
+    ],
+    ["function register(node:HTMLElement){node.addEventListener('click',receive)}", true],
+    [
+      "const transport=new WebSocket('wss://api.example');const alias=transport;alias['addEventListener']('message',receive);",
+      false,
+    ],
+    [
+      "function register(transport:WebSocket){transport.addEventListener('message',receive)}",
+      false,
+    ],
+    ["const document={addEventListener(){}};document.addEventListener('message',receive);", false],
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/ListenerControl.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root, {}, { Path: file });
+    if (rejects) assert.match(validationMessage(root), /forbidden interaction/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), source);
+  }
+});
+
+test('review entry controls: shorthand head is conservatively unverified without executing bindings', () => {
+  for (const source of [
+    'const head=[];export default {head};',
+    'function configure(head){return {head}};export default configure(dynamicHead);',
+    'const head=loadHead();export default {integrations:[starlight({head})]};',
+  ]) {
+    const root = createRoot();
+    fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), source);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /shorthand head configuration is unverified/);
+  }
+});
+
+test('review entry controls: Astro self-closing JSON data does not turn later markup into JSX execution', () => {
+  const root = createRoot(),
+    file = 'apps/www/src/components/JsonGallery.astro';
+  fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, file),
+    '<script is:inline type="application/json" data-index set:html={serializedIndex} /><section>Static content</section><script>import React from "react";</script>'
+  );
+  writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
+  assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+});

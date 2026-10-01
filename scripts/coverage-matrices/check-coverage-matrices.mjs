@@ -1610,7 +1610,14 @@ function astContainsInteractiveRuntime(content, { harnessGeometry = false } = {}
           return;
         }
         if (
-          method === 'addEventListener' ||
+          (method === 'addEventListener' &&
+            (!harnessGeometry ||
+              isDomReceiverExpression(
+                calledMember.receiver,
+                sourceFile,
+                receiverBindings,
+                node
+              ))) ||
           ((owner === 'customElements' || owner.endsWith('.customElements')) && method === 'define')
         ) {
           found = true;
@@ -4062,6 +4069,48 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       );
     });
   const visit = (node) => {
+    if (
+      /\.[cm]?[jt]sx?$/iu.test(fileName) &&
+      (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
+      ts.isIdentifier(node.tagName)
+    ) {
+      const tag = node.tagName.text;
+      if (!harnessPreviewBoundary && /^(?:iframe|object|embed|webview)$/u.test(tag))
+        specifiers.push(UNREVIEWED_WEBSITE_EMBED_SPECIFIER);
+      if (tag === 'script') {
+        const attributes = new Map();
+        let opaque = false;
+        for (const attribute of node.attributes.properties) {
+          if (!ts.isJsxAttribute(attribute) || !ts.isIdentifier(attribute.name)) {
+            opaque = true;
+            continue;
+          }
+          const name = attribute.name.text;
+          if (attributes.has(name)) opaque = true;
+          const initializer = attribute.initializer;
+          attributes.set(
+            name,
+            initializer && ts.isJsxExpression(initializer) ? initializer.expression : initializer
+          );
+        }
+        const typeNode = attributes.get('type');
+        const type = typeNode && ts.isStringLiteralLike(typeNode) ? typeNode.text : null;
+        if (opaque || (attributes.has('type') && type === null))
+          specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+        else if (type?.trim().toLowerCase() === 'importmap')
+          specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+        else if (isExecutableScriptType(type)) {
+          if (attributes.has('src'))
+            specifiers.push(scriptElementSourceSpecifier(attributes.get('src')));
+          else if (
+            attributes.has('dangerouslySetInnerHTML') ||
+            (ts.isJsxOpeningElement(node) &&
+              node.parent.children.some((child) => !ts.isJsxText(child) || child.text.trim()))
+          )
+            specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+        }
+      }
+    }
     if (harnessPreviewBoundary) {
       if (
         (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
@@ -4269,6 +4318,7 @@ function isExecutableScriptType(type) {
   );
 }
 const DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER = '<dynamic executable script src>';
+const UNREVIEWED_WEBSITE_EMBED_SPECIFIER = '<unreviewed Website embed>';
 const DYNAMIC_STYLESHEET_LINK_SPECIFIER = '<dynamic stylesheet href>';
 const DYNAMIC_STYLESHEET_REL_SPECIFIER = '<dynamic stylesheet relation>';
 const DYNAMIC_DOCUMENT_BASE_SPECIFIER = '<dynamic document base href>';
@@ -4457,6 +4507,8 @@ function astroHeadImportMapIssues(rootDir) {
       const name = propertyName(node.name);
       if (name === 'head') inspectHead(node.initializer);
       else if (name === null) reject('computed config field is unverified');
+    } else if (ts.isShorthandPropertyAssignment(node) && node.name.text === 'head') {
+      reject('shorthand head configuration is unverified');
     }
     ts.forEachChild(node, visit);
   };
@@ -4997,6 +5049,8 @@ function guardedWebsiteImport(
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
     return { category: 'dynamic-executable-script', resolvedPath: null };
   }
+  if (specifier === UNREVIEWED_WEBSITE_EMBED_SPECIFIER)
+    return { category: 'unreviewed-embed', resolvedPath: null };
   if (specifier === UNRESOLVED_WORKER_ENTRY_SPECIFIER) {
     return { category: 'unresolved-worker-entry', resolvedPath: null };
   }
@@ -5844,6 +5898,27 @@ function reachableSourcePaths(
   return reachable;
 }
 
+// Existing local static browser-default baseline, not a general iframe allowance.
+const REVIEWED_STYLE_BASELINE_EMBED_SHA256 =
+  '6b4aab88932f3e54de9a87ff75e022630b2b1198511a8cadbc05aa1e61cf5c95';
+function unreviewedWebsiteEmbeds(content, sourcePath) {
+  const markup = markupSourceForJsxFallback(
+    content.replace(/<!--[\s\S]*?-->/gu, '').replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/giu, ''),
+    sourcePath
+  );
+  if (markup === null) return [];
+  const pattern = /\.html?$/iu.test(sourcePath)
+    ? /^<(?:iframe|object|embed|webview)\b/iu
+    : /^<(?:iframe|object|embed|webview)\b/u;
+  const embeds = jsxOpeningTagCandidates(markup).filter((tag) => pattern.test(tag));
+  return embeds.filter(
+    (tag) =>
+      sourcePath !== 'apps/www/src/pages/en/test/style-isolation.astro' ||
+      embeds.length !== 1 ||
+      createHash('sha256').update(tag).digest('hex') !== REVIEWED_STYLE_BASELINE_EMBED_SHA256
+  );
+}
+
 function discoverWebsiteRawImports(rootDir) {
   const canonicalRootDir = canonicalImportTarget(path.resolve(rootDir));
   const websiteRoot = path.join(rootDir, 'apps', 'www');
@@ -5881,6 +5956,13 @@ function discoverWebsiteRawImports(rootDir) {
     if (/\.(?:html?|astro|mdx?|vue|svelte)$/i.test(absolutePath)) {
       const content = fs.readFileSync(absolutePath, 'utf8');
       const markup = /\.mdx?$/i.test(absolutePath) ? stripMarkdownCode(content) : content;
+      for (const _embed of unreviewedWebsiteEmbeds(markup, sourcePath))
+        rawImports.push({
+          sourcePath,
+          specifier: UNREVIEWED_WEBSITE_EMBED_SPECIFIER,
+          category: 'unreviewed-embed',
+          resolvedPath: null,
+        });
       for (const specifier of documentBaseSpecifiers(markup)) {
         rawImports.push({
           sourcePath,
@@ -5979,6 +6061,12 @@ function discoverWebsiteRawImports(rootDir) {
 
 function validateWebsiteRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverWebsiteRawImports(rootDir)) {
+    if (rawImport.category === 'unreviewed-embed') {
+      issues.push(
+        `${relativePath}: unreviewed executable embed in \`${rawImport.sourcePath}\` is not admitted for Website consumer-wall review`
+      );
+      continue;
+    }
     if (rawImport.category === 'unreviewed-config-import-map') {
       issues.push(
         `${relativePath}: import map / head script in \`${rawImport.sourcePath}\` is unverified: ${rawImport.reason}`
