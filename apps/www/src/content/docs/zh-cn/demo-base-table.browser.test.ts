@@ -13,12 +13,13 @@ import {
 } from './browser-harness';
 
 const ROUTE = '/en/ui-libraries/base/table/';
+const CHINESE_ROUTE = '/zh-cn/ui-libraries/base/table/';
 const RUNTIMES = ['wc', 'react', 'vue', 'vue2'] as const;
 let browser: Browser;
 let baseUrl = '';
 
 beforeAll(async () => {
-  baseUrl = await startServer(ROUTE);
+  baseUrl = await startServer([ROUTE, CHINESE_ROUTE]);
   browser = await launchBrowser();
 }, 150_000);
 
@@ -94,12 +95,10 @@ describe.sequential('Base Table public four-adapter browser evidence', () => {
   }
 
   it('keeps the Chinese page on the same four-adapter public demo', async () => {
-    const { context, page, previewer } = await openRoute(
-      browser,
-      baseUrl,
-      '/zh-cn/ui-libraries/base/table/',
-      { width: 390, height: 900 }
-    );
+    const { context, page, previewer } = await openRoute(browser, baseUrl, CHINESE_ROUTE, {
+      width: 390,
+      height: 900,
+    });
     try {
       await selectRuntime(page, previewer, 'vue2', '[role="table"]', 1);
       expect(await previewer.getAttribute('data-demo-id')).toBe('demo-base-table');
