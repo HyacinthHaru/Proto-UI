@@ -115,6 +115,8 @@ implementations:
     path: packages/adapters/react/test/table.test.ts
     required: true
     consumesCases: [T-TABLE-STRUCTURE-0001-CASE-A11Y-BOUNDARY]
+    notes:
+      - Uses a synthetic React hook runtime to isolate Adapter projection; it does not establish a real React 18 or React 19 consumer.
   - id: adapter-vue-table-contract
     kind: adapter-test
     status: passing
@@ -133,6 +135,18 @@ implementations:
     path: apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts
     required: true
     consumesCases: [T-TABLE-STRUCTURE-0001-CASE-A11Y-BOUNDARY]
+    notes:
+      - The public Previewer uses React 18; this case does not certify React 19.
+  - id: table-react19-browser-consumer
+    kind: adapter-test
+    status: passing
+    path: apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts
+    required: true
+    consumesCases: [T-TABLE-STRUCTURE-0001-CASE-A11Y-BOUNDARY]
+    notes:
+      - Runs the public Adapter and Table exports with real React 19.2.6 and ReactDOM 19.2.6 and asserts both runtime versions; pinned browser modules require esm.sh connectivity.
+      - Verifies counts, one-based indices, row/column spans, caption naming, opaque cross-kind ordered header references, reactive invalidation/recovery, content preservation and unmount; no manually assigned ARIA or fake hooks.
+      - This is bounded Web DOM evidence, not assistive-technology certification or independent semantic admission.
 verifies:
   decisions:
     - id: D-BASE-TABLE-STRUCTURE-0001
@@ -225,6 +239,8 @@ sources:
   - path: packages/adapters/vue/test/table.test.ts
   - path: packages/adapters/vue2/test/table.test.ts
   - path: apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts
+  - path: apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts
+  - path: apps/www/test/fixtures/table-react19.ts
 revisions:
   - version: 0.3.0-alpha.0
     change: introduced
@@ -238,4 +254,7 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: Added a passing public browser case that runs the same static Table demo through Web Components, React, Vue 3, and Vue 2 and verifies rendered Web roles, counts, coordinates, caption naming, and ordered header references; no assistive-technology certification is implied.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Added a real React 19.2.6/ReactDOM 19.2.6 browser consumer using public exports with runtime-version assertions, spans, ordered cross-kind headers, reactive invalidation/recovery and cleanup; distinguishes the synthetic React unit harness and React 18 public Previewer from React 19 evidence, and registers both Table browser suites in the sequential shared-server test plan without promoting lifecycle or claiming assistive-technology certification.
 tags: [table, structure, test, accessibility]

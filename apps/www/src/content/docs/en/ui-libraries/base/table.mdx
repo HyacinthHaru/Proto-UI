@@ -97,6 +97,10 @@ A later Data Table composition may consume the passive structure while composing
 
 The host-neutral reference probe and Module/Base tests cover deterministic placement, multiple-header resolution, diagnostics, nearest-domain isolation, authored-fact churn, exact anatomy, passive negative boundaries, generic A11y emission, and projection cleanup. Adapter integration tests cover all four Web profiles; the public browser case exercises the same static example in each runtime. The workspace CLI facade `base-table` generates the five Table authoring parts for React, Vue 3, Vue 2, or Web Components. The `@proto.ui/module-table-structure` and `@proto.ui/prototypes-base/table` exports and their semantics remain draft.
 
+The React unit case uses a synthetic hook runtime, while the public preview above loads React 18. A separate `table-react19.browser.test.ts` consumer runs the public Adapter and Table exports with real React 19.2.6 and ReactDOM 19.2.6 and asserts both versions. It verifies counts, indices, row/column spans, caption naming, ordered opaque headers, reactive invalidation/recovery, preserved cell content, and unmount. It loads pinned browser modules from esm.sh, so that check requires network access. Both Table browser suites run in the sequential shared-server test bucket.
+
+These passing DOM checks are not independent Checkpoint C acceptance or lifecycle promotion. The Table family remains draft pending independent review and explicit admission; no assistive-technology or non-Web conformance is claimed.
+
 ## References
 
 - [D-BASE-TABLE-STRUCTURE-0001](https://github.com/Proto-UI/Proto-UI/blob/main/spec/decisions/D-BASE-TABLE-STRUCTURE-0001.yaml)

@@ -19,6 +19,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const READY_ROUTES = [
   '/en/test/style-isolation/',
   '/en/ui-libraries/base/image/',
+  '/en/ui-libraries/base/table/',
   '/en/start-here/quick-start/',
   '/en/ui-libraries/shadcn/select/',
   '/en/ui-libraries/base/scroll-area/',

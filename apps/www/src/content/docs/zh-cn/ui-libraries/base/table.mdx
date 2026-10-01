@@ -97,6 +97,10 @@ Later Data Table composition 可以消费 passive structure，同时组合分别
 
 Host-neutral reference probe 与 Module/Base tests 已覆盖 deterministic placement、multiple-header resolution、diagnostics、nearest-domain isolation、authored-fact churn、exact anatomy、passive negative boundaries、generic A11y emission 与 projection cleanup。四个 Web profile 的 Adapter integration tests 已加入；public browser case 会在每种 runtime 中运行同一个静态示例。workspace CLI facade `base-table` 为 React、Vue 3、Vue 2 或 Web Components 生成五个 Table authoring parts。`@proto.ui/module-table-structure` 与 `@proto.ui/prototypes-base/table` exports 及其语义仍为 draft。
 
+React unit case 使用 synthetic hook runtime，上方 public preview 加载的是 React 18。独立的 `table-react19.browser.test.ts` consumer 使用公共 Adapter 与 Table exports，在真实 React 19.2.6 和 ReactDOM 19.2.6 中运行并断言两个版本。它验证 count、index、row/column span、caption naming、有序 opaque headers、响应式 invalidation/recovery、cell content 保留与 unmount。此检查从 esm.sh 加载固定版本 browser modules，需要网络访问。两个 Table browser suite 都进入 sequential shared-server test bucket。
+
+这些通过的 DOM 检查不等于 Checkpoint C 独立验收或 lifecycle promotion。Table family 仍为 draft，等待独立 review 与明确 admission；不宣称 assistive-technology 或 non-Web conformance。
+
 ## 参考
 
 - [D-BASE-TABLE-STRUCTURE-0001](https://github.com/Proto-UI/Proto-UI/blob/main/spec/decisions/D-BASE-TABLE-STRUCTURE-0001.yaml)

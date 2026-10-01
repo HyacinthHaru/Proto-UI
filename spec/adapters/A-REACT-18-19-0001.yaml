@@ -523,4 +523,7 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: Provides the draft Focus navigation order through document order within one tree, with roving evidence where document and registration order differ.
+  - version: 0.3.0-alpha.1
+    change: extended
+    summary: Recorded the bounded Table criterion, required M-A11Y/M-TABLE-STRUCTURE support, translated HC-A11Y provision and T-TABLE-STRUCTURE evidence mapping; real React 18 public-demo and React 19.2.6 browser-consumer evidence are distinct from the synthetic unit harness, without admitting draft semantics or claiming React Native/assistive-technology certification.
 tags: [adapter, react, web, props, event, lifecycle, state, expose, official]
