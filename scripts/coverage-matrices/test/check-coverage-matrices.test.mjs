@@ -10643,3 +10643,111 @@ test('fresh review: tracked package targets use literal Git pathspecs', () => {
     /package closure.*unverified/
   );
 });
+
+test('latest entry review: qualified browser Worker constructors reach consumer walls', () => {
+  for (const prefix of ['apps/www/src/components', 'apps/agent-harness/src/run'])
+    for (const ctor of ['window.Worker', 'self.Worker', 'globalThis.SharedWorker']) {
+      const root = createRoot(),
+        file = path.join(prefix, 'QualifiedWorker.ts');
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(path.join(root, file), `new ${ctor}('/raw-runtime.js');`);
+      writeValidMatrices(root);
+      assert.match(validationMessage(root), /external.*raw-runtime.js/);
+    }
+});
+
+test('latest entry review: wildcard bare-package self references retain the consumer wall', () => {
+  for (const name of ['self-widget', '@example/self-widget']) {
+    const root = createRoot(),
+      packageRoot = path.join(root, 'node_modules', name),
+      source = path.join(root, 'apps/www/src/components/SelfWidget.ts');
+    fs.mkdirSync(path.join(packageRoot, 'src'), { recursive: true });
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(
+      path.join(packageRoot, 'package.json'),
+      JSON.stringify({ name, exports: { '.': './src/index.js', './*': './src/*.js' } })
+    );
+    fs.writeFileSync(path.join(packageRoot, 'src/index.js'), `import '${name}/feature';`);
+    fs.writeFileSync(path.join(packageRoot, 'src/feature.js'), "import '@proto.ui/runtime';");
+    fs.writeFileSync(source, `import '${name}';`);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /raw Proto UI import.*self-widget/);
+  }
+});
+
+test('latest entry review: browser Worker constructors preserve global-shadow controls', () => {
+  for (const source of [
+    "function business(window){new window.Worker('/business');}",
+    "const globalThis={SharedWorker:class{}};new globalThis.SharedWorker('/business');",
+    "class Worker{};new Worker('/business');",
+    "function business(){new self.Worker('/business');var self={};}",
+  ]) {
+    const root = createRoot(),
+      file = 'apps/www/src/components/BusinessWorker.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+  for (const source of [
+    'new window.Worker(url);',
+    'new globalThis.SharedWorker(new URL(workerPath,import.meta.url));',
+  ]) {
+    const root = createRoot(),
+      file = 'apps/www/src/components/DynamicWorker.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /unresolved Worker\/SharedWorker entry/);
+  }
+});
+
+test('latest entry review: self-reference conditions, imports aliases and traversal budgets remain explicit', () => {
+  for (const mode of ['conditions', 'imports-alias', 'exact', 'cycle', 'large', 'missing']) {
+    const root = createRoot(),
+      packageRoot = path.join(root, 'node_modules/self-controls'),
+      source = path.join(root, 'apps/www/src/components/SelfControls.ts');
+    fs.mkdirSync(path.join(packageRoot, 'src'), { recursive: true });
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    const exports = { '.': './src/index.js', './*': './src/*.js' };
+    if (mode === 'conditions') exports['./*'] = { require: './src/*.cjs', import: './src/*.mjs' };
+    if (mode === 'exact') exports['./feature'] = './src/safe.js';
+    fs.writeFileSync(
+      path.join(packageRoot, 'package.json'),
+      JSON.stringify({
+        name: 'self-controls',
+        exports,
+        imports: { '#self': 'self-controls/feature' },
+      })
+    );
+    fs.writeFileSync(
+      path.join(packageRoot, 'src/index.js'),
+      mode === 'imports-alias' ? "import '#self';" : "import 'self-controls/feature';"
+    );
+    fs.writeFileSync(path.join(packageRoot, 'src/safe.js'), 'export const safe=true;');
+    if (mode === 'conditions') {
+      fs.writeFileSync(path.join(packageRoot, 'src/feature.cjs'), 'module.exports={};');
+      fs.writeFileSync(path.join(packageRoot, 'src/feature.mjs'), "import '@proto.ui/runtime';");
+    } else if (mode === 'cycle') {
+      fs.writeFileSync(path.join(packageRoot, 'src/feature.js'), "import 'self-controls/other';");
+      fs.writeFileSync(path.join(packageRoot, 'src/other.js'), "import 'self-controls/feature';");
+    } else if (mode === 'large') {
+      fs.writeFileSync(path.join(packageRoot, 'src/feature.js'), "import 'self-controls/part0';");
+      for (let i = 0; i < 501; i++)
+        fs.writeFileSync(
+          path.join(packageRoot, `src/part${i}.js`),
+          i < 500 ? `import 'self-controls/part${i + 1}';` : 'export const safe=true;'
+        );
+    } else if (mode !== 'missing')
+      fs.writeFileSync(path.join(packageRoot, 'src/feature.js'), "import '@proto.ui/runtime';");
+    fs.writeFileSync(source, "import 'self-controls';");
+    writeValidMatrices(root);
+    if (['conditions', 'imports-alias'].includes(mode))
+      assert.match(validationMessage(root), /raw Proto UI import.*self-controls/);
+    else if (mode === 'large')
+      assert.match(validationMessage(root), /500-module bound.*unverified/);
+    else if (mode === 'missing')
+      assert.match(validationMessage(root), /package entry target.*unresolved.*unverified/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});

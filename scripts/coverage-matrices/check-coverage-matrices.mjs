@@ -3808,8 +3808,7 @@ function scriptModuleSpecifiers(source, fileName) {
   const workerEntrySpecifier = (node) => {
     if (
       !ts.isNewExpression(node) ||
-      !ts.isIdentifier(node.expression) ||
-      !/^(?:SharedWorker|Worker)$/u.test(node.expression.text) ||
+      !isBrowserGlobal(node.expression, node, ['SharedWorker', 'Worker']) ||
       !node.arguments?.[0]
     ) {
       return null;
@@ -5090,11 +5089,28 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
   };
   // https://nodejs.org/api/packages.html#subpath-imports: imports use package-root
   // targets and exact/pattern keys. Inspect all conditions conservatively.
-  const resolvePackageImports = (specifier, sourcePath) => {
-    if (!specifier.startsWith('#')) return [specifier];
-    const mappings = manifest.imports;
+  const isPackageSelfReference = (specifier) =>
+    typeof manifest.name === 'string' &&
+    (specifier === manifest.name || specifier.startsWith(`${manifest.name}/`));
+  const resolvePackageImports = (specifier, sourcePath, seenMappings = new Set()) => {
+    const selfSpecifier = importSpecifierWithoutViteSuffix(specifier);
+    const selfReference = isPackageSelfReference(selfSpecifier);
+    if (!specifier.startsWith('#') && !selfReference) return [specifier];
+    if (seenMappings.has(specifier) || seenMappings.size >= 64) return null;
+    seenMappings.add(specifier);
+    const exports = manifest.exports;
+    const mappings = selfReference
+      ? exports &&
+        typeof exports === 'object' &&
+        Object.keys(exports).some((key) => key.startsWith('.'))
+        ? exports
+        : { '.': exports }
+      : manifest.imports;
     if (!mappings || typeof mappings !== 'object') return null;
-    let mapping = Object.hasOwn(mappings, specifier) ? mappings[specifier] : undefined;
+    const keySpecifier = selfReference
+      ? `.${selfSpecifier.slice(manifest.name.length)}`
+      : specifier;
+    let mapping = Object.hasOwn(mappings, keySpecifier) ? mappings[keySpecifier] : undefined;
     let substitution = null;
     if (mapping === undefined) {
       const matches = Object.keys(mappings)
@@ -5102,9 +5118,9 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
           const parts = key.split('*');
           return (
             parts.length === 2 &&
-            specifier.startsWith(parts[0]) &&
-            specifier.endsWith(parts[1]) &&
-            specifier.length >= parts[0].length + parts[1].length
+            keySpecifier.startsWith(parts[0]) &&
+            keySpecifier.endsWith(parts[1]) &&
+            keySpecifier.length >= parts[0].length + parts[1].length
           );
         })
         .sort(
@@ -5113,13 +5129,13 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
       if (matches.length === 0) return null;
       const key = matches[0];
       const [prefix, suffix] = key.split('*');
-      substitution = specifier.slice(prefix.length, specifier.length - suffix.length);
+      substitution = keySpecifier.slice(prefix.length, keySpecifier.length - suffix.length);
       mapping = mappings[key];
     }
     const targets = [];
     const visit = (node) => {
       if (typeof node === 'string')
-        targets.push(substitution === null ? node : node.replaceAll('*', substitution));
+        targets.push(substitution === null ? node : node.replaceAll('*', () => substitution));
       else if (node && typeof node === 'object') Object.values(node).forEach(visit);
     };
     visit(mapping);
@@ -5128,7 +5144,10 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
     for (const target of targets) {
       if (target.startsWith('./')) {
         const absolute = path.resolve(packageRoot, target);
-        const relative = path.relative(packageRoot, absolute);
+        const relative = path.relative(
+          canonicalImportTarget(packageRoot),
+          canonicalImportTarget(absolute)
+        );
         if (
           relative.startsWith('..') ||
           path.isAbsolute(relative) ||
@@ -5139,6 +5158,14 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
         resolved.push(
           relativeImportSpecifier(path.relative(rootDir, sourcePath), rootDir, absolute)
         );
+      } else if (selfReference) {
+        // Package exports must stay package-relative; never reinterpret a
+        // malformed self export as another package or reset the traversal cap.
+        return null;
+      } else if (isPackageSelfReference(importSpecifierWithoutViteSuffix(target))) {
+        const selfTargets = resolvePackageImports(target, sourcePath, new Set(seenMappings));
+        if (!selfTargets) return null;
+        resolved.push(...selfTargets);
       } else if (isNodeBuiltinSpecifier(target)) {
         resolved.push(target);
       } else if (
