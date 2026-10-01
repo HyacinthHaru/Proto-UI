@@ -76,4 +76,51 @@ describe('core: feedback.style v0 contract', () => {
     expect(out).toContain('rounded-[min(var(--radius-md),12px)]');
     expect(out).toContain('bg-[var(--brand-surface)]');
   });
+
+  it.each([
+    'selection:*',
+    'selection:foo*bar',
+    "selection:content-['x]>button",
+    'selection:w-[calc(100%+2px)',
+    'selection:w-[2px]]',
+    'selection:trailing\\',
+    'selection:w-[var(--x,[2px])',
+    String.raw`selection:custom\\*token`,
+    'selection:&foo',
+    'selection:foo>bar',
+    'selection:foo+bar',
+    'selection:foo~bar',
+    'selection:foo,bar',
+    'selection:foo|bar',
+    'selection:foo#bar',
+    'selection:foo.bar',
+    'selection:[disabled]',
+    'selection:button[disabled]',
+    String.raw`selection:foo\\>bar`,
+    "selection:content-['[']>button",
+  ])('rejects selector structure outside selection arbitrary values: %s', (token) => {
+    const recorder = new FeedbackStyleRecorder();
+    expect(() => recorder.use(tw(token))).toThrow();
+    expect(recorder.export().tokens).toEqual([]);
+  });
+
+  it.each([
+    'selection:gap-1.5',
+    'selection:px-2.5',
+    'selection:text-[0.8rem]',
+    'selection:w-[calc(100%+var(--space))]',
+    'selection:w-[calc(2*var(--space))]',
+    String.raw`selection:custom\*token`,
+    String.raw`selection:content-['it\'s']`,
+    'selection:rounded-[min(var(--radius-md),12px)]',
+    'selection:bg-[#ffffff]',
+    "selection:content-['>']",
+    "selection:content-['[']",
+    String.raw`selection:content-[\[]`,
+    String.raw`selection:custom\>token`,
+  ])('preserves non-selector selection values and escaped data: %s', (token) => {
+    const recorder = new FeedbackStyleRecorder();
+    expect(() => recorder.use(tw(token))).not.toThrow();
+    expect(recorder.export().tokens).toContain(token);
+  });
 });

@@ -486,6 +486,11 @@ export default defineConfig({
                   slug: 'ui-libraries/shadcn/tabs',
                 },
                 {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/shadcn/input',
+                },
+                {
                   label: 'Textarea',
                   translations: { en: 'Textarea', 'zh-CN': 'Textarea' },
                   slug: 'ui-libraries/shadcn/textarea',
