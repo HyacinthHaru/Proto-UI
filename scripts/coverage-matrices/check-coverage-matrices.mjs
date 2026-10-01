@@ -4072,6 +4072,13 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
     });
   const visit = (node) => {
     if (
+      (ts.isCallExpression(node) || ts.isNewExpression(node)) &&
+      resolveLocalValue(node.expression, node, new Set(), (candidate, useNode) =>
+        isBrowserGlobal(candidate, useNode, ['eval', 'Function'])
+      )
+    )
+      specifiers.push(UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER);
+    if (
       /\.[cm]?[jt]sx?$/iu.test(fileName) &&
       (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
       ts.isIdentifier(node.tagName)
@@ -4339,6 +4346,7 @@ function isExecutableScriptType(type) {
 }
 const DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER = '<dynamic executable script src>';
 const UNREVIEWED_WEBSITE_EMBED_SPECIFIER = '<unreviewed Website embed>';
+const UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER = '<unverified runtime compilation>';
 const DYNAMIC_STYLESHEET_LINK_SPECIFIER = '<dynamic stylesheet href>';
 const DYNAMIC_STYLESHEET_REL_SPECIFIER = '<dynamic stylesheet relation>';
 const DYNAMIC_DOCUMENT_BASE_SPECIFIER = '<dynamic document base href>';
@@ -5068,6 +5076,8 @@ function guardedWebsiteImport(
       resolvedPath: null,
     };
   }
+  if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
+    return { category: 'unverified-runtime-compilation', resolvedPath: null };
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
     return { category: 'dynamic-executable-script', resolvedPath: null };
   }
@@ -5603,6 +5613,8 @@ function guardedHarnessImport(rootDir, canonicalRootDir, sourcePath, specifier) 
       resolvedPath: null,
     };
   }
+  if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
+    return { category: 'unverified-runtime-compilation', resolvedPath: null };
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
     return { category: 'dynamic-script-element', resolvedPath: null };
   }
@@ -6083,6 +6095,12 @@ function discoverWebsiteRawImports(rootDir) {
 
 function validateWebsiteRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverWebsiteRawImports(rootDir)) {
+    if (rawImport.category === 'unverified-runtime-compilation') {
+      issues.push(
+        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function entry points require an explicit reviewed admission`
+      );
+      continue;
+    }
     if (rawImport.category === 'unreviewed-embed') {
       issues.push(
         `${relativePath}: unreviewed executable embed in \`${rawImport.sourcePath}\` is not admitted for Website consumer-wall review`
@@ -6300,6 +6318,12 @@ function discoverHarnessRawImports(rootDir) {
 
 function validateHarnessRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverHarnessRawImports(rootDir)) {
+    if (rawImport.category === 'unverified-runtime-compilation') {
+      issues.push(
+        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function entry points require an explicit reviewed admission`
+      );
+      continue;
+    }
     if (
       rawImport.category === 'unreviewed-preview' ||
       rawImport.category === 'production-import-map'

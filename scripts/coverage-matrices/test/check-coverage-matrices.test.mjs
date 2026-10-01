@@ -11470,3 +11470,48 @@ test('review URL controls: existing CSS import URLs share browser normalization'
     assert.match(validationMessage(root), /external stylesheet/);
   }
 });
+
+test('runtime compilation admission: recognized global eval and Function entries remain unverified', () => {
+  for (const expression of [
+    'eval(source);',
+    'new Function(source);',
+    'Function(source);',
+    'window.eval(source);',
+    "globalThis['Function'](source);",
+    'new self.Function(source);',
+    'const compile=globalThis.Function;new compile(source);',
+    'const evaluate=window.eval;evaluate(source);',
+  ])
+    for (const kind of ['website', 'harness']) {
+      const root = createRoot(),
+        file =
+          kind === 'website'
+            ? 'apps/www/src/components/CompileEntry.ts'
+            : 'apps/agent-harness/src/run/CompileEntry.ts';
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(path.join(root, file), expression);
+      writeValidMatrices(root, {}, kind === 'harness' ? { Path: file } : {}, {
+        websiteBindings: kind === 'website' ? [[file, ['www.shell.primary-nav']]] : [],
+      });
+      assert.match(validationMessage(root), /runtime code compilation.*unverified/, expression);
+    }
+});
+
+test('runtime compilation admission: business methods and lexically shadowed globals remain data', () => {
+  for (const expression of [
+    'const business={eval(){},Function(){}};business.eval(source);business.Function(source);',
+    'function run(Function){new Function(source)}',
+    'function run(){new Function(source);var Function=BusinessConstructor;}',
+    'function run(window){window.eval(source);}',
+    'function run(){globalThis.Function(source);const globalThis=business;}',
+    'const description="eval(source);new Function(source)";',
+    'const descriptor=Function.length;',
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/CompilationControl.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), expression);
+    writeValidMatrices(root, {}, { Path: file });
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), expression);
+  }
+});

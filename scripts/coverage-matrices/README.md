@@ -18,6 +18,8 @@ Resource URL attributes (script `src`, stylesheet/base `href`), CSS `@import` UR
 
 The live governance reader rejects the REST Issues endpoint's `pull_request` marker before serializing a dependency Issue. GitHub's [Issues API](https://docs.github.com/en/rest/issues/issues#get-an-issue) also returns pull requests through that endpoint; their issue-shaped metadata cannot certify the required dependency-Issue identity. Reviewed owners and the existing explicit snapshot refresh policy are unchanged.
 
+Recognized unshadowed `eval(...)`, `Function(...)` and `new Function(...)` calls are unsupported compilation entries and fail as **unverified**, including direct `window`/`self`/`globalThis` forms and the existing bounded local-alias resolution. The checker never parses or executes their payload strings. Business methods and lexically shadowed globals do not establish that native entry. This conservative admission rule can require review of future build-time compilation too; it does not assert the payload is malicious or add a Proto UI behavior guarantee. Reflective constructors, bind/call/apply indirection and arbitrary generated execution are not generally modeled. Current production-source search found no direct global compilation dependency; ordinary test-only `window.eval` fixtures remain outside the production set unless reached by it.
+
 ## Retained raster and video evidence
 
 Raster validation captures a bounded immutable input, validates PNG structure and palette indices, and uses the already-declared Website `sharp` dependency to normalize/decode pixels. Multi-frame image manifests require distinct normalized pixel content with dimensions/channels bound to the digest; changed filenames, metadata or compression alone are insufficient.
