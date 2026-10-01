@@ -8950,7 +8950,7 @@ test('rejects production import maps without an exact reviewed allowance', () =>
   writeValidMatrices(root);
   assert.match(
     validationMessage(root),
-    /production import map in `apps\/www\/public\/import-map\.html` is not reviewed/
+    /production import map(?: or unverified script type)? in `apps\/www\/public\/import-map\.html` is not reviewed/
   );
 });
 
@@ -11513,5 +11513,125 @@ test('runtime compilation admission: business methods and lexically shadowed glo
     fs.writeFileSync(path.join(root, file), expression);
     writeValidMatrices(root, {}, { Path: file });
     assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), expression);
+  }
+});
+
+test('review follow-up: transport event properties are not UI state ownership', () => {
+  for (const source of [
+    "const socket=new WebSocket('wss://api.example');socket.onmessage=receive;",
+    "const events=new EventSource('/events');events.onerror=receive;",
+    'function register(worker:Worker){worker.onmessage=receive;}',
+    'const business={};business.onclick=receive;',
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/services/agent-service.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), source);
+  }
+});
+
+for (const prefix of ['apps/www/public', 'apps/agent-harness/public'])
+  test(`review follow-up: encoded import-map types remain unverified in ${prefix}`, () => {
+    const root = createRoot(),
+      file = `${prefix}/import-map.html`;
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      '<script type="import&#109;ap">{"imports":{"react":"https://cdn.example/runtime.js"}}</script>'
+    );
+    writeValidMatrices(
+      root,
+      {},
+      {},
+      { websiteBindings: prefix.includes('/www/') ? [[file, ['www.shell.primary-nav']]] : [] }
+    );
+    assert.match(validationMessage(root), /production import map|unverified.*script type/);
+  });
+
+test('frontmatter review evidence: standard Astro imports already enter the source wall', () => {
+  for (const newline of ['\n', '\r\n']) {
+    const root = createRoot(),
+      file = 'apps/www/src/components/Frontmatter.astro';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      ['---', "import '@proto.ui/runtime';", '---', '<main>Static</main>'].join(newline)
+    );
+    writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
+    assert.match(validationMessage(root), /raw Proto UI import `@proto.ui\/runtime`.*Frontmatter/);
+  }
+});
+
+test('review follow-up controls: native event-property assignments require Harness DOM provenance', () => {
+  for (const [source, rejects] of [
+    ["const button=document.querySelector('button');button.onclick=receive;", true],
+    ["const button=document.querySelector('button');button['onclick']??=receive;", true],
+    ['window.onmessage=receive;', true],
+    ['function update(node:HTMLElement){node.onclick=receive;}', true],
+    ["const channel=new BroadcastChannel('events');channel.onmessage=receive;", false],
+    ["const socket=new WebSocket('wss://api.example');socket.onmessage??=receive;", false],
+    ['function update(model){model.onclick=receive;}', false],
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/EventProperty.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root, {}, { Path: file });
+    if (rejects) assert.match(validationMessage(root), /forbidden interaction/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), source);
+  }
+});
+
+test('review follow-up controls: opaque script types fail closed without a src while literal JSON stays inert', () => {
+  for (const [attributes, rejects] of [
+    ['type="import&#109;ap"', true],
+    ['type="import&#x6d;ap"', true],
+    ['type="application/&#106;son"', true],
+    ['type={kind}', true],
+    [':type="kind"', true],
+    ['v-bind:type="kind"', true],
+    ['type="application/json"', false],
+    ['type="application/ld+json"', false],
+  ])
+    for (const prefix of ['apps/www/public', 'apps/agent-harness/public']) {
+      const root = createRoot(),
+        file = `${prefix}/types.html`;
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(
+        path.join(root, file),
+        `<script ${attributes}>{"imports":{"react":"https://cdn.example/runtime.js"}}</script>`
+      );
+      writeValidMatrices(
+        root,
+        {},
+        {},
+        { websiteBindings: prefix.includes('/www/') ? [[file, ['www.shell.primary-nav']]] : [] }
+      );
+      if (rejects)
+        assert.match(validationMessage(root), /production import map|unverified script type/);
+      else
+        assert.doesNotThrow(
+          () => validateCoverageMatrices({ rootDir: root }),
+          `${prefix}: ${attributes}`
+        );
+    }
+});
+
+test('review follow-up controls: native JSX encoded script type is unverified and custom Script is not native', () => {
+  for (const [markup, rejects] of [
+    ['<script type="import&#109;ap">{"{}"}</script>', true],
+    ['<script type={kind}>{payload}</script>', true],
+    ['<script type={"application/json"}>{"{}"}</script>', false],
+    ['<Script type="import&#109;ap">{"{}"}</Script>', false],
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/ScriptType.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), `export const Surface=()=>${markup};`);
+    writeValidMatrices(root, {}, { Path: file });
+    if (rejects) assert.match(validationMessage(root), /dynamic executable script/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), markup);
   }
 });

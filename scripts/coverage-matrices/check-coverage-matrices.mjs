@@ -1689,9 +1689,13 @@ function astContainsInteractiveRuntime(content, { harnessGeometry = false } = {}
         found = true;
         return;
       }
-      const eventProperty =
-        node.operatorToken.kind === ts.SyntaxKind.EqualsToken ? assignedProperty?.name : null;
-      if (eventProperty && NATIVE_EVENT_ATTRIBUTE_NAMES.has(eventProperty)) {
+      const eventProperty = assignedProperty?.name;
+      if (
+        eventProperty &&
+        NATIVE_EVENT_ATTRIBUTE_NAMES.has(eventProperty) &&
+        (!harnessGeometry ||
+          isDomReceiverExpression(assignedProperty.receiver, sourceFile, receiverBindings, node))
+      ) {
         found = true;
         return;
       }
@@ -4104,7 +4108,10 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         }
         const typeNode = attributes.get('type');
         const type = typeNode && ts.isStringLiteralLike(typeNode) ? typeNode.text : null;
-        if (opaque || (attributes.has('type') && type === null))
+        if (
+          opaque ||
+          (attributes.has('type') && (type === null || hasHtmlCharacterReference(type)))
+        )
           specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
         else if (type?.trim().toLowerCase() === 'importmap')
           specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
@@ -4425,11 +4432,17 @@ function stylesheetLinkSpecifiers(content) {
     });
 }
 function containsProductionImportMap(content) {
-  return jsxOpeningTagCandidates(content).some(
-    (openingTag) =>
-      /^<script\b/iu.test(openingTag) &&
-      staticMarkupAttribute(openingTag, 'type')?.trim().toLowerCase() === 'importmap'
-  );
+  return jsxOpeningTagCandidates(content).some((openingTag) => {
+    if (!/^<script\b/iu.test(openingTag)) return false;
+    const type = staticMarkupAttribute(openingTag, 'type');
+    const opaqueType =
+      /(?:^|\s)(?::type|v-bind:type)\s*=/iu.test(openingTag) ||
+      /(?:^|\s)type\s*=\s*(?:\{|\$\{)/iu.test(openingTag) ||
+      (type !== null && hasHtmlCharacterReference(type));
+    // An opaque type could become importmap even without a src attribute.
+    // Do not decode candidate HTML or claim that it is definitely an import map.
+    return opaqueType || type?.trim().toLowerCase() === 'importmap';
+  });
 }
 // Reviewed production map in apps/www/astro.config.mjs. This is an exact URL
 // allowlist, not an assertion about immutable content at those remote URLs.
@@ -6129,7 +6142,7 @@ function validateWebsiteRawImports(rootDir, relativePath, issues) {
 
     if (rawImport.category === 'production-import-map') {
       issues.push(
-        `${relativePath}: production import map in \`${rawImport.sourcePath}\` is not reviewed`
+        `${relativePath}: production import map or unverified script type in \`${rawImport.sourcePath}\` is not reviewed`
       );
       continue;
     }
@@ -6329,7 +6342,7 @@ function validateHarnessRawImports(rootDir, relativePath, issues) {
       rawImport.category === 'production-import-map'
     ) {
       issues.push(
-        `${relativePath}: ${rawImport.category === 'unreviewed-preview' ? 'unreviewed executable preview or unresolved native element creation' : 'production import map'} in \`${rawImport.sourcePath}\` is not admitted for Harness consumer-wall review`
+        `${relativePath}: ${rawImport.category === 'unreviewed-preview' ? 'unreviewed executable preview or unresolved native element creation' : 'production import map or unverified script type'} in \`${rawImport.sourcePath}\` is not admitted for Harness consumer-wall review`
       );
       continue;
     }
