@@ -136,9 +136,10 @@ function validateShadowSelectorAbi(cssText: string): void {
       if (
         token[3] ||
         (/(?:^|:)dark:/i.test(token[2]!) &&
-          !/^(?::where\()?:host\(\[data-pui-color-scheme=(['"])dark\1\]\)\)?(?=$|[>+~.#[:])/.test(
+          (!/^(?::where\()?:host\(\[data-pui-color-scheme=(['"])dark\1\]\)\)?(?=$|[>+~.#[:])/.test(
             normalized
-          ))
+          ) ||
+            hasShadowHostThemeGate(selector)))
       )
         return true;
     }
@@ -147,6 +148,30 @@ function validateShadowSelectorAbi(cssText: string): void {
   if (hasUnscopedDarkToken) {
     throw invalidArtifact('dark');
   }
+}
+
+// Inspect only the leading host compound, including functional suffixes. A
+// top-level combinator ends that scope; same-named Shadow-local descendants do
+// not impose a second theme gate on the host. Keep quoted text and escaped
+// delimiters out of the scan, and preserve whitespace consumed by CSS escapes.
+function hasShadowHostThemeGate(selector: string): boolean {
+  const structuralSelector = selector.trimStart().replace(/(["'])(?:\\.|(?!\1)[^\\])*\1/g, '$1$1');
+  const tokens = structuralSelector.matchAll(
+    /\\(?:[0-9a-f]{1,6}\s?|.)|([.[])\s*((?:[-\w\u0080-\uFFFF]|\\(?:[0-9a-f]{1,6}\s?|.))+)|([()[\]])|([\s>+~]+)/gi
+  );
+  let depth = 0;
+  for (const match of tokens) {
+    if (match[4] && depth === 0) break;
+    if (match[1] === '[' || match[3] === '[' || match[3] === '(') depth += 1;
+    else if (match[3] === ']' || match[3] === ')') depth = Math.max(0, depth - 1);
+    if (!match[1]) continue;
+    const name = decodeShadowCssEscapes(match[2]!);
+    if (
+      match[1] === '.' ? name === 'dark' || name === 'light' : name.toLowerCase() === 'data-theme'
+    )
+      return true;
+  }
+  return false;
 }
 
 function findShadowDocumentThemeHostContext(cssText: string): string | undefined {
@@ -165,7 +190,7 @@ function findShadowDocumentThemeHostContext(cssText: string): string | undefined
 
 // CSS identifiers may encode otherwise ordinary characters with a one-to-six
 // digit hexadecimal escape plus optional trailing whitespace. Decode only an
-// already isolated @media prelude: decoding before structural scanning could
+// already isolated prelude or identifier: decoding before structural scanning could
 // incorrectly promote an escaped delimiter into CSS syntax.
 function decodeShadowCssEscapes(value: string): string {
   let decoded = '';

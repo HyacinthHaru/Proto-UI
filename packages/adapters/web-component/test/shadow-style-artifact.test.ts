@@ -84,6 +84,70 @@ describe('adapter-web-component Shadow style artifact', () => {
     ).not.toThrow();
   });
 
+  it.each([
+    ['host class name with a dark prefix', `.dark-mode`],
+    ['case-distinct Dark host class', `.Dark`],
+    ['case-distinct LIGHT host class', `.LIGHT`],
+    ['host class name with an escaped suffix', String.raw`.dark\:active`],
+    ['host class name with an escaped hyphen', String.raw`.dark\2d mode`],
+    ['host class name with an escaped dot', String.raw`.\.dark`],
+    ['theme-like text in a quoted attribute', `[data-label='.dark, .light, [data-theme=dark]']`],
+    ['a different theme-like attribute name', `[data-theme-label='dark']`],
+    ['nested functional quoted text', `:is(:where([data-label='.dark']), .supported)`],
+    [
+      'a functional selector containing quoted theme text',
+      `:is([data-label='.dark'], [data-label='[data-theme=dark]'])`,
+    ],
+  ])('accepts %s beside the host marker', (_label, hostSuffix) => {
+    expect(() =>
+      validateShadowStyleArtifact(
+        artifact(
+          `:host([data-pui-color-scheme='dark'])${hostSuffix} [data-pui-style~='dark:bg-primary'] { color: red; }`
+        )
+      )
+    ).not.toThrow();
+  });
+
+  it.each([
+    ['dark descendant class', ` .dark`],
+    ['light descendant class', ` .light`],
+    ['descendant theme attribute', ` [data-theme='dark']`],
+    ['child combinator', `>.dark`],
+    ['descendant functional selector list', ` :is(.dark, .light, [data-theme='dark'])`],
+  ])('accepts an unrelated Shadow-local %s', (_label, descendant) => {
+    expect(() =>
+      validateShadowStyleArtifact(
+        artifact(
+          `:host([data-pui-color-scheme='dark'])${descendant} [data-pui-style~='dark:bg-primary'] { color: red; }`
+        )
+      )
+    ).not.toThrow();
+  });
+
+  it.each([
+    ['plain dark class', `.dark`],
+    ['plain light class', `.light`],
+    ['hex-escaped dark class initial', String.raw`.\64 ark`],
+    ['hex-escaped dark class letter', String.raw`.d\61 rk`],
+    ['six-digit escaped dark class initial', String.raw`.\000064ark`],
+    ['simple-escaped dark class letter', String.raw`.dar\k`],
+    ['theme attribute', `[data-theme='dark']`],
+    ['theme attribute presence', `[ data-theme ]`],
+    ['escaped theme attribute', String.raw`[data\2d theme='dark']`],
+    ['functional dark class gate', `:is(.dark)`],
+    ['nested functional dark class gate', `:is(:where(.dark))`],
+    ['functional dark class gate after argument whitespace', `:is(.supported, .dark)`],
+    ['functional theme attribute gate', `:where([data-theme='dark'])`],
+  ])('rejects a second %s beside the host marker', (_label, hostSuffix) => {
+    expect(() =>
+      validateShadowStyleArtifact(
+        artifact(
+          `:host([data-pui-color-scheme='dark'])${hostSuffix} [data-pui-style~='dark:bg-primary'] { color: red; }`
+        )
+      )
+    ).toThrow('invalid shadow-style:');
+  });
+
   it('accepts document marker text inside a Shadow-local attribute value', () => {
     expect(() =>
       validateShadowStyleArtifact(
