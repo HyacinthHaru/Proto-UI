@@ -151,8 +151,10 @@ function githubJson(endpoint) {
   });
 }
 
-function liveIssue(number) {
-  const issue = githubJson(`repos/${REPOSITORY}/issues/${number}`);
+export function normalizeLiveIssue(number, issue) {
+  // The REST Issues endpoint also returns pull requests, identified by this key.
+  if (Object.hasOwn(issue, 'pull_request'))
+    throw new Error(`pull request #${number} cannot satisfy a dependency Issue binding`);
   return {
     number: issue.number,
     nodeId: issue.node_id,
@@ -165,6 +167,10 @@ function liveIssue(number) {
     assignees: issue.assignees.map((assignee) => assignee.login).sort(),
     milestone: issue.milestone?.title ?? null,
   };
+}
+
+function liveIssue(number) {
+  return normalizeLiveIssue(number, githubJson(`repos/${REPOSITORY}/issues/${number}`));
 }
 
 function livePullRequest(number) {

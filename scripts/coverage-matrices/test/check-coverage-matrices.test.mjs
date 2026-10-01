@@ -11357,3 +11357,116 @@ test('review entry controls: Astro self-closing JSON data does not turn later ma
   writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
   assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
 });
+
+for (const kind of ['script', 'stylesheet'])
+  test(`review URL normalization: ${kind} attributes follow browser URL parsing`, () => {
+    const root = createRoot(),
+      file = 'apps/www/src/components/ResourceUrl.astro';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    const url = ' https://cdn.example/runtime.js ';
+    assert.equal(new URL(url, 'https://site.example/docs/').origin, 'https://cdn.example');
+    fs.writeFileSync(
+      path.join(root, file),
+      kind === 'script' ? `<script src="${url}"></script>` : `<link rel="stylesheet" href="${url}">`
+    );
+    writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
+    assert.match(validationMessage(root), /external (?:executable script|stylesheet)/);
+  });
+
+test('review URL controls: browser C0 and tab/newline preprocessing is shared by script, stylesheet and base attributes', () => {
+  const values = [
+    ' https://cdn.example/runtime.js ',
+    '\u0001\u001fhttps://cdn.example/runtime.js\u0020',
+    ' ht\nt\rps:\t//cdn.example/runtime.js ',
+    ' //cdn.example/runtime.js ',
+    ' \\\\cdn.example/runtime.js ',
+  ];
+  for (const value of values)
+    for (const kind of ['script', 'stylesheet', 'base']) {
+      assert.equal(new URL(value, 'https://site.example/docs/').origin, 'https://cdn.example');
+      const root = createRoot(),
+        file = 'apps/www/src/components/NormalizedUrl.astro';
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      const markup =
+        kind === 'script'
+          ? `<script src="${value}"></script>`
+          : kind === 'stylesheet'
+            ? `<link rel="stylesheet" href="${value}">`
+            : `<base href="${value}">`;
+      fs.writeFileSync(path.join(root, file), markup);
+      writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
+      assert.match(
+        validationMessage(root),
+        /external (?:executable script|stylesheet|document base)/,
+        JSON.stringify({ kind, value })
+      );
+    }
+});
+
+test('review URL controls: Harness markup uses the same normalized executable URLs', () => {
+  for (const markup of [
+    '<script src=" ht\ntps://cdn.example/runtime.js "></script>',
+    '<link rel="stylesheet" href=" //cdn.example/runtime.css ">',
+    '<base href=" \u001fhttps://cdn.example/ ">',
+  ]) {
+    const root = createRoot();
+    fs.mkdirSync(path.join(root, 'apps/agent-harness'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'apps/agent-harness/index.html'), markup);
+    writeValidMatrices(root);
+    assert.match(
+      validationMessage(root),
+      /external (?:executable (?:worker )?script|stylesheet|document base)/
+    );
+  }
+});
+
+test('review URL controls: local dependency closure survives trimming and non-ASCII space is not stripped', () => {
+  const root = createRoot(),
+    file = 'apps/www/src/components/LocalResource.astro';
+  fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+  fs.writeFileSync(path.join(root, file), '<script src=" ./local-runtime.js "></script>');
+  fs.writeFileSync(
+    path.join(root, 'apps/www/src/components/local-runtime.js'),
+    "import '@proto.ui/runtime';"
+  );
+  writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
+  assert.match(validationMessage(root), /raw Proto UI import.*local-runtime/);
+  const value = '\u00a0https://cdn.example/runtime.js';
+  assert.equal(new URL(value, 'https://site.example/docs/').origin, 'https://site.example');
+  fs.writeFileSync(path.join(root, file), `<script src="${value}"></script>`);
+  fs.rmSync(path.join(root, 'apps/www/src/components/local-runtime.js'));
+  writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
+  assert.doesNotMatch(
+    collectCoverageMatrixIssues({ rootDir: root }).join('\n'),
+    /external executable script/
+  );
+});
+
+test('review URL controls: JSX and standard DOM resource writes share normalization', () => {
+  for (const source of [
+    'export const Surface=()=> <script src={" ht\\ntps://cdn.example/runtime.js "}/>;',
+    "const script=document.createElement('script');script.src=' ht\\ntps://cdn.example/runtime.js ';",
+    "const link=document.createElement('link');link.rel='stylesheet';link.href=' //cdn.example/runtime.css ';",
+  ]) {
+    const root = createRoot(),
+      file = 'apps/www/src/components/NormalizedWrite.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root, {}, {}, { websiteBindings: [[file, ['www.shell.primary-nav']]] });
+    assert.match(validationMessage(root), /external (?:executable script|stylesheet)/);
+  }
+});
+
+test('review URL controls: existing CSS import URLs share browser normalization', () => {
+  for (const content of [
+    '@import " https://cdn.example/runtime.css ";',
+    '@import url(" //cdn.example/runtime.css ");',
+  ]) {
+    const root = createRoot(),
+      file = 'apps/www/src/styles/normalized.css';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), content);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /external stylesheet/);
+  }
+});

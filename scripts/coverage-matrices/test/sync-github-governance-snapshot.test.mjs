@@ -4,6 +4,7 @@ import { parse as parseYaml } from 'yaml';
 import { test } from 'node:test';
 import {
   collectDependencyOwners,
+  normalizeLiveIssue,
   reconcileGovernanceSnapshot,
 } from '../sync-github-governance-snapshot.mjs';
 
@@ -189,4 +190,53 @@ test('candidate governance reconciliation stays secret-free and read-only', () =
   );
   assert.deepEqual(compare.env, { GH_TOKEN: '${{ github.token }}' });
   assert.ok(steps.some((step) => step.run?.includes('install --frozen-lockfile --ignore-scripts')));
+});
+
+test('live Issues endpoint does not certify a pull request as a dependency Issue', () => {
+  const raw = {
+    number: 563,
+    node_id: 'I_fixture',
+    html_url: 'https://github.com/Proto-UI/Proto-UI/pull/563',
+    title: 'Pull request',
+    state: 'open',
+    updated_at: '2026-10-01T00:00:00Z',
+    labels: [],
+    assignees: [],
+    milestone: null,
+    pull_request: { url: 'https://api.github.com/repos/Proto-UI/Proto-UI/pulls/563' },
+  };
+  assert.throws(() => normalizeLiveIssue(563, raw), /pull request.*dependency Issue/);
+});
+
+test('live Issues endpoint rejects every own pull_request marker while retaining actual Issue metadata', () => {
+  const raw = {
+    number: 420,
+    node_id: 'I_fixture',
+    html_url: 'https://github.com/Proto-UI/Proto-UI/issues/420',
+    title: 'Website',
+    state: 'open',
+    state_reason: null,
+    updated_at: '2026-10-01T00:00:00Z',
+    labels: [{ name: 'z' }, { name: 'a' }],
+    assignees: [{ login: 'z' }, { login: 'a' }],
+    milestone: { title: 'Website' },
+  };
+  const expected = {
+    number: 420,
+    nodeId: 'I_fixture',
+    url: raw.html_url,
+    title: 'Website',
+    state: 'OPEN',
+    stateReason: null,
+    updatedAt: raw.updated_at,
+    labels: ['a', 'z'],
+    assignees: ['a', 'z'],
+    milestone: 'Website',
+  };
+  assert.deepEqual(normalizeLiveIssue(420, raw), expected);
+  for (const marker of [null, {}, false])
+    assert.throws(
+      () => normalizeLiveIssue(420, { ...raw, pull_request: marker }),
+      /pull request.*dependency Issue/
+    );
 });

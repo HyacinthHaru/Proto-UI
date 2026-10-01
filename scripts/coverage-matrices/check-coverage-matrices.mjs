@@ -3827,8 +3827,10 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       : ts.isIdentifier(source) && literalBindings.has(source.text)
         ? literalBindings.get(source.text)
         : null;
-    return typeof target === 'string' && isExternalExecutableScriptSpecifier(target)
-      ? externalScriptElementSpecifier(target)
+    const normalizedTarget =
+      typeof target === 'string' ? normalizeBrowserResourceUrl(target) : null;
+    return normalizedTarget !== null && isExternalExecutableScriptSpecifier(normalizedTarget)
+      ? externalScriptElementSpecifier(normalizedTarget)
       : DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER;
   };
   const addLiteral = (node) => {
@@ -4293,12 +4295,30 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       continue;
     for (const { literal } of hrefs) {
       if (literal === null) specifiers.push(DYNAMIC_STYLESHEET_LINK_SPECIFIER);
-      else if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(literal)) {
-        specifiers.push(`${EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX}${literal}>`);
+      else {
+        const normalized = normalizeBrowserResourceUrl(literal);
+        if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(normalized))
+          specifiers.push(`${EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX}${normalized}>`);
       }
     }
   }
   return specifiers;
+}
+
+// URL Standard basic-parser preprocessing. Relative browser resources use an
+// HTTP(S) document base, where reverse solidus also acts as a path separator.
+function normalizeBrowserResourceUrl(value) {
+  const normalized = value
+    .replace(/^[\u0000-\u0020]+|[\u0000-\u0020]+$/gu, '')
+    .replace(/[\t\n\r]/gu, '');
+  return !/^[a-z][a-z0-9+.-]*:/iu.test(normalized) ||
+    /^(?:https?|file|ftp|wss?):/iu.test(normalized)
+    ? normalized.replaceAll('\\', '/')
+    : normalized;
+}
+function staticMarkupResourceUrl(openingTag, name) {
+  const value = staticMarkupAttribute(openingTag, name);
+  return value === null ? null : normalizeBrowserResourceUrl(value);
 }
 
 function staticMarkupAttribute(openingTag, name) {
@@ -4340,7 +4360,7 @@ function externalScriptModuleSpecifiers(content) {
       if (/(?:^|\s)(?::src|v-bind:src)\s*=/iu.test(openingTag)) {
         return [DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER];
       }
-      const specifier = staticMarkupAttribute(openingTag, 'src');
+      const specifier = staticMarkupResourceUrl(openingTag, 'src');
       if (!specifier || /[{}\x60]/u.test(specifier) || hasHtmlCharacterReference(specifier)) {
         return [DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER];
       }
@@ -4356,12 +4376,11 @@ function documentBaseSpecifiers(content) {
       if (/(?:^|\s)(?::href|v-bind:href)\s*=/iu.test(openingTag)) {
         return [DYNAMIC_DOCUMENT_BASE_SPECIFIER];
       }
-      const href = staticMarkupAttribute(openingTag, 'href');
+      const href = staticMarkupResourceUrl(openingTag, 'href');
       if (!href || /[{}\x60]/u.test(href) || hasHtmlCharacterReference(href)) {
         return [DYNAMIC_DOCUMENT_BASE_SPECIFIER];
       }
-      const normalizedHref = href.trim();
-      return /^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(normalizedHref) ? [normalizedHref] : [];
+      return /^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(href) ? [href] : [];
     });
 }
 function stylesheetLinkSpecifiers(content) {
@@ -4390,7 +4409,7 @@ function stylesheetLinkSpecifiers(content) {
       if (/(?:^|\s)(?::href|v-bind:href)\s*=/iu.test(openingTag)) {
         return [DYNAMIC_STYLESHEET_LINK_SPECIFIER];
       }
-      const specifier = staticMarkupAttribute(openingTag, 'href');
+      const specifier = staticMarkupResourceUrl(openingTag, 'href');
       if (!specifier || /[{}\x60]/u.test(specifier) || hasHtmlCharacterReference(specifier)) {
         return [DYNAMIC_STYLESHEET_LINK_SPECIFIER];
       }
@@ -4618,7 +4637,10 @@ function styleModuleSpecifiers(content) {
         .slice(index + directive[0].length + directiveTailOffset)
         .match(targetPattern);
       if (!firstTarget) continue;
-      const targetValue = (target) => target[2] ?? target[3] ?? target[5] ?? target[6];
+      const targetValue = (target) => {
+        const value = target[2] ?? target[3] ?? target[5] ?? target[6];
+        return directive[1].toLowerCase() === 'import' ? normalizeBrowserResourceUrl(value) : value;
+      };
       specifiers.push(targetValue(firstTarget));
       let consumedLength = directive[0].length + directiveTailOffset + firstTarget[0].length;
       if (directive[1].toLowerCase() === 'import') {
