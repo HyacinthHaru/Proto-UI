@@ -186,7 +186,10 @@ test('Cloudflare mutation kill switch gates deployment and selects the dcbot fal
     workflow,
     /deploy:[\s\S]*if: needs\.resolve-deploy\.outputs\.pr != '' && vars\.POPPY_CLOUDFLARE_MUTATIONS_ENABLED == 'true'/
   );
-  assert.match(close, /cleanup:[\s\S]*if: vars\.POPPY_CLOUDFLARE_MUTATIONS_ENABLED == 'true'/);
+  assert.match(
+    close,
+    /cleanup:[\s\S]*if: steps\.live\.outputs\.cleanup == 'true' && vars\.POPPY_CLOUDFLARE_MUTATIONS_ENABLED == 'true'/
+  );
   assert.match(workflow, /fallback-upload:[\s\S]*vars\.POPPY_PREVIEW_FALLBACK_ORIGIN != ''/);
   assert.match(workflow, /fallback-unavailable:[\s\S]*vars\.POPPY_PREVIEW_FALLBACK_ORIGIN == ''/);
   assert.match(upload, /new URL\(['"]\/api\/preview\/deployments['"]/);
@@ -214,11 +217,14 @@ test('fallback publication requires a separate untrusted content origin', async 
   );
 });
 
-test('close always reports closed to Poppy while Cloudflare deletion is gated', () => {
+test('eligible close reports to Poppy while Cloudflare deletion remains gated', () => {
   assert.match(close, /Report the closed deployment to the central Poppy control plane/);
   assert.match(close, /Report the closed deployment to the configured fallback control plane/);
   assert.equal((close.match(/report\.mjs closed/g) ?? []).length, 2);
-  assert.match(close, /cleanup:[\s\S]*if: vars\.POPPY_CLOUDFLARE_MUTATIONS_ENABLED == 'true'/);
+  assert.match(
+    close,
+    /cleanup:[\s\S]*if: steps\.live\.outputs\.cleanup == 'true' && vars\.POPPY_CLOUDFLARE_MUTATIONS_ENABLED == 'true'/
+  );
   assert.match(close, /fallback-closed/);
 });
 
@@ -492,7 +498,7 @@ test('all fallback comment writers serialize per PR and the writer rechecks live
   assert.match(sticky, /pullRequest\?\.head\?\.sha !== headSHA/);
 });
 
-test('close revocation covers every possibly-owning control plane in both modes', () => {
+test('eligible close revokes the central and currently configured fallback targets in both modes', () => {
   // The owning plane cannot be derived from the current kill-switch value, so
   // trusted cleanup always revokes the central plane and revokes the fallback
   // plane whenever one is configured.
@@ -511,7 +517,10 @@ test('close revocation covers every possibly-owning control plane in both modes'
     close.indexOf('- name: Maintain the sticky PR comment')
   );
   assert.match(fallback, /POPPY_CONTROL_PLANE: \$\{\{ vars\.POPPY_PREVIEW_FALLBACK_ORIGIN \}\}/);
-  assert.match(fallback, /if: always\(\) && vars\.POPPY_PREVIEW_FALLBACK_ORIGIN != ''/);
+  assert.match(
+    fallback,
+    /if: always\(\) && steps\.live\.outputs\.cleanup == 'true' && vars\.POPPY_PREVIEW_FALLBACK_ORIGIN != ''/
+  );
   assert.match(fallback, /report\.mjs closed/);
   assert.match(
     close,
@@ -800,5 +809,90 @@ test('cleanup cards treat every configured non-success revocation as cleanup-fai
     for (const outcome of ['failure', 'cancelled', 'skipped']) {
       assert.equal(status({ ...steps, 'revoke-fallback': { outcome } }, vars), 'cleanup-failed');
     }
+  }
+});
+
+test('cleanup admission rechecks the live closed state and exact head under the lock', async () => {
+  const block = close.match(
+    /name: Revalidate the live closed pull request under the lock[\s\S]*?script: \|\n([\s\S]*?)\n      - name:/
+  );
+  assert.ok(block, 'cleanup needs an early live-state guard, before lifecycle mutations');
+  const script = block[1]
+    .split('\n')
+    .map((line) => line.replace(/^            /, ''))
+    .join('\n');
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  for (const [state, head, allowed] of [
+    ['closed', 'a'.repeat(40), 'true'],
+    ['open', 'a'.repeat(40), 'false'],
+    ['closed', 'b'.repeat(40), 'false'],
+  ]) {
+    const outputs = {};
+    await new AsyncFunction('github', 'context', 'core', script)(
+      { rest: { pulls: { get: async () => ({ data: { state, head: { sha: head } } }) } } },
+      {
+        repo: { owner: 'Fixture', repo: 'fixture' },
+        payload: { pull_request: { number: 596, head: { sha: 'a'.repeat(40) } } },
+      },
+      { setOutput: (key, value) => (outputs[key] = value), notice: () => {} }
+    );
+    assert.equal(outputs.cleanup, allowed);
+  }
+});
+
+test('stale cleanup cannot delete resources, report Closed or replace the sticky card', () => {
+  const stale = {
+    live: { outputs: { cleanup: 'false' } },
+    cleanup: { outcome: 'success' },
+    'revoke-central': { outcome: 'success' },
+    'revoke-fallback': { outcome: 'success' },
+  };
+  const vars = {
+    POPPY_CLOUDFLARE_MUTATIONS_ENABLED: 'true',
+    POPPY_PREVIEW_FALLBACK_ORIGIN: 'https://fallback.example',
+  };
+  for (const name of [
+    'Delete all preview resources for the PR',
+    'Report the closed deployment to the central Poppy control plane',
+    'Report the closed deployment to the configured fallback control plane',
+    'Maintain the sticky PR comment',
+  ]) {
+    assert.equal(conditionForStep(close, name)(stale, vars), false, name);
+  }
+});
+
+test('failed or invalid live cleanup lookup never authorizes mutation', async () => {
+  const block = close.match(
+    /name: Revalidate the live closed pull request under the lock[\s\S]*?script: \|\n([\s\S]*?)\n      - name:/
+  );
+  assert.ok(block);
+  const script = block[1]
+    .split('\n')
+    .map((line) => line.replace(/^            /, ''))
+    .join('\n');
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  for (const value of ['lookup-failure', {}, { state: 'closed' }, null]) {
+    const outputs = {};
+    const invoke = () =>
+      new AsyncFunction('github', 'context', 'core', script)(
+        {
+          rest: {
+            pulls: {
+              get: async () => {
+                if (value === 'lookup-failure') throw new Error('lookup unavailable');
+                return { data: value };
+              },
+            },
+          },
+        },
+        {
+          repo: { owner: 'Fixture', repo: 'fixture' },
+          payload: { pull_request: { number: 596, head: { sha: 'a'.repeat(40) } } },
+        },
+        { setOutput: (key, value) => (outputs[key] = value), notice: () => {} }
+      );
+    if (value === 'lookup-failure' || value === null) await assert.rejects(invoke);
+    else await invoke();
+    assert.notEqual(outputs.cleanup, 'true');
   }
 });

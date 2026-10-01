@@ -287,3 +287,55 @@ test('aborts a stream that outruns or mismatches the recorded compressed size', 
     /exceeded the 50 MiB compressed envelope/
   );
 });
+
+for (const [name, entries, extraLimits, message] of [
+  ['depth', [{ name: 'a/b/c/file', content: Buffer.alloc(0) }], { maxPathDepth: 3 }, /path depth/],
+  [
+    'path bytes',
+    [{ name: '界/file', content: Buffer.alloc(0) }],
+    { maxPathBytes: 7 },
+    /path bytes/,
+  ],
+  [
+    'total path bytes',
+    [
+      { name: 'a/file', content: Buffer.alloc(0) },
+      { name: 'b/file', content: Buffer.alloc(0) },
+    ],
+    { maxTotalPathBytes: 10 },
+    /total path bytes/,
+  ],
+  [
+    'inferred directories',
+    [
+      { name: 'a/b/file', content: Buffer.alloc(0) },
+      { name: 'c/d/file', content: Buffer.alloc(0) },
+    ],
+    { maxDirectories: 3 },
+    /inferred directories/,
+  ],
+]) {
+  test(`rejects excessive ${name} before changing the extraction tree`, async (t) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'poppy-path-budget-'));
+    t.after(() => rm(root, { recursive: true, force: true }));
+    const marker = path.join(root, 'keep.txt');
+    const { writeFile } = await import('node:fs/promises');
+    await writeFile(marker, 'untouched');
+    await assert.rejects(
+      materializeBoundedZip(buildZip(entries), root, { ...smallLimits, ...extraLimits }),
+      message
+    );
+    assert.equal(await readFile(marker, 'utf8'), 'untouched');
+  });
+}
+
+test('shared parent directories count once at the exact path budget', () => {
+  const files = extractBoundedZip(
+    buildZip([
+      { name: 'a/x', content: Buffer.alloc(0) },
+      { name: 'a/y', content: Buffer.alloc(0) },
+    ]),
+    { ...smallLimits, maxDirectories: 1, maxPathDepth: 2, maxPathBytes: 3, maxTotalPathBytes: 6 }
+  );
+  assert.equal(files.size, 2);
+});

@@ -16,6 +16,15 @@ import { inflateRawSync } from 'node:zlib';
 
 import { FALLBACK_LIMITS } from './prepare-fallback-artifact.mjs';
 
+// Local filesystem-materialization budgets supplement the receiver's byte/file
+// envelope. They do not change the pinned wire contract.
+export const ZIP_PATH_LIMITS = Object.freeze({
+  maxPathDepth: 64,
+  maxPathBytes: 1024,
+  maxTotalPathBytes: 8 * 1024 * 1024,
+  maxDirectories: 20_000,
+});
+
 const EOCD_SIGNATURE = 0x06054b50;
 const CENTRAL_SIGNATURE = 0x02014b50;
 const LOCAL_SIGNATURE = 0x04034b50;
@@ -130,6 +139,10 @@ function findEndOfCentralDirectory(bytes) {
 }
 
 export function listBoundedEntries(bytes, limits = FALLBACK_LIMITS) {
+  limits = { ...FALLBACK_LIMITS, ...ZIP_PATH_LIMITS, ...limits };
+  for (const [name, value] of Object.entries(limits)) {
+    if (!Number.isSafeInteger(value) || value < 1) fail(`invalid extraction limit ${name}`);
+  }
   const eocd = findEndOfCentralDirectory(bytes);
   const totalEntries = bytes.readUInt16LE(eocd + 10);
   const directorySize = bytes.readUInt32LE(eocd + 12);
@@ -142,6 +155,8 @@ export function listBoundedEntries(bytes, limits = FALLBACK_LIMITS) {
   }
 
   const entries = [];
+  const directories = new Set();
+  let totalPathBytes = 0;
   let expandedBytes = 0;
   let offset = directoryOffset;
   for (let index = 0; index < totalEntries; index += 1) {
@@ -169,6 +184,21 @@ export function listBoundedEntries(bytes, limits = FALLBACK_LIMITS) {
 
     if (name.endsWith('/')) continue; // directories are recreated from file paths
     assertSafeEntryName(name);
+    const segments = name.split('/');
+    const pathBytes = Buffer.byteLength(name, 'utf8');
+    if (segments.length > limits.maxPathDepth)
+      fail(`artifact path depth exceeds ${limits.maxPathDepth}`);
+    if (pathBytes > limits.maxPathBytes) fail(`artifact path bytes exceed ${limits.maxPathBytes}`);
+    totalPathBytes += pathBytes;
+    if (totalPathBytes > limits.maxTotalPathBytes)
+      fail(`artifact total path bytes exceed ${limits.maxTotalPathBytes}`);
+    let parent = '';
+    for (const segment of segments.slice(0, -1)) {
+      parent = parent ? `${parent}/${segment}` : segment;
+      directories.add(parent);
+      if (directories.size > limits.maxDirectories)
+        fail(`artifact inferred directories exceed ${limits.maxDirectories}`);
+    }
     if (flags & 0x1) fail(`artifact entry is encrypted: ${name}`);
     if (method !== 0 && method !== 8) fail(`artifact entry uses an unsupported method: ${name}`);
     const unixFileType = (externalAttributes >>> 16) & 0o170000;
