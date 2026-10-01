@@ -1,0 +1,18 @@
+{
+  "scope": "Single Rust host test, baseline/control and exact candidate-fixture failure with a separate diagnostic observation; no fix or full combined CI claim",
+  "base": "f5bae261491368b586959f1d8b353cf372775221",
+  "feature": "17a2cff98080eb57f9070a6f45d89b58d3a72c3f",
+  "manifestExcludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 4969,
+      "sha256": "8b9657ec8f2c292f3d97c6c8efd0b2d3e3c3e20071ea910d50374aada49d7585"
+    },
+    {
+      "path": "reproduction-records.tar.gz",
+      "bytes": 17893,
+      "sha256": "617d9599adfc90c9ec779abeaf66ba5607dc2462abba22d402a031f6a9145b53"
+    }
+  ]
+}
