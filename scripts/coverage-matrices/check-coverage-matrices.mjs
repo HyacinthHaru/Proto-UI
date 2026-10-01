@@ -1373,7 +1373,7 @@ function domReceiverBindings(sourceFile) {
       visitedBindings
     );
   };
-  const receiverBindings = { isIdentifierDomCollection, isIdentifierDomReceiver };
+  const receiverBindings = { isIdentifierDomCollection, isIdentifierDomReceiver, latestBinding };
   return receiverBindings;
 }
 
@@ -1502,7 +1502,7 @@ function isDomReceiverExpression(
   );
 }
 
-function astContainsInteractiveRuntime(content) {
+function astContainsInteractiveRuntime(content, { harnessGeometry = false } = {}) {
   const sourceFile = ts.createSourceFile(
     'website-source.tsx',
     content,
@@ -1511,6 +1511,40 @@ function astContainsInteractiveRuntime(content) {
     ts.ScriptKind.TSX
   );
   const receiverBindings = domReceiverBindings(sourceFile);
+  const geometryRefBindings = new Set();
+  const collectGeometryRefs = (node) => {
+    if (
+      ts.isJsxAttribute(node) &&
+      node.name.getText(sourceFile) === 'ref' &&
+      node.initializer &&
+      ts.isJsxExpression(node.initializer) &&
+      node.initializer.expression &&
+      ts.isIdentifier(node.initializer.expression)
+    ) {
+      const tag = node.parent.parent.tagName;
+      if (tag && ts.isIdentifier(tag) && /^[a-z]/u.test(tag.text)) {
+        const binding = receiverBindings.latestBinding(node.initializer.expression.text, node);
+        if (binding) geometryRefBindings.add(binding);
+      }
+    }
+    ts.forEachChild(node, collectGeometryRefs);
+  };
+  if (harnessGeometry) collectGeometryRefs(sourceFile);
+  const isGeometryReceiver = (expression, useNode, seen = new Set()) => {
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isIdentifier(candidate)) {
+      const binding = receiverBindings.latestBinding(candidate.text, useNode);
+      if (binding?.initializer && !binding.intrinsicallyDom) {
+        if (seen.has(binding) || seen.size >= 64) return false;
+        seen.add(binding);
+        return isGeometryReceiver(binding.initializer, binding.node, seen);
+      }
+    }
+    const member = staticMemberAccess(candidate);
+    if (member?.name === 'current' && ts.isIdentifier(member.receiver))
+      return geometryRefBindings.has(receiverBindings.latestBinding(member.receiver.text, useNode));
+    return isDomReceiverExpression(candidate, sourceFile, receiverBindings, useNode);
+  };
   const literalBindings = topLevelConstStringBindings(sourceFile);
   let found = false;
   const visit = (node) => {
@@ -1559,6 +1593,14 @@ function astContainsInteractiveRuntime(content) {
         if (
           method === 'addEventListener' ||
           ((owner === 'customElements' || owner.endsWith('.customElements')) && method === 'define')
+        ) {
+          found = true;
+          return;
+        }
+        if (
+          harnessGeometry &&
+          /^(?:getBoundingClientRect|getClientRects)$/u.test(method) &&
+          isGeometryReceiver(calledMember.receiver, node)
         ) {
           found = true;
           return;
@@ -3123,6 +3165,32 @@ function astContainsHarnessRenderOrEffectAction(content, absolutePath, visitedPa
       nextVisitedPaths
     );
   };
+  const resolveClassLocalCallable = (callee) => {
+    const member = staticMemberAccess(callee);
+    if (!member || unwrapTypeScriptExpression(member.receiver).kind !== ts.SyntaxKind.ThisKeyword)
+      return null;
+    let owner = callee.parent;
+    while (owner && !ts.isClassDeclaration(owner) && !ts.isClassExpression(owner)) {
+      if (ts.isFunctionExpression(owner) || ts.isFunctionDeclaration(owner)) return null;
+      owner = owner.parent;
+    }
+    if (!owner) return null;
+    const declaration = owner.members.find((entry) => {
+      if (entry.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.StaticKeyword))
+        return false;
+      const name =
+        entry.name && (ts.isIdentifier(entry.name) || ts.isStringLiteralLike(entry.name))
+          ? entry.name.text
+          : null;
+      return name === member.name;
+    });
+    if (declaration && ts.isMethodDeclaration(declaration) && declaration.body) return declaration;
+    if (declaration && ts.isPropertyDeclaration(declaration) && declaration.initializer) {
+      const value = unwrapTypeScriptExpression(declaration.initializer);
+      if (ts.isArrowFunction(value) || ts.isFunctionExpression(value)) return value;
+    }
+    return null;
+  };
   const executionPathContainsAgentAction = (root) => {
     let found = false;
     const candidate = unwrapTypeScriptExpression(root);
@@ -3188,7 +3256,7 @@ function astContainsHarnessRenderOrEffectAction(content, absolutePath, visitedPa
             ? callee
             : ts.isIdentifier(callee)
               ? resolveCallable(callee.text, callee)
-              : null;
+              : resolveClassLocalCallable(callee);
         if (
           !callable &&
           ts.isIdentifier(callee) &&
@@ -3198,6 +3266,10 @@ function astContainsHarnessRenderOrEffectAction(content, absolutePath, visitedPa
           return;
         }
         if (callable && !visitedCallables.has(callable) && callable.body) {
+          if (visitedCallables.size >= 500) {
+            found = true;
+            return;
+          }
           visitedCallables.add(callable);
           for (const argument of node.arguments) {
             const callbackExpression = unwrapTypeScriptExpression(argument);
@@ -3484,14 +3556,14 @@ function containsHarnessForbiddenStateMachine(content, absolutePath) {
       containsJsxEventHandler(content, absolutePath) ||
       embeddedScriptSegments(content).some(
         (script) =>
-          astContainsInteractiveRuntime(script) ||
+          astContainsInteractiveRuntime(script, { harnessGeometry: true }) ||
           astContainsNativeJsxEventHandler(script, absolutePath) ||
           astContainsHarnessRenderOrEffectAction(script, absolutePath)
       )
     );
   }
   return (
-    astContainsInteractiveRuntime(content) ||
+    astContainsInteractiveRuntime(content, { harnessGeometry: true }) ||
     astContainsNativeJsxEventHandler(content, absolutePath) ||
     astContainsHarnessRenderOrEffectAction(content, absolutePath)
   );
@@ -3913,6 +3985,61 @@ function scriptModuleSpecifiers(source, fileName) {
       !hasLocalBinding(member.receiver.text, useNode)
     );
   };
+  const isBrowserGlobal = (expression, useNode, names) => {
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isIdentifier(candidate))
+      return names.includes(candidate.text) && !hasLocalBinding(candidate.text, useNode);
+    const member = staticMemberAccess(candidate);
+    return Boolean(
+      member &&
+      names.includes(member.name) &&
+      ts.isIdentifier(member.receiver) &&
+      /^(?:globalThis|self|window)$/u.test(member.receiver.text) &&
+      !hasLocalBinding(member.receiver.text, useNode)
+    );
+  };
+  const resolveLocalValue = (expression, useNode, seen, match) => {
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (match(candidate, useNode, seen)) return true;
+    if (!ts.isIdentifier(candidate)) return false;
+    for (let scope = scriptLexicalScope(useNode); scope; scope = scriptLexicalScope(scope)) {
+      const entries = (scriptElementBindings.get(candidate.text) ?? []).filter(
+        (entry) => entry.scope === scope
+      );
+      const binding = entries
+        .filter((entry) => entry.position < useNode.getStart(sourceFile))
+        .sort((a, b) => b.position - a.position)[0];
+      if (entries.length) {
+        if (!binding?.initializer || seen.has(binding) || seen.size >= 64) return false;
+        seen.add(binding);
+        return resolveLocalValue(binding.initializer, binding.node, seen, match);
+      }
+      if (ts.isSourceFile(scope)) break;
+    }
+    return false;
+  };
+  const isAudioContext = (expression, useNode, seen) =>
+    resolveLocalValue(
+      expression,
+      useNode,
+      seen,
+      (candidate, node) =>
+        ts.isNewExpression(candidate) &&
+        isBrowserGlobal(candidate.expression, node, [
+          'AudioContext',
+          'OfflineAudioContext',
+          'webkitAudioContext',
+        ])
+    );
+  const isWorklet = (expression, useNode, seen = new Set()) =>
+    resolveLocalValue(expression, useNode, seen, (candidate, node, visited) => {
+      const member = staticMemberAccess(candidate);
+      return Boolean(
+        member &&
+        ((member.name === 'paintWorklet' && isBrowserGlobal(member.receiver, node, ['CSS'])) ||
+          (member.name === 'audioWorklet' && isAudioContext(member.receiver, node, visited)))
+      );
+    });
   const visit = (node) => {
     if (
       ts.isBinaryExpression(node) &&
@@ -3958,6 +4085,22 @@ function scriptModuleSpecifiers(source, fileName) {
         }
       }
 
+      if (calledMember?.name === 'addModule' && isWorklet(calledMember.receiver, node)) {
+        const argument = node.arguments[0] && unwrapTypeScriptExpression(node.arguments[0]);
+        const target =
+          argument && ts.isStringLiteralLike(argument)
+            ? argument.text
+            : argument && ts.isIdentifier(argument)
+              ? literalBindings.get(argument.text)
+              : null;
+        // Browser URL resolution is not Vite's source resolver: a local/dynamic
+        // worklet URL stays unverified until its exact public entry is modeled.
+        specifiers.push(
+          typeof target === 'string' && isExternalExecutableScriptSpecifier(target)
+            ? externalWorkerEntrySpecifier(target)
+            : UNRESOLVED_WORKER_ENTRY_SPECIFIER
+        );
+      }
       const serviceWorker =
         calledMember?.name === 'register' ? staticMemberAccess(calledMember.receiver) : null;
       if (
@@ -5287,11 +5430,97 @@ function isTestNamedSource(absolutePath) {
   return /\.(?:browser\.)?(?:test|spec)\.[cm]?[jt]sx?$/iu.test(absolutePath);
 }
 
+// Mirror the checked-in Website proto-ui-source resolver without evaluating
+// candidate configuration. The full config fingerprint fails closed for any
+// unreviewed resolver/plugin shape; updates require source review and parity tests.
+const PROMOTION_RESOLVER_CONFIG_SHA256 =
+  '5319f5862ddbb861153a957fb2b54991a33caae4547a3b7ed8b679ceaf537e62';
+export function promotionBarePackageTargets(root, specifier, metadata) {
+  const unverified = () =>
+    new Error(`promotion package closure for ${specifier} remains unverified`);
+  const configPath = path.join(root, 'apps/www/astro.config.mjs');
+  if (
+    !fs.existsSync(configPath) ||
+    !fs.lstatSync(configPath).isFile() ||
+    path.relative(root, fs.realpathSync(configPath)).startsWith('..') ||
+    createHash('sha256').update(fs.readFileSync(configPath)).digest('hex') !==
+      PROMOTION_RESOLVER_CONFIG_SHA256
+  )
+    throw new Error(
+      'promotion package resolver configuration is unrecognized; closure remains unverified'
+    );
+  metadata.add(configPath);
+  const assertRepositoryFile = (target) => {
+    if (!fs.existsSync(target) || !fs.statSync(target).isFile()) throw unverified();
+    const canonical = fs.realpathSync(target);
+    const relative = path.relative(root, canonical);
+    if (
+      relative.startsWith('..') ||
+      path.isAbsolute(relative) ||
+      spawnSync('git', ['--literal-pathspecs', 'ls-files', '--error-unmatch', '--', relative], {
+        cwd: root,
+        stdio: 'ignore',
+      }).status !== 0
+    )
+      throw unverified();
+    return canonical;
+  };
+  if (specifier.startsWith('@proto.ui/')) {
+    const [segment, ...rest] = specifier.slice('@proto.ui/'.length).split('/');
+    if (
+      !/^[a-z0-9-]+$/u.test(segment) ||
+      rest.some((part) => !part || part === '.' || part === '..')
+    )
+      throw unverified();
+    const directory = segment.startsWith('module-')
+      ? path.join('modules', segment.slice(7))
+      : segment.startsWith('adapter-')
+        ? path.join('adapters', segment.slice(8))
+        : segment.startsWith('prototypes-')
+          ? path.join('prototypes', segment.slice(11))
+          : segment;
+    const packageRoot = path.join(root, 'packages', directory);
+    const manifestPath = assertRepositoryFile(path.join(packageRoot, 'package.json'));
+    metadata.add(manifestPath);
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    const subpath = rest.length ? `./${rest.join('/')}` : '.';
+    for (const [key, value] of Object.entries(manifest.exports ?? {})) {
+      const match = key.includes('*')
+        ? subpath.match(
+            new RegExp(`^${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace('\\*', '(.+)')}$`)
+          )
+        : key === subpath
+          ? []
+          : null;
+      if (!match) continue;
+      const target =
+        typeof value === 'string' ? value : (value?.import ?? value?.default ?? value?.types);
+      if (typeof target !== 'string') throw unverified();
+      const sourceTarget = target
+        .replace('*', match[1] ?? '')
+        .replace('./dist/', './src/')
+        .replace(/\.d\.ts$/u, '.ts')
+        .replace(/\.js$/u, '.ts');
+      const candidate = assertRepositoryFile(path.resolve(packageRoot, sourceTarget));
+      const relative = path.relative(fs.realpathSync(packageRoot), candidate);
+      if (relative.startsWith('..') || path.isAbsolute(relative)) throw unverified();
+      return [candidate];
+    }
+    throw unverified();
+  }
+  // Installed external packages are not historical Git source evidence. Do not
+  // silently equate today's node_modules bytes or lock metadata with a capture.
+  throw unverified();
+}
+
 function reachableSourcePaths(
   candidates,
   aliasConfig = { aliases: new Map(), unsupported: new Set() },
-  root = process.cwd()
+  root = process.cwd(),
+  { promotionPackages = false } = {}
 ) {
+  const packageMetadata = new Set();
+  const promotionGlobBudget = { entries: 0, patterns: 0 };
   const candidateByPath = new Map(
     candidates.map((candidate) => [path.resolve(candidate), candidate])
   );
@@ -5299,7 +5528,17 @@ function reachableSourcePaths(
     const classifiedSpecifier = importSpecifierWithoutViteSuffix(specifier);
     const aliasMatch = configuredAliasMatch(classifiedSpecifier, aliasConfig);
     const rootRelative = /^\/(?!\/)/u.test(classifiedSpecifier);
-    if (!classifiedSpecifier.startsWith('.') && !aliasMatch && !rootRelative) return null;
+    if (!classifiedSpecifier.startsWith('.') && !aliasMatch && !rootRelative) {
+      if (
+        !promotionPackages ||
+        isReviewedBuildTimeModuleSpecifier(
+          path.relative(root, sourcePath).replaceAll('\\', '/'),
+          classifiedSpecifier
+        )
+      )
+        return null;
+      return promotionBarePackageTargets(root, classifiedSpecifier, packageMetadata);
+    }
     const bases = aliasMatch
       ? [path.resolve(aliasMatch.replacement, aliasMatch.suffix)]
       : rootRelative
@@ -5374,6 +5613,8 @@ function reachableSourcePaths(
     const { sourcePath, viteRoot } = pending.pop();
     const contextKey = `${sourcePath}\0${viteRoot}`;
     if (visitedContexts.has(contextKey)) continue;
+    if (promotionPackages && visitedContexts.size >= 500)
+      throw new Error('promotion package closure reached the 500-module bound; remains unverified');
     visitedContexts.add(contextKey);
     for (const specifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
       const targets = resolveLocalImport(sourcePath, specifier, viteRoot);
@@ -5387,6 +5628,7 @@ function reachableSourcePaths(
       for (const target of viteGlobTargets(root, relativeSourcePath, patterns, {
         aliasConfig,
         viteRoot,
+        ...(promotionPackages ? { packageRoot: root, globBudget: promotionGlobBudget } : {}),
       })) {
         if (target.absolutePath) {
           reachable.add(target.absolutePath);
@@ -5394,6 +5636,11 @@ function reachableSourcePaths(
         }
       }
     }
+  }
+  for (const metadataPath of packageMetadata) reachable.add(metadataPath);
+  if (promotionPackages) {
+    const config = path.join(root, 'apps/www/astro.config.mjs');
+    if (fs.existsSync(config)) reachable.add(config);
   }
   return reachable;
 }
@@ -6506,7 +6753,8 @@ function evidenceCommitMetadata(
   const sourceDependencyPaths = reachableSourcePaths(
     sourceImplementationRoots,
     aliasConfig,
-    rootDir
+    rootDir,
+    { promotionPackages: true }
   );
   for (const absoluteDependencyPath of sourceDependencyPaths) {
     const canonicalDependencyPath = canonicalImportTarget(absoluteDependencyPath);

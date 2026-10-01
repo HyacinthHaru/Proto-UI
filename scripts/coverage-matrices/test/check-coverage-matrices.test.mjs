@@ -6,9 +6,11 @@ import os from 'node:os';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import { afterEach, test } from 'node:test';
+import { runInNewContext } from 'node:vm';
 import {
   MATRIX_CONFIGS,
   boundedPackageGlobTargets,
+  promotionBarePackageTargets,
   collectCoverageMatrixIssues,
   validateCoverageMatrices,
 } from '../check-coverage-matrices.mjs';
@@ -10225,5 +10227,419 @@ test('package glob supports scoped literal roots and nested brace patterns', () 
   assert.equal(
     boundedPackageGlobTargets(packageRoot, path.join(packageRoot, 'features/**/*.{js,ts}')).length,
     2
+  );
+});
+
+test('fresh review: changed workspace package sources invalidate promotion evidence', () => {
+  const root = createRoot(),
+    implementationPath = 'apps/www/src/components/override/Search.astro';
+  const registry = 'apps/www/src/components/PrototypePreviewer/prototype-modules.ts';
+  const packageFile = 'packages/prototypes/base/src/index.ts';
+  for (const file of [implementationPath, registry, packageFile])
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, implementationPath),
+    "---\nimport { label } from '../PrototypePreviewer/prototype-modules';\n---\n<main>{label}</main>"
+  );
+  fs.writeFileSync(
+    path.join(root, 'apps/www/astro.config.mjs'),
+    fs.readFileSync(new URL('../../../apps/www/astro.config.mjs', import.meta.url))
+  );
+  fs.writeFileSync(path.join(root, registry), "export { label } from '@proto.ui/prototypes-base';");
+  fs.writeFileSync(
+    path.join(root, 'packages/prototypes/base/package.json'),
+    JSON.stringify({
+      name: '@proto.ui/prototypes-base',
+      exports: { '.': { import: './dist/index.js' } },
+    })
+  );
+  fs.writeFileSync(path.join(root, packageFile), "export const label='captured';");
+  const websiteBindings = [[implementationPath, ['www.shell.search']]];
+  writeValidMatrices(root, {}, {}, { websiteBindings });
+  const revision = commitFixtureRoot(root);
+  writeSelfHostedPromotion(root, revision, { websiteBindings });
+  assert.doesNotThrow(() =>
+    validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+  );
+  fs.writeFileSync(path.join(root, packageFile), "export const label='changed';");
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /promoted dependency `packages\/prototypes\/base\/src\/index.ts` differs/
+  );
+});
+
+test('fresh review: class-local helpers executed by render own their Agent actions', () => {
+  const root = createRoot(),
+    file = 'apps/agent-harness/src/run/ClassHelper.tsx';
+  fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, file),
+    "import React from 'react'; export class Surface extends React.Component { run() { this.props.actions.send(); } render() { this.run(); return <section/>; } }"
+  );
+  writeValidMatrices(root, {}, { Path: `\`${file}\`` });
+  assert.match(validationMessage(root), /Harness source .*ClassHelper.*forbidden interaction/);
+});
+
+test('fresh review: Harness geometry acquisition on proven DOM refs is classified', () => {
+  const root = createRoot(),
+    file = 'apps/agent-harness/src/run/Geometry.tsx';
+  fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, file),
+    "import {useRef,useLayoutEffect,useState} from 'react'; export function Surface(){ const panelRef=useRef(null); const [box,setBox]=useState(null); useLayoutEffect(()=>{setBox(panelRef.current.getBoundingClientRect());},[]); return <div ref={panelRef}/>; }"
+  );
+  writeValidMatrices(root, {}, { Path: `\`${file}\`` });
+  assert.match(validationMessage(root), /Harness source .*Geometry.*forbidden interaction/);
+});
+
+test('fresh review: browser worklet module URLs are governed entry points', () => {
+  for (const prefix of ['apps/www/src/components', 'apps/agent-harness/src/run']) {
+    const root = createRoot(),
+      file = path.join(prefix, 'Worklet.ts');
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      "CSS.paintWorklet.addModule('https://cdn.example/paint.js');"
+    );
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /external.*paint.js/i);
+  }
+});
+
+test('fresh review: class helper traversal is literal, cycle-safe and bounded', () => {
+  const cases = [
+    ["run=()=>{this.props.actions.send()}; render(){this['run']();return <section/>;}", true],
+    [
+      'run(){this.next()} next(){this.run();this.props.actions.send()} render(){this.run();return <section/>;}',
+      true,
+    ],
+    ['run(){this.next()} next(){this.run()} render(){this.run();return <section/>;}', false],
+    ['run(){this.props.actions.send()} render(){return <section/>;}', false],
+    ['run(){return 1} componentDidMount(){this.run()} render(){return <section/>;}', false],
+    [
+      Array.from(
+        { length: 501 },
+        (_, i) => `run${i}(){${i === 500 ? 'return 1;' : `this.run${i + 1}();`}}`
+      ).join('') + 'render(){this.run0();return <section/>;}',
+      true,
+    ],
+  ];
+  for (const [body, reject] of cases) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/ClassBound.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      `import React from 'react'; export class Surface extends React.Component { ${body} }`
+    );
+    writeValidMatrices(root, {}, { Path: `\`${file}\`` });
+    if (reject)
+      assert.match(validationMessage(root), /Harness source .*ClassBound.*forbidden interaction/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('fresh review: geometry is Harness-only and requires DOM provenance', () => {
+  for (const [file, source, reject] of [
+    ['apps/agent-harness/src/run/Rect.ts', "document.querySelector('div').getClientRects();", true],
+    [
+      'apps/agent-harness/src/run/Business.ts',
+      'const model={getBoundingClientRect(){return {width:1}}}; model.getBoundingClientRect();',
+      false,
+    ],
+    [
+      'apps/agent-harness/src/run/BusinessRef.ts',
+      'const panelRef={current:{getBoundingClientRect(){return {width:1}}}}; const panel=panelRef.current; panel.getBoundingClientRect();',
+      false,
+    ],
+    [
+      'apps/www/src/components/Rect.ts',
+      "document.querySelector('div').getBoundingClientRect();",
+      false,
+    ],
+  ]) {
+    const root = createRoot();
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root);
+    if (reject)
+      assert.match(validationMessage(root), /Harness source .*Rect.*forbidden interaction/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('fresh review: worklet acquisition covers browser aliases and rejects dynamic entries', () => {
+  for (const source of [
+    "globalThis.CSS.paintWorklet.addModule('https://cdn.example/paint.js');",
+    'const paint=CSS.paintWorklet; paint.addModule(url);',
+    "const context=new AudioContext(); context.audioWorklet.addModule('https://cdn.example/audio.js');",
+    "const context=new window.OfflineAudioContext(1,100,44100); const worklet=context.audioWorklet; worklet.addModule('./local.js');",
+  ]) {
+    const root = createRoot(),
+      file = 'apps/www/src/components/WorkletEntry.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root);
+    assert.match(
+      validationMessage(root),
+      /external executable script|unresolved Worker\/SharedWorker entry/
+    );
+  }
+  for (const source of [
+    "const model={paintWorklet:{addModule(){}}}; model.paintWorklet.addModule('https://cdn.example/data');",
+    "function business(CSS){CSS.paintWorklet.addModule('https://cdn.example/data');}",
+    "function business(AudioContext){const context=new AudioContext();context.audioWorklet.addModule('https://cdn.example/data');}",
+    "const business={addModule(){}};business.addModule('https://cdn.example/data');",
+  ]) {
+    const root = createRoot(),
+      file = 'apps/www/src/components/BusinessWorklet.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
+
+test('fresh review: promotion binds workspace manifests and rejects unbound external packages', () => {
+  for (const mode of ['manifest', 'external']) {
+    const root = createRoot(),
+      file = 'apps/www/src/components/override/Search.astro',
+      registry = 'apps/www/src/components/PrototypePreviewer/prototype-modules.ts';
+    for (const filename of [file, registry, 'packages/prototypes/base/src/index.ts'])
+      fs.mkdirSync(path.dirname(path.join(root, filename)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, file),
+      "---\nimport {label} from '../PrototypePreviewer/prototype-modules';\n---\n<main>{label}</main>"
+    );
+    fs.writeFileSync(
+      path.join(root, 'apps/www/astro.config.mjs'),
+      fs.readFileSync(new URL('../../../apps/www/astro.config.mjs', import.meta.url))
+    );
+    fs.writeFileSync(path.join(root, registry), "export {label} from '@proto.ui/prototypes-base';");
+    fs.writeFileSync(
+      path.join(root, 'packages/prototypes/base/package.json'),
+      JSON.stringify({
+        name: '@proto.ui/prototypes-base',
+        exports: { '.': { import: './dist/index.js' } },
+      })
+    );
+    fs.writeFileSync(
+      path.join(root, 'packages/prototypes/base/src/index.ts'),
+      "export const label='captured';"
+    );
+    const websiteBindings = [[file, ['www.shell.search']]];
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    if (mode === 'manifest') {
+      fs.writeFileSync(
+        path.join(root, 'packages/prototypes/base/package.json'),
+        JSON.stringify({
+          name: '@proto.ui/prototypes-base',
+          exports: { '.': { import: './dist/index.js' } },
+          sideEffects: false,
+        })
+      );
+      assert.match(
+        validationMessage(root, promotionOptions(revision)),
+        /promoted dependency `packages\/prototypes\/base\/package.json` differs/
+      );
+    } else {
+      fs.writeFileSync(
+        path.join(root, 'packages/prototypes/base/src/index.ts'),
+        "export {label} from 'unbound-package';"
+      );
+      assert.throws(
+        () => validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) }),
+        /promotion package closure.*unbound-package.*unverified/
+      );
+    }
+  }
+});
+
+test('fresh review: promotion follows transitive wildcard workspace exports using the Website resolver convention', () => {
+  const root = createRoot(),
+    file = 'apps/www/src/components/override/Search.astro',
+    registry = 'apps/www/src/components/PrototypePreviewer/prototype-modules.ts';
+  const leaf = 'packages/core/src/label.ts';
+  for (const filename of [file, registry, leaf, 'packages/prototypes/base/src/index.ts'])
+    fs.mkdirSync(path.dirname(path.join(root, filename)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, file),
+    "---\nimport {label} from '../PrototypePreviewer/prototype-modules';\n---\n<main>{label}</main>"
+  );
+  fs.writeFileSync(
+    path.join(root, 'apps/www/astro.config.mjs'),
+    fs.readFileSync(new URL('../../../apps/www/astro.config.mjs', import.meta.url))
+  );
+  fs.writeFileSync(path.join(root, registry), "export {label} from '@proto.ui/prototypes-base';");
+  fs.writeFileSync(
+    path.join(root, 'packages/prototypes/base/package.json'),
+    JSON.stringify({
+      name: '@proto.ui/prototypes-base',
+      exports: { '.': { import: './dist/index.js' } },
+    })
+  );
+  fs.writeFileSync(
+    path.join(root, 'packages/prototypes/base/src/index.ts'),
+    "export {label} from '@proto.ui/core/label';"
+  );
+  fs.writeFileSync(
+    path.join(root, 'packages/core/package.json'),
+    JSON.stringify({ name: '@proto.ui/core', exports: { './*': { import: './dist/*.js' } } })
+  );
+  fs.writeFileSync(path.join(root, leaf), "export const label='captured';");
+  const configuration = fs.readFileSync(
+    new URL('../../../apps/www/astro.config.mjs', import.meta.url),
+    'utf8'
+  );
+  const resolver = configuration.slice(
+    configuration.indexOf('function resolveProtoUiSource('),
+    configuration.indexOf('/** @type', configuration.indexOf('function resolveProtoUiSource('))
+  );
+  const resolve = runInNewContext(`${resolver}\nresolveProtoUiSource;`, {
+    fs,
+    path,
+    repositoryRoot: root,
+    PROTO_UI_PREFIX: '@proto.ui/',
+  });
+  assert.equal(
+    resolve('@proto.ui/prototypes-base'),
+    path.join(root, 'packages/prototypes/base/src/index.ts')
+  );
+  assert.equal(resolve('@proto.ui/core/label'), path.join(root, leaf));
+  const websiteBindings = [[file, ['www.shell.search']]];
+  writeValidMatrices(root, {}, {}, { websiteBindings });
+  const revision = commitFixtureRoot(root);
+  writeSelfHostedPromotion(root, revision, { websiteBindings });
+  assert.doesNotThrow(() =>
+    validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+  );
+  fs.writeFileSync(path.join(root, leaf), "export const label='changed';");
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /promoted dependency `packages\/core\/src\/label.ts` differs/
+  );
+});
+
+test('fresh review: package source resolver parity covers condition order, directory mapping and wildcard precedence', () => {
+  const root = createRoot();
+  const config = fs.readFileSync(
+    new URL('../../../apps/www/astro.config.mjs', import.meta.url),
+    'utf8'
+  );
+  fs.mkdirSync(path.join(root, 'apps/www'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), config);
+  const cases = [
+    [
+      '@proto.ui/prototypes-example',
+      'prototypes/example',
+      {
+        '.': {
+          import: './dist/import.js',
+          default: './dist/default.js',
+          types: './dist/types.d.ts',
+        },
+      },
+      'import.ts',
+    ],
+    [
+      '@proto.ui/adapter-example',
+      'adapters/example',
+      { '.': { default: './dist/default.js', types: './dist/types.d.ts' } },
+      'default.ts',
+    ],
+    [
+      '@proto.ui/module-example',
+      'modules/example',
+      { '.': { types: './dist/types.d.ts' } },
+      'types.ts',
+    ],
+    [
+      '@proto.ui/example/exact',
+      'example',
+      { './*': { import: './dist/*.js' }, './exact': { import: './dist/other.js' } },
+      'exact.ts',
+    ],
+    [
+      '@proto.ui/other/exact',
+      'other',
+      { './exact': { import: './dist/other.js' }, './*': { import: './dist/*.js' } },
+      'other.ts',
+    ],
+  ];
+  for (const [specifier, directory, exports, target] of cases) {
+    const packageRoot = path.join(root, 'packages', directory);
+    fs.mkdirSync(path.join(packageRoot, 'src'), { recursive: true });
+    fs.writeFileSync(path.join(packageRoot, 'package.json'), JSON.stringify({ exports }));
+    for (const file of new Set([target, 'other.ts', 'import.ts', 'default.ts', 'types.ts']))
+      fs.writeFileSync(path.join(packageRoot, 'src', file), 'export const value=1;');
+  }
+  commitFixtureRoot(root);
+  const resolver = config.slice(
+    config.indexOf('function resolveProtoUiSource('),
+    config.indexOf('/** @type', config.indexOf('function resolveProtoUiSource('))
+  );
+  const resolve = runInNewContext(`${resolver}\nresolveProtoUiSource;`, {
+    fs,
+    path,
+    repositoryRoot: root,
+    PROTO_UI_PREFIX: '@proto.ui/',
+  });
+  for (const [specifier, directory, _exports, target] of cases) {
+    const expected = path.join(root, 'packages', directory, 'src', target);
+    assert.equal(resolve(specifier), expected);
+    const metadata = new Set();
+    assert.deepEqual(promotionBarePackageTargets(root, specifier, metadata), [expected]);
+    assert.ok(metadata.has(path.join(root, 'packages', directory, 'package.json')));
+  }
+  fs.appendFileSync(
+    path.join(root, 'apps/www/astro.config.mjs'),
+    '\n// unreviewed resolver shape\n'
+  );
+  assert.throws(
+    () => promotionBarePackageTargets(root, cases[0][0], new Set()),
+    /resolver configuration is unrecognized.*unverified/
+  );
+  const changedResolver = config.replace(
+    ".replace('./dist/', './src/')",
+    ".replace('./dist/', './different/')"
+  );
+  assert.notEqual(changedResolver, config);
+  fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), changedResolver);
+  assert.throws(
+    () => promotionBarePackageTargets(root, cases[0][0], new Set()),
+    /resolver configuration is unrecognized.*unverified/
+  );
+  const outside = createRoot();
+  const externalConfig = path.join(outside, 'astro.config.mjs');
+  fs.writeFileSync(externalConfig, config);
+  fs.unlinkSync(path.join(root, 'apps/www/astro.config.mjs'));
+  fs.symlinkSync(externalConfig, path.join(root, 'apps/www/astro.config.mjs'));
+  assert.throws(
+    () => promotionBarePackageTargets(root, cases[0][0], new Set()),
+    /resolver configuration is unrecognized.*unverified/
+  );
+});
+
+test('fresh review: tracked package targets use literal Git pathspecs', () => {
+  const root = createRoot(),
+    directory = path.join(root, 'packages/prototypes/example');
+  fs.mkdirSync(path.join(root, 'apps/www'), { recursive: true });
+  fs.mkdirSync(path.join(directory, 'src'), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, 'apps/www/astro.config.mjs'),
+    fs.readFileSync(new URL('../../../apps/www/astro.config.mjs', import.meta.url))
+  );
+  fs.writeFileSync(
+    path.join(directory, 'package.json'),
+    JSON.stringify({ exports: { '.': './dist/item[1].js' } })
+  );
+  fs.writeFileSync(path.join(directory, 'src/item1.ts'), 'export const captured=true;');
+  commitFixtureRoot(root);
+  fs.writeFileSync(path.join(directory, 'src/item[1].ts'), 'export const untracked=true;');
+  assert.throws(
+    () => promotionBarePackageTargets(root, '@proto.ui/prototypes-example', new Set()),
+    /package closure.*unverified/
   );
 });
