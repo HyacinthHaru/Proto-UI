@@ -10856,3 +10856,88 @@ test('current Harness review: cross-repository imports and symlinks are rejected
     }
   }
 });
+
+test('fresh Harness review: rejects native executable preview elements before admission', () => {
+  for (const markup of [
+    '<iframe src="https://preview.example/app" />',
+    '<iframe srcDoc="<script>run()</script>" />',
+    '<object data="https://preview.example/app" />',
+    '<embed src="https://preview.example/app" />',
+  ]) {
+    const root = createRoot();
+    const relativePath = 'apps/agent-harness/src/future/PreviewSurface.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, relativePath)), { recursive: true });
+    fs.writeFileSync(path.join(root, relativePath), `export const Preview = () => ${markup};`);
+    writeValidMatrices(root, {}, { ID: 'harness.future.preview-chrome', Path: relativePath });
+    assert.match(validationMessage(root), /forbidden interaction|unreviewed.*preview/);
+  }
+});
+
+test('fresh Harness review: rejects root and public HTML import maps', () => {
+  for (const entry of ['index.html', 'public/index.html']) {
+    const root = createRoot();
+    const absolute = path.join(root, 'apps/agent-harness', entry);
+    fs.mkdirSync(path.dirname(absolute), { recursive: true });
+    fs.writeFileSync(
+      absolute,
+      '<script type="importmap">{"imports":{"react":"https://cdn.example/runtime.js"}}</script><script type="module" src="./runtime.js"></script>'
+    );
+    fs.writeFileSync(path.join(path.dirname(absolute), 'runtime.js'), "import 'react';");
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /production import map.*Harness/);
+  }
+});
+
+test('fresh Harness review: preview boundaries cover native creation and static markup controls', () => {
+  const rejected = [
+    "document.createElement('iframe');",
+    "window.document.createElement('object');",
+    "const doc=globalThis.document;const kind='embed';doc['createElement'](kind);",
+    "document.createElementNS('http://www.w3.org/1999/xhtml','iframe');",
+    'document.createElement(dynamicTag);',
+    'export const Preview=()=> <webview src="https://preview.example" />;',
+  ];
+  const accepted = [
+    "document.createElement('div');",
+    "document.createElementNS('http://www.w3.org/2000/svg','circle');",
+    "function helper(document){document.createElement('iframe');}",
+    "function helper(){document.createElement('iframe');var document={};}",
+    "const service={createElement:()=>({})};service.createElement('iframe');",
+    'const text="<iframe src=external>";export const Preview=()=> <section>{text}</section>;',
+    'const Iframe=()=> <section/>;export const Preview=()=> <Iframe />;',
+  ];
+  for (const [source, rejects] of [
+    ...rejected.map((x) => [x, true]),
+    ...accepted.map((x) => [x, false]),
+  ]) {
+    const root = createRoot();
+    const relativePath = 'apps/agent-harness/src/future/PreviewSurface.tsx';
+    fs.mkdirSync(path.dirname(path.join(root, relativePath)), { recursive: true });
+    fs.writeFileSync(path.join(root, relativePath), source);
+    writeValidMatrices(root, {}, { ID: 'harness.future.preview-chrome', Path: relativePath });
+    if (rejects) assert.match(validationMessage(root), /unreviewed executable preview/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), source);
+  }
+  for (const markup of [
+    '<IFRAME src="./preview.html"></IFRAME>',
+    '<object data="./preview.html"></object>',
+    '<embed src="./preview.html">',
+  ]) {
+    const root = createRoot();
+    fs.mkdirSync(path.join(root, 'apps/agent-harness/public'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'apps/agent-harness/public/index.html'), markup);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /unreviewed executable preview/);
+  }
+});
+
+test('fresh Harness review: ordinary data scripts and markup examples remain inert', () => {
+  const root = createRoot();
+  fs.mkdirSync(path.join(root, 'apps/agent-harness/public'), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, 'apps/agent-harness/public/index.html'),
+    '<!-- <iframe src="https://preview.example"></iframe><script type="importmap">{}</script> --><script type="application/json">{"example":"<iframe>"}</script><p>Static preview placeholder</p>'
+  );
+  writeValidMatrices(root);
+  assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+});

@@ -3700,7 +3700,7 @@ function externalScriptElementTarget(specifier) {
     : null;
 }
 
-function scriptModuleSpecifiers(source, fileName) {
+function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = false } = {}) {
   const sourceFile = ts.createSourceFile(
     fileName,
     source,
@@ -4040,6 +4040,36 @@ function scriptModuleSpecifiers(source, fileName) {
       );
     });
   const visit = (node) => {
+    if (harnessPreviewBoundary) {
+      if (
+        (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
+        ts.isIdentifier(node.tagName) &&
+        /^(?:iframe|object|embed|webview)$/u.test(node.tagName.text)
+      )
+        specifiers.push('<unreviewed Harness preview>');
+      if (ts.isCallExpression(node)) {
+        const member = staticMemberAccess(node.expression);
+        if (
+          member &&
+          /^(?:createElement|createElementNS)$/u.test(member.name) &&
+          resolveLocalValue(member.receiver, node, new Set(), (candidate, useNode) =>
+            isBrowserGlobal(candidate, useNode, ['document'])
+          )
+        ) {
+          const argument = node.arguments[member.name === 'createElementNS' ? 1 : 0];
+          let tag = null;
+          if (argument)
+            resolveLocalValue(argument, node, new Set(), (candidate) => {
+              if (!ts.isStringLiteralLike(candidate)) return false;
+              tag = candidate.text.toLowerCase();
+              return true;
+            });
+          if (tag === null || /^(?:iframe|object|embed|webview)$/u.test(tag))
+            specifiers.push('<unreviewed Harness preview>');
+        }
+      }
+    }
+
     if (
       ts.isBinaryExpression(node) &&
       node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
@@ -4446,7 +4476,7 @@ function externalStylesheetSpecifiersForWebsiteSource(absolutePath) {
   );
 }
 
-function moduleSpecifiersForWebsiteSource(absolutePath) {
+function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
   const content = fs.readFileSync(absolutePath, 'utf8');
   if (/\.(?:css|less|s[ac]ss)$/i.test(absolutePath)) {
     return styleModuleSpecifiers(content);
@@ -4463,7 +4493,7 @@ function moduleSpecifiersForWebsiteSource(absolutePath) {
           specifier !== DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER
       ),
       ...embeddedScriptSegments(content).flatMap((segment) =>
-        scriptModuleSpecifiers(segment, absolutePath)
+        scriptModuleSpecifiers(segment, absolutePath, options)
       ),
     ];
   }
@@ -4479,13 +4509,13 @@ function moduleSpecifiersForWebsiteSource(absolutePath) {
           specifier !== DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER
       ),
       ...embeddedScriptSegments(content).flatMap((segment) =>
-        scriptModuleSpecifiers(segment, absolutePath)
+        scriptModuleSpecifiers(segment, absolutePath, options)
       ),
       ...embeddedStyleSegments(content).flatMap(styleModuleSpecifiers),
     ];
   }
   const source = /\.mdx?$/i.test(absolutePath) ? stripMarkdownCode(content) : content;
-  return scriptModuleSpecifiers(source, absolutePath);
+  return scriptModuleSpecifiers(source, absolutePath, options);
 }
 
 function viteGlobPatternGroupsForWebsiteSource(absolutePath) {
@@ -5928,7 +5958,27 @@ function discoverHarnessRawImports(rootDir) {
   for (const absolutePath of candidates) {
     const sourcePath = path.relative(rootDir, absolutePath).replaceAll('\\', '/');
     if (/\.html?$/i.test(absolutePath)) {
-      for (const specifier of documentBaseSpecifiers(fs.readFileSync(absolutePath, 'utf8')))
+      const content = fs.readFileSync(absolutePath, 'utf8').replace(/<!--[\s\S]*?-->/gu, '');
+      const markup = markupSourceForJsxFallback(content, absolutePath);
+      if (
+        jsxOpeningTagCandidates(markup).some((tag) =>
+          /^<(?:iframe|object|embed|webview)\b/iu.test(tag)
+        )
+      )
+        rawImports.push({
+          sourcePath,
+          specifier: '<unreviewed Harness preview>',
+          category: 'unreviewed-preview',
+          resolvedPath: null,
+        });
+      if (containsProductionImportMap(content))
+        rawImports.push({
+          sourcePath,
+          specifier: '<production import map>',
+          category: 'production-import-map',
+          resolvedPath: null,
+        });
+      for (const specifier of documentBaseSpecifiers(content))
         rawImports.push({
           sourcePath,
           specifier,
@@ -5952,7 +6002,18 @@ function discoverHarnessRawImports(rootDir) {
         resolvedPath: null,
       });
     }
-    for (let specifier of moduleSpecifiersForWebsiteSource(absolutePath)) {
+    for (let specifier of moduleSpecifiersForWebsiteSource(absolutePath, {
+      harnessPreviewBoundary: true,
+    })) {
+      if (specifier === '<unreviewed Harness preview>') {
+        rawImports.push({
+          sourcePath,
+          specifier,
+          category: 'unreviewed-preview',
+          resolvedPath: null,
+        });
+        continue;
+      }
       if (/\.html?$/i.test(absolutePath) && /^\/(?!\/)/u.test(specifier)) {
         const localPath = [
           path.join(harnessRoot, specifier),
@@ -5988,6 +6049,16 @@ function discoverHarnessRawImports(rootDir) {
 
 function validateHarnessRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverHarnessRawImports(rootDir)) {
+    if (
+      rawImport.category === 'unreviewed-preview' ||
+      rawImport.category === 'production-import-map'
+    ) {
+      issues.push(
+        `${relativePath}: ${rawImport.category === 'unreviewed-preview' ? 'unreviewed executable preview or unresolved native element creation' : 'production import map'} in \`${rawImport.sourcePath}\` is not admitted for Harness consumer-wall review`
+      );
+      continue;
+    }
+
     if (
       rawImport.category === 'external-document-base' ||
       rawImport.category === 'dynamic-document-base'
