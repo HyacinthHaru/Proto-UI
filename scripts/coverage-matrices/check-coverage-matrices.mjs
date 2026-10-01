@@ -1793,7 +1793,7 @@ function openingTagAttributeSyntax(candidate) {
 function containsFrameworkTemplateEventDirective(candidate, absolutePath) {
   const syntax = openingTagAttributeSyntax(candidate);
   if (/\.vue$/i.test(absolutePath)) {
-    return /(?:^|\s)(?:@[A-Za-z][\w:-]*|v-on(?::[A-Za-z][\w:-]*)?)(?:\.[A-Za-z][\w-]*)*(?=\s|=|\/?\s*>)/u.test(
+    return /(?:^|\s)(?:@(?:[A-Za-z][\w:-]*|\[[^\]\s]+\])|v-on(?::(?:[A-Za-z][\w:-]*|\[[^\]\s]+\]))?)(?:\.[A-Za-z][\w-]*)*(?=\s|=|\/?\s*>)/u.test(
       syntax
     );
   }
@@ -3151,7 +3151,7 @@ function astContainsHarnessRenderOrEffectAction(content, absolutePath, visitedPa
         const scheduledCallbackArguments = promiseReactionName
           ? node.arguments.slice(0, promiseReactionName === 'then' ? 2 : 1)
           : scheduledCallbackName &&
-              /^(?:queueMicrotask|requestAnimationFrame|setInterval|setTimeout)$/u.test(
+              /^(?:queueMicrotask|requestAnimationFrame|requestIdleCallback|setInterval|setTimeout)$/u.test(
                 scheduledCallbackName
               ) &&
               node.arguments[0]
@@ -3480,9 +3480,17 @@ function containsHarnessForbiddenStateMachine(content, absolutePath) {
 function harnessProductionSourceSet(rootDir) {
   const harnessRoot = path.resolve(rootDir, 'apps', 'agent-harness');
   const sourceRoot = path.join(harnessRoot, 'src');
-  const sourceRootCandidates = walkFiles(sourceRoot).filter((absolutePath) =>
-    /\.(?:[cm]?[jt]sx?|css|less|s[ac]ss)$/i.test(absolutePath)
-  );
+  const rootMarkup = fs.existsSync(harnessRoot)
+    ? fs
+        .readdirSync(harnessRoot, { withFileTypes: true })
+        .filter((entry) => entry.isFile() && /\.html?$/i.test(entry.name))
+        .map((entry) => path.join(harnessRoot, entry.name))
+    : [];
+  const sourceRootCandidates = [
+    ...walkFiles(sourceRoot),
+    ...walkFiles(path.join(harnessRoot, 'public')),
+    ...rootMarkup,
+  ].filter((absolutePath) => /\.(?:html?|[cm]?[jt]sx?|css|less|s[ac]ss)$/i.test(absolutePath));
   const reachable = reachableSourcePaths(sourceRootCandidates, undefined, rootDir);
   const candidates = [...new Set([...sourceRootCandidates, ...reachable])].filter(
     (absolutePath) => !isTestNamedSource(absolutePath) || reachable.has(absolutePath)
@@ -3521,6 +3529,7 @@ const EXTERNAL_IMPORTSCRIPTS_SPECIFIER_PREFIX = '<external importScripts target:
 const UNRESOLVED_WORKER_ENTRY_SPECIFIER = '<unresolved Worker entry>';
 const EXTERNAL_WORKER_ENTRY_SPECIFIER_PREFIX = '<external Worker entry:';
 const EXTERNAL_SCRIPT_ELEMENT_SPECIFIER_PREFIX = '<external script element src:';
+const EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX = '<external stylesheet element href:';
 
 function viteIgnoredDynamicImportSpecifier(argument, sourceFile, literalBindings) {
   const boundary = ts.isStringLiteralLike(argument)
@@ -3630,6 +3639,16 @@ function scriptModuleSpecifiers(source, fileName) {
     scriptElementBindings.set(name, bindings);
   };
   const collectScriptElementBindings = (node) => {
+    if (
+      (ts.isFunctionDeclaration(node) ||
+        ts.isClassDeclaration(node) ||
+        ts.isImportClause(node) ||
+        ts.isImportSpecifier(node) ||
+        ts.isNamespaceImport(node)) &&
+      node.name
+    ) {
+      addScriptElementBinding(node.name.text, node, null);
+    }
     if ((ts.isVariableDeclaration(node) || ts.isParameter(node)) && ts.isIdentifier(node.name)) {
       addScriptElementBinding(node.name.text, node, node.initializer);
     }
@@ -3643,22 +3662,22 @@ function scriptModuleSpecifiers(source, fileName) {
     ts.forEachChild(node, collectScriptElementBindings);
   };
   collectScriptElementBindings(sourceFile);
-  const isScriptElementCreation = (expression) => {
+  const isResourceElementCreation = (expression, tagName) => {
     const candidate = unwrapTypeScriptExpression(expression);
-    if (!ts.isCallExpression(candidate) || !candidate.arguments[0]) return false;
+    if (!ts.isCallExpression(candidate) || !candidate.arguments[0]) return null;
     const member = staticMemberAccess(candidate.expression);
     return Boolean(
       member &&
       member.name === 'createElement' &&
       ts.isStringLiteralLike(candidate.arguments[0]) &&
-      candidate.arguments[0].text.toLowerCase() === 'script' &&
+      candidate.arguments[0].text.toLowerCase() === tagName &&
       isDomReceiverExpression(member.receiver, sourceFile, receiverBindings, candidate)
     );
   };
-  const isScriptElementExpression = (expression, useNode, visitedBindings = new Set()) => {
+  const resourceElementCreation = (expression, useNode, tagName, visitedBindings = new Set()) => {
     const candidate = unwrapTypeScriptExpression(expression);
-    if (isScriptElementCreation(candidate)) return true;
-    if (!ts.isIdentifier(candidate)) return false;
+    if (isResourceElementCreation(candidate, tagName)) return candidate;
+    if (!ts.isIdentifier(candidate)) return null;
     const bindings = scriptElementBindings.get(candidate.text) ?? [];
     const usePosition = useNode.getStart(sourceFile);
     for (let scope = scriptLexicalScope(useNode); scope; scope = scriptLexicalScope(scope)) {
@@ -3666,14 +3685,16 @@ function scriptModuleSpecifiers(source, fileName) {
         .filter((entry) => entry.scope === scope && entry.position < usePosition)
         .sort((left, right) => right.position - left.position)[0];
       if (binding) {
-        if (!binding.initializer || visitedBindings.has(binding)) return false;
+        if (!binding.initializer || visitedBindings.has(binding)) return null;
         visitedBindings.add(binding);
-        return isScriptElementExpression(binding.initializer, binding.node, visitedBindings);
+        return resourceElementCreation(binding.initializer, binding.node, tagName, visitedBindings);
       }
       if (ts.isSourceFile(scope)) break;
     }
-    return false;
+    return null;
   };
+  const isScriptElementExpression = (expression, useNode) =>
+    Boolean(resourceElementCreation(expression, useNode, 'script'));
   const scriptElementSourceSpecifier = (argument) => {
     if (!argument) return DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER;
     const source = unwrapTypeScriptExpression(argument);
@@ -3726,6 +3747,63 @@ function scriptModuleSpecifiers(source, fileName) {
       ? target
       : UNRESOLVED_WORKER_ENTRY_SPECIFIER;
   };
+  const linkMutations = new Map();
+  const recordLinkMutation = (receiver, property, value, useNode) => {
+    const element = resourceElementCreation(receiver, useNode, 'link');
+    if (!element || !['rel', 'href'].includes(property)) return;
+    const entries = linkMutations.get(element) ?? [];
+    const candidate = value && unwrapTypeScriptExpression(value);
+    const literal =
+      candidate && ts.isStringLiteralLike(candidate)
+        ? candidate.text
+        : candidate && ts.isIdentifier(candidate)
+          ? literalBindings.get(candidate.text)
+          : null;
+    entries.push({ property, literal: typeof literal === 'string' ? literal : null });
+    linkMutations.set(element, entries);
+  };
+  const hasLocalBinding = (name, useNode) => {
+    const bindings = scriptElementBindings.get(name) ?? [];
+    for (let scope = scriptLexicalScope(useNode); scope; scope = scriptLexicalScope(scope)) {
+      if (
+        bindings.some((entry) => {
+          // A declaration shadows the global for its whole lexical lifetime,
+          // including the TDZ or hoisted pre-initialization portion. An ordinary
+          // assignment alone does not introduce a new local binding.
+          if (ts.isBinaryExpression(entry.node)) return false;
+          let declaredScope = entry.scope;
+          if (
+            ts.isVariableDeclaration(entry.node) &&
+            ts.isVariableDeclarationList(entry.node.parent) &&
+            !(entry.node.parent.flags & ts.NodeFlags.BlockScoped)
+          ) {
+            for (let parent = entry.node.parent; parent; parent = parent.parent) {
+              if (ts.isFunctionLike(parent) || ts.isSourceFile(parent)) {
+                declaredScope = parent;
+                break;
+              }
+            }
+          }
+          return declaredScope === scope;
+        })
+      )
+        return true;
+      if (ts.isSourceFile(scope)) break;
+    }
+    return false;
+  };
+  const isGlobalNavigator = (expression, useNode) => {
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isIdentifier(candidate))
+      return candidate.text === 'navigator' && !hasLocalBinding('navigator', useNode);
+    const member = staticMemberAccess(candidate);
+    return (
+      member?.name === 'navigator' &&
+      ts.isIdentifier(member.receiver) &&
+      /^(?:globalThis|self|window)$/u.test(member.receiver.text) &&
+      !hasLocalBinding(member.receiver.text, useNode)
+    );
+  };
   const visit = (node) => {
     if (
       ts.isBinaryExpression(node) &&
@@ -3733,6 +3811,8 @@ function scriptModuleSpecifiers(source, fileName) {
       node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
     ) {
       const assignedProperty = staticMemberAccess(node.left);
+      if (assignedProperty)
+        recordLinkMutation(assignedProperty.receiver, assignedProperty.name, node.right, node);
       if (
         assignedProperty?.name === 'src' &&
         isScriptElementExpression(assignedProperty.receiver, node)
@@ -3743,6 +3823,35 @@ function scriptModuleSpecifiers(source, fileName) {
     if (ts.isCallExpression(node)) {
       const calledMember = staticMemberAccess(node.expression);
       const attributeName = node.arguments[0];
+      if (calledMember?.name === 'setAttribute') {
+        const property =
+          attributeName && ts.isStringLiteralLike(attributeName)
+            ? attributeName.text.toLowerCase()
+            : null;
+        if (property) recordLinkMutation(calledMember.receiver, property, node.arguments[1], node);
+        else recordLinkMutation(calledMember.receiver, 'rel', null, node);
+      }
+
+      const serviceWorker =
+        calledMember?.name === 'register' ? staticMemberAccess(calledMember.receiver) : null;
+      if (
+        serviceWorker?.name === 'serviceWorker' &&
+        isGlobalNavigator(serviceWorker.receiver, node)
+      ) {
+        const argument = node.arguments[0] && unwrapTypeScriptExpression(node.arguments[0]);
+        const target =
+          argument && ts.isStringLiteralLike(argument)
+            ? argument.text
+            : argument && ts.isIdentifier(argument)
+              ? literalBindings.get(argument.text)
+              : null;
+        specifiers.push(
+          typeof target === 'string' && isExternalExecutableScriptSpecifier(target)
+            ? externalWorkerEntrySpecifier(target)
+            : UNRESOLVED_WORKER_ENTRY_SPECIFIER
+        );
+      }
+
       if (
         calledMember?.name === 'setAttribute' &&
         isScriptElementExpression(calledMember.receiver, node) &&
@@ -3801,6 +3910,25 @@ function scriptModuleSpecifiers(source, fileName) {
     ts.forEachChild(node, visit);
   };
   visit(sourceFile);
+  for (const mutations of linkMutations.values()) {
+    const hrefs = mutations.filter((entry) => entry.property === 'href');
+    if (hrefs.length === 0) continue;
+    const relations = mutations.filter((entry) => entry.property === 'rel');
+    if (relations.length === 0 || relations.some((entry) => entry.literal === null)) {
+      specifiers.push(DYNAMIC_STYLESHEET_REL_SPECIFIER);
+      continue;
+    }
+    if (
+      !relations.some((entry) => entry.literal.toLowerCase().split(/\s+/u).includes('stylesheet'))
+    )
+      continue;
+    for (const { literal } of hrefs) {
+      if (literal === null) specifiers.push(DYNAMIC_STYLESHEET_LINK_SPECIFIER);
+      else if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(literal)) {
+        specifiers.push(`${EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX}${literal}>`);
+      }
+    }
+  }
   return specifiers;
 }
 
@@ -4277,6 +4405,23 @@ function relativeImportSpecifier(sourcePath, rootDir, targetPath) {
   return specifier;
 }
 
+function isReviewedBuildTimeModuleSpecifier(sourcePath, specifier) {
+  // Public assets and entry HTML execute directly in the browser. They cannot
+  // inherit the Node/Astro/Vite resolvers used by compiled application sources.
+  if (/\/public\/|\.html?$/iu.test(sourcePath)) return false;
+  if (isNodeBuiltinSpecifier(specifier)) return true;
+  return (
+    sourcePath.startsWith('apps/www/src/') &&
+    new Set([
+      'astro:content',
+      'astro:middleware',
+      'virtual:starlight/user-config',
+      'virtual:starlight/project-context',
+      'virtual:starlight/pagefind-config',
+    ]).has(specifier)
+  );
+}
+
 function guardedWebsiteImport(
   rootDir,
   canonicalRootDir,
@@ -4284,6 +4429,20 @@ function guardedWebsiteImport(
   specifier,
   websiteAliasConfig
 ) {
+  if (specifier === DYNAMIC_STYLESHEET_REL_SPECIFIER)
+    return { category: 'dynamic-stylesheet-relation', resolvedPath: null };
+  if (specifier === DYNAMIC_STYLESHEET_LINK_SPECIFIER)
+    return { category: 'dynamic-stylesheet-link', resolvedPath: null };
+  if (
+    specifier.startsWith(EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX) &&
+    specifier.endsWith('>')
+  ) {
+    return {
+      category: 'external-stylesheet',
+      specifier: specifier.slice(EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX.length, -1),
+      resolvedPath: null,
+    };
+  }
   const viteIgnoredBoundary = viteIgnoredDynamicImportBoundary(specifier);
   if (viteIgnoredBoundary !== null) {
     return {
@@ -4326,6 +4485,16 @@ function guardedWebsiteImport(
     return { category: 'unresolved-worker-script', resolvedPath: null };
   }
   const classifiedSpecifier = importSpecifierWithoutViteSuffix(specifier);
+  if (
+    /^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(classifiedSpecifier) &&
+    !isReviewedBuildTimeModuleSpecifier(sourcePath, classifiedSpecifier)
+  ) {
+    return {
+      category: 'external-executable-script',
+      specifier: classifiedSpecifier,
+      resolvedPath: null,
+    };
+  }
   if (classifiedSpecifier === UNRESOLVED_DYNAMIC_IMPORT_SPECIFIER) {
     return { category: 'unresolved-dynamic-import', resolvedPath: null };
   }
@@ -4466,6 +4635,7 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
   const dependencyNames = new Set([
     ...Object.keys(manifest.dependencies ?? {}),
     ...Object.keys(manifest.optionalDependencies ?? {}),
+    ...Object.keys(manifest.peerDependencies ?? {}),
   ]);
   // `require.resolve` only selects the CommonJS condition, but Vite bundles
   // the import/browser condition. Enumerate every exports-map target so the
@@ -4566,6 +4736,20 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
   return null;
 }
 function guardedHarnessImport(rootDir, canonicalRootDir, sourcePath, specifier) {
+  if (specifier === DYNAMIC_STYLESHEET_REL_SPECIFIER)
+    return { category: 'dynamic-stylesheet-relation', resolvedPath: null };
+  if (specifier === DYNAMIC_STYLESHEET_LINK_SPECIFIER)
+    return { category: 'dynamic-stylesheet-link', resolvedPath: null };
+  if (
+    specifier.startsWith(EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX) &&
+    specifier.endsWith('>')
+  ) {
+    return {
+      category: 'external-stylesheet',
+      specifier: specifier.slice(EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX.length, -1),
+      resolvedPath: null,
+    };
+  }
   const viteIgnoredBoundary = viteIgnoredDynamicImportBoundary(specifier);
   if (viteIgnoredBoundary !== null) {
     return {
@@ -4608,6 +4792,16 @@ function guardedHarnessImport(rootDir, canonicalRootDir, sourcePath, specifier) 
     return { category: 'unresolved-worker-script', resolvedPath: null };
   }
   const classifiedSpecifier = importSpecifierWithoutViteSuffix(specifier);
+  if (
+    /^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(classifiedSpecifier) &&
+    !isReviewedBuildTimeModuleSpecifier(sourcePath, classifiedSpecifier)
+  ) {
+    return {
+      category: 'external-executable-script',
+      specifier: classifiedSpecifier,
+      resolvedPath: null,
+    };
+  }
   if (classifiedSpecifier === UNRESOLVED_DYNAMIC_IMPORT_SPECIFIER) {
     return { category: 'unresolved-dynamic-import', resolvedPath: null };
   }
@@ -4997,7 +5191,14 @@ function discoverHarnessRawImports(rootDir) {
   const rawImports = [];
   for (const absolutePath of candidates) {
     const sourcePath = path.relative(rootDir, absolutePath).replaceAll('\\', '/');
-    for (const specifier of moduleSpecifiersForWebsiteSource(absolutePath)) {
+    for (let specifier of moduleSpecifiersForWebsiteSource(absolutePath)) {
+      if (/\.html?$/i.test(absolutePath) && /^\/(?!\/)/u.test(specifier)) {
+        const localPath = [
+          path.join(harnessRoot, specifier),
+          path.join(harnessRoot, 'public', specifier),
+        ].find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
+        if (localPath) specifier = relativeImportSpecifier(sourcePath, rootDir, localPath);
+      }
       const guardedImport = guardedHarnessImport(rootDir, canonicalRootDir, sourcePath, specifier);
       if (guardedImport) rawImports.push({ sourcePath, specifier, ...guardedImport });
     }
@@ -5026,6 +5227,21 @@ function discoverHarnessRawImports(rootDir) {
 
 function validateHarnessRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverHarnessRawImports(rootDir)) {
+    if (rawImport.category === 'external-stylesheet') {
+      issues.push(
+        `${relativePath}: external stylesheet \`${rawImport.specifier}\` in \`${rawImport.sourcePath}\` is not reviewed`
+      );
+      continue;
+    }
+    if (
+      rawImport.category === 'dynamic-stylesheet-relation' ||
+      rawImport.category === 'dynamic-stylesheet-link'
+    ) {
+      issues.push(
+        `${relativePath}: dynamic stylesheet ${rawImport.category === 'dynamic-stylesheet-relation' ? 'relation' : 'source'} in \`${rawImport.sourcePath}\` must be statically bounded for Harness consumer-wall review`
+      );
+      continue;
+    }
     if (rawImport.category === 'external-executable-script') {
       issues.push(
         `${relativePath}: external executable worker script \`${rawImport.specifier}\` in \`${rawImport.sourcePath}\` is not reviewed for Harness consumer-wall review`

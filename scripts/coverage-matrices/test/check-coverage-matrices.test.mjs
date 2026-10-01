@@ -9126,3 +9126,246 @@ test('rejects zero-valued Issue references before governance lookup', () => {
   });
   assert.match(validationMessage(exemptionRoot), /must link re-review or removal as #<issue>/);
 });
+
+test('review closure: detects idle callbacks, including qualified schedulers', () => {
+  for (const scheduler of [
+    'requestIdleCallback',
+    'window.requestIdleCallback',
+    'globalThis.requestIdleCallback',
+    'self.requestIdleCallback',
+  ]) {
+    const root = createRoot();
+    const relativePath = 'apps/agent-harness/src/run/IdleAction.tsx';
+    const absolutePath = path.join(root, relativePath);
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(
+      absolutePath,
+      `import * as actions from './agent-actions'; export function Surface() { ${scheduler}(() => actions.send()); return <section />; }`
+    );
+    writeValidMatrices(root, {}, { Path: `\`${relativePath}\`` });
+    assert.match(
+      validationMessage(root),
+      /Harness source .*IdleAction.* contains a forbidden interaction/
+    );
+  }
+});
+
+test('review closure: follows installed peer dependencies to governed layers', () => {
+  const root = createRoot();
+  writeValidMatrices(root);
+  for (const [name, manifest, source] of [
+    ['peer-consumer', { peerDependencies: { 'peer-runtime': '1.0.0' } }, "import 'peer-runtime';"],
+    ['peer-runtime', {}, "import '@proto.ui/runtime';"],
+  ]) {
+    const directory = path.join(root, 'node_modules', name);
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name, version: '1.0.0', main: 'index.js', ...manifest })
+    );
+    fs.writeFileSync(path.join(directory, 'index.js'), source);
+  }
+  const sourcePath = path.join(root, 'apps/www/src/components/PeerConsumer.ts');
+  fs.mkdirSync(path.dirname(sourcePath), { recursive: true });
+  fs.writeFileSync(sourcePath, "import 'peer-consumer';");
+  assert.match(validationMessage(root), /raw Proto UI import `peer-consumer`.*PeerConsumer/);
+});
+
+test('review closure: inventories bracketed Vue event directives', () => {
+  for (const directive of ['v-on:[eventName]', '@[eventName]', '@[eventName].stop']) {
+    const root = createRoot();
+    const relativePath = 'apps/www/src/components/DynamicEvents.vue';
+    const absolutePath = path.join(root, relativePath);
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(
+      absolutePath,
+      `<template><button ${directive}="handler">Open</button></template>`
+    );
+    writeValidMatrices(root);
+    assert.match(
+      validationMessage(root),
+      /interactive website source .*DynamicEvents.vue.* is not bound/
+    );
+  }
+});
+
+test('review closure: rejects URL module imports in browser-owned sources', () => {
+  for (const target of [
+    'https://cdn.example/runtime.js',
+    '//cdn.example/runtime.js',
+    'data:text/javascript,void%200',
+  ]) {
+    const root = createRoot();
+    const sourcePath = path.join(root, 'apps/www/public/remote-module.html');
+    fs.mkdirSync(path.dirname(sourcePath), { recursive: true });
+    fs.writeFileSync(sourcePath, `<script type="module">import '${target}'</script>`);
+    writeValidMatrices(root);
+    assert.match(
+      validationMessage(root),
+      /external executable script .*remote-module.html.* is not reviewed/
+    );
+  }
+});
+
+test('review closure: scans Harness entry HTML and public scripts', () => {
+  for (const [relativePath, source] of [
+    ['apps/agent-harness/index.html', '<script src="https://cdn.example/widget.js"></script>'],
+    ['apps/agent-harness/public/worker.js', "import '@proto.ui/runtime';"],
+    [
+      'apps/agent-harness/public/entry.html',
+      '<script type="module">import "https://cdn.example/runtime.js"</script>',
+    ],
+  ]) {
+    const root = createRoot();
+    const absolutePath = path.join(root, relativePath);
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(absolutePath, source);
+    writeValidMatrices(root);
+    assert.match(
+      validationMessage(root),
+      /(?:external executable|raw Proto UI import).*apps\/agent-harness\/(?:index|public)/
+    );
+  }
+});
+
+test('review closure: scans service worker registration targets', () => {
+  for (const family of ['www', 'agent-harness']) {
+    for (const target of ["'/raw-runtime.js'", "'https://cdn.example/sw.js'", 'workerUrl']) {
+      const root = createRoot();
+      const relativePath = `apps/${family}/src/registered-worker.ts`;
+      const absolutePath = path.join(root, relativePath);
+      fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+      fs.writeFileSync(absolutePath, `navigator.serviceWorker.register(${target});`);
+      writeValidMatrices(root);
+      assert.match(
+        validationMessage(root),
+        /(?:external executable|unresolved Worker).*registered-worker.ts/
+      );
+    }
+  }
+});
+
+test('review closure: inspects DOM-created stylesheet links and dynamic relations', () => {
+  for (const [source, expected] of [
+    [
+      "const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = 'https://cdn.example/theme.css'; document.head.append(link);",
+      /external stylesheet .*theme.css/,
+    ],
+    [
+      "const link = document.createElement('link'); link.setAttribute('href', 'https://cdn.example/theme.css'); link.setAttribute('rel', 'stylesheet');",
+      /external stylesheet .*theme.css/,
+    ],
+    [
+      "const link = document.createElement('link'); link.rel = relation; link.href = 'https://cdn.example/theme.css';",
+      /dynamic stylesheet relation/,
+    ],
+    [
+      "const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = themeUrl;",
+      /dynamic stylesheet source/,
+    ],
+  ]) {
+    const root = createRoot();
+    const absolutePath = path.join(root, 'apps/www/src/components/DomStylesheet.ts');
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(absolutePath, source);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), expected);
+  }
+});
+
+test('review closure: preserves safe resource objects, icon links and local module bootstraps', () => {
+  for (const source of [
+    "const link = document.createElement('link'); link.rel = 'icon'; link.href = 'https://cdn.example/icon.png';",
+    "const link = { rel: 'stylesheet', href: '' }; link.href = 'https://cdn.example/business-value';",
+    "const navigator = { serviceWorker: { register() {} } }; navigator.serviceWorker.register('/business-value');",
+  ]) {
+    const root = createRoot();
+    const absolutePath = path.join(root, 'apps/www/src/components/SafeResource.ts');
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(absolutePath, source);
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+  const root = createRoot();
+  fs.mkdirSync(path.join(root, 'apps/agent-harness/src'), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, 'apps/agent-harness/index.html'),
+    '<script type="module" src="/src/main.ts"></script>'
+  );
+  fs.writeFileSync(
+    path.join(root, 'apps/agent-harness/src/main.ts'),
+    'export const bootstrap = true;'
+  );
+  writeValidMatrices(root);
+  assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+});
+
+test('review closure: tracks link aliases, same-name shadows and qualified service workers', () => {
+  for (const [source, expected] of [
+    [
+      "const link = document.createElement('link'); const alias = link; alias.rel = 'stylesheet'; alias.href = 'https://cdn.example/alias.css';",
+      /external stylesheet .*alias.css/,
+    ],
+    [
+      "const link = document.createElement('link'); link.rel = 'stylesheet'; function local() { const link = {}; link.href = 'https://cdn.example/safe'; } link.href = 'https://cdn.example/outer.css';",
+      /external stylesheet .*outer.css/,
+    ],
+    [
+      "window.navigator.serviceWorker.register('/worker.js');",
+      /external executable script .*worker.js/,
+    ],
+    ['globalThis.navigator.serviceWorker.register(workerUrl);', /unresolved Worker/],
+  ]) {
+    const root = createRoot();
+    const absolutePath = path.join(root, 'apps/www/src/components/ResourceAlias.ts');
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(absolutePath, source);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), expected);
+  }
+});
+
+test('review closure: build-time module identities do not authorize public browser imports', () => {
+  for (const target of ['astro:content', 'virtual:starlight/user-config', 'node:fs']) {
+    const root = createRoot();
+    const absolutePath = path.join(root, 'apps/www/public/build-time-only.html');
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(absolutePath, `<script type="module">import '${target}'</script>`);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /external executable script .*build-time-only.html/);
+  }
+});
+
+test('review closure: local DOM stylesheet contents retain their own consumer-wall scan', () => {
+  const root = createRoot();
+  const sourcePath = path.join(root, 'apps/www/src/components/LocalStylesheet.ts');
+  const stylesheetPath = path.join(root, 'apps/www/public/theme.css');
+  fs.mkdirSync(path.dirname(sourcePath), { recursive: true });
+  fs.mkdirSync(path.dirname(stylesheetPath), { recursive: true });
+  fs.writeFileSync(
+    sourcePath,
+    "const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = '/theme.css';"
+  );
+  fs.writeFileSync(stylesheetPath, '@import "https://cdn.example/unreviewed.css";');
+  writeValidMatrices(root);
+  assert.match(
+    validationMessage(root),
+    /external stylesheet .*unreviewed.css.*apps\/www\/public\/theme.css/
+  );
+});
+
+test('review closure: navigator parameters and hoisted local declarations are business bindings', () => {
+  for (const source of [
+    "function render(navigator) { navigator.serviceWorker.register('/business'); }",
+    "function render() { navigator.serviceWorker.register('/business'); var navigator = { serviceWorker: { register() {} } }; }",
+    "function render() { navigator.serviceWorker.register('/business'); let navigator = { serviceWorker: { register() {} } }; }",
+    "navigator.serviceWorker.register('/business'); function navigator() {}",
+  ]) {
+    const root = createRoot();
+    const sourcePath = path.join(root, 'apps/www/src/components/ShadowedNavigator.ts');
+    fs.mkdirSync(path.dirname(sourcePath), { recursive: true });
+    fs.writeFileSync(sourcePath, source);
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  }
+});
