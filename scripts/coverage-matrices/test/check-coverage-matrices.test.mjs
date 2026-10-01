@@ -9369,3 +9369,95 @@ test('review closure: navigator parameters and hoisted local declarations are bu
     assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
   }
 });
+
+test('follow-up review: scans Vite module and browser entry fields', () => {
+  for (const entryFields of [
+    { module: './client.js' },
+    { browser: './client.js' },
+    { 'jsnext:main': './client.js' },
+    { jsnext: './client.js' },
+    { module: './client' },
+    { browser: { './safe.cjs': './client.js' } },
+  ]) {
+    const root = createRoot();
+    const directory = path.join(root, 'node_modules/vite-entry');
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name: 'vite-entry', main: './safe.cjs', ...entryFields })
+    );
+    fs.writeFileSync(path.join(directory, 'safe.cjs'), 'module.exports = {};');
+    fs.writeFileSync(path.join(directory, 'client.js'), "import '@proto.ui/runtime';");
+    const source = path.join(root, 'apps/www/src/components/ViteEntry.ts');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, "import 'vite-entry';");
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /raw Proto UI import `vite-entry`.*ViteEntry.ts/);
+  }
+});
+
+test('follow-up review: an unvisited package graph tail fails closed at the traversal bound', () => {
+  const root = createRoot();
+  const directory = path.join(root, 'node_modules/large-entry');
+  fs.mkdirSync(directory, { recursive: true });
+  fs.writeFileSync(
+    path.join(directory, 'package.json'),
+    JSON.stringify({ name: 'large-entry', main: './0.js' })
+  );
+  for (let index = 0; index <= 500; index += 1) {
+    fs.writeFileSync(
+      path.join(directory, `${index}.js`),
+      index === 500 ? "import '@proto.ui/runtime';" : `import './${index + 1}.js';`
+    );
+  }
+  const source = path.join(root, 'apps/www/src/components/LargeEntry.ts');
+  fs.mkdirSync(path.dirname(source), { recursive: true });
+  fs.writeFileSync(source, "import 'large-entry';");
+  writeValidMatrices(root);
+  assert.match(validationMessage(root), /package traversal.*500.*unverified/);
+});
+
+test('follow-up review: rejects Harness entry and public HTML interaction ownership', () => {
+  for (const relativePath of [
+    'apps/agent-harness/index.html',
+    'apps/agent-harness/public/interaction.html',
+  ]) {
+    for (const source of [
+      '<button onclick="send()">Send</button>',
+      '<script>document.addEventListener("keydown", handler);</script>',
+      '<script>document.querySelector("button").focus();</script>',
+    ]) {
+      const root = createRoot();
+      const absolutePath = path.join(root, relativePath);
+      fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+      fs.writeFileSync(absolutePath, source);
+      writeValidMatrices(root);
+      assert.match(validationMessage(root), /Harness source.*\.html.*forbidden interaction/);
+    }
+  }
+});
+
+test('follow-up review: static Harness markup does not gain forbidden state ownership', () => {
+  const root = createRoot();
+  const source = path.join(root, 'apps/agent-harness/index.html');
+  fs.mkdirSync(path.dirname(source), { recursive: true });
+  fs.writeFileSync(source, '<main><h1>Overview</h1><p>Read-only content</p></main>');
+  writeValidMatrices(root);
+  assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+});
+
+test('follow-up review: unresolved declared Vite entries stay unverified', () => {
+  const root = createRoot();
+  const directory = path.join(root, 'node_modules/missing-browser-entry');
+  fs.mkdirSync(directory, { recursive: true });
+  fs.writeFileSync(
+    path.join(directory, 'package.json'),
+    JSON.stringify({ name: 'missing-browser-entry', main: './safe.cjs', module: './missing.js' })
+  );
+  fs.writeFileSync(path.join(directory, 'safe.cjs'), 'module.exports = {};');
+  const source = path.join(root, 'apps/www/src/components/MissingBrowserEntry.ts');
+  fs.mkdirSync(path.dirname(source), { recursive: true });
+  fs.writeFileSync(source, "import 'missing-browser-entry';");
+  writeValidMatrices(root);
+  assert.match(validationMessage(root), /package entry target.*missing.js.*unverified/);
+});

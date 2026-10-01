@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { parse as parseYaml } from 'yaml';
 import { test } from 'node:test';
 import {
   collectDependencyOwners,
@@ -145,4 +147,46 @@ test('reconciliation fails rather than guessing changed owner tokens', () => {
       }),
     /reviewed owners for Issue #420 do not match matrix owner tokens/
   );
+});
+
+test('candidate governance reconciliation stays secret-free and read-only', () => {
+  const text = fs.readFileSync(
+    new URL('../../../.github/workflows/coverage-governance.yml', import.meta.url),
+    'utf8'
+  );
+  const workflow = parseYaml(text);
+  assert.deepEqual(workflow.permissions, {
+    contents: 'read',
+    issues: 'read',
+    'pull-requests': 'read',
+  });
+  assert.equal(workflow.on.pull_request_target, undefined);
+  assert.doesNotMatch(text, /secrets\./);
+  const paths = workflow.on.pull_request.paths;
+  for (const required of [
+    '.github/workflows/coverage-governance.yml',
+    'internal/coverage-matrices/**',
+    'internal/website/self-hosting-coverage-matrix.md',
+    'internal/agent-harness/dogfood-coverage-matrix.md',
+    'scripts/coverage-matrices/**',
+    'packages/spec/schema/**',
+    '**/package.json',
+    'pnpm-lock.yaml',
+    'pnpm-workspace.yaml',
+    '.npmrc',
+    '.prettier*',
+  ]) {
+    assert.ok(paths.includes(required), required);
+  }
+  const steps = workflow.jobs.reconcile.steps;
+  const checkout = steps.find((step) => step.uses?.startsWith('actions/checkout@'));
+  assert.equal(checkout.with['persist-credentials'], false);
+  assert.equal(checkout.with.ref, undefined, 'the PR event must inspect its candidate checkout');
+  const compare = steps.find((step) => step.run?.includes('sync-github-governance-snapshot.mjs'));
+  assert.equal(
+    compare.run,
+    'node scripts/coverage-matrices/sync-github-governance-snapshot.mjs --check'
+  );
+  assert.deepEqual(compare.env, { GH_TOKEN: '${{ github.token }}' });
+  assert.ok(steps.some((step) => step.run?.includes('install --frozen-lockfile --ignore-scripts')));
 });

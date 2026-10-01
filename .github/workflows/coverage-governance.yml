@@ -1,6 +1,22 @@
 name: Coverage governance drift
 
 on:
+  # Candidate snapshot data is reconciled before merge with the same read-only
+  # GitHub permissions. This is ordinary PR CI, not unforgeable attestation:
+  # changes to this workflow or its checker still need independent source review.
+  pull_request:
+    paths:
+      - .github/workflows/coverage-governance.yml
+      - internal/coverage-matrices/**
+      - internal/website/self-hosting-coverage-matrix.md
+      - internal/agent-harness/dogfood-coverage-matrix.md
+      - scripts/coverage-matrices/**
+      - packages/spec/schema/**
+      - '**/package.json'
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - .npmrc
+      - .prettier*
   issues:
     types:
       [
@@ -38,7 +54,7 @@ jobs:
           node-version: 22
 
       - name: Install workspace dependencies
-        run: corepack pnpm@10.32.1 install --frozen-lockfile
+        run: corepack pnpm@10.32.1 install --frozen-lockfile --ignore-scripts
       - name: Compare retained dependency governance with GitHub
         env:
           GH_TOKEN: ${{ github.token }}

@@ -1748,7 +1748,7 @@ function maskStringsInMdxBraceExpressions(content) {
 
 function markupSourceForJsxFallback(content, absolutePath) {
   if (/\.mdx?$/i.test(absolutePath)) return maskStringsInMdxBraceExpressions(content);
-  if (!/\.(?:astro|vue|svelte)$/i.test(absolutePath)) return null;
+  if (!/\.(?:html?|astro|vue|svelte)$/i.test(absolutePath)) return null;
 
   let markup = content;
   if (/\.astro$/i.test(absolutePath)) {
@@ -3470,6 +3470,17 @@ function astContainsHarnessRenderOrEffectAction(content, absolutePath, visitedPa
 }
 
 function containsHarnessForbiddenStateMachine(content, absolutePath) {
+  if (/\.html?$/i.test(absolutePath)) {
+    return (
+      containsJsxEventHandler(content, absolutePath) ||
+      embeddedScriptSegments(content).some(
+        (script) =>
+          astContainsInteractiveRuntime(script) ||
+          astContainsNativeJsxEventHandler(script, absolutePath) ||
+          astContainsHarnessRenderOrEffectAction(script, absolutePath)
+      )
+    );
+  }
   return (
     astContainsInteractiveRuntime(content) ||
     astContainsNativeJsxEventHandler(content, absolutePath) ||
@@ -3509,7 +3520,7 @@ function harnessProductionSourceSet(rootDir) {
 function discoverHarnessForbiddenStateMachineSources(rootDir) {
   const { sourceRoot, harnessSources } = harnessProductionSourceSet(rootDir);
   return harnessSources
-    .filter((absolutePath) => /\.[cm]?[jt]sx?$/i.test(absolutePath))
+    .filter((absolutePath) => /\.(?:html?|[cm]?[jt]sx?)$/i.test(absolutePath))
     .filter((absolutePath) => {
       const relativePath = path.relative(sourceRoot, absolutePath).replaceAll('\\', '/');
       return !isGeneratedHarnessFacadeSource(relativePath);
@@ -4654,6 +4665,44 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
     }
   };
   collectExportTargets(manifest.exports);
+  // Vite's client entry fields are lower precedence than a resolved exports
+  // map. Browser replacement objects still describe in-package rewrites.
+  // https://vite.dev/config/shared-options#resolve-mainfields
+  let unresolvedEntryTarget = null;
+  const collectClientTargets = (value) => {
+    if (typeof value === 'string') {
+      const base = path.resolve(packageRoot, value);
+      const candidates = [
+        base,
+        ...['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json'].map(
+          (extension) => base + extension
+        ),
+        ...['index.mjs', 'index.js', 'index.ts', 'index.tsx'].map((file) => path.join(base, file)),
+      ];
+      const resolved = candidates.find(
+        (candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()
+      );
+      if (resolved) exportTargets.add(resolved);
+      else unresolvedEntryTarget = value;
+    } else if (value && typeof value === 'object') {
+      for (const target of Object.values(value)) collectClientTargets(target);
+    }
+  };
+  if (!manifest.exports) {
+    for (const field of ['browser', 'module', 'jsnext:main', 'jsnext'])
+      collectClientTargets(manifest[field]);
+  } else if (manifest.browser && typeof manifest.browser === 'object') {
+    collectClientTargets(manifest.browser);
+  }
+  if (unresolvedEntryTarget !== null) {
+    const result = {
+      category: 'unresolved-package-entry',
+      resolvedPath: path.relative(rootDir, manifestPath).replaceAll('\\', '/'),
+      entryTarget: unresolvedEntryTarget,
+    };
+    cache.set(entryPath, result);
+    return result;
+  }
 
   const resolveRelative = (sourcePath, importedSpecifier) => {
     const classified = importSpecifierWithoutViteSuffix(importedSpecifier);
@@ -4732,6 +4781,14 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
         }
       }
     }
+  }
+  if (pending.some((candidate) => !visited.has(candidate) && /\.[cm]?[jt]sx?$/iu.test(candidate))) {
+    const result = {
+      category: 'incomplete-package-traversal',
+      resolvedPath: path.relative(rootDir, packageRoot).replaceAll('\\', '/'),
+    };
+    cache.set(entryPath, result);
+    return result;
   }
   return null;
 }
@@ -5092,6 +5149,19 @@ function discoverWebsiteRawImports(rootDir) {
 
 function validateWebsiteRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverWebsiteRawImports(rootDir)) {
+    if (rawImport.category === 'incomplete-package-traversal') {
+      issues.push(
+        `${relativePath}: package traversal for \`${rawImport.specifier}\` in \`${rawImport.sourcePath}\` reached the 500-module bound; its closure remains unverified`
+      );
+      continue;
+    }
+    if (rawImport.category === 'unresolved-package-entry') {
+      issues.push(
+        `${relativePath}: package entry target \`${rawImport.entryTarget}\` for \`${rawImport.specifier}\` in \`${rawImport.sourcePath}\` is unresolved; its browser closure remains unverified`
+      );
+      continue;
+    }
+
     if (rawImport.category === 'production-import-map') {
       issues.push(
         `${relativePath}: production import map in \`${rawImport.sourcePath}\` is not reviewed`
