@@ -580,3 +580,30 @@ fn tokens_for_target<'a>(
         issues,
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn feedback_cannot_map_explicit_static_or_fixed_position() {
+        // Inject both values at the declaration boundary: static is absent
+        // from the checked vocabulary, and this check must not depend on it.
+        for value in ["static", "fixed"] {
+            let resolved = ResolvedStyle {
+                declarations: [("position".into(), value.into())].into(),
+                unknown: Vec::new(),
+            };
+            let mapped = map_for_target(
+                &resolved,
+                LengthContext::default(),
+                StyleTarget::ExistingHostRoot,
+            );
+            assert_eq!(mapped.refinement.position, None);
+            assert_eq!(
+                mapped.unmapped,
+                [("position".into(), value.into(), Unmapped::UnsupportedValue)]
+            );
+        }
+    }
+}

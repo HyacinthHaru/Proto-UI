@@ -113,18 +113,16 @@ fn feedback_insets_need_an_authored_supported_position() {
 
 #[test]
 fn feedback_keeps_unsupported_positions_and_unknown_tokens_as_errors() {
-    for token in ["static", "fixed"] {
-        let mapped = style_for_feedback_tokens([token], None, LengthContext::default());
-        assert_eq!(mapped.refinement.position, None);
-        assert_eq!(
-            mapped.issues,
-            [StyleIssue::Unmapped {
-                property: "position".into(),
-                value: token.into(),
-                reason: Unmapped::UnsupportedValue,
-            }]
-        );
-    }
+    let fixed = style_for_feedback_tokens(["fixed"], None, LengthContext::default());
+    assert_eq!(fixed.refinement.position, None);
+    assert_eq!(
+        fixed.issues,
+        [StyleIssue::Unmapped {
+            property: "position".into(),
+            value: "fixed".into(),
+            reason: Unmapped::UnsupportedValue,
+        }]
+    );
     let unknown = style_for_feedback_tokens(["not-a-proto-token"], None, LengthContext::default());
     assert_eq!(
         unknown.issues,
