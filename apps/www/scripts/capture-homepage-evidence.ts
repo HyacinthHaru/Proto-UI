@@ -20,7 +20,7 @@ import {
   HOMEPAGE_ROUTES,
   HOMEPAGE_VIEWPORTS,
   layoutFailures,
-  classifyHistoricalFailure,
+  classifyCapturedFailure,
   verifyRevision,
 } from './homepage-evidence-contract';
 import { captureDocumentationEvidence } from './capture-documentation-evidence';
@@ -119,7 +119,7 @@ const fontSelectors = [
     name: 'component-control',
     selector: '[data-home-demo-options] [data-projection-control="component"] [role="combobox"]',
   },
-  { name: 'toolbar-label', selector: '.pui-projection-control-label' },
+  { name: 'toolbar-label', selector: '[data-home-demo-options] .pui-projection-control-label' },
   { name: 'preview-intro-title', selector: '.home-demo-previewer__intro-title' },
   { name: 'preview-status', selector: '.home-demo-previewer__status' },
   { name: 'research-lead', selector: '.home-demo-previewer__research-lead' },
@@ -645,9 +645,9 @@ try {
         } catch (error) {
           evidence.outcome = 'failed';
           evidence.error = error instanceof Error ? error.stack : String(error);
-          evidence.failureState = await page
+          const failureState = await page
             .evaluate(() => ({
-              active: document.activeElement
+              activeElement: document.activeElement
                 ? {
                     tag: document.activeElement.tagName,
                     id: document.activeElement.id,
@@ -671,20 +671,15 @@ try {
               ),
             }))
             .catch(() => null);
+          evidence.failureState = failureState;
           evidence.failureStage = activeProbeStage;
           evidence.errorName = error instanceof Error ? error.name : typeof error;
-          const failure = evidence.failureState as {
-            activeElement?: { role?: string; text?: string };
-            home?: { runnerRuntime?: string };
-          } | null;
-          evidence.failureClassification = classifyHistoricalFailure({
+          evidence.failureClassification = classifyCapturedFailure({
             revisionKind,
             route,
             stage: activeProbeStage,
             errorName: String(evidence.errorName),
-            activeRole: failure?.activeElement?.role,
-            activeText: failure?.activeElement?.text,
-            committedRuntime: failure?.home?.runnerRuntime,
+            failureState,
           });
           report.failures.push(`${id}: ${error instanceof Error ? error.message : String(error)}`);
           await screenshot('failure-viewport').catch(() => {});

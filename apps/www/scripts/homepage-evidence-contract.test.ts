@@ -12,6 +12,7 @@ import {
   HOMEPAGE_VIEWPORTS,
   layoutFailures,
   classifyHistoricalFailure,
+  classifyCapturedFailure,
   verifyRevision,
 } from './homepage-evidence-contract';
 
@@ -184,4 +185,70 @@ test('baseline negative control never swallows unrelated or candidate failures',
     { committedRuntime: 'wc' },
   ])
     assert.equal(classifyHistoricalFailure({ ...known, ...different }), 'unexpected');
+});
+
+test('the actual serialized failure snapshot reaches the historical classifier', () => {
+  const source = ts.createSourceFile(
+    'capture-homepage-evidence.ts',
+    readFileSync(new URL('capture-homepage-evidence.ts', import.meta.url), 'utf8'),
+    ts.ScriptTarget.ES2022,
+    true,
+    ts.ScriptKind.TS
+  );
+  let snapshotProbe: ts.Expression | undefined;
+  const visit = (node: ts.Node) => {
+    if (ts.isVariableDeclaration(node) && node.name.getText(source) === 'failureState') {
+      const findEvaluate = (child: ts.Node) => {
+        if (
+          ts.isCallExpression(child) &&
+          ts.isPropertyAccessExpression(child.expression) &&
+          child.expression.name.text === 'evaluate'
+        ) {
+          snapshotProbe = child.arguments[0];
+        }
+        ts.forEachChild(child, findEvaluate);
+      };
+      ts.forEachChild(node, findEvaluate);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  assert.ok(snapshotProbe, 'Test the actual capture callback, not a duplicate fixture');
+  const compiled = transformSync(`const probe = ${snapshotProbe.getText(source)};`, {
+    loader: 'ts',
+    format: 'cjs',
+    target: 'es2022',
+    keepNames: true,
+  }).code;
+  const document = {
+    activeElement: {
+      tagName: 'DIV',
+      id: 'react-option',
+      getAttribute: () => 'option',
+      textContent: 'React',
+      outerHTML: '<div role="option">React</div>',
+    },
+    querySelector: (selector: string) =>
+      selector === '[data-home-demo-options]' ? { dataset: { runnerRuntime: 'react' } } : null,
+    querySelectorAll: () => [],
+  };
+  const failureState = runInNewContext(`${compiled}\nprobe();`, { document });
+  const input = {
+    revisionKind: 'baseline',
+    route: '/en/',
+    stage: 'keyboard-home',
+    errorName: 'TimeoutError',
+    failureState,
+  };
+  assert.equal(classifyCapturedFailure(input), 'baseline-react-select-home-focus');
+  assert.equal(classifyCapturedFailure({ ...input, revisionKind: 'candidate' }), 'unexpected');
+  assert.equal(classifyCapturedFailure({ ...input, failureState: null }), 'unexpected');
+});
+
+test('toolbar font evidence selects the visible example toolbar, not the clipped header label', () => {
+  const source = readFileSync(new URL('capture-homepage-evidence.ts', import.meta.url), 'utf8');
+  assert.match(
+    source,
+    /name: 'toolbar-label', selector: '\[data-home-demo-options\] \.pui-projection-control-label'/
+  );
 });

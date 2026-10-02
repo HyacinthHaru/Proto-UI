@@ -77,3 +77,22 @@ export function classifyHistoricalFailure(input: {
     ? 'baseline-react-select-home-focus'
     : 'unexpected';
 }
+
+/** Keep the serialized browser snapshot and its classification on one typed boundary. */
+export function classifyCapturedFailure(input: {
+  revisionKind: string;
+  route: string;
+  stage: string | null;
+  errorName: string;
+  failureState: {
+    activeElement: { role: string | null; text?: string } | null;
+    home?: { runnerRuntime?: string };
+  } | null;
+}): ReturnType<typeof classifyHistoricalFailure> {
+  return classifyHistoricalFailure({
+    ...input,
+    activeRole: input.failureState?.activeElement?.role,
+    activeText: input.failureState?.activeElement?.text,
+    committedRuntime: input.failureState?.home?.runnerRuntime,
+  });
+}
