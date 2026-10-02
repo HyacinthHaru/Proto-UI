@@ -34,26 +34,26 @@ const locale = Astro.locals.starlightRoute.locale;
 const copy =
   locale === 'en'
     ? {
-        eyebrow: 'Homepage Preview',
-        title: 'One component lineage, projected as a coherent browser generation.',
-        lead: 'Runtime, component library, controls, behavior, and visual style switch together.',
+        eyebrow: 'Built with Proto UI',
+        title: 'Same definition. A different framework.',
+        lead: 'Use the page runtime selector, then try the components below.',
         loading: 'Preparing',
         ready: 'Ready',
         error: 'Error',
-        researchTitle: 'Browser WASM lane',
+        researchTitle: 'Beyond the browser',
         researchLead:
-          'Reserved for presenting Proto UI through future Flutter, Qt, and GPUI runners. Research only; no Adapter or conformance claim.',
+          'Flutter, Qt and GPUI browser runners are research directions, not available adapters or conformance claims.',
       }
     : {
-        eyebrow: '首页预览',
-        title: '同一组件谱系，在浏览器中投影为一个完整 generation',
-        lead: 'Runtime、组件库、控制器、行为与视觉样式会一起切换。',
+        eyebrow: '用 Proto UI 构建',
+        title: '同一份定义，换个框架试试',
+        lead: '切换页面 Runtime，再试试下面的组件。',
         loading: '准备中',
         ready: '就绪',
         error: '错误',
-        researchTitle: '浏览器 WASM 通道',
+        researchTitle: '浏览器之外',
         researchLead:
-          '为未来通过 Flutter、Qt 与 GPUI runner 在浏览器中展示 Proto UI 预留。仅表示研究方向，不代表 Adapter 或一致性支持。',
+          'Flutter、Qt 和 GPUI 浏览器 runner 仍是研究方向，不代表可用 Adapter 或一致性支持。',
       };
 
 const {
@@ -75,7 +75,7 @@ const {
   class: className = '',
   pickerLabel = 'Component',
   runtimeLabel = 'Runtime',
-  familyLabel = locale === 'en' ? 'Component Library' : '组件库',
+  familyLabel = locale === 'en' ? 'Page style' : '页面风格',
 } = Astro.props;
 
 if (!Array.isArray(demos) || demos.length === 0) {
@@ -111,7 +111,7 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
   data-status-ready={copy.ready}
   data-status-error={copy.error}
 >
-  <div class="home-demo-previewer__panel">
+  <div class="home-demo-previewer__panel pui-runtime-box">
     <div class="home-demo-previewer__header">
       <div class="home-demo-previewer__intro">
         <p class="home-demo-previewer__intro-eyebrow">{copy.eyebrow}</p>
@@ -125,21 +125,39 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
       </output>
     </div>
 
-    <div class="home-demo-previewer__host" data-home-demo-host aria-busy="true"></div>
-
-    <div class="home-demo-previewer__research">
-      <div class="home-demo-previewer__research-copy">
-        <p class="home-demo-previewer__research-title">{copy.researchTitle}</p>
-        <p class="home-demo-previewer__research-lead">{copy.researchLead}</p>
-      </div>
-      <ul class="home-demo-previewer__research-targets" aria-label={copy.researchTitle}>
-        {
-          researchOptions.map((option) => (
-            <li data-browser-runner-research-id={option.id}>{option.label}</li>
-          ))
-        }
-      </ul>
+    <div class="home-demo-previewer__definition">
+      <span>{locale === 'en' ? 'Shared definition' : '共享定义'}</span>
+      <a
+        data-home-demo-source
+        href={`https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/content/docs/zh-cn/${initialDemo.id}.demo.ts`}
+      >
+        {initialDemo.id}.demo.ts
+      </a>
+      <span class="home-demo-previewer__definition-arrow" aria-hidden="true">→</span>
+      <span>{locale === 'en' ? 'Live component below' : '下方真实渲染'}</span>
     </div>
+
+    <div class="home-demo-previewer__host" data-home-demo-host aria-busy="true"></div>
+  </div>
+  <p class="home-demo-previewer__scope">
+    {
+      locale === 'en'
+        ? 'Page runtime switches navigation, theme, language, actions and this example. Astro keeps the static content; search remains a docs service. Switching resets example state.'
+        : '页面 Runtime 切换导航、主题、语言、操作与本例中的 Proto UI 实现。Astro 保留静态内容，搜索由文档服务提供；切换会重置示例状态。'
+    }
+  </p>
+  <div class="home-demo-previewer__research">
+    <div class="home-demo-previewer__research-copy">
+      <p class="home-demo-previewer__research-title">{copy.researchTitle}</p>
+      <p class="home-demo-previewer__research-lead">{copy.researchLead}</p>
+    </div>
+    <ul class="home-demo-previewer__research-targets" aria-label={copy.researchTitle}>
+      {
+        researchOptions.map((option) => (
+          <li data-browser-runner-research-id={option.id}>{option.label}</li>
+        ))
+      }
+    </ul>
   </div>
 
   <script>
@@ -166,216 +184,217 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
   .home-demo-previewer {
     width: min(100%, 68rem);
     margin: 0 auto;
-    padding: 0 1rem 2.5rem;
-    scroll-margin-block: 18vh;
+    padding: 0 1.25rem 3rem;
+    scroll-margin-block: 5rem;
+    font-family: var(--font-sans);
   }
 
   .home-demo-previewer__panel {
     overflow: hidden;
     color: var(--color-card-foreground);
     background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg, 0.625rem);
-    box-shadow: 0 1px 2px color-mix(in oklch, black 8%, transparent);
+    border: var(--runtime-box-border);
+    border-radius: var(--runtime-box-radius);
   }
 
   .home-demo-previewer__header {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 1rem;
-    align-items: start;
-    padding: 1.125rem 1.25rem;
-    border-bottom: 1px solid var(--color-border);
+    align-items: center;
+    padding: 1.25rem 1.5rem 1rem;
   }
 
   .home-demo-previewer__intro {
-    display: grid;
-    gap: 0.25rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.625rem;
     min-width: 0;
   }
-
   .home-demo-previewer__intro-eyebrow,
   .home-demo-previewer__intro-title,
   .home-demo-previewer__description {
     margin: 0;
   }
-
-  .home-demo-previewer__intro-eyebrow,
-  .home-demo-previewer__status,
-  .home-demo-previewer__research-lead {
-    color: var(--color-muted-foreground);
-    font-size: 0.75rem;
-    line-height: 1.125rem;
+  .home-demo-previewer__intro-eyebrow {
+    display: none;
   }
-
   .home-demo-previewer__intro-title {
     color: var(--color-foreground);
-    font-size: 0.98rem;
-    font-weight: 600;
-    line-height: 1.35;
+    font-size: 1.125rem;
+    font-weight: 550;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
   }
-
   .home-demo-previewer__description {
     max-width: 46rem;
-    overflow: hidden;
     color: var(--color-muted-foreground);
     font-size: 0.875rem;
-    line-height: 1.35;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.6;
   }
-
   .home-demo-previewer__status {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    padding-top: 0.125rem;
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
     white-space: nowrap;
   }
-
   .home-demo-previewer__status::before {
-    width: 0.4rem;
-    height: 0.4rem;
+    width: 0.375rem;
+    height: 0.375rem;
     content: '';
     background: var(--color-muted-foreground);
     border-radius: 50%;
   }
-
   .home-demo-previewer[data-runner-state='ready'] .home-demo-previewer__status::before {
     background: var(--color-primary);
   }
-
   .home-demo-previewer[data-runner-state='error'] .home-demo-previewer__status::before {
     background: var(--color-destructive);
   }
-
+  .home-demo-previewer__definition {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: var(--color-muted-foreground);
+    background: color-mix(in oklch, var(--color-muted) 28%, var(--color-card));
+    border-block: 1px solid var(--color-border);
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  .home-demo-previewer__definition a {
+    color: var(--color-foreground);
+    font-family: var(--font-mono, monospace);
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .home-demo-previewer__host {
     position: relative;
-    min-height: 24rem;
+    min-height: 15rem;
     width: 100%;
     border: 0;
     border-radius: 0;
     box-shadow: none;
   }
-
   .home-demo-previewer :global(.pui-projection-generation) {
     width: 100%;
   }
-
   .home-demo-previewer :global(.pui-projection-scope) {
     display: grid;
     width: 100%;
   }
-
   .home-demo-previewer :global(.pui-projection-controls) {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
-    padding: 0.875rem 1.25rem;
+    grid-template-columns: minmax(0, auto) minmax(0, auto);
+    justify-content: start;
+    gap: 0.875rem;
+    padding: var(--runtime-box-toolbar-padding);
     background: var(--color-card);
   }
-
   .home-demo-previewer :global(.pui-projection-control) {
-    display: grid;
-    gap: 0.375rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.625rem;
     min-width: 0;
   }
-
   .home-demo-previewer :global(.pui-projection-control-label) {
     color: var(--color-muted-foreground);
     font-size: 0.75rem;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1rem;
   }
-
   .home-demo-previewer :global(.pui-projection-content) {
-    min-height: 20rem;
+    min-height: var(--runtime-box-content-min);
     min-width: 0;
     max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 2rem 1.5rem;
+    padding: var(--runtime-box-content-padding);
     overflow: hidden;
-    background: color-mix(in oklch, var(--color-muted) 24%, var(--color-card) 76%);
+    background: var(--runtime-box-canvas);
     border-top: 1px solid var(--color-border);
   }
-
+  .home-demo-previewer__scope {
+    max-width: 58rem;
+    margin: 0.875rem 0 0;
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.75;
+  }
   .home-demo-previewer__research {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
     align-items: center;
-    padding: 0.875rem 1.25rem;
-    background: var(--color-card);
+    justify-content: space-between;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
     border-top: 1px solid var(--color-border);
   }
-
   .home-demo-previewer__research-copy {
+    flex: 1 1 20rem;
     min-width: 0;
   }
-
   .home-demo-previewer__research-title,
   .home-demo-previewer__research-lead {
     margin: 0;
   }
-
   .home-demo-previewer__research-title {
     color: var(--color-foreground);
     font-size: 0.8125rem;
     font-weight: 500;
-    line-height: 1.25rem;
+    line-height: 1.5;
   }
-
+  .home-demo-previewer__research-lead {
+    margin-top: 0.25rem;
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.7;
+  }
   .home-demo-previewer__research-targets {
     display: flex;
-    gap: 0;
-    align-items: center;
+    gap: 1rem;
     padding: 0;
     margin: 0;
     color: var(--color-muted-foreground);
     font-size: 0.75rem;
-    white-space: nowrap;
     list-style: none;
   }
-
-  .home-demo-previewer__research-targets li + li::before {
-    margin-inline: 0.5rem;
-    color: color-mix(in oklch, var(--color-muted-foreground) 48%, transparent);
-    content: '/';
-  }
-
   @media (max-width: 720px) {
     .home-demo-previewer {
-      padding-inline: 0.75rem;
-      padding-bottom: 1.5rem;
-    }
-
-    .home-demo-previewer__header,
-    .home-demo-previewer__research {
-      grid-template-columns: 1fr;
-      gap: 0.625rem;
-    }
-
-    .home-demo-previewer :global(.pui-projection-controls) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
       padding-inline: 1rem;
     }
-
-    .home-demo-previewer :global(.pui-projection-content) {
-      min-height: 16rem;
-      padding: 1.25rem 1rem;
+    .home-demo-previewer__header {
+      grid-template-columns: 1fr;
+      gap: 0.625rem;
+      padding: 1rem;
     }
-  }
-
-  @media (max-width: 480px) {
+    .home-demo-previewer__definition {
+      padding-inline: 1rem;
+    }
     .home-demo-previewer :global(.pui-projection-controls) {
       grid-template-columns: 1fr;
+      padding: 1rem;
     }
-
-    .home-demo-previewer__description {
-      white-space: normal;
+    .home-demo-previewer :global(.pui-projection-content) {
+      min-height: var(--runtime-box-content-min);
+      padding: 1.5rem 1rem;
+    }
+    .home-demo-previewer__research {
+      margin-top: 1.75rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-demo-previewer {
+      scroll-behavior: auto;
     }
   }
 </style>

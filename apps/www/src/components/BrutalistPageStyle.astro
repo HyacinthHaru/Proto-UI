@@ -19,4 +19,16 @@ const themeCss = renderBrutalistThemeCss({
     border: 2px solid var(--pui-border);
     box-shadow: 3px 3px 0 var(--pui-foreground);
   }
+  /* The preview already owns its frame: keep this wrapper as a theme boundary. */
+  .brutalist-demo-frame:has(> .proto-previewer) {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+  .brutalist-demo-frame > .proto-previewer {
+    --runtime-box-radius: 0;
+    --runtime-box-border: 2px solid var(--pui-border);
+    --runtime-box-canvas: var(--pui-background);
+    box-shadow: 3px 3px 0 var(--pui-foreground);
+  }
 </style>

@@ -1,0 +1,134 @@
+---
+import config from 'virtual:starlight/user-config';
+import context from 'virtual:starlight/project-context';
+import { localizedUrl } from '../../utils/localizedUrl';
+import HomeActions from './HomeActions.astro';
+const locale = Astro.locals.starlightRoute.locale || 'en';
+const zh = locale === 'zh-cn';
+const path = (pathname: string) =>
+  localizedUrl(new URL(pathname, Astro.url), locale, context.trailingSlash).pathname;
+const otherLocale = Object.keys(config.locales ?? {}).find((key) => key !== locale);
+const actions = [
+  {
+    text: 'Proto UI',
+    link: Astro.locals.starlightRoute.siteTitleHref,
+    variant: 'minimal' as const,
+  },
+  {
+    text: zh ? '文档' : 'Docs',
+    link: path('/start-here/what-you-saw/'),
+    variant: 'minimal' as const,
+  },
+  { text: zh ? '组件库' : 'Libraries', link: path('/ui-libraries/'), variant: 'minimal' as const },
+  {
+    text: zh ? '白皮书' : 'Whitepaper',
+    link: path('/whitepaper/0-preface/'),
+    variant: 'minimal' as const,
+  },
+  ...(otherLocale
+    ? [
+        {
+          text: config.locales![otherLocale].label || otherLocale,
+          link: localizedUrl(Astro.url, otherLocale, context.trailingSlash).pathname,
+          variant: 'minimal' as const,
+          attrs: { 'data-home-locale': otherLocale, hreflang: otherLocale },
+        },
+      ]
+    : []),
+];
+---
+
+<div
+  class="home-runtime-header"
+  data-homepage-runtime
+  data-runtime-state="loading"
+  data-family-label={zh ? '整页组件库' : 'Page library'}
+  data-runtime-label={zh ? '整页 Runtime' : 'Page runtime'}
+  data-status-ready={zh ? '页面控件已就绪' : 'Page controls ready'}
+  data-status-loading={zh ? '准备页面控件' : 'Preparing page controls'}
+  data-status-error={zh ? '切换失败，已保留可用页面' : 'Switch failed; usable page retained'}
+>
+  <HomeActions id="home-navigation" {actions} runtimeControl themeButton />
+  <div class="home-runtime-shell" data-homepage-shell-tools>
+    <slot />
+  </div>
+  <output class="home-runtime-status" data-homepage-runtime-status aria-live="polite">
+    {zh ? '原生链接可用 · Runtime 加载中' : 'Native links ready · runtime loading'}
+  </output>
+</div>
+<script>
+  import { initHomepageRuntime } from './homepage-runtime-client';
+  const initialize = () =>
+    document.querySelectorAll<HTMLElement>('[data-homepage-runtime]').forEach(initHomepageRuntime);
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', initialize, { once: true });
+  else initialize();
+  document.addEventListener('astro:page-load', initialize);
+</script>
+<style is:global>
+  .home-runtime-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 1rem;
+    width: 100%;
+    max-width: 86rem;
+    padding: 0.6rem 2rem;
+    margin-inline: auto;
+  }
+  .home-runtime-header #home-navigation {
+    flex: 1;
+  }
+  .home-runtime-header .pui-projection-scope {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+  .home-runtime-header .pui-projection-content {
+    order: -1;
+    flex: 1;
+  }
+  .home-runtime-header .pui-projection-controls {
+    width: 11rem;
+  }
+  .home-runtime-header .pui-projection-control-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted-foreground);
+    margin-bottom: 0.2rem;
+  }
+  .home-runtime-header .home-runtime-actions {
+    gap: 0.2rem;
+  }
+  .home-runtime-header .home-runtime-anchor,
+  .home-runtime-header .home-actions-fallback a {
+    min-height: 2.1rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.82rem;
+  }
+  .home-runtime-shell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .home-runtime-status {
+    flex-basis: 100%;
+    font-size: 0.75rem;
+    color: var(--color-muted-foreground);
+    text-align: right;
+  }
+  @media (max-width: 50rem) {
+    .home-runtime-header {
+      padding: 0.45rem 0.8rem;
+      gap: 0.35rem;
+    }
+    .home-runtime-header .pui-projection-controls {
+      width: 10rem;
+    }
+    .home-runtime-shell {
+      margin-left: auto;
+    }
+  }
+</style>

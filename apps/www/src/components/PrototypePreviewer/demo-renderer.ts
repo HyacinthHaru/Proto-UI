@@ -154,7 +154,7 @@ function renderDemoNodeWc(node: DemoChild, parent: HTMLElement, instances: HTMLE
     return;
   }
   if (node.kind === 'box') {
-    const el = document.createElement('div');
+    const el = document.createElement(node.tag ?? 'div');
     for (const [name, value] of Object.entries(node.attrs ?? {})) {
       el.setAttribute(name, value);
     }
@@ -300,7 +300,7 @@ async function renderDemoReact(
     if (node.kind === 'box') {
       const kids = (node.children ?? []).map((child) => renderNode(child));
       return React.createElement(
-        'div',
+        node.tag ?? 'div',
         { ...node.attrs, className: node.className, 'data-demo-ref': node.ref },
         ...kids
       );
@@ -436,7 +436,7 @@ async function renderDemoVue(
     if (node.kind === 'box') {
       const kids = (node.children ?? []).map((child) => renderNode(child));
       return Vue.h(
-        'div',
+        node.tag ?? 'div',
         {
           ...node.attrs,
           class: node.className,
@@ -570,7 +570,7 @@ async function renderDemoVue2(
     if (node.kind === 'box') {
       const kids = (node.children ?? []).map((child) => renderNode(child, h));
       return h(
-        'div',
+        node.tag ?? 'div',
         {
           class: node.className,
           attrs: {

@@ -3,6 +3,10 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
+  --font-sans:
+    'GeistSans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   --radius: var(--pui-radius);
   --radius-xl: var(--pui-radius-xl);
   --radius-lg: var(--pui-radius-lg);
@@ -53,6 +57,9 @@
 @font-face {
   font-family: 'GeistSans';
   src: url('./assets/font/GeistVF.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @layer base {
@@ -71,22 +78,7 @@
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
-  font-family:
-    var(--color-font-geist-sans),
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    'Noto Sans',
-    sans-serif,
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol',
-    'Noto Color Emoji';
+  font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

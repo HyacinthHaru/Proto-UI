@@ -14,6 +14,8 @@ export type DemoNode =
   | DemoTextNode
   | {
       kind: 'box';
+      /** Website host composition only; never forwarded into Proto Template. */
+      tag?: 'div' | 'a';
       className?: string;
       attrs?: DemoBoxAttrs;
       ref?: string;
@@ -178,6 +180,31 @@ export function assertDemoSpec(demo: DemoSpec) {
       return;
     }
     if (node.kind === 'box') {
+      if (node.tag !== undefined && node.tag !== 'div' && node.tag !== 'a') {
+        throw new Error('[PrototypePreviewer] host box tag must be div or a.');
+      }
+      if (node.tag === 'a') {
+        const href = node.attrs?.href;
+        if (!href || /^(?:javascript|data|vbscript):/i.test(href.replace(/[\u0000-\u0020]/g, ''))) {
+          throw new Error('[PrototypePreviewer] native anchor requires a safe href.');
+        }
+        const allowed = new Set([
+          'href',
+          'target',
+          'rel',
+          'title',
+          'download',
+          'hreflang',
+          'id',
+          'role',
+          'tabindex',
+        ]);
+        for (const name of Object.keys(node.attrs ?? {})) {
+          if (!allowed.has(name) && !/^(?:aria|data)-[a-z0-9-]+$/.test(name)) {
+            throw new Error(`[PrototypePreviewer] unsupported native anchor attribute "${name}".`);
+          }
+        }
+      }
       assertClassName((node as any).className, [...path, 'className']);
       assertBoxAttrs((node as any).attrs, [...path, 'attrs']);
       if ((node as any).surfaceStyle !== undefined) {

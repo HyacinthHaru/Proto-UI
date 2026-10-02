@@ -50,6 +50,12 @@ export type ProjectionCompositionControls = Readonly<{
   component: ProjectionControlConfig<ProjectionComponentId>;
 }>;
 
+export type ProjectionContentRecipe = Readonly<{
+  id: string;
+  prototypeIds: readonly string[];
+  rootPrototypeId: string | null;
+}>;
+
 export type ProjectionCompositionOptions = Readonly<{
   ownerId: string;
   runtimeId: RuntimeId;
@@ -57,6 +63,8 @@ export type ProjectionCompositionOptions = Readonly<{
   generation: number;
   componentId: ProjectionComponentId;
   childDemo: DemoSpec;
+  /** Explicit Website-consumer recipe; not a new library/Base guarantee. */
+  contentRecipe?: ProjectionContentRecipe;
   controls: ProjectionCompositionControls;
   /** Scope-owned controls to materialize. Defaults to all three controls. */
   controlIds?: readonly ProjectionControlId[];
@@ -428,7 +436,7 @@ function cloneProjectedChild(
   coordinateAttrs: DemoBoxAttrs,
   themeSurfaceStyle: DemoSurfaceStyle | undefined,
   allowedPrototypeIds: ReadonlySet<string>,
-  componentRootPrototypeId: string
+  componentRootPrototypeId: string | null
 ): DemoChild {
   if (typeof node === 'string') return node;
   if (node.kind === 'text') return { ...node };
@@ -602,15 +610,17 @@ export function createProjectionComposition(
   }
   assertProjectionRecipeClosure(
     options.childDemo.root,
-    componentFamily.recipePrototypeIds,
-    componentFamily.recipeId
+    options.contentRecipe?.prototypeIds ?? componentFamily.recipePrototypeIds,
+    options.contentRecipe?.id ?? componentFamily.recipeId
   );
-  const allowedPrototypeIds = new Set(componentFamily.recipePrototypeIds);
-  const componentRootPrototypeId = resolveProjectionPart(
-    options.projectionFamilyId,
-    options.componentId,
-    'root'
-  ).prototypeId;
+  const allowedPrototypeIds = new Set(
+    options.contentRecipe?.prototypeIds ?? componentFamily.recipePrototypeIds
+  );
+  const componentRootPrototypeId = options.contentRecipe
+    ? options.contentRecipe.rootPrototypeId
+    : resolveProjectionPart(options.projectionFamilyId, options.componentId, 'root').prototypeId;
+  if (componentRootPrototypeId !== null && !allowedPrototypeIds.has(componentRootPrototypeId))
+    throw new Error('[PrototypePreviewer] content recipe root must be declared.');
   const coordinateAttrs = createCoordinateAttrs(options);
   const selectParts = Object.fromEntries(
     (['root', 'trigger', 'value', 'content', 'item'] as const).map((partId) => [
@@ -845,7 +855,9 @@ export function createProjectionComposition(
             ...coordinateAttrs,
             'data-projection-content': '',
             'data-projection-id': options.componentId,
-            'data-projection-prototype': componentRootPrototypeId,
+            ...(componentRootPrototypeId
+              ? { 'data-projection-prototype': componentRootPrototypeId }
+              : {}),
           },
           children: [projectedChild],
         },

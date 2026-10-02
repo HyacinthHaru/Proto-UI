@@ -66,7 +66,8 @@ async function chooseProjectionControl(
   control: 'runtime' | 'family' | 'component',
   value: string
 ): Promise<void> {
-  const trigger = root.locator(`[data-projection-control="${control}"] [role="combobox"]`);
+  const owner = control === 'runtime' ? page.locator('[data-homepage-runtime]') : root;
+  const trigger = owner.locator(`[data-projection-control="${control}"] [role="combobox"]`);
   await trigger.click();
   const portal = await portalControlledBy(page, trigger);
   const optionLabel = (CONTROL_OPTION_LABELS[control] as Readonly<Record<string, string>>)[value];
@@ -98,7 +99,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
     const page = await context.newPage();
     await page.goto(`${baseUrl}${HOME_ROUTE}`, { waitUntil: 'networkidle' });
     const home = page.locator(HOME_SELECTOR);
-    const globalRoot = page.locator('wc-shadcn-select-root[data-adapter-select-root]').first();
+    const globalRoot = page.locator('[data-homepage-runtime]');
 
     try {
       await home.waitFor({ state: 'visible' });
@@ -108,22 +109,19 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
         await expect
           .poll(
             () =>
-              home
+              globalRoot
                 .locator('[data-projection-control="runtime"] [role="combobox"]')
                 .evaluate((element) => document.activeElement === element),
             { timeout: 10_000 }
           )
           .toBe(true);
         expect(
-          await page
-            .locator('wc-shadcn-select-root[data-adapter-select-root]')
-            .first()
-            .getAttribute('data-value'),
+          await page.locator('[data-homepage-runtime]').getAttribute('data-runtime'),
           `${runtime} global preference`
         ).toBe(runtime);
       }
 
-      await globalRoot.locator('wc-shadcn-select-trigger').click();
+      await globalRoot.locator('[data-projection-control="runtime"] [role="combobox"]').click();
       await page.getByRole('option', { name: 'Vue', exact: true }).last().click({ force: true });
       await waitForHomeRuntime(page, 'vue');
       expect(await home.getAttribute('data-runner-runtime')).toBe('vue');
@@ -301,7 +299,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           const panel = root.querySelector<HTMLElement>('.home-demo-previewer__panel');
           const host = root.querySelector<HTMLElement>('[data-home-demo-host]');
           const trigger = root.querySelector<HTMLElement>(
-            '[data-projection-control="runtime"] [role="combobox"]'
+            '[data-projection-control="family"] [role="combobox"]'
           );
           if (!panel || !host || !trigger) throw new Error('Runtime Box geometry is incomplete.');
           const panelStyle = getComputedStyle(panel);
@@ -340,9 +338,9 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
             items.map((item) => item.getAttribute('data-browser-runner-research-id'))
           );
         expect(researchIds).toEqual(['flutter-wasm', 'qt-wasm', 'gpui-wasm']);
-        const runtimeTrigger = home.locator(
-          '[data-projection-control="runtime"] [role="combobox"]'
-        );
+        const runtimeTrigger = page
+          .locator('[data-homepage-runtime]')
+          .locator('[data-projection-control="runtime"] [role="combobox"]');
         await runtimeTrigger.click();
         const runtimePortal = await portalControlledBy(page, runtimeTrigger);
         const executableLabels = await runtimePortal.getByRole('option').allTextContents();
@@ -351,7 +349,9 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
 
         await page.setViewportSize({ width: 1440, height: 900 });
         for (const control of ['component', 'runtime', 'family'] as const) {
-          const trigger = home.locator(`[data-projection-control="${control}"] [role="combobox"]`);
+          const trigger = (
+            control === 'runtime' ? page.locator('[data-homepage-runtime]') : home
+          ).locator(`[data-projection-control="${control}"] [role="combobox"]`);
           const before = await trigger.boundingBox();
           if (!before) throw new Error(`${control} trigger must have geometry.`);
           await page.mouse.move(before.x + before.width / 2, before.y + before.height / 2);
