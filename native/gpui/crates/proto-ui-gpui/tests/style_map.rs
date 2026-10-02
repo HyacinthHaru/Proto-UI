@@ -57,7 +57,7 @@ fn a_missing_theme_variable_is_still_reported_when_no_declarations_remain() {
         mapped.issues,
         [StyleIssue::UnresolvedVariable {
             property: "background-color".into(),
-            variable: "var(--background)".into(),
+            variable: "var(--pui-background)".into(),
         }]
     );
     assert_eq!(mapped.refinement.background, None);
