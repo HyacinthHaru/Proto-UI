@@ -74,7 +74,11 @@ fn feedback_refines_the_host_root_without_inventing_a_position() {
     assert_eq!(hidden.refinement.position, None);
 
     let cleared = style_for_feedback_tokens([], None, LengthContext::default());
-    assert!(cleared.issues.is_empty(), "unexpected: {:?}", cleared.issues);
+    assert!(
+        cleared.issues.is_empty(),
+        "unexpected: {:?}",
+        cleared.issues
+    );
     assert_eq!(cleared.refinement.display, None);
     assert_eq!(cleared.refinement.position, None);
 }
@@ -95,7 +99,11 @@ fn feedback_insets_need_an_authored_supported_position() {
 
     let absolute =
         style_for_feedback_tokens(["absolute", "left-1/2"], None, LengthContext::default());
-    assert!(absolute.issues.is_empty(), "unexpected: {:?}", absolute.issues);
+    assert!(
+        absolute.issues.is_empty(),
+        "unexpected: {:?}",
+        absolute.issues
+    );
     assert_eq!(absolute.refinement.position, Some(Position::Absolute));
     assert_eq!(
         absolute.refinement.inset.left,
@@ -117,8 +125,7 @@ fn feedback_keeps_unsupported_positions_and_unknown_tokens_as_errors() {
             }]
         );
     }
-    let unknown =
-        style_for_feedback_tokens(["not-a-proto-token"], None, LengthContext::default());
+    let unknown = style_for_feedback_tokens(["not-a-proto-token"], None, LengthContext::default());
     assert_eq!(
         unknown.issues,
         [StyleIssue::UnknownToken("not-a-proto-token".into())]
