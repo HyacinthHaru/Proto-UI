@@ -319,9 +319,12 @@ describe('Homepage page-owned runtime', () => {
     const button = content.root.kind === 'box' ? content.root.children?.[0] : null;
     expect(
       button && typeof button !== 'string' && button.kind === 'proto' ? button.props : null
-    ).toMatchObject({ size: 'icon', 'aria-label': 'Toggle color theme' });
+    ).toMatchObject({ size: 'icon' });
     expect(
       button && typeof button !== 'string' && button.kind === 'proto' ? button.children : null
-    ).toEqual(['◐']);
+    ).toEqual([
+      { kind: 'box', attrs: { 'aria-hidden': 'true' }, children: ['◐'] },
+      { kind: 'box', className: 'home-theme-accessible-label', children: ['Toggle color theme'] },
+    ]);
   });
 });

@@ -98,6 +98,7 @@
 }
 
 [data-site-library-family='brutalist'] .right-sidebar a[in-view] {
+  border-radius: 0;
   border-inline-start: 3px solid var(--site-brutalist-main);
   padding-inline-start: 0.5rem;
   font-weight: 650;

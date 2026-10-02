@@ -107,6 +107,13 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             )
             .evaluate((element) => document.activeElement === element)
         ).toBe(true);
+        const accessibleTheme = page
+          .locator('[data-homepage-runtime]')
+          .getByRole('button', { name: '切换主题', exact: true });
+        expect(await accessibleTheme.count()).toBe(1);
+        expect(await accessibleTheme.getAttribute('title')).toBe('切换主题');
+        await accessibleTheme.hover();
+        expect(await accessibleTheme.count(), 'name survives hover feedback').toBe(1);
         const themeBefore = await page.locator('html').getAttribute('data-theme');
         await page
           .locator(
@@ -175,6 +182,13 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
               })),
             };
           });
+          const accessibleTheme = page
+            .locator('[data-homepage-runtime]')
+            .getByRole('button', { name: '切换主题', exact: true });
+          expect(await accessibleTheme.count(), `${family}/${runtime} icon accessible name`).toBe(
+            1
+          );
+          expect(await accessibleTheme.getAttribute('title')).toBe('切换主题');
           expect(coordinates.family).toBe(family);
           expect(coordinates.component).toBe('tabs');
           expect(coordinates.demoGeneration).toBe(coordinates.pageGeneration);

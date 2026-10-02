@@ -97,9 +97,11 @@ function attributeEquals(name: string, value: string): string {
 }
 
 async function projectionScope(page: Page): Promise<Locator> {
-  const scopes = page.locator('[data-projection-scope]');
+  const scopes = page.locator(
+    '[data-home-demo-host] [data-projection-generation-state="active"] [data-projection-scope]'
+  );
   await scopes.first().waitFor({ state: 'attached', timeout: 15_000 });
-  expect(await scopes.count(), 'one homepage projection scope').toBe(1);
+  expect(await scopes.count(), 'one active live-example participant scope').toBe(1);
 
   const scope = scopes.first();
   expect(
@@ -248,7 +250,11 @@ async function chooseControl(
   control: 'runtime' | 'family' | 'component',
   value: string
 ) {
-  const controlSurface = scope.locator(`[data-projection-control="${control}"]`);
+  const controlOwner =
+    control === 'runtime'
+      ? page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]')
+      : scope;
+  const controlSurface = controlOwner.locator(`[data-projection-control="${control}"]`);
   expect(await controlSurface.count(), `${control} projection control`).toBe(1);
 
   const trigger = controlSurface.locator('[role="combobox"]');
@@ -342,10 +348,24 @@ async function assertCoherentGeneration(
   await assertSurfacesShareCoordinate(ownedSurfaces, expected, 'scope-owned coordinate');
 
   for (const control of ['runtime', 'family', 'component'] as const) {
-    const surface = scope.locator(`[data-projection-control="${control}"]`);
+    const controlOwner =
+      control === 'runtime'
+        ? page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]')
+        : scope;
+    const surface = controlOwner.locator(`[data-projection-control="${control}"]`);
     expect(await surface.count(), `${control} control surface`).toBe(1);
     await assertSurfacesShareCoordinate(surface, expected, `${control} control coordinate`);
   }
+
+  // Each Website participant has independent ownership, but the page transaction
+  // must commit identical runtime/family/generation coordinates everywhere.
+  const participants = page.locator(
+    '[data-homepage-mount] [data-projection-generation-state="active"] [data-projection-scope], [data-home-demo-host] [data-projection-generation-state="active"] [data-projection-scope]'
+  );
+  expect(await participants.count()).toBe(
+    (await page.locator('[data-homepage-actions]').count()) + 1
+  );
+  await assertSurfacesShareCoordinate(participants, expected, 'page participant coordinate');
 
   const content = scope.locator('[data-projection-content]');
   expect(await content.count(), 'one active projection content slot').toBe(1);
@@ -495,11 +515,19 @@ async function readWebsiteThemeTokens(page: Page) {
   );
 }
 
-async function expectSemanticFocus(scope: Locator, control: 'runtime' | 'family'): Promise<void> {
+async function expectSemanticFocus(
+  page: Page,
+  scope: Locator,
+  control: 'runtime' | 'family'
+): Promise<void> {
+  const owner =
+    control === 'runtime'
+      ? page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]')
+      : scope;
   await expect
     .poll(
       () =>
-        scope
+        owner
           .locator(`[data-projection-control="${control}"] [role="combobox"]`)
           .evaluate((element) => document.activeElement === element),
       { timeout: 10_000 }
@@ -650,7 +678,7 @@ describe.sequential('Homepage Prototype projection scope', () => {
       const oldFamilyGeneration = current.generation;
       const familySwitch = await chooseControl(page, scope, 'family', nextProjectionFamilyId);
       current = await waitForReady(scope, current.runtimeId, nextProjectionFamilyId);
-      await expectSemanticFocus(scope, 'family');
+      await expectSemanticFocus(page, scope, 'family');
       expect(await familySwitch.oldPortal?.evaluate((element) => element.isConnected)).toBe(false);
       expect(
         await page
@@ -668,7 +696,7 @@ describe.sequential('Homepage Prototype projection scope', () => {
       const oldRuntimeGeneration = current.generation;
       const runtimeSwitch = await chooseControl(page, scope, 'runtime', nextRuntimeId);
       current = await waitForReady(scope, nextRuntimeId, nextProjectionFamilyId);
-      await expectSemanticFocus(scope, 'runtime');
+      await expectSemanticFocus(page, scope, 'runtime');
       expect(await runtimeSwitch.oldPortal?.evaluate((element) => element.isConnected)).toBe(false);
       expect(
         await page

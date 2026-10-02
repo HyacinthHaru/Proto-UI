@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { assertDemoSpec, type DemoSpec } from '../PrototypePreviewer/demo-types';
 import { renderDemo } from '../PrototypePreviewer/demo-renderer';
 import { getDemoSourcePath } from '../PrototypePreviewer/demo-modules';
+import { loadPrototypes } from '../PrototypePreviewer/prototype-modules';
+import { createHomepageContent } from './homepage-runtime-client';
 
 const demo = {
   type: 'demo',
@@ -51,5 +53,50 @@ describe('Website native-link host composition', () => {
       'apps/www/src/content/docs/demo_components/tabs/demo-shadcn-tabs.demo.ts'
     );
     expect(() => getDemoSourcePath('invented-demo')).toThrow('missing source path');
+  });
+  it('annotates the real icon Button DOM with its name and title instead of relying on undeclared props', async () => {
+    await loadPrototypes(['shadcn-button']);
+    const host = document.createElement('div');
+    host.dataset.homepageThemeIcon = 'true';
+    host.dataset.homepageThemeLabel = 'Toggle color theme';
+    document.body.append(host);
+    document.documentElement.dataset.theme = 'light';
+    const content = createHomepageContent(
+      {
+        root: host,
+        mount: host,
+        fallback: host,
+        ownerId: 'theme-name',
+        links: [],
+        theme: true,
+        runtime: true,
+      },
+      'wc',
+      () => true
+    );
+    const rendered = await renderDemo({ runtime: 'wc', demo: content, host });
+    try {
+      const button = host.querySelector<HTMLElement>('[data-demo-ref="home-theme"]')!;
+      expect(button.getAttribute('role')).toBe('button');
+      expect(button.querySelector('[aria-hidden="true"]')?.textContent).toBe('◐');
+      expect(button.querySelector('.home-theme-accessible-label')?.textContent).toBe(
+        'Toggle color theme'
+      );
+      expect(button.getAttribute('title')).toBe('Toggle color theme');
+      expect(button.getAttribute('aria-pressed')).toBe('false');
+      document.documentElement.dataset.theme = 'dark';
+      document.dispatchEvent(
+        new CustomEvent('starlight-theme:change', { detail: { theme: 'dark' } })
+      );
+      expect(button.querySelector('.home-theme-accessible-label')?.textContent).toBe(
+        'Toggle color theme'
+      );
+      expect(button.getAttribute('title')).toBe('Toggle color theme');
+      expect(button.getAttribute('aria-pressed')).toBe('true');
+    } finally {
+      await rendered.destroy();
+      host.remove();
+      document.documentElement.removeAttribute('data-theme');
+    }
   });
 });

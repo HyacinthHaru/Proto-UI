@@ -65,6 +65,11 @@ const report: Record<string, unknown> & {
   nodeVersion: process.version,
   platform: process.platform,
   browserContext: { deviceScaleFactor: 1, reducedMotion: 'reduce', freshStoragePerCase: true },
+  renderer: {
+    mode: 'Astro dev server',
+    developerToolbar:
+      process.env.PROTO_UI_EVIDENCE_TOOLBAR ?? 'default project preference; toolbar may be visible',
+  },
   github: {
     runId: process.env.GITHUB_RUN_ID,
     runAttempt: process.env.GITHUB_RUN_ATTEMPT,
@@ -171,7 +176,9 @@ async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): P
   await portal.waitFor({ state: 'visible' });
   if (keyboard) {
     await page.waitForFunction(
-      (id) => document.getElementById(id)?.contains(document.activeElement),
+      // The portal itself can receive focus before Select's deferred selected-
+      // item focus. Home/ArrowDown require an actual focused roving member.
+      (id) => Boolean(document.getElementById(id)?.querySelector('[role="option"]:focus')),
       id
     );
     await page.keyboard.press('Home');
@@ -285,6 +292,7 @@ async function measure(page: Page, samples = fontSelectors) {
       documentWidth: document.documentElement.scrollWidth,
       bodyWidth: document.body.scrollWidth,
       theme: document.documentElement.dataset.theme,
+      developerToolbarPresent: document.querySelector('astro-dev-toolbar') !== null,
       heading: document.querySelector('h1')?.textContent?.trim(),
       fontVariables: {
         fontSans: getComputedStyle(document.documentElement).getPropertyValue('--font-sans'),
@@ -565,6 +573,30 @@ try {
         } catch (error) {
           evidence.outcome = 'failed';
           evidence.error = error instanceof Error ? error.stack : String(error);
+          evidence.failureState = await page
+            .evaluate(() => ({
+              active: document.activeElement
+                ? {
+                    tag: document.activeElement.tagName,
+                    id: document.activeElement.id,
+                    role: document.activeElement.getAttribute('role'),
+                    text: document.activeElement.textContent?.trim().slice(0, 100),
+                  }
+                : null,
+              home: document.querySelector<HTMLElement>('[data-home-demo-options]')?.dataset,
+              page: document.querySelector<HTMLElement>('[data-homepage-runtime]')?.dataset,
+              options: [...document.querySelectorAll<HTMLElement>('[role="option"]')].map(
+                (option) => ({
+                  id: option.id,
+                  text: option.textContent?.trim(),
+                  focused: option === document.activeElement,
+                  tabIndex: option.tabIndex,
+                  selected: option.getAttribute('aria-selected'),
+                  visible: option.getClientRects().length > 0,
+                })
+              ),
+            }))
+            .catch(() => null);
           report.failures.push(`${id}: ${error instanceof Error ? error.message : String(error)}`);
           await screenshot('failure-viewport').catch(() => {});
         } finally {

@@ -126,6 +126,21 @@ const actions = [
     white-space: nowrap;
     border: 0;
   }
+  .home-runtime-header[data-runtime-state='error'] .home-runtime-status {
+    position: static;
+    grid-column: 1 / -1;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0.5rem;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    color: var(--color-destructive);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
   @media (max-width: 50rem) {
     .home-runtime-header {
       grid-template-columns: minmax(0, 1fr) auto;

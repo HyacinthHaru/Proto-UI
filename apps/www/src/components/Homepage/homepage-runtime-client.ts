@@ -58,7 +58,8 @@ type HomepageHandle = { destroy(): Promise<void>; getSnapshot(): ProjectionScope
 function bindThemeButton(
   context: DemoSetupContext,
   runtime: RuntimeId,
-  isActive: () => boolean
+  isActive: () => boolean,
+  label: string
 ): () => void {
   const button = context.refs['home-theme'];
   if (!button) return () => {};
@@ -76,6 +77,9 @@ function bindThemeButton(
   else context.api.setProps('home-theme', { onClick });
   const update = () => {
     const dark = document.documentElement.dataset.theme === 'dark';
+    // Title is a Website-owned annotation. The accessible name is host slot text
+    // because Button does not declare arbitrary DOM attributes as props.
+    button.setAttribute('title', label);
     button.setAttribute('aria-pressed', String(dark));
   };
   update();
@@ -119,19 +123,29 @@ export function createHomepageContent(
       props: {
         variant: family === 'shadcn' ? 'ghost' : 'surface',
         size: group.root.dataset.homepageThemeIcon === 'true' ? 'icon' : 'default',
-        'aria-label': group.root.dataset.homepageThemeLabel || 'Toggle theme',
       },
-      children: [
+      children:
         group.root.dataset.homepageThemeIcon === 'true'
-          ? '◐'
-          : group.root.dataset.homepageThemeLabel || 'Toggle theme',
-      ],
+          ? [
+              { kind: 'box', attrs: { 'aria-hidden': 'true' }, children: ['◐'] },
+              {
+                kind: 'box',
+                className: 'home-theme-accessible-label',
+                children: [group.root.dataset.homepageThemeLabel || 'Toggle theme'],
+              },
+            ]
+          : [group.root.dataset.homepageThemeLabel || 'Toggle theme'],
     });
   return {
     type: 'demo',
     root: { kind: 'box', className: 'home-runtime-actions', children },
     setup(context) {
-      const cleanupTheme = bindThemeButton(context, runtime, isActive);
+      const cleanupTheme = bindThemeButton(
+        context,
+        runtime,
+        isActive,
+        group.root.dataset.homepageThemeLabel || 'Toggle theme'
+      );
       const listeners: Array<{ link: Element; listener: EventListener }> = [];
       for (const link of context.host.querySelectorAll<HTMLAnchorElement>('a[href]')) {
         const listener: EventListener = (event) => {
