@@ -228,6 +228,8 @@ const stateProperties = [
   'translate',
   'rotate',
   'scale',
+  'perspective',
+  'transform-style',
   'overflow-x',
   'overflow-y',
   'clip',
@@ -375,14 +377,74 @@ const paint = (color: string): SolidPaint => {
   };
 };
 
+// CSSOM keeps individual transforms separate from `transform`. Translations do
+// not change the axis-aligned shape: DOMRects already include their displacement.
+// Reject every other matrix rather than treating its bounding box as its edges.
+const translationOnly = (style: CSSStyleDeclaration): boolean => {
+  if (style.perspective !== 'none' || style.transformStyle === 'preserve-3d') return false;
+  if (style.transform !== 'none') {
+    if (style.transform.startsWith('matrix3d(')) return false;
+    try {
+      const matrix = new DOMMatrixReadOnly(style.transform);
+      if (
+        !matrix.is2D ||
+        matrix.a !== 1 ||
+        matrix.b !== 0 ||
+        matrix.c !== 0 ||
+        matrix.d !== 1 ||
+        !Number.isFinite(matrix.e) ||
+        !Number.isFinite(matrix.f)
+      )
+        return false;
+    } catch {
+      return false;
+    }
+  }
+  if (style.translate !== 'none') {
+    // Count computed components, not whitespace inside calc()/min()/max().
+    // One or two lengths/percentages are necessarily a 2D translation.
+    let depth = 0,
+      components = 0,
+      inComponent = false;
+    for (const char of style.translate) {
+      if (/\s/.test(char) && depth === 0) inComponent = false;
+      else if (!inComponent) {
+        components++;
+        inComponent = true;
+      }
+      if (char === '(') depth++;
+      if (char === ')') depth--;
+    }
+    if (components < 1 || components > 2) return false;
+  }
+  if (style.rotate !== 'none' && !/^0(?:deg|grad|rad|turn)$/.test(style.rotate)) return false;
+  if (style.scale !== 'none') {
+    const components = style.scale.split(/\s+/);
+    if (
+      components.length > 2 ||
+      components.some((value) => Number(value.replace('%', '')) !== (value.endsWith('%') ? 100 : 1))
+    )
+      return false;
+  }
+  return true;
+};
+
 const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf = false) => {
   const limits: string[] = [];
   const own = getComputedStyle(element);
   if (own.visibility !== 'visible')
-    return { classification: 'exempt-not-visible', limits: ['visibility-hidden-or-collapse'] };
+    return {
+      visible: false,
+      classification: 'exempt-not-visible',
+      limits: ['visibility-hidden-or-collapse'],
+    };
   const nonempty = boxes.filter((box) => box.width > 0 && box.height > 0);
   if (!nonempty.length)
-    return { classification: 'exempt-not-visible', limits: ['no-painted-layout-box'] };
+    return {
+      visible: false,
+      classification: 'exempt-not-visible',
+      limits: ['no-painted-layout-box'],
+    };
   let left = 0,
     top = 0,
     right = innerWidth,
@@ -394,18 +456,16 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
       style.contentVisibility === 'hidden' ||
       Number(style.opacity) === 0
     ) {
-      return { classification: 'exempt-not-visible', limits: ['ancestor-or-target-hidden'] };
+      return {
+        visible: false,
+        classification: 'exempt-not-visible',
+        limits: ['ancestor-or-target-hidden'],
+      };
     }
     if (style.clip !== 'auto') limits.push('unsupported-legacy-clip');
     if (style.clipPath !== 'none' || style.maskImage !== 'none')
       limits.push('unsupported-clip-path-or-mask');
-    if (
-      style.transform !== 'none' ||
-      style.translate !== 'none' ||
-      style.rotate !== 'none' ||
-      style.scale !== 'none'
-    )
-      limits.push('unsupported-transformed-paint');
+    if (!translationOnly(style)) limits.push('unsupported-transformed-paint');
     if (style.contain.includes('paint')) limits.push('unsupported-paint-containment');
     const rect = current.getBoundingClientRect();
     if ((clipSelf || current !== element) && style.overflowX !== 'visible') {
@@ -417,12 +477,12 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
       bottom = Math.min(bottom, rect.top + current.clientTop + current.clientHeight);
     }
   }
-  if (
-    !nonempty.some(
-      (box) => box.right > left && box.left < right && box.bottom > top && box.top < bottom
-    )
-  )
-    limits.push('offscreen-or-fully-clipped');
+  // This reports intersecting bounds, not proof of painted coverage through
+  // unsupported clips/masks/transforms; those remain explicit in `limits`.
+  const visible = nonempty.some(
+    (box) => box.right > left && box.left < right && box.bottom > top && box.top < bottom
+  );
+  if (!visible) limits.push('offscreen-or-fully-clipped');
   else if (
     nonempty.some(
       (box) => box.left < left || box.right > right || box.top < top || box.bottom > bottom
@@ -430,6 +490,7 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
   )
     limits.push('partially-clipped-paint');
   return {
+    visible,
     classification: limits.length ? 'unsupported' : 'source-model-visible',
     limits: [...new Set(limits)],
   };
@@ -530,8 +591,10 @@ export const collectContrastFrame = async ({
       const backdrop = background(element);
       const inactive =
         element.hasAttribute('disabled') || host.getAttribute('aria-disabled') === 'true';
-      const visibility = paintedVisibility(element, [...element.getClientRects()]);
-      const visible = visibility.classification === 'source-model-visible';
+      const { visible, ...visibility } = paintedVisibility(element, [...element.getClientRects()]);
+      // Visible bounds are evidence even when their paint geometry is unsupported.
+      // Only fully supported, unclipped rectangles may supply perimeter metrics.
+      const measurablePerimeter = visibility.classification === 'source-model-visible';
       const largeText =
         parseFloat(style.fontSize) >= 24 ||
         (parseFloat(style.fontSize) >= 18.6666666667 && parseInt(style.fontWeight) >= 700);
@@ -732,7 +795,7 @@ export const collectContrastFrame = async ({
                 : 'verified direct-text source-model-only; receiving pixels unverified',
             }
           : null;
-      const exterior = visible
+      const exterior = measurablePerimeter
         ? [0.25, 0.5, 0.75].flatMap((fraction) => [
             { side: 'top', point: sample(rect.x + rect.width * fraction, rect.y - 1) },
             { side: 'left', point: sample(rect.x - 1, rect.y + rect.height * fraction) },
@@ -768,7 +831,7 @@ export const collectContrastFrame = async ({
           blur = Number(matched[4]),
           spread = Number(matched[5]),
           inset = Boolean(matched[6]);
-        const hardOpaque = visible && inkUnmodified && ink.alpha === 1 && blur === 0;
+        const hardOpaque = measurablePerimeter && inkUnmodified && ink.alpha === 1 && blur === 0;
         const receiving =
           !inset && hardOpaque
             ? [
@@ -792,7 +855,7 @@ export const collectContrastFrame = async ({
           raw,
           ink: ink.rgba,
           alpha: ink.alpha,
-          limits: ink.limits,
+          limits: [...ink.limits, ...visibility.limits],
           x,
           y,
           blur,
@@ -813,7 +876,7 @@ export const collectContrastFrame = async ({
             ? 'Inset CSS ink versus ancestor-background source model only; no receiving pixels measured. Child paint may adjoin the ring; rendered adjacency, visibility and cue necessity remain unresolved.'
             : hardOpaque
               ? 'CSS ink versus recorded receiving pixel; signed/layered geometry, shadow visibility and cue necessity remain unresolved.'
-              : 'Alpha, unsupported color, blur, opacity/filter/blend or hidden shadow; no opaque-shadow metric.',
+              : 'Alpha, unsupported color/geometry, clipping, blur, opacity/filter/blend or hidden shadow; no opaque-shadow metric.',
         };
       });
       return {

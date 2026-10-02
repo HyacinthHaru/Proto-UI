@@ -204,6 +204,90 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     expect(shadow.limitation).toContain('no receiving pixels measured');
   });
 
+  it('samples translated controls and ancestors at their painted perimeter and shadow neighbors', async () => {
+    // These displacements all used to become visible:false and lose every
+    // perimeter/receiving sample. Fixed coordinates also reject unshifted boxes.
+    const frame = await calibrate(`
+      <style>
+        .translated { position:absolute; width:100px; height:40px; min-height:0; margin:0; border:2px solid black; box-shadow:8px 6px 0 0 black; }
+      </style>
+      <div style="position:absolute;left:100px;top:80px;width:500px;height:400px;background:white">
+        <div data-pui-root data-demo-ref="matrix" class="translated" style="left:20px;top:20px;transform:matrix(1,0,0,1,30,12)">Matrix</div>
+        <div data-pui-root data-demo-ref="individual" class="translated" style="left:20px;top:100px;translate:calc(20% + 10px) 12px;rotate:0deg;scale:1 1">Individual</div>
+        <div style="position:absolute;left:20px;top:180px;transform:translate(30px,12px)"><div data-pui-root data-demo-ref="ancestor" class="translated" style="left:0;top:0">Ancestor</div></div>
+      </div>
+    `);
+    for (const [ref, y] of [
+      ['matrix', 112],
+      ['individual', 192],
+      ['ancestor', 272],
+    ] as const) {
+      const target = surface(frame, ref);
+      expect(target.visible).toBe(true);
+      expect(target.visibility).toEqual({ classification: 'source-model-visible', limits: [] });
+      expect(target.rect).toEqual({ x: 150, y, width: 100, height: 40 });
+      expect(target.textContrast?.ratio).toBeCloseTo(21, 8);
+      expect(
+        target.exterior.map(({ side, point }) => ({ side, x: point?.x, y: point?.y }))
+      ).toEqual(
+        [0.25, 0.5, 0.75].flatMap((fraction) => [
+          { side: 'top', x: 150 + 100 * fraction, y: y - 1 },
+          { side: 'left', x: 149, y: y + 40 * fraction },
+          { side: 'bottom', x: 150 + 100 * fraction, y: y + 41 },
+          { side: 'right', x: 251, y: y + 40 * fraction },
+        ])
+      );
+      for (const edge of target.exterior.filter(({ side }) => side === 'top' || side === 'left')) {
+        expect(edge.point?.rgb).toEqual([255, 255, 255]);
+        expect(edge.opaqueBorderVsPixel).toBeCloseTo(21, 8);
+      }
+      // The exterior bottom/right lie in black shadow, whereas these receiving
+      // pixels lie just beyond it on white. Both coordinate and ink errors fail.
+      for (const edge of target.exterior.filter(
+        ({ side }) => side === 'bottom' || side === 'right'
+      )) {
+        expect(edge.point?.rgb).toEqual([0, 0, 0]);
+        expect(edge.opaqueBorderVsPixel).toBeCloseTo(1, 8);
+      }
+      expect(target.shadows[0].receiving).toEqual([
+        { side: 'right', point: { x: 259, y: y + 26, rgb: [255, 255, 255] }, ratio: 21 },
+        { side: 'bottom', point: { x: 208, y: y + 47, rgb: [255, 255, 255] }, ratio: 21 },
+      ]);
+    }
+  });
+
+  it('keeps transformed visible bounds without inventing rectangular edge or shadow ratios', async () => {
+    const frame = await calibrate(`
+      <style>
+        .unsupported-transform { position:absolute; left:40px; width:100px; height:40px; min-height:0; margin:0; border:2px solid black; box-shadow:8px 6px 0 0 black,inset 0 0 0 4px black; }
+      </style>
+      <div style="position:absolute;left:100px;top:80px;width:500px;height:700px;background:white">
+        <div data-pui-root data-demo-ref="rotated" class="unsupported-transform" style="top:40px;rotate:15deg">Rotated</div>
+        <div data-pui-root data-demo-ref="scaled" class="unsupported-transform" style="top:140px;scale:1.5">Scaled</div>
+        <div data-pui-root data-demo-ref="sheared" class="unsupported-transform" style="top:240px;transform:matrix(1,0,0.2,1,0,0)">Sheared</div>
+        <div data-pui-root data-demo-ref="depth" class="unsupported-transform" style="top:340px;translate:0 0 10px">Depth</div>
+        <div style="position:absolute;top:440px;perspective:500px"><div data-pui-root data-demo-ref="perspective" class="unsupported-transform">Perspective</div></div>
+      </div>
+    `);
+    for (const ref of ['rotated', 'scaled', 'sheared', 'depth', 'perspective']) {
+      const target = surface(frame, ref);
+      expect(target.visible).toBe(true);
+      expect(target.visibility.classification).toBe('unsupported');
+      expect(target.visibility.limits).toContain('unsupported-transformed-paint');
+      expect(target.exterior).toEqual([]);
+      expect(target.textContrast).toBeNull();
+      for (const shadow of target.shadows) {
+        expect(shadow.limits).toContain('unsupported-transformed-paint');
+        expect(shadow.receiving).toEqual([]);
+        expect(shadow.insetVsFill).toBeNull();
+      }
+    }
+    // These are actual transformed bounds, not a visibility flag synthesized
+    // from support status or the untransformed CSS width/height.
+    expect(surface(frame, 'scaled').rect).toEqual({ x: 115, y: 210, width: 150, height: 60 });
+    expect(surface(frame, 'rotated').rect.height).toBeGreaterThan(60);
+  });
+
   it('binds facts to actual native targets, composed slot constraints and state changes', async () => {
     const context = await browser.newContext({ viewport: { width: 800, height: 900 } });
     try {

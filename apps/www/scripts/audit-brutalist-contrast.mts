@@ -2,7 +2,10 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
 import { resolve, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { isDeepStrictEqual } from 'node:util';
 import { transform } from 'esbuild';
+import { readContrastProvenance } from './contrast-provenance.mjs';
 import type { Browser, BrowserContext, Page, Locator } from 'playwright-core';
 import { PROJECTION_FAMILY_MANIFESTS } from '../src/components/PrototypePreviewer/projection-families';
 import {
@@ -36,7 +39,11 @@ if (
 }
 const selectedFamilies = requestedFamilies ?? families;
 const viewport = { width: 1440, height: 1000 };
-const baseline = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url));
+const baseline = execFileSync('git', ['rev-parse', 'HEAD'], {
+  cwd: repositoryRoot,
+  encoding: 'utf8',
+}).trim();
 const digest = (data: string | Buffer) =>
   `sha256:${createHash('sha256').update(data).digest('hex')}`;
 const message = (error: unknown) =>
@@ -58,9 +65,29 @@ function plannedStates(family: string): string[] {
   if (passiveFamilies.has(family)) return states;
   states.push('hover', 'keyboard-focus');
   if (
-    ['button', 'toggle', 'switch', 'tabs', 'checkbox', 'dropdown-menu', 'select'].includes(family)
+    [
+      'button',
+      'toggle',
+      'switch',
+      'tabs',
+      'checkbox',
+      'dropdown-menu',
+      'select',
+      'dialog',
+    ].includes(family)
   )
     states.push('pointer-down', 'activation-result');
+  if (family === 'button') {
+    for (const variant of ['surface', 'destructive']) {
+      states.push(
+        `${variant}-rest`,
+        `${variant}-hover`,
+        `${variant}-pointer-down`,
+        `${variant}-activation-result`,
+        `${variant}-keyboard-focus`
+      );
+    }
+  }
   if (['toggle', 'switch', 'checkbox'].includes(family)) states.push('keyboard-activation');
   if (family === 'tabs') states.push('keyboard-selection-overview');
   if (family === 'toggle') states.push('already-active', 'active-and-pointer-held');
@@ -186,6 +213,41 @@ await persist('initial');
 let browser: Browser | undefined;
 let browserProbe = '';
 let phase = 'source-provenance';
+let cleanSource: ReturnType<typeof readContrastProvenance>;
+let servedSource:
+  | ({ schemaVersion: number; serverId: string } & ReturnType<typeof readContrastProvenance>)
+  | undefined;
+
+async function verifyServedSource(): Promise<void> {
+  const local = readContrastProvenance(repositoryRoot);
+  if (!isDeepStrictEqual(local, cleanSource))
+    throw new Error('Local rendered source changed during the audit.');
+  const response = await fetch(new URL('/__pui_contrast_provenance', baseUrl), {
+    cache: 'no-store',
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!response.ok)
+    throw new Error(
+      `Served contrast provenance unavailable (HTTP ${response.status}); start a clean opt-in audit server.`
+    );
+  const current = (await response.json()) as NonNullable<typeof servedSource>;
+  if (
+    current.schemaVersion !== 1 ||
+    typeof current.serverId !== 'string' ||
+    !current.serverId ||
+    !isDeepStrictEqual(
+      { head: current.head, tree: current.tree, generated: current.generated },
+      cleanSource
+    )
+  ) {
+    throw new Error(
+      'Served build does not match the complete clean local source and generated CSS.'
+    );
+  }
+  if (servedSource && !isDeepStrictEqual(current, servedSource))
+    throw new Error('Audit server identity changed during the run.');
+  servedSource = current;
+}
 
 async function settle(page: Page): Promise<void> {
   await page.waitForFunction(
@@ -360,6 +422,8 @@ async function targetObservation(target: Locator): Promise<Observation> {
     nativeActive: element.matches(':active'),
     ariaPressed: element.getAttribute('aria-pressed'),
     ariaSelected: element.getAttribute('aria-selected'),
+    ariaChecked: element.getAttribute('aria-checked'),
+    ariaExpanded: element.getAttribute('aria-expanded'),
     shadow: getComputedStyle(element).boxShadow,
   }));
 }
@@ -369,6 +433,119 @@ async function requireTarget(
 ): Promise<Observation> {
   const observation = await targetObservation(target);
   return { ...observation, achieved: observation.achieved && predicate(observation) };
+}
+async function pointerJourney(
+  page: Page,
+  item: Case,
+  target: Locator,
+  previewer: Locator,
+  prefix = ''
+): Promise<void> {
+  const before = await targetObservation(target);
+  const family = item.family;
+  if (family === 'tabs' && before.ariaSelected !== 'false') {
+    throw new Error(
+      'Details must initially be unselected; no selection transition can be claimed.'
+    );
+  }
+  const popupName = (
+    {
+      dialog: 'brutalist-dialog-content',
+      'dropdown-menu': 'brutalist-dropdown-content',
+      select: 'brutalist-select-content',
+    } as Record<string, string>
+  )[family];
+  const popup = popupName ? (await owned(page, popupName)).first() : null;
+  const popupBefore = popup ? await popup.isVisible() : null;
+  if (popupBefore)
+    throw new Error('Pointer open journey requires an initially closed owned popup.');
+  const clicks =
+    family === 'button'
+      ? await target.evaluateHandle((element) => {
+          // This observes native click delivery only; no subject state or handler is replaced.
+          const observation = {
+            count: 0,
+            listener(event: Event) {
+              if (event instanceof MouseEvent && event.isTrusted && event.button === 0)
+                observation.count++;
+            },
+            dispose() {
+              element.removeEventListener('click', observation.listener);
+            },
+          };
+          element.addEventListener('click', observation.listener);
+          return observation;
+        })
+      : null;
+  try {
+    const bounds = await target.boundingBox();
+    if (!bounds) throw new Error(`${family}: physical input target lacks bounds.`);
+    await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    await page.mouse.down();
+    try {
+      await capture(page, item, `${prefix}pointer-down`, () =>
+        requireTarget(target, (value) => value.nativeActive === true)
+      );
+    } finally {
+      await page.mouse.up();
+    }
+    if (family === 'tabs') {
+      await target.locator('xpath=self::*[@aria-selected="true"]').waitFor();
+      await capture(page, item, `${prefix}activation-result`, () =>
+        tabsObservation(previewer, 'Details')
+      );
+      return;
+    }
+    if (popup) await popup.waitFor({ state: 'visible' });
+    await capture(page, item, `${prefix}activation-result`, async () => {
+      const after = await targetObservation(target);
+      if (family === 'button') {
+        const delivered = await clicks!.evaluate((observation) => observation.count);
+        return {
+          ...after,
+          achieved: after.achieved && delivered === 1,
+          trustedNativeClicks: delivered,
+          basis:
+            'One trusted native click delivered to this Button after release; not application-effect or Expose-protocol acceptance.',
+        };
+      }
+      if (popup) {
+        const popupAfter = await popup.isVisible();
+        return {
+          ...after,
+          achieved:
+            popupBefore === false &&
+            popupAfter &&
+            (family === 'dialog' || after.ariaExpanded === 'true'),
+          before,
+          after,
+          popupBefore,
+          popupAfter,
+          popupPrototype: popupName,
+        };
+      }
+      const attribute = family === 'toggle' ? 'ariaPressed' : 'ariaChecked';
+      const oldValue = before[attribute];
+      const expected = oldValue === 'true' ? 'false' : 'true';
+      const validBefore =
+        oldValue === 'true' ||
+        oldValue === 'false' ||
+        (family === 'checkbox' && oldValue === 'mixed');
+      return {
+        ...after,
+        achieved: after.achieved && validBefore && after[attribute] === expected,
+        attribute,
+        before: oldValue,
+        expected,
+        after: after[attribute],
+      };
+    });
+  } finally {
+    if (clicks) {
+      await clicks.evaluate((observation) => observation.dispose());
+      await clicks.dispose();
+    }
+  }
 }
 async function owned(page: Page, prototype: string): Promise<Locator> {
   const lease = await page
@@ -485,9 +662,14 @@ async function waitScroll(
 }
 
 try {
+  cleanSource = readContrastProvenance(repositoryRoot);
+  if (cleanSource.head !== baseline) throw new Error('Source HEAD changed during audit startup.');
+  await verifyServedSource();
+  report.servedSource = servedSource;
   const sourceFiles = [
     ['runner', new URL('./audit-brutalist-contrast.mts', import.meta.url)],
     ['probe', new URL('./contrast-probe.browser.ts', import.meta.url)],
+    ['provenance-guard', new URL('./contrast-provenance.mjs', import.meta.url)],
     ['browser-harness', new URL('../src/content/docs/zh-cn/browser-harness.ts', import.meta.url)],
     [
       'projection-manifest',
@@ -518,7 +700,9 @@ try {
   report.sourceCodeVersion = {
     head: baseline,
     status: 'captured',
-    kind: 'baseline commit plus captured exact runner/probe/harness/manifest/recipe/package/lockfile worktree bytes',
+    kind: 'complete clean Git tree plus generated CSS, bound to the opt-in dev server startup identity and current source checks',
+    cleanTree: cleanSource.tree,
+    generatedCSS: cleanSource.generated,
     sourceSetDigest: digest(
       JSON.stringify(sources.map(({ identity, digest }) => ({ identity, digest })))
     ),
@@ -549,6 +733,7 @@ try {
     item.status = 'running';
     phase = 'context-creation';
     try {
+      await verifyServedSource();
       // openRoute creates a context before readiness and leaks it on rejection.
       // Keep the same documented setup with ownership established before goto.
       context = await browser.newContext({ viewport });
@@ -557,7 +742,10 @@ try {
       page.setDefaultNavigationTimeout(30_000);
       phase = 'route-opening';
       const response = await page.goto(`${baseUrl}${item.route}`, { waitUntil: 'networkidle' });
-      if (response && !response.ok()) throw new Error(`Route returned HTTP ${response.status()}.`);
+      if (!response || !response.ok())
+        throw new Error(`Route returned HTTP ${response?.status() ?? 'no response'}.`);
+      if (response.headers()['x-proto-ui-contrast-server'] !== servedSource!.serverId)
+        throw new Error('Rendered page came from a different audit server identity.');
       const previewer = page.locator('[data-previewer-id]').first();
       await previewer.waitFor({ state: 'visible' });
       phase = 'runtime-theme-readiness';
@@ -585,6 +773,7 @@ try {
           throw new Error(
             `${family}: no planned physical target; unsupported interaction coverage.`
           );
+        await verifyServedSource();
         item.status = 'observed';
         await persist('case');
         continue;
@@ -617,34 +806,23 @@ try {
         }));
       }
       if (
-        ['button', 'toggle', 'switch', 'tabs', 'checkbox', 'dropdown-menu', 'select'].includes(
-          family
-        )
+        [
+          'button',
+          'toggle',
+          'switch',
+          'tabs',
+          'checkbox',
+          'dropdown-menu',
+          'select',
+          'dialog',
+        ].includes(family)
       ) {
-        if (family === 'tabs' && (await target.getAttribute('aria-selected')) !== 'false')
-          throw new Error(
-            'Details must initially be unselected; no selection transition can be claimed.'
-          );
-        const bounds = await target.boundingBox();
-        if (!bounds) throw new Error(`${family}: physical input target lacks bounds.`);
-        await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-        await page.mouse.down();
-        try {
-          await capture(page, item, 'pointer-down', () =>
-            requireTarget(target, (value) => value.nativeActive === true)
-          );
-        } finally {
-          await page.mouse.up();
-        }
-        if (family === 'tabs') {
-          await target.locator('xpath=self::*[@aria-selected="true"]').waitFor();
-          await capture(page, item, 'activation-result', () =>
-            tabsObservation(previewer, 'Details')
-          );
-        } else await capture(page, item, 'activation-result', () => targetObservation(target));
+        await pointerJourney(page, item, target, previewer);
       }
       // Dismiss open menus before testing the trigger's native keyboard route.
       await page.keyboard.press('Escape');
+      if (family === 'dialog')
+        await (await owned(page, 'brutalist-dialog-content')).first().waitFor({ state: 'hidden' });
       await page.mouse.move(0, 0);
       await target.focus();
       await page.keyboard.press('Tab');
@@ -653,6 +831,30 @@ try {
       await capture(page, item, 'keyboard-focus', () =>
         requireTarget(target, (value) => value.focused === true && value.focusVisible === true)
       );
+      if (family === 'button') {
+        for (const variant of ['surface', 'destructive']) {
+          const variantTarget = previewer.locator(
+            `[data-projection-content] [data-pui-root][data-demo-ref="${variant}"]`
+          );
+          await page.mouse.move(0, 0);
+          await capture(page, item, `${variant}-rest`, () => targetObservation(variantTarget));
+          await variantTarget.hover();
+          await capture(page, item, `${variant}-hover`, () =>
+            requireTarget(variantTarget, (value) => value.hovered === true)
+          );
+          await pointerJourney(page, item, variantTarget, previewer, `${variant}-`);
+          await page.mouse.move(0, 0);
+          await variantTarget.focus();
+          await page.keyboard.press('Tab');
+          await page.keyboard.press('Shift+Tab');
+          await capture(page, item, `${variant}-keyboard-focus`, () =>
+            requireTarget(
+              variantTarget,
+              (value) => value.focused === true && value.focusVisible === true
+            )
+          );
+        }
+      }
       if (family === 'tooltip') {
         const portal = await tooltipPortal(page, target);
         await capture(page, item, 'focus-open', async () => ({
@@ -877,6 +1079,7 @@ try {
       await page.mouse.move(0, 0);
       const missing = item.plannedStates.filter((state) => !item.achievedTargets.includes(state));
       if (missing.length) throw new Error(`Unachieved planned targets: ${missing.join(', ')}.`);
+      await verifyServedSource();
       item.status = 'observed';
     } catch (error) {
       item.status = 'failed';
