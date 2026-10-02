@@ -56,3 +56,24 @@ export function layoutFailures(
   }
   return failures;
 }
+
+/** Only the pinned baseline's reproduced React Select Home failure is a negative control. */
+export function classifyHistoricalFailure(input: {
+  revisionKind: string;
+  route: string;
+  stage: string | null;
+  errorName: string;
+  activeRole?: string | null;
+  activeText?: string | null;
+  committedRuntime?: string;
+}): 'baseline-react-select-home-focus' | 'unexpected' {
+  return input.revisionKind === 'baseline' &&
+    (input.route === '/zh-cn/' || input.route === '/en/') &&
+    input.stage === 'keyboard-home' &&
+    input.errorName === 'TimeoutError' &&
+    input.activeRole === 'option' &&
+    input.activeText?.trim() === 'React' &&
+    input.committedRuntime === 'react'
+    ? 'baseline-react-select-home-focus'
+    : 'unexpected';
+}

@@ -92,6 +92,10 @@ jobs:
         working-directory: candidate
         run: node --import tsx --test apps/www/scripts/homepage-evidence-contract.test.ts
       - name: Capture real baseline with the candidate-owned browser probe
+        id: baseline_capture
+        # Historical behavior may fail: preserve its red trace, then require
+        # the complete before-image inventory in the independent step below.
+        continue-on-error: true
         if: always() && steps.install.outcome == 'success' && steps.chrome.outcome == 'success'
         timeout-minutes: 10
         working-directory: baseline
@@ -103,6 +107,39 @@ jobs:
             --revision-kind baseline --expected-revision "$BASELINE_SHA" \
             --out "$RUNNER_TEMP/homepage-evidence/baseline" \
             2>&1 | tee "$RUNNER_TEMP/homepage-evidence/baseline.log"
+      - name: Validate the complete immutable baseline visual inventory
+        id: baseline_visual_inventory
+        if: always() && steps.install.outcome == 'success' && steps.chrome.outcome == 'success'
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          import path from 'node:path';
+          const root = path.join(process.env.RUNNER_TEMP, 'homepage-evidence/baseline');
+          const report = JSON.parse(fs.readFileSync(path.join(root, 'metrics.json'), 'utf8'));
+          assert.equal(report.revisionKind, 'baseline');
+          assert.equal(report.revision, process.env.BASELINE_SHA);
+          assert.equal(report.cases.length, 20, 'All configured before views must exist');
+          assert.equal(new Set(report.cases.map((entry) => entry.id)).size, 20);
+          const failed = report.cases.filter((entry) => entry.outcome !== 'passed');
+          assert.equal(report.failures.length, failed.length, 'No unclassified top-level failures');
+          for (const entry of failed) {
+            assert.equal(entry.failureClassification, 'baseline-react-select-home-focus', `${entry.id}: unexpected baseline failure`);
+            assert.equal(entry.failureStage, 'keyboard-home');
+            assert.equal(entry.errorName, 'TimeoutError');
+            console.log(`Known negative control ${entry.id}: ${entry.error}`);
+          }
+          for (const entry of report.cases) {
+            assert.equal(entry.pageErrors?.length ?? 0, 0, `${entry.id}: unexpected page exception`);
+            const filename = `${entry.id}-initial-viewport.png`;
+            assert.match(filename, /^[a-z0-9-]+\.png$/);
+            assert.ok(entry.screenshots.includes(filename), filename);
+            const bytes = fs.readFileSync(path.join(root, filename));
+            assert.equal(bytes.subarray(0, 8).toString('hex'), '89504e470d0a1a0a', filename);
+            assert.ok(bytes.length > 1000, filename);
+          }
+          console.log(`20 exact-baseline initial screenshots verified; ${report.failures.length} historical behavior failures remain recorded in metrics.json.`);
+          JS
       - name: Make baseline evidence available before candidate execution
         if: always()
         uses: actions/upload-artifact@v4

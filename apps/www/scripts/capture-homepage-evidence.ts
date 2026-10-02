@@ -20,6 +20,7 @@ import {
   HOMEPAGE_ROUTES,
   HOMEPAGE_VIEWPORTS,
   layoutFailures,
+  classifyHistoricalFailure,
   verifyRevision,
 } from './homepage-evidence-contract';
 import { captureDocumentationEvidence } from './capture-documentation-evidence';
@@ -166,7 +167,10 @@ function runtimeTrigger(page: Page) {
   return page.locator(`${owner} [data-projection-control="runtime"] [role="combobox"]`).first();
 }
 
+let activeProbeStage: string | null = null;
+
 async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): Promise<void> {
+  activeProbeStage = null;
   const trigger = runtimeTrigger(page);
   if (keyboard) {
     await trigger.focus();
@@ -186,6 +190,7 @@ async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): P
         ),
       id
     );
+    activeProbeStage = 'keyboard-home';
     await page.keyboard.press('Home');
     await page.waitForFunction(
       ([id, label]) =>
@@ -194,6 +199,7 @@ async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): P
       [id, RUNTIME_LABELS.wc]
     );
     for (let index = 0; index < Object.keys(RUNTIME_LABELS).indexOf(runtime); index++) {
+      activeProbeStage = 'keyboard-arrow-down';
       await page.keyboard.press('ArrowDown');
       await page.waitForFunction(
         ([id, label]) =>
@@ -204,11 +210,13 @@ async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): P
         [id, Object.values(RUNTIME_LABELS)[index + 1]!]
       );
     }
+    activeProbeStage = 'keyboard-commit';
     await page.keyboard.press('Enter');
   } else {
     await portal.getByRole('option', { name: RUNTIME_LABELS[runtime], exact: true }).click();
   }
   await waitForRuntime(page, runtime);
+  activeProbeStage = null;
 }
 
 async function ownership(page: Page, runtime: Runtime) {
@@ -663,6 +671,21 @@ try {
               ),
             }))
             .catch(() => null);
+          evidence.failureStage = activeProbeStage;
+          evidence.errorName = error instanceof Error ? error.name : typeof error;
+          const failure = evidence.failureState as {
+            activeElement?: { role?: string; text?: string };
+            home?: { runnerRuntime?: string };
+          } | null;
+          evidence.failureClassification = classifyHistoricalFailure({
+            revisionKind,
+            route,
+            stage: activeProbeStage,
+            errorName: String(evidence.errorName),
+            activeRole: failure?.activeElement?.role,
+            activeText: failure?.activeElement?.text,
+            committedRuntime: failure?.home?.runnerRuntime,
+          });
           report.failures.push(`${id}: ${error instanceof Error ? error.message : String(error)}`);
           await screenshot('failure-viewport').catch(() => {});
         } finally {

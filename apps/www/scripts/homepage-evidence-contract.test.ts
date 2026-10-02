@@ -11,6 +11,7 @@ import {
   HOMEPAGE_POINTER_RUNTIME_SEQUENCE,
   HOMEPAGE_VIEWPORTS,
   layoutFailures,
+  classifyHistoricalFailure,
   verifyRevision,
 } from './homepage-evidence-contract';
 
@@ -89,6 +90,25 @@ test('CI preserves the pinned baseline, exact head, read-only permissions and ar
   assert.equal(workflow.on.pull_request_target, undefined);
   assert.doesNotMatch(source, /\$\{\{\s*secrets\./);
   const steps = workflow.jobs.capture.steps;
+  assert.equal(
+    steps.find((step: { id?: string }) => step.id === 'baseline_capture')['continue-on-error'],
+    true
+  );
+  const inventory = steps.find((step: { id?: string }) => step.id === 'baseline_visual_inventory');
+  assert.ok(inventory.if.includes('always()'));
+  assert.ok(inventory.run.includes('report.cases.length, 20'));
+  for (const step of steps.filter(
+    (step: { name?: string }) =>
+      step.name?.includes('Capture real exact-head candidate') ||
+      step.name?.includes('Execute focused real-browser')
+  )) {
+    assert.notEqual(
+      step['continue-on-error'],
+      true,
+      'Candidate evidence and regressions remain strict'
+    );
+  }
+
   const checkouts = steps.filter((step: { uses?: string }) =>
     step.uses?.startsWith('actions/checkout@')
   );
@@ -141,4 +161,27 @@ test('serialized browser probes do not depend on tsx keepNames helpers', () => {
     visit(source);
   }
   assert.ok(inspected >= 15, 'Inspect the actual browser callbacks, not a synthetic subset');
+});
+
+test('baseline negative control never swallows unrelated or candidate failures', () => {
+  const known = {
+    revisionKind: 'baseline',
+    route: '/en/',
+    stage: 'keyboard-home',
+    errorName: 'TimeoutError',
+    activeRole: 'option',
+    activeText: 'React',
+    committedRuntime: 'react',
+  };
+  assert.equal(classifyHistoricalFailure(known), 'baseline-react-select-home-focus');
+  for (const different of [
+    { revisionKind: 'candidate' },
+    { route: '/zh-cn/ui-libraries/base/toggle/' },
+    { stage: 'keyboard-arrow-down' },
+    { errorName: 'ReferenceError' },
+    { activeRole: 'listbox' },
+    { activeText: 'Vue' },
+    { committedRuntime: 'wc' },
+  ])
+    assert.equal(classifyHistoricalFailure({ ...known, ...different }), 'unexpected');
 });
