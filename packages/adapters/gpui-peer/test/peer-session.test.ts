@@ -87,6 +87,40 @@ describe('gpui peer: projection cycle', () => {
       { ref: 'focus-root', sequential: true, programmatic: true },
     ]);
   });
+
+  it('carries the first accessibility snapshot in the install without sending it early', async () => {
+    await harness.peer.mount();
+
+    const installIndex = harness.host.sent.findIndex(
+      (message) => message.kind === 'projection.install'
+    );
+    expect(installIndex).toBeGreaterThanOrEqual(0);
+    expect(
+      harness.host.sent.slice(0, installIndex).some((message) => message.kind === 'a11y.snapshot')
+    ).toBe(false);
+    expect(harness.host.last('projection.install')!.transaction.a11y).toMatchObject({
+      role: 'button',
+      name: { kind: 'content' },
+      states: { disabled: false },
+    });
+
+    await harness.peer.dispose();
+  });
+
+  it('continues sending accessibility updates for the installed view', async () => {
+    await harness.peer.mount();
+    harness.host.clear();
+
+    harness.peer.setProps({ disabled: true });
+    expect(harness.host.of('a11y.snapshot')).toContainEqual(
+      expect.objectContaining({
+        viewEpoch: 1,
+        snapshot: expect.objectContaining({ states: expect.objectContaining({ disabled: true }) }),
+      })
+    );
+
+    await harness.peer.dispose();
+  });
 });
 
 describe('gpui peer: interaction', () => {
@@ -433,7 +467,7 @@ describe('gpui peer: instances composed into one another', () => {
     expect(root.host.of('session.disposed')).toHaveLength(1);
   });
 
-  it('sends the ids a Tabs trigger and panel give themselves and name each other by', async () => {
+  it('carries Tabs relationships by the target semantic identity, not an authored host id', async () => {
     const root = open('tabs-root', tabsRoot);
     root.peer.setProps({ defaultValue: 'overview' });
     await root.peer.mount();
@@ -448,14 +482,55 @@ describe('gpui peer: instances composed into one another', () => {
     const panelA11y = panel.host.lastA11y();
     expect(triggerA11y?.role).toBe('tab');
     expect(panelA11y?.role).toBe('tabpanel');
-    expect(triggerA11y?.id).toMatch(/-trigger-overview$/);
-    expect(panelA11y?.id).toMatch(/-content-overview$/);
-    expect(triggerA11y?.relations.controls).toBe(panelA11y?.id);
-    expect(panelA11y?.relations.labelledBy).toBe(triggerA11y?.id);
+    // C-A11Y-PART-RELATIONSHIP-0001-B: match keys are not host IDs.
+    expect(triggerA11y?.id).toBeUndefined();
+    expect(panelA11y?.id).toBeUndefined();
+    expect(triggerA11y?.semanticObjectId).toMatch(/:a11y:\d+$/);
+    expect(panelA11y?.semanticObjectId).toMatch(/:a11y:\d+$/);
+    expect(triggerA11y?.semanticObjectId).not.toBe(panelA11y?.semanticObjectId);
+    expect(triggerA11y?.relations.controls).toEqual([panelA11y?.semanticObjectId]);
+    expect(panelA11y?.relations.labelledBy).toEqual([triggerA11y?.semanticObjectId]);
 
     await panel.peer.dispose();
     await trigger.peer.dispose();
     await root.peer.dispose();
+  });
+
+  it('does not cross-match equal Tabs keys in independent composition trees', async () => {
+    const first = open('tabs-first-root', tabsRoot);
+    const second = open('tabs-second-root', tabsRoot);
+    const pairs = [];
+    for (const root of [first, second]) {
+      root.peer.setProps({ defaultValue: 'same' });
+      await root.peer.mount();
+      const trigger = open(`${root.peer.sessionId}-trigger`, tabsTrigger, root.peer);
+      trigger.peer.setProps({ value: 'same' });
+      await trigger.peer.mount();
+      const panel = open(`${root.peer.sessionId}-panel`, tabsContent, root.peer);
+      panel.peer.setProps({ value: 'same' });
+      await panel.peer.mount();
+      pairs.push({ root, trigger, panel });
+    }
+
+    const ids = new Set<string>();
+    for (const { trigger, panel } of pairs) {
+      const source = trigger.host.lastA11y()!;
+      const target = panel.host.lastA11y()!;
+      expect(source.semanticObjectId).toMatch(/:a11y:\d+$/);
+      expect(target.semanticObjectId).toMatch(/:a11y:\d+$/);
+      expect(source.relations.controls).toEqual([target.semanticObjectId]);
+      expect(target.relations.labelledBy).toEqual([source.semanticObjectId]);
+      ids.add(source.semanticObjectId);
+      ids.add(target.semanticObjectId);
+    }
+    expect(ids.size).toBe(4);
+
+    await first.peer.dispose();
+    const surviving = pairs[1]!;
+    expect(surviving.trigger.host.lastA11y()!.relations.controls).toEqual([
+      surviving.panel.host.lastA11y()!.semanticObjectId,
+    ]);
+    await second.peer.dispose();
   });
 
   it('ends the other parts and reports each failure when one part fails to end', async () => {

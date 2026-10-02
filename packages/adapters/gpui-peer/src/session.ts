@@ -142,6 +142,7 @@ type InstanceRecord = {
   readonly sessionId: string;
   readonly prototype: Prototype<any>;
   readonly parent: object | null;
+  readonly a11yIdOf: (ref: object) => string;
 };
 
 /**
@@ -258,14 +259,18 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
   };
 
   // ---------------------------------------------------------------------
-  // A11y: opaque refs become session-scoped ids.
+  // A11y: every session in a composition tree shares one opaque-ref identity
+  // mapping. A relation must name the same object as its target's snapshot,
+  // never a second source-session-local spelling of that object.
   // ---------------------------------------------------------------------
   let a11yCounter = 0;
   const a11yIds = new WeakMap<object, string>();
   let latestA11y: A11ySnapshotWire | null = null;
   let a11yDirtyDuringCommit = false;
+  const inheritedA11yIdOf = args.parent ? recordOf(args.parent.token)!.a11yIdOf : undefined;
 
   const a11yIdOf = (ref: object): string => {
+    if (inheritedA11yIdOf) return inheritedA11yIdOf(ref);
     let id = a11yIds.get(ref);
     if (!id) {
       id = `${sessionId}:a11y:${++a11yCounter}`;
@@ -357,6 +362,7 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
   const projector: A11yProjector = Object.assign(
     (snapshot: A11ySemanticObjectSnapshot) => {
       latestA11y = toA11yWire(snapshot);
+      if (!viewInstalled) return;
       if (flushingCommit) {
         a11yDirtyDuringCommit = true;
         return;
@@ -454,7 +460,12 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
   // Capability wiring, attached once the Runtime is ready (CP1).
   // ---------------------------------------------------------------------
   const instanceToken = Object.freeze({ instanceId });
-  instances.set(instanceToken, { sessionId, prototype, parent: args.parent?.token ?? null });
+  instances.set(instanceToken, {
+    sessionId,
+    prototype,
+    parent: args.parent?.token ?? null,
+    a11yIdOf,
+  });
   // The session of the trigger group's anchor, when this instance is a trigger.
   let triggerAnchor: string | null = null;
 
