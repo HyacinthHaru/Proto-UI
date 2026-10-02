@@ -371,7 +371,7 @@
           },
           "style": [],
           "a11y": {
-            "semanticObjectId": "switch-thumb:a11y:1",
+            "semanticObjectId": "switch-root:a11y:2",
             "states": {},
             "actions": {},
             "relations": {}
@@ -767,7 +767,7 @@
           },
           "style": [],
           "a11y": {
-            "semanticObjectId": "switch-checked-thumb:a11y:1",
+            "semanticObjectId": "switch-checked:a11y:2",
             "states": {},
             "actions": {},
             "relations": {}

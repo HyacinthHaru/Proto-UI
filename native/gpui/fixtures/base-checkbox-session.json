@@ -379,7 +379,7 @@
           },
           "style": [],
           "a11y": {
-            "semanticObjectId": "checkbox-indicator:a11y:1",
+            "semanticObjectId": "checkbox-root:a11y:2",
             "states": {},
             "actions": {},
             "relations": {}
@@ -783,7 +783,7 @@
           },
           "style": [],
           "a11y": {
-            "semanticObjectId": "checkbox-checked-indicator:a11y:1",
+            "semanticObjectId": "checkbox-checked:a11y:2",
             "states": {},
             "actions": {},
             "relations": {}
@@ -1187,7 +1187,7 @@
           },
           "style": [],
           "a11y": {
-            "semanticObjectId": "checkbox-mixed-indicator:a11y:1",
+            "semanticObjectId": "checkbox-mixed:a11y:2",
             "states": {},
             "actions": {},
             "relations": {}
