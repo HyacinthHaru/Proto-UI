@@ -9,7 +9,9 @@
 use std::collections::BTreeSet;
 
 use gpui::{AbsoluteLength, DefiniteLength, Display, Length, Position};
-use proto_ui_gpui::style::{map, style_for_tokens, StyleIssue, Unmapped};
+use proto_ui_gpui::style::{
+    map, style_for_feedback_tokens, style_for_tokens, StyleIssue, Unmapped,
+};
 use proto_ui_style::length::LengthContext;
 use proto_ui_style::{themes, vocabulary, ColorScheme, Substitution};
 
@@ -62,6 +64,65 @@ fn a_missing_theme_variable_is_still_reported_when_no_declarations_remain() {
     );
     assert_eq!(mapped.refinement.background, None);
     assert_eq!(mapped.refinement.position, None);
+}
+
+#[test]
+fn feedback_refines_the_host_root_without_inventing_a_position() {
+    let hidden = style_for_feedback_tokens(["hidden"], None, LengthContext::default());
+    assert!(hidden.issues.is_empty(), "unexpected: {:?}", hidden.issues);
+    assert_eq!(hidden.refinement.display, Some(Display::None));
+    assert_eq!(hidden.refinement.position, None);
+
+    let cleared = style_for_feedback_tokens([], None, LengthContext::default());
+    assert!(cleared.issues.is_empty(), "unexpected: {:?}", cleared.issues);
+    assert_eq!(cleared.refinement.display, None);
+    assert_eq!(cleared.refinement.position, None);
+}
+
+#[test]
+fn feedback_insets_need_an_authored_supported_position() {
+    let unspecified = style_for_feedback_tokens(["left-1/2"], None, LengthContext::default());
+    assert_eq!(unspecified.refinement.position, None);
+    assert_eq!(unspecified.refinement.inset.left, None);
+    assert_eq!(
+        unspecified.issues,
+        [StyleIssue::Unmapped {
+            property: "left".into(),
+            value: "50%".into(),
+            reason: Unmapped::UnsupportedValue,
+        }]
+    );
+
+    let absolute =
+        style_for_feedback_tokens(["absolute", "left-1/2"], None, LengthContext::default());
+    assert!(absolute.issues.is_empty(), "unexpected: {:?}", absolute.issues);
+    assert_eq!(absolute.refinement.position, Some(Position::Absolute));
+    assert_eq!(
+        absolute.refinement.inset.left,
+        Some(Length::Definite(DefiniteLength::Fraction(0.5)))
+    );
+}
+
+#[test]
+fn feedback_keeps_unsupported_positions_and_unknown_tokens_as_errors() {
+    for token in ["static", "fixed"] {
+        let mapped = style_for_feedback_tokens([token], None, LengthContext::default());
+        assert_eq!(mapped.refinement.position, None);
+        assert_eq!(
+            mapped.issues,
+            [StyleIssue::Unmapped {
+                property: "position".into(),
+                value: token.into(),
+                reason: Unmapped::UnsupportedValue,
+            }]
+        );
+    }
+    let unknown =
+        style_for_feedback_tokens(["not-a-proto-token"], None, LengthContext::default());
+    assert_eq!(
+        unknown.issues,
+        [StyleIssue::UnknownToken("not-a-proto-token".into())]
+    );
 }
 
 #[test]

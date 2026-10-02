@@ -34,7 +34,7 @@ use serde_json::{json, Value};
 use crate::a11y::{project, A11yIssue, A11yProjection, A11yReference};
 use crate::host::{ProtoHostView, SurfaceChild, SurfaceNode, FOCUS_ROOT_REF};
 use crate::input::{SessionRoute, SurfaceId};
-use crate::style::{style_for_tokens, StyleIssue};
+use crate::style::{style_for_feedback_tokens, StyleIssue};
 use crate::template::{build, parse, BuildContext, BuildIssue};
 
 /// What the host application decides about one instance it opens.
@@ -629,7 +629,7 @@ impl ProtoHostView {
                     });
                     return;
                 }
-                let resolved = style_for_tokens(
+                let resolved = style_for_feedback_tokens(
                     style.tokens.iter().map(String::as_str),
                     session.config.theme,
                     LengthContext::default(),
@@ -861,7 +861,7 @@ impl ProtoHostView {
         );
         // The root's feedback style is part of the view, so a token the host
         // cannot render refuses the projection as a template token does.
-        let feedback = style_for_tokens(
+        let feedback = style_for_feedback_tokens(
             transaction.style.iter().map(String::as_str),
             session.config.theme,
             LengthContext::default(),
