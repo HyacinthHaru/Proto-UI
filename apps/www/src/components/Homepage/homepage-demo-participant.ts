@@ -47,6 +47,7 @@ export function homepageDemoParticipant(document: Document) {
       const attributes = [
         'data-runner-state',
         'data-runner-runtime',
+        'data-projection-runtime',
         'data-projection-family',
         'data-projection-component',
         'data-projection-generation',
@@ -60,6 +61,7 @@ export function homepageDemoParticipant(document: Document) {
       const oldBusy = mount.getAttribute('aria-busy');
       return {
         publish() {
+          root.dataset.projectionRuntime = commit.selection.runtimeId;
           root.dataset.projectionFamily = family;
           root.dataset.projectionComponent = component;
           root.dataset.projectionGeneration = String(commit.generation);

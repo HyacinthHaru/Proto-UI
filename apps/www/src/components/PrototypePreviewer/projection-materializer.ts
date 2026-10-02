@@ -136,11 +136,15 @@ function externalProjectionPortalRoots(
     mount.ownerDocument.querySelectorAll<HTMLElement>(
       '[data-projection-owner][data-projection-generation]'
     )
-  ).filter((element) => !mount.contains(element) && ownsGeneration(element));
+  ).filter(
+    (element) => !mount.contains(element) && !element.contains(mount) && ownsGeneration(element)
+  );
 
   return externalSurfaces.filter((surface) => {
     let ancestor = surface.parentElement;
-    while (ancestor && !mount.contains(ancestor)) {
+    // Consumer shells may publish the same owner/generation as their mount.
+    // They are never external portals, nor roots of a genuine sibling portal.
+    while (ancestor && !mount.contains(ancestor) && !ancestor.contains(mount)) {
       if (sameOwnedGeneration(surface, ancestor)) return false;
       ancestor = ancestor.parentElement;
     }

@@ -178,6 +178,7 @@ describe('Homepage page-owned runtime', () => {
     const demo = document.querySelector<HTMLElement>('[data-home-demo-options]')!;
     expect(fakes.materialize.mock.calls).toHaveLength(3);
     expect(demo.dataset.projectionGeneration).toBe(root.dataset.runtimeGeneration);
+    expect(demo.dataset.projectionRuntime).toBe('wc');
     const controls = fakes.materialize.mock.calls[2]![1].controls;
     controls.component.onValueChange('tabs');
     await settle();
@@ -203,6 +204,7 @@ describe('Homepage page-owned runtime', () => {
     await settle();
     expect(root.dataset.runtime).toBe('react');
     expect(demo.dataset.runnerRuntime).toBe('react');
+    expect(demo.dataset.projectionRuntime).toBe('react');
     expect(demo.dataset.projectionGeneration).toBe(root.dataset.runtimeGeneration);
     expect(demo.dataset.projectionComponent).toBe('tabs');
     expect(root.dataset.family).toBe('brutalist');
