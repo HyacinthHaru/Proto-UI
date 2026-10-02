@@ -4,6 +4,15 @@ export const HOMEPAGE_VIEWPORTS = [
   { name: 'mobile', width: 390, height: 844 },
 ] as const;
 export const HOMEPAGE_ROUTES = ['/zh-cn/', '/en/'] as const;
+export const HOMEPAGE_POINTER_RUNTIME_SEQUENCE = [
+  'react',
+  'vue',
+  'vue2',
+  'wc',
+  'react',
+  'wc',
+] as const;
+export const HOMEPAGE_KEYBOARD_TRANSITION = { from: 'react', to: 'vue' } as const;
 export const DOCUMENTATION_VARIANTS = [
   { id: 'base-toggle', family: 'base', route: '/zh-cn/ui-libraries/base/toggle/' },
   { id: 'shadcn-radio-group', family: 'shadcn', route: '/zh-cn/ui-libraries/shadcn/radio-group/' },

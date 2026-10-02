@@ -131,8 +131,27 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         );
         await trigger.focus();
         await page.keyboard.press('Enter');
+        const keyboardPortalId = await trigger.getAttribute('aria-controls');
+        const keyboardPortal = page.locator(`[id=${JSON.stringify(keyboardPortalId)}]`);
+        await keyboardPortal.waitFor({ state: 'visible' });
+        // Select enters the selected item after its deferred overlay-ready step.
+        // Escape must test an entered popup, not race that entry callback.
+        await expect
+          .poll(
+            () =>
+              keyboardPortal
+                .getByRole('option')
+                .evaluateAll((items) => items.some((item) => item === document.activeElement)),
+            { timeout: 10_000 }
+          )
+          .toBe(true);
         await page.keyboard.press('Escape');
-        expect(await trigger.evaluate((element) => document.activeElement === element)).toBe(true);
+        await keyboardPortal.waitFor({ state: 'hidden' });
+        await expect
+          .poll(() => trigger.evaluate((element) => document.activeElement === element), {
+            timeout: 10_000,
+          })
+          .toBe(true);
       }
       const chooseDemo = async (control: 'family' | 'component', label: string) => {
         const trigger = page.locator(

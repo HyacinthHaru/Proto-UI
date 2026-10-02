@@ -151,10 +151,23 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           transitionDuration: string;
           visibilityTransitions: string[];
           visibility: string;
+          ancestry: Array<{
+            tag: string;
+            pending: boolean;
+            visibility: string;
+            inlineVisibility: string;
+            opacity: string;
+            generationState: string | null;
+            ariaHidden: string | null;
+            inert: boolean;
+          }>;
         }> = [];
         const guardReleaseSamples: Array<{
           visibility: string;
           visibilityTransitions: string[];
+          stage: string | null;
+          inert: boolean;
+          opacity: string;
         }> = [];
         (window as typeof window & { __homeMountSamples?: typeof samples }).__homeMountSamples =
           samples;
@@ -163,6 +176,43 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
             __homeRevealGuardReleaseSamples?: typeof guardReleaseSamples;
           }
         ).__homeRevealGuardReleaseSamples = guardReleaseSamples;
+        const publishedSamples: Array<{
+          pending: boolean;
+          visibility: string;
+          visibilityTransitions: string[];
+          ownerInert: boolean;
+          ownerOpacity: string;
+        }> = [];
+        (
+          window as typeof window & { __homePublishedSamples?: typeof publishedSamples }
+        ).__homePublishedSamples = publishedSamples;
+        const publicationObserver = new MutationObserver(() => {
+          const generation = host.querySelector<HTMLElement>(
+            '[data-projection-generation-state="active"]'
+          );
+          const activeScope = generation?.querySelector<HTMLElement>('[data-projection-scope]');
+          if (!generation || activeScope?.dataset.projectionRuntime !== 'react') return;
+          for (const surface of generation.querySelectorAll<HTMLElement>(
+            '[data-projection-content] [data-home-react-reveal-sample]'
+          )) {
+            publishedSamples.push({
+              pending: surface.hasAttribute('data-pui-view-pending'),
+              visibility: getComputedStyle(surface).visibility,
+              visibilityTransitions: surface
+                .getAnimations()
+                .filter((animation) => 'transitionProperty' in animation)
+                .map((animation) => (animation as CSSTransition).transitionProperty),
+              ownerInert: generation.inert,
+              ownerOpacity: getComputedStyle(generation).opacity,
+            });
+          }
+          publicationObserver.disconnect();
+        });
+        publicationObserver.observe(host, {
+          attributes: true,
+          attributeFilter: ['data-projection-generation-state'],
+          subtree: true,
+        });
         const removeAttribute = Element.prototype.removeAttribute;
         Element.prototype.removeAttribute = function (name) {
           const samplesReveal =
@@ -192,11 +242,40 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
                 .filter((animation) => 'transitionProperty' in animation)
                 .map((animation) => (animation as CSSTransition).transitionProperty),
               visibility: style.visibility,
+              ancestry: (() => {
+                const ancestors = [];
+                for (
+                  let node: HTMLElement | null = this as HTMLElement;
+                  node;
+                  node = node.parentElement
+                ) {
+                  const computed = getComputedStyle(node);
+                  ancestors.push({
+                    tag: node.tagName,
+                    pending: node.hasAttribute('data-pui-view-pending'),
+                    visibility: computed.visibility,
+                    inlineVisibility: node.style.visibility,
+                    opacity: computed.opacity,
+                    generationState: node.getAttribute('data-projection-generation-state'),
+                    ariaHidden: node.getAttribute('aria-hidden'),
+                    inert: node.inert,
+                  });
+                }
+                return ancestors;
+              })(),
             });
           }
           if (samplesGuardRelease) {
             guardReleaseSamples.push({
               visibility: getComputedStyle(this).visibility,
+              stage:
+                this.closest<HTMLElement>('[data-projection-generation-state]')?.dataset
+                  .projectionGenerationState ?? null,
+              inert:
+                this.closest<HTMLElement>('[data-projection-generation-state]')?.inert ?? false,
+              opacity: getComputedStyle(
+                this.closest<HTMLElement>('[data-projection-generation-state]')!
+              ).opacity,
               visibilityTransitions: this.getAnimations()
                 .filter((animation) => 'transitionProperty' in animation)
                 .map((animation) => (animation as CSSTransition).transitionProperty),
@@ -217,6 +296,16 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
                 transitionDuration: string;
                 visibilityTransitions: string[];
                 visibility: string;
+                ancestry: Array<{
+                  tag: string;
+                  pending: boolean;
+                  visibility: string;
+                  inlineVisibility: string;
+                  opacity: string;
+                  generationState: string | null;
+                  ariaHidden: string | null;
+                  inert: boolean;
+                }>;
               }>;
             }
           ).__homeMountSamples ?? []
@@ -224,7 +313,12 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
       expect(samples).toHaveLength(6);
       for (const sample of samples) {
         expect(sample.revealing).toBe(true);
-        expect(sample.visibility).toBe('visible');
+        // Adapter readiness precedes the whole-page publication barrier. It must
+        // have complete style while its generation remains unpainted and inert.
+        expect(
+          sample.ancestry.find((ancestor) => ancestor.generationState === 'staging'),
+          `React staged reveal: ${JSON.stringify(sample)}`
+        ).toMatchObject({ inert: true, opacity: '0', ariaHidden: 'true' });
         expect(sample.transitionDuration).toBe('0s');
         expect(sample.visibilityTransitions).not.toContain('visibility');
         const tokens = sample.style.split(/\s+/);
@@ -252,13 +346,49 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
               __homeRevealGuardReleaseSamples?: Array<{
                 visibility: string;
                 visibilityTransitions: string[];
+                stage: string | null;
+                inert: boolean;
+                opacity: string;
               }>;
             }
           ).__homeRevealGuardReleaseSamples ?? []
       );
       expect(guardReleaseSamples).toHaveLength(6);
       for (const sample of guardReleaseSamples) {
-        expect(sample.visibility).toBe('visible');
+        if (sample.stage === 'staging') {
+          expect(sample.inert).toBe(true);
+          expect(sample.opacity).toBe('0');
+        } else {
+          expect(sample.stage).toBe('active');
+          expect(sample.visibility).toBe('visible');
+        }
+        expect(sample.visibilityTransitions).not.toContain('visibility');
+      }
+      const publishedSamples = await page.evaluate(
+        () =>
+          (
+            window as typeof window & {
+              __homePublishedSamples?: Array<{
+                pending: boolean;
+                visibility: string;
+                visibilityTransitions: string[];
+                ownerInert: boolean;
+                ownerOpacity: string;
+              }>;
+            }
+          ).__homePublishedSamples ?? []
+      );
+      expect(
+        publishedSamples,
+        'first published generation must expose all six ready roots'
+      ).toHaveLength(6);
+      for (const sample of publishedSamples) {
+        expect(sample).toMatchObject({
+          pending: false,
+          visibility: 'visible',
+          ownerInert: false,
+          ownerOpacity: '1',
+        });
         expect(sample.visibilityTransitions).not.toContain('visibility');
       }
       const revealedRoots = await home

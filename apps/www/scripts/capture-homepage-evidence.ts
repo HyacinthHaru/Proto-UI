@@ -15,6 +15,8 @@ import type { Browser, Page } from 'playwright-core';
 import { launchBrowser, startServer, stopServer } from '../src/content/docs/zh-cn/browser-harness';
 import {
   DOCUMENTATION_VARIANTS,
+  HOMEPAGE_KEYBOARD_TRANSITION,
+  HOMEPAGE_POINTER_RUNTIME_SEQUENCE,
   HOMEPAGE_ROUTES,
   HOMEPAGE_VIEWPORTS,
   layoutFailures,
@@ -76,7 +78,7 @@ const report: Record<string, unknown> & {
     repository: process.env.GITHUB_REPOSITORY,
   },
   procedure:
-    'Real Chromium, clean checkout, shared docs dev-server harness, real pointer/keyboard selection; no visual-state injection',
+    'Real Chromium, clean checkout, shared docs dev-server harness, real pointer/keyboard selection, passive input observation; no visual-state injection',
   scope:
     'Two localized homepages and Base Toggle / Shadcn Radio Group / Brutalist Tooltip docs, desktop/mobile, light/dark; actual controls, ownership, computed/platform fonts and overflow',
   limitations: [
@@ -178,7 +180,10 @@ async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): P
     await page.waitForFunction(
       // The portal itself can receive focus before Select's deferred selected-
       // item focus. Home/ArrowDown require an actual focused roving member.
-      (id) => Boolean(document.getElementById(id)?.querySelector('[role="option"]:focus')),
+      (id) =>
+        Boolean(
+          document.getElementById(id)?.querySelector('[role="option"][aria-selected="true"]:focus')
+        ),
       id
     );
     await page.keyboard.press('Home');
@@ -448,6 +453,44 @@ try {
           reducedMotion: 'reduce',
         });
         const page = await context.newPage();
+        await page.addInitScript(() => {
+          const events: Array<Record<string, unknown>> = [];
+          Object.defineProperty(window, '__protoEvidenceEvents', { value: events });
+          document.addEventListener(
+            'keydown',
+            (event) => {
+              queueMicrotask(() => {
+                const target = event.target instanceof Element ? event.target : null;
+                events.push({
+                  type: 'keydown',
+                  time: performance.now(),
+                  key: event.key,
+                  defaultPrevented: event.defaultPrevented,
+                  target: target?.tagName,
+                  role: target?.getAttribute('role'),
+                  text: target?.textContent?.trim().slice(0, 80),
+                });
+                if (events.length > 150) events.shift();
+              });
+            },
+            { passive: true }
+          );
+          document.addEventListener(
+            'focusin',
+            (event) => {
+              const target = event.target instanceof Element ? event.target : null;
+              events.push({
+                type: 'focusin',
+                time: performance.now(),
+                target: target?.tagName,
+                role: target?.getAttribute('role'),
+                text: target?.textContent?.trim().slice(0, 80),
+              });
+              if (events.length > 150) events.shift();
+            },
+            { passive: true }
+          );
+        });
         page.setDefaultTimeout(15_000);
         const pageErrors: string[] = [];
         const externalModules = new Map<string, number>();
@@ -487,10 +530,8 @@ try {
             report.failures.push(...failures.map((failure) => `${id}: ${failure}`));
           }
           evidence.initialOwnership = await ownership(page, 'wc');
-          for (const [index, runtime] of (
-            ['react', 'vue', 'vue2', 'wc', 'react', 'wc'] as const
-          ).entries()) {
-            await chooseRuntime(page, runtime, index === 1);
+          for (const [index, runtime] of HOMEPAGE_POINTER_RUNTIME_SEQUENCE.entries()) {
+            await chooseRuntime(page, runtime, false);
             const owners = await ownership(page, runtime);
             const focused = await runtimeTrigger(page).evaluate(
               (element) => document.activeElement === element
@@ -528,8 +569,7 @@ try {
             );
             (evidence.transitions as unknown[]).push({
               runtime,
-              input:
-                index === 1 ? 'focused control + keyboard Enter/Home/ArrowDown/Enter' : 'pointer',
+              input: 'pointer',
               owners,
               focusRestored: focused,
               nativeLinks: links,
@@ -564,6 +604,30 @@ try {
             );
             evidence.themeRoundTrip = [colorScheme, opposite, colorScheme];
           }
+          // Preserve independent pointer evidence for every runtime before the
+          // strict keyboard journey. Start from React so Home must move focus.
+          await chooseRuntime(page, HOMEPAGE_KEYBOARD_TRANSITION.from, false);
+          await ownership(page, HOMEPAGE_KEYBOARD_TRANSITION.from);
+          await chooseRuntime(page, HOMEPAGE_KEYBOARD_TRANSITION.to, true);
+          const keyboardOwners = await ownership(page, HOMEPAGE_KEYBOARD_TRANSITION.to);
+          const keyboardFocus = await runtimeTrigger(page).evaluate(
+            (element) => document.activeElement === element
+          );
+          assert.ok(keyboardFocus, 'Keyboard runtime selection restores trigger focus');
+          const keyboardLinks = await nativeLinks(page);
+          for (const group of keyboardLinks)
+            assert.deepEqual(
+              group.live,
+              group.fallback,
+              `${group.group}: keyboard transition preserves native links`
+            );
+          evidence.keyboardJourney = {
+            ...HOMEPAGE_KEYBOARD_TRANSITION,
+            input: 'focused control + keyboard Enter/Home/ArrowDown/Enter',
+            owners: keyboardOwners,
+            focusRestored: keyboardFocus,
+            nativeLinks: keyboardLinks,
+          };
           assert.deepEqual(pageErrors, [], 'No uncaught page errors');
           evidence.outcome = report.failures.some(
             (failure) => failure.startsWith(`${id}:`) || failure.startsWith(`${id} `)
@@ -581,6 +645,7 @@ try {
                     id: document.activeElement.id,
                     role: document.activeElement.getAttribute('role'),
                     text: document.activeElement.textContent?.trim().slice(0, 100),
+                    outerHTML: document.activeElement.outerHTML.slice(0, 1800),
                   }
                 : null,
               home: document.querySelector<HTMLElement>('[data-home-demo-options]')?.dataset,
@@ -593,6 +658,7 @@ try {
                   tabIndex: option.tabIndex,
                   selected: option.getAttribute('aria-selected'),
                   visible: option.getClientRects().length > 0,
+                  data: option.dataset,
                 })
               ),
             }))
@@ -600,6 +666,12 @@ try {
           report.failures.push(`${id}: ${error instanceof Error ? error.message : String(error)}`);
           await screenshot('failure-viewport').catch(() => {});
         } finally {
+          evidence.inputEvents = await page
+            .evaluate(
+              () =>
+                (window as Window & { __protoEvidenceEvents?: unknown }).__protoEvidenceEvents ?? []
+            )
+            .catch(() => []);
           evidence.externalModules = [...externalModules].map(([url, status]) => ({ url, status }));
           await context.close();
           await saveReport();

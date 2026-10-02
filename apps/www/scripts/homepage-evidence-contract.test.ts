@@ -7,6 +7,8 @@ import ts from 'typescript';
 import { parse } from 'yaml';
 import {
   HOMEPAGE_BASELINE,
+  HOMEPAGE_KEYBOARD_TRANSITION,
+  HOMEPAGE_POINTER_RUNTIME_SEQUENCE,
   HOMEPAGE_VIEWPORTS,
   layoutFailures,
   verifyRevision,
@@ -51,6 +53,26 @@ test('candidate layout failures distinguish overflow, missing samples and serif 
   );
 });
 
+test('pointer coverage reaches all four runtimes before strict non-first keyboard navigation', () => {
+  assert.deepEqual(
+    [...new Set(HOMEPAGE_POINTER_RUNTIME_SEQUENCE)].sort(),
+    ['react', 'vue', 'vue2', 'wc'].sort()
+  );
+  assert.equal(
+    HOMEPAGE_POINTER_RUNTIME_SEQUENCE.filter((runtime) => runtime === 'react').length,
+    2
+  );
+  assert.deepEqual(HOMEPAGE_KEYBOARD_TRANSITION, { from: 'react', to: 'vue' });
+  const source = readFileSync(new URL('capture-homepage-evidence.ts', import.meta.url), 'utf8');
+  assert.match(source, /chooseRuntime\(page, runtime, false\)/);
+  assert.ok(
+    source.indexOf('HOMEPAGE_POINTER_RUNTIME_SEQUENCE.entries()') <
+      source.indexOf('chooseRuntime(page, HOMEPAGE_KEYBOARD_TRANSITION.to, true)')
+  );
+  assert.match(source, /aria-selected="true"\]:focus/);
+  assert.match(source, /report\.failures\.push/);
+});
+
 test('CI preserves the pinned baseline, exact head, read-only permissions and artifact boundary', () => {
   const source = readFileSync(
     new URL('../../../.github/workflows/homepage-visual-evidence.yml', import.meta.url),
@@ -93,7 +115,9 @@ test('serialized browser probes do not depend on tsx keepNames helpers', () => {
       if (
         ts.isCallExpression(node) &&
         ts.isPropertyAccessExpression(node.expression) &&
-        ['evaluate', 'evaluateAll', 'waitForFunction'].includes(node.expression.name.text)
+        ['evaluate', 'evaluateAll', 'waitForFunction', 'addInitScript'].includes(
+          node.expression.name.text
+        )
       ) {
         const callback = node.arguments[0];
         if (callback && (ts.isArrowFunction(callback) || ts.isFunctionExpression(callback))) {

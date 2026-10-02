@@ -10,7 +10,7 @@ const { Button } = siteControlTags(family);
   data-theme-toggle
   data-variant={family === 'brutalist' ? 'surface' : 'ghost'}
   data-size="icon"
-  class="group/toggle extend-touch-target shrink-0"
+  class="group/toggle extend-touch-target shrink-0 [&_svg]:pointer-events-none"
   type="button"
   aria-label="Toggle color theme"
   aria-pressed="false"
@@ -78,8 +78,11 @@ const { Button } = siteControlTags(family);
     });
 
     // 响应全局变更（来自其它控件）
-    document.addEventListener('starlight-theme:change', (e) => {
-      render(e.detail.theme);
+    document.addEventListener('starlight-theme:change', () => {
+      // A projected click runs inside the native click dispatch. Keep that
+      // event's descendant target attached until the global router has seen
+      // it, rather than making it resemble an out-of-root portal click.
+      queueMicrotask(() => render(current()));
     });
 
     // Provider 主动触发的首帧对齐（可选）
