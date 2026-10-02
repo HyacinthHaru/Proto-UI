@@ -33,16 +33,24 @@ const whitepaperLabel =
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.125rem;
+    gap: 0.875rem;
     max-width: 64rem;
     margin-inline: auto;
-    padding: clamp(2.75rem, 6vw, 5rem) 1.25rem clamp(2.5rem, 5vw, 4rem);
+    padding: clamp(2rem, 4vw, 3rem) 1.25rem 2.5rem;
     text-align: center;
   }
 
   .homepage-hero :global(.homepage-hero__eyebrow) {
     font-size: 0.8125rem;
     color: var(--color-muted-foreground);
+  }
+
+  .homepage-hero :global(.homepage-hero__eyebrow .home-runtime-anchor),
+  .homepage-hero :global(.homepage-hero__eyebrow .home-actions-fallback a) {
+    max-width: calc(100vw - 3rem);
+    white-space: normal;
+    line-height: 1.5;
+    text-wrap: balance;
   }
 
   .homepage-hero h1 {
@@ -72,6 +80,7 @@ const whitepaperLabel =
   }
 
   .homepage-hero :global(.homepage-hero__actions) {
+    width: 100%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -79,11 +88,26 @@ const whitepaperLabel =
     padding-top: 0.25rem;
   }
 
+  .homepage-hero :global(.homepage-hero__actions [data-homepage-mount]) {
+    width: 100%;
+  }
+  .homepage-hero :global(.homepage-hero__actions .home-runtime-actions) {
+    justify-content: center;
+  }
+
   @media (max-width: 480px) {
     .homepage-hero {
       gap: 1rem;
       padding-inline: 1rem;
     }
+    .homepage-hero :global(.homepage-hero__eyebrow .home-runtime-anchor),
+    .homepage-hero :global(.homepage-hero__eyebrow .home-actions-fallback a) {
+      max-width: calc(100vw - 3rem);
+      white-space: normal;
+      line-height: 1.5;
+      text-wrap: balance;
+    }
+
     .homepage-hero h1 {
       max-width: 13ch;
     }

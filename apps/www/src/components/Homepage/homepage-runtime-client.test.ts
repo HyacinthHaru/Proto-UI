@@ -298,4 +298,30 @@ describe('Homepage page-owned runtime', () => {
     root.removeEventListener('click', preventTestNavigation);
     if (typeof cleanup === 'function') cleanup();
   });
+  it('uses the public icon-size Button prop for compact accessible header preferences', () => {
+    fixture();
+    const group = document.querySelector<HTMLElement>('[data-homepage-actions]')!;
+    group.dataset.homepageThemeIcon = 'true';
+    group.dataset.homepageThemeLabel = 'Toggle color theme';
+    const content = createHomepageContent(
+      {
+        root: group,
+        mount: group,
+        fallback: group,
+        ownerId: 'preferences',
+        links: [],
+        theme: true,
+        runtime: true,
+      },
+      'wc',
+      () => true
+    );
+    const button = content.root.kind === 'box' ? content.root.children?.[0] : null;
+    expect(
+      button && typeof button !== 'string' && button.kind === 'proto' ? button.props : null
+    ).toMatchObject({ size: 'icon', 'aria-label': 'Toggle color theme' });
+    expect(
+      button && typeof button !== 'string' && button.kind === 'proto' ? button.children : null
+    ).toEqual(['◐']);
+  });
 });

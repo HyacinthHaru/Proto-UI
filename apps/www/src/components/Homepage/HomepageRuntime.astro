@@ -11,6 +11,7 @@ const otherLocale = Object.keys(config.locales ?? {}).find((key) => key !== loca
 const actions = [
   {
     text: 'Proto UI',
+    attrs: { 'data-home-brand': '' },
     link: Astro.locals.starlightRoute.siteTitleHref,
     variant: 'minimal' as const,
   },
@@ -48,7 +49,8 @@ const actions = [
   data-status-loading={zh ? '准备页面控件' : 'Preparing page controls'}
   data-status-error={zh ? '切换失败，已保留可用页面' : 'Switch failed; usable page retained'}
 >
-  <HomeActions id="home-navigation" {actions} runtimeControl themeButton />
+  <HomeActions id="home-navigation" {actions} />
+  <HomeActions id="home-preferences" actions={[]} runtimeControl themeButton themeIcon />
   <div class="home-runtime-shell" data-homepage-shell-tools>
     <slot />
   </div>
@@ -67,39 +69,32 @@ const actions = [
 </script>
 <style is:global>
   .home-runtime-header {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: center;
-    gap: 0.3rem 1rem;
+    gap: 0.5rem 1rem;
     width: 100%;
     max-width: 86rem;
-    padding: 0.6rem 2rem;
+    padding: 0.65rem 2rem;
     margin-inline: auto;
-  }
-  .home-runtime-header #home-navigation {
-    flex: 1;
   }
   .home-runtime-header .pui-projection-scope {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem 1rem;
+    gap: 0.35rem;
+  }
+  .home-runtime-header #home-preferences {
+    min-height: 2.25rem;
   }
   .home-runtime-header .pui-projection-content {
-    order: -1;
-    flex: 1;
+    min-width: 0;
   }
   .home-runtime-header .pui-projection-controls {
-    width: 11rem;
+    width: 10rem;
+    flex: none;
   }
-  .home-runtime-header .pui-projection-control-label {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-muted-foreground);
-    margin-bottom: 0.2rem;
-  }
-  .home-runtime-header .home-runtime-actions {
+  .home-runtime-header .home-runtime-actions,
+  .home-runtime-header .home-actions-fallback {
     gap: 0.2rem;
   }
   .home-runtime-header .home-runtime-anchor,
@@ -108,27 +103,60 @@ const actions = [
     padding: 0.3rem 0.6rem;
     font-size: 0.82rem;
   }
+  .home-runtime-header [data-home-brand] {
+    font-size: 1rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+  }
   .home-runtime-shell {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
-  .home-runtime-status {
-    flex-basis: 100%;
-    font-size: 0.75rem;
-    color: var(--color-muted-foreground);
-    text-align: right;
+  /* These labels belong to the Website composition, not a Prototype surface. */
+  .home-runtime-status,
+  .home-runtime-header .pui-projection-control-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
   @media (max-width: 50rem) {
     .home-runtime-header {
-      padding: 0.45rem 0.8rem;
-      gap: 0.35rem;
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding: 0.5rem 0;
+      gap: 0.45rem 0.35rem;
     }
-    .home-runtime-header .pui-projection-controls {
-      width: 10rem;
+    .home-runtime-header #home-navigation {
+      grid-column: 1 / -1;
+    }
+    .home-runtime-header #home-preferences {
+      justify-self: start;
+    }
+    .home-runtime-header .home-runtime-anchor,
+    .home-runtime-header .home-actions-fallback a {
+      padding-inline: 0.5rem;
     }
     .home-runtime-shell {
-      margin-left: auto;
+      justify-self: end;
+    }
+    .home-runtime-shell > :last-child {
+      gap: 0;
+    }
+  }
+  @media (max-width: 23rem) {
+    /* Keep every native link and 32px shell target when all utilities cannot fit. */
+    .home-runtime-header #home-preferences {
+      grid-column: 1 / -1;
+    }
+    .home-runtime-shell {
+      grid-column: 1 / -1;
+      justify-self: start;
     }
   }
 </style>

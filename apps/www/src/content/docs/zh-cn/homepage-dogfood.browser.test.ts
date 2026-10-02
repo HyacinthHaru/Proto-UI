@@ -223,6 +223,38 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       const page = await context.newPage();
       await page.goto(`${baseUrl}/zh-cn/`);
       await ready(page, 'wc');
+      for (const width of [390, 320]) {
+        await page.setViewportSize({ width, height: 844 });
+        const geometry = await page.evaluate(() => {
+          const header = document
+            .querySelector<HTMLElement>('[data-homepage-runtime]')!
+            .getBoundingClientRect();
+          const nav = document
+            .querySelector<HTMLElement>('#home-navigation')!
+            .getBoundingClientRect();
+          const status = document
+            .querySelector<HTMLElement>('[data-homepage-runtime-status]')!
+            .getBoundingClientRect();
+          const brand = document.querySelector<HTMLElement>(
+            '[data-homepage-mount] [data-home-brand]'
+          )!;
+          return {
+            width: header.width,
+            navWidth: nav.width,
+            height: header.height,
+            statusArea: status.width * status.height,
+            brandSize: getComputedStyle(brand).fontSize,
+          };
+        });
+        expect(geometry.navWidth, `${width}px full-width navigation`).toBeGreaterThanOrEqual(
+          geometry.width * 0.95
+        );
+        expect(geometry.height, `${width}px compact header`).toBeLessThan(
+          width === 390 ? 150 : 190
+        );
+        expect(geometry.statusArea).toBeLessThanOrEqual(1);
+        expect(geometry.brandSize).toBe('16px');
+      }
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
         true
       );
@@ -234,4 +266,104 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       await context.close();
     }
   }, 90_000);
+  it('retains saved React across cold library routes and exercises actual family chrome', async () => {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    const page = await context.newPage();
+    try {
+      await page.goto(`${baseUrl}/zh-cn/`, { waitUntil: 'networkidle' });
+      await ready(page, 'wc');
+      await switchRuntime(page, 'react');
+      expect(await page.evaluate(() => localStorage.getItem('preferred-prototypes-adapter'))).toBe(
+        'react'
+      );
+      for (const route of [
+        {
+          path: '/zh-cn/ui-libraries/brutalist/components/tooltip/',
+          family: 'brutalist',
+          component: 'tooltip',
+        },
+        {
+          path: '/zh-cn/ui-libraries/shadcn/radio-group/',
+          family: 'shadcn',
+          component: 'radio-group',
+        },
+      ]) {
+        await page.goto(`${baseUrl}${route.path}`, { waitUntil: 'networkidle' });
+        const preview = page
+          .locator('[data-previewer-id][data-projection-mode="fixed-family"]')
+          .first();
+        await preview.scrollIntoViewIfNeeded();
+        const scope = preview.locator(
+          '[data-projection-generation-state="active"] [data-projection-scope]'
+        );
+        await expect.poll(() => scope.getAttribute('data-projection-runtime')).toBe('react');
+        expect(await page.locator('html').getAttribute('data-site-library-family')).toBe(
+          route.family
+        );
+        expect(await preview.getAttribute('data-projection-family')).toBe(route.family);
+        expect(await preview.getAttribute('data-projection-component')).toBe(route.component);
+        const adapter = page.locator('header [data-adapter-select-root]').first();
+        const language = page.locator('header [data-language-select-root]').first();
+        const theme = page.locator('header [data-theme-toggle]').first();
+        for (const control of [adapter, language]) {
+          expect(await control.evaluate((element) => element.localName)).toBe(
+            `wc-${route.family}-select-root`
+          );
+          expect(await control.getAttribute('data-pui-root')).not.toBeNull();
+        }
+        expect(await theme.evaluate((element) => element.localName)).toBe(
+          `wc-${route.family}-button`
+        );
+        const chooseAdapter = async (value: 'vue' | 'react') => {
+          const trigger = adapter.locator('[role="combobox"]');
+          await trigger.click();
+          const id = await trigger.getAttribute('aria-controls');
+          expect(id).toBeTruthy();
+          const portal = page.locator(`[id=${JSON.stringify(id)}]`);
+          await portal.waitFor({ state: 'visible' });
+          expect(await portal.getAttribute('data-site-control-family')).toBe(route.family);
+          expect(await portal.getAttribute('data-pui-root')).not.toBeNull();
+          await portal
+            .getByRole('option', { name: value === 'vue' ? 'Vue' : 'React', exact: true })
+            .click();
+          await expect.poll(() => scope.getAttribute('data-projection-runtime')).toBe(value);
+        };
+        await chooseAdapter('vue');
+        await chooseAdapter('react');
+        const languageTrigger = language.locator('[role="combobox"]');
+        await languageTrigger.click();
+        const languagePortalId = await languageTrigger.getAttribute('aria-controls');
+        const languagePortal = page.locator(`[id=${JSON.stringify(languagePortalId)}]`);
+        await languagePortal.waitFor({ state: 'visible' });
+        expect(await languagePortal.getAttribute('data-site-control-family')).toBe(route.family);
+        expect(await languagePortal.getByRole('option').count()).toBeGreaterThan(1);
+        await page.keyboard.press('Escape');
+        await languagePortal.waitFor({ state: 'hidden' });
+        const beforeTheme = await page.locator('html').getAttribute('data-theme');
+        await page.evaluate(() => {
+          const state = window as typeof window & { __siteThemeChanges?: number };
+          state.__siteThemeChanges = 0;
+          document.addEventListener('starlight-theme:change', () => {
+            state.__siteThemeChanges = (state.__siteThemeChanges ?? 0) + 1;
+          });
+        });
+        await theme.click();
+        await expect
+          .poll(() => page.locator('html').getAttribute('data-theme'))
+          .toBe(beforeTheme === 'dark' ? 'light' : 'dark');
+        expect(
+          await page.evaluate(
+            () => (window as typeof window & { __siteThemeChanges?: number }).__siteThemeChanges
+          )
+        ).toBe(1);
+        expect(
+          await page.evaluate(() => localStorage.getItem('preferred-prototypes-adapter'))
+        ).toBe('react');
+        expect(await preview.getAttribute('data-projection-family')).toBe(route.family);
+        expect(await preview.getAttribute('data-projection-component')).toBe(route.component);
+      }
+    } finally {
+      await context.close();
+    }
+  }, 180_000);
 });

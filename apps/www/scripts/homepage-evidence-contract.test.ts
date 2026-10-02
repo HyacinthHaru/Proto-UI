@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { runInNewContext } from 'node:vm';
+import { transformSync } from 'esbuild';
+import ts from 'typescript';
 import { parse } from 'yaml';
 import {
   HOMEPAGE_BASELINE,
@@ -74,4 +77,44 @@ test('CI preserves the pinned baseline, exact head, read-only permissions and ar
     .at(-1);
   assert.equal(artifact.with.path, '${{ runner.temp }}/homepage-evidence');
   assert.equal(artifact.if, 'always()');
+});
+
+test('serialized browser probes do not depend on tsx keepNames helpers', () => {
+  let inspected = 0;
+  for (const file of ['capture-homepage-evidence.ts', 'capture-documentation-evidence.ts']) {
+    const source = ts.createSourceFile(
+      file,
+      readFileSync(new URL(file, import.meta.url), 'utf8'),
+      ts.ScriptTarget.ES2022,
+      true,
+      ts.ScriptKind.TS
+    );
+    const visit = (node: ts.Node) => {
+      if (
+        ts.isCallExpression(node) &&
+        ts.isPropertyAccessExpression(node.expression) &&
+        ['evaluate', 'evaluateAll', 'waitForFunction'].includes(node.expression.name.text)
+      ) {
+        const callback = node.arguments[0];
+        if (callback && (ts.isArrowFunction(callback) || ts.isFunctionExpression(callback))) {
+          const compiled = transformSync(`const probe = ${callback.getText(source)};`, {
+            loader: 'ts',
+            format: 'cjs',
+            target: 'es2022',
+            keepNames: true,
+          }).code;
+          const probe = runInNewContext(`${compiled}\nprobe;`);
+          assert.doesNotMatch(
+            String(probe),
+            /\b__name\s*\(/,
+            `${file}:${source.getLineAndCharacterOfPosition(node.pos).line + 1} must be self-contained when Playwright serializes it`
+          );
+          inspected++;
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(source);
+  }
+  assert.ok(inspected >= 15, 'Inspect the actual browser callbacks, not a synthetic subset');
 });

@@ -132,25 +132,27 @@ export async function captureDocumentationEvidence({
           await screenshot('initial-viewport');
           await screenshot('initial-full', true);
           const surfaces = await page.evaluate(() => {
-            const geometry = (element: HTMLElement) => {
-              const style = getComputedStyle(element);
-              const rect = element.getBoundingClientRect();
-              return {
-                tag: element.tagName,
-                id: element.id,
-                class: element.className,
-                visible: rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden',
-                x: rect.x,
-                y: rect.y,
-                width: rect.width,
-                height: rect.height,
-                fontFamily: style.fontFamily,
-                color: style.color,
-                background: style.backgroundColor,
-                border: style.border,
-                radius: style.borderRadius,
-                boxShadow: style.boxShadow,
-              };
+            const helpers = {
+              geometry(element: HTMLElement) {
+                const style = getComputedStyle(element);
+                const rect = element.getBoundingClientRect();
+                return {
+                  tag: element.tagName,
+                  id: element.id,
+                  class: element.className,
+                  visible: rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden',
+                  x: rect.x,
+                  y: rect.y,
+                  width: rect.width,
+                  height: rect.height,
+                  fontFamily: style.fontFamily,
+                  color: style.color,
+                  background: style.backgroundColor,
+                  border: style.border,
+                  radius: style.borderRadius,
+                  boxShadow: style.boxShadow,
+                };
+              },
             };
             const parts = [
               'header',
@@ -183,14 +185,14 @@ export async function captureDocumentationEvidence({
               geometry: parts.flatMap((selector) =>
                 [...document.querySelectorAll<HTMLElement>(selector)].map((element) => ({
                   selector,
-                  ...geometry(element),
+                  ...helpers.geometry(element),
                 }))
               ),
               globalControls: [
                 ...document.querySelectorAll<HTMLElement>('[data-site-control-family]'),
               ].map((element) => ({
                 family: element.dataset.siteControlFamily,
-                ...geometry(element),
+                ...helpers.geometry(element),
                 puiRoots: [...element.querySelectorAll<HTMLElement>('[data-pui-root]')].map(
                   (root) => ({
                     tag: root.tagName,
@@ -206,7 +208,7 @@ export async function captureDocumentationEvidence({
                 prototype:
                   root.getAttribute('data-projection-prototype') ||
                   root.getAttribute('data-prototype'),
-                ...geometry(root),
+                ...helpers.geometry(root),
               })),
               nativeLinks: [
                 ...document.querySelectorAll<HTMLAnchorElement>(

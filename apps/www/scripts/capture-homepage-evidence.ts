@@ -77,7 +77,7 @@ const report: Record<string, unknown> & {
   limitations: [
     'Chromium only; screenshots require visual review',
     'No claim of complete assistive-technology or browser-engine parity',
-    'Failure/stale-candidate/disposal coverage is in the separate homepage runtime regression suite',
+    'Failure, stale-candidate and disposal behavior are outside this capture probe; consult separate runtime regression results',
   ],
   cases: [],
   failures: [],
@@ -90,6 +90,8 @@ const HOME = '[data-home-demo-options]';
 const RUNTIME_LABELS = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' } as const;
 type Runtime = keyof typeof RUNTIME_LABELS;
 const fontSelectors = [
+  { name: 'html', selector: 'html' },
+  { name: 'body', selector: 'body' },
   { name: 'heading', selector: 'h1' },
   { name: 'tagline', selector: '.homepage-hero__tagline, h1[data-page-title] + div' },
   {
@@ -110,6 +112,9 @@ const fontSelectors = [
     selector: '[data-home-demo-options] [data-projection-control="component"] [role="combobox"]',
   },
   { name: 'toolbar-label', selector: '.pui-projection-control-label' },
+  { name: 'preview-intro-title', selector: '.home-demo-previewer__intro-title' },
+  { name: 'preview-status', selector: '.home-demo-previewer__status' },
+  { name: 'research-lead', selector: '.home-demo-previewer__research-lead' },
   { name: 'demo', selector: '[data-home-demo-host] [data-projection-content] [data-pui-root]' },
 ];
 
@@ -156,15 +161,37 @@ function runtimeTrigger(page: Page) {
 
 async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): Promise<void> {
   const trigger = runtimeTrigger(page);
-  await trigger.click();
+  if (keyboard) {
+    await trigger.focus();
+    await page.keyboard.press('Enter');
+  } else await trigger.click();
   const id = await trigger.getAttribute('aria-controls');
   assert.ok(id, 'Runtime selector must control an identifiable option portal');
   const portal = page.locator(`[id=${JSON.stringify(id)}]`);
   await portal.waitFor({ state: 'visible' });
   if (keyboard) {
+    await page.waitForFunction(
+      (id) => document.getElementById(id)?.contains(document.activeElement),
+      id
+    );
     await page.keyboard.press('Home');
-    for (let index = 0; index < Object.keys(RUNTIME_LABELS).indexOf(runtime); index++)
+    await page.waitForFunction(
+      ([id, label]) =>
+        document.getElementById(id)?.querySelector('[role="option"]:focus')?.textContent?.trim() ===
+        label,
+      [id, RUNTIME_LABELS.wc]
+    );
+    for (let index = 0; index < Object.keys(RUNTIME_LABELS).indexOf(runtime); index++) {
       await page.keyboard.press('ArrowDown');
+      await page.waitForFunction(
+        ([id, label]) =>
+          document
+            .getElementById(id)
+            ?.querySelector('[role="option"]:focus')
+            ?.textContent?.trim() === label,
+        [id, Object.values(RUNTIME_LABELS)[index + 1]!]
+      );
+    }
     await page.keyboard.press('Enter');
   } else {
     await portal.getByRole('option', { name: RUNTIME_LABELS[runtime], exact: true }).click();
@@ -259,6 +286,47 @@ async function measure(page: Page, samples = fontSelectors) {
       bodyWidth: document.body.scrollWidth,
       theme: document.documentElement.dataset.theme,
       heading: document.querySelector('h1')?.textContent?.trim(),
+      fontVariables: {
+        fontSans: getComputedStyle(document.documentElement).getPropertyValue('--font-sans'),
+        colorFontGeistSans: getComputedStyle(document.documentElement).getPropertyValue(
+          '--color-font-geist-sans'
+        ),
+      },
+      fontFaces: [...document.fonts].map((face) => ({
+        family: face.family,
+        status: face.status,
+        weight: face.weight,
+        style: face.style,
+      })),
+      surfaceGeometry: [
+        'header',
+        '.homepage-hero',
+        'section:has(h1)',
+        'h1',
+        '[data-home-demo-options]',
+        '.home-demo-previewer__intro-title',
+        '.home-demo-previewer__status',
+        '.home-demo-previewer__research-lead',
+      ].flatMap((selector) =>
+        [...document.querySelectorAll<HTMLElement>(selector)].map((element) => {
+          const rect = element.getBoundingClientRect();
+          const style = getComputedStyle(element);
+          return {
+            selector,
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height,
+            margin: style.margin,
+            padding: style.padding,
+            gap: style.gap,
+            fontFamily: style.fontFamily,
+            fontSize: style.fontSize,
+            lineHeight: style.lineHeight,
+            whiteSpace: style.whiteSpace,
+          };
+        })
+      ),
       fonts: samples.flatMap(({ name, selector }) => {
         const matches = [...document.querySelectorAll<HTMLElement>(selector)];
         const matchIndex = matches.findIndex(
@@ -325,17 +393,20 @@ async function measure(page: Page, samples = fontSelectors) {
 async function nativeLinks(page: Page) {
   return page.locator('[data-homepage-actions]').evaluateAll((groups) =>
     groups.map((group) => {
-      const links = (selector: string) =>
-        [...group.querySelectorAll<HTMLAnchorElement>(selector)].map((link) => ({
-          text: link.textContent?.trim(),
-          href: link.getAttribute('href'),
-          target: link.getAttribute('target'),
-          rel: link.getAttribute('rel'),
-        }));
+      const helpers = {
+        links(selector: string) {
+          return [...group.querySelectorAll<HTMLAnchorElement>(selector)].map((link) => ({
+            text: link.textContent?.trim(),
+            href: link.getAttribute('href'),
+            target: link.getAttribute('target'),
+            rel: link.getAttribute('rel'),
+          }));
+        },
+      };
       return {
         group: group.id,
-        fallback: links('[data-homepage-fallback] a[href]'),
-        live: links('[data-homepage-mount] [data-projection-content] a[href]'),
+        fallback: helpers.links('[data-homepage-fallback] a[href]'),
+        live: helpers.links('[data-homepage-mount] [data-projection-content] a[href]'),
       };
     })
   );
@@ -449,7 +520,8 @@ try {
             );
             (evidence.transitions as unknown[]).push({
               runtime,
-              input: index === 1 ? 'pointer-open + keyboard Home/ArrowDown/Enter' : 'pointer',
+              input:
+                index === 1 ? 'focused control + keyboard Enter/Home/ArrowDown/Enter' : 'pointer',
               owners,
               focusRestored: focused,
               nativeLinks: links,
@@ -528,7 +600,7 @@ try {
     );
   await writeFile(
     path.join(out, 'index.html'),
-    `<!doctype html><html lang="en"><meta charset="utf-8"><title>Homepage ${revisionKind} evidence</title><style>body{font:16px system-ui;margin:2rem;max-width:100rem}img{max-width:100%;height:auto;border:1px solid #bbb}figure{margin:2rem 0}code{overflow-wrap:anywhere}</style><h1>Actual homepage: ${revisionKind}</h1><p>Revision <code>${revision}</code>. Browser ${escape(report.browserVersion)}. <a href="metrics.json">Measured results and exact procedure</a>.</p>${report.cases.map((item) => `<section><h2>${escape(item.id)}: ${escape(item.outcome)}</h2>${(item.screenshots as string[]).map((file) => `<figure><figcaption>${escape(file)}</figcaption><a href="${escape(file)}"><img loading="lazy" src="${escape(file)}" alt="Actual rendered homepage ${escape(file)}"></a></figure>`).join('')}</section>`).join('')}</html>`
+    `<!doctype html><html lang="en"><meta charset="utf-8"><title>Website ${revisionKind} evidence</title><style>body{font:16px system-ui;margin:2rem;max-width:100rem}img{max-width:100%;height:auto;border:1px solid #bbb}figure{margin:2rem 0}code{overflow-wrap:anywhere}</style><h1>Actual website pages: ${revisionKind}</h1><p>Revision <code>${revision}</code>. Browser ${escape(report.browserVersion)}. <a href="metrics.json">Measured results and exact procedure</a>.</p>${report.cases.map((item) => `<section><h2>${escape(item.id)}: ${escape(item.outcome)}</h2>${(item.screenshots as string[]).map((file) => `<figure><figcaption>${escape(file)}</figcaption><a href="${escape(file)}"><img loading="lazy" src="${escape(file)}" alt="Actual rendered page ${escape(file)}"></a></figure>`).join('')}</section>`).join('')}</html>`
   );
 }
 console.log(

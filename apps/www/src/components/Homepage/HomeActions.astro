@@ -12,8 +12,16 @@ interface Props {
   class?: string;
   runtimeControl?: boolean;
   themeButton?: boolean;
+  themeIcon?: boolean;
 }
-const { id, actions, class: className, runtimeControl = false, themeButton = false } = Astro.props;
+const {
+  id,
+  actions,
+  class: className,
+  runtimeControl = false,
+  themeButton = false,
+  themeIcon = false,
+} = Astro.props;
 const locale = Astro.locals.starlightRoute.locale;
 const themeLabel = locale === 'zh-cn' ? '切换主题' : 'Toggle theme';
 ---
@@ -24,6 +32,7 @@ const themeLabel = locale === 'zh-cn' ? '切换主题' : 'Toggle theme';
   data-homepage-actions
   data-homepage-controls={runtimeControl ? 'runtime' : undefined}
   data-homepage-theme-label={themeLabel}
+  data-homepage-theme-icon={themeIcon ? 'true' : undefined}
 >
   <div class="home-actions-fallback" data-homepage-fallback>
     {
@@ -35,8 +44,8 @@ const themeLabel = locale === 'zh-cn' ? '切换主题' : 'Toggle theme';
     }
     {
       themeButton && (
-        <button type="button" data-homepage-theme>
-          {themeLabel}
+        <button type="button" data-homepage-theme aria-label={themeLabel}>
+          {themeIcon ? '◐' : themeLabel}
         </button>
       )
     }

@@ -41,6 +41,7 @@ const ANCHOR_ATTRIBUTES = [
   'download',
   'hreflang',
   'data-home-locale',
+  'data-home-brand',
 ] as const;
 type Group = {
   root: HTMLElement;
@@ -117,9 +118,14 @@ export function createHomepageContent(
       ref: 'home-theme',
       props: {
         variant: family === 'shadcn' ? 'ghost' : 'surface',
+        size: group.root.dataset.homepageThemeIcon === 'true' ? 'icon' : 'default',
         'aria-label': group.root.dataset.homepageThemeLabel || 'Toggle theme',
       },
-      children: [group.root.dataset.homepageThemeLabel || 'Toggle theme'],
+      children: [
+        group.root.dataset.homepageThemeIcon === 'true'
+          ? '◐'
+          : group.root.dataset.homepageThemeLabel || 'Toggle theme',
+      ],
     });
   return {
     type: 'demo',
