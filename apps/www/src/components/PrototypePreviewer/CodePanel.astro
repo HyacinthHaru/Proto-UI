@@ -1,4 +1,7 @@
 ---
+import { resolveSiteLibraryFamily, siteControlTags } from '../site-library-family';
+const siteFamily = resolveSiteLibraryFamily(Astro.url.pathname);
+const { Button } = siteControlTags(siteFamily);
 import { highlightCode, type CodeLang } from './code-highlight';
 
 export type { CodeLang } from './code-highlight';
@@ -27,8 +30,9 @@ const highlighted = await highlightCode(code, lang);
   data-code-shell
 >
   <div class="group relative min-w-0 max-w-full min-h-12 p-2" data-code-inner>
-    <wc-shadcn-button
-      data-site-shadcn-button
+    <Button
+      data-site-button
+      data-site-control-family={siteFamily}
       data-variant="outline"
       data-size="icon"
       type="button"
@@ -63,7 +67,7 @@ const highlighted = await highlightCode(code, lang);
         </svg>
       </span>
       <span class="sr-only">Copy code</span>
-    </wc-shadcn-button>
+    </Button>
 
     <div class="min-w-0 max-w-full" data-code-content set:html={highlighted} />
 
@@ -74,28 +78,29 @@ const highlighted = await highlightCode(code, lang);
     >
     </div>
 
-    <wc-shadcn-button
-      data-site-shadcn-button
+    <Button
+      data-site-button
+      data-site-control-family={siteFamily}
       data-variant="outline"
       data-size="sm"
-      class="absolute left-1/2 bottom-1/2 -translate-x-1/2 translate-y-1/2 z-10 py-1.5 px-4 text-[0.8125rem] font-medium rounded-lg border border-border bg-background text-foreground cursor-pointer inline-flex items-center gap-1.5 shadow-sm transition-colors duration-150 hover:bg-muted"
+      class="absolute left-1/2 bottom-1/2 -translate-x-1/2 translate-y-1/2 z-10"
       data-code-toggle
       aria-expanded="false"
       aria-label="展开代码"
     >
       View code
-    </wc-shadcn-button>
+    </Button>
   </div>
 </figure>
 
 <script>
-  import { initSiteShadcnControls } from '../site-shadcn-controls';
+  import { initSiteControls } from '../site-shadcn-controls';
   import { initCodePanels } from './code-panel-client';
 
-  initSiteShadcnControls(document);
+  initSiteControls(document);
   initCodePanels(document);
   document.addEventListener('astro:page-load', () => {
-    initSiteShadcnControls(document);
+    initSiteControls(document);
     initCodePanels(document);
   });
 </script>

@@ -14,7 +14,8 @@ vi.mock('../PrototypePreviewer/projection-theme', () => ({
   resolveProjectionThemeSurfaceStyle: () => ({ '--pui-background': '#fff' }),
   watchProjectionThemeSurfaceStyle: fakes.watchTheme,
 }));
-import { initHomepageRuntime } from './homepage-runtime-client';
+import { createHomepageContent, initHomepageRuntime } from './homepage-runtime-client';
+import * as siteFamily from '../site-library-family';
 
 type Handle = NonNullable<ReturnType<typeof initHomepageRuntime>>;
 let handle: Handle | undefined;
@@ -230,5 +231,71 @@ describe('Homepage page-owned runtime', () => {
     expect(actions.activate).not.toHaveBeenCalled();
     expect(header.dispose).toHaveBeenCalledOnce();
     expect(actions.dispose).toHaveBeenCalledOnce();
+  });
+  it('rolls back every site family marker when publication fails, including absent markers', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const root = fixture(true);
+    document.documentElement.removeAttribute('data-site-library-family');
+    const scope = document.createElement('div');
+    scope.setAttribute('data-site-family-scope', '');
+    document.body.append(scope);
+    const apply = siteFamily.applySiteLibraryFamily;
+    vi.spyOn(siteFamily, 'applySiteLibraryFamily').mockImplementationOnce((doc, family) => {
+      apply(doc, family);
+      throw new Error('publication failed');
+    });
+    handle = initHomepageRuntime(root);
+    await settle();
+    expect(root.dataset.runtimeState).toBe('error');
+    expect(document.documentElement.hasAttribute('data-site-library-family')).toBe(false);
+    expect(scope.hasAttribute('data-site-library-family')).toBe(false);
+    expect(document.querySelector<HTMLElement>('[data-homepage-fallback]')!.hidden).toBe(false);
+  });
+
+  it('gates stale native-link events without intercepting current native navigation', () => {
+    const root = fixture();
+    const group = document.querySelector<HTMLElement>('[data-homepage-actions]')!;
+    const anchor = group.querySelector<HTMLAnchorElement>('a')!;
+    let active = false;
+    const content = createHomepageContent(
+      {
+        root: group,
+        mount: group,
+        fallback: group,
+        ownerId: 'test',
+        links: [anchor],
+        theme: false,
+        runtime: false,
+      },
+      'wc',
+      () => active
+    );
+    const cleanup = content.setup?.({
+      host: group,
+      refs: {},
+      api: {
+        call() {},
+        getExposes() {
+          return undefined;
+        },
+        setProps() {},
+      },
+    });
+    const stale = new MouseEvent('click', { bubbles: true, cancelable: true, ctrlKey: true });
+    anchor.dispatchEvent(stale);
+    expect(stale.defaultPrevented).toBe(true);
+    active = true;
+    // Capture at the caller only to keep this unit test from navigating its document.
+    const current = new MouseEvent('click', { bubbles: true, cancelable: true, ctrlKey: true });
+    let nativeAllowed = false;
+    const preventTestNavigation = (event: Event) => {
+      nativeAllowed = !event.defaultPrevented;
+      event.preventDefault();
+    };
+    root.addEventListener('click', preventTestNavigation);
+    anchor.dispatchEvent(current);
+    expect(nativeAllowed).toBe(true);
+    root.removeEventListener('click', preventTestNavigation);
+    if (typeof cleanup === 'function') cleanup();
   });
 });

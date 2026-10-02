@@ -127,6 +127,65 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         await page.keyboard.press('Escape');
         expect(await trigger.evaluate((element) => document.activeElement === element)).toBe(true);
       }
+      const chooseDemo = async (control: 'family' | 'component', label: string) => {
+        const trigger = page.locator(
+          `[data-home-demo-options] [data-projection-control="${control}"] [role="combobox"]`
+        );
+        await trigger.click();
+        const id = await trigger.getAttribute('aria-controls');
+        await page
+          .locator(`[id=${JSON.stringify(id)}]`)
+          .getByRole('option', { name: label, exact: true })
+          .click();
+      };
+      await chooseDemo('component', 'Tabs');
+      await page.waitForFunction(
+        () =>
+          document.querySelector<HTMLElement>('[data-home-demo-options]')?.dataset
+            .projectionComponent === 'tabs'
+      );
+      for (const family of ['brutalist', 'shadcn'] as const) {
+        await chooseDemo('family', family === 'brutalist' ? 'Brutalist' : 'Shadcn');
+        await page.waitForFunction(
+          (target) =>
+            document.querySelector<HTMLElement>('[data-homepage-runtime]')?.dataset.family ===
+            target,
+          family
+        );
+        for (const runtime of RUNTIMES) {
+          await switchRuntime(page, runtime);
+          const coordinates = await page.evaluate(() => {
+            const root = document.querySelector<HTMLElement>('[data-homepage-runtime]')!;
+            const demo = document.querySelector<HTMLElement>('[data-home-demo-options]')!;
+            const scopes = [
+              ...document.querySelectorAll<HTMLElement>(
+                '[data-homepage-mount] [data-projection-generation-state="active"] [data-projection-scope], [data-home-demo-host] [data-projection-generation-state="active"] [data-projection-scope]'
+              ),
+            ];
+            return {
+              family: root.dataset.family,
+              component: demo.dataset.projectionComponent,
+              pageGeneration: root.dataset.runtimeGeneration,
+              demoGeneration: demo.dataset.projectionGeneration,
+              source: demo.querySelector('a[data-home-demo-source]')?.getAttribute('href'),
+              scopes: scopes.map((scope) => ({
+                runtime: scope.dataset.projectionRuntime,
+                family: scope.dataset.projectionFamily,
+                generation: scope.dataset.projectionGeneration,
+              })),
+            };
+          });
+          expect(coordinates.family).toBe(family);
+          expect(coordinates.component).toBe('tabs');
+          expect(coordinates.demoGeneration).toBe(coordinates.pageGeneration);
+          expect(coordinates.source).toContain(`demo-${family}-tabs.demo.ts`);
+          for (const scope of coordinates.scopes) {
+            expect(scope.runtime).toBe(runtime);
+            expect(scope.family).toBe(family);
+            expect(scope.generation).toBe(coordinates.pageGeneration);
+          }
+        }
+      }
       expect(errors).toEqual([]);
       const link = page
         .locator('[data-homepage-runtime] [data-projection-generation-state="active"] a')

@@ -127,10 +127,11 @@ export function createHomepageContent(
     setup(context) {
       const cleanupTheme = bindThemeButton(context, runtime, isActive);
       const listeners: Array<{ link: Element; listener: EventListener }> = [];
-      for (const link of context.host.querySelectorAll<HTMLAnchorElement>('a[data-home-locale]')) {
+      for (const link of context.host.querySelectorAll<HTMLAnchorElement>('a[href]')) {
         const listener: EventListener = (event) => {
           if (!isActive()) {
             event.preventDefault();
+            event.stopImmediatePropagation();
             return;
           }
           const locale = link.getAttribute('data-home-locale');
@@ -218,7 +219,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       onValueChange: requestRuntime,
     },
     family: {
-      label: root.dataset.familyLabel || 'Page library',
+      label: root.dataset.familyLabel || demo?.root.dataset.familyLabel || 'Page library',
       options: [
         { value: 'shadcn', label: 'Shadcn' },
         { value: 'brutalist', label: 'Brutalist' },
@@ -319,7 +320,10 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       const previous = activeCandidates;
       const previousFamily = activeFamily;
       const previousComponent = committedComponent;
-      const previousSiteFamily = document.documentElement.dataset.siteLibraryFamily;
+      const previousSiteMarkers = [
+        document.documentElement,
+        ...document.querySelectorAll<HTMLElement>('[data-site-family-scope]'),
+      ].map((element) => ({ element, value: element.getAttribute('data-site-library-family') }));
       const hidden = groups.map((group) => group.fallback.hidden);
       const previousAttributes = [
         'data-runtime-generation',
@@ -352,9 +356,10 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
             if (value === null) root.removeAttribute(name);
             else root.setAttribute(name, value);
           }
-          if (previousSiteFamily === 'shadcn' || previousSiteFamily === 'brutalist')
-            applySiteLibraryFamily(document, previousSiteFamily);
-          else delete document.documentElement.dataset.siteLibraryFamily;
+          for (const { element, value } of previousSiteMarkers) {
+            if (value === null) element.removeAttribute('data-site-library-family');
+            else element.setAttribute('data-site-library-family', value);
+          }
           if (status) status.textContent = previousStatus;
           demoPublication?.rollback();
         },

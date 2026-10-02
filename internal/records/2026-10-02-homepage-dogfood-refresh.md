@@ -21,3 +21,23 @@ The six presentation objectives are consistent sans-serif inheritance, a shorter
 Capture the actual baseline and candidate at 1440 × 1000 and 390 × 844, light/dark, with computed font family and overflow measurements. Exercise the real selector and inspect rendered runtime/owner markers in header, actions and example, including repeated transitions, keyboard focus, disposal, error/stale candidates and native links. Run the applicable existing projection regressions and new homepage tests, type checks and production build on the final tree. Uploaded captures and exact-head results belong on the PR; this plan alone is not completed evidence.
 
 Co-author by OpenAI Dots
+
+## Follow-up scope and dependency reconciliation
+
+The same maintainer request now includes the other public Runtime Box variants and complete library-route presentation. The supplied examples identify Base Toggle's toolbar/canvas, Shadcn Radio Group's different control placement, and Brutalist Tooltip's nested square/rounded frames with a still-Shadcn site shell. The shared Runtime Box layout must be consistent while real styled Prototypes retain their own grammar.
+
+The #559 accepted option 2 is preserved: navigation, social and hero anchors remain **application-owned native-link recipes**, not Proto UI Prototypes or a new Base Link. The website's existing multi-runtime renderer may materialize those native anchors; `href`, modified clicks, target, browser context menus and SSR fallback stay native. Actual Select/Button controls and example Prototypes use the selected library's own published implementation. The private website demo DSL accepts only `div` and `a` host boxes; this does not expand Proto Template or a package API.
+
+The homepage owns one transaction for all its declared action groups plus its live example. `{runtimeId, projectionFamilyId}` are independent coordinates; the selected example component is separate controlled host state. All target hosts prepare before activation, share the committed generation and dispose stale or failed candidates. A failed example candidate must not activate the header or CTA candidates. Static Astro prose/layout and document search remain explicit shell/service boundaries. Successful remounts reset component-local state; no state migration is promised.
+
+Component-library document routes determine their library presentation, independently of the saved Adapter preference. Website-owned Select/Button controls must use matching family tags, including language, theme, runtime, copy and package-manager controls and their portaled content. Native sidebar/TOC/pagination/navigation recipes consume document presentation tokens. A family switch must not overwrite canonical Shadcn source tokens used to prepare a reverse switch; actual Proto surfaces retain their isolated family theme values.
+
+Dependencies checked against live GitHub on 2026-10-02:
+
+- Reused, already merged: #567, #576, #578, #571, #655 and #769. #566/#577/#573 are closed; #574 was superseded by #578, including the implementation. They are not pending blockers.
+- #563 is the open matrix/bundle-boundary carrier. Its runtime-ID/lazy-import changes are compatible with this consumer work, but the old WC-only homepage-shell assumption and affected source-bound matrix rows need reconciliation. The scope change is homepage-specific, not a claim that all of #420 is complete.
+- #559 supplies the accepted native-anchor boundary described above. #420 and #568 remain broader ongoing programs.
+- #596 and #509 are parallel with no missing component/runtime capability dependency. #744/#747/#740 add independent Prototype loader entries; preserve their additions during eventual integration. #652's opt-in Shadow work is not a prerequisite to this Light DOM slice. #775's bounded contrast audit is separate, not an unaccepted visual gate for this work.
+- #772 changes the deployment/Node baseline; follow main's actual toolchain when it lands rather than silently assuming an unmerged PR.
+
+The first implementation checkpoint is `da2bd762`. It carries code, focused tests and a readonly Actions workflow that compares the immutable baseline and exact candidate head through the same Chromium capture scripts. Before/after screenshots and actual computed/platform fonts are required review evidence; source inspection or passing unit tests alone do not prove the visual result. Local Chromium execution was blocked by environment infrastructure, and cloud-browser localhost access was denied; no denied route was bypassed.

@@ -52,7 +52,8 @@ export async function captureDocumentationEvidence({
         const evidence: Record<string, unknown> = {
           id,
           route: variant.route,
-          expectedFamily: variant.family,
+          expectedComponentFamily: variant.family,
+          expectedSiteFamily: variant.family === 'brutalist' ? 'brutalist' : 'shadcn',
           viewport,
           colorScheme,
           screenshots,
@@ -97,6 +98,29 @@ export async function captureDocumentationEvidence({
             (theme) => document.documentElement.dataset.theme === theme,
             colorScheme
           );
+          if (revisionKind === 'candidate') {
+            await page.waitForFunction(
+              (family) => {
+                const controls = [
+                  ...document.querySelectorAll<HTMLElement>(
+                    'header [data-site-select-root], header [data-theme-toggle]'
+                  ),
+                ];
+                return (
+                  document.documentElement.dataset.siteLibraryFamily === family &&
+                  controls.length > 0 &&
+                  controls.every(
+                    (control) =>
+                      control.dataset.siteShadcnInitialized === '1' &&
+                      typeof (control as HTMLElement & { getExposes?: unknown }).getExposes ===
+                        'function'
+                  )
+                );
+              },
+              variant.family === 'brutalist' ? 'brutalist' : 'shadcn',
+              { timeout: 30_000 }
+            );
+          }
           await page.evaluate(async () => {
             await document.fonts.ready;
             await new Promise<void>((resolve) =>
@@ -146,7 +170,11 @@ export async function captureDocumentationEvidence({
                   '--foreground',
                   '--pui-background',
                   '--pui-foreground',
+                  '--color-background',
+                  '--color-foreground',
                   '--radius',
+                  '--site-surface-radius',
+                  '--site-surface-border-width',
                 ].map((name) => [
                   name,
                   getComputedStyle(document.documentElement).getPropertyValue(name),
@@ -261,6 +289,19 @@ export async function captureDocumentationEvidence({
             };
           }
           await screenshot('interaction-viewport');
+          const themeButton = page.locator('header [data-theme-toggle]');
+          const opposite = colorScheme === 'light' ? 'dark' : 'light';
+          await themeButton.click();
+          await page.waitForFunction(
+            (theme) => document.documentElement.dataset.theme === theme,
+            opposite
+          );
+          await themeButton.click();
+          await page.waitForFunction(
+            (theme) => document.documentElement.dataset.theme === theme,
+            colorScheme
+          );
+          evidence.themeRoundTrip = [colorScheme, opposite, colorScheme];
           assert.deepEqual(pageErrors, [], 'No uncaught page errors');
           evidence.outcome = report.failures.some((failure) => failure.startsWith(`${id}:`))
             ? 'failed'

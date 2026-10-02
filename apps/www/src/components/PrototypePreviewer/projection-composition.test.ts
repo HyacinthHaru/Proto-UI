@@ -764,3 +764,58 @@ describe('Website projection composition', () => {
     expect(composition.restoreFocus(PROJECTION_FOCUS_KEYS.runtime)).toBe(false);
   });
 });
+
+describe('Website native-only content recipes', () => {
+  const nativeDemo = {
+    type: 'demo',
+    root: { kind: 'box', tag: 'a', attrs: { href: '/docs/' }, children: ['Documentation'] },
+  } satisfies DemoSpec;
+  const options = {
+    ownerId: 'native-links',
+    runtimeId: 'wc' as const,
+    projectionFamilyId: 'shadcn' as const,
+    generation: 1,
+    componentId: 'button' as const,
+    childDemo: nativeDemo,
+    controls: controls(),
+    controlIds: [],
+  };
+  it('preserves anchor host semantics without claiming a Link or Button Prototype', () => {
+    const composition = createProjectionComposition({
+      ...options,
+      contentRecipe: { id: 'native-actions', prototypeIds: [], rootPrototypeId: null },
+    });
+    const anchor = findNode(composition.demo, (node) => node.kind === 'box' && node.tag === 'a');
+    expect(anchor.kind === 'box' && anchor.attrs?.href).toBe('/docs/');
+    const prototypes: string[] = [];
+    walk(composition.demo.root, (node) => {
+      if (node.kind === 'proto') prototypes.push(node.prototypeId);
+    });
+    expect(prototypes).toEqual([]);
+    const content = findNode(
+      composition.demo,
+      (node) => node.kind === 'box' && node.attrs?.['data-projection-content'] === ''
+    );
+    expect(content.kind === 'box' && content.attrs?.['data-projection-prototype']).toBeUndefined();
+  });
+  it('rejects missing, duplicate, or falsely omitted declared Prototype identity', () => {
+    expect(() =>
+      createProjectionComposition({
+        ...options,
+        contentRecipe: { id: 'native-actions', prototypeIds: [], rootPrototypeId: 'shadcn-button' },
+      })
+    ).toThrow('root must be declared');
+    expect(() =>
+      createProjectionComposition({
+        ...options,
+        contentRecipe: { id: '', prototypeIds: [], rootPrototypeId: null },
+      })
+    ).toThrow('requires an id');
+    expect(() =>
+      createProjectionComposition({
+        ...options,
+        contentRecipe: { id: 'bad', prototypeIds: ['shadcn-button'], rootPrototypeId: null },
+      })
+    ).toThrow('native-only');
+  });
+});

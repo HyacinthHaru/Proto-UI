@@ -44,6 +44,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Install the official Ubuntu CJK font package for both revisions
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/homepage-evidence"
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+          {
+            dpkg-query -W -f='${Package} ${Version}\n' fonts-noto-cjk fontconfig
+            fc-match -f '%{family}\n%{file}\n' 'sans-serif:lang=zh-cn'
+          } | tee "$RUNNER_TEMP/homepage-evidence/font-environment.txt"
       - name: Install locked dependencies in both isolated worktrees
         id: install
         timeout-minutes: 5
@@ -59,29 +70,46 @@ jobs:
           CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser) || {
             echo 'BLOCKED: runner has no Chrome/Chromium executable'; exit 1;
           }
-          "$CHROME" --version
+          "$CHROME" --version | tee "$RUNNER_TEMP/homepage-evidence/browser-environment.txt"
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
       - name: Test evidence provenance and acceptance predicates
         working-directory: candidate
         run: node --import tsx --test apps/www/scripts/homepage-evidence-contract.test.ts
-      - name: Capture real baseline and candidate with the same browser probe
+      - name: Capture real baseline with the candidate-owned browser probe
         if: always() && steps.install.outcome == 'success' && steps.chrome.outcome == 'success'
-        timeout-minutes: 20
+        timeout-minutes: 10
+        working-directory: baseline
         run: |
-          set -uo pipefail
+          set -euo pipefail
           mkdir -p "$RUNNER_TEMP/homepage-evidence"
-          status=0
-          for worktree in baseline candidate; do
-            if [ "$worktree" = baseline ]; then revision="$BASELINE_SHA"; else revision="$CANDIDATE_SHA"; fi
-            (
-              cd "$worktree"
-              timeout --signal=TERM --kill-after=10s 540s \
-                node --import tsx "$GITHUB_WORKSPACE/candidate/apps/www/scripts/capture-homepage-evidence.ts" \
-                --revision-kind "$worktree" --expected-revision "$revision" \
-                --out "$RUNNER_TEMP/homepage-evidence/$worktree"
-            ) 2>&1 | tee "$RUNNER_TEMP/homepage-evidence/$worktree.log" || status=1
-          done
-          exit "$status"
+          timeout --signal=TERM --kill-after=10s 540s \
+            node --import tsx "$GITHUB_WORKSPACE/candidate/apps/www/scripts/capture-homepage-evidence.ts" \
+            --revision-kind baseline --expected-revision "$BASELINE_SHA" \
+            --out "$RUNNER_TEMP/homepage-evidence/baseline" \
+            2>&1 | tee "$RUNNER_TEMP/homepage-evidence/baseline.log"
+      - name: Make baseline evidence available before candidate execution
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: homepage-baseline-${{ env.BASELINE_SHA }}-probe-${{ env.CANDIDATE_SHA }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/homepage-evidence/baseline
+            ${{ runner.temp }}/homepage-evidence/baseline.log
+            ${{ runner.temp }}/homepage-evidence/*-environment.txt
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Capture real exact-head candidate with the same browser probe
+        if: always() && steps.install.outcome == 'success' && steps.chrome.outcome == 'success'
+        timeout-minutes: 10
+        working-directory: candidate
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/homepage-evidence"
+          timeout --signal=TERM --kill-after=10s 540s \
+            node --import tsx apps/www/scripts/capture-homepage-evidence.ts \
+            --revision-kind candidate --expected-revision "$CANDIDATE_SHA" \
+            --out "$RUNNER_TEMP/homepage-evidence/candidate" \
+            2>&1 | tee "$RUNNER_TEMP/homepage-evidence/candidate.log"
       - name: Retain actual images, measurements and failure output
         if: always()
         uses: actions/upload-artifact@v4

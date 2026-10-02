@@ -78,7 +78,7 @@
   }
 
   .expressive-code .copy button,
-  .docs-code-copy {
+  .docs-code-copy:not([data-site-control-family='brutalist']) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -117,7 +117,7 @@
     outline-offset: 2px;
   }
 
-  [data-code-shell] wc-shadcn-button[hidden] {
+  [data-code-shell] :is([data-site-button], [data-site-shadcn-button])[hidden] {
     display: none;
   }
 }

@@ -224,3 +224,64 @@ describe('site Shadcn control bridge', () => {
     expect(button.querySelector('.sr-only')?.textContent).toBe('Copy code');
   });
 });
+
+describe('site family projections', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+    registerSiteShadcnControls();
+  });
+
+  it('uses real Brutalist Button grammar rather than recoloring Shadcn', async () => {
+    const button = document.createElement('wc-brutalist-button');
+    button.dataset.siteButton = '1';
+    button.dataset.variant = 'ghost';
+    button.dataset.size = 'icon';
+    button.textContent = 'Theme';
+    document.body.append(button);
+    initSiteShadcnControls(document);
+    await settle();
+    expect(button.getAttribute('role')).toBe('button');
+    expect(button.dataset.siteControlFamily).toBe('brutalist');
+    expect(button.getAttribute('data-pui-style')).toContain('border-2');
+    expect(button.getAttribute('data-pui-style')).toContain('rounded-none');
+    expect(button.getAttribute('data-pui-style')).toContain('bg-secondary-background');
+    expect(button.getAttribute('data-pui-style')).not.toContain('rounded-md');
+  });
+
+  it('keeps Brutalist Select semantics, selected label and portal theme together', async () => {
+    document.body.innerHTML = `
+      <wc-brutalist-select-root data-site-select-root data-site-initial-value="vue">
+        <wc-brutalist-select-trigger><wc-brutalist-select-value></wc-brutalist-select-value></wc-brutalist-select-trigger>
+        <wc-brutalist-select-content>
+          <wc-brutalist-select-item data-value="vue" data-text-value="Vue">Vue</wc-brutalist-select-item>
+          <wc-brutalist-select-item data-value="react" data-text-value="React">React</wc-brutalist-select-item>
+        </wc-brutalist-select-content>
+      </wc-brutalist-select-root>`;
+    const root = document.querySelector<SiteSelectRoot>('[data-site-select-root]')!;
+    const trigger = root.querySelector<HTMLElement>('wc-brutalist-select-trigger')!;
+    const content = root.querySelector<HTMLElement>('wc-brutalist-select-content')!;
+    initSiteShadcnControls(document);
+    await settle();
+    expect(selectValue(root)).toBe('vue');
+    expect(root.querySelector('wc-brutalist-select-value')?.textContent).toBe('Vue');
+    expect(trigger.getAttribute('data-pui-style')).toContain('rounded-none');
+    expect(content.dataset.siteControlFamily).toBe('brutalist');
+    trigger.click();
+    await settle();
+    expect(root.getExposes?.().open?.get?.()).toBe(true);
+    const requestValue = root.getExposes?.().requestValue as (request: {
+      value: string;
+      textValue: string;
+      reason: string;
+    }) => boolean;
+    root.addEventListener('valueChange', (event) => {
+      setSelectValue(root, (event as CustomEvent<{ value: string }>).detail.value);
+    });
+    requestValue({ value: 'react', textValue: 'React', reason: 'pointer' });
+    await settle();
+    expect(selectValue(root)).toBe('react');
+    expect(root.getExposes?.().open?.get?.()).toBe(false);
+    expect(content.dataset.siteControlFamily).toBe('brutalist');
+    expect(document.activeElement).toBe(trigger);
+  });
+});

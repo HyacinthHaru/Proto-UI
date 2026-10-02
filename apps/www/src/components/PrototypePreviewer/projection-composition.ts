@@ -608,6 +608,23 @@ export function createProjectionComposition(
       `[PrototypePreviewer] projection family ${options.projectionFamilyId} has no component ${options.componentId}.`
     );
   }
+  if (options.contentRecipe) {
+    const recipe = options.contentRecipe;
+    if (
+      !recipe.id.trim() ||
+      recipe.prototypeIds.some((id) => !id.trim()) ||
+      new Set(recipe.prototypeIds).size !== recipe.prototypeIds.length
+    ) {
+      throw new Error(
+        '[PrototypePreviewer] content recipe requires an id and unique nonempty Prototype identities.'
+      );
+    }
+    if (recipe.rootPrototypeId === null && recipe.prototypeIds.length > 0) {
+      throw new Error(
+        '[PrototypePreviewer] only a native-only content recipe may omit its Prototype root.'
+      );
+    }
+  }
   assertProjectionRecipeClosure(
     options.childDemo.root,
     options.contentRecipe?.prototypeIds ?? componentFamily.recipePrototypeIds,

@@ -14,7 +14,7 @@ describe('Homepage presentation source boundaries', () => {
     expect(style).toContain("'Noto Sans CJK SC'");
     expect(style).toContain('font-family: var(--font-sans)');
     expect(style).not.toContain('--color-font-geist-sans');
-    expect(style).toContain('font-weight: 100 900');
+    expect(style).not.toContain('GeistVF.woff2');
   });
 
   it('keeps the live preview and research limitations distinct in both languages', () => {

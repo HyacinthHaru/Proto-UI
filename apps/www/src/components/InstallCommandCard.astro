@@ -1,4 +1,7 @@
 ---
+import { resolveSiteLibraryFamily, siteControlTags } from './site-library-family';
+const siteFamily = resolveSiteLibraryFamily(Astro.url.pathname);
+const { Button } = siteControlTags(siteFamily);
 // <InstallCommandCard
 //   manager="npm"
 //   commands={{
@@ -76,9 +79,18 @@ const activeManager =
     <div class="install-command-card__managers" aria-label="Package manager">
       {
         normalizedEntries.map((entry) => (
-          <wc-shadcn-button
-            data-site-shadcn-button
-            data-variant="ghost"
+          <Button
+            data-site-button
+            data-site-control-family={siteFamily}
+            data-variant={
+              siteFamily === 'brutalist'
+                ? entry.manager === activeManager
+                  ? 'solid'
+                  : 'surface'
+                : entry.manager === activeManager
+                  ? 'secondary'
+                  : 'ghost'
+            }
             data-size="sm"
             type="button"
             class:list={[
@@ -89,13 +101,14 @@ const activeManager =
             aria-pressed={entry.manager === activeManager ? 'true' : 'false'}
           >
             {entry.manager}
-          </wc-shadcn-button>
+          </Button>
         ))
       }
     </div>
 
-    <wc-shadcn-button
-      data-site-shadcn-button
+    <Button
+      data-site-button
+      data-site-control-family={siteFamily}
       data-variant="ghost"
       data-size="icon"
       type="button"
@@ -121,7 +134,7 @@ const activeManager =
         </svg>
       </span>
       <span class="sr-only">Copy command</span>
-    </wc-shadcn-button>
+    </Button>
   </div>
 
   {
@@ -141,6 +154,8 @@ const activeManager =
 </figure>
 
 <script>
+  import { setElementProps } from '@proto.ui/adapter-web-component';
+
   (() => {
     document.querySelectorAll<HTMLElement>('[data-install-command-card]').forEach((card) => {
       if (card.dataset.installCommandInit === '1') return;
@@ -182,6 +197,17 @@ const activeManager =
           const active = tab.dataset.managerTab === nextManager;
           tab.classList.toggle('install-command-card__manager--active', active);
           tab.setAttribute('aria-pressed', active ? 'true' : 'false');
+          setElementProps(tab, {
+            variant:
+              tab.dataset.siteControlFamily === 'brutalist'
+                ? active
+                  ? 'solid'
+                  : 'surface'
+                : active
+                  ? 'secondary'
+                  : 'ghost',
+            size: 'sm',
+          });
         });
         panels.forEach((panel) => {
           const active = panel.dataset.commandPanel === nextManager;
@@ -192,7 +218,11 @@ const activeManager =
 
       tabs.forEach((tab) => {
         tab.addEventListener('click', (event) => {
-          if (tab.matches('wc-shadcn-button') && !(event instanceof CustomEvent)) return;
+          if (
+            tab.matches('wc-shadcn-button, wc-brutalist-button') &&
+            !(event instanceof CustomEvent)
+          )
+            return;
           const nextManager = tab.dataset.managerTab;
           if (!nextManager) return;
           setActiveManager(nextManager);
@@ -200,7 +230,11 @@ const activeManager =
       });
 
       copyButton.addEventListener('click', async (event) => {
-        if (copyButton.matches('wc-shadcn-button') && !(event instanceof CustomEvent)) return;
+        if (
+          copyButton.matches('wc-shadcn-button, wc-brutalist-button') &&
+          !(event instanceof CustomEvent)
+        )
+          return;
         try {
           await navigator.clipboard.writeText(getCommandNode()?.textContent ?? '');
           copyIcon.innerHTML = successIcon;
@@ -216,10 +250,10 @@ const activeManager =
 </script>
 
 <script>
-  import { initSiteShadcnControls } from './site-shadcn-controls';
+  import { initSiteControls } from './site-shadcn-controls';
 
-  initSiteShadcnControls(document);
-  document.addEventListener('astro:page-load', () => initSiteShadcnControls(document));
+  initSiteControls(document);
+  document.addEventListener('astro:page-load', () => initSiteControls(document));
 </script>
 
 <style>
@@ -260,31 +294,6 @@ const activeManager =
     flex-wrap: wrap;
   }
 
-  .install-command-card__manager {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2rem;
-    padding: 0.15rem 0.8rem;
-    border-radius: 0.8rem;
-    color: var(--color-muted-foreground);
-    font-size: 1rem;
-    line-height: 1;
-    font-weight: 500;
-    border: 1px solid transparent;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .install-command-card__manager--active {
-    background: var(--color-background);
-    color: var(--color-foreground);
-    border-color: color-mix(in oklch, var(--color-border) 90%, transparent);
-    box-shadow:
-      0 1px 2px color-mix(in oklch, var(--color-foreground) 5%, transparent),
-      inset 0 1px 0 color-mix(in oklch, white 50%, transparent);
-  }
-
   .install-command-card__copy {
     margin-left: auto;
   }
@@ -322,11 +331,5 @@ const activeManager =
   :global([data-theme='dark']) .install-command-card__prompt {
     background: color-mix(in oklch, white 24%, #2b2b2b 76%);
     color: white;
-  }
-
-  :global([data-theme='dark']) .install-command-card__manager--active {
-    box-shadow:
-      0 1px 1px color-mix(in oklch, black 30%, transparent),
-      inset 0 1px 0 color-mix(in oklch, white 8%, transparent);
   }
 </style>

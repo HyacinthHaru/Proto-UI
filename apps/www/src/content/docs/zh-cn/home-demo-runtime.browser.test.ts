@@ -94,7 +94,7 @@ afterAll(async () => {
 }, 60_000);
 
 describe.sequential('Homepage Runtime demobox browser smoke', () => {
-  it('remounts locally and follows the global adapter preference across all runtimes', async () => {
+  it('remounts the homepage transaction and follows adapter preference across all runtimes', async () => {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const page = await context.newPage();
     await page.goto(`${baseUrl}${HOME_ROUTE}`, { waitUntil: 'networkidle' });
@@ -305,9 +305,15 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           const panelStyle = getComputedStyle(panel);
           const hostStyle = getComputedStyle(host);
           const triggerStyle = getComputedStyle(trigger);
+          const probe = document.createElement('div');
+          probe.style.borderRadius = 'var(--runtime-box-radius)';
+          panel.append(probe);
+          const sharedRadius = getComputedStyle(probe).borderRadius;
+          probe.remove();
           const rect = root.getBoundingClientRect();
           return {
             panelRadius: panelStyle.borderRadius,
+            sharedRadius,
             hostRadius: hostStyle.borderRadius,
             hostBorder: hostStyle.borderWidth,
             hostShadow: hostStyle.boxShadow,
@@ -323,7 +329,12 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
         for (const width of [1440, 390, 320]) {
           await page.setViewportSize({ width, height: 900 });
           const geometry = await readGeometry();
-          expect(geometry.panelRadius, `${colorScheme} ${width}px panel`).toBe('10px');
+          expect(geometry.panelRadius, `${colorScheme} ${width}px panel`).toBe(
+            geometry.sharedRadius
+          );
+          expect(geometry.sharedRadius, `${colorScheme} ${width}px shared radius token`).not.toBe(
+            ''
+          );
           expect(geometry.hostRadius, `${colorScheme} ${width}px host radius`).toBe('0px');
           expect(geometry.hostBorder, `${colorScheme} ${width}px host border`).toBe('0px');
           expect(geometry.hostShadow, `${colorScheme} ${width}px host shadow`).toBe('none');

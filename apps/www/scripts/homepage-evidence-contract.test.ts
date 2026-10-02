@@ -69,9 +69,9 @@ test('CI preserves the pinned baseline, exact head, read-only permissions and ar
   );
   assert.equal(checkouts.length, 2);
   for (const checkout of checkouts) assert.equal(checkout.with['persist-credentials'], false);
-  const artifact = steps.find((step: { uses?: string }) =>
-    step.uses?.startsWith('actions/upload-artifact@')
-  );
+  const artifact = steps
+    .filter((step: { uses?: string }) => step.uses?.startsWith('actions/upload-artifact@'))
+    .at(-1);
   assert.equal(artifact.with.path, '${{ runner.temp }}/homepage-evidence');
   assert.equal(artifact.if, 'always()');
 });
