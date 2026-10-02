@@ -207,7 +207,7 @@ export async function openRoute(
 export function runtimeSelectTrigger(previewer: Locator): Locator {
   return previewer
     .locator(
-      '[data-projection-control="runtime"] [role="combobox"], [data-adapter-select-root] wc-shadcn-select-trigger'
+      '[data-projection-control="runtime"] [role="combobox"], [data-adapter-select-root] [role="combobox"]'
     )
     .first();
 }

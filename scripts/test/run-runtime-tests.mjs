@@ -11,6 +11,7 @@ import { createServer } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRuntimeTestPlan } from './runtime-test-plan.mjs';
+import { observeRuntimeServer } from './runtime-server-diagnostics.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 // Astro dev compiles a route on first request, so a suite probing a cold route
@@ -123,6 +124,11 @@ async function startServer() {
 
   const url = `http://127.0.0.1:${port}`;
   for (const route of READY_ROUTES) await waitForServer(`${url}${route}`);
+  observeRuntimeServer(devServer, {
+    isShuttingDown: () => shuttingDown,
+    readOutput: () => serverOutput,
+    report: (message) => console.error(message),
+  });
   return url;
 }
 

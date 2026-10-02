@@ -738,6 +738,47 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
       for (const runtime of TEST_RUNTIMES) {
         await selectRuntime(opened.page, opened.previewer, runtime, '[data-pui-root]', 4);
         const toggles = roots(opened.previewer);
+        // Closing the runtime menu can leave the pointer over a newly mounted
+        // Toggle. Preserve that real input state before establishing the resting
+        // precondition; the exact resting shadow assertions below stay unchanged.
+        const inputStateAfterRuntimeSelection = await toggles.evaluateAll((elements) =>
+          elements.map((element, index) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              index,
+              label: element.textContent?.trim(),
+              hovered: element.getAttribute('data-hovered'),
+              pressed: element.getAttribute('data-pressed'),
+              focusVisible: element.getAttribute('data-focus-visible'),
+              pointerOverSurface: element.matches(':hover'),
+              boxShadow: getComputedStyle(element).boxShadow,
+              bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+            };
+          })
+        );
+        console.log(
+          '[Brutalist Toggle before resting measurement]',
+          JSON.stringify({ runtime, surfaces: inputStateAfterRuntimeSelection })
+        );
+        await opened.page.mouse.move(0, 0);
+        await opened.page.waitForFunction(
+          () => {
+            const controls = document.querySelectorAll(
+              '[data-previewer-id] [data-projection-content] [data-pui-root]'
+            );
+            return (
+              controls.length === 4 &&
+              [...controls].every(
+                (element) =>
+                  !element.hasAttribute('data-hovered') &&
+                  !element.hasAttribute('data-pressed') &&
+                  !element.matches(':hover')
+              )
+            );
+          },
+          undefined,
+          { timeout: 10_000 }
+        );
         const factsBefore = await toggles.evaluateAll((elements) =>
           elements.map((element) => {
             const style = getComputedStyle(element);

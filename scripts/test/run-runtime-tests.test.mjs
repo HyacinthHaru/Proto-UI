@@ -2,8 +2,10 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { readdirSync } from 'node:fs';
 import path from 'node:path';
+import { EventEmitter } from 'node:events';
 
 import { BROWSER_SUITES, createRuntimeTestPlan } from './runtime-test-plan.mjs';
+import { observeRuntimeServer } from './runtime-server-diagnostics.mjs';
 
 describe('runtime test plan', () => {
   it('classifies every website browser suite into the shared-server phase', () => {
@@ -46,5 +48,70 @@ describe('runtime test plan', () => {
         args: ['--no-file-parallelism', ...BROWSER_SUITES],
       },
     ]);
+  });
+});
+
+describe('shared browser server diagnostics', () => {
+  function fixture() {
+    const server = new EventEmitter();
+    const reports = [];
+    let shuttingDown = false;
+    let output = 'startup output';
+    const dispose = observeRuntimeServer(server, {
+      isShuttingDown: () => shuttingDown,
+      readOutput: () => output,
+      report: (message) => reports.push(message),
+    });
+    return {
+      server,
+      reports,
+      dispose,
+      shutdown: () => (shuttingDown = true),
+      output: (value) => (output = value),
+    };
+  }
+
+  it('reports unexpected signal exit immediately with bounded current server output', () => {
+    const probe = fixture();
+    probe.output('old output' + 'x'.repeat(20_000) + '\nFATAL ERROR: heap exhausted');
+    probe.server.emit('exit', null, 'SIGKILL');
+    assert.equal(probe.reports.length, 1);
+    assert.match(probe.reports[0], /exitCode=null; signal=SIGKILL/);
+    assert.match(probe.reports[0], /FATAL ERROR: heap exhausted$/);
+    assert.equal(probe.reports[0].includes('old output'), false);
+    assert.equal(probe.reports[0].split('characters):\n')[1].length, 20_000);
+    probe.dispose();
+  });
+
+  it('reports an unexpected nonzero or clean early exit', () => {
+    for (const code of [1, 0]) {
+      const probe = fixture();
+      probe.server.emit('exit', code, null);
+      assert.equal(probe.reports.length, 1);
+      assert.match(probe.reports[0], new RegExp(`exitCode=${code}; signal=null`));
+      probe.dispose();
+    }
+  });
+
+  it('reports error followed by exit only once', () => {
+    const probe = fixture();
+    probe.server.emit('error', new Error('server process error'));
+    probe.server.emit('exit', 1, null);
+    assert.equal(probe.reports.length, 1);
+    assert.match(probe.reports[0], /error=server process error/);
+    probe.dispose();
+  });
+
+  it('keeps normal completion and signal cleanup silent and removes its listeners', () => {
+    for (const signal of [null, 'SIGTERM', 'SIGKILL']) {
+      const probe = fixture();
+      probe.shutdown();
+      probe.server.emit('error', new Error('shutdown error'));
+      probe.server.emit('exit', signal ? null : 0, signal);
+      assert.deepEqual(probe.reports, []);
+      probe.dispose();
+      assert.equal(probe.server.listenerCount('exit'), 0);
+      assert.equal(probe.server.listenerCount('error'), 0);
+    }
   });
 });
