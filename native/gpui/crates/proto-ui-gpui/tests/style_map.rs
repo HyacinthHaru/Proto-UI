@@ -9,7 +9,7 @@
 use std::collections::BTreeSet;
 
 use gpui::{AbsoluteLength, DefiniteLength, Display, Length, Position};
-use proto_ui_gpui::style::{map, Unmapped};
+use proto_ui_gpui::style::{map, style_for_tokens, StyleIssue, Unmapped};
 use proto_ui_style::length::LengthContext;
 use proto_ui_style::{themes, vocabulary, ColorScheme, Substitution};
 
@@ -24,6 +24,44 @@ fn resolve(tokens: &[&str], language: &str) -> proto_ui_style::ResolvedStyle {
         }
     }
     resolved
+}
+
+#[test]
+fn an_empty_declaration_set_is_an_identity_refinement() {
+    let mapped = map(&declared(&[]), LengthContext::default());
+    assert!(mapped.is_complete(), "unexpected: {:?}", mapped.unmapped);
+    assert_eq!(mapped.refinement.position, None);
+    assert_eq!(mapped.refinement.display, None);
+    assert_eq!(mapped.refinement.background, None);
+}
+
+#[test]
+fn an_empty_token_list_does_not_invent_a_static_position_request() {
+    let mapped = style_for_tokens([], None, LengthContext::default());
+    assert!(mapped.issues.is_empty(), "unexpected: {:?}", mapped.issues);
+    assert_eq!(mapped.refinement.position, None);
+}
+
+#[test]
+fn an_unknown_token_is_still_reported_when_no_declarations_resolve() {
+    let token = "not-a-proto-token";
+    let mapped = style_for_tokens([token], None, LengthContext::default());
+    assert_eq!(mapped.issues, [StyleIssue::UnknownToken(token.into())]);
+    assert_eq!(mapped.refinement.position, None);
+}
+
+#[test]
+fn a_missing_theme_variable_is_still_reported_when_no_declarations_remain() {
+    let mapped = style_for_tokens(["bg-background"], None, LengthContext::default());
+    assert_eq!(
+        mapped.issues,
+        [StyleIssue::UnresolvedVariable {
+            property: "background-color".into(),
+            variable: "var(--background)".into(),
+        }]
+    );
+    assert_eq!(mapped.refinement.background, None);
+    assert_eq!(mapped.refinement.position, None);
 }
 
 #[test]
