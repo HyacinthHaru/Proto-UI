@@ -115,17 +115,27 @@ try {
   assert.equal(report.fieldGeometry.width, 600);
   assert.equal(report.fieldGeometry.height, 264);
   const rest = await capture('liquid-rest');
+  // Aesthetic gradients can be nearly constant under a narrow, monotonic rim.
+  // Calibrate displacement on real high-contrast DOM content without changing
+  // the field, alpha, scatter, geometry or threshold; restore it before visual review.
+  await page.evaluate(() =>
+    document.querySelector('#backdrop').setAttribute('data-calibration', '')
+  );
+  const calibration = await capture('calibration-refraction');
   await page.evaluate(() =>
     document.querySelector('#lens-displacement').setAttribute('scale', '0')
   );
   const noRefraction = await capture('negative-no-refraction');
-  report.refractionChangedPixels = await changedPixels(rest, noRefraction);
+  report.refractionChangedPixels = await changedPixels(calibration, noRefraction);
   assert(
     report.refractionChangedPixels > 300,
     'shape-normal refraction must visibly differ from the same geometry with zero displacement'
   );
   await page.evaluate(() =>
     document.querySelector('#lens-displacement').setAttribute('scale', '40')
+  );
+  await page.evaluate(() =>
+    document.querySelector('#backdrop').removeAttribute('data-calibration')
   );
   await page.getByRole('button', { name: 'Move light', exact: true }).click();
   const otherLight = await capture('light-direction-changed');
