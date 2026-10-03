@@ -21,14 +21,25 @@ describe('Homepage presentation source boundaries', () => {
     }
   });
 
-  it('puts the actual demo before source and implementation detail without nested heading bands', () => {
+  it('shows the task without conceptual headings, metadata or styled wrapper surfaces', () => {
     const preview = read('apps/www/src/components/PrototypePreviewer/HomeDemoPreviewer.astro');
-    expect(preview.indexOf('data-home-demo-host')).toBeLessThan(
-      preview.indexOf('data-home-demo-source')
-    );
-    expect(preview).not.toContain('class="home-demo-previewer__header"');
-    expect(preview).not.toContain('class="home-demo-previewer__definition"');
+    expect(preview).toContain('data-home-showcase="website-workspace-settings"');
+    expect(preview).toContain('data-home-demo-host');
     expect(preview).toContain('aria-live="polite"');
+    for (const removed of [
+      'home-demo-previewer__intro-title',
+      'data-home-demo-source',
+      'home-demo-previewer__scope',
+      'home-demo-previewer__research',
+      'background:',
+      'border:',
+      'border-radius:',
+      'box-shadow:',
+    ]) {
+      expect(preview).not.toContain(removed);
+    }
+    expect(preview).toContain('grid-template-columns: 1fr 1fr');
+    expect(preview).toContain('grid-template-columns: 1fr;');
   });
   it('uses one defined bilingual sans-serif stack instead of an unresolved color token', () => {
     const style = read('apps/www/src/styles/tailwindcss.css');
@@ -41,25 +52,19 @@ describe('Homepage presentation source boundaries', () => {
     expect(style).not.toContain('GeistVF.woff2');
   });
 
-  it('keeps the live preview and research limitations distinct in both languages', () => {
-    const preview = read('apps/www/src/components/PrototypePreviewer/HomeDemoPreviewer.astro');
-    expect(preview).toContain('data-home-demo-source');
-    expect(preview).toContain('data-home-demo-host');
-    expect(preview).toContain('not available adapters or conformance claims');
-    expect(preview).toContain('不代表可用 Adapter 或一致性支持');
-    expect(preview).not.toContain('完整 generation');
-    expect(preview).not.toContain('component lineage');
+  it('keeps technical scope and research qualifications in secondary docs', () => {
+    for (const locale of ['en', 'zh-cn']) {
+      const doc = read(`apps/www/src/content/docs/${locale}/build/runtime-architecture.md`);
+      expect(doc).toContain('website-workspace-settings');
+      expect(doc).toContain('Flutter');
+      expect(doc).toContain('GPUI');
+    }
   });
 
-  it('labels website demo configuration without presenting it as a Prototype definition', () => {
-    const preview = read('apps/www/src/components/PrototypePreviewer/HomeDemoPreviewer.astro');
-    expect(preview).toContain('Website demo configuration');
-    expect(preview).toContain('网站示例配置');
-    expect(preview).toContain('data-home-demo-source-kind="demo-configuration"');
-    expect(preview).not.toContain('Shared definition');
-    expect(preview).not.toContain('共享定义');
-    expect(preview).toContain('Define interactions once. Reuse them across frameworks.');
-    expect(preview).toContain('交互定义写一次，在不同框架中复用');
+  it('keeps the native-link journey bound to the actual task family picker', () => {
+    const journey = read('apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts');
+    expect(journey).toContain('[data-home-showcase] [data-projection-control="family"]');
+    expect(journey).not.toContain('[data-home-demo-options]');
   });
 
   it('retains docs, live example and whitepaper paths while dogfooding actions', () => {

@@ -334,3 +334,252 @@ test('the actual ownership probe recognizes real control-only groups and rejects
   await assert.rejects(() => ownership(page, 'wc'), /home-preferences: same page generation/);
   window.happyDOM.abort();
 });
+
+function captureDeclarations(names: string[]) {
+  const source = ts.createSourceFile(
+    'capture-homepage-evidence.ts',
+    readFileSync(new URL('capture-homepage-evidence.ts', import.meta.url), 'utf8'),
+    ts.ScriptTarget.ES2022,
+    true,
+    ts.ScriptKind.TS
+  );
+  const declarations = source.statements.filter((node) =>
+    ts.isFunctionDeclaration(node)
+      ? names.includes(node.name?.text ?? '')
+      : ts.isVariableStatement(node) &&
+        node.declarationList.declarations.some((entry) =>
+          names.includes(entry.name.getText(source))
+        )
+  );
+  assert.equal(declarations.length, names.length, 'Compile the actual capture declarations');
+  return transformSync(declarations.map((node) => node.getText(source)).join('\n'), {
+    loader: 'ts',
+    target: 'es2022',
+    keepNames: true,
+  }).code;
+}
+
+test('candidate samples task content while the immutable baseline keeps picker samples', () => {
+  const compiled = captureDeclarations([
+    'HOME',
+    'commonFontSelectors',
+    'baselineFontSelectors',
+    'candidateFontSelectors',
+    'fontSelectors',
+    'surfaceSelectors',
+  ]);
+  const candidate = runInNewContext(`${compiled}\n({ HOME, fontSelectors, surfaceSelectors });`, {
+    revisionKind: 'candidate',
+  });
+  const baseline = runInNewContext(`${compiled}\n({ HOME, fontSelectors, surfaceSelectors });`, {
+    revisionKind: 'baseline',
+  });
+  assert.equal(candidate.HOME, '[data-home-showcase="website-workspace-settings"]');
+  assert.equal(baseline.HOME, '[data-home-demo-options]');
+  const names = (value: typeof candidate) =>
+    Array.from(value.fontSelectors, (sample: { name: string }) => sample.name);
+  assert.ok(names(candidate).includes('task-feedback'));
+  assert.ok(names(candidate).includes('task-save-action'));
+  assert.ok(names(candidate).includes('library-control'));
+  for (const removed of [
+    'component-control',
+    'definition-label',
+    'preview-intro-title',
+    'research-lead',
+  ]) {
+    assert.ok(names(baseline).includes(removed));
+    assert.ok(!names(candidate).includes(removed));
+  }
+  assert.ok(
+    candidate.surfaceSelectors.includes(`${candidate.HOME} [data-demo-ref="settings-view-trigger"]`)
+  );
+});
+
+test('actual task observer reads physical textarea and rejects stale values or missing feedback', () => {
+  const compiled = captureDeclarations(['observeWorkspaceSettings']);
+  for (const wrappedTextarea of [false, true]) {
+    const window = new Window();
+    const document = window.document;
+    // Synthetic observer unit fixture, not evidence of rendered controls.
+    document.body.innerHTML = `
+      <section data-home-showcase="website-workspace-settings">
+        <div data-demo-ref="settings" data-dirty="false">
+          <div data-demo-ref="settings-view-trigger">Board</div>
+          <div data-demo-ref="settings-summary" aria-checked="true"></div>
+          ${
+            wrappedTextarea
+              ? '<wc-textarea data-demo-ref="settings-note"><textarea></textarea></wc-textarea>'
+              : '<textarea data-demo-ref="settings-note"></textarea>'
+          }
+          <div data-demo-ref="settings-save" aria-disabled="true"></div>
+          <div data-demo-ref="settings-reset" aria-disabled="false"></div>
+          <div data-demo-ref="settings-feedback" role="status">Saved to this page</div>
+        </div>
+      </section>`;
+    document.querySelector('textarea')!.value = 'A real note value';
+    const observe = runInNewContext(`${compiled}\nobserveWorkspaceSettings;`, { document });
+    assert.doesNotMatch(
+      String(observe),
+      /\b__name\s*\(/,
+      'Named browser observer is self-contained'
+    );
+    const input = {
+      homeSelector: '[data-home-showcase="website-workspace-settings"]',
+      expected: {
+        view: 'Board',
+        summary: 'true',
+        note: 'A real note value',
+        dirty: 'false',
+        saveDisabled: true,
+        resetDisabled: false,
+        feedback: 'Saved to this page',
+      },
+    };
+    assert.deepEqual(JSON.parse(JSON.stringify(observe(input))), input.expected);
+    assert.equal(observe({ ...input, expected: { ...input.expected, note: 'old note' } }), false);
+    assert.equal(observe({ ...input, expected: { ...input.expected, summary: 'false' } }), false);
+    assert.equal(
+      observe({ ...input, expected: { ...input.expected, saveDisabled: false } }),
+      false
+    );
+    document.querySelector('[data-demo-ref="settings-feedback"]')!.removeAttribute('role');
+    assert.equal(observe(input), false, 'An absent live feedback region cannot pass');
+    window.happyDOM.abort();
+  }
+});
+
+test('actual candidate task driver saves edits, restores a dirty draft, then saves defaults in both locales', async () => {
+  const compiled = captureDeclarations(['exerciseWorkspaceSettings']);
+  for (const route of ['/en/', '/zh-cn/']) {
+    const english = route === '/en/';
+    const labels = english
+      ? {
+          list: 'List',
+          board: 'Board',
+          changed: 'Unsaved changes',
+          unchanged: 'No unsaved changes',
+          saved: 'Saved to this page',
+          restored: 'Defaults restored',
+          on: 'Weekly summary on',
+          off: 'Weekly summary off',
+        }
+      : {
+          list: '列表',
+          board: '看板',
+          changed: '有未保存的更改',
+          unchanged: '没有未保存的更改',
+          saved: '已保存到本页',
+          restored: '已恢复默认值',
+          on: '显示每周摘要',
+          off: '隐藏每周摘要',
+        };
+    let state = {
+      view: labels.list,
+      summary: 'false',
+      note: '',
+      dirty: 'false',
+      saveDisabled: true,
+      resetDisabled: true,
+      feedback: labels.unchanged,
+    };
+    const actions: string[] = [];
+    const snapshots: string[] = [];
+    const home = '[data-home-showcase="website-workspace-settings"]';
+    // Driver unit fixture: control behavior is modeled only to reject an
+    // incorrect input sequence or expectation. Actual-browser execution is separate.
+    const locate = (selector: string): any => ({
+      locator: locate,
+      async click() {
+        actions.push(selector);
+        if (selector === '[data-demo-ref="settings-summary"]') state.summary = 'true';
+        if (selector === '[data-demo-ref="settings-save"]') {
+          assert.equal(state.saveDisabled, false, 'Never attempt to save an unchanged draft');
+          state.dirty = 'false';
+          state.saveDisabled = true;
+          const count = english
+            ? `Note: ${state.note.length} characters`
+            : `备注 ${state.note.length} 字`;
+          state.feedback = `${labels.saved} · ${state.view} · ${state.summary === 'true' ? labels.on : labels.off} · ${count}`;
+        }
+        if (selector === '[data-demo-ref="settings-reset"]') {
+          assert.equal(state.resetDisabled, false);
+          state = {
+            view: labels.list,
+            summary: 'false',
+            note: '',
+            dirty: 'true',
+            saveDisabled: false,
+            resetDisabled: true,
+            feedback: `${labels.restored} · ${labels.changed}`,
+          };
+        }
+      },
+      async getAttribute(name: string) {
+        assert.equal(selector, '[data-demo-ref="settings-view-trigger"]');
+        assert.equal(name, 'aria-controls');
+        return 'task-options';
+      },
+      async waitFor(options: unknown) {
+        assert.equal(selector, '[id="task-options"]');
+        assert.deepEqual(JSON.parse(JSON.stringify(options)), { state: 'visible' });
+      },
+      getByRole(role: string, options: { name: string; exact: boolean }) {
+        assert.equal(selector, '[id="task-options"]');
+        assert.equal(role, 'option');
+        assert.equal(options.name, labels.board);
+        assert.equal(options.exact, true);
+        return {
+          async click() {
+            actions.push('choose-board');
+            state = {
+              ...state,
+              view: labels.board,
+              dirty: 'true',
+              saveDisabled: false,
+              resetDisabled: false,
+              feedback: labels.changed,
+            };
+          },
+        };
+      },
+    });
+    const page = {
+      locator: locate,
+      keyboard: {
+        async insertText(text: string) {
+          actions.push('type-note');
+          state.note = text;
+        },
+      },
+    };
+    const exercise = runInNewContext(`${compiled}\nexerciseWorkspaceSettings;`, {
+      HOME: home,
+      assert,
+      activeProbeStage: null,
+      async waitForWorkspaceSettings(_page: unknown, expected: object) {
+        assert.deepEqual(state, JSON.parse(JSON.stringify(expected)));
+        return { ...state };
+      },
+    });
+    const result = await exercise(page, route, async (stage: string) => {
+      snapshots.push(stage);
+    });
+    assert.equal(result.saved.dirty, 'false');
+    assert.equal(result.restoredDraft.dirty, 'true');
+    assert.equal(result.restoredDraft.saveDisabled, false);
+    assert.equal(result.defaultsSaved.dirty, 'false');
+    assert.equal(result.defaultsSaved.note, '');
+    assert.deepEqual(snapshots, ['saved', 'restored-draft']);
+    assert.deepEqual(actions, [
+      '[data-demo-ref="settings-view-trigger"]',
+      'choose-board',
+      '[data-demo-ref="settings-summary"]',
+      'textarea[data-demo-ref="settings-note"], [data-demo-ref="settings-note"] textarea',
+      'type-note',
+      '[data-demo-ref="settings-save"]',
+      '[data-demo-ref="settings-reset"]',
+      '[data-demo-ref="settings-save"]',
+    ]);
+    assert.match(result.persistence, /no backend or durable-storage claim/);
+  }
+});

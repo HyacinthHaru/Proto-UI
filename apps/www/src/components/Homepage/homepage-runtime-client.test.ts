@@ -25,13 +25,9 @@ function fixture(withDemo = false) {
   <main><div id="hero" data-homepage-actions><div data-homepage-fallback><a href="https://example.com/docs" target="_blank" rel="noopener">Get started</a></div><div data-homepage-mount></div></div></main>`;
   if (withDemo) {
     const demo = document.createElement('section');
-    demo.dataset.homeDemoOptions = JSON.stringify([
-      { id: 'demo-shadcn-button', label: 'Button' },
-      { id: 'demo-shadcn-tabs', label: 'Tabs' },
-    ]);
-    demo.dataset.initialDemoId = 'demo-shadcn-button';
-    demo.innerHTML =
-      '<div data-home-demo-host></div><output data-home-demo-status></output><p data-home-demo-description></p><a data-home-demo-source></a><span data-home-demo-definition></span>';
+    demo.dataset.homeShowcase = 'website-workspace-settings';
+    demo.dataset.locale = 'en';
+    demo.innerHTML = '<div data-home-demo-host></div><output data-home-demo-status></output>';
     document.body.append(demo);
   }
   return document.querySelector<HTMLElement>('[data-homepage-runtime]')!;
@@ -171,26 +167,26 @@ describe('Homepage page-owned runtime', () => {
     await settle();
     expect(fakes.materialize.mock.calls).toHaveLength(count);
   });
-  it('switches header, native action recipes and demo in one generation with orthogonal family/component state', async () => {
+  it('switches header, native action recipes and demo in one generation with orthogonal runtime/library state and the explicit task recipe', async () => {
     const root = fixture(true);
     handle = initHomepageRuntime(root);
     await settle();
-    const demo = document.querySelector<HTMLElement>('[data-home-demo-options]')!;
+    const demo = document.querySelector<HTMLElement>('[data-home-showcase]')!;
     expect(fakes.materialize.mock.calls).toHaveLength(3);
     expect(demo.dataset.projectionGeneration).toBe(root.dataset.runtimeGeneration);
     expect(demo.dataset.projectionRuntime).toBe('wc');
     const controls = fakes.materialize.mock.calls[2]![1].controls;
-    controls.component.onValueChange('tabs');
-    await settle();
-    expect(demo.dataset.projectionComponent).toBe('tabs');
-    expect(demo.querySelector('a')?.getAttribute('href')).toContain(
-      'demo_components/tabs/demo-shadcn-tabs.demo.ts'
-    );
+    expect(fakes.materialize.mock.calls[2]![1].controlIds).toEqual(['family']);
+    const task = fakes.materialize.mock.calls[2]![1].content;
+    expect(task.recipe.id).toBe('website-workspace-settings');
+    assertDemoSpec(task.demo);
+    expect(task.recipe.prototypeIds).toContain('shadcn-textarea-root');
+    expect(task.recipe.prototypeIds).toContain('shadcn-switch-root');
     controls.family.onValueChange('brutalist');
     await settle();
     expect(root.dataset.family).toBe('brutalist');
     expect(demo.dataset.projectionFamily).toBe('brutalist');
-    expect(demo.dataset.projectionComponent).toBe('tabs');
+    expect(demo.dataset.projectionComponent).toBe('website-workspace-settings');
     expect(document.documentElement.dataset.siteLibraryFamily).toBe('brutalist');
     expect(
       fakes.materialize.mock.calls
@@ -206,7 +202,7 @@ describe('Homepage page-owned runtime', () => {
     expect(demo.dataset.runnerRuntime).toBe('react');
     expect(demo.dataset.projectionRuntime).toBe('react');
     expect(demo.dataset.projectionGeneration).toBe(root.dataset.runtimeGeneration);
-    expect(demo.dataset.projectionComponent).toBe('tabs');
+    expect(demo.dataset.projectionComponent).toBe('website-workspace-settings');
     expect(root.dataset.family).toBe('brutalist');
   });
 
@@ -215,7 +211,7 @@ describe('Homepage page-owned runtime', () => {
     const root = fixture(true);
     handle = initHomepageRuntime(root);
     await settle();
-    const demo = document.querySelector<HTMLElement>('[data-home-demo-options]')!;
+    const demo = document.querySelector<HTMLElement>('[data-home-showcase]')!;
     const generation = root.dataset.runtimeGeneration;
     const header = candidate();
     const actions = candidate();

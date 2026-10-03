@@ -17,7 +17,7 @@ async function ready(page: Page, runtime: string) {
   await page.waitForFunction(
     (target) => {
       const page = document.querySelector<HTMLElement>('[data-homepage-runtime]');
-      const demo = document.querySelector<HTMLElement>('[data-home-demo-options]');
+      const demo = document.querySelector<HTMLElement>('[data-home-showcase]');
       return (
         page?.dataset.runtimeState === 'ready' &&
         page.dataset.runtime === target &&
@@ -61,7 +61,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       );
       expect(fallbackLinks.length).toBeGreaterThan(5);
       expect(
-        await page.locator('[data-home-demo-options] [data-projection-control="runtime"]').count()
+        await page.locator('[data-home-showcase] [data-projection-control="runtime"]').count()
       ).toBe(0);
       for (const runtime of [...RUNTIMES, 'react', 'wc'] as const) {
         await switchRuntime(page, runtime);
@@ -153,9 +153,9 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           })
           .toBe(true);
       }
-      const chooseDemo = async (control: 'family' | 'component', label: string) => {
+      const chooseDemo = async (control: 'family', label: string) => {
         const trigger = page.locator(
-          `[data-home-demo-options] [data-projection-control="${control}"] [role="combobox"]`
+          `[data-home-showcase] [data-projection-control="${control}"] [role="combobox"]`
         );
         await trigger.click();
         const id = await trigger.getAttribute('aria-controls');
@@ -164,12 +164,6 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           .getByRole('option', { name: label, exact: true })
           .click();
       };
-      await chooseDemo('component', 'Tabs');
-      await page.waitForFunction(
-        () =>
-          document.querySelector<HTMLElement>('[data-home-demo-options]')?.dataset
-            .projectionComponent === 'tabs'
-      );
       for (const family of ['brutalist', 'shadcn'] as const) {
         await chooseDemo('family', family === 'brutalist' ? 'Brutalist' : 'Shadcn');
         await page.waitForFunction(
@@ -182,7 +176,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           await switchRuntime(page, runtime);
           const coordinates = await page.evaluate(() => {
             const root = document.querySelector<HTMLElement>('[data-homepage-runtime]')!;
-            const demo = document.querySelector<HTMLElement>('[data-home-demo-options]')!;
+            const demo = document.querySelector<HTMLElement>('[data-home-showcase]')!;
             const scopes = [
               ...document.querySelectorAll<HTMLElement>(
                 '[data-homepage-mount] [data-projection-generation-state="active"] [data-projection-scope], [data-home-demo-host] [data-projection-generation-state="active"] [data-projection-scope]'
@@ -193,7 +187,6 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
               component: demo.dataset.projectionComponent,
               pageGeneration: root.dataset.runtimeGeneration,
               demoGeneration: demo.dataset.projectionGeneration,
-              source: demo.querySelector('a[data-home-demo-source]')?.getAttribute('href'),
               scopes: scopes.map((scope) => ({
                 runtime: scope.dataset.projectionRuntime,
                 family: scope.dataset.projectionFamily,
@@ -209,9 +202,12 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           );
           expect(await accessibleTheme.getAttribute('title')).toBe('切换主题');
           expect(coordinates.family).toBe(family);
-          expect(coordinates.component).toBe('tabs');
+          expect(coordinates.component).toBe('website-workspace-settings');
           expect(coordinates.demoGeneration).toBe(coordinates.pageGeneration);
-          expect(coordinates.source).toContain(`demo-${family}-tabs.demo.ts`);
+          expect(
+            await page.locator('[data-home-showcase] [data-projection-control="component"]').count()
+          ).toBe(0);
+          expect(await page.locator('[data-home-settings]').count()).toBe(1);
           for (const scope of coordinates.scopes) {
             expect(scope.runtime).toBe(runtime);
             expect(scope.family).toBe(family);

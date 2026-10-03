@@ -1,230 +1,73 @@
 ---
-import type { RuntimeId } from './runtimes/registry';
-
-type DemoOption = {
-  id: string;
-  label: string;
-  description?: string;
-};
-
-type RuntimeOption = {
-  id: RuntimeId;
-  label: string;
-};
-
-type BrowserRunnerResearchOption = {
-  id: 'flutter-wasm' | 'qt-wasm' | 'gpui-wasm';
-  label: string;
-};
-
 interface Props {
-  demos: DemoOption[];
-  initialDemoId?: string;
-  initialRuntime?: RuntimeId;
-  runtimes?: RuntimeOption[];
-  browserRunnerResearch?: BrowserRunnerResearchOption[];
   id?: string;
   class?: string;
-  pickerLabel?: string;
-  runtimeLabel?: string;
-  familyLabel?: string;
 }
-
-const locale = Astro.locals.starlightRoute.locale;
+const locale = Astro.locals.starlightRoute.locale === 'en' ? 'en' : 'zh-cn';
+const { id = 'home-demo-previewer', class: className = '' } = Astro.props;
 const copy =
   locale === 'en'
     ? {
-        eyebrow: 'Built with Proto UI',
-        title: 'Define interactions once. Reuse them across frameworks.',
-        lead: 'Use the page runtime selector, then try the components below.',
+        title: 'Workspace settings',
+        family: 'Page style',
         loading: 'Preparing',
         ready: 'Ready',
         error: 'Error',
-        researchTitle: 'Beyond the browser',
-        researchLead:
-          'Flutter, Qt and GPUI browser runners are research directions, not available adapters or conformance claims.',
       }
-    : {
-        eyebrow: '用 Proto UI 构建',
-        title: '交互定义写一次，在不同框架中复用',
-        lead: '切换页面 Runtime，再试试下面的组件。',
-        loading: '准备中',
-        ready: '就绪',
-        error: '错误',
-        researchTitle: '浏览器之外',
-        researchLead:
-          'Flutter、Qt 和 GPUI 浏览器 runner 仍是研究方向，不代表可用 Adapter 或一致性支持。',
-      };
-
-const {
-  demos,
-  initialDemoId,
-  initialRuntime = 'wc',
-  runtimes = [
-    { id: 'wc', label: 'Web Components' },
-    { id: 'react', label: 'React' },
-    { id: 'vue', label: 'Vue' },
-    { id: 'vue2', label: 'Vue 2' },
-  ],
-  browserRunnerResearch = [
-    { id: 'flutter-wasm', label: 'Flutter' },
-    { id: 'qt-wasm', label: 'Qt' },
-    { id: 'gpui-wasm', label: 'GPUI' },
-  ],
-  id = 'home-demo-previewer',
-  class: className = '',
-  pickerLabel = 'Component',
-  runtimeLabel = 'Runtime',
-  familyLabel = locale === 'en' ? 'Page style' : '页面风格',
-} = Astro.props;
-
-if (!Array.isArray(demos) || demos.length === 0) {
-  throw new Error('[HomeDemoPreviewer] "demos" must include at least one demo option.');
-}
-
-const initialDemo = demos.find((demo) => demo.id === initialDemoId) ?? demos[0];
-const researchOptions = browserRunnerResearch.map((option) => ({
-  ...option,
-  status: 'research' as const,
-}));
-const initialRuntimeLabel =
-  runtimes.find((runtime) => runtime.id === initialRuntime)?.label ?? initialRuntime;
-const instanceToken = Math.random().toString(36).slice(2);
-const projectionOwner = `${id}-projection-${instanceToken}`;
+    : { title: '工作区设置', family: '页面风格', loading: '准备中', ready: '就绪', error: '错误' };
+const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}`;
 ---
 
 <section
   id={id}
   class:list={['home-demo-previewer', className]}
-  data-home-demo-options={JSON.stringify(demos)}
-  data-runtime-options={JSON.stringify(runtimes)}
-  data-browser-runner-research={JSON.stringify(researchOptions)}
-  data-initial-demo-id={initialDemo.id}
-  data-initial-runtime={initialRuntime}
+  aria-label={copy.title}
+  data-home-showcase="website-workspace-settings"
+  data-locale={locale}
   data-projection-owner={projectionOwner}
-  data-picker-label={pickerLabel}
-  data-runtime-label={runtimeLabel}
-  data-family-label={familyLabel}
+  data-family-label={copy.family}
   data-runner-state="loading"
-  data-runner-runtime={initialRuntime}
+  data-runner-runtime="wc"
   data-status-loading={copy.loading}
   data-status-ready={copy.ready}
   data-status-error={copy.error}
 >
-  <h2 class="home-demo-previewer__intro-title">{copy.title}</h2>
-  <div class="home-demo-previewer__panel pui-runtime-box">
-    <div class="home-demo-previewer__host" data-home-demo-host aria-busy="true"></div>
-  </div>
-  <div class="home-demo-previewer__caption">
-    <p class="home-demo-previewer__description" data-home-demo-description>
-      {initialDemo.description ?? copy.lead}
-    </p>
-    <div class="home-demo-previewer__source">
-      <span class="home-demo-previewer__meta-label"
-        >{locale === 'en' ? 'Website demo configuration' : '网站示例配置'}</span
-      >
-      <a
-        data-home-demo-source
-        data-home-demo-source-kind="demo-configuration"
-        href={`https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/content/docs/zh-cn/${initialDemo.id}.demo.ts`}
-      >
-        {initialDemo.id}.demo.ts
-      </a>
-    </div>
-  </div>
+  <div class="home-demo-previewer__host" data-home-demo-host aria-busy="true"></div>
   <output class="home-demo-previewer__status" data-home-demo-status aria-live="polite">
-    {initialRuntimeLabel} · {copy.loading}
+    {copy.loading}
   </output>
-  <p class="home-demo-previewer__scope">
-    {
-      locale === 'en'
-        ? 'Page runtime switches navigation, theme, language, actions and this example. Astro keeps the static content; search remains a docs service. Switching resets example state.'
-        : '页面 Runtime 切换导航、主题、语言、操作与本例中的 Proto UI 实现。Astro 保留静态内容，搜索由文档服务提供；切换会重置示例状态。'
-    }
-  </p>
-  <div class="home-demo-previewer__research">
-    <div class="home-demo-previewer__research-copy">
-      <p class="home-demo-previewer__research-title">{copy.researchTitle}</p>
-      <p class="home-demo-previewer__research-lead">{copy.researchLead}</p>
-    </div>
-    <ul class="home-demo-previewer__research-targets" aria-label={copy.researchTitle}>
-      {
-        researchOptions.map((option) => (
-          <li data-browser-runner-research-id={option.id}>{option.label}</li>
-        ))
-      }
-    </ul>
-  </div>
-
-  <script>
-    import { initHomeDemoPreviewer } from './home-demo-client';
-
-    function init() {
-      document
-        .querySelectorAll<HTMLElement>(
-          '.home-demo-previewer[data-home-demo-options]:not([data-inited])'
-        )
-        .forEach((root) => initHomeDemoPreviewer(root));
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-    document.addEventListener('astro:page-load', init);
-  </script>
 </section>
 
 <style>
+  /* App-owned layout and type only. Interactive surfaces belong to the selected PUI library. */
   .home-demo-previewer {
-    width: min(100%, 65rem);
+    width: min(100%, 56rem);
     margin: 0 auto;
     padding: 0 0 3rem;
     scroll-margin-block: 8rem;
     font-family: var(--font-sans);
   }
-  .home-demo-previewer__intro-title {
-    margin: 0 0 0.75rem;
-    color: var(--color-foreground);
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: -0.015em;
-  }
-  .home-demo-previewer__panel {
-    overflow: hidden;
-    color: var(--color-card-foreground);
-    background: var(--color-background);
-    border: var(--runtime-box-border);
-    border-radius: var(--runtime-box-radius);
-  }
   .home-demo-previewer__host {
     position: relative;
-    min-height: 14rem;
+    min-height: 20rem;
     width: 100%;
   }
   .home-demo-previewer :global(.pui-projection-generation),
-  .home-demo-previewer :global(.pui-projection-scope) {
+  .home-demo-previewer :global(.pui-projection-scope),
+  .home-demo-previewer :global(.pui-projection-content) {
     width: 100%;
-  }
-  .home-demo-previewer :global(.pui-projection-scope) {
-    display: grid;
+    min-width: 0;
   }
   .home-demo-previewer :global(.pui-projection-controls) {
-    display: grid;
-    grid-template-columns: 10rem 10rem;
-    align-items: center;
-    justify-content: start;
-    gap: 0.75rem;
-    padding: var(--runtime-box-toolbar-padding);
-    border-bottom: var(--runtime-box-border);
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
   }
   .home-demo-previewer :global(.pui-projection-control) {
     display: flex;
+    width: 10rem;
     min-width: 0;
   }
-  /* Select values are visible; each control retains its complete accessible label. */
   .home-demo-previewer :global(.pui-projection-control-label),
   .home-demo-previewer__status {
     position: absolute;
@@ -235,7 +78,6 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
-    border: 0;
   }
   .home-demo-previewer[data-runner-state='error'] .home-demo-previewer__status,
   .home-demo-previewer[data-runner-state='loading'] .home-demo-previewer__status {
@@ -246,101 +88,74 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
     margin: 0.75rem 0 0;
     clip: auto;
     white-space: normal;
-    color: var(--color-muted-foreground);
     font-size: 0.8125rem;
     line-height: 1.5;
   }
-  .home-demo-previewer[data-runner-state='error'] .home-demo-previewer__status {
-    color: var(--color-destructive);
+  .home-demo-previewer :global(.home-settings) {
+    display: grid;
+    gap: 1.5rem;
   }
-  .home-demo-previewer :global(.pui-projection-content) {
-    min-height: var(--runtime-box-content-min);
-    min-width: 0;
-    max-width: 100%;
+  .home-demo-previewer :global(.home-settings__title) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+  .home-demo-previewer :global(.home-settings__fields) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  .home-demo-previewer :global(.home-settings__preferences) {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: var(--runtime-box-content-padding);
-    overflow: hidden;
-  }
-  .home-demo-previewer__caption {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.375rem 1.5rem;
-    margin-top: 0.75rem;
-    color: var(--color-muted-foreground);
-    font-size: 0.8125rem;
-    line-height: 1.55;
-  }
-  .home-demo-previewer__description {
-    margin: 0;
-    flex: 1 1 20rem;
-  }
-  .home-demo-previewer__source {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 1.25rem;
     min-width: 0;
   }
-  .home-demo-previewer__source a {
-    color: var(--color-foreground);
-    font: inherit;
-    text-underline-offset: 3px;
-    overflow-wrap: anywhere;
-  }
-  .home-demo-previewer__scope {
-    max-width: 58rem;
-    margin: 0.5rem 0 0;
-    color: var(--color-muted-foreground);
-    font-size: 0.8125rem;
-    line-height: 1.55;
-  }
-  .home-demo-previewer__research {
+  .home-demo-previewer :global(.home-settings__field) {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 2rem;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 3rem;
-  }
-  .home-demo-previewer__research-copy {
-    flex: 1 1 20rem;
+    flex-direction: column;
+    gap: 0.625rem;
     min-width: 0;
   }
-  .home-demo-previewer__research-title,
-  .home-demo-previewer__research-lead {
-    margin: 0;
-  }
-  .home-demo-previewer__research-title {
-    color: var(--color-foreground);
+  .home-demo-previewer :global(.home-settings__label) {
     font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.5;
   }
-  .home-demo-previewer__research-lead {
-    margin-top: 0.25rem;
-    color: var(--color-muted-foreground);
-    font-size: 0.8125rem;
-    line-height: 1.55;
-  }
-  .home-demo-previewer__research-targets {
+  .home-demo-previewer :global(.home-settings__switch-row) {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 1rem;
-    padding: 0;
-    margin: 0;
-    color: var(--color-muted-foreground);
-    font-size: 0.8125rem;
-    list-style: none;
   }
-  @media (max-width: 720px) {
-    .home-demo-previewer :global(.pui-projection-controls) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  .home-demo-previewer :global(.home-settings__muted) {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    text-align: right;
+  }
+  .home-demo-previewer :global(.home-settings__footer) {
+    display: grid;
+    gap: 0.875rem;
+  }
+  .home-demo-previewer :global(.home-settings__actions) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .home-demo-previewer :global(.home-settings__feedback) {
+    min-height: 1.5em;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 640px) {
+    .home-demo-previewer :global(.home-settings__fields) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
-    .home-demo-previewer__research {
-      margin-top: 2rem;
+    .home-demo-previewer :global(.pui-projection-controls) {
+      margin-bottom: 1rem;
     }
   }
 </style>

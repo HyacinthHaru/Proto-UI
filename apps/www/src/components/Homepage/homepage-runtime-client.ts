@@ -352,10 +352,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     },
     component: {
       label: demo?.root.dataset.pickerLabel || 'Component',
-      options: demo?.options.map((option) => ({
-        value: option.componentId,
-        label: option.label,
-      })) ?? [{ value: 'button', label: 'Button' }],
+      options: [{ value: 'button', label: 'Button' }],
       onValueChange: (value) => requestComponent(value as SharedBaseFamilyId),
     },
   });
@@ -401,7 +398,16 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
             ownerId: demo.ownerId,
             componentId: component,
             controls: controls(),
-            controlIds: ['family', 'component'],
+            controlIds: ['family'],
+            content: demo.createContent(
+              family,
+              runtime,
+              () =>
+                !destroyed &&
+                controller.getSnapshot().phase === 'ready' &&
+                controller.getSnapshot().generation === request.generation,
+              () => !destroyed && controller.getSnapshot().generation === request.generation
+            ),
           })
         );
       const outcomes = await Promise.allSettled(work);

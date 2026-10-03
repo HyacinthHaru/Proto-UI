@@ -116,3 +116,13 @@ corepack pnpm@10.32.1 check:types
 `T-LIFECYCLE-0003`、`T-LIFECYCLE-0005` 与 `T-LIFECYCLE-0006` 把共享 lifecycle criteria 连接到 Runtime 和官方 Adapter evidence。
 
 接下来阅读 [Host Caps](/zh-cn/build/host-caps/)理解 capability wiring，阅读 [Adapter 指南](/zh-cn/build/adapter-guide/)理解当前贡献边界，或阅读[契约与测试](/zh-cn/build/contracts-and-tests/)理解证据追踪。
+
+## 首页工作区示例
+
+首页的 `website-workspace-settings` 是网站使用现有 Select、Switch、Textarea 和 Button Prototype 编排的应用示例。每个组件库提供各自真实的部件；它是网站应用配方，不是新的公共 Prototype，也不新增 Template 层的组件组合能力。
+
+页面 Runtime 选择器通过 Web Components、React、Vue 或 Vue 2 重新实现首页的 Proto UI 导航表面、主题与语言控件、操作及工作区示例。组件库选择器独立切换 Shadcn / Brutalist，整页在同一 generation 内一并提交。Astro 保留静态内容与布局，搜索仍由文档服务提供。
+
+“保存到本页”将当前工作区设置复制为本次挂载示例中的已保存状态。“恢复默认值”修改草稿，需要再次保存才会接受默认值。这个示例不向服务器提交，也不持久化数据；切换 Runtime 或组件库会重置草稿和已保存状态。单组件示例继续保留在各组件文档中。
+
+对应源码为 [homepage-showcase.ts](https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/components/Homepage/homepage-showcase.ts)。Flutter、Qt 和 GPUI 浏览器/WASM runner 仍是研究方向，不代表可用 Adapter 或一致性支持。

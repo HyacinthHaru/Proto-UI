@@ -239,7 +239,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       for (const family of ['brutalist', 'shadcn'] as const) {
         await choose(
           page,
-          '[data-home-demo-options] [data-projection-control="family"]',
+          '[data-home-showcase] [data-projection-control="family"]',
           family === 'brutalist' ? 'Brutalist' : 'Shadcn'
         );
         for (const runtime of RUNTIMES) {

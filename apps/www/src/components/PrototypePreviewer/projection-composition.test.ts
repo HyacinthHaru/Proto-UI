@@ -853,6 +853,7 @@ describe('Website native-only content recipes', () => {
       (node) => node.kind === 'box' && node.attrs?.['data-projection-content'] === ''
     );
     expect(content.kind === 'box' && content.attrs?.['data-projection-prototype']).toBeUndefined();
+    expect(content.kind === 'box' && content.attrs?.['data-projection-id']).toBe('native-actions');
   });
   it('rejects missing, duplicate, or falsely omitted declared Prototype identity', () => {
     expect(() =>

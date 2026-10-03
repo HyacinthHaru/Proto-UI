@@ -94,10 +94,13 @@ const saveReport = () =>
   writeFile(path.join(out, 'metrics.json'), `${JSON.stringify(report, null, 2)}\n`);
 await saveReport();
 
-const HOME = '[data-home-demo-options]';
+const HOME =
+  revisionKind === 'candidate'
+    ? '[data-home-showcase="website-workspace-settings"]'
+    : '[data-home-demo-options]';
 const RUNTIME_LABELS = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' } as const;
 type Runtime = keyof typeof RUNTIME_LABELS;
-const fontSelectors = [
+const commonFontSelectors = [
   { name: 'html', selector: 'html' },
   { name: 'body', selector: 'body' },
   { name: 'heading', selector: 'h1' },
@@ -115,6 +118,9 @@ const fontSelectors = [
     selector:
       '[data-homepage-runtime] [data-projection-control="runtime"] [role="combobox"], [data-home-demo-options] [data-projection-control="runtime"] [role="combobox"]',
   },
+];
+// The same candidate-owned probe must still sample the immutable picker baseline.
+const baselineFontSelectors = [
   {
     name: 'component-control',
     selector: '[data-home-demo-options] [data-projection-control="component"] [role="combobox"]',
@@ -124,6 +130,54 @@ const fontSelectors = [
   { name: 'preview-caption', selector: '.home-demo-previewer__description' },
   { name: 'research-lead', selector: '.home-demo-previewer__research-lead' },
   { name: 'demo', selector: '[data-home-demo-host] [data-projection-content] [data-pui-root]' },
+];
+const candidateFontSelectors = [
+  {
+    name: 'library-control',
+    selector: `${HOME} [data-projection-control="family"] [role="combobox"]`,
+  },
+  { name: 'task-title', selector: `${HOME} .home-settings__title` },
+  {
+    name: 'task-view-label',
+    selector: `${HOME} .home-settings__preferences .home-settings__field .home-settings__label`,
+  },
+  {
+    name: 'task-summary-label',
+    selector: `${HOME} .home-settings__switch-row .home-settings__label`,
+  },
+  {
+    name: 'task-note-label',
+    selector: `${HOME} .home-settings__fields > .home-settings__field > .home-settings__label`,
+  },
+  { name: 'task-view-control', selector: `${HOME} [data-demo-ref="settings-view-trigger"]` },
+  { name: 'task-save-action', selector: `${HOME} [data-demo-ref="settings-save"]` },
+  { name: 'task-reset-action', selector: `${HOME} [data-demo-ref="settings-reset"]` },
+  { name: 'task-feedback', selector: `${HOME} [data-demo-ref="settings-feedback"][role="status"]` },
+];
+const fontSelectors = [
+  ...commonFontSelectors,
+  ...(revisionKind === 'candidate' ? candidateFontSelectors : baselineFontSelectors),
+];
+const surfaceSelectors = [
+  'header',
+  '.homepage-hero',
+  'section:has(h1)',
+  'h1',
+  HOME,
+  ...(revisionKind === 'candidate'
+    ? [
+        `${HOME} .home-settings__title`,
+        `${HOME} [data-demo-ref="settings-view-trigger"]`,
+        `${HOME} .home-settings__fields`,
+        `${HOME} .home-settings__actions`,
+        `${HOME} [data-demo-ref="settings-feedback"]`,
+      ]
+    : [
+        '.home-demo-previewer__intro-title',
+        '[data-home-demo-host] [data-projection-content] [data-pui-root]',
+        '.home-demo-previewer__status',
+        '.home-demo-previewer__research-lead',
+      ]),
 ];
 
 async function settle(page: Page): Promise<void> {
@@ -137,8 +191,8 @@ async function settle(page: Page): Promise<void> {
 
 async function waitForRuntime(page: Page, runtime: Runtime): Promise<void> {
   await page.waitForFunction(
-    ({ runtime, requireHeader }) => {
-      const home = document.querySelector<HTMLElement>('[data-home-demo-options]');
+    ({ runtime, requireHeader, homeSelector }) => {
+      const home = document.querySelector<HTMLElement>(homeSelector);
       const host = home?.querySelector<HTMLElement>('[data-home-demo-host]');
       const scope = host?.querySelector<HTMLElement>('[data-projection-scope]');
       const header = document.querySelector<HTMLElement>('[data-homepage-runtime]');
@@ -153,7 +207,7 @@ async function waitForRuntime(page: Page, runtime: Runtime): Promise<void> {
           (header?.dataset.runtimeState === 'ready' && header.dataset.runtime === runtime))
       );
     },
-    { runtime, requireHeader: revisionKind === 'candidate' },
+    { runtime, requireHeader: revisionKind === 'candidate', homeSelector: HOME },
     { timeout: 30_000 }
   );
   assert.ok(
@@ -217,6 +271,174 @@ async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): P
   }
   await waitForRuntime(page, runtime);
   activeProbeStage = null;
+}
+
+type WorkspaceSettingsState = {
+  view: string;
+  summary: string | null;
+  note: string;
+  dirty: string | undefined;
+  saveDisabled: boolean;
+  resetDisabled: boolean;
+  feedback: string;
+};
+
+// Serialized by Playwright. Keep this read-only observer self-contained, and
+// read the Adapter's actual native textarea (WC wraps it; React/Vue own it).
+function observeWorkspaceSettings({
+  homeSelector,
+  expected,
+}: {
+  homeSelector: string;
+  expected: Partial<WorkspaceSettingsState>;
+}): WorkspaceSettingsState | false {
+  const home = document.querySelector<HTMLElement>(homeSelector);
+  const settings = home?.querySelector<HTMLElement>('[data-demo-ref="settings"]');
+  const view = home?.querySelector<HTMLElement>('[data-demo-ref="settings-view-trigger"]');
+  const summary = home?.querySelector<HTMLElement>('[data-demo-ref="settings-summary"]');
+  const noteRoot = home?.querySelector<HTMLElement>('[data-demo-ref="settings-note"]');
+  const note = noteRoot?.matches('textarea')
+    ? (noteRoot as HTMLTextAreaElement)
+    : noteRoot?.querySelector<HTMLTextAreaElement>('textarea');
+  const save = home?.querySelector<HTMLElement>('[data-demo-ref="settings-save"]');
+  const reset = home?.querySelector<HTMLElement>('[data-demo-ref="settings-reset"]');
+  const feedback = home?.querySelector<HTMLElement>(
+    '[data-demo-ref="settings-feedback"][role="status"]'
+  );
+  if (!settings || !view || !summary || !note || !save || !reset || !feedback) return false;
+  const state: WorkspaceSettingsState = {
+    view: view.textContent?.trim() ?? '',
+    summary: summary.getAttribute('aria-checked'),
+    note: note.value,
+    dirty: settings.dataset.dirty,
+    saveDisabled: save.getAttribute('aria-disabled') === 'true' || save.hasAttribute('disabled'),
+    resetDisabled: reset.getAttribute('aria-disabled') === 'true' || reset.hasAttribute('disabled'),
+    feedback: feedback.textContent?.trim() ?? '',
+  };
+  for (const key of Object.keys(expected) as Array<keyof WorkspaceSettingsState>) {
+    if (state[key] !== expected[key]) return false;
+  }
+  return state;
+}
+
+async function waitForWorkspaceSettings(page: Page, expected: Partial<WorkspaceSettingsState>) {
+  const result = await page.waitForFunction(observeWorkspaceSettings, {
+    homeSelector: HOME,
+    expected,
+  });
+  try {
+    const state = await result.jsonValue();
+    assert.ok(state, 'The actual workspace settings state must match the task expectation');
+    return state;
+  } finally {
+    await result.dispose();
+  }
+}
+
+async function exerciseWorkspaceSettings(
+  page: Page,
+  route: string,
+  capture: (state: string) => Promise<void>
+) {
+  const copy =
+    route === '/en/'
+      ? {
+          list: 'List',
+          board: 'Board',
+          unchanged: 'No unsaved changes',
+          changed: 'Unsaved changes',
+          saved: 'Saved to this page',
+          restored: 'Defaults restored',
+          on: 'Weekly summary on',
+          off: 'Weekly summary off',
+          note: 'Plan the next team check-in.',
+          noteLength: (count: number) => `Note: ${count} characters`,
+        }
+      : {
+          list: '列表',
+          board: '看板',
+          unchanged: '没有未保存的更改',
+          changed: '有未保存的更改',
+          saved: '已保存到本页',
+          restored: '已恢复默认值',
+          on: '显示每周摘要',
+          off: '隐藏每周摘要',
+          note: '准备下一次团队同步。',
+          noteLength: (count: number) => `备注 ${count} 字`,
+        };
+  const task = page.locator(HOME);
+  activeProbeStage = 'workspace-settings-initial';
+  const initial = await waitForWorkspaceSettings(page, {
+    view: copy.list,
+    summary: 'false',
+    note: '',
+    dirty: 'false',
+    saveDisabled: true,
+    resetDisabled: true,
+    feedback: copy.unchanged,
+  });
+  const trigger = task.locator('[data-demo-ref="settings-view-trigger"]');
+  activeProbeStage = 'workspace-settings-edit';
+  await trigger.click();
+  const portalId = await trigger.getAttribute('aria-controls');
+  assert.ok(portalId, 'Project-view selector must identify its real option portal');
+  const portal = page.locator(`[id=${JSON.stringify(portalId)}]`);
+  await portal.waitFor({ state: 'visible' });
+  await portal.getByRole('option', { name: copy.board, exact: true }).click();
+  const viewChanged = await waitForWorkspaceSettings(page, {
+    view: copy.board,
+    summary: 'false',
+    note: '',
+    dirty: 'true',
+    saveDisabled: false,
+    resetDisabled: false,
+    feedback: copy.changed,
+  });
+  await task.locator('[data-demo-ref="settings-summary"]').click();
+  const summaryChanged = await waitForWorkspaceSettings(page, { ...viewChanged, summary: 'true' });
+  const note = task.locator(
+    'textarea[data-demo-ref="settings-note"], [data-demo-ref="settings-note"] textarea'
+  );
+  await note.click();
+  await page.keyboard.insertText(copy.note);
+  const edited = await waitForWorkspaceSettings(page, { ...summaryChanged, note: copy.note });
+  activeProbeStage = 'workspace-settings-save';
+  await task.locator('[data-demo-ref="settings-save"]').click();
+  const saved = await waitForWorkspaceSettings(page, {
+    ...edited,
+    dirty: 'false',
+    saveDisabled: true,
+    feedback: `${copy.saved} · ${copy.board} · ${copy.on} · ${copy.noteLength(copy.note.length)}`,
+  });
+  await capture('saved');
+  activeProbeStage = 'workspace-settings-restore';
+  await task.locator('[data-demo-ref="settings-reset"]').click();
+  // Restore changes the draft. It must not claim the previously saved local
+  // values changed until the user deliberately saves those defaults as well.
+  const restoredDraft = await waitForWorkspaceSettings(page, {
+    ...initial,
+    dirty: 'true',
+    saveDisabled: false,
+    feedback: `${copy.restored} · ${copy.changed}`,
+  });
+  await capture('restored-draft');
+  await task.locator('[data-demo-ref="settings-save"]').click();
+  const defaultsSaved = await waitForWorkspaceSettings(page, {
+    ...initial,
+    feedback: `${copy.saved} · ${copy.list} · ${copy.off} · ${copy.noteLength(0)}`,
+  });
+  activeProbeStage = null;
+  return {
+    persistence: 'Local to this page instance; no backend or durable-storage claim',
+    input: 'Real project-view option, Switch click, native textarea typing, Save, Restore, Save',
+    initial,
+    viewChanged,
+    summaryChanged,
+    edited,
+    saved,
+    restoredDraft,
+    defaultsSaved,
+  };
 }
 
 async function ownership(page: Page, runtime: Runtime) {
@@ -301,7 +523,7 @@ async function ownership(page: Page, runtime: Runtime) {
 
 async function measure(page: Page, samples = fontSelectors) {
   const metrics = await page.evaluate(
-    (samples) => ({
+    ({ samples, surfaces }) => ({
       viewportWidth: innerWidth,
       viewportHeight: innerHeight,
       documentWidth: document.documentElement.scrollWidth,
@@ -321,17 +543,7 @@ async function measure(page: Page, samples = fontSelectors) {
         weight: face.weight,
         style: face.style,
       })),
-      surfaceGeometry: [
-        'header',
-        '.homepage-hero',
-        'section:has(h1)',
-        'h1',
-        '[data-home-demo-options]',
-        '.home-demo-previewer__intro-title',
-        '[data-home-demo-host] [data-projection-content] [data-pui-root]',
-        '.home-demo-previewer__status',
-        '.home-demo-previewer__research-lead',
-      ].flatMap((selector) =>
+      surfaceGeometry: surfaces.flatMap((selector) =>
         [...document.querySelectorAll<HTMLElement>(selector)].map((element) => {
           const rect = element.getBoundingClientRect();
           const style = getComputedStyle(element);
@@ -392,7 +604,7 @@ async function measure(page: Page, samples = fontSelectors) {
           right: element.getBoundingClientRect().right,
         })),
     }),
-    samples
+    { samples, surfaces: surfaceSelectors }
   );
   const session = await page.context().newCDPSession(page);
   const platformFonts: Array<Record<string, unknown>> = [];
@@ -540,17 +752,15 @@ try {
               const demoControl = (
                 evidence.initial as Awaited<ReturnType<typeof measure>>
               ).surfaceGeometry.find(
-                (surface) =>
-                  surface.selector ===
-                  '[data-home-demo-host] [data-projection-content] [data-pui-root]'
+                (surface) => surface.selector === `${HOME} [data-demo-ref="settings-view-trigger"]`
               );
               assert.ok(
                 demoControl && demoControl.width > 0 && demoControl.height > 0,
-                'Mobile first view must contain a real rendered demo control'
+                'Mobile first view must contain the real project-view control'
               );
               assert.ok(
                 demoControl.y + demoControl.height <= viewport.height,
-                'The first real demo row must be visible before scrolling, rather than source metadata filling the first view'
+                'The project-view trigger must be visible before scrolling'
               );
             }
             const failures = layoutFailures(
@@ -598,40 +808,54 @@ try {
             const links = await nativeLinks(page);
             for (const group of links)
               assert.deepEqual(group.live, group.fallback, `${group.group}: preserve native links`);
-            const button = page
-              .locator(`${HOME} [data-projection-content] [data-pui-root]`)
-              .first();
-            await button.scrollIntoViewIfNeeded();
-            const box = await button.boundingBox();
-            assert.ok(box, 'Demo button is rendered');
-            await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-            await page.mouse.down();
-            await page.waitForFunction(
-              () =>
-                !!document.querySelector(
-                  '[data-home-demo-host] [data-projection-content] [data-pui-root][data-pressed]'
-                )
-            );
-            const pressed = await button.getAttribute('data-pressed');
-            if (index < 3) {
-              const filename = `${id}-${runtime}-demo-pressed.png`;
-              await page.locator(HOME).screenshot({ path: path.join(out, filename) });
-              screenshots.push(filename);
+            let task: Record<string, unknown>;
+            if (revisionKind === 'candidate') {
+              task = {
+                workspaceSettings: await exerciseWorkspaceSettings(page, route, async (state) => {
+                  if (index < 4) {
+                    const filename = `${id}-${runtime}-settings-${state}.png`;
+                    await page.locator(HOME).screenshot({ path: path.join(out, filename) });
+                    screenshots.push(filename);
+                  }
+                }),
+              };
+            } else {
+              const button = page
+                .locator(`${HOME} [data-projection-content] [data-pui-root]`)
+                .first();
+              await button.scrollIntoViewIfNeeded();
+              const box = await button.boundingBox();
+              assert.ok(box, 'Demo button is rendered');
+              await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+              await page.mouse.down();
+              await page.waitForFunction(
+                () =>
+                  !!document.querySelector(
+                    '[data-home-demo-host] [data-projection-content] [data-pui-root][data-pressed]'
+                  )
+              );
+              const pressed = await button.getAttribute('data-pressed');
+              if (index < 3) {
+                const filename = `${id}-${runtime}-demo-pressed.png`;
+                await page.locator(HOME).screenshot({ path: path.join(out, filename) });
+                screenshots.push(filename);
+              }
+              await page.mouse.up();
+              await page.waitForFunction(
+                () =>
+                  !document.querySelector(
+                    '[data-home-demo-host] [data-projection-content] [data-pui-root][data-pressed]'
+                  )
+              );
+              task = { demoPress: { down: pressed, released: true } };
             }
-            await page.mouse.up();
-            await page.waitForFunction(
-              () =>
-                !document.querySelector(
-                  '[data-home-demo-host] [data-projection-content] [data-pui-root][data-pressed]'
-                )
-            );
             (evidence.transitions as unknown[]).push({
               runtime,
               input: 'pointer',
               owners,
               focusRestored: focused,
               nativeLinks: links,
-              demoPress: { down: pressed, released: true },
+              ...task,
             });
             if (index < 3) {
               await page.evaluate(() => scrollTo(0, 0));
@@ -706,7 +930,11 @@ try {
                     outerHTML: document.activeElement.outerHTML.slice(0, 1800),
                   }
                 : null,
-              home: document.querySelector<HTMLElement>('[data-home-demo-options]')?.dataset,
+              home: (
+                document.querySelector<HTMLElement>(
+                  '[data-home-showcase="website-workspace-settings"]'
+                ) ?? document.querySelector<HTMLElement>('[data-home-demo-options]')
+              )?.dataset,
               page: document.querySelector<HTMLElement>('[data-homepage-runtime]')?.dataset,
               options: [...document.querySelectorAll<HTMLElement>('[role="option"]')].map(
                 (option) => ({

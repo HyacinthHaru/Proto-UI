@@ -888,7 +888,7 @@ export function createProjectionComposition(
           attrs: {
             ...coordinateAttrs,
             'data-projection-content': '',
-            'data-projection-id': options.componentId,
+            'data-projection-id': options.contentRecipe?.id ?? options.componentId,
             ...(componentRootPrototypeId
               ? { 'data-projection-prototype': componentRootPrototypeId }
               : {}),

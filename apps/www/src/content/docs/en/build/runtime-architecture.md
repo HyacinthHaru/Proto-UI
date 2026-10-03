@@ -116,3 +116,13 @@ corepack pnpm@10.32.1 check:types
 `T-LIFECYCLE-0003`, `T-LIFECYCLE-0005`, and `T-LIFECYCLE-0006` connect the shared lifecycle criteria to Runtime and official Adapter evidence.
 
 Continue to [Host Caps](/en/build/host-caps/) for capability wiring, [Adapter Guide](/en/build/adapter-guide/) for the current contribution boundary, or [Contracts & Tests](/en/build/contracts-and-tests/) for evidence tracing.
+
+## Homepage workspace example
+
+The homepage's `website-workspace-settings` is a website-owned composition of existing Select, Switch, Textarea and Button Prototypes. Each selected library supplies its own concrete parts. It is an application recipe, not a new public Prototype or Template-level composition feature.
+
+The page runtime selector rematerializes the homepage's Proto UI navigation surfaces, theme and language controls, actions and workspace example through Web Components, React, Vue or Vue 2. The library selector changes Shadcn / Brutalist independently. The complete page generation commits together. Astro retains static content and layout; search remains the documentation service.
+
+“Save to this page” copies the current workspace settings into that mounted example's local saved state. Restore defaults edits the draft; save again to accept the defaults. There is no server submission or durable storage. A runtime or library remount resets both draft and saved state. The individual component examples remain in their component documentation.
+
+The source is [homepage-showcase.ts](https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/components/Homepage/homepage-showcase.ts). Flutter, Qt and GPUI browser/WASM runners remain research directions, not available adapters or conformance claims.
