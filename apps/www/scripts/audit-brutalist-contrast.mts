@@ -518,17 +518,20 @@ async function pointerJourney(
       }
       if (popup) {
         const popupAfter = await popup.isVisible();
+        const maskProof = family === 'dialog' ? await dialogOpenObservation(page, popup) : null;
         return {
           ...after,
           achieved:
             popupBefore === false &&
             popupAfter &&
-            (family === 'dialog' || after.ariaExpanded === 'true'),
+            (family === 'dialog' || after.ariaExpanded === 'true') &&
+            (!maskProof || maskProof.achieved),
           before,
           after,
           popupBefore,
           popupAfter,
           popupPrototype: popupName,
+          maskProof,
         };
       }
       const attribute = family === 'toggle' ? 'ariaPressed' : 'ariaChecked';
@@ -566,6 +569,105 @@ async function owned(page: Page, prototype: string): Promise<Locator> {
   return page.locator(
     `[data-pui-root][data-projection-prototype=${JSON.stringify(prototype)}][data-projection-owner=${JSON.stringify(lease.owner)}][data-projection-generation=${JSON.stringify(lease.generation)}]`
   );
+}
+async function dialogOpenObservation(page: Page, modal: Locator): Promise<Observation> {
+  const masks = await owned(page, 'brutalist-dialog-mask');
+  if ((await masks.count()) !== 1)
+    return { achieved: false, reason: 'Open Dialog requires exactly one owned mask.' };
+  const handle = await masks.elementHandle();
+  if (!handle) return { achieved: false, reason: 'Owned Dialog mask has no physical target.' };
+  try {
+    return await modal.evaluate((content, mask) => {
+      const visible = (element: Element): boolean => {
+        const rect = element.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) return false;
+        for (let current: Element | null = element; current; ) {
+          const style = getComputedStyle(current);
+          if (
+            style.display === 'none' ||
+            style.visibility !== 'visible' ||
+            style.contentVisibility === 'hidden' ||
+            Number(style.opacity) === 0
+          )
+            return false;
+          const root = current.getRootNode();
+          current =
+            current.assignedSlot ??
+            current.parentElement ??
+            (root instanceof ShadowRoot ? root.host : null);
+        }
+        return true;
+      };
+      const rect = content.getBoundingClientRect();
+      const maskRect = mask.getBoundingClientRect();
+      const style = getComputedStyle(mask);
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = 1;
+      const paint = canvas.getContext('2d');
+      if (!paint) return { achieved: false, reason: 'Mask fill could not be observed.' };
+      paint.fillStyle = style.backgroundColor;
+      paint.fillRect(0, 0, 1, 1);
+      const fillAlpha = paint.getImageData(0, 0, 1, 1).data[3];
+      const maskVisible = visible(mask) && fillAlpha > 0;
+      const coversViewport =
+        maskRect.left <= 0 &&
+        maskRect.top <= 0 &&
+        maskRect.right >= innerWidth &&
+        maskRect.bottom >= innerHeight;
+      // Same twelve one-CSS-pixel exterior locations sampled by the probe.
+      // Hit ownership establishes the receiving layer, not a contrast verdict
+      // or a claim that content box-shadow cannot paint over that layer.
+      const exterior = [0.25, 0.5, 0.75]
+        .flatMap((fraction) => [
+          { side: 'top', x: rect.x + rect.width * fraction, y: rect.y - 1 },
+          { side: 'left', x: rect.x - 1, y: rect.y + rect.height * fraction },
+          { side: 'bottom', x: rect.x + rect.width * fraction, y: rect.bottom + 1 },
+          { side: 'right', x: rect.right + 1, y: rect.y + rect.height * fraction },
+        ])
+        .map((point) => {
+          const insideViewport =
+            point.x >= 0 && point.y >= 0 && point.x < innerWidth && point.y < innerHeight;
+          const hit = insideViewport ? document.elementFromPoint(point.x, point.y) : null;
+          return {
+            ...point,
+            insideViewport,
+            maskIsExteriorLayer: hit === mask,
+            hitPrototype: hit?.getAttribute('data-projection-prototype') ?? null,
+          };
+        });
+      const center = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+      const contentInFront = center !== null && content.contains(center);
+      const ownedMask =
+        mask.getAttribute('data-projection-owner') ===
+          content.getAttribute('data-projection-owner') &&
+        mask.getAttribute('data-projection-generation') ===
+          content.getAttribute('data-projection-generation');
+      return {
+        achieved:
+          content.getAttribute('role') === 'dialog' &&
+          visible(content) &&
+          ownedMask &&
+          maskVisible &&
+          coversViewport &&
+          style.position === 'fixed' &&
+          contentInFront &&
+          exterior.every((point) => point.insideViewport && point.maskIsExteriorLayer),
+        maskVisible,
+        coversViewport,
+        ownedMask,
+        fillAlpha,
+        contentInFront,
+        exterior,
+        contentBounds: rect.toJSON(),
+        maskBounds: maskRect.toJSON(),
+        maskBackground: style.backgroundColor,
+        basis:
+          'Owned visible filled full-viewport mask is the hit-tested exterior receiving layer; content remains above it. Pixel ratios and shadow-overhang classification remain separate.',
+      };
+    }, handle);
+  } finally {
+    await handle.dispose();
+  }
 }
 async function tooltipPortal(page: Page, target: Locator): Promise<Locator> {
   const content = await owned(page, 'brutalist-tooltip-content');
@@ -880,7 +982,7 @@ try {
           await modal.waitFor({ state: 'visible' });
           await settle(page);
           await capture(page, item, 'open', async () => ({
-            achieved: (await modal.isVisible()) && (await modal.getAttribute('role')) === 'dialog',
+            ...(await dialogOpenObservation(page, modal)),
             modal: await targetObservation(modal),
             entryBasis:
               'Visible owned Dialog with authored CSS entry animations finished; portable transitionState is not inferred from a fabricated DOM attribute.',
@@ -888,13 +990,19 @@ try {
           const icon = (await owned(page, 'brutalist-dialog-close-icon')).first();
           await icon.waitFor({ state: 'visible' });
           await icon.hover();
-          await capture(page, item, 'close-icon-hover', async () => ({
-            ...(await requireTarget(icon, (value) => value.hovered === true)),
-            footerCloseCount: await modal
-              .locator('[data-projection-prototype="brutalist-dialog-close"]')
-              .count(),
-            identity: 'brutalist-dialog-close-icon, not footer Close',
-          }));
+          await capture(page, item, 'close-icon-hover', async () => {
+            const control = await requireTarget(icon, (value) => value.hovered === true);
+            const maskProof = await dialogOpenObservation(page, modal);
+            return {
+              ...control,
+              achieved: control.achieved && maskProof.achieved,
+              maskProof,
+              footerCloseCount: await modal
+                .locator('[data-projection-prototype="brutalist-dialog-close"]')
+                .count(),
+              identity: 'brutalist-dialog-close-icon, not footer Close',
+            };
+          });
           await page.mouse.move(0, 0);
           let reached = false;
           for (let step = 0; step < 30; step++) {
@@ -911,9 +1019,14 @@ try {
           }
           if (!reached)
             throw new Error('CloseIcon native keyboard focus not reached within 30 modal Tabs.');
-          await capture(page, item, 'close-icon-keyboard-focus', () =>
-            requireTarget(icon, (value) => value.focused === true && value.focusVisible === true)
-          );
+          await capture(page, item, 'close-icon-keyboard-focus', async () => {
+            const control = await requireTarget(
+              icon,
+              (value) => value.focused === true && value.focusVisible === true
+            );
+            const maskProof = await dialogOpenObservation(page, modal);
+            return { ...control, achieved: control.achieved && maskProof.achieved, maskProof };
+          });
         } else {
           if ((await target.getAttribute('aria-expanded')) === 'true') await target.click();
           await target.press('ArrowDown');
