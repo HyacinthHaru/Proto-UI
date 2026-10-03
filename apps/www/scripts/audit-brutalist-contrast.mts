@@ -578,7 +578,7 @@ async function dialogOpenObservation(page: Page, modal: Locator): Promise<Observ
   if (!handle) return { achieved: false, reason: 'Owned Dialog mask has no physical target.' };
   try {
     return await modal.evaluate((content, mask) => {
-      const visible = (element: Element): boolean => {
+      const visibility = [content, mask].map((element): boolean => {
         const rect = element.getBoundingClientRect();
         if (rect.width <= 0 || rect.height <= 0) return false;
         for (let current: Element | null = element; current; ) {
@@ -597,7 +597,7 @@ async function dialogOpenObservation(page: Page, modal: Locator): Promise<Observ
             (root instanceof ShadowRoot ? root.host : null);
         }
         return true;
-      };
+      });
       const rect = content.getBoundingClientRect();
       const maskRect = mask.getBoundingClientRect();
       const style = getComputedStyle(mask);
@@ -608,7 +608,7 @@ async function dialogOpenObservation(page: Page, modal: Locator): Promise<Observ
       paint.fillStyle = style.backgroundColor;
       paint.fillRect(0, 0, 1, 1);
       const fillAlpha = paint.getImageData(0, 0, 1, 1).data[3];
-      const maskVisible = visible(mask) && fillAlpha > 0;
+      const maskVisible = visibility[1] === true && fillAlpha > 0;
       const coversViewport =
         maskRect.left <= 0 &&
         maskRect.top <= 0 &&
@@ -645,7 +645,7 @@ async function dialogOpenObservation(page: Page, modal: Locator): Promise<Observ
       return {
         achieved:
           content.getAttribute('role') === 'dialog' &&
-          visible(content) &&
+          visibility[0] === true &&
           ownedMask &&
           maskVisible &&
           coversViewport &&
