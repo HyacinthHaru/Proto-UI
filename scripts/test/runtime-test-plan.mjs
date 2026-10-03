@@ -1,6 +1,10 @@
 export const BROWSER_SUITES = Object.freeze([
+  'apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts',
+  'apps/www/test/evidence/brutalist-fonts.browser.test.ts',
+  'apps/www/src/components/documentation-image-preview.browser.test.ts',
   'apps/www/test/message-composition.browser.test.ts',
   'apps/www/test/color-scheme.browser.test.ts',
+  'apps/www/test/preferences.browser.test.ts',
   'apps/www/test/button-view-lifetime.browser.test.ts',
   'apps/www/test/radio-group-entry.browser.test.ts',
   'apps/workspace/test/lifecycle.browser.test.ts',
@@ -11,6 +15,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts',
@@ -19,6 +24,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts',
@@ -26,6 +32,8 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
 ]);
 
 export function createRuntimeTestPlan(rawArgs) {

@@ -20,9 +20,10 @@ export type ProjectionComponentId =
   | 'badge'
   | 'card'
   | 'skeleton'
+  | 'spinner'
   | 'scroll-area'
   | 'tooltip';
-export type ProjectionFamilyId = 'shadcn' | 'brutalist';
+export type ProjectionFamilyId = 'shadcn' | 'brutalist' | 'bootstrap-2-3-2' | 'liquid-glass';
 
 export type ProjectionPartManifest = Readonly<{
   /**
@@ -78,6 +79,7 @@ const REQUIRED_PART_IDS: Readonly<Record<ProjectionComponentId, readonly string[
   badge: ['root'],
   card: ['root', 'header', 'content', 'footer'],
   skeleton: ['root'],
+  spinner: ['root'],
   'scroll-area': ['root', 'viewport', 'scrollbar', 'thumb'],
   tooltip: ['group', 'root', 'trigger', 'content'],
 };
@@ -587,6 +589,18 @@ const BRUTALIST_MANIFEST = {
         root: { basePrototypeId: null, prototypeId: 'brutalist-skeleton-root' },
       },
     },
+    spinner: {
+      baseFamilyId: null,
+      recipeId: 'demo-brutalist-spinner',
+      recipePrototypeIds: ['brutalist-spinner-root', 'brutalist-button', 'base-async-region-root'],
+      parts: {
+        root: { basePrototypeId: null, prototypeId: 'brutalist-spinner-root' },
+      },
+      auxiliaryPrototypes: [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'brutalist-button' },
+        { basePrototypeId: 'P-BASE-ASYNC-REGION', prototypeId: 'base-async-region-root' },
+      ],
+    },
     'scroll-area': {
       baseFamilyId: 'P-BASE-SCROLL-AREA',
       recipeId: 'demo-brutalist-scroll-area',
@@ -646,9 +660,41 @@ const BRUTALIST_MANIFEST = {
   },
 } as const satisfies ProjectionFamilyManifest;
 
+const BOOTSTRAP_232_MANIFEST = {
+  projectionFamilyId: 'bootstrap-2-3-2',
+  themeArtifactId: 'prototype-bootstrap-2-3-2-theme',
+  themeInputId: 'website-bootstrap-2-3-2-theme-mode',
+  // Partial by design: no missing kind may borrow an implementation.
+  families: {
+    button: {
+      baseFamilyId: 'P-BASE-BUTTON',
+      recipeId: 'demo-bootstrap-2-3-2-button',
+      recipePrototypeIds: ['bootstrap-2-3-2-button'],
+      parts: { root: { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'bootstrap-2-3-2-button' } },
+    },
+  },
+} as const satisfies ProjectionFamilyManifest;
+
+const LIQUID_GLASS_MANIFEST = {
+  projectionFamilyId: 'liquid-glass',
+  themeArtifactId: 'prototype-liquid-glass-theme',
+  themeInputId: 'website-liquid-glass-theme-mode',
+  // Partial by design: no missing kind may borrow an implementation.
+  families: {
+    button: {
+      baseFamilyId: 'P-BASE-BUTTON',
+      recipeId: 'demo-liquid-glass-button',
+      recipePrototypeIds: ['liquid-glass-button'],
+      parts: { root: { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'liquid-glass-button' } },
+    },
+  },
+} as const satisfies ProjectionFamilyManifest;
+
 export const PROJECTION_FAMILY_MANIFESTS = Object.freeze({
   shadcn: SHADCN_MANIFEST,
   brutalist: BRUTALIST_MANIFEST,
+  'bootstrap-2-3-2': BOOTSTRAP_232_MANIFEST,
+  'liquid-glass': LIQUID_GLASS_MANIFEST,
 }) satisfies ProjectionFamilyManifestRegistry;
 
 const hasOwn = (value: object, key: string): boolean =>

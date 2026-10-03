@@ -4,6 +4,7 @@
   "type": "module",
   "packageManager": "pnpm@10.32.1",
   "engines": {
+    "node": "24.x",
     "pnpm": ">=10.32.1 <11"
   },
   "devDependencies": {
@@ -48,8 +49,8 @@
     "release:publish": "node scripts/release/publish.mjs --publish",
     "issues:good-first:dry-run": "node scripts/issues/publish-good-first-issues.mjs --dry-run",
     "issues:good-first:publish": "node scripts/issues/publish-good-first-issues.mjs --publish",
-    "styles:preset:generate": "node --import tsx scripts/styles/generate-shadcn-style-tokens.ts && node --import tsx scripts/styles/generate-brutalist-style-tokens.ts",
-    "check:styles:preset": "node --import tsx scripts/styles/generate-shadcn-style-tokens.ts --check && node --import tsx scripts/styles/generate-brutalist-style-tokens.ts --check",
+    "styles:preset:generate": "node --import tsx scripts/styles/generate-shadcn-style-tokens.ts && node --import tsx scripts/styles/generate-brutalist-style-tokens.ts && node --import tsx scripts/styles/generate-draft-family-style-tokens.ts",
+    "check:styles:preset": "node --import tsx scripts/styles/generate-shadcn-style-tokens.ts --check && node --import tsx scripts/styles/generate-brutalist-style-tokens.ts --check && node --import tsx scripts/styles/generate-draft-family-style-tokens.ts --check",
     "component-presets:generate": "node --import tsx scripts/components/generate-shadcn-component-presets.mjs",
     "check:component-presets": "node --import tsx scripts/components/generate-shadcn-component-presets.mjs --check",
     "check:prototype-catalog": "node scripts/spec/check-prototype-catalog.mjs",
@@ -60,6 +61,8 @@
     "check:agent-operations": "node scripts/agent-operations/check-agent-operations.mjs && node scripts/agent-operations/check-contributor-skills.mjs && node --test scripts/agent-operations/test/*.test.mjs",
     "agent:skill": "node scripts/agent-operations/resolve-skill.mjs",
     "agent:review": "node scripts/agent-operations/review-packet.mjs",
+    "agent:collaborate": "node scripts/agent-operations/collaboration-packet.mjs",
+    "agent:event-shadow": "node scripts/agent-operations/event-shadow-cli.mjs",
     "agent:assess": "node scripts/agent-operations/create-capability-challenge.mjs",
     "agent:assess:response": "node scripts/agent-operations/create-capability-response.mjs",
     "agent:assess:evaluation": "node scripts/agent-operations/create-self-evaluation.mjs",
@@ -93,7 +96,10 @@
     "check:styles:variant-order": "node --import tsx scripts/styles/generate-lowered-variant-order.ts --check",
     "agent:review:smoke": "node scripts/agent-operations/smoke-live-review-input.mjs",
     "release:lifecycle": "tsx scripts/spec/lifecycle-report.mjs",
-    "check:spec-authoring": "tsx scripts/spec/check-lifecycle-authoring.mjs"
+    "check:spec-authoring": "tsx scripts/spec/check-lifecycle-authoring.mjs",
+    "benchmark:validate": "node scripts/benchmark/benchmark.mjs validate",
+    "benchmark:test": "node --test scripts/benchmark/test/*.test.mjs scripts/benchmark/browser-calibration.test.mjs",
+    "benchmark:dry-run": "node scripts/benchmark/benchmark.mjs dry-run"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,mts,json,css,md,mdx,astro,yaml,yml}": "prettier --write"
