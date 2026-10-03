@@ -5,7 +5,8 @@ import fs from 'node:fs';
 import { builtinModules, createRequire } from 'node:module';
 import { inflateSync } from 'node:zlib';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { moduleResolve } from 'import-meta-resolve';
 import { specEntitySchema } from '@proto.ui/spec-schema';
 import ts from 'typescript';
 import { parse as parseYaml } from 'yaml';
@@ -3978,7 +3979,10 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       member.name === 'createElement' &&
       ts.isStringLiteralLike(candidate.arguments[0]) &&
       candidate.arguments[0].text.toLowerCase() === tagName &&
-      isDomReceiverExpression(member.receiver, sourceFile, receiverBindings, candidate)
+      (isDomReceiverExpression(member.receiver, sourceFile, receiverBindings, candidate) ||
+        resolveLocalValue(member.receiver, candidate, new Set(), (receiver, useNode) =>
+          isBrowserGlobal(receiver, useNode, ['document'])
+        ))
     );
   };
   const resourceElementCreation = (expression, useNode, tagName, visitedBindings = new Set()) => {
@@ -4005,6 +4009,17 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
   };
   const isScriptElementExpression = (expression, useNode) =>
     Boolean(resourceElementCreation(expression, useNode, 'script'));
+  // Body mutation on a proven script receiver remains unverified: tracking its
+  // type, insertion timing and later reassignment is outside this bounded scan.
+  const scriptBodyProperties = new Set(['text', 'textContent', 'innerText', 'innerHTML']);
+  const scriptBodyMethods = new Set([
+    'append',
+    'appendChild',
+    'prepend',
+    'replaceChildren',
+    'insertBefore',
+    'replaceChild',
+  ]);
   const scriptElementSourceSpecifier = (argument) => {
     if (!argument) return DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER;
     const source = unwrapTypeScriptExpression(argument);
@@ -4162,6 +4177,8 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
             ? property.name
             : null;
         if (script && key === 'src') specifiers.push(scriptElementSourceSpecifier(value));
+        if (script && scriptBodyProperties.has(key))
+          specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
         if (link) recordLinkMutation(target, key, value, node);
       }
     }
@@ -4174,6 +4191,8 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
     if (!script && !link) return;
     const argument = node.arguments[1] && unwrapTypeScriptExpression(node.arguments[1]);
     const property = argument && ts.isStringLiteralLike(argument) ? argument.text : null;
+    if (script && scriptBodyProperties.has(property))
+      specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
     if (script && (property === 'src' || property === null)) {
       specifiers.push(
         property === null
@@ -4369,11 +4388,26 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       ) {
         specifiers.push(scriptElementSourceSpecifier(node.right));
       }
+      if (
+        assignedProperty &&
+        scriptBodyProperties.has(assignedProperty.name) &&
+        isScriptElementExpression(assignedProperty.receiver, node)
+      ) {
+        specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+      }
     }
     if (ts.isCallExpression(node)) {
       inspectResourceAssignment(node);
       inspectReflectResourceMutation(node);
       const calledMember = staticMemberAccess(node.expression);
+      if (
+        calledMember &&
+        scriptBodyMethods.has(calledMember.name) &&
+        node.arguments.length > 0 &&
+        isScriptElementExpression(calledMember.receiver, node)
+      ) {
+        specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+      }
       const attributeName = node.arguments[0];
       if (calledMember?.name === 'setAttribute') {
         const property =
@@ -4873,6 +4907,108 @@ function styleModuleSpecifiers(content) {
 
 function embeddedStyleSegments(content) {
   return [...content.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style\s*>/giu)].map((match) => match[1]);
+}
+
+function promotionStyleResourceUrls(absolutePath) {
+  const styles = /\.(?:css|less|s[ac]ss)$/iu.test(absolutePath)
+    ? [fs.readFileSync(absolutePath, 'utf8')]
+    : /\.(?:html?|astro|vue|svelte)$/iu.test(absolutePath)
+      ? embeddedStyleSegments(fs.readFileSync(absolutePath, 'utf8'))
+      : [];
+  const urls = [];
+  const unverified = () => {
+    throw new Error(`promotion CSS resource URL in ${absolutePath} remains unverified`);
+  };
+  const decodeCss = (value) =>
+    value.replace(
+      /\\(?:([\da-f]{1,6})(?:\r\n|[\t\n\r\f ])?|([\s\S]))/giu,
+      (_match, hex, character) => {
+        if (!hex) return /[\n\r\f]/u.test(character) ? '' : character;
+        const code = Number.parseInt(hex, 16);
+        return code === 0 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff)
+          ? '\uFFFD'
+          : String.fromCodePoint(code);
+      }
+    );
+  // A bounded lexical URL collector, not a general CSS parser or sanitizer.
+  // Quoted examples and comments are opaque; URL values retain CSS escapes.
+  for (const content of styles) {
+    // CSS preprocessing replaces raw NUL with U+FFFD before tokenization.
+    // Do not let browser URL trimming silently bind a different asset instead.
+    // https://www.w3.org/TR/css-syntax-3/#input-preprocessing
+    if (content.includes('\0')) unverified();
+    let index = 0;
+    const whitespace = () => {
+      while (/[\t\n\r\f ]/u.test(content[index] ?? '') && index < content.length) index += 1;
+    };
+    const quoted = () => {
+      const quote = content[index++];
+      const start = index;
+      while (index < content.length) {
+        if (content[index] === '\\') {
+          index += 2;
+          continue;
+        }
+        if (content[index] === quote) return content.slice(start, index++);
+        index += 1;
+      }
+      return unverified();
+    };
+    while (index < content.length) {
+      if (content.startsWith('/*', index)) {
+        const end = content.indexOf('*/', index + 2);
+        if (end < 0) unverified();
+        index = end + 2;
+        continue;
+      }
+      if (content[index] === '"' || content[index] === "'") {
+        quoted();
+        continue;
+      }
+      const identifier = content
+        .slice(index)
+        .match(/^(?:[-_a-z\d]|\\(?:[\da-f]{1,6}(?:\r\n|[\t\n\r\f ])?|[^\n\r\f]))+/iu)?.[0];
+      if (!identifier) {
+        index += 1;
+        continue;
+      }
+      index += identifier.length;
+      const functionName = decodeCss(identifier).toLowerCase();
+      if (/^(?:-webkit-)?image-set$/u.test(functionName) && content[index] === '(') unverified();
+      if (functionName !== 'url' || content[index] !== '(') continue;
+      index += 1;
+      whitespace();
+      let value;
+      if (content[index] === '"' || content[index] === "'") {
+        value = quoted();
+        whitespace();
+      } else {
+        const start = index;
+        while (index < content.length && content[index] !== ')') {
+          if (content[index] === '\\') {
+            const escape = content
+              .slice(index)
+              .match(/^\\(?:[\da-f]{1,6}(?:\r\n|[\t\n\r\f ])?|[^\n\r\f])/iu)?.[0];
+            if (!escape) unverified();
+            index += escape.length;
+          } else if (/[\t\n\r\f ]/u.test(content[index])) break;
+          else {
+            if (/[('"\u0000-\u0008\u000b\u000e-\u001f\u007f]/u.test(content[index])) unverified();
+            index += 1;
+          }
+        }
+        value = content.slice(start, index);
+        whitespace();
+      }
+      if (content[index++] !== ')') unverified();
+      const url = normalizeBrowserResourceUrl(decodeCss(value));
+      if (/[\u0000-\u001f\u007f]/u.test(url) || /(?:#|@|\$)\{/u.test(url)) unverified();
+      if (!url || url.startsWith('#') || /^data:/iu.test(url)) continue;
+      if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/iu.test(url)) unverified();
+      urls.push(url);
+    }
+  }
+  return urls;
 }
 
 function externalStylesheetSpecifiersForWebsiteSource(absolutePath) {
@@ -5483,7 +5619,19 @@ function inspectBarePackageForGuardedWebsiteImports(
     // fall through to import-condition resolution below.
   }
   try {
-    entryCandidates.add(require.resolve(classifiedSpecifier, { conditions: ['import'] }));
+    // Resolve only; never import or execute package code. Vite's production
+    // client conditions include module/browser/production, plus ESM import.
+    // Unlike require.resolve options, this API actually selects these conditions
+    // and preserves exports key specificity and authored condition order.
+    entryCandidates.add(
+      fileURLToPath(
+        moduleResolve(
+          classifiedSpecifier,
+          pathToFileURL(importingPath),
+          new Set(['browser', 'import', 'module', 'production'])
+        )
+      )
+    );
   } catch {
     // CommonJS resolution above remains the fallback when an import entry is absent.
   }
@@ -5494,7 +5642,11 @@ function inspectBarePackageForGuardedWebsiteImports(
     // candidate so a browser/import entry cannot smuggle a governed layer
     // past the CommonJS condition the require resolver selects.
     for (const candidate of entryPaths) {
-      if (cache.has(candidate)) return cache.get(candidate);
+      if (cache.has(candidate)) {
+        const cached = cache.get(candidate);
+        if (cached) return cached;
+        continue;
+      }
       cache.set(candidate, null);
       const candidateResult = inspectBarePackageEntry(
         rootDir,
@@ -6198,6 +6350,54 @@ function reachableSourcePaths(
     if (promotionPackages && visitedContexts.size >= 500)
       throw new Error('promotion package closure reached the 500-module bound; remains unverified');
     visitedContexts.add(contextKey);
+    if (promotionPackages) {
+      for (const url of promotionStyleResourceUrls(sourcePath)) {
+        let resourcePath;
+        try {
+          resourcePath = decodeURIComponent(url.split(/[?#]/u, 1)[0]);
+        } catch {
+          throw new Error(`promotion CSS resource URL ${url} remains unverified`);
+        }
+        if (!resourcePath || resourcePath.includes('\0') || resourcePath.includes('\\'))
+          throw new Error(`promotion CSS resource URL ${url} remains unverified`);
+        if (resourcePath.startsWith('/')) {
+          const relative = path.relative(viteRoot, path.resolve(viteRoot, `.${resourcePath}`));
+          if (relative.startsWith('..') || path.isAbsolute(relative))
+            throw new Error(
+              'promotion CSS resource URL escapes its application root; remains unverified'
+            );
+        }
+        // CSS URLs without ./ are stylesheet-relative, not bare package imports.
+        const bases = resourcePath.startsWith('/')
+          ? [
+              path.resolve(viteRoot, 'public', `.${resourcePath}`),
+              path.resolve(viteRoot, `.${resourcePath}`),
+            ]
+          : [path.resolve(path.dirname(sourcePath), resourcePath)];
+        const resource = bases.find(
+          (candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()
+        );
+        if (!resource)
+          throw new Error(`promotion CSS resource URL ${url} is unresolved; remains unverified`);
+        const relative = path.relative(canonicalRoot, fs.realpathSync(resource));
+        if (relative.startsWith('..') || path.isAbsolute(relative))
+          throw new Error(
+            'promotion CSS resource resolves outside the repository; remains unverified'
+          );
+        // Comparing only today's canonical target cannot prove which bytes a
+        // historical symlink selected. Reject links in any resource component.
+        for (let component = resource; component !== path.resolve(root); ) {
+          if (fs.lstatSync(component).isSymbolicLink())
+            throw new Error('promotion CSS resource symlink remains unverified');
+          const parent = path.dirname(component);
+          if (parent === component) break;
+          component = parent;
+        }
+        // Hash resource bytes only. Fonts/images, even with code-like bytes or
+        // extensions, do not become executable module traversal roots.
+        reachable.add(resource);
+      }
+    }
     for (const specifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
       const targets = resolveLocalImport(sourcePath, specifier, viteRoot);
       for (const target of targets ?? []) {

@@ -7,6 +7,8 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import { afterEach, test } from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { createRequire } from 'node:module';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   MATRIX_CONFIGS,
   boundedPackageGlobTargets,
@@ -16,6 +18,535 @@ import {
 } from '../check-coverage-matrices.mjs';
 
 const temporaryRoots = [];
+
+for (const mode of ['file', 'directory', 'ancestor-directory']) {
+  test(`resource closure review: rejects retargeted ${mode} symlink assets`, () => {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const directory = path.dirname(path.join(root, implementationPath));
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    const suffix = mode === 'ancestor-directory' ? 'nested/surface.bin' : 'surface.bin';
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      "---\nimport './surface.css';\n---\n<main>Search</main>"
+    );
+    fs.writeFileSync(
+      path.join(directory, 'surface.css'),
+      `.surface{background:url(./${mode === 'file' ? 'surface.bin' : `assets/${suffix}`})}`
+    );
+    const before = mode === 'file' ? 'before.bin' : 'before-assets';
+    const after = mode === 'file' ? 'after.bin' : 'after-assets';
+    const beforeFile = mode === 'file' ? before : `${before}/${suffix}`;
+    const afterFile = mode === 'file' ? after : `${after}/${suffix}`;
+    for (const [filename, bytes] of [
+      [beforeFile, [0, 128, 255]],
+      [afterFile, [0, 129, 255]],
+    ]) {
+      fs.mkdirSync(path.dirname(path.join(directory, filename)), { recursive: true });
+      fs.writeFileSync(path.join(directory, filename), Buffer.from(bytes));
+    }
+    const link = path.join(directory, mode === 'file' ? 'surface.bin' : 'assets');
+    fs.symlinkSync(before, link, mode === 'file' ? 'file' : 'dir');
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    fs.unlinkSync(link);
+    fs.symlinkSync(after, link, mode === 'file' ? 'file' : 'dir');
+    assert.match(
+      validationMessage(root, promotionOptions(revision)),
+      /promotion CSS resource.*symlink.*unverified/
+    );
+  });
+}
+
+test('resource closure review: regular nested assets preserve unchanged and changed controls', () => {
+  const root = createRoot();
+  const implementationPath = 'apps/www/src/components/override/Search.astro';
+  const directory = path.dirname(path.join(root, implementationPath));
+  const asset = path.join(directory, 'assets/nested/surface.bin');
+  const websiteBindings = [[implementationPath, ['www.shell.search']]];
+  fs.mkdirSync(path.dirname(asset), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, implementationPath),
+    "---\nimport './surface.css';\n---\n<main>Search</main>"
+  );
+  fs.writeFileSync(
+    path.join(directory, 'surface.css'),
+    '.surface{background:url(./assets/nested/surface.bin)}'
+  );
+  fs.writeFileSync(asset, Buffer.from([0, 128, 255]));
+  writeValidMatrices(root, {}, {}, { websiteBindings });
+  const revision = commitFixtureRoot(root);
+  writeSelfHostedPromotion(root, revision, { websiteBindings });
+  assert.doesNotThrow(() =>
+    validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+  );
+  fs.writeFileSync(asset, Buffer.from([0, 129, 255]));
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /promoted dependency.*surface\.bin.*differs from evidence Commit/
+  );
+});
+
+for (const embedded of [false, true]) {
+  test(`resource closure review: rejects raw CSS NUL before ${embedded ? 'embedded' : 'stylesheet'} URL normalization`, () => {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const directory = path.dirname(path.join(root, implementationPath));
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    const style = '.surface{background:url("\0surface.bin")}';
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      embedded
+        ? `<main>Search</main><style>${style}</style>`
+        : "---\nimport './surface.css';\n---\n<main>Search</main>"
+    );
+    if (!embedded) fs.writeFileSync(path.join(directory, 'surface.css'), style);
+    fs.writeFileSync(path.join(directory, 'surface.bin'), Buffer.from([0, 128, 255]));
+    const browserAsset = path.join(directory, '\uFFFDsurface.bin');
+    fs.writeFileSync(browserAsset, Buffer.from([0, 128, 255]));
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    fs.writeFileSync(browserAsset, Buffer.from([0, 129, 255]));
+    assert.match(
+      validationMessage(root, promotionOptions(revision)),
+      /promotion CSS resource URL.*unverified/
+    );
+  });
+}
+
+for (const mode of ['import', 'import-only', 'browser', 'cached-require', 'nested']) {
+  test(`resource closure: rejects ${mode} conditional wildcard package entry`, () => {
+    const root = createRoot();
+    const name = '@example/conditional-widget';
+    const directory = path.join(root, 'node_modules', name);
+    const source = path.join(root, 'apps/www/src/components/ConditionalWidget.ts');
+    fs.mkdirSync(path.join(directory, 'src'), { recursive: true });
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    const conditions =
+      mode === 'import-only'
+        ? { import: './src/*.mjs' }
+        : mode === 'browser'
+          ? { browser: { import: './src/*.mjs' }, import: './src/*.cjs', require: './src/*.cjs' }
+          : { require: './src/safe.cjs', import: './src/*.mjs' };
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name, exports: { './*': conditions } })
+    );
+    fs.writeFileSync(path.join(directory, 'src/safe.cjs'), 'module.exports = {};');
+    fs.writeFileSync(path.join(directory, 'src/feature.cjs'), 'module.exports = {};');
+    fs.writeFileSync(path.join(directory, 'src/safe.mjs'), 'export const safe = true;');
+    fs.writeFileSync(
+      path.join(directory, 'src/feature.mjs'),
+      "import '@proto.ui/runtime'; throw new Error('must only resolve, never execute');"
+    );
+    if (mode !== 'import-only')
+      assert.match(createRequire(source).resolve(`${name}/feature`), /\.cjs$/);
+    if (mode === 'nested') {
+      const bridge = path.join(root, 'node_modules/conditional-bridge');
+      fs.mkdirSync(bridge, { recursive: true });
+      fs.writeFileSync(
+        path.join(bridge, 'package.json'),
+        JSON.stringify({
+          name: 'conditional-bridge',
+          main: './index.js',
+          dependencies: { [name]: '1.0.0' },
+        })
+      );
+      fs.writeFileSync(path.join(bridge, 'index.js'), `import '${name}/feature';`);
+      fs.writeFileSync(source, "import 'conditional-bridge';");
+    } else
+      fs.writeFileSync(
+        source,
+        `${mode === 'cached-require' ? `import '${name}/safe';` : ''} import '${name}/feature';`
+      );
+    writeValidMatrices(root);
+    assert.match(
+      validationMessage(root),
+      /raw Proto UI import.*(?:conditional-widget\/feature|conditional-bridge)/
+    );
+  });
+}
+
+for (const mode of ['exact', 'prefix', 'suffix', 'default-first', 'import-first']) {
+  test(`resource closure: respects ${mode} export precedence`, () => {
+    const root = createRoot();
+    const directory = path.join(root, 'node_modules/precedence-widget');
+    const source = path.join(root, 'apps/www/src/components/PrecedenceWidget.ts');
+    fs.mkdirSync(path.join(directory, 'safe/features'), { recursive: true });
+    fs.mkdirSync(path.join(directory, 'guarded/features'), { recursive: true });
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    const exports =
+      mode === 'default-first'
+        ? { './*': { default: './safe/*.js', import: './guarded/*.js' } }
+        : mode === 'import-first'
+          ? { './*': { import: './guarded/*.js', default: './safe/*.js' } }
+          : { './*': './guarded/*.js' };
+    if (mode === 'exact') exports['./features/one.js'] = './safe/features/one.js';
+    if (mode === 'prefix') exports['./features/*'] = './safe/features/*';
+    if (mode === 'suffix') {
+      exports['./features/*'] = './guarded/features/*';
+      exports['./features/*.js'] = './safe/features/*.js';
+    }
+    fs.writeFileSync(
+      path.join(directory, 'package.json'),
+      JSON.stringify({ name: 'precedence-widget', exports })
+    );
+    for (const suffix of ['one.js', 'one.js.js']) {
+      fs.writeFileSync(
+        path.join(directory, 'safe/features', suffix),
+        "throw new Error('resolver must not execute candidate code');"
+      );
+      fs.writeFileSync(
+        path.join(directory, 'guarded/features', suffix),
+        "import '@proto.ui/runtime';"
+      );
+    }
+    fs.writeFileSync(source, "import 'precedence-widget/features/one.js';");
+    const nativeTarget = fileURLToPath(
+      execFileSync(
+        process.execPath,
+        [
+          '--conditions=browser',
+          '--conditions=module',
+          '--conditions=production',
+          '--experimental-import-meta-resolve',
+          '--input-type=module',
+          '--eval',
+          'process.stdout.write(import.meta.resolve(process.argv[1], process.argv[2]));',
+          'precedence-widget/features/one.js',
+          pathToFileURL(source).href,
+        ],
+        { encoding: 'utf8' }
+      )
+    );
+    assert.equal(
+      nativeTarget,
+      path.join(
+        directory,
+        mode === 'import-first'
+          ? 'guarded/features/one.js.js'
+          : mode === 'default-first'
+            ? 'safe/features/one.js.js'
+            : 'safe/features/one.js'
+      )
+    );
+    writeValidMatrices(root);
+    if (mode === 'import-first')
+      assert.match(validationMessage(root), /raw Proto UI import.*precedence-widget/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  });
+}
+
+for (const [label, url, assetPath, before, after] of [
+  [
+    'SVG query and fragment',
+    './surface.svg?v=1#paint',
+    'apps/www/src/components/override/surface.svg',
+    '<svg/>',
+    '<svg><rect/></svg>',
+  ],
+  [
+    'bare relative URL',
+    'surface.svg',
+    'apps/www/src/components/override/surface.svg',
+    '<svg/>',
+    '<svg><rect/></svg>',
+  ],
+  [
+    'percent-encoded local URL',
+    './surface%20one.svg',
+    'apps/www/src/components/override/surface one.svg',
+    '<svg/>',
+    '<svg><rect/></svg>',
+  ],
+  [
+    'CSS-escaped local URL',
+    './surface\\20 one.svg',
+    'apps/www/src/components/override/surface one.svg',
+    '<svg/>',
+    '<svg><rect/></svg>',
+  ],
+  [
+    'public-root URL',
+    '/media/surface.svg#paint',
+    'apps/www/public/media/surface.svg',
+    '<svg/>',
+    '<svg><rect/></svg>',
+  ],
+  [
+    'binary font',
+    './surface.woff2',
+    'apps/www/src/components/override/surface.woff2',
+    Buffer.from([119, 79, 70, 50, 0, 128, 255]),
+    Buffer.from([119, 79, 70, 50, 0, 129, 255]),
+  ],
+  [
+    'opaque code-like resource',
+    './surface.bin',
+    'apps/www/src/components/override/surface.bin',
+    Buffer.from("\0import '@proto.ui/runtime';\0"),
+    Buffer.from("\0import '@proto.ui/core';\0"),
+  ],
+]) {
+  test(`resource closure: changed CSS ${label} invalidates promotion evidence`, () => {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+    fs.mkdirSync(path.dirname(path.join(root, assetPath)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      "---\nimport './surface.css';\n---\n<main>Search</main>"
+    );
+    fs.writeFileSync(
+      path.join(root, 'apps/www/src/components/override/surface.css'),
+      `@font-face { font-family: Surface; src: url('${url}'); } .surface { background-image: url('${url}'); }`
+    );
+    fs.writeFileSync(path.join(root, assetPath), before);
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    assert.doesNotThrow(() =>
+      validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+    );
+    fs.writeFileSync(path.join(root, assetPath), after);
+    assert.ok(
+      validationMessage(root, promotionOptions(revision)).includes(
+        `promoted dependency \`${assetPath}\` differs from evidence Commit`
+      )
+    );
+  });
+}
+
+for (const [label, style, expected] of [
+  [
+    'padded remote resource with local lookalike',
+    '.surface {background: url(" https://cdn.example/surface.svg")}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'image-set string resource',
+    '.surface {background: image-set("./surface.svg" 1x)}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'prefixed image-set resource',
+    '.surface {background: -webkit-image-set("./surface.svg" 1x)}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'public-root escape',
+    '.surface {background: url(/../../surface.svg)}',
+    /promotion CSS resource.*unverified/,
+  ],
+  [
+    'encoded public-root escape',
+    '.surface {background: url(/%2e%2e/%2e%2e/surface.svg)}',
+    /promotion CSS resource.*unverified/,
+  ],
+  [
+    'remote resource',
+    '.surface {background: url(https://cdn.example/surface.svg)}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'protocol-relative resource',
+    '.surface {background: url(//cdn.example/surface.svg)}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'missing local resource',
+    '.surface {background: url(./missing.svg)}',
+    /promotion CSS resource URL.*unresolved/,
+  ],
+  [
+    'malformed percent encoding',
+    '.surface {background: url(./surface%GG.svg)}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'dynamic resource',
+    '.surface {background: url(var(--surface))}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'unterminated URL',
+    '.surface {background: url("./surface.svg"}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'escaped remote URL function',
+    '.surface {background: u\\72l("https://cdn.example/surface.svg")}',
+    /promotion CSS resource URL.*unverified/,
+  ],
+  [
+    'inline data and fragment',
+    '.surface {background: url("data:image/svg+xml,%3Csvg/%3E");filter:url(#paint)}',
+    null,
+  ],
+  [
+    'opaque comments and strings',
+    '/* url(https://cdn.example/ignored.svg) */ .surface::before {content:"url(https://cdn.example/example.svg)"}',
+    null,
+  ],
+]) {
+  test(`resource closure: ${label} has an explicit promotion boundary`, () => {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      `<main>Search</main><style>${style}</style>`
+    );
+    fs.writeFileSync(path.join(root, 'apps/surface.svg'), '<svg/>');
+    const remoteLookalike = path.join(
+      root,
+      'apps/www/src/components/override/ https:/cdn.example/surface.svg'
+    );
+    fs.mkdirSync(path.dirname(remoteLookalike), { recursive: true });
+    fs.writeFileSync(remoteLookalike, '<svg/>');
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    if (expected) assert.match(validationMessage(root, promotionOptions(revision)), expected);
+    else
+      assert.doesNotThrow(() =>
+        validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+      );
+  });
+}
+
+for (const kind of ['website', 'harness']) {
+  for (const [label, mutation] of [
+    ['text', `script.text = "import('https://cdn.example/runtime.js')";`],
+    ['textContent', `script.textContent = "import('https://cdn.example/runtime.js')";`],
+    ['computed textContent', `script['textContent'] = payload;`],
+    ['compound text', `script.text += payload;`],
+    ['innerText', `script.innerText = payload;`],
+    ['innerHTML', `script.innerHTML = payload;`],
+    ['aliased body', `const alias = script; alias.textContent = payload;`],
+    ['Object.assign body', `Object.assign(script, { textContent: payload });`],
+    ['Reflect.set body', `Reflect.set(script, 'text', payload);`],
+    ['append text', `script.append("import('https://cdn.example/runtime.js')");`],
+    ['append text node', `script.appendChild(document.createTextNode(payload));`],
+    ['replace children', `script.replaceChildren(payload);`],
+  ]) {
+    test(`inline DOM script body: rejects ${kind} ${label}`, () => {
+      const root = createRoot();
+      const sourcePath =
+        kind === 'website'
+          ? 'apps/www/src/components/ScriptBody.ts'
+          : 'apps/agent-harness/src/run/ScriptBody.ts';
+      fs.mkdirSync(path.dirname(path.join(root, sourcePath)), { recursive: true });
+      fs.writeFileSync(
+        path.join(root, sourcePath),
+        `const script = document.createElement('script'); ${mutation} document.head.append(script);`
+      );
+      if (kind === 'website')
+        writeValidMatrices(
+          root,
+          {},
+          {},
+          { websiteBindings: [[sourcePath, ['www.demo.prototype-previewer']]] }
+        );
+      else writeValidMatrices(root, {}, { Path: `\`${sourcePath}\`` });
+      assert.match(validationMessage(root), /dynamic executable script source/);
+    });
+  }
+  for (const [label, source] of [
+    ['ordinary DOM text', `const span=document.createElement('span');span.textContent='hello';`],
+    ['business receiver', `const script={};script.textContent='hello';script.append('hello');`],
+    [
+      'reassigned receiver',
+      `let script=document.createElement('script');script={};script.textContent='hello';`,
+    ],
+    [
+      'shadowed document',
+      `function business(document){const script=document.createElement('script');script.textContent='hello';}`,
+    ],
+    [
+      'no body mutation',
+      `const script=document.createElement('script');script.async=true;script.append();`,
+    ],
+    [
+      'data attributes',
+      `const script=document.createElement('script');script.setAttribute('textContent','data');`,
+    ],
+  ]) {
+    test(`inline DOM script body: retains ${kind} ${label}`, () => {
+      const root = createRoot();
+      const sourcePath =
+        kind === 'website'
+          ? 'apps/www/src/components/ScriptControl.ts'
+          : 'apps/agent-harness/src/run/ScriptControl.ts';
+      fs.mkdirSync(path.dirname(path.join(root, sourcePath)), { recursive: true });
+      fs.writeFileSync(path.join(root, sourcePath), source);
+      if (kind === 'website')
+        writeValidMatrices(
+          root,
+          {},
+          {},
+          { websiteBindings: [[sourcePath, ['www.demo.prototype-previewer']]] }
+        );
+      else writeValidMatrices(root, {}, { Path: `\`${sourcePath}\`` });
+      assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+    });
+  }
+}
+
+for (const kind of ['website', 'harness']) {
+  for (const owner of ['window', 'self', 'globalThis']) {
+    for (const alias of [false, true]) {
+      test(`inline DOM qualified source: rejects ${kind} ${owner} ${alias ? 'alias' : 'direct'}`, () => {
+        const root = createRoot();
+        const sourcePath =
+          kind === 'website'
+            ? 'apps/www/src/components/QualifiedScript.ts'
+            : 'apps/agent-harness/src/run/QualifiedScript.ts';
+        fs.mkdirSync(path.dirname(path.join(root, sourcePath)), { recursive: true });
+        fs.writeFileSync(
+          path.join(root, sourcePath),
+          `${alias ? `const doc=${owner}.document;` : ''} const script=${alias ? 'doc' : `${owner}.document`}.createElement('script'); script.textContent=payload;`
+        );
+        if (kind === 'website')
+          writeValidMatrices(
+            root,
+            {},
+            {},
+            { websiteBindings: [[sourcePath, ['www.demo.prototype-previewer']]] }
+          );
+        else writeValidMatrices(root, {}, { Path: `\`${sourcePath}\`` });
+        assert.match(validationMessage(root), /dynamic executable script source/);
+      });
+    }
+    test(`inline DOM qualified source: retains ${kind} shadowed ${owner}`, () => {
+      const root = createRoot();
+      const sourcePath =
+        kind === 'website'
+          ? 'apps/www/src/components/ShadowedScript.ts'
+          : 'apps/agent-harness/src/run/ShadowedScript.ts';
+      fs.mkdirSync(path.dirname(path.join(root, sourcePath)), { recursive: true });
+      fs.writeFileSync(
+        path.join(root, sourcePath),
+        `function business(${owner}) {const doc=${owner}.document; const script=doc.createElement('script'); script.textContent='data';}`
+      );
+      if (kind === 'website')
+        writeValidMatrices(
+          root,
+          {},
+          {},
+          { websiteBindings: [[sourcePath, ['www.demo.prototype-previewer']]] }
+        );
+      else writeValidMatrices(root, {}, { Path: `\`${sourcePath}\`` });
+      assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+    });
+  }
+}
 
 afterEach(() => {
   for (const root of temporaryRoots.splice(0)) fs.rmSync(root, { recursive: true, force: true });
