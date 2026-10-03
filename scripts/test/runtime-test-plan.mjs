@@ -4,6 +4,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/components/documentation-image-preview.browser.test.ts',
   'apps/www/test/message-composition.browser.test.ts',
   'apps/www/test/color-scheme.browser.test.ts',
+  'apps/www/test/preferences.browser.test.ts',
   'apps/www/test/button-view-lifetime.browser.test.ts',
   'apps/www/test/radio-group-entry.browser.test.ts',
   'apps/workspace/test/lifecycle.browser.test.ts',
@@ -32,6 +33,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
 ]);
 
 export function createRuntimeTestPlan(rawArgs) {
