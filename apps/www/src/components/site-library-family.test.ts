@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   applySiteLibraryFamily,
+  requireSiteLibraryFamily,
   resolveSiteLibraryFamily,
   siteControlTags,
 } from './site-library-family';
@@ -88,4 +89,11 @@ describe('website library family scope', () => {
     expect(css).toContain('--color-background: var(--site-brutalist-background)');
     expect(css).toContain('--site-surface-radius: 0');
   });
+});
+
+it('does not promote a partial demo family into whole-site support', () => {
+  expect(requireSiteLibraryFamily('shadcn')).toBe('shadcn');
+  expect(requireSiteLibraryFamily('brutalist')).toBe('brutalist');
+  for (const family of ['bootstrap-2-3-2', 'liquid-glass', 'unknown', undefined, null])
+    expect(() => requireSiteLibraryFamily(family)).toThrow(/unsupported whole-site family/);
 });

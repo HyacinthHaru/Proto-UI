@@ -3,7 +3,11 @@ import { bindNativeLinkFacts } from '../site-native-link-facts';
 import { siteLinkAppearance, siteLinkEmphasis, siteLinkIcon } from '../site-native-controls';
 import { initSiteHeaderDisclosure, type SiteHeaderDisclosure } from '../site-header-disclosure';
 import { homepageDemoParticipant } from './homepage-demo-participant';
-import { applySiteLibraryFamily } from '../site-library-family';
+import {
+  applySiteLibraryFamily,
+  requireSiteLibraryFamily,
+  type SiteLibraryFamily,
+} from '../site-library-family';
 import { searchCommandParticipant } from '../site-search-commands';
 import {
   resolveProjectionPart,
@@ -109,7 +113,7 @@ export function createHomepageContent(
   group: Group,
   runtime: RuntimeId,
   isActive: () => boolean,
-  family: ProjectionFamilyId = 'shadcn'
+  family: SiteLibraryFamily = 'shadcn'
 ): DemoSpec {
   const children: DemoNode[] = group.links.map((link, index) => {
     const attrs: Record<string, string> = {};
@@ -318,9 +322,9 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const demo = homepageDemoParticipant(document);
   const searchRoot = root.querySelector<HTMLElement>('site-search');
   const search = searchRoot ? searchCommandParticipant(searchRoot) : null;
-  const initialFamily = demo?.initialFamily ?? 'shadcn';
-  let desiredFamily: ProjectionFamilyId = initialFamily;
-  let activeFamily: ProjectionFamilyId = initialFamily;
+  const initialFamily = requireSiteLibraryFamily(demo?.initialFamily ?? 'shadcn');
+  let desiredFamily: SiteLibraryFamily = initialFamily;
+  let activeFamily: SiteLibraryFamily = initialFamily;
   let desiredComponent: SharedBaseFamilyId = demo?.initialComponent ?? 'button';
   let committedComponent = desiredComponent;
   const roots = [
@@ -372,7 +376,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     initialSelection: { runtimeId: initialRuntime, projectionFamilyId: initialFamily },
     async materialize(request) {
       const runtime = request.selection.runtimeId as RuntimeId;
-      const family = request.selection.projectionFamilyId as ProjectionFamilyId;
+      const family = requireSiteLibraryFamily(request.selection.projectionFamilyId);
       const component = desiredComponent;
       const work = groups.map(async (group) => {
         const ids = [
@@ -464,7 +468,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       const prepared = staged.get(commit.generation);
       if (!prepared) throw new Error('[HomepageRuntime] prepared page generation is missing.');
       const next = prepared.candidates;
-      const family = commit.selection.projectionFamilyId as ProjectionFamilyId;
+      const family = requireSiteLibraryFamily(commit.selection.projectionFamilyId);
       for (let index = 0; index < next.length; index++)
         next[index]!.setThemeSurfaceStyle(
           resolveProjectionThemeSurfaceStyle(family, roots[index]!)
@@ -540,7 +544,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       .then((snapshot) => {
         if (destroyed || requestEpoch !== epoch) return;
         desiredRuntime = snapshot.selection.runtimeId as RuntimeId;
-        desiredFamily = snapshot.selection.projectionFamilyId as ProjectionFamilyId;
+        desiredFamily = requireSiteLibraryFamily(snapshot.selection.projectionFamilyId);
         desiredComponent = committedComponent;
         setStatus('ready', desiredRuntime);
         if (publishPreference) {
@@ -559,7 +563,9 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       .catch((error) => {
         if (destroyed || requestEpoch !== epoch) return;
         desiredRuntime = controller.getSnapshot().selection.runtimeId as RuntimeId;
-        desiredFamily = controller.getSnapshot().selection.projectionFamilyId as ProjectionFamilyId;
+        desiredFamily = requireSiteLibraryFamily(
+          controller.getSnapshot().selection.projectionFamilyId
+        );
         desiredComponent = committedComponent;
         setStatus('error', desiredRuntime);
         console.error('[HomepageRuntime] retained previous generation or native SSR links.', error);
@@ -580,8 +586,10 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       true
     );
   }
-  function requestFamily(family: ProjectionFamilyId): void {
-    if (destroyed || family === desiredFamily) return;
+  function requestFamily(value: ProjectionFamilyId): void {
+    if (destroyed) return;
+    const family = requireSiteLibraryFamily(value);
+    if (family === desiredFamily) return;
     desiredFamily = family;
     observe(
       controller.request(

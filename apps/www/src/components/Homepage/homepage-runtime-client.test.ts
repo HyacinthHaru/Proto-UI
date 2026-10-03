@@ -210,6 +210,30 @@ describe('Homepage page-owned runtime', () => {
     expect(root.dataset.family).toBe('brutalist');
   });
 
+  it('rejects partial family requests before changing the committed homepage transaction', async () => {
+    const root = fixture(true);
+    handle = initHomepageRuntime(root);
+    await settle();
+    const generation = root.dataset.runtimeGeneration;
+    const calls = fakes.materialize.mock.calls.length;
+    const controls = fakes.materialize.mock.calls[0]![1].controls;
+    for (const family of ['bootstrap-2-3-2', 'liquid-glass', 'unknown']) {
+      expect(() => controls.family.onValueChange(family)).toThrow(/unsupported whole-site family/);
+      await settle();
+      expect(root.dataset.family).toBe('shadcn');
+      expect(root.dataset.runtimeState).toBe('ready');
+      expect(root.dataset.runtimeGeneration).toBe(generation);
+      expect(fakes.materialize.mock.calls).toHaveLength(calls);
+    }
+    controls.family.onValueChange('brutalist');
+    await settle();
+    expect(root.dataset.family).toBe('brutalist');
+    await handle!.destroy();
+    const retiredCalls = fakes.materialize.mock.calls.length;
+    expect(() => controls.family.onValueChange('liquid-glass')).not.toThrow();
+    expect(fakes.materialize.mock.calls).toHaveLength(retiredCalls);
+  });
+
   it('a failed demo prevents the header and native action groups from committing', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const root = fixture(true);

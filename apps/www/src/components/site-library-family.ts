@@ -1,6 +1,13 @@
 /** Website consumer identity. Runtime/adapter choice is a separate axis. */
 export type SiteLibraryFamily = 'shadcn' | 'brutalist';
 
+/** Whole-site compositions need the complete control families. Partial library
+ * demos have their own explicit registry and cannot be silently admitted here. */
+export function requireSiteLibraryFamily(value: unknown): SiteLibraryFamily {
+  if (value === 'shadcn' || value === 'brutalist') return value;
+  throw new Error(`[SiteLibraryFamily] unsupported whole-site family: ${String(value)}`);
+}
+
 /** Library routes own the document family; Base and editorial routes use the site default. */
 export function resolveSiteLibraryFamily(pathname: string): SiteLibraryFamily {
   return /^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?ui-libraries\/brutalist(?:\/|$)/i.test(pathname)
