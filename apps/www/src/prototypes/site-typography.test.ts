@@ -30,7 +30,12 @@ describe('app-private semantic typography style closure', () => {
       expect(en).toContain(copy);
   });
   it('collects and compiles the complete role scale from Prototype source', async () => {
-    const tokens = await collectProtoStyleTokens(fileURLToPath(new NodeURL('.', import.meta.url)));
+    const tokens = (
+      await collectProtoStyleTokens(fileURLToPath(new NodeURL('.', import.meta.url)))
+    ).map((token) => {
+      if (typeof token !== 'string') throw new Error('Collected style tokens must be strings');
+      return token;
+    });
     for (const token of [
       'text-2xl',
       'text-3xl',

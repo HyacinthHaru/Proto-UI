@@ -225,10 +225,14 @@ describe('source-bound native mouse selection diagnostics', () => {
       eventSHA: 'synthetic-event',
     });
   });
-  it('does not collect or write diagnostics on the successful journey', async () => {
-    const { run, token, error } = selectionCheck('wc-base-transition');
+  it('retains successful selection geometry without reporting a failure', async () => {
+    const { run, token, error, writeFile } = selectionCheck('wc-base-transition', false, {
+      PROTO_UI_RUNTIME_EVIDENCE_DIR: '/runner/runtime-ci',
+    });
     await run();
-    expect(token.evaluate).not.toHaveBeenCalled();
+    expect(token.evaluate).toHaveBeenCalledTimes(1);
+    expect(writeFile).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(writeFile.mock.calls[0][1]).observed.selectedText).toBe('wc-base-transition');
     expect(error).not.toHaveBeenCalled();
   });
 
