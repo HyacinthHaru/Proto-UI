@@ -254,6 +254,8 @@ jobs:
             suite: site-native-links
           - name: code-surfaces
             suite: code-surfaces
+          - name: code-surface-grammar
+            suite: code-surface-grammar
           - name: copy-commands
             suite: site-copy-commands
           - name: runtime-box

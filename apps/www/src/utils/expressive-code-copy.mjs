@@ -14,8 +14,41 @@ export function siteCopyPlugin() {
           throw new Error('Website Copy requires the EC frames wrapper');
         const classes = frame.properties.className ?? [];
         const terminal = classes.includes('is-terminal');
+        frame.properties['data-site-code-surface'] = 'frame';
+        let header = frame.children.find(
+          (node) => node.type === 'element' && node.tagName === 'figcaption'
+        );
+        if (header && (terminal || classes.includes('has-title'))) {
+          // Replace only plugin-frames presentation, preserving the authored
+          // title. Its sr-only fallback must not become a second visible label.
+          const title = header.children.find((node) => {
+            const names = node.properties?.className ?? [];
+            return node.type === 'element' && names.includes('title');
+          });
+          const label = title?.children?.some((node) => node.type === 'text' && node.value.trim())
+            ? title.children
+            : [
+                {
+                  type: 'text',
+                  value: locale.toLowerCase().startsWith('zh') ? '终端' : 'Terminal',
+                },
+              ];
+          header.properties = { 'data-code-toolbar': '', 'data-site-code-surface': 'toolbar' };
+          header.children = [
+            {
+              type: 'element',
+              tagName: 'span',
+              properties: { 'data-code-label': '' },
+              children: label,
+            },
+          ];
+        } else if (header) {
+          // Plain fences have no metadata row. Keep Copy in the source corner.
+          frame.children = frame.children.filter((node) => node !== header);
+          header = undefined;
+        }
         const label = locale.toLowerCase().startsWith('zh') ? '复制代码' : 'Copy code';
-        frame.children.push({
+        (header ? header.children : frame.children).push({
           type: 'element',
           tagName: 'div',
           properties: {

@@ -58,7 +58,11 @@ async function ready(page: Page): Promise<void> {
       | (HTMLElement & { __previewer__?: { getCurrentRuntime(): string | null } })
       | null;
     // CodeExample owns a CodePanel without an async Previewer runtime.
-    return !previewer || Boolean(previewer.__previewer__?.getCurrentRuntime());
+    const sources = document.querySelectorAll<HTMLElement>('[data-site-code-surface="frame"]');
+    const visibleReady = [...sources]
+      .filter((root) => root.checkVisibility())
+      .every((root) => root.dataset.codeSurfaceView === 'ready');
+    return visibleReady && (!previewer || Boolean(previewer.__previewer__?.getCurrentRuntime()));
   });
 }
 
@@ -73,14 +77,18 @@ async function surfaceFacts(page: Page): Promise<SurfaceFacts> {
     const canvases = card.querySelectorAll<HTMLElement>(
       '.pui-runtime-preview-surface[data-pui-style]'
     );
-    const frame = isRuntimePreview ? canvases[0] : card;
+    const sourceFrame = preview.closest<HTMLElement>('[data-site-code-surface="frame"]')!;
+    const frame = sourceFrame.querySelector<HTMLElement>(
+      ':scope > .site-code-surface-mount .site-code-surface-paint'
+    )!;
+    const ecFrame = ec
+      .closest<HTMLElement>('[data-site-code-surface="frame"]')!
+      .querySelector<HTMLElement>(':scope > .site-code-surface-mount .site-code-surface-paint')!;
     if (!frame) throw new Error('The committed RuntimeBox canvas must exist before paint evidence');
-    const inner = preview.closest<HTMLElement>('[data-code-inner]')!;
     const frameStyle = getComputedStyle(frame);
     const layoutStyle = getComputedStyle(card);
-    // The layout owner intentionally has no frame after #786. Resolve the
-    // actual Prototype's declared radius independently rather than requiring
-    // the removed ancestor frame or copying the observed radius as expectation.
+    // Source frames now share an actual passive Prototype; the RuntimeBox
+    // canvas remains separate. Derive expected radius from the theme input.
     const radiusProbe = document.createElement('span');
     radiusProbe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none';
     radiusProbe.style.setProperty('--pui-radius', frameStyle.getPropertyValue('--pui-radius'));
@@ -88,14 +96,14 @@ async function surfaceFacts(page: Page): Promise<SurfaceFacts> {
       '--pui-radius-xl',
       frameStyle.getPropertyValue('--pui-radius-xl')
     );
-    radiusProbe.style.borderRadius = isRuntimePreview ? 'var(--pui-radius-xl)' : '12px';
+    radiusProbe.style.borderRadius = 'var(--pui-radius-xl)';
     document.body.append(radiusProbe);
     const expectedPreviewRadius = getComputedStyle(radiusProbe).borderRadius;
     radiusProbe.remove();
-    const facts = (element: HTMLElement): CodeStyleFacts => {
+    const facts = (element: HTMLElement, surface?: HTMLElement): CodeStyleFacts => {
       const style = getComputedStyle(element);
       return {
-        background: style.backgroundColor,
+        background: surface ? getComputedStyle(surface).backgroundColor : style.backgroundColor,
         color: style.color,
         font: style.fontFamily,
         size: style.fontSize,
@@ -103,12 +111,12 @@ async function surfaceFacts(page: Page): Promise<SurfaceFacts> {
       };
     };
     return {
-      ec: facts(ec),
-      preview: facts(preview),
+      ec: facts(ec, ecFrame),
+      preview: facts(preview, frame),
       ecCode: facts(ec.querySelector('code')!),
       previewCode: facts(preview.querySelector('code')!),
-      border: [getComputedStyle(ec).borderLeftColor, getComputedStyle(inner).borderTopColor],
-      radius: [getComputedStyle(ec.closest('.frame')!).borderRadius, frameStyle.borderRadius],
+      border: [getComputedStyle(ecFrame).borderLeftColor, frameStyle.borderLeftColor],
+      radius: [getComputedStyle(ecFrame).borderRadius, frameStyle.borderRadius],
       expectedPreviewRadius,
       canvasCount: isRuntimePreview ? canvases.length : null,
       layoutBorderWidths: isRuntimePreview
@@ -130,7 +138,7 @@ async function expectSurfaces(page: Page): Promise<SurfaceFacts> {
   expect(facts.previewCode).toEqual(facts.ecCode);
   expect(facts.ec.size).toBe('13px');
   expect(facts.ec.lineHeight).toBe('24px');
-  expect(facts.radius[0]).toBe('12px');
+  expect(facts.radius[0]).toBe(facts.expectedPreviewRadius);
   expect(parseFloat(facts.expectedPreviewRadius)).toBeGreaterThan(0);
   expect(facts.radius[1]).toBe(facts.expectedPreviewRadius);
   if (facts.canvasCount !== null) {
@@ -453,23 +461,44 @@ describe.sequential('code-surface dogfood matrix (#630, #420, #568)', () => {
         await page.evaluate((mode) => {
           document.documentElement.dataset.theme = mode;
         }, theme);
+        await page.waitForFunction(() =>
+          [...document.querySelectorAll<HTMLElement>('.install-command-card')]
+            .filter((card) => card.checkVisibility())
+            .every((card) => card.dataset.codeSurfaceView === 'ready')
+        );
         const facts = { ec: expectedInstall.get(theme)! };
         const install = await page
           .locator('.install-command-card:visible')
           .first()
           .evaluate((element) => {
-            const style = getComputedStyle(element);
+            const surface = element.querySelector<HTMLElement>(
+              ':scope > .site-code-surface-mount .site-code-surface-paint'
+            )!;
+            const style = getComputedStyle(surface);
             const code = getComputedStyle(element.querySelector('code')!);
+            const probe = document.createElement('span');
+            probe.style.setProperty('--pui-radius', style.getPropertyValue('--pui-radius'));
+            probe.style.setProperty('--pui-radius-xl', style.getPropertyValue('--pui-radius-xl'));
+            probe.style.borderRadius = 'var(--pui-radius-xl)';
+            document.body.append(probe);
+            const expectedRadius = getComputedStyle(probe).borderRadius;
+            probe.remove();
             return {
               background: style.backgroundColor,
               color: code.color,
               radius: style.borderRadius,
+              expectedRadius,
               font: code.fontFamily,
               size: code.fontSize,
               lineHeight: code.lineHeight,
             };
           });
-        expect(install).toEqual({ ...facts.ec, radius: '12px' });
+        expect(install).toEqual({
+          ...facts.ec,
+          radius: install.expectedRadius,
+          expectedRadius: install.expectedRadius,
+        });
+        expect(parseFloat(install.radius)).toBeGreaterThan(0);
         const body = page.locator('.install-command-card__body:visible').first();
         expect(
           await body.evaluate((element) => {
