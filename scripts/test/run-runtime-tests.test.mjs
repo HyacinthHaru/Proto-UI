@@ -1,16 +1,37 @@
 import assert from 'node:assert/strict';
-import { globSync } from 'node:fs';
+import { globSync, mkdtempSync, rmSync, mkdirSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { spawnSync } from 'node:child_process';
 import { describe, it } from 'node:test';
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { EventEmitter, getEventListeners } from 'node:events';
 import { runInNewContext } from 'node:vm';
 import ts from 'typescript';
+import YAML from 'yaml';
+import {
+  createCiPlan,
+  runtimeSelection,
+  assertVitestReport,
+  assertRuntimeGate,
+  runtimeRoot,
+  ciContext,
+  checkoutSha,
+  runtimeSlots,
+  artifactName,
+  assertCiGate,
+  finishCiSlot,
+  writeJson,
+} from './runtime-ci.mjs';
 import { waitForServerReadiness } from './server-readiness.mjs';
 import { fileURLToPath } from 'node:url';
 
 import {
   BROWSER_SUITES,
+  BROWSER_SHARD_COUNT,
+  assertBrowserInventory,
+  browserShards,
+  selectBrowserShard,
   PRODUCTION_BROWSER_SUITES,
   createRuntimeTestPlan,
 } from './runtime-test-plan.mjs';
@@ -863,5 +884,532 @@ describe('native navigation precondition evidence', () => {
       else await result;
       assert.deepEqual(order, ['open', 'select-current', 'actual-portal-hidden']);
     }
+  });
+});
+
+describe('bounded CI runtime shards (no browser or server)', () => {
+  const sha = 'a'.repeat(40);
+  const needs = Object.fromEntries(
+    ['test-plan', 'test-general', 'test-browser'].map((job) => [job, { result: 'success' }])
+  );
+  const plan = createCiPlan(sha);
+  const selections = [
+    runtimeSelection('general', undefined, plan),
+    ...plan.browser.map((_, index) =>
+      runtimeSelection('browser', `${index + 1}/${BROWSER_SHARD_COUNT}`, plan)
+    ),
+  ];
+  const report = (selection) => ({
+    success: true,
+    numFailedTests: 0,
+    numFailedTestSuites: 0,
+    numPassedTests: selection.suites.length,
+    testResults: selection.suites.map((suite) => ({
+      name: path.join(runtimeRoot, suite),
+      status: 'passed',
+      assertionResults: [{ status: 'passed', fullName: 'simulated gate control' }],
+    })),
+  });
+  const receipts = () =>
+    selections.map((selection) => ({ ...selection, report: report(selection) }));
+  it('keeps all development suites exactly once in deterministic nonempty bounded shards', () => {
+    const shards = browserShards();
+    assert.equal(shards.length, BROWSER_SHARD_COUNT);
+    assert.deepEqual(shards.flat().sort(), [...BROWSER_SUITES].sort());
+    assert.deepEqual(shards, browserShards([...BROWSER_SUITES].reverse()));
+    assert.ok(
+      shards.every(
+        (suites) =>
+          suites.length > 0 &&
+          suites.length <= Math.ceil(BROWSER_SUITES.length / BROWSER_SHARD_COUNT)
+      )
+    );
+    for (let index = 0; index < shards.length; index += 1) {
+      const [browser] = createRuntimeTestPlan([], {
+        phase: 'browser',
+        shard: `${index + 1}/${shards.length}`,
+      });
+      assert.equal(browser.needsServer, true);
+      assert.deepEqual(browser.args, ['--no-file-parallelism', ...shards[index]]);
+    }
+    assert.deepEqual(createRuntimeTestPlan([], { phase: 'general' }), [
+      createRuntimeTestPlan([])[0],
+    ]);
+  });
+  it('rejects newly discovered unregistered files, stale entries and duplicate ownership', () => {
+    const inventory = [...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES];
+    assert.throws(
+      () =>
+        assertBrowserInventory([
+          ...inventory,
+          'apps/www/test/pending-code-surface.browser.test.ts',
+        ]),
+      /unregistered/
+    );
+    assert.throws(() => assertBrowserInventory(inventory.slice(1)), /missing=/);
+    assert.throws(
+      () => assertBrowserInventory(inventory, [...BROWSER_SUITES, BROWSER_SUITES[0]]),
+      /Duplicate/
+    );
+    assert.throws(
+      () =>
+        assertBrowserInventory(inventory, BROWSER_SUITES, [
+          ...PRODUCTION_BROWSER_SUITES,
+          BROWSER_SUITES[0],
+        ]),
+      /Duplicate/
+    );
+    const added = 'apps/www/test/pending-code-surface.browser.test.ts';
+    assert.doesNotThrow(() =>
+      assertBrowserInventory([...inventory, added], [...BROWSER_SUITES, added])
+    );
+    assert.equal(
+      browserShards([...BROWSER_SUITES, added])
+        .flat()
+        .filter((suite) => suite === added).length,
+      1
+    );
+  });
+  it('rejects empty shards, unknown phases, ambiguous filters and invalid shard selections', () => {
+    for (const shard of [undefined, '', '0/8', '9/8', '1/7', '1/99', 'x/8'])
+      assert.throws(() => selectBrowserShard(shard), /Expected browser shard/);
+    assert.throws(() => browserShards([], 8), /nonempty/);
+    assert.throws(() => browserShards(['same', 'same'], 2), /unique/);
+    assert.throws(() => createRuntimeTestPlan([], { phase: 'typo' }), /Unknown/);
+    assert.throws(() => createRuntimeTestPlan([], { phase: 'general', shard: '1/8' }), /requires/);
+    assert.throws(
+      () => createRuntimeTestPlan(['some-filter'], { phase: 'general' }),
+      /cannot be combined/
+    );
+  });
+  it('accepts complete simulated receipts and retains explicitly authored general todo coverage', () => {
+    assert.doesNotThrow(() => assertRuntimeGate(needs, plan, receipts(), sha));
+    const general = report(selections[0]);
+    general.testResults[0].assertionResults.push({ status: 'todo' });
+    assert.doesNotThrow(() => assertVitestReport(general, selections[0]));
+  });
+  for (const state of ['failure', 'cancelled', 'skipped', '']) {
+    for (const job of Object.keys(needs))
+      it(`rejects ${state || 'unknown'} ${job} even with complete receipts`, () => {
+        assert.throws(
+          () => assertRuntimeGate({ ...needs, [job]: { result: state } }, plan, receipts(), sha),
+          /did not succeed/
+        );
+      });
+  }
+  it('rejects missing jobs, receipts, duplicate receipts and checkout drift', () => {
+    const { 'test-browser': omitted, ...missing } = needs;
+    assert.throws(() => assertRuntimeGate(missing, plan, receipts(), sha));
+    assert.throws(
+      () => assertRuntimeGate(needs, plan, receipts().slice(1), sha),
+      /exactly one receipt/
+    );
+    const duplicate = receipts();
+    duplicate[2] = duplicate[1];
+    assert.throws(() => assertRuntimeGate(needs, plan, duplicate, sha), /Missing\/duplicate/);
+    const stale = receipts();
+    stale[1].checkoutSha = 'b'.repeat(40);
+    assert.throws(() => assertRuntimeGate(needs, plan, stale, sha), /checkout SHA/);
+    assert.throws(
+      () => assertRuntimeGate(needs, plan, receipts(), 'b'.repeat(40)),
+      /gate checkout/
+    );
+  });
+  for (const [label, mutate] of [
+    [
+      'empty job',
+      (r) => {
+        r.numPassedTests = 0;
+        r.testResults = [];
+      },
+    ],
+    [
+      'missing suite',
+      (r) => {
+        r.testResults.pop();
+      },
+    ],
+    [
+      'duplicate suite',
+      (r) => {
+        r.testResults[1] = r.testResults[0];
+      },
+    ],
+    [
+      'empty suite',
+      (r) => {
+        r.testResults[0].assertionResults = [];
+      },
+    ],
+    [
+      'failed suite',
+      (r) => {
+        r.testResults[0].status = 'failed';
+      },
+    ],
+    [
+      'failed test',
+      (r) => {
+        r.numFailedTests = 1;
+      },
+    ],
+    [
+      'skipped test',
+      (r) => {
+        r.testResults[0].assertionResults[0].status = 'skipped';
+      },
+    ],
+    [
+      'todo browser test',
+      (r) => {
+        r.testResults[0].assertionResults[0].status = 'todo';
+      },
+    ],
+    [
+      'cancelled assertion',
+      (r) => {
+        r.testResults[0].assertionResults[0].status = 'cancelled';
+      },
+    ],
+    [
+      'false success',
+      (r) => {
+        r.success = false;
+      },
+    ],
+    [
+      'false count',
+      (r) => {
+        r.numPassedTests += 1;
+      },
+    ],
+  ])
+    it(`rejects a ${label} in an otherwise successful matrix job`, () => {
+      const actual = receipts();
+      mutate(actual[1].report);
+      assert.throws(() => assertRuntimeGate(needs, plan, actual, sha));
+    });
+  it('keeps production Search outside every general/dev selection and fails altered plans', () => {
+    for (const suite of PRODUCTION_BROWSER_SUITES) {
+      assert.ok(!selections.some((selection) => selection.suites.includes(suite)));
+      assert.ok(
+        readFileSync('apps/www/scripts/run-search-production-evidence.mjs', 'utf8').includes(suite)
+      );
+    }
+    const changed = structuredClone(plan);
+    changed.browser[0].pop();
+    assert.throws(
+      () => assertRuntimeGate(needs, changed, receipts(), sha),
+      /complete current inventory/
+    );
+  });
+  it('wires every required CI job into the existing fail-closed test gate', () => {
+    const { jobs } = YAML.parse(readFileSync('.github/workflows/ci.yml', 'utf8'));
+    assert.deepEqual(jobs.test.needs, ['test-plan', 'test-general', 'test-browser']);
+    assert.equal(jobs.test.if, 'always()');
+    assert.equal(jobs['test-browser'].strategy['fail-fast'], false);
+    assert.equal(jobs['test-browser'].strategy['max-parallel'], BROWSER_SHARD_COUNT);
+    assert.equal(
+      jobs['test-browser'].strategy.matrix,
+      '${{ fromJSON(needs.test-plan.outputs.matrix) }}'
+    );
+    assert.equal(jobs['test-general'].env.PROTO_UI_RUNTIME_PHASE, 'general');
+    assert.equal(jobs['test-browser'].env.PROTO_UI_RUNTIME_PHASE, 'browser');
+    for (const name of ['test-general', 'test-browser']) {
+      assert.ok(jobs[name].steps.some((step) => step.uses === 'actions/checkout@v4'));
+      const upload = jobs[name].steps.find((step) => step.uses === 'actions/upload-artifact@v4');
+      assert.equal(upload.if, 'always()');
+      assert.equal(upload.with['if-no-files-found'], 'error');
+      assert.ok(jobs[name].steps.some((step) => step.run?.includes('git rev-parse HEAD')));
+    }
+    assert.ok(jobs['test-general'].steps.some((step) => step.run?.includes('-s test\n')));
+    assert.ok(
+      jobs['test-browser'].steps.some((step) =>
+        step.run?.includes('timeout --signal=TERM --kill-after=10s 900s')
+      )
+    );
+    assert.ok(
+      jobs.test.steps.some(
+        (step) =>
+          step.run?.includes('runtime-ci.mjs gate') &&
+          step.env?.RUNTIME_CI_NEEDS === '${{ toJSON(needs) }}'
+      )
+    );
+    assert.ok(
+      !JSON.stringify(jobs['test-browser']).includes('site-search-production.browser.test.ts')
+    );
+    const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
+    assert.ok(packageJson.scripts.test.endsWith('-s test:runtime'));
+    assert.ok(
+      packageJson.scripts['test:runtime'].endsWith('node scripts/test/run-runtime-tests.mjs')
+    );
+  });
+});
+
+describe('CI partial-rerun receipt protocol (no browser or server)', () => {
+  const sha = 'a'.repeat(40);
+  const context = { runId: '123456', attempt: 2, eventSha: sha, checkoutSha: sha };
+  const needs = Object.fromEntries(
+    ['test-plan', 'test-general', 'test-browser'].map((job) => [job, { result: 'success' }])
+  );
+  const complete = (binding = context, attempt = 1) => {
+    const plan = createCiPlan(binding.checkoutSha);
+    return runtimeSlots.map((slot, index) => {
+      const selection =
+        index === 0
+          ? null
+          : index === 1
+            ? runtimeSelection('general', undefined, plan)
+            : runtimeSelection('browser', `${index - 1}/${BROWSER_SHARD_COUNT}`, plan);
+      const payload = selection
+        ? {
+            ...selection,
+            report: {
+              success: true,
+              numFailedTests: 0,
+              numFailedTestSuites: 0,
+              numPassedTests: selection.suites.length,
+              testResults: selection.suites.map((suite) => ({
+                name: path.join(runtimeRoot, suite),
+                status: 'passed',
+                assertionResults: [
+                  { status: 'passed', fullName: 'simulated rerun control, not browser evidence' },
+                ],
+              })),
+            },
+          }
+        : plan;
+      const receipt = { schemaVersion: 1, ...binding, attempt, slot, outcome: 'success', payload };
+      return { name: artifactName(receipt), receipt };
+    });
+  };
+  it('accepts an aggregate-only rerun with all original successful slots', () => {
+    assert.doesNotThrow(() => assertCiGate(needs, complete(), context));
+  });
+  it('accepts only the failed shard rerunning while plan/general/other shards stay at attempt one', () => {
+    const artifacts = complete();
+    artifacts[2].receipt.outcome = 'failure';
+    artifacts[2].receipt.payload = null;
+    artifacts.push(complete(context, 2)[2]);
+    assert.doesNotThrow(() => assertCiGate(needs, artifacts, context));
+  });
+  for (const outcome of ['failure', 'cancelled', 'skipped']) {
+    it(`never falls back to earlier success after a later ${outcome}`, () => {
+      const artifacts = complete();
+      const later = complete(context, 2)[2];
+      later.receipt.outcome = outcome;
+      artifacts.push(later);
+      assert.throws(() => assertCiGate(needs, artifacts, context), /Latest .* did not succeed/);
+    });
+    it(`blocks a hard ${outcome} without a new artifact through current needs`, () => {
+      assert.throws(
+        () => assertCiGate({ ...needs, 'test-browser': { result: outcome } }, complete(), context),
+        /Required job/
+      );
+    });
+  }
+  it('rejects a later successful slot with no report instead of accepting its older report', () => {
+    const artifacts = complete();
+    const later = complete(context, 2)[2];
+    later.receipt.payload = null;
+    artifacts.push(later);
+    assert.throws(() => assertCiGate(needs, artifacts, context), /no completed evidence/);
+  });
+  for (const [label, mutate] of [
+    [
+      'wrong run',
+      (r) => {
+        r.runId = '999';
+      },
+    ],
+    [
+      'wrong event SHA',
+      (r) => {
+        r.eventSha = 'b'.repeat(40);
+      },
+    ],
+    [
+      'wrong checkout SHA',
+      (r) => {
+        r.checkoutSha = 'b'.repeat(40);
+      },
+    ],
+    [
+      'future attempt',
+      (r) => {
+        r.attempt = 3;
+      },
+    ],
+    [
+      'zero attempt',
+      (r) => {
+        r.attempt = 0;
+      },
+    ],
+    [
+      'fractional attempt',
+      (r) => {
+        r.attempt = 1.5;
+      },
+    ],
+    [
+      'string attempt',
+      (r) => {
+        r.attempt = '1';
+      },
+    ],
+    [
+      'unknown slot',
+      (r) => {
+        r.slot = 'browser-99-of-8';
+      },
+    ],
+    [
+      'empty slot',
+      (r) => {
+        r.slot = '';
+      },
+    ],
+    [
+      'schema drift',
+      (r) => {
+        r.schemaVersion = 2;
+      },
+    ],
+    [
+      'nonterminal outcome',
+      (r) => {
+        r.outcome = 'running';
+      },
+    ],
+    [
+      'slot payload swap',
+      (r) => {
+        r.payload.shard = '8/8';
+      },
+    ],
+  ])
+    it(`rejects ${label}`, () => {
+      const artifacts = complete();
+      mutate(artifacts[2].receipt);
+      assert.throws(() => assertCiGate(needs, artifacts, context));
+    });
+  it('rejects duplicate same-attempt slots, missing slots, artifact-name drift and plan drift', () => {
+    const artifacts = complete();
+    assert.throws(
+      () => assertCiGate(needs, [...artifacts, artifacts[2]], context),
+      /Duplicate slot\/attempt/
+    );
+    assert.throws(() => assertCiGate(needs, artifacts.slice(1), context), /Missing logical slot/);
+    artifacts[2].name += '-unexpected';
+    assert.throws(() => assertCiGate(needs, artifacts, context), /Artifact name/);
+    const planDrift = complete();
+    const later = complete(context, 2)[0];
+    later.receipt.payload.browser[0].pop();
+    planDrift.push(later);
+    assert.throws(() => assertCiGate(needs, planDrift, context), /complete current inventory/);
+  });
+  it('requires real checkout HEAD to equal event SHA rather than merely agreeing receipts', () => {
+    const env = { GITHUB_RUN_ID: '123456', GITHUB_RUN_ATTEMPT: '2', GITHUB_SHA: sha };
+    assert.deepEqual(ciContext(env, sha), context);
+    assert.throws(() => ciContext(env, 'b'.repeat(40)), /Actual checkout HEAD/);
+    for (const key of Object.keys(env)) assert.throws(() => ciContext({ ...env, [key]: '' }, sha));
+  });
+  it('exercises actual plan, always-finalizer and aggregate CLIs across reruns and rejects corrupt artifacts', (t) => {
+    const directory = mkdtempSync(path.join(tmpdir(), 'runtime-ci-cli-'));
+    t.after(() => rmSync(directory, { recursive: true, force: true }));
+    const actual = { ...context, eventSha: checkoutSha(), checkoutSha: checkoutSha() };
+    const env = {
+      ...process.env,
+      GITHUB_RUN_ID: actual.runId,
+      GITHUB_RUN_ATTEMPT: '2',
+      GITHUB_SHA: actual.eventSha,
+      RUNTIME_CI_NEEDS: JSON.stringify(needs),
+    };
+    const run = (command, dir, extra = {}, status = 0) => {
+      const result = spawnSync(process.execPath, ['scripts/test/runtime-ci.mjs', command, dir], {
+        cwd: runtimeRoot,
+        env: { ...env, ...extra },
+        encoding: 'utf8',
+      });
+      assert.equal(result.status, status, `${command}: ${result.stdout} ${result.stderr}`);
+      return result;
+    };
+    const materialize = (artifacts) => {
+      const dir = mkdtempSync(path.join(directory, 'artifacts-'));
+      for (const { name, receipt } of artifacts)
+        writeJson(path.join(dir, name, 'receipt.json'), receipt);
+      return dir;
+    };
+    const first = complete(actual);
+    run('gate', materialize(first)); // attempt one all green; only aggregate rerun
+    const repaired = complete(actual);
+    repaired[2].receipt.outcome = 'failure';
+    repaired[2].receipt.payload = null;
+    repaired.push(complete(actual, 2)[2]);
+    run('gate', materialize(repaired));
+    const laterFailed = [...first, complete(actual, 2)[2]];
+    laterFailed.at(-1).receipt.outcome = 'failure';
+    run('gate', materialize(laterFailed), {}, 1);
+    run('gate', materialize(first.slice(1)), {}, 1);
+    run('gate', materialize(first), { GITHUB_SHA: 'b'.repeat(40) }, 1);
+    run(
+      'gate',
+      materialize(first),
+      { RUNTIME_CI_NEEDS: JSON.stringify({ ...needs, 'test-browser': { result: 'cancelled' } }) },
+      1
+    );
+    const empty = materialize(first);
+    mkdirSync(path.join(empty, `runtime-ci-${actual.runId}-general-attempt-2`));
+    run('gate', empty, {}, 1);
+    const planDir = path.join(directory, 'producer');
+    run('plan', planDir, { GITHUB_OUTPUT: path.join(directory, 'output') });
+    const matrix = JSON.parse(
+      readFileSync(path.join(directory, 'output'), 'utf8').trim().slice('matrix='.length)
+    );
+    assert.equal(matrix.include.length, BROWSER_SHARD_COUNT);
+    assert.equal(matrix.include[0].slot, 'browser-1-of-8');
+    run('plan', path.join(directory, 'wrong-checkout'), { GITHUB_SHA: 'b'.repeat(40) }, 1);
+    run('finish', planDir, { PROTO_UI_RUNTIME_SLOT: 'plan', RUNTIME_CI_OUTCOME: 'success' });
+    const finished = JSON.parse(readFileSync(path.join(planDir, 'receipt.json'), 'utf8'));
+    assert.equal(finished.attempt, 2);
+    assert.equal(finished.checkoutSha, actual.eventSha);
+    assert.equal(finished.outcome, 'success');
+    const failedDir = path.join(directory, 'failed-before-vitest');
+    run('finish', failedDir, {
+      PROTO_UI_RUNTIME_SLOT: 'browser-1-of-8',
+      RUNTIME_CI_OUTCOME: 'failure',
+    });
+    const failed = JSON.parse(readFileSync(path.join(failedDir, 'receipt.json'), 'utf8'));
+    assert.equal(failed.payload, null);
+    assert.equal(failed.outcome, 'failure');
+    run(
+      'finish',
+      path.join(directory, 'missing-success'),
+      { PROTO_UI_RUNTIME_SLOT: 'general', RUNTIME_CI_OUTCOME: 'success' },
+      1
+    );
+  });
+  it('uses same-run separated artifacts and always writes every producer outcome without token escalation', () => {
+    const workflow = YAML.parse(readFileSync('.github/workflows/ci.yml', 'utf8'));
+    const { jobs } = workflow;
+    const download = jobs.test.steps.find((step) => step.uses === 'actions/download-artifact@v4');
+    assert.equal(download.with.pattern, 'runtime-ci-${{ github.run_id }}-*');
+    assert.equal(download.with['merge-multiple'], false);
+    assert.equal(download.with['github-token'], undefined);
+    assert.equal(workflow.permissions, undefined);
+    for (const name of ['test-plan', 'test-general', 'test-browser']) {
+      const finish = jobs[name].steps.find((step) => step.run?.includes('runtime-ci.mjs finish'));
+      assert.equal(finish.if, 'always()');
+      assert.equal(finish.env.RUNTIME_CI_OUTCOME, '${{ job.status }}');
+      const upload = jobs[name].steps.find((step) => step.uses === 'actions/upload-artifact@v4');
+      assert.equal(upload.if, 'always()');
+      assert.equal(
+        upload.with.name,
+        'runtime-ci-${{ github.run_id }}-${{ env.PROTO_UI_RUNTIME_SLOT }}-attempt-${{ github.run_attempt }}'
+      );
+      assert.equal(jobs[name].permissions, undefined);
+    }
+    assert.equal(jobs['test-browser'].env.PROTO_UI_RUNTIME_SLOT, '${{ matrix.slot }}');
   });
 });

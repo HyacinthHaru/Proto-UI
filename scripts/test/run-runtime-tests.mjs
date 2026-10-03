@@ -7,10 +7,12 @@
 // server exits and its suite fails. One server for the whole run removes that.
 
 import { spawn } from 'node:child_process';
+import { readFileSync, rmSync } from 'node:fs';
 import { createServer } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRuntimeTestPlan } from './runtime-test-plan.mjs';
+import { runtimeSelection, assertVitestReport, writeJson, ciContext } from './runtime-ci.mjs';
 import { waitForServerReadiness } from './server-readiness.mjs';
 import {
   observeReadinessFailures,
@@ -58,7 +60,29 @@ const READY_ROUTES = [
 ];
 const READY_TIMEOUT_MS = 180_000;
 
-const testPlan = createRuntimeTestPlan(process.argv.slice(2));
+const phase = process.env.PROTO_UI_RUNTIME_PHASE;
+const shard = process.env.PROTO_UI_RUNTIME_SHARD;
+const testPlan = createRuntimeTestPlan(process.argv.slice(2), { phase, shard });
+const context = phase ? ciContext() : undefined;
+const selection = phase ? runtimeSelection(phase, shard) : undefined;
+if (selection && selection.checkoutSha !== context.checkoutSha)
+  throw new Error('Runtime checkout changed during selection');
+const evidenceDirectory = process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR;
+if (selection && !evidenceDirectory)
+  throw new Error('A CI runtime phase requires PROTO_UI_RUNTIME_EVIDENCE_DIR');
+const evidenceId = selection
+  ? `${phase}${shard ? `-${shard.replace('/', '-of-')}` : ''}`
+  : undefined;
+const reportPath = selection
+  ? path.resolve(evidenceDirectory, `vitest-${evidenceId}.json`)
+  : undefined;
+if (selection) {
+  // Clear only this invocation's result: stale evidence must never satisfy a rerun.
+  rmSync(reportPath, { force: true });
+  rmSync(path.join(evidenceDirectory, `result-${evidenceId}.json`), { force: true });
+  writeJson(path.join(evidenceDirectory, `selection-${evidenceId}.json`), selection);
+  console.log(`[test:runtime] selection ${JSON.stringify(selection)}`);
+}
 let devServer = null;
 let serverOutput = '';
 let shuttingDown = false;
@@ -184,7 +208,10 @@ async function runVitest(args, baseUrl) {
       process.platform === 'win32' ? 'vitest.cmd' : 'vitest'
     );
     const env = baseUrl ? { ...process.env, PROTO_UI_BROWSER_BASE_URL: baseUrl } : process.env;
-    const child = spawn(vitestBin, ['run', ...args], {
+    const reportArgs = reportPath
+      ? ['--reporter=default', '--reporter=json', `--outputFile=${reportPath}`]
+      : [];
+    const child = spawn(vitestBin, ['run', ...args, ...reportArgs], {
       cwd: root,
       env,
       shell: process.platform === 'win32',
@@ -236,6 +263,14 @@ try {
     }
     exitCode = await runVitest(phase.args, baseUrl);
     if (exitCode !== 0) break;
+    if (selection) {
+      const report = JSON.parse(readFileSync(reportPath, 'utf8'));
+      assertVitestReport(report, selection);
+      writeJson(path.join(evidenceDirectory, `result-${evidenceId}.json`), {
+        ...selection,
+        report,
+      });
+    }
   }
 } catch (error) {
   console.error(`[test:runtime] ${error instanceof Error ? error.message : String(error)}`);
