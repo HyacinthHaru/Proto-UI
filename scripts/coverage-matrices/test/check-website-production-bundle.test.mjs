@@ -88,6 +88,14 @@ function graphFixture() {
         dynamicImports: ['_astro/react.js', '_astro/vue.js', '_astro/vue2.js'],
         moduleIds: ['apps/www/src/pages/en/test/new-projection-families.astro'],
       }),
+      chunk('_astro/liquid-glass-material.js', {
+        isEntry: true,
+        facadeModuleId:
+          'apps/www/src/pages/en/test/liquid-glass-material.astro?astro&type=script&index=0&lang.ts',
+        imports: ['_astro/wc-host.js'],
+        dynamicImports: ['_astro/react.js', '_astro/vue.js', '_astro/vue2.js'],
+        moduleIds: ['apps/www/src/pages/en/test/liquid-glass-material.astro'],
+      }),
       chunk('_astro/wc-host.js', {
         name: 'wc-host',
         moduleIds: [
@@ -200,7 +208,11 @@ test('rejects runtime chunks that are not dynamically reachable from a route dem
 
 test('rejects a graph without route-owned Web Component host provenance', () => {
   const graph = graphFixture();
-  for (const route of ['_astro/home-demo.js', '_astro/new-projection-families.js']) {
+  for (const route of [
+    '_astro/home-demo.js',
+    '_astro/new-projection-families.js',
+    '_astro/liquid-glass-material.js',
+  ]) {
     const entry = graph.chunks.find((candidate) => candidate.fileName === route);
     entry.imports = entry.imports.filter((fileName) => fileName !== '_astro/wc-host.js');
   }
@@ -214,7 +226,11 @@ test('rejects a graph without route-owned Web Component host provenance', () => 
 
 test('does not mistake an orphaned WC runtime for primary host provenance', () => {
   const graph = graphFixture();
-  for (const route of ['_astro/home-demo.js', '_astro/new-projection-families.js']) {
+  for (const route of [
+    '_astro/home-demo.js',
+    '_astro/new-projection-families.js',
+    '_astro/liquid-glass-material.js',
+  ]) {
     const entry = graph.chunks.find((candidate) => candidate.fileName === route);
     entry.imports = entry.imports.filter((fileName) => fileName !== '_astro/wc-host.js');
   }
@@ -344,6 +360,8 @@ test('allows Adapter modules only in the exact reviewed site-control bridge chun
     .moduleIds.push(
       'packages/adapters/base/src/host/adapter-host.ts',
       'packages/adapters/base/src/platform/focus-order.ts?used',
+      'packages/adapters/base/src/platform/web-preference-source.ts?used',
+      'packages/adapters/base/src/platform/web-style-support-source.ts?used',
       'packages/adapters/web-component/src/adapt.ts?used'
     );
 
@@ -607,4 +625,31 @@ test('admits only the reviewed new-family demonstration route with isolated runt
       issue.includes('Website shell entry')
     )
   );
+});
+
+test('keeps accepted stage-zero material sources inside their exact demonstration and bridge boundaries', () => {
+  const graph = graphFixture();
+  assert.deepEqual(collectWebsiteProductionBundleIssues({ graph }), []);
+  graph.chunks.find(
+    (entry) => entry.fileName === '_astro/liquid-glass-material.js'
+  ).facadeModuleId =
+    'apps/www/src/pages/en/test/CopiedMaterial.astro?astro&type=script&index=0&lang.ts';
+  assert.ok(
+    collectWebsiteProductionBundleIssues({ graph }).some((issue) =>
+      issue.includes('Website shell entry')
+    )
+  );
+  for (const module of [
+    'packages/adapters/base/src/platform/web-preference-source.ts',
+    'packages/adapters/base/src/platform/web-style-support-source.ts',
+  ]) {
+    const outside = graphFixture();
+    outside.chunks[0].imports.push('_astro/sibling-source.js');
+    outside.chunks.push(chunk('_astro/sibling-source.js', { moduleIds: [module] }));
+    assert.ok(
+      collectWebsiteProductionBundleIssues({ graph: outside }).some((issue) =>
+        issue.includes(module)
+      )
+    );
+  }
 });

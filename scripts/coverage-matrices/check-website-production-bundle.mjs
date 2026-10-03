@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 const DEFAULT_GRAPH_PATH = 'apps/www/dist/proto-ui-bundle-graph.json';
 const APPROVED_DEMONSTRATION_ENTRY_FACADES = new Set([
   'apps/www/src/pages/en/test/new-projection-families.astro?astro&type=script&index=0&lang.ts',
+  'apps/www/src/pages/en/test/liquid-glass-material.astro?astro&type=script&index=0&lang.ts',
   'apps/www/src/components/PrototypePreviewer/HomeDemoPreviewer.astro?astro&type=script&index=0&lang.ts',
   'apps/www/src/components/PrototypePreviewer/PrototypePreviewer.astro?astro&type=script&index=0&lang.ts',
   'apps/www/src/components/PrototypePreviewer/previewer-client.ts',
@@ -29,7 +30,9 @@ const REQUIRED_ADAPTER_FAMILIES = Object.freeze(['react', 'vue', 'vue2']);
 const REVIEWED_WEB_COMPONENT_HOST_MODULE =
   'apps/www/src/components/PrototypePreviewer/wc-registry.ts';
 const REVIEWED_WEBSITE_CONTROL_MODULE = 'apps/www/src/components/site-shadcn-controls.ts';
-// Exact Adapter modules observed in the reviewed production bridge graph.
+// Exact Adapter modules reviewed for the site-control bridge closure.
+// #801 adds the two source providers imported by the same WC adapt entry;
+// exact-head production graph verification remains required for their placement.
 // Matrix rule 6 is authoritative; new modules require review, not family-wide inheritance.
 const REVIEWED_WEBSITE_CONTROL_ADAPTER_MODULES = new Set([
   'packages/adapters/base/src/events/web-default-action.ts',
@@ -49,6 +52,8 @@ const REVIEWED_WEBSITE_CONTROL_ADAPTER_MODULES = new Set([
   'packages/adapters/base/src/platform/layout-ready.ts',
   'packages/adapters/base/src/platform/web-color-scheme-source.ts',
   'packages/adapters/base/src/platform/web-preferences.ts',
+  'packages/adapters/base/src/platform/web-preference-source.ts',
+  'packages/adapters/base/src/platform/web-style-support-source.ts',
   'packages/adapters/base/src/public-types.ts',
   'packages/adapters/base/src/types.ts',
   'packages/adapters/base/src/wiring/caps-builder.ts',

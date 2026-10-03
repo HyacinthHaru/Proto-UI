@@ -198,7 +198,11 @@ const WEBSITE_RAW_IMPORT_ALLOWLIST = Object.freeze({
     resolvedPaths: Object.freeze(['packages/prototypes/brutalist/src/theme']),
   }),
   'apps/www/src/components/PrototypePreviewer/projection-theme.ts': Object.freeze({
-    resolvedPaths: Object.freeze(['packages/prototypes/brutalist/src/theme']),
+    resolvedPaths: Object.freeze([
+      'packages/prototypes/brutalist/src/theme',
+      'packages/prototypes/bootstrap-2-3-2/src/theme',
+      'packages/prototypes/liquid-glass/src/theme',
+    ]),
   }),
   'apps/www/src/components/LucideIconGallery.astro': Object.freeze({
     specifierPrefixes: Object.freeze(['@proto.ui/prototypes-lucide']),
@@ -227,6 +231,10 @@ const WEBSITE_RAW_IMPORT_ALLOWLIST = Object.freeze({
   }),
   'apps/www/src/components/documentation-image-zoom.proto.ts': Object.freeze({
     specifiers: Object.freeze(['@proto.ui/core', '@proto.ui/prototypes-base/dialog']),
+  }),
+  'apps/www/src/pages/en/test/liquid-glass-material.astro': Object.freeze({
+    specifiers: Object.freeze(['@proto.ui/prototypes-liquid-glass/button']),
+    resolvedPaths: Object.freeze(['packages/prototypes/liquid-glass/src/theme']),
   }),
   'apps/www/src/pages/en/test/new-projection-families.astro': Object.freeze({
     specifiers: Object.freeze([
@@ -5997,11 +6005,11 @@ function isTestNamedSource(absolutePath) {
 // Mirror the checked-in Website proto-ui-source resolver without evaluating
 // candidate configuration. The full config fingerprint fails closed for any
 // unreviewed resolver/plugin shape; updates require source review and parity tests.
-// Main integration changes only the reviewed CSS layer order; the resolver
-// function and plugin shape are byte-identical. Parity/mutation tests retain
+// Reviewed main contributions change CSS layer order and accepted family
+// sidebar entries; resolver functions and plugin shape stay intact. Parity/mutation tests retain
 // fail-closed behavior for every other configuration change.
 const PROMOTION_RESOLVER_CONFIG_SHA256 =
-  'b5c4fa84e0ed5120508626d93095432322efc3e2e0abd4145995dccefd799151';
+  '856cc74b95d480cbdb0f1253823f306f41a7101ee41815cd68269786c839fc0d';
 export function promotionBarePackageTargets(root, specifier, metadata) {
   const unverified = () =>
     new Error(`promotion package closure for ${specifier} remains unverified`);

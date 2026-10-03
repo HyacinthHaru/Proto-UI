@@ -12056,3 +12056,29 @@ test('fresh Website resource review: Astro parsing preserves expressions and com
     assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), source);
   }
 });
+
+test('registered stage-zero family allowances stay bound to their reviewed sources', () => {
+  const root = createRoot();
+  const source = 'apps/www/src/pages/en/test/liquid-glass-material.astro';
+  const copied = 'apps/www/src/pages/en/test/CopiedMaterial.astro';
+  const markup =
+    "---\nimport { renderThemeCss } from '../../../../../../packages/prototypes/liquid-glass/src/theme';\n---\n<script>import button from '@proto.ui/prototypes-liquid-glass/button';</script>";
+  for (const file of [source, copied]) {
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), markup);
+  }
+  const theme = 'apps/www/src/components/PrototypePreviewer/projection-theme.ts';
+  fs.mkdirSync(path.dirname(path.join(root, theme)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, theme),
+    "import '../../../../../packages/prototypes/bootstrap-2-3-2/src/theme'; import '../../../../../packages/prototypes/liquid-glass/src/theme';"
+  );
+  writeValidMatrices(root);
+  let message = validationMessage(root);
+  assert.ok(!message.includes(`in \`${source}\` escapes the website consumer-wall allowlist`));
+  assert.ok(!message.includes(`in \`${theme}\` escapes the website consumer-wall allowlist`));
+  assert.ok(message.includes(`in \`${copied}\` escapes the website consumer-wall allowlist`));
+  fs.appendFileSync(path.join(root, source), "\n<script>import '@proto.ui/runtime';</script>");
+  message = validationMessage(root);
+  assert.ok(message.includes(`raw Proto UI import \`@proto.ui/runtime\` in \`${source}\``));
+});
