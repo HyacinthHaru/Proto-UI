@@ -340,9 +340,17 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   let epoch = 0;
   let desiredRuntime = initialRuntime;
   let activeCandidates: MaterializedProjectionCandidate[] = [];
+  let activeTypography: MaterializedProjectionCandidate | undefined;
+  let typographyEpoch = 0;
+  let failedTypographyRevision: number | undefined;
+  let typographyRefresh: Promise<void> | undefined;
   const staged = new Map<
     number,
-    { candidates: MaterializedProjectionCandidate[]; component: SharedBaseFamilyId }
+    {
+      candidates: MaterializedProjectionCandidate[];
+      component: SharedBaseFamilyId;
+      typography: MaterializedProjectionCandidate;
+    }
   >();
   const status = root.querySelector<HTMLElement>('[data-homepage-runtime-status]');
   const setStatus = (state: 'loading' | 'ready' | 'error', runtime: RuntimeId) => {
@@ -378,6 +386,8 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const controller = createProjectionScopeController({
     initialSelection: { runtimeId: initialRuntime, projectionFamilyId: initialFamily },
     async materialize(request) {
+      // A page selection supersedes any passive refresh of its retained view.
+      typographyEpoch++;
       const runtime = request.selection.runtimeId as RuntimeId;
       const family = requireSiteLibraryFamily(request.selection.projectionFamilyId);
       const component = desiredComponent;
@@ -433,10 +443,15 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       // Search contributes to this exact request. Its native dialog and Pagefind
       // owner stay mounted while all three command views commit with the page.
       const searchWork = search?.materialize(request);
+      let preparedTypography: MaterializedProjectionCandidate | undefined;
+      const typographyWork = typography.materialize(request).then((candidate) => {
+        preparedTypography = candidate;
+        return candidate;
+      });
       const outcomes = await Promise.allSettled([
         ...work,
         ...(searchWork ? [searchWork] : []),
-        typography.materialize(request),
+        typographyWork,
       ]);
       const candidates = outcomes.flatMap((outcome) =>
         outcome.status === 'fulfilled'
@@ -450,7 +465,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
         await Promise.allSettled(candidates.map((candidate) => candidate.dispose()));
         throw failure.reason;
       }
-      staged.set(request.generation, { candidates, component });
+      staged.set(request.generation, { candidates, component, typography: preparedTypography! });
       let disposed = false;
       return {
         activate() {
@@ -484,6 +499,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       const headerPublication = headerSurface?.prepareCommit(commit);
       const searchPublication = search?.prepareCommit(commit);
       const previous = activeCandidates;
+      const previousTypography = activeTypography;
       const previousFamily = activeFamily;
       const previousComponent = committedComponent;
       const previousSiteMarkers = [
@@ -502,6 +518,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       return {
         publish() {
           activeCandidates = next;
+          activeTypography = prepared.typography;
           activeFamily = family;
           committedComponent = prepared.component;
           for (const group of groups) group.fallback.hidden = true;
@@ -516,6 +533,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
         },
         rollback() {
           activeCandidates = previous;
+          activeTypography = previousTypography;
           activeFamily = previousFamily;
           committedComponent = previousComponent;
           groups.forEach((group, index) => {
@@ -554,6 +572,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
         desiredFamily = requireSiteLibraryFamily(snapshot.selection.projectionFamilyId);
         desiredComponent = committedComponent;
         setStatus('ready', desiredRuntime);
+        onTypographyChange();
         if (publishPreference) {
           try {
             document.defaultView?.localStorage.setItem(PREFERRED_ADAPTER_KEY, desiredRuntime);
@@ -576,6 +595,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
         desiredComponent = committedComponent;
         setStatus('error', desiredRuntime);
         console.error('[HomepageRuntime] retained previous generation or native SSR links.', error);
+        onTypographyChange();
       });
   };
   function requestRuntime(runtime: RuntimeId): void {
@@ -658,6 +678,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     (destroyPromise ??= (async () => {
       destroyed = true;
       epoch++;
+      typographyEpoch++;
       observer.disconnect();
       compactMedia?.removeEventListener('change', onTypographyChange);
       typography.destroy();
@@ -666,7 +687,9 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       document.removeEventListener(PREFERRED_ADAPTER_EVENT, onAdapterChange);
       document.removeEventListener('astro:before-swap', onBeforeSwap);
       activeCandidates = [];
+      activeTypography = undefined;
       await controller.destroy();
+      await typographyRefresh;
       staged.clear();
       for (const group of groups) group.fallback.hidden = false;
       delete ownedRoot.__homepageRuntime__;
@@ -675,9 +698,75 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     void destroy();
   };
   const onTypographyChange = () => {
-    if (destroyed || controller.getSnapshot().phase !== 'ready' || !typography.needsRefresh())
+    const snapshot = controller.getSnapshot();
+    if (destroyed || typographyRefresh || snapshot.phase !== 'ready' || !typography.needsRefresh())
       return;
-    observe(controller.request({}, { force: true }), false);
+    const candidates = activeCandidates;
+    const previous = activeTypography;
+    if (!previous) return;
+    const index = candidates.indexOf(previous);
+    if (index < 0) return;
+    const sourceRevision = typography.getSourceRevision();
+    if (sourceRevision === failedTypographyRevision) return;
+    const refreshEpoch = ++typographyEpoch;
+    typographyRefresh = (async () => {
+      let candidate: Awaited<ReturnType<typeof typography.materialize>> | undefined;
+      let recheck = false;
+      try {
+        candidate = await typography.materialize(snapshot);
+        const current = controller.getSnapshot();
+        if (
+          destroyed ||
+          refreshEpoch !== typographyEpoch ||
+          current.phase !== 'ready' ||
+          current.generation !== snapshot.generation ||
+          activeCandidates !== candidates ||
+          activeTypography !== previous ||
+          sourceRevision !== typography.getSourceRevision()
+        ) {
+          recheck = true;
+          return;
+        }
+        candidate.setThemeSurfaceStyle(
+          resolveProjectionThemeSurfaceStyle(activeFamily, typography.root)
+        );
+        try {
+          candidate.activate();
+        } catch (error) {
+          previous.activate();
+          throw error;
+        }
+        // The page candidate owns this same array. Its rollback, theme updates
+        // and eventual disposal therefore retain the latest passive batch.
+        // Interactive participants and the page snapshot never change here.
+        candidates[index] = candidate;
+        activeTypography = candidate;
+        failedTypographyRevision = undefined;
+        candidate = undefined;
+        recheck = true;
+        try {
+          await previous.dispose();
+        } catch (error) {
+          console.error('[HomepageRuntime] failed to retire previous typography batch.', error);
+        }
+      } catch (error) {
+        if (!destroyed && refreshEpoch === typographyEpoch) {
+          failedTypographyRevision = sourceRevision;
+          recheck = sourceRevision !== typography.getSourceRevision();
+          console.error('[HomepageRuntime] retained previous typography batch.', error);
+        }
+      } finally {
+        try {
+          await candidate?.dispose();
+        } catch (error) {
+          console.error('[HomepageRuntime] failed to dispose prepared typography batch.', error);
+        } finally {
+          typographyRefresh = undefined;
+          // Source/viewport changes made during preparation need one more pass.
+          if (recheck) onTypographyChange();
+        }
+      }
+    })();
   };
   const compactMedia = document.defaultView?.matchMedia('(max-width: 47.999rem)');
   compactMedia?.addEventListener('change', onTypographyChange);

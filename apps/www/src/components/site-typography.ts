@@ -182,8 +182,34 @@ export function siteTypographyParticipant(
   let committedCompact = false;
   const compact = () => document.defaultView?.matchMedia('(max-width: 47.999rem)').matches === true;
   const targets = () => collectSiteTypographyTargets(root, options.docsOnly);
+  let sourceRevision = 0;
+  let sourceSnapshot: { targets: Target[]; nodes: Node[][]; compact: boolean } | undefined;
   return {
     root,
+    // A participant-local revision, independent of the page's runtime/family
+    // generation. Native source nodes are compared by identity, never copied.
+    getSourceRevision() {
+      const next = targets();
+      const nodes = next.map(({ native }) => sourceNodes(native));
+      const isCompact = compact();
+      const previous = sourceSnapshot;
+      if (
+        !previous ||
+        previous.compact !== isCompact ||
+        next.length !== previous.targets.length ||
+        next.some(
+          ({ native, role }, index) =>
+            native !== previous.targets[index]!.native ||
+            role !== previous.targets[index]!.role ||
+            nodes[index]!.length !== previous.nodes[index]!.length ||
+            nodes[index]!.some((node, offset) => node !== previous.nodes[index]![offset])
+        )
+      ) {
+        sourceSnapshot = { targets: next, nodes, compact: isCompact };
+        sourceRevision++;
+      }
+      return sourceRevision;
+    },
     needsRefresh() {
       if (!alive) return false;
       const next = targets();
@@ -374,6 +400,7 @@ export function siteTypographyParticipant(
     },
     destroy() {
       alive = false;
+      sourceSnapshot = undefined;
     },
   };
 }
