@@ -104,6 +104,17 @@ try {
       { a, b }
     );
   }
+  report.fieldGeometry = await page.evaluate(() => {
+    const field = document.querySelector('#field');
+    return {
+      width: field.width.baseVal.value,
+      height: field.height.baseVal.value,
+      hrefBytes: field.getAttribute('href')?.length,
+      filter: getComputedStyle(document.querySelector('#lens')).backdropFilter,
+    };
+  });
+  assert.equal(report.fieldGeometry.width, 600);
+  assert.equal(report.fieldGeometry.height, 264);
   const rest = await capture('liquid-rest');
   await page.evaluate(() =>
     document.querySelector('#lens-displacement').setAttribute('scale', '0')
