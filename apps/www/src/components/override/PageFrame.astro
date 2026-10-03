@@ -100,6 +100,11 @@ const { hasSidebar } = Astro.locals.starlightRoute;
   syncLibraryRoute();
   document.addEventListener('astro:page-load', syncLibraryRoute);
 
+  import { initSiteSidebarCurrentVisibility } from '../site-sidebar-current-visibility';
+  const revealCurrentArticle = () => initSiteSidebarCurrentVisibility(document);
+  revealCurrentArticle();
+  document.addEventListener('astro:page-load', revealCurrentArticle);
+
   import { initSiteContentsNavigation } from '../site-header-disclosure';
   const initializeContents = () => initSiteContentsNavigation(document);
   initializeContents();

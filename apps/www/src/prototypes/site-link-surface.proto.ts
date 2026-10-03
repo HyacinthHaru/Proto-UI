@@ -1,7 +1,15 @@
 import { definePrototype, tw } from '@proto.ui/core';
 import { SITE_LINK_ICONS, type SiteLinkIcon } from './site-link-icons';
 
-export type SiteLinkAppearance = 'action' | 'icon' | 'nav' | 'text' | 'brand';
+export type SiteLinkAppearance =
+  | 'action'
+  | 'icon'
+  | 'nav'
+  | 'text'
+  | 'brand'
+  | 'sidebar'
+  | 'toc'
+  | 'pagination';
 export type SiteLinkEmphasis = 'primary' | 'secondary' | 'minimal' | 'link';
 export type SiteLinkSurfaceProps = {
   family: 'shadcn' | 'brutalist';
@@ -22,6 +30,9 @@ const SIZE_TOKENS: Record<SiteLinkAppearance, string> = {
   // baseline or an unsupported whitespace-normal token.
   text: 'min-h-6 px-0 py-0 text-sm',
   brand: 'min-h-11 px-0 py-2 text-base font-semibold tracking-tight whitespace-nowrap',
+  sidebar: 'flex w-full min-w-0 min-h-11 px-2 py-1.5 gap-2 justify-between text-sm',
+  toc: 'flex w-full min-w-0 min-h-6 px-2 py-1 gap-2 justify-between text-sm',
+  pagination: 'flex w-full min-w-0 min-h-9 px-3 py-1 gap-1.5 text-sm',
 };
 
 /** App-owned experimental visual composition, not an official Link protocol.
@@ -36,7 +47,7 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
       appearance: {
         type: 'enum',
         empty: 'fallback',
-        options: ['action', 'icon', 'nav', 'text', 'brand'],
+        options: ['action', 'icon', 'nav', 'text', 'brand', 'sidebar', 'toc', 'pagination'],
       },
       emphasis: {
         type: 'enum',
@@ -81,7 +92,58 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
       when: (w) =>
         w.all(
           w.prop('family').eq('shadcn'),
-          w.any(w.prop('appearance').eq('icon'), w.prop('appearance').eq('action'))
+          w.any(w.prop('appearance').eq('sidebar'), w.prop('appearance').eq('toc'))
+        ),
+      intent: (i) => i.feedback.style.use(tw('rounded-md')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('family').eq('brutalist'),
+          w.any(w.prop('appearance').eq('sidebar'), w.prop('appearance').eq('toc'))
+        ),
+      intent: (i) => i.feedback.style.use(tw('rounded-none')),
+    });
+    def.rule({
+      when: (w) => w.prop('appearance').eq('toc'),
+      intent: (i) => i.feedback.style.use(tw('text-muted-foreground')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('family').eq('shadcn'),
+          w.any(w.prop('appearance').eq('sidebar'), w.prop('appearance').eq('toc')),
+          w.prop('hovered').eq(true)
+        ),
+      intent: (i) => i.feedback.style.use(tw('bg-muted text-foreground')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('family').eq('shadcn'),
+          w.any(w.prop('appearance').eq('sidebar'), w.prop('appearance').eq('toc')),
+          w.prop('current').eq(true)
+        ),
+      intent: (i) => i.feedback.style.use(tw('bg-accent text-accent-foreground')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('family').eq('brutalist'),
+          w.any(w.prop('appearance').eq('sidebar'), w.prop('appearance').eq('toc')),
+          w.any(w.prop('hovered').eq(true), w.prop('current').eq(true))
+        ),
+      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground border-foreground')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('family').eq('shadcn'),
+          w.any(
+            w.prop('appearance').eq('icon'),
+            w.prop('appearance').eq('action'),
+            w.prop('appearance').eq('pagination')
+          )
         ),
       intent: (i) => i.feedback.style.use(tw('rounded-lg')),
     });
@@ -98,8 +160,10 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
       when: (w) =>
         w.all(
           w.prop('family').eq('shadcn'),
-          w.prop('appearance').eq('action'),
-          w.prop('emphasis').eq('secondary')
+          w.any(
+            w.all(w.prop('appearance').eq('action'), w.prop('emphasis').eq('secondary')),
+            w.prop('appearance').eq('pagination')
+          )
         ),
       intent: (i) => i.feedback.style.use(tw('border-border bg-background text-foreground')),
     });
@@ -107,7 +171,11 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
       when: (w) =>
         w.all(
           w.prop('family').eq('brutalist'),
-          w.any(w.prop('appearance').eq('icon'), w.prop('appearance').eq('action'))
+          w.any(
+            w.prop('appearance').eq('icon'),
+            w.prop('appearance').eq('action'),
+            w.prop('appearance').eq('pagination')
+          )
         ),
       intent: (i) =>
         i.feedback.style.use(
@@ -132,6 +200,7 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
           w.prop('family').eq('shadcn'),
           w.any(
             w.prop('appearance').eq('icon'),
+            w.prop('appearance').eq('pagination'),
             w.all(w.prop('appearance').eq('action'), w.prop('emphasis').eq('secondary'))
           )
         ),
@@ -152,7 +221,11 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
         w.all(
           w.prop('hovered').eq(true),
           w.prop('family').eq('brutalist'),
-          w.any(w.prop('appearance').eq('icon'), w.prop('appearance').eq('action'))
+          w.any(
+            w.prop('appearance').eq('icon'),
+            w.prop('appearance').eq('action'),
+            w.prop('appearance').eq('pagination')
+          )
         ),
       intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground')),
     });

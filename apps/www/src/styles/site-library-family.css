@@ -60,9 +60,9 @@
   :is(
     a[data-site-native-button],
     .mobile-primary-links a,
-    .sidebar-pane .top-level a,
+    .sidebar-pane .top-level a:not([data-site-link-enhanced]),
     .sidebar-pane .top-level summary,
-    .pagination-links a
+    .pagination-links a:not([data-site-link-enhanced])
   ) {
   border-radius: 0;
 }
@@ -73,14 +73,20 @@
 
 [data-site-library-family='brutalist']
   :is(a[data-site-native-button], .mobile-primary-links a):hover,
-[data-site-library-family='brutalist'] .sidebar-pane .top-level a[aria-current='page'] {
+[data-site-library-family='brutalist']
+  .sidebar-pane
+  .top-level
+  a:not([data-site-link-enhanced])[aria-current='page'] {
   border-color: var(--site-brutalist-border);
   background: var(--site-brutalist-main);
   color: var(--site-brutalist-main-foreground);
   box-shadow: 2px 2px 0 var(--site-brutalist-border);
 }
 
-[data-site-library-family='brutalist'] .sidebar-pane .top-level a[aria-current='page'] {
+[data-site-library-family='brutalist']
+  .sidebar-pane
+  .top-level
+  a:not([data-site-link-enhanced])[aria-current='page'] {
   outline: 2px solid var(--site-brutalist-border);
   outline-offset: -2px;
   font-weight: 650;
@@ -88,7 +94,7 @@
 
 [data-site-library-family='brutalist']
   :is(
-    .pagination-links a,
+    .pagination-links a:not([data-site-link-enhanced]),
     site-search button[data-open-modal],
     site-search dialog,
     starlight-menu-button button,
@@ -101,7 +107,7 @@
   box-shadow: 3px 3px 0 var(--site-brutalist-border);
 }
 
-[data-site-library-family='brutalist'] .right-sidebar a[in-view] {
+[data-site-library-family='brutalist'] .right-sidebar a:not([data-site-link-enhanced])[in-view] {
   border-radius: 0;
   border-inline-start: 3px solid var(--site-brutalist-main);
   padding-inline-start: 0.5rem;

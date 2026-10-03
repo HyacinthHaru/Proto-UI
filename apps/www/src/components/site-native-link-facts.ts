@@ -5,6 +5,13 @@ export type NativeLinkFacts = Readonly<{
   current: boolean;
 }>;
 
+function isCurrent(link: HTMLAnchorElement): boolean {
+  return (
+    (link.hasAttribute('aria-current') && link.getAttribute('aria-current') !== 'false') ||
+    (link.dataset.siteLinkAppearance === 'toc' && link.hasAttribute('in-view'))
+  );
+}
+
 /** Observe browser-owned facts without intercepting or synthesizing navigation.
  * No click listener, default prevention, focus request or added focus target. */
 export function bindNativeLinkFacts(
@@ -22,7 +29,7 @@ export function bindNativeLinkFacts(
     hovered,
     pressed,
     focusVisible: focusVisible(),
-    current: link.hasAttribute('aria-current') && link.getAttribute('aria-current') !== 'false',
+    current: isCurrent(link),
   });
   const publish = () => {
     if (alive && link.isConnected && (options.isActive?.() ?? true)) project(snapshot());
@@ -80,7 +87,7 @@ export function bindNativeLinkFacts(
   view?.addEventListener('pointerup', up);
   view?.addEventListener('blur', windowBlur);
   const observer = view ? new view.MutationObserver(publish) : null;
-  observer?.observe(link, { attributes: true, attributeFilter: ['aria-current'] });
+  observer?.observe(link, { attributes: true, attributeFilter: ['aria-current', 'in-view'] });
   publish();
   return () => {
     if (!alive) return;
@@ -93,7 +100,7 @@ export function bindNativeLinkFacts(
       hovered: false,
       focusVisible: false,
       pressed: false,
-      current: link.hasAttribute('aria-current') && link.getAttribute('aria-current') !== 'false',
+      current: isCurrent(link),
     });
   };
 }

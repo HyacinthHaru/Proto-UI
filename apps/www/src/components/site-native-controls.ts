@@ -20,14 +20,41 @@ export function siteLinkAppearance(link: HTMLAnchorElement): SiteLinkAppearance 
     requested === 'icon' ||
     requested === 'nav' ||
     requested === 'text' ||
-    requested === 'brand'
+    requested === 'brand' ||
+    requested === 'sidebar' ||
+    requested === 'toc' ||
+    requested === 'pagination'
   )
     return requested;
   if (link.closest('.homepage-hero__eyebrow')) return 'text';
+  if (link.closest('.sidebar-pane .top-level')) return 'sidebar';
+  if (link.closest('.pagination-links')) return 'pagination';
+  if (link.closest('sl-toc')) return 'toc';
   if (link.closest('[data-site-header-navigation]')) return 'nav';
   return link.dataset.homeActionVariant === 'minimal' || link.dataset.homeActionVariant === 'link'
     ? 'text'
     : 'action';
+}
+
+/** Keep Starlight's localized label, line break and title nodes. Only the
+ * existing caption becomes visually hidden; the native accessible name still
+ * includes Previous/Next and the title. Releasing restores exact node order. */
+function preparePaginationCaption(link: HTMLAnchorElement): () => void {
+  if (siteLinkAppearance(link) !== 'pagination') return () => {};
+  const title = link.querySelector('.link-title');
+  const label = title?.parentElement;
+  if (!title || !label) return () => {};
+  const before: ChildNode[] = [];
+  for (const node of label.childNodes) {
+    if (node === title) break;
+    before.push(node);
+  }
+  if (!before.length) return () => {};
+  const caption = link.ownerDocument.createElement('span');
+  caption.dataset.sitePaginationCaption = '';
+  caption.append(...before);
+  label.insertBefore(caption, title);
+  return () => caption.replaceWith(...before);
 }
 export function siteLinkEmphasis(link: HTMLAnchorElement): SiteLinkEmphasis {
   const value = link.dataset.homeActionVariant;
@@ -57,11 +84,14 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
   }
   const releases: Array<() => void> = [];
   for (const link of scope.querySelectorAll<HTMLAnchorElement>(
-    'a[data-site-native-link], a[data-site-native-button]'
+    'a[data-site-native-link], a[data-site-native-button], .sidebar-pane .top-level a[href], .pagination-links a[href], sl-toc a[href]'
   )) {
     if (link.closest('[data-homepage-actions]') || bindings.has(link)) continue;
     let alive = true;
+    const appearance = siteLinkAppearance(link);
+    const restoreCaption = preparePaginationCaption(link);
     const surface = document.createElement(SITE_LINK_TAG);
+    surface.dataset.siteLinkContent = '';
     // Keep SSR glyph/text nodes: the passive slot never takes ownership of the
     // anchor's name, destination, focus target, or default browser action.
     const content = Array.from(link.childNodes);
@@ -69,6 +99,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     link.append(surface);
     link.classList.add('site-native-link');
     link.dataset.siteLinkEnhanced = 'true';
+    link.dataset.siteLinkAppearance = appearance;
     link.dataset.siteNativeLink = '';
     link.removeAttribute('data-slot');
     link.removeAttribute('data-site-native-button');
@@ -81,7 +112,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
           : resolveSiteLibraryFamily(view.location.pathname);
       const props: SiteLinkSurfaceProps & { surfaceStyle: Record<string, string> } = {
         family,
-        appearance: siteLinkAppearance(link),
+        appearance,
         emphasis: siteLinkEmphasis(link),
         icon: 'none',
         ...facts,
@@ -115,6 +146,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
       observer.disconnect();
       media?.removeEventListener?.('change', update);
       bindings.delete(link);
+      restoreCaption();
       if (surface.parentElement === link) {
         surface.replaceWith(...Array.from(surface.childNodes));
         delete link.dataset.siteLinkEnhanced;

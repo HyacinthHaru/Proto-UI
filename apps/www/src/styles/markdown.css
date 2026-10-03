@@ -172,8 +172,8 @@
   main[data-pagefind-body] footer .pagination-links {
     @apply mt-6 flex items-center justify-between gap-2;
   }
-  footer .pagination-links a,
-  main[data-pagefind-body] footer .pagination-links a {
+  footer .pagination-links a:not([data-site-link-enhanced]),
+  main[data-pagefind-body] footer .pagination-links a:not([data-site-link-enhanced]) {
     @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors;
     @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
     @apply h-7 rounded-md gap-1.5 px-3 shadow-none;
@@ -189,24 +189,33 @@
     height: 0.95rem;
   }
   /* Hide "Previous/Next" label line, keep link title */
-  footer .pagination-links a > span:first-of-type,
-  main[data-pagefind-body] footer .pagination-links a > span:first-of-type {
+  footer .pagination-links a:not([data-site-link-enhanced]) > span:first-of-type,
+  main[data-pagefind-body]
+    footer
+    .pagination-links
+    a:not([data-site-link-enhanced])
+    > span:first-of-type {
     font-size: 0;
     line-height: 0;
   }
-  footer .pagination-links a > span:first-of-type .link-title,
-  main[data-pagefind-body] footer .pagination-links a > span:first-of-type .link-title {
+  footer .pagination-links a:not([data-site-link-enhanced]) > span:first-of-type .link-title,
+  main[data-pagefind-body]
+    footer
+    .pagination-links
+    a:not([data-site-link-enhanced])
+    > span:first-of-type
+    .link-title {
     @apply block;
     font-size: 0.8125rem;
     line-height: 1.25rem;
   }
-  main[data-pagefind-body] .pagination-links a:hover {
+  main[data-pagefind-body] .pagination-links a:not([data-site-link-enhanced]):hover {
     @apply shadow-none;
   }
 
   @media (max-width: 40rem) {
-    footer .pagination-links a,
-    main[data-pagefind-body] footer .pagination-links a {
+    footer .pagination-links a:not([data-site-link-enhanced]),
+    main[data-pagefind-body] footer .pagination-links a:not([data-site-link-enhanced]) {
       width: auto;
       min-width: 0;
       max-width: calc(50% - 0.25rem);
@@ -215,13 +224,18 @@
       white-space: normal;
     }
 
-    footer .pagination-links a:only-child,
-    main[data-pagefind-body] footer .pagination-links a:only-child {
+    footer .pagination-links a:not([data-site-link-enhanced]):only-child,
+    main[data-pagefind-body] footer .pagination-links a:not([data-site-link-enhanced]):only-child {
       max-width: 100%;
     }
 
-    footer .pagination-links a > span:first-of-type .link-title,
-    main[data-pagefind-body] footer .pagination-links a > span:first-of-type .link-title {
+    footer .pagination-links a:not([data-site-link-enhanced]) > span:first-of-type .link-title,
+    main[data-pagefind-body]
+      footer
+      .pagination-links
+      a:not([data-site-link-enhanced])
+      > span:first-of-type
+      .link-title {
       overflow-wrap: anywhere;
     }
   }

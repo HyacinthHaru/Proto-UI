@@ -393,6 +393,29 @@ async function assertHostCurrentProjection(link: Locator) {
   await expect.poll(async () => (await linkPaint(link)).weight).toBe(baseline.weight);
 }
 
+async function assertNavigationFocus(page: Page, link: Locator) {
+  await link.scrollIntoViewIfNeeded();
+  await page.mouse.move(0, 0);
+  await link.focus();
+  await page.keyboard.press('Tab');
+  await expect.poll(async () => (await linkPaint(link)).tokens).not.toContain('ring-2');
+  const baseline = await linkPaint(link);
+  await page.keyboard.press('Shift+Tab');
+  await expect.poll(async () => (await linkPaint(link)).tokens).toContain('ring-2');
+  const observed = await linkPaint(link);
+  expect(observed.focused).toBe(true);
+  expect(observed.tokens).toEqual(
+    expect.arrayContaining(['ring-ring', 'ring-offset-2', 'ring-offset-background'])
+  );
+  expect(observed.ringWidth).toBe('2px');
+  expect(observed.ringOffset).toBe('2px');
+  expect(observed.ringColor).not.toMatch(/^(?:|transparent|rgba\(0, 0, 0, 0\))$/);
+  expect(observed.shadow).not.toBe(baseline.shadow);
+  expect(observed.visibleTarget).toBe(true);
+  expect(observed.unclipped).toBe(true);
+  return { baseline, observed };
+}
+
 describe.sequential('native links with app-owned Proto visual surfaces', () => {
   it('preserves real link targets and uniform social visuals through all runtime/family transitions', async () => {
     const context = await browser.newContext({
@@ -748,4 +771,480 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       await context.close();
     }
   }, 60_000);
+
+  it('renders docs navigation through the same Prototype while preserving native targets and caption projection', async () => {
+    for (const [family, route, colorScheme] of [
+      ['shadcn', '/zh-cn/ui-libraries/shadcn/button/', 'light'],
+      ['shadcn', '/zh-cn/ui-libraries/shadcn/button/', 'dark'],
+      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/button/', 'light'],
+      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/button/', 'dark'],
+    ] as const) {
+      const context = await browser.newContext({
+        viewport: { width: 1440, height: 1000 },
+        colorScheme,
+      });
+      const page = await context.newPage();
+      try {
+        await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+        const selected = page
+          .locator('.sidebar-pane a[aria-current="page"][data-site-link-enhanced]')
+          .first();
+        await selected.waitFor({ state: 'visible' });
+        expect((await linkPaint(selected)).tokens).toContain(
+          family === 'brutalist' ? 'bg-main' : 'bg-accent'
+        );
+        const sidebar = page
+          .locator('.sidebar-pane a[data-site-link-enhanced]:not([aria-current]):visible')
+          .first();
+        const baseline = await linkPaint(sidebar);
+        await sidebar.hover();
+        await expect
+          .poll(async () => (await linkPaint(sidebar)).background)
+          .not.toBe(baseline.background);
+        await captureLinks(
+          page,
+          `nav-${family}-${colorScheme}-sidebar-hover`,
+          family,
+          'wc',
+          'native-sidebar-hover; real-current-route',
+          { baseline, observed: await linkPaint(sidebar) }
+        );
+        await captureLinks(
+          page,
+          `nav-${family}-${colorScheme}-sidebar-focus`,
+          family,
+          'wc',
+          'native-sidebar-keyboard-focus',
+          await assertNavigationFocus(page, sidebar)
+        );
+
+        const brand = page.locator('.site-header a[data-site-link-appearance="brand"]').first();
+        expect(await brand.getAttribute('role')).toBeNull();
+        expect(await brand.locator('[data-pui-root]').count()).toBe(1);
+        await captureLinks(
+          page,
+          `nav-${family}-${colorScheme}-brand-focus`,
+          family,
+          'wc',
+          'native-brand-keyboard-focus',
+          await assertNavigationFocus(page, brand)
+        );
+        const toc = page.locator('sl-toc a[data-site-link-appearance="toc"]').nth(1);
+        await captureLinks(
+          page,
+          `nav-${family}-${colorScheme}-toc-focus`,
+          family,
+          'wc',
+          'native-toc-keyboard-focus',
+          await assertNavigationFocus(page, toc)
+        );
+        const hash = await toc.getAttribute('href');
+        await toc.click();
+        expect(new URL(page.url()).hash).toBe(new URL(hash!, page.url()).hash);
+        await expect.poll(() => toc.getAttribute('in-view')).not.toBeNull();
+        await expect
+          .poll(async () => (await linkPaint(toc)).tokens)
+          .toContain(family === 'brutalist' ? 'bg-main' : 'bg-accent');
+        expect(await page.locator('sl-toc > div[aria-hidden]').count()).toBe(0);
+        await captureLinks(
+          page,
+          `nav-${family}-${colorScheme}-toc-current`,
+          family,
+          'wc',
+          'native-toc-anchor-navigation; observed-in-view',
+          { observed: await linkPaint(toc) }
+        );
+
+        const pagination = page
+          .locator('.pagination-links a[data-site-link-appearance="pagination"]')
+          .first();
+        await pagination.scrollIntoViewIfNeeded();
+        const caption = (await pagination
+          .locator('[data-site-pagination-caption]')
+          .textContent())!.trim();
+        const title = (await pagination.locator('.link-title').textContent())!.trim();
+        const accessible = await pagination.ariaSnapshot();
+        expect(accessible).toContain(caption);
+        expect(accessible).toContain(title);
+        const geometry = await pagination.evaluate((anchor) => {
+          const root = getComputedStyle(anchor);
+          const title = anchor.querySelector<HTMLElement>('.link-title')!;
+          const caption = anchor.querySelector<HTMLElement>('[data-site-pagination-caption]')!;
+          const rect = title.getBoundingClientRect();
+          return {
+            titleFont: parseFloat(getComputedStyle(title).fontSize),
+            titleWidth: rect.width,
+            titleHeight: rect.height,
+            captionWidth: caption.getBoundingClientRect().width,
+            background: root.backgroundColor,
+            border: root.borderTopWidth,
+            shadow: root.boxShadow,
+            directChild: title.parentElement?.parentElement === anchor.firstElementChild,
+            nativeNameOnly:
+              anchor.getAttribute('role') === null && !anchor.querySelector('a,button,[tabindex]'),
+          };
+        });
+        expect(geometry.titleFont).toBeGreaterThan(0);
+        expect(geometry.titleWidth).toBeGreaterThan(0);
+        expect(geometry.titleHeight).toBeGreaterThan(0);
+        expect(geometry.captionWidth).toBe(1);
+        expect(geometry.background).toBe('rgba(0, 0, 0, 0)');
+        expect(geometry.border).toBe('0px');
+        expect(geometry.shadow).toBe('none');
+        expect(geometry.directChild).toBe(true);
+        expect(geometry.nativeNameOnly).toBe(true);
+        await captureLinks(
+          page,
+          `nav-${family}-${colorScheme}-pagination`,
+          family,
+          'wc',
+          'native-pagination-visible-title-preserved-name',
+          { geometry, observed: await linkPaint(pagination) }
+        );
+        await captureLinks(
+          page,
+          `nav-${family}-${colorScheme}-pagination-focus`,
+          family,
+          'wc',
+          'native-pagination-keyboard-focus',
+          await assertNavigationFocus(page, pagination)
+        );
+        const destination = new URL((await pagination.getAttribute('href'))!, page.url()).href;
+        await Promise.all([page.waitForURL(destination), pagination.click()]);
+        expect(page.url()).toBe(destination);
+      } finally {
+        await context.close();
+      }
+    }
+  }, 240_000);
+
+  it('opens the actual narrow-screen contents drawer and keeps long pagination labels within the page', async () => {
+    for (const [family, route] of [
+      ['shadcn', '/zh-cn/ui-libraries/shadcn/button/'],
+      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/button/'],
+    ] as const) {
+      const context = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        colorScheme: 'dark',
+      });
+      const page = await context.newPage();
+      try {
+        await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+        const contents = page.locator('.site-header-docs-navigation starlight-menu-button button');
+        const pane = page.locator('#starlight__sidebar');
+        expect(await pane.isVisible()).toBe(false);
+        await contents.click();
+        await expect.poll(() => contents.getAttribute('aria-expanded')).toBe('true');
+        await pane.waitFor({ state: 'visible' });
+        const sidebar = pane
+          .locator('a[data-site-link-enhanced]:not([aria-current]):visible')
+          .first();
+        const focus = await assertNavigationFocus(page, sidebar);
+        expect(
+          await sidebar
+            .locator('[data-pui-root]')
+            .evaluate((surface) => surface.getBoundingClientRect().height)
+        ).toBeGreaterThanOrEqual(44);
+        await captureLinks(
+          page,
+          `nav-${family}-narrow-sidebar-focus`,
+          family,
+          'wc',
+          '390px; actual-contents-drawer-open; keyboard-focus',
+          focus
+        );
+        const beforeHover = await linkPaint(sidebar);
+        await sidebar.hover();
+        await expect
+          .poll(async () => (await linkPaint(sidebar)).background)
+          .not.toBe(beforeHover.background);
+        await captureLinks(
+          page,
+          `nav-${family}-narrow-sidebar-hover`,
+          family,
+          'wc',
+          '390px; actual-contents-drawer-open; native-pointer-hover',
+          { baseline: beforeHover, observed: await linkPaint(sidebar) }
+        );
+        await page.keyboard.press('Escape');
+        await expect.poll(() => contents.getAttribute('aria-expanded')).toBe('false');
+        expect(await pane.isVisible()).toBe(false);
+        // This site has a desktop-only TOC; do not force it visible or claim a
+        // nonexistent mobile TOC interaction. The heading targets still exist.
+        expect(await page.locator('sl-toc').count()).toBeGreaterThan(0);
+        expect(await page.locator('sl-toc:visible').count()).toBe(0);
+        const tocTarget = await page.locator('sl-toc a').nth(1).getAttribute('href');
+        expect(
+          await page
+            .locator(`[id=${JSON.stringify(decodeURIComponent(tocTarget!.slice(1)))}]`)
+            .count()
+        ).toBe(1);
+
+        const pagination = page.locator('.pagination-links a[data-site-link-enhanced]').first();
+        const title = pagination.locator('.link-title');
+        const originalTitle = await title.textContent();
+        const fixtureTitle =
+          '窄屏长标题换行检查 / A long public navigation title with multiple words '.repeat(4);
+        // Deliberate content stress fixture; captures identify it as injected,
+        // not as the page's real editorial title.
+        await title.evaluate((node, text) => {
+          node.textContent = text;
+        }, fixtureTitle);
+        await pagination.scrollIntoViewIfNeeded();
+        const layout = await pagination.evaluate((anchor) => {
+          const title = anchor.querySelector('.link-title')!.getBoundingClientRect();
+          const link = anchor.getBoundingClientRect();
+          return {
+            pageWidth: document.documentElement.scrollWidth,
+            viewportWidth: document.documentElement.clientWidth,
+            titleLeft: title.left,
+            titleRight: title.right,
+            linkLeft: link.left,
+            linkRight: link.right,
+            titleHeight: title.height,
+            caption: anchor.querySelector('[data-site-pagination-caption]')?.textContent,
+          };
+        });
+        expect(layout.pageWidth).toBeLessThanOrEqual(layout.viewportWidth + 1);
+        expect(layout.titleLeft).toBeGreaterThanOrEqual(layout.linkLeft - 0.5);
+        expect(layout.titleRight).toBeLessThanOrEqual(layout.linkRight + 0.5);
+        expect(layout.titleHeight).toBeGreaterThan(20);
+        expect(await pagination.ariaSnapshot()).toContain(layout.caption!.trim());
+        await captureLinks(
+          page,
+          `nav-${family}-narrow-long-pagination`,
+          family,
+          'wc',
+          '390px; injected-long-title-stress-fixture',
+          { layout, originalTitle, fixtureTitle }
+        );
+        await title.evaluate((node, text) => {
+          node.textContent = text;
+        }, originalTitle);
+        await captureLinks(
+          page,
+          `nav-${family}-narrow-pagination-focus`,
+          family,
+          'wc',
+          '390px; original-title-restored; keyboard-focus',
+          await assertNavigationFocus(page, pagination)
+        );
+      } finally {
+        await context.close();
+      }
+    }
+  }, 150_000);
+
+  it('keeps docs native destinations, current truth, heading navigation and keyboard focus without JavaScript', async () => {
+    for (const [family, route] of [
+      ['shadcn', '/zh-cn/ui-libraries/shadcn/button/'],
+      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/button/'],
+    ] as const) {
+      const context = await browser.newContext({
+        javaScriptEnabled: false,
+        viewport: { width: 1440, height: 1000 },
+      });
+      const page = await context.newPage();
+      try {
+        await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+        const targets = [
+          ['brand', '.site-header a[data-site-link-appearance="brand"]'],
+          ['sidebar', '.sidebar-pane a[aria-current="page"]'],
+          ['toc', 'sl-toc a'],
+          ['pagination', '.pagination-links a'],
+        ] as const;
+        for (const [role, selector] of targets) {
+          const link = page.locator(selector).first();
+          expect(await link.getAttribute('href')).toBeTruthy();
+          expect(await link.getAttribute('data-site-link-enhanced')).toBeNull();
+          expect(await link.getAttribute('role')).toBeNull();
+          expect(await link.locator('[data-pui-root],button,[tabindex]').count()).toBe(0);
+          await link.scrollIntoViewIfNeeded();
+          await page.mouse.move(0, 0);
+          await link.focus();
+          await page.keyboard.press('Tab');
+          const read = () =>
+            link.evaluate((anchor) => {
+              const style = getComputedStyle(anchor);
+              const box = anchor.getBoundingClientRect();
+              return {
+                outline: style.outline,
+                shadow: style.boxShadow,
+                focused: anchor === document.activeElement && anchor.matches(':focus-visible'),
+                visible: anchor.contains(
+                  document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2)
+                ),
+              };
+            });
+          const baseline = await read();
+          await page.keyboard.press('Shift+Tab');
+          const observed = await read();
+          expect(observed.focused).toBe(true);
+          expect(observed.visible).toBe(true);
+          expect(observed.outline !== baseline.outline || observed.shadow !== baseline.shadow).toBe(
+            true
+          );
+          await captureLinks(
+            page,
+            `nav-${family}-no-js-${role}-focus`,
+            family,
+            'native-no-js',
+            `no-JavaScript; native-${role}-keyboard-focus`,
+            { baseline, observed }
+          );
+        }
+        const current = page.locator('.sidebar-pane a[aria-current="page"]').first();
+        expect(new URL((await current.getAttribute('href'))!, page.url()).pathname).toBe(
+          new URL(page.url()).pathname
+        );
+        const toc = page.locator('sl-toc a').nth(1);
+        const href = (await toc.getAttribute('href'))!;
+        const heading = page.locator(`[id=${JSON.stringify(decodeURIComponent(href.slice(1)))}]`);
+        expect(await heading.count()).toBe(1);
+        await toc.click();
+        expect(new URL(page.url()).hash).toBe(new URL(href, page.url()).hash);
+        await expect
+          .poll(() =>
+            heading.evaluate((node) => {
+              const box = node.getBoundingClientRect();
+              return box.top < innerHeight && box.bottom > 0;
+            })
+          )
+          .toBe(true);
+        expect(await toc.getAttribute('in-view')).toBeNull();
+        const pagination = page.locator('.pagination-links a').first();
+        expect(['prev', 'next']).toContain(await pagination.getAttribute('rel'));
+        const destination = new URL((await pagination.getAttribute('href'))!, page.url()).href;
+        await Promise.all([page.waitForURL(destination), pagination.click()]);
+        expect(page.url()).toBe(destination);
+      } finally {
+        await context.close();
+      }
+    }
+  }, 150_000);
+  it('reveals the current article in only the sidebar scroll owner and yields to manual scrolling', async () => {
+    for (const width of [1440, 390, 320]) {
+      const context = await browser.newContext({
+        viewport: { width, height: 900 },
+        colorScheme: 'light',
+      });
+      const page = await context.newPage();
+      try {
+        await page.goto(`${baseUrl}/zh-cn/contribute/automation/`, { waitUntil: 'networkidle' });
+        const sidebar = page.locator('.docs-sidebar');
+        const current = sidebar.locator('.top-level a[aria-current="page"]');
+        expect(await current.count()).toBe(1);
+        expect(await current.getAttribute('href')).toContain('/contribute/automation/');
+        if (width < 1024) await page.locator('starlight-menu-button button').click();
+        const facts = () =>
+          current.evaluate((link) => {
+            const boundary = link.closest<HTMLElement>('.docs-sidebar')!;
+            let owner: HTMLElement | null = null;
+            for (
+              let node = link.parentElement;
+              node && boundary.contains(node);
+              node = node.parentElement
+            ) {
+              if (
+                node.clientHeight > 0 &&
+                node.scrollHeight > node.clientHeight &&
+                /^(auto|scroll|overlay)$/.test(getComputedStyle(node).overflowY)
+              ) {
+                owner = node;
+                break;
+              }
+              if (node === boundary) break;
+            }
+            if (!owner) return { visible: false, reason: 'missing sidebar owner' };
+            const row = link.getBoundingClientRect(),
+              box = owner.getBoundingClientRect();
+            const top = box.top + owner.clientTop;
+            return {
+              visible:
+                row.width > 0 &&
+                row.height > 0 &&
+                row.top >= top - 1 &&
+                row.bottom <= top + owner.clientHeight + 1,
+              owner: owner.className,
+              scrollTop: owner.scrollTop,
+              documentY: scrollY,
+              linkTop: row.top,
+              linkBottom: row.bottom,
+              viewportTop: top,
+              viewportHeight: owner.clientHeight,
+              projected: link.getAttribute('data-site-link-enhanced'),
+              focus: document.activeElement?.outerHTML.slice(0, 300),
+            };
+          });
+        await expect.poll(async () => (await facts()).visible, { timeout: 10_000 }).toBe(true);
+        expect((await facts()).documentY).toBe(0);
+        const before = await facts();
+        await captureLinks(
+          page,
+          `sidebar-current-${width}`,
+          'shadcn',
+          'wc',
+          'current-article-revealed',
+          before
+        );
+        await current.hover();
+        await page.mouse.wheel(0, -400);
+        // Observe the actual scroll event rather than guessing a fixed delay.
+        await expect.poll(async () => (await facts()).scrollTop).toBeLessThan(before.scrollTop!);
+        await current.evaluate(async (link) => {
+          const boundary = link.closest<HTMLElement>('.docs-sidebar')!;
+          let owner = link.parentElement!;
+          while (
+            boundary.contains(owner) &&
+            !(
+              owner.clientHeight > 0 &&
+              owner.scrollHeight > owner.clientHeight &&
+              /^(auto|scroll|overlay)$/.test(getComputedStyle(owner).overflowY)
+            )
+          ) {
+            if (owner === boundary || !owner.parentElement)
+              throw new Error('Missing actual scroll owner');
+            owner = owner.parentElement;
+          }
+          let previous = owner.scrollTop,
+            stable = 0;
+          for (let frame = 0; frame < 60; frame++) {
+            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+            const next = owner.scrollTop;
+            stable = next === previous ? stable + 1 : 0;
+            previous = next;
+            if (stable >= 2) return;
+          }
+          throw new Error('Manual scrolling did not settle');
+        });
+        const manuallyScrolled = await facts();
+        await current.evaluate((link) => {
+          // A delayed projection/font-sized geometry mutation must not revoke manual ownership.
+          link.style.paddingBlock = '16px';
+          link.setAttribute('data-site-link-enhanced', 'true');
+        });
+        await page.evaluate(
+          () =>
+            new Promise<void>((resolve) =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+            )
+        );
+        expect((await facts()).scrollTop).toBe(manuallyScrolled.scrollTop);
+        expect((await facts()).documentY).toBe(0);
+        await page.reload({ waitUntil: 'networkidle' });
+        if (width < 1024) await page.locator('starlight-menu-button button').click();
+        await expect.poll(async () => (await facts()).visible, { timeout: 10_000 }).toBe(true);
+        await captureLinks(
+          page,
+          `sidebar-current-${width}-reload`,
+          'shadcn',
+          'wc',
+          'current-article-after-reload',
+          await facts()
+        );
+      } finally {
+        await context.close();
+      }
+    }
+  }, 180_000);
 });
