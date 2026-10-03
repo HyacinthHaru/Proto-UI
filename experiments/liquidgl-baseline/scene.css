@@ -35,7 +35,8 @@ h1 {
   height: 560px;
   position: relative;
   overflow: hidden;
-  isolation: isolate;
+  /* The vendor canvas is attached to body. Keep foreground z-index in that context. */
+  user-select: none;
 }
 .backdrop {
   position: absolute;

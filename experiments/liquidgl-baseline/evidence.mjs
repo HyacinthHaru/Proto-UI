@@ -124,6 +124,53 @@ try {
       : 'recorded-fallback-unavailable';
   } else {
     const normal = await capture('upstream-normal');
+    await page.locator('.caption').evaluateAll((nodes) =>
+      nodes.forEach((node) => {
+        node.style.visibility = 'hidden';
+      })
+    );
+    const withoutCaption = await capture('negative-hidden-foreground');
+    await page.locator('.caption').evaluateAll((nodes) =>
+      nodes.forEach((node) => {
+        node.style.removeProperty('visibility');
+      })
+    );
+    report.foregroundChangedPixels = await page.evaluate(
+      async ({ normal, withoutCaption }) => {
+        async function pixels(base64) {
+          const image = new Image();
+          image.src = `data:image/png;base64,${base64}`;
+          await image.decode();
+          const canvas = document.createElement('canvas');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(image, 0, 0);
+          return ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        }
+        const a = await pixels(normal),
+          b = await pixels(withoutCaption);
+        let changed = 0;
+        for (let y = 253; y < 292; y++)
+          for (let x = 160; x < 280; x++) {
+            const i = 4 * (y * 760 + x);
+            if (
+              Math.abs(a[i] - b[i]) +
+                Math.abs(a[i + 1] - b[i + 1]) +
+                Math.abs(a[i + 2] - b[i + 2]) >
+              12
+            )
+              changed++;
+          }
+        return changed;
+      },
+      { normal, withoutCaption }
+    );
+    assert(
+      report.foregroundChangedPixels > 20,
+      'The real Select foreground must visibly paint above the vendor canvas'
+    );
+
     assert(initial.gpuReady, `No optical GPU backend: ${initial.backend}`);
     assert(initial.sharedRenderer, 'The two baseline lenses should share one renderer');
     assert(
@@ -133,6 +180,11 @@ try {
     await page.mouse.move(145, 270);
     await page.mouse.move(285, 270, { steps: 12 });
     await capture('upstream-fluid-movement');
+    assert.equal(
+      await page.evaluate(() => getSelection()?.toString() ?? ''),
+      '',
+      'Decorative baseline pointer movement must not select backdrop text'
+    );
     await page.mouse.move(20, 720);
     await page.waitForTimeout(700);
     const partial = await page.evaluate(() => window.upstreamBaseline.destroyOne(0));

@@ -30,3 +30,9 @@ The following are observations of this exact source, not executed behavior:
 ## Acceptance boundary
 
 The first result is an isolated upstream visual/ownership baseline for comparison. It cannot be used as evidence that Proto-UI has a material Adapter, graph compiler, all-family projection coverage or an accepted Apple Liquid Glass appearance. Scope and native backend work remain in #792/#793; graph modeling is #806.
+
+## First executed baseline and fixture repair
+
+Head d425c1c8 / run 37144522909 used Chrome 154 and the WebGLBackend at 760×770. The optical control changed 5979 pixels in the fixed large-surface ROI, while both pointer-transparent surfaces restored `pointer-events: auto` on destroy and the final canvas/style elements were removed. These are bounded observations, not visual acceptance.
+
+The actual images exposed an ownership mistake in our fixture: its isolated stacking context trapped the foreground captions below the vendor's body-level canvas. Removing that isolation puts the authored foreground above the canvas; a paired visible/hidden caption pixel test now checks actual paint. The decorative scene also disables text selection during recorded pointer movement. The vendor bytes are unchanged. The first recording's dynamically registered moved text left a visible double image; that reconstruction/freshness failure remains unresolved and must not be described as a successful live update.
