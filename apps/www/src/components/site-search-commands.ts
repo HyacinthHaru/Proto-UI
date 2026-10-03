@@ -128,8 +128,8 @@ export function searchCommandParticipant(root: HTMLElement): SearchCommandPartic
                   children: [
                     {
                       kind: 'proto' as const,
-                      prototypeId: 'lucide-icon',
-                      props: { name: icon, size: 16 },
+                      prototypeId: `lucide-${icon}-icon`,
+                      props: { size: 16 },
                     },
                   ],
                 },
@@ -272,7 +272,9 @@ export function searchCommandParticipant(root: HTMLElement): SearchCommandPartic
               recipe: {
                 id: `website-search-${command}`,
                 prototypeIds:
-                  command === 'retry' ? [`${family}-button`] : [`${family}-button`, 'lucide-icon'],
+                  command === 'retry'
+                    ? [`${family}-button`]
+                    : [`${family}-button`, `lucide-${command === 'open' ? 'search' : 'x'}-icon`],
                 rootPrototypeId: `${family}-button`,
               },
             },

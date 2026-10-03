@@ -23,6 +23,10 @@ function getPrototypeIdFromPath(path: string): string | null {
  * value: 动态导入函数
  */
 const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
+  'site-copy-feedback-icon': async () => {
+    const mod = await import('../../prototypes/site-copy-feedback-icon.proto');
+    registerPrototype('site-copy-feedback-icon', mod.default);
+  },
   'site-code-surface': async () => {
     const mod = await import('../../prototypes/site-code-surface.proto');
     registerPrototype('site-code-surface', mod.default);
@@ -322,6 +326,14 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
   'lucide-icon': async () => {
     const mod = await import('../../../../../packages/prototypes/lucide/src/icon/index');
     registerPrototype('lucide-icon', mod.default);
+  },
+  'lucide-search-icon': async () => {
+    const mod = await import('../../../../../packages/prototypes/lucide/src/icons/search');
+    registerPrototype('lucide-search-icon', mod.default);
+  },
+  'lucide-x-icon': async () => {
+    const mod = await import('../../../../../packages/prototypes/lucide/src/icons/x');
+    registerPrototype('lucide-x-icon', mod.default);
   },
   'shadcn-separator-root': async () => {
     const mod = await import('@proto.ui/prototypes-shadcn/separator');

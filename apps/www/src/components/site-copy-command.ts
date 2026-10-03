@@ -67,9 +67,9 @@ export function createCopyCommandDemo(
               children: [
                 {
                   kind: 'proto',
-                  prototypeId: 'lucide-icon',
+                  prototypeId: 'site-copy-feedback-icon',
                   ref: 'copy-icon',
-                  props: { name: 'copy', size: 18 },
+                  props: { state: 'idle' },
                   surfaceStyle: { pointerEvents: 'none' },
                 },
               ],
@@ -110,15 +110,7 @@ export function createCopyCommandDemo(
           ...(runtime === 'wc' ? {} : { onClick: activate }),
         });
         context.api.setProps('copy-icon', {
-          name:
-            latest.state === 'pending'
-              ? 'loader-circle'
-              : latest.state === 'success'
-                ? 'check'
-                : latest.state === 'error'
-                  ? 'circle-alert'
-                  : 'copy',
-          size: 18,
+          state: latest.state,
         });
         button.setAttribute(
           'title',
@@ -234,7 +226,11 @@ export function initCopyCommand(root: HTMLElement, readText: () => string): Site
             recipe: {
               id: 'website-copy-command',
               rootPrototypeId: `${family}-button`,
-              prototypeIds: [`${family}-button`, 'lucide-icon', 'base-live-region-root'],
+              prototypeIds: [
+                `${family}-button`,
+                'site-copy-feedback-icon',
+                'base-live-region-root',
+              ],
             },
           },
         });
