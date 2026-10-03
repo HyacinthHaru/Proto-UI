@@ -28,6 +28,9 @@ type SurfaceFacts = {
   previewCode: CodeStyleFacts;
   border: [string, string];
   radius: [string, string];
+  expectedPreviewRadius: string;
+  canvasCount: number | null;
+  layoutBorderWidths: string[] | null;
   documentOverflow: number;
 };
 
@@ -66,6 +69,29 @@ async function surfaceFacts(page: Page): Promise<SurfaceFacts> {
       (element) => element.checkVisibility()
     )!;
     const card = preview.closest<HTMLElement>('.proto-previewer, .code-example')!;
+    const isRuntimePreview = card.matches('.proto-previewer');
+    const canvases = card.querySelectorAll<HTMLElement>(
+      '.pui-runtime-preview-surface[data-pui-style]'
+    );
+    const frame = isRuntimePreview ? canvases[0] : card;
+    if (!frame) throw new Error('The committed RuntimeBox canvas must exist before paint evidence');
+    const inner = preview.closest<HTMLElement>('[data-code-inner]')!;
+    const frameStyle = getComputedStyle(frame);
+    const layoutStyle = getComputedStyle(card);
+    // The layout owner intentionally has no frame after #786. Resolve the
+    // actual Prototype's declared radius independently rather than requiring
+    // the removed ancestor frame or copying the observed radius as expectation.
+    const radiusProbe = document.createElement('span');
+    radiusProbe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none';
+    radiusProbe.style.setProperty('--pui-radius', frameStyle.getPropertyValue('--pui-radius'));
+    radiusProbe.style.setProperty(
+      '--pui-radius-xl',
+      frameStyle.getPropertyValue('--pui-radius-xl')
+    );
+    radiusProbe.style.borderRadius = isRuntimePreview ? 'var(--pui-radius-xl)' : '12px';
+    document.body.append(radiusProbe);
+    const expectedPreviewRadius = getComputedStyle(radiusProbe).borderRadius;
+    radiusProbe.remove();
     const facts = (element: HTMLElement): CodeStyleFacts => {
       const style = getComputedStyle(element);
       return {
@@ -81,11 +107,18 @@ async function surfaceFacts(page: Page): Promise<SurfaceFacts> {
       preview: facts(preview),
       ecCode: facts(ec.querySelector('code')!),
       previewCode: facts(preview.querySelector('code')!),
-      border: [getComputedStyle(ec).borderLeftColor, getComputedStyle(card).borderLeftColor],
-      radius: [
-        getComputedStyle(ec.closest('.frame')!).borderRadius,
-        getComputedStyle(card).borderRadius,
-      ],
+      border: [getComputedStyle(ec).borderLeftColor, getComputedStyle(inner).borderTopColor],
+      radius: [getComputedStyle(ec.closest('.frame')!).borderRadius, frameStyle.borderRadius],
+      expectedPreviewRadius,
+      canvasCount: isRuntimePreview ? canvases.length : null,
+      layoutBorderWidths: isRuntimePreview
+        ? [
+            layoutStyle.borderTopWidth,
+            layoutStyle.borderRightWidth,
+            layoutStyle.borderBottomWidth,
+            layoutStyle.borderLeftWidth,
+          ]
+        : null,
       documentOverflow: document.documentElement.scrollWidth - innerWidth,
     };
   });
@@ -97,7 +130,13 @@ async function expectSurfaces(page: Page): Promise<SurfaceFacts> {
   expect(facts.previewCode).toEqual(facts.ecCode);
   expect(facts.ec.size).toBe('13px');
   expect(facts.ec.lineHeight).toBe('24px');
-  expect(facts.radius).toEqual(['12px', '12px']);
+  expect(facts.radius[0]).toBe('12px');
+  expect(parseFloat(facts.expectedPreviewRadius)).toBeGreaterThan(0);
+  expect(facts.radius[1]).toBe(facts.expectedPreviewRadius);
+  if (facts.canvasCount !== null) {
+    expect(facts.canvasCount).toBe(1);
+    expect(facts.layoutBorderWidths).toEqual(['0px', '0px', '0px', '0px']);
+  }
   expect(facts.border[0]).toBe(facts.border[1]);
   expect(facts.documentOverflow).toBeLessThanOrEqual(1);
   return facts;

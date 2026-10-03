@@ -1,6 +1,74 @@
-import type { Locator } from 'playwright-core';
+import type { Locator, Page } from 'playwright-core';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { runtimeSelectTrigger, startServer } from './browser-harness';
+import { runtimeSelectTrigger, selectRuntime, startServer } from './browser-harness';
+
+describe('runtime evidence counts the original demonstrated slot', () => {
+  afterEach(() => document.body.replaceChildren());
+  async function observed(runtime: 'wc' | 'react' | 'vue' | 'vue2') {
+    let result: boolean | undefined;
+    const click = async () => {};
+    const trigger = { click, getAttribute: async () => 'runtime-options' };
+    const previewer = { locator: () => ({ first: () => trigger }) } as unknown as Locator;
+    const page = {
+      locator: () => ({ getByRole: () => ({ last: () => ({ click }) }) }),
+      waitForFunction: async (
+        predicate: (args: unknown) => boolean,
+        args: unknown,
+        options: unknown
+      ) => {
+        expect(options).toEqual({ timeout: 20_000 });
+        result = predicate(args);
+      },
+    } as unknown as Page;
+    await selectRuntime(page, previewer, runtime, '[data-pui-root]', 2);
+    return result;
+  }
+  function mount(runtime: 'wc' | 'react' | 'vue' | 'vue2') {
+    const tag = runtime === 'wc' ? 'wc-test-command' : 'div';
+    document.body.innerHTML = `<div data-previewer-id="test" data-projection-mode="fixed-family">
+      <div class="host"><div data-projection-scope data-projection-runtime="${runtime}" data-projection-state="ready">
+        <div data-projection-content><div class="pui-runtime-preview-surface" data-demo-ref="__website_runtime_preview_surface__" data-pui-root>
+          <div data-original-demo ${runtime === 'vue' ? 'data-v-app' : ''}><${tag} data-pui-root></${tag}><${tag} data-pui-root></${tag}></div>
+        </div></div>
+      </div></div></div>`;
+    if (runtime === 'vue2')
+      Object.assign(document.querySelector('[data-original-demo] [data-pui-root]')!, {
+        __vue__: {},
+      });
+  }
+  it.each(['wc', 'react', 'vue', 'vue2'] as const)(
+    'retains exact %s owner and two original roots',
+    async (runtime) => {
+      mount(runtime);
+      expect(await observed(runtime)).toBe(true);
+    }
+  );
+  it.each([
+    'missing',
+    'extra-inside',
+    'extra-outside',
+    'duplicate-boundary',
+    'wrong-owner',
+    'unmarked-boundary',
+    'not-ready',
+  ] as const)('rejects %s without increasing the expected root count', async (mutation) => {
+    mount('wc');
+    const content = document.querySelector('[data-projection-content]')!;
+    const surface = content.firstElementChild!;
+    const slot = document.querySelector('[data-original-demo]')!;
+    if (mutation === 'missing') slot.firstElementChild!.remove();
+    if (mutation === 'extra-inside') slot.append(slot.firstElementChild!.cloneNode());
+    if (mutation === 'extra-outside') content.append(slot.firstElementChild!.cloneNode());
+    if (mutation === 'duplicate-boundary') content.append(surface.cloneNode(true));
+    if (mutation === 'wrong-owner')
+      slot.innerHTML = '<div data-pui-root></div><div data-pui-root></div>';
+    if (mutation === 'unmarked-boundary') surface.removeAttribute('data-demo-ref');
+    if (mutation === 'not-ready')
+      document.querySelector<HTMLElement>('[data-projection-scope]')!.dataset.projectionState =
+        'preparing';
+    expect(await observed('wc')).toBe(false);
+  });
+});
 
 /** Resolve the real selector against DOM fixtures without launching a browser. */
 function locatorFor(root: HTMLElement): Locator {

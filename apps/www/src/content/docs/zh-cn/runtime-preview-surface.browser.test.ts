@@ -194,7 +194,10 @@ describe('RuntimeBox single actual Prototype surface', () => {
             localStorage.setItem('starlight-theme', 'light');
           }, runtime);
           await page.goto(`${baseUrl}/zh-cn/ui-libraries/${family}/`, { waitUntil: 'networkidle' });
-          const root = page.locator(`.prototype-card [data-demo-id="demo-${family}-button"]`);
+          // The Shadcn overview reuses its real variants demo; it has never
+          // registered a demo named "demo-shadcn-button".
+          const demoId = family === 'shadcn' ? 'demo-button-variants' : 'demo-brutalist-button';
+          const root = page.locator(`.prototype-card [data-demo-id="${demoId}"]`);
           await ready(root, runtime);
           const light = await measure(root, family, [16, 16, 16, 16]);
           await capture(page, root, `${family}-${runtime}-overview-light`, family, runtime, light);

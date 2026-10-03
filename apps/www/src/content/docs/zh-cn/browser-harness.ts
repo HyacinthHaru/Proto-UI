@@ -248,10 +248,27 @@ export async function selectRuntime(
       const fixed = root?.dataset.projectionMode === 'fixed-family';
       const content = fixed ? scope?.querySelector<HTMLElement>('[data-projection-content]') : host;
       const selectedValue = fixed ? scope?.dataset.projectionRuntime : legacySelect?.dataset.value;
-      const firstRoot = content?.querySelector<HTMLElement>('[data-pui-root]');
       if (!root || !host || !content || selectedValue !== selectedRuntime) return false;
       if (fixed && scope?.dataset.projectionState !== 'ready') return false;
-      if (content.querySelectorAll(selector).length !== count || !firstRoot) return false;
+      const surfaces = content.querySelectorAll<HTMLElement>(
+        '.pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"]'
+      );
+      if (surfaces.length > 1) return false;
+      const surface = surfaces[0];
+      if (
+        surface &&
+        (!surface.hasAttribute('data-pui-root') ||
+          Array.from(content.querySelectorAll('[data-pui-root]')).some(
+            (element) => element !== surface && !surface.contains(element)
+          ))
+      )
+        return false;
+      // RuntimeBox owns this one reserved passive boundary. Count and inspect
+      // the original demonstrated slot, not that additional Website Prototype.
+      // No arbitrary Prototype root is filtered, including extra real siblings.
+      const demonstrated = surface ?? content;
+      const firstRoot = demonstrated.querySelector<HTMLElement>('[data-pui-root]');
+      if (demonstrated.querySelectorAll(selector).length !== count || !firstRoot) return false;
       if (selectedRuntime === 'wc') return firstRoot.tagName.startsWith('WC-');
       if (selectedRuntime === 'vue') {
         return host.hasAttribute('data-v-app') || firstRoot.closest('[data-v-app]') != null;
