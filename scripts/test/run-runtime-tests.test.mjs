@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { globSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -6,6 +7,7 @@ import { EventEmitter, getEventListeners } from 'node:events';
 import { runInNewContext } from 'node:vm';
 import ts from 'typescript';
 import { waitForServerReadiness } from './server-readiness.mjs';
+import { fileURLToPath } from 'node:url';
 
 import {
   BROWSER_SUITES,
@@ -144,6 +146,35 @@ describe('native-link browser evidence mutation controls (no browser or server)'
       mutate(actual);
       assert.ok(check(actual, expected).some((issue) => issue.includes(rejected)));
     });
+  }
+});
+
+it('registers every discovered browser suite exactly once in its explicit browser phase', () => {
+  // Mirror the runtime Vitest include roots, retaining newly added browser suites.
+  const root = fileURLToPath(new URL('../../', import.meta.url));
+  const discovered = globSync(
+    [
+      'packages/**/*.browser.test.ts',
+      'internal/contracts/__tests__/**/*.browser.test.ts',
+      'apps/**/test/**/*.browser.test.ts',
+      'apps/www/src/**/*.browser.test.ts',
+    ],
+    { cwd: root, exclude: ['**/node_modules/**', '**/dist/**'] }
+  ).map((suite) => suite.replaceAll('\\', '/'));
+  assert.deepEqual(
+    [...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].sort(),
+    [...new Set(discovered)].sort()
+  );
+  const [general, browser] = createRuntimeTestPlan([]);
+  assert.equal(browser.needsServer, true);
+  assert.ok(browser.args.includes('--no-file-parallelism'));
+  for (const suite of discovered) {
+    assert.equal(general.args.filter((arg) => arg === suite).length, 1);
+    assert.equal(general.args[general.args.indexOf(suite) - 1], '--exclude');
+    assert.equal(
+      browser.args.filter((arg) => arg === suite).length,
+      PRODUCTION_BROWSER_SUITES.includes(suite) ? 0 : 1
+    );
   }
 });
 
