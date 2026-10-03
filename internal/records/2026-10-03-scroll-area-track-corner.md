@@ -26,3 +26,11 @@ The CSS renderer test asserts that both dimensions lower into valid `calc(100% -
 Local browser launch is unavailable in this execution environment; no browser security policy is changed. Real-browser execution, screenshot inspection, independent review, and exact-head CI remain pending until their actual results are recorded in the PR. No screenshot from the user's private report is published.
 
 OpenAI Dots assisted source tracing, implementation, tests and evidence preparation. No third-party implementation or assets were copied. Existing upstream provenance for the Shadcn family is unchanged.
+
+## First exact-head execution and repair
+
+At `0117043eb88ece2f72c2ec94de4c244981901558`, Actions run `37105594923` captured all eight baseline family/runtime cases. All four Shadcn candidate runtime journeys passed. The Brutalist WC corner bounds and corner hit test passed, but its horizontal drag retained the full 216px remaining range. Its initial PNG visibly places the Astro development toolbar over the horizontal Thumb. That is retained as a failed run, not counted as completed Brutalist acceptance.
+
+The follow-up uses Astro's supported `preferences disable devToolbar` command with `preferences get devToolbar.enabled` readback on both baseline and candidate. The normal CI browser environment uses the same setup, coordinated with #777. No component overlay is suppressed, input is not forced, and no timeout or geometry threshold changes. A pointer hit assertion immediately before mouse-down now identifies any remaining interception rather than guessing from an unchanged offset.
+
+The first full test job stopped earlier at the stale GPUI style vocabulary fixture, before runtime tests. Running `scripts/gpui/generate-style-fixture.mts` adds exactly the two new calculated dimension tokens and their generated counts/list entries; it does not add a GPUI Scroll Area claim. The generator's check mode passes. The original full-CI and browser failures remain evidence; subsequent results are reported against their own source SHA.

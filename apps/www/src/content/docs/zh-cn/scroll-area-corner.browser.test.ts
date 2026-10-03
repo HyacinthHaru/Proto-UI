@@ -170,6 +170,21 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
             const x = box.x + box.width / 2,
               y = box.y + box.height / 2;
             await page.mouse.move(x, y);
+            // Keep a failed hit diagnostic rather than turning overlay
+            // interception into a false Scroll/Move failure or a forced click.
+            const hit = await thumb.evaluate(
+              (element, point) => {
+                const target = document.elementFromPoint(point.x, point.y);
+                return {
+                  onThumb: Boolean(target && element.contains(target)),
+                  tag: target?.tagName ?? null,
+                };
+              },
+              { x, y }
+            );
+            expect(hit.onThumb, `${family.name}/${runtime}/${axis}: pointer hit ${hit.tag}`).toBe(
+              true
+            );
             await page.mouse.down();
             await page.mouse.move(
               x + (axis === 'horizontal' ? 700 : 0),

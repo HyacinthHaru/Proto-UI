@@ -51,6 +51,10 @@ jobs:
         run: |
           corepack enable
           corepack pnpm@10.32.1 install --frozen-lockfile
+      - name: Disable only the development toolbar on both evidence subjects
+        run: |
+          corepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar
+          corepack pnpm@10.32.1 --filter apps-www exec astro preferences get devToolbar.enabled
       - name: Render both actual families in all four Web runtimes
         env:
           PROTO_UI_SCROLL_CORNER_EVIDENCE_DIR: ${{ github.workspace }}/scroll-corner-evidence
