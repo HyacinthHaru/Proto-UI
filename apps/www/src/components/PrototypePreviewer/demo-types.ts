@@ -15,7 +15,7 @@ export type DemoNode =
   | {
       kind: 'box';
       /** Website host composition only; never forwarded into Proto Template. */
-      tag?: 'div' | 'a';
+      tag?: 'div' | 'a' | 'span';
       className?: string;
       attrs?: DemoBoxAttrs;
       ref?: string;
@@ -24,6 +24,8 @@ export type DemoNode =
   | {
       kind: 'proto';
       prototypeId: string;
+      /** Host-only passive inline carrier; not a Proto Template tag. */
+      rootTag?: 'div' | 'span';
       className?: string;
       surfaceStyle?: DemoSurfaceStyle;
       ref?: string;
@@ -180,8 +182,8 @@ export function assertDemoSpec(demo: DemoSpec) {
       return;
     }
     if (node.kind === 'box') {
-      if (node.tag !== undefined && node.tag !== 'div' && node.tag !== 'a') {
-        throw new Error('[PrototypePreviewer] host box tag must be div or a.');
+      if (node.tag !== undefined && node.tag !== 'div' && node.tag !== 'a' && node.tag !== 'span') {
+        throw new Error('[PrototypePreviewer] host box tag must be div, a or span.');
       }
       if (node.tag === 'a') {
         const href = node.attrs?.href;
@@ -217,6 +219,8 @@ export function assertDemoSpec(demo: DemoSpec) {
         throw new Error(`[PrototypePreviewer] demo ref 必须是字符串：${path.join('.')}`);
       }
     } else if (node.kind === 'proto') {
+      if (node.rootTag !== undefined && node.rootTag !== 'div' && node.rootTag !== 'span')
+        throw new Error('[PrototypePreviewer] Proto rootTag must be div or span.');
       const protoId = (node as any).prototypeId;
       if (!protoId || typeof protoId !== 'string') {
         throw new Error(`[PrototypePreviewer] demo 节点缺少 prototypeId：${path.join('.')}`);

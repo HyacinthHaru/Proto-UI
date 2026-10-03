@@ -219,7 +219,15 @@ describe('Website projection composition', () => {
       kind: 'box',
       className: 'pui-projection-control-label',
       attrs: { 'data-projection-control-label': 'runtime' },
-      children: ['Runtime'],
+      children: [
+        {
+          kind: 'proto',
+          prototypeId: 'site-typography',
+          rootTag: 'span',
+          props: { family: 'shadcn', role: 'label', compact: false },
+          children: ['Runtime'],
+        },
+      ],
     });
     const runtimeSelectRoot = findNode(
       composition.demo,

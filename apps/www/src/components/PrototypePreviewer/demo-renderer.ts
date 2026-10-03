@@ -308,10 +308,11 @@ async function renderDemoReact(
 
     const proto = getPrototype(node.prototypeId);
     const scopedCache = getScopedComponentCache(reactComponentCache, adapter);
-    let Component = scopedCache.get(node.prototypeId);
+    const componentKey = `${node.prototypeId}:${node.rootTag ?? 'div'}`;
+    let Component = scopedCache.get(componentKey);
     if (!Component) {
-      Component = adapter(proto as Prototype<PropsBaseType>);
-      scopedCache.set(node.prototypeId, Component);
+      Component = adapter(proto as Prototype<PropsBaseType>, { rootTag: node.rootTag });
+      scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child));
     const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
@@ -465,10 +466,11 @@ async function renderDemoVue(
 
     const proto = getPrototype(node.prototypeId);
     const scopedCache = getScopedComponentCache(vueComponentCache, adapter);
-    let Component = scopedCache.get(node.prototypeId);
+    const componentKey = `${node.prototypeId}:${node.rootTag ?? 'div'}`;
+    let Component = scopedCache.get(componentKey);
     if (!Component) {
-      Component = adapter(proto as Prototype<PropsBaseType>);
-      scopedCache.set(node.prototypeId, Component);
+      Component = adapter(proto as Prototype<PropsBaseType>, { rootTag: node.rootTag });
+      scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child));
     const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
@@ -596,10 +598,11 @@ async function renderDemoVue2(
 
     const proto = getPrototype(node.prototypeId);
     const scopedCache = getScopedComponentCache(vueComponentCache, adapter);
-    let Component = scopedCache.get(node.prototypeId);
+    const componentKey = `${node.prototypeId}:${node.rootTag ?? 'div'}`;
+    let Component = scopedCache.get(componentKey);
     if (!Component) {
-      Component = adapter(proto as Prototype<PropsBaseType>);
-      scopedCache.set(node.prototypeId, Component);
+      Component = adapter(proto as Prototype<PropsBaseType>, { rootTag: node.rootTag });
+      scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child, h));
     const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };

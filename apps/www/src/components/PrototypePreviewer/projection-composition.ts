@@ -497,7 +497,13 @@ function createSelectControl<Value extends string>(
       ...coordinateAttrs,
       'data-projection-control-label': id,
     },
-    children: [config.label],
+    children: [
+      createProjectedProto('site-typography', coordinateAttrs, themeSurfaceStyle, {
+        rootTag: 'span',
+        props: { family: coordinateAttrs['data-projection-family'], role: 'label', compact: false },
+        children: [config.label],
+      }),
+    ],
   } satisfies DemoBoxNode;
   const value = createProjectedProto(selectParts.value, coordinateAttrs, themeSurfaceStyle, {
     props: { placeholder: config.placeholder ?? config.label },

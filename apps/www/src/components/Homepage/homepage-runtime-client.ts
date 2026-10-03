@@ -1,3 +1,4 @@
+import { siteTypographyParticipant } from '../site-typography';
 import { headerSurfaceParticipant } from '../site-header-surface';
 import { bindNativeLinkFacts } from '../site-native-link-facts';
 import { siteLinkAppearance, siteLinkEmphasis, siteLinkIcon } from '../site-native-controls';
@@ -323,6 +324,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const searchRoot = root.querySelector<HTMLElement>('site-search');
   const search = searchRoot ? searchCommandParticipant(searchRoot) : null;
   const initialFamily = requireSiteLibraryFamily(demo?.initialFamily ?? 'shadcn');
+  const typography = siteTypographyParticipant(document.body, { ownerId: 'homepage-typography' });
   let desiredFamily: SiteLibraryFamily = initialFamily;
   let activeFamily: SiteLibraryFamily = initialFamily;
   let desiredComponent: SharedBaseFamilyId = demo?.initialComponent ?? 'button';
@@ -332,6 +334,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     ...(demo ? [demo.root] : []),
     ...(headerSurface ? [headerSurface.root] : []),
     ...(search?.mounts ?? []),
+    typography.root,
   ];
   let destroyed = false;
   let epoch = 0;
@@ -430,7 +433,11 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       // Search contributes to this exact request. Its native dialog and Pagefind
       // owner stay mounted while all three command views commit with the page.
       const searchWork = search?.materialize(request);
-      const outcomes = await Promise.allSettled([...work, ...(searchWork ? [searchWork] : [])]);
+      const outcomes = await Promise.allSettled([
+        ...work,
+        ...(searchWork ? [searchWork] : []),
+        typography.materialize(request),
+      ]);
       const candidates = outcomes.flatMap((outcome) =>
         outcome.status === 'fulfilled'
           ? Array.isArray(outcome.value)
@@ -652,6 +659,8 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       destroyed = true;
       epoch++;
       observer.disconnect();
+      compactMedia?.removeEventListener('change', onTypographyChange);
+      typography.destroy();
       disclosure?.destroy();
       for (const stop of stopThemes) stop();
       document.removeEventListener(PREFERRED_ADAPTER_EVENT, onAdapterChange);
@@ -665,8 +674,16 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const onBeforeSwap = () => {
     void destroy();
   };
+  const onTypographyChange = () => {
+    if (destroyed || controller.getSnapshot().phase !== 'ready' || !typography.needsRefresh())
+      return;
+    observe(controller.request({}, { force: true }), false);
+  };
+  const compactMedia = document.defaultView?.matchMedia('(max-width: 47.999rem)');
+  compactMedia?.addEventListener('change', onTypographyChange);
   const observer = new MutationObserver(() => {
     if (!root.isConnected) void destroy();
+    else onTypographyChange();
   });
   observer.observe(document.body, { childList: true, subtree: true });
   document.addEventListener('astro:before-swap', onBeforeSwap);
