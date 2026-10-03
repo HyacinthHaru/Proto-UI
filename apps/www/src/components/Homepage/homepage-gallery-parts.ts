@@ -15,6 +15,7 @@ export function createHomepageGalleryParts(
 ) {
   const zh = locale === 'zh-cn';
   const ids = new Set<string>([PREVIEW_SURFACE_ID]);
+  const authoredProps = new Map<string, Record<string, unknown>>();
   const box = (
     className: string,
     children: DemoChild[],
@@ -34,6 +35,7 @@ export function createHomepageGalleryParts(
     ref?: string
   ): DemoNode => {
     ids.add(id);
+    if (ref) authoredProps.set(ref, { ...props });
     return { kind: 'proto', prototypeId: id, props, children, ...(ref ? { ref } : {}) };
   };
   const part = (kind: Parameters<typeof resolveProjectionPart>[1], name = 'root') =>
@@ -179,7 +181,13 @@ export function createHomepageGalleryParts(
   const dialog = p(
     part('dialog'),
     [
-      p(part('dialog', 'trigger'), [button(zh ? '打开对话框' : 'Open dialog')]),
+      p(part('dialog', 'trigger'), [
+        family === 'brutalist'
+          ? zh
+            ? '打开对话框'
+            : 'Open dialog'
+          : button(zh ? '打开对话框' : 'Open dialog'),
+      ]),
       p(part('dialog', 'mask')),
       p(part('dialog', 'content'), [
         p(part('dialog', 'header'), [
@@ -294,11 +302,18 @@ export function createHomepageGalleryParts(
         copies = 0;
       const selected = new Set(['choice-product', 'choice-components']);
       const pending = new Map<string, Record<string, unknown>>();
+      const currentProps = new Map([...authoredProps].map(([ref, props]) => [ref, { ...props }]));
+      const completeProps = (ref: string, next: Record<string, unknown>) => {
+        const complete = { ...currentProps.get(ref), ...next };
+        currentProps.set(ref, complete);
+        return complete;
+      };
       let queued = false;
       const cleanups: Array<() => void> = [];
       const canAct = () => alive && isActive();
       const write = (ref: string, props: Record<string, unknown>) => {
         if (!alive || !isCurrent()) return;
+        props = completeProps(ref, props);
         if (runtime === 'vue' || runtime === 'vue2') {
           context.api.setProps(ref, props);
           return;
@@ -335,8 +350,9 @@ export function createHomepageGalleryParts(
           cleanups.push(() => node.removeEventListener(name, listener));
         } else {
           const prop = `on${name[0]!.toUpperCase()}${name.slice(1)}`;
-          context.api.setProps(ref, { [prop]: deliver });
-          cleanups.push(() => context.api.setProps(ref, { [prop]: () => {} }));
+          context.api.setProps(ref, completeProps(ref, { [prop]: deliver }));
+          // Framework callbacks are owned by the view. Revoking alive gates them;
+          // writing props during cleanup would replay an uncommitted queued bag.
         }
       };
       const feedback = (ref: string, value: string) => {

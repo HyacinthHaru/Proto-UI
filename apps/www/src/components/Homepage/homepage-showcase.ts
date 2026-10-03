@@ -245,6 +245,20 @@ export function createHomepageShowcase(
         const refs = context.refs;
         const canAct = () => alive && isActive();
         const pendingProps = new Map<string, Record<string, unknown>>();
+        // setProps replaces the WC bag; keep authored configuration and bound
+        // framework callbacks alongside each controlled value update.
+        const currentProps = new Map<string, Record<string, unknown>>();
+        const collectProps = (node: DemoNode) => {
+          if (node.kind === 'proto' && node.ref) currentProps.set(node.ref, { ...node.props });
+          for (const child of ('children' in node ? node.children : []) ?? [])
+            if (typeof child === 'object' && child !== null) collectProps(child);
+        };
+        collectProps(result.demo.root);
+        const completeProps = (ref: string, next: Record<string, unknown>) => {
+          const complete = { ...currentProps.get(ref), ...next };
+          currentProps.set(ref, complete);
+          return complete;
+        };
         let propsScheduled = false;
         // A protocol event may continue doing owner work after its outward signal.
         // WC and this demo renderer's React flushSync path update synchronously;
@@ -252,6 +266,7 @@ export function createHomepageShowcase(
         // Vue's existing nextTick staging must remain ahead of TextControl's owner
         // restoration microtask, or accepted text can lose its caret position.
         const publishProps = (ref: string, next: Record<string, unknown>) => {
+          next = completeProps(ref, next);
           if (runtime === 'vue' || runtime === 'vue2') {
             context.api.setProps(ref, next);
             return;
@@ -308,8 +323,9 @@ export function createHomepageShowcase(
             cleanups.push(() => element.removeEventListener(event, listener));
           } else {
             const prop = `on${event[0]!.toUpperCase()}${event.slice(1)}`;
-            context.api.setProps(ref, { [prop]: deliver });
-            cleanups.push(() => context.api.setProps(ref, { [prop]: () => {} }));
+            context.api.setProps(ref, completeProps(ref, { [prop]: deliver }));
+            // The view owns this callback; alive=false revokes it without a
+            // cleanup write that could replay an uncommitted queued value.
           }
         };
         // Select owns its content-derived name. This consumer adds the field context

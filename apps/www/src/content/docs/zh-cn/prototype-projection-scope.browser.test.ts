@@ -461,7 +461,9 @@ async function assertTaskPartInventory(
   const family = expected.projectionFamilyId;
   const expectedIds = [
     ...Object.entries(GALLERY_PART_COUNTS).flatMap(([suffix, count]) =>
-      Array(count).fill(`${family}-${suffix}`)
+      Array(suffix === 'button' && family === 'brutalist' ? count - 1 : count).fill(
+        `${family}-${suffix}`
+      )
     ),
     ...Array(6).fill('site-preview-surface'),
   ].sort();

@@ -17,7 +17,7 @@ export const SitePreviewSurface = definePrototype<{
     def.feedback.style.use(tw('block w-full min-w-0 border p-4 text-foreground'));
     def.rule({
       when: (w) => w.prop('family').eq('shadcn'),
-      intent: (i) => i.feedback.style.use(tw('rounded-2xl border-border bg-background shadow-sm')),
+      intent: (i) => i.feedback.style.use(tw('rounded-xl border-border bg-background shadow-sm')),
     });
     def.rule({
       when: (w) => w.all(w.prop('family').eq('shadcn'), w.prop('emphasis').eq('accent')),
