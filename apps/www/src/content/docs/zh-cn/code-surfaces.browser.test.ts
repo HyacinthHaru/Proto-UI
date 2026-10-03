@@ -138,6 +138,42 @@ async function expectSurfaces(page: Page): Promise<SurfaceFacts> {
     expect(facts.layoutBorderWidths).toEqual(['0px', '0px', '0px', '0px']);
   }
   expect(facts.border[0]).toBe(facts.border[1]);
+  if (facts.documentOverflow > 1) {
+    const overflow = await page.evaluate(() =>
+      [...document.querySelectorAll<HTMLElement>('body *')]
+        .map((element) => {
+          const rect = element.getBoundingClientRect();
+          const style = getComputedStyle(element);
+          return {
+            tag: element.tagName,
+            id: element.id,
+            className: element.className,
+            ref: element.dataset.demoRef,
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            right: rect.right,
+            scrollWidth: element.scrollWidth,
+            clientWidth: element.clientWidth,
+            minWidth: style.minWidth,
+            maxWidth: style.maxWidth,
+            display: style.display,
+            flexWrap: style.flexWrap,
+            overflowX: style.overflowX,
+          };
+        })
+        .filter(
+          (row) =>
+            row.width > 0 &&
+            (row.right > innerWidth + 1 || row.x < -1 || row.scrollWidth > row.clientWidth + 1)
+        )
+    );
+    await retainEvidence(
+      page,
+      `overflow-${page.viewportSize()?.width}-${await page.evaluate(() => document.documentElement.dataset.theme)}`,
+      { facts, overflow }
+    );
+  }
   expect(facts.documentOverflow).toBeLessThanOrEqual(1);
   return facts;
 }
@@ -306,6 +342,12 @@ describe.sequential('code-surface dogfood matrix (#630, #420, #568)', () => {
             document.documentElement.dataset.theme = mode;
           }, theme);
           const facts = await expectSurfaces(page);
+          if (width === 1440) {
+            const box = page.locator('.transition-box').first();
+            expect(await box.evaluate((element) => element.getBoundingClientRect().width)).toBe(
+              256
+            );
+          }
           const pre = page.locator('.proto-previewer__code').first();
           const collapsed = await pre.evaluate((element) => {
             const content = element.closest('[data-code-content]')!;
