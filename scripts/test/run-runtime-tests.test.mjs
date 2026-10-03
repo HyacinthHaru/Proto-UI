@@ -782,3 +782,86 @@ describe('native navigation observation contracts (no browser or server)', () =>
     assert.doesNotMatch(focus[1], /background|box-shadow/);
   });
 });
+
+describe('native navigation precondition evidence', () => {
+  const source = readFileSync(
+    'apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts',
+    'utf8'
+  );
+  it('uses a real Brutalist document with substantive headings for TOC journeys', () => {
+    const tocJourneys = source.slice(source.indexOf("it('renders docs navigation through"));
+    assert.equal(
+      (tocJourneys.match(/\/zh-cn\/ui-libraries\/brutalist\/components\/textarea\//g) ?? []).length,
+      4
+    );
+    const document = readFileSync(
+      'apps/www/src/content/docs/zh-cn/ui-libraries/brutalist/components/textarea.mdx',
+      'utf8'
+    );
+    assert.ok((document.match(/^## /gm) ?? []).length >= 2);
+    const button = readFileSync(
+      'apps/www/src/content/docs/zh-cn/ui-libraries/brutalist/components/button.mdx',
+      'utf8'
+    );
+    assert.equal(
+      (button.match(/^## /gm) ?? []).length,
+      0,
+      'Retain why the old nth(1) fixture was invalid'
+    );
+    assert.match(
+      source,
+      /const toc = page\.locator\('sl-toc a\[data-site-link-appearance="toc"\]'\)\.nth\(1\)/
+    );
+  });
+  it('waits for the actual option portal to close and propagates a stuck closing surface', async () => {
+    const parsed = ts.createSourceFile('native.ts', source, ts.ScriptTarget.Latest, true);
+    const helper = parsed.statements.find(
+      (node) => ts.isFunctionDeclaration(node) && node.name?.text === 'choose'
+    );
+    assert.ok(helper);
+    const context = { result: undefined };
+    runInNewContext(
+      ts.transpileModule(`${helper.getText(parsed)}; result = choose;`, {
+        compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None },
+      }).outputText,
+      context
+    );
+    for (const stuck of [false, true]) {
+      const order = [];
+      const portal = {
+        getByRole(role, options) {
+          assert.equal(role, 'option');
+          assert.equal(options.name, 'Web Components');
+          return {
+            click: async () => {
+              order.push('select-current');
+            },
+          };
+        },
+        async waitFor(options) {
+          assert.equal(options.state, 'hidden');
+          order.push('actual-portal-hidden');
+          if (stuck) throw new Error('closing surface remained visible');
+        },
+      };
+      const trigger = {
+        click: async () => {
+          order.push('open');
+        },
+        getAttribute: async (name) => {
+          assert.equal(name, 'aria-controls');
+          return 'runtime-options';
+        },
+      };
+      const page = {
+        locator(selector) {
+          return selector.startsWith('[id=') ? portal : trigger;
+        },
+      };
+      const result = context.result(page, 'runtime-owner', 'Web Components');
+      if (stuck) await assert.rejects(result, /closing surface remained visible/);
+      else await result;
+      assert.deepEqual(order, ['open', 'select-current', 'actual-portal-hidden']);
+    }
+  });
+});

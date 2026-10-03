@@ -80,10 +80,11 @@ async function choose(page: Page, selector: string, label: string) {
   const trigger = page.locator(`${selector} [role="combobox"]`);
   await trigger.click();
   const id = await trigger.getAttribute('aria-controls');
-  await page
-    .locator(`[id=${JSON.stringify(id)}]`)
-    .getByRole('option', { name: label, exact: true })
-    .click();
+  const portal = page.locator(`[id=${JSON.stringify(id)}]`);
+  await portal.getByRole('option', { name: label, exact: true }).click();
+  // Selecting the already-current value need not remount the page. Its real
+  // Select closing transition must finish before unrelated native hit samples.
+  await portal.waitFor({ state: 'hidden' });
 }
 async function ready(page: Page, runtime: string, family: string) {
   await page.waitForFunction(
@@ -828,8 +829,8 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
     for (const [family, route, colorScheme] of [
       ['shadcn', '/zh-cn/ui-libraries/shadcn/button/', 'light'],
       ['shadcn', '/zh-cn/ui-libraries/shadcn/button/', 'dark'],
-      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/button/', 'light'],
-      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/button/', 'dark'],
+      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/textarea/', 'light'],
+      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/textarea/', 'dark'],
     ] as const) {
       const context = await browser.newContext({
         viewport: { width: 1440, height: 1000 },
@@ -973,7 +974,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
   it('opens the actual narrow-screen contents drawer and keeps long pagination labels within the page', async () => {
     for (const [family, route] of [
       ['shadcn', '/zh-cn/ui-libraries/shadcn/button/'],
-      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/button/'],
+      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/textarea/'],
     ] as const) {
       const context = await browser.newContext({
         viewport: { width: 390, height: 844 },
@@ -1090,7 +1091,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
   it('keeps docs native destinations, current truth, heading navigation and keyboard focus without JavaScript', async () => {
     for (const [family, route] of [
       ['shadcn', '/zh-cn/ui-libraries/shadcn/button/'],
-      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/button/'],
+      ['brutalist', '/zh-cn/ui-libraries/brutalist/components/textarea/'],
     ] as const) {
       const context = await browser.newContext({
         javaScriptEnabled: false,
