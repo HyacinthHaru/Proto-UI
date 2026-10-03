@@ -7,8 +7,19 @@ import { isDeepStrictEqual } from 'node:util';
 import { transform } from 'esbuild';
 import { readContrastProvenance } from './contrast-provenance.mjs';
 import type { Browser, BrowserContext, Page, Locator } from 'playwright-core';
-import { PROJECTION_FAMILY_MANIFESTS } from '../src/components/PrototypePreviewer/projection-families';
 import {
+  PROJECTION_FAMILY_MANIFESTS,
+  resolveProjectionRecipe,
+  type ProjectionFamilyManifest,
+} from '../src/components/PrototypePreviewer/projection-families';
+import {
+  assertDemoSpec,
+  collectPrototypeIds,
+  type DemoChild,
+  type DemoSpec,
+} from '../src/components/PrototypePreviewer/demo-types';
+import {
+  RUNTIMES,
   launchBrowser,
   choosePreviewRuntime,
   applyColorScheme,
@@ -23,7 +34,7 @@ const runID = `${new Date().toISOString().replaceAll(':', '-')}-${randomUUID()}`
 const output = resolve(
   process.env.PROTO_UI_CONTRAST_EVIDENCE_DIR ?? `/tmp/pui469-rendered-${runID}`
 );
-const runtimes = ['wc', 'react', 'vue'] as const;
+const runtimes = RUNTIMES;
 const themes = ['light', 'dark'] as const;
 const families = Object.keys(PROJECTION_FAMILY_MANIFESTS.brutalist.families);
 const requestedFamilies = process.env.PROTO_UI_CONTRAST_FAMILIES?.split(',');
@@ -58,6 +69,7 @@ type Case = {
   plannedStates: string[];
   achievedTargets: string[];
   errors: { phase: string; error: string }[];
+  passiveSurfaceCoverage?: Observation;
 };
 const passiveFamilies = new Set(['badge', 'card', 'skeleton', 'separator']);
 function plannedStates(family: string): string[] {
@@ -89,7 +101,7 @@ function plannedStates(family: string): string[] {
     }
   }
   if (['toggle', 'switch', 'checkbox'].includes(family)) states.push('keyboard-activation');
-  if (family === 'tabs') states.push('keyboard-selection-overview');
+  if (family === 'tabs') states.push('keyboard-selection-overview', 'selected-and-pointer-held');
   if (family === 'toggle') states.push('already-active', 'active-and-pointer-held');
   if (family === 'tooltip') states.push('hover-open', 'focus-open');
   if (family === 'hover-card') states.push('hover-open');
@@ -160,7 +172,7 @@ const report: Record<string, unknown> = {
   failedCases: failures,
   evidenceDebt: [
     'All cue necessity and required/redundant/decorative classifications remain independent-review debt; no frame is automatically a WCAG verdict.',
-    'Rest-only families have no interaction journey in this runner; authored auxiliary controls and every possible cue are not covered by their rest frames.',
+    'Passive-family acceptance covers only the current recipe identity multiplicities, anatomy, ownership and visible physical regions at rest. Auxiliary controls are observed at rest only; their interactions, prop transitions and semantic criteria remain uncovered.',
     'Portable Transition entered state is not directly exposed on every runtime DOM; modal entry observations use owned visibility and completed authored CSS animations, not an invented transition attribute.',
   ],
   authority: [
@@ -175,6 +187,7 @@ const report: Record<string, unknown> = {
     'Native reader controls choose runtime/theme. Native pointer and keyboard input change subject state; helpers never write subject CSS, attributes or state.',
     'General keyboard focus uses a programmatic seed followed by native Tab/Shift+Tab; not a whole-page Tab-order claim. Modal CloseIcon uses native Tab inside the modal.',
     'Target predicates and collected states are distinct from coverage of all authored cues and from independent WCAG classification.',
+    'Passive expectations come from the exact manifest recipe and existing demo-schema accessors, never a runner-owned count table. Structural projection wrappers and reader controls are not component physical roots.',
     'One shared state fingerprint binds the pre-PNG state to measured facts and post-measurement state. Mismatch is a preserved failed attempt, never a retry.',
     'Scroll claims require observed offset movement after native input and stable offsets/geometry across consecutive animation frames; no timed sleep substitutes for movement.',
     'Every cue remains unclassified unless independently reviewed. Inactive compositing observations are not normal-text conformance assertions.',
@@ -409,6 +422,284 @@ function primary(previewer: Locator, family: string): Locator | null {
     } as Record<string, string>
   )[family];
   return selector ? previewer.locator(`[data-projection-content] ${selector}`).first() : null;
+}
+async function passiveSurfaceObservation(page: Page, family: string): Promise<Observation> {
+  const manifest = (PROJECTION_FAMILY_MANIFESTS.brutalist as ProjectionFamilyManifest).families[
+    family
+  ];
+  if (!passiveFamilies.has(family) || !manifest)
+    return { achieved: false, unsupportedCoverage: [{ reason: 'Unsupported passive family.' }] };
+  const resolution = resolveProjectionRecipe(manifest.recipeId);
+  const recipePath = `apps/www/src/content/docs/zh-cn/${manifest.recipeId}.demo.ts`;
+  // loadDemo is the browser's Vite registry (import.meta.glob). Import the same
+  // exact authored recipe in Node without constructing a second recipe registry.
+  const recipeURL = new URL(
+    `../src/content/docs/zh-cn/${manifest.recipeId}.demo.ts`,
+    import.meta.url
+  );
+  const demo = (await import(recipeURL.href)).default as DemoSpec;
+  assertDemoSpec(demo);
+  const recipeIdentities = new Set<string>();
+  collectPrototypeIds(demo.root, recipeIdentities);
+  const sourceUnsupported = [
+    ...manifest.recipePrototypeIds
+      .filter((prototypeId) => !recipeIdentities.has(prototypeId))
+      .map((prototypeId) => ({ prototypeId, reason: 'Manifest identity missing from recipe.' })),
+    ...[...recipeIdentities]
+      .filter((prototypeId) => !manifest.recipePrototypeIds.includes(prototypeId))
+      .map((prototypeId) => ({ prototypeId, reason: 'Recipe identity absent from manifest.' })),
+  ];
+  if (resolution.projectionFamilyId !== 'brutalist' || resolution.familyId !== family)
+    sourceUnsupported.push({ prototypeId: '', reason: 'Recipe resolution does not match family.' });
+  const instances: {
+    prototypeId: string;
+    path: string;
+    ancestorPrototypeIds: string[];
+    ref: string | null;
+    props: Record<string, unknown>;
+  }[] = [];
+  function collect(node: DemoChild, path: string, ancestors: string[]): void {
+    if (typeof node === 'string' || node.kind === 'text') return;
+    if (node.kind === 'proto') {
+      instances.push({
+        prototypeId: node.prototypeId,
+        path,
+        ancestorPrototypeIds: ancestors,
+        ref: node.ref ?? null,
+        props: node.props ?? {},
+      });
+      ancestors = [...ancestors, node.prototypeId];
+    }
+    for (const [index, child] of (node.children ?? []).entries())
+      collect(child, `${path}.children.${index}`, ancestors);
+  }
+  collect(demo.root, 'root', []);
+  const expected = manifest.recipePrototypeIds.map((prototypeId) => ({
+    prototypeId,
+    expectedCount: instances.filter((instance) => instance.prototypeId === prototypeId).length,
+    partIds: Object.entries(manifest.parts)
+      .filter(([, part]) => part.prototypeId === prototypeId)
+      .map(([partId]) => partId),
+    auxiliary: (manifest.auxiliaryPrototypes ?? []).some(
+      (prototype) => prototype.prototypeId === prototypeId
+    ),
+    // These bounded author templates own physical regions, including Card
+    // Content's padded text region. No positive box is required of scope/box
+    // wrappers, and aria-hidden Skeleton/Separator regions still need paint.
+    visibilityRequirement: 'visible-physical-region',
+  }));
+  return page.evaluate(
+    (input) => {
+      const scope = document.querySelector<HTMLElement>('[data-projection-scope]');
+      const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
+      const generation = scope?.dataset.projectionGeneration;
+      const contents = [
+        ...(scope?.querySelectorAll<HTMLElement>('[data-projection-content]') ?? []),
+      ];
+      const content = contents.length === 1 ? contents[0] : null;
+      const ready = !!(
+        owner &&
+        generation &&
+        scope?.dataset.projectionState === 'ready' &&
+        scope.dataset.projectionFamily === 'brutalist' &&
+        scope.closest<HTMLElement>('[data-previewer-id]')?.dataset.demoId === input.recipeId &&
+        content?.dataset.projectionOwner === owner &&
+        content.dataset.projectionGeneration === generation &&
+        content.dataset.projectionId === input.family &&
+        content.dataset.projectionPrototype === input.rootPrototypeId
+      );
+      const surfaces = [...document.querySelectorAll<HTMLElement>('[data-pui-root]')]
+        .filter(
+          (element) =>
+            content?.contains(element) ||
+            (owner &&
+              generation &&
+              element.dataset.projectionOwner === owner &&
+              element.dataset.projectionGeneration === generation &&
+              !element.closest('[data-projection-control]'))
+        )
+        .map((element) => {
+          const rect = element.getBoundingClientRect();
+          const own = getComputedStyle(element);
+          let visible =
+            own.visibility === 'visible' &&
+            [...element.getClientRects()].some((box) => box.width > 0 && box.height > 0);
+          let left = 0,
+            top = 0,
+            right = innerWidth,
+            bottom = innerHeight;
+          const limits: string[] = [];
+          const ancestorPrototypeIds: string[] = [];
+          for (
+            let current: HTMLElement | null = element;
+            current;
+            current = current.parentElement
+          ) {
+            const style = getComputedStyle(current);
+            if (
+              style.display === 'none' ||
+              style.contentVisibility === 'hidden' ||
+              Number(style.opacity) === 0
+            )
+              visible = false;
+            if (style.clip !== 'auto' || style.clipPath !== 'none' || style.maskImage !== 'none')
+              limits.push('unsupported-clip-or-mask');
+            if (
+              style.filter !== 'none' ||
+              style.backdropFilter !== 'none' ||
+              style.mixBlendMode !== 'normal'
+            )
+              limits.push('unsupported-filter-or-blend');
+            if (
+              style.transform !== 'none' ||
+              style.translate !== 'none' ||
+              style.rotate !== 'none' ||
+              style.scale !== 'none'
+            )
+              limits.push('unsupported-transformed-region');
+            if (style.contain.includes('paint')) limits.push('unsupported-paint-containment');
+            if (current !== element) {
+              const ancestorRect = current.getBoundingClientRect();
+              if (style.overflowX !== 'visible') {
+                left = Math.max(left, ancestorRect.left + current.clientLeft);
+                right = Math.min(
+                  right,
+                  ancestorRect.left + current.clientLeft + current.clientWidth
+                );
+              }
+              if (style.overflowY !== 'visible') {
+                top = Math.max(top, ancestorRect.top + current.clientTop);
+                bottom = Math.min(
+                  bottom,
+                  ancestorRect.top + current.clientTop + current.clientHeight
+                );
+              }
+              if (content?.contains(current) && current.hasAttribute('data-pui-root'))
+                ancestorPrototypeIds.unshift(current.dataset.projectionPrototype ?? '');
+            }
+          }
+          visible =
+            visible &&
+            rect.right > left &&
+            rect.left < right &&
+            rect.bottom > top &&
+            rect.top < bottom;
+          if (
+            visible &&
+            (rect.left < left || rect.right > right || rect.top < top || rect.bottom > bottom)
+          )
+            limits.push('partially-clipped-region');
+          return {
+            prototypeId: element.dataset.projectionPrototype ?? null,
+            owner: element.dataset.projectionOwner ?? null,
+            generation: element.dataset.projectionGeneration ?? null,
+            currentLease:
+              !!owner &&
+              !!generation &&
+              element.dataset.projectionOwner === owner &&
+              element.dataset.projectionGeneration === generation,
+            withinContent: !!content?.contains(element),
+            ancestorPrototypeIds,
+            ref: element.getAttribute('data-demo-ref'),
+            text: element.textContent,
+            display: own.display,
+            ariaHidden: element.getAttribute('aria-hidden'),
+            visible,
+            bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+            visibilityLimits: [...new Set(limits)],
+          };
+        });
+      const currentSurfaces = surfaces.filter(
+        (surface) => surface.currentLease && surface.withinContent
+      );
+      const counts = input.expected.map((expectation) => ({
+        ...expectation,
+        actualCount: currentSurfaces.filter(
+          (surface) => surface.prototypeId === expectation.prototypeId
+        ).length,
+      }));
+      const missing = counts.filter((count) => count.actualCount < count.expectedCount);
+      const extra = counts.filter((count) => count.actualCount > count.expectedCount);
+      const unexpectedIdentities = currentSurfaces.filter(
+        (surface) =>
+          !input.expected.some((expectation) => expectation.prototypeId === surface.prototypeId)
+      );
+      const unmatched = [...currentSurfaces];
+      const missingInstances = input.instances.filter((instance) => {
+        const index = unmatched.findIndex(
+          (surface) =>
+            surface.prototypeId === instance.prototypeId &&
+            surface.ref === instance.ref &&
+            JSON.stringify(surface.ancestorPrototypeIds) ===
+              JSON.stringify(instance.ancestorPrototypeIds)
+        );
+        if (index < 0) return true;
+        unmatched.splice(index, 1);
+        return false;
+      });
+      const unsupportedCoverage = [
+        ...input.sourceUnsupported,
+        ...surfaces
+          .filter((surface) => !surface.currentLease || !surface.withinContent)
+          .map((surface) => ({ reason: 'Physical root outside current content lease.', surface })),
+        ...currentSurfaces
+          .filter((surface) => surface.visibilityLimits.length > 0)
+          .map((surface) => ({ reason: 'Physical-region visibility is unsupported.', surface })),
+      ];
+      const notVisible = currentSurfaces.filter((surface) => !surface.visible);
+      return {
+        achieved:
+          ready &&
+          !missing.length &&
+          !extra.length &&
+          !unexpectedIdentities.length &&
+          !missingInstances.length &&
+          !unmatched.length &&
+          !unsupportedCoverage.length &&
+          !notVisible.length,
+        scope:
+          'Current authored passive recipe physical regions at rest only; not semantic or cue conformance.',
+        owner: owner ?? null,
+        generation: generation ?? null,
+        ready,
+        expectationSource: {
+          manifest: 'apps/www/src/components/PrototypePreviewer/projection-families.ts',
+          recipe: input.recipePath,
+          recipeId: input.recipeId,
+          derivation:
+            'Validated authored proto nodes counted with exact manifest identities; ancestry/ref from the same recipe tree.',
+        },
+        counts,
+        expectedInstances: input.instances,
+        surfaces,
+        missing,
+        extra,
+        unexpectedIdentities,
+        missingInstances,
+        extraInstances: unmatched,
+        unsupportedCoverage,
+        notVisible,
+        unexercisedCoverage: [
+          'Prop/state transitions, semantic criteria and independent cue/WCAG classification.',
+          ...input.expected
+            .filter((expectation) => expectation.auxiliary)
+            .map(
+              (expectation) =>
+                `${expectation.prototypeId}: observed at rest only; interaction journey not exercised.`
+            ),
+        ],
+      };
+    },
+    {
+      family,
+      recipeId: manifest.recipeId,
+      recipePath,
+      rootPrototypeId: manifest.parts.root?.prototypeId,
+      expected,
+      instances,
+      sourceUnsupported,
+    }
+  );
 }
 async function targetObservation(target: Locator): Promise<Observation> {
   return target.evaluate((element) => ({
@@ -784,6 +1075,7 @@ try {
       'projection-manifest',
       new URL('../src/components/PrototypePreviewer/projection-families.ts', import.meta.url),
     ],
+    ['demo-schema', new URL('../src/components/PrototypePreviewer/demo-types.ts', import.meta.url)],
     ['www-package', new URL('../package.json', import.meta.url)],
     ['workspace-package', new URL('../../../package.json', import.meta.url)],
     ['workspace-lockfile', new URL('../../../pnpm-lock.yaml', import.meta.url)],
@@ -868,8 +1160,13 @@ try {
       await previewer.scrollIntoViewIfNeeded();
       await page.mouse.move(0, 0);
       await page.addScriptTag({ content: browserProbe });
-      const rest = () =>
-        page
+      const rest = async () => {
+        if (passiveFamilies.has(family)) {
+          const observation = await passiveSurfaceObservation(page, family);
+          item.passiveSurfaceCoverage = observation;
+          return observation;
+        }
+        return page
           .locator('[data-projection-scope]')
           .first()
           .evaluate((scope: HTMLElement) => ({
@@ -877,12 +1174,28 @@ try {
             owner: scope.dataset.projectionOwner,
             generation: scope.dataset.projectionGeneration,
           }));
+      };
       await capture(page, item, 'rest', rest);
       const target = primary(previewer, family);
       if (!target) {
         if (!passiveFamilies.has(family))
           throw new Error(
             `${family}: no planned physical target; unsupported interaction coverage.`
+          );
+        phase = 'passive-surface-acceptance';
+        const captured = item.passiveSurfaceCoverage;
+        const current = await passiveSurfaceObservation(page, family);
+        const capturedLeaseMatches =
+          current.owner === captured?.owner && current.generation === captured?.generation;
+        item.passiveSurfaceCoverage = {
+          ...current,
+          capturedLeaseMatches,
+          achieved:
+            current.achieved && capturedLeaseMatches && item.achievedTargets.includes('rest'),
+        };
+        if (!item.passiveSurfaceCoverage.achieved)
+          throw new Error(
+            `${family}: current passive surface coverage does not match the captured rest lease.`
           );
         phase = 'source-provenance';
         await verifyServedSource();
@@ -1078,6 +1391,133 @@ try {
         await capture(page, item, 'keyboard-selection-overview', () =>
           tabsObservation(previewer, 'Overview')
         );
+        // Selection has already committed through native keyboard activation.
+        // This is not the initially unselected Details pointerdown journey.
+        await overview.hover();
+        const physical = await overview.elementHandle();
+        if (!physical) throw new Error('Selected Overview Tabs trigger has no physical target.');
+        try {
+          const observeSelected = async (): Promise<Observation> => {
+            const value = await overview.evaluate((element, expected) => {
+              const rect = element.getBoundingClientRect();
+              const style = getComputedStyle(element);
+              return {
+                achieved:
+                  element === expected && element.isConnected && rect.width > 0 && rect.height > 0,
+                samePhysicalTarget: element === expected,
+                prototype: element.getAttribute('data-projection-prototype'),
+                owner: element.getAttribute('data-projection-owner'),
+                generation: element.getAttribute('data-projection-generation'),
+                id: element.id,
+                controls: element.getAttribute('aria-controls'),
+                role: element.getAttribute('role'),
+                ariaSelected: element.getAttribute('aria-selected'),
+                nativeActive: element.matches(':active'),
+                focusVisible: element.matches(':focus-visible'),
+                background: style.backgroundColor,
+                foreground: style.color,
+                border: style.borderColor,
+                shadow: style.boxShadow,
+              };
+            }, physical);
+            const shadowLayers = value.shadow.split(/,(?![^()]*\))/).map((raw) => {
+              const layer = raw.trim();
+              const lengths = [...layer.matchAll(/(-?(?:\d+\.?\d*|\.\d+))px/g)].map((match) =>
+                Number(match[1])
+              );
+              return {
+                raw: layer,
+                inset: layer.includes('inset'),
+                visible: layer !== 'none' && !/^rgba\([^)]*,\s*0(?:\.0*)?\)\s/.test(layer),
+                lengths,
+                black: /^rgba?\(0,\s*0,\s*0(?:,\s*1(?:\.0*)?)?\)\s/.test(layer),
+              };
+            });
+            const visibleOuterElevation = shadowLayers.filter(
+              (layer) =>
+                layer.visible && !layer.inset && (layer.lengths[0] !== 0 || layer.lengths[1] !== 0)
+            );
+            return {
+              ...value,
+              achieved:
+                value.achieved &&
+                value.prototype === 'brutalist-tabs-trigger' &&
+                value.role === 'tab' &&
+                value.ariaSelected === 'true' &&
+                shadowLayers.every((layer) => layer.raw === 'none' || layer.lengths.length === 4),
+              shadowLayers,
+              visibleOuterElevation,
+              selectedElevation: visibleOuterElevation.some(
+                (layer) =>
+                  layer.black &&
+                  layer.lengths[0] === 3 &&
+                  layer.lengths[1] === 3 &&
+                  layer.lengths[2] === 0 &&
+                  layer.lengths[3] === 0
+              ),
+            };
+          };
+          await stableFingerprint(page);
+          const releasedBefore = await observeSelected();
+          if (
+            !releasedBefore.achieved ||
+            releasedBefore.nativeActive !== false ||
+            releasedBefore.selectedElevation !== true
+          )
+            throw new Error('Committed selected Tabs trigger lacks its released hard elevation.');
+          const bounds = await physical.boundingBox();
+          if (!bounds) throw new Error('Selected Overview Tabs trigger lacks physical bounds.');
+          const sameSelectedPair = (value: Observation) =>
+            value.owner === releasedBefore.owner &&
+            value.generation === releasedBefore.generation &&
+            value.id === releasedBefore.id &&
+            value.controls === releasedBefore.controls &&
+            value.background === releasedBefore.background &&
+            value.foreground === releasedBefore.foreground &&
+            value.border === releasedBefore.border;
+          await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+          try {
+            await page.mouse.down();
+            await capture(page, item, 'selected-and-pointer-held', async () => {
+              const held = await observeSelected();
+              return {
+                ...held,
+                achieved:
+                  held.achieved &&
+                  held.nativeActive === true &&
+                  sameSelectedPair(held) &&
+                  (held.visibleOuterElevation as unknown[]).length === 0,
+                historicalSetup: {
+                  boundary:
+                    'Released, already-selected Overview before native pointerdown; not the held PNG state.',
+                  observation: releasedBefore,
+                },
+                criterion: 'P-BRUTALIST-TABS-TRIGGER-SELECTED-PAIR-INVARIANT',
+                interactionCriterion: 'P-BRUTALIST-TABS-TRIGGER-INTERACTION',
+                criterionStatus: 'draft',
+                basis:
+                  'Already-selected physical Overview trigger remains aria-selected=true under native held pointer and :active; selected computed fill/foreground/border persist while offset outer elevation is suppressed. Zero-offset focus rings and transparent reset layers are recorded separately, not selected elevation. Observation only, not full criterion or WCAG acceptance.',
+              };
+            });
+          } finally {
+            // Do not release until PNG, facts and the post-capture fingerprint
+            // have all been collected, including on a preserved failed attempt.
+            await page.mouse.up();
+          }
+          await stableFingerprint(page);
+          const releasedAfter = await observeSelected();
+          // Release is a separate cleanup boundary, not a mutation of the held
+          // frame. Any failure enters the existing unresolved Case.errors path.
+          if (
+            !releasedAfter.achieved ||
+            releasedAfter.nativeActive !== false ||
+            !sameSelectedPair(releasedAfter) ||
+            releasedAfter.selectedElevation !== true
+          )
+            throw new Error('Selected Tabs trigger did not restore its released hard elevation.');
+        } finally {
+          await physical.dispose();
+        }
       }
       if (['toggle', 'switch', 'checkbox'].includes(family)) {
         const attribute = family === 'toggle' ? 'aria-pressed' : 'aria-checked';
