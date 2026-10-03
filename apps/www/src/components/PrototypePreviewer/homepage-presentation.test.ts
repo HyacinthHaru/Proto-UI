@@ -51,13 +51,27 @@ describe('Homepage presentation source boundaries', () => {
     expect(preview).not.toContain('component lineage');
   });
 
+  it('labels website demo configuration without presenting it as a Prototype definition', () => {
+    const preview = read('apps/www/src/components/PrototypePreviewer/HomeDemoPreviewer.astro');
+    expect(preview).toContain('Website demo configuration');
+    expect(preview).toContain('网站示例配置');
+    expect(preview).toContain('data-home-demo-source-kind="demo-configuration"');
+    expect(preview).not.toContain('Shared definition');
+    expect(preview).not.toContain('共享定义');
+    expect(preview).toContain('Define interactions once. Reuse them across frameworks.');
+    expect(preview).toContain('交互定义写一次，在不同框架中复用');
+  });
+
   it('retains docs, live example and whitepaper paths while dogfooding actions', () => {
     const hero = read('apps/www/src/components/override/Hero.astro');
     expect(hero).toContain('HomeActions');
     expect(hero).toContain('/whitepaper/0-preface/');
     for (const locale of ['en', 'zh-cn']) {
       const home = read(`apps/www/src/content/docs/${locale}/index.mdx`);
-      expect(home).toContain(`/${locale}/start-here/what-you-saw/`);
+      expect(home).toContain(`/${locale}/start-here/quick-start/`);
+      expect(read(`apps/www/src/content/docs/${locale}/start-here/quick-start.mdx`)).toContain(
+        'npx @proto.ui/cli@latest'
+      );
       expect(home).toContain("'#home-demo-previewer'");
     }
   });

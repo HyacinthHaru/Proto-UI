@@ -35,7 +35,7 @@ const copy =
   locale === 'en'
     ? {
         eyebrow: 'Built with Proto UI',
-        title: 'Same definition. A different framework.',
+        title: 'Define interactions once. Reuse them across frameworks.',
         lead: 'Use the page runtime selector, then try the components below.',
         loading: 'Preparing',
         ready: 'Ready',
@@ -46,7 +46,7 @@ const copy =
       }
     : {
         eyebrow: '用 Proto UI 构建',
-        title: '同一份定义，换个框架试试',
+        title: '交互定义写一次，在不同框架中复用',
         lead: '切换页面 Runtime，再试试下面的组件。',
         loading: '准备中',
         ready: '就绪',
@@ -121,10 +121,11 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
     </p>
     <div class="home-demo-previewer__source">
       <span class="home-demo-previewer__meta-label"
-        >{locale === 'en' ? 'Shared definition' : '共享定义'}</span
+        >{locale === 'en' ? 'Website demo configuration' : '网站示例配置'}</span
       >
       <a
         data-home-demo-source
+        data-home-demo-source-kind="demo-configuration"
         href={`https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/content/docs/zh-cn/${initialDemo.id}.demo.ts`}
       >
         {initialDemo.id}.demo.ts
