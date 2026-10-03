@@ -740,7 +740,11 @@ export function createProjectionComposition(
     const ownerMarker = markerClass('owner', options.ownerId);
     const generationMarker = markerClass('generation', String(options.generation));
     const prototypeMarkers = new Map<string, string>();
-    for (const prototypeId of new Set([...allowedPrototypeIds, ...Object.values(selectParts)])) {
+    for (const prototypeId of new Set([
+      ...allowedPrototypeIds,
+      ...Object.values(selectParts),
+      ...(controlIds.length ? ['site-typography'] : []),
+    ])) {
       prototypeMarkers.set(markerClass('prototype', prototypeId), prototypeId);
     }
     const stampProjectionSurfaces = () => {

@@ -745,6 +745,35 @@ describe('Website projection composition', () => {
     }
   });
 
+  it('stamps the exact private caption Prototype identity with its control coordinate', () => {
+    const composition = createProjectionComposition({
+      ownerId: 'caption-owner',
+      runtimeId: 'react',
+      projectionFamilyId: 'shadcn',
+      generation: 9,
+      componentId: 'button',
+      childDemo: { type: 'demo', root: { kind: 'proto', prototypeId: 'shadcn-button' } },
+      controls: controls(),
+      controlIds: ['runtime'],
+    });
+    const { host, refs } = mountDemoTree(composition.demo);
+    const api: DemoRuntimeApi = {
+      call: () => undefined,
+      getExposes: () => undefined,
+      setProps: () => undefined,
+    };
+    const cleanup = composition.demo.setup?.({ host, refs, api });
+    try {
+      const caption = host.querySelector(
+        '[data-projection-control-label] .pui-projection-prototype'
+      )!;
+      expect(caption.getAttribute('data-projection-prototype')).toBe('site-typography');
+      expect(caption.getAttribute('data-projection-owner')).toBe('caption-owner');
+      expect(caption.getAttribute('data-projection-generation')).toBe('9');
+    } finally {
+      (cleanup as () => void)();
+    }
+  });
   it('stamps SVG Prototype surfaces with generation identity and theme values', async () => {
     const componentFamily = PROJECTION_FAMILY_MANIFESTS.shadcn.families.toggle;
     const childDemo = await loadDemo(componentFamily.recipeId);
