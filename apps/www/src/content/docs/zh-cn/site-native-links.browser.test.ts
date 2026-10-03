@@ -417,6 +417,84 @@ async function assertNavigationFocus(page: Page, link: Locator) {
   return { baseline, observed };
 }
 
+async function assertHeaderPopupSurface(
+  page: Page,
+  family: 'shadcn' | 'brutalist',
+  runtime: string,
+  homepage: boolean
+) {
+  const panel = page.locator('[data-site-header-panel]');
+  await expect
+    .poll(() => panel.getAttribute('data-header-surface-runtime'), { timeout: 10000 })
+    .toBe(runtime);
+  expect(await panel.locator('.site-header-popup-surface').count()).toBe(1);
+  const paint = await panel.evaluate((panel) => {
+    const surface = panel.querySelector<HTMLElement>('.site-header-popup-surface')!;
+    const content = panel.querySelector('[data-site-header-panel-content]')!;
+    const style = getComputedStyle(surface);
+    const outer = getComputedStyle(panel);
+    const bounds = surface.getBoundingClientRect();
+    const value = document.createElement('span');
+    value.style.cssText = 'position:absolute;visibility:hidden;width:var(--pui-radius-xl);height:0';
+    value.style.setProperty('--pui-radius', style.getPropertyValue('--pui-radius'));
+    value.style.setProperty('--pui-radius-xl', style.getPropertyValue('--pui-radius-xl'));
+    document.body.append(value);
+    const declaredShadcnRadius = parseFloat(getComputedStyle(value).width);
+    value.remove();
+    return {
+      role: surface.getAttribute('role'),
+      tabindex: surface.getAttribute('tabindex'),
+      contentInside: surface.contains(content),
+      prototype: surface.getAttribute('data-projection-prototype'),
+      tokens: surface.getAttribute('data-pui-style'),
+      runtime: (panel as HTMLElement).dataset.headerSurfaceRuntime,
+      family: (panel as HTMLElement).dataset.headerSurfaceFamily,
+      generation: (panel as HTMLElement).dataset.headerSurfaceGeneration,
+      pageGeneration:
+        document.querySelector<HTMLElement>('[data-homepage-runtime]')?.dataset.runtimeGeneration,
+      width: bounds.width,
+      height: bounds.height,
+      right: bounds.right,
+      left: bounds.left,
+      radius: parseFloat(style.borderTopLeftRadius),
+      declaredShadcnRadius,
+      border: parseFloat(style.borderTopWidth),
+      shadow: style.boxShadow,
+      outerBorder: parseFloat(outer.borderTopWidth),
+      outerShadow: outer.boxShadow,
+      outerBackground: outer.backgroundColor,
+      nestedNativeMenus: panel.querySelectorAll('[role="menu"], [role="dialog"]').length,
+    };
+  });
+  await captureLinks(
+    page,
+    `${homepage ? 'home' : 'docs'}-${family}-${runtime}-menu-surface`,
+    family,
+    runtime,
+    'open-native-disclosure; one-real-family-surface',
+    paint
+  );
+  expect(paint.family).toBe(family);
+  expect(paint.runtime).toBe(runtime);
+  if (homepage) expect(paint.generation).toBe(paint.pageGeneration);
+  expect(paint.prototype).toBe('site-preview-surface');
+  expect(paint.contentInside).toBe(true);
+  expect(paint.role).toBeNull();
+  expect(paint.tabindex).toBeNull();
+  expect(paint.nestedNativeMenus).toBe(0);
+  expect(paint.width).toBeGreaterThan(200);
+  expect(paint.height).toBeGreaterThan(44);
+  expect(paint.left).toBeGreaterThanOrEqual(0);
+  expect(paint.right).toBeLessThanOrEqual(page.viewportSize()!.width);
+  expect(paint.outerBorder).toBe(0);
+  expect(paint.outerShadow).toBe('none');
+  expect(['transparent', 'rgba(0, 0, 0, 0)']).toContain(paint.outerBackground);
+  expect(paint.border).toBe(family === 'brutalist' ? 2 : 1);
+  expect(paint.radius).toBe(family === 'brutalist' ? 0 : paint.declaredShadcnRadius);
+  if (family === 'brutalist') expect(paint.shadow).toContain('3px 3px 0px');
+  else expect(paint.shadow).not.toBe('none');
+}
+
 describe.sequential('native links with app-owned Proto visual surfaces', () => {
   it('preserves real link targets and uniform social visuals through all runtime/family transitions', async () => {
     const context = await browser.newContext({
@@ -640,6 +718,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
               nativeLinkEvidenceIssues(footprint, footprint.expected),
               String(footprint.name)
             ).toEqual([]);
+          await assertHeaderPopupSurface(page, family, runtime, true);
           await assertSocialPaint(page, links, family, async (state, evidence) => {
             if (runtime === 'wc')
               await captureLinks(
@@ -652,7 +731,9 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
               );
           });
           await assertHostCurrentProjection(
-            page.locator('#home-navigation [data-projection-generation-state="active"] a').first()
+            page
+              .locator('#home-navigation-desktop [data-projection-generation-state="active"] a')
+              .first()
           );
           expect(
             (
@@ -787,6 +868,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           .locator('a[data-site-native-link][aria-label="GitHub"] wc-site-link-surface')
           .waitFor({ state: 'attached' });
         await openSettings(page);
+        await assertHeaderPopupSurface(page, family, 'wc', false);
         const links = page.locator('.site-social-links a[data-site-native-link]');
         expect(await links.count()).toBe(4);
         await assertSocialPaint(page, links, family, async (state, evidence) => {
@@ -799,7 +881,9 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
             evidence
           );
         });
-        await assertHostCurrentProjection(page.locator('[data-site-header-navigation] a').first());
+        await assertHostCurrentProjection(
+          page.locator('[data-site-header-desktop-navigation] a').first()
+        );
       } finally {
         await context.close();
       }

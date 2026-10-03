@@ -242,7 +242,13 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       const links = page.locator('[data-homepage-fallback] a');
       expect(await links.count()).toBeGreaterThan(5);
       expect(await links.first().isVisible()).toBe(true);
-      await links.filter({ hasText: '文档' }).first().click();
+      const nativeMobileDocs = page
+        .locator('#home-navigation-mobile [data-homepage-fallback] a')
+        .filter({ hasText: '文档' });
+      expect(await nativeMobileDocs.count()).toBe(1);
+      expect(await nativeMobileDocs.isVisible()).toBe(true);
+      expect(await nativeMobileDocs.getAttribute('href')).toBe('/zh-cn/start-here/what-you-saw/');
+      await nativeMobileDocs.click();
       await page.waitForURL('**/zh-cn/start-here/what-you-saw/');
     } finally {
       await noJs.close();
@@ -334,7 +340,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       await menu.click();
       expect(await menu.getAttribute('aria-expanded')).toBe('true');
       const disclosedDocs = page
-        .locator('#home-navigation [data-homepage-mount] a')
+        .locator('#home-navigation-mobile [data-homepage-mount] a')
         .filter({ hasText: '文档' });
       expect(await disclosedDocs.isVisible()).toBe(true);
       await switchRuntime(page, 'vue2');
@@ -480,11 +486,16 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           });
           return {
             height: bounds.height,
+            measuredOffset: parseFloat(
+              getComputedStyle(element.closest('.site-page-frame')!).getPropertyValue(
+                '--header-height'
+              )
+            ),
             controls,
             overflow: document.documentElement.scrollWidth > innerWidth,
           };
         });
-        expect(geometry.height).toBe(104);
+        expect(Math.abs(geometry.height - geometry.measuredOffset)).toBeLessThanOrEqual(1);
         expect(geometry.overflow).toBe(false);
         expect(geometry.controls).toHaveLength(3);
         for (const control of geometry.controls) {

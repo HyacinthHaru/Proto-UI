@@ -21,6 +21,9 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   const window = document.defaultView;
   const panel = root.querySelector<HTMLElement>('[data-site-header-panel]');
   const navigation = root.querySelector<HTMLElement>('[data-site-header-navigation]');
+  const desktopNavigation = root.querySelector<HTMLElement>(
+    '[data-site-header-desktop-navigation]'
+  );
   const settings = root.querySelector<HTMLElement>('[data-site-header-settings]');
   const compact = window?.matchMedia('(max-width: 47.999rem)');
   const buttons = new Set<HTMLElement>();
@@ -63,9 +66,11 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   const sync = () => {
     root.dataset.siteMenuOpen = String(open);
     root.toggleAttribute('data-site-menu-ready', enhanced);
-    if (navigation) navigation.hidden = enhanced && !!compact?.matches && !open;
+    if (desktopNavigation) desktopNavigation.hidden = !!compact?.matches;
+    if (navigation) navigation.hidden = !compact?.matches || (enhanced && !open);
+    if (panel) panel.hidden = enhanced && !open;
     if (settings) settings.hidden = enhanced && !open;
-    const controlled = compact?.matches ? panel : settings;
+    const controlled = panel;
     for (const button of buttons) {
       button.setAttribute('aria-expanded', String(open));
       if (controlled?.id) button.setAttribute('aria-controls', controlled.id);
@@ -78,20 +83,27 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     sync();
     if (restoreFocus) activeButton()?.focus();
   };
+  const ownsSelectPopup = (target: Element | null) => {
+    const popup = target?.closest('[role="listbox"], [data-site-select-content]');
+    if (!popup?.id) return false;
+    return [...root.querySelectorAll('[aria-controls]')].some((trigger) =>
+      trigger.getAttribute('aria-controls')?.split(/\s+/).includes(popup.id)
+    );
+  };
   const onEscape = (event: KeyboardEvent) => {
     if (event.key !== 'Escape' || event.defaultPrevented || !open) return;
     // A Select or another nested overlay owns its own Escape first.
-    const target = event.target as Element | null;
-    if (target?.closest('[role="listbox"], [role="dialog"]')) return;
+    const target = event.target instanceof (window?.Element ?? Element) ? event.target : null;
+    if (ownsSelectPopup(target) || target?.closest('[role="dialog"]')) return;
     event.preventDefault();
     close(true);
   };
   const onOutside = (event: Event) => {
     if (!open) return;
-    const target = event.target as Element | null;
+    const target = event.target instanceof (window?.Element ?? Element) ? event.target : null;
     if (!target || root.contains(target)) return;
     // Header Select popups are portaled. Do not dismiss their parent disclosure.
-    if (target.closest('[role="listbox"], [data-site-select-content]')) return;
+    if (ownsSelectPopup(target)) return;
     close();
   };
   const onNavigation = (event: Event) => {
@@ -101,7 +113,11 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   const onBreakpoint = () => {
     const focused = document.activeElement;
     sync();
-    if (navigation?.hidden && focused && navigation.contains(focused)) activeButton()?.focus();
+    if (
+      focused &&
+      [navigation, desktopNavigation].some((region) => region?.hidden && region.contains(focused))
+    )
+      activeButton()?.focus();
   };
   const onContentsOpen = () => close();
   const destroy = () => {
@@ -127,6 +143,8 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     panel?.removeEventListener('click', onNavigation);
     buttons.clear();
     if (navigation) navigation.hidden = false;
+    if (desktopNavigation) desktopNavigation.hidden = false;
+    if (panel) panel.hidden = false;
     if (settings) settings.hidden = false;
     root.removeAttribute('data-site-menu-ready');
     root.removeAttribute('data-site-menu-open');
@@ -153,7 +171,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
         document.dispatchEvent(new CustomEvent(SITE_HEADER_OPEN_EVENT));
         queueMicrotask(() => {
           if (!open || destroyed) return;
-          const region = compact?.matches ? panel : settings;
+          const region = panel;
           const target = [...(region?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])].find(
             (element) => !element.closest('[hidden], [inert]')
           );

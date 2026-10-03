@@ -1049,6 +1049,56 @@ try {
               await settings.locator('[data-homepage-mount] a[href]').first().isVisible(),
               'Opened settings must show a real native navigation link'
             );
+            const panelSurface = await page
+              .locator('[data-site-header-panel]')
+              .evaluate((panel) => {
+                const surfaces = panel.querySelectorAll<HTMLElement>('.site-header-popup-surface');
+                const surface = surfaces[0];
+                if (!surface) return null;
+                const content = panel.querySelector('[data-site-header-panel-content]');
+                const paint = getComputedStyle(surface);
+                const outer = getComputedStyle(panel);
+                const rect = surface.getBoundingClientRect();
+                return {
+                  count: surfaces.length,
+                  prototype: surface.dataset.projectionPrototype,
+                  family: (panel as HTMLElement).dataset.headerSurfaceFamily,
+                  runtime: (panel as HTMLElement).dataset.headerSurfaceRuntime,
+                  generation: (panel as HTMLElement).dataset.headerSurfaceGeneration,
+                  pageGeneration:
+                    document.querySelector<HTMLElement>('[data-homepage-runtime]')?.dataset
+                      .runtimeGeneration,
+                  containsNativeContent: !!content && surface.contains(content),
+                  role: surface.getAttribute('role'),
+                  tabindex: surface.getAttribute('tabindex'),
+                  border: parseFloat(paint.borderTopWidth),
+                  radius: paint.borderTopLeftRadius,
+                  shadow: paint.boxShadow,
+                  outerBorder: parseFloat(outer.borderTopWidth),
+                  outerShadow: outer.boxShadow,
+                  outerBackground: outer.backgroundColor,
+                  left: rect.left,
+                  right: rect.right,
+                  width: rect.width,
+                  height: rect.height,
+                  viewportWidth: innerWidth,
+                };
+              });
+            evidence.headerDisclosureSurface = panelSurface;
+            assert.ok(panelSurface, 'Native disclosure requires its actual Prototype surface');
+            assert.equal(panelSurface.count, 1, 'Exactly one popup organizing surface');
+            assert.equal(panelSurface.prototype, 'site-preview-surface');
+            assert.equal(panelSurface.runtime, 'wc');
+            assert.equal(panelSurface.generation, panelSurface.pageGeneration);
+            assert.ok(panelSurface.containsNativeContent);
+            assert.equal(panelSurface.role, null);
+            assert.equal(panelSurface.tabindex, null);
+            assert.equal(panelSurface.outerBorder, 0);
+            assert.equal(panelSurface.outerShadow, 'none');
+            assert.ok(['transparent', 'rgba(0, 0, 0, 0)'].includes(panelSurface.outerBackground));
+            assert.equal(panelSurface.border, panelSurface.family === 'brutalist' ? 2 : 1);
+            assert.ok(panelSurface.left >= 0 && panelSurface.right <= panelSurface.viewportWidth);
+            assert.ok(panelSurface.width > 200 && panelSurface.height > 44);
             evidence.navigationOwnership = await ownership(page, 'wc');
             await screenshot('navigation-open-viewport');
             await page.keyboard.press('Escape');

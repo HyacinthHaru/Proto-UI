@@ -13,6 +13,7 @@ function fixture(mobile = true) {
   query = Object.assign(target, { matches: mobile }) as MediaQueryList;
   vi.spyOn(window, 'matchMedia').mockReturnValue(query);
   document.body.innerHTML = `<header data-site-header>
+    <nav data-site-header-desktop-navigation><a href="/docs/">Docs</a></nav>
     <div data-site-header-panel id="navigation-panel">
       <nav data-site-header-navigation><a href="/docs/">Docs</a></nav>
       <div data-site-header-settings id="settings-panel"><a href="/zh-cn/">简体中文</a></div>
@@ -26,7 +27,9 @@ function fixture(mobile = true) {
   return {
     root,
     button,
-    navigation: root.querySelector<HTMLElement>('nav')!,
+    navigation: root.querySelector<HTMLElement>('[data-site-header-navigation]')!,
+    desktopNavigation: root.querySelector<HTMLElement>('[data-site-header-desktop-navigation]')!,
+    panel: root.querySelector<HTMLElement>('[data-site-header-panel]')!,
     settings: root.querySelector<HTMLElement>('[data-site-header-settings]')!,
   };
 }
@@ -64,16 +67,19 @@ describe('shared website navigation disclosure', () => {
   });
 
   it('keeps desktop links inline while the controlled settings are collapsed', async () => {
-    const { button, navigation, settings } = fixture(false);
+    const { button, navigation, desktopNavigation, settings, panel } = fixture(false);
     disclosure!.enhance();
-    expect(navigation.hidden).toBe(false);
+    expect(desktopNavigation.hidden).toBe(false);
+    expect(navigation.hidden).toBe(true);
     expect(settings.hidden).toBe(true);
-    expect(button.getAttribute('aria-controls')).toBe('settings-panel');
+    expect(panel.hidden).toBe(true);
+    expect(button.getAttribute('aria-controls')).toBe('navigation-panel');
     disclosure!.toggle();
     await Promise.resolve();
     expect(document.activeElement).toBe(settings.querySelector('a'));
     disclosure!.close();
-    expect(navigation.hidden).toBe(false);
+    expect(desktopNavigation.hidden).toBe(false);
+    expect(navigation.hidden).toBe(true);
   });
 
   it('retains open state and rebinds return focus across a runtime generation', async () => {
@@ -106,6 +112,8 @@ describe('shared website navigation disclosure', () => {
     expect(root.dataset.siteMenuOpen).toBe('true');
     const listbox = document.createElement('div');
     listbox.setAttribute('role', 'listbox');
+    listbox.id = 'owned-language-options';
+    root.querySelector('[data-runtime]')!.setAttribute('aria-controls', listbox.id);
     document.body.append(listbox);
     listbox.dispatchEvent(new Event('pointerdown', { bubbles: true }));
     listbox.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
@@ -116,8 +124,20 @@ describe('shared website navigation disclosure', () => {
     expect(root.dataset.siteMenuOpen).toBe('false');
   });
 
+  it('does not treat an unrelated portaled listbox as Header-owned', () => {
+    const { root } = fixture();
+    disclosure!.enhance();
+    disclosure!.toggle();
+    const foreign = document.createElement('div');
+    foreign.id = 'foreign-options';
+    foreign.setAttribute('role', 'listbox');
+    document.body.append(foreign);
+    foreign.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+    expect(root.dataset.siteMenuOpen).toBe('false');
+  });
+
   it('restores a focused inline link to Menu when shrinking, without moving mounted nodes', () => {
-    const { navigation, button } = fixture(false);
+    const { desktopNavigation: navigation, button } = fixture(false);
     disclosure!.enhance();
     const link = navigation.querySelector('a')!;
     link.focus();
@@ -126,6 +146,21 @@ describe('shared website navigation disclosure', () => {
     expect(navigation.hidden).toBe(true);
     expect(document.activeElement).toBe(button);
     expect(navigation.querySelector('a')).toBe(link);
+  });
+
+  it('keeps an open disclosure usable when mobile navigation becomes hidden on desktop', async () => {
+    const { navigation, desktopNavigation, panel, button } = fixture(true);
+    disclosure!.enhance();
+    disclosure!.toggle();
+    await Promise.resolve();
+    expect(document.activeElement).toBe(navigation.querySelector('a'));
+    Object.defineProperty(query, 'matches', { value: false });
+    query.dispatchEvent(new Event('change'));
+    expect(navigation.hidden).toBe(true);
+    expect(desktopNavigation.hidden).toBe(false);
+    expect(panel.hidden).toBe(false);
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+    expect(document.activeElement).toBe(button);
   });
 
   it('restores readable fallback and removes listeners on disposal', () => {

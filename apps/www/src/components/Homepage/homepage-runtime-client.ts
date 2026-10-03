@@ -1,3 +1,4 @@
+import { headerSurfaceParticipant } from '../site-header-surface';
 import { bindNativeLinkFacts } from '../site-native-link-facts';
 import { siteLinkAppearance, siteLinkEmphasis, siteLinkIcon } from '../site-native-controls';
 import { initSiteHeaderDisclosure, type SiteHeaderDisclosure } from '../site-header-disclosure';
@@ -313,6 +314,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   } catch {
     /* Optional preference. */
   }
+  const headerSurface = headerSurfaceParticipant(root);
   const demo = homepageDemoParticipant(document);
   const searchRoot = root.querySelector<HTMLElement>('site-search');
   const search = searchRoot ? searchCommandParticipant(searchRoot) : null;
@@ -324,6 +326,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const roots = [
     ...groups.map((group) => group.root),
     ...(demo ? [demo.root] : []),
+    ...(headerSurface ? [headerSurface.root] : []),
     ...(search?.mounts ?? []),
   ];
   let destroyed = false;
@@ -417,6 +420,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
             ),
           })
         );
+      if (headerSurface) work.push(headerSurface.materialize(request));
       // Search contributes to this exact request. Its native dialog and Pagefind
       // owner stay mounted while all three command views commit with the page.
       const searchWork = search?.materialize(request);
@@ -464,6 +468,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           resolveProjectionThemeSurfaceStyle(family, roots[index]!)
         );
       const demoPublication = demo?.prepareCommit(commit, prepared.component);
+      const headerPublication = headerSurface?.prepareCommit(commit);
       const searchPublication = search?.prepareCommit(commit);
       const previous = activeCandidates;
       const previousFamily = activeFamily;
@@ -491,6 +496,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           root.dataset.family = family;
           applySiteLibraryFamily(document, family);
           demoPublication?.publish();
+          headerPublication?.publish();
           searchPublication?.publish();
           setStatus('ready', commit.selection.runtimeId as RuntimeId);
           disclosure?.enhance();
@@ -512,6 +518,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           }
           if (status) status.textContent = previousStatus;
           demoPublication?.rollback();
+          headerPublication?.rollback();
           searchPublication?.rollback();
         },
       };
