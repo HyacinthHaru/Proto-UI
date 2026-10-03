@@ -9,6 +9,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 import {
   installSearchStartupTrace,
+  readSearchDisabledNow,
   traceSearchGetter,
   type SearchGetterSample,
   searchEvidenceDirectory,
@@ -468,7 +469,7 @@ describe.sequential('Search family Button commands', () => {
               await expect
                 .poll(() =>
                   traceSearchGetter(diagnosticPages.get(page)!.initialGetterSamples, () =>
-                    trigger.getAttribute('aria-disabled')
+                    page.evaluate(readSearchDisabledNow)
                   )
                 )
                 .toBe('false');

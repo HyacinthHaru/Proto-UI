@@ -190,3 +190,12 @@ export function installSearchStartupTrace() {
   void customElements.whenDefined('site-search').then(() => trace.record('defined'));
   (window as any).__puiSearchStartup = trace;
 }
+
+/** One DOM sample: the outer expect.poll owns the only readiness deadline. */
+export function readSearchDisabledNow(): string | null {
+  const commands = document.querySelectorAll(
+    'site-search [data-projection-generation-state="active"] [data-open-modal]'
+  );
+  if (commands.length > 1) throw new Error('Search open command must be unique');
+  return commands[0]?.getAttribute('aria-disabled') ?? null;
+}

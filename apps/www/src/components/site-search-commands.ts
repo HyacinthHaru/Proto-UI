@@ -1,3 +1,6 @@
+import searchIcon from '../../../../packages/prototypes/lucide/src/icons/search';
+import closeIcon from '../../../../packages/prototypes/lucide/src/icons/x';
+import { registerPrototype } from './PrototypePreviewer/registry';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from './adapter-preference';
 import { isRuntimeId, type RuntimeId } from './PrototypePreviewer/runtimes/registry';
 import {
@@ -12,6 +15,13 @@ import {
 import { watchProjectionThemeSurfaceStyle } from './PrototypePreviewer/projection-theme';
 import type { DemoSpec } from './PrototypePreviewer/demo-types';
 import type { SiteLibraryFamily } from './site-library-family';
+
+// These fixed glyphs are required by every Search generation. Keep them in
+// the command owner's initial module graph instead of discovering their import
+// chain only after the custom element connects. The materializer still owns
+// rendering the registered prototypes and committing all three commands.
+registerPrototype('lucide-search-icon', searchIcon);
+registerPrototype('lucide-x-icon', closeIcon);
 
 export type SearchCommand = 'open' | 'close' | 'retry';
 export type SearchCommandParticipant = {

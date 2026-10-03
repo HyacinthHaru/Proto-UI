@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PREFERRED_ADAPTER_EVENT } from './adapter-preference';
+import { getPrototype } from './PrototypePreviewer/registry';
+import searchIcon from '../../../../packages/prototypes/lucide/src/icons/search';
+import closeIcon from '../../../../packages/prototypes/lucide/src/icons/x';
 const faults = vi.hoisted(() => ({ materialize: vi.fn(), theme: vi.fn() }));
 vi.mock('./PrototypePreviewer/projection-materializer', () => ({
   materializeProjectionCandidate: faults.materialize,
@@ -123,4 +126,10 @@ describe('Search projection failure and lifetime boundaries (materializer fault 
     owners.push(owner);
     expect(() => initDocumentationSearchCommands(owner)).toThrow('page transaction');
   });
+});
+
+it('registers Search fixed glyph prototypes before starting any command generation', () => {
+  expect(getPrototype('lucide-search-icon')).toBe(searchIcon);
+  expect(getPrototype('lucide-x-icon')).toBe(closeIcon);
+  expect(faults.materialize).not.toHaveBeenCalled();
 });

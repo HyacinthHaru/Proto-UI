@@ -5,6 +5,7 @@ import { transformSync } from 'esbuild';
 import { describe, expect, it, vi } from 'vitest';
 import {
   installSearchStartupTrace,
+  readSearchDisabledNow,
   traceSearchGetter,
   type SearchGetterSample,
   searchEvidenceDirectory,
@@ -24,7 +25,7 @@ describe('Search cold-start evidence boundary', () => {
     const workflow = readFileSync('.github/workflows/ci.yml', 'utf8');
     expect(workflow).toContain('path: ${{ runner.temp }}/runtime-ci');
     expect(source.replace(/\s/g, '')).toContain(
-      "awaitexpect.poll(()=>traceSearchGetter(diagnosticPages.get(page)!.initialGetterSamples,()=>trigger.getAttribute('aria-disabled'))).toBe('false');"
+      "awaitexpect.poll(()=>traceSearchGetter(diagnosticPages.get(page)!.initialGetterSamples,()=>page.evaluate(readSearchDisabledNow))).toBe('false');"
     );
     expect(source).toContain('{ timeout: 10_000 }');
     expect(source).toContain("command?.getAttribute('role') === 'button'");
@@ -295,4 +296,39 @@ it('bounds observations and ignores queued observer/definition callbacks after s
 
 it('parses the actual browser suite without starting its browser or server hooks', () => {
   expect(() => transformSync(source, { loader: 'ts', target: 'es2022' })).not.toThrow();
+});
+
+it('samples initial readiness once per outer poll without nesting the locator wait', () => {
+  expect(source).toContain('page.evaluate(readSearchDisabledNow)');
+});
+
+it('retains absence, disabled and unique-element semantics in the immediate DOM sample', () => {
+  let elements: Array<{ getAttribute: (name: string) => string | null }> = [];
+  const querySelectorAll = vi.fn(() => elements);
+  const read = runInNewContext(`(${readSearchDisabledNow.toString()})`, {
+    document: { querySelectorAll },
+  });
+  expect(read()).toBeNull();
+  elements = [{ getAttribute: (name) => (name === 'aria-disabled' ? 'true' : null) }];
+  expect(read()).toBe('true');
+  elements = [{ getAttribute: (name) => (name === 'aria-disabled' ? 'false' : null) }];
+  expect(read()).toBe('false');
+  elements.push(elements[0]);
+  expect(read).toThrow('Search open command must be unique');
+  expect(querySelectorAll).toHaveBeenCalledWith(
+    'site-search [data-projection-generation-state="active"] [data-open-modal]'
+  );
+});
+
+it('keeps a missed deadline failed when immediate samples stay unavailable through the window', async () => {
+  let value: string | null = null;
+  const samples: SearchGetterSample[] = [];
+  const read = vi.fn(async () => value);
+  await expect(
+    expect.poll(() => traceSearchGetter(samples, read), { timeout: 20, interval: 1 }).toBe('false')
+  ).rejects.toThrow('Matcher did not succeed in 20ms');
+  expect(samples.length).toBeGreaterThan(1);
+  expect(samples.every((sample) => sample.value === null)).toBe(true);
+  value = 'false';
+  expect(await read()).toBe('false');
 });
