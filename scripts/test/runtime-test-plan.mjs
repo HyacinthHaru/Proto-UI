@@ -1,28 +1,24 @@
-import { readdirSync } from 'node:fs';
+import { globSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const BROWSER_SUITE_ROOTS = [
-  path.join(REPOSITORY_ROOT, 'apps', 'www', 'src', 'content', 'docs'),
-  path.join(REPOSITORY_ROOT, 'apps', 'www', 'test'),
-  path.join(REPOSITORY_ROOT, 'apps', 'workspace', 'test'),
-];
-
-function discoverBrowserSuites(directory) {
-  const suites = [];
-  for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    const absolutePath = path.join(directory, entry.name);
-    if (entry.isDirectory()) suites.push(...discoverBrowserSuites(absolutePath));
-    else if (entry.isFile() && /\.browser\.test\.[cm]?[jt]sx?$/.test(entry.name)) {
-      suites.push(path.relative(REPOSITORY_ROOT, absolutePath).replaceAll('\\', '/'));
-    }
-  }
-  return suites.sort();
-}
-
+// Match the complete runtime Vitest include roots. Keep automatic discovery
+// without losing component, package or contract suites introduced on main.
 export const BROWSER_SUITES = Object.freeze(
-  BROWSER_SUITE_ROOTS.flatMap((root) => discoverBrowserSuites(root)).sort()
+  [
+    ...new Set(
+      globSync(
+        [
+          'packages/**/*.browser.test.ts',
+          'internal/contracts/__tests__/**/*.browser.test.ts',
+          'apps/**/test/**/*.browser.test.ts',
+          'apps/www/src/**/*.browser.test.ts',
+        ],
+        { cwd: REPOSITORY_ROOT, exclude: ['**/node_modules/**', '**/dist/**'] }
+      ).map((suite) => suite.replaceAll('\\', '/'))
+    ),
+  ].sort()
 );
 export function corepackInvocation(platform = process.platform) {
   return {

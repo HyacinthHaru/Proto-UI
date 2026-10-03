@@ -7,14 +7,16 @@ description: Select, run, and report proportional Proto UI validation for a comp
 
 For state/ownership or rendered-projection changes, selective test commands, or resource-related failures, read `internal/agent-operations/testing-method.md`. Confirm the intended files ran and keep candidate-bound failures, controlled reruns and omitted evidence distinct.
 
-1. Read `AGENTS.md`, the actual diff, the `pui-trace` map, and any approved validation boundary.
+1. Read `AGENTS.md`, the actual diff, the `pui-trace` map, and the governed validation boundary.
 2. Check worktree and generated-file discipline before running tests.
 3. Run focused evidence first. Confirm it exercises the intended failure and owning layer.
 4. Expand through affected entity graph, Runtime or Adapter integration, types, public docs, package surfaces, consumer smoke, and release governance as the change requires.
 5. Run generators before their corresponding check mode. Never hand-edit generated output.
 6. Record command, exit status, relevant output, environment, and skipped checks. Do not claim a check that did not run.
-7. Separate machine evidence, manual acceptance, semantic approval, and deployment evidence.
-8. Return failures to the owning skill with the smallest useful diagnosis.
+7. Separate machine evidence, observable acceptance evidence, authority resolution, and deployment evidence.
+8. Diagnose failures before returning them: distinguish environment/setup, implementation, and test/fixture defects, retaining uncertainty when the evidence cannot separate them. Preserve the failing command, assertion, and candidate; use `internal/agent-operations/testing-method.md` for controlled reruns.
+9. Return a repairable failure to one eligible owning leaf with the evidence report and required prior artifacts. A `pui-regression` handoff needs the authority map, reproduction, and existing implementation authorization; a `pui-test` handoff needs the authority map, governed behavior, and existing implementation authorization. Do not invent missing authorization or perform source repairs inside this disposable-output-only leaf. The entrypoint resumes validation after repair.
+10. If the next repair lacks a prerequisite or crosses a gate, return a terminal handoff naming the blocker and next action. A failed or blocked check is not a completed implementation task, evidence of infeasibility, or permission to remove requested behavior or weaken its assertion.
 
 Passing checks establish technical evidence, not product correctness, review approval, merge permission, or release authorization.
 

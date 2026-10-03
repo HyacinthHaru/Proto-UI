@@ -1,5 +1,6 @@
 const PUI_STYLE_ATTR = 'data-pui-style';
 const SYSTEM_DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)';
+const SYSTEM_REDUCED_MOTION_MEDIA_QUERY = '(prefers-reduced-motion: reduce)';
 const SYSTEM_THEME_FALLBACK_ROOT =
   ":root:not(.dark):not(.light):not([data-theme='dark']):not([data-theme='light'])";
 
@@ -77,9 +78,10 @@ const staticUtilities: Record<string, string[]> = {
   block: ['display: block;'],
   flex: ['display: flex;'],
   'inline-flex': ['display: inline-flex;'],
-  'flex-1': ['flex: 1 1 0%;'],
+  'inline-block': ['display: inline-block;'],
   grid: ['display: grid;'],
   hidden: ['display: none;'],
+  'flex-1': ['flex: 1 1 0%;'],
   'flex-col': ['flex-direction: column;'],
   'flex-row': ['flex-direction: row;'],
   'flex-wrap': ['flex-wrap: wrap;'],
@@ -128,6 +130,13 @@ const staticUtilities: Record<string, string[]> = {
     'animation-timing-function: ease;',
     'animation-fill-mode: both;',
   ],
+  'animate-spin': [
+    'animation-name: pui-spin;',
+    'animation-duration: 1000ms;',
+    'animation-timing-function: linear;',
+    'animation-iteration-count: infinite;',
+  ],
+  'animate-none': ['animation: none;'],
   'fade-in-0': ['--pui-enter-opacity: 0;'],
   'fade-out-0': ['--pui-exit-opacity: 0;'],
   'zoom-in-95': ['--pui-enter-scale: 0.95;'],
@@ -160,6 +169,7 @@ const staticUtilities: Record<string, string[]> = {
   'duration-150': ['transition-duration: 150ms;', '--pui-animation-duration: 150ms;'],
   'duration-200': ['transition-duration: 200ms;', '--pui-animation-duration: 200ms;'],
   'ease-in-out': ['transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);'],
+  'font-normal': ['font-weight: 400;'],
   'font-medium': ['font-weight: 500;'],
   'font-black': ['font-weight: 900;'],
   'font-heading': ['font-family: var(--pui-font-heading, ui-sans-serif, system-ui, sans-serif);'],
@@ -169,6 +179,7 @@ const staticUtilities: Record<string, string[]> = {
     'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;',
   ],
   uppercase: ['text-transform: uppercase;'],
+  'leading-5': ['line-height: 1.25rem;'],
   'leading-6': ['line-height: 1.5rem;'],
   'leading-relaxed': ['line-height: 1.625;'],
   'leading-none': ['line-height: 1;'],
@@ -189,6 +200,13 @@ const staticUtilities: Record<string, string[]> = {
   'border-b': ['border-bottom-width: 1px;', 'border-bottom-style: solid;'],
   'border-l-2': ['border-left-width: 2px;', 'border-left-style: solid;'],
   'border-ink': ['border-color: var(--pui-foreground);'],
+  'border-current': ['border-color: currentColor;'],
+  'border-t-transparent': ['border-top-color: transparent;'],
+  // One v0 border-color intent, lowered to the existing declaration vocabulary.
+  'border-[transparent_currentColor_currentColor_currentColor]': [
+    'border-color: currentColor;',
+    'border-top-color: transparent;',
+  ],
   'border-black': ['border-color: #000;'],
   'border-foreground': ['border-color: var(--pui-foreground);'],
   'border-transparent': ['border-color: transparent;'],
@@ -212,6 +230,7 @@ const staticUtilities: Record<string, string[]> = {
   'right-0': ['right: 0px;'],
   'right-full': ['right: 100%;'],
   'top-auto': ['top: auto;'],
+  'opacity-65': ['opacity: 0.65;'],
   'opacity-70': ['opacity: 0.7;'],
   'opacity-100': ['opacity: 1;'],
   'opacity-0': ['opacity: 0;'],
@@ -223,6 +242,25 @@ const staticUtilities: Record<string, string[]> = {
   'ring-offset-0': ['--pui-ring-offset-width: 0px;'],
   'ring-offset-2': ['--pui-ring-offset-width: 2px;'],
   'ring-offset-background': ['--pui-ring-offset-color: var(--pui-background);'],
+  // Controlled v2.3.2 paint vocabulary: one bg token owns both fallback and image.
+  'bg-[#e6e6e6]': ['background-color: #e6e6e6;', 'background-image: none;'],
+  'bg-[#04c]': ['background-color: #04c;', 'background-image: none;'],
+  'bg-[linear-gradient(#fff,#e6e6e6)]': [
+    'background-color: #f5f5f5;',
+    'background-image: linear-gradient(to bottom, #fff, #e6e6e6);',
+  ],
+  'bg-[linear-gradient(#08c,#04c)]': [
+    'background-color: #006dcc;',
+    'background-image: linear-gradient(to bottom, #08c, #04c);',
+  ],
+  'shadow-[inset_0_1px_0_rgb(255_255_255/20%),0_1px_2px_rgb(0_0_0/5%)]': [
+    '--pui-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), 0 1px 2px rgb(0 0 0 / 0.05);',
+    ...composedShadow(),
+  ],
+  'shadow-[inset_0_2px_4px_rgb(0_0_0/15%),0_1px_2px_rgb(0_0_0/5%)]': [
+    '--pui-shadow: inset 0 2px 4px rgb(0 0 0 / 0.15), 0 1px 2px rgb(0 0 0 / 0.05);',
+    ...composedShadow(),
+  ],
   'shadow-xs': ['--pui-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);', ...composedShadow()],
   'shadow-sm': [
     '--pui-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);',
@@ -346,7 +384,24 @@ export function renderProtoStyleTokenCss(tokens: string[]): string {
     );
   }
 
+  if (
+    rules.some((rule) => {
+      const utility = splitVariants(rule.token).at(-1);
+      return utility === 'animate-spin';
+    })
+  ) {
+    lines.push(
+      '  @keyframes pui-spin {',
+      '    to {',
+      '      transform: rotate(360deg);',
+      '    }',
+      '  }',
+      ''
+    );
+  }
+
   for (const rule of rules) {
+    if (hasMotionReduceVariant(rule.token)) continue;
     const selectors = buildSelectors(rule.token);
     if (selectors.length === 0 || rule.css.length === 0) continue;
     lines.push(`  ${selectors.join(',\n  ')} {`);
@@ -355,7 +410,10 @@ export function renderProtoStyleTokenCss(tokens: string[]): string {
     lines.push('');
   }
 
-  const systemDarkRules = rules.filter((rule) => hasDarkVariant(rule.token));
+  // Reduced-motion variants must not apply under the dark preference alone.
+  const systemDarkRules = rules.filter(
+    (rule) => hasDarkVariant(rule.token) && !hasMotionReduceVariant(rule.token)
+  );
   if (systemDarkRules.length > 0) {
     lines.push(`  @media ${SYSTEM_DARK_MEDIA_QUERY} {`);
     for (const rule of systemDarkRules) {
@@ -365,6 +423,44 @@ export function renderProtoStyleTokenCss(tokens: string[]): string {
       for (const decl of rule.css) lines.push(`      ${decl}`);
       lines.push('    }');
       lines.push('');
+    }
+    lines.push('  }');
+    lines.push('');
+  }
+
+  const motionReduceRules = rules.filter((rule) => hasMotionReduceVariant(rule.token));
+  const spinRules = rules.filter((rule) => splitVariants(rule.token).at(-1) === 'animate-spin');
+  const reducedMotionBlocks: CssRule[] = [...motionReduceRules];
+  // P-BRUTALIST-SPINNER-MOTION-REDUCED-MOTION: whenever animate-spin projects,
+  // a generated @media (prefers-reduced-motion: reduce) rule removes the
+  // animation on the spinning surface itself while the open edge stays as a
+  // non-color orientation cue.
+  if (spinRules.length > 0) {
+    for (const rule of spinRules) {
+      reducedMotionBlocks.push({ token: rule.token, css: ['animation: none;'] });
+    }
+  }
+  if (reducedMotionBlocks.length > 0) {
+    lines.push(`  @media ${SYSTEM_REDUCED_MOTION_MEDIA_QUERY} {`);
+    for (const rule of reducedMotionBlocks) {
+      const selectors = buildSelectors(rule.token);
+      if (selectors.length === 0 || rule.css.length === 0) continue;
+      lines.push(`    ${selectors.join(',\n    ')} {`);
+      for (const decl of rule.css) lines.push(`      ${decl}`);
+      lines.push('    }');
+      lines.push('');
+    }
+    const systemDarkMotionRules = reducedMotionBlocks.filter((rule) => hasDarkVariant(rule.token));
+    if (systemDarkMotionRules.length > 0) {
+      lines.push(`    @media ${SYSTEM_DARK_MEDIA_QUERY} {`);
+      for (const rule of systemDarkMotionRules) {
+        const selectors = buildSelectors(rule.token, { systemPreferenceFallback: true });
+        if (selectors.length === 0 || rule.css.length === 0) continue;
+        lines.push(`      ${selectors.join(',\n      ')} {`);
+        for (const decl of rule.css) lines.push(`        ${decl}`);
+        lines.push('      }');
+      }
+      lines.push('    }');
     }
     lines.push('  }');
     lines.push('');
@@ -590,6 +686,9 @@ function buildSelectors(
       dark = true;
       continue;
     }
+    if (variant === 'motion-reduce') {
+      continue;
+    }
     selectors = selectors.flatMap((selector) => applyVariant(selector, variant));
   }
 
@@ -611,6 +710,10 @@ function buildSelectors(
 
 function hasDarkVariant(token: string): boolean {
   return splitVariants(token).slice(0, -1).includes('dark');
+}
+
+function hasMotionReduceVariant(token: string): boolean {
+  return splitVariants(token).slice(0, -1).includes('motion-reduce');
 }
 
 function applyVariant(selector: string, variant: string): string[] {

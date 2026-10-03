@@ -53,7 +53,13 @@
     "reconciliation": { "$ref": "#/$defs/reconciliation" },
     "limitations": { "$ref": "#/$defs/strings" },
     "unknowns": { "$ref": "#/$defs/strings" },
-    "humanGates": { "$ref": "#/$defs/strings" },
+    "humanGates": {
+      "type": "array",
+      "items": {
+        "enum": ["unresolved-product-direction", "privileged-or-irreversible-operation"]
+      },
+      "uniqueItems": true
+    },
     "recommendedAction": { "enum": ["APPROVE", "REQUEST_CHANGES", "COMMENT", "ABSTAIN"] }
   },
   "allOf": [
@@ -122,8 +128,27 @@
               "kind": { "enum": ["publication", "verification", "outside-scope"] },
               "missing": { "type": "string", "minLength": 1 },
               "reason": { "type": "string", "minLength": 1 },
-              "nextAction": { "type": "string", "minLength": 1 }
-            }
+              "nextAction": { "type": "string", "minLength": 1 },
+              "previewAuthorization": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["provider", "checkName", "authorizationUrl"],
+                "properties": {
+                  "provider": { "const": "vercel" },
+                  "checkName": { "const": "Vercel" },
+                  "authorizationUrl": {
+                    "type": "string",
+                    "pattern": "^https://vercel\\.com/git/authorize(?:\\?[^#]*)?(?:#.*)?$"
+                  }
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": { "required": ["previewAuthorization"] },
+                "then": { "properties": { "kind": { "const": "publication" } } }
+              }
+            ]
           }
         }
       },
