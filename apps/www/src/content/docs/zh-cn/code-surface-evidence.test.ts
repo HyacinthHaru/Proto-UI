@@ -115,3 +115,16 @@ describe('native code selection preparation', () => {
       expect(nativeCodeSelectionHasGutter({ ...facts, token })).toBe(false);
   });
 });
+
+it('keeps decorative line numbers in the same horizontal flow as selectable code', async () => {
+  const { readFileSync } = await import('node:fs');
+  const css = readFileSync('apps/www/src/styles/global.css', 'utf8');
+  const rule = css.match(/\.proto-previewer__code \.line::before\s*\{([^}]*)\}/)?.[1];
+  expect(rule).toBeDefined();
+  expect(rule).toContain('content: counter(code-line)');
+  expect(rule).toContain('width: calc(var(--spacing) * 16)');
+  expect(rule).toContain('padding-right: calc(var(--spacing) * 6)');
+  expect(rule).toContain('user-select: none');
+  expect(rule).toContain('pointer-events: none');
+  expect(rule).not.toMatch(/\bposition:\s*(sticky|fixed|absolute)|\bz-index:|\bbackground:/);
+});
