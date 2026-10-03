@@ -1,4 +1,10 @@
 // @vitest-environment node
+import { execFileSync } from 'node:child_process';
+import {
+  copyPaintIssues,
+  copySourceBindingIssues,
+  type CopySourceBinding,
+} from './copy-command-evidence';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -9,7 +15,18 @@ import { launchBrowser, startServer, stopServer } from './browser-harness';
 const ROUTE = '/zh-cn/start-here/quick-start/';
 let browser: Browser;
 let baseUrl: string;
+let sourceBinding: CopySourceBinding;
+const directory = join(process.env.RUNNER_TEMP || tmpdir(), 'homepage-evidence', 'copy-commands');
 beforeAll(async () => {
+  sourceBinding = {
+    exactSHA: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+    dirty: Boolean(execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim()),
+    expectedSHA: process.env.CANDIDATE_SHA ?? process.env.PROTO_UI_EXPECTED_REVISION ?? null,
+    eventSHA: process.env.GITHUB_SHA ?? null,
+  };
+  await mkdir(directory, { recursive: true });
+  await writeFile(join(directory, 'source-binding.json'), JSON.stringify(sourceBinding, null, 2));
+  expect(copySourceBindingIssues(sourceBinding, Boolean(process.env.CI))).toEqual([]);
   baseUrl = await startServer(ROUTE);
   browser = await launchBrowser();
 }, 300_000);
@@ -43,6 +60,25 @@ async function paint(button: Locator) {
     const style = getComputedStyle(element),
       rect = element.getBoundingClientRect(),
       glyph = element.querySelector('svg')!.getBoundingClientRect();
+    const family = element.closest<HTMLElement>('[data-site-copy]')?.dataset.copyFamily;
+    const ringColor = style.getPropertyValue('--pui-ring').trim();
+    const expectedSpread = family === 'brutalist' ? 4 : 3;
+    const expectedColor =
+      family === 'brutalist' ? ringColor : `color-mix(in oklab, ${ringColor} 50%, transparent)`;
+    // Resolve the independent source recipe in the same browser color serializer.
+    // Keep the probe outside the live Prototype subtree and never derive it from
+    // --pui-ring-shadow or the control's actual box-shadow under test.
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:fixed;left:-9999px;top:0;pointer-events:none';
+    probe.style.boxShadow = `0 0 0 ${expectedSpread}px ${expectedColor}`;
+    document.body.append(probe);
+    const expectedRingShadow = getComputedStyle(probe).boxShadow;
+    probe.style.boxShadow =
+      family === 'brutalist'
+        ? `0 0 0 2px ${style.getPropertyValue('--pui-background').trim()}`
+        : 'none';
+    const expectedRingOffsetShadow = getComputedStyle(probe).boxShadow;
+    probe.remove();
     return {
       width: rect.width,
       height: rect.height,
@@ -53,33 +89,223 @@ async function paint(button: Locator) {
       glyph: [glyph.width, glyph.height],
       background: style.backgroundColor,
       shadow: style.boxShadow,
+      expectedRingShadow,
+      expectedRingOffsetShadow,
       transform: style.transform,
+      translate: style.translate,
+      hovered: element.hasAttribute('data-hovered'),
+      pressed: element.hasAttribute('data-pressed'),
+      focusVisible: element.hasAttribute('data-focus-visible'),
       tokens: element.getAttribute('data-pui-style'),
       focused: document.activeElement === element,
     };
   });
 }
-async function evidence(page: Page, root: Locator, name: string, facts: unknown) {
-  const directory = join(process.env.RUNNER_TEMP || tmpdir(), 'homepage-evidence', 'copy-commands');
+async function unfocusedPaint(button: Locator) {
+  await button.page().mouse.move(0, 0);
+  await button.evaluate((element: HTMLElement) => element.blur());
+  await expect
+    .poll(() =>
+      button.evaluate(
+        (element) =>
+          document.activeElement === element ||
+          ['data-hovered', 'data-pressed', 'data-focus-visible'].some((name) =>
+            element.hasAttribute(name)
+          )
+      )
+    )
+    .toBe(false);
+  await button.evaluate(async (element) => {
+    await Promise.all(
+      element.getAnimations().map((animation) => animation.finished.catch(() => {}))
+    );
+  });
+  // Confirm stability rather than attributing a changed hard shadow to focus.
+  await expect
+    .poll(async () => {
+      const before = await paint(button);
+      await button.evaluate(
+        () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
+      );
+      const after = await paint(button);
+      return (
+        before.shadow === after.shadow &&
+        before.transform === after.transform &&
+        before.translate === after.translate &&
+        before.background === after.background &&
+        !after.focused &&
+        !after.focusVisible &&
+        !after.hovered &&
+        !after.pressed
+      );
+    })
+    .toBe(true);
+  return paint(button);
+}
+
+async function observeCopyPage(page: Page) {
+  const errors: Array<{ kind: string; text: string }> = [];
+  page.on('pageerror', (error) =>
+    errors.push({ kind: 'pageerror', text: error.stack ?? error.message })
+  );
+  page.on('console', (message) => {
+    if (['error', 'warning'].includes(message.type()))
+      errors.push({ kind: message.type(), text: message.text() });
+  });
+  page.on('requestfailed', (request) =>
+    errors.push({ kind: 'requestfailed', text: `${request.url()} ${request.failure()?.errorText}` })
+  );
+  await page.addInitScript(() => {
+    const trace: unknown[] = [];
+    const record = (kind: string, detail: unknown = null) => {
+      if (trace.length < 1000) trace.push({ at: performance.now(), kind, detail });
+    };
+    (window as any).__copyEvidence = { trace, record };
+    for (const type of ['DOMContentLoaded', 'astro:page-load', 'astro:before-swap'])
+      document.addEventListener(type, () =>
+        record(type, document.documentElement.dataset.siteLibraryFamily)
+      );
+    window.addEventListener('load', () =>
+      record('window.load', document.documentElement.dataset.siteLibraryFamily)
+    );
+    new MutationObserver((records) => {
+      for (const entry of records) {
+        const node = entry.target as HTMLElement;
+        record('attribute', {
+          tag: node.localName,
+          id: node.id,
+          attribute: entry.attributeName,
+          old: entry.oldValue,
+          value: node.getAttribute(entry.attributeName!),
+          copy: node.hasAttribute('data-site-copy'),
+          scope: node.hasAttribute('data-site-family-scope'),
+        });
+      }
+    }).observe(document, {
+      subtree: true,
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: [
+        'data-site-library-family',
+        'data-projection-family',
+        'data-copy-view',
+        'data-copy-runtime',
+        'data-copy-family',
+      ],
+    });
+  });
+  return errors;
+}
+
+async function evidence(page: Page, root: Locator | null, name: string, facts: unknown) {
   await mkdir(directory, { recursive: true });
-  await root.scrollIntoViewIfNeeded();
+  // Metadata is written even if there is no ready control. The old success-only
+  // capture lost the exact three Install failures this evidence must distinguish.
+  const observed = await page
+    .evaluate(() => ({
+      readyState: document.readyState,
+      documentFamily: document.documentElement.dataset.siteLibraryFamily,
+      theme: document.documentElement.dataset.theme,
+      preferredRuntime: localStorage.getItem('preferred-prototypes-adapter'),
+      trace: (window as any).__copyEvidence?.trace ?? [],
+      roots: Array.from(document.querySelectorAll<HTMLElement>('[data-site-copy]')).map((root) => {
+        const ancestors = [];
+        for (let node: HTMLElement | null = root; node; node = node.parentElement)
+          if (
+            node.matches(
+              '[data-site-library-family], [data-projection-family], [data-previewer-id], [data-adapter-panel]'
+            )
+          )
+            ancestors.push({
+              tag: node.localName,
+              id: node.id,
+              family: node.dataset.siteLibraryFamily,
+              projectionFamily: node.dataset.projectionFamily,
+              runtime: node.dataset.projectionRuntime,
+              previewer: node.dataset.previewerId,
+              sourceHost: node.dataset.adapterPanel,
+            });
+        return {
+          id: root.id,
+          view: root.dataset.copyView,
+          runtime: root.dataset.copyRuntime,
+          family: root.dataset.copyFamily,
+          title: root.title,
+          ancestors,
+          generations: Array.from(
+            root.querySelectorAll<HTMLElement>('[data-projection-generation-host]')
+          ).map((host) => ({
+            state: host.dataset.projectionGenerationState,
+            runtime: host.dataset.projectionRuntime,
+            family: host.dataset.projectionFamily,
+            inert: host.inert,
+          })),
+          buttons: Array.from(
+            root.querySelectorAll<HTMLElement>('[data-demo-ref="copy-button"]')
+          ).map((button) => ({
+            tag: button.localName,
+            state: button.dataset.copyState,
+            tokens: button.getAttribute('data-pui-style'),
+            focused: document.activeElement === button,
+            rect: button.getBoundingClientRect().toJSON(),
+          })),
+        };
+      }),
+    }))
+    .catch((error) => ({ captureError: String(error) }));
   await writeFile(
     join(directory, `${name}.json`),
     JSON.stringify(
       {
-        exactSHA: process.env.GITHUB_SHA ?? 'local-unpublished',
+        ...sourceBinding,
         viewport: page.viewportSize(),
         url: page.url(),
         ...(facts as object),
+        observed,
       },
       null,
       2
     )
   );
+  if (root && (await root.count()))
+    await root.scrollIntoViewIfNeeded({ timeout: 1500 }).catch(() => {});
   const session = await page.context().newCDPSession(page);
-  const capture = await session.send('Page.captureScreenshot', { format: 'png' });
-  await writeFile(join(directory, `${name}.png`), Buffer.from(capture.data, 'base64'));
-  await session.detach();
+  try {
+    const capture = await session.send('Page.captureScreenshot', { format: 'png' });
+    await writeFile(join(directory, `${name}.png`), Buffer.from(capture.data, 'base64'));
+  } finally {
+    await session.detach();
+  }
+}
+
+async function recordFailure(
+  page: Page,
+  root: Locator | null,
+  name: string,
+  state: unknown,
+  errors: unknown,
+  error: unknown
+) {
+  await evidence(page, root, `${name}-failure`, {
+    outcome: 'failed',
+    state,
+    errors,
+    failure:
+      error instanceof Error ? { message: error.message, stack: error.stack } : String(error),
+  }).catch((captureError) => console.error('[Copy evidence] failure capture failed', captureError));
+}
+
+async function applyFamilyFixture(page: Page, family: string) {
+  await page.evaluate((family) => {
+    (window as any).__copyEvidence?.record('fixture.family', {
+      family,
+      readyState: document.readyState,
+    });
+    document.documentElement.dataset.siteLibraryFamily = family;
+    document
+      .querySelectorAll<HTMLElement>('[data-site-family-scope]')
+      .forEach((scope) => (scope.dataset.siteLibraryFamily = family));
+  }, family);
 }
 
 describe.sequential('Copy commands: real consumer recipes across public runtimes', () => {
@@ -88,6 +314,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
       permissions: ['clipboard-read', 'clipboard-write'],
     });
     const page = await context.newPage();
+    const errors = await observeCopyPage(page);
     try {
       await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
       const root = page.locator('.expressive-code [data-site-copy]').first();
@@ -100,6 +327,10 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
             ?.dataset.copyState === 'success'
       );
       expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(expected);
+      await evidence(page, root, 'trusted-clipboard', { outcome: 'passed', errors });
+    } catch (error) {
+      await recordFailure(page, null, 'trusted-clipboard', 'trusted clipboard', errors, error);
+      throw error;
     } finally {
       await context.close();
     }
@@ -110,6 +341,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
       viewport: { width: 390, height: 1000 },
     });
     const page = await context.newPage();
+    const errors = await observeCopyPage(page);
     try {
       await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
       const source = page.locator('.expressive-code pre').first();
@@ -124,6 +356,10 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
       ).toBeLessThanOrEqual(1);
+      await evidence(page, source, 'nojs-source', { outcome: 'passed', errors });
+    } catch (error) {
+      await recordFailure(page, null, 'nojs-source', 'no JavaScript', errors, error);
+      throw error;
     } finally {
       await context.close();
     }
@@ -145,6 +381,9 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
         });
       }, runtime);
       const page = await context.newPage();
+      const errors = await observeCopyPage(page);
+      const stage = { action: 'navigate', family: 'shadcn' };
+      let observedRoot: Locator | null = null;
       try {
         await page.goto(`${baseUrl}/zh-cn/ui-libraries/shadcn/button/`, {
           waitUntil: 'domcontentloaded',
@@ -163,17 +402,16 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
         const card = page.locator('[data-install-command-card]:visible').first();
         await card.waitFor();
         const root = card.locator('[data-site-copy]');
+        observedRoot = root;
         const expected = await card
           .locator('[data-command-panel]:not([hidden]) [data-command]')
           .textContent();
         for (const family of ['shadcn', 'brutalist']) {
-          await page.evaluate((family) => {
-            document.documentElement.dataset.siteLibraryFamily = family;
-            document
-              .querySelectorAll<HTMLElement>('[data-site-family-scope]')
-              .forEach((scope) => (scope.dataset.siteLibraryFamily = family));
-          }, family);
+          stage.family = family;
+          stage.action = 'family input and ready';
+          await applyFamilyFixture(page, family);
           await ready(root, runtime, family);
+          stage.action = 'trusted copy activation';
           const button = root.locator('[data-demo-ref="copy-button"]');
           const count = await page.evaluate(() => (window as any).__installCopyWrites.length);
           await button.click();
@@ -192,9 +430,21 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
             family,
             sourceHostFixture: runtime === 'vue2' ? 'existing wc snippet' : false,
             familyInput: 'explicit docs consumer fixture',
+            errors,
+            stage: { ...stage },
             facts,
           });
         }
+      } catch (error) {
+        await recordFailure(
+          page,
+          observedRoot,
+          `${runtime}-${stage.family}-install`,
+          stage,
+          errors,
+          error
+        );
+        throw error;
       } finally {
         await context.close();
       }
@@ -226,17 +476,17 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
           });
         }, runtime);
         const page = await context.newPage();
+        const errors = await observeCopyPage(page);
+        const stage = { action: 'navigate', family, index: -1, theme: 'light' };
+        let observedRoot: Locator | null = null;
         try {
           await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
           await page.waitForSelector('[data-code-panel-init="1"]:visible');
           // Docs has no family picker. This explicit consumer-input fixture uses
           // the same family markers as applySiteLibraryFamily; screenshots label it.
-          await page.evaluate((family) => {
-            document.documentElement.dataset.siteLibraryFamily = family;
-            document
-              .querySelectorAll<HTMLElement>('[data-site-family-scope]')
-              .forEach((scope) => (scope.dataset.siteLibraryFamily = family));
-          }, family);
+          stage.family = family;
+          stage.action = 'family input and ready';
+          await applyFamilyFixture(page, family);
           const panel = page.locator('[data-code-shell]:visible').first();
           await panel.waitFor();
           const toggle = panel.locator('[data-code-toggle]');
@@ -246,6 +496,9 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
             panel.locator('[data-site-copy]'),
           ];
           for (const [index, root] of roots.entries()) {
+            stage.index = index;
+            observedRoot = root;
+            stage.action = 'ready';
             await ready(root, runtime, family);
             const button = root.locator('[data-demo-ref="copy-button"]');
             const expected = await root.evaluate((root) =>
@@ -257,48 +510,89 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
             const name = await button.textContent();
             expect(name?.trim()).toBeTruthy();
             for (const theme of ['light', 'dark']) {
+              stage.theme = theme;
+              stage.action = 'baseline';
               await page.evaluate(
                 (theme) => (document.documentElement.dataset.theme = theme),
                 theme
               );
-              await page.mouse.move(0, 0);
-              await button.evaluate((element: HTMLElement) => element.blur());
-              const baseline = await paint(button);
+              const baseline = await unfocusedPaint(button);
               expect([baseline.width, baseline.height]).toEqual(
                 family === 'shadcn' ? [32, 32] : [40, 40]
               );
               expect(baseline.glyph).toEqual([18, 18]);
               expect(Math.max(...baseline.center)).toBeLessThanOrEqual(1);
+              // Record baseline before any assertion on the first interactive state.
+              await evidence(page, root, `${runtime}-${family}-${index}-${theme}-baseline`, {
+                runtime,
+                family,
+                theme,
+                baseline,
+                errors,
+              });
+              stage.action = 'hover';
               await button.hover();
-              await page.waitForFunction(
-                ({ selector, color }) =>
-                  getComputedStyle(document.querySelector(selector)!).backgroundColor !== color,
-                {
-                  selector: `#${await root.getAttribute('id')} [data-demo-ref="copy-button"]`,
-                  color: baseline.background,
-                }
-              );
+              await expect
+                .poll(async () =>
+                  copyPaintIssues(
+                    family as 'shadcn' | 'brutalist',
+                    baseline,
+                    await paint(button),
+                    'hover'
+                  )
+                )
+                .toEqual([]);
               const hovered = await paint(button);
-              expect(hovered.background).not.toBe(baseline.background);
-              await page.mouse.move(0, 0);
+              stage.action = 'pressed';
+              await page.mouse.down();
+              try {
+                await expect
+                  .poll(async () =>
+                    copyPaintIssues(
+                      family as 'shadcn' | 'brutalist',
+                      hovered,
+                      await paint(button),
+                      'pressed'
+                    )
+                  )
+                  .toEqual([]);
+                await evidence(page, root, `${runtime}-${family}-${index}-${theme}-pressed`, {
+                  runtime,
+                  family,
+                  theme,
+                  baseline,
+                  hovered,
+                  pressed: await paint(button),
+                  errors,
+                });
+              } finally {
+                // Release away from the command so the paint probe itself does not copy.
+                await page.mouse.move(0, 0);
+                await page.mouse.up();
+              }
+              stage.action = 'focus baseline';
+              const unfocused = await unfocusedPaint(button);
+              await evidence(page, root, `${runtime}-${family}-${index}-${theme}-unfocused`, {
+                runtime,
+                family,
+                theme,
+                unfocused,
+                errors,
+              });
+              stage.action = 'focus';
               await page.keyboard.press('Tab');
               await button.focus();
-              const ring = family === 'shadcn' ? 'ring-3' : 'ring-offset-2';
-              await page.waitForFunction(
-                ({ selector, ring }) =>
-                  document
-                    .querySelector(selector)
-                    ?.getAttribute('data-pui-style')
-                    ?.split(' ')
-                    .includes(ring),
-                {
-                  selector: `#${await root.getAttribute('id')} [data-demo-ref="copy-button"]`,
-                  ring,
-                }
-              );
+              await expect
+                .poll(async () =>
+                  copyPaintIssues(
+                    family as 'shadcn' | 'brutalist',
+                    unfocused,
+                    await paint(button),
+                    'focus'
+                  )
+                )
+                .toEqual([]);
               const focused = await paint(button);
-              expect(focused.focused).toBe(true);
-              expect(focused.shadow).not.toBe(baseline.shadow);
               await evidence(page, root, `${runtime}-${family}-${index}-${theme}-focus`, {
                 runtime,
                 family,
@@ -306,10 +600,12 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
                 familyInput: 'explicit docs consumer fixture',
                 baseline,
                 hovered,
+                unfocused,
                 focused,
               });
             }
             for (const key of ['Enter', 'Space']) {
+              stage.action = `keyboard ${key}`;
               const count = await page.evaluate(
                 () => ((window as any).__copyFixture.writes as string[]).length
               );
@@ -342,6 +638,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
               );
               expect(await page.evaluate(() => scrollY)).toBe(beforeScroll);
             }
+            stage.action = 'clipboard rejection';
             await page.evaluate(() => {
               (window as any).__copyFixture.fail = true;
             });
@@ -352,6 +649,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
               { selector: `#${await root.getAttribute('id')} [data-demo-ref="copy-button"]` }
             );
             expect(await root.locator('[role="status"]').textContent()).toContain('复制失败');
+            stage.action = 'clipboard retry';
             await page.evaluate(() => {
               (window as any).__copyFixture.fail = false;
             });
@@ -367,6 +665,16 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
             await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
           ).toBeLessThanOrEqual(1);
           expect(await page.locator('.expressive-code .copy button').count()).toBe(0);
+        } catch (error) {
+          await recordFailure(
+            page,
+            observedRoot,
+            `${runtime}-${family}-${stage.index}-${stage.theme}`,
+            stage,
+            errors,
+            error
+          );
+          throw error;
         } finally {
           await context.close();
         }

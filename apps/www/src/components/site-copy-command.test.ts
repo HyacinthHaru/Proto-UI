@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createCopyCommandDemo, initCopyCommand, type SiteCopyCommand } from './site-copy-command';
 import { createCopyController } from './site-copy-controller';
 import { initSiteCopyCommands, readCopyText } from './site-copy-client';
+import { applySiteLibraryFamily, resolveSiteLibraryFamily } from './site-library-family';
 
 vi.mock('./PrototypePreviewer/projection-theme', () => ({
   resolveProjectionThemeSurfaceStyle: () => ({
@@ -378,4 +379,77 @@ describe('initial projection recovery', () => {
       release();
     }
   }, 20000);
+});
+
+describe('Install Copy route and fixture input ordering', () => {
+  it('follows the nearest family after delayed route synchronization and repeated commits', async () => {
+    const { root, writeText } = fixture();
+    const frame = document.createElement('div');
+    frame.dataset.siteFamilyScope = '';
+    root.before(frame);
+    const card = document.createElement('figure');
+    card.dataset.installCommandCard = '';
+    frame.append(card);
+    card.append(root);
+    applySiteLibraryFamily(document, 'shadcn');
+    const handle = initCopyCommand(root, () => 'npx @proto.ui/cli@latest add wc shadcn-button');
+    mounted.push(handle);
+    await handle.ready;
+    root.querySelector<HTMLElement>('[data-demo-ref="copy-button"]')!.click();
+    await settle();
+    expect(writeText).toHaveBeenCalledTimes(1);
+    const routeSync = () =>
+      applySiteLibraryFamily(
+        document,
+        resolveSiteLibraryFamily('/zh-cn/ui-libraries/shadcn/button/')
+      );
+    document.addEventListener('astro:page-load', routeSync);
+    try {
+      // Discriminating fixture control: a later real PageFrame route write is
+      // allowed to replace a test's global family injection. It is not evidence
+      // that the Copy consumer lost its subscription.
+      applySiteLibraryFamily(document, 'brutalist');
+      document.dispatchEvent(new Event('astro:page-load'));
+      await vi.waitFor(() => expect(root.dataset.copyFamily).toBe('shadcn'), { timeout: 15000 });
+      expect(frame.dataset.siteLibraryFamily).toBe('shadcn');
+      applySiteLibraryFamily(document, 'brutalist');
+      await vi.waitFor(() => expect(root.dataset.copyFamily).toBe('brutalist'), { timeout: 15000 });
+      expect(root.dataset.copyView).toBe('ready');
+      expect(root.querySelectorAll('[data-demo-ref="copy-button"]')).toHaveLength(1);
+      expect(writeText).toHaveBeenCalledTimes(1);
+      routeSync();
+      await vi.waitFor(() => expect(root.dataset.copyFamily).toBe('shadcn'), { timeout: 15000 });
+      card.dataset.siteLibraryFamily = 'brutalist';
+      await vi.waitFor(
+        () =>
+          expect(
+            root.dataset.copyFamily,
+            JSON.stringify({
+              connected: root.isConnected,
+              cardConnected: card.isConnected,
+              currentPreference: localStorage.getItem('preferred-prototypes-adapter'),
+              frameFamily: frame.dataset.siteLibraryFamily,
+              cardFamily: card.dataset.siteLibraryFamily,
+              nearest: root.closest<HTMLElement>('[data-site-library-family]')?.dataset
+                .siteLibraryFamily,
+              calls: faults.calls,
+              view: root.dataset.copyView,
+              candidates: faults.completed.map(({ host }) => ({
+                connected: host.isConnected,
+                state: host.dataset.projectionGenerationState,
+                family: host.dataset.projectionFamily,
+              })),
+            })
+          ).toBe('brutalist'),
+        { timeout: 15000 }
+      );
+      routeSync();
+      await settle();
+      expect(root.dataset.copyFamily).toBe('brutalist');
+      delete card.dataset.siteLibraryFamily;
+      await vi.waitFor(() => expect(root.dataset.copyFamily).toBe('shadcn'), { timeout: 15000 });
+    } finally {
+      document.removeEventListener('astro:page-load', routeSync);
+    }
+  }, 25000);
 });
