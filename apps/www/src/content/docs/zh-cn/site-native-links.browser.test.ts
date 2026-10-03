@@ -630,6 +630,8 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
                 );
                 if (generations.length !== 1)
                   throw new Error('Native action group requires exactly one active generation');
+                if (!(anchor instanceof HTMLAnchorElement))
+                  throw new Error('Expected a native anchor in its navigation owner');
                 const index = Array.from(generations[0].querySelectorAll('a')).indexOf(anchor);
                 const source = group
                   .querySelector('[data-homepage-fallback]')

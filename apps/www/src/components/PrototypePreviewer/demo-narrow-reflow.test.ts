@@ -44,7 +44,7 @@ describe('Demo consumer narrow-layout constraints', () => {
   });
 
   it('reflows the passive Transition demo without reducing its desktop box or removing states', () => {
-    assertDemoSpec(transitionDemo);
+    assertDemoSpec(transitionDemo as DemoSpec);
     const root = transitionDemo.root as DemoSpec['root'];
     expect(root.kind).toBe('box');
     if (root.kind !== 'box') return;
