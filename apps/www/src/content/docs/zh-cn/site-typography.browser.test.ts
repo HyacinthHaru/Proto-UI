@@ -5,13 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import type { Browser, BrowserContext, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import {
-  launchBrowser,
-  RUNTIMES,
-  choosePreviewRuntime,
-  startServer,
-  stopServer,
-} from './browser-harness';
+import { launchBrowser, RUNTIMES, startServer, stopServer } from './browser-harness';
 import { revealHeaderPreferences } from './site-header-browser';
 
 // Authority: current bounded #803 native-owner request; app-private
@@ -165,6 +159,7 @@ async function renderedRoleFonts(context: BrowserContext, page: Page, selector: 
   try {
     await cdp.send('DOM.enable');
     await cdp.send('CSS.enable');
+    await cdp.send('DOM.getDocument');
     const expression = `(function(){const root=document.querySelector(${JSON.stringify(selector)});if(!root)return null;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);for(let node=walker.nextNode();node;node=walker.nextNode()){if(node.textContent.trim())return node.parentElement;}return null;})()`;
     const { result } = await cdp.send('Runtime.evaluate', {
       expression,
@@ -563,7 +558,7 @@ describe.sequential('native SiteTypography rendered evidence', () => {
         }, 120_000);
 
   for (const family of FAMILIES)
-    it(`${family}: real documentation follows global runtime independently from a demo`, async () => {
+    it(`${family}: real documentation follows shared runtime preferences with separate scope ownership`, async () => {
       await runCase(`docs-${family}`, async (page, _context, record) => {
         await page.goto(
           `${baseUrl}/en/ui-libraries/${family === 'brutalist' ? 'brutalist/components' : 'shadcn'}/button/`,
@@ -600,19 +595,20 @@ describe.sequential('native SiteTypography rendered evidence', () => {
             { timeout: 30_000 }
           );
           const generation = await title.getAttribute('data-typography-generation');
-          const demoRuntime = RUNTIMES[(RUNTIMES.indexOf(runtime) + 1) % RUNTIMES.length]!;
-          await choosePreviewRuntime(
-            page,
-            page.locator('[data-previewer-id]').first(),
-            demoRuntime
-          );
-          await page.waitForFunction(
-            (runtime) =>
-              document.querySelector<HTMLElement>('[data-previewer-id] [data-projection-scope]')
-                ?.dataset.projectionRuntime === runtime,
-            demoRuntime,
-            { timeout: 30_000 }
-          );
+          // Public preview pickers may publish the common preference, and
+          // adapter-panel examples intentionally omit a local picker. Observe
+          // actual scope coordinates instead of inventing a private preference.
+          const scopes = await page
+            .locator('[data-previewer-id] [data-projection-scope]')
+            .evaluateAll((nodes) =>
+              nodes.map((node) => ({
+                owner: node.getAttribute('data-projection-scope'),
+                runtime: node.getAttribute('data-projection-runtime'),
+                family: node.getAttribute('data-projection-family'),
+                generation: node.getAttribute('data-projection-generation'),
+              }))
+            );
+          expect(await page.locator('[data-previewer-id] [data-typography-owner]').count()).toBe(0);
           expect(await title.getAttribute('data-typography-runtime')).toBe(runtime);
           expect(await title.getAttribute('data-typography-generation')).toBe(generation);
           expect(
@@ -624,7 +620,7 @@ describe.sequential('native SiteTypography rendered evidence', () => {
           states.push({
             runtime,
             family,
-            demoRuntime,
+            scopes,
             generation,
             paint: await typographyPaint(page, 'h1[data-site-typography="h1"]'),
           });
