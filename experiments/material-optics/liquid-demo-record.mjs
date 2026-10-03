@@ -76,13 +76,6 @@ try {
     await page.waitForFunction(() => document.body.dataset.animating === 'false');
     await hold();
   }
-  await page.getByRole('button', { name: 'Fusion example', exact: true }).click();
-  await hold();
-  for (let i = 0; i < 2; i++) {
-    await page.getByRole('button', { name: 'Join / separate', exact: true }).click();
-    await page.waitForFunction(() => document.body.dataset.animating === 'false');
-    await hold();
-  }
   await page.getByRole('button', { name: 'Move light', exact: true }).click();
   await hold();
   await page.getByRole('button', { name: 'Move real background', exact: true }).click();

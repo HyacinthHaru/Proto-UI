@@ -94,7 +94,7 @@
       text-align: center;
       color: #12294d;
       font-size: 17px;
-      font-weight: 650;
+      font-weight: 500;
       text-shadow: 0 1px 1px #fff9;
       pointer-events: none;
     }
@@ -118,7 +118,7 @@
       left: 189px;
       top: 66px;
       color: #123052;
-      font-weight: 600;
+      font-weight: 450;
       line-height: 2.4;
       opacity: 0;
       pointer-events: none;
@@ -202,20 +202,46 @@
         />
         <feDisplacementMap
           id="lens-displacement"
-          in="soft-background"
+          in="SourceGraphic"
           in2="normal"
           scale="40"
           xChannelSelector="R"
           yChannelSelector="G"
-          result="refracted"
+          result="sharp-refracted"
+        />
+        <feImage
+          id="weights"
+          x="0"
+          y="0"
+          width="600"
+          height="264"
+          preserveAspectRatio="none"
+          result="weights"
         />
         <feColorMatrix
-          in="normal"
+          in="weights"
           type="matrix"
-          values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 1 0 0"
-          result="shape-mask"
+          values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0"
+          result="rim-mask"
         />
-        <feComposite in="refracted" in2="shape-mask" operator="in" result="masked" />
+        <feColorMatrix
+          in="weights"
+          type="matrix"
+          values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 1 0 0 0"
+          result="body-mask"
+        />
+        <feComposite in="sharp-refracted" in2="rim-mask" operator="in" result="rim" />
+        <feComposite in="soft-background" in2="body-mask" operator="in" result="body" />
+        <feComposite
+          in="rim"
+          in2="body"
+          operator="arithmetic"
+          k1="0"
+          k2="1"
+          k3="1"
+          k4="0"
+          result="masked"
+        />
         <feMerge>
           <feMergeNode in="SourceGraphic" />
           <feMergeNode in="masked" />
@@ -238,6 +264,10 @@
     const normal = document.createElement('canvas');
     normal.width = 600;
     normal.height = 264;
+    const weights = document.createElement('canvas');
+    weights.width = 600;
+    weights.height = 264;
+    const weightsContext = weights.getContext('2d');
     const ctx = normal.getContext('2d'),
       shine = document.querySelector('#shine').getContext('2d');
     let generation = 0,
@@ -252,11 +282,21 @@
     function render() {
       const f = makeField(state);
       ctx.putImageData(new ImageData(f.normal, f.width, f.height), 0, 0);
+      weightsContext.putImageData(new ImageData(f.weights, f.width, f.height), 0, 0);
       shine.putImageData(new ImageData(f.shine, f.width, f.height), 0, 0);
       document.querySelector('#field').setAttribute('href', normal.toDataURL());
+      document.querySelector('#weights').setAttribute('href', weights.toDataURL());
       document
         .querySelector('#scatter')
-        .setAttribute('stdDeviation', String(0.15 + 4 * state.morph));
+        .setAttribute(
+          'stdDeviation',
+          String(
+            state.bodyScatter === false
+              ? 0
+              : (0.4 + 4 * state.morph) *
+                  (1 - 0.4 * (state.opticalPress === false ? 0 : state.press))
+          )
+        );
       const menu = state.mode === 'menu',
         offset = 105 - state.merge * 58;
       document.querySelector('#lens').dataset.effectId = menu ? 'regular-control' : 'fusion-group';

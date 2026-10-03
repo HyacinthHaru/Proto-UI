@@ -24,7 +24,7 @@ export function distanceAt(x, y, state = {}) {
   const anchorX = state.anchorX ?? 300,
     anchorY = state.anchorY ?? 132;
   const local = Math.exp(-((x - anchorX) ** 2 + (y - anchorY) ** 2) / (2 * 48 ** 2));
-  return d + press * 2.5 * local;
+  return d - press * 2.5 * local;
 }
 export function advanceSpring(value, velocity, target, dt, omega = 18, damping = 0.82) {
   if (
@@ -48,17 +48,23 @@ export function advanceSpring(value, velocity, target, dt, omega = 18, damping =
 }
 export function sampleOptics(x, y, state = {}) {
   const d = distanceAt(x, y, state);
-  if (d >= 1) return { dx: 0, dy: 0, alpha: 0, highlight: 0, d };
+  if (d >= 1) return { dx: 0, dy: 0, alpha: 0, highlight: 0, edgeShade: 0, rimWeight: 0, d };
   const alpha = Math.max(0, Math.min(1, 0.5 - d));
   const gx = distanceAt(x + 0.5, y, state) - distanceAt(x - 0.5, y, state);
   const gy = distanceAt(x, y + 0.5, state) - distanceAt(x, y - 0.5, state);
-  const rimWidth = 8 + 6 * (state.morph ?? 0);
+  const local = Math.exp(
+    -((x - (state.anchorX ?? 300)) ** 2 + (y - (state.anchorY ?? 132)) ** 2) / (2 * 48 ** 2)
+  );
+  const opticalPress =
+    state.opticalPress === false ? 0 : Math.max(0, Math.min(1, state.press ?? 0));
+  const thickness = opticalPress * local;
+  const rimWidth = 8 + 6 * (state.morph ?? 0) + 3 * thickness;
   const t = Math.max(0, Math.min(1, -d / rimWidth));
   const bump = Math.sin(Math.PI * t) ** 2;
   // This ordinary-rim profile bounds |d(displacement)/d(distance)| by 0.22*pi < 1.
-  const strength = 0.22 * rimWidth * bump;
+  const strength = 0.22 * rimWidth * bump * (1 + 0.12 * thickness);
   // Keep the smooth-union gradient magnitude; the height field has a real z normal.
-  const slope = 0.55 * bump,
+  const slope = (0.55 + 0.25 * thickness) * bump,
     norm = Math.hypot(gx * slope, gy * slope, 1);
   const nx = (gx * slope) / norm,
     ny = (gy * slope) / norm,
@@ -70,20 +76,35 @@ export function sampleOptics(x, y, state = {}) {
     hy = light[1] / ll,
     hz = lz / ll + 1,
     hl = Math.hypot(hx, hy, hz);
-  const spec = Math.pow(Math.max(0, (nx * hx + ny * hy + nz * hz) / hl), 64) * bump * 0.18;
-  const local = Math.exp(
-    -((x - (state.anchorX ?? 300)) ** 2 + (y - (state.anchorY ?? 132)) ** 2) / (2 * 48 ** 2)
-  );
-  const highlight = spec + 0.025 * bump + 0.035 * (state.energy ?? 0) * local;
-  return { dx: gx * strength, dy: gy * strength, alpha, highlight, d };
+  const spec = Math.pow(Math.max(0, (nx * hx + ny * hy + nz * hz) / hl), 64) * bump * 0.23;
+  // Fine opposite light/dark edges are separate from the wide optical sampling rim.
+  const edge = Math.exp(-((-d - 0.7) ** 2) / 0.65);
+  const facing = -(gx * light[0] + gy * light[1]) / Math.hypot(...light);
+  const highlight =
+    spec + edge * (0.1 + 0.19 * Math.max(0, facing)) + 0.02 * (state.energy ?? 0) * local;
+  const edgeShade = edge * Math.max(0, -facing) * 0.13;
+  const transition = Math.max(0, Math.min(1, (t - 0.65) / 0.35));
+  const rimWeight = 1 - transition * transition * (3 - 2 * transition);
+  return {
+    dx: gx * strength,
+    dy: gy * strength,
+    alpha,
+    highlight,
+    edgeShade,
+    rimWeight,
+    rimWidth,
+    d,
+  };
 }
 export function makeField(state = {}, width = 600, height = 264) {
   const normal = new Uint8ClampedArray(width * height * 4);
   const shine = new Uint8ClampedArray(normal.length);
+  const weights = new Uint8ClampedArray(normal.length);
   for (let i = 0; i < normal.length; i += 4) {
     normal[i] = 128;
     normal[i + 1] = 128;
     normal[i + 3] = 255;
+    weights[i + 3] = 255;
   }
   const morph = state.morph ?? 0,
     menu = (state.mode ?? 'menu') === 'menu';
@@ -103,6 +124,9 @@ export function makeField(state = {}, width = 600, height = 264) {
       // Blue carries the independent shape mask, extracted by the filter.
       normal[i + 2] = 255 * value.alpha;
       normal[i + 3] = 255;
+      const sharpWeight = state.sharpRim === false ? 0 : value.rimWeight;
+      weights[i] = 255 * value.alpha * sharpWeight;
+      weights[i + 1] = 255 * value.alpha * (1 - sharpWeight);
       shine[i] = shine[i + 1] = shine[i + 2] = 255;
       const morph = state.morph ?? 0;
       const shadowDistance = distanceAt(
@@ -111,9 +135,15 @@ export function makeField(state = {}, width = 600, height = 264) {
         state
       );
       const shadow =
-        value.d > 0 ? Math.exp(-(Math.max(0, shadowDistance) ** 2) / (18 + 20 * morph)) * 0.055 : 0;
+        value.d > 0 ? Math.exp(-(Math.max(0, shadowDistance) ** 2) / (8 + 14 * morph)) * 0.028 : 0;
       if (value.alpha === 0) shine[i] = shine[i + 1] = shine[i + 2] = 0;
-      shine[i + 3] = 255 * (value.alpha * (0.12 + 0.25 * morph + value.highlight) + shadow);
+      // Body integration is modest and spatially separate from the sharp optical rim.
+      const bodyTint = (0.04 + 0.15 * morph) * (1 - value.rimWeight);
+      const white = bodyTint + value.highlight;
+      const opacity = value.alpha * (white + value.edgeShade) + shadow;
+      if (opacity > 0 && value.alpha > 0)
+        shine[i] = shine[i + 1] = shine[i + 2] = (255 * white) / (white + value.edgeShade);
+      shine[i + 3] = 255 * opacity;
     }
-  return { normal, shine, width, height };
+  return { normal, weights, shine, width, height };
 }

@@ -13,7 +13,7 @@ test('rim displacement is spatially varying, two-dimensional and vanishes outsid
 test('shape union connects continuously and press/morph change actual geometry', () => {
   assert(distanceAt(300, 132, { merge: 0, mode: 'pair' }) > 0);
   assert(distanceAt(300, 132, { merge: 1, mode: 'pair' }) < 0);
-  assert(distanceAt(300, 103, { press: 1 }) > distanceAt(300, 103, { press: 0 }));
+  assert(distanceAt(300, 103, { press: 1 }) < distanceAt(300, 103, { press: 0 }));
   assert(distanceAt(300, 60, { mode: 'menu', morph: 0 }) > 0);
   assert(distanceAt(300, 60, { mode: 'menu', morph: 1 }) < 0);
   for (let i = 1; i <= 20; i++)
@@ -51,4 +51,42 @@ test('ordinary rim sampling stays monotonic and independent spring clocks conver
   assert(Math.abs(states[0].value - states[2].value) < 1e-8);
   const first = advanceSpring(0.4, 2, 0, 1 / 60);
   assert(first.value > 0.4, 'retarget preserves incoming velocity before turning');
+});
+
+test('complementary sharp-rim and scattered-body weights preserve one surface', () => {
+  const f = makeField();
+  assert.equal(f.weights?.length, f.normal.length);
+  for (let i = 0; i < f.normal.length; i += 4) {
+    assert(Math.abs(f.weights[i] + f.weights[i + 1] - f.normal[i + 2]) <= 1);
+    assert.equal(f.weights[i + 3], 255);
+  }
+  assert(sampleOptics(230, 132).rimWeight > 0.9);
+  assert.equal(sampleOptics(300, 132).rimWeight, 0);
+});
+
+test('press changes local optical thickness independently of silhouette and has bounded maps', () => {
+  const base = { anchorX: 240, anchorY: 132 };
+  const rest = sampleOptics(234, 132, base);
+  const press = sampleOptics(234, 132, { ...base, press: 1 });
+  const disabled = sampleOptics(234, 132, { ...base, press: 1, opticalPress: false });
+  assert(press.rimWidth > rest.rimWidth);
+  assert.equal(disabled.rimWidth, rest.rimWidth);
+  assert(Math.abs(press.dx - disabled.dx) > 0.1);
+  for (const state of [{}, { press: 1, ...base }, { morph: 0.5 }, { morph: 1 }]) {
+    for (let y = 34; y < 230; y += 3)
+      for (let x = 148; x < 452; x += 3) {
+        const a = sampleOptics(x - 0.25, y, state),
+          b = sampleOptics(x + 0.25, y, state);
+        const c = sampleOptics(x, y - 0.25, state),
+          d = sampleOptics(x, y + 0.25, state);
+        const xx = 1 + (b.dx - a.dx) / 0.5,
+          xy = (d.dx - c.dx) / 0.5;
+        const yx = (b.dy - a.dy) / 0.5,
+          yy = 1 + (d.dy - c.dy) / 0.5;
+        assert(
+          xx * yy - xy * yx > 0.15,
+          'sampled source map must not fold in the bounded single-surface poses'
+        );
+      }
+  }
 });
