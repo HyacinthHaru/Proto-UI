@@ -72,6 +72,11 @@ async function capture(name: string, target?: Locator) {
   screenshots.push(filename);
 }
 async function open(theme: 'light' | 'dark') {
+  if (!page || page.isClosed()) {
+    page = await context!.newPage();
+    page.setDefaultTimeout(10_000);
+    page.on('pageerror', (error) => pageErrors.push(error.message));
+  }
   pageErrors.length = 0;
   await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
   await page.goto(`${baseUrl}${ROUTE}?theme=${theme}`, { waitUntil: 'networkidle' });
@@ -201,7 +206,24 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
         observations.push({ failureCaptureError: String(error) });
       }
     }
-    await manifest('running');
+    // Each case gets its own document. Dispose real hosts before closing it;
+    // native diagnostic listeners cannot survive into a later case.
+    if (page && !page.isClosed()) {
+      try {
+        await page.evaluate(() =>
+          (window as unknown as Partial<FixtureWindow>).bootstrapStateControlsFixture?.dispose()
+        );
+      } catch (error) {
+        results[results.length - 1].status = 'fail';
+        observations.push({ caseCleanupError: String(error) });
+        throw error;
+      } finally {
+        await page.close();
+        await manifest('running');
+      }
+    } else {
+      await manifest('running');
+    }
   });
   afterAll(async () => {
     try {
@@ -459,8 +481,39 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
           (element, marker) => element.setAttribute('data-editor-identity', marker),
           marker
         );
+        // Read-only native/expose attribution probe: preserve the failing count
+        // until actual browser events distinguish multiple native edits from
+        // duplicate outward delivery. No dispatch, value write or owner patch.
+        await editor.evaluate((element) => {
+          const trace: unknown[] = [];
+          (
+            element as HTMLElement & { __bootstrapNativeInputTrace?: unknown[] }
+          ).__bootstrapNativeInputTrace = trace;
+          element.addEventListener('input', (event) => {
+            const input = event as InputEvent;
+            trace.push({
+              type: input.type,
+              inputType: input.inputType,
+              data: input.data,
+              composing: input.isComposing,
+              isTrusted: input.isTrusted,
+              value: (element as HTMLInputElement | HTMLTextAreaElement).value,
+            });
+          });
+        });
         await editor.fill(ref === 'textarea' ? 'Changed\nSecond line' : 'Changed');
         await expect.poll(() => state(runtime, ref, 'value')).toBe(await editor.inputValue());
+        observations.push({
+          runtime,
+          ref,
+          stage: 'initial-editor-fill-before-count-assertion',
+          nativeInputs: await editor.evaluate(
+            (element) =>
+              (element as HTMLElement & { __bootstrapNativeInputTrace?: unknown[] })
+                .__bootstrapNativeInputTrace
+          ),
+          valueChangeRequests: await requests(runtime, ref, 'valueChange'),
+        });
         expect((await requests(runtime, ref, 'valueChange')).length).toBe(1);
         const value = await editor.inputValue();
         for (const disabled of [true, false, true, false]) {
