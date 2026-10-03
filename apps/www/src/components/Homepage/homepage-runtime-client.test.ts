@@ -68,14 +68,14 @@ afterEach(async () => {
 });
 
 describe('Homepage page-owned runtime', () => {
-  it('stages all action groups before hiding native SSR links, with one runtime selector', async () => {
+  it('stages all action groups before hiding native SSR links, with the one global runtime/library control group', async () => {
     const root = fixture();
     const gate = deferred<ReturnType<typeof candidate>>();
     fakes.materialize.mockImplementationOnce(() => gate.promise);
     handle = initHomepageRuntime(root);
     await settle();
     expect(document.querySelector<HTMLElement>('[data-homepage-fallback]')!.hidden).toBe(false);
-    expect(fakes.materialize.mock.calls[0]![1].controlIds).toEqual(['runtime']);
+    expect(fakes.materialize.mock.calls[0]![1].controlIds).toEqual(['runtime', 'family']);
     expect(fakes.materialize.mock.calls[1]![1].controlIds).toEqual([]);
     gate.resolve(candidate());
     await settle();
@@ -175,8 +175,8 @@ describe('Homepage page-owned runtime', () => {
     expect(fakes.materialize.mock.calls).toHaveLength(3);
     expect(demo.dataset.projectionGeneration).toBe(root.dataset.runtimeGeneration);
     expect(demo.dataset.projectionRuntime).toBe('wc');
-    const controls = fakes.materialize.mock.calls[2]![1].controls;
-    expect(fakes.materialize.mock.calls[2]![1].controlIds).toEqual(['family']);
+    const controls = fakes.materialize.mock.calls[0]![1].controls;
+    expect(fakes.materialize.mock.calls[2]![1].controlIds).toEqual([]);
     const task = fakes.materialize.mock.calls[2]![1].content;
     expect(task.recipe.id).toBe('website-workspace-settings');
     assertDemoSpec(task.demo);
@@ -385,12 +385,12 @@ describe('Homepage page-owned runtime', () => {
     expect(unbind).toHaveBeenCalledTimes(4);
   });
 
-  it('supports a runtime-only header group without inventing a command control', async () => {
+  it('supports a preferences-only header group without inventing a command control', async () => {
     const root = fixture();
     root.querySelector('[data-homepage-fallback]')!.replaceChildren();
     handle = initHomepageRuntime(root);
     await settle();
     expect(root.dataset.runtimeState).toBe('ready');
-    expect(fakes.materialize.mock.calls[0]![1].controlIds).toEqual(['runtime']);
+    expect(fakes.materialize.mock.calls[0]![1].controlIds).toEqual(['runtime', 'family']);
   });
 });

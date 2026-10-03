@@ -1,5 +1,14 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { initAdapterSelects, isRuntimeId } from '../adapter-preference';
+
+afterEach(async () => {
+  // Disconnect real WC trees while Happy DOM still owns their document. Their
+  // nested async unmount chain must finish before the environment is destroyed.
+  document.body.replaceChildren();
+  await new Promise<void>((resolve) => setTimeout(resolve, 0));
+  delete document.documentElement.dataset.siteLibraryFamily;
+  vi.restoreAllMocks();
+});
 
 const adapterSelect = (id: string) => `
   <div data-adapter-select>

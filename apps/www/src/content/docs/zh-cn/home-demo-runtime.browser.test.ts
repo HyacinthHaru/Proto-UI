@@ -50,11 +50,11 @@ async function portalControlledBy(page: Page, trigger: Locator): Promise<Locator
 
 async function chooseProjectionControl(
   page: Page,
-  root: Locator,
+  _root: Locator,
   control: 'runtime' | 'family',
   value: string
 ): Promise<void> {
-  const owner = control === 'runtime' ? page.locator('[data-homepage-runtime]') : root;
+  const owner = page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]');
   const trigger = owner.locator(`[data-projection-control="${control}"] [role="combobox"]`);
   await trigger.click();
   const portal = await portalControlledBy(page, trigger);
@@ -543,7 +543,14 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           const task = home.locator('[data-home-settings]');
           const save = task.getByRole('button', { name: '保存到本页', exact: true });
           const reset = task.getByRole('button', { name: '恢复默认值', exact: true });
-          const editor = task.getByRole('textbox', { name: '工作区备注', exact: true });
+          const editor = task.locator(
+            'textarea[data-demo-ref="settings-note"], [data-demo-ref="settings-note"] > textarea'
+          );
+          expect(await editor.count(), 'one physical editable textarea').toBe(1);
+          expect(await editor.getAttribute('aria-label')).toBe('工作区备注');
+          expect(await editor.getAttribute('data-projection-prototype')).toBe(
+            `${family}-textarea-root`
+          );
           const summary = task.getByRole('switch', { name: '显示每周摘要', exact: true });
           const view = task.getByRole('combobox', { name: '默认项目视图', exact: true });
           expect(await editor.inputValue()).toBe('');

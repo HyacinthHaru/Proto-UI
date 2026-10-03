@@ -134,7 +134,7 @@ const baselineFontSelectors = [
 const candidateFontSelectors = [
   {
     name: 'library-control',
-    selector: `${HOME} [data-projection-control="family"] [role="combobox"]`,
+    selector: `[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"] [role="combobox"], ${HOME} [data-projection-control="family"] [role="combobox"]`,
   },
   { name: 'task-title', selector: `${HOME} .home-settings__title` },
   {
@@ -481,6 +481,43 @@ async function exerciseWorkspaceSettings(
     saveDisabled: true,
     feedback: `${copy.saved} · ${copy.board} · ${copy.on} · ${copy.noteLength(copy.note.length)}`,
   });
+  const livePreview = await page.waitForFunction(
+    ({ homeSelector, note }) => {
+      const root = document.querySelector(homeSelector);
+      const tasks = root?.querySelector<HTMLElement>('[data-demo-ref="settings-preview-tasks"]');
+      const summary = root?.querySelector<HTMLElement>(
+        '[data-demo-ref="settings-preview-summary"]'
+      );
+      const noteBox = root?.querySelector<HTMLElement>('[data-demo-ref="settings-preview-note"]');
+      const text = root?.querySelector('[data-demo-ref="settings-preview-note-text"]');
+      if (
+        !tasks ||
+        tasks.dataset.view !== 'board' ||
+        !summary ||
+        summary.hidden ||
+        !noteBox ||
+        noteBox.hidden ||
+        text?.textContent !== note
+      )
+        return false;
+      const surfaces = [
+        ...root!.querySelectorAll<HTMLElement>(
+          '[data-projection-prototype="site-preview-surface"]'
+        ),
+      ];
+      if (surfaces.length !== 5 || surfaces.some((surface) => !surface.dataset.puiStyle))
+        return false;
+      return {
+        view: tasks.dataset.view,
+        summaryVisible: !summary.hidden,
+        note: text.textContent,
+        prototypeInstances: surfaces.length,
+      };
+    },
+    { homeSelector: HOME, note: copy.note }
+  );
+  const liveResult = await livePreview.jsonValue();
+  await livePreview.dispose();
   activeProbeStage = 'workspace-settings-saved-capture';
   await capture('saved');
   activeProbeStage = 'workspace-settings-restore';
@@ -514,6 +551,7 @@ async function exerciseWorkspaceSettings(
     saved,
     restoredDraft,
     defaultsSaved,
+    liveResult,
   };
 }
 
@@ -837,21 +875,40 @@ try {
               fontSelectors.length,
               'Every candidate font sample must resolve to visible content'
             );
-            if (viewport.name === 'mobile') {
-              const demoControl = (
-                evidence.initial as Awaited<ReturnType<typeof measure>>
-              ).surfaceGeometry.find(
-                (surface) => surface.selector === `${HOME} [data-demo-ref="settings-view-trigger"]`
+            // The approved mobile composition flows Hero → editor → preview.
+            // Do not compress the first task control above the fold at the cost of readable content.
+            const globalControls = await page
+              .locator(
+                '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control] [role="combobox"]'
+              )
+              .evaluateAll((elements) =>
+                elements.map((element) => {
+                  const value = element.querySelector<HTMLElement>(
+                    '[data-pui-part="select-value"], [data-projection-prototype$="-select-value"]'
+                  );
+                  const rect = element.getBoundingClientRect();
+                  return {
+                    name: element.getAttribute('aria-label'),
+                    width: rect.width,
+                    height: rect.height,
+                    text: value?.textContent,
+                    fullValueVisible: !!value && value.scrollWidth <= value.clientWidth + 1,
+                  };
+                })
               );
-              assert.ok(
-                demoControl && demoControl.width > 0 && demoControl.height > 0,
-                'Mobile first view must contain the real project-view control'
-              );
-              assert.ok(
-                demoControl.y + demoControl.height <= viewport.height,
-                'The project-view trigger must be visible before scrolling'
-              );
-            }
+            evidence.globalControls = globalControls;
+            assert.equal(
+              globalControls.length,
+              2,
+              'Exactly one global runtime and library control'
+            );
+            assert.ok(
+              globalControls.every(
+                (control) =>
+                  control.width >= 120 && control.height >= 44 && control.fullValueVisible
+              ),
+              'Global selected values and targets must be fully visible'
+            );
             const failures = layoutFailures(
               evidence.initial as Awaited<ReturnType<typeof measure>>
             );
@@ -1007,6 +1064,34 @@ try {
             focusRestored: keyboardFocus,
             nativeLinks: keyboardLinks,
           };
+          if (revisionKind === 'candidate') {
+            const family = page.locator(
+              '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"] [role="combobox"]'
+            );
+            await family.click();
+            const portalId = await family.getAttribute('aria-controls');
+            assert.ok(portalId, 'Global library selector owns a real option portal');
+            await page
+              .locator(`[id=${JSON.stringify(portalId)}]`)
+              .getByRole('option', { name: 'Brutalist', exact: true })
+              .click();
+            await page.waitForFunction(() => {
+              const root = document.querySelector<HTMLElement>('[data-homepage-runtime]');
+              return root?.dataset.runtimeState === 'ready' && root.dataset.family === 'brutalist';
+            });
+            const familyTasks: unknown[] = [];
+            for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+              await chooseRuntime(page, runtime, false);
+              const owners = await ownership(page, runtime);
+              const task = await exerciseWorkspaceSettings(page, route, async (state) => {
+                await page.evaluate(() => scrollTo(0, 0));
+                await screenshot(`brutalist-${runtime}-${state}-viewport`);
+                if (runtime === 'wc') await screenshot(`brutalist-${runtime}-${state}-full`, true);
+              });
+              familyTasks.push({ family: 'brutalist', runtime, owners, task });
+            }
+            evidence.familyTasks = familyTasks;
+          }
           assert.deepEqual(pageErrors, [], 'No uncaught page errors');
           evidence.outcome = report.failures.some(
             (failure) => failure.startsWith(`${id}:`) || failure.startsWith(`${id} `)
@@ -1070,6 +1155,49 @@ try {
           await saveReport();
         }
       }
+  // Optional public visual references use the same browser/viewports. They
+  // are isolated from candidate acceptance: upstream outages are recorded only.
+  if (revisionKind === 'candidate') {
+    const references: Array<Record<string, unknown>> = [];
+    for (const [name, url] of [
+      ['shadcn', 'https://ui.shadcn.com/'],
+      ['neobrutalism', 'https://www.neobrutalism.dev/'],
+    ] as const) {
+      for (const viewport of HOMEPAGE_VIEWPORTS) {
+        const context = await browser.newContext({
+          viewport: { width: viewport.width, height: viewport.height },
+          colorScheme: 'light',
+        });
+        const page = await context.newPage();
+        const reference: Record<string, unknown> = {
+          name,
+          requestedUrl: url,
+          viewport,
+          capturedAt: new Date().toISOString(),
+          purpose: 'Public upstream reference, not candidate output or copied implementation',
+        };
+        references.push(reference);
+        try {
+          const response = await page.goto(url, { waitUntil: 'load', timeout: 15_000 });
+          reference.responseStatus = response?.status();
+          reference.actualUrl = page.url();
+          if (!response?.ok()) throw new Error(`Reference returned ${response?.status()}`);
+          await page.evaluate(() => scrollTo(0, 0));
+          const file = `reference-${name}-${viewport.name}-light.png`;
+          await page.screenshot({ path: path.join(out, file), timeout: 10_000 });
+          reference.screenshot = file;
+          reference.outcome = 'captured';
+        } catch (error) {
+          reference.outcome = 'unavailable';
+          reference.error = String(error);
+        } finally {
+          await context.close();
+        }
+      }
+    }
+    report.publicReferences = references;
+    await saveReport();
+  }
   await captureDocumentationEvidence({
     browser,
     baseUrl,

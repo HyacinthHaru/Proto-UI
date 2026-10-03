@@ -101,7 +101,7 @@ function fixture(family = 'shadcn', runtimeId = 'wc') {
     componentId: 'button',
     childDemo: task.demo,
     contentRecipe: task.recipe,
-    controlIds: ['family'],
+    controlIds: [],
     controls: {
       runtime: {
         label: 'Runtime',
@@ -121,14 +121,23 @@ function fixture(family = 'shadcn', runtimeId = 'wc') {
       parent.append(typeof node === 'string' ? node : node.text);
       return;
     }
-    const element = document.createElement('div');
+    const textarea = node.kind === 'proto' && node.prototypeId.endsWith('-textarea-root');
+    const element = document.createElement(textarea && runtimeId !== 'wc' ? 'textarea' : 'div');
     element.className = node.className ?? '';
     for (const [name, value] of Object.entries(node.attrs ?? {})) element.setAttribute(name, value);
     if (node.ref) {
       element.setAttribute('data-demo-ref', node.ref);
       refs[node.ref] = element;
     }
-    if (node.kind === 'proto') prototypeNodes.push({ element, prototypeId: node.prototypeId });
+    if (textarea && runtimeId === 'wc') {
+      // Model the real WC adapter's logical host and physical text-control target.
+      const control = document.createElement('textarea');
+      control.className = element.className;
+      element.className = '';
+      element.append(control);
+      prototypeNodes.push({ element: control, prototypeId: node.prototypeId });
+    } else if (node.kind === 'proto')
+      prototypeNodes.push({ element, prototypeId: node.prototypeId });
     parent.append(element);
     for (const child of node.children ?? []) render(child, element);
   }
@@ -221,9 +230,9 @@ for (const family of ['shadcn', 'brutalist']) {
       try {
         assert.deepEqual(
           [...value.task.recipe.prototypeIds].sort(),
-          Object.values(api.EXPECTED_TASK_PROTOTYPES[family]).sort()
+          [...Object.values(api.EXPECTED_TASK_PROTOTYPES[family]), 'site-preview-surface'].sort()
         );
-        assert.equal(value.task.recipe.prototypeIds.length, 9);
+        assert.equal(value.task.recipe.prototypeIds.length, 10);
         await verify(value);
       } finally {
         value.close();
@@ -314,3 +323,37 @@ test('Select content that never leaves the task DOM is not portal evidence', asy
     value.close();
   }
 });
+
+for (const mutation of [
+  'wrapper-marker',
+  'wrong-physical-tag',
+  'stale-physical-generation',
+  'detached-physical-control',
+]) {
+  test(`physical textarea rejects ${mutation}`, async () => {
+    const value = fixture();
+    try {
+      const host = value.element.querySelector('[data-demo-ref="settings-note"]');
+      const control = host.querySelector('textarea');
+      assert.ok(control);
+      if (mutation === 'wrapper-marker') {
+        host.className = control.className;
+        for (const name of control.getAttributeNames())
+          host.setAttribute(name, control.getAttribute(name));
+        control.remove();
+      }
+      if (mutation === 'wrong-physical-tag') {
+        const fake = control.ownerDocument.createElement('div');
+        for (const name of control.getAttributeNames())
+          fake.setAttribute(name, control.getAttribute(name));
+        control.replaceWith(fake);
+      }
+      if (mutation === 'stale-physical-generation')
+        control.setAttribute('data-projection-generation', '6');
+      if (mutation === 'detached-physical-control') control.remove();
+      await assert.rejects(() => verify(value));
+    } finally {
+      value.close();
+    }
+  });
+}

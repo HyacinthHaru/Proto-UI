@@ -44,8 +44,8 @@ describe('Homepage presentation source boundaries', () => {
     ]) {
       expect(preview).not.toContain(removed);
     }
-    expect(preview).toContain('grid-template-columns: 1fr 1fr');
-    expect(preview).toContain('grid-template-columns: 1fr;');
+    expect(preview).toContain('grid-template-columns: minmax(19rem, 0.8fr) minmax(0, 1.4fr)');
+    expect(preview).toContain('grid-template-columns: minmax(0, 1fr);');
   });
   it('uses one defined bilingual sans-serif stack instead of an unresolved color token', () => {
     const style = read('apps/www/src/styles/tailwindcss.css');
@@ -67,9 +67,11 @@ describe('Homepage presentation source boundaries', () => {
     }
   });
 
-  it('keeps the native-link journey bound to the actual task family picker', () => {
+  it('keeps the native-link journey bound to the actual global family picker', () => {
     const journey = read('apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts');
-    expect(journey).toContain('[data-home-showcase] [data-projection-control="family"]');
+    expect(journey).toContain(
+      '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"]'
+    );
     expect(journey).not.toContain('[data-home-demo-options]');
   });
 

@@ -1,3 +1,4 @@
+import { createHomepageLivePreview, PREVIEW_SURFACE_ID } from './homepage-live-preview';
 import type { DemoNode, DemoSetupContext, DemoSpec } from '../PrototypePreviewer/demo-types';
 import type { ProjectionContentRecipe } from '../PrototypePreviewer/projection-composition';
 import {
@@ -78,10 +79,11 @@ export function createHomepageShowcase(
     children: [text],
   });
   const initial = defaults();
-  return {
+  const preview = createHomepageLivePreview(family, locale);
+  const result: { demo: DemoSpec; recipe: ProjectionContentRecipe } = {
     recipe: {
       id: HOMEPAGE_SHOWCASE_ID,
-      prototypeIds: Object.values(parts),
+      prototypeIds: [...Object.values(parts), PREVIEW_SURFACE_ID],
       rootPrototypeId: parts.select,
     },
     demo: {
@@ -264,6 +266,7 @@ export function createHomepageShowcase(
           });
         };
         const refresh = (message?: string) => {
+          preview.update(context, draft);
           const dirty = !equal(draft, saved);
           refs.settings!.dataset.dirty = String(dirty);
           refs['settings-count']!.textContent = copy.characters(draft.note.length);
@@ -370,4 +373,18 @@ export function createHomepageShowcase(
       },
     },
   };
+  if (result.demo.root.kind !== 'box') throw new Error('Workspace root must remain an app box');
+  const [title, fields, footer] = result.demo.root.children!;
+  result.demo.root.children = [
+    title!,
+    {
+      kind: 'box',
+      className: 'home-settings__layout',
+      children: [
+        { kind: 'box', className: 'home-settings__editor', children: [fields!, footer!] },
+        preview.node,
+      ],
+    },
+  ];
+  return result;
 }

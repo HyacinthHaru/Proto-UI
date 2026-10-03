@@ -244,14 +244,13 @@ function expectPortalSealed(sample: PortalSealSample, label: string): void {
 
 async function chooseControl(
   page: Page,
-  scope: Locator,
+  _scope: Locator,
   control: 'runtime' | 'family',
   value: string
 ) {
-  const controlOwner =
-    control === 'runtime'
-      ? page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]')
-      : scope;
+  const controlOwner = page.locator(
+    '[data-homepage-runtime] [data-projection-generation-state="active"]'
+  );
   const controlSurface = controlOwner.locator(`[data-projection-control="${control}"]`);
   expect(await controlSurface.count(), `${control} projection control`).toBe(1);
 
@@ -346,10 +345,9 @@ async function assertCoherentGeneration(
   await assertSurfacesShareCoordinate(ownedSurfaces, expected, 'scope-owned coordinate');
 
   for (const control of ['runtime', 'family'] as const) {
-    const controlOwner =
-      control === 'runtime'
-        ? page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]')
-        : scope;
+    const controlOwner = page.locator(
+      '[data-homepage-runtime] [data-projection-generation-state="active"]'
+    );
     const surface = controlOwner.locator(`[data-projection-control="${control}"]`);
     expect(await surface.count(), `${control} control surface`).toBe(1);
     await assertSurfacesShareCoordinate(surface, expected, `${control} control coordinate`);
@@ -391,7 +389,12 @@ async function workspaceTask(
   const prototypes = EXPECTED_TASK_PROTOTYPES[family];
   expect(prototypes, 'declared task projection family').toBeTruthy();
   for (const [ref, part] of Object.entries(TASK_PART_REFS)) {
-    const surface = content.locator(attributeEquals('data-demo-ref', ref));
+    const refSelector = attributeEquals('data-demo-ref', ref);
+    const surface = content.locator(
+      part === 'textarea'
+        ? `textarea${refSelector}.pui-projection-prototype, ${refSelector} > textarea.pui-projection-prototype`
+        : refSelector
+    );
     expect(await surface.count(), `actual task part ${ref}`).toBe(1);
     expect(await surface.getAttribute('data-projection-prototype'), `${ref} Prototype`).toBe(
       prototypes[part]
@@ -428,14 +431,16 @@ async function assertTaskPartInventory(
     prototypes.textarea,
     prototypes.button,
     prototypes.button,
+    ...Array(5).fill('site-preview-surface'),
   ].sort();
   const actualIds = await parts.evaluateAll((elements) =>
     elements.map((element) => element.getAttribute('data-projection-prototype')).sort()
   );
-  expect(actualIds, 'all 12 task instances from exactly nine lane-owned parts').toEqual(
-    expectedIds
-  );
-  expect(new Set(actualIds).size, 'complete nine-part task recipe').toBe(9);
+  expect(
+    actualIds,
+    'all 17 task instances from nine lane parts and the passive preview surface'
+  ).toEqual(expectedIds);
+  expect(new Set(actualIds).size, 'complete declared task recipe').toBe(10);
   await assertSurfacesShareCoordinate(parts, expected, 'every actual task part coordinate');
   const ownerId = await scope.getAttribute('data-projection-scope');
   const owners = await parts.evaluateAll((elements) =>
@@ -585,13 +590,10 @@ async function readWebsiteThemeTokens(page: Page) {
 
 async function expectSemanticFocus(
   page: Page,
-  scope: Locator,
+  _scope: Locator,
   control: 'runtime' | 'family'
 ): Promise<void> {
-  const owner =
-    control === 'runtime'
-      ? page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]')
-      : scope;
+  const owner = page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]');
   await expect
     .poll(
       () =>

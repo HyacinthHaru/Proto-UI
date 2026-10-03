@@ -697,7 +697,38 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
         };
       },
     });
+    const previewWindow = new Window();
     const page = {
+      async waitForFunction(
+        callback: (args: unknown) => unknown,
+        args: { homeSelector: string; note: string }
+      ) {
+        assert.equal(state.view, labels.board);
+        assert.equal(state.summary, 'true');
+        assert.equal(state.note, args.note);
+        const document = previewWindow.document;
+        document.body.innerHTML = `<section data-home-showcase="website-workspace-settings"><div data-demo-ref="settings-preview-tasks" data-view="board"></div><div data-demo-ref="settings-preview-summary"></div><div data-demo-ref="settings-preview-note"><span data-demo-ref="settings-preview-note-text"></span></div>${Array(5).fill('<div data-projection-prototype="site-preview-surface" data-pui-style="border"></div>').join('')}</section>`;
+        document.querySelector('[data-demo-ref="settings-preview-note-text"]')!.textContent =
+          state.note;
+        const value = callback(args);
+        assert.ok(value, 'The actual preview observer accepts real fixture state');
+        const physicalSurface = document.querySelector('[data-projection-prototype]')!;
+        physicalSurface.removeAttribute('data-pui-style');
+        assert.equal(callback(args), false, 'A merely marked shell must not pass');
+        physicalSurface.setAttribute('data-pui-style', 'border');
+        document
+          .querySelector('[data-demo-ref="settings-preview-summary"]')!
+          .setAttribute('hidden', '');
+        assert.equal(callback(args), false, 'Hidden output cannot satisfy the active summary');
+        return {
+          async jsonValue() {
+            return value;
+          },
+          async dispose() {
+            previewWindow.happyDOM.abort();
+          },
+        };
+      },
       locator: locate,
       keyboard: {
         async insertText(text: string) {
@@ -708,6 +739,7 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
       },
     };
     const probeContext = {
+      document: previewWindow.document,
       HOME: home,
       assert,
       activeProbeStage: null as string | null,

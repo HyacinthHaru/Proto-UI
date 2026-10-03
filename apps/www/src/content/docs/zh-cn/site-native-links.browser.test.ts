@@ -247,7 +247,10 @@ async function nativePopup(
     }
     const result = await outcome;
     if ('error' in result) throw result.error;
-    await result.popup.waitForLoadState('domcontentloaded');
+    // A popup can first report the initial empty document as loaded. Wait
+    // for this activation's exact routed destination before accepting it.
+    if (!href) throw new Error('Native navigation destination is missing');
+    await result.popup.waitForURL(href, { waitUntil: 'domcontentloaded' });
     expect(result.popup.url(), label).toBe(href);
     await result.popup.close();
     console.info(`[native-link] ${label} passed`);
@@ -327,7 +330,15 @@ async function assertSocialPaint(
 
   await nativeActionLabel(page, `social-${family}-primary-down`);
   await page.mouse.down();
-  await expect.poll(async () => (await linkPaint(first)).tokens).toContain('translate-y-px');
+  try {
+    await expect.poll(async () => (await linkPaint(first)).tokens).toContain('translate-y-px');
+  } catch (error) {
+    await saveNativeTrace(page, `social-${family}-press-failure`, {
+      family,
+      observed: await linkPaint(first),
+    });
+    throw error;
+  }
   const pressed = await linkPaint(first);
   expect(pressed.tokens).toContain('shadow-none');
   expect(pressed.transform).not.toBe(hovered.transform);
@@ -398,13 +409,17 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       for (const family of ['brutalist', 'shadcn'] as const) {
         await choose(
           page,
-          '[data-home-showcase] [data-projection-control="family"]',
+          '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"]',
           family === 'brutalist' ? 'Brutalist' : 'Shadcn'
         );
+        await page.waitForFunction((family) => {
+          const root = document.querySelector<HTMLElement>('[data-homepage-runtime]');
+          return root?.dataset.runtimeState === 'ready' && root.dataset.family === family;
+        }, family);
         for (const runtime of RUNTIMES) {
           await choose(
             page,
-            '[data-homepage-runtime] [data-projection-control="runtime"]',
+            '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="runtime"]',
             labels[runtime]
           );
           await ready(page, runtime, family);

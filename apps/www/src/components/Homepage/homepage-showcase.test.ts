@@ -7,6 +7,7 @@ import {
 } from '../PrototypePreviewer/demo-types';
 import { createProjectionComposition } from '../PrototypePreviewer/projection-composition';
 import { createHomepageShowcase, HOMEPAGE_SHOWCASE_ID } from './homepage-showcase';
+import { PREVIEW_SURFACE_ID } from './homepage-live-preview';
 import type { RuntimeId } from '../PrototypePreviewer/runtimes/registry';
 
 function mount(runtime: RuntimeId, locale = 'en') {
@@ -71,14 +72,16 @@ function mount(runtime: RuntimeId, locale = 'en') {
 afterEach(() => document.body.replaceChildren());
 
 for (const family of ['shadcn', 'brutalist'] as const) {
-  it(`${family} has a closed explicit recipe using only real existing lane parts`, () => {
+  it(`${family} has a closed explicit recipe using real lane parts and the explicit passive preview surface`, () => {
     const content = createHomepageShowcase(family, 'wc', 'en', () => true);
     assertDemoSpec(content.demo);
     const ids = new Set<string>();
     collectPrototypeIds(content.demo.root, ids);
     expect([...ids].sort()).toEqual([...content.recipe.prototypeIds].sort());
-    expect(ids.size).toBe(9);
-    expect([...ids].every((id) => id.startsWith(`${family}-`))).toBe(true);
+    expect(ids.size).toBe(10);
+    expect([...ids].every((id) => id.startsWith(`${family}-`) || id === PREVIEW_SURFACE_ID)).toBe(
+      true
+    );
     expect([...ids].some((id) => id.includes('card'))).toBe(false);
     const composition = createProjectionComposition({
       ownerId: 'settings',
@@ -88,7 +91,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       componentId: 'button',
       childDemo: content.demo,
       contentRecipe: content.recipe,
-      controlIds: ['family'],
+      controlIds: [],
       controls: {
         runtime: {
           label: 'Runtime',
@@ -111,6 +114,9 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
     it('edits, saves an actual page-local snapshot, restores defaults and saves again', async () => {
       const task = mount(runtime);
       expect(task.props['settings-save']!.disabled).toBe(true);
+      expect(task.refs['settings-preview-tasks']!.dataset.view).toBe('list');
+      expect(task.refs['settings-preview-summary']!.hidden).toBe(true);
+      expect(task.refs['settings-preview-note']!.hidden).toBe(true);
       task.event('settings-view', 'valueChange', { value: 'board' });
       task.event('settings-summary', 'checkedChange', { checked: true });
       task.event('settings-note', 'valueChange', { value: 'Plan', composing: false });
@@ -119,6 +125,11 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
       expect(task.props['settings-view']!.value).toBe('board');
       expect(task.props['settings-summary']!.checked).toBe(true);
       expect(task.props['settings-note']!.value).toBe('Plan');
+      expect(task.refs['settings-preview-tasks']!.dataset.view).toBe('board');
+      expect(task.refs['settings-preview-view']!.textContent).toBe('Board');
+      expect(task.refs['settings-preview-summary']!.hidden).toBe(false);
+      expect(task.refs['settings-preview-note']!.hidden).toBe(false);
+      expect(task.refs['settings-preview-note-text']!.textContent).toBe('Plan');
       expect(task.refs['settings-count']!.textContent).toBe('4 / 240 characters');
       task.event('settings-save', 'click');
       await Promise.resolve();
@@ -132,6 +143,9 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
       expect(task.props['settings-view']!.value).toBe('list');
       expect(task.props['settings-summary']!.checked).toBe(false);
       expect(task.props['settings-note']!.value).toBe('');
+      expect(task.refs['settings-preview-tasks']!.dataset.view).toBe('list');
+      expect(task.refs['settings-preview-summary']!.hidden).toBe(true);
+      expect(task.refs['settings-preview-note']!.hidden).toBe(true);
       expect(task.refs.settings!.dataset.dirty).toBe('true');
       expect(task.props['settings-reset']!.disabled).toBe(true);
       task.event('settings-save', 'click');

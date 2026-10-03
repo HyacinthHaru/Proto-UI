@@ -376,7 +376,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           ownerId: group.ownerId,
           componentId: 'button',
           controls: controls(),
-          controlIds: group.runtime ? ['runtime'] : [],
+          controlIds: group.runtime ? ['runtime', 'family'] : [],
           content: {
             demo: createHomepageContent(
               group,
@@ -398,7 +398,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
             ownerId: demo.ownerId,
             componentId: component,
             controls: controls(),
-            controlIds: ['family'],
+            controlIds: [],
             content: demo.createContent(
               family,
               runtime,
