@@ -6,7 +6,12 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { parse } from 'yaml';
 import { ConnectorReviewTransport } from '../connector-review-transport.mjs';
-import { ConnectorReviewSession, CONNECTOR_AUTHORIZATION } from '../connector-review-session.mjs';
+import {
+  ConnectorReviewSession,
+  CONNECTOR_AUTHORIZATION,
+  INITIAL_SWEEP_AUTHORIZATION,
+  INITIAL_SWEEP_ID,
+} from '../connector-review-session.mjs';
 import { LocalCloudReviewLedger } from '../local-cloud-review-ledger.mjs';
 import { computeReviewPacketDigest, renderReviewBody } from '../review-runtime.mjs';
 import { analysis } from './fixtures/cloud-review.mjs';
@@ -504,9 +509,14 @@ test('REST validity does not invent a GitHub platform identity for an unknown co
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
 });
 
-test('fresh run must cumulatively reconcile its governed prior finding with exact canonical bodies', async (t) => {
+test('initial sweep and later event cumulatively reconcile findings with exact canonical bodies', async (t) => {
   const { f, s, dir, genesis, transport } = await session(t);
-  const first = await parentPacket(s);
+  const request0 = await s.beginInitialSweep(487);
+  assert.equal(request0.executionModeSource, 'delegated-owner-initial-sweep');
+  const { packet: first } = analysis(request0.input);
+  first.agentEvidence.source = 'AI-executed review by ChatGPT';
+  first.agentEvidence.disposition = 'complete';
+  first.agentEvidence.debt = [];
   first.recommendedAction = 'REQUEST_CHANGES';
   first.findings = [
     {
@@ -526,6 +536,13 @@ test('fresh run must cumulatively reconcile its governed prior finding with exac
   const done = await s.publishParentPacket(first, assessment);
   assert.equal(done.status, 'published');
   assert.equal(done.receipt.body, renderReviewBody(first));
+  const repeated = new ConnectorReviewSession({
+    transport,
+    ledger: new LocalCloudReviewLedger(dir, genesis),
+    policy: rootPolicy,
+  });
+  assert.equal((await repeated.beginInitialSweep(487)).skipped, true);
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
   f.comments.push({
     id: 5,
     node_id: 'C5',
@@ -604,4 +621,121 @@ test('fresh run rejects a cleared prior pointer or omitted prior finding before 
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
       assert.equal(new LocalCloudReviewLedger(dir, genesis).read().state.slot.intent, null);
     });
+});
+
+test('initial sweep uses its exact admitted scope and cannot masquerade as webhook intake', async (t) => {
+  const { s, f, transport, store } = await session(t);
+  await assert.rejects(
+    s.begin(487, { kind: 'initial-sweep', deliveryId: 'fake-webhook' }),
+    /unsupported event/
+  );
+  for (const mutation of ['missing', 'inactive', 'wrong-id']) {
+    const policy = structuredClone(rootPolicy);
+    const scope = policy.reviewSubmissionAuthorizations.find(
+      (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
+    );
+    if (mutation === 'missing')
+      policy.reviewSubmissionAuthorizations = policy.reviewSubmissionAuthorizations.filter(
+        (x) => x !== scope
+      );
+    if (mutation === 'inactive') scope.status = 'inactive';
+    if (mutation === 'wrong-id') scope.initialSweepId = 'arbitrary-workflow';
+    const candidate = new ConnectorReviewSession({ transport, ledger: store, policy });
+    await assert.rejects(candidate.beginInitialSweep(487), /separately admitted exact scope/);
+  }
+  assert.equal(f.calls.length, 0);
+  assert.equal(store.read().state.deliveries.length, 0);
+});
+
+test('initial sweep and webhook sessions share one global slot and replay boundary', async (t) => {
+  const { s, f, transport, store, dir, genesis } = await session(t);
+  const request = await s.beginInitialSweep(487);
+  assert.equal(request.executionModeSource, 'delegated-owner-initial-sweep');
+  assert.equal(store.read().state.deliveries[0].deliveryId, `${INITIAL_SWEEP_ID}:487`);
+  assert.equal(store.read().state.deliveries[0].eventKind, 'initial-sweep');
+  const next = new ConnectorReviewSession({
+    transport,
+    ledger: new LocalCloudReviewLedger(dir, genesis),
+    policy: rootPolicy,
+  });
+  assert.equal(
+    (await next.begin(487, { kind: 'human-comment', deliveryId: 'actual-event' })).queued,
+    true
+  );
+  const policy = structuredClone(rootPolicy);
+  policy.reviewSubmissionAuthorizations.find(
+    (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
+  ).executionModeSource = 'delegated-owner-event';
+  const bad = new ConnectorReviewSession({ transport, ledger: store, policy });
+  // The existing owner cannot be displaced, regardless of another scope declaration.
+  assert.equal((await bad.beginInitialSweep(487)).queued, true);
+  f.comments.push({
+    id: 7,
+    node_id: 'C7',
+    user: author,
+    body: 'new discussion',
+    updated_at: '2026-10-03T00:04:00Z',
+  });
+  await assert.rejects(bad.beginInitialSweep(487), /delivery id reused with different evidence/);
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+});
+
+test('initial sweep includes draft analysis and rejects closed inventory races', async (t) => {
+  for (const mode of ['draft', 'closed'])
+    await t.test(mode, async (t) => {
+      const { s, f } = await session(t, {
+        modify(f) {
+          if (mode === 'draft') f.pr.draft = true;
+          else f.pr.state = 'closed';
+        },
+      });
+      if (mode === 'closed') await assert.rejects(s.beginInitialSweep(487), /currently open/);
+      else {
+        const request = await s.beginInitialSweep(487);
+        const { packet } = analysis(request.input);
+        packet.agentEvidence.source = 'AI-executed review by ChatGPT';
+        packet.agentEvidence.disposition = 'complete';
+        packet.agentEvidence.debt = [];
+        packet.recommendedAction = 'COMMENT';
+        assert.equal((await s.finishParentAnalysis(packet)).status, 'applied');
+      }
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+    });
+});
+
+test('initial sweep cannot borrow webhook standing authorization at publication', async (t) => {
+  const { f, transport, store } = await session(t);
+  const policy = structuredClone(rootPolicy);
+  policy.reviewSubmissionAuthorizations.find(
+    (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
+  ).executionModeSource = 'delegated-owner-event';
+  const s = new ConnectorReviewSession({ transport, ledger: store, policy });
+  const request = await s.beginInitialSweep(487);
+  const { packet } = analysis(request.input);
+  packet.agentEvidence.source = 'AI-executed review by ChatGPT';
+  packet.agentEvidence.disposition = 'complete';
+  packet.agentEvidence.debt = [];
+  await assert.rejects(s.publishParentPacket(packet, assessment), /authorization is unavailable/);
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+  assert.equal(store.read().state.slot.intent, null);
+});
+
+test('default read-only worker refuses the initial sweep without any connector dispatch', () => {
+  const output = execFileSync(
+    process.execPath,
+    ['scripts/agent-operations/connector-review-worker.mjs'],
+    {
+      input:
+        JSON.stringify({
+          kind: 'begin-initial-sweep',
+          pullRequest: 487,
+          output: '/tmp/unused-initial-sweep.json',
+        }) + '\n',
+      encoding: 'utf8',
+    }
+  );
+  const frames = output.trim().split('\n').map(JSON.parse);
+  assert.equal(frames[0].mode, 'read-only');
+  assert.match(frames[1].message, /read-only/);
+  assert(!frames.some((f) => f.kind === 'tool-call'));
 });

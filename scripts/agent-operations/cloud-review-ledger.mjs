@@ -14,6 +14,7 @@ export const LEDGER_PRINCIPAL = Object.freeze({ id: '52768321', login: 'guanglia
 const HEX = /^[a-f0-9]{64}$/;
 const OWNER = /^[a-f0-9]{32}$/;
 const EVENT_KINDS = new Set([
+  'initial-sweep',
   'opened',
   'ready_for_review',
   'closed',
@@ -64,7 +65,9 @@ function binding(command, state) {
   ]);
   assert(
     observation.executionMode === 'autonomous' &&
-      observation.executionModeSource === 'delegated-owner-event',
+      ['delegated-owner-event', 'delegated-owner-initial-sweep'].includes(
+        observation.executionModeSource
+      ),
     'event provenance must remain explicit'
   );
   assert(

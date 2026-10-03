@@ -72,7 +72,12 @@ lines.on('line', async (line) => {
       waiting.resolve(message.result);
       return;
     }
-    if (!['collect', 'begin', 'publish', 'finish', 'abandon'].includes(message.kind) || busy)
+    if (
+      !['collect', 'begin', 'begin-initial-sweep', 'publish', 'finish', 'abandon'].includes(
+        message.kind
+      ) ||
+      busy
+    )
       throw new Error('one parent command at a time');
     if (message.kind !== 'collect' && !session)
       throw new Error('worker is read-only; production state and policy not enabled');
@@ -86,6 +91,8 @@ lines.on('line', async (line) => {
     try {
       let result;
       if (message.kind === 'collect') result = await transport.collect(message.pullRequest);
+      if (message.kind === 'begin-initial-sweep')
+        result = await session.beginInitialSweep(message.pullRequest);
       if (message.kind === 'begin')
         result = await session.begin(message.pullRequest, message.event);
       if (message.kind === 'publish')

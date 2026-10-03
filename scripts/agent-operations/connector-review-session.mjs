@@ -13,7 +13,8 @@ const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
 const hash = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
-const source = 'delegated-owner-event';
+export const INITIAL_SWEEP_AUTHORIZATION = 'proto-ui-cloud-owner-initial-sweep-v1';
+export const INITIAL_SWEEP_ID = 'owner-requested-open-pr-sweep-2026-10-03';
 const identity = (live) => [
   live.reviewerId,
   live.viewerLogin,
@@ -30,6 +31,8 @@ export class ConnectorReviewSession {
   #initial;
   #priorPacket = null;
   #used = false;
+  #source = 'delegated-owner-event';
+  #authorizationId = CONNECTOR_AUTHORIZATION;
   constructor({ transport, ledger, policy }) {
     this.#transport = transport;
     this.#ledger = ledger;
@@ -49,7 +52,33 @@ export class ConnectorReviewSession {
         ].includes(event.kind),
       'unsupported event hint'
     );
+    this.#source = 'delegated-owner-event';
+    this.#authorizationId = CONNECTOR_AUTHORIZATION;
+    return this.#begin(pullRequest, event);
+  }
+  async beginInitialSweep(pullRequest) {
+    assert(!this.#initial && !this.#used, 'one parent-review lifecycle per session');
+    const scope = this.#policy.reviewSubmissionAuthorizations.find(
+      (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
+    );
+    assert(
+      scope?.status === 'active' && scope.initialSweepId === INITIAL_SWEEP_ID,
+      'initial sweep needs its separately admitted exact scope'
+    );
+    this.#source = 'delegated-owner-initial-sweep';
+    this.#authorizationId = INITIAL_SWEEP_AUTHORIZATION;
+    return this.#begin(pullRequest, {
+      kind: 'initial-sweep',
+      deliveryId: `${INITIAL_SWEEP_ID}:${pullRequest}`,
+    });
+  }
+  async #begin(pullRequest, event) {
     const live = await this.#transport.collect(pullRequest);
+    if (event.kind === 'initial-sweep')
+      assert(
+        live.input.pullRequestState === 'OPEN',
+        'initial sweep admits only currently open PRs'
+      );
     const before = await this.#ledger.read();
     assert(
       before.state.publicationEnabled === true,
@@ -101,7 +130,7 @@ export class ConnectorReviewSession {
     return {
       kind: 'proto-ui.parent-review-request',
       executionMode: 'autonomous',
-      executionModeSource: source,
+      executionModeSource: this.#source,
       input: structuredClone(live.input),
       inputDigest: computeReviewInputDigest(live.input),
       identity: identity(live),
@@ -135,8 +164,8 @@ export class ConnectorReviewSession {
       input: this.#initial.input,
       liveInput: live.input,
       executionMode: 'autonomous',
-      executionModeSource: source,
-      authorizationId: CONNECTOR_AUTHORIZATION,
+      executionModeSource: this.#source,
+      authorizationId: this.#authorizationId,
       policy: this.#policy,
       priorPacket: this.#priorPacket,
       dcoConclusion: summarizeLiveDco(live.input.checks, {
@@ -162,7 +191,7 @@ export class ConnectorReviewSession {
     });
     assert(authorization.allowed, `canonical publication gate: ${authorization.reason}`);
     const scope = this.#policy.reviewSubmissionAuthorizations.find(
-      (x) => x.id === CONNECTOR_AUTHORIZATION
+      (x) => x.id === this.#authorizationId
     );
     assert(
       scope.principalId === LEDGER_PRINCIPAL.id && scope.principalLogin === LEDGER_PRINCIPAL.login,
@@ -186,7 +215,7 @@ export class ConnectorReviewSession {
       liveInput: live.input,
       observation: {
         executionMode: 'autonomous',
-        executionModeSource: source,
+        executionModeSource: this.#source,
         reviewerId: live.reviewerId,
         reviewerLogin: live.viewerLogin,
         authorId: live.authorId,
@@ -254,7 +283,7 @@ export class ConnectorReviewSession {
       liveInput: live.input,
       observation: {
         executionMode: 'autonomous',
-        executionModeSource: source,
+        executionModeSource: this.#source,
         reviewerId: live.reviewerId,
         reviewerLogin: live.viewerLogin,
         authorId: live.authorId,
