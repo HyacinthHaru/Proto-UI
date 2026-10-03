@@ -364,3 +364,27 @@ test('owner transport rejects invalid target, absent expected tip and non-child 
   assert.equal(pushes, 0);
   assert.equal(git(f.remote, 'rev-parse', REMOTE_LEDGER_REF), second);
 });
+
+test('identical delivery replay consumes no commits or remote writes, including fresh runs', (t) => {
+  const f = fixture(t);
+  const first = f.open();
+  const admitted = apply(first.ledger, event());
+  const count = git(f.remote, 'rev-list', '--count', REMOTE_LEDGER_REF);
+  for (let i = 0; i < 12; i++) {
+    const replay = first.ledger.apply(admitted.revision, event());
+    assert.equal(replay.noOp, true);
+    assert.equal(replay.revision, admitted.revision);
+  }
+  assert.equal(first.calls.writes, 1);
+  const fresh = f.open(admitted.revision);
+  assert.equal(apply(fresh.ledger, event()).noOp, true);
+  assert.equal(fresh.calls.writes, 0);
+  assert.equal(git(f.remote, 'rev-list', '--count', REMOTE_LEDGER_REF), count);
+  assert.throws(
+    () => apply(fresh.ledger, { ...event(), materialDigest: 'c'.repeat(64) }),
+    /reused with different evidence/
+  );
+  assert.equal(fresh.calls.writes, 0);
+  assert.equal(apply(fresh.ledger, event('event-2')).status, 'applied');
+  assert.equal(fresh.calls.writes, 1);
+});

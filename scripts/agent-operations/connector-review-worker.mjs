@@ -1,8 +1,9 @@
 // Retained parent-to-connector bridge. No credentials are read or transmitted.
 import { createInterface } from 'node:readline';
 import { randomUUID } from 'node:crypto';
-import { writeFileSync, readFileSync } from 'node:fs';
-import { parse } from 'yaml';
+import { writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { loadCapabilityPolicy, collectRepositorySnapshot } from './assessment-runtime.mjs';
 import {
   ConnectorReviewSession,
   CONNECTOR_AUTHORIZATION,
@@ -23,12 +24,14 @@ for (let i = 2; i < process.argv.length; i += 2) {
     throw new Error('invalid worker option');
   args.set(process.argv[i], process.argv[i + 1]);
 }
-const policy = parse(
-  readFileSync(
-    new URL('../../internal/agent-operations/capability-policy.yaml', import.meta.url),
-    'utf8'
-  )
+const policyPath = fileURLToPath(
+  new URL('../../internal/agent-operations/capability-policy.yaml', import.meta.url)
 );
+const root = fileURLToPath(new URL('../../', import.meta.url));
+const readPolicy = () => loadCapabilityPolicy(policyPath);
+const readSnapshot = () =>
+  collectRepositorySnapshot(root, { repositoryId: 'github.com:Proto-UI/Proto-UI' });
+const policy = readPolicy();
 const enabled = args.size > 0;
 if (
   enabled &&
@@ -65,7 +68,9 @@ const ledger = enabled
       transport: ownerGitLedgerTransport(),
     })
   : null;
-const session = ledger ? new ConnectorReviewSession({ transport, ledger, policy }) : null;
+const session = ledger
+  ? new ConnectorReviewSession({ transport, ledger, readPolicy, readSnapshot })
+  : null;
 let busy = false;
 const lines = createInterface({ input: process.stdin });
 lines.on('line', async (line) => {
@@ -80,9 +85,15 @@ lines.on('line', async (line) => {
       return;
     }
     if (
-      !['collect', 'begin', 'begin-initial-sweep', 'publish', 'finish', 'abandon'].includes(
-        message.kind
-      ) ||
+      ![
+        'collect',
+        'capture-initial-sweep',
+        'begin',
+        'begin-initial-sweep',
+        'publish',
+        'finish',
+        'abandon',
+      ].includes(message.kind) ||
       busy
     )
       throw new Error('one parent command at a time');
@@ -98,6 +109,7 @@ lines.on('line', async (line) => {
     try {
       let result;
       if (message.kind === 'collect') result = await transport.collect(message.pullRequest);
+      if (message.kind === 'capture-initial-sweep') result = await session.captureInitialSweep();
       if (message.kind === 'begin-initial-sweep')
         result = await session.beginInitialSweep(message.pullRequest);
       if (message.kind === 'begin')

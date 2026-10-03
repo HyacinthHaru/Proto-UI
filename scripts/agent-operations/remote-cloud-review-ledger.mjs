@@ -86,6 +86,7 @@ export class RemoteCloudReviewLedger {
       this.#stopped = true;
       return { ...candidate, mutationStopped: true };
     }
+    if (candidate.noOp) return { ...candidate, checkpoint: this.#checkpoint };
     // The local adapter constructed and validated exactly one single-parent
     // child of expectedRevision. The owner transport uses an exact remote-tip
     // lease, so deletion, rollback or a sibling winner cannot be overwritten.

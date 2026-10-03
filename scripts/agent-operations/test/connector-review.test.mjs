@@ -7,13 +7,15 @@ import path from 'node:path';
 import { parse } from 'yaml';
 import { ConnectorReviewTransport } from '../connector-review-transport.mjs';
 import {
-  ConnectorReviewSession,
+  ConnectorReviewSession as NativeConnectorReviewSession,
   CONNECTOR_AUTHORIZATION,
   INITIAL_SWEEP_AUTHORIZATION,
   INITIAL_SWEEP_ID,
 } from '../connector-review-session.mjs';
 import { LocalCloudReviewLedger } from '../local-cloud-review-ledger.mjs';
+import { computeSelfAssessmentResultDigest } from '../assessment-runtime.mjs';
 import { computeReviewPacketDigest, renderReviewBody } from '../review-runtime.mjs';
+import { assessment, assessmentSnapshot } from './fixtures/connector-assessment.mjs';
 import { analysis } from './fixtures/cloud-review.mjs';
 
 const sha = (c) => c.repeat(40);
@@ -25,11 +27,16 @@ const rootPolicy = parse(
     'utf8'
   )
 );
-const assessment = {
-  fresh: true,
-  validated: true,
-  capability: { band: 'C4', recommendedReviewClasses: ['review-governed-implementation-slice'] },
-};
+// Readers are trusted constructor seams, never parent command fields.
+class ConnectorReviewSession extends NativeConnectorReviewSession {
+  constructor({ policy, ...options }) {
+    super({
+      readPolicy: () => structuredClone(policy),
+      readSnapshot: () => assessmentSnapshot,
+      ...options,
+    });
+  }
+}
 const result = (structuredContent) => ({ isError: false, structuredContent });
 function fixture() {
   const f = {
@@ -130,7 +137,8 @@ function fixture() {
     const p = url.pathname.replace('/repos/Proto-UI/Proto-UI', '');
     let data;
     let field;
-    if (p === '/pulls/487') data = f.pr;
+    if (p === '/pulls') data = f.inventory ?? [{ ...f.pr, id: 487, number: 487 }];
+    else if (p === '/pulls/487') data = f.pr;
     else if (p === '/pulls/487/files') data = f.files;
     else if (p === '/pulls/487/commits') data = f.commits;
     else if (p === '/pulls/487/reviews') data = f.reviews;
@@ -510,6 +518,7 @@ test('REST validity does not invent a GitHub platform identity for an unknown co
 
 test('initial sweep and later event cumulatively reconcile findings with exact canonical bodies', async (t) => {
   const { f, s, dir, genesis, transport } = await session(t);
+  await s.captureInitialSweep();
   const request0 = await s.beginInitialSweep(487);
   assert.equal(request0.executionModeSource, 'delegated-owner-initial-sweep');
   const { packet: first } = analysis(request0.input);
@@ -648,6 +657,7 @@ test('initial sweep uses its exact admitted scope and cannot masquerade as webho
 
 test('initial sweep and webhook sessions share one global slot and replay boundary', async (t) => {
   const { s, f, transport, store, dir, genesis } = await session(t);
+  await s.captureInitialSweep();
   const request = await s.beginInitialSweep(487);
   assert.equal(request.executionModeSource, 'delegated-owner-initial-sweep');
   assert.equal(store.read().state.deliveries[0].deliveryId, `${INITIAL_SWEEP_ID}:487`);
@@ -685,11 +695,15 @@ test('initial sweep includes draft analysis and rejects closed inventory races',
       const { s, f } = await session(t, {
         modify(f) {
           if (mode === 'draft') f.pr.draft = true;
-          else f.pr.state = 'closed';
+          // Close only after the durable inventory has been captured.
         },
       });
-      if (mode === 'closed') await assert.rejects(s.beginInitialSweep(487), /currently open/);
-      else {
+      await s.captureInitialSweep();
+      if (mode === 'closed') {
+        f.pr.state = 'closed';
+        await assert.rejects(s.beginInitialSweep(487), /currently open/);
+      } else {
+        await s.captureInitialSweep();
         const request = await s.beginInitialSweep(487);
         const { packet } = analysis(request.input);
         packet.agentEvidence.source = 'AI-executed review by ChatGPT';
@@ -709,6 +723,7 @@ test('initial sweep cannot borrow webhook standing authorization at publication'
     (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
   ).executionModeSource = 'delegated-owner-event';
   const s = new ConnectorReviewSession({ transport, ledger: store, policy });
+  await s.captureInitialSweep();
   const request = await s.beginInitialSweep(487);
   const { packet } = analysis(request.input);
   packet.agentEvidence.source = 'AI-executed review by ChatGPT';
@@ -786,6 +801,7 @@ syncBuiltinESMExports();`
   );
   assert.equal(f.calls.length, 0);
   assert.equal(store.read().state.deliveries.length, 0);
+  await scoped.captureInitialSweep();
   assert.equal(
     (await scoped.beginInitialSweep(487)).executionModeSource,
     'delegated-owner-initial-sweep'
@@ -813,6 +829,7 @@ test('each intake command enforces only its own scope across all active/paused c
                 ? s.begin(487, { kind: 'synchronize', deliveryId: 'matrix-event' })
                 : s.beginInitialSweep(487);
             if (command === 'event' ? eventActive : sweepActive) {
+              if (command === 'sweep') await s.captureInitialSweep();
               const request = await begin();
               const { packet } = analysis(request.input);
               packet.agentEvidence.source = 'AI-executed review by ChatGPT';
@@ -828,4 +845,236 @@ test('each intake command enforces only its own scope across all active/paused c
             }
           }
         );
+});
+
+test('parent assessment artifact is validated, derived and bound before any intent', async (t) => {
+  for (const mode of [
+    'flags',
+    'digest',
+    'band',
+    'expired',
+    'repository',
+    'snapshot',
+    'worktree',
+    'policy',
+  ])
+    await t.test(mode, async (t) => {
+      const { f, transport, store } = await session(t);
+      const policy = structuredClone(rootPolicy);
+      if (mode === 'policy') Object.defineProperty(policy, '__digest', { value: '0'.repeat(64) });
+      const snapshot = structuredClone(assessmentSnapshot);
+      if (mode === 'snapshot') snapshot.treeSha = '0'.repeat(40);
+      if (mode === 'worktree') snapshot.worktreeDigest = '0'.repeat(64);
+      const s = new ConnectorReviewSession({
+        policy,
+        transport,
+        ledger: store,
+        readPolicy: () => policy,
+        readSnapshot: () => snapshot,
+      });
+      const packet = await parentPacket(s);
+      let candidate = structuredClone(assessment);
+      if (mode === 'flags')
+        candidate = { fresh: true, validated: true, capability: assessment.capability };
+      if (mode === 'digest') candidate.resultDigest = '0'.repeat(64);
+      if (mode === 'band') {
+        candidate.capability.band = 'C1';
+        candidate.resultDigest = computeSelfAssessmentResultDigest(candidate);
+      }
+      if (mode === 'expired') {
+        candidate.validity.expiresAt = new Date(Date.now() - 1000).toISOString();
+        candidate.resultDigest = computeSelfAssessmentResultDigest(candidate);
+      }
+      if (mode === 'repository') {
+        candidate.scope.repositoryId = 'github.com:other/repository';
+        candidate.resultDigest = computeSelfAssessmentResultDigest(candidate);
+      }
+      await assert.rejects(s.publishParentPacket(packet, candidate), /self result|self assessment/);
+      assert.equal(store.read().state.slot.intent, null);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+    });
+});
+
+test('live policy revocation at either publication preflight prevents POST', async (t) => {
+  for (const when of ['before-intent', 'after-intent'])
+    await t.test(when, async (t) => {
+      const { f, transport, store } = await session(t);
+      const policy = structuredClone(rootPolicy);
+      const s = new ConnectorReviewSession({ policy, transport, ledger: store });
+      const packet = await parentPacket(s);
+      const revoke = () => {
+        policy.reviewSubmissionAuthorizations.find((x) => x.id === CONNECTOR_AUTHORIZATION).status =
+          'paused';
+      };
+      if (when === 'before-intent') {
+        revoke();
+        await assert.rejects(s.publishParentPacket(packet, assessment), /policy changed|revoked/);
+        assert.equal(store.read().state.slot.intent, null);
+      } else {
+        const apply = store.apply.bind(store);
+        store.apply = (...args) => {
+          const result = apply(...args);
+          if (args[1].type === 'stagePublicationIntent') revoke();
+          return result;
+        };
+        const done = await s.publishParentPacket(packet, assessment);
+        assert.equal(done.status, 'unknown');
+        assert.match(done.reason, /policy changed|revoked/);
+        assert.equal(store.read().state.slot.intent.status, 'unknown');
+      }
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+    });
+});
+
+test('snapshot changes after intent also fail closed without POST', async (t) => {
+  const { f, transport, store } = await session(t);
+  const snapshot = structuredClone(assessmentSnapshot);
+  const s = new ConnectorReviewSession({
+    policy: rootPolicy,
+    transport,
+    ledger: store,
+    readSnapshot: () => snapshot,
+  });
+  const packet = await parentPacket(s);
+  const apply = store.apply.bind(store);
+  store.apply = (...args) => {
+    const result = apply(...args);
+    if (args[1].type === 'stagePublicationIntent') snapshot.catalogDigest = '0'.repeat(64);
+    return result;
+  };
+  assert.equal((await s.publishParentPacket(packet, assessment)).status, 'unknown');
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+});
+
+test('durable sweep inventory cannot expand, restart or replay a completed item', async (t) => {
+  const { f, s, transport, store, dir, genesis } = await session(t);
+  await assert.rejects(s.beginInitialSweep(487), /captured initial sweep/);
+  assert.equal(f.calls.length, 0);
+  await s.captureInitialSweep();
+  const captured = store.read().revision;
+  f.inventory = [{ ...f.pr, id: 488, number: 488 }];
+  assert.equal((await s.captureInitialSweep()).status, 'captured');
+  assert.equal(store.read().revision, captured);
+  await assert.rejects(s.beginInitialSweep(488), /captured initial sweep/);
+  assert.throws(
+    () =>
+      store.apply(captured, {
+        type: 'captureInitialSweep',
+        sweepId: INITIAL_SWEEP_ID,
+        pullRequests: [487, 488],
+      }),
+    /already captured/
+  );
+  assert.throws(
+    () =>
+      store.apply(captured, {
+        type: 'enqueue',
+        deliveryId: `${INITIAL_SWEEP_ID}:488`,
+        pullRequest: 488,
+        eventKind: 'initial-sweep',
+        materialDigest: 'a'.repeat(64),
+      }),
+    /inventory/
+  );
+  const request = await s.beginInitialSweep(487);
+  const { packet } = analysis(request.input);
+  packet.recommendedAction = 'COMMENT';
+  await s.finishParentAnalysis(packet);
+  const fresh = new ConnectorReviewSession({
+    policy: rootPolicy,
+    transport,
+    ledger: new LocalCloudReviewLedger(dir, genesis),
+  });
+  f.pr.head.sha = 'c'.repeat(40);
+  assert.equal((await fresh.beginInitialSweep(487)).skipped, true);
+  assert.deepEqual(store.read().state.initialSweep.completed, [487]);
+});
+
+test('initial inventory collector excludes owner, includes drafts and rejects changing membership', async (t) => {
+  const { f, s, store } = await session(t);
+  f.inventory = [
+    { ...f.pr, id: 487, number: 487, draft: true },
+    { ...f.pr, id: 488, number: 488, user: owner },
+  ];
+  await s.captureInitialSweep();
+  assert.deepEqual(store.read().state.initialSweep.pullRequests, [487]);
+  const g = await session(t);
+  const call = g.f.call;
+  let reads = 0;
+  const transport = new ConnectorReviewTransport(async (op, args) => {
+    if (
+      op === 'fetch' &&
+      args.url.includes('/pulls?') &&
+      args.url.endsWith('page=1') &&
+      ++reads === 2
+    )
+      g.f.inventory = [];
+    return call(op, args);
+  });
+  const candidate = new ConnectorReviewSession({ policy: rootPolicy, transport, ledger: g.store });
+  await assert.rejects(candidate.captureInitialSweep(), /changed during capture/);
+  assert.equal(g.store.read().state.initialSweep, null);
+});
+
+test('owner route retains canonical spec, discussion and finding-backed change-request boundaries', async (t) => {
+  for (const mode of ['current-spec', 'previous-spec', 'discussion', 'failed-dco-change-request'])
+    await t.test(mode, async (t) => {
+      const { f, s } = await session(t, {
+        modify(f) {
+          if (mode === 'current-spec') f.files[0].filename = 'spec/contracts/C-EXAMPLE-0001.yaml';
+          if (mode === 'previous-spec') {
+            f.files[0].status = 'renamed';
+            f.files[0].previous_filename = 'spec/contracts/C-EXAMPLE-0001.yaml';
+          }
+          if (mode === 'discussion') {
+            const comment = {
+              id: 7,
+              node_id: 'C7',
+              user: author,
+              body: 'Mechanical question considered by parent',
+              updated_at: '2026-10-03T00:00:00Z',
+            };
+            f.inline = [comment];
+            f.threads = [
+              {
+                id: 'T1',
+                is_resolved: false,
+                comments: [
+                  {
+                    id: comment.node_id,
+                    database_id: comment.id,
+                    author,
+                    body: comment.body,
+                    updated_at: comment.updated_at,
+                  },
+                ],
+              },
+            ];
+          }
+          if (mode === 'failed-dco-change-request')
+            f.checks.find((x) => x.name === 'DCO').conclusion = 'failure';
+        },
+      });
+      const packet = await parentPacket(s);
+      if (mode === 'failed-dco-change-request') {
+        packet.recommendedAction = 'REQUEST_CHANGES';
+        packet.findings = [
+          {
+            id: 'F1',
+            severity: 'P1',
+            confidence: 'high',
+            file: 'packages/core/src/index.ts',
+            line: 1,
+            authority: 'DCO evidence',
+            observed: 'DCO failed',
+            expected: 'Valid contribution provenance',
+            impact: 'Contribution cannot be accepted',
+            fix: 'Repair DCO evidence',
+          },
+        ];
+        packet.reconciliation.newFindingIds = ['F1'];
+      }
+      assert.equal((await s.publishParentPacket(packet, assessment)).status, 'published');
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
+    });
 });

@@ -1,12 +1,13 @@
 // Parent-owned review session. No model/reviewer is invoked by this helper.
 import { createHash } from 'node:crypto';
+import { validateSelfAssessmentResult, isSelfAssessmentFresh } from './assessment-runtime.mjs';
 import {
   authorizeReviewSubmission,
   computeReviewInputDigest,
   verifyLiveReviewInput,
 } from './review-runtime.mjs';
 import { summarizeLiveChecks, summarizeLiveDco } from './collect-live-review-input.mjs';
-import { LEDGER_PRINCIPAL, LEDGER_REPOSITORY } from './cloud-review-ledger.mjs';
+import { LEDGER_PRINCIPAL, LEDGER_REPOSITORY, INITIAL_SWEEP_ID } from './cloud-review-ledger.mjs';
 
 export const CONNECTOR_AUTHORIZATION = 'proto-ui-cloud-owner-review-v1';
 const assert = (condition, message) => {
@@ -14,7 +15,7 @@ const assert = (condition, message) => {
 };
 const hash = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 export const INITIAL_SWEEP_AUTHORIZATION = 'proto-ui-cloud-owner-initial-sweep-v1';
-export const INITIAL_SWEEP_ID = 'owner-requested-open-pr-sweep-2026-10-03';
+export { INITIAL_SWEEP_ID };
 const identity = (live) => [
   live.reviewerId,
   live.viewerLogin,
@@ -29,16 +30,60 @@ export class ConnectorReviewSession {
   #ledger;
   #policy;
   #initial;
+  #readPolicy;
+  #readSnapshot;
   #priorPacket = null;
   #used = false;
   #source = 'delegated-owner-event';
   #authorizationId = CONNECTOR_AUTHORIZATION;
-  constructor({ transport, ledger, policy }) {
+  constructor({ transport, ledger, readPolicy, readSnapshot }) {
     this.#transport = transport;
     this.#ledger = ledger;
-    this.#policy = structuredClone(policy);
+    assert(
+      typeof readPolicy === 'function' && typeof readSnapshot === 'function',
+      'trusted live policy and snapshot readers required'
+    );
+    this.#readPolicy = readPolicy;
+    this.#readSnapshot = readSnapshot;
+    this.#policy = readPolicy();
+  }
+  #refreshPolicy() {
+    const current = this.#readPolicy();
+    assert(
+      hash(current) === hash(this.#policy) && current.__digest === this.#policy.__digest,
+      'policy changed or authorization revoked; restart with current scope'
+    );
+    this.#policy = current;
+  }
+  async captureInitialSweep() {
+    this.#refreshPolicy();
+    this.#checkSweepScope();
+    const before = await this.#ledger.read();
+    assert(
+      before.state.publicationEnabled === true,
+      'production ledger must be explicitly provisioned'
+    );
+    if (before.state.initialSweep)
+      return { status: 'captured', inventory: before.state.initialSweep };
+    const pullRequests = await this.#transport.collectInitialSweep();
+    this.#refreshPolicy();
+    return this.#ledger.apply(before.revision, {
+      type: 'captureInitialSweep',
+      sweepId: INITIAL_SWEEP_ID,
+      pullRequests,
+    });
+  }
+  #checkSweepScope() {
+    const scope = this.#policy.reviewSubmissionAuthorizations.find(
+      (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
+    );
+    assert(
+      scope?.status === 'active' && scope.initialSweepId === INITIAL_SWEEP_ID,
+      'initial sweep needs its separately admitted exact scope'
+    );
   }
   async begin(pullRequest, event) {
+    this.#refreshPolicy();
     assert(!this.#initial && !this.#used, 'one parent-review lifecycle per session');
     assert(
       event &&
@@ -64,13 +109,19 @@ export class ConnectorReviewSession {
   }
   async beginInitialSweep(pullRequest) {
     assert(!this.#initial && !this.#used, 'one parent-review lifecycle per session');
-    const scope = this.#policy.reviewSubmissionAuthorizations.find(
-      (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
-    );
+    this.#refreshPolicy();
+    this.#checkSweepScope();
+    const { state } = await this.#ledger.read();
     assert(
-      scope?.status === 'active' && scope.initialSweepId === INITIAL_SWEEP_ID,
-      'initial sweep needs its separately admitted exact scope'
+      state.initialSweep?.pullRequests.includes(pullRequest),
+      'PR is not in the captured initial sweep inventory'
     );
+    if (state.initialSweep.completed.includes(pullRequest))
+      return {
+        skipped: true,
+        reason: 'initial sweep item already completed',
+        publicationAllowed: false,
+      };
     this.#source = 'delegated-owner-initial-sweep';
     this.#authorizationId = INITIAL_SWEEP_AUTHORIZATION;
     return this.#begin(pullRequest, {
@@ -115,6 +166,7 @@ export class ConnectorReviewSession {
       replies: live.input.replies,
       threads: live.input.threads,
     };
+    this.#refreshPolicy();
     const queued = await this.#ledger.apply(before.revision, {
       type: 'enqueue',
       deliveryId: event.deliveryId,
@@ -128,6 +180,7 @@ export class ConnectorReviewSession {
       return { skipped: true, reason: 'unchanged material', publicationAllowed: false };
     if (admitted.state.slot !== null)
       return { queued: true, reason: 'global slot occupied', publicationAllowed: false };
+    this.#refreshPolicy();
     const claimed = await this.#ledger.apply(admitted.revision, { type: 'claim', pullRequest });
     assert(claimed.status === 'applied', 'claim not confirmed; stop without retry');
     this.#initial = structuredClone(live);
@@ -147,6 +200,18 @@ export class ConnectorReviewSession {
     };
   }
   #authorize(packet, live, assessment) {
+    this.#refreshPolicy();
+    validateSelfAssessmentResult(assessment, this.#policy);
+    const snapshot = this.#readSnapshot();
+    assert(
+      isSelfAssessmentFresh(assessment, snapshot) &&
+        assessment.scope.worktreeDigest === snapshot.worktreeDigest,
+      'self assessment is stale or expired'
+    );
+    assert(
+      assessment.scope.repositoryId === LEDGER_REPOSITORY,
+      'self assessment repository mismatch'
+    );
     assert(
       !live.contributionGap && !live.contributed,
       'independent contributor identity unavailable or reviewer contributed'
@@ -182,7 +247,7 @@ export class ConnectorReviewSession {
         trustedProviderId: this.#policy.trustedDcoEvidence?.providerId,
         trustedDetailsUrl: this.#policy.trustedDcoEvidence?.detailsUrl,
       }),
-      selfAssessment: assessment,
+      selfAssessment: { ...assessment, validated: true, fresh: true },
       credentialCanReview: ['admin', 'write', 'maintain'].includes(live.permission),
       reviewer: live.viewerLogin,
       pullRequestAuthor: live.authorLogin,
@@ -214,6 +279,7 @@ export class ConnectorReviewSession {
     const live = await this.#transport.collect(this.#initial.input.pullRequest);
     this.#authorize(packet, live, assessment);
     const before = await this.#ledger.read();
+    this.#refreshPolicy();
     const staged = await this.#ledger.apply(before.revision, {
       type: 'stagePublicationIntent',
       input: this.#initial.input,
@@ -237,7 +303,6 @@ export class ConnectorReviewSession {
     await this.#ledger.consumePublicationAttempt(intent.id);
     try {
       const final = await this.#transport.collect(live.input.pullRequest);
-      this.#authorize(intent.analysis.packet, final, assessment);
       verifyLiveReviewInput(intent.analysis.packet, final.input);
       const current = (await this.#ledger.read()).state;
       assert(
@@ -246,6 +311,7 @@ export class ConnectorReviewSession {
             current.slot.generation,
         'material generation changed before review request'
       );
+      this.#authorize(intent.analysis.packet, final, assessment);
       const receipt = await this.#transport.submit(intent.pullRequest, intent);
       const snapshot = await this.#ledger.read();
       const finalized = await this.#ledger.apply(snapshot.revision, {
@@ -282,6 +348,7 @@ export class ConnectorReviewSession {
       'live identity/permission changed'
     );
     const snapshot = await this.#ledger.read();
+    this.#refreshPolicy();
     return this.#ledger.apply(snapshot.revision, {
       type: 'finishAnalysis',
       input: this.#initial.input,

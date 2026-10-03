@@ -75,6 +75,47 @@ export class ConnectorReviewTransport {
     }
     throw new Error('pagination budget exceeded; collection incomplete');
   }
+  async collectInitialSweep() {
+    const profile = await this.call('get_profile', {});
+    assert(
+      String(profile.id) === LEDGER_PRINCIPAL.id && profile.nickname === LEDGER_PRINCIPAL.login,
+      'connected principal is not the delegated owner'
+    );
+    const permission = await this.call('get_repo_collaborator_permission', {
+      repository_full_name: CONNECTOR_REPOSITORY,
+      username: profile.nickname,
+    });
+    assert(
+      ['admin', 'maintain', 'write'].includes(permission.permission),
+      'live permission unavailable'
+    );
+    const read = async () => {
+      const rows = await this.pages('/pulls?state=open&sort=created&direction=asc');
+      assert(rows.length <= 1000, 'initial sweep inventory budget exceeded');
+      const numbers = [];
+      for (const row of rows) {
+        assert(
+          row.state === 'open' &&
+            Number.isSafeInteger(row.number) &&
+            row.number > 0 &&
+            numeric(row.user?.id) &&
+            typeof row.user?.login === 'string',
+          'initial sweep inventory identity incomplete'
+        );
+        if (
+          String(row.user.id) !== LEDGER_PRINCIPAL.id &&
+          row.user.login.toLowerCase() !== LEDGER_PRINCIPAL.login
+        )
+          numbers.push(row.number);
+      }
+      numbers.sort((a, b) => a - b);
+      assert(new Set(numbers).size === numbers.length, 'duplicate initial sweep PR');
+      return numbers;
+    };
+    const first = await read();
+    assert(same(first, await read()), 'initial sweep inventory changed during capture');
+    return first;
+  }
   async collect(pullRequest, externalEvidence = []) {
     assert(Number.isSafeInteger(pullRequest) && pullRequest > 0, 'invalid pull request');
     const profile = await this.call('get_profile', {});

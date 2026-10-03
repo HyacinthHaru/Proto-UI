@@ -9,6 +9,7 @@ import {
   verifyReconciliation,
 } from './review-runtime.mjs';
 
+export const INITIAL_SWEEP_ID = 'owner-requested-open-pr-sweep-2026-10-03';
 export const LEDGER_REPOSITORY = 'github.com:Proto-UI/Proto-UI';
 export const LEDGER_PRINCIPAL = Object.freeze({ id: '52768321', login: 'guangliang2019' });
 const HEX = /^[a-f0-9]{64}$/;
@@ -42,6 +43,7 @@ export function emptyCloudReviewLedger({ publicationEnabled = false } = {}) {
   return {
     publicationEnabled,
     publicationReceipts: [],
+    initialSweep: null,
     generation: 0,
     deliveries: [],
     material: [],
@@ -88,6 +90,12 @@ function binding(command, state) {
     'owner-authored PR is excluded'
   );
   assert(HEX.test(observation.policyDigest), 'recorded policy digest is required');
+  if (observation.executionModeSource === 'delegated-owner-initial-sweep')
+    assert(
+      state.initialSweep?.pullRequests.includes(input.pullRequest) &&
+        !state.initialSweep.completed.includes(input.pullRequest),
+      'initial sweep inventory is absent or completed'
+    );
   validateReviewPacket(packet, input);
   assert(packet.schemaVersion === 2, 'candidate requires evidence-bearing packet v2');
   assert(
@@ -124,6 +132,8 @@ function binding(command, state) {
 
 function complete(state, analysis = null) {
   if (analysis) {
+    if (analysis.observation.executionModeSource === 'delegated-owner-initial-sweep')
+      state.initialSweep.completed.push(state.slot.pullRequest);
     state.analyses = state.analyses.filter(
       (item) => item.input.pullRequest !== state.slot.pullRequest
     );
@@ -142,7 +152,30 @@ function complete(state, analysis = null) {
 export function reduceCloudReviewLedger(previous, command) {
   const state = structuredClone(previous);
   assert(typeof state.publicationEnabled === 'boolean', 'ledger publication mode is invalid');
-  if (command.type === 'enqueue') {
+  if (command.type === 'captureInitialSweep') {
+    keys(command, ['type', 'sweepId', 'pullRequests']);
+    assert(
+      state.publicationEnabled && state.initialSweep === null,
+      'initial sweep is already captured or ledger disabled'
+    );
+    assert(command.sweepId === INITIAL_SWEEP_ID, 'initial sweep ID mismatch');
+    assert(
+      Array.isArray(command.pullRequests) && command.pullRequests.length <= 1000,
+      'initial sweep inventory budget exceeded'
+    );
+    command.pullRequests.forEach(pr);
+    assert(
+      command.pullRequests.every(
+        (value, index) => index === 0 || value > command.pullRequests[index - 1]
+      ),
+      'initial sweep inventory must be sorted and unique'
+    );
+    state.initialSweep = {
+      sweepId: command.sweepId,
+      pullRequests: command.pullRequests,
+      completed: [],
+    };
+  } else if (command.type === 'enqueue') {
     keys(command, ['type', 'deliveryId', 'pullRequest', 'eventKind', 'materialDigest']);
     pr(command.pullRequest);
     assert(
@@ -160,6 +193,17 @@ export function reduceCloudReviewLedger(previous, command) {
         'delivery id reused with different evidence'
       );
       return state;
+    }
+    if (command.eventKind === 'initial-sweep') {
+      assert(
+        state.initialSweep?.pullRequests.includes(command.pullRequest) &&
+          !state.initialSweep.completed.includes(command.pullRequest),
+        'PR is not in the incomplete initial sweep inventory'
+      );
+      assert(
+        command.deliveryId === `${INITIAL_SWEEP_ID}:${command.pullRequest}`,
+        'initial sweep delivery binding mismatch'
+      );
     }
     state.deliveries.push(command);
     const material = state.material.find((item) => item.pullRequest === command.pullRequest);

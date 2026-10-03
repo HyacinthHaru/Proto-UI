@@ -196,13 +196,20 @@ export class LocalCloudReviewLedger {
     this.read();
     if (expectedRevision !== this.#floor) return { status: 'conflict', publicationAllowed: false };
     const command = structuredClone(requested);
-    if (command.type !== 'enqueue') {
+    if (!['enqueue', 'captureInitialSweep'].includes(command.type)) {
       if (command.type !== 'claim')
         assert(this.#claimed, 'fresh or restarted process does not own the slot');
       command.owner = this.#owner;
     }
     const snapshot = this.#history(expectedRevision);
-    reduceCloudReviewLedger(snapshot.state, command);
+    const next = reduceCloudReviewLedger(snapshot.state, command);
+    if (JSON.stringify(next) === JSON.stringify(snapshot.state))
+      return {
+        status: 'applied',
+        revision: expectedRevision,
+        noOp: true,
+        publicationAllowed: false,
+      };
     const raw = JSON.stringify(command);
     assert(Buffer.byteLength(raw) <= MAX_BYTES, 'entry byte budget exceeded');
     const blob = this.#git(['hash-object', '-w', '--stdin'], raw).trim();
