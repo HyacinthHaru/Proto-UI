@@ -155,7 +155,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       }
       const chooseDemo = async (control: 'family', label: string) => {
         const trigger = page.locator(
-          `[data-home-showcase] [data-projection-control="${control}"] [role="combobox"]`
+          `[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="${control}"] [role="combobox"]`
         );
         await trigger.click();
         const id = await trigger.getAttribute('aria-controls');
@@ -280,12 +280,42 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             navHidden: navigation.hidden,
             controls: controlBounds.map(({ x, y, width, height }) => ({ x, y, width, height })),
             height: header.height,
+            headerBottom: header.bottom,
+            preferences: [
+              ...document.querySelectorAll<HTMLElement>(
+                '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control] [role="combobox"]'
+              ),
+            ].map((control) => {
+              const bounds = control.getBoundingClientRect();
+              const value = control.querySelector<HTMLElement>(
+                '[data-projection-prototype$="-select-value"]'
+              )!;
+              return {
+                x: bounds.x,
+                y: bounds.y,
+                width: bounds.width,
+                height: bounds.height,
+                bottom: bounds.bottom,
+                fullValueVisible: value.scrollWidth <= value.clientWidth + 1,
+              };
+            }),
             statusArea: status.width * status.height,
             brandSize: getComputedStyle(brand).fontSize,
           };
         });
         expect(geometry.navHidden, `${width}px navigation is deliberately disclosed`).toBe(true);
-        expect(geometry.height, `${width}px one 56px row and 48px runtime bar`).toBe(104);
+        expect(geometry.preferences).toHaveLength(2);
+        for (const preference of geometry.preferences) {
+          expect(preference.height).toBeGreaterThanOrEqual(44);
+          expect(preference.width).toBeGreaterThanOrEqual(120);
+          expect(preference.fullValueVisible).toBe(true);
+          expect(preference.bottom).toBeLessThanOrEqual(geometry.headerBottom + 1);
+          expect(preference.y).toBeGreaterThan(
+            geometry.controls[0]!.y + geometry.controls[0]!.height
+          );
+        }
+        if (width === 390) expect(geometry.preferences[0]!.y).toBe(geometry.preferences[1]!.y);
+        else expect(geometry.preferences[1]!.y).toBeGreaterThan(geometry.preferences[0]!.bottom);
         expect(geometry.controls).toHaveLength(3);
         for (const control of geometry.controls) {
           expect(control.width).toBeGreaterThanOrEqual(44);

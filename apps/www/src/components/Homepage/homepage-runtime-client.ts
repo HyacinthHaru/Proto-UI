@@ -500,7 +500,10 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       };
     },
     restoreFocus(key, commit, origin) {
-      const mount = key === PROJECTION_FOCUS_KEYS.runtime ? selectorGroup.mount : demo?.mount;
+      const mount =
+        key === PROJECTION_FOCUS_KEYS.runtime || key === PROJECTION_FOCUS_KEYS.family
+          ? selectorGroup.mount
+          : demo?.mount;
       if (mount) restoreProjectionControlFocus(mount, key, commit.generation, origin);
     },
   });

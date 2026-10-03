@@ -425,9 +425,9 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           await page.setViewportSize({ width, height: 900 });
           const geometry = await home.evaluate((root) => {
             const task = root.querySelector<HTMLElement>('[data-home-settings]')!;
-            const fields = task.querySelector<HTMLElement>('.home-settings__fields')!;
-            const trigger = root.querySelector<HTMLElement>(
-              '[data-projection-control="family"] [role="combobox"]'
+            const fields = task.querySelector<HTMLElement>('.home-settings__layout')!;
+            const trigger = document.querySelector<HTMLElement>(
+              '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"] [role="combobox"]'
             )!;
             const style = getComputedStyle(task);
             const rect = root.getBoundingClientRect();
@@ -442,8 +442,8 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           });
           expect(geometry.border).toBe('0px');
           expect(geometry.shadow).toBe('none');
-          expect(geometry.columns).toBe(width > 640 ? 2 : 1);
-          expect(geometry.triggerHeight).toBeGreaterThanOrEqual(32);
+          expect(geometry.columns).toBe(width > 767 ? 2 : 1);
+          expect(geometry.triggerHeight).toBeGreaterThanOrEqual(44);
           expect(geometry.fits, `${colorScheme} ${width}px overflow`).toBe(true);
         }
         expect(await home.locator('[data-projection-control="component"]').count()).toBe(0);

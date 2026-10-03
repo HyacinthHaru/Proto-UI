@@ -185,6 +185,10 @@ describe('Homepage page-owned runtime', () => {
     controls.family.onValueChange('brutalist');
     await settle();
     expect(root.dataset.family).toBe('brutalist');
+    expect(fakes.restoreFocus.mock.calls.at(-1)?.[0]).toBe(
+      root.querySelector('[data-homepage-controls="runtime"] [data-homepage-mount]')
+    );
+    expect(fakes.restoreFocus.mock.calls.at(-1)?.[1]).toBe('projection-family-select');
     expect(demo.dataset.projectionFamily).toBe('brutalist');
     expect(demo.dataset.projectionComponent).toBe('website-workspace-settings');
     expect(document.documentElement.dataset.siteLibraryFamily).toBe('brutalist');

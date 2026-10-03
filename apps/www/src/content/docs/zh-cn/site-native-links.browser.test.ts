@@ -424,6 +424,9 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           );
           await ready(page, runtime, family);
           await openSettings(page);
+          // Each journey measures viewport hit targets. Earlier keyboard/focus
+          // actions may scroll the document while the Header remains sticky.
+          await page.evaluate(() => scrollTo(0, 0));
           const links = page.locator('#home-social [data-projection-generation-state="active"] a');
           await expect.poll(() => links.count()).toBe(4);
           const facts = await links.evaluateAll((anchors) =>
@@ -643,8 +646,14 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       }
       await page.bringToFront();
       await openSettings(page);
-      for (const action of ['modifier', 'middle', 'enter'] as const)
+      for (const action of ['modifier', 'middle', 'enter'] as const) {
+        // Successful native navigation intentionally dismisses its parent menu.
+        await page.bringToFront();
+        await openSettings(page);
         await nativePopup(page, link, action, 'homepage-social');
+      }
+      await page.bringToFront();
+      await openSettings(page);
       const location = page.url();
       await link.focus();
       await page.keyboard.press('Space');

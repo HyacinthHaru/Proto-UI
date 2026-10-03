@@ -132,6 +132,13 @@ const baselineFontSelectors = [
   { name: 'demo', selector: '[data-home-demo-host] [data-projection-content] [data-pui-root]' },
 ];
 const candidateFontSelectors = [
+  { name: 'task-preview-title', selector: `${HOME} .home-preview__title` },
+  { name: 'task-result-title', selector: `${HOME} .home-preview__task-title` },
+  { name: 'task-result-detail', selector: `${HOME} .home-preview__detail` },
+  {
+    name: 'task-note-control',
+    selector: `${HOME} textarea[data-demo-ref="settings-note"], ${HOME} [data-demo-ref="settings-note"] > textarea`,
+  },
   {
     name: 'library-control',
     selector: `[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"] [role="combobox"], ${HOME} [data-projection-control="family"] [role="combobox"]`,
@@ -698,6 +705,8 @@ async function measure(page: Page, samples = fontSelectors) {
             fontSize: style.fontSize,
             lineHeight: style.lineHeight,
             fontWeight: style.fontWeight,
+            color: style.color,
+            backgroundColor: style.backgroundColor,
           },
         ];
       }),
@@ -1011,7 +1020,7 @@ try {
               nativeLinks: links,
               ...task,
             });
-            if (index < 3) {
+            if (index < 4) {
               await page.evaluate(() => scrollTo(0, 0));
               await screenshot(`${runtime}-viewport`);
               const metrics = await measure(page);
@@ -1088,9 +1097,23 @@ try {
                 await screenshot(`brutalist-${runtime}-${state}-viewport`);
                 if (runtime === 'wc') await screenshot(`brutalist-${runtime}-${state}-full`, true);
               });
-              familyTasks.push({ family: 'brutalist', runtime, owners, task });
+              const typography = await measure(page);
+              familyTasks.push({ family: 'brutalist', runtime, owners, task, typography });
             }
             evidence.familyTasks = familyTasks;
+            if (viewport.name === 'mobile') {
+              await page.setViewportSize({ width: 320, height: 844 });
+              await page.evaluate(() => scrollTo(0, 0));
+              evidence.narrow320 = await measure(page);
+              report.failures.push(
+                ...layoutFailures(evidence.narrow320 as Awaited<ReturnType<typeof measure>>).map(
+                  (failure) => `${id} 320px: ${failure}`
+                )
+              );
+              await screenshot('brutalist-320px-viewport');
+              await screenshot('brutalist-320px-full', true);
+              await page.setViewportSize({ width: viewport.width, height: viewport.height });
+            }
           }
           assert.deepEqual(pageErrors, [], 'No uncaught page errors');
           evidence.outcome = report.failures.some(
