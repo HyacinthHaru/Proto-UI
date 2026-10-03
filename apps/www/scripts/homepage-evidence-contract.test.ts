@@ -906,3 +906,62 @@ test('Dialog capture waits on the actual bounded focus owner and disposes its ph
     await window.happyDOM.close();
   }
 });
+
+test('native and Copy browser scopes have independent bounded jobs and small evidence bundles', () => {
+  const workflow = parse(
+    readFileSync(
+      new URL('../../../.github/workflows/homepage-visual-evidence.yml', import.meta.url),
+      'utf8'
+    )
+  );
+  const job = workflow.jobs['isolated-controls'];
+  assert.equal(job.needs, undefined);
+  assert.equal(job['timeout-minutes'], 15);
+  assert.equal(job.strategy['fail-fast'], false);
+  assert.deepEqual(job.strategy.matrix.include, [
+    { name: 'native-links', suite: 'site-native-links' },
+    { name: 'code-surfaces', suite: 'code-surfaces' },
+    { name: 'copy-commands', suite: 'site-copy-commands' },
+  ]);
+  const run = job.steps.find(
+    (step: { name?: string }) => step.name === 'Execute the exact isolated browser suite'
+  );
+  assert.equal(run['continue-on-error'], undefined);
+  assert.match(run.run, /timeout --signal=TERM --kill-after=10s 600s/);
+  assert.match(run.run, /vitest run --no-file-parallelism "\$FILE"/);
+  const checkout = job.steps.find((step: { uses?: string }) =>
+    step.uses?.startsWith('actions/checkout@')
+  );
+  assert.equal(checkout.with.ref, '${{ env.CANDIDATE_SHA }}');
+  assert.equal(checkout.with['persist-credentials'], false);
+  const artifact = job.steps.at(-1);
+  assert.equal(artifact.if, 'always()');
+  assert.match(artifact.with.name, /matrix.name/);
+  const focused = workflow.jobs.capture.steps.find((step: { name?: string }) =>
+    step.name?.startsWith('Execute focused real-browser')
+  );
+  for (const entry of job.strategy.matrix.include)
+    assert.ok(
+      !focused.run.includes(`${entry.suite}.browser.test.ts`),
+      'No duplicated shared-lifetime suite'
+    );
+  for (const suite of [
+    'homepage-dogfood',
+    'home-demo-runtime',
+    'prototype-projection-scope',
+    'demo-brutalist-checkbox',
+    'demo-brutalist-remaining',
+  ])
+    assert.ok(focused.run.includes(`${suite}.browser.test.ts`), `${suite} still runs`);
+  const frames = workflow.jobs.capture.steps.find(
+    (step: { name?: string }) => step.name === 'Retain small candidate frame and metadata bundles'
+  );
+  assert.equal(frames.if, 'always()');
+  for (const pattern of [
+    '*-initial-viewport.png',
+    '*-initial-full.png',
+    '*brutalist-*-viewport.png',
+    '*.json',
+  ])
+    assert.ok(frames.with.path.includes(pattern));
+});
