@@ -340,6 +340,84 @@ async function stableFingerprint(page: Page): Promise<string> {
   if (stableFrames < 2) throw new Error('Measured state did not stabilize before capture.');
   return previous;
 }
+async function projectionObservation(page: Page, item: Case): Promise<Observation> {
+  const manifest = (PROJECTION_FAMILY_MANIFESTS.brutalist as ProjectionFamilyManifest).families[
+    item.family
+  ];
+  if (!manifest?.parts.root)
+    return { achieved: false, reason: 'Requested family has no authored projection root.' };
+  return page
+    .locator('[data-previewer-id]')
+    .first()
+    .evaluate(
+      (previewer, expected) => {
+        const scopes = previewer.querySelectorAll<HTMLElement>('[data-projection-scope]');
+        const scope = scopes.length === 1 ? scopes[0] : null;
+        const contents = scope?.querySelectorAll<HTMLElement>('[data-projection-content]');
+        const content = contents?.length === 1 ? contents[0] : null;
+        const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
+        const generation = scope?.dataset.projectionGeneration;
+        const roots = [...(content?.querySelectorAll<HTMLElement>('[data-pui-root]') ?? [])];
+        const invalidRoots = roots.filter(
+          (root) =>
+            root.dataset.projectionOwner !== owner ||
+            root.dataset.projectionGeneration !== generation ||
+            !expected.prototypeIds.includes(root.dataset.projectionPrototype ?? '')
+        );
+        const rootPresent = roots.some(
+          (root) => root.dataset.projectionPrototype === expected.rootPrototypeId
+        );
+        return {
+          achieved: !!(
+            owner &&
+            generation &&
+            previewer.getAttribute('data-demo-id') === expected.recipeId &&
+            scope?.dataset.projectionState === 'ready' &&
+            scope.dataset.projectionFamily === 'brutalist' &&
+            scope.dataset.projectionRuntime === expected.runtime &&
+            content?.dataset.projectionOwner === owner &&
+            content.dataset.projectionGeneration === generation &&
+            content.dataset.projectionFamily === 'brutalist' &&
+            content.dataset.projectionRuntime === expected.runtime &&
+            content.dataset.projectionId === expected.family &&
+            content.dataset.projectionPrototype === expected.rootPrototypeId &&
+            rootPresent &&
+            !invalidRoots.length
+          ),
+          owner: owner ?? null,
+          generation: generation ?? null,
+          expected,
+          observed: {
+            recipeId: previewer.getAttribute('data-demo-id'),
+            scopeCount: scopes.length,
+            contentCount: contents?.length ?? 0,
+            state: scope?.dataset.projectionState ?? null,
+            family: scope?.dataset.projectionFamily ?? null,
+            runtime: scope?.dataset.projectionRuntime ?? null,
+            contentFamily: content?.dataset.projectionFamily ?? null,
+            contentRuntime: content?.dataset.projectionRuntime ?? null,
+            componentId: content?.dataset.projectionId ?? null,
+            rootPrototypeId: content?.dataset.projectionPrototype ?? null,
+            rootPresent,
+            invalidRoots: invalidRoots.map((root) => ({
+              prototypeId: root.dataset.projectionPrototype ?? null,
+              owner: root.dataset.projectionOwner ?? null,
+              generation: root.dataset.projectionGeneration ?? null,
+            })),
+          },
+          boundary:
+            'Requested authored Brutalist recipe/component/runtime and current lease, checked before and after every PNG/fact frame; not semantic conformance.',
+        };
+      },
+      {
+        recipeId: manifest.recipeId,
+        family: item.family,
+        runtime: item.runtime,
+        rootPrototypeId: manifest.parts.root.prototypeId,
+        prototypeIds: manifest.recipePrototypeIds,
+      }
+    );
+}
 async function capture(
   page: Page,
   item: Case,
@@ -361,6 +439,10 @@ async function capture(
   try {
     const before = await stableFingerprint(page);
     frame.beforeFingerprintDigest = digest(before);
+    const projectionBefore = await projectionObservation(page, item);
+    frame.projectionBefore = projectionBefore;
+    if (!projectionBefore.achieved)
+      throw new Error('Requested Brutalist recipe/component/runtime or current lease is missing.');
     // Default caret hiding writes native editor styles; preserve the reader's
     // state rather than weakening the exact PNG/fact fingerprint guards.
     const png = await page.screenshot({ caret: 'initial' });
@@ -390,6 +472,12 @@ async function capture(
     frame.targetObservation = await observe();
     const after = await fingerprint(page);
     frame.afterFingerprintDigest = digest(after);
+    const projectionAfter = await projectionObservation(page, item);
+    frame.projectionAfter = projectionAfter;
+    const sameProjectionLease =
+      projectionBefore.owner === projectionAfter.owner &&
+      projectionBefore.generation === projectionAfter.generation;
+    frame.sameProjectionLease = sameProjectionLease;
     if (before !== facts.stateFingerprint || before !== after) {
       const mismatchJSON =
         JSON.stringify(
@@ -408,6 +496,10 @@ async function capture(
         'PNG/fact state mismatch: physical state or projection lease changed; raw attempt retained, no retry.'
       );
     }
+    if (!projectionAfter.achieved || !sameProjectionLease)
+      throw new Error(
+        'Requested Brutalist projection changed during capture; raw attempt retained.'
+      );
     if (!(frame.targetObservation as Observation).achieved)
       throw new Error(`Requested target predicate not achieved: ${state}.`);
     frame.status = 'matched';
@@ -1320,9 +1412,13 @@ try {
       await previewer.waitFor({ state: 'visible' });
       phase = 'runtime-theme-readiness';
       await choosePreviewRuntime(page, previewer, runtime as (typeof runtimes)[number]);
-      await page.waitForSelector(
-        `[data-projection-scope][data-projection-runtime="${runtime}"][data-projection-state="ready"]`
-      );
+      await previewer
+        .locator(
+          `[data-projection-scope][data-projection-family="brutalist"][data-projection-runtime="${runtime}"][data-projection-state="ready"]`
+        )
+        .waitFor({ state: 'attached' });
+      if (!(await projectionObservation(page, item)).achieved)
+        throw new Error('Ready previewer is not the requested Brutalist recipe/component/runtime.');
       await applyColorScheme(page, theme as (typeof themes)[number]);
       await previewer.scrollIntoViewIfNeeded();
       await page.mouse.move(0, 0);
@@ -1335,14 +1431,7 @@ try {
             item.motionContext.observedReducedMotion = observation.observedReducedMotion === true;
           return observation;
         }
-        return page
-          .locator('[data-projection-scope]')
-          .first()
-          .evaluate((scope: HTMLElement) => ({
-            achieved: scope.dataset.projectionState === 'ready',
-            owner: scope.dataset.projectionOwner,
-            generation: scope.dataset.projectionGeneration,
-          }));
+        return projectionObservation(page, item);
       };
       await capture(page, item, 'rest', rest);
       const target = primary(previewer, family);

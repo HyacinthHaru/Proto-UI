@@ -167,6 +167,36 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     expect(path('opaque').fillContrast).toBeCloseTo(21, 8);
   });
 
+  it('measures supported opaque boundary fills but withholds image and clipped fill ratios', async () => {
+    // The baseline reported the white CSS color as 21:1 even when an opaque
+    // black image replaced it or padding-box clipping removed it at the edge.
+    const frame = await calibrate(`
+      <div style="background:black;padding:16px">
+        <div data-pui-root data-demo-ref="supported">Flat white fill</div>
+        <div data-pui-root data-demo-ref="gradient" style="background-image:linear-gradient(black,black);border:4px solid white">Image fill</div>
+        <div data-pui-root data-demo-ref="padding-clip" style="background-clip:padding-box;border:4px solid white">Clipped fill</div>
+      </div>
+    `);
+    for (const ref of ['supported', 'gradient', 'padding-clip']) {
+      const target = surface(frame, ref);
+      expect(target.exterior[0].point?.rgb).toEqual([0, 0, 0]);
+      for (const edge of target.exterior) {
+        expect(edge.point?.rgb).toEqual([0, 0, 0]);
+        if (ref === 'supported') expect(edge.opaqueFillVsPixel).toBeCloseTo(21, 8);
+        else {
+          expect(edge.opaqueFillVsPixel).toBeNull();
+          // Withholding unsupported fill must not erase the separately
+          // supported white border against native-sampled black neighbors.
+          expect(edge.opaqueBorderVsPixel).toBeCloseTo(21, 8);
+        }
+      }
+    }
+    expect(surface(frame, 'gradient').paint.limits).toContain('background-image');
+    expect(surface(frame, 'padding-clip').paint.limits).toContain(
+      'unsupported-background-clip-perimeter'
+    );
+  });
+
   it('retains fractional CSS alpha before raster bytes can round it opaque', async () => {
     // CSS Color 4 retains the fractional value in this user agent. Legacy rgba
     // already quantizes .999 to opaque in CSSOM, before the probe can see it.

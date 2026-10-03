@@ -588,6 +588,12 @@ export const collectContrastFrame = async ({
         fill = paint(style.backgroundColor),
         border = paint(style.borderTopColor),
         outline = paint(style.outlineColor);
+      // The color beneath an image is not the observed fill, and only a
+      // border-box background supplies the modeled exterior fill boundary.
+      // Keep these limits local to fill evidence, not independent border ink.
+      if (style.backgroundImage !== 'none') fill.limits.push('background-image');
+      if (style.backgroundClip !== 'border-box')
+        fill.limits.push('unsupported-background-clip-perimeter');
       const backdrop = background(element);
       let inactive =
         element.hasAttribute('disabled') || host.getAttribute('aria-disabled') === 'true';
@@ -997,7 +1003,12 @@ export const collectContrastFrame = async ({
               ? contrast(borders[side].color, point.rgb)
               : null,
           opaqueFillVsPixel:
-            !inactive && inkUnmodified && fill.alpha === 1 && fill.rgba && point
+            !inactive &&
+            inkUnmodified &&
+            !fill.limits.length &&
+            fill.alpha === 1 &&
+            fill.rgba &&
+            point
               ? contrast(fill.rgba, point.rgb)
               : null,
         })),
