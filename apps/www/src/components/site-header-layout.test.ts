@@ -8,16 +8,16 @@ const browser = readFileSync(
   'utf8'
 );
 
-function actualMarkdownFixture() {
+function actualMarkdownFixture(section = '<h2 id="actual-doc-heading">Installation</h2>') {
   // Materialize the checked-in wrapper itself. Never invent a legacy class to
   // make a Website selector pass when the real MarkdownContent does not have it.
   const body = markdown
     .replace(/^---[\s\S]*?---\s*/, '')
     .replace('<SiteCopyBootstrap />', '')
-    .replace('<slot />', '<h2 id="actual-doc-heading">Installation</h2>');
+    .replace('<slot />', section);
   document.body.innerHTML = `<div class="site-page-frame"><header data-docs-site-header></header><main>${body}</main></div>`;
   const heading = document.querySelector<HTMLHeadingElement>('#actual-doc-heading')!;
-  expect(heading.closest('[data-doc-flow]')).not.toBeNull();
+  if (heading) expect(heading.closest('[data-doc-flow]')).not.toBeNull();
   expect(document.querySelector('.sl-markdown-content')).toBeNull();
   return heading;
 }
@@ -40,3 +40,24 @@ describe('Docs header offset targets the actual MarkdownContent wrapper', () => 
     expect(document.querySelector(selector!)).toBe(heading);
   });
 });
+
+for (const family of ['shadcn', 'brutalist']) {
+  it(`covers an authored ${family} section heading on the actual browser route`, () => {
+    const route =
+      family === 'brutalist'
+        ? (browser.match(
+            /family === 'brutalist'\s*\? '(\/zh-cn\/ui-libraries\/brutalist\/components\/[^']+)'\s*:\s*searchRoute/
+          )?.[1] ?? '/zh-cn/ui-libraries/brutalist/components/button/')
+        : '/zh-cn/ui-libraries/shadcn/button/';
+    const page = readFileSync(`apps/www/src/content/docs${route.replace(/\/$/, '')}.mdx`, 'utf8');
+    const section = page.match(/^## (.+)$/m)?.[1];
+    actualMarkdownFixture(
+      section
+        ? `<h2 id="actual-doc-heading">${section}</h2>`
+        : '<p>No section in this authored page</p>'
+    );
+    const selector = browser.match(/const heading = page\.locator\('([^']+)'\)\.first\(\)/)?.[1];
+    expect(document.querySelector(selector!)).not.toBeNull();
+    expect(document.querySelector(selector!)?.textContent).toBe(section);
+  });
+}

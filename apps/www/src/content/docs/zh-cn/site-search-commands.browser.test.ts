@@ -35,12 +35,40 @@ afterAll(async () => {
 
 const diagnosticPages = new Map<
   Page,
-  { id: string; stage: string; writes: Promise<void>; errors: string[] }
+  {
+    id: string;
+    stage: string;
+    writes: Promise<void>;
+    errors: string[];
+    pendingRequests: Map<string, string>;
+    requests: unknown[];
+    lateObservation?: { budgetMs: number; elapsedMs: number; ready: boolean };
+  }
 >();
 function stage(page: Page, id: string, step: string) {
   const existing = diagnosticPages.get(page);
-  const entry = existing ?? { id, stage: step, writes: Promise.resolve(), errors: [] as string[] };
+  const entry = existing ?? {
+    id,
+    stage: step,
+    writes: Promise.resolve(),
+    errors: [] as string[],
+    pendingRequests: new Map<string, string>(),
+    requests: [] as unknown[],
+  };
   if (!existing) {
+    page.on('request', (request) =>
+      entry.pendingRequests.set(request.url(), request.resourceType())
+    );
+    page.on('requestfinished', (request) => {
+      entry.pendingRequests.delete(request.url());
+      entry.requests.push({ url: request.url(), outcome: 'finished' });
+      if (entry.requests.length > 80) entry.requests.shift();
+    });
+    page.on('requestfailed', (request) => {
+      entry.pendingRequests.delete(request.url());
+      entry.requests.push({ url: request.url(), outcome: request.failure()?.errorText });
+      if (entry.requests.length > 80) entry.requests.shift();
+    });
     page.on('pageerror', (error) => entry.errors.push(`pageerror: ${error.message}`));
     page.on('console', (message) => {
       if (message.type() === 'error') entry.errors.push(`console: ${message.text()}`);
@@ -64,6 +92,40 @@ async function captureFailure(page: Page) {
   await capture(page, entry.id, `failure-${entry.stage}`).catch((error) =>
     console.warn('[Search evidence] failure capture unavailable', error)
   );
+  // Preserve the original failed assertion. This bounded observation only
+  // distinguishes late mounting from a stuck/absent owner for the next repair.
+  const missingCommand = await page
+    .locator('site-search [data-projection-generation-state="active"] [data-open-modal]')
+    .count()
+    .catch(() => -1);
+  if (missingCommand === 0 && !page.isClosed()) {
+    const startedAt = Date.now();
+    let ready = false;
+    await page
+      .waitForFunction(
+        () => {
+          const command = document.querySelector(
+            'site-search [data-projection-generation-state="active"] [data-open-modal]'
+          );
+          return (
+            command?.getAttribute('role') === 'button' &&
+            command.getAttribute('aria-disabled') === 'false'
+          );
+        },
+        undefined,
+        { timeout: 10_000 }
+      )
+      .then(
+        () => {
+          ready = true;
+        },
+        () => {}
+      );
+    entry.lateObservation = { budgetMs: 10_000, elapsedMs: Date.now() - startedAt, ready };
+    await capture(page, entry.id, `late-observation-${entry.stage}`).catch((error) =>
+      console.warn('[Search evidence] Late observation unavailable', error)
+    );
+  }
 }
 afterEach(async () => {
   // A case-level timeout can interrupt an await before its catch/finally runs.
@@ -84,6 +146,67 @@ async function capture(page: Page, id: string, state: string) {
   const observed = await page.locator('site-search').evaluate((search) => ({
     family: document.documentElement.dataset.siteLibraryFamily,
     searchState: { ...(search as HTMLElement).dataset },
+    startup: {
+      documentReadyState: document.readyState,
+      capturedAtMs: performance.now(),
+      customElementDefined: !!customElements.get('site-search'),
+      upgraded: search.constructor === customElements.get('site-search'),
+      connected: search.isConnected,
+      serviceOwnerInstalled: typeof (search as any).cleanup === 'function',
+      commandRefreshInstalled: typeof (search as any).refreshCommands === 'function',
+      mounts: [...search.querySelectorAll<HTMLElement>('[data-search-command-mount]')].map(
+        (mount) => ({
+          command: mount.dataset.searchCommandMount,
+          owner: mount.dataset.projectionOwner,
+          html: mount.innerHTML.slice(0, 1200),
+          generations: [
+            ...mount.querySelectorAll<HTMLElement>('[data-projection-generation-host]'),
+          ].map((host) => ({ ...host.dataset })),
+        })
+      ),
+      scripts: [...document.scripts]
+        .filter((script) => script.src)
+        .map((script) => ({ src: script.src, type: script.type })),
+      resources: performance
+        .getEntriesByType('resource')
+        .slice(-80)
+        .map((resource) => ({
+          name: resource.name,
+          startTime: resource.startTime,
+          duration: resource.duration,
+        })),
+    },
+    overflowElements: [...document.querySelectorAll<HTMLElement>('body *')]
+      .flatMap((element) => {
+        const box = element.getBoundingClientRect();
+        const css = getComputedStyle(element);
+        if (
+          box.width <= 0 ||
+          box.height <= 0 ||
+          css.display === 'none' ||
+          css.visibility === 'hidden' ||
+          (box.right <= innerWidth + 1 && box.left >= -1)
+        )
+          return [];
+        return [
+          {
+            tag: element.localName,
+            id: element.id,
+            classes: element.className,
+            right: box.right,
+            left: box.left,
+            width: box.width,
+            scrollWidth: element.scrollWidth,
+            clientWidth: element.clientWidth,
+            display: css.display,
+            position: css.position,
+            overflowX: css.overflowX,
+            gridTemplateColumns: css.gridTemplateColumns,
+            parent: element.parentElement?.className,
+          },
+        ];
+      })
+      .slice(0, 60),
     native: {
       dialog: search.querySelector('dialog')?.getBoundingClientRect().toJSON(),
       frame: search.querySelector('.dialog-frame')?.getBoundingClientRect().toJSON(),
@@ -125,6 +248,9 @@ async function capture(page: Page, id: string, state: string) {
         viewport: page.viewportSize(),
         observed,
         errors: diagnosticPages.get(page)?.errors ?? [],
+        pendingRequests: [...(diagnosticPages.get(page)?.pendingRequests ?? [])],
+        recentRequests: diagnosticPages.get(page)?.requests ?? [],
+        lateObservation: diagnosticPages.get(page)?.lateObservation,
         renderer: 'Real Chromium via existing repository browser harness',
         scope:
           'Search trigger/close/retry Buttons only; native dialog and Pagefind visuals remain CSS-owned',
@@ -760,6 +886,8 @@ for (const width of [320, 390]) {
       const page = await context.newPage();
       const errors: string[] = [];
       page.on('pageerror', (error) => errors.push(error.message));
+      const id = `docs-${family}-font-200-${width}`;
+      stage(page, id, 'font-navigate');
       try {
         expect(
           (await page.goto(`${baseUrl}${searchRoute(family)}`, { waitUntil: 'networkidle' }))?.ok()
@@ -777,6 +905,8 @@ for (const width of [320, 390]) {
           const frame = root.closest<HTMLElement>('.site-page-frame')!;
           return frame.style.getPropertyValue('--header-height') === `${root.offsetHeight}px`;
         });
+        stage(page, id, 'font-geometry');
+        await capture(page, id, 'before-geometry');
         const geometry = await header.evaluate((header) => {
           const select = header.querySelector<HTMLElement>(
             '[data-adapter-select] [data-site-select-trigger]'
@@ -807,7 +937,6 @@ for (const width of [320, 390]) {
             pageOverflow: document.documentElement.scrollWidth - innerWidth,
           };
         });
-        const id = `docs-${family}-font-200-${width}`;
         await capture(page, id, 'geometry');
         await writeFile(
           path.join(evidenceDirectory, `${id}-rects.json`),
@@ -831,6 +960,30 @@ for (const width of [320, 390]) {
         expect(await page.locator(`[id=${JSON.stringify(listboxId)}]`).isVisible()).toBe(true);
         expect((await header.boundingBox())!.height).toBe(beforePortal!.height);
         await page.keyboard.press('Escape');
+        // Keep all geometry assertions on the Button page above. Brutalist
+        // Button has no authored section heading, so verify sticky offsets on
+        // the same family's real Card contract section instead.
+        const headingRoute =
+          family === 'brutalist'
+            ? '/zh-cn/ui-libraries/brutalist/components/card/'
+            : searchRoute(family);
+        if (new URL(page.url()).pathname !== headingRoute) {
+          stage(page, id, 'heading-navigation');
+          const response = await page.goto(`${baseUrl}${headingRoute}`, {
+            waitUntil: 'networkidle',
+          });
+          expect(response?.ok()).toBe(true);
+          await page.evaluate(() => {
+            document.documentElement.style.fontSize = '200%';
+          });
+          await expect.poll(() => select.getAttribute('role')).toBe('combobox');
+          await page.waitForFunction(() => {
+            const root = document.querySelector<HTMLElement>('[data-docs-site-header]')!;
+            const frame = root.closest<HTMLElement>('.site-page-frame')!;
+            return frame.style.getPropertyValue('--header-height') === `${root.offsetHeight}px`;
+          });
+        }
+        stage(page, id, 'heading-offset');
         const heading = page.locator('[data-doc-flow] h2[id]').first();
         expect(await heading.count()).toBe(1);
         expect(await heading.isVisible()).toBe(true);
@@ -838,6 +991,8 @@ for (const width of [320, 390]) {
           id: element.id,
           text: element.textContent?.trim(),
           inActualFlow: !!element.closest('[data-doc-flow]'),
+          route: location.pathname,
+          rootFontSize: getComputedStyle(document.documentElement).fontSize,
           box: element.getBoundingClientRect().toJSON(),
           scrollMarginTop: parseFloat(getComputedStyle(element).scrollMarginTop),
         }));
@@ -846,6 +1001,9 @@ for (const width of [320, 390]) {
           JSON.stringify({ source, family, width, headingFacts }, null, 2)
         );
         expect(headingFacts.inActualFlow).toBe(true);
+        expect(headingFacts.route).toBe(headingRoute);
+        expect(headingFacts.rootFontSize).toBe('32px');
+        expect(headingFacts.text).toContain(family === 'brutalist' ? '契约' : '安装');
         expect(headingFacts.id).toBeTruthy();
         expect(headingFacts.text).toBeTruthy();
         expect(headingFacts.box.width).toBeGreaterThan(0);
@@ -872,6 +1030,9 @@ for (const width of [320, 390]) {
         expect(panelBox.y + panelBox.height).toBeLessThanOrEqual(1001);
         await capture(page, id, 'menu-and-heading');
         expect(errors).toEqual([]);
+      } catch (error) {
+        await captureFailure(page);
+        throw error;
       } finally {
         await context.close();
       }
