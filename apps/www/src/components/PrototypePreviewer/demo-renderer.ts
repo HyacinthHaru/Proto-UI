@@ -287,8 +287,8 @@ async function renderDemoReact(
 
   function initProps(node: DemoChild) {
     if (typeof node === 'string' || node.kind === 'text') return;
-    if (node.kind === 'proto' && node.ref && node.props) {
-      propsMap.set(node.ref, { ...node.props });
+    if (node.kind === 'proto' && node.ref) {
+      propsMap.set(node.ref, { ...(node.props ?? {}) });
     }
     for (const child of node.children ?? []) initProps(child);
   }
@@ -435,8 +435,8 @@ async function renderDemoVue(
 
   function initProps(node: DemoChild) {
     if (typeof node === 'string' || node.kind === 'text') return;
-    if (node.kind === 'proto' && node.ref && node.props) {
-      propsMap[node.ref] = { ...node.props };
+    if (node.kind === 'proto' && node.ref) {
+      propsMap[node.ref] = { ...(node.props ?? {}) };
     }
     for (const child of node.children ?? []) initProps(child);
   }
@@ -530,9 +530,9 @@ async function renderDemoVue(
       if (propsMap[ref]) {
         Object.assign(propsMap[ref], next);
       }
-      // Wait until reactive props/attrs have reached the adapter. Calling the
-      // controller in the same stack would re-read the previous attrs value.
-      void Vue.nextTick(() => componentRefs.get(ref)?.update?.());
+      // The actual Vue adapter reconciles changed host props after its commit.
+      // An additional controller update can replace that pending feedback
+      // commit with an unchanged one and lose a later controlled prop's paint.
     },
   };
 
@@ -678,10 +678,8 @@ async function renderDemoVue2(
         setReactive(propsMap[ref], key, value);
       }
       app.$forceUpdate?.();
-      void nextVue2(Vue).then(() => {
-        refreshComponentRefs(app);
-        componentRefs.get(ref)?.update?.();
-      });
+      // Vue2's adapter owns host-prop notification and the resulting update.
+      // Public call/getExposes refresh component refs when they are consumed.
     },
   };
 
