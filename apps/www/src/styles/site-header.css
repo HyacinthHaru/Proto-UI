@@ -195,8 +195,10 @@
 .site-header-setting [aria-label='Discord'],
 .site-header-setting [aria-label='X'],
 .site-header-setting [aria-label='Bluesky'] {
-  width: 2.75rem;
-  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  width: auto;
+  height: auto;
   padding: 0;
 }
 .site-header-setting svg {

@@ -104,3 +104,14 @@ it('reserves the existing public focus ring inside only the native popup scroll 
   expect(slot).toContain('overflow-y: auto');
   expect(slot).not.toMatch(/(?:box-shadow|outline|border-radius)\s*:/);
 });
+
+it('lets enhanced social anchors enclose the Prototype motion extent without fixed 44px clipping', () => {
+  const css = readFileSync('apps/www/src/styles/site-header.css', 'utf8');
+  const block = css.match(/\.site-header-setting \[aria-label='GitHub'\][\s\S]*?\{([^}]+)\}/)?.[1];
+  expect(block).toBeTruthy();
+  expect(block).toMatch(/min-width:\s*2\.75rem/);
+  expect(block).toMatch(/min-height:\s*2\.75rem/);
+  expect(block).toMatch(/(?:^|[;\n])\s*width:\s*auto/);
+  expect(block).toMatch(/(?:^|[;\n])\s*height:\s*auto/);
+  expect(block).not.toMatch(/(?:^|[;\n])\s*(?:width|height):\s*2\.75rem/);
+});
