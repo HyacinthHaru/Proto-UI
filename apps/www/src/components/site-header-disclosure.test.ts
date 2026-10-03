@@ -213,3 +213,87 @@ describe('shared website navigation disclosure', () => {
     expect(root.hasAttribute('data-site-menu-open')).toBe(false);
   });
 });
+
+// Geometry is injected here; browser evidence measures the real layout.
+describe('Docs header offset ownership', () => {
+  function measuredFixture(initial = '7rem') {
+    let deliver!: () => void;
+    const observe = vi.fn();
+    const disconnect = vi.fn();
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        constructor(callback: () => void) {
+          deliver = callback;
+        }
+        observe = observe;
+        disconnect = disconnect;
+      }
+    );
+    document.body.innerHTML =
+      '<div class="site-page-frame"><header data-site-header data-docs-site-header><div data-site-header-panel><nav data-site-header-navigation></nav><div data-site-header-settings></div></div></header></div>';
+    const frame = document.querySelector<HTMLElement>('.site-page-frame')!;
+    const root = frame.querySelector<HTMLElement>('header')!;
+    if (initial) frame.style.setProperty('--header-height', initial, 'important');
+    let height = 137;
+    vi.spyOn(root, 'offsetHeight', 'get').mockImplementation(() => height);
+    const writes = vi.spyOn(frame.style, 'setProperty');
+    disclosure = initSiteHeaderDisclosure(root);
+    disclosure.enhance();
+    return {
+      frame,
+      root,
+      deliver: () => deliver(),
+      observe,
+      disconnect,
+      writes,
+      setHeight: (next: number) => {
+        height = next;
+      },
+    };
+  }
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('publishes actual height once, ignores unchanged portal delivery and follows font-driven height', () => {
+    const h = measuredFixture();
+    expect(h.frame.style.getPropertyValue('--header-height')).toBe('137px');
+    expect(h.observe).toHaveBeenCalledOnce();
+    expect(initSiteHeaderDisclosure(h.root)).toBe(disclosure);
+    const writes = h.writes.mock.calls.length;
+    const portal = document.createElement('div');
+    portal.setAttribute('role', 'listbox');
+    document.body.append(portal);
+    h.deliver();
+    h.deliver();
+    expect(h.writes.mock.calls).toHaveLength(writes);
+    h.setHeight(221);
+    h.deliver();
+    expect(h.frame.style.getPropertyValue('--header-height')).toBe('221px');
+    h.setHeight(0);
+    h.deliver();
+    expect(h.frame.style.getPropertyValue('--header-height')).toBe('221px');
+  });
+
+  it('restores the exact fallback priority, disconnects and ignores late observer delivery', () => {
+    const h = measuredFixture();
+    document.dispatchEvent(new Event('astro:before-swap'));
+    expect(h.disconnect).toHaveBeenCalledOnce();
+    expect(h.frame.style.getPropertyValue('--header-height')).toBe('7rem');
+    expect(h.frame.style.getPropertyPriority('--header-height')).toBe('important');
+    h.setHeight(500);
+    h.deliver();
+    expect(h.frame.style.getPropertyValue('--header-height')).toBe('7rem');
+  });
+
+  it('removes an initially absent value without overwriting a later external owner', () => {
+    const first = measuredFixture('');
+    expect(first.frame.style.getPropertyValue('--header-height')).toBe('137px');
+    disclosure!.destroy();
+    expect(first.frame.style.getPropertyValue('--header-height')).toBe('');
+    const second = measuredFixture('');
+    second.frame.style.setProperty('--header-height', '137px', 'important');
+    disclosure!.destroy();
+    expect(second.frame.style.getPropertyValue('--header-height')).toBe('137px');
+    expect(second.frame.style.getPropertyPriority('--header-height')).toBe('important');
+  });
+});

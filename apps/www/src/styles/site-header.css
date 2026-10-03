@@ -479,3 +479,59 @@
     padding-block-end: 0.5rem;
   }
 }
+
+/* Docs gives its longest Runtime value real space. Text can wrap through the
+   Select's public surface inputs when enlargement needs more than one line. */
+@media (min-width: 68.75rem) {
+  .site-header[data-docs-site-header] {
+    grid-template-columns: auto auto minmax(0, 1fr) 12rem minmax(12.5rem, 15rem) 2.75rem 2.75rem;
+  }
+}
+.site-header[data-docs-site-header] .site-header-runtime .adapter-select-wrapper {
+  width: 12rem;
+  flex-basis: 12rem;
+}
+@media (max-width: 68.749rem) {
+  .site-header[data-docs-site-header] {
+    grid-template-rows: minmax(var(--site-header-row-height), auto) auto;
+  }
+  .site-header[data-docs-site-header] .site-header-context {
+    box-sizing: border-box;
+    height: auto;
+    min-height: 5rem;
+    padding-block: 0.5rem;
+    align-items: end;
+  }
+  .site-header[data-docs-site-header] .site-header-runtime {
+    display: grid;
+    gap: 0.25rem;
+    flex: 1 1 0;
+  }
+  .site-header[data-docs-site-header] .site-header-runtime-label {
+    line-height: 1rem;
+    white-space: normal;
+  }
+  .site-header[data-docs-site-header] .site-header-runtime .adapter-select-wrapper {
+    width: 100%;
+  }
+  .site-header[data-docs-site-header][data-site-menu-ready] .site-header-panel,
+  .site-header[data-docs-site-header][data-site-menu-ready] .site-header-settings {
+    inset-block-start: 100%;
+    max-height: calc(100svh - var(--header-height) - 1rem);
+  }
+}
+@container docs-page (max-width: 15rem) {
+  .site-header[data-docs-site-header] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas: 'brand brand brand' 'search theme menu' 'context context context';
+    grid-template-rows: auto auto auto;
+    padding-inline: 0.25rem;
+    row-gap: 0.25rem;
+  }
+  .site-header[data-docs-site-header] .site-header-context {
+    flex-wrap: wrap;
+  }
+  .site-header[data-docs-site-header] .site-header-runtime {
+    flex-basis: 100%;
+  }
+}

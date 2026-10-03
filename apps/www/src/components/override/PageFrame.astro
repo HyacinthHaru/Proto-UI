@@ -28,6 +28,11 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     <header class="bg-background sticky top-0 z-50 w-full"><slot name="header" /></header>
     <noscript>
       <style is:inline>
+        /* Without measurements, keep document navigation in normal flow so
+           enlarged headings cannot scroll behind an estimated sticky header. */
+        .site-page-frame > .container-wrapper > header:has([data-docs-site-header]) {
+          position: static !important;
+        }
         @media (max-width: 63.999rem) {
           [data-page-frame-layout] {
             flex-direction: column !important;
@@ -124,6 +129,14 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     .site-page-frame {
       --header-height: 6.5rem;
     }
+  }
+  :global(.site-page-frame > .container-wrapper > header:has([data-docs-site-header])) {
+    container: docs-page / inline-size;
+  }
+  :global(
+    .site-page-frame:has([data-docs-site-header]) [data-doc-flow] :is(h1, h2, h3, h4, h5, h6)[id]
+  ) {
+    scroll-margin-top: calc(var(--header-height) + 1rem);
   }
   /* Keep the header and all three documentation columns on one centered canvas. */
   .docs-shell {

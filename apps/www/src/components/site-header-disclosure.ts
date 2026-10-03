@@ -27,6 +27,31 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   let enhanced = false;
   let open = false;
   let destroyed = false;
+  // Docs offsets follow the actual header, including font enlargement and
+  // wrapped values. The existing disclosure owns this one measurement source.
+  const frame = root.hasAttribute('data-docs-site-header')
+    ? root.closest<HTMLElement>('.site-page-frame')
+    : null;
+  const originalHeight = frame?.style.getPropertyValue('--header-height') ?? '';
+  const originalHeightPriority = frame?.style.getPropertyPriority('--header-height') ?? '';
+  let measuredHeight: string | null = null;
+  const measureHeader = () => {
+    if (destroyed || !enhanced || !frame || !root.isConnected) return;
+    // offsetHeight is a layout pixel measurement; CSS zoom must not be applied
+    // twice when this value is later consumed by a positioned descendant.
+    const height = root.offsetHeight;
+    if (!Number.isFinite(height) || height <= 0) return;
+    const next = `${height}px`;
+    if (frame.style.getPropertyValue('--header-height') === next) return;
+    frame.style.setProperty('--header-height', next);
+    measuredHeight = next;
+  };
+  const heightObserver =
+    frame && typeof window?.ResizeObserver === 'function'
+      ? new window.ResizeObserver(measureHeader)
+      : null;
+  heightObserver?.observe(root);
+  if (frame && !heightObserver) window?.addEventListener('resize', measureHeader);
   const activeButton = () =>
     [...buttons].find((button) => {
       const generation = button.closest<HTMLElement>('[data-projection-generation-state]');
@@ -45,6 +70,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
       button.setAttribute('aria-expanded', String(open));
       if (controlled?.id) button.setAttribute('aria-controls', controlled.id);
     }
+    measureHeader();
   };
   const close = (restoreFocus = false) => {
     if (!open || destroyed) return;
@@ -81,6 +107,18 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   const destroy = () => {
     if (destroyed) return;
     destroyed = true;
+    heightObserver?.disconnect();
+    window?.removeEventListener('resize', measureHeader);
+    if (
+      frame &&
+      measuredHeight !== null &&
+      frame.style.getPropertyValue('--header-height') === measuredHeight &&
+      frame.style.getPropertyPriority('--header-height') === ''
+    ) {
+      if (originalHeight)
+        frame.style.setProperty('--header-height', originalHeight, originalHeightPriority);
+      else frame.style.removeProperty('--header-height');
+    }
     compact?.removeEventListener('change', onBreakpoint);
     document.removeEventListener('keydown', onEscape);
     document.removeEventListener('pointerdown', onOutside);

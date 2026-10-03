@@ -567,3 +567,243 @@ it('keeps a documentation link available without JavaScript', async () => {
     await context.close();
   }
 });
+
+for (const width of [320, 390, 1280, 1440, 2048]) {
+  for (const family of ['shadcn', 'brutalist'] as const) {
+    it(`Docs ${family} ${width}px shows complete runtime values beside real Search`, async () => {
+      const context = await browser.newContext({ viewport: { width, height: 1000 } });
+      const page = await context.newPage();
+      const errors: string[] = [];
+      page.on('pageerror', (error) => errors.push(error.message));
+      try {
+        const response = await page.goto(`${baseUrl}${searchRoute(family)}`, {
+          waitUntil: 'networkidle',
+        });
+        expect(response?.ok()).toBe(true);
+        const selector = page
+          .locator('[data-docs-site-header] [data-adapter-select] [data-site-select-trigger]')
+          .first();
+        await expect.poll(() => selector.getAttribute('role')).toBe('combobox');
+        for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+          if (runtime !== 'wc') {
+            await selector.click();
+            const listboxId = await selector.getAttribute('aria-controls');
+            expect(listboxId).toBeTruthy();
+            await page
+              .locator(`[id=${JSON.stringify(listboxId)}]`)
+              .getByRole('option', { name: runtimeLabels[runtime], exact: true })
+              .click();
+          }
+          await page.waitForFunction(
+            ({ family, runtime }) => {
+              const search = document.querySelector<HTMLElement>('site-search');
+              return (
+                search?.dataset.searchRuntime === runtime && search.dataset.searchFamily === family
+              );
+            },
+            { family, runtime }
+          );
+          const geometry = await page.locator('[data-docs-site-header]').evaluate((header) => {
+            const rect = (element: Element) => {
+              const box = element.getBoundingClientRect();
+              return {
+                ...box.toJSON(),
+                center: box.y + box.height / 2,
+                scrollWidth: element.scrollWidth,
+                clientWidth: element.clientWidth,
+              };
+            };
+            const select = header.querySelector<HTMLElement>(
+              '[data-adapter-select] [data-site-select-trigger]'
+            )!;
+            const value = select.querySelector<HTMLElement>(
+              'wc-shadcn-select-value, wc-brutalist-select-value'
+            )!;
+            const search = header.querySelector<HTMLElement>(
+              'site-search [data-projection-generation-state="active"] [data-open-modal]'
+            )!;
+            const label = header.querySelector<HTMLElement>('.site-header-runtime-label')!;
+            const text = document.createRange();
+            text.selectNodeContents(value);
+            return {
+              header: rect(header),
+              select: rect(select),
+              search: rect(search),
+              label: rect(label),
+              labelDisplay: getComputedStyle(label).display,
+              value: rect(value),
+              valueText: value.textContent?.trim(),
+              textWidth: text.getBoundingClientRect().width,
+              selectTag: select.localName,
+              searchRole: search.getAttribute('role'),
+              searchDisabled: search.getAttribute('aria-disabled'),
+              overflow: document.documentElement.scrollWidth - innerWidth,
+              sidebarTop: parseFloat(
+                getComputedStyle(document.querySelector('.mobile-sidebar-pane')!).top
+              ),
+            };
+          });
+          // Save the actual measured geometry even when the assertion below fails.
+          const id = `docs-${family}-${runtime}-${width}`;
+          await capture(page, id, 'geometry');
+          await writeFile(
+            path.join(evidenceDirectory, `${id}-rects.json`),
+            JSON.stringify({ source, family, runtime, width, geometry }, null, 2)
+          );
+          expect(geometry.selectTag).toBe(`wc-${family}-select-trigger`);
+          expect(geometry.valueText).toBe(runtimeLabels[runtime]);
+          expect(geometry.value.scrollWidth - geometry.value.clientWidth).toBeLessThanOrEqual(1);
+          expect(geometry.textWidth - geometry.value.width).toBeLessThanOrEqual(1);
+          expect(geometry.select.scrollWidth - geometry.select.clientWidth).toBeLessThanOrEqual(1);
+          expect(geometry.overflow).toBeLessThanOrEqual(1);
+          expect(Math.abs(geometry.select.height - 44)).toBeLessThanOrEqual(1);
+          expect(Math.abs(geometry.search.height - 44)).toBeLessThanOrEqual(1);
+          expect(geometry.searchRole).toBe('button');
+          expect(geometry.searchDisabled).toBe('false');
+          if (width < 1100) {
+            expect(geometry.labelDisplay).not.toBe('none');
+            expect(geometry.label.bottom).toBeLessThanOrEqual(geometry.select.y + 1);
+            expect(geometry.search.bottom).toBeLessThanOrEqual(geometry.label.y + 1);
+            expect(Math.abs(geometry.sidebarTop - geometry.header.bottom)).toBeLessThanOrEqual(1);
+          } else {
+            expect(Math.abs(geometry.select.bottom - geometry.search.bottom)).toBeLessThanOrEqual(
+              1
+            );
+            expect(Math.abs(geometry.select.center - geometry.search.center)).toBeLessThanOrEqual(
+              1
+            );
+          }
+        }
+        expect(errors).toEqual([]);
+      } finally {
+        await context.close();
+      }
+    }, 180_000);
+  }
+}
+
+for (const width of [320, 390]) {
+  for (const family of ['shadcn', 'brutalist'] as const) {
+    it(`Docs ${family} ${width}px keeps enlarged 200% text reachable without clipping`, async () => {
+      const context = await browser.newContext({ viewport: { width, height: 1000 } });
+      const page = await context.newPage();
+      const errors: string[] = [];
+      page.on('pageerror', (error) => errors.push(error.message));
+      try {
+        expect(
+          (await page.goto(`${baseUrl}${searchRoute(family)}`, { waitUntil: 'networkidle' }))?.ok()
+        ).toBe(true);
+        // This is actual browser font enlargement, not DPR or a claim of native
+        // browser zoom. Keep viewport unchanged so text must genuinely reflow.
+        await page.evaluate(() => {
+          document.documentElement.style.fontSize = '200%';
+        });
+        const header = page.locator('[data-docs-site-header]');
+        const select = header.locator('[data-adapter-select] [data-site-select-trigger]').first();
+        await expect.poll(() => select.getAttribute('role')).toBe('combobox');
+        await page.waitForFunction(() => {
+          const root = document.querySelector<HTMLElement>('[data-docs-site-header]')!;
+          const frame = root.closest<HTMLElement>('.site-page-frame')!;
+          return frame.style.getPropertyValue('--header-height') === `${root.offsetHeight}px`;
+        });
+        const geometry = await header.evaluate((header) => {
+          const select = header.querySelector<HTMLElement>(
+            '[data-adapter-select] [data-site-select-trigger]'
+          )!;
+          const value = select.querySelector<HTMLElement>(
+            'wc-shadcn-select-value, wc-brutalist-select-value'
+          )!;
+          const search = header.querySelector<HTMLElement>(
+            'site-search [data-projection-generation-state="active"] [data-open-modal]'
+          )!;
+          const label = header.querySelector<HTMLElement>('.site-header-runtime-label')!;
+          const text = document.createRange();
+          text.selectNodeContents(value);
+          return {
+            enlargement: 'documentElement font-size: 200%; viewport unchanged',
+            viewportWidth: innerWidth,
+            dpr: devicePixelRatio,
+            rootFontSize: getComputedStyle(document.documentElement).fontSize,
+            selectFontSize: getComputedStyle(select).fontSize,
+            header: header.getBoundingClientRect().toJSON(),
+            select: select.getBoundingClientRect().toJSON(),
+            search: search.getBoundingClientRect().toJSON(),
+            label: label.getBoundingClientRect().toJSON(),
+            value: value.getBoundingClientRect().toJSON(),
+            text: text.getBoundingClientRect().toJSON(),
+            valueText: value.textContent?.trim(),
+            valueOverflow: value.scrollWidth - value.clientWidth,
+            pageOverflow: document.documentElement.scrollWidth - innerWidth,
+          };
+        });
+        const id = `docs-${family}-font-200-${width}`;
+        await capture(page, id, 'geometry');
+        await writeFile(
+          path.join(evidenceDirectory, `${id}-rects.json`),
+          JSON.stringify({ source, family, width, geometry }, null, 2)
+        );
+        expect(geometry.rootFontSize).toBe('32px');
+        expect(geometry.selectFontSize).toBe('28px');
+        expect(geometry.valueText).toBe('Web Components');
+        expect(geometry.valueOverflow).toBeLessThanOrEqual(1);
+        expect(geometry.pageOverflow).toBeLessThanOrEqual(1);
+        expect(geometry.text.left).toBeGreaterThanOrEqual(geometry.value.left - 1);
+        expect(geometry.text.right).toBeLessThanOrEqual(geometry.value.right + 1);
+        expect(geometry.text.bottom).toBeLessThanOrEqual(geometry.select.bottom + 1);
+        expect(geometry.label.bottom).toBeLessThanOrEqual(geometry.select.y + 1);
+        expect(geometry.select.height).toBeGreaterThanOrEqual(44);
+        expect(geometry.search.height).toBeGreaterThanOrEqual(44);
+        expect(geometry.search.width).toBeGreaterThanOrEqual(44);
+        const beforePortal = await header.boundingBox();
+        await select.click();
+        const listboxId = await select.getAttribute('aria-controls');
+        expect(await page.locator(`[id=${JSON.stringify(listboxId)}]`).isVisible()).toBe(true);
+        expect((await header.boundingBox())!.height).toBe(beforePortal!.height);
+        await page.keyboard.press('Escape');
+        const heading = page.locator('[data-doc-flow] h2[id]').first();
+        expect(await heading.count()).toBe(1);
+        expect(await heading.isVisible()).toBe(true);
+        const headingFacts = await heading.evaluate((element) => ({
+          id: element.id,
+          text: element.textContent?.trim(),
+          inActualFlow: !!element.closest('[data-doc-flow]'),
+          box: element.getBoundingClientRect().toJSON(),
+          scrollMarginTop: parseFloat(getComputedStyle(element).scrollMarginTop),
+        }));
+        await writeFile(
+          path.join(evidenceDirectory, `${id}-heading.json`),
+          JSON.stringify({ source, family, width, headingFacts }, null, 2)
+        );
+        expect(headingFacts.inActualFlow).toBe(true);
+        expect(headingFacts.id).toBeTruthy();
+        expect(headingFacts.text).toBeTruthy();
+        expect(headingFacts.box.width).toBeGreaterThan(0);
+        expect(headingFacts.box.height).toBeGreaterThan(0);
+        expect(headingFacts.scrollMarginTop).toBeGreaterThanOrEqual(
+          (await header.boundingBox())!.height
+        );
+        await heading.evaluate((element) => element.scrollIntoView({ block: 'start' }));
+        await expect
+          .poll(
+            async () =>
+              (await heading.boundingBox())!.y -
+              (await header.boundingBox())!.y -
+              (await header.boundingBox())!.height
+          )
+          .toBeGreaterThanOrEqual(-1);
+        expect((await heading.boundingBox())!.y).toBeLessThan(1000);
+        await header.locator('[data-site-menu-button]').click();
+        const panel = header.locator('[data-site-header-panel]');
+        expect(await panel.isVisible()).toBe(true);
+        const panelBox = (await panel.boundingBox())!;
+        const headerBox = (await header.boundingBox())!;
+        expect(panelBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height - 1);
+        expect(panelBox.y + panelBox.height).toBeLessThanOrEqual(1001);
+        await capture(page, id, 'menu-and-heading');
+        expect(errors).toEqual([]);
+      } finally {
+        await context.close();
+      }
+    }, 90_000);
+  }
+}

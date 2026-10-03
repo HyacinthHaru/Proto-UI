@@ -155,14 +155,16 @@ function applyProps(element: HTMLElement, props: Record<string, unknown>): void 
 function headerSurfaceStyle(element: HTMLElement, kind: 'button' | 'root' | 'trigger' | 'value') {
   if (!element.closest('[data-site-header]')) return undefined;
   if (kind === 'root') return { width: '100%', minWidth: '0', maxWidth: '100%' };
+  const docsRuntime = !!element.closest('[data-docs-site-header] [data-adapter-select]');
   if (kind === 'value')
     return {
       display: 'block',
       minWidth: '0',
       flex: '1 1 auto',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
+      overflow: docsRuntime ? 'visible' : 'hidden',
+      textOverflow: docsRuntime ? 'clip' : 'ellipsis',
+      whiteSpace: docsRuntime ? 'normal' : 'nowrap',
+      ...(docsRuntime ? { overflowWrap: 'anywhere' } : {}),
     };
   if (kind === 'trigger')
     return {
@@ -170,6 +172,7 @@ function headerSurfaceStyle(element: HTMLElement, kind: 'button' | 'root' | 'tri
       minWidth: '0',
       maxWidth: '100%',
       minHeight: 'var(--site-control-height, 2.75rem)',
+      ...(docsRuntime ? { height: 'auto' } : {}),
       fontFamily: 'inherit',
       fontSize: '0.875rem',
     };

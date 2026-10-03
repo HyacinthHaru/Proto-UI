@@ -342,3 +342,33 @@ describe('site family projections', () => {
     }
   );
 });
+
+it.each(['shadcn', 'brutalist'] as const)(
+  'allows Docs %s runtime values to wrap through supported surface inputs and keeps full props',
+  async (family) => {
+    registerSiteShadcnControls();
+    document.body.innerHTML = `<header data-site-header data-docs-site-header><div data-adapter-select>
+      <wc-${family}-select-root data-site-select-root data-site-initial-value="wc">
+        <wc-${family}-select-trigger data-size="sm"><wc-${family}-select-value></wc-${family}-select-value></wc-${family}-select-trigger>
+        <wc-${family}-select-content><wc-${family}-select-item data-value="wc" data-text-value="Web Components">Web Components</wc-${family}-select-item></wc-${family}-select-content>
+      </wc-${family}-select-root></div></header>`;
+    initSiteShadcnControls(document);
+    await settle();
+    const trigger = document.querySelector<HTMLElement>(`wc-${family}-select-trigger`)!;
+    const value = document.querySelector<HTMLElement>(`wc-${family}-select-value`)!;
+    expect(trigger.getAttribute('role')).toBe('combobox');
+    expect(trigger.style.height).toBe('auto');
+    expect(trigger.style.minHeight).toBe('var(--site-control-height, 2.75rem)');
+    expect(trigger.style.fontSize).toBe('0.875rem');
+    expect(trigger.getAttribute('data-pui-style')).toContain('h-8');
+    expect(value.style.whiteSpace).toBe('normal');
+    expect(value.style.overflow).toBe('visible');
+    expect(value.style.overflowWrap).toBe('anywhere');
+    expect(value.textContent).toBe('Web Components');
+    initSiteShadcnControls(document);
+    await settle();
+    expect(trigger.getAttribute('role')).toBe('combobox');
+    expect(value.textContent).toBe('Web Components');
+    expect(value.style.whiteSpace).toBe('normal');
+  }
+);
