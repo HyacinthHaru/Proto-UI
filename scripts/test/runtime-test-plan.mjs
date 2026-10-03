@@ -27,6 +27,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts',
@@ -36,6 +37,11 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts',
 ]);
 
+// Built Pagefind evidence uses its dedicated production owner, never the dev server.
+export const PRODUCTION_BROWSER_SUITES = Object.freeze([
+  'apps/www/src/content/docs/zh-cn/site-search-production.browser.test.ts',
+]);
+
 export function createRuntimeTestPlan(rawArgs) {
   const args = rawArgs[0] === '--' ? rawArgs.slice(1) : rawArgs;
   if (args.length > 0) return [{ needsServer: false, args }];
@@ -43,7 +49,10 @@ export function createRuntimeTestPlan(rawArgs) {
   return [
     {
       needsServer: false,
-      args: BROWSER_SUITES.flatMap((suite) => ['--exclude', suite]),
+      args: [...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].flatMap((suite) => [
+        '--exclude',
+        suite,
+      ]),
     },
     {
       needsServer: true,

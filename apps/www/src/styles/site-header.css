@@ -84,23 +84,21 @@
   height: 2.75rem;
 }
 .site-header :is(.site-header-theme, .site-header-menu) svg,
-.site-header .site-header-search [data-open-modal] > svg {
+.site-header .site-header-search [data-open-modal] svg {
   width: 1.125rem;
   height: 1.125rem;
   flex: none;
 }
-.site-header .site-header-search [data-open-modal] {
-  box-sizing: border-box;
-  min-height: 2.75rem;
-  width: 100%;
-  max-width: none;
-  height: 2.75rem;
-  font-size: 0.875rem;
+/* Responsive layout inputs consumed by Search's actual family Button. */
+.site-header-search site-search {
+  --site-search-trigger-width: 100%;
+  --site-search-trigger-padding: 0.75rem;
+  --site-search-trigger-justify: flex-start;
 }
-.site-header .site-header-search [data-open-modal] > span {
+.site-header .site-header-search [data-open-modal] .site-search-label {
   display: inline;
 }
-.site-header .site-header-search [data-open-modal] > kbd {
+.site-header .site-header-search [data-open-modal] .site-search-shortcut {
   display: inline-flex;
 }
 .site-header-context {
@@ -288,20 +286,15 @@
   .site-header-search {
     margin-inline-start: 0;
   }
-  .site-header .site-header-search [data-open-modal] {
-    display: flex;
-    justify-content: center;
-    width: 2.75rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    color: inherit;
+  .site-header-search site-search {
+    --site-search-trigger-width: 2.75rem;
+    --site-search-trigger-padding: 0;
+    --site-search-trigger-justify: center;
   }
-  .site-header .site-header-search [data-open-modal]:hover {
-    background: var(--color-accent);
-  }
-  .site-header .site-header-search [data-open-modal] > :is(span, kbd) {
+  .site-header
+    .site-header-search
+    [data-open-modal]
+    :is(.site-search-label, .site-search-shortcut) {
     display: none !important;
   }
   .site-header[data-site-menu-ready] .site-header-settings {
@@ -406,15 +399,6 @@
   }
 }
 
-/* Search is service-owned, so its native command recipe follows the same
-   visible family grammar as the actual PUI icon Buttons beside it. */
-[data-site-library-family='brutalist'] .site-header .site-header-search [data-open-modal] {
-  border: 2px solid var(--site-brutalist-border);
-  border-radius: 0;
-  background: var(--site-brutalist-secondary-background);
-  color: var(--site-brutalist-foreground);
-  box-shadow: 3px 3px 0 var(--site-brutalist-border);
-}
 @media (max-width: 24.999rem) {
   .site-header-docs-navigation > span {
     display: none;

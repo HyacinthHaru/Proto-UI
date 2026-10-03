@@ -3,6 +3,7 @@ import { siteLinkAppearance, siteLinkEmphasis, siteLinkIcon } from '../site-nati
 import { initSiteHeaderDisclosure, type SiteHeaderDisclosure } from '../site-header-disclosure';
 import { homepageDemoParticipant } from './homepage-demo-participant';
 import { applySiteLibraryFamily } from '../site-library-family';
+import { searchCommandParticipant } from '../site-search-commands';
 import {
   resolveProjectionPart,
   type ProjectionFamilyId,
@@ -313,12 +314,18 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     /* Optional preference. */
   }
   const demo = homepageDemoParticipant(document);
+  const searchRoot = root.querySelector<HTMLElement>('site-search');
+  const search = searchRoot ? searchCommandParticipant(searchRoot) : null;
   const initialFamily = demo?.initialFamily ?? 'shadcn';
   let desiredFamily: ProjectionFamilyId = initialFamily;
   let activeFamily: ProjectionFamilyId = initialFamily;
   let desiredComponent: SharedBaseFamilyId = demo?.initialComponent ?? 'button';
   let committedComponent = desiredComponent;
-  const roots = [...groups.map((group) => group.root), ...(demo ? [demo.root] : [])];
+  const roots = [
+    ...groups.map((group) => group.root),
+    ...(demo ? [demo.root] : []),
+    ...(search?.mounts ?? []),
+  ];
   let destroyed = false;
   let epoch = 0;
   let desiredRuntime = initialRuntime;
@@ -410,9 +417,16 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
             ),
           })
         );
-      const outcomes = await Promise.allSettled(work);
+      // Search contributes to this exact request. Its native dialog and Pagefind
+      // owner stay mounted while all three command views commit with the page.
+      const searchWork = search?.materialize(request);
+      const outcomes = await Promise.allSettled([...work, ...(searchWork ? [searchWork] : [])]);
       const candidates = outcomes.flatMap((outcome) =>
-        outcome.status === 'fulfilled' ? [outcome.value] : []
+        outcome.status === 'fulfilled'
+          ? Array.isArray(outcome.value)
+            ? outcome.value
+            : [outcome.value]
+          : []
       );
       const failure = outcomes.find((outcome) => outcome.status === 'rejected');
       if (failure?.status === 'rejected') {
@@ -450,6 +464,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           resolveProjectionThemeSurfaceStyle(family, roots[index]!)
         );
       const demoPublication = demo?.prepareCommit(commit, prepared.component);
+      const searchPublication = search?.prepareCommit(commit);
       const previous = activeCandidates;
       const previousFamily = activeFamily;
       const previousComponent = committedComponent;
@@ -476,6 +491,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           root.dataset.family = family;
           applySiteLibraryFamily(document, family);
           demoPublication?.publish();
+          searchPublication?.publish();
           setStatus('ready', commit.selection.runtimeId as RuntimeId);
           disclosure?.enhance();
         },
@@ -496,6 +512,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           }
           if (status) status.textContent = previousStatus;
           demoPublication?.rollback();
+          searchPublication?.rollback();
         },
       };
     },

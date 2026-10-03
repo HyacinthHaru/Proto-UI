@@ -923,6 +923,7 @@ test('native and Copy browser scopes have independent bounded jobs and small evi
     { name: 'code-surfaces', suite: 'code-surfaces' },
     { name: 'copy-commands', suite: 'site-copy-commands' },
     { name: 'runtime-box', suite: 'runtime-preview-surface', contract: 'runtime-preview-evidence' },
+    { name: 'search-commands', suite: 'site-search-commands' },
   ]);
   const run = job.steps.find(
     (step: { name?: string }) => step.name === 'Execute the exact isolated browser suite'

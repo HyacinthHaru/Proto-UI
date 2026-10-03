@@ -106,7 +106,6 @@
 [data-site-library-family='brutalist']
   :is(
     .pagination-links a:not([data-site-link-enhanced]),
-    site-search button[data-open-modal],
     site-search dialog,
     starlight-menu-button button,
     .sidebar-pane .top-level .docs-wip-badge

@@ -398,3 +398,69 @@ describe('Homepage page-owned runtime', () => {
     expect(fakes.materialize.mock.calls[0]![1].controlIds).toEqual(['runtime', 'family']);
   });
 });
+
+describe('Search participates in the existing homepage generation', () => {
+  function withSearch() {
+    const root = fixture(true);
+    const search = document.createElement('site-search');
+    search.innerHTML =
+      '<div data-search-command-mount="open"></div><dialog><input value="Button"><div data-search-command-mount="close"></div><div data-search-command-mount="retry"></div></dialog>';
+    root.append(search);
+    return { root, search, dialog: search.querySelector('dialog')! };
+  }
+  it('uses one generation for all commands and preserves the native service DOM through library/runtime changes', async () => {
+    const { root, search, dialog } = withSearch();
+    handle = initHomepageRuntime(root);
+    await settle();
+    expect(search.dataset.searchGeneration).toBe(root.dataset.runtimeGeneration);
+    const searchCalls = () =>
+      fakes.materialize.mock.calls.filter(([, options]) =>
+        options.ownerId.startsWith('site-search-')
+      );
+    expect(searchCalls()).toHaveLength(3);
+    const controls = fakes.materialize.mock.calls[0]![1].controls;
+    controls.family.onValueChange('brutalist');
+    await settle();
+    controls.runtime.onValueChange('vue2');
+    await settle();
+    expect(search.dataset.searchGeneration).toBe(root.dataset.runtimeGeneration);
+    expect(search.dataset.searchFamily).toBe('brutalist');
+    expect(search.dataset.searchRuntime).toBe('vue2');
+    expect(
+      new Set(
+        searchCalls()
+          .slice(-3)
+          .map(([request]) => request.generation)
+      ).size
+    ).toBe(1);
+    expect(search.querySelector('dialog')).toBe(dialog);
+    expect(search.querySelector('input')!.value).toBe('Button');
+    expect(initHomepageRuntime(root)).toBe(handle);
+  });
+  it('retains the whole old page if one Search command fails and never publishes mixed generations', async () => {
+    const { root, search, dialog } = withSearch();
+    handle = initHomepageRuntime(root);
+    await settle();
+    const before = root.dataset.runtimeGeneration;
+    const controls = fakes.materialize.mock.calls[0]![1].controls;
+    const staged: ReturnType<typeof candidate>[] = [];
+    fakes.materialize.mockImplementation(async (_request, options) => {
+      if (options.ownerId.endsWith('-close')) throw new Error('search close projection failed');
+      const result = candidate();
+      staged.push(result);
+      return result;
+    });
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    controls.family.onValueChange('brutalist');
+    await settle();
+    expect(root.dataset.runtimeGeneration).toBe(before);
+    expect(search.dataset.searchGeneration).toBe(before);
+    expect(search.dataset.searchFamily).toBe('shadcn');
+    expect(search.querySelector('dialog')).toBe(dialog);
+    for (const item of staged) {
+      expect(item.activate).not.toHaveBeenCalled();
+      expect(item.dispose).toHaveBeenCalledOnce();
+    }
+    expect(error).toHaveBeenCalled();
+  });
+});

@@ -7,7 +7,11 @@ import { runInNewContext } from 'node:vm';
 import ts from 'typescript';
 import { waitForServerReadiness } from './server-readiness.mjs';
 
-import { BROWSER_SUITES, createRuntimeTestPlan } from './runtime-test-plan.mjs';
+import {
+  BROWSER_SUITES,
+  PRODUCTION_BROWSER_SUITES,
+  createRuntimeTestPlan,
+} from './runtime-test-plan.mjs';
 import {
   observeReadinessFailures,
   observeRuntimeServer,
@@ -157,7 +161,20 @@ describe('runtime test plan', () => {
             : [];
       });
     for (const file of scan('apps/www')) {
-      assert.ok(BROWSER_SUITES.includes(file), `${file} must not run in the parallel unit phase`);
+      assert.ok(
+        [...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].includes(file),
+        `${file} must not run in the parallel unit phase`
+      );
+    }
+  });
+  it('reserves generated Pagefind evidence for the mandatory production runner', () => {
+    const plan = createRuntimeTestPlan([]);
+    for (const suite of PRODUCTION_BROWSER_SUITES) {
+      assert.ok(plan[0].args.includes(suite));
+      assert.ok(!plan[1].args.includes(suite));
+      assert.ok(
+        readFileSync('apps/www/scripts/run-search-production-evidence.mjs', 'utf8').includes(suite)
+      );
     }
   });
   it('preserves focused Vitest arguments without starting the documentation server', () => {
@@ -176,7 +193,10 @@ describe('runtime test plan', () => {
     assert.deepEqual(createRuntimeTestPlan([]), [
       {
         needsServer: false,
-        args: BROWSER_SUITES.flatMap((suite) => ['--exclude', suite]),
+        args: [...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].flatMap((suite) => [
+          '--exclude',
+          suite,
+        ]),
       },
       {
         needsServer: true,

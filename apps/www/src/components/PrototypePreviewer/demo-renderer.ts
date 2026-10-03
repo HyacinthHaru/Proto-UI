@@ -336,8 +336,11 @@ async function renderDemoReact(
     }
   ).createRoot(host);
   let cleanup: void | (() => void);
+  const pendingRefreshFrames = new Set<number>();
   if (
     !lease.commit(() => {
+      for (const frame of pendingRefreshFrames) cancelAnimationFrame(frame);
+      pendingRefreshFrames.clear();
       const currentCleanup = cleanup;
       cleanup = undefined;
       runCleanupSteps([
@@ -351,10 +354,9 @@ async function renderDemoReact(
     return EMPTY_DEMO_RENDER;
   }
 
-  const flushReact = <T>(fn: () => T): T => {
-    const flushSync = (ReactDOM as { flushSync?: <R>(callback: () => R) => R }).flushSync;
-    return typeof flushSync === 'function' ? flushSync(fn) : fn();
-  };
+  const flushSync = (ReactDOM as { flushSync?: <R>(callback: () => R) => R }).flushSync;
+  const flushReact = <T>(fn: () => T): T =>
+    typeof flushSync === 'function' ? flushSync(fn) : fn();
 
   function renderTree() {
     return renderNode(demo.root);
@@ -388,14 +390,24 @@ async function renderDemoReact(
       return inst?.getExposes?.();
     },
     setProps(ref, next) {
+      if (!ownsLease(opt, lease)) return;
       const current = propsMap.get(ref);
       if (!current) return;
       Object.assign(current, next);
       flushReact(() => root.render(renderTree()));
-      componentRefs.get(ref)?.update?.();
-      // React root rendering may commit asynchronously. Refresh the retained
-      // Proto owner only after the adapter has received the new props.
-      requestAnimationFrame(() => componentRefs.get(ref)?.update?.());
+      // An owner refresh can close its event gate until React commits the
+      // resulting effects. Finish that commit before a materializer may
+      // expose this generation, just as public calls above already do.
+      flushReact(() => componentRefs.get(ref)?.update?.());
+      if (typeof flushSync !== 'function') {
+        // Older renderers without a synchronous commit still need the retained
+        // owner refreshed after props delivery. This frame belongs to the lease.
+        const frame = requestAnimationFrame(() => {
+          pendingRefreshFrames.delete(frame);
+          if (ownsLease(opt, lease)) componentRefs.get(ref)?.update?.();
+        });
+        pendingRefreshFrames.add(frame);
+      }
     },
   };
 
