@@ -90,7 +90,7 @@ jobs:
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
       - name: Test evidence provenance and acceptance predicates
         working-directory: candidate
-        run: node --import tsx --test apps/www/scripts/homepage-evidence-contract.test.ts
+        run: node --import tsx --test apps/www/scripts/homepage-evidence-contract.test.ts scripts/test/projection-scope-evidence.test.mjs scripts/test/run-runtime-tests.test.mjs
       - name: Capture real baseline with the candidate-owned browser probe
         id: baseline_capture
         # Historical behavior may fail: preserve its red trace, then require

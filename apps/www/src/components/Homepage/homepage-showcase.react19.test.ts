@@ -1,12 +1,25 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+// Supplementary compatibility/negative-control fixture using the React Adapter's
+// installed React 19 dev dependency. It does not replace the homepage's React 18
+// CDN runtime, which must still pass the real-browser CI journey.
+vi.mock('../PrototypePreviewer/runtimes/react-runtime', async () => {
+  const { createRequire } = await import('node:module');
+  const { resolve } = await import('node:path');
+  const require = createRequire(resolve(process.cwd(), 'packages/adapters/react/package.json'));
+  const React = require('react');
+  const ReactDOM = { ...require('react-dom'), ...require('react-dom/client') };
+  if (!React.version.startsWith('19.'))
+    throw new Error(`Expected local React 19 negative control, got ${React.version}`);
+  return { loadReact: async () => ({ React, ReactDOM }) };
+});
 import { renderDemo } from '../PrototypePreviewer/demo-renderer';
 import { loadPrototypes } from '../PrototypePreviewer/prototype-modules';
 import { createHomepageShowcase } from './homepage-showcase';
 
-// Real website renderer, real PUI parts and real WC Adapter in Happy DOM.
+// Real website renderer, real PUI parts and real React Adapter in Happy DOM.
 // DOM keyboard/edit events are synthetic; paint and native-browser behavior
 // remain covered by the separately executed browser suite.
-type ProtoElement = HTMLElement & { getExposes(): { open: { get(): boolean } } };
 let rendered: Awaited<ReturnType<typeof renderDemo>> | undefined;
 let stopErrorWatch: (() => void) | undefined;
 afterEach(async () => {
@@ -25,7 +38,7 @@ function press(element: HTMLElement, key: string) {
 }
 
 for (const family of ['shadcn', 'brutalist'] as const) {
-  describe(`${family} workspace real WC integration`, () => {
+  describe(`${family} workspace local React 19 compatibility`, () => {
     it('lets Select own close/focus, preserves controlled IME, and saves/restores actual input', async () => {
       const errors: string[] = [];
       const onError = (event: ErrorEvent) => {
@@ -33,24 +46,26 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       };
       window.addEventListener('error', onError);
       stopErrorWatch = () => window.removeEventListener('error', onError);
-      const content = createHomepageShowcase(family, 'wc', 'zh-cn', () => true);
+      const content = createHomepageShowcase(family, 'react', 'zh-cn', () => true);
       await loadPrototypes([...content.recipe.prototypeIds]);
       const host = document.createElement('div');
       document.body.append(host);
-      rendered = await renderDemo({ runtime: 'wc', demo: content.demo, host });
+      rendered = await renderDemo({ runtime: 'react', demo: content.demo, host });
       const ref = (name: string) => host.querySelector<HTMLElement>(`[data-demo-ref="${name}"]`)!;
-      const root = ref('settings-view') as ProtoElement;
       const trigger = ref('settings-view-trigger');
       const summary = ref('settings-summary');
       const save = ref('settings-save');
       const reset = ref('settings-reset');
       const feedback = ref('settings-feedback');
-      const note = ref('settings-note').querySelector('textarea')!;
+      const note = ref('settings-note') as HTMLTextAreaElement;
       const task = ref('settings');
       await expect.poll(() => trigger.textContent).toContain('列表');
       trigger.focus();
       press(trigger, 'Enter');
-      await expect.poll(() => root.getExposes().open.get()).toBe(true);
+      await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('true');
+      await expect
+        .poll(() => document.getElementById(trigger.getAttribute('aria-controls')!))
+        .toBeTruthy();
       const portal = document.getElementById(trigger.getAttribute('aria-controls')!)!;
       const board = [...portal.querySelectorAll<HTMLElement>('[role="option"]')].find(
         (option) => option.textContent?.trim() === '看板'
@@ -59,7 +74,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       board.focus();
       press(board, 'Enter');
       await expect.poll(() => trigger.textContent).toContain('看板');
-      await expect.poll(() => root.getExposes().open.get()).toBe(false);
+      await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
       await expect.poll(() => document.activeElement === trigger).toBe(true);
       expect(task.dataset.dirty).toBe('true');
 
@@ -116,11 +131,17 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         .toBe('已保存到本页 · 看板 · 显示每周摘要 · 备注 3 字');
       expect(note.value).toBe('A备注');
       expect(task.dataset.dirty).toBe('false');
+      // The renderer refreshes every React root. Wait for the next action's
+      // actual accessibility projection rather than clicking a pending DOM node.
+      await expect.poll(() => reset.getAttribute('aria-disabled')).toBe('false');
+      await expect.poll(() => reset.getAttribute('role')).toBe('button');
       reset.click();
       await expect.poll(() => trigger.textContent).toContain('列表');
       await expect.poll(() => summary.getAttribute('aria-checked')).toBe('false');
       await expect.poll(() => note.value).toBe('');
       expect(task.dataset.dirty).toBe('true');
+      await expect.poll(() => save.getAttribute('aria-disabled')).toBe('false');
+      await expect.poll(() => save.getAttribute('role')).toBe('button');
       save.click();
       await expect
         .poll(() => feedback.textContent)

@@ -3,6 +3,8 @@ import { describe, it } from 'node:test';
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { EventEmitter, getEventListeners } from 'node:events';
+import { runInNewContext } from 'node:vm';
+import ts from 'typescript';
 import { waitForServerReadiness } from './server-readiness.mjs';
 
 import { BROWSER_SUITES, createRuntimeTestPlan } from './runtime-test-plan.mjs';
@@ -11,6 +13,135 @@ import {
   observeRuntimeServer,
   runtimeServerSnapshot,
 } from './runtime-server-diagnostics.mjs';
+
+describe('native-link browser evidence mutation controls (no browser or server)', () => {
+  // Execute the exact pure function imported by the browser suite. Compilation
+  // and VM evaluation avoid booting Vite, a websocket, or a DOM simulator.
+  const source = readFileSync(
+    new URL('../../apps/www/src/content/docs/zh-cn/site-native-link-evidence.ts', import.meta.url),
+    'utf8'
+  );
+  const compiled = ts.transpileModule(source, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+  }).outputText;
+  const module = { exports: {} };
+  runInNewContext(compiled, { module, exports: module.exports });
+  const check = module.exports.nativeLinkEvidenceIssues;
+  const expected = {
+    href: 'https://github.com/Proto-UI/Proto-UI',
+    name: 'GitHub',
+    target: '_blank',
+    rel: 'noreferrer',
+  };
+  const fixture = () => ({
+    ...expected,
+    tag: 'A',
+    role: null,
+    nestedFocus: 0,
+    centerHitIsAnchor: true,
+    cornerHitIsAnchor: true,
+    anchorRect: { left: 10, top: 20, right: 54, bottom: 64 },
+    surfaceRect: { left: 10, top: 20, right: 54, bottom: 64 },
+  });
+  it('accepts a real-anchor snapshot and the explicit subpixel containment tolerance', () => {
+    assert.equal(check(fixture(), expected).length, 0);
+    const near = fixture();
+    near.surfaceRect.right += 0.49;
+    assert.equal(check(near, expected).length, 0);
+  });
+  for (const [name, mutate, rejected] of [
+    [
+      'descendant SVG center hit',
+      (f) => {
+        f.centerHitIsAnchor = false;
+      },
+      'exact hit target',
+    ],
+    [
+      'descendant corner hit',
+      (f) => {
+        f.cornerHitIsAnchor = false;
+      },
+      'exact hit target',
+    ],
+    [
+      'oversized visual',
+      (f) => {
+        f.surfaceRect.right += 3;
+      },
+      'outside native hit box',
+    ],
+    [
+      'shifted visual',
+      (f) => {
+        f.surfaceRect.top -= 3;
+      },
+      'outside native hit box',
+    ],
+    [
+      'invalid geometry',
+      (f) => {
+        f.surfaceRect.right = NaN;
+      },
+      'outside native hit box',
+    ],
+    [
+      'wrong href',
+      (f) => {
+        f.href = 'https://example.invalid/';
+      },
+      'href mismatch',
+    ],
+    [
+      'wrong aria name',
+      (f) => {
+        f.name = 'Wrong';
+      },
+      'name mismatch',
+    ],
+    [
+      'fake button role',
+      (f) => {
+        f.role = 'button';
+      },
+      'unexpected role',
+    ],
+    [
+      'non-anchor root',
+      (f) => {
+        f.tag = 'DIV';
+      },
+      'native anchor tag',
+    ],
+    [
+      'nested focus owner',
+      (f) => {
+        f.nestedFocus = 1;
+      },
+      'nested focus owner',
+    ],
+    [
+      'lost new-tab target',
+      (f) => {
+        f.target = null;
+      },
+      'target mismatch',
+    ],
+    [
+      'lost rel',
+      (f) => {
+        f.rel = null;
+      },
+      'rel mismatch',
+    ],
+  ]) {
+    it(`rejects ${name}`, () => {
+      const actual = fixture();
+      mutate(actual);
+      assert.ok(check(actual, expected).some((issue) => issue.includes(rejected)));
+    });
+  }
+});
 
 describe('runtime test plan', () => {
   it('classifies every website browser suite into the shared-server phase', () => {

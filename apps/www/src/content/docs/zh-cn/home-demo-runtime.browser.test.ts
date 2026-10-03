@@ -490,7 +490,40 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const page = await context.newPage();
     const errors: string[] = [];
-    page.on('pageerror', (error) => errors.push(error.message));
+    const errorDetails: Array<Record<string, unknown>> = [];
+    let editingCase: { family: string; runtime: string; stage: string } | null = null;
+    page.on('pageerror', (error) => {
+      errors.push(error.message);
+      errorDetails.push({ ...editingCase, message: error.message, stack: error.stack });
+    });
+    const reportEditingState = async (stage: string) => {
+      if (editingCase) editingCase.stage = stage;
+      const state = await page.evaluate(() => {
+        const root = document.querySelector<HTMLElement>('[data-demo-ref="settings-note"]');
+        const note = root?.matches('textarea')
+          ? (root as HTMLTextAreaElement)
+          : root?.querySelector('textarea');
+        const active = document.activeElement;
+        return {
+          value: note?.value,
+          selectionStart: note?.selectionStart,
+          selectionEnd: note?.selectionEnd,
+          active: active
+            ? {
+                tag: active.tagName,
+                role: active.getAttribute('role'),
+                ref: active.getAttribute('data-demo-ref'),
+              }
+            : null,
+          pageRuntime:
+            document.querySelector<HTMLElement>('[data-homepage-runtime]')?.dataset.runtime,
+        };
+      });
+      console.info(
+        '[homepage-settings-edit]',
+        JSON.stringify({ ...editingCase, ...state, pageErrors: errorDetails })
+      );
+    };
     try {
       await page.goto(`${baseUrl}${HOME_ROUTE}`, { waitUntil: 'networkidle' });
       const home = page.locator(HOME_SELECTOR);
@@ -505,6 +538,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           );
         }
         for (const runtime of RUNTIMES) {
+          editingCase = { family, runtime, stage: 'runtime-selection' };
           await chooseRuntime(page, home, runtime);
           const task = home.locator('[data-home-settings]');
           const save = task.getByRole('button', { name: '保存到本页', exact: true });
@@ -538,15 +572,20 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           await page.keyboard.press('Space');
           await expect.poll(() => summary.getAttribute('aria-checked')).toBe('true');
           const noteText = `${family} / ${runtime}`;
+          editingCase.stage = 'native-fill';
           await editor.fill(noteText);
+          await reportEditingState('after-native-fill');
           await expect
-            .poll(() => editor.evaluate((element: HTMLTextAreaElement) => element.selectionStart))
+            .poll(() => editor.evaluate((element: HTMLTextAreaElement) => element.selectionStart), {
+              message: `${family}/${runtime} native fill caret`,
+            })
             .toBe(noteText.length);
           expect(
             await editor.evaluate((element: HTMLTextAreaElement) => element.selectionEnd)
           ).toBe(noteText.length);
           // Synthetic composition events exercise the real browser/Adapter boundary;
           // they do not claim to reproduce an operating-system IME session.
+          editingCase.stage = 'composition-input';
           await editor.evaluate((element: HTMLTextAreaElement) => {
             element.dispatchEvent(
               new CompositionEvent('compositionstart', { bubbles: true, data: '' })
@@ -562,7 +601,9 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
               })
             );
           });
+          await reportEditingState('after-composition-input');
           await expect.poll(() => save.getAttribute('aria-disabled')).toBe('true');
+          editingCase.stage = 'composition-end';
           await editor.evaluate((element: HTMLTextAreaElement) => {
             element.value += '注';
             element.setSelectionRange(element.value.length, element.value.length);
@@ -570,6 +611,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
               new CompositionEvent('compositionend', { bubbles: true, data: '备注' })
             );
           });
+          await reportEditingState('after-composition-end');
           await expect.poll(() => editor.inputValue()).toBe(`${noteText}备注`);
           await expect
             .poll(() => editor.evaluate((element: HTMLTextAreaElement) => element.selectionStart))
@@ -601,6 +643,9 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
       await chooseRuntime(page, home, 'wc');
       expect(await home.getByRole('textbox', { name: '工作区备注' }).inputValue()).toBe('');
       expect(errors).toEqual([]);
+    } catch (error) {
+      await reportEditingState('failed').catch(() => {});
+      throw error;
     } finally {
       await context.close();
     }

@@ -359,6 +359,155 @@ function captureDeclarations(names: string[]) {
   }).code;
 }
 
+test('actual pageerror recorder snapshots stack and probe context synchronously without filtering errors', () => {
+  const compiled = captureDeclarations(['observePageErrors']);
+  const observedAt = '2026-10-03T06:00:00.000Z';
+  const observe = runInNewContext(`${compiled}\nobservePageErrors;`, {
+    Date: class extends Date {
+      constructor() {
+        super(observedAt);
+      }
+    },
+  });
+  let listener: ((error: Error) => unknown) | undefined;
+  const page = {
+    on(event: string, callback: typeof listener) {
+      assert.equal(event, 'pageerror');
+      listener = callback;
+    },
+  };
+  const context = {
+    runtime: 'react' as string | null,
+    requestedRuntime: null as string | null,
+    activeProbeStage: 'workspace-settings-switch-change' as string | null,
+  };
+  const { pageErrors, pageErrorDetails } = observe(page, () => context);
+  assert.ok(listener);
+  const error = new Error('[Context] illegal phase for run.context.update: unknown');
+  error.stack = `${error.message}\n    at update (http://localhost:4321/context.ts:42:9)`;
+  assert.equal(listener(error), undefined, 'No ignored Promise or deferred browser query');
+  assert.equal(pageErrors.length, 1, 'The strict message log updates before the listener returns');
+  assert.equal(pageErrorDetails.length, 1);
+  context.runtime = 'vue';
+  context.requestedRuntime = 'wc';
+  context.activeProbeStage = 'keyboard-commit';
+  assert.equal(listener(error), undefined, 'Repeated identical errors must also be retained');
+  const noStack = new Error('unrelated error');
+  noStack.stack = undefined;
+  context.runtime = null;
+  context.activeProbeStage = null;
+  listener(noStack);
+  assert.deepEqual(Array.from(pageErrors), [error.message, error.message, noStack.message]);
+  assert.deepEqual(JSON.parse(JSON.stringify(pageErrorDetails)), [
+    {
+      message: error.message,
+      name: 'Error',
+      stack: error.stack,
+      observedAt,
+      runtime: 'react',
+      requestedRuntime: null,
+      activeProbeStage: 'workspace-settings-switch-change',
+    },
+    {
+      message: error.message,
+      name: 'Error',
+      stack: error.stack,
+      observedAt,
+      runtime: 'vue',
+      requestedRuntime: 'wc',
+      activeProbeStage: 'keyboard-commit',
+    },
+    {
+      message: noStack.message,
+      name: 'Error',
+      stack: null,
+      observedAt,
+      runtime: null,
+      requestedRuntime: 'wc',
+      activeProbeStage: null,
+    },
+  ]);
+  const source = readFileSync(new URL('capture-homepage-evidence.ts', import.meta.url), 'utf8');
+  assert.match(source, /const \{ pageErrors, pageErrorDetails \} = observePageErrors\(page,/);
+  assert.match(source, /evidence\.pageErrorDetails = pageErrorDetails;/);
+  assert.match(source, /assert\.deepEqual\(pageErrors, \[\], 'No uncaught page errors'\);/);
+  assert.throws(() => assert.deepEqual(Array.from(pageErrors), []));
+});
+
+test('actual runtime task recorder retains only new errors for repeated runtimes and rethrows task failures', async () => {
+  const compiled = captureDeclarations(['recordRuntimeTask']);
+  const record = runInNewContext(`${compiled}\nrecordRuntimeTask;`);
+  const runtimeTasks: Array<Record<string, any>> = [];
+  const earlier = { message: 'before task' };
+  const first = { message: 'first task', activeProbeStage: 'workspace-settings-view-select' };
+  const second = { message: 'second task', activeProbeStage: 'workspace-settings-default-save' };
+  const pageErrorDetails = [earlier];
+  const result = { saved: true };
+  assert.equal(
+    await record(runtimeTasks, pageErrorDetails, 'react', 0, async () => {
+      assert.equal(runtimeTasks.length, 1, 'Publish the task before it runs');
+      pageErrorDetails.push(first);
+      await Promise.resolve();
+      return result;
+    }),
+    result
+  );
+  const failure = new Error('strict task assertion');
+  await assert.rejects(
+    record(runtimeTasks, pageErrorDetails, 'react', 4, async () => {
+      pageErrorDetails.push(second);
+      await Promise.resolve();
+      throw failure;
+    }),
+    (error: unknown) => error === failure
+  );
+  await record(runtimeTasks, pageErrorDetails, 'wc', 5, async () => undefined);
+  assert.deepEqual(
+    runtimeTasks.map(
+      ({ runtime, pointerStep, pageErrorStartIndex, pageErrorEndIndex, pageErrors }) => ({
+        runtime,
+        pointerStep,
+        pageErrorStartIndex,
+        pageErrorEndIndex,
+        pageErrors: Array.from(pageErrors),
+      })
+    ),
+    [
+      {
+        runtime: 'react',
+        pointerStep: 0,
+        pageErrorStartIndex: 1,
+        pageErrorEndIndex: 2,
+        pageErrors: [first],
+      },
+      {
+        runtime: 'react',
+        pointerStep: 4,
+        pageErrorStartIndex: 2,
+        pageErrorEndIndex: 3,
+        pageErrors: [second],
+      },
+      {
+        runtime: 'wc',
+        pointerStep: 5,
+        pageErrorStartIndex: 3,
+        pageErrorEndIndex: 3,
+        pageErrors: [],
+      },
+    ]
+  );
+  for (const task of runtimeTasks) {
+    assert.ok(Number.isFinite(Date.parse(task.startedAt)));
+    assert.ok(Date.parse(task.finishedAt) >= Date.parse(task.startedAt));
+  }
+  pageErrorDetails.push({ message: 'after tasks' });
+  assert.equal(runtimeTasks[0]!.pageErrors.length, 1, 'Finished error slices do not grow later');
+  assert.deepEqual(pageErrorDetails, [earlier, first, second, { message: 'after tasks' }]);
+  const source = readFileSync(new URL('capture-homepage-evidence.ts', import.meta.url), 'utf8');
+  assert.match(source, /workspaceSettings: await recordRuntimeTask\(/);
+  assert.match(source, /evidence\.runtimeTasks as Array<Record<string, unknown>>/);
+});
+
 test('candidate samples task content while the immutable baseline keeps picker samples', () => {
   const compiled = captureDeclarations([
     'HOME',
@@ -484,12 +633,14 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
     };
     const actions: string[] = [];
     const snapshots: string[] = [];
+    const probeStages: Array<string | null> = [];
     const home = '[data-home-showcase="website-workspace-settings"]';
     // Driver unit fixture: control behavior is modeled only to reject an
     // incorrect input sequence or expectation. Actual-browser execution is separate.
     const locate = (selector: string): any => ({
       locator: locate,
       async click() {
+        probeStages.push(probeContext.activeProbeStage);
         actions.push(selector);
         if (selector === '[data-demo-ref="settings-summary"]') state.summary = 'true';
         if (selector === '[data-demo-ref="settings-save"]') {
@@ -515,11 +666,13 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
         }
       },
       async getAttribute(name: string) {
+        probeStages.push(probeContext.activeProbeStage);
         assert.equal(selector, '[data-demo-ref="settings-view-trigger"]');
         assert.equal(name, 'aria-controls');
         return 'task-options';
       },
       async waitFor(options: unknown) {
+        probeStages.push(probeContext.activeProbeStage);
         assert.equal(selector, '[id="task-options"]');
         assert.deepEqual(JSON.parse(JSON.stringify(options)), { state: 'visible' });
       },
@@ -530,6 +683,7 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
         assert.equal(options.exact, true);
         return {
           async click() {
+            probeStages.push(probeContext.activeProbeStage);
             actions.push('choose-board');
             state = {
               ...state,
@@ -547,21 +701,25 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
       locator: locate,
       keyboard: {
         async insertText(text: string) {
+          probeStages.push(probeContext.activeProbeStage);
           actions.push('type-note');
           state.note = text;
         },
       },
     };
-    const exercise = runInNewContext(`${compiled}\nexerciseWorkspaceSettings;`, {
+    const probeContext = {
       HOME: home,
       assert,
-      activeProbeStage: null,
+      activeProbeStage: null as string | null,
       async waitForWorkspaceSettings(_page: unknown, expected: object) {
+        probeStages.push(probeContext.activeProbeStage);
         assert.deepEqual(state, JSON.parse(JSON.stringify(expected)));
         return { ...state };
       },
-    });
+    };
+    const exercise = runInNewContext(`${compiled}\nexerciseWorkspaceSettings;`, probeContext);
     const result = await exercise(page, route, async (stage: string) => {
+      probeStages.push(probeContext.activeProbeStage);
       snapshots.push(stage);
     });
     assert.equal(result.saved.dirty, 'false');
@@ -570,6 +728,28 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
     assert.equal(result.defaultsSaved.dirty, 'false');
     assert.equal(result.defaultsSaved.note, '');
     assert.deepEqual(snapshots, ['saved', 'restored-draft']);
+    assert.deepEqual(probeStages, [
+      'workspace-settings-initial',
+      'workspace-settings-view-open',
+      'workspace-settings-view-portal',
+      'workspace-settings-view-portal',
+      'workspace-settings-view-select',
+      'workspace-settings-view-observe',
+      'workspace-settings-switch-change',
+      'workspace-settings-switch-observe',
+      'workspace-settings-textarea-focus',
+      'workspace-settings-textarea-input',
+      'workspace-settings-textarea-observe',
+      'workspace-settings-save',
+      'workspace-settings-save-observe',
+      'workspace-settings-saved-capture',
+      'workspace-settings-restore',
+      'workspace-settings-restore-observe',
+      'workspace-settings-restored-draft-capture',
+      'workspace-settings-default-save',
+      'workspace-settings-default-save-observe',
+    ]);
+    assert.equal(probeContext.activeProbeStage, null, 'Completed task clears its active stage');
     assert.deepEqual(actions, [
       '[data-demo-ref="settings-view-trigger"]',
       'choose-board',

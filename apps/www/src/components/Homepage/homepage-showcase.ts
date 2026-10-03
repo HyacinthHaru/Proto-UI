@@ -239,11 +239,12 @@ export function createHomepageShowcase(
         const pendingProps = new Map<string, Record<string, unknown>>();
         let propsScheduled = false;
         // A protocol event may continue doing owner work after its outward signal.
-        // WC updates synchronously; re-entering it can invalidate that callback's phase.
+        // WC and this demo renderer's React flushSync path update synchronously;
+        // re-entering either can invalidate that callback's phase.
         // Vue's existing nextTick staging must remain ahead of TextControl's owner
         // restoration microtask, or accepted text can lose its caret position.
         const publishProps = (ref: string, next: Record<string, unknown>) => {
-          if (runtime !== 'wc') {
+          if (runtime === 'vue' || runtime === 'vue2') {
             context.api.setProps(ref, next);
             return;
           }

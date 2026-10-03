@@ -222,9 +222,69 @@ function runtimeTrigger(page: Page) {
 }
 
 let activeProbeStage: string | null = null;
+let activeProbeRuntime: Runtime | null = null;
+let requestedProbeRuntime: Runtime | null = null;
+
+type PageErrorContext = {
+  runtime: Runtime | null;
+  requestedRuntime: Runtime | null;
+  activeProbeStage: string | null;
+};
+type PageErrorDetail = PageErrorContext & {
+  message: string;
+  name: string;
+  stack: string | null;
+  observedAt: string;
+};
+
+function observePageErrors(page: Page, readContext: () => PageErrorContext) {
+  const pageErrors: string[] = [];
+  const pageErrorDetails: PageErrorDetail[] = [];
+  // Capture host-side metadata synchronously at delivery. Do not start browser
+  // queries here: their completion could race the next probe stage or teardown.
+  page.on('pageerror', (error) => {
+    pageErrors.push(error.message);
+    pageErrorDetails.push({
+      message: error.message,
+      name: error.name,
+      stack: error.stack ?? null,
+      observedAt: new Date().toISOString(),
+      ...readContext(),
+    });
+  });
+  return { pageErrors, pageErrorDetails };
+}
+
+async function recordRuntimeTask<T>(
+  runtimeTasks: Array<Record<string, unknown>>,
+  pageErrorDetails: PageErrorDetail[],
+  runtime: Runtime,
+  pointerStep: number,
+  run: () => Promise<T>
+): Promise<T> {
+  const startIndex = pageErrorDetails.length;
+  const task: Record<string, unknown> = {
+    runtime,
+    pointerStep,
+    startedAt: new Date().toISOString(),
+    pageErrorStartIndex: startIndex,
+  };
+  runtimeTasks.push(task);
+  try {
+    return await run();
+  } finally {
+    // Retain newly observed errors even when the strict task driver throws.
+    // Runtime selection/ownership errors outside this interval remain in the
+    // complete case-level log, with their event-time context intact.
+    task.pageErrorEndIndex = pageErrorDetails.length;
+    task.pageErrors = pageErrorDetails.slice(startIndex);
+    task.finishedAt = new Date().toISOString();
+  }
+}
 
 async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): Promise<void> {
   activeProbeStage = null;
+  requestedProbeRuntime = runtime;
   const trigger = runtimeTrigger(page);
   if (keyboard) {
     await trigger.focus();
@@ -270,6 +330,8 @@ async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): P
     await portal.getByRole('option', { name: RUNTIME_LABELS[runtime], exact: true }).click();
   }
   await waitForRuntime(page, runtime);
+  activeProbeRuntime = runtime;
+  requestedProbeRuntime = null;
   activeProbeStage = null;
 }
 
@@ -378,13 +440,16 @@ async function exerciseWorkspaceSettings(
     feedback: copy.unchanged,
   });
   const trigger = task.locator('[data-demo-ref="settings-view-trigger"]');
-  activeProbeStage = 'workspace-settings-edit';
+  activeProbeStage = 'workspace-settings-view-open';
   await trigger.click();
+  activeProbeStage = 'workspace-settings-view-portal';
   const portalId = await trigger.getAttribute('aria-controls');
   assert.ok(portalId, 'Project-view selector must identify its real option portal');
   const portal = page.locator(`[id=${JSON.stringify(portalId)}]`);
   await portal.waitFor({ state: 'visible' });
+  activeProbeStage = 'workspace-settings-view-select';
   await portal.getByRole('option', { name: copy.board, exact: true }).click();
+  activeProbeStage = 'workspace-settings-view-observe';
   const viewChanged = await waitForWorkspaceSettings(page, {
     view: copy.board,
     summary: 'false',
@@ -394,25 +459,33 @@ async function exerciseWorkspaceSettings(
     resetDisabled: false,
     feedback: copy.changed,
   });
+  activeProbeStage = 'workspace-settings-switch-change';
   await task.locator('[data-demo-ref="settings-summary"]').click();
+  activeProbeStage = 'workspace-settings-switch-observe';
   const summaryChanged = await waitForWorkspaceSettings(page, { ...viewChanged, summary: 'true' });
   const note = task.locator(
     'textarea[data-demo-ref="settings-note"], [data-demo-ref="settings-note"] textarea'
   );
+  activeProbeStage = 'workspace-settings-textarea-focus';
   await note.click();
+  activeProbeStage = 'workspace-settings-textarea-input';
   await page.keyboard.insertText(copy.note);
+  activeProbeStage = 'workspace-settings-textarea-observe';
   const edited = await waitForWorkspaceSettings(page, { ...summaryChanged, note: copy.note });
   activeProbeStage = 'workspace-settings-save';
   await task.locator('[data-demo-ref="settings-save"]').click();
+  activeProbeStage = 'workspace-settings-save-observe';
   const saved = await waitForWorkspaceSettings(page, {
     ...edited,
     dirty: 'false',
     saveDisabled: true,
     feedback: `${copy.saved} · ${copy.board} · ${copy.on} · ${copy.noteLength(copy.note.length)}`,
   });
+  activeProbeStage = 'workspace-settings-saved-capture';
   await capture('saved');
   activeProbeStage = 'workspace-settings-restore';
   await task.locator('[data-demo-ref="settings-reset"]').click();
+  activeProbeStage = 'workspace-settings-restore-observe';
   // Restore changes the draft. It must not claim the previously saved local
   // values changed until the user deliberately saves those defaults as well.
   const restoredDraft = await waitForWorkspaceSettings(page, {
@@ -421,8 +494,11 @@ async function exerciseWorkspaceSettings(
     saveDisabled: false,
     feedback: `${copy.restored} · ${copy.changed}`,
   });
+  activeProbeStage = 'workspace-settings-restored-draft-capture';
   await capture('restored-draft');
+  activeProbeStage = 'workspace-settings-default-save';
   await task.locator('[data-demo-ref="settings-save"]').click();
+  activeProbeStage = 'workspace-settings-default-save-observe';
   const defaultsSaved = await waitForWorkspaceSettings(page, {
     ...initial,
     feedback: `${copy.saved} · ${copy.list} · ${copy.off} · ${copy.noteLength(0)}`,
@@ -669,6 +745,7 @@ try {
           colorScheme,
           screenshots: [],
           transitions: [],
+          runtimeTasks: [],
         };
         report.cases.push(evidence);
         const screenshots = evidence.screenshots as string[];
@@ -717,15 +794,24 @@ try {
           );
         });
         page.setDefaultTimeout(15_000);
-        const pageErrors: string[] = [];
+        activeProbeRuntime = null;
+        requestedProbeRuntime = 'wc';
+        activeProbeStage = 'homepage-load';
+        const { pageErrors, pageErrorDetails } = observePageErrors(page, () => ({
+          // Last readiness-verified runtime; requestedRuntime separately names
+          // an in-flight selection rather than claiming the DOM has committed.
+          runtime: activeProbeRuntime,
+          requestedRuntime: requestedProbeRuntime,
+          activeProbeStage,
+        }));
         const externalModules = new Map<string, number>();
-        page.on('pageerror', (error) => pageErrors.push(error.message));
         page.on('response', (response) => {
           if (new URL(response.url()).hostname === 'esm.sh') {
             externalModules.set(response.url(), response.status());
           }
         });
         evidence.pageErrors = pageErrors;
+        evidence.pageErrorDetails = pageErrorDetails;
         const screenshot = async (name: string, fullPage = false) => {
           const filename = `${id}-${name}.png`;
           await page.screenshot({ path: path.join(out, filename), fullPage });
@@ -734,6 +820,9 @@ try {
         try {
           await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
           await waitForRuntime(page, 'wc');
+          activeProbeRuntime = 'wc';
+          requestedProbeRuntime = null;
+          activeProbeStage = 'homepage-initial-observe';
           await page.waitForFunction(
             (theme) => document.documentElement.dataset.theme === theme,
             colorScheme
@@ -771,6 +860,7 @@ try {
           }
           evidence.initialOwnership = await ownership(page, 'wc');
           if (revisionKind === 'candidate') {
+            activeProbeStage = 'homepage-navigation';
             const menu = page.locator(
               '[data-homepage-runtime] [data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
             );
@@ -811,13 +901,20 @@ try {
             let task: Record<string, unknown>;
             if (revisionKind === 'candidate') {
               task = {
-                workspaceSettings: await exerciseWorkspaceSettings(page, route, async (state) => {
-                  if (index < 4) {
-                    const filename = `${id}-${runtime}-settings-${state}.png`;
-                    await page.locator(HOME).screenshot({ path: path.join(out, filename) });
-                    screenshots.push(filename);
-                  }
-                }),
+                workspaceSettings: await recordRuntimeTask(
+                  evidence.runtimeTasks as Array<Record<string, unknown>>,
+                  pageErrorDetails,
+                  runtime,
+                  index,
+                  () =>
+                    exerciseWorkspaceSettings(page, route, async (state) => {
+                      if (index < 4) {
+                        const filename = `${id}-${runtime}-settings-${state}.png`;
+                        await page.locator(HOME).screenshot({ path: path.join(out, filename) });
+                        screenshots.push(filename);
+                      }
+                    })
+                ),
               };
             } else {
               const button = page

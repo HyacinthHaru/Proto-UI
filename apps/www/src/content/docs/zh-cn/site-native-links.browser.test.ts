@@ -6,6 +6,8 @@ import path from 'node:path';
 import os from 'node:os';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, RUNTIMES, startServer, stopServer } from './browser-harness';
+import { nativeLinkEvidenceIssues } from './site-native-link-evidence';
+import socialDestinations from '../../../../../../shared/links.json';
 
 let browser: Browser;
 let baseUrl: string;
@@ -103,6 +105,163 @@ async function openSettings(page: Page) {
   if ((await button.getAttribute('aria-expanded')) !== 'true') await button.click();
 }
 
+async function installNativeTrace(page: Page, currentDocument = false) {
+  const initialize = () => {
+    const state = {
+      action: 'initial',
+      events: [] as Array<{
+        event: Event;
+        target: Node;
+        anchor: HTMLAnchorElement;
+        at: number;
+        action: string;
+        targetTag: string;
+        hitIsAnchor: boolean;
+        connectedAtCapture: boolean;
+        x: number;
+        y: number;
+      }>,
+    };
+    (window as Window & { __siteNativeTrace?: typeof state }).__siteNativeTrace = state;
+    for (const type of [
+      'pointerenter',
+      'pointerleave',
+      'pointerdown',
+      'pointerup',
+      'mousedown',
+      'mouseup',
+      'click',
+      'auxclick',
+      'focus',
+      'blur',
+      'keydown',
+      'keyup',
+    ]) {
+      document.addEventListener(
+        type,
+        (event) => {
+          const target = event.target;
+          if (!(target instanceof Element)) return;
+          const anchor = target.closest('a');
+          if (!anchor) return;
+          const { clientX: x = 0, clientY: y = 0 } = event as MouseEvent;
+          state.events.push({
+            event,
+            target,
+            anchor,
+            at: performance.now(),
+            action: state.action,
+            targetTag: target.tagName,
+            hitIsAnchor: document.elementFromPoint(x, y) === anchor,
+            connectedAtCapture: target.isConnected,
+            x,
+            y,
+          });
+          if (state.events.length > 150) state.events.shift();
+        },
+        { capture: true }
+      );
+    }
+  };
+  await page.addInitScript(initialize);
+  if (currentDocument) await page.evaluate(initialize);
+}
+async function nativeActionLabel(page: Page, action: string) {
+  await page.evaluate((action) => {
+    const state = (window as Window & { __siteNativeTrace?: { action: string } }).__siteNativeTrace;
+    if (state) state.action = action;
+  }, action);
+}
+async function saveNativeTrace(page: Page, id: string, detail: unknown = null) {
+  const events = await page.evaluate(() => {
+    const state = (
+      window as Window & {
+        __siteNativeTrace?: {
+          events: Array<{
+            event: Event;
+            target: Node;
+            anchor: HTMLAnchorElement;
+            at: number;
+            action: string;
+            targetTag: string;
+            hitIsAnchor: boolean;
+            connectedAtCapture: boolean;
+            x: number;
+            y: number;
+          }>;
+        };
+      }
+    ).__siteNativeTrace;
+    return (state?.events ?? []).map(({ event, target, anchor, ...entry }) => ({
+      ...entry,
+      type: event.type,
+      trusted: event.isTrusted,
+      preventedAfterDispatch: event.defaultPrevented,
+      button: (event as MouseEvent).button,
+      buttons: (event as MouseEvent).buttons,
+      key: (event as KeyboardEvent).key,
+      ctrl: (event as MouseEvent).ctrlKey,
+      meta: (event as MouseEvent).metaKey,
+      targetConnectedAfterDispatch: target.isConnected,
+      anchorConnected: anchor.isConnected,
+      targetWasAnchor: target === anchor,
+      href: anchor.getAttribute('href'),
+      name: anchor.getAttribute('aria-label'),
+    }));
+  });
+  await mkdir(evidenceDirectory, { recursive: true });
+  await writeFile(
+    path.join(evidenceDirectory, `${id}-events.json`),
+    JSON.stringify(
+      { source: evidenceSource, url: page.url(), viewport: page.viewportSize(), detail, events },
+      null,
+      2
+    )
+  );
+  return events;
+}
+
+async function nativePopup(
+  page: Page,
+  link: Locator,
+  action: 'modifier' | 'middle' | 'enter',
+  owner: string
+) {
+  const label = `${owner}:${action}`;
+  const href = await link.getAttribute('href');
+  console.info(`[native-link] ${label} begin href=${href}`);
+  await nativeActionLabel(page, label);
+  const outcome = page
+    .context()
+    .waitForEvent('page')
+    .then(
+      (popup) => ({ popup }),
+      (error: unknown) => ({ error })
+    );
+  try {
+    if (action === 'modifier') await link.click({ modifiers: ['Control'] });
+    else if (action === 'middle') await link.click({ button: 'middle' });
+    else {
+      await link.focus();
+      await page.keyboard.press('Enter');
+    }
+    const result = await outcome;
+    if ('error' in result) throw result.error;
+    await result.popup.waitForLoadState('domcontentloaded');
+    expect(result.popup.url(), label).toBe(href);
+    await result.popup.close();
+    console.info(`[native-link] ${label} passed`);
+  } catch (error) {
+    await saveNativeTrace(page, `${owner}-${action}-failure`, {
+      action,
+      owner,
+      href,
+      error: String(error),
+    });
+    throw new Error(`[native-link] ${label} failed for ${href}`, { cause: error });
+  }
+}
+
 async function linkPaint(link: Locator) {
   return link.evaluate((anchor) => {
     const surface = anchor.querySelector<HTMLElement>('[data-pui-root]')!;
@@ -139,9 +298,7 @@ async function linkPaint(link: Locator) {
       visibleTarget:
         box.width > 0 &&
         box.height > 0 &&
-        anchor.contains(
-          document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2)
-        ),
+        anchor === document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2),
       unclipped,
       // Record the native root outline too: the Prototype ring alone does not
       // prove that a browser focus outline is absent or visually acceptable.
@@ -168,6 +325,7 @@ async function assertSocialPaint(
   const hovered = await linkPaint(first);
   await capture('hover', { baseline, observed: hovered });
 
+  await nativeActionLabel(page, `social-${family}-primary-down`);
   await page.mouse.down();
   await expect.poll(async () => (await linkPaint(first)).tokens).toContain('translate-y-px');
   const pressed = await linkPaint(first);
@@ -231,6 +389,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       colorScheme: 'light',
     });
     const page = await context.newPage();
+    await installNativeTrace(page);
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     try {
@@ -265,9 +424,15 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
                 rel: anchor.getAttribute('rel'),
                 role: anchor.getAttribute('role'),
                 tag: anchor.tagName,
-                tabStops: anchor.querySelectorAll(
-                  'a[href],button,input,select,textarea,[tabindex="0"]'
-                ).length,
+                tabStops: anchor.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')
+                  .length,
+                anchorRect: { left: box.left, top: box.top, right: box.right, bottom: box.bottom },
+                surfaceRect: {
+                  left: visual.left,
+                  top: visual.top,
+                  right: visual.right,
+                  bottom: visual.bottom,
+                },
                 width: visual.width,
                 height: visual.height,
                 border: style.borderTopWidth,
@@ -278,9 +443,14 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
                   box.top <= visual.top + 0.5 &&
                   box.right >= visual.right - 0.5 &&
                   box.bottom >= visual.bottom - 0.5,
-                topLeftHitInside: anchor.contains(
-                  document.elementFromPoint(visual.left + 3, visual.top + 3)
-                ),
+                topLeftHitInside:
+                  anchor === document.elementFromPoint(visual.left + 3, visual.top + 3),
+                centerHitIsAnchor:
+                  anchor ===
+                  document.elementFromPoint(
+                    visual.left + visual.width / 2,
+                    visual.top + visual.height / 2
+                  ),
               };
             })
           );
@@ -290,7 +460,19 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
               facts.map((fact) => `${fact.width}/${fact.height}/${fact.border}/${fact.radius}`)
             ).size
           ).toBe(1);
-          for (const fact of facts) {
+          const expectedSocial = [
+            { name: 'GitHub', href: socialDestinations.github },
+            { name: 'Discord', href: socialDestinations.discord },
+            { name: 'X', href: socialDestinations.x },
+            { name: 'Bluesky', href: socialDestinations.bluesky },
+          ];
+          for (const [index, fact] of facts.entries()) {
+            expect(
+              nativeLinkEvidenceIssues(
+                { ...fact, nestedFocus: fact.tabStops, cornerHitIsAnchor: fact.topLeftHitInside },
+                { ...expectedSocial[index]!, target: '_blank', rel: 'noreferrer' }
+              )
+            ).toEqual([]);
             expect(fact.tag).toBe('A');
             expect(fact.role).toBeNull();
             expect(fact.target).toBe('_blank');
@@ -301,12 +483,69 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
             expect(fact.height).toBeGreaterThanOrEqual(44);
             expect(fact.nativeCoversSurface).toBe(true);
             expect(fact.topLeftHitInside).toBe(true);
+            expect(fact.centerHitIsAnchor).toBe(true);
             if (family === 'brutalist') {
               expect(fact.border).toBe('2px');
               expect(fact.radius).toBe('0px');
               expect(fact.shadow).not.toBe('none');
             }
           }
+          const footprints = await page
+            .locator(
+              '[data-homepage-actions] [data-projection-generation-state="active"] a:visible'
+            )
+            .evaluateAll((anchors) =>
+              anchors.map((anchor) => {
+                const surface = anchor.querySelector<HTMLElement>('[data-pui-root]')!;
+                const visual = surface.getBoundingClientRect();
+                const native = anchor.getBoundingClientRect();
+                const group = anchor.closest('[data-homepage-actions]')!;
+                const index = [
+                  ...group.querySelectorAll('[data-projection-generation-state="active"] a'),
+                ].indexOf(anchor);
+                const source = group.querySelectorAll('[data-homepage-fallback] a')[index]!;
+                const identity = (link: Element) => ({
+                  href: link.getAttribute('href'),
+                  name: link.getAttribute('aria-label') ?? link.textContent?.trim() ?? null,
+                  target: link.getAttribute('target'),
+                  rel: link.getAttribute('rel'),
+                });
+                return {
+                  ...identity(anchor),
+                  expected: identity(source),
+                  tag: anchor.tagName,
+                  role: anchor.getAttribute('role'),
+                  centerHitIsAnchor:
+                    document.elementFromPoint(
+                      visual.left + visual.width / 2,
+                      visual.top + visual.height / 2
+                    ) === anchor,
+                  cornerHitIsAnchor:
+                    document.elementFromPoint(visual.left + 3, visual.top + 3) === anchor,
+                  anchorRect: {
+                    left: native.left,
+                    top: native.top,
+                    right: native.right,
+                    bottom: native.bottom,
+                  },
+                  surfaceRect: {
+                    left: visual.left,
+                    top: visual.top,
+                    right: visual.right,
+                    bottom: visual.bottom,
+                  },
+                  nestedFocus: anchor.querySelectorAll(
+                    'a[href],button,input,select,textarea,[tabindex]'
+                  ).length,
+                };
+              })
+            );
+          expect(footprints.length).toBeGreaterThan(4);
+          for (const footprint of footprints)
+            expect(
+              nativeLinkEvidenceIssues(footprint, footprint.expected),
+              String(footprint.name)
+            ).toEqual([]);
           await assertSocialPaint(page, links, family, async (state, evidence) => {
             if (runtime === 'wc')
               await captureLinks(
@@ -335,6 +574,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       }
       expect(errors).toEqual([]);
     } finally {
+      await saveNativeTrace(page, 'homepage-native-paint-final');
       await context.close();
     }
   }, 150_000);
@@ -349,6 +589,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       route.fulfill({ contentType: 'text/html', body: '<title>External link fixture</title>' })
     );
     const page = await context.newPage();
+    await installNativeTrace(page);
     try {
       await page.goto(`${baseUrl}/zh-cn/`, { waitUntil: 'networkidle' });
       await ready(page, 'wc', 'shadcn');
@@ -356,20 +597,39 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       const link = page.locator(
         '#home-social [data-projection-generation-state="active"] a[aria-label="GitHub"]'
       );
-      const href = await link.getAttribute('href');
-      for (const action of ['modifier', 'middle', 'enter'] as const) {
-        const popupPromise = context.waitForEvent('page');
-        if (action === 'modifier') await link.click({ modifiers: ['Control'] });
-        else if (action === 'middle') await link.click({ button: 'middle' });
-        else {
-          await link.focus();
-          await page.keyboard.press('Enter');
-        }
-        const popup = await popupPromise;
-        await popup.waitForLoadState('domcontentloaded');
-        expect(popup.url()).toBe(href);
-        await popup.close();
+      const href = (await link.getAttribute('href'))!;
+      // Plain-native controls distinguish a broken browser/popup fixture from
+      // the application bridge. This page is not claimed as product UI.
+      const controlPage = await context.newPage();
+      await controlPage.setContent(
+        '<a id="native-control" target="_blank" rel="noreferrer">Native navigation control</a>'
+      );
+      await installNativeTrace(controlPage, true);
+      const control = controlPage.locator('#native-control');
+      await control.evaluate((anchor, href) => anchor.setAttribute('href', href), href);
+      try {
+        await nativeActionLabel(controlPage, 'plain-native:cancel-negative-control');
+        await control.evaluate((anchor) =>
+          anchor.addEventListener('click', (event) => event.preventDefault(), { once: true })
+        );
+        const count = context.pages().length;
+        await control.click({ modifiers: ['Control'] });
+        const cancelled = await saveNativeTrace(controlPage, 'plain-native-negative-control');
+        expect(cancelled.filter((event) => event.type === 'click').at(-1)).toMatchObject({
+          trusted: true,
+          preventedAfterDispatch: true,
+        });
+        expect(context.pages()).toHaveLength(count);
+        for (const action of ['modifier', 'middle', 'enter'] as const)
+          await nativePopup(controlPage, control, action, 'plain-native');
+        await saveNativeTrace(controlPage, 'plain-native-positive-controls');
+      } finally {
+        await controlPage.close();
       }
+      await page.bringToFront();
+      await openSettings(page);
+      for (const action of ['modifier', 'middle', 'enter'] as const)
+        await nativePopup(page, link, action, 'homepage-social');
       const location = page.url();
       await link.focus();
       await page.keyboard.press('Space');
@@ -406,6 +666,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       expect(context.pages()).toHaveLength(1);
       expect(await link.getAttribute('role')).toBeNull();
     } finally {
+      await saveNativeTrace(page, 'homepage-native-navigation-final');
       await context.close();
     }
   }, 90_000);

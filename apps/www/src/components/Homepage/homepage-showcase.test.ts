@@ -167,7 +167,7 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
       task.cleanup();
     });
 
-    if (runtime === 'wc') {
+    if (runtime === 'wc' || runtime === 'react') {
       it('coalesces owner feedback without entering props during the outward callback', async () => {
         const task = mount(runtime);
         await Promise.resolve();

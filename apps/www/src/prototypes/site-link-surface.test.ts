@@ -10,6 +10,59 @@ const settle = async () => {
 };
 afterEach(() => document.body.replaceChildren());
 describe('app-owned passive link surface', () => {
+  it.each(['action', 'icon', 'nav', 'text', 'brand'])(
+    'keeps the %s surface passive for every family',
+    async (appearance) => {
+      for (const family of ['shadcn', 'brutalist']) {
+        const surface = new Constructor();
+        setElementProps(surface, { family, appearance });
+        document.body.append(surface);
+        await settle();
+        expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain(
+          'pointer-events-none'
+        );
+        expect(surface.hasAttribute('role')).toBe(false);
+        expect(surface.hasAttribute('tabindex')).toBe(false);
+        expect(surface.getExposes()).toEqual({});
+      }
+    }
+  );
+  it('leaves the stable native anchor as hit owner while visual props rebuild decoration', async () => {
+    const link = document.createElement('a');
+    link.href = '/native-destination/';
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+    const surface = new Constructor();
+    const props = { family: 'brutalist', appearance: 'icon', icon: 'github' };
+    setElementProps(surface, props);
+    link.append(surface);
+    document.body.append(link);
+    await settle();
+    const originalGlyph = surface.querySelector('svg')!;
+    link.focus();
+    const update = (facts: Record<string, unknown>) => {
+      setElementProps(surface, { ...props, ...facts });
+      surface.update();
+    };
+    update({ hovered: true, pressed: true });
+    await settle();
+    // Actual WC behavior: decoration is replaced on a visual-only update.
+    // Native activation therefore must never depend on the glyph being the
+    // pointer target. This does not pretend Happy DOM performs hit testing.
+    expect(surface.querySelector('svg')).not.toBe(originalGlyph);
+    expect(originalGlyph.isConnected).toBe(false);
+    expect(link.firstElementChild).toBe(surface);
+    expect(document.activeElement).toBe(link);
+    const tokens = surface.getAttribute('data-pui-style')!.split(/\s+/);
+    expect(tokens).toContain('translate-y-px');
+    expect(tokens).toContain('pointer-events-none');
+    expect(renderProtoStyleTokenCss(['pointer-events-none'])).toContain('pointer-events: none;');
+    expect(link.getAttribute('href')).toBe('/native-destination/');
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toBe('noreferrer');
+    expect(surface.hasAttribute('role')).toBe(false);
+    expect(surface.hasAttribute('tabindex')).toBe(false);
+  });
   it('compiles every website token and leaves text wrapping unforced', async () => {
     const collected = await collectProtoStyleTokens(
       fileURLToPath(new NodeURL('.', import.meta.url))

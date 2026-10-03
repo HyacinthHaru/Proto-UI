@@ -6,6 +6,12 @@ import { describe, expect, it } from 'vitest';
 const read = (path: string) => readFileSync(resolve(process.cwd(), path), 'utf8');
 
 describe('Homepage presentation source boundaries', () => {
+  it('preserves the maintainer-selected Chinese Demo CTA and its existing destination', () => {
+    const home = read('apps/www/src/content/docs/zh-cn/index.mdx');
+    expect(home).toContain("    - text: 试试 Demo\n      link: '#home-demo-previewer'");
+    expect(home).not.toContain('试试交互');
+  });
+
   it('preserves the approved bilingual slogan and supporting line exactly', () => {
     for (const [locale, title, tagline] of [
       ['zh-cn', '组件可以独立于框架或设计体系', '而不是在不同框架中被反复实现'],

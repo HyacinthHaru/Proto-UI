@@ -65,7 +65,10 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
     });
     def.feedback.style.use(
       tw(
-        'inline-flex shrink-0 items-center justify-center border border-transparent bg-transparent text-foreground font-medium outline-none'
+        // Native anchors own pointer hit testing as well as activation. A
+        // visual-only WC update may rebuild decoration; it must not replace
+        // the browser's in-flight pointer/click target inside the anchor.
+        'pointer-events-none inline-flex shrink-0 items-center justify-center border border-transparent bg-transparent text-foreground font-medium outline-none'
       )
     );
     for (const appearance of Object.keys(SIZE_TOKENS) as SiteLinkAppearance[]) {
