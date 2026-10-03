@@ -13,6 +13,8 @@ import {
   createDeferredOwnerDisposal,
   createEventGate,
   createDefaultWebColorSchemeSource,
+  createDefaultWebPreferenceSource,
+  createDefaultWebStyleSupportSource,
   createScopedExposesReader,
   createViewEpochOwner,
   createWebProtoEventRouter,
@@ -164,6 +166,10 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
     const getProps = opt.getProps ?? defaultGetProps;
     const getMeta = opt.getMeta ?? createDefaultMetaGetter();
     const colorSchemeSource = opt.getMeta ? undefined : createDefaultWebColorSchemeSource(getMeta);
+    const preferenceSource = opt.getMeta ? undefined : createDefaultWebPreferenceSource(getMeta);
+    const styleSupportSource = opt.getMeta
+      ? undefined
+      : createDefaultWebStyleSupportSource(getMeta);
     const exposeStateWebMode = opt.exposeStateWebMode;
     const scrollProjection = opt.scrollProjection;
     const autoUpdate = opt.autoUpdateOnPropsChange ?? true;
@@ -357,6 +363,8 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             rawPropsSource: rawPropsSourceRef.current as RawPropsSource<Props>,
             getMeta,
             colorSchemeSource,
+            preferenceSource,
+            styleSupportSource,
             setExposes: (record) => {
               exposesRef.current = record;
             },
@@ -448,6 +456,8 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           effectsPort,
           getMeta,
           colorSchemeSource,
+          preferenceSource,
+          styleSupportSource,
           exposeStateWebMode,
           scrollProjection,
           setExposes: (record) => {

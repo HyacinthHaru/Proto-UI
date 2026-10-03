@@ -39,6 +39,14 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('../../prototypes/site-link-surface.proto');
     registerPrototype('site-link-surface', mod.default);
   },
+  'bootstrap-2-3-2-button': async () => {
+    const mod = await import('@proto.ui/prototypes-bootstrap-2-3-2/button');
+    registerPrototype('bootstrap-2-3-2-button', mod.default);
+  },
+  'liquid-glass-button': async () => {
+    const mod = await import('@proto.ui/prototypes-liquid-glass/button');
+    registerPrototype('liquid-glass-button', mod.default);
+  },
   'base-button': async () => {
     const mod = await import('@proto.ui/prototypes-base');
     registerPrototype('base-button', mod.button);

@@ -657,10 +657,14 @@ export function createProjectionComposition(
     throw new Error('[PrototypePreviewer] content recipe root must be declared.');
   const coordinateAttrs = createCoordinateAttrs(options);
   const selectParts = Object.fromEntries(
-    (['root', 'trigger', 'value', 'content', 'item'] as const).map((partId) => [
-      partId,
-      resolveProjectionPart(options.projectionFamilyId, 'select', partId).prototypeId,
-    ])
+    // A fixed-family, toolbar-free preview needs only its real component parts.
+    // Requesting controls still requires that family's complete Select anatomy.
+    (controlIds.length ? (['root', 'trigger', 'value', 'content', 'item'] as const) : []).map(
+      (partId) => [
+        partId,
+        resolveProjectionPart(options.projectionFamilyId, 'select', partId).prototypeId,
+      ]
+    )
   ) as Record<'root' | 'trigger' | 'value' | 'content' | 'item', string>;
 
   let locked = options.locked === true;
