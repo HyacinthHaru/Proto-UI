@@ -116,7 +116,9 @@ export function contrastProvenancePlugin(root) {
         try {
           // Tracked paths are never ignored by check-ignore. Normal ignored Vite,
           // Astro and dependency cache churn must not invalidate the source latch.
-          git(root, ['check-ignore', '--quiet', '--', relative]);
+          // An unlinked directory no longer has filesystem type information.
+          const candidate = event === 'unlinkDir' ? `${relative}${path.sep}` : relative;
+          git(root, ['check-ignore', '--quiet', '--', candidate]);
         } catch {
           // Exit 1 means a source path; any Git error also fails closed.
           stale = true;

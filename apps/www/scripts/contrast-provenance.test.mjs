@@ -269,6 +269,12 @@ describe('contrast development server provenance', () => {
       server.watcher.emit('all', 'add', path.join(root, file));
     }
     assert.equal((await server.get()).status, 200);
+    for (const directory of ['apps/www/.astro', 'node_modules/.vite']) {
+      const absolute = path.join(root, directory);
+      rmSync(absolute, { recursive: true });
+      server.watcher.emit('all', 'unlinkDir', absolute);
+    }
+    assert.equal((await server.get()).status, 200);
     const generated = path.join(root, CSS_FILES[0]);
     const original = readFileSync(generated);
     writeFileSync(generated, 'temporary generated contents');

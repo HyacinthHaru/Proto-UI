@@ -455,7 +455,14 @@ async function pointerJourney(
       select: 'brutalist-select-content',
     } as Record<string, string>
   )[family];
-  const popup = popupName ? (await owned(page, popupName)).first() : null;
+  const controlledId = popupName ? await target.getAttribute('aria-controls') : null;
+  if (popupName && !controlledId)
+    throw new Error('Popup trigger has no controls identity to bind its activation result.');
+  // The runtime selector is itself a Select with the same owner/generation.
+  // Use the product trigger's relation, not the first owned listbox.
+  const popup = popupName
+    ? (await owned(page, popupName)).and(page.locator(`[id=${JSON.stringify(controlledId)}]`))
+    : null;
   const popupBefore = popup ? await popup.isVisible() : null;
   if (popupBefore)
     throw new Error('Pointer open journey requires an initially closed owned popup.');
