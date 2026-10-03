@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mountDocumentationImagePreview } from './documentation-image-preview';
 import type { PreviewControl } from './documentation-image-controls';
 import { sharedImageHitPoint } from './documentation-image-preview.test-utils';
+import { getElementProps } from '@proto.ui/adapter-web-component';
 let dispose: (() => void) | undefined;
 afterEach(() => {
   dispose?.();
@@ -53,6 +54,34 @@ describe('documentation image native hit probe', () => {
   });
 });
 describe('documentation image viewer PUI integration', () => {
+  it('uses a private Base Button thumbnail without family variants or moving hover feedback', async () => {
+    document.documentElement.dataset.siteLibraryFamily = 'brutalist';
+    const { trigger, root } = await fixture();
+    expect(getElementProps(trigger)).not.toHaveProperty('variant');
+    expect(trigger.getAttribute('data-pui-style')).toContain('docs-image-zoom-trigger');
+    trigger.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+    trigger.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    await settle();
+    expect(trigger.getExposes?.().hovered.get()).toBe(true);
+    expect(trigger.getExposes?.().pressed.get()).toBe(true);
+    expect(trigger.getAttribute('data-pui-style')).not.toMatch(/translate-|scale-|shadow-/);
+    expect(trigger.getAttribute('data-pui-style')).toContain('data-[focus-visible]:ring-2');
+    trigger.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
+    trigger.getExposes?.().focusSelf({ reason: 'keyboard' });
+    expect(trigger.getExposes?.().focusVisible.get()).toBe(true);
+    expect(trigger.getAttribute('data-focus-visible')).not.toBeNull();
+    trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await settle();
+    expect(root.getExposes?.().open.get()).toBe(true);
+  });
+  it('supplies a supported Brutalist close variant rather than ghost falling back to solid', async () => {
+    document.documentElement.dataset.siteLibraryFamily = 'brutalist';
+    await fixture();
+    const close = document.querySelector<HTMLElement>('[data-docs-image-close]')!;
+    expect(getElementProps(close)?.variant).toBe('surface');
+    expect(close.getAttribute('data-pui-style')).toContain('bg-secondary-background');
+    expect(close.getAttribute('data-pui-style')).not.toContain('bg-main');
+  });
   it('enhances eligible images only and restores authored structure on disposal', async () => {
     await fixture();
     expect(document.querySelectorAll('[data-docs-image-trigger]')).toHaveLength(1);
@@ -73,8 +102,7 @@ describe('documentation image viewer PUI integration', () => {
   });
   it('does not erase the prototype-owned focus-ring shadow with unlayered thumbnail CSS', () => {
     const css = readFileSync('apps/www/src/styles/documentation-image-preview.css', 'utf8');
-    const thumbnailRule = css.match(/\[data-docs-image-trigger\]\s*\{([^}]+)\}/)![1];
-    expect(thumbnailRule).not.toMatch(/box-shadow\s*:/);
+    expect(css).not.toMatch(/\[data-docs-image-trigger\]\s*\{[^}]*box-shadow\s*:/);
   });
   it('opens through Button semantic activation, closes through Dialog, restores focus and reopens the contain presentation', async () => {
     const { trigger, root } = await fixture();
@@ -184,7 +212,8 @@ describe('documentation image viewer PUI integration', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
     await settle();
     const trigger = document.querySelector('[data-docs-image-trigger]')! as PreviewControl;
-    expect(trigger.localName).toBe('docs-preview-brutalist-button');
+    expect(trigger.localName).toBe('docs-preview-brutalist-image-trigger');
+    expect(trigger.getAttribute('data-pui-style')).toContain('docs-image-zoom-trigger');
     trigger.focus();
     trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await settle();

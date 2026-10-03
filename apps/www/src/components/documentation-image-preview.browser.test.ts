@@ -978,7 +978,7 @@ describe('automatic documentation image preview in real Chromium', () => {
     const page = track(await context.newPage());
     try {
       await page.goto(`${baseUrl}${MD}`, { waitUntil: 'networkidle' });
-      await open(page, 'Vector landscape');
+      const trigger = await open(page, 'Vector landscape');
       expect(
         await page
           .locator('[data-docs-image-content]')
@@ -987,7 +987,14 @@ describe('automatic documentation image preview in real Chromium', () => {
       await capture(page, 'reduced-motion-vector');
       await page.keyboard.press('Escape');
       await closed(page);
+      expect(await trigger.evaluate((el) => el === document.activeElement)).toBe(true);
+      await trigger.click();
+      await entered(page);
+      await page.mouse.click(1, 1);
+      await closed(page);
+      expect(await trigger.evaluate((el) => el === document.activeElement)).toBe(true);
     } finally {
+      await capture(page, 'reduced-motion-pointer-return');
       await context.close();
     }
     const noJs = await browser.newContext({ javaScriptEnabled: false });
