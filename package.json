@@ -88,7 +88,7 @@
     "test:public-docs": "node --test scripts/docs/test/*.test.mjs apps/www/scripts/contrast-provenance.test.mjs",
     "test:types": "echo \"[types] checking type contracts...\" && tsc -p internal/contracts/types/tsconfig.json && echo \"[types] OK\"",
     "test:web-conformance": "vitest run packages/web-conformance/test",
-    "test:runtime": "node --test scripts/test/run-runtime-tests.test.mjs && node scripts/test/run-runtime-tests.mjs",
+    "test:runtime": "node scripts/test/run-runtime-tests.mjs",
     "styles:variant-order:generate": "node --import tsx scripts/styles/generate-lowered-variant-order.ts",
     "check:styles:variant-order": "node --import tsx scripts/styles/generate-lowered-variant-order.ts --check",
     "agent:review:smoke": "node scripts/agent-operations/smoke-live-review-input.mjs",
