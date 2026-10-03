@@ -791,3 +791,41 @@ syncBuiltinESMExports();`
     'delegated-owner-initial-sweep'
   );
 });
+
+test('each intake command enforces only its own scope across all active/paused combinations', async (t) => {
+  for (const eventActive of [false, true])
+    for (const sweepActive of [false, true])
+      for (const command of ['event', 'sweep'])
+        await t.test(
+          `event=${eventActive}, sweep=${sweepActive}, command=${command}`,
+          async (t) => {
+            const { f, transport, store } = await session(t);
+            const policy = structuredClone(rootPolicy);
+            policy.reviewSubmissionAuthorizations.find(
+              (x) => x.id === CONNECTOR_AUTHORIZATION
+            ).status = eventActive ? 'active' : 'inactive';
+            policy.reviewSubmissionAuthorizations.find(
+              (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
+            ).status = sweepActive ? 'active' : 'inactive';
+            const s = new ConnectorReviewSession({ transport, ledger: store, policy });
+            const begin = () =>
+              command === 'event'
+                ? s.begin(487, { kind: 'synchronize', deliveryId: 'matrix-event' })
+                : s.beginInitialSweep(487);
+            if (command === 'event' ? eventActive : sweepActive) {
+              const request = await begin();
+              const { packet } = analysis(request.input);
+              packet.agentEvidence.source = 'AI-executed review by ChatGPT';
+              packet.agentEvidence.disposition = 'complete';
+              packet.agentEvidence.debt = [];
+              assert.equal((await s.publishParentPacket(packet, assessment)).status, 'published');
+              assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
+            } else {
+              await assert.rejects(begin(), /event scope|separately admitted exact scope/);
+              assert.equal(f.calls.length, 0);
+              assert.equal(store.read().state.deliveries.length, 0);
+              assert.equal(store.read().state.slot, null);
+            }
+          }
+        );
+});

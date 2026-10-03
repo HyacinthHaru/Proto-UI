@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync, chmodSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -46,9 +46,18 @@ function fixture(t) {
       publish({ directory, ref, expectedRevision, revision }) {
         calls.writes++;
         assert.equal(ref, REMOTE_LEDGER_REF);
-        assert.equal(git(directory, 'show', '-s', '--format=%P', revision), expectedRevision);
-        git(directory, 'push', '--porcelain', remote, `${revision}:${ref}`); // no force/lease override
-        return { status: 'accepted' };
+        return ownerGitLedgerTransport({
+          runGit(directory, args) {
+            // Exercise the production command; substitute only its fixed URL with
+            // this local fixture. No real remote request is possible.
+            return git(
+              directory,
+              ...args.map((arg) =>
+                arg === 'https://github.com/Proto-UI/Proto-UI.git' ? remote : arg
+              )
+            );
+          },
+        }).publish({ directory, ref, expectedRevision, revision });
       },
     };
     const original = { ...transport };
@@ -251,3 +260,107 @@ for (const race of ['unchanged', 'deleted', 'rolled-back'])
     }
     assert.equal(pushes, 1);
   });
+
+test('remote expected-tip transaction rejects deletion, rollback and advance after snapshot', async (t) => {
+  for (const mode of ['delete', 'rollback', 'advance', 'already-candidate', 'unchanged'])
+    await t.test(mode, (t) => {
+      const f = fixture(t);
+      git(f.remote, 'config', 'receive.denyNonFastForwards', 'true');
+      const seed = f.open();
+      apply(seed.ledger, event());
+      const expected = seed.ledger.read().revision;
+      const competitor = f.open(expected);
+      let observed = expected;
+      const actor = f.open(expected, (original) => ({
+        publish(args) {
+          if (mode === 'delete') {
+            git(f.remote, 'update-ref', '-d', REMOTE_LEDGER_REF);
+            observed = null;
+          }
+          if (mode === 'rollback') {
+            git(f.remote, 'update-ref', REMOTE_LEDGER_REF, f.genesis);
+            observed = f.genesis;
+          }
+          if (mode === 'advance') {
+            assert.equal(apply(competitor.ledger, event('competitor', 488)).status, 'applied');
+            observed = competitor.ledger.read().revision;
+          }
+          if (mode === 'already-candidate') {
+            git(args.directory, 'push', f.remote, `${args.revision}:${REMOTE_LEDGER_REF}`);
+            observed = args.revision;
+          }
+          return original.publish(args);
+        },
+      }));
+      const result = actor.ledger.apply(expected, { type: 'claim', pullRequest: 487 });
+      assert.equal(result.status, mode === 'unchanged' ? 'applied' : 'unknown');
+      assert.equal(actor.calls.writes, 1);
+      if (mode === 'delete')
+        assert.throws(() => git(f.remote, 'rev-parse', '--verify', REMOTE_LEDGER_REF));
+      else
+        assert.equal(
+          git(f.remote, 'rev-parse', REMOTE_LEDGER_REF),
+          mode === 'unchanged' ? result.attemptedRevision : observed
+        );
+      if (mode !== 'unchanged')
+        assert.throws(() => actor.ledger.apply(expected, event('retry')), /mutation is stopped/);
+    });
+});
+
+test('server transaction rejects deletion or rollback after ref advertisement', async (t) => {
+  for (const mode of ['delete', 'rollback'])
+    await t.test(mode, (t) => {
+      const f = fixture(t);
+      const seed = f.open();
+      apply(seed.ledger, event());
+      const expected = seed.ledger.read().revision;
+      const actor = f.open(expected);
+      const args =
+        mode === 'delete'
+          ? ['update-ref', '-d', REMOTE_LEDGER_REF]
+          : ['update-ref', REMOTE_LEDGER_REF, f.genesis];
+      // Git runs pre-push after receiving the remote advertisement. Mutate only
+      // the isolated fixture here, so the server must reject its stale old-OID.
+      const hook = path.join(actor.directory, 'hooks/pre-push');
+      writeFileSync(
+        hook,
+        '#!/usr/bin/env node\n' +
+          `const {execFileSync}=require('node:child_process');execFileSync('git',${JSON.stringify(['--git-dir', f.remote, ...args])},{stdio:'pipe'});\n`
+      );
+      chmodSync(hook, 0o755);
+      const result = actor.ledger.apply(expected, { type: 'claim', pullRequest: 487 });
+      assert.equal(result.status, 'unknown');
+      assert.equal(actor.calls.writes, 1);
+      if (mode === 'delete')
+        assert.throws(() => git(f.remote, 'rev-parse', '--verify', REMOTE_LEDGER_REF));
+      else assert.equal(git(f.remote, 'rev-parse', REMOTE_LEDGER_REF), f.genesis);
+      assert.throws(() => actor.ledger.apply(expected, event('retry')), /mutation is stopped/);
+    });
+});
+
+test('owner transport rejects invalid target, absent expected tip and non-child candidates before push', (t) => {
+  const f = fixture(t);
+  const actor = f.open();
+  const first = apply(actor.ledger, event()).attemptedRevision;
+  const second = apply(actor.ledger, { type: 'claim', pullRequest: 487 }).attemptedRevision;
+  let pushes = 0;
+  const transport = ownerGitLedgerTransport({
+    runGit(dir, args) {
+      if (args[0] === 'push') pushes++;
+      return git(dir, ...args);
+    },
+  });
+  for (const fields of [
+    { ref: 'refs/heads/other', revision: second, expectedRevision: first },
+    { ref: REMOTE_LEDGER_REF, revision: second, expectedRevision: '' },
+    { ref: REMOTE_LEDGER_REF, revision: first, expectedRevision: second },
+    { ref: REMOTE_LEDGER_REF, revision: second, expectedRevision: f.genesis },
+    { ref: REMOTE_LEDGER_REF, revision: f.genesis, expectedRevision: second },
+  ])
+    assert.throws(
+      () => transport.publish({ directory: actor.directory, ...fields }),
+      /invalid state publication target|not one exact-parent child/
+    );
+  assert.equal(pushes, 0);
+  assert.equal(git(f.remote, 'rev-parse', REMOTE_LEDGER_REF), second);
+});

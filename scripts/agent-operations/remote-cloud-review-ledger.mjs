@@ -145,7 +145,7 @@ export function ownerGitLedgerTransport({ runGit = git } = {}) {
         runGit(directory, ['show', '-s', '--format=%P', revision]) === expectedRevision,
         'state candidate is not one exact-parent child'
       );
-      runGit(directory, [
+      const output = runGit(directory, [
         'push',
         '--porcelain',
         // An explicit lease checks the remote old tip atomically. The exact-parent
@@ -155,6 +155,16 @@ export function ownerGitLedgerTransport({ runGit = git } = {}) {
         'https://github.com/Proto-UI/Proto-UI.git',
         `${revision}:${ref}`,
       ]);
+      const updates = output
+        .split('\n')
+        .map((line) => line.split('\t'))
+        .filter((fields) => fields[1] === `${revision}:${ref}`);
+      // Up-to-date is not our successful CAS: another writer may already have
+      // installed this exact object. Never attribute that no-op to this attempt.
+      assert(
+        updates.length === 1 && updates[0][0] === ' ',
+        'remote did not acknowledge one fast-forward transaction'
+      );
       return { status: 'accepted' };
     },
   };
