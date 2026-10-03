@@ -13,6 +13,8 @@ import type {
 import {
   createEventGate,
   createDefaultWebColorSchemeSource,
+  createDefaultWebPreferenceSource,
+  createDefaultWebStyleSupportSource,
   createScopedExposesReader,
   createViewEpochOwner,
   createWebProtoEventRouter,
@@ -35,7 +37,11 @@ import {
   type OverlayZIndexLayerSchedulerOptions,
 } from '@proto.ui/module-overlay';
 import type { RawPropsSource } from '@proto.ui/module-props';
-import type { ColorSchemeInvalidationSource } from '@proto.ui/module-rule-meta';
+import type {
+  ColorSchemeInvalidationSource,
+  PreferenceInvalidationSource,
+  StyleSupportInvalidationSource,
+} from '@proto.ui/module-rule-meta';
 import { PropsBaseType } from '@proto.ui/types';
 
 import { createDefaultMetaGetter } from './platform/meta';
@@ -98,6 +104,8 @@ type Vue2InternalState<Props extends PropsBaseType> = {
     schedule: (task: () => void) => void;
     getMeta: (key: string) => unknown;
     colorSchemeSource?: ColorSchemeInvalidationSource;
+    preferenceSource?: PreferenceInvalidationSource;
+    styleSupportSource?: StyleSupportInvalidationSource;
     onLifecycleCheckpoint?: (cp: RuntimeCheckpoint) => void;
     onLifecycleEvent?: (event: RuntimeLifecycleEvent) => void;
     exposeStateWebMode?: ExposeStateWebMode;
@@ -176,6 +184,10 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
     const getProps = opt.getProps ?? defaultGetProps;
     const getMeta = opt.getMeta ?? createDefaultMetaGetter();
     const colorSchemeSource = opt.getMeta ? undefined : createDefaultWebColorSchemeSource(getMeta);
+    const preferenceSource = opt.getMeta ? undefined : createDefaultWebPreferenceSource(getMeta);
+    const styleSupportSource = opt.getMeta
+      ? undefined
+      : createDefaultWebStyleSupportSource(getMeta);
     const exposeStateWebMode = opt.exposeStateWebMode;
     const scrollProjection = opt.scrollProjection;
     const autoUpdate = opt.autoUpdateOnPropsChange ?? true;
@@ -220,6 +232,8 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
           schedule,
           getMeta,
           colorSchemeSource,
+          preferenceSource,
+          styleSupportSource,
           onLifecycleCheckpoint: opt.diagnostics?.onLifecycleCheckpoint,
           onLifecycleEvent: opt.diagnostics?.onLifecycleEvent,
           exposeStateWebMode,
@@ -356,6 +370,8 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
           rawPropsSource,
           getMeta,
           colorSchemeSource,
+          preferenceSource,
+          styleSupportSource,
           setExposes: (record) => {
             state.exposes = record;
           },
@@ -394,6 +410,8 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
             schedule,
             getMeta,
             colorSchemeSource,
+            preferenceSource,
+            styleSupportSource,
             exposeStateWebMode,
             scrollProjection,
             overlayLayerScheduler,
@@ -412,6 +430,8 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
                 schedule,
                 getMeta,
                 colorSchemeSource,
+                preferenceSource,
+                styleSupportSource,
                 exposeStateWebMode,
                 scrollProjection,
                 overlayLayerScheduler,
@@ -435,6 +455,8 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
             schedule,
             getMeta,
             colorSchemeSource,
+            preferenceSource,
+            styleSupportSource,
             exposeStateWebMode,
             scrollProjection,
             overlayLayerScheduler,
@@ -583,6 +605,8 @@ function initSession<Props extends PropsBaseType>(
     schedule: (task: () => void) => void;
     getMeta: (key: string) => unknown;
     colorSchemeSource?: ColorSchemeInvalidationSource;
+    preferenceSource?: PreferenceInvalidationSource;
+    styleSupportSource?: StyleSupportInvalidationSource;
     onLifecycleCheckpoint?: (cp: RuntimeCheckpoint) => void;
     onLifecycleEvent?: (event: RuntimeLifecycleEvent) => void;
     exposeStateWebMode?: ExposeStateWebMode;
@@ -643,6 +667,8 @@ function initSession<Props extends PropsBaseType>(
     effectsPort,
     getMeta: targetOptions.getMeta,
     colorSchemeSource: targetOptions.colorSchemeSource,
+    preferenceSource: targetOptions.preferenceSource,
+    styleSupportSource: targetOptions.styleSupportSource,
     exposeStateWebMode: targetOptions.exposeStateWebMode,
     scrollProjection: targetOptions.scrollProjection,
     setExposes: (record) => {
@@ -742,6 +768,8 @@ function getInitOptionsFromState<Props extends PropsBaseType>(
   schedule: (task: () => void) => void;
   getMeta: (key: string) => unknown;
   colorSchemeSource?: ColorSchemeInvalidationSource;
+  preferenceSource?: PreferenceInvalidationSource;
+  styleSupportSource?: StyleSupportInvalidationSource;
   onLifecycleCheckpoint?: (cp: RuntimeCheckpoint) => void;
   onLifecycleEvent?: (event: RuntimeLifecycleEvent) => void;
   exposeStateWebMode?: ExposeStateWebMode;

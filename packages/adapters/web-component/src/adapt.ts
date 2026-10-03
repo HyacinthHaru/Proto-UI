@@ -13,6 +13,8 @@ import {
   createHostSurfaceProjection,
   createEventGate,
   createDefaultWebColorSchemeSource,
+  createDefaultWebPreferenceSource,
+  createDefaultWebStyleSupportSource,
   createScopedExposesReader,
   createWebProtoEventRouter,
   createViewEpochOwner,
@@ -123,6 +125,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
   const schedule = opt.schedule ?? ((task) => queueMicrotask(task));
   const getMeta = opt.getMeta ?? createDefaultMetaGetter();
   const colorSchemeSource = opt.getMeta ? undefined : createDefaultWebColorSchemeSource(getMeta);
+  const preferenceSource = opt.getMeta ? undefined : createDefaultWebPreferenceSource(getMeta);
+  const styleSupportSource = opt.getMeta ? undefined : createDefaultWebStyleSupportSource(getMeta);
   const exposeStateWebMode = opt.exposeStateWebMode;
   const scrollProjection = opt.scrollProjection;
   const MAX_FOCUS_TARGET_RETRIES = 3;
@@ -430,6 +434,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             effectsPort: createWebEffectsPort(applier),
             getMeta,
             colorSchemeSource,
+            preferenceSource,
+            styleSupportSource,
             textControlTarget: this._textControlTarget,
             imageViewTarget: this._imageViewTarget,
             exposeStateWebMode,
@@ -508,6 +514,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         rawPropsSource,
         getMeta,
         colorSchemeSource,
+        preferenceSource,
+        styleSupportSource,
         textControlTarget: this._textControlTarget,
         imageViewTarget: this._imageViewTarget,
         exposeStateWebMode,
