@@ -6,6 +6,7 @@ const textButtonLayout = {
   minWidth: '0',
   maxWidth: '100%',
   whiteSpace: 'normal',
+  overflowWrap: 'anywhere',
   height: 'auto',
   minHeight: '2.5rem',
 };

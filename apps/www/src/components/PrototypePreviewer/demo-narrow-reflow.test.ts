@@ -29,6 +29,7 @@ describe('Demo consumer narrow-layout constraints', () => {
           minWidth: '0',
           maxWidth: '100%',
           whiteSpace: 'normal',
+          overflowWrap: 'anywhere',
           height: 'auto',
           minHeight: '2.5rem',
         });
