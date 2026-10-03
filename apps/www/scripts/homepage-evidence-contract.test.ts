@@ -834,3 +834,75 @@ test('only the declared Brutalist Button/Textarea mono roles may differ from the
         .length
     );
 });
+
+test('Dialog capture waits on the actual bounded focus owner and disposes its physical handle', async () => {
+  const source = readFileSync(new URL('./capture-homepage-evidence.ts', import.meta.url), 'utf8');
+  const parsed = ts.createSourceFile('capture.ts', source, ts.ScriptTarget.Latest, true);
+  const helper = parsed.statements.find(
+    (node) => ts.isFunctionDeclaration(node) && node.name?.text === 'waitForDialogEntryFocus'
+  );
+  assert.ok(helper);
+  for (const mode of ['settles', 'never-enters', 'inert', 'detached', 'hidden', 'wrong-role']) {
+    const window = new Window();
+    const document = window.document;
+    const modal = document.createElement('div');
+    modal.setAttribute('role', 'dialog');
+    const trigger = document.createElement('button');
+    const command = document.createElement('button');
+    modal.append(command);
+    document.body.append(trigger, modal);
+    trigger.focus();
+    let disposed = 0;
+    const observations: boolean[] = [];
+    const handle = Object.assign(modal, {
+      dispose: async () => {
+        disposed++;
+      },
+    });
+    const dialog = {
+      elementHandle: async () => handle,
+      evaluate: async (read: (node: typeof modal) => unknown) => read(modal),
+    };
+    const page = {
+      waitForFunction: async (
+        predicate: (node: typeof modal) => boolean,
+        node: typeof modal,
+        options: { timeout: number }
+      ) => {
+        assert.equal(node, modal);
+        assert.equal(options.timeout, 5000);
+        observations.push(predicate(node));
+        if (mode !== 'never-enters') command.focus();
+        if (mode === 'inert') modal.setAttribute('inert', '');
+        if (mode === 'detached') modal.remove();
+        if (mode === 'hidden') modal.setAttribute('aria-hidden', 'true');
+        if (mode === 'wrong-role') modal.setAttribute('role', 'region');
+        observations.push(predicate(node));
+        if (!observations[1]) throw new Error('focus readiness deadline');
+      },
+    };
+    const context = { assert, Date, document, result: undefined as unknown };
+    runInNewContext(
+      transformSync(`${helper.getText(parsed)}; result = waitForDialogEntryFocus;`, {
+        loader: 'ts',
+        target: 'es2022',
+      }).code,
+      context
+    );
+    const run = context.result as (
+      page: unknown,
+      dialog: unknown
+    ) => Promise<{ initiallyInside: boolean; ownsEntryFocus: boolean }>;
+    if (mode === 'settles') {
+      const result = await run(page, dialog);
+      assert.equal(result.initiallyInside, false);
+      assert.equal(result.ownsEntryFocus, true);
+      assert.deepEqual(observations, [false, true]);
+    } else {
+      await assert.rejects(run(page, dialog), /focus readiness deadline/);
+      assert.deepEqual(observations, [false, false]);
+    }
+    assert.equal(disposed, 1);
+    await window.happyDOM.close();
+  }
+});

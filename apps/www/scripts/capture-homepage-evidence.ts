@@ -11,7 +11,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
-import type { Browser, Page } from 'playwright-core';
+import type { Browser, Page, Locator } from 'playwright-core';
 import { launchBrowser, startServer, stopServer } from '../src/content/docs/zh-cn/browser-harness';
 import {
   DOCUMENTATION_VARIANTS,
@@ -536,6 +536,30 @@ async function exerciseWorkspaceSettings(
   };
 }
 
+async function waitForDialogEntryFocus(page: Page, dialog: Locator) {
+  const element = await dialog.elementHandle();
+  assert.ok(element, 'The visible Dialog must have a connected physical surface');
+  const initiallyInside = await dialog.evaluate((node) => node.contains(document.activeElement));
+  const startedAt = Date.now();
+  try {
+    // Visibility includes an entering (opacity-zero) surface. Wait for the
+    // actual focus owner, not a sleep or a weakened descendant/visibility check.
+    await page.waitForFunction(
+      (node) =>
+        node.isConnected &&
+        node.getAttribute('role') === 'dialog' &&
+        node.getAttribute('aria-hidden') !== 'true' &&
+        !node.closest('[inert]') &&
+        node.contains(document.activeElement),
+      element,
+      { timeout: 5_000 }
+    );
+    return { initiallyInside, elapsedMs: Date.now() - startedAt, ownsEntryFocus: true };
+  } finally {
+    await element.dispose();
+  }
+}
+
 async function exerciseInteractiveGallery(
   page: Page,
   route: string,
@@ -576,10 +600,7 @@ async function exerciseInteractiveGallery(
     exact: true,
   });
   await dialog.waitFor({ state: 'visible' });
-  assert.ok(
-    await dialog.evaluate((element) => element.contains(document.activeElement)),
-    'Dialog owns entry focus'
-  );
+  const entryFocus = await waitForDialogEntryFocus(page, dialog);
   await capture('gallery-dialog-open');
   await dialog.getByRole('button', { name: zh ? '确认' : 'Confirm', exact: true }).click();
   await dialog.waitFor({ state: 'hidden' });
@@ -629,6 +650,7 @@ async function exerciseInteractiveGallery(
     editorValue: value,
     editorBold: true,
     dialogConfirmAndFocus: true,
+    entryFocus,
     menuCopies: 1,
     choicesApplied: 1,
     hoverFocus: true,
