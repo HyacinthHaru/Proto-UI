@@ -480,6 +480,11 @@ const loadingLabel = isChinese ? '正在加载搜索…' : 'Loading search…';
 
       // Listen for `ctrl + k` and `cmd + k` keyboard shortcuts.
       const onKeydown = (e: KeyboardEvent) => {
+        // The Button opens on keydown and can focus an already-loaded Pagefind
+        // input before this key's native default action. Consume the opener's
+        // Enter so it cannot submit the newly focused form's Clear button.
+        if (e.key === 'Enter' && e.target instanceof Node && openMount.contains(e.target))
+          e.preventDefault();
         if ((e.metaKey === true || e.ctrlKey === true) && e.key === 'k') {
           dialog.open ? closeModal() : openModal();
           e.preventDefault();

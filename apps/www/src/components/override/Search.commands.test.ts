@@ -219,6 +219,67 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       );
     });
 
+    it('retains a populated query and focus when Enter reopens the warm service', async () => {
+      const f = await mount(family);
+      clickIcon(f.trigger);
+      await settle();
+      const input = f.root.querySelector<HTMLInputElement>('.pagefind-ui__search-input')!;
+      input.value = 'Button';
+      clickIcon(f.close);
+      await settle();
+      expect(document.activeElement).toBe(f.trigger);
+      f.trigger.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Enter',
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      await settle();
+      expect(f.dialog.open).toBe(true);
+      expect(document.activeElement).toBe(input);
+      expect(input.value).toBe('Button');
+      expect(f.buildUI).toHaveBeenCalledTimes(1);
+    });
+
+    it('consumes the opening Enter before a populated Pagefind form can act on it', async () => {
+      const f = await mount(family);
+      clickIcon(f.trigger);
+      await settle();
+      const input = f.root.querySelector<HTMLInputElement>('.pagefind-ui__search-input')!;
+      const form = document.createElement('form');
+      input.replaceWith(form);
+      form.append(input);
+      const clear = document.createElement('button');
+      clear.className = 'pagefind-ui__search-clear';
+      form.append(clear);
+      // The installed Pagefind UI uses an untyped button and clears/blurs on
+      // click; its input-only keydown guard cannot see the opener's keydown.
+      const onClear = vi.fn((event: Event) => {
+        event.preventDefault();
+        input.value = '';
+        input.blur();
+      });
+      clear.addEventListener('click', onClear);
+      input.value = 'Button';
+      clickIcon(f.close);
+      await settle();
+      const enter = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+        cancelable: true,
+      });
+      f.trigger.dispatchEvent(enter);
+      await settle();
+      // Explicit host-default model after listener microtasks, not a claim of
+      // trusted browser event coverage. Native Actions must verify this order.
+      if (!enter.defaultPrevented && document.activeElement === input) clear.click();
+      expect(f.dialog.open).toBe(true);
+      expect(document.activeElement).toBe(input);
+      expect(input.value).toBe('Button');
+      expect(onClear).not.toHaveBeenCalled();
+    });
+
     it('keeps the dialog open if the native trigger click arrives after the outward-signal microtask', async () => {
       const { trigger, dialog, showModal } = await mount(family);
       // Model the browser's callback-cleanup checkpoint between an adapter's
@@ -365,6 +426,31 @@ for (const runtime of ['react', 'vue', 'vue2', 'wc']) {
     expect(f.buildUI).toHaveBeenCalledTimes(1);
   });
 }
+
+it('limits Enter default prevention to the live Search opener and removes it on disposal', async () => {
+  const f = await mount('shadcn');
+  const outside = document.createElement('input');
+  document.body.append(outside);
+  const key = (target: HTMLElement, value: string) => {
+    const event = new KeyboardEvent('keydown', { key: value, bubbles: true, cancelable: true });
+    target.dispatchEvent(event);
+    return event;
+  };
+  expect(key(outside, 'Enter').defaultPrevented).toBe(false);
+  expect(key(f.trigger, 'x').defaultPrevented).toBe(false);
+  expect(f.dialog.open).toBe(false);
+  expect(key(f.trigger, 'Enter').defaultPrevented).toBe(true);
+  await settle();
+  expect(f.dialog.open).toBe(true);
+  const input = f.root.querySelector<HTMLInputElement>('.pagefind-ui__search-input')!;
+  // The service double has no Enter handler: Search must leave it untouched.
+  expect(key(input, 'Enter').defaultPrevented).toBe(false);
+  f.dispose();
+  expect(key(f.trigger, 'Enter').defaultPrevented).toBe(false);
+  await settle();
+  expect(f.showModal).toHaveBeenCalledTimes(1);
+  expect(f.dialog.open).toBe(false);
+});
 
 it('preserves pending Retry state through a real runtime swap and does not reopen after Close', async () => {
   const f = await mount('brutalist', false);
