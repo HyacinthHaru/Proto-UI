@@ -211,6 +211,31 @@ const WEBSITE_RAW_IMPORT_ALLOWLIST = Object.freeze({
       '@proto.ui/prototypes-shadcn/select',
     ]),
   }),
+  // Accepted documentation-media bridge (#787/#797). These are exact source
+  // imports, not a family-wide or active-SVG admission.
+  'apps/www/src/components/documentation-image-controls.ts': Object.freeze({
+    specifiers: Object.freeze([
+      '@proto.ui/adapter-web-component',
+      '@proto.ui/prototypes-shadcn/button',
+      '@proto.ui/prototypes-shadcn/dialog',
+      '@proto.ui/prototypes-brutalist/button',
+      '@proto.ui/prototypes-brutalist/dialog',
+      '@proto.ui/prototypes-brutalist/theme',
+    ]),
+  }),
+  'apps/www/src/components/documentation-image-zoom.proto.ts': Object.freeze({
+    specifiers: Object.freeze(['@proto.ui/core', '@proto.ui/prototypes-base/dialog']),
+  }),
+  'apps/www/src/pages/en/test/new-projection-families.astro': Object.freeze({
+    specifiers: Object.freeze([
+      '@proto.ui/prototypes-bootstrap-2-3-2/button',
+      '@proto.ui/prototypes-liquid-glass/button',
+    ]),
+    resolvedPaths: Object.freeze([
+      'packages/prototypes/bootstrap-2-3-2/src/theme',
+      'packages/prototypes/liquid-glass/src/theme',
+    ]),
+  }),
   'apps/www/src/components/override/Search.astro': Object.freeze({
     viteIgnoredDynamicImports: Object.freeze(['`${bundlePath}pagefind.js`']),
   }),
@@ -5725,8 +5750,11 @@ function isTestNamedSource(absolutePath) {
 // Mirror the checked-in Website proto-ui-source resolver without evaluating
 // candidate configuration. The full config fingerprint fails closed for any
 // unreviewed resolver/plugin shape; updates require source review and parity tests.
+// Main integration changes only the reviewed CSS layer order; the resolver
+// function and plugin shape are byte-identical. Parity/mutation tests retain
+// fail-closed behavior for every other configuration change.
 const PROMOTION_RESOLVER_CONFIG_SHA256 =
-  '5319f5862ddbb861153a957fb2b54991a33caae4547a3b7ed8b679ceaf537e62';
+  'b5c4fa84e0ed5120508626d93095432322efc3e2e0abd4145995dccefd799151';
 export function promotionBarePackageTargets(root, specifier, metadata) {
   const unverified = () =>
     new Error(`promotion package closure for ${specifier} remains unverified`);

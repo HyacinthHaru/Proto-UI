@@ -80,6 +80,14 @@ function graphFixture() {
         dynamicImports: ['_astro/react.js', '_astro/vue.js', '_astro/vue2.js'],
         moduleIds: ['apps/www/src/pages/en/test/style-isolation.astro'],
       }),
+      chunk('_astro/new-projection-families.js', {
+        isEntry: true,
+        facadeModuleId:
+          'apps/www/src/pages/en/test/new-projection-families.astro?astro&type=script&index=0&lang.ts',
+        imports: ['_astro/wc-host.js'],
+        dynamicImports: ['_astro/react.js', '_astro/vue.js', '_astro/vue2.js'],
+        moduleIds: ['apps/www/src/pages/en/test/new-projection-families.astro'],
+      }),
       chunk('_astro/wc-host.js', {
         name: 'wc-host',
         moduleIds: [
@@ -192,10 +200,10 @@ test('rejects runtime chunks that are not dynamically reachable from a route dem
 
 test('rejects a graph without route-owned Web Component host provenance', () => {
   const graph = graphFixture();
-  graph.chunks.find((candidate) => candidate.fileName === '_astro/home-demo.js').imports =
-    graph.chunks
-      .find((candidate) => candidate.fileName === '_astro/home-demo.js')
-      .imports.filter((fileName) => fileName !== '_astro/wc-host.js');
+  for (const route of ['_astro/home-demo.js', '_astro/new-projection-families.js']) {
+    const entry = graph.chunks.find((candidate) => candidate.fileName === route);
+    entry.imports = entry.imports.filter((fileName) => fileName !== '_astro/wc-host.js');
+  }
 
   assert.ok(
     collectWebsiteProductionBundleIssues({ graph }).includes(
@@ -206,10 +214,10 @@ test('rejects a graph without route-owned Web Component host provenance', () => 
 
 test('does not mistake an orphaned WC runtime for primary host provenance', () => {
   const graph = graphFixture();
-  graph.chunks.find((candidate) => candidate.fileName === '_astro/home-demo.js').imports =
-    graph.chunks
-      .find((candidate) => candidate.fileName === '_astro/home-demo.js')
-      .imports.filter((fileName) => fileName !== '_astro/wc-host.js');
+  for (const route of ['_astro/home-demo.js', '_astro/new-projection-families.js']) {
+    const entry = graph.chunks.find((candidate) => candidate.fileName === route);
+    entry.imports = entry.imports.filter((fileName) => fileName !== '_astro/wc-host.js');
+  }
   graph.chunks.push(
     chunk('_astro/wc-runtime.js', {
       isDynamicEntry: true,
@@ -582,6 +590,21 @@ test('rejects shell dynamic imports of demo-owned framework chunks', () => {
       issue.includes(
         'Website shell entry `apps/www/src/components/override/Search.astro?astro&type=script&index=0&lang.ts` dynamically reaches forbidden React/Vue module(s)'
       )
+    )
+  );
+});
+
+test('admits only the reviewed new-family demonstration route with isolated runtimes', () => {
+  const graph = graphFixture();
+  assert.deepEqual(collectWebsiteProductionBundleIssues({ graph }), []);
+  const fixture = graph.chunks.find(
+    (chunk) => chunk.fileName === '_astro/new-projection-families.js'
+  );
+  fixture.facadeModuleId =
+    'apps/www/src/pages/en/test/CopiedFamilies.astro?astro&type=script&index=0&lang.ts';
+  assert.ok(
+    collectWebsiteProductionBundleIssues({ graph }).some((issue) =>
+      issue.includes('Website shell entry')
     )
   );
 });

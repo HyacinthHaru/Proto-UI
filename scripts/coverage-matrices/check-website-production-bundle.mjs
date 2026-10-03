@@ -4,6 +4,7 @@ import { pathToFileURL } from 'node:url';
 
 const DEFAULT_GRAPH_PATH = 'apps/www/dist/proto-ui-bundle-graph.json';
 const APPROVED_DEMONSTRATION_ENTRY_FACADES = new Set([
+  'apps/www/src/pages/en/test/new-projection-families.astro?astro&type=script&index=0&lang.ts',
   'apps/www/src/components/PrototypePreviewer/HomeDemoPreviewer.astro?astro&type=script&index=0&lang.ts',
   'apps/www/src/components/PrototypePreviewer/PrototypePreviewer.astro?astro&type=script&index=0&lang.ts',
   'apps/www/src/components/PrototypePreviewer/previewer-client.ts',

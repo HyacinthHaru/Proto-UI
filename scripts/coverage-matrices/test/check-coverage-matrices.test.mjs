@@ -11635,3 +11635,41 @@ test('review follow-up controls: native JSX encoded script type is unverified an
     else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), markup);
   }
 });
+
+test('documentation media allowances remain bound to exact reviewed sources and imports', () => {
+  const root = createRoot();
+  writeValidMatrices(root);
+  const bridge = 'apps/www/src/components/documentation-image-controls.ts';
+  const presentation = 'apps/www/src/components/documentation-image-zoom.proto.ts';
+  const copied = 'apps/www/src/components/CopiedDocumentationImageControls.ts';
+  const allowed = [
+    '@proto.ui/adapter-web-component',
+    '@proto.ui/prototypes-shadcn/button',
+    '@proto.ui/prototypes-shadcn/dialog',
+    '@proto.ui/prototypes-brutalist/button',
+    '@proto.ui/prototypes-brutalist/dialog',
+    '@proto.ui/prototypes-brutalist/theme',
+  ];
+  const bridgeSource = allowed.map((specifier) => `import '${specifier}';`).join('\n');
+  for (const [relative, source] of [
+    [bridge, bridgeSource],
+    [presentation, "import '@proto.ui/core'; import '@proto.ui/prototypes-base/dialog';"],
+    [copied, bridgeSource],
+  ]) {
+    fs.mkdirSync(path.dirname(path.join(root, relative)), { recursive: true });
+    fs.writeFileSync(path.join(root, relative), source);
+  }
+  let message = validationMessage(root);
+  for (const specifier of allowed) {
+    assert.ok(!message.includes(`raw Proto UI import \`${specifier}\` in \`${bridge}\``));
+    assert.ok(message.includes(`raw Proto UI import \`${specifier}\` in \`${copied}\``));
+  }
+  assert.ok(!message.includes(`raw Proto UI import \`@proto.ui/core\` in \`${presentation}\``));
+  fs.appendFileSync(path.join(root, bridge), "\nimport '@proto.ui/runtime';");
+  fs.appendFileSync(path.join(root, presentation), "\nimport '@proto.ui/adapter-react';");
+  message = validationMessage(root);
+  assert.ok(message.includes(`raw Proto UI import \`@proto.ui/runtime\` in \`${bridge}\``));
+  assert.ok(
+    message.includes(`raw Proto UI import \`@proto.ui/adapter-react\` in \`${presentation}\``)
+  );
+});
