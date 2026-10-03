@@ -17,6 +17,8 @@ use gpui::{
 };
 use proto_ui_gpui::host::{FocusResultStatus, InputBridge, ProtoHostView, SurfaceChild};
 use proto_ui_gpui::hub::{HubNote, SessionConfig};
+use proto_ui_gpui::style::StyleIssue;
+use proto_ui_gpui::template::BuildIssue;
 use proto_ui_host_protocol::messages::{HostToPeerMessage, PeerToHostMessage, WireRecord};
 use proto_ui_host_protocol::wire::{ProjectionAckStatus, ProjectionTransaction};
 use serde_json::{json, Value};
@@ -686,4 +688,97 @@ fn a_projection_with_a_style_the_host_cannot_resolve_is_refused_not_applied(
     );
     hub.click();
     assert!(samples(&hub.outbox()).is_empty());
+}
+
+#[gpui::test]
+fn selection_targets_refuse_replacement_with_token_diagnostics(cx: &mut TestAppContext) {
+    let mut hub = Hub::open(cx);
+    hub.outbox();
+    let template = json!({
+        "kind": "root",
+        "children": [{
+            "kind": "element",
+            "type": "span",
+            // Explicit positioning avoids the separately unsupported static default.
+            "style": { "kind": "tw", "tokens": ["relative", "h-9"] },
+            "children": [{ "kind": "slot", "ref": "slot-default" }]
+        }]
+    });
+    let baseline = install_with_template(&mut hub, template.clone());
+    assert_eq!(baseline.status, ProjectionAckStatus::Applied);
+    assert!(baseline.diagnostics.is_empty());
+    assert!(!baseline.ready_surfaces.is_empty());
+    let baseline_name = snapshot_name(&mut hub);
+    hub.click();
+    assert!(
+        !samples(&hub.outbox()).is_empty(),
+        "the baseline is interactive"
+    );
+    hub.notes();
+
+    let tokens = ["selection:bg-primary", "selection:text-primary-foreground"];
+    let mut replacement = recorded_transaction();
+    replacement.view_epoch += 1;
+    replacement.commit_id = 1;
+    replacement.template = template;
+    replacement.template["children"][0]["style"]["tokens"] =
+        json!(["relative", "h-9", tokens[0], tokens[1]]);
+    replacement.a11y.as_mut().expect("recorded snapshot").name =
+        Some(proto_ui_host_protocol::wire::A11yNameWire::Text {
+            value: "must not install".into(),
+        });
+    let (view_epoch, commit_id) = (replacement.view_epoch, replacement.commit_id);
+    hub.receive([
+        peer(json!({ "kind": "projection.install", "transaction": replacement })),
+        peer(json!({
+            "kind": "projection.activate",
+            "sessionId": SESSION,
+            "viewEpoch": view_epoch,
+            "commitId": commit_id
+        })),
+    ]);
+    let ack = hub
+        .outbox()
+        .into_iter()
+        .find_map(|message| match message {
+            HostToPeerMessage::ProjectionAck(ack) => Some(ack.ack),
+            _ => None,
+        })
+        .expect("the unsupported replacement is acknowledged");
+    assert_eq!(ack.status, ProjectionAckStatus::Unsupported);
+    assert_eq!((ack.view_epoch, ack.commit_id), (view_epoch, commit_id));
+    assert!(ack.ready_surfaces.is_empty());
+    assert_eq!(ack.diagnostics.len(), tokens.len());
+    let surface = format!("{SESSION}/proto-surface/0");
+    for (diagnostic, token) in ack.diagnostics.iter().zip(tokens) {
+        assert_eq!(diagnostic.code, "style-not-rendered");
+        assert_eq!(
+            diagnostic.data,
+            Some(json!({ "surface": surface, "detail": { "unknownToken": token } }))
+        );
+    }
+    let notes = hub.notes();
+    for token in tokens {
+        assert!(notes.contains(&HubNote::Build {
+            session_id: SESSION.into(),
+            issue: BuildIssue::Style {
+                surface: surface.clone(),
+                issue: StyleIssue::UnknownToken(token.into()),
+            },
+        }));
+    }
+    assert!(notes
+        .iter()
+        .any(|note| matches!(note, HubNote::ActivationRefused { .. })));
+    assert_eq!(snapshot_name(&mut hub), baseline_name);
+
+    // Refusing the replacement leaves the installed surface and route intact.
+    hub.click();
+    let outbox = hub.outbox();
+    assert!(!samples(&outbox).is_empty());
+    for message in outbox {
+        if let HostToPeerMessage::InputSample(input) = message {
+            assert_eq!(input.sample.view_epoch, baseline.view_epoch);
+        }
+    }
 }
