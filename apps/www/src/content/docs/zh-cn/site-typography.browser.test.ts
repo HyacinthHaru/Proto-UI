@@ -160,6 +160,29 @@ async function platformFonts(context: BrowserContext, page: Page, selector: stri
     await cdp.detach();
   }
 }
+async function renderedRoleFonts(context: BrowserContext, page: Page, selector: string) {
+  const cdp = await context.newCDPSession(page);
+  try {
+    await cdp.send('DOM.enable');
+    await cdp.send('CSS.enable');
+    const expression = `(function(){const root=document.querySelector(${JSON.stringify(selector)});if(!root)return null;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);for(let node=walker.nextNode();node;node=walker.nextNode()){if(node.textContent.trim())return node.parentElement;}return null;})()`;
+    const { result } = await cdp.send('Runtime.evaluate', {
+      expression,
+      objectGroup: 'typography-role-fonts',
+    });
+    if (!result.objectId) return { status: 'no-text-node', selector };
+    const { nodeId } = await cdp.send('DOM.requestNode', { objectId: result.objectId });
+    const { fonts } = await cdp.send('CSS.getPlatformFontsForNode', { nodeId });
+    return {
+      selector,
+      status: fonts.some((font) => font.glyphCount > 0) ? 'measured' : 'no-rendered-glyphs',
+      fonts,
+    };
+  } finally {
+    await cdp.send('Runtime.releaseObjectGroup', { objectGroup: 'typography-role-fonts' });
+    await cdp.detach();
+  }
+}
 async function accessibleName(context: BrowserContext, page: Page, selector: string) {
   const cdp = await context.newCDPSession(page);
   try {
@@ -438,7 +461,7 @@ describe.sequential('native SiteTypography rendered evidence', () => {
         it(`${locale}/${runtime}/${family}: real homepage generation and narrow text resize`, async () => {
           await runCase(
             `homepage-${locale}-${runtime}-${family}`,
-            async (page, _context, record) => {
+            async (page, context, record) => {
               await page.setViewportSize({ width: 1280, height: 900 });
               await page.goto(`${baseUrl}/${locale}/`, { waitUntil: 'networkidle' });
               await homepageReady(page);
@@ -509,6 +532,30 @@ describe.sequential('native SiteTypography rendered evidence', () => {
                     );
                   }
                 }
+              await page.evaluate(() => {
+                document.documentElement.style.fontSize = '100%';
+              });
+              await page.setViewportSize({ width: 390, height: 844 });
+              await revealHeaderPreferences(page);
+              await page.evaluate(() => document.fonts.ready);
+              record.roleFonts = {};
+              for (const [role, selector] of Object.entries({
+                navigation: '[data-site-header-navigation] a',
+                runtimeLabel: '[data-projection-control-label="runtime"]',
+                galleryTitle: '[data-home-showcase] .home-gallery__title',
+                galleryLabel: '[data-home-showcase] .home-settings__label',
+                slogan: '[data-site-typography="slogan"]',
+              }))
+                (record.roleFonts as Record<string, unknown>)[role] = await renderedRoleFonts(
+                  context,
+                  page,
+                  selector
+                );
+              await capture(
+                page,
+                record,
+                `homepage-${locale}-${runtime}-${family}-mobile-role-fonts`
+              );
               expect(failures, 'every configured viewport was attempted').toEqual([]);
             },
             { runtime }
@@ -518,9 +565,12 @@ describe.sequential('native SiteTypography rendered evidence', () => {
   for (const family of FAMILIES)
     it(`${family}: real documentation follows global runtime independently from a demo`, async () => {
       await runCase(`docs-${family}`, async (page, _context, record) => {
-        await page.goto(`${baseUrl}/en/ui-libraries/${family}/components/button/`, {
-          waitUntil: 'networkidle',
-        });
+        await page.goto(
+          `${baseUrl}/en/ui-libraries/${family === 'brutalist' ? 'brutalist/components' : 'shadcn'}/button/`,
+          {
+            waitUntil: 'networkidle',
+          }
+        );
         const title = page.locator('h1[data-site-typography="h1"]');
         const originalTitle = await title.elementHandle();
         const states: unknown[] = [];
