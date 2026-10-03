@@ -1413,3 +1413,35 @@ describe('CI partial-rerun receipt protocol (no browser or server)', () => {
     assert.equal(jobs['test-browser'].env.PROTO_UI_RUNTIME_SLOT, '${{ matrix.slot }}');
   });
 });
+
+// GitHub's context-availability table excludes runner from jobs.<job_id>.env.
+// YAML parsing alone does not validate these platform expression boundaries.
+// https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability
+// This targeted source guard is not a substitute for GitHub workflow admission.
+describe('CI evidence directory context availability', () => {
+  for (const name of ['test-general', 'test-browser']) {
+    it(`${name} resolves RUNNER_TEMP only after a runner is available`, () => {
+      const job = YAML.parse(readFileSync('.github/workflows/ci.yml', 'utf8')).jobs[name];
+      for (const [key, value] of Object.entries(job.env ?? {})) {
+        assert.doesNotMatch(
+          String(value),
+          /\$\{\{[^}]*\brunner\./,
+          `${name}.env.${key} cannot use runner context`
+        );
+      }
+      assert.equal(job.env.PROTO_UI_RUNTIME_EVIDENCE_DIR, undefined);
+      const run = job.steps.find((step) =>
+        step.run?.includes('mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"')
+      ).run;
+      const declared = run.indexOf(
+        'export PROTO_UI_RUNTIME_EVIDENCE_DIR="$RUNNER_TEMP/runtime-ci"'
+      );
+      assert.ok(
+        declared >= 0,
+        'Child runtime tests require an exported runner-local evidence directory'
+      );
+      assert.ok(declared < run.indexOf('mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"'));
+      assert.ok(declared < run.indexOf('git rev-parse HEAD'));
+    });
+  }
+});

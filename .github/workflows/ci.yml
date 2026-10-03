@@ -301,7 +301,6 @@ jobs:
     env:
       PROTO_UI_RUNTIME_PHASE: general
       PROTO_UI_RUNTIME_SLOT: general
-      PROTO_UI_RUNTIME_EVIDENCE_DIR: ${{ runner.temp }}/runtime-ci
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -353,6 +352,7 @@ jobs:
           SPEC_AUTHORING_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           set -euo pipefail
+          export PROTO_UI_RUNTIME_EVIDENCE_DIR="$RUNNER_TEMP/runtime-ci"
           mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"
           git rev-parse HEAD | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
           # Keep the complete repository preflight chain; only its runtime phase is split.
@@ -390,7 +390,6 @@ jobs:
       PROTO_UI_RUNTIME_PHASE: browser
       PROTO_UI_RUNTIME_SHARD: ${{ matrix.shard }}
       PROTO_UI_RUNTIME_SLOT: ${{ matrix.slot }}
-      PROTO_UI_RUNTIME_EVIDENCE_DIR: ${{ runner.temp }}/runtime-ci
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -407,6 +406,7 @@ jobs:
       - name: Run the bounded shard with its own documentation server
         run: |
           set -euo pipefail
+          export PROTO_UI_RUNTIME_EVIDENCE_DIR="$RUNNER_TEMP/runtime-ci"
           mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"
           git rev-parse HEAD | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
           # Each matrix job owns an independent checkout, server and Astro cache.
