@@ -28,7 +28,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
-      PROTO_UI_BOOTSTRAP_EVIDENCE_DIR: ${{ runner.temp }}/bootstrap-state-controls-evidence
       PROTO_UI_EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +38,8 @@ jobs:
         with:
           node-version: 24
       - name: Bind evidence to the exact PR head before setup
+        env:
+          PROTO_UI_BOOTSTRAP_EVIDENCE_DIR: ${{ runner.temp }}/bootstrap-state-controls-evidence
         run: |
           test "$(git rev-parse HEAD)" = "$PROTO_UI_EXPECTED_HEAD_SHA"
           mkdir -p "$PROTO_UI_BOOTSTRAP_EVIDENCE_DIR"
@@ -71,6 +72,7 @@ jobs:
       - name: Collect real four-runtime evidence
         env:
           PROTO_UI_BOOTSTRAP_BROWSER_EVIDENCE: '1'
+          PROTO_UI_BOOTSTRAP_EVIDENCE_DIR: ${{ runner.temp }}/bootstrap-state-controls-evidence
         run: |
           corepack pnpm@10.32.1 exec vitest run \
             packages/prototypes/bootstrap-2-3-2/test/controls.test.ts \
@@ -80,6 +82,7 @@ jobs:
         if: always()
         env:
           EVIDENCE_JOB_STATUS: ${{ job.status }}
+          PROTO_UI_BOOTSTRAP_EVIDENCE_DIR: ${{ runner.temp }}/bootstrap-state-controls-evidence
         run: |
           mkdir -p "$PROTO_UI_BOOTSTRAP_EVIDENCE_DIR"
           node --input-type=module <<'JS'

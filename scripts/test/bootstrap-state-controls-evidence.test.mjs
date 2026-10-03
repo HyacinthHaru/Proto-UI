@@ -132,3 +132,24 @@ test('registered browser suite stays out of the no-server phase', () => {
     /'\/en\/test\/bootstrap-state-controls\/'/
   );
 });
+
+test('runner-dependent evidence paths are evaluated only in supported step env contexts', () => {
+  // GitHub context availability: jobs.<job_id>.env does not admit runner;
+  // jobs.<job_id>.steps.env does. YAML parsing alone cannot establish this.
+  // https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability
+  const job = workflow.jobs['browser-evidence'];
+  assert.doesNotMatch(JSON.stringify(job.env), /\$\{\{\s*runner\./);
+  const consumers = [
+    'Bind evidence to the exact PR head before setup',
+    'Collect real four-runtime evidence',
+    'Preserve terminal status even when setup or browser launch fails',
+  ];
+  for (const name of consumers) {
+    const step = job.steps.find((step) => step.name === name);
+    assert.equal(
+      step?.env?.PROTO_UI_BOOTSTRAP_EVIDENCE_DIR,
+      '${{ runner.temp }}/bootstrap-state-controls-evidence',
+      `${name} must resolve its own path even when an earlier step failed`
+    );
+  }
+});
