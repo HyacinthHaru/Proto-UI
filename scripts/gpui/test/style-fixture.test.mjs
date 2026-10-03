@@ -37,6 +37,17 @@ test('a declaration that holds only under a media condition is not recorded', ()
   assert.equal(tokens['animate-spin'].animation, undefined);
 });
 
+test('selection tokens are neither element declarations nor no-op markers', () => {
+  const fixture = JSON.parse(readFileSync(FIXTURE, 'utf8'));
+  assert.equal(fixture.tokens.flex.display, 'flex');
+  assert.ok(fixture.noDeclarations.includes('peer'));
+  for (const token of ['selection:bg-primary', 'selection:text-primary-foreground']) {
+    assert.equal(fixture.tokens[token], undefined, `${token} must not style the whole element`);
+    assert.ok(!fixture.order.includes(token), `${token} has no element declaration order`);
+    assert.ok(!fixture.noDeclarations.includes(token), `${token} must remain diagnosable`);
+  }
+});
+
 test('the Spinner single border-color intent retains the existing native declaration gaps', () => {
   const tokens = JSON.parse(readFileSync(FIXTURE, 'utf8')).tokens;
   // Same declarations as the former border-current + border-t-transparent pair.

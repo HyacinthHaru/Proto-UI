@@ -184,7 +184,7 @@ tw('hover:opacity-50'); // invalid
 tw('data-[open]:opacity-50'); // invalid
 ```
 
-冒号唯一例外是单一前缀 `selection:<style-token>`，只将静态样式作用于宿主原生文本选择 pseudo-element。它不能查询宿主状态、嵌套或组合 variant，也不能编写任意 selector。普通 arbitrary value 和小数仍保留原有语法；这个例外不引入通用 selector/state 语法。
+冒号唯一例外是单一前缀 `selection:<style-token>`，只表达原生文本选择区域的静态视觉样式，不读取选择状态、不增加 selection API。当前 Web 翻译使用 `::selection`；作者语法被接受不等于每个宿主均已支持。Shadcn Input 投射只声明已验证的 Web 呈现。GPUI 当前将这些 token 报为 `UnknownToken`，其 projection installer 会拒绝不支持的 template，不声称已经绘制 selection 样式。它不能查询宿主状态、嵌套或组合 variant，也不能编写任意 selector。普通 arbitrary value 和小数仍保留原有语法；这个例外不引入通用 selector/state 语法。
 
 其余冒号限制不是 parser 能力不足，而是 feedback 通路纯度要求。`hover:bg-white` 把状态逻辑塞进了 style token；Proto UI 希望这种关系通过更明确的信息通路和 API 表达。
 
