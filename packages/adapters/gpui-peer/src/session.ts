@@ -142,6 +142,7 @@ type InstanceRecord = {
   readonly sessionId: string;
   readonly prototype: Prototype<any>;
   readonly parent: object | null;
+  readonly acceptingChildren: () => boolean;
   readonly a11yIdOf: (ref: object) => string;
 };
 
@@ -165,10 +166,17 @@ const prototypeOf = (instance: unknown): Prototype<any> | null =>
 
 export function createPeerSession(args: PeerSessionArgs): PeerSession {
   const { sessionId, instanceId, prototype, send } = args;
-  // An ended instance keeps no context, anatomy domain or trigger group to
-  // belong to.
-  if (args.parent && !recordOf(args.parent.token)) {
-    throw new Error(`session ${args.parent.sessionId} has ended; nothing opens inside it`);
+  // Seal the whole ownership chain before setup: an older child can still be
+  // alive while a newer sibling delays their common owner's terminal teardown.
+  for (let token = args.parent?.token ?? null; token !== null; ) {
+    const owner = recordOf(token);
+    if (!owner) {
+      throw new Error(`session ${args.parent!.sessionId} has ended; nothing opens inside it`);
+    }
+    if (!owner.acceptingChildren()) {
+      throw new Error(`session ${owner.sessionId} is closing or failed; nothing opens inside it`);
+    }
+    token = owner.parent;
   }
   const schedule = args.schedule ?? ((task: () => void) => queueMicrotask(task));
 
@@ -464,6 +472,9 @@ export function createPeerSession(args: PeerSessionArgs): PeerSession {
     sessionId,
     prototype,
     parent: args.parent?.token ?? null,
+    // acceptingInbound flips synchronously on disposal and stays false on
+    // failure; retaining identity for cleanup never permits new descendants.
+    acceptingChildren: () => acceptingInbound,
     a11yIdOf,
   });
   // The session of the trigger group's anchor, when this instance is a trigger.

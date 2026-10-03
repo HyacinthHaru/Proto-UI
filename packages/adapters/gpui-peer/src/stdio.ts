@@ -154,7 +154,8 @@ export function createPeerProcess(options: PeerProcessOptions): PeerProcess {
       case 'session.dispose': {
         const closing = session(message.sessionId, message.kind);
         if (!closing) return;
-        sessions.delete(message.sessionId);
+        // Only send(session.disposed) releases this ID. Rejected teardown
+        // retains a failed owner, so a replacement cannot alias its children.
         await closing.dispose();
         return;
       }
