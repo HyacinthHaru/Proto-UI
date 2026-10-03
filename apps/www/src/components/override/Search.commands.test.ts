@@ -439,3 +439,106 @@ it('restores a focused command to its new view, while newer query focus wins', a
   await vi.waitFor(() => expect(f.root.dataset.searchRuntime).toBe('vue2'));
   expect(document.activeElement).toBe(input);
 });
+
+// Native dialog.close() queues a user-interaction task, not a microtask.
+// Hold that notification to exercise a permitted reopen-before-close-delivery order.
+function holdNativeCloseTasks(dialog: HTMLDialogElement) {
+  const tasks: Array<() => void> = [];
+  dialog.close = vi.fn(() => {
+    if (!dialog.open) return;
+    dialog.open = false;
+    tasks.push(() => dialog.dispatchEvent(new Event('close')));
+  });
+  return () => {
+    const task = tasks.shift();
+    expect(task).toBeTypeOf('function');
+    task!();
+  };
+}
+
+it.each(['shadcn', 'brutalist'] as const)(
+  'keeps %s backdrop ownership when an older native close task arrives after reopening',
+  async (family) => {
+    const f = await mount(family);
+    const deliverOldClose = holdNativeCloseTasks(f.dialog);
+    clickIcon(f.trigger);
+    await settle();
+    clickIcon(f.close);
+    await settle();
+    expect(f.dialog.open).toBe(false);
+    clickIcon(f.trigger);
+    await settle();
+    expect(f.dialog.open).toBe(true);
+    deliverOldClose();
+    await settle();
+    document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(f.dialog.open).toBe(false);
+    expect(document.activeElement).toBe(f.trigger);
+    expect(f.showModal).toHaveBeenCalledTimes(2);
+    expect(f.buildUI).toHaveBeenCalledOnce();
+  }
+);
+
+it.each(['react', 'vue', 'vue2', 'wc'])(
+  'restores the current %s trigger after a stale native close notification during the next session',
+  async (runtime) => {
+    const f = await mount('shadcn');
+    const deliverOldClose = holdNativeCloseTasks(f.dialog);
+    clickIcon(f.trigger);
+    await settle();
+    clickIcon(f.close);
+    await settle();
+    clickIcon(f.trigger);
+    await settle();
+    document.dispatchEvent(
+      new CustomEvent(PREFERRED_ADAPTER_EVENT, { detail: { adapter: runtime } })
+    );
+    await vi.waitFor(() => expect(f.root.dataset.searchRuntime).toBe(runtime));
+    const current = f.root.querySelector<HTMLElement>(
+      '[data-projection-generation-state="active"] [data-open-modal]'
+    )!;
+    const close = f.root.querySelector<HTMLElement>(
+      '[data-projection-generation-state="active"] [data-close-modal]'
+    )!;
+    deliverOldClose();
+    await settle();
+    // Real pointer activation focuses the clicked Close inside the new modal.
+    close.focus();
+    clickIcon(close);
+    await vi.waitFor(() => expect(f.dialog.open).toBe(false));
+    await vi.waitFor(() => expect(document.activeElement).toBe(current));
+    expect(f.showModal).toHaveBeenCalledTimes(2);
+    expect(f.buildUI).toHaveBeenCalledOnce();
+    expect(f.root.querySelectorAll('.pagefind-ui__search-input')).toHaveLength(1);
+  }
+);
+
+it.each(['disconnect', 'route'] as const)(
+  'forces native dialog cleanup on %s before a delayed close task and ignores retired events',
+  async (reason) => {
+    const f = await mount('shadcn');
+    const deliverRetiredClose = holdNativeCloseTasks(f.dialog);
+    clickIcon(f.trigger);
+    await settle();
+    expect(f.dialog.open).toBe(true);
+    expect(document.body.hasAttribute('data-search-modal-open')).toBe(true);
+    if (reason === 'route') document.dispatchEvent(new Event('astro:before-swap'));
+    else f.dispose();
+    // Forced teardown cannot wait for the queued native notification.
+    expect(f.dialog.open).toBe(false);
+    expect(document.body.hasAttribute('data-search-modal-open')).toBe(false);
+    expect(document.documentElement.hasAttribute('data-search-modal-open')).toBe(false);
+    // A newer page/modal can now own the same global attributes. Neither the
+    // old dialog's notification nor its old window click listener may clear them.
+    document.body.setAttribute('data-search-modal-open', '');
+    document.documentElement.setAttribute('data-search-modal-open', '');
+    deliverRetiredClose();
+    document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await settle();
+    expect(document.body.hasAttribute('data-search-modal-open')).toBe(true);
+    expect(document.documentElement.hasAttribute('data-search-modal-open')).toBe(true);
+    expect(f.showModal).toHaveBeenCalledOnce();
+    document.body.removeAttribute('data-search-modal-open');
+    document.documentElement.removeAttribute('data-search-modal-open');
+  }
+);

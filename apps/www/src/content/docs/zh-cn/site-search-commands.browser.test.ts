@@ -4,7 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import type { Browser, Page } from 'playwright-core';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 
 let browser: Browser;
@@ -33,12 +33,63 @@ afterAll(async () => {
   await stopServer();
 }, 60_000);
 
+const diagnosticPages = new Map<
+  Page,
+  { id: string; stage: string; writes: Promise<void>; errors: string[] }
+>();
+function stage(page: Page, id: string, step: string) {
+  const existing = diagnosticPages.get(page);
+  const entry = existing ?? { id, stage: step, writes: Promise.resolve(), errors: [] as string[] };
+  if (!existing) {
+    page.on('pageerror', (error) => entry.errors.push(`pageerror: ${error.message}`));
+    page.on('console', (message) => {
+      if (message.type() === 'error') entry.errors.push(`console: ${message.text()}`);
+    });
+  }
+  entry.id = id;
+  entry.stage = step;
+  const observation = { source, id, stage: step, at: new Date().toISOString(), url: page.url() };
+  entry.writes = entry.writes.then(async () => {
+    await mkdir(evidenceDirectory, { recursive: true });
+    await writeFile(
+      path.join(evidenceDirectory, `${id}-progress.json`),
+      JSON.stringify(observation, null, 2)
+    );
+  });
+  diagnosticPages.set(page, entry);
+}
+async function captureFailure(page: Page) {
+  const entry = diagnosticPages.get(page);
+  if (!entry) return;
+  await capture(page, entry.id, `failure-${entry.stage}`).catch((error) =>
+    console.warn('[Search evidence] failure capture unavailable', error)
+  );
+}
+afterEach(async () => {
+  // A case-level timeout can interrupt an await before its catch/finally runs.
+  for (const [page, entry] of diagnosticPages) {
+    await entry.writes;
+    if (!page.isClosed()) {
+      await captureFailure(page);
+      await page.context().close();
+    }
+  }
+  diagnosticPages.clear();
+});
+
 async function capture(page: Page, id: string, state: string) {
   await mkdir(evidenceDirectory, { recursive: true });
   const screenshot = `${id}-${state}.png`;
   await page.screenshot({ path: path.join(evidenceDirectory, screenshot) });
   const observed = await page.locator('site-search').evaluate((search) => ({
     family: document.documentElement.dataset.siteLibraryFamily,
+    searchState: { ...(search as HTMLElement).dataset },
+    native: {
+      dialog: search.querySelector('dialog')?.getBoundingClientRect().toJSON(),
+      frame: search.querySelector('.dialog-frame')?.getBoundingClientRect().toJSON(),
+      activeElement: document.activeElement?.outerHTML.slice(0, 2000),
+    },
+    timeline: (window as any).__puiSearchTimeline ?? [],
     theme: document.documentElement.dataset.theme,
     dialogOpen: search.querySelector('dialog')?.open,
     service: search.querySelector('.search-failure') ? 'production-pagefind' : 'dev-warning',
@@ -52,6 +103,10 @@ async function capture(page: Page, id: string, state: string) {
       tag: button.localName,
       role: button.getAttribute('role'),
       disabled: button.getAttribute('aria-disabled'),
+      connected: button.isConnected,
+      tabIndex: button.tabIndex,
+      inertAncestor: button.closest('[inert]')?.outerHTML.slice(0, 600),
+      viewPending: button.hasAttribute('data-pui-view-pending'),
       tokens: button.getAttribute('data-pui-style'),
       box: button.getBoundingClientRect().toJSON(),
       border: getComputedStyle(button).borderWidth,
@@ -69,6 +124,7 @@ async function capture(page: Page, id: string, state: string) {
         url: page.url(),
         viewport: page.viewportSize(),
         observed,
+        errors: diagnosticPages.get(page)?.errors ?? [],
         renderer: 'Real Chromium via existing repository browser harness',
         scope:
           'Search trigger/close/retry Buttons only; native dialog and Pagefind visuals remain CSS-owned',
@@ -81,6 +137,77 @@ async function capture(page: Page, id: string, state: string) {
 
 async function installOpenCounter(page: Page) {
   await page.addInitScript(() => {
+    const timeline: unknown[] = [];
+    (window as any).__puiSearchTimeline = timeline;
+    const describe = (node: EventTarget | null) =>
+      node instanceof Element
+        ? {
+            tag: node.localName,
+            id: node.id,
+            command: (node as HTMLElement).dataset.searchCommand,
+            role: node.getAttribute('role'),
+            disabled: node.getAttribute('aria-disabled'),
+            generation: (node as HTMLElement).dataset.projectionGeneration,
+            connected: node.isConnected,
+          }
+        : null;
+    const record = (type: string, target: EventTarget | null, extra: unknown = null) => {
+      timeline.push({
+        at: performance.now(),
+        type,
+        target: describe(target),
+        active: describe(document.activeElement),
+        open: document.querySelector('site-search dialog')?.hasAttribute('open'),
+        extra,
+      });
+      if (timeline.length > 160) timeline.shift();
+    };
+    for (const type of [
+      'pointerdown',
+      'pointerup',
+      'click',
+      'keydown',
+      'keyup',
+      'focusin',
+      'focusout',
+      'cancel',
+      'close',
+    ]) {
+      for (const capture of [true, false])
+        window.addEventListener(
+          type,
+          (event) => {
+            if (
+              document.querySelector('site-search dialog[open]') ||
+              (event.target instanceof Element && event.target.closest('site-search'))
+            ) {
+              record(`${type}:${capture ? 'capture' : 'bubble'}`, event.target, {
+                key: (event as KeyboardEvent).key,
+                x: (event as MouseEvent).clientX,
+                y: (event as MouseEvent).clientY,
+                trusted: event.isTrusted,
+                kind: event.constructor.name,
+              });
+            }
+          },
+          capture
+        );
+    }
+    const originalFocus = HTMLElement.prototype.focus;
+    HTMLElement.prototype.focus = function (...args) {
+      const tracked = this.hasAttribute('data-search-command');
+      if (tracked) record('native-focus:before', this);
+      const result = originalFocus.apply(this, args);
+      if (tracked) record('native-focus:after', this);
+      return result;
+    };
+    const originalClose = HTMLDialogElement.prototype.close;
+    HTMLDialogElement.prototype.close = function (...args) {
+      record('dialog-close:before', this);
+      const result = originalClose.apply(this, args);
+      record('dialog-close:after', this);
+      return result;
+    };
     const original = HTMLDialogElement.prototype.showModal;
     HTMLDialogElement.prototype.showModal = function () {
       this.dataset.testOpenCount = String(Number(this.dataset.testOpenCount ?? 0) + 1);
@@ -110,6 +237,8 @@ describe.sequential('Search family Button commands', () => {
             theme
           );
           await installOpenCounter(page);
+          const id = `${family}-${theme}-${width}`;
+          stage(page, id, 'navigate');
           try {
             const response = await page.goto(`${baseUrl}${searchRoute(family)}`, {
               waitUntil: 'networkidle',
@@ -122,6 +251,7 @@ describe.sequential('Search family Button commands', () => {
             const close = page.locator(
               'site-search [data-projection-generation-state="active"] [data-close-modal]'
             );
+            stage(page, id, 'initial-ready');
             await expect.poll(() => trigger.getAttribute('aria-disabled')).toBe('false');
             expect(await trigger.evaluate((button) => button.localName)).toBe(
               `wc-${family}-button`
@@ -141,7 +271,6 @@ describe.sequential('Search family Button commands', () => {
             expect(box!.height).toBeGreaterThanOrEqual(43);
             if (width < 1100) expect(box!.width).toBeCloseTo(44, 0);
             else expect(box!.width).toBeGreaterThan(150);
-            const id = `${family}-${theme}-${width}`;
             await capture(page, id, 'trigger');
             await trigger.locator('svg').click();
             await expect
@@ -165,6 +294,7 @@ describe.sequential('Search family Button commands', () => {
               .toBe(true);
             await trigger.press('Space');
             await expect.poll(() => dialog.getAttribute('data-test-open-count')).toBe('3');
+            stage(page, id, 'backdrop');
             await page.mouse.click(2, 2);
             await expect
               .poll(() => dialog.evaluate((element) => (element as HTMLDialogElement).open))
@@ -186,6 +316,9 @@ describe.sequential('Search family Button commands', () => {
                 .toBe(true);
             }
             expect(errors).toEqual([]);
+          } catch (error) {
+            await captureFailure(page);
+            throw error;
           } finally {
             await context.close();
           }
@@ -357,6 +490,8 @@ for (const width of [1280, 1440, 2048]) {
 it('homepage keeps one native dialog through open-runtime transitions and repeat initialization', async () => {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const page = await context.newPage();
+  await installOpenCounter(page);
+  stage(page, 'home-open-runtime', 'navigate');
   try {
     expect((await page.goto(`${baseUrl}/zh-cn/`, { waitUntil: 'networkidle' }))?.ok()).toBe(true);
     await homeReady(page, 'shadcn', 'wc');
@@ -396,6 +531,7 @@ it('homepage keeps one native dialog through open-runtime transitions and repeat
       const close = page.locator(
         'site-search [data-projection-generation-state="active"] [data-close-modal]'
       );
+      stage(page, 'home-open-runtime', `${runtime}-close-focus`);
       await close.click();
       const trigger = page.locator(
         'site-search [data-projection-generation-state="active"] [data-open-modal]'
@@ -406,6 +542,9 @@ it('homepage keeps one native dialog through open-runtime transitions and repeat
       await trigger.press('Space');
     }
     await capture(page, 'home-open-runtime', 'final');
+  } catch (error) {
+    await captureFailure(page);
+    throw error;
   } finally {
     await context.close();
   }
@@ -414,11 +553,15 @@ it('homepage keeps one native dialog through open-runtime transitions and repeat
 it('keeps a documentation link available without JavaScript', async () => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
+  stage(page, 'no-js', 'navigate-source');
   try {
     expect((await page.goto(`${baseUrl}${searchRoute('shadcn')}`))?.ok()).toBe(true);
+    stage(page, 'no-js', 'find-link');
     const link = page.locator('site-search noscript a');
     expect(await link.isVisible()).toBe(true);
+    stage(page, 'no-js', 'click-link');
     await link.click();
+    stage(page, 'no-js', 'destination-url');
     await page.waitForURL('**/zh-cn/ui-libraries/');
   } finally {
     await context.close();

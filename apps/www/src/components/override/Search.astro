@@ -423,6 +423,9 @@ const loadingLabel = isChinese ? '正在加载搜索…' : 'Loading search…';
       };
 
       const cleanupModal = () => {
+        // Native close is queued as a task. A previous session's notification
+        // must not clear listeners or return-focus ownership after a reopen.
+        if (dialog.open) return;
         document.documentElement.toggleAttribute('data-search-modal-open', false);
         document.body.toggleAttribute('data-search-modal-open', false);
         window.removeEventListener('click', onClick);

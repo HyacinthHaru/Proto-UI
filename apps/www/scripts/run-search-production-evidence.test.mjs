@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 import { parse } from 'yaml';
 import {
@@ -437,3 +439,24 @@ test('required Actions and real cross-path navigation cannot be replaced by skip
   assert.doesNotMatch(runner, /launchBrowserServer|\.launchServer\(/);
   assert.match(runner, /start\('search-production-browser', env\.CHROME_PATH/);
 });
+
+for (const root of [
+  new URL('../', import.meta.url),
+  new URL('file:///tmp/production%20site/apps/www/'),
+]) {
+  test(`passes Astro a filesystem root string for ${root.href}`, async () => {
+    const expectedRoot = fileURLToPath(root);
+    const owned = { server: { address: () => ({ port: 4397 }) }, stop: async () => {} };
+    const preview = await startStrictPreview({ root, port: 4397 }, async (config) => {
+      // Astro 5.18.1 createFileBasedRoutes calls path.relative(root, ...).
+      // Retain that real argument boundary; accepting URL here hid the defect.
+      assert.equal(path.relative(config.root, expectedRoot), '');
+      assert.deepEqual(config, {
+        root: expectedRoot,
+        server: { host: '127.0.0.1', port: 4397, open: false },
+      });
+      return owned;
+    });
+    assert.equal(preview, owned);
+  });
+}

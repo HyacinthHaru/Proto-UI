@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 /** Astro can choose a different free port. Never accept that fallback: the
  * readiness probe must address this exact owned preview, not another server. */
@@ -7,7 +7,10 @@ export async function startStrictPreview(
   { root, port },
   start = async (config) => (await import('astro')).preview(config)
 ) {
-  const preview = await start({ root, server: { host: '127.0.0.1', port, open: false } });
+  // Astro's preview passes inlineConfig.root into path.relative while building
+  // its route manifest. Its public config boundary needs a filesystem string.
+  const rootPath = root instanceof URL ? fileURLToPath(root) : root;
+  const preview = await start({ root: rootPath, server: { host: '127.0.0.1', port, open: false } });
   const address = preview.server.address();
   if (!address || typeof address === 'string' || address.port !== port) {
     await preview.stop();
