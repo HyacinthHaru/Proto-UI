@@ -270,6 +270,36 @@ export class ConnectorReviewSession {
     );
     return authorization;
   }
+  async #persistPublicationReceipt(intent, receipt) {
+    // A pre-write CAS conflict proves no receipt write was attempted. Only that
+    // outcome may retry, while the same owner/intent remains fenced. The ledger
+    // adapter still enforces process ownership and stops on ambiguous writes.
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const snapshot = await this.#ledger.read();
+      assert(
+        snapshot.state.slot?.intent?.dispatchFenced === true &&
+          hash(snapshot.state.slot.intent) === hash(intent),
+        'fenced publication intent changed during receipt persistence'
+      );
+      const followUpQueued =
+        snapshot.state.deferred.some((x) => x.pullRequest === intent.pullRequest) ||
+        snapshot.state.pending.some(
+          (x) =>
+            x.pullRequest === intent.pullRequest && x.generation !== snapshot.state.slot.generation
+        );
+      const finalized = await this.#ledger.apply(snapshot.revision, {
+        type: 'finalizePublication',
+        response: receipt,
+        readback: receipt,
+      });
+      if (finalized.status === 'applied') return { finalized, followUpQueued };
+      assert(
+        finalized.status === 'conflict',
+        'publication receipt persistence uncertain; no retry'
+      );
+    }
+    throw new Error('publication receipt persistence contention budget exhausted');
+  }
   async publishParentPacket(packet, assessment) {
     assert(
       this.#initial && !this.#used,
@@ -300,6 +330,7 @@ export class ConnectorReviewSession {
       'intent acknowledgement unavailable; never submit or retry'
     );
     const intent = (await this.#ledger.read()).state.slot.intent;
+    let confirmedReceipt = null;
     try {
       const final = await this.#transport.collect(live.input.pullRequest);
       verifyLiveReviewInput(intent.analysis.packet, final.input);
@@ -314,6 +345,7 @@ export class ConnectorReviewSession {
       await this.#ledger.consumePublicationAttempt(intent.id);
       this.#refreshPolicy();
       const receipt = await this.#transport.submit(intent.pullRequest, intent);
+      confirmedReceipt = receipt;
       // The API acknowledges a review of one commit, never approval of a later head.
       // Observe immediately, without retrying/dismissing the known published review.
       let observedHeadSha = null;
@@ -341,19 +373,7 @@ export class ConnectorReviewSession {
       } catch (error) {
         followUpError = error.message;
       }
-      const snapshot = await this.#ledger.read();
-      const followUpQueued =
-        snapshot.state.deferred.some((x) => x.pullRequest === intent.pullRequest) ||
-        snapshot.state.pending.some(
-          (x) =>
-            x.pullRequest === intent.pullRequest && x.generation !== snapshot.state.slot.generation
-        );
-      const finalized = await this.#ledger.apply(snapshot.revision, {
-        type: 'finalizePublication',
-        response: receipt,
-        readback: receipt,
-      });
-      assert(finalized.status === 'applied', 'publication receipt persistence uncertain');
+      const { finalized, followUpQueued } = await this.#persistPublicationReceipt(intent, receipt);
       return {
         status: 'published',
         reviewedHeadSha: intent.headSha,
@@ -367,7 +387,14 @@ export class ConnectorReviewSession {
         retryAllowed: false,
       };
     } catch (error) {
-      return { status: 'unknown', intentId: intent.id, reason: error.message, retryAllowed: false };
+      return {
+        status: 'unknown',
+        intentId: intent.id,
+        reason: error.message,
+        retryAllowed: false,
+        publicationConfirmed: confirmedReceipt !== null,
+        ...(confirmedReceipt ? { receipt: confirmedReceipt, reviewedHeadSha: intent.headSha } : {}),
+      };
     }
   }
   async abandonBeforeIntent() {

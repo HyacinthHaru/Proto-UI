@@ -1245,3 +1245,79 @@ test('post-publication observation or paused event scope cannot cause dismissal,
       assert.equal(store.read().state.pending.length, 0);
     });
 });
+
+test('known receipt survives a definitive finalize conflict without a second POST', async (t) => {
+  for (const pullRequest of [487, 488])
+    await t.test(`enqueue PR ${pullRequest}`, async (t) => {
+      const { f, s, store, dir, genesis } = await session(t);
+      const packet = await parentPacket(s);
+      const apply = store.apply.bind(store);
+      let attempts = 0;
+      store.apply = (revision, command) => {
+        if (command.type === 'finalizePublication' && ++attempts === 1) {
+          const other = new LocalCloudReviewLedger(dir, genesis);
+          other.apply(other.read().revision, {
+            type: 'enqueue',
+            deliveryId: 'receipt-race',
+            pullRequest,
+            eventKind: 'human-comment',
+            materialDigest: 'e'.repeat(64),
+          });
+        }
+        return apply(revision, command);
+      };
+      const result = await s.publishParentPacket(packet, assessment);
+      assert.equal(result.status, 'published');
+      assert.equal(attempts, 2);
+      assert.equal(result.followUpQueued, pullRequest === 487);
+      assert.equal(store.read().state.slot, null);
+      assert.equal(store.read().state.publicationReceipts.length, 1);
+      assert.equal(store.read().state.pending[0].pullRequest, pullRequest);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
+    });
+});
+
+test('receipt persistence stops on uncertainty or bounded contention without repeating publication', async (t) => {
+  for (const mode of ['unknown', 'lost-applied-ack', 'persistent-conflict', 'intent-drift'])
+    await t.test(mode, async (t) => {
+      const { f, s, store } = await session(t);
+      const packet = await parentPacket(s);
+      const apply = store.apply.bind(store);
+      const read = store.read.bind(store);
+      let attempts = 0;
+      store.apply = (revision, command) => {
+        if (command.type !== 'finalizePublication') return apply(revision, command);
+        attempts++;
+        if (mode === 'lost-applied-ack') {
+          apply(revision, command);
+          return { status: 'unknown' };
+        }
+        if (mode === 'unknown') return { status: 'unknown' };
+        if (mode === 'intent-drift') {
+          store.read = () => {
+            const snapshot = read();
+            snapshot.state.slot.intent.id = '0'.repeat(64);
+            return snapshot;
+          };
+          return { status: 'conflict' };
+        }
+        apply(revision, {
+          type: 'enqueue',
+          deliveryId: `receipt-contention-${attempts}`,
+          pullRequest: 488,
+          eventKind: 'human-comment',
+          materialDigest: String(attempts).repeat(64),
+        });
+        return apply(revision, command);
+      };
+      const result = await s.publishParentPacket(packet, assessment);
+      assert.equal(result.status, 'unknown');
+      assert.equal(result.publicationConfirmed, true);
+      assert.equal(result.receipt.commitId, sha('b'));
+      assert.equal(attempts, mode === 'persistent-conflict' ? 3 : 1);
+      assert.equal(result.retryAllowed, false);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
+      if (mode === 'intent-drift') assert.match(result.reason, /fenced publication intent changed/);
+      store.read = read;
+    });
+});
