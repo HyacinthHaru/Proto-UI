@@ -47,6 +47,8 @@ Pass only registered artifacts through the validated handoff. Return a terminal 
 
 For interface work, establish the audience, primary task, important content, and existing product decisions before choosing a visual treatment. Use the design-review method in `internal/agent-operations/visual-evidence.md` to compare real output with relevant current references, explain concrete tradeoffs, and iterate. Preserve approved content and design intent unless changing them is in scope. Treat visual quality, accessibility, and interaction correctness as related but separately evidenced outcomes; a functional pass does not settle the design review.
 
+Plan around an observable task or product result, with explanatory copy that helps the reader understand, decide, or act. For design-system work, identify which actual Proto UI components own the controls and styled surfaces; use the reference's reuse and ownership questions before choosing a new Prototype or page-local styling.
+
 ## Drive implementation to verified evidence
 
 Within the established envelope, favor implementing, preserving, or extending the requested capability over omitting it. Decide reversible engineering details from the available evidence without waiting for another user choice. Keep the user's goal, acceptance criteria, explicit constraints, and authorized scope intact; optimism does not grant authority or settle an unresolved product decision.

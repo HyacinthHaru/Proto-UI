@@ -26,6 +26,8 @@ Include the Agent-only soft-gate disposition from `internal/agent-operations/vis
 
 For UI work, inspect the final rendered captures rather than only producing files or reading layout values. Apply the policy's design-review method: identify the actual region, observed issue or successful relationship, user consequence, and proposed correction. Account for the supported viewport, theme, locale, and interaction-state scope; separate visual judgment, accessibility checks, and functional results. Recapture after relevant changes and keep unresolved findings visible.
 
+Where reuse or dogfood is claimed, trace the rendered control or surface to the actual component or Prototype and its supported inputs, then exercise its behavior. Identify native recipes, page layout, and brand artwork separately. Visual similarity and component-shaped markup alone do not verify that claim.
+
 For per-commit reporting, reconcile newly pushed development SHAs with their change summaries, validation, remaining work, and comment receipts or publication debt. UI evidence binds the revision, viewport, and theme; purely internal work uses applicable executable evidence. Missing captures or running checks remain `pending`. Return this evidence without posting or uploading from this leaf. Adding or updating a progress comment changes the canonical review input even on the same head; recollect before relying on an earlier packet.
 
 Apply these principles to every validation round; they are methodology, not a checklist of known bugs:
