@@ -49,6 +49,10 @@ async function capture(page: Page, name: string) {
       display: getComputedStyle(el).display,
       animation: getComputedStyle(el).animationName,
     })),
+    activeElement: document.activeElement?.localName,
+    sourceFocused: document.activeElement?.hasAttribute('data-docs-image-trigger') ?? false,
+    triggerFrames: (window as any).__docsTriggerFrames ?? [],
+    focusTimeline: (window as any).__docsFocusTimeline ?? [],
   }));
   await writeFile(
     path.join(evidence, `${name}.json`),
@@ -276,6 +280,32 @@ describe('automatic documentation image preview in real Chromium', () => {
             expect(await trigger.getAttribute('data-focus-visible')).not.toBeNull();
             expect(await trigger.evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe('none');
             await capture(page, `${width}-${colorScheme}-${family}-keyboard-focus`);
+            if (width === 390 && family === 'brutalist') {
+              await page.evaluate(() => {
+                const trigger = document.querySelector('[data-docs-image-trigger]')!;
+                const frames: object[] = [];
+                (window as any).__docsTriggerFrames = frames;
+                const sample = (time: number) => {
+                  const rect = trigger.getBoundingClientRect();
+                  const style = getComputedStyle(trigger);
+                  frames.push({
+                    time,
+                    x: rect.x,
+                    y: rect.y,
+                    width: rect.width,
+                    height: rect.height,
+                    hovered: trigger.hasAttribute('data-hovered'),
+                    pressed: trigger.hasAttribute('data-pressed'),
+                    focused: document.activeElement === trigger,
+                    transform: style.transform,
+                    translate: style.translate,
+                    tokens: trigger.getAttribute('data-pui-style'),
+                  });
+                  if (frames.length < 240) requestAnimationFrame(sample);
+                };
+                requestAnimationFrame(sample);
+              });
+            }
             for (let count = 0; count < 2; count++) {
               await trigger.click();
               await entered(page);
@@ -489,6 +519,49 @@ describe('automatic documentation image preview in real Chromium', () => {
     try {
       await page.goto(`${baseUrl}${MD}`, { waitUntil: 'networkidle' });
       const name = 'Enlarge image: Raster comparison diagram';
+      await page.evaluate(() => {
+        const timeline: object[] = [];
+        (window as any).__docsFocusTimeline = timeline;
+        const label = (node: EventTarget | null) =>
+          node instanceof Element
+            ? node.hasAttribute('data-docs-image-trigger')
+              ? 'source-trigger'
+              : node.hasAttribute('data-docs-image-mask')
+                ? 'image-mask'
+                : node.classList.contains('docs-image-full')
+                  ? 'preview-image'
+                  : node.localName
+            : null;
+        for (const type of [
+          'pointerdown',
+          'mousedown',
+          'pointerup',
+          'mouseup',
+          'click',
+          'focusin',
+          'focusout',
+        ]) {
+          for (const capture of [true, false])
+            document.addEventListener(
+              type,
+              (event) => {
+                timeline.push({
+                  time: performance.now(),
+                  type,
+                  capture,
+                  trusted: event.isTrusted,
+                  target: label(event.target),
+                  active: label(document.activeElement),
+                  defaultPrevented: event.defaultPrevented,
+                  phase: document
+                    .querySelector('[data-docs-image-content]')
+                    ?.getAttribute('data-transition-state'),
+                });
+              },
+              { capture }
+            );
+        }
+      });
       const trigger = page.getByRole('button', { name, exact: true });
       const source = page.locator('[data-docs-image-trigger] img[alt="Raster comparison diagram"]');
       const originalSrc = await source.getAttribute('src');
