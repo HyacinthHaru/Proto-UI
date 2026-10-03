@@ -30,7 +30,8 @@ export function siteLinkAppearance(link: HTMLAnchorElement): SiteLinkAppearance 
   if (link.closest('.sidebar-pane .top-level')) return 'sidebar';
   if (link.closest('.pagination-links')) return 'pagination';
   if (link.closest('sl-toc')) return 'toc';
-  if (link.closest('[data-site-header-navigation]')) return 'nav';
+  if (link.closest('[data-site-header-navigation], [data-site-header-desktop-navigation]'))
+    return 'nav';
   return link.dataset.homeActionVariant === 'minimal' || link.dataset.homeActionVariant === 'link'
     ? 'text'
     : 'action';

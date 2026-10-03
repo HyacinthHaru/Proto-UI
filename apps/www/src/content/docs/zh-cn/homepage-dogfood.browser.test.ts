@@ -217,8 +217,12 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       }
       expect(errors).toEqual([]);
       const link = page
-        .locator('[data-homepage-runtime] [data-projection-generation-state="active"] a')
+        .locator(
+          '#home-navigation-desktop [data-homepage-mount] [data-projection-generation-state="active"] a'
+        )
         .filter({ hasText: '文档' });
+      expect(await link.count()).toBe(1);
+      expect(await link.isVisible()).toBe(true);
       const destination = await link.getAttribute('href');
       const opened = context.waitForEvent('page');
       await link.click({ modifiers: ['Control'] });

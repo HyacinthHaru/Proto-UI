@@ -620,10 +620,23 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
                 const visual = surface.getBoundingClientRect();
                 const native = anchor.getBoundingClientRect();
                 const group = anchor.closest('[data-homepage-actions]')!;
-                const index = [
-                  ...group.querySelectorAll('[data-projection-generation-state="active"] a'),
-                ].indexOf(anchor);
-                const source = group.querySelectorAll('[data-homepage-fallback] a')[index]!;
+                // owner-bounded-start: use direct generation children, not an ancestor selector.
+                const mount = Array.from(group.children).find((node) =>
+                  node.hasAttribute('data-homepage-mount')
+                );
+                if (!mount) throw new Error('Native action group mount is missing');
+                const generations = Array.from(mount.children).filter(
+                  (node) => node.getAttribute('data-projection-generation-state') === 'active'
+                );
+                if (generations.length !== 1)
+                  throw new Error('Native action group requires exactly one active generation');
+                const index = Array.from(generations[0].querySelectorAll('a')).indexOf(anchor);
+                const source = group
+                  .querySelector('[data-homepage-fallback]')
+                  ?.querySelectorAll('a')[index];
+                if (index < 0 || !source)
+                  throw new Error('Native anchor has no source in its own action group');
+                // owner-bounded-end
                 const identity = (link: Element) => ({
                   href: link.getAttribute('href'),
                   name: link.getAttribute('aria-label') ?? link.textContent?.trim() ?? null,

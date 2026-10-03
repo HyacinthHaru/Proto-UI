@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { initSiteNativeControls } from './site-native-controls';
 vi.mock('./PrototypePreviewer/projection-theme', () => ({
   resolveProjectionThemeSurfaceStyle: (family: string) => ({
@@ -17,6 +18,56 @@ afterEach(() => {
 });
 
 describe('website native anchor composition', () => {
+  it.each(['data-site-header-navigation', 'data-site-header-desktop-navigation'])(
+    '%s retains navigation current feedback on the actual passive surface',
+    async (attribute) => {
+      document.body.innerHTML = `<nav ${attribute}><a data-site-native-button href="/docs/">Docs</a></nav>`;
+      const link = document.querySelector('a')!;
+      releases.push(initSiteNativeControls());
+      await settle();
+      const surface = link.querySelector('wc-site-link-surface')!;
+      expect(link.dataset.siteLinkAppearance).toBe('nav');
+      link.setAttribute('aria-current', 'page');
+      await vi.waitFor(() => expect(surface.getAttribute('data-pui-style')).toContain('underline'));
+      expect(surface.getAttribute('data-pui-style')).toContain('underline');
+      expect(surface.getAttribute('data-pui-style')).toContain('font-semibold');
+      link.removeAttribute('aria-current');
+      await vi.waitFor(() =>
+        expect(surface.getAttribute('data-pui-style')).not.toContain('underline')
+      );
+      expect(surface.getAttribute('data-pui-style')).not.toContain('underline');
+      expect(link.getAttribute('href')).toBe('/docs/');
+      expect(surface.hasAttribute('tabindex')).toBe(false);
+    }
+  );
+  it('maps evidence to the nearest action group mount even inside another active surface', () => {
+    const browser = readFileSync(
+      'apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts',
+      'utf8'
+    );
+    const measured = browser.match(
+      /owner-bounded-start[^\n]*\n([\s\S]*?)\s*\/\/ owner-bounded-end/
+    )?.[1];
+    expect(measured).toBeTruthy();
+    const inspect = new Function('group', 'anchor', measured + '\nreturn { index, source };') as (
+      group: Element,
+      anchor: Element
+    ) => { index: number; source: Element };
+    document.body.innerHTML = `<section data-projection-generation-state="active"><div data-homepage-actions><div data-homepage-fallback><a href="/docs/">Docs</a></div><div data-homepage-mount><div data-projection-generation-state="active"><a href="/docs/" data-live>Docs</a></div></div></div></section>`;
+    const group = document.querySelector('[data-homepage-actions]')!;
+    const live = group.querySelector('[data-live]')!;
+    expect(inspect(group, live)).toEqual({
+      index: 0,
+      source: group.querySelector('[data-homepage-fallback] a'),
+    });
+    const extra = document.createElement('a');
+    live.parentElement!.append(extra);
+    expect(() => inspect(group, extra)).toThrow('no source');
+    const mount = group.querySelector('[data-homepage-mount]')!;
+    mount.append(mount.firstElementChild!.cloneNode(true));
+    expect(() => inspect(group, live)).toThrow('exactly one active generation');
+  });
+
   it('retains the native link and moves only its content into a passive visual Prototype', async () => {
     document.body.innerHTML =
       '<a data-site-native-button href="/docs/" target="_blank" rel="noreferrer" aria-label="Docs"><span>Docs</span></a>';
