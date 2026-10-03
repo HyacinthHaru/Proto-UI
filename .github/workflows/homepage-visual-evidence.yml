@@ -234,6 +234,9 @@ jobs:
             suite: code-surfaces
           - name: copy-commands
             suite: site-copy-commands
+          - name: runtime-box
+            suite: runtime-preview-surface
+            contract: runtime-preview-evidence
     steps:
       - uses: actions/checkout@v4
         with:
@@ -264,16 +267,23 @@ jobs:
         timeout-minutes: 12
         env:
           SUITE: ${{ matrix.suite }}
+          CONTRACT: ${{ matrix.contract }}
           PROTO_UI_CODE_EVIDENCE_DIR: ${{ runner.temp }}/homepage-evidence/code-surfaces
         run: |
           set -euo pipefail
           FILE="apps/www/src/content/docs/zh-cn/${SUITE}.browser.test.ts"
           test -f "$FILE"
+          files=("$FILE")
+          if [[ -n "$CONTRACT" ]]; then
+            CONTRACT_FILE="apps/www/src/content/docs/zh-cn/${CONTRACT}.test.ts"
+            test -f "$CONTRACT_FILE"
+            files+=("$CONTRACT_FILE")
+          fi
           {
             git rev-parse HEAD
             echo "Selected suite: $FILE"
             timeout --signal=TERM --kill-after=10s 600s \
-              corepack pnpm@10.32.1 exec vitest run --no-file-parallelism "$FILE"
+              corepack pnpm@10.32.1 exec vitest run --no-file-parallelism "${files[@]}"
           } 2>&1 | tee "$RUNNER_TEMP/homepage-evidence/isolated-regressions.log"
       - name: Preserve this suite's actual images, measurements and failures
         if: always()

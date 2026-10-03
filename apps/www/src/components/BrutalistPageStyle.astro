@@ -11,24 +11,4 @@ const themeCss = renderBrutalistThemeCss({
 
 <style is:inline set:html={themeCss}></style>
 
-<style is:global>
-  .brutalist-demo-frame {
-    padding: 1rem;
-    color: var(--pui-foreground);
-    background: var(--pui-background);
-    border: 2px solid var(--pui-foreground);
-    box-shadow: 2px 2px 0 var(--pui-foreground);
-  }
-  /* The preview already owns its frame: keep this wrapper as a theme boundary. */
-  .brutalist-demo-frame:has(> .proto-previewer) {
-    padding: 0;
-    border: 0;
-    box-shadow: none;
-  }
-  .brutalist-demo-frame > .proto-previewer {
-    --runtime-box-radius: 0;
-    --runtime-box-border: 2px solid var(--pui-foreground);
-    --runtime-box-canvas: var(--pui-background);
-    box-shadow: 2px 2px 0 var(--pui-foreground);
-  }
-</style>
+<!-- Theme boundary only. RuntimeBox canvas paint belongs to SitePreviewSurface. -->

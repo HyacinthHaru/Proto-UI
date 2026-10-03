@@ -135,6 +135,7 @@ if (prototypeId && demoId) {
 assertJsonLike(protoProps);
 
 const rid = `pp-${Math.random().toString(36).slice(2)}`;
+const isZh = Astro.url.pathname.startsWith('/zh-cn/');
 ---
 
 <div
@@ -174,7 +175,14 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
   >
     <div class="proto-previewer__preview" role="region" aria-live="polite">
       <div class="host">
-        {lazy && <span class="proto-previewer__skeleton" aria-hidden="true" />}
+        <span class="proto-previewer__skeleton">{isZh ? '交互示例' : 'Interactive preview'}</span>
+        <noscript
+          >{
+            isZh
+              ? '交互示例需要 JavaScript；正文和源码仍可阅读。'
+              : 'Interactive previews require JavaScript; the article and source remain readable.'
+          }</noscript
+        >
       </div>
     </div>
   </div>
@@ -187,12 +195,9 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
 
   <style>
     .proto-previewer {
-      --proto-previewer-radius: var(--runtime-box-radius);
-      --proto-previewer-border: var(--runtime-box-border);
-      --proto-previewer-bg: var(--runtime-box-canvas);
-      border: var(--proto-previewer-border);
-      border-radius: var(--proto-previewer-radius);
-      overflow: hidden;
+      display: grid;
+      gap: 0.75rem;
+      min-width: 0;
     }
 
     .proto-previewer__header {
@@ -200,8 +205,6 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
       align-items: center;
       gap: 0.75rem;
       padding: var(--runtime-box-toolbar-padding);
-      border-bottom: var(--proto-previewer-border);
-      background: color-mix(in oklch, var(--color-muted) 12%, transparent);
     }
 
     .proto-previewer__toolbar {
@@ -220,12 +223,11 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
     }
 
     .proto-previewer__preview {
-      padding: var(--runtime-box-content-padding);
-      min-height: var(--runtime-box-content-min);
+      padding: 0;
+      min-height: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--proto-previewer-bg);
     }
 
     .proto-previewer__preview .host {
@@ -264,8 +266,6 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
       flex-wrap: wrap;
       gap: 0.875rem;
       padding: var(--runtime-box-toolbar-padding);
-      background: var(--color-card);
-      border-bottom: var(--runtime-box-border);
     }
 
     .proto-previewer[data-projection-mode='fixed-family'] :global(.pui-projection-controls:empty) {
@@ -281,8 +281,7 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
     }
 
     .proto-previewer[data-projection-mode='fixed-family'] :global(.pui-projection-content) {
-      min-height: var(--runtime-box-content-min);
-      padding: var(--runtime-box-content-padding);
+      padding: 0;
       min-width: 0;
       max-width: 100%;
       width: 100%;
@@ -292,38 +291,13 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
     }
 
     .proto-previewer__skeleton {
-      width: min(9rem, 58%);
-      height: 2.5rem;
-      border-radius: 0.5rem;
-      background: linear-gradient(
-        100deg,
-        color-mix(in oklch, var(--color-muted) 55%, transparent) 30%,
-        color-mix(in oklch, var(--color-muted) 85%, transparent) 48%,
-        color-mix(in oklch, var(--color-muted) 55%, transparent) 66%
-      );
-      background-size: 260% 100%;
-      animation: proto-previewer-skeleton 1.5s ease-in-out infinite;
-    }
-
-    @keyframes proto-previewer-skeleton {
-      from {
-        background-position: 100% 0;
-      }
-      to {
-        background-position: 0 0;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .proto-previewer__skeleton {
-        animation: none;
-      }
+      font-size: 0.875rem;
+      line-height: 1.5;
     }
 
     @media (max-width: 640px) {
       .proto-previewer__preview {
-        padding: var(--runtime-box-content-padding);
-        min-height: var(--runtime-box-content-min);
+        padding: 0;
       }
 
       .proto-previewer__preview .host {
@@ -333,90 +307,7 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
   </style>
 
   <script>
-    import type { RuntimeId } from './runtimes/registry';
-    import type { ProjectionComponentId, ProjectionFamilyId } from './projection-families';
-    const defaultRuntimeIds: RuntimeId[] = ['wc', 'react', 'vue', 'vue2'];
-
-    async function mount(root: HTMLElement) {
-      if (root.dataset.inited === '1' || root.dataset.mounting === '1') return;
-      root.dataset.mounting = '1';
-      const prototypeId = root.dataset.prototypeId || '';
-      const demoId = root.dataset.demoId || '';
-      const initialRuntime = (root.dataset.initialRuntime || 'wc') as RuntimeId;
-      const demoProps = root.dataset.props ? JSON.parse(root.dataset.props) : {};
-      const runtimeList = root.dataset.runtimes
-        ? JSON.parse(root.dataset.runtimes)
-        : defaultRuntimeIds;
-      const loader = root.dataset.loader || '';
-      const projectionFamilyId = (root.dataset.projectionFamily || undefined) as
-        | ProjectionFamilyId
-        | undefined;
-      const projectionComponentId = (root.dataset.projectionComponent || undefined) as
-        | ProjectionComponentId
-        | undefined;
-      const projectionToolbar = root.dataset.projectionToolbar !== 'false';
-
-      if (!prototypeId && !demoId) {
-        console.error('[PrototypePreviewer] missing prototypeId or demoId', root);
-        delete root.dataset.mounting;
-        return;
-      }
-
-      try {
-        const { initPreviewer } = await import('./previewer-client');
-        if (!root.isConnected) return;
-        initPreviewer({
-          root,
-          prototypeId,
-          demoId,
-          initialRuntime,
-          demoProps,
-          runtimeList,
-          loader,
-          projectionFamilyId,
-          projectionComponentId,
-          projectionToolbar,
-        });
-      } finally {
-        delete root.dataset.mounting;
-      }
-    }
-
-    function init() {
-      document
-        .querySelectorAll<HTMLElement>('.proto-previewer[data-previewer-id]:not([data-inited])')
-        .forEach((root) => {
-          if (root.dataset.lazy !== 'true') {
-            void mount(root);
-            return;
-          }
-
-          if (root.dataset.lazyObserved === '1') return;
-          root.dataset.lazyObserved = '1';
-
-          if (typeof IntersectionObserver === 'undefined') {
-            void mount(root);
-            return;
-          }
-
-          const observer = new IntersectionObserver(
-            (entries) => {
-              if (!entries.some((entry) => entry.isIntersecting)) return;
-              observer.disconnect();
-              void mount(root);
-            },
-            { rootMargin: '360px 0px' }
-          );
-          observer.observe(root);
-        });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-
-    document.addEventListener('astro:page-load', init);
+    import { initPreviewerBootstrap } from './previewer-bootstrap';
+    initPreviewerBootstrap(document);
   </script>
 </div>

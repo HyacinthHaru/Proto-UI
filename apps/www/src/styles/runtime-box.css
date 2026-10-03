@@ -1,12 +1,9 @@
-/* Website-owned preview framing only. Prototype state/style stays with its family. */
+/* RuntimeBox layout only. SitePreviewSurface owns the canvas paint. */
 .pui-runtime-box {
   --site-control-height: 2.25rem;
-  --runtime-box-radius: var(--docs-code-radius, var(--site-surface-radius, 0.625rem));
-  --runtime-box-border: var(--site-surface-border-width, 1px) solid var(--color-border);
   --runtime-box-toolbar-padding: 0.75rem 1rem;
   --runtime-box-content-padding: 1.5rem 1rem;
   --runtime-box-content-min: 10rem;
-  --runtime-box-canvas: var(--color-background);
   font-family: var(--font-sans);
 }
 
@@ -39,9 +36,4 @@
 }
 .pui-runtime-box .pui-projection-control > [data-pui-root] {
   flex: 1 1 auto;
-}
-
-[data-site-library-family='brutalist'] .pui-runtime-box {
-  --runtime-box-border: 2px solid var(--site-brutalist-foreground);
-  box-shadow: 2px 2px 0 var(--site-brutalist-foreground);
 }

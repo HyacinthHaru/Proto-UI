@@ -922,13 +922,15 @@ test('native and Copy browser scopes have independent bounded jobs and small evi
     { name: 'native-links', suite: 'site-native-links' },
     { name: 'code-surfaces', suite: 'code-surfaces' },
     { name: 'copy-commands', suite: 'site-copy-commands' },
+    { name: 'runtime-box', suite: 'runtime-preview-surface', contract: 'runtime-preview-evidence' },
   ]);
   const run = job.steps.find(
     (step: { name?: string }) => step.name === 'Execute the exact isolated browser suite'
   );
   assert.equal(run['continue-on-error'], undefined);
   assert.match(run.run, /timeout --signal=TERM --kill-after=10s 600s/);
-  assert.match(run.run, /vitest run --no-file-parallelism "\$FILE"/);
+  assert.match(run.run, /vitest run --no-file-parallelism "\$\{files\[@\]\}"/);
+  assert.match(run.run, /files\+=\("\$CONTRACT_FILE"\)/);
   const checkout = job.steps.find((step: { uses?: string }) =>
     step.uses?.startsWith('actions/checkout@')
   );
