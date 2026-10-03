@@ -90,3 +90,15 @@ test('press changes local optical thickness independently of silhouette and has 
       }
   }
 });
+
+test('body integration does not draw a second contour at the rim/body crossover', () => {
+  let last = 0;
+  for (let depth = 1; depth <= 70; depth++) {
+    const optical = sampleOptics(300, 39 + depth, { morph: 1 });
+    assert(Number.isFinite(optical.bodyTint));
+    assert(optical.bodyTint >= last);
+    assert(optical.bodyTint - last < 0.004, 'no concentrated tint step at the 14px optical rim');
+    last = optical.bodyTint;
+  }
+  assert(last > 0.1);
+});

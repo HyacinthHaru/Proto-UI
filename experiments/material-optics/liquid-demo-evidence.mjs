@@ -175,7 +175,7 @@ try {
           }
         return { center: sum > 0 ? weighted / sum : null, mass: sum };
       }
-      return { x: center(0, 224, 126, 244, 138, 'x'), y: center(2, 296, 99, 304, 119, 'y') };
+      return { x: center(0, 224, 126, 244, 138, 'x'), y: center(2, 296, 99, 304, 114, 'y') };
     }, png);
   }
   report.axisMarkers = {};
@@ -211,6 +211,15 @@ try {
   report.branchControls = {};
   await page.evaluate(() => window.liquidExperiment.set({ morph: 1 }));
   const regularMenu = await capture('regular-layered-menu');
+  // Constant actual DOM background isolates the reported nested tint contour.
+  await page.evaluate(() => (document.querySelector('#backdrop').style.background = '#7acfb8'));
+  await capture('uniform-body-integration');
+  await page.evaluate(() => window.liquidExperiment.set({ bodyIntegration: false }));
+  await capture('negative-body-integration');
+  await page.evaluate(() => {
+    document.querySelector('#backdrop').style.background = '';
+    window.liquidExperiment.set({ bodyIntegration: true });
+  });
   for (const key of ['sharpRim', 'bodyScatter']) {
     await page.evaluate((key) => window.liquidExperiment.set({ [key]: false }), key);
     const negative = await capture(`negative-${key}`);

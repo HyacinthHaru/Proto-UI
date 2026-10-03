@@ -48,7 +48,8 @@ export function advanceSpring(value, velocity, target, dt, omega = 18, damping =
 }
 export function sampleOptics(x, y, state = {}) {
   const d = distanceAt(x, y, state);
-  if (d >= 1) return { dx: 0, dy: 0, alpha: 0, highlight: 0, edgeShade: 0, rimWeight: 0, d };
+  if (d >= 1)
+    return { dx: 0, dy: 0, alpha: 0, highlight: 0, edgeShade: 0, rimWeight: 0, bodyTint: 0, d };
   const alpha = Math.max(0, Math.min(1, 0.5 - d));
   const gx = distanceAt(x + 0.5, y, state) - distanceAt(x - 0.5, y, state);
   const gy = distanceAt(x, y + 0.5, state) - distanceAt(x, y - 0.5, state);
@@ -93,6 +94,12 @@ export function sampleOptics(x, y, state = {}) {
     edgeShade,
     rimWeight,
     rimWidth,
+    // Tone integrates continuously over the whole body depth, not the optical branch boundary.
+    bodyTint:
+      state.bodyIntegration === false
+        ? 0
+        : (0.04 + 0.15 * (state.morph ?? 0)) *
+          (1 - Math.exp(Math.min(0, d) / (0.65 * (30 + 63 * (state.morph ?? 0))))),
     d,
   };
 }
@@ -138,7 +145,7 @@ export function makeField(state = {}, width = 600, height = 264) {
         value.d > 0 ? Math.exp(-(Math.max(0, shadowDistance) ** 2) / (8 + 14 * morph)) * 0.028 : 0;
       if (value.alpha === 0) shine[i] = shine[i + 1] = shine[i + 2] = 0;
       // Body integration is modest and spatially separate from the sharp optical rim.
-      const bodyTint = (0.04 + 0.15 * morph) * (1 - value.rimWeight);
+      const bodyTint = value.bodyTint;
       const white = bodyTint + value.highlight;
       const opacity = value.alpha * (white + value.edgeShade) + shadow;
       if (opacity > 0 && value.alpha > 0)
