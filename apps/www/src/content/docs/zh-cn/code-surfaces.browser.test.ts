@@ -1,8 +1,9 @@
 // @vitest-environment node
 
 import { mkdir, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
-import type { Browser, Page } from 'playwright-core';
+import type { Browser, Locator, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { highlightCode } from '../../../components/PrototypePreviewer/code-highlight';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
@@ -307,8 +308,136 @@ async function paletteProbe(page: Page): Promise<void> {
   ).toBe('rgb(4, 5, 6)');
 }
 
+// Read-only failure probe. Ranges measure text runs; they are never installed as
+// the browser selection. Keep the original mouse drag and exact assertion.
+function readNativeSelectionDiagnostics(
+  element: HTMLElement | SVGElement,
+  bounds: { x: number; y: number; width: number; height: number }
+) {
+  const rect = (value: DOMRect) => ({
+    x: value.x,
+    y: value.y,
+    width: value.width,
+    height: value.height,
+  });
+  const node = (value: Node | null) =>
+    value && {
+      name: value.nodeName,
+      text: value.nodeValue,
+      index: value.parentNode
+        ? Array.from(value.parentNode.childNodes).indexOf(value as ChildNode)
+        : -1,
+      parentTag: value.parentElement?.tagName ?? null,
+      parentText: value.parentElement?.textContent ?? null,
+    };
+  const textRuns = (root: Node | null) => {
+    if (!root) return [];
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const runs = [];
+    for (let text = walker.nextNode(); text; text = walker.nextNode()) {
+      const value = text.nodeValue ?? '';
+      const glyphs = [];
+      for (let offset = 0; offset < value.length; offset++) {
+        const range = document.createRange();
+        range.setStart(text, offset);
+        range.setEnd(text, offset + 1);
+        glyphs.push({
+          offset,
+          text: value[offset],
+          rects: Array.from(range.getClientRects(), rect),
+        });
+      }
+      runs.push({ node: node(text), glyphs });
+    }
+    return runs;
+  };
+  const selection = getSelection();
+  const pre = element.closest('pre')!;
+  const style = getComputedStyle(pre);
+  return {
+    selectedText: selection?.toString() ?? null,
+    anchor: { node: node(selection?.anchorNode ?? null), offset: selection?.anchorOffset ?? null },
+    focus: { node: node(selection?.focusNode ?? null), offset: selection?.focusOffset ?? null },
+    selectionRects: selection?.rangeCount
+      ? Array.from(selection.getRangeAt(0).getClientRects(), rect)
+      : [],
+    token: {
+      text: element.textContent,
+      rect: rect(element.getBoundingClientRect()),
+      runs: textRuns(element),
+    },
+    nextRun: textRuns(element.nextSibling),
+    pre: {
+      rect: rect(pre.getBoundingClientRect()),
+      scrollLeft: pre.scrollLeft,
+      scrollTop: pre.scrollTop,
+      clientWidth: pre.clientWidth,
+      scrollWidth: pre.scrollWidth,
+      font: style.font,
+      whiteSpace: style.whiteSpace,
+      userSelect: style.userSelect,
+    },
+    hitTargets: {
+      start: node(document.elementFromPoint(bounds.x + 1, bounds.y + bounds.height / 2)),
+      end: node(
+        document.elementFromPoint(bounds.x + bounds.width - 1, bounds.y + bounds.height / 2)
+      ),
+    },
+    viewport: { width: innerWidth, height: innerHeight, scrollX, scrollY, devicePixelRatio },
+  };
+}
+
+async function expectNativeTokenSelection(
+  page: Page,
+  token: Locator,
+  bounds: { x: number; y: number; width: number; height: number },
+  name: string
+): Promise<void> {
+  const selected = await page.evaluate(() => getSelection()?.toString());
+  if (selected !== 'wc-base-transition') {
+    try {
+      const facts = {
+        name,
+        source: {
+          exactSHA: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+          expectedSHA: process.env.CANDIDATE_SHA ?? process.env.PROTO_UI_EXPECTED_REVISION ?? null,
+          eventSHA: process.env.GITHUB_SHA ?? null,
+        },
+        drag: {
+          start: { x: bounds.x + 1, y: bounds.y + bounds.height / 2 },
+          end: { x: bounds.x + bounds.width - 1, y: bounds.y + bounds.height / 2 },
+          steps: 8,
+        },
+        observed: await token.evaluate(readNativeSelectionDiagnostics, bounds),
+      };
+      console.error('[code-native-selection]', JSON.stringify(facts));
+      const directory =
+        process.env.PROTO_UI_CODE_EVIDENCE_DIR ??
+        (process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR
+          ? join(process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR, 'code-surfaces')
+          : undefined);
+      if (directory) {
+        await mkdir(directory, { recursive: true });
+        await writeFile(
+          join(directory, `${name}-native-selection.json`),
+          JSON.stringify(facts, null, 2)
+        );
+      }
+    } catch (error) {
+      console.error('[code-native-selection] diagnosis unavailable:', String(error));
+    }
+  }
+  // Whitespace is significant: diagnostics must never normalize the payload or
+  // replace the original selection failure, even if collection itself fails.
+  expect(selected).toBe('wc-base-transition');
+}
+
 async function retainEvidence(page: Page, name: string, facts: unknown): Promise<void> {
-  const directory = process.env.PROTO_UI_CODE_EVIDENCE_DIR;
+  const directory =
+    process.env.PROTO_UI_CODE_EVIDENCE_DIR ??
+    (process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR
+      ? join(process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR, 'code-surfaces')
+      : undefined);
   if (!directory) return;
   await mkdir(directory, { recursive: true });
   await writeFile(join(directory, `${name}.json`), JSON.stringify(facts, null, 2));
@@ -393,7 +522,7 @@ describe.sequential('code-surface dogfood matrix (#630, #420, #568)', () => {
             steps: 8,
           });
           await page.mouse.up();
-          expect(await page.evaluate(() => getSelection()?.toString())).toBe('wc-base-transition');
+          await expectNativeTokenSelection(page, token, bounds, `${width}-${theme}`);
           await page.evaluate(() => getSelection()?.removeAllRanges());
           await pre.focus();
           await page.keyboard.press('ArrowRight');

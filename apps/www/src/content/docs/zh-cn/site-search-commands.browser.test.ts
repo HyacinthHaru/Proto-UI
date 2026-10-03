@@ -3,19 +3,23 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import type { Browser, Page } from 'playwright-core';
+import type { Browser, Page, Request } from 'playwright-core';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
+import {
+  searchEvidenceDirectory,
+  summarizePendingRequests,
+  type PendingSearchRequest,
+} from './site-search-evidence';
 
 let browser: Browser;
 let baseUrl: string;
 let source: { sha: string; dirty: boolean };
 const searchRoute = (family: 'shadcn' | 'brutalist') =>
   `/zh-cn/ui-libraries/${family}/${family === 'brutalist' ? 'components/' : ''}button/`;
-const evidenceDirectory = path.join(
-  process.env.RUNNER_TEMP ?? os.tmpdir(),
-  'homepage-evidence',
-  'search-commands'
+const evidenceDirectory = searchEvidenceDirectory(
+  process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR,
+  process.env.RUNNER_TEMP ?? os.tmpdir()
 );
 
 beforeAll(async () => {
@@ -40,7 +44,9 @@ const diagnosticPages = new Map<
     stage: string;
     writes: Promise<void>;
     errors: string[];
-    pendingRequests: Map<string, string>;
+    pendingRequests: Map<Request, PendingSearchRequest>;
+    startedAt: number;
+    stageStartedAt: number;
     requests: unknown[];
     lateObservation?: { budgetMs: number; elapsedMs: number; ready: boolean };
   }
@@ -52,20 +58,22 @@ function stage(page: Page, id: string, step: string) {
     stage: step,
     writes: Promise.resolve(),
     errors: [] as string[],
-    pendingRequests: new Map<string, string>(),
+    pendingRequests: new Map<Request, PendingSearchRequest>(),
+    startedAt: Date.now(),
+    stageStartedAt: Date.now(),
     requests: [] as unknown[],
   };
   if (!existing) {
     page.on('request', (request) =>
-      entry.pendingRequests.set(request.url(), request.resourceType())
+      entry.pendingRequests.set(request, { url: request.url(), type: request.resourceType() })
     );
     page.on('requestfinished', (request) => {
-      entry.pendingRequests.delete(request.url());
+      entry.pendingRequests.delete(request);
       entry.requests.push({ url: request.url(), outcome: 'finished' });
       if (entry.requests.length > 80) entry.requests.shift();
     });
     page.on('requestfailed', (request) => {
-      entry.pendingRequests.delete(request.url());
+      entry.pendingRequests.delete(request);
       entry.requests.push({ url: request.url(), outcome: request.failure()?.errorText });
       if (entry.requests.length > 80) entry.requests.shift();
     });
@@ -76,6 +84,7 @@ function stage(page: Page, id: string, step: string) {
   }
   entry.id = id;
   entry.stage = step;
+  entry.stageStartedAt = Date.now();
   const observation = { source, id, stage: step, at: new Date().toISOString(), url: page.url() };
   entry.writes = entry.writes.then(async () => {
     await mkdir(evidenceDirectory, { recursive: true });
@@ -98,7 +107,7 @@ async function captureFailure(page: Page) {
     .locator('site-search [data-projection-generation-state="active"] [data-open-modal]')
     .count()
     .catch(() => -1);
-  if (missingCommand === 0 && !page.isClosed()) {
+  if ((entry.stage === 'initial-ready' || missingCommand === 0) && !page.isClosed()) {
     const startedAt = Date.now();
     let ready = false;
     await page
@@ -142,7 +151,6 @@ afterEach(async () => {
 async function capture(page: Page, id: string, state: string) {
   await mkdir(evidenceDirectory, { recursive: true });
   const screenshot = `${id}-${state}.png`;
-  await page.screenshot({ path: path.join(evidenceDirectory, screenshot) });
   const observed = await page.locator('site-search').evaluate((search) => ({
     family: document.documentElement.dataset.siteLibraryFamily,
     searchState: { ...(search as HTMLElement).dataset },
@@ -223,6 +231,8 @@ async function capture(page: Page, id: string, state: string) {
         '[data-projection-generation-state="active"] [data-search-command]'
       ),
     ].map((button) => ({
+      command: button.dataset.searchCommand,
+      generation: button.closest<HTMLElement>('[data-projection-generation-host]')?.dataset,
       tag: button.localName,
       role: button.getAttribute('role'),
       disabled: button.getAttribute('aria-disabled'),
@@ -236,6 +246,46 @@ async function capture(page: Page, id: string, state: string) {
       shadow: getComputedStyle(button).boxShadow,
     })),
   }));
+  const entry = diagnosticPages.get(page);
+  const pendingRequests = [...(entry?.pendingRequests.values() ?? [])];
+  const summary = {
+    source,
+    id,
+    state,
+    elapsedMs: entry ? Date.now() - entry.startedAt : null,
+    stageElapsedMs: entry ? Date.now() - entry.stageStartedAt : null,
+    ...summarizePendingRequests(pendingRequests),
+    owner: {
+      state: observed.searchState,
+      defined: observed.startup.customElementDefined,
+      upgraded: observed.startup.upgraded,
+      connected: observed.startup.connected,
+      service: observed.startup.serviceOwnerInstalled,
+      refresh: observed.startup.commandRefreshInstalled,
+      mounts: observed.startup.mounts.map(({ command, owner, generations }) => ({
+        command,
+        owner,
+        generations,
+      })),
+    },
+    activeCommands: observed.commands.map((command) => ({
+      command: command.command,
+      tag: command.tag,
+      role: command.role,
+      disabled: command.disabled,
+      connected: command.connected,
+      tabIndex: command.tabIndex,
+      inert: !!command.inertAncestor,
+      viewPending: command.viewPending,
+      generation: command.generation,
+    })),
+    errorCount: entry?.errors.length ?? 0,
+    lateObservation: entry?.lateObservation ?? null,
+  };
+  // Emit before screenshot I/O so the job log retains owner facts even when
+  // screenshot capture fails. The original readiness assertion still fails.
+  if (state.startsWith('failure-') || state.startsWith('late-observation-'))
+    console.info('[Search evidence]', JSON.stringify(summary));
   await writeFile(
     path.join(evidenceDirectory, `${id}-${state}.json`),
     JSON.stringify(
@@ -248,7 +298,8 @@ async function capture(page: Page, id: string, state: string) {
         viewport: page.viewportSize(),
         observed,
         errors: diagnosticPages.get(page)?.errors ?? [],
-        pendingRequests: [...(diagnosticPages.get(page)?.pendingRequests ?? [])],
+        pendingRequests: pendingRequests.map(({ url, type }) => [url, type]),
+        summary,
         recentRequests: diagnosticPages.get(page)?.requests ?? [],
         lateObservation: diagnosticPages.get(page)?.lateObservation,
         renderer: 'Real Chromium via existing repository browser harness',
@@ -259,6 +310,7 @@ async function capture(page: Page, id: string, state: string) {
       2
     )
   );
+  await page.screenshot({ path: path.join(evidenceDirectory, screenshot) });
 }
 
 async function installOpenCounter(page: Page) {
