@@ -499,12 +499,27 @@ function createSelectControl<Value extends string>(
   } satisfies DemoBoxNode;
   const value = createProjectedProto(selectParts.value, coordinateAttrs, themeSurfaceStyle, {
     props: { placeholder: config.placeholder ?? config.label },
+    // Truncate only the presentation. The complete selected text stays in the
+    // Value and options while the trailing chevron keeps its own flex space.
+    surfaceStyle: {
+      display: 'block',
+      minWidth: '0',
+      flex: '1 1 auto',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
   });
   const trigger = createProjectedProto(selectParts.trigger, coordinateAttrs, themeSurfaceStyle, {
     ref: refs.trigger,
     props: { 'aria-label': config.label },
     // The website owns control density, through the Adapter's normalized surface channel.
-    surfaceStyle: { minHeight: 'var(--site-control-height, 2.25rem)' },
+    surfaceStyle: {
+      width: '100%',
+      minWidth: '0',
+      maxWidth: '100%',
+      minHeight: 'var(--site-control-height, 2.25rem)',
+    },
     children: [value],
   });
   const content = createProjectedProto(selectParts.content, coordinateAttrs, themeSurfaceStyle, {
@@ -526,7 +541,7 @@ function createSelectControl<Value extends string>(
     // Width is a host-owned normalized surface input projected by every
     // Adapter. Website CSS must not reach through the wrapper to style the
     // physical combobox surface.
-    surfaceStyle: { width: '100%' },
+    surfaceStyle: { width: '100%', minWidth: '0', maxWidth: '100%' },
     children: [trigger, content],
   });
 

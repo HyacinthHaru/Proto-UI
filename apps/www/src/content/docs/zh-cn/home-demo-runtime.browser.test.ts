@@ -435,6 +435,12 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           const panelStyle = getComputedStyle(panel);
           const hostStyle = getComputedStyle(host);
           const triggerStyle = getComputedStyle(trigger);
+          const controlHeight = panelStyle.getPropertyValue('--site-control-height').trim();
+          if (!controlHeight.endsWith('rem'))
+            throw new Error('Runtime Box density token is missing.');
+          const expectedControlHeight =
+            Number.parseFloat(controlHeight) *
+            Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
           const probe = document.createElement('div');
           probe.style.borderRadius = 'var(--runtime-box-radius)';
           panel.append(probe);
@@ -449,6 +455,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
             hostShadow: hostStyle.boxShadow,
             triggerRadius: triggerStyle.borderRadius,
             triggerHeight: trigger.getBoundingClientRect().height,
+            expectedControlHeight,
             fitsViewport:
               rect.left >= 0 && rect.right <= innerWidth && root.scrollWidth <= root.clientWidth,
           };
@@ -469,7 +476,11 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           expect(geometry.hostBorder, `${colorScheme} ${width}px host border`).toBe('0px');
           expect(geometry.hostShadow, `${colorScheme} ${width}px host shadow`).toBe('none');
           expect(geometry.triggerRadius, `${colorScheme} ${width}px trigger`).toBe('8px');
-          expect(geometry.triggerHeight, `${colorScheme} ${width}px trigger height`).toBe(36);
+          // The website's Runtime Box owns density: 2.25rem desktop / 2.5rem mobile.
+          // Its normalized surface input must win over the Prototype's default h-9.
+          expect(geometry.triggerHeight, `${colorScheme} ${width}px trigger height`).toBe(
+            geometry.expectedControlHeight
+          );
           expect(geometry.fitsViewport, `${colorScheme} ${width}px overflow`).toBe(true);
         }
 

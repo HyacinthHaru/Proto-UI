@@ -1,3 +1,4 @@
+import { waitForServerReadiness } from '../../../../../../scripts/test/server-readiness.mjs';
 // Shared server/browser plumbing for documentation browser regressions.
 // Extracted so a third suite does not need a third inline copy; the two existing
 // suites still carry their own and can migrate once their PRs land.
@@ -74,28 +75,20 @@ export async function chromeExecutable(): Promise<string> {
 }
 
 async function waitForServer(url: string): Promise<void> {
-  const deadline = Date.now() + 120_000;
-  let lastResult = 'no response received';
-  while (Date.now() < deadline) {
-    if (devServer && devServer.exitCode !== null) {
-      throw new Error(`Documentation dev server exited early.\n${serverOutput}`);
-    }
-    try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(2_000) });
-      lastResult = `HTTP ${response.status} ${response.statusText}`.trim();
-      await response.body?.cancel();
-      if (response.ok) return;
-    } catch (error) {
-      lastResult = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
-      if (error instanceof Error && error.cause) lastResult += `; cause=${String(error.cause)}`;
-    }
-    await new Promise((resolve) => setTimeout(resolve, 250));
+  try {
+    await waitForServerReadiness(url, {
+      timeoutMs: 120_000,
+      server: devServer,
+      readOutput: () => serverOutput,
+    });
+  } catch (error) {
+    // Vitest defers failed-hook details. Keep the immediate diagnostic so the
+    // runner captures the shared server state before CI cancellation.
+    console.error(
+      `[browser-harness] readiness failed: ${error instanceof Error ? error.message : String(error)}`
+    );
+    throw error;
   }
-  const message = `Timed out waiting for ${url}. Last readiness result: ${lastResult}.\n${serverOutput}`;
-  // Vitest may defer failed-hook details until the whole matrix finishes. Emit
-  // now so the runner can print its shared server log before a CI cancellation.
-  console.error(`[browser-harness] readiness failed: ${message}`);
-  throw new Error(message);
 }
 
 function recordServerOutput(chunk: Buffer): void {

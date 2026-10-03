@@ -1,6 +1,7 @@
 // @vitest-environment node
 
 import { spawn, type ChildProcess } from 'node:child_process';
+import { waitForServerReadiness } from '../../../../../../scripts/test/server-readiness.mjs';
 import { access } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import {
@@ -102,20 +103,18 @@ async function chromeExecutable(): Promise<string> {
 }
 
 async function waitForServer(url: string): Promise<void> {
-  const deadline = Date.now() + 120_000;
-  while (Date.now() < deadline) {
-    if (devServer && devServer.exitCode !== null) {
-      throw new Error(`Documentation dev server exited early.\n${serverOutput}`);
-    }
-    try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(2_000) });
-      if (response.ok) return;
-    } catch {
-      // The dev server is still starting.
-    }
-    await new Promise((resolve) => setTimeout(resolve, 250));
+  try {
+    await waitForServerReadiness(url, {
+      timeoutMs: 120_000,
+      server: devServer,
+      readOutput: () => serverOutput,
+    });
+  } catch (error) {
+    console.error(
+      `[browser-harness] readiness failed: ${error instanceof Error ? error.message : String(error)}`
+    );
+    throw error;
   }
-  throw new Error(`Timed out waiting for ${url}.\n${serverOutput}`);
 }
 
 function recordServerOutput(chunk: Buffer): void {
@@ -1044,7 +1043,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
       width: viewportWidth,
       height: 844,
     });
-    const widths: number[] = [];
+    const widths: Array<{ runtime: RuntimeId; width: number }> = [];
 
     try {
       for (const runtime of RUNTIMES) {
@@ -1056,7 +1055,52 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         expect(rootBox, runtime).not.toBeNull();
         expect(scrollbarBox, runtime).not.toBeNull();
 
-        widths.push(rootBox!.width);
+        widths.push({ runtime, width: rootBox!.width });
+        const layoutChain = await previewer.evaluate((element) => {
+          const selectors = [
+            '[data-projection-generation-state="active"]',
+            '[data-projection-scope]',
+            '.pui-projection-controls',
+            '[data-projection-control="runtime"]',
+            '[data-projection-control="runtime"] [role="combobox"]',
+            '[data-projection-control="runtime"] [data-projection-prototype$="select-value"]',
+            '[data-projection-content]',
+            '[data-projection-content] > div',
+            '[data-projection-content] [data-pui-root]',
+          ];
+          return {
+            viewportWidth: innerWidth,
+            documentWidth: document.documentElement.scrollWidth,
+            nodes: selectors.map((selector) => {
+              const node = element.querySelector<HTMLElement>(selector);
+              if (!node) return { selector, missing: true };
+              const rect = node.getBoundingClientRect();
+              const style = getComputedStyle(node);
+              return {
+                selector,
+                tag: node.tagName,
+                text: node.textContent?.trim().slice(0, 100),
+                x: rect.x,
+                width: rect.width,
+                clientWidth: node.clientWidth,
+                scrollWidth: node.scrollWidth,
+                display: style.display,
+                cssWidth: style.width,
+                minWidth: style.minWidth,
+                maxWidth: style.maxWidth,
+                boxSizing: style.boxSizing,
+                padding: style.padding,
+                flex: style.flex,
+                gridTemplateColumns: style.gridTemplateColumns,
+                runtime: node.dataset.projectionRuntime,
+                generation: node.dataset.projectionGeneration,
+                state: node.dataset.projectionState,
+                prototype: node.dataset.projectionPrototype,
+              };
+            }),
+          };
+        });
+        console.info('Scroll Area 320px layout chain', JSON.stringify({ runtime, ...layoutChain }));
         expect(rootBox!.x, runtime).toBeGreaterThanOrEqual(-GEOMETRY_EPSILON);
         expect(rootBox!.x + rootBox!.width, runtime).toBeLessThanOrEqual(
           viewportWidth + GEOMETRY_EPSILON
@@ -1073,7 +1117,11 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         ).toBe(0);
       }
 
-      expect(Math.max(...widths) - Math.min(...widths)).toBeLessThanOrEqual(GEOMETRY_EPSILON);
+      const measuredWidths = widths.map(({ width }) => width);
+      expect(
+        Math.max(...measuredWidths) - Math.min(...measuredWidths),
+        `Scroll Area width parity: ${JSON.stringify(widths)}`
+      ).toBeLessThanOrEqual(GEOMETRY_EPSILON);
     } finally {
       await context.close();
     }

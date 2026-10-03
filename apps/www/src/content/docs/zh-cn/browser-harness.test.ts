@@ -1,5 +1,5 @@
 import type { Locator } from 'playwright-core';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { runtimeSelectTrigger, startServer } from './browser-harness';
 
 /** Resolve the real selector against DOM fixtures without launching a browser. */
@@ -40,11 +40,53 @@ describe('documentation runtime control locator', () => {
 });
 
 describe('documentation server readiness diagnostics', () => {
+  beforeEach(() => {
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
   afterEach(() => {
     vi.useRealTimers();
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
     vi.restoreAllMocks();
+  });
+
+  it('accepts the observed 3.6s HTTP 200 response within the existing total budget', async () => {
+    vi.useFakeTimers();
+    vi.stubEnv('PROTO_UI_BROWSER_BASE_URL', 'http://documentation.test');
+    // Native AbortSignal.timeout does not use Vitest's fake clock. Model its
+    // real deadline so the old 2s abort remains a discriminating negative.
+    vi.spyOn(AbortSignal, 'timeout').mockImplementation((delay) => {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(new DOMException('Timed out', 'TimeoutError')), delay);
+      return controller.signal;
+    });
+    const cancel = vi.fn().mockResolvedValue(undefined);
+    const fetch = vi.fn(
+      (_url, { signal }: RequestInit) =>
+        new Promise((resolve, reject) => {
+          const finish = () => {
+            signal?.removeEventListener('abort', abort);
+            clearTimeout(timer);
+          };
+          const abort = () => {
+            finish();
+            reject(signal?.reason);
+          };
+          const timer = setTimeout(() => {
+            finish();
+            resolve({ ok: true, status: 200, statusText: 'OK', body: { cancel } });
+          }, 3_600);
+          signal?.addEventListener('abort', abort, { once: true });
+        })
+    );
+    vi.stubGlobal('fetch', fetch);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const result = startServer('/ready/').catch((error: Error) => error);
+    await vi.advanceTimersByTimeAsync(125_000);
+    expect(await result).toBe('http://documentation.test');
+    expect(fetch).toHaveBeenCalledOnce();
+    expect(cancel).toHaveBeenCalledOnce();
   });
 
   it('reports the last HTTP status immediately before rejecting the hook', async () => {

@@ -5,6 +5,7 @@ import { runInNewContext } from 'node:vm';
 import { transformSync } from 'esbuild';
 import ts from 'typescript';
 import { parse } from 'yaml';
+import { Window } from 'happy-dom';
 import {
   HOMEPAGE_BASELINE,
   HOMEPAGE_KEYBOARD_TRANSITION,
@@ -164,6 +165,22 @@ test('serialized browser probes do not depend on tsx keepNames helpers', () => {
   assert.ok(inspected >= 15, 'Inspect the actual browser callbacks, not a synthetic subset');
 });
 
+test('full CI uses the same supported toolbar preference before exercising public-page clicks', () => {
+  const workflow = parse(
+    readFileSync(new URL('../../../.github/workflows/ci.yml', import.meta.url), 'utf8')
+  );
+  const steps = workflow.jobs.test.steps;
+  const preferenceIndex = steps.findIndex((step: { run?: string }) =>
+    step.run?.includes('astro preferences disable devToolbar')
+  );
+  const testsIndex = steps.findIndex(
+    (step: { name?: string }) => step.name === 'Public documentation gate and repository tests'
+  );
+  assert.ok(preferenceIndex >= 0 && preferenceIndex < testsIndex);
+  assert.match(steps[preferenceIndex].run, /astro preferences get devToolbar.enabled/);
+  assert.equal(workflow.jobs.test['timeout-minutes'], 20);
+});
+
 test('baseline negative control never swallows unrelated or candidate failures', () => {
   const known = {
     revisionKind: 'baseline',
@@ -250,4 +267,63 @@ test('font evidence selects visible captions and excludes clipped accessible lab
   assert.match(source, /name: 'definition-label', selector: '\.home-demo-previewer__meta-label'/);
   assert.match(source, /getBoundingClientRect\(\)\.width > 2/);
   assert.match(source, /getBoundingClientRect\(\)\.height > 2/);
+});
+
+test('the actual ownership probe recognizes real control-only groups and rejects empty ones', async () => {
+  const source = ts.createSourceFile(
+    'capture-homepage-evidence.ts',
+    readFileSync(new URL('capture-homepage-evidence.ts', import.meta.url), 'utf8'),
+    ts.ScriptTarget.ES2022,
+    true,
+    ts.ScriptKind.TS
+  );
+  const declaration = source.statements.find(
+    (node): node is ts.FunctionDeclaration =>
+      ts.isFunctionDeclaration(node) && node.name?.text === 'ownership'
+  );
+  assert.ok(declaration, 'Execute the actual capture function, including its assertions');
+  const compiled = transformSync(`${declaration.getText(source)}\nownership;`, {
+    loader: 'ts',
+    target: 'es2022',
+    keepNames: true,
+  }).code;
+  const window = new Window();
+  const document = window.document;
+  const scope = (content: string) => `
+    <div data-projection-generation-host data-projection-generation-state="active">
+      <div data-projection-scope data-projection-runtime="wc"
+        data-projection-generation="7" data-projection-state="ready">${content}</div>
+    </div>`;
+  // A synthetic DOM fixture of the real composition marker contract, not browser evidence.
+  document.body.innerHTML = `
+    <header data-homepage-runtime data-runtime-generation="7">
+      <div id="home-brand" data-homepage-actions><div data-homepage-mount>
+        ${scope('<div data-projection-content><a href="/en/">Proto UI</a></div>')}
+      </div></div>
+      <div id="home-preferences" data-homepage-actions><div data-homepage-mount>
+        ${scope('<div class="pui-projection-controls"><div data-projection-control="runtime"><wc-select-root data-pui-root></wc-select-root></div></div><div data-projection-content></div>')}
+      </div></div>
+    </header>
+    <div data-home-demo-host>
+      ${scope('<div data-projection-content><wc-button data-pui-root></wc-button></div>')}
+    </div>`;
+  const ownership = runInNewContext(compiled, { document, assert, revisionKind: 'candidate' });
+  const page = { evaluate: (callback: () => unknown) => callback() };
+  const result = await ownership(page, 'wc');
+  assert.equal(
+    result.find((host: { name: string }) => host.name === 'home-preferences').scopes[0].roots
+      .length,
+    1
+  );
+
+  const control = document.querySelector('[data-projection-control="runtime"]')!;
+  control.innerHTML = '<span>Web Components</span>';
+  await assert.rejects(
+    () => ownership(page, 'wc'),
+    /home-preferences: actual prototype or native-anchor content required/
+  );
+  control.innerHTML = '<wc-select-root data-pui-root></wc-select-root>';
+  control.closest('[data-projection-scope]')!.setAttribute('data-projection-generation', '6');
+  await assert.rejects(() => ownership(page, 'wc'), /home-preferences: same page generation/);
+  window.happyDOM.abort();
 });

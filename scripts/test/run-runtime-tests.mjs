@@ -11,6 +11,7 @@ import { createServer } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRuntimeTestPlan } from './runtime-test-plan.mjs';
+import { waitForServerReadiness } from './server-readiness.mjs';
 import {
   observeReadinessFailures,
   observeRuntimeServer,
@@ -90,26 +91,11 @@ async function availablePort() {
 }
 
 async function waitForServer(url) {
-  const deadline = Date.now() + READY_TIMEOUT_MS;
-  let lastResult = 'no response received';
-  while (Date.now() < deadline) {
-    if (devServer && devServer.exitCode !== null) {
-      throw new Error(`Documentation dev server exited early.\n${serverOutput}`);
-    }
-    try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(2_000) });
-      lastResult = `HTTP ${response.status} ${response.statusText}`.trim();
-      await response.body?.cancel();
-      if (response.ok) return;
-    } catch (error) {
-      lastResult = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
-      if (error?.cause) lastResult += `; cause=${String(error.cause)}`;
-    }
-    await new Promise((resolve) => setTimeout(resolve, 250));
-  }
-  throw new Error(
-    `Timed out waiting for ${url}. Last readiness result: ${lastResult}.\n${serverOutput}`
-  );
+  await waitForServerReadiness(url, {
+    timeoutMs: READY_TIMEOUT_MS,
+    server: devServer,
+    readOutput: () => serverOutput,
+  });
 }
 
 async function startServer() {

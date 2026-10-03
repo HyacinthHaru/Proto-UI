@@ -90,6 +90,62 @@ afterEach(() => {
 });
 
 describe('Website projection composition', () => {
+  it.each(
+    (['shadcn', 'brutalist'] as const).flatMap((projectionFamilyId) =>
+      (['wc', 'react', 'vue', 'vue2'] as const).map((runtimeId) => ({
+        projectionFamilyId,
+        runtimeId,
+      }))
+    )
+  )(
+    'keeps $projectionFamilyId $runtimeId control values shrinkable without shortening their accessible text',
+    ({ projectionFamilyId, runtimeId }) => {
+      const composition = createProjectionComposition({
+        ownerId: 'compact-runtime-control',
+        runtimeId,
+        projectionFamilyId,
+        generation: 1,
+        componentId: 'button',
+        childDemo: {
+          type: 'demo',
+          root: { kind: 'proto', prototypeId: `${projectionFamilyId}-button` },
+        },
+        controls: controls(),
+        controlIds: ['runtime'],
+      });
+      const part = (name: string) =>
+        findNode(
+          composition.demo,
+          (node) =>
+            node.kind === 'proto' && node.prototypeId === `${projectionFamilyId}-select-${name}`
+        );
+      expect(part('root')).toMatchObject({
+        surfaceStyle: { width: '100%', minWidth: '0', maxWidth: '100%' },
+      });
+      expect(part('trigger')).toMatchObject({
+        props: { 'aria-label': 'Runtime' },
+        surfaceStyle: {
+          width: '100%',
+          minWidth: '0',
+          maxWidth: '100%',
+          minHeight: 'var(--site-control-height, 2.25rem)',
+        },
+      });
+      expect(part('value')).toMatchObject({
+        surfaceStyle: {
+          minWidth: '0',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        },
+      });
+      expect(part('item')).toMatchObject({
+        props: { value: 'wc', textValue: 'Web Components' },
+        children: ['Web Components'],
+      });
+    }
+  );
+
   it('clones the child tree and closes style plus identity markers over every Proto surface', () => {
     const childDemo = {
       type: 'demo',

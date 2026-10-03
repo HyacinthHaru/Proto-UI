@@ -309,7 +309,7 @@ describe.sequential('code-surface dogfood matrix (#630, #420, #568)', () => {
           );
         });
       });
-      await page.getByRole('button', { name: '菜单', exact: true }).click();
+      await page.getByRole('button', { name: '页面目录', exact: true }).click();
       await page.locator(`a[href="${QUICK_START}"]`).first().click();
       await page.waitForURL(`**${QUICK_START}`);
       await ready(page);

@@ -251,7 +251,7 @@ async function ownership(page: Page, runtime: Runtime) {
           },
           roots: [
             ...scope.querySelectorAll<HTMLElement>(
-              '[data-projection-content] [data-pui-root], [data-projection-controls] [data-pui-root]'
+              '[data-projection-content] [data-pui-root], [data-projection-control] [data-pui-root]'
             ),
           ].map((root) => ({
             tag: root.tagName,
@@ -560,6 +560,34 @@ try {
             report.failures.push(...failures.map((failure) => `${id}: ${failure}`));
           }
           evidence.initialOwnership = await ownership(page, 'wc');
+          if (revisionKind === 'candidate') {
+            const menu = page.locator(
+              '[data-homepage-runtime] [data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
+            );
+            await menu.click();
+            await page.waitForFunction(
+              () =>
+                document
+                  .querySelector(
+                    '[data-homepage-runtime] [data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
+                  )
+                  ?.getAttribute('aria-expanded') === 'true'
+            );
+            const settings = page.locator('[data-site-header-settings]');
+            assert.ok(await settings.isVisible(), 'Opened settings must be visible');
+            assert.ok(
+              await settings.locator('[data-homepage-mount] a[href]').first().isVisible(),
+              'Opened settings must show a real native navigation link'
+            );
+            evidence.navigationOwnership = await ownership(page, 'wc');
+            await screenshot('navigation-open-viewport');
+            await page.keyboard.press('Escape');
+            assert.equal(await menu.getAttribute('aria-expanded'), 'false');
+            assert.ok(
+              await menu.evaluate((element) => document.activeElement === element),
+              'Closing settings must restore focus to the real menu control'
+            );
+          }
           for (const [index, runtime] of HOMEPAGE_POINTER_RUNTIME_SEQUENCE.entries()) {
             await chooseRuntime(page, runtime, false);
             const owners = await ownership(page, runtime);

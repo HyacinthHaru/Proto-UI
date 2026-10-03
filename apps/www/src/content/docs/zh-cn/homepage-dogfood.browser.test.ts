@@ -476,6 +476,47 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         expect(await contents.getAttribute('aria-controls')).toBe('starlight__sidebar');
         expect(await contents.getAttribute('aria-label')).toBe('页面目录');
         expect(await contents.getAttribute('title')).toBe('页面目录');
+        const hitTargets = await header.evaluate((element) => {
+          const trigger = element.querySelector<HTMLElement>(
+            '[data-adapter-select] [role="combobox"]'
+          )!;
+          const contents = element.querySelector<HTMLElement>('starlight-menu-button button')!;
+          const triggerRect = trigger.getBoundingClientRect();
+          const contentsRect = contents.getBoundingClientRect();
+          const center = document.elementFromPoint(
+            contentsRect.x + contentsRect.width / 2,
+            contentsRect.y + contentsRect.height / 2
+          );
+          return {
+            trigger: { left: triggerRect.left, right: triggerRect.right },
+            contents: { left: contentsRect.left, right: contentsRect.right },
+            contentsOwnsCenter: center !== null && contents.contains(center),
+            centerTag: center?.tagName,
+            chevrons: [...trigger.querySelectorAll('svg')].map((svg) => {
+              const rect = svg.getBoundingClientRect();
+              return { left: rect.left, right: rect.right, width: rect.width };
+            }),
+          };
+        });
+        console.info('Mobile documentation header hit targets', { width, ...hitTargets });
+        expect(hitTargets.chevrons).toHaveLength(1);
+        for (const chevron of hitTargets.chevrons) {
+          expect(chevron.width, `${width}px real runtime chevron`).toBeGreaterThan(0);
+          expect(chevron.left, `${width}px chevron inside trigger left`).toBeGreaterThanOrEqual(
+            hitTargets.trigger.left
+          );
+          expect(chevron.right, `${width}px chevron inside trigger right`).toBeLessThanOrEqual(
+            hitTargets.trigger.right
+          );
+        }
+        expect(
+          hitTargets.trigger.right,
+          `${width}px separate runtime and contents targets`
+        ).toBeLessThanOrEqual(hitTargets.contents.left);
+        expect(
+          hitTargets.contentsOwnsCenter,
+          `${width}px native contents target owns its center`
+        ).toBe(true);
         await contents.click();
         expect(await page.locator('body').getAttribute('data-mobile-menu-expanded')).not.toBeNull();
         expect(await menu.getAttribute('aria-expanded')).toBe('false');

@@ -152,12 +152,23 @@ function applyProps(element: HTMLElement, props: Record<string, unknown>): void 
 
 /** Header sizing is a consumer override through the adapter's normalized
  * surfaceStyle input, not an external selector competing with Proto styles. */
-function headerSurfaceStyle(element: HTMLElement, kind: 'button' | 'root' | 'trigger') {
+function headerSurfaceStyle(element: HTMLElement, kind: 'button' | 'root' | 'trigger' | 'value') {
   if (!element.closest('[data-site-header]')) return undefined;
-  if (kind === 'root') return { width: '100%' };
+  if (kind === 'root') return { width: '100%', minWidth: '0', maxWidth: '100%' };
+  if (kind === 'value')
+    return {
+      display: 'block',
+      minWidth: '0',
+      flex: '1 1 auto',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    };
   if (kind === 'trigger')
     return {
       width: '100%',
+      minWidth: '0',
+      maxWidth: '100%',
       minHeight: 'var(--site-control-height, 2.75rem)',
       fontFamily: 'inherit',
       fontSize: '0.875rem',
@@ -228,7 +239,14 @@ function initializeSelect(root: SiteSelectRoot): void {
   const valuePart = root.querySelector<HTMLElement>(
     'wc-shadcn-select-value, wc-brutalist-select-value'
   );
-  if (valuePart) applyProps(valuePart, { placeholder: valuePart.dataset.placeholder ?? '' });
+  if (valuePart) {
+    applyProps(valuePart, {
+      placeholder: valuePart.dataset.placeholder ?? '',
+      ...(headerSurfaceStyle(valuePart, 'value')
+        ? { surfaceStyle: headerSurfaceStyle(valuePart, 'value') }
+        : {}),
+    });
+  }
 
   const content = root.querySelector<HTMLElement>(
     'wc-shadcn-select-content, wc-brutalist-select-content'
