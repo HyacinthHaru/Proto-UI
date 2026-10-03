@@ -523,7 +523,7 @@ test('candidate samples task content while the immutable baseline keeps picker s
   const baseline = runInNewContext(`${compiled}\n({ HOME, fontSelectors, surfaceSelectors });`, {
     revisionKind: 'baseline',
   });
-  assert.equal(candidate.HOME, '[data-home-showcase="website-workspace-settings"]');
+  assert.equal(candidate.HOME, '[data-home-showcase="website-component-gallery"]');
   assert.equal(baseline.HOME, '[data-home-demo-options]');
   const names = (value: typeof candidate) =>
     Array.from(value.fontSelectors, (sample: { name: string }) => sample.name);
@@ -551,7 +551,7 @@ test('actual task observer reads physical textarea and rejects stale values or m
     const document = window.document;
     // Synthetic observer unit fixture, not evidence of rendered controls.
     document.body.innerHTML = `
-      <section data-home-showcase="website-workspace-settings">
+      <section data-home-showcase="website-component-gallery">
         <div data-demo-ref="settings" data-dirty="false">
           <div data-demo-ref="settings-view-trigger">Board</div>
           <div data-demo-ref="settings-summary" aria-checked="true"></div>
@@ -573,7 +573,7 @@ test('actual task observer reads physical textarea and rejects stale values or m
       'Named browser observer is self-contained'
     );
     const input = {
-      homeSelector: '[data-home-showcase="website-workspace-settings"]',
+      homeSelector: '[data-home-showcase="website-component-gallery"]',
       expected: {
         view: 'Board',
         summary: 'true',
@@ -603,8 +603,8 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
     const english = route === '/en/';
     const labels = english
       ? {
-          list: 'List',
-          board: 'Board',
+          list: 'Email',
+          board: 'Push',
           changed: 'Unsaved changes',
           unchanged: 'No unsaved changes',
           saved: 'Saved to this page',
@@ -613,8 +613,8 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
           off: 'Weekly summary off',
         }
       : {
-          list: '列表',
-          board: '看板',
+          list: '邮件',
+          board: '推送',
           changed: '有未保存的更改',
           unchanged: '没有未保存的更改',
           saved: '已保存到本页',
@@ -634,11 +634,20 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
     const actions: string[] = [];
     const snapshots: string[] = [];
     const probeStages: Array<string | null> = [];
-    const home = '[data-home-showcase="website-workspace-settings"]';
+    const home = '[data-home-showcase="website-component-gallery"]';
     // Driver unit fixture: control behavior is modeled only to reject an
     // incorrect input sequence or expectation. Actual-browser execution is separate.
     const locate = (selector: string): any => ({
       locator: locate,
+      async evaluateAll(callback: (nodes: Element[]) => unknown) {
+        return callback(
+          ['controls', 'hover', 'preferences', 'editor', 'overlays', 'choices'].map((id) => {
+            const el = previewWindow.document.createElement('div');
+            el.setAttribute('data-gallery-demo', id);
+            return el as unknown as Element;
+          })
+        );
+      },
       async click() {
         probeStages.push(probeContext.activeProbeStage);
         actions.push(selector);
@@ -707,7 +716,7 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
         assert.equal(state.summary, 'true');
         assert.equal(state.note, args.note);
         const document = previewWindow.document;
-        document.body.innerHTML = `<section data-home-showcase="website-workspace-settings"><div data-demo-ref="settings-preview-tasks" data-view="board"></div><div data-demo-ref="settings-preview-summary"></div><div data-demo-ref="settings-preview-note"><span data-demo-ref="settings-preview-note-text"></span></div>${Array(5).fill('<div data-projection-prototype="site-preview-surface" data-pui-style="border"></div>').join('')}</section>`;
+        document.body.innerHTML = `<section data-home-showcase="website-component-gallery"><div data-demo-ref="settings-preview-tasks" data-view="board"></div><div data-demo-ref="settings-preview-summary"></div><div data-demo-ref="settings-preview-note"><span data-demo-ref="settings-preview-note-text"></span></div>${Array(5).fill('<div data-projection-prototype="site-preview-surface" data-pui-style="border"></div>').join('')}</section>`;
         document.querySelector('[data-demo-ref="settings-preview-note-text"]')!.textContent =
           state.note;
         const value = callback(args);
@@ -794,4 +803,34 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
     ]);
     assert.match(result.persistence, /no backend or durable-storage claim/);
   }
+});
+
+test('only the declared Brutalist Button/Textarea mono roles may differ from the page sans stack', () => {
+  const base = {
+    viewportWidth: 390,
+    documentWidth: 390,
+    bodyWidth: 390,
+    family: 'brutalist',
+    fonts: [
+      { name: 'heading', fontFamily: 'Arial, sans-serif' },
+      {
+        name: 'task-note-control',
+        fontFamily: 'ui-monospace, Consolas, monospace',
+        prototypeId: 'brutalist-textarea-root',
+        styleTokens: ['font-mono'],
+      },
+    ],
+  };
+  assert.deepEqual(layoutFailures(base), []);
+  assert.ok(layoutFailures({ ...base, family: 'shadcn' }).length);
+  for (const mutation of [
+    { prototypeId: 'brutalist-select-trigger' },
+    { styleTokens: [] },
+    { fontFamily: 'Times New Roman, monospace' },
+    { fontFamily: 'serif' },
+  ])
+    assert.ok(
+      layoutFailures({ ...base, fonts: [base.fonts[0]!, { ...base.fonts[1]!, ...mutation }] })
+        .length
+    );
 });

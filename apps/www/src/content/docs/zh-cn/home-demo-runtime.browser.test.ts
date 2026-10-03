@@ -425,7 +425,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           await page.setViewportSize({ width, height: 900 });
           const geometry = await home.evaluate((root) => {
             const task = root.querySelector<HTMLElement>('[data-home-settings]')!;
-            const fields = task.querySelector<HTMLElement>('.home-settings__layout')!;
+            const fields = root.querySelector<HTMLElement>('.home-gallery')!;
             const trigger = document.querySelector<HTMLElement>(
               '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"] [role="combobox"]'
             )!;
@@ -442,7 +442,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           });
           expect(geometry.border).toBe('0px');
           expect(geometry.shadow).toBe('none');
-          expect(geometry.columns).toBe(width > 767 ? 2 : 1);
+          expect(geometry.columns).toBe(width >= 1200 ? 4 : width >= 640 ? 2 : 1);
           expect(geometry.triggerHeight).toBeGreaterThanOrEqual(44);
           expect(geometry.fits, `${colorScheme} ${width}px overflow`).toBe(true);
         }
@@ -462,9 +462,9 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
         await page.keyboard.press('Escape');
         await page.setViewportSize({ width: 1440, height: 900 });
         for (const control of ['runtime', 'family'] as const) {
-          const trigger = (
-            control === 'runtime' ? page.locator('[data-homepage-runtime]') : home
-          ).locator(`[data-projection-control="${control}"] [role="combobox"]`);
+          const trigger = page
+            .locator('[data-homepage-runtime]')
+            .locator(`[data-projection-control="${control}"] [role="combobox"]`);
           const before = await trigger.boundingBox();
           if (!before) throw new Error(`${control} trigger must have geometry.`);
           await page.mouse.move(before.x + before.width / 2, before.y + before.height / 2);
@@ -547,12 +547,12 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
             'textarea[data-demo-ref="settings-note"], [data-demo-ref="settings-note"] > textarea'
           );
           expect(await editor.count(), 'one physical editable textarea').toBe(1);
-          expect(await editor.getAttribute('aria-label')).toBe('工作区备注');
+          expect(await editor.getAttribute('aria-label')).toBe('附加说明');
           expect(await editor.getAttribute('data-projection-prototype')).toBe(
             `${family}-textarea-root`
           );
-          const summary = task.getByRole('switch', { name: '显示每周摘要', exact: true });
-          const view = task.getByRole('combobox', { name: '默认项目视图', exact: true });
+          const summary = task.getByRole('switch', { name: '每周摘要', exact: true });
+          const view = task.getByRole('combobox', { name: '通知方式', exact: true });
           expect(await editor.inputValue()).toBe('');
           expect(await save.getAttribute('aria-disabled')).toBe('true');
           expect(await task.getAttribute('data-dirty')).toBe('false');
@@ -571,7 +571,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           await page.keyboard.press('ArrowDown');
           await page.keyboard.press('Enter');
           await portal.waitFor({ state: 'hidden' });
-          await expect.poll(() => view.textContent()).toContain('看板');
+          await expect.poll(() => view.textContent()).toContain('推送');
           await expect
             .poll(() => view.evaluate((element) => document.activeElement === element))
             .toBe(true);
@@ -631,24 +631,24 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           await page.keyboard.press('Enter');
           await expect
             .poll(() => task.getByRole('status').textContent())
-            .toContain('已保存到本页 · 看板 · 显示每周摘要');
+            .toContain('已保存到本页 · 推送 · 显示每周摘要');
           expect(await task.getAttribute('data-dirty')).toBe('false');
           await reset.click();
           await expect.poll(() => editor.inputValue()).toBe('');
           await expect.poll(() => summary.getAttribute('aria-checked')).toBe('false');
-          await expect.poll(() => view.textContent()).toContain('列表');
+          await expect.poll(() => view.textContent()).toContain('邮件');
           expect(await task.getAttribute('data-dirty')).toBe('true');
           await save.click();
           await expect
             .poll(() => task.getByRole('status').textContent())
-            .toContain('已保存到本页 · 列表 · 隐藏每周摘要 · 备注 0 字');
+            .toContain('已保存到本页 · 邮件 · 隐藏每周摘要 · 备注 0 字');
           // Leave dirty state behind; next generation must not carry or persist it.
           await editor.fill('仅属于当前 generation');
           expect(await task.getAttribute('data-dirty')).toBe('true');
         }
       }
       await chooseRuntime(page, home, 'wc');
-      expect(await home.getByRole('textbox', { name: '工作区备注' }).inputValue()).toBe('');
+      expect(await home.getByRole('textbox', { name: '附加说明' }).inputValue()).toBe('');
       expect(errors).toEqual([]);
     } catch (error) {
       await reportEditingState('failed').catch(() => {});

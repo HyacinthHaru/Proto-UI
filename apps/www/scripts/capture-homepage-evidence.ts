@@ -96,7 +96,7 @@ await saveReport();
 
 const HOME =
   revisionKind === 'candidate'
-    ? '[data-home-showcase="website-workspace-settings"]'
+    ? '[data-home-showcase="website-component-gallery"]'
     : '[data-home-demo-options]';
 const RUNTIME_LABELS = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' } as const;
 type Runtime = keyof typeof RUNTIME_LABELS;
@@ -132,9 +132,9 @@ const baselineFontSelectors = [
   { name: 'demo', selector: '[data-home-demo-host] [data-projection-content] [data-pui-root]' },
 ];
 const candidateFontSelectors = [
-  { name: 'task-preview-title', selector: `${HOME} .home-preview__title` },
-  { name: 'task-result-title', selector: `${HOME} .home-preview__task-title` },
-  { name: 'task-result-detail', selector: `${HOME} .home-preview__detail` },
+  { name: 'task-preview-title', selector: `${HOME} .home-gallery__title` },
+  { name: 'task-result-title', selector: `${HOME} .home-gallery__choice-label` },
+  { name: 'task-result-detail', selector: `${HOME} .home-gallery__caption` },
   {
     name: 'task-note-control',
     selector: `${HOME} textarea[data-demo-ref="settings-note"], ${HOME} [data-demo-ref="settings-note"] > textarea`,
@@ -143,7 +143,10 @@ const candidateFontSelectors = [
     name: 'library-control',
     selector: `[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"] [role="combobox"], ${HOME} [data-projection-control="family"] [role="combobox"]`,
   },
-  { name: 'task-title', selector: `${HOME} .home-settings__title` },
+  {
+    name: 'task-title',
+    selector: `${HOME} [data-gallery-demo="preferences"] .home-gallery__title`,
+  },
   {
     name: 'task-view-label',
     selector: `${HOME} .home-settings__preferences .home-settings__field .home-settings__label`,
@@ -412,8 +415,8 @@ async function exerciseWorkspaceSettings(
   const copy =
     route === '/en/'
       ? {
-          list: 'List',
-          board: 'Board',
+          list: 'Email',
+          board: 'Push',
           unchanged: 'No unsaved changes',
           changed: 'Unsaved changes',
           saved: 'Saved to this page',
@@ -424,8 +427,8 @@ async function exerciseWorkspaceSettings(
           noteLength: (count: number) => `Note: ${count} characters`,
         }
       : {
-          list: '列表',
-          board: '看板',
+          list: '邮件',
+          board: '推送',
           unchanged: '没有未保存的更改',
           changed: '有未保存的更改',
           saved: '已保存到本页',
@@ -488,43 +491,14 @@ async function exerciseWorkspaceSettings(
     saveDisabled: true,
     feedback: `${copy.saved} · ${copy.board} · ${copy.on} · ${copy.noteLength(copy.note.length)}`,
   });
-  const livePreview = await page.waitForFunction(
-    ({ homeSelector, note }) => {
-      const root = document.querySelector(homeSelector);
-      const tasks = root?.querySelector<HTMLElement>('[data-demo-ref="settings-preview-tasks"]');
-      const summary = root?.querySelector<HTMLElement>(
-        '[data-demo-ref="settings-preview-summary"]'
-      );
-      const noteBox = root?.querySelector<HTMLElement>('[data-demo-ref="settings-preview-note"]');
-      const text = root?.querySelector('[data-demo-ref="settings-preview-note-text"]');
-      if (
-        !tasks ||
-        tasks.dataset.view !== 'board' ||
-        !summary ||
-        summary.hidden ||
-        !noteBox ||
-        noteBox.hidden ||
-        text?.textContent !== note
-      )
-        return false;
-      const surfaces = [
-        ...root!.querySelectorAll<HTMLElement>(
-          '[data-projection-prototype="site-preview-surface"]'
-        ),
-      ];
-      if (surfaces.length !== 5 || surfaces.some((surface) => !surface.dataset.puiStyle))
-        return false;
-      return {
-        view: tasks.dataset.view,
-        summaryVisible: !summary.hidden,
-        note: text.textContent,
-        prototypeInstances: surfaces.length,
-      };
-    },
-    { homeSelector: HOME, note: copy.note }
+  const liveResult = await page
+    .locator(`${HOME} [data-gallery-demo]`)
+    .evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-gallery-demo')));
+  assert.deepEqual(
+    [...liveResult].join(','),
+    'controls,hover,preferences,editor,overlays,choices',
+    'Every real component composition remains present'
   );
-  const liveResult = await livePreview.jsonValue();
-  await livePreview.dispose();
   activeProbeStage = 'workspace-settings-saved-capture';
   await capture('saved');
   activeProbeStage = 'workspace-settings-restore';
@@ -559,6 +533,105 @@ async function exerciseWorkspaceSettings(
     restoredDraft,
     defaultsSaved,
     liveResult,
+  };
+}
+
+async function exerciseInteractiveGallery(
+  page: Page,
+  route: string,
+  capture: (state: string) => Promise<void>
+) {
+  const zh = route === '/zh-cn/';
+  const gallery = page.locator(`${HOME} [data-home-gallery]`);
+  activeProbeStage = 'gallery-button';
+  await gallery.locator('[data-demo-ref="gallery-primary"]').click();
+  await page.waitForFunction(
+    (home) =>
+      document
+        .querySelector(`${home} [data-demo-ref="gallery-controls-feedback"]`)
+        ?.textContent?.includes('✓'),
+    HOME
+  );
+  activeProbeStage = 'gallery-editor';
+  const editor = gallery.locator('[data-gallery-demo="editor"]');
+  const text = editor.locator('textarea');
+  const value = zh ? '直接编辑，立即预览。' : 'Edit directly. Preview immediately.';
+  await text.fill(value);
+  await editor.locator('[data-demo-ref="editor-bold"]').click();
+  await editor.getByRole('tab', { name: zh ? '预览' : 'Preview', exact: true }).click();
+  const preview = editor.locator('[data-demo-ref="editor-preview"]');
+  await preview.waitFor({ state: 'visible' });
+  assert.equal(await preview.textContent(), value);
+  assert.equal(await preview.evaluate((element) => getComputedStyle(element).fontWeight), '700');
+  await capture('gallery-editor-preview');
+  activeProbeStage = 'gallery-dialog';
+  const overlays = gallery.locator('[data-gallery-demo="overlays"]');
+  const trigger = overlays.getByRole('button', {
+    name: zh ? '打开对话框' : 'Open dialog',
+    exact: true,
+  });
+  await trigger.click();
+  const dialog = page.getByRole('dialog', {
+    name: zh ? '确认这次选择？' : 'Confirm this choice?',
+    exact: true,
+  });
+  await dialog.waitFor({ state: 'visible' });
+  assert.ok(
+    await dialog.evaluate((element) => element.contains(document.activeElement)),
+    'Dialog owns entry focus'
+  );
+  await capture('gallery-dialog-open');
+  await dialog.getByRole('button', { name: zh ? '确认' : 'Confirm', exact: true }).click();
+  await dialog.waitFor({ state: 'hidden' });
+  await page.waitForFunction((home) => {
+    const node = document.querySelector(
+      `${home} [data-gallery-demo="overlays"] [data-demo-ref="gallery-dialog-feedback"]`
+    );
+    return node?.textContent === 'Confirmed' || node?.textContent === '已确认';
+  }, HOME);
+  assert.ok(
+    await trigger.evaluate((element) => element === document.activeElement),
+    'Dialog returns focus to its real trigger'
+  );
+  activeProbeStage = 'gallery-menu';
+  await overlays
+    .getByRole('button', { name: zh ? '更多操作' : 'More actions', exact: true })
+    .click();
+  await page.getByRole('menuitem', { name: zh ? '增加一份' : 'Add a copy', exact: true }).click();
+  assert.equal(
+    await overlays.locator('[data-demo-ref="gallery-dialog-feedback"]').textContent(),
+    `${zh ? '副本' : 'Copies'}: 1`
+  );
+  activeProbeStage = 'gallery-checkboxes';
+  const choices = gallery.locator('[data-gallery-demo="choices"]');
+  await choices
+    .getByRole('checkbox', { name: zh ? '产品更新' : 'Product updates', exact: true })
+    .click();
+  await choices
+    .getByRole('button', { name: zh ? '应用选择' : 'Apply selection', exact: true })
+    .click();
+  assert.equal(
+    await choices.getByRole('status').textContent(),
+    zh ? '已应用 1 项选择' : 'Applied 1 selections'
+  );
+  activeProbeStage = 'gallery-hover-card';
+  const hover = gallery.locator('[data-demo-ref="gallery-hover-trigger"]');
+  await hover.focus();
+  const hoverContent = page.locator('[data-demo-ref="gallery-hover-content"]');
+  await hoverContent.waitFor({ state: 'visible' });
+  assert.ok((await hoverContent.textContent())?.includes('Proto UI'));
+  await page.mouse.move(1, 1);
+  await gallery.locator('[data-demo-ref="gallery-primary"]').focus();
+  await hoverContent.waitFor({ state: 'hidden' });
+  activeProbeStage = null;
+  return {
+    button: true,
+    editorValue: value,
+    editorBold: true,
+    dialogConfirmAndFocus: true,
+    menuCopies: 1,
+    choicesApplied: 1,
+    hoverFocus: true,
   };
 }
 
@@ -650,6 +723,7 @@ async function measure(page: Page, samples = fontSelectors) {
       documentWidth: document.documentElement.scrollWidth,
       bodyWidth: document.body.scrollWidth,
       theme: document.documentElement.dataset.theme,
+      family: document.documentElement.dataset.siteLibraryFamily,
       developerToolbarPresent: document.querySelector('astro-dev-toolbar') !== null,
       heading: document.querySelector('h1')?.textContent?.trim(),
       fontVariables: {
@@ -705,6 +779,8 @@ async function measure(page: Page, samples = fontSelectors) {
             fontSize: style.fontSize,
             lineHeight: style.lineHeight,
             fontWeight: style.fontWeight,
+            prototypeId: element.getAttribute('data-projection-prototype'),
+            styleTokens: (element.getAttribute('data-pui-style') ?? '').split(/\s+/),
             color: style.color,
             backgroundColor: style.backgroundColor,
           },
@@ -748,7 +824,13 @@ async function measure(page: Page, samples = fontSelectors) {
   } finally {
     await session.detach();
   }
-  return { ...metrics, platformFonts };
+  return {
+    ...metrics,
+    platformFonts,
+    unmeasuredPlatformFontSamples: platformFonts
+      .filter((entry) => !(entry.fonts as unknown[]).length)
+      .map((entry) => entry.name),
+  };
 }
 
 async function nativeLinks(page: Page) {
@@ -1012,6 +1094,13 @@ try {
               );
               task = { demoPress: { down: pressed, released: true } };
             }
+            if (revisionKind === 'candidate')
+              task.gallery = await exerciseInteractiveGallery(page, route, async (state) => {
+                if (index < 4) {
+                  await page.evaluate(() => scrollTo(0, 0));
+                  await screenshot(`${runtime}-${state}-viewport`);
+                }
+              });
             (evidence.transitions as unknown[]).push({
               runtime,
               input: 'pointer',
@@ -1097,8 +1186,11 @@ try {
                 await screenshot(`brutalist-${runtime}-${state}-viewport`);
                 if (runtime === 'wc') await screenshot(`brutalist-${runtime}-${state}-full`, true);
               });
+              const gallery = await exerciseInteractiveGallery(page, route, async (state) => {
+                await screenshot(`brutalist-${runtime}-${state}-viewport`);
+              });
               const typography = await measure(page);
-              familyTasks.push({ family: 'brutalist', runtime, owners, task, typography });
+              familyTasks.push({ family: 'brutalist', runtime, owners, task, gallery, typography });
             }
             evidence.familyTasks = familyTasks;
             if (viewport.name === 'mobile') {
@@ -1137,7 +1229,7 @@ try {
                 : null,
               home: (
                 document.querySelector<HTMLElement>(
-                  '[data-home-showcase="website-workspace-settings"]'
+                  '[data-home-showcase="website-component-gallery"]'
                 ) ?? document.querySelector<HTMLElement>('[data-home-demo-options]')
               )?.dataset,
               page: document.querySelector<HTMLElement>('[data-homepage-runtime]')?.dataset,

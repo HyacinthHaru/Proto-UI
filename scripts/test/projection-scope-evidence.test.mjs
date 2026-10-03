@@ -51,13 +51,16 @@ function expect(value, label) {
 const api = missing.length
   ? null
   : vm.runInNewContext(
-      `${ts.transpileModule(declarations, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText}\n({ ${helpers.join(', ')}, EXPECTED_TASK_PROTOTYPES, TASK_ID });`,
+      `${ts.transpileModule(declarations, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText}\n({ ${helpers.join(', ')}, EXPECTED_TASK_PROTOTYPES, GALLERY_PART_COUNTS, TASK_ID });`,
       { expect }
     );
 
 class FixtureLocator {
   constructor(elements) {
     this.elements = [...new Set(elements)];
+  }
+  page() {
+    return new FixtureLocator([this.elements[0].ownerDocument]);
   }
   locator(selector) {
     return new FixtureLocator(
@@ -184,7 +187,7 @@ test('browser acceptance targets the approved task without restoring the removed
     [],
     'old picker-based acceptance must be migrated to real-task helpers'
   );
-  assert.equal(api.TASK_ID, 'website-workspace-settings');
+  assert.equal(api.TASK_ID, 'website-component-gallery');
   assert.doesNotMatch(
     source,
     /chooseComponent|COMPONENT_IDS|control: 'runtime' \| 'family' \| 'component'/
@@ -230,9 +233,12 @@ for (const family of ['shadcn', 'brutalist']) {
       try {
         assert.deepEqual(
           [...value.task.recipe.prototypeIds].sort(),
-          [...Object.values(api.EXPECTED_TASK_PROTOTYPES[family]), 'site-preview-surface'].sort()
+          [
+            ...Object.keys(api.GALLERY_PART_COUNTS).map((suffix) => `${family}-${suffix}`),
+            'site-preview-surface',
+          ].sort()
         );
-        assert.equal(value.task.recipe.prototypeIds.length, 10);
+        assert.equal(value.task.recipe.prototypeIds.length, 35);
         await verify(value);
       } finally {
         value.close();

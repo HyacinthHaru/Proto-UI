@@ -1,4 +1,4 @@
-import { createHomepageLivePreview, PREVIEW_SURFACE_ID } from './homepage-live-preview';
+import { createHomepageGalleryParts } from './homepage-gallery-parts';
 import type { DemoNode, DemoSetupContext, DemoSpec } from '../PrototypePreviewer/demo-types';
 import type { ProjectionContentRecipe } from '../PrototypePreviewer/projection-composition';
 import {
@@ -7,7 +7,7 @@ import {
 } from '../PrototypePreviewer/projection-families';
 import type { RuntimeId } from '../PrototypePreviewer/runtimes/registry';
 
-export const HOMEPAGE_SHOWCASE_ID = 'website-workspace-settings';
+export const HOMEPAGE_SHOWCASE_ID = 'website-component-gallery';
 
 type Settings = { view: 'list' | 'board' | 'calendar'; summary: boolean; note: string };
 const defaults = (): Settings => ({ view: 'list', summary: false, note: '' });
@@ -16,12 +16,12 @@ const equal = (left: Settings, right: Settings) =>
 
 const COPY = {
   en: {
-    title: 'Workspace settings',
-    view: 'Default project view',
-    views: { list: 'List', board: 'Board', calendar: 'Calendar' },
-    summary: 'Show weekly summary',
-    note: 'Workspace note',
-    placeholder: 'What should your team keep in mind?',
+    title: 'Notification preferences',
+    view: 'Delivery channel',
+    views: { list: 'Email', board: 'Push', calendar: 'In-app' },
+    summary: 'Weekly digest',
+    note: 'Additional note',
+    placeholder: 'Add a note for this example',
     save: 'Save to this page',
     reset: 'Restore defaults',
     unchanged: 'No unsaved changes',
@@ -34,12 +34,12 @@ const COPY = {
     noteLength: (count: number) => `Note: ${count} characters`,
   },
   'zh-cn': {
-    title: '工作区设置',
-    view: '默认项目视图',
-    views: { list: '列表', board: '看板', calendar: '日历' },
-    summary: '显示每周摘要',
-    note: '工作区备注',
-    placeholder: '有哪些需要团队记住的事情？',
+    title: '通知偏好',
+    view: '通知方式',
+    views: { list: '邮件', board: '推送', calendar: '站内信' },
+    summary: '每周摘要',
+    note: '附加说明',
+    placeholder: '为这个示例补充备注',
     save: '保存到本页',
     reset: '恢复默认值',
     unchanged: '没有未保存的更改',
@@ -79,11 +79,17 @@ export function createHomepageShowcase(
     children: [text],
   });
   const initial = defaults();
-  const preview = createHomepageLivePreview(family, locale);
+  const gallery = createHomepageGalleryParts(
+    family,
+    runtime,
+    locale,
+    isActive,
+    isCurrentGeneration
+  );
   const result: { demo: DemoSpec; recipe: ProjectionContentRecipe } = {
     recipe: {
       id: HOMEPAGE_SHOWCASE_ID,
-      prototypeIds: [...Object.values(parts), PREVIEW_SURFACE_ID],
+      prototypeIds: [...new Set([...Object.values(parts), ...gallery.ids])],
       rootPrototypeId: parts.select,
     },
     demo: {
@@ -180,7 +186,7 @@ export function createHomepageShowcase(
                       value: initial.note,
                       ariaLabel: copy.note,
                       placeholder: copy.placeholder,
-                      rows: 5,
+                      rows: 3,
                       maxLength: 240,
                     },
                     surfaceStyle: { width: '100%', minWidth: '0' },
@@ -266,7 +272,6 @@ export function createHomepageShowcase(
           });
         };
         const refresh = (message?: string) => {
-          preview.update(context, draft);
           const dirty = !equal(draft, saved);
           refs.settings!.dataset.dirty = String(dirty);
           refs['settings-count']!.textContent = copy.characters(draft.note.length);
@@ -362,11 +367,13 @@ export function createHomepageShowcase(
           replay();
           refresh(`${copy.restored} · ${equal(draft, saved) ? copy.unchanged : copy.changed}`);
         });
+        const stopGallery = gallery.setup(context);
         refresh();
         return () => {
           if (!alive) return;
           alive = false;
           pendingProps.clear();
+          stopGallery();
           context.api.call('settings-view', 'close', 'workspace settings disposed');
           for (const cleanup of cleanups) cleanup();
         };
@@ -374,17 +381,30 @@ export function createHomepageShowcase(
     },
   };
   if (result.demo.root.kind !== 'box') throw new Error('Workspace root must remain an app box');
-  const [title, fields, footer] = result.demo.root.children!;
-  result.demo.root.children = [
-    title!,
-    {
-      kind: 'box',
-      className: 'home-settings__layout',
-      children: [
-        { kind: 'box', className: 'home-settings__editor', children: [fields!, footer!] },
-        preview.node,
-      ],
+  const [, fields, footer] = result.demo.root.children!;
+  const form: DemoNode = gallery.card(
+    copy.title,
+    'Select · Switch · Textarea · Button',
+    [
+      {
+        kind: 'box',
+        ref: 'settings',
+        className: 'home-settings',
+        attrs: { 'data-home-settings': '', role: 'group', 'aria-label': copy.title },
+        children: [fields!, footer!],
+      },
+    ],
+    'preferences'
+  );
+  result.demo.root = {
+    kind: 'box',
+    className: 'home-gallery',
+    attrs: {
+      'data-home-gallery': '',
+      role: 'region',
+      'aria-label': locale === 'en' ? 'Interactive component gallery' : '可交互的组件展示',
     },
-  ];
+    children: gallery.columns(form),
+  };
   return result;
 }

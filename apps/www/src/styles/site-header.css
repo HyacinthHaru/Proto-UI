@@ -487,3 +487,11 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Labels occupy the line above the shared control baseline. */
+@media (min-width: 80rem) {
+  .home-runtime-header {
+    align-items: end;
+    padding-block-end: 0.5rem;
+  }
+}

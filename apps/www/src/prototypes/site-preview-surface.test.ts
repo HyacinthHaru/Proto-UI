@@ -24,7 +24,7 @@ it('owns actual family tokens while leaving native content and focus semantics p
     return surface.getAttribute('data-pui-style')!.split(/\s+/);
   };
   expect(await update('shadcn')).toEqual(
-    expect.arrayContaining(['rounded-lg', 'border-border', 'bg-background'])
+    expect.arrayContaining(['rounded-2xl', 'border-border', 'bg-background'])
   );
   expect(await update('brutalist', 'accent')).toEqual(
     expect.arrayContaining(['rounded-none', 'border-2', 'bg-main'])

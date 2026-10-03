@@ -12,11 +12,11 @@ import {
 
 const HOME_ROUTE = '/zh-cn/';
 const PROJECTION_FAMILIES = ['shadcn', 'brutalist'] as const;
-// The approved homepage replaced the component picker with one real task. This
-// remains a single content slot, whose nine concrete lane parts must all survive
-// each Runtime/family transaction. Never treat the wrapper's root marker as a
-// substitute for the actual Select, Switch, Textarea, or Button instances.
-const TASK_ID = 'website-workspace-settings';
+// The approved homepage displays directly usable prototype compositions in one
+// coordinated content slot. Every declared gallery part must survive each
+// Runtime/family transaction. The wrapper marker cannot substitute for the
+// actual controls or for projected portal content.
+const TASK_ID = 'website-component-gallery';
 const EXPECTED_TASK_PROTOTYPES = {
   shadcn: {
     select: 'shadcn-select-root',
@@ -40,6 +40,42 @@ const EXPECTED_TASK_PROTOTYPES = {
     textarea: 'brutalist-textarea-root',
     button: 'brutalist-button',
   },
+} as const;
+const GALLERY_PART_COUNTS = {
+  'button': 11,
+  'separator-root': 2,
+  'toggle': 4,
+  'checkbox-root': 4,
+  'checkbox-indicator': 4,
+  'switch-root': 2,
+  'switch-thumb': 2,
+  'hover-card-root': 1,
+  'hover-card-trigger': 1,
+  'hover-card-content': 1,
+  'select-root': 1,
+  'select-trigger': 1,
+  'select-value': 1,
+  'select-content': 1,
+  'select-item': 3,
+  'textarea-root': 2,
+  'tabs-root': 1,
+  'tabs-list': 1,
+  'tabs-trigger': 2,
+  'tabs-content': 2,
+  'dialog-root': 1,
+  'dialog-trigger': 1,
+  'dialog-mask': 1,
+  'dialog-content': 1,
+  'dialog-header': 1,
+  'dialog-title': 1,
+  'dialog-description': 1,
+  'dialog-footer': 1,
+  'dialog-close': 2,
+  'dialog-close-icon': 1,
+  'dropdown-root': 1,
+  'dropdown-trigger': 1,
+  'dropdown-content': 1,
+  'dropdown-item': 2,
 } as const;
 const TASK_PART_REFS = {
   'settings-view': 'select',
@@ -383,7 +419,10 @@ async function workspaceTask(
     await scope.locator('[data-projection-control="component"]').count(),
     'the approved homepage has no component picker'
   ).toBe(0);
-  expect(await content.locator('[data-home-settings]').count(), 'one real workspace task').toBe(1);
+  expect(
+    await content.locator('[data-home-settings]').count(),
+    'one real notification composition'
+  ).toBe(1);
 
   const family = expected.projectionFamilyId as ProjectionFamilyId;
   const prototypes = EXPECTED_TASK_PROTOTYPES[family];
@@ -406,43 +445,34 @@ async function workspaceTask(
 
 async function assertTaskPartInventory(
   scope: Locator,
-  content: Locator,
+  _content: Locator,
   portal: Locator,
   expected: ProjectionCoordinate
 ): Promise<void> {
   // These are the renderer's actual Prototype marker surfaces, not the content
   // wrapper (which also carries the recipe root identity). The union deduplicates
   // any still-in-tree portal and includes the content root after it is portaled.
-  const parts = content
-    .locator('.pui-projection-prototype')
-    .or(portal)
-    .or(portal.locator('.pui-projection-prototype'));
-  const prototypes = EXPECTED_TASK_PROTOTYPES[expected.projectionFamilyId as ProjectionFamilyId];
+  const ownerId = await scope.getAttribute('data-projection-scope');
+  const parts = scope
+    .page()
+    .locator(
+      `${attributeEquals('data-projection-owner', ownerId!)}${attributeEquals('data-projection-generation', expected.generation)}.pui-projection-prototype`
+    );
+  const family = expected.projectionFamilyId;
   const expectedIds = [
-    prototypes.select,
-    prototypes.trigger,
-    prototypes.value,
-    prototypes.content,
-    prototypes.item,
-    prototypes.item,
-    prototypes.item,
-    prototypes.switch,
-    prototypes.thumb,
-    prototypes.textarea,
-    prototypes.button,
-    prototypes.button,
-    ...Array(5).fill('site-preview-surface'),
+    ...Object.entries(GALLERY_PART_COUNTS).flatMap(([suffix, count]) =>
+      Array(count).fill(`${family}-${suffix}`)
+    ),
+    ...Array(6).fill('site-preview-surface'),
   ].sort();
   const actualIds = await parts.evaluateAll((elements) =>
     elements.map((element) => element.getAttribute('data-projection-prototype')).sort()
   );
-  expect(
-    actualIds,
-    'all 17 task instances from nine lane parts and the passive preview surface'
-  ).toEqual(expectedIds);
-  expect(new Set(actualIds).size, 'complete declared task recipe').toBe(10);
+  expect(actualIds, 'all declared gallery instances, including closed/portaled parts').toEqual(
+    expectedIds
+  );
+  expect(new Set(actualIds).size, 'complete declared task recipe').toBe(35);
   await assertSurfacesShareCoordinate(parts, expected, 'every actual task part coordinate');
-  const ownerId = await scope.getAttribute('data-projection-scope');
   const owners = await parts.evaluateAll((elements) =>
     elements.map((element) => element.getAttribute('data-projection-owner'))
   );
@@ -658,7 +688,7 @@ describe.sequential('Homepage Prototype projection scope', () => {
     }
   }, 240_000);
 
-  it('projects one WC workspace task with all nine lane parts and exact Select fingerprints', async () => {
+  it('projects the WC gallery with every concrete part and exact Select fingerprints', async () => {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const page = await context.newPage();
     const errors = observePageErrors(page);

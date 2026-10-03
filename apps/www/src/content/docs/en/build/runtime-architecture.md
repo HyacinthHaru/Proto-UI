@@ -117,12 +117,12 @@ corepack pnpm@10.32.1 check:types
 
 Continue to [Host Caps](/en/build/host-caps/) for capability wiring, [Adapter Guide](/en/build/adapter-guide/) for the current contribution boundary, or [Contracts & Tests](/en/build/contracts-and-tests/) for evidence tracing.
 
-## Homepage workspace example
+## Homepage component gallery
 
-The homepage's `website-workspace-settings` is a website-owned composition of existing Select, Switch, Textarea and Button Prototypes. Each selected library supplies its own concrete parts. It is an application recipe, not a new public Prototype or Template-level composition feature.
+`website-component-gallery` is a website composition of eleven existing Prototype families: Button, Toggle, Checkbox, Switch, Select, Textarea, Tabs, Dialog, Dropdown Menu, Hover Card and Separator. The gallery exposes the controls directly and combines them into preferences, text editing/preview, and overlay tasks. Its six display surfaces use the site-owned experimental passive `SitePreviewSurface`; they do not claim an official Shadcn Card or new Base behavior.
 
-The page runtime selector rematerializes the homepage's Proto UI navigation surfaces, theme and language controls, actions and workspace example through Web Components, React, Vue or Vue 2. The library selector changes Shadcn / Brutalist independently. The complete page generation commits together. Astro retains static content and layout; search remains the documentation service.
+Global Runtime and Library preferences rematerialize all registered homepage participants through Web Components, React, Vue or Vue 2 and commit one generation. Family and runtime are independent choices. Astro owns content/layout; Pagefind owns search infrastructure while its UI retains a separate migration obligation. Individual component examples remain in documentation.
 
-“Save to this page” copies the current workspace settings into that mounted example's local saved state. Restore defaults edits the draft; save again to accept the defaults. There is no server submission or durable storage. A runtime or library remount resets both draft and saved state. The individual component examples remain in their component documentation.
+Preferences are saved only within the mounted example. Text editing updates a real preview; supported Tabs `keepMounted` preserves that controlled draft while inactive. Dialog/Dropdown/HoverCard own their interaction and focus semantics. Successful global remount resets example state; failed replacement retains the old usable generation. No backend or durable storage is implied.
 
-The source is [homepage-showcase.ts](https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/components/Homepage/homepage-showcase.ts). Flutter, Qt and GPUI browser/WASM runners remain research directions, not available adapters or conformance claims.
+Source: [homepage-showcase.ts](https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/components/Homepage/homepage-showcase.ts) and [homepage-gallery-parts.ts](https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/components/Homepage/homepage-gallery-parts.ts). Flutter, Qt and GPUI browser/WASM runners remain research directions, not available adapters or conformance claims.

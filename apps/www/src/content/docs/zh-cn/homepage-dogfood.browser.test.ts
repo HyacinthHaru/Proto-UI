@@ -202,7 +202,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           );
           expect(await accessibleTheme.getAttribute('title')).toBe('切换主题');
           expect(coordinates.family).toBe(family);
-          expect(coordinates.component).toBe('website-workspace-settings');
+          expect(coordinates.component).toBe('website-component-gallery');
           expect(coordinates.demoGeneration).toBe(coordinates.pageGeneration);
           expect(
             await page.locator('[data-home-showcase] [data-projection-control="component"]').count()

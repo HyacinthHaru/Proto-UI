@@ -37,7 +37,13 @@ export function layoutFailures(
     viewportWidth: number;
     documentWidth: number;
     bodyWidth: number;
-    fonts: Array<{ name: string; fontFamily: string }>;
+    family?: string;
+    fonts: Array<{
+      name: string;
+      fontFamily: string;
+      prototypeId?: string | null;
+      styleTokens?: string[];
+    }>;
   },
   { requireSansSerif = true } = {}
 ): string[] {
@@ -50,7 +56,18 @@ export function layoutFailures(
   if (!metrics.fonts.some((font) => font.name === 'heading'))
     failures.push('Missing heading font sample.');
   for (const font of metrics.fonts) {
-    if (requireSansSerif && !/(?:sans-serif|system-ui)/i.test(font.fontFamily)) {
+    const intentionalMono =
+      metrics.family === 'brutalist' &&
+      ['brutalist-button', 'brutalist-textarea-root'].includes(font.prototypeId ?? '') &&
+      font.styleTokens?.includes('font-mono') &&
+      /monospace/i.test(font.fontFamily);
+    const serif = /(?:^|,)\s*serif\s*(?:,|$)|Times New Roman|Noto Serif|Songti|SimSun/i.test(
+      font.fontFamily
+    );
+    if (
+      requireSansSerif &&
+      (serif || (!intentionalMono && !/(?:sans-serif|system-ui)/i.test(font.fontFamily)))
+    ) {
       failures.push(`${font.name} does not inherit a sans-serif stack: ${font.fontFamily}`);
     }
   }

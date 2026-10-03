@@ -78,11 +78,12 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     const ids = new Set<string>();
     collectPrototypeIds(content.demo.root, ids);
     expect([...ids].sort()).toEqual([...content.recipe.prototypeIds].sort());
-    expect(ids.size).toBe(10);
+    expect(ids.size).toBe(35);
     expect([...ids].every((id) => id.startsWith(`${family}-`) || id === PREVIEW_SURFACE_ID)).toBe(
       true
     );
-    expect([...ids].some((id) => id.includes('card'))).toBe(false);
+    expect(ids.has(`${family}-hover-card-root`)).toBe(true);
+    expect(ids.has(`${family}-card-root`)).toBe(false);
     const composition = createProjectionComposition({
       ownerId: 'settings',
       runtimeId: 'wc',
@@ -114,9 +115,6 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
     it('edits, saves an actual page-local snapshot, restores defaults and saves again', async () => {
       const task = mount(runtime);
       expect(task.props['settings-save']!.disabled).toBe(true);
-      expect(task.refs['settings-preview-tasks']!.dataset.view).toBe('list');
-      expect(task.refs['settings-preview-summary']!.hidden).toBe(true);
-      expect(task.refs['settings-preview-note']!.hidden).toBe(true);
       task.event('settings-view', 'valueChange', { value: 'board' });
       task.event('settings-summary', 'checkedChange', { checked: true });
       task.event('settings-note', 'valueChange', { value: 'Plan', composing: false });
@@ -125,17 +123,12 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
       expect(task.props['settings-view']!.value).toBe('board');
       expect(task.props['settings-summary']!.checked).toBe(true);
       expect(task.props['settings-note']!.value).toBe('Plan');
-      expect(task.refs['settings-preview-tasks']!.dataset.view).toBe('board');
-      expect(task.refs['settings-preview-view']!.textContent).toBe('Board');
-      expect(task.refs['settings-preview-summary']!.hidden).toBe(false);
-      expect(task.refs['settings-preview-note']!.hidden).toBe(false);
-      expect(task.refs['settings-preview-note-text']!.textContent).toBe('Plan');
       expect(task.refs['settings-count']!.textContent).toBe('4 / 240 characters');
       task.event('settings-save', 'click');
       await Promise.resolve();
       expect(task.refs.settings!.dataset.dirty).toBe('false');
       expect(task.refs['settings-feedback']!.textContent).toBe(
-        'Saved to this page · Board · Weekly summary on · Note: 4 characters'
+        'Saved to this page · Push · Weekly summary on · Note: 4 characters'
       );
       expect(task.props['settings-save']!.disabled).toBe(true);
       task.event('settings-reset', 'click');
@@ -143,15 +136,12 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
       expect(task.props['settings-view']!.value).toBe('list');
       expect(task.props['settings-summary']!.checked).toBe(false);
       expect(task.props['settings-note']!.value).toBe('');
-      expect(task.refs['settings-preview-tasks']!.dataset.view).toBe('list');
-      expect(task.refs['settings-preview-summary']!.hidden).toBe(true);
-      expect(task.refs['settings-preview-note']!.hidden).toBe(true);
       expect(task.refs.settings!.dataset.dirty).toBe('true');
       expect(task.props['settings-reset']!.disabled).toBe(true);
       task.event('settings-save', 'click');
       await Promise.resolve();
       expect(task.refs['settings-feedback']!.textContent).toBe(
-        'Saved to this page · List · Weekly summary off · Note: 0 characters'
+        'Saved to this page · Email · Weekly summary off · Note: 0 characters'
       );
       task.cleanup();
       task.cleanup();
@@ -258,3 +248,28 @@ it('ignores the native click when WC emits its protocol click', () => {
   expect(task.refs.settings!.dataset.dirty).toBe('false');
   task.cleanup();
 });
+
+for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+  it(`${runtime}: gallery compositions have real independent task results and revoke stale work`, async () => {
+    const gallery = mount(runtime);
+    gallery.event('gallery-primary', 'click');
+    expect(gallery.refs['gallery-controls-feedback']!.textContent).toBe('Primary button ✓');
+    gallery.event('editor-text', 'valueChange', { value: 'Editable result' });
+    gallery.event('editor-bold', 'activeChange', { active: true });
+    await Promise.resolve();
+    expect(gallery.props['editor-text']!.value).toBe('Editable result');
+    expect(gallery.refs['editor-preview']!.textContent).toBe('Editable result');
+    expect(gallery.refs['editor-preview']!.style.fontWeight).toBe('700');
+    gallery.event('gallery-menu-add', 'select', { value: 'add' });
+    expect(gallery.refs['gallery-dialog-feedback']!.textContent).toBe('Copies: 1');
+    gallery.event('gallery-confirm', 'click');
+    expect(gallery.refs['gallery-dialog-feedback']!.textContent).toBe('Confirmed');
+    gallery.event('choice-product', 'checkedChange', { checked: false });
+    gallery.event('choice-apply', 'click');
+    expect(gallery.refs['choice-feedback']!.textContent).toBe('Applied 1 selections');
+    gallery.deactivate();
+    gallery.event('gallery-menu-add', 'select');
+    expect(gallery.refs['gallery-dialog-feedback']!.textContent).toBe('Confirmed');
+    gallery.cleanup();
+  });
+}

@@ -29,7 +29,7 @@ describe('Homepage presentation source boundaries', () => {
 
   it('shows the task without conceptual headings, metadata or styled wrapper surfaces', () => {
     const preview = read('apps/www/src/components/PrototypePreviewer/HomeDemoPreviewer.astro');
-    expect(preview).toContain('data-home-showcase="website-workspace-settings"');
+    expect(preview).toContain('data-home-showcase="website-component-gallery"');
     expect(preview).toContain('data-home-demo-host');
     expect(preview).toContain('aria-live="polite"');
     for (const removed of [
@@ -44,7 +44,7 @@ describe('Homepage presentation source boundaries', () => {
     ]) {
       expect(preview).not.toContain(removed);
     }
-    expect(preview).toContain('grid-template-columns: minmax(19rem, 0.8fr) minmax(0, 1.4fr)');
+    expect(preview).toContain('grid-template-columns: repeat(4, minmax(0, 1fr))');
     expect(preview).toContain('grid-template-columns: minmax(0, 1fr);');
   });
   it('uses one defined bilingual sans-serif stack instead of an unresolved color token', () => {
@@ -61,7 +61,7 @@ describe('Homepage presentation source boundaries', () => {
   it('keeps technical scope and research qualifications in secondary docs', () => {
     for (const locale of ['en', 'zh-cn']) {
       const doc = read(`apps/www/src/content/docs/${locale}/build/runtime-architecture.md`);
-      expect(doc).toContain('website-workspace-settings');
+      expect(doc).toContain('website-component-gallery');
       expect(doc).toContain('Flutter');
       expect(doc).toContain('GPUI');
     }

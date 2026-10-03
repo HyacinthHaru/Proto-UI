@@ -25,7 +25,7 @@ function fixture(withDemo = false) {
   <main><div id="hero" data-homepage-actions><div data-homepage-fallback><a href="https://example.com/docs" target="_blank" rel="noopener">Get started</a></div><div data-homepage-mount></div></div></main>`;
   if (withDemo) {
     const demo = document.createElement('section');
-    demo.dataset.homeShowcase = 'website-workspace-settings';
+    demo.dataset.homeShowcase = 'website-component-gallery';
     demo.dataset.locale = 'en';
     demo.innerHTML = '<div data-home-demo-host></div><output data-home-demo-status></output>';
     document.body.append(demo);
@@ -178,7 +178,7 @@ describe('Homepage page-owned runtime', () => {
     const controls = fakes.materialize.mock.calls[0]![1].controls;
     expect(fakes.materialize.mock.calls[2]![1].controlIds).toEqual([]);
     const task = fakes.materialize.mock.calls[2]![1].content;
-    expect(task.recipe.id).toBe('website-workspace-settings');
+    expect(task.recipe.id).toBe('website-component-gallery');
     assertDemoSpec(task.demo);
     expect(task.recipe.prototypeIds).toContain('shadcn-textarea-root');
     expect(task.recipe.prototypeIds).toContain('shadcn-switch-root');
@@ -190,7 +190,7 @@ describe('Homepage page-owned runtime', () => {
     );
     expect(fakes.restoreFocus.mock.calls.at(-1)?.[1]).toBe('projection-family-select');
     expect(demo.dataset.projectionFamily).toBe('brutalist');
-    expect(demo.dataset.projectionComponent).toBe('website-workspace-settings');
+    expect(demo.dataset.projectionComponent).toBe('website-component-gallery');
     expect(document.documentElement.dataset.siteLibraryFamily).toBe('brutalist');
     expect(
       fakes.materialize.mock.calls
@@ -206,7 +206,7 @@ describe('Homepage page-owned runtime', () => {
     expect(demo.dataset.runnerRuntime).toBe('react');
     expect(demo.dataset.projectionRuntime).toBe('react');
     expect(demo.dataset.projectionGeneration).toBe(root.dataset.runtimeGeneration);
-    expect(demo.dataset.projectionComponent).toBe('website-workspace-settings');
+    expect(demo.dataset.projectionComponent).toBe('website-component-gallery');
     expect(root.dataset.family).toBe('brutalist');
   });
 

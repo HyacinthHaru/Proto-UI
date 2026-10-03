@@ -59,7 +59,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       const feedback = ref('settings-feedback');
       const note = ref('settings-note') as HTMLTextAreaElement;
       const task = ref('settings');
-      await expect.poll(() => trigger.textContent).toContain('列表');
+      await expect.poll(() => trigger.textContent).toContain('邮件');
       trigger.focus();
       press(trigger, 'Enter');
       await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('true');
@@ -68,12 +68,12 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         .toBeTruthy();
       const portal = document.getElementById(trigger.getAttribute('aria-controls')!)!;
       const board = [...portal.querySelectorAll<HTMLElement>('[role="option"]')].find(
-        (option) => option.textContent?.trim() === '看板'
+        (option) => option.textContent?.trim() === '推送'
       )!;
       expect(board).toBeTruthy();
       board.focus();
       press(board, 'Enter');
-      await expect.poll(() => trigger.textContent).toContain('看板');
+      await expect.poll(() => trigger.textContent).toContain('推送');
       await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
       await expect.poll(() => document.activeElement === trigger).toBe(true);
       expect(task.dataset.dirty).toBe('true');
@@ -82,7 +82,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       await expect.poll(() => summary.getAttribute('aria-checked')).toBe('true');
       note.focus();
       // Fill-shaped synthetic replacement inputs complement native .fill in CI.
-      for (const replacement of [`${family} / renderer`, '多字符工作区备注']) {
+      for (const replacement of [`${family} / renderer`, '多字符附加说明']) {
         note.value = replacement;
         note.setSelectionRange(replacement.length, replacement.length);
         note.dispatchEvent(
@@ -128,7 +128,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       save.click();
       await expect
         .poll(() => feedback.textContent)
-        .toBe('已保存到本页 · 看板 · 显示每周摘要 · 备注 3 字');
+        .toBe('已保存到本页 · 推送 · 显示每周摘要 · 备注 3 字');
       expect(note.value).toBe('A备注');
       expect(task.dataset.dirty).toBe('false');
       // The renderer refreshes every React root. Wait for the next action's
@@ -136,7 +136,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       await expect.poll(() => reset.getAttribute('aria-disabled')).toBe('false');
       await expect.poll(() => reset.getAttribute('role')).toBe('button');
       reset.click();
-      await expect.poll(() => trigger.textContent).toContain('列表');
+      await expect.poll(() => trigger.textContent).toContain('邮件');
       await expect.poll(() => summary.getAttribute('aria-checked')).toBe('false');
       await expect.poll(() => note.value).toBe('');
       expect(task.dataset.dirty).toBe('true');
@@ -145,8 +145,25 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       save.click();
       await expect
         .poll(() => feedback.textContent)
-        .toBe('已保存到本页 · 列表 · 隐藏每周摘要 · 备注 0 字');
+        .toBe('已保存到本页 · 邮件 · 隐藏每周摘要 · 备注 0 字');
       expect(task.dataset.dirty).toBe('false');
+      ref('gallery-primary').click();
+      await expect.poll(() => ref('gallery-controls-feedback').textContent).toContain('✓');
+      const editorRoot = ref('editor-text');
+      const editorText = (
+        editorRoot.matches('textarea') ? editorRoot : editorRoot.querySelector('textarea')
+      ) as HTMLTextAreaElement;
+      editorText.value = '真实组合编辑';
+      editorText.dispatchEvent(
+        new InputEvent('input', { bubbles: true, data: '真实组合编辑', inputType: 'insertText' })
+      );
+      await expect.poll(() => editorText.value).toBe('真实组合编辑');
+      ref('editor-bold').click();
+      await expect.poll(() => ref('editor-preview').textContent).toBe('真实组合编辑');
+      await expect.poll(() => ref('editor-preview').style.fontWeight).toBe('700');
+      ref('choice-product').click();
+      ref('choice-apply').click();
+      await expect.poll(() => ref('choice-feedback').textContent).toBe('已应用 1 项选择');
       await rendered.destroy();
       rendered = undefined;
       expect(errors).toEqual([]);
