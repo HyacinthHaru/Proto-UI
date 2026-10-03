@@ -221,7 +221,7 @@ test('browser acceptance targets the approved task without restoring the removed
     'replaced Runtime generation surfaces',
     'expected.content',
     'expected.item',
-    'restingBounds.y + 1',
+    "restingBounds.y + (projectionFamilyId === 'brutalist' ? 0 : 1)",
   ])
     assert.ok(source.includes(requirement), `retains ${requirement}`);
 });

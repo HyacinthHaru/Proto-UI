@@ -109,7 +109,8 @@ async function settled(
   root: Locator,
   runtime: string,
   family: string,
-  phase: 'route-reset' | 'fixture-restore'
+  phase: 'route-reset' | 'fixture-restore',
+  caseFamily: string
 ) {
   const samples: CodeSurfaceGenerationFacts[] = [];
   const ownershipViolations: string[] = [];
@@ -154,9 +155,9 @@ async function settled(
     expect(ownershipViolations).toEqual([]);
   } finally {
     await writeFile(
-      join(directory, `${runtime}-${family}-${phase}-generation-settle.json`),
+      join(directory, `${runtime}-${caseFamily}-${phase}-${family}-generation-settle.json`),
       JSON.stringify(
-        { ...sourceBinding, runtime, family, phase, samples, ownershipViolations },
+        { ...sourceBinding, runtime, family, caseFamily, phase, samples, ownershipViolations },
         null,
         2
       )
@@ -297,12 +298,12 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
           // The real quick-start route restores Shadcn on astro:page-load.
           // Reinitialization can therefore also request a family transaction;
           // require its committed coordinates AND retirement, not just a count.
-          await settled(example, runtime, 'shadcn', 'route-reset');
+          await settled(example, runtime, 'shadcn', 'route-reset', family);
           expect((await appearance(example)).surfaceCount).toBe(1);
           for (const node of sourceNodes)
             expect(await node.evaluate((node) => node.isConnected)).toBe(true);
           await selectFixtureFamily(page, family);
-          await settled(example, runtime, family, 'fixture-restore');
+          await settled(example, runtime, family, 'fixture-restore', family);
           expect((await appearance(example)).surfaceCount).toBe(1);
           await page.setViewportSize({ width: 320, height: 1000 });
           expect(
