@@ -39,6 +39,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts',
