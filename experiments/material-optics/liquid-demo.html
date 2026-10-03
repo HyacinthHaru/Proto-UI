@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <title>Experimental refractive and liquid surfaces</title>
+  <style>
+    body {
+      margin: 0;
+      background: #11182b;
+      color: #f0f4ff;
+      font: 16px system-ui;
+    }
+    main {
+      width: 720px;
+      margin: 32px auto;
+    }
+    h1 {
+      font-size: 27px;
+      margin: 0 0 12px;
+    }
+    p {
+      color: #b8c5df;
+      line-height: 1.55;
+    }
+    button {
+      font: inherit;
+      color: #11182b;
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    #stage {
+      position: relative;
+      width: 680px;
+      height: 390px;
+      overflow: hidden;
+      border-radius: 28px;
+      margin-top: 24px;
+      background: #6abedd;
+    }
+    #backdrop {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          100deg,
+          transparent 0 31px,
+          #fff8 32px 34px,
+          transparent 35px 83px
+        ),
+        linear-gradient(125deg, #3066c9 0%, #6cdac9 38%, #eea284 74%, #d462a9 100%);
+    }
+    #backdrop h2 {
+      font-size: 64px;
+      line-height: 1;
+      letter-spacing: -3px;
+      color: #fff9;
+      position: absolute;
+      left: 32px;
+      top: 62px;
+      margin: 0;
+    }
+    #backdrop p {
+      position: absolute;
+      top: 252px;
+      left: 34px;
+      color: #163564;
+      font-weight: 600;
+    }
+    #lens {
+      position: absolute;
+      left: 40px;
+      top: 65px;
+      width: 600px;
+      height: 264px;
+      backdrop-filter: url(#lens-filter);
+    }
+    #shine {
+      position: absolute;
+      inset: 0;
+      width: 600px;
+      height: 264px;
+      pointer-events: none;
+    }
+    #label {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 116px;
+      text-align: center;
+      color: #12294d;
+      font-size: 17px;
+      font-weight: 650;
+      text-shadow: 0 1px 1px #fff9;
+      pointer-events: none;
+    }
+    #liquid-trigger {
+      position: absolute;
+      left: 174px;
+      top: 94px;
+      width: 252px;
+      height: 82px;
+      opacity: 0;
+      background: transparent;
+      padding: 0;
+    }
+    #menu-copy {
+      position: absolute;
+      left: 189px;
+      top: 66px;
+      color: #123052;
+      font-weight: 600;
+      line-height: 2.4;
+      display: none;
+      pointer-events: none;
+    }
+    #status {
+      font-size: 13px;
+      color: #a6b8d5;
+    }
+    #toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .note {
+      font-size: 13px;
+    }
+  </style>
+  <main>
+    <h1>Refractive, responsive, and liquid</h1>
+    <p>
+      Independent experimental model on the real, live DOM backdrop. Shape-driven lensing and
+      highlights, press deformation, fusion and menu morphing.
+    </p>
+    <div id="toolbar">
+      <button id="press-demo">Press & release</button
+      ><button id="merge-demo">Join / separate</button><button id="menu-demo">Button / menu</button
+      ><button id="light-demo">Move light</button
+      ><button id="background-demo">Move real background</button>
+    </div>
+    <div id="stage">
+      <div id="backdrop">
+        <h2>Flow<br />with the light.</h2>
+        <p>LIVE DOM CONTENT · 0123 / A</p>
+      </div>
+      <div id="lens">
+        <canvas id="shine" width="300" height="132"></canvas>
+        <div id="label">
+          Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Share
+        </div>
+        <div id="menu-copy">
+          ✦ Save to collection<br />↗ Share with someone<br />＋ Create new item
+        </div>
+        <button id="liquid-trigger" aria-label="Press the refractive surface"></button>
+      </div>
+    </div>
+    <p id="status">
+      Experimental optical model; not Apple's native engine or cross-platform conformance.
+    </p>
+    <p class="note">
+      The displayed backdrop is ordinary DOM. Only the generated normal/highlight field is an image.
+      Prototype/Adapter/Compiler admission follows separate review.
+    </p>
+  </main>
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <defs>
+      <filter
+        id="lens-filter"
+        x="0"
+        y="0"
+        width="100%"
+        height="100%"
+        color-interpolation-filters="sRGB"
+      >
+        <feImage
+          id="field"
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          preserveAspectRatio="none"
+          result="normal"
+        />
+        <feDisplacementMap
+          id="lens-displacement"
+          in="SourceGraphic"
+          in2="normal"
+          scale="40"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="refracted"
+        />
+        <feComposite in="refracted" in2="normal" operator="in" result="masked" />
+        <feMerge>
+          <feMergeNode in="SourceGraphic" />
+          <feMergeNode in="masked" />
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+  <script type="module">
+    import { makeField } from './heightfield.mjs';
+    const state = { merge: 0, press: 0, morph: 0, mode: 'pair', light: [-0.65, -0.75] };
+    const normal = document.createElement('canvas');
+    normal.width = 300;
+    normal.height = 132;
+    const ctx = normal.getContext('2d'),
+      shine = document.querySelector('#shine').getContext('2d');
+    let generation = 0,
+      frame = 0;
+    const samples = [];
+    function render() {
+      const f = makeField(state);
+      ctx.putImageData(new ImageData(f.normal, f.width, f.height), 0, 0);
+      shine.putImageData(new ImageData(f.shine, f.width, f.height), 0, 0);
+      document.querySelector('#field').setAttribute('href', normal.toDataURL());
+      document.querySelector('#label').textContent =
+        state.mode === 'menu'
+          ? state.morph > 0.45
+            ? ''
+            : 'Options'
+          : state.merge > 0.6
+            ? 'Edit · Share'
+            : 'Edit                 Share';
+      document.querySelector('#menu-copy').style.display =
+        state.mode === 'menu' && state.morph > 0.6 ? 'block' : 'none';
+      frame++;
+      document.body.dataset.frame = String(frame);
+    }
+    function animate(patch, duration = 850) {
+      const old = { ...state },
+        current = ++generation,
+        start = performance.now();
+      document.body.dataset.animating = 'true';
+      return new Promise((resolve) => {
+        function tick(now) {
+          if (current !== generation) return resolve(false);
+          const t = Math.min(1, (now - start) / duration),
+            s = t * t * (3 - 2 * t);
+          for (const key of Object.keys(patch)) state[key] = old[key] + (patch[key] - old[key]) * s;
+          render();
+          samples.push({ frame, t, state: { ...state } });
+          if (t < 1) requestAnimationFrame(tick);
+          else {
+            document.body.dataset.animating = 'false';
+            resolve(true);
+          }
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+    async function press() {
+      if (!(await animate({ press: 1 }, 180))) return;
+      if (!(await animate({ press: -0.15 }, 210))) return;
+      await animate({ press: 0 }, 260);
+    }
+    document.querySelector('#press-demo').onclick = press;
+    document.querySelector('#merge-demo').onclick = () => {
+      state.mode = 'pair';
+      animate({ merge: state.merge > 0.5 ? 0 : 1, press: 0 });
+    };
+    document.querySelector('#menu-demo').onclick = () => {
+      state.mode = 'menu';
+      animate({ morph: state.morph > 0.5 ? 0 : 1, press: 0 }, 1000);
+    };
+    document.querySelector('#light-demo').onclick = () => {
+      state.light = state.light[0] < 0 ? [0.8, -0.6] : [-0.65, -0.75];
+      render();
+    };
+    document.querySelector('#background-demo').onclick = () => {
+      document.querySelector('#backdrop').style.transform = 'translateX(13px)';
+      document.querySelector('#backdrop p').textContent = 'LIVE DOM CONTENT · 4567 / B';
+    };
+    const trigger = document.querySelector('#liquid-trigger');
+    trigger.onpointerdown = () => animate({ press: 1 }, 150);
+    trigger.onpointerup = () => animate({ press: 0 }, 400);
+    trigger.onpointercancel = () => animate({ press: 0 }, 400);
+    window.liquidExperiment = {
+      state,
+      samples,
+      render,
+      set(patch) {
+        Object.assign(state, patch);
+        render();
+      },
+      get frame() {
+        return frame;
+      },
+    };
+    render();
+    document.body.dataset.ready = 'true';
+  </script>
+</html>
