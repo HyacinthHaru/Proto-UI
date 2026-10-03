@@ -840,14 +840,36 @@ describe('native navigation precondition evidence', () => {
       (node) => ts.isFunctionDeclaration(node) && node.name?.text === 'choose'
     );
     assert.ok(helper);
+    const headerSource = readFileSync(
+      new URL('../../apps/www/src/content/docs/zh-cn/site-header-browser.ts', import.meta.url),
+      'utf8'
+    );
+    const headerParsed = ts.createSourceFile(
+      'header.ts',
+      headerSource,
+      ts.ScriptTarget.Latest,
+      true
+    );
+    const headerHelper = headerParsed.statements.find(
+      (node) => ts.isFunctionDeclaration(node) && node.name?.text === 'revealHeaderPreferences'
+    );
+    assert.ok(headerHelper);
     const context = { result: undefined };
     runInNewContext(
-      ts.transpileModule(`${helper.getText(parsed)}; result = choose;`, {
-        compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None },
-      }).outputText,
+      ts.transpileModule(
+        `${headerHelper.getText(headerParsed).replace(/^export /, '')}; ${helper.getText(parsed)}; result = choose;`,
+        {
+          compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None },
+        }
+      ).outputText,
       context
     );
-    for (const stuck of [false, true]) {
+    for (const [compact, stuck] of [
+      [false, false],
+      [false, true],
+      [true, false],
+      [true, true],
+    ]) {
       const order = [];
       const portal = {
         getByRole(role, options) {
@@ -874,15 +896,36 @@ describe('native navigation precondition evidence', () => {
           return 'runtime-options';
         },
       };
+      const preferences = {
+        count: async () => (compact ? 1 : 0),
+        isVisible: async () => false,
+        async waitFor(options) {
+          assert.equal(options.state, 'visible');
+          order.push('preferences-visible');
+        },
+      };
+      const menu = {
+        getAttribute: async () => 'false',
+        click: async () => {
+          order.push('open-menu');
+        },
+      };
       const page = {
         locator(selector) {
+          if (selector === '[data-site-header] [data-site-header-preferences]') return preferences;
+          if (selector.includes('home-menu')) return menu;
           return selector.startsWith('[id=') ? portal : trigger;
         },
       };
       const result = context.result(page, 'runtime-owner', 'Web Components');
       if (stuck) await assert.rejects(result, /closing surface remained visible/);
       else await result;
-      assert.deepEqual(order, ['open', 'select-current', 'actual-portal-hidden']);
+      assert.deepEqual(order, [
+        ...(compact ? ['open-menu', 'preferences-visible'] : []),
+        'open',
+        'select-current',
+        'actual-portal-hidden',
+      ]);
     }
   });
 });
