@@ -3,7 +3,11 @@ import { createInterface } from 'node:readline';
 import { randomUUID } from 'node:crypto';
 import { writeFileSync, readFileSync } from 'node:fs';
 import { parse } from 'yaml';
-import { ConnectorReviewSession, CONNECTOR_AUTHORIZATION } from './connector-review-session.mjs';
+import {
+  ConnectorReviewSession,
+  CONNECTOR_AUTHORIZATION,
+  INITIAL_SWEEP_AUTHORIZATION,
+} from './connector-review-session.mjs';
 import { RemoteCloudReviewLedger, ownerGitLedgerTransport } from './remote-cloud-review-ledger.mjs';
 import { ConnectorReviewTransport } from './connector-review-transport.mjs';
 
@@ -29,10 +33,13 @@ const enabled = args.size > 0;
 if (
   enabled &&
   (args.size !== 3 ||
-    policy.reviewSubmissionAuthorizations.find((x) => x.id === CONNECTOR_AUTHORIZATION)?.status !==
-      'active')
+    ![CONNECTOR_AUTHORIZATION, INITIAL_SWEEP_AUTHORIZATION].some((id) =>
+      policy.reviewSubmissionAuthorizations.some(
+        (scope) => scope.id === id && scope.status === 'active'
+      )
+    ))
 ) {
-  throw new Error('publication worker needs exact ledger pins and active admitted event policy');
+  throw new Error('publication worker needs exact ledger pins and an active admitted review scope');
 }
 const pending = new Map();
 const send = (message) => process.stdout.write(JSON.stringify(message) + '\n');

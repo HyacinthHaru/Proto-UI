@@ -9,6 +9,7 @@ import {
   RemoteCloudReviewLedger,
   REMOTE_LEDGER_REF,
   readOnlyGitLedgerTransport,
+  ownerGitLedgerTransport,
 } from '../remote-cloud-review-ledger.mjs';
 import { analysis } from './fixtures/cloud-review.mjs';
 
@@ -203,3 +204,50 @@ test('lost acknowledgement of simulated finalization preserves baseline and neve
   assert.throws(() => reopened.consumeSimulationAttempt(intent.id), /fresh, stopped or restarted/);
   assert.throws(() => a.ledger.consumeSimulationAttempt(intent.id), /mutation is stopped/);
 });
+
+// Exercise the production push arguments against real disposable local remotes.
+// The injected runner changes only the fixed GitHub URL; no network is used.
+for (const race of ['unchanged', 'deleted', 'rolled-back'])
+  test(`owner transport binds the exact remote tip: ${race}`, (t) => {
+    const f = fixture(t);
+    const seed = f.open();
+    assert.equal(apply(seed.ledger, event()).status, 'applied');
+    const expectedRevision = seed.ledger.read().revision;
+    const local = new LocalCloudReviewLedger(seed.directory, f.genesis, {
+      checkpoint: expectedRevision,
+    });
+    const candidate = local.apply(expectedRevision, event('event-2'));
+    assert.equal(candidate.status, 'applied');
+    let pushes = 0;
+    const transport = ownerGitLedgerTransport({
+      runGit(directory, args) {
+        if (args[0] === 'push') {
+          pushes++;
+          if (race === 'deleted') git(f.remote, 'update-ref', '-d', REMOTE_LEDGER_REF);
+          if (race === 'rolled-back') git(f.remote, 'update-ref', REMOTE_LEDGER_REF, f.genesis);
+        }
+        return git(
+          directory,
+          ...args.map((arg) =>
+            arg === 'https://github.com/Proto-UI/Proto-UI.git' ? f.remote : arg
+          )
+        );
+      },
+    });
+    const publish = () =>
+      transport.publish({
+        directory: seed.directory,
+        ref: REMOTE_LEDGER_REF,
+        expectedRevision,
+        revision: candidate.revision,
+      });
+    if (race === 'unchanged') {
+      assert.equal(publish().status, 'accepted');
+      assert.equal(git(f.remote, 'rev-parse', REMOTE_LEDGER_REF), candidate.revision);
+    } else {
+      assert.throws(publish, /stale info|rejected|failed to push/);
+      if (race === 'deleted') assert.throws(() => git(f.remote, 'rev-parse', REMOTE_LEDGER_REF));
+      else assert.equal(git(f.remote, 'rev-parse', REMOTE_LEDGER_REF), f.genesis);
+    }
+    assert.equal(pushes, 1);
+  });

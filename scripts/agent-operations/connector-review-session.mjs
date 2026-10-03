@@ -52,6 +52,12 @@ export class ConnectorReviewSession {
         ].includes(event.kind),
       'unsupported event hint'
     );
+    assert(
+      this.#policy.reviewSubmissionAuthorizations.find(
+        (scope) => scope.id === CONNECTOR_AUTHORIZATION
+      )?.status === 'active',
+      'event scope is not active'
+    );
     this.#source = 'delegated-owner-event';
     this.#authorizationId = CONNECTOR_AUTHORIZATION;
     return this.#begin(pullRequest, event);

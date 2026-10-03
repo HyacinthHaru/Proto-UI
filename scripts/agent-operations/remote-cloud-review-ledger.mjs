@@ -1,5 +1,5 @@
-// Inactive remote-state protocol. The provided Git transport is READ ONLY.
-// A mutation transport must be separately integrated/authorized; tests use local Git.
+// Remote-state protocol. The default Git transport is read-only.
+// The exact-parent owner transport is separately selected; tests use local Git.
 import { execFileSync } from 'node:child_process';
 import { LocalCloudReviewLedger, LOCAL_LEDGER_REF } from './local-cloud-review-ledger.mjs';
 
@@ -87,8 +87,9 @@ export class RemoteCloudReviewLedger {
       return { ...candidate, mutationStopped: true };
     }
     // The local adapter constructed and validated exactly one single-parent
-    // child of expectedRevision. A non-force remote update cannot replace a
-    // sibling winner. Never rebase or retry a candidate after a conflict/error.
+    // child of expectedRevision. The owner transport uses an exact remote-tip
+    // lease, so deletion, rollback or a sibling winner cannot be overwritten.
+    // Never rebase or retry a candidate after a conflict/error.
     try {
       const result = this.#transport.publish({
         directory: this.#directory,
@@ -132,7 +133,7 @@ export class RemoteCloudReviewLedger {
 
 // Explicit production-state binding, never selected by default or by PR input.
 // Parent must authorize/provision the fixed ref and supply its pinned genesis.
-export function ownerGitLedgerTransport() {
+export function ownerGitLedgerTransport({ runGit = git } = {}) {
   return {
     ...readOnlyGitLedgerTransport(),
     publish({ directory, ref, revision, expectedRevision }) {
@@ -141,12 +142,16 @@ export function ownerGitLedgerTransport() {
         'invalid state publication target'
       );
       assert(
-        git(directory, ['show', '-s', '--format=%P', revision]) === expectedRevision,
+        runGit(directory, ['show', '-s', '--format=%P', revision]) === expectedRevision,
         'state candidate is not one exact-parent child'
       );
-      git(directory, [
+      runGit(directory, [
         'push',
         '--porcelain',
+        // An explicit lease checks the remote old tip atomically. The exact-parent
+        // assertion above still permits only its single-child fast-forward; this
+        // cannot restore a deleted/rolled-back ref or overwrite a sibling.
+        `--force-with-lease=${ref}:${expectedRevision}`,
         'https://github.com/Proto-UI/Proto-UI.git',
         `${revision}:${ref}`,
       ]);

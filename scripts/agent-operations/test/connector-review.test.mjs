@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { execFileSync } from 'node:child_process';
-import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { readFileSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { parse } from 'yaml';
@@ -249,10 +249,9 @@ test('shipped active scope uses parent packet, exact connector request and durab
 });
 test('disabled scope and inactive genesis cannot authorize a tool review', async (t) => {
   const a = await session(t, { active: false });
-  const packet = await parentPacket(a.s);
-  await assert.rejects(a.s.publishParentPacket(packet, assessment), /authorization is unavailable/);
-  assert.equal(a.f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
-  assert.equal((await a.s.abandonBeforeIntent()).status, 'applied');
+  await assert.rejects(parentPacket(a.s), /event scope is not active/);
+  assert.equal(a.f.calls.length, 0);
+  assert.equal(a.store.read().state.slot, null);
   const b = await session(t, { enabled: false });
   await assert.rejects(parentPacket(b.s), /explicitly provisioned/);
 });
@@ -738,4 +737,57 @@ test('default read-only worker refuses the initial sweep without any connector d
   assert.equal(frames[0].mode, 'read-only');
   assert.match(frames[1].message, /read-only/);
   assert(!frames.some((f) => f.kind === 'tool-call'));
+});
+
+test('worker permits initial-sweep-only startup without enabling event intake', async (t) => {
+  const policy = structuredClone(rootPolicy);
+  policy.reviewSubmissionAuthorizations.find((x) => x.id === CONNECTOR_AUTHORIZATION).status =
+    'inactive';
+  const directory = mkdtempSync(path.join(tmpdir(), 'pui-startup-scope-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const preload = path.join(directory, 'policy.mjs');
+  // Substitute only the policy dependency; execute the unchanged worker. The
+  // nonexistent local cache stops construction before any remote read or write.
+  writeFileSync(
+    preload,
+    `import fs from 'node:fs';
+import { syncBuiltinESMExports } from 'node:module';
+const read = fs.readFileSync;
+fs.readFileSync = function(file, ...args) {
+  return String(file).endsWith('/internal/agent-operations/capability-policy.yaml')
+    ? ${JSON.stringify(JSON.stringify(policy))} : read.call(this, file, ...args);
+};
+syncBuiltinESMExports();`
+  );
+  const child = spawnSync(
+    process.execPath,
+    [
+      '--import',
+      preload,
+      'scripts/agent-operations/connector-review-worker.mjs',
+      '--ledger-dir',
+      path.join(directory, 'missing-cache'),
+      '--genesis',
+      sha('a'),
+      '--checkpoint',
+      sha('a'),
+    ],
+    { encoding: 'utf8' }
+  );
+  assert.equal(child.status, 1);
+  assert.doesNotMatch(child.stderr, /publication worker needs exact ledger pins/);
+  assert.match(child.stderr, /missing-cache/);
+  assert.doesNotMatch(child.stdout, /tool-call/);
+  const { f, transport, store } = await session(t);
+  const scoped = new ConnectorReviewSession({ transport, ledger: store, policy });
+  await assert.rejects(
+    scoped.begin(487, { kind: 'opened', deliveryId: 'paused-event' }),
+    /event scope/
+  );
+  assert.equal(f.calls.length, 0);
+  assert.equal(store.read().state.deliveries.length, 0);
+  assert.equal(
+    (await scoped.beginInitialSweep(487)).executionModeSource,
+    'delegated-owner-initial-sweep'
+  );
 });
