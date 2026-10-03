@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mountDocumentationImagePreview } from './documentation-image-preview';
 import type { PreviewControl } from './documentation-image-controls';
+import { sharedImageHitPoint } from './documentation-image-preview.test-utils';
 let dispose: (() => void) | undefined;
 afterEach(() => {
   dispose?.();
@@ -27,6 +28,30 @@ async function fixture() {
     root: document.querySelector('[data-docs-image-dialog]')! as PreviewControl,
   };
 }
+describe('documentation image native hit probe', () => {
+  it('uses the shared interior even when the source center is below the contained image', () => {
+    const source = { x: 45, y: 449.984375, width: 300, height: 200 };
+    const preview = { x: 16, y: 302.65625, width: 358, height: 238.65625 };
+    expect(source.y + source.height / 2).toBeGreaterThan(preview.y + preview.height);
+    const point = sharedImageHitPoint(source, preview)!;
+    for (const rect of [source, preview]) {
+      expect(point.x).toBeGreaterThan(rect.x);
+      expect(point.x).toBeLessThan(rect.x + rect.width);
+      expect(point.y).toBeGreaterThan(rect.y);
+      expect(point.y).toBeLessThan(rect.y + rect.height);
+    }
+  });
+  it('rejects disjoint rectangles and edge-only contact instead of inventing a hit', () => {
+    const source = { x: 10, y: 10, width: 100, height: 100 };
+    expect(sharedImageHitPoint(source, { ...source, y: 200 })).toBeNull();
+    expect(sharedImageHitPoint(source, { ...source, x: 110 })).toBeNull();
+  });
+  it('rejects missing or invalid painted area', () => {
+    const source = { x: 10, y: 10, width: 100, height: 100 };
+    expect(sharedImageHitPoint(source, { ...source, width: 0 })).toBeNull();
+    expect(sharedImageHitPoint(source, { ...source, y: Number.NaN })).toBeNull();
+  });
+});
 describe('documentation image viewer PUI integration', () => {
   it('enhances eligible images only and restores authored structure on disposal', async () => {
     await fixture();
