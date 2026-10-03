@@ -48,3 +48,28 @@ export function codeSurfaceSettled(
     Boolean(host.generation)
   );
 }
+
+export type NativeCodeSelectionGeometry = {
+  token: { x: number; y: number; width: number; height: number };
+  pre: { left: number; width: number; scrollLeft: number; scrollWidth: number };
+};
+/** One native wheel places the word away from the scroll edge before selection.
+ * It does not choose the selected payload or retry a failed drag. */
+export function nativeCodeSelectionScrollTarget(facts: NativeCodeSelectionGeometry): number {
+  return Math.max(
+    0,
+    Math.min(
+      facts.pre.scrollWidth - facts.pre.width,
+      facts.pre.scrollLeft +
+        facts.token.x +
+        facts.token.width / 2 -
+        (facts.pre.left + facts.pre.width / 2)
+    )
+  );
+}
+export function nativeCodeSelectionHasGutter(facts: NativeCodeSelectionGeometry): boolean {
+  return (
+    facts.token.x >= facts.pre.left + 16 &&
+    facts.token.x + facts.token.width <= facts.pre.left + facts.pre.width - 16
+  );
+}

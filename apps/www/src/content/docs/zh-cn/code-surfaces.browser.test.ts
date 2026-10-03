@@ -7,6 +7,10 @@ import type { Browser, Locator, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { highlightCode } from '../../../components/PrototypePreviewer/code-highlight';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
+import {
+  nativeCodeSelectionScrollTarget,
+  nativeCodeSelectionHasGutter,
+} from './code-surface-evidence';
 
 // Issue #630 acceptance; website presentation only, not a Prototype guarantee.
 const ROUTE = '/zh-cn/ui-libraries/base/transition/';
@@ -391,10 +395,11 @@ async function expectNativeTokenSelection(
   page: Page,
   token: Locator,
   bounds: { x: number; y: number; width: number; height: number },
-  name: string
+  name: string,
+  preparation: unknown
 ): Promise<void> {
   const selected = await page.evaluate(() => getSelection()?.toString());
-  if (selected !== 'wc-base-transition') {
+  {
     try {
       const facts = {
         name,
@@ -403,6 +408,7 @@ async function expectNativeTokenSelection(
           expectedSHA: process.env.CANDIDATE_SHA ?? process.env.PROTO_UI_EXPECTED_REVISION ?? null,
           eventSHA: process.env.GITHUB_SHA ?? null,
         },
+        preparation,
         drag: {
           start: { x: bounds.x + 1, y: bounds.y + bounds.height / 2 },
           end: { x: bounds.x + bounds.width - 1, y: bounds.y + bounds.height / 2 },
@@ -410,7 +416,8 @@ async function expectNativeTokenSelection(
         },
         observed: await token.evaluate(readNativeSelectionDiagnostics, bounds),
       };
-      console.error('[code-native-selection]', JSON.stringify(facts));
+      if (selected !== 'wc-base-transition')
+        console.error('[code-native-selection]', JSON.stringify(facts));
       const directory =
         process.env.PROTO_UI_CODE_EVIDENCE_DIR ??
         (process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR
@@ -515,19 +522,84 @@ describe.sequential('code-surface dogfood matrix (#630, #420, #568)', () => {
             .first()
             .locator('span')
             .filter({ hasText: /^wc-base-transition$/ });
-          const bounds = (await token.boundingBox())!;
+          const originalToken = (await token.elementHandle())!;
+          const readGeometry = (element: HTMLElement | SVGElement) => {
+            const rect = element.getBoundingClientRect();
+            const pre = element.closest('pre')!;
+            const box = pre.getBoundingClientRect();
+            return {
+              token: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+              pre: {
+                left: box.x + pre.clientLeft,
+                width: pre.clientWidth,
+                scrollLeft: pre.scrollLeft,
+                scrollWidth: pre.scrollWidth,
+              },
+            };
+          };
+          const beforeWheel = await originalToken.evaluate(readGeometry);
+          const targetScroll = nativeCodeSelectionScrollTarget(beforeWheel);
+          const delta = targetScroll - beforeWheel.pre.scrollLeft;
+          await page.mouse.move(
+            beforeWheel.pre.left + beforeWheel.pre.width / 2,
+            beforeWheel.token.y + beforeWheel.token.height / 2
+          );
+          if (Math.abs(delta) > 0.5) await page.mouse.wheel(delta, 0);
+          await expect
+            .poll(
+              async () =>
+                Math.abs(
+                  (await originalToken.evaluate(readGeometry)).pre.scrollLeft - targetScroll
+                ),
+              { timeout: 2000 }
+            )
+            .toBeLessThanOrEqual(1);
+          await expect
+            .poll(
+              async () =>
+                originalToken.evaluate(async (element) => {
+                  const sample = () => {
+                    const r = element.getBoundingClientRect();
+                    const p = element.closest('pre')!;
+                    return JSON.stringify([r.x, r.y, r.width, r.height, p.scrollLeft, p.scrollTop]);
+                  };
+                  const first = sample();
+                  await new Promise<void>((resolve) =>
+                    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+                  );
+                  return first === sample();
+                }),
+              { timeout: 2000 }
+            )
+            .toBe(true);
+          expect(
+            await originalToken.evaluate(
+              (node) => node.isConnected && node.textContent === 'wc-base-transition'
+            )
+          ).toBe(true);
+          const afterWheel = await originalToken.evaluate(readGeometry);
+          expect(nativeCodeSelectionHasGutter(afterWheel)).toBe(true);
+          const bounds = (await originalToken.boundingBox())!;
+          const preparation = {
+            beforeWheel,
+            wheel: { deltaX: delta, deltaY: 0, targetScroll },
+            afterWheel,
+          };
           await page.mouse.move(bounds.x + 1, bounds.y + bounds.height / 2);
           await page.mouse.down();
           await page.mouse.move(bounds.x + bounds.width - 1, bounds.y + bounds.height / 2, {
             steps: 8,
           });
           await page.mouse.up();
-          await expectNativeTokenSelection(page, token, bounds, `${width}-${theme}`);
+          await expectNativeTokenSelection(page, token, bounds, `${width}-${theme}`, preparation);
+          await originalToken.dispose();
           await page.evaluate(() => getSelection()?.removeAllRanges());
           await pre.focus();
+          const beforeArrow = await pre.evaluate((element) => element.scrollLeft);
           await page.keyboard.press('ArrowRight');
           await page.waitForFunction(
-            () => document.querySelector('.proto-previewer__code')!.scrollLeft > 0
+            (before) => document.querySelector('.proto-previewer__code')!.scrollLeft > before,
+            beforeArrow
           );
           await retainEvidence(page, `${width}-${theme}-collapsed`, { facts, collapsed });
           await expectCopyControls(page);

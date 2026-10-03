@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   codeSurfaceOwnershipIssues,
+  nativeCodeSelectionScrollTarget,
+  nativeCodeSelectionHasGutter,
   codeSurfaceSettled,
   type CodeSurfaceGenerationFacts,
 } from './code-surface-evidence';
@@ -77,5 +79,39 @@ describe('passive code-frame settled evidence', () => {
     expect(codeSurfaceOwnershipIssues(f)).toContain('Passive code paint has pointer authority');
     f.hosts[0] = { ...f.hosts[0], pointerEvents: 'none', state: 'staging', inert: false };
     expect(codeSurfaceOwnershipIssues(f)).toContain('Uncommitted code generation is exposed');
+  });
+});
+
+describe('native code selection preparation', () => {
+  const facts = {
+    token: { x: 119.8125, y: 530, width: 140.4375, height: 18 },
+    pre: { left: 48, width: 224, scrollLeft: 0, scrollWidth: 620 },
+  };
+  it('moves the original edge-adjacent word into the scroll viewport center', () => {
+    const target = nativeCodeSelectionScrollTarget(facts);
+    expect(target).toBe(30.03125);
+    expect(nativeCodeSelectionHasGutter(facts)).toBe(false);
+    expect(
+      nativeCodeSelectionHasGutter({
+        ...facts,
+        token: { ...facts.token, x: facts.token.x - target },
+        pre: { ...facts.pre, scrollLeft: target },
+      })
+    ).toBe(true);
+  });
+  it('clamps the single wheel target to the real scroll range', () => {
+    expect(nativeCodeSelectionScrollTarget({ ...facts, token: { ...facts.token, x: -100 } })).toBe(
+      0
+    );
+    expect(nativeCodeSelectionScrollTarget({ ...facts, token: { ...facts.token, x: 1000 } })).toBe(
+      396
+    );
+  });
+  it('rejects words too wide or crossing either scroll edge without normalizing text', () => {
+    for (const token of [
+      { ...facts.token, x: 40 },
+      { ...facts.token, x: 70, width: 220 },
+    ])
+      expect(nativeCodeSelectionHasGutter({ ...facts, token })).toBe(false);
   });
 });
