@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { revealHeaderPreferences } from './site-header-browser';
 import type { Browser, Page, Request } from 'playwright-core';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
@@ -508,6 +509,7 @@ describe.sequential('Search family Button commands', () => {
 
 const runtimeLabels = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' };
 async function choosePageControl(page: Page, control: 'family' | 'runtime', label: string) {
+  await revealHeaderPreferences(page);
   const trigger = page.locator(
     `[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="${control}"] [role="combobox"]`
   );
@@ -833,6 +835,7 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
           .locator('[data-docs-site-header] [data-adapter-select] [data-site-select-trigger]')
           .first();
         await expect.poll(() => selector.getAttribute('role')).toBe('combobox');
+        await revealHeaderPreferences(page);
         for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
           if (runtime !== 'wc') {
             await selector.click();
@@ -957,6 +960,7 @@ for (const width of [320, 390]) {
           const frame = root.closest<HTMLElement>('.site-page-frame')!;
           return frame.style.getPropertyValue('--header-height') === `${root.offsetHeight}px`;
         });
+        await revealHeaderPreferences(page);
         stage(page, id, 'font-geometry');
         await capture(page, id, 'before-geometry');
         const geometry = await header.evaluate((header) => {

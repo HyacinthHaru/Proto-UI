@@ -23,6 +23,7 @@ import {
   classifyCapturedFailure,
   verifyRevision,
 } from './homepage-evidence-contract';
+import { revealHeaderPreferences } from '../src/content/docs/zh-cn/site-header-browser';
 import { captureDocumentationEvidence } from './capture-documentation-evidence';
 
 const { values } = parseArgs({
@@ -295,6 +296,7 @@ async function recordRuntimeTask<T>(
 async function chooseRuntime(page: Page, runtime: Runtime, keyboard: boolean): Promise<void> {
   activeProbeStage = null;
   requestedProbeRuntime = runtime;
+  if (revisionKind === 'candidate') await revealHeaderPreferences(page);
   const trigger = runtimeTrigger(page);
   if (keyboard) {
     await trigger.focus();
@@ -983,8 +985,12 @@ try {
           await screenshot('initial-viewport');
           await screenshot('initial-full', true);
           if (revisionKind === 'candidate') {
+            await revealHeaderPreferences(page);
+            // Initial captures intentionally show the collapsed compact Header.
+            // Inspect settings fonts only after the user's real disclosure path.
+            evidence.settings = await measure(page);
             assert.equal(
-              (evidence.initial as Awaited<ReturnType<typeof measure>>).fonts.length,
+              (evidence.settings as Awaited<ReturnType<typeof measure>>).fonts.length,
               fontSelectors.length,
               'Every candidate font sample must resolve to visible content'
             );
@@ -1034,7 +1040,7 @@ try {
             const menu = page.locator(
               '[data-homepage-runtime] [data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
             );
-            await menu.click();
+            if ((await menu.getAttribute('aria-expanded')) !== 'true') await menu.click();
             await page.waitForFunction(
               () =>
                 document
@@ -1079,6 +1085,14 @@ try {
                   outerBackground: outer.backgroundColor,
                   left: rect.left,
                   right: rect.right,
+                  top: rect.top,
+                  trigger: panel
+                    .closest('[data-site-header]')!
+                    .querySelector(
+                      '[data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
+                    )!
+                    .getBoundingClientRect()
+                    .toJSON(),
                   width: rect.width,
                   height: rect.height,
                   viewportWidth: innerWidth,
@@ -1099,6 +1113,14 @@ try {
             assert.equal(panelSurface.border, panelSurface.family === 'brutalist' ? 2 : 1);
             assert.ok(panelSurface.left >= 0 && panelSurface.right <= panelSurface.viewportWidth);
             assert.ok(panelSurface.width > 200 && panelSurface.height > 44);
+            assert.ok(
+              Math.abs(panelSurface.top - panelSurface.trigger.bottom - 5) <= 1,
+              'Surface follows the actual hamburger bottom'
+            );
+            assert.ok(
+              Math.abs(panelSurface.right - panelSurface.trigger.right) <= 1,
+              'Surface fills the trigger-aligned positioning box'
+            );
             evidence.navigationOwnership = await ownership(page, 'wc');
             await screenshot('navigation-open-viewport');
             await page.keyboard.press('Escape');
@@ -1238,6 +1260,7 @@ try {
             const family = page.locator(
               '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"] [role="combobox"]'
             );
+            await revealHeaderPreferences(page);
             await family.click();
             const portalId = await family.getAttribute('aria-controls');
             assert.ok(portalId, 'Global library selector owns a real option portal');

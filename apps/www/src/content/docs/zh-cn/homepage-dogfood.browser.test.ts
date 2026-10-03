@@ -1,5 +1,16 @@
 // @vitest-environment node
-import type { Browser, Page } from 'playwright-core';
+import { revealHeaderPreferences } from './site-header-browser';
+import { execFileSync } from 'node:child_process';
+import { mkdir, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import {
+  captureHeaderPreferenceLease,
+  inspectHeaderPreferenceLease,
+  headerPreferenceLeaseIssues,
+  measureHeaderPreferenceFocusRing,
+} from './site-header-breakpoint-evidence';
+import type { Browser, ElementHandle, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, RUNTIMES, startServer, stopServer } from './browser-harness';
 const LABELS = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' } as const;
@@ -30,6 +41,7 @@ async function ready(page: Page, runtime: string) {
   );
 }
 async function switchRuntime(page: Page, runtime: keyof typeof LABELS) {
+  await revealHeaderPreferences(page);
   const trigger = page.locator(
     '[data-homepage-runtime] [data-projection-control="runtime"] [role="combobox"]'
   );
@@ -129,6 +141,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         const trigger = page.locator(
           '[data-homepage-runtime] [data-projection-control="runtime"] [role="combobox"]'
         );
+        await revealHeaderPreferences(page);
         await trigger.focus();
         await page.keyboard.press('Enter');
         const keyboardPortalId = await trigger.getAttribute('aria-controls');
@@ -264,6 +277,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       await ready(page, 'wc');
       for (const width of [390, 320]) {
         await page.setViewportSize({ width, height: 844 });
+        await revealHeaderPreferences(page);
         const geometry = await page.evaluate(() => {
           const header = document
             .querySelector<HTMLElement>('[data-homepage-runtime]')!
@@ -291,6 +305,16 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             controls: controlBounds.map(({ x, y, width, height }) => ({ x, y, width, height })),
             height: header.height,
             headerBottom: header.bottom,
+            panel: document
+              .querySelector('[data-site-header-panel]')!
+              .getBoundingClientRect()
+              .toJSON(),
+            menu: document
+              .querySelector(
+                '[data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
+              )!
+              .getBoundingClientRect()
+              .toJSON(),
             preferences: [
               ...document.querySelectorAll<HTMLElement>(
                 '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control] [role="combobox"]'
@@ -319,13 +343,16 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           expect(preference.height).toBeGreaterThanOrEqual(44);
           expect(preference.width).toBeGreaterThanOrEqual(120);
           expect(preference.fullValueVisible).toBe(true);
-          expect(preference.bottom).toBeLessThanOrEqual(geometry.headerBottom + 1);
+          expect(preference.bottom).toBeLessThanOrEqual(geometry.panel.bottom + 1);
+          expect(preference.y).toBeGreaterThanOrEqual(geometry.panel.top);
           expect(preference.y).toBeGreaterThan(
             geometry.controls[0]!.y + geometry.controls[0]!.height
           );
         }
-        if (width === 390) expect(geometry.preferences[0]!.y).toBe(geometry.preferences[1]!.y);
-        else expect(geometry.preferences[1]!.y).toBeGreaterThan(geometry.preferences[0]!.bottom);
+        expect(geometry.preferences[1]!.y).toBeGreaterThan(geometry.preferences[0]!.bottom);
+        expect(Math.abs(geometry.panel.top - geometry.menu.bottom - 5)).toBeLessThanOrEqual(1);
+        expect(Math.abs(geometry.panel.right - geometry.menu.right)).toBeLessThanOrEqual(1);
+        expect(geometry.height).toBeLessThanOrEqual(64);
         expect(geometry.controls).toHaveLength(3);
         for (const control of geometry.controls) {
           expect(control.width).toBeGreaterThanOrEqual(44);
@@ -334,6 +361,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         }
         expect(geometry.statusArea).toBeLessThanOrEqual(1);
         expect(geometry.brandSize).toBe('16px');
+        await page.keyboard.press('Escape');
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
         true
@@ -412,6 +440,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           `wc-${route.family}-button`
         );
         const chooseAdapter = async (value: 'vue' | 'react') => {
+          await revealHeaderPreferences(page);
           const trigger = adapter.locator('[role="combobox"]');
           await trigger.click();
           const id = await trigger.getAttribute('aria-controls');
@@ -517,6 +546,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         expect(await contents.getAttribute('aria-controls')).toBe('starlight__sidebar');
         expect(await contents.getAttribute('aria-label')).toBe('页面目录');
         expect(await contents.getAttribute('title')).toBe('页面目录');
+        await revealHeaderPreferences(page);
         const hitTargets = await header.evaluate((element) => {
           const trigger = element.querySelector<HTMLElement>(
             '[data-adapter-select] [role="combobox"]'
@@ -529,8 +559,12 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             contentsRect.y + contentsRect.height / 2
           );
           return {
-            trigger: { left: triggerRect.left, right: triggerRect.right },
-            contents: { left: contentsRect.left, right: contentsRect.right },
+            trigger: { left: triggerRect.left, right: triggerRect.right, top: triggerRect.top },
+            contents: {
+              left: contentsRect.left,
+              right: contentsRect.right,
+              bottom: contentsRect.bottom,
+            },
             contentsOwnsCenter: center !== null && contents.contains(center),
             centerTag: center?.tagName,
             chevrons: [...trigger.querySelectorAll('svg')].map((svg) => {
@@ -551,9 +585,9 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           );
         }
         expect(
-          hitTargets.trigger.right,
-          `${width}px separate runtime and contents targets`
-        ).toBeLessThanOrEqual(hitTargets.contents.left);
+          hitTargets.trigger.top,
+          `${width}px runtime panel is separate from the first-row contents opener`
+        ).toBeGreaterThanOrEqual(hitTargets.contents.bottom);
         expect(
           hitTargets.contentsOwnsCenter,
           `${width}px native contents target owns its center`
@@ -581,3 +615,367 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
     }
   }, 90_000);
 });
+
+for (const family of ['shadcn', 'brutalist'] as const) {
+  it(`compact ${family} preferences stay usable at 200% text, RTL and breakpoint moves`, async () => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 1000 } });
+    const page = await context.newPage();
+    try {
+      await page.goto(`${baseUrl}/zh-cn/`, { waitUntil: 'networkidle' });
+      await ready(page, 'wc');
+      await revealHeaderPreferences(page);
+      if (family === 'brutalist') {
+        const control = page.locator(
+          '#home-preferences [data-projection-control="family"] [role="combobox"]'
+        );
+        await control.click();
+        const id = await control.getAttribute('aria-controls');
+        await page
+          .locator(`[id=${JSON.stringify(id)}]`)
+          .getByRole('option', { name: 'Brutalist', exact: true })
+          .click();
+        await page.waitForFunction(
+          () =>
+            document.querySelector<HTMLElement>('[data-homepage-runtime]')?.dataset.family ===
+            'brutalist'
+        );
+      }
+      for (const width of [320, 390])
+        for (const rtl of [false, true]) {
+          await page.setViewportSize({ width, height: 1000 });
+          await page.evaluate((rtl) => {
+            document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+            document.documentElement.style.fontSize = '200%';
+          }, rtl);
+          const menu = page.locator(
+            '.site-header-menu [data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
+          );
+          // Reopen through the actual Button after changing host text/direction.
+          if ((await menu.getAttribute('aria-expanded')) === 'true') await menu.click();
+          await revealHeaderPreferences(page);
+          const controls = page.locator('#home-preferences [role="combobox"]');
+          expect(await controls.count()).toBe(2);
+          for (const control of await controls.all()) {
+            await control.scrollIntoViewIfNeeded();
+            const facts = await control.evaluate((node) => {
+              const value = node.querySelector<HTMLElement>(
+                '[data-projection-prototype$="-select-value"]'
+              )!;
+              return {
+                rect: node.getBoundingClientRect().toJSON(),
+                overflow: value.scrollWidth - value.clientWidth,
+                whiteSpace: getComputedStyle(value).whiteSpace,
+                hidden: !!node.closest('[hidden], [inert]'),
+              };
+            });
+            expect(facts.hidden).toBe(false);
+            expect(facts.rect.height).toBeGreaterThanOrEqual(44);
+            expect(facts.whiteSpace).toBe('normal');
+            expect(facts.overflow).toBeLessThanOrEqual(1);
+          }
+          const placement = await page.locator('[data-site-header-panel]').evaluate((panel) => {
+            const surface = panel.querySelector('.site-header-popup-surface')!;
+            const trigger = document.querySelector(
+              '.site-header-menu [data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
+            )!;
+            return {
+              panel: panel.getBoundingClientRect().toJSON(),
+              surface: surface.getBoundingClientRect().toJSON(),
+              trigger: trigger.getBoundingClientRect().toJSON(),
+              overflow: document.documentElement.scrollWidth - innerWidth,
+            };
+          });
+          expect(placement.overflow).toBeLessThanOrEqual(1);
+          expect(Math.abs(placement.panel.top - placement.trigger.bottom - 5)).toBeLessThanOrEqual(
+            1
+          );
+          expect(
+            Math.abs(
+              (rtl ? placement.panel.left : placement.panel.right) -
+                (rtl ? placement.trigger.left : placement.trigger.right)
+            )
+          ).toBeLessThanOrEqual(1);
+          expect(Math.abs(placement.surface.width - placement.panel.width)).toBeLessThanOrEqual(1);
+          const runtime = page.locator(
+            '#home-preferences [data-projection-control="runtime"] [role="combobox"]'
+          );
+          await runtime.focus();
+          await page.setViewportSize({ width: 1440, height: 1000 });
+          await expect
+            .poll(() =>
+              runtime.evaluate(
+                (node) =>
+                  node === document.activeElement && !node.closest('[data-site-header-panel]')
+              )
+            )
+            .toBe(true);
+          await page.setViewportSize({ width, height: 1000 });
+          await expect
+            .poll(() =>
+              runtime.evaluate(
+                (node) =>
+                  node === document.activeElement &&
+                  !!node.closest('[data-site-header-panel]') &&
+                  !node.closest('[hidden], [inert]')
+              )
+            )
+            .toBe(true);
+          await page.keyboard.press('Escape');
+          expect(await menu.evaluate((node) => node === document.activeElement)).toBe(true);
+          expect(await page.locator('[data-site-header-panel]').isVisible()).toBe(false);
+        }
+    } finally {
+      await context.close();
+    }
+  }, 120_000);
+}
+
+// Two bounded family journeys, each exercising all four actual renderers. A
+// locator re-query is insufficient here: every comparison retains the original
+// physical ElementHandle, plus WC's public exposed-state handle identities.
+for (const family of ['shadcn', 'brutalist'] as const) {
+  it(`retains ${family} preference owners and portals through real breakpoint reconnects`, async () => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await context.newPage();
+    const evidenceDirectory = path.join(
+      process.env.RUNNER_TEMP ?? os.tmpdir(),
+      'homepage-evidence',
+      'header-breakpoint'
+    );
+    await mkdir(evidenceDirectory, { recursive: true });
+    const source = {
+      sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+      dirty: execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim() !== '',
+      expectedSha: process.env.CANDIDATE_SHA ?? null,
+      eventSha: process.env.GITHUB_SHA ?? null,
+    };
+    const records: unknown[] = [];
+    const ringFailures: string[] = [];
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    let stage = 'navigate';
+    const save = async (name: string, facts: unknown) => {
+      const id = `${family}-${name}`;
+      const screenshot = `${id}.png`;
+      const jsonPath = path.join(evidenceDirectory, `${id}.json`);
+      const record = {
+        source,
+        screenshot,
+        family,
+        stage,
+        viewport: page.viewportSize(),
+        capturedAt: new Date().toISOString(),
+        facts,
+      };
+      // Retain the primary geometry/ownership facts even if capture itself fails.
+      await writeFile(jsonPath, JSON.stringify({ ...record, screenshotComplete: false }, null, 2));
+      await page.screenshot({ path: path.join(evidenceDirectory, screenshot) });
+      await writeFile(jsonPath, JSON.stringify({ ...record, screenshotComplete: true }, null, 2));
+    };
+    try {
+      await page.goto(`${baseUrl}/zh-cn/`, { waitUntil: 'networkidle' });
+      await ready(page, 'wc');
+      if (family === 'brutalist') {
+        await revealHeaderPreferences(page);
+        const control = page.locator(
+          '#home-preferences [data-projection-control="family"] [role="combobox"]'
+        );
+        await control.click();
+        const id = await control.getAttribute('aria-controls');
+        await page
+          .locator(`[id=${JSON.stringify(id)}]`)
+          .getByRole('option', { name: 'Brutalist', exact: true })
+          .click();
+        await expect
+          .poll(() => page.locator('[data-homepage-runtime]').getAttribute('data-family'))
+          .toBe(family);
+        await ready(page, 'wc');
+      }
+      for (const runtime of RUNTIMES) {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await switchRuntime(page, runtime);
+        const header = page.locator('[data-homepage-runtime]');
+        const generation = await header.getAttribute('data-runtime-generation');
+        const handles = new Map<string, ElementHandle<HTMLElement>>();
+        for (const control of ['runtime', 'family'] as const) {
+          stage = `${runtime}-${control}-lease`;
+          const triggerLocator = page.locator(
+            `#home-preferences [data-projection-control="${control}"] [role="combobox"]`
+          );
+          const rootLocator = page.locator(
+            `#home-preferences [data-demo-ref="__pui_projection__${control}_root"]`
+          );
+          await expect.poll(() => triggerLocator.count()).toBe(1);
+          await expect.poll(() => rootLocator.count()).toBe(1);
+          const trigger = (await triggerLocator.elementHandle()) as ElementHandle<HTMLElement>;
+          const root = (await rootLocator.elementHandle()) as ElementHandle<HTMLElement>;
+          expect(trigger).not.toBeNull();
+          expect(root).not.toBeNull();
+          handles.set(control, trigger);
+          const lease = await trigger.evaluateHandle(captureHeaderPreferenceLease, {
+            root,
+            control,
+          });
+          let portal: ElementHandle<HTMLElement> | null = null;
+          let selected: ElementHandle<HTMLElement> | null = null;
+          try {
+            await trigger.focus();
+            await page.keyboard.press('Enter');
+            const id = await trigger.getAttribute('aria-controls');
+            expect(id).toBeTruthy();
+            const portalLocator = page.locator(`[id=${JSON.stringify(id)}]`);
+            await portalLocator.waitFor({ state: 'visible' });
+            const expectedLabel =
+              control === 'runtime'
+                ? LABELS[runtime]
+                : family === 'shadcn'
+                  ? 'Shadcn'
+                  : 'Brutalist';
+            const selectedLocator = portalLocator.getByRole('option', {
+              name: expectedLabel,
+              exact: true,
+            });
+            await expect
+              .poll(() =>
+                selectedLocator.evaluate(
+                  (node) =>
+                    node === document.activeElement && node.getAttribute('aria-selected') === 'true'
+                )
+              )
+              .toBe(true);
+            portal = (await portalLocator.elementHandle()) as ElementHandle<HTMLElement>;
+            selected = (await selectedLocator.elementHandle()) as ElementHandle<HTMLElement>;
+            for (const [name, width, insidePanel] of [
+              ['mobile-before', 390, true],
+              ['desktop', 1440, false],
+              ['mobile-return', 320, true],
+            ] as const) {
+              stage = `${runtime}-${control}-${name}`;
+              await page.setViewportSize({ width, height: 844 });
+              await expect
+                .poll(() =>
+                  lease
+                    .evaluate(inspectHeaderPreferenceLease, {
+                      insidePanel,
+                      portal: portal!,
+                      selected: selected!,
+                      focused: 'portal',
+                    })
+                    .then(headerPreferenceLeaseIssues)
+                )
+                .toEqual([]);
+              const facts = await lease.evaluate(inspectHeaderPreferenceLease, {
+                insidePanel,
+                portal,
+                selected,
+                focused: 'portal',
+              });
+              records.push({ stage, facts });
+              if (control === 'runtime') await save(stage, facts);
+              expect(await header.getAttribute('data-runtime-generation')).toBe(generation);
+              expect(await trigger.getAttribute('aria-controls')).toBe(id);
+            }
+            // Re-select the current value using native keys, so a legitimate
+            // runtime/family change cannot hide a breakpoint-induced remount.
+            stage = `${runtime}-${control}-keyboard-commit-current`;
+            await page.keyboard.press('Home');
+            const options = control === 'runtime' ? Object.values(LABELS) : ['Shadcn', 'Brutalist'];
+            for (let index = 0; index < options.indexOf(expectedLabel); index++)
+              await page.keyboard.press('ArrowDown');
+            await expect
+              .poll(() => selected!.evaluate((node) => node === document.activeElement))
+              .toBe(true);
+            await page.keyboard.press('Enter');
+            await expect.poll(() => portal!.isVisible()).toBe(false);
+            await expect
+              .poll(() =>
+                lease
+                  .evaluate(inspectHeaderPreferenceLease, { insidePanel: true, focused: 'trigger' })
+                  .then(headerPreferenceLeaseIssues)
+              )
+              .toEqual([]);
+            records.push({
+              stage,
+              facts: await lease.evaluate(inspectHeaderPreferenceLease, {
+                insidePanel: true,
+                focused: 'trigger',
+              }),
+            });
+            expect(await header.getAttribute('data-runtime-generation')).toBe(generation);
+          } finally {
+            await lease.dispose();
+            await root.dispose();
+            await portal?.dispose();
+            await selected?.dispose();
+          }
+        }
+        // The compact closed state must remove the settings row. Do not change
+        // app DOM or force a hidden Select to obtain its focus-ring capture.
+        stage = `${runtime}-closed`;
+        await page.keyboard.press('Escape');
+        const menu = page.locator(
+          '.site-header-menu [data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
+        );
+        await expect.poll(() => menu.getAttribute('aria-expanded')).toBe('false');
+        expect(await header.locator('[data-site-header-preferences]').isVisible()).toBe(false);
+        expect((await header.boundingBox())!.height).toBeLessThanOrEqual(64);
+        await page.setViewportSize({ width: 320, height: 300 });
+        await menu.focus();
+        await page.keyboard.press('Enter');
+        const firstLink = page
+          .locator('#home-navigation-mobile [data-homepage-mount] a[href]')
+          .first();
+        await expect
+          .poll(() => firstLink.evaluate((node) => node === document.activeElement))
+          .toBe(true);
+        const unfocused = await handles.get('runtime')!.evaluate(measureHeaderPreferenceFocusRing);
+        for (let index = 0; index < 3; index++) await page.keyboard.press('Tab');
+        for (const control of ['runtime', 'family'] as const) {
+          stage = `${runtime}-${control}-narrow-focus-ring`;
+          const trigger = handles.get(control)!;
+          await expect
+            .poll(() =>
+              trigger.evaluate(
+                (node) => node === document.activeElement && node.matches(':focus-visible')
+              )
+            )
+            .toBe(true);
+          const expectedToken = family === 'shadcn' ? 'ring-3' : 'ring-2';
+          await expect.poll(() => trigger.getAttribute('data-pui-style')).toContain(expectedToken);
+          const facts = await trigger.evaluate(measureHeaderPreferenceFocusRing);
+          records.push({ stage, facts });
+          await save(stage, { unfocused, focused: facts });
+          if (!facts.unclipped || !facts.inViewport)
+            ringFailures.push(
+              `${stage}: ${JSON.stringify({ ring: facts.ring, viewport: facts.viewport, clipping: facts.clipping })}`
+            );
+          expect(facts.prototype).toBe(`${family}-select-trigger`);
+          expect(facts.ringWidth).toBe(family === 'shadcn' ? 3 : 2);
+          expect(facts.ringOffset).toBe(family === 'shadcn' ? 0 : 2);
+          expect(facts.shadow).not.toBe('none');
+          if (control === 'runtime') expect(facts.shadow).not.toBe(unfocused.shadow);
+          if (control === 'runtime') await page.keyboard.press('Tab');
+        }
+        await page.keyboard.press('Escape');
+        await expect
+          .poll(() => menu.evaluate((node) => node === document.activeElement))
+          .toBe(true);
+        for (const handle of handles.values()) await handle.dispose();
+      }
+      expect(errors).toEqual([]);
+      // Collect every family/runtime sample before reporting clipping debt.
+      expect(ringFailures, 'Prototype focus rings must fit all real clipping boundaries').toEqual(
+        []
+      );
+    } catch (error) {
+      await save('failure', { stage, message: String(error), records, ringFailures, errors });
+      throw error;
+    } finally {
+      await writeFile(
+        path.join(evidenceDirectory, `${family}-lifecycle.json`),
+        JSON.stringify({ source, family, records, ringFailures, errors }, null, 2)
+      );
+      await context.close();
+    }
+  }, 180_000);
+}

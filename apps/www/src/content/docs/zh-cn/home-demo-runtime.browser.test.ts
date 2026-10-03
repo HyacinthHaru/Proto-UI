@@ -1,5 +1,6 @@
 // @vitest-environment node
 
+import { revealHeaderPreferences } from './site-header-browser';
 import type { Browser, Locator, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { RUNTIMES, launchBrowser, startServer, stopServer } from './browser-harness';
@@ -54,13 +55,14 @@ async function chooseProjectionControl(
   control: 'runtime' | 'family',
   value: string
 ): Promise<void> {
+  await revealHeaderPreferences(page);
   const owner = page.locator('[data-homepage-runtime] [data-projection-generation-state="active"]');
   const trigger = owner.locator(`[data-projection-control="${control}"] [role="combobox"]`);
   await trigger.click();
   const portal = await portalControlledBy(page, trigger);
   const optionLabel = (CONTROL_OPTION_LABELS[control] as Readonly<Record<string, string>>)[value];
   if (!optionLabel) throw new Error(`Unknown ${control} projection option ${value}.`);
-  await portal.getByRole('option', { name: optionLabel, exact: true }).click({ force: true });
+  await portal.getByRole('option', { name: optionLabel, exact: true }).click();
 }
 
 async function chooseRuntime(page: Page, root: Locator, runtime: string) {
@@ -110,7 +112,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
       }
 
       await globalRoot.locator('[data-projection-control="runtime"] [role="combobox"]').click();
-      await page.getByRole('option', { name: 'Vue', exact: true }).last().click({ force: true });
+      await page.getByRole('option', { name: 'Vue', exact: true }).last().click();
       await waitForHomeRuntime(page, 'vue');
       expect(await home.getAttribute('data-runner-runtime')).toBe('vue');
     } finally {
@@ -423,6 +425,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
         await waitForHomeRuntime(page, 'wc');
         for (const width of [1440, 390, 320]) {
           await page.setViewportSize({ width, height: 900 });
+          await revealHeaderPreferences(page);
           const geometry = await home.evaluate((root) => {
             const task = root.querySelector<HTMLElement>('[data-home-settings]')!;
             const fields = root.querySelector<HTMLElement>('.home-gallery')!;

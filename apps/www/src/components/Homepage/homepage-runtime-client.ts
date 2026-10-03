@@ -349,11 +349,13 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const controls = (): ProjectionCompositionControls => ({
     runtime: {
       label: root.dataset.runtimeLabel || 'Page runtime',
+      wrapValue: true,
       options: AdapterIds.map((value) => ({ value, label: LABELS[value] })),
       onValueChange: requestRuntime,
     },
     family: {
       label: root.dataset.familyLabel || demo?.root.dataset.familyLabel || 'Page library',
+      wrapValue: true,
       options: [
         { value: 'shadcn', label: 'Shadcn' },
         { value: 'brutalist', label: 'Brutalist' },

@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { revealHeaderPreferences } from './site-header-browser';
 import type { Browser, Locator, Page } from 'playwright-core';
 import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -77,6 +78,7 @@ afterAll(async () => {
   await stopServer();
 }, 60_000);
 async function choose(page: Page, selector: string, label: string) {
+  await revealHeaderPreferences(page);
   const trigger = page.locator(`${selector} [role="combobox"]`);
   await trigger.click();
   const id = await trigger.getAttribute('aria-controls');

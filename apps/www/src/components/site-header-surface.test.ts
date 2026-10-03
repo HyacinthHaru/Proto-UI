@@ -3,6 +3,7 @@ import { headerSurfaceParticipant, initDocumentationHeaderSurface } from './site
 import { initHomepageRuntime } from './Homepage/homepage-runtime-client';
 import { AdaptToWebComponent } from '@proto.ui/adapter-web-component';
 import Toggle from '../../../../packages/prototypes/shadcn/src/toggle/toggle.proto';
+import { initSiteHeaderDisclosure } from './site-header-disclosure';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from './adapter-preference';
 import type { MaterializedProjectionCandidate } from './PrototypePreviewer/projection-materializer';
 
@@ -197,6 +198,73 @@ describe('native Header content inside real family projection surfaces', () => {
         '[data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
       )
     );
+  }, 30000);
+
+  it('retains nested preference owners through compact moves, runtime publication and failure rollback', async () => {
+    vi.spyOn(window, 'matchMedia').mockReturnValue(
+      Object.assign(new EventTarget(), { matches: true }) as MediaQueryList
+    );
+    const { header, panel, content } = fixture();
+    header.dataset.homepageRuntime = '';
+    content.insertAdjacentHTML('beforeend', '<div data-site-header-compact-context></div>');
+    header.insertAdjacentHTML(
+      'beforeend',
+      '<div data-site-header-context><div data-site-header-preferences><div id="preferences" data-homepage-actions data-homepage-controls="runtime"><div data-homepage-fallback></div><div data-homepage-mount></div></div></div></div><div id="menu" data-homepage-actions><div data-homepage-fallback><span data-homepage-menu>Navigation</span></div><div data-homepage-mount></div></div>'
+    );
+    const preferences = header.querySelector<HTMLElement>('[data-site-header-preferences]')!;
+    const mount = preferences.querySelector<HTMLElement>('[data-homepage-mount]')!;
+    const handle = initHomepageRuntime(header)!;
+    handles.push(handle);
+    await vi.waitFor(() => expect(handle.getSnapshot().phase).toBe('ready'), { timeout: 15000 });
+    const disclosure = initSiteHeaderDisclosure(header);
+    disclosure.toggle();
+    expect(panel.contains(preferences)).toBe(true);
+    for (const runtime of ['wc', 'react', 'vue', 'vue2', 'wc']) {
+      document.dispatchEvent(
+        new CustomEvent(PREFERRED_ADAPTER_EVENT, { detail: { adapter: runtime } })
+      );
+      await vi.waitFor(() => expect(header.dataset.runtime).toBe(runtime), { timeout: 15000 });
+      await vi.waitFor(() => expect(header.dataset.runtimeState).toBe('ready'));
+      await vi.waitFor(() =>
+        expect(mount.querySelectorAll('[data-projection-generation-host]')).toHaveLength(1)
+      );
+      expect(header.querySelector('[data-site-header-preferences]')).toBe(preferences);
+      expect(panel.contains(preferences)).toBe(true);
+      const generation = header.dataset.runtimeGeneration;
+      const ownScope = mount.querySelector<HTMLElement>(
+        '[data-projection-scope="homepage-preferences"]'
+      )!;
+      expect(ownScope.dataset.projectionGeneration).toBe(generation);
+      expect(
+        ownScope
+          .closest('[data-projection-generation-host]')
+          ?.getAttribute('data-projection-owner-host')
+      ).toBe('homepage-preferences');
+      const triggers = mount.querySelectorAll<HTMLElement>('[role="combobox"]');
+      expect(triggers).toHaveLength(2);
+      for (const trigger of triggers) {
+        expect(trigger.dataset.projectionOwner).toBe('homepage-preferences');
+        expect(trigger.dataset.projectionGeneration).toBe(generation);
+        expect(trigger.dataset.projectionRuntime).toBe(runtime);
+        expect(trigger.closest('[hidden], [inert]')).toBeNull();
+      }
+      expect(panel.dataset.headerSurfaceGeneration).toBe(generation);
+      expect(panel.querySelectorAll('.site-header-popup-surface')).toHaveLength(1);
+    }
+    const previousScope = mount.querySelector('[data-projection-scope]');
+    const previousGeneration = header.dataset.runtimeGeneration;
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    faults.failReact = true;
+    document.dispatchEvent(
+      new CustomEvent(PREFERRED_ADAPTER_EVENT, { detail: { adapter: 'react' } })
+    );
+    await vi.waitFor(() => expect(header.dataset.runtimeState).toBe('error'));
+    expect(error).toHaveBeenCalled();
+    expect(mount.querySelector('[data-projection-scope]')).toBe(previousScope);
+    expect(panel.dataset.headerSurfaceGeneration).toBe(previousGeneration);
+    expect(panel.contains(preferences)).toBe(true);
+    expect(panel.hidden).toBe(false);
+    expect(mount.querySelector('[role="combobox"]')?.closest('[hidden], [inert]')).toBeNull();
   }, 30000);
 
   it('rolls back partial publication into the previous physical slot and restores coordinates', async () => {

@@ -40,6 +40,8 @@ export type ProjectionControlOption<Value extends string = string> = Readonly<{
 export type ProjectionControlConfig<Value extends string> = Readonly<{
   label: string;
   placeholder?: string;
+  /** Consumer opt-in for full selected values under narrow/text-enlarged layout. */
+  wrapValue?: boolean;
   options: readonly ProjectionControlOption<Value>[];
   onValueChange(value: Value): void;
 }>;
@@ -499,15 +501,16 @@ function createSelectControl<Value extends string>(
   } satisfies DemoBoxNode;
   const value = createProjectedProto(selectParts.value, coordinateAttrs, themeSurfaceStyle, {
     props: { placeholder: config.placeholder ?? config.label },
-    // Truncate only the presentation. The complete selected text stays in the
-    // Value and options while the trailing chevron keeps its own flex space.
+    // Preview controls retain their default truncation. A consumer such as
+    // compact Header settings may explicitly request full-value wrapping.
     surfaceStyle: {
       display: 'block',
       minWidth: '0',
       flex: '1 1 auto',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
+      overflow: config.wrapValue ? 'visible' : 'hidden',
+      textOverflow: config.wrapValue ? 'clip' : 'ellipsis',
+      whiteSpace: config.wrapValue ? 'normal' : 'nowrap',
+      ...(config.wrapValue ? { overflowWrap: 'anywhere' } : {}),
     },
   });
   const trigger = createProjectedProto(selectParts.trigger, coordinateAttrs, themeSurfaceStyle, {
@@ -519,6 +522,7 @@ function createSelectControl<Value extends string>(
       minWidth: '0',
       maxWidth: '100%',
       minHeight: 'var(--site-control-height, 2.25rem)',
+      ...(config.wrapValue ? { height: 'auto' } : {}),
     },
     children: [value],
   });

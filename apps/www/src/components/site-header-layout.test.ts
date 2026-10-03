@@ -61,3 +61,33 @@ for (const family of ['shadcn', 'brutalist']) {
     expect(document.querySelector(selector!)?.textContent).toBe(section);
   });
 }
+
+describe('shared compact Header ownership and layout', () => {
+  for (const path of ['Homepage/HomepageRuntime.astro', 'override/Header.astro']) {
+    it(`${path} provides one movable preference owner and one empty compact destination`, () => {
+      const source = readFileSync(`apps/www/src/components/${path}`, 'utf8');
+      expect(source.match(/data-site-header-preferences/g)).toHaveLength(1);
+      expect(source.match(/data-site-header-compact-context/g)).toHaveLength(1);
+      expect(source.indexOf('data-site-header-compact-context')).toBeGreaterThan(
+        source.indexOf('data-site-header-panel-content')
+      );
+      expect(source.indexOf('data-site-header-preferences')).toBeGreaterThan(
+        source.indexOf('data-site-header-context')
+      );
+      expect(source).not.toMatch(/role=["'](?:menu|dialog)["']/);
+    });
+  }
+  it('fills only the direct Header surface projection and never assigns its layout to nested controls', () => {
+    const css = readFileSync('apps/www/src/styles/site-header.css', 'utf8');
+    expect(css).toContain(
+      '[data-site-header-surface-mount] > .pui-projection-generation > .pui-projection-scope'
+    );
+    expect(css).toMatch(
+      /\.site-header\[data-site-menu-ready\] \.site-header-panel \{[^}]*grid-area: auto;/
+    );
+    expect(css).toContain('top: var(--site-header-panel-top, 100%)');
+    expect(css).toContain('left: var(--site-header-panel-left, 0)');
+    expect(css).toContain('.site-header[data-site-menu-ready] > .site-header-context');
+    expect(css).toContain("grid-template-areas: 'brand contents search theme menu'");
+  });
+});

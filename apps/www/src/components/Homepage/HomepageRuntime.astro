@@ -74,6 +74,7 @@ const localeActions = otherLocale
       >
         <HomeActions id="home-navigation-mobile" {actions} />
       </nav>
+      <div data-site-header-compact-context></div>
       <div class="site-header-settings" id="site-header-settings" data-site-header-settings>
         {
           localeActions.length > 0 && (
@@ -90,8 +91,8 @@ const localeActions = otherLocale
       </div>
     </div>
   </div>
-  <div class="site-header-context">
-    <div class="site-header-runtime home-runtime-preferences">
+  <div class="site-header-context" data-site-header-context>
+    <div class="site-header-runtime home-runtime-preferences" data-site-header-preferences>
       <HomeActions id="home-preferences" actions={[]} runtimeControl />
     </div>
   </div>

@@ -66,6 +66,7 @@ const navigation = [
               </a>
             ))}
           </nav>
+          <div data-site-header-compact-context />
           <div class="site-header-settings" id="site-header-settings" data-site-header-settings>
             <div class="site-header-setting">
               <span class="site-header-setting-label">{zh ? '语言' : 'Language'}</span>
@@ -78,8 +79,8 @@ const navigation = [
           </div>
         </div>
       </div>
-      <div class="site-header-context">
-        <div class="site-header-runtime">
+      <div class="site-header-context" data-site-header-context>
+        <div class="site-header-runtime" data-site-header-preferences>
           <span class="site-header-runtime-label">{zh ? '预览 Runtime' : 'Preview runtime'}</span>
           <AdapterSelect />
         </div>

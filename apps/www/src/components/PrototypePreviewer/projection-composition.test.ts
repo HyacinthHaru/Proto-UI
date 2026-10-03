@@ -909,3 +909,46 @@ describe('toolbar-free partial-family compositions', () => {
     });
   }
 });
+
+it('keeps full-value wrapping an explicit consumer opt-in rather than changing preview defaults', () => {
+  for (const wrapValue of [false, true]) {
+    const settings = controls();
+    const composition = createProjectionComposition({
+      ownerId: 'wrap-settings',
+      runtimeId: 'wc',
+      projectionFamilyId: 'shadcn',
+      generation: 1,
+      componentId: 'button',
+      childDemo: { type: 'demo', root: { kind: 'box', children: [] } },
+      contentRecipe: { id: 'empty-settings', prototypeIds: [], rootPrototypeId: null },
+      controlIds: ['runtime'],
+      controls: { ...settings, runtime: { ...settings.runtime, wrapValue } },
+    });
+    const value = findNode(
+      composition.demo,
+      (node) => node.kind === 'proto' && node.prototypeId === 'shadcn-select-value'
+    );
+    const trigger = findNode(
+      composition.demo,
+      (node) => node.kind === 'proto' && node.prototypeId === 'shadcn-select-trigger'
+    );
+    expect(value).toMatchObject({
+      surfaceStyle: {
+        whiteSpace: wrapValue ? 'normal' : 'nowrap',
+        textOverflow: wrapValue ? 'clip' : 'ellipsis',
+      },
+    });
+    expect(trigger).toMatchObject({
+      surfaceStyle: { minHeight: 'var(--site-control-height, 2.25rem)' },
+    });
+    if (wrapValue) {
+      expect(value).toMatchObject({
+        surfaceStyle: { overflowWrap: 'anywhere', overflow: 'visible' },
+      });
+      expect(trigger).toMatchObject({ surfaceStyle: { height: 'auto' } });
+    } else
+      expect((trigger as Extract<DemoNode, { kind: 'proto' }>).surfaceStyle).not.toHaveProperty(
+        'height'
+      );
+  }
+});

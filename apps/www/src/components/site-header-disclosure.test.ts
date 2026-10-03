@@ -15,10 +15,10 @@ function fixture(mobile = true) {
   document.body.innerHTML = `<header data-site-header>
     <nav data-site-header-desktop-navigation><a href="/docs/">Docs</a></nav>
     <div data-site-header-panel id="navigation-panel">
-      <nav data-site-header-navigation><a href="/docs/">Docs</a></nav>
+      <nav data-site-header-navigation><a href="/docs/">Docs</a></nav><div data-site-header-compact-context></div>
       <div data-site-header-settings id="settings-panel"><a href="/zh-cn/">简体中文</a></div>
     </div>
-    <button data-menu>Menu</button><button data-runtime>Runtime</button>
+    <div data-site-header-context><div data-site-header-preferences><button data-runtime>Runtime</button><input value="retained" /></div><button data-contents>Contents</button></div><button data-menu>Menu</button>
   </header><button data-outside>Outside</button>`;
   const root = document.querySelector<HTMLElement>('header')!;
   const button = root.querySelector<HTMLButtonElement>('[data-menu]')!;
@@ -64,6 +64,45 @@ describe('shared website navigation disclosure', () => {
     );
     expect(button.getAttribute('aria-expanded')).toBe('false');
     expect(document.activeElement).toBe(button);
+  });
+
+  it('moves the same preferences owner into the compact panel only after enhancement', () => {
+    const { root, panel } = fixture();
+    const context = root.querySelector('[data-site-header-context]')!;
+    const preferences = root.querySelector('[data-site-header-preferences]')!;
+    const input = preferences.querySelector('input')!;
+    expect(preferences.parentElement).toBe(context);
+    disclosure!.enhance();
+    expect(panel.contains(preferences)).toBe(true);
+    expect(preferences.querySelector('input')).toBe(input);
+    expect(context.contains(root.querySelector('[data-contents]'))).toBe(true);
+    disclosure!.destroy();
+    expect(preferences.parentElement).toBe(context);
+    expect(input.value).toBe('retained');
+  });
+
+  it('keeps focused preferences visible and preserves identity across both breakpoint moves', () => {
+    const { root, panel, button } = fixture(false);
+    disclosure!.enhance();
+    const preferences = root.querySelector('[data-site-header-preferences]')!;
+    const input = preferences.querySelector('input')!;
+    input.focus();
+    input.setSelectionRange(1, 4);
+    Object.defineProperty(query, 'matches', { value: true, configurable: true });
+    query.dispatchEvent(new Event('change'));
+    expect(panel.contains(preferences)).toBe(true);
+    expect(panel.hidden).toBe(false);
+    expect(document.activeElement).toBe(input);
+    expect([input.selectionStart, input.selectionEnd]).toEqual([1, 4]);
+    Object.defineProperty(query, 'matches', { value: false, configurable: true });
+    query.dispatchEvent(new Event('change'));
+    expect(preferences.parentElement).toBe(root.querySelector('[data-site-header-context]'));
+    expect(document.activeElement).toBe(input);
+    Object.defineProperty(query, 'matches', { value: true, configurable: true });
+    query.dispatchEvent(new Event('change'));
+    disclosure!.close();
+    expect(document.activeElement).toBe(button);
+    expect(root.querySelectorAll('[data-site-header-preferences]')).toHaveLength(1);
   });
 
   it('keeps desktop links inline while the controlled settings are collapsed', async () => {
@@ -249,6 +288,135 @@ describe('shared website navigation disclosure', () => {
   });
 });
 
+describe('actual Header Button anchoring', () => {
+  it('keeps the current binding when an older lease for the same Button retires', () => {
+    const { root, button, panel } = fixture();
+    vi.spyOn(root, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 360, 56));
+    vi.spyOn(button, 'getBoundingClientRect').mockReturnValue(new DOMRect(280, 6, 44, 44));
+    vi.spyOn(panel, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 280, 300));
+    const old = disclosure!.bindButton(button);
+    disclosure!.bindButton(button);
+    old();
+    disclosure!.enhance();
+    disclosure!.toggle();
+    expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('55px');
+  });
+  it('follows state-driven Button translation without a resize and cancels late work', async () => {
+    const frames = new Map<number, FrameRequestCallback>();
+    let nextFrame = 0;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      frames.set(++nextFrame, callback);
+      return nextFrame;
+    });
+    const cancel = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation((id) => {
+      frames.delete(id);
+    });
+    const { root, button, panel } = fixture();
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 });
+    vi.spyOn(root, 'offsetWidth', 'get').mockReturnValue(360);
+    vi.spyOn(root, 'offsetHeight', 'get').mockReturnValue(56);
+    vi.spyOn(root, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 360, 56));
+    let translated = false;
+    vi.spyOn(button, 'getBoundingClientRect').mockImplementation(
+      () => new DOMRect(translated ? 284 : 280, translated ? 10 : 6, 44, 44)
+    );
+    vi.spyOn(panel, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 280, 300));
+    disclosure!.enhance();
+    disclosure!.toggle();
+    expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('55px');
+    translated = true;
+    button.setAttribute('data-hovered', '');
+    button.setAttribute('data-pressed', '');
+    await vi.waitFor(() => expect(frames.size).toBe(1));
+    const [id, callback] = [...frames][0];
+    frames.delete(id);
+    callback(0);
+    expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('59px');
+    expect(panel.style.getPropertyValue('--site-header-panel-left')).toBe('48px');
+    translated = false;
+    button.removeAttribute('data-hovered');
+    button.removeAttribute('data-pressed');
+    await vi.waitFor(() => expect(frames.size).toBe(1));
+    const late = [...frames.values()][0];
+    disclosure!.destroy();
+    expect(cancel).toHaveBeenCalled();
+    expect(frames.size).toBe(0);
+    late(0);
+    expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('');
+  });
+  for (const width of [320, 390])
+    for (const rtl of [false, true]) {
+      it(`${width}px ${rtl ? 'RTL' : 'LTR'} anchors the painted box to the current Button`, () => {
+        const { root, button, panel } = fixture();
+        root.style.direction = rtl ? 'rtl' : 'ltr';
+        Object.defineProperty(window, 'innerWidth', { configurable: true, value: width });
+        Object.defineProperty(window, 'innerHeight', { configurable: true, value: 844 });
+        vi.spyOn(root, 'offsetWidth', 'get').mockReturnValue(width - 32);
+        vi.spyOn(root, 'offsetHeight', 'get').mockReturnValue(56);
+        vi.spyOn(root, 'getBoundingClientRect').mockReturnValue(
+          new DOMRect(16, 10, width - 32, 56)
+        );
+        const anchorLeft = rtl ? 24 : width - 68;
+        vi.spyOn(button, 'getBoundingClientRect').mockReturnValue(
+          new DOMRect(anchorLeft, 16, 44, 44)
+        );
+        vi.spyOn(panel, 'getBoundingClientRect').mockImplementation(
+          () =>
+            new DOMRect(
+              0,
+              0,
+              Math.min(
+                352,
+                parseFloat(panel.style.getPropertyValue('--site-header-panel-max-width'))
+              ),
+              500
+            )
+        );
+        disclosure!.enhance();
+        disclosure!.toggle();
+        const panelWidth = panel.getBoundingClientRect().width;
+        const left = parseFloat(panel.style.getPropertyValue('--site-header-panel-left')) + 16;
+        expect(rtl ? left : left + panelWidth).toBe(rtl ? anchorLeft : anchorLeft + 44);
+        expect(left).toBeGreaterThanOrEqual(8);
+        expect(left + panelWidth).toBeLessThanOrEqual(width - 8);
+        expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('55px');
+        expect(panel.style.getPropertyValue('--site-header-panel-max-height')).toBe('771px');
+        // Header height may include wrapped branding; anchor remains this Button.
+        vi.mocked(root.getBoundingClientRect).mockReturnValue(new DOMRect(16, 10, width - 32, 100));
+        vi.mocked(Object.getOwnPropertyDescriptor(root, 'offsetHeight')!.get!).mockReturnValue(100);
+        window.dispatchEvent(new Event('resize'));
+        expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('55px');
+      });
+    }
+
+  it('repositions from the newly active runtime Button and clears owned measurements on destroy', () => {
+    const { root, button, panel } = fixture();
+    vi.spyOn(root, 'offsetWidth', 'get').mockReturnValue(360);
+    vi.spyOn(root, 'offsetHeight', 'get').mockReturnValue(56);
+    vi.spyOn(root, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 360, 56));
+    vi.spyOn(button, 'getBoundingClientRect').mockReturnValue(new DOMRect(300, 6, 44, 44));
+    vi.spyOn(panel, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 280, 400));
+    disclosure!.enhance();
+    disclosure!.toggle();
+    expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('55px');
+    const nextHost = document.createElement('div');
+    nextHost.dataset.projectionGenerationState = 'staging';
+    const next = document.createElement('button');
+    nextHost.append(next);
+    root.append(nextHost);
+    vi.spyOn(next, 'getBoundingClientRect').mockReturnValue(new DOMRect(280, 28, 44, 44));
+    disclosure!.bindButton(next);
+    expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('55px');
+    button.remove();
+    nextHost.dataset.projectionGenerationState = 'active';
+    disclosure!.enhance();
+    expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('77px');
+    expect(panel.style.getPropertyValue('--site-header-panel-left')).toBe('44px');
+    disclosure!.destroy();
+    expect(panel.style.getPropertyValue('--site-header-panel-top')).toBe('');
+  });
+});
+
 // Geometry is injected here; browser evidence measures the real layout.
 describe('Docs header offset ownership', () => {
   function measuredFixture(initial = '7rem') {
@@ -292,7 +460,8 @@ describe('Docs header offset ownership', () => {
   it('publishes actual height once, ignores unchanged portal delivery and follows font-driven height', () => {
     const h = measuredFixture();
     expect(h.frame.style.getPropertyValue('--header-height')).toBe('137px');
-    expect(h.observe).toHaveBeenCalledOnce();
+    expect(h.observe).toHaveBeenCalledWith(h.root);
+    expect(h.observe).toHaveBeenCalledWith(h.root.querySelector('[data-site-header-panel]'));
     expect(initSiteHeaderDisclosure(h.root)).toBe(disclosure);
     const writes = h.writes.mock.calls.length;
     const portal = document.createElement('div');

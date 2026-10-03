@@ -47,12 +47,18 @@
 }
 .site-header[data-site-menu-ready] .site-header-panel {
   position: absolute;
+  /* Absolute geometry uses the Header padding box, not its grid track area. */
+  grid-area: auto;
   z-index: 70;
-  inset-block-start: 100%;
-  inset-inline-end: 1.5rem;
+  top: var(--site-header-panel-top, 100%);
+  left: var(--site-header-panel-left, 0);
   width: 22rem;
-  max-width: calc(100% - 2rem);
-  max-height: calc(100svh - var(--header-height, 8rem) - 1rem);
+  max-width: var(--site-header-panel-max-width, calc(100vw - 1rem));
+  max-height: var(--site-header-panel-max-height, calc(100svh - 5rem));
+  overflow: visible;
+}
+/* Initial projection failure retains the readable native disclosure too. */
+.site-header[data-site-menu-ready] .site-header-panel:not(:has(.site-header-popup-surface)) {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -344,10 +350,6 @@
     grid-template-areas: 'brand search theme menu' 'context context context context';
     padding-inline: 1rem;
   }
-  .site-header[data-site-menu-ready] .site-header-panel {
-    inset-inline-end: 1rem;
-    width: calc(100% - 2rem);
-  }
   .site-header [data-site-header-desktop-navigation] {
     display: none;
   }
@@ -437,9 +439,6 @@
     height: auto;
     padding-block: 0.5rem 0.75rem;
   }
-  .home-runtime-header[data-site-menu-ready] .site-header-panel {
-    inset-block-start: 100%;
-  }
 }
 @media (max-width: 47.999rem) {
   .home-runtime-header {
@@ -499,10 +498,6 @@
   .site-header[data-docs-site-header] .site-header-runtime .adapter-select-wrapper {
     width: 100%;
   }
-  .site-header[data-docs-site-header][data-site-menu-ready] .site-header-panel {
-    inset-block-start: 100%;
-    max-height: calc(100svh - var(--header-height) - 1rem);
-  }
 }
 @container docs-page (max-width: 15rem) {
   .site-header[data-docs-site-header] {
@@ -517,5 +512,94 @@
   }
   .site-header[data-docs-site-header] .site-header-runtime {
     flex-basis: 100%;
+  }
+}
+
+/* The passive surface must fill the same box that is anchored to the Button.
+   Restrict this to its direct scope; nested Select owners keep their layout. */
+[data-site-header-surface-mount] > .pui-projection-generation > .pui-projection-scope {
+  display: block;
+  width: 100%;
+}
+[data-site-header-surface-mount]
+  > .pui-projection-generation
+  > .pui-projection-scope
+  > .pui-projection-controls:empty {
+  display: none;
+}
+[data-site-header-surface-mount]
+  > .pui-projection-generation
+  > .pui-projection-scope
+  > .pui-projection-content {
+  width: 100%;
+}
+/* Keep the actual popup frame fixed to the Button while only its native slot
+   scrolls. The family Prototype still owns frame, padding, radius and paint. */
+.site-header[data-site-menu-ready] .site-header-popup-surface {
+  display: flex;
+  flex-direction: column;
+  max-height: var(--site-header-panel-max-height, none);
+}
+.site-header[data-site-menu-ready] .site-header-native-slot {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+[data-site-header-compact-context]:empty {
+  display: none;
+}
+@media (max-width: 47.999rem) {
+  .site-header[data-site-menu-ready] {
+    grid-template-areas: 'brand search theme menu';
+    grid-template-rows: minmax(var(--site-header-row-height), auto);
+  }
+  .site-header[data-site-menu-ready] > .site-header-context {
+    display: contents;
+  }
+  .site-header[data-docs-site-header][data-site-menu-ready]:has(.site-header-docs-navigation) {
+    grid-template-columns: minmax(0, 1fr) repeat(4, 2.75rem);
+    grid-template-areas: 'brand contents search theme menu';
+  }
+  .site-header[data-site-menu-ready] .site-header-docs-navigation {
+    grid-area: contents;
+    justify-content: center;
+    width: 2.75rem;
+  }
+  .site-header[data-site-menu-ready] .site-header-docs-navigation > span {
+    display: none;
+  }
+  .site-header [data-site-header-compact-context] .site-header-runtime {
+    display: grid;
+    gap: 0.25rem;
+    width: 100%;
+  }
+  .site-header
+    [data-site-header-compact-context]
+    .site-header-runtime
+    :is(.adapter-select-wrapper, .home-actions, .pui-projection-controls) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .home-runtime-header
+    [data-site-header-compact-context]
+    .home-runtime-preferences
+    .pui-projection-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Text enlargement may reflow the toolbar itself. It must never bring back a
+   second settings row or shrink the real PUI touch targets to fit. */
+@container docs-page (max-width: 15rem) {
+  .site-header[data-site-menu-ready] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas: 'brand brand brand' 'search theme menu';
+    grid-template-rows: auto auto;
+    padding-inline: 0.25rem;
+    row-gap: 0.25rem;
+  }
+  .site-header[data-docs-site-header][data-site-menu-ready]:has(.site-header-docs-navigation) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas: 'brand brand contents' 'search theme menu';
   }
 }

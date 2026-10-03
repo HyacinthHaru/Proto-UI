@@ -25,8 +25,14 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     '[data-site-header-desktop-navigation]'
   );
   const settings = root.querySelector<HTMLElement>('[data-site-header-settings]');
+  const preferences = root.querySelector<HTMLElement>('[data-site-header-preferences]');
+  const compactContext = root.querySelector<HTMLElement>('[data-site-header-compact-context]');
+  const preferencesParent = preferences?.parentElement;
+  const preferencesNext = preferences?.nextSibling ?? null;
   const compact = window?.matchMedia('(max-width: 47.999rem)');
   const buttons = new Set<HTMLElement>();
+  const buttonLeases = new Map<HTMLElement, { observer: MutationObserver | null }>();
+  let pendingPositionFrame: number | null = null;
   let enhanced = false;
   let open = false;
   let destroyed = false;
@@ -49,12 +55,6 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     frame.style.setProperty('--header-height', next);
     measuredHeight = next;
   };
-  const heightObserver =
-    frame && typeof window?.ResizeObserver === 'function'
-      ? new window.ResizeObserver(measureHeader)
-      : null;
-  heightObserver?.observe(root);
-  if (frame && !heightObserver) window?.addEventListener('resize', measureHeader);
   const activeButton = () =>
     [...buttons].find((button) => {
       const generation = button.closest<HTMLElement>('[data-projection-generation-state]');
@@ -63,25 +63,115 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
         (!generation || generation.dataset.projectionGenerationState === 'active')
       );
     });
+  const movePreferences = (compactLayout: boolean) => {
+    if (!preferences || !preferencesParent || !compactContext) return;
+    const parent = compactLayout ? compactContext : preferencesParent;
+    if (preferences.parentElement === parent) return;
+    // Move the complete mount owner, never its renderer-created children. In
+    // particular, both homepage Selects retain one owner and one set of IDs.
+    parent.insertBefore(
+      preferences,
+      !compactLayout && preferencesNext?.parentNode === parent ? preferencesNext : null
+    );
+  };
+  const panelProperties = [
+    '--site-header-panel-left',
+    '--site-header-panel-top',
+    '--site-header-panel-max-width',
+    '--site-header-panel-max-height',
+  ];
+  const positionPanel = () => {
+    const button = activeButton();
+    if (destroyed || !enhanced || !open || !panel || !button || !window) return;
+    const anchor = button.getBoundingClientRect();
+    const header = root.getBoundingClientRect();
+    if (anchor.width <= 0 || header.width <= 0) return;
+    // Rects include zoom/transforms; absolute offsets use the containing block's
+    // layout pixels. Use the actual current Button, not the header's far edge.
+    const scaleX = root.offsetWidth > 0 ? header.width / root.offsetWidth : 1;
+    const scaleY = root.offsetHeight > 0 ? header.height / root.offsetHeight : scaleX;
+    const viewport = window.visualViewport;
+    const leftEdge = (viewport?.offsetLeft ?? 0) + 8;
+    const rightEdge = (viewport?.offsetLeft ?? 0) + (viewport?.width ?? window.innerWidth) - 8;
+    const bottomEdge = (viewport?.offsetTop ?? 0) + (viewport?.height ?? window.innerHeight) - 8;
+    const rtl = window.getComputedStyle(root).direction === 'rtl';
+    const availableWidth = Math.max(0, rtl ? rightEdge - anchor.left : anchor.right - leftEdge);
+    const top = anchor.bottom + 5 * scaleY;
+    const values: Record<string, string> = {
+      '--site-header-panel-max-width': `${Math.max(0, Math.min(rightEdge - leftEdge, availableWidth)) / scaleX}px`,
+      '--site-header-panel-top': `${(top - header.top) / scaleY - root.clientTop}px`,
+      '--site-header-panel-max-height': `${Math.max(0, bottomEdge - top) / scaleY}px`,
+    };
+    for (const [name, value] of Object.entries(values))
+      if (panel.style.getPropertyValue(name) !== value) panel.style.setProperty(name, value);
+    const width = panel.getBoundingClientRect().width;
+    const aligned = rtl ? anchor.left : anchor.right - width;
+    const left = Math.max(leftEdge, Math.min(aligned, rightEdge - width));
+    const value = `${(left - header.left) / scaleX - root.clientLeft}px`;
+    if (panel.style.getPropertyValue('--site-header-panel-left') !== value)
+      panel.style.setProperty('--site-header-panel-left', value);
+  };
+  const measureLayout = () => {
+    measureHeader();
+    positionPanel();
+  };
+  const schedulePosition = () => {
+    if (destroyed || !open || pendingPositionFrame !== null) return;
+    if (!window?.requestAnimationFrame) return positionPanel();
+    pendingPositionFrame = window.requestAnimationFrame(() => {
+      pendingPositionFrame = null;
+      positionPanel();
+    });
+  };
+  const geometryObserver =
+    typeof window?.ResizeObserver === 'function'
+      ? new window.ResizeObserver((entries) => {
+          // Panel content/scroll extent can change independently of the toolbar.
+          // It never supplies the sticky Header height or creates a feedback loop.
+          if (!entries || entries.some((entry) => entry.target === root)) measureHeader();
+          positionPanel();
+        })
+      : null;
+  geometryObserver?.observe(root);
+  if (panel) geometryObserver?.observe(panel);
+  window?.addEventListener('resize', measureLayout);
+  window?.addEventListener('scroll', positionPanel, true);
+  window?.visualViewport?.addEventListener('resize', positionPanel);
+  window?.visualViewport?.addEventListener('scroll', positionPanel);
   const sync = () => {
+    const focused = document.activeElement as HTMLElement | null;
+    const focusInPreferences = !!focused && !!preferences?.contains(focused);
+    const compactLayout = enhanced && !!compact?.matches;
+    // A breakpoint cannot hide the settings currently being used, including a
+    // portaled Select. Preserve that interaction by revealing its destination.
+    if (
+      compactLayout &&
+      preferences?.parentElement !== compactContext &&
+      (focusInPreferences || ownsSelectPopup(focused))
+    )
+      open = true;
     root.dataset.siteMenuOpen = String(open);
     root.toggleAttribute('data-site-menu-ready', enhanced);
     if (desktopNavigation) desktopNavigation.hidden = !!compact?.matches;
     if (navigation) navigation.hidden = !compact?.matches || (enhanced && !open);
     if (panel) panel.hidden = enhanced && !open;
     if (settings) settings.hidden = enhanced && !open;
-    const controlled = panel;
+    movePreferences(compactLayout);
+    if (focusInPreferences && focused?.isConnected && !focused.closest('[hidden], [inert]'))
+      focused.focus({ preventScroll: true });
     for (const button of buttons) {
       button.setAttribute('aria-expanded', String(open));
-      if (controlled?.id) button.setAttribute('aria-controls', controlled.id);
+      if (panel?.id) button.setAttribute('aria-controls', panel.id);
     }
-    measureHeader();
+    measureLayout();
   };
   const close = (restoreFocus = false) => {
     if (!open || destroyed) return;
+    const focused = document.activeElement;
+    const hidingFocus = !!focused && (!!panel?.contains(focused) || ownsSelectPopup(focused));
     open = false;
     sync();
-    if (restoreFocus) activeButton()?.focus();
+    if (restoreFocus || hidingFocus) activeButton()?.focus({ preventScroll: true });
   };
   const ownsSelectPopup = (target: Element | null) => {
     const popup = target?.closest('[role="listbox"], [data-site-select-content]');
@@ -123,8 +213,17 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   const destroy = () => {
     if (destroyed) return;
     destroyed = true;
-    heightObserver?.disconnect();
-    window?.removeEventListener('resize', measureHeader);
+    if (pendingPositionFrame !== null) window?.cancelAnimationFrame(pendingPositionFrame);
+    pendingPositionFrame = null;
+    for (const lease of buttonLeases.values()) lease.observer?.disconnect();
+    buttonLeases.clear();
+    geometryObserver?.disconnect();
+    window?.removeEventListener('resize', measureLayout);
+    window?.removeEventListener('scroll', positionPanel, true);
+    window?.visualViewport?.removeEventListener('resize', positionPanel);
+    window?.visualViewport?.removeEventListener('scroll', positionPanel);
+    movePreferences(false);
+    for (const property of panelProperties) panel?.style.removeProperty(property);
     if (
       frame &&
       measuredHeight !== null &&
@@ -152,14 +251,39 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   };
   const handle: SiteHeaderDisclosure = {
     bindButton(button) {
+      if (destroyed) return () => {};
+      buttonLeases.get(button)?.observer?.disconnect();
+      const lease = {
+        observer: window?.MutationObserver ? new window.MutationObserver(schedulePosition) : null,
+      };
+      buttonLeases.set(button, lease);
       buttons.add(button);
+      geometryObserver?.observe(button);
+      // Prototype hover/press translations do not trigger ResizeObserver. Read
+      // the resulting actual box once per frame without a permanent RAF loop.
+      lease.observer?.observe(button, {
+        attributes: true,
+        attributeFilter: [
+          'data-hovered',
+          'data-pressed',
+          'data-focused',
+          'data-focus-visible',
+          'data-pui-style',
+          'style',
+          'class',
+        ],
+      });
       sync();
       return () => {
+        lease.observer?.disconnect();
+        if (buttonLeases.get(button) !== lease) return;
+        buttonLeases.delete(button);
         buttons.delete(button);
+        geometryObserver?.unobserve(button);
       };
     },
     enhance() {
-      if (destroyed || enhanced) return;
+      if (destroyed) return;
       enhanced = true;
       sync();
     },
