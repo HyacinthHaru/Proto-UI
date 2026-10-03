@@ -551,18 +551,60 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
                   target: link.getAttribute('target'),
                   rel: link.getAttribute('rel'),
                 });
+                const describe = (element: Element | null) => {
+                  if (!element) return null;
+                  const rect = element.getBoundingClientRect();
+                  const style = getComputedStyle(element);
+                  return {
+                    tag: element.tagName,
+                    id: element.id,
+                    class: element.getAttribute('class'),
+                    html: element.outerHTML.slice(0, 800),
+                    rect: {
+                      left: rect.left,
+                      top: rect.top,
+                      right: rect.right,
+                      bottom: rect.bottom,
+                    },
+                    pointerEvents: style.pointerEvents,
+                    position: style.position,
+                    zIndex: style.zIndex,
+                    transform: style.transform,
+                    visibility: style.visibility,
+                  };
+                };
+                const hit = (x: number, y: number) => {
+                  const target = document.elementFromPoint(x, y);
+                  return {
+                    x,
+                    y,
+                    isAnchor: target === anchor,
+                    insideViewport: x >= 0 && y >= 0 && x < innerWidth && y < innerHeight,
+                    target: describe(target),
+                    stack: document.elementsFromPoint(x, y).slice(0, 6).map(describe),
+                  };
+                };
+                const centerHit = hit(
+                  visual.left + visual.width / 2,
+                  visual.top + visual.height / 2
+                );
+                const cornerHit = hit(visual.left + 3, visual.top + 3);
                 return {
                   ...identity(anchor),
                   expected: identity(source),
                   tag: anchor.tagName,
                   role: anchor.getAttribute('role'),
-                  centerHitIsAnchor:
-                    document.elementFromPoint(
-                      visual.left + visual.width / 2,
-                      visual.top + visual.height / 2
-                    ) === anchor,
-                  cornerHitIsAnchor:
-                    document.elementFromPoint(visual.left + 3, visual.top + 3) === anchor,
+                  centerHitIsAnchor: centerHit.isAnchor,
+                  cornerHitIsAnchor: cornerHit.isAnchor,
+                  hitDiagnostics: {
+                    centerHit,
+                    cornerHit,
+                    anchor: describe(anchor),
+                    surface: describe(surface),
+                    documentX: scrollX,
+                    documentY: scrollY,
+                    viewport: { width: innerWidth, height: innerHeight },
+                  },
                   anchorRect: {
                     left: native.left,
                     top: native.top,
@@ -581,6 +623,16 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
                 };
               })
             );
+          // Persist the actual hit node/stack and both rectangles before a
+          // strict assertion can fail; descendant or overlaid hits remain red.
+          await captureLinks(
+            page,
+            `homepage-${family}-${runtime}-native-hit-targets`,
+            family,
+            runtime,
+            'menu-open; exact-native-anchor-hit-samples',
+            { social: facts, footprints }
+          );
           expect(footprints.length).toBeGreaterThan(4);
           for (const footprint of footprints)
             expect(
@@ -794,7 +846,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           family === 'brutalist' ? 'bg-main' : 'bg-accent'
         );
         const sidebar = page
-          .locator('.sidebar-pane a[data-site-link-enhanced]:not([aria-current]):visible')
+          .locator('.sidebar-pane a[data-site-link-enhanced]:not([aria-current="page"]):visible')
           .first();
         const baseline = await linkPaint(sidebar);
         await sidebar.hover();
@@ -937,7 +989,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         await expect.poll(() => contents.getAttribute('aria-expanded')).toBe('true');
         await pane.waitFor({ state: 'visible' });
         const sidebar = pane
-          .locator('a[data-site-link-enhanced]:not([aria-current]):visible')
+          .locator('a[data-site-link-enhanced]:not([aria-current="page"]):visible')
           .first();
         const focus = await assertNavigationFocus(page, sidebar);
         expect(
@@ -1069,29 +1121,45 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
               const box = anchor.getBoundingClientRect();
               return {
                 outline: style.outline,
+                outlineOffset: style.outlineOffset,
                 shadow: style.boxShadow,
+                current: anchor.getAttribute('aria-current'),
+                rect: { left: box.left, top: box.top, right: box.right, bottom: box.bottom },
                 focused: anchor === document.activeElement && anchor.matches(':focus-visible'),
                 visible: anchor.contains(
                   document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2)
                 ),
               };
             });
+          await expect.poll(async () => (await read()).focused).toBe(false);
           const baseline = await read();
           await page.keyboard.press('Shift+Tab');
-          const observed = await read();
-          expect(observed.focused).toBe(true);
-          expect(observed.visible).toBe(true);
-          expect(observed.outline !== baseline.outline || observed.shadow !== baseline.shadow).toBe(
-            true
-          );
-          await captureLinks(
-            page,
-            `nav-${family}-no-js-${role}-focus`,
-            family,
-            'native-no-js',
-            `no-JavaScript; native-${role}-keyboard-focus`,
-            { baseline, observed }
-          );
+          let focusPassed = false;
+          try {
+            await expect
+              .poll(
+                async () => {
+                  const observed = await read();
+                  return (
+                    observed.focused &&
+                    observed.visible &&
+                    (observed.outline !== baseline.outline || observed.shadow !== baseline.shadow)
+                  );
+                },
+                { timeout: 10_000 }
+              )
+              .toBe(true);
+            focusPassed = true;
+          } finally {
+            await captureLinks(
+              page,
+              `nav-${family}-no-js-${role}-focus${focusPassed ? '' : '-failure'}`,
+              family,
+              'native-no-js',
+              `no-JavaScript; native-${role}-keyboard-focus; ${focusPassed ? 'passed' : 'failed'}`,
+              { baseline, observed: await read() }
+            );
+          }
         }
         const current = page.locator('.sidebar-pane a[aria-current="page"]').first();
         expect(new URL((await current.getAttribute('href'))!, page.url()).pathname).toBe(
@@ -1172,6 +1240,9 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
               linkBottom: row.bottom,
               viewportTop: top,
               viewportHeight: owner.clientHeight,
+              ownerBottom: box.bottom,
+              documentViewportHeight: innerHeight,
+              documentScrollHeight: document.documentElement.scrollHeight,
               projected: link.getAttribute('data-site-link-enhanced'),
               focus: document.activeElement?.outerHTML.slice(0, 300),
             };
@@ -1187,10 +1258,52 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           'current-article-revealed',
           before
         );
-        await current.hover();
+        expect(
+          before.ownerBottom,
+          'sidebar owner must fit inside the document viewport'
+        ).toBeLessThanOrEqual(before.documentViewportHeight!);
+        const pointer = await current.evaluate((link) => {
+          const row = link.getBoundingClientRect();
+          const left = Math.max(0, row.left),
+            right = Math.min(innerWidth, row.right);
+          const top = Math.max(0, row.top),
+            bottom = Math.min(innerHeight, row.bottom);
+          if (right <= left || bottom <= top)
+            throw new Error('Current article has no visible pointer target');
+          const x = (left + right) / 2,
+            y = (top + bottom) / 2;
+          const target = document.elementFromPoint(x, y);
+          return {
+            x,
+            y,
+            hitIsCurrent: target === link,
+            hit: target?.outerHTML.slice(0, 500) ?? null,
+          };
+        });
+        expect(pointer.hitIsCurrent, 'actual visible native current-article target').toBe(true);
+        // locator.hover() first scrolls all ancestors to expose the entire row.
+        // Use a measured visible point so this test's wheel is the only scroll request.
+        await page.mouse.move(pointer.x, pointer.y);
+        const beforeWheel = await facts();
+        await captureLinks(
+          page,
+          `sidebar-current-${width}-pointer`,
+          'shadcn',
+          'wc',
+          'native-pointer-move; no-scrollIntoView',
+          { before, pointer, beforeWheel }
+        );
+        expect(beforeWheel.documentY, 'pointer must not move document scroll').toBe(
+          before.documentY
+        );
+        expect(beforeWheel.scrollTop, 'pointer must not move sidebar scroll').toBe(
+          before.scrollTop
+        );
         await page.mouse.wheel(0, -400);
         // Observe the actual scroll event rather than guessing a fixed delay.
-        await expect.poll(async () => (await facts()).scrollTop).toBeLessThan(before.scrollTop!);
+        await expect
+          .poll(async () => (await facts()).scrollTop)
+          .toBeLessThan(beforeWheel.scrollTop!);
         await current.evaluate(async (link) => {
           const boundary = link.closest<HTMLElement>('.docs-sidebar')!;
           let owner = link.parentElement!;
@@ -1218,6 +1331,20 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           throw new Error('Manual scrolling did not settle');
         });
         const manuallyScrolled = await facts();
+        await captureLinks(
+          page,
+          `sidebar-current-${width}-wheel`,
+          'shadcn',
+          'wc',
+          'native-wheel-settled; owner-and-document-deltas',
+          { beforeWheel, manuallyScrolled }
+        );
+        expect(manuallyScrolled.owner, 'wheel preserves the actual sidebar scroll owner').toBe(
+          beforeWheel.owner
+        );
+        expect(manuallyScrolled.documentY, 'sidebar wheel must not scroll the document').toBe(
+          beforeWheel.documentY
+        );
         await current.evaluate((link) => {
           // A delayed projection/font-sized geometry mutation must not revoke manual ownership.
           link.style.paddingBlock = '16px';
@@ -1229,8 +1356,24 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
               requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
             )
         );
-        expect((await facts()).scrollTop).toBe(manuallyScrolled.scrollTop);
-        expect((await facts()).documentY).toBe(0);
+        const afterMutation = await facts();
+        await captureLinks(
+          page,
+          `sidebar-current-${width}-mutation`,
+          'shadcn',
+          'wc',
+          'injected-late-geometry; manual-scroll-ownership-retained',
+          { manuallyScrolled, afterMutation }
+        );
+        expect(afterMutation.owner, 'late geometry retains the sidebar scroll owner').toBe(
+          manuallyScrolled.owner
+        );
+        expect(afterMutation.scrollTop, 'late geometry must not recenter the sidebar').toBe(
+          manuallyScrolled.scrollTop
+        );
+        expect(afterMutation.documentY, 'late geometry must not scroll the document').toBe(
+          manuallyScrolled.documentY
+        );
         await page.reload({ waitUntil: 'networkidle' });
         if (width < 1024) await page.locator('starlight-menu-button button').click();
         await expect.poll(async () => (await facts()).visible, { timeout: 10_000 }).toBe(true);

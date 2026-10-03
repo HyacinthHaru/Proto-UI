@@ -550,3 +550,184 @@ describe('bounded documentation readiness', () => {
     f.assertClean();
   });
 });
+
+describe('native navigation observation contracts (no browser or server)', () => {
+  const browserSource = readFileSync(
+    'apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts',
+    'utf8'
+  );
+  const ast = ts.createSourceFile(
+    'site-native-links.browser.test.ts',
+    browserSource,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS
+  );
+  const arrows = [];
+  const visit = (node) => {
+    if (ts.isArrowFunction(node)) arrows.push(node);
+    ts.forEachChild(node, visit);
+  };
+  visit(ast);
+  const expression = (node) =>
+    ts.transpileModule(`(${node.getText(ast)})`, {
+      compilerOptions: { target: ts.ScriptTarget.ES2022 },
+    }).outputText;
+
+  it('accepts false aria-current values without treating the current page as inactive', async () => {
+    const { Window } = await import('happy-dom');
+    const window = new Window();
+    try {
+      window.document.body.innerHTML =
+        '<a data-site-link-enhanced aria-current="page"></a><a data-site-link-enhanced aria-current="false"></a><a data-site-link-enhanced></a>';
+      const selector = 'a[data-site-link-enhanced]:not([aria-current="page"])';
+      assert.equal(window.document.querySelectorAll(selector).length, 2);
+      assert.equal(window.document.querySelector(selector).getAttribute('aria-current'), 'false');
+      assert.equal(
+        (browserSource.match(/:not\(\[aria-current="page"\]\):visible/g) ?? []).length,
+        2
+      );
+      assert.doesNotMatch(browserSource, /:not\(\[aria-current\]\)/);
+    } finally {
+      window.happyDOM.abort();
+    }
+  });
+
+  const focusPoll = arrows.find((node) => {
+    const value = node.getText(ast);
+    return (
+      value.includes('const observed = await read()') &&
+      value.includes('observed.focused &&') &&
+      !value.includes('const baseline =')
+    );
+  });
+  const baseline = {
+    focused: false,
+    visible: true,
+    outline: 'black solid 2px',
+    shadow: '2px 2px black',
+  };
+  for (const [label, sample, expected] of [
+    ['unchanged current-link outline and hard shadow', { ...baseline, focused: true }, false],
+    [
+      'paint changed without native keyboard focus',
+      { ...baseline, outline: 'white solid 3px' },
+      false,
+    ],
+    [
+      'focused paint is obscured',
+      { ...baseline, focused: true, visible: false, outline: 'white solid 3px' },
+      false,
+    ],
+    [
+      'actual visible focused paint changed',
+      { ...baseline, focused: true, outline: 'white solid 3px' },
+      true,
+    ],
+  ]) {
+    it(`actual focus poll ${expected ? 'accepts' : 'rejects'} ${label}`, async () => {
+      assert.ok(
+        focusPoll,
+        'the actual browser poll retains focus, hit visibility, and paint delta'
+      );
+      const check = runInNewContext(expression(focusPoll), { baseline, read: async () => sample });
+      assert.equal(await check(), expected);
+    });
+  }
+
+  it('captures failed no-JS paint and exact homepage hit nodes before losing the evidence', () => {
+    assert.match(browserSource, /focusPassed \? '' : '-failure'/);
+    assert.match(
+      browserSource,
+      /finally \{\s*await captureLinks\([\s\S]*?observed: await read\(\)/
+    );
+    assert.match(browserSource, /document\.elementsFromPoint\(x, y\)\.slice\(0, 6\)/);
+    assert.match(browserSource, /centerHitIsAnchor: centerHit\.isAnchor/);
+    assert.match(browserSource, /cornerHitIsAnchor: cornerHit\.isAnchor/);
+    assert.ok(
+      browserSource.indexOf('`homepage-${family}-${runtime}-native-hit-targets`') <
+        browserSource.indexOf('nativeLinkEvidenceIssues(footprint, footprint.expected)')
+    );
+  });
+
+  it('uses an actual visible pointer point without locator-triggered ancestor scrolling', () => {
+    const pointer = arrows.find(
+      (node) =>
+        node
+          .getText(ast)
+          .includes("throw new Error('Current article has no visible pointer target')") &&
+        !node.getText(ast).includes('await current.evaluate')
+    );
+    assert.ok(pointer);
+    const link = {
+      outerHTML: '<a aria-current="page">Current article</a>',
+      getBoundingClientRect: () => ({ left: 80, right: 310, top: 857, bottom: 901 }),
+    };
+    const check = runInNewContext(expression(pointer), {
+      innerWidth: 1440,
+      innerHeight: 900,
+      document: { elementFromPoint: () => link },
+    });
+    const point = check(link);
+    assert.equal(point.hitIsCurrent, true);
+    assert.equal(point.y, 878.5);
+    assert.ok(point.y < 900);
+    assert.doesNotMatch(browserSource, /await current\.hover\(\)/);
+    assert.match(browserSource, /await page\.mouse\.move\(pointer\.x, pointer\.y\)/);
+  });
+
+  it('retains exact document and sidebar ownership deltas from an initial zero scroll', () => {
+    assert.match(browserSource, /expect\(\(await facts\(\)\)\.documentY\)\.toBe\(0\)/);
+    for (const [before, after] of [
+      ['before', 'beforeWheel'],
+      ['beforeWheel', 'manuallyScrolled'],
+      ['manuallyScrolled', 'afterMutation'],
+    ]) {
+      assert.match(
+        browserSource,
+        new RegExp(
+          `expect\\(\\s*${after}\\.documentY,[\\s\\S]*?\\)\\.toBe\\(\\s*${before}\\.documentY\\s*\\)`
+        )
+      );
+    }
+    assert.match(
+      browserSource,
+      /expect\(\s*afterMutation\.scrollTop,[\s\S]*?\.toBe\(\s*manuallyScrolled\.scrollTop\s*\)/
+    );
+    assert.match(browserSource, /ownerBottom: box\.bottom/);
+    assert.match(browserSource, /documentViewportHeight: innerHeight/);
+  });
+
+  it('desktop sidebar height compensates its actual sticky top offset', () => {
+    const frame = readFileSync('apps/www/src/components/override/PageFrame.astro', 'utf8');
+    const desktop = frame.slice(frame.indexOf('@media (min-width: 64rem)'));
+    const topExtra = Number(
+      desktop.match(/top:\s*calc\(var\(--header-height\)\s*\+\s*(\d+)px\)/)?.[1]
+    );
+    const height = desktop.match(
+      /height:\s*calc\(100svh\s*-\s*var\(--header-height\)(?:\s*-\s*(\d+)px)?\)/
+    );
+    assert.ok(height, 'height must remain viewport-relative');
+    const heightExtra = Number(height[1] ?? 0);
+    for (const viewport of [900, 1000])
+      for (const header of [64, 104, 112]) {
+        const bottom = header + topExtra + (viewport - header - heightExtra);
+        assert.equal(
+          bottom,
+          viewport,
+          'source-derived sidebar bottom must equal the real viewport bottom'
+        );
+      }
+  });
+
+  it('Brutalist current no-JS links have an explicit distinct focus ring only in the fallback owner', () => {
+    const css = readFileSync('apps/www/src/styles/site-library-family.css', 'utf8');
+    const focus = css.match(
+      /\[data-site-library-family='brutalist'\]\s*\.sidebar-pane\s*\.top-level\s*a:not\(\[data-site-link-enhanced\]\)\[aria-current='page'\]:focus-visible\s*\{([^}]+)\}/
+    );
+    assert.ok(focus, 'unlayered current decoration needs an equally owned focus-visible rule');
+    assert.match(focus[1], /outline:\s*3px solid var\(--site-brutalist-ring\)/);
+    assert.match(focus[1], /outline-offset:\s*2px/);
+    assert.doesNotMatch(focus[1], /background|box-shadow/);
+  });
+});

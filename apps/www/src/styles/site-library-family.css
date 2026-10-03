@@ -92,6 +92,17 @@
   font-weight: 650;
 }
 
+/* The current marker above is unlayered, so its inset outline otherwise
+   masks the layered native focus rule. Only the no-JS fallback owns this ring;
+   enhanced links keep their Prototype-owned focus presentation. */
+[data-site-library-family='brutalist']
+  .sidebar-pane
+  .top-level
+  a:not([data-site-link-enhanced])[aria-current='page']:focus-visible {
+  outline: 3px solid var(--site-brutalist-ring);
+  outline-offset: 2px;
+}
+
 [data-site-library-family='brutalist']
   :is(
     .pagination-links a:not([data-site-link-enhanced]),
