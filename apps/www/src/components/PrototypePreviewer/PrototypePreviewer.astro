@@ -253,11 +253,13 @@ const rid = `pp-${Math.random().toString(36).slice(2)}`;
 
     .proto-previewer[data-projection-mode='fixed-family'] :global(.pui-projection-scope) {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: 0;
     }
 
     .proto-previewer[data-projection-mode='fixed-family'] :global(.pui-projection-controls) {
       display: flex;
+      min-width: 0;
       align-items: center;
       flex-wrap: wrap;
       gap: 0.875rem;

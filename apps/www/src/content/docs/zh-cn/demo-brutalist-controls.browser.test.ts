@@ -1073,7 +1073,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
             documentWidth: document.documentElement.scrollWidth,
             nodes: selectors.map((selector) => {
               const node = element.querySelector<HTMLElement>(selector);
-              if (!node) return { selector, missing: true };
+              if (!node) return { selector, missing: true } as const;
               const rect = node.getBoundingClientRect();
               const style = getComputedStyle(node);
               return {
@@ -1082,6 +1082,10 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
                 text: node.textContent?.trim().slice(0, 100),
                 x: rect.x,
                 width: rect.width,
+                contentLeft:
+                  rect.x + parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft),
+                contentRight:
+                  rect.right - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight),
                 clientWidth: node.clientWidth,
                 scrollWidth: node.scrollWidth,
                 display: style.display,
@@ -1101,11 +1105,52 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
           };
         });
         console.info('Scroll Area 320px layout chain', JSON.stringify({ runtime, ...layoutChain }));
+        const layoutBox = (selector: string) => {
+          const node = layoutChain.nodes.find((entry) => entry.selector === selector);
+          if (!node || node.missing === true) {
+            throw new Error(`${runtime}/${selector}: expected rendered layout node.`);
+          }
+          return node;
+        };
+        const scopeBox = layoutBox('[data-projection-scope]');
+        const controlsBox = layoutBox('.pui-projection-controls');
+        const contentBox = layoutBox('[data-projection-content]');
+        const runtimeControlBox = layoutBox('[data-projection-control="runtime"]');
+        // Document overflow alone cannot detect children clipped by the preview frame.
+        for (const [name, box] of [
+          ['toolbar', controlsBox],
+          ['content', contentBox],
+        ] as const) {
+          expect(box.x, `${runtime}/${name}/scope-left`).toBeGreaterThanOrEqual(
+            scopeBox.contentLeft - GEOMETRY_EPSILON
+          );
+          expect(box.x + box.width, `${runtime}/${name}/scope-right`).toBeLessThanOrEqual(
+            scopeBox.contentRight + GEOMETRY_EPSILON
+          );
+        }
+        expect(
+          runtimeControlBox.x,
+          `${runtime}/runtime-control/toolbar-left`
+        ).toBeGreaterThanOrEqual(controlsBox.contentLeft - GEOMETRY_EPSILON);
+        expect(
+          runtimeControlBox.x + runtimeControlBox.width,
+          `${runtime}/runtime-control/toolbar-right`
+        ).toBeLessThanOrEqual(controlsBox.contentRight + GEOMETRY_EPSILON);
+        expect(rootBox!.x, `${runtime}/root/content-left`).toBeGreaterThanOrEqual(
+          contentBox.contentLeft - GEOMETRY_EPSILON
+        );
+        expect(rootBox!.x + rootBox!.width, `${runtime}/root/content-right`).toBeLessThanOrEqual(
+          contentBox.contentRight + GEOMETRY_EPSILON
+        );
         expect(rootBox!.x, runtime).toBeGreaterThanOrEqual(-GEOMETRY_EPSILON);
         expect(rootBox!.x + rootBox!.width, runtime).toBeLessThanOrEqual(
           viewportWidth + GEOMETRY_EPSILON
         );
         expect(scrollbarBox!.x, runtime).toBeGreaterThanOrEqual(rootBox!.x);
+        expect(
+          scrollbarBox!.x + scrollbarBox!.width,
+          `${runtime}/scrollbar/root-right`
+        ).toBeLessThanOrEqual(rootBox!.x + rootBox!.width + GEOMETRY_EPSILON);
         expect(scrollbarBox!.x + scrollbarBox!.width, runtime).toBeLessThanOrEqual(
           viewportWidth + GEOMETRY_EPSILON
         );
