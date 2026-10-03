@@ -1,0 +1,416 @@
+/* One website-owned layout for the homepage and documentation. Actual PUI
+   Button/Select surfaces still belong to the selected library and runtime. */
+.site-header {
+  --site-header-row-height: 4rem;
+  --site-control-height: 2.75rem;
+  box-sizing: border-box;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) 10rem minmax(12.5rem, 15rem) 2.75rem 2.75rem;
+  grid-template-areas: 'brand navigation . context search theme menu';
+  align-items: center;
+  column-gap: 0.25rem;
+  width: 100%;
+  min-height: var(--site-header-row-height);
+  max-width: 82.5rem;
+  padding-inline: 1.5rem;
+  margin-inline: auto;
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.site-header :is(button, a, select) {
+  font-family: inherit;
+}
+.site-header-brand {
+  grid-area: brand;
+}
+.site-header .site-header-brand a {
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+.site-header-panel {
+  display: contents;
+}
+.site-header-navigation {
+  grid-area: navigation;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-inline-start: 1.5rem;
+}
+.site-header-navigation :is(.home-actions-fallback, .home-runtime-actions) {
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+}
+.site-header .site-header-navigation a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  text-transform: none;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: none;
+}
+.site-header-navigation a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.site-header-search {
+  grid-area: search;
+  min-width: 0;
+  margin-inline-start: 0.5rem;
+}
+.site-header-theme {
+  grid-area: theme;
+}
+.site-header-menu {
+  grid-area: menu;
+}
+.site-header :is(.site-header-theme, .site-header-menu) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+}
+.site-header :is(.site-header-theme, .site-header-menu) svg,
+.site-header .site-header-search [data-open-modal] > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: none;
+}
+.site-header .site-header-search [data-open-modal] {
+  box-sizing: border-box;
+  min-height: 2.75rem;
+  width: 100%;
+  max-width: none;
+  height: 2.75rem;
+  font-size: 0.875rem;
+}
+.site-header .site-header-search [data-open-modal] > span {
+  display: inline;
+}
+.site-header .site-header-search [data-open-modal] > kbd {
+  display: inline-flex;
+}
+.site-header-context {
+  grid-area: context;
+  min-width: 0;
+}
+.site-header-runtime {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.site-header-runtime-label {
+  display: none;
+}
+.site-header-runtime :is(.adapter-select-wrapper, .home-actions, .pui-projection-controls) {
+  min-width: 0;
+  width: 10rem;
+  flex: none;
+}
+.site-header-runtime .pui-projection-content:empty {
+  display: none;
+}
+.site-header .pui-projection-scope {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.site-header .pui-projection-content {
+  min-width: 0;
+}
+.site-header .home-runtime-actions,
+.site-header .home-actions-fallback {
+  align-items: center;
+}
+.site-header-settings {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 1rem;
+  padding-block: 1rem;
+}
+.site-header[data-site-menu-ready] .site-header-settings {
+  position: absolute;
+  z-index: 70;
+  inset-block-start: calc(var(--site-header-row-height) - 0.25rem);
+  inset-inline-end: 1.5rem;
+  width: 17.5rem;
+  padding: 1rem;
+  border: var(--site-surface-border-width, 1px) solid var(--color-border);
+  border-radius: var(--site-surface-radius, 0.5rem);
+  background: var(--color-background);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.08);
+}
+.site-header-setting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+.site-header-setting-label {
+  color: var(--color-muted-foreground);
+  font-size: 0.8125rem;
+}
+.site-header-setting a {
+  min-height: 2.75rem;
+}
+.site-header-setting a {
+  font-size: 0.875rem;
+}
+.site-header-setting [aria-label='GitHub'],
+.site-header-setting [aria-label='Discord'],
+.site-header-setting [aria-label='X'],
+.site-header-setting [aria-label='Bluesky'] {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+}
+.site-header-setting svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.site-header-docs-navigation {
+  display: none;
+}
+.site-header-menu-icon,
+.site-header-theme-icon {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+  position: relative;
+}
+.site-header-menu-icon::before,
+.site-header-menu-icon::after {
+  content: '';
+  position: absolute;
+  left: 0.0625rem;
+  right: 0.0625rem;
+  top: 0.3125rem;
+  height: 1.5px;
+  background: currentColor;
+}
+.site-header-menu-icon::after {
+  top: 0.75rem;
+}
+[data-site-menu-open='true'] .site-header-menu-icon::before {
+  top: 0.53125rem;
+  transform: rotate(45deg);
+}
+[data-site-menu-open='true'] .site-header-menu-icon::after {
+  top: 0.53125rem;
+  transform: rotate(-45deg);
+}
+.site-header-theme-icon {
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.site-header-theme-icon::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 100%;
+  background: currentColor;
+}
+.site-header:not([data-site-menu-ready]) .site-header-menu {
+  visibility: hidden;
+}
+.site-header [hidden] {
+  display: none !important;
+}
+.home-runtime-status,
+.site-header .pui-projection-control-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.home-runtime-header[data-runtime-state='error'] .home-runtime-status {
+  position: static;
+  grid-column: 1 / -1;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0.5rem 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  color: var(--color-destructive);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+@media (max-width: 68.749rem) {
+  .site-header {
+    grid-template-columns: auto auto minmax(0, 1fr) 2.75rem 2.75rem 2.75rem;
+    grid-template-areas: 'brand navigation . search theme menu' 'context context context context context context';
+    grid-template-rows: var(--site-header-row-height) 3rem;
+  }
+  .site-header-context {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .site-header-runtime-label {
+    display: inline;
+    font-size: 0.75rem;
+    color: var(--color-muted-foreground);
+    white-space: nowrap;
+  }
+  .site-header-search {
+    margin-inline-start: 0;
+  }
+  .site-header .site-header-search [data-open-modal] {
+    display: flex;
+    justify-content: center;
+    width: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+  }
+  .site-header .site-header-search [data-open-modal]:hover {
+    background: var(--color-accent);
+  }
+  .site-header .site-header-search [data-open-modal] > :is(span, kbd) {
+    display: none !important;
+  }
+  .site-header[data-site-menu-ready] .site-header-settings {
+    inset-block-start: calc(var(--site-header-row-height) + 3rem);
+  }
+  .site-header-docs-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+  }
+  .site-header-docs-navigation starlight-menu-button button {
+    position: static;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    border-radius: var(--site-surface-radius, 0.5rem);
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    box-shadow: none;
+  }
+  .site-header-docs-navigation svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+@media (min-width: 64rem) {
+  .site-header-docs-navigation {
+    display: none;
+  }
+}
+@media (max-width: 47.999rem) {
+  .site-header {
+    --site-header-row-height: 3.5rem;
+    grid-template-columns: minmax(0, 1fr) 2.75rem 2.75rem 2.75rem;
+    grid-template-areas: 'brand search theme menu' 'context context context context';
+    padding-inline: 1rem;
+  }
+  .site-header-panel {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 0.75rem;
+    padding-block: 0.75rem;
+  }
+  .site-header[data-site-menu-ready] .site-header-panel {
+    position: absolute;
+    z-index: 70;
+    inset-block-start: calc(var(--site-header-row-height) + 3rem);
+    inset-inline: 1rem;
+    max-height: calc(100svh - var(--site-header-row-height) - 4rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1rem;
+    border: var(--site-surface-border-width, 1px) solid var(--color-border);
+    border-radius: var(--site-surface-radius, 0.5rem);
+    background: var(--color-background);
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.08);
+  }
+  .site-header[data-site-menu-ready][data-site-menu-open='false'] .site-header-panel {
+    display: none;
+  }
+  .site-header-navigation {
+    grid-area: auto;
+    display: grid;
+    gap: 0;
+    margin-inline-start: 0;
+  }
+  .site-header-navigation :is(.home-actions-fallback, .home-runtime-actions) {
+    display: grid;
+    gap: 0;
+  }
+  .site-header .site-header-navigation a {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .site-header[data-site-menu-ready] .site-header-settings,
+  .site-header-settings {
+    position: static;
+    grid-column: auto;
+    width: auto;
+    padding: 0.75rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .site-header-runtime {
+    gap: 0.5rem;
+  }
+  .site-header-runtime-label {
+    font-size: 0.6875rem;
+  }
+  .site-header-runtime :is(.adapter-select-wrapper, .home-actions, .pui-projection-controls) {
+    width: 9.5rem;
+  }
+}
+
+/* Search is service-owned, so its native command recipe follows the same
+   visible family grammar as the actual PUI icon Buttons beside it. */
+[data-site-library-family='brutalist'] .site-header .site-header-search [data-open-modal] {
+  border: 2px solid var(--site-brutalist-border);
+  border-radius: 0;
+  background: var(--site-brutalist-secondary-background);
+  color: var(--site-brutalist-foreground);
+  box-shadow: 3px 3px 0 var(--site-brutalist-border);
+}
+@media (max-width: 24.999rem) {
+  .site-header-docs-navigation > span {
+    display: none;
+  }
+}

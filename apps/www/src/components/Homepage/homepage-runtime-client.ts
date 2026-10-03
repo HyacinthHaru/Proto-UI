@@ -1,3 +1,4 @@
+import { initSiteHeaderDisclosure, type SiteHeaderDisclosure } from '../site-header-disclosure';
 import { homepageDemoParticipant } from './homepage-demo-participant';
 import { applySiteLibraryFamily } from '../site-library-family';
 import {
@@ -51,6 +52,8 @@ type Group = {
   links: HTMLAnchorElement[];
   theme: boolean;
   runtime: boolean;
+  menu?: boolean;
+  disclosure?: SiteHeaderDisclosure;
 };
 type HomepageHandle = { destroy(): Promise<void>; getSnapshot(): ProjectionScopeSnapshot };
 
@@ -120,6 +123,13 @@ export function createHomepageContent(
       kind: 'proto',
       prototypeId: resolveProjectionPart(family, 'button', 'root').prototypeId,
       ref: 'home-theme',
+      surfaceStyle: {
+        minHeight: 'var(--site-control-height, 2.75rem)',
+        height: '2.75rem',
+        width: '2.75rem',
+        padding: '0',
+        fontFamily: 'inherit',
+      },
       props: {
         variant: family === 'shadcn' ? 'ghost' : 'surface',
         size: group.root.dataset.homepageThemeIcon === 'true' ? 'icon' : 'default',
@@ -127,7 +137,11 @@ export function createHomepageContent(
       children:
         group.root.dataset.homepageThemeIcon === 'true'
           ? [
-              { kind: 'box', attrs: { 'aria-hidden': 'true' }, children: ['◐'] },
+              {
+                kind: 'box',
+                className: 'site-header-theme-icon',
+                attrs: { 'aria-hidden': 'true' },
+              },
               {
                 kind: 'box',
                 className: 'home-theme-accessible-label',
@@ -135,6 +149,28 @@ export function createHomepageContent(
               },
             ]
           : [group.root.dataset.homepageThemeLabel || 'Toggle theme'],
+    });
+  if (group.menu)
+    children.push({
+      kind: 'proto',
+      prototypeId: resolveProjectionPart(family, 'button', 'root').prototypeId,
+      ref: 'home-menu',
+      surfaceStyle: {
+        minHeight: 'var(--site-control-height, 2.75rem)',
+        height: '2.75rem',
+        width: '2.75rem',
+        padding: '0',
+        fontFamily: 'inherit',
+      },
+      props: { variant: family === 'shadcn' ? 'ghost' : 'surface', size: 'icon' },
+      children: [
+        { kind: 'box', className: 'site-header-menu-icon', attrs: { 'aria-hidden': 'true' } },
+        {
+          kind: 'box',
+          className: 'home-theme-accessible-label',
+          children: [group.root.dataset.homepageMenuLabel || 'Navigation and settings'],
+        },
+      ],
     });
   return {
     type: 'demo',
@@ -146,6 +182,23 @@ export function createHomepageContent(
         isActive,
         group.root.dataset.homepageThemeLabel || 'Toggle theme'
       );
+      const menuButton = context.refs['home-menu'];
+      const unbindMenu = menuButton && group.disclosure?.bindButton(menuButton);
+      const toggleMenu = () => {
+        if (isActive()) group.disclosure?.toggle();
+      };
+      const onMenuClick = (event: Event) => {
+        if (event instanceof (context.host.ownerDocument.defaultView?.CustomEvent ?? CustomEvent))
+          toggleMenu();
+      };
+      if (menuButton) {
+        menuButton.setAttribute(
+          'title',
+          group.root.dataset.homepageMenuLabel || 'Navigation and settings'
+        );
+        if (runtime === 'wc') menuButton.addEventListener('click', onMenuClick);
+        else context.api.setProps('home-menu', { onClick: toggleMenu });
+      }
       const listeners: Array<{ link: Element; listener: EventListener }> = [];
       for (const link of context.host.querySelectorAll<HTMLAnchorElement>('a[href]')) {
         const listener: EventListener = (event) => {
@@ -168,6 +221,10 @@ export function createHomepageContent(
       }
       return () => {
         cleanupTheme();
+        unbindMenu?.();
+        menuButton?.removeEventListener('click', onMenuClick);
+        if (menuButton && runtime !== 'wc')
+          context.api.setProps('home-menu', { onClick: () => {} });
         for (const { link, listener } of listeners) link.removeEventListener('click', listener);
       };
     },
@@ -179,6 +236,9 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const ownedRoot = root as HTMLElement & { __homepageRuntime__?: HomepageHandle };
   if (ownedRoot.__homepageRuntime__) return ownedRoot.__homepageRuntime__;
   const document = root.ownerDocument;
+  const disclosure = root.hasAttribute('data-site-header')
+    ? initSiteHeaderDisclosure(root)
+    : undefined;
   const groups: Group[] = Array.from(
     document.querySelectorAll<HTMLElement>('[data-homepage-actions]')
   ).map((group, index) => {
@@ -196,6 +256,8 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       links: Array.from(fallback.querySelectorAll<HTMLAnchorElement>('a[href]')),
       theme: !!fallback.querySelector('[data-homepage-theme]'),
       runtime: group.dataset.homepageControls === 'runtime',
+      menu: !!fallback.querySelector('[data-homepage-menu]'),
+      disclosure,
     };
   });
   const selectorGroup = groups.find((group) => group.runtime);
@@ -262,10 +324,11 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       const family = request.selection.projectionFamilyId as ProjectionFamilyId;
       const component = desiredComponent;
       const work = groups.map(async (group) => {
-        const ids = group.theme
-          ? [resolveProjectionPart(family, 'button', 'root').prototypeId]
-          : [];
-        if (!group.links.length && !group.theme)
+        const ids =
+          group.theme || group.menu
+            ? [resolveProjectionPart(family, 'button', 'root').prototypeId]
+            : [];
+        if (!group.links.length && !group.theme && !group.menu && !group.runtime)
           throw new Error('[HomepageRuntime] action groups must not be empty.');
         return materializeProjectionCandidate(request, {
           mount: group.mount,
@@ -364,6 +427,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           applySiteLibraryFamily(document, family);
           demoPublication?.publish();
           setStatus('ready', commit.selection.runtimeId as RuntimeId);
+          disclosure?.enhance();
         },
         rollback() {
           activeCandidates = previous;
@@ -501,6 +565,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       destroyed = true;
       epoch++;
       observer.disconnect();
+      disclosure?.destroy();
       for (const stop of stopThemes) stop();
       document.removeEventListener(PREFERRED_ADAPTER_EVENT, onAdapterChange);
       document.removeEventListener('astro:before-swap', onBeforeSwap);

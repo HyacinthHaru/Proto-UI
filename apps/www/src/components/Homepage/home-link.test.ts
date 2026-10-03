@@ -78,7 +78,9 @@ describe('Website native-link host composition', () => {
     try {
       const button = host.querySelector<HTMLElement>('[data-demo-ref="home-theme"]')!;
       expect(button.getAttribute('role')).toBe('button');
-      expect(button.querySelector('[aria-hidden="true"]')?.textContent).toBe('◐');
+      expect(button.querySelector('.site-header-theme-icon')?.getAttribute('aria-hidden')).toBe(
+        'true'
+      );
       expect(button.querySelector('.home-theme-accessible-label')?.textContent).toBe(
         'Toggle color theme'
       );

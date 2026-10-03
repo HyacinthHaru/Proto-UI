@@ -24,7 +24,11 @@
   --color-muted-foreground: var(--site-brutalist-muted-foreground);
   --color-accent: var(--site-brutalist-accent);
   --color-accent-foreground: var(--site-brutalist-accent-foreground);
-  --color-border: var(--site-brutalist-border);
+  --color-border: color-mix(
+    in srgb,
+    var(--site-brutalist-foreground) 28%,
+    var(--site-brutalist-background)
+  );
   --color-ring: var(--site-brutalist-ring);
   --color-sidebar: var(--site-brutalist-background);
   --color-sidebar-foreground: var(--site-brutalist-foreground);
@@ -106,4 +110,12 @@
 
 [data-site-library-family='brutalist'] :is(site-search kbd, .docs-table-scroll > table) {
   border-radius: 0;
+}
+
+/* Shortcut hints are application chrome, not library accents. */
+[data-site-library-family='brutalist'] site-search kbd kbd {
+  background: var(--site-brutalist-muted);
+  color: var(--site-brutalist-muted-foreground);
+  border-color: var(--site-brutalist-foreground);
+  box-shadow: none;
 }

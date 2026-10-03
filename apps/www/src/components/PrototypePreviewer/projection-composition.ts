@@ -503,6 +503,8 @@ function createSelectControl<Value extends string>(
   const trigger = createProjectedProto(selectParts.trigger, coordinateAttrs, themeSurfaceStyle, {
     ref: refs.trigger,
     props: { 'aria-label': config.label },
+    // The website owns control density, through the Adapter's normalized surface channel.
+    surfaceStyle: { minHeight: 'var(--site-control-height, 2.25rem)' },
     children: [value],
   });
   const content = createProjectedProto(selectParts.content, coordinateAttrs, themeSurfaceStyle, {

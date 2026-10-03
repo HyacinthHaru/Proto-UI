@@ -10,12 +10,6 @@ const path = (pathname: string) =>
 const otherLocale = Object.keys(config.locales ?? {}).find((key) => key !== locale);
 const actions = [
   {
-    text: 'Proto UI',
-    attrs: { 'data-home-brand': '' },
-    link: Astro.locals.starlightRoute.siteTitleHref,
-    variant: 'minimal' as const,
-  },
-  {
     text: zh ? '文档' : 'Docs',
     link: path('/start-here/what-you-saw/'),
     variant: 'minimal' as const,
@@ -26,21 +20,22 @@ const actions = [
     link: path('/whitepaper/0-preface/'),
     variant: 'minimal' as const,
   },
-  ...(otherLocale
-    ? [
-        {
-          text: config.locales![otherLocale].label || otherLocale,
-          link: localizedUrl(Astro.url, otherLocale, context.trailingSlash).pathname,
-          variant: 'minimal' as const,
-          attrs: { 'data-home-locale': otherLocale, hreflang: otherLocale },
-        },
-      ]
-    : []),
 ];
+const localeActions = otherLocale
+  ? [
+      {
+        text: config.locales![otherLocale].label || otherLocale,
+        link: localizedUrl(Astro.url, otherLocale, context.trailingSlash).pathname,
+        variant: 'minimal' as const,
+        attrs: { 'data-home-locale': otherLocale, hreflang: otherLocale },
+      },
+    ]
+  : [];
 ---
 
 <div
-  class="home-runtime-header"
+  class="site-header home-runtime-header"
+  data-site-header
   data-homepage-runtime
   data-runtime-state="loading"
   data-family-label={zh ? '整页组件库' : 'Page library'}
@@ -49,10 +44,54 @@ const actions = [
   data-status-loading={zh ? '准备页面控件' : 'Preparing page controls'}
   data-status-error={zh ? '切换失败，已保留可用页面' : 'Switch failed; usable page retained'}
 >
-  <HomeActions id="home-navigation" {actions} />
-  <HomeActions id="home-preferences" actions={[]} runtimeControl themeButton themeIcon />
-  <div class="home-runtime-shell" data-homepage-shell-tools>
-    <slot />
+  <div class="site-header-brand">
+    <HomeActions
+      id="home-brand"
+      actions={[
+        {
+          text: 'Proto UI',
+          attrs: { 'data-home-brand': '' },
+          link: Astro.locals.starlightRoute.siteTitleHref,
+          variant: 'minimal',
+        },
+      ]}
+    />
+  </div>
+  <div class="site-header-panel" id="site-header-panel" data-site-header-panel>
+    <nav
+      class="site-header-navigation"
+      data-site-header-navigation
+      aria-label={zh ? '主导航' : 'Primary navigation'}
+    >
+      <HomeActions id="home-navigation" {actions} />
+    </nav>
+    <div class="site-header-settings" id="site-header-settings" data-site-header-settings>
+      {
+        localeActions.length > 0 && (
+          <div class="site-header-setting">
+            <span class="site-header-setting-label">{zh ? '语言' : 'Language'}</span>
+            <HomeActions id="home-language" actions={localeActions} />
+          </div>
+        )
+      }
+      <div class="site-header-setting">
+        <span class="site-header-setting-label">{zh ? '社区' : 'Community'}</span>
+        <slot name="social" />
+      </div>
+    </div>
+  </div>
+  <div class="site-header-context">
+    <div class="site-header-runtime">
+      <span class="site-header-runtime-label">{zh ? '页面 Runtime' : 'Page runtime'}</span>
+      <HomeActions id="home-preferences" actions={[]} runtimeControl />
+    </div>
+  </div>
+  <div class="site-header-search" data-homepage-shell-tools><slot name="search" /></div>
+  <div class="site-header-theme">
+    <HomeActions id="home-theme-controls" actions={[]} themeButton themeIcon />
+  </div>
+  <div class="site-header-menu">
+    <HomeActions id="home-menu-control" actions={[]} menuButton />
   </div>
   <output class="home-runtime-status" data-homepage-runtime-status aria-live="polite">
     {zh ? '原生链接可用 · Runtime 加载中' : 'Native links ready · runtime loading'}
@@ -67,111 +106,3 @@ const actions = [
   else initialize();
   document.addEventListener('astro:page-load', initialize);
 </script>
-<style is:global>
-  .home-runtime-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    align-items: center;
-    gap: 0.5rem 1rem;
-    width: 100%;
-    max-width: 86rem;
-    padding: 0.65rem 2rem;
-    margin-inline: auto;
-  }
-  .home-runtime-header .pui-projection-scope {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-  .home-runtime-header #home-preferences {
-    min-height: 2.25rem;
-  }
-  .home-runtime-header .pui-projection-content {
-    min-width: 0;
-  }
-  .home-runtime-header .pui-projection-controls {
-    width: 10rem;
-    flex: none;
-  }
-  .home-runtime-header .home-runtime-actions,
-  .home-runtime-header .home-actions-fallback {
-    gap: 0.2rem;
-  }
-  .home-runtime-header .home-runtime-anchor,
-  .home-runtime-header .home-actions-fallback a {
-    min-height: 2.1rem;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.82rem;
-  }
-  .home-runtime-header [data-home-brand] {
-    font-size: 1rem;
-    font-weight: 650;
-    letter-spacing: -0.03em;
-  }
-  .home-runtime-shell {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-  /* These labels belong to the Website composition, not a Prototype surface. */
-  .home-runtime-status,
-  .home-runtime-header .pui-projection-control-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  .home-runtime-header[data-runtime-state='error'] .home-runtime-status {
-    position: static;
-    grid-column: 1 / -1;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0.5rem;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-    color: var(--color-destructive);
-    font-size: 0.8125rem;
-    line-height: 1.5;
-  }
-
-  @media (max-width: 50rem) {
-    .home-runtime-header {
-      grid-template-columns: minmax(0, 1fr) auto;
-      padding: 0.5rem 0;
-      gap: 0.45rem 0.35rem;
-    }
-    .home-runtime-header #home-navigation {
-      grid-column: 1 / -1;
-    }
-    .home-runtime-header #home-preferences {
-      justify-self: start;
-    }
-    .home-runtime-header .home-runtime-anchor,
-    .home-runtime-header .home-actions-fallback a {
-      padding-inline: 0.375rem;
-    }
-    .home-runtime-shell {
-      justify-self: end;
-    }
-    .home-runtime-shell > :last-child {
-      gap: 0;
-    }
-  }
-  @media (max-width: 23rem) {
-    /* Keep every native link and 32px shell target when all utilities cannot fit. */
-    .home-runtime-header #home-preferences {
-      grid-column: 1 / -1;
-    }
-    .home-runtime-shell {
-      grid-column: 1 / -1;
-      justify-self: start;
-    }
-  }
-</style>

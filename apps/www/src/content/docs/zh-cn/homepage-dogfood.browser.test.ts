@@ -262,9 +262,17 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           const header = document
             .querySelector<HTMLElement>('[data-homepage-runtime]')!
             .getBoundingClientRect();
-          const nav = document
-            .querySelector<HTMLElement>('#home-navigation')!
-            .getBoundingClientRect();
+          const navigation = document.querySelector<HTMLElement>('[data-site-header-navigation]')!;
+          const controls = [
+            ...document.querySelectorAll<HTMLElement>(
+              '.site-header-search [data-open-modal], .site-header-theme [data-demo-ref="home-theme"], .site-header-menu [data-demo-ref="home-menu"]'
+            ),
+          ].filter(
+            (element) =>
+              element.closest('[data-projection-generation-state="active"]') ||
+              element.hasAttribute('data-open-modal')
+          );
+          const controlBounds = controls.map((element) => element.getBoundingClientRect());
           const status = document
             .querySelector<HTMLElement>('[data-homepage-runtime-status]')!
             .getBoundingClientRect();
@@ -273,25 +281,45 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           )!;
           return {
             width: header.width,
-            navWidth: nav.width,
+            navHidden: navigation.hidden,
+            controls: controlBounds.map(({ x, y, width, height }) => ({ x, y, width, height })),
             height: header.height,
             statusArea: status.width * status.height,
             brandSize: getComputedStyle(brand).fontSize,
           };
         });
-        expect(geometry.navWidth, `${width}px full-width navigation`).toBeGreaterThanOrEqual(
-          geometry.width * 0.95
-        );
-        expect(geometry.height, `${width}px compact header`).toBeLessThan(
-          width === 390 ? 150 : 190
-        );
+        expect(geometry.navHidden, `${width}px navigation is deliberately disclosed`).toBe(true);
+        expect(geometry.height, `${width}px one 56px row and 48px runtime bar`).toBe(104);
+        expect(geometry.controls).toHaveLength(3);
+        for (const control of geometry.controls) {
+          expect(control.width).toBeGreaterThanOrEqual(44);
+          expect(control.height).toBeGreaterThanOrEqual(44);
+          expect(control.y).toBe(geometry.controls[0]!.y);
+        }
         expect(geometry.statusArea).toBeLessThanOrEqual(1);
         expect(geometry.brandSize).toBe('16px');
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
         true
       );
+      const menu = page.locator(
+        '[data-projection-generation-state="active"] [data-demo-ref="home-menu"]'
+      );
+      await menu.click();
+      expect(await menu.getAttribute('aria-expanded')).toBe('true');
+      const disclosedDocs = page
+        .locator('#home-navigation [data-homepage-mount] a')
+        .filter({ hasText: '文档' });
+      expect(await disclosedDocs.isVisible()).toBe(true);
       await switchRuntime(page, 'vue2');
+      expect(
+        await menu.getAttribute('aria-expanded'),
+        'open application state survives runtime commit'
+      ).toBe('true');
+      expect(await disclosedDocs.isVisible()).toBe(true);
+      await page.keyboard.press('Escape');
+      expect(await menu.getAttribute('aria-expanded')).toBe('false');
+      expect(await menu.evaluate((element) => document.activeElement === element)).toBe(true);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
         true
       );
@@ -363,6 +391,9 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         };
         await chooseAdapter('vue');
         await chooseAdapter('react');
+        const menu = page.locator('header [data-site-menu-button]');
+        await menu.click();
+        expect(await menu.getAttribute('aria-expanded')).toBe('true');
         const languageTrigger = language.locator('[role="combobox"]');
         await languageTrigger.click();
         const languagePortalId = await languageTrigger.getAttribute('aria-controls');
@@ -399,4 +430,72 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       await context.close();
     }
   }, 180_000);
+  it('uses the same mobile shell on documentation with independent global navigation and contents', async () => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await context.newPage();
+    try {
+      for (const width of [390, 320]) {
+        await page.setViewportSize({ width, height: 844 });
+        await page.goto(`${baseUrl}/zh-cn/ui-libraries/brutalist/components/tooltip/`, {
+          waitUntil: 'networkidle',
+        });
+        const header = page.locator('[data-docs-site-header]');
+        const menu = header.locator('[data-site-menu-button]');
+        await expect.poll(() => header.getAttribute('data-site-menu-ready')).toBe('');
+        const geometry = await header.evaluate((element) => {
+          const bounds = element.getBoundingClientRect();
+          const controls = [
+            ...element.querySelectorAll<HTMLElement>(
+              '.site-header-search [data-open-modal], [data-theme-toggle], [data-site-menu-button]'
+            ),
+          ].map((control) => {
+            const { x, y, width, height } = control.getBoundingClientRect();
+            return { x, y, width, height };
+          });
+          return {
+            height: bounds.height,
+            controls,
+            overflow: document.documentElement.scrollWidth > innerWidth,
+          };
+        });
+        expect(geometry.height).toBe(104);
+        expect(geometry.overflow).toBe(false);
+        expect(geometry.controls).toHaveLength(3);
+        for (const control of geometry.controls) {
+          expect(control.width).toBeGreaterThanOrEqual(44);
+          expect(control.height).toBeGreaterThanOrEqual(44);
+          expect(control.y).toBe(geometry.controls[0]!.y);
+        }
+        await menu.click();
+        expect(await menu.getAttribute('aria-controls')).toBe('site-header-panel');
+        expect(await header.locator('[data-site-header-navigation]').isVisible()).toBe(true);
+        expect(await page.locator('body').getAttribute('data-mobile-menu-expanded')).toBeNull();
+        await page.keyboard.press('Escape');
+        expect(await menu.getAttribute('aria-expanded')).toBe('false');
+        const contents = header.locator('starlight-menu-button button');
+        expect(await contents.getAttribute('aria-controls')).toBe('starlight__sidebar');
+        expect(await contents.getAttribute('aria-label')).toBe('页面目录');
+        expect(await contents.getAttribute('title')).toBe('页面目录');
+        await contents.click();
+        expect(await page.locator('body').getAttribute('data-mobile-menu-expanded')).not.toBeNull();
+        expect(await menu.getAttribute('aria-expanded')).toBe('false');
+        // Opening global navigation closes contents without transferring focus.
+        await menu.click();
+        expect(await menu.getAttribute('aria-expanded')).toBe('true');
+        expect(await contents.getAttribute('aria-expanded')).toBe('false');
+        expect(await page.locator('body').getAttribute('data-mobile-menu-expanded')).toBeNull();
+        await page.keyboard.press('Escape');
+        expect(await menu.evaluate((element) => document.activeElement === element)).toBe(true);
+        // Reverse the order and exercise the complete keydown + keyup Escape.
+        await menu.click();
+        await contents.click();
+        await expect.poll(() => menu.getAttribute('aria-expanded')).toBe('false');
+        expect(await contents.getAttribute('aria-expanded')).toBe('true');
+        await page.keyboard.press('Escape');
+        expect(await contents.evaluate((element) => document.activeElement === element)).toBe(true);
+      }
+    } finally {
+      await context.close();
+    }
+  }, 90_000);
 });

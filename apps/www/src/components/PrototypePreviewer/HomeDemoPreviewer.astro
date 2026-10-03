@@ -111,34 +111,29 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
   data-status-ready={copy.ready}
   data-status-error={copy.error}
 >
+  <h2 class="home-demo-previewer__intro-title">{copy.title}</h2>
   <div class="home-demo-previewer__panel pui-runtime-box">
-    <div class="home-demo-previewer__header">
-      <div class="home-demo-previewer__intro">
-        <p class="home-demo-previewer__intro-eyebrow">{copy.eyebrow}</p>
-        <h2 class="home-demo-previewer__intro-title">{copy.title}</h2>
-        <p class="home-demo-previewer__description" data-home-demo-description>
-          {initialDemo.description ?? copy.lead}
-        </p>
-      </div>
-      <output class="home-demo-previewer__status" data-home-demo-status aria-live="polite">
-        {initialRuntimeLabel} · {copy.loading}
-      </output>
-    </div>
-
-    <div class="home-demo-previewer__definition">
-      <span>{locale === 'en' ? 'Shared definition' : '共享定义'}</span>
+    <div class="home-demo-previewer__host" data-home-demo-host aria-busy="true"></div>
+  </div>
+  <div class="home-demo-previewer__caption">
+    <p class="home-demo-previewer__description" data-home-demo-description>
+      {initialDemo.description ?? copy.lead}
+    </p>
+    <div class="home-demo-previewer__source">
+      <span class="home-demo-previewer__meta-label"
+        >{locale === 'en' ? 'Shared definition' : '共享定义'}</span
+      >
       <a
         data-home-demo-source
         href={`https://github.com/Proto-UI/Proto-UI/blob/main/apps/www/src/content/docs/zh-cn/${initialDemo.id}.demo.ts`}
       >
         {initialDemo.id}.demo.ts
       </a>
-      <span class="home-demo-previewer__definition-arrow" aria-hidden="true">→</span>
-      <span>{locale === 'en' ? 'Live component below' : '下方真实渲染'}</span>
     </div>
-
-    <div class="home-demo-previewer__host" data-home-demo-host aria-busy="true"></div>
   </div>
+  <output class="home-demo-previewer__status" data-home-demo-status aria-live="polite">
+    {initialRuntimeLabel} · {copy.loading}
+  </output>
   <p class="home-demo-previewer__scope">
     {
       locale === 'en'
@@ -182,130 +177,80 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
 
 <style>
   .home-demo-previewer {
-    width: min(100%, 68rem);
+    width: min(100%, 65rem);
     margin: 0 auto;
-    padding: 0 1.25rem 3rem;
-    scroll-margin-block: 5rem;
+    padding: 0 0 3rem;
+    scroll-margin-block: 8rem;
     font-family: var(--font-sans);
   }
-
+  .home-demo-previewer__intro-title {
+    margin: 0 0 0.75rem;
+    color: var(--color-foreground);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+  }
   .home-demo-previewer__panel {
     overflow: hidden;
     color: var(--color-card-foreground);
-    background: var(--color-card);
+    background: var(--color-background);
     border: var(--runtime-box-border);
     border-radius: var(--runtime-box-radius);
   }
-
-  .home-demo-previewer__header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1rem;
-    align-items: center;
-    padding: 1.25rem 1.5rem 1rem;
-  }
-
-  .home-demo-previewer__intro {
-    display: grid;
-    gap: 0.375rem;
-    min-width: 0;
-  }
-  .home-demo-previewer__intro-eyebrow,
-  .home-demo-previewer__intro-title,
-  .home-demo-previewer__description {
-    margin: 0;
-  }
-  .home-demo-previewer__intro-eyebrow {
-    display: none;
-  }
-  .home-demo-previewer__intro-title {
-    color: var(--color-foreground);
-    font-size: 1.125rem;
-    font-weight: 550;
-    line-height: 1.5;
-    letter-spacing: -0.015em;
-  }
-  .home-demo-previewer__description {
-    max-width: 46rem;
-    color: var(--color-muted-foreground);
-    font-size: 0.875rem;
-    line-height: 1.6;
-  }
-  .home-demo-previewer__status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    color: var(--color-muted-foreground);
-    font-size: 0.75rem;
-    white-space: nowrap;
-  }
-  .home-demo-previewer__status::before {
-    width: 0.375rem;
-    height: 0.375rem;
-    content: '';
-    background: var(--color-muted-foreground);
-    border-radius: 50%;
-  }
-  .home-demo-previewer[data-runner-state='ready'] .home-demo-previewer__status::before {
-    background: var(--color-primary);
-  }
-  .home-demo-previewer[data-runner-state='error'] .home-demo-previewer__status::before {
-    background: var(--color-destructive);
-  }
-  .home-demo-previewer__definition {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem 0.75rem;
-    padding: 0.75rem 1.5rem;
-    color: var(--color-muted-foreground);
-    background: color-mix(in oklch, var(--color-muted) 28%, var(--color-card));
-    border-block: 1px solid var(--color-border);
-    font-size: 0.75rem;
-    line-height: 1.6;
-  }
-  .home-demo-previewer__definition a {
-    color: var(--color-foreground);
-    font-family: var(--font-mono, monospace);
-    overflow-wrap: anywhere;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
   .home-demo-previewer__host {
     position: relative;
-    min-height: 15rem;
+    min-height: 14rem;
     width: 100%;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
   }
-  .home-demo-previewer :global(.pui-projection-generation) {
+  .home-demo-previewer :global(.pui-projection-generation),
+  .home-demo-previewer :global(.pui-projection-scope) {
     width: 100%;
   }
   .home-demo-previewer :global(.pui-projection-scope) {
     display: grid;
-    width: 100%;
   }
   .home-demo-previewer :global(.pui-projection-controls) {
     display: grid;
-    grid-template-columns: minmax(0, auto) minmax(0, auto);
+    grid-template-columns: 10rem 10rem;
+    align-items: center;
     justify-content: start;
-    gap: 0.875rem;
+    gap: 0.75rem;
     padding: var(--runtime-box-toolbar-padding);
-    background: var(--color-card);
+    border-bottom: var(--runtime-box-border);
   }
   .home-demo-previewer :global(.pui-projection-control) {
     display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.625rem;
     min-width: 0;
   }
-  .home-demo-previewer :global(.pui-projection-control-label) {
+  /* Select values are visible; each control retains its complete accessible label. */
+  .home-demo-previewer :global(.pui-projection-control-label),
+  .home-demo-previewer__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .home-demo-previewer[data-runner-state='error'] .home-demo-previewer__status,
+  .home-demo-previewer[data-runner-state='loading'] .home-demo-previewer__status {
+    position: static;
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0.75rem 0 0;
+    clip: auto;
+    white-space: normal;
     color: var(--color-muted-foreground);
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+  .home-demo-previewer[data-runner-state='error'] .home-demo-previewer__status {
+    color: var(--color-destructive);
   }
   .home-demo-previewer :global(.pui-projection-content) {
     min-height: var(--runtime-box-content-min);
@@ -317,15 +262,40 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
     width: 100%;
     padding: var(--runtime-box-content-padding);
     overflow: hidden;
-    background: var(--runtime-box-canvas);
-    border-top: 1px solid var(--color-border);
+  }
+  .home-demo-previewer__caption {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.375rem 1.5rem;
+    margin-top: 0.75rem;
+    color: var(--color-muted-foreground);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+  .home-demo-previewer__description {
+    margin: 0;
+    flex: 1 1 20rem;
+  }
+  .home-demo-previewer__source {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .home-demo-previewer__source a {
+    color: var(--color-foreground);
+    font: inherit;
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
   }
   .home-demo-previewer__scope {
     max-width: 58rem;
-    margin: 0.875rem 0 0;
+    margin: 0.5rem 0 0;
     color: var(--color-muted-foreground);
-    font-size: 0.75rem;
-    line-height: 1.75;
+    font-size: 0.8125rem;
+    line-height: 1.55;
   }
   .home-demo-previewer__research {
     display: flex;
@@ -333,9 +303,7 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
     gap: 0.75rem 2rem;
     align-items: center;
     justify-content: space-between;
-    margin-top: 2.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--color-border);
+    margin-top: 3rem;
   }
   .home-demo-previewer__research-copy {
     flex: 1 1 20rem;
@@ -347,15 +315,15 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
   }
   .home-demo-previewer__research-title {
     color: var(--color-foreground);
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.5;
   }
   .home-demo-previewer__research-lead {
     margin-top: 0.25rem;
     color: var(--color-muted-foreground);
-    font-size: 0.75rem;
-    line-height: 1.7;
+    font-size: 0.8125rem;
+    line-height: 1.55;
   }
   .home-demo-previewer__research-targets {
     display: flex;
@@ -363,41 +331,15 @@ const projectionOwner = `${id}-projection-${instanceToken}`;
     padding: 0;
     margin: 0;
     color: var(--color-muted-foreground);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     list-style: none;
   }
   @media (max-width: 720px) {
-    .home-demo-previewer {
-      padding-inline: 0;
-    }
-    .home-demo-previewer__header {
-      grid-template-columns: 1fr;
-      gap: 0.625rem;
-      padding: 1rem;
-    }
-    .home-demo-previewer__definition {
-      padding-inline: 1rem;
-    }
     .home-demo-previewer :global(.pui-projection-controls) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      padding: 1rem;
-    }
-    .home-demo-previewer :global(.pui-projection-content) {
-      min-height: var(--runtime-box-content-min);
-      padding: 1.5rem 1rem;
     }
     .home-demo-previewer__research {
-      margin-top: 1.75rem;
-    }
-  }
-  @media (max-width: 380px) {
-    .home-demo-previewer :global(.pui-projection-controls) {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .home-demo-previewer {
-      scroll-behavior: auto;
+      margin-top: 2rem;
     }
   }
 </style>

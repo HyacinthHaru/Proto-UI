@@ -46,7 +46,7 @@
   }
 
   main[data-pagefind-body] {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.625;
   }
 
@@ -65,11 +65,11 @@
   }
 
   main[data-pagefind-body] h1 {
-    @apply scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl;
+    @apply scroll-m-20 text-[2rem] leading-[2.5rem] font-semibold tracking-tight md:text-[2.25rem] md:leading-[2.75rem];
   }
 
   main[data-pagefind-body] h2 {
-    @apply scroll-m-20 text-3xl font-semibold tracking-tight;
+    @apply scroll-m-20 text-[1.625rem] leading-[2.125rem] font-semibold tracking-tight md:text-[1.75rem] md:leading-9;
   }
 
   main[data-pagefind-body] .sl-heading-wrapper {
@@ -268,7 +268,7 @@
 
   /* 仅对行内 code 应用样式，排除 pre>code 代码块（如 Shiki 高亮），避免暗色模式下黑色矩形 */
   main[data-pagefind-body] :not(pre) > code {
-    @apply bg-muted relative rounded-sm px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+    @apply bg-muted relative rounded-sm px-[0.25rem] py-[0.1rem] font-mono text-sm font-normal;
   }
 
   main[data-pagefind-body] .sl-heading-wrapper {

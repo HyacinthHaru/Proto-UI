@@ -107,8 +107,8 @@ const fontSelectors = [
     selector: '.homepage-hero [data-homepage-mount] a[href], section:has(h1) a[data-slot="button"]',
   },
   {
-    name: 'navigation',
-    selector: '[data-homepage-runtime] [data-projection-content] a[href], header a[href]',
+    name: 'header-brand',
+    selector: '[data-homepage-runtime] [data-home-brand], header a[href]',
   },
   {
     name: 'runtime-control',
@@ -119,9 +119,9 @@ const fontSelectors = [
     name: 'component-control',
     selector: '[data-home-demo-options] [data-projection-control="component"] [role="combobox"]',
   },
-  { name: 'toolbar-label', selector: '[data-home-demo-options] .pui-projection-control-label' },
+  { name: 'definition-label', selector: '.home-demo-previewer__meta-label' },
   { name: 'preview-intro-title', selector: '.home-demo-previewer__intro-title' },
-  { name: 'preview-status', selector: '.home-demo-previewer__status' },
+  { name: 'preview-caption', selector: '.home-demo-previewer__description' },
   { name: 'research-lead', selector: '.home-demo-previewer__research-lead' },
   { name: 'demo', selector: '[data-home-demo-host] [data-projection-content] [data-pui-root]' },
 ];
@@ -250,7 +250,9 @@ async function ownership(page: Page, runtime: Runtime) {
             react: Object.keys(scope).some((key) => key.startsWith('__reactFiber$')),
           },
           roots: [
-            ...scope.querySelectorAll<HTMLElement>('[data-projection-content] [data-pui-root]'),
+            ...scope.querySelectorAll<HTMLElement>(
+              '[data-projection-content] [data-pui-root], [data-projection-controls] [data-pui-root]'
+            ),
           ].map((root) => ({
             tag: root.tagName,
             prototype: root.getAttribute('data-prototype'),
@@ -326,6 +328,7 @@ async function measure(page: Page, samples = fontSelectors) {
         'h1',
         '[data-home-demo-options]',
         '.home-demo-previewer__intro-title',
+        '[data-home-demo-host] [data-projection-content] [data-pui-root]',
         '.home-demo-previewer__status',
         '.home-demo-previewer__research-lead',
       ].flatMap((selector) =>
@@ -352,7 +355,9 @@ async function measure(page: Page, samples = fontSelectors) {
         const matches = [...document.querySelectorAll<HTMLElement>(selector)];
         const matchIndex = matches.findIndex(
           (element) =>
-            element.getClientRects().length > 0 && getComputedStyle(element).visibility !== 'hidden'
+            element.getBoundingClientRect().width > 2 &&
+            element.getBoundingClientRect().height > 2 &&
+            getComputedStyle(element).visibility !== 'hidden'
         );
         if (matchIndex < 0) return [];
         const element = matches[matchIndex]!;
@@ -531,6 +536,23 @@ try {
               fontSelectors.length,
               'Every candidate font sample must resolve to visible content'
             );
+            if (viewport.name === 'mobile') {
+              const demoControl = (
+                evidence.initial as Awaited<ReturnType<typeof measure>>
+              ).surfaceGeometry.find(
+                (surface) =>
+                  surface.selector ===
+                  '[data-home-demo-host] [data-projection-content] [data-pui-root]'
+              );
+              assert.ok(
+                demoControl && demoControl.width > 0 && demoControl.height > 0,
+                'Mobile first view must contain a real rendered demo control'
+              );
+              assert.ok(
+                demoControl.y + demoControl.height <= viewport.height,
+                'The first real demo row must be visible before scrolling, rather than source metadata filling the first view'
+              );
+            }
             const failures = layoutFailures(
               evidence.initial as Awaited<ReturnType<typeof measure>>
             );

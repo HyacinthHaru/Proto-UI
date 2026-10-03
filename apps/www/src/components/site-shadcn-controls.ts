@@ -150,6 +150,27 @@ function applyProps(element: HTMLElement, props: Record<string, unknown>): void 
   queueMicrotask(() => (element as SiteSelectRoot).setProps?.(props));
 }
 
+/** Header sizing is a consumer override through the adapter's normalized
+ * surfaceStyle input, not an external selector competing with Proto styles. */
+function headerSurfaceStyle(element: HTMLElement, kind: 'button' | 'root' | 'trigger') {
+  if (!element.closest('[data-site-header]')) return undefined;
+  if (kind === 'root') return { width: '100%' };
+  if (kind === 'trigger')
+    return {
+      width: '100%',
+      minHeight: 'var(--site-control-height, 2.75rem)',
+      fontFamily: 'inherit',
+      fontSize: '0.875rem',
+    };
+  return {
+    width: '2.75rem',
+    height: '2.75rem',
+    minHeight: '2.75rem',
+    padding: '0',
+    fontFamily: 'inherit',
+  };
+}
+
 function initializeButton(button: HTMLElement): void {
   button.dataset.siteControlFamily = button.localName.includes('brutalist')
     ? 'brutalist'
@@ -166,6 +187,8 @@ function initializeButton(button: HTMLElement): void {
   }
   if (button.dataset.size) props.size = button.dataset.size;
   if (button.dataset.disabled === 'true') props.disabled = true;
+  const surfaceStyle = headerSurfaceStyle(button, 'button');
+  if (surfaceStyle) props.surfaceStyle = surfaceStyle;
   applyProps(button, props);
   button.dataset.siteShadcnInitialized = '1';
 }
@@ -183,6 +206,9 @@ function initializeSelect(root: SiteSelectRoot): void {
       value,
       disabled: root.dataset.disabled === 'true',
       closeOnSelect: true,
+      ...(headerSurfaceStyle(root, 'root')
+        ? { surfaceStyle: headerSurfaceStyle(root, 'root') }
+        : {}),
     });
   }
 
@@ -193,6 +219,9 @@ function initializeSelect(root: SiteSelectRoot): void {
     applyProps(trigger, {
       size: trigger.dataset.size ?? 'default',
       disabled: trigger.dataset.disabled === 'true',
+      ...(headerSurfaceStyle(trigger, 'trigger')
+        ? { surfaceStyle: headerSurfaceStyle(trigger, 'trigger') }
+        : {}),
     });
   }
 

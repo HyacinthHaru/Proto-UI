@@ -325,8 +325,76 @@ describe('Homepage page-owned runtime', () => {
     expect(
       button && typeof button !== 'string' && button.kind === 'proto' ? button.children : null
     ).toEqual([
-      { kind: 'box', attrs: { 'aria-hidden': 'true' }, children: ['◐'] },
+      { kind: 'box', className: 'site-header-theme-icon', attrs: { 'aria-hidden': 'true' } },
       { kind: 'box', className: 'home-theme-accessible-label', children: ['Toggle color theme'] },
     ]);
+  });
+  it('projects the menu as a real family Button and binds only its current runtime command channel', () => {
+    fixture();
+    const group = document.querySelector<HTMLElement>('[data-homepage-actions]')!;
+    group.dataset.homepageMenuLabel = 'Navigation and settings';
+    const button = document.createElement('button');
+    group.append(button);
+    const toggle = vi.fn();
+    const unbind = vi.fn();
+    const bindButton = vi.fn(() => unbind);
+    let active = true;
+    const disclosure = { bindButton, toggle, close: vi.fn(), enhance: vi.fn(), destroy: vi.fn() };
+    for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+      const content = createHomepageContent(
+        {
+          root: group,
+          mount: group,
+          fallback: group,
+          ownerId: 'menu',
+          links: [],
+          theme: false,
+          runtime: false,
+          menu: true,
+          disclosure,
+        },
+        runtime,
+        () => active,
+        'brutalist'
+      );
+      assertDemoSpec(content);
+      expect(JSON.stringify(content.root)).toContain('brutalist-button');
+      const setProps = vi.fn();
+      const cleanup = content.setup!({
+        host: group,
+        refs: { 'home-menu': button },
+        api: {
+          setProps,
+          call() {},
+          getExposes() {
+            return undefined;
+          },
+        },
+      });
+      expect(bindButton).toHaveBeenCalledWith(button);
+      const before = toggle.mock.calls.length;
+      if (runtime === 'wc') {
+        button.dispatchEvent(new MouseEvent('click'));
+        expect(toggle).toHaveBeenCalledTimes(before);
+        button.dispatchEvent(new CustomEvent('click'));
+      } else setProps.mock.calls[0]![1].onClick();
+      expect(toggle).toHaveBeenCalledTimes(before + 1);
+      active = false;
+      if (runtime === 'wc') button.dispatchEvent(new CustomEvent('click'));
+      else setProps.mock.calls[0]![1].onClick();
+      expect(toggle).toHaveBeenCalledTimes(before + 1);
+      if (typeof cleanup === 'function') cleanup();
+      active = true;
+    }
+    expect(unbind).toHaveBeenCalledTimes(4);
+  });
+
+  it('supports a runtime-only header group without inventing a command control', async () => {
+    const root = fixture();
+    root.querySelector('[data-homepage-fallback]')!.replaceChildren();
+    handle = initHomepageRuntime(root);
+    await settle();
+    expect(root.dataset.runtimeState).toBe('ready');
+    expect(fakes.materialize.mock.calls[0]![1].controlIds).toEqual(['runtime']);
   });
 });

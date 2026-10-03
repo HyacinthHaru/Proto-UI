@@ -245,10 +245,9 @@ test('the actual serialized failure snapshot reaches the historical classifier',
   assert.equal(classifyCapturedFailure({ ...input, failureState: null }), 'unexpected');
 });
 
-test('toolbar font evidence selects the visible example toolbar, not the clipped header label', () => {
+test('font evidence selects visible captions and excludes clipped accessible labels', () => {
   const source = readFileSync(new URL('capture-homepage-evidence.ts', import.meta.url), 'utf8');
-  assert.match(
-    source,
-    /name: 'toolbar-label', selector: '\[data-home-demo-options\] \.pui-projection-control-label'/
-  );
+  assert.match(source, /name: 'definition-label', selector: '\.home-demo-previewer__meta-label'/);
+  assert.match(source, /getBoundingClientRect\(\)\.width > 2/);
+  assert.match(source, /getBoundingClientRect\(\)\.height > 2/);
 });

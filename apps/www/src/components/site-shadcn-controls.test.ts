@@ -284,4 +284,37 @@ describe('site family projections', () => {
     expect(content.dataset.siteControlFamily).toBe('brutalist');
     expect(document.activeElement).toBe(trigger);
   });
+  it.each(['shadcn', 'brutalist'] as const)(
+    'projects header-only %s density through normalized surfaceStyle without changing other controls',
+    async (family) => {
+      const header = document.createElement('header');
+      header.dataset.siteHeader = '';
+      const button = document.createElement(`wc-${family}-button`);
+      button.dataset.siteButton = '';
+      button.dataset.size = 'icon';
+      button.dataset.variant = family === 'shadcn' ? 'ghost' : 'surface';
+      const root = document.createElement(`wc-${family}-select-root`) as SiteSelectRoot;
+      root.dataset.siteSelectRoot = '';
+      const trigger = document.createElement(`wc-${family}-select-trigger`);
+      trigger.append(document.createElement(`wc-${family}-select-value`));
+      root.append(trigger);
+      const outside = document.createElement(`wc-${family}-button`);
+      outside.dataset.siteButton = '';
+      header.append(button, root);
+      document.body.append(header, outside);
+      initSiteShadcnControls(document);
+      await settle();
+      expect(button.style.width).toBe('2.75rem');
+      expect(button.style.height).toBe('2.75rem');
+      expect(button.style.padding).toBe('0px');
+      expect(root.style.width).toBe('100%');
+      expect(trigger.style.width).toBe('100%');
+      expect(trigger.style.minHeight).toBe('var(--site-control-height, 2.75rem)');
+      expect(outside.style.width).not.toBe('2.75rem');
+      setSelectValue(root, 'react');
+      setSiteSelectDisabled(root, true);
+      await settle();
+      expect(root.style.width).toBe('100%');
+    }
+  );
 });

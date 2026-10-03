@@ -41,3 +41,24 @@ Dependencies checked against live GitHub on 2026-10-02:
 - #772 changes the deployment/Node baseline; follow main's actual toolchain when it lands rather than silently assuming an unmerged PR.
 
 The first implementation checkpoint is `da2bd762`. It carries code, focused tests and a readonly Actions workflow that compares the immutable baseline and exact candidate head through the same Chromium capture scripts. Before/after screenshots and actual computed/platform fonts are required review evidence; source inspection or passing unit tests alone do not prove the visual result. Local Chromium execution was blocked by environment infrastructure, and cloud-browser localhost access was denied; no denied route was bypassed.
+
+## Design-review correction after rendered evidence
+
+The maintainer rejected the first candidate's visual composition even after its focused interaction matrix passed. Functional success and zero overflow did not resolve the fragmented mobile navigation, inconsistent header treatments or the preview's layered information hierarchy. The earlier proposal to shorten the slogan is superseded: preserve the accepted text exactly and solve its presentation with line width, natural wrapping and type hierarchy.
+
+- Chinese title: `组件可以独立于框架或设计体系`
+- Chinese supporting line: `而不是在不同框架中被反复实现`
+- English title: `Components should not depend on frameworks or designs.`
+- English supporting line: `Defined once — not rebuilt per framework.`
+
+The revised composition uses one shared homepage/documentation header layout. Its compact first row contains brand, search, theme and navigation disclosure; the runtime selector has a deliberate compact context row rather than accidental wrapping. Locale and social links live in one settings region, and document contents remain a distinct contextual control. The homepage disclosure uses the real selected-family Button through its runtime transaction, while application code owns expansion, ARIA relationships, Escape and focus return. Native links remain native recipes.
+
+The home example has an external short heading, one controls toolbar and the actual demo surface. The source link, selected-example explanation and precise implementation boundary follow the demo. Successful readiness remains available to assistive technology without occupying another visual band. Loading and errors remain visible. Documentation Runtime Boxes share the same label/control arrangement; family identity changes visual tokens, not information order. The representative Tooltip page keeps its technical qualifications after the working example instead of placing two dense paragraphs before it.
+
+Use one spacing/type rhythm and shared page gutters across these surfaces. Brutalist application frames retain square corners and hard offset shadows, but use a complete theme-visible foreground border instead of an invisible dark edge with a detached bright shadow. This changes website-owned framing, not the published Prototype palette, state rules or style ownership. Actual PUI control density is an explicit normalized surface input; global website selectors must not patch Prototype internals.
+
+### Reference method and acceptance
+
+The comparison considers the current [shadcn homepage](https://ui.shadcn.com/) and [component examples](https://ui.shadcn.com/docs/components/button), [Kill AI Slop's design questions](https://killaislop.com/#principles), and [Apple HIG layout](https://developer.apple.com/design/human-interface-guidelines/layout), [typography](https://developer.apple.com/design/human-interface-guidelines/typography) and [accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility). They inform hierarchy, coherence, adaptation and affordance. Apple-platform point sizes or native materials are not asserted to be Web requirements, and shadcn is not substituted for Proto UI.
+
+Recapture and inspect the actual revised interface at the established desktop/mobile, locale and theme dimensions, including open navigation, runtime switching, focus and library states. The 390 × 844 homepage should show the first row of actual demo controls without requiring a scroll through source metadata. Record visual judgment, accessibility measurements and functional results separately. Do not close a visual finding using an old image or a passing behavior test. The prior images and failed checks remain historical evidence, not proof of this revised design.

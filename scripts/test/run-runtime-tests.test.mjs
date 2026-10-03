@@ -5,7 +5,11 @@ import path from 'node:path';
 import { EventEmitter } from 'node:events';
 
 import { BROWSER_SUITES, createRuntimeTestPlan } from './runtime-test-plan.mjs';
-import { observeRuntimeServer } from './runtime-server-diagnostics.mjs';
+import {
+  observeReadinessFailures,
+  observeRuntimeServer,
+  runtimeServerSnapshot,
+} from './runtime-server-diagnostics.mjs';
 
 describe('runtime test plan', () => {
   it('classifies every website browser suite into the shared-server phase', () => {
@@ -52,6 +56,29 @@ describe('runtime test plan', () => {
 });
 
 describe('shared browser server diagnostics', () => {
+  it('prints the current bounded output even when the wrapper process has not exited', () => {
+    const message = runtimeServerSnapshot(
+      { pid: 123, exitCode: null, signalCode: null },
+      'browser readiness failed',
+      'old output' + 'x'.repeat(20_000) + '\n[500] /ready/'
+    );
+    assert.match(message, /pid=123; exitCode=null; signal=null/);
+    assert.match(message, /\[500\] \/ready\/$/);
+    assert.equal(message.includes('old output'), false);
+    assert.equal(message.split('characters):\n')[1].length, 20_000);
+  });
+
+  it('recognizes a readiness failure across output chunks and reports it only once', () => {
+    let reports = 0;
+    const inspect = observeReadinessFailures(() => reports++);
+    inspect(Buffer.from('normal browser output\n[browser-har'));
+    assert.equal(reports, 0);
+    inspect(Buffer.from('ness] readiness failed: Last readiness result: HTTP 500'));
+    assert.equal(reports, 1);
+    inspect(Buffer.from('\n[browser-harness] readiness failed: again'));
+    assert.equal(reports, 1);
+  });
+
   function fixture() {
     const server = new EventEmitter();
     const reports = [];

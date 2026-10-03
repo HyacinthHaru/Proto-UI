@@ -75,19 +75,27 @@ export async function chromeExecutable(): Promise<string> {
 
 async function waitForServer(url: string): Promise<void> {
   const deadline = Date.now() + 120_000;
+  let lastResult = 'no response received';
   while (Date.now() < deadline) {
     if (devServer && devServer.exitCode !== null) {
       throw new Error(`Documentation dev server exited early.\n${serverOutput}`);
     }
     try {
       const response = await fetch(url, { signal: AbortSignal.timeout(2_000) });
+      lastResult = `HTTP ${response.status} ${response.statusText}`.trim();
+      await response.body?.cancel();
       if (response.ok) return;
-    } catch {
-      // The dev server is still starting.
+    } catch (error) {
+      lastResult = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+      if (error instanceof Error && error.cause) lastResult += `; cause=${String(error.cause)}`;
     }
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
-  throw new Error(`Timed out waiting for ${url}.\n${serverOutput}`);
+  const message = `Timed out waiting for ${url}. Last readiness result: ${lastResult}.\n${serverOutput}`;
+  // Vitest may defer failed-hook details until the whole matrix finishes. Emit
+  // now so the runner can print its shared server log before a CI cancellation.
+  console.error(`[browser-harness] readiness failed: ${message}`);
+  throw new Error(message);
 }
 
 function recordServerOutput(chunk: Buffer): void {

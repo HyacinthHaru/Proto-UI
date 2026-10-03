@@ -13,6 +13,7 @@ interface Props {
   runtimeControl?: boolean;
   themeButton?: boolean;
   themeIcon?: boolean;
+  menuButton?: boolean;
 }
 const {
   id,
@@ -21,9 +22,11 @@ const {
   runtimeControl = false,
   themeButton = false,
   themeIcon = false,
+  menuButton = false,
 } = Astro.props;
 const locale = Astro.locals.starlightRoute.locale;
 const themeLabel = locale === 'zh-cn' ? '切换主题' : 'Toggle theme';
+const menuLabel = locale === 'zh-cn' ? '导航与设置' : 'Navigation and settings';
 ---
 
 <div
@@ -33,6 +36,7 @@ const themeLabel = locale === 'zh-cn' ? '切换主题' : 'Toggle theme';
   data-homepage-controls={runtimeControl ? 'runtime' : undefined}
   data-homepage-theme-label={themeLabel}
   data-homepage-theme-icon={themeIcon ? 'true' : undefined}
+  data-homepage-menu-label={menuButton ? menuLabel : undefined}
 >
   <div class="home-actions-fallback" data-homepage-fallback>
     {
@@ -45,10 +49,18 @@ const themeLabel = locale === 'zh-cn' ? '切换主题' : 'Toggle theme';
     {
       themeButton && (
         <button type="button" data-homepage-theme aria-label={themeLabel}>
-          {themeIcon ? '◐' : themeLabel}
+          {themeIcon ? <span class="site-header-theme-icon" aria-hidden="true" /> : themeLabel}
         </button>
       )
     }
+    {
+      menuButton && (
+        <span data-homepage-menu hidden>
+          {menuLabel}
+        </span>
+      )
+    }
+    {runtimeControl && <span class="site-header-runtime-placeholder">Web Components</span>}
   </div>
   <div data-homepage-mount></div>
 </div>
