@@ -176,16 +176,19 @@ test('full CI uses the same supported toolbar preference before exercising publi
   const workflow = parse(
     readFileSync(new URL('../../../.github/workflows/ci.yml', import.meta.url), 'utf8')
   );
-  const steps = workflow.jobs.test.steps;
+  const steps = workflow.jobs['test-browser'].steps;
   const preferenceIndex = steps.findIndex((step: { run?: string }) =>
     step.run?.includes('astro preferences disable devToolbar')
   );
   const testsIndex = steps.findIndex(
-    (step: { name?: string }) => step.name === 'Public documentation gate and repository tests'
+    (step: { name?: string }) =>
+      step.name === 'Run the bounded shard with its own documentation server'
   );
   assert.ok(preferenceIndex >= 0 && preferenceIndex < testsIndex);
   assert.match(steps[preferenceIndex].run, /astro preferences get devToolbar.enabled/);
-  assert.equal(workflow.jobs.test['timeout-minutes'], 20);
+  assert.equal(workflow.jobs['test-browser']['timeout-minutes'], 20);
+  assert.deepEqual(workflow.jobs.test.needs, ['test-plan', 'test-general', 'test-browser']);
+  assert.equal(workflow.jobs.test.if, 'always()');
 });
 
 test('baseline negative control never swallows unrelated or candidate failures', () => {
@@ -921,6 +924,7 @@ test('native and Copy browser scopes have independent bounded jobs and small evi
   assert.deepEqual(job.strategy.matrix.include, [
     { name: 'native-links', suite: 'site-native-links' },
     { name: 'code-surfaces', suite: 'code-surfaces' },
+    { name: 'code-surface-grammar', suite: 'code-surface-grammar' },
     { name: 'copy-commands', suite: 'site-copy-commands' },
     { name: 'runtime-box', suite: 'runtime-preview-surface', contract: 'runtime-preview-evidence' },
     { name: 'search-commands', suite: 'site-search-commands' },
@@ -963,6 +967,7 @@ test('native and Copy browser scopes have independent bounded jobs and small evi
   for (const pattern of [
     '*-initial-viewport.png',
     '*-initial-full.png',
+    '*-navigation-open-viewport.png',
     '*brutalist-*-viewport.png',
     '*.json',
   ])

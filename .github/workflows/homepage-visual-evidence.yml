@@ -182,6 +182,7 @@ jobs:
           path: |
             ${{ runner.temp }}/homepage-evidence/candidate/*-initial-viewport.png
             ${{ runner.temp }}/homepage-evidence/candidate/*-initial-full.png
+            ${{ runner.temp }}/homepage-evidence/candidate/*-navigation-open-viewport.png
             ${{ runner.temp }}/homepage-evidence/candidate/*brutalist-*-viewport.png
             ${{ runner.temp }}/homepage-evidence/candidate/*-failure-viewport.png
             ${{ runner.temp }}/homepage-evidence/candidate/reference-*.png

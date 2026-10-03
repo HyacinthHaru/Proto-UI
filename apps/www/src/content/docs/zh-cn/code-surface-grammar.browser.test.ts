@@ -7,6 +7,11 @@ import type { Browser, Locator, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 import { copySourceBindingIssues, type CopySourceBinding } from './copy-command-evidence';
+import {
+  codeSurfaceOwnershipIssues,
+  codeSurfaceSettled,
+  type CodeSurfaceGenerationFacts,
+} from './code-surface-evidence';
 
 const SOURCE_ROUTE = '/zh-cn/start-here/quick-start/';
 const INSTALL_ROUTE = '/zh-cn/ui-libraries/shadcn/button/';
@@ -99,6 +104,64 @@ async function appearance(root: Locator) {
       ),
     };
   });
+}
+async function settled(
+  root: Locator,
+  runtime: string,
+  family: string,
+  phase: 'route-reset' | 'fixture-restore'
+) {
+  const samples: CodeSurfaceGenerationFacts[] = [];
+  const ownershipViolations: string[] = [];
+  try {
+    await expect
+      .poll(
+        async () => {
+          const facts = await root.evaluate((root) => ({
+            view: root.getAttribute('data-code-surface-view'),
+            runtime: root.getAttribute('data-code-surface-runtime'),
+            family: root.getAttribute('data-code-surface-family'),
+            surfaceCount: root.querySelectorAll(
+              ':scope > .site-code-surface-mount .site-code-surface-paint'
+            ).length,
+            hosts: [
+              ...root.querySelectorAll<HTMLElement>(
+                ':scope > .site-code-surface-mount > [data-projection-generation-host]'
+              ),
+            ].map((host) => ({
+              generation: host.getAttribute('data-projection-generation-host'),
+              state: host.getAttribute('data-projection-generation-state'),
+              runtime:
+                host
+                  .querySelector('[data-projection-scope]')
+                  ?.getAttribute('data-projection-runtime') ?? null,
+              family:
+                host
+                  .querySelector('[data-projection-scope]')
+                  ?.getAttribute('data-projection-family') ?? null,
+              inert: host.inert,
+              ariaHidden: host.getAttribute('aria-hidden'),
+              pointerEvents: getComputedStyle(host).pointerEvents,
+            })),
+          }));
+          samples.push(facts);
+          ownershipViolations.push(...codeSurfaceOwnershipIssues(facts));
+          return codeSurfaceSettled(facts, runtime, family);
+        },
+        { timeout: 5000, interval: 25 }
+      )
+      .toBe(true);
+    expect(ownershipViolations).toEqual([]);
+  } finally {
+    await writeFile(
+      join(directory, `${runtime}-${family}-${phase}-generation-settle.json`),
+      JSON.stringify(
+        { ...sourceBinding, runtime, family, phase, samples, ownershipViolations },
+        null,
+        2
+      )
+    );
+  }
 }
 async function evidence(page: Page, root: Locator, name: string, facts: unknown) {
   await root.scrollIntoViewIfNeeded();
@@ -231,6 +294,15 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
             document.dispatchEvent(new Event('astro:page-load'));
             document.dispatchEvent(new Event('astro:page-load'));
           });
+          // The real quick-start route restores Shadcn on astro:page-load.
+          // Reinitialization can therefore also request a family transaction;
+          // require its committed coordinates AND retirement, not just a count.
+          await settled(example, runtime, 'shadcn', 'route-reset');
+          expect((await appearance(example)).surfaceCount).toBe(1);
+          for (const node of sourceNodes)
+            expect(await node.evaluate((node) => node.isConnected)).toBe(true);
+          await selectFixtureFamily(page, family);
+          await settled(example, runtime, family, 'fixture-restore');
           expect((await appearance(example)).surfaceCount).toBe(1);
           await page.setViewportSize({ width: 320, height: 1000 });
           expect(
