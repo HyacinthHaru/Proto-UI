@@ -65,6 +65,43 @@ async function capture(page: Page, family: string, state: string, facts: unknown
       inputBox: input?.getBoundingClientRect().toJSON(),
       clearType: search?.querySelector<HTMLButtonElement>('.pagefind-ui__search-clear')?.type,
       searchState: search instanceof HTMLElement ? { ...search.dataset } : null,
+      results: [
+        ...(search?.querySelectorAll<HTMLAnchorElement>('.pagefind-ui__result-link') ?? []),
+      ].map((link) => {
+        const box = link.getBoundingClientRect();
+        const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+        const hit = document.elementFromPoint(point.x, point.y);
+        const pseudo = getComputedStyle(link, '::after');
+        let nearestPositionedAncestor: HTMLElement | null = link;
+        while (
+          nearestPositionedAncestor &&
+          getComputedStyle(nearestPositionedAncestor).position === 'static'
+        )
+          nearestPositionedAncestor = nearestPositionedAncestor.parentElement;
+        return {
+          href: link.getAttribute('href'),
+          text: link.textContent,
+          box: box.toJSON(),
+          point,
+          hit: hit?.outerHTML.slice(0, 800),
+          ownsCenter: hit === link || (hit !== null && link.contains(hit)),
+          position: getComputedStyle(link).position,
+          pseudo: {
+            content: pseudo.content,
+            position: pseudo.position,
+            inset: pseudo.inset,
+            width: pseudo.width,
+            height: pseudo.height,
+          },
+          nearestPositionedAncestor: nearestPositionedAncestor
+            ? {
+                tag: nearestPositionedAncestor.localName,
+                className: nearestPositionedAncestor.className,
+                box: nearestPositionedAncestor.getBoundingClientRect().toJSON(),
+              }
+            : null,
+        };
+      }),
       timeline: (window as any).__searchProductionTimeline ?? [],
     };
   });
@@ -104,9 +141,16 @@ describe.sequential('Required production Search recovery with generated Pagefind
       });
       const page = await context.newPage();
       const errors: string[] = [];
+      let navigationOutcomes: { click: string; response: string } | undefined;
+      const documentResponses: Array<{ url: string; status: number }> = [];
       const pagefindResponses: Array<{ url: string; method: string; status: number }> = [];
       page.on('pageerror', (error) => errors.push(error.message));
       page.on('response', (response) => {
+        if (
+          response.request().isNavigationRequest() &&
+          response.request().frame() === page.mainFrame()
+        )
+          documentResponses.push({ url: response.url(), status: response.status() });
         if (new URL(response.url()).pathname.startsWith('/pagefind/'))
           pagefindResponses.push({
             url: response.url(),
@@ -385,7 +429,9 @@ describe.sequential('Required production Search recovery with generated Pagefind
           )
           .first();
         const target = new URL(destination.href);
-        const [navigationResponse] = await Promise.all([
+        await result.scrollIntoViewIfNeeded();
+        await capture(page, family, 'before-result-click', { destination, documentResponses });
+        const [responseOutcome, clickOutcome] = await Promise.allSettled([
           page.waitForResponse(
             (response) =>
               response.request().isNavigationRequest() &&
@@ -395,6 +441,18 @@ describe.sequential('Required production Search recovery with generated Pagefind
           ),
           result.click(),
         ]);
+        navigationOutcomes = {
+          click: clickOutcome.status === 'fulfilled' ? 'completed' : String(clickOutcome.reason),
+          response:
+            responseOutcome.status === 'fulfilled'
+              ? `HTTP ${responseOutcome.value.status()} ${responseOutcome.value.url()}`
+              : String(responseOutcome.reason),
+        };
+        // Both promises are observed. A blocked click must not be hidden by
+        // the response timer winning Promise.all's rejection race.
+        if (clickOutcome.status === 'rejected') throw clickOutcome.reason;
+        if (responseOutcome.status === 'rejected') throw responseOutcome.reason;
+        const navigationResponse = responseOutcome.value;
         expect(
           navigationResponse?.ok(),
           'Click must produce a successful main-document navigation'
@@ -415,6 +473,8 @@ describe.sequential('Required production Search recovery with generated Pagefind
           sourceUrl,
           destination,
           navigationStatus: navigationResponse?.status(),
+          navigationOutcomes,
+          documentResponses,
           pagefindResponses,
         });
         expect(errors).toEqual([]);
@@ -422,6 +482,8 @@ describe.sequential('Required production Search recovery with generated Pagefind
         await capture(page, family, `failure-${stage}`, {
           error: String(error),
           errors,
+          navigationOutcomes,
+          documentResponses,
           failedProbes,
           successfulProbes,
           pagefindResponses,
