@@ -1,10 +1,13 @@
 ---
+import { SITE_LINK_ICONS, type SiteLinkIcon } from '../../prototypes/site-link-icons';
+import '../../styles/site-native-links.css';
 export interface HomeAction {
   text: string;
   link: string;
   variant?: 'primary' | 'secondary' | 'minimal' | 'link';
   attrs?: Record<string, unknown>;
   icon?: unknown;
+  siteIcon?: SiteLinkIcon;
 }
 interface Props {
   id: string;
@@ -40,9 +43,22 @@ const menuLabel = locale === 'zh-cn' ? '导航与设置' : 'Navigation and setti
 >
   <div class="home-actions-fallback" data-homepage-fallback>
     {
-      actions.map(({ text, link, variant = 'primary', attrs = {} }) => (
-        <a {...attrs} href={link} data-home-action-variant={variant}>
-          {text}
+      actions.map(({ text, link, variant = 'primary', attrs = {}, siteIcon: icon }) => (
+        <a
+          {...attrs}
+          href={link}
+          class="site-native-link"
+          data-home-action-variant={variant}
+          data-site-link-icon={icon}
+          data-site-link-appearance={icon ? 'icon' : undefined}
+        >
+          {icon ? (
+            <svg viewBox={SITE_LINK_ICONS[icon].viewBox} width="18" height="18" aria-hidden="true">
+              <path fill="currentColor" d={SITE_LINK_ICONS[icon].path} />
+            </svg>
+          ) : (
+            text
+          )}
         </a>
       ))
     }
@@ -80,70 +96,12 @@ const menuLabel = locale === 'zh-cn' ? '导航与设置' : 'Navigation and setti
   .home-actions [data-homepage-fallback][hidden] {
     display: none;
   }
-  .home-actions-fallback a,
-  .home-runtime-anchor {
+  /* Fallback anchors retain readable native destinations until the
+     page-owned Prototype composition is ready. No second visual recipe. */
+  .home-actions-fallback a {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    min-height: 2.65rem;
-    padding: 0.6rem 1rem;
-    border-radius: inherit;
-    color: inherit;
-    font: inherit;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .home-actions-fallback a {
-    border: 1px solid var(--color-border);
-    border-radius: 0.6rem;
-  }
-  .home-actions-fallback a[data-home-action-variant='primary'] {
-    background: var(--color-primary);
-    color: var(--color-primary-foreground);
-    border-color: transparent;
-  }
-  .home-actions-fallback a[data-home-action-variant='minimal'],
-  .home-actions-fallback a[data-home-action-variant='link'] {
-    border-color: transparent;
-  }
-  .home-runtime-anchor {
-    border: 1px solid var(--pui-border);
-    border-radius: var(--pui-radius-lg, 0.5rem);
-    background: var(--pui-background);
-    color: var(--pui-foreground);
-  }
-  .home-runtime-anchor[data-home-link-recipe='primary'] {
-    background: var(--pui-primary);
-    color: var(--pui-primary-foreground);
-    border-color: transparent;
-  }
-  .home-runtime-anchor[data-home-link-recipe='minimal'],
-  .home-runtime-anchor[data-home-link-recipe='link'] {
-    background: transparent;
-    border-color: transparent;
-  }
-  .home-runtime-anchor[data-home-link-recipe='link'] {
-    color: var(--pui-primary);
-  }
-  .home-runtime-anchor[data-projection-family='brutalist'] {
-    border-width: 2px;
-    border-radius: 0;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-  .home-runtime-anchor[data-projection-family='brutalist'][data-home-link-recipe='primary'],
-  .home-runtime-anchor[data-projection-family='brutalist'][data-home-link-recipe='secondary'] {
-    border-color: var(--pui-border);
-    box-shadow: 4px 4px 0 var(--pui-border);
-  }
-  .home-runtime-anchor:focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 3px;
-  }
-  .home-runtime-anchor:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
+    min-height: 2.75rem;
   }
   .home-theme-accessible-label {
     position: absolute;

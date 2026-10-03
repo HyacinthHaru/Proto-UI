@@ -254,7 +254,7 @@ describe('Homepage page-owned runtime', () => {
     expect(document.querySelector<HTMLElement>('[data-homepage-fallback]')!.hidden).toBe(false);
   });
 
-  it('gates stale native-link events without intercepting current native navigation', () => {
+  it('ignores stale preference side effects without taking over native navigation', () => {
     const root = fixture();
     const group = document.querySelector<HTMLElement>('[data-homepage-actions]')!;
     const anchor = group.querySelector<HTMLAnchorElement>('a')!;
@@ -283,10 +283,6 @@ describe('Homepage page-owned runtime', () => {
         setProps() {},
       },
     });
-    const stale = new MouseEvent('click', { bubbles: true, cancelable: true, ctrlKey: true });
-    anchor.dispatchEvent(stale);
-    expect(stale.defaultPrevented).toBe(true);
-    active = true;
     // Capture at the caller only to keep this unit test from navigating its document.
     const current = new MouseEvent('click', { bubbles: true, cancelable: true, ctrlKey: true });
     let nativeAllowed = false;
@@ -295,6 +291,10 @@ describe('Homepage page-owned runtime', () => {
       event.preventDefault();
     };
     root.addEventListener('click', preventTestNavigation);
+    const stale = new MouseEvent('click', { bubbles: true, cancelable: true, ctrlKey: true });
+    anchor.dispatchEvent(stale);
+    expect(nativeAllowed).toBe(true);
+    active = true;
     anchor.dispatchEvent(current);
     expect(nativeAllowed).toBe(true);
     root.removeEventListener('click', preventTestNavigation);

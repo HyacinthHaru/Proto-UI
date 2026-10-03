@@ -1,3 +1,5 @@
+import { bindNativeLinkFacts } from '../site-native-link-facts';
+import { siteLinkAppearance, siteLinkEmphasis, siteLinkIcon } from '../site-native-controls';
 import { initSiteHeaderDisclosure, type SiteHeaderDisclosure } from '../site-header-disclosure';
 import { homepageDemoParticipant } from './homepage-demo-participant';
 import { applySiteLibraryFamily } from '../site-library-family';
@@ -39,6 +41,10 @@ const ANCHOR_ATTRIBUTES = [
   'rel',
   'title',
   'aria-label',
+  'aria-current',
+  'aria-describedby',
+  'aria-labelledby',
+  'data-site-link-icon',
   'download',
   'hreflang',
   'data-home-locale',
@@ -113,9 +119,30 @@ export function createHomepageContent(
       kind: 'box',
       tag: 'a',
       ref: `home-link-${index}`,
-      attrs: { ...attrs, 'data-home-link-recipe': link.dataset.homeActionVariant || 'primary' },
-      className: 'home-runtime-anchor',
-      children: [link.textContent?.trim() || 'Link'],
+      attrs: { ...attrs, 'data-site-link-enhanced': 'true' },
+      className: 'site-native-link home-runtime-link',
+      children: [
+        {
+          kind: 'proto',
+          prototypeId: 'site-link-surface',
+          ref: `home-link-surface-${index}`,
+          props: {
+            family,
+            appearance: siteLinkAppearance(link),
+            emphasis: siteLinkEmphasis(link),
+            icon: siteLinkIcon(link),
+            // Setup runs while the generation is staged. Carry native static
+            // truth into the first materialized frame before its active gate
+            // permits later host-fact publications.
+            current:
+              link.hasAttribute('aria-current') && link.getAttribute('aria-current') !== 'false',
+            hovered: false,
+            pressed: false,
+            focusVisible: false,
+          },
+          children: [link.textContent?.trim() || link.getAttribute('aria-label') || 'Link'],
+        },
+      ],
     };
   });
   if (group.theme)
@@ -199,14 +226,28 @@ export function createHomepageContent(
         if (runtime === 'wc') menuButton.addEventListener('click', onMenuClick);
         else context.api.setProps('home-menu', { onClick: toggleMenu });
       }
+      const cleanupLinkFacts = group.links.map((_link, index) => {
+        const link = context.refs[`home-link-${index}`] as HTMLAnchorElement | undefined;
+        if (!link) return () => {};
+        return bindNativeLinkFacts(
+          link,
+          (facts) =>
+            context.api.setProps(`home-link-surface-${index}`, {
+              family,
+              appearance: siteLinkAppearance(group.links[index]!),
+              emphasis: siteLinkEmphasis(group.links[index]!),
+              icon: siteLinkIcon(group.links[index]!),
+              ...facts,
+            }),
+          { isActive }
+        );
+      });
       const listeners: Array<{ link: Element; listener: EventListener }> = [];
       for (const link of context.host.querySelectorAll<HTMLAnchorElement>('a[href]')) {
-        const listener: EventListener = (event) => {
-          if (!isActive()) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            return;
-          }
+        const listener: EventListener = () => {
+          // Staged generations are already inert at the reveal boundary.
+          // Ignore stale preference side effects without taking link activation.
+          if (!isActive()) return;
           const locale = link.getAttribute('data-home-locale');
           if (!locale) return;
           try {
@@ -221,6 +262,7 @@ export function createHomepageContent(
       }
       return () => {
         cleanupTheme();
+        for (const cleanup of cleanupLinkFacts) cleanup();
         unbindMenu?.();
         menuButton?.removeEventListener('click', onMenuClick);
         if (menuButton && runtime !== 'wc')
@@ -324,10 +366,12 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       const family = request.selection.projectionFamilyId as ProjectionFamilyId;
       const component = desiredComponent;
       const work = groups.map(async (group) => {
-        const ids =
-          group.theme || group.menu
+        const ids = [
+          ...(group.links.length ? ['site-link-surface'] : []),
+          ...(group.theme || group.menu
             ? [resolveProjectionPart(family, 'button', 'root').prototypeId]
-            : [];
+            : []),
+        ];
         if (!group.links.length && !group.theme && !group.menu && !group.runtime)
           throw new Error('[HomepageRuntime] action groups must not be empty.');
         return materializeProjectionCandidate(request, {

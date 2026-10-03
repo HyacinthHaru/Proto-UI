@@ -23,6 +23,10 @@ function getPrototypeIdFromPath(path: string): string | null {
  * value: 动态导入函数
  */
 const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
+  'site-link-surface': async () => {
+    const mod = await import('../../prototypes/site-link-surface.proto');
+    registerPrototype('site-link-surface', mod.default);
+  },
   'base-button': async () => {
     const mod = await import('@proto.ui/prototypes-base');
     registerPrototype('base-button', mod.button);

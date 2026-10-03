@@ -183,6 +183,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/homepage-evidence"
           suites=(
             apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts
+            apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts
             apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts
             apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts
             apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts

@@ -64,10 +64,6 @@
   color: inherit;
   text-decoration: none;
 }
-.site-header-navigation a:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
-}
 .site-header-search {
   grid-area: search;
   min-width: 0;
