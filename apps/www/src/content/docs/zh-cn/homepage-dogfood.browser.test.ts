@@ -507,6 +507,119 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       await context.close();
     }
   }, 180_000);
+  it('uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence', async () => {
+    const directory = path.join(
+      process.env.RUNNER_TEMP ?? os.tmpdir(),
+      'homepage-evidence',
+      'contents-command'
+    );
+    await mkdir(directory, { recursive: true });
+    const source = {
+      sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+      dirty: execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim() !== '',
+      expectedSha: process.env.CANDIDATE_SHA ?? null,
+    };
+    for (const family of ['shadcn', 'brutalist'] as const) {
+      const context = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        colorScheme: 'dark',
+      });
+      const page = await context.newPage();
+      try {
+        const route =
+          family === 'shadcn'
+            ? '/zh-cn/ui-libraries/shadcn/button/'
+            : '/zh-cn/ui-libraries/brutalist/components/button/';
+        await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+        const root = page.locator('[data-site-contents-command]');
+        const command = root.locator(
+          '[data-projection-generation-state="active"] [data-site-contents-button]'
+        );
+        const menu = page.locator('[data-docs-site-header] [data-site-menu-button]');
+        for (const runtime of RUNTIMES) {
+          await revealHeaderPreferences(page);
+          const select = page.locator('[data-adapter-select] [role="combobox"]');
+          await select.click();
+          const popup = await select.getAttribute('aria-controls');
+          await page
+            .locator(`[id=${JSON.stringify(popup)}]`)
+            .getByRole('option', { name: LABELS[runtime], exact: true })
+            .click();
+          await expect.poll(() => root.getAttribute('data-contents-runtime')).toBe(runtime);
+          expect(await root.getAttribute('data-contents-family')).toBe(family);
+          expect(await root.getAttribute('data-contents-generation')).toBe(
+            await page
+              .locator('[data-site-header-panel]')
+              .getAttribute('data-header-surface-generation')
+          );
+          if ((await menu.getAttribute('aria-expanded')) === 'true') await menu.click();
+          expect(await root.getByRole('button', { name: '页面目录', exact: true }).count()).toBe(1);
+          expect(await command.getAttribute('aria-controls')).toBe('starlight__sidebar');
+          for (const action of ['click', 'Enter', 'Space']) {
+            expect(await command.getAttribute('aria-expanded')).toBe('false');
+            if (action === 'click') await command.click();
+            else {
+              await command.focus();
+              await page.keyboard.press(action);
+            }
+            await expect.poll(() => command.getAttribute('aria-expanded')).toBe('true');
+            expect(await page.locator('#starlight__sidebar').isVisible()).toBe(true);
+            await page.keyboard.press('Escape');
+            await expect.poll(() => command.getAttribute('aria-expanded')).toBe('false');
+            expect(await command.evaluate((element) => document.activeElement === element)).toBe(
+              true
+            );
+          }
+          // Real keyboard navigation selects the focus-visible state for the capture.
+          await page.keyboard.press('Tab');
+          await page.keyboard.press('Shift+Tab');
+          const facts = await command.evaluate((element) => {
+            const style = getComputedStyle(element);
+            const box = element.getBoundingClientRect();
+            const center = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+            return {
+              tokens: element.getAttribute('data-pui-style'),
+              width: box.width,
+              height: box.height,
+              border: [style.borderWidth, style.borderColor],
+              radius: style.borderRadius,
+              shadow: style.boxShadow,
+              font: style.fontFamily,
+              focusVisible: element.hasAttribute('data-focus-visible'),
+              ownsCenter: !!center && element.contains(center),
+            };
+          });
+          expect(facts.width).toBeGreaterThanOrEqual(44);
+          expect(facts.height).toBeGreaterThanOrEqual(44);
+          expect(facts.ownsCenter).toBe(true);
+          expect(facts.focusVisible).toBe(true);
+          expect(facts.tokens).toContain(
+            family === 'shadcn' ? 'border-transparent' : 'rounded-base'
+          );
+          const id = `${family}-${runtime}-keyboard-focus`;
+          const record = {
+            source,
+            family,
+            runtime,
+            viewport: page.viewportSize(),
+            facts,
+            screenshot: `${id}.png`,
+          };
+          await writeFile(
+            path.join(directory, `${id}.json`),
+            JSON.stringify({ ...record, screenshotComplete: false }, null, 2)
+          );
+          await page.screenshot({ path: path.join(directory, `${id}.png`) });
+          await writeFile(
+            path.join(directory, `${id}.json`),
+            JSON.stringify({ ...record, screenshotComplete: true }, null, 2)
+          );
+        }
+      } finally {
+        await context.close();
+      }
+    }
+  }, 180_000);
   it('uses the same mobile shell on documentation with independent global navigation and contents', async () => {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page = await context.newPage();
@@ -554,16 +667,20 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         expect(await page.locator('body').getAttribute('data-mobile-menu-expanded')).toBeNull();
         await page.keyboard.press('Escape');
         expect(await menu.getAttribute('aria-expanded')).toBe('false');
-        const contents = header.locator('starlight-menu-button button');
+        const contents = header.locator(
+          '[data-site-contents-command] [data-projection-generation-state="active"] [data-site-contents-button]'
+        );
         expect(await contents.getAttribute('aria-controls')).toBe('starlight__sidebar');
-        expect(await contents.getAttribute('aria-label')).toBe('页面目录');
+        expect(await header.getByRole('button', { name: '页面目录', exact: true }).count()).toBe(1);
         expect(await contents.getAttribute('title')).toBe('页面目录');
         await revealHeaderPreferences(page);
         const hitTargets = await header.evaluate((element) => {
           const trigger = element.querySelector<HTMLElement>(
             '[data-adapter-select] [role="combobox"]'
           )!;
-          const contents = element.querySelector<HTMLElement>('starlight-menu-button button')!;
+          const contents = element.querySelector<HTMLElement>(
+            '[data-site-contents-command] [data-projection-generation-state="active"] [data-site-contents-button]'
+          )!;
           const triggerRect = trigger.getBoundingClientRect();
           const contentsRect = contents.getBoundingClientRect();
           const center = document.elementFromPoint(

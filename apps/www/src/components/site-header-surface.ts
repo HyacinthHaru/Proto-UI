@@ -1,3 +1,4 @@
+import { contentsCommandParticipant } from './site-contents-command';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from './adapter-preference';
 import { isRuntimeId, type RuntimeId } from './PrototypePreviewer/runtimes/registry';
 import {
@@ -145,30 +146,69 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
   const family = resolveSiteLibraryFamily(document.defaultView?.location.pathname ?? '/');
   let alive = true;
   const retired = new Set<Promise<void>>();
+  const contents = contentsCommandParticipant(header);
+  let attempt = 0;
   const create = () => {
     const participant = headerSurfaceParticipant(header)!;
+    const namespace = `docs-${++attempt}`;
     return createProjectionScopeController({
       initialSelection: { runtimeId: runtime, projectionFamilyId: family },
       async materialize(request) {
-        const candidate = await participant.materialize(request);
+        const outcomes = await Promise.allSettled([
+          participant.materialize(request),
+          ...(contents ? [contents.materialize(request, namespace)] : []),
+        ]);
+        const candidates = outcomes.flatMap((outcome) =>
+          outcome.status === 'fulfilled' ? [outcome.value] : []
+        );
+        const failure = outcomes.find((outcome) => outcome.status === 'rejected');
+        if (failure?.status === 'rejected') {
+          await Promise.allSettled(candidates.map((candidate) => candidate.dispose()));
+          throw failure.reason;
+        }
         let stop: () => void;
         try {
-          stop = watchProjectionThemeSurfaceStyle(family, participant.root, (theme) =>
-            candidate.setThemeSurfaceStyle(theme)
+          stop = watchProjectionThemeSurfaceStyle(family, header, (theme) =>
+            candidates.forEach((candidate) => candidate.setThemeSurfaceStyle(theme))
           );
         } catch (error) {
-          await candidate.dispose();
+          await Promise.allSettled(candidates.map((candidate) => candidate.dispose()));
           throw error;
         }
         return {
-          ...candidate,
+          activate() {
+            candidates.forEach((candidate) => candidate.activate());
+          },
+          setLocked(locked: boolean) {
+            candidates.forEach((candidate) => candidate.setLocked?.(locked));
+          },
           async dispose() {
             stop();
-            await candidate.dispose();
+            const results = await Promise.allSettled(
+              candidates.map((candidate) => candidate.dispose())
+            );
+            const failure = results.find((result) => result.status === 'rejected');
+            if (failure?.status === 'rejected') throw failure.reason;
           },
         };
       },
-      prepareCommit: participant.prepareCommit,
+      prepareCommit(commit) {
+        const publications = [participant.prepareCommit(commit)];
+        try {
+          if (contents) publications.push(contents.prepareCommit(commit));
+        } catch (error) {
+          for (const publication of publications.reverse()) publication.rollback();
+          throw error;
+        }
+        return {
+          publish() {
+            publications.forEach((publication) => publication.publish());
+          },
+          rollback() {
+            [...publications].reverse().forEach((publication) => publication.rollback());
+          },
+        };
+      },
     });
   };
   let controller = create();
@@ -207,6 +247,7 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
     destroy() {
       return (destroyPromise ??= (async () => {
         alive = false;
+        contents?.revoke();
         observer.disconnect();
         document.removeEventListener(PREFERRED_ADAPTER_EVENT, onPreference);
         document.removeEventListener('astro:before-swap', onSwap);
@@ -216,6 +257,7 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
         } finally {
           if (documentationOwners.get(header) === handle) {
             documentationOwners.delete(header);
+            contents?.dispose();
             const panel = header.querySelector('[data-site-header-panel]');
             for (const name of [
               'data-header-surface-runtime',

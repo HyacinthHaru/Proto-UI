@@ -2,7 +2,7 @@
 import config from 'virtual:starlight/user-config';
 import context from 'virtual:starlight/project-context';
 import { localizedUrl } from '../../utils/localizedUrl';
-import MobileMenuToggle from '@astrojs/starlight/components/MobileMenuToggle.astro';
+import SiteContentsCommand from '../SiteContentsCommand.astro';
 import LanguageSelect from './LanguageSelect.astro';
 import Search from './Search.astro';
 import SiteTitle from './SiteTitle.astro';
@@ -90,7 +90,7 @@ const navigation = [
             data-site-contents-label={zh ? '页面目录' : 'Page contents'}
           >
             <span aria-hidden="true">{zh ? '页面目录' : 'Contents'}</span>
-            <MobileMenuToggle />
+            <SiteContentsCommand label={zh ? '页面目录' : 'Page contents'} />
           </div>
         )}
       </div>
@@ -124,13 +124,6 @@ const navigation = [
   import { initDocumentationHeaderSurface } from '../site-header-surface';
   const initialize = () => {
     document.querySelectorAll<HTMLElement>('[data-docs-site-header]').forEach((root) => {
-      const contents = root.querySelector<HTMLElement>('[data-site-contents-label]');
-      const contentsButton = contents?.querySelector('button');
-      if (contentsButton) {
-        const label = contents?.dataset.siteContentsLabel || 'Page contents';
-        contentsButton.setAttribute('aria-label', label);
-        contentsButton.setAttribute('title', label);
-      }
       const button = root.querySelector<HTMLElement>('[data-site-menu-button]');
       if (!button || button.dataset.siteMenuBound === 'true') return;
       initSiteControls(root);

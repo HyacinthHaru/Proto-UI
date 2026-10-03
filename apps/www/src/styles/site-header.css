@@ -319,20 +319,7 @@
     gap: 0.25rem;
     font-size: 0.75rem;
   }
-  .site-header-docs-navigation starlight-menu-button button {
-    position: static;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border: 0;
-    border-radius: var(--site-surface-radius, 0.5rem);
-    padding: 0;
-    background: transparent;
-    color: inherit;
-    box-shadow: none;
-  }
+
   .site-header-docs-navigation svg {
     width: 1.125rem;
     height: 1.125rem;

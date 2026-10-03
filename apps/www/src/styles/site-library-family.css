@@ -107,7 +107,6 @@
   :is(
     .pagination-links a:not([data-site-link-enhanced]),
     site-search dialog,
-    starlight-menu-button button,
     .sidebar-pane .top-level .docs-wip-badge
   ) {
   border: 2px solid var(--site-brutalist-border);

@@ -1155,7 +1155,9 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       const page = await context.newPage();
       try {
         await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
-        const contents = page.locator('.site-header-docs-navigation starlight-menu-button button');
+        const contents = page.locator(
+          '.site-header-docs-navigation [data-site-contents-command] [data-projection-generation-state="active"] [data-site-contents-button]'
+        );
         const pane = page.locator('#starlight__sidebar');
         expect(await pane.isVisible()).toBe(false);
         await contents.click();
@@ -1377,7 +1379,12 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         const current = sidebar.locator('.top-level a[aria-current="page"]');
         expect(await current.count()).toBe(1);
         expect(await current.getAttribute('href')).toContain('/contribute/automation/');
-        if (width < 1024) await page.locator('starlight-menu-button button').click();
+        if (width < 1024)
+          await page
+            .locator(
+              '[data-site-contents-command] [data-projection-generation-state="active"] [data-site-contents-button]'
+            )
+            .click();
         const facts = () =>
           current.evaluate((link) => {
             const boundary = link.closest<HTMLElement>('.docs-sidebar')!;
@@ -1549,7 +1556,12 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           manuallyScrolled.documentY
         );
         await page.reload({ waitUntil: 'networkidle' });
-        if (width < 1024) await page.locator('starlight-menu-button button').click();
+        if (width < 1024)
+          await page
+            .locator(
+              '[data-site-contents-command] [data-projection-generation-state="active"] [data-site-contents-button]'
+            )
+            .click();
         await expect.poll(async () => (await facts()).visible, { timeout: 10_000 }).toBe(true);
         await captureLinks(
           page,

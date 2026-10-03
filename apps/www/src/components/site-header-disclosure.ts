@@ -11,7 +11,7 @@ export interface SiteHeaderDisclosure {
 const SITE_HEADER_OPEN_EVENT = 'site-header:disclosure-open';
 const SITE_CONTENTS_OPEN_EVENT = 'site-contents:open';
 const disclosures = new WeakMap<HTMLElement, SiteHeaderDisclosure>();
-const contentsNavigations = new WeakMap<HTMLElement, () => void>();
+const contentsNavigations = new WeakMap<HTMLElement, SiteContentsNavigation>();
 const FOCUSABLE = 'a[href], button, [role="button"], [role="combobox"], [tabindex="0"]';
 
 export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosure {
@@ -316,57 +316,157 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   return handle;
 }
 
-/** Keep the existing Starlight contents drawer independent from, and mutually
- * exclusive with, global navigation. Closing its peer must never steal focus. */
-export function initSiteContentsNavigation(document: Document): (() => void) | undefined {
-  const menuHost = document.querySelector<HTMLElement>('starlight-menu-button');
-  const menuControl = menuHost?.querySelector('button');
-  if (!menuHost || !menuControl) return;
+/** The application retains one directory-disclosure owner across replaceable
+ * command views. The legacy host branch remains compatible with old consumers;
+ * the Docs Header uses an ordinary app-owned host, with no upstream listener. */
+export interface SiteContentsNavigation {
+  bindButton(button: HTMLElement, active: () => boolean, focus: () => void): () => void;
+  toggle(): void;
+  close(restoreFocus?: boolean): void;
+  focus(): void;
+  refresh(): void;
+  destroy(): void;
+}
+
+export function siteContentsNavigation(document: Document): SiteContentsNavigation | undefined {
+  const menuHost = document.querySelector<HTMLElement>(
+    '[data-site-contents-command], starlight-menu-button'
+  );
+  const fallback = menuHost?.querySelector<HTMLButtonElement>(
+    '[data-site-contents-fallback], button'
+  );
+  if (!menuHost || !fallback) return;
   const existing = contentsNavigations.get(menuHost);
   if (existing) return existing;
+  const view = document.defaultView!;
+  const appOwned = menuHost.hasAttribute('data-site-contents-command');
+  const bindings = new Map<HTMLElement, { active(): boolean; focus(): void }>();
+  bindings.set(fallback, {
+    active: () => fallback.isConnected && !fallback.hidden && !fallback.inert && !fallback.disabled,
+    focus: () => fallback.focus(),
+  });
+  let pendingFocus = false;
+  const onFocus = () => {
+    pendingFocus = false;
+  };
+  document.addEventListener('focusin', onFocus, true);
   let expanded = false;
   let destroyed = false;
+  const focus = () => {
+    if (destroyed) return;
+    pendingFocus = true;
+    for (const binding of bindings.values())
+      if (binding.active()) {
+        pendingFocus = false;
+        return binding.focus();
+      }
+  };
   const syncExpandedState = () => {
     const next = menuHost.getAttribute('aria-expanded') === 'true';
-    menuControl.setAttribute('aria-expanded', String(next));
+    for (const button of bindings.keys()) {
+      button.setAttribute('aria-expanded', String(next));
+      button.setAttribute('aria-controls', 'starlight__sidebar');
+    }
     const newlyOpened = next && !expanded;
     expanded = next;
-    if (newlyOpened) document.dispatchEvent(new CustomEvent(SITE_CONTENTS_OPEN_EVENT));
+    if (newlyOpened) document.dispatchEvent(new view.CustomEvent(SITE_CONTENTS_OPEN_EVENT));
   };
   const collapseMenu = (restoreFocus = false) => {
+    if (destroyed) return;
     menuHost.setAttribute('aria-expanded', 'false');
     document.body.removeAttribute('data-mobile-menu-expanded');
     syncExpandedState();
-    if (restoreFocus) menuControl.focus();
+    if (restoreFocus) focus();
   };
-  const desktopQuery = document.defaultView?.matchMedia('(min-width: 64rem)');
+  const toggle = () => {
+    if (destroyed) return;
+    const next = menuHost.getAttribute('aria-expanded') !== 'true';
+    menuHost.setAttribute('aria-expanded', String(next));
+    document.body.toggleAttribute('data-mobile-menu-expanded', next);
+    syncExpandedState();
+  };
+  // A native fallback already supplies Enter/Space click synthesis. Enhanced
+  // Buttons supply only their public outward activation through their view.
+  const onFallback = (event: Event) => {
+    if (!(event instanceof view.CustomEvent) && bindings.get(fallback)?.active()) toggle();
+  };
+  const desktopQuery = view.matchMedia('(min-width: 64rem)');
   const collapseOnDesktop = () => {
-    if (desktopQuery?.matches) collapseMenu();
+    if (desktopQuery.matches) collapseMenu();
   };
   const onHeaderOpen = () => collapseMenu();
   const onEscape = (event: KeyboardEvent) => {
-    if (event.key !== 'Escape' || !document.body.hasAttribute('data-mobile-menu-expanded')) return;
+    if (event.key !== 'Escape' || event.defaultPrevented || !expanded) return;
+    event.preventDefault();
     collapseMenu(true);
   };
-  const observer = new MutationObserver(syncExpandedState);
+  const onOutside = (event: Event) => {
+    if (!expanded || !(event.target instanceof view.Element)) return;
+    if (
+      menuHost.contains(event.target) ||
+      document.getElementById('starlight__sidebar')?.contains(event.target)
+    )
+      return;
+    collapseMenu();
+  };
+  const onNavigation = (event: Event) => {
+    if (!(event.target instanceof view.Element)) return;
+    if (event.target.closest('#starlight__sidebar a[href]')) collapseMenu();
+  };
+  const observer = new view.MutationObserver(syncExpandedState);
   observer.observe(menuHost, { attributes: true, attributeFilter: ['aria-expanded'] });
   const destroy = () => {
     if (destroyed) return;
+    collapseMenu();
     destroyed = true;
     observer.disconnect();
-    desktopQuery?.removeEventListener('change', collapseOnDesktop);
+    desktopQuery.removeEventListener('change', collapseOnDesktop);
+    fallback.removeEventListener('click', onFallback);
     document.removeEventListener(SITE_HEADER_OPEN_EVENT, onHeaderOpen);
     document.removeEventListener('keyup', onEscape);
+    document.removeEventListener('pointerdown', onOutside);
+    document.removeEventListener('click', onNavigation);
     document.removeEventListener('astro:before-swap', destroy);
-    collapseMenu();
+    document.removeEventListener('focusin', onFocus, true);
+    bindings.clear();
     contentsNavigations.delete(menuHost);
   };
-  desktopQuery?.addEventListener('change', collapseOnDesktop);
+  const handle: SiteContentsNavigation = {
+    bindButton(button, active, focus) {
+      if (destroyed) return () => {};
+      const binding = { active, focus };
+      bindings.set(button, binding);
+      syncExpandedState();
+      return () => {
+        if (bindings.get(button) === binding) bindings.delete(button);
+      };
+    },
+    toggle,
+    close: collapseMenu,
+    focus,
+    refresh() {
+      if (destroyed) return;
+      syncExpandedState();
+      if (pendingFocus) focus();
+    },
+    destroy,
+  };
+  if (appOwned) {
+    fallback.addEventListener('click', onFallback);
+    document.addEventListener('pointerdown', onOutside);
+    document.addEventListener('click', onNavigation);
+  }
+  desktopQuery.addEventListener('change', collapseOnDesktop);
   document.addEventListener(SITE_HEADER_OPEN_EVENT, onHeaderOpen);
   document.addEventListener('keyup', onEscape);
   document.addEventListener('astro:before-swap', destroy);
-  contentsNavigations.set(menuHost, destroy);
+  contentsNavigations.set(menuHost, handle);
   syncExpandedState();
   collapseOnDesktop();
-  return destroy;
+  return handle;
+}
+
+/** Retain the existing PageFrame initializer and its stable cleanup identity. */
+export function initSiteContentsNavigation(document: Document): (() => void) | undefined {
+  return siteContentsNavigation(document)?.destroy;
 }
