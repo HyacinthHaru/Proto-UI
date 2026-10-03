@@ -31,6 +31,11 @@ jobs:
           node --test experiments/material-optics/heightfield.test.mjs
           node experiments/material-optics/backdrop-probe.mjs
           node experiments/material-optics/liquid-demo-evidence.mjs
+      - name: Record current experiment independently of optical acceptance
+        if: always()
+        env:
+          OPTICAL_EVIDENCE_DIR: ${{ runner.temp }}/optical-carrier
+        run: node experiments/material-optics/liquid-demo-record.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
