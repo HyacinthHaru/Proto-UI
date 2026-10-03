@@ -589,8 +589,30 @@ export const collectContrastFrame = async ({
         border = paint(style.borderTopColor),
         outline = paint(style.outlineColor);
       const backdrop = background(element);
-      const inactive =
+      let inactive =
         element.hasAttribute('disabled') || host.getAttribute('aria-disabled') === 'true';
+      // Only current Proto roots can supply inherited inactivity. Composed
+      // traversal admits slots/shadow hosts without crossing a foreign lease.
+      for (
+        let ancestor = composedParent(host);
+        !inactive && ancestor;
+        ancestor = composedParent(ancestor)
+      ) {
+        const ancestorOwner =
+          ancestor.getAttribute('data-projection-owner') ??
+          ancestor.getAttribute('data-projection-scope');
+        const ancestorGeneration = ancestor.getAttribute('data-projection-generation');
+        if (
+          ancestor.hasAttribute('data-projection-control') ||
+          (ancestorOwner !== null && ancestorOwner !== owner) ||
+          (ancestorGeneration !== null && ancestorGeneration !== generation)
+        )
+          break;
+        if (!ancestor.hasAttribute('data-pui-root')) continue;
+        if (ancestorOwner !== owner || ancestorGeneration !== generation) break;
+        inactive =
+          ancestor.hasAttribute('disabled') || ancestor.getAttribute('aria-disabled') === 'true';
+      }
       const { visible, ...visibility } = paintedVisibility(element, [...element.getClientRects()]);
       // Visible bounds are evidence even when their paint geometry is unsupported.
       // Only fully supported, unclipped rectangles may supply perimeter metrics.

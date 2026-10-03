@@ -70,8 +70,16 @@ type Case = {
   achievedTargets: string[];
   errors: { phase: string; error: string }[];
   passiveSurfaceCoverage?: Observation;
+  motionContext?: {
+    requestedReducedMotion: 'reduce';
+    observedReducedMotion?: boolean;
+    scope: string;
+    uncovered: string[];
+  };
+  hoverCardClosedBaseline?: Observation;
+  binaryKeyboardActivation?: Observation;
 };
-const passiveFamilies = new Set(['badge', 'card', 'skeleton', 'separator']);
+const passiveFamilies = new Set(['badge', 'card', 'skeleton', 'separator', 'spinner']);
 function plannedStates(family: string): string[] {
   const states = ['rest'];
   if (passiveFamilies.has(family)) return states;
@@ -104,7 +112,7 @@ function plannedStates(family: string): string[] {
   if (family === 'tabs') states.push('keyboard-selection-overview', 'selected-and-pointer-held');
   if (family === 'toggle') states.push('already-active', 'active-and-pointer-held');
   if (family === 'tooltip') states.push('hover-open', 'focus-open');
-  if (family === 'hover-card') states.push('hover-open');
+  if (family === 'hover-card') states.push('hover-open', 'focus-open');
   if (['dropdown-menu', 'select', 'dialog'].includes(family)) states.push('open');
   if (['dropdown-menu', 'select'].includes(family))
     states.push('item-focus-first', 'item-focus-last');
@@ -125,6 +133,15 @@ const cases: Case[] = selectedFamilies.flatMap((family) =>
       plannedStates: plannedStates(family),
       achievedTargets: [],
       errors: [],
+      ...(family === 'spinner'
+        ? {
+            motionContext: {
+              requestedReducedMotion: 'reduce' as const,
+              scope: 'Styled-only Spinner static reduced-motion rest observation only.',
+              uncovered: ['Normal-motion 1000ms linear infinite rotation and timing sequence.'],
+            },
+          }
+        : {}),
     }))
   )
 );
@@ -174,6 +191,8 @@ const report: Record<string, unknown> = {
     'All cue necessity and required/redundant/decorative classifications remain independent-review debt; no frame is automatically a WCAG verdict.',
     'Passive-family acceptance covers only the current recipe identity multiplicities, anatomy, ownership and visible physical regions at rest. Auxiliary controls are observed at rest only; their interactions, prop transitions and semantic criteria remain uncovered.',
     'Portable Transition entered state is not directly exposed on every runtime DOM; modal entry observations use owned visibility and completed authored CSS animations, not an invented transition attribute.',
+    'Spinner snapshots request and observe the real reduced-motion preference only for Spinner cases. Normal-motion rotation/timing and parent composition interactions remain uncovered; no Spinner hover or keyboard-focus claim.',
+    'Hover Card focus-open observes the current one-Root zero-delay demo against draft P-BASE-HOVER-CARD-INTERACTION-INTENT after an independently closed non-hover baseline; not protocol conformance.',
   ],
   authority: [
     'https://github.com/Proto-UI/Proto-UI/issues/469',
@@ -486,7 +505,10 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
     // These bounded author templates own physical regions, including Card
     // Content's padded text region. No positive box is required of scope/box
     // wrappers, and aria-hidden Skeleton/Separator regions still need paint.
-    visibilityRequirement: 'visible-physical-region',
+    visibilityRequirement:
+      family === 'spinner' && prototypeId !== manifest.parts.root?.prototypeId
+        ? 'owned-parent-composition-only'
+        : 'visible-physical-region',
   }));
   return page.evaluate(
     (input) => {
@@ -604,6 +626,31 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
             text: element.textContent,
             display: own.display,
             ariaHidden: element.getAttribute('aria-hidden'),
+            ...(input.family === 'spinner' &&
+            element.dataset.projectionPrototype === input.rootPrototypeId
+              ? {
+                  staticReducedMotion:
+                    own.animationName === 'none' &&
+                    element.getAnimations({ subtree: true }).length === 0 &&
+                    own.borderTopColor === 'rgba(0, 0, 0, 0)' &&
+                    own.borderRightColor === own.color &&
+                    own.borderBottomColor === own.color &&
+                    own.borderLeftColor === own.color &&
+                    [
+                      own.borderTopWidth,
+                      own.borderRightWidth,
+                      own.borderBottomWidth,
+                      own.borderLeftWidth,
+                    ].every((width) => width === '2px'),
+                  animationName: own.animationName,
+                  borderColors: [
+                    own.borderTopColor,
+                    own.borderRightColor,
+                    own.borderBottomColor,
+                    own.borderLeftColor,
+                  ],
+                }
+              : {}),
             visible,
             bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
             visibilityLimits: [...new Set(limits)],
@@ -643,10 +690,35 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
           .filter((surface) => !surface.currentLease || !surface.withinContent)
           .map((surface) => ({ reason: 'Physical root outside current content lease.', surface })),
         ...currentSurfaces
-          .filter((surface) => surface.visibilityLimits.length > 0)
+          .filter(
+            (surface) =>
+              surface.visibilityLimits.length > 0 &&
+              input.expected.some(
+                (expectation) =>
+                  expectation.prototypeId === surface.prototypeId &&
+                  expectation.visibilityRequirement === 'visible-physical-region'
+              )
+          )
           .map((surface) => ({ reason: 'Physical-region visibility is unsupported.', surface })),
       ];
-      const notVisible = currentSurfaces.filter((surface) => !surface.visible);
+      const notVisible = currentSurfaces.filter(
+        (surface) =>
+          !surface.visible &&
+          input.expected.some(
+            (expectation) =>
+              expectation.prototypeId === surface.prototypeId &&
+              expectation.visibilityRequirement === 'visible-physical-region'
+          )
+      );
+      const spinnerSurfaces = currentSurfaces.filter(
+        (surface) => surface.prototypeId === input.rootPrototypeId
+      );
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const staticSpinner =
+        input.family !== 'spinner' ||
+        (reducedMotion &&
+          spinnerSurfaces.length > 0 &&
+          spinnerSurfaces.every((surface) => surface.staticReducedMotion === true));
       return {
         achieved:
           ready &&
@@ -656,7 +728,8 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
           !missingInstances.length &&
           !unmatched.length &&
           !unsupportedCoverage.length &&
-          !notVisible.length,
+          !notVisible.length &&
+          staticSpinner,
         scope:
           'Current authored passive recipe physical regions at rest only; not semantic or cue conformance.',
         owner: owner ?? null,
@@ -679,6 +752,16 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
         extraInstances: unmatched,
         unsupportedCoverage,
         notVisible,
+        ...(input.family === 'spinner'
+          ? {
+              requestedReducedMotion: 'reduce',
+              observedReducedMotion: reducedMotion,
+              staticSpinner,
+              criterion: 'P-BRUTALIST-SPINNER-MOTION-REDUCED-MOTION (draft)',
+              motionScope:
+                'Static supported open-edge Spinner roots at reduced-motion rest only; parent regions are ownership/composition observations, not required painted cues.',
+            }
+          : {}),
         unexercisedCoverage: [
           'Prop/state transitions, semantic criteria and independent cue/WCAG classification.',
           ...input.expected
@@ -999,6 +1082,80 @@ async function tooltipPortal(page: Page, target: Locator): Promise<Locator> {
   await portal.waitFor({ state: 'visible' });
   return portal;
 }
+async function hoverCardObservation(
+  page: Page,
+  target: Locator,
+  intent: 'hover' | 'focus' | 'closed'
+): Promise<Observation> {
+  const roots = await owned(page, 'brutalist-hover-card-root');
+  const triggers = await owned(page, 'brutalist-hover-card-trigger');
+  const contents = await owned(page, 'brutalist-hover-card-content');
+  const rootCount = await roots.count();
+  const triggerCount = await triggers.count();
+  const contentCount = await contents.count();
+  if (
+    rootCount !== 1 ||
+    triggerCount !== 1 ||
+    contentCount > 1 ||
+    (intent !== 'closed' && contentCount !== 1)
+  )
+    return {
+      achieved: false,
+      reason:
+        'Hover Card requires the authored one-Root/one-Trigger composition and unambiguous current owned content.',
+      rootCount,
+      triggerCount,
+      contentCount,
+    };
+  const handle = await target.elementHandle();
+  if (!handle) return { achieved: false, reason: 'Hover Card physical trigger missing.' };
+  try {
+    const binding = await roots.evaluate(
+      (root, trigger) => ({
+        owner: root.getAttribute('data-projection-owner'),
+        generation: root.getAttribute('data-projection-generation'),
+        ownsTrigger:
+          root.contains(trigger) &&
+          trigger.getAttribute('data-projection-prototype') === 'brutalist-hover-card-trigger' &&
+          trigger.getAttribute('data-projection-owner') ===
+            root.getAttribute('data-projection-owner') &&
+          trigger.getAttribute('data-projection-generation') ===
+            root.getAttribute('data-projection-generation'),
+      }),
+      handle
+    );
+    const trigger = await targetObservation(target);
+    const visible = contentCount === 1 && (await contents.isVisible());
+    const portal = contentCount === 1 ? await targetObservation(contents) : null;
+    return {
+      ...binding,
+      achieved:
+        binding.ownsTrigger &&
+        trigger.achieved &&
+        (intent === 'closed'
+          ? !visible && trigger.focused === false && trigger.hovered === false
+          : visible &&
+            portal?.achieved === true &&
+            (intent === 'hover'
+              ? trigger.hovered === true
+              : trigger.focused === true &&
+                trigger.focusVisible === true &&
+                trigger.hovered === false)),
+      rootCount,
+      triggerCount,
+      contentCount,
+      visible,
+      trigger,
+      portal,
+      intent,
+      criterion: 'P-BASE-HOVER-CARD-INTERACTION-INTENT (draft)',
+      boundary:
+        'Current demo-brutalist-hover-card authored one Root, one Trigger/Content, openDelay:0 and closeDelay:0; current owner/generation binds the sole content, not a general cross-Root association or conformance claim.',
+    };
+  } finally {
+    await handle.dispose();
+  }
+}
 async function tabsObservation(
   previewer: Locator,
   selected: 'Details' | 'Overview'
@@ -1139,7 +1296,10 @@ try {
       // openRoute creates a context before readiness and leaks it on rejection.
       // Keep the same documented setup with ownership established before goto.
       phase = 'context-creation';
-      context = await browser.newContext({ viewport });
+      context = await browser.newContext({
+        viewport,
+        ...(item.motionContext ? { reducedMotion: item.motionContext.requestedReducedMotion } : {}),
+      });
       const page = await context.newPage();
       page.setDefaultTimeout(20_000);
       page.setDefaultNavigationTimeout(30_000);
@@ -1149,6 +1309,13 @@ try {
         throw new Error(`Route returned HTTP ${response?.status() ?? 'no response'}.`);
       if (response.headers()['x-proto-ui-contrast-server'] !== servedSource!.serverId)
         throw new Error('Rendered page came from a different audit server identity.');
+      if (item.motionContext) {
+        item.motionContext.observedReducedMotion = await page.evaluate(
+          () => matchMedia('(prefers-reduced-motion: reduce)').matches
+        );
+        if (!item.motionContext.observedReducedMotion)
+          throw new Error('Spinner reduced-motion preference was requested but not observed.');
+      }
       const previewer = page.locator('[data-previewer-id]').first();
       await previewer.waitFor({ state: 'visible' });
       phase = 'runtime-theme-readiness';
@@ -1164,6 +1331,8 @@ try {
         if (passiveFamilies.has(family)) {
           const observation = await passiveSurfaceObservation(page, family);
           item.passiveSurfaceCoverage = observation;
+          if (item.motionContext)
+            item.motionContext.observedReducedMotion = observation.observedReducedMotion === true;
           return observation;
         }
         return page
@@ -1197,6 +1366,8 @@ try {
           throw new Error(
             `${family}: current passive surface coverage does not match the captured rest lease.`
           );
+        const missing = item.plannedStates.filter((state) => !item.achievedTargets.includes(state));
+        if (missing.length) throw new Error(`Unachieved planned targets: ${missing.join(', ')}.`);
         phase = 'source-provenance';
         await verifyServedSource();
         item.status = 'observed';
@@ -1208,9 +1379,7 @@ try {
       await target.hover();
       if (family === 'tooltip') await tooltipPortal(page, target);
       if (family === 'hover-card')
-        await (await owned(page, 'brutalist-hover-card-content'))
-          .first()
-          .waitFor({ state: 'visible' });
+        await (await owned(page, 'brutalist-hover-card-content')).waitFor({ state: 'visible' });
       await capture(page, item, 'hover', () =>
         requireTarget(target, (value) => value.hovered === true)
       );
@@ -1223,12 +1392,7 @@ try {
         }));
       }
       if (family === 'hover-card') {
-        const portal = (await owned(page, 'brutalist-hover-card-content')).first();
-        await portal.waitFor({ state: 'visible' });
-        await capture(page, item, 'hover-open', async () => ({
-          achieved: await portal.isVisible(),
-          portal: await targetObservation(portal),
-        }));
+        await capture(page, item, 'hover-open', () => hoverCardObservation(page, target, 'hover'));
       }
       if (
         [
@@ -1251,8 +1415,21 @@ try {
       await page.mouse.move(0, 0);
       await target.focus();
       await page.keyboard.press('Tab');
+      if (family === 'hover-card') {
+        // The native Tab leaves the focused seed. Both pointer and focus must
+        // be absent and owned content closed before Shift+Tab can prove open.
+        await (await owned(page, 'brutalist-hover-card-content')).waitFor({ state: 'hidden' });
+        await settle(page);
+        item.hoverCardClosedBaseline = await hoverCardObservation(page, target, 'closed');
+        if (!item.hoverCardClosedBaseline.achieved)
+          throw new Error(
+            'Hover Card did not establish an independent closed non-hover focus baseline.'
+          );
+      }
       await page.keyboard.press('Shift+Tab');
       if (family === 'tooltip') await tooltipPortal(page, target);
+      if (family === 'hover-card')
+        await (await owned(page, 'brutalist-hover-card-content')).waitFor({ state: 'visible' });
       await capture(page, item, 'keyboard-focus', () =>
         requireTarget(target, (value) => value.focused === true && value.focusVisible === true)
       );
@@ -1287,6 +1464,22 @@ try {
             (await portal.isVisible()) && (await targetObservation(target)).focused === true,
           portal: await targetObservation(portal),
         }));
+      }
+      if (family === 'hover-card') {
+        await capture(page, item, 'focus-open', async () => {
+          const observation = await hoverCardObservation(page, target, 'focus');
+          const baseline = item.hoverCardClosedBaseline;
+          const sameLease =
+            observation.owner === baseline?.owner &&
+            observation.generation === baseline?.generation;
+          return {
+            ...observation,
+            achieved: observation.achieved && baseline?.achieved === true && sameLease,
+            closedBaseline: baseline,
+            sameLease,
+            input: 'Native Shift+Tab after native Tab closed the seeded trigger; pointer outside.',
+          };
+        });
       }
       if (['dropdown-menu', 'select', 'dialog'].includes(family)) {
         if (family === 'dialog') {
@@ -1522,13 +1715,37 @@ try {
       if (['toggle', 'switch', 'checkbox'].includes(family)) {
         const attribute = family === 'toggle' ? 'aria-pressed' : 'aria-checked';
         const before = await target.getAttribute(attribute);
-        await target.press('Space');
-        await capture(page, item, 'keyboard-activation', async () => ({
-          ...(await targetObservation(target)),
-          achieved: (await target.getAttribute(attribute)) !== before,
+        const validBefore = before === 'true' || before === 'false';
+        const expected = validBefore ? (before === 'true' ? 'false' : 'true') : null;
+        item.binaryKeyboardActivation = {
+          achieved: false,
+          attribute,
           before,
-          after: await target.getAttribute(attribute),
-        }));
+          expected,
+          actual: before,
+          input: 'Not yet activated; true/false precondition required before native Space.',
+        };
+        if (!validBefore)
+          throw new Error(
+            `${family}: keyboard activation requires binary ${attribute}; observed ${JSON.stringify(before)}.`
+          );
+        await target.press('Space');
+        await capture(page, item, 'keyboard-activation', async () => {
+          const after = await targetObservation(target);
+          const actual = family === 'toggle' ? after.ariaPressed : after.ariaChecked;
+          item.binaryKeyboardActivation = {
+            ...after,
+            achieved: after.achieved && validBefore && actual === expected,
+            attribute,
+            before,
+            expected,
+            actual,
+            after: actual,
+            input:
+              'Native Space on the current uncontrolled binary demo target; Checkbox mixed/indeterminate modes are outside this journey.',
+          };
+          return item.binaryKeyboardActivation;
+        });
       }
       if (family === 'toggle') {
         const active = previewer.getByRole('button', { name: 'Active', exact: true });

@@ -288,6 +288,110 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     expect(surface(frame, 'rotated').rect.height).toBeGreaterThan(60);
   });
 
+  it('inherits inactive part exemptions only through current composed control ownership', async () => {
+    const context = await browser.newContext({ viewport: { width: 800, height: 900 } });
+    try {
+      const page = await context.newPage();
+      await page.setContent(
+        fixture(`
+        <div id="checkbox" data-pui-root role="checkbox" aria-disabled="false">
+          <div id="boundary" aria-disabled="true">
+            <div data-pui-root data-demo-ref="indicator" data-projection-prototype="brutalist-checkbox-indicator">Indicator ink<svg viewBox="0 0 24 24"><path d="M2 2L22 22" stroke="black" stroke-width="4" fill="none"/></svg></div>
+          </div>
+        </div>
+        <div id="switch" data-pui-root role="switch" aria-disabled="false">
+          <div slot="thumb" data-pui-root data-demo-ref="thumb" data-projection-prototype="brutalist-switch-thumb">Thumb ink</div>
+        </div>
+      `)
+      );
+      await page.evaluate(() => {
+        for (const element of document.querySelectorAll('[data-pui-root]')) {
+          element.setAttribute('data-projection-owner', 'calibration');
+          element.setAttribute('data-projection-generation', '1');
+        }
+        document.querySelector('#switch')!.attachShadow({ mode: 'open' }).innerHTML =
+          '<div><slot name="thumb"></slot></div>';
+      });
+      await page.addScriptTag({ content: bundle });
+      await page.evaluate(() => document.fonts.ready);
+      const capture = async () => {
+        const image = (await page.screenshot({ type: 'png', caret: 'initial' })).toString('base64');
+        return await page.evaluate(
+          (image) =>
+            window.puiContrastProbe.collectContrastFrame({
+              image,
+              family: 'instrument-calibration',
+            }),
+          image
+        );
+      };
+      const active = await capture();
+      const indicator = surface(active, 'indicator');
+      // A generic aria-disabled wrapper is not a Proto control. The slotted
+      // thumb retains its existing unsupported background model, not exemption.
+      expect(indicator.inactive).toBe(false);
+      expect(indicator.textRuns[0].classification).toBe('source-model-only');
+      expect(indicator.textRuns[0].ratio).toBeCloseTo(21, 8);
+      expect(surface(active, 'thumb').inactive).toBe(false);
+      expect(surface(active, 'thumb').textRuns[0].classification).toBe('unsupported');
+      await page.evaluate(() => {
+        document.querySelector('#checkbox')!.setAttribute('aria-disabled', 'true');
+        document.querySelector('#switch')!.setAttribute('aria-disabled', 'true');
+      });
+      const disabled = await capture();
+      // Preserved e4 fails here: neither independently collected part has its
+      // own aria-disabled, though both composed owning controls are disabled.
+      for (const ref of ['indicator', 'thumb']) {
+        const part = surface(disabled, ref);
+        expect(part.inactive).toBe(true);
+        expect(part.visible).toBe(true);
+        expect(part.textContrastDisposition.classification).toBe('exempt');
+        expect(part.textRuns[0].classification).toBe('exempt');
+        expect(part.textRuns[0].ratio).toBeNull();
+        expect(part.textRuns[0].limits).toContain('inactive-component');
+        expect(part.exterior[0].opaqueFillVsPixel).toBeNull();
+      }
+      const disabledPath = surface(disabled, 'indicator').glyphs.find(
+        (glyph) => glyph.tag.toLowerCase() === 'path'
+      )!;
+      expect(disabledPath.strokeContrast).toBeNull();
+      expect(disabledPath.strokeLimits).toContain('inactive-component');
+      await page.evaluate(() => {
+        document.querySelector('#checkbox')!.removeAttribute('aria-disabled');
+        document.querySelector('#switch')!.setAttribute('aria-disabled', 'false');
+      });
+      const reactivated = await capture();
+      expect(surface(reactivated, 'indicator').inactive).toBe(false);
+      expect(surface(reactivated, 'indicator').textRuns[0].ratio).toBeCloseTo(21, 8);
+      expect(surface(reactivated, 'thumb').textRuns[0].classification).toBe('unsupported');
+      await page.evaluate(() => {
+        document.querySelector('#checkbox')!.setAttribute('aria-disabled', 'true');
+        const boundary = document.querySelector('#boundary')!;
+        boundary.setAttribute('data-projection-scope', 'foreign-preview');
+        boundary.setAttribute('data-projection-owner', 'foreign-preview');
+        boundary.setAttribute('data-projection-generation', '1');
+      });
+      const foreign = surface(await capture(), 'indicator');
+      expect(foreign.inactive).toBe(false);
+      expect(foreign.textRuns[0].classification).toBe('source-model-only');
+      await page.evaluate(() => {
+        const boundary = document.querySelector('#boundary')!;
+        boundary.setAttribute('data-projection-scope', 'calibration');
+        boundary.setAttribute('data-projection-owner', 'calibration');
+        boundary.setAttribute('data-projection-generation', '0');
+      });
+      const stale = surface(await capture(), 'indicator');
+      expect(stale.inactive).toBe(false);
+      expect(stale.textRuns[0].ratio).toBeCloseTo(21, 8);
+      await page.evaluate(() => {
+        document.querySelector('#boundary')!.setAttribute('data-projection-control', 'runtime');
+      });
+      expect((await capture()).surfaces.some((part) => part.ref === 'indicator')).toBe(false);
+    } finally {
+      await context.close();
+    }
+  });
+
   it('binds facts to actual native targets, composed slot constraints and state changes', async () => {
     const context = await browser.newContext({ viewport: { width: 800, height: 900 } });
     try {
