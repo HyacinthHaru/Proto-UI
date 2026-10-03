@@ -93,6 +93,48 @@ export function contrastProvenancePlugin(root) {
   return {
     name: 'proto-ui-contrast-provenance',
     apply: /** @type {const} */ ('serve'),
+    config() {
+      root = realpathSync(root);
+      const protectedDirectories = new Set([root]);
+      for (const file of [
+        ...git(root, ['ls-files', '-z']).split('\0').filter(Boolean),
+        ...GENERATED_CSS,
+      ]) {
+        for (let directory = path.dirname(path.resolve(root, file)); directory !== root; ) {
+          protectedDirectories.add(directory);
+          directory = path.dirname(directory);
+        }
+      }
+      const ignoredDirectories = new Set();
+      return {
+        server: {
+          watch: {
+            ignored(filename, stats) {
+              const absolute = path.resolve(root, filename);
+              const relative = path.relative(root, absolute);
+              if (
+                relative === '..' ||
+                relative.startsWith(`..${path.sep}`) ||
+                path.isAbsolute(relative)
+              )
+                return false;
+              if (relative === '.git' || relative.startsWith(`.git${path.sep}`)) return true;
+              if (protectedDirectories.has(absolute)) return false;
+              if (ignoredDirectories.has(absolute)) return true;
+              if (!stats?.isDirectory()) return false;
+              try {
+                git(root, ['check-ignore', '--quiet', '--', `${relative}${path.sep}`]);
+                ignoredDirectories.add(absolute);
+                return true;
+              } catch {
+                // Unknown/non-ignored paths remain watched; errors never drop source.
+                return false;
+              }
+            },
+          },
+        },
+      };
+    },
     configureServer(server) {
       root = realpathSync(root);
       let stale = false;
@@ -111,6 +153,7 @@ export function contrastProvenancePlugin(root) {
         const portable = relative.split(path.sep).join('/');
         if (GENERATED_CSS.includes(portable)) {
           stale = true;
+          console.warn(`[contrast-provenance] Generated CSS invalidated: ${event} ${portable}`);
           return;
         }
         try {
@@ -119,9 +162,12 @@ export function contrastProvenancePlugin(root) {
           // An unlinked directory no longer has filesystem type information.
           const candidate = event === 'unlinkDir' ? `${relative}${path.sep}` : relative;
           git(root, ['check-ignore', '--quiet', '--', candidate]);
-        } catch {
+        } catch (error) {
           // Exit 1 means a source path; any Git error also fails closed.
           stale = true;
+          console.warn(
+            `[contrast-provenance] Source watcher invalidated: ${event} ${portable}; Git ${error.status ?? error.code ?? 'error'}`
+          );
         }
       };
       server.watcher.on('all', invalidate);
@@ -160,8 +206,10 @@ export function contrastProvenancePlugin(root) {
         if (!stale) {
           try {
             stale = JSON.stringify(readContrastProvenance(root)) !== serialized;
-          } catch {
+            if (stale) console.warn('[contrast-provenance] Served source identity changed.');
+          } catch (error) {
             stale = true;
+            console.warn(`[contrast-provenance] Source recheck failed: ${error.message}`);
           }
         }
         if (stale) {

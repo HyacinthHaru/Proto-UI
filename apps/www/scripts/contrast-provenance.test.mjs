@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { EventEmitter } from 'node:events';
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer, request } from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
@@ -194,6 +194,32 @@ describe('contrast source provenance', () => {
 });
 
 describe('contrast development server provenance', () => {
+  it('prunes nested ignored caches without dropping tracked or required generated inputs', (t) => {
+    const root = repository(t);
+    put(root, 'native/gpui/.gitignore', 'target/\n');
+    put(root, 'native/gpui/target/cache/blob', 'discarded build cache');
+    put(root, 'apps/www/dist/.gitignore', '*\n');
+    put(root, 'apps/www/dist/required.ts', 'export const source = true;\n');
+    git(root, 'add', 'native/gpui/.gitignore');
+    git(root, 'add', '--force', 'apps/www/dist/.gitignore', 'apps/www/dist/required.ts');
+    git(root, 'commit', '--quiet', '-m', 'Track source inside an otherwise ignored directory');
+    const ignored = contrastProvenancePlugin(root).config().server.watch.ignored;
+    for (const relative of ['native/gpui/target', 'apps/www/.astro', 'node_modules/.vite']) {
+      const absolute = path.join(root, relative);
+      mkdirSync(absolute, { recursive: true });
+      assert.equal(ignored(absolute, statSync(absolute)), true);
+    }
+    for (const relative of ['apps/www/dist', 'apps/www/src/styles', 'packages/themes']) {
+      const absolute = path.join(root, relative);
+      assert.equal(ignored(absolute, statSync(absolute)), false);
+    }
+    for (const relative of ['apps/www/dist/required.ts', ...CSS_FILES]) {
+      const absolute = path.join(root, relative);
+      assert.equal(ignored(absolute, statSync(absolute)), false);
+    }
+    assert.equal(ignored(path.join(root, '.git')), true);
+  });
+
   it('binds page headers to the startup snapshot, distinguishes another tree and a replacement server', async (t) => {
     const root = repository(t);
     const server = await serve(t, root);

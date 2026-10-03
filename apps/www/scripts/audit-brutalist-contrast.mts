@@ -740,9 +740,11 @@ try {
     item.status = 'running';
     phase = 'context-creation';
     try {
+      phase = 'source-provenance';
       await verifyServedSource();
       // openRoute creates a context before readiness and leaks it on rejection.
       // Keep the same documented setup with ownership established before goto.
+      phase = 'context-creation';
       context = await browser.newContext({ viewport });
       const page = await context.newPage();
       page.setDefaultTimeout(20_000);
@@ -780,6 +782,7 @@ try {
           throw new Error(
             `${family}: no planned physical target; unsupported interaction coverage.`
           );
+        phase = 'source-provenance';
         await verifyServedSource();
         item.status = 'observed';
         await persist('case');
@@ -1086,6 +1089,7 @@ try {
       await page.mouse.move(0, 0);
       const missing = item.plannedStates.filter((state) => !item.achievedTargets.includes(state));
       if (missing.length) throw new Error(`Unachieved planned targets: ${missing.join(', ')}.`);
+      phase = 'source-provenance';
       await verifyServedSource();
       item.status = 'observed';
     } catch (error) {
