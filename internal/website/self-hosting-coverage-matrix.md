@@ -121,7 +121,7 @@ The matrix rows remain authoritative. Each binding joins a scanned source, its c
 | `apps/www/src/components/documentation-image-controls.ts` | `www.docs.whitepaper-diagram-viewer` | `ac2f3892de521367825499a527b3d6dfce6cb72e454f7a8c5bac81b1fe3704c5` |
 | `apps/www/src/components/documentation-image-preview.ts` | `www.docs.whitepaper-diagram-viewer` | `6ed32edbb44a3efe1676b8a355cb8e14133e1c6170012031f1bda0c12f73d399` |
 | `apps/www/src/components/documentation-image-zoom.proto.ts` | `www.docs.whitepaper-diagram-viewer` | `1ea4e73da7686fb6d4d105b4c6575885a29f998a939e0443f40480888094e5c1` |
-| `apps/www/src/pages/en/test/new-projection-families.astro` | `www.demo.demo-matrix` | `8f96fa524edcc71823d5dba19d7954416c5476df97362aaeb4f90890a4483ef1` |
+| `apps/www/src/pages/en/test/new-projection-families.astro` | `www.demo.demo-matrix` | `0c601535cc4fa8a43a8589995e6e027de4a98327ca333420ee3cb2c76781f430` |
 | `apps/www/src/components/CodeExample.astro` | `www.docs.code-example-file-tabs`, `www.docs.code-example-host-tabs` | `c1e4344039e46b9d2295f6591c2e9ed5cb188dd243d41679ba172699fd4f0d55` |
 | `apps/www/src/components/InstallCommandCard.astro` | `www.docs.install-copy`, `www.docs.install-manager-tabs` | `e55907df1e4ad1d88c1ab5489cf5697399e0f285668cea46580cddd34dbfc5be` |
 | `apps/www/src/components/LanguageRedirect.astro` | `www.route.root-locale-redirect` | `18eb5d0fa57946c881a41698a55ec3fa36a8eeb04fcfd263d333c1f9e37087b6` |
