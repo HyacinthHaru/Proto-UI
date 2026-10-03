@@ -349,7 +349,7 @@ it.each(['shadcn', 'brutalist'] as const)(
     registerSiteShadcnControls();
     document.body.innerHTML = `<header data-site-header data-docs-site-header><div data-adapter-select>
       <wc-${family}-select-root data-site-select-root data-site-initial-value="wc">
-        <wc-${family}-select-trigger data-size="sm"><wc-${family}-select-value></wc-${family}-select-value></wc-${family}-select-trigger>
+        <wc-${family}-select-trigger data-size="sm" data-appearance="elevated"><wc-${family}-select-value></wc-${family}-select-value></wc-${family}-select-trigger>
         <wc-${family}-select-content><wc-${family}-select-item data-value="wc" data-text-value="Web Components">Web Components</wc-${family}-select-item></wc-${family}-select-content>
       </wc-${family}-select-root></div></header>`;
     initSiteShadcnControls(document);
@@ -361,6 +361,9 @@ it.each(['shadcn', 'brutalist'] as const)(
     expect(trigger.style.minHeight).toBe('var(--site-control-height, 2.75rem)');
     expect(trigger.style.fontSize).toBe('0.875rem');
     expect(trigger.getAttribute('data-pui-style')).toContain('h-8');
+    expect(trigger.getAttribute('data-pui-style')?.includes('shadow-[4px_4px_0_0_#000]')).toBe(
+      family === 'brutalist'
+    );
     expect(value.style.whiteSpace).toBe('normal');
     expect(value.style.overflow).toBe('visible');
     expect(value.style.overflowWrap).toBe('anywhere');
@@ -370,5 +373,8 @@ it.each(['shadcn', 'brutalist'] as const)(
     expect(trigger.getAttribute('role')).toBe('combobox');
     expect(value.textContent).toBe('Web Components');
     expect(value.style.whiteSpace).toBe('normal');
+    expect(trigger.getAttribute('data-pui-style')?.includes('shadow-[4px_4px_0_0_#000]')).toBe(
+      family === 'brutalist'
+    );
   }
 );

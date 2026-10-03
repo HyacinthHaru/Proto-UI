@@ -5,9 +5,10 @@ const { SelectRoot, SelectTrigger, SelectValue, SelectContent, SelectItem } =
   siteControlTags(family);
 interface Props {
   id?: string;
+  brutalistTriggerAppearance?: 'flat' | 'elevated';
 }
 
-const { id = 'adapter-select' } = Astro.props;
+const { id = 'adapter-select', brutalistTriggerAppearance } = Astro.props;
 const labelId = `${id}-label-${Math.random().toString(36).slice(2)}`;
 
 // 适配器选项
@@ -32,6 +33,7 @@ const options = [
       data-site-select-trigger
       aria-labelledby={labelId}
       data-size="sm"
+      data-appearance={family === 'brutalist' ? brutalistTriggerAppearance : undefined}
       class="adapter-select min-w-36"
     >
       <SelectValue data-placeholder="选择适配器" />

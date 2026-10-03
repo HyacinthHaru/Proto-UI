@@ -232,6 +232,9 @@ function initializeSelect(root: SiteSelectRoot): void {
   if (trigger) {
     applyProps(trigger, {
       size: trigger.dataset.size ?? 'default',
+      ...(family === 'brutalist' && trigger.dataset.appearance
+        ? { appearance: trigger.dataset.appearance }
+        : {}),
       disabled: trigger.dataset.disabled === 'true',
       ...(headerSurfaceStyle(trigger, 'trigger')
         ? { surfaceStyle: headerSurfaceStyle(trigger, 'trigger') }

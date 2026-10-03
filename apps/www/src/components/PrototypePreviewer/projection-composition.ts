@@ -42,6 +42,8 @@ export type ProjectionControlConfig<Value extends string> = Readonly<{
   placeholder?: string;
   /** Consumer opt-in for full selected values under narrow/text-enlarged layout. */
   wrapValue?: boolean;
+  /** Explicit Brutalist Trigger presentation; other families keep their own recipe. */
+  brutalistTriggerAppearance?: 'flat' | 'elevated';
   options: readonly ProjectionControlOption<Value>[];
   onValueChange(value: Value): void;
 }>;
@@ -521,7 +523,12 @@ function createSelectControl<Value extends string>(
   });
   const trigger = createProjectedProto(selectParts.trigger, coordinateAttrs, themeSurfaceStyle, {
     ref: refs.trigger,
-    props: { 'aria-label': config.label },
+    props: {
+      'aria-label': config.label,
+      ...(selectParts.trigger === 'brutalist-select-trigger' && config.brutalistTriggerAppearance
+        ? { appearance: config.brutalistTriggerAppearance }
+        : {}),
+    },
     // The website owns control density, through the Adapter's normalized surface channel.
     surfaceStyle: {
       width: '100%',

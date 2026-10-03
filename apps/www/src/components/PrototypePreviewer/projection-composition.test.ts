@@ -146,6 +146,39 @@ describe('Website projection composition', () => {
     }
   );
 
+  it.each(['wc', 'react', 'vue', 'vue2'] as const)(
+    '%s routes the explicit Header appearance only into the Brutalist Trigger',
+    (runtimeId) => {
+      for (const family of ['brutalist', 'shadcn'] as const) {
+        const config = controls();
+        const composition = createProjectionComposition({
+          ownerId: 'header-appearance',
+          runtimeId,
+          projectionFamilyId: family,
+          generation: 1,
+          componentId: 'button',
+          childDemo: { type: 'demo', root: { kind: 'proto', prototypeId: `${family}-button` } },
+          controls: {
+            ...config,
+            runtime: { ...config.runtime, brutalistTriggerAppearance: 'elevated' },
+            family: { ...config.family, brutalistTriggerAppearance: 'elevated' },
+          },
+          controlIds: ['runtime', 'family'],
+        });
+        let triggers = 0;
+        walk(composition.demo.root, (node) => {
+          if (node.kind !== 'proto') return;
+          if (node.prototypeId.endsWith('-select-trigger')) {
+            triggers++;
+            expect(node.props?.appearance).toBe(family === 'brutalist' ? 'elevated' : undefined);
+            expect(node.surfaceStyle).not.toHaveProperty('boxShadow');
+          } else expect(node.props?.appearance).toBeUndefined();
+        });
+        expect(triggers).toBe(2);
+      }
+    }
+  );
+
   it('clones the child tree and closes style plus identity markers over every Proto surface', () => {
     const childDemo = {
       type: 'demo',
