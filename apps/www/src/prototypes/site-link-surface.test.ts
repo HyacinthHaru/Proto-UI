@@ -54,7 +54,9 @@ describe('app-owned passive link surface', () => {
     expect(link.firstElementChild).toBe(surface);
     expect(document.activeElement).toBe(link);
     const tokens = surface.getAttribute('data-pui-style')!.split(/\s+/);
-    expect(tokens).toContain('translate-y-px');
+    expect(tokens).toEqual(
+      expect.arrayContaining(['translate-x-1', 'translate-y-1', 'shadow-none'])
+    );
     expect(tokens).toContain('pointer-events-none');
     expect(renderProtoStyleTokenCss(['pointer-events-none'])).toContain('pointer-events: none;');
     expect(link.getAttribute('href')).toBe('/native-destination/');
@@ -89,7 +91,14 @@ describe('app-owned passive link surface', () => {
       document.body.append(element);
       await settle();
       const tokens = element.getAttribute('data-pui-style')!;
-      for (const token of ['size-11', 'border-2', 'border-foreground', 'rounded-none'])
+      for (const token of [
+        'size-11',
+        'border-2',
+        'border-black',
+        'rounded-base',
+        'font-sans',
+        'font-medium',
+      ])
         expect(tokens).toContain(token);
       expect(element.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
       expect(element.querySelector('path')?.getAttribute('d')).toBeTruthy();
@@ -120,3 +129,81 @@ describe('app-owned passive link surface', () => {
     expect(element.getExposes()).toEqual({});
   });
 });
+
+it.each(['action', 'icon', 'pagination'])(
+  'applies canonical Brutalist elevation only to framed %s links',
+  async (appearance) => {
+    const surface = new Constructor();
+    document.body.append(surface);
+    const update = async (facts: Record<string, unknown> = {}) => {
+      setElementProps(surface, {
+        family: 'brutalist',
+        appearance,
+        emphasis: 'secondary',
+        ...facts,
+      });
+      surface.update();
+      await settle();
+      return surface.getAttribute('data-pui-style')!.split(/\s+/);
+    };
+    const resting = await update();
+    expect(resting).toEqual(
+      expect.arrayContaining(['rounded-base', 'border-black', 'shadow-[4px_4px_0_0_#000]'])
+    );
+    for (const facts of [{ hovered: true }, { hovered: true, pressed: true }, { pressed: true }]) {
+      const active = await update(facts);
+      expect(active).toEqual(
+        expect.arrayContaining(['translate-x-1', 'translate-y-1', 'shadow-none'])
+      );
+      expect(active).not.toContain('translate-y-px');
+      expect(active).not.toContain('bg-main');
+    }
+    expect(await update()).toEqual(resting);
+    for (const emphasis of ['minimal', 'link']) {
+      const flat = await update({ emphasis, hovered: true });
+      expect(flat).not.toContain('border-black');
+      expect(
+        flat.some((token) => token.startsWith('shadow-') || token.startsWith('translate-'))
+      ).toBe(false);
+    }
+  }
+);
+it.each(['nav', 'text', 'brand', 'sidebar', 'toc'])(
+  'does not apply control elevation to Brutalist %s navigation',
+  async (appearance) => {
+    const surface = new Constructor();
+    setElementProps(surface, { family: 'brutalist', appearance, hovered: true });
+    document.body.append(surface);
+    await settle();
+    const tokens = surface.getAttribute('data-pui-style')!.split(/\s+/);
+    expect(
+      tokens.some((token) => token.startsWith('shadow-') || token.startsWith('translate-'))
+    ).toBe(false);
+    expect(tokens).not.toContain('border-2');
+    expect(tokens).toContain('pointer-events-none');
+  }
+);
+
+it.each(['action', 'icon', 'nav', 'text', 'brand', 'sidebar', 'toc', 'pagination'])(
+  'owns Brutalist %s typography without overriding brand or current emphasis',
+  async (appearance) => {
+    const surface = new Constructor();
+    document.body.append(surface);
+    const update = async (family: string, current = false) => {
+      setElementProps(surface, { family, appearance, current });
+      surface.update();
+      await settle();
+      return surface.getAttribute('data-pui-style')!.split(/\s+/);
+    };
+    const resting = await update('brutalist');
+    expect(resting).toContain('font-sans');
+    expect(resting).toContain(appearance === 'brand' ? 'font-semibold' : 'font-medium');
+    expect(await update('brutalist', true)).toEqual(
+      expect.arrayContaining(['font-sans', 'font-semibold'])
+    );
+    expect(await update('shadcn')).not.toContain('font-sans');
+    expect(renderProtoStyleTokenCss(['font-sans'])).toContain(
+      'font-family: var(--pui-font-sans, ui-sans-serif, system-ui, sans-serif)'
+    );
+  }
+);

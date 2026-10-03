@@ -63,7 +63,7 @@ export function createHomepageLivePreview(family: ProjectionFamilyId, locale: st
       {
         kind: 'proto',
         prototypeId: PREVIEW_SURFACE_ID,
-        props: { family, emphasis },
+        props: { family, emphasis, appearance: 'card' },
         children,
       },
     ],

@@ -1,4 +1,9 @@
 import { definePrototype, tw } from '@proto.ui/core';
+import {
+  BRUTALIST_CONTROL_TOKENS,
+  BRUTALIST_HOVER_LIFT_TOKENS,
+  BRUTALIST_PRESS_TOKENS,
+} from '../../../../packages/prototypes/brutalist/src/style';
 import { SITE_LINK_ICONS, type SiteLinkIcon } from './site-link-icons';
 
 export type SiteLinkAppearance =
@@ -82,6 +87,12 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
         'pointer-events-none inline-flex shrink-0 items-center justify-center border border-transparent bg-transparent text-foreground font-medium outline-none'
       )
     );
+    // Theme variables alone do not select a font for unframed navigation.
+    // Later appearance/current rules retain their intentional weight emphasis.
+    def.rule({
+      when: (w) => w.prop('family').eq('brutalist'),
+      intent: (i) => i.feedback.style.use(tw('font-sans font-medium')),
+    });
     for (const appearance of Object.keys(SIZE_TOKENS) as SiteLinkAppearance[]) {
       def.rule({
         when: (w) => w.prop('appearance').eq(appearance),
@@ -102,7 +113,7 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
           w.prop('family').eq('brutalist'),
           w.any(w.prop('appearance').eq('sidebar'), w.prop('appearance').eq('toc'))
         ),
-      intent: (i) => i.feedback.style.use(tw('rounded-none')),
+      intent: (i) => i.feedback.style.use(tw('rounded-base')),
     });
     def.rule({
       when: (w) => w.prop('appearance').eq('toc'),
@@ -133,7 +144,7 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
           w.any(w.prop('appearance').eq('sidebar'), w.prop('appearance').eq('toc')),
           w.any(w.prop('hovered').eq(true), w.prop('current').eq(true))
         ),
-      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground border-foreground')),
+      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground border-black')),
     });
     def.rule({
       when: (w) =>
@@ -171,18 +182,14 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
       when: (w) =>
         w.all(
           w.prop('family').eq('brutalist'),
+          w.any(w.prop('emphasis').eq('primary'), w.prop('emphasis').eq('secondary')),
           w.any(
             w.prop('appearance').eq('icon'),
             w.prop('appearance').eq('action'),
             w.prop('appearance').eq('pagination')
           )
         ),
-      intent: (i) =>
-        i.feedback.style.use(
-          tw(
-            'rounded-none border-2 border-foreground bg-secondary-background text-foreground shadow-[2px_2px_0_0_var(--pui-foreground)]'
-          )
-        ),
+      intent: (i) => i.feedback.style.use(tw(BRUTALIST_CONTROL_TOKENS)),
     });
     def.rule({
       when: (w) =>
@@ -191,7 +198,7 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
           w.prop('appearance').eq('action'),
           w.prop('emphasis').eq('primary')
         ),
-      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground font-bold')),
+      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground')),
     });
     def.rule({
       when: (w) =>
@@ -221,13 +228,14 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
         w.all(
           w.prop('hovered').eq(true),
           w.prop('family').eq('brutalist'),
+          w.any(w.prop('emphasis').eq('primary'), w.prop('emphasis').eq('secondary')),
           w.any(
             w.prop('appearance').eq('icon'),
             w.prop('appearance').eq('action'),
             w.prop('appearance').eq('pagination')
           )
         ),
-      intent: (i) => i.feedback.style.use(tw('bg-main text-main-foreground')),
+      intent: (i) => i.feedback.style.use(tw(BRUTALIST_HOVER_LIFT_TOKENS)),
     });
     def.rule({
       when: (w) =>
@@ -242,8 +250,35 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
       intent: (i) => i.feedback.style.use(tw('font-semibold')),
     });
     def.rule({
-      when: (w) => w.prop('pressed').eq(true),
+      when: (w) =>
+        w.all(
+          w.prop('pressed').eq(true),
+          w.any(
+            w.prop('family').eq('shadcn'),
+            w.prop('emphasis').eq('minimal'),
+            w.prop('emphasis').eq('link'),
+            w.prop('appearance').eq('nav'),
+            w.prop('appearance').eq('text'),
+            w.prop('appearance').eq('brand'),
+            w.prop('appearance').eq('sidebar'),
+            w.prop('appearance').eq('toc')
+          )
+        ),
       intent: (i) => i.feedback.style.use(tw('translate-y-px shadow-none')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('pressed').eq(true),
+          w.prop('family').eq('brutalist'),
+          w.any(w.prop('emphasis').eq('primary'), w.prop('emphasis').eq('secondary')),
+          w.any(
+            w.prop('appearance').eq('icon'),
+            w.prop('appearance').eq('action'),
+            w.prop('appearance').eq('pagination')
+          )
+        ),
+      intent: (i) => i.feedback.style.use(tw(BRUTALIST_PRESS_TOKENS)),
     });
     def.rule({
       when: (w) => w.prop('focusVisible').eq(true),

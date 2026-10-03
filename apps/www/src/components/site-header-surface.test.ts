@@ -97,7 +97,12 @@ describe('native Header content inside real family projection surfaces', () => {
         input.setSelectionRange(2, 5);
         a.activate();
         participant.prepareCommit(first).publish();
-        expect(content.closest('.site-header-popup-surface')).not.toBeNull();
+        const surface = content.closest('.site-header-popup-surface')!;
+        expect(surface).not.toBeNull();
+        expect(surface.getAttribute('data-pui-style')).toContain(
+          family === 'brutalist' ? 'rounded-base' : 'rounded-xl'
+        );
+        expect(surface.getAttribute('data-pui-style')).not.toContain('shadow-');
         expect(content.querySelector('a')).toBe(link);
         expect(link.getAttribute('href')).toBe('/docs/');
         expect(link.getAttribute('target')).toBe('_blank');

@@ -80,7 +80,7 @@ describe('documentation native-navigation visual bridge', () => {
     link.setAttribute('in-view', '');
     await settle();
     expect(tokens()).toContain('bg-main');
-    expect(tokens()).toContain('rounded-none');
+    expect(tokens()).toContain('rounded-base');
     expect(link.hasAttribute('aria-current')).toBe(false);
     link.setAttribute('aria-current', 'true');
     link.removeAttribute('in-view');
@@ -91,7 +91,7 @@ describe('documentation native-navigation visual bridge', () => {
     expect(tokens()).not.toContain('bg-main');
     link.dispatchEvent(new Event('pointerenter'));
     await settle();
-    expect(tokens()).toContain('rounded-none');
+    expect(tokens()).toContain('rounded-base');
     expect(link.getAttribute('href')).toBe('#section');
   });
 

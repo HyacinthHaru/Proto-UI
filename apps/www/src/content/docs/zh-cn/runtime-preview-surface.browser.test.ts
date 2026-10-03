@@ -46,7 +46,9 @@ async function measure(
       // do not derive the expectation from the frame's actual border-radius.
       const lengthProbe = document.createElement('span');
       lengthProbe.style.cssText =
-        'position:absolute;visibility:hidden;pointer-events:none;width:var(--pui-radius-xl);height:0';
+        'position:absolute;visibility:hidden;pointer-events:none;height:0';
+      lengthProbe.style.width =
+        family === 'brutalist' ? 'var(--pui-radius)' : 'var(--pui-radius-xl)';
       const themeValues = getComputedStyle(frame);
       lengthProbe.style.setProperty('--pui-radius', themeValues.getPropertyValue('--pui-radius'));
       lengthProbe.style.setProperty(
@@ -55,8 +57,7 @@ async function measure(
       );
       // Keep the independent probe outside the live Proto slot subtree.
       document.body.append(lengthProbe);
-      const expectedRadius =
-        family === 'brutalist' ? 0 : parseFloat(getComputedStyle(lengthProbe).width);
+      const expectedRadius = parseFloat(getComputedStyle(lengthProbe).width);
       lengthProbe.remove();
       const style = getComputedStyle(frame);
       const rect = frame.getBoundingClientRect();

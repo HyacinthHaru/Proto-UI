@@ -96,7 +96,11 @@ export function createHomepageGalleryParts(
               ...children,
             ]),
           ],
-          { family, emphasis: 'plain' }
+          {
+            family,
+            emphasis: 'plain',
+            appearance: family === 'brutalist' && id === 'editor' ? 'canvas' : 'card',
+          }
         ),
       ],
       undefined,

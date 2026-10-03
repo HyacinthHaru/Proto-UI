@@ -72,7 +72,7 @@ export function headerSurfaceParticipant(header: HTMLElement) {
               prototypeId: 'site-preview-surface',
               ref: 'header-surface',
               className: 'site-header-popup-surface',
-              props: { family, emphasis: 'plain' },
+              props: { family, emphasis: 'plain', appearance: 'popup' },
               children: [
                 { kind: 'box', ref: 'header-native-slot', className: 'site-header-native-slot' },
               ],

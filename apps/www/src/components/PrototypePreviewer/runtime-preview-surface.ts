@@ -31,6 +31,11 @@ export function runtimePreviewFamily(root: HTMLElement): ProjectionFamilyId {
   return resolveSiteLibraryFamily(root.ownerDocument.defaultView?.location.pathname ?? '/');
 }
 
+function assertCanvasFamily(family: ProjectionFamilyId): void {
+  if (!Object.hasOwn(PROJECTION_FAMILY_MANIFESTS, family))
+    throw new Error(`[RuntimeBox] unsupported canvas family: ${String(family)}`);
+}
+
 /** App composition, not Prototype template composition. The original recipe
  * remains the slot child, with its own refs, setup, state and cleanup. */
 export function createRuntimePreviewSurface(
@@ -38,6 +43,7 @@ export function createRuntimePreviewSurface(
   family: ProjectionFamilyId,
   theme?: ProjectionThemeSurfaceStyle
 ) {
+  assertCanvasFamily(family);
   assertAvailableRef(child.root);
   const surfaceStyle: Record<string, string> = {
     display: 'flex',
@@ -56,7 +62,7 @@ export function createRuntimePreviewSurface(
     prototypeId: RUNTIME_PREVIEW_SURFACE_ID,
     className: 'pui-runtime-preview-surface',
     ref: SURFACE_REF,
-    props: { family, emphasis: 'plain' },
+    props: { family, emphasis: 'plain', appearance: 'canvas' },
     surfaceStyle,
     children: [child.root],
   };
@@ -84,11 +90,12 @@ export function createRuntimePreviewSurface(
   return {
     demo,
     setAppearance(nextFamily: ProjectionFamilyId, nextTheme: ProjectionThemeSurfaceStyle) {
+      assertCanvasFamily(nextFamily);
       for (const key of Object.keys(surfaceStyle)) {
         if (key.startsWith('--pui-')) delete surfaceStyle[key];
       }
       Object.assign(surfaceStyle, nextTheme);
-      surface.props = { family: nextFamily, emphasis: 'plain' };
+      surface.props = { family: nextFamily, emphasis: 'plain', appearance: 'canvas' };
       if (active) {
         // A color-mode update only changes the declared theme values. It does
         // not rebuild the slot subtree or reinitialize the demonstrated state.

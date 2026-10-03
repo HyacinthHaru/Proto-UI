@@ -35,6 +35,17 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     };
     await settle();
     verify();
+    for (const tile of host.querySelectorAll('[data-gallery-demo]')) {
+      const surface = tile.querySelector('[data-pui-root]')!;
+      const appearance =
+        family === 'brutalist' && tile.getAttribute('data-gallery-demo') === 'editor'
+          ? 'canvas'
+          : 'card';
+      expect(getElementProps(surface as HTMLElement)).toMatchObject({ family, appearance });
+      expect(surface.getAttribute('data-pui-style')?.includes('shadow-')).toBe(
+        appearance === 'card'
+      );
+    }
     if (family === 'brutalist') {
       const authored = content.demo.root;
       const visit = (node: unknown): any[] => {

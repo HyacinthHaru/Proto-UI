@@ -271,6 +271,22 @@ async function linkPaint(link: Locator) {
     const surface = anchor.querySelector<HTMLElement>('[data-pui-root]')!;
     const style = getComputedStyle(surface);
     const box = surface.getBoundingClientRect();
+    const nativeBox = anchor.getBoundingClientRect();
+    // Observe the painted body's edge midpoints, not its decorative shadow or
+    // rounded corner. The passive child may move; the native a remains the only
+    // activation owner and must still cover the visible target at that endpoint.
+    const edgeHits = [
+      { edge: 'right', x: box.right - 1, y: box.top + box.height / 2 },
+      { edge: 'bottom', x: box.left + box.width / 2, y: box.bottom - 1 },
+    ].map((point) => {
+      const hit = document.elementFromPoint(point.x, point.y);
+      return {
+        ...point,
+        hitIsAnchor: hit === anchor,
+        hitTag: hit?.tagName ?? null,
+        hitHref: hit?.closest('a')?.getAttribute('href') ?? null,
+      };
+    });
     const ringExtent = 4;
     let unclipped =
       box.left >= ringExtent &&
@@ -293,12 +309,22 @@ async function linkPaint(link: Locator) {
       shadow: style.boxShadow,
       transform: style.transform,
       weight: style.fontWeight,
+      font: style.fontFamily,
       decoration: style.textDecorationLine,
       whiteSpace: style.whiteSpace,
       ringWidth: style.getPropertyValue('--pui-ring-width').trim(),
       ringOffset: style.getPropertyValue('--pui-ring-offset-width').trim(),
       ringColor: style.getPropertyValue('--pui-ring-color').trim(),
       focused: anchor === document.activeElement && anchor.matches(':focus-visible'),
+      nativePressed: anchor.matches(':active'),
+      nativeRect: {
+        x: nativeBox.x,
+        y: nativeBox.y,
+        width: nativeBox.width,
+        height: nativeBox.height,
+      },
+      surfaceRect: { x: box.x, y: box.y, width: box.width, height: box.height },
+      edgeHits,
       visibleTarget:
         box.width > 0 &&
         box.height > 0 &&
@@ -319,20 +345,39 @@ async function assertSocialPaint(
 ) {
   const first = links.first();
   await page.mouse.move(1400, 950);
-  const hoverToken = family === 'brutalist' ? 'bg-main' : 'bg-muted';
+  const hoverToken = family === 'brutalist' ? 'translate-x-1' : 'bg-muted';
+  const pressToken = family === 'brutalist' ? 'translate-y-1' : 'translate-y-px';
   await expect.poll(async () => (await linkPaint(first)).tokens).not.toContain(hoverToken);
   const baseline = await linkPaint(first);
   await capture('baseline', { observed: baseline });
   await first.hover();
   await expect.poll(async () => (await linkPaint(first)).tokens).toContain(hoverToken);
-  await expect.poll(async () => (await linkPaint(first)).background).not.toBe(baseline.background);
+  if (family === 'shadcn')
+    await expect
+      .poll(async () => (await linkPaint(first)).background)
+      .not.toBe(baseline.background);
   const hovered = await linkPaint(first);
+  if (family === 'brutalist') {
+    // Accepted #800 Button-like role: settle +4/+4 into its 4px shadow.
+    expect(baseline.shadow).toContain('4px 4px 0px');
+    expect(baseline.font).toContain('DM Sans');
+    expect(baseline.weight).toBe('500');
+    expect(hovered.transform).toBe('matrix(1, 0, 0, 1, 4, 4)');
+    expect(hovered.tokens).toContain('shadow-none');
+    expect(hovered.shadow).not.toBe(baseline.shadow);
+    expect(hovered.background).toBe(baseline.background);
+  }
   await capture('hover', { baseline, observed: hovered });
+  for (const hit of hovered.edgeHits)
+    expect(hit.hitIsAnchor, `${family} hovered ${hit.edge} paint must hit its native anchor`).toBe(
+      true
+    );
 
   await nativeActionLabel(page, `social-${family}-primary-down`);
   await page.mouse.down();
   try {
-    await expect.poll(async () => (await linkPaint(first)).tokens).toContain('translate-y-px');
+    await expect.poll(async () => (await linkPaint(first)).nativePressed).toBe(true);
+    await expect.poll(async () => (await linkPaint(first)).tokens).toContain(pressToken);
   } catch (error) {
     await saveNativeTrace(page, `social-${family}-press-failure`, {
       family,
@@ -342,13 +387,19 @@ async function assertSocialPaint(
   }
   const pressed = await linkPaint(first);
   expect(pressed.tokens).toContain('shadow-none');
-  expect(pressed.transform).not.toBe(hovered.transform);
-  if (family === 'brutalist') expect(pressed.shadow).not.toBe(hovered.shadow);
+  if (family === 'brutalist') {
+    expect(pressed.transform).toBe(hovered.transform);
+    expect(pressed.shadow).toBe(hovered.shadow);
+  } else expect(pressed.transform).not.toBe(hovered.transform);
   await capture('pressed', { baseline: hovered, observed: pressed });
+  for (const hit of pressed.edgeHits)
+    expect(hit.hitIsAnchor, `${family} pressed ${hit.edge} paint must hit its native anchor`).toBe(
+      true
+    );
   // Release off the link: observe real pointer facts without navigating.
   await page.mouse.move(1400, 950);
   await page.mouse.up();
-  await expect.poll(async () => (await linkPaint(first)).tokens).not.toContain('translate-y-px');
+  await expect.poll(async () => (await linkPaint(first)).tokens).not.toContain(pressToken);
   await expect.poll(async () => (await linkPaint(first)).background).toBe(baseline.background);
 
   await first.focus();
@@ -372,8 +423,12 @@ async function assertSocialPaint(
   await capture('focus', { baseline: unfocused, observed: focused });
 }
 
-async function assertHostCurrentProjection(link: Locator) {
+async function assertHostCurrentProjection(link: Locator, family: string) {
   const baseline = await linkPaint(link);
+  if (family === 'brutalist') {
+    expect(baseline.tokens).toContain('font-sans');
+    expect(baseline.font).toContain('DM Sans');
+  }
   const original = await link.getAttribute('aria-current');
   // Explicit host fixture, not a claim that route selection changed itself.
   await link.evaluate((anchor) => anchor.setAttribute('aria-current', 'page'));
@@ -490,9 +545,9 @@ async function assertHeaderPopupSurface(
   expect(paint.outerShadow).toBe('none');
   expect(['transparent', 'rgba(0, 0, 0, 0)']).toContain(paint.outerBackground);
   expect(paint.border).toBe(family === 'brutalist' ? 2 : 1);
-  expect(paint.radius).toBe(family === 'brutalist' ? 0 : paint.declaredShadcnRadius);
-  if (family === 'brutalist') expect(paint.shadow).toContain('3px 3px 0px');
-  else expect(paint.shadow).not.toBe('none');
+  // Popup role is flat in both app families; #800 Brutalist uses the 5px base radius.
+  expect(paint.radius).toBe(family === 'brutalist' ? 5 : paint.declaredShadcnRadius);
+  expect(paint.shadow).toBe('none');
 }
 
 describe.sequential('native links with app-owned Proto visual surfaces', () => {
@@ -606,8 +661,8 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
             expect(fact.centerHitIsAnchor).toBe(true);
             if (family === 'brutalist') {
               expect(fact.border).toBe('2px');
-              expect(fact.radius).toBe('0px');
-              expect(fact.shadow).not.toBe('none');
+              expect(fact.radius).toBe('5px');
+              expect(fact.shadow).toContain('4px 4px 0px');
             }
           }
           const footprints = await page
@@ -748,7 +803,8 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           await assertHostCurrentProjection(
             page
               .locator('#home-navigation-desktop [data-projection-generation-state="active"] a')
-              .first()
+              .first(),
+            family
           );
           expect(
             (
@@ -897,7 +953,8 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           );
         });
         await assertHostCurrentProjection(
-          page.locator('[data-site-header-desktop-navigation] a').first()
+          page.locator('[data-site-header-desktop-navigation] a').first(),
+          family
         );
       } finally {
         await context.close();
@@ -1226,6 +1283,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
                 current: anchor.getAttribute('aria-current'),
                 rect: { left: box.left, top: box.top, right: box.right, bottom: box.bottom },
                 focused: anchor === document.activeElement && anchor.matches(':focus-visible'),
+                nativePressed: anchor.matches(':active'),
                 visible: anchor.contains(
                   document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2)
                 ),

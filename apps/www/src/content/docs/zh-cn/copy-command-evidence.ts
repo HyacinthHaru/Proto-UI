@@ -73,6 +73,31 @@ function sameShadow(left: ShadowLayer, right: ShadowLayer): boolean {
   );
 }
 
+/** #800 source-aligned Button endpoint, independently observed in computed CSS. */
+function atBrutalistPressedEndpoint(paint: CopyPaint): boolean {
+  const matrix = paint.transform
+    .match(/^matrix\(([^)]+)\)$/)?.[1]
+    .split(',')
+    .map(Number);
+  const translated =
+    paint.translate === 'none' ? [0, 0] : paint.translate.split(/\s+/).map(parseFloat);
+  if (paint.transform !== 'none' && (!matrix || matrix.length !== 6)) return false;
+  const x = (matrix?.[4] ?? 0) + (translated[0] ?? 0);
+  const y = (matrix?.[5] ?? 0) + (translated[1] ?? 0);
+  return Math.abs(x - 4) < 0.01 && Math.abs(y - 4) < 0.01;
+}
+function hasVisibleElevation(shadow: string): boolean {
+  return copyShadowLayers(shadow).some(
+    (layer) =>
+      !layer.inset &&
+      (layer.x !== 0 || layer.y !== 0 || layer.blur !== 0) &&
+      layer.color !== 'transparent' &&
+      layer.color !== '#0000' &&
+      !/^(?:rgba|hsla)\([^)]*,0(?:\.0+)?\)$/.test(layer.color) &&
+      !/\/0(?:\.0+)?%?\)$/.test(layer.color)
+  );
+}
+
 export function copyPaintIssues(
   family: 'shadcn' | 'brutalist',
   baseline: CopyPaint,
@@ -90,11 +115,11 @@ export function copyPaintIssues(
     // P-SHADCN-BUTTON-INTERACTION-STYLES: Copy uses outline, hence a fill delta.
     if (family === 'shadcn' && changed.background === baseline.background)
       issues.push('outline hover fill did not change');
-    // P-BRUTALIST-BUTTON-INTERACTION: surface lifts and hard shadow grows.
+    // P-BRUTALIST-BUTTON-INTERACTION: +4/+4 settles into the resting shadow.
     if (family === 'brutalist') {
-      if (!moved) issues.push('Brutalist hover did not lift');
-      if (changed.shadow === baseline.shadow || changed.shadow === 'none')
-        issues.push('Brutalist hover shadow did not grow');
+      if (!atBrutalistPressedEndpoint(changed)) issues.push('Brutalist hover is not +4px/+4px');
+      if (hasVisibleElevation(changed.shadow) || changed.shadow === baseline.shadow)
+        issues.push('Brutalist hover elevation did not clear');
     }
   } else if (state === 'focus') {
     if (!changed.focused || !changed.focusVisible) issues.push('keyboard focus is not visible');
@@ -156,10 +181,21 @@ export function copyPaintIssues(
     }
   } else {
     if (!changed.pressed) issues.push('pressed state absent');
-    if (!moved) issues.push('pressed paint did not move');
-    if (!hasStateToken('translate-y-px', 'pressed')) issues.push('press offset recipe absent');
-    if (family === 'brutalist' && changed.shadow === baseline.shadow)
-      issues.push('Brutalist press shadow did not change');
+    if (family === 'brutalist') {
+      // Pointer press after hover retains the same endpoint; never add a second offset.
+      if (!atBrutalistPressedEndpoint(changed)) issues.push('Brutalist press is not +4px/+4px');
+      if (
+        !['translate-x-1', 'translate-y-1', 'shadow-none'].every((token) =>
+          hasStateToken(token, 'pressed')
+        )
+      )
+        issues.push('press offset recipe absent');
+      if (hasVisibleElevation(changed.shadow))
+        issues.push('Brutalist press elevation did not clear');
+    } else {
+      if (!moved) issues.push('pressed paint did not move');
+      if (!hasStateToken('translate-y-px', 'pressed')) issues.push('press offset recipe absent');
+    }
   }
   return issues;
 }

@@ -79,8 +79,8 @@ describe('website native anchor composition', () => {
       getExposes(): Record<string, unknown>;
     };
     expect(surface).not.toBeNull();
-    expect(surface.getAttribute('data-pui-style')).toContain('border-foreground');
-    expect(surface.getAttribute('data-pui-style')).toContain('rounded-none');
+    expect(surface.getAttribute('data-pui-style')).toContain('border-black');
+    expect(surface.getAttribute('data-pui-style')).toContain('rounded-base');
     expect(surface.textContent).toBe('Docs');
     expect(surface.getExposes()).toEqual({});
     expect(surface.hasAttribute('role')).toBe(false);
@@ -93,15 +93,15 @@ describe('website native anchor composition', () => {
     expect(link.hasAttribute('data-slot')).toBe(false);
     link.dispatchEvent(new Event('pointerenter'));
     await settle();
-    expect(surface.getAttribute('data-pui-style')).toContain('bg-main');
+    expect(surface.getAttribute('data-pui-style')).toContain('translate-x-1');
     link.dispatchEvent(new Event('pointerleave'));
     await settle();
-    expect(surface.getAttribute('data-pui-style')).not.toContain('bg-main');
+    expect(surface.getAttribute('data-pui-style')).not.toContain('translate-x-1');
     document.documentElement.dataset.siteLibraryFamily = 'shadcn';
     await new Promise((resolve) => setTimeout(resolve, 0));
     await settle();
     expect(surface.getAttribute('data-pui-style')).toContain('rounded-lg');
-    expect(surface.getAttribute('data-pui-style')).not.toContain('rounded-none');
+    expect(surface.getAttribute('data-pui-style')).not.toContain('rounded-base');
   });
   it('does not wrap a homepage transaction and supports cleanup followed by reinitialization', async () => {
     document.body.innerHTML =

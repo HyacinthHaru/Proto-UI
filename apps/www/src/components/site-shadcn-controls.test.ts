@@ -243,7 +243,7 @@ describe('site family projections', () => {
     expect(button.getAttribute('role')).toBe('button');
     expect(button.dataset.siteControlFamily).toBe('brutalist');
     expect(button.getAttribute('data-pui-style')).toContain('border-2');
-    expect(button.getAttribute('data-pui-style')).toContain('rounded-none');
+    expect(button.getAttribute('data-pui-style')).toContain('rounded-base');
     expect(button.getAttribute('data-pui-style')).toContain('bg-secondary-background');
     expect(button.getAttribute('data-pui-style')).not.toContain('rounded-md');
   });
@@ -264,7 +264,7 @@ describe('site family projections', () => {
     await settle();
     expect(selectValue(root)).toBe('vue');
     expect(root.querySelector('wc-brutalist-select-value')?.textContent).toBe('Vue');
-    expect(trigger.getAttribute('data-pui-style')).toContain('rounded-none');
+    expect(trigger.getAttribute('data-pui-style')).toContain('rounded-base');
     expect(content.dataset.siteControlFamily).toBe('brutalist');
     trigger.click();
     await settle();

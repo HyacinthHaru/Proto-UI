@@ -48,6 +48,11 @@ describe('RuntimeBox canvas composition', () => {
     const surface = createRuntimePreviewSurface(child, 'brutalist');
     expect(surface.demo.root.kind).toBe('proto');
     if (surface.demo.root.kind !== 'proto') throw new Error('Expected a Prototype surface');
+    expect(surface.demo.root.props).toEqual({
+      family: 'brutalist',
+      emphasis: 'plain',
+      appearance: 'canvas',
+    });
     expect(surface.demo.root.children).toEqual([child.root]);
     expect(surface.demo.root.children?.[0]).toBe(child.root);
     const original = document.createElement('div');
@@ -91,6 +96,94 @@ describe('RuntimeBox canvas composition', () => {
     const ids = new Set<string>();
     collectPrototypeIds(createRuntimePreviewSurface(child, 'shadcn').demo.root, ids);
     expect([...ids]).toEqual(['site-preview-surface', 'original-component']);
+  });
+
+  for (const family of ['bootstrap-2-3-2', 'liquid-glass'] as const) {
+    for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+      it(`${family}/${runtime}: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button`, async () => {
+        registerPrototype('site-preview-surface', SitePreviewSurface);
+        const prototype =
+          family === 'liquid-glass'
+            ? (
+                await import('../../../../../packages/prototypes/liquid-glass/src/button/button.proto')
+              ).default
+            : (
+                await import('../../../../../packages/prototypes/bootstrap-2-3-2/src/button/button.proto')
+              ).default;
+        registerPrototype(`${family}-button`, prototype);
+        let context!: DemoSetupContext;
+        const onClick = vi.fn();
+        const cleanup = vi.fn();
+        const child: DemoSpec = {
+          type: 'demo',
+          root: {
+            kind: 'proto',
+            prototypeId: `${family}-button`,
+            ref: 'actual-button',
+            props: { onClick },
+            children: ['Actual partial-family Button'],
+          },
+          setup(next) {
+            context = next;
+            const onCustomClick = (event: Event) => {
+              if (event instanceof CustomEvent) onClick();
+            };
+            context.refs['actual-button'].addEventListener('click', onCustomClick);
+            return () => {
+              context.refs['actual-button'].removeEventListener('click', onCustomClick);
+              cleanup();
+            };
+          },
+        };
+        const surface = createRuntimePreviewSurface(child, family, {
+          '--pui-background': '#123456',
+        });
+        expect(surface.demo.root.children?.[0]).toBe(child.root);
+        expect(runtimePreviewRecipe(family, 'button').prototypeIds).toEqual([
+          `${family}-button`,
+          'site-preview-surface',
+        ]);
+        expect(() => runtimePreviewRecipe(family, 'select')).toThrow(/unavailable/);
+        const host = document.createElement('div');
+        document.body.append(host);
+        const result = await renderDemo({ runtime, host, demo: surface.demo });
+        try {
+          const frame = host.querySelector<HTMLElement>('.pui-runtime-preview-surface')!;
+          const button = context.refs['actual-button'];
+          await vi.waitFor(() => expect(button.getAttribute('role')).toBe('button'));
+          const tokens = frame.getAttribute('data-pui-style') ?? '';
+          expect(tokens).not.toContain('rounded-xl');
+          expect(tokens).toContain(family === 'bootstrap-2-3-2' ? 'rounded-[4px]' : 'rounded-none');
+          expect(tokens).not.toContain('backdrop-blur');
+          expect(frame.style.getPropertyValue('--pui-background')).toBe('#123456');
+          expect(frame.getAttribute('role')).toBeNull();
+          expect(frame.getAttribute('tabindex')).toBeNull();
+          expect(frame.contains(button)).toBe(true);
+          expect(Object.keys(context.refs)).toEqual(['actual-button']);
+          button.click();
+          expect(onClick).toHaveBeenCalledTimes(1);
+          button.focus();
+          surface.setAppearance(family, { '--pui-background': '#654321' });
+          expect(context.refs['actual-button']).toBe(button);
+          expect(document.activeElement).toBe(button);
+          expect(frame.style.getPropertyValue('--pui-background')).toBe('#654321');
+          button.click();
+          expect(onClick).toHaveBeenCalledTimes(2);
+        } finally {
+          await result.destroy();
+        }
+        expect(cleanup).toHaveBeenCalledTimes(1);
+      }, 15000);
+    }
+  }
+
+  it('rejects unknown canvas families instead of falling back to another family', () => {
+    const child: DemoSpec = { type: 'demo', root: { kind: 'box', children: ['Actual source'] } };
+    const unknown = 'unknown-family' as Parameters<typeof createRuntimePreviewSurface>[1];
+    expect(() => createRuntimePreviewSurface(child, unknown)).toThrow(/unsupported canvas family/);
+    const surface = createRuntimePreviewSurface(child, 'brutalist');
+    expect(() => surface.setAppearance(unknown, {})).toThrow(/unsupported canvas family/);
+    expect(surface.demo.root.kind === 'proto' && surface.demo.root.props?.family).toBe('brutalist');
   });
 
   it('rejects a child ref collision instead of taking over the demonstrated instance', () => {
@@ -150,7 +243,7 @@ describe('RuntimeBox canvas composition', () => {
         await vi.waitFor(() =>
           expect(
             host.querySelector('.pui-runtime-preview-surface')?.getAttribute('data-pui-style')
-          ).toContain('rounded-none')
+          ).toContain('rounded-base')
         );
         expect(context.refs.toggle).toBe(toggle);
         expect(active()).toBe(true);
@@ -193,6 +286,7 @@ describe('RuntimeBox canvas composition', () => {
         expect(frame.getAttribute('role')).toBeNull();
         expect(frame.getAttribute('tabindex')).toBeNull();
         expect(frame.getAttribute('data-pui-style')).toContain('rounded-xl');
+        expect(frame.getAttribute('data-pui-style')).not.toContain('shadow-');
         link.focus();
         expect(document.activeElement).toBe(link);
         surface.setAppearance('brutalist', {
@@ -200,14 +294,16 @@ describe('RuntimeBox canvas composition', () => {
           '--pui-foreground': '#fff',
         });
         await vi.waitFor(() =>
-          expect(frame.getAttribute('data-pui-style')).toContain('rounded-none')
+          expect(frame.getAttribute('data-pui-style')).toContain('rounded-base')
         );
+        expect(frame.getAttribute('data-pui-style')).not.toContain('shadow-');
         expect(host.querySelector('a')).toBe(link);
         expect(document.activeElement).toBe(link);
         expect(link.getAttribute('href')).toBe('#destination');
         expect(link.getAttribute('aria-label')).toBe('Original link');
         surface.setAppearance('brutalist', { '--pui-background': '#000' });
         expect(frame.style.getPropertyValue('--pui-foreground')).toBe('');
+        expect(frame.getAttribute('data-pui-style')).not.toContain('shadow-');
         expect(host.querySelector('a')).toBe(link);
         expect(setup).toHaveBeenCalledTimes(1);
         await result.destroy();

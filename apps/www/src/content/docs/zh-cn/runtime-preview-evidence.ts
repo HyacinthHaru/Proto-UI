@@ -28,11 +28,10 @@ export function runtimePreviewEvidenceIssues(facts: RuntimePreviewPaint): string
     ![facts.surfaceWidth, facts.surfaceHeight].every((value) => Number.isFinite(value) && value > 0)
   )
     issues.push('invalid canvas geometry');
-  const radius = facts.family === 'brutalist' ? 0 : facts.expectedRadius;
-  if (facts.family === 'shadcn' && !(radius > 0))
-    issues.push('missing independent radius theme value');
+  const radius = facts.expectedRadius;
+  if (!(radius > 0)) issues.push('missing independent radius theme value');
   const border = facts.family === 'brutalist' ? 2 : 1;
-  const radiusToken = facts.family === 'brutalist' ? 'rounded-none' : 'rounded-xl';
+  const radiusToken = facts.family === 'brutalist' ? 'rounded-base' : 'rounded-xl';
   if (!facts.tokens.includes(radiusToken)) issues.push('wrong family radius token');
   if (
     facts.radius.length !== 4 ||
@@ -57,7 +56,8 @@ export function runtimePreviewEvidenceIssues(facts: RuntimePreviewPaint): string
     issues.push('wrong canvas padding');
   if (facts.background === 'rgba(0, 0, 0, 0)' || facts.background === 'transparent')
     issues.push('missing canvas fill');
-  if (!facts.shadow || facts.shadow === 'none') issues.push('missing family shadow');
+  // Canvas is the flat role; elevated card paint here would recreate nested depth.
+  if (facts.shadow !== 'none') issues.push('canvas must remain flat');
   if (facts.ancestorPaint.length) issues.push('duplicate ancestor paint');
   if (facts.hasRole || facts.hasTabStop) issues.push('surface took semantic ownership');
   if (facts.pointerEvents === 'none') issues.push('surface blocks interactive slot');

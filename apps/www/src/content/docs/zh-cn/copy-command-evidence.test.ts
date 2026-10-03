@@ -27,7 +27,7 @@ const brute = {
   ...idle,
   width: 40,
   height: 40,
-  shadow: 'rgb(0, 0, 0) 3px 3px 0px 0px',
+  shadow: 'rgb(0, 0, 0) 4px 4px 0px 0px',
   expectedRingShadow: 'rgb(23, 23, 23) 0px 0px 0px 4px',
   expectedRingOffsetShadow: 'rgb(255, 255, 255) 0px 0px 0px 2px',
 };
@@ -52,7 +52,7 @@ describe('actual Copy family paint evidence', () => {
     expect(copyPaintIssues('shadcn', idle, focus.shadcn, 'focus')).toEqual([]);
     expect(focus.shadcn.tokens.split(' ').includes('ring-3')).toBe(false);
   });
-  it('accepts Brutalist hover lift/shadow with the same background', () => {
+  it('accepts Brutalist hover +4/+4 and cleared elevation with the same background', () => {
     expect(
       copyPaintIssues(
         'brutalist',
@@ -60,8 +60,8 @@ describe('actual Copy family paint evidence', () => {
         {
           ...brute,
           hovered: true,
-          transform: 'matrix(1,0,0,1,-1,-1)',
-          shadow: '4px 4px 0 0 black',
+          transform: 'matrix(1,0,0,1,4,4)',
+          shadow: 'none',
         },
         'hover'
       )
@@ -119,7 +119,7 @@ describe('actual Copy family paint evidence', () => {
         { ...brute, hovered: true, translate: '-1px -1px' },
         'hover'
       )
-    ).toContain('Brutalist hover shadow did not grow');
+    ).toContain('Brutalist hover elevation did not clear');
   });
   it.each(['shadcn', 'brutalist'] as const)(
     '%s pressed needs state, applied translation and the recipe',
@@ -128,9 +128,12 @@ describe('actual Copy family paint evidence', () => {
       const press = {
         ...base,
         pressed: true,
-        translate: '1px 1px',
+        translate: family === 'brutalist' ? '4px 4px' : '1px 1px',
         shadow: 'none',
-        tokens: 'data-[pressed]:translate-y-px',
+        tokens:
+          family === 'brutalist'
+            ? 'translate-x-1 translate-y-1 shadow-none'
+            : 'data-[pressed]:translate-y-px',
       };
       expect(copyPaintIssues(family, base, press, 'pressed')).toEqual([]);
       for (const mutation of [{ pressed: false }, { translate: base.translate }, { tokens: '' }])
@@ -139,6 +142,39 @@ describe('actual Copy family paint evidence', () => {
         ).toBeGreaterThan(0);
     }
   );
+  it('keeps Brutalist press at its hovered endpoint and rejects old lift or a doubled press offset', () => {
+    const hovered = {
+      ...brute,
+      hovered: true,
+      transform: 'matrix(1, 0, 0, 1, 4, 4)',
+      shadow: 'none',
+      tokens: 'translate-x-1 translate-y-1 shadow-none',
+    };
+    expect(copyPaintIssues('brutalist', hovered, { ...hovered, pressed: true }, 'pressed')).toEqual(
+      []
+    );
+    for (const offset of [-1, 1, 8]) {
+      const changed = {
+        ...hovered,
+        pressed: true,
+        transform: `matrix(1, 0, 0, 1, ${offset}, ${offset})`,
+      };
+      expect(copyPaintIssues('brutalist', brute, changed, 'hover')).toContain(
+        'Brutalist hover is not +4px/+4px'
+      );
+      expect(copyPaintIssues('brutalist', hovered, changed, 'pressed')).toContain(
+        'Brutalist press is not +4px/+4px'
+      );
+    }
+    expect(
+      copyPaintIssues(
+        'brutalist',
+        brute,
+        { ...hovered, shadow: 'rgba(0, 0, 0, 0) 0px 0px 0px 0px' },
+        'hover'
+      )
+    ).toEqual([]);
+  });
 });
 describe('computed ring-layer evidence', () => {
   it('parses layered modern colors without splitting their inner commas/spaces', () => {

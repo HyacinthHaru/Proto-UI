@@ -79,21 +79,26 @@ describe('native link facts through actual renderer props', () => {
       const tokens = () =>
         link.querySelector('[data-pui-root]')?.getAttribute('data-pui-style')?.split(/\s+/) ?? [];
       link.dispatchEvent(new PointerEvent('pointerenter'));
-      await vi.waitFor(() => expect(tokens()).toContain('bg-main'));
+      await vi.waitFor(() => expect(tokens()).toContain('translate-x-1'));
       link.dispatchEvent(new PointerEvent('pointerdown', { button: 0, bubbles: true }));
       link.focus();
-      await vi.waitFor(() => expect(tokens()).toContain('translate-y-px'));
+      await vi.waitFor(() => expect(tokens()).toContain('translate-y-1'));
       expect(events.some((event: any) => event.next.pressed === true)).toBe(true);
       expect(tokens()).toContain('shadow-none');
       window.dispatchEvent(new PointerEvent('pointerup', { button: 0 }));
-      await vi.waitFor(() => expect(tokens()).not.toContain('translate-y-px'));
+      await vi.waitFor(() => expect((events.at(-1) as any).next.pressed).toBe(false));
+      // Hover and press share the same endpoint. The real props lease must still
+      // clear pressed, and only leaving hover restores resting elevation.
+      expect(tokens()).toContain('translate-y-1');
+      link.dispatchEvent(new PointerEvent('pointerleave'));
+      await vi.waitFor(() => expect(tokens()).not.toContain('translate-y-1'));
       expect(link.isConnected).toBe(true);
       expect(host.querySelectorAll('a')).toHaveLength(1);
       // Later independent props remain live; the first hover update is not enough.
       link.dispatchEvent(new PointerEvent('pointerdown', { button: 0, bubbles: true }));
-      await vi.waitFor(() => expect(tokens()).toContain('translate-y-px'));
+      await vi.waitFor(() => expect(tokens()).toContain('translate-y-1'));
       window.dispatchEvent(new PointerEvent('pointerup', { button: 0 }));
-      await vi.waitFor(() => expect(tokens()).not.toContain('translate-y-px'));
+      await vi.waitFor(() => expect(tokens()).not.toContain('translate-y-1'));
       await view.destroy();
       const eventsAfterDispose = events.length;
       link.dispatchEvent(new PointerEvent('pointerdown', { button: 0, bubbles: true }));
@@ -154,8 +159,9 @@ describe('native link facts through actual renderer props', () => {
       const surface = link.querySelector('[data-pui-root]')!;
       const tokens = (surface.getAttribute('data-pui-style') ?? '').split(/\s+/);
       expect(tokens).toContain('rounded-lg');
-      expect(tokens).not.toContain('rounded-none');
-      expect(tokens).not.toContain('translate-y-px');
+      expect(tokens).not.toContain('rounded-base');
+      expect(tokens).not.toContain('translate-y-1');
+      expect(tokens).not.toContain('translate-x-1');
       expect(tokens).not.toContain('bg-main');
     }, 20_000);
   }

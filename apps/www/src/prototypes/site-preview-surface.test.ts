@@ -27,14 +27,44 @@ it('owns actual family tokens while leaving native content and focus semantics p
     expect.arrayContaining(['rounded-xl', 'border-border', 'bg-background'])
   );
   expect(await update('brutalist', 'accent')).toEqual(
-    expect.arrayContaining(['rounded-none', 'border-2', 'bg-main'])
+    expect.arrayContaining(['rounded-base', 'border-2', 'border-black', 'bg-main'])
   );
   const plain = await update('shadcn');
   expect(plain).not.toContain('bg-main');
-  expect(plain).not.toContain('rounded-none');
+  expect(plain).not.toContain('rounded-base');
   expect(surface.contains(content)).toBe(true);
   expect(content.textContent).toBe('Actual example result');
   expect(surface.hasAttribute('role')).toBe(false);
   expect(surface.hasAttribute('tabindex')).toBe(false);
   expect(surface.getExposes()).toEqual({});
 });
+
+// Site roles reuse the accepted family grammar; elevation is never universal.
+it.each(['shadcn', 'brutalist'] as const)(
+  'switches %s card, popup and canvas paint without taking ownership',
+  async (family) => {
+    const surface = new Surface();
+    document.body.append(surface);
+    const update = async (appearance?: string) => {
+      setElementProps(surface, { family, ...(appearance ? { appearance } : {}) });
+      surface.update();
+      await settle();
+      return surface.getAttribute('data-pui-style')!.split(/\s+/);
+    };
+    const radius = family === 'shadcn' ? 'rounded-xl' : 'rounded-base';
+    const elevation = family === 'shadcn' ? 'shadow-sm' : 'shadow-[4px_4px_0_0_#000]';
+    expect(await update()).toContain(elevation);
+    for (const appearance of ['popup', 'canvas', 'card', 'popup']) {
+      const tokens = await update(appearance);
+      expect(tokens).toContain(radius);
+      expect(tokens.includes(elevation)).toBe(appearance === 'card');
+      if (family === 'brutalist')
+        expect(tokens).toEqual(
+          expect.arrayContaining(['border-black', 'font-sans', 'font-medium'])
+        );
+      expect(tokens).not.toContain('rounded-none');
+      expect(surface.hasAttribute('role')).toBe(false);
+      expect(surface.hasAttribute('tabindex')).toBe(false);
+    }
+  }
+);
