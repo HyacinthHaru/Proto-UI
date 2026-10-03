@@ -774,7 +774,12 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     if (!root.isConnected) void destroy();
     else onTypographyChange();
   });
-  observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['data-site-typography'],
+  });
   document.addEventListener('astro:before-swap', onBeforeSwap);
   ownedRoot.__homepageRuntime__ = { destroy, getSnapshot: () => controller.getSnapshot() };
   observe(controller.start(), false);

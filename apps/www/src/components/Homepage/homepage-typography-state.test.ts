@@ -6,6 +6,7 @@ import type { MaterializedProjectionCandidate } from '../PrototypePreviewer/proj
 type TypographyCandidate = MaterializedProjectionCandidate;
 const preparation = vi.hoisted(() => ({
   next: null as null | ((candidate: TypographyCandidate) => Promise<TypographyCandidate>),
+  count: 0,
 }));
 vi.mock('../site-typography', async (original) => {
   const actual = await original<typeof import('../site-typography')>();
@@ -16,6 +17,7 @@ vi.mock('../site-typography', async (original) => {
       return {
         ...participant,
         async materialize(request: Parameters<typeof participant.materialize>[0]) {
+          preparation.count++;
           const candidate = await participant.materialize(request);
           const next = preparation.next;
           preparation.next = null;
@@ -52,6 +54,7 @@ let media: MediaQueryList;
 beforeEach(() => {
   localStorage.clear();
   preparation.next = null;
+  preparation.count = 0;
   media = Object.assign(new EventTarget(), {
     matches: false,
     media: '(max-width: 47.999rem)',
@@ -336,5 +339,106 @@ describe('homepage passive typography refresh preserves real gallery state', () 
     expect(document.querySelectorAll('[data-typography-prototype]')).toHaveLength(0);
     expect(document.querySelectorAll('[data-projection-generation-host]')).toHaveLength(0);
     expect(document.querySelector('h1')!.textContent).toBe('Stable original source');
+  });
+
+  for (const change of ['change role', 'remove role', 'new marker'] as const) {
+    it(`${change}: observes only the authored change, keeps gallery state and settles after one batch`, async () => {
+      const text = document.createTextNode('Native inline caption');
+      const span = document.createElement('span');
+      span.append(text);
+      document.querySelector('main')!.append(span);
+      const before = await editGallery();
+      // Let startup and gallery observer deliveries finish, as in the independent
+      // red probe. The sole trigger below is an authored attribute mutation.
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      const baseline = preparation.count;
+      const h1 = document.querySelector<HTMLElement>('h1')!;
+      const source = h1.querySelector('[data-site-typography-slot]')!.firstChild;
+      if (change === 'change role') h1.dataset.siteTypography = 'h2';
+      else if (change === 'remove role') h1.removeAttribute('data-site-typography');
+      else span.dataset.siteTypography = 'caption';
+      const target = change === 'new marker' ? span : h1;
+      const role = change === 'change role' ? 'h2' : change === 'remove role' ? 'h1' : 'caption';
+      await expect
+        .poll(
+          () =>
+            target
+              .querySelector('[data-typography-prototype]')
+              ?.getAttribute('data-typography-role'),
+          { timeout: 500 }
+        )
+        .toBe(role);
+      // Real observer deliveries and self-authored projection metadata must not
+      // cause another materialization after this passive batch is published.
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      expect(preparation.count).toBe(baseline + 1);
+      expect(h1.querySelector('[data-site-typography-slot]')!.firstChild).toBe(source);
+      if (change === 'new marker') {
+        expect(span.querySelector('[data-site-typography-slot]')!.firstChild).toBe(text);
+        span.removeAttribute('data-site-typography');
+        await expect.poll(() => span.querySelector('[data-typography-prototype]')).toBeNull();
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        expect(preparation.count).toBe(baseline + 2);
+        expect(span.firstChild).toBe(text);
+      }
+      expect(handle!.getSnapshot()).toEqual(before.snapshot);
+      expect(ref('settings')).toBe(before.owner);
+      expect(note()).toBe(before.input);
+      expect(note().value).toBe('Keep my unsaved note');
+      expect(note().selectionStart).toBe(5);
+      expect(document.activeElement).toBe(before.input);
+      expect(before.summary.getAttribute('aria-checked')).toBe('true');
+      ref('settings-save').click();
+      await expect
+        .poll(() => ref('settings-feedback').textContent)
+        .toContain('Note: 20 characters');
+    });
+  }
+
+  it('keeps language and complete textContent replacement fresh in the same page generation', async () => {
+    const before = await editGallery();
+    const h1 = document.querySelector<HTMLElement>('h1')!;
+    h1.lang = 'zh-CN';
+    h1.textContent = '保持完全相同的原始语义';
+    const source = h1.firstChild;
+    await expect
+      .poll(() => h1.querySelector('[data-site-typography-slot]')?.firstChild)
+      .toBe(source);
+    expect(h1.textContent).toBe('保持完全相同的原始语义');
+    expect(h1.lang).toBe('zh-CN');
+    expect(handle!.getSnapshot()).toEqual(before.snapshot);
+    expect(note()).toBe(before.input);
+    expect(note().value).toBe('Keep my unsaved note');
+  });
+
+  it('reconciles source changes arriving while a failed local batch is being disposed', async () => {
+    const before = await editGallery();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const disposing = deferred<void>();
+    const release = deferred<void>();
+    preparation.next = async (candidate) => ({
+      ...candidate,
+      activate() {
+        candidate.activate();
+        throw new Error('local activation failed');
+      },
+      async dispose() {
+        disposing.resolve();
+        await release.promise;
+        await candidate.dispose();
+      },
+    });
+    resize(true);
+    await disposing.promise;
+    const added = document.createElement('h2');
+    added.textContent = 'Source during failed cleanup';
+    document.querySelector('main')!.append(added);
+    await new Promise((resolve) => setTimeout(resolve, 60));
+    release.resolve();
+    await expect
+      .poll(() => added.querySelector('[data-typography-prototype]'), { timeout: 700 })
+      .not.toBeNull();
+    expect(handle!.getSnapshot()).toEqual(before.snapshot);
+    expect(note()).toBe(before.input);
   });
 });
