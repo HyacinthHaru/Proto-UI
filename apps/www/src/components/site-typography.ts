@@ -18,7 +18,9 @@ import { isRuntimeId } from './PrototypePreviewer/runtimes/registry';
 const ROLES = new Set<string>(SITE_TYPOGRAPHY_ROLES);
 const SEMANTIC_TARGETS = 'h1,h2,h3,h4,h5,h6,p,label,legend,figcaption';
 const COMPONENT_OWNED =
-  '[data-pui-root],[data-pui-style],[data-previewer-id],[data-home-showcase],[data-homepage-actions],[data-site-native-link],[data-site-native-button],pre,code,script,style,template';
+  '[data-previewer-id],[data-home-showcase],[data-homepage-actions],[data-site-native-link],[data-site-native-button],pre,code,script,style,template';
+const PASSIVE_HEADER_FRAME =
+  '.site-header-popup-surface[data-projection-prototype="site-preview-surface"]';
 const MARKERS = [
   'data-typography-owner',
   'data-typography-runtime',
@@ -48,13 +50,21 @@ export function collectSiteTypographyTargets(root: ParentNode, docsOnly = false)
   return candidates.flatMap((native): Target[] => {
     const explicit = native.dataset.siteTypography;
     const explicitRole = explicit !== undefined && ROLES.has(explicit);
+    if (native.closest(COMPONENT_OWNED) || native.closest('[data-site-typography-batch]'))
+      return [];
+    const prototypeOwner = native.closest('[data-pui-root],[data-pui-style]');
+    // Only the existing passive Header frame is allowed to contain explicitly
+    // marked native labels. An explicit marker never bypasses another actual
+    // component's text owner or a preview/example island.
     if (
-      native.closest('[data-site-typography-batch],pre,code,script,style,template') ||
-      (!explicitRole && native.closest(COMPONENT_OWNED))
+      prototypeOwner &&
+      !(
+        explicitRole &&
+        native.closest('[data-site-header-panel-content]') &&
+        prototypeOwner.matches(PASSIVE_HEADER_FRAME)
+      )
     )
       return [];
-    // Explicit native text markers can live inside a passive Header/Card frame.
-    // Unmarked component text stays with its existing actual Proto owner.
     const tag = native.localName;
     const role =
       explicit && ROLES.has(explicit)

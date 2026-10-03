@@ -1,3 +1,4 @@
+import { headerSurfaceParticipant } from './site-header-surface';
 import { renderDemo } from './PrototypePreviewer/demo-renderer';
 import { loadPrototypes } from './PrototypePreviewer/prototype-modules';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -281,12 +282,31 @@ describe('inline renderer cache isolation', () => {
 });
 
 describe('native-source lease boundaries', () => {
-  it('keeps explicitly marked native Header labels inside passive frames eligible without wrapping component text', () => {
+  it('only lets explicit native labels cross the exact actual passive Header frame', async () => {
     document.body.innerHTML =
-      '<div data-pui-root><span data-site-typography="label">Runtime</span><p>Already component-owned</p></div>';
+      '<div data-pui-root><span data-site-typography="label">Component text</span></div><header><div data-site-header-panel><div data-site-header-surface-mount></div><div data-site-header-panel-content><span data-site-typography="label">Runtime</span></div></div></header>';
+    const header = document.querySelector<HTMLElement>('header')!;
+    const frame = headerSurfaceParticipant(header)!;
+    const selection = request('wc', 1);
+    const rendered = await frame.materialize(selection);
+    candidates.push(rendered);
+    rendered.activate();
+    frame.prepareCommit(selection).publish();
+    const actual = header.querySelector('.site-header-popup-surface')!;
+    expect(actual.getAttribute('data-projection-prototype')).toBe('site-preview-surface');
     expect(
       collectSiteTypographyTargets(document.body).map((target) => target.native.textContent)
     ).toEqual(['Runtime']);
+    const typography = siteTypographyParticipant(header);
+    const batch = await typography.materialize(request('react', 1));
+    candidates.push(batch);
+    batch.activate();
+    expect(
+      header.querySelector('[data-site-typography]')!.getAttribute('data-typography-runtime')
+    ).toBe('react');
+    await batch.dispose();
+    actual.classList.remove('site-header-popup-surface');
+    expect(collectSiteTypographyTargets(document.body)).toHaveLength(0);
   });
   it('preserves a text caret and backward labelled-input selection through replacement', async () => {
     const root = fixture();
