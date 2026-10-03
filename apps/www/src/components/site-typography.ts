@@ -35,6 +35,10 @@ type View = Target & {
   home: HTMLElement;
 };
 const activeViews = new WeakMap<HTMLElement, View>();
+// These are renderer-owned containers, never authored source nodes. Recording
+// their source slot lets selection boundaries follow source siblings instead
+// of keeping an offset into a carrier that will be moved or retired.
+const selectionContainers = new WeakMap<Node, { native: HTMLElement; slot: HTMLElement }>();
 let serial = 0;
 
 /** Inventory uses native semantics, never discovers text by replacing HTML.
@@ -92,18 +96,71 @@ function sourceNodes(native: HTMLElement): Node[] {
     node === active?.carrier ? Array.from(active.slot.childNodes) : [node]
   );
 }
+type SelectionBoundary = {
+  node: Node;
+  offset: number;
+  previous: Node | null;
+  next: Node | null;
+  native: HTMLElement | null;
+};
+function captureBoundary(node: Node | null, offset: number): SelectionBoundary | null {
+  if (!node) return null;
+  const owner = selectionContainers.get(node);
+  const edge = (child: Node | undefined, end: boolean): Node | null => {
+    if (!child) return null;
+    const source = selectionContainers.get(child)?.slot;
+    return source ? (end ? source.lastChild : source.firstChild) : child;
+  };
+  return {
+    node,
+    offset,
+    previous: edge(node.childNodes[offset - 1], true),
+    next: edge(node.childNodes[offset], false),
+    native: owner?.native ?? (activeViews.has(node as HTMLElement) ? (node as HTMLElement) : null),
+  };
+}
+function resolveBoundary(
+  boundary: SelectionBoundary | null
+): { node: Node; offset: number } | null {
+  if (!boundary) return null;
+  // Prefer the same source node immediately to the right; a terminal boundary
+  // follows the same source node on its left. This maps native p child offsets
+  // into a new slot and maps retired slot offsets back to native p on teardown.
+  for (const [sibling, after] of [
+    [boundary.next, false],
+    [boundary.previous, true],
+  ] as const) {
+    const parent = sibling?.parentNode;
+    if (sibling?.isConnected && parent)
+      return {
+        node: parent,
+        offset: Array.prototype.indexOf.call(parent.childNodes, sibling) + (after ? 1 : 0),
+      };
+  }
+  if (boundary.native?.isConnected)
+    return {
+      node: activeViews.get(boundary.native)?.slot ?? boundary.native,
+      offset: 0,
+    };
+  return boundary.node.isConnected ? { node: boundary.node, offset: boundary.offset } : null;
+}
 function preserveSelection(document: Document, move: () => void): void {
   const focus = document.activeElement as HTMLElement | null;
   const selection = document.getSelection();
-  const anchor = selection?.anchorNode;
-  const focusNode = selection?.focusNode;
-  const anchorOffset = selection?.anchorOffset ?? 0;
-  const focusOffset = selection?.focusOffset ?? 0;
+  const anchor = captureBoundary(selection?.anchorNode ?? null, selection?.anchorOffset ?? 0);
+  const extent = captureBoundary(selection?.focusNode ?? null, selection?.focusOffset ?? 0);
   move();
   if (focus?.isConnected && document.activeElement !== focus) focus.focus({ preventScroll: true });
-  if (selection && anchor?.isConnected && focusNode?.isConnected) {
+  const nextAnchor = resolveBoundary(anchor);
+  const nextExtent = resolveBoundary(extent);
+  if (selection && nextAnchor && nextExtent) {
     try {
-      selection.setBaseAndExtent(anchor, anchorOffset, focusNode, focusOffset);
+      selection.setBaseAndExtent(
+        nextAnchor.node,
+        nextAnchor.offset,
+        nextExtent.node,
+        nextExtent.offset
+      );
     } catch {
       /* Source changed while selecting. */
     }
@@ -137,7 +194,10 @@ export function siteTypographyParticipant(
           (target, index) =>
             target.native !== committed[index]?.native ||
             target.role !== committed[index]?.role ||
-            activeViews.get(target.native)?.carrier.parentElement !== target.native
+            activeViews.get(target.native)?.carrier.parentElement !== target.native ||
+            Array.from(target.native.childNodes).some(
+              (node) => node !== activeViews.get(target.native)?.carrier
+            )
         )
       );
     },
@@ -262,6 +322,8 @@ export function siteTypographyParticipant(
               surface.dataset.typographyRuntime = runtime;
               surface.dataset.typographyFamily = family;
               surface.dataset.typographyGeneration = String(request.generation);
+              for (const container of [carrier, surface, slot])
+                selectionContainers.set(container, { native: target.native, slot });
               return { ...target, carrier, surface, slot, home: batch! };
             });
           },

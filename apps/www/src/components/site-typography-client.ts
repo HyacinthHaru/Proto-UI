@@ -5,15 +5,23 @@ import { watchProjectionThemeSurfaceStyle } from './PrototypePreviewer/projectio
 import { resolveSiteLibraryFamily } from './site-library-family';
 import { siteTypographyParticipant } from './site-typography';
 
-const documents = new WeakMap<Document, { destroy(): Promise<void>; ready: Promise<unknown> }>();
+type DocumentationTypographyHandle = { destroy(): Promise<void>; ready: Promise<unknown> };
+const documents = new WeakMap<
+  Document,
+  { root: HTMLElement; handle: DocumentationTypographyHandle }
+>();
 /** Documentation has one explicit typography scope, shared global runtime
  * preference, no competing picker and no coupling to each individual demo. */
 export function initDocumentationTypography(doc: Document = document) {
   if (doc.querySelector('[data-homepage-runtime]')) return;
-  const existing = documents.get(doc);
-  if (existing) return existing;
   const view = doc.defaultView!;
   const root = doc.querySelector<HTMLElement>('[data-site-family-scope]') ?? doc.body;
+  const existing = documents.get(doc);
+  if (existing?.root === root && root.isConnected) return existing.handle;
+  // A route can replace its owner and call init before MutationObserver runs.
+  // Revoke the old registration synchronously; its async teardown owns only
+  // its detached source/batch and cannot remove the next registration.
+  if (existing) void existing.handle.destroy();
   const participant = siteTypographyParticipant(root, {
     docsOnly: true,
     ownerId: 'documentation-typography',
@@ -58,13 +66,20 @@ export function initDocumentationTypography(doc: Document = document) {
     },
   });
   const observe = (pending: Promise<unknown>) =>
-    pending.catch((error) => {
-      if (alive)
-        console.error(
-          '[SiteTypography] Retained native documentation text after projection failure.',
-          error
-        );
-    });
+    pending
+      .then(() => {
+        // A source mutation may arrive while preparation suppresses observers.
+        // Reconcile once the transaction settles rather than waiting for another
+        // unrelated mutation to notice an unprojected source node.
+        if (alive) refresh();
+      })
+      .catch((error) => {
+        if (alive)
+          console.error(
+            '[SiteTypography] Retained native documentation text after projection failure.',
+            error
+          );
+      });
   const refresh = () => {
     if (!alive) return;
     const snapshot = controller.getSnapshot();
@@ -93,11 +108,13 @@ export function initDocumentationTypography(doc: Document = document) {
         : controller.request(selection)
     );
   };
-  const observer = new view.MutationObserver(() => {
+  const observer = new view.MutationObserver((records) => {
     if (!root.isConnected) void handle.destroy();
-    else refresh();
+    else if (records.some((record) => root.contains(record.target))) refresh();
   });
-  observer.observe(root, {
+  // Watching only root cannot observe root's own removal from its parent.
+  // Document remains stable across owner/body replacements and view swaps.
+  observer.observe(doc, {
     childList: true,
     subtree: true,
     attributes: true,
@@ -121,14 +138,11 @@ export function initDocumentationTypography(doc: Document = document) {
         doc.removeEventListener(PREFERRED_ADAPTER_EVENT, preference);
         doc.removeEventListener('astro:before-swap', onSwap);
         participant.destroy();
-        try {
-          await controller.destroy();
-        } finally {
-          documents.delete(doc);
-        }
+        if (documents.get(doc)?.handle === handle) documents.delete(doc);
+        await controller.destroy();
       })());
     },
   };
-  documents.set(doc, handle);
+  documents.set(doc, { root, handle });
   return handle;
 }
