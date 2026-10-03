@@ -91,3 +91,16 @@ describe('shared compact Header ownership and layout', () => {
     expect(css).toContain("grid-template-areas: 'brand contents search theme menu'");
   });
 });
+
+it('reserves the existing public focus ring inside only the native popup scroll slot', () => {
+  const css = readFileSync('apps/www/src/styles/site-header.css', 'utf8');
+  const slot =
+    css.match(
+      /\.site-header\[data-site-menu-ready\] \.site-header-native-slot\s*\{([^}]+)\}/
+    )?.[1] ?? '';
+  expect(slot).toContain('margin: -4px');
+  expect(slot).toContain('padding: 4px');
+  expect(slot).toContain('scroll-padding: 4px');
+  expect(slot).toContain('overflow-y: auto');
+  expect(slot).not.toMatch(/(?:box-shadow|outline|border-radius)\s*:/);
+});

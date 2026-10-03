@@ -542,6 +542,11 @@
 }
 .site-header[data-site-menu-ready] .site-header-native-slot {
   min-height: 0;
+  /* Public Select focus paint extends at most 4px (ring plus offset).
+     Reserve that space inside this scroll viewport without moving content. */
+  margin: -4px;
+  padding: 4px;
+  scroll-padding: 4px;
   overflow-y: auto;
   overscroll-behavior: contain;
 }

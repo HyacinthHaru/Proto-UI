@@ -138,6 +138,8 @@ describe('RuntimeBox canvas composition', () => {
         const surface = createRuntimePreviewSurface(child, family, {
           '--pui-background': '#123456',
         });
+        expect(surface.demo.root.kind).toBe('proto');
+        if (surface.demo.root.kind !== 'proto') throw new Error('Expected a real private canvas');
         expect(surface.demo.root.children?.[0]).toBe(child.root);
         expect(runtimePreviewRecipe(family, 'button').prototypeIds).toEqual([
           `${family}-button`,

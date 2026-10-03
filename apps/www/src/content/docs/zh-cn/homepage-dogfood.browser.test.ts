@@ -277,7 +277,18 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       await ready(page, 'wc');
       for (const width of [390, 320]) {
         await page.setViewportSize({ width, height: 844 });
+        const navigation = page.locator('[data-site-header-navigation]');
+        const originalNavigation = await navigation.elementHandle();
+        expect(
+          await originalNavigation!.evaluate((node) => (node as HTMLElement).hidden),
+          `${width}px navigation starts collapsed`
+        ).toBe(true);
         await revealHeaderPreferences(page);
+        expect(
+          await originalNavigation!.evaluate(
+            (node) => node === document.querySelector('[data-site-header-navigation]')
+          )
+        ).toBe(true);
         const geometry = await page.evaluate(() => {
           const header = document
             .querySelector<HTMLElement>('[data-homepage-runtime]')!
@@ -337,7 +348,8 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             brandSize: getComputedStyle(brand).fontSize,
           };
         });
-        expect(geometry.navHidden, `${width}px navigation is deliberately disclosed`).toBe(true);
+        expect(geometry.navHidden, `${width}px navigation is deliberately disclosed`).toBe(false);
+        await originalNavigation!.dispose();
         expect(geometry.preferences).toHaveLength(2);
         for (const preference of geometry.preferences) {
           expect(preference.height).toBeGreaterThanOrEqual(44);
@@ -738,8 +750,8 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page = await context.newPage();
     const evidenceDirectory = path.join(
-      process.env.RUNNER_TEMP ?? os.tmpdir(),
-      'homepage-evidence',
+      process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR ??
+        path.join(process.env.RUNNER_TEMP ?? os.tmpdir(), 'homepage-evidence'),
       'header-breakpoint'
     );
     await mkdir(evidenceDirectory, { recursive: true });
@@ -859,7 +871,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
                       insidePanel,
                       portal: portal!,
                       selected: selected!,
-                      focused: 'portal',
+                      focused: 'portal' as const,
                     })
                     .then(headerPreferenceLeaseIssues)
                 )
@@ -868,7 +880,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
                 insidePanel,
                 portal,
                 selected,
-                focused: 'portal',
+                focused: 'portal' as const,
               });
               records.push({ stage, facts });
               if (control === 'runtime') await save(stage, facts);
@@ -890,7 +902,10 @@ for (const family of ['shadcn', 'brutalist'] as const) {
             await expect
               .poll(() =>
                 lease
-                  .evaluate(inspectHeaderPreferenceLease, { insidePanel: true, focused: 'trigger' })
+                  .evaluate(inspectHeaderPreferenceLease, {
+                    insidePanel: true,
+                    focused: 'trigger' as const,
+                  })
                   .then(headerPreferenceLeaseIssues)
               )
               .toEqual([]);
@@ -898,7 +913,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
               stage,
               facts: await lease.evaluate(inspectHeaderPreferenceLease, {
                 insidePanel: true,
-                focused: 'trigger',
+                focused: 'trigger' as const,
               }),
             });
             expect(await header.getAttribute('data-runtime-generation')).toBe(generation);

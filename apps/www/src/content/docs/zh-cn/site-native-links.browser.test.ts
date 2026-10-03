@@ -791,16 +791,30 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
               String(footprint.name)
             ).toEqual([]);
           await assertHeaderPopupSurface(page, family, runtime, true);
-          await assertSocialPaint(page, links, family, async (state, evidence) => {
-            if (runtime === 'wc')
+          for (const direction of ['ltr', 'rtl'] as const) {
+            await page.evaluate((direction) => {
+              document.documentElement.dir = direction;
+            }, direction);
+            // Reopen from the actual command so its anchor is measured after
+            // host direction changes; do not inject panel geometry in evidence.
+            const menu = page.locator(
+              '[data-homepage-menu-label] [role="button"], [data-site-menu-button]'
+            );
+            if ((await menu.getAttribute('aria-expanded')) === 'true') await menu.click();
+            await openSettings(page);
+            await assertSocialPaint(page, links, family, async (state, evidence) => {
               await captureLinks(
                 page,
-                `homepage-${family}-${state}`,
+                `homepage-${family}-${runtime}-${direction}-${state}`,
                 family,
                 runtime,
-                `menu-open; first-social-${state}`,
+                `menu-open; actual-${direction}-social-${state}`,
                 evidence
               );
+            });
+          }
+          await page.evaluate(() => {
+            document.documentElement.dir = 'ltr';
           });
           await assertHostCurrentProjection(
             page

@@ -87,6 +87,36 @@ export const SiteLinkSurface = definePrototype<SiteLinkSurfaceProps>({
         'pointer-events-none inline-flex shrink-0 items-center justify-center border border-transparent bg-transparent text-foreground font-medium outline-none'
       )
     );
+    // The native anchor must contain the moving painted body at every endpoint.
+    // Reserve the same physical right/down flow extent as the family motion;
+    // this is not shadow hit testing and never makes the passive child an owner.
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('family').eq('brutalist'),
+          w.any(w.prop('emphasis').eq('primary'), w.prop('emphasis').eq('secondary')),
+          w.any(
+            w.prop('appearance').eq('icon'),
+            w.prop('appearance').eq('action'),
+            w.prop('appearance').eq('pagination')
+          )
+        ),
+      intent: (i) => i.feedback.style.use(tw('mr-1 mb-1')),
+    });
+    def.rule({
+      when: (w) =>
+        w.any(
+          w.prop('family').eq('shadcn'),
+          w.prop('emphasis').eq('minimal'),
+          w.prop('emphasis').eq('link'),
+          w.prop('appearance').eq('nav'),
+          w.prop('appearance').eq('text'),
+          w.prop('appearance').eq('brand'),
+          w.prop('appearance').eq('sidebar'),
+          w.prop('appearance').eq('toc')
+        ),
+      intent: (i) => i.feedback.style.use(tw('mb-px')),
+    });
     // Theme variables alone do not select a font for unframed navigation.
     // Later appearance/current rules retain their intentional weight emphasis.
     def.rule({

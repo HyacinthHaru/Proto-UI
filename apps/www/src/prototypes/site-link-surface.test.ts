@@ -65,6 +65,51 @@ describe('app-owned passive link surface', () => {
     expect(surface.hasAttribute('role')).toBe(false);
     expect(surface.hasAttribute('tabindex')).toBe(false);
   });
+  it.each(['shadcn', 'brutalist'] as const)(
+    'reserves %s body-motion space without moving pointer ownership or changing feedback',
+    async (family) => {
+      for (const appearance of [
+        'action',
+        'icon',
+        'pagination',
+        'nav',
+        'text',
+        'brand',
+        'sidebar',
+        'toc',
+      ]) {
+        for (const emphasis of ['primary', 'secondary', 'minimal', 'link']) {
+          const framed =
+            family === 'brutalist' &&
+            ['action', 'icon', 'pagination'].includes(appearance) &&
+            ['primary', 'secondary'].includes(emphasis);
+          const surface = new Constructor();
+          const props = { family, appearance, emphasis };
+          setElementProps(surface, props);
+          document.body.append(surface);
+          await settle();
+          const idle = surface.getAttribute('data-pui-style')!.split(/\s+/);
+          expect(idle).toContain(framed ? 'mb-1' : 'mb-px');
+          expect(idle.includes('mr-1')).toBe(framed);
+          expect(idle).not.toContain(framed ? 'mb-px' : 'mb-1');
+          for (const feedback of [{ hovered: true }, { pressed: true }, { focusVisible: true }]) {
+            setElementProps(surface, { ...props, ...feedback });
+            surface.update();
+            await settle();
+            const tokens = surface.getAttribute('data-pui-style')!.split(/\s+/);
+            expect(tokens).toContain(framed ? 'mb-1' : 'mb-px');
+            expect(tokens.includes('mr-1')).toBe(framed);
+            expect(tokens).toContain('pointer-events-none');
+            expect(surface.hasAttribute('tabindex')).toBe(false);
+            if ('pressed' in feedback)
+              expect(tokens).toContain(framed ? 'translate-y-1' : 'translate-y-px');
+          }
+          surface.remove();
+        }
+      }
+    }
+  );
+
   it('compiles every website token and leaves text wrapping unforced', async () => {
     const collected = await collectProtoStyleTokens(
       fileURLToPath(new NodeURL('.', import.meta.url))
