@@ -1,0 +1,9 @@
+---
+import '../styles/site-copy-command.css';
+---
+
+<script>
+  import { initSiteCopyCommands } from './site-copy-client';
+  initSiteCopyCommands(document);
+  document.addEventListener('astro:page-load', () => initSiteCopyCommands(document));
+</script>

@@ -24,6 +24,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts',

@@ -1,4 +1,5 @@
 ---
+import SiteCopyBootstrap from './SiteCopyBootstrap.astro';
 import { resolveSiteLibraryFamily, siteControlTags } from './site-library-family';
 const siteFamily = resolveSiteLibraryFamily(Astro.url.pathname);
 const { Button } = siteControlTags(siteFamily);
@@ -52,6 +53,7 @@ const activeManager =
   normalizedEntries[0]?.manager;
 ---
 
+<SiteCopyBootstrap />
 <figure
   class="install-command-card"
   data-install-command-card
@@ -106,35 +108,13 @@ const activeManager =
       }
     </div>
 
-    <Button
-      data-site-button
-      data-site-control-family={siteFamily}
-      data-variant="ghost"
-      data-size="icon"
-      type="button"
-      class="install-command-card__copy docs-code-copy"
-      title="Copy command"
-      aria-label="Copy command"
+    <div
+      class="install-command-card__copy"
       data-copy-button
+      data-site-copy
+      data-copy-label="Copy command"
     >
-      <span data-copy-icon>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>
-      </span>
-      <span class="sr-only">Copy command</span>
-    </Button>
+    </div>
   </div>
 
   {
@@ -161,35 +141,9 @@ const activeManager =
       if (card.dataset.installCommandInit === '1') return;
       card.dataset.installCommandInit = '1';
 
-      const copyButton = card.querySelector<HTMLElement>('[data-copy-button]');
-      const copyIcon = card.querySelector<HTMLElement>('[data-copy-icon]');
       const tabs = Array.from(card.querySelectorAll<HTMLElement>('[data-manager-tab]'));
       const panels = Array.from(card.querySelectorAll<HTMLElement>('[data-command-panel]'));
-      if (!copyButton || !copyIcon || tabs.length === 0 || panels.length === 0) return;
-
-      const defaultIcon = copyIcon.innerHTML;
-      const successIcon = `
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M20 6 9 17l-5-5"></path>
-        </svg>
-      `;
-
-      function getCommandNode() {
-        const activeManager = card.dataset.activeManager;
-        return card.querySelector<HTMLElement>(
-          `[data-command-panel="${activeManager}"] [data-command]`
-        );
-      }
+      if (tabs.length === 0 || panels.length === 0) return;
 
       function setActiveManager(nextManager: string) {
         card.dataset.activeManager = nextManager;
@@ -227,23 +181,6 @@ const activeManager =
           if (!nextManager) return;
           setActiveManager(nextManager);
         });
-      });
-
-      copyButton.addEventListener('click', async (event) => {
-        if (
-          copyButton.matches('wc-shadcn-button, wc-brutalist-button') &&
-          !(event instanceof CustomEvent)
-        )
-          return;
-        try {
-          await navigator.clipboard.writeText(getCommandNode()?.textContent ?? '');
-          copyIcon.innerHTML = successIcon;
-          window.setTimeout(() => {
-            copyIcon.innerHTML = defaultIcon;
-          }, 1500);
-        } catch {
-          copyIcon.innerHTML = defaultIcon;
-        }
       });
     });
   })();

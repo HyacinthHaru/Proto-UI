@@ -107,43 +107,63 @@ async function expectCopyControls(page: Page): Promise<void> {
   const panel = page.locator('[data-code-shell]:visible').first();
   const toggle = panel.locator('[data-code-toggle]');
   if (await toggle.isVisible()) await toggle.click();
-  await page.mouse.move(0, 0);
-  const ec = page.locator('.expressive-code .copy button').first();
-  const preview = panel.locator('[data-copy]');
+  const ec = page
+    .locator(
+      '.expressive-code [data-site-copy][data-copy-view="ready"] [data-demo-ref="copy-button"]'
+    )
+    .first();
+  const preview = panel.locator(
+    '[data-copy][data-copy-view="ready"] [data-demo-ref="copy-button"]'
+  );
   for (const control of [ec, preview]) {
-    expect(await control.isVisible()).toBe(true);
+    await control.waitFor({ state: 'visible' });
+    await page.mouse.move(0, 0);
+    await control.evaluate((element: HTMLElement) => element.blur());
     const facts = await control.evaluate((element) => {
       const style = getComputedStyle(element);
-      const icon = element.matches('button')
-        ? getComputedStyle(element, '::after')
-        : getComputedStyle(element.querySelector('svg')!);
+      const icon = element.querySelector('svg')!;
+      const buttonRect = element.getBoundingClientRect();
+      const iconRect = icon.getBoundingClientRect();
+      const radius = document.createElement('div');
+      radius.style.borderRadius = style.getPropertyValue('--pui-radius-lg');
+      element.parentElement!.append(radius);
+      const expectedRadius = getComputedStyle(radius).borderRadius;
+      radius.remove();
       return {
         width: style.width,
         height: style.height,
         radius: style.borderRadius,
+        expectedRadius,
         opacity: style.opacity,
-        glyph: [icon.width, icon.height],
+        glyph: [getComputedStyle(icon).width, getComputedStyle(icon).height],
+        center: [
+          Math.abs(iconRect.x + iconRect.width / 2 - buttonRect.x - buttonRect.width / 2),
+          Math.abs(iconRect.y + iconRect.height / 2 - buttonRect.y - buttonRect.height / 2),
+        ],
+        tokens: element.getAttribute('data-pui-style'),
+        shadow: style.boxShadow,
       };
     });
-    expect(facts).toEqual({
-      width: '32px',
-      height: '32px',
-      radius: '6px',
-      opacity: '1',
-      glyph: ['18px', '18px'],
-    });
+    // #630 keeps its 32px/18px geometry. Radius and focus now belong to the
+    // actual Shadcn Button's rounded-lg/ring-3 recipe, not a CSS imitation.
+    expect([facts.width, facts.height, ...facts.glyph]).toEqual(['32px', '32px', '18px', '18px']);
+    expect(facts.radius).toBe(facts.expectedRadius);
+    expect(facts.opacity).toBe('1');
+    expect(facts.tokens).toContain('rounded-lg');
+    expect(Math.max(...facts.center)).toBeLessThanOrEqual(1);
     await page.keyboard.press('Tab');
     await control.focus();
-    expect(
-      await control.evaluate((element) => {
-        const style = getComputedStyle(element);
-        return [element.matches(':focus-visible'), style.outlineStyle, style.outlineWidth];
-      })
-    ).toEqual([true, 'solid', '2px']);
+    await page.waitForFunction(
+      (element) => element?.getAttribute('data-pui-style')?.includes('ring-3'),
+      await control.elementHandle()
+    );
+    const focused = await control.evaluate((element) => ({
+      focused: document.activeElement === element,
+      shadow: getComputedStyle(element).boxShadow,
+    }));
+    expect(focused.focused).toBe(true);
+    expect(focused.shadow).not.toBe(facts.shadow);
   }
-  expect(await ec.evaluate((element) => getComputedStyle(element.parentElement!).opacity)).toBe(
-    '1'
-  );
   expect(await preview.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(
     await ec.evaluate((element) => getComputedStyle(element).backgroundColor)
   );

@@ -187,6 +187,7 @@ jobs:
             apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts
             apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts
             apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts
+            apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts
             apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts
             apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts
           )

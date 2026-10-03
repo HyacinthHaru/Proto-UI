@@ -74,9 +74,10 @@ describe('website library family scope', () => {
     }
   });
 
-  it('keeps the accepted Shadcn code-copy recipe off actual Brutalist Buttons', () => {
+  it('leaves Copy paint to the actual family Prototype recipe', () => {
     const css = readFileSync('apps/www/src/styles/code-surfaces.css', 'utf8');
-    expect(css).toContain(".docs-code-copy:not([data-site-control-family='brutalist'])");
+    expect(css).not.toContain('.docs-code-copy');
+    expect(css).not.toContain('.expressive-code .copy button');
     expect(css).toContain('[data-site-button]');
     expect(css).not.toContain('wc-shadcn-button[hidden]');
   });
