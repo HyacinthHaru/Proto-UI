@@ -8,18 +8,43 @@ function smoothUnion(a, b, radius) {
   const h = Math.max(radius - Math.abs(a - b), 0) / radius;
   return Math.min(a, b) - h * h * radius * 0.25;
 }
-export function distanceAt(x, y, { merge = 0, press = 0, morph = 0, mode = 'pair' } = {}) {
+export function distanceAt(x, y, state = {}) {
+  const { merge = 0, press = 0, morph = 0, mode = 'menu' } = state;
+  let d;
   if (mode === 'menu')
-    return roundedBoxDistance(x, y, 300, 132, 136 + 170 * morph, 62 + 124 * morph, 31 - 5 * morph);
-  const offset = 105 - merge * 58;
-  const width = 122 * (1 + press * 0.1);
-  const height = 104 * (1 - press * 0.14);
-  const radius = height / 2;
-  return smoothUnion(
-    roundedBoxDistance(x, y, 300 - offset, 132, width, height, radius),
-    roundedBoxDistance(x, y, 300 + offset, 132, width, height, radius),
-    34
-  );
+    d = roundedBoxDistance(x, y, 300, 132, 146 + 146 * morph, 60 + 126 * morph, 30 - 4 * morph);
+  else {
+    const offset = 105 - merge * 58;
+    d = smoothUnion(
+      roundedBoxDistance(x, y, 300 - offset, 132, 146, 60, 30),
+      roundedBoxDistance(x, y, 300 + offset, 132, 146, 60, 30),
+      34
+    );
+  }
+  const anchorX = state.anchorX ?? 300,
+    anchorY = state.anchorY ?? 132;
+  const local = Math.exp(-((x - anchorX) ** 2 + (y - anchorY) ** 2) / (2 * 48 ** 2));
+  return d + press * 2.5 * local;
+}
+export function advanceSpring(value, velocity, target, dt, omega = 18, damping = 0.82) {
+  if (
+    ![value, velocity, target, dt, omega, damping].every(Number.isFinite) ||
+    dt < 0 ||
+    omega <= 0 ||
+    damping <= 0 ||
+    damping >= 1
+  )
+    throw new Error('Invalid bounded spring input');
+  const a = damping * omega,
+    wd = omega * Math.sqrt(1 - damping * damping),
+    decay = Math.exp(-a * dt),
+    c = Math.cos(wd * dt),
+    s = Math.sin(wd * dt),
+    y = value - target;
+  return {
+    value: target + decay * (y * c + ((velocity + a * y) / wd) * s),
+    velocity: decay * (velocity * c - ((a * velocity + omega * omega * y) / wd) * s),
+  };
 }
 export function sampleOptics(x, y, state = {}) {
   const d = distanceAt(x, y, state);
@@ -27,33 +52,68 @@ export function sampleOptics(x, y, state = {}) {
   const alpha = Math.max(0, Math.min(1, 0.5 - d));
   const gx = distanceAt(x + 0.5, y, state) - distanceAt(x - 0.5, y, state);
   const gy = distanceAt(x, y + 0.5, state) - distanceAt(x, y - 0.5, state);
-  const length = Math.hypot(gx, gy) || 1;
-  const nx = gx / length,
-    ny = gy / length;
-  const rimWidth = 22 + 8 * (state.morph ?? 0);
+  const rimWidth = 8 + 6 * (state.morph ?? 0);
   const t = Math.max(0, Math.min(1, -d / rimWidth));
-  // Smooth height-profile derivative: zero beyond the rim, peak inside it.
-  const slope = 4 * t * (1 - t);
-  const strength = (12 + 4 * (state.morph ?? 0)) * slope;
-  const light = state.light ?? [-0.65, -0.75];
-  const facing = Math.max(0, -nx * light[0] - ny * light[1]);
-  const highlight =
-    Math.pow(facing, 5) * slope * 0.85 + Math.exp(-Math.pow((d + 1) / 1.3, 2)) * 0.16;
-  return { dx: nx * strength, dy: ny * strength, alpha, highlight, d };
+  const bump = Math.sin(Math.PI * t) ** 2;
+  // This ordinary-rim profile bounds |d(displacement)/d(distance)| by 0.22*pi < 1.
+  const strength = 0.22 * rimWidth * bump;
+  // Keep the smooth-union gradient magnitude; the height field has a real z normal.
+  const slope = 0.55 * bump,
+    norm = Math.hypot(gx * slope, gy * slope, 1);
+  const nx = (gx * slope) / norm,
+    ny = (gy * slope) / norm,
+    nz = 1 / norm;
+  const light = state.light ?? [-0.45, -0.65];
+  const lz = 0.75,
+    ll = Math.hypot(light[0], light[1], lz);
+  const hx = light[0] / ll,
+    hy = light[1] / ll,
+    hz = lz / ll + 1,
+    hl = Math.hypot(hx, hy, hz);
+  const spec = Math.pow(Math.max(0, (nx * hx + ny * hy + nz * hz) / hl), 64) * bump * 0.18;
+  const local = Math.exp(
+    -((x - (state.anchorX ?? 300)) ** 2 + (y - (state.anchorY ?? 132)) ** 2) / (2 * 48 ** 2)
+  );
+  const highlight = spec + 0.025 * bump + 0.035 * (state.energy ?? 0) * local;
+  return { dx: gx * strength, dy: gy * strength, alpha, highlight, d };
 }
-export function makeField(state = {}, width = 300, height = 132) {
+export function makeField(state = {}, width = 600, height = 264) {
   const normal = new Uint8ClampedArray(width * height * 4);
   const shine = new Uint8ClampedArray(normal.length);
-  for (let py = 0; py < height; py++)
-    for (let px = 0; px < width; px++) {
+  for (let i = 0; i < normal.length; i += 4) {
+    normal[i] = 128;
+    normal[i + 1] = 128;
+    normal[i + 3] = 255;
+  }
+  const morph = state.morph ?? 0,
+    menu = (state.mode ?? 'menu') === 'menu';
+  const halfWidth = menu ? (146 + 146 * morph) / 2 : 105 - (state.merge ?? 0) * 58 + 73;
+  const halfHeight = menu ? (60 + 126 * morph) / 2 : 30;
+  const x0 = Math.max(0, Math.floor(((300 - halfWidth - 14) * width) / 600)),
+    x1 = Math.min(width, Math.ceil(((300 + halfWidth + 14) * width) / 600));
+  const y0 = Math.max(0, Math.floor(((132 - halfHeight - 14) * height) / 264)),
+    y1 = Math.min(height, Math.ceil(((132 + halfHeight + 18) * height) / 264));
+  for (let py = y0; py < y1; py++)
+    for (let px = x0; px < x1; px++) {
       const value = sampleOptics(((px + 0.5) * 600) / width, ((py + 0.5) * 264) / height, state);
       const i = (py * width + px) * 4;
       normal[i] = 255 * (0.5 + value.dx / 40);
       normal[i + 1] = 255 * (0.5 + value.dy / 40);
-      normal[i + 2] = 128;
-      normal[i + 3] = 255 * value.alpha;
+      // Opaque vector channels avoid premultiplied-alpha contamination at the rim.
+      // Blue carries the independent shape mask, extracted by the filter.
+      normal[i + 2] = 255 * value.alpha;
+      normal[i + 3] = 255;
       shine[i] = shine[i + 1] = shine[i + 2] = 255;
-      shine[i + 3] = 255 * value.alpha * (0.025 + value.highlight);
+      const morph = state.morph ?? 0;
+      const shadowDistance = distanceAt(
+        ((px + 0.5) * 600) / width,
+        ((py + 0.5) * 264) / height - 3 - 2 * morph,
+        state
+      );
+      const shadow =
+        value.d > 0 ? Math.exp(-(Math.max(0, shadowDistance) ** 2) / (18 + 20 * morph)) * 0.055 : 0;
+      if (value.alpha === 0) shine[i] = shine[i + 1] = shine[i + 2] = 0;
+      shine[i + 3] = 255 * (value.alpha * (0.12 + 0.25 * morph + value.highlight) + shadow);
     }
   return { normal, shine, width, height };
 }

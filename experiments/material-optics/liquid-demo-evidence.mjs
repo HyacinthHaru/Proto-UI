@@ -49,9 +49,8 @@ try {
   });
   report.browser = browser.version();
   context = await browser.newContext({
-    viewport: { width: 780, height: 650 },
+    viewport: { width: 780, height: 800 },
     deviceScaleFactor: 1,
-    recordVideo: { dir: path.join(evidence, 'video'), size: { width: 780, height: 650 } },
   });
   page = await context.newPage();
   page.on('pageerror', (e) => report.errors.push(e.message));
@@ -133,16 +132,17 @@ try {
   report.lightChangedPixels = await changedPixels(rest, otherLight);
   assert(report.lightChangedPixels > 100, 'highlight must react to the light direction');
   await page.getByRole('button', { name: 'Move light', exact: true }).click();
-  const start = await page.evaluate(() => window.liquidExperiment.frame);
-  await page.getByRole('button', { name: 'Press & release', exact: true }).click();
-  await page.waitForFunction(() => window.liquidExperiment.state.press > 0.8);
+  const trigger = await page
+    .getByRole('button', { name: 'Press the refractive surface', exact: true })
+    .boundingBox();
+  await page.mouse.move(trigger.x + trigger.width * 0.35, trigger.y + trigger.height / 2);
+  await page.mouse.down();
+  await page.waitForFunction(() => window.liquidExperiment.state.press === 1);
   await capture('pressed-shape');
-  await page.waitForFunction(
-    (start) =>
-      window.liquidExperiment.state.press === 0 && window.liquidExperiment.frame > start + 8,
-    start
-  );
+  await page.mouse.up();
+  await page.waitForFunction(() => window.liquidExperiment.state.press === 0);
   await capture('released-shape');
+  await page.getByRole('button', { name: 'Fusion example', exact: true }).click();
   await page.getByRole('button', { name: 'Join / separate', exact: true }).click();
   for (const progress of [0.15, 0.35, 0.55, 0.75, 0.95]) {
     await page.waitForFunction((p) => window.liquidExperiment.state.merge >= p, progress);
@@ -153,6 +153,8 @@ try {
   await page.getByRole('button', { name: 'Join / separate', exact: true }).click();
   await page.waitForFunction(() => window.liquidExperiment.state.merge === 0);
   await capture('separated-shape');
+  await page.getByRole('button', { name: 'Button/menu example', exact: true }).click();
+  const menuIdentity = await page.locator('#lens').getAttribute('data-effect-id');
   await page.getByRole('button', { name: 'Button / menu', exact: true }).click();
   for (const progress of [0.15, 0.35, 0.55, 0.75, 0.95]) {
     await page.waitForFunction((p) => window.liquidExperiment.state.morph >= p, progress);
@@ -160,15 +162,107 @@ try {
   }
   await page.waitForFunction(() => document.body.dataset.animating === 'false');
   await capture('expanded-menu');
+  assert.equal(await page.locator('#lens').getAttribute('data-effect-id'), menuIdentity);
   await page.getByRole('button', { name: 'Button / menu', exact: true }).click();
   await page.waitForFunction(() => window.liquidExperiment.state.morph === 0);
   await capture('collapsed-menu');
   await page.getByRole('button', { name: 'Move real background', exact: true }).click();
   await capture('live-background-update');
+  // Real early reverse and cancellation, from the current surface rather than recipe rest.
+  await page.getByRole('button', { name: 'Button/menu example', exact: true }).click();
+  await page.getByRole('button', { name: 'Button / menu', exact: true }).click();
+  await page.waitForFunction(() => window.liquidExperiment.state.morph > 0.15);
+  await page.getByRole('button', { name: 'Button / menu', exact: true }).click();
+  await page.waitForFunction(() => window.liquidExperiment.state.morph === 0);
+  await capture('early-reverse-settled');
+  await page.getByRole('button', { name: 'Button / menu', exact: true }).click();
+  await page.waitForFunction(() => window.liquidExperiment.state.morph > 0.2);
+  await page.getByRole('button', { name: 'Cancel motion', exact: true }).click();
+  const frozen = await page.evaluate(() => ({
+    morph: window.liquidExperiment.state.morph,
+    frame: window.liquidExperiment.frame,
+  }));
+  await frame();
+  assert.deepEqual(
+    await page.evaluate(() => ({
+      morph: window.liquidExperiment.state.morph,
+      frame: window.liquidExperiment.frame,
+    })),
+    frozen
+  );
+  report.cancelledState = frozen;
+  await capture('cancelled-current-surface');
+  const cdp = await context.newCDPSession(page);
+  await cdp.send('Emulation.setEmulatedMedia', {
+    features: [{ name: 'prefers-reduced-motion', value: 'reduce' }],
+  });
+  await page.waitForFunction(() => document.body.dataset.reducedMotion === 'true');
+  await page.getByRole('button', { name: 'Button/menu example', exact: true }).click();
+  const beforeReduced = await page.evaluate(() => window.liquidExperiment.renderStates.length);
+  await page.mouse.move(trigger.x + trigger.width / 2, trigger.y + trigger.height / 2);
+  await page.mouse.down();
+  await capture('reduced-motion-static-feedback');
+  await page.mouse.up();
+  await frame();
+  const reduced = await page.evaluate(
+    (start) => window.liquidExperiment.renderStates.slice(start),
+    beforeReduced
+  );
+  assert(reduced.some((x) => x.state.energy === 1));
+  assert(reduced.every((x) => x.state.press === 0));
+  report.reducedMotion = reduced;
   assert.deepEqual(report.errors, []);
   report.samples = await page.evaluate(() => window.liquidExperiment.samples);
   assert(report.samples.length >= 30);
   report.status = 'experimental-scene-observed';
+  // A separate fixed-viewport context records input only. No screenshot call
+  // runs during this recording, avoiding locator-screenshot viewport artifacts.
+  await context.close();
+  context = await browser.newContext({
+    viewport: { width: 780, height: 800 },
+    deviceScaleFactor: 1,
+    recordVideo: { dir: path.join(evidence, 'clean-video'), size: { width: 780, height: 800 } },
+  });
+  page = await context.newPage();
+  page.on('pageerror', (e) => report.errors.push(e.message));
+  await page.goto(`http://127.0.0.1:${server.address().port}/`);
+  await page.waitForFunction(() => document.body.dataset.ready === 'true');
+  const hold = () => page.waitForTimeout(350); // Presentation hold, not a correctness retry.
+  await hold();
+  const point = await page
+    .getByRole('button', { name: 'Press the refractive surface', exact: true })
+    .boundingBox();
+  await page.mouse.move(point.x + point.width * 0.3, point.y + point.height / 2);
+  await page.mouse.down();
+  await page.waitForFunction(() => window.liquidExperiment.state.press === 1);
+  await hold();
+  await page.mouse.move(point.x + point.width * 0.7, point.y + point.height / 2, { steps: 8 });
+  await hold();
+  await page.mouse.up();
+  await page.waitForFunction(() => window.liquidExperiment.state.press === 0);
+  await hold();
+  for (let i = 0; i < 2; i++) {
+    await page.getByRole('button', { name: 'Button / menu', exact: true }).click();
+    await page.waitForFunction(() => document.body.dataset.animating === 'false');
+    await hold();
+  }
+  await page.getByRole('button', { name: 'Fusion example', exact: true }).click();
+  await hold();
+  for (let i = 0; i < 2; i++) {
+    await page.getByRole('button', { name: 'Join / separate', exact: true }).click();
+    await page.waitForFunction(() => document.body.dataset.animating === 'false');
+    await hold();
+  }
+  await page.getByRole('button', { name: 'Move light', exact: true }).click();
+  await hold();
+  await page.getByRole('button', { name: 'Move real background', exact: true }).click();
+  await hold();
+  report.recording = {
+    viewport: { width: 780, height: 800 },
+    screenshotCalls: 0,
+    samples: await page.evaluate(() => window.liquidExperiment.samples),
+  };
+  assert.deepEqual(report.errors, []);
 } catch (error) {
   report.status = 'failed';
   report.failure = String(error.stack ?? error);
