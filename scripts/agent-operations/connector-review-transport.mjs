@@ -75,6 +75,16 @@ export class ConnectorReviewTransport {
     }
     throw new Error('pagination budget exceeded; collection incomplete');
   }
+  async observeHead(pullRequest) {
+    const current = await this.get(`/pulls/${pullRequest}`);
+    assert(
+      current.number === pullRequest &&
+        current.base?.repo?.full_name === CONNECTOR_REPOSITORY &&
+        /^[a-f0-9]{40}$/.test(current.head?.sha),
+      'post-publication head observation is incomplete'
+    );
+    return current.head.sha;
+  }
   async collectInitialSweep() {
     const profile = await this.call('get_profile', {});
     assert(

@@ -167,7 +167,9 @@ export class LocalCloudReviewLedger {
     assert(
       state.slot.intent?.id === intentId &&
         (publishing
-          ? state.publicationEnabled && state.slot.intent.publicationIntent === true
+          ? state.publicationEnabled &&
+            state.slot.intent.publicationIntent === true &&
+            state.slot.intent.dispatchFenced === true
           : state.slot.intent.simulationOnly === true),
       'owned simulation intent required'
     );
@@ -175,6 +177,10 @@ export class LocalCloudReviewLedger {
       state.pending.find((item) => item.pullRequest === state.slot.pullRequest)?.generation ===
         state.slot.generation,
       'material generation changed before simulation attempt'
+    );
+    assert(
+      !publishing || !state.deferred.some((item) => item.pullRequest === state.slot.pullRequest),
+      'material wake-up deferred before publication attempt'
     );
     assert(
       !this.#simulationAttempts.has(intentId),

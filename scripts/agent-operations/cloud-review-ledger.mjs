@@ -46,6 +46,7 @@ export function emptyCloudReviewLedger({ publicationEnabled = false } = {}) {
     initialSweep: null,
     generation: 0,
     deliveries: [],
+    deferred: [],
     material: [],
     pending: [],
     owners: [],
@@ -130,6 +131,16 @@ function binding(command, state) {
   return { input, packet, observation };
 }
 
+function admitMaterial(state, command) {
+  const material = state.material.find((item) => item.pullRequest === command.pullRequest);
+  if (material?.digest === command.materialDigest) return;
+  state.generation += 1;
+  state.material = state.material.filter((item) => item.pullRequest !== command.pullRequest);
+  state.material.push({ pullRequest: command.pullRequest, digest: command.materialDigest });
+  state.pending = state.pending.filter((item) => item.pullRequest !== command.pullRequest);
+  state.pending.push({ pullRequest: command.pullRequest, generation: state.generation });
+}
+
 function complete(state, analysis = null) {
   if (analysis) {
     if (analysis.observation.executionModeSource === 'delegated-owner-initial-sweep')
@@ -144,6 +155,9 @@ function complete(state, analysis = null) {
       item.pullRequest !== state.slot.pullRequest || item.generation !== state.slot.generation
   );
   state.slot = null;
+  const deferred = state.deferred;
+  state.deferred = [];
+  for (const command of deferred) admitMaterial(state, command);
 }
 
 // Replay only a verified journal prefix through this reducer; never trust a
@@ -206,13 +220,15 @@ export function reduceCloudReviewLedger(previous, command) {
       );
     }
     state.deliveries.push(command);
-    const material = state.material.find((item) => item.pullRequest === command.pullRequest);
-    if (material?.digest === command.materialDigest) return state;
-    state.generation += 1;
-    state.material = state.material.filter((item) => item.pullRequest !== command.pullRequest);
-    state.material.push({ pullRequest: command.pullRequest, digest: command.materialDigest });
-    state.pending = state.pending.filter((item) => item.pullRequest !== command.pullRequest);
-    state.pending.push({ pullRequest: command.pullRequest, generation: state.generation });
+    if (state.slot?.intent?.dispatchFenced && state.slot.pullRequest === command.pullRequest) {
+      // Persist the wake-up, but serialize its generation after this dispatch.
+      // No event is dropped or allowed to invalidate a reserved generation.
+      const latest =
+        state.deferred.findLast((item) => item.pullRequest === command.pullRequest)
+          ?.materialDigest ??
+        state.material.find((item) => item.pullRequest === command.pullRequest)?.digest;
+      if (latest !== command.materialDigest) state.deferred.push(command);
+    } else admitMaterial(state, command);
   } else if (command.type === 'claim') {
     keys(command, ['type', 'owner', 'pullRequest']);
     pr(command.pullRequest);
@@ -248,7 +264,9 @@ export function reduceCloudReviewLedger(previous, command) {
       const publishing = command.type === 'finalizePublication';
       assert(
         publishing
-          ? state.publicationEnabled && intent?.publicationIntent === true
+          ? state.publicationEnabled &&
+              intent?.publicationIntent === true &&
+              intent.dispatchFenced === true
           : intent?.simulationOnly === true,
         publishing
           ? 'production intent and enabled ledger required'
@@ -325,7 +343,7 @@ export function reduceCloudReviewLedger(previous, command) {
           bodyDigest: hash(body),
           analysis,
           ...(command.type === 'stageSimulationIntent' ? { simulationOnly: true } : {}),
-          ...(publishing ? { publicationIntent: true } : {}),
+          ...(publishing ? { publicationIntent: true, dispatchFenced: true } : {}),
         };
       }
     }

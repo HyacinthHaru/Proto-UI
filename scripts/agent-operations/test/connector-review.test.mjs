@@ -1078,3 +1078,170 @@ test('owner route retains canonical spec, discussion and finding-backed change-r
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
     });
 });
+
+test('a generation winner or uncertain acknowledgement before the dispatch fence prevents POST', async (t) => {
+  for (const mode of ['generation-winner', 'lost-fence-ack'])
+    await t.test(mode, async (t) => {
+      const { f, s, store } = await session(t);
+      const packet = await parentPacket(s);
+      const apply = store.apply.bind(store);
+      store.apply = (revision, command) => {
+        if (command.type === 'stagePublicationIntent') {
+          if (mode === 'generation-winner')
+            apply(revision, {
+              type: 'enqueue',
+              deliveryId: 'fence-race',
+              pullRequest: 487,
+              eventKind: 'synchronize',
+              materialDigest: 'd'.repeat(64),
+            });
+          else {
+            apply(revision, command);
+            return { status: 'unknown' };
+          }
+        }
+        return apply(revision, command);
+      };
+      await assert.rejects(s.publishParentPacket(packet, assessment), /intent acknowledgement/);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+      assert.equal(
+        store.read().state.slot.intent?.status ?? null,
+        mode === 'lost-fence-ack' ? 'unknown' : null
+      );
+    });
+});
+
+test('material arriving during final collection is persisted but prevents dispatch', async (t) => {
+  const { f, s, store, transport } = await session(t);
+  const packet = await parentPacket(s);
+  const collect = transport.collect.bind(transport);
+  transport.collect = async (...args) => {
+    const live = await collect(...args);
+    const state = store.read();
+    if (state.state.slot?.intent?.dispatchFenced)
+      store.apply(state.revision, {
+        type: 'enqueue',
+        deliveryId: 'during-final-collection',
+        pullRequest: 487,
+        eventKind: 'human-comment',
+        materialDigest: 'd'.repeat(64),
+      });
+    return live;
+  };
+  const result = await s.publishParentPacket(packet, assessment);
+  assert.equal(result.status, 'unknown');
+  assert.match(result.reason, /deferred before publication/);
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+  assert.equal(store.read().state.deferred.length, 1);
+});
+
+test('late wake-up is serialized after dispatch and survives a fresh run without advancing the fenced generation', async (t) => {
+  for (const kind of ['synchronize', 'human-comment'])
+    await t.test(kind, async (t) => {
+      const { f, s, store, transport, dir, genesis } = await session(t);
+      const packet = await parentPacket(s);
+      const submit = transport.submit.bind(transport);
+      transport.submit = async (...args) => {
+        const before = store.read();
+        assert.equal(before.state.slot.intent.dispatchFenced, true);
+        store.apply(before.revision, {
+          type: 'enqueue',
+          deliveryId: `late-${kind}`,
+          pullRequest: 487,
+          eventKind: kind,
+          materialDigest: 'd'.repeat(64),
+        });
+        const during = new LocalCloudReviewLedger(dir, genesis).read().state;
+        assert.equal(during.pending[0].generation, before.state.slot.generation);
+        assert.equal(during.deferred.length, 1);
+        if (kind === 'synchronize') f.pr.head.sha = sha('c');
+        return submit(...args);
+      };
+      const result = await s.publishParentPacket(packet, assessment);
+      assert.equal(result.status, 'published');
+      assert.equal(result.reviewedHeadSha, sha('b'));
+      assert.equal(result.observedHeadSha, kind === 'synchronize' ? sha('c') : sha('b'));
+      assert.equal(result.followUpRequired, true);
+      assert.equal(result.followUpQueued, true);
+      const after = new LocalCloudReviewLedger(dir, genesis).read().state;
+      assert.equal(after.slot, null);
+      assert.equal(after.deferred.length, 0);
+      assert(after.pending[0].generation > 1);
+      assert.equal(after.publicationReceipts[0].headSha, sha('b'));
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
+    });
+});
+
+test('external head change without an admitted event queues a read-observed follow-up, never new-head approval', async (t) => {
+  const { f, s, store, transport } = await session(t);
+  const packet = await parentPacket(s);
+  const submit = transport.submit.bind(transport);
+  transport.submit = async (...args) => {
+    f.pr.head.sha = sha('c');
+    return submit(...args);
+  };
+  const result = await s.publishParentPacket(packet, assessment);
+  assert.equal(result.reviewedHeadSha, sha('b'));
+  assert.equal(result.observedHeadSha, sha('c'));
+  assert.equal(result.followUpQueued, true);
+  assert.equal(store.read().state.pending.length, 1);
+  assert.match(store.read().state.deliveries.at(-1).deliveryId, /^post-review:/);
+  assert.equal(f.calls.find((c) => c.operation === 'add_review_to_pr').args.commit_id, sha('b'));
+});
+
+test('fenced unknown outcome retains deferred work and cannot be adopted after restart', async (t) => {
+  const { f, s, store, transport, dir, genesis } = await session(t);
+  const packet = await parentPacket(s);
+  const submit = transport.submit.bind(transport);
+  transport.submit = async (...args) => {
+    store.apply(store.read().revision, {
+      type: 'enqueue',
+      deliveryId: 'unknown-late-event',
+      pullRequest: 487,
+      eventKind: 'synchronize',
+      materialDigest: 'd'.repeat(64),
+    });
+    f.writeBehavior = 'lost';
+    return submit(...args);
+  };
+  assert.equal((await s.publishParentPacket(packet, assessment)).status, 'unknown');
+  const fresh = new LocalCloudReviewLedger(dir, genesis);
+  const state = fresh.read().state;
+  assert.equal(state.slot.intent.dispatchFenced, true);
+  assert.equal(state.deferred.length, 1);
+  assert.throws(
+    () => fresh.consumePublicationAttempt(state.slot.intent.id),
+    /fresh, stopped or restarted/
+  );
+  assert.throws(() => fresh.apply(fresh.read().revision, { type: 'abandon' }), /does not own/);
+});
+
+test('post-publication observation or paused event scope cannot cause dismissal, retry or scope borrowing', async (t) => {
+  for (const mode of ['unavailable', 'event-paused'])
+    await t.test(mode, async (t) => {
+      const { f, transport, store } = await session(t);
+      const policy = structuredClone(rootPolicy);
+      if (mode === 'event-paused')
+        policy.reviewSubmissionAuthorizations.find((x) => x.id === CONNECTOR_AUTHORIZATION).status =
+          'inactive';
+      const s = new ConnectorReviewSession({ policy, transport, ledger: store });
+      await s.captureInitialSweep();
+      const request = await s.beginInitialSweep(487);
+      const { packet } = analysis(request.input);
+      packet.agentEvidence.source = 'AI-executed review by ChatGPT';
+      packet.agentEvidence.disposition = 'complete';
+      packet.agentEvidence.debt = [];
+      transport.observeHead = async () => {
+        if (mode === 'unavailable') throw Error('observation unavailable');
+        return sha('c');
+      };
+      const result = await s.publishParentPacket(packet, assessment);
+      assert.equal(result.status, 'published');
+      assert.equal(result.followUpRequired, true);
+      assert.equal(result.followUpQueued, false);
+      assert.match(result.followUpError, /unavailable|active event scope/);
+      assert.equal(result.reviewedHeadSha, sha('b'));
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
+      assert.equal(store.read().state.pending.length, 0);
+    });
+});

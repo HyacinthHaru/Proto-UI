@@ -433,3 +433,40 @@ test('recording a blocked packet cannot activate or bypass the canonical publica
     /unexpected command fields/
   );
 });
+
+test('publication intent atomically reserves its generation and defers only changed target material', () => {
+  let state = reduceCloudReviewLedger(
+    emptyCloudReviewLedger({ publicationEnabled: true }),
+    event()
+  );
+  state = step(state, 'claim', { pullRequest: 487 });
+  assert.throws(
+    () =>
+      reduceCloudReviewLedger(state, {
+        type: 'stagePublicationIntent',
+        owner: '2'.repeat(32),
+        ...analysis(),
+      }),
+    /current process owner/
+  );
+  assert.throws(
+    () =>
+      step(
+        reduceCloudReviewLedger(state, event('late', 'b')),
+        'stagePublicationIntent',
+        analysis()
+      ),
+    /generation changed/
+  );
+  state = step(state, 'stagePublicationIntent', analysis());
+  assert.equal(state.slot.intent.dispatchFenced, true);
+  state = reduceCloudReviewLedger(state, event('same-material'));
+  assert.equal(state.deferred.length, 0);
+  state = reduceCloudReviewLedger(state, event('later-material', 'b'));
+  assert.equal(state.generation, 1);
+  assert.equal(state.deferred.length, 1);
+  assert.deepEqual(reduceCloudReviewLedger(state, event('later-material', 'b')), state);
+  state = reduceCloudReviewLedger(state, event('other-pr', 'c', 488));
+  assert.equal(state.pending.find((x) => x.pullRequest === 487).generation, 1);
+  assert.equal(state.pending.find((x) => x.pullRequest === 488).generation, 2);
+});

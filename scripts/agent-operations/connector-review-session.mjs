@@ -300,7 +300,6 @@ export class ConnectorReviewSession {
       'intent acknowledgement unavailable; never submit or retry'
     );
     const intent = (await this.#ledger.read()).state.slot.intent;
-    await this.#ledger.consumePublicationAttempt(intent.id);
     try {
       const final = await this.#transport.collect(live.input.pullRequest);
       verifyLiveReviewInput(intent.analysis.packet, final.input);
@@ -312,8 +311,43 @@ export class ConnectorReviewSession {
         'material generation changed before review request'
       );
       this.#authorize(intent.analysis.packet, final, assessment);
+      await this.#ledger.consumePublicationAttempt(intent.id);
+      this.#refreshPolicy();
       const receipt = await this.#transport.submit(intent.pullRequest, intent);
+      // The API acknowledges a review of one commit, never approval of a later head.
+      // Observe immediately, without retrying/dismissing the known published review.
+      let observedHeadSha = null;
+      let followUpError = null;
+      try {
+        observedHeadSha = await this.#transport.observeHead(intent.pullRequest);
+        if (observedHeadSha !== intent.headSha) {
+          this.#refreshPolicy();
+          assert(
+            this.#policy.reviewSubmissionAuthorizations.find(
+              (x) => x.id === CONNECTOR_AUTHORIZATION
+            )?.status === 'active',
+            'new-head follow-up needs the separately active event scope'
+          );
+          const followUp = await this.#ledger.read();
+          const queued = await this.#ledger.apply(followUp.revision, {
+            type: 'enqueue',
+            deliveryId: `post-review:${receipt.id}:${observedHeadSha}`,
+            pullRequest: intent.pullRequest,
+            eventKind: 'synchronize',
+            materialDigest: hash({ observedHeadSha, publishedReviewId: receipt.id }),
+          });
+          assert(queued.status === 'applied', 'new-head follow-up acknowledgement unavailable');
+        }
+      } catch (error) {
+        followUpError = error.message;
+      }
       const snapshot = await this.#ledger.read();
+      const followUpQueued =
+        snapshot.state.deferred.some((x) => x.pullRequest === intent.pullRequest) ||
+        snapshot.state.pending.some(
+          (x) =>
+            x.pullRequest === intent.pullRequest && x.generation !== snapshot.state.slot.generation
+        );
       const finalized = await this.#ledger.apply(snapshot.revision, {
         type: 'finalizePublication',
         response: receipt,
@@ -322,6 +356,12 @@ export class ConnectorReviewSession {
       assert(finalized.status === 'applied', 'publication receipt persistence uncertain');
       return {
         status: 'published',
+        reviewedHeadSha: intent.headSha,
+        observedHeadSha,
+        followUpRequired:
+          followUpQueued || observedHeadSha !== intent.headSha || followUpError !== null,
+        followUpQueued,
+        followUpError,
         receipt,
         checkpoint: finalized.checkpoint ?? finalized.revision,
         retryAllowed: false,
