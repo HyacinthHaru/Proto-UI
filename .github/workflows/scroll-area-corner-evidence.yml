@@ -59,6 +59,11 @@ jobs:
         env:
           PROTO_UI_SCROLL_CORNER_EVIDENCE_DIR: ${{ github.workspace }}/scroll-corner-evidence
         run: corepack pnpm@10.32.1 exec vitest run apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts --maxWorkers=1 --minWorkers=1
+      - name: Preserve both existing Scroll Area focus checks
+        if: matrix.subject == 'candidate'
+        run: >-
+          corepack pnpm@10.32.1 exec vitest run apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts --testNamePattern 'rings the focused Scroll Area|renders exact oriented chrome' --maxWorkers=1 --minWorkers=1
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
