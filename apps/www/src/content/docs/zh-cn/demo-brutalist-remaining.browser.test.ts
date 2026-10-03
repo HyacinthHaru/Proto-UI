@@ -163,7 +163,9 @@ async function separatorGeometry(locator: Locator): Promise<SeparatorGeometry> {
 }
 
 function roots(previewer: Locator): Locator {
-  return previewer.locator('[data-projection-content] [data-pui-root]');
+  return previewer.locator(
+    '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+  );
 }
 
 async function expectVisibility(locator: Locator, visible: boolean, label: string): Promise<void> {
@@ -764,7 +766,7 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
         await opened.page.waitForFunction(
           () => {
             const controls = document.querySelectorAll(
-              '[data-previewer-id] [data-projection-content] [data-pui-root]'
+              '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
             );
             return (
               controls.length === 4 &&
@@ -1029,7 +1031,9 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           '[data-pui-root]',
           3
         );
-        const nodes = opened.previewer.locator('[data-projection-content] [data-pui-root]');
+        const nodes = opened.previewer.locator(
+          '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+        );
         const trigger = nodes.nth(1);
         await opened.page.mouse.move(5, 5);
         const triggerElement = await trigger.elementHandle();
@@ -1137,7 +1141,9 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
         await expectVisibility(panelText, false, `${runtime}/hover-focus-close`);
         await applyColorScheme(opened.page, 'dark');
         const darkTrigger = opened.previewer
-          .locator('[data-projection-content] [data-pui-root]')
+          .locator(
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+          )
           .nth(1);
         const darkTriggerElement = await darkTrigger.elementHandle();
         if (!darkTriggerElement) throw new Error('Dark Hover Card trigger was not materialized.');

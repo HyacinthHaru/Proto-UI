@@ -551,22 +551,93 @@ it('homepage keeps one native dialog through open-runtime transitions and repeat
 }, 120_000);
 
 it('keeps a documentation link available without JavaScript', async () => {
+  const startedAt = Date.now();
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  stage(page, 'no-js', 'navigate-source');
+  const steps: Array<{ stage: string; elapsedMs: number; url: string }> = [];
+  const responses: Array<{ url: string; status: number; elapsedMs: number }> = [];
+  let nativeHref: string | null = null;
+  let headingText: string | null = null;
+  let outcome = 'pending';
+  const mark = (step: string) => {
+    stage(page, 'no-js', step);
+    steps.push({ stage: step, elapsedMs: Date.now() - startedAt, url: page.url() });
+  };
+  page.on('response', (response) => {
+    if (response.request().isNavigationRequest() && response.request().frame() === page.mainFrame())
+      responses.push({
+        url: response.url(),
+        status: response.status(),
+        elapsedMs: Date.now() - startedAt,
+      });
+  });
   try {
-    expect((await page.goto(`${baseUrl}${searchRoute('shadcn')}`))?.ok()).toBe(true);
-    stage(page, 'no-js', 'find-link');
+    mark('navigate-source');
+    const sourceResponse = await page.goto(`${baseUrl}${searchRoute('shadcn')}`, {
+      timeout: 10_000,
+    });
+    expect(sourceResponse?.ok()).toBe(true);
+    mark('find-native-link');
     const link = page.locator('site-search noscript a');
     expect(await link.isVisible()).toBe(true);
-    stage(page, 'no-js', 'click-link');
-    await link.click();
-    stage(page, 'no-js', 'destination-url');
-    await page.waitForURL('**/zh-cn/ui-libraries/');
+    nativeHref = await link.getAttribute('href');
+    expect(nativeHref).not.toBeNull();
+    expect(new URL(nativeHref!, page.url()).origin).toBe(new URL(baseUrl).origin);
+    expect(new URL(nativeHref!, page.url()).pathname).toBe('/zh-cn/ui-libraries/');
+    mark('click-native-link');
+    const [destinationResponse] = await Promise.all([
+      page.waitForResponse(
+        (response) =>
+          response.request().isNavigationRequest() &&
+          response.request().frame() === page.mainFrame() &&
+          new URL(response.url()).pathname === '/zh-cn/ui-libraries/',
+        { timeout: 10_000 }
+      ),
+      page.waitForURL('**/zh-cn/ui-libraries/', { timeout: 10_000 }),
+      link.click({ timeout: 10_000 }),
+    ]);
+    expect(destinationResponse.ok()).toBe(true);
+    mark('destination-heading');
+    const heading = page.getByRole('heading', { level: 1, name: 'UI Libraries', exact: true });
+    expect(await heading.isVisible()).toBe(true);
+    headingText = await heading.innerText();
+    expect(headingText).toBe('UI Libraries');
+    expect(new URL(page.url()).pathname).toBe('/zh-cn/ui-libraries/');
+    outcome = 'passed';
+    mark('complete');
+    await capture(page, 'no-js', 'destination');
+  } catch (error) {
+    outcome = 'failed';
+    mark('failure');
+    await captureFailure(page);
+    throw error;
   } finally {
+    await mkdir(evidenceDirectory, { recursive: true });
+    await writeFile(
+      path.join(evidenceDirectory, 'no-js-navigation.json'),
+      JSON.stringify(
+        {
+          source,
+          outcome,
+          javaScriptEnabled: false,
+          totalBudgetMs: 20_000,
+          navigationBudgetMs: 10_000,
+          elapsedMs: Date.now() - startedAt,
+          steps,
+          responses,
+          nativeHref,
+          headingText,
+          finalUrl: page.url(),
+        },
+        null,
+        2
+      )
+    );
     await context.close();
   }
-});
+  // The implicit Vitest 5s total failed after the correct destination arrived.
+  // Keep finite per-navigation and total budgets, without retry or sleep.
+}, 20_000);
 
 for (const width of [320, 390, 1280, 1440, 2048]) {
   for (const family of ['shadcn', 'brutalist'] as const) {

@@ -15,7 +15,8 @@ import {
 } from './browser-harness';
 
 const BUTTON_ROUTE = '/en/ui-libraries/brutalist/components/button/';
-const BUTTON_SELECTOR = '[data-projection-content] [data-pui-root]';
+const BUTTON_SELECTOR =
+  '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]';
 const BUTTON_COUNT = 10;
 const BUTTON_RUNTIMES = ['wc', 'react', 'vue'] as const satisfies readonly RuntimeId[];
 const VIEWPORT = { width: 1440, height: 900 } as const;

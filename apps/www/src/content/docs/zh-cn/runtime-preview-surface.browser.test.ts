@@ -284,8 +284,36 @@ describe('RuntimeBox single actual Prototype surface', () => {
       const demoPopupId = await demoTrigger.getAttribute('aria-controls');
       const demoPopup = page.locator(`[id=${JSON.stringify(demoPopupId)}]`);
       await demoPopup.waitFor({ state: 'visible' });
+      const selectedTrigger = await demoTrigger.elementHandle();
+      if (!selectedTrigger) throw new Error('The original demonstrated Select trigger is missing.');
+      const generation = await selectedTrigger.evaluate((element) =>
+        element.closest('[data-projection-generation]')?.getAttribute('data-projection-generation')
+      );
+      expect(generation).toBeTruthy();
       await demoPopup.getByRole('option', { name: 'Ink', exact: true }).click();
-      expect(await demoTrigger.innerText()).toContain('Ink');
+      try {
+        await expect
+          .poll(
+            () =>
+              selectedTrigger.evaluate((element) => ({
+                connected: element.isConnected,
+                text: element.textContent?.trim(),
+                expanded: element.getAttribute('aria-expanded'),
+              })),
+            { timeout: 2000, message: 'The same React Select trigger must commit Ink and close' }
+          )
+          .toEqual({ connected: true, text: 'Ink', expanded: 'false' });
+        expect(await demoPopup.isVisible()).toBe(false);
+        expect(
+          await selectedTrigger.evaluate((element) =>
+            element
+              .closest('[data-projection-generation]')
+              ?.getAttribute('data-projection-generation')
+          )
+        ).toBe(generation);
+      } finally {
+        await selectedTrigger.dispose();
+      }
       expect(await root.getAttribute('data-projection-family')).toBe('brutalist');
       expect(
         runtimePreviewEvidenceIssues(await measure(root, 'brutalist', [20, 16, 20, 16]))

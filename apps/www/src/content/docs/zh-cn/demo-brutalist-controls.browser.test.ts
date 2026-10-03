@@ -234,7 +234,9 @@ type TextareaFocusSnapshot = {
 
 async function wcTextareaFocusSnapshot(previewer: Locator): Promise<TextareaFocusSnapshot> {
   return previewer.evaluate((root) => {
-    const host = root.querySelector<HTMLElement>('[data-projection-content] [data-pui-root]');
+    const host = root.querySelector<HTMLElement>(
+      '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+    );
     const textarea = root.querySelector<HTMLTextAreaElement>('textarea');
     if (!host || !textarea) throw new Error('Web Component Textarea projection is missing.');
     const exposes = (
@@ -727,7 +729,11 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
     try {
       for (const runtime of RUNTIMES) {
         await selectRuntime(page, previewer, runtime, '[role="tab"]', 2);
-        const root = previewer.locator('[data-projection-content] > [data-pui-root]').first();
+        const root = previewer
+          .locator(
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+          )
+          .first();
         const before = await root.boundingBox();
         expect(before, runtime).not.toBeNull();
 
@@ -760,7 +766,11 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
     try {
       for (const runtime of RUNTIMES) {
         await selectRuntime(page, previewer, runtime, '[data-pui-root]', 5);
-        const trigger = previewer.locator('[data-projection-content] [data-pui-root]').nth(1);
+        const trigger = previewer
+          .locator(
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+          )
+          .nth(1);
         await trigger.click();
         await expect.poll(() => page.getByRole('menu').count(), { message: runtime }).toBe(1);
         await page.waitForTimeout(200);
@@ -906,7 +916,9 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         await applyHostTheme(page, 'light');
         // Scoped to the rendered host: the previewer chrome is Proto UI too, so
         // a previewer-wide count is not evidence about this demo.
-        const roots = previewer.locator('[data-projection-content] [data-pui-root]');
+        const roots = previewer.locator(
+          '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+        );
         expect(await roots.count(), runtime).toBe(7);
         expect(await roots.nth(0).getAttribute('data-pui-root'), runtime).toBe('');
         const firstTrigger = roots.filter({ hasText: 'Hover or focus for details' }).last();
@@ -1048,7 +1060,11 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
     try {
       for (const runtime of RUNTIMES) {
         await selectRuntime(page, previewer, runtime, '[data-demo-ref="scrollbar"]', 1);
-        const root = previewer.locator('[data-projection-content] [data-pui-root]').first();
+        const root = previewer
+          .locator(
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+          )
+          .first();
         const scrollbar = previewer.locator('[data-demo-ref="scrollbar"]').first();
         const rootBox = await root.boundingBox();
         const scrollbarBox = await scrollbar.boundingBox();
@@ -1066,7 +1082,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
             '[data-projection-control="runtime"] [data-projection-prototype$="select-value"]',
             '[data-projection-content]',
             '[data-projection-content] > div',
-            '[data-projection-content] [data-pui-root]',
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]',
           ];
           return {
             viewportWidth: innerWidth,
@@ -1196,7 +1212,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         await page.waitForFunction(
           () => {
             const root = document.querySelector<HTMLElement>(
-              '[data-previewer-id] [data-projection-content] [data-pui-root]'
+              '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
             );
             return (
               root?.hasAttribute('data-focused') === true && root.hasAttribute('data-focus-visible')
@@ -1225,7 +1241,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
           () =>
             !document
               .querySelector<HTMLElement>(
-                '[data-previewer-id] [data-projection-content] [data-pui-root]'
+                '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
               )
               ?.hasAttribute('data-focused')
         );
@@ -1238,7 +1254,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
           () =>
             document
               .querySelector<HTMLElement>(
-                '[data-previewer-id] [data-projection-content] [data-pui-root]'
+                '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
               )
               ?.hasAttribute('data-focused') === true
         );

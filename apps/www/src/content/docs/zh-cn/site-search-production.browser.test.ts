@@ -53,6 +53,21 @@ afterAll(async () => {
 
 async function capture(page: Page, family: string, state: string, facts: unknown) {
   await mkdir(evidenceDirectory, { recursive: true });
+  const observed = await page.evaluate(() => {
+    const search = document.querySelector('site-search');
+    const input = search?.querySelector<HTMLInputElement>('.pagefind-ui__search-input');
+    return {
+      dialogOpen: search?.querySelector('dialog')?.open,
+      activeElement: document.activeElement?.outerHTML.slice(0, 2000),
+      query: input?.value,
+      inputFocused: input === document.activeElement,
+      inputConnected: input?.isConnected,
+      inputBox: input?.getBoundingClientRect().toJSON(),
+      clearType: search?.querySelector<HTMLButtonElement>('.pagefind-ui__search-clear')?.type,
+      searchState: search instanceof HTMLElement ? { ...search.dataset } : null,
+      timeline: (window as any).__searchProductionTimeline ?? [],
+    };
+  });
   const screenshot = `${family}-${state}.png`;
   await page.screenshot({ path: path.join(evidenceDirectory, screenshot) });
   await writeFile(
@@ -68,6 +83,7 @@ async function capture(page: Page, family: string, state: string, facts: unknown
         family,
         state,
         facts,
+        observed,
         renderer:
           'Built Astro preview with generated Pagefind assets; only initial HEAD failure and retry HEAD delay injected',
         boundary:
@@ -98,7 +114,52 @@ describe.sequential('Required production Search recovery with generated Pagefind
             status: response.status(),
           });
       });
-      await page.addInitScript(() => localStorage.setItem('starlight-theme', 'light'));
+      await page.addInitScript(() => {
+        localStorage.setItem('starlight-theme', 'light');
+        const timeline: unknown[] = [];
+        (window as any).__searchProductionTimeline = timeline;
+        const describe = (target: EventTarget | null) =>
+          target instanceof Element
+            ? {
+                tag: target.localName,
+                command: (target as HTMLElement).dataset.searchCommand,
+                className: target.getAttribute('class'),
+              }
+            : null;
+        const record = (event: Event, phase: string) => {
+          const search = document.querySelector('site-search');
+          if (!(event.target instanceof Node) || !search?.contains(event.target)) return;
+          timeline.push({
+            at: performance.now(),
+            type: event.type,
+            phase,
+            target: describe(event.target),
+            active: describe(document.activeElement),
+            key: event instanceof KeyboardEvent ? event.key : undefined,
+            trusted: event.isTrusted,
+            defaultPrevented: event.defaultPrevented,
+            dialogOpen: search.querySelector('dialog')?.open,
+            query: search.querySelector<HTMLInputElement>('.pagefind-ui__search-input')?.value,
+          });
+          if (timeline.length > 160) timeline.shift();
+        };
+        for (const type of [
+          'keydown',
+          'keypress',
+          'keyup',
+          'click',
+          'submit',
+          'beforeinput',
+          'input',
+          'focusin',
+          'focusout',
+          'close',
+          'cancel',
+        ]) {
+          window.addEventListener(type, (event) => record(event, 'capture'), true);
+          window.addEventListener(type, (event) => record(event, 'bubble'));
+        }
+      });
       let blockIndex = true;
       let failedProbes = 0;
       let successfulProbes = 0;
@@ -120,6 +181,7 @@ describe.sequential('Required production Search recovery with generated Pagefind
           await route.continue(); // Real restored index HEAD.
         }
       });
+      let stage = 'navigate';
       try {
         const response = await page.goto(`${baseUrl}${routeFor(family)}`, {
           waitUntil: 'networkidle',
@@ -139,6 +201,7 @@ describe.sequential('Required production Search recovery with generated Pagefind
           expect(await button.evaluate((element) => element.localName)).toBe(`wc-${family}-button`);
           expect(await button.getAttribute('role')).toBe('button');
         }
+        stage = 'head503';
         await trigger.locator('svg').click();
         await retry.waitFor({ state: 'visible' });
         await expect
@@ -154,6 +217,7 @@ describe.sequential('Required production Search recovery with generated Pagefind
           pagefindResponses,
         });
 
+        stage = 'retry';
         blockIndex = false;
         await retry.click();
         await expect.poll(() => retry.getAttribute('aria-disabled')).toBe('true');
@@ -192,6 +256,7 @@ describe.sequential('Required production Search recovery with generated Pagefind
 
         // Actual query/results are required: focusing an empty service shell
         // alone does not establish recovery of the generated search index.
+        stage = 'query';
         await input.fill('Button');
         const resultLinks = page.locator('site-search .pagefind-ui__result-link');
         const sourceUrl = page.url();
@@ -258,6 +323,7 @@ describe.sequential('Required production Search recovery with generated Pagefind
           })
         );
         for (const runtime of ['react', 'vue2', 'wc']) {
+          stage = `runtime-${runtime}`;
           await page.evaluate(
             (runtime) =>
               document.dispatchEvent(
@@ -299,15 +365,19 @@ describe.sequential('Required production Search recovery with generated Pagefind
 
         // Close and reopen use real Button/public-focus paths after service
         // recovery; the existing query and real result links remain usable.
+        stage = 'close-focus';
         await close.click();
         await expect
           .poll(() => trigger.evaluate((element) => element === document.activeElement))
           .toBe(true);
+        stage = 'reopen-focus';
         await trigger.press('Enter');
         await expect
           .poll(() => input.evaluate((element) => element === document.activeElement))
           .toBe(true);
         expect(await input.inputValue()).toBe('Button');
+        await capture(page, family, 'reopen', { successfulProbes, pagefindResponses });
+        stage = 'result-navigation';
         // Follow the exact authored result href rather than reconstructing it.
         const result = page
           .locator(
@@ -348,6 +418,17 @@ describe.sequential('Required production Search recovery with generated Pagefind
           pagefindResponses,
         });
         expect(errors).toEqual([]);
+      } catch (error) {
+        await capture(page, family, `failure-${stage}`, {
+          error: String(error),
+          errors,
+          failedProbes,
+          successfulProbes,
+          pagefindResponses,
+        }).catch((captureError) =>
+          console.warn('[Search production] Failure capture unavailable', captureError)
+        );
+        throw error;
       } finally {
         releaseRetry();
         await context.close();

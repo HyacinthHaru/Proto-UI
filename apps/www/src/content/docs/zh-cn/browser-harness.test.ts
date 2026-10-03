@@ -1,4 +1,5 @@
 import type { Locator, Page } from 'playwright-core';
+import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { runtimeSelectTrigger, selectRuntime, startServer } from './browser-harness';
 
@@ -36,6 +37,51 @@ describe('runtime evidence counts the original demonstrated slot', () => {
         __vue__: {},
       });
   }
+  it('keeps the remaining-component paint measurements on the same original slot', () => {
+    const source = readFileSync(
+      'apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts',
+      'utf8'
+    );
+    const selector = source.match(
+      /function roots\(previewer: Locator\): Locator \{\s*return previewer\.locator\(\s*'([^']+)'/
+    )?.[1];
+    expect(selector).toBeTruthy();
+    mount('wc');
+    const root = document.querySelector('[data-previewer-id]')!;
+    expect(root.querySelectorAll(selector!)).toHaveLength(2);
+    const slot = root.querySelector('[data-original-demo]')!;
+    slot.append(slot.firstElementChild!.cloneNode());
+    expect(root.querySelectorAll(selector!)).toHaveLength(3);
+    expect(source).not.toContain("'[data-projection-content] [data-pui-root]'");
+  });
+  it.each(['demo-brutalist-controls', 'demo-brutalist-button'])(
+    'keeps %s private physical-root selectors inside the demonstrated slot',
+    (name) => {
+      const source = readFileSync(
+        `apps/www/src/content/docs/zh-cn/${name}.browser.test.ts`,
+        'utf8'
+      );
+      const selectors = [
+        ...source.matchAll(
+          /'([^'\n]*\[data-projection-content\][^'\n]*\[data-pui-root\][^'\n]*)'/g
+        ),
+      ].map((match) => match[1]!);
+      expect(selectors.length).toBeGreaterThan(0);
+      mount('wc');
+      const root = document.querySelector('[data-previewer-id]')!;
+      for (const selector of selectors) {
+        expect(selector).toContain(
+          '.pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"]'
+        );
+        expect(document.querySelectorAll(selector)).toHaveLength(2);
+      }
+      root.querySelector('[data-original-demo]')!.append(document.createElement('div'));
+      root
+        .querySelector('[data-original-demo]')!
+        .lastElementChild!.setAttribute('data-pui-root', '');
+      for (const selector of selectors) expect(document.querySelectorAll(selector)).toHaveLength(3);
+    }
+  );
   it.each(['wc', 'react', 'vue', 'vue2'] as const)(
     'retains exact %s owner and two original roots',
     async (runtime) => {
