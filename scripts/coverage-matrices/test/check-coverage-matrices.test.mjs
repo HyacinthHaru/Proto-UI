@@ -11673,3 +11673,255 @@ test('documentation media allowances remain bound to exact reviewed sources and 
     message.includes(`raw Proto UI import \`@proto.ui/adapter-react\` in \`${presentation}\``)
   );
 });
+
+// Public SVG documents can be opened directly even when a page uses an <img>.
+// Inventory evidence must not become active-document execution admission.
+for (const [label, markup, reason] of [
+  ['external script href', '<svg><script href="https://cdn.example/runtime.js"/></svg>', 'script'],
+  ['local script href', '<svg><script href="/runtime.js"/></svg>', 'script'],
+  [
+    'legacy script xlink href',
+    '<svg xmlns:xlink="http://www.w3.org/1999/xlink"><script xlink:href="runtime.js"/></svg>',
+    'script',
+  ],
+  [
+    'prefixed script',
+    '<s:svg xmlns:s="http://www.w3.org/2000/svg"><s:script href="runtime.js"/></s:svg>',
+    'script',
+  ],
+  [
+    'unicode namespace script',
+    '<é:svg xmlns:é="http://www.w3.org/2000/svg"><é:script href="runtime.js"/></é:svg>',
+    'script',
+  ],
+  [
+    'inline script',
+    '<svg><script>document.documentElement.dataset.state="open";</script></svg>',
+    'script',
+  ],
+  ['CDATA inline script', '<svg><script><![CDATA[alert("active")]]></script></svg>', 'script'],
+  ['data-looking script', '<svg><script type="application/json">{}</script></svg>', 'script'],
+  ['event handler', '<svg onload="alert(1)"><rect/></svg>', 'event'],
+  ['encoded handler value', '<svg onload="&#97;lert(1)"><rect/></svg>', 'event'],
+  [
+    'prefixed event element',
+    '<s:svg xmlns:s="http://www.w3.org/2000/svg" onload="alert(1)"/>',
+    'event',
+  ],
+  [
+    'foreign content',
+    '<svg><foreignObject><div xmlns="http://www.w3.org/1999/xhtml">Preview</div></foreignObject></svg>',
+    'foreign',
+  ],
+  [
+    'prefixed foreign content',
+    '<svg xmlns:s="http://www.w3.org/2000/svg"><s:foreignObject/></svg>',
+    'foreign',
+  ],
+  [
+    'external use resource',
+    '<svg><use href="https://cdn.example/other.svg#shape"/></svg>',
+    'resource',
+  ],
+  ['local use resource', '<svg><use xlink:href="other.svg#shape"/></svg>', 'resource'],
+  ['encoded resource value', '<svg><use href="&#35;shape"/></svg>', 'resource'],
+  [
+    'aliased xlink resource',
+    '<svg xmlns:r="http://www.w3.org/1999/xlink"><use r:href="other.svg#shape"/></svg>',
+    'resource',
+  ],
+  [
+    'external image resource',
+    '<svg><image href="https://cdn.example/image.svg"/></svg>',
+    'resource',
+  ],
+  [
+    'javascript hyperlink',
+    '<svg><a href="javascript:alert(1)"><text>Go</text></a></svg>',
+    'resource',
+  ],
+  ['stylesheet instruction', '<?xml-stylesheet href="style.css"?><svg/>', 'resource'],
+  ['stylesheet import', '<svg><style>@import "style.css";</style></svg>', 'resource'],
+  [
+    'stylesheet CDATA import',
+    '<svg><style><![CDATA[@import "style.css";]]></style></svg>',
+    'resource',
+  ],
+  ['stylesheet URL', '<svg><rect style="fill:url(other.svg#paint)"/></svg>', 'resource'],
+  ['encoded paint resource', '<svg><rect fill="u&#114;l(other.svg#paint)"/></svg>', 'resource'],
+  ['escaped paint resource', '<svg><rect fill="\\75rl(other.svg#paint)"/></svg>', 'resource'],
+  [
+    'unclosed stylesheet resource',
+    '<svg><rect style="fill:url(other.svg#paint"/></svg>',
+    'resource',
+  ],
+  ['encoded stylesheet', '<svg><style>@im\\70ort "style.css";</style></svg>', 'resource'],
+  [
+    'animated reference',
+    '<svg><set attributeName="href" to="javascript:alert(1)"/></svg>',
+    'animation',
+  ],
+  [
+    'external SYSTEM DTD',
+    '<!DOCTYPE svg SYSTEM "https://cdn.example/active.dtd"><svg/>',
+    'resource',
+  ],
+  [
+    'unreviewed PUBLIC DTD',
+    '<!DOCTYPE svg PUBLIC "-//EXAMPLE//DTD ACTIVE//EN" "https://cdn.example/active.dtd"><svg/>',
+    'resource',
+  ],
+  [
+    'redirected legacy PUBLIC DTD',
+    '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "https://cdn.example/svg11.dtd"><svg/>',
+    'resource',
+  ],
+  [
+    'changed legacy PUBLIC identity',
+    '<!DOCTYPE svg PUBLIC "-//EXAMPLE//DTD ACTIVE//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg/>',
+    'resource',
+  ],
+  [
+    'changed legacy declaration spelling',
+    '<!DOCTYPE svg  PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg/>',
+    'resource',
+  ],
+  [
+    'CDATA comment opener before script',
+    '<svg><desc><![CDATA[<!--]]></desc><script>alert(1)</script><!-- --></svg>',
+    'script',
+  ],
+  [
+    'CDATA comment opener before resource',
+    '<svg><desc><![CDATA[<!--]]></desc><use href="https://cdn.example/other.svg#shape"/><!-- --></svg>',
+    'resource',
+  ],
+  [
+    'CDATA CDO stylesheet import',
+    '<svg><style><![CDATA[<!-- @import "https://cdn.example/style.css"; -->]]></style></svg>',
+    'resource',
+  ],
+  [
+    'quoted CSS comment opener',
+    '<svg><style>.shape{font-family:"/*";fill:url(https://cdn.example/other.svg#paint)} /* */</style></svg>',
+    'resource',
+  ],
+  [
+    'image-set string resource',
+    '<svg><style>svg{background-image:image-set("https://cdn.example/image.png" 1x)}</style></svg>',
+    'resource',
+  ],
+  [
+    'prefixed image-set string resource',
+    `<svg><rect style='background-image:-webkit-image-set("image.png" 1x)'/></svg>`,
+    'resource',
+  ],
+  [
+    'CDATA quoted style closing tag',
+    '<svg><style><![CDATA[.shape{font-family:"</style>";fill:url(https://cdn.example/other.svg#paint)}]]></style></svg>',
+    'resource',
+  ],
+  [
+    'PI comment opener before script',
+    '<svg><?probe <!-- ?><script>alert(1)</script><!-- --></svg>',
+    'script',
+  ],
+  [
+    'PI comment opener before resource',
+    '<svg><?probe <!-- ?><use href="https://cdn.example/other.svg#shape"/><!-- --></svg>',
+    'resource',
+  ],
+  ['unsupported XML encoding', '<?xml version="1.0" encoding="UTF-16"?><svg/>', 'XML'],
+  [
+    'entity declarations',
+    '<!DOCTYPE svg [<!ENTITY payload "&lt;script/&gt;">]><svg>&payload;</svg>',
+    'XML',
+  ],
+]) {
+  test(`public SVG inventory rejects ${label} even with a reviewed source binding`, () => {
+    const root = createRoot();
+    const source = 'apps/www/public/preview.svg';
+    fs.mkdirSync(path.dirname(path.join(root, source)), { recursive: true });
+    fs.writeFileSync(path.join(root, source), markup);
+    fs.writeFileSync(
+      path.join(root, 'apps/www/src/components/override/Header.astro'),
+      '<img src="/preview.svg" alt="Preview"/>'
+    );
+    writeValidMatrices(root);
+    const missing = validationMessage(root);
+    assert.ok(
+      missing.includes(
+        `interactive website source \`${source}\` is missing a reviewed Source-scan binding`
+      ),
+      missing
+    );
+    assert.match(missing, new RegExp(`public SVG.*${reason}.*unverified.*not admitted`, 'i'));
+    writeValidMatrices(root, {}, {}, { websiteBindings: [[source, ['www.shell.primary-nav']]] });
+    const bound = validationMessage(root);
+    assert.match(bound, new RegExp(`public SVG.*${reason}.*unverified.*not admitted`, 'i'));
+    assert.ok(!bound.includes('source binding must name exactly one'), bound);
+    assert.ok(!bound.includes(`interactive website source \`${source}\` is missing`), bound);
+  });
+}
+
+test('public SVG inventory preserves ordinary static image assets and quoted examples', () => {
+  const root = createRoot();
+  const source = 'apps/www/public/static.svg';
+  fs.mkdirSync(path.dirname(path.join(root, source)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, source),
+    `<?xml version="1.0"?>
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20">
+      <!-- <script href="runtime.js"/><svg onload="alert(1)"/><foreignObject/> -->
+      <title>&lt;script&gt; is an example</title>
+      <desc><![CDATA[<script href="runtime.js"/> onload="alert(1)"]]></desc>
+      <desc><![CDATA[<!-- is text, not a comment opener]]></desc>
+      <!-- <![CDATA[ <script href="runtime.js"/> is still a true comment -->
+      <defs><path id="shape" d="M0 0h20v20z"/><linearGradient id="paint"/></defs>
+      <style>/* @import 'ignored.css'; */ .shape { fill:url(#paint); } @font-face {font-family:Embedded;src:url(data:font/woff2;base64,AAAA)}</style>
+      <style>.shape { font-family:"/*"; fill:url(#paint) } /* real comment */</style>
+      <style><![CDATA[.shape { font-family:"</style>"; fill:url(#paint) }]]></style>
+      <use xlink:href="#shape" class="shape"/>
+      <image href="data:image/svg+xml;base64,PHN2Zy8+"/>
+      <rect width="20" height="20" fill="url(#paint)" data-description="onload='example'"/>
+    </svg>`
+  );
+  fs.writeFileSync(
+    path.join(root, 'apps/www/src/components/override/Header.astro'),
+    '<img src="/static.svg" alt="Static diagram"/>'
+  );
+  writeValidMatrices(root);
+  assert.deepEqual(validateCoverageMatrices({ rootDir: root }), { matrixCount: 2 });
+});
+
+test('public SVG inventory keeps UTF-16 source unverified instead of missing active syntax', () => {
+  const root = createRoot();
+  const source = 'apps/www/public/encoded.svg';
+  fs.mkdirSync(path.dirname(path.join(root, source)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, source),
+    Buffer.from('\ufeff<svg onload="alert(1)"/>', 'utf16le')
+  );
+  writeValidMatrices(root);
+  const message = validationMessage(root);
+  assert.match(message, /interactive website source `apps\/www\/public\/encoded\.svg` is missing/);
+  assert.match(message, /public SVG.*XML.*unverified.*not admitted/);
+});
+
+test('public SVG inventory ignores inert markup in opaque processing instructions', () => {
+  const root = createRoot();
+  const source = 'apps/www/public/pi.svg';
+  fs.mkdirSync(path.dirname(path.join(root, source)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, source),
+    `<?xml version="1.0" encoding="UTF-8"?>
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <?probe <script href="runtime.js"/> <svg onload="alert(1)"/> <use href="other.svg"/> ?>
+      <?probe <style>@import "style.css";</style> <?xml-stylesheet href="style.css"?>
+      <rect width="20" height="20"/>
+    </svg>`
+  );
+  writeValidMatrices(root);
+  assert.deepEqual(validateCoverageMatrices({ rootDir: root }), { matrixCount: 2 });
+});

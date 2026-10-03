@@ -1191,6 +1191,7 @@ function stripMarkdownCode(content) {
 }
 
 function sourceTextForInteractionScan(absolutePath) {
+  if (/\.svg$/i.test(absolutePath)) return fs.readFileSync(absolutePath, 'utf8');
   const content = fs
     .readFileSync(absolutePath, 'utf8')
     .replace(/<script\b([^>]*)>[\s\S]*?<\/script\s*>/giu, (script, attributes) => {
@@ -1939,7 +1940,153 @@ function containsJsxEventHandler(content, absolutePath) {
   });
 }
 
+// Inventory only: SVG document execution has no reviewed admission profile.
+// Do not interpret XML entities, evaluate scripts, or reuse HTML script/src rules.
+function publicSvgSourceIssues(content) {
+  const reasons = new Set();
+  if (/[\u0000\ufffd]/u.test(content)) reasons.add('unsupported XML encoding');
+  const markupParts = [];
+  const styles = [];
+  let style = null;
+  let previousEnd = 0;
+  // Tokenize processing instructions, comments, CDATA and quoted tags together.
+  // A comment opener inside a PI or CDATA must not consume later real markup.
+  for (const token of content.matchAll(
+    /<(?:\?[\s\S]*?\?|!\[CDATA\[[\s\S]*?\]\]|!--[\s\S]*?--|(?:[^"'<>]|"[^"]*"|'[^']*')*)>/gu
+  )) {
+    if (style !== null) style += content.slice(previousEnd, token.index);
+    previousEnd = token.index + token[0].length;
+    if (token[0].startsWith('<?')) {
+      if (/^<\?xml-stylesheet(?=[\s?])/iu.test(token[0])) {
+        reasons.add('stylesheet resource instruction');
+      }
+      if (/^<\?xml\s/iu.test(token[0])) {
+        const encoding = token[0].match(/\bencoding\s*=\s*['"]([^'"]+)['"]/iu)?.[1];
+        if (encoding && !/^(?:utf-8|us-ascii)$/iu.test(encoding)) {
+          reasons.add('unsupported XML encoding');
+        }
+      }
+      continue;
+    }
+    if (token[0].startsWith('<!--')) continue;
+    if (token[0].startsWith('<![CDATA[')) {
+      if (style !== null) style += token[0].slice(9, -3);
+      continue;
+    }
+    markupParts.push(token[0]);
+    const styleTag = token[0].match(/^<(\/?)(?:[^\s/>:]+:)?style(?=[\s/>])/iu);
+    if (styleTag?.[1] === '/') {
+      if (style !== null) styles.push(style);
+      style = null;
+    } else if (styleTag && !/\/\s*>$/u.test(token[0])) {
+      if (style !== null) styles.push(style);
+      style = '';
+    } else if (style !== null) {
+      style += token[0];
+    }
+  }
+  if (style !== null) styles.push(style + content.slice(previousEnd));
+  const markup = markupParts.join('');
+  if (/<!ENTITY\b|<!DOCTYPE\b[^>]*\[/iu.test(markup)) {
+    reasons.add('XML entity declarations or internal subset');
+  }
+  // Preserve the exact conventional declaration already used by retained static
+  // whitepaper art. This does not resolve/fetch the DTD or admit active XML.
+  const legacySvgDoctype =
+    '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
+  for (const match of markup.matchAll(/<!DOCTYPE\b(?:"[^"]*"|'[^']*'|[^"'<>])*>/giu)) {
+    if (/\b(?:SYSTEM|PUBLIC)\b/u.test(match[0]) && match[0] !== legacySvgDoctype) {
+      reasons.add('external XML document-type resource');
+    }
+  }
+
+  const isFragment = (value) => /^#[^\s&\\{}]+$/u.test(value);
+  const isEmbeddedImage = (value) =>
+    /^data:image\/(?:png|gif|jpeg|webp|avif|svg\+xml);base64,[A-Za-z0-9+/=]+$/iu.test(value);
+  const isEmbeddedFont = (value) =>
+    /^data:font\/(?:woff2?|ttf|otf);base64,[A-Za-z0-9+/=]+$/iu.test(value);
+  const inspectStyle = (style) => {
+    let source = '';
+    let quote = null;
+    for (let index = 0; index < style.length; index += 1) {
+      const character = style[index];
+      if (quote) {
+        source += character;
+        if (character === '\\') source += style[++index] ?? '';
+        else if (character === quote) quote = null;
+      } else if (character === '"' || character === "'") {
+        quote = character;
+        source += character;
+      } else if (character === '/' && style[index + 1] === '*') {
+        const end = style.indexOf('*/', index + 2);
+        if (end === -1) break;
+        index = end + 1;
+      } else {
+        source += character;
+      }
+    }
+    // Escapes/entities can conceal resource syntax. Keep it unverified instead
+    // of claiming CSS/XML decoding or treating candidate text as trusted code.
+    if (/\\|&|@import\b|(?:-webkit-)?image-set\s*\(/iu.test(source)) {
+      reasons.add('encoded, imported or image-set stylesheet resource');
+    }
+    for (const opening of source.matchAll(/url\(/giu)) {
+      const match = source
+        .slice(opening.index + opening[0].length)
+        .match(/^\s*(?:"([^"]*)"|'([^']*)'|([^)]*))\s*\)/u);
+      if (!match) {
+        reasons.add('unresolved stylesheet resource URL');
+        continue;
+      }
+      const value = (match[1] ?? match[2] ?? match[3]).trim();
+      if (!isFragment(value) && !isEmbeddedFont(value) && !isEmbeddedImage(value)) {
+        reasons.add('stylesheet resource URL');
+      }
+    }
+  };
+  for (const style of styles) inspectStyle(style);
+  // XML quotes have no backslash escape. Consume complete quoted attributes so
+  // event-like text inside an ordinary value does not create another attribute.
+  for (const match of markup.matchAll(
+    /<([^\s/<>"'=!?]+)(?=[\s/>])((?:"[^"]*"|'[^']*'|[^"'<>])*)>/gu
+  )) {
+    const localName = match[1].split(':').at(-1).toLowerCase();
+    if (localName === 'script') reasons.add('script element (inline or href/xlink:href resource)');
+    if (/^(?:foreignobject|iframe|object|embed|webview)$/u.test(localName)) {
+      reasons.add('foreign content element');
+    }
+    if (/^(?:animate(?:motion|transform|color)?|set|discard)$/u.test(localName)) {
+      reasons.add('declarative animation');
+    }
+    for (const attribute of match[2].matchAll(
+      /([^\s=/'">]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/gu
+    )) {
+      const name = attribute[1].toLowerCase();
+      const attributeName = name.split(':').at(-1);
+      const value = attribute[2] ?? attribute[3] ?? attribute[4];
+      if (/^on[a-z]/u.test(attributeName)) reasons.add('event handler attribute');
+      if (name === 'xmlns' || name.startsWith('xmlns:')) continue;
+      if (attributeName === 'href' || attributeName === 'src' || name === 'xml:base') {
+        // Local paint/use fragments and embedded image-mode bytes are static
+        // cases, not authorization to open those bytes as an active document.
+        if (!isFragment(value) && !(localName === 'image' && isEmbeddedImage(value))) {
+          reasons.add('document resource attribute');
+        }
+      }
+      if (
+        /^(?:style|fill|stroke|filter|clip-path|mask|cursor|marker(?:-start|-mid|-end)?)$/u.test(
+          attributeName
+        ) ||
+        /url\s*\(/iu.test(value)
+      )
+        inspectStyle(value);
+    }
+  }
+  return [...reasons];
+}
+
 function containsInteractiveSource(content, absolutePath) {
+  if (/\.svg$/i.test(absolutePath)) return publicSvgSourceIssues(content).length > 0;
   if (/\.[cm]?[jt]sx?$/i.test(absolutePath)) {
     return astContainsInteractiveRuntime(content) || containsJsxEventHandler(content, absolutePath);
   }
@@ -1965,7 +2112,7 @@ function discoverWebsiteInteractiveSources(rootDir) {
     .concat(walkFiles(contentRoot).filter((absolutePath) => /\.[cm]?[jt]sx?$/.test(absolutePath)))
     .concat(
       walkFiles(publicRoot).filter((absolutePath) =>
-        /\.(?:html?|[cm]?[jt]sx?)$/i.test(absolutePath)
+        /\.(?:svg|html?|[cm]?[jt]sx?)$/i.test(absolutePath)
       )
     )
     .filter((absolutePath, index, files) => files.indexOf(absolutePath) === index);
@@ -4731,6 +4878,7 @@ function externalStylesheetSpecifiersForWebsiteSource(absolutePath) {
 }
 
 function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
+  if (/\.svg$/i.test(absolutePath)) return [];
   const content = fs.readFileSync(absolutePath, 'utf8');
   if (/\.(?:css|less|s[ac]ss)$/i.test(absolutePath)) {
     return styleModuleSpecifiers(content);
@@ -4773,6 +4921,7 @@ function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
 }
 
 function viteGlobPatternGroupsForWebsiteSource(absolutePath) {
+  if (/\.svg$/i.test(absolutePath)) return [];
   const content = fs.readFileSync(absolutePath, 'utf8');
   if (/\.(?:css|less|s[ac]ss)$/i.test(absolutePath)) return [];
   if (/\.(?:astro|vue|svelte)$/i.test(absolutePath)) {
@@ -6003,8 +6152,10 @@ function discoverWebsiteRawImports(rootDir) {
   const allCandidates = walkFiles(sourceRoot)
     .concat(walkFiles(publicRoot))
     .concat(fs.existsSync(configPath) ? [configPath] : [])
-    .filter((absolutePath) =>
-      /\.(?:html?|astro|mdx?|[cm]?[jt]sx?|css|less|s[ac]ss|vue|svelte)$/i.test(absolutePath)
+    .filter(
+      (absolutePath) =>
+        /\.(?:html?|astro|mdx?|[cm]?[jt]sx?|css|less|s[ac]ss|vue|svelte)$/i.test(absolutePath) ||
+        (absolutePath.startsWith(`${publicRoot}${path.sep}`) && /\.svg$/i.test(absolutePath))
     );
   const websiteAliasConfig = configuredWebsiteSourceAliases(rootDir);
   const reachable = reachableSourcePaths(allCandidates, websiteAliasConfig, rootDir);
@@ -6015,6 +6166,17 @@ function discoverWebsiteRawImports(rootDir) {
   const bareInspectionCache = new Map();
   for (const absolutePath of candidates) {
     const sourcePath = path.relative(rootDir, absolutePath).replaceAll('\\', '/');
+    if (/\.svg$/i.test(absolutePath)) {
+      for (const reason of publicSvgSourceIssues(fs.readFileSync(absolutePath, 'utf8'))) {
+        rawImports.push({
+          sourcePath,
+          reason,
+          category: 'unverified-public-svg',
+          resolvedPath: null,
+        });
+      }
+      continue;
+    }
     for (const specifier of externalStylesheetSpecifiersForWebsiteSource(absolutePath)) {
       rawImports.push({
         sourcePath,
@@ -6136,6 +6298,12 @@ function discoverWebsiteRawImports(rootDir) {
 
 function validateWebsiteRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverWebsiteRawImports(rootDir)) {
+    if (rawImport.category === 'unverified-public-svg') {
+      issues.push(
+        `${relativePath}: public SVG \`${rawImport.sourcePath}\` contains ${rawImport.reason}; active document behavior remains unverified and is not admitted by a Source-scan binding`
+      );
+      continue;
+    }
     if (rawImport.category === 'unverified-runtime-compilation') {
       issues.push(
         `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function entry points require an explicit reviewed admission`
@@ -8395,10 +8563,11 @@ function parseSourceBindings(lines, afterIndex, relativePath, issues) {
     const sourcePath = sourcePaths[0];
     const isWebsiteSource = sourcePath?.startsWith('apps/www/src/');
     const isPublicExecutable =
-      sourcePath?.startsWith('apps/www/public/') && /\.(?:cjs|html?|js|mjs)$/iu.test(sourcePath);
+      sourcePath?.startsWith('apps/www/public/') &&
+      /\.(?:cjs|html?|js|mjs|svg)$/iu.test(sourcePath);
     if (sourcePaths.length !== 1 || (!isWebsiteSource && !isPublicExecutable)) {
       issues.push(
-        `${context}: source binding must name exactly one \`apps/www/src/**\` path or executable \`apps/www/public/**/*.{html,js,mjs,cjs}\` path`
+        `${context}: source binding must name exactly one \`apps/www/src/**\` path or executable \`apps/www/public/**/*.{html,js,mjs,cjs,svg}\` path`
       );
       continue;
     }
