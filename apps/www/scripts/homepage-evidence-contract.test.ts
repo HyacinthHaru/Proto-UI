@@ -90,6 +90,13 @@ test('CI preserves the pinned baseline, exact head, read-only permissions and ar
   );
   assert.ok(workflow.on.pull_request.paths.includes('apps/www/**'));
   assert.equal(workflow.on.pull_request_target, undefined);
+  const packageMetadata = JSON.parse(
+    readFileSync(new URL('../../../package.json', import.meta.url), 'utf8')
+  );
+  const nodeSetup = workflow.jobs.capture.steps.find((step: { uses?: string }) =>
+    step.uses?.startsWith('actions/setup-node@')
+  );
+  assert.equal(String(nodeSetup.with['node-version']), packageMetadata.engines.node.split('.')[0]);
   assert.doesNotMatch(source, /\$\{\{\s*secrets\./);
   const steps = workflow.jobs.capture.steps;
   assert.equal(
