@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import command from './demo-base-transition-command.demo';
 import controlled from './demo-base-transition-controlled.demo';
@@ -9,6 +10,25 @@ function nodes(root: unknown): LayoutNode[] {
   return [node, ...(node.children ?? []).flatMap(nodes)];
 }
 describe('Transition example app layout bounds', () => {
+  it('bounds the actual generic RuntimeBox grid instead of hiding overflowing content', () => {
+    const source = readFileSync(
+      'apps/www/src/components/PrototypePreviewer/PrototypePreviewer.astro',
+      'utf8'
+    );
+    const root = source.match(/\.proto-previewer \{([^}]+)\}/)![1]!;
+    expect(root).toContain('grid-template-columns: minmax(0, 1fr)');
+    expect(root).toContain('min-width: 0');
+    expect(root).not.toMatch(/overflow:\s*(hidden|clip)/);
+    for (const name of [
+      '.proto-previewer__header',
+      '.proto-previewer__preview-panel',
+      '.proto-previewer__preview .host',
+    ]) {
+      const body = source.slice(source.indexOf(name + ' {')).split('}')[0]!;
+      expect(body).toContain('min-width: 0');
+    }
+  });
+
   it.each([
     ['command', command],
     ['controlled', controlled],

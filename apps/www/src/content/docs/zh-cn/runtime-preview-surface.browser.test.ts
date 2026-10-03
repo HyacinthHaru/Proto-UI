@@ -294,16 +294,17 @@ describe('RuntimeBox single actual Prototype surface', () => {
       try {
         await expect
           .poll(
-            () =>
-              selectedTrigger.evaluate((element) => ({
+            async () => ({
+              ...(await selectedTrigger.evaluate((element) => ({
                 connected: element.isConnected,
                 text: element.textContent?.trim(),
                 expanded: element.getAttribute('aria-expanded'),
-              })),
+              }))),
+              popupHidden: !(await demoPopup.isVisible()),
+            }),
             { timeout: 2000, message: 'The same React Select trigger must commit Ink and close' }
           )
-          .toEqual({ connected: true, text: 'Ink', expanded: 'false' });
-        expect(await demoPopup.isVisible()).toBe(false);
+          .toEqual({ connected: true, text: 'Ink', expanded: 'false', popupHidden: true });
         expect(
           await selectedTrigger.evaluate((element) =>
             element
@@ -311,6 +312,37 @@ describe('RuntimeBox single actual Prototype surface', () => {
               ?.getAttribute('data-projection-generation')
           )
         ).toBe(generation);
+      } catch (error) {
+        await mkdir(directory, { recursive: true });
+        await writeFile(
+          path.join(directory, 'brutalist-react-narrow-select-failure.json'),
+          JSON.stringify(
+            {
+              source,
+              capturedAt: new Date().toISOString(),
+              error: String(error),
+              generation,
+              trigger: await selectedTrigger.evaluate((element) => ({
+                connected: element.isConnected,
+                html: element.outerHTML,
+              })),
+              popupVisible: await demoPopup.isVisible(),
+              popup: await demoPopup.evaluateAll((nodes) =>
+                nodes.map((element) => ({
+                  html: element.outerHTML,
+                  style: {
+                    visibility: getComputedStyle(element).visibility,
+                    opacity: getComputedStyle(element).opacity,
+                    display: getComputedStyle(element).display,
+                  },
+                }))
+              ),
+            },
+            null,
+            2
+          )
+        );
+        throw error;
       } finally {
         await selectedTrigger.dispose();
       }

@@ -196,12 +196,15 @@ const isZh = Astro.url.pathname.startsWith('/zh-cn/');
   <style>
     .proto-previewer {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: 0.75rem;
       min-width: 0;
     }
 
     .proto-previewer__header {
       display: flex;
+      min-width: 0;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.75rem;
       padding: var(--runtime-box-toolbar-padding);
@@ -209,6 +212,9 @@ const isZh = Astro.url.pathname.startsWith('/zh-cn/');
 
     .proto-previewer__toolbar {
       display: flex;
+      min-width: 0;
+      max-width: 100%;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.5rem;
     }
@@ -220,6 +226,7 @@ const isZh = Astro.url.pathname.startsWith('/zh-cn/');
 
     .proto-previewer__preview-panel {
       display: block;
+      min-width: 0;
     }
 
     .proto-previewer__preview {
@@ -231,6 +238,8 @@ const isZh = Astro.url.pathname.startsWith('/zh-cn/');
     }
 
     .proto-previewer__preview .host {
+      min-width: 0;
+      max-width: 100%;
       min-height: 7rem;
       width: 100%;
       display: flex;

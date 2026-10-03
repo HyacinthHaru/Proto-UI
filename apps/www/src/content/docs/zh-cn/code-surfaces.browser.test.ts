@@ -344,9 +344,17 @@ describe.sequential('code-surface dogfood matrix (#630, #420, #568)', () => {
           const facts = await expectSurfaces(page);
           if (width === 1440) {
             const box = page.locator('.transition-box').first();
-            expect(await box.evaluate((element) => element.getBoundingClientRect().width)).toBe(
-              256
-            );
+            const boxGeometry = await box.evaluate((element) => ({
+              layoutWidth: (element as HTMLElement).offsetWidth,
+              visualWidth: element.getBoundingClientRect().width,
+              transform: getComputedStyle(element).transform,
+              declaredWidth: getComputedStyle(element).width,
+            }));
+            Object.assign(facts, { transitionBoxGeometry: boxGeometry });
+            // The authored entering/leaving scale (.98) changes the visual
+            // rectangle, not the 256px desktop layout contract.
+            expect(boxGeometry.layoutWidth).toBe(256);
+            expect(boxGeometry.declaredWidth).toBe('256px');
           }
           const pre = page.locator('.proto-previewer__code').first();
           const collapsed = await pre.evaluate((element) => {
