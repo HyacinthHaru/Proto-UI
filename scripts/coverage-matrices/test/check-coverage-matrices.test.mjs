@@ -11925,3 +11925,134 @@ test('public SVG inventory ignores inert markup in opaque processing instruction
   writeValidMatrices(root);
   assert.deepEqual(validateCoverageMatrices({ rootDir: root }), { matrixCount: 2 });
 });
+
+test('fresh Website resource review: imperative embed creation retains DOM provenance', () => {
+  for (const [source, rejects] of [
+    ["document.createElement('iframe');", true],
+    ["window.document.createElement('object');", true],
+    ["const doc=globalThis.document;const kind='embed';doc['createElement'](kind);", true],
+    ["document.createElementNS('http://www.w3.org/1999/xhtml','webview');", true],
+    ["document.createElement('div');", false],
+    ["function render(document){document.createElement('iframe');}", false],
+    ["const service={createElement(){}};service.createElement('iframe');", false],
+  ]) {
+    const root = createRoot();
+    const file = 'apps/www/src/components/ImperativeEmbed.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(root);
+    if (rejects) assert.match(validationMessage(root), /unreviewed executable embed/);
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), source);
+  }
+});
+
+test('fresh Website resource review: bound native markup handlers expose executable imports', () => {
+  for (const file of ['apps/www/public/events.html', 'apps/www/src/components/EventMarkup.astro']) {
+    for (const markup of [
+      `<body onload="import('https://cdn.example/runtime.js')"></body>`,
+      `<div data-label={><button onclick="import('https://cdn.example/runtime.js')">Run</button> }>`,
+      '<div data-label=`><button onclick="import(\'https://cdn.example/runtime.js\')">Run</button> `>',
+      `<svg><title><button onclick="import('https://cdn.example/runtime.js')">Run</button></title></svg>`,
+      `<svg><title><button title=">" onclick="import('https://cdn.example/runtime.js')">Run</button></title></svg>`,
+      `<!--><body onload="import('https://cdn.example/runtime.js')"></body>`,
+      `<p title="<!--">Label</p><body onload="import('https://cdn.example/runtime.js')"></body><!-- -->`,
+      `<p title="<script>">Label</p><body onload="import('https://cdn.example/runtime.js')"></body></script>`,
+      String.raw`<button title="\" onclick="import('https://cdn.example/runtime.js')">Run</button>`,
+      `<button onclick="import('@proto.ui/runtime')">Run</button>`,
+      `<button ONCLICK='import("https://cdn.example/runtime.js")'>Run</button>`,
+      `<button onclick="import(&quot;https://cdn.example/runtime.js&quot;)">Run</button>`,
+      `<button onclick={runtimeHandler}>Run</button>`,
+    ]) {
+      // Braces/backticks are HTML attribute data here, but Astro treats these
+      // particular data-label forms as template expressions/literals.
+      if (!file.endsWith('.html') && /data-label=[{`]/u.test(markup)) continue;
+      const root = createRoot();
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(path.join(root, file), markup);
+      writeValidMatrices(
+        root,
+        { Path: file },
+        {},
+        {
+          websiteBindings: [[file, ['www.shell.primary-nav']]],
+        }
+      );
+      assert.match(
+        validationMessage(root),
+        /raw Proto UI import|external executable script|unverified markup event handler/
+      );
+    }
+  }
+});
+
+test('fresh Website resource review: static bound handlers and inert examples stay separate', () => {
+  for (const markup of [
+    '<button onclick="return false">Run</button>',
+    '<button title="😀" onclick="return false">Run</button>',
+    '<!-- <body onload="import(\'https://cdn.example/runtime.js\')"> -->',
+    '<script type="application/json">{"example":"<body onload=bad()>"}</script>',
+    '<p data-example="onload=bad()">Static</p>',
+  ]) {
+    const root = createRoot();
+    const file = 'apps/www/public/safe-events.html';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), markup);
+    writeValidMatrices(
+      root,
+      { Path: file },
+      {},
+      {
+        websiteBindings: [[file, ['www.shell.primary-nav']]],
+      }
+    );
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), markup);
+  }
+});
+
+test('fresh Website resource review: a template handler cannot inherit source-relative module admission', () => {
+  const root = createRoot();
+  const file = 'apps/www/src/components/HandlerImport.astro';
+  fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, file),
+    `<button onclick="import('./safe-helper.js')">Run</button>`
+  );
+  fs.writeFileSync(
+    path.join(root, 'apps/www/src/components/safe-helper.js'),
+    'export const safe=true;'
+  );
+  writeValidMatrices(
+    root,
+    { Path: file },
+    {},
+    {
+      websiteBindings: [[file, ['www.shell.primary-nav']]],
+    }
+  );
+  assert.match(validationMessage(root), /unverified markup event handler/);
+});
+
+test('fresh Website resource review: Astro parsing preserves expressions and component callbacks', () => {
+  for (const source of [
+    '<svg><title>Plain &lt;button&gt; label</title></svg>',
+    '<div data-label=`><button onclick="import(\'https://cdn.example/runtime.js\')">Run</button> `></div>',
+    `---\nconst callback = "import('https://cdn.example/runtime.js')";\n---\n<Widget onClick={callback} />`,
+    `{ '<button onclick="import(\\\'https://cdn.example/runtime.js\\\')">Example</button>' }`,
+    `<script>const sample = '<button onclick="import(\\\'https://cdn.example/runtime.js\\\')">Example</button>';</script>`,
+    `<style is:inline set:html={''} /><button onclick="return false">Run</button>`,
+  ]) {
+    const root = createRoot();
+    const file = 'apps/www/src/components/NativeHandlerControl.astro';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), source);
+    writeValidMatrices(
+      root,
+      { Path: file },
+      {},
+      {
+        websiteBindings: [[file, ['www.shell.primary-nav']]],
+      }
+    );
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), source);
+  }
+});

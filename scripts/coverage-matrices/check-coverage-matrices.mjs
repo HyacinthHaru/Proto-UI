@@ -9,6 +9,8 @@ import { pathToFileURL } from 'node:url';
 import { specEntitySchema } from '@proto.ui/spec-schema';
 import ts from 'typescript';
 import { parse as parseYaml } from 'yaml';
+import { parse as parseHtml } from 'parse5';
+import { parse as parseAstro } from '@astrojs/compiler/sync';
 
 const TOTAL_HEADERS = ['State', 'Count'];
 const TARGET_CLASS_TOTAL_HEADERS = ['Target class', 'Count'];
@@ -4299,33 +4301,39 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         }
       }
     }
-    if (harnessPreviewBoundary) {
+    if (
+      harnessPreviewBoundary &&
+      (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
+      ts.isIdentifier(node.tagName) &&
+      /^(?:iframe|object|embed|webview)$/u.test(node.tagName.text)
+    )
+      specifiers.push('<unreviewed Harness preview>');
+    if (ts.isCallExpression(node)) {
+      const member = staticMemberAccess(node.expression);
       if (
-        (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
-        ts.isIdentifier(node.tagName) &&
-        /^(?:iframe|object|embed|webview)$/u.test(node.tagName.text)
-      )
-        specifiers.push('<unreviewed Harness preview>');
-      if (ts.isCallExpression(node)) {
-        const member = staticMemberAccess(node.expression);
+        member &&
+        /^(?:createElement|createElementNS)$/u.test(member.name) &&
+        resolveLocalValue(member.receiver, node, new Set(), (candidate, useNode) =>
+          isBrowserGlobal(candidate, useNode, ['document'])
+        )
+      ) {
+        const argument = node.arguments[member.name === 'createElementNS' ? 1 : 0];
+        let tag = null;
+        if (argument)
+          resolveLocalValue(argument, node, new Set(), (candidate) => {
+            if (!ts.isStringLiteralLike(candidate)) return false;
+            tag = candidate.text.toLowerCase();
+            return true;
+          });
         if (
-          member &&
-          /^(?:createElement|createElementNS)$/u.test(member.name) &&
-          resolveLocalValue(member.receiver, node, new Set(), (candidate, useNode) =>
-            isBrowserGlobal(candidate, useNode, ['document'])
-          )
-        ) {
-          const argument = node.arguments[member.name === 'createElementNS' ? 1 : 0];
-          let tag = null;
-          if (argument)
-            resolveLocalValue(argument, node, new Set(), (candidate) => {
-              if (!ts.isStringLiteralLike(candidate)) return false;
-              tag = candidate.text.toLowerCase();
-              return true;
-            });
-          if (tag === null || /^(?:iframe|object|embed|webview)$/u.test(tag))
-            specifiers.push('<unreviewed Harness preview>');
-        }
+          (tag === null && harnessPreviewBoundary) ||
+          /^(?:iframe|object|embed|webview)$/u.test(tag)
+        )
+          specifiers.push(
+            harnessPreviewBoundary
+              ? '<unreviewed Harness preview>'
+              : UNREVIEWED_WEBSITE_EMBED_SPECIFIER
+          );
       }
     }
 
@@ -4525,6 +4533,7 @@ function isExecutableScriptType(type) {
 }
 const DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER = '<dynamic executable script src>';
 const UNREVIEWED_WEBSITE_EMBED_SPECIFIER = '<unreviewed Website embed>';
+const UNVERIFIED_MARKUP_HANDLER_SPECIFIER = '<unverified markup event handler>';
 const UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER = '<unverified runtime compilation>';
 const DYNAMIC_STYLESHEET_LINK_SPECIFIER = '<dynamic stylesheet href>';
 const DYNAMIC_STYLESHEET_REL_SPECIFIER = '<dynamic stylesheet relation>';
@@ -4877,6 +4886,89 @@ function externalStylesheetSpecifiersForWebsiteSource(absolutePath) {
   );
 }
 
+function markupEventHandlerSpecifiers(content, absolutePath, options) {
+  if (!/\.(?:html?|astro)$/iu.test(absolutePath)) return [];
+  const specifiers = [];
+  const inspect = (body, raw, literal, sourceLocation) => {
+    // A parser result is source evidence, never execution or admission. Browser
+    // handler URLs do not inherit the component source file's module base.
+    if (!sourceLocation || !literal || hasHtmlCharacterReference(raw)) {
+      specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
+      return;
+    }
+    const parsed = ts.createSourceFile(
+      absolutePath,
+      body,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.JS
+    );
+    if (
+      parsed.parseDiagnostics.length > 0 ||
+      scriptModuleSpecifiers(body, absolutePath, options).length > 0
+    )
+      specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
+  };
+  try {
+    if (/\.html?$/iu.test(absolutePath)) {
+      const visit = (node) => {
+        for (const attribute of node.attrs ?? []) {
+          if (!NATIVE_EVENT_ATTRIBUTE_NAMES.has(attribute.name.toLowerCase())) continue;
+          const location =
+            node.sourceCodeLocation?.attrs?.[
+              attribute.prefix ? `${attribute.prefix}:${attribute.name}` : attribute.name
+            ];
+          const raw = location ? content.slice(location.startOffset, location.endOffset) : '';
+          const literal = /^[^\s=]+\s*=\s*(["'])([\s\S]*)\1$/u.test(raw);
+          inspect(attribute.value, raw, literal, location);
+        }
+        for (const child of node.childNodes ?? []) visit(child);
+        // Template content is separately stored by the HTML parser. Inventory
+        // still sees handlers that can become active when the template is used.
+        if (node.content) visit(node.content);
+      };
+      visit(parseHtml(content, { sourceCodeLocationInfo: true }));
+    } else {
+      const parsed = parseAstro(content, { position: true });
+      if (parsed.diagnostics.some((diagnostic) => diagnostic.severity === 1)) {
+        specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
+        return specifiers;
+      }
+      const visit = (node, foreignContent = false, parentIsElement = false) => {
+        const nativeElement = node.type === 'element' || node.type === 'custom-element';
+        const childIsForeign =
+          foreignContent || (nativeElement && /^(?:svg|math)$/iu.test(node.name));
+        // Astro can retain foreign-content integration markup as raw text
+        // (for example SVG title). Any markup in that text stays unverified;
+        // a quoted delimiter must not hide its possible browser structure.
+        if (
+          foreignContent &&
+          parentIsElement &&
+          node.type === 'text' &&
+          /<[A-Za-z!/?]/u.test(node.value)
+        )
+          specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
+        if (nativeElement) {
+          for (const attribute of node.attributes ?? []) {
+            if (!NATIVE_EVENT_ATTRIBUTE_NAMES.has(attribute.name.toLowerCase())) continue;
+            const raw = attribute.raw ?? '';
+            const literal =
+              attribute.kind === 'quoted' && /^["']/u.test(raw) && raw.at(-1) === raw[0];
+            inspect(attribute.value, raw, literal, attribute.position);
+          }
+        }
+        // Component callback props and expression text are not native HTML
+        // attributes; real elements nested in expressions still get visited.
+        for (const child of node.children ?? []) visit(child, childIsForeign, nativeElement);
+      };
+      visit(parsed.ast);
+    }
+  } catch {
+    specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
+  }
+  return specifiers;
+}
+
 function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
   if (/\.svg$/i.test(absolutePath)) return [];
   const content = fs.readFileSync(absolutePath, 'utf8');
@@ -4885,6 +4977,7 @@ function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
   }
   if (/\.html?$/i.test(absolutePath)) {
     return [
+      ...markupEventHandlerSpecifiers(content, absolutePath, options),
       ...stylesheetLinkSpecifiers(content).filter(
         (specifier) =>
           !specifier.startsWith('<') && !/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(specifier)
@@ -4901,6 +4994,7 @@ function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
   }
   if (/\.(?:astro|vue|svelte)$/i.test(absolutePath)) {
     return [
+      ...markupEventHandlerSpecifiers(content, absolutePath, options),
       ...stylesheetLinkSpecifiers(content).filter(
         (specifier) =>
           !specifier.startsWith('<') && !/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(specifier)
@@ -5263,6 +5357,8 @@ function guardedWebsiteImport(
       resolvedPath: null,
     };
   }
+  if (specifier === UNVERIFIED_MARKUP_HANDLER_SPECIFIER)
+    return { category: 'unverified-markup-handler', resolvedPath: null };
   if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
     return { category: 'unverified-runtime-compilation', resolvedPath: null };
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
@@ -5800,6 +5896,8 @@ function guardedHarnessImport(rootDir, canonicalRootDir, sourcePath, specifier) 
       resolvedPath: null,
     };
   }
+  if (specifier === UNVERIFIED_MARKUP_HANDLER_SPECIFIER)
+    return { category: 'unverified-markup-handler', resolvedPath: null };
   if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
     return { category: 'unverified-runtime-compilation', resolvedPath: null };
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
@@ -6304,6 +6402,12 @@ function validateWebsiteRawImports(rootDir, relativePath, issues) {
       );
       continue;
     }
+    if (rawImport.category === 'unverified-markup-handler') {
+      issues.push(
+        `${relativePath}: unverified markup event handler in \`${rawImport.sourcePath}\` requires a statically readable literal body without an unreviewed executable resource entry`
+      );
+      continue;
+    }
     if (rawImport.category === 'unverified-runtime-compilation') {
       issues.push(
         `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function entry points require an explicit reviewed admission`
@@ -6527,6 +6631,12 @@ function discoverHarnessRawImports(rootDir) {
 
 function validateHarnessRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverHarnessRawImports(rootDir)) {
+    if (rawImport.category === 'unverified-markup-handler') {
+      issues.push(
+        `${relativePath}: unverified markup event handler in \`${rawImport.sourcePath}\` requires a statically readable literal body without an unreviewed executable resource entry`
+      );
+      continue;
+    }
     if (rawImport.category === 'unverified-runtime-compilation') {
       issues.push(
         `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function entry points require an explicit reviewed admission`
