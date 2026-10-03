@@ -277,8 +277,8 @@
           "name": "uCaptureOffset",
           "type": "vec2<f32>",
           "binding": {
-            "kind": "frame-value",
-            "id": "uCaptureOffset"
+            "kind": "constant",
+            "value": [0, 0]
           }
         },
         {
@@ -411,14 +411,20 @@
       "id": "matte-transform",
       "type": "mat4<f32>",
       "from": "group-local-logical-pixels",
-      "to": "geometry-matte-physical-pixels",
+      "to": "screen-logical-pixels",
       "owner": "adapter-layout"
     },
     {
       "id": "enclosing-filter-pass-rect",
       "type": "rect<f32>",
-      "space": "filter-local-physical-pixels",
+      "space": "screen-physical-pixels",
       "owner": "host-compositor"
+    },
+    {
+      "id": "screen-device-pixel-ratio",
+      "type": "f32",
+      "owner": "view",
+      "distinctFrom": "matte-dpr"
     }
   ],
   "featurePreconditions": [
@@ -437,6 +443,27 @@
       "requiredHostSamplers": {
         "uBackgroundTexture": 0
       }
+    },
+    {
+      "feature": "captured-background-coordinate-offset",
+      "mode": "excluded",
+      "requires": {
+        "uniformBlock": "render",
+        "field": "uCaptureOffset",
+        "value": [0, 0]
+      },
+      "reason": "This core models only the live BackdropFilter path; upstream live render writes Offset.zero"
     }
-  ]
+  ],
+  "coordinateMapping": {
+    "geometryBounds": [
+      "stored geometry-local-bounds",
+      "apply matte-transform to screen-logical-pixels",
+      "multiply screen-device-pixel-ratio to screen-physical-pixels",
+      "subtract enclosing-filter-pass-rect origin to filter-local-physical-pixels"
+    ],
+    "geometrySize": "transformed logical bounds size multiplied by screen-device-pixel-ratio",
+    "matteRasterDpr": "controls geometry texture extent/resampling only; never substitutes for screen positioning",
+    "source": "lib/src/engine/rendering/liquid_glass_render_object.dart:491-562"
+  }
 }

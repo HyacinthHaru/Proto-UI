@@ -119,3 +119,23 @@ test('live compositor sampler ownership cannot be replaced with a data texture',
   graph.passes[1].bindings.uBackgroundTexture = 'geometry';
   assert(inspectGraph(graph).errors.some((x) => x.code === 'host-sampler-ownership'));
 });
+
+test('Flutter live coordinates distinguish matte raster DPR from screen placement', async () => {
+  const graph = await load('flutter');
+  assert.equal(
+    graph.frameInputs.find((f) => f.id === 'matte-transform').to,
+    'screen-logical-pixels'
+  );
+  assert.equal(
+    graph.frameInputs.find((f) => f.id === 'enclosing-filter-pass-rect').space,
+    'screen-physical-pixels'
+  );
+  assert.equal(
+    graph.frameInputs.find((f) => f.id === 'screen-device-pixel-ratio').distinctFrom,
+    'matte-dpr'
+  );
+  const offset = graph.uniformBlocks[1].fields.find((f) => f.name === 'uCaptureOffset');
+  assert.deepEqual(offset.binding, { kind: 'constant', value: [0, 0] });
+  offset.binding = { kind: 'frame-value', id: 'uCaptureOffset' };
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'disabled-feature-precondition'));
+});
