@@ -8,6 +8,9 @@ import type { Browser, Page, Request } from 'playwright-core';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 import {
+  installSearchStartupTrace,
+  traceSearchGetter,
+  type SearchGetterSample,
   searchEvidenceDirectory,
   summarizePendingRequests,
   type PendingSearchRequest,
@@ -48,6 +51,8 @@ const diagnosticPages = new Map<
     pendingRequests: Map<Request, PendingSearchRequest>;
     startedAt: number;
     stageStartedAt: number;
+    initialGetterSamples: SearchGetterSample[];
+    initialPollFailure?: { at: number; message: string; cause: string | null };
     requests: unknown[];
     lateObservation?: { budgetMs: number; elapsedMs: number; ready: boolean };
   }
@@ -62,6 +67,7 @@ function stage(page: Page, id: string, step: string) {
     pendingRequests: new Map<Request, PendingSearchRequest>(),
     startedAt: Date.now(),
     stageStartedAt: Date.now(),
+    initialGetterSamples: [] as SearchGetterSample[],
     requests: [] as unknown[],
   };
   if (!existing) {
@@ -158,6 +164,7 @@ async function capture(page: Page, id: string, state: string) {
     startup: {
       documentReadyState: document.readyState,
       capturedAtMs: performance.now(),
+      trace: (window as any).__puiSearchStartup?.snapshot() ?? null,
       customElementDefined: !!customElements.get('site-search'),
       upgraded: search.constructor === customElements.get('site-search'),
       connected: search.isConnected,
@@ -280,6 +287,31 @@ async function capture(page: Page, id: string, state: string) {
       viewPending: command.viewPending,
       generation: command.generation,
     })),
+    initialGetterSamples: entry?.initialGetterSamples ?? [],
+    initialPollFailure: entry?.initialPollFailure ?? null,
+    startupTrace: observed.startup.trace && {
+      timeOrigin: observed.startup.trace.timeOrigin,
+      capturedAtMs: observed.startup.trace.capturedAtMs,
+      eventCount: observed.startup.trace.eventCount,
+      resourceCount: observed.startup.trace.resourceCount,
+      longTaskCount: observed.startup.trace.longTaskCount,
+      events: observed.startup.trace.events.slice(0, 8).map((event: any) => ({
+        atMs: event.atMs,
+        reason: event.reason,
+        view: event.state.view,
+        defined: event.state.defined,
+        connected: event.state.connected,
+        owners: event.state.mounts.filter((mount: any) => !!mount.owner).length,
+        hosts: event.state.hosts.map((host: any) => host.projectionGenerationState),
+        commands: event.state.commands.map((command: any) => ({
+          command: command.command,
+          role: command.role,
+          disabled: command.disabled,
+          inert: command.inert,
+          pending: command.pending,
+        })),
+      })),
+    },
     errorCount: entry?.errors.length ?? 0,
     lateObservation: entry?.lateObservation ?? null,
   };
@@ -416,6 +448,7 @@ describe.sequential('Search family Button commands', () => {
             theme
           );
           await installOpenCounter(page);
+          await page.addInitScript(installSearchStartupTrace);
           const id = `${family}-${theme}-${width}`;
           stage(page, id, 'navigate');
           try {
@@ -431,21 +464,44 @@ describe.sequential('Search family Button commands', () => {
               'site-search [data-projection-generation-state="active"] [data-close-modal]'
             );
             stage(page, id, 'initial-ready');
-            await expect.poll(() => trigger.getAttribute('aria-disabled')).toBe('false');
+            try {
+              await expect
+                .poll(() =>
+                  traceSearchGetter(diagnosticPages.get(page)!.initialGetterSamples, () =>
+                    trigger.getAttribute('aria-disabled')
+                  )
+                )
+                .toBe('false');
+            } catch (error) {
+              diagnosticPages.get(page)!.initialPollFailure = {
+                at: Date.now(),
+                message: String(error),
+                cause:
+                  error instanceof Error && error.cause ? String(error.cause).slice(0, 400) : null,
+              };
+              throw error;
+            }
+            await page.evaluate(() => (window as any).__puiSearchStartup?.stop());
             expect(await trigger.evaluate((button) => button.localName)).toBe(
               `wc-${family}-button`
             );
             expect(await trigger.getAttribute('role')).toBe('button');
             await expect.poll(() => page.locator('html').getAttribute('data-theme')).toBe(theme);
-            // P-SHADCN-BUTTON-COLOR-SCHEME-STYLES: dark outline has its
-            // own input tint; Brutalist surface retains its paired tokens.
-            expect(await trigger.getAttribute('data-pui-style')).toContain(
-              family === 'brutalist'
-                ? 'bg-secondary-background'
-                : theme === 'dark'
-                  ? 'bg-input/30'
-                  : 'bg-background'
+            // Sibling Header commands use real Shadcn ghost Buttons; fields
+            // retain their independent Select border. Brutalist stays surface.
+            const triggerTokens = await trigger.getAttribute('data-pui-style');
+            expect(triggerTokens).toContain(
+              family === 'brutalist' ? 'bg-secondary-background' : 'bg-transparent'
             );
+            if (family === 'shadcn') {
+              expect(triggerTokens).toContain('border-transparent');
+              const rest = await trigger.evaluate((node) => ({
+                border: getComputedStyle(node).borderTopColor,
+                background: getComputedStyle(node).backgroundColor,
+              }));
+              expect(rest.border).toBe('rgba(0, 0, 0, 0)');
+              expect(rest.background).toBe('rgba(0, 0, 0, 0)');
+            }
             const box = await trigger.boundingBox();
             expect(box!.height).toBeGreaterThanOrEqual(43);
             if (width < 1100) expect(box!.width).toBeCloseTo(44, 0);
@@ -1077,8 +1133,14 @@ for (const width of [320, 390]) {
           )
           .toBeGreaterThanOrEqual(-1);
         expect((await heading.boundingBox())!.y).toBeLessThan(1000);
-        await header.locator('[data-site-menu-button]').click();
+        // The same-route Shadcn journey already revealed settings above;
+        // the different-route Brutalist journey has a new closed disclosure.
+        // Follow its actual state rather than toggling the first one closed.
+        await revealHeaderPreferences(page);
         const panel = header.locator('[data-site-header-panel]');
+        expect(await header.locator('[data-site-menu-button]').getAttribute('aria-expanded')).toBe(
+          'true'
+        );
         expect(await panel.isVisible()).toBe(true);
         const panelBox = (await panel.boundingBox())!;
         const headerBox = (await header.boundingBox())!;

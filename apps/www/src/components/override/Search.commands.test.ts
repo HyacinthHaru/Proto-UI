@@ -203,7 +203,9 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       expect(trigger.getAttribute('role')).toBe('button');
       expect(trigger.getAttribute('aria-disabled')).toBe('false');
       const style = trigger.getAttribute('data-pui-style')!;
-      expect(style).toContain(family === 'brutalist' ? 'bg-secondary-background' : 'border-border');
+      expect(style).toContain(
+        family === 'brutalist' ? 'bg-secondary-background' : 'border-transparent'
+      );
       clickIcon(trigger);
       await settle();
       expect(dialog.open).toBe(true);
@@ -215,7 +217,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       expect(dialog.open).toBe(false);
       expect(document.activeElement).toBe(trigger);
       expect(trigger.getAttribute('data-pui-style')).toContain(
-        family === 'brutalist' ? 'bg-secondary-background' : 'border-border'
+        family === 'brutalist' ? 'bg-secondary-background' : 'border-transparent'
       );
     });
 

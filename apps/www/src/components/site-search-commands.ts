@@ -88,7 +88,7 @@ export function searchCommandParticipant(root: HTMLElement): SearchCommandPartic
         family === 'brutalist'
           ? 'surface'
           : command === 'open'
-            ? 'outline'
+            ? 'ghost'
             : command === 'close'
               ? 'ghost'
               : 'secondary',
