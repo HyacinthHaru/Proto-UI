@@ -206,17 +206,30 @@ describe('automatic documentation image preview in real Chromium', () => {
               },
               { family, colorScheme }
             );
-            await page.waitForFunction(
-              (family) =>
-                document.querySelector('[data-docs-image-trigger]')?.localName ===
-                `docs-preview-${family}-button`,
-              family
-            );
+            await page.waitForFunction((family) => {
+              const triggers = [
+                ...document.querySelectorAll<HTMLElement>('[data-docs-image-trigger]'),
+              ];
+              return (
+                triggers.length === 2 &&
+                triggers.every(
+                  (trigger) =>
+                    trigger.localName === `docs-preview-${family}-image-trigger` &&
+                    trigger.dataset.docsPreviewFamily === family &&
+                    trigger.getAttribute('role') === 'button' &&
+                    trigger.tabIndex === 0 &&
+                    trigger.getAttribute('aria-disabled') !== 'true' &&
+                    !trigger.closest('[hidden], [inert]')
+                )
+              );
+            }, family);
             expect(await page.locator('[data-docs-image-trigger]').count()).toBe(2);
             const trigger = page.getByRole('button', {
               name: 'Enlarge image: Raster comparison diagram',
               exact: true,
             });
+            expect(await trigger.count(), 'exact source image accessible name').toBe(1);
+            expect(await trigger.isEnabled(), 'private semantic trigger is usable').toBe(true);
             if (width < 500) await trigger.tap();
             else await trigger.click();
             await entered(page);
