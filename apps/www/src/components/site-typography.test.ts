@@ -171,6 +171,25 @@ describe('batched real typography adapters and stable native semantic owners', (
     expect(body.textContent).toBe('New translated source');
     expect(body.querySelector('[data-typography-prototype]')).toBeNull();
   });
+  it('honors an explicit committed Shadcn family on a Brutalist documentation path', async () => {
+    const previous = location.href;
+    history.replaceState(null, '', '/en/ui-libraries/brutalist/button/');
+    try {
+      const root = fixture();
+      root.dataset.siteLibraryFamily = 'brutalist';
+      const handle = initDocumentationTypography(document)!;
+      handles.push(handle);
+      await handle.ready;
+      const body = root.querySelector<HTMLElement>('#body')!;
+      expect(body.dataset.typographyFamily).toBe('brutalist');
+      root.dataset.siteLibraryFamily = 'shadcn';
+      await vi.waitFor(() => expect(body.dataset.typographyFamily).toBe('shadcn'));
+      delete root.dataset.siteLibraryFamily;
+      await vi.waitFor(() => expect(body.dataset.typographyFamily).toBe('brutalist'));
+    } finally {
+      history.replaceState(null, '', previous);
+    }
+  });
   it('uses one documentation scope, follows global runtime and responds to new semantic content', async () => {
     const root = fixture();
     const handle = initDocumentationTypography(document)!;

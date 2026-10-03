@@ -34,10 +34,12 @@ export function initDocumentationTypography(doc: Document = document) {
     /* Optional preference. */
   }
   let alive = true;
-  const family = () =>
-    root.dataset.siteLibraryFamily === 'brutalist'
-      ? 'brutalist'
+  const family = () => {
+    const committed = root.dataset.siteLibraryFamily;
+    return committed === 'shadcn' || committed === 'brutalist'
+      ? committed
       : resolveSiteLibraryFamily(view.location.pathname);
+  };
   const controller = createProjectionScopeController({
     initialSelection: { runtimeId: runtime, projectionFamilyId: family() },
     async materialize(request) {
