@@ -43,6 +43,10 @@ Load only the skill needed for the current transition. The list below is routing
 
 Pass only registered artifacts through the validated handoff. Return a terminal handoff when there is no eligible next transition.
 
+## Shape and review interfaces
+
+For interface work, establish the audience, primary task, important content, and existing product decisions before choosing a visual treatment. Use the design-review method in `internal/agent-operations/visual-evidence.md` to compare real output with relevant current references, explain concrete tradeoffs, and iterate. Preserve approved content and design intent unless changing them is in scope. Treat visual quality, accessibility, and interaction correctness as related but separately evidenced outcomes; a functional pass does not settle the design review.
+
 ## Stop at a gate
 
 Stop when product semantics, ownership, public surface, compatibility, lifecycle promotion, contributor rights, security, integration, publication, or release requires a human decision and no exact active standing authorization resolves that bounded action. Present one decision packet with the exact authorization requested and the actions it would not authorize.
@@ -54,6 +58,8 @@ Commit and push when the user explicitly requests them and the live branch permi
 ## Communicate
 
 Apply `internal/agent-operations/visual-evidence.md` to Agent-authored or materially advanced Issues and PRs, including historical backfill. Agents own reproduction, uploaded visuals, sanitized request paraphrases, and evidence debt; humans may submit plain descriptions. This is a soft gate, not a new human intake requirement or external-write authority. Read `internal/agent-operations/github-evidence-upload.md` before choosing an upload method.
+
+Prepare a SHA-bound progress report for each development commit pushed to a PR. When publication is authorized, keep one comment per commit and complete pending evidence in that same comment, following the policy's per-commit workflow. This reporting requirement grants no ongoing comment or upload permission.
 
 Show visible bugs in actual running components. For purely internal failures, explain measured variable/state transitions and their consequences as a source-bound technical walkthrough. Prose/log screenshots alone satisfy neither. An all-history backfill includes closed Issues and cannot be completed by a sample or inventory.
 
