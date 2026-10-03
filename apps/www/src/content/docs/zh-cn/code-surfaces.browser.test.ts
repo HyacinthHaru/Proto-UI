@@ -3,7 +3,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
-import type { Browser, Locator, Page } from 'playwright-core';
+import type { Browser, JSHandle, Locator, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { highlightCode } from '../../../components/PrototypePreviewer/code-highlight';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
@@ -312,6 +312,163 @@ async function paletteProbe(page: Page): Promise<void> {
   ).toBe('rgb(4, 5, 6)');
 }
 
+// Observe the unchanged native gesture on the same retained token. In particular,
+// a sticky line-number pseudo-element can hit-test as its .line origin even when
+// a token's Range rect lies underneath it. This probe never changes DOM/selection.
+function installNativeSelectionEventProbe(
+  element: HTMLElement | SVGElement,
+  bounds: { x: number; y: number; width: number; height: number }
+) {
+  const pre = element.closest('pre')!;
+  const line = element.closest('.line')!;
+  const rect = (value: DOMRect) => ({
+    x: value.x,
+    y: value.y,
+    width: value.width,
+    height: value.height,
+  });
+  const node = (value: Node | null) =>
+    value && {
+      name: value.nodeName,
+      text: value.nodeValue,
+      className: value instanceof Element ? value.getAttribute('class') : null,
+      parentTag: value.parentElement?.tagName ?? null,
+      relation:
+        value === element
+          ? 'token'
+          : element.contains(value)
+            ? 'token-descendant'
+            : value === line
+              ? 'line'
+              : value === pre
+                ? 'pre'
+                : 'other',
+    };
+  const endpoint = (value: Node | null, offset: number | null) => ({
+    node: node(value),
+    offset,
+  });
+  const caret = (point: { x: number; y: number }) => {
+    // Measurement only: this Range is never installed as the Selection.
+    const range = document.caretRangeFromPoint?.(point.x, point.y);
+    return range ? endpoint(range.startContainer, range.startOffset) : null;
+  };
+  const start = { x: bounds.x + 1, y: bounds.y + bounds.height / 2 };
+  const end = { x: bounds.x + bounds.width - 1, y: bounds.y + bounds.height / 2 };
+  const pointFacts = (point: { x: number; y: number }) => ({
+    point,
+    hit: node(document.elementFromPoint(point.x, point.y)),
+    caret: caret(point),
+  });
+  const gutter = () => {
+    const style = getComputedStyle(line, '::before');
+    return {
+      // These are computed pseudo styles plus its originating element's rect,
+      // not a claimed directly measured pseudo-element border box.
+      origin: node(line),
+      originRect: rect(line.getBoundingClientRect()),
+      content: style.content,
+      position: style.position,
+      left: style.left,
+      width: style.width,
+      paddingLeft: style.paddingLeft,
+      paddingRight: style.paddingRight,
+      boxSizing: style.boxSizing,
+      zIndex: style.zIndex,
+      pointerEvents: style.pointerEvents,
+      userSelect: style.userSelect,
+    };
+  };
+  const snapshot = () => {
+    const selection = getSelection();
+    return {
+      token: {
+        connected: element.isConnected,
+        sameToken:
+          pre.querySelector('.line') === line &&
+          [...line.querySelectorAll('span')].find(
+            (span) => span.textContent === 'wc-base-transition'
+          ) === element,
+        text: element.textContent,
+        rect: rect(element.getBoundingClientRect()),
+      },
+      pre: {
+        rect: rect(pre.getBoundingClientRect()),
+        scrollLeft: pre.scrollLeft,
+        scrollTop: pre.scrollTop,
+      },
+      selection: {
+        text: selection?.toString() ?? null,
+        anchor: endpoint(selection?.anchorNode ?? null, selection?.anchorOffset ?? null),
+        focus: endpoint(selection?.focusNode ?? null, selection?.focusOffset ?? null),
+      },
+    };
+  };
+  const initial = {
+    ...snapshot(),
+    start: pointFacts(start),
+    end: pointFacts(end),
+    gutter: gutter(),
+  };
+  const observations: { event: Event; facts: unknown }[] = [];
+  const errors: string[] = [];
+  let dropped = 0;
+  const observe = (event: Event) => {
+    if (observations.length >= 64) {
+      dropped++;
+      return;
+    }
+    try {
+      const mouse = event instanceof MouseEvent ? event : null;
+      observations.push({
+        event,
+        facts: {
+          type: event.type,
+          phase: event.type === 'selectionchange' ? 'notification' : 'capture-before-default',
+          timeStamp: event.timeStamp,
+          isTrusted: event.isTrusted,
+          target: event.target instanceof Node ? node(event.target) : null,
+          buttons: mouse?.buttons ?? null,
+          detail: mouse?.detail ?? null,
+          pointer: mouse ? pointFacts({ x: mouse.clientX, y: mouse.clientY }) : null,
+          ...snapshot(),
+        },
+      });
+    } catch (error) {
+      if (errors.length < 4) errors.push(String(error));
+    }
+  };
+  const events = [
+    'pointerdown',
+    'mousedown',
+    'pointermove',
+    'mousemove',
+    'pointerup',
+    'mouseup',
+    'selectionchange',
+  ];
+  for (const type of events)
+    document.addEventListener(type, observe, { capture: true, passive: true });
+  return {
+    finish() {
+      for (const type of events) document.removeEventListener(type, observe, true);
+      return {
+        mode: 'passive-same-token-native-gesture',
+        productionCodeChanged: false,
+        gestureChanged: false,
+        initial,
+        events: observations.map(({ event, facts }) => ({
+          ...(facts as object),
+          defaultPreventedAfterDispatch: event.defaultPrevented,
+        })),
+        final: { ...snapshot(), start: pointFacts(start), end: pointFacts(end), gutter: gutter() },
+        dropped,
+        errors,
+      };
+    },
+  };
+}
+
 // Read-only failure probe. Ranges measure text runs; they are never installed as
 // the browser selection. Keep the original mouse drag and exact assertion.
 function readNativeSelectionDiagnostics(
@@ -584,13 +741,34 @@ describe.sequential('code-surface dogfood matrix (#630, #420, #568)', () => {
             beforeWheel,
             wheel: { deltaX: delta, deltaY: 0, targetScroll },
             afterWheel,
+            nativeEventProbe: null as unknown,
           };
-          await page.mouse.move(bounds.x + 1, bounds.y + bounds.height / 2);
-          await page.mouse.down();
-          await page.mouse.move(bounds.x + bounds.width - 1, bounds.y + bounds.height / 2, {
-            steps: 8,
-          });
-          await page.mouse.up();
+          let eventProbe: JSHandle<ReturnType<typeof installNativeSelectionEventProbe>> | undefined;
+          try {
+            eventProbe = await originalToken.evaluateHandle(
+              installNativeSelectionEventProbe,
+              bounds
+            );
+          } catch (error) {
+            preparation.nativeEventProbe = { setupError: String(error) };
+          }
+          try {
+            await page.mouse.move(bounds.x + 1, bounds.y + bounds.height / 2);
+            await page.mouse.down();
+            await page.mouse.move(bounds.x + bounds.width - 1, bounds.y + bounds.height / 2, {
+              steps: 8,
+            });
+            await page.mouse.up();
+          } finally {
+            if (eventProbe) {
+              try {
+                preparation.nativeEventProbe = await eventProbe.evaluate((probe) => probe.finish());
+              } catch (error) {
+                preparation.nativeEventProbe = { collectionError: String(error) };
+              }
+              await eventProbe.dispose().catch(() => {});
+            }
+          }
           await expectNativeTokenSelection(page, token, bounds, `${width}-${theme}`, preparation);
           await originalToken.dispose();
           await page.evaluate(() => getSelection()?.removeAllRanges());
