@@ -3,14 +3,13 @@ import '../../styles/global.css';
 import SiteLibraryStyle from '../SiteLibraryStyle.astro';
 import { resolveSiteLibraryFamily } from '../site-library-family';
 const siteLibraryFamily = resolveSiteLibraryFamily(Astro.url.pathname);
-import WhitepaperDiagramViewer from '../WhitepaperDiagramViewer.astro';
+import DocumentationImagePreview from '../DocumentationImagePreview.astro';
 
 const { hasSidebar } = Astro.locals.starlightRoute;
 ---
 
 <SiteLibraryStyle />
-
-{Astro.url.pathname.includes('/whitepaper/') && <WhitepaperDiagramViewer />}
+<DocumentationImagePreview />
 
 <div
   data-site-family-scope
