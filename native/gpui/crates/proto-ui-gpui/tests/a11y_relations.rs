@@ -263,3 +263,42 @@ fn of_two_open_objects_with_one_id_the_panel_reads_the_one_opened_first(cx: &mut
     tabs.receive([ended(TAB)]);
     assert_eq!(label(&mut tabs).as_deref(), Some("Elsewhere"));
 }
+
+#[gpui::test]
+fn a_structured_relation_does_not_keep_a_partial_name_after_a_target_detaches(
+    cx: &mut TestAppContext,
+) {
+    const OTHER: &str = "other-label";
+    let mut tabs = Tabs::open(cx);
+    tabs.window
+        .update(&mut tabs.cx, |view, _, cx| {
+            view.open_session(OTHER, config(OTHER, "Settings"), cx)
+        })
+        .expect("the view opens the second label");
+    tabs.receive(installed(OTHER));
+    let mut other = tab();
+    other["semanticObjectId"] = json!("other-object");
+    other["id"] = json!("other-label-id");
+    let mut source = panel(json!(["tab-object", "other-object"]));
+    source["name"] = json!({ "kind": "text", "value": "Details" });
+    tabs.receive([
+        snapshot(TAB, tab()),
+        snapshot(OTHER, other),
+        snapshot(PANEL, source),
+    ]);
+    let label = |tabs: &mut Tabs| tabs.reported(PANEL).and_then(|panel| panel.label);
+    assert_eq!(label(&mut tabs).as_deref(), Some("Overview Settings"));
+
+    let detached = serde_json::from_value(json!({
+        "kind": "projection.detach",
+        "sessionId": OTHER,
+        "viewEpoch": 1,
+    }))
+    .expect("a detach message");
+    tabs.receive([detached]);
+    assert_eq!(
+        label(&mut tabs).as_deref(),
+        Some("Details"),
+        "an unavailable endpoint must withdraw the whole structured relation, not retain Overview"
+    );
+}

@@ -234,7 +234,7 @@ impl HostHub {
                 .collect(),
             A11yReference::Objects(objects) => objects
                 .iter()
-                .filter_map(|object| {
+                .map(|object| {
                     open().find(|session| {
                         session
                             .a11y
@@ -242,7 +242,10 @@ impl HostHub {
                             .is_some_and(|a11y| &a11y.semantic_object_id == object)
                     })
                 })
-                .collect(),
+                // A structured relation holds only while every object it names
+                // is open; with one of them gone, none of it applies.
+                .collect::<Option<Vec<_>>>()
+                .unwrap_or_default(),
         }
     }
 
