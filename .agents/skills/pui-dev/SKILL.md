@@ -30,6 +30,7 @@ Load only the skill needed for the current transition. The list below is routing
 - use `pui-issue` or `pui-pr` for bounded queue inspection, then `pui-collaborate` for an authorized exact-target metadata, update-branch, ready-for-review, thread, review-request, status-comment, or CI-recheck mutation;
 - use `pui-evidence-publish` only for one prepared, separately authorized additive Issue evidence comment after `pui-issue`; evidence preparation/uploads remain separate authorized work;
 - use `pui-ci`, `pui-govern`, `pui-deploy`, or `pui-deps` for the corresponding bounded read-only operational question, then `pui-dependency-update` for an assessed governed manifest or lockfile update;
+- use `pui-package-budget` for a separately reviewable numeric package-budget transaction after the accepted capability, canonical cost evidence, authority map and implementation authorization are present; a governance or CI report alone does not authorize the mutation;
 - use `pui-spec` or `pui-contract` after the corresponding semantic scope is governed;
 - use `pui-adapter-assess` for a bounded Adapter question and `pui-adapter` when the target slice is governed or accepted;
 - use `pui-module`, `pui-host`, `pui-adapter`, or `pui-prototype` when existing authority or the current bounded request determines the implementation result;
@@ -58,6 +59,8 @@ When blocked, preserve the candidate and useful negative evidence, explain the c
 ## Decide package-budget ceilings
 
 Within an authorized development task, the Agent may decide and implement a bounded numeric increase to the whole-entry package-budget ceilings in `scripts/analysis/package-budgets.mjs` when an already accepted capability justifies its measured cost. The numeric increase does not require an additional human gate. This is an engineering decision about package bytes, not authority to accept a new capability or waive another gate.
+
+Resolve `pui-package-budget` for this standalone mutation. It consumes `capability-envelope`, `authority-map`, the measured `candidate-change`, `evidence-report` and `implementation-authorization`, and returns the numeric transaction and its supporting record as one `candidate-change`. If its measurement report is absent, first route the accepted capability candidate through `pui-validate` to produce `evidence-report`; a raw `pui-ci` report alone is insufficient. After the numeric edit, `pui-validate` replaces the prior report with current-candidate evidence before `pui-review`; retain prior measurements by reference in the transaction record. Route a numeric-only repair back to `pui-package-budget` with the existing authorization and refreshed evidence. A broader implementation repair belongs to its owning leaf. `pui-ci` and `pui-govern` remain read-only observation routes.
 
 Keep each increase a separately reviewable numeric transaction, in a dedicated commit or focused PR linked to the capability. Apply the evidence discipline from [the package-budget decision](https://github.com/Proto-UI/Proto-UI/issues/654#issuecomment-5677625733):
 

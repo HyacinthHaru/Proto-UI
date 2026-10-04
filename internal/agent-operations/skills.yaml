@@ -1,5 +1,5 @@
 schemaVersion: 2
-registryVersion: 2026-09-19.agent-forward-evidence-1
+registryVersion: 2026-10-04.package-budget-route-1
 entrypoints:
   development: pui-dev
   maintenance: pui-maintain
@@ -274,6 +274,22 @@ skills:
     taskClass: update-governed-dependency
     mutation: feature-branch
     requires: [capability-envelope, dependency-report, authority-map, implementation-authorization]
+    produces: [candidate-change]
+  - id: pui-package-budget
+    entrypoints: [development]
+    loadPath: .agents/skills/pui-package-budget/SKILL.md
+    transition: accepted capability cost evidence -> bounded numeric package-budget transaction
+    autonomousMinimumBand: C2
+    taskClass: update-governed-package-budget
+    mutation: feature-branch
+    requires:
+      [
+        capability-envelope,
+        authority-map,
+        candidate-change,
+        evidence-report,
+        implementation-authorization,
+      ]
     produces: [candidate-change]
   - id: pui-release-prep
     entrypoints: [development]
