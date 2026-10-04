@@ -69,11 +69,11 @@
   }
 
   main[data-pagefind-body] h2 {
-    @apply scroll-m-20 text-[1.625rem] leading-[2.125rem] font-semibold tracking-tight md:text-[1.75rem] md:leading-9;
+    @apply scroll-m-20 text-2xl leading-tight font-semibold tracking-tight;
   }
 
   main[data-pagefind-body] .sl-heading-wrapper {
-    @apply flex items-end mt-16 gap-2;
+    @apply flex items-end mt-10 gap-2;
   }
 
   main[data-pagefind-body] .sl-heading-wrapper a {
@@ -81,11 +81,11 @@
   }
 
   main[data-pagefind-body] h3 {
-    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+    @apply scroll-m-20 text-xl leading-snug font-semibold tracking-tight;
   }
 
   main[data-pagefind-body] h4 {
-    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+    @apply scroll-m-20 text-lg leading-snug font-semibold tracking-tight;
   }
 
   main[data-pagefind-body] p {

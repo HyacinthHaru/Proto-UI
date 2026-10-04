@@ -95,7 +95,13 @@ try {
       }))
     : fullVariants;
   for (const v of variants)
-    for (const target of quickPreview ? (['docs'] as const) : (['home', 'docs'] as const)) {
+    for (const target of quickPreview
+      ? v.family === 'shadcn'
+        ? (['quick-start', 'docs'] as const)
+        : (['docs'] as const)
+      : v.family === 'shadcn'
+        ? (['home', 'docs', 'quick-start'] as const)
+        : (['home', 'docs'] as const)) {
       const id = `${v.locale}-${v.width}-${v.theme}-${v.family}-${target}`;
       const context = await browser.newContext({
         viewport: { width: v.width, height: 1000 },
@@ -195,6 +201,76 @@ try {
               assert.ok(Math.abs(select.height - (v.width === 390 ? 44 : 36)) <= 1);
           }
           if (v.width === 390) await page.keyboard.press('Escape');
+        } else if (target === 'quick-start') {
+          await page.goto(`${base}/${v.locale}/start-here/quick-start/`, {
+            waitUntil: 'networkidle',
+          });
+          await page.waitForFunction(() => {
+            const headings = [...document.querySelectorAll('main :is(h2,h3,h4)')];
+            return (
+              headings.length > 0 &&
+              headings.every((heading) => heading.querySelector('[data-typography-prototype]'))
+            );
+          });
+          const rhythm = await page.evaluate(() => ({
+            headings: [...document.querySelectorAll<HTMLElement>('main :is(h2,h3,h4)')].map(
+              (heading) => {
+                const leaf = heading.querySelector<HTMLElement>('[data-typography-prototype]');
+                if (!leaf) throw new Error('Heading requires an actual public Text projection');
+                const paint = getComputedStyle(leaf);
+                return {
+                  tag: heading.localName,
+                  label: heading.textContent,
+                  prototype: leaf.dataset.typographyPrototype,
+                  size: parseFloat(paint.fontSize),
+                  lineHeight: paint.lineHeight,
+                  sectionMargin: getComputedStyle(heading.closest('.sl-heading-wrapper') ?? heading)
+                    .marginTop,
+                };
+              }
+            ),
+            bodies: [
+              ...document.querySelectorAll<HTMLElement>(
+                '[data-doc-flow] > p [data-typography-prototype]'
+              ),
+            ].map((leaf) => parseFloat(getComputedStyle(leaf).fontSize)),
+            overflow: document.documentElement.scrollWidth - innerWidth,
+          }));
+          entry.rhythm = rhythm;
+          await shot('initial');
+          assert.ok(rhythm.headings.some((heading) => heading.tag === 'h2'));
+          assert.ok(rhythm.overflow <= 1);
+          if (kind === 'candidate') {
+            for (const heading of rhythm.headings) {
+              assert.equal(
+                heading.size,
+                heading.tag === 'h2' ? 24 : heading.tag === 'h3' ? 20 : 18
+              );
+              assert.equal(heading.sectionMargin, '40px');
+            }
+            for (const size of rhythm.bodies) assert.equal(size, 16);
+          }
+          const code = page.locator('[data-code-example]').first();
+          await code.scrollIntoViewIfNeeded();
+          const file = code.getByRole('tab', { name: 'src/App.tsx', exact: true });
+          if (await file.count()) await file.click();
+          const expand = code.locator('[data-code-toggle]:visible').first();
+          if (await expand.count()) await expand.click();
+          await shot('code-example');
+          assert.ok(await code.locator('pre:visible').count());
+          entry.codeExample = await code.evaluate((element) => ({
+            overflow: document.documentElement.scrollWidth - innerWidth,
+            labels: [...element.querySelectorAll<HTMLElement>('[role="tab"]')]
+              .filter((tab) => tab.checkVisibility())
+              .map((tab) => tab.textContent),
+            code: [...element.querySelectorAll<HTMLElement>('pre')]
+              .filter((pre) => pre.checkVisibility())
+              .map((pre) => ({
+                size: getComputedStyle(pre).fontSize,
+                width: pre.clientWidth,
+                scrollWidth: pre.scrollWidth,
+              })),
+          }));
         } else {
           const route =
             v.family === 'brutalist'
