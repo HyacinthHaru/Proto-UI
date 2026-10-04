@@ -12,6 +12,7 @@ import ts from 'typescript';
 import { parse as parseYaml } from 'yaml';
 import { parse as parseHtml } from 'parse5';
 import { parse as parseAstro } from '@astrojs/compiler/sync';
+import { createProcessor as createMarkdownProcessor } from '@mdx-js/mdx';
 
 const TOTAL_HEADERS = ['State', 'Count'];
 const TARGET_CLASS_TOTAL_HEADERS = ['Target class', 'Count'];
@@ -2247,24 +2248,25 @@ function maskMdxEsmLiteralText(content, absolutePath) {
 
 function containsNativeMdxControl(content, absolutePath) {
   if (!/\.mdx?$/iu.test(absolutePath)) return false;
-  const markup = markupSourceForJsxFallback(
-    maskMdxEsmLiteralText(content, absolutePath),
-    absolutePath
-  );
-  const nativeTag = new RegExp(
-    '^<(?:button|details|summary|form|input|select|textarea|option|optgroup|dialog)(?=[\\s/>])',
-    /\.md$/iu.test(absolutePath) ? 'iu' : 'u'
-  );
-  return jsxOpeningTagCandidates(markup).some((tag) => nativeTag.test(tag));
+  return authoredResourceTags(content, absolutePath).some(({ name, attributes, opaque, jsx }) => {
+    if (
+      /^(?:button|details|summary|form|input|select|textarea|option|optgroup|dialog)$/u.test(name)
+    )
+      return true;
+    if (name !== 'video' && name !== 'audio') return false;
+    if (opaque) return true;
+    const controls = attributes.get('controls');
+    return !!controls && (!jsx || controls.encoded || controls.value === null || !!controls.value);
+  });
 }
 
-function containsInteractiveSource(content, absolutePath) {
+function containsInteractiveSource(content, absolutePath, authoredContent = content) {
   if (/\.svg$/i.test(absolutePath)) return publicSvgSourceIssues(content).length > 0;
   if (/\.[cm]?[jt]sx?$/i.test(absolutePath)) {
     return astContainsInteractiveRuntime(content) || containsJsxEventHandler(content, absolutePath);
   }
   return (
-    containsNativeMdxControl(content, absolutePath) ||
+    containsNativeMdxControl(authoredContent, absolutePath) ||
     (/\.mdx?$/i.test(absolutePath) && astContainsInteractiveRuntime(content)) ||
     INTERACTIVE_SOURCE_PATTERNS.some((pattern) => pattern.test(content)) ||
     containsJsxEventHandler(content, absolutePath)
@@ -2298,7 +2300,11 @@ function discoverWebsiteInteractiveSources(rootDir) {
   return [...new Set([...candidates, ...reachable])]
     .filter((absolutePath) => !isTestNamedSource(absolutePath) || reachable.has(absolutePath))
     .filter((absolutePath) =>
-      containsInteractiveSource(sourceTextForInteractionScan(absolutePath), absolutePath)
+      containsInteractiveSource(
+        sourceTextForInteractionScan(absolutePath),
+        absolutePath,
+        /\.mdx?$/iu.test(absolutePath) ? fs.readFileSync(absolutePath, 'utf8') : undefined
+      )
     )
     .map((absolutePath) => path.relative(rootDir, absolutePath).replaceAll('\\', '/'))
     .sort();
@@ -4984,7 +4990,7 @@ const REVIEWED_ASTRO_IMPORTS = Object.freeze({
   vue: 'https://esm.sh/vue@3',
 });
 
-function astroHeadImportMapIssues(rootDir) {
+function astroHeadImportMapIssues(rootDir, localStylesheets = [], inlineStyles = []) {
   const sourcePath = 'apps/www/astro.config.mjs';
   const absolutePath = path.join(rootDir, sourcePath);
   if (!fs.existsSync(absolutePath)) return [];
@@ -5039,7 +5045,80 @@ function astroHeadImportMapIssues(rootDir) {
         reject('dynamic head entry is unverified');
         continue;
       }
-      if (tag.toLowerCase() !== 'script') continue;
+      if (tag.toLowerCase() !== 'script') {
+        if (!['link', 'base', 'style'].includes(tag.toLowerCase())) continue;
+        const attrs = item.has('attrs') ? fields(item.get('attrs')) : new Map();
+        if (!attrs) {
+          reject('dynamic head resource attributes are unverified');
+          continue;
+        }
+        const attributes = [];
+        let opaque = false;
+        for (const [name, value] of attrs) {
+          // Astro stringifies booleans on non-boolean resource attributes.
+          // They are not absent/bare HTML flags; keep non-string URLs/relations
+          // unverified rather than silently omitting a stylesheet/base edge.
+          if (
+            /^(?:href|rel)$/iu.test(name) &&
+            (value.kind === ts.SyntaxKind.FalseKeyword || value.kind === ts.SyntaxKind.TrueKeyword)
+          ) {
+            opaque = true;
+            break;
+          }
+          if (value.kind === ts.SyntaxKind.FalseKeyword) continue;
+          if (value.kind === ts.SyntaxKind.TrueKeyword && /^[a-z][\w:-]*$/iu.test(name)) {
+            attributes.push(name);
+            continue;
+          }
+          const text = literal(value);
+          if (text === null || /["<>]/u.test(text) || !/^[a-z][\w:-]*$/iu.test(name)) {
+            opaque = true;
+            break;
+          }
+          attributes.push(`${name}="${text}"`);
+        }
+        if (opaque) {
+          reject('dynamic head resource attributes are unverified');
+          continue;
+        }
+        const markup = `<${tag.toLowerCase()} ${attributes.join(' ')}>`;
+        for (const specifier of documentBaseSpecifiers(markup))
+          issues.push({
+            sourcePath,
+            specifier,
+            category:
+              specifier === DYNAMIC_DOCUMENT_BASE_SPECIFIER
+                ? 'dynamic-document-base'
+                : 'external-document-base',
+            resolvedPath: null,
+          });
+        const styles = stylesheetLinkSpecifiers(markup);
+        if (tag.toLowerCase() === 'style') {
+          const style = literal(item.get('content'));
+          if (style === null) {
+            reject('dynamic head stylesheet content is unverified');
+            continue;
+          }
+          inlineStyles.push(style);
+          styles.push(...styleModuleSpecifiers(style));
+        }
+        for (const specifier of styles) {
+          const category =
+            specifier === DYNAMIC_STYLESHEET_REL_SPECIFIER
+              ? 'dynamic-stylesheet-relation'
+              : specifier === DYNAMIC_STYLESHEET_LINK_SPECIFIER
+                ? 'dynamic-stylesheet-link'
+                : /^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(specifier)
+                  ? 'external-stylesheet'
+                  : null;
+          if (category) issues.push({ sourcePath, specifier, category, resolvedPath: null });
+          else
+            localStylesheets.push(
+              specifier.startsWith('/') || specifier.startsWith('.') ? specifier : `./${specifier}`
+            );
+        }
+        continue;
+      }
       const attrs = item.has('attrs') ? fields(item.get('attrs')) : null;
       const type = attrs && literal(attrs.get('type'))?.trim().toLowerCase();
       if (type === 'application/json' || type === 'application/ld+json') continue;
@@ -5074,17 +5153,109 @@ function astroHeadImportMapIssues(rootDir) {
         reject('import map does not match the exact reviewed mappings');
     }
   };
-  const visit = (node) => {
-    if (ts.isPropertyAssignment(node)) {
-      const name = propertyName(node.name);
-      if (name === 'head') inspectHead(node.initializer);
-      else if (name === null) reject('computed config field is unverified');
-    } else if (ts.isShorthandPropertyAssignment(node) && node.name.text === 'head') {
-      reject('shorthand head configuration is unverified');
+  // Follow only the exported Astro configuration and its Starlight options.
+  // A business object's `head` field elsewhere in this module is not emitted HTML.
+  const configNames = new Set(['defineConfig']);
+  const starlightNames = new Set(['starlight']);
+  const otherIntegrationNames = new Set();
+  for (const statement of sourceFile.statements) {
+    if (!ts.isImportDeclaration(statement) || !ts.isStringLiteralLike(statement.moduleSpecifier))
+      continue;
+    const module = statement.moduleSpecifier.text;
+    const clause = statement.importClause;
+    if (module === '@astrojs/starlight' && clause?.name) starlightNames.add(clause.name.text);
+    if (module !== '@astrojs/starlight' && module !== 'astro/config') {
+      if (clause?.name) otherIntegrationNames.add(clause.name.text);
+      if (clause?.namedBindings && ts.isNamedImports(clause.namedBindings))
+        for (const binding of clause.namedBindings.elements)
+          otherIntegrationNames.add(binding.name.text);
     }
-    ts.forEachChild(node, visit);
+    if (
+      module === 'astro/config' &&
+      clause?.namedBindings &&
+      ts.isNamedImports(clause.namedBindings)
+    )
+      for (const binding of clause.namedBindings.elements)
+        if ((binding.propertyName ?? binding.name).text === 'defineConfig')
+          configNames.add(binding.name.text);
+  }
+  const active = new Set();
+  const inspectConfig = (expression) => {
+    const node = unwrapTypeScriptExpression(expression);
+    if (active.has(node)) {
+      reject('cyclic head configuration is unverified');
+      return;
+    }
+    active.add(node);
+    try {
+      if (ts.isIdentifier(node)) {
+        // A const object can still be mutated or escape through an alias. Do
+        // not certify its historical/config-emitted shape from its initializer.
+        reject('dynamic or shorthand head configuration is unverified');
+        return;
+      }
+      if (ts.isCallExpression(node)) {
+        if (
+          ts.isIdentifier(node.expression) &&
+          (configNames.has(node.expression.text) || starlightNames.has(node.expression.text)) &&
+          node.arguments.length === 1
+        )
+          inspectConfig(node.arguments[0]);
+        else reject('dynamic or shorthand head configuration is unverified');
+        return;
+      }
+      if (!ts.isObjectLiteralExpression(node)) {
+        reject('dynamic or shorthand head configuration is unverified');
+        return;
+      }
+      for (const property of node.properties) {
+        if (ts.isSpreadAssignment(property)) {
+          reject('spread config field is unverified');
+          continue;
+        }
+        const name = propertyName(property.name);
+        if (name === null) {
+          reject('computed config field is unverified');
+          continue;
+        }
+        if (name === 'head') {
+          if (ts.isPropertyAssignment(property)) inspectHead(property.initializer);
+          else reject('shorthand head configuration is unverified');
+        } else if (name === 'integrations') {
+          if (!ts.isPropertyAssignment(property)) {
+            reject('shorthand or getter integration head configuration is unverified');
+            continue;
+          }
+          const integrations = unwrapTypeScriptExpression(property.initializer);
+          if (!ts.isArrayLiteralExpression(integrations)) {
+            reject('dynamic integration head configuration is unverified');
+            continue;
+          }
+          for (const integration of integrations.elements) {
+            const entry = unwrapTypeScriptExpression(integration);
+            if (ts.isCallExpression(entry) && ts.isIdentifier(entry.expression)) {
+              if (starlightNames.has(entry.expression.text)) inspectConfig(entry);
+              else if (!otherIntegrationNames.has(entry.expression.text))
+                reject('opaque integration head configuration is unverified');
+            } else reject('opaque integration head configuration is unverified');
+          }
+        }
+      }
+    } finally {
+      active.delete(node);
+    }
   };
-  visit(sourceFile);
+  for (const statement of sourceFile.statements) {
+    if (ts.isExportAssignment(statement) && !statement.isExportEquals)
+      inspectConfig(statement.expression);
+    else if (
+      ts.isExportDeclaration(statement) &&
+      statement.exportClause &&
+      ts.isNamedExports(statement.exportClause) &&
+      statement.exportClause.elements.some((entry) => entry.name.text === 'default')
+    )
+      reject('indirect default head configuration is unverified');
+  }
   if (sourceFile.parseDiagnostics.length) reject('config syntax is unverified');
   if (mapCount > 1) reject('multiple config import maps are unreviewed');
   return issues;
@@ -5218,12 +5389,347 @@ function embeddedStyleSegments(content) {
   return [...content.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style\s*>/giu)].map((match) => match[1]);
 }
 
-function promotionStyleResourceUrls(absolutePath) {
+function parseAuthoredMarkdown(content, absolutePath) {
+  let markdown = content.replace(/^---[ \t]*\r?\n[\s\S]*?\r?\n---[ \t]*(?:\r?\n|$)/u, '');
+  if (/\.mdx$/iu.test(absolutePath)) {
+    // Preserve the existing inert HTML-comment tolerance for MDX without
+    // treating comment-looking bytes inside attributes/ESM strings as comments.
+    const comments = [];
+    jsxOpeningTagCandidates(
+      maskStringsInMdxBraceExpressions(maskMdxEsmLiteralText(markdown, absolutePath)),
+      { commentRanges: comments }
+    );
+    const characters = markdown.split('');
+    for (const { start, end } of comments)
+      for (let index = start; index < end; index += 1)
+        if (!/[\r\n]/u.test(characters[index])) characters[index] = ' ';
+    markdown = characters.join('');
+  }
+  try {
+    return {
+      markdown,
+      tree: createMarkdownProcessor({ format: /\.mdx$/iu.test(absolutePath) ? 'mdx' : 'md' }).parse(
+        markdown
+      ),
+    };
+  } catch {
+    throw new Error(`promotion markup resource URL in ${absolutePath} remains unverified`);
+  }
+}
+
+function markdownResourceSource(content, absolutePath) {
+  const { markdown, tree } = parseAuthoredMarkdown(content, absolutePath);
+  const characters = markdown
+    .split('')
+    .map((character) => (/[\r\n]/u.test(character) ? character : ' '));
+  const copy = (start, end) => {
+    for (let index = start; index < end; index += 1) characters[index] = markdown[index];
+  };
+  const visit = (node) => {
+    const start = node.position?.start.offset,
+      end = node.position?.end.offset;
+    if (
+      node.type === 'html' ||
+      node.type === 'mdxjsEsm' ||
+      /^mdx(?:Flow|Text)Expression$/u.test(node.type)
+    ) {
+      copy(start, end);
+      return;
+    }
+    if (/^mdxJsx/u.test(node.type)) {
+      // Keep native/component tag syntax, but let each child AST node decide
+      // whether its bytes are HTML/JSX or genuine Markdown code/text.
+      copy(start, node.children[0]?.position.start.offset ?? end);
+      if (node.children.length) copy(node.children.at(-1).position.end.offset, end);
+    }
+    for (const child of node.children ?? []) visit(child);
+  };
+  visit(tree);
+  return characters.join('');
+}
+
+function markdownStyleSegments(content, absolutePath) {
+  const { tree } = parseAuthoredMarkdown(content, absolutePath);
+  const unverified = () => {
+    throw new Error(`promotion CSS resource URL in ${absolutePath} remains unverified`);
+  };
+  const styles = [];
+  if (/\.md$/iu.test(absolutePath)) {
+    const opaqueContent = '<unverified-markdown-style-content>';
+    // Raw HTML nodes are already parsed as HTML by CommonMark. Backticks in a
+    // raw block remain ordinary bytes, unlike actual code/inlineCode nodes.
+    // Inline raw style tags may surround text nodes; use their rendered text.
+    // Other Markdown-generated markup inside CSS is deliberately unverified.
+    const render = (node) => {
+      if (node.type === 'html') return node.value;
+      if (node.type === 'text')
+        return node.value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+      if (node.type === 'definition') return '';
+      const children = (node.children ?? []).map(render).join('');
+      return /^(?:root|paragraph)$/u.test(node.type)
+        ? children
+        : `${opaqueContent}${children}${opaqueContent}`;
+    };
+    const visitHtml = (node) => {
+      if (node.tagName === 'style') {
+        const value = (node.childNodes ?? []).map((child) => child.value ?? '').join('');
+        if (value.includes(opaqueContent)) unverified();
+        styles.push(value);
+      }
+      for (const child of node.childNodes ?? []) visitHtml(child);
+      if (node.content) visitHtml(node.content);
+    };
+    visitHtml(parseHtml(render(tree)));
+    return styles;
+  }
+  const staticText = (node) => {
+    if (node.type === 'text') return node.value;
+    if (/^mdx(?:Flow|Text)Expression$/u.test(node.type)) {
+      const body = node.data?.estree?.body;
+      if (body?.length === 0) return '';
+      const expression =
+        body?.length === 1 && body[0].type === 'ExpressionStatement' ? body[0].expression : null;
+      if (expression?.type === 'Literal' && typeof expression.value === 'string')
+        return expression.value;
+      if (
+        expression?.type === 'TemplateLiteral' &&
+        expression.expressions.length === 0 &&
+        expression.quasis.every((quasi) => typeof quasi.value.cooked === 'string')
+      )
+        return expression.quasis.map((quasi) => quasi.value.cooked).join('');
+    }
+    return unverified();
+  };
+  const visit = (node) => {
+    if (/^mdxJsx/u.test(node.type) && node.name === 'style') {
+      if (
+        node.attributes.some(
+          (attribute) =>
+            attribute.type !== 'mdxJsxAttribute' ||
+            /^(?:children|set:html|set:text|dangerouslySetInnerHTML)$/u.test(attribute.name)
+        )
+      )
+        unverified();
+      styles.push(node.children.map(staticText).join(''));
+      return;
+    }
+    if (node.type === 'mdxjsEsm' || /^mdx(?:Flow|Text)Expression$/u.test(node.type)) {
+      const source = ts.createSourceFile(
+        'markdown-style.tsx',
+        node.value,
+        ts.ScriptTarget.Latest,
+        true,
+        ts.ScriptKind.TSX
+      );
+      const inspect = (candidate) => {
+        if (
+          (ts.isJsxOpeningElement(candidate) || ts.isJsxSelfClosingElement(candidate)) &&
+          candidate.tagName.getText() === 'style'
+        )
+          unverified();
+        ts.forEachChild(candidate, inspect);
+      };
+      inspect(source);
+      return;
+    }
+    for (const child of node.children ?? []) visit(child);
+  };
+  visit(tree);
+  return styles;
+}
+
+// Read authored native tags only. JSX is walked as syntax, never evaluated;
+// Markdown examples and module literal text are masked before lexical fallback.
+function authoredResourceTags(content, absolutePath) {
+  const tags = [];
+  const literal = (node) => {
+    if (!node) return true;
+    if (ts.isJsxExpression(node)) node = node.expression;
+    if (!node) return null;
+    node = unwrapTypeScriptExpression(node);
+    if (ts.isStringLiteralLike(node)) return node.text;
+    if (node.kind === ts.SyntaxKind.FalseKeyword || node.kind === ts.SyntaxKind.NullKeyword)
+      return false;
+    if (node.kind === ts.SyntaxKind.TrueKeyword) return true;
+    if (ts.isNumericLiteral(node)) return Number(node.text);
+    return null;
+  };
+  const inspectJsx = (node) => {
+    if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+      const name = node.tagName.getText();
+      if (/^[a-z][a-z\d-]*$/u.test(name)) {
+        const attributes = new Map();
+        let opaque = false;
+        for (const attribute of node.attributes.properties) {
+          if (!ts.isJsxAttribute(attribute)) {
+            opaque = true;
+            continue;
+          }
+          const key = attribute.name.getText();
+          if (attributes.has(key)) opaque = true;
+          attributes.set(key, {
+            value: literal(attribute.initializer),
+            encoded:
+              !!attribute.initializer &&
+              ts.isStringLiteralLike(attribute.initializer) &&
+              hasHtmlCharacterReference(attribute.initializer.text),
+          });
+        }
+        tags.push({ name, attributes, opaque, jsx: true });
+      }
+    }
+    ts.forEachChild(node, inspectJsx);
+  };
+  if (/\.[cm]?[jt]sx?$/iu.test(absolutePath)) {
+    inspectJsx(
+      ts.createSourceFile(absolutePath, content, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+    );
+    return tags;
+  }
+  if (!/\.(?:html?|astro|mdx?|vue|svelte)$/iu.test(absolutePath)) return tags;
+  let raw = content;
+  if (/\.mdx?$/iu.test(absolutePath)) {
+    try {
+      raw = markdownResourceSource(content, absolutePath);
+    } catch {
+      // Inventory still recognizes bounded native markup in an invalid source;
+      // promotion independently rejects every Markdown/MDX parse failure.
+      raw = stripMarkdownCode(content);
+    }
+    raw = maskMdxEsmLiteralText(raw, absolutePath);
+  }
+  raw = raw
+    .replace(/^---[ \t]*\r?\n[\s\S]*?\r?\n---[ \t]*(?:\r?\n|$)/u, '')
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/giu, '');
+  const masked =
+    /\.html?$/iu.test(absolutePath) || /\.md$/iu.test(absolutePath)
+      ? raw
+      : maskStringsInMdxBraceExpressions(raw);
+  if (/\.(?:html?|md)$/iu.test(absolutePath)) {
+    const inspectHtml = (node) => {
+      if (node.sourceCodeLocation?.startTag) {
+        const attributes = new Map(
+          (node.attrs ?? []).map((attribute) => {
+            const key = attribute.prefix ? `${attribute.prefix}:${attribute.name}` : attribute.name;
+            const range = node.sourceCodeLocation.attrs[key];
+            return [
+              key,
+              {
+                value: attribute.value,
+                encoded:
+                  !!range &&
+                  hasHtmlCharacterReference(raw.slice(range.startOffset, range.endOffset)),
+              },
+            ];
+          })
+        );
+        tags.push({ name: node.tagName, attributes, opaque: false, jsx: false });
+      }
+      for (const child of node.childNodes ?? []) inspectHtml(child);
+      if (node.content) inspectHtml(node.content);
+    };
+    inspectHtml(parseHtml(raw, { sourceCodeLocationInfo: true }));
+  } else
+    for (const { start, end } of jsxOpeningTagCandidates(masked, { includeOffsets: true })) {
+      const candidate = raw.slice(start, end);
+      const source = ts.createSourceFile(
+        'resource.tsx',
+        candidate.replace(/\/?\s*>$/u, ' />'),
+        ts.ScriptTarget.Latest,
+        true,
+        ts.ScriptKind.TSX
+      );
+      const count = tags.length;
+      inspectJsx(source);
+      if (source.parseDiagnostics.length) {
+        if (tags.length > count) tags.at(-1).opaque = true;
+        else {
+          const name = candidate.match(/^<([a-z][a-z\d-]*)(?=[\s/>])/u)?.[1];
+          if (name) tags.push({ name, attributes: new Map(), opaque: true, jsx: true });
+        }
+      }
+    }
+  return tags;
+}
+
+function promotionMarkupResourceUrls(absolutePath) {
+  if (!/\.(?:html?|astro|mdx?|vue|svelte|[cm]?[jt]sx?)$/iu.test(absolutePath)) return [];
+  const content = fs.readFileSync(absolutePath, 'utf8');
+  const urls = [];
+  const unverified = () => {
+    throw new Error(`promotion markup resource URL in ${absolutePath} remains unverified`);
+  };
+  const add = (value, encoded = false) => {
+    if (typeof value !== 'string' || encoded || /[{}\x60\0]/u.test(value)) unverified();
+    const url = normalizeBrowserResourceUrl(value);
+    if (/[\u0000-\u001f\u007f]/u.test(url)) unverified();
+    if (url.startsWith('#') || /^data:/iu.test(url)) return;
+    if (!url || /^(?:[a-z][a-z\d+.-]*:|\/\/)/iu.test(url)) unverified();
+    urls.push(url);
+  };
+  const attributesByTag = {
+    img: ['src', 'srcset', 'srcSet'],
+    video: ['src', 'poster'],
+    audio: ['src'],
+    source: ['src', 'srcset', 'srcSet'],
+    track: ['src'],
+    image: ['href', 'xlink:href', 'xlinkHref'],
+    input: ['src'],
+  };
+  for (const { name, attributes, opaque } of authoredResourceTags(content, absolutePath)) {
+    const names = attributesByTag[name];
+    if (!names) continue;
+    if (
+      opaque ||
+      attributes.has('v-bind') ||
+      names.some((key) => attributes.has(`:${key}`) || attributes.has(`v-bind:${key}`))
+    )
+      unverified();
+    for (const key of names) {
+      const attribute = attributes.get(key);
+      if (!attribute) continue;
+      if (/^srcset$/iu.test(key)) {
+        if (typeof attribute.value !== 'string' || attribute.encoded) unverified();
+        for (const candidate of attribute.value.split(',')) {
+          const match = candidate.trim().match(/^(\S+)(?:\s+(?:\d+w|(?:\d+(?:\.\d+)?|\.\d+)x))?$/u);
+          if (!match) unverified();
+          add(match[1]);
+        }
+      } else add(attribute.value, attribute.encoded);
+    }
+  }
+  if (/\.mdx?$/iu.test(absolutePath)) {
+    // Parse only, using the same AST boundary as authored HTML/JSX inventory.
+    const { tree } = parseAuthoredMarkdown(content, absolutePath);
+    const definitions = new Map();
+    const references = [];
+    const visit = (node) => {
+      if (node.type === 'definition' && !definitions.has(node.identifier))
+        definitions.set(node.identifier, node.url);
+      if (node.type === 'image') add(node.url);
+      if (node.type === 'imageReference') references.push(node.identifier);
+      if (/^mdxJsx/u.test(node.type) && /^(?:script|style)$/iu.test(node.name ?? '')) return;
+      for (const child of node.children ?? []) visit(child);
+    };
+    visit(tree);
+    for (const reference of references) {
+      const target = definitions.get(reference);
+      if (target === undefined) unverified();
+      add(target);
+    }
+  }
+  return urls;
+}
+
+function promotionStyleResourceUrls(absolutePath, inlineStyles = []) {
   const styles = /\.(?:css|less|s[ac]ss)$/iu.test(absolutePath)
     ? [fs.readFileSync(absolutePath, 'utf8')]
     : /\.(?:html?|astro|vue|svelte)$/iu.test(absolutePath)
       ? embeddedStyleSegments(fs.readFileSync(absolutePath, 'utf8'))
       : [];
+  if (/\.mdx?$/iu.test(absolutePath))
+    styles.push(...markdownStyleSegments(fs.readFileSync(absolutePath, 'utf8'), absolutePath));
+  styles.push(...inlineStyles);
   const urls = [];
   const unverified = () => {
     throw new Error(`promotion CSS resource URL in ${absolutePath} remains unverified`);
@@ -5520,6 +6026,12 @@ function templateNavigationUrlSpecifiers(content, absolutePath, options) {
 function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
   if (/\.svg$/i.test(absolutePath)) return [];
   const content = fs.readFileSync(absolutePath, 'utf8');
+  if (absolutePath.endsWith(`${path.sep}apps${path.sep}www${path.sep}astro.config.mjs`)) {
+    const localStylesheets = [];
+    astroHeadImportMapIssues(path.resolve(path.dirname(absolutePath), '../..'), localStylesheets);
+    return [...localStylesheets, ...scriptModuleSpecifiers(content, absolutePath, options)];
+  }
+
   if (/\.(?:css|less|s[ac]ss)$/i.test(absolutePath)) {
     return styleModuleSpecifiers(content);
   }
@@ -6652,6 +7164,51 @@ export function promotionBarePackageTargets(root, specifier, metadata) {
   throw unverified();
 }
 
+function promotionResourcePath(root, canonicalRoot, sourcePath, viteRoot, kind, url) {
+  let resourcePath;
+  try {
+    resourcePath = decodeURIComponent(url.split(/[?#]/u, 1)[0]);
+  } catch {
+    throw new Error(`promotion ${kind} resource URL ${url} remains unverified`);
+  }
+  if (!resourcePath || resourcePath.includes('\0') || resourcePath.includes('\\'))
+    throw new Error(`promotion ${kind} resource URL ${url} remains unverified`);
+  if (resourcePath.startsWith('/')) {
+    const relative = path.relative(viteRoot, path.resolve(viteRoot, `.${resourcePath}`));
+    if (relative.startsWith('..') || path.isAbsolute(relative))
+      throw new Error(
+        `promotion ${kind} resource URL escapes its application root; remains unverified`
+      );
+  }
+  // CSS URLs without ./ are stylesheet-relative, not bare package imports.
+  const bases = resourcePath.startsWith('/')
+    ? [
+        path.resolve(viteRoot, 'public', `.${resourcePath}`),
+        path.resolve(viteRoot, `.${resourcePath}`),
+      ]
+    : [path.resolve(path.dirname(sourcePath), resourcePath)];
+  const resource = bases.find(
+    (candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()
+  );
+  if (!resource)
+    throw new Error(`promotion ${kind} resource URL ${url} is unresolved; remains unverified`);
+  const relative = path.relative(canonicalRoot, fs.realpathSync(resource));
+  if (relative.startsWith('..') || path.isAbsolute(relative))
+    throw new Error(
+      `promotion ${kind} resource resolves outside the repository; remains unverified`
+    );
+  // Comparing only today's canonical target cannot prove which bytes a
+  // historical symlink selected. Reject links in any resource component.
+  for (let component = resource; component !== path.resolve(root); ) {
+    if (fs.lstatSync(component).isSymbolicLink())
+      throw new Error(`promotion ${kind} resource symlink remains unverified`);
+    const parent = path.dirname(component);
+    if (parent === component) break;
+    component = parent;
+  }
+  return resource;
+}
+
 function reachableSourcePaths(
   candidates,
   aliasConfig = { aliases: new Map(), unsupported: new Set() },
@@ -6751,6 +7308,32 @@ function reachableSourcePaths(
       ? path.join(root, 'apps', 'agent-harness')
       : path.join(root, 'apps', 'www'),
   }));
+  if (promotionPackages) {
+    const config = path.join(root, 'apps/www/astro.config.mjs');
+    if (fs.existsSync(config)) {
+      const localStylesheets = [];
+      const inlineStyles = [];
+      const configIssues = astroHeadImportMapIssues(root, localStylesheets, inlineStyles);
+      if (configIssues.length) throw new Error('promotion config head resources remain unverified');
+      const viteRoot = path.join(root, 'apps/www');
+      for (const url of promotionStyleResourceUrls(config, inlineStyles))
+        reachable.add(
+          promotionResourcePath(root, canonicalRoot, config, viteRoot, 'head CSS', url)
+        );
+      for (const url of localStylesheets) {
+        const target = promotionResourcePath(
+          root,
+          canonicalRoot,
+          config,
+          viteRoot,
+          'head stylesheet',
+          url
+        );
+        reachable.add(target);
+        pending.push({ sourcePath: target, viteRoot });
+      }
+    }
+  }
   const visitedContexts = new Set();
   while (pending.length > 0) {
     const { sourcePath, viteRoot } = pending.pop();
@@ -6763,48 +7346,18 @@ function reachableSourcePaths(
       throw new Error('promotion package closure reached the 500-module bound; remains unverified');
     visitedContexts.add(contextKey);
     if (promotionPackages) {
-      for (const url of promotionStyleResourceUrls(sourcePath)) {
-        let resourcePath;
-        try {
-          resourcePath = decodeURIComponent(url.split(/[?#]/u, 1)[0]);
-        } catch {
-          throw new Error(`promotion CSS resource URL ${url} remains unverified`);
-        }
-        if (!resourcePath || resourcePath.includes('\0') || resourcePath.includes('\\'))
-          throw new Error(`promotion CSS resource URL ${url} remains unverified`);
-        if (resourcePath.startsWith('/')) {
-          const relative = path.relative(viteRoot, path.resolve(viteRoot, `.${resourcePath}`));
-          if (relative.startsWith('..') || path.isAbsolute(relative))
-            throw new Error(
-              'promotion CSS resource URL escapes its application root; remains unverified'
-            );
-        }
-        // CSS URLs without ./ are stylesheet-relative, not bare package imports.
-        const bases = resourcePath.startsWith('/')
-          ? [
-              path.resolve(viteRoot, 'public', `.${resourcePath}`),
-              path.resolve(viteRoot, `.${resourcePath}`),
-            ]
-          : [path.resolve(path.dirname(sourcePath), resourcePath)];
-        const resource = bases.find(
-          (candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()
+      for (const [kind, url] of [
+        ...promotionStyleResourceUrls(sourcePath).map((url) => ['CSS', url]),
+        ...promotionMarkupResourceUrls(sourcePath).map((url) => ['markup', url]),
+      ]) {
+        const resource = promotionResourcePath(
+          root,
+          canonicalRoot,
+          sourcePath,
+          viteRoot,
+          kind,
+          url
         );
-        if (!resource)
-          throw new Error(`promotion CSS resource URL ${url} is unresolved; remains unverified`);
-        const relative = path.relative(canonicalRoot, fs.realpathSync(resource));
-        if (relative.startsWith('..') || path.isAbsolute(relative))
-          throw new Error(
-            'promotion CSS resource resolves outside the repository; remains unverified'
-          );
-        // Comparing only today's canonical target cannot prove which bytes a
-        // historical symlink selected. Reject links in any resource component.
-        for (let component = resource; component !== path.resolve(root); ) {
-          if (fs.lstatSync(component).isSymbolicLink())
-            throw new Error('promotion CSS resource symlink remains unverified');
-          const parent = path.dirname(component);
-          if (parent === component) break;
-          component = parent;
-        }
         // Hash resource bytes only. Fonts/images, even with code-like bytes or
         // extensions, do not become executable module traversal roots.
         reachable.add(resource);

@@ -6,6 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import { afterEach, test } from 'node:test';
+import { createProcessor as createMarkdownProcessor } from '@mdx-js/mdx';
 import { runInNewContext } from 'node:vm';
 import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -12948,7 +12949,8 @@ test('reviewed native MDX: nested live controls and prose boundaries', () => {
     ['<section>\n    <details>\n        <summary>More</summary>\n    </details>\n</section>', true],
     ['{"<details><summary>Example</summary></details>"}', false],
     ['<Widget label="<button>Example</button>" />', false],
-    ['    <button>Indented example</button>', false],
+    // MDX permits indented JSX; unlike Markdown, this is not a code block.
+    ['    <button>Indented example</button>', true],
     ['<a href="/docs">Ordinary document link</a>', false],
   ])
     assert.equal(
@@ -13172,4 +13174,458 @@ test('reviewed native MDX: real exported templates survive example and comment e
       /executable navigation URL/.test(issue)
     )
   );
+});
+
+for (const extension of ['md', 'mdx'])
+  for (const tag of ['video', 'audio'])
+    test(`media resource review: inventories ${extension} ${tag} controls`, () => {
+      const issues = probeReview('4178614707', 'website', `<${tag} controls />`, extension, false);
+      assert.ok(issues.some((issue) => /interactive website source.*not bound/u.test(issue)));
+    });
+
+for (const [name, markup] of [
+  ['image', '<img src="/surface.bin" />'],
+  ['Markdown image', '![Surface](/surface.bin)'],
+])
+  test(`media resource review: binds changed ${name} bytes to evidence`, () => {
+    const root = createRoot();
+    const implementationPath =
+      name === 'image'
+        ? 'apps/www/src/components/override/Search.astro'
+        : 'apps/www/src/content/docs/search.mdx';
+    const asset = path.join(root, 'apps/www/public/surface.bin');
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+    fs.mkdirSync(path.dirname(asset), { recursive: true });
+    fs.writeFileSync(path.join(root, implementationPath), markup);
+    fs.writeFileSync(asset, Buffer.from([0, 128, 255]));
+    writeValidMatrices(root, { Path: implementationPath }, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, {
+      websiteBindings,
+      matrixOverrides: { Path: implementationPath },
+    });
+    assert.doesNotThrow(() =>
+      validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+    );
+    fs.writeFileSync(asset, Buffer.from([0, 129, 255]));
+    assert.match(
+      validationMessage(root, promotionOptions(revision)),
+      /promoted dependency.*surface\.bin.*differs from evidence Commit/u
+    );
+  });
+
+for (const [name, entry, pattern] of [
+  [
+    'stylesheet',
+    "{tag:'link',attrs:{rel:'stylesheet',href:'https://cdn.example/theme.css'}}",
+    /external stylesheet/u,
+  ],
+  ['base', "{tag:'base',attrs:{href:'https://cdn.example/'}}", /external document base/u],
+])
+  test(`media resource review: inspects config head ${name}`, () => {
+    const root = createRoot();
+    fs.writeFileSync(
+      path.join(root, 'apps/www/astro.config.mjs'),
+      `export default {integrations:[starlight({head:[${entry}]})]};`
+    );
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), pattern);
+  });
+
+for (const [extension, source, interactive] of [
+  ['md', '<VIDEO CONTROLS="false"></VIDEO>', true],
+  ['md', '<audio controls=false></audio>', true],
+  ['md', '<video data-controls="yes"></video>', false],
+  ['md', '<audio title="controls"></audio>', false],
+  ['mdx', '<video controls={true}/>', true],
+  ['mdx', '<video controls={enabled}/>', true],
+  ['mdx', '<audio {...attributes}/>', true],
+  ['mdx', '<audio controls="false"/>', true],
+  ['mdx', '<audio controls={false}/>', false],
+  ['mdx', '<video controls={null}/>', false],
+  ['mdx', '<video controls={0}/>', false],
+  ['mdx', '<video muted autoPlay/>', false],
+  ['mdx', '<Video controls/>', false],
+  ['mdx', '<div>{"<video controls/>"}</div>', false],
+  ['mdx', 'export const sample = "<audio controls/>";\n\nText', false],
+  ['mdx', '```mdx\n<video controls/>\n```\n`<audio controls/>`', false],
+  ['mdx', '<!-- <audio controls/> -->', false],
+])
+  test(`media resource controls: ${extension} ${source}`, () => {
+    assert.equal(
+      probeReview('4178614707-controls', 'website', source, extension, false).some((issue) =>
+        /interactive website source.*not bound/u.test(issue)
+      ),
+      interactive
+    );
+  });
+
+function markupPromotionFixture(
+  markup,
+  { extension = 'astro', config, assets = ['apps/www/public/surface.bin'] } = {}
+) {
+  const root = createRoot();
+  const implementationPath = /^mdx?$/u.test(extension)
+    ? `apps/www/src/content/docs/search.${extension}`
+    : `apps/www/src/components/override/Search.${extension}`;
+  const websiteBindings = [[implementationPath, ['www.shell.search']]];
+  fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+  fs.writeFileSync(path.join(root, implementationPath), markup);
+  for (const asset of assets) {
+    fs.mkdirSync(path.dirname(path.join(root, asset)), { recursive: true });
+    fs.writeFileSync(path.join(root, asset), Buffer.from([0, 128, 255]));
+  }
+  if (config) fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), config);
+  writeValidMatrices(root, { Path: implementationPath }, {}, { websiteBindings });
+  const revision = commitFixtureRoot(root);
+  writeSelfHostedPromotion(root, revision, {
+    websiteBindings,
+    matrixOverrides: { Path: implementationPath },
+  });
+  return {
+    root,
+    revision,
+    websiteBindings,
+    options: { rootDir: root, ...promotionOptions(revision) },
+  };
+}
+
+for (const [name, extension, markup] of [
+  ['HTML image', 'html', '<img src="/surface.bin">'],
+  ['Astro video poster', 'astro', '<video poster="/surface.bin"/>'],
+  ['Astro audio source', 'astro', '<audio><source src="/surface.bin"/></audio>'],
+  ['Astro track', 'astro', '<video><track src="/surface.bin"/></video>'],
+  ['Vue source', 'vue', '<template><audio src="/surface.bin"/></template>'],
+  ['Svelte image', 'svelte', '<img src="/surface.bin"/>'],
+  ['JSX image', 'tsx', 'export const Surface=()=> <img src={"/surface.bin"}/>;'],
+  [
+    'responsive image',
+    'tsx',
+    'export const Surface=()=> <picture><source srcSet="/surface.bin 1x, /surface.bin 2x"/></picture>;',
+  ],
+  ['SVG image', 'html', '<svg><image href="/surface.bin"/></svg>'],
+  ['SVG legacy image', 'md', '<svg><image xlink:href="/surface.bin"/></svg>'],
+  ['percent query fragment', 'astro', '<img src="/surf%61ce.bin?v=2#crop"/>'],
+  ['browser normalization', 'astro', '<img src=" \tsurface.bin "/>'],
+  ['nested alt text', 'md', '![A [nested] label](/surface.bin)'],
+  ['even escaped prefix', 'md', '\\\\![Surface](/surface.bin)'],
+  ['angle destination', 'md', '![Surface](</surface.bin> "title")'],
+  ['full reference', 'md', '![Surface][Art]\n\n[art]: /surface.bin'],
+  ['collapsed reference', 'md', '![Art][]\n\n[art]: /surface.bin'],
+  ['shortcut reference', 'md', '![Art]\n\n[art]: /surface.bin'],
+  ['multiline reference', 'md', '![Art][x]\n\n[x]:\n /surface.bin'],
+  ['nested MDX children', 'mdx', '<section>\n![Surface](/surface.bin)\n</section>'],
+  ['MDX reference', 'mdx', '![Art][]\n\n[art]: /surface.bin'],
+])
+  test(`media resource assets: ${name} preserves unchanged and rejects changed bytes`, () => {
+    const relative =
+      name === 'browser normalization'
+        ? 'apps/www/src/components/override/surface.bin'
+        : 'apps/www/public/surface.bin';
+    const { root, options } = markupPromotionFixture(markup, { extension, assets: [relative] });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+    fs.writeFileSync(path.join(root, relative), Buffer.from([0, 129, 255]));
+    assert.match(
+      validationMessage(root, options),
+      /promoted dependency.*surface\.bin.*differs from evidence Commit/u
+    );
+  });
+
+for (const [name, extension, markup] of [
+  ['remote', 'astro', '<img src="https://cdn.example/surface.bin"/>'],
+  ['missing', 'astro', '<img src="/missing.bin"/>'],
+  ['dynamic', 'mdx', '<img src={asset}/>'],
+  ['spread', 'tsx', 'export const Surface=()=> <img {...attributes}/>;'],
+  ['Vue dynamic', 'vue', '<template><img :src="asset"/></template>'],
+  ['Vue spread', 'vue', '<template><img v-bind="attributes"/></template>'],
+  ['bad percent', 'astro', '<img src="/%zz.bin"/>'],
+  ['encoded traversal', 'astro', '<img src="/%2e%2e/surface.bin"/>'],
+  ['repository escape', 'astro', '<img src="../../../../../../surface.bin"/>'],
+  ['entity uncertainty', 'astro', '<img src="/surf&#97;ce.bin"/>'],
+  ['opaque srcset', 'tsx', 'export const Surface=()=> <img srcSet={choices}/>;'],
+  ['unparseable MDX', 'mdx', '![Surface](/surface.bin)\n{'],
+])
+  test(`media resource assets: ${name} stays unverified`, () => {
+    const { root, options } = markupPromotionFixture(markup, { extension });
+    assert.match(validationMessage(root, options), /promotion markup resource.*unverified/u);
+  });
+
+for (const mode of ['file', 'directory', 'ancestor-directory'])
+  test(`media resource assets: rejects ${mode} symlink targets`, () => {
+    const { root, options } = markupPromotionFixture('<img src="/alias/surface.bin"/>');
+    const publicRoot = path.join(root, 'apps/www/public');
+    if (mode === 'file') {
+      fs.mkdirSync(path.join(publicRoot, 'alias'));
+      fs.symlinkSync('../surface.bin', path.join(publicRoot, 'alias/surface.bin'));
+    } else if (mode === 'directory') fs.symlinkSync('.', path.join(publicRoot, 'alias'));
+    else {
+      fs.mkdirSync(path.join(publicRoot, 'nested'));
+      fs.renameSync(
+        path.join(publicRoot, 'surface.bin'),
+        path.join(publicRoot, 'nested/surface.bin')
+      );
+      fs.symlinkSync('nested', path.join(publicRoot, 'alias'));
+    }
+    assert.match(
+      validationMessage(root, options),
+      /promotion markup resource symlink.*unverified/u
+    );
+  });
+
+for (const [extension, markup] of [
+  ['md', '```md\n![Surface](/missing.bin)\n```\n`![Surface](/missing.bin)`'],
+  ['md', '\\![Surface](/missing.bin)\n\n<pre>![Surface](/missing.bin)</pre>'],
+  ['mdx', 'export const sample = "![Surface](/missing.bin) <img src=\'/missing.bin\'/>";\n\nText'],
+  ['mdx', '<div>{"![Surface](/missing.bin)"}</div>'],
+  ['mdx', '<!-- ![Surface](/missing.bin) <img src="/missing.bin"/> -->'],
+  [
+    'tsx',
+    'export const sample="<img src=\'/missing.bin\'/>"; export const Surface=()=> <Image src="/missing.bin"/>;',
+  ],
+  ['astro', '---\nconst sample="<img src=\'/missing.bin\'/>";\n---\n<main>Static</main>'],
+  ['astro', '<img src="data:image/png;base64,AA=="/><svg><image href="#local"/></svg>'],
+])
+  test(`media resource examples: ${extension} ${markup}`, () => {
+    const { options } = markupPromotionFixture(markup, { extension });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+  });
+
+for (const [name, config, rejects] of [
+  [
+    'meta/icon and business head',
+    `const business={head:[{tag:'link',attrs:{rel:'stylesheet',href:'https://cdn.example/business.css'}}]}; export default {head:[{tag:'meta',attrs:{name:'description',content:'ordinary'}},{tag:'link',attrs:{rel:'icon',href:'/icon.png'}}], business:{head:unknownValue}};`,
+    false,
+  ],
+  [
+    'aliased Starlight',
+    `import star from '@astrojs/starlight'; export default {integrations:[star({head:[{tag:'base',attrs:{href:'https://cdn.example/'}}]})]};`,
+    true,
+  ],
+  [
+    'computed keys',
+    `export default {['head']:[{['tag']:'link',['attrs']:{['rel']:'stylesheet',['href']:'https://cdn.example/theme.css'}}]};`,
+    true,
+  ],
+  ['opaque attrs', `export default {head:[{tag:'link',attrs:attributes}]};`, true],
+  [
+    'opaque relation',
+    `export default {head:[{tag:'link',attrs:{rel:relation,href:'/theme.css'}}]};`,
+    true,
+  ],
+  ['opaque href', `export default {head:[{tag:'base',attrs:{href:base}}]};`, true],
+  ['head spread', `export default {head:[{tag:'link',attrs:{...attributes}}]};`, true],
+  [
+    'exported alias',
+    `const cfg={};cfg.head=[{tag:'base',attrs:{href:'https://cdn.example/'}}];export default cfg;`,
+    true,
+  ],
+  ['named default', `const cfg={head:[]};export {cfg as default};`, true],
+  ['quoted default', `const cfg={head:[]};export {cfg as 'default'};`, true],
+  [
+    'integration alias',
+    `const docs=starlight({head:[]});export default {integrations:[docs]};`,
+    true,
+  ],
+  ['integration spread', `const docs=[];export default {integrations:[...docs]};`, true],
+  [
+    'integration conditional',
+    `export default {integrations:[condition?starlight({head:[]}):null]};`,
+    true,
+  ],
+  [
+    'options mutation',
+    `const options={};options.head=resource;export default {integrations:[starlight(options)]};`,
+    true,
+  ],
+  [
+    'style import',
+    `export default {head:[{tag:'style',content:'@import "https://cdn.example/theme.css";'}]};`,
+    true,
+  ],
+])
+  test(`media resource head: ${name}`, () => {
+    const root = createRoot();
+    fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), config);
+    writeValidMatrices(root);
+    if (rejects)
+      assert.match(
+        validationMessage(root),
+        /(?:unverified|external stylesheet|external document base)/u
+      );
+    else assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  });
+
+test('media resource head: local stylesheet has its own wall and promotion byte closure', () => {
+  const config = `export default {head:[{tag:'link',attrs:{rel:'stylesheet',href:'/surface.css'}}]};`;
+  const { root, options, websiteBindings } = markupPromotionFixture('<main>Static</main>', {
+    config,
+    assets: [],
+  });
+  const stylesheet = path.join(root, 'apps/www/public/surface.css');
+  fs.mkdirSync(path.dirname(stylesheet), { recursive: true });
+  fs.writeFileSync(stylesheet, 'main{color:red}');
+  const revision = commitFixtureRoot(root);
+  writeSelfHostedPromotion(root, revision, { websiteBindings });
+  const promoted = { ...options, ...promotionOptions(revision) };
+  assert.doesNotThrow(() => validateCoverageMatrices(promoted));
+  fs.writeFileSync(stylesheet, 'main{color:blue}');
+  assert.match(
+    validationMessage(root, promoted),
+    /promoted dependency.*surface\.css.*differs from evidence Commit/u
+  );
+  fs.writeFileSync(stylesheet, '@import "https://cdn.example/raw.css";');
+  writeValidMatrices(root, {}, {}, { websiteBindings });
+  assert.match(validationMessage(root), /external stylesheet.*raw.css/u);
+});
+
+for (const declaration of [
+  `const integrations=[starlight({head:[]})];export default {integrations};`,
+  `export default {get integrations(){return [starlight({head:[]})]}};`,
+])
+  test(`media resource head: opaque integration field ${declaration}`, () => {
+    const root = createRoot();
+    fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), declaration);
+    writeValidMatrices(root);
+    assert.match(validationMessage(root), /integration head configuration is unverified/u);
+  });
+
+for (const disabled of [true, false])
+  test(`media resource head: static boolean attributes preserve link semantics (${disabled})`, () => {
+    const root = createRoot();
+    fs.writeFileSync(
+      path.join(root, 'apps/www/astro.config.mjs'),
+      `export default {head:[{tag:'link',attrs:{rel:'icon',href:'/icon.png',crossorigin:true}},{tag:'link',attrs:{rel:'stylesheet',href:'/theme.css',disabled:${disabled}}}]};`
+    );
+    fs.mkdirSync(path.join(root, 'apps/www/public'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'apps/www/public/theme.css'), 'main{color:blue}');
+    writeValidMatrices(root);
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+  });
+
+for (const field of ['href', 'rel'])
+  for (const value of [true, false])
+    test(`media resource head: ${field}=${value} is not an HTML boolean flag`, () => {
+      const root = createRoot();
+      const attrs = { rel: 'stylesheet', href: '/theme.css', [field]: value };
+      fs.writeFileSync(
+        path.join(root, 'apps/www/astro.config.mjs'),
+        `export default {head:[{tag:'link',attrs:${JSON.stringify(attrs)}}]};`
+      );
+      writeValidMatrices(root);
+      assert.match(validationMessage(root), /head resource attributes are unverified/u);
+    });
+
+test('media resource head: inline style URL bytes enter promotion closure', () => {
+  const config = `export default {head:[{tag:'style',content:"main{background:url('/surface.bin')}"}]};`;
+  const { root, options } = markupPromotionFixture('<main>Static</main>', { config });
+  assert.doesNotThrow(() => validateCoverageMatrices(options));
+  fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+  assert.match(
+    validationMessage(root, options),
+    /promoted dependency.*surface\.bin.*differs from evidence Commit/u
+  );
+});
+
+for (const source of [
+  '<pre>`<img src="/surface.bin">`</pre>',
+  '<div>\n`<img src="/surface.bin">`\n</div>',
+])
+  test(`raw Markdown resource boundary: ${source}`, () => {
+    const { root, options } = markupPromotionFixture(source, { extension: 'md' });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+    fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+    assert.match(
+      validationMessage(root, options),
+      /promoted dependency.*surface\.bin.*differs from evidence Commit/u
+    );
+  });
+
+for (const [extension, source, interactive] of [
+  ['md', '<pre>`<video controls></video>`</pre>', true],
+  ['md', '<div>\n`<audio controls></audio>`\n</div>', true],
+  ['md', '`<video controls></video>`', false],
+  ['md', '```html\n<pre><audio controls></audio></pre>\n```', false],
+  ['mdx', '<pre>`<video controls/>`</pre>', false],
+])
+  test(`raw Markdown media boundary: ${extension} ${source}`, () => {
+    assert.equal(
+      probeReview('raw-markdown-media', 'website', source, extension, false).some((issue) =>
+        /interactive website source.*not bound/u.test(issue)
+      ),
+      interactive
+    );
+  });
+
+for (const [extension, source] of [
+  ['md', '<style>.surface{background:url("/surface.bin")}</style>'],
+  ['mdx', '<style>{`.surface{background:url("/surface.bin")}`}</style>'],
+])
+  test(`raw Markdown stylesheet boundary: ${extension} binds changed bytes`, () => {
+    const { root, options } = markupPromotionFixture(source, { extension });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+    fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+    assert.match(
+      validationMessage(root, options),
+      /promoted dependency.*surface\.bin.*differs from evidence Commit/u
+    );
+  });
+
+for (const [extension, source] of [
+  ['md', '```html\n<style>.a{background:url("/missing.bin")}</style>\n```'],
+  ['md', '`<style>.a{background:url("/missing.bin")}</style>`'],
+  ['mdx', '```mdx\n<style>{".a{background:url(/missing.bin)}"}</style>\n```'],
+  ['mdx', '`<style>{".a{background:url(/missing.bin)}"}</style>`'],
+  ['mdx', 'export const css="<style>.a{background:url(/missing.bin)}</style>";\n\nText'],
+  ['mdx', '{"<style>.a{background:url(/missing.bin)}</style>"}'],
+  ['md', '<!-- <style>.a{background:url(/missing.bin)}</style> -->'],
+  ['mdx', '<pre>`<img src="/missing.bin"/>`</pre>'],
+  ['md', '\\<img src="/missing.bin">'],
+])
+  test(`raw Markdown inert boundary: ${extension} ${source}`, () => {
+    const { options } = markupPromotionFixture(source, { extension });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+  });
+
+for (const source of [
+  '<style>{stylesheet}</style>',
+  '<style children={stylesheet}/>',
+  '<style>{`.a{background:url(${resource})}`}</style>',
+  'export const Dynamic=()=> <style>{stylesheet}</style>;',
+])
+  test(`raw Markdown dynamic style boundary: ${source}`, () => {
+    const { root, options } = markupPromotionFixture(source, { extension: 'mdx' });
+    assert.match(validationMessage(root, options), /promotion CSS resource URL.*unverified/u);
+  });
+
+test('raw Markdown inline style text keeps the rendered CSS resource', () => {
+  const { root, options } = markupPromotionFixture(
+    'Text <style>.a{background:url("/surface.bin")}</style>',
+    { extension: 'md' }
+  );
+  assert.doesNotThrow(() => validateCoverageMatrices(options));
+  fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+  assert.match(
+    validationMessage(root, options),
+    /promoted dependency.*surface\.bin.*differs from evidence Commit/u
+  );
+});
+
+test('raw Markdown indentation boundary follows the actual format parser', () => {
+  const source = '    <button>Indented example</button>';
+  assert.equal(createMarkdownProcessor({ format: 'md' }).parse(source).children[0].type, 'code');
+  const mdx = createMarkdownProcessor({ format: 'mdx' }).parse(source);
+  assert.equal(mdx.children[0].type, 'paragraph');
+  assert.equal(mdx.children[0].children[0].type, 'mdxJsxTextElement');
+  assert.equal(mdx.children[0].children[0].name, 'button');
+  for (const [extension, interactive] of [
+    ['md', false],
+    ['mdx', true],
+  ])
+    assert.equal(
+      probeReview('raw-indentation', 'website', source, extension, false).some((issue) =>
+        /interactive website source.*not bound/u.test(issue)
+      ),
+      interactive
+    );
 });

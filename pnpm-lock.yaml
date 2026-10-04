@@ -11,6 +11,9 @@ importers:
       '@astrojs/compiler':
         specifier: 2.13.1
         version: 2.13.1
+      '@mdx-js/mdx':
+        specifier: 3.1.1
+        version: 3.1.1
       '@proto.ui/spec-schema':
         specifier: workspace:*
         version: link:packages/spec/schema
