@@ -80,3 +80,28 @@ export function classifyFlatTabPaint({ shadow, transform, translate }) {
     flatPaint: supported && depthLayers.length === 0 && identityTransform && noTranslation,
   };
 }
+
+// Popup visibility is not native focus/event readiness. Observe entry first,
+// then request the opposite row with a real key and observe that exact focus.
+// No delay, synthetic focus, or state mutation substitutes for these barriers.
+export async function establishNativeItemPointerBaseline({
+  waitForEntry,
+  pressEdge,
+  waitForOther,
+  readTarget,
+  expectedSelection,
+  identity,
+}) {
+  await waitForEntry();
+  await pressEdge();
+  await waitForOther();
+  const before = await readTarget();
+  if (
+    !before.achieved ||
+    before.focused ||
+    before.hovered ||
+    (expectedSelection !== null && before.ariaSelected !== expectedSelection)
+  )
+    throw new Error(`Invalid independent pointer baseline for ${identity}.`);
+  return before;
+}

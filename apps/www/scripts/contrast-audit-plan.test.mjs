@@ -7,6 +7,7 @@ import {
   contrastHeldBinaryTargets,
   assertContrastCaseCoverage,
   classifyFlatTabPaint,
+  establishNativeItemPointerBaseline,
 } from './contrast-audit-plan.mjs';
 
 const official = ['wc', 'react', 'vue', 'vue2'];
@@ -164,4 +165,109 @@ test('Tabs held audit follows current flat prototype criteria while retaining na
   assert.ok(runner.includes('sameSelectedPair(held)'));
   assert.ok(runner.includes('held.flatPaint === true'));
   assert.ok(!runner.includes('selectedElevation'));
+});
+
+test('native item baseline waits for deferred entry and exact other focus before reading the target', async () => {
+  // Explicit injected readiness ordering; not a browser execution claim.
+  const calls = [];
+  let ready = false;
+  let otherFocused = false;
+  let releaseEntry;
+  let releaseOther;
+  const entry = new Promise((resolve) => {
+    releaseEntry = () => {
+      ready = true;
+      resolve();
+    };
+  });
+  const other = new Promise((resolve) => {
+    releaseOther = () => {
+      otherFocused = true;
+      resolve();
+    };
+  });
+  const before = { achieved: true, focused: false, hovered: false, ariaSelected: 'true' };
+  const result = establishNativeItemPointerBaseline({
+    waitForEntry: async () => {
+      calls.push('entry');
+      await entry;
+    },
+    pressEdge: async () => {
+      assert.equal(ready, true);
+      calls.push('native-End');
+    },
+    waitForOther: async () => {
+      calls.push('other');
+      await other;
+    },
+    readTarget: async () => {
+      assert.equal(otherFocused, true);
+      calls.push('read');
+      return before;
+    },
+    expectedSelection: 'true',
+    identity: 'selected',
+  });
+  assert.deepEqual(calls, ['entry']);
+  releaseEntry();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.deepEqual(calls, ['entry', 'native-End', 'other']);
+  releaseOther();
+  assert.equal(await result, before);
+  assert.deepEqual(calls, ['entry', 'native-End', 'other', 'read']);
+});
+
+test('native item baseline preserves absent-focus and strict target-state failures', async () => {
+  const valid = { achieved: true, focused: false, hovered: false, ariaSelected: 'true' };
+  const common = {
+    waitForEntry: async () => {},
+    pressEdge: async () => {},
+    waitForOther: async () => {},
+    expectedSelection: 'true',
+    identity: 'selected',
+  };
+  for (const mutation of [
+    { achieved: false },
+    { focused: true },
+    { hovered: true },
+    { ariaSelected: 'false' },
+    { ariaSelected: null },
+  ])
+    await assert.rejects(
+      establishNativeItemPointerBaseline({
+        ...common,
+        readTarget: async () => ({ ...valid, ...mutation }),
+      }),
+      /Invalid independent pointer baseline/
+    );
+  let pressed = false;
+  await assert.rejects(
+    establishNativeItemPointerBaseline({
+      ...common,
+      waitForEntry: async () => {
+        throw new Error('entry missing');
+      },
+      pressEdge: async () => {
+        pressed = true;
+      },
+      readTarget: async () => valid,
+    }),
+    /entry missing/
+  );
+  assert.equal(pressed, false);
+  let read = false;
+  await assert.rejects(
+    establishNativeItemPointerBaseline({
+      ...common,
+      waitForOther: async () => {
+        throw new Error('other focus missing');
+      },
+      readTarget: async () => {
+        read = true;
+        return valid;
+      },
+    }),
+    /other focus missing/
+  );
+  assert.equal(read, false);
 });

@@ -12,6 +12,7 @@ import {
   contrastHeldBinaryTargets,
   assertContrastCaseCoverage,
   classifyFlatTabPaint,
+  establishNativeItemPointerBaseline,
 } from './contrast-audit-plan.mjs';
 import { compileContrastAnatomy, compareContrastAnatomy } from './contrast-anatomy.mjs';
 import { BRUTALIST_THEME } from '../../../packages/prototypes/brutalist/src/theme';
@@ -87,6 +88,7 @@ type Case = {
   };
   hoverCardClosedBaseline?: Observation;
   binaryKeyboardActivation?: Observation;
+  pointerItemBaselines?: Record<string, unknown>[];
 };
 const passiveFamilies = new Set(['badge', 'card', 'skeleton', 'separator', 'spinner']);
 function plannedStates(family: string): string[] {
@@ -1166,7 +1168,14 @@ async function popupItemPointerJourneys(page: Page, item: Case, trigger: Locator
   // These exact authored rows come from demo-brutalist-{select,dropdown-menu}.demo.ts.
   // Selection is observed before mouseup; activation is not suppressed or rewritten.
   for (const row of rows) {
+    phase = `item-pointer-close:${row.identity}`;
+    const previousId = await trigger.getAttribute('aria-controls');
+    if (!previousId)
+      throw new Error('Item pointer journey has no prior controlled popup identity.');
     await page.keyboard.press('Escape');
+    await (await owned(page, contentName))
+      .and(page.locator(`[id=${JSON.stringify(previousId)}]`))
+      .waitFor({ state: 'hidden' });
     await page.mouse.move(0, 0);
     await trigger.click();
     const controlledId = await trigger.getAttribute('aria-controls');
@@ -1179,13 +1188,53 @@ async function popupItemPointerJourneys(page: Page, item: Case, trigger: Locator
       name: row.name,
       exact: true,
     });
-    // Native keyboard focus starts on the OTHER authored row. The pointer must
-    // reach this row itself; an already-focused row cannot hide a missing route.
-    await page.keyboard.press(row === rows[0] ? 'End' : 'Home');
-    await page.mouse.move(0, 0);
-    const before = await targetObservation(target);
-    if (before.focused || before.hovered || (isSelect && before.ariaSelected !== row.selected))
-      throw new Error(`Invalid independent pointer baseline for ${row.identity}.`);
+    // Visibility can precede deferred native entry focus. Start from an
+    // observed item in this exact popup before sending End/Home; then require
+    // focus on the OTHER authored row, rather than merely hoping the key ran.
+    const role = isSelect ? 'option' : 'menuitem';
+    const otherRow = rows.find((candidate) => candidate !== row)!;
+    const other = popup.getByRole(role, { name: otherRow.name, exact: true });
+    const baselineRecord: Record<string, unknown> = {
+      identity: row.identity,
+      targetName: row.name,
+      expectedOtherName: otherRow.name,
+      expectedSelection: row.selected,
+      stage: 'popup-visible',
+      beforeEntryWait: await targetObservation(target),
+      achieved: false,
+    };
+    (item.pointerItemBaselines ??= []).push(baselineRecord);
+    phase = `item-pointer-baseline:${row.identity}`;
+    const before = await establishNativeItemPointerBaseline({
+      waitForEntry: async () => {
+        baselineRecord.stage = 'waiting-native-entry';
+        const entry = popup.locator(
+          `[role="${role}"]:focus:not([aria-disabled="true"]):not([disabled])`
+        );
+        await entry.waitFor({ state: 'visible' });
+        baselineRecord.entry = await targetObservation(entry);
+      },
+      pressEdge: async () => {
+        baselineRecord.stage = 'requesting-other-item';
+        await page.keyboard.press(row === rows[0] ? 'End' : 'Home');
+        await page.mouse.move(0, 0);
+      },
+      waitForOther: async () => {
+        baselineRecord.stage = 'waiting-other-item-focus';
+        await other.and(page.locator(':focus')).waitFor({ state: 'visible' });
+        baselineRecord.other = await targetObservation(other);
+      },
+      readTarget: async () => {
+        baselineRecord.stage = 'checking-independent-target';
+        const observation = await targetObservation(target);
+        baselineRecord.observed = observation;
+        return observation;
+      },
+      expectedSelection: row.selected,
+      identity: row.identity,
+    });
+    baselineRecord.stage = 'verified';
+    baselineRecord.achieved = true;
     const physical = await target.elementHandle();
     if (!physical) throw new Error('Pointer item has no physical target.');
     const theme = BRUTALIST_THEME[item.theme as keyof typeof BRUTALIST_THEME];
