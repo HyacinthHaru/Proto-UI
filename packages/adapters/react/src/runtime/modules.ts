@@ -240,7 +240,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
-  isFocusTargetReady: () => boolean;
+  isFocusAcquisitionReady: () => boolean;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -264,7 +264,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
 
   const getTriggerSurface = () => {
     const target = getLogicalTriggerSurfaceRoot(instanceToken);
-    return args.isViewReady() && args.isFocusTargetReady() && target?.isConnected ? target : null;
+    return args.isViewReady() && target?.isConnected ? target : null;
   };
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
@@ -337,7 +337,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       [
         FOCUS_REQUEST_FOCUS_CAP,
         (target: HTMLElement, options?: FocusRequestOptions) => {
-          if (!target.isConnected) return false;
+          if (!args.isFocusAcquisitionReady() || !target.isConnected) return false;
           target.focus(
             typeof options?.preventScroll === 'boolean'
               ? { preventScroll: options.preventScroll }

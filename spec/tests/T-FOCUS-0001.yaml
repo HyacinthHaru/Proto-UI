@@ -97,6 +97,17 @@ cases:
     expectation: focus-visible-equals-native-result-when-supported-modality-fallback-when-unsupported
 
 implementations:
+  - id: focus-entry-rejected-request-lifecycle
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-entry-readiness.contract.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-ENTRY-HOST-DELEGATION
+      - T-FOCUS-0001-CASE-ENTRY-DISABLE
+      - T-FOCUS-0001-CASE-PENDING-HOST-TARGET
+    notes:
+      - Rejected entry acquisition re-resolves current host targets, retains only the latest intent and preserves cancellation and retained-view boundaries without fabricating region facts.
   - id: runtime-focus-contract
     kind: runtime-test
     status: passing
@@ -186,6 +197,9 @@ verifies:
         - C-AS-FOCUS-ENTRY-0001-F
         - C-AS-FOCUS-ENTRY-0001-G
 revisions:
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added rejected entry acquisition lifecycle evidence without broadening first-request no-target policy.
   - version: 0.3.0-alpha.0
     change: strengthened
     summary: Bound the focus-visible native-equality case to the runtime focus contract and the React and Vue adapter focus tests, which jointly prove the measurable and fallback halves.
