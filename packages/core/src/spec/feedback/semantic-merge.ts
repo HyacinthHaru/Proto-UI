@@ -56,6 +56,15 @@ const TEXT_SIZE_TOKENS = new Set([
 ]);
 
 export function getSemanticGroupKeyV0(token: string): string {
+  // Keep allowlisted selector targets isolated from the element's ordinary
+  // style groups, while still resolving conflicts within the target by the
+  // underlying utility (for example selection:bg-* is last-wins separately
+  // from both selection:text-* and bg-*).
+  const selectionPrefix = 'selection:';
+  if (token.startsWith(selectionPrefix)) {
+    return `${selectionPrefix}${getSemanticGroupKeyV0(token.slice(selectionPrefix.length))}`;
+  }
+
   if (
     token === 'flex' ||
     token === 'inline-flex' ||

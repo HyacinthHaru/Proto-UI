@@ -242,6 +242,21 @@ describe('proto style css renderer', () => {
     expect(css).not.toContain('Unsupported Proto UI style tokens');
   });
 
+  it('renders the allowlisted static text-selection pseudo-element variants', () => {
+    const css = renderProtoStyleTokenCss([
+      'selection:bg-primary',
+      'selection:text-primary-foreground',
+    ]);
+
+    expect(css).toContain(
+      ':where([data-pui-style~="selection:bg-primary"])::selection {\n    background-color: var(--pui-primary);'
+    );
+    expect(css).toContain(
+      ':where([data-pui-style~="selection:text-primary-foreground"])::selection {\n    color: var(--pui-primary-foreground);'
+    );
+    expect(css).not.toContain('Unsupported Proto UI style tokens');
+  });
+
   it('lets dark tokens follow the system preference when the host has no explicit theme', () => {
     const css = renderProtoStyleTokenCss(['dark:bg-input/30']);
 
