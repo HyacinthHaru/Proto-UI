@@ -13,9 +13,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  popup-audit-evidence:
+  family-audit-evidence:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - shard: binary-and-buttons
+            families: button,toggle,switch,checkbox
+          - shard: popup-boundaries
+            families: dropdown-menu,select,dialog
+          - shard: intent-and-tabs
+            families: tooltip,hover-card,tabs
+          - shard: passive-and-editors
+            families: badge,card,skeleton,separator,spinner,textarea,scroll-area
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,15 +46,17 @@ jobs:
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
       - name: Calibrate paint acceptance and bounded evidence storage
         run: |
-          node --test apps/www/scripts/contrast-report-journal.test.mjs
+          node --test apps/www/scripts/contrast-report-journal.test.mjs \
+            apps/www/scripts/contrast-audit-plan.test.mjs \
+            apps/www/scripts/contrast-anatomy.test.mjs
           corepack pnpm@10.32.1 exec vitest run \
             apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts \
             --maxWorkers=1 --minWorkers=1
-      - name: Observe exact-head Dropdown Menu and Select in all four Web runtimes
+      - name: Observe exact-head ${{ matrix.shard }} in every page-declared Web runtime
         env:
           ASTRO_TELEMETRY_DISABLED: '1'
           PROTO_UI_CONTRAST_AUDIT: '1'
-          PROTO_UI_CONTRAST_FAMILIES: dropdown-menu,select
+          PROTO_UI_CONTRAST_FAMILIES: ${{ matrix.families }}
           PROTO_UI_BROWSER_BASE_URL: http://127.0.0.1:4321
           PROTO_UI_CONTRAST_EVIDENCE_DIR: ${{ runner.temp }}/contrast-evidence/candidate
         run: |
@@ -67,7 +82,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: brutalist-contrast-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
+          name: brutalist-contrast-${{ matrix.shard }}-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
           path: ${{ runner.temp }}/contrast-evidence
           if-no-files-found: warn
           retention-days: 30

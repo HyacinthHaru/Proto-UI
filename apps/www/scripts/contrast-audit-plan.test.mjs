@@ -87,3 +87,29 @@ test('unsupported runtime availability cannot become zero-case success for a req
     )
   );
 });
+
+test('normal PR evidence shards cover every current manifest family exactly once', async () => {
+  const { PROJECTION_FAMILY_MANIFESTS } =
+    await import('../src/components/PrototypePreviewer/projection-families.ts');
+  const workflow = parse(
+    await readFile(
+      new URL('../../../.github/workflows/brutalist-contrast-evidence.yml', import.meta.url),
+      'utf8'
+    )
+  );
+  const job = workflow.jobs['family-audit-evidence'];
+  const rows = job.strategy.matrix.include;
+  const families = rows.flatMap((row) => row.families.split(','));
+  assert.equal(new Set(families).size, families.length);
+  assert.deepEqual(
+    [...families].sort(),
+    Object.keys(PROJECTION_FAMILY_MANIFESTS.brutalist.families).sort()
+  );
+  assert.equal(job.strategy['fail-fast'], false);
+  assert.equal(job.strategy['max-parallel'], 2);
+  const observe = job.steps.find((step) => step.env?.PROTO_UI_CONTRAST_FAMILIES);
+  assert.equal(observe.env.PROTO_UI_CONTRAST_FAMILIES, '${{ matrix.families }}');
+  const upload = job.steps.find((step) => step.uses?.startsWith('actions/upload-artifact@'));
+  assert.ok(upload.with.name.includes('${{ matrix.shard }}'));
+  assert.equal(upload.if, 'always()');
+});
