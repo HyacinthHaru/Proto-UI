@@ -1,5 +1,5 @@
 schemaVersion: 2
-registryVersion: 2026-10-04.package-budget-route-1
+registryVersion: 2026-10-04.package-budget-validation-route-2
 entrypoints:
   development: pui-dev
   maintenance: pui-maintain
@@ -7,6 +7,7 @@ compositionRules:
   - resolve exactly one leaf for the current transition
   - load only the resolved loadPath
   - pass explicit artifacts through a validated handoff
+  - honor a source leaf's declared allowedNextSkillIds before loading its next leaf
   - treat assessment as advice in human-assisted mode
   - enforce the fresh self-assessed ceiling before every autonomous transition
   - revalidate live permission and current authorization at every external action
@@ -291,6 +292,7 @@ skills:
         implementation-authorization,
       ]
     produces: [candidate-change]
+    allowedNextSkillIds: [pui-validate]
   - id: pui-release-prep
     entrypoints: [development]
     loadPath: .agents/skills/pui-release-prep/SKILL.md

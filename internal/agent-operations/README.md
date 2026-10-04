@@ -4,6 +4,8 @@ This directory defines the operational control plane for Agent-assisted GitHub w
 
 Ordinary contributor Agents enter through `$pui-dev` and the composable skill registry in `skills.yaml`. Their capability and assessment rules live in `capability-policy.yaml` and `contributor-agents.md`. These files define task eligibility and routing; they do not grant GitHub permission.
 
+A leaf may declare `allowedNextSkillIds` to constrain its nonterminal handoff to registered leaves sharing an entrypoint. The resolver returns this metadata and the handoff validator enforces it; `null` still permits an honest terminal result with the source leaf's required outputs. `pui-package-budget` uses this constraint to require `pui-validate` after numeric mutation, so retained pre-mutation cost evidence cannot satisfy a direct review handoff. This routing check does not certify evidence contents or authenticate a caller-supplied source identity.
+
 Agent Operations coordinates multiple workflow families without flattening their domain-specific protocols:
 
 - `issue-steward`: classify and route GitHub Issues;

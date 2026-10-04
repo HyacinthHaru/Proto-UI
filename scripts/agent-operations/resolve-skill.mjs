@@ -106,6 +106,9 @@ try {
             mutation: skill.mutation,
             requires: skill.requires,
             produces: skill.produces,
+            ...(skill.allowedNextSkillIds
+              ? { allowedNextSkillIds: skill.allowedNextSkillIds }
+              : {}),
           },
         };
   process.stdout.write(`${JSON.stringify(output, null, 2)}\n`);

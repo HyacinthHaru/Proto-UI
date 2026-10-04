@@ -117,6 +117,7 @@ export function validateSkillRegistryDocument(registry, policy, { root = DEFAULT
         'requires',
         'produces',
         ...(Object.hasOwn(skill, 'conditionalProduces') ? ['conditionalProduces'] : []),
+        ...(Object.hasOwn(skill, 'allowedNextSkillIds') ? ['allowedNextSkillIds'] : []),
       ],
       label
     );
@@ -170,6 +171,19 @@ export function validateSkillRegistryDocument(registry, policy, { root = DEFAULT
     );
     assertStringList(skill.requires, `${label}.requires`, { nonempty: true });
     assertStringList(skill.produces, `${label}.produces`, { nonempty: true });
+    if (Object.hasOwn(skill, 'allowedNextSkillIds')) {
+      assert(
+        Array.isArray(skill.allowedNextSkillIds) && skill.allowedNextSkillIds.length > 0,
+        `${label}.allowedNextSkillIds must be a non-empty array`
+      );
+      const nextIds = new Set();
+      for (const nextId of skill.allowedNextSkillIds) {
+        assert(ID.test(nextId ?? ''), `${label}.allowedNextSkillIds contains an invalid id`);
+        assert(!nextIds.has(nextId), `${label}.allowedNextSkillIds duplicates ${nextId}`);
+        assert(nextId !== skill.id, `${label}.allowedNextSkillIds cannot select itself`);
+        nextIds.add(nextId);
+      }
+    }
     if (Object.hasOwn(skill, 'conditionalProduces')) {
       assert(
         Array.isArray(skill.conditionalProduces) && skill.conditionalProduces.length > 0,
@@ -195,6 +209,17 @@ export function validateSkillRegistryDocument(registry, policy, { root = DEFAULT
         );
         conditions.add(key);
       }
+    }
+  }
+
+  for (const skill of registry.skills) {
+    for (const nextId of skill.allowedNextSkillIds ?? []) {
+      const next = registry.skills.find((candidate) => candidate.id === nextId);
+      assert(next, `${skill.id}.allowedNextSkillIds names an unregistered leaf: ${nextId}`);
+      assert(
+        skill.entrypoints.some((entrypoint) => next.entrypoints.includes(entrypoint)),
+        `${skill.id}.allowedNextSkillIds has no compatible entrypoint with ${nextId}`
+      );
     }
   }
 
@@ -321,6 +346,12 @@ export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
   }
 
   if (handoff.nextSkillId === null) return { handoff, nextSkill: null };
+  if (fromLeaf?.allowedNextSkillIds) {
+    assert(
+      fromLeaf.allowedNextSkillIds.includes(handoff.nextSkillId),
+      `handoff from ${fromLeaf.id} must continue through one of: ${fromLeaf.allowedNextSkillIds.join(', ')}`
+    );
+  }
   assert(
     handoff.nextSkillId !== handoff.fromId,
     'handoff cannot recursively select its source skill'
