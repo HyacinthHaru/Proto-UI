@@ -360,6 +360,27 @@ jobs:
               corepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar
             )
           done
+      - name: Capture the first normal-size 390px before and after views
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          for worktree in baseline candidate; do
+            if [[ "$worktree" == baseline ]]; then revision="$MOBILE_BASELINE_SHA"; else revision="$CANDIDATE_SHA"; fi
+            (
+              cd "$worktree"
+              node --import tsx "$GITHUB_WORKSPACE/candidate/apps/www/scripts/capture-mobile-interaction-evidence.ts" \
+                --revision-kind "$worktree" --expected-revision "$revision" --quick-preview \
+                --out "$RUNNER_TEMP/mobile-interaction/first-pair/$worktree"
+            )
+          done
+      - name: Publish the first actual pair before the full interaction matrix
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-first-pair-${{ env.CANDIDATE_SHA }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-interaction/first-pair
+          if-no-files-found: warn
+          retention-days: 30
       - name: Capture the exact pre-change mobile experience
         working-directory: baseline
         timeout-minutes: 6

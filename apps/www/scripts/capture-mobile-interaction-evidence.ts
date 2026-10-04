@@ -17,9 +17,11 @@ const { values } = parseArgs({
     'revision-kind': { type: 'string' },
     'expected-revision': { type: 'string' },
     out: { type: 'string' },
+    'quick-preview': { type: 'boolean', default: false },
   },
 });
 const kind = values['revision-kind'];
+const quickPreview = values['quick-preview'] === true;
 assert.ok(kind === 'baseline' || kind === 'candidate');
 assert.ok(values.out && values['expected-revision']);
 assert.ok(!process.env.PROTO_UI_BROWSER_BASE_URL, 'A source-bound capture starts its own server');
@@ -36,6 +38,7 @@ await mkdir(out, { recursive: true });
 const cases: Array<Record<string, unknown>> = [];
 const failures: string[] = [];
 const report = {
+  quickPreview,
   revisionKind: kind,
   revision,
   scriptRevision: execFileSync('git', ['-C', path.dirname(script), 'rev-parse', 'HEAD'], {
@@ -65,9 +68,9 @@ const readyHome = (page: Page, runtime = 'wc') =>
 const base = await startServer(['/zh-cn/', '/en/ui-libraries/base/transition/']);
 const browser = await launchBrowser();
 try {
-  for (const width of [390, 430])
-    for (const locale of ['zh-cn', 'en'])
-      for (const theme of ['light', 'dark'] as const) {
+  for (const width of quickPreview ? [390] : [390, 430])
+    for (const locale of quickPreview ? ['zh-cn'] : ['zh-cn', 'en'])
+      for (const theme of quickPreview ? (['light'] as const) : (['light', 'dark'] as const)) {
         const id = `${locale}-${width}-${theme}`;
         const context = await browser.newContext({
           viewport: { width, height: 844 },
@@ -148,42 +151,43 @@ try {
             assert.ok(await homeMenu(page).evaluate((e) => e === document.activeElement));
             await page.keyboard.press('Space');
           }
-          // Exercise nested Select Escape before its parent and actual generation replacement.
-          const runtime = page.locator(
-            '#home-preferences [data-projection-control="runtime"] [role="combobox"]'
-          );
-          await runtime.click();
-          await page.keyboard.press('Escape');
-          assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'true');
-          for (const [target, label] of [
-            ['react', 'React'],
-            ['vue', 'Vue'],
-            ['vue2', 'Vue 2'],
-            ['wc', 'Web Components'],
-          ]) {
+          if (!quickPreview) {
+            // Exercise nested Select Escape before its parent and actual generation replacement.
+            const runtime = page.locator(
+              '#home-preferences [data-projection-control="runtime"] [role="combobox"]'
+            );
             await runtime.click();
-            const control = await runtime.getAttribute('aria-controls');
-            await page
-              .locator(`[id=${JSON.stringify(control)}]`)
-              .getByRole('option', { name: label, exact: true })
-              .click();
-            await readyHome(page, target);
+            await page.keyboard.press('Escape');
             assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'true');
-            if (kind === 'candidate')
-              assert.ok(await page.locator('[data-demo-ref="home-menu-close"]').isVisible());
+            for (const [target, label] of [
+              ['react', 'React'],
+              ['vue', 'Vue'],
+              ['vue2', 'Vue 2'],
+              ['wc', 'Web Components'],
+            ]) {
+              await runtime.click();
+              const control = await runtime.getAttribute('aria-controls');
+              await page
+                .locator(`[id=${JSON.stringify(control)}]`)
+                .getByRole('option', { name: label, exact: true })
+                .click();
+              await readyHome(page, target);
+              assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'true');
+              if (kind === 'candidate')
+                assert.ok(await page.locator('[data-demo-ref="home-menu-close"]').isVisible());
+            }
+            await page.locator('#home-navigation-mobile [data-homepage-mount] a').first().click();
+            await page.waitForURL(`**/${locale}/start-here/what-you-saw/`);
+            assert.equal(
+              await page.locator('[data-site-menu-button]').getAttribute('aria-expanded'),
+              'false'
+            );
+            await page.goBack({ waitUntil: 'networkidle' });
+            await readyHome(page);
+            assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'false');
+            entry.navigationJourneys =
+              'Escape, Enter/Space, Close, nested Select Escape, WC/React/Vue/Vue2 replacement, native navigation and browser Back';
           }
-          await page.locator('#home-navigation-mobile [data-homepage-mount] a').first().click();
-          await page.waitForURL(`**/${locale}/start-here/what-you-saw/`);
-          assert.equal(
-            await page.locator('[data-site-menu-button]').getAttribute('aria-expanded'),
-            'false'
-          );
-          await page.goBack({ waitUntil: 'networkidle' });
-          await readyHome(page);
-          assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'false');
-          entry.navigationJourneys =
-            'Escape, Enter/Space, Close, nested Select Escape, WC/React/Vue/Vue2 replacement, native navigation and browser Back';
-
           await page.goto(`${base}/${locale}/ui-libraries/base/transition/`, {
             waitUntil: 'networkidle',
           });
@@ -195,10 +199,7 @@ try {
             const previewer = shell?.closest('[data-previewer-id]') as
               | (HTMLElement & { __previewer__?: { getCurrentRuntime(): string | null } })
               | null;
-            return (
-              shell?.querySelector('[data-copy-view="ready"]') &&
-              (!previewer || !!previewer.__previewer__?.getCurrentRuntime())
-            );
+            return shell && (!previewer || !!previewer.__previewer__?.getCurrentRuntime());
           });
           const docsMenu = page.locator('[data-site-menu-button]');
           await docsMenu.click();
@@ -215,6 +216,8 @@ try {
           assert.equal(await shell.getAttribute('data-code-expanded'), 'true');
           const source = shell.locator('pre');
           await shell.scrollIntoViewIfNeeded();
+          const copy = shell.locator('[data-copy] [data-demo-ref="copy-button"]');
+          await copy.waitFor({ state: 'visible' });
           const initialSource = await source.evaluate((e) => ({
             height: e.clientHeight,
             fullHeight: e.scrollHeight,
@@ -228,7 +231,6 @@ try {
           if (kind === 'candidate')
             assert.ok(initialSource.height > 144, 'Expanded reading is no longer capped at 9rem');
           assert.ok(initialSource.documentOverflow <= 1);
-          const copy = shell.locator('[data-copy] [data-demo-ref="copy-button"]');
           const before = await copy.boundingBox();
           await source.focus();
           if (initialSource.fullHeight > initialSource.height + 1) {
@@ -273,7 +275,7 @@ try {
         }
       }
   // Explicit host text enlargement is stress-only, separate from normal-phone views.
-  if (kind === 'candidate')
+  if (kind === 'candidate' && !quickPreview)
     for (const locale of ['zh-cn', 'en']) {
       const id = `${locale}-320-text200-stress`;
       const context = await browser.newContext({
