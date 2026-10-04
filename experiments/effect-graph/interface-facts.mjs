@@ -107,13 +107,15 @@ function reflectedBlock(id, floatSlotCount, rows) {
       ...(count === undefined ? {} : { count }),
       floatSlotRange: { start, count: size },
       // These semantic producer names are the pinned recipe's input roles,
-      // not a claim that a runtime provider exists or has executed.
+      // not a claim that a runtime provider exists or has executed. Optical
+      // props need block-local producers: geometry .w is blend; render .w is
+      // refraction scale (the pinned Dart recipe writes 1.0 there).
       binding:
         id === 'render' && name === 'uSize'
           ? { kind: 'host-injected', id: 'ImageFilter.shader.inputSize', floatSlots: [0, 1] }
           : id === 'render' && ['uCaptureOffset', 'uFrost'].includes(name)
             ? { kind: 'constant', value: Array(size).fill(0) }
-            : { kind: 'frame-value', id: name },
+            : { kind: 'frame-value', id: name === 'uOpticalProps' ? `${id}.${name}` : name },
     })),
   };
 }

@@ -168,7 +168,7 @@
           "type": "vec4<f32>",
           "binding": {
             "kind": "frame-value",
-            "id": "uOpticalProps"
+            "id": "geometry.uOpticalProps"
           },
           "floatSlotRange": {
             "start": 2,
@@ -273,7 +273,7 @@
           "type": "vec4<f32>",
           "binding": {
             "kind": "frame-value",
-            "id": "uOpticalProps"
+            "id": "render.uOpticalProps"
           },
           "floatSlotRange": {
             "start": 10,
@@ -548,7 +548,12 @@
       "owner": "application-frame-state"
     },
     {
-      "id": "uOpticalProps",
+      "id": "geometry.uOpticalProps",
+      "type": "vec4<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "render.uOpticalProps",
       "type": "vec4<f32>",
       "owner": "application-frame-state"
     },

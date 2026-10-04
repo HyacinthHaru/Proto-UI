@@ -876,3 +876,31 @@ test('the pinned budgeted matte retains its budget binding and producer contract
   wrongType.frameInputs.find((input) => input.id === 'geometry-pixel-budget').type = 'f32';
   assert.equal(inspectGraph(wrongType).valid, false);
 });
+
+test('same-named optical uniforms keep distinct geometry and render producers', async () => {
+  const graph = await load('flutter');
+  const optical = graph.uniformBlocks.map((block) =>
+    block.fields.find((field) => field.name === 'uOpticalProps')
+  );
+  assert.deepEqual(
+    optical.map((field) => field.binding.id),
+    ['geometry.uOpticalProps', 'render.uOpticalProps']
+  );
+  assert.equal(inspectGraph(graph).valid, true);
+  const crossed = structuredClone(graph);
+  crossed.uniformBlocks[1].fields.find((field) => field.name === 'uOpticalProps').binding.id =
+    'geometry.uOpticalProps';
+  assert.equal(inspectGraph(crossed).valid, false);
+  const merged = structuredClone(graph);
+  for (const block of merged.uniformBlocks)
+    block.fields.find((field) => field.name === 'uOpticalProps').binding.id = 'uOpticalProps';
+  merged.frameInputs = merged.frameInputs.filter(
+    (input) => !['geometry.uOpticalProps', 'render.uOpticalProps'].includes(input.id)
+  );
+  merged.frameInputs.push({
+    id: 'uOpticalProps',
+    type: 'vec4<f32>',
+    owner: 'application-frame-state',
+  });
+  assert.equal(inspectGraph(merged).valid, false);
+});
