@@ -255,15 +255,16 @@ try {
           );
           await screenshot('code-scrolled');
           const raw = await source.locator('code').getAttribute('data-raw-code');
-          const copyOwner = shell.locator('[data-copy]');
-          assert.equal(await copyOwner.getAttribute('data-copy-state'), 'idle');
+          assert.equal(await copy.getAttribute('data-copy-state'), 'idle');
           await copy.click();
           await page.waitForFunction(() => {
             const active = [...document.querySelectorAll<HTMLElement>('[data-code-shell]')].find(
               (e) => e.checkVisibility()
             );
             return (
-              active?.querySelector('[data-copy]')?.getAttribute('data-copy-state') === 'success'
+              active
+                ?.querySelector('[data-demo-ref="copy-button"]')
+                ?.getAttribute('data-copy-state') === 'success'
             );
           });
           assert.equal(
