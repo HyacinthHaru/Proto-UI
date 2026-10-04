@@ -13,6 +13,7 @@ import { parse as parseYaml } from 'yaml';
 import { parse as parseHtml } from 'parse5';
 import { parse as parseAstro } from '@astrojs/compiler/sync';
 import { createProcessor as createMarkdownProcessor } from '@mdx-js/mdx';
+import { parse as parseVue, NodeTypes as VueNodeTypes } from '@vue/compiler-dom';
 
 const TOTAL_HEADERS = ['State', 'Count'];
 const TARGET_CLASS_TOTAL_HEADERS = ['Target class', 'Count'];
@@ -1294,12 +1295,34 @@ function domReceiverBindings(sourceFile) {
         ts.isBlock(current) ||
         ts.isFunctionLike(current) ||
         ts.isClassLike(current) ||
+        ts.isCatchClause(current) ||
+        ts.isForStatement(current) ||
+        ts.isForInStatement(current) ||
+        ts.isForOfStatement(current) ||
+        ts.isCaseBlock(current) ||
+        ts.isClassStaticBlockDeclaration(current) ||
         ts.isSourceFile(current)
       ) {
         return current;
       }
     }
     return sourceFile;
+  };
+  const declarationScope = (node) => {
+    if (
+      ts.isVariableDeclaration(node) &&
+      ts.isVariableDeclarationList(node.parent) &&
+      !(node.parent.flags & ts.NodeFlags.BlockScoped)
+    ) {
+      for (let current = node.parent; current; current = current.parent)
+        if (
+          ts.isFunctionLike(current) ||
+          ts.isSourceFile(current) ||
+          ts.isClassStaticBlockDeclaration(current)
+        )
+          return current;
+    }
+    return lexicalScope(node);
   };
   const addBinding = (
     name,
@@ -1326,7 +1349,8 @@ function domReceiverBindings(sourceFile) {
     initializer,
     intrinsicallyDom,
     destructuredProperties = [],
-    fromParameter = false
+    fromParameter = false,
+    scope = lexicalScope(node)
   ) => {
     if (ts.isIdentifier(name)) {
       addBinding(
@@ -1336,7 +1360,8 @@ function domReceiverBindings(sourceFile) {
         intrinsicallyDom ||
           (fromParameter &&
             /^(?:currentTarget|target)$/u.test(destructuredProperties.at(-1) ?? '')),
-        destructuredProperties.length > 0 ? destructuredProperties : null
+        destructuredProperties.length > 0 ? destructuredProperties : null,
+        scope
       );
       return;
     }
@@ -1351,7 +1376,8 @@ function domReceiverBindings(sourceFile) {
         initializer,
         intrinsicallyDom,
         destructuredProperties.concat(property.text),
-        fromParameter
+        fromParameter,
+        scope
       );
     }
   };
@@ -1377,7 +1403,8 @@ function domReceiverBindings(sourceFile) {
             ts.isIdentifier(node.name) &&
             /^(?:el|element)$/u.test(node.name.text)),
         [],
-        ts.isParameter(node)
+        ts.isParameter(node),
+        declarationScope(node)
       );
     }
     if (
@@ -3420,6 +3447,67 @@ function astContainsHarnessRenderOrEffectAction(content, absolutePath, visitedPa
           qualifiedActionOwnerHasProvenance(candidate.expression)))
     );
   };
+  const scheduledActionBindings = domReceiverBindings(sourceFile);
+  const visibleScheduledActionOwner = (expression, useNode, seen = new Set()) => {
+    let owner = unwrapTypeScriptExpression(expression);
+    while (ts.isPropertyAccessExpression(owner) || ts.isElementAccessExpression(owner))
+      owner = unwrapTypeScriptExpression(owner.expression);
+    if (!ts.isIdentifier(owner)) return owner.kind === ts.SyntaxKind.ThisKeyword;
+    const binding = scheduledActionBindings.latestBinding(owner.text, useNode);
+    if (!binding)
+      return (
+        !scheduledActionBindings.hasLocalBinding(owner.text, useNode) &&
+        agentActionOwners.has(owner.text)
+      );
+    if (seen.has(binding) || seen.size >= 64) return false;
+    seen.add(binding);
+    if (
+      ts.isImportClause(binding.node) ||
+      ts.isImportSpecifier(binding.node) ||
+      ts.isNamespaceImport(binding.node)
+    )
+      return true;
+    if (
+      ts.isParameter(binding.node) ||
+      (ts.isBindingElement(binding.node) && bindingElementComesFromParameter(binding.node))
+    )
+      return hasAgentActionOwnerProvenance(owner.text);
+    return Boolean(
+      binding.initializer && visibleScheduledActionOwner(binding.initializer, binding.node, seen)
+    );
+  };
+  const isScheduledAgentActionExpression = (expression, seen = new Set()) => {
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (!isAgentActionExpression(candidate)) return false;
+    let owner = candidate;
+    while (ts.isPropertyAccessExpression(owner) || ts.isElementAccessExpression(owner))
+      owner = unwrapTypeScriptExpression(owner.expression);
+    if (!ts.isIdentifier(owner)) return true;
+    const binding = scheduledActionBindings.latestBinding(owner.text, candidate);
+    if (!binding) return !scheduledActionBindings.hasLocalBinding(owner.text, candidate);
+    if (seen.has(binding) || seen.size >= 64) return false;
+    seen.add(binding);
+    if (
+      ts.isImportClause(binding.node) ||
+      ts.isImportSpecifier(binding.node) ||
+      ts.isNamespaceImport(binding.node)
+    )
+      return true;
+    // Parameters retain the existing explicit owner/verb provenance rule;
+    // a concrete local value must not inherit a same-named import's identity.
+    if (
+      ts.isParameter(binding.node) ||
+      (ts.isBindingElement(binding.node) && bindingElementComesFromParameter(binding.node))
+    )
+      return hasAgentActionOwnerProvenance(owner.text) || agentActionAliases.has(owner.text);
+    if (!binding.initializer) return false;
+    if (ts.isIdentifier(candidate)) {
+      if (binding.destructuredProperties)
+        return visibleScheduledActionOwner(binding.initializer, binding.node, seen);
+      return isScheduledAgentActionExpression(binding.initializer, seen);
+    }
+    return visibleScheduledActionOwner(binding.initializer, binding.node, seen);
+  };
   const isAgentActionCall = (node) => {
     if (!ts.isCallExpression(node)) return false;
     return isAgentActionExpression(node.expression);
@@ -3618,6 +3706,10 @@ function astContainsHarnessRenderOrEffectAction(content, absolutePath, visitedPa
             ? node.arguments.slice(0, 1)
             : [];
         for (const callbackArgument of scheduledCallbackArguments) {
+          if (isScheduledAgentActionExpression(callbackArgument)) {
+            found = true;
+            return;
+          }
           const callbackExpression = unwrapTypeScriptExpression(callbackArgument);
           const scheduledCallable =
             ts.isArrowFunction(callbackExpression) || ts.isFunctionExpression(callbackExpression)
@@ -4692,6 +4784,19 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       inspectResourceAssignment(node);
       inspectReflectResourceMutation(node);
       const calledMember = staticMemberAccess(node.expression);
+      // These browser methods parse markup without a module-graph edge. Keep
+      // their bodies unverified rather than treating quoted HTML as inert JS.
+      if (
+        calledMember &&
+        node.arguments.length > 0 &&
+        ((/^(?:write|writeln)$/u.test(calledMember.name) &&
+          resolveLocalValue(calledMember.receiver, node, new Set(), (candidate, useNode) =>
+            isBrowserDocumentExpression(candidate, sourceFile, receiverBindings, useNode)
+          )) ||
+          (calledMember.name === 'insertAdjacentHTML' &&
+            isDomReceiverExpression(calledMember.receiver, sourceFile, receiverBindings, node)))
+      )
+        specifiers.push(UNVERIFIED_HTML_SINK_SPECIFIER);
       if (
         calledMember &&
         scriptBodyMethods.has(calledMember.name) &&
@@ -4868,6 +4973,7 @@ function isExecutableScriptType(type) {
 const DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER = '<dynamic executable script src>';
 const UNREVIEWED_WEBSITE_EMBED_SPECIFIER = '<unreviewed Website embed>';
 const UNVERIFIED_MARKUP_HANDLER_SPECIFIER = '<unverified markup event handler>';
+const UNVERIFIED_HTML_SINK_SPECIFIER = '<unverified DOM HTML sink>';
 const UNVERIFIED_NAVIGATION_URL_SPECIFIER = '<unverified executable navigation URL>';
 function isNavigationUrlAttribute(tag, name) {
   return (
@@ -5307,8 +5413,50 @@ function embeddedScriptSegments(content) {
   return segments;
 }
 
+function decodeCssEscapes(value) {
+  return value.replace(
+    /\\(?:([\da-f]{1,6})(?:\r\n|[\t\n\r\f ])?|([\s\S]))/giu,
+    (_match, hex, character) => {
+      if (!hex) return /[\n\r\f]/u.test(character) ? '' : character;
+      const code = Number.parseInt(hex, 16);
+      return code === 0 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff)
+        ? '\uFFFD'
+        : String.fromCodePoint(code);
+    }
+  );
+}
+
 function styleModuleSpecifiers(content) {
   const specifiers = [];
+  const escapePattern = /^\\(?:[\da-f]{1,6}(?:\r\n|[\t\n\r\f ])?|[\s\S])/iu;
+  const identifierPattern = /^(?:[-_a-z\d]|\\(?:[\da-f]{1,6}(?:\r\n|[\t\n\r\f ])?|[^\n\r\f]))+/iu;
+  const targetAt = (offset) => {
+    const tail = content.slice(offset);
+    const identifier = tail.match(identifierPattern)?.[0];
+    const urlFunction =
+      identifier &&
+      decodeCssEscapes(identifier).toLowerCase() === 'url' &&
+      tail[identifier.length] === '(';
+    let cursor = urlFunction ? identifier.length + 1 : 0;
+    if (urlFunction) while (/[\t\n\r\f ]/u.test(tail[cursor] ?? '')) cursor += 1;
+    const quote = /['"]/u.test(tail[cursor] ?? '') ? tail[cursor++] : null;
+    const start = cursor;
+    while (cursor < tail.length) {
+      if (tail[cursor] === '\\') {
+        const escape = tail.slice(cursor).match(escapePattern)?.[0];
+        if (!escape) return null;
+        cursor += escape.length;
+      } else if (quote ? tail[cursor] === quote : /[\s;,)'"]/u.test(tail[cursor])) break;
+      else cursor += 1;
+    }
+    const value = tail.slice(start, cursor);
+    if (!value || (quote && tail[cursor++] !== quote)) return null;
+    if (urlFunction) {
+      while (/[\t\n\r\f ]/u.test(tail[cursor] ?? '')) cursor += 1;
+      if (tail[cursor++] !== ')') return null;
+    }
+    return { value: decodeCssEscapes(value), length: cursor };
+  };
   let quote = null;
   let escaped = false;
   let inComment = false;
@@ -5346,37 +5494,39 @@ function styleModuleSpecifiers(content) {
       quote = character;
       continue;
     }
-    if (!/^@(?:import|use|forward)\b/iu.test(content.slice(index))) {
-      continue;
+    if (character !== '@') continue;
+    const name = content.slice(index + 1).match(identifierPattern)?.[0];
+    const directiveName = name && decodeCssEscapes(name).toLowerCase();
+    if (!/^(?:import|use|forward)$/u.test(directiveName ?? '')) continue;
+    // An at-keyword may be directly followed by a string token. CSS comments
+    // also separate tokens without requiring a whitespace character.
+    let directiveLength = 1 + name.length;
+    while (true) {
+      const separator = content
+        .slice(index + directiveLength)
+        .match(/^(?:\s+|\/\*[\s\S]*?\*\/)/u)?.[0];
+      if (!separator) break;
+      directiveLength += separator.length;
     }
-    const directive = content.slice(index).match(/^@(import|use|forward)\b\s+/iu);
-    if (directive) {
-      const targetPattern =
-        /^(?:url\(\s*(?:(['"])([^'"]+)\1|([^'"\s)]+))\s*\)|(?:(['"])([^'"]+)\4|([^'"\s;,)]+)))/u;
+    {
       const directiveTailOffset =
-        directive[1].toLowerCase() === 'import'
-          ? (content.slice(index + directive[0].length).match(/^\([^)]*\)\s*/u)?.[0].length ?? 0)
+        directiveName === 'import'
+          ? (content.slice(index + directiveLength).match(/^\([^)]*\)\s*/u)?.[0].length ?? 0)
           : 0;
-      const firstTarget = content
-        .slice(index + directive[0].length + directiveTailOffset)
-        .match(targetPattern);
+      const firstTarget = targetAt(index + directiveLength + directiveTailOffset);
       if (!firstTarget) continue;
-      const targetValue = (target) => {
-        const value = target[2] ?? target[3] ?? target[5] ?? target[6];
-        return directive[1].toLowerCase() === 'import' ? normalizeBrowserResourceUrl(value) : value;
-      };
+      const targetValue = (target) =>
+        directiveName === 'import' ? normalizeBrowserResourceUrl(target.value) : target.value;
       specifiers.push(targetValue(firstTarget));
-      let consumedLength = directive[0].length + directiveTailOffset + firstTarget[0].length;
-      if (directive[1].toLowerCase() === 'import') {
+      let consumedLength = directiveLength + directiveTailOffset + firstTarget.length;
+      if (directiveName === 'import') {
         while (true) {
           const comma = content.slice(index + consumedLength).match(/^\s*,\s*/u);
           if (!comma) break;
-          const additionalTarget = content
-            .slice(index + consumedLength + comma[0].length)
-            .match(targetPattern);
+          const additionalTarget = targetAt(index + consumedLength + comma[0].length);
           if (!additionalTarget) break;
           specifiers.push(targetValue(additionalTarget));
-          consumedLength += comma[0].length + additionalTarget[0].length;
+          consumedLength += comma[0].length + additionalTarget.length;
         }
       }
       index += consumedLength - 1;
@@ -5540,7 +5690,65 @@ function markdownStyleSegments(content, absolutePath) {
 
 // Read authored native tags only. JSX is walked as syntax, never evaluated;
 // Markdown examples and module literal text are masked before lexical fallback.
+// Vue owns SFC template ancestry, self-closing tags and directive parsing.
+// This is parse-only: no template compilation, plugin transform or evaluation.
+function vueTemplateElements(content) {
+  const result = [];
+  const visit = (node) => {
+    if (node.type === VueNodeTypes.ELEMENT) {
+      if (/^(?:script|style)$/u.test(node.tag)) return;
+      if (
+        node.tag === 'template' &&
+        node.props.some(
+          (property) =>
+            property.type === VueNodeTypes.ATTRIBUTE &&
+            property.name === 'lang' &&
+            property.value &&
+            property.value.content !== 'html'
+        )
+      )
+        throw new Error('unsupported Vue template language');
+      result.push(node);
+    }
+    for (const child of node.children ?? []) visit(child);
+  };
+  visit(parseVue(content));
+  return result;
+}
+
+function authoredVueResourceTags(content, absolutePath) {
+  try {
+    return vueTemplateElements(content).map((node) => {
+      const attributes = new Map();
+      for (const property of node.props) {
+        if (property.type === VueNodeTypes.ATTRIBUTE) {
+          // Under v-pre the Vue parser exposes directive-looking names as
+          // inert attributes, not runtime style/binding directives.
+          if (/^(?:@|:|v-)/u.test(property.name)) continue;
+          attributes.set(property.name.toLowerCase(), {
+            value: property.value?.content ?? '',
+            encoded: hasHtmlCharacterReference(property.loc.source),
+          });
+        } else if (property.type === VueNodeTypes.DIRECTIVE) {
+          const name =
+            property.name === 'bind' && property.arg?.isStatic && property.arg.content === 'style'
+              ? ':style'
+              : property.rawName;
+          attributes.set(name, {
+            value: null,
+            encoded: hasHtmlCharacterReference(property.loc.source),
+          });
+        }
+      }
+      return { name: node.tag, attributes, opaque: false, jsx: false };
+    });
+  } catch {
+    throw new Error(`promotion CSS resource URL in ${absolutePath} remains unverified`);
+  }
+}
+
 function authoredResourceTags(content, absolutePath) {
+  if (/\.vue$/iu.test(absolutePath)) return authoredVueResourceTags(content, absolutePath);
   const tags = [];
   const literal = (node) => {
     if (!node) return true;
@@ -5729,22 +5937,23 @@ function promotionStyleResourceUrls(absolutePath, inlineStyles = []) {
       : [];
   if (/\.mdx?$/iu.test(absolutePath))
     styles.push(...markdownStyleSegments(fs.readFileSync(absolutePath, 'utf8'), absolutePath));
+  if (/\.(?:html?|astro|mdx?|vue|svelte|[cm]?[jt]sx?)$/iu.test(absolutePath)) {
+    const content = fs.readFileSync(absolutePath, 'utf8');
+    for (const { attributes, opaque } of authoredResourceTags(content, absolutePath)) {
+      const style = attributes.get('style');
+      if (attributes.has(':style') || attributes.has('v-bind:style'))
+        throw new Error(`promotion CSS resource URL in ${absolutePath} remains unverified`);
+      if (!style) continue;
+      if (opaque || attributes.has('v-bind') || typeof style.value !== 'string' || style.encoded)
+        throw new Error(`promotion CSS resource URL in ${absolutePath} remains unverified`);
+      styles.push(style.value);
+    }
+  }
   styles.push(...inlineStyles);
   const urls = [];
   const unverified = () => {
     throw new Error(`promotion CSS resource URL in ${absolutePath} remains unverified`);
   };
-  const decodeCss = (value) =>
-    value.replace(
-      /\\(?:([\da-f]{1,6})(?:\r\n|[\t\n\r\f ])?|([\s\S]))/giu,
-      (_match, hex, character) => {
-        if (!hex) return /[\n\r\f]/u.test(character) ? '' : character;
-        const code = Number.parseInt(hex, 16);
-        return code === 0 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff)
-          ? '\uFFFD'
-          : String.fromCodePoint(code);
-      }
-    );
   // A bounded lexical URL collector, not a general CSS parser or sanitizer.
   // Quoted examples and comments are opaque; URL values retain CSS escapes.
   for (const content of styles) {
@@ -5788,7 +5997,7 @@ function promotionStyleResourceUrls(absolutePath, inlineStyles = []) {
         continue;
       }
       index += identifier.length;
-      const functionName = decodeCss(identifier).toLowerCase();
+      const functionName = decodeCssEscapes(identifier).toLowerCase();
       if (/^(?:-webkit-)?image-set$/u.test(functionName) && content[index] === '(') unverified();
       if (functionName !== 'url' || content[index] !== '(') continue;
       index += 1;
@@ -5816,7 +6025,7 @@ function promotionStyleResourceUrls(absolutePath, inlineStyles = []) {
         whitespace();
       }
       if (content[index++] !== ')') unverified();
-      const url = normalizeBrowserResourceUrl(decodeCss(value));
+      const url = normalizeBrowserResourceUrl(decodeCssEscapes(value));
       if (/[\u0000-\u001f\u007f]/u.test(url) || /(?:#|@|\$)\{/u.test(url)) unverified();
       if (!url || url.startsWith('#') || /^data:/iu.test(url)) continue;
       if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/iu.test(url)) unverified();
@@ -5846,7 +6055,7 @@ function externalStylesheetSpecifiersForWebsiteSource(absolutePath) {
 }
 
 function markupEventHandlerSpecifiers(content, absolutePath, options) {
-  if (!/\.(?:html?|astro)$/iu.test(absolutePath)) return [];
+  if (!/\.(?:html?|astro|vue)$/iu.test(absolutePath)) return [];
   const specifiers = [];
   const inspect = (body, raw, literal, sourceLocation) => {
     // A parser result is source evidence, never execution or admission. Browser
@@ -5869,7 +6078,36 @@ function markupEventHandlerSpecifiers(content, absolutePath, options) {
       specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
   };
   try {
-    if (/\.html?$/iu.test(absolutePath)) {
+    if (/\.vue$/iu.test(absolutePath)) {
+      for (const node of vueTemplateElements(content)) {
+        for (const property of node.props) {
+          const native = property.type === VueNodeTypes.ATTRIBUTE;
+          if (native) {
+            const name = property.name.toLowerCase();
+            const value = property.value?.content ?? '';
+            if (isNavigationUrlAttribute(node.tag, name) && isExecutableNavigationUrl(value))
+              specifiers.push(UNVERIFIED_NAVIGATION_URL_SPECIFIER);
+            if (!NATIVE_EVENT_ATTRIBUTE_NAMES.has(name)) continue;
+          } else if (property.type === VueNodeTypes.DIRECTIVE) {
+            if (/^(?:cloak|once|pre|else)$/u.test(property.name)) continue;
+            if (property.name === 'html') {
+              specifiers.push(UNVERIFIED_HTML_SINK_SPECIFIER);
+              continue;
+            }
+            if (property.arg && !property.arg.isStatic)
+              specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
+          } else continue;
+          const raw = property.loc.source;
+          const literal = /^[^\s=]+\s*=\s*(["'])([\s\S]*)\1$/u.test(raw);
+          inspect(
+            native ? (property.value?.content ?? '') : (property.exp?.content ?? ''),
+            raw,
+            literal,
+            { startOffset: property.loc.start.offset, endOffset: property.loc.end.offset }
+          );
+        }
+      }
+    } else if (/\.html?$/iu.test(absolutePath)) {
       const visit = (node) => {
         for (const attribute of node.attrs ?? []) {
           if (
@@ -5887,8 +6125,6 @@ function markupEventHandlerSpecifiers(content, absolutePath, options) {
           inspect(attribute.value, raw, literal, location);
         }
         for (const child of node.childNodes ?? []) visit(child);
-        // Template content is separately stored by the HTML parser. Inventory
-        // still sees handlers that can become active when the template is used.
         if (node.content) visit(node.content);
       };
       visit(parseHtml(content, { sourceCodeLocationInfo: true }));
@@ -6136,14 +6372,24 @@ function configuredWebsiteSourceAliases(rootDir) {
     }
     return path.resolve(path.dirname(configPath), url.arguments[0].text);
   };
-  const visit = (node) => {
+  const inspectAlias = (node) => {
+    if (!ts.isPropertyAssignment(node)) {
+      unsupportedAll = true;
+      return;
+    }
     if (ts.isPropertyAssignment(node) && propertyName(node) === 'alias') {
       const aliasInitializer = unwrapTypeScriptExpression(node.initializer);
       if (ts.isObjectLiteralExpression(aliasInitializer)) {
         for (const property of aliasInitializer.properties) {
-          if (!ts.isPropertyAssignment(property)) continue;
           const key = propertyName(property);
-          if (!key) continue;
+          if (!key) {
+            unsupportedAll = true;
+            continue;
+          }
+          if (!ts.isPropertyAssignment(property)) {
+            unsupported.add(key);
+            continue;
+          }
           const replacement = aliasReplacement(property.initializer);
           if (replacement) aliases.set(key, replacement);
           else unsupported.add(key);
@@ -6151,7 +6397,10 @@ function configuredWebsiteSourceAliases(rootDir) {
       } else if (ts.isArrayLiteralExpression(aliasInitializer)) {
         for (const element of aliasInitializer.elements) {
           const entry = unwrapTypeScriptExpression(element);
-          if (!ts.isObjectLiteralExpression(entry)) {
+          if (
+            !ts.isObjectLiteralExpression(entry) ||
+            entry.properties.some((property) => !ts.isPropertyAssignment(property))
+          ) {
             unsupportedAll = true;
             continue;
           }
@@ -6181,9 +6430,65 @@ function configuredWebsiteSourceAliases(rootDir) {
         unsupportedAll = true;
       }
     }
-    ts.forEachChild(node, visit);
   };
-  visit(sourceFile);
+  const configNames = new Set(['defineConfig']);
+  for (const statement of sourceFile.statements) {
+    if (
+      !ts.isImportDeclaration(statement) ||
+      !ts.isStringLiteralLike(statement.moduleSpecifier) ||
+      statement.moduleSpecifier.text !== 'astro/config' ||
+      !statement.importClause?.namedBindings ||
+      !ts.isNamedImports(statement.importClause.namedBindings)
+    )
+      continue;
+    for (const binding of statement.importClause.namedBindings.elements)
+      if ((binding.propertyName ?? binding.name).text === 'defineConfig')
+        configNames.add(binding.name.text);
+  }
+  // Only values consumed by the exported Astro -> Vite -> resolve configuration
+  // can define an alias. Unused business objects/functions are not configuration.
+  const inspectConfig = (expression, level = 0) => {
+    const node = unwrapTypeScriptExpression(expression);
+    if (
+      level === 0 &&
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      configNames.has(node.expression.text) &&
+      node.arguments.length === 1
+    ) {
+      inspectConfig(node.arguments[0]);
+      return;
+    }
+    if (!ts.isObjectLiteralExpression(node)) {
+      unsupportedAll = true;
+      return;
+    }
+    const selected = ['vite', 'resolve', 'alias'][level];
+    let selectedCount = 0;
+    for (const property of node.properties) {
+      if (ts.isSpreadAssignment(property) || propertyName(property) === null) {
+        unsupportedAll = true;
+        continue;
+      }
+      if (propertyName(property) !== selected) continue;
+      if (++selectedCount > 1) unsupportedAll = true;
+      if (level === 2) inspectAlias(property);
+      else if (ts.isPropertyAssignment(property)) inspectConfig(property.initializer, level + 1);
+      else unsupportedAll = true;
+    }
+  };
+  for (const statement of sourceFile.statements) {
+    if (ts.isExportAssignment(statement) && !statement.isExportEquals)
+      inspectConfig(statement.expression);
+    else if (
+      ts.isExportDeclaration(statement) &&
+      statement.exportClause &&
+      ts.isNamedExports(statement.exportClause) &&
+      statement.exportClause.elements.some((entry) => entry.name.text === 'default')
+    )
+      unsupportedAll = true;
+  }
+  if (sourceFile.parseDiagnostics.length) unsupportedAll = true;
   return { aliases, unsupported, unsupportedAll };
 }
 
@@ -6425,6 +6730,8 @@ function guardedWebsiteImport(
     return { category: 'unverified-navigation-url', resolvedPath: null };
   if (specifier === UNVERIFIED_MARKUP_HANDLER_SPECIFIER)
     return { category: 'unverified-markup-handler', resolvedPath: null };
+  if (specifier === UNVERIFIED_HTML_SINK_SPECIFIER)
+    return { category: 'unverified-html-sink', resolvedPath: null };
   if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
     return { category: 'unverified-runtime-compilation', resolvedPath: null };
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
@@ -6982,6 +7289,8 @@ function guardedHarnessImport(rootDir, canonicalRootDir, sourcePath, specifier) 
     return { category: 'unverified-navigation-url', resolvedPath: null };
   if (specifier === UNVERIFIED_MARKUP_HANDLER_SPECIFIER)
     return { category: 'unverified-markup-handler', resolvedPath: null };
+  if (specifier === UNVERIFIED_HTML_SINK_SPECIFIER)
+    return { category: 'unverified-html-sink', resolvedPath: null };
   if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
     return { category: 'unverified-runtime-compilation', resolvedPath: null };
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
@@ -7581,6 +7890,12 @@ function validateWebsiteRawImports(rootDir, relativePath, issues) {
       );
       continue;
     }
+    if (rawImport.category === 'unverified-html-sink') {
+      issues.push(
+        `${relativePath}: DOM HTML sink in \`${rawImport.sourcePath}\` is unverified; recognized document.write/writeln and insertAdjacentHTML calls require an explicit reviewed admission`
+      );
+      continue;
+    }
     if (rawImport.category === 'unverified-markup-handler') {
       issues.push(
         `${relativePath}: unverified markup event handler in \`${rawImport.sourcePath}\` requires a statically readable literal body without an unreviewed executable resource entry`
@@ -7813,6 +8128,12 @@ function validateHarnessRawImports(rootDir, relativePath, issues) {
     if (rawImport.category === 'unverified-navigation-url') {
       issues.push(
         `${relativePath}: executable navigation URL in \`${rawImport.sourcePath}\` is unverified; javascript: payloads are not admitted`
+      );
+      continue;
+    }
+    if (rawImport.category === 'unverified-html-sink') {
+      issues.push(
+        `${relativePath}: DOM HTML sink in \`${rawImport.sourcePath}\` is unverified; recognized document.write/writeln and insertAdjacentHTML calls require an explicit reviewed admission`
       );
       continue;
     }

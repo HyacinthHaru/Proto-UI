@@ -23,6 +23,9 @@ importers:
       '@types/node':
         specifier: ^25.6.2
         version: 25.6.2
+      '@vue/compiler-dom':
+        specifier: 3.5.31
+        version: 3.5.31
       esbuild:
         specifier: 0.25.12
         version: 0.25.12

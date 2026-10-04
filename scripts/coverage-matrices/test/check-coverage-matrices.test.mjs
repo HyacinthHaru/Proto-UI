@@ -12692,6 +12692,11 @@ function probeReview(id, kind, source, ext = 'ts', bind = true) {
       : `apps/agent-harness/src/run/ReviewProbe.${ext}`;
   fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
   fs.writeFileSync(path.join(root, file), source);
+  if (kind === 'harness' && ext === 'vue')
+    fs.writeFileSync(
+      path.join(root, 'apps/agent-harness/src/run/vue-entry.ts'),
+      `import './ReviewProbe.vue';`
+    );
   writeValidMatrices(root, {}, kind === 'harness' ? { Path: file } : {}, {
     websiteBindings: kind === 'website' && bind ? [[file, ['www.shell.primary-nav']]] : [],
   });
@@ -13629,3 +13634,670 @@ test('raw Markdown indentation boundary follows the actual format parser', () =>
       interactive
     );
 });
+
+for (const kind of ['website', 'harness']) {
+  test(`bounded entry review: Vue directive import ${kind}`, () => {
+    assert.ok(
+      probeReview(
+        '4178643496',
+        kind,
+        `<template><button @click="import('https://cdn.example/runtime.js')">Run</button></template>`,
+        'vue'
+      ).some((issue) => /unverified|external.*(?:module|script)|consumer.wall/u.test(issue))
+    );
+  });
+  test(`bounded entry review: DOM HTML sink ${kind}`, () => {
+    assert.ok(
+      probeReview(
+        '4178643498',
+        kind,
+        `document.write('<script src="https://cdn.example/runtime.js"></script>');`
+      ).some((issue) => /unverified|dynamic executable script/u.test(issue))
+    );
+  });
+  test(`bounded entry review: CSS escaped import ${kind}`, () => {
+    assert.ok(
+      probeReview(
+        '4178643502',
+        kind,
+        String.raw`@import "h\74tps://cdn.example/theme.css";`,
+        'css'
+      ).some((issue) => /external stylesheet|consumer.wall/u.test(issue))
+    );
+  });
+}
+test('bounded entry review: scheduled member Agent callback', () => {
+  assert.ok(
+    probeReview(
+      '4178643504',
+      'harness',
+      `import * as actions from './agent-actions'; export function Surface() { queueMicrotask(actions.send); return <section/>; }`,
+      'tsx'
+    ).some((issue) => /forbidden interaction/u.test(issue))
+  );
+});
+test('bounded entry review: inline style changed asset', () => {
+  const { root, options } = markupPromotionFixture(
+    `<div style="background-image:url('/surface.bin')"></div>`
+  );
+  assert.doesNotThrow(() => validateCoverageMatrices(options));
+  fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+  assert.match(
+    validationMessage(root, options),
+    /promoted dependency.*surface\.bin.*differs from evidence Commit/u
+  );
+});
+test('bounded entry review: shorthand Vite alias', () => {
+  const root = createRoot();
+  writeValidMatrices(root);
+  fs.writeFileSync(
+    path.join(root, 'apps/www/astro.config.mjs'),
+    `const alias = { rawRuntime: '../../packages/runtime/src' }; export default { vite: { resolve: { alias } } };`
+  );
+  const runtime = path.join(root, 'packages/runtime/src/index.ts');
+  fs.mkdirSync(path.dirname(runtime), { recursive: true });
+  fs.writeFileSync(runtime, 'export const runtime = true;');
+  const source = path.join(root, 'apps/www/src/components/ShorthandAlias.ts');
+  fs.mkdirSync(path.dirname(source), { recursive: true });
+  fs.writeFileSync(source, `import { runtime } from 'rawRuntime';`);
+  assert.match(
+    validationMessage(root),
+    /(?:raw Proto UI import|unverified.*alias|alias.*unverified)/u
+  );
+});
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, markup, reject] of [
+    [
+      'longhand modifier',
+      `<button v-on:click.prevent="import('https://cdn.example/runtime.js')"/>`,
+      true,
+    ],
+    ['component handler', `<Widget @activate="import('https://cdn.example/runtime.js')"/>`, true],
+    ['bound expression', `<div :title="import('https://cdn.example/runtime.js')"/>`, true],
+    [
+      'object directive',
+      `<button v-on="{click: () => import('https://cdn.example/runtime.js')}"/>`,
+      true,
+    ],
+    ['dynamic import', `<button @click="import(target)"/>`, true],
+    ['dynamic argument', `<button @[event]="run"/>`, true],
+    [
+      'encoded expression',
+      `<button @click="&#105;mport('https://cdn.example/runtime.js')"/>`,
+      true,
+    ],
+    ['HTML directive', `<div v-html="content"/>`, true],
+    ['malformed expression', `<button @click="import("/>`, true],
+    ['ordinary callback', `<button @click="count++"/>`, false],
+    ['ordinary bound expression', `<div :title="description"/>`, false],
+    [
+      'v-pre example',
+      `<section v-pre><button @click="import('https://cdn.example/runtime.js')"/></section>`,
+      false,
+    ],
+    [
+      'comment example',
+      `<!-- <button @click="import('https://cdn.example/runtime.js')"/> -->`,
+      false,
+    ],
+    [
+      'inert attribute string',
+      `<div title="@click=import('https://cdn.example/runtime.js')"/>`,
+      false,
+    ],
+  ])
+    test(`bounded parser controls: ${kind} Vue ${name}`, () => {
+      const issues = probeReview('4178643496', kind, `<template>${markup}</template>`, 'vue');
+      assert.equal(
+        issues.some((issue) =>
+          /(?:markup event handler|DOM HTML sink).*unverified|unverified markup event handler/u.test(
+            issue
+          )
+        ),
+        reject,
+        issues.join('\n')
+      );
+    });
+
+  for (const [name, source, reject] of [
+    [
+      'qualified writeln',
+      `window.document.writeln('<img src=x onerror="import(\'https://cdn.example/runtime.js\')">');`,
+      true,
+    ],
+    ['bracket write', `globalThis.document['write'](markup);`, true],
+    ['document alias', `const page=document;page.write(markup);`, true],
+    [
+      'acquired element',
+      `document.querySelector('#root').insertAdjacentHTML('beforeend',markup);`,
+      true,
+    ],
+    [
+      'element alias',
+      `const target=document.getElementById('root');target.insertAdjacentHTML('beforeend',markup);`,
+      true,
+    ],
+    ['shadowed document', `function f(document){document.write(markup);}`, false],
+    ['qualified shadow', `function f(window){window.document.writeln(markup);}`, false],
+    [
+      'business object',
+      `const target={insertAdjacentHTML(){}};target.insertAdjacentHTML('beforeend',markup);`,
+      false,
+    ],
+    ['method name string', `const description="document.write(markup)";`, false],
+    ['inert text insertion', `document.body.insertAdjacentText('beforeend',markup);`, false],
+    ['empty writer', `document.write();`, false],
+  ])
+    test(`bounded parser controls: ${kind} HTML sink ${name}`, () => {
+      const issues = probeReview('4178643498', kind, source);
+      assert.equal(
+        issues.some((issue) => /DOM HTML sink.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+    });
+
+  for (const [name, css, reject] of [
+    ['hex terminator', String.raw`@import "\68 ttps://cdn.example/theme.css";`, true],
+    ['six digits', String.raw`@import "\000068ttps://cdn.example/theme.css";`, true],
+    ['escaped slash', String.raw`@import "\2f\2f cdn.example/theme.css";`, true],
+    ['URL token', String.raw`@import url(\68 ttps://cdn.example/theme.css);`, true],
+    ['URL function name', String.raw`@import u\72l("h\74tps://cdn.example/theme.css");`, true],
+    ['directive name', String.raw`@\69mport "h\74tps://cdn.example/theme.css";`, true],
+    [
+      'multiple imports',
+      String.raw`@import "./local.css", "h\74tps://cdn.example/theme.css";`,
+      true,
+    ],
+    [
+      'quoted content',
+      String.raw`.a { content:'@import "h\74tps://cdn.example/theme.css";'; }`,
+      false,
+    ],
+    ['comment example', String.raw`/* @import "h\74tps://cdn.example/theme.css"; */`, false],
+    [
+      'escaped at in content',
+      String.raw`.a { content:"\40 import 'https://cdn.example/theme.css'"; }`,
+      false,
+    ],
+  ])
+    for (const extension of ['css', 'vue'])
+      test(`bounded resource controls: ${kind} CSS ${name} ${extension}`, () => {
+        const source =
+          extension === 'vue' ? `<template><div/></template><style>${css}</style>` : css;
+        const issues = probeReview('4178643502', kind, source, extension);
+        assert.equal(
+          issues.some((issue) =>
+            /external stylesheet|external.*(?:module|script)|consumer.wall/u.test(issue)
+          ),
+          reject,
+          issues.join('\n')
+        );
+      });
+}
+
+for (const scheduler of [
+  'queueMicrotask',
+  'window.requestAnimationFrame',
+  'globalThis.requestIdleCallback',
+  'Promise.resolve().then',
+  'Promise.resolve().catch',
+  'Promise.resolve().finally',
+])
+  for (const phase of ['render', 'effect'])
+    test(`bounded execution controls: ${scheduler} ${phase} member action`, () => {
+      const statement = `${scheduler}(actions['send']);`;
+      const source = `import {useEffect} from 'react';import * as actions from './agent-actions';export function Surface(){${phase === 'effect' ? `useEffect(()=>{${statement}},[]);` : statement}return <section/>;}`;
+      assert.ok(
+        probeReview('4178643504', 'harness', source, 'tsx').some((issue) =>
+          /forbidden interaction/u.test(issue)
+        )
+      );
+    });
+for (const [name, body] of [
+  ['deferred handler', `return <ProtoButton onPress={()=>queueMicrotask(actions.send)}/>;`],
+  [
+    'business callback',
+    `const business={send(){}};queueMicrotask(business.send);return <section/>;`,
+  ],
+  ['ordinary callback', `queueMicrotask(()=>console.log('ready'));return <section/>;`],
+])
+  test(`bounded execution controls: ${name} stays allowed`, () => {
+    const source = `import * as actions from './agent-actions';export function Surface(){${body}}`;
+    assert.ok(
+      !probeReview('4178643504', 'harness', source, 'tsx').some((issue) =>
+        /forbidden interaction/u.test(issue)
+      )
+    );
+  });
+
+for (const [name, extension, source] of [
+  ['HTML attribute', 'html', `<div style="background:url('/surface.bin')"></div>`],
+  ['raw Markdown HTML', 'md', `<div style="background:url('/surface.bin')">\nraw \`code\`\n</div>`],
+  [
+    'inline Markdown HTML',
+    'md',
+    `Text <span style="background:url('/surface.bin')">surface</span>`,
+  ],
+  ['MDX attribute', 'mdx', `<div style="background:url('/surface.bin')"/>`],
+  ['MDX literal expression', 'mdx', `<div style={"background:url('/surface.bin')"}/>`],
+  ['Vue attribute', 'vue', `<template><div style="background:url('/surface.bin')"/></template>`],
+  ['Svelte attribute', 'svelte', `<div style="background:url('/surface.bin')"/>`],
+  [
+    'JSX literal expression',
+    'tsx',
+    `export const Surface=()=> <div style={"background:url('/surface.bin')"}/>;`,
+  ],
+  [
+    'escaped CSS attribute',
+    'astro',
+    String.raw`<div style="background:u\72l('/surf\61 ce.bin')"/>`,
+  ],
+])
+  test(`bounded resource controls: inline style ${name} binds asset bytes`, () => {
+    const { root, options } = markupPromotionFixture(source, { extension });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+    fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+    assert.match(
+      validationMessage(root, options),
+      /promoted dependency.*surface\.bin.*differs from evidence Commit/u
+    );
+  });
+for (const [name, extension, source] of [
+  ['encoded style', 'html', `<div style="background:url(&quot;/surface.bin&quot;)"></div>`],
+  ['dynamic style', 'astro', `<div style={style}/>`],
+  ['opaque JSX object', 'tsx', `export const Surface=()=> <div style={styles}/>;`],
+  ['Vue bound style', 'vue', `<template><div :style="styles"/></template>`],
+  [
+    'Vue spread obscured style',
+    'vue',
+    `<template><div style="background:url('/surface.bin')" v-bind="attrs"/></template>`,
+  ],
+  [
+    'Vue duplicate style',
+    'vue',
+    `<template><div style="color:red" style="background:url('/surface.bin')"/></template>`,
+  ],
+  [
+    'Vue encoded style',
+    'vue',
+    `<template><div style="background:url(&quot;/surface.bin&quot;)"/></template>`,
+  ],
+  [
+    'external CSS URL',
+    'html',
+    `<div style="background:url(https://cdn.example/surface.bin)"></div>`,
+  ],
+])
+  test(`bounded resource controls: inline style ${name} stays unverified`, () => {
+    const { root, options } = markupPromotionFixture(source, { extension });
+    assert.match(validationMessage(root, options), /promotion CSS resource.*unverified/u);
+  });
+for (const [name, extension, source] of [
+  ['Markdown code', 'md', '```html\n<div style="background:url(/surface.bin)"></div>\n```'],
+  ['Markdown inline code', 'md', '`<div style="background:url(/surface.bin)"></div>`'],
+  ['MDX string', 'mdx', '{\'<div style="background:url(/surface.bin)"></div>\'}'],
+  ['HTML comment', 'html', '<!-- <div style="background:url(/surface.bin)"></div> -->'],
+  [
+    'JS string',
+    'tsx',
+    'export const description=\'<div style="background:url(/surface.bin)"></div>\';',
+  ],
+])
+  test(`bounded resource controls: inline style ${name} is inert`, () => {
+    const { root, options } = markupPromotionFixture(source, { extension });
+    fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+  });
+
+for (const [name, config, reject] of [
+  [
+    'shorthand',
+    `const alias={rawRuntime:'../../packages/runtime/src'}; export default {vite:{resolve:{alias}}};`,
+    true,
+  ],
+  ['getter', `export default {vite:{resolve:{get alias(){return aliases;}}}};`, true],
+  [
+    'spread entries',
+    `const aliases={rawRuntime:'../../packages/runtime/src'}; export default {vite:{resolve:{alias:{...aliases}}}};`,
+    true,
+  ],
+  [
+    'shorthand entry',
+    `const rawRuntime='../../packages/runtime/src';export default {vite:{resolve:{alias:{rawRuntime}}}};`,
+    true,
+  ],
+  ['dynamic alias', `export default {vite:{resolve:{alias:aliases}}};`, true],
+  [
+    'ordinary static alias',
+    `export default {vite:{resolve:{alias:{rawRuntime:'./src/safe'}}}};`,
+    false,
+  ],
+  [
+    'unused alias variable',
+    `const alias={rawRuntime:'../../packages/runtime/src'};export default {};`,
+    false,
+  ],
+])
+  test(`bounded resource controls: Vite alias ${name}`, () => {
+    const root = createRoot();
+    writeValidMatrices(root);
+    fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), config);
+    for (const relative of ['packages/runtime/src/index.ts', 'apps/www/src/safe/index.ts']) {
+      const absolute = path.join(root, relative);
+      fs.mkdirSync(path.dirname(absolute), { recursive: true });
+      fs.writeFileSync(absolute, 'export const value=true;');
+    }
+    const source = path.join(root, 'apps/www/src/components/AliasProbe.ts');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, `import {value} from 'rawRuntime';`);
+    const issues = collectCoverageMatrixIssues({ rootDir: root });
+    assert.equal(
+      issues.some((issue) =>
+        /raw Proto UI import|alias.*unverified|unverified.*alias/u.test(issue)
+      ),
+      reject,
+      issues.join('\n')
+    );
+  });
+
+// Independent review of the bounded template patch: real Vue/CSS parser
+// semantics, retained byte transitions, and base/candidate false-positive controls.
+for (const css of [
+  '@import"https://cdn.example/theme.css";',
+  '@import/**/url("https://cdn.example/theme.css");',
+  String.raw`@\69mport"h\74tps://cdn.example/theme.css";`,
+  String.raw`@\69mport/**/u\72l("h\74tps://cdn.example/theme.css");`,
+])
+  for (const kind of ['website', 'harness']) {
+    test(`bounded followup review: CSS token boundary ${kind} ${css}`, () => {
+      const issues = probeReview('followup', kind, css, 'css');
+      assert.ok(
+        issues.some((issue) => /external stylesheet|consumer.wall/u.test(issue)),
+        issues.join('\n')
+      );
+    });
+  }
+for (const [name, markup, rejected] of [
+  [
+    'self-closing v-pre siblings',
+    `<span v-pre/><button @click="import('https://cdn.example/runtime.js')"/>`,
+    true,
+  ],
+  [
+    'native handler under v-pre',
+    `<section v-pre><button onclick="import('https://cdn.example/runtime.js')">Go</button></section>`,
+    true,
+  ],
+  [
+    'inert directive under v-pre',
+    `<section v-pre><button @click="import('https://cdn.example/runtime.js')">Go</button></section>`,
+    false,
+  ],
+])
+  for (const kind of ['website', 'harness']) {
+    test(`bounded followup review: Vue ${kind} ${name}`, () => {
+      const issues = probeReview('followup', kind, `<template>${markup}</template>`, 'vue');
+      assert.equal(
+        issues.some((issue) =>
+          /unverified markup event handler|DOM HTML sink.*unverified/u.test(issue)
+        ),
+        rejected,
+        issues.join('\n')
+      );
+    });
+  }
+for (const [name, markup] of [
+  [
+    'td',
+    '<template><table><tr><td style="background:url(/surface.bin)">x</td></tr></table></template>',
+  ],
+  [
+    'tr',
+    '<template><table><tr style="background:url(/surface.bin)"><td>x</td></tr></table></template>',
+  ],
+  [
+    'col',
+    '<template><table><colgroup><col style="background:url(/surface.bin)"></colgroup></table></template>',
+  ],
+  [
+    'style modifier',
+    `<template><div v-bind:style.camel="{backgroundImage:'url(/surface.bin)'}"/></template>`,
+  ],
+]) {
+  test(`bounded followup review: Vue ${name} retains asset closure`, () => {
+    const { root, options } = markupPromotionFixture(markup, { extension: 'vue' });
+    fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+    let issues;
+    try {
+      issues = collectCoverageMatrixIssues(options);
+    } catch (error) {
+      issues = [error.message];
+    }
+    assert.ok(
+      issues.some((issue) =>
+        /promotion CSS resource.*unverified|promoted dependency.*surface\.bin.*differs/u.test(issue)
+      ),
+      issues.join('\n')
+    );
+  });
+}
+for (const [name, config] of [
+  [
+    'business shorthand',
+    `const alias={rawRuntime:'../../packages/runtime/src'};const business={alias};export default {}`,
+  ],
+  ['business method', `const business={alias(){return {}}};export default {}`],
+  [
+    'uncalled local object',
+    `function unused(){const alias={rawRuntime:'../../packages/runtime/src'};return {alias}};export default {}`,
+  ],
+]) {
+  test(`bounded followup review: ignore ${name} outside exported config`, () => {
+    const root = createRoot();
+    writeValidMatrices(root);
+    fs.writeFileSync(path.join(root, 'apps/www/astro.config.mjs'), config);
+    const source = path.join(root, 'apps/www/src/components/Alias.ts');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(source, `import {value} from 'ordinary-business-package';`);
+    const issues = collectCoverageMatrixIssues({ rootDir: root });
+    assert.equal(
+      issues.some((issue) =>
+        /raw Proto UI import|alias.*unverified|unverified.*alias/u.test(issue)
+      ),
+      false,
+      issues.join('\n')
+    );
+  });
+}
+test('bounded followup review: scheduler respects a local business namespace shadow', () => {
+  const issues = probeReview(
+    'followup',
+    'harness',
+    `import * as actions from './agent-actions';export function Surface(){const actions={send(){}};Promise.resolve().then(actions.send);return <section/>;}`,
+    'tsx'
+  );
+  assert.equal(
+    issues.some((issue) => /forbidden interaction/u.test(issue)),
+    false,
+    issues.join('\n')
+  );
+});
+
+test('bounded followup review: Vue v-pre style directive is inert', () => {
+  const { root, options } = markupPromotionFixture(
+    `<template><div v-pre :style="{backgroundImage:'url(/surface.bin)'}"/></template>`,
+    { extension: 'vue' }
+  );
+  fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+  assert.equal(
+    collectCoverageMatrixIssues(options).some((issue) =>
+      /surface\.bin.*differs|CSS resource.*unverified/u.test(issue)
+    ),
+    false
+  );
+});
+
+test('bounded followup review: actual alias array entry overriding spread is opaque', () => {
+  const root = createRoot();
+  writeValidMatrices(root);
+  fs.writeFileSync(
+    path.join(root, 'apps/www/astro.config.mjs'),
+    `export default {vite:{resolve:{alias:[{find:'rawRuntime',replacement:'./src/safe',...aliases}]}}}`
+  );
+  const source = path.join(root, 'apps/www/src/components/Alias.ts');
+  fs.mkdirSync(path.dirname(source), { recursive: true });
+  fs.writeFileSync(source, `import {value} from 'rawRuntime';`);
+  const issues = collectCoverageMatrixIssues({ rootDir: root });
+  assert.ok(
+    issues.some((issue) => /raw Proto UI import|alias.*unverified|unverified.*alias/u.test(issue)),
+    issues.join('\n')
+  );
+});
+
+for (const [name, body, rejected] of [
+  ['real destructured import', 'const {send}=actions;queueMicrotask(send);', true],
+  ['renamed destructured import', 'const {send:run}=actions;queueMicrotask(run);', true],
+  [
+    'shadowed destructured business',
+    'const actions={send(){}};const {send}=actions;queueMicrotask(send);',
+    false,
+  ],
+  ['ordinary action alias', 'const run=actions.send;queueMicrotask(run);', true],
+]) {
+  test(`bounded followup review: scheduler ${name}`, () => {
+    const issues = probeReview(
+      'followup',
+      'harness',
+      `import * as actions from './agent-actions';export function Surface(){${body}return <section/>;}`,
+      'tsx'
+    );
+    assert.equal(
+      issues.some((issue) => /forbidden interaction/u.test(issue)),
+      rejected,
+      issues.join('\n')
+    );
+  });
+}
+
+for (const [name, body, rejected] of [
+  ['var member function scope', '{var actions={send(){}};}queueMicrotask(actions.send);', false],
+  ['var destructuring function scope', '{var {send}={send(){}};}queueMicrotask(send);', false],
+  ['block const stays local', '{const actions={send(){}};}queueMicrotask(actions.send);', true],
+  [
+    'catch binding stays inside catch',
+    'try{throw {send(){}};}catch(actions){queueMicrotask(actions.send);}',
+    false,
+  ],
+  [
+    'catch binding does not hide outside import',
+    'try{throw {send(){}};}catch(actions){}queueMicrotask(actions.send);',
+    true,
+  ],
+  [
+    'unrelated block var does not hide imported owner',
+    '{var localActions=actions;}queueMicrotask(actions.send);',
+    true,
+  ],
+  ['var retains destructured imported action', '{var {send}=actions;}queueMicrotask(send);', true],
+]) {
+  test(`bounded followup review: scheduler ${name}`, () => {
+    const issues = probeReview(
+      'followup',
+      'harness',
+      `import * as actions from './agent-actions';export function Surface(){${body}return <section/>;}`,
+      'tsx'
+    );
+    assert.equal(
+      issues.some((issue) => /forbidden interaction/u.test(issue)),
+      rejected,
+      issues.join('\n')
+    );
+  });
+}
+for (const [name, source, rejected] of [
+  [
+    'block var DOM acquisition',
+    `function render(){ {var target=document.body;} target.insertAdjacentHTML('beforeend',markup); }`,
+    true,
+  ],
+  [
+    'block var business document shadow',
+    `function render(){ {var document={write(){}};} document.write(markup); }`,
+    false,
+  ],
+]) {
+  test(`bounded followup review: DOM ${name}`, () => {
+    const issues = probeReview('followup', 'website', source);
+    assert.equal(
+      issues.some((issue) => /DOM HTML sink.*unverified/u.test(issue)),
+      rejected,
+      issues.join('\n')
+    );
+  });
+}
+
+for (const [name, body, rejected] of [
+  [
+    'for-of lexical head ends before next statement',
+    'for(const actions of []){}queueMicrotask(actions.send);',
+    true,
+  ],
+  [
+    'for-in lexical head ends before next statement',
+    'for(const actions in {}){}queueMicrotask(actions.send);',
+    true,
+  ],
+  [
+    'for lexical head ends before next statement',
+    'for(let actions=0;actions<0;actions++){}queueMicrotask(actions.send);',
+    true,
+  ],
+  [
+    'for var remains function scoped',
+    'for(var actions of []){}queueMicrotask(actions.send);',
+    false,
+  ],
+  [
+    'case lexical binding stays within switch',
+    'switch(0){case 1:const actions={send(){}};}queueMicrotask(actions.send);',
+    true,
+  ],
+  [
+    'case business binding remains local',
+    'switch(1){case 1:const actions={send(){}};queueMicrotask(actions.send);}',
+    false,
+  ],
+]) {
+  test(`bounded followup review: scheduler ${name}`, () => {
+    const issues = probeReview(
+      'followup',
+      'harness',
+      `import * as actions from './agent-actions';export function Surface(){${body}return <section/>;}`,
+      'tsx'
+    );
+    assert.equal(
+      issues.some((issue) => /forbidden interaction/u.test(issue)),
+      rejected,
+      issues.join('\n')
+    );
+  });
+}
+for (const [name, body] of [
+  ['for-of destructuring', 'for(const {send} of []){}queueMicrotask(send);'],
+  ['for lexical alias', 'for(let send=0;send<0;send++){}queueMicrotask(send);'],
+]) {
+  test(`bounded followup review: ${name} cannot hide the later imported action`, () => {
+    const issues = probeReview(
+      'followup',
+      'harness',
+      `import {send} from './agent-actions';export function Surface(){${body}return <section/>;}`,
+      'tsx'
+    );
+    assert.ok(
+      issues.some((issue) => /forbidden interaction/u.test(issue)),
+      issues.join('\n')
+    );
+  });
+}
