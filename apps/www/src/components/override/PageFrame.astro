@@ -133,6 +133,11 @@ const { hasSidebar } = Astro.locals.starlightRoute;
   :global(.site-page-frame > .container-wrapper > header:has([data-site-header])) {
     container: docs-page / inline-size;
   }
+  /* Our measured Header margin owns anchor clearance. Starlight's root
+     padding otherwise adds a second header-height offset before scrollspy. */
+  :global(html:has(.site-page-frame [data-docs-site-header])) {
+    scroll-padding-top: 0;
+  }
   :global(
     .site-page-frame:has([data-docs-site-header]) [data-doc-flow] :is(h1, h2, h3, h4, h5, h6)[id]
   ) {

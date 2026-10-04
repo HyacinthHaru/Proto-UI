@@ -976,7 +976,7 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
           expect(geometry.textWidth - geometry.value.width).toBeLessThanOrEqual(1);
           expect(geometry.select.scrollWidth - geometry.select.clientWidth).toBeLessThanOrEqual(1);
           expect(geometry.overflow).toBeLessThanOrEqual(1);
-          expect(Math.abs(geometry.select.height - 44)).toBeLessThanOrEqual(1);
+          expect(Math.abs(geometry.select.height - (width < 768 ? 44 : 36))).toBeLessThanOrEqual(1);
           expect(Math.abs(geometry.search.height - 44)).toBeLessThanOrEqual(1);
           expect(geometry.searchRole).toBe('button');
           expect(geometry.searchDisabled).toBe('false');
@@ -986,9 +986,6 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
             expect(geometry.search.bottom).toBeLessThanOrEqual(geometry.label.y + 1);
             expect(Math.abs(geometry.sidebarTop - geometry.header.bottom)).toBeLessThanOrEqual(1);
           } else {
-            expect(Math.abs(geometry.select.bottom - geometry.search.bottom)).toBeLessThanOrEqual(
-              1
-            );
             expect(Math.abs(geometry.select.center - geometry.search.center)).toBeLessThanOrEqual(
               1
             );

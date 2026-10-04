@@ -120,10 +120,17 @@ try {
           await homeReady(page);
           if (v.family === 'brutalist') await switchFamily(page);
           await page.evaluate(() => window.scrollTo(0, 0));
+          await shot('initial');
+          await shot('full', true);
           const facts = await page.evaluate(() => {
-            const text = (selector: string) => {
-              const e = document.querySelector<HTMLElement>(selector)!;
-              assertLeaf(e);
+            const [slogan, title, caption] = [
+              '[data-site-typography="slogan"] [data-typography-prototype]',
+              '.home-gallery__title [data-projection-prototype$="-text-root"]',
+              '.home-gallery__caption [data-projection-prototype$="-text-root"]',
+            ].map((selector) => {
+              const e = document.querySelector<HTMLElement>(selector);
+              if (!e || !e.hasAttribute('data-pui-root'))
+                throw new Error('Expected the actual public Text leaf');
               const c = getComputedStyle(e);
               return {
                 prototype: e.dataset.projectionPrototype ?? e.dataset.typographyPrototype,
@@ -132,16 +139,7 @@ try {
                 fontWeight: c.fontWeight,
                 lineHeight: c.lineHeight,
               };
-            };
-            function assertLeaf(e: HTMLElement | null) {
-              if (!e || !e.hasAttribute('data-pui-root'))
-                throw new Error('Expected the actual public Text leaf');
-            }
-            const slogan = text('[data-site-typography="slogan"] [data-typography-prototype]');
-            const title = text('.home-gallery__title [data-projection-prototype$="-text-root"]');
-            const caption = text(
-              '.home-gallery__caption [data-projection-prototype$="-text-root"]'
-            );
+            });
             const card = document.querySelector<HTMLElement>(
               '[data-gallery-demo] [data-projection-prototype$="-surface-root"]'
             )!;
@@ -162,8 +160,6 @@ try {
             };
           });
           entry.home = facts;
-          await shot('initial');
-          await shot('full', true);
           assert.ok(facts.overflow <= 1);
           assert.equal(facts.primary.fontSize, 14);
           assert.ok(Math.abs(facts.primary.height - (v.family === 'brutalist' ? 40 : 32)) <= 1);
@@ -214,7 +210,10 @@ try {
           );
           const read = () =>
             page.evaluate(() => {
-              const rows = (selector: string) =>
+              const [left, right] = [
+                '.sidebar-pane a[data-site-link-appearance="sidebar"]',
+                '.right-sidebar a[data-site-link-appearance="toc"]',
+              ].map((selector) =>
                 [...document.querySelectorAll<HTMLAnchorElement>(selector)]
                   .filter((e) => e.checkVisibility())
                   .map((link) => {
@@ -233,6 +232,8 @@ try {
                       href: link.getAttribute('href'),
                       current: link.getAttribute('aria-current'),
                       inView: link.hasAttribute('in-view'),
+                      textHeight: text.getBoundingClientRect().height,
+                      textLineHeight: parseFloat(c.lineHeight),
                       surfaceHeight: surface.getBoundingClientRect().height,
                       hitHeight: link.getBoundingClientRect().height,
                       padding: s.padding,
@@ -241,10 +242,11 @@ try {
                       tokens: surface.getAttribute('data-pui-style'),
                       textTokens: text.getAttribute('data-pui-style'),
                     };
-                  });
+                  })
+              );
               return {
-                left: rows('.sidebar-pane a[data-site-link-appearance="sidebar"]'),
-                right: rows('.right-sidebar a[data-site-link-appearance="toc"]'),
+                left,
+                right,
                 bodySize: parseFloat(
                   getComputedStyle(
                     document.querySelector('[data-doc-flow] p [data-typography-prototype]')!
@@ -261,7 +263,13 @@ try {
           if (v.width === 1440) assert.ok(facts.right.length > 0);
           if (kind === 'candidate')
             for (const row of [...facts.left, ...facts.right]) {
-              assert.ok(row.surfaceHeight >= (v.width === 390 ? 44 : 32) - 1);
+              const minimum = v.width === 390 ? 44 : 32;
+              assert.ok(row.surfaceHeight >= minimum - 1);
+              if (row.textHeight <= row.textLineHeight + 1)
+                assert.ok(
+                  Math.abs(row.surfaceHeight - minimum) <= 1,
+                  `Unwrapped ${row.label} must be ${minimum}px, got ${row.surfaceHeight}`
+                );
               assert.equal(row.fontSize, 14);
               assert.equal(row.padding, '4px 8px');
               assert.equal(
@@ -291,13 +299,38 @@ try {
                 (href) => location.hash === new URL(href!, location.href).hash,
                 href
               );
-              await page.waitForFunction(
-                (href) =>
-                  [...document.querySelectorAll<HTMLAnchorElement>('.right-sidebar a')]
-                    .find((a) => a.getAttribute('href') === href)
-                    ?.getAttribute('aria-current') === 'true',
-                href
+              await page.evaluate(
+                () =>
+                  new Promise<void>((resolve) =>
+                    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+                  )
               );
+              entry.anchorLanding = await page.evaluate(() => {
+                const heading = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+                return {
+                  hash: location.hash,
+                  scrollY,
+                  scrollPaddingTop: getComputedStyle(document.documentElement).scrollPaddingTop,
+                  header: document.querySelector('header')?.getBoundingClientRect().toJSON(),
+                  heading: heading?.getBoundingClientRect().toJSON(),
+                  scrollMarginTop: heading ? getComputedStyle(heading).scrollMarginTop : null,
+                  current: [...document.querySelectorAll('.right-sidebar a[aria-current]')].map(
+                    (e) => ({
+                      href: e.getAttribute('href'),
+                      current: e.getAttribute('aria-current'),
+                    })
+                  ),
+                };
+              });
+              await save();
+              if (kind === 'candidate')
+                await page.waitForFunction(
+                  (href) =>
+                    [...document.querySelectorAll<HTMLAnchorElement>('.right-sidebar a')]
+                      .find((a) => a.getAttribute('href') === href)
+                      ?.getAttribute('aria-current') === 'true',
+                  href
+                );
               await page.mouse.move(0, 0);
               const moved = await read();
               entry.afterTocNavigation = moved;

@@ -172,6 +172,7 @@ function headerSurfaceStyle(element: HTMLElement, kind: 'button' | 'root' | 'tri
       minWidth: '0',
       maxWidth: '100%',
       minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.75rem))',
+      paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
       ...(docsRuntime ? { height: 'auto' } : {}),
       fontFamily: 'inherit',
       fontSize: '0.875rem',

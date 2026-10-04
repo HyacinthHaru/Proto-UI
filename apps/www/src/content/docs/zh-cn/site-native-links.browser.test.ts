@@ -1212,6 +1212,29 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         await toc.click();
         expect(new URL(page.url()).hash).toBe(new URL(hash!, page.url()).hash);
         await expect.poll(() => toc.getAttribute('in-view')).not.toBeNull();
+        await captureLinks(
+          page,
+          `nav-${family}-${colorScheme}-toc-anchor-landing`,
+          family,
+          'wc',
+          'native-anchor-before-current-assertion',
+          await page.evaluate(() => {
+            const heading = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+            return {
+              hash: location.hash,
+              scrollY,
+              scrollPaddingTop: getComputedStyle(document.documentElement).scrollPaddingTop,
+              header: document.querySelector('header')?.getBoundingClientRect().toJSON(),
+              heading: heading?.getBoundingClientRect().toJSON(),
+              scrollMarginTop: heading ? getComputedStyle(heading).scrollMarginTop : null,
+              links: [...document.querySelectorAll('sl-toc a')].map((e) => ({
+                href: e.getAttribute('href'),
+                current: e.getAttribute('aria-current'),
+                inView: e.hasAttribute('in-view'),
+              })),
+            };
+          })
+        );
         await expect.poll(() => toc.getAttribute('aria-current')).toBe('true');
         await expect
           .poll(async () => (await linkPaint(toc)).tokens)

@@ -129,6 +129,7 @@ describe('Website projection composition', () => {
           minWidth: '0',
           maxWidth: '100%',
           minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
+          paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
         },
       });
       expect(part('value')).toMatchObject({
@@ -1011,6 +1012,7 @@ it('keeps full-value wrapping an explicit consumer opt-in rather than changing p
     expect(trigger).toMatchObject({
       surfaceStyle: {
         minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
+        paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
       },
     });
     if (wrapValue) {

@@ -372,6 +372,19 @@ try {
               'Short code keeps its natural one-line height'
             );
             assert.ok(shortFacts.documentOverflow <= 1);
+            entry.shortSourceFraming = await page.evaluate(() => ({
+              header: document.querySelector('header')?.getBoundingClientRect().toJSON(),
+              scrollY,
+              ancestors: [
+                ...document.querySelectorAll('.site-page-frame, .container-wrapper, header'),
+              ].map((e) => ({
+                tag: e.localName,
+                class: e.className,
+                position: getComputedStyle(e).position,
+                transform: getComputedStyle(e).transform,
+                rect: e.getBoundingClientRect().toJSON(),
+              })),
+            }));
             await screenshot('code-short-natural');
             assert.equal(await shortCopy.getAttribute('data-copy-state'), 'idle');
             await shortCopy.click();
@@ -485,6 +498,23 @@ try {
             raw: e.querySelector('code')?.getAttribute('data-raw-code'),
             documentOverflow: document.documentElement.scrollWidth - innerWidth,
           }));
+          entry[`code-${sourceKind}`] = facts;
+          entry[`code-${sourceKind}-layout`] = await page.evaluate(() => ({
+            header: document.querySelector('header')?.getBoundingClientRect().toJSON(),
+            scrollY,
+            overflow: [...document.querySelectorAll<HTMLElement>('body *')]
+              .filter(
+                (e) => e.checkVisibility() && e.getBoundingClientRect().right > innerWidth + 1
+              )
+              .slice(0, 20)
+              .map((e) => ({
+                tag: e.localName,
+                class: e.className,
+                rect: e.getBoundingClientRect().toJSON(),
+                overflowX: getComputedStyle(e).overflowX,
+              })),
+          }));
+          await save();
           assert.ok(
             facts.documentOverflow <= 1 && facts.height > 0 && facts.height <= 417,
             'Enlarged source fits its independent viewport'

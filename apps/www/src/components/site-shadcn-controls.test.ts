@@ -325,6 +325,9 @@ describe('site family projections', () => {
       expect(trigger.style.minHeight).toBe(
         'var(--site-select-control-height, var(--site-control-height, 2.75rem))'
       );
+      expect(trigger.style.getPropertyValue('padding-block')).toBe(
+        'var(--site-select-control-padding-block, 0.5rem)'
+      );
       expect(value.style.minWidth).toBe('0');
       expect(value.style.flex).toBe('1 1 auto');
       expect(value.style.overflow).toBe('hidden');

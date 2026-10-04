@@ -33,6 +33,13 @@ describe('Docs header offset targets the actual MarkdownContent wrapper', () => 
     expect(match![2]).toBe('calc(var(--header-height) + 1rem)');
   });
 
+  it('removes the upstream root offset only when our measured docs Header owns clearance', () => {
+    expect(frame).toMatch(
+      /:global\(html:has\(\.site-page-frame \[data-docs-site-header\]\)\)\s*\{\s*scroll-padding-top: 0;/
+    );
+    expect(frame).toContain('scroll-margin-top: calc(var(--header-height) + 1rem)');
+  });
+
   it('uses a browser heading locator that exists in the real wrapper', () => {
     const heading = actualMarkdownFixture();
     const selector = browser.match(/const heading = page\.locator\('([^']+)'\)\.first\(\)/)?.[1];

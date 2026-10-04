@@ -132,7 +132,12 @@ test('CI preserves the pinned baseline, exact head, read-only permissions and ar
 
 test('serialized browser probes do not depend on tsx keepNames helpers', () => {
   let inspected = 0;
-  for (const file of ['capture-homepage-evidence.ts', 'capture-documentation-evidence.ts']) {
+  for (const file of [
+    'capture-homepage-evidence.ts',
+    'capture-documentation-evidence.ts',
+    'capture-mobile-interaction-evidence.ts',
+    'capture-visual-density-evidence.ts',
+  ]) {
     const source = ts.createSourceFile(
       file,
       readFileSync(new URL(file, import.meta.url), 'utf8'),
