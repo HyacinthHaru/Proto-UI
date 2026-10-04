@@ -114,7 +114,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
       : resolveSiteLibraryFamily(view.location.pathname);
   // All native controls in this initialization batch consume one closed root
   // theme. Do not interleave the same computed-style read with every Surface
-  // write, or reread it when only a native hover/press/current fact changes.
+  // write or independently resolve it for each owner's hover/press facts.
   let batchFamily = readFamily();
   let batchTheme = resolveProjectionThemeSurfaceStyle(batchFamily, document.documentElement);
   let themeFingerprint = JSON.stringify(batchTheme);
@@ -243,11 +243,45 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
   });
   const media = view.matchMedia?.('(prefers-color-scheme: dark)');
   media?.addEventListener?.('change', refreshTheme);
+  // Stylesheet/CSSOM palette edits have no general mutation event. Preserve the
+  // previous next-interaction visibility without a global patch or polling:
+  // sample once before this batch's first native interaction, then share that
+  // snapshot for all owners/facts in the same microtask turn. Unchanged themes
+  // do not broadcast, and initialization performs no extra interaction sample.
+  const targets = new Set(links);
+  let interactionSampled = false;
+  const sampleInteractionTheme = (event: Event) => {
+    if (!batchAlive || interactionSampled) return;
+    const target = event.target;
+    if (!(target instanceof view.Element)) return;
+    const owner = target.closest<HTMLElement>('[data-site-link-enhanced]');
+    if (!owner || !targets.has(owner)) return;
+    interactionSampled = true;
+    queueMicrotask(() => {
+      interactionSampled = false;
+    });
+    refreshTheme();
+  };
+  const interactionEvents = [
+    'pointerenter',
+    'pointerleave',
+    'pointerdown',
+    'pointerup',
+    'pointercancel',
+    'focus',
+    'blur',
+    'keydown',
+    'keyup',
+  ];
+  for (const event of interactionEvents)
+    document.addEventListener(event, sampleInteractionTheme, true);
   return () => {
     if (!batchAlive) return;
     batchAlive = false;
     observer.disconnect();
     media?.removeEventListener?.('change', refreshTheme);
+    for (const event of interactionEvents)
+      document.removeEventListener(event, sampleInteractionTheme, true);
     for (const release of releases) release();
     updates.clear();
   };

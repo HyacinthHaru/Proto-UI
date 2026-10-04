@@ -32,7 +32,7 @@ function assertColor(color: string) {
   for (const surface of surfaces)
     expect(surface.style.getPropertyValue('--pui-foreground')).toBe(color);
 }
-it('reads one theme per batch and reuses the closed snapshot for native interaction facts', async () => {
+it('reads once at initialization and once for a shared interaction batch, not per owner or fact', async () => {
   releases.push(initSiteNativeControls());
   await settle();
   expect(theme.read).toHaveBeenCalledTimes(1);
@@ -45,6 +45,42 @@ it('reads one theme per batch and reuses the closed snapshot for native interact
     link.dispatchEvent(new MouseEvent('pointerdown', { button: 0 }));
     link.dispatchEvent(new Event('pointerleave'));
   }
+  await settle();
+  expect(theme.read).toHaveBeenCalledTimes(2);
+});
+it('refreshes implicit stylesheet inputs on the next interaction without broadcasting an unchanged palette', async () => {
+  releases.push(initSiteNativeControls());
+  await settle();
+  const [first, second] = [...document.querySelectorAll('a')];
+  const untouched = document.querySelector('summary wc-site-shadcn-surface')!;
+  const mutations: MutationRecord[] = [];
+  const observer = new MutationObserver((records) => mutations.push(...records));
+  observer.observe(untouched, { attributes: true, attributeFilter: ['style'] });
+  first.dispatchEvent(new Event('pointerenter'));
+  second.dispatchEvent(new MouseEvent('pointerdown', { button: 0 }));
+  await settle();
+  expect(theme.read).toHaveBeenCalledTimes(2);
+  expect(mutations).toHaveLength(0);
+  theme.color = '#0000ff'; // External stylesheet/CSSOM update, no root attribute event.
+  first.dispatchEvent(new Event('pointerleave'));
+  second.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+  await settle();
+  expect(theme.read).toHaveBeenCalledTimes(3);
+  assertColor('#0000ff');
+  expect(mutations.length).toBeGreaterThan(0);
+  observer.disconnect();
+});
+it('ignores interactions outside its targets and removes the shared capture listeners on release', async () => {
+  const release = initSiteNativeControls();
+  releases.push(release);
+  await settle();
+  document.body.dispatchEvent(new Event('pointerenter'));
+  document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+  await settle();
+  expect(theme.read).toHaveBeenCalledTimes(1);
+  const link = document.querySelector('a')!;
+  release();
+  link.dispatchEvent(new Event('pointerenter'));
   await settle();
   expect(theme.read).toHaveBeenCalledTimes(1);
 });
