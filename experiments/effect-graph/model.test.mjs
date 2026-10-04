@@ -904,3 +904,30 @@ test('same-named optical uniforms keep distinct geometry and render producers', 
   });
   assert.equal(inspectGraph(merged).valid, false);
 });
+
+test('the pinned Flutter recipe cannot omit its feature and host prerequisites', async () => {
+  const absent = await load('flutter');
+  delete absent.featurePreconditions;
+  assert.equal(inspectGraph(absent).valid, false);
+  const empty = await load('flutter');
+  empty.featurePreconditions = [];
+  assert.equal(inspectGraph(empty).valid, false);
+  for (let i = 0; i < 3; i++) {
+    const graph = await load('flutter');
+    graph.featurePreconditions.splice(i, 1);
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+  const weakened = await load('flutter');
+  weakened.featurePreconditions[1].mode = 'excluded';
+  assert.equal(inspectGraph(weakened).valid, false);
+});
+
+test('jointly blanking a sampler declaration and its binding cannot match a pinned interface', async () => {
+  const graph = await load('studio');
+  const kernel = graph.kernels.find((entry) => entry.id === 'bg');
+  kernel.samplers[0].name = '   ';
+  const pass = graph.passes.find((entry) => entry.kernel === 'bg');
+  pass.bindings['   '] = pass.bindings.u_bgTexture;
+  delete pass.bindings.u_bgTexture;
+  assert.equal(inspectGraph(graph).valid, false);
+});

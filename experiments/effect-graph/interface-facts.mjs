@@ -322,6 +322,26 @@ const registry = {
       ],
       uniformBlocks: flutterBlocks,
       frameInputs: flutterFrameInputs(),
+      // Fixed inspection-recipe exclusions and host prerequisites. These are
+      // declared recipe boundaries, not additional upstream shader features.
+      featurePreconditions: [
+        {
+          feature: 'frost-preprocessing',
+          mode: 'excluded',
+          requires: { uniformBlock: 'render', field: 'uFrost', value: [0, 0, 0, 0] },
+        },
+        {
+          feature: 'live-compositor-input',
+          requiredHostUniforms: ['uSize'],
+          requiredHostSamplers: { uBackgroundTexture: 0 },
+          mode: 'host-required',
+        },
+        {
+          feature: 'captured-background-coordinate-offset',
+          mode: 'excluded',
+          requires: { uniformBlock: 'render', field: 'uCaptureOffset', value: [0, 0] },
+        },
+      ],
       sources: [
         {
           id: 'backdrop',
