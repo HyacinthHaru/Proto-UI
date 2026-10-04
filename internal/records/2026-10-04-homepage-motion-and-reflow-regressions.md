@@ -22,3 +22,9 @@ Local Node24/pnpm10.32.1 focused tests pass 66/66 across four files, including t
 Local Chromium cannot open its required socket (EPERM), including the approved execution retry; the separate cloud browser rejects localhost. Therefore no local browser pass or new screenshot is claimed. Original Actions screenshots/measurements were inspected and keep their original baseline SHA. New screenshots must come from the new exact-head workflows before visual acceptance. No merge, deployment, credentials or protection changes are included.
 
 Co-author by OpenAI Dots
+
+## Current-main integration
+
+The repair was published as `3ddc179c81663ede8c91048c2af00783606efacd` with the same tree as local `3741d07a`. GitHub then reported the PR as conflicting, so no pull-request Actions or new capture artifacts were created. Vercel reported preview success, but the actual cloud-browser route required Vercel login; no screenshot of the product could be obtained there.
+
+Normal integration of main `d4bdb66b54d68625fb3da1109a76e0829c1e77d7` preserves its Shadcn Input, selection diagnostics and draft-family GPUI mappings. The only textual conflicts were the generated style fixture and additive fixture tests. The fixture was regenerated from the combined compiler; both upstream palette checks and this repair's explicit unsupported pseudo-element check remain. After resolution, 71 focused tests across five files, four focused fixture tests, workspace types and fixture check passed. Exact merged-head hosted browser evidence is still required; the integration is not a force push or a merge to main.

@@ -41,7 +41,10 @@ const cases = [
   // #801 separately reviewed live preference/support lease cost; old 66,500 /
   // 86,500 / 86,500 ceilings and canonical before/after evidence are retained in
   // internal/records/2026-10-03-bounded-meta-budget-transaction.md.
-  ['runtime root', 'packages/runtime/src/index.ts', 66_800],
+  // #747 adds 260 gzip bytes for the static selection grammar/grouping; the
+  // independent bounded transaction retains the old failure and 220 headroom:
+  // internal/records/2026-10-03-selection-style-runtime-budget.md
+  ['runtime root', 'packages/runtime/src/index.ts', 67_100],
   // #623 scroll end-follow, #625 direct-reference transport, and the earlier
   // #652 baseline proposal were measured on merge-ref main c473eae3 at React
   // 82,082 / Vue 81,804 gzip. The current #652 proposal and combined headroom:

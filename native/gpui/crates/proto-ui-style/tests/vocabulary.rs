@@ -121,6 +121,33 @@ fn resolves_a_list_by_the_cascade() {
 }
 
 #[test]
+fn selection_targets_remain_diagnostic_without_becoming_element_paint() {
+    let vocabulary = vocabulary();
+    let baseline = vocabulary.resolve_all(["relative", "bg-white", "text-foreground"]);
+    assert!(baseline.unknown.is_empty());
+    assert!(baseline.get("background-color").is_some());
+    assert!(baseline.get("color").is_some());
+
+    let selected = vocabulary.resolve_all([
+        "relative",
+        "bg-white",
+        "text-foreground",
+        "selection:bg-primary",
+        "selection:text-primary-foreground",
+    ]);
+    assert_eq!(selected.declarations, baseline.declarations);
+    assert_eq!(
+        selected.unknown,
+        ["selection:bg-primary", "selection:text-primary-foreground"]
+    );
+    for token in &selected.unknown {
+        assert_eq!(vocabulary.resolve(token), Resolution::Unknown);
+        assert_eq!(vocabulary.cascade_position(token), None);
+    }
+    assert_eq!(vocabulary.resolve("peer"), Resolution::NoDeclarations);
+}
+
+#[test]
 fn collects_unknown_tokens_instead_of_dropping_them() {
     let vocabulary = vocabulary();
 

@@ -18,10 +18,13 @@
 //!
 //! # What is deliberately absent
 //!
-//! *State variants.* Author-time tokens cannot carry a `:` variant, and
-//! variants are produced by the Web-only `rule-expose-state-web` lowering. A
-//! host with no selectors never receives them: its Rules stay on the default
-//! plan and evaluate to a flat token list.
+//! *Other style targets.* State variants come from the Web-only
+//! `rule-expose-state-web` lowering; native Rules evaluate to a flat token list.
+//! The one author-side exception, static `selection:`, is realized as
+//! `::selection` on Web. This vocabulary has no native selection realization:
+//! those tokens stay [`Resolution::Unknown`], not [`Resolution::NoDeclarations`].
+//! Unknown describes a vocabulary gap, not an author-syntax verdict. Callers
+//! must preserve that diagnostic and must not claim the target was painted.
 //!
 //! *Semantic merge.* Last-wins merging by semantic group happens in the
 //! Feedback module before the tokens cross the wire, so the host receives an
@@ -62,10 +65,9 @@ pub enum Resolution<'a> {
     /// The token is a marker the Web side uses for selector targeting and
     /// carries no declarations. Ignoring it is correct.
     NoDeclarations,
-    /// The token is not in the vocabulary. The TypeScript compiler emits
-    /// nothing for a marker *and* for a token it has never heard of, so this
-    /// crate keeps the two apart: an unknown token is a defect to report, not
-    /// something to render unstyled.
+    /// The token is not in this native vocabulary, including a valid author
+    /// target this host does not yet realize. Keep this gap distinct from a
+    /// marker: it requires a diagnostic, not permission to render unstyled.
     Unknown,
 }
 
