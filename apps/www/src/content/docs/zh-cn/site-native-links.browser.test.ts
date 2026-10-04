@@ -1231,7 +1231,19 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         const brand = page.locator('.site-header a[data-site-link-appearance="brand"]').first();
         expect(await brand.getAttribute('role')).toBeNull();
         expect(await brand.locator('[data-pui-root]').count()).toBe(2);
-        expect(await brand.locator('[data-pui-style~="bg-transparent"]').count()).toBe(1);
+        expect(
+          await brand
+            .locator(
+              `[data-pui-style~="${family === 'brutalist' ? 'bg-secondary-background' : 'bg-transparent'}"]`
+            )
+            .count()
+        ).toBe(1);
+        if (family === 'brutalist') {
+          const paint = await linkPaint(brand);
+          expect(paint.tokens).toEqual(
+            expect.arrayContaining(['border-2', 'border-black', 'shadow-[4px_4px_0_0_#000]'])
+          );
+        }
         expect(await brand.locator('[data-pui-style~="font-semibold"]').count()).toBe(1);
         expect(await brand.locator('[role], [tabindex]').count()).toBe(0);
         await captureLinks(
