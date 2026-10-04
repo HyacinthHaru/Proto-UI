@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import { transform } from 'esbuild';
 import { readContrastProvenance } from './contrast-provenance.mjs';
+import { createContrastReportJournal } from './contrast-report-journal.mjs';
+import { BRUTALIST_THEME } from '../../../packages/prototypes/brutalist/src/theme';
 import type { Browser, BrowserContext, Page, Locator } from 'playwright-core';
 import {
   PROJECTION_FAMILY_MANIFESTS,
@@ -116,6 +118,12 @@ function plannedStates(family: string): string[] {
   if (['dropdown-menu', 'select', 'dialog'].includes(family)) states.push('open');
   if (['dropdown-menu', 'select'].includes(family))
     states.push('item-focus-first', 'item-focus-last');
+  if (family === 'dropdown-menu')
+    for (const variant of ['default', 'destructive'])
+      states.push(`item-${variant}-hover`, `item-${variant}-pointer-held`);
+  if (family === 'select')
+    for (const selection of ['selected', 'unselected'])
+      states.push(`item-${selection}-hover`, `item-${selection}-pointer-held`);
   if (family === 'dialog') states.push('close-icon-hover', 'close-icon-keyboard-focus');
   if (family === 'textarea')
     states.push('empty-placeholder', 'disabled-and-readonly', 'live-props-restored');
@@ -148,10 +156,11 @@ const cases: Case[] = selectedFamilies.flatMap((family) =>
 // An existing directory, including an old failed attempt, is never reused.
 await mkdir(resolve(output, '..'), { recursive: true });
 await mkdir(output);
-const frames: Record<string, unknown>[] = [];
+const journal = await createContrastReportJournal(output);
+const frames: Record<string, unknown>[] = journal.frames;
 const failures: Record<string, unknown>[] = [];
 const report: Record<string, unknown> = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   runID,
   baseline,
   observedAt: new Date().toISOString(),
@@ -203,6 +212,7 @@ const report: Record<string, unknown> = {
   scope:
     'Selected current documented Brutalist consumers only; no historical attempt is merged or cleared by this run.',
   methodology: [
+    'Schema 3 stores each started/result frame once in a create-only journal and references immutable PNG/facts files. report.json is an atomic current manifest while running; final reports materialize compact frame references once. Replay readContrastReportJournal(output) after interruption; incomplete attempts remain unresolved.',
     'Native reader controls choose runtime/theme. Native pointer and keyboard input change subject state; helpers never write subject CSS, attributes or state.',
     'General keyboard focus uses a programmatic seed followed by native Tab/Shift+Tab; not a whole-page Tab-order claim. Modal CloseIcon uses native Tab inside the modal.',
     'Target predicates and collected states are distinct from coverage of all authored cues and from independent WCAG classification.',
@@ -213,11 +223,10 @@ const report: Record<string, unknown> = {
   ],
   disposition: 'running; no acceptance determination',
 };
-let sequence = 0;
-async function persist(reason: string): Promise<void> {
+async function persist(reason: string, changedCase?: Case): Promise<void> {
   report.summary = {
     collectedFrames: frames.length,
-    pngFactMatchedFrames: frames.filter((frame) => frame.status === 'matched').length,
+    pngFactMatchedFrames: journal.matchedFrames,
     achievedTargetPredicates: cases.reduce((sum, item) => sum + item.achievedTargets.length, 0),
     unresolvedRuntimeThemeCases: cases.filter((item) => item.status !== 'observed').length,
     distinctUnresolvedFamilies: new Set(
@@ -232,14 +241,7 @@ async function persist(reason: string): Promise<void> {
     })),
     conformance: 'not evaluated; frame count and target predicate count are not full conformance',
   };
-  const json = JSON.stringify(report, null, 2) + '\n';
-  await writeFile(
-    join(output, `report-${String(sequence++).padStart(5, '0')}-${reason}.json`),
-    json,
-    { flag: 'wx' }
-  );
-  // Only this newly owned run's current report is updated; immutable snapshots remain.
-  await writeFile(join(output, 'report.json'), json);
+  await journal.persist(reason, report, changedCase);
 }
 await persist('initial');
 let browser: Browser | undefined;
@@ -435,7 +437,7 @@ async function capture(
     image: null,
     facts: null,
   };
-  frames.push(frame);
+  await journal.beginFrame(name, frame);
   try {
     const before = await stableFingerprint(page);
     frame.beforeFingerprintDigest = digest(before);
@@ -512,7 +514,8 @@ async function capture(
     frame.error = message(error);
     throw error;
   } finally {
-    await persist('frame');
+    await journal.finishFrame(name, frame);
+    await persist('frame', item);
   }
 }
 function primary(previewer: Locator, family: string): Locator | null {
@@ -983,7 +986,8 @@ async function pointerJourney(
         };
       }
       if (popup) {
-        const popupAfter = await popup.isVisible();
+        const popupPaint = await paintedPopupObservation(popup);
+        const popupAfter = popupPaint.achieved;
         const maskProof = family === 'dialog' ? await dialogOpenObservation(page, popup) : null;
         return {
           ...after,
@@ -997,6 +1001,7 @@ async function pointerJourney(
           popupBefore,
           popupAfter,
           popupPrototype: popupName,
+          popupPaint,
           maskProof,
         };
       }
@@ -1035,6 +1040,114 @@ async function owned(page: Page, prototype: string): Promise<Locator> {
   return page.locator(
     `[data-pui-root][data-projection-prototype=${JSON.stringify(prototype)}][data-projection-owner=${JSON.stringify(lease.owner)}][data-projection-generation=${JSON.stringify(lease.generation)}]`
   );
+}
+async function paintedPopupObservation(popup: Locator): Promise<Observation> {
+  if ((await popup.count()) !== 1)
+    return { achieved: false, reason: 'Expected exactly one controlled owned popup.' };
+  return popup.evaluate((element) => {
+    const visibility = (
+      globalThis as typeof globalThis & {
+        puiContrastProbe: typeof import('./contrast-probe.browser');
+      }
+    ).puiContrastProbe.readContrastPaintedVisibility(element);
+    return {
+      achieved: visibility.visible && visibility.classification === 'source-model-visible',
+      visibility,
+      prototype: element.getAttribute('data-projection-prototype'),
+      owner: element.getAttribute('data-projection-owner'),
+      generation: element.getAttribute('data-projection-generation'),
+      id: element.id,
+      basis: 'Exact trigger-controlled owned popup; same painted-visibility model as frame facts.',
+    };
+  });
+}
+async function popupItemPointerJourneys(page: Page, item: Case, trigger: Locator): Promise<void> {
+  const family = item.family;
+  const isSelect = family === 'select';
+  const contentName = isSelect ? 'brutalist-select-content' : 'brutalist-dropdown-content';
+  const rows = isSelect
+    ? [
+        { name: 'Paper', identity: 'selected', pair: 'main', selected: 'true' },
+        { name: 'Ink', identity: 'unselected', pair: 'main', selected: 'false' },
+      ]
+    : [
+        { name: 'Profile', identity: 'default', pair: 'main', selected: null },
+        { name: 'Delete', identity: 'destructive', pair: 'destructive', selected: null },
+      ];
+  // These exact authored rows come from demo-brutalist-{select,dropdown-menu}.demo.ts.
+  // Selection is observed before mouseup; activation is not suppressed or rewritten.
+  for (const row of rows) {
+    await page.keyboard.press('Escape');
+    await page.mouse.move(0, 0);
+    await trigger.click();
+    const controlledId = await trigger.getAttribute('aria-controls');
+    if (!controlledId) throw new Error('Item pointer journey has no controlled popup identity.');
+    const popup = (await owned(page, contentName)).and(
+      page.locator(`[id=${JSON.stringify(controlledId)}]`)
+    );
+    await popup.waitFor({ state: 'visible' });
+    const target = popup.getByRole(isSelect ? 'option' : 'menuitem', {
+      name: row.name,
+      exact: true,
+    });
+    // Native keyboard focus starts on the OTHER authored row. The pointer must
+    // reach this row itself; an already-focused row cannot hide a missing route.
+    await page.keyboard.press(row === rows[0] ? 'End' : 'Home');
+    await page.mouse.move(0, 0);
+    const before = await targetObservation(target);
+    if (before.focused || before.hovered || (isSelect && before.ariaSelected !== row.selected))
+      throw new Error(`Invalid independent pointer baseline for ${row.identity}.`);
+    const physical = await target.elementHandle();
+    if (!physical) throw new Error('Pointer item has no physical target.');
+    const theme = BRUTALIST_THEME[item.theme as keyof typeof BRUTALIST_THEME];
+    const expected = { fill: theme[row.pair], foreground: theme[`${row.pair}-foreground`] };
+    const observe = async (held: boolean): Promise<Observation> => {
+      const control = await target.evaluate(
+        (element, input) => {
+          const pair = (
+            globalThis as typeof globalThis & {
+              puiContrastProbe: typeof import('./contrast-probe.browser');
+            }
+          ).puiContrastProbe.readContrastPointerPair(element, input.expected, input.held);
+          return {
+            ...pair,
+            achieved:
+              pair.achieved &&
+              element === input.physical &&
+              (!input.isSelect || element.getAttribute('aria-selected') === input.selected),
+            samePhysicalTarget: element === input.physical,
+            focused: document.activeElement === element,
+            selected: element.getAttribute('aria-selected'),
+          };
+        },
+        { physical, held, isSelect, selected: row.selected, expected }
+      );
+      const popupPaint = await paintedPopupObservation(popup);
+      return {
+        ...control,
+        achieved: control.achieved && popupPaint.achieved,
+        popupPaint,
+        before,
+        identity: row.identity,
+        expectedPairSource: 'packages/prototypes/brutalist/src/theme.ts',
+        criterion: isSelect
+          ? 'P-BRUTALIST-SELECT-ITEM-INTERACTION (draft)'
+          : 'P-BRUTALIST-DROPDOWN-MENU-ITEM-INTERACTION (draft)',
+      };
+    };
+    try {
+      await target.hover();
+      await capture(page, item, `item-${row.identity}-hover`, () => observe(false));
+      await page.mouse.down();
+      try {
+        await capture(page, item, `item-${row.identity}-pointer-held`, () => observe(true));
+      } finally {
+        await page.mouse.up();
+      }
+    } finally {
+      await physical.dispose();
+    }
+  }
 }
 async function dialogOpenObservation(page: Page, modal: Locator): Promise<Observation> {
   const masks = await owned(page, 'brutalist-dialog-mask');
@@ -1318,7 +1431,9 @@ try {
   const sourceFiles = [
     ['runner', new URL('./audit-brutalist-contrast.mts', import.meta.url)],
     ['probe', new URL('./contrast-probe.browser.ts', import.meta.url)],
+    ['theme', new URL('../../../packages/prototypes/brutalist/src/theme.ts', import.meta.url)],
     ['provenance-guard', new URL('./contrast-provenance.mjs', import.meta.url)],
+    ['report-journal', new URL('./contrast-report-journal.mjs', import.meta.url)],
     ['browser-harness', new URL('../src/content/docs/zh-cn/browser-harness.ts', import.meta.url)],
     [
       'projection-manifest',
@@ -1460,7 +1575,7 @@ try {
         phase = 'source-provenance';
         await verifyServedSource();
         item.status = 'observed';
-        await persist('case');
+        await persist('case', item);
         continue;
       }
       if (!(await target.count()))
@@ -1630,12 +1745,21 @@ try {
             (role) => document.activeElement?.getAttribute('role') === role,
             role
           );
-          const itemFocus = (edge?: 'first' | 'last') =>
-            page.evaluate(
-              ({ role, edge }) => {
+          const controlledId = await target.getAttribute('aria-controls');
+          if (!controlledId)
+            throw new Error('Keyboard item journey has no controlled popup identity.');
+          const popup = (
+            await owned(
+              page,
+              family === 'select' ? 'brutalist-select-content' : 'brutalist-dropdown-content'
+            )
+          ).and(page.locator(`[id=${JSON.stringify(controlledId)}]`));
+          const itemFocus = async (edge?: 'first' | 'last') => {
+            const focus = await popup.evaluate(
+              (popup, { role, edge }) => {
                 const focused = document.activeElement as HTMLElement | null;
                 const candidates = [
-                  ...document.querySelectorAll<HTMLElement>(`[role="${role}"]`),
+                  ...popup.querySelectorAll<HTMLElement>(`[role="${role}"]`),
                 ].filter(
                   (element) =>
                     element.dataset.projectionOwner === focused?.dataset.projectionOwner &&
@@ -1649,7 +1773,10 @@ try {
                 const expected =
                   edge === 'first' ? candidates[0] : edge === 'last' ? candidates.at(-1) : focused;
                 return {
-                  achieved: focused?.getAttribute('role') === role && focused === expected,
+                  achieved:
+                    focused?.getAttribute('role') === role &&
+                    popup.contains(focused) &&
+                    focused === expected,
                   focusedText: focused?.textContent,
                   focusVisible: focused?.matches(':focus-visible'),
                   requestedEdge: edge ?? null,
@@ -1658,11 +1785,15 @@ try {
               },
               { role, edge }
             );
+            const popupPaint = await paintedPopupObservation(popup);
+            return { ...focus, achieved: focus.achieved && popupPaint.achieved, popupPaint };
+          };
           await capture(page, item, 'open', itemFocus);
           await page.keyboard.press('Home');
           await capture(page, item, 'item-focus-first', () => itemFocus('first'));
           await page.keyboard.press('End');
           await capture(page, item, 'item-focus-last', () => itemFocus('last'));
+          await popupItemPointerJourneys(page, item, target);
         }
       }
       if (family === 'tabs') {
@@ -1963,7 +2094,7 @@ try {
         disposition: 'unresolved case; achieved earlier targets retained, not excluded or passing',
       });
       console.error(`${family}/${runtime}/${theme}: ${phase}: ${message(error)}`);
-      await persist('failure');
+      await persist('failure', item);
     } finally {
       if (context) {
         try {
@@ -1980,7 +2111,7 @@ try {
           });
         }
       }
-      await persist('case');
+      await persist('case', item);
     }
   }
 } catch (error) {

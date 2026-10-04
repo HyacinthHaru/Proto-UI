@@ -7,6 +7,8 @@ import type {
   ContrastFrame,
   collectContrastFrame,
   readContrastState,
+  readContrastPaintedVisibility,
+  readContrastPointerPair,
 } from '../../../../scripts/contrast-probe.browser';
 import { launchBrowser } from './browser-harness';
 
@@ -15,6 +17,8 @@ declare global {
     puiContrastProbe: {
       collectContrastFrame: typeof collectContrastFrame;
       readContrastState: typeof readContrastState;
+      readContrastPaintedVisibility: typeof readContrastPaintedVisibility;
+      readContrastPointerPair: typeof readContrastPointerPair;
     };
   }
 }
@@ -88,6 +92,84 @@ const surface = (frame: ContrastFrame, ref: string) => {
 };
 
 describe('contrast probe / real Chromium instrument calibration', () => {
+  it('rejects transparent and clipped popup acceptance despite Playwright visibility', async () => {
+    const context = await browser.newContext({ viewport: { width: 800, height: 600 } });
+    const page = await context.newPage();
+    try {
+      await page.setContent(
+        fixture(`
+        <div id="normal" data-pui-root>Painted popup</div>
+        <div id="transparent" data-pui-root style="opacity:0">Transparent popup</div>
+        <div style="opacity:0"><div id="ancestor" data-pui-root>Transparent ancestor</div></div>
+        <div style="height:0;overflow:hidden"><div id="clipped" data-pui-root>Clipped popup</div></div>
+        <div id="unsupported" data-pui-root style="clip-path:inset(100%)">Unsupported clip</div>
+      `)
+      );
+      await page.addScriptTag({ content: bundle });
+      // This is the original runner's false-positive acceptance, reproduced on
+      // unchanged native Playwright semantics rather than a missing import.
+      for (const id of ['transparent', 'ancestor', 'clipped'])
+        expect(await page.locator(`#${id}`).isVisible()).toBe(true);
+      const observations = await page.evaluate(() =>
+        Object.fromEntries(
+          ['normal', 'transparent', 'ancestor', 'clipped', 'unsupported'].map((id) => [
+            id,
+            window.puiContrastProbe.readContrastPaintedVisibility(document.getElementById(id)!),
+          ])
+        )
+      );
+      expect(observations.normal).toMatchObject({
+        visible: true,
+        classification: 'source-model-visible',
+      });
+      for (const id of ['transparent', 'ancestor', 'clipped'])
+        expect(observations[id].visible).toBe(false);
+      expect(observations.unsupported.classification).toBe('unsupported');
+    } finally {
+      await context.close();
+    }
+  });
+
+  it('requires real pointer state and both painted colors for item pair acceptance', async () => {
+    const context = await browser.newContext({ viewport: { width: 800, height: 600 } });
+    const page = await context.newPage();
+    try {
+      await page.setContent(
+        fixture(
+          `<button id="item" data-pui-root style="background:#5294ff;color:#000">Item</button>`
+        )
+      );
+      await page.addScriptTag({ content: bundle });
+      const target = page.locator('#item');
+      const observe = (held: boolean, fill = '#5294ff', foreground = '#000') =>
+        target.evaluate(
+          (element, input) =>
+            window.puiContrastProbe.readContrastPointerPair(element, input, input.held),
+          { held, fill, foreground }
+        );
+      expect((await observe(false)).achieved).toBe(false);
+      await target.hover();
+      expect((await observe(false)).achieved).toBe(true);
+      expect((await observe(true)).achieved).toBe(false);
+      await page.mouse.down();
+      try {
+        expect((await observe(true)).achieved).toBe(true);
+        expect((await observe(true, '#fff')).achieved).toBe(false);
+        expect((await observe(true, '#5294ff', '#fff')).achieved).toBe(false);
+        // Instrument-only mutation control, never injected into component audit pages.
+        await target.evaluate((element) => {
+          element.style.opacity = '0';
+        });
+        expect((await observe(true)).achieved).toBe(false);
+      } finally {
+        await page.mouse.up();
+      }
+      expect((await observe(true)).achieved).toBe(false);
+    } finally {
+      await context.close();
+    }
+  });
+
   it('measures real text and glyph controls, not empty or descendant-only host ink', async () => {
     // Baseline falsifier: all opaque host boxes received 21:1, including empty,
     // SVG-only, child-only and empty-placeholder boxes with no direct black text.

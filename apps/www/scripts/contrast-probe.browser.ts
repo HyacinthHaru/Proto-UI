@@ -496,6 +496,52 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
   };
 };
 
+// Shared with the runner's popup acceptance: Playwright visibility alone admits
+// opacity-zero and fully clipped boxes. This observes the same paint limits as
+// the captured frame and never mutates the subject.
+export const readContrastPaintedVisibility = (element: Element) =>
+  paintedVisibility(element, [...element.getClientRects()]);
+
+export const readContrastPointerPair = (
+  element: Element,
+  expected: { fill: string; foreground: string },
+  held: boolean
+) => {
+  const style = getComputedStyle(element);
+  const visibility = readContrastPaintedVisibility(element);
+  const canvas = document.createElement('canvas').getContext('2d');
+  const normalize = (color: string): string | null => {
+    if (!canvas || !CSS.supports('color', color)) return null;
+    canvas.fillStyle = color;
+    return canvas.fillStyle;
+  };
+  const fill = normalize(style.backgroundColor);
+  const foreground = normalize(style.color);
+  const expectedFill = normalize(expected.fill);
+  const expectedForeground = normalize(expected.foreground);
+  const hovered = element.matches(':hover');
+  const nativeActive = element.matches(':active');
+  return {
+    achieved:
+      element.isConnected &&
+      visibility.visible &&
+      visibility.classification === 'source-model-visible' &&
+      hovered &&
+      (!held || nativeActive) &&
+      fill !== null &&
+      foreground !== null &&
+      fill === expectedFill &&
+      foreground === expectedForeground,
+    visibility,
+    hovered,
+    nativeActive,
+    fill,
+    foreground,
+    expectedFill,
+    expectedForeground,
+  };
+};
+
 export const collectContrastFrame = async ({
   image,
   family,

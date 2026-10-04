@@ -1,0 +1,77 @@
+name: Brutalist contrast audit evidence
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/brutalist-contrast-evidence.yml'
+      - 'apps/www/scripts/audit-brutalist-contrast.mts'
+      - 'apps/www/scripts/contrast-*.mjs'
+      - 'apps/www/scripts/contrast-probe.browser.ts'
+      - 'apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: brutalist-contrast-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  popup-audit-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install locked dependencies
+        run: |
+          corepack enable
+          corepack pnpm@10.32.1 install --frozen-lockfile
+          CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
+      - name: Calibrate paint acceptance and bounded evidence storage
+        run: |
+          node --test apps/www/scripts/contrast-report-journal.test.mjs
+          corepack pnpm@10.32.1 exec vitest run \
+            apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts \
+            --maxWorkers=1 --minWorkers=1
+      - name: Observe exact-head Dropdown Menu and Select in all four Web runtimes
+        env:
+          ASTRO_TELEMETRY_DISABLED: '1'
+          PROTO_UI_CONTRAST_AUDIT: '1'
+          PROTO_UI_CONTRAST_FAMILIES: dropdown-menu,select
+          PROTO_UI_BROWSER_BASE_URL: http://127.0.0.1:4321
+          PROTO_UI_CONTRAST_EVIDENCE_DIR: ${{ runner.temp }}/contrast-evidence/candidate
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/contrast-evidence"
+          corepack pnpm@10.32.1 --filter apps-www dev --host 127.0.0.1 --port 4321 \
+            > "$RUNNER_TEMP/contrast-evidence/server.log" 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          READY=0
+          for attempt in $(seq 1 180); do
+            if curl --silent --fail http://127.0.0.1:4321/__pui_contrast_provenance \
+              > "$RUNNER_TEMP/contrast-evidence/server-provenance.json"; then
+              READY=1
+              break
+            fi
+            kill -0 "$SERVER_PID" || { cat "$RUNNER_TEMP/contrast-evidence/server.log"; exit 1; }
+            sleep 1
+          done
+          test "$READY" = 1 || { cat "$RUNNER_TEMP/contrast-evidence/server.log"; exit 1; }
+          corepack pnpm@10.32.1 exec tsx apps/www/scripts/audit-brutalist-contrast.mts
+      - name: Retain public component captures, raw attempts and bound provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brutalist-contrast-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/contrast-evidence
+          if-no-files-found: warn
+          retention-days: 30
