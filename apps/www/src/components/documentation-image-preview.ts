@@ -219,7 +219,10 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
     status.className = 'docs-image-status';
     status.hidden = true;
     status.setAttribute('role', 'status');
-    status.textContent = labels.error;
+    const statusText = makePreviewControl(family, 'text', { size: 'base', tone: 'inherit' });
+    statusText.dataset.docsImageStatusText = '';
+    statusText.textContent = labels.error;
+    status.append(statusText);
     contentSurface.append(title, description, image, status, close);
     root.append(mask, content);
     host.append(root);

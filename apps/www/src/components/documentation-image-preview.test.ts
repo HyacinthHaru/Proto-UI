@@ -247,3 +247,33 @@ it('validates the controlled public Surface duration instead of accepting arbitr
   setPreviewSurfaceDuration(surface, 0);
   expect(surface.style.getPropertyValue('--pui-surface-transition-duration')).toBe('0ms');
 });
+
+describe('public Text error presentation with native live semantics', () => {
+  for (const family of ['shadcn', 'brutalist'])
+    it(`${family}: mounts the real Text atom inside the original status paragraph`, async () => {
+      document.documentElement.dataset.siteLibraryFamily = family;
+      const { trigger } = await fixture();
+      trigger.click();
+      await settle();
+      const image = document.querySelector<HTMLImageElement>('.docs-image-full')!;
+      const status = document.querySelector<HTMLElement>('.docs-image-status')!;
+      image.dispatchEvent(new Event('error'));
+      await settle();
+      expect(status.localName).toBe('p');
+      expect(status.getAttribute('role')).toBe('status');
+      expect(status.hidden).toBe(false);
+      expect(status.textContent).toBe('This image could not be loaded');
+      const text = status.querySelector<HTMLElement>('[data-docs-image-status-text]')!;
+      expect(text.dataset.docsPreviewPrototype).toBe(`${family}-text-root`);
+      expect(text.hasAttribute('data-pui-root')).toBe(true);
+      expect(text.getAttribute('data-pui-style')).toContain('text-base');
+      expect(text.getAttribute('data-pui-style')).toContain('font-sans');
+      expect(text.getAttribute('role')).toBeNull();
+      expect(text.getAttribute('tabindex')).toBeNull();
+      image.dispatchEvent(new Event('load'));
+      await settle();
+      expect(status.hidden).toBe(true);
+      expect(status.querySelector('[data-docs-image-status-text]')).toBe(text);
+      expect(image.hidden).toBe(false);
+    });
+});
