@@ -11,8 +11,15 @@ export async function loadReact(): Promise<{
   React: typeof ReactTypes;
   ReactDOM: any;
 }> {
-  const [reactModule, ReactDOM] = await Promise.all([import('react'), import('react-dom/client')]);
+  const [reactModule, reactDOMModule, reactDOMClient] = await Promise.all([
+    import('react'),
+    import('react-dom'),
+    import('react-dom/client'),
+  ]);
   const React = (reactModule.default ?? reactModule) as unknown as typeof ReactTypes;
+  // Client roots do not export commit/portal APIs. Keep the public DOM APIs
+  // used by composed demos, with client createRoot/hydrateRoot entry points.
+  const ReactDOM = { ...reactDOMModule, ...reactDOMClient };
   return { React, ReactDOM };
 }
 
