@@ -120,6 +120,7 @@ describe('actual passive CodeSurface projection', () => {
       );
       expect(title.dataset.siteTypography).toBe('label');
       expect(note.textContent).toBe(source);
+      expect(note.firstElementChild).toBe(title);
       expect(note.querySelector('svg')).toBe(icon);
       expect(note.querySelector('a')).toBe(link);
       expect(document.activeElement).toBe(link);

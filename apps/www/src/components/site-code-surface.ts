@@ -55,7 +55,10 @@ function initPassiveSurface(root: HTMLElement, purpose: 'code' | 'note'): CodeSu
   const mount = doc.createElement('div');
   mount.className = `site-${purpose}-surface-mount`;
   mount.setAttribute('aria-hidden', 'true');
-  root.prepend(mount);
+  // Native note rhythm includes :first-child paragraph rules. Keep its title
+  // first rather than letting a decorative, positioned plane change that fact.
+  if (purpose === 'note') root.append(mount);
+  else root.prepend(mount);
   const previewer = root.closest<Previewer>('[data-previewer-id]');
   let preferred: RuntimeId = 'wc';
   try {

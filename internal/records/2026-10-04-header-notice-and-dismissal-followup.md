@@ -26,6 +26,8 @@ The exact-source hosted probes now retain original fbd before images and candida
 
 Local workspace typechecking was killed with exit137 in the shared resource-constrained environment. It is retained as failed/unverified local evidence, not a pass; exact-head hosted type/General/browser checks remain required. No repeated identical resource-heavy typecheck is used to claim recovery.
 
+An additional native-order negative control after the first push found that prepending the decorative note plane made the original title stop matching `:first-child`, allowing the existing paragraph-spacing rule to add an unintended top gap. Four real adapter cases failed this retained structural assertion. Appending the absolutely positioned passive plane keeps the native title first; the full23 passive-surface cases pass after the correction. The initial121 test set had preserved node identity but had not asserted this CSS-relevant sibling fact.
+
 ## Review and delivery
 
 Continue on #816 above the synchronized #777 base. Publish a per-commit progress report and replace pending visual debt with this source's actual images. Do not relabel d657/fbd screenshots as the new source. Resolve the three exact review threads only after the new implementation and hosted browser evidence establish their fixes. Independent maintainer approval and the real external Vercel quota failure remain separate integration gates.
