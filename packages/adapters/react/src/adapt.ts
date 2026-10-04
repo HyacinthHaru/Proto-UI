@@ -476,6 +476,11 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           isViewReady: () =>
             viewEffectsTargetReadyRef.current &&
             !rootRef.current?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+          // Native focus must not precede host-event ingress: focusSelf relies
+          // on the real focus event to establish facts used by roving navigation.
+          // A11y/style projection still uses the earlier effects-ready boundary.
+          isFocusTargetReady: () =>
+            viewReadyRef.current && eventGateRef.current?.isEnabled() === true,
           getCurrentElement: () => rootRef.current,
           subscribeTargetReady: (listener) => {
             focusTargetReadyListenersRef.current.add(listener);

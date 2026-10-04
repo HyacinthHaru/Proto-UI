@@ -240,6 +240,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
+  isFocusTargetReady: () => boolean;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -263,7 +264,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
 
   const getTriggerSurface = () => {
     const target = getLogicalTriggerSurfaceRoot(instanceToken);
-    return args.isViewReady() && target?.isConnected ? target : null;
+    return args.isViewReady() && args.isFocusTargetReady() && target?.isConnected ? target : null;
   };
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
