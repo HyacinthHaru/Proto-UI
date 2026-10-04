@@ -1,10 +1,10 @@
 # Pinned liquidGL whole-backend baseline
 
-Status: the owner authorized this pinned, isolated browser baseline on 2026-10-03. Source preparation is complete; no execution, screenshot or visual acceptance is recorded yet.
+Status: the owner authorized this pinned, isolated browser baseline on 2026-10-03. The exact-source browser runs and screenshots below establish bounded execution evidence. Visual acceptance and production material admission remain open.
 
 The candidate is [naughtyduk/liquidGL 3.0.0 at 88f681a](https://github.com/naughtyduk/liquidGL/tree/88f681ab7035fd55b04f63edff1841e32c4199e9). `vendor/liquidGL.js` is the unmodified `scripts/liquidGL.js`; `provenance.json` pins its exact Git blob, SHA-256 and byte length. `vendor/LICENSE` preserves the complete MIT text and its asset exclusion. No upstream demonstration asset is included. This directory is not a public package or a production Adapter.
 
-## Proposed bounded run
+## Bounded run protocol
 
 - A temporary GitHub Actions Ubuntu runner, official Chromium, empty browser context and loopback-only owned fixture; no authenticated pages, personal cookies, service credentials or production deployment
 - Reuse the repository-locked Playwright toolchain and official video utility; the vendor script has no package runtime dependencies. Do not load the upstream helper or third-party scrolling libraries
@@ -36,3 +36,9 @@ The first result is an isolated upstream visual/ownership baseline for compariso
 Head d425c1c8 / run 37144522909 used Chrome 154 and the WebGLBackend at 760×770. The optical control changed 5979 pixels in the fixed large-surface ROI, while both pointer-transparent surfaces restored `pointer-events: auto` on destroy and the final canvas/style elements were removed. These are bounded observations, not visual acceptance.
 
 The actual images exposed an ownership mistake in our fixture: its isolated stacking context trapped the foreground captions below the vendor's body-level canvas. Removing that isolation puts the authored foreground above the canvas; a paired visible/hidden caption pixel test now checks actual paint. The decorative scene also disables text selection during recorded pointer movement. The vendor bytes are unchanged. The first recording's dynamically registered moved text left a visible double image; that reconstruction/freshness failure remains unresolved and must not be described as a successful live update.
+
+## Repaired fixture result
+
+Source `036c2221f514e01021c5f109783cecff18e94edd` passed [run 37145152891](https://github.com/Proto-UI/Proto-UI/actions/runs/37145152891). The visible/hidden foreground control differs by 586 pixels; the normal/zero-optics ROI differs by 4975 pixels. Both observations establish the tested paint difference, not a visual-quality score. No script errors or non-loopback requests were observed.
+
+The repaired fixture also produced a 15.56-second fixed-viewport recording with zero screenshot calls. Background text still competes with foreground readability, and dynamically registered text still shows a double image near the end. [Source-bound images and recording context](https://github.com/Proto-UI/Proto-UI/pull/807) remain evidence of those limitations. Repository CI and exact-byte/license checks passed; the Vercel preview failed at the free deployment quota. No later documentation-only commit changes the renderer or relabels these images as newly rendered.
