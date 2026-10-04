@@ -54,3 +54,11 @@ The narrow fix collects caller nodes through the existing projector and replaces
 The exact WC regression is red on `8f7c9ef7` (one failure / seven passing controls) and green with the seven-line session repair. Related WC lifecycle, props and Template checks plus the existing three-framework carrier tests pass: eight files / twenty-one tests. Narrow TypeScript and diff checks pass. These are DOM-harness results; the previous `8f7c9ef7` native evidence does not certify this later production change, and a new exact-head CI/native run is required after publication.
 
 An exploratory four-adapter topology round-trip additionally found pre-existing Vue caller-DOM replacement when returning from a slot-only root to the owned-sibling array shape. It is not repaired or admitted as a guarantee here. The new committed transition regression is WC-specific; existing framework carrier tests do not claim universal dynamic topology identity preservation. Keep that Vue observation as a separate follow-up instead of widening this cleanup fix.
+
+## Caller-mutation review correction
+
+Independent review of `28c9a9f1` found that the newly exercised slot-only cleanup path exposed stale slot-pool assumptions: it could resurrect a removed caller node, reclaim one reparented outside the host, or undo a pending prepend/reorder before MutationObserver delivery. All four independent cases failed on the candidate and passed when only the pre-cleanup `session.ts` source was substituted. The existing passing tests did not cover those windows.
+
+The collector now snapshots current ownership before detaching anything, takes live caller roots in current document order, and preserves caller nesting rather than promoting nested children. A template with no slot may still intentionally park detached callers; that retained pool is preserved, while a parked node adopted by an external parent is not reclaimed. The old and new owned-node sets and slot-only initial fast path remain unchanged. No new public API or caller-style mutation is introduced.
+
+The exact prior collector fails six cases with eight controls passing. The repaired candidate passes 31 related WC/Template contract cases and narrow TypeScript. Independent incremental review and new exact-head CI/native evidence remain required; the preceding 28c fixture images show that historical source only.
