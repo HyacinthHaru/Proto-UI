@@ -84,7 +84,7 @@ export class StarlightTOC extends HTMLElement {
   }
 
   private onIdle = (cb: IdleRequestCallback) =>
-    (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
+    (window.requestIdleCallback || ((cb) => setTimeout(() => cb(), 1)))(cb);
 
   constructor() {
     super();

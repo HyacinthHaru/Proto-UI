@@ -12613,3 +12613,72 @@ test('registered stage-zero family allowances stay bound to their reviewed sourc
   message = validationMessage(root);
   assert.ok(message.includes(`raw Proto UI import \`@proto.ui/runtime\` in \`${source}\``));
 });
+
+test('timer compilation admission: string and unresolved global handlers fail closed', () => {
+  for (const expression of [
+    `setTimeout("import('https://cdn.example/runtime.js')", 0);`,
+    `setInterval('run()', 1);`,
+    'window.setTimeout(source, 0);',
+    "self['setInterval'](source, 0);",
+    'globalThis.setTimeout(`run()`, 0);',
+    'const schedule=window.setTimeout;schedule(source, 0);',
+    'function run(handler){setTimeout(handler, 0)}',
+    'function run(handler=()=>{}){setTimeout(handler, 0)}',
+    'setTimeout();',
+    'window.setTimeout.call(window, source, 0);',
+    'setInterval.apply(window, [source, 0]);',
+    'const schedule=setTimeout.bind(window);schedule(source, 0);',
+    'Reflect.apply(setTimeout, window, [source, 0]);',
+    'window.Reflect.apply(window.setTimeout, window, source);',
+
+    'setTimeout(condition ? (()=>{}) : source, 0);',
+    'let handler=()=>{};handler=source;setTimeout(handler, 0);',
+    'let handler=()=>{};function later(){handler=source}setTimeout(handler, 0);',
+    'const handler=externalHandler;setTimeout(handler, 0);',
+    'setTimeout(handler, 0);function handler(){};handler=source;',
+    'function handler(){};handler &&= source;setTimeout(handler, 0);',
+    'function handler(){};({handler}=external);setTimeout(handler, 0);',
+    'function handler(){};[handler]=external;setTimeout(handler, 0);',
+    'function handler(){};for(handler of values) { setTimeout(handler, 0); }',
+  ])
+    for (const kind of ['website', 'harness']) {
+      const root = createRoot();
+      const file =
+        kind === 'website'
+          ? 'apps/www/src/components/TimerEntry.ts'
+          : 'apps/agent-harness/src/run/TimerEntry.ts';
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(path.join(root, file), expression);
+      writeValidMatrices(root, {}, kind === 'harness' ? { Path: file } : {}, {
+        websiteBindings: kind === 'website' ? [[file, ['www.shell.primary-nav']]] : [],
+      });
+      assert.match(validationMessage(root), /runtime code compilation.*unverified/, expression);
+    }
+});
+
+test('timer compilation admission: proven callable handlers and shadowed timers remain valid', () => {
+  for (const expression of [
+    'setTimeout(()=>{}, 0);',
+    'setTimeout.call(window, ()=>{}, 0);',
+    'setTimeout.apply(window, [()=>{}, 0]);',
+    'Reflect.apply(setTimeout, window, [()=>{}, 0]);',
+    'const schedule=setTimeout.bind(window, ()=>{});schedule(0);',
+    'window.setInterval(function(){}, 1);',
+    'const handler=()=>{};setTimeout(handler, 0);',
+    'const handler=()=>{};function other(){let handler;handler=source;}setTimeout(handler,0);',
+    'function handler(){};function other(handler){handler=source;}setTimeout(handler,0);',
+    'const handler=function(){};const alias=handler;self.setInterval(alias, 0);',
+    'setTimeout(handler, 0);function handler(){}',
+    'function run(setTimeout){setTimeout(source, 0)}',
+    'function run(window){window.setTimeout(source, 0)}',
+    'const business={setInterval(){}};business.setInterval(source, 0);',
+    'const description="setTimeout(source, 0)";',
+  ]) {
+    const root = createRoot(),
+      file = 'apps/agent-harness/src/run/TimerControl.ts';
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), expression);
+    writeValidMatrices(root, {}, { Path: file });
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), expression);
+  }
+});

@@ -4253,6 +4253,80 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
     }
     return false;
   };
+  const timerMutatedBindings = new Set();
+  const recordTimerMutationTarget = (expression) => {
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isIdentifier(candidate)) {
+      // Attribute writes to their nearest lexical declaration, rather than
+      // poisoning an unrelated callback with the same spelling in another scope.
+      for (let scope = scriptLexicalScope(candidate); scope; scope = scriptLexicalScope(scope)) {
+        const declarations = (scriptElementBindings.get(candidate.text) ?? []).filter(
+          (entry) => entry.scope === scope && !ts.isBinaryExpression(entry.node)
+        );
+        if (declarations.length) {
+          declarations.forEach((binding) => timerMutatedBindings.add(binding));
+          break;
+        }
+        if (ts.isSourceFile(scope)) break;
+      }
+    } else if (ts.isArrayLiteralExpression(candidate))
+      candidate.elements.forEach(recordTimerMutationTarget);
+    else if (ts.isObjectLiteralExpression(candidate))
+      candidate.properties.forEach((property) => {
+        if (ts.isShorthandPropertyAssignment(property)) recordTimerMutationTarget(property.name);
+        else if (ts.isPropertyAssignment(property)) recordTimerMutationTarget(property.initializer);
+        else if (ts.isSpreadAssignment(property)) recordTimerMutationTarget(property.expression);
+      });
+    else if (ts.isSpreadElement(candidate)) recordTimerMutationTarget(candidate.expression);
+  };
+  const collectTimerMutations = (node) => {
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+      node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+    )
+      recordTimerMutationTarget(node.left);
+    if (
+      (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) &&
+      [ts.SyntaxKind.PlusPlusToken, ts.SyntaxKind.MinusMinusToken].includes(node.operator)
+    )
+      recordTimerMutationTarget(node.operand);
+    if (ts.isForOfStatement(node) || ts.isForInStatement(node))
+      recordTimerMutationTarget(node.initializer);
+    ts.forEachChild(node, collectTimerMutations);
+  };
+  collectTimerMutations(sourceFile);
+  // Timer handlers are executable inputs. Only syntax-proven callables bypass
+  // the compilation wall; types, imported values and default parameters do not
+  // prove what value reaches the browser. Mutable aliases remain unverified.
+  const isProvenTimerCallback = (expression, useNode, seen = new Set()) => {
+    if (!expression) return false;
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isArrowFunction(candidate) || ts.isFunctionExpression(candidate)) return true;
+    if (!ts.isIdentifier(candidate)) return false;
+    const entries = scriptElementBindings.get(candidate.text) ?? [];
+    for (let scope = scriptLexicalScope(useNode); scope; scope = scriptLexicalScope(scope)) {
+      const local = entries.filter((entry) => entry.scope === scope);
+      if (local.length) {
+        if (local.length !== 1 || seen.has(local[0]) || seen.size >= 64) return false;
+        const binding = local[0];
+        if (timerMutatedBindings.has(binding)) return false;
+        if (ts.isFunctionDeclaration(binding.node)) return Boolean(binding.node.body);
+        if (
+          !ts.isVariableDeclaration(binding.node) ||
+          !ts.isVariableDeclarationList(binding.node.parent) ||
+          !(binding.node.parent.flags & ts.NodeFlags.Const) ||
+          binding.position >= useNode.getStart(sourceFile) ||
+          !binding.initializer
+        )
+          return false;
+        seen.add(binding);
+        return isProvenTimerCallback(binding.initializer, binding.node, seen);
+      }
+      if (ts.isSourceFile(scope)) break;
+    }
+    return false;
+  };
   const isAudioContext = (expression, useNode, seen) =>
     resolveLocalValue(
       expression,
@@ -4276,6 +4350,33 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       );
     });
   const visit = (node) => {
+    if (ts.isCallExpression(node)) {
+      const isTimer = (expression) =>
+        resolveLocalValue(expression, node, new Set(), (candidate, useNode) =>
+          isBrowserGlobal(candidate, useNode, ['setTimeout', 'setInterval'])
+        );
+      const arrayHandler = (expression) => {
+        const candidate = expression && unwrapTypeScriptExpression(expression);
+        return candidate && ts.isArrayLiteralExpression(candidate) ? candidate.elements[0] : null;
+      };
+      let timer = isTimer(node.expression);
+      let handler = node.arguments[0];
+      const member = staticMemberAccess(node.expression);
+      if (member && ['call', 'apply', 'bind'].includes(member.name) && isTimer(member.receiver)) {
+        timer = true;
+        handler = member.name === 'apply' ? arrayHandler(node.arguments[1]) : node.arguments[1];
+      }
+      if (
+        isGlobalMethod(node, node, 'Reflect', 'apply') &&
+        node.arguments[0] &&
+        isTimer(node.arguments[0])
+      ) {
+        timer = true;
+        handler = arrayHandler(node.arguments[2]);
+      }
+      if (timer && !isProvenTimerCallback(handler, node))
+        specifiers.push(UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER);
+    }
     if (
       (ts.isCallExpression(node) || ts.isNewExpression(node)) &&
       resolveLocalValue(node.expression, node, new Set(), (candidate, useNode) =>
@@ -6161,7 +6262,7 @@ function isTestNamedSource(absolutePath) {
 // sidebar entries; resolver functions and plugin shape stay intact. Parity/mutation tests retain
 // fail-closed behavior for every other configuration change.
 const PROMOTION_RESOLVER_CONFIG_SHA256 =
-  '856cc74b95d480cbdb0f1253823f306f41a7101ee41815cd68269786c839fc0d';
+  '90ac61e7134b84376dfef9e4db1a75640c25364e16122b7e56806f0388fecfc9';
 export function promotionBarePackageTargets(root, specifier, metadata) {
   const unverified = () =>
     new Error(`promotion package closure for ${specifier} remains unverified`);
@@ -6618,7 +6719,7 @@ function validateWebsiteRawImports(rootDir, relativePath, issues) {
     }
     if (rawImport.category === 'unverified-runtime-compilation') {
       issues.push(
-        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function entry points require an explicit reviewed admission`
+        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function and string-or-unresolved timer entry points require an explicit reviewed admission`
       );
       continue;
     }
@@ -6847,7 +6948,7 @@ function validateHarnessRawImports(rootDir, relativePath, issues) {
     }
     if (rawImport.category === 'unverified-runtime-compilation') {
       issues.push(
-        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function entry points require an explicit reviewed admission`
+        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function and string-or-unresolved timer entry points require an explicit reviewed admission`
       );
       continue;
     }

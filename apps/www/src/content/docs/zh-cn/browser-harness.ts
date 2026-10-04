@@ -85,7 +85,7 @@ async function waitForServer(url: string): Promise<void> {
     } catch {
       // The dev server is still starting.
     }
-    await new Promise((resolve) => setTimeout(resolve, 250));
+    await new Promise((resolve) => setTimeout(() => resolve(), 250));
   }
   throw new Error(`Timed out waiting for ${url}.\n${serverOutput}`);
 }

@@ -155,11 +155,11 @@ The matrix rows remain authoritative. Each binding joins a scanned source, its c
 | `apps/www/src/components/override/Hero.astro` | `www.shell.hero-actions`, `www.shell.hero-hash-scroll` | `a5ec201cab577289bd3e2f09296074d25cd178d700e458d928470f0586a96fec` |
 | `apps/www/src/components/override/LanguageSelect.astro` | `www.shell.language-select` | `730dff7e67d5eae67648e601a190dd50a77a2199e9d72616c14d63e379618a59` |
 | `apps/www/src/components/override/PageFrame.astro` | `www.docs.whitepaper-diagram-viewer`, `www.docs.wiki-term`, `www.shell.mobile-menu-panel`, `www.shell.mobile-menu-toggle`, `www.shell.page-layout` | `3697d028e1e0bffc3ecebd2bed153c8b270ca7e25f1fc259699dab783f740f79` |
-| `apps/www/src/components/override/Search.astro` | `www.search.dialog`, `www.search.input-results`, `www.search.launcher`, `www.search.loading-failure`, `www.search.pagefind-engine` | `db71bce39cc76541822d430ac30986b56e2f56c87e8079e3f11870f7c19eecdc` |
+| `apps/www/src/components/override/Search.astro` | `www.search.dialog`, `www.search.input-results`, `www.search.launcher`, `www.search.loading-failure`, `www.search.pagefind-engine` | `354cfd2a8e70e53acf21546f8ad0da17249c60f146f4e257e69501abf0c0d63d` |
 | `apps/www/src/components/override/Select.astro` | `www.shell.language-select` | `2de370ac250545ea251fcdd6a837c4d793dfa21ae5b659805c30bed6507a5c51` |
 | `apps/www/src/components/override/TableOfContents/TableOfContents.astro` | `www.shell.table-of-contents` | `15cea18078fa1be5db8d913d84d84dd467decbdafb2bd8d283310bd318bb51f0` |
 | `apps/www/src/components/override/TableOfContents/TableOfContentsList.astro` | `www.shell.table-of-contents` | `c40d5b6dfe449f715ed89c75749b8f2d327d116651f14bce009994d19a113b48` |
-| `apps/www/src/components/override/TableOfContents/starlight-toc.ts` | `www.shell.table-of-contents` | `c1b753b74493ef8397e43380f4f082105382c1b64d1e32d5830f829d0fccec72` |
+| `apps/www/src/components/override/TableOfContents/starlight-toc.ts` | `www.shell.table-of-contents` | `72c619face7f96c41273b312677ffc1b5a7fb251bf342fc2fcb657d8a8ecaedf` |
 | `apps/www/src/components/override/ThemeProvider.astro` | `www.shell.theme-provider` | `7357e80613d87dcba985a5318d2d03b853537cef660ac76fbd457145cb227993` |
 | `apps/www/src/components/override/ThemeToggle.astro` | `www.shell.theme-toggle` | `8bca29228daae1dcf2aa0d9f1935bcc71b70f65d3eee67aae18073b73e1f85a6` |
 | `apps/www/src/components/site-shadcn-controls.ts` | `www.shell.adapter-select`, `www.shell.language-select`, `www.shell.theme-toggle` | `0a36a825d6591af23d3595d687561b80cd0f285ab6a0fc30fc58312effec89d9` |
