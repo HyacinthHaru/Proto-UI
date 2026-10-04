@@ -54,7 +54,9 @@ const cases = [
   // the Vue adapter root (82,527; main 79,163). Retain ~700-1,000 bytes of
   // bounded headroom.
   // #549 adds 2,593 / 2,613 gzip bytes over main 9d9552bb: 85,351 / 85,093.
-  ['adapter-react root', 'packages/adapters/react/src/index.ts', 87_500],
+  // Separate #811 native Focus owner/lifetime baseline proposal per #654:
+  // internal/records/2026-10-04-react-native-focus-budget-transaction.json
+  ['adapter-react root', 'packages/adapters/react/src/index.ts', 88_000],
   ['adapter-vue root', 'packages/adapters/vue/src/index.ts', 87_200],
   // The earlier #652 shadow split baseline proposal measured 84,683 gzip at
   // head dd820b30 (main at ddac15da: 75,664 with the same toolchain). Its
