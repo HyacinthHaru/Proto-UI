@@ -404,31 +404,27 @@ export function createRuntimeSession<P extends PropsBaseType>(
       if (presence) await presence;
       if (currentUnmountVersion !== unmountVersion) return;
 
-      emit({ type: 'unmount.begin', epoch });
-      host.onUnmountBegin?.();
-      moduleHub.getPort<EventPort>('event')?.unbind?.();
-
       let callbackFailed = phaseFailed;
       let callbackError: unknown = phaseError;
-      try {
+      const attempt = (action: () => void) => {
+        try {
+          action();
+        } catch (error) {
+          if (!callbackFailed) {
+            callbackFailed = true;
+            callbackError = error;
+          }
+        }
+      };
+      emit({ type: 'unmount.begin', epoch });
+      attempt(() => host.onUnmountBegin?.());
+      attempt(() => moduleHub.getPort<EventPort>('event')?.unbind?.());
+      attempt(() =>
         callbackScope.run(run, () => {
           for (const cb of lifecycle.unmounted) cb(run);
-        });
-      } catch (error) {
-        if (!callbackFailed) {
-          callbackFailed = true;
-          callbackError = error;
-        }
-      }
-
-      try {
-        setMountPhase('detached', epoch);
-      } catch (error) {
-        if (!callbackFailed) {
-          callbackFailed = true;
-          callbackError = error;
-        }
-      }
+        })
+      );
+      attempt(() => setMountPhase('detached', epoch));
       cancelPendingDelayTasks();
       emit({ type: 'unmount.done', epoch });
       unmountPending = undefined;
@@ -441,77 +437,98 @@ export function createRuntimeSession<P extends PropsBaseType>(
   const unmount = (): Promise<void> => unmountInternal(false);
 
   const dispose = (): Promise<void> => {
-    if (instancePhase === 'disposed') return Promise.resolve();
     if (disposePending) return disposePending;
-
-    setInstancePhase('disposing');
-    cancelPendingDelayTasks();
-    kernel.viewIntent.lockTerminal();
-    emit({ type: 'instance.dispose.begin' });
-
-    const finalizeDispose = () => {
-      let failed = false;
-      let finalError: unknown;
-      try {
-        callbackScope.run(run, () => {
-          for (const cb of lifecycle.beforeDispose) cb(run);
-        });
-      } catch (error) {
-        failed = true;
-        finalError = error;
-      }
-
-      const eventRegistry = (moduleHub as any)[__RT_EVENT_CALLBACKS] as
-        | { clear: () => void }
-        | undefined;
-      eventRegistry?.clear?.();
-
-      // Legacy terminal notification. Modules are migrated away from treating
-      // repeatable unmount as disposal in a later layer-specific change.
-      moduleHub.setProtoPhase('unmounted');
-      moduleHub.getPort<PresencePort>('presence')?.setLifecycleDriver(null);
+    if (instancePhase === 'disposed') return Promise.resolve();
+    // Publish the shared completion before any callback can reenter disposal.
+    let resolveDispose!: () => void;
+    let rejectDispose!: (error: unknown) => void;
+    const pending = new Promise<void>((resolve, reject) => {
+      resolveDispose = resolve;
+      rejectDispose = reject;
+    });
+    disposePending = pending;
+    const succeed = () => {
+      disposePending = undefined;
+      resolveDispose();
+    };
+    const fail = (error: unknown) => {
+      disposePending = undefined;
+      rejectDispose(error);
+    };
+    try {
+      setInstancePhase('disposing');
       cancelPendingDelayTasks();
-      try {
-        inst.dispose();
-      } catch (error) {
-        if (!failed) {
+      kernel.viewIntent.lockTerminal();
+      emit({ type: 'instance.dispose.begin' });
+
+      const finalizeDispose = () => {
+        let failed = false;
+        let finalError: unknown;
+        try {
+          callbackScope.run(run, () => {
+            for (const cb of lifecycle.beforeDispose) cb(run);
+          });
+        } catch (error) {
           failed = true;
           finalError = error;
         }
+
+        const eventRegistry = (moduleHub as any)[__RT_EVENT_CALLBACKS] as
+          | { clear: () => void }
+          | undefined;
+        eventRegistry?.clear?.();
+
+        // Legacy terminal notification. Modules are migrated away from treating
+        // repeatable unmount as disposal in a later layer-specific change.
+        moduleHub.setProtoPhase('unmounted');
+        moduleHub.getPort<PresencePort>('presence')?.setLifecycleDriver(null);
+        cancelPendingDelayTasks();
+        try {
+          inst.dispose();
+        } catch (error) {
+          if (!failed) {
+            failed = true;
+            finalError = error;
+          }
+        }
+        setInstancePhase('disposed');
+        emit({ type: 'instance.dispose.done' });
+        return { failed, error: finalError };
+      };
+
+      const unmountResult = unmountInternal(true);
+      let completion: Promise<void>;
+      if (mountPhase === 'detached') {
+        // Preserve deterministic terminal invalidation when no asynchronous
+        // presence transition blocks unmount. The returned Promise still
+        // carries callback errors to async-aware callers.
+        const finalError = finalizeDispose();
+        completion = unmountResult.then(
+          () => {
+            if (finalError.failed) throw finalError.error;
+          },
+          (unmountError) => {
+            throw unmountError;
+          }
+        );
+      } else {
+        completion = unmountResult.then(
+          () => {
+            const finalError = finalizeDispose();
+            if (finalError.failed) throw finalError.error;
+          },
+          (unmountError) => {
+            finalizeDispose();
+            throw unmountError;
+          }
+        );
       }
-      setInstancePhase('disposed');
-      emit({ type: 'instance.dispose.done' });
-      return { failed, error: finalError };
-    };
 
-    const unmountResult = unmountInternal(true);
-    if (mountPhase === 'detached') {
-      // Preserve deterministic terminal invalidation when no asynchronous
-      // presence transition blocks unmount. The returned Promise still
-      // carries callback errors to async-aware callers.
-      const finalError = finalizeDispose();
-      disposePending = unmountResult.then(
-        () => {
-          if (finalError.failed) throw finalError.error;
-        },
-        (unmountError) => {
-          throw unmountError;
-        }
-      );
-    } else {
-      disposePending = unmountResult.then(
-        () => {
-          const finalError = finalizeDispose();
-          if (finalError.failed) throw finalError.error;
-        },
-        (unmountError) => {
-          finalizeDispose();
-          throw unmountError;
-        }
-      );
+      completion.then(succeed, fail);
+    } catch (error) {
+      fail(error);
     }
-
-    return disposePending;
+    return pending;
   };
 
   if (host.presenceLifecycle === 'session') {
