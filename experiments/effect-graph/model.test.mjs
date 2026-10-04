@@ -749,3 +749,24 @@ test('application source alternatives are recognized, explicit and used for comp
   mismatch.sources[0].sourceKinds = ['owned-video-frame'];
   assert(inspectGraph(mismatch).errors.some((e) => e.code === 'sampler-source-alternatives'));
 });
+
+test('host-injected uniform fields require an ImageFilter consumer', async () => {
+  const graph = await load('flutter');
+  graph.uniformBlocks.find((block) => block.id === 'geometry').fields[0].binding = {
+    kind: 'host-injected',
+    id: 'ImageFilter.shader.inputSize',
+    floatSlots: [0, 1],
+  };
+  assert(inspectGraph(graph).errors.some((error) => error.code === 'host-uniform-target'));
+});
+
+test('indexed sampler declarations preserve their reflected source order', async () => {
+  for (const slot of [2, 99]) {
+    const graph = await load('flutter');
+    graph.kernels.find((kernel) => kernel.id === 'render').samplers[1].slot = slot;
+    assert(inspectGraph(graph).errors.some((error) => error.code === 'reflected-sampler-slot'));
+  }
+  const reordered = await load('flutter');
+  reordered.kernels.find((kernel) => kernel.id === 'render').samplers.reverse();
+  assert(inspectGraph(reordered).errors.some((error) => error.code === 'reflected-sampler-slot'));
+});

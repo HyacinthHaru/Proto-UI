@@ -155,10 +155,12 @@ export function inspectGraph(graph) {
     }
     if (!records(kernel.samplers)) error('invalid-sampler-contract', kernel.id);
     else
-      for (const sampler of kernel.samplers) {
+      for (const [samplerIndex, sampler] of kernel.samplers.entries()) {
         if (bindingNames.has(sampler.name)) error('duplicate-binding-name', kernel.id);
         bindingNames.add(sampler.name);
         if (kernel.samplerBinding === 'indexed') {
+          if (sampler.slot !== samplerIndex)
+            error('reflected-sampler-slot', `${kernel.id}:${sampler.name}`);
           if (!Number.isInteger(sampler.slot) || sampler.slot < 0 || samplerSlots.has(sampler.slot))
             error('invalid-sampler-slot', kernel.id);
           samplerSlots.add(sampler.slot);
@@ -623,6 +625,14 @@ export function inspectGraph(graph) {
           error('missing-frame-input', `${block.id}:${field.name}`);
       }
       if (field.binding?.kind === 'host-injected') {
+        const consumers = graph.kernels.filter(
+          (kernel) => strings(kernel.uniformBlocks) && kernel.uniformBlocks.includes(block.id)
+        );
+        if (
+          !consumers.length ||
+          consumers.some((kernel) => kernel.targetProfile !== 'flutter-impeller-image-filter')
+        )
+          error('host-uniform-target', field.name);
         if (
           block.abi !== 'flutter-reflected-float-slots' ||
           field.binding.id !== 'ImageFilter.shader.inputSize' ||
