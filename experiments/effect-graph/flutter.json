@@ -15,7 +15,8 @@
       "execution": "not-admitted",
       "entryPoint": "main",
       "stage": "fragment",
-      "uniformBlocks": ["geometry"]
+      "uniformBlocks": ["geometry"],
+      "samplers": []
     },
     {
       "id": "render",

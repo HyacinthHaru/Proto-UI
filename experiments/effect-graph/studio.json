@@ -15,7 +15,14 @@
       "execution": "not-admitted",
       "entryPoint": "fs_main",
       "stage": "fragment",
-      "uniformBlocks": ["main"]
+      "uniformBlocks": ["main"],
+      "samplers": [
+        {
+          "name": "u_bgTexture",
+          "ownership": "application-bound",
+          "resourceKind": "application-texture"
+        }
+      ]
     },
     {
       "id": "blur-v",
@@ -29,7 +36,14 @@
       "execution": "not-admitted",
       "entryPoint": "fs_main",
       "stage": "fragment",
-      "uniformBlocks": ["blur"]
+      "uniformBlocks": ["blur"],
+      "samplers": [
+        {
+          "name": "u_prevPassTexture",
+          "ownership": "application-bound",
+          "resourceKind": "color-texture"
+        }
+      ]
     },
     {
       "id": "blur-h",
@@ -43,7 +57,14 @@
       "execution": "not-admitted",
       "entryPoint": "fs_main",
       "stage": "fragment",
-      "uniformBlocks": ["blur"]
+      "uniformBlocks": ["blur"],
+      "samplers": [
+        {
+          "name": "u_prevPassTexture",
+          "ownership": "application-bound",
+          "resourceKind": "color-texture"
+        }
+      ]
     },
     {
       "id": "main",
@@ -57,7 +78,19 @@
       "execution": "not-admitted",
       "entryPoint": "fs_main",
       "stage": "fragment",
-      "uniformBlocks": ["main"]
+      "uniformBlocks": ["main"],
+      "samplers": [
+        {
+          "name": "u_bg",
+          "ownership": "application-bound",
+          "resourceKind": "color-texture"
+        },
+        {
+          "name": "u_blurredBg",
+          "ownership": "application-bound",
+          "resourceKind": "color-texture"
+        }
+      ]
     }
   ],
   "sources": [

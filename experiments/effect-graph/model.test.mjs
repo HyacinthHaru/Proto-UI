@@ -139,3 +139,94 @@ test('Flutter live coordinates distinguish matte raster DPR from screen placemen
   offset.binding = { kind: 'frame-value', id: 'uCaptureOffset' };
   assert(inspectGraph(graph).errors.some((e) => e.code === 'disabled-feature-precondition'));
 });
+
+test('malformed collection members return an invalid inspection without throwing', async () => {
+  for (const key of ['kernels', 'sources', 'resources', 'data', 'passes', 'uniformBlocks']) {
+    for (const value of [null, 3, {}, 'invalid']) {
+      const graph = await load('studio');
+      graph[key].push(value);
+      const result = inspectGraph(graph);
+      assert.equal(result.valid, false, `${key}: ${JSON.stringify(value)}`);
+      assert.equal(result.execution, 'not-admitted');
+    }
+  }
+});
+
+test('missing or malformed nested metadata stays a diagnostic, never an exception', async () => {
+  const mutations = [
+    (g) => delete g.kernels[0].license,
+    (g) => (g.kernels[0].license = 7),
+    (g) => (g.kernels[0].upstream.commit = { toString: null }),
+    (g) => (g.kernels[0].uniformBlocks = {}),
+    (g) => delete g.kernels[0].samplers,
+    (g) => (g.kernels[1].samplers = [null]),
+    (g) => (g.passes[1].reads = {}),
+    (g) => (g.passes[1].dependsOn = 2),
+    (g) => (g.passes[1].bindings = []),
+    (g) => (g.uniformBlocks[0].fields = [null]),
+    (g) => (g.uniformBlocks[0].fields[0].type = { toString: null }),
+    (g) => delete g.uniformBlocks[0].fields,
+    (g) => (g.uniformBlocks[0].reservedAutoInputs = {}),
+    (g) => (g.featurePreconditions = [null]),
+    (g) => (g.featurePreconditions = [{ mode: 'excluded' }]),
+  ];
+  for (const mutate of mutations) {
+    const graph = await load('flutter');
+    mutate(graph);
+    const result = inspectGraph(graph);
+    assert.equal(result.valid, false, String(mutate));
+    assert.equal(result.execution, 'not-admitted');
+  }
+});
+
+test('every declared texture sampler requires its own pass binding', async () => {
+  for (const name of ['studio', 'flutter']) {
+    const original = await load(name);
+    for (const pass of original.passes) {
+      const kernel = original.kernels.find((k) => k.id === pass.kernel);
+      for (const sampler of kernel.samplers ?? []) {
+        const graph = structuredClone(original);
+        delete graph.passes.find((p) => p.id === pass.id).bindings[sampler.name];
+        const result = inspectGraph(graph);
+        assert(result.errors.some((e) => e.code === 'missing-sampler-binding'));
+        assert.equal(result.execution, 'not-admitted');
+      }
+    }
+  }
+  const studio = await load('studio');
+  studio.passes[3].bindings = {};
+  assert.equal(inspectGraph(studio).valid, false);
+});
+
+test('packed scalar and vector fields cannot forge or omit their typed byte length', async () => {
+  for (const bytes of [1, 4, 12, 16, undefined]) {
+    const graph = await load('studio');
+    if (bytes === undefined) delete graph.uniformBlocks[0].fields[0].bytes;
+    else graph.uniformBlocks[0].fields[0].bytes = bytes;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'uniform-byte-size'));
+  }
+  const noOffset = await load('studio');
+  delete noOffset.uniformBlocks[0].fields[0].offset;
+  assert(inspectGraph(noOffset).errors.some((e) => e.code === 'uniform-out-of-bounds'));
+  const wrongVector = await load('studio');
+  wrongVector.uniformBlocks[0].fields[0].type = 'vec4f';
+  assert(inspectGraph(wrongVector).errors.some((e) => e.code === 'uniform-byte-size'));
+});
+
+test('packed widths distinguish vector size from padding and reject unmodeled strides', async () => {
+  // WGSL SizeOf(vec3<f32>) is 12 despite its 16-byte alignment. This probe
+  // checks a field's byte length, not complete struct layout or reflection.
+  const vector = await load('studio');
+  vector.uniformBlocks[0].fields = [{ name: 'probe', type: 'vec3<f32>', offset: 0, bytes: 12 }];
+  assert.equal(inspectGraph(vector).valid, true);
+  vector.uniformBlocks[0].fields[0].bytes = 16;
+  assert(inspectGraph(vector).errors.some((e) => e.code === 'uniform-byte-size'));
+  for (const field of [
+    { name: 'matrix', type: 'mat3<f32>', offset: 0, bytes: 36 },
+    { name: 'array', type: 'f32', count: 4, offset: 0, bytes: 16 },
+  ]) {
+    const graph = await load('studio');
+    graph.uniformBlocks[0].fields = [field];
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'unsupported-packed-uniform-type'));
+  }
+});
