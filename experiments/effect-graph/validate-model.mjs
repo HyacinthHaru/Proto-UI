@@ -1,3 +1,11 @@
+const SOURCE_KINDS = [
+  'application-texture',
+  'host-compositor-backdrop',
+  'application-owned-captured-texture',
+  'reconstructed-scene',
+  'video-frame',
+];
+const nonempty = (value) => typeof value === 'string' && value.trim().length > 0;
 // Inspection-only data model. It neither loads shader code nor grants execution capability.
 export function inspectGraph(graph) {
   const errors = [];
@@ -60,15 +68,31 @@ export function inspectGraph(graph) {
   if (errors.length) return invalid();
   for (const kernel of graph.kernels) {
     if (!strings(kernel.uniformBlocks)) error('missing-kernel-uniform-block', kernel.id);
+    if (!['named', 'indexed'].includes(kernel.samplerBinding))
+      error('invalid-sampler-binding-mode', kernel.id);
+    if (
+      !records(kernel.dataBindings) ||
+      kernel.dataBindings.some(
+        (binding) => !nonempty(binding.name) || binding.type !== 'bounded-array<f32>'
+      )
+    )
+      error('invalid-data-binding-contract', kernel.id);
+    const samplerSlots = new Set();
     if (!records(kernel.samplers)) error('invalid-sampler-contract', kernel.id);
     else
-      for (const sampler of kernel.samplers)
+      for (const sampler of kernel.samplers) {
+        if (kernel.samplerBinding === 'indexed') {
+          if (!Number.isInteger(sampler.slot) || sampler.slot < 0 || samplerSlots.has(sampler.slot))
+            error('invalid-sampler-slot', kernel.id);
+          samplerSlots.add(sampler.slot);
+        } else if (sampler.slot !== undefined) error('unexpected-sampler-slot', kernel.id);
         if (
           typeof sampler.name !== 'string' ||
           !sampler.name ||
           !['host-injected', 'application-bound'].includes(sampler.ownership)
         )
           error('invalid-sampler-contract', kernel.id);
+      }
   }
   for (const pass of graph.passes) {
     if (!strings(pass.reads) || !strings(pass.dependsOn)) error('incomplete-pass', pass.id);
@@ -88,7 +112,18 @@ export function inspectGraph(graph) {
   if (graph.featurePreconditions !== undefined) {
     if (!records(graph.featurePreconditions)) error('invalid-feature-preconditions', 'graph');
     else
-      for (const condition of graph.featurePreconditions)
+      for (const condition of graph.featurePreconditions) {
+        if (!['excluded', 'host-required'].includes(condition.mode))
+          error('invalid-feature-precondition-mode', condition.feature);
+        if (
+          condition.mode === 'host-required' &&
+          (!strings(condition.requiredHostUniforms) ||
+            !record(condition.requiredHostSamplers) ||
+            !Object.values(condition.requiredHostSamplers).every(
+              (slot) => Number.isInteger(slot) && slot >= 0
+            ))
+        )
+          error('invalid-feature-precondition', condition.feature);
         if (
           condition.mode === 'excluded' &&
           (!record(condition.requires) ||
@@ -97,12 +132,13 @@ export function inspectGraph(graph) {
             !Object.hasOwn(condition.requires, 'value'))
         )
           error('invalid-feature-precondition', condition.feature);
+      }
   }
   if (errors.length) return invalid();
   const named = (items, label) => {
     const map = new Map();
     for (const item of items) {
-      if (!item || typeof item.id !== 'string' || map.has(item.id)) {
+      if (!item || !nonempty(item.id) || map.has(item.id)) {
         error('duplicate-or-invalid-id', label);
         continue;
       }
@@ -118,6 +154,11 @@ export function inspectGraph(graph) {
   for (const k of kernels.values()) {
     if (
       !k.upstream ||
+      typeof k.upstream.repo !== 'string' ||
+      !/^[^/\s]+\/[^/\s]+$/.test(k.upstream.repo) ||
+      !nonempty(k.upstream.path) ||
+      k.upstream.path.startsWith('/') ||
+      k.upstream.path.split('/').some((part) => !part || part === '.' || part === '..') ||
       typeof k.upstream.commit !== 'string' ||
       typeof k.upstream.gitBlob !== 'string' ||
       !/^[0-9a-f]{40}$/.test(k.upstream.commit) ||
@@ -137,16 +178,7 @@ export function inspectGraph(graph) {
       error('missing-kernel-uniform-block', k.id);
   }
   for (const s of graph.sources) {
-    if (
-      ![
-        'application-texture',
-        'host-compositor-backdrop',
-        'application-owned-captured-texture',
-        'reconstructed-scene',
-        'video-frame',
-      ].includes(s.kind)
-    )
-      error('unknown-source-kind', s.id);
+    if (!SOURCE_KINDS.includes(s.kind)) error('unknown-source-kind', s.id);
     if (!s.space || !s.alpha || !s.freshness || !s.format)
       error('incomplete-source-contract', s.id);
   }
@@ -186,6 +218,13 @@ export function inspectGraph(graph) {
     for (const d of p.dependsOn) if (!passes.has(d)) error('unknown-dependency', `${p.id}:${d}`);
     for (const r of Object.values(p.bindings ?? {}))
       if (!p.reads.includes(r)) error('undeclared-sampling', `${p.id}:${r}`);
+    for (const binding of kernels.get(p.kernel)?.dataBindings ?? []) {
+      const bound = graph.data.find((d) => d.id === p.bindings[binding.name]);
+      if (!Object.hasOwn(p.bindings, binding.name))
+        error('missing-data-binding', `${p.id}:${binding.name}`);
+      else if (!bound || bound.type !== binding.type)
+        error('data-binding-mismatch', `${p.id}:${binding.name}`);
+    }
     for (const sampler of kernels.get(p.kernel)?.samplers ?? []) {
       if (!Object.hasOwn(p.bindings, sampler.name))
         error('missing-sampler-binding', `${p.id}:${sampler.name}`);
@@ -199,6 +238,7 @@ export function inspectGraph(graph) {
         error('sampler-resource-mismatch', `${p.id}:${sampler.name}`);
     }
   }
+  if (!writers.has('presentation')) error('missing-presentation-writer', 'graph');
   const completed = new Set(),
     active = new Set();
   function visit(id) {
@@ -228,6 +268,8 @@ export function inspectGraph(graph) {
   for (const block of graph.uniformBlocks) {
     const names = new Set(),
       intervals = [];
+    if (!['wgsl-uniform-buffer', 'flutter-reflected-float-slots'].includes(block.abi))
+      error('unknown-uniform-abi', block.id);
     if (block.abi === 'wgsl-uniform-buffer' && (!Number.isInteger(block.bytes) || block.bytes < 1))
       error('missing-block-size', block.id);
     for (const field of block.fields ?? []) {
@@ -281,6 +323,32 @@ export function inspectGraph(graph) {
     }
   }
   for (const condition of graph.featurePreconditions ?? []) {
+    if (condition.mode === 'host-required') {
+      for (const name of condition.requiredHostUniforms) {
+        if (
+          !graph.uniformBlocks.some((block) =>
+            block.fields.some(
+              (field) => field.name === name && field.binding?.kind === 'host-injected'
+            )
+          )
+        )
+          error('missing-host-uniform', name);
+      }
+      for (const [name, slot] of Object.entries(condition.requiredHostSamplers)) {
+        if (
+          !graph.kernels.some((kernel) =>
+            kernel.samplers.some(
+              (sampler) =>
+                sampler.name === name &&
+                sampler.ownership === 'host-injected' &&
+                sampler.slot === slot
+            )
+          )
+        )
+          error('missing-host-sampler', name);
+      }
+      continue;
+    }
     if (condition.mode !== 'excluded') continue;
     const requirement = condition.requires;
     const field = blocks
@@ -293,6 +361,10 @@ export function inspectGraph(graph) {
       error('disabled-feature-precondition', condition.feature);
   }
   if (
+    !Number.isInteger(graph.limits?.passes) ||
+    graph.limits.passes < 1 ||
+    graph.limits.passes > 8 ||
+    graph.passes.length > graph.limits.passes ||
     graph.passes.length > 8 ||
     graph.limits?.historyFrames !== 0 ||
     graph.limits?.storageWrites !== false
@@ -315,6 +387,8 @@ export function inspectGraph(graph) {
   };
 }
 export function sourceCompatibility(required, provided) {
+  if (!SOURCE_KINDS.includes(required) || !SOURCE_KINDS.includes(provided))
+    return { compatible: false, reason: 'unknown-source-kind' };
   return required === provided
     ? { compatible: true }
     : {

@@ -22,7 +22,9 @@
           "ownership": "application-bound",
           "resourceKind": "application-texture"
         }
-      ]
+      ],
+      "samplerBinding": "named",
+      "dataBindings": []
     },
     {
       "id": "blur-v",
@@ -42,6 +44,13 @@
           "name": "u_prevPassTexture",
           "ownership": "application-bound",
           "resourceKind": "color-texture"
+        }
+      ],
+      "samplerBinding": "named",
+      "dataBindings": [
+        {
+          "name": "u_blurWeights",
+          "type": "bounded-array<f32>"
         }
       ]
     },
@@ -63,6 +72,13 @@
           "name": "u_prevPassTexture",
           "ownership": "application-bound",
           "resourceKind": "color-texture"
+        }
+      ],
+      "samplerBinding": "named",
+      "dataBindings": [
+        {
+          "name": "u_blurWeights",
+          "type": "bounded-array<f32>"
         }
       ]
     },
@@ -90,7 +106,9 @@
           "ownership": "application-bound",
           "resourceKind": "color-texture"
         }
-      ]
+      ],
+      "samplerBinding": "named",
+      "dataBindings": []
     }
   ],
   "sources": [

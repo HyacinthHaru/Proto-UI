@@ -16,7 +16,9 @@
       "entryPoint": "main",
       "stage": "fragment",
       "uniformBlocks": ["geometry"],
-      "samplers": []
+      "samplers": [],
+      "samplerBinding": "indexed",
+      "dataBindings": []
     },
     {
       "id": "render",
@@ -44,7 +46,9 @@
           "slot": 1,
           "resourceKind": "data-texture"
         }
-      ]
+      ],
+      "samplerBinding": "indexed",
+      "dataBindings": []
     }
   ],
   "sources": [
@@ -443,7 +447,8 @@
       "requiredHostUniforms": ["uSize"],
       "requiredHostSamplers": {
         "uBackgroundTexture": 0
-      }
+      },
+      "mode": "host-required"
     },
     {
       "feature": "captured-background-coordinate-offset",

@@ -230,3 +230,108 @@ test('packed widths distinguish vector size from padding and reject unmodeled st
     assert(inspectGraph(graph).errors.some((e) => e.code === 'unsupported-packed-uniform-type'));
   }
 });
+
+test('read-only data binding names and kinds remain mandatory for blur kernels', async () => {
+  for (const passIndex of [1, 2]) {
+    const graph = await load('studio');
+    delete graph.passes[passIndex].bindings.u_blurWeights;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'missing-data-binding'));
+    graph.passes[passIndex].bindings.u_blurWeights = 'background';
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'data-binding-mismatch'));
+  }
+  const graph = await load('studio');
+  delete graph.kernels[1].dataBindings;
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-data-binding-contract'));
+});
+
+test('unknown and absent uniform ABI labels cannot disable packed bounds', async () => {
+  for (const abi of [undefined, '', 'wgsl-uniform-bufer']) {
+    const graph = await load('studio');
+    if (abi === undefined) delete graph.uniformBlocks[0].abi;
+    else graph.uniformBlocks[0].abi = abi;
+    delete graph.uniformBlocks[0].bytes;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'unknown-uniform-abi'));
+  }
+});
+
+test('declared finite pass ceilings bound the actual graph', async () => {
+  for (const limit of [undefined, 0, 1, 3.5, 9, '4']) {
+    const graph = await load('studio');
+    if (limit === undefined) delete graph.limits.passes;
+    else graph.limits.passes = limit;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'unsupported-graph-budget'));
+  }
+  const graph = await load('studio');
+  graph.limits.passes = 5;
+  assert.equal(inspectGraph(graph).valid, true);
+});
+
+test('indexed application samplers cannot omit or collide with reserved slots', async () => {
+  for (const slot of [undefined, 0, -1, 1.5]) {
+    const graph = await load('flutter');
+    if (slot === undefined) delete graph.kernels[1].samplers[1].slot;
+    else graph.kernels[1].samplers[1].slot = slot;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-sampler-slot'));
+  }
+  const graph = await load('studio');
+  assert.equal(inspectGraph(graph).valid, true, 'named bindings do not invent numeric slots');
+});
+
+test('a graph must produce exactly one presentation target', async () => {
+  const graph = await load('studio');
+  graph.passes.pop();
+  graph.limits.passes = 3;
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'missing-presentation-writer'));
+  const duplicate = await load('studio');
+  duplicate.passes.push({ ...structuredClone(duplicate.passes[3]), id: 'second-presentation' });
+  duplicate.limits.passes = 5;
+  assert(inspectGraph(duplicate).errors.some((e) => e.code === 'multiple-writers'));
+});
+
+test('source compatibility rejects unknown or absent kinds even when equal', () => {
+  for (const source of [undefined, null, '', 'typo-source'])
+    assert.deepEqual(sourceCompatibility(source, source), {
+      compatible: false,
+      reason: 'unknown-source-kind',
+    });
+  assert.equal(sourceCompatibility('video-frame', 'video-frame').compatible, true);
+});
+
+test('immutable provenance includes repository and exact relative path', async () => {
+  for (const mutate of [
+    (k) => delete k.upstream.repo,
+    (k) => delete k.upstream.path,
+    (k) => (k.upstream.repo = 'owner'),
+    (k) => (k.upstream.path = ''),
+    (k) => (k.upstream.path = '../shader.wgsl'),
+  ]) {
+    const graph = await load('studio');
+    mutate(graph.kernels[0]);
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'unpinned-kernel'));
+  }
+});
+
+test('precondition modes cannot silently disable exclusions or host requirements', async () => {
+  for (const mode of [undefined, 'exclued', '']) {
+    const graph = await load('flutter');
+    if (mode === undefined) delete graph.featurePreconditions[0].mode;
+    else graph.featurePreconditions[0].mode = mode;
+    graph.uniformBlocks[1].fields.find((f) => f.name === 'uFrost').binding = {
+      kind: 'frame-value',
+      id: 'uFrost',
+    };
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-feature-precondition-mode'));
+  }
+  const host = await load('flutter');
+  host.featurePreconditions[1].requiredHostSamplers.uBackgroundTexture = 1;
+  assert(inspectGraph(host).errors.some((e) => e.code === 'missing-host-sampler'));
+});
+
+test('graph member identifiers cannot be empty even when references agree', async () => {
+  for (const id of ['', '   ']) {
+    const graph = await load('studio');
+    graph.kernels[0].id = id;
+    graph.passes[0].kernel = id;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'duplicate-or-invalid-id'));
+  }
+});
