@@ -12,8 +12,32 @@ const assert = (condition, message) => {
 const git = (directory, args) =>
   execFileSync('git', ['--no-replace-objects', '-C', directory, ...args], {
     encoding: 'utf8',
+    // Machine-parse local porcelain, never locale-dependent stderr prose.
+    env: { ...process.env, LC_ALL: 'C' },
     stdio: ['ignore', 'pipe', 'pipe'],
   }).trim();
+
+function isExactStaleLeaseRejection(error, { revision, ref }) {
+  if (error?.status !== 1 || error.signal !== null) return false;
+  const stdout =
+    typeof error.stdout === 'string'
+      ? error.stdout
+      : Buffer.isBuffer(error.stdout)
+        ? error.stdout.toString('utf8')
+        : null;
+  if (stdout === null) return false;
+  const updates = stdout
+    .split('\n')
+    .map((line) => line.split('\t'))
+    .filter((fields) => [' ', '+', '-', '*', '=', '!'].includes(fields[0]));
+  return (
+    updates.length === 1 &&
+    updates[0].length === 3 &&
+    updates[0][0] === '!' &&
+    updates[0][1] === revision + ':' + ref &&
+    updates[0][2] === '[rejected] (stale info)'
+  );
+}
 
 export function readOnlyGitLedgerTransport() {
   return Object.freeze({
@@ -81,8 +105,9 @@ export class RemoteCloudReviewLedger {
     const before = this.read();
     if (before.revision !== expectedRevision)
       return { status: 'conflict', publicationAllowed: false };
-    const candidate = this.#local.apply(expectedRevision, command);
-    if (candidate.status !== 'applied') {
+    const candidate = this.#local.prepare(expectedRevision, command);
+    if (candidate.status === 'conflict') return candidate;
+    if (!['prepared', 'applied'].includes(candidate.status)) {
       this.#stopped = true;
       return { ...candidate, mutationStopped: true };
     }
@@ -98,8 +123,28 @@ export class RemoteCloudReviewLedger {
         expectedRevision,
         revision: candidate.revision,
       });
+      if (
+        result?.status === 'conflict' &&
+        result.noWrite === true &&
+        result.ref === REMOTE_LEDGER_REF &&
+        result.revision === candidate.revision &&
+        result.expectedRevision === expectedRevision &&
+        result.reason === 'stale-exact-lease'
+      ) {
+        // This exact ref was not updated. Keep the original process owner;
+        // read the current fence before constructing a new candidate. Never
+        // replay this rejected commit or the external review POST.
+        this.#local.discardPrepared(candidate);
+        return {
+          status: 'conflict',
+          attemptedRevision: candidate.revision,
+          checkpoint: this.#checkpoint,
+          publicationAllowed: false,
+        };
+      }
       assert(result?.status === 'accepted', 'remote candidate was not acknowledged');
-      const observed = this.read(); // validates ancestry includes the local candidate
+      const observed = this.read();
+      this.#local.confirmPrepared(candidate); // validate actual acknowledgement ancestry
       return {
         status: 'applied',
         revision: observed.revision,
@@ -146,16 +191,29 @@ export function ownerGitLedgerTransport({ runGit = git } = {}) {
         runGit(directory, ['show', '-s', '--format=%P', revision]) === expectedRevision,
         'state candidate is not one exact-parent child'
       );
-      const output = runGit(directory, [
-        'push',
-        '--porcelain',
-        // An explicit lease checks the remote old tip atomically. The exact-parent
-        // assertion above still permits only its single-child fast-forward; this
-        // cannot restore a deleted/rolled-back ref or overwrite a sibling.
-        `--force-with-lease=${ref}:${expectedRevision}`,
-        'https://github.com/Proto-UI/Proto-UI.git',
-        `${revision}:${ref}`,
-      ]);
+      let output;
+      try {
+        output = runGit(directory, [
+          'push',
+          '--porcelain',
+          // An explicit lease checks the remote old tip atomically. The exact-parent
+          // assertion above still permits only its single-child fast-forward; this
+          // cannot restore a deleted/rolled-back ref or overwrite a sibling.
+          `--force-with-lease=${ref}:${expectedRevision}`,
+          'https://github.com/Proto-UI/Proto-UI.git',
+          `${revision}:${ref}`,
+        ]);
+      } catch (error) {
+        if (!isExactStaleLeaseRejection(error, { revision, ref })) throw error;
+        return {
+          status: 'conflict',
+          noWrite: true,
+          reason: 'stale-exact-lease',
+          ref,
+          revision,
+          expectedRevision,
+        };
+      }
       const updates = output
         .split('\n')
         .map((line) => line.split('\t'))

@@ -26,6 +26,7 @@ export class LocalCloudReviewLedger {
   #uncertain = false;
   #simulationAttempts = new Set();
   #runner;
+  #prepared = null;
 
   constructor(directory, genesis, { checkpoint = genesis, runner = execFileSync } = {}) {
     this.#repo = realpathSync(directory);
@@ -161,7 +162,7 @@ export class LocalCloudReviewLedger {
   #consumeAttempt(intentId, publishing) {
     const { state } = this.read();
     assert(
-      !this.#uncertain && this.#claimed && state.slot?.owner === this.#owner,
+      !this.#uncertain && !this.#prepared && this.#claimed && state.slot?.owner === this.#owner,
       'fresh, stopped or restarted process cannot submit a simulation'
     );
     assert(
@@ -189,11 +190,12 @@ export class LocalCloudReviewLedger {
     this.#simulationAttempts.add(intentId);
   }
 
-  apply(expectedRevision, requested) {
+  prepare(expectedRevision, requested) {
     assert(
       !this.#uncertain,
       'this process has an uncertain update; restart for read-only reconciliation'
     );
+    assert(this.#prepared === null, 'an owned candidate is already awaiting confirmation');
     assert(SHA.test(expectedRevision), 'expected revision required');
     assert(
       requested && typeof requested === 'object' && !Object.hasOwn(requested, 'owner'),
@@ -226,22 +228,62 @@ export class LocalCloudReviewLedger {
     ).trim();
     // Validate budgets and the exact candidate before the only ref mutation.
     this.#history(revision);
-    try {
-      this.#git(['update-ref', LOCAL_LEDGER_REF, revision, expectedRevision]);
-    } catch {
-      // Even a local error can follow an applied ref update in an injected
-      // transport. Never infer non-application, rebase, retry or acquire a slot.
-      this.#uncertain = true;
-      return { status: 'unknown', attemptedRevision: revision, publicationAllowed: false };
-    }
-    this.#floor = revision;
-    if (command.type === 'claim') this.#claimed = true;
-    if (
-      ['abandon', 'finishAnalysis', 'finalizeSimulation', 'finalizePublication'].includes(
-        command.type
-      )
-    )
+    // Construct objects only. A speculative remote candidate must not become
+    // the cache checkpoint or acquire/release this process ownership yet.
+    const token = Object.freeze({
+      status: 'prepared',
+      revision,
+      expectedRevision,
+      publicationAllowed: false,
+    });
+    this.#prepared = { token, type: command.type };
+    return token;
+  }
+
+  discardPrepared(token) {
+    assert(
+      !this.#uncertain && this.#prepared?.token === token,
+      'no matching owned prepared candidate'
+    );
+    assert(
+      this.#git(['rev-parse', '--verify', LOCAL_LEDGER_REF]).trim() === token.expectedRevision,
+      'candidate cache changed; do not discard or roll back'
+    );
+    this.#prepared = null;
+  }
+
+  confirmPrepared(token) {
+    assert(
+      !this.#uncertain && this.#prepared?.token === token,
+      'no matching owned prepared candidate'
+    );
+    const observed = this.read();
+    assert(
+      this.#history(observed.revision).revisions.includes(token.revision),
+      'acknowledged candidate is missing from the confirmed lineage'
+    );
+    const type = this.#prepared.type;
+    if (type === 'claim') this.#claimed = true;
+    if (['abandon', 'finishAnalysis', 'finalizeSimulation', 'finalizePublication'].includes(type))
       this.#claimed = false;
-    return { status: 'applied', revision, publicationAllowed: false };
+    this.#prepared = null;
+    return { status: 'applied', revision: token.revision, publicationAllowed: false };
+  }
+
+  apply(expectedRevision, requested) {
+    const candidate = this.prepare(expectedRevision, requested);
+    if (candidate.status !== 'prepared') return candidate;
+    try {
+      this.#git(['update-ref', LOCAL_LEDGER_REF, candidate.revision, expectedRevision]);
+      return this.confirmPrepared(candidate);
+    } catch {
+      // A lost ref acknowledgement or inconsistent readback is never adopted.
+      this.#uncertain = true;
+      return {
+        status: 'unknown',
+        attemptedRevision: candidate.revision,
+        publicationAllowed: false,
+      };
+    }
   }
 }

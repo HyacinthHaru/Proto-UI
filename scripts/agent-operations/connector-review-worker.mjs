@@ -8,6 +8,7 @@ import {
   ConnectorReviewSession,
   CONNECTOR_AUTHORIZATION,
   INITIAL_SWEEP_AUTHORIZATION,
+  isConnectorReviewScopeActive,
 } from './connector-review-session.mjs';
 import { RemoteCloudReviewLedger, ownerGitLedgerTransport } from './remote-cloud-review-ledger.mjs';
 import { ConnectorReviewTransport } from './connector-review-transport.mjs';
@@ -37,9 +38,7 @@ if (
   enabled &&
   (args.size !== 3 ||
     ![CONNECTOR_AUTHORIZATION, INITIAL_SWEEP_AUTHORIZATION].some((id) =>
-      policy.reviewSubmissionAuthorizations.some(
-        (scope) => scope.id === id && scope.status === 'active'
-      )
+      isConnectorReviewScopeActive(policy, id)
     ))
 ) {
   throw new Error('publication worker needs exact ledger pins and an active admitted review scope');

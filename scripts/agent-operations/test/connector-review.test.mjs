@@ -13,6 +13,11 @@ import {
   INITIAL_SWEEP_ID,
 } from '../connector-review-session.mjs';
 import { LocalCloudReviewLedger } from '../local-cloud-review-ledger.mjs';
+import {
+  RemoteCloudReviewLedger,
+  REMOTE_LEDGER_REF,
+  ownerGitLedgerTransport,
+} from '../remote-cloud-review-ledger.mjs';
 import { computeSelfAssessmentResultDigest } from '../assessment-runtime.mjs';
 import { computeReviewPacketDigest, renderReviewBody } from '../review-runtime.mjs';
 import { assessment, assessmentSnapshot } from './fixtures/connector-assessment.mjs';
@@ -676,8 +681,11 @@ test('initial sweep and webhook sessions share one global slot and replay bounda
     (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
   ).executionModeSource = 'delegated-owner-event';
   const bad = new ConnectorReviewSession({ transport, ledger: store, policy });
-  // The existing owner cannot be displaced, regardless of another scope declaration.
-  assert.equal((await bad.beginInitialSweep(487)).queued, true);
+  // A wrong source now rejects before spending journal budget. The existing
+  // owner remains unchanged; a separately valid session still checks replay.
+  const beforeWrongScope = store.read();
+  await assert.rejects(bad.beginInitialSweep(487), /separately admitted exact scope/);
+  assert.deepEqual(store.read(), beforeWrongScope);
   f.comments.push({
     id: 7,
     node_id: 'C7',
@@ -685,7 +693,11 @@ test('initial sweep and webhook sessions share one global slot and replay bounda
     body: 'new discussion',
     updated_at: '2026-10-03T00:04:00Z',
   });
-  await assert.rejects(bad.beginInitialSweep(487), /delivery id reused with different evidence/);
+  const validReplay = new ConnectorReviewSession({ transport, ledger: store, policy: rootPolicy });
+  await assert.rejects(
+    validReplay.beginInitialSweep(487),
+    /delivery id reused with different evidence/
+  );
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
 });
 
@@ -716,22 +728,18 @@ test('initial sweep includes draft analysis and rejects closed inventory races',
     });
 });
 
-test('initial sweep cannot borrow webhook standing authorization at publication', async (t) => {
+test('initial sweep cannot borrow webhook source before capture or claim', async (t) => {
   const { f, transport, store } = await session(t);
   const policy = structuredClone(rootPolicy);
   policy.reviewSubmissionAuthorizations.find(
     (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
   ).executionModeSource = 'delegated-owner-event';
   const s = new ConnectorReviewSession({ transport, ledger: store, policy });
-  await s.captureInitialSweep();
-  const request = await s.beginInitialSweep(487);
-  const { packet } = analysis(request.input);
-  packet.agentEvidence.source = 'AI-executed review by ChatGPT';
-  packet.agentEvidence.disposition = 'complete';
-  packet.agentEvidence.debt = [];
-  await assert.rejects(s.publishParentPacket(packet, assessment), /authorization is unavailable/);
-  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
-  assert.equal(store.read().state.slot.intent, null);
+  const before = store.read();
+  await assert.rejects(s.captureInitialSweep(), /separately admitted exact scope/);
+  await assert.rejects(s.beginInitialSweep(487), /separately admitted exact scope/);
+  assert.equal(f.calls.length, 0);
+  assert.deepEqual(store.read(), before);
 });
 
 test('default read-only worker refuses the initial sweep without any connector dispatch', () => {
@@ -1320,4 +1328,115 @@ test('receipt persistence stops on uncertainty or bounded contention without rep
       if (mode === 'intent-drift') assert.match(result.reason, /fenced publication intent changed/);
       store.read = read;
     });
+});
+
+// A newly started trusted policy reader may load changed bindings. Active ID alone
+// must not spend journal budget or acquire the old hard-coded principal slot.
+const intakeBindingMutations = [
+  ['repositoryId', 'github.com:other/repository'],
+  ['executionMode', 'human-assisted'],
+  ['executionModeSource', 'schedule'],
+  ['mutationClass', 'metadata'],
+  ['principalId', '19223209'],
+  ['principalLogin', 'cyjin-yl'],
+];
+for (const operation of ['event', 'capture', 'initial-begin'])
+  for (const [field, wrong] of intakeBindingMutations)
+    for (const mutation of ['replace', 'missing'])
+      test(
+        'complete scope prevents journal effects: ' + operation + '/' + field + '/' + mutation,
+        async (t) => {
+          const { f, transport, store, s } = await session(t);
+          if (operation === 'initial-begin') await s.captureInitialSweep();
+          const before = store.read();
+          f.calls.length = 0;
+          const policy = structuredClone(rootPolicy);
+          const authorization =
+            operation === 'event' ? CONNECTOR_AUTHORIZATION : INITIAL_SWEEP_AUTHORIZATION;
+          const scope = policy.reviewSubmissionAuthorizations.find((x) => x.id === authorization);
+          if (mutation === 'missing') delete scope[field];
+          else scope[field] = wrong;
+          const candidate = new ConnectorReviewSession({ transport, ledger: store, policy });
+          let rejected = false;
+          try {
+            if (operation === 'event')
+              await candidate.begin(487, { kind: 'opened', deliveryId: 'wrong-complete-scope' });
+            else if (operation === 'capture') await candidate.captureInitialSweep();
+            else await candidate.beginInitialSweep(487);
+          } catch {
+            rejected = true;
+          }
+          const after = store.read();
+          assert.equal(after.revision, before.revision, 'invalid scope wrote the journal');
+          assert.deepEqual(after.state, before.state, 'invalid scope changed slot or pending work');
+          assert.equal(f.calls.length, 0, 'invalid scope dispatched connector collection');
+          assert.equal(rejected, true, 'invalid complete scope was not rejected');
+        }
+      );
+
+test('confirmed review receipt survives a real remote stale-lease race without repeating POST', async (t) => {
+  // Connector responses are fixtures; journal CAS executes actual local Git.
+  // The production URL is substituted only with an isolated bare repository.
+  const { f, transport, dir, genesis } = await session(t);
+  const git = (directory, ...args) =>
+    execFileSync('git', ['-C', directory, ...args], { encoding: 'utf8', stdio: 'pipe' }).trim();
+  git(dir, 'update-ref', REMOTE_LEDGER_REF, genesis);
+  let peer;
+  let raced = false;
+  let receiptPushes = 0;
+  function open(racing) {
+    const cache = mkdtempSync(path.join(tmpdir(), 'pui-real-receipt-cache-'));
+    t.after(() => rmSync(cache, { recursive: true, force: true }));
+    git(cache, 'init', '--bare');
+    const journalTransport = {
+      readInto(directory) {
+        git(directory, 'fetch', '--no-tags', '--no-write-fetch-head', dir, REMOTE_LEDGER_REF);
+        return git(dir, 'rev-parse', REMOTE_LEDGER_REF);
+      },
+      publish(args) {
+        const entry = JSON.parse(git(args.directory, 'show', args.revision + ':entry.json'));
+        if (racing && entry.type === 'finalizePublication') {
+          receiptPushes++;
+          if (!raced) {
+            raced = true;
+            const snapshot = peer.read();
+            const queued = peer.apply(snapshot.revision, {
+              type: 'enqueue',
+              pullRequest: 488,
+              deliveryId: 'receipt-race-peer',
+              eventKind: 'synchronize',
+              materialDigest: 'f'.repeat(64),
+            });
+            assert.equal(queued.status, 'applied');
+          }
+        }
+        return ownerGitLedgerTransport({
+          runGit(directory, command) {
+            return git(
+              directory,
+              ...command.map((arg) =>
+                arg === 'https://github.com/Proto-UI/Proto-UI.git' ? dir : arg
+              )
+            );
+          },
+        }).publish(args);
+      },
+    };
+    return new RemoteCloudReviewLedger(cache, genesis, {
+      checkpoint: genesis,
+      transport: journalTransport,
+    });
+  }
+  peer = open(false);
+  const store = open(true);
+  const s = new ConnectorReviewSession({ transport, ledger: store, policy: rootPolicy });
+  const packet = await parentPacket(s);
+  const published = await s.publishParentPacket(packet, assessment);
+  assert.equal(published.status, 'published');
+  assert.equal(receiptPushes, 2);
+  assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
+  const state = store.read().state;
+  assert.equal(state.publicationReceipts.length, 1);
+  assert.equal(state.slot, null);
+  assert(state.pending.some((item) => item.pullRequest === 488));
 });

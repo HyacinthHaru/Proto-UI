@@ -92,7 +92,7 @@ test('remote candidate round-trip persists baseline; fresh cache must supply che
   );
   assert.equal(typeof readOnlyGitLedgerTransport().publish, 'undefined');
 });
-test('a competing sibling wins remotely; loser stops and can only reconcile', (t) => {
+test('an attributable sibling lease rejection is a no-write conflict, not an unknown attempt', (t) => {
   const f = fixture(t);
   const seed = f.open();
   apply(seed.ledger, event());
@@ -107,11 +107,11 @@ test('a competing sibling wins remotely; loser stops and can only reconcile', (t
   }));
   const result = apply(a.ledger, { type: 'claim', pullRequest: 487 });
   assert.equal(bResult.status, 'applied');
-  assert.equal(result.status, 'unknown');
+  assert.equal(result.status, 'conflict');
   assert.equal(a.calls.writes, 1);
   assert.equal(b.calls.writes, 1);
   assert.equal(a.ledger.read().revision, b.ledger.read().revision);
-  assert.throws(() => apply(a.ledger, { type: 'claim', pullRequest: 487 }), /mutation is stopped/);
+  assert.equal(a.ledger.read().mutationStopped, false);
 });
 test('lost remote acknowledgement, accepted-but-stale readback and checkpoint rollback all fail closed', async (t) => {
   for (const [name, overrides] of [
@@ -254,7 +254,12 @@ for (const race of ['unchanged', 'deleted', 'rolled-back'])
       assert.equal(publish().status, 'accepted');
       assert.equal(git(f.remote, 'rev-parse', REMOTE_LEDGER_REF), candidate.revision);
     } else {
-      assert.throws(publish, /stale info|rejected|failed to push/);
+      const rejected = publish();
+      assert.equal(rejected.status, 'conflict');
+      assert.equal(rejected.noWrite, true);
+      assert.equal(rejected.expectedRevision, expectedRevision);
+      assert.equal(rejected.revision, candidate.revision);
+      assert.equal(rejected.ref, REMOTE_LEDGER_REF);
       if (race === 'deleted') assert.throws(() => git(f.remote, 'rev-parse', REMOTE_LEDGER_REF));
       else assert.equal(git(f.remote, 'rev-parse', REMOTE_LEDGER_REF), f.genesis);
     }
@@ -293,7 +298,10 @@ test('remote expected-tip transaction rejects deletion, rollback and advance aft
         },
       }));
       const result = actor.ledger.apply(expected, { type: 'claim', pullRequest: 487 });
-      assert.equal(result.status, mode === 'unchanged' ? 'applied' : 'unknown');
+      assert.equal(
+        result.status,
+        mode === 'unchanged' ? 'applied' : mode === 'already-candidate' ? 'unknown' : 'conflict'
+      );
       assert.equal(actor.calls.writes, 1);
       if (mode === 'delete')
         assert.throws(() => git(f.remote, 'rev-parse', '--verify', REMOTE_LEDGER_REF));
@@ -302,8 +310,9 @@ test('remote expected-tip transaction rejects deletion, rollback and advance aft
           git(f.remote, 'rev-parse', REMOTE_LEDGER_REF),
           mode === 'unchanged' ? result.attemptedRevision : observed
         );
-      if (mode !== 'unchanged')
+      if (mode === 'already-candidate')
         assert.throws(() => actor.ledger.apply(expected, event('retry')), /mutation is stopped/);
+      if (mode === 'advance') assert.equal(actor.ledger.read().mutationStopped, false);
     });
 });
 

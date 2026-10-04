@@ -25,6 +25,32 @@ const identity = (live) => [
   live.contributors,
 ];
 
+// Field binding is operational admission, not authenticated runtime attestation.
+export function isConnectorReviewScopeActive(policy, authorizationId) {
+  const source =
+    authorizationId === CONNECTOR_AUTHORIZATION
+      ? 'delegated-owner-event'
+      : authorizationId === INITIAL_SWEEP_AUTHORIZATION
+        ? 'delegated-owner-initial-sweep'
+        : null;
+  if (!source || !Array.isArray(policy?.reviewSubmissionAuthorizations)) return false;
+  const matches = policy.reviewSubmissionAuthorizations.filter(
+    (scope) => scope?.id === authorizationId
+  );
+  if (matches.length !== 1) return false;
+  const scope = matches[0];
+  return (
+    scope.status === 'active' &&
+    scope.repositoryId === LEDGER_REPOSITORY &&
+    scope.executionMode === 'autonomous' &&
+    scope.executionModeSource === source &&
+    scope.mutationClass === 'conditional-review-submission' &&
+    scope.principalId === LEDGER_PRINCIPAL.id &&
+    scope.principalLogin === LEDGER_PRINCIPAL.login &&
+    (authorizationId !== INITIAL_SWEEP_AUTHORIZATION || scope.initialSweepId === INITIAL_SWEEP_ID)
+  );
+}
+
 export class ConnectorReviewSession {
   #transport;
   #ledger;
@@ -74,11 +100,8 @@ export class ConnectorReviewSession {
     });
   }
   #checkSweepScope() {
-    const scope = this.#policy.reviewSubmissionAuthorizations.find(
-      (x) => x.id === INITIAL_SWEEP_AUTHORIZATION
-    );
     assert(
-      scope?.status === 'active' && scope.initialSweepId === INITIAL_SWEEP_ID,
+      isConnectorReviewScopeActive(this.#policy, INITIAL_SWEEP_AUTHORIZATION),
       'initial sweep needs its separately admitted exact scope'
     );
   }
@@ -98,9 +121,7 @@ export class ConnectorReviewSession {
       'unsupported event hint'
     );
     assert(
-      this.#policy.reviewSubmissionAuthorizations.find(
-        (scope) => scope.id === CONNECTOR_AUTHORIZATION
-      )?.status === 'active',
+      isConnectorReviewScopeActive(this.#policy, CONNECTOR_AUTHORIZATION),
       'event scope is not active'
     );
     this.#source = 'delegated-owner-event';
@@ -261,17 +282,14 @@ export class ConnectorReviewSession {
       }),
     });
     assert(authorization.allowed, `canonical publication gate: ${authorization.reason}`);
-    const scope = this.#policy.reviewSubmissionAuthorizations.find(
-      (x) => x.id === this.#authorizationId
-    );
     assert(
-      scope.principalId === LEDGER_PRINCIPAL.id && scope.principalLogin === LEDGER_PRINCIPAL.login,
-      'standing scope principal mismatch'
+      isConnectorReviewScopeActive(this.#policy, this.#authorizationId),
+      'standing scope principal or complete binding mismatch'
     );
     return authorization;
   }
   async #persistPublicationReceipt(intent, receipt) {
-    // A pre-write CAS conflict proves no receipt write was attempted. Only that
+    // A definitive CAS conflict proves no receipt state update was applied. Only that
     // outcome may retry, while the same owner/intent remains fenced. The ledger
     // adapter still enforces process ownership and stops on ambiguous writes.
     for (let attempt = 0; attempt < 3; attempt++) {
@@ -355,9 +373,7 @@ export class ConnectorReviewSession {
         if (observedHeadSha !== intent.headSha) {
           this.#refreshPolicy();
           assert(
-            this.#policy.reviewSubmissionAuthorizations.find(
-              (x) => x.id === CONNECTOR_AUTHORIZATION
-            )?.status === 'active',
+            isConnectorReviewScopeActive(this.#policy, CONNECTOR_AUTHORIZATION),
             'new-head follow-up needs the separately active event scope'
           );
           const followUp = await this.#ledger.read();
