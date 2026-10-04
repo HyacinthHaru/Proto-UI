@@ -58,7 +58,9 @@ export function assertOwnedMaterialConfig(value: unknown): asserts value is Owne
   )
     throw new Error('Invalid finite owned-material declaration');
 }
-export function declareMaterial(config: OwnedMaterialConfig) {
+export function declareMaterial(
+  config: OwnedMaterialConfig
+): PrototypeModuleDeclaration<OwnedMaterialConfig> {
   assertOwnedMaterialConfig(config);
   const copy = structuredClone(config);
   for (const value of Object.values(copy))

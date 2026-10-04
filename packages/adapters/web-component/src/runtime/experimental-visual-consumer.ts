@@ -1,5 +1,5 @@
 import type { Prototype } from '@proto.ui/core';
-import type { FinalStyleSink } from '../../../../modules/feedback/src/material/final-style-sink';
+import type { FinalStyleSink } from '@proto.ui/module-feedback/internal/final-style-sink';
 import type { OwnedTokenApplier } from '../feedback-style';
 
 /** Private test/development admission; intentionally absent from package exports. */

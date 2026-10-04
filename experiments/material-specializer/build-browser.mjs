@@ -1,22 +1,35 @@
-import { mkdir, writeFile, copyFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { build } from 'esbuild';
 import button from './button.proto.ts';
 import { compileMaterialDeclarations } from './compile.mjs';
+import { getPublicPackages } from '../../scripts/build/public-packages.mjs';
+const packed = process.argv.includes('--packed');
+const paths = Object.fromEntries(
+  getPublicPackages().flatMap((pkg) =>
+    Object.entries(pkg.manifest.exports ?? {}).map(([key, value]) => [
+      pkg.name + (key === '.' ? '' : key.slice(1)),
+      [resolve(pkg.dir, typeof value === 'string' ? value : value.import)],
+    ])
+  )
+);
 const out = resolve(process.argv[2] || '/tmp/pui-material-browser');
 await mkdir(out, { recursive: true });
 const result = compileMaterialDeclarations(button.modules, 'webgl-es100');
 if (result.kind !== 'generated') throw new Error(JSON.stringify(result.diagnostics));
 for (const [name, content] of Object.entries(result.files))
   await writeFile(resolve(out, name), content);
-await build({
+const built = await build({
   entryPoints: ['experiments/material-specializer/browser-entry.ts'],
   outfile: resolve(out, 'app.js'),
   bundle: true,
   format: 'esm',
   platform: 'browser',
-  tsconfig: 'tsconfig.json',
+  metafile: true,
+  ...(packed
+    ? { tsconfigRaw: { compilerOptions: { baseUrl: process.cwd(), paths } } }
+    : { tsconfig: 'tsconfig.json' }),
   plugins: [
     {
       name: 'fixed-material-program',
@@ -33,6 +46,17 @@ await build({
     },
   ],
 });
+const packageInputs = Object.keys(built.metafile.inputs).filter((path) =>
+  path.startsWith('packages/')
+);
+if (packed && (packageInputs.length === 0 || packageInputs.some((path) => path.includes('/src/'))))
+  throw new Error(
+    'Packed material fixture reached workspace package source instead of emitted artifacts'
+  );
+await writeFile(
+  resolve(out, 'package-inputs.json'),
+  JSON.stringify({ packed, packageInputs }, null, 2)
+);
 execFileSync(
   process.execPath,
   [
@@ -57,6 +81,7 @@ await writeFile(
   JSON.stringify(
     {
       revision,
+      packageMode: packed ? 'built-package-artifacts' : 'workspace-source',
       shader: '88f681ab7035fd55b04f63edff1841e32c4199e9',
       execution: 'pending-browser-evidence',
     },

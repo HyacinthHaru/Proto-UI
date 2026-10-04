@@ -3,4 +3,4 @@ export {
   declareMaterial,
   OWNED_MATERIAL_ID as MATERIAL_EXPERIMENT_ID,
   type OwnedMaterialConfig,
-} from '../../packages/modules/feedback/src/material/owned-slot';
+} from '@proto.ui/module-feedback/internal/owned-slot';

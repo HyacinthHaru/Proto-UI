@@ -35,11 +35,11 @@ import { EFFECTS_CAP } from '@proto.ui/module-feedback';
 import {
   MATERIAL_BINDING_FACTORY_CAP,
   type MaterialBindingFactory,
-} from '../../../../modules/feedback/src/material/runtime-cap';
+} from '@proto.ui/module-feedback/internal/runtime-cap';
 import {
   FINAL_STYLE_SINK_CAP,
   type FinalStyleSink,
-} from '../../../../modules/feedback/src/material/final-style-sink';
+} from '@proto.ui/module-feedback/internal/final-style-sink';
 import {
   EVENT_CANCEL_DEFAULT_ACTION_CAP,
   EVENT_GLOBAL_TARGET_CAP,

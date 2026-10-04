@@ -64,7 +64,7 @@ import { getExperimentalVisualConsumer } from './runtime/experimental-visual-con
 import {
   OWNED_MATERIAL_ID,
   createOwnedMaterialBinding,
-} from '../../../modules/feedback/src/material/owned-slot';
+} from '@proto.ui/module-feedback/internal/owned-slot';
 import { createOpaqueMaterialVisualSink } from './material/owned-texture-sink';
 import { createWebComponentModules, createWebComponentOwnerModules } from './runtime/modules';
 import { createWebComponentHostSession } from './runtime/session';

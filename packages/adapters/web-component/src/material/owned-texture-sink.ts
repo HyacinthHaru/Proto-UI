@@ -1,7 +1,7 @@
 import type {
   FinalStyleFrame,
   FinalStyleSink,
-} from '../../../../modules/feedback/src/material/final-style-sink';
+} from '@proto.ui/module-feedback/internal/final-style-sink';
 import type { OwnedTokenApplier } from '../feedback-style';
 
 export type OwnedTexture = {

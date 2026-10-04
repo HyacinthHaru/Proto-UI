@@ -1,11 +1,11 @@
 import button from './button.proto';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
-import { installExperimentalVisualConsumer } from '../../packages/adapters/web-component/src/runtime/experimental-visual-consumer';
+import { installExperimentalVisualConsumer } from '@proto.ui/adapter-web-component/internal/visual-consumer';
 import {
   createOwnedTextureVisualSink,
   type OwnedTexture,
   type MaterialPreferences,
-} from '../../packages/adapters/web-component/src/material/owned-texture-sink';
+} from '@proto.ui/adapter-web-component/internal/owned-texture-sink';
 import program from 'material-program';
 
 const scene = document.querySelector<HTMLElement>('#scene')!;
