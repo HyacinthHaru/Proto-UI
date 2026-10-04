@@ -9,7 +9,9 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 import {
   installSearchStartupTrace,
-  readSearchDisabledNow,
+  readSearchReadyWithinBudget,
+  searchReadinessWasOnTime,
+  type SearchReadinessEvidence,
   traceSearchGetter,
   type SearchGetterSample,
   searchEvidenceDirectory,
@@ -53,6 +55,7 @@ const diagnosticPages = new Map<
     startedAt: number;
     stageStartedAt: number;
     initialGetterSamples: SearchGetterSample[];
+    initialReadiness?: SearchReadinessEvidence;
     initialPollFailure?: { at: number; message: string; cause: string | null };
     requests: unknown[];
     lateObservation?: { budgetMs: number; elapsedMs: number; ready: boolean };
@@ -289,6 +292,7 @@ async function capture(page: Page, id: string, state: string) {
       generation: command.generation,
     })),
     initialGetterSamples: entry?.initialGetterSamples ?? [],
+    initialReadiness: entry?.initialReadiness ?? null,
     initialPollFailure: entry?.initialPollFailure ?? null,
     startupTrace: observed.startup.trace && {
       timeOrigin: observed.startup.trace.timeOrigin,
@@ -466,13 +470,20 @@ describe.sequential('Search family Button commands', () => {
             );
             stage(page, id, 'initial-ready');
             try {
-              await expect
-                .poll(() =>
-                  traceSearchGetter(diagnosticPages.get(page)!.initialGetterSamples, () =>
-                    page.evaluate(readSearchDisabledNow)
-                  )
-                )
-                .toBe('false');
+              const entry = diagnosticPages.get(page)!;
+              // Retain the original stage-start deadline; exclude only the
+              // return trip of a browser observation already made on time.
+              await traceSearchGetter(entry.initialGetterSamples, async () => {
+                const evidence = await page.evaluate(readSearchReadyWithinBudget, {
+                  startedAt: entry.stageStartedAt,
+                });
+                entry.initialReadiness = evidence;
+                return evidence.currentDisabled;
+              });
+              expect(
+                searchReadinessWasOnTime(entry.initialReadiness!),
+                JSON.stringify(entry.initialReadiness)
+              ).toBe(true);
             } catch (error) {
               diagnosticPages.get(page)!.initialPollFailure = {
                 at: Date.now(),

@@ -103,7 +103,8 @@ export function installSearchStartupTrace() {
       if (key === lastState && reason === 'mutation') return;
       lastState = key;
       eventCount++;
-      if (events.length < 48) events.push({ atMs: performance.now(), reason, state });
+      if (events.length < 48)
+        events.push({ atMs: performance.now(), atEpochMs: Date.now(), reason, state });
     },
     attach() {
       if (stopped || root) return;
@@ -198,4 +199,89 @@ export function readSearchDisabledNow(): string | null {
   );
   if (commands.length > 1) throw new Error('Search open command must be unique');
   return commands[0]?.getAttribute('aria-disabled') ?? null;
+}
+
+export type SearchReadinessEvidence = {
+  startedAt: number;
+  deadline: number;
+  observedReadyAt: number | null;
+  completedAt: number;
+  currentDisabled: string | null;
+};
+
+export function searchReadinessWasOnTime(evidence: SearchReadinessEvidence): boolean {
+  return (
+    evidence.currentDisabled === 'false' &&
+    evidence.observedReadyAt !== null &&
+    evidence.observedReadyAt <= evidence.deadline &&
+    evidence.deadline === evidence.startedAt + 1000
+  );
+}
+
+/** Keep the original runner-started 1000ms deadline. The browser's actual
+ * observer timestamp decides readiness; an IPC reply arriving late is only
+ * transport evidence. Runner and page Date.now use the same CI host clock.
+ * This self-contained function is serialized into that page by Playwright. */
+export function readSearchReadyWithinBudget({
+  startedAt,
+}: {
+  startedAt: number;
+}): Promise<SearchReadinessEvidence> {
+  return new Promise((resolve, reject) => {
+    const deadline = startedAt + 1000;
+    let observer: MutationObserver | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let done = false;
+    const probe = {
+      sample(expired = false) {
+        if (done) return;
+        const commands = document.querySelectorAll(
+          'site-search [data-projection-generation-state="active"] [data-open-modal]'
+        );
+        if (commands.length > 1) {
+          done = true;
+          observer?.disconnect();
+          if (timer !== undefined) clearTimeout(timer);
+          reject(new Error('Search open command must be unique'));
+          return;
+        }
+        const currentDisabled = commands[0]?.getAttribute('aria-disabled') ?? null;
+        const trace = (window as any).__puiSearchStartup?.snapshot();
+        const ready = trace?.events.find(
+          (event: any) =>
+            event.state.view === 'ready' &&
+            event.state.commands.some(
+              (command: any) =>
+                command.command === 'open' &&
+                command.role === 'button' &&
+                command.disabled === 'false' &&
+                command.connected &&
+                !command.inert &&
+                !command.pending
+            )
+        );
+        const observedReadyAt =
+          ready?.atEpochMs ?? (currentDisabled === 'false' ? Date.now() : null);
+        if (currentDisabled !== 'false' && !expired && Date.now() < deadline) return;
+        done = true;
+        observer?.disconnect();
+        if (timer !== undefined) clearTimeout(timer);
+        resolve({ startedAt, deadline, observedReadyAt, completedAt: Date.now(), currentDisabled });
+      },
+    };
+    observer = new MutationObserver(() => probe.sample());
+    observer.observe(document, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: [
+        'data-projection-generation-state',
+        'data-search-view',
+        'aria-disabled',
+        'role',
+      ],
+    });
+    timer = setTimeout(() => probe.sample(true), Math.max(0, deadline - Date.now()));
+    probe.sample();
+  });
 }

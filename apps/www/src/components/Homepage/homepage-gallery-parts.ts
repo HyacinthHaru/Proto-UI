@@ -6,6 +6,17 @@ import {
 import type { RuntimeId } from '../PrototypePreviewer/runtimes/registry';
 import { PREVIEW_SURFACE_ID } from './homepage-live-preview';
 
+/** Consumer geometry only: retain family paint and the public default height,
+ * while allowing enlarged text to make a command taller than that minimum. */
+export const homepageCommandLayout = (family: ProjectionFamilyId) => ({
+  minWidth: '0',
+  maxWidth: '100%',
+  height: 'auto',
+  minHeight: family === 'brutalist' ? '2.5rem' : '2rem',
+  whiteSpace: 'normal',
+  overflowWrap: 'anywhere',
+});
+
 export function createHomepageGalleryParts(
   family: ProjectionFamilyId,
   runtime: RuntimeId,
@@ -36,7 +47,16 @@ export function createHomepageGalleryParts(
   ): DemoNode => {
     ids.add(id);
     if (ref) authoredProps.set(ref, { ...props });
-    return { kind: 'proto', prototypeId: id, props, children, ...(ref ? { ref } : {}) };
+    return {
+      kind: 'proto',
+      prototypeId: id,
+      props,
+      children,
+      ...(ref ? { ref } : {}),
+      ...(/-(?:button|dialog-trigger|dropdown-menu-trigger)$/.test(id)
+        ? { surfaceStyle: homepageCommandLayout(family) }
+        : {}),
+    };
   };
   const part = (kind: Parameters<typeof resolveProjectionPart>[1], name = 'root') =>
     resolveProjectionPart(family, kind, name).prototypeId;

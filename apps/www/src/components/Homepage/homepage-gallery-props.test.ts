@@ -22,6 +22,12 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       for (let i = 0; i < 16; i++) await Promise.resolve();
     };
     const verify = () => {
+      for (const name of ['settings-save', 'settings-reset', 'editor-reset']) {
+        expect(ref(name).style.maxWidth).toBe('100%');
+        expect(ref(name).style.whiteSpace).toBe('normal');
+        expect(ref(name).style.height).toBe('auto');
+        expect(ref(name).style.minHeight).toBe(family === 'brutalist' ? '2.5rem' : '2rem');
+      }
       expect(Number(input('editor-text').rows)).toBe(4);
       expect(input('editor-text').getAttribute('aria-label')).toBe('Edit example text');
       expect(Number(input('settings-note').rows)).toBe(3);

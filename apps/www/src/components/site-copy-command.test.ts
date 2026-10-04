@@ -1,4 +1,10 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { retainHappyDomMutationCallbacks } from '../../../../scripts/test/happy-dom-mutation-keepalive.mjs';
+let observerKeeper: ReturnType<typeof retainHappyDomMutationCallbacks>;
+beforeAll(() => {
+  observerKeeper = retainHappyDomMutationCallbacks(window);
+});
+afterAll(() => observerKeeper.restore());
 import { createCopyCommandDemo, initCopyCommand, type SiteCopyCommand } from './site-copy-command';
 import { createCopyController } from './site-copy-controller';
 import { initSiteCopyCommands, readCopyText } from './site-copy-client';
@@ -410,7 +416,27 @@ describe('Install Copy route and fixture input ordering', () => {
       // that the Copy consumer lost its subscription.
       applySiteLibraryFamily(document, 'brutalist');
       document.dispatchEvent(new Event('astro:page-load'));
-      await vi.waitFor(() => expect(root.dataset.copyFamily).toBe('shadcn'), { timeout: 15000 });
+      await vi.waitFor(
+        () =>
+          expect(
+            root.dataset.copyFamily,
+            JSON.stringify({
+              frame: frame.dataset.siteLibraryFamily,
+              card: card.dataset.siteLibraryFamily,
+              doc: document.documentElement.dataset.siteLibraryFamily,
+              nearest: root.closest<HTMLElement>('[data-site-library-family]')?.dataset
+                .siteLibraryFamily,
+              calls: faults.calls,
+              completed: faults.completed.map((x) => ({
+                owner: x.owner,
+                connected: x.host.isConnected,
+                state: x.host.dataset.projectionGenerationState,
+              })),
+              root: { ...root.dataset },
+            })
+          ).toBe('shadcn'),
+        { timeout: 15000 }
+      );
       expect(frame.dataset.siteLibraryFamily).toBe('shadcn');
       applySiteLibraryFamily(document, 'brutalist');
       await vi.waitFor(() => expect(root.dataset.copyFamily).toBe('brutalist'), { timeout: 15000 });
@@ -418,7 +444,27 @@ describe('Install Copy route and fixture input ordering', () => {
       expect(root.querySelectorAll('[data-demo-ref="copy-button"]')).toHaveLength(1);
       expect(writeText).toHaveBeenCalledTimes(1);
       routeSync();
-      await vi.waitFor(() => expect(root.dataset.copyFamily).toBe('shadcn'), { timeout: 15000 });
+      await vi.waitFor(
+        () =>
+          expect(
+            root.dataset.copyFamily,
+            JSON.stringify({
+              frame: frame.dataset.siteLibraryFamily,
+              card: card.dataset.siteLibraryFamily,
+              doc: document.documentElement.dataset.siteLibraryFamily,
+              nearest: root.closest<HTMLElement>('[data-site-library-family]')?.dataset
+                .siteLibraryFamily,
+              calls: faults.calls,
+              completed: faults.completed.map((x) => ({
+                owner: x.owner,
+                connected: x.host.isConnected,
+                state: x.host.dataset.projectionGenerationState,
+              })),
+              root: { ...root.dataset },
+            })
+          ).toBe('shadcn'),
+        { timeout: 15000 }
+      );
       card.dataset.siteLibraryFamily = 'brutalist';
       await vi.waitFor(
         () =>
@@ -447,7 +493,27 @@ describe('Install Copy route and fixture input ordering', () => {
       await settle();
       expect(root.dataset.copyFamily).toBe('brutalist');
       delete card.dataset.siteLibraryFamily;
-      await vi.waitFor(() => expect(root.dataset.copyFamily).toBe('shadcn'), { timeout: 15000 });
+      await vi.waitFor(
+        () =>
+          expect(
+            root.dataset.copyFamily,
+            JSON.stringify({
+              frame: frame.dataset.siteLibraryFamily,
+              card: card.dataset.siteLibraryFamily,
+              doc: document.documentElement.dataset.siteLibraryFamily,
+              nearest: root.closest<HTMLElement>('[data-site-library-family]')?.dataset
+                .siteLibraryFamily,
+              calls: faults.calls,
+              completed: faults.completed.map((x) => ({
+                owner: x.owner,
+                connected: x.host.isConnected,
+                state: x.host.dataset.projectionGenerationState,
+              })),
+              root: { ...root.dataset },
+            })
+          ).toBe('shadcn'),
+        { timeout: 15000 }
+      );
     } finally {
       document.removeEventListener('astro:page-load', routeSync);
     }

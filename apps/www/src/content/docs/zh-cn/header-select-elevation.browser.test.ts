@@ -18,6 +18,10 @@ const output =
     ? path.join(process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR, 'header-select-elevation')
     : undefined);
 const sourceSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+const HISTORICAL_FLAT_SHA = '8856a7112e86aa974f2ba388c3b8b70417268394';
+if (appearance === 'flat' && sourceSha !== HISTORICAL_FLAT_SHA)
+  throw new Error('Historical flat negative is bound only to its immutable baseline');
+const subjectRole = appearance === 'flat' ? 'historical-negative' : 'candidate-acceptance';
 let browser: Browser;
 let baseUrl: string;
 beforeAll(async () => {
@@ -90,7 +94,7 @@ async function keyboardFocus(page: Page, select: Locator) {
 describe.sequential('Header explicit Brutalist Select elevation', () => {
   for (const runtime of RUNTIMES)
     for (const theme of ['light', 'dark'] as const) {
-      it(`${runtime}/${theme}: source-bound rest, hover, native focus, popup and compact reparenting`, async () => {
+      it(`${runtime}/${theme}: ${subjectRole}; source-bound rest, hover, native focus, popup and compact reparenting`, async () => {
         const context = await browser.newContext({
           viewport: { width: 1440, height: 1000 },
           colorScheme: theme,
@@ -99,6 +103,7 @@ describe.sequential('Header explicit Brutalist Select elevation', () => {
         const errors: string[] = [];
         page.on('pageerror', (error) => errors.push(error.message));
         const measurements: unknown[] = [];
+        let disposition = 'not-completed';
         const capture = async (state: string) => {
           if (output)
             await page.screenshot({
@@ -174,6 +179,28 @@ describe.sequential('Header explicit Brutalist Select elevation', () => {
               expect(ring.ringWidth).toBe(2);
               expect(ring.ringOffset).toBe(2);
               expect(ring.inViewport).toBe(true);
+              if (
+                appearance === 'flat' &&
+                sourceSha === HISTORICAL_FLAT_SHA &&
+                width === 390 &&
+                control === 'runtime'
+              ) {
+                // The immutable before revision predates the ring gutter fix.
+                // Reproduce this exact old defect, never call it a healthy
+                // baseline or silently ignore other historical failures.
+                measurements.push({
+                  stage: 'historical-negative',
+                  width,
+                  control,
+                  ring,
+                  classification: '8856a711-compact-runtime-focus-ring-clipped',
+                });
+                expect(ring.unclipped, 'the exact old clipping must be reproduced').toBe(false);
+                expect(errors).toEqual([]);
+                await capture('390-runtime-historical-clipped-focus-ring');
+                disposition = 'historical-negative-reproduced';
+                return;
+              }
               expect(ring.unclipped).toBe(true);
               await capture(`${width}-${control}-focus`);
               const lease = await select.elementHandle();
@@ -306,7 +333,9 @@ describe.sequential('Header explicit Brutalist Select elevation', () => {
             }
           }
           expect(errors).toEqual([]);
+          disposition = 'candidate-accepted';
         } catch (error) {
+          disposition = 'unexpected-failure';
           try {
             await capture('failure');
           } catch (captureError) {
@@ -327,6 +356,8 @@ describe.sequential('Header explicit Brutalist Select elevation', () => {
                     null,
                   probeSha: process.env.CANDIDATE_SHA ?? sourceSha,
                   appearance,
+                  subjectRole,
+                  disposition,
                   route: '/zh-cn/',
                   runtime,
                   theme,

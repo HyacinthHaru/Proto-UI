@@ -85,6 +85,8 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   }
   .home-demo-previewer :global(.home-settings) {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
     gap: 1.5rem;
   }
   .home-demo-previewer :global(.home-settings__title) {
@@ -117,6 +119,7 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   }
   .home-demo-previewer :global(.home-settings__switch-row) {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
@@ -128,6 +131,8 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   }
   .home-demo-previewer :global(.home-settings__footer) {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
     gap: 0.875rem;
   }
   .home-demo-previewer :global(.home-settings__actions) {
@@ -151,6 +156,7 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   .home-demo-previewer :global(.home-gallery__card-body),
   .home-demo-previewer :global(.home-gallery__stack) {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-content: start;
     gap: 1rem;
     min-width: 0;
@@ -163,6 +169,8 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   }
   .home-demo-previewer :global(.home-gallery__card-heading) {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
     gap: 0.25rem;
   }
   .home-demo-previewer :global(.home-gallery__title) {
@@ -213,6 +221,15 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   }
   .home-demo-previewer :global(.home-settings__label) {
     font-size: 0.8125rem;
+  }
+  /* Let intrinsic English labels reflow inside a resized text layout rather
+     than widening an implicit grid track. Surface paint stays in Proto UI. */
+  .home-demo-previewer :global(.home-gallery__title),
+  .home-demo-previewer :global(.home-gallery__caption),
+  .home-demo-previewer :global(.home-gallery__choice-label),
+  .home-demo-previewer :global(.home-settings__label) {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   @media (max-width: 1199px) {
     .home-demo-previewer :global(.home-gallery) {

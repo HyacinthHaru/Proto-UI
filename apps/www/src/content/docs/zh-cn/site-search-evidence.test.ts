@@ -5,7 +5,9 @@ import { transformSync } from 'esbuild';
 import { describe, expect, it, vi } from 'vitest';
 import {
   installSearchStartupTrace,
+  searchReadinessWasOnTime,
   readSearchDisabledNow,
+  readSearchReadyWithinBudget,
   traceSearchGetter,
   type SearchGetterSample,
   searchEvidenceDirectory,
@@ -24,9 +26,9 @@ describe('Search cold-start evidence boundary', () => {
     );
     const workflow = readFileSync('.github/workflows/ci.yml', 'utf8');
     expect(workflow).toContain('path: ${{ runner.temp }}/runtime-ci');
-    expect(source.replace(/\s/g, '')).toContain(
-      "awaitexpect.poll(()=>traceSearchGetter(diagnosticPages.get(page)!.initialGetterSamples,()=>page.evaluate(readSearchDisabledNow))).toBe('false');"
-    );
+    expect(source).toContain('startedAt: entry.stageStartedAt');
+    expect(source).toContain('searchReadinessWasOnTime(entry.initialReadiness!)');
+    expect(source).toContain('entry.initialReadiness = evidence');
     expect(source).toContain('{ timeout: 10_000 }');
     expect(source).toContain("command?.getAttribute('role') === 'button'");
     expect(source).toContain("command.getAttribute('aria-disabled') === 'false'");
@@ -298,8 +300,9 @@ it('parses the actual browser suite without starting its browser or server hooks
   expect(() => transformSync(source, { loader: 'ts', target: 'es2022' })).not.toThrow();
 });
 
-it('samples initial readiness once per outer poll without nesting the locator wait', () => {
-  expect(source).toContain('page.evaluate(readSearchDisabledNow)');
+it('uses one browser-local observation without a nested locator timeout', () => {
+  expect(source).toContain('page.evaluate(readSearchReadyWithinBudget');
+  expect(readSearchReadyWithinBudget.toString()).not.toMatch(/\b__name\s*\(/);
 });
 
 it('retains absence, disabled and unique-element semantics in the immediate DOM sample', () => {
@@ -331,4 +334,64 @@ it('keeps a missed deadline failed when immediate samples stay unavailable throu
   expect(samples.every((sample) => sample.value === null)).toBe(true);
   value = 'false';
   expect(await read()).toBe('false');
+});
+
+it('keeps the same 1000ms DOM-readiness budget even when the RPC reply arrives later', () => {
+  const sample = {
+    startedAt: 10000,
+    deadline: 11000,
+    observedReadyAt: 10999,
+    completedAt: 11500,
+    currentDisabled: 'false',
+  };
+  expect(searchReadinessWasOnTime(sample)).toBe(true);
+  expect(searchReadinessWasOnTime({ ...sample, observedReadyAt: 11001 })).toBe(false);
+  expect(searchReadinessWasOnTime({ ...sample, observedReadyAt: null })).toBe(false);
+  expect(searchReadinessWasOnTime({ ...sample, currentDisabled: 'true' })).toBe(false);
+  expect(searchReadinessWasOnTime({ ...sample, deadline: 12000 })).toBe(false);
+});
+
+it('uses the real recorded deadline in the serialized page waiter, including late-ready rejection', async () => {
+  let observed = 999;
+  const read = runInNewContext(`(${readSearchReadyWithinBudget.toString()})`, {
+    Date: { now: () => 1500 },
+    setTimeout: () => 1,
+    clearTimeout() {},
+    MutationObserver: class {
+      observe() {}
+      disconnect() {}
+    },
+    document: { querySelectorAll: () => [{ getAttribute: () => 'false' }] },
+    window: {
+      __puiSearchStartup: {
+        snapshot: () => ({
+          events: [
+            {
+              atEpochMs: observed,
+              state: {
+                view: 'ready',
+                commands: [
+                  {
+                    command: 'open',
+                    role: 'button',
+                    disabled: 'false',
+                    connected: true,
+                    inert: false,
+                    pending: false,
+                  },
+                ],
+              },
+            },
+          ],
+        }),
+      },
+    },
+  });
+  const early = await read({ startedAt: 0 });
+  expect(early.observedReadyAt).toBe(999);
+  expect(early.completedAt).toBe(1500);
+  expect(searchReadinessWasOnTime(early)).toBe(true);
+  observed = 1001;
+  const late = await read({ startedAt: 0 });
+  expect(searchReadinessWasOnTime(late)).toBe(false);
 });
