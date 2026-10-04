@@ -126,7 +126,7 @@ function fixture() {
     if (operation === 'add_review_to_pr') {
       assert.equal(args.repo_full_name, 'Proto-UI/Proto-UI');
       assert.equal(args.pr_number, 487);
-      assert.equal(args.commit_id, sha('b'));
+      assert.equal(args.commit_id, f.expectedReviewHead ?? sha('b'));
       const review = {
         id: 99 + f.reviews.length,
         node_id: `PRR_${99 + f.reviews.length}`,
@@ -832,7 +832,7 @@ test('fresh run rejects a cleared prior pointer or omitted prior finding before 
       } else packet.reconciliation.resolvedFindingIds = [];
       await assert.rejects(next.publishParentPacket(packet, assessment), /prior|reconciliation/i);
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
-      assert.equal(new LocalCloudReviewLedger(dir, genesis).read().state.slot.intent, null);
+      assert.equal(new LocalCloudReviewLedger(dir, genesis).read().state.slot, null);
     });
 });
 
@@ -1098,7 +1098,7 @@ test('parent assessment artifact is validated, derived and bound before any inte
         candidate.resultDigest = computeSelfAssessmentResultDigest(candidate);
       }
       await assert.rejects(s.publishParentPacket(packet, candidate), /self result|self assessment/);
-      assert.equal(store.read().state.slot.intent, null);
+      assert.equal(store.read().state.slot, null);
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
     });
 });
@@ -1117,7 +1117,7 @@ test('live policy revocation at either publication preflight prevents POST', asy
       if (when === 'before-intent') {
         revoke();
         await assert.rejects(s.publishParentPacket(packet, assessment), /policy changed|revoked/);
-        assert.equal(store.read().state.slot.intent, null);
+        assert.equal(store.read().state.slot, null);
       } else {
         const apply = store.apply.bind(store);
         store.apply = (...args) => {
@@ -1315,7 +1315,7 @@ test('a generation winner or uncertain acknowledgement before the dispatch fence
       await assert.rejects(s.publishParentPacket(packet, assessment), /intent acknowledgement/);
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
       assert.equal(
-        store.read().state.slot.intent?.status ?? null,
+        store.read().state.slot?.intent?.status ?? null,
         mode === 'lost-fence-ack' ? 'unknown' : null
       );
     });
@@ -1865,4 +1865,547 @@ test('confirmed review receipt survives a real remote stale-lease race without r
   assert.equal(state.publicationReceipts.length, 1);
   assert.equal(state.slot, null);
   assert(state.pending.some((item) => item.pullRequest === 488));
+});
+
+function completePacket(input, prior = null, ids = []) {
+  const { packet } = analysis(input);
+  packet.agentEvidence.source = 'AI-executed review by ChatGPT; parent-owned test judgment';
+  packet.agentEvidence.disposition = 'complete';
+  packet.agentEvidence.debt = [];
+  packet.findings = ids.map((id) => ({
+    id,
+    severity: 'P1',
+    confidence: 'high',
+    file: 'packages/core/src/index.ts',
+    line: 1,
+    authority: 'fixture',
+    observed: id,
+    expected: 'working',
+    impact: 'regression',
+    fix: 'repair',
+  }));
+  packet.recommendedAction = ids.length ? 'REQUEST_CHANGES' : 'APPROVE';
+  packet.reconciliation = reconcilePacket(prior, ids);
+  return packet;
+}
+function reconcilePacket(prior, ids) {
+  const previous = prior?.findings.map((finding) => finding.id) ?? [];
+  return {
+    priorReviewedHeadSha: prior?.headSha ?? null,
+    priorPacketDigest: prior ? computeReviewPacketDigest(prior) : null,
+    resolvedFindingIds: previous.filter((id) => !ids.includes(id)),
+    openFindingIds: previous.filter((id) => ids.includes(id)),
+    newFindingIds: ids.filter((id) => !previous.includes(id)),
+  };
+}
+function freshSession({ transport, dir, genesis }, policy = rootPolicy) {
+  return new ConnectorReviewSession({
+    transport,
+    ledger: new LocalCloudReviewLedger(dir, genesis),
+    policy,
+  });
+}
+
+test('definitive staging conflict releases the original intent-free claim for fresh recovery', async (t) => {
+  const context = await session(t);
+  const { f, s, store, dir, genesis } = context;
+  const packet = await parentPacket(s);
+  const apply = store.apply.bind(store);
+  store.apply = (revision, command) => {
+    if (command.type === 'stagePublicationIntent')
+      apply(revision, {
+        type: 'enqueue',
+        deliveryId: 'winner-before-intent',
+        pullRequest: 487,
+        eventKind: 'synchronize',
+        materialDigest: 'd'.repeat(64),
+      });
+    return apply(revision, command);
+  };
+  await assert.rejects(s.publishParentPacket(packet, assessment), /intent acknowledgement/);
+  const fresh = new LocalCloudReviewLedger(dir, genesis);
+  assert.equal(fresh.read().state.slot, null);
+  assert.equal(fresh.read().state.pending[0].generation, 2);
+  assert.equal(
+    fresh.apply(fresh.read().revision, { type: 'claim', pullRequest: 487 }).status,
+    'applied'
+  );
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+});
+
+test('base-only material changes cannot inherit event coverage in the initial sweep', async (t) => {
+  for (const field of ['sha', 'ref'])
+    await t.test(field, async (t) => {
+      const context = await session(t);
+      const { f, s, store } = context;
+      await s.captureInitialSweep();
+      await s.finishParentAnalysis(await parentPacket(s));
+      f.pr.base[field] = field === 'sha' ? sha('c') : 'release';
+      const next = freshSession(context);
+      const request = await next.beginInitialSweep(487);
+      assert.equal(request.kind, 'proto-ui.parent-review-request');
+      const state = store.read().state;
+      assert.deepEqual(state.initialSweep.completed, []);
+      assert.equal(state.pending[0].generation, 2);
+      assert.equal(request.input.baseSha, f.pr.base.sha);
+      assert.equal(request.input.baseRefName, f.pr.base.ref);
+      const packet = completePacket(request.input, request.priorAnalysis.packet);
+      assert.equal((await next.finishParentAnalysis(packet)).status, 'applied');
+      assert.deepEqual(store.read().state.initialSweep.completed, [487]);
+    });
+});
+
+test('closed to reopened uses its own durable event identity and a new analysis', async (t) => {
+  const context = await session(t, {
+    modify: (f) => {
+      f.pr.state = 'closed';
+    },
+  });
+  const { f, s, store } = context;
+  const closed = await s.begin(487, { kind: 'closed', deliveryId: 'closed-event' });
+  const first = completePacket(closed.input);
+  first.recommendedAction = 'ABSTAIN';
+  await s.finishParentAnalysis(first);
+  f.pr.state = 'open';
+  const reopened = freshSession(context);
+  const request = await reopened.begin(487, { kind: 'reopened', deliveryId: 'reopened-event' });
+  assert.equal(request.input.pullRequestState, 'OPEN');
+  assert.equal(store.read().state.deliveries.at(-1).eventKind, 'reopened');
+  const recorded = store.read().state.deliveries.at(-1);
+  assert.throws(
+    () => store.apply(store.read().revision, { ...recorded, eventKind: 'opened' }),
+    /reused/
+  );
+  assert.equal(store.read().state.pending[0].generation, 2);
+  assert.equal(
+    (await reopened.publishParentPacket(completePacket(request.input, first), assessment)).status,
+    'published'
+  );
+});
+
+test('published A survives finish-only B and restart before publication C', async (t) => {
+  const context = await session(t);
+  const { f, s, store } = context;
+  const requestA = await s.begin(487, { kind: 'opened', deliveryId: 'sequence-a' });
+  const a = completePacket(requestA.input, null, ['A1', 'A2']);
+  assert.equal((await s.publishParentPacket(a, assessment)).status, 'published');
+  f.pr.body = 'B material';
+  const nextB = freshSession(context);
+  const requestB = await nextB.begin(487, { kind: 'human-comment', deliveryId: 'sequence-b' });
+  const b = completePacket(requestB.input, a, ['A1', 'B1']);
+  assert.equal((await nextB.finishParentAnalysis(b)).status, 'applied');
+  f.pr.body = 'C material';
+  const nextC = freshSession(context);
+  const requestC = await nextC.begin(487, { kind: 'human-comment', deliveryId: 'sequence-c' });
+  const c = completePacket(requestC.input, a, ['B1', 'C1']);
+  const outcome = await nextC.publishParentPacket(c, assessment, reconcilePacket(b, ['B1', 'C1']));
+  assert.equal(outcome.status, 'published');
+  assert.deepEqual(requestC.priorAnalysis.packet, b);
+  assert.deepEqual(requestC.priorPublishedAnalysis.packet, a);
+  const state = store.read().state;
+  assert.deepEqual(state.analyses[0].packet, c);
+  assert.deepEqual(state.publishedAnalyses[0].packet, c);
+  assert.equal(state.publicationReceipts.length, 2);
+  assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 2);
+});
+
+test('pre-staging failures release only the unchanged original claim and preserve pending work', async (t) => {
+  for (const phase of ['collect', 'authorize', 'snapshot', 'policy', 'ledger-read', 'generation'])
+    await t.test(phase, async (t) => {
+      const context = await session(t);
+      const { f, store, transport, dir, genesis } = context;
+      const policy = structuredClone(rootPolicy);
+      let snapshotUnavailable = false;
+      const s = new ConnectorReviewSession({
+        policy,
+        transport,
+        ledger: store,
+        readSnapshot: () => {
+          if (snapshotUnavailable) throw Error('snapshot unavailable');
+          return assessmentSnapshot;
+        },
+      });
+      const packet = await parentPacket(s);
+      const read = store.read.bind(store);
+      const collect = transport.collect.bind(transport);
+      if (phase === 'collect')
+        transport.collect = async () => {
+          throw Error('collection unavailable');
+        };
+      if (phase === 'authorize') f.permission = 'read';
+      if (phase === 'snapshot') snapshotUnavailable = true;
+      if (phase === 'policy') policy.reviewSubmissionAuthorizations[0].status = 'paused';
+      if (phase === 'ledger-read') {
+        let once = true;
+        store.read = () => {
+          if (once) {
+            once = false;
+            throw Error('read unavailable');
+          }
+          return read();
+        };
+      }
+      if (phase === 'generation')
+        store.apply(store.read().revision, {
+          type: 'enqueue',
+          deliveryId: 'generation-before-stage',
+          pullRequest: 487,
+          eventKind: 'synchronize',
+          materialDigest: 'd'.repeat(64),
+        });
+      await assert.rejects(s.publishParentPacket(packet, assessment));
+      const state = new LocalCloudReviewLedger(dir, genesis).read().state;
+      assert.equal(state.slot, null);
+      assert.equal(state.pending.length, 1);
+      assert.equal(state.analyses.length, 0);
+      assert.equal(state.publicationReceipts.length, 0);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+      transport.collect = collect;
+      f.permission = 'admin';
+      // A new session can consume unchanged material because abandonment kept it pending.
+      assert.equal(
+        (
+          await freshSession(context).begin(487, {
+            kind: 'synchronize',
+            deliveryId: `recover-${phase}`,
+          })
+        ).kind,
+        'proto-ui.parent-review-request'
+      );
+    });
+});
+
+test('unstaged claim release retries only proven CAS conflicts and never adopts another claim', async (t) => {
+  for (const mode of [
+    'conflict',
+    'persistent-conflict',
+    'unknown',
+    'lost-release-ack',
+    'owner-drift',
+    'intent-appeared',
+    'unreadable',
+  ])
+    await t.test(mode, async (t) => {
+      const { f, s, store, transport } = await session(t);
+      const packet = await parentPacket(s);
+      const read = store.read.bind(store);
+      const apply = store.apply.bind(store);
+      let attempts = 0;
+      transport.collect = async () => {
+        throw Error('collection unavailable');
+      };
+      store.read = () => {
+        if (mode === 'unreadable') throw Error('read unavailable');
+        const snapshot = read();
+        if (mode === 'owner-drift') snapshot.state.slot.owner = 'e'.repeat(32);
+        if (mode === 'intent-appeared') snapshot.state.slot.intent = { id: 'f'.repeat(64) };
+        return snapshot;
+      };
+      store.apply = (revision, command) => {
+        if (command.type !== 'abandon') return apply(revision, command);
+        attempts++;
+        if (mode === 'unknown') return { status: 'unknown' };
+        if (mode === 'lost-release-ack') {
+          apply(revision, command);
+          return { status: 'unknown' };
+        }
+        if (mode === 'persistent-conflict' || (mode === 'conflict' && attempts === 1))
+          apply(revision, {
+            type: 'enqueue',
+            deliveryId: `release-winner-${attempts}`,
+            pullRequest: 488,
+            eventKind: 'human-comment',
+            materialDigest: String(attempts).repeat(64),
+          });
+        return apply(revision, command);
+      };
+      await assert.rejects(
+        s.publishParentPacket(packet, assessment),
+        mode === 'conflict' ? /collection unavailable$/ : /claim release unknown/
+      );
+      store.read = read;
+      assert.equal(
+        attempts,
+        mode === 'conflict'
+          ? 2
+          : mode === 'persistent-conflict'
+            ? 3
+            : ['unknown', 'lost-release-ack'].includes(mode)
+              ? 1
+              : 0
+      );
+      assert.equal(
+        store.read().state.slot === null,
+        ['conflict', 'lost-release-ack'].includes(mode)
+      );
+      assert.equal(
+        store.read().state.pending.some((item) => item.pullRequest === 487),
+        true
+      );
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+    });
+});
+
+test('ambiguous staging and failed acknowledged-intent readback never release an intent-free-looking slot', async (t) => {
+  for (const mode of ['unknown-without-write', 'throw-without-write', 'lost-stage-ack', 'readback'])
+    await t.test(mode, async (t) => {
+      const { f, s, store } = await session(t);
+      const packet = await parentPacket(s);
+      const apply = store.apply.bind(store);
+      const read = store.read.bind(store);
+      let releases = 0;
+      store.apply = (revision, command) => {
+        if (command.type === 'abandon') releases++;
+        if (command.type !== 'stagePublicationIntent') return apply(revision, command);
+        if (mode === 'unknown-without-write') return { status: 'unknown' };
+        if (mode === 'throw-without-write') throw Error('stage result unavailable');
+        const result = apply(revision, command);
+        if (mode === 'lost-stage-ack') return { status: 'unknown' };
+        store.read = () => {
+          throw Error('readback unavailable');
+        };
+        return result;
+      };
+      await assert.rejects(s.publishParentPacket(packet, assessment));
+      store.read = read;
+      assert.equal(releases, 0);
+      assert.notEqual(store.read().state.slot, null);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+    });
+});
+
+test('multiple unpublished analyses remain independently reconciled across source head and base changes', async (t) => {
+  for (const mode of ['no-publication', 'event-to-sweep', 'sweep-to-event', 'head-and-base'])
+    await t.test(mode, async (t) => {
+      const context = await session(t);
+      const { f, s, store } = context;
+      await s.captureInitialSweep();
+      const initial =
+        mode === 'sweep-to-event'
+          ? await s.beginInitialSweep(487)
+          : await s.begin(487, { kind: 'opened', deliveryId: 'multi-a' });
+      const a = completePacket(initial.input, null, ['A1', 'A2']);
+      if (mode === 'no-publication') await s.finishParentAnalysis(a);
+      else assert.equal((await s.publishParentPacket(a, assessment)).status, 'published');
+      let prior = a;
+      for (const [index, ids] of [
+        ['b', ['A1', 'B1']],
+        ['c', ['B1', 'C1']],
+      ]) {
+        f.pr.body = `analysis ${index}`;
+        const next = freshSession(context);
+        const request = await next.begin(487, {
+          kind: 'human-comment',
+          deliveryId: `multi-${index}`,
+        });
+        const packet = completePacket(request.input, prior, ids);
+        await next.finishParentAnalysis(packet);
+        prior = packet;
+      }
+      f.pr.body = 'final publication';
+      if (mode === 'head-and-base') {
+        f.pr.base.sha = sha('d');
+        f.pr.base.ref = 'release';
+        f.pr.head.sha = sha('c');
+        f.expectedReviewHead = sha('c');
+        f.commits[0].sha = sha('c');
+        for (const check of f.checks) check.head_sha = sha('c');
+        for (const run of f.runs) run.head_sha = sha('c');
+      }
+      const final = freshSession(context);
+      const request =
+        mode === 'event-to-sweep'
+          ? await final.beginInitialSweep(487)
+          : await final.begin(487, { kind: 'synchronize', deliveryId: 'multi-final' });
+      const primary = mode === 'no-publication' ? prior : a;
+      const packet = completePacket(request.input, primary, ['C1', 'D1']);
+      assert.equal(
+        (
+          await final.publishParentPacket(
+            packet,
+            assessment,
+            mode === 'no-publication' ? null : reconcilePacket(prior, ['C1', 'D1'])
+          )
+        ).status,
+        'published'
+      );
+      const state = store.read().state;
+      assert.deepEqual(request.priorAnalysis.packet, prior);
+      assert.equal(request.priorPublishedAnalysis === null, mode === 'no-publication');
+      assert.deepEqual(state.publishedAnalyses[0].packet, packet);
+      assert.equal(state.publicationReceipts.length, mode === 'no-publication' ? 1 : 2);
+      assert.equal(state.slot, null);
+    });
+});
+
+test('a publication cannot omit or forge either durable reconciliation baseline', async (t) => {
+  for (const mode of [
+    'missing',
+    'wrong-digest',
+    'wrong-head',
+    'omitted-finding',
+    'hidden-open',
+    'string',
+    'primary-latest',
+  ])
+    await t.test(mode, async (t) => {
+      const context = await session(t);
+      const { f, s, store } = context;
+      const a = completePacket(
+        (await s.begin(487, { kind: 'opened', deliveryId: 'neg-a' })).input,
+        null,
+        ['A1']
+      );
+      await s.publishParentPacket(a, assessment);
+      f.pr.body = 'B material';
+      const next = freshSession(context);
+      const b = completePacket(
+        (await next.begin(487, { kind: 'human-comment', deliveryId: 'neg-b' })).input,
+        a,
+        ['B1']
+      );
+      await next.finishParentAnalysis(b);
+      f.pr.body = 'C material';
+      const final = freshSession(context);
+      const request = await final.begin(487, { kind: 'human-comment', deliveryId: 'neg-c' });
+      const c = completePacket(request.input, mode === 'primary-latest' ? b : a, ['B1']);
+      let secondary = reconcilePacket(b, ['B1']);
+      if (mode === 'missing') secondary = null;
+      if (mode === 'wrong-digest') secondary.priorPacketDigest = computeReviewPacketDigest(a);
+      if (mode === 'wrong-head') secondary.priorReviewedHeadSha = sha('f');
+      if (mode === 'omitted-finding') {
+        secondary.openFindingIds = [];
+        secondary.newFindingIds = ['B1'];
+      }
+      if (mode === 'hidden-open') {
+        secondary.openFindingIds = [];
+        secondary.resolvedFindingIds = ['B1'];
+      }
+      if (mode === 'string') secondary = computeReviewPacketDigest(b);
+      await assert.rejects(
+        final.publishParentPacket(c, assessment, secondary),
+        /prior|reconciliation|finding/
+      );
+      assert.equal(store.read().state.slot, null);
+      assert.deepEqual(store.read().state.analyses[0].packet, b);
+      assert.deepEqual(store.read().state.publishedAnalyses[0].packet, a);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
+    });
+});
+
+test('historical field-less journal replays without rewriting and can continue with dual baselines', async (t) => {
+  const context = await session(t);
+  const { f, s, store, dir, genesis } = context;
+  const apply = store.apply.bind(store);
+  store.apply = (revision, command) => {
+    const legacy = structuredClone(command);
+    delete legacy.analysisReconciliation;
+    return apply(revision, legacy);
+  };
+  const a = completePacket(
+    (await s.begin(487, { kind: 'opened', deliveryId: 'legacy-a' })).input,
+    null,
+    ['A1']
+  );
+  await s.publishParentPacket(a, assessment);
+  let prior = a;
+  for (const id of ['B1', 'C1']) {
+    f.pr.body = id;
+    const next = freshSession(context);
+    const request = await next.begin(487, { kind: 'human-comment', deliveryId: `legacy-${id}` });
+    const packet = completePacket(request.input, prior, [id]);
+    await next.finishParentAnalysis(packet);
+    prior = packet;
+  }
+  const git = (...args) =>
+    execFileSync('git', ['-C', dir, ...args], { encoding: 'utf8', stdio: 'pipe' }).trim();
+  const checkpoint = store.read().revision;
+  const prefix = git('rev-list', '--reverse', checkpoint);
+  const entries = prefix.split('\n').map((revision) => git('show', `${revision}:entry.json`));
+  assert(entries.every((entry) => !Object.hasOwn(JSON.parse(entry), 'analysisReconciliation')));
+  const restarted = new LocalCloudReviewLedger(dir, genesis, { checkpoint });
+  assert.deepEqual(restarted.read().state.publishedAnalyses[0].packet, a);
+  assert.deepEqual(restarted.read().state.analyses[0].packet, prior);
+  f.pr.body = 'new protocol';
+  const final = freshSession(context);
+  const request = await final.begin(487, { kind: 'human-comment', deliveryId: 'modern-d' });
+  const packet = completePacket(request.input, a, ['C1']);
+  assert.equal(
+    (await final.publishParentPacket(packet, assessment, reconcilePacket(prior, ['C1']))).status,
+    'published'
+  );
+  assert.equal(git('rev-list', '--reverse', checkpoint), prefix);
+  assert.deepEqual(
+    prefix.split('\n').map((revision) => git('show', `${revision}:entry.json`)),
+    entries
+  );
+  assert.equal(git('merge-base', '--is-ancestor', checkpoint, store.read().revision), '');
+});
+
+test('a real stale-lease staging conflict releases only the original intent-free owner', async (t) => {
+  const { f, transport, dir, genesis } = await session(t);
+  const git = (directory, ...args) =>
+    execFileSync('git', ['-C', directory, ...args], { encoding: 'utf8', stdio: 'pipe' }).trim();
+  git(dir, 'update-ref', REMOTE_LEDGER_REF, genesis);
+  let peer;
+  let races = 0;
+  function open(racing) {
+    const cache = mkdtempSync(path.join(tmpdir(), 'pui-stage-race-'));
+    t.after(() => rmSync(cache, { recursive: true, force: true }));
+    git(cache, 'init', '--bare');
+    return new RemoteCloudReviewLedger(cache, genesis, {
+      checkpoint: genesis,
+      transport: {
+        readInto(directory) {
+          git(directory, 'fetch', '--no-tags', '--no-write-fetch-head', dir, REMOTE_LEDGER_REF);
+          return git(dir, 'rev-parse', REMOTE_LEDGER_REF);
+        },
+        publish(args) {
+          const entry = JSON.parse(git(args.directory, 'show', args.revision + ':entry.json'));
+          if (racing && ['stagePublicationIntent', 'abandon'].includes(entry.type) && races < 2) {
+            races++;
+            assert.equal(
+              peer.apply(peer.read().revision, {
+                type: 'enqueue',
+                pullRequest: races === 1 ? 487 : 488,
+                deliveryId: `real-stage-race-${races}`,
+                eventKind: 'synchronize',
+                materialDigest: String(races).repeat(64),
+              }).status,
+              'applied'
+            );
+          }
+          return ownerGitLedgerTransport({
+            runGit(directory, command) {
+              return git(
+                directory,
+                ...command.map((arg) =>
+                  arg === 'https://github.com/Proto-UI/Proto-UI.git' ? dir : arg
+                )
+              );
+            },
+          }).publish(args);
+        },
+      },
+    });
+  }
+  peer = open(false);
+  const store = open(true);
+  const s = new ConnectorReviewSession({ transport, ledger: store, policy: rootPolicy });
+  const packet = await parentPacket(s);
+  await assert.rejects(s.publishParentPacket(packet, assessment), /intent acknowledgement/);
+  const fresh = open(false);
+  const state = fresh.read().state;
+  assert.equal(state.slot, null);
+  assert.deepEqual(
+    state.pending.map((item) => item.pullRequest),
+    [487, 488]
+  );
+  assert.equal(state.publicationReceipts.length, 0);
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+  assert.equal(races, 2);
+  assert.equal(
+    fresh.apply(fresh.read().revision, { type: 'claim', pullRequest: 487 }).status,
+    'applied'
+  );
 });

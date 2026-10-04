@@ -17,6 +17,7 @@ const OWNER = /^[a-f0-9]{32}$/;
 const EVENT_KINDS = new Set([
   'initial-sweep',
   'opened',
+  'reopened',
   'ready_for_review',
   'closed',
   'synchronize',
@@ -51,11 +52,12 @@ export function emptyCloudReviewLedger({ publicationEnabled = false } = {}) {
     pending: [],
     owners: [],
     analyses: [],
+    publishedAnalyses: [],
     slot: null,
   };
 }
 
-function binding(command, state) {
+export function validateCloudReviewAnalysis(command, state) {
   const { input, packet, liveInput, observation } = command;
   keys(observation, [
     'executionMode',
@@ -109,7 +111,30 @@ function binding(command, state) {
       state.slot.generation,
     'material generation changed during analysis'
   );
-  const prior = state.analyses.find((item) => item.input.pullRequest === input.pullRequest);
+  const latest = state.analyses.find((item) => item.input.pullRequest === input.pullRequest);
+  // The added field selects dual-baseline binding. Field-less commands retain
+  // their historical sequential semantics when replaying immutable journals.
+  const dualBaseline = Object.hasOwn(command, 'analysisReconciliation');
+  const published = state.publishedAnalyses.find(
+    (item) => item.input.pullRequest === input.pullRequest
+  );
+  const prior = dualBaseline ? (published ?? latest) : latest;
+  if (dualBaseline) {
+    const separateAnalysis =
+      latest &&
+      prior &&
+      computeReviewPacketDigest(latest.packet) !== computeReviewPacketDigest(prior.packet);
+    if (separateAnalysis) {
+      assert(command.analysisReconciliation !== null, 'latest analysis reconciliation is required');
+      const analysisPacket = { ...packet, reconciliation: command.analysisReconciliation };
+      validateReviewPacket(analysisPacket, input);
+      verifyReconciliation(analysisPacket, latest.packet);
+    } else
+      assert(
+        command.analysisReconciliation === null,
+        'separate analysis reconciliation is not applicable'
+      );
+  }
   if (prior) {
     verifyReconciliation(packet, prior.packet);
     // Canonical runtime validates each referenced ID; require total prior coverage too.
@@ -132,6 +157,7 @@ function binding(command, state) {
     input,
     packet,
     observation,
+    ...(dualBaseline ? { analysisReconciliation: command.analysisReconciliation } : {}),
     materialDigest: state.material.find((item) => item.pullRequest === input.pullRequest).digest,
   };
 }
@@ -178,6 +204,12 @@ function complete(state, analysis = null) {
       (item) => item.input.pullRequest !== state.slot.pullRequest
     );
     state.analyses.push(analysis);
+    if (analysis.publicationReceipt) {
+      state.publishedAnalyses = state.publishedAnalyses.filter(
+        (item) => item.input.pullRequest !== state.slot.pullRequest
+      );
+      state.publishedAnalyses.push(analysis);
+    }
   }
   state.pending = state.pending.filter(
     (item) =>
@@ -356,8 +388,19 @@ export function reduceCloudReviewLedger(previous, command) {
       // No writer exists in this candidate. Preserve pending work on abandonment.
       state.slot = null;
     } else {
-      keys(command, ['type', 'owner', 'input', 'packet', 'liveInput', 'observation']);
-      const analysis = binding(command, state);
+      keys(command, [
+        'type',
+        'owner',
+        'input',
+        'packet',
+        'liveInput',
+        'observation',
+        ...(command.type === 'stagePublicationIntent' &&
+        Object.hasOwn(command, 'analysisReconciliation')
+          ? ['analysisReconciliation']
+          : []),
+      ]);
+      const analysis = validateCloudReviewAnalysis(command, state);
       if (command.type === 'finishAnalysis') complete(state, analysis);
       else {
         assert(
