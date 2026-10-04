@@ -22,13 +22,13 @@ const event = (id = 'event-1', pr = 487) => ({
   eventKind: 'synchronize',
   materialDigest: id === 'event-1' ? 'a'.repeat(64) : 'b'.repeat(64),
 });
-function fixture(t) {
+function fixture(t, { publicationEnabled = false } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), 'pui-remote-state-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const remote = path.join(root, 'remote.git');
   mkdirSync(remote);
   git(remote, 'init', '--bare');
-  const genesis = LocalCloudReviewLedger.initialize(remote);
+  const genesis = LocalCloudReviewLedger.initialize(remote, { publicationEnabled });
   git(remote, 'update-ref', REMOTE_LEDGER_REF, genesis);
   let sequence = 0;
   const open = (checkpoint = genesis, overrides = {}) => {
@@ -72,6 +72,49 @@ function fixture(t) {
   };
 }
 const apply = (ledger, command) => ledger.apply(ledger.read().revision, command);
+
+test('remote cancellation requires the original unconsumed owner and stops on lost acknowledgement', async (t) => {
+  for (const mode of ['before-attempt', 'consumed', 'lost-cancel-ack'])
+    await t.test(mode, (t) => {
+      const f = fixture(t, { publicationEnabled: true });
+      const a = f.open();
+      apply(a.ledger, event());
+      apply(a.ledger, { type: 'claim', pullRequest: 487 });
+      apply(a.ledger, { type: 'stagePublicationIntent', ...analysis() });
+      const intentId = a.ledger.read().state.slot.intent.id;
+      const command = { type: 'cancelPublicationIntent', intentId };
+      const restarted = f.open(a.ledger.read().checkpoint);
+      assert.throws(() => apply(restarted.ledger, command), /does not own/);
+      assert.throws(() => apply(a.ledger, { ...command, intentId: '0'.repeat(64) }), /exact owned/);
+      if (mode === 'consumed') {
+        a.ledger.consumePublicationAttempt(intentId);
+        assert.throws(() => apply(a.ledger, command), /attempt already consumed/);
+        assert.equal(a.ledger.read().state.slot.intent.id, intentId);
+        return;
+      }
+      apply(restarted.ledger, event('later-target'));
+      apply(restarted.ledger, event('other-pr', 488));
+      const publish = a.transport.publish;
+      if (mode === 'lost-cancel-ack')
+        a.transport.publish = (args) => {
+          publish(args);
+          throw new Error('lost cancellation acknowledgement');
+        };
+      const result = apply(a.ledger, command);
+      assert.equal(result.status, mode === 'before-attempt' ? 'applied' : 'unknown');
+      const state = f.open(a.ledger.read().checkpoint).ledger.read().state;
+      assert.equal(state.slot, null);
+      assert.equal(state.deferred.length, 0);
+      assert.deepEqual(state.pending.map((item) => item.pullRequest).sort(), [487, 488]);
+      assert.equal(state.analyses.length, 0);
+      assert.equal(state.publicationReceipts.length, 0);
+      assert.throws(() => a.ledger.consumePublicationAttempt(intentId), /stopped|fresh/);
+      if (mode === 'lost-cancel-ack') {
+        assert.equal(a.ledger.read().mutationStopped, true);
+        assert.throws(() => apply(a.ledger, command), /mutation is stopped/);
+      }
+    });
+});
 
 test('remote candidate round-trip persists baseline; fresh cache must supply checkpoint and cannot adopt owner', (t) => {
   const f = fixture(t);

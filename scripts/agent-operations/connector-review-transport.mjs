@@ -45,7 +45,7 @@ export class ConnectorReviewTransport {
     assert(typeof result.content === 'string', 'raw connector GET content missing');
     return JSON.parse(result.content);
   }
-  async pages(path, field = null) {
+  async pages(path, field = null, identity = (item) => item.id ?? item.sha ?? item.filename) {
     const items = [];
     const ids = new Set();
     let total;
@@ -67,7 +67,7 @@ export class ConnectorReviewTransport {
       }
       assert(batch.length <= 100, 'unexpected pagination size');
       for (const item of batch) {
-        const id = item.id ?? item.sha ?? item.filename;
+        const id = identity(item);
         assert(id !== undefined && !ids.has(String(id)), 'duplicate/repeated pagination item');
         ids.add(String(id));
         items.push(item);
@@ -160,7 +160,8 @@ export class ConnectorReviewTransport {
     );
     const [files, commits, reviews, comments, inline, threadResult, runs, checkRuns, statuses] =
       await Promise.all([
-        this.pages(`/pulls/${pullRequest}/files`),
+        // Blob SHAs identify content; distinct file paths can share a blob.
+        this.pages(`/pulls/${pullRequest}/files`, null, (file) => file.filename),
         this.pages(`/pulls/${pullRequest}/commits`),
         this.pages(`/pulls/${pullRequest}/reviews`),
         this.pages(`/issues/${pullRequest}/comments`),
@@ -324,13 +325,21 @@ export class ConnectorReviewTransport {
         repository_full_name: CONNECTOR_REPOSITORY,
         username: reviewer,
       });
+      // The connector may expose GitHub roles instead of legacy base permissions.
+      // Keep canonical approval eligibility unchanged; role_name cannot upgrade it.
+      const permission =
+        observed.permission === 'maintain'
+          ? 'write'
+          : observed.permission === 'triage'
+            ? 'read'
+            : observed.permission;
       assert(
-        ['admin', 'write', 'read', 'none'].includes(observed.permission),
+        ['admin', 'write', 'read', 'none'].includes(permission),
         'approval reviewer permission unavailable'
       );
       input.reviewerPermissions.push({
         login: reviewer,
-        permission: observed.permission,
+        permission,
         source: 'github-rest-collaborator-permission',
         endpoint: `repos/${CONNECTOR_REPOSITORY}/collaborators/${encodeURIComponent(reviewer)}/permission`,
         repositoryId: LEDGER_REPOSITORY,

@@ -228,6 +228,11 @@ export class LocalCloudReviewLedger {
     this.read();
     if (expectedRevision !== this.#floor) return { status: 'conflict', publicationAllowed: false };
     const command = structuredClone(requested);
+    if (command.type === 'cancelPublicationIntent')
+      assert(
+        !this.#simulationAttempts.has(command.intentId),
+        'publication attempt already consumed; cannot cancel an uncertain dispatch'
+      );
     if (!['enqueue', 'captureInitialSweep'].includes(command.type)) {
       if (command.type !== 'claim')
         assert(this.#claimed, 'fresh or restarted process does not own the slot');
@@ -288,7 +293,15 @@ export class LocalCloudReviewLedger {
     );
     const type = this.#prepared.type;
     if (type === 'claim') this.#claimed = true;
-    if (['abandon', 'finishAnalysis', 'finalizeSimulation', 'finalizePublication'].includes(type))
+    if (
+      [
+        'abandon',
+        'finishAnalysis',
+        'finalizeSimulation',
+        'finalizePublication',
+        'cancelPublicationIntent',
+      ].includes(type)
+    )
       this.#claimed = false;
     this.#prepared = null;
     return { status: 'applied', revision: token.revision, publicationAllowed: false };

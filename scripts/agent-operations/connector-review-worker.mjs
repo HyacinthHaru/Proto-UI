@@ -114,7 +114,11 @@ lines.on('line', async (line) => {
       if (message.kind === 'begin')
         result = await session.begin(message.pullRequest, message.event);
       if (message.kind === 'publish')
-        result = await session.publishParentPacket(message.packet, message.assessment);
+        result = await session.publishParentPacket(
+          message.packet,
+          message.assessment,
+          message.analysisReconciliation
+        );
       if (message.kind === 'finish') result = await session.finishParentAnalysis(message.packet);
       if (message.kind === 'abandon') result = await session.abandonBeforeIntent();
       writeFileSync(message.output, JSON.stringify(result, null, 2));

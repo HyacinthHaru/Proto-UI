@@ -7,7 +7,12 @@ import {
   verifyLiveReviewInput,
 } from './review-runtime.mjs';
 import { summarizeLiveChecks, summarizeLiveDco } from './collect-live-review-input.mjs';
-import { LEDGER_PRINCIPAL, LEDGER_REPOSITORY, INITIAL_SWEEP_ID } from './cloud-review-ledger.mjs';
+import {
+  LEDGER_PRINCIPAL,
+  LEDGER_REPOSITORY,
+  INITIAL_SWEEP_ID,
+  validateCloudReviewAnalysis,
+} from './cloud-review-ledger.mjs';
 
 export const CONNECTOR_AUTHORIZATION = 'proto-ui-cloud-owner-review-v1';
 const assert = (condition, message) => {
@@ -59,6 +64,7 @@ export class ConnectorReviewSession {
   #readPolicy;
   #readSnapshot;
   #priorPacket = null;
+  #claim = null;
   #used = false;
   #source = 'delegated-owner-event';
   #authorizationId = CONNECTOR_AUTHORIZATION;
@@ -112,6 +118,7 @@ export class ConnectorReviewSession {
       event &&
         [
           'opened',
+          'reopened',
           'ready_for_review',
           'closed',
           'synchronize',
@@ -174,6 +181,8 @@ export class ConnectorReviewSession {
     }
     const material = {
       headSha: live.input.headSha,
+      baseSha: live.input.baseSha,
+      baseRefName: live.input.baseRefName,
       state: live.input.pullRequestState,
       draft: live.input.isDraft,
       body: live.input.pullRequestBody,
@@ -204,9 +213,13 @@ export class ConnectorReviewSession {
     this.#refreshPolicy();
     const claimed = await this.#ledger.apply(admitted.revision, { type: 'claim', pullRequest });
     assert(claimed.status === 'applied', 'claim not confirmed; stop without retry');
+    this.#claim = structuredClone((await this.#ledger.read()).state.slot);
     this.#initial = structuredClone(live);
-    this.#priorPacket =
-      before.state.analyses.find((x) => x.input.pullRequest === pullRequest)?.packet ?? null;
+    const priorAnalysis =
+      admitted.state.analyses.find((x) => x.input.pullRequest === pullRequest) ?? null;
+    const priorPublishedAnalysis =
+      admitted.state.publishedAnalyses.find((x) => x.input.pullRequest === pullRequest) ?? null;
+    this.#priorPacket = (priorPublishedAnalysis ?? priorAnalysis)?.packet ?? null;
     return {
       kind: 'proto-ui.parent-review-request',
       executionMode: 'autonomous',
@@ -215,7 +228,8 @@ export class ConnectorReviewSession {
       inputDigest: computeReviewInputDigest(live.input),
       identity: identity(live),
       coverage: live.coverage,
-      priorAnalysis: before.state.analyses.find((x) => x.input.pullRequest === pullRequest) ?? null,
+      priorAnalysis,
+      priorPublishedAnalysis,
       instruction:
         'Parent inspects actual diff and evidence, reconciles prior findings, and supplies its own packet; helper does not judge.',
     };
@@ -318,37 +332,75 @@ export class ConnectorReviewSession {
     }
     throw new Error('publication receipt persistence contention budget exhausted');
   }
-  async publishParentPacket(packet, assessment) {
+  async #releaseUnstagedClaim() {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const snapshot = await this.#ledger.read();
+      assert(
+        this.#claim?.intent === null && hash(snapshot.state.slot) === hash(this.#claim),
+        'cannot abandon: original intent-free claim changed before release'
+      );
+      const released = await this.#ledger.apply(snapshot.revision, { type: 'abandon' });
+      if (released.status === 'applied') return released;
+      assert(released.status === 'conflict', 'intent-free claim release uncertain; no retry');
+    }
+    throw new Error('intent-free claim release contention budget exhausted');
+  }
+  async publishParentPacket(packet, assessment, analysisReconciliation = null) {
     assert(
       this.#initial && !this.#used,
       'parent-review request required; one publication attempt per session'
     );
     this.#used = true;
-    const live = await this.#transport.collect(this.#initial.input.pullRequest);
-    this.#authorize(packet, live, assessment);
-    const before = await this.#ledger.read();
-    this.#refreshPolicy();
-    const staged = await this.#ledger.apply(before.revision, {
-      type: 'stagePublicationIntent',
-      input: this.#initial.input,
-      packet,
-      liveInput: live.input,
-      observation: {
-        executionMode: 'autonomous',
-        executionModeSource: this.#source,
-        reviewerId: live.reviewerId,
-        reviewerLogin: live.viewerLogin,
-        authorId: live.authorId,
-        authorLogin: live.authorLogin,
-        policyDigest: hash(this.#policy),
-      },
-    });
-    assert(
-      staged.status === 'applied',
-      'intent acknowledgement unavailable; never submit or retry'
-    );
-    const intent = (await this.#ledger.read()).state.slot.intent;
+    let live;
+    let intent;
+    let stagingStarted = false;
+    try {
+      live = await this.#transport.collect(this.#initial.input.pullRequest);
+      this.#authorize(packet, live, assessment);
+      const before = await this.#ledger.read();
+      this.#refreshPolicy();
+      const command = {
+        type: 'stagePublicationIntent',
+        sweepCoverageVersion: 1,
+        analysisReconciliation,
+        input: this.#initial.input,
+        packet,
+        liveInput: live.input,
+        observation: {
+          executionMode: 'autonomous',
+          executionModeSource: this.#source,
+          reviewerId: live.reviewerId,
+          reviewerLogin: live.viewerLogin,
+          authorId: live.authorId,
+          authorLogin: live.authorLogin,
+          policyDigest: hash(this.#policy),
+        },
+      };
+      // Prove deterministic binding failures before starting the journal write;
+      // the adapter repeats the same validation under its exact-revision CAS.
+      validateCloudReviewAnalysis(command, before.state);
+      stagingStarted = true;
+      const staged = await this.#ledger.apply(before.revision, command);
+      if (staged.status === 'conflict') stagingStarted = false;
+      assert(
+        staged.status === 'applied',
+        'intent acknowledgement unavailable; never submit or retry'
+      );
+      intent = (await this.#ledger.read()).state.slot.intent;
+    } catch (error) {
+      // Read-only/preflight failures or a definitive no-write fence conflict
+      // cannot have dispatched. Never infer that from an ambiguous stage/readback.
+      if (!stagingStarted) {
+        try {
+          await this.#releaseUnstagedClaim();
+        } catch (failure) {
+          error.message += `; claim release unknown: ${failure.message}`;
+        }
+      }
+      throw error;
+    }
     let confirmedReceipt = null;
+    let attemptConsumed = false;
     try {
       const final = await this.#transport.collect(live.input.pullRequest);
       verifyLiveReviewInput(intent.analysis.packet, final.input);
@@ -361,6 +413,7 @@ export class ConnectorReviewSession {
       );
       this.#authorize(intent.analysis.packet, final, assessment);
       await this.#ledger.consumePublicationAttempt(intent.id);
+      attemptConsumed = true;
       this.#refreshPolicy();
       const receipt = await this.#transport.submit(intent.pullRequest, intent);
       confirmedReceipt = receipt;
@@ -403,21 +456,51 @@ export class ConnectorReviewSession {
         retryAllowed: false,
       };
     } catch (error) {
+      let cancellationError = null;
+      if (!attemptConsumed) {
+        try {
+          // Only this still-owning process can prove that dispatch never began.
+          // A definitive no-write conflict may be retried; uncertain writes cannot.
+          for (let attempt = 0; attempt < 3; attempt++) {
+            const snapshot = await this.#ledger.read();
+            assert(
+              hash(snapshot.state.slot?.intent) === hash(intent),
+              'publication intent changed before cancellation'
+            );
+            const cancelled = await this.#ledger.apply(snapshot.revision, {
+              type: 'cancelPublicationIntent',
+              intentId: intent.id,
+            });
+            if (cancelled.status === 'applied')
+              return {
+                status: 'cancelled',
+                intentId: intent.id,
+                reason: error.message,
+                retryAllowed: false,
+                publicationConfirmed: false,
+                checkpoint: cancelled.checkpoint ?? cancelled.revision,
+              };
+            assert(cancelled.status === 'conflict', 'pre-attempt cancellation uncertain; no retry');
+          }
+          throw new Error('pre-attempt cancellation contention budget exhausted');
+        } catch (failure) {
+          cancellationError = failure.message;
+        }
+      }
       return {
         status: 'unknown',
         intentId: intent.id,
         reason: error.message,
         retryAllowed: false,
         publicationConfirmed: confirmedReceipt !== null,
+        ...(cancellationError ? { cancellationError } : {}),
         ...(confirmedReceipt ? { receipt: confirmedReceipt, reviewedHeadSha: intent.headSha } : {}),
       };
     }
   }
   async abandonBeforeIntent() {
-    const snapshot = await this.#ledger.read();
-    assert(snapshot.state.slot?.intent === null, 'cannot abandon a persisted or uncertain intent');
     this.#used = true;
-    return this.#ledger.apply(snapshot.revision, { type: 'abandon' });
+    return this.#releaseUnstagedClaim();
   }
   async finishParentAnalysis(packet) {
     assert(
@@ -425,27 +508,50 @@ export class ConnectorReviewSession {
       'parent-review request required; lifecycle already consumed'
     );
     this.#used = true;
-    const live = await this.#transport.collect(this.#initial.input.pullRequest);
-    assert(
-      hash(identity(live)) === hash(identity(this.#initial)),
-      'live identity/permission changed'
-    );
-    const snapshot = await this.#ledger.read();
-    this.#refreshPolicy();
-    return this.#ledger.apply(snapshot.revision, {
-      type: 'finishAnalysis',
-      input: this.#initial.input,
-      packet,
-      liveInput: live.input,
-      observation: {
-        executionMode: 'autonomous',
-        executionModeSource: this.#source,
-        reviewerId: live.reviewerId,
-        reviewerLogin: live.viewerLogin,
-        authorId: live.authorId,
-        authorLogin: live.authorLogin,
-        policyDigest: hash(this.#policy),
-      },
-    });
+    let finishingStarted = false;
+    try {
+      const live = await this.#transport.collect(this.#initial.input.pullRequest);
+      assert(
+        hash(identity(live)) === hash(identity(this.#initial)),
+        'live identity/permission changed'
+      );
+      const snapshot = await this.#ledger.read();
+      this.#refreshPolicy();
+      const command = {
+        type: 'finishAnalysis',
+        sweepCoverageVersion: 1,
+        input: this.#initial.input,
+        packet,
+        liveInput: live.input,
+        observation: {
+          executionMode: 'autonomous',
+          executionModeSource: this.#source,
+          reviewerId: live.reviewerId,
+          reviewerLogin: live.viewerLogin,
+          authorId: live.authorId,
+          authorLogin: live.authorLogin,
+          policyDigest: hash(this.#policy),
+        },
+      };
+      // Separate deterministic rejection from an uncertain journal write, just
+      // as publication staging does. The adapter validates again under CAS.
+      validateCloudReviewAnalysis(command, snapshot.state);
+      finishingStarted = true;
+      const finished = await this.#ledger.apply(snapshot.revision, command);
+      if (finished.status === 'conflict') finishingStarted = false;
+      assert(finished.status === 'applied', 'analysis acknowledgement unavailable; never retry');
+      return finished;
+    } catch (error) {
+      // Releasing a proven unwritten finish preserves pending work; it must
+      // never be returned as a durable completion of the rejected analysis.
+      if (!finishingStarted) {
+        try {
+          await this.#releaseUnstagedClaim();
+        } catch (failure) {
+          error.message += `; claim release unknown: ${failure.message}`;
+        }
+      }
+      throw error;
+    }
   }
 }
