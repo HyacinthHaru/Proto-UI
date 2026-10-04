@@ -331,13 +331,17 @@ try {
             // the browser's real Back operation, not a dispatched popstate.
             await page.evaluate(() => history.pushState(null, '', '#header-history-regression'));
             await page.goBack();
-            await page.waitForFunction(
-              () =>
-                document.querySelector('[data-site-menu-button]')?.getAttribute('aria-expanded') ===
-                'false'
-            );
-            if (kind === 'candidate')
+            // The original ec6 baseline has no history-close listener. Record
+            // that state; only the candidate is required to close its owner.
+            if (kind === 'candidate') {
+              await page.waitForFunction(
+                () =>
+                  document
+                    .querySelector('[data-site-menu-button]')
+                    ?.getAttribute('aria-expanded') === 'false'
+              );
               await page.locator(`[id=${JSON.stringify(popup)}]`).waitFor({ state: 'hidden' });
+            }
             const historyState = {
               menuOpen: await page.locator('[data-site-menu-button]').getAttribute('aria-expanded'),
               selectOpen: await trigger.getAttribute('aria-expanded'),
@@ -351,7 +355,14 @@ try {
                 selectOpen: 'false',
                 popupVisible: false,
               });
-            else if (historyState.popupVisible) await page.keyboard.press('Escape');
+            else {
+              if (historyState.popupVisible) await page.keyboard.press('Escape');
+              if (
+                (await page.locator('[data-site-menu-button]').getAttribute('aria-expanded')) ===
+                'true'
+              )
+                await page.locator('[data-site-menu-button]').click();
+            }
             await page.setViewportSize({ width: 1440, height: 1000 });
             await page.waitForFunction(
               () =>

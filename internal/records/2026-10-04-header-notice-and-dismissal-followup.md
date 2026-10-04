@@ -32,6 +32,8 @@ Current-head review then found a second closing path: `toggle()` had flipped vis
 
 The density workflow also restores its original ec6 whole-increment baseline. A separate fbd checkout serves only the latest-feedback first pair; changing the feedback comparison no longer replaces the original83-file change's before tree. The evidence contract tests bind these two distinct purposes. All original4c2/fbd images and results remain historical, source-labeled evidence.
 
+Restoring ec6 requires the probe to retain its historical missing history-close listener: source inspection confirms ec6 installs neither popstate nor pageshow handling. Its Back state is captured before ordinary Escape/Menu cleanup; only the candidate waits for and asserts closed state. This corrects the capture fixture's scope, not the candidate acceptance, Search budget or earlier negative result.
+
 ## Review and delivery
 
 Continue on #816 above the synchronized #777 base. Publish a per-commit progress report and replace pending visual debt with this source's actual images. Do not relabel d657/fbd screenshots as the new source. Resolve the three exact review threads only after the new implementation and hosted browser evidence establish their fixes. Independent maintainer approval and the real external Vercel quota failure remain separate integration gates.
