@@ -95,6 +95,38 @@ describe('private material through real WC and Feedback', () => {
     expect(host.style.isolation).toBe('auto');
     host.remove();
   });
+  it('restores application diagnostics and preserves a later external metadata write', () => {
+    const host = document.createElement('div');
+    host.style.color = 'rgb(0, 0, 0)';
+    Object.assign(host.dataset, {
+      materialQuality: 'app-quality',
+      materialReason: 'app-reason',
+      materialPhase: 'app-phase',
+      materialFrame: 'app-frame',
+      materialRadius: 'app-radius',
+    });
+    document.body.append(host);
+    const sink = createOpaqueMaterialVisualSink(host, createOwnedTwTokenApplier(host));
+    sink.commit(
+      finalStyleFrame(tw('rounded-full'), 1, 1, {
+        config: button.modules![0].config as OwnedMaterialConfig,
+        pressed: false,
+        disabled: false,
+        bindingsReady: true,
+      })
+    );
+    host.dataset.materialReason = 'new-app-reason';
+    sink.release(1);
+    expect({ ...host.dataset }).toEqual({
+      materialQuality: 'app-quality',
+      materialReason: 'new-app-reason',
+      materialPhase: 'app-phase',
+      materialFrame: 'app-frame',
+      materialRadius: 'app-radius',
+    });
+    host.remove();
+  });
+
   it('reads styles from the new document after adopting a retained host', () => {
     const host = document.createElement('div');
     host.style.color = 'rgb(0, 0, 0)';

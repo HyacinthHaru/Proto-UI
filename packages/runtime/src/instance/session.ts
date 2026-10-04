@@ -384,7 +384,14 @@ export function createRuntimeSession<P extends PropsBaseType>(
     ++transitionVersion;
     mountPending?.resolve();
     mountPending = undefined;
-    setMountPhase('unmounting', epoch);
+    let phaseFailed = false;
+    let phaseError: unknown;
+    try {
+      setMountPhase('unmounting', epoch);
+    } catch (error) {
+      phaseFailed = true;
+      phaseError = error;
+    }
     cancelPendingDelayTasks();
 
     unmountPending = (async () => {
@@ -401,20 +408,31 @@ export function createRuntimeSession<P extends PropsBaseType>(
       host.onUnmountBegin?.();
       moduleHub.getPort<EventPort>('event')?.unbind?.();
 
-      let callbackError: unknown;
+      let callbackFailed = phaseFailed;
+      let callbackError: unknown = phaseError;
       try {
         callbackScope.run(run, () => {
           for (const cb of lifecycle.unmounted) cb(run);
         });
       } catch (error) {
-        callbackError = error;
+        if (!callbackFailed) {
+          callbackFailed = true;
+          callbackError = error;
+        }
       }
 
-      setMountPhase('detached', epoch);
+      try {
+        setMountPhase('detached', epoch);
+      } catch (error) {
+        if (!callbackFailed) {
+          callbackFailed = true;
+          callbackError = error;
+        }
+      }
       cancelPendingDelayTasks();
       emit({ type: 'unmount.done', epoch });
       unmountPending = undefined;
-      if (callbackError) throw callbackError;
+      if (callbackFailed) throw callbackError;
     })();
 
     return unmountPending;
@@ -431,13 +449,15 @@ export function createRuntimeSession<P extends PropsBaseType>(
     kernel.viewIntent.lockTerminal();
     emit({ type: 'instance.dispose.begin' });
 
-    const finalizeDispose = (): unknown => {
+    const finalizeDispose = () => {
+      let failed = false;
       let finalError: unknown;
       try {
         callbackScope.run(run, () => {
           for (const cb of lifecycle.beforeDispose) cb(run);
         });
       } catch (error) {
+        failed = true;
         finalError = error;
       }
 
@@ -451,10 +471,17 @@ export function createRuntimeSession<P extends PropsBaseType>(
       moduleHub.setProtoPhase('unmounted');
       moduleHub.getPort<PresencePort>('presence')?.setLifecycleDriver(null);
       cancelPendingDelayTasks();
-      inst.dispose();
+      try {
+        inst.dispose();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          finalError = error;
+        }
+      }
       setInstancePhase('disposed');
       emit({ type: 'instance.dispose.done' });
-      return finalError;
+      return { failed, error: finalError };
     };
 
     const unmountResult = unmountInternal(true);
@@ -465,7 +492,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
       const finalError = finalizeDispose();
       disposePending = unmountResult.then(
         () => {
-          if (finalError) throw finalError;
+          if (finalError.failed) throw finalError.error;
         },
         (unmountError) => {
           throw unmountError;
@@ -475,7 +502,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
       disposePending = unmountResult.then(
         () => {
           const finalError = finalizeDispose();
-          if (finalError) throw finalError;
+          if (finalError.failed) throw finalError.error;
         },
         (unmountError) => {
           finalizeDispose();

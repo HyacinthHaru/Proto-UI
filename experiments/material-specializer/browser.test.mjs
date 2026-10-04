@@ -157,6 +157,35 @@ try {
   await page.evaluate(() => window.probe.move(0, 0));
   await page.waitForFunction((frame) => window.probe.state().materialFrame > frame, movedFrame);
   await page.evaluate(() => {
+    document.querySelector('#glass').style.transform = 'translateX(8px)';
+  });
+  await page.waitForFunction(() => window.probe.state().reason === 'geometry-unavailable');
+  await page.evaluate(() => {
+    document.querySelector('#glass').style.transform = 'none';
+  });
+  await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
+  await page.evaluate(() => {
+    document.querySelector('#glass').style.borderRadius = '50%';
+  });
+  await page.waitForFunction(() => window.probe.state().reason === 'geometry-unavailable');
+  await page.evaluate(() => {
+    document.querySelector('#glass').style.borderRadius = '8px';
+  });
+  await page.waitForFunction(
+    () =>
+      window.probe.state().quality === 'experimental-owned-texture' &&
+      window.probe.state().radius === '8'
+  );
+  await page.evaluate(() => {
+    document.querySelector('#glass').style.borderRadius = '';
+  });
+  await page.waitForFunction(
+    () =>
+      window.probe.state().quality === 'experimental-owned-texture' &&
+      window.probe.state().radius === '24'
+  );
+  await capture('11-geometry-restored');
+  await page.evaluate(() => {
     const iframe = document.createElement('iframe');
     iframe.style.width = '900px';
     iframe.style.height = '720px';

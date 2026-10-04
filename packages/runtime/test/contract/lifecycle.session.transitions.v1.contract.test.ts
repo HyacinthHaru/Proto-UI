@@ -1,3 +1,4 @@
+import { FINAL_STYLE_SINK_CAP } from '../../../modules/feedback/src/material/final-style-sink';
 import { asAccessible } from '@proto.ui/hooks';
 import { describe, expect, it, vi } from 'vitest';
 import { definePrototype, type Prototype } from '@proto.ui/core';
@@ -154,6 +155,35 @@ describe('runtime contract: lifecycle transition matrix (v1)', () => {
       { type: 'update.updated', epoch: 1, revision: 1 },
       { type: 'update.updated', epoch: 1, revision: 2 },
     ]);
+  });
+
+  it('retires later modules and the session after a material sink release throws', async () => {
+    const { host, signals, scheduled, events } = createControlledHost();
+    let state: ReturnType<Parameters<Prototype['setup']>[0]['state']['bool']>;
+    const release = vi.fn(() => {
+      throw new Error('sink release failed');
+    });
+    host.onRuntimeReady = (wiring) => {
+      wiring.attach('feedback', [[FINAL_STYLE_SINK_CAP, { commit() {}, release }]]);
+    };
+    const proto = definePrototype({
+      name: 'material-release-convergence',
+      setup(def) {
+        state = def.state.bool('retired', false);
+        return (run) => run.el('div', 'ok');
+      },
+    });
+    const session = createRuntimeSession(proto, host);
+    const mounting = session.mount();
+    signals.shift()!.done();
+    scheduled.shift()!();
+    await mounting;
+    await expect(session.dispose()).rejects.toThrow('sink release failed');
+    expect(session.instancePhase).toBe('disposed');
+    expect(() => state.get()).toThrow(/disposed/);
+    expect(events.some((event) => event.type === 'instance.dispose.done')).toBe(true);
+    await expect(session.dispose()).resolves.toBeUndefined();
+    expect(release).toHaveBeenCalledOnce();
   });
 
   it('reaches detached/disposed terminal phases even when callbacks throw', async () => {
