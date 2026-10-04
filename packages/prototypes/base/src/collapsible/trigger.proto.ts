@@ -69,6 +69,7 @@ function setupCollapsibleTrigger(
   def.context.subscribe(COLLAPSIBLE_CONTEXT, syncContext);
   def.lifecycle.onCreated(syncContext);
   def.lifecycle.onUpdated(syncContext);
+  def.lifecycle.onUnmounted(clearTransient);
   def.props.watch(['disabled'], syncContext);
 
   // P-BASE-COLLAPSIBLE-TRIGGER-ACTIVATION: one semantic route, no raw key toggles.

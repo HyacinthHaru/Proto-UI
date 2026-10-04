@@ -110,7 +110,7 @@ cases:
       - P-BASE-COLLAPSIBLE-CARDINALITY
       - P-BASE-COLLAPSIBLE-TRIGGER-A11Y
       - P-BASE-COLLAPSIBLE-CONTENT-ROLE-NEUTRAL
-    expectation: The canonical family declares root/trigger/content each 1..1 with root contains trigger/content. Duplicate claims reject immediately; missing Trigger or Content fails only in settled composition after real host readiness, not during initial declaration or closed L1 detach. No invented completion signal or automatic part creation supplies missing anatomy.
+    expectation: The canonical family declares root/trigger/content each 1..1 with root contains trigger/content. Duplicate claims reject immediately. An explicit settled-composition conformance query after host readiness reports an absent Trigger or Content as a family error, following C-ANATOMY-0010; it is not an automatic runtime admission exception during construction or closed L1 detach. No invented completion signal or automatic part creation supplies missing anatomy.
   - id: T-BASE-COLLAPSIBLE-0001-CASE-AUTHORING-CONSUMER
     title: Public direct and authored-asHook consumers share one independent disclosure protocol
     covers:
@@ -149,6 +149,7 @@ implementations:
     notes:
       - Focused assertions executed with the real Web Component owner under happy-dom, including controlled requests, synthetic Enter/Space, L1/retention, controls, domains, terminal replacement and all three authored asHooks.
       - Added discriminating synchronous-owner-acceptance, live Trigger/Content reparent and maximum, and detached Content wake cases after independent source review. Settled minimum inspects real ready parts, not a new completion signal or continuous minimum.
+      - Additional executed regressions cover controlled/disabled requests during Root L1, interrupted Trigger pointer facts, and initial replacement-Root admission of already-created detached duplicates. Negative minimum conformance queries the actual Runtime Anatomy port after a controlled host acknowledges its mount commit, rather than adding an author-facing completion flag or automatic throw.
       - Compiled generated CLI-consumer provenance is recorded separately with the change. No native input, browser paint, OS accessibility or complete relationship-service conformance is claimed.
   - id: adapter-web-component-collapsible-contract
     kind: adapter-test
@@ -170,7 +171,7 @@ implementations:
     exercises: [P-BASE-COLLAPSIBLE, P-BASE-COLLAPSIBLE-TRIGGER, P-BASE-COLLAPSIBLE-CONTENT]
     notes:
       - Five shared conformance cases executed with actual Custom Element owners under happy-dom through packages/adapters/base/test/fixtures/collapsible-conformance.ts.
-      - Covers logical ownership, synthetic activation, controls, two L1 cycles, retained hidden projection, domains, cleanup, ready anatomy and creation-time duplicates. Uses authored Root/Content wrappers and the direct Trigger, not all-three-asHook translation.
+      - Covers logical ownership, synthetic activation, controls, two L1 cycles, retained hidden projection, domains, cleanup, ready anatomy and creation-time duplicates through authored Root, Trigger and Content wrappers using all three Collapsible asHooks. Direct public-package consumers are separately attributed.
       - No native input, computed paint, OS accessibility or complete relationship-service conformance is claimed. A detached WC host view may retain a hidden logical Custom Element.
   - id: adapter-react-collapsible-contract
     kind: adapter-test
@@ -192,7 +193,7 @@ implementations:
     exercises: [P-BASE-COLLAPSIBLE, P-BASE-COLLAPSIBLE-TRIGGER, P-BASE-COLLAPSIBLE-CONTENT]
     notes:
       - Five shared conformance cases executed with actual React/ReactDOM owners under happy-dom through packages/adapters/base/test/fixtures/collapsible-conformance.ts.
-      - Covers logical ownership, synthetic activation, controls, two L1 cycles, retained hidden projection, domains, cleanup, ready anatomy and creation-time duplicates. Uses authored Root/Content wrappers and the direct Trigger, not all-three-asHook translation.
+      - Covers logical ownership, synthetic activation, controls, two L1 cycles, retained hidden projection, domains, cleanup, ready anatomy and creation-time duplicates through authored Root, Trigger and Content wrappers using all three Collapsible asHooks. Direct public-package consumers are separately attributed.
       - No native input, computed paint, OS accessibility or complete relationship-service conformance is claimed. A detached WC host view may retain a hidden logical Custom Element.
   - id: adapter-vue-collapsible-contract
     kind: adapter-test
@@ -214,7 +215,7 @@ implementations:
     exercises: [P-BASE-COLLAPSIBLE, P-BASE-COLLAPSIBLE-TRIGGER, P-BASE-COLLAPSIBLE-CONTENT]
     notes:
       - Five shared conformance cases executed with actual Vue 3 owners under happy-dom through packages/adapters/base/test/fixtures/collapsible-conformance.ts.
-      - Covers logical ownership, synthetic activation, controls, two L1 cycles, retained hidden projection, domains, cleanup, ready anatomy and creation-time duplicates. Uses authored Root/Content wrappers and the direct Trigger, not all-three-asHook translation.
+      - Covers logical ownership, synthetic activation, controls, two L1 cycles, retained hidden projection, domains, cleanup, ready anatomy and creation-time duplicates through authored Root, Trigger and Content wrappers using all three Collapsible asHooks. Direct public-package consumers are separately attributed.
       - No native input, computed paint, OS accessibility or complete relationship-service conformance is claimed. A detached WC host view may retain a hidden logical Custom Element.
   - id: adapter-vue2-collapsible-contract
     kind: adapter-test
@@ -236,7 +237,7 @@ implementations:
     exercises: [P-BASE-COLLAPSIBLE, P-BASE-COLLAPSIBLE-TRIGGER, P-BASE-COLLAPSIBLE-CONTENT]
     notes:
       - Five shared conformance cases executed with actual Vue 2 owners under happy-dom through packages/adapters/base/test/fixtures/collapsible-conformance.ts.
-      - Covers logical ownership, synthetic activation, controls, two L1 cycles, retained hidden projection, domains, cleanup, ready anatomy and creation-time duplicates. Uses authored Root/Content wrappers and the direct Trigger, not all-three-asHook translation.
+      - Covers logical ownership, synthetic activation, controls, two L1 cycles, retained hidden projection, domains, cleanup, ready anatomy and creation-time duplicates through authored Root, Trigger and Content wrappers using all three Collapsible asHooks. Direct public-package consumers are separately attributed.
       - No native input, computed paint, OS accessibility or complete relationship-service conformance is claimed. A detached WC host view may retain a hidden logical Custom Element.
   - id: public-collapsible-native-browser
     kind: workspace-check
@@ -258,7 +259,7 @@ implementations:
       - P-BASE-COLLAPSIBLE-TRIGGER
       - P-BASE-COLLAPSIBLE-CONTENT
     notes:
-      - Implemented and registered in the standard sequential browser plan with bilingual warm routes; not executed or native passing evidence.
+      - Implemented and registered in the standard sequential browser plan with bilingual warm routes. All five journeys executed successfully for the first PR835 head af669b2984ba811778511af07894417b2aad37a0 in trusted CI run 37238882547 on merge tree 843d4d6b40f12efb0ce8e1908599a9a2c5ee1b94; that historical result is not a pass for this later repaired candidate, which requires fresh source-bound CI.
       - Plans four Web-runtime pointer/Tab/Enter/Space journeys, controlled acceptance, disabled skip, repeated L1 identity, computed retained hiding, sibling isolation and physical-view renderer teardown, plus a narrow Chinese Vue 2 surface.
       - Renderer teardown assertions establish physical host removal, not complete reservation/semantic-disposal conformance. Screenshots are conditional on PROTO_UI_COLLAPSIBLE_SCREENSHOT_DIR; a passing journey alone is not a verified capture.
       - Requires a source-bound Chromium surface or exact-head trusted CI. Local broker/browser unavailability does not authorize synthetic substitution or weaker assertions.

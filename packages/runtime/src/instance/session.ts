@@ -417,7 +417,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
 
   const unmount = (): Promise<void> => unmountInternal(false);
 
-  const dispose = (): Promise<void> => {
+  const dispose = (failFast = false): Promise<void> => {
     if (instancePhase === 'disposed') return Promise.resolve();
     if (disposePending) return disposePending;
 
@@ -458,6 +458,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
       // presence transition blocks unmount. The returned Promise still
       // carries callback errors to async-aware callers.
       const finalError = finalizeDispose();
+      if (failFast && finalError) throw finalError;
       disposePending = unmountResult.then(
         () => {
           if (finalError) throw finalError;
@@ -491,11 +492,9 @@ export function createRuntimeSession<P extends PropsBaseType>(
     // No session reaches the host on failure. Release logical resources while
     // its owner capabilities still exist, before host wiring is revoked.
     try {
-      void dispose().catch((cleanupError) => {
-        queueMicrotask(() => {
-          throw cleanupError;
-        });
-      });
+      // Creation has no mounted view or returned disposal promise. Report its
+      // synchronous terminal cleanup failure through this same caller.
+      void dispose(true);
     } catch (cleanupError) {
       throw new AggregateError([error, cleanupError]);
     }

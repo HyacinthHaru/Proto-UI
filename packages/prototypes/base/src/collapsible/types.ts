@@ -1,4 +1,10 @@
-import type { ExposeEvent, ExposeMethod, ExposeState, State } from '@proto.ui/core';
+import type {
+  ExposeEvent,
+  ExposeMethod,
+  ExposeState,
+  FocusRequestOptions,
+  State,
+} from '@proto.ui/core';
 import type { CollapsibleOpenReason } from './shared';
 
 export interface CollapsibleRootProps {
@@ -38,7 +44,7 @@ export type CollapsibleTriggerExposes = {
   pressed: ExposeState<boolean>;
   focused: ExposeState<boolean>;
   focusVisible: ExposeState<boolean>;
-  focusSelf: ExposeMethod<(options?: { reason?: CollapsibleOpenReason }) => void>;
+  focusSelf: ExposeMethod<(options?: FocusRequestOptions) => void>;
 };
 
 export type CollapsibleTriggerAsHookContract = { state: CollapsibleTriggerStateHandles };

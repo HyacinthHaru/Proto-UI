@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import { definePrototype } from '@proto.ui/core';
+import { createRuntimeSession } from '@proto.ui/runtime';
+import {
+  ANATOMY_INSTANCE_TOKEN_CAP,
+  ANATOMY_PARENT_CAP,
+  ANATOMY_GET_PROTO_CAP,
+  ANATOMY_ROOT_TARGET_CAP,
+  type AnatomyPort,
+} from '@proto.ui/module-anatomy';
+import { CONTEXT_INSTANCE_TOKEN_CAP, CONTEXT_PARENT_CAP } from '@proto.ui/module-context';
 import {
   COLLAPSIBLE_FAMILY,
   asCollapsibleContent,
@@ -425,6 +434,158 @@ describe('Base Collapsible consumer contract', () => {
     } finally {
       root.remove();
       await flush();
+    }
+  });
+
+  it('preserves controlled and disabled requests while the same Root view is detached', async () => {
+    const Root = definePrototype({
+      name: 'x-collapsible-detached-request-root',
+      setup(def) {
+        asCollapsibleRoot();
+        let owner: any;
+        def.lifecycle.onCreated((run) => {
+          owner = run;
+        });
+        def.expose.method('present', (present: boolean) => owner.lifecycle.setPresent(present));
+      },
+    });
+    AdaptToWebComponent(Root);
+    const { trigger, content, requests } = fixture();
+    const root = document.createElement(Root.name) as any;
+    root.addEventListener('openChange', (event: Event) => {
+      requests.push((event as CustomEvent).detail);
+    });
+    setElementProps(root, { open: false });
+    root.append(trigger, content);
+    try {
+      document.body.append(root);
+      await until(() => trigger.getAttribute('aria-expanded') === 'false');
+      const exposes = root.getExposes();
+      exposes.present(false);
+      await until(() => root.hasAttribute('data-pui-view-detached'));
+      exposes.openCollapsible();
+      expect(exposes.open.get()).toBe(false);
+      exposes.toggle();
+      expect(exposes.open.get()).toBe(false);
+      expect(requests).toEqual([
+        { open: true, reason: 'programmatic' },
+        { open: true, reason: 'programmatic' },
+      ]);
+
+      setElementProps(root, { open: false, disabled: true });
+      exposes.openCollapsible();
+      exposes.toggle();
+      expect(exposes.open.get()).toBe(false);
+      expect(requests).toHaveLength(2);
+      exposes.present(true);
+      await until(() => !root.hasAttribute('data-pui-view-detached'));
+      expect(exposes.open.get()).toBe(false);
+    } finally {
+      root.remove();
+      await flush();
+    }
+  });
+
+  it('clears held pointer facts before the same Trigger view rematerializes', async () => {
+    const Trigger = definePrototype({
+      name: 'x-collapsible-detached-transient-trigger',
+      setup(def) {
+        asCollapsibleTrigger();
+        let owner: any;
+        def.lifecycle.onCreated((run) => {
+          owner = run;
+        });
+        def.expose.method('present', (present: boolean) => owner.lifecycle.setPresent(present));
+      },
+    });
+    AdaptToWebComponent(Trigger);
+    const { root, content } = fixture();
+    const trigger = document.createElement(Trigger.name) as any;
+    trigger.textContent = 'Repeatable disclosure';
+    root.replaceChildren(trigger, content);
+    try {
+      document.body.append(root);
+      await until(() => trigger.tabIndex === 0);
+      trigger.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+      trigger.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }));
+      const exposes = trigger.getExposes();
+      expect(exposes.hovered.get()).toBe(true);
+      expect(exposes.pressed.get()).toBe(true);
+      exposes.present(false);
+      await until(() => trigger.hasAttribute('data-pui-view-detached'));
+      expect(exposes.hovered.get()).toBe(false);
+      expect(exposes.pressed.get()).toBe(false);
+      exposes.present(true);
+      await until(() => !trigger.hasAttribute('data-pui-view-detached'));
+      expect(trigger.getExposes().hovered.get()).toBe(false);
+      expect(trigger.getExposes().pressed.get()).toBe(false);
+    } finally {
+      root.remove();
+      await flush();
+    }
+  });
+
+  it('rejects an adopted over-maximum composition when the new Root is first created', async () => {
+    const first = fixture();
+    const second = fixture();
+    const destination = document.createElement('x-collapsible-base-root');
+    try {
+      document.body.append(first.root, second.root);
+      await until(
+        () =>
+          first.trigger.getAttribute('aria-expanded') === 'false' &&
+          second.trigger.getAttribute('aria-expanded') === 'false' &&
+          first.content.hasAttribute('data-pui-view-detached') &&
+          second.content.hasAttribute('data-pui-view-detached')
+      );
+      // Adopt synchronously, before the existing owners' deferred disposal.
+      destination.append(first.trigger, first.content, second.content);
+      expect(() => document.body.append(destination)).toThrowError(
+        expect.objectContaining({ code: 'COLLAPSIBLE_DUPLICATE_PART' })
+      );
+    } finally {
+      destination.remove();
+      first.root.remove();
+      second.root.remove();
+      await flush();
+    }
+  });
+
+  it('reports absent required roles through conformance after actual Runtime mount readiness', async () => {
+    const token = {};
+    const target = document.createElement('div');
+    const session = createRuntimeSession(collapsibleRoot, {
+      prototypeName: collapsibleRoot.name,
+      getRawProps: () => ({}),
+      schedule: (task) => task(),
+      commit: (_children, signal) => signal?.done(),
+      onRuntimeReady(wiring) {
+        wiring.attach('anatomy', [
+          [ANATOMY_INSTANCE_TOKEN_CAP, token],
+          [ANATOMY_PARENT_CAP, () => null],
+          [ANATOMY_GET_PROTO_CAP, () => collapsibleRoot],
+          [ANATOMY_ROOT_TARGET_CAP, () => target],
+        ]);
+        wiring.attach('context', [
+          [CONTEXT_INSTANCE_TOKEN_CAP, token],
+          [CONTEXT_PARENT_CAP, () => null],
+        ]);
+      },
+    });
+    try {
+      // The controlled test host acknowledges the real Runtime commit. This
+      // is an explicit conformance query, never an all-child completion flag.
+      await session.mount();
+      expect(session.mountPhase).toBe('mounted');
+      const missing = session.caps
+        .getPort<AnatomyPort>('anatomy')!
+        .getDiagnostics()
+        .filter((diagnostic) => diagnostic.code === 'ANATOMY_FAMILY_MIN');
+      expect(missing.map((diagnostic) => diagnostic.role).sort()).toEqual(['content', 'trigger']);
+      expect(missing.every((diagnostic) => diagnostic.scope === 'family')).toBe(true);
+      expect(missing.every((diagnostic) => diagnostic.level === 'error')).toBe(true);
+    } finally {
+      await session.dispose();
     }
   });
 

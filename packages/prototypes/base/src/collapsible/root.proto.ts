@@ -85,7 +85,11 @@ function setupCollapsibleRoot(def: DefHandle<CollapsibleRootProps, CollapsibleRo
     });
   }
 
-  def.lifecycle.onCreated(syncContext);
+  def.lifecycle.onCreated((run) => {
+    rejectDuplicateCollapsiblePart(run, 'trigger');
+    rejectDuplicateCollapsiblePart(run, 'content');
+    syncContext(run);
+  });
   def.props.watch(['open', 'disabled'], (run) => syncContext(run));
   open.watch((run, event) => {
     if (event.type === 'next') syncContext(run);

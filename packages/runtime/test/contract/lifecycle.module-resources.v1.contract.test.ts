@@ -76,6 +76,30 @@ describe('runtime contract: lifecycle module resource ownership (v1)', () => {
     expect(() => retainedRun.expose.emit('change')).toThrow();
   });
 
+  it('preserves both created and terminal cleanup failures in the synchronous caller', () => {
+    const createdFailure = new Error('created failure');
+    const cleanupFailure = new Error('cleanup failure');
+    const proto = definePrototype({
+      name: 'lifecycle-failed-created-and-cleanup-owner',
+      setup(def) {
+        def.lifecycle.onCreated(() => {
+          throw createdFailure;
+        });
+        def.lifecycle.onBeforeDispose(() => {
+          throw cleanupFailure;
+        });
+      },
+    });
+    let thrown: unknown;
+    try {
+      createRuntimeSession(proto, createImmediateHost());
+    } catch (error) {
+      thrown = error;
+    }
+    expect(thrown).toBeInstanceOf(AggregateError);
+    expect((thrown as AggregateError).errors).toEqual([createdFailure, cleanupFailure]);
+  });
+
   it('keeps Expose Event declarations across view epochs and invalidates emit at disposal', async () => {
     const emitted: string[] = [];
     let retainedRun: any;
