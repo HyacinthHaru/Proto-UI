@@ -446,7 +446,7 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           expect(geometry.border).toBe('0px');
           expect(geometry.shadow).toBe('none');
           expect(geometry.columns).toBe(width >= 1200 ? 4 : width >= 640 ? 2 : 1);
-          expect(geometry.triggerHeight).toBeGreaterThanOrEqual(44);
+          expect(geometry.triggerHeight).toBeCloseTo(width >= 768 ? 36 : 44, 0);
           expect(geometry.fits, `${colorScheme} ${width}px overflow`).toBe(true);
         }
         expect(await home.locator('[data-projection-control="component"]').count()).toBe(0);

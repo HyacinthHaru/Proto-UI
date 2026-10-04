@@ -632,6 +632,9 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         const header = page.locator('[data-docs-site-header]');
         const menu = header.locator('[data-site-menu-button]');
         await expect.poll(() => header.getAttribute('data-site-menu-ready')).toBe('');
+        // This loop reuses its native pointer across navigations. Measure the
+        // resting row, not a legitimate +4px Brutalist hover under the old point.
+        await page.mouse.move(0, 800);
         const geometry = await header.evaluate((element) => {
           const bounds = element.getBoundingClientRect();
           const controls = [
