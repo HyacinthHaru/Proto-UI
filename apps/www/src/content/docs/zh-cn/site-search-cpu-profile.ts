@@ -61,7 +61,7 @@ export async function startSearchCpuProfile(options: {
                 reason,
                 samplingIntervalMicroseconds: 1000,
                 caveat:
-                  'Diagnostic sampling and trace observation add unquantified overhead. Do not treat this run as ordinary performance-pass evidence. Failure capture may extend sampling past the original readiness deadline. The manual job runs this case alone, so preceding-case/server warmup differs from the original full shard.',
+                  'Diagnostic sampling and trace observation add unquantified overhead. Do not treat this run as ordinary performance-pass evidence. Failure capture may extend sampling past the original readiness deadline. The diagnostic job runs this case alone, so preceding-case/server warmup differs from the original full shard.',
                 url: options.page.url(),
                 viewport: options.page.viewportSize(),
                 timing,

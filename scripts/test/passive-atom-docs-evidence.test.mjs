@@ -199,14 +199,15 @@ test('font probe reaches authored text inside the real Text carrier and distingu
   assert.equal(findFontSample('[data-missing]', false), null);
 });
 
-test('CPU diagnostics are manual opt-in, source-bound, and restricted to one actual cold case', () => {
+test('CPU diagnostics run once for the authorized PR synchronization and preserve the normal matrix', () => {
   const workflow = YAML.parse(
     readFileSync('.github/workflows/passive-atom-docs-evidence.yml', 'utf8')
   );
-  assert.equal(workflow.on.workflow_dispatch.inputs.profile_search.default, false);
+  assert.equal(workflow.jobs['public-atom-previews'].if, undefined);
   const job = workflow.jobs['cold-search-profile'];
-  assert.match(job.if, /workflow_dispatch/);
-  assert.match(job.if, /inputs.profile_search/);
+  assert.match(job.if, /pull_request.number == 815/);
+  assert.match(job.if, /event.action == 'synchronize'/);
+  assert.match(job.if, /event.before == '87b927f4bca02484806e588a53029c577f828279'/);
   const sample = job.steps.find((step) => step.env?.PROTO_UI_SEARCH_CPU_PROFILE === '1');
   assert.match(sample.run, /-t 'shadcn dark 390px preserves activation, dismissal and focus'/);
   assert.match(sample.run, /git rev-parse HEAD/);

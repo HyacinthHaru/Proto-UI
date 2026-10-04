@@ -13,11 +13,6 @@ on:
       - 'package.json'
       - 'pnpm-lock.yaml'
   workflow_dispatch:
-    inputs:
-      profile_search:
-        description: 'Diagnostic only: sample the first Shadcn dark/390 Search load (not performance acceptance)'
-        type: boolean
-        default: false
 
 permissions:
   contents: read
@@ -29,7 +24,6 @@ env:
 
 jobs:
   public-atom-previews:
-    if: ${{ ! (github.event_name == 'workflow_dispatch' && inputs.profile_search) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     steps:
@@ -89,7 +83,9 @@ jobs:
           retention-days: 30
 
   cold-search-profile:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.profile_search }}
+    # Temporary, exactly one PR synchronization after the diagnosed candidate.
+    # Later pushes do not match; remove this job after recording the CPU attribution.
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number == 815 && github.event.action == 'synchronize' && github.event.before == '87b927f4bca02484806e588a53029c577f828279' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
