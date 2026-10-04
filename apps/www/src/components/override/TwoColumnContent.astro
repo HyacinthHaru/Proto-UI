@@ -113,6 +113,14 @@ const mainPaneClass = isSplash
         width: 100%;
         min-width: 0;
       }
+      /* PageSidebar's slotted legacy container has a viewport-minus-rem
+         quarter-width cap of its own. Reset that layout cap too, not just the
+         outer Surface lane, so the actual native links gain the reading room. */
+      .right-sidebar :global(.right-sidebar-panel .sl-container) {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+      }
       :global([data-has-sidebar][data-has-toc]) .main-pane {
         order: 1;
         width: 100%;

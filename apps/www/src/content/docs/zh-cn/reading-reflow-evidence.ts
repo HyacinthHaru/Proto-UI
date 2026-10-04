@@ -6,8 +6,9 @@ export function readReadingReflow() {
       '.docs-sidebar',
       '.right-sidebar-container',
       '.right-sidebar',
-      '.right-sidebar sl-toc',
-      '.right-sidebar nav',
+      '.right-sidebar-panel .sl-container',
+      '.right-sidebar-panel sl-toc',
+      '.right-sidebar-panel nav',
       '.main-pane',
       '[data-docs-site-header]',
     ].map((selector) => {
@@ -31,6 +32,12 @@ export function readReadingReflow() {
     viewportWidth: innerWidth,
     overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
     boxes,
+    visibleTocLinks: [...document.querySelectorAll<HTMLElement>('.right-sidebar-panel sl-toc a')]
+      .filter((link) => link.checkVisibility())
+      .map((link) => ({
+        label: link.textContent?.trim(),
+        ...link.getBoundingClientRect().toJSON(),
+      })),
     controls: [
       '.site-header-brand',
       '.site-header-search',

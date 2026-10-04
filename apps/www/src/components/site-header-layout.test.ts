@@ -31,6 +31,9 @@ it('reflows enlarged desktop reading columns and Header by container space, pres
   expect(columns).toContain('@container docs-canvas (max-width: 80rem)');
   expect(columns).toContain('class="docs-reading-columns lg:sl-flex"');
   expect(columns).toMatch(/\.right-sidebar-container[\s\S]*width: 100%/);
+  expect(columns).toMatch(
+    /:global\(\.right-sidebar-panel \.sl-container\)\s*\{[^}]*max-width: none/
+  );
   expect(header).toContain('@container docs-page (max-width: 68.749rem)');
   expect(header).toContain('@container docs-page (max-width: 42rem)');
 });

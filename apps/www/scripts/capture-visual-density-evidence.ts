@@ -489,6 +489,15 @@ try {
                     `${control.selector} stays reachable at 200% text`
                   );
                 }
+                assert.ok(
+                  reflow.boxes['.right-sidebar-panel sl-toc'].width >= 12 * reflow.rootFontSize,
+                  'The actual visible TOC, not only its wrapper, gets reading space'
+                );
+                for (const link of reflow.visibleTocLinks)
+                  assert.ok(
+                    link.width >= 10 * reflow.rootFontSize,
+                    `Visible TOC link ${link.label} must not collapse into fragmented words`
+                  );
                 const overview = page
                   .locator('.right-sidebar a[data-site-link-appearance="toc"]:visible')
                   .first();
