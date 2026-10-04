@@ -5,6 +5,7 @@ import { createFeedbackModule } from '../src/create';
 import { EFFECTS_CAP } from '../src/caps';
 import { FINAL_STYLE_SINK_CAP, type FinalStyleFrame } from '../src/material/final-style-sink';
 import type { FeedbackPort, FeedbackInternalHooks } from '../src/types';
+import { MATERIAL_BINDING_FACTORY_CAP } from '../src/material/runtime-cap';
 
 function fixture() {
   const caps = new CapsVault();
@@ -37,6 +38,26 @@ function fixture() {
 }
 
 describe('private Feedback final-style sink', () => {
+  it('keeps material implementation opt-in and cleans up after a throwing semantic binding', () => {
+    const f = fixture();
+    const factory = vi.fn(() => ({
+      connect() {},
+      snapshot: () => null as any,
+      dispose() {
+        throw new Error('semantic-release');
+      },
+    }));
+    f.style.use(tw('rounded-lg'));
+    f.caps.attach([
+      [MATERIAL_BINDING_FACTORY_CAP, factory],
+      [FINAL_STYLE_SINK_CAP, f.sink],
+    ]);
+    f.mount();
+    expect(factory).toHaveBeenCalledTimes(1);
+    expect(() => f.hooks.dispose?.()).toThrow('semantic-release');
+    expect(f.style.exportMerged().tokens).toEqual([]);
+    expect(() => f.style.patch(tw('rounded-full'))).toThrow(/disposed/);
+  });
   it('retries failed structural replay, remount and temporary Rule frames after a clean frame', () => {
     const f = fixture();
     f.caps.attach([[FINAL_STYLE_SINK_CAP, f.sink]]);

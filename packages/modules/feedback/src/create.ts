@@ -12,7 +12,11 @@ import type {
   FeedbackRuntimeStyleDisposer,
 } from './types';
 import { EFFECTS_CAP } from './caps';
-import { createOwnedMaterialBinding } from './material/owned-slot';
+import {
+  MATERIAL_BINDING_FACTORY_CAP,
+  type MaterialBinding,
+  type MaterialBindingFactory,
+} from './material/runtime-cap';
 import {
   FINAL_STYLE_SINK_CAP,
   finalStyleFrame,
@@ -39,10 +43,8 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
         private visualSink: FinalStyleSink | null = null;
         private visualSinkView = 0;
         private pendingProjection: StyleHandle | null = null;
-        private material = createOwnedMaterialBinding(init.declarations, deps, () => {
-          this.markDirty();
-          this.flushIfPossible();
-        });
+        private material: MaterialBinding | null = null;
+        private materialFactory: MaterialBindingFactory | null = null;
 
         /** setup-only */
         useStyle(handles: StyleHandle[]): () => void {
@@ -165,6 +167,7 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
             this.releaseVisualSink();
           }
           if (phase === 'mounting') {
+            this.ensureMaterialBinding();
             this.material?.connect();
             // A fresh view epoch owns a fresh EffectsPort. Replay the retained
             // instance style before the host commit so the first materialized
@@ -175,6 +178,7 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
 
         protected override onCapsEpoch(_epoch: number): void {
           if (this.disposed) return;
+          this.ensureMaterialBinding();
           const next = this.caps.has(FINAL_STYLE_SINK_CAP)
             ? this.caps.get(FINAL_STYLE_SINK_CAP)
             : null;
@@ -187,6 +191,23 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
 
         private hasOutput(): boolean {
           return this.caps.has(FINAL_STYLE_SINK_CAP) || this.caps.has(EFFECTS_CAP);
+        }
+
+        private ensureMaterialBinding(): void {
+          if (!this.caps.has(MATERIAL_BINDING_FACTORY_CAP)) return;
+          const factory = this.caps.get(MATERIAL_BINDING_FACTORY_CAP);
+          if (this.materialFactory) {
+            if (this.materialFactory !== factory)
+              throw new Error('Material semantics cannot change within an instance');
+            return;
+          }
+          const material = factory(init.declarations, deps, () => {
+            this.markDirty();
+            this.flushIfPossible();
+          });
+          this.material = material;
+          this.materialFactory = factory;
+          if (this.canProject()) this.material?.connect();
         }
 
         private releaseVisualSink(): void {
@@ -299,13 +320,16 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
           try {
             this.releaseVisualSink();
           } finally {
-            this.material?.dispose();
-            this.recorder = new FeedbackStyleRecorder();
-            this.dirty = false;
-            this.pendingProjection = null;
-            this.flushRequested = false;
-            // Discard deferred view work while its entry guards are terminal.
-            this.flushPending();
+            try {
+              this.material?.dispose();
+            } finally {
+              this.recorder = new FeedbackStyleRecorder();
+              this.dirty = false;
+              this.pendingProjection = null;
+              this.flushRequested = false;
+              // Discard deferred view work while its entry guards are terminal.
+              this.flushPending();
+            }
           }
         }
 

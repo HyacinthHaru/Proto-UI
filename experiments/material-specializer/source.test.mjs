@@ -9,6 +9,8 @@ import button from './button.proto.ts';
 import { compileMaterialDeclarations, DECLARATION_ID } from './compile.mjs';
 import { executeWithHost } from '@proto.ui/runtime';
 import { FINAL_STYLE_SINK_CAP } from '../../packages/modules/feedback/src/material/final-style-sink.ts';
+import { MATERIAL_BINDING_FACTORY_CAP } from '../../packages/modules/feedback/src/material/runtime-cap.ts';
+import { createOwnedMaterialBinding } from '../../packages/modules/feedback/src/material/owned-slot.ts';
 import { EVENT_GLOBAL_TARGET_CAP, EVENT_ROOT_TARGET_CAP } from '@proto.ui/module-event';
 import {
   AS_TRIGGER_GET_PROTO_CAP,
@@ -187,6 +189,7 @@ test('real Runtime publishes Base Button material state through Feedback and dis
     },
     onRuntimeReady(wiring) {
       wiring.attach('feedback', [
+        [MATERIAL_BINDING_FACTORY_CAP, createOwnedMaterialBinding],
         [
           FINAL_STYLE_SINK_CAP,
           {
