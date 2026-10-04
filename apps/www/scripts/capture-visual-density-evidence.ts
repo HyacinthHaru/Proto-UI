@@ -10,6 +10,7 @@ import { parseArgs } from 'node:util';
 import type { Page } from 'playwright-core';
 import { launchBrowser, startServer, stopServer } from '../src/content/docs/zh-cn/browser-harness';
 import { verifyRevision } from './homepage-evidence-contract';
+import { readReadingReflow } from '../src/content/docs/zh-cn/reading-reflow-evidence';
 const { values } = parseArgs({
   options: {
     'revision-kind': { type: 'string' },
@@ -468,32 +469,16 @@ try {
                       requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
                     )
                 );
-                const reflow = await page.evaluate(() => {
-                  const box = (selector: string) =>
-                    document.querySelector<HTMLElement>(selector)!.getBoundingClientRect().toJSON();
-                  return {
-                    rootFontSize: parseFloat(getComputedStyle(document.documentElement).fontSize),
-                    viewportWidth: innerWidth,
-                    overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
-                    left: box('.docs-sidebar'),
-                    toc: box('.right-sidebar'),
-                    main: box('.main-pane'),
-                    header: box('[data-docs-site-header]'),
-                    controls: [
-                      '.site-header-brand',
-                      '.site-header-search',
-                      '.site-header-theme',
-                      '.site-header-menu',
-                    ].map((selector) => ({ selector, ...box(selector) })),
-                  };
-                });
+                const reflow = await page.evaluate(readReadingReflow);
                 entry.text200Reflow = reflow;
                 await shot('text200-reflow');
                 assert.equal(reflow.rootFontSize, 32, 'Keep actual 200% root text');
                 assert.equal(reflow.overflow, 0, 'Enlarged reading layout must stay in viewport');
-                assert.ok(reflow.left.width >= 14 * reflow.rootFontSize);
-                assert.ok(reflow.toc.width >= 12 * reflow.rootFontSize);
-                assert.ok(reflow.toc.width <= reflow.main.width + 1);
+                assert.ok(reflow.boxes['.docs-sidebar'].width >= 14 * reflow.rootFontSize);
+                assert.ok(reflow.boxes['.right-sidebar'].width >= 12 * reflow.rootFontSize);
+                assert.ok(
+                  reflow.boxes['.right-sidebar'].width <= reflow.boxes['.main-pane'].width + 1
+                );
                 for (const control of reflow.controls) {
                   assert.ok(
                     control.width > 0 && control.height > 0,

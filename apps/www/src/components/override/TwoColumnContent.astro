@@ -81,6 +81,8 @@ const mainPaneClass = isSplash
       .docs-reading-columns {
         display: flex;
         flex-direction: column;
+        align-items: stretch;
+        width: 100%;
         gap: 1rem;
       }
       .right-sidebar-container {
@@ -88,6 +90,9 @@ const mainPaneClass = isSplash
         position: static;
         order: 0;
         width: 100%;
+        min-width: 0;
+        flex: none;
+        align-self: stretch;
         height: auto;
         padding-bottom: 0;
         overflow: visible;
@@ -95,9 +100,18 @@ const mainPaneClass = isSplash
       .right-sidebar {
         position: static;
         width: 100%;
+        min-width: 0;
+        flex: none;
+        align-self: stretch;
         height: auto;
         padding-block: 0;
         overflow: visible;
+      }
+      .right-sidebar :global(sl-toc),
+      .right-sidebar :global(sl-toc nav) {
+        display: block;
+        width: 100%;
+        min-width: 0;
       }
       :global([data-has-sidebar][data-has-toc]) .main-pane {
         order: 1;
