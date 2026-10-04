@@ -151,3 +151,11 @@ it('keeps one Header close toggle and lets short compact menus shrink to their c
   expect(css).toContain('max-height: var(--site-header-panel-max-height');
   expect(css).toContain("[data-site-menu-open='true'] .site-header-menu-icon::before");
 });
+
+it('aligns framed brand-to-nav and nav-to-nav visual gaps without extra first-item space', () => {
+  const css = readFileSync('apps/www/src/styles/site-header.css', 'utf8');
+  const nav = css.match(/\.site-header-navigation\s*\{([^}]+)\}/)![1];
+  expect(nav).toContain('gap: 0.75rem');
+  expect(nav).toContain('margin-inline-start: 0.5rem');
+  expect(css).toMatch(/flex-wrap: nowrap;\s*gap: 0.75rem/);
+});

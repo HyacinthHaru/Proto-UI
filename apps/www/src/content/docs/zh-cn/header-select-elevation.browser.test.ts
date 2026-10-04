@@ -115,6 +115,7 @@ async function headerLinkPaint(link: Locator) {
     const text = surface.querySelector<HTMLElement>('[data-pui-root]')!;
     const paint = getComputedStyle(surface);
     return {
+      bounds: surface.getBoundingClientRect().toJSON(),
       tag: anchor.localName,
       href: anchor.getAttribute('href'),
       surface: surface.getAttribute('data-projection-prototype'),
@@ -178,6 +179,16 @@ describe.sequential('Header public family presentation and labelled compact fiel
                 '#home-brand [data-projection-generation-state="active"] a, #home-navigation-desktop [data-projection-generation-state="active"] a'
               );
               expect(await links.count()).toBe(4);
+              const restingLinks = await Promise.all(
+                [0, 1, 2, 3].map((index) => headerLinkPaint(links.nth(index)))
+              );
+              const gaps = restingLinks
+                .slice(1)
+                .map((entry, index) => entry.bounds.left - restingLinks[index].bounds.right);
+              // Border-box gap includes the 4px public hard-shadow extent,
+              // leaving the same 12px visible gap at each neighbouring control.
+              for (const gap of gaps) expect(gap).toBeCloseTo(16, 0);
+              measurements.push({ stage: 'header-link-spacing', gaps, restingLinks });
               for (let index = 0; index < 4; index++) {
                 const link = links.nth(index);
                 await page.mouse.move(0, 900);

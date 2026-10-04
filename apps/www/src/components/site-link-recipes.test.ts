@@ -65,3 +65,22 @@ for (const appearance of ['brand', 'nav'] as const) {
     });
   });
 }
+
+it('keeps Brutalist navigation inset and size stable when a structural border appears', () => {
+  for (const appearance of ['sidebar', 'toc'] as const) {
+    expect(linkSurfaceProps('brutalist', appearance, 'minimal', idle).border).toBe('none');
+    for (const facts of [
+      { ...idle, hovered: true },
+      { ...idle, current: true },
+    ]) {
+      expect(linkSurfaceProps('brutalist', appearance, 'minimal', facts)).toMatchObject({
+        border: 'all',
+        elevation: 'none',
+      });
+      expect(linkSurfaceLayout('brutalist', appearance, 'minimal', facts)).toMatchObject({
+        minHeight: 'var(--site-navigation-row-height, 2rem)',
+        padding: '0.125rem 0.375rem',
+      });
+    }
+  }
+});

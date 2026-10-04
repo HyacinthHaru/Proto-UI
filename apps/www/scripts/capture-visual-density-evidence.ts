@@ -276,7 +276,12 @@ try {
                   `Unwrapped ${row.label} must be ${minimum}px, got ${row.surfaceHeight}`
                 );
               assert.equal(row.fontSize, 14);
-              assert.equal(row.padding, '4px 8px');
+              assert.equal(
+                row.padding,
+                v.family === 'brutalist' && row.current && row.current !== 'false'
+                  ? '2px 6px'
+                  : '4px 8px'
+              );
               assert.equal(
                 row.fontWeight,
                 row.current && row.current !== 'false'

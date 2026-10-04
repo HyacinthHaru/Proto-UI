@@ -31,6 +31,7 @@ for (const family of ['shadcn', 'brutalist'] as const)
     'nav',
     'text',
     'brand',
+    'nav-group',
     'sidebar',
     'toc',
     'pagination',
@@ -51,8 +52,9 @@ for (const family of ['shadcn', 'brutalist'] as const)
         const layout = linkSurfaceLayout(family, appearance, emphasis);
         const raised =
           family === 'brutalist' &&
-          ['action', 'icon', 'pagination'].includes(appearance) &&
-          ['primary', 'secondary'].includes(emphasis);
+          (['brand', 'nav'].includes(appearance) ||
+            (['action', 'icon', 'pagination'].includes(appearance) &&
+              ['primary', 'secondary'].includes(emphasis)));
         for (const facts of [
           { hovered: false, pressed: false, focusVisible: false, current: false },
           { hovered: true, pressed: true, focusVisible: true, current: true },
@@ -89,7 +91,9 @@ for (const family of ['shadcn', 'brutalist'] as const)
               ? facts.current
                 ? 'font-medium'
                 : 'font-normal'
-              : facts.current || appearance === 'brand'
+              : facts.current ||
+                  appearance === 'brand' ||
+                  (family === 'brutalist' && appearance === 'nav-group')
                 ? 'font-semibold'
                 : 'font-medium'
           );

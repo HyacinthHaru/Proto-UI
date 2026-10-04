@@ -959,6 +959,49 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
             'a[data-site-native-link][aria-label="GitHub"] :is(wc-site-shadcn-surface,wc-site-brutalist-surface)'
           )
           .waitFor({ state: 'attached' });
+        const group = page
+          .locator('.sidebar-pane details')
+          .filter({ has: page.locator('a[aria-current="page"]') })
+          .last();
+        const summary = group.locator(':scope > summary');
+        await summary.scrollIntoViewIfNeeded();
+        const summaryPaint = () =>
+          summary.evaluate((element) => {
+            const surface = element.querySelector<HTMLElement>('[data-pui-root]')!;
+            const style = getComputedStyle(surface);
+            return {
+              open: (element.parentElement as HTMLDetailsElement).open,
+              surface: surface.localName,
+              tokens: surface.getAttribute('data-pui-style'),
+              border: style.borderBottomWidth,
+              height: surface.getBoundingClientRect().height,
+              focused: element === document.activeElement,
+              nestedInteractive: element.querySelectorAll('a,button,[tabindex]').length,
+            };
+          });
+        const original = await summaryPaint();
+        expect(original.open).toBe(true);
+        expect(original.surface).toBe(`wc-site-${family}-surface`);
+        expect(original.height).toBeCloseTo(32, 0);
+        expect(original.nestedInteractive).toBe(0);
+        if (family === 'brutalist') expect(original.border).toBe('2px');
+        await summary.click();
+        await expect.poll(async () => (await summaryPaint()).open).toBe(false);
+        await page.keyboard.press('Space');
+        await expect.poll(async () => (await summaryPaint()).open).toBe(true);
+        await page.keyboard.press('Tab');
+        await page.keyboard.press('Shift+Tab');
+        const focused = await summaryPaint();
+        expect(focused.focused).toBe(true);
+        expect(focused.tokens).toContain('ring-2');
+        await captureLinks(
+          page,
+          `docs-${family}-group-focus`,
+          family,
+          'wc',
+          'native-summary; Space restores open; family Surface/Text focus',
+          { original, focused }
+        );
         await openSettings(page);
         await assertHeaderPopupSurface(page, family, 'wc', false);
         const links = page.locator('.site-social-links a[data-site-native-link]');

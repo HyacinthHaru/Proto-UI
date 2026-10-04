@@ -566,13 +566,12 @@ describe.sequential('Search family Button commands', () => {
             );
             expect(await trigger.getAttribute('role')).toBe('button');
             await expect.poll(() => page.locator('html').getAttribute('data-theme')).toBe(theme);
-            // Both Header families consume public ghost Buttons; labelled
-            // compact preferences and ordinary form fields keep their defaults.
+            // Each Header consumes its public family Button presentation.
             const triggerTokens = await trigger.getAttribute('data-pui-style');
             expect(triggerTokens).toContain(
               family === 'brutalist' ? 'bg-secondary-background' : 'bg-transparent'
             );
-            {
+            if (family === 'shadcn') {
               expect(triggerTokens).toContain('border-transparent');
               const rest = await trigger.evaluate((node) => ({
                 border: getComputedStyle(node).borderTopColor,
@@ -580,6 +579,9 @@ describe.sequential('Search family Button commands', () => {
               }));
               expect(rest.border).toBe('rgba(0, 0, 0, 0)');
               expect(rest.background).toBe('rgba(0, 0, 0, 0)');
+            } else {
+              expect(triggerTokens).toContain('border-black');
+              expect(triggerTokens).toContain('shadow-[4px_4px_0_0_#000]');
             }
             const box = await trigger.boundingBox();
             expect(box!.height).toBeGreaterThanOrEqual(43);

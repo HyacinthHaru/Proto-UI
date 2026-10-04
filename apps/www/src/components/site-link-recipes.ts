@@ -9,6 +9,7 @@ export type SiteLinkAppearance =
   | 'nav'
   | 'text'
   | 'brand'
+  | 'nav-group'
   | 'sidebar'
   | 'toc'
   | 'pagination';
@@ -30,6 +31,7 @@ export function linkSurfaceProps(
     !['minimal', 'link'].includes(emphasis);
   const framedNavigation = family === 'brutalist' && ['brand', 'nav'].includes(appearance);
   const framed = action || framedNavigation;
+  const group = appearance === 'nav-group';
   const row = appearance === 'sidebar' || appearance === 'toc';
   return {
     variant:
@@ -51,10 +53,15 @@ export function linkSurfaceProps(
           ? 'default'
           : 'md'
         : 'none',
-    border: framed ? 'all' : 'none',
+    border:
+      framed || (family === 'brutalist' && row && (facts.current || facts.hovered))
+        ? 'all'
+        : family === 'brutalist' && group
+          ? 'bottom'
+          : 'none',
     elevation: framed && family === 'brutalist' ? 'raised' : 'none',
     focusVisible: facts.focusVisible,
-    hovered: framed || row ? facts.hovered : false,
+    hovered: framed || row || group ? facts.hovered : false,
     pressed: facts.pressed,
     current: row && facts.current,
   };
@@ -66,16 +73,20 @@ export function linkTextProps(
 ): TextRootProps {
   const quietNavigation = family === 'shadcn' && (appearance === 'sidebar' || appearance === 'toc');
   return {
-    size: appearance === 'brand' ? 'base' : 'sm',
+    size: appearance === 'brand' ? 'base' : appearance === 'nav-group' ? 'xs' : 'sm',
     tone:
-      appearance === 'toc' && !facts.hovered && !facts.current && !facts.inView
+      appearance === 'nav-group' && !facts.hovered && !facts.focusVisible
         ? 'muted'
-        : 'inherit',
+        : appearance === 'toc' && !facts.hovered && !facts.current && !facts.inView
+          ? 'muted'
+          : 'inherit',
     weight: quietNavigation
       ? facts.current
         ? 'medium'
         : 'normal'
-      : facts.current || appearance === 'brand'
+      : facts.current ||
+          appearance === 'brand' ||
+          (family === 'brutalist' && appearance === 'nav-group')
         ? 'semibold'
         : 'medium',
     font: 'body',
@@ -91,9 +102,10 @@ export function linkTextProps(
 export function linkSurfaceLayout(
   family: SiteLibraryFamily,
   appearance: SiteLinkAppearance,
-  emphasis: SiteLinkEmphasis
+  emphasis: SiteLinkEmphasis,
+  facts = initial
 ): Record<string, string> {
-  const row = appearance === 'sidebar' || appearance === 'toc' || appearance === 'pagination';
+  const row = ['sidebar', 'toc', 'pagination', 'nav-group'].includes(appearance);
   const raised =
     family === 'brutalist' &&
     (['brand', 'nav'].includes(appearance) ||
@@ -106,10 +118,16 @@ export function linkSurfaceLayout(
         ? { minHeight: '2.75rem', padding: '0.5rem 1rem', gap: '0.5rem', overflowWrap: 'anywhere' }
         : appearance === 'pagination'
           ? { minHeight: '2.25rem', padding: '0.25rem 0.75rem', gap: '0.375rem' }
-          : appearance === 'sidebar' || appearance === 'toc'
+          : appearance === 'sidebar' || appearance === 'toc' || appearance === 'nav-group'
             ? {
                 minHeight: 'var(--site-navigation-row-height, 2rem)',
-                padding: '0.25rem 0.5rem',
+                // Preserve the same 4px/8px content inset when the public border appears.
+                padding:
+                  family === 'brutalist' &&
+                  appearance !== 'nav-group' &&
+                  (facts.current || facts.hovered)
+                    ? '0.125rem 0.375rem'
+                    : '0.25rem 0.5rem',
                 gap: '0.5rem',
               }
             : {
