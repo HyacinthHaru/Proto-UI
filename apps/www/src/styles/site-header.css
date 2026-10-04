@@ -27,6 +27,7 @@
 }
 .site-header-brand {
   grid-area: brand;
+  white-space: nowrap;
 }
 .site-header .site-header-brand a {
   min-height: 2.75rem;
@@ -625,5 +626,49 @@
   }
   .site-header-popup-navigation > .site-header-group-label {
     margin-block-end: 0.5rem;
+  }
+}
+
+/* Use available text-relative space as well as viewport breakpoints. This only
+   reflows the desktop owners; compact preferences keep their existing move and
+   focus semantics. Public atoms still supply all control paint. */
+@media (min-width: 48rem) {
+  @container docs-page (max-width: 68.749rem) {
+    .site-header[data-docs-site-header] {
+      grid-template-columns: auto auto minmax(0, 1fr) repeat(3, 2.75rem);
+      grid-template-areas: 'brand navigation . search theme menu' 'context context context context context context';
+      grid-template-rows: minmax(var(--site-header-row-height), auto) auto;
+    }
+    .site-header[data-docs-site-header] .site-header-context {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: auto;
+      padding-block: 0.5rem;
+    }
+    .site-header[data-docs-site-header] .site-header-search {
+      margin-inline-start: 0;
+    }
+    .site-header[data-docs-site-header] .site-header-search site-search {
+      --site-search-trigger-width: 2.75rem;
+      --site-search-trigger-padding: 0;
+      --site-search-trigger-justify: center;
+    }
+    .site-header[data-docs-site-header]
+      .site-header-search
+      [data-open-modal]
+      :is(.site-search-label, .site-search-shortcut) {
+      display: none !important;
+    }
+  }
+  @container docs-page (max-width: 42rem) {
+    .site-header[data-docs-site-header] {
+      grid-template-columns: minmax(0, 1fr) repeat(3, 2.75rem);
+      grid-template-areas: 'brand search theme menu' 'navigation navigation navigation navigation' 'context context context context';
+    }
+    .site-header[data-docs-site-header] [data-site-header-desktop-navigation] {
+      flex-wrap: wrap;
+      margin-inline-start: 0;
+    }
   }
 }

@@ -460,7 +460,50 @@ try {
               if (kind === 'candidate') {
                 await page.evaluate(() => {
                   document.documentElement.style.fontSize = '200%';
+                  window.scrollTo(0, 0);
                 });
+                await page.evaluate(
+                  () =>
+                    new Promise<void>((resolve) =>
+                      requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+                    )
+                );
+                const reflow = await page.evaluate(() => {
+                  const box = (selector: string) =>
+                    document.querySelector<HTMLElement>(selector)!.getBoundingClientRect().toJSON();
+                  return {
+                    rootFontSize: parseFloat(getComputedStyle(document.documentElement).fontSize),
+                    viewportWidth: innerWidth,
+                    overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
+                    left: box('.docs-sidebar'),
+                    toc: box('.right-sidebar'),
+                    main: box('.main-pane'),
+                    header: box('[data-docs-site-header]'),
+                    controls: [
+                      '.site-header-brand',
+                      '.site-header-search',
+                      '.site-header-theme',
+                      '.site-header-menu',
+                    ].map((selector) => ({ selector, ...box(selector) })),
+                  };
+                });
+                entry.text200Reflow = reflow;
+                await shot('text200-reflow');
+                assert.equal(reflow.rootFontSize, 32, 'Keep actual 200% root text');
+                assert.equal(reflow.overflow, 0, 'Enlarged reading layout must stay in viewport');
+                assert.ok(reflow.left.width >= 14 * reflow.rootFontSize);
+                assert.ok(reflow.toc.width >= 12 * reflow.rootFontSize);
+                assert.ok(reflow.toc.width <= reflow.main.width + 1);
+                for (const control of reflow.controls) {
+                  assert.ok(
+                    control.width > 0 && control.height > 0,
+                    `${control.selector} stays present`
+                  );
+                  assert.ok(
+                    control.left >= 0 && control.right <= reflow.viewportWidth,
+                    `${control.selector} stays reachable at 200% text`
+                  );
+                }
                 const overview = page
                   .locator('.right-sidebar a[data-site-link-appearance="toc"]:visible')
                   .first();

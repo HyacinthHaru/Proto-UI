@@ -6,7 +6,7 @@ const mainPaneClass = isSplash
   : 'main-pane mx-auto flex w-full max-w-2xl min-w-0 flex-1 flex-col gap-8 px-5 py-6 text-neutral-800 md:px-0 lg:py-8 dark:text-neutral-200';
 ---
 
-<div class="lg:sl-flex">
+<div class="docs-reading-columns lg:sl-flex">
   {
     Astro.locals.starlightRoute.toc && (
       <aside class="right-sidebar-container print:hidden">
@@ -66,6 +66,42 @@ const mainPaneClass = isSplash
       .main-pane[data-layout='splash'] {
         width: 100%;
         max-width: min(100%, 88rem);
+      }
+    }
+  }
+</style>
+
+<style>
+  /* Viewport media queries use the initial font size. The actual reading canvas
+     must also respond to enlarged root text, before the old column arithmetic
+     compresses the TOC into individual letters. Keep the same native TOC in
+     normal flow; no hidden duplicate or new disclosure owner is needed. */
+  @media (min-width: 64rem) {
+    @container docs-canvas (max-width: 80rem) {
+      .docs-reading-columns {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .right-sidebar-container {
+        display: flex;
+        position: static;
+        order: 0;
+        width: 100%;
+        height: auto;
+        padding-bottom: 0;
+        overflow: visible;
+      }
+      .right-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        padding-block: 0;
+        overflow: visible;
+      }
+      :global([data-has-sidebar][data-has-toc]) .main-pane {
+        order: 1;
+        width: 100%;
       }
     }
   }

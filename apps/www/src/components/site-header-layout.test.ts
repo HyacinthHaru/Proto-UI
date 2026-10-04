@@ -23,6 +23,18 @@ function actualMarkdownFixture(section = '<h2 id="actual-doc-heading">Installati
 }
 afterEach(() => document.body.replaceChildren());
 
+it('reflows enlarged desktop reading columns and Header by container space, preserving original owners', () => {
+  const columns = readFileSync('apps/www/src/components/override/TwoColumnContent.astro', 'utf8');
+  const header = readFileSync('apps/www/src/styles/site-header.css', 'utf8');
+  expect(frame).toContain('container: docs-canvas / inline-size');
+  expect(frame).toContain('lg:[--sidebar-width:15rem]');
+  expect(columns).toContain('@container docs-canvas (max-width: 80rem)');
+  expect(columns).toContain('class="docs-reading-columns lg:sl-flex"');
+  expect(columns).toMatch(/\.right-sidebar-container[\s\S]*width: 100%/);
+  expect(header).toContain('@container docs-page (max-width: 68.749rem)');
+  expect(header).toContain('@container docs-page (max-width: 42rem)');
+});
+
 describe('Docs header offset targets the actual MarkdownContent wrapper', () => {
   it('matches the real heading with the owned scroll-margin selector', () => {
     const heading = actualMarkdownFixture();
