@@ -171,3 +171,27 @@ test('native-sequence oracle remains discriminating and runs with the browser ev
   assert.match(browser, /toEqual\(recoveredRequests\)/);
   assert.match(readFileSync(helper, 'utf8'), /assert\.deepEqual/);
 });
+
+test('opt-in browser evidence follows its shared renderer and execution dependencies', () => {
+  const paths = workflow.on.pull_request.paths;
+  for (const dependency of [
+    'packages/adapters/base/**',
+    'packages/adapters/web-component/**',
+    'packages/adapters/react/**',
+    'packages/adapters/vue/**',
+    'packages/adapters/vue2/**',
+    'packages/core/**',
+    'packages/hooks/**',
+    'packages/runtime/**',
+    'packages/modules/**',
+    'packages/prototypes/base/**',
+    'packages/cli/src/services/prototype-style-tokens.ts',
+    'apps/www/src/components/PrototypePreviewer/**',
+    'apps/www/astro.config.mjs',
+    'apps/www/package.json',
+    'package.json',
+    'pnpm-lock.yaml',
+  ]) {
+    assert.ok(paths.includes(dependency), `${dependency} must wake the opt-in fixture`);
+  }
+});
