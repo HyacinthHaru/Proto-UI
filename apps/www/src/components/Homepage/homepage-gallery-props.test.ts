@@ -41,13 +41,23 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     };
     await settle();
     verify();
+    expect(host.querySelectorAll('[data-home-text]')).toHaveLength(28);
+    for (const owner of host.querySelectorAll('[data-home-text]')) {
+      const text = owner.querySelector('[data-pui-root]')!;
+      expect(text).not.toBeNull();
+      expect(text.getAttribute('data-pui-style')).toContain('font-');
+      expect(owner.querySelectorAll('[data-pui-root]')).toHaveLength(1);
+    }
     for (const tile of host.querySelectorAll('[data-gallery-demo]')) {
       const surface = tile.querySelector('[data-pui-root]')!;
       const appearance =
         family === 'brutalist' && tile.getAttribute('data-gallery-demo') === 'editor'
           ? 'canvas'
           : 'card';
-      expect(getElementProps(surface as HTMLElement)).toMatchObject({ family, appearance });
+      expect(getElementProps(surface as HTMLElement)).toMatchObject({
+        variant: 'outline',
+        elevation: appearance === 'card' ? 'raised' : 'none',
+      });
       expect(surface.getAttribute('data-pui-style')?.includes('shadow-')).toBe(
         appearance === 'card'
       );

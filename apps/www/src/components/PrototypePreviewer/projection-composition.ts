@@ -1,3 +1,4 @@
+import { siteTextRecipe } from '../site-text-recipes';
 import type { RuntimeId } from './runtimes/registry';
 import {
   assertDemoSpec,
@@ -500,11 +501,21 @@ function createSelectControl<Value extends string>(
       'data-projection-control-label': id,
     },
     children: [
-      createProjectedProto('site-typography', coordinateAttrs, themeSurfaceStyle, {
-        rootTag: 'span',
-        props: { family: coordinateAttrs['data-projection-family'], role: 'label', compact: false },
-        children: [config.label],
-      }),
+      createProjectedProto(
+        `${coordinateAttrs['data-projection-family']}-text-root`,
+        coordinateAttrs,
+        themeSurfaceStyle,
+        {
+          rootTag: 'span',
+          props: {
+            ...siteTextRecipe(
+              'label',
+              coordinateAttrs['data-projection-family'] === 'brutalist' ? 'brutalist' : 'shadcn'
+            ),
+          },
+          children: [config.label],
+        }
+      ),
     ],
   } satisfies DemoBoxNode;
   const value = createProjectedProto(selectParts.value, coordinateAttrs, themeSurfaceStyle, {
@@ -750,7 +761,7 @@ export function createProjectionComposition(
     for (const prototypeId of new Set([
       ...allowedPrototypeIds,
       ...Object.values(selectParts),
-      ...(controlIds.length ? ['site-typography'] : []),
+      ...(controlIds.length ? [`${options.projectionFamilyId}-text-root`] : []),
     ])) {
       prototypeMarkers.set(markerClass('prototype', prototypeId), prototypeId);
     }

@@ -287,7 +287,7 @@ fn reports_a_property_it_cannot_express() {
 ///
 /// Every entry here is deliberate, not an oversight: each needs work beyond a
 /// property assignment, and each is named in the plan as its own slice.
-const EXPECTED_UNMAPPED: [&str; 30] = [
+const EXPECTED_UNMAPPED: [&str; 31] = [
     // Composed paint that needs BoxShadow construction from the ring/shadow
     // custom properties rather than a single declaration.
     "box-shadow",
@@ -319,6 +319,7 @@ const EXPECTED_UNMAPPED: [&str; 30] = [
     "transition-property",
     "transition-timing-function",
     // Text properties this layer has not mapped yet.
+    "font-style",
     "letter-spacing",
     "text-align",
     "text-decoration-line",
@@ -331,7 +332,12 @@ const EXPECTED_UNMAPPED: [&str; 30] = [
 /// This is a separate list from the property inventory on purpose. `width` is
 /// mapped; `width: fit-content` is not. Recording the pair keeps the property
 /// inventory from claiming that `width` never reaches a surface.
-const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 8] = [
+const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 9] = [
+    (
+        "color",
+        "inherit",
+        "Text's inherited ink requires a parent text style; the single-surface mapper does not resolve CSS inheritance.",
+    ),
     (
         "width",
         "fit-content",
@@ -713,6 +719,36 @@ fn liquid_alpha_maps_but_the_recorded_blur_remains_explicitly_unsupported() {
         property == "backdrop-filter"
             && value == "blur(4px)"
             && *reason == Unmapped::UnknownProperty
+    }));
+    assert!(!mapped.is_complete());
+}
+
+// T-TEXT-0001-CASE-NATIVE-LIMITS: these declarations are known, but no native
+// italic/tracking/decoration support is claimed until the mapper realizes them.
+#[test]
+fn text_presentation_preserves_explicit_unmapped_diagnostics() {
+    let mapped = map(
+        &resolve(&["italic", "tracking-tight", "underline"], "shadcn"),
+        LengthContext::default(),
+    );
+    for property in ["font-style", "letter-spacing", "text-decoration-line"] {
+        assert!(
+            mapped
+                .unmapped
+                .iter()
+                .any(|(name, _, reason)| name == property && *reason == Unmapped::UnknownProperty),
+            "missing explicit diagnostic for {property}: {:?}",
+            mapped.unmapped
+        );
+    }
+    assert!(!mapped.is_complete());
+}
+
+#[test]
+fn text_inherited_tone_reports_unsupported_value_without_parent_style() {
+    let mapped = map(&resolve(&["text-inherit"], "shadcn"), LengthContext::default());
+    assert!(mapped.unmapped.iter().any(|(property, value, reason)| {
+        property == "color" && value == "inherit" && *reason == Unmapped::UnsupportedValue
     }));
     assert!(!mapped.is_complete());
 }

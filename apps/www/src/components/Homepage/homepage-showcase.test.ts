@@ -29,6 +29,9 @@ function mount(runtime: RuntimeId, locale = 'en') {
       return;
     }
     const element = document.createElement('div');
+    if (node.kind === 'box')
+      for (const [name, value] of Object.entries(node.attrs ?? {}))
+        element.setAttribute(name, value);
     if (node.ref) {
       refs[node.ref] = element;
       props[node.ref] = node.kind === 'proto' ? { ...node.props } : {};
@@ -78,10 +81,10 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     const ids = new Set<string>();
     collectPrototypeIds(content.demo.root, ids);
     expect([...ids].sort()).toEqual([...content.recipe.prototypeIds].sort());
-    expect(ids.size).toBe(35);
-    expect([...ids].every((id) => id.startsWith(`${family}-`) || id === PREVIEW_SURFACE_ID)).toBe(
-      true
-    );
+    expect(ids.size).toBe(36);
+    expect(
+      [...ids].every((id) => id.startsWith(`${family}-`) || id === PREVIEW_SURFACE_ID(family))
+    ).toBe(true);
     expect(ids.has(`${family}-hover-card-root`)).toBe(true);
     expect(ids.has(`${family}-card-root`)).toBe(false);
     const composition = createProjectionComposition({
@@ -259,7 +262,7 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
     await Promise.resolve();
     expect(gallery.props['editor-text']!.value).toBe('Editable result');
     expect(gallery.refs['editor-preview']!.textContent).toBe('Editable result');
-    expect(gallery.refs['editor-preview']!.style.fontWeight).toBe('700');
+    expect(gallery.props['editor-preview-text']!.weight).toBe('bold');
     gallery.event('gallery-menu-add', 'select', { value: 'add' });
     expect(gallery.refs['gallery-dialog-feedback']!.textContent).toBe('Copies: 1');
     gallery.event('gallery-confirm', 'click');

@@ -139,7 +139,9 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       await expect.poll(() => editorText.value).toBe('真实组合编辑');
       ref('editor-bold').click();
       await expect.poll(() => ref('editor-preview').textContent).toBe('真实组合编辑');
-      await expect.poll(() => ref('editor-preview').style.fontWeight).toBe('700');
+      await expect
+        .poll(() => ref('editor-preview-text').getAttribute('data-pui-style')?.split(/\s+/))
+        .toContain('font-bold');
       ref('choice-product').click();
       ref('choice-apply').click();
       await expect.poll(() => ref('choice-feedback').textContent).toBe('已应用 1 项选择');

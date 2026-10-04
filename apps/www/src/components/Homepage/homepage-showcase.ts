@@ -1,3 +1,4 @@
+import { composeHomepageText, setHomepageText } from './homepage-text';
 import { createHomepageGalleryParts, homepageCommandLayout } from './homepage-gallery-parts';
 import type { DemoNode, DemoSetupContext, DemoSpec } from '../PrototypePreviewer/demo-types';
 import type { ProjectionContentRecipe } from '../PrototypePreviewer/projection-composition';
@@ -89,7 +90,7 @@ export function createHomepageShowcase(
   const result: { demo: DemoSpec; recipe: ProjectionContentRecipe } = {
     recipe: {
       id: HOMEPAGE_SHOWCASE_ID,
-      prototypeIds: [...new Set([...Object.values(parts), ...gallery.ids])],
+      prototypeIds: [...new Set([...Object.values(parts), ...gallery.ids, `${family}-text-root`])],
       rootPrototypeId: parts.select,
     },
     demo: {
@@ -291,9 +292,11 @@ export function createHomepageShowcase(
         const refresh = (message?: string) => {
           const dirty = !equal(draft, saved);
           refs.settings!.dataset.dirty = String(dirty);
-          refs['settings-count']!.textContent = copy.characters(draft.note.length);
-          refs['settings-feedback']!.textContent =
-            message ?? (dirty ? copy.changed : copy.unchanged);
+          setHomepageText(refs['settings-count']!, copy.characters(draft.note.length));
+          setHomepageText(
+            refs['settings-feedback']!,
+            message ?? (dirty ? copy.changed : copy.unchanged)
+          );
           publishProps('settings-save', { disabled: !dirty || composing });
           publishProps('settings-reset', {
             disabled: equal(draft, defaults()) || composing,
@@ -424,5 +427,6 @@ export function createHomepageShowcase(
     },
     children: gallery.columns(form),
   };
+  result.demo.root = composeHomepageText(result.demo.root, family);
   return result;
 }

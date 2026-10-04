@@ -77,7 +77,7 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
     });
     await loadPrototypes([
       'brutalist-button',
-      'site-typography',
+      'brutalist-text-root',
       ...['root', 'trigger', 'value', 'content', 'item'].map((part) => `brutalist-select-${part}`),
     ]);
     rendered = await renderDemo({ runtime, demo: composition.demo, host });

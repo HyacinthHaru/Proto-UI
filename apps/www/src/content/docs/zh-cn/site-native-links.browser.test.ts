@@ -534,7 +534,7 @@ async function assertHeaderPopupSurface(
   expect(paint.family).toBe(family);
   expect(paint.runtime).toBe(runtime);
   if (homepage) expect(paint.generation).toBe(paint.pageGeneration);
-  expect(paint.prototype).toBe('site-preview-surface');
+  expect(paint.prototype).toBe(`${family}-surface-root`);
   expect(paint.contentInside).toBe(true);
   expect(paint.role).toBeNull();
   expect(paint.tabindex).toBeNull();
@@ -952,7 +952,9 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       try {
         await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
         await page
-          .locator('a[data-site-native-link][aria-label="GitHub"] wc-site-link-surface')
+          .locator(
+            'a[data-site-native-link][aria-label="GitHub"] :is(wc-site-shadcn-surface,wc-site-brutalist-surface)'
+          )
           .waitFor({ state: 'attached' });
         await openSettings(page);
         await assertHeaderPopupSurface(page, family, 'wc', false);
@@ -975,6 +977,105 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       } finally {
         await context.close();
       }
+    }
+  }, 90_000);
+
+  it('preserves real pagination selection endpoints and arrow layout through family replacement', async () => {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await context.newPage();
+    try {
+      await page.goto(`${baseUrl}/en/ui-libraries/shadcn/button/`, { waitUntil: 'networkidle' });
+      await page.locator('.pagination-links a[data-site-link-enhanced]').first().waitFor();
+      for (const endpoint of ['text', 'container'] as const) {
+        await page.evaluate((kind) => {
+          const link = document.querySelector<HTMLAnchorElement>(
+            '.pagination-links a[data-site-link-enhanced]'
+          )!;
+          const label = link.querySelector<HTMLElement>('.link-title')!;
+          const node = kind === 'text' ? label.firstChild! : label;
+          const end = kind === 'text' ? node.textContent!.length : node.childNodes.length;
+          const selection = document.getSelection()!;
+          selection.setBaseAndExtent(node, 0, node, end);
+          (window as any).__paginationSelection = {
+            link,
+            label,
+            node,
+            end,
+            text: selection.toString(),
+            href: link.getAttribute('href'),
+          };
+        }, endpoint);
+        for (const family of ['brutalist', 'shadcn'] as const) {
+          await page.evaluate((value) => {
+            document.documentElement.dataset.siteLibraryFamily = value;
+          }, family);
+          await page.waitForFunction(
+            (value) =>
+              Array.from(
+                document.querySelectorAll('.pagination-links a[data-site-link-enhanced]')
+              ).every((link) => link.firstElementChild?.localName === `wc-site-${value}-surface`),
+            family
+          );
+          const evidence = await page.evaluate(() => {
+            const saved = (window as any).__paginationSelection;
+            const selection = document.getSelection()!;
+            return {
+              sameLink: saved.link.isConnected,
+              sameLabel: saved.label.isConnected,
+              anchor: selection.anchorNode === saved.node,
+              focus: selection.focusNode === saved.node,
+              anchorOffset: selection.anchorOffset,
+              focusOffset: selection.focusOffset,
+              expectedEnd: saved.end,
+              text: selection.toString(),
+              expectedText: saved.text,
+              sameHref: saved.link.getAttribute('href') === saved.href,
+              layout: Array.from(
+                document.querySelectorAll<HTMLAnchorElement>(
+                  '.pagination-links a[data-site-link-enhanced]'
+                )
+              ).map((link) => {
+                const surface = link.firstElementChild!;
+                const arrow = surface.querySelector('svg')!;
+                const label = surface.querySelector('[data-site-link-text]')!;
+                return {
+                  rel: link.rel,
+                  marker: surface.hasAttribute('data-site-link-content'),
+                  siblings: arrow.parentElement === label.parentElement,
+                  arrowLeft: arrow.getBoundingClientRect().left,
+                  labelLeft: label.getBoundingClientRect().left,
+                };
+              }),
+            };
+          });
+          expect(evidence).toMatchObject({
+            sameLink: true,
+            sameLabel: true,
+            anchor: true,
+            focus: true,
+            anchorOffset: 0,
+            sameHref: true,
+          });
+          expect(evidence.focusOffset).toBe(evidence.expectedEnd);
+          expect(evidence.text).toBe(evidence.expectedText);
+          for (const item of evidence.layout) {
+            expect(item.marker).toBe(true);
+            expect(item.siblings).toBe(true);
+            if (item.rel === 'next') expect(item.arrowLeft).toBeGreaterThan(item.labelLeft);
+            else expect(item.arrowLeft).toBeLessThan(item.labelLeft);
+          }
+          await captureLinks(
+            page,
+            `docs-pagination-${endpoint}-${family}`,
+            family,
+            'wc',
+            'native-directional-selection-retained',
+            evidence
+          );
+        }
+      }
+    } finally {
+      await context.close();
     }
   }, 90_000);
 

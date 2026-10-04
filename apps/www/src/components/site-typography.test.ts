@@ -264,7 +264,7 @@ describe('typography scope transaction and bounded setup', () => {
 describe('inline renderer cache isolation', () => {
   for (const runtime of ['react', 'vue', 'vue2'] as const)
     it(`${runtime}: keeps span and default roots distinct for the same prototype`, async () => {
-      await loadPrototypes(['site-typography']);
+      await loadPrototypes(['shadcn-text-root']);
       const host = document.createElement('div');
       document.body.append(host);
       const result = await renderDemo({
@@ -275,14 +275,14 @@ describe('inline renderer cache isolation', () => {
           root: {
             kind: 'box',
             children: [
-              { kind: 'proto', prototypeId: 'site-typography', ref: 'block', children: ['Block'] },
+              { kind: 'proto', prototypeId: 'shadcn-text-root', ref: 'block', children: ['Block'] },
               {
                 kind: 'box',
                 tag: 'span',
                 children: [
                   {
                     kind: 'proto',
-                    prototypeId: 'site-typography',
+                    prototypeId: 'shadcn-text-root',
                     rootTag: 'span',
                     ref: 'inline',
                     children: ['Inline'],
@@ -312,7 +312,7 @@ describe('native-source lease boundaries', () => {
     rendered.activate();
     frame.prepareCommit(selection).publish();
     const actual = header.querySelector('.site-header-popup-surface')!;
-    expect(actual.getAttribute('data-projection-prototype')).toBe('site-preview-surface');
+    expect(actual.getAttribute('data-projection-prototype')).toBe('shadcn-surface-root');
     expect(
       collectSiteTypographyTargets(document.body).map((target) => target.native.textContent)
     ).toEqual(['Runtime']);

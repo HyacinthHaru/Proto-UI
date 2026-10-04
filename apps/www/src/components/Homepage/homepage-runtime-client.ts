@@ -1,3 +1,9 @@
+import {
+  linkSurfaceProps,
+  linkSurfaceLayout,
+  linkTextProps,
+  appendSiteLinkGlyph,
+} from '../site-link-recipes';
 import { siteTypographyParticipant } from '../site-typography';
 import { headerSurfaceParticipant } from '../site-header-surface';
 import { bindNativeLinkFacts } from '../site-native-link-facts';
@@ -131,23 +137,42 @@ export function createHomepageContent(
       children: [
         {
           kind: 'proto',
-          prototypeId: 'site-link-surface',
+          prototypeId: `${family}-surface-root`,
           ref: `home-link-surface-${index}`,
+          surfaceStyle: linkSurfaceLayout(family, siteLinkAppearance(link), siteLinkEmphasis(link)),
           props: {
-            family,
-            appearance: siteLinkAppearance(link),
-            emphasis: siteLinkEmphasis(link),
-            icon: siteLinkIcon(link),
-            // Setup runs while the generation is staged. Carry native static
-            // truth into the first materialized frame before its active gate
-            // permits later host-fact publications.
-            current:
-              link.hasAttribute('aria-current') && link.getAttribute('aria-current') !== 'false',
-            hovered: false,
-            pressed: false,
-            focusVisible: false,
+            ...linkSurfaceProps(family, siteLinkAppearance(link), siteLinkEmphasis(link), {
+              hovered: false,
+              pressed: false,
+              focusVisible: false,
+              current:
+                link.hasAttribute('aria-current') && link.getAttribute('aria-current') !== 'false',
+            }),
           },
-          children: [link.textContent?.trim() || link.getAttribute('aria-label') || 'Link'],
+          children:
+            siteLinkIcon(link) !== 'none'
+              ? [{ kind: 'box', tag: 'span', ref: `home-link-glyph-${index}` }]
+              : [
+                  {
+                    kind: 'proto',
+                    prototypeId: `${family}-text-root`,
+                    rootTag: 'span',
+                    ref: `home-link-text-${index}`,
+                    props: {
+                      ...linkTextProps(siteLinkAppearance(link), {
+                        hovered: false,
+                        pressed: false,
+                        focusVisible: false,
+                        current:
+                          link.hasAttribute('aria-current') &&
+                          link.getAttribute('aria-current') !== 'false',
+                      }),
+                    },
+                    children: [
+                      link.textContent?.trim() || link.getAttribute('aria-label') || 'Link',
+                    ],
+                  },
+                ],
         },
       ],
     };
@@ -236,16 +261,24 @@ export function createHomepageContent(
       const cleanupLinkFacts = group.links.map((_link, index) => {
         const link = context.refs[`home-link-${index}`] as HTMLAnchorElement | undefined;
         if (!link) return () => {};
+        const icon = siteLinkIcon(group.links[index]!);
+        if (icon !== 'none') appendSiteLinkGlyph(context.refs[`home-link-glyph-${index}`]!, icon);
         return bindNativeLinkFacts(
           link,
-          (facts) =>
+          (facts) => {
             context.api.setProps(`home-link-surface-${index}`, {
-              family,
-              appearance: siteLinkAppearance(group.links[index]!),
-              emphasis: siteLinkEmphasis(group.links[index]!),
-              icon: siteLinkIcon(group.links[index]!),
-              ...facts,
-            }),
+              ...linkSurfaceProps(
+                family,
+                siteLinkAppearance(group.links[index]!),
+                siteLinkEmphasis(group.links[index]!),
+                facts
+              ),
+            });
+            if (context.refs[`home-link-text-${index}`])
+              context.api.setProps(`home-link-text-${index}`, {
+                ...linkTextProps(siteLinkAppearance(group.links[index]!), facts),
+              });
+          },
           { isActive }
         );
       });
@@ -395,7 +428,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       const component = desiredComponent;
       const work = groups.map(async (group) => {
         const ids = [
-          ...(group.links.length ? ['site-link-surface'] : []),
+          ...(group.links.length ? [`${family}-surface-root`, `${family}-text-root`] : []),
           ...(group.theme || group.menu
             ? [resolveProjectionPart(family, 'button', 'root').prototypeId]
             : []),

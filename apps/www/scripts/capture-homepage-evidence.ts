@@ -1101,7 +1101,7 @@ try {
             evidence.headerDisclosureSurface = panelSurface;
             assert.ok(panelSurface, 'Native disclosure requires its actual Prototype surface');
             assert.equal(panelSurface.count, 1, 'Exactly one popup organizing surface');
-            assert.equal(panelSurface.prototype, 'site-preview-surface');
+            assert.equal(panelSurface.prototype, `${panelSurface.family}-surface-root`);
             assert.equal(panelSurface.runtime, 'wc');
             assert.equal(panelSurface.generation, panelSurface.pageGeneration);
             assert.ok(panelSurface.containsNativeContent);

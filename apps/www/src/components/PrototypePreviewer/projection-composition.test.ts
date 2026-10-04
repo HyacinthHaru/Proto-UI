@@ -255,9 +255,9 @@ describe('Website projection composition', () => {
       children: [
         {
           kind: 'proto',
-          prototypeId: 'site-typography',
+          prototypeId: 'shadcn-text-root',
           rootTag: 'span',
-          props: { family: 'shadcn', role: 'label', compact: false },
+          props: { size: 'sm', weight: 'medium' },
           children: ['Runtime'],
         },
       ],
@@ -800,7 +800,7 @@ describe('Website projection composition', () => {
       const caption = host.querySelector(
         '[data-projection-control-label] .pui-projection-prototype'
       )!;
-      expect(caption.getAttribute('data-projection-prototype')).toBe('site-typography');
+      expect(caption.getAttribute('data-projection-prototype')).toBe('shadcn-text-root');
       expect(caption.getAttribute('data-projection-owner')).toBe('caption-owner');
       expect(caption.getAttribute('data-projection-generation')).toBe('9');
     } finally {

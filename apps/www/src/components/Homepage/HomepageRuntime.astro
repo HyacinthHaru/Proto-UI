@@ -103,7 +103,12 @@ const localeActions = otherLocale
   <div class="site-header-menu">
     <HomeActions id="home-menu-control" actions={[]} menuButton />
   </div>
-  <output class="home-runtime-status" data-homepage-runtime-status aria-live="polite">
+  <output
+    class="home-runtime-status"
+    data-homepage-runtime-status
+    data-site-typography="caption"
+    aria-live="polite"
+  >
     {zh ? '原生链接可用 · Runtime 加载中' : 'Native links ready · runtime loading'}
   </output>
 </div>

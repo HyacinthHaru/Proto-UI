@@ -82,7 +82,10 @@ async function measure(
         )
           outerPaint.push(element.className);
       }
-      const children = Array.from(frame.children).filter(
+      const originalContent = frame.querySelector(
+        '[data-demo-ref="__website_runtime_preview_surface__-content"]'
+      );
+      const children = Array.from((originalContent ?? frame).children).filter(
         (child) => child.getBoundingClientRect().width > 0
       );
       return {
@@ -114,10 +117,12 @@ async function measure(
         hasRole: frame.hasAttribute('role'),
         hasTabStop: frame.hasAttribute('tabindex'),
         pointerEvents: style.pointerEvents,
-        contentContained: children.every((child) => {
-          const box = child.getBoundingClientRect();
-          return box.left >= rect.left - 1 && box.right <= rect.right + 1;
-        }),
+        contentContained:
+          children.length > 0 &&
+          children.every((child) => {
+            const box = child.getBoundingClientRect();
+            return box.left >= rect.left - 1 && box.right <= rect.right + 1;
+          }),
         pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
     },

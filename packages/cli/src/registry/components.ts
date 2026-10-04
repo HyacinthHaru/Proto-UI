@@ -209,6 +209,38 @@ const baseCompound = (
   );
 
 export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
+  'bootstrap-2-3-2-surface': defineSimple(
+    'bootstrap-2-3-2-surface',
+    'Bootstrap 2.3.2 Surface',
+    '@proto.ui/prototypes-bootstrap-2-3-2',
+    '@proto.ui/prototypes-bootstrap-2-3-2/surface',
+    'surfaceRoot',
+    'Bootstrap232SurfaceRoot'
+  ),
+  'liquid-glass-surface': defineSimple(
+    'liquid-glass-surface',
+    'Liquid Glass Surface',
+    '@proto.ui/prototypes-liquid-glass',
+    '@proto.ui/prototypes-liquid-glass/surface',
+    'surfaceRoot',
+    'LiquidGlassSurfaceRoot'
+  ),
+  'base-surface': base('base-surface', 'Base Surface', 'surfaceRoot', 'BaseSurfaceRoot'),
+  'shadcn-surface': shadcn('shadcn-surface', 'Shadcn Surface', 'surfaceRoot', 'ShadcnSurfaceRoot'),
+  'brutalist-surface': brutalist(
+    'brutalist-surface',
+    'Brutalist Surface',
+    'surfaceRoot',
+    'BrutalistSurfaceRoot'
+  ),
+  'base-text': base('base-text', 'Base Text', 'textRoot', 'BaseTextRoot'),
+  'shadcn-text': shadcn('shadcn-text', 'shadcn Text', 'shadcnTextRoot', 'ShadcnTextRoot'),
+  'brutalist-text': brutalist(
+    'brutalist-text',
+    'Brutalist Text',
+    'brutalistTextRoot',
+    'BrutalistTextRoot'
+  ),
   'shadcn-input': shadcn('shadcn-input', 'shadcn Input', 'shadcnInputRoot', 'ShadcnInputRoot'),
   'shadcn-button': shadcn('shadcn-button', 'shadcn Button', 'shadcnButton', 'ShadcnButton'),
   'shadcn-toggle': shadcn('shadcn-toggle', 'shadcn Toggle', 'shadcnToggle', 'ShadcnToggle'),

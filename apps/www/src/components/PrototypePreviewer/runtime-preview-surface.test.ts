@@ -8,7 +8,6 @@ import { collectPrototypeIds, type DemoSetupContext, type DemoSpec } from './dem
 import { PROJECTION_FAMILY_MANIFESTS, type ProjectionFamilyManifest } from './projection-families';
 import { registerPrototype } from './registry';
 import { renderDemo } from './demo-renderer';
-import SitePreviewSurface from '../../prototypes/site-preview-surface.proto';
 import Toggle from '../../../../../packages/prototypes/shadcn/src/toggle/toggle.proto';
 
 // Exercise the real adapters with the repository's installed framework versions.
@@ -41,34 +40,29 @@ afterEach(() => {
 });
 
 describe('RuntimeBox canvas composition', () => {
-  it('preserves the original recipe root and forwards only its setup refs and cleanup once', () => {
+  it('preserves original recipe identity and forwards only child refs with one cleanup', async () => {
     const cleanup = vi.fn();
-    const setup = vi.fn(() => cleanup);
-    const child: DemoSpec = { type: 'demo', root: { kind: 'box', ref: 'original' }, setup };
-    const surface = createRuntimePreviewSurface(child, 'brutalist');
-    expect(surface.demo.root.kind).toBe('proto');
-    if (surface.demo.root.kind !== 'proto') throw new Error('Expected a Prototype surface');
-    expect(surface.demo.root.props).toEqual({
-      family: 'brutalist',
-      emphasis: 'plain',
-      appearance: 'canvas',
-    });
-    expect(surface.demo.root.children).toEqual([child.root]);
-    expect(surface.demo.root.children?.[0]).toBe(child.root);
-    const original = document.createElement('div');
-    const host = document.createElement('div');
-    const context = {
-      host,
-      refs: { original, [surface.demo.root.ref!]: host },
-      api: { setProps: vi.fn(), call: vi.fn(), getExposes: vi.fn() },
+    const setup = vi.fn((_context: DemoSetupContext) => cleanup);
+    const child: DemoSpec = {
+      type: 'demo',
+      root: { kind: 'box', ref: 'original', children: ['Content'] },
+      setup,
     };
-    const release = surface.demo.setup!(context)!;
-    expect(setup).toHaveBeenCalledWith({ ...context, refs: { original } });
-    release();
-    release();
-    surface.setAppearance('shadcn', { '--pui-background': '#fff' });
+    const surface = createRuntimePreviewSurface(child, 'brutalist');
+    if (surface.demo.root.kind !== 'box') throw new Error('Expected composition');
+    const content = surface.demo.root.children![1];
+    if (typeof content === 'string' || content.kind !== 'box')
+      throw new Error('Expected source container');
+    expect(content.children![0]).toBe(child.root);
+    const host = document.createElement('div');
+    document.body.append(host);
+    const result = await renderDemo({ runtime: 'wc', host, demo: surface.demo });
+    await surface.ready;
+    expect(Object.keys(setup.mock.calls[0]![0].refs)).toEqual(['original']);
+    await result.destroy();
+    await result.destroy();
+    await surface.setAppearance('shadcn', { '--pui-background': '#fff' });
     expect(cleanup).toHaveBeenCalledTimes(1);
-    expect(context.api.setProps).not.toHaveBeenCalled();
   });
 
   it('declares only the original recipe closure plus the one actual app surface', () => {
@@ -84,9 +78,9 @@ describe('RuntimeBox canvas composition', () => {
         const recipe = runtimePreviewRecipe(family, component);
         expect(recipe.prototypeIds).toEqual([
           ...original.recipePrototypeIds,
-          'site-preview-surface',
+          `${family}-surface-root`,
         ]);
-        expect(recipe.rootPrototypeId).not.toBe('site-preview-surface');
+        expect(recipe.rootPrototypeId).not.toBe(`${family}-surface-root`);
       }
     }
     const child: DemoSpec = {
@@ -95,13 +89,12 @@ describe('RuntimeBox canvas composition', () => {
     };
     const ids = new Set<string>();
     collectPrototypeIds(createRuntimePreviewSurface(child, 'shadcn').demo.root, ids);
-    expect([...ids]).toEqual(['site-preview-surface', 'original-component']);
+    expect([...ids]).toEqual(['original-component']);
   });
 
   for (const family of ['bootstrap-2-3-2', 'liquid-glass'] as const) {
     for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
       it(`${family}/${runtime}: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button`, async () => {
-        registerPrototype('site-preview-surface', SitePreviewSurface);
         const prototype =
           family === 'liquid-glass'
             ? (
@@ -135,22 +128,26 @@ describe('RuntimeBox canvas composition', () => {
             };
           },
         };
-        const surface = createRuntimePreviewSurface(child, family, {
-          '--pui-background': '#123456',
-        });
-        expect(surface.demo.root.kind).toBe('proto');
-        if (surface.demo.root.kind !== 'proto') throw new Error('Expected a real private canvas');
-        expect(surface.demo.root.children?.[0]).toBe(child.root);
+        const surface = createRuntimePreviewSurface(
+          child,
+          family,
+          {
+            '--pui-background': '#123456',
+          },
+          runtime
+        );
+        expect(surface.demo.root.kind).toBe('box');
         expect(runtimePreviewRecipe(family, 'button').prototypeIds).toEqual([
           `${family}-button`,
-          'site-preview-surface',
+          `${family}-surface-root`,
         ]);
         expect(() => runtimePreviewRecipe(family, 'select')).toThrow(/unavailable/);
         const host = document.createElement('div');
         document.body.append(host);
         const result = await renderDemo({ runtime, host, demo: surface.demo });
+        await surface.ready;
         try {
-          const frame = host.querySelector<HTMLElement>('.pui-runtime-preview-surface')!;
+          let frame = host.querySelector<HTMLElement>('.pui-runtime-preview-surface')!;
           const button = context.refs['actual-button'];
           await vi.waitFor(() => expect(button.getAttribute('role')).toBe('button'));
           const tokens = frame.getAttribute('data-pui-style') ?? '';
@@ -165,7 +162,7 @@ describe('RuntimeBox canvas composition', () => {
           button.click();
           expect(onClick).toHaveBeenCalledTimes(1);
           button.focus();
-          surface.setAppearance(family, { '--pui-background': '#654321' });
+          await surface.setAppearance(family, { '--pui-background': '#654321' });
           expect(context.refs['actual-button']).toBe(button);
           expect(document.activeElement).toBe(button);
           expect(frame.style.getPropertyValue('--pui-background')).toBe('#654321');
@@ -185,7 +182,9 @@ describe('RuntimeBox canvas composition', () => {
     expect(() => createRuntimePreviewSurface(child, unknown)).toThrow(/unsupported canvas family/);
     const surface = createRuntimePreviewSurface(child, 'brutalist');
     expect(() => surface.setAppearance(unknown, {})).toThrow(/unsupported canvas family/);
-    expect(surface.demo.root.kind === 'proto' && surface.demo.root.props?.family).toBe('brutalist');
+    expect(runtimePreviewRecipe('brutalist', 'button').prototypeIds).toContain(
+      'brutalist-surface-root'
+    );
   });
 
   it('rejects a child ref collision instead of taking over the demonstrated instance', () => {
@@ -211,7 +210,6 @@ describe('RuntimeBox canvas composition', () => {
 
   for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
     it(`${runtime}: keeps the demonstrated uncontrolled state and activation after a surface family change`, async () => {
-      registerPrototype('site-preview-surface', SitePreviewSurface);
       registerPrototype('shadcn-toggle', Toggle);
       let context!: DemoSetupContext;
       const cleanup = vi.fn();
@@ -228,17 +226,18 @@ describe('RuntimeBox canvas composition', () => {
           return cleanup;
         },
       };
-      const surface = createRuntimePreviewSurface(child, 'shadcn');
+      const surface = createRuntimePreviewSurface(child, 'shadcn', {}, runtime);
       const host = document.createElement('div');
       document.body.append(host);
       const result = await renderDemo({ runtime, host, demo: surface.demo });
+      await surface.ready;
       try {
         const toggle = context.refs.toggle!;
         const active = () => (context.api.getExposes('toggle')?.active as { get(): boolean }).get();
         toggle.click();
         await vi.waitFor(() => expect(active()).toBe(true));
         toggle.focus();
-        surface.setAppearance('brutalist', {
+        await surface.setAppearance('brutalist', {
           '--pui-background': '#fff',
           '--pui-foreground': '#000',
         });
@@ -258,7 +257,6 @@ describe('RuntimeBox canvas composition', () => {
       expect(cleanup).toHaveBeenCalledTimes(1);
     }, 15000);
     it(`${runtime}: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup`, async () => {
-      registerPrototype('site-preview-surface', SitePreviewSurface);
       let context!: DemoSetupContext;
       const cleanup = vi.fn();
       const setup = vi.fn((next: DemoSetupContext) => {
@@ -276,13 +274,19 @@ describe('RuntimeBox canvas composition', () => {
         },
         setup,
       };
-      const surface = createRuntimePreviewSurface(child, 'shadcn', { '--pui-background': '#fff' });
+      const surface = createRuntimePreviewSurface(
+        child,
+        'shadcn',
+        { '--pui-background': '#fff' },
+        runtime
+      );
       const host = document.createElement('div');
       document.body.append(host);
       const result = await renderDemo({ runtime, host, demo: surface.demo });
+      await surface.ready;
       try {
         const link = host.querySelector('a')!;
-        const frame = host.querySelector<HTMLElement>('.pui-runtime-preview-surface')!;
+        let frame = host.querySelector<HTMLElement>('.pui-runtime-preview-surface')!;
         expect(context.refs['original-link']).toBe(link);
         expect(frame.contains(link)).toBe(true);
         expect(frame.getAttribute('role')).toBeNull();
@@ -291,19 +295,18 @@ describe('RuntimeBox canvas composition', () => {
         expect(frame.getAttribute('data-pui-style')).not.toContain('shadow-');
         link.focus();
         expect(document.activeElement).toBe(link);
-        surface.setAppearance('brutalist', {
+        await surface.setAppearance('brutalist', {
           '--pui-background': '#111',
           '--pui-foreground': '#fff',
         });
-        await vi.waitFor(() =>
-          expect(frame.getAttribute('data-pui-style')).toContain('rounded-base')
-        );
+        frame = host.querySelector<HTMLElement>('.pui-runtime-preview-surface')!;
+        expect(frame.getAttribute('data-pui-style')).toContain('rounded-base');
         expect(frame.getAttribute('data-pui-style')).not.toContain('shadow-');
         expect(host.querySelector('a')).toBe(link);
         expect(document.activeElement).toBe(link);
         expect(link.getAttribute('href')).toBe('#destination');
         expect(link.getAttribute('aria-label')).toBe('Original link');
-        surface.setAppearance('brutalist', { '--pui-background': '#000' });
+        await surface.setAppearance('brutalist', { '--pui-background': '#000' });
         expect(frame.style.getPropertyValue('--pui-foreground')).toBe('');
         expect(frame.getAttribute('data-pui-style')).not.toContain('shadow-');
         expect(host.querySelector('a')).toBe(link);
@@ -311,11 +314,96 @@ describe('RuntimeBox canvas composition', () => {
         await result.destroy();
         expect(cleanup).toHaveBeenCalledTimes(1);
         expect(link.isConnected).toBe(false);
-        surface.setAppearance('shadcn', { '--pui-background': '#ccc' });
+        await surface.setAppearance('shadcn', { '--pui-background': '#ccc' });
         expect(link.isConnected).toBe(false);
       } finally {
         await result.destroy();
       }
     }, 15000);
   }
+});
+
+describe('passive public shell lease interruption', () => {
+  for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+    it(`${runtime}: latest family wins while the original focused content and state survive`, async () => {
+      registerPrototype('shadcn-toggle', Toggle);
+      let context!: DemoSetupContext;
+      const cleanup = vi.fn();
+      const child: DemoSpec = {
+        type: 'demo',
+        root: {
+          kind: 'proto',
+          prototypeId: 'shadcn-toggle',
+          ref: 'retained',
+          children: ['Retained toggle'],
+        },
+        setup(next) {
+          context = next;
+          return cleanup;
+        },
+      };
+      const shell = createRuntimePreviewSurface(child, 'shadcn', {}, runtime);
+      const host = document.createElement('div');
+      document.body.append(host);
+      const rendered = await renderDemo({ runtime, host, demo: shell.demo });
+      await shell.ready;
+      const toggle = context.refs.retained!;
+      toggle.click();
+      toggle.focus();
+      const first = shell.setAppearance('brutalist', { '--pui-background': '#111' });
+      const second = shell.setAppearance('shadcn', { '--pui-background': '#222' });
+      const third = shell.setAppearance('brutalist', { '--pui-background': '#333' });
+      await Promise.all([first, second, third]);
+      expect(context.refs.retained).toBe(toggle);
+      expect((context.api.getExposes('retained')!.active as { get(): boolean }).get()).toBe(true);
+      expect(document.activeElement).toBe(toggle);
+      expect(host.querySelectorAll('.pui-runtime-preview-surface')).toHaveLength(1);
+      expect(
+        host.querySelector('.pui-runtime-preview-surface')!.getAttribute('data-pui-style')
+      ).toContain('rounded-base');
+      await rendered.destroy();
+      expect(cleanup).toHaveBeenCalledTimes(1);
+      expect(host.querySelectorAll('.pui-runtime-preview-surface')).toHaveLength(0);
+    });
+    it(`${runtime}: restores a removed borrowed source before teardown and rejects late publication`, async () => {
+      const cleanup = vi.fn();
+      const shell = createRuntimePreviewSurface(
+        {
+          type: 'demo',
+          root: { kind: 'box', ref: 'source', children: ['Source text'] },
+          setup: () => cleanup,
+        },
+        'shadcn',
+        {},
+        runtime
+      );
+      const host = document.createElement('div');
+      document.body.append(host);
+      const rendered = await renderDemo({ runtime, host, demo: shell.demo });
+      await shell.ready;
+      const borrowed = host.querySelector<HTMLElement>(
+        '[data-passive-shell-slot]'
+      )!.firstElementChild!;
+      borrowed.remove();
+      const pending = shell.setAppearance('brutalist', {});
+      await rendered.destroy();
+      await pending;
+      await shell.setAppearance('shadcn', {});
+      expect(cleanup).toHaveBeenCalledTimes(1);
+      expect(host.textContent).toBe('');
+      expect(host.querySelector('[data-passive-shell-slot]')).toBeNull();
+    });
+  }
+  it('reserves both shell and borrowed-content refs recursively', () => {
+    for (const ref of [
+      '__website_runtime_preview_surface__',
+      '__website_runtime_preview_surface__-content',
+    ])
+      expect(() =>
+        createRuntimePreviewSurface(
+          { type: 'demo', root: { kind: 'box', children: [{ kind: 'box', ref }] } },
+          'shadcn'
+        )
+      ).toThrow('reserved surface ref');
+  });
 });

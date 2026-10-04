@@ -719,7 +719,7 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
         assert.equal(state.summary, 'true');
         assert.equal(state.note, args.note);
         const document = previewWindow.document;
-        document.body.innerHTML = `<section data-home-showcase="website-component-gallery"><div data-demo-ref="settings-preview-tasks" data-view="board"></div><div data-demo-ref="settings-preview-summary"></div><div data-demo-ref="settings-preview-note"><span data-demo-ref="settings-preview-note-text"></span></div>${Array(5).fill('<div data-projection-prototype="site-preview-surface" data-pui-style="border"></div>').join('')}</section>`;
+        document.body.innerHTML = `<section data-home-showcase="website-component-gallery"><div data-demo-ref="settings-preview-tasks" data-view="board"></div><div data-demo-ref="settings-preview-summary"></div><div data-demo-ref="settings-preview-note"><span data-demo-ref="settings-preview-note-text"></span></div>${Array(5).fill('<div data-projection-prototype="shadcn-surface-root" data-pui-style="border"></div>').join('')}</section>`;
         document.querySelector('[data-demo-ref="settings-preview-note-text"]')!.textContent =
           state.note;
         const value = callback(args);

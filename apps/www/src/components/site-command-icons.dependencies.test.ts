@@ -64,7 +64,10 @@ describe('website command icon dependency boundary', () => {
   it.each([
     ['lucide-search-icon', ['search']],
     ['lucide-x-icon', ['x']],
-    ['site-copy-feedback-icon', ['check', 'circle-alert', 'copy', 'loader-circle']],
+    ['lucide-copy-icon', ['copy']],
+    ['lucide-loader-circle-icon', ['loader-circle']],
+    ['lucide-check-icon', ['check']],
+    ['lucide-circle-alert-icon', ['circle-alert']],
   ] as const)(
     '%s reaches exactly its declared fixed glyphs, never the generic catalog',
     (id, glyphs) => {

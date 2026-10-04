@@ -1,3 +1,4 @@
+import { surfacePrototypeId, panelSurfaceProps, panelSurfaceLayout } from './surface-recipes';
 import { contentsCommandParticipant } from './site-contents-command';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from './adapter-preference';
 import { isRuntimeId, type RuntimeId } from './PrototypePreviewer/runtimes/registry';
@@ -63,17 +64,18 @@ export function headerSurfaceParticipant(header: HTMLElement) {
         content: {
           recipe: {
             id: owner,
-            prototypeIds: ['site-preview-surface'],
-            rootPrototypeId: 'site-preview-surface',
+            prototypeIds: [surfacePrototypeId(family)],
+            rootPrototypeId: surfacePrototypeId(family),
           },
           demo: {
             type: 'demo',
             root: {
               kind: 'proto',
-              prototypeId: 'site-preview-surface',
+              prototypeId: surfacePrototypeId(family),
               ref: 'header-surface',
               className: 'site-header-popup-surface',
-              props: { family, emphasis: 'plain', appearance: 'popup' },
+              props: { ...panelSurfaceProps('popup') },
+              surfaceStyle: panelSurfaceLayout,
               children: [
                 { kind: 'box', ref: 'header-native-slot', className: 'site-header-native-slot' },
               ],

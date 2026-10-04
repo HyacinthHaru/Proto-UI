@@ -1,10 +1,11 @@
+import { homepageTextProps, setHomepageText } from './homepage-text';
 import type { DemoChild, DemoNode, DemoSetupContext } from '../PrototypePreviewer/demo-types';
 import {
   resolveProjectionPart,
   type ProjectionFamilyId,
 } from '../PrototypePreviewer/projection-families';
 import type { RuntimeId } from '../PrototypePreviewer/runtimes/registry';
-import { PREVIEW_SURFACE_ID } from './homepage-live-preview';
+import { surfacePrototypeId, panelSurfaceProps, panelSurfaceLayout } from '../surface-recipes';
 
 /** Consumer geometry only: retain family paint and the public default height,
  * while allowing enlarged text to make a command taller than that minimum. */
@@ -25,6 +26,7 @@ export function createHomepageGalleryParts(
   isCurrent: () => boolean
 ) {
   const zh = locale === 'zh-cn';
+  const PREVIEW_SURFACE_ID = surfacePrototypeId(family);
   const ids = new Set<string>([PREVIEW_SURFACE_ID]);
   const authoredProps = new Map<string, Record<string, unknown>>();
   const box = (
@@ -53,6 +55,7 @@ export function createHomepageGalleryParts(
       props,
       children,
       ...(ref ? { ref } : {}),
+      ...(id === PREVIEW_SURFACE_ID ? { surfaceStyle: panelSurfaceLayout } : {}),
       ...(/-(?:button|dialog-trigger|dropdown-menu-trigger)$/.test(id)
         ? { surfaceStyle: homepageCommandLayout(family) }
         : {}),
@@ -138,11 +141,7 @@ export function createHomepageGalleryParts(
               ...children,
             ]),
           ],
-          {
-            family,
-            emphasis: 'plain',
-            appearance: family === 'brutalist' && id === 'editor' ? 'canvas' : 'card',
-          }
+          { ...panelSurfaceProps(family === 'brutalist' && id === 'editor' ? 'canvas' : 'card') }
         ),
       ],
       undefined,
@@ -349,6 +348,9 @@ export function createHomepageGalleryParts(
       const selected = new Set(['choice-product', 'choice-components']);
       const pending = new Map<string, Record<string, unknown>>();
       const currentProps = new Map([...authoredProps].map(([ref, props]) => [ref, { ...props }]));
+      currentProps.set('editor-preview-text', {
+        ...homepageTextProps('home-gallery__text-preview', family),
+      });
       const completeProps = (ref: string, next: Record<string, unknown>) => {
         const complete = { ...currentProps.get(ref), ...next };
         currentProps.set(ref, complete);
@@ -402,7 +404,7 @@ export function createHomepageGalleryParts(
         }
       };
       const feedback = (ref: string, value: string) => {
-        context.refs[ref]!.textContent = value;
+        setHomepageText(context.refs[ref]!, value);
       };
       for (const [ref, label] of [
         ['gallery-primary', zh ? '主要按钮' : 'Primary button'],
@@ -431,10 +433,12 @@ export function createHomepageGalleryParts(
         feedback('editor-preview', value);
       });
       bind('editor-bold', 'activeChange', ({ active }) => {
-        context.refs['editor-preview']!.style.fontWeight = active === true ? '700' : '400';
+        write('editor-preview-text', {
+          weight: active === true ? 'bold' : family === 'brutalist' ? 'medium' : 'normal',
+        });
       });
       bind('editor-italic', 'activeChange', ({ active }) => {
-        context.refs['editor-preview']!.style.fontStyle = active === true ? 'italic' : 'normal';
+        write('editor-preview-text', { emphasis: active === true ? 'italic' : 'normal' });
       });
       bind('editor-reset', 'click', () => {
         editorText = sample;

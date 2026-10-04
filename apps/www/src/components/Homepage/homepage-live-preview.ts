@@ -1,7 +1,8 @@
+import { surfacePrototypeId, panelSurfaceProps, panelSurfaceLayout } from '../surface-recipes';
 import type { DemoNode, DemoSetupContext } from '../PrototypePreviewer/demo-types';
 import type { ProjectionFamilyId } from '../PrototypePreviewer/projection-families';
 
-export const PREVIEW_SURFACE_ID = 'site-preview-surface';
+export const PREVIEW_SURFACE_ID = surfacePrototypeId;
 export type PreviewSettings = {
   view: 'list' | 'board' | 'calendar';
   summary: boolean;
@@ -62,8 +63,9 @@ export function createHomepageLivePreview(family: ProjectionFamilyId, locale: st
     children: [
       {
         kind: 'proto',
-        prototypeId: PREVIEW_SURFACE_ID,
-        props: { family, emphasis, appearance: 'card' },
+        prototypeId: surfacePrototypeId(family),
+        props: { ...panelSurfaceProps('card', emphasis) },
+        surfaceStyle: panelSurfaceLayout,
         children,
       },
     ],

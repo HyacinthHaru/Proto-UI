@@ -150,14 +150,21 @@ describe('bounded command icons through real loaders and Adapters (host-unit evi
         const button = root.querySelector<HTMLElement>('[data-demo-ref="copy-button"]')!;
         const icon = root.querySelector<HTMLElement>('[data-demo-ref="copy-icon"]')!;
         const feedback = root.querySelector('[role="status"]')!;
-        const glyph = () => expectSvg(icon, 18);
+        const glyph = () =>
+          expectSvg(
+            icon.querySelector<HTMLElement>('[data-demo-ref^="copy-glyph-"]:not([hidden])')!,
+            18
+          );
         const assertStable = () => {
           expect(root.querySelector('[data-demo-ref="copy-button"]')).toBe(button);
           expect(root.querySelector('[data-demo-ref="copy-icon"]')).toBe(icon);
           expect(button.textContent).toBe('Copy code');
           expect(button.getAttribute('aria-disabled')).toBe('false');
           expect(document.activeElement).toBe(button);
-          expect(root.querySelectorAll('svg')).toHaveLength(1);
+          expect(root.querySelectorAll('svg')).toHaveLength(4);
+          expect(
+            root.querySelectorAll('[data-demo-ref^="copy-glyph-"]:not([hidden]) svg')
+          ).toHaveLength(1);
         };
         await vi.waitFor(() => expect(button.dataset.copyState).toBe('idle'));
         expect(glyph().querySelector('rect')?.getAttribute('width')).toBe('14');
@@ -255,9 +262,14 @@ describe('bounded command icons through real loaders and Adapters (host-unit evi
       expect(handle.owner).toBe(owner);
       await vi.waitFor(() => expect(button.dataset.copyState).toBe('pending'));
       await vi.waitFor(() =>
-        expect(expectSvg(button, 18).querySelector('path')?.getAttribute('d')).toBe(
-          'M21 12a9 9 0 1 1-6.219-8.56'
-        )
+        expect(
+          expectSvg(
+            button.querySelector<HTMLElement>('[data-demo-ref^="copy-glyph-"]:not([hidden])')!,
+            18
+          )
+            .querySelector('path')
+            ?.getAttribute('d')
+        ).toBe('M21 12a9 9 0 1 1-6.219-8.56')
       );
       old.click();
       button.click();
@@ -266,7 +278,14 @@ describe('bounded command icons through real loaders and Adapters (host-unit evi
     succeed();
     await vi.waitFor(() => expect(button.dataset.copyState).toBe('success'));
     await vi.waitFor(() =>
-      expect(expectSvg(button, 18).querySelector('path')?.getAttribute('d')).toBe('M20 6 9 17l-5-5')
+      expect(
+        expectSvg(
+          button.querySelector<HTMLElement>('[data-demo-ref^="copy-glyph-"]:not([hidden])')!,
+          18
+        )
+          .querySelector('path')
+          ?.getAttribute('d')
+      ).toBe('M20 6 9 17l-5-5')
     );
     expect(root.querySelector('[role="status"]')?.textContent).toBe('Copied');
     expect(catalog.evaluations).toBe(0);

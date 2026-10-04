@@ -1,3 +1,4 @@
+import { surfacePrototypeId } from './surface-recipes';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from './adapter-preference';
 import { isRuntimeId, type RuntimeId } from './PrototypePreviewer/runtimes/registry';
 import { runtimePreviewFamily } from './PrototypePreviewer/runtime-preview-surface';
@@ -73,18 +74,31 @@ export function initCodeSurface(root: HTMLElement): CodeSurfaceHandle {
           content: {
             recipe: {
               id: 'website-code-surface',
-              rootPrototypeId: 'site-code-surface',
-              prototypeIds: ['site-code-surface'],
+              rootPrototypeId: surfacePrototypeId(family),
+              prototypeIds: [surfacePrototypeId(family)],
             },
             demo: {
               type: 'demo',
               root: {
                 kind: 'proto',
-                prototypeId: 'site-code-surface',
+                prototypeId: surfacePrototypeId(family),
                 className: 'site-code-surface-paint',
+                surfaceStyle: {
+                  display: 'block',
+                  width: '100%',
+                  height: '100%',
+                  pointerEvents: 'none',
+                },
                 props: {
-                  family,
-                  part: root.dataset.siteCodeSurface === 'toolbar' ? 'toolbar' : 'frame',
+                  variant:
+                    root.dataset.siteCodeSurface === 'toolbar'
+                      ? 'transparent'
+                      : family === 'shadcn'
+                        ? 'muted'
+                        : 'outline',
+                  radius: root.dataset.siteCodeSurface === 'toolbar' ? 'none' : 'default',
+                  border: root.dataset.siteCodeSurface === 'toolbar' ? 'bottom' : 'all',
+                  elevation: 'none',
                 },
               },
             },

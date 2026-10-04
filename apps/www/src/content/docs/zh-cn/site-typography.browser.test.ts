@@ -205,7 +205,7 @@ async function fixtureReady(page: Page, runtime: string, family: string) {
       return (
         owner?.dataset.typographyRuntime === runtime &&
         owner.dataset.typographyFamily === family &&
-        owner.querySelector('[data-typography-prototype="site-typography"][data-pui-root]')
+        owner.querySelector('[data-typography-prototype][data-pui-root]')
       );
     },
     { runtime, family },
@@ -235,9 +235,7 @@ async function sourceIntegrity(page: Page) {
       })(),
       originalTextNodeCount: texts.length,
       carrierCount: native.querySelectorAll('[data-site-typography-carrier]').length,
-      surfaceCount: native.querySelectorAll(
-        '[data-typography-prototype="site-typography"][data-pui-root]'
-      ).length,
+      surfaceCount: native.querySelectorAll('[data-typography-prototype][data-pui-root]').length,
       invalidBlocks: native.querySelectorAll('div,section,p,h1,h2,h3,fieldset').length,
       nestedFocusable: native.querySelectorAll(
         '[data-site-typography-carrier] [tabindex], [data-site-typography-carrier] [role="button"]'
@@ -260,8 +258,7 @@ function assertSourceIntegrity(measured: Awaited<ReturnType<typeof sourceIntegri
 }
 async function typographyPaint(page: Page, selector: string) {
   return page.locator(selector).evaluate((native) => {
-    const surface =
-      native.querySelector<HTMLElement>('[data-typography-prototype="site-typography"]') ?? native;
+    const surface = native.querySelector<HTMLElement>('[data-typography-prototype]') ?? native;
     const css = getComputedStyle(surface);
     const box = surface.getBoundingClientRect();
     return {
@@ -519,7 +516,32 @@ describe.sequential('native SiteTypography rendered evidence', () => {
                         family: root.dataset.family,
                       };
                     });
-                    Object.assign(state, { slogan, tagline, geometry, generation });
+                    const galleryText = await page
+                      .locator('[data-home-showcase] [data-home-text]')
+                      .evaluateAll((nodes) =>
+                        nodes.map((node) => ({
+                          text: node.textContent,
+                          owners: Array.from(node.querySelectorAll('[data-pui-root]')).map(
+                            (owner) => ({
+                              prototype: owner.getAttribute('data-projection-prototype'),
+                              runtime: owner.getAttribute('data-projection-runtime'),
+                              family: owner.getAttribute('data-projection-family'),
+                              generation: owner.getAttribute('data-projection-generation'),
+                            })
+                          ),
+                        }))
+                      );
+                    expect(galleryText).toHaveLength(28);
+                    for (const text of galleryText) {
+                      expect(text.owners).toHaveLength(1);
+                      expect(text.owners[0]).toMatchObject({
+                        prototype: `${family}-text-root`,
+                        runtime,
+                        family,
+                        generation: generation.page,
+                      });
+                    }
+                    Object.assign(state, { slogan, tagline, geometry, generation, galleryText });
                     expect(slogan.text).toBe(SLOGANS[locale][0]);
                     expect(tagline.text).toBe(SLOGANS[locale][1]);
                     expect(slogan.size).toBeGreaterThan(tagline.size);
@@ -602,7 +624,7 @@ describe.sequential('native SiteTypography rendered evidence', () => {
                 title?.dataset.typographyOwner === 'documentation-typography' &&
                 title.dataset.typographyRuntime === runtime &&
                 title.dataset.typographyFamily === family &&
-                title.querySelector('[data-pui-root][data-typography-prototype="site-typography"]')
+                title.querySelector('[data-pui-root][data-typography-prototype]')
               );
             },
             { runtime, family },
@@ -670,9 +692,7 @@ describe.sequential('native SiteTypography rendered evidence', () => {
                 blocked,
                 'failure injection must reach a real requested module'
               ).toBeGreaterThan(0);
-            expect(
-              await page.locator('[data-typography-prototype="site-typography"]').count()
-            ).toBe(0);
+            expect(await page.locator('[data-typography-prototype]').count()).toBe(0);
             const title =
               target === 'homepage' ? '[data-site-typography="slogan"]' : '#native-title';
             const body =

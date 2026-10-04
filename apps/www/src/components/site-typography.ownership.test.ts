@@ -1,4 +1,10 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { retainHappyDomMutationCallbacks } from '../../../../scripts/test/happy-dom-mutation-keepalive.mjs';
+let observerKeeper: ReturnType<typeof retainHappyDomMutationCallbacks>;
+beforeAll(() => {
+  observerKeeper = retainHappyDomMutationCallbacks(window);
+});
+afterAll(() => observerKeeper.restore());
+import { afterAll, beforeAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { siteTypographyParticipant } from './site-typography';
 import { initDocumentationTypography } from './site-typography-client';
 import { createProjectionScopeController } from './PrototypePreviewer/projection-scope';

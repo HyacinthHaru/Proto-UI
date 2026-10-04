@@ -465,7 +465,8 @@ async function assertTaskPartInventory(
         `${family}-${suffix}`
       )
     ),
-    ...Array(6).fill('site-preview-surface'),
+    ...Array(6).fill(`${family}-surface-root`),
+    ...Array(28).fill(`${family}-text-root`),
   ].sort();
   const actualIds = await parts.evaluateAll((elements) =>
     elements.map((element) => element.getAttribute('data-projection-prototype')).sort()
@@ -473,7 +474,7 @@ async function assertTaskPartInventory(
   expect(actualIds, 'all declared gallery instances, including closed/portaled parts').toEqual(
     expectedIds
   );
-  expect(new Set(actualIds).size, 'complete declared task recipe').toBe(35);
+  expect(new Set(actualIds).size, 'complete declared task recipe').toBe(36);
   await assertSurfacesShareCoordinate(parts, expected, 'every actual task part coordinate');
   const owners = await parts.evaluateAll((elements) =>
     elements.map((element) => element.getAttribute('data-projection-owner'))

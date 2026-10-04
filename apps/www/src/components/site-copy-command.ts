@@ -20,6 +20,12 @@ import type { ProjectionCompositionControls } from './PrototypePreviewer/project
 import type { DemoSpec } from './PrototypePreviewer/demo-types';
 import type { SiteLibraryFamily } from './site-library-family';
 
+const COPY_GLYPHS = {
+  idle: 'copy',
+  pending: 'loader-circle',
+  success: 'check',
+  error: 'circle-alert',
+} as const;
 const handles = new WeakMap<HTMLElement, SiteCopyCommand>();
 let nextOwner = 0;
 const NO_CONTROLS: ProjectionCompositionControls = {
@@ -64,15 +70,21 @@ export function createCopyCommandDemo(
               kind: 'box',
               attrs: { 'aria-hidden': 'true' },
               className: 'site-copy-glyph',
-              children: [
-                {
-                  kind: 'proto',
-                  prototypeId: 'site-copy-feedback-icon',
-                  ref: 'copy-icon',
-                  props: { state: 'idle' },
-                  surfaceStyle: { pointerEvents: 'none' },
-                },
-              ],
+              ref: 'copy-icon',
+              children: Object.entries(COPY_GLYPHS).map(([state, icon]) => ({
+                kind: 'box' as const,
+                tag: 'span' as const,
+                ref: `copy-glyph-${state}`,
+                attrs: state === 'idle' ? undefined : { hidden: '' },
+                children: [
+                  {
+                    kind: 'proto' as const,
+                    prototypeId: `lucide-${icon}-icon`,
+                    props: { size: 18 },
+                    surfaceStyle: { pointerEvents: 'none' },
+                  },
+                ],
+              })),
             },
             { kind: 'box', className: 'sr-only', children: [labels.command] },
           ],
@@ -109,9 +121,8 @@ export function createCopyCommandDemo(
           disabled: false,
           ...(runtime === 'wc' ? {} : { onClick: activate }),
         });
-        context.api.setProps('copy-icon', {
-          state: latest.state,
-        });
+        for (const state of Object.keys(COPY_GLYPHS))
+          context.refs[`copy-glyph-${state}`]!.hidden = state !== latest.state;
         button.setAttribute(
           'title',
           latest.state === 'idle' ? labels.command : labels[latest.state]
@@ -228,7 +239,7 @@ export function initCopyCommand(root: HTMLElement, readText: () => string): Site
               rootPrototypeId: `${family}-button`,
               prototypeIds: [
                 `${family}-button`,
-                'site-copy-feedback-icon',
+                ...Object.values(COPY_GLYPHS).map((icon) => `lucide-${icon}-icon`),
                 'base-live-region-root',
               ],
             },

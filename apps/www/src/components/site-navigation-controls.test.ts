@@ -41,7 +41,9 @@ describe('documentation native-navigation visual bridge', () => {
       await settle();
       expect(document.querySelector('.sidebar-pane a')).toBe(sidebar);
       expect(document.querySelector('summary')).toBe(summary);
-      expect(summary.querySelector('wc-site-link-surface')).toBeNull();
+      expect(
+        summary.querySelector(':is(wc-site-shadcn-surface,wc-site-brutalist-surface)')
+      ).toBeNull();
       expect(sidebar.querySelector('.docs-wip-badge')).toBe(badge);
       expect(sidebar.getAttribute('aria-current')).toBe('page');
       expect(sidebar.getAttribute('target')).toBe('_blank');
@@ -53,10 +55,14 @@ describe('documentation native-navigation visual bridge', () => {
       expect(pagination.querySelector('br')).toBe(lineBreak);
       expect(pagination.querySelector('a,button,[tabindex]')).toBeNull();
       expect(pagination.textContent).toBe(name);
-      expect(label.parentElement).toBe(pagination.firstElementChild);
-      expect(label.parentElement?.hasAttribute('data-site-link-content')).toBe(true);
+      expect(label.parentElement?.parentElement).toBe(pagination.firstElementChild);
+      expect(label.parentElement?.hasAttribute('data-site-link-text')).toBe(true);
       expect(lineBreak.parentElement?.hasAttribute('data-site-pagination-caption')).toBe(true);
-      expect(document.querySelector('a[href="/prose/"] wc-site-link-surface')).toBeNull();
+      expect(
+        document.querySelector(
+          'a[href="/prose/"] :is(wc-site-shadcn-surface,wc-site-brutalist-surface)'
+        )
+      ).toBeNull();
       const duplicate = initSiteNativeControls();
       expect(pagination.querySelectorAll('[data-site-pagination-caption]')).toHaveLength(1);
       duplicate();
@@ -65,6 +71,41 @@ describe('documentation native-navigation visual bridge', () => {
       expect(Array.from(label.childNodes)).toEqual(beforeNodes);
       expect(pagination.querySelector('[data-site-pagination-caption]')).toBeNull();
       expect(pagination.textContent).toBe(name);
+    }
+  );
+
+  it.each(['prev', 'next'])(
+    '%s arrow and text remain sibling items through family replacement',
+    async (rel) => {
+      document.body.innerHTML = `<div class="pagination-links"><a href="/destination/" rel="${rel}"><svg data-arrow></svg><span>Direction<br><span class="link-title">Title</span></span></a></div>`;
+      const link = document.querySelector('a')!;
+      const arrow = link.querySelector('svg')!;
+      const label = link.querySelector('span')!;
+      const before = Array.from(link.childNodes);
+      const source = label.firstChild!;
+      const selection = document.getSelection()!;
+      const release = initSiteNativeControls();
+      releases.push(release);
+      for (const family of ['shadcn', 'brutalist', 'shadcn']) {
+        const endpoint = family === 'brutalist' ? label : source;
+        const offset = endpoint === label ? 1 : 2;
+        selection.setBaseAndExtent(endpoint, offset, endpoint, offset);
+        document.documentElement.dataset.siteLibraryFamily = family;
+        await settle();
+        expect(selection.anchorNode).toBe(endpoint);
+        expect(selection.anchorOffset).toBe(offset);
+        const surface = link.firstElementChild!;
+        expect(surface.hasAttribute('data-site-link-content')).toBe(true);
+        expect(surface.localName).toBe(`wc-site-${family}-surface`);
+        expect(surface.firstElementChild).toBe(arrow);
+        expect(label.parentElement?.parentElement).toBe(surface);
+        expect(label.parentElement?.hasAttribute('data-site-link-text')).toBe(true);
+        expect(link.getAttribute('rel')).toBe(rel);
+        expect(link.querySelectorAll('svg')).toHaveLength(1);
+        expect(link.textContent).toBe('DirectionTitle');
+      }
+      release();
+      expect(Array.from(link.childNodes)).toEqual(before);
     }
   );
 

@@ -202,7 +202,16 @@ describe('Copy source and page lifetime', () => {
       const demo = createCopyCommandDemo(root, owner, runtime, 'brutalist', () => active);
       const cleanup = demo.setup!({
         host: root,
-        refs: { 'copy-button': button, 'copy-feedback': feedback },
+        refs: {
+          'copy-button': button,
+          'copy-feedback': feedback,
+          ...Object.fromEntries(
+            ['idle', 'pending', 'success', 'error'].map((state) => [
+              `copy-glyph-${state}`,
+              document.createElement('span'),
+            ])
+          ),
+        },
         api: { setProps, call() {}, getExposes: () => ({}) },
       });
       await settle();
@@ -264,7 +273,9 @@ describe('initial projection recovery', () => {
     mounted.push(handle);
     await handle.ready;
     const button = root.querySelector<HTMLElement>('[data-demo-ref="copy-button"]')!;
-    const idleGlyph = button.querySelector('svg')!.innerHTML;
+    const idleGlyph = button.querySelector(
+      '[data-demo-ref^="copy-glyph-"]:not([hidden]) svg'
+    )!.innerHTML;
     button.focus();
     button.click();
     await settle();
@@ -273,7 +284,9 @@ describe('initial projection recovery', () => {
     expect(button.dataset.copyState).toBe('pending');
     expect(button.textContent).toBe('Copy code');
     expect(root.querySelector('[role="status"]')?.textContent).toBe('Copying');
-    expect(button.querySelector('svg')!.innerHTML).not.toBe(idleGlyph);
+    expect(
+      button.querySelector('[data-demo-ref^="copy-glyph-"]:not([hidden]) svg')!.innerHTML
+    ).not.toBe(idleGlyph);
     button.click();
     button.click();
     expect(writeText).toHaveBeenCalledTimes(1);

@@ -25,17 +25,19 @@ describe('website native anchor composition', () => {
       const link = document.querySelector('a')!;
       releases.push(initSiteNativeControls());
       await settle();
-      const surface = link.querySelector('wc-site-link-surface')!;
+      const surface = link.querySelector('wc-site-shadcn-text, wc-site-brutalist-text')!;
       expect(link.dataset.siteLinkAppearance).toBe('nav');
       link.setAttribute('aria-current', 'page');
-      await vi.waitFor(() => expect(surface.getAttribute('data-pui-style')).toContain('underline'));
-      expect(surface.getAttribute('data-pui-style')).toContain('underline');
-      expect(surface.getAttribute('data-pui-style')).toContain('font-semibold');
+      await vi.waitFor(() =>
+        expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain('underline')
+      );
+      expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain('underline');
+      expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain('font-semibold');
       link.removeAttribute('aria-current');
       await vi.waitFor(() =>
-        expect(surface.getAttribute('data-pui-style')).not.toContain('underline')
+        expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).not.toContain('underline')
       );
-      expect(surface.getAttribute('data-pui-style')).not.toContain('underline');
+      expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).not.toContain('underline');
       expect(link.getAttribute('href')).toBe('/docs/');
       expect(surface.hasAttribute('tabindex')).toBe(false);
     }
@@ -75,12 +77,14 @@ describe('website native anchor composition', () => {
     document.documentElement.dataset.siteLibraryFamily = 'brutalist';
     releases.push(initSiteNativeControls());
     await settle();
-    const surface = link.querySelector('wc-site-link-surface') as HTMLElement & {
+    let surface = link.querySelector(
+      'wc-site-shadcn-surface, wc-site-brutalist-surface'
+    ) as HTMLElement & {
       getExposes(): Record<string, unknown>;
     };
     expect(surface).not.toBeNull();
-    expect(surface.getAttribute('data-pui-style')).toContain('border-black');
-    expect(surface.getAttribute('data-pui-style')).toContain('rounded-base');
+    expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain('border-black');
+    expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain('rounded-base');
     expect(surface.textContent).toBe('Docs');
     expect(surface.getExposes()).toEqual({});
     expect(surface.hasAttribute('role')).toBe(false);
@@ -93,15 +97,16 @@ describe('website native anchor composition', () => {
     expect(link.hasAttribute('data-slot')).toBe(false);
     link.dispatchEvent(new Event('pointerenter'));
     await settle();
-    expect(surface.getAttribute('data-pui-style')).toContain('translate-x-1');
+    expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain('translate-x-1');
     link.dispatchEvent(new Event('pointerleave'));
     await settle();
-    expect(surface.getAttribute('data-pui-style')).not.toContain('translate-x-1');
+    expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).not.toContain('translate-x-1');
     document.documentElement.dataset.siteLibraryFamily = 'shadcn';
     await new Promise((resolve) => setTimeout(resolve, 0));
     await settle();
-    expect(surface.getAttribute('data-pui-style')).toContain('rounded-lg');
-    expect(surface.getAttribute('data-pui-style')).not.toContain('rounded-base');
+    surface = link.querySelector('wc-site-shadcn-surface') as typeof surface;
+    expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain('rounded-lg');
+    expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).not.toContain('rounded-base');
   });
   it('does not wrap a homepage transaction and supports cleanup followed by reinitialization', async () => {
     document.body.innerHTML =
@@ -109,15 +114,25 @@ describe('website native anchor composition', () => {
     const release = initSiteNativeControls();
     const releaseDuplicate = initSiteNativeControls();
     await settle();
-    expect(document.querySelectorAll('wc-site-link-surface')).toHaveLength(1);
+    expect(
+      document.querySelectorAll('wc-site-shadcn-surface, wc-site-brutalist-surface')
+    ).toHaveLength(1);
     releaseDuplicate();
-    expect(document.querySelector('[data-homepage-actions] wc-site-link-surface')).toBeNull();
-    const first = document.querySelector('wc-site-link-surface')!;
+    expect(
+      document.querySelector(
+        '[data-homepage-actions] :is(wc-site-shadcn-surface,wc-site-brutalist-surface)'
+      )
+    ).toBeNull();
+    const first = document.querySelector('wc-site-shadcn-surface, wc-site-brutalist-surface')!;
     release();
-    expect(document.querySelector('wc-site-link-surface')).toBeNull();
+    expect(document.querySelector('wc-site-shadcn-surface, wc-site-brutalist-surface')).toBeNull();
     releases.push(initSiteNativeControls());
     await settle();
-    expect(document.querySelector('wc-site-link-surface')).not.toBe(first);
-    expect(document.querySelectorAll('wc-site-link-surface')).toHaveLength(1);
+    expect(document.querySelector('wc-site-shadcn-surface, wc-site-brutalist-surface')).not.toBe(
+      first
+    );
+    expect(
+      document.querySelectorAll('wc-site-shadcn-surface, wc-site-brutalist-surface')
+    ).toHaveLength(1);
   });
 });

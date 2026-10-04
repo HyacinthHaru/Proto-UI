@@ -34,7 +34,16 @@ vi.mock('./runtimes/vue2-runtime', async (original) => {
 });
 
 const cleanups: Array<() => void | Promise<void>> = [];
-beforeAll(async () => loadPrototypes(['site-link-surface']), 20_000);
+beforeAll(
+  async () =>
+    loadPrototypes([
+      'shadcn-surface-root',
+      'shadcn-text-root',
+      'brutalist-surface-root',
+      'brutalist-text-root',
+    ]),
+  20_000
+);
 afterEach(async () => {
   for (const cleanup of cleanups.splice(0).reverse()) await cleanup();
   document.body.replaceChildren();

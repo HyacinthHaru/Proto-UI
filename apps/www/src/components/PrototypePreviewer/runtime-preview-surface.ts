@@ -1,4 +1,7 @@
-import type { DemoChild, DemoSetupContext, DemoSpec } from './demo-types';
+import { createPassiveShellComposition } from './passive-shell-composition';
+import type { RuntimeId } from './runtimes/registry';
+import { surfacePrototypeId, panelSurfaceProps } from '../surface-recipes';
+import type { DemoChild, DemoSpec } from './demo-types';
 import type { ProjectionContentRecipe } from './projection-composition';
 import {
   PROJECTION_FAMILY_MANIFESTS,
@@ -7,18 +10,20 @@ import {
   type ProjectionFamilyId,
   type ProjectionFamilyManifest,
 } from './projection-families';
-import {
-  applyProjectionThemeSurfaceStyle,
-  type ProjectionThemeSurfaceStyle,
-} from './projection-theme';
+import { type ProjectionThemeSurfaceStyle } from './projection-theme';
 import { resolveSiteLibraryFamily } from '../site-library-family';
 
-export const RUNTIME_PREVIEW_SURFACE_ID = 'site-preview-surface';
+export const RUNTIME_PREVIEW_SURFACE_ID = surfacePrototypeId;
 const SURFACE_REF = '__website_runtime_preview_surface__';
 
 function assertAvailableRef(node: DemoChild): void {
   if (typeof node === 'string' || node.kind === 'text') return;
-  if (node.ref === SURFACE_REF) throw new Error('[RuntimeBox] reserved surface ref is in use.');
+  if (
+    node.ref === SURFACE_REF ||
+    node.ref === `${SURFACE_REF}-content` ||
+    node.ref === `${SURFACE_REF}-mount`
+  )
+    throw new Error('[RuntimeBox] reserved surface ref is in use.');
   for (const child of node.children ?? []) assertAvailableRef(child);
 }
 
@@ -41,69 +46,80 @@ function assertCanvasFamily(family: ProjectionFamilyId): void {
 export function createRuntimePreviewSurface(
   child: DemoSpec,
   family: ProjectionFamilyId,
-  theme?: ProjectionThemeSurfaceStyle
+  theme: ProjectionThemeSurfaceStyle = {},
+  runtime: RuntimeId = 'wc'
 ) {
   assertCanvasFamily(family);
   assertAvailableRef(child.root);
-  const surfaceStyle: Record<string, string> = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    minWidth: '0',
-    minHeight: 'var(--runtime-box-content-min, 10rem)',
-    padding: 'var(--runtime-box-content-padding, 1.5rem 1rem)',
-    ...theme,
-  };
-  let active: DemoSetupContext | null = null;
+  let active: ReturnType<typeof createPassiveShellComposition> | null = null;
   let currentFamily = family;
-  const surface = {
-    kind: 'proto' as const,
-    prototypeId: RUNTIME_PREVIEW_SURFACE_ID,
-    className: 'pui-runtime-preview-surface',
-    ref: SURFACE_REF,
-    props: { family, emphasis: 'plain', appearance: 'canvas' },
-    surfaceStyle,
-    children: [child.root],
-  };
+  let currentTheme = theme;
+  let ready: Promise<unknown> = Promise.resolve();
   const demo: DemoSpec = {
     type: 'demo',
-    root: surface,
+    root: {
+      kind: 'box',
+      className: 'pui-runtime-preview-composition',
+      children: [
+        { kind: 'box', ref: `${SURFACE_REF}-mount`, attrs: { 'data-passive-shell-mount': '' } },
+        { kind: 'box', ref: `${SURFACE_REF}-content`, children: [child.root] },
+      ],
+    },
     setup(context) {
-      if (active) throw new Error('[RuntimeBox] surface composition is already mounted.');
-      active = context;
-      let cleanup: void | (() => void);
-      try {
-        const { [SURFACE_REF]: _surface, ...refs } = context.refs;
-        cleanup = child.setup?.({ ...context, refs });
-      } catch (error) {
-        active = null;
-        throw error;
-      }
+      const {
+        [`${SURFACE_REF}-mount`]: mount,
+        [`${SURFACE_REF}-content`]: content,
+        ...refs
+      } = context.refs;
+      if (!mount || !content || active) throw new Error('Invalid RuntimeBox shell composition');
+      const cleanup = child.setup?.({ ...context, refs });
+      active = createPassiveShellComposition({
+        runtime,
+        mount,
+        content,
+        family: currentFamily,
+        theme: currentTheme,
+        prototypeId: (next) => surfacePrototypeId(next as ProjectionFamilyId),
+        props: () => ({ ...panelSurfaceProps('canvas') }),
+        layout: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          minWidth: '0',
+          minHeight: 'var(--runtime-box-content-min, 10rem)',
+          padding: 'var(--runtime-box-content-padding, 1.5rem 1rem)',
+        },
+        className: 'pui-runtime-preview-surface',
+        surfaceRef: SURFACE_REF,
+      });
+      ready = active.ready;
+      void ready.catch((error) =>
+        console.error('[RuntimeBox] Native demo retained after shell failure.', error)
+      );
       return () => {
-        if (active !== context) return;
+        const retiring = active;
+        if (!retiring) return;
         active = null;
+        // destroy synchronously restores the content owner's parent before its
+        // renderer retires the original child tree.
+        void retiring
+          ?.destroy()
+          .catch((error) => console.error('[RuntimeBox] Shell cleanup failed.', error));
         cleanup?.();
       };
     },
   };
   return {
     demo,
+    get ready() {
+      return ready;
+    },
     setAppearance(nextFamily: ProjectionFamilyId, nextTheme: ProjectionThemeSurfaceStyle) {
       assertCanvasFamily(nextFamily);
-      for (const key of Object.keys(surfaceStyle)) {
-        if (key.startsWith('--pui-')) delete surfaceStyle[key];
-      }
-      Object.assign(surfaceStyle, nextTheme);
-      surface.props = { family: nextFamily, emphasis: 'plain', appearance: 'canvas' };
-      if (active) {
-        // A color-mode update only changes the declared theme values. It does
-        // not rebuild the slot subtree or reinitialize the demonstrated state.
-        if (nextFamily !== currentFamily) active.api.setProps(SURFACE_REF, surface.props);
-        const target = active.refs[SURFACE_REF];
-        if (target) applyProjectionThemeSurfaceStyle(target, nextTheme);
-      }
       currentFamily = nextFamily;
+      currentTheme = nextTheme;
+      return active?.update(nextFamily, nextTheme) ?? Promise.resolve();
     },
   };
 }
@@ -119,7 +135,7 @@ export function runtimePreviewRecipe(
   if (!recipe) throw new Error(`[RuntimeBox] unavailable ${family}/${component} recipe.`);
   return {
     id: `website-runtime-preview:${recipe.recipeId}`,
-    prototypeIds: [...recipe.recipePrototypeIds, RUNTIME_PREVIEW_SURFACE_ID],
+    prototypeIds: [...recipe.recipePrototypeIds, surfacePrototypeId(family)],
     rootPrototypeId: resolveProjectionPart(family, component, 'root').prototypeId,
   };
 }

@@ -128,8 +128,10 @@ describe('PrototypePreviewer adapter preference synchronization', () => {
     expect(demoSpies.render).toHaveBeenCalledWith(
       expect.objectContaining({ runtime: 'wc', host: root.querySelector('.host') })
     );
-    expect(demoSpies.render.mock.calls[0]![0].demo.root.prototypeId).toBe('site-preview-surface');
-    expect(demoSpies.render.mock.calls[0]![0].demo.root.children[0]).toEqual({
+    expect(demoSpies.render.mock.calls[0]![0].demo.root.className).toBe(
+      'pui-runtime-preview-composition'
+    );
+    expect(demoSpies.render.mock.calls[0]![0].demo.root.children[1].children[0]).toEqual({
       kind: 'box',
       children: ['Custom demo'],
     });
@@ -162,9 +164,9 @@ describe('PrototypePreviewer adapter preference synchronization', () => {
         expect(document.documentElement.dataset.runtimeCustomLoader).toBe('loaded')
       );
       await vi.waitFor(() => expect(prototypeSpies.loadMany).toHaveBeenCalled());
-      expect(prototypeSpies.loadMany).toHaveBeenCalledWith(['site-preview-surface']);
+      expect(prototypeSpies.loadMany).toHaveBeenCalledWith([]);
       await vi.waitFor(() => expect((root as any).__previewer__.getCurrentRuntime()).toBe('wc'));
-      expect(demoSpies.render.mock.calls[0]![0].demo.root.children[0]).toEqual({
+      expect(demoSpies.render.mock.calls[0]![0].demo.root.children[1].children[0]).toEqual({
         kind: 'proto',
         prototypeId,
         props: { label: 'Original props' },
@@ -297,12 +299,13 @@ describe('PrototypePreviewer adapter preference synchronization', () => {
     });
     await vi.waitFor(() => expect(demoSpies.render).toHaveBeenCalledTimes(1));
     const surface = demoSpies.render.mock.calls[0]![0].demo.root;
-    expect(surface.props.family).toBe('shadcn');
+    expect(surface.className).toBe('pui-runtime-preview-composition');
     root.dataset.siteLibraryFamily = 'brutalist';
     finish();
     try {
       await vi.waitFor(() => expect((root as any).__previewer__.getCurrentRuntime()).toBe('wc'));
-      expect(surface.props.family).toBe('brutalist');
+      expect(root.dataset.siteLibraryFamily).toBe('brutalist');
+      expect(demoSpies.render).toHaveBeenCalledTimes(1); // Mock never executes setup; real family/state lease is covered by runtime-preview-surface.test.ts.
     } finally {
       await (root as any).__previewer__.destroy();
     }

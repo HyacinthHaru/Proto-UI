@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createHomepageContent } from './homepage-runtime-client';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
-import SiteLinkSurface from '../../prototypes/site-link-surface.proto';
+import SiteLinkSurface from '@proto.ui/prototypes-brutalist/text';
 
 const Surface = AdaptToWebComponent(SiteLinkSurface, {
   registerAs: 'test-home-staged-link-surface',
@@ -34,23 +34,21 @@ describe('Homepage native-link Prototype ownership', () => {
     const surfaceNode = anchor.children![0];
     if (typeof surfaceNode === 'string' || surfaceNode.kind !== 'proto')
       throw new Error('Expected surface');
-    expect(surfaceNode.props).toMatchObject({
-      family: 'brutalist',
-      appearance: 'nav',
-      current: true,
-      hovered: false,
-      pressed: false,
-      focusVisible: false,
-    });
+    expect(surfaceNode.prototypeId).toBe('brutalist-surface-root');
+    const textNode = surfaceNode.children![0];
+    if (typeof textNode === 'string' || textNode.kind !== 'proto')
+      throw new Error('Expected public Text');
+    expect(textNode.prototypeId).toBe('brutalist-text-root');
+    expect(textNode.props).toMatchObject({ decoration: 'underline', weight: 'semibold' });
     const surface = new Surface();
-    setElementProps(surface, surfaceNode.props!);
+    setElementProps(surface, textNode.props!);
     link.append(surface);
     const project = vi.fn((_ref: string, props: Record<string, unknown>) =>
       setElementProps(surface, props)
     );
     const cleanup = content.setup?.({
       host: root,
-      refs: { 'home-link-0': link },
+      refs: { 'home-link-0': link, 'home-link-glyph-0': document.createElement('span') },
       api: {
         call() {},
         getExposes() {
@@ -97,7 +95,7 @@ describe('Homepage native-link Prototype ownership', () => {
     });
     expect(anchor).toMatchObject({
       children: [
-        { kind: 'proto', prototypeId: 'site-link-surface', props: { family: 'brutalist' } },
+        { kind: 'proto', prototypeId: 'brutalist-surface-root', props: { variant: 'solid' } },
       ],
     });
   });
@@ -126,7 +124,7 @@ it('retains full visual identity on every fact update and clears the disposed ge
   );
   const cleanup = content.setup?.({
     host: root,
-    refs: { 'home-link-0': link },
+    refs: { 'home-link-0': link, 'home-link-glyph-0': document.createElement('span') },
     api: {
       call() {},
       getExposes() {
@@ -141,10 +139,10 @@ it('retains full visual identity on every fact update and clears the disposed ge
   for (const [ref, props] of project.mock.calls) {
     expect(ref).toBe('home-link-surface-0');
     expect(props).toMatchObject({
-      family: 'brutalist',
-      appearance: 'icon',
-      emphasis: 'secondary',
-      icon: 'github',
+      variant: 'outline',
+      radius: 'default',
+      border: 'all',
+      elevation: 'raised',
     });
   }
   expect(project).toHaveBeenLastCalledWith(
@@ -159,8 +157,8 @@ it('retains full visual identity on every fact update and clears the disposed ge
   expect(project).toHaveBeenLastCalledWith(
     'home-link-surface-0',
     expect.objectContaining({
-      family: 'brutalist',
-      icon: 'github',
+      variant: 'outline',
+      elevation: 'raised',
       hovered: false,
       pressed: false,
       focusVisible: false,

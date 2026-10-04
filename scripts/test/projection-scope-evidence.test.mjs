@@ -235,10 +235,11 @@ for (const family of ['shadcn', 'brutalist']) {
           [...value.task.recipe.prototypeIds].sort(),
           [
             ...Object.keys(api.GALLERY_PART_COUNTS).map((suffix) => `${family}-${suffix}`),
-            'site-preview-surface',
+            `${family}-surface-root`,
+            `${family}-text-root`,
           ].sort()
         );
-        assert.equal(value.task.recipe.prototypeIds.length, 35);
+        assert.equal(value.task.recipe.prototypeIds.length, 36);
         await verify(value);
       } finally {
         value.close();

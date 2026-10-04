@@ -1,15 +1,21 @@
+import { withNativeContentLease } from './PrototypePreviewer/native-content-lease';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
-import SiteLinkSurface, {
+import ShadcnSurface from '@proto.ui/prototypes-shadcn/surface';
+import BrutalistSurface from '@proto.ui/prototypes-brutalist/surface';
+import ShadcnText from '@proto.ui/prototypes-shadcn/text';
+import BrutalistText from '@proto.ui/prototypes-brutalist/text';
+import {
+  linkSurfaceProps,
+  linkSurfaceLayout,
+  linkTextProps,
   type SiteLinkAppearance,
   type SiteLinkEmphasis,
-  type SiteLinkSurfaceProps,
-} from '../prototypes/site-link-surface.proto';
+} from './site-link-recipes';
 import { type SiteLinkIcon } from '../prototypes/site-link-icons';
 import { bindNativeLinkFacts } from './site-native-link-facts';
 import { resolveSiteLibraryFamily, type SiteLibraryFamily } from './site-library-family';
 import { resolveProjectionThemeSurfaceStyle } from './PrototypePreviewer/projection-theme';
 
-const SITE_LINK_TAG = 'wc-site-link-surface';
 const bindings = new WeakMap<HTMLAnchorElement, () => void>();
 
 export function siteLinkAppearance(link: HTMLAnchorElement): SiteLinkAppearance {
@@ -76,12 +82,21 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
   if (!document) return () => {};
   const view = document.defaultView;
   if (!view) return () => {};
-  if (!view.customElements.get(SITE_LINK_TAG)) {
-    const Constructor = AdaptToWebComponent(SiteLinkSurface, {
-      register: false,
-      registerAs: SITE_LINK_TAG,
-    });
-    view.customElements.define(SITE_LINK_TAG, Constructor);
+  for (const [family, surface, text] of [
+    ['shadcn', ShadcnSurface, ShadcnText],
+    ['brutalist', BrutalistSurface, BrutalistText],
+  ] as const) {
+    for (const [part, proto] of [
+      ['surface', surface],
+      ['text', text],
+    ] as const) {
+      const tag = `wc-site-${family}-${part}`;
+      if (!view.customElements.get(tag))
+        view.customElements.define(
+          tag,
+          AdaptToWebComponent(proto, { register: false, registerAs: tag })
+        );
+    }
   }
   const releases: Array<() => void> = [];
   for (const link of scope.querySelectorAll<HTMLAnchorElement>(
@@ -91,12 +106,36 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     let alive = true;
     const appearance = siteLinkAppearance(link);
     const restoreCaption = preparePaginationCaption(link);
-    const surface = document.createElement(SITE_LINK_TAG);
-    surface.dataset.siteLinkContent = '';
-    // Keep SSR glyph/text nodes: the passive slot never takes ownership of the
-    // anchor's name, destination, focus target, or default browser action.
+    let family: SiteLibraryFamily =
+      document.documentElement.dataset.siteLibraryFamily === 'brutalist'
+        ? 'brutalist'
+        : resolveSiteLibraryFamily(view.location.pathname);
+    let surface = document.createElement(`wc-site-${family}-surface`);
+    let texts: HTMLElement[] = [];
+    // Original arrows and text regions remain separate flex items, in source
+    // order. Wrapping an entire anchor would break pagination reversal and
+    // sidebar label/badge alignment even if the accessible name survived.
     const content = Array.from(link.childNodes);
-    surface.append(...content);
+    const composeContent = () => {
+      surface.dataset.siteLinkContent = '';
+      texts = [];
+      for (const node of content) {
+        if (
+          (node.nodeType === 1 &&
+            (node as Element).namespaceURI === 'http://www.w3.org/2000/svg') ||
+          (node.nodeType === 3 && !node.textContent?.trim())
+        ) {
+          surface.append(node);
+        } else {
+          const text = document.createElement(`wc-site-${family}-text`);
+          text.dataset.siteLinkText = '';
+          text.append(node);
+          surface.append(text);
+          texts.push(text);
+        }
+      }
+    };
+    composeContent();
     link.append(surface);
     link.classList.add('site-native-link');
     link.dataset.siteLinkEnhanced = 'true';
@@ -107,24 +146,41 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     let facts = { hovered: false, pressed: false, focusVisible: false, current: false };
     const update = () => {
       if (!alive) return;
-      const family: SiteLibraryFamily =
+      const nextFamily: SiteLibraryFamily =
         document.documentElement.dataset.siteLibraryFamily === 'brutalist'
           ? 'brutalist'
           : resolveSiteLibraryFamily(view.location.pathname);
-      const props: SiteLinkSurfaceProps & { surfaceStyle: Record<string, string> } = {
-        family,
-        appearance,
-        emphasis: siteLinkEmphasis(link),
-        icon: 'none',
-        ...facts,
-        surfaceStyle: resolveProjectionThemeSurfaceStyle(family, document.documentElement),
+      if (nextFamily !== family) {
+        const previous = surface;
+        family = nextFamily;
+        surface = document.createElement(`wc-site-${family}-surface`);
+        withNativeContentLease(link, () => {
+          composeContent();
+          previous.replaceWith(surface);
+        });
+      }
+      const theme = resolveProjectionThemeSurfaceStyle(family, document.documentElement);
+      const props = {
+        ...linkSurfaceProps(family, appearance, siteLinkEmphasis(link), facts),
+        surfaceStyle: {
+          ...theme,
+          ...linkSurfaceLayout(family, appearance, siteLinkEmphasis(link)),
+        },
       };
       setElementProps(surface, props);
+      const textProps = {
+        ...linkTextProps(appearance, facts),
+        surfaceStyle: { ...theme, minWidth: '0' },
+      };
+      for (const text of texts) setElementProps(text, textProps);
       // Direct props can arrive during Custom Element upgrade. Replay only
       // while this exact native link binding still owns the surface.
       queueMicrotask(() => {
-        if (alive && surface.isConnected)
+        if (alive && surface.isConnected) {
           (surface as HTMLElement & { setProps?: (props: unknown) => void }).setProps?.(props);
+          for (const text of texts)
+            (text as HTMLElement & { setProps?: (props: unknown) => void }).setProps?.(textProps);
+        }
       });
     };
     const unbind = bindNativeLinkFacts(link, (next) => {
@@ -149,7 +205,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
       bindings.delete(link);
       restoreCaption();
       if (surface.parentElement === link) {
-        surface.replaceWith(...Array.from(surface.childNodes));
+        surface.replaceWith(...content);
         delete link.dataset.siteLinkEnhanced;
       }
     };

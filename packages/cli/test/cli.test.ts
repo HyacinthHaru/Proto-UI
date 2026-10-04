@@ -98,7 +98,7 @@ describe('@proto.ui/cli', () => {
   it('keeps installation packages separate from family import paths', () => {
     for (const entry of Object.values(COMPONENT_REGISTRY)) {
       expect(entry.importPath).toBe(
-        `${entry.packageName}/${entry.id.replace(/^(?:base|shadcn|brutalist)-/, '')}`
+        `${entry.packageName}/${entry.id.replace(/^(?:base|shadcn|brutalist|bootstrap-2-3-2|liquid-glass)-/, '')}`
       );
       expect(entry.importPath).not.toBe(entry.packageName);
     }
@@ -142,8 +142,10 @@ describe('@proto.ui/cli', () => {
       'brutalist-separator',
       'brutalist-skeleton',
       'brutalist-spinner',
+      'brutalist-surface',
       'brutalist-switch',
       'brutalist-tabs',
+      'brutalist-text',
       'brutalist-textarea',
       'brutalist-toggle',
     ]);

@@ -59,7 +59,9 @@ async function paint(button: Locator) {
   return button.evaluate((element) => {
     const style = getComputedStyle(element),
       rect = element.getBoundingClientRect(),
-      glyph = element.querySelector('svg')!.getBoundingClientRect();
+      glyph = element
+        .querySelector('[data-demo-ref^="copy-glyph-"]:not([hidden]) svg')!
+        .getBoundingClientRect();
     const family = element.closest<HTMLElement>('[data-site-copy]')?.dataset.copyFamily;
     const ringColor = style.getPropertyValue('--pui-ring').trim();
     const expectedSpread = family === 'brutalist' ? 4 : 3;

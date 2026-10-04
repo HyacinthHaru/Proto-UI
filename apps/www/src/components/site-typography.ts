@@ -1,7 +1,5 @@
-import {
-  SITE_TYPOGRAPHY_ROLES,
-  type SiteTypographyRole,
-} from '../prototypes/site-typography.proto';
+import { siteTextRecipe } from './site-text-recipes';
+import { SITE_TYPOGRAPHY_ROLES, type SiteTypographyRole } from './site-text-recipes';
 import { prepareDemoRuntime, renderDemo } from './PrototypePreviewer/demo-renderer';
 import { loadPrototypes } from './PrototypePreviewer/prototype-modules';
 import type { DemoRenderResult, DemoSpec } from './PrototypePreviewer/demo-types';
@@ -20,7 +18,7 @@ const SEMANTIC_TARGETS = 'h1,h2,h3,h4,h5,h6,p,label,legend,figcaption';
 const COMPONENT_OWNED =
   '[data-previewer-id],[data-home-showcase],[data-homepage-actions],[data-site-native-link],[data-site-native-button],pre,code,script,style,template';
 const PASSIVE_HEADER_FRAME =
-  '.site-header-popup-surface[data-projection-prototype="site-preview-surface"]';
+  '.site-header-popup-surface:is([data-projection-prototype="shadcn-surface-root"],[data-projection-prototype="brutalist-surface-root"])';
 const MARKERS = [
   'data-typography-owner',
   'data-typography-runtime',
@@ -54,7 +52,11 @@ export function collectSiteTypographyTargets(root: ParentNode, docsOnly = false)
   return candidates.flatMap((native): Target[] => {
     const explicit = native.dataset.siteTypography;
     const explicitRole = explicit !== undefined && ROLES.has(explicit);
-    if (native.closest(COMPONENT_OWNED) || native.closest('[data-site-typography-batch]'))
+    if (
+      (native.closest(COMPONENT_OWNED) &&
+        !(explicitRole && native.matches('output[data-home-demo-status]'))) ||
+      native.closest('[data-site-typography-batch]')
+    )
       return [];
     const prototypeOwner = native.closest('[data-pui-root],[data-pui-style]');
     // Only the existing passive Header frame is allowed to contain explicitly
@@ -302,7 +304,7 @@ export function siteTypographyParticipant(
             setThemeSurfaceStyle() {},
             dispose,
           };
-        await Promise.all([prepareDemoRuntime(runtime), loadPrototypes(['site-typography'])]);
+        await Promise.all([prepareDemoRuntime(runtime), loadPrototypes([`${family}-text-root`])]);
         if (!alive) throw new Error('[SiteTypography] Scope was disposed during preparation.');
         const demo: DemoSpec = {
           type: 'demo',
@@ -318,10 +320,10 @@ export function siteTypographyParticipant(
               children: [
                 {
                   kind: 'proto',
-                  prototypeId: 'site-typography',
+                  prototypeId: `${family}-text-root`,
                   rootTag: 'span',
                   ref: `surface-${index}`,
-                  props: { family, role, compact: isCompact },
+                  props: { ...siteTextRecipe(role, family, isCompact) },
                   surfaceStyle: theme,
                   children: [
                     {
@@ -343,7 +345,7 @@ export function siteTypographyParticipant(
               const slot = context.refs[`slot-${index}`];
               if (!carrier || !surface || !slot)
                 throw new Error('[SiteTypography] Missing prepared inline slot.');
-              surface.dataset.typographyPrototype = 'site-typography';
+              surface.dataset.typographyPrototype = `${family}-text-root`;
               surface.dataset.typographyRole = target.role;
               surface.dataset.typographyRuntime = runtime;
               surface.dataset.typographyFamily = family;

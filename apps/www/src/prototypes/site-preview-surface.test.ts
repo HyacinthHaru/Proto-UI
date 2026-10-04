@@ -1,70 +1,32 @@
 import { afterEach, expect, it } from 'vitest';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
-import SitePreviewSurface from './site-preview-surface.proto';
-
-const Surface = AdaptToWebComponent(SitePreviewSurface, {
-  registerAs: 'test-site-preview-surface',
-});
-const settle = async () => {
-  for (let i = 0; i < 12; i++) await Promise.resolve();
+import ShadcnSurface from '@proto.ui/prototypes-shadcn/surface';
+import BrutalistSurface from '@proto.ui/prototypes-brutalist/surface';
+import { panelSurfaceProps } from '../components/surface-recipes';
+const constructors = {
+  shadcn: AdaptToWebComponent(ShadcnSurface),
+  brutalist: AdaptToWebComponent(BrutalistSurface),
 };
 afterEach(() => document.body.replaceChildren());
-
-it('owns actual family tokens while leaving native content and focus semantics passive', async () => {
-  const surface = new Surface();
-  const content = document.createElement('p');
-  content.textContent = 'Actual example result';
-  surface.append(content);
-  document.body.append(surface);
-  await settle();
-  const update = async (family: string, emphasis = 'plain') => {
-    setElementProps(surface, { family, emphasis });
-    surface.update();
-    await settle();
-    return surface.getAttribute('data-pui-style')!.split(/\s+/);
-  };
-  expect(await update('shadcn')).toEqual(
-    expect.arrayContaining(['rounded-xl', 'border-border', 'bg-background'])
-  );
-  expect(await update('brutalist', 'accent')).toEqual(
-    expect.arrayContaining(['rounded-base', 'border-2', 'border-black', 'bg-main'])
-  );
-  const plain = await update('shadcn');
-  expect(plain).not.toContain('bg-main');
-  expect(plain).not.toContain('rounded-base');
-  expect(surface.contains(content)).toBe(true);
-  expect(content.textContent).toBe('Actual example result');
-  expect(surface.hasAttribute('role')).toBe(false);
-  expect(surface.hasAttribute('tabindex')).toBe(false);
-  expect(surface.getExposes()).toEqual({});
-});
-
-// Site roles reuse the accepted family grammar; elevation is never universal.
-it.each(['shadcn', 'brutalist'] as const)(
-  'switches %s card, popup and canvas paint without taking ownership',
-  async (family) => {
-    const surface = new Surface();
+for (const family of ['shadcn', 'brutalist'] as const)
+  it(`${family}: generic Surface composes passive card, popup and canvas without universal elevation`, async () => {
+    const surface = new constructors[family]();
+    const p = document.createElement('p');
+    p.textContent = 'Actual example result';
+    surface.append(p);
     document.body.append(surface);
-    const update = async (appearance?: string) => {
-      setElementProps(surface, { family, ...(appearance ? { appearance } : {}) });
+    for (const appearance of ['card', 'popup', 'canvas', 'card'] as const) {
+      setElementProps(surface, { ...panelSurfaceProps(appearance) });
       surface.update();
-      await settle();
-      return surface.getAttribute('data-pui-style')!.split(/\s+/);
-    };
-    const radius = family === 'shadcn' ? 'rounded-xl' : 'rounded-base';
-    const elevation = family === 'shadcn' ? 'shadow-sm' : 'shadow-[4px_4px_0_0_#000]';
-    expect(await update()).toContain(elevation);
-    for (const appearance of ['popup', 'canvas', 'card', 'popup']) {
-      const tokens = await update(appearance);
-      expect(tokens).toContain(radius);
-      expect(tokens.includes(elevation)).toBe(appearance === 'card');
-      if (family === 'brutalist')
-        expect(tokens).toEqual(
-          expect.arrayContaining(['border-black', 'font-sans', 'font-medium'])
-        );
-      expect(tokens).not.toContain('rounded-none');
+      for (let i = 0; i < 12; i++) await Promise.resolve();
+      const tokens = surface.getAttribute('data-pui-style')!;
+      expect(tokens).toContain(family === 'shadcn' ? 'rounded-xl' : 'rounded-base');
+      expect(tokens.includes('shadow-')).toBe(appearance === 'card');
+      expect(tokens).toContain(family === 'shadcn' ? 'border-border' : 'border-black');
+      expect(surface.contains(p)).toBe(true);
+      expect(p.textContent).toBe('Actual example result');
       expect(surface.hasAttribute('role')).toBe(false);
       expect(surface.hasAttribute('tabindex')).toBe(false);
+      expect(surface.getExposes()).toEqual({});
     }
-  }
-);
+  });

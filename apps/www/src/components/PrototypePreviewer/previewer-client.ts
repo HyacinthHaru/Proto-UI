@@ -235,7 +235,8 @@ export function initPreviewer(options: PreviewerOptions) {
       const surface = createRuntimePreviewSurface(
         demo,
         family,
-        resolveProjectionThemeSurfaceStyle(family, root)
+        resolveProjectionThemeSurfaceStyle(family, root),
+        runtime
       );
       const ids = new Set<string>();
       collectPrototypeIds(surface.demo.root, ids);
@@ -262,7 +263,9 @@ export function initPreviewer(options: PreviewerOptions) {
       const watchTheme = () =>
         watchProjectionThemeSurfaceStyle(family, root, (theme) => {
           if (!destroyed && myVersion === version && activeSurface === surface) {
-            surface.setAppearance(family, theme);
+            void surface
+              .setAppearance(family, theme)
+              .catch((error) => console.error('[RuntimeBox] Shell family update failed.', error));
           }
         });
       stopThemeWatcher = watchTheme();
