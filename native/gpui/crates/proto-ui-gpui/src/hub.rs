@@ -69,7 +69,7 @@ pub enum HubNote {
         session_id: Option<SessionId>,
         diagnostic: HostDiagnostic,
     },
-    /// A template built with issues; the projection still installed.
+    /// A template built with issues; the projection was refused before installation.
     Build {
         session_id: SessionId,
         issue: BuildIssue,

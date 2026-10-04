@@ -7,10 +7,13 @@
  * re-reading its tables. A table transcription can drift silently; a recorded
  * result of the real compiler cannot.
  *
- * Only un-varianted tokens are recorded. State variants (`data-[hovered]:`,
- * `dark:`, ...) are a Web lowering performed by `rule-expose-state-web`; a
- * host without CSS selectors never receives them, because its Rules stay on
- * the default plan and evaluate to a flat token list.
+ * Only un-varianted tokens are recorded as element declarations. State
+ * variants (`data-[hovered]:`, `dark:`, ...) are Web lowering performed by
+ * `rule-expose-state-web`; native Rules instead evaluate to a flat token list.
+ * The author-side static `selection:` target is a separate case: Web maps it
+ * to `::selection`, but this GPUI vocabulary has no selection realization.
+ * Keep it outside both declarations and noDeclarations so the Rust consumer
+ * reports UnknownToken rather than silently painting or ignoring the target.
  *
  * Scope is the Prototype token set only. Website demo `className`s are a
  * different system: they go through the site's real Tailwind, and this
@@ -68,7 +71,7 @@ function collectBaseTokens(): string[] {
   return [...tokens];
 }
 
-/** A token that carries a `:` variant is a Web lowering and is out of scope. */
+/** Only tokens targeting the element itself belong in this declaration fixture. */
 function isUnvarianted(token: string): boolean {
   let depth = 0;
   for (const character of token) {

@@ -178,6 +178,8 @@ export type {
 } from './dialog/types';
 export { ShadcnTextareaRoot, shadcnTextareaRoot } from './textarea';
 export type { ShadcnTextareaRootProps, ShadcnTextareaRootExposes } from './textarea';
+export { ShadcnInputRoot, shadcnInputRoot } from './input';
+export type { ShadcnInputRootProps, ShadcnInputRootExposes } from './input';
 export {
   ShadcnScrollAreaRoot,
   ShadcnScrollAreaViewport,
