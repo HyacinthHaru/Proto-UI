@@ -209,6 +209,7 @@ const baseCompound = (
   );
 
 export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
+  'shadcn-input': shadcn('shadcn-input', 'shadcn Input', 'shadcnInputRoot', 'ShadcnInputRoot'),
   'shadcn-button': shadcn('shadcn-button', 'shadcn Button', 'shadcnButton', 'ShadcnButton'),
   'shadcn-toggle': shadcn('shadcn-toggle', 'shadcn Toggle', 'shadcnToggle', 'ShadcnToggle'),
   'shadcn-separator': shadcn(
@@ -504,6 +505,12 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     'Brutalist Skeleton',
     'brutalistSkeletonRoot',
     'BrutalistSkeletonRoot'
+  ),
+  'brutalist-spinner': brutalist(
+    'brutalist-spinner',
+    'Brutalist Spinner',
+    'brutalistSpinnerRoot',
+    'BrutalistSpinnerRoot'
   ),
   'brutalist-textarea': brutalist(
     'brutalist-textarea',

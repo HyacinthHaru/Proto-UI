@@ -1,5 +1,5 @@
 import type { FocusEntryConfig } from '@proto.ui/core';
-import { resolveWebFocusEntryTarget } from '@proto.ui/adapter-base';
+import { orderFocusTargetsByDocument, resolveWebFocusEntryTarget } from '@proto.ui/adapter-base';
 import {
   cancelWebEventDefaultAction,
   createCapsWiring,
@@ -43,6 +43,7 @@ import {
   FOCUS_BLUR_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
   FOCUS_IS_NATIVELY_FOCUSABLE_CAP,
+  FOCUS_ORDER_CAP,
   FOCUS_PARENT_CAP,
   FOCUS_REQUEST_FOCUS_CAP,
   FOCUS_ROOT_TARGET_CAP,
@@ -80,6 +81,10 @@ import { RULE_EXPOSE_STATE_WEB_NATIVE_VARIANT_POLICY_CAP } from '@proto.ui/modul
 import {
   RULE_META_GET_CAP,
   RULE_META_COLOR_SCHEME_SOURCE_CAP,
+  RULE_META_PREFERENCE_SOURCE_CAP,
+  RULE_META_STYLE_SUPPORT_SOURCE_CAP,
+  type StyleSupportInvalidationSource,
+  type PreferenceInvalidationSource,
   type ColorSchemeInvalidationSource,
 } from '@proto.ui/module-rule-meta';
 import { createWebScrollSurfaceHost, SCROLL_SURFACE_HOST_CAP } from '@proto.ui/module-scroll';
@@ -113,6 +118,8 @@ type VueOwnerModulesArgs<Props extends PropsBaseType> = {
   rawPropsSource: RawPropsSource<Props>;
   getMeta: (key: string) => unknown;
   colorSchemeSource?: ColorSchemeInvalidationSource;
+  preferenceSource?: PreferenceInvalidationSource;
+  styleSupportSource?: StyleSupportInvalidationSource;
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
@@ -139,7 +146,16 @@ export function createVueOverlayGlobalMount(
 export function createVueOwnerModules<Props extends PropsBaseType>(
   args: VueOwnerModulesArgs<Props>
 ) {
-  const { instanceToken, emit, rawPropsSource, getMeta, colorSchemeSource, setExposes } = args;
+  const {
+    instanceToken,
+    emit,
+    rawPropsSource,
+    getMeta,
+    colorSchemeSource,
+    preferenceSource,
+    styleSupportSource,
+    setExposes,
+  } = args;
 
   return createCapsWiring()
     .use('props', [[RAW_PROPS_SOURCE_CAP, rawPropsSource]])
@@ -189,6 +205,10 @@ export function createVueOwnerModules<Props extends PropsBaseType>(
       ...(colorSchemeSource
         ? [[RULE_META_COLOR_SCHEME_SOURCE_CAP, colorSchemeSource] as const]
         : []),
+      ...(preferenceSource ? [[RULE_META_PREFERENCE_SOURCE_CAP, preferenceSource] as const] : []),
+      ...(styleSupportSource
+        ? [[RULE_META_STYLE_SUPPORT_SOURCE_CAP, styleSupportSource] as const]
+        : []),
     ])
     .use('rule-expose-state-web', [
       [RULE_EXPOSE_STATE_WEB_NATIVE_VARIANT_POLICY_CAP, createExposeStateWebNativeVariantPolicy],
@@ -213,6 +233,8 @@ export function createVueModules<Props extends PropsBaseType>(args: {
   effectsPort: EffectsPort;
   getMeta: (key: string) => unknown;
   colorSchemeSource?: ColorSchemeInvalidationSource;
+  preferenceSource?: PreferenceInvalidationSource;
+  styleSupportSource?: StyleSupportInvalidationSource;
   exposeStateWebMode?: ExposeStateWebMode;
   scrollProjection?: ScrollProjectionPreference;
   setExposes: (record: Record<string, unknown>) => void;
@@ -232,6 +254,8 @@ export function createVueModules<Props extends PropsBaseType>(args: {
     effectsPort,
     getMeta,
     colorSchemeSource,
+    preferenceSource,
+    styleSupportSource,
     exposeStateWebMode,
     scrollProjection,
     setExposes,
@@ -267,9 +291,11 @@ export function createVueModules<Props extends PropsBaseType>(args: {
     .use('a11y', [
       [
         A11Y_PROJECT_CAP,
-        createWebA11yProjector(getTriggerSurface, (listener) =>
-          subscribeLogicalTriggerSurface(instanceToken, listener)
-        ),
+        createWebA11yProjector(() => {
+          const surface = getLogicalTriggerSurfaceRoot(instanceToken);
+          const target = surface === el ? args.getCurrentElement() : surface;
+          return args.isViewReady() && target?.isConnected ? target : null;
+        }, subscribeFocusTarget),
       ],
     ])
     .use('event', [
@@ -285,6 +311,7 @@ export function createVueModules<Props extends PropsBaseType>(args: {
       [FOCUS_TARGET_READY_CAP, subscribeFocusTarget],
       [FOCUS_ROOT_TARGET_CAP, getTriggerSurface],
       [FOCUS_IS_NATIVELY_FOCUSABLE_CAP, isNativelyFocusable],
+      [FOCUS_ORDER_CAP, orderFocusTargetsByDocument],
       [
         FOCUS_SET_FOCUSABLE_CAP,
         (target: HTMLElement, enabled: boolean, options?: { programmatic?: boolean }) => {
@@ -373,6 +400,10 @@ export function createVueModules<Props extends PropsBaseType>(args: {
       [RULE_META_GET_CAP, getMeta],
       ...(colorSchemeSource
         ? [[RULE_META_COLOR_SCHEME_SOURCE_CAP, colorSchemeSource] as const]
+        : []),
+      ...(preferenceSource ? [[RULE_META_PREFERENCE_SOURCE_CAP, preferenceSource] as const] : []),
+      ...(styleSupportSource
+        ? [[RULE_META_STYLE_SUPPORT_SOURCE_CAP, styleSupportSource] as const]
         : []),
     ])
     .use('rule-expose-state-web', [

@@ -26,12 +26,13 @@ const EXPECTED_SHARED_BASE_FAMILY_IDS = [
 ] as const;
 
 const EXPECTED_COMPONENT_IDS = {
-  shadcn: [...EXPECTED_SHARED_BASE_FAMILY_IDS, 'checkbox', 'radio-group'],
+  shadcn: [...EXPECTED_SHARED_BASE_FAMILY_IDS, 'input', 'checkbox', 'radio-group'],
   brutalist: [
     ...EXPECTED_SHARED_BASE_FAMILY_IDS,
     'badge',
     'card',
     'skeleton',
+    'spinner',
     'scroll-area',
     'tooltip',
   ],
@@ -58,6 +59,7 @@ const EXPECTED_REQUIRED_PART_IDS = {
     'footer',
   ],
   separator: ['root'],
+  input: ['root'],
   textarea: ['root'],
   checkbox: ['root', 'indicator'],
   'radio-group': ['root', 'item', 'indicator'],
@@ -252,6 +254,7 @@ const EXPECTED_RECIPE_PROTOTYPE_IDS = {
       'shadcn-button',
     ],
     separator: ['shadcn-separator-root'],
+    input: ['shadcn-input-root'],
     textarea: ['shadcn-textarea-root'],
   },
   brutalist: {
@@ -354,6 +357,12 @@ const EXPECTED_FAMILIES = {
       baseFamilyId: 'P-BASE-TEXTAREA',
       recipeId: 'demo-shadcn-textarea',
       root: { basePrototypeId: 'P-BASE-TEXTAREA', prototypeId: 'shadcn-textarea-root' },
+    },
+    input: {
+      baseFamilyId: 'P-BASE-INPUT',
+      recipeId: 'demo-shadcn-input',
+      recipePrototypeIds: ['shadcn-input-root'],
+      root: { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'shadcn-input-root' },
     },
   },
   brutalist: {
@@ -483,7 +492,12 @@ function withoutPart(
 describe('Website projection-family manifests', () => {
   it('explicitly catalogs the same ten Base families in the Shadcn and Brutalist lanes', () => {
     expect(SHARED_BASE_FAMILY_IDS).toEqual(EXPECTED_SHARED_BASE_FAMILY_IDS);
-    expect(Object.keys(PROJECTION_FAMILY_MANIFESTS).sort()).toEqual(['brutalist', 'shadcn']);
+    expect(Object.keys(PROJECTION_FAMILY_MANIFESTS).sort()).toEqual([
+      'bootstrap-2-3-2',
+      'brutalist',
+      'liquid-glass',
+      'shadcn',
+    ]);
 
     for (const projectionFamilyId of ['shadcn', 'brutalist'] as const) {
       const manifest = PROJECTION_FAMILY_MANIFESTS[projectionFamilyId];
@@ -635,6 +649,10 @@ describe('Website projection-family manifests', () => {
       'shadcn/dialog': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'shadcn-button' }],
       'brutalist/card': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'brutalist-button' }],
       'brutalist/dialog': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'brutalist-button' }],
+      'brutalist/spinner': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'brutalist-button' },
+        { basePrototypeId: 'P-BASE-ASYNC-REGION', prototypeId: 'base-async-region-root' },
+      ],
     } as const;
 
     for (const [projectionFamilyId, manifest] of Object.entries(PROJECTION_FAMILY_MANIFESTS)) {
@@ -697,4 +715,24 @@ describe('Website projection-family manifests', () => {
       expect(() => validateProjectionFamilyManifest(invalid)).toThrow(/recipe Prototype set/i);
     }
   });
+});
+
+describe('partial new projection families', () => {
+  for (const family of ['bootstrap-2-3-2', 'liquid-glass'] as const) {
+    it(`${family} declares only its real Button and rejects every missing kind`, () => {
+      const manifest = PROJECTION_FAMILY_MANIFESTS[family];
+      expect(Object.keys(manifest.families)).toEqual(['button']);
+      expect(() => validateProjectionFamilyManifest(manifest)).not.toThrow();
+      expect(resolveProjectionPart(family, 'button', 'root').prototypeId).toBe(`${family}-button`);
+      for (const kind of ['select', 'switch', 'dialog', 'tabs', 'checkbox']) {
+        expect(() => resolveProjectionPart(family, kind, 'root')).toThrow(
+          /no family.*fallback is forbidden/
+        );
+      }
+      expect(resolveProjectionRecipe(`demo-${family}-button`)).toEqual({
+        projectionFamilyId: family,
+        familyId: 'button',
+      });
+    });
+  }
 });

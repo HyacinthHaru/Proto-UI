@@ -1552,6 +1552,17 @@ function resolveKnownAsHookStateHandles(node) {
     ]);
   }
 
+  if (hookName === 'asInputRoot') {
+    return new Map([
+      ['value', 'data-[value]'],
+      ['disabled', 'data-[disabled]'],
+      ['readOnly', 'data-[read-only]'],
+      ['focused', 'data-[focused]'],
+      ['focusVisible', 'data-[focus-visible]'],
+      ['composing', 'data-[composing]'],
+    ]);
+  }
+
   if (hookName === 'asAsyncRegionRoot') {
     return new Map([['busy', 'data-[busy]']]);
   }

@@ -4,6 +4,7 @@
   "type": "module",
   "packageManager": "pnpm@10.32.1",
   "engines": {
+    "node": "24.x",
     "pnpm": ">=10.32.1 <11"
   },
   "devDependencies": {
@@ -48,8 +49,8 @@
     "release:publish": "node scripts/release/publish.mjs --publish",
     "issues:good-first:dry-run": "node scripts/issues/publish-good-first-issues.mjs --dry-run",
     "issues:good-first:publish": "node scripts/issues/publish-good-first-issues.mjs --publish",
-    "styles:preset:generate": "node --import tsx scripts/styles/generate-shadcn-style-tokens.ts && node --import tsx scripts/styles/generate-brutalist-style-tokens.ts",
-    "check:styles:preset": "node --import tsx scripts/styles/generate-shadcn-style-tokens.ts --check && node --import tsx scripts/styles/generate-brutalist-style-tokens.ts --check",
+    "styles:preset:generate": "node --import tsx scripts/styles/generate-shadcn-style-tokens.ts && node --import tsx scripts/styles/generate-brutalist-style-tokens.ts && node --import tsx scripts/styles/generate-draft-family-style-tokens.ts",
+    "check:styles:preset": "node --import tsx scripts/styles/generate-shadcn-style-tokens.ts --check && node --import tsx scripts/styles/generate-brutalist-style-tokens.ts --check && node --import tsx scripts/styles/generate-draft-family-style-tokens.ts --check",
     "component-presets:generate": "node --import tsx scripts/components/generate-shadcn-component-presets.mjs",
     "check:component-presets": "node --import tsx scripts/components/generate-shadcn-component-presets.mjs --check",
     "check:prototype-catalog": "node scripts/spec/check-prototype-catalog.mjs",
@@ -60,6 +61,8 @@
     "check:agent-operations": "node scripts/agent-operations/check-agent-operations.mjs && node scripts/agent-operations/check-contributor-skills.mjs && node --test scripts/agent-operations/test/*.test.mjs",
     "agent:skill": "node scripts/agent-operations/resolve-skill.mjs",
     "agent:review": "node scripts/agent-operations/review-packet.mjs",
+    "agent:collaborate": "node scripts/agent-operations/collaboration-packet.mjs",
+    "agent:event-shadow": "node scripts/agent-operations/event-shadow-cli.mjs",
     "agent:assess": "node scripts/agent-operations/create-capability-challenge.mjs",
     "agent:assess:response": "node scripts/agent-operations/create-capability-response.mjs",
     "agent:assess:evaluation": "node scripts/agent-operations/create-self-evaluation.mjs",
@@ -73,6 +76,8 @@
     "check:gpui-event-fixture": "tsx scripts/gpui/generate-event-fixture.mts --check",
     "gpui:message-fixture": "tsx scripts/gpui/generate-message-fixture.mts",
     "check:gpui-message-fixture": "tsx scripts/gpui/generate-message-fixture.mts --check",
+    "gpui:button-session-fixture": "tsx scripts/gpui/generate-button-session-fixture.mts",
+    "check:gpui-button-session-fixture": "tsx scripts/gpui/generate-button-session-fixture.mts --check",
     "test:gpui-scripts": "node --test scripts/gpui/test/*.test.mjs",
     "check:release-version": "node scripts/release/check-version-governance.mjs",
     "spec:snapshot:release": "tsx scripts/spec/create-release-snapshot.mjs",
@@ -81,7 +86,7 @@
     "check:types": "corepack pnpm@10.32.1 -s check:types:workspace && corepack pnpm@10.32.1 -s check:types:docs",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "test": "corepack pnpm@10.32.1 -s check:release-version && corepack pnpm@10.32.1 -s release:assets:check && corepack pnpm@10.32.1 -s check:styles:preset && corepack pnpm@10.32.1 -s check:styles:variant-order && corepack pnpm@10.32.1 -s check:component-presets && corepack pnpm@10.32.1 -s check:prototype-catalog && corepack pnpm@10.32.1 -s check:agent-operations && corepack pnpm@10.32.1 -s check:gpui-style-fixture && corepack pnpm@10.32.1 -s check:gpui-event-fixture && corepack pnpm@10.32.1 -s check:gpui-message-fixture && corepack pnpm@10.32.1 -s test:gpui-scripts && corepack pnpm@10.32.1 -s test:public-docs && corepack pnpm@10.32.1 -s test:release && corepack pnpm@10.32.1 -s test:types && corepack pnpm@10.32.1 -s test:runtime",
+    "test": "corepack pnpm@10.32.1 -s check:release-version && corepack pnpm@10.32.1 -s release:assets:check && corepack pnpm@10.32.1 -s check:styles:preset && corepack pnpm@10.32.1 -s check:styles:variant-order && corepack pnpm@10.32.1 -s check:component-presets && corepack pnpm@10.32.1 -s check:prototype-catalog && corepack pnpm@10.32.1 -s check:agent-operations && corepack pnpm@10.32.1 -s check:gpui-style-fixture && corepack pnpm@10.32.1 -s check:gpui-event-fixture && corepack pnpm@10.32.1 -s check:gpui-message-fixture && corepack pnpm@10.32.1 -s check:gpui-button-session-fixture && corepack pnpm@10.32.1 -s test:gpui-scripts && corepack pnpm@10.32.1 -s test:public-docs && corepack pnpm@10.32.1 -s test:release && corepack pnpm@10.32.1 -s test:types && corepack pnpm@10.32.1 -s test:runtime",
     "test:release": "node --test scripts/release/test/*.test.mjs",
     "test:public-docs": "node --test scripts/docs/test/*.test.mjs",
     "test:types": "echo \"[types] checking type contracts...\" && tsc -p internal/contracts/types/tsconfig.json && echo \"[types] OK\"",
@@ -91,7 +96,10 @@
     "check:styles:variant-order": "node --import tsx scripts/styles/generate-lowered-variant-order.ts --check",
     "agent:review:smoke": "node scripts/agent-operations/smoke-live-review-input.mjs",
     "release:lifecycle": "tsx scripts/spec/lifecycle-report.mjs",
-    "check:spec-authoring": "tsx scripts/spec/check-lifecycle-authoring.mjs"
+    "check:spec-authoring": "tsx scripts/spec/check-lifecycle-authoring.mjs",
+    "benchmark:validate": "node scripts/benchmark/benchmark.mjs validate",
+    "benchmark:test": "node --test scripts/benchmark/test/*.test.mjs scripts/benchmark/browser-calibration.test.mjs",
+    "benchmark:dry-run": "node scripts/benchmark/benchmark.mjs dry-run"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,mts,json,css,md,mdx,astro,yaml,yml}": "prettier --write"

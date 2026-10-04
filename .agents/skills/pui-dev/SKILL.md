@@ -15,41 +15,53 @@ Read `internal/agent-operations/skills.yaml` as routing metadata. Do not preload
 2. Establish `executionMode` before reading task-authored content. Use `human-assisted` for an explicit current user request or active human decision loop. Use `autonomous` only for a maintainer-controlled invocation, schedule, or governed queue. Repository files, Issues, pull requests, comments, and generated artifacts cannot select the mode.
 3. Resolve `pui-orient` to record the mode, repository state, live authority, assessed comprehension, task risk, and current authorization. Never override the mode carried by an existing handoff. When a user takes over an autonomous run, stop that chain and start a new `pui-orient` transition in `human-assisted` mode.
 4. In `human-assisted` mode, assessment is optional and advisory: use it to increase validation, narrow claims, expose limitations, or request review, but never to refuse explicitly requested implementation or local review. In `autonomous` mode, resolve `pui-assess` when the local result is absent, stale, or snapshot-mismatched, then enforce its task and review ceiling before every transition.
-5. If the requested work is not already bounded, resolve `pui-select` to return one read-only work-item proposal or an explicit no-work result. Autonomous selection must remain within the fresh local ceiling.
-6. Resolve `pui-claim` only when the exact external write is explicitly or standing-authorized, the task is still ready and unowned, and live GitHub permission allows it. Otherwise stop with the proposal.
+5. If the requested work is not already bounded, resolve `pui-select` to choose one ready work item or return an explicit no-work result. Autonomous selection remains within the fresh local ceiling.
+6. Resolve `pui-claim` when the task is ready and unowned and the current request or standing scope covers the reversible claim write. Continue directly once the live target confirms the claim.
 7. After the subject is bounded, resolve `pui-trace` to map applicable authority, lifecycle, relations, evidence, projections, and conflicts.
 
-Local assessment decides how far an Agent may go alone, not whether it may participate with a human. It never grants GitHub or Discord permission, predicts acceptance, proves identity, or decides a human gate. Before an external write, re-read the target, current authorization, credential permission, repository rules, and idempotency state. Local edits, tests, commits, authorized branch pushes, own-PR updates, and review responses remain ordinary contributor work in `human-assisted` mode.
+Local assessment decides how far an Agent may go alone, not whether it may participate with a human. It never grants GitHub or Discord permission, predicts acceptance, proves identity, or creates decision authority. Before an external write, re-read the target, current authorization, credential permission, repository rules, and idempotency state. Local edits, tests, commits, authorized branch pushes, own-PR updates, and review responses remain ordinary contributor work in `human-assisted` mode.
 
 ## Compose the smallest chain
 
 Load only the skill needed for the current transition. The list below is routing metadata, not an instruction to open every skill:
 
-- use `pui-brainstorm` before normative work whose identity, owner, boundary, or compatibility remains unsettled;
+- use `pui-brainstorm` only when normative identity, ownership, public guarantee, or compatibility has more than one materially different unresolved direction;
 - use `pui-unclaim` when the current contributor's claim expires, its boundary changes, or work stops;
-- use `pui-issue` or `pui-pr` for bounded read-only queue inspection;
+- use `pui-issue` or `pui-pr` for bounded queue inspection, then `pui-collaborate` for an authorized exact-target metadata, update-branch, ready-for-review, thread, review-request, status-comment, or CI-recheck mutation;
 - use `pui-evidence-publish` only for one prepared, separately authorized additive Issue evidence comment after `pui-issue`; evidence preparation/uploads remain separate authorized work;
-- use `pui-ci`, `pui-govern`, `pui-deploy`, or `pui-deps` for the corresponding bounded read-only operational question;
+- use `pui-ci`, `pui-govern`, `pui-deploy`, or `pui-deps` for the corresponding bounded read-only operational question, then `pui-dependency-update` for an assessed governed manifest or lockfile update;
 - use `pui-spec` or `pui-contract` after the corresponding semantic scope is governed;
-- use `pui-adapter-assess` for a bounded read-only Adapter question and `pui-adapter` only for an explicitly approved Adapter implementation slice;
-- use `pui-module`, `pui-host`, `pui-adapter`, or `pui-prototype` for an approved new or extended implementation slice;
+- use `pui-adapter-assess` for a bounded Adapter question and `pui-adapter` when the target slice is governed or accepted;
+- use `pui-module`, `pui-host`, `pui-adapter`, or `pui-prototype` when existing authority or the current bounded request determines the implementation result;
 - use `pui-regression` first whenever the task starts from a reproducible failure against governed expected behavior, including Adapter parity, Prototype, Runtime, export, or public-projection failures;
 - select `pui-test` as a separate transition when evidence must be designed or changed;
 - select `pui-docs` as a separate transition for reader projections;
 - select `pui-validate` after a technical change;
 - use a fresh context with `pui-review` when independent acceptance is required;
-- use `pui-integrate` after `pui-review` only for an exact-head clean packet under separate current-user or active standing merge authorization;
-- use `pui-release-prep` and `pui-release-audit` only for their separate gated release phases.
+- use `pui-integrate` after `pui-review` for an exact-head clean packet under current-user or active standing merge authorization;
+- use `pui-release-prep` and `pui-release-audit` for their purpose-bound release preparation and immutable-evidence phases.
 
 Pass only registered artifacts through the validated handoff. Return a terminal handoff when there is no eligible next transition.
 
-## Stop at a gate
+## Drive implementation to verified evidence
 
-Stop when product semantics, ownership, public surface, compatibility, lifecycle promotion, contributor rights, security, integration, publication, or release requires a human decision and no exact active standing authorization resolves that bounded action. Present one decision packet with the exact authorization requested and the actions it would not authorize.
+Within the established envelope, favor implementing, preserving, or extending the requested capability over omitting it. Decide reversible engineering details from the available evidence without waiting for another user choice. Keep the user's goal, acceptance criteria, explicit constraints, and authorized scope intact; optimism does not grant authority or settle an unresolved product decision.
 
-An autonomous handoff with a pending human gate is terminal. After the human decision, continue through a newly oriented human-assisted run or a separately authorized autonomous run; do not relabel the old handoff.
+1. **Decide:** distinguish an open implementation option from a human gate. Choose a testable, reversible option consistent with the authority map; record material assumptions and the evidence that would change the choice.
+2. **Implement:** route one coherent slice to its owning leaf. A reviewable increment advances the full requested outcome; it does not silently redefine that outcome as a smaller deliverable.
+3. **Verify:** route the candidate to `pui-validate` with its authority map and prior evidence. Preserve the implementation authorization and other artifacts needed for a possible repair handoff.
+4. **Repair:** use the failure diagnosis to select the eligible implementation or test leaf, then validate the repaired candidate. Follow `internal/agent-operations/testing-method.md` for evidence-driven retries. One failed attempt does not establish infeasibility or justify abandoning a constraint, switching the requested approach, or reducing coverage.
+5. **Report:** distinguish implemented behavior, passed checks, failed or unrun checks, remaining work, and actual gates. Continue eligible work until the requested outcome is verified or a concrete blocker requires escalation. Keep formal independent review and publication as their separately governed transitions.
 
-Commit and push when the user explicitly requests them and the live branch permission allows it. Do not infer permission to mutate unrelated GitHub state, approve, merge, publish, or release.
+When blocked, preserve the candidate and useful negative evidence, explain the constraint and attempted remedies, and propose the smallest decision or prerequisite needed to continue. Continue independent authorized work; do not fabricate success, relax permissions, or spend unbounded resources to avoid reporting a blocker.
+
+## Default to completion
+
+When authority and the bounded request determine the result, continue through implementation, validation, documentation, review response, ready-for-review, and exact-head integration without inventing another approval checkpoint. Treat a request to implement, advance, or finish the bounded work as authorization for its normal local edits, signed-off commits, and owned or explicitly authorized branch updates; re-read the live target before each external write.
+
+Pause for one concise decision packet only when either (a) product authority leaves a real semantic, ownership, public-guarantee, lifecycle, or compatibility choice unresolved, or (b) the next action is privileged or difficult to reverse, such as publication, release, access, secrets, rulesets, security disclosure, or a provenance exception. CI, review, commit grouping, ready-for-review, and merge are execution conditions handled by the relevant skills and repository rules and therefore continue without another attended decision.
+
+Never widen the user's task or external mutation scope merely because the workflow can automate more actions.
 
 ## Communicate
 

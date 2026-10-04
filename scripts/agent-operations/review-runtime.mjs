@@ -1,4 +1,8 @@
 import { createHash } from 'node:crypto';
+import { isDeepStrictEqual } from 'node:util';
+
+// Match the existing governed live-response bound for this supplied artifact.
+export const MAX_PUBLISHED_REVIEW_PACKET_BYTES = 64 * 1024 * 1024;
 
 const SHA = /^[a-f0-9]{40,64}$/;
 const HEX64 = /^[a-f0-9]{64}$/;
@@ -21,6 +25,10 @@ const RECOMMENDATION_RANK = new Map([
   ['APPROVE', 3],
 ]);
 const PULL_REQUEST_STATES = new Set(['OPEN', 'CLOSED', 'MERGED']);
+const ATTENDED_DECISION_CLASSES = new Set([
+  'unresolved-product-direction',
+  'privileged-or-irreversible-operation',
+]);
 const CHANGED_FILE_STATUSES = new Set([
   'added',
   'removed',
@@ -32,6 +40,7 @@ const CHANGED_FILE_STATUSES = new Set([
 ]);
 const SPEC_ENTITY_PATH =
   /^spec\/(contracts|prototypes|modules|adapters|decisions|host-caps|tests|versions|knowledge)\/[^/]+\.yaml$/;
+const PREVIEW_AUTHORIZATION_URL = /^https:\/\/vercel\.com\/git\/authorize(?:\?[^#]*)?(?:#.*)?$/;
 
 // An external preview authorization prompt is not evidence about repository CI.
 // Keep its status in the canonical input and require explicit publication debt
@@ -62,7 +71,11 @@ function hasUndisclosedPreviewAuthorizationDebt(packet, input) {
     (check) =>
       isExternalPreviewAuthorizationFailure(check) &&
       !packet.agentEvidence.debt.some(
-        (item) => item.kind === 'publication' && item.missing.includes(check.name)
+        (item) =>
+          item.kind === 'publication' &&
+          item.previewAuthorization?.provider === check.source &&
+          item.previewAuthorization.checkName === check.name &&
+          item.previewAuthorization.authorizationUrl === check.detailsUrl
       )
   );
 }
@@ -125,7 +138,13 @@ function validateInputItems(items, fields, label, validator) {
   }
 }
 
-export function validateReviewInputSnapshot(input) {
+function validateReviewInputVersion(input, legacy) {
+  assert(
+    input?.schemaVersion === (legacy ? 3 : 5),
+    input?.schemaVersion === 4
+      ? 'legacy review input v4 must be re-collected as v5 with current reviewer permission observations'
+      : 'review input schemaVersion is invalid'
+  );
   exactKeys(
     input,
     [
@@ -134,6 +153,7 @@ export function validateReviewInputSnapshot(input) {
       'repositoryId',
       'pullRequest',
       'pullRequestState',
+      ...(legacy ? [] : ['pullRequestAuthor']),
       'isDraft',
       'baseRefName',
       'baseSha',
@@ -142,6 +162,7 @@ export function validateReviewInputSnapshot(input) {
       'changedFiles',
       'commits',
       'reviews',
+      ...(legacy ? [] : ['reviewerPermissions']),
       'comments',
       'replies',
       'threads',
@@ -150,7 +171,6 @@ export function validateReviewInputSnapshot(input) {
     ],
     'review input'
   );
-  assert(input.schemaVersion === 3, 'review input schemaVersion is invalid');
   assert(input.kind === 'proto-ui.review-input', 'review input kind is invalid');
   assert(
     typeof input.repositoryId === 'string' && input.repositoryId.length > 3,
@@ -161,6 +181,12 @@ export function validateReviewInputSnapshot(input) {
     'review input PR is invalid'
   );
   assert(PULL_REQUEST_STATES.has(input.pullRequestState), 'review input PR state is invalid');
+  if (!legacy) {
+    assert(
+      typeof input.pullRequestAuthor === 'string' && input.pullRequestAuthor.length > 0,
+      'review input pull-request author identity is invalid'
+    );
+  }
   assert(typeof input.isDraft === 'boolean', 'review input draft state is invalid');
   assert(
     typeof input.baseRefName === 'string' && input.baseRefName.length > 0,
@@ -191,26 +217,111 @@ export function validateReviewInputSnapshot(input) {
     }
   );
   assert(input.changedFiles.length > 0, 'review input changedFiles must not be empty');
-  validateInputItems(input.commits, ['sha', 'message'], 'review input commits', (item) => {
-    assert(SHA.test(item.sha), 'review input commit SHA is invalid');
-    assert(typeof item.message === 'string', 'review input commit message is invalid');
-  });
+  validateInputItems(
+    input.commits,
+    legacy ? ['sha', 'message'] : ['sha', 'message', 'author', 'committer'],
+    'review input commits',
+    (item) => {
+      assert(SHA.test(item.sha), 'review input commit SHA is invalid');
+      assert(typeof item.message === 'string', 'review input commit message is invalid');
+      if (legacy) return;
+      for (const role of ['author', 'committer']) {
+        exactKeys(
+          item[role],
+          ['login', 'name', 'email', 'platform'],
+          `review input commit ${role}`
+        );
+        assert(
+          item[role].login === null ||
+            (typeof item[role].login === 'string' && item[role].login.length > 0),
+          `review input commit ${role} login is invalid`
+        );
+        assert(typeof item[role].name === 'string', `review input commit ${role} name is invalid`);
+        assert(
+          typeof item[role].email === 'string',
+          `review input commit ${role} email is invalid`
+        );
+        // A platform-generated actor (GitHub's web-flow committer) carries an
+        // explicit verified platform identity instead of an unresolved null
+        // login; the collector may only set it from GitHub's own signature
+        // attestation, so a forged entry cannot weaken the fail-closed rule.
+        if (item[role].platform !== null) {
+          exactKeys(
+            item[role].platform,
+            ['kind', 'attestation'],
+            `review input commit ${role} platform`
+          );
+          assert(
+            item[role].platform.kind === 'github-web-flow' &&
+              item[role].platform.attestation === 'valid-github-signature',
+            `review input commit ${role} platform identity is invalid`
+          );
+        }
+      }
+    }
+  );
   validateInputItems(
     input.reviews,
     ['id', 'author', 'state', 'commitSha', 'submittedAt', 'body'],
     'review input reviews',
     (item) => {
-      for (const field of ['id', 'author', 'state']) {
+      for (const field of ['id', 'state']) {
         assert(
           typeof item[field] === 'string' && item[field].length > 0,
           `review ${field} is invalid`
         );
       }
+      assert(
+        (!legacy && item.author === null) ||
+          (typeof item.author === 'string' && item.author.length > 0),
+        'review author is invalid'
+      );
       assert(item.commitSha === null || SHA.test(item.commitSha), 'review commitSha is invalid');
       validateTimestamp(item.submittedAt, 'review submittedAt', { nullable: true });
       assert(typeof item.body === 'string', 'review body is invalid');
     }
   );
+  if (!legacy)
+    validateInputItems(
+      input.reviewerPermissions,
+      ['login', 'permission', 'source', 'endpoint', 'repositoryId', 'headSha'],
+      'review input reviewerPermissions',
+      (item) => {
+        assert(
+          typeof item.login === 'string' &&
+            item.login.length > 0 &&
+            item.login === item.login.toLowerCase(),
+          'reviewer permission login is invalid'
+        );
+        assert(
+          ['admin', 'write', 'read', 'none'].includes(item.permission),
+          'reviewer permission is invalid'
+        );
+        assert(
+          item.source === 'github-rest-collaborator-permission',
+          'reviewer permission source is invalid'
+        );
+        assert(
+          item.repositoryId === input.repositoryId && item.headSha === input.headSha,
+          'reviewer permission target binding is invalid'
+        );
+        const repository = input.repositoryId.replace(/^github\.com:/, '');
+        assert(
+          item.endpoint ===
+            `repos/${repository}/collaborators/${encodeURIComponent(item.login)}/permission`,
+          'reviewer permission endpoint is invalid'
+        );
+        assert(
+          input.reviews.some(
+            (review) =>
+              review.author?.toLowerCase() === item.login &&
+              review.state === 'APPROVED' &&
+              review.commitSha === input.headSha
+          ),
+          'reviewer permission has no exact-head approval subject'
+        );
+      }
+    );
   validateInputItems(
     input.comments,
     ['id', 'author', 'body', 'updatedAt'],
@@ -260,6 +371,7 @@ export function validateReviewInputSnapshot(input) {
       'completedAt',
       'detailsUrl',
       'source',
+      ...(legacy ? [] : ['providerId']),
       'repository',
       'workflowName',
       'workflowPath',
@@ -285,6 +397,12 @@ export function validateReviewInputSnapshot(input) {
         'check conclusion is invalid'
       );
       assert(typeof item.source === 'string' && item.source.length > 0, 'check source is invalid');
+      if (!legacy)
+        assert(
+          item.providerId === null ||
+            (typeof item.providerId === 'string' && item.providerId.length > 0),
+          'check providerId is invalid'
+        );
       for (const field of ['repository', 'workflowName', 'workflowPath']) {
         assert(
           item[field] === null || (typeof item[field] === 'string' && item[field].length > 0),
@@ -311,6 +429,9 @@ export function validateReviewInputSnapshot(input) {
   for (const [items, key, label] of [
     [input.commits, (item) => item.sha, 'commit SHA'],
     [input.reviews, (item) => item.id, 'review id'],
+    ...(legacy
+      ? []
+      : [[input.reviewerPermissions, (item) => item.login, 'reviewer permission login']]),
     [input.comments, (item) => item.id, 'comment id'],
     [input.replies, (item) => item.id, 'reply id'],
     [input.threads, (item) => item.id, 'thread id'],
@@ -321,8 +442,18 @@ export function validateReviewInputSnapshot(input) {
   return input;
 }
 
-function canonicalReviewInput(input) {
-  validateReviewInputSnapshot(input);
+// Current collection and every mutation remain v5-only. Legacy parsing is a
+// separate read-only surface; it never supplies missing identity/permission facts.
+export function validateReviewInputSnapshot(input) {
+  return validateReviewInputVersion(input, false);
+}
+
+export function validateReviewInputForIngestion(input) {
+  return validateReviewInputVersion(input, input?.schemaVersion === 3);
+}
+
+function canonicalReviewInput(input, validate = validateReviewInputSnapshot) {
+  validate(input);
   const clone = structuredClone(input);
   const compareCanonical = (left, right) => {
     const leftKey = JSON.stringify(canonicalJson(left));
@@ -333,6 +464,7 @@ function canonicalReviewInput(input) {
     'changedFiles',
     'commits',
     'reviews',
+    ...(input.schemaVersion === 5 ? ['reviewerPermissions'] : []),
     'comments',
     'replies',
     'threads',
@@ -346,6 +478,10 @@ function canonicalReviewInput(input) {
 
 export function computeReviewInputDigest(input) {
   return digest(canonicalReviewInput(input));
+}
+
+export function computeReviewIngestionInputDigest(input) {
+  return digest(canonicalReviewInput(input, validateReviewInputForIngestion));
 }
 
 export function reviewChangesSpecEntities(input) {
@@ -453,6 +589,45 @@ export function computeReviewPacketDigest(priorPacket) {
   return digest(priorPacket);
 }
 
+// The supplied file is content, not authority. Its complete packet/evidence
+// tokens must also occur in the same qualified live approval below.
+export function validatePublishedReviewPacket(packet, publishedPacket) {
+  assert(
+    publishedPacket && typeof publishedPacket === 'object' && !Array.isArray(publishedPacket),
+    'the original published review packet is required'
+  );
+  let serialized;
+  try {
+    serialized = JSON.stringify(publishedPacket);
+  } catch {
+    throw new Error('the published review packet cannot be serialized');
+  }
+  assert(
+    typeof serialized === 'string' &&
+      Buffer.byteLength(serialized, 'utf8') <= MAX_PUBLISHED_REVIEW_PACKET_BYTES,
+    `the published review packet exceeds the ${MAX_PUBLISHED_REVIEW_PACKET_BYTES}-byte bound`
+  );
+  assert(publishedPacket.schemaVersion === 2, 'the published review packet must use schema v2');
+  exactKeys(publishedPacket, Object.keys(packet), 'published review packet');
+  assert(
+    typeof publishedPacket.reviewInputDigest === 'string' &&
+      HEX64.test(publishedPacket.reviewInputDigest),
+    'the published review input digest is invalid'
+  );
+  validateTimestamp(publishedPacket.observedAt, 'published review observedAt');
+  // Only these two transport fields change after publishing the review. All
+  // content, base/head, scope, evidence, findings and reconciliation stay exact.
+  assert(
+    isDeepStrictEqual(packet, {
+      ...publishedPacket,
+      reviewInputDigest: packet.reviewInputDigest,
+      observedAt: packet.observedAt,
+    }),
+    'the merge packet changed published review content beyond reviewInputDigest/observedAt'
+  );
+  return publishedPacket;
+}
+
 /**
  * Stable publication receipt marker embedded in every rendered review body and
  * evidence comment. Duplicate detection and merge authorization bind to this
@@ -469,15 +644,191 @@ export function reviewPacketMarkerPresent(packet, bodies) {
   return bodies.some((body) => typeof body === 'string' && body.includes(marker));
 }
 
-/** Remove governed receipt markers so two rendered bodies compare by content. */
-function stripReceiptMarkers(body) {
-  return body.replace(/<!--[\s\S]*?proto-ui:[\s\S]*?-->/g, '').trim();
+/** Preserve disclosure; only pure receipt comments are transport metadata. */
+function normalizedReviewBody(body) {
+  const source = body.replace(/\r\n/g, '\n');
+  const content = [];
+  let cursor = 0;
+  while (cursor < source.length) {
+    const start = source.indexOf('<!--', cursor);
+    if (start === -1) break;
+    const end = source.indexOf('-->', start + 4);
+    if (end === -1) break;
+    content.push(source.slice(cursor, start));
+    const tokens = source
+      .slice(start + 4, end)
+      .trim()
+      .split(/\s+/);
+    if (
+      !tokens.every((token) =>
+        /^proto-ui:(?:review-packet|agent-evidence):sha256=[a-f0-9]{64}$/.test(token)
+      )
+    ) {
+      content.push(source.slice(start, end + 3));
+    }
+    cursor = end + 3;
+  }
+  content.push(source.slice(cursor));
+  return content.join('').trim();
 }
 
 /** Evidence identity shared by every packet and publication carrying it. */
 export function agentEvidenceMarker(packet) {
   assert(packet.schemaVersion === 2, 'schema v1 packets carry no Agent evidence');
   return `proto-ui:agent-evidence:sha256=${digest(packet.agentEvidence)}`;
+}
+
+function receiptMarkerTokens(body) {
+  const tokens = [];
+  if (typeof body !== 'string') return tokens;
+  let cursor = 0;
+  while (cursor < body.length) {
+    const start = body.indexOf('<!--', cursor);
+    if (start === -1) break;
+    const end = body.indexOf('-->', start + 4);
+    if (end === -1) break;
+    // renderReviewBody combines packet and evidence markers in one comment.
+    // Match a complete whitespace-delimited token, never a prefix or suffix.
+    tokens.push(
+      ...body
+        .slice(start + 4, end)
+        .trim()
+        .split(/\s+/)
+    );
+    cursor = end + 3;
+  }
+  return tokens;
+}
+
+function hasReceiptMarker(body, marker) {
+  return receiptMarkerTokens(body).includes(marker);
+}
+
+function hasUniquePublishedPacketReceipts(body, packet) {
+  const tokens = receiptMarkerTokens(body);
+  const packetTokens = [
+    ...new Set(
+      tokens.filter((token) => /^proto-ui:review-packet:sha256=[a-f0-9]{64}$/.test(token))
+    ),
+  ];
+  const evidenceTokens = [
+    ...new Set(
+      tokens.filter((token) => /^proto-ui:agent-evidence:sha256=[a-f0-9]{64}$/.test(token))
+    ),
+  ];
+  return (
+    packetTokens.length === 1 &&
+    packetTokens[0] === reviewPacketMarker(packet) &&
+    evidenceTokens.length === 1 &&
+    evidenceTokens[0] === agentEvidenceMarker(packet)
+  );
+}
+
+// Invert exactly one normal publication. Do not discard unrelated reviews,
+// comments, checks or files in search of a matching historical digest.
+function matchesPublishedReviewInput(publishedPacket, input, review) {
+  try {
+    const positions = input.reviews.flatMap((entry, index) =>
+      entry.id === review.id ? [index] : []
+    );
+    if (positions.length !== 1 || review.author === null) return false;
+    const reconstructed = {
+      ...input,
+      reviews: input.reviews.toSpliced(positions[0], 1),
+      reviewerPermissions: [...input.reviewerPermissions],
+    };
+    const publisher = review.author.toLowerCase();
+    // The collector adds this fact only when publication newly introduces an
+    // eligible approval subject. Existing subjects keep their exact fact.
+    if (!reviewerPermissionSubjects(reconstructed).includes(publisher)) {
+      reconstructed.reviewerPermissions = reconstructed.reviewerPermissions.filter(
+        (entry) => entry.login !== publisher
+      );
+    }
+    if (computeReviewInputDigest(reconstructed) !== publishedPacket.reviewInputDigest) return false;
+    validateReviewPacket(publishedPacket, reconstructed);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function uniqueLatestReview(reviews) {
+  let latest = null;
+  let tied = false;
+  for (const review of reviews) {
+    const timestamp = review.submittedAt;
+    if (typeof timestamp !== 'string' || !RFC3339.test(timestamp)) return null;
+    const milliseconds = Date.parse(timestamp);
+    if (!Number.isFinite(milliseconds)) return null;
+    // Normalize timezone offsets without truncating admitted fractional digits.
+    // An opaque review ID and input array position supply no chronological order.
+    const second = Math.floor(milliseconds / 1000);
+    const fraction = timestamp.match(/\.(\d+)/)?.[1] ?? '';
+    const precision = Math.max(fraction.length, latest?.fraction.length ?? 0);
+    const paddedFraction = fraction.padEnd(precision, '0');
+    const latestFraction = latest?.fraction.padEnd(precision, '0');
+    if (
+      latest === null ||
+      second > latest.second ||
+      (second === latest.second && paddedFraction > latestFraction)
+    ) {
+      latest = { review, second, fraction };
+      tied = false;
+    } else if (second === latest.second && paddedFraction === latestFraction) {
+      tied = true;
+    }
+  }
+  return tied ? null : (latest?.review ?? null);
+}
+
+function requiredPriorReview(input, reviewer) {
+  const candidates = input.reviews
+    .filter(
+      (review) =>
+        review.author?.toLowerCase() === reviewer.toLowerCase() &&
+        ['APPROVED', 'CHANGES_REQUESTED', 'DISMISSED'].includes(review.state)
+    )
+    .map((review) => ({
+      ...review,
+      packetDigests: [
+        ...new Set(
+          receiptMarkerTokens(review.body)
+            .filter((token) => /^proto-ui:review-packet:sha256=[a-f0-9]{64}$/.test(token))
+            .map((token) => token.slice('proto-ui:review-packet:sha256='.length))
+        ),
+      ],
+    }))
+    // A COMMENT cannot replace findings from a disposition. Dismissals keep
+    // their existing clearing behavior, without certifying old publications.
+    .filter((review) => review.packetDigests.length > 0 || review.state === 'DISMISSED');
+  if (!candidates.some((review) => review.state !== 'DISMISSED')) return null;
+  const review = uniqueLatestReview(candidates);
+  assert(
+    review !== null,
+    'the governed prior review order is unavailable or ambiguous; reconcile live history before a disposition'
+  );
+  if (review.state === 'DISMISSED') return null;
+  assert(review.packetDigests.length === 1, 'the governed prior review packet marker is ambiguous');
+  assert(SHA.test(review.commitSha), 'the governed prior review head is unavailable');
+  return { ...review, packetDigest: review.packetDigests[0] };
+}
+
+function verifySubmissionReconciliation(packet, input, reviewer, priorPacket) {
+  if (['APPROVE', 'REQUEST_CHANGES'].includes(packet.recommendedAction)) {
+    const prior = requiredPriorReview(input, reviewer);
+    if (prior !== null) {
+      assert(
+        packet.reconciliation.priorPacketDigest === prior.packetDigest &&
+          packet.reconciliation.priorReviewedHeadSha === prior.commitSha,
+        'the disposition must reconcile the latest governed prior review from this reviewer'
+      );
+      assert(priorPacket, 'the governed prior review artifact is required before a disposition');
+    }
+  }
+  if (packet.reconciliation.priorPacketDigest !== null) {
+    verifyReconciliation(packet, priorPacket);
+  }
 }
 
 export function verifyReconciliation(packet, priorPacket) {
@@ -512,16 +863,40 @@ export function verifyReconciliation(packet, priorPacket) {
   assert(Array.isArray(priorPacket.findings), 'the prior review packet has no findings array');
   const priorIds = new Set(priorPacket.findings.map((finding) => finding.id));
   assert(
-    packet.reconciliation.resolvedFindingIds.every((id) => priorIds.has(id)),
+    priorIds.size === priorPacket.findings.length,
+    'the prior review packet contains duplicate finding ids'
+  );
+  const { resolvedFindingIds, openFindingIds, newFindingIds } = packet.reconciliation;
+  // PR509-RECONCILIATION-COVERAGE-001: membership alone is insufficient. The
+  // union of resolved and open must account for every prior finding exactly
+  // once, no state may repeat a finding id, and new ids must be current
+  // findings absent from the prior packet.
+  const accounted = [...resolvedFindingIds, ...openFindingIds, ...newFindingIds];
+  assert(
+    new Set(accounted).size === accounted.length,
+    'finding reconciliation states overlap or repeat a finding id'
+  );
+  assert(
+    resolvedFindingIds.every((id) => priorIds.has(id)),
     'resolved reconciliation references a finding absent from the prior packet'
   );
   assert(
-    packet.reconciliation.openFindingIds.every((id) => priorIds.has(id)),
+    openFindingIds.every((id) => priorIds.has(id)),
     'open reconciliation references a finding absent from the prior packet'
   );
+  const currentIds = new Set(packet.findings.map((finding) => finding.id));
   assert(
-    packet.reconciliation.newFindingIds.every((id) => !priorIds.has(id)),
+    newFindingIds.every((id) => currentIds.has(id)),
+    'new reconciliation references a finding absent from the current packet'
+  );
+  assert(
+    newFindingIds.every((id) => !priorIds.has(id)),
     'new reconciliation reuses a finding id already present in the prior packet'
+  );
+  const coveredPriorIds = new Set([...resolvedFindingIds, ...openFindingIds]);
+  assert(
+    coveredPriorIds.size === priorIds.size && [...priorIds].every((id) => coveredPriorIds.has(id)),
+    'resolved and open reconciliation must cover every prior finding exactly once'
   );
   return true;
 }
@@ -562,7 +937,13 @@ export function validateReviewPacket(packet, input) {
   assert(Number.isInteger(packet.pullRequest) && packet.pullRequest > 0, 'pullRequest is invalid');
   assert(SHA.test(packet.baseSha) && SHA.test(packet.headSha), 'review SHAs are invalid');
   assert(HEX64.test(packet.reviewInputDigest), 'reviewInputDigest is invalid');
-  validateReviewInputSnapshot(input);
+  if (input?.schemaVersion === 3) {
+    assert(
+      packet.schemaVersion === 1 && packet.recommendedAction === 'COMMENT',
+      'legacy review input v3 may only ingest a schema v1 COMMENT packet'
+    );
+  }
+  validateReviewInputForIngestion(input);
   assert(
     packet.repositoryId === input.repositoryId &&
       packet.pullRequest === input.pullRequest &&
@@ -571,7 +952,7 @@ export function validateReviewPacket(packet, input) {
     'review packet does not match its input snapshot'
   );
   assert(
-    packet.reviewInputDigest === computeReviewInputDigest(input),
+    packet.reviewInputDigest === computeReviewIngestionInputDigest(input),
     'reviewInputDigest does not match the canonical input snapshot'
   );
   validateTimestamp(packet.observedAt, 'observedAt');
@@ -585,6 +966,10 @@ export function validateReviewPacket(packet, input) {
   for (const field of ['limitations', 'unknowns', 'humanGates']) {
     validateStrings(packet[field], field);
   }
+  assert(
+    packet.humanGates.every((gate) => ATTENDED_DECISION_CLASSES.has(gate)),
+    'humanGates contains an unknown attended decision class'
+  );
   assert(RECOMMENDATIONS.includes(packet.recommendedAction), 'recommendedAction is invalid');
   const findingIds = new Set();
   for (const finding of packet.findings) {
@@ -680,7 +1065,18 @@ export function validateAgentEvidence(evidence, headSha) {
   );
   assert(Array.isArray(evidence.debt), 'agentEvidence.debt must be an array');
   for (const debt of evidence.debt) {
-    exactKeys(debt, ['kind', 'missing', 'reason', 'nextAction'], 'agentEvidence.debt item');
+    const hasPreviewAuthorization = Object.hasOwn(debt, 'previewAuthorization');
+    exactKeys(
+      debt,
+      [
+        'kind',
+        'missing',
+        'reason',
+        'nextAction',
+        ...(hasPreviewAuthorization ? ['previewAuthorization'] : []),
+      ],
+      'agentEvidence.debt item'
+    );
     assert(
       ['publication', 'verification', 'outside-scope'].includes(debt.kind),
       'agentEvidence.debt.kind is invalid'
@@ -690,6 +1086,25 @@ export function validateAgentEvidence(evidence, headSha) {
         typeof debt[field] === 'string' && debt[field].trim().length > 0,
         `agentEvidence.debt.${field} is required`
       );
+    if (hasPreviewAuthorization) {
+      exactKeys(
+        debt.previewAuthorization,
+        ['provider', 'checkName', 'authorizationUrl'],
+        'agentEvidence.debt.previewAuthorization'
+      );
+      assert(
+        debt.kind === 'publication' &&
+          typeof debt.previewAuthorization.authorizationUrl === 'string' &&
+          PREVIEW_AUTHORIZATION_URL.test(debt.previewAuthorization.authorizationUrl) &&
+          isExternalPreviewAuthorizationFailure({
+            name: debt.previewAuthorization.checkName,
+            source: debt.previewAuthorization.provider,
+            conclusion: 'FAILURE',
+            detailsUrl: debt.previewAuthorization.authorizationUrl,
+          }),
+        'agentEvidence.debt.previewAuthorization must identify a Vercel authorization publication debt'
+      );
+    }
   }
   assert(
     evidence.disposition === 'complete' ? evidence.debt.length === 0 : evidence.debt.length > 0,
@@ -729,6 +1144,7 @@ export function renderReviewBody(packet) {
   const evidence = packet.agentEvidence;
   return [
     `Reviewed exact head \`${packet.headSha}\`.`,
+    `Reviewed exact base \`${packet.baseSha}\`.`,
     `Review class: ${packet.reviewClass}. Scope: ${packet.scope.join('; ')}.`,
     packet.findings.length
       ? list(
@@ -754,7 +1170,10 @@ export function renderReviewBody(packet) {
       ? list(
           evidence.debt.map(
             (item) =>
-              `[${item.kind}] ${item.missing}. Reason: ${item.reason} Next Agent action: ${item.nextAction}`
+              `[${item.kind}] ${item.missing}. Reason: ${item.reason} Next Agent action: ${item.nextAction}` +
+              (item.previewAuthorization
+                ? ` Preview authorization: ${item.previewAuthorization.provider}/${item.previewAuthorization.checkName} <${item.previewAuthorization.authorizationUrl}>.`
+                : '')
           )
         )
       : 'No known debt within that evidence scope.',
@@ -823,10 +1242,10 @@ export function evaluateReviewEligibility({ executionMode, selfAssessment, revie
   if (executionMode === 'human-assisted') {
     return {
       eligible: true,
-      reviewDepth: withinSelfAssessedDepth ? 'full' : 'partial',
-      maximumRecommendation: withinSelfAssessedDepth ? 'APPROVE' : 'ABSTAIN',
-      limitationRequired: !withinSelfAssessedDepth,
-      approvalDecisionRequired: true,
+      reviewDepth: 'full',
+      maximumRecommendation: 'APPROVE',
+      limitationRequired: false,
+      approvalDecisionRequired: false,
     };
   }
   const eligible =
@@ -839,7 +1258,7 @@ export function evaluateReviewEligibility({ executionMode, selfAssessment, revie
     reviewDepth: eligible ? 'full' : 'none',
     maximumRecommendation: eligible ? 'APPROVE' : 'ABSTAIN',
     limitationRequired: !eligible,
-    approvalDecisionRequired: 'when-spec-entities-change',
+    approvalDecisionRequired: 'when-unresolved-product-direction',
   };
 }
 
@@ -874,6 +1293,14 @@ export function verifyLiveReviewInput(packet, freshInput) {
   return true;
 }
 
+function validateReviewMutationInput(input) {
+  assert(
+    input?.schemaVersion !== 3,
+    'legacy review input v3 is read-only; re-collect v5 before a review submission or merge'
+  );
+  return validateReviewInputSnapshot(input);
+}
+
 function standingAuthorizationMatches(
   authorization,
   { executionMode, executionModeSource, repositoryId }
@@ -898,6 +1325,28 @@ function assessmentAllowsMutation(selfAssessment, policy, mutationClass) {
   );
 }
 
+function dispositionIneligibleLogins(input) {
+  const logins = new Set([input.pullRequestAuthor.toLowerCase()]);
+  for (const commit of input.commits) {
+    for (const actor of [commit.author, commit.committer]) {
+      if (actor.login !== null) logins.add(actor.login.toLowerCase());
+    }
+  }
+  return logins;
+}
+
+function hasVerifiedCommitActorIdentity(actor) {
+  return actor.login !== null || actor.platform !== null;
+}
+
+function hasCompleteCommitContributorIdentity(input) {
+  return input.commits.every(
+    (commit) =>
+      hasVerifiedCommitActorIdentity(commit.author) &&
+      hasVerifiedCommitActorIdentity(commit.committer)
+  );
+}
+
 export function authorizeReviewSubmission({
   packet,
   input,
@@ -909,10 +1358,12 @@ export function authorizeReviewSubmission({
   selfAssessment,
   credentialCanReview,
   reviewer,
-  pullRequestAuthor,
   ciConclusion,
+  dcoConclusion,
+  priorPacket = null,
 }) {
   assert(['human-assisted', 'autonomous'].includes(executionMode), 'execution mode is invalid');
+  validateReviewMutationInput(input);
   validateReviewPacket(packet, input);
   verifyLiveReviewInput(packet, liveInput);
   const revision = inspectReviewRevision(packet, input, liveInput.headSha, null, liveInput.baseSha);
@@ -922,10 +1373,6 @@ export function authorizeReviewSubmission({
   assert(
     typeof reviewer === 'string' && reviewer.length > 0,
     'live viewer identity is required for submission'
-  );
-  assert(
-    typeof pullRequestAuthor === 'string' && pullRequestAuthor.length > 0,
-    'live pull-request author identity is required for submission'
   );
   const recommendedAction = packet.recommendedAction;
   assert(RECOMMENDATIONS.includes(recommendedAction), 'recommendedAction is invalid');
@@ -961,12 +1408,23 @@ export function authorizeReviewSubmission({
   if (liveInput.pullRequestState !== 'OPEN') {
     return { allowed: false, reason: 'pull request is not open' };
   }
-  if (liveInput.isDraft) return { allowed: false, reason: 'draft pull request is not reviewable' };
   if (
-    reviewer === pullRequestAuthor &&
-    ['APPROVE', 'REQUEST_CHANGES'].includes(recommendedAction)
+    ['APPROVE', 'REQUEST_CHANGES'].includes(recommendedAction) &&
+    !hasCompleteCommitContributorIdentity(liveInput)
   ) {
-    return { allowed: false, reason: 'an Agent cannot issue a disposition on its own work' };
+    return {
+      allowed: false,
+      reason: 'a commit author or committer lacks a verifiable platform identity',
+    };
+  }
+  if (
+    ['APPROVE', 'REQUEST_CHANGES'].includes(recommendedAction) &&
+    dispositionIneligibleLogins(liveInput).has(reviewer.toLowerCase())
+  ) {
+    return {
+      allowed: false,
+      reason: 'the reviewer is the pull-request author or a commit contributor',
+    };
   }
   if (recommendedAction === 'ABSTAIN') {
     return { allowed: false, reason: 'ABSTAIN is not a GitHub review submission' };
@@ -993,15 +1451,36 @@ export function authorizeReviewSubmission({
     REQUEST_CHANGES: 'CHANGES_REQUESTED',
     COMMENT: 'COMMENTED',
   }[recommendedAction];
-  const renderedBody = stripReceiptMarkers(renderReviewBody(packet));
+  const renderedBody = normalizedReviewBody(renderReviewBody(packet));
   if (
     liveInput.reviews.some(
       (review) =>
-        review.author === reviewer &&
+        review.author !== null &&
+        review.author.toLowerCase() === reviewer.toLowerCase() &&
         review.commitSha === liveInput.headSha &&
         review.state === sameDispositionState &&
         typeof review.body === 'string' &&
-        stripReceiptMarkers(review.body) === renderedBody
+        (() => {
+          const publishedBody = normalizedReviewBody(review.body);
+          if (recommendedAction === 'COMMENT') return publishedBody === renderedBody;
+          if (
+            hasUniquePublishedPacketReceipts(review.body, packet) &&
+            publishedBody === renderedBody
+          ) {
+            return true;
+          }
+          if (!priorPacket) return false;
+          try {
+            validatePublishedReviewPacket(packet, priorPacket);
+            return (
+              hasUniquePublishedPacketReceipts(review.body, priorPacket) &&
+              publishedBody === normalizedReviewBody(renderReviewBody(priorPacket)) &&
+              matchesPublishedReviewInput(priorPacket, liveInput, review)
+            );
+          } catch {
+            return false;
+          }
+        })()
     )
   ) {
     return {
@@ -1010,6 +1489,14 @@ export function authorizeReviewSubmission({
       reason: 'the live head already carries this exact rendered review from this reviewer',
       recommendedAction,
     };
+  }
+  // The packet cannot opt out by clearing its prior pointers. Derive the
+  // required predecessor from canonical live history and the actual viewer,
+  // then bind the supplied artifact before permitting another disposition.
+  try {
+    verifySubmissionReconciliation(packet, liveInput, reviewer, priorPacket);
+  } catch (error) {
+    return { allowed: false, reason: error.message };
   }
   if (
     ['REQUEST_CHANGES', 'APPROVE'].includes(recommendedAction) &&
@@ -1026,26 +1513,18 @@ export function authorizeReviewSubmission({
       packet.unknowns.length > 0 ||
       packet.humanGates.length > 0
     ) {
-      return { allowed: false, reason: 'REQUEST_CHANGES evidence is incomplete or human-gated' };
+      return {
+        allowed: false,
+        reason: 'REQUEST_CHANGES requires complete evidence and no attended decision',
+      };
     }
   }
   if (recommendedAction === 'APPROVE') {
-    if (activeStandingAuthorization && reviewChangesSpecEntities(liveInput)) {
-      return {
-        allowed: false,
-        humanReviewRequired: true,
-        reason: 'spec entity changes require independent maintainer approval',
-        recommendedAction,
-      };
-    }
-    const unresolvedHumanGates = packet.humanGates.filter(
-      (gate) => gate !== 'pull-request-approval'
-    );
     if (
       packet.findings.length > 0 ||
       packet.limitations.length > 0 ||
       packet.unknowns.length > 0 ||
-      unresolvedHumanGates.length > 0
+      packet.humanGates.length > 0
     ) {
       return { allowed: false, reason: 'APPROVE requires a complete clean review packet' };
     }
@@ -1055,48 +1534,66 @@ export function authorizeReviewSubmission({
     if (ciConclusion !== 'success') {
       return { allowed: false, reason: 'APPROVE requires successful live checks' };
     }
+    if (dcoConclusion !== 'success') {
+      return { allowed: false, reason: 'APPROVE requires a successful trusted DCO status' };
+    }
   }
   return {
     allowed: true,
     reason: 'authorized review submission',
     recommendedAction,
     ciConclusion,
+    dcoConclusion,
     authorizationId,
   };
 }
 
-function latestReviewStates(input) {
-  const reviews = input.reviews
-    .filter((review) => ['APPROVED', 'CHANGES_REQUESTED'].includes(review.state))
-    .toSorted((left, right) => {
-      const leftKey = `${left.submittedAt ?? ''}:${left.id}`;
-      const rightKey = `${right.submittedAt ?? ''}:${right.id}`;
-      return leftKey.localeCompare(rightKey);
-    });
-  const states = new Map();
-  for (const review of reviews) states.set(review.author, review.state);
-  return states;
+function latestReviewStatesByAuthor(input, { exactHead = false } = {}) {
+  const reviews = input.reviews.filter(
+    (review) =>
+      (!exactHead || review.commitSha === input.headSha) &&
+      ['APPROVED', 'CHANGES_REQUESTED', 'DISMISSED'].includes(review.state)
+  );
+  const byAuthor = new Map();
+  for (const review of reviews) {
+    const identityKey =
+      review.author === null
+        ? `unknown-reviewer:${review.id}`
+        : `login:${review.author.toLowerCase()}`;
+    if (!byAuthor.has(identityKey)) byAuthor.set(identityKey, []);
+    byAuthor.get(identityKey).push(review);
+  }
+  return new Map(
+    [...byAuthor].map(([identity, history]) => [
+      identity,
+      uniqueLatestReview(history)?.state ?? null,
+    ])
+  );
 }
 
-function latestHeadReviewStates(input) {
-  const reviews = input.reviews
+export function reviewerPermissionSubjects(input) {
+  if (!hasCompleteCommitContributorIdentity(input)) return [];
+  const ineligible = dispositionIneligibleLogins(input);
+  return [...latestReviewStatesByAuthor(input, { exactHead: true }).entries()]
     .filter(
-      (review) =>
-        review.commitSha === input.headSha &&
-        ['APPROVED', 'CHANGES_REQUESTED'].includes(review.state)
+      ([identity, state]) =>
+        state === 'APPROVED' &&
+        identity.startsWith('login:') &&
+        !ineligible.has(identity.slice('login:'.length))
     )
-    .toSorted((left, right) => {
-      const leftKey = `${left.submittedAt ?? ''}:${left.id}`;
-      const rightKey = `${right.submittedAt ?? ''}:${right.id}`;
-      return leftKey.localeCompare(rightKey);
-    });
-  const states = new Map();
-  for (const review of reviews) states.set(review.author, review.state);
-  return states;
+    .map(([identity]) => identity.slice('login:'.length))
+    .sort();
+}
+
+function hasCurrentReviewWritePermission(input, login) {
+  return input.reviewerPermissions.some(
+    (item) => item.login === login.toLowerCase() && ['write', 'admin'].includes(item.permission)
+  );
 }
 
 export function authorizePullRequestMerge({
   packet,
+  publishedPacket = null,
   input,
   liveInput,
   executionMode,
@@ -1105,13 +1602,16 @@ export function authorizePullRequestMerge({
   policy,
   selfAssessment,
   credentialCanMerge,
+  credentialPermission,
+  credentialCanBypass,
   actor,
-  pullRequestAuthor,
   ciConclusion,
+  dcoConclusion,
   mergeable,
   mergeStateStatus,
 }) {
   assert(['human-assisted', 'autonomous'].includes(executionMode), 'execution mode is invalid');
+  validateReviewMutationInput(input);
   validateReviewPacket(packet, input);
   verifyLiveReviewInput(packet, liveInput);
   const revision = inspectReviewRevision(packet, input, liveInput.headSha, null, liveInput.baseSha);
@@ -1119,11 +1619,6 @@ export function authorizePullRequestMerge({
     return { allowed: false, reason: 'review packet is stale at the merge boundary' };
   }
   assert(typeof actor === 'string' && actor.length > 0, 'live actor identity is required');
-  assert(
-    typeof pullRequestAuthor === 'string' && pullRequestAuthor.length > 0,
-    'live pull-request author identity is required'
-  );
-
   const explicitCurrentUser =
     executionMode === 'human-assisted' &&
     ['current-user', 'active-human-loop'].includes(executionModeSource) &&
@@ -1174,63 +1669,115 @@ export function authorizePullRequestMerge({
   if (hasUndisclosedPreviewAuthorizationDebt(packet, liveInput)) {
     return { allowed: false, reason: 'merge has undisclosed external preview authorization debt' };
   }
-  const resolvedByAuthorization = new Set([
-    'commit-grouping',
-    'integration-decision',
-    'pull-request-approval',
-    'merge',
-  ]);
-  const unresolvedHumanGates = packet.humanGates.filter(
-    (gate) => !resolvedByAuthorization.has(gate)
-  );
   if (
     packet.findings.length > 0 ||
     packet.limitations.length > 0 ||
     packet.unknowns.length > 0 ||
-    unresolvedHumanGates.length > 0
+    packet.humanGates.length > 0
   ) {
     return { allowed: false, reason: 'merge requires a complete clean review packet' };
   }
   if (ciConclusion !== 'success') {
     return { allowed: false, reason: 'merge requires successful trusted live checks' };
   }
+  if (dcoConclusion !== 'success') {
+    return { allowed: false, reason: 'merge requires a successful trusted DCO status' };
+  }
   if (liveInput.threads.some((thread) => thread.isResolved !== true)) {
     return { allowed: false, reason: 'merge requires every review thread to be resolved' };
   }
-  if (mergeable !== 'MERGEABLE' || mergeStateStatus !== 'CLEAN') {
+  // GitHub marks a mergeable head UNSTABLE even when its only non-passing
+  // context is the verified Vercel preview-authorization prompt. That exact
+  // publication debt is already excluded from trusted CI; do not reintroduce
+  // it through the aggregate merge state. Every other context must be terminal
+  // and successful, and the final non-admin merge API still enforces GitHub rules.
+  const previewAuthorizationOnlyUnstable =
+    mergeStateStatus === 'UNSTABLE' &&
+    ['MAINTAIN', 'WRITE'].includes(credentialPermission) &&
+    credentialCanBypass === false &&
+    liveInput.checks.some(isExternalPreviewAuthorizationFailure) &&
+    liveInput.checks.every(
+      (check) =>
+        check.status === 'COMPLETED' &&
+        (isExternalPreviewAuthorizationFailure(check) ||
+          ['SUCCESS', 'SKIPPED', 'NEUTRAL'].includes(check.conclusion))
+    );
+  if (
+    mergeable !== 'MERGEABLE' ||
+    (mergeStateStatus !== 'CLEAN' && !previewAuthorizationOnlyUnstable)
+  ) {
     return { allowed: false, reason: 'GitHub does not report the exact head as merge-ready' };
   }
 
-  const effectiveReviewStates = latestReviewStates(liveInput);
-  const activeChangeRequest = [...effectiveReviewStates.values()].includes('CHANGES_REQUESTED');
-  if (activeChangeRequest) {
-    return { allowed: false, reason: 'the pull request still has an active change request' };
+  const allHeadReviewStates = latestReviewStatesByAuthor(liveInput);
+  if ([...allHeadReviewStates.values()].includes(null)) {
+    return {
+      allowed: false,
+      reason: 'review order is unavailable or ambiguous; reconcile live history before merging',
+    };
   }
-  const headReviewStates = latestHeadReviewStates(liveInput);
+  const activeChangeRequest = [...allHeadReviewStates.values()].includes('CHANGES_REQUESTED');
+  if (activeChangeRequest) {
+    return {
+      allowed: false,
+      reason: 'an active change request has not been superseded or dismissed',
+    };
+  }
+  const headReviewStates = latestReviewStatesByAuthor(liveInput, { exactHead: true });
+  if (!hasCompleteCommitContributorIdentity(liveInput)) {
+    return {
+      allowed: false,
+      reason: 'a commit author or committer lacks a verifiable platform identity',
+    };
+  }
+  const ineligibleApprovalLogins = dispositionIneligibleLogins(liveInput);
   const independentApproval = [...headReviewStates.entries()].some(
-    ([reviewer, state]) => state === 'APPROVED' && reviewer !== pullRequestAuthor
+    ([reviewer, state]) =>
+      state === 'APPROVED' &&
+      reviewer.startsWith('login:') &&
+      !ineligibleApprovalLogins.has(reviewer.slice('login:'.length)) &&
+      hasCurrentReviewWritePermission(liveInput, reviewer.slice('login:'.length))
   );
   if (!independentApproval) {
-    return { allowed: false, reason: 'the exact head lacks an independent approval' };
-  }
-
-  // Publication debt fails closed: a local packet whose Agent evidence never
-  // reached the live pull request cannot authorize the material merge update.
-  // The receipt is the evidence digest marker published by a governed review
-  // or additive evidence comment; it is stable across the review packet and
-  // this merge packet because the evidence content is identical.
-  const evidenceReceipt = agentEvidenceMarker(packet);
-  const publicationReceipt = [
-    ...liveInput.reviews
-      .filter((review) => review.commitSha === liveInput.headSha)
-      .map((review) => review.body),
-    ...liveInput.comments.map((comment) => comment.body),
-  ].some((body) => typeof body === 'string' && body.includes(evidenceReceipt));
-  if (!publicationReceipt) {
     return {
       allowed: false,
       reason:
-        'merge requires a live published Agent evidence receipt matching the packet evidence digest',
+        'the exact head lacks an approval independent of the pull-request author and commit contributors with verified current repository write permission',
+    };
+  }
+
+  // The publication source must itself be a valid independent approval.
+  // A matching digest in arbitrary participant-authored text is not authority.
+  try {
+    validatePublishedReviewPacket(packet, publishedPacket);
+  } catch (error) {
+    return { allowed: false, reason: error.message };
+  }
+  const evidenceReceipt = agentEvidenceMarker(publishedPacket);
+  const renderedPublication = normalizedReviewBody(renderReviewBody(publishedPacket));
+  const publicationReceipt = liveInput.reviews.some(
+    (review) =>
+      review.commitSha === liveInput.headSha &&
+      review.state === 'APPROVED' &&
+      review.author !== null &&
+      !ineligibleApprovalLogins.has(review.author.toLowerCase()) &&
+      hasCurrentReviewWritePermission(liveInput, review.author) &&
+      headReviewStates.get(`login:${review.author.toLowerCase()}`) === 'APPROVED' &&
+      typeof review.body === 'string' &&
+      hasUniquePublishedPacketReceipts(review.body, publishedPacket) &&
+      normalizedReviewBody(review.body) === renderedPublication &&
+      matchesPublishedReviewInput(publishedPacket, liveInput, review)
+  );
+  if (!publicationReceipt) {
+    const unboundComment = liveInput.comments.some(
+      (comment) =>
+        typeof comment.body === 'string' && hasReceiptMarker(comment.body, evidenceReceipt)
+    );
+    return {
+      allowed: false,
+      reason: unboundComment
+        ? 'comment evidence marker lacks a governed publication authorization receipt; publish through a valid exact-head independent APPROVE review and re-collect'
+        : 'merge requires a live published review packet and Agent evidence receipt from the same valid exact-head independent APPROVE review, with only its publication delta since the reviewed input',
     };
   }
 
