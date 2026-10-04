@@ -820,6 +820,15 @@ describe('automatic documentation image preview in real Chromium', () => {
         .getByRole('status')
         .filter({ hasText: 'This image could not be loaded' })
         .waitFor({ state: 'visible' });
+      const status = page.locator('.docs-image-status');
+      expect(await status.evaluate((node) => node.localName)).toBe('p');
+      expect(await status.getAttribute('role')).toBe('status');
+      const statusText = status.locator('[data-docs-image-status-text][data-pui-root]');
+      expect(await statusText.count()).toBe(1);
+      expect(await statusText.getAttribute('data-docs-preview-prototype')).toBe('shadcn-text-root');
+      expect(await statusText.getAttribute('role')).toBeNull();
+      expect(await statusText.getAttribute('tabindex')).toBeNull();
+      expect(await statusText.getAttribute('data-pui-style')).toContain('text-base');
       await capture(page, 'mdx-image-error');
       await page.keyboard.press('Escape');
       await closed(page);

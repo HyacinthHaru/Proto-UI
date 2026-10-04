@@ -1,12 +1,8 @@
 import { setElementProps } from '@proto.ui/adapter-web-component';
-import { createReactAdapter, type ReactRuntime } from '@proto.ui/adapter-react';
-import { createVueAdapter, type VueRuntime as AdapterVueRuntime } from '@proto.ui/adapter-vue';
-import { createVue2Adapter } from '@proto.ui/adapter-vue2';
+import type { ReactRuntime } from '@proto.ui/adapter-react';
+import type { VueRuntime as AdapterVueRuntime } from '@proto.ui/adapter-vue';
 import type { Prototype } from '@proto.ui/core';
 import { getPrototype } from './registry';
-import { loadReact } from './runtimes/react-runtime';
-import { loadVue } from './runtimes/vue-runtime';
-import { loadVue2, toVue2ComponentData, toVue2Runtime } from './runtimes/vue2-runtime';
 import { claimHostMount, type HostMountLease } from './runtimes/host-mount';
 import type {
   DemoChild,
@@ -17,6 +13,28 @@ import type {
 } from './demo-types';
 import { ensurePreviewWcRegistered } from './wc-registry';
 import type { RuntimeId } from './runtimes/registry';
+
+// Share acquisition across concurrently prepared commands/surfaces. Failed
+// acquisition remains retryable; successful module namespaces are stable.
+function lazyModules<T>(load: () => Promise<T>): () => Promise<T> {
+  let pending: Promise<T> | undefined;
+  return () => {
+    pending ??= load().catch((error) => {
+      pending = undefined;
+      throw error;
+    });
+    return pending;
+  };
+}
+const reactModules = lazyModules(() =>
+  Promise.all([import('@proto.ui/adapter-react'), import('./runtimes/react-runtime')])
+);
+const vueModules = lazyModules(() =>
+  Promise.all([import('@proto.ui/adapter-vue'), import('./runtimes/vue-runtime')])
+);
+const vue2Modules = lazyModules(() =>
+  Promise.all([import('@proto.ui/adapter-vue2'), import('./runtimes/vue2-runtime')])
+);
 
 type PropsBaseType = Record<string, unknown>;
 
@@ -40,13 +58,13 @@ export async function prepareDemoRuntime(runtime: RuntimeId): Promise<void> {
     case 'wc':
       return;
     case 'react':
-      await loadReact();
+      await (await reactModules())[1].loadReact();
       return;
     case 'vue':
-      await loadVue();
+      await (await vueModules())[1].loadVue();
       return;
     case 'vue2':
-      await loadVue2();
+      await (await vue2Modules())[1].loadVue2();
       return;
     default:
       throw unsupportedRuntime(runtime);
@@ -275,6 +293,10 @@ async function renderDemoReact(
 ): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
+  // Non-WC modules join the graph only when this runtime is selected. A
+  // superseded owner must not proceed to CDN loading after that import boundary.
+  const [{ createReactAdapter }, { loadReact }] = await reactModules();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const { React, ReactDOM } = await loadReact();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createReactAdapter({
@@ -427,6 +449,8 @@ async function renderDemoVue(
 ): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
+  const [{ createVueAdapter }, { loadVue }] = await vueModules();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const Vue = await loadVue();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createVueAdapter(Vue as unknown as AdapterVueRuntime);
@@ -553,6 +577,9 @@ async function renderDemoVue2(
 ): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
+  const [{ createVue2Adapter }, { loadVue2, toVue2ComponentData, toVue2Runtime }] =
+    await vue2Modules();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const Vue = await loadVue2();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createVue2Adapter(toVue2Runtime(Vue));

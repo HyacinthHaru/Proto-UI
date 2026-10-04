@@ -88,3 +88,21 @@ Surface adds `scrim`, `fade` (default false) and observed `transitionState` (def
 The bounded `P-BASE-DIALOG-MASK-DEFAULT-ACTION` revision is recorded on Base Dialog and linked by its Shadcn/Brutalist projections. The Base page's pre-existing claim that `alert` belongs on Content is corrected to Root, and its unsupported non-modal claim is aligned with `P-BASE-DIALOG-ROLE-MODAL-WINDOW`, consistent with the existing protocol and Shadcn page. These are workspace/draft claims, not retroactive 0.2 release guarantees.
 
 The final dependency for this documentation increment is `6721a50c0f0e93a4a58b2964bfc1331363959744`, whose parent is `0fd5f474`. It changes browser test oracles/fixtures only; the production Surface and Dialog APIs documented above are unchanged. The normal dependency merge retains both earlier docs commits and their exact-source evidence.
+
+## 10:09 UTC functional evidence and font-environment correction
+
+The exact docs head `6e6ec029b002ccfbe7073b80e052f6089ca845b8` passed 64/64 browser cases in run `37193756666`; artifact `11299294548` retains 64 JSON reports and 66 original PNGs, including two full Surface documents. All reports bind the clean source SHA, with zero page errors and at most one raw/active shell in the recorded states.
+
+Visual inspection found missing Chinese glyphs in that run's full Chinese document. Functional preview success does not establish localized prose rendering. The original failed visual evidence remains retained under its original source. The evidence runner now follows the existing typography workflow's `fonts-noto-cjk` installation, records the package versions and fontconfig CJK inventory, and records Chromium's actually rendered platform fonts plus computed family, size, weight and line height for the document sample. The mixed-script first-paragraph sample must use a rendered CJK font, but its aggregate glyph counts do not identify individual Chinese glyphs or prove whole-page coverage. Final screenshot inspection remains required. Font facts are retained in failure reports as well as successful captures. No application font substitution or screenshot synthesis is used to hide the environment defect. Final validation is pending the combined dependency/environment increment.
+
+### Associated CI failure attribution
+
+The ordinary CI run `37193756656` checked out GitHub's PR merge commit `888c7b7406668804d445c77e376b24d7a57582f1`, whose tree `b25e1c399abac5129d878786a6188922ba3a6b92` is identical to docs head `6e6ec029`. This differs from the dedicated atom evidence workflow's direct head checkout.
+
+Browser shard 5/8 passed 51 of 54 cases. Its three failures are all `site-search-commands.browser.test.ts` initial readiness: Shadcn light/1440px, dark/390px and dark/1440px. Recorded ready events arrived 194.4ms, 41.5ms and 510.4ms after the unchanged 1000ms deadline, respectively. Subsequent observation found all three ready with no page errors; it does not turn the failed deadline into a pass. The aggregate `test` failed solely because the required browser job failed, not due to a second independent assertion.
+
+The docs increment changes no Search implementation, renderer or Search test, but its additional demo recipes can affect the module graph. Absence of a direct source edit is not proof of zero startup impact. Final integration must rerun Search by suite identity: adding the atom suite changes deterministic shard allocation, so a successful same-numbered shard on the dependency branch is not equivalent coverage.
+
+## 10:49 UTC final candidate synchronization
+
+The documentation branch now incorporates `ec6e5710d0aaeee6d5844f9c996c1d7ca594aa31` (tree `9f9eaf79adf03d9b3152a8325b2a55ca60873b7d`), preserving the intervening source history. The dependency narrows runtime module acquisition and defers hidden Code/Copy initialization until real activation; its last increment uses public Text for the image error status while retaining the native paragraph/live owner. None adds a new public atom API. The documentation evidence environment correction is combined with this one synchronization. The next direct-head 64-case run, Chinese full-document visual inspection and Search suite/aggregate checks must bind the resulting docs commit; earlier source-branch successes remain separate evidence.

@@ -39,6 +39,19 @@ jobs:
         run: |
           corepack enable
           corepack pnpm@10.32.1 install --frozen-lockfile --ignore-scripts
+      - name: Install and record Chinese glyph coverage
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+          mkdir -p "$RUNNER_TEMP/passive-atom-evidence"
+          {
+            dpkg-query -W -f='${Package} ${Version}\n' fonts-noto-cjk fontconfig
+            fc-match -f '%{family}\n%{file}\n' 'sans-serif:lang=zh-cn'
+            fc-list ':lang=zh-cn' family file
+          } | tee "$RUNNER_TEMP/passive-atom-evidence/font-environment.txt"
+          test -n "$(fc-list ':lang=zh-cn' file)"
       - name: Select real Chromium and supported toolbar setting
         run: |
           set -euo pipefail

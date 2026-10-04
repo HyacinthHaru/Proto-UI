@@ -1,3 +1,4 @@
+import { createHiddenFirstActivation } from './hidden-first-activation';
 import { initCopyCommand, type SiteCopyCommand } from './site-copy-command';
 
 export function readCopyText(root: HTMLElement): string {
@@ -25,22 +26,25 @@ export function initSiteCopyCommands(doc: Document = document): () => void {
   }
   const view = doc.defaultView!;
   const roots = new Map<HTMLElement, { command: SiteCopyCommand; source: MutationObserver }>();
+  const activation = createHiddenFirstActivation(doc, (root) => {
+    if (roots.has(root)) return;
+    const command = initCopyCommand(root, () => readCopyText(root));
+    const source = new view.MutationObserver(() => command.owner.syncSource());
+    source.observe(root.closest('[data-code-shell], [data-install-command-card]') ?? root, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: ['data-raw-code', 'data-site-copy-text', 'hidden', 'data-active-manager'],
+    });
+    roots.set(root, { command, source });
+  });
   const scan = (scope: ParentNode) => {
     const found = Array.from(scope.querySelectorAll<HTMLElement>('[data-site-copy]'));
     if (scope instanceof view.HTMLElement && scope.matches('[data-site-copy]'))
       found.unshift(scope);
     for (const root of found) {
-      if (!root.isConnected || roots.has(root)) continue;
-      const command = initCopyCommand(root, () => readCopyText(root));
-      const source = new view.MutationObserver(() => command.owner.syncSource());
-      source.observe(root.closest('[data-code-shell], [data-install-command-card]') ?? root, {
-        childList: true,
-        subtree: true,
-        characterData: true,
-        attributes: true,
-        attributeFilter: ['data-raw-code', 'data-site-copy-text', 'hidden', 'data-active-manager'],
-      });
-      roots.set(root, { command, source });
+      if (!roots.has(root)) activation.add(root);
     }
   };
   const remove = (root: HTMLElement) => {
@@ -62,6 +66,7 @@ export function initSiteCopyCommands(doc: Document = document): () => void {
     if (disposed) return;
     disposed = true;
     observer.disconnect();
+    activation.dispose();
     doc.removeEventListener('astro:before-swap', dispose);
     for (const root of roots.keys()) remove(root);
     documents.delete(doc);

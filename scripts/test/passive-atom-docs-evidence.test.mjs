@@ -146,3 +146,18 @@ test('hosted evidence retains exact head and read-only permissions', () => {
     steps.some((step) => step.uses === 'actions/upload-artifact@v4' && step.if === 'always()')
   );
 });
+
+// Functional preview assertions alone cannot detect missing CJK glyphs in prose.
+test('bilingual evidence installs real CJK fonts and retains font provenance', () => {
+  const workflow = YAML.parse(
+    readFileSync('.github/workflows/passive-atom-docs-evidence.yml', 'utf8')
+  );
+  const steps = workflow.jobs['public-atom-previews'].steps;
+  const fonts = steps.findIndex((step) => step.run?.includes('fonts-noto-cjk'));
+  const browser = steps.findIndex((step) => step.run?.includes(suitePath));
+  assert.ok(fonts >= 0 && fonts < browser);
+  assert.match(steps[fonts].run, /dpkg-query/);
+  assert.match(steps[fonts].run, /fc-list ':lang=zh-cn'/);
+  assert.match(steps[fonts].run, /font-environment\.txt/);
+  assert.match(steps[fonts].run, /test -n/);
+});

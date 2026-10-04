@@ -12,6 +12,8 @@ import baseButton from '@proto.ui/prototypes-base/button';
 import { dialogContent, dialogMask } from '@proto.ui/prototypes-base/dialog';
 import shadcnSurface from '@proto.ui/prototypes-shadcn/surface';
 import brutalistSurface from '@proto.ui/prototypes-brutalist/surface';
+import shadcnText from '@proto.ui/prototypes-shadcn/text';
+import brutalistText from '@proto.ui/prototypes-brutalist/text';
 import './documentation-image-zoom.css';
 export const IMAGE_ZOOM_DURATION = 220;
 
@@ -25,6 +27,7 @@ const parts = {
   shadcn: {
     button: shadcnButton,
     surface: shadcnSurface,
+    text: shadcnText,
     imageTrigger: baseButton,
     ...shadcnDialog,
     dialogContent,
@@ -33,6 +36,7 @@ const parts = {
   brutalist: {
     button: brutalistButton,
     surface: brutalistSurface,
+    text: brutalistText,
     imageTrigger: baseButton,
     ...brutalistDialog,
     dialogContent,
@@ -42,6 +46,7 @@ const parts = {
 const roles = [
   'button',
   'surface',
+  'text',
   'imageTrigger',
   'dialogRoot',
   'dialogMask',
@@ -88,6 +93,7 @@ export function makePreviewControl(
 ): PreviewControl {
   const host = document.createElement(previewTag(family, part)) as PreviewControl;
   host.dataset.docsPreviewFamily = family;
+  host.dataset.docsPreviewPrototype = parts[family][part].name;
   setPreviewProps(host, props);
   return host;
 }

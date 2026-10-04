@@ -191,6 +191,7 @@ describe.sequential('Public passive atom documentation previews', () => {
       page.on('pageerror', (error) => errors.push(error.message));
       await page.addInitScript(installShellRecorder);
       const name = `${locale}-${family}-${atom}-${runtime}`;
+      let documentTypography: Record<string, unknown> | null = null;
       try {
         await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded' });
         const preview = page.locator('[data-previewer-id]').first();
@@ -285,6 +286,8 @@ describe.sequential('Public passive atom documentation previews', () => {
               width: node.getBoundingClientRect().width,
               height: node.getBoundingClientRect().height,
               size: Number.parseFloat(style.fontSize),
+              fontFamily: style.fontFamily,
+              fontWeight: style.fontWeight,
               decoration: style.textDecorationLine,
               background: style.backgroundColor,
               shadow: style.boxShadow,
@@ -320,8 +323,51 @@ describe.sequential('Public passive atom documentation previews', () => {
           family === 'shadcn' && atom === 'surface' && runtime === 'wc'
             ? `${name}-document.png`
             : null;
-        if (documentCapture)
+        if (documentCapture) {
+          await page.evaluate(() => document.fonts.ready);
+          const selector = '.sl-markdown-content > p';
+          const computed = await page
+            .locator(selector)
+            .first()
+            .evaluate((node) => {
+              const css = getComputedStyle(node);
+              return {
+                text: node.textContent,
+                family: css.fontFamily,
+                size: css.fontSize,
+                weight: css.fontWeight,
+                lineHeight: css.lineHeight,
+              };
+            });
+          const cdp = await context.newCDPSession(page);
+          try {
+            await cdp.send('DOM.enable');
+            await cdp.send('CSS.enable');
+            const { root } = await cdp.send('DOM.getDocument');
+            const { nodeId } = await cdp.send('DOM.querySelector', {
+              nodeId: root.nodeId,
+              selector,
+            });
+            expect(nodeId).toBeGreaterThan(0);
+            const { fonts } = await cdp.send('CSS.getPlatformFontsForNode', { nodeId });
+            documentTypography = {
+              scope: 'Mixed-script first-paragraph sample; whole-page visual inspection required',
+              selector,
+              computed,
+              platformFonts: fonts,
+            };
+            expect(fonts.some((font) => font.glyphCount > 0)).toBe(true);
+            if (locale === 'zh-cn') {
+              expect(computed.text).toMatch(/[\u3400-\u9fff]/);
+              expect(fonts.some((font) => /CJK/.test(font.familyName) && font.glyphCount > 0)).toBe(
+                true
+              );
+            }
+          } finally {
+            await cdp.detach();
+          }
           await page.screenshot({ path: path.join(evidence, documentCapture), fullPage: true });
+        }
         await writeFile(
           path.join(evidence, `${name}.json`),
           JSON.stringify(
@@ -335,6 +381,7 @@ describe.sequential('Public passive atom documentation previews', () => {
               viewport: { width: 1280, height: 1000 },
               theme: 'light',
               captures: { preview: `${name}.png`, document: documentCapture },
+              documentTypography,
               facts,
               shellEvidence,
               errors,
@@ -360,6 +407,7 @@ describe.sequential('Public passive atom documentation previews', () => {
               route,
               runtime,
               error: String(error),
+              documentTypography,
               shellEvidence,
               errors,
             },
