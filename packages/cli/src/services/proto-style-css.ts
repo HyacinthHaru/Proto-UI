@@ -73,6 +73,17 @@ const colorVars = new Set([
 
 const staticUtilities: Record<string, string[]> = {
   absolute: ['position: absolute;'],
+  // A translated, 2px-bordered interactive host retains the union of its rest
+  // and painted bodies. This pseudo-element is part of the same native owner,
+  // so state updates cannot replace a child that received pointerdown.
+  'hit-envelope-translate-1': [
+    "content: '';",
+    'position: absolute;',
+    'top: calc(-0.25rem - 2px);',
+    'left: calc(-0.25rem - 2px);',
+    'right: -2px;',
+    'bottom: -2px;',
+  ],
   fixed: ['position: fixed;'],
   relative: ['position: relative;'],
   block: ['display: block;'],
@@ -728,6 +739,8 @@ function buildSelectors(
     ]);
   }
 
+  if (parts.at(-1) === 'hit-envelope-translate-1')
+    selectors = selectors.map((selector) => `${selector}::before`);
   return selectors;
 }
 

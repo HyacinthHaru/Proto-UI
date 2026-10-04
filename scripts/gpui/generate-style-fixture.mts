@@ -85,7 +85,10 @@ type TokenRule = { token: string; declarations: Record<string, string> };
  * a host without CSS inheritance needs none of it, and recording it would make
  * every token's fixture entry identical noise.
  */
-function extractRules(css: string, tokens: string[]): { rules: TokenRule[]; order: string[] } {
+function extractRules(
+  css: string,
+  tokens: string[]
+): { rules: TokenRule[]; order: string[]; unsupportedSelectors: string[] } {
   const wanted = new Map(tokens.map((token) => [token, [] as string[]]));
   const order: string[] = [];
   // A rule inside `@media` holds only under its condition, which a token's
@@ -117,8 +120,17 @@ function extractRules(css: string, tokens: string[]): { rules: TokenRule[]; orde
     wanted.get(token)!.push(body);
   }
 
+  // Pseudo-element paint/hit geometry belongs to a generated Web box, not the
+  // native owner. Never flatten it onto GPUI or call it a harmless marker.
+  const pseudoTokens = new Set(
+    [
+      ...css.matchAll(/:where\(\[data-pui-style~="((?:[^"\\]|\\.)*)"\]\)::(?:before|after)\s*\{/g),
+    ].map((match) => match[1]!.replace(/\\(.)/g, '$1'))
+  );
+  const unsupportedSelectors = tokens.filter((token) => pseudoTokens.has(token));
   const rules: TokenRule[] = [];
   for (const token of tokens) {
+    if (pseudoTokens.has(token)) continue;
     const bodies = wanted.get(token) ?? [];
     const declarations: Record<string, string> = {};
     for (const body of bodies) {
@@ -132,7 +144,7 @@ function extractRules(css: string, tokens: string[]): { rules: TokenRule[]; orde
     }
     rules.push({ token, declarations });
   }
-  return { rules, order };
+  return { rules, order: order.filter((token) => !pseudoTokens.has(token)), unsupportedSelectors };
 }
 
 /**
@@ -249,7 +261,7 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
   ]);
   const tokens = [...union].filter(isUnvarianted).sort();
   const css = renderProtoStyleTokenCss(tokens);
-  const { rules, order } = extractRules(css, tokens);
+  const { rules, order, unsupportedSelectors } = extractRules(css, tokens);
 
   const compiled = rules.filter((rule) => Object.keys(rule.declarations).length > 0);
   const marker = rules.filter((rule) => Object.keys(rule.declarations).length === 0);
@@ -261,6 +273,7 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
       tokens: tokens.length,
       compiled: compiled.length,
       noDeclarations: marker.length,
+      unsupportedSelectors: unsupportedSelectors.length,
     },
     /** Tokens the compiler resolves to declarations. */
     tokens: Object.fromEntries(compiled.map((rule) => [rule.token, rule.declarations])),
@@ -282,6 +295,9 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
      * silently rendering it unstyled.
      */
     noDeclarations: marker.map((rule) => rule.token),
+    // Deliberately absent from the native vocabulary: existing UnknownToken
+    // diagnostics expose this Web-only gap instead of silently dropping it.
+    unsupportedSelectors,
   };
 
   const serialized = `${JSON.stringify(fixture, null, 2)}\n`;

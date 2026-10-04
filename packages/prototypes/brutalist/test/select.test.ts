@@ -131,7 +131,12 @@ describe('prototypes/brutalist: select', () => {
     trigger.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
     await flush();
     expect(trigger.getExposes().hovered.get()).toBe(true);
-    for (const token of ['translate-x-1', 'translate-y-1', 'shadow-none']) {
+    for (const token of [
+      'translate-x-1',
+      'translate-y-1',
+      'shadow-none',
+      'hit-envelope-translate-1',
+    ]) {
       expect(styleContains(trigger, token)).toBe(true);
     }
     expect(styleContains(trigger, depth)).toBe(false);
@@ -139,10 +144,16 @@ describe('prototypes/brutalist: select', () => {
     await flush();
     expect(styleContains(trigger, depth)).toBe(true);
     expect(styleContains(trigger, 'translate-x-1')).toBe(false);
+    expect(styleContains(trigger, 'hit-envelope-translate-1')).toBe(false);
     trigger.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     await flush();
     expect(trigger.getExposes().pressed.get()).toBe(true);
-    for (const token of ['translate-x-1', 'translate-y-1', 'shadow-none']) {
+    for (const token of [
+      'translate-x-1',
+      'translate-y-1',
+      'shadow-none',
+      'hit-envelope-translate-1',
+    ]) {
       expect(styleContains(trigger, token)).toBe(true);
     }
     trigger.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
@@ -159,6 +170,7 @@ describe('prototypes/brutalist: select', () => {
     expect(trigger.getExposes().hovered.get()).toBe(true);
     expect(styleContains(trigger, depth)).toBe(false);
     expect(styleContains(trigger, 'translate-x-1')).toBe(false);
+    expect(styleContains(trigger, 'hit-envelope-translate-1')).toBe(false);
     expect(styleContains(trigger, 'translate-y-1')).toBe(false);
     trigger.setProps({ appearance: 'elevated', disabled: true });
     await settle();
@@ -170,6 +182,7 @@ describe('prototypes/brutalist: select', () => {
     expect(styleContains(trigger, 'h-9')).toBe(true);
     expect(trigger.getExposes().disabled.get()).toBe(false);
     expect(styleContains(trigger, 'translate-x-1')).toBe(false);
+    expect(styleContains(trigger, 'hit-envelope-translate-1')).toBe(false);
     expect(styleContains(trigger, 'translate-y-1')).toBe(false);
     for (const state of ['hovered', 'pressed']) {
       expect(styleContains(trigger, `data-[${state}]:translate-x-1`)).toBe(false);

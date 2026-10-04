@@ -1,6 +1,10 @@
 import { definePrototype, type RendererHandle, tw } from '@proto.ui/core';
 import { asSelectTrigger } from '@proto.ui/prototypes-base/select';
-import { BRUTALIST_HOVER_LIFT_TOKENS, BRUTALIST_PRESS_TOKENS } from '../style';
+import {
+  BRUTALIST_HOVER_LIFT_TOKENS,
+  BRUTALIST_MOTION_HIT_TOKENS,
+  BRUTALIST_PRESS_TOKENS,
+} from '../style';
 import type { BrutalistSelectTriggerExposes, BrutalistSelectTriggerProps } from './types';
 
 function renderChevron(renderer: Pick<RendererHandle<any>, 'svg' | 'el'>) {
@@ -64,11 +68,13 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     });
     def.rule({
       when: (w) => w.all(w.prop('appearance').eq('elevated'), w.state(hovered).eq(true)),
-      intent: (i) => i.feedback.style.use(tw(BRUTALIST_HOVER_LIFT_TOKENS)),
+      intent: (i) =>
+        i.feedback.style.use(tw(`${BRUTALIST_HOVER_LIFT_TOKENS} ${BRUTALIST_MOTION_HIT_TOKENS}`)),
     });
     def.rule({
       when: (w) => w.all(w.prop('appearance').eq('elevated'), w.state(pressed).eq(true)),
-      intent: (i) => i.feedback.style.use(tw(BRUTALIST_PRESS_TOKENS)),
+      intent: (i) =>
+        i.feedback.style.use(tw(`${BRUTALIST_PRESS_TOKENS} ${BRUTALIST_MOTION_HIT_TOKENS}`)),
     });
     // P-BRUTALIST-SELECT-TRIGGER-PLACEHOLDER-STATE: placeholder keeps paired ink on the main fill (muted ink fails 4.5:1 in both themes).
     def.rule({

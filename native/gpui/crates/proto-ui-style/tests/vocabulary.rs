@@ -81,7 +81,13 @@ fn keeps_unknown_apart_from_marker() {
 
     // A typo, a Tailwind class this compiler does not implement, and a
     // variant-carrying token all have to be reported rather than ignored.
-    for token in ["flexx", "sr-only", "data-[hovered]:bg-accent", ""] {
+    for token in [
+        "flexx",
+        "sr-only",
+        "data-[hovered]:bg-accent",
+        "",
+        "hit-envelope-translate-1",
+    ] {
         assert_eq!(vocabulary.resolve(token), Resolution::Unknown, "{token}");
     }
 }

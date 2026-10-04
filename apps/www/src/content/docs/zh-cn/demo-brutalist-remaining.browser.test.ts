@@ -1137,7 +1137,7 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           '0.2s'
         );
 
-        await trigger.dispatchEvent('pointerleave');
+        await opened.page.mouse.move(5, 5);
         await expectVisibility(panelText, false, `${runtime}/hover-pointer-close`);
         await trigger.focus();
         expect(
@@ -1146,7 +1146,7 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
         ).toBe(true);
         await expectVisibility(panelText, true, `${runtime}/hover-focus-open`);
         await trigger.evaluate((element) => (element as HTMLElement).blur());
-        await trigger.dispatchEvent('pointerleave');
+        await opened.page.mouse.move(5, 5);
         await expectVisibility(panelText, false, `${runtime}/hover-focus-close`);
         await applyColorScheme(opened.page, 'dark');
         const darkTrigger = opened.previewer

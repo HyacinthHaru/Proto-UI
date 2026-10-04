@@ -28,7 +28,7 @@ export type SiteLinkSurfaceProps = {
 };
 
 const SIZE_TOKENS: Record<SiteLinkAppearance, string> = {
-  action: 'min-h-11 px-4 py-2 gap-2 text-sm whitespace-nowrap',
+  action: 'min-w-0 max-w-full min-h-11 px-4 py-2 gap-2 text-sm wrap-anywhere',
   icon: 'size-11 p-0 whitespace-nowrap',
   nav: 'min-h-11 px-0 py-2 text-sm whitespace-nowrap',
   // Text inherits normal document wrapping; do not add a competing nowrap

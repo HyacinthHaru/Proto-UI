@@ -196,45 +196,114 @@ describe.sequential('Header explicit Brutalist Select elevation', () => {
           }
           // Hold the real pointer at the original edge; center-only paint
           // checks cannot detect feedback that moves its own hit owner away.
-          const edgeSelect = trigger(page, 'runtime');
-          for (const edge of ['left', 'top'] as const) {
-            await page.mouse.move(0, 900);
-            await expect
-              .poll(async () => (await edgeSelect.getAttribute('data-hovered')) === null)
-              .toBe(true);
-            const before = await sample(edgeSelect);
-            const point =
-              edge === 'left'
-                ? { x: before.x + 1, y: before.y + before.height / 2 }
-                : { x: before.x + before.width / 2, y: before.y + 1 };
-            await page.mouse.move(point.x, point.y);
-            const frames = await edgeSelect.evaluate(async (element, point) => {
-              const result = [];
-              for (let index = 0; index < 120; index++) {
-                await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-                const rect = element.getBoundingClientRect();
-                const hit = document.elementFromPoint(point.x, point.y);
-                result.push({
-                  x: rect.x,
-                  y: rect.y,
-                  hovered: element.hasAttribute('data-hovered'),
-                  hit: !!hit && element.contains(hit),
+          const edgeTargets = [
+            { id: 'runtime', locator: trigger(page, 'runtime') },
+            ...(appearance === 'elevated'
+              ? [
+                  {
+                    id: 'theme-button',
+                    locator: page.locator(
+                      '[data-homepage-runtime] .site-header-theme [data-projection-generation-state="active"] [data-demo-ref="home-theme"]'
+                    ),
+                  },
+                ]
+              : []),
+          ];
+          for (const target of edgeTargets) {
+            const edgeSelect = target.locator;
+            const physicalOwner = await edgeSelect.elementHandle();
+            for (const edge of ['left', 'top'] as const) {
+              await page.mouse.move(0, 900);
+              await expect
+                .poll(async () => (await edgeSelect.getAttribute('data-hovered')) === null)
+                .toBe(true);
+              const before = await sample(edgeSelect);
+              const point =
+                edge === 'left'
+                  ? { x: before.x + 1, y: before.y + before.height / 2 }
+                  : { x: before.x + before.width / 2, y: before.y + 1 };
+              await page.mouse.move(point.x, point.y);
+              const frames = await edgeSelect.evaluate(async (element, point) => {
+                const result = [];
+                for (let index = 0; index < 120; index++) {
+                  await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+                  const rect = element.getBoundingClientRect();
+                  const hit = document.elementFromPoint(point.x, point.y);
+                  result.push({
+                    x: rect.x,
+                    y: rect.y,
+                    hovered: element.hasAttribute('data-hovered'),
+                    hit: !!hit && element.contains(hit),
+                  });
+                }
+                return result;
+              }, point);
+              measurements.push({
+                stage: 'original-edge-stability',
+                control: target.id,
+                edge,
+                point,
+                before,
+                frames,
+              });
+              await capture(`390-${target.id}-${edge}-edge`);
+              if (appearance === 'elevated') {
+                const envelope = await edgeSelect.evaluate((element) => {
+                  const root = getComputedStyle(element);
+                  const pseudo = getComputedStyle(element, '::before');
+                  return {
+                    position: root.position,
+                    content: pseudo.content,
+                    pseudoPosition: pseudo.position,
+                    top: pseudo.top,
+                    left: pseudo.left,
+                    right: pseudo.right,
+                    bottom: pseudo.bottom,
+                  };
+                });
+                measurements.push({
+                  stage: 'native-hit-envelope',
+                  control: target.id,
+                  edge,
+                  envelope,
+                });
+                expect(envelope).toEqual({
+                  position: 'relative',
+                  content: '""',
+                  pseudoPosition: 'absolute',
+                  top: '-6px',
+                  left: '-6px',
+                  right: '-2px',
+                  bottom: '-2px',
                 });
               }
-              return result;
-            }, point);
-            measurements.push({ stage: 'original-edge-stability', edge, point, before, frames });
-            await capture(`390-runtime-${edge}-edge`);
-            expect(
-              new Set(
-                frames.slice(-60).map((frame) => JSON.stringify([frame.x, frame.y, frame.hovered]))
-              ).size,
-              `${edge} original edge must not oscillate between hover and rest`
-            ).toBe(1);
-            expect(
-              frames.slice(-60).every((frame) => frame.hit),
-              `${edge} original body edge retains its actual interactive owner`
-            ).toBe(true);
+              expect(
+                new Set(
+                  frames
+                    .slice(-60)
+                    .map((frame) => JSON.stringify([frame.x, frame.y, frame.hovered]))
+                ).size,
+                `${edge} original edge must not oscillate between hover and rest`
+              ).toBe(1);
+              expect(
+                frames.slice(-60).every((frame) => frame.hit),
+                `${edge} original body edge retains its actual interactive owner`
+              ).toBe(true);
+              if (target.id === 'runtime') {
+                await page.mouse.down();
+                await expect.poll(() => edgeSelect.getAttribute('data-pressed')).not.toBeNull();
+                await page.mouse.up();
+                const popupId = await edgeSelect.getAttribute('aria-controls');
+                await page.locator(`[id=${JSON.stringify(popupId)}]`).waitFor({ state: 'visible' });
+                await page.keyboard.press('Escape');
+                expect(
+                  await edgeSelect.evaluate((element, owner) => element === owner, physicalOwner)
+                ).toBe(true);
+                expect(
+                  await edgeSelect.evaluate((element) => document.activeElement === element)
+                ).toBe(true);
+              }
+            }
           }
           expect(errors).toEqual([]);
         } catch (error) {

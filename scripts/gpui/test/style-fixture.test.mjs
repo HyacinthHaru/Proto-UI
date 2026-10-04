@@ -85,3 +85,11 @@ test('a stale theme fixture fails the check', () => {
   assert.notEqual(result.status, 0, 'a stale theme fixture must fail');
   assert.match(result.stderr, /theme-tokens\.json is stale/);
 });
+
+test('Web pseudo-element envelopes remain an explicit native diagnostic gap', () => {
+  const fixture = JSON.parse(readFileSync(FIXTURE, 'utf8'));
+  assert.ok(fixture.unsupportedSelectors.includes('hit-envelope-translate-1'));
+  assert.equal(fixture.tokens['hit-envelope-translate-1'], undefined);
+  assert.ok(!fixture.noDeclarations.includes('hit-envelope-translate-1'));
+  assert.ok(!fixture.order.includes('hit-envelope-translate-1'));
+});

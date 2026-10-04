@@ -464,6 +464,18 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
         ]);
         await page.keyboard.press('Escape');
         await page.setViewportSize({ width: 1440, height: 900 });
+        // Viewport resize precedes matchMedia delivery. Wait for the real
+        // compact-to-desktop owner move before sampling pointer coordinates.
+        await page.waitForFunction(() => {
+          const preferences = document.querySelector('[data-site-header-preferences]');
+          return preferences?.parentElement?.matches('[data-site-header-context]');
+        });
+        await page.evaluate(
+          () =>
+            new Promise<void>((resolve) =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+            )
+        );
         for (const control of ['runtime', 'family'] as const) {
           const trigger = page
             .locator('[data-homepage-runtime]')

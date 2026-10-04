@@ -80,6 +80,12 @@ const whitepaperLabel =
     min-height: 2.75rem;
     padding: 0.625rem 1rem;
   }
+  /* Only size the native owner here; its passive Link Prototype owns paint,
+     typography and wrapping. Use the real projected anchor class. */
+  .homepage-hero :global(.homepage-hero__actions .home-runtime-link) {
+    max-width: 100%;
+    min-width: 0;
+  }
   @media (max-width: 767px) {
     .homepage-hero {
       padding-top: 0;

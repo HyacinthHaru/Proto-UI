@@ -58,6 +58,12 @@ async function capture(page: Page, family: string, state: string, facts: unknown
     const input = search?.querySelector<HTMLInputElement>('.pagefind-ui__search-input');
     return {
       dialogOpen: search?.querySelector('dialog')?.open,
+      readyState: document.readyState,
+      headings: [...document.querySelectorAll('h1')].map((heading) => ({
+        text: heading.textContent,
+        html: heading.outerHTML.slice(0, 2000),
+        visible: heading.getBoundingClientRect().height > 0,
+      })),
       activeElement: document.activeElement?.outerHTML.slice(0, 2000),
       query: input?.value,
       inputFocused: input === document.activeElement,

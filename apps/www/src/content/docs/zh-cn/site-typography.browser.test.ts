@@ -287,6 +287,20 @@ async function overflow(page: Page) {
     documentWidth: document.documentElement.scrollWidth,
     bodyWidth: document.body.scrollWidth,
     rootFont: getComputedStyle(document.documentElement).fontSize,
+    // Preserve the actual offenders when the aggregate width assertion fails.
+    overflowNodes: [...document.querySelectorAll<HTMLElement>('body *')]
+      .filter((element) => {
+        const box = element.getBoundingClientRect();
+        return box.width > 0 && (box.right > innerWidth + 1 || box.left < -1);
+      })
+      .map((element) => ({
+        tag: element.localName,
+        class: element.className,
+        text: element.textContent?.slice(0, 100),
+        x: element.getBoundingClientRect().x,
+        width: element.getBoundingClientRect().width,
+        whiteSpace: getComputedStyle(element).whiteSpace,
+      })),
   }));
 }
 async function copySelection(page: Page) {

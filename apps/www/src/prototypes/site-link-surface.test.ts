@@ -122,7 +122,14 @@ describe('app-owned passive link surface', () => {
     document.body.append(element);
     await settle();
     expect(element.getAttribute('data-pui-style')).not.toContain('whitespace-nowrap');
-    for (const appearance of ['action', 'icon', 'nav', 'brand']) {
+    setElementProps(element, { appearance: 'action' });
+    (element as HTMLElement & { update?(): void }).update?.();
+    await settle();
+    const actionTokens = element.getAttribute('data-pui-style')!;
+    expect(actionTokens).not.toContain('whitespace-nowrap');
+    expect(actionTokens).toContain('wrap-anywhere');
+    expect(actionTokens).toContain('max-w-full');
+    for (const appearance of ['icon', 'nav', 'brand']) {
       setElementProps(element, { appearance });
       (element as HTMLElement & { update?(): void }).update?.();
       await settle();
