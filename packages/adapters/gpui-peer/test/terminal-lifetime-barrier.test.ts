@@ -30,15 +30,15 @@ function latch() {
 
 describe('gpui peer: actual terminal disposal barriers', () => {
   it('shows that an async beforeDispose callback does not hold terminal completion', async () => {
-    const entered = latch();
     const finish = latch();
     const callbackDone = latch();
+    let enteredCallback = false;
     let completedCallback = false;
     const prototype = definePrototype({
       name: 'review-unawaited-before-dispose',
       setup(def) {
         def.lifecycle.onBeforeDispose(async () => {
-          entered.release();
+          enteredCallback = true;
           await finish.promise;
           completedCallback = true;
           callbackDone.release();
@@ -48,15 +48,29 @@ describe('gpui peer: actual terminal disposal barriers', () => {
     });
     const session = open('review-unawaited', prototype);
     await session.peer.mount();
+    let disposed = false;
+    let disposeError: unknown;
+    const ending = session.peer.dispose().then(
+      () => {
+        disposed = true;
+      },
+      (error: unknown) => {
+        disposeError = error;
+      }
+    );
     try {
-      const ending = session.peer.dispose();
-      await entered.promise;
-      await ending;
+      for (let turn = 0; turn < 3; turn++) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      }
+      expect(enteredCallback).toBe(true);
+      expect(disposeError).toBeUndefined();
+      expect(disposed).toBe(true);
       expect(completedCallback).toBe(false);
       expect(session.host.of('session.disposed')).toHaveLength(1);
     } finally {
       finish.release();
-      await callbackDone.promise;
+      await ending;
+      if (enteredCallback) await callbackDone.promise;
     }
   });
 
@@ -79,6 +93,7 @@ describe('gpui peer: actual terminal disposal barriers', () => {
         await originalDispose();
       };
       const ending = root.peer.dispose();
+      let late: ReturnType<typeof open> | undefined;
       try {
         await entered.promise;
         for (let turn = 0; turn < 3; turn++) {
@@ -88,10 +103,16 @@ describe('gpui peer: actual terminal disposal barriers', () => {
           expect(newest.host.of('session.disposed')).toHaveLength(0);
         }
         const parent = target === 'closing-root' ? root.peer : older.peer;
-        expect(() => open(`review-late-${target}`, neutral, parent)).toThrow(/closing or failed/);
+        expect(() => {
+          late = open(`review-late-${target}`, neutral, parent);
+        }).toThrow(/closing or failed/);
       } finally {
         finish.release();
-        await ending;
+        try {
+          await ending;
+        } finally {
+          if (late) await late.peer.dispose();
+        }
       }
       expect(newest.host.of('session.disposed')).toHaveLength(1);
       expect(older.host.of('session.disposed')).toHaveLength(1);
