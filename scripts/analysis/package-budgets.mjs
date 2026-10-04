@@ -57,8 +57,10 @@ const cases = [
   // the Vue adapter root (82,527; main 79,163). Retain ~700-1,000 bytes of
   // bounded headroom.
   // #549 adds 2,593 / 2,613 gzip bytes over main 9d9552bb: 85,351 / 85,093.
-  ['adapter-react root', 'packages/adapters/react/src/index.ts', 89_000],
-  ['adapter-vue root', 'packages/adapters/vue/src/index.ts', 88_500],
+  // Independent terminal cleanup/reentry follow-up, with exact combined evidence:
+  // internal/records/2026-10-04-material-terminal-budget-followup.json
+  ['adapter-react root', 'packages/adapters/react/src/index.ts', 89_300],
+  ['adapter-vue root', 'packages/adapters/vue/src/index.ts', 88_700],
   // The earlier #652 shadow split baseline proposal measured 84,683 gzip at
   // head dd820b30 (main at ddac15da: 75,664 with the same toolchain). Its
   // prior 97,000 ceiling rationale is retained here; current proposal:
