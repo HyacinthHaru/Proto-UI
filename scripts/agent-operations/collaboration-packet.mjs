@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { loadModelTraceRecord, readModelTraceJson } from './modeltrace.mjs';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
@@ -53,8 +54,30 @@ function usage() {
 const OPTIONS = new Map([
   ['thread-revision', new Set(['--repository', '--pull-request', '--thread'])],
   ['request-digest', new Set(['--request'])],
-  ['validate', new Set(['--mode', '--mode-source', '--request', '--handoff', '--assessment'])],
-  ['apply', new Set(['--mode', '--mode-source', '--request', '--handoff', '--assessment'])],
+  [
+    'validate',
+    new Set([
+      '--mode',
+      '--mode-source',
+      '--request',
+      '--handoff',
+      '--assessment',
+      '--record',
+      '--context',
+    ]),
+  ],
+  [
+    'apply',
+    new Set([
+      '--mode',
+      '--mode-source',
+      '--request',
+      '--handoff',
+      '--assessment',
+      '--record',
+      '--context',
+    ]),
+  ],
 ]);
 
 export function parseCollaborationCli(argv) {
@@ -149,7 +172,7 @@ function validateExecution(request, args, policy, invocationContext, routed) {
   return { selfAssessment, eligibility };
 }
 
-function rejectedReceipt(request, preState, postState, reason) {
+function rejectedReceipt(request, preState, postState, reason, modelTrace) {
   return buildCollaborationReceipt({
     request,
     preState,
@@ -162,6 +185,7 @@ function rejectedReceipt(request, preState, postState, reason) {
     verifiedAt: postState.observedAt,
     verification: 'live-authorization-rejected',
     note: reason,
+    modelTrace,
   });
 }
 
@@ -195,6 +219,23 @@ export function runCollaborationCli(argv, dependencies = {}) {
   // collection, live GitHub reads, or any other external dependency is called.
   const routed = loadCollaborationHandoff(args.get('--handoff'), invocationContext);
   const request = readRequest(args.get('--request'));
+  const modelTrace = loadModelTraceRecord({
+    recordPath: args.get('--record'),
+    contextPath: args.get('--context'),
+    repositoryId: request.repositoryId,
+  });
+  const modelTraceContext = readModelTraceJson(args.get('--context'), 'context');
+  const recordArtifact = routed.handoff.artifacts.find((item) => item.type === 'modeltrace-record');
+  const requestRecord = request.evidence.find((item) => item.type === 'modeltrace-record');
+  if (
+    recordArtifact?.reference !== args.get('--record') ||
+    recordArtifact.digest !== modelTrace.id ||
+    requestRecord?.reference !== args.get('--record') ||
+    requestRecord.digest !== modelTrace.id
+  )
+    throw new Error(
+      'request and handoff must bind the --record reference and measured receipt digest'
+    );
   const policy = (dependencies.loadPolicy ?? loadCapabilityPolicy)(POLICY_PATH);
   const execution = validateExecution(request, args, policy, invocationContext, routed);
   if (command === 'validate') {
@@ -204,6 +245,7 @@ export function runCollaborationCli(argv, dependencies = {}) {
       action: request.action,
       ...invocationContext,
       eligibility: execution.eligibility,
+      modelTrace,
     };
   }
 
@@ -215,8 +257,11 @@ export function runCollaborationCli(argv, dependencies = {}) {
     ...invocationContext,
     policy,
     selfAssessment: execution.selfAssessment,
+    modelTrace,
+    modelTraceContext,
   });
-  if (!decision.allowed) return rejectedReceipt(request, preState, preState, decision.reason);
+  if (!decision.allowed)
+    return rejectedReceipt(request, preState, preState, decision.reason, modelTrace);
 
   if (decision.outcome === 'no-op') {
     return buildCollaborationReceipt({
@@ -234,6 +279,7 @@ export function runCollaborationCli(argv, dependencies = {}) {
           ? 'idempotency-marker-present'
           : 'live-state-matches-desired',
       note: decision.reason,
+      modelTrace,
     });
   }
 
@@ -247,11 +293,13 @@ export function runCollaborationCli(argv, dependencies = {}) {
         ...invocationContext,
         policy,
         selfAssessment: execution.selfAssessment,
+        modelTrace,
+        modelTraceContext,
       },
     });
   } catch (error) {
     if (!(error instanceof CollaborationPreWriteRejection)) throw error;
-    return rejectedReceipt(request, preState, error.liveState, error.message);
+    return rejectedReceipt(request, preState, error.liveState, error.message, modelTrace);
   }
   try {
     return buildCollaborationReceipt({
@@ -272,6 +320,7 @@ export function runCollaborationCli(argv, dependencies = {}) {
         applied.mutationCount === 0
           ? 'The exact desired state was already satisfied at the final admission read; no mutation was attempted.'
           : 'The exact desired state was verified after the single admitted mutation.',
+      modelTrace,
     });
   } catch (error) {
     if (request.action !== 'post-bounded-reconciliation-comment' || applied.mutationCount !== 1)

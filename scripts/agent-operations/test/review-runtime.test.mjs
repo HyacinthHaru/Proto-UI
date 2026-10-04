@@ -23,6 +23,7 @@ import {
   verifyReconciliation,
 } from '../review-runtime.mjs';
 import { agentEvidence } from './fixtures/agent-evidence.mjs';
+import { modelTraceFixture, writeModelTraceFixture } from './fixtures/modeltrace.mjs';
 
 const root = path.resolve(fileURLToPath(new URL('../../..', import.meta.url)));
 const policy = parseYaml(
@@ -210,6 +211,7 @@ function priorReviewFixture() {
   const boundary = (reviews = [review], overrides = {}) => {
     const input = reviewInput({ reviews });
     return {
+      ...modelTraceFixture(input.repositoryId),
       packet: packet({ limitations: [], recommendedAction: 'APPROVE' }, input),
       input,
       liveInput: structuredClone(input),
@@ -481,6 +483,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
     ];
     base.packet = packet({ limitations: [], recommendedAction: 'APPROVE' }, base.input);
     const input = base.input;
+    const identity = writeModelTraceFixture(directory, input.repositoryId);
     const connection = (nodes) => ({ nodes, pageInfo: { hasNextPage: false } });
     const actor = ({ login, name, email }) => ({ user: { login }, name, email });
     const contexts = connection(
@@ -585,6 +588,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
           { type: 'candidate-change', reference: 'bounded candidate change' },
           { type: 'evidence-report', reference: 'validation evidence' },
           { type: 'review-input', reference: inputPath },
+          identity.artifact,
         ],
         humanGates: [],
         notes: [],
@@ -613,6 +617,10 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
             handoffPath,
             '--authorization',
             'explicit-current-user',
+            '--record',
+            identity.recordPath,
+            '--context',
+            identity.contextPath,
             ...priorArgs,
           ],
           {
@@ -1210,6 +1218,7 @@ test('agent:review submit-review consumes the bound prior packet before any live
     writeFileSync(inputPath, JSON.stringify(input));
     writeFileSync(packetPath, JSON.stringify(boundPacket));
     writeFileSync(priorPath, JSON.stringify(priorPacket));
+    const trace = writeModelTraceFixture(directory, input.repositoryId);
     writeFileSync(
       handoffPath,
       JSON.stringify({
@@ -1225,6 +1234,7 @@ test('agent:review submit-review consumes the bound prior packet before any live
           { type: 'candidate-change', reference: 'bounded candidate change' },
           { type: 'evidence-report', reference: 'validation evidence' },
           { type: 'review-input', reference: inputPath },
+          trace.artifact,
         ],
         humanGates: [],
         notes: [],
@@ -1243,6 +1253,10 @@ test('agent:review submit-review consumes the bound prior packet before any live
       inputPath,
       '--handoff',
       handoffPath,
+      '--record',
+      trace.recordPath,
+      '--context',
+      trace.contextPath,
     ];
     assert.throws(
       () => execFileSync(process.execPath, submitArgs, { cwd: root, encoding: 'utf8' }),
@@ -1385,6 +1399,7 @@ test('approval discloses a Vercel authorization failure as publication debt', ()
   });
   const review = packet({ limitations: [], humanGates: [], recommendedAction: 'APPROVE' }, input);
   const submission = {
+    ...modelTraceFixture(input.repositoryId),
     packet: review,
     input,
     liveInput: structuredClone(input),
@@ -1444,6 +1459,7 @@ test('approval discloses a Vercel authorization failure as publication debt', ()
 test('review submission preserves explicit authorization and activates the bounded scheduled scope', () => {
   const input = reviewInput();
   const base = {
+    ...modelTraceFixture(input.repositoryId),
     packet: packet(
       {
         limitations: [],
@@ -1881,6 +1897,7 @@ test('an active scheduled standing authorization can submit an exact-head review
   authorization.status = 'active';
   delete authorization.blockedBy;
   const approval = authorizeReviewSubmission({
+    ...modelTraceFixture(input.repositoryId),
     packet: packet({ limitations: [], humanGates: [], recommendedAction: 'APPROVE' }, input),
     input,
     liveInput: structuredClone(input),
@@ -1901,6 +1918,7 @@ test('an active scheduled standing authorization can submit an exact-head review
 test('submission preflight re-collects live canonical input and rejects drift and forged identities', () => {
   const input = reviewInput();
   const base = {
+    ...modelTraceFixture(input.repositoryId),
     packet: packet({ recommendedAction: 'COMMENT', limitations: [] }, input),
     input,
     liveInput: structuredClone(input),
@@ -2278,7 +2296,7 @@ test('agent:review CLI validates and inspects the same packet contract used by t
   }
 });
 
-test('legacy schema v1 packets ingest without evidence but cannot carry dispositions', () => {
+test('legacy schema v1 packets remain readable but cannot authorize current writes', () => {
   const input = reviewInput();
   const legacy = packet({ recommendedAction: 'COMMENT' }, input);
   delete legacy.agentEvidence;
@@ -2295,6 +2313,7 @@ test('legacy schema v1 packets ingest without evidence but cannot carry disposit
   assert.throws(() => validateReviewPacket(smuggled, input), /unexpected|agentEvidence/);
 
   const base = {
+    ...modelTraceFixture(input.repositoryId),
     input,
     liveInput: structuredClone(input),
     executionMode: 'human-assisted',
@@ -2306,13 +2325,15 @@ test('legacy schema v1 packets ingest without evidence but cannot carry disposit
     pullRequestAuthor: 'contributor',
     ciConclusion: 'success',
   };
-  const comment = authorizeReviewSubmission({ ...base, packet: legacy });
-  assert.equal(comment.allowed, true);
+  assert.equal(authorizeReviewSubmission({ ...base, packet: legacy }).allowed, false);
 
   for (const recommendedAction of ['APPROVE', 'REQUEST_CHANGES']) {
     const disposition = packet({ recommendedAction }, input);
     delete disposition.agentEvidence;
     disposition.schemaVersion = 1;
+    disposition.limitations.push(
+      `Historical disposition fixture.\n\n${modelTraceFixture(input.repositoryId).disclosure}`
+    );
     const result = authorizeReviewSubmission({ ...base, packet: disposition });
     assert.equal(result.allowed, false);
     assert.match(result.reason, /schema v2/);

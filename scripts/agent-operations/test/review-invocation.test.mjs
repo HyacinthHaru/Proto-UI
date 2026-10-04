@@ -7,6 +7,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { computeReviewInputDigest, computeReviewPacketDigest } from '../review-runtime.mjs';
 import { publicationRoundTrip } from './fixtures/review-publication.mjs';
+import { writeModelTraceFixture } from './fixtures/modeltrace.mjs';
 
 const root = fileURLToPath(new URL('../../..', import.meta.url));
 // Launcher declarations are independent fixture inputs, never copied from a handoff.
@@ -20,12 +21,15 @@ function fixture(t, command) {
   const merge = command === 'merge-pull-request';
   const input = merge ? publication.collected : publication.before;
   const packet = merge ? publication.mergePacket : publication.reviewed;
+  const identity = writeModelTraceFixture(directory, input.repositoryId);
   const files = Object.fromEntries(
     ['input', 'packet', 'published', 'handoff', 'assessment', 'external', 'prior'].map((name) => [
       name,
       path.join(directory, `${name}.json`),
     ])
   );
+  files.record = identity.recordPath;
+  files.context = identity.contextPath;
   writeFileSync(files.input, JSON.stringify(input));
   writeFileSync(files.packet, JSON.stringify(packet));
   writeFileSync(files.published, JSON.stringify(publication.reviewed));
@@ -44,6 +48,7 @@ function fixture(t, command) {
     nextSkillId: merge ? 'pui-integrate' : 'pui-review',
     artifacts: merge
       ? [
+          identity.artifact,
           inputArtifact,
           {
             type: 'review-packet',
@@ -58,6 +63,7 @@ function fixture(t, command) {
           { type: 'mutation-authorization', reference: 'explicit-current-user' },
         ]
       : [
+          identity.artifact,
           inputArtifact,
           { type: 'authority-map', reference: 'fixture://authority' },
           { type: 'candidate-change', reference: 'fixture://change' },
@@ -113,6 +119,10 @@ function fixture(t, command) {
           files.handoff,
           '--authorization',
           'explicit-current-user',
+          '--record',
+          files.record,
+          '--context',
+          files.context,
           ...(merge ? ['--published-review-packet', files.published] : []),
           ...extraArgs,
         ],

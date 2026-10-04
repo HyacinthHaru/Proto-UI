@@ -1,0 +1,501 @@
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import fs from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { establishExecutionMode } from './skill-registry.mjs';
+import { MAX_LIVE_RESPONSE_BYTES, parseRepositoryId } from './collect-live-review-input.mjs';
+import {
+  loadModelTraceRecord,
+  renderModelTraceDisclosure,
+  assertModelTraceDisclosure,
+} from './modeltrace.mjs';
+
+const COMMON = [
+  '--record',
+  '--context',
+  '--mode',
+  '--mode-source',
+  '--authorization',
+  '--repository',
+];
+const OPTIONS = new Map([
+  ['commit', [...COMMON, '--message-file', '--branch', '--expected-head']],
+  ['issue create', [...COMMON, '--title', '--body-file']],
+  ['pull-request create', [...COMMON, '--title', '--body-file', '--base', '--head']],
+  ['comment', [...COMMON, '--number', '--body-file']],
+  [
+    'update-body',
+    [...COMMON, '--number', '--body-file', '--target-updated-at', '--target-body-digest'],
+  ],
+]);
+const VIEWER_QUERY = `query PublisherViewer($owner: String!, $name: String!) {
+  viewer { login }
+  repository(owner: $owner, name: $name) { nameWithOwner viewerPermission isArchived defaultBranchRef { name } }
+}`;
+const sha256 = (text) => createHash('sha256').update(text).digest('hex');
+const sameLogin = (a, b) =>
+  typeof a === 'string' && typeof b === 'string' && a.toLowerCase() === b.toLowerCase();
+
+export function parsePublishCli(argv) {
+  const values = [...argv];
+  if (values[0] === '--') values.shift();
+  let command = values.shift();
+  if (['issue', 'pull-request'].includes(command)) command += ` ${values.shift()}`;
+  if (!OPTIONS.has(command))
+    throw new Error(
+      'supported commands: commit, issue create, pull-request create, comment, update-body'
+    );
+  if (values.length % 2 !== 0) throw new Error('each publisher option requires a value');
+  const args = new Map();
+  for (let i = 0; i < values.length; i += 2) {
+    const key = values[i];
+    const value = values[i + 1];
+    if (!OPTIONS.get(command).includes(key)) throw new Error(`unexpected option: ${key}`);
+    if (args.has(key)) throw new Error(`duplicate option: ${key}`);
+    if (!value || value.startsWith('--')) throw new Error(`missing value: ${key}`);
+    args.set(key, value);
+  }
+  // Declarations precede all artifact reads, git operations and network calls.
+  for (const key of ['--mode', '--mode-source', '--authorization']) {
+    if (!args.has(key)) throw new Error(`${key} is required`);
+  }
+  establishExecutionMode(args.get('--mode'), args.get('--mode-source'));
+  if (args.get('--authorization') !== 'explicit-current-user') {
+    throw new Error(
+      'publisher requires explicit-current-user; standing scopes are not activated here'
+    );
+  }
+  if (args.get('--mode') !== 'human-assisted')
+    throw new Error('autonomous execution cannot claim explicit-current-user authorization');
+  for (const key of OPTIONS.get(command)) if (!args.has(key)) throw new Error(`${key} is required`);
+  parseRepositoryId(args.get('--repository'));
+  if (args.has('--number') && !/^[1-9][0-9]*$/.test(args.get('--number')))
+    throw new Error('--number must be a positive integer');
+  if (args.has('--number') && !Number.isSafeInteger(Number(args.get('--number'))))
+    throw new Error('--number exceeds the safe integer range');
+  if (command === 'update-body') {
+    if (!/^[a-f0-9]{64}$/.test(args.get('--target-body-digest')))
+      throw new Error('--target-body-digest must be a bare sha256 digest');
+    if (!Number.isFinite(Date.parse(args.get('--target-updated-at'))))
+      throw new Error('--target-updated-at must be an ISO timestamp');
+  }
+  if (command === 'commit' && !/^[a-f0-9]{40,64}$/.test(args.get('--expected-head')))
+    throw new Error('--expected-head must be an exact commit SHA');
+  return { command, args };
+}
+
+function tools(options) {
+  const runner = options.runner ?? execFileSync;
+  const cwd = options.cwd ?? process.cwd();
+  function run(binary, args, extra = {}) {
+    const result = runner(binary, args, {
+      cwd,
+      encoding: 'utf8',
+      maxBuffer: MAX_LIVE_RESPONSE_BYTES,
+      stdio: ['pipe', 'pipe', 'pipe'],
+      ...extra,
+    });
+    return typeof result === 'string' ? result : result.toString('utf8');
+  }
+  function api(endpoint, { method, input, paginate = false } = {}) {
+    const args = ['api'];
+    if (method) args.push('--method', method);
+    if (paginate) args.push('--paginate', '--slurp');
+    args.push(endpoint);
+    if (input !== undefined) args.push('--input', '-');
+    const text = run('gh', args, input === undefined ? {} : { input: JSON.stringify(input) });
+    const payload = JSON.parse(text);
+    if (payload?.errors?.length) throw new Error('GitHub returned GraphQL errors');
+    if (!paginate) return payload;
+    if (!Array.isArray(payload) || !payload.every(Array.isArray))
+      throw new Error('GitHub pagination returned an invalid shape');
+    return payload.flat();
+  }
+  return { run, api, cwd };
+}
+
+function liveViewer(io, repositoryId) {
+  const { owner, name } = parseRepositoryId(repositoryId);
+  const payload = io.api('graphql', {
+    method: 'POST',
+    input: { query: VIEWER_QUERY, variables: { owner, name } },
+  });
+  const repository = payload?.data?.repository;
+  const login = payload?.data?.viewer?.login;
+  if (!login || repository?.nameWithOwner?.toLowerCase() !== `${owner}/${name}`.toLowerCase())
+    throw new Error('live repository or credential identity unavailable');
+  if (
+    !['READ', 'TRIAGE', 'WRITE', 'MAINTAIN', 'ADMIN'].includes(repository.viewerPermission) ||
+    repository.isArchived
+  )
+    throw new Error('live repository access and credential identity required');
+  if (!repository.defaultBranchRef?.name)
+    throw new Error('repository default branch is unavailable');
+  return {
+    login,
+    permission: repository.viewerPermission,
+    defaultBranch: repository.defaultBranchRef.name,
+  };
+}
+
+function assertSameViewer(first, latest) {
+  if (
+    !sameLogin(first.login, latest.login) ||
+    first.permission !== latest.permission ||
+    first.defaultBranch !== latest.defaultBranch
+  ) {
+    throw new Error('live credential, permission or repository binding changed before write');
+  }
+}
+
+function checkoutRepository(io) {
+  const remote = io
+    .run('git', ['config', '--get', 'remote.origin.url'])
+    .trim()
+    .replace(/\.git$/, '');
+  const match =
+    remote.match(/^https:\/\/github\.com\/([^/]+\/[^/]+)$/i) ??
+    remote.match(/^(?:ssh:\/\/)?git@github\.com[:/]([^/]+\/[^/]+)$/i);
+  if (!match) throw new Error('checkout requires an explicit github.com origin');
+  return `github.com:${match[1]}`;
+}
+
+function localCommitBinding(io, args) {
+  const repositoryId = args.get('--repository');
+  if (checkoutRepository(io).toLowerCase() !== repositoryId.toLowerCase())
+    throw new Error('commit repository differs from checkout origin');
+  const branch = io.run('git', ['symbolic-ref', '--short', 'HEAD']).trim();
+  const head = io.run('git', ['rev-parse', 'HEAD']).trim();
+  if (branch !== args.get('--branch') || head !== args.get('--expected-head'))
+    throw new Error('local branch or exact HEAD binding changed');
+  if (['main', 'master'].includes(branch))
+    throw new Error(
+      'commit requires the explicitly authorized contributor branch, not a default branch'
+    );
+  io.run('git', ['check-ref-format', '--branch', branch]);
+  // Creating a local commit grants no GitHub privilege. The operator authorizes
+  // this exact branch/head; the configured signer still owns DCO responsibility.
+  // Existing contributor history and protected push rules are not model identity.
+  return { branch, head };
+}
+
+function pullBinding(io, args, viewer) {
+  const { owner, name } = parseRepositoryId(args.get('--repository'));
+  const base = args.get('--base');
+  const head = args.get('--head');
+  const parts = head.split(':');
+  if (parts.length > 2 || parts.some((part) => !part)) throw new Error('invalid PR source head');
+  const branch = parts.at(-1);
+  io.run('git', ['check-ref-format', '--branch', branch]);
+  io.run('git', ['check-ref-format', '--branch', base]);
+  if (branch === base || branch === viewer.defaultBranch)
+    throw new Error('PR requires a distinct contributor head branch');
+  const sourceOwner = parts.length === 2 ? parts[0] : owner;
+  const sourceRepository = `github.com:${sourceOwner}/${name}`;
+  if (checkoutRepository(io).toLowerCase() !== sourceRepository.toLowerCase())
+    throw new Error('PR source repository differs from checkout origin');
+  if (io.run('git', ['symbolic-ref', '--short', 'HEAD']).trim() !== branch)
+    throw new Error('PR head branch differs from checkout branch');
+  const localSha = io.run('git', ['rev-parse', 'HEAD']).trim();
+  const liveBranch = io.api(`repos/${sourceOwner}/${name}/branches/${encodeURIComponent(branch)}`);
+  const baseBranch = io.api(`repos/${owner}/${name}/branches/${encodeURIComponent(base)}`);
+  if (liveBranch?.commit?.sha !== localSha || !baseBranch?.commit?.sha)
+    throw new Error('PR source must be pushed and bound to exact local HEAD/base');
+  const compare = io.api(
+    `repos/${owner}/${name}/compare/${encodeURIComponent(base)}...${encodeURIComponent(head)}`
+  );
+  if (
+    !Array.isArray(compare?.commits) ||
+    compare.commits.length === 0 ||
+    compare.total_commits !== compare.commits.length ||
+    compare.commits.at(-1)?.sha !== localSha
+  ) {
+    throw new Error('complete PR contributor commit attribution is unavailable');
+  }
+  return { headSha: localSha, baseSha: baseBranch.commit.sha };
+}
+
+function target(io, endpoint, number) {
+  const item = io.api(`${endpoint}/issues/${number}`);
+  if (
+    item?.number !== number ||
+    !item.node_id ||
+    typeof item.updated_at !== 'string' ||
+    (item.body !== null && typeof item.body !== 'string')
+  )
+    throw new Error('live target binding is incomplete');
+  return item;
+}
+
+function assertTarget(first, latest) {
+  for (const key of ['node_id', 'updated_at', 'body', 'state', 'locked']) {
+    if (first[key] !== latest[key]) throw new Error(`target ${key} changed before write`);
+  }
+  if (!sameLogin(first.user?.login, latest.user?.login))
+    throw new Error('target author changed before write');
+}
+
+function exactPublished(item, body, viewer, expected = {}) {
+  if (!sameLogin(item?.user?.login, viewer.login) || item.body !== body)
+    throw new Error(
+      'published marker exists but full body or author does not match; refusing duplicate publication'
+    );
+  for (const [key, value] of Object.entries(expected))
+    if (item[key] !== value) throw new Error(`published ${key} does not match`);
+  return item;
+}
+
+export class PublicationUnknown extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'PublicationUnknown';
+  }
+}
+
+export function runCommitMessageHook(messagePath, options = {}) {
+  const environment = options.env ?? process.env;
+  if (environment.PUI_AGENT !== '1') return { status: 'human-exempt' };
+  if (!environment.PUI_MODELTRACE_RECORD || !environment.PUI_MODELTRACE_CONTEXT)
+    throw new Error('Agent commit requires PUI_MODELTRACE_RECORD and PUI_MODELTRACE_CONTEXT');
+  const io = tools(options);
+  const repositoryId = checkoutRepository(io);
+  const receipt = loadModelTraceRecord({
+    recordPath: environment.PUI_MODELTRACE_RECORD,
+    contextPath: environment.PUI_MODELTRACE_CONTEXT,
+    repositoryId,
+    now: options.now ?? new Date(),
+  });
+  const message = fs.readFileSync(messagePath, 'utf8');
+  const trailers = message.split(/\r?\n/).filter((line) => line.startsWith('ModelTrace:'));
+  if (trailers.length !== 1)
+    throw new Error('Agent commit requires exactly one ModelTrace trailer');
+  if (trailers[0] !== renderModelTraceDisclosure(receipt, 'commit'))
+    throw new Error('Agent commit ModelTrace trailer is not the exact current disclosure');
+  assertModelTraceDisclosure(message, receipt, 'commit');
+  return { status: 'validated' };
+}
+
+export function runPublishCli(argv, options = {}) {
+  const { command, args } = parsePublishCli(argv);
+  const repositoryId = args.get('--repository');
+  const recordPath = path.resolve(args.get('--record'));
+  const contextPath = path.resolve(args.get('--context'));
+  // Recompute the private raw samples. Never substitute a system/harness model.
+  const measure = () =>
+    loadModelTraceRecord({ recordPath, contextPath, repositoryId, now: options.now ?? new Date() });
+  const receipt = measure();
+  const io = tools(options);
+  if (command === 'commit') {
+    const binding = localCommitBinding(io, args);
+    const prepared = fs.readFileSync(args.get('--message-file'), 'utf8');
+    if (!prepared.trim() || /^ModelTrace:/m.test(prepared))
+      throw new Error(
+        'prepared commit message must be nonempty and have no existing ModelTrace trailer'
+      );
+    const message = `${prepared.trimEnd()}\n\n${renderModelTraceDisclosure(receipt, 'commit')}\n`;
+    const directory = fs.mkdtempSync(path.join(tmpdir(), 'pui-agent-commit-'));
+    try {
+      const messagePath = path.join(directory, 'message');
+      fs.writeFileSync(messagePath, message, { mode: 0o600 });
+      if (JSON.stringify(localCommitBinding(io, args)) !== JSON.stringify(binding))
+        throw new Error('commit branch changed before write');
+      assertModelTraceDisclosure(message, measure(), 'commit');
+      let output;
+      try {
+        output = io.run('git', ['commit', '--signoff', '--file', messagePath], {
+          env: {
+            ...process.env,
+            PUI_AGENT: '1',
+            PUI_MODELTRACE_RECORD: recordPath,
+            PUI_MODELTRACE_CONTEXT: contextPath,
+          },
+        });
+      } catch {
+        throw new PublicationUnknown(
+          'git commit failed or outcome is unknown; inspect local HEAD before any retry'
+        );
+      }
+      const committed = io.run('git', ['log', '-1', '--format=%B']);
+      assertModelTraceDisclosure(committed, receipt, 'commit');
+      return {
+        status: 'published',
+        command,
+        output,
+        head: io.run('git', ['rev-parse', 'HEAD']).trim(),
+      };
+    } finally {
+      fs.rmSync(directory, { recursive: true, force: true });
+    }
+  }
+
+  const viewer = liveViewer(io, repositoryId);
+  const { owner, name } = parseRepositoryId(repositoryId);
+  const endpoint = `repos/${owner}/${name}`;
+  const prepared = fs.readFileSync(args.get('--body-file'), 'utf8');
+  if (!prepared.trim()) throw new Error('prepared body must be nonempty');
+  const exactPrepared = /^## ModelTrace\s*$/m.test(prepared);
+  if (exactPrepared) assertModelTraceDisclosure(prepared, receipt);
+  else if (/<!-- proto-ui-agent-publication:/i.test(prepared))
+    throw new Error('undisclosed prepared body must not forge a publication marker');
+  const number = args.has('--number') ? Number(args.get('--number')) : null;
+  const publicationDigest = sha256(
+    JSON.stringify({
+      repositoryId,
+      command,
+      number,
+      title: args.get('--title') ?? null,
+      base: args.get('--base') ?? null,
+      head: args.get('--head') ?? null,
+      prepared,
+    })
+  );
+  const marker = exactPrepared ? null : `<!-- proto-ui-agent-publication:${publicationDigest} -->`;
+  // Evidence-publication approval binds exact bytes. Already disclosed prepared
+  // bodies must not be silently reformatted or gain another marker/disclosure.
+  const body = exactPrepared
+    ? prepared
+    : `${prepared}${prepared.endsWith('\n') ? '\n' : '\n\n'}${renderModelTraceDisclosure(receipt, 'markdown')}\n\n${marker}\n`;
+  let before = number === null ? null : target(io, endpoint, number);
+  const branch = command === 'pull-request create' ? pullBinding(io, args, viewer) : null;
+  if (before?.locked) throw new Error('target is locked');
+  if (command === 'update-body' && !sameLogin(before.user?.login, viewer.login))
+    throw new Error('body replacement requires a credential-owned Issue or PR');
+  function findPublished() {
+    if (command === 'update-body') {
+      const current = target(io, endpoint, number);
+      return (marker === null ? current.body === body : current.body?.includes(marker))
+        ? exactPublished(current, body, viewer)
+        : null;
+    }
+    const route =
+      command === 'comment'
+        ? `${endpoint}/issues/${number}/comments?per_page=100`
+        : `${endpoint}/issues?state=all&creator=${encodeURIComponent(viewer.login)}&per_page=100`;
+    const items = io
+      .api(route, { paginate: true })
+      .filter(
+        (item) =>
+          typeof item.body === 'string' &&
+          (marker === null ? item.body === body : item.body.includes(marker))
+      );
+    if (items.length > 1)
+      throw new Error('multiple publication markers exist; refusing duplicate publication');
+    if (!items.length) return null;
+    const item =
+      command === 'comment'
+        ? io.api(`${endpoint}/issues/comments/${items[0].id}`)
+        : target(io, endpoint, items[0].number);
+    exactPublished(
+      item,
+      body,
+      viewer,
+      command.endsWith(' create') ? { title: args.get('--title') } : {}
+    );
+    if (command === 'issue create' && item.pull_request)
+      throw new Error('publication marker belongs to a PR, not an Issue');
+    if (command === 'pull-request create') {
+      if (!item.pull_request) throw new Error('publication marker belongs to an Issue, not a PR');
+      const pull = io.api(`${endpoint}/pulls/${item.number}`);
+      const sourceOwner = args.get('--head').includes(':')
+        ? args.get('--head').split(':')[0]
+        : owner;
+      if (
+        pull.base?.ref !== args.get('--base') ||
+        pull.head?.ref !== args.get('--head').split(':').at(-1) ||
+        pull.head?.sha !== branch.headSha ||
+        pull.head?.repo?.full_name?.toLowerCase() !== `${sourceOwner}/${name}`.toLowerCase()
+      )
+        throw new Error('existing PR head/base binding changed');
+    }
+    return item;
+  }
+  const existing = findPublished();
+  if (existing)
+    return { status: 'already-published', command, publicationDigest, url: existing.html_url };
+  if (
+    command === 'update-body' &&
+    (before.updated_at !== args.get('--target-updated-at') ||
+      sha256(before.body ?? '') !== args.get('--target-body-digest'))
+  )
+    throw new Error('prepared body replacement does not match exact current target');
+  assertSameViewer(viewer, liveViewer(io, repositoryId));
+  if (before) {
+    const latest = target(io, endpoint, number);
+    assertTarget(before, latest);
+    before = latest;
+  }
+  if (branch && JSON.stringify(pullBinding(io, args, viewer)) !== JSON.stringify(branch))
+    throw new Error('PR head/base changed before write');
+  if (findPublished())
+    throw new Error('publication appeared during preflight; rerun read-only reconciliation');
+  assertModelTraceDisclosure(body, measure(), 'markdown');
+  let route;
+  let method = 'POST';
+  let input = { body };
+  if (command === 'issue create') {
+    route = `${endpoint}/issues`;
+    input.title = args.get('--title');
+  }
+  if (command === 'pull-request create') {
+    route = `${endpoint}/pulls`;
+    input = {
+      ...input,
+      title: args.get('--title'),
+      base: args.get('--base'),
+      head: args.get('--head'),
+    };
+  }
+  if (command === 'comment') route = `${endpoint}/issues/${number}/comments`;
+  if (command === 'update-body') {
+    route = `${endpoint}/issues/${number}`;
+    method = 'PATCH';
+  }
+  let acknowledged;
+  try {
+    // Exactly one mutation. Transport/JSON failure may mean it succeeded.
+    acknowledged = io.api(route, { method, input });
+  } catch {
+    let observed = null;
+    try {
+      observed = findPublished();
+    } catch {
+      /* The write remains unknown; never retry a mutation. */
+    }
+    throw new PublicationUnknown(
+      observed
+        ? `An exact matching publication is observed at ${observed.html_url}, but the lost acknowledgement cannot attribute it to this invocation; no retry was attempted`
+        : 'GitHub publication outcome is unknown; reconcile the digest marker and exact full body before any new write'
+    );
+  }
+  try {
+    if (!acknowledged?.id) throw new Error('mutation acknowledgement is incomplete');
+    const published = findPublished();
+    if (!published || published.id !== acknowledged.id)
+      throw new Error('publication readback does not match acknowledgement');
+    return { status: 'published', command, publicationDigest, url: published.html_url };
+  } catch {
+    throw new PublicationUnknown(
+      'GitHub acknowledged publication but exact full-body readback is unknown; no retry was attempted'
+    );
+  }
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try {
+    const argv = process.argv.slice(2);
+    const result =
+      argv[0] === 'check-commit-message'
+        ? argv.length === 3 && argv[1] === '--message-file'
+          ? runCommitMessageHook(argv[2])
+          : (() => {
+              throw new Error('check-commit-message requires only --message-file');
+            })()
+        : runPublishCli(argv);
+    process.stdout.write(`${JSON.stringify(result)}\n`);
+  } catch (error) {
+    process.stderr.write(`${error.name}: ${error.message}\n`);
+    process.exitCode = 1;
+  }
+}

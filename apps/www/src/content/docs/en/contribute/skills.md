@@ -23,14 +23,15 @@ A handoff carries typed artifacts and at most one next skill. A terminal handoff
 
 ## Enter and bound the work
 
-| Skill         | One transition                                                       |
-| ------------- | -------------------------------------------------------------------- |
-| `pui-assess`  | Unassessed context to an unsigned U0-C4 local task-fit result        |
-| `pui-orient`  | Unknown context to a mode-aware contribution envelope                |
-| `pui-select`  | Unbounded request to one read-only work proposal or no-work result   |
-| `pui-claim`   | Authorized proposal to one posted claim or exact re-selection result |
-| `pui-unclaim` | One owned claim to a recorded release                                |
-| `pui-trace`   | Bounded subject to an authority and evidence map                     |
+| Skill                | One transition                                                       |
+| -------------------- | -------------------------------------------------------------------- |
+| `pui-assess`         | Unassessed context to an unsigned U0-C4 local task-fit result        |
+| `pui-agent-identify` | Active request context to an unsigned closed-set ModelTrace record   |
+| `pui-orient`         | Unknown context to a mode-aware contribution envelope                |
+| `pui-select`         | Unbounded request to one read-only work proposal or no-work result   |
+| `pui-claim`          | Authorized proposal to one posted claim or exact re-selection result |
+| `pui-unclaim`        | One owned claim to a recorded release                                |
+| `pui-trace`          | Bounded subject to an authority and evidence map                     |
 
 ## Shape governed artifacts
 
@@ -99,6 +100,8 @@ The inspection leaves are read-only intake and diagnosis transitions. Their cred
 | `pui-record` | Supported non-remediation terminal outcome to a synchronized run record |
 
 ## Capability is a ceiling when the Agent works alone
+
+`pui-agent-identify` is U0, `public-read`, and disposable-output-only: `request-context` in, `modeltrace-record` out. It uses genuine active-model literal sampling and pinned offline scoring, not a system/harness label fallback. Carry its exact private reference and canonical public-receipt digest through handoffs. Every Agent-originated commit or Issue/PR creation, material update, comment, review or current collaboration write requires a current record in both modes; local edits, read-only review and verification do not. Humans and deterministic non-LLM automation need no model test. An independent model context measures itself. ModelTrace is unsigned closed-set attribution, not authenticated identity, permission, independent review, acceptance or activation of pending scheduled scopes. See [Contributor Agents](/en/contribute/agents/) for disclosure and freshness.
 
 C1 covers bounded facts plus factual or documentation review. C2 adds test and bounded-regression review plus exact-target collaboration mutations such as review submission and exact-head integration. C3 adds bounded semantic implementation and governed-slice review. C4 adds cross-domain semantics, governance judgment, release-evidence review, and release preparation. `pui-review` declares one content review class from C1 through C4; the review and merge write primitives themselves use the C2 exact-target mutation floor. The registry calls a leaf's threshold `autonomousMinimumBand` because it applies when an Agent chooses or advances work alone.
 

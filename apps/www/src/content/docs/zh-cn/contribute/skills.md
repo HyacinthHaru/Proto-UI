@@ -23,14 +23,15 @@ Handoff 携带有类型的产物，最多指向一个下个 skill。终态 hando
 
 ## 进入仓库并确定任务
 
-| Skill         | 完成的一次转换                                  |
-| ------------- | ----------------------------------------------- |
-| `pui-assess`  | 从未测评状态得到未签名的 U0-C4 本地任务适配结果 |
-| `pui-orient`  | 从未知上下文得到带执行模式的协作边界            |
-| `pui-select`  | 从未限定请求得到一个只读任务提案，或明确无任务  |
-| `pui-claim`   | 从已授权提案得到一个 claim，或安全地不写入      |
-| `pui-unclaim` | 释放一个自己拥有的 claim 并留下记录             |
-| `pui-trace`   | 从明确对象得到权威与证据图                      |
+| Skill                | 完成的一次转换                                           |
+| -------------------- | -------------------------------------------------------- |
+| `pui-assess`         | 从未测评状态得到未签名的 U0-C4 本地任务适配结果          |
+| `pui-agent-identify` | 从当前请求上下文得到未签名、闭集归因的 ModelTrace record |
+| `pui-orient`         | 从未知上下文得到带执行模式的协作边界                     |
+| `pui-select`         | 从未限定请求得到一个只读任务提案，或明确无任务           |
+| `pui-claim`          | 从已授权提案得到一个 claim，或安全地不写入               |
+| `pui-unclaim`        | 释放一个自己拥有的 claim 并留下记录                      |
+| `pui-trace`          | 从明确对象得到权威与证据图                               |
 
 ## 整理受治理的内容
 
@@ -99,6 +100,8 @@ Handoff 携带有类型的产物，最多指向一个下个 skill。终态 hando
 | `pui-record`             | 从不需要修复的终态结果得到同步后的 run 记录            |
 
 ## Agent 独自工作时，能力档位就是上限
+
+`pui-agent-identify` 属于 U0、`public-read`、disposable-output-only：输入 `request-context`，输出 `modeltrace-record`。它由当前模型直接给出字面量样本，再使用固定版本离线评分；不能用 system/harness 标签补填测得的 ID。Handoff 携带精确的私有文件引用和 canonical public receipt digest。两种模式下，Agent 创建的 commit、Issue/PR 创建或实质更新、评论、review 及当前协作写入都必须有当前 record；本地编辑、只读复核与验证不要求它。人类和确定性非 LLM 自动化无需模型测试。独立模型上下文分别测量自己。ModelTrace 是未签名的闭集统计归因，不是身份认证、权限、独立 review、接受结论，也不能激活 pending 定时 scope。披露与有效期规则见[贡献者 Agent](/zh-cn/contribute/agents/)。
 
 C1 适合处理有边界的事实，以及事实或文档复核；C2 增加测试、bounded-regression 复核，以及 review 提交和 exact-head integration 等 exact-target 协作写入；C3 增加有边界的语义实现和受治理切片复核；C4 增加跨域语义、治理判断、release evidence 复核与发布准备。`pui-review` 每次按内容声明 C1–C4 review class；review 与 merge 写入原语本身使用 C2 exact-target mutation floor。注册表把叶子的门槛叫作 `autonomousMinimumBand`，因为它只在 Agent 自己选择或推进任务时作为硬上限。
 

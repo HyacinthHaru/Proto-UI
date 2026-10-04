@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import process from 'node:process';
+import { loadModelTraceRecord, readModelTraceJson } from './modeltrace.mjs';
 import { readPublishedReviewPacket } from './published-review-packet.mjs';
 import {
   collectRepositorySnapshot,
@@ -96,6 +97,8 @@ const ALLOWED_OPTIONS = new Map([
       '--assessment',
       '--authorization',
       '--external-evidence-file',
+      '--record',
+      '--context',
       '--prior-packet',
     ]),
   ],
@@ -111,6 +114,8 @@ const ALLOWED_OPTIONS = new Map([
       '--assessment',
       '--authorization',
       '--external-evidence-file',
+      '--record',
+      '--context',
     ]),
   ],
 ]);
@@ -287,6 +292,18 @@ function readExternalEvidence(args) {
   return parsed;
 }
 
+function loadModelTraceInvocation(args, packet, handoff) {
+  const modelTrace = loadModelTraceRecord({
+    recordPath: args.get('--record'),
+    contextPath: args.get('--context'),
+    repositoryId: packet.repositoryId,
+  });
+  const artifact = handoff.artifacts.find((item) => item.type === 'modeltrace-record');
+  if (artifact?.reference !== args.get('--record') || artifact.digest !== modelTrace.id)
+    throw new Error('review handoff must bind the --record reference and measured receipt digest');
+  return { modelTrace, modelTraceContext: readModelTraceJson(args.get('--context'), 'context') };
+}
+
 try {
   const { command, args } = parse(process.argv.slice(2));
   let output;
@@ -362,9 +379,14 @@ try {
     });
   } else if (command === 'submit-review') {
     const invocationContext = loadInvocationContext(args);
-    loadHandoff(args.get('--handoff'), 'pui-review', invocationContext);
+    const routed = loadHandoff(args.get('--handoff'), 'pui-review', invocationContext);
     const input = readInput(args.get('--input'));
     const packet = readPacket(args.get('--packet'), input);
+    const { modelTrace, modelTraceContext } = loadModelTraceInvocation(
+      args,
+      packet,
+      routed.handoff
+    );
     const policy = loadCapabilityPolicy(
       new URL('../../internal/agent-operations/capability-policy.yaml', import.meta.url)
     );
@@ -394,6 +416,8 @@ try {
       credentialCanReview: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
       reviewer: live.viewerLogin,
       priorPacket,
+      modelTrace,
+      modelTraceContext,
       ciConclusion: summarizeLiveChecks(live.input.checks, {
         repositoryId: packet.repositoryId,
         trustedRepositoryId: policy.trustedCiEvidence?.repositoryId,
@@ -426,6 +450,8 @@ try {
         {
           reviewerLogin: live.viewerLogin,
           invocationId: `${packet.repositoryId}:${packet.pullRequest}:${packet.headSha}:${authorization.recommendedAction}`,
+          modelTrace,
+          modelTraceContext,
         }
       );
       output = {
@@ -440,6 +466,11 @@ try {
     const routed = loadHandoff(args.get('--handoff'), 'pui-integrate', invocationContext);
     const input = readInput(args.get('--input'));
     const packet = readPacket(args.get('--packet'), input);
+    const { modelTrace, modelTraceContext } = loadModelTraceInvocation(
+      args,
+      packet,
+      routed.handoff
+    );
     const policy = loadCapabilityPolicy(
       new URL('../../internal/agent-operations/capability-policy.yaml', import.meta.url)
     );
@@ -467,6 +498,8 @@ try {
       actor: live.viewerLogin,
       viewerPermission: live.viewerPermission,
       externalEvidence,
+      modelTrace,
+      modelTraceContext,
     };
     const authorization = authorizeLivePullRequestMerge(authorizationContext, live);
     if (!authorization.allowed) {

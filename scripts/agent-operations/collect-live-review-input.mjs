@@ -1,5 +1,10 @@
 import { execFileSync } from 'node:child_process';
 import {
+  assertModelTraceDisclosure,
+  assertModelTraceFresh,
+  renderModelTraceDisclosure,
+} from './modeltrace.mjs';
+import {
   authorizePullRequestMerge,
   isExternalPreviewAuthorizationFailure,
   reviewerPermissionSubjects,
@@ -532,7 +537,12 @@ export function submitGitHubReview(
   pullRequest,
   { commitId, event, body },
   runner = execFileSync,
-  { reviewerLogin = null, invocationId = `${commitId}:${event}:${body}` } = {}
+  {
+    reviewerLogin = null,
+    invocationId = `${commitId}:${event}:${body}`,
+    modelTrace,
+    modelTraceContext,
+  } = {}
 ) {
   const { owner, name } = parseRepositoryId(repositoryId);
   if (!Number.isInteger(pullRequest) || pullRequest < 1) {
@@ -547,6 +557,8 @@ export function submitGitHubReview(
   if (typeof body !== 'string') throw new Error('review submission body is invalid');
   if (typeof reviewerLogin !== 'string' || reviewerLogin.length === 0)
     throw new Error('review submission requires the verified reviewer identity');
+  assertModelTraceFresh(modelTrace, modelTraceContext, { repositoryId });
+  assertModelTraceDisclosure(body, modelTrace);
 
   const expectedState = {
     APPROVE: 'APPROVED',
@@ -738,6 +750,8 @@ export function authorizeLivePullRequestMerge(context, live) {
     authorizationId: context.authorizationId,
     policy,
     selfAssessment: context.selfAssessment,
+    modelTrace: context.modelTrace,
+    modelTraceContext: context.modelTraceContext,
     credentialCanMerge: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
     credentialPermission: live.viewerPermission,
     credentialCanBypass: live.viewerCanMergeAsAdmin,
@@ -825,6 +839,9 @@ export function submitGitHubMerge(
   validateReviewInputSnapshot(input);
   validateReviewPacket(packet, input);
   validatePublishedReviewPacket(packet, authorizationContext.publishedPacket);
+  assertModelTraceFresh(authorizationContext.modelTrace, authorizationContext.modelTraceContext, {
+    repositoryId,
+  });
   // The writer owns this final collection. A caller-supplied allowed boolean
   // or callback cannot stand in for current checks, approvals or permissions.
   const finalLive = collectLiveReviewInput(repositoryId, pullRequest, {
@@ -881,7 +898,8 @@ export function submitGitHubMerge(
     before.state !== 'open' ||
     before.merged !== false ||
     before.draft !== false ||
-    before.base.sha !== expectedBaseSha
+    before.base.sha !== expectedBaseSha ||
+    (before.body ?? '') !== input.pullRequestBody
   )
     throw new Error('merge preflight head, base, target or open state changed; no PUT attempted');
   // Use the same accepted policy at the last REST boundary, including its
@@ -906,7 +924,25 @@ export function submitGitHubMerge(
   )
     throw new Error('live base branch changed before merge; no PUT attempted');
 
+  // Historical text remains readable, but cannot impersonate this merge's
+  // ModelTrace or DCO trailers. Do not rewrite the original Git history.
+  const quoteHistory = (text) =>
+    text
+      .split('\n')
+      .map((line) => `> ${line}`)
+      .join('\n');
+  const commitMessage = [
+    `Reviewed PR body:\n${quoteHistory(input.pullRequestBody)}`,
+    ...input.commits.map(
+      (commit) => `Reviewed commit ${commit.sha}:\n${quoteHistory(commit.message)}`
+    ),
+    renderModelTraceDisclosure(authorizationContext.modelTrace, 'commit'),
+  ].join('\n\n');
+  assertModelTraceDisclosure(commitMessage, authorizationContext.modelTrace, 'commit');
   let response;
+  assertModelTraceFresh(authorizationContext.modelTrace, authorizationContext.modelTraceContext, {
+    repositoryId,
+  });
   try {
     response = JSON.parse(
       runner(
@@ -914,7 +950,11 @@ export function submitGitHubMerge(
         ['api', '--method', 'PUT', `${prefix}/pulls/${pullRequest}/merge`, '--input', '-'],
         {
           encoding: 'utf8',
-          input: JSON.stringify({ sha: headSha, merge_method: mergeMethod }),
+          input: JSON.stringify({
+            sha: headSha,
+            merge_method: mergeMethod,
+            commit_message: commitMessage,
+          }),
           stdio: ['pipe', 'pipe', 'pipe'],
           maxBuffer: MAX_LIVE_RESPONSE_BYTES,
         }

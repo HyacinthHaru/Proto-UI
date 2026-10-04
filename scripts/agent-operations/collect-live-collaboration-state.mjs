@@ -792,6 +792,8 @@ export function applyGitHubCollaborationMutation(request, preState, options = {}
       executionModeSource: context.executionModeSource,
       policy: context.policy,
       selfAssessment: context.selfAssessment ?? null,
+      modelTrace: context.modelTrace,
+      modelTraceContext: context.modelTraceContext,
     });
   const beforeDecision = authorizeState(preState);
   if (!beforeDecision.allowed)
