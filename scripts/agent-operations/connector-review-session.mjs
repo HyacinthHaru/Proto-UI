@@ -349,6 +349,7 @@ export class ConnectorReviewSession {
     );
     const intent = (await this.#ledger.read()).state.slot.intent;
     let confirmedReceipt = null;
+    let attemptConsumed = false;
     try {
       const final = await this.#transport.collect(live.input.pullRequest);
       verifyLiveReviewInput(intent.analysis.packet, final.input);
@@ -361,6 +362,7 @@ export class ConnectorReviewSession {
       );
       this.#authorize(intent.analysis.packet, final, assessment);
       await this.#ledger.consumePublicationAttempt(intent.id);
+      attemptConsumed = true;
       this.#refreshPolicy();
       const receipt = await this.#transport.submit(intent.pullRequest, intent);
       confirmedReceipt = receipt;
@@ -403,12 +405,44 @@ export class ConnectorReviewSession {
         retryAllowed: false,
       };
     } catch (error) {
+      let cancellationError = null;
+      if (!attemptConsumed) {
+        try {
+          // Only this still-owning process can prove that dispatch never began.
+          // A definitive no-write conflict may be retried; uncertain writes cannot.
+          for (let attempt = 0; attempt < 3; attempt++) {
+            const snapshot = await this.#ledger.read();
+            assert(
+              hash(snapshot.state.slot?.intent) === hash(intent),
+              'publication intent changed before cancellation'
+            );
+            const cancelled = await this.#ledger.apply(snapshot.revision, {
+              type: 'cancelPublicationIntent',
+              intentId: intent.id,
+            });
+            if (cancelled.status === 'applied')
+              return {
+                status: 'cancelled',
+                intentId: intent.id,
+                reason: error.message,
+                retryAllowed: false,
+                publicationConfirmed: false,
+                checkpoint: cancelled.checkpoint ?? cancelled.revision,
+              };
+            assert(cancelled.status === 'conflict', 'pre-attempt cancellation uncertain; no retry');
+          }
+          throw new Error('pre-attempt cancellation contention budget exhausted');
+        } catch (failure) {
+          cancellationError = failure.message;
+        }
+      }
       return {
         status: 'unknown',
         intentId: intent.id,
         reason: error.message,
         retryAllowed: false,
         publicationConfirmed: confirmedReceipt !== null,
+        ...(cancellationError ? { cancellationError } : {}),
         ...(confirmedReceipt ? { receipt: confirmedReceipt, reviewedHeadSha: intent.headSha } : {}),
       };
     }

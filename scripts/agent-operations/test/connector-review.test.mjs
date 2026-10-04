@@ -388,7 +388,7 @@ test('same-account receipt contradiction is rejected even when object readback m
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
 });
 
-test('permission revoked after durable intent prevents the connector request and keeps unknown slot', async (t) => {
+test('permission revoked after durable intent prevents the connector request and cancels before attempt', async (t) => {
   const { f, s, store } = await session(t);
   // The transport retains its dispatcher; change the fixture when its durable
   // intent becomes visible, before the third live permission response.
@@ -400,10 +400,11 @@ test('permission revoked after durable intent prevents the connector request and
     return applied;
   };
   const done = await s.publishParentPacket(packet, assessment);
-  assert.equal(done.status, 'unknown');
+  assert.equal(done.status, 'cancelled');
   assert.match(done.reason, /permission unavailable/);
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
-  assert.equal(store.read().state.slot.intent.status, 'unknown');
+  assert.equal(store.read().state.slot, null);
+  assert.equal(store.read().state.pending.length, 1);
 });
 
 test('fresh session suppresses its proven own-review wakeup using durable receipt', async (t) => {
@@ -1023,9 +1024,10 @@ test('live policy revocation at either publication preflight prevents POST', asy
           return result;
         };
         const done = await s.publishParentPacket(packet, assessment);
-        assert.equal(done.status, 'unknown');
+        assert.equal(done.status, 'cancelled');
         assert.match(done.reason, /policy changed|revoked/);
-        assert.equal(store.read().state.slot.intent.status, 'unknown');
+        assert.equal(store.read().state.slot, null);
+        assert.equal(store.read().state.pending.length, 1);
       }
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
     });
@@ -1047,7 +1049,8 @@ test('snapshot changes after intent also fail closed without POST', async (t) =>
     if (args[1].type === 'stagePublicationIntent') snapshot.catalogDigest = '0'.repeat(64);
     return result;
   };
-  assert.equal((await s.publishParentPacket(packet, assessment)).status, 'unknown');
+  assert.equal((await s.publishParentPacket(packet, assessment)).status, 'cancelled');
+  assert.equal(store.read().state.slot, null);
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
 });
 
@@ -1234,10 +1237,12 @@ test('material arriving during final collection is persisted but prevents dispat
     return live;
   };
   const result = await s.publishParentPacket(packet, assessment);
-  assert.equal(result.status, 'unknown');
+  assert.equal(result.status, 'cancelled');
   assert.match(result.reason, /deferred before publication/);
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
-  assert.equal(store.read().state.deferred.length, 1);
+  assert.equal(store.read().state.slot, null);
+  assert.equal(store.read().state.deferred.length, 0);
+  assert.equal(store.read().state.pending[0].generation, 2);
 });
 
 test('late wake-up is serialized after dispatch and survives a fresh run without advancing the fenced generation', async (t) => {
@@ -1425,6 +1430,228 @@ test('receipt persistence stops on uncertainty or bounded contention without rep
       if (mode === 'intent-drift') assert.match(result.reason, /fenced publication intent changed/);
       store.read = read;
     });
+});
+
+test('definitive final-input drift cancels an undispatched intent and preserves queued work', async (t) => {
+  for (const change of ['head', 'checks', 'body'])
+    await t.test(change, async (t) => {
+      const { f, s, store, dir, genesis } = await session(t);
+      const packet = await parentPacket(s);
+      const apply = store.apply.bind(store);
+      store.apply = (revision, command) => {
+        const result = apply(revision, command);
+        if (command.type === 'stagePublicationIntent') {
+          if (change === 'head') f.pr.head.sha = sha('c');
+          if (change === 'checks') f.checks[0].conclusion = 'failure';
+          if (change === 'body') f.pr.body = 'changed after intent';
+          apply(store.read().revision, {
+            type: 'enqueue',
+            deliveryId: 'pre-submit-other-pr',
+            pullRequest: 488,
+            eventKind: 'synchronize',
+            materialDigest: 'd'.repeat(64),
+          });
+        }
+        return result;
+      };
+      const result = await s.publishParentPacket(packet, assessment);
+      assert.equal(result.status, 'cancelled');
+      assert.equal(result.retryAllowed, false);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+      const fresh = new LocalCloudReviewLedger(dir, genesis);
+      const state = fresh.read().state;
+      assert.equal(state.slot, null);
+      assert.deepEqual(
+        state.pending.map((x) => x.pullRequest),
+        [487, 488]
+      );
+      assert.equal(state.analyses.length, 0);
+      assert.equal(state.publicationReceipts.length, 0);
+      assert.equal(
+        fresh.apply(fresh.read().revision, { type: 'claim', pullRequest: 488 }).status,
+        'applied'
+      );
+      await assert.rejects(s.publishParentPacket(packet, assessment), /one publication attempt/);
+    });
+});
+
+test('unchanged event analysis durably completes only its captured initial-sweep member', async (t) => {
+  const { f, s, store, transport, dir, genesis } = await session(t);
+  f.inventory = [
+    { ...f.pr, id: 487, number: 487 },
+    { ...f.pr, id: 488, number: 488 },
+  ];
+  await s.captureInitialSweep();
+  const packet = await parentPacket(s);
+  await s.finishParentAnalysis(packet);
+  const sweep = new ConnectorReviewSession({
+    policy: rootPolicy,
+    transport,
+    ledger: new LocalCloudReviewLedger(dir, genesis),
+  });
+  assert.equal((await sweep.beginInitialSweep(487)).skipped, true);
+  const state = new LocalCloudReviewLedger(dir, genesis).read().state;
+  assert.deepEqual(state.initialSweep.completed, [487]);
+  assert.equal(state.pending.length, 0);
+  assert.equal(state.slot, null);
+  assert.equal(state.analyses.length, 1);
+  assert.equal(state.analyses[0].observation.executionModeSource, 'delegated-owner-event');
+  assert.equal(state.deliveries.at(-1).deliveryId, `${INITIAL_SWEEP_ID}:487`);
+  f.pr.head.sha = sha('c');
+  const fresh = new ConnectorReviewSession({
+    policy: rootPolicy,
+    transport,
+    ledger: new LocalCloudReviewLedger(dir, genesis),
+  });
+  assert.equal((await fresh.beginInitialSweep(487)).reason, 'initial sweep item already completed');
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+});
+
+test('pre-attempt cancellation retries only definitive no-write conflicts', async (t) => {
+  for (const mode of [
+    'conflict',
+    'unknown',
+    'lost-applied-ack',
+    'persistent-conflict',
+    'intent-drift',
+  ])
+    await t.test(mode, async (t) => {
+      const { f, s, store } = await session(t);
+      const packet = await parentPacket(s);
+      const apply = store.apply.bind(store);
+      const read = store.read.bind(store);
+      let attempts = 0;
+      store.apply = (revision, command) => {
+        if (command.type === 'stagePublicationIntent') {
+          const result = apply(revision, command);
+          f.pr.body = 'pre-submit drift';
+          return result;
+        }
+        if (command.type !== 'cancelPublicationIntent') return apply(revision, command);
+        attempts++;
+        if (mode === 'lost-applied-ack') {
+          apply(revision, command);
+          return { status: 'unknown' };
+        }
+        if (mode === 'unknown') return { status: 'unknown' };
+        if (mode === 'intent-drift') {
+          store.read = () => {
+            const snapshot = read();
+            snapshot.state.slot.intent.id = '0'.repeat(64);
+            return snapshot;
+          };
+          return { status: 'conflict' };
+        }
+        if (mode === 'persistent-conflict' || attempts === 1)
+          apply(revision, {
+            type: 'enqueue',
+            deliveryId: `cancel-contention-${attempts}`,
+            pullRequest: 488,
+            eventKind: 'human-comment',
+            materialDigest: String(attempts).repeat(64),
+          });
+        return apply(revision, command);
+      };
+      const result = await s.publishParentPacket(packet, assessment);
+      assert.equal(result.status, mode === 'conflict' ? 'cancelled' : 'unknown');
+      assert.equal(attempts, mode === 'conflict' ? 2 : mode === 'persistent-conflict' ? 3 : 1);
+      assert.equal(result.retryAllowed, false);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+      store.read = read;
+      assert.equal(
+        store.read().state.slot === null,
+        ['conflict', 'lost-applied-ack'].includes(mode)
+      );
+    });
+});
+
+test('consumed attempt, even with no observed POST, cannot use cancellation or transfer ownership', async (t) => {
+  for (const mode of ['consumed-then-thrown', 'revoked-after-consume', 'lost-post'])
+    await t.test(mode, async (t) => {
+      const { f, transport, store, dir, genesis } = await session(t);
+      const policy = structuredClone(rootPolicy);
+      const s = new ConnectorReviewSession({ policy, transport, ledger: store });
+      const packet = await parentPacket(s);
+      const consume = store.consumePublicationAttempt.bind(store);
+      store.consumePublicationAttempt = (id) => {
+        consume(id);
+        if (mode === 'consumed-then-thrown') throw new Error('consumption acknowledgement lost');
+        if (mode === 'revoked-after-consume')
+          policy.reviewSubmissionAuthorizations[0].status = 'paused';
+      };
+      if (mode === 'lost-post') f.writeBehavior = 'lost';
+      const result = await s.publishParentPacket(packet, assessment);
+      assert.equal(result.status, 'unknown');
+      const intentId = store.read().state.slot.intent.id;
+      assert.throws(
+        () => store.apply(store.read().revision, { type: 'cancelPublicationIntent', intentId }),
+        /attempt already consumed/
+      );
+      const fresh = new LocalCloudReviewLedger(dir, genesis);
+      assert.throws(
+        () => fresh.apply(fresh.read().revision, { type: 'cancelPublicationIntent', intentId }),
+        /does not own/
+      );
+      assert.equal(
+        f.calls.filter((c) => c.operation === 'add_review_to_pr').length,
+        mode === 'lost-post' ? 1 : 0
+      );
+    });
+});
+
+test('captured sweep material is not complete while event analysis is in flight or abandoned', async (t) => {
+  for (const completion of ['finish', 'abandon'])
+    await t.test(completion, async (t) => {
+      const { s, transport, store, dir, genesis } = await session(t);
+      await s.captureInitialSweep();
+      const packet = await parentPacket(s);
+      const sweep = new ConnectorReviewSession({
+        policy: rootPolicy,
+        transport,
+        ledger: new LocalCloudReviewLedger(dir, genesis),
+      });
+      assert.equal((await sweep.beginInitialSweep(487)).queued, true);
+      assert.deepEqual(store.read().state.initialSweep.completed, []);
+      if (completion === 'finish') await s.finishParentAnalysis(packet);
+      else await s.abandonBeforeIntent();
+      const state = new LocalCloudReviewLedger(dir, genesis).read().state;
+      assert.deepEqual(state.initialSweep.completed, completion === 'finish' ? [487] : []);
+      assert.equal(state.pending.length, completion === 'finish' ? 0 : 1);
+    });
+});
+
+test('sweep completion and its delivery are atomic with competing cross-scope admission', async (t) => {
+  const { s, transport, store, dir, genesis } = await session(t);
+  await s.captureInitialSweep();
+  const packet = await parentPacket(s);
+  await s.finishParentAnalysis(packet);
+  const sweepStore = new LocalCloudReviewLedger(dir, genesis);
+  const sweep = new ConnectorReviewSession({ policy: rootPolicy, transport, ledger: sweepStore });
+  const apply = sweepStore.apply.bind(sweepStore);
+  sweepStore.apply = (revision, command) => {
+    store.apply(store.read().revision, {
+      type: 'enqueue',
+      deliveryId: 'competing-event-scope',
+      pullRequest: 488,
+      eventKind: 'synchronize',
+      materialDigest: 'd'.repeat(64),
+    });
+    return apply(revision, command);
+  };
+  await assert.rejects(sweep.beginInitialSweep(487), /enqueue not confirmed/);
+  assert.deepEqual(store.read().state.initialSweep.completed, []);
+  assert.equal(
+    store.read().state.deliveries.some((x) => x.eventKind === 'initial-sweep'),
+    false
+  );
+  sweepStore.apply = apply;
+  assert.equal((await sweep.beginInitialSweep(487)).skipped, true);
+  const state = new LocalCloudReviewLedger(dir, genesis).read().state;
+  assert.deepEqual(state.initialSweep.completed, [487]);
+  assert.deepEqual(
+    state.pending.map((x) => x.pullRequest),
+    [488]
+  );
 });
 
 // A newly started trusted policy reader may load changed bindings. Active ID alone
