@@ -109,9 +109,10 @@ import {
   getLogicalPrototype,
   getLogicalRoot,
   getLogicalTriggerSurfaceRoot,
+  isNativeFocusTargetReady,
   mergeLogicalTriggerGroup,
   setProtoParent,
-  subscribeLogicalTriggerSurface,
+  subscribeFocusSurfaceReady,
 } from '../platform/instance-tree';
 
 type ReactOwnerModulesArgs<Props extends PropsBaseType> = {
@@ -241,7 +242,6 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
-  isNativeFocusReady: () => boolean;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -269,7 +269,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   };
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
-    const offSurface = subscribeLogicalTriggerSurface(instanceToken, listener);
+    const offSurface = subscribeFocusSurfaceReady(instanceToken, listener);
     return () => {
       offReady();
       offSurface();
@@ -338,7 +338,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       [
         FOCUS_REQUEST_FOCUS_CAP,
         (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
-          if (!target.isConnected || (kind === 'native' && !args.isNativeFocusReady())) {
+          if (!target.isConnected || (kind === 'native' && !isNativeFocusTargetReady(target))) {
             return false;
           }
           target.focus(

@@ -48,6 +48,7 @@ import {
   createLogicalInstance,
   resolveLogicalTriggerEventRouteForTarget,
   markProtoInstance,
+  registerNativeFocusReadiness,
   unbindProtoInstance,
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
@@ -430,11 +431,25 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         });
         bindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
         let viewDisposed = false;
+        const releaseNativeReadiness = registerNativeFocusReadiness(instanceTokenRef.current, {
+          isReady: () =>
+            !viewDisposed &&
+            viewReadyRef.current &&
+            eventGate.isEnabled() &&
+            rootRef.current === rootEl &&
+            rootEl.isConnected &&
+            !rootEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+          subscribe: (listener) => {
+            focusTargetReadyListenersRef.current.add(listener);
+            return () => focusTargetReadyListenersRef.current.delete(listener);
+          },
+        });
         const disposeView = () => {
           if (viewDisposed) return;
           viewDisposed = true;
           eventGate.disable();
           eventGate.dispose();
+          releaseNativeReadiness();
           unbindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
           router.dispose();
           unbindProtoInstance(instanceTokenRef.current, boundRootRef.current ?? undefined);
@@ -482,7 +497,6 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             projectionReadyRef.current &&
             !viewDisposed &&
             !rootRef.current?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
-          isNativeFocusReady: () => viewReadyRef.current && eventGate.isEnabled(),
           getCurrentElement: () => rootRef.current,
           subscribeTargetReady: (listener) => {
             focusTargetReadyListenersRef.current.add(listener);
