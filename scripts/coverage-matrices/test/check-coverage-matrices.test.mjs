@@ -7,6 +7,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import { afterEach, test } from 'node:test';
 import { createProcessor as createMarkdownProcessor } from '@mdx-js/mdx';
+import { parse as parseHtml, parseFragment as parseHtmlFragment, defaultTreeAdapter } from 'parse5';
 import { runInNewContext } from 'node:vm';
 import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -1478,9 +1479,17 @@ test('ignores inert JSON data scripts during interaction discovery', () => {
     ],
     [
       'apps/www/src/content/docs/data.mdx',
-      '<script type="application/json">{"fixture":true}</script>',
+      `<script type="application/json">{'{"fixture":true}'}</script>`,
     ],
   ];
+  assert.throws(
+    () =>
+      createMarkdownProcessor({ format: 'mdx' }).parse(
+        '<script type="application/json">{"fixture":true}</script>'
+      ),
+    /Could not parse expression/u
+  );
+  assert.doesNotThrow(() => createMarkdownProcessor({ format: 'mdx' }).parse(cases[1][1]));
   for (const [relativePath, content] of cases) {
     const sourcePath = path.join(root, relativePath);
     fs.mkdirSync(path.dirname(sourcePath), { recursive: true });
@@ -11811,7 +11820,7 @@ test('review entry controls: Website native embeds cover markup and JSX with dat
     ],
     [
       'apps/www/src/content/docs/embed.mdx',
-      '<!-- <iframe src="external"></iframe> -->\n```html\n<iframe src="external"></iframe>\n```\n<script type="application/json">{"example":"<iframe>"}</script>\n<article>Static</article>',
+      '<!-- <iframe src="external"></iframe> -->\n```html\n<iframe src="external"></iframe>\n```\n<script type="application/json">{\'{"example":"<iframe>"}\'}</script>\n<article>Static</article>',
       false,
     ],
     [
@@ -14301,3 +14310,772 @@ for (const [name, body] of [
     );
   });
 }
+
+// These source-bound fixtures assert the consumer-wall reason, rather than
+// counting an unrelated inventory/ownership failure as a reproduced finding.
+for (const kind of ['website', 'harness']) {
+  for (const [id, name, source, ext, expected] of [
+    [
+      '9979',
+      'DOM HTML properties',
+      `document.body.innerHTML = '<img src=x onerror="import(\\\'https://cdn.example/runtime.js\\\')">';`,
+      'ts',
+      /DOM HTML sink.*unverified/u,
+    ],
+    [
+      '9980',
+      'DOM style body',
+      `const style=document.createElement('style');style.textContent='@import url(https://cdn.example/theme.css)';document.head.append(style);`,
+      'ts',
+      /external stylesheet|unverified.*style|style.*unverified/u,
+    ],
+    [
+      '9983',
+      'imperative handler',
+      `const image=document.createElement('img');image.setAttribute('onerror', "import('https://cdn.example/runtime.js')");image.src='missing.png';document.body.append(image);`,
+      'ts',
+      /markup event handler.*unverified|unverified markup event handler/u,
+    ],
+    [
+      '9984',
+      'complete attribute name',
+      `<script data-type="application/json" src="https://cdn.example/runtime.js"></script>`,
+      'html',
+      /external executable (?:worker )?script/u,
+    ],
+    [
+      '9985',
+      'worker indirect call',
+      `self.importScripts.call(self,'https://cdn.example/runtime.js');`,
+      'ts',
+      /external (?:worker|executable)|importScripts.*(?:unverified|bounded)|consumer.wall/u,
+    ],
+  ])
+    test(`DOM entry closure red: ${id} ${kind} ${name}`, () => {
+      const issues = probeReview(id, kind, source, ext);
+      assert.ok(
+        issues.some((issue) => expected.test(issue)),
+        issues.join('\n')
+      );
+    });
+}
+for (const ext of ['md', 'mdx'])
+  test(`DOM entry closure red: 9990 authored ${ext} inline script`, () => {
+    const issues = probeReview(
+      '9990',
+      'website',
+      `<script>import('https://cdn.example/runtime.js')</script>`,
+      ext
+    );
+    assert.ok(
+      issues.some((issue) =>
+        /external executable script|raw Proto UI import.*https:.*consumer.wall/u.test(issue)
+      ),
+      issues.join('\n')
+    );
+  });
+for (const [name, source] of [
+  ['business HTML', `const state={innerHTML:''};state.innerHTML=markup;`],
+  [
+    'business style',
+    `const style={textContent:''};style.textContent='@import url(https://cdn.example/theme.css)';`,
+  ],
+  [
+    'business attribute',
+    `const data={setAttribute(){}};data.setAttribute('onerror',"import('https://cdn.example/runtime.js')");`,
+  ],
+  ['empty DOM HTML', `document.body.innerHTML='';`],
+  ['static inert HTML', `document.body.innerHTML='<span>Ready</span>';`],
+  [
+    'ordinary DOM CSS',
+    `const s=document.createElement('style');s.textContent='body{color:blue}';document.head.append(s);`,
+  ],
+])
+  test(`DOM entry closure controls: ${name}`, () => {
+    const issues = probeReview('controls', 'website', source);
+    assert.equal(issues.length, 0, issues.join('\n'));
+  });
+for (const ext of ['md', 'mdx'])
+  for (const [name, source] of [
+    ['fence', "```html\n<script>import('https://cdn.example/runtime.js')</script>\n```"],
+    ['inline code', "`<script>import('https://cdn.example/runtime.js')</script>`"],
+    [
+      'inert type',
+      `<script type="application/json">import('https://cdn.example/runtime.js')</script>`,
+    ],
+  ])
+    test(`DOM entry closure controls: ${ext} ${name}`, () => {
+      const issues = probeReview('controls', 'website', source, ext);
+      assert.equal(issues.length, 0, issues.join('\n'));
+    });
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, rejects] of [
+    ['outerHTML literal', `document.body.outerHTML='<img src=x onerror="alert(1)">';`, true],
+    [
+      'computed HTML property',
+      `document.body['innerHTML']='<button onclick="alert(1)">Run</button>';`,
+      true,
+    ],
+    [
+      'qualified receiver alias const HTML',
+      `const host=globalThis.document.body; const html='<img src=x onerror="alert(1)">'; host.innerHTML=html;`,
+      true,
+    ],
+    [
+      'local scoped const HTML',
+      `function f(){const html='<a href="javascript:alert(1)">Run</a>'; document.body.innerHTML=html;}`,
+      true,
+    ],
+    [
+      'const name shadow',
+      `const html='<img src=x onerror="alert(1)">'; function f(){const html='<span>Safe</span>';document.body.innerHTML=html;}`,
+      false,
+    ],
+    [
+      'Object assign literal',
+      `Object.assign(document.body,{innerHTML:'<img onerror="alert(1)">'});`,
+      true,
+    ],
+    ['Reflect literal', `Reflect.set(document.body,'outerHTML','<img onerror="alert(1)">');`, true],
+    [
+      'concatenated HTML mutation',
+      `document.body.innerHTML='<img on';document.body.innerHTML+='error="alert(1)">';`,
+      true,
+    ],
+    [
+      'business HTML shadow',
+      `function f(document){document.body.innerHTML='<img onerror="alert(1)">';}`,
+      false,
+    ],
+    ['comment HTML example', `// document.body.innerHTML='<img onerror="alert(1)">';`, false],
+    [
+      'static SVG icon',
+      `const icon='<svg viewBox="0 0 24 24"><path d="M1 2L3 4"/></svg>';document.body.innerHTML=icon;`,
+      false,
+    ],
+    ['opaque dynamic HTML retained research', `document.body.innerHTML=getRemoteMarkup();`, false],
+    [
+      'same receiver snapshot retained research',
+      `const target=document.body;const html=target.innerHTML;target.innerHTML=html;`,
+      false,
+    ],
+  ])
+    test(`DOM entry closure HTML: ${kind} ${name}`, () => {
+      const issues = probeReview('9979', kind, source);
+      assert.equal(
+        issues.some((issue) => /DOM HTML sink.*unverified/u.test(issue)),
+        rejects,
+        issues.join('\n')
+      );
+    });
+  for (const [name, source, rejects] of [
+    [
+      'alias escaped CSS',
+      String.raw`const s=document.createElement('style');const css='@import "h\\74tps://cdn.example/theme.css";';const alias=s;alias.textContent=css;`,
+      true,
+    ],
+    [
+      'XHTML style',
+      `const s=self.document.createElementNS('http://www.w3.org/1999/xhtml','style');s.innerHTML='@import "https://cdn.example/theme.css";';`,
+      true,
+    ],
+    [
+      'Object assign CSS',
+      `Object.assign(document.createElement('style'),{textContent:'@import "https://cdn.example/theme.css";'});`,
+      true,
+    ],
+    [
+      'Reflect CSS',
+      `const s=document.createElement('style');Reflect.set(s,'textContent','@import "https://cdn.example/theme.css";');`,
+      true,
+    ],
+    [
+      'local CSS is browser relative',
+      `const s=document.createElement('style');s.textContent='@import "./theme.css";';`,
+      true,
+    ],
+    ['opaque CSS', `const s=document.createElement('style');s.textContent=stylesheet;`, true],
+    [
+      'fragmented CSS',
+      `const s=document.createElement('style');s.append('@im');s.append('port "https://cdn.example/theme.css";');`,
+      true,
+    ],
+    [
+      'compound CSS',
+      `const s=document.createElement('style');s.textContent='@im';s.textContent+='port "https://cdn.example/theme.css";';`,
+      true,
+    ],
+    [
+      'style text is non-native data',
+      `const s=document.createElement('style');s.text='@import "https://cdn.example/theme.css";';`,
+      false,
+    ],
+    [
+      'inert quoted CSS content',
+      `const s=document.createElement('style');s.textContent='p:before{content:"@import url(https://cdn.example/theme.css)"}';`,
+      false,
+    ],
+    [
+      'shadowed style factory',
+      `function f(document){const s=document.createElement('style');s.textContent='@import "https://cdn.example/theme.css";';}`,
+      false,
+    ],
+  ])
+    test(`DOM entry closure style: ${kind} ${name}`, () => {
+      const issues = probeReview('9980', kind, source);
+      assert.equal(
+        issues.some((issue) => /external stylesheet|DOM style body.*unverified/u.test(issue)),
+        rejects,
+        issues.join('\n')
+      );
+    });
+  for (const [name, source, rejects] of [
+    ['computed method', `document.body['setAttribute']('ONCLICK','alert(1)');`, true],
+    [
+      'const attribute name',
+      `const name='onerror';const image=document.createElement('img');image.setAttribute(name,'alert(1)');`,
+      true,
+    ],
+    ['null namespace', `document.body.setAttributeNS(null,'onclick','alert(1)');`, true],
+    ['non-null namespace', `document.body.setAttributeNS('urn:data','onclick','alert(1)');`, false],
+    ['data-onclick', `document.body.setAttribute('data-onclick','alert(1)');`, false],
+    [
+      'unknown on-business name',
+      `document.body.setAttribute('onbusinessmessage','alert(1)');`,
+      false,
+    ],
+    ['handler string IDL assignment', `document.body.onclick='alert(1)';`, false],
+    [
+      'locally shadowed receiver',
+      `function f(document){document.body.setAttribute('onerror','alert(1)');}`,
+      false,
+    ],
+  ])
+    test(`DOM entry closure attributes: ${kind} ${name}`, () => {
+      const issues = probeReview('9983', kind, source);
+      assert.equal(
+        issues.some((issue) =>
+          /markup event handler.*unverified|unverified markup event handler/u.test(issue)
+        ),
+        rejects,
+        issues.join('\n')
+      );
+    });
+  for (const [name, source, rejects] of [
+    [
+      'apply literal list',
+      `self.importScripts.apply(self,['https://cdn.example/runtime.js']);`,
+      true,
+    ],
+    [
+      'call computed members',
+      `globalThis['importScripts']['call'](globalThis,'https://cdn.example/runtime.js');`,
+      true,
+    ],
+    [
+      'direct alias invocation',
+      `const load=self.importScripts;load.call(self,'https://cdn.example/runtime.js');`,
+      true,
+    ],
+    ['opaque apply arguments', `self.importScripts.apply(self,urls);`, true],
+    ['spread apply arguments', `self.importScripts.apply(self,[...urls]);`, true],
+    [
+      'shadowed self',
+      `function f(self){self.importScripts.call(self,'https://cdn.example/runtime.js');}`,
+      false,
+    ],
+    [
+      'shadowed global function',
+      `function f(importScripts){importScripts.call(self,'https://cdn.example/runtime.js');}`,
+      false,
+    ],
+    [
+      'direct global shadow',
+      `const importScripts=(...args)=>args;importScripts('https://cdn.example/runtime.js');`,
+      false,
+    ],
+    [
+      'direct qualified shadow',
+      `const self={importScripts(){}};self.importScripts('https://cdn.example/runtime.js');`,
+      false,
+    ],
+    ['empty call', `self.importScripts.call(self);`, false],
+    ['empty apply', `self.importScripts.apply(self,[]);`, false],
+    ['null argument list', `self.importScripts.apply(self,null);`, false],
+  ])
+    test(`DOM entry closure worker: ${kind} ${name}`, () => {
+      const issues = probeReview('9985', kind, source);
+      assert.equal(
+        issues.some((issue) =>
+          /external executable (?:worker )?script|unresolved importScripts/u.test(issue)
+        ),
+        rejects,
+        issues.join('\n')
+      );
+    });
+}
+for (const [name, source, rejects] of [
+  [
+    'script data-type collision',
+    `<script data-type="application/json" src="https://cdn.example/runtime.js"></script>`,
+    true,
+  ],
+  [
+    'script quoted fake type',
+    `<script title='type="application/json"' src="https://cdn.example/runtime.js"></script>`,
+    true,
+  ],
+  [
+    'link data-rel collision',
+    `<link data-rel="icon" rel="stylesheet" href="https://cdn.example/theme.css">`,
+    true,
+  ],
+  [
+    'link quoted fake relation',
+    `<link title='rel="icon"' rel="stylesheet" href="https://cdn.example/theme.css">`,
+    true,
+  ],
+  ['base data-href collision', `<base data-href="/" href="https://cdn.example/">`, true],
+  ['base quoted fake href', `<base title='href="/"' href="https://cdn.example/">`, true],
+  ['data-src only', `<script data-src="https://cdn.example/runtime.js"></script>`, false],
+  ['quoted fake src only', `<script title='src="https://cdn.example/runtime.js"'></script>`, false],
+  ['data-href only', `<base data-href="https://cdn.example/">`, false],
+  ['quoted fake href only', `<base title='href="https://cdn.example/"'>`, false],
+  ['data-rel only', `<link data-rel="stylesheet" href="https://cdn.example/theme.css">`, false],
+  [
+    'quoted fake rel only',
+    `<link title='rel="stylesheet"' href="https://cdn.example/theme.css">`,
+    false,
+  ],
+  [
+    'real inert script',
+    `<script type="application/json" data-type="module" src="https://cdn.example/runtime.js"></script>`,
+    false,
+  ],
+  [
+    'duplicate type first inert',
+    `<script type="application/json" type="module" src="https://cdn.example/runtime.js"></script>`,
+    false,
+  ],
+  [
+    'duplicate type first executable',
+    `<script type="module" type="application/json" src="https://cdn.example/runtime.js"></script>`,
+    true,
+  ],
+])
+  test(`DOM entry closure markup tokens: ${name}`, () => {
+    const issues = probeReview('9984', 'website', source, 'html');
+    assert.equal(
+      issues.some((issue) =>
+        /external executable script|external stylesheet|external document base/u.test(issue)
+      ),
+      rejects,
+      issues.join('\n')
+    );
+  });
+
+for (const [name, source] of [
+  ['remote expression', `document.body.innerHTML=remoteMarkup;`],
+  [
+    'same receiver serialization',
+    `const host=document.body;const snapshot=host.innerHTML;host.innerHTML=snapshot;`,
+  ],
+])
+  test(`DOM entry closure promotion: opaque ${name} is research, not evidence admission`, () => {
+    assert.deepEqual(probeReview('opaque', 'website', source), []);
+    const { root, options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.match(validationMessage(root, options), /promotion opaque DOM HTML sink.*unverified/u);
+  });
+
+for (const ext of ['md', 'mdx']) {
+  for (const [name, source, reject] of [
+    [
+      'inline script after prose',
+      `Intro <script>import('https://cdn.example/runtime.js')</script>`,
+      true,
+    ],
+    [
+      'module script',
+      `<script type="module">import('https://cdn.example/runtime.js')</script>`,
+      true,
+    ],
+    [
+      'raw script backticks',
+      `<script>const template = \`example\`; import('https://cdn.example/runtime.js')</script>`,
+      true,
+    ],
+    [
+      'script data-type collision',
+      `<script data-type="application/json">import('https://cdn.example/runtime.js')</script>`,
+      true,
+    ],
+    [
+      'inert text',
+      `<script type="application/json">import('https://cdn.example/runtime.js')</script>`,
+      false,
+    ],
+    ['ordinary inline script', `<script>console.log('ready')</script>`, false],
+    ['comment', `<!-- <script>import('https://cdn.example/runtime.js')</script> -->`, false],
+    [
+      'indented fence',
+      `  ~~~html\n  <script>import('https://cdn.example/runtime.js')</script>\n  ~~~`,
+      false,
+    ],
+  ])
+    test(`DOM entry closure Markdown: ${ext} ${name}`, () => {
+      const issues = probeReview('9990', 'website', source, ext);
+      assert.equal(
+        issues.some((issue) =>
+          /external executable script|raw Proto UI import.*https:.*consumer.wall|dynamic executable script/u.test(
+            issue
+          )
+        ),
+        reject,
+        issues.join('\n')
+      );
+    });
+}
+for (const [name, source, reject] of [
+  ['static string child', `<script>{"import('https://cdn.example/runtime.js')"}</script>`, true],
+  ['static template child', "<script>{`import('https://cdn.example/runtime.js')`}</script>", true],
+  ['opaque child', `<script>{payload}</script>`, true],
+  ['opaque content prop', `<script dangerouslySetInnerHTML={payload}/>`, true],
+  [
+    'data script expression executes',
+    `<script type="application/json">{import('https://cdn.example/runtime.js')}</script>`,
+    true,
+  ],
+  [
+    'script attribute expression executes',
+    `<script type="application/json" data-id={import('https://cdn.example/runtime.js')}>{'{}'}</script>`,
+    true,
+  ],
+  [
+    'custom JSX attribute expression executes',
+    `<Widget value={import('https://cdn.example/runtime.js')}/>`,
+    true,
+  ],
+  [
+    'ESM remains executable',
+    `import value from 'https://cdn.example/runtime.js';\n\n# Title`,
+    true,
+  ],
+  [
+    'ESM string is data',
+    `export const example="<script>import('https://cdn.example/runtime.js')</script>";\n\n# Title`,
+    false,
+  ],
+  [
+    'valid data script literal',
+    `<script type="application/json">{'{"example":"<iframe>"}'}</script>`,
+    false,
+  ],
+  ['literal braces in code', '```js\n<script>{bad JavaScript @@@}</script>\n```', false],
+])
+  test(`DOM entry closure MDX structure: ${name}`, () => {
+    assert.doesNotThrow(() => createMarkdownProcessor({ format: 'mdx' }).parse(source));
+    const issues = probeReview('9990', 'website', source, 'mdx');
+    assert.equal(
+      issues.some((issue) =>
+        /external executable script|raw Proto UI import.*https:.*consumer.wall|dynamic executable script/u.test(
+          issue
+        )
+      ),
+      reject,
+      issues.join('\n')
+    );
+  });
+test('DOM entry closure MDX oracle: native JSON syntax differs from authored MDX', () => {
+  const raw = '<script type="application/json">{"example":"<iframe>"}</script>';
+  const mdx = `<script type="application/json">{'{"example":"<iframe>"}'}</script>`;
+  assert.doesNotThrow(() => createMarkdownProcessor({ format: 'md' }).parse(raw));
+  assert.throws(
+    () => createMarkdownProcessor({ format: 'mdx' }).parse(raw),
+    /Could not parse expression/u
+  );
+  assert.doesNotThrow(() => createMarkdownProcessor({ format: 'mdx' }).parse(mdx));
+  assert.deepEqual(probeReview('9990', 'website', raw, 'md'), []);
+  assert.deepEqual(probeReview('9990', 'website', mdx, 'mdx'), []);
+  assert.ok(
+    probeReview('9990', 'website', raw, 'mdx').some((issue) =>
+      /dynamic executable script.*must be static/u.test(issue)
+    )
+  );
+});
+
+for (const [name, source] of [
+  [
+    'style body local image',
+    `const style=document.createElement('style');style.textContent='body{background:url(/surface.bin)}';`,
+  ],
+  [
+    'HTML style block local image',
+    `document.body.innerHTML='<style>body{background:url(/surface.bin)}</style>';`,
+  ],
+  [
+    'HTML style attribute local image',
+    `document.body.innerHTML='<div style="background:url(/surface.bin)"></div>';`,
+  ],
+  ['HTML media resource', `document.body.innerHTML='<img src="/surface.bin">';`],
+  ['HTML source set', `document.body.innerHTML='<img srcset="/surface.bin 1x">';`],
+  [
+    'style unsupported image-set',
+    `const style=document.createElement('style');style.textContent='body{background:image-set("/surface.bin" 1x)}';`,
+  ],
+])
+  test(`DOM entry closure resource promotion: ${name} remains unverified`, () => {
+    assert.deepEqual(probeReview('dom-resource', 'website', source), []);
+    const { root, options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.match(validationMessage(root, options), /promotion DOM-authored resource.*unverified/u);
+  });
+for (const [name, source] of [
+  ['static text markup', `document.body.innerHTML='<span>Ready</span>';`],
+  [
+    'static SVG geometry',
+    `document.body.innerHTML='<svg viewBox="0 0 24 24"><path d="M1 2L3 4"/></svg>';`,
+  ],
+  [
+    'static resource-free CSS',
+    `const style=document.createElement('style');style.textContent='body{color:blue}';`,
+  ],
+])
+  test(`DOM entry closure resource promotion: ${name} retains supported evidence`, () => {
+    const { options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+  });
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source] of [
+    [
+      'table row',
+      `const table=document.querySelector('table');table.innerHTML='<tr onclick="alert(1)"><td>Cell</td></tr>';`,
+    ],
+    [
+      'row cell',
+      `const row=document.querySelector('tr');row.innerHTML='<td onclick="alert(1)">Cell</td>';`,
+    ],
+    [
+      'table body',
+      `const table=document.querySelector('table');table.innerHTML='<tbody onclick="alert(1)"><tr><td>Cell</td></tr></tbody>';`,
+    ],
+    [
+      'script outer replacement',
+      `const s=document.createElement('script');document.body.append(s);s.outerHTML='<img src=x onerror="alert(1)">';`,
+    ],
+    [
+      'style outer replacement',
+      `const s=document.createElement('style');document.body.append(s);s.outerHTML='<img src=x onerror="alert(1)">';`,
+    ],
+    [
+      'reflected script outer replacement',
+      `const s=document.createElement('script');Reflect.set(s,'outerHTML','<img onerror="alert(1)">');`,
+    ],
+    [
+      'assigned script outer replacement',
+      `const s=document.createElement('script');Object.assign(s,{outerHTML:'<img onerror="alert(1)">'});`,
+    ],
+    [
+      'Reflect constant property',
+      `const key='innerHTML';Reflect.set(document.body,key,'<img onerror="alert(1)">');`,
+    ],
+    [
+      'assign constant property',
+      `const key='innerHTML';Object.assign(document.body,{[key]:'<img onerror="alert(1)">'});`,
+    ],
+    [
+      'direct constant property',
+      `const key='innerHTML';document.body[key]='<img onerror="alert(1)">';`,
+    ],
+    [
+      'body wrapper attributes',
+      `document.documentElement.innerHTML='<body onclick="alert(1)">Body</body>';`,
+    ],
+  ])
+    test(`DOM entry repair source: ${kind} ${name}`, () => {
+      const issues = probeReview('independent', kind, source);
+      assert.ok(
+        issues.some((issue) => /DOM HTML sink.*unverified/u.test(issue)),
+        issues.join('\n')
+      );
+    });
+  for (const [name, source, reject] of [
+    ['ordinary uppercase HTML', `document.body.setAttribute('ONCLICK','alert(1)');`, true],
+    ['NS uppercase HTML', `document.body.setAttributeNS(null,'ONCLICK','alert(1)');`, false],
+    ['NS mixed-case HTML', `document.body.setAttributeNS('','onClick','alert(1)');`, false],
+    ['NS lowercase HTML', `document.body.setAttributeNS(null,'onclick','alert(1)');`, true],
+    [
+      'NS empty namespace lowercase',
+      `document.body.setAttributeNS('','onclick','alert(1)');`,
+      true,
+    ],
+    [
+      'NS non-null lowercase',
+      `document.body.setAttributeNS('urn:business','onclick','alert(1)');`,
+      false,
+    ],
+    [
+      'ordinary uppercase SVG',
+      `const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('ONCLICK','alert(1)');`,
+      false,
+    ],
+    [
+      'ordinary lowercase SVG',
+      `const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('onclick','alert(1)');`,
+      true,
+    ],
+  ])
+    test(`DOM entry repair namespace: ${kind} ${name}`, () => {
+      const issues = probeReview('independent', kind, source);
+      assert.equal(
+        issues.some((issue) => /unverified markup event handler/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+    });
+}
+for (const [name, source] of [
+  [
+    'table cell CSS',
+    `const row=document.querySelector('tr');row.innerHTML='<td style="background:url(/surface.bin)">Cell</td>';`,
+  ],
+  [
+    'table row CSS',
+    `const table=document.querySelector('table');table.innerHTML='<tr style="background:url(/surface.bin)"><td>Cell</td></tr>';`,
+  ],
+  [
+    'script outer media',
+    `const s=document.createElement('script');document.body.append(s);s.outerHTML='<img src="/surface.bin">';`,
+  ],
+  [
+    'style outer media',
+    `const s=document.createElement('style');document.body.append(s);s.outerHTML='<img src="/surface.bin">';`,
+  ],
+])
+  test(`DOM entry repair promotion resource: ${name}`, () => {
+    const { root, options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.match(validationMessage(root, options), /promotion DOM-authored resource.*unverified/u);
+    fs.writeFileSync(path.join(root, 'apps/www/public/surface.bin'), Buffer.from([0, 129, 255]));
+    assert.match(validationMessage(root, options), /promotion DOM-authored resource.*unverified/u);
+  });
+for (const [name, source] of [
+  ['assign spread', `Object.assign(document.body,{...attrs});`],
+  ['assign unknown object', `Object.assign(document.body,attrs);`],
+  ['assign unknown property', `Object.assign(document.body,{[key]:value});`],
+  ['Reflect unknown property', `Reflect.set(document.body,key,value);`],
+  ['direct unknown property', `document.body[key]=value;`],
+  [
+    'literal spread remains opaque',
+    `Object.assign(document.body,{...{innerHTML:'<img src="/surface.bin">'}});`,
+  ],
+])
+  test(`DOM entry repair promotion unknown: ${name}`, () => {
+    assert.deepEqual(probeReview('independent', 'website', source), []);
+    const { root, options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.match(validationMessage(root, options), /promotion opaque DOM HTML sink.*unverified/u);
+  });
+for (const [name, source] of [
+  [
+    'static table',
+    `const table=document.querySelector('table');table.innerHTML='<tr><td>Cell</td></tr>';`,
+  ],
+  [
+    'static SVG icon',
+    `document.body.innerHTML='<svg viewBox="0 0 24 24"><path d="M1 2L3 4"/></svg>';`,
+  ],
+  ['business assign', `const state={};Object.assign(state,{...attrs});`],
+  ['business Reflect', `const state={};Reflect.set(state,key,value);`],
+  ['business computed assignment', `const state={};state[key]=value;`],
+  [
+    'constant key inert markup',
+    `const key='innerHTML';Reflect.set(document.body,key,'<span>Safe</span>');`,
+  ],
+])
+  test(`DOM entry repair controls: ${name}`, () => {
+    const { options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+  });
+
+test('DOM entry repair parser oracle: fragment and document views preserve distinct attributes', () => {
+  const collect = (node) => [
+    node,
+    ...(node.childNodes ?? []).flatMap(collect),
+    ...(node.content ? collect(node.content) : []),
+  ];
+  const row = '<tr onclick="alert(1)"><td style="background:url(/surface.bin)">Cell</td></tr>';
+  assert.equal(
+    collect(parseHtml(row)).some((node) => node.tagName === 'tr'),
+    false
+  );
+  assert.ok(
+    collect(parseHtmlFragment(row)).some(
+      (node) =>
+        node.tagName === 'tr' && node.attrs.some((attribute) => attribute.name === 'onclick')
+    )
+  );
+  assert.ok(
+    collect(parseHtmlFragment(row)).some(
+      (node) => node.tagName === 'td' && node.attrs.some((attribute) => attribute.name === 'style')
+    )
+  );
+  const wrapper = '<html><body onclick="alert(1)">Body</body></html>';
+  assert.equal(
+    collect(parseHtmlFragment(wrapper)).some((node) => node.tagName === 'body'),
+    false
+  );
+  assert.ok(
+    collect(parseHtml(wrapper)).some(
+      (node) =>
+        node.tagName === 'body' && node.attrs.some((attribute) => attribute.name === 'onclick')
+    )
+  );
+  const rawText = defaultTreeAdapter.createElement('textarea', 'http://www.w3.org/1999/xhtml', []);
+  assert.equal(
+    collect(parseHtmlFragment(rawText, row)).some((node) => node.tagName === 'tr'),
+    false
+  );
+  const svg = '<svg viewBox="0 0 24 24"><path d="M1 2L3 4"/></svg>';
+  assert.ok(
+    collect(parseHtmlFragment(svg)).some(
+      (node) => node.tagName === 'path' && node.namespaceURI === 'http://www.w3.org/2000/svg'
+    )
+  );
+});
+
+for (const source of [
+  `const refs:Record<string,HTMLElement>={};refs[key]=document.body;`,
+  `const refs:Record<string,HTMLElement>={};const alias=refs;Object.assign(alias,{...values});`,
+  `const refs:Map<string,HTMLElement>=new Map();Reflect.set(refs,key,value);`,
+])
+  test(`DOM entry repair container controls: ${source}`, () => {
+    const { options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+  });
+
+for (const source of [
+  `const refs:HTMLElement[]=[];Object.assign(refs,attrs);`,
+  `function update(wrapper:CustomWrapper<HTMLElement>){Reflect.set(wrapper,key,value);}`,
+])
+  test(`DOM entry repair container controls: ${source}`, () => {
+    const { options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+  });
+for (const source of [
+  `const element:HTMLElement=document.body;Object.assign(element,attrs);`,
+  `const element:HTMLElement & {owned:true}=document.body as any;const alias=element;Reflect.set(alias,key,value);`,
+])
+  test(`DOM entry repair actual element controls: ${source}`, () => {
+    const { root, options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.match(validationMessage(root, options), /promotion opaque DOM HTML sink.*unverified/u);
+  });
+
+for (const source of [
+  `const cells:Record<string,HTMLElement>={};cells.innerHTML=document.body;`,
+  `const cells:Record<string,HTMLElement|string>={};cells.innerHTML='<img onerror="alert(1)">';`,
+  `const cells:Record<string,HTMLElement|string>={};cells.innerHTML+='<img onerror="alert(1)">';`,
+  `const state:{element:HTMLElement;setAttribute(name:string,value:string):void}={element:document.body,setAttribute(){}};state.setAttribute('onclick','alert(1)');`,
+])
+  test(`DOM entry repair shared container controls: ${source}`, () => {
+    const { options } = markupPromotionFixture(source, { extension: 'ts' });
+    assert.doesNotThrow(() => validateCoverageMatrices(options));
+  });

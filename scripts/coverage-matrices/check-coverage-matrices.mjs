@@ -10,7 +10,7 @@ import { moduleResolve } from 'import-meta-resolve';
 import { specEntitySchema } from '@proto.ui/spec-schema';
 import ts from 'typescript';
 import { parse as parseYaml } from 'yaml';
-import { parse as parseHtml } from 'parse5';
+import { parse as parseHtml, parseFragment as parseHtmlFragment } from 'parse5';
 import { parse as parseAstro } from '@astrojs/compiler/sync';
 import { createProcessor as createMarkdownProcessor } from '@mdx-js/mdx';
 import { parse as parseVue, NodeTypes as VueNodeTypes } from '@vue/compiler-dom';
@@ -4343,6 +4343,132 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       ? target
       : UNRESOLVED_WORKER_ENTRY_SPECIFIER;
   };
+  // Only literal strings and lexically resolved const-string bindings are
+  // interpreted. No candidate expression, markup, CSS or script is executed.
+  const literalString = (expression, useNode, seen = new Set()) => {
+    if (!expression) return null;
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isStringLiteralLike(candidate)) return candidate.text;
+    if (!ts.isIdentifier(candidate) || seen.size >= 64) return null;
+    const binding = receiverBindings.latestBinding(candidate.text, useNode);
+    if (
+      !binding?.initializer ||
+      seen.has(binding) ||
+      !ts.isVariableDeclaration(binding.node) ||
+      !ts.isVariableDeclarationList(binding.node.parent) ||
+      !(binding.node.parent.flags & ts.NodeFlags.Const)
+    )
+      return null;
+    seen.add(binding);
+    return literalString(binding.initializer, binding.node, seen);
+  };
+  const isDomMutationTarget = (expression, useNode, seen = new Set()) => {
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (!isDomReceiverExpression(candidate, sourceFile, receiverBindings, useNode)) return false;
+    if (!ts.isIdentifier(candidate)) return true;
+    const binding = receiverBindings.latestBinding(candidate.text, useNode);
+    if (!binding) return true;
+    if (seen.has(binding) || seen.size >= 64) return false;
+    seen.add(binding);
+    const directDomType = (type) => {
+      if (ts.isParenthesizedTypeNode(type)) return directDomType(type.type);
+      if (ts.isUnionTypeNode(type) || ts.isIntersectionTypeNode(type))
+        return type.types.some(directDomType);
+      return (
+        ts.isTypeReferenceNode(type) &&
+        /^(?:Document|Element|HTMLElement|HTML[A-Za-z0-9]*Element|SVGElement|Window)$/u.test(
+          type.typeName.getText(sourceFile)
+        )
+      );
+    };
+    // The older ownership heuristic accepts DOM types nested in containers.
+    // A Record/Map/array of elements is not itself a DOM mutation target.
+    if (
+      binding.node.type &&
+      isDomTypeNode(binding.node.type, sourceFile) &&
+      !directDomType(binding.node.type)
+    )
+      return binding.initializer
+        ? isDomMutationTarget(binding.initializer, binding.node, seen)
+        : false;
+    if (!binding.intrinsicallyDom && binding.initializer)
+      return isDomMutationTarget(binding.initializer, binding.node, seen);
+    return true;
+  };
+  const domElementNamespace = (expression, useNode, seen = new Set()) => {
+    const namespaceFromType = (type) => {
+      const text = type?.getText(sourceFile) ?? '';
+      if (/^(?:HTMLElement|HTML[A-Za-z]+Element)(?:\s*\|\s*null)?$/u.test(text))
+        return 'http://www.w3.org/1999/xhtml';
+      if (/^SVG[A-Za-z]*Element(?:\s*\|\s*null)?$/u.test(text)) return 'http://www.w3.org/2000/svg';
+      return null;
+    };
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isIdentifier(candidate)) {
+      const binding = receiverBindings.latestBinding(candidate.text, useNode);
+      if (!binding || seen.has(binding) || seen.size >= 64 || binding.destructuredProperties)
+        return null;
+      seen.add(binding);
+      return (
+        namespaceFromType(binding.node.type) ??
+        (binding.initializer ? domElementNamespace(binding.initializer, binding.node, seen) : null)
+      );
+    }
+    if (ts.isCallExpression(candidate)) {
+      const member = staticMemberAccess(candidate.expression);
+      if (
+        member &&
+        isBrowserDocumentExpression(member.receiver, sourceFile, receiverBindings, useNode)
+      ) {
+        if (member.name === 'createElement') return 'http://www.w3.org/1999/xhtml';
+        if (member.name === 'createElementNS')
+          return literalString(candidate.arguments[0], useNode);
+      }
+      return namespaceFromType(candidate.typeArguments?.[0]);
+    }
+    const member = staticMemberAccess(candidate);
+    return member &&
+      /^(?:body|documentElement)$/u.test(member.name) &&
+      isBrowserDocumentExpression(member.receiver, sourceFile, receiverBindings, useNode)
+      ? 'http://www.w3.org/1999/xhtml'
+      : null;
+  };
+  const styleBodyProperties = new Set(['textContent', 'innerText', 'innerHTML']);
+  const inspectStyleBody = (value, useNode) => {
+    const css = literalString(value, useNode);
+    if (css === null) {
+      specifiers.push(UNVERIFIED_STYLE_BODY_SPECIFIER);
+      return;
+    }
+    if (domCssHasUnverifiedResource(css)) specifiers.push(UNVERIFIED_DOM_RESOURCE_SPECIFIER);
+    for (const target of styleModuleSpecifiers(css)) {
+      const normalized = normalizeBrowserResourceUrl(target);
+      // Browser-inserted CSS has a document base, not this source module's
+      // directory. A local import cannot be silently resolved as a Vite edge.
+      specifiers.push(
+        /^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(normalized)
+          ? `${EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX}${normalized}>`
+          : UNVERIFIED_STYLE_BODY_SPECIFIER
+      );
+    }
+  };
+  const inspectDomBodyProperty = (target, property, value, useNode) => {
+    const style = resourceElementCreation(target, useNode, 'style');
+    if (style && styleBodyProperties.has(property)) {
+      inspectStyleBody(value, useNode);
+      return;
+    }
+    if (
+      !/^(?:innerHTML|outerHTML)$/u.test(property ?? '') ||
+      !isDomMutationTarget(target, useNode) ||
+      (property === 'innerHTML' && isScriptElementExpression(target, useNode))
+    )
+      return;
+    const html = literalString(value, useNode);
+    if (html === null) specifiers.push(OPAQUE_HTML_SINK_SPECIFIER);
+    else if (literalHtmlHasUnreviewedEntry(html, specifiers))
+      specifiers.push(UNVERIFIED_HTML_SINK_SPECIFIER);
+  };
   const linkMutations = new Map();
   const recordLinkMutation = (receiver, property, value, useNode) => {
     const element = resourceElementCreation(receiver, useNode, 'link');
@@ -4410,9 +4536,13 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
     const target = node.arguments[0];
     const script = isScriptElementExpression(target, node);
     const link = resourceElementCreation(target, node, 'link');
-    if (!script && !link) return;
+    const style = resourceElementCreation(target, node, 'style');
+    const dom = isDomMutationTarget(target, node);
+    if (!script && !link && !style && !dom) return;
     const unknown = () => {
+      if (dom) specifiers.push(OPAQUE_HTML_SINK_SPECIFIER);
       if (script) specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+      if (style) specifiers.push(UNVERIFIED_STYLE_BODY_SPECIFIER);
       if (link) {
         recordLinkMutation(target, 'rel', null, node);
         recordLinkMutation(target, 'href', null, node);
@@ -4432,9 +4562,9 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         const name = ts.isComputedPropertyName(property.name)
           ? unwrapTypeScriptExpression(property.name.expression)
           : property.name;
-        const key =
-          (ts.isIdentifier(name) && !ts.isComputedPropertyName(property.name)) ||
-          ts.isStringLiteralLike(name)
+        const key = ts.isComputedPropertyName(property.name)
+          ? literalString(name, node)
+          : ts.isIdentifier(name) || ts.isStringLiteralLike(name)
             ? name.text
             : null;
         if (key === null) {
@@ -4450,6 +4580,7 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         if (script && scriptBodyProperties.has(key))
           specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
         if (link) recordLinkMutation(target, key, value, node);
+        inspectDomBodyProperty(target, key, value, node);
       }
     }
   };
@@ -4458,9 +4589,14 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
     const target = node.arguments[0];
     const script = isScriptElementExpression(target, node);
     const link = resourceElementCreation(target, node, 'link');
-    if (!script && !link) return;
+    const style = resourceElementCreation(target, node, 'style');
+    const dom = isDomMutationTarget(target, node);
+    if (!script && !link && !style && !dom) return;
     const argument = node.arguments[1] && unwrapTypeScriptExpression(node.arguments[1]);
-    const property = argument && ts.isStringLiteralLike(argument) ? argument.text : null;
+    const property = literalString(argument, node);
+    if (dom && property === null) specifiers.push(OPAQUE_HTML_SINK_SPECIFIER);
+    inspectDomBodyProperty(target, property, node.arguments[2], node);
+    if (style && property === null) specifiers.push(UNVERIFIED_STYLE_BODY_SPECIFIER);
     if (script && scriptBodyProperties.has(property))
       specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
     if (script && (property === 'src' || property === null)) {
@@ -4753,19 +4889,46 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
       node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
     ) {
-      const assignedProperty = staticMemberAccess(node.left);
+      let assignedProperty = staticMemberAccess(node.left);
       const assignedTarget = unwrapTypeScriptExpression(node.left);
       if (!assignedProperty && ts.isElementAccessExpression(assignedTarget)) {
+        const name = literalString(assignedTarget.argumentExpression, node);
+        if (name !== null) assignedProperty = { name, receiver: assignedTarget.expression };
+      }
+      if (!assignedProperty && ts.isElementAccessExpression(assignedTarget)) {
         const receiver = assignedTarget.expression;
+        if (isDomMutationTarget(receiver, node)) specifiers.push(OPAQUE_HTML_SINK_SPECIFIER);
         if (isScriptElementExpression(receiver, node))
           specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+        if (resourceElementCreation(receiver, node, 'style'))
+          specifiers.push(UNVERIFIED_STYLE_BODY_SPECIFIER);
         if (resourceElementCreation(receiver, node, 'link')) {
           recordLinkMutation(receiver, 'rel', null, node);
           recordLinkMutation(receiver, 'href', null, node);
         }
       }
-      if (assignedProperty)
+      if (assignedProperty) {
         recordLinkMutation(assignedProperty.receiver, assignedProperty.name, node.right, node);
+        if (
+          node.operatorToken.kind !== ts.SyntaxKind.EqualsToken &&
+          /^(?:innerHTML|outerHTML)$/u.test(assignedProperty.name) &&
+          isDomMutationTarget(assignedProperty.receiver, node)
+        )
+          specifiers.push(UNVERIFIED_HTML_SINK_SPECIFIER);
+        else if (
+          node.operatorToken.kind !== ts.SyntaxKind.EqualsToken &&
+          styleBodyProperties.has(assignedProperty.name) &&
+          resourceElementCreation(assignedProperty.receiver, node, 'style')
+        )
+          specifiers.push(UNVERIFIED_STYLE_BODY_SPECIFIER);
+        else
+          inspectDomBodyProperty(
+            assignedProperty.receiver,
+            assignedProperty.name,
+            node.right,
+            node
+          );
+      }
       if (
         assignedProperty?.name === 'src' &&
         isScriptElementExpression(assignedProperty.receiver, node)
@@ -4804,6 +4967,45 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         isScriptElementExpression(calledMember.receiver, node)
       ) {
         specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+      }
+      if (
+        calledMember &&
+        scriptBodyMethods.has(calledMember.name) &&
+        node.arguments.length > 0 &&
+        resourceElementCreation(calledMember.receiver, node, 'style')
+      ) {
+        specifiers.push(UNVERIFIED_STYLE_BODY_SPECIFIER);
+      }
+      // Event-handler content attributes compile strings. Assigning a string
+      // to an event-handler IDL property is a different operation.
+      if (
+        calledMember &&
+        /^(?:setAttribute|setAttributeNS)$/u.test(calledMember.name) &&
+        isDomMutationTarget(calledMember.receiver, node)
+      ) {
+        const namespaced = calledMember.name === 'setAttributeNS';
+        const namespace = node.arguments[0] && unwrapTypeScriptExpression(node.arguments[0]);
+        const nativeNamespace =
+          !namespaced ||
+          namespace?.kind === ts.SyntaxKind.NullKeyword ||
+          literalString(namespace, node) === '';
+        const rawName = literalString(node.arguments[namespaced ? 1 : 0], node);
+        // DOM setAttributeNS preserves the local name's case. Ordinary
+        // setAttribute folds ASCII case only for HTML elements/documents.
+        const elementNamespace = domElementNamespace(calledMember.receiver, node);
+        const lowercaseName = rawName?.replace(/[A-Z]/gu, (character) => character.toLowerCase());
+        const name =
+          !namespaced && elementNamespace === 'http://www.w3.org/1999/xhtml'
+            ? lowercaseName
+            : rawName;
+        if (
+          nativeNamespace &&
+          (NATIVE_EVENT_ATTRIBUTE_NAMES.has(name) ||
+            (!namespaced &&
+              elementNamespace === null &&
+              NATIVE_EVENT_ATTRIBUTE_NAMES.has(lowercaseName)))
+        )
+          specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
       }
       const attributeName = node.arguments[0];
       if (calledMember?.name === 'setAttribute') {
@@ -4870,22 +5072,67 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       addLiteral(node.moduleSpecifier);
     } else if (ts.isCallExpression(node)) {
       const callee = node.expression;
-      const importScriptsCallee = unwrapTypeScriptExpression(callee);
-      const isImportScriptsCall =
-        (ts.isIdentifier(importScriptsCallee) && importScriptsCallee.text === 'importScripts') ||
-        (ts.isPropertyAccessExpression(importScriptsCallee) &&
-          importScriptsCallee.name.text === 'importScripts' &&
-          ts.isIdentifier(importScriptsCallee.expression) &&
-          /^(?:globalThis|self)$/u.test(importScriptsCallee.expression.text));
+      const nativeImportScripts = (expression, useNode) =>
+        resolveLocalValue(expression, useNode, new Set(), (candidate, at) => {
+          if (ts.isIdentifier(candidate))
+            return (
+              candidate.text === 'importScripts' &&
+              !receiverBindings.hasLocalBinding('importScripts', at)
+            );
+          const member = staticMemberAccess(candidate);
+          return (
+            member?.name === 'importScripts' &&
+            ts.isIdentifier(member.receiver) &&
+            /^(?:globalThis|self)$/u.test(member.receiver.text) &&
+            !receiverBindings.hasLocalBinding(member.receiver.text, at)
+          );
+        });
+      const invocation = staticMemberAccess(callee);
+      const indirectImportScripts =
+        invocation &&
+        /^(?:call|apply)$/u.test(invocation.name) &&
+        nativeImportScripts(invocation.receiver, node);
+      const isImportScriptsCall = nativeImportScripts(callee, node);
       const isImportMetaGlob =
         ts.isPropertyAccessExpression(callee) &&
         /^(?:glob|globEager)$/u.test(callee.name.text) &&
         ts.isMetaProperty(callee.expression) &&
         callee.expression.keywordToken === ts.SyntaxKind.ImportKeyword;
-      if (isImportScriptsCall) {
-        for (const argument of node.arguments) {
-          specifiers.push(importScriptsTargetSpecifier(argument, literalBindings));
+      if (isImportScriptsCall || indirectImportScripts) {
+        let argumentsToInspect = [...node.arguments];
+        if (indirectImportScripts) {
+          const receiver = node.arguments[0] && unwrapTypeScriptExpression(node.arguments[0]);
+          const nativeReceiver =
+            receiver &&
+            ts.isIdentifier(receiver) &&
+            /^(?:self|globalThis)$/u.test(receiver.text) &&
+            !receiverBindings.hasLocalBinding(receiver.text, node);
+          // A static business receiver cannot invoke this native Worker method.
+          // Opaque rebinding is unverified, never evidence of a loaded URL.
+          if (!nativeReceiver) {
+            if (!receiver || !ts.isObjectLiteralExpression(receiver))
+              specifiers.push(UNRESOLVED_IMPORTSCRIPTS_SPECIFIER);
+            argumentsToInspect = [];
+          } else if (invocation.name === 'call') argumentsToInspect = node.arguments.slice(1);
+          else {
+            const list = node.arguments[1] && unwrapTypeScriptExpression(node.arguments[1]);
+            if (
+              !list ||
+              list.kind === ts.SyntaxKind.NullKeyword ||
+              (ts.isIdentifier(list) &&
+                list.text === 'undefined' &&
+                !receiverBindings.hasLocalBinding('undefined', node))
+            )
+              argumentsToInspect = [];
+            else if (ts.isArrayLiteralExpression(list)) argumentsToInspect = [...list.elements];
+            else {
+              specifiers.push(UNRESOLVED_IMPORTSCRIPTS_SPECIFIER);
+              argumentsToInspect = [];
+            }
+          }
         }
+        for (const argument of argumentsToInspect)
+          specifiers.push(importScriptsTargetSpecifier(argument, literalBindings));
       } else if (
         !isImportMetaGlob &&
         (callee.kind === ts.SyntaxKind.ImportKeyword ||
@@ -4954,10 +5201,75 @@ function staticMarkupResourceUrl(openingTag, name) {
   return value === null ? null : normalizeBrowserResourceUrl(value);
 }
 
+// Tokenize entire attributes, never suffix-match names or scan inside values.
+// This is shared by literal HTML and template opening tags; expression-valued
+// attributes remain opaque instead of being interpreted as HTML strings.
+function markupAttributeTokens(openingTag) {
+  const attributes = new Map();
+  let cursor = openingTag.match(/^<[^\s/>]+/u)?.[0].length ?? openingTag.length;
+  while (cursor < openingTag.length) {
+    while (/[\t\n\r\f /]/u.test(openingTag[cursor] ?? '')) cursor += 1;
+    if (!openingTag[cursor] || openingTag[cursor] === '>') break;
+    const start = cursor;
+    while (cursor < openingTag.length && !/[\t\n\r\f /=>]/u.test(openingTag[cursor])) cursor += 1;
+    const name = openingTag.slice(start, cursor).toLowerCase();
+    if (!name) {
+      cursor += 1;
+      continue;
+    }
+    while (/[\t\n\r\f ]/u.test(openingTag[cursor] ?? '')) cursor += 1;
+    let value = '';
+    let dynamic = false;
+    if (openingTag[cursor] === '=') {
+      cursor += 1;
+      while (/[\t\n\r\f ]/u.test(openingTag[cursor] ?? '')) cursor += 1;
+      const quote = openingTag[cursor];
+      if (quote === '"' || quote === "'") {
+        const valueStart = ++cursor;
+        while (cursor < openingTag.length && openingTag[cursor] !== quote) cursor += 1;
+        value = openingTag.slice(valueStart, cursor);
+        if (openingTag[cursor] !== quote) dynamic = true;
+        else cursor += 1;
+      } else if (quote === '{') {
+        // Skip the whole expression, including quoted attribute-looking text.
+        dynamic = true;
+        let depth = 0;
+        let string = null;
+        do {
+          const character = openingTag[cursor++];
+          if (string) {
+            if (character === '\\') cursor += 1;
+            else if (character === string) string = null;
+          } else if (/['"`]/u.test(character)) string = character;
+          else if (character === '{') depth += 1;
+          else if (character === '}') depth -= 1;
+        } while (cursor < openingTag.length && depth > 0);
+        value = null;
+      } else {
+        const valueStart = cursor;
+        while (cursor < openingTag.length && !/[\t\n\r\f >]/u.test(openingTag[cursor])) cursor += 1;
+        value = openingTag.slice(valueStart, cursor);
+        dynamic = /[{}\x60]/u.test(value);
+      }
+    }
+    // Native HTML keeps the first duplicate attribute.
+    if (!attributes.has(name)) attributes.set(name, { value, dynamic });
+  }
+  return attributes;
+}
 function staticMarkupAttribute(openingTag, name) {
-  const pattern = `\\b${escapeRegularExpression(name)}\\s*=\\s*(?:(['"])([^'"]*)\\1|([^\\s'"=<>\\x60]+))`;
-  const match = openingTag.match(new RegExp(pattern, 'iu'));
-  return match ? (match[2] ?? match[3]) : null;
+  const attribute = markupAttributeTokens(openingTag).get(name.toLowerCase());
+  return attribute && !attribute.dynamic ? attribute.value : null;
+}
+function hasMarkupAttribute(openingTag, ...names) {
+  const attributes = markupAttributeTokens(openingTag);
+  return names.some((name) => attributes.has(name));
+}
+function dynamicMarkupAttribute(openingTag, name) {
+  const attributes = markupAttributeTokens(openingTag);
+  return Boolean(
+    attributes.get(name)?.dynamic || attributes.has(`:${name}`) || attributes.has(`v-bind:${name}`)
+  );
 }
 function hasHtmlCharacterReference(value) {
   return /&(?:#(?:\d+|x[\da-f]+);?|[a-z][a-z\d]+;)/iu.test(value);
@@ -4974,6 +5286,72 @@ const DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER = '<dynamic executable script src>';
 const UNREVIEWED_WEBSITE_EMBED_SPECIFIER = '<unreviewed Website embed>';
 const UNVERIFIED_MARKUP_HANDLER_SPECIFIER = '<unverified markup event handler>';
 const UNVERIFIED_HTML_SINK_SPECIFIER = '<unverified DOM HTML sink>';
+const OPAQUE_HTML_SINK_SPECIFIER = '<opaque DOM HTML sink>';
+const UNVERIFIED_DOM_RESOURCE_SPECIFIER = '<unverified DOM-authored resource>';
+const UNVERIFIED_STYLE_BODY_SPECIFIER = '<unverified DOM style body>';
+
+function domCssHasUnverifiedResource(css) {
+  try {
+    // Reuse the existing CSS URL lexer without reading a candidate file. DOM
+    // strings have a browser base, so this repair does not certify their URLs
+    // against the JavaScript file's source directory.
+    return promotionStyleResourceUrls('<DOM CSS>', [css]).length > 0;
+  } catch {
+    return true;
+  }
+}
+
+function literalHtmlHasUnreviewedEntry(html, specifiers) {
+  let unverified = false;
+  const visit = (node) => {
+    const attrs = new Map((node.attrs ?? []).map((attr) => [attr.name, attr.value]));
+    if (
+      node.tagName === 'script' ||
+      /^(?:iframe|object|embed|webview|base)$/u.test(node.tagName ?? '') ||
+      (node.tagName === 'link' &&
+        (attrs.get('rel') ?? '').toLowerCase().split(/\s+/u).includes('stylesheet'))
+    )
+      unverified = true;
+    if (
+      node.tagName === 'style' &&
+      styleModuleSpecifiers((node.childNodes ?? []).map((child) => child.value ?? '').join(''))
+        .length
+    )
+      unverified = true;
+    const css =
+      node.tagName === 'style'
+        ? (node.childNodes ?? []).map((child) => child.value ?? '').join('')
+        : attrs.get('style');
+    if (typeof css === 'string' && domCssHasUnverifiedResource(css))
+      specifiers.push(UNVERIFIED_DOM_RESOURCE_SPECIFIER);
+    const resourceNames = /^(?:img|source|video|audio|track|input|image|use|link)$/u.test(
+      node.tagName ?? ''
+    )
+      ? ['src', 'srcset', 'poster', 'href']
+      : [];
+    for (const name of resourceNames) {
+      if (!attrs.has(name)) continue;
+      const url = normalizeBrowserResourceUrl(attrs.get(name));
+      if (name === 'srcset' || (!url.startsWith('#') && !/^data:/iu.test(url)))
+        specifiers.push(UNVERIFIED_DOM_RESOURCE_SPECIFIER);
+    }
+    for (const [name, value] of attrs)
+      if (
+        NATIVE_EVENT_ATTRIBUTE_NAMES.has(name) ||
+        (isNavigationUrlAttribute(node.tagName, name) && isExecutableNavigationUrl(value))
+      )
+        unverified = true;
+    for (const child of node.childNodes ?? []) visit(child);
+    if (node.content) visit(node.content);
+  };
+  // A document parse drops context-dependent table tags; a default template
+  // fragment retains them. Keep the document view too so html/body wrapper
+  // attributes cannot disappear in the opposite direction. These are
+  // conservative inspection views, not an inferred live insertion context.
+  visit(parseHtmlFragment(html));
+  visit(parseHtml(html));
+  return unverified;
+}
 const UNVERIFIED_NAVIGATION_URL_SPECIFIER = '<unverified executable navigation URL>';
 function isNavigationUrlAttribute(tag, name) {
   return (
@@ -5007,16 +5385,15 @@ function externalScriptModuleSpecifiers(content) {
   return jsxOpeningTagCandidates(content)
     .filter((openingTag) => /^<script\b/iu.test(openingTag))
     .flatMap((openingTag) => {
-      const hasSrc = /\bsrc\s*=/iu.test(openingTag);
+      const hasSrc = hasMarkupAttribute(openingTag, 'src', ':src', 'v-bind:src');
       const type = staticMarkupAttribute(openingTag, 'type');
       const dynamicType =
-        /(?:^|\s)(?::type|v-bind:type)\s*=/iu.test(openingTag) ||
-        /(?:^|\s)type\s*=\s*(?:\{|\$\{)/iu.test(openingTag) ||
+        dynamicMarkupAttribute(openingTag, 'type') ||
         (type !== null && hasHtmlCharacterReference(type));
       if (hasSrc && dynamicType) return [DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER];
       if (!isExecutableScriptType(type) || !hasSrc) return [];
 
-      if (/(?:^|\s)(?::src|v-bind:src)\s*=/iu.test(openingTag)) {
+      if (dynamicMarkupAttribute(openingTag, 'src')) {
         return [DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER];
       }
       const specifier = staticMarkupResourceUrl(openingTag, 'src');
@@ -5030,9 +5407,9 @@ function documentBaseSpecifiers(content) {
   return jsxOpeningTagCandidates(content)
     .filter((openingTag) => /^<base\b/iu.test(openingTag))
     .flatMap((openingTag) => {
-      const hasHref = /(?:^|\s)(?:href|:href|v-bind:href)\s*=/iu.test(openingTag);
+      const hasHref = hasMarkupAttribute(openingTag, 'href', ':href', 'v-bind:href');
       if (!hasHref) return [];
-      if (/(?:^|\s)(?::href|v-bind:href)\s*=/iu.test(openingTag)) {
+      if (dynamicMarkupAttribute(openingTag, 'href')) {
         return [DYNAMIC_DOCUMENT_BASE_SPECIFIER];
       }
       const href = staticMarkupResourceUrl(openingTag, 'href');
@@ -5046,14 +5423,13 @@ function stylesheetLinkSpecifiers(content) {
   return jsxOpeningTagCandidates(content)
     .filter((openingTag) => /^<link\b/iu.test(openingTag))
     .flatMap((openingTag) => {
-      const hasHref = /(?:^|\s)(?:href|:href|v-bind:href)\s*=/iu.test(openingTag);
+      const hasHref = hasMarkupAttribute(openingTag, 'href', ':href', 'v-bind:href');
       if (!hasHref) return [];
 
-      const hasRel = /(?:^|\s)rel\s*=/iu.test(openingTag);
+      const hasRel = hasMarkupAttribute(openingTag, 'rel');
       const relAttribute = staticMarkupAttribute(openingTag, 'rel');
       const dynamicRel =
-        /(?:^|\s)(?::rel|v-bind:rel)\s*=/iu.test(openingTag) ||
-        (hasRel && /(?:^|\s)rel\s*=\s*(?:\{|\$\{)/iu.test(openingTag)) ||
+        dynamicMarkupAttribute(openingTag, 'rel') ||
         (relAttribute !== null && hasHtmlCharacterReference(relAttribute));
 
       if (dynamicRel) return [DYNAMIC_STYLESHEET_REL_SPECIFIER];
@@ -5065,7 +5441,7 @@ function stylesheetLinkSpecifiers(content) {
       }
       if (!rel.split(/\s+/u).some((token) => token.toLowerCase() === 'stylesheet')) return [];
 
-      if (/(?:^|\s)(?::href|v-bind:href)\s*=/iu.test(openingTag)) {
+      if (dynamicMarkupAttribute(openingTag, 'href')) {
         return [DYNAMIC_STYLESHEET_LINK_SPECIFIER];
       }
       const specifier = staticMarkupResourceUrl(openingTag, 'href');
@@ -5080,8 +5456,7 @@ function containsProductionImportMap(content) {
     if (!/^<script\b/iu.test(openingTag)) return false;
     const type = staticMarkupAttribute(openingTag, 'type');
     const opaqueType =
-      /(?:^|\s)(?::type|v-bind:type)\s*=/iu.test(openingTag) ||
-      /(?:^|\s)type\s*=\s*(?:\{|\$\{)/iu.test(openingTag) ||
+      dynamicMarkupAttribute(openingTag, 'type') ||
       (type !== null && hasHtmlCharacterReference(type));
     // An opaque type could become importmap even without a src attribute.
     // Do not decode candidate HTML or claim that it is definitely an import map.
@@ -6259,6 +6634,116 @@ function templateNavigationUrlSpecifiers(content, absolutePath, options) {
   return [...found];
 }
 
+function markdownScriptModuleSpecifiers(content, absolutePath, options) {
+  const specifiers = [];
+  try {
+    const { tree } = parseAuthoredMarkdown(content, absolutePath);
+    const inspectBody = (body) =>
+      specifiers.push(...scriptModuleSpecifiers(body, absolutePath, options));
+    if (/\.md$/iu.test(absolutePath)) {
+      // Raw HTML blocks keep their literal script bytes. Actual Markdown code
+      // and inline-code nodes never enter the HTML parser.
+      const opaque = '<unverified-markdown-script-content>';
+      const render = (node) => {
+        if (node.type === 'html') return node.value;
+        if (node.type === 'text')
+          return node.value
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;');
+        if (node.type === 'definition') return '';
+        const children = (node.children ?? []).map(render).join('');
+        return /^(?:root|paragraph)$/u.test(node.type) ? children : `${opaque}${children}${opaque}`;
+      };
+      const visit = (node) => {
+        if (node.tagName === 'script') {
+          const attrs = new Map((node.attrs ?? []).map((attr) => [attr.name, attr.value]));
+          if (isExecutableScriptType(attrs.get('type') ?? null) && !attrs.has('src')) {
+            const body = (node.childNodes ?? []).map((child) => child.value ?? '').join('');
+            if (body.includes(opaque)) specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+            else inspectBody(body);
+          }
+        }
+        for (const child of node.childNodes ?? []) visit(child);
+        if (node.content) visit(node.content);
+      };
+      visit(parseHtml(render(tree)));
+      return specifiers;
+    }
+    const staticExpression = (node) => {
+      const body = node.data?.estree?.body;
+      if (body?.length === 0) return '';
+      const expression =
+        body?.length === 1 && body[0].type === 'ExpressionStatement' ? body[0].expression : null;
+      if (expression?.type === 'Literal' && typeof expression.value === 'string')
+        return expression.value;
+      if (
+        expression?.type === 'TemplateLiteral' &&
+        expression.expressions.length === 0 &&
+        expression.quasis.every((quasi) => typeof quasi.value.cooked === 'string')
+      )
+        return expression.quasis.map((quasi) => quasi.value.cooked).join('');
+      return null;
+    };
+    const visit = (node) => {
+      if (/^mdxJsx/u.test(node.type)) {
+        for (const attribute of node.attributes ?? []) {
+          const expression =
+            attribute.type === 'mdxJsxExpressionAttribute'
+              ? attribute.value
+              : attribute.value && typeof attribute.value === 'object'
+                ? attribute.value.value
+                : null;
+          if (typeof expression === 'string') inspectBody(expression);
+        }
+      }
+      if (/^mdxJsx/u.test(node.type) && node.name === 'script') {
+        const attrs = new Map();
+        let opaque = false;
+        for (const attribute of node.attributes) {
+          if (attribute.type !== 'mdxJsxAttribute') {
+            opaque = true;
+            continue;
+          }
+          const value =
+            typeof attribute.value === 'string' || attribute.value === null
+              ? (attribute.value ?? '')
+              : staticExpression(attribute.value);
+          attrs.set(attribute.name, value);
+          if (value === null && /^(?:type|src)$/u.test(attribute.name)) opaque = true;
+          if (/^(?:children|set:html|set:text|dangerouslySetInnerHTML)$/u.test(attribute.name))
+            opaque = true;
+        }
+        if (opaque) {
+          specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+          return;
+        }
+        if (!isExecutableScriptType(attrs.get('type') ?? null) || attrs.has('src')) {
+          // JSX expressions still execute while rendering a data-script node;
+          // only its literal text is inert JavaScript.
+          for (const child of node.children) visit(child);
+          return;
+        }
+        const chunks = node.children.map((child) =>
+          child.type === 'text' ? child.value : staticExpression(child)
+        );
+        if (chunks.includes(null)) specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+        else inspectBody(chunks.join(''));
+        return;
+      }
+      if (node.type === 'mdxjsEsm' || /^mdx(?:Flow|Text)Expression$/u.test(node.type)) {
+        inspectBody(node.value);
+        return;
+      }
+      for (const child of node.children ?? []) visit(child);
+    };
+    visit(tree);
+  } catch {
+    specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
+  }
+  return specifiers;
+}
+
 function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
   if (/\.svg$/i.test(absolutePath)) return [];
   const content = fs.readFileSync(absolutePath, 'utf8');
@@ -6307,10 +6792,11 @@ function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
       ...embeddedStyleSegments(content).flatMap(styleModuleSpecifiers),
     ];
   }
-  const source = /\.mdx?$/i.test(absolutePath) ? stripMarkdownCode(content) : content;
   return [
     ...templateNavigationUrlSpecifiers(content, absolutePath, options),
-    ...scriptModuleSpecifiers(source, absolutePath, options),
+    ...(/\.mdx?$/iu.test(absolutePath)
+      ? markdownScriptModuleSpecifiers(content, absolutePath, options)
+      : scriptModuleSpecifiers(content, absolutePath, options)),
   ];
 }
 
@@ -6730,8 +7216,14 @@ function guardedWebsiteImport(
     return { category: 'unverified-navigation-url', resolvedPath: null };
   if (specifier === UNVERIFIED_MARKUP_HANDLER_SPECIFIER)
     return { category: 'unverified-markup-handler', resolvedPath: null };
+  // An opaque string is retained as research evidence, never interpreted as
+  // a module URL or admitted by the promotion evidence closure.
+  if (specifier === OPAQUE_HTML_SINK_SPECIFIER || specifier === UNVERIFIED_DOM_RESOURCE_SPECIFIER)
+    return null;
   if (specifier === UNVERIFIED_HTML_SINK_SPECIFIER)
     return { category: 'unverified-html-sink', resolvedPath: null };
+  if (specifier === UNVERIFIED_STYLE_BODY_SPECIFIER)
+    return { category: 'unverified-style-body', resolvedPath: null };
   if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
     return { category: 'unverified-runtime-compilation', resolvedPath: null };
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
@@ -7289,8 +7781,14 @@ function guardedHarnessImport(rootDir, canonicalRootDir, sourcePath, specifier) 
     return { category: 'unverified-navigation-url', resolvedPath: null };
   if (specifier === UNVERIFIED_MARKUP_HANDLER_SPECIFIER)
     return { category: 'unverified-markup-handler', resolvedPath: null };
+  // An opaque string is retained as research evidence, never interpreted as
+  // a module URL or admitted by the promotion evidence closure.
+  if (specifier === OPAQUE_HTML_SINK_SPECIFIER || specifier === UNVERIFIED_DOM_RESOURCE_SPECIFIER)
+    return null;
   if (specifier === UNVERIFIED_HTML_SINK_SPECIFIER)
     return { category: 'unverified-html-sink', resolvedPath: null };
+  if (specifier === UNVERIFIED_STYLE_BODY_SPECIFIER)
+    return { category: 'unverified-style-body', resolvedPath: null };
   if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
     return { category: 'unverified-runtime-compilation', resolvedPath: null };
   if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER) {
@@ -7673,6 +8171,16 @@ function reachableSourcePaths(
       }
     }
     for (const specifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
+      if (specifier === UNVERIFIED_DOM_RESOURCE_SPECIFIER) {
+        if (promotionPackages)
+          throw new Error(`promotion DOM-authored resource in ${sourcePath} remains unverified`);
+        continue;
+      }
+      if (specifier === OPAQUE_HTML_SINK_SPECIFIER) {
+        if (promotionPackages)
+          throw new Error(`promotion opaque DOM HTML sink in ${sourcePath} remains unverified`);
+        continue;
+      }
       const targets = resolveLocalImport(sourcePath, specifier, viteRoot);
       for (const target of targets ?? []) {
         reachable.add(target);
@@ -7890,9 +8398,15 @@ function validateWebsiteRawImports(rootDir, relativePath, issues) {
       );
       continue;
     }
+    if (rawImport.category === 'unverified-style-body') {
+      issues.push(
+        `${relativePath}: DOM style body in \`${rawImport.sourcePath}\` is unverified; CSS must be a static string with no unresolved browser imports`
+      );
+      continue;
+    }
     if (rawImport.category === 'unverified-html-sink') {
       issues.push(
-        `${relativePath}: DOM HTML sink in \`${rawImport.sourcePath}\` is unverified; recognized document.write/writeln and insertAdjacentHTML calls require an explicit reviewed admission`
+        `${relativePath}: DOM HTML sink in \`${rawImport.sourcePath}\` is unverified; recognized HTML-parsing calls and innerHTML/outerHTML writes require static inspected markup or explicit reviewed admission`
       );
       continue;
     }
@@ -8131,9 +8645,15 @@ function validateHarnessRawImports(rootDir, relativePath, issues) {
       );
       continue;
     }
+    if (rawImport.category === 'unverified-style-body') {
+      issues.push(
+        `${relativePath}: DOM style body in \`${rawImport.sourcePath}\` is unverified; CSS must be a static string with no unresolved browser imports`
+      );
+      continue;
+    }
     if (rawImport.category === 'unverified-html-sink') {
       issues.push(
-        `${relativePath}: DOM HTML sink in \`${rawImport.sourcePath}\` is unverified; recognized document.write/writeln and insertAdjacentHTML calls require an explicit reviewed admission`
+        `${relativePath}: DOM HTML sink in \`${rawImport.sourcePath}\` is unverified; recognized HTML-parsing calls and innerHTML/outerHTML writes require static inspected markup or explicit reviewed admission`
       );
       continue;
     }
