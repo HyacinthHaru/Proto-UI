@@ -19,6 +19,19 @@ export function inspectGraph(graph) {
   const record = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
   const strings = (value) => Array.isArray(value) && value.every((x) => typeof x === 'string');
   const records = (value) => Array.isArray(value) && value.every(record);
+  const alphaContract = (value) =>
+    nonempty(value) ||
+    (record(value) && value.status === 'unresolved' && nonempty(value.obligation));
+  const extentContract = (value) =>
+    record(value) &&
+    nonempty(value.basis) &&
+    (value.scale === undefined ||
+      (Array.isArray(value.scale) &&
+        value.scale.length === 2 &&
+        value.scale.every((x) => Number.isFinite(x) && x > 0))) &&
+    (value.policy === undefined || nonempty(value.policy)) &&
+    (value.marginLogicalPixels === undefined ||
+      (Number.isFinite(value.marginLogicalPixels) && value.marginLogicalPixels >= 0));
   const seen = new WeakSet();
   function plain(value, path = 'graph') {
     if (typeof value === 'number' && !Number.isFinite(value)) error('nonfinite', path);
@@ -217,7 +230,12 @@ export function inspectGraph(graph) {
   }
   for (const s of graph.sources) {
     if (!SOURCE_KINDS.includes(s.kind)) error('unknown-source-kind', s.id);
-    if (!s.space || !s.alpha || !s.freshness || !s.format)
+    if (
+      !nonempty(s.space) ||
+      !alphaContract(s.alpha) ||
+      !nonempty(s.freshness) ||
+      !nonempty(s.format)
+    )
       error('incomplete-source-contract', s.id);
   }
   for (const r of graph.resources) {
@@ -230,7 +248,13 @@ export function inspectGraph(graph) {
         for (const id of r.coordinateBindings)
           if (!frameInputs.has(id)) error('missing-frame-input', `${r.id}:${id}`);
     }
-    if (!r.format || !r.extent || !r.space || !r.alpha || !r.clear)
+    if (
+      !nonempty(r.format) ||
+      !extentContract(r.extent) ||
+      !nonempty(r.space) ||
+      !alphaContract(r.alpha) ||
+      !nonempty(r.clear)
+    )
       error('incomplete-resource-contract', r.id);
   }
   for (const d of graph.data)
@@ -243,6 +267,31 @@ export function inspectGraph(graph) {
       error('unbounded-data-buffer', d.id);
   const writers = new Map();
   for (const p of passes.values()) {
+    if (record(p.update) && p.update.kind === 'any-dirty') {
+      if (
+        !strings(p.update.dependencies) ||
+        !p.update.dependencies.length ||
+        new Set(p.update.dependencies).size !== p.update.dependencies.length
+      )
+        error('invalid-pass-update', p.id);
+      else
+        for (const dep of p.update.dependencies) {
+          const valid = dep.startsWith('source:')
+            ? graph.sources.some((source) => source.id === dep.slice(7))
+            : dep.startsWith('uniform:')
+              ? blocks.has(dep.slice(8))
+              : ['geometry', 'derived-morph-state', 'pointer-spring-state'].includes(dep);
+          if (!valid) error('invalid-update-dependency', `${p.id}:${dep}`);
+        }
+    } else if (
+      ![
+        'upstream-or-blur-parameter-dirty',
+        'frame-bindings-dirty',
+        'geometry-or-layout-or-optical-profile-dirty',
+        'compositor-or-uniform-frame',
+      ].includes(p.update)
+    )
+      error('invalid-pass-update', p.id);
     if (!['fragment', 'host-image-filter', 'copy', 'composite'].includes(p.kind))
       error('unknown-pass-kind', p.id);
     if (['fragment', 'host-image-filter'].includes(p.kind) && !kernels.has(p.kernel))
@@ -328,6 +377,39 @@ export function inspectGraph(graph) {
       )
         error('invalid-uniform', block.id);
       names.add(field.name);
+      if (block.abi === 'flutter-reflected-float-slots') {
+        if (
+          !record(field.binding) ||
+          !['frame-value', 'host-injected', 'constant'].includes(field.binding.kind)
+        )
+          error('missing-reflected-value-binding', field.name);
+        else if (field.binding.kind === 'constant') {
+          const vector = /^(?:vec([234])f|vec([234])<f32>)$/.exec(field.type);
+          const width = /^(f32|i32|u32)$/.test(field.type)
+            ? 1
+            : vector
+              ? Number(vector[1] ?? vector[2])
+              : null;
+          const value = field.binding.value;
+          const values = width === 1 && field.count === undefined ? [value] : value;
+          if (
+            width === null ||
+            !Array.isArray(values) ||
+            values.length !== width * (field.count ?? 1) ||
+            !values.every(
+              (v) =>
+                typeof v === 'number' &&
+                Number.isFinite(v) &&
+                (field.type === 'i32'
+                  ? Number.isInteger(v) && v >= -2147483648 && v <= 2147483647
+                  : field.type === 'u32'
+                    ? Number.isInteger(v) && v >= 0 && v <= 4294967295
+                    : true)
+            )
+          )
+            error('invalid-constant-uniform', field.name);
+        }
+      }
       if (field.binding?.kind === 'frame-value') {
         const input = frameInputs.get(field.binding.id);
         if (!input || input.type !== field.type || input.count !== field.count)

@@ -400,3 +400,61 @@ test('target requirements remain nonempty, unique declared capability names', as
     assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-capability-requirements'));
   }
 });
+
+test('every reflected uniform has a recognized typed value binding', async () => {
+  for (const binding of [
+    undefined,
+    {},
+    { kind: 'frame-vlaue', id: 'uGlassColor' },
+    { kind: 'constant', value: [1] },
+    { kind: 'constant', value: ['red', 1, 1, 1] },
+  ]) {
+    const graph = await load('flutter');
+    const field = graph.uniformBlocks[1].fields.find((f) => f.name === 'uGlassColor');
+    if (binding === undefined) delete field.binding;
+    else field.binding = binding;
+    assert(
+      inspectGraph(graph).errors.some((e) =>
+        ['missing-reflected-value-binding', 'invalid-constant-uniform'].includes(e.code)
+      )
+    );
+  }
+});
+
+test('pass invalidation retains a recognized policy and declared dependencies', async () => {
+  for (const update of [
+    undefined,
+    'upstrem-dirty',
+    {},
+    { kind: 'any-dirty', dependencies: [] },
+    { kind: 'any-dirty', dependencies: ['source:missing'] },
+    { kind: 'any-dirty', dependencies: ['uniform:missing'] },
+    { kind: 'any-dirty', dependencies: ['geomtry'] },
+  ]) {
+    const graph = await load('studio');
+    if (update === undefined) delete graph.passes[1].update;
+    else graph.passes[1].update = update;
+    assert(
+      inspectGraph(graph).errors.some((e) =>
+        ['invalid-pass-update', 'invalid-update-dependency'].includes(e.code)
+      )
+    );
+  }
+});
+
+test('resource contract values have usable types, including unresolved alpha and extent', async () => {
+  for (const [field, value] of [
+    ['format', 7],
+    ['space', {}],
+    ['alpha', true],
+    ['alpha', { status: 'unresolved' }],
+    ['clear', []],
+    ['extent', 4],
+    ['extent', {}],
+    ['extent', { basis: 'viewport', scale: [1, -1] }],
+  ]) {
+    const graph = await load('studio');
+    graph.resources[0][field] = value;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'incomplete-resource-contract'));
+  }
+});
