@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { createHash } from 'node:crypto';
 import { CompilerRejection } from './diagnostics';
-import { OPERATION_RULES } from './operations';
+import { OPERATION_RULES, operationArgumentType } from './operations';
 import {
   SourceGraph,
   identifier,
@@ -457,17 +457,16 @@ class Frontend {
     const rule = OPERATION_RULES[operation];
     if (operation.startsWith('state.') && rule.receiver === 'def') {
       this.literalString(args[0], node.arguments[0]);
-      if (args[1].type !== rule.result.slice('state:'.length))
-        rejectNode(node.arguments[1], 'PUI1006', 'Initial state type differs from declaration.');
     }
-    if (
-      operation === 'state.set' &&
-      receiver &&
-      args[0].type !== receiver.type.slice('state:'.length)
-    )
-      rejectNode(node.arguments[0], 'PUI1006', 'State write type does not match its handle.');
-    if (operation === 'lifecycle.setPresent' && args[0].type !== 'boolean')
-      rejectNode(node.arguments[0], 'PUI1006', 'View presence requires a boolean.');
+    for (let index = 0; index < args.length; index++) {
+      const expected = operationArgumentType(operation, index, receiver?.type);
+      if (expected !== undefined && args[index].type !== expected)
+        rejectNode(
+          node.arguments[index],
+          'PUI1006',
+          `${operation} argument ${index + 1} requires ${expected}.`
+        );
+    }
     if (operation === 'props.define') {
       if (args[0].kind !== 'record')
         rejectNode(node, 'PUI1006', 'Props declarations must be literal records.');

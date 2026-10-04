@@ -6,7 +6,7 @@ import {
   type SourceSpan,
   type ValueType,
 } from './ir';
-import { OPERATION_RULES } from './operations';
+import { OPERATION_RULES, operationArgumentType } from './operations';
 
 const TYPES: readonly string[] = [
   'boolean',
@@ -425,8 +425,18 @@ export function validateIR(input: unknown): CompileResult<PrototypeIR> {
               fn(callback.function, scope, rule.callback.phase);
             } else {
               const argumentType = expression(arg, scope, phase);
-              if (operation === 'lifecycle.setPresent' && argumentType !== 'boolean')
-                reject('PUI2002', 'View presence requires a boolean.', location, 'invalid-ir');
+              const expected = operationArgumentType(
+                operation as keyof typeof OPERATION_RULES,
+                index,
+                receiver as ValueType
+              );
+              if (expected !== undefined && argumentType !== expected)
+                reject(
+                  'PUI2002',
+                  `${operation} argument ${index + 1} requires ${expected}.`,
+                  location,
+                  'invalid-ir'
+                );
             }
           });
           type = operation === 'state.get' ? receiver.slice('state:'.length) : rule.result;

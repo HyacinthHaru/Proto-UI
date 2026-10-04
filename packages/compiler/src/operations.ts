@@ -302,3 +302,18 @@ export const OPERATION_RULES: Record<Operation, OperationRule> = {
     max: 0,
   },
 };
+
+/** Value constraints shared by source admission and caller-supplied checked IR. */
+export function operationArgumentType(
+  operation: Operation,
+  index: number,
+  receiver?: ValueType
+): ValueType | undefined {
+  const rule = OPERATION_RULES[operation];
+  if (operation === 'state.set' && index === 0 && receiver?.startsWith('state:'))
+    return receiver.slice('state:'.length) as ValueType;
+  if (operation.startsWith('state.') && rule.receiver === 'def' && index === 1)
+    return rule.result.slice('state:'.length) as ValueType;
+  if (operation === 'lifecycle.setPresent' && index === 0) return 'boolean';
+  return undefined;
+}
