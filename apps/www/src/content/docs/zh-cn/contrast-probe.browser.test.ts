@@ -141,6 +141,102 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     }
   });
 
+  for (const placement of ['target', 'ancestor'] as const) {
+    for (const [property, value] of [
+      ['filter', 'opacity(0)'],
+      ['filter', 'blur(2px)'],
+      ['backdrop-filter', 'blur(2px)'],
+    ] as const) {
+      it(`rejects ${placement} ${property}: ${value} in target and anatomy paint acceptance`, async () => {
+        const context = await browser.newContext({ viewport: { width: 800, height: 600 } });
+        try {
+          const page = await context.newPage();
+          await page.setContent(
+            fixture(`<section data-projection-content>
+              <div id="ancestor"><button id="target" data-pui-root
+                data-projection-owner="calibration" data-projection-generation="1"
+                data-projection-prototype="instrument-target">Filtered target</button></div>
+            </section>`)
+          );
+          await page
+            .locator('[data-projection-scope]')
+            .evaluate((scope) => scope.setAttribute('data-projection-state', 'ready'));
+          await page.addScriptTag({ content: bundle });
+          const target = page.locator('#target');
+          const filteredElement = page.locator(`#${placement}`);
+          const observe = () =>
+            target.evaluate((element) => ({
+              target: window.puiContrastProbe.readContrastTargetObservation(element),
+              anatomy: window.puiContrastProbe.readContrastAnatomy(element),
+            }));
+          const unfiltered = await observe();
+          expect(unfiltered.target.achieved).toBe(true);
+          expect(unfiltered.anatomy.currentLease).toBe(true);
+          expect(unfiltered.anatomy.surfaces[0].painted).toBe(true);
+          await target.focus();
+          await target.hover();
+          await page.mouse.down();
+          try {
+            // Real CSS on an isolated instrument fixture. Filter is the only
+            // changed paint input; bounds, opacity and native state stay intact.
+            await filteredElement.evaluate(
+              (element, input) => element.style.setProperty(input.property, input.value),
+              { property, value }
+            );
+            expect(
+              await filteredElement.evaluate(
+                (element, property) => getComputedStyle(element).getPropertyValue(property),
+                property
+              )
+            ).toBe(value);
+            expect(await target.evaluate((element) => getComputedStyle(element).opacity)).toBe('1');
+            expect(
+              await page
+                .locator('#ancestor')
+                .evaluate((element) => getComputedStyle(element).opacity)
+            ).toBe('1');
+            const bounds = await target.boundingBox();
+            expect(bounds!.width > 0 && bounds!.height > 0).toBe(true);
+            expect(await target.isVisible()).toBe(true);
+            const observation = await observe();
+            expect(observation.target).toMatchObject({
+              achieved: false,
+              focused: true,
+              hovered: true,
+              nativeActive: true,
+              visibility: {
+                classification: 'unsupported',
+                limits: expect.arrayContaining(['unsupported-filter-or-backdrop-filter']),
+              },
+            });
+            expect(observation.anatomy.currentLease).toBe(true);
+            expect(observation.anatomy.surfaces).toHaveLength(1);
+            expect(observation.anatomy.surfaces[0]).toMatchObject({
+              painted: false,
+              visibility: { classification: 'unsupported' },
+            });
+            await filteredElement.evaluate(
+              (element, property) => element.style.setProperty(property, 'none'),
+              property
+            );
+            expect((await observe()).target).toMatchObject({
+              achieved: true,
+              focused: true,
+              hovered: true,
+              nativeActive: true,
+              visibility: { classification: 'source-model-visible' },
+            });
+            expect((await observe()).anatomy.surfaces[0].painted).toBe(true);
+          } finally {
+            await page.mouse.up();
+          }
+        } finally {
+          await context.close();
+        }
+      });
+    }
+  }
+
   it('collects exact current-lease anatomy and rejects omitted real-recipe Thumb and Indicator instances', async () => {
     for (const [family, demo, rootRef] of [
       ['switch', switchDemo, 'releaseAlertsSwitch'],

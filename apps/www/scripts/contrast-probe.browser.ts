@@ -462,6 +462,10 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
         limits: ['ancestor-or-target-hidden'],
       };
     }
+    // Filters can change or erase painted pixels without changing CSS opacity
+    // or layout bounds. Their output is neither known visible nor known hidden.
+    if (style.filter !== 'none' || style.backdropFilter !== 'none')
+      limits.push('unsupported-filter-or-backdrop-filter');
     if (style.clip !== 'auto') limits.push('unsupported-legacy-clip');
     if (style.clipPath !== 'none' || style.maskImage !== 'none')
       limits.push('unsupported-clip-path-or-mask');
@@ -478,7 +482,7 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
     }
   }
   // This reports intersecting bounds, not proof of painted coverage through
-  // unsupported clips/masks/transforms; those remain explicit in `limits`.
+  // unsupported filters/clips/masks/transforms; those remain explicit in `limits`.
   const visible = nonempty.some(
     (box) => box.right > left && box.left < right && box.bottom > top && box.top < bottom
   );
