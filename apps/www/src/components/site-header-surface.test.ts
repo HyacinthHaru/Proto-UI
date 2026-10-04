@@ -100,6 +100,8 @@ describe('native Header content inside real family projection surfaces', () => {
         participant.prepareCommit(first).publish();
         const surface = content.closest('.site-header-popup-surface')!;
         expect(surface).not.toBeNull();
+        expect((surface as HTMLElement).style.display).toBe('flex');
+        expect((surface as HTMLElement).style.flexDirection).toBe('column');
         expect(surface.getAttribute('data-pui-style')).toContain(
           family === 'brutalist' ? 'rounded-base' : 'rounded-xl'
         );

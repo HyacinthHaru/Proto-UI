@@ -10,6 +10,30 @@ export const Bootstrap232SurfaceRoot = definePrototype<SurfaceRootProps, Surface
   setup(def) {
     asSurfaceRoot();
     def.rule({
+      when: (w) => w.prop('variant').eq('scrim'),
+      intent: (i) => i.feedback.style.use(tw('bg-black/80')),
+    });
+    def.rule({
+      when: (w) => w.prop('fade').eq(true),
+      intent: (i) => i.feedback.style.use(tw('surface-fade')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('fade').eq(true),
+          w.any(w.prop('transitionState').eq('closed'), w.prop('transitionState').eq('leaving'))
+        ),
+      intent: (i) => i.feedback.style.use(tw('opacity-0')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('fade').eq(true),
+          w.any(w.prop('transitionState').eq('entering'), w.prop('transitionState').eq('entered'))
+        ),
+      intent: (i) => i.feedback.style.use(tw('opacity-100')),
+    });
+    def.rule({
       when: (w) => w.prop('radius').eq('default'),
       intent: (i) => i.feedback.style.use(tw('rounded-[4px]')),
     });
@@ -81,7 +105,7 @@ export const Bootstrap232SurfaceRoot = definePrototype<SurfaceRootProps, Surface
       when: (w) => w.prop('focusVisible').eq(true),
       intent: (i) =>
         i.feedback.style.use(
-          tw('outline-none ring-2 ring-ring ring-offset-2 ring-offset-background')
+          tw('forced-colors-focus-outline ring-2 ring-ring ring-offset-2 ring-offset-background')
         ),
     });
     def.rule({

@@ -45,9 +45,15 @@ export function withNativeContentLease(scope: HTMLElement, move: () => void): vo
   const selection = document.getSelection();
   const anchor = capture(selection?.anchorNode, selection?.anchorOffset ?? 0);
   const extent = capture(selection?.focusNode, selection?.focusOffset ?? 0);
-  const ownedSelection =
-    !!selection &&
-    ((anchor && scope.contains(anchor.node)) || (extent && scope.contains(extent.node)));
+  // A generated shell can be an ancestor of the retained scope. Only accept
+  // such endpoints when its explicit source lease resolves into this scope;
+  // an arbitrary ancestor or adjacent preview must not acquire ownership.
+  const ownsBoundary = (boundary: Boundary | null): boolean =>
+    !!boundary &&
+    (scope.contains(boundary.node) ||
+      (sourceContainers.has(boundary.node) &&
+        [boundary.previous, boundary.next].some((node) => !!node && scope.contains(node))));
+  const ownedSelection = !!selection && (ownsBoundary(anchor) || ownsBoundary(extent));
   move();
   if (ownedFocus && focused.isConnected && document.activeElement !== focused)
     focused.focus({ preventScroll: true });

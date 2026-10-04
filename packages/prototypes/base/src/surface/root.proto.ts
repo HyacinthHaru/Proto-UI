@@ -6,7 +6,7 @@ function setupSurfaceRoot(def: DefHandle<SurfaceRootProps, SurfaceRootExposes>) 
     variant: {
       type: 'enum',
       empty: 'fallback',
-      options: ['transparent', 'outline', 'secondary', 'muted', 'accent', 'solid'],
+      options: ['transparent', 'outline', 'secondary', 'muted', 'accent', 'solid', 'scrim'],
     },
     radius: {
       type: 'enum',
@@ -15,6 +15,12 @@ function setupSurfaceRoot(def: DefHandle<SurfaceRootProps, SurfaceRootExposes>) 
     },
     border: { type: 'enum', empty: 'fallback', options: ['all', 'bottom', 'none'] },
     elevation: { type: 'enum', empty: 'fallback', options: ['none', 'raised'] },
+    transitionState: {
+      type: 'enum',
+      empty: 'fallback',
+      options: ['closed', 'entering', 'entered', 'leaving'],
+    },
+    fade: { type: 'boolean', empty: 'fallback' },
     hovered: { type: 'boolean', empty: 'fallback' },
     focusVisible: { type: 'boolean', empty: 'fallback' },
     pressed: { type: 'boolean', empty: 'fallback' },
@@ -25,6 +31,8 @@ function setupSurfaceRoot(def: DefHandle<SurfaceRootProps, SurfaceRootExposes>) 
     radius: 'default',
     border: 'all',
     elevation: 'none',
+    transitionState: 'entered',
+    fade: false,
     hovered: false,
     focusVisible: false,
     pressed: false,

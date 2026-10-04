@@ -588,7 +588,15 @@ async function exerciseInteractiveGallery(
   const preview = editor.locator('[data-demo-ref="editor-preview"]');
   await preview.waitFor({ state: 'visible' });
   assert.equal(await preview.textContent(), value);
-  assert.equal(await preview.evaluate((element) => getComputedStyle(element).fontWeight), '700');
+  // Candidate text is painted by the public Text atom; the immutable before
+  // revision paints its box directly. Measure the actual text owner in each.
+  const textOwner = preview.locator('[data-demo-ref="editor-preview-text"]');
+  assert.equal(
+    await ((await textOwner.count()) ? textOwner : preview).evaluate(
+      (element) => getComputedStyle(element).fontWeight
+    ),
+    '700'
+  );
   await capture('gallery-editor-preview');
   activeProbeStage = 'gallery-dialog';
   const overlays = gallery.locator('[data-gallery-demo="overlays"]');

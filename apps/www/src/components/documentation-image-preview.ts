@@ -1,7 +1,9 @@
 import { isPreviewCandidate, readPreviewSource } from './documentation-image-source';
 import { imageContainRect, imageOriginTransform } from './documentation-image-geometry';
-import { IMAGE_ZOOM_DURATION } from './documentation-image-zoom.proto';
 import {
+  IMAGE_ZOOM_DURATION,
+  bindPreviewSurface,
+  setPreviewSurfaceDuration,
   makePreviewControl,
   previewFamily,
   registerPreviewControls,
@@ -14,6 +16,9 @@ import {
 type Enhancement = {
   trigger: PreviewControl;
   original: Element;
+  surface: PreviewControl;
+  mediaSurface: PreviewControl;
+  dispose: () => void;
   label: HTMLElement;
   media: HTMLImageElement | SVGSVGElement;
 };
@@ -55,6 +60,8 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
   let root: PreviewControl;
   let mask: PreviewControl;
   let content: PreviewControl;
+  let maskSurface: PreviewControl;
+  let contentSurface: PreviewControl;
   let title: PreviewControl;
   let description: PreviewControl;
   let image: HTMLImageElement;
@@ -69,19 +76,33 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
   };
   const theme = () => {
     const dark = doc.documentElement.dataset.theme === 'dark';
-    for (const control of [root, mask, content, ...enhancements.map((item) => item.trigger)])
+    for (const control of [
+      root,
+      mask,
+      content,
+      maskSurface,
+      contentSurface,
+      ...enhancements.map((item) => item.surface),
+    ])
       themePreviewControl(control, family, dark);
   };
   const motion = () => {
     const duration = reduced.matches ? 0 : IMAGE_ZOOM_DURATION;
     for (const control of [mask, content]) {
-      setPreviewProps(control, { enterDuration: duration, leaveDuration: duration });
+      setPreviewProps(control, {
+        enterDuration: duration,
+        leaveDuration: duration,
+        interrupt: 'reverse',
+      });
       control.style.setProperty('--docs-image-duration', `${duration}ms`);
     }
+    for (const surface of [maskSurface, contentSurface])
+      setPreviewSurfaceDuration(surface, duration);
   };
   const restoreOrigin = () => {
     if (!activeItem) return;
     activeItem.trigger.removeAttribute('data-docs-image-origin-hidden');
+    setPreviewProps(activeItem.mediaSurface, { fade: false, transitionState: 'entered' });
     // Commit the visible endpoint while source transitions are disabled, then
     // restore the author's rules. No timeout or secondary modal clock is used.
     const sourceSurface = activeItem.media.closest('picture') ?? activeItem.media;
@@ -117,10 +138,10 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
       '--docs-image-width': `${target.width}px`,
       '--docs-image-height': `${target.height}px`,
       '--docs-image-origin-transform': transform ?? 'none',
-      '--docs-image-closed-opacity': transform ? '1' : '0',
     };
     for (const [name, value] of Object.entries(values))
       if (content.style.getPropertyValue(name) !== value) content.style.setProperty(name, value);
+    setPreviewProps(contentSurface, { fade: !transform });
     content.dataset.docsImageReturn = transform ? 'origin' : 'fade';
   };
   const createImage = () => {
@@ -159,6 +180,25 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
     mask.dataset.docsImageMask = '';
     content = makePreviewControl(family, 'dialogContent');
     content.dataset.docsImageContent = '';
+    maskSurface = makePreviewControl(family, 'surface', {
+      variant: 'scrim',
+      radius: 'none',
+      border: 'none',
+      fade: true,
+      transitionState: 'closed',
+    });
+    maskSurface.dataset.docsImageScrim = '';
+    maskSurface.style.pointerEvents = 'none';
+    mask.append(maskSurface);
+    contentSurface = makePreviewControl(family, 'surface', {
+      variant: 'outline',
+      radius: 'none',
+      border: 'none',
+      fade: false,
+      transitionState: 'closed',
+    });
+    contentSurface.dataset.docsImageCanvas = '';
+    content.append(contentSurface);
     title = makePreviewControl(family, 'dialogTitle');
     title.textContent = labels.title;
     title.className = 'docs-image-accessible';
@@ -180,9 +220,11 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
     status.hidden = true;
     status.setAttribute('role', 'status');
     status.textContent = labels.error;
-    content.append(title, description, image, status, close);
+    contentSurface.append(title, description, image, status, close);
     root.append(mask, content);
     host.append(root);
+    bindPreviewSurface(mask, maskSurface, 'transitionState', renderOptions.signal);
+    bindPreviewSurface(content, contentSurface, 'transitionState', renderOptions.signal);
     motion();
     theme();
     content.addEventListener('beforeLeave', geometry, renderOptions);
@@ -200,7 +242,11 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
   };
   const open = (item: Enhancement) => {
     const body = item.media.closest('[data-doc-flow]');
-    if (!body || !isPreviewCandidate(item.media, body, item.trigger)) return;
+    if (
+      !body ||
+      !isPreviewCandidate(item.media, body, item.trigger, [item.surface, item.mediaSurface])
+    )
+      return;
     const source = readPreviewSource(item.media);
     if (!source) return;
     releaseSource();
@@ -219,6 +265,7 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
     geometry();
     item.trigger.setAttribute('data-docs-image-source-instant', '');
     item.trigger.setAttribute('data-docs-image-origin-hidden', '');
+    setPreviewProps(item.mediaSurface, { fade: true, transitionState: 'closed' });
     // Never innerHTML, object/embed, source-document navigation or SVG fetch.
     if (source.svgText)
       ownedUrl = URL.createObjectURL(new Blob([source.svgText], { type: 'image/svg+xml' }));
@@ -228,7 +275,17 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
     image.src = ownedUrl ?? source.sourceUrl;
     root.getExposes?.().openDialog?.('image.preview');
   };
-  const restoreTrigger = ({ trigger, original, label }: Enhancement) => {
+  const restoreTrigger = ({
+    trigger,
+    original,
+    label,
+    surface,
+    mediaSurface,
+    dispose,
+  }: Enhancement) => {
+    dispose();
+    mediaSurface.replaceWith(...Array.from(mediaSurface.childNodes));
+    surface.replaceWith(...Array.from(surface.childNodes));
     label.remove();
     if (original.localName === 'button') {
       original.append(...Array.from(trigger.childNodes));
@@ -248,7 +305,7 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
       const body = item.media.closest('[data-doc-flow]');
       if (
         body &&
-        isPreviewCandidate(item.media, body, item.trigger) &&
+        isPreviewCandidate(item.media, body, item.trigger, [item.surface, item.mediaSurface]) &&
         readPreviewSource(item.media)
       )
         return true;
@@ -273,6 +330,20 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
         )
           continue;
         const trigger = makePreviewControl(family, 'imageTrigger');
+        const surface = makePreviewControl(family, 'surface', {
+          variant: 'transparent',
+          radius: 'sm',
+          border: 'none',
+        });
+        const mediaSurface = makePreviewControl(family, 'surface', {
+          variant: 'transparent',
+          radius: 'none',
+          border: 'none',
+        });
+        mediaSurface.dataset.docsImageSourceSurface = '';
+        surface.dataset.docsImageTriggerSurface = '';
+        surface.style.pointerEvents = 'none';
+        const binding = new AbortController();
         trigger.dataset.docsImageTrigger = '';
         const name = `${labels.open}: ${readPreviewSource(media)!.alt}`;
         trigger.title = name;
@@ -282,10 +353,20 @@ export function mountDocumentationImagePreview(host: HTMLElement): () => void {
         label.className = 'docs-image-trigger-label';
         label.textContent = `${labels.open}: `;
         original.replaceWith(trigger);
-        if (legacy) trigger.append(...Array.from(legacy.childNodes));
-        else trigger.append(original);
-        trigger.prepend(label);
-        const item = { trigger, original, media, label };
+        if (legacy) mediaSurface.append(...Array.from(legacy.childNodes));
+        else mediaSurface.append(original);
+        surface.append(mediaSurface);
+        trigger.append(label, surface);
+        bindPreviewSurface(trigger, surface, 'focusVisible', binding.signal);
+        const item = {
+          trigger,
+          original,
+          media,
+          label,
+          surface,
+          mediaSurface,
+          dispose: () => binding.abort(),
+        };
         enhancements.push(item);
         themePreviewControl(trigger, family, doc.documentElement.dataset.theme === 'dark');
         trigger.addEventListener(

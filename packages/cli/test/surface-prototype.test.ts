@@ -18,6 +18,20 @@ describe('Surface public compiler consumption', () => {
       expect(tokens.length).toBeGreaterThan(15);
       expect(css).not.toContain('Unsupported Proto UI style tokens');
       expect(css).toContain('border');
+      expect(css).toContain('transition-duration: var(--pui-surface-transition-duration, 0ms)');
+      expect(css).toContain('@starting-style');
+      expect(css).toContain('@media (forced-colors: active)');
+      expect(css).toContain('outline-color: Highlight;');
+      expect(css.indexOf('@starting-style')).toBeGreaterThan(css.indexOf('opacity: 1;'));
+      expect(css.indexOf('@media (prefers-reduced-motion: reduce)')).toBeGreaterThan(
+        css.indexOf('transition-duration: var(--pui-surface-transition-duration, 0ms)')
+      );
+      expect(css.indexOf('@media (forced-colors: active)')).toBeGreaterThan(
+        css.indexOf('outline: 2px solid transparent;')
+      );
+      expect(css).toContain('@media (prefers-reduced-motion: reduce)');
+      expect(css).toContain('opacity: 0;');
+      expect(css).toContain('opacity: 1;');
       expect(css).toContain('border-radius');
       expect(css).not.toMatch(/(?:^|\n)\s*(?:body|h1|p|a)\s*\{/);
     }

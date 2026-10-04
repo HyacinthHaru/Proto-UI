@@ -1187,7 +1187,10 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
 
         const brand = page.locator('.site-header a[data-site-link-appearance="brand"]').first();
         expect(await brand.getAttribute('role')).toBeNull();
-        expect(await brand.locator('[data-pui-root]').count()).toBe(1);
+        expect(await brand.locator('[data-pui-root]').count()).toBe(2);
+        expect(await brand.locator('[data-pui-style~="bg-transparent"]').count()).toBe(1);
+        expect(await brand.locator('[data-pui-style~="font-semibold"]').count()).toBe(1);
+        expect(await brand.locator('[role], [tabindex]').count()).toBe(0);
         await captureLinks(
           page,
           `nav-${family}-${colorScheme}-brand-focus`,
@@ -1311,7 +1314,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         const focus = await assertNavigationFocus(page, sidebar);
         expect(
           await sidebar
-            .locator('[data-pui-root]')
+            .locator('[data-site-link-content]')
             .evaluate((surface) => surface.getBoundingClientRect().height)
         ).toBeGreaterThanOrEqual(44);
         await captureLinks(
