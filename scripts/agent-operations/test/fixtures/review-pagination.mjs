@@ -57,6 +57,7 @@ export function paginationFixture({ large = true, mutate = () => {} } = {}) {
   const reviewThreads = Array.from({ length: n(102) }, (_, i) => {
     const id = `PRRT_${i}`;
     const nodes = Array.from({ length: i === 0 ? n(101) : 1 }, (_, j) => ({
+      id: `PRRC_${i}_${j}`,
       databaseId: i * 1000 + j + 1,
       author: { login: 'independent' },
       body: `Reply ${i}/${j}`,
@@ -163,7 +164,11 @@ export function withReviewTransportMetadata(value) {
     value.pageInfo.endCursor ??= value.nodes.length ? String(value.nodes.length) : null;
   }
   for (const key of ['commits', 'reviews', 'comments', 'reviewThreads']) connection(pr[key]);
-  for (const thread of pr.reviewThreads.nodes) connection(thread.comments);
+  for (const thread of pr.reviewThreads.nodes) {
+    connection(thread.comments);
+    for (const comment of thread.comments.nodes)
+      comment.id ??= `fixture-reply-${comment.databaseId}`;
+  }
   for (const node of pr.commits.nodes) {
     node.commit.signature ??= null;
     const contexts = node.commit.statusCheckRollup?.contexts;

@@ -20,7 +20,7 @@ const CHECK_FIELDS = `
   }
   ... on StatusContext { id context state targetUrl createdAt creator { login __typename } }
 `;
-const COMMENT_FIELDS = 'databaseId author { login } body updatedAt';
+const COMMENT_FIELDS = 'id databaseId author { login } body updatedAt';
 const FIELDS = {
   commits: `commit {
     oid message author { name email user { login } } committer { name email user { login } }
@@ -92,6 +92,15 @@ function requireFields(value, fields, label) {
     fields.some((field) => !Object.hasOwn(value, field) || value[field] === undefined)
   )
     throw new Error(`live ${label} record is malformed or incomplete`);
+}
+export function canonicalReplyId(comment) {
+  requireFields(comment, ['databaseId'], 'thread comment');
+  // Keep historical numeric IDs (and their canonical digests) unchanged. GitHub's
+  // deprecated databaseId is nullable; only an explicit null uses the node ID.
+  if (Number.isSafeInteger(comment.databaseId) && comment.databaseId > 0)
+    return String(comment.databaseId);
+  if (comment.databaseId === null && stringId(comment.id)) return comment.id;
+  throw new Error('live thread comment identity is missing or malformed');
 }
 function actorFields(actor, label) {
   if (actor === null) return;
@@ -294,16 +303,22 @@ export function collectReviewSnapshot({ owner, name, pullRequest, read }) {
         boundQuery(PAGE_QUERIES[field], { cursor }).data.repository.pullRequest[field],
     });
   }
+  const replyNodeIds = new Set();
   for (const thread of pr.reviewThreads.nodes) {
     thread.comments = collectConnection(thread.comments, {
       label: `thread ${thread.id} comments`,
       id(node) {
-        requireFields(node, ['databaseId', 'author', 'body', 'updatedAt'], 'thread comment');
+        requireFields(node, ['id', 'databaseId', 'author', 'body', 'updatedAt'], 'thread comment');
         if (typeof node.body !== 'string') throw new Error('live thread comment body is malformed');
         platformActorFields(node.author, 'thread comment author');
-        return Number.isSafeInteger(node.databaseId) && node.databaseId > 0
-          ? String(node.databaseId)
-          : null;
+        canonicalReplyId(node);
+        if (!stringId(node.id)) throw new Error('live thread comment node identity is malformed');
+        // A repeated node cannot evade completeness checks by changing between
+        // numeric and null database IDs, or by appearing in another thread.
+        if (replyNodeIds.has(node.id))
+          throw new Error('live thread comment collection duplicates a node identity');
+        replyNodeIds.add(node.id);
+        return node.id;
       },
       next(cursor) {
         const node = boundQuery(THREAD_COMMENTS_QUERY, { id: thread.id, cursor }).data.node;

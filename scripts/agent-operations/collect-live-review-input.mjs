@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { isDeepStrictEqual } from 'node:util';
-import { collectReviewSnapshot, QUERY } from './review-pagination.mjs';
+import { canonicalReplyId, collectReviewSnapshot, QUERY } from './review-pagination.mjs';
 export { QUERY };
 import {
   authorizePullRequestMerge,
@@ -294,7 +294,7 @@ export function buildLiveReviewInput(
     });
     for (const comment of thread.comments?.nodes ?? []) {
       replies.push({
-        id: String(comment.databaseId),
+        id: canonicalReplyId(comment),
         threadId: thread.id,
         updatedAt: comment.updatedAt,
         author: comment.author?.login ?? 'ghost',
