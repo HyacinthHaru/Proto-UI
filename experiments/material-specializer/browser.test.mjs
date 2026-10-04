@@ -186,6 +186,30 @@ try {
   );
   await capture('11-geometry-restored');
   await page.evaluate(() => {
+    document.querySelector('#glass').style.background = '#101010';
+    document.documentElement.style.setProperty('--pui-foreground', 'rgb(255,255,255)');
+  });
+  await page.waitForFunction(() => window.probe.state().quality === 'unavailable');
+  assert.equal(
+    await page.evaluate(() => window.probe.pixels()),
+    'data:,',
+    'theme contrast change withdraws stale enhanced pixels'
+  );
+  await page.evaluate(() => {
+    document.querySelector('#glass').style.background = '';
+    document.documentElement.style.setProperty('--pui-foreground', 'rgb(0,0,0)');
+  });
+  await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
+  await page.evaluate(() => {
+    document.querySelector('#glass').style.opacity = 'var(--test-opacity, 1)';
+    document.documentElement.style.setProperty('--test-opacity', '0.5');
+  });
+  await page.waitForFunction(() => window.probe.state().quality === 'unavailable');
+  await page.evaluate(() => document.documentElement.style.setProperty('--test-opacity', '1'));
+  await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
+  await capture('12-theme-contrast-restored');
+
+  await page.evaluate(() => {
     const iframe = document.createElement('iframe');
     iframe.style.width = '900px';
     iframe.style.height = '720px';

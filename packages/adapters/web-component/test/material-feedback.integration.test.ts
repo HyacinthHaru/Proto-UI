@@ -96,6 +96,95 @@ describe('private material through real WC and Feedback', () => {
     expect(host.style.isolation).toBe('auto');
     host.remove();
   });
+  for (const unsafe of ['color', 'opacity'] as const)
+    it(`recovers from resolved ${unsafe} changes without repainting unchanged fallback`, () => {
+      const host = document.createElement('div');
+      document.body.append(host);
+      const css = {
+        color: unsafe === 'color' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)',
+        opacity: unsafe === 'opacity' ? '0.5' : '1',
+        transform: 'none',
+        position: 'static',
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+        borderBottomLeftRadius: '8px',
+        borderBottomRightRadius: '8px',
+      };
+      const frames = new Map<number, FrameRequestCallback>();
+      let sequence = 0;
+      const computed = vi
+        .spyOn(window, 'getComputedStyle')
+        .mockReturnValue(css as CSSStyleDeclaration);
+      const request = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((fn) => {
+        frames.set(++sequence, fn);
+        return sequence;
+      });
+      const cancel = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation((id) => {
+        frames.delete(id);
+      });
+      const context = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
+      vi.spyOn(host, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 180, 48));
+      const tick = () => {
+        const tasks = [...frames.values()];
+        frames.clear();
+        tasks.forEach((fn) => fn(0));
+      };
+      const apply = vi.fn();
+      const sink = createOwnedTextureVisualSink(
+        host,
+        { apply, clear() {} } as any,
+        { vertex: '', fragment: '', uniforms: [], writeFrame() {} },
+        {
+          current: () => ({
+            generation: 1,
+            width: 1,
+            height: 1,
+            pixels: new Uint8Array([255, 255, 255, 255]),
+            bounds: () => [0, 0, 1, 1],
+          }),
+          subscribe: () => () => {},
+        },
+        {
+          current: () => ({
+            reducedMotion: 'no-preference',
+            reducedTransparency: 'no-preference',
+            contrast: 'no-preference',
+            forcedColors: 'none',
+          }),
+          subscribe: () => () => {},
+        }
+      );
+      try {
+        sink.commit(
+          finalStyleFrame(tw('rounded-full'), 1, 1, {
+            config: button.modules![0].config as OwnedMaterialConfig,
+            pressed: false,
+            disabled: false,
+            bindingsReady: true,
+          })
+        );
+        expect(host.dataset.materialQuality).toBe('unavailable');
+        tick();
+        tick();
+        const unchanged = apply.mock.calls.length;
+        tick();
+        expect(apply).toHaveBeenCalledTimes(unchanged);
+        css.color = 'rgb(0, 0, 0)';
+        css.opacity = '1';
+        tick();
+        expect(context).toHaveBeenCalledOnce();
+        expect(host.dataset.materialReason).toBe('webgl-unavailable');
+      } finally {
+        sink.release(1);
+        expect(frames.size).toBe(0);
+        computed.mockRestore();
+        request.mockRestore();
+        cancel.mockRestore();
+        context.mockRestore();
+        host.remove();
+      }
+    });
+
   it('retires adapter and owner resources when the visual consumer fails before attachment', async () => {
     const beforeDispose = vi.fn();
     const states: Array<{ get(): boolean }> = [];

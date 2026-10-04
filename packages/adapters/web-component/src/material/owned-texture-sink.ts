@@ -119,7 +119,7 @@ export function createOwnedTextureVisualSink(
   let geometryFrame: number | null = null;
   let renderedGeneration = -1;
   let renderedGeometry: (number | string)[] | null = null;
-  let recoverGeometry = false;
+  let recoverInputs = false;
   const sameSnapshot = (a: OwnedTexture | null, b: OwnedTexture) =>
     a !== null && a.generation === b.generation && a.width === b.width && a.height === b.height;
   function stopGeometryWatch() {
@@ -129,38 +129,36 @@ export function createOwnedTextureVisualSink(
   function watchGeometry() {
     if (
       retired ||
-      (!recoverGeometry && canvas.style.display !== 'block') ||
+      (!recoverInputs && canvas.style.display !== 'block') ||
       geometryFrame !== null ||
       !ownerWindow
     )
       return;
     geometryFrame = ownerWindow.requestAnimationFrame(() => {
       geometryFrame = null;
-      if (retired || (!recoverGeometry && canvas.style.display !== 'block')) return;
+      if (retired || (!recoverInputs && canvas.style.display !== 'block')) return;
       try {
         const current = source.current();
         const rect = host.getBoundingClientRect();
         const css = host.ownerDocument.defaultView?.getComputedStyle(host);
-        const next = current
-          ? [
-              rect.x,
-              rect.y,
-              rect.width,
-              rect.height,
-              host.ownerDocument.defaultView?.devicePixelRatio ?? NaN,
-              ...current.bounds(host),
-              css?.transform ?? 'none',
-              css?.borderTopLeftRadius ?? '',
-              css?.borderTopRightRadius ?? '',
-              css?.borderBottomLeftRadius ?? '',
-              css?.borderBottomRightRadius ?? '',
-            ]
-          : null;
+        const next = [
+          rect.x,
+          rect.y,
+          rect.width,
+          rect.height,
+          host.ownerDocument.defaultView?.devicePixelRatio ?? NaN,
+          ...(current ? current.bounds(host) : []),
+          css?.transform ?? 'none',
+          css?.borderTopLeftRadius ?? '',
+          css?.borderTopRightRadius ?? '',
+          css?.borderBottomLeftRadius ?? '',
+          css?.borderBottomRightRadius ?? '',
+          css?.color ?? '',
+          css?.opacity ?? '',
+        ];
         if (
           host.ownerDocument.defaultView !== ownerWindow ||
-          !current ||
-          current.generation !== renderedGeneration ||
-          !next ||
+          (current?.generation ?? -1) !== renderedGeneration ||
           !renderedGeometry ||
           next.length !== renderedGeometry.length ||
           next.some((value, i) => value !== renderedGeometry![i])
@@ -198,7 +196,7 @@ export function createOwnedTextureVisualSink(
     diagnostics.clear();
   }
   function unavailable(reason: string) {
-    recoverGeometry = false;
+    recoverInputs = false;
     stopGeometryWatch();
     canvas.style.display = 'none';
     freeGPU();
@@ -207,6 +205,9 @@ export function createOwnedTextureVisualSink(
     clearDiagnostics();
     diagnostic('materialQuality', 'unavailable');
     diagnostic('materialReason', reason);
+    recoverInputs =
+      !!last?.material && !!program && reason === 'complete-readable-fallback-unavailable';
+    if (recoverInputs) watchGeometry();
   }
   const luminance = (rgb: readonly number[]) =>
     rgb
@@ -220,7 +221,10 @@ export function createOwnedTextureVisualSink(
   };
   function fallback(reason: string) {
     stopGeometryWatch();
-    recoverGeometry = reason === 'geometry-unavailable' || reason === 'geometry-budget';
+    recoverInputs =
+      reason === 'geometry-unavailable' ||
+      reason === 'geometry-budget' ||
+      reason === 'rendered-contrast-unsafe';
     canvas.style.display = 'none';
     restoreOwnedInline();
     const fill = last?.material?.config?.fallback?.fill;
@@ -236,15 +240,14 @@ export function createOwnedTextureVisualSink(
       last?.material?.pressed && !last?.material?.disabled ? 'pressed' : 'rest'
     );
     diagnostic('materialRadius', undefined);
-    if (recoverGeometry) watchGeometry();
+    if (recoverInputs) watchGeometry();
   }
   function freeGPU() {
-    recoverGeometry = false;
+    recoverInputs = false;
     // Revoked leases must not leave readable pixels in preserveDrawingBuffer.
     stopGeometryWatch();
     canvas.width = 0;
     canvas.height = 0;
-    renderedGeometry = null;
     preparedSource = null;
     preparedPixels = null;
     preparedGeneration = -1;
@@ -554,7 +557,7 @@ export function createOwnedTextureVisualSink(
       ownInline('isolation', 'isolate');
       surface.mount(canvas);
       ownInline('background', 'transparent');
-      recoverGeometry = false;
+      recoverInputs = false;
       canvas.style.display = 'block';
       diagnostic('materialQuality', 'experimental-owned-texture');
       diagnostic('materialReason', 'rendered');
@@ -571,6 +574,8 @@ export function createOwnedTextureVisualSink(
         ...frame.bounds,
         css.transform,
         ...radii,
+        css.color,
+        css.opacity,
       ];
       watchGeometry();
     } catch (error) {
