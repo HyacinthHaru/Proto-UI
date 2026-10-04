@@ -6,6 +6,7 @@ import {
   parseContrastRuntimeOptions,
   contrastHeldBinaryTargets,
   assertContrastCaseCoverage,
+  classifyFlatTabPaint,
 } from './contrast-audit-plan.mjs';
 
 const official = ['wc', 'react', 'vue', 'vue2'];
@@ -112,4 +113,55 @@ test('normal PR evidence shards cover every current manifest family exactly once
   const upload = job.steps.find((step) => step.uses?.startsWith('actions/upload-artifact@'));
   assert.ok(upload.with.name.includes('${{ matrix.shard }}'));
   assert.equal(upload.if, 'always()');
+});
+
+test('current flat Tabs accept the recorded native focus rings and reject legacy elevation or motion', () => {
+  // Captured f8894c3c / run37237502096 / tabs-react-light-keyboard-selection-overview.
+  // This literal is replayed source evidence, not a new native observation.
+  const recorded = {
+    shadow:
+      'rgb(220, 235, 254) 0px 0px 0px 2px, rgb(0, 0, 0) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px',
+    transform: 'none',
+    translate: 'none',
+  };
+  assert.equal(classifyFlatTabPaint(recorded).flatPaint, true);
+  assert.equal(classifyFlatTabPaint({ ...recorded, shadow: 'none' }).flatPaint, true);
+  for (const shadow of [
+    'rgb(0, 0, 0) 3px 3px 0px 0px',
+    'rgb(0, 0, 0) 0px 0px 3px 0px',
+    'rgb(0, 0, 0) 0px 0px 0px 2px inset',
+    'malformed',
+  ])
+    assert.equal(classifyFlatTabPaint({ ...recorded, shadow }).flatPaint, false, shadow);
+  for (const transform of ['matrix(1, 0, 0, 1, 1, 0)', 'matrix(2, 0, 0, 2, 0, 0)', 'rotate(2deg)'])
+    assert.equal(classifyFlatTabPaint({ ...recorded, transform }).flatPaint, false, transform);
+  assert.equal(classifyFlatTabPaint({ ...recorded, translate: '1px 0px' }).flatPaint, false);
+  assert.equal(
+    classifyFlatTabPaint({
+      ...recorded,
+      transform: 'matrix(1, 0, 0, 1, 0, 0)',
+      translate: '0px 0px',
+    }).flatPaint,
+    true
+  );
+});
+
+test('Tabs held audit follows current flat prototype criteria while retaining native state and pair guards', async () => {
+  const spec = parse(
+    await readFile(
+      new URL('../../../spec/prototypes/P-BRUTALIST-TABS-TRIGGER.yaml', import.meta.url),
+      'utf8'
+    )
+  );
+  assert.equal(spec.status, 'draft');
+  assert.match(
+    spec.criteria.find((criterion) => criterion.id.endsWith('SELECTED-PAIR-INVARIANT')).text.en,
+    /Selection never adds elevation/
+  );
+  const runner = await readFile(new URL('./audit-brutalist-contrast.mts', import.meta.url), 'utf8');
+  assert.ok(runner.includes('classifyFlatTabPaint(value)'));
+  assert.ok(runner.includes('held.nativeActive === true'));
+  assert.ok(runner.includes('sameSelectedPair(held)'));
+  assert.ok(runner.includes('held.flatPaint === true'));
+  assert.ok(!runner.includes('selectedElevation'));
 });

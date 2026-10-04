@@ -11,6 +11,7 @@ import {
   parseContrastRuntimeOptions,
   contrastHeldBinaryTargets,
   assertContrastCaseCoverage,
+  classifyFlatTabPaint,
 } from './contrast-audit-plan.mjs';
 import { compileContrastAnatomy, compareContrastAnatomy } from './contrast-anatomy.mjs';
 import { BRUTALIST_THEME } from '../../../packages/prototypes/brutalist/src/theme';
@@ -2010,43 +2011,20 @@ try {
                 foreground: style.color,
                 border: style.borderColor,
                 shadow: style.boxShadow,
+                transform: style.transform,
+                translate: style.translate,
               };
             }, physical);
-            const shadowLayers = value.shadow.split(/,(?![^()]*\))/).map((raw) => {
-              const layer = raw.trim();
-              const lengths = [...layer.matchAll(/(-?(?:\d+\.?\d*|\.\d+))px/g)].map((match) =>
-                Number(match[1])
-              );
-              return {
-                raw: layer,
-                inset: layer.includes('inset'),
-                visible: layer !== 'none' && !/^rgba\([^)]*,\s*0(?:\.0*)?\)\s/.test(layer),
-                lengths,
-                black: /^rgba?\(0,\s*0,\s*0(?:,\s*1(?:\.0*)?)?\)\s/.test(layer),
-              };
-            });
-            const visibleOuterElevation = shadowLayers.filter(
-              (layer) =>
-                layer.visible && !layer.inset && (layer.lengths[0] !== 0 || layer.lengths[1] !== 0)
-            );
+            const paint = classifyFlatTabPaint(value);
             return {
               ...value,
+              ...paint,
               achieved:
                 value.achieved &&
                 value.prototype === 'brutalist-tabs-trigger' &&
                 value.role === 'tab' &&
                 value.ariaSelected === 'true' &&
-                shadowLayers.every((layer) => layer.raw === 'none' || layer.lengths.length === 4),
-              shadowLayers,
-              visibleOuterElevation,
-              selectedElevation: visibleOuterElevation.some(
-                (layer) =>
-                  layer.black &&
-                  layer.lengths[0] === 3 &&
-                  layer.lengths[1] === 3 &&
-                  layer.lengths[2] === 0 &&
-                  layer.lengths[3] === 0
-              ),
+                paint.flatPaint,
             };
           };
           await stableFingerprint(page);
@@ -2054,9 +2032,11 @@ try {
           if (
             !releasedBefore.achieved ||
             releasedBefore.nativeActive !== false ||
-            releasedBefore.selectedElevation !== true
+            releasedBefore.flatPaint !== true
           )
-            throw new Error('Committed selected Tabs trigger lacks its released hard elevation.');
+            throw new Error(
+              'Committed selected Tabs trigger violates current flat-paint criteria.'
+            );
           const bounds = await physical.boundingBox();
           if (!bounds) throw new Error('Selected Overview Tabs trigger lacks physical bounds.');
           const sameSelectedPair = (value: Observation) =>
@@ -2078,7 +2058,7 @@ try {
                   held.achieved &&
                   held.nativeActive === true &&
                   sameSelectedPair(held) &&
-                  (held.visibleOuterElevation as unknown[]).length === 0,
+                  held.flatPaint === true,
                 historicalSetup: {
                   boundary:
                     'Released, already-selected Overview before native pointerdown; not the held PNG state.',
@@ -2088,7 +2068,7 @@ try {
                 interactionCriterion: 'P-BRUTALIST-TABS-TRIGGER-INTERACTION',
                 criterionStatus: 'draft',
                 basis:
-                  'Already-selected physical Overview trigger remains aria-selected=true under native held pointer and :active; selected computed fill/foreground/border persist while offset outer elevation is suppressed. Zero-offset focus rings and transparent reset layers are recorded separately, not selected elevation. Observation only, not full criterion or WCAG acceptance.',
+                  'Already-selected physical Overview trigger remains aria-selected=true under native held pointer and :active; selected computed fill/foreground/border persist with no elevation or translation before, during and after press, per the current 0.3.0-alpha.1 draft. Zero-offset focus rings and transparent reset layers are recorded separately, not elevation. Observation only, not full criterion or WCAG acceptance.',
               };
             });
           } finally {
@@ -2104,9 +2084,9 @@ try {
             !releasedAfter.achieved ||
             releasedAfter.nativeActive !== false ||
             !sameSelectedPair(releasedAfter) ||
-            releasedAfter.selectedElevation !== true
+            releasedAfter.flatPaint !== true
           )
-            throw new Error('Selected Tabs trigger did not restore its released hard elevation.');
+            throw new Error('Selected Tabs trigger did not preserve released flat paint.');
         } finally {
           await physical.dispose();
         }
