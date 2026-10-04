@@ -1044,47 +1044,20 @@ async function owned(page: Page, prototype: string): Promise<Locator> {
 async function failedKeyboardDiagnostics(page: Page): Promise<Record<string, unknown>> {
   // Read-only, source-bound diagnostics on this independently supervised local
   // Vite audit server. Never use these private observations as acceptance facts.
-  const moduleURL = new URL(`/@fs${repositoryRoot}/packages/modules/focus/src/center.ts`, baseUrl!);
+  const moduleURL = new URL(
+    `/@fs${join(repositoryRoot, 'packages/modules/focus/src/center.ts')}`,
+    baseUrl!
+  );
   try {
-    return await page.evaluate(async (url) => {
-      const center = (await import(url)).FOCUS_CENTER;
-      const entries = [...center.entries.values()] as any[];
-      const describe = (element: HTMLElement | null) =>
-        element
-          ? {
-              text: element.textContent,
-              role: element.getAttribute('role'),
-              prototype: element.getAttribute('data-projection-prototype'),
-              owner: element.getAttribute('data-projection-owner'),
-              generation: element.getAttribute('data-projection-generation'),
-              pending: element.hasAttribute('data-pui-view-pending'),
-              detached: !!element.closest('[data-pui-view-detached]'),
-              tabIndex: element.tabIndex,
-              connected: element.isConnected,
-            }
-          : null;
-      return {
-        source: url,
-        entryCount: entries.length,
-        nativeFocused: describe(document.activeElement as HTMLElement | null),
-        entries: entries.map((entry) => ({
-          target: describe(entry.getRootTarget()),
-          facts: entry.getFacts(),
-          focusable: entry.isFocusable(),
-          rovingProvider: entry.isRovingProvider(),
-          scopeProvider: entry.isScopeProvider(),
-          pendingFocus: entry.hasPendingFocus(),
-          rovingMembers: entry.isRovingProvider()
-            ? center.getRovingMembers(entry).map((member: any) => describe(member.getRootTarget()))
-            : undefined,
-        })),
-        activeScopes: center.activeScopes.map((scope: any) =>
-          describe(center.entries.get(scope.scope)?.getRootTarget() ?? null)
-        ),
-        boundary:
-          'Private Focus diagnostics only; zero entries can mean a separate module identity and must not be treated as proof of no runtime state.',
-      };
-    }, moduleURL.href);
+    return await page.evaluate(
+      async (url) =>
+        (
+          globalThis as typeof globalThis & {
+            puiContrastProbe: typeof import('./contrast-probe.browser');
+          }
+        ).puiContrastProbe.readContrastFocusDiagnostics((await import(url)).FOCUS_CENTER, url),
+      moduleURL.href
+    );
   } catch (error) {
     return { unavailable: message(error), source: moduleURL.href };
   }

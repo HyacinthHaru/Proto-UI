@@ -542,6 +542,48 @@ export const readContrastPointerPair = (
   };
 };
 
+// Diagnostic only. The runner imports the exact supervised server source;
+// keeping this reader in the probe avoids Node transpiler name helpers leaking
+// into Playwright's serialized page callback.
+export const readContrastFocusDiagnostics = (center: any, url: string) => {
+  const entries = [...center.entries.values()] as any[];
+  const describe = (element: HTMLElement | null) =>
+    element
+      ? {
+          text: element.textContent,
+          role: element.getAttribute('role'),
+          prototype: element.getAttribute('data-projection-prototype'),
+          owner: element.getAttribute('data-projection-owner'),
+          generation: element.getAttribute('data-projection-generation'),
+          pending: element.hasAttribute('data-pui-view-pending'),
+          detached: !!element.closest('[data-pui-view-detached]'),
+          tabIndex: element.tabIndex,
+          connected: element.isConnected,
+        }
+      : null;
+  return {
+    source: url,
+    entryCount: entries.length,
+    nativeFocused: describe(document.activeElement as HTMLElement | null),
+    entries: entries.map((entry) => ({
+      target: describe(entry.getRootTarget()),
+      facts: entry.getFacts(),
+      focusable: entry.isFocusable(),
+      rovingProvider: entry.isRovingProvider(),
+      scopeProvider: entry.isScopeProvider(),
+      pendingFocus: entry.hasPendingFocus(),
+      rovingMembers: entry.isRovingProvider()
+        ? center.getRovingMembers(entry).map((member: any) => describe(member.getRootTarget()))
+        : undefined,
+    })),
+    activeScopes: center.activeScopes.map((scope: any) =>
+      describe(center.entries.get(scope.scope)?.getRootTarget() ?? null)
+    ),
+    boundary:
+      'Private Focus diagnostics only; zero entries can mean a separate module identity and must not be treated as proof of no runtime state.',
+  };
+};
+
 export const collectContrastFrame = async ({
   image,
   family,
