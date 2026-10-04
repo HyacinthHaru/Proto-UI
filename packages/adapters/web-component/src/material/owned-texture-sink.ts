@@ -118,7 +118,8 @@ export function createOwnedTextureVisualSink(
   let ownerWindow = host.ownerDocument.defaultView;
   let geometryFrame: number | null = null;
   let renderedGeneration = -1;
-  let renderedGeometry: number[] | null = null;
+  let renderedGeometry: (number | string)[] | null = null;
+  let recoverGeometry = false;
   const sameSnapshot = (a: OwnedTexture | null, b: OwnedTexture) =>
     a !== null && a.generation === b.generation && a.width === b.width && a.height === b.height;
   function stopGeometryWatch() {
@@ -126,14 +127,20 @@ export function createOwnedTextureVisualSink(
     geometryFrame = null;
   }
   function watchGeometry() {
-    if (retired || canvas.style.display !== 'block' || geometryFrame !== null || !ownerWindow)
+    if (
+      retired ||
+      (!recoverGeometry && canvas.style.display !== 'block') ||
+      geometryFrame !== null ||
+      !ownerWindow
+    )
       return;
     geometryFrame = ownerWindow.requestAnimationFrame(() => {
       geometryFrame = null;
-      if (retired || canvas.style.display !== 'block') return;
+      if (retired || (!recoverGeometry && canvas.style.display !== 'block')) return;
       try {
         const current = source.current();
         const rect = host.getBoundingClientRect();
+        const css = host.ownerDocument.defaultView?.getComputedStyle(host);
         const next = current
           ? [
               rect.x,
@@ -142,6 +149,11 @@ export function createOwnedTextureVisualSink(
               rect.height,
               host.ownerDocument.defaultView?.devicePixelRatio ?? NaN,
               ...current.bounds(host),
+              css?.transform ?? 'none',
+              css?.borderTopLeftRadius ?? '',
+              css?.borderTopRightRadius ?? '',
+              css?.borderBottomLeftRadius ?? '',
+              css?.borderBottomRightRadius ?? '',
             ]
           : null;
         if (
@@ -152,8 +164,11 @@ export function createOwnedTextureVisualSink(
           !renderedGeometry ||
           next.length !== renderedGeometry.length ||
           next.some((value, i) => value !== renderedGeometry![i])
-        )
+        ) {
+          renderedGeometry = next;
+          renderedGeneration = current?.generation ?? -1;
           repaint();
+        }
       } catch {
         freeGPU();
         fallback('geometry-observation-failed');
@@ -162,25 +177,36 @@ export function createOwnedTextureVisualSink(
     });
   }
 
+  const diagnostics = new Map<
+    string,
+    { before: string | undefined; applied: string | undefined }
+  >();
+  function diagnostic(key: string, value: string | undefined) {
+    const current = host.dataset[key];
+    const entry = diagnostics.get(key);
+    const before = entry && current === entry.applied ? entry.before : current;
+    if (value === undefined) delete host.dataset[key];
+    else host.dataset[key] = value;
+    diagnostics.set(key, { before, applied: value });
+  }
   function clearDiagnostics() {
-    for (const key of [
-      'materialQuality',
-      'materialReason',
-      'materialFrame',
-      'materialPhase',
-      'materialRadius',
-    ])
-      delete host.dataset[key];
+    for (const [key, entry] of diagnostics) {
+      if (host.dataset[key] !== entry.applied) continue;
+      if (entry.before === undefined) delete host.dataset[key];
+      else host.dataset[key] = entry.before;
+    }
+    diagnostics.clear();
   }
   function unavailable(reason: string) {
+    recoverGeometry = false;
     stopGeometryWatch();
     canvas.style.display = 'none';
     freeGPU();
     restoreOwnedInline();
     if (last) style.apply([...last.style.tokens]);
     clearDiagnostics();
-    host.dataset.materialQuality = 'unavailable';
-    host.dataset.materialReason = reason;
+    diagnostic('materialQuality', 'unavailable');
+    diagnostic('materialReason', reason);
   }
   const luminance = (rgb: readonly number[]) =>
     rgb
@@ -194,6 +220,7 @@ export function createOwnedTextureVisualSink(
   };
   function fallback(reason: string) {
     stopGeometryWatch();
+    recoverGeometry = reason === 'geometry-unavailable' || reason === 'geometry-budget';
     canvas.style.display = 'none';
     restoreOwnedInline();
     const fill = last?.material?.config?.fallback?.fill;
@@ -202,13 +229,17 @@ export function createOwnedTextureVisualSink(
       return;
     }
     ownInline('background', color(fill));
-    host.dataset.materialQuality = 'opaque-fallback';
-    host.dataset.materialReason = reason;
-    host.dataset.materialPhase =
-      last?.material?.pressed && !last?.material?.disabled ? 'pressed' : 'rest';
-    delete host.dataset.materialRadius;
+    diagnostic('materialQuality', 'opaque-fallback');
+    diagnostic('materialReason', reason);
+    diagnostic(
+      'materialPhase',
+      last?.material?.pressed && !last?.material?.disabled ? 'pressed' : 'rest'
+    );
+    diagnostic('materialRadius', undefined);
+    if (recoverGeometry) watchGeometry();
   }
   function freeGPU() {
+    recoverGeometry = false;
     // Revoked leases must not leave readable pixels in preserveDrawingBuffer.
     stopGeometryWatch();
     canvas.width = 0;
@@ -523,14 +554,24 @@ export function createOwnedTextureVisualSink(
       ownInline('isolation', 'isolate');
       surface.mount(canvas);
       ownInline('background', 'transparent');
+      recoverGeometry = false;
       canvas.style.display = 'block';
-      host.dataset.materialQuality = 'experimental-owned-texture';
-      host.dataset.materialReason = 'rendered';
-      host.dataset.materialFrame = String(++paints);
-      host.dataset.materialPhase = material.pressed && !material.disabled ? 'pressed' : 'rest';
-      host.dataset.materialRadius = String(radius);
+      diagnostic('materialQuality', 'experimental-owned-texture');
+      diagnostic('materialReason', 'rendered');
+      diagnostic('materialFrame', String(++paints));
+      diagnostic('materialPhase', material.pressed && !material.disabled ? 'pressed' : 'rest');
+      diagnostic('materialRadius', String(radius));
       renderedGeneration = texture.generation;
-      renderedGeometry = [rect.x, rect.y, rect.width, rect.height, dpr, ...frame.bounds];
+      renderedGeometry = [
+        rect.x,
+        rect.y,
+        rect.width,
+        rect.height,
+        dpr,
+        ...frame.bounds,
+        css.transform,
+        ...radii,
+      ];
       watchGeometry();
     } catch (error) {
       freeGPU();
