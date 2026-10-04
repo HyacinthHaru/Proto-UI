@@ -10,6 +10,35 @@ const LICENSE_LABELS = new Set([
   'MIT-chain-review',
   'MIT-Tim-Lehmann-and-Sebastian-Degenaar-notices-required',
 ]);
+const INTERNAL_TEXTURE_KINDS = ['color-texture', 'data-texture'];
+const APPLICATION_TEXTURE_KINDS = [
+  ...INTERNAL_TEXTURE_KINDS,
+  ...SOURCE_KINDS.filter((kind) => kind !== 'host-compositor-backdrop'),
+];
+const TARGET_PROFILES = new Map([
+  [
+    'webgpu-wgsl-fragment',
+    { pass: 'fragment', abi: 'wgsl-uniform-buffer', samplers: 'named', extension: '.wgsl' },
+  ],
+  [
+    'flutter-fragment',
+    {
+      pass: 'fragment',
+      abi: 'flutter-reflected-float-slots',
+      samplers: 'indexed',
+      extension: '.frag',
+    },
+  ],
+  [
+    'flutter-impeller-image-filter',
+    {
+      pass: 'host-image-filter',
+      abi: 'flutter-reflected-float-slots',
+      samplers: 'indexed',
+      extension: '.frag',
+    },
+  ],
+]);
 const nonempty = (value) => typeof value === 'string' && value.trim().length > 0;
 // Inspection-only data model. It neither loads shader code nor grants execution capability.
 export function inspectGraph(graph) {
@@ -132,7 +161,8 @@ export function inspectGraph(graph) {
           typeof sampler.name !== 'string' ||
           !sampler.name ||
           !['host-injected', 'application-bound'].includes(sampler.ownership) ||
-          (sampler.ownership === 'application-bound' && !nonempty(sampler.resourceKind)) ||
+          (sampler.ownership === 'application-bound' &&
+            !APPLICATION_TEXTURE_KINDS.includes(sampler.resourceKind)) ||
           (sampler.ownership === 'host-injected' && !SOURCE_KINDS.includes(sampler.sourceKind))
         )
           error('invalid-sampler-contract', kernel.id);
@@ -205,6 +235,15 @@ export function inspectGraph(graph) {
   }
   const external = new Set([...graph.sources, ...graph.data].map((x) => x.id));
   for (const k of kernels.values()) {
+    const profile = TARGET_PROFILES.get(k.targetProfile);
+    if (!profile) error('unknown-kernel-target-profile', k.id);
+    else if (
+      k.samplerBinding !== profile.samplers ||
+      typeof k.upstream?.path !== 'string' ||
+      !k.upstream.path.endsWith(profile.extension) ||
+      k.uniformBlocks.some((id) => blocks.get(id)?.abi !== profile.abi)
+    )
+      error('kernel-target-abi-mismatch', k.id);
     if (
       !k.upstream ||
       typeof k.upstream.repo !== 'string' ||
@@ -242,6 +281,15 @@ export function inspectGraph(graph) {
       error('incomplete-source-contract', s.id);
   }
   for (const r of graph.resources) {
+    if (!INTERNAL_TEXTURE_KINDS.includes(r.kind)) error('unknown-resource-kind', r.id);
+    if (graph.passes.some((pass) => pass.reads.includes(r.id))) {
+      const hostManaged = r.format === 'host-managed-ui-image';
+      if (
+        r.filter !== (hostManaged ? 'Flutter-FilterQuality.medium' : 'linear') ||
+        r.wrap !== (hostManaged ? 'shader-clamp-0-1' : 'clamp-to-edge')
+      )
+        error('invalid-texture-sampling', r.id);
+    }
     for (const key of ['dprBinding', 'pixelBudgetBinding'])
       if (r.extent?.[key] !== undefined && !frameInputs.has(r.extent[key]))
         error('missing-frame-input', `${r.id}:${key}`);
@@ -259,6 +307,50 @@ export function inspectGraph(graph) {
       !nonempty(r.clear)
     )
       error('incomplete-resource-contract', r.id);
+  }
+  const requiresLiveCoordinates = graph.kernels.some(
+    (kernel) => kernel.targetProfile === 'flutter-impeller-image-filter'
+  );
+  if (requiresLiveCoordinates || graph.coordinateMapping !== undefined) {
+    const mapping = graph.coordinateMapping;
+    const roles = {
+      bounds: { type: 'rect<f32>', space: 'group-local-logical-pixels' },
+      transform: {
+        type: 'mat4<f32>',
+        from: 'group-local-logical-pixels',
+        to: 'screen-logical-pixels',
+      },
+      screenDpr: { type: 'f32', owner: 'view' },
+      passRect: { type: 'rect<f32>', space: 'screen-physical-pixels' },
+      matteDpr: { type: 'f32', owner: 'adapter-geometry-budget' },
+    };
+    if (
+      !record(mapping) ||
+      mapping.kind !== 'flutter-live-screen-to-pass' ||
+      !record(mapping.bindings) ||
+      Object.keys(roles).some((role) => !nonempty(mapping.bindings[role]))
+    )
+      error('invalid-coordinate-mapping', 'graph');
+    else {
+      for (const [role, contract] of Object.entries(roles)) {
+        const input = frameInputs.get(mapping.bindings[role]);
+        if (!input || Object.entries(contract).some(([key, value]) => input[key] !== value))
+          error('coordinate-input-mismatch', role);
+      }
+      const binding = mapping.bindings;
+      const resource = graph.resources.find((r) => r.id === mapping.resource);
+      if (
+        binding.screenDpr === binding.matteDpr ||
+        frameInputs.get(binding.screenDpr)?.distinctFrom !== binding.matteDpr ||
+        !resource ||
+        resource.extent?.dprBinding !== binding.matteDpr ||
+        !strings(resource.coordinateBindings) ||
+        ['bounds', 'transform', 'screenDpr', 'passRect'].some(
+          (role) => !resource.coordinateBindings.includes(binding[role])
+        )
+      )
+        error('coordinate-input-mismatch', 'resource');
+    }
   }
   for (const d of graph.data) {
     if (
@@ -293,6 +385,8 @@ export function inspectGraph(graph) {
   }
   const writers = new Map();
   for (const p of passes.values()) {
+    const profile = TARGET_PROFILES.get(kernels.get(p.kernel)?.targetProfile);
+    if (profile && p.kind !== profile.pass) error('kernel-pass-profile-mismatch', p.id);
     if (record(p.update) && p.update.kind === 'any-dirty') {
       if (
         !strings(p.update.dependencies) ||
@@ -429,6 +523,7 @@ export function inspectGraph(graph) {
   for (const block of graph.uniformBlocks) {
     const names = new Set(),
       intervals = [];
+    let floatCursor = 0;
     if (!['wgsl-uniform-buffer', 'flutter-reflected-float-slots'].includes(block.abi))
       error('unknown-uniform-abi', block.id);
     if (block.abi === 'wgsl-uniform-buffer' && (!Number.isInteger(block.bytes) || block.bytes < 1))
@@ -442,6 +537,24 @@ export function inspectGraph(graph) {
         error('invalid-uniform', block.id);
       names.add(field.name);
       if (block.abi === 'flutter-reflected-float-slots') {
+        const vector = /^(?:vec([234])f|vec([234])<f32>)$/.exec(field.type);
+        const width = field.type === 'f32' ? 1 : vector ? Number(vector[1] ?? vector[2]) : null;
+        const count = field.count ?? 1;
+        const size =
+          width !== null && Number.isSafeInteger(count) && count > 0 ? width * count : null;
+        const range = field.floatSlotRange;
+        if (
+          width === null ||
+          !Number.isSafeInteger(count) ||
+          count < 1 ||
+          !record(range) ||
+          !Number.isSafeInteger(range.start) ||
+          !Number.isSafeInteger(range.count) ||
+          range.start !== floatCursor ||
+          range.count !== size
+        )
+          error('reflected-slot-range', `${block.id}:${field.name}`);
+        if (width !== null && Number.isSafeInteger(size) && size > 0) floatCursor += size;
         if (
           !record(field.binding) ||
           !['frame-value', 'host-injected', 'constant'].includes(field.binding.kind)
@@ -536,6 +649,11 @@ export function inspectGraph(graph) {
         intervals.push([field.offset, field.offset + field.bytes]);
       }
     }
+    if (
+      block.abi === 'flutter-reflected-float-slots' &&
+      (!Number.isSafeInteger(block.floatSlotCount) || block.floatSlotCount !== floatCursor)
+    )
+      error('reflected-slot-count', block.id);
     for (const name of block.reservedAutoInputs ?? []) {
       const uniform = (block.fields ?? []).find((f) => f.name === name);
       if (uniform && uniform.binding?.kind !== 'host-injected')

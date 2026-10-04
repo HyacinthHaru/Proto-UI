@@ -34,7 +34,8 @@
           "derived-morph-state",
           "pointer-spring-state"
         ]
-      }
+      },
+      "targetProfile": "webgpu-wgsl-fragment"
     },
     {
       "id": "blur-v",
@@ -63,7 +64,8 @@
           "type": "bounded-array<f32>"
         }
       ],
-      "invalidation": "upstream-or-blur-parameter-dirty"
+      "invalidation": "upstream-or-blur-parameter-dirty",
+      "targetProfile": "webgpu-wgsl-fragment"
     },
     {
       "id": "blur-h",
@@ -92,7 +94,8 @@
           "type": "bounded-array<f32>"
         }
       ],
-      "invalidation": "upstream-or-blur-parameter-dirty"
+      "invalidation": "upstream-or-blur-parameter-dirty",
+      "targetProfile": "webgpu-wgsl-fragment"
     },
     {
       "id": "main",
@@ -121,7 +124,8 @@
       ],
       "samplerBinding": "named",
       "dataBindings": [],
-      "invalidation": "frame-bindings-dirty"
+      "invalidation": "frame-bindings-dirty",
+      "targetProfile": "webgpu-wgsl-fragment"
     }
   ],
   "sources": [

@@ -581,3 +581,104 @@ test('f32 data allocation bounds agree with the declared element count', async (
     assert(inspectGraph(graph).errors.some((e) => e.code === 'data-abi-byte-bounds'));
   }
 });
+
+test('sampled intermediates require the modeled filter and wrap contracts', async () => {
+  for (const field of ['filter', 'wrap']) {
+    for (const value of [undefined, null, 7, {}, 'invented-sampling']) {
+      const graph = await load('studio');
+      if (value === undefined) delete graph.resources[0][field];
+      else graph.resources[0][field] = value;
+      assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-texture-sampling'));
+    }
+  }
+  const flutter = await load('flutter');
+  delete flutter.resources[0].filter;
+  assert(inspectGraph(flutter).errors.some((e) => e.code === 'invalid-texture-sampling'));
+});
+
+test('matching typos do not invent application texture resource kinds', async () => {
+  for (const kind of ['dtaa-texture', 'host-compositor-backdrop', {}, null]) {
+    const graph = await load('flutter');
+    graph.resources[0].kind = kind;
+    graph.kernels[1].samplers[1].resourceKind = kind;
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+  const graph = await load('flutter');
+  graph.resources[0].kind = 'dtaa-texture';
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'unknown-resource-kind'));
+});
+
+test('live coordinates structurally require screen DPR independently of matte DPR', async () => {
+  const missing = await load('flutter');
+  missing.frameInputs = missing.frameInputs.filter((f) => f.id !== 'screen-device-pixel-ratio');
+  assert.equal(inspectGraph(missing).valid, false);
+  const disconnected = await load('flutter');
+  delete disconnected.coordinateMapping.bindings;
+  assert(inspectGraph(disconnected).errors.some((e) => e.code === 'invalid-coordinate-mapping'));
+  const wrongSpace = await load('flutter');
+  wrongSpace.frameInputs.find((f) => f.id === 'matte-transform').to = 'screen-physical-pixels';
+  assert(inspectGraph(wrongSpace).errors.some((e) => e.code === 'coordinate-input-mismatch'));
+  for (const mutate of [
+    (g) => delete g.coordinateMapping,
+    (g) => (g.coordinateMapping.bindings.screenDpr = 'matte-dpr'),
+    (g) => (g.coordinateMapping.resource = 'missing'),
+    (g) => (g.resources[0].coordinateBindings = ['geometry-local-bounds', 'matte-transform']),
+  ]) {
+    const graph = await load('flutter');
+    mutate(graph);
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+});
+
+test('kernel target profiles bind the pass kind and uniform ABI together', async () => {
+  const host = await load('studio');
+  host.passes[3].kind = 'host-image-filter';
+  host.passes[3].blend = 'premultiplied-source-over';
+  assert(inspectGraph(host).errors.some((e) => e.code === 'kernel-pass-profile-mismatch'));
+  const fragment = await load('flutter');
+  fragment.passes[1].kind = 'fragment';
+  fragment.passes[1].drawDomain = 'geometry-matte-bounds';
+  assert(inspectGraph(fragment).errors.some((e) => e.code === 'kernel-pass-profile-mismatch'));
+  const abi = await load('studio');
+  abi.kernels[0].targetProfile = 'flutter-fragment';
+  assert(inspectGraph(abi).errors.some((e) => e.code === 'kernel-target-abi-mismatch'));
+  for (const profile of [undefined, 'unmodeled-target', null, {}]) {
+    const graph = await load('studio');
+    if (profile === undefined) delete graph.kernels[0].targetProfile;
+    else graph.kernels[0].targetProfile = profile;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'unknown-kernel-target-profile'));
+  }
+});
+
+test('all reflected uniforms retain exact ordered float-slot ranges', async () => {
+  const swapped = await load('flutter');
+  const fields = swapped.uniformBlocks[1].fields;
+  [fields[1], fields[2]] = [fields[2], fields[1]];
+  assert(inspectGraph(swapped).errors.some((e) => e.code === 'reflected-slot-range'));
+  for (const range of [undefined, null, {}, { start: 2, count: 1 }, { start: 0, count: 2 }]) {
+    const graph = await load('flutter');
+    if (range === undefined) delete graph.uniformBlocks[1].fields[1].floatSlotRange;
+    else graph.uniformBlocks[1].fields[1].floatSlotRange = range;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'reflected-slot-range'));
+  }
+  const count = await load('flutter');
+  count.uniformBlocks[0].floatSlotCount = 115;
+  assert(inspectGraph(count).errors.some((e) => e.code === 'reflected-slot-count'));
+  const original = await load('flutter');
+  for (const [blockIndex, block] of original.uniformBlocks.entries())
+    for (const [fieldIndex] of block.fields.entries()) {
+      const graph = structuredClone(original);
+      delete graph.uniformBlocks[blockIndex].fields[fieldIndex].floatSlotRange;
+      assert(inspectGraph(graph).errors.some((e) => e.code === 'reflected-slot-range'));
+    }
+  assert.deepEqual(
+    original.uniformBlocks.map((b) => b.floatSlotCount),
+    [121, 45]
+  );
+  assert.deepEqual(original.uniformBlocks[0].fields[4].floatSlotRange, { start: 120, count: 1 });
+  for (const count of [null, {}, { toString: null }, '2', Infinity]) {
+    const graph = structuredClone(original);
+    graph.uniformBlocks[0].fields[3].count = count;
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+});

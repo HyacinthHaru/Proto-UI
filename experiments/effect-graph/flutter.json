@@ -19,7 +19,8 @@
       "samplers": [],
       "samplerBinding": "indexed",
       "dataBindings": [],
-      "invalidation": "geometry-or-layout-or-optical-profile-dirty"
+      "invalidation": "geometry-or-layout-or-optical-profile-dirty",
+      "targetProfile": "flutter-fragment"
     },
     {
       "id": "render",
@@ -50,7 +51,8 @@
       ],
       "samplerBinding": "indexed",
       "dataBindings": [],
-      "invalidation": "compositor-or-uniform-frame"
+      "invalidation": "compositor-or-uniform-frame",
+      "targetProfile": "flutter-impeller-image-filter"
     }
   ],
   "sources": [
@@ -98,7 +100,8 @@
       "coordinateBindings": [
         "geometry-local-bounds",
         "matte-transform",
-        "enclosing-filter-pass-rect"
+        "enclosing-filter-pass-rect",
+        "screen-device-pixel-ratio"
       ],
       "colorSpace": {
         "status": "unresolved",
@@ -107,7 +110,8 @@
       "orientation": {
         "status": "unresolved",
         "obligation": "verify local/physical/UV axes and transforms for the target variant"
-      }
+      },
+      "wrap": "shader-clamp-0-1"
     }
   ],
   "data": [],
@@ -151,6 +155,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uSize"
+          },
+          "floatSlotRange": {
+            "start": 0,
+            "count": 2
           }
         },
         {
@@ -159,6 +167,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uOpticalProps"
+          },
+          "floatSlotRange": {
+            "start": 2,
+            "count": 4
           }
         },
         {
@@ -167,6 +179,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uShapeSettings"
+          },
+          "floatSlotRange": {
+            "start": 6,
+            "count": 2
           }
         },
         {
@@ -176,6 +192,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uShapeData"
+          },
+          "floatSlotRange": {
+            "start": 8,
+            "count": 112
           }
         },
         {
@@ -184,9 +204,14 @@
           "binding": {
             "kind": "frame-value",
             "id": "uNativeEdge"
+          },
+          "floatSlotRange": {
+            "start": 120,
+            "count": 1
           }
         }
-      ]
+      ],
+      "floatSlotCount": 121
     },
     {
       "id": "render",
@@ -199,6 +224,10 @@
             "kind": "host-injected",
             "id": "ImageFilter.shader.inputSize",
             "floatSlots": [0, 1]
+          },
+          "floatSlotRange": {
+            "start": 0,
+            "count": 2
           }
         },
         {
@@ -207,6 +236,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uGeometryOffset"
+          },
+          "floatSlotRange": {
+            "start": 2,
+            "count": 2
           }
         },
         {
@@ -215,6 +248,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uGeometrySize"
+          },
+          "floatSlotRange": {
+            "start": 4,
+            "count": 2
           }
         },
         {
@@ -223,6 +260,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uGlassColor"
+          },
+          "floatSlotRange": {
+            "start": 6,
+            "count": 4
           }
         },
         {
@@ -231,6 +272,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uOpticalProps"
+          },
+          "floatSlotRange": {
+            "start": 10,
+            "count": 4
           }
         },
         {
@@ -239,6 +284,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uLightConfig"
+          },
+          "floatSlotRange": {
+            "start": 14,
+            "count": 3
           }
         },
         {
@@ -247,6 +296,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uLightDirection"
+          },
+          "floatSlotRange": {
+            "start": 17,
+            "count": 2
           }
         },
         {
@@ -255,6 +308,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uWhiten"
+          },
+          "floatSlotRange": {
+            "start": 19,
+            "count": 1
           }
         },
         {
@@ -263,6 +320,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uWhitenGated"
+          },
+          "floatSlotRange": {
+            "start": 20,
+            "count": 1
           }
         },
         {
@@ -271,6 +332,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uPinchStrength"
+          },
+          "floatSlotRange": {
+            "start": 21,
+            "count": 1
           }
         },
         {
@@ -279,6 +344,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uBackgroundFallback"
+          },
+          "floatSlotRange": {
+            "start": 22,
+            "count": 4
           }
         },
         {
@@ -287,6 +356,10 @@
           "binding": {
             "kind": "constant",
             "value": [0, 0]
+          },
+          "floatSlotRange": {
+            "start": 26,
+            "count": 2
           }
         },
         {
@@ -295,6 +368,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uEdgeConfig"
+          },
+          "floatSlotRange": {
+            "start": 28,
+            "count": 4
           }
         },
         {
@@ -303,6 +380,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uPlatformViewMode"
+          },
+          "floatSlotRange": {
+            "start": 32,
+            "count": 1
           }
         },
         {
@@ -311,6 +392,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uBodyMode"
+          },
+          "floatSlotRange": {
+            "start": 33,
+            "count": 1
           }
         },
         {
@@ -319,6 +404,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uTouchPosition"
+          },
+          "floatSlotRange": {
+            "start": 34,
+            "count": 2
           }
         },
         {
@@ -327,6 +416,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uTouchIntensity"
+          },
+          "floatSlotRange": {
+            "start": 36,
+            "count": 1
           }
         },
         {
@@ -335,6 +428,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uRimConfig"
+          },
+          "floatSlotRange": {
+            "start": 37,
+            "count": 3
           }
         },
         {
@@ -343,6 +440,10 @@
           "binding": {
             "kind": "frame-value",
             "id": "uLensModel"
+          },
+          "floatSlotRange": {
+            "start": 40,
+            "count": 1
           }
         },
         {
@@ -351,10 +452,15 @@
           "binding": {
             "kind": "constant",
             "value": [0, 0, 0, 0]
+          },
+          "floatSlotRange": {
+            "start": 41,
+            "count": 4
           }
         }
       ],
-      "reservedAutoInputs": ["uSize", "uBackgroundTexture"]
+      "reservedAutoInputs": ["uSize", "uBackgroundTexture"],
+      "floatSlotCount": 45
     }
   ],
   "requirements": [
@@ -579,6 +685,15 @@
     ],
     "geometrySize": "transformed logical bounds size multiplied by screen-device-pixel-ratio",
     "matteRasterDpr": "controls geometry texture extent/resampling only; never substitutes for screen positioning",
-    "source": "lib/src/engine/rendering/liquid_glass_render_object.dart:491-562"
+    "source": "lib/src/engine/rendering/liquid_glass_render_object.dart:491-562",
+    "kind": "flutter-live-screen-to-pass",
+    "resource": "geometry",
+    "bindings": {
+      "bounds": "geometry-local-bounds",
+      "transform": "matte-transform",
+      "screenDpr": "screen-device-pixel-ratio",
+      "passRect": "enclosing-filter-pass-rect",
+      "matteDpr": "matte-dpr"
+    }
   }
 }
