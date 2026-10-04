@@ -320,3 +320,78 @@ jobs:
           path: ${{ runner.temp }}/homepage-evidence
           if-no-files-found: warn
           retention-days: 30
+
+  mobile-navigation-reading:
+    # Additive exact-source evidence for the mobile interaction increment.
+    # Keep the older homepage comparison and all existing acceptance budgets.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      MOBILE_BASELINE_SHA: ec6e5710d0aaeee6d5844f9c996c1d7ca594aa31
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          path: candidate
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.MOBILE_BASELINE_SHA }}
+          path: baseline
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Prepare the same official browser and fonts for both revisions
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          corepack enable
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+          mkdir -p "$RUNNER_TEMP/mobile-interaction"
+          CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          "$CHROME" --version | tee "$RUNNER_TEMP/mobile-interaction/browser.txt"
+          echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
+          for worktree in baseline candidate; do
+            (
+              cd "$worktree"
+              corepack pnpm@10.32.1 install --frozen-lockfile --ignore-scripts
+              corepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar
+            )
+          done
+      - name: Capture the exact pre-change mobile experience
+        working-directory: baseline
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          node --import tsx "$GITHUB_WORKSPACE/candidate/apps/www/scripts/capture-mobile-interaction-evidence.ts" \
+            --revision-kind baseline --expected-revision "$MOBILE_BASELINE_SHA" \
+            --out "$RUNNER_TEMP/mobile-interaction/baseline" \
+            2>&1 | tee "$RUNNER_TEMP/mobile-interaction/baseline.log"
+      - name: Retain the pre-change mobile pictures before candidate validation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-before-${{ env.MOBILE_BASELINE_SHA }}-probe-${{ env.CANDIDATE_SHA }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-interaction/baseline
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Capture and regress the exact candidate mobile interactions
+        if: always()
+        working-directory: candidate
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          node --import tsx apps/www/scripts/capture-mobile-interaction-evidence.ts \
+            --revision-kind candidate --expected-revision "$CANDIDATE_SHA" \
+            --out "$RUNNER_TEMP/mobile-interaction/candidate" \
+            2>&1 | tee "$RUNNER_TEMP/mobile-interaction/candidate.log"
+      - name: Preserve before/after mobile screenshots and all failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-interaction-${{ env.CANDIDATE_SHA }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mobile-interaction
+          if-no-files-found: error
+          retention-days: 30

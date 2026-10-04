@@ -55,26 +55,46 @@ const navigation = [
       <div class="site-header-panel" id="site-header-panel" data-site-header-panel>
         <div data-site-header-surface-mount />
         <div data-site-header-panel-content>
-          <nav
-            class="site-header-navigation site-header-popup-navigation"
-            data-site-header-navigation
-            aria-label={zh ? '主导航' : 'Primary navigation'}
-          >
-            {navigation.map(({ label, href }) => (
-              <a data-site-native-button href={href}>
-                {label}
-              </a>
-            ))}
-          </nav>
-          <div data-site-header-compact-context />
-          <div class="site-header-settings" id="site-header-settings" data-site-header-settings>
-            <div class="site-header-setting">
-              <span class="site-header-setting-label">{zh ? '语言' : 'Language'}</span>
-              <LanguageSelect />
-            </div>
-            <div class="site-header-setting">
-              <span class="site-header-setting-label">{zh ? '社区' : 'Community'}</span>
-              <SocialIcons />
+          <div class="site-header-panel-heading" data-site-header-panel-heading>
+            <span>{menuLabel}</span>
+            <Button
+              data-site-button
+              data-site-control-family={family}
+              data-site-menu-close
+              data-variant={family === 'brutalist' ? 'surface' : 'ghost'}
+              data-size="icon"
+              aria-label={zh ? '关闭导航' : 'Close navigation'}
+              title={zh ? '关闭导航' : 'Close navigation'}
+            >
+              <span class="site-header-close-icon" aria-hidden="true" />
+            </Button>
+          </div>
+          <div data-site-header-panel-body>
+            <nav
+              class="site-header-navigation site-header-popup-navigation"
+              data-site-header-navigation
+              aria-label={zh ? '主导航' : 'Primary navigation'}
+            >
+              <span class="site-header-group-label">{zh ? '浏览' : 'Explore'}</span>
+              {navigation.map(({ label, href }) => (
+                <a data-site-native-button href={href}>
+                  {label}
+                </a>
+              ))}
+            </nav>
+            <div data-site-header-compact-context />
+            <div class="site-header-settings" id="site-header-settings" data-site-header-settings>
+              <span class="site-header-group-label">
+                {zh ? '偏好与社区' : 'Preferences and community'}
+              </span>
+              <div class="site-header-setting">
+                <span class="site-header-setting-label">{zh ? '语言' : 'Language'}</span>
+                <LanguageSelect />
+              </div>
+              <div class="site-header-setting">
+                <span class="site-header-setting-label">{zh ? '社区' : 'Community'}</span>
+                <SocialIcons />
+              </div>
             </div>
           </div>
         </div>
@@ -119,7 +139,7 @@ const navigation = [
 }
 
 <script>
-  import { initSiteControls } from '../site-shadcn-controls';
+  import { initSiteControls, isSiteButtonActivation } from '../site-shadcn-controls';
   import { initSiteHeaderDisclosure } from '../site-header-disclosure';
   import { initDocumentationHeaderSurface } from '../site-header-surface';
   const initialize = () => {
@@ -134,6 +154,11 @@ const navigation = [
         if (event instanceof CustomEvent) disclosure.toggle();
       };
       button.addEventListener('click', onClick);
+      const closeButton = root.querySelector<HTMLElement>('[data-site-menu-close]');
+      const onClose = (event: Event) => {
+        if (isSiteButtonActivation(event)) disclosure.close(true);
+      };
+      closeButton?.addEventListener('click', onClose);
       button.dataset.siteMenuBound = 'true';
       disclosure.enhance();
       document.addEventListener(
@@ -141,6 +166,7 @@ const navigation = [
         () => {
           void surface?.destroy();
           button.removeEventListener('click', onClick);
+          closeButton?.removeEventListener('click', onClose);
           unbind();
           delete button.dataset.siteMenuBound;
         },

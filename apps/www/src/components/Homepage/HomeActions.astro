@@ -17,6 +17,7 @@ interface Props {
   themeButton?: boolean;
   themeIcon?: boolean;
   menuButton?: boolean;
+  closeMenuButton?: boolean;
 }
 const {
   id,
@@ -26,10 +27,17 @@ const {
   themeButton = false,
   themeIcon = false,
   menuButton = false,
+  closeMenuButton = false,
 } = Astro.props;
 const locale = Astro.locals.starlightRoute.locale;
 const themeLabel = locale === 'zh-cn' ? '切换主题' : 'Toggle theme';
-const menuLabel = locale === 'zh-cn' ? '导航与设置' : 'Navigation and settings';
+const menuLabel = closeMenuButton
+  ? locale === 'zh-cn'
+    ? '关闭导航'
+    : 'Close navigation'
+  : locale === 'zh-cn'
+    ? '导航与设置'
+    : 'Navigation and settings';
 ---
 
 <div
@@ -39,7 +47,8 @@ const menuLabel = locale === 'zh-cn' ? '导航与设置' : 'Navigation and setti
   data-homepage-controls={runtimeControl ? 'runtime' : undefined}
   data-homepage-theme-label={themeLabel}
   data-homepage-theme-icon={themeIcon ? 'true' : undefined}
-  data-homepage-menu-label={menuButton ? menuLabel : undefined}
+  data-homepage-menu-label={menuButton || closeMenuButton ? menuLabel : undefined}
+  data-homepage-menu-close={closeMenuButton ? 'true' : undefined}
 >
   <div class="home-actions-fallback" data-homepage-fallback>
     {
@@ -70,7 +79,7 @@ const menuLabel = locale === 'zh-cn' ? '导航与设置' : 'Navigation and setti
       )
     }
     {
-      menuButton && (
+      (menuButton || closeMenuButton) && (
         <span data-homepage-menu hidden>
           {menuLabel}
         </span>

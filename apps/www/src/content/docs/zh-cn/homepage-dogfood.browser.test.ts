@@ -275,7 +275,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       const page = await context.newPage();
       await page.goto(`${baseUrl}/zh-cn/`);
       await ready(page, 'wc');
-      for (const width of [390, 320]) {
+      for (const width of [390, 430, 320]) {
         await page.setViewportSize({ width, height: 844 });
         const navigation = page.locator('[data-site-header-navigation]');
         const originalNavigation = await navigation.elementHandle();
@@ -362,8 +362,8 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           );
         }
         expect(geometry.preferences[1]!.y).toBeGreaterThan(geometry.preferences[0]!.bottom);
-        expect(Math.abs(geometry.panel.top - geometry.menu.bottom - 5)).toBeLessThanOrEqual(1);
-        expect(Math.abs(geometry.panel.right - geometry.menu.right)).toBeLessThanOrEqual(1);
+        expect(Math.abs(geometry.panel.top - geometry.headerBottom - 5)).toBeLessThanOrEqual(1);
+        expect(Math.abs(geometry.panel.right - (width - 8))).toBeLessThanOrEqual(1);
         expect(geometry.height).toBeLessThanOrEqual(64);
         expect(geometry.controls).toHaveLength(3);
         for (const control of geometry.controls) {
@@ -624,7 +624,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page = await context.newPage();
     try {
-      for (const width of [390, 320]) {
+      for (const width of [390, 430, 320]) {
         await page.setViewportSize({ width, height: 844 });
         await page.goto(`${baseUrl}/zh-cn/ui-libraries/brutalist/components/tooltip/`, {
           waitUntil: 'networkidle',
@@ -811,18 +811,16 @@ for (const family of ['shadcn', 'brutalist'] as const) {
               panel: panel.getBoundingClientRect().toJSON(),
               surface: surface.getBoundingClientRect().toJSON(),
               trigger: trigger.getBoundingClientRect().toJSON(),
+              header: trigger.closest('[data-site-header]')!.getBoundingClientRect().toJSON(),
               overflow: document.documentElement.scrollWidth - innerWidth,
             };
           });
           expect(placement.overflow).toBeLessThanOrEqual(1);
-          expect(Math.abs(placement.panel.top - placement.trigger.bottom - 5)).toBeLessThanOrEqual(
+          expect(Math.abs(placement.panel.top - placement.header.bottom - 5)).toBeLessThanOrEqual(
             1
           );
           expect(
-            Math.abs(
-              (rtl ? placement.panel.left : placement.panel.right) -
-                (rtl ? placement.trigger.left : placement.trigger.right)
-            )
+            Math.abs((rtl ? placement.panel.left : placement.panel.right) - (rtl ? 8 : width - 8))
           ).toBeLessThanOrEqual(1);
           expect(Math.abs(placement.surface.width - placement.panel.width)).toBeLessThanOrEqual(1);
           const runtime = page.locator(

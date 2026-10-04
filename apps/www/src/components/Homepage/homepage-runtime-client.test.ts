@@ -500,3 +500,67 @@ describe('Search participates in the existing homepage generation', () => {
     expect(error).toHaveBeenCalled();
   });
 });
+
+it('projects Close through the same public Button without making it the return-focus trigger', () => {
+  fixture();
+  const group = document.querySelector<HTMLElement>('[data-homepage-actions]')!;
+  group.dataset.homepageMenuLabel = 'Close navigation';
+  const button = document.createElement('button');
+  group.append(button);
+  const disclosure = {
+    bindButton: vi.fn(),
+    toggle: vi.fn(),
+    close: vi.fn(),
+    enhance: vi.fn(),
+    destroy: vi.fn(),
+  };
+  for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+    let active = true;
+    const content = createHomepageContent(
+      {
+        root: group,
+        mount: group,
+        fallback: group,
+        ownerId: 'close-menu',
+        links: [],
+        theme: false,
+        runtime: false,
+        menu: true,
+        closeMenu: true,
+        disclosure,
+      },
+      runtime,
+      () => active
+    );
+    assertDemoSpec(content);
+    expect(JSON.stringify(content.root)).toContain('shadcn-button');
+    expect(JSON.stringify(content.root)).toContain('home-menu-close');
+    const setProps = vi.fn();
+    const cleanup = content.setup!({
+      host: group,
+      refs: { 'home-menu-close': button },
+      api: {
+        setProps,
+        call() {},
+        getExposes() {
+          return undefined;
+        },
+      },
+    });
+    expect(disclosure.bindButton).not.toHaveBeenCalled();
+    const before = disclosure.close.mock.calls.length;
+    if (runtime === 'wc') {
+      button.dispatchEvent(new MouseEvent('click'));
+      expect(disclosure.close).toHaveBeenCalledTimes(before);
+      button.dispatchEvent(new CustomEvent('click'));
+    } else setProps.mock.calls[0]![1].onClick();
+    expect(disclosure.close).toHaveBeenLastCalledWith(true);
+    expect(disclosure.close).toHaveBeenCalledTimes(before + 1);
+    expect(disclosure.toggle).not.toHaveBeenCalled();
+    active = false;
+    if (runtime === 'wc') button.dispatchEvent(new CustomEvent('click'));
+    else setProps.mock.calls[0]![1].onClick();
+    expect(disclosure.close).toHaveBeenCalledTimes(before + 1);
+    if (typeof cleanup === 'function') cleanup();
+  }
+});
