@@ -1,7 +1,16 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { retainHappyDomMutationCallbacks } from '../../../../../scripts/test/happy-dom-mutation-keepalive.mjs';
 import { initHomepageRuntime } from './homepage-runtime-client';
 import * as siteFamily from '../site-library-family';
 import type { MaterializedProjectionCandidate } from '../PrototypePreviewer/projection-materializer';
+
+// Keep the pinned host's internal WeakRef forwarding closure alive, exactly as
+// the other real typography suites do. Browser behavior and deadlines stay real.
+let observerKeeper: ReturnType<typeof retainHappyDomMutationCallbacks>;
+beforeAll(() => {
+  observerKeeper = retainHappyDomMutationCallbacks(window);
+});
+afterAll(() => observerKeeper.restore());
 
 type TypographyCandidate = MaterializedProjectionCandidate;
 const preparation = vi.hoisted(() => ({
