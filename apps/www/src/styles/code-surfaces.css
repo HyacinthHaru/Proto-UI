@@ -141,7 +141,8 @@
      The existing Copy owner gets a real control row only at this pressure size. */
   @container code-panel (max-width: 14rem) {
     .proto-previewer__code {
-      padding-inline-end: 0;
+      /* Keep a real native-selection edge gutter, not the Copy-width reserve. */
+      padding-inline: 16px;
     }
     [data-code-expanded='true'] .proto-previewer__code {
       max-height: min(36rem, 65svh, max(6rem, calc(100svh - var(--header-height, 4rem) - 4rem)));

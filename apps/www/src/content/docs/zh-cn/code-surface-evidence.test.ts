@@ -136,7 +136,7 @@ it('uses a real Copy row and full source width only for pressure-sized code cont
   const global = readFileSync('apps/www/src/styles/global.css', 'utf8');
   expect(css).toContain('container: code-panel / inline-size');
   expect(css).toContain('padding: min(var(--docs-code-padding), 12px)');
-  expect(css).toMatch(/@container code-panel \(max-width: 14rem\)[\s\S]*padding-inline-end: 0/);
+  expect(css).toMatch(/@container code-panel \(max-width: 14rem\)[\s\S]*padding-inline: 16px/);
   expect(copy).toMatch(/@container code-panel \(max-width: 14rem\)[\s\S]*position: static/);
   expect(global).toMatch(/@container code-panel \(max-width: 14rem\)[\s\S]*display: none/);
 });

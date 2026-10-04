@@ -345,6 +345,31 @@ try {
                   ).length,
                   1
                 );
+              if (kind === 'candidate') {
+                await page.evaluate(() => {
+                  document.documentElement.style.fontSize = '200%';
+                });
+                const overview = page
+                  .locator('.right-sidebar a[data-site-link-appearance="toc"]')
+                  .first();
+                await overview.click();
+                await page.waitForFunction(() => {
+                  const title = document.querySelector('main h1[id]')!.getBoundingClientRect();
+                  const header = document.querySelector('header')!.getBoundingClientRect();
+                  return title.top >= header.bottom - 1;
+                });
+                entry.overviewText200 = await page.evaluate(() => ({
+                  stressOnly: true,
+                  textPercent: 200,
+                  hash: location.hash,
+                  scrollY,
+                  title: document.querySelector('main h1[id]')!.getBoundingClientRect().toJSON(),
+                  header: document.querySelector('header')!.getBoundingClientRect().toJSON(),
+                  margin: getComputedStyle(document.querySelector('main h1[id]')!).scrollMarginTop,
+                }));
+                await shot('overview-text200');
+                assert.equal(await overview.getAttribute('aria-current'), 'true');
+              }
             }
           }
         }

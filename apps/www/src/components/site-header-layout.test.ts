@@ -40,6 +40,22 @@ describe('Docs header offset targets the actual MarkdownContent wrapper', () => 
     expect(frame).toContain('scroll-margin-top: calc(var(--header-height) + 1rem)');
   });
 
+  it('preserves native clearance for the actual PageTitle and non-heading bookmarks', () => {
+    actualMarkdownFixture(
+      '<h2 id="actual-doc-heading">Section</h2><span id="legacy-bookmark">Legacy anchor</span>'
+    );
+    const titleSource = readFileSync('apps/www/src/components/override/PageTitle.astro', 'utf8');
+    expect(titleSource).toContain('id={PAGE_TITLE_ID}');
+    const title = document.createElement('h1');
+    title.id = '_top';
+    document.querySelector('main')!.prepend(title);
+    expect(title.closest('[data-doc-flow]')).toBeNull();
+    const match = frame.match(/:global\(([^{}]*?)\)\s*\{\s*scroll-margin-top:/)!;
+    const targets = [...document.querySelectorAll(match[1]!.replace(/\s+/g, ' ').trim())];
+    expect(targets).toContain(title);
+    expect(targets).toContain(document.querySelector('#legacy-bookmark'));
+  });
+
   it('uses a browser heading locator that exists in the real wrapper', () => {
     const heading = actualMarkdownFixture();
     const selector = browser.match(/const heading = page\.locator\('([^']+)'\)\.first\(\)/)?.[1];

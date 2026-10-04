@@ -133,14 +133,13 @@ const { hasSidebar } = Astro.locals.starlightRoute;
   :global(.site-page-frame > .container-wrapper > header:has([data-site-header])) {
     container: docs-page / inline-size;
   }
-  /* Our measured Header margin owns anchor clearance. Starlight's root
-     padding otherwise adds a second header-height offset before scrollspy. */
+  /* Our measured Header margin owns anchor clearance for every native main
+     target, including PageTitle and legacy anchors outside MarkdownContent.
+     Starlight root padding would otherwise add a second header offset. */
   :global(html:has(.site-page-frame [data-docs-site-header])) {
     scroll-padding-top: 0;
   }
-  :global(
-    .site-page-frame:has([data-docs-site-header]) [data-doc-flow] :is(h1, h2, h3, h4, h5, h6)[id]
-  ) {
+  :global(.site-page-frame:has([data-docs-site-header]) main [id]) {
     scroll-margin-top: calc(var(--header-height) + 1rem);
   }
   /* Keep the header and all three documentation columns on one centered canvas. */

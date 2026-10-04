@@ -385,3 +385,22 @@ it.each(['shadcn', 'brutalist'] as const)(
     );
   }
 );
+
+it('bounds the existing local adapter field without clipping enlarged value text', async () => {
+  document.body.innerHTML = `<div data-adapter-select><wc-shadcn-select-root data-site-select-root data-site-initial-value="wc">
+    <wc-shadcn-select-trigger><wc-shadcn-select-value></wc-shadcn-select-value></wc-shadcn-select-trigger>
+    <wc-shadcn-select-content><wc-shadcn-select-item data-value="wc">Web Components</wc-shadcn-select-item></wc-shadcn-select-content>
+    </wc-shadcn-select-root></div>`;
+  initSiteShadcnControls(document);
+  await settle();
+  const root = document.querySelector<HTMLElement>('wc-shadcn-select-root')!;
+  const trigger = document.querySelector<HTMLElement>('wc-shadcn-select-trigger')!;
+  const value = document.querySelector<HTMLElement>('wc-shadcn-select-value')!;
+  expect(root.style.width).toBe('100%');
+  expect(trigger.style.minWidth).toBe('0');
+  expect(trigger.style.maxWidth).toBe('100%');
+  expect(trigger.style.height).toBe('auto');
+  expect(value.style.whiteSpace).toBe('normal');
+  expect(value.style.overflowWrap).toBe('anywhere');
+  expect(trigger.getAttribute('data-pui-style')).toContain('border');
+});
