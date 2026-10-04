@@ -29,6 +29,21 @@ criteria:
     text:
       en: 'Each scope or roving navigation takes one total order of its members from the host of the entry that owns it (HC-FOCUS-ORDER-0001). When the host cannot order the set, the whole navigation keeps stable registration order; host answers and registration order are never mixed pair by pair. Collection and Anatomy order do not supply Focus order.'
       zh-CN: '每次 scope 或 roving 导航都从拥有它的 entry 所在宿主取得成员的一个全序（HC-FOCUS-ORDER-0001）。宿主无法排列该集合时，整次导航保持稳定注册顺序；宿主答案与注册顺序从不逐对混用。Collection 与 Anatomy 的顺序不提供 Focus 顺序。'
+  - id: M-FOCUS-0001-G
+    text:
+      en: 'Every privileged host focus request must pass the required programmatic, native or entry kind. Programmatic requests synchronize Module-owned target facts only after accepted host application; native requests rely on host-observed focus facts rather than synchronizing them from the request result. Entry requests delegate the resolved descendant or self-fallback effect without taking ownership of the facts of that target or declaring the entry region a focus target. Kind describes this request/fact ownership distinction, not keyboard-versus-pointer modality or the request reason. Target requests retain the existing FocusCenter arbitration, latest-intent pending policy, readiness revalidation and lifecycle cancellation; an absent or rejected target produces no successful focus facts. The distinction adds no author-facing facade and does not make entry a pending target request.'
+      zh-CN: '每次特权宿主 focus request 都必须传入必需的 programmatic、native 或 entry kind。Programmatic request 仅在宿主应用被接纳后同步 Module-owned target facts；native request 依赖宿主观察到的 focus facts，而不根据 request result 同步 facts。Entry request 委派已解析 descendant 或 self-fallback target 的效果，不接管该 target 的 facts，也不把 entry region 声明为 focus target。Kind 表达这一 request/fact ownership 区分，不代表 keyboard/pointer modality 或 request reason。Target request 保持既有 FocusCenter 仲裁、latest-intent pending policy、readiness 重验与生命周期取消规则；target 缺失或拒绝不得产生成功 focus facts。此区分不增加 author-facing facade，也不把 entry 变成 pending target request。'
+    dependsOn:
+      hostCaps:
+        - id: HC-FOCUS-TARGET-0001
+          since: 0.3.0-alpha.1
+          anchors: [HC-FOCUS-TARGET-0001-D]
+    references:
+      contracts:
+        - id: C-AS-FOCUSABLE-0001
+          anchors: [C-AS-FOCUSABLE-0001-C, C-AS-FOCUSABLE-0001-G]
+        - id: C-AS-FOCUS-ENTRY-0001
+          anchors: [C-AS-FOCUS-ENTRY-0001-F, C-AS-FOCUS-ENTRY-0001-G]
 satisfies:
   contracts:
     [
@@ -89,3 +104,7 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: Navigation order now comes from the host through HC-FOCUS-ORDER-0001, with whole-navigation registration fallback (criterion F); Q-PORTABILITY keeps only the focus-domain half.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Cataloged the required privileged programmatic/native/entry host request kind and its accepted-effect, observed-fact and fact-free entry distinctions (criterion G); this is a breaking privileged capability shape change, not an author-facing facade or lifecycle change.
+    breaking: true
