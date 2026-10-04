@@ -543,3 +543,41 @@ test('fragment passes require a recognized draw domain', async () => {
   graph.passes.forEach((pass) => delete pass.drawDomain);
   assert(inspectGraph(graph).errors.some((e) => e.code === 'missing-draw-domain'));
 });
+
+test('application samplers require a resource kind before checking the bound input', async () => {
+  const graph = await load('flutter');
+  delete graph.kernels[1].samplers[1].resourceKind;
+  graph.passes[1].bindings.uGeometryTexture = 'backdrop';
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-sampler-contract'));
+});
+
+test('unmodeled copy and composite contracts are rejected instead of guessed', async () => {
+  for (const kind of ['copy', 'composite']) {
+    const graph = await load('studio');
+    graph.passes[3].kind = kind;
+    delete graph.passes[3].kernel;
+    graph.passes[3].bindings = {};
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'unknown-pass-kind'));
+  }
+});
+
+test('pinned shader entry points require an identifier, not blank or malformed text', async () => {
+  for (const entryPoint of ['   ', 'fs main', '1main', 'main()']) {
+    const graph = await load('studio');
+    graph.kernels[0].entryPoint = entryPoint;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'incomplete-kernel-contract'));
+  }
+});
+
+test('f32 data allocation bounds agree with the declared element count', async () => {
+  for (const mutate of [
+    (d) => delete d.abi,
+    (d) => (d.abi.maxLogicalBytes = 4),
+    (d) => (d.maxCount = 4096),
+    (d) => (d.abi.minimumBytes = 0),
+  ]) {
+    const graph = await load('studio');
+    mutate(graph.data[0]);
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'data-abi-byte-bounds'));
+  }
+});

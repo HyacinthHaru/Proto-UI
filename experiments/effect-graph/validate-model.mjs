@@ -131,7 +131,9 @@ export function inspectGraph(graph) {
         if (
           typeof sampler.name !== 'string' ||
           !sampler.name ||
-          !['host-injected', 'application-bound'].includes(sampler.ownership)
+          !['host-injected', 'application-bound'].includes(sampler.ownership) ||
+          (sampler.ownership === 'application-bound' && !nonempty(sampler.resourceKind)) ||
+          (sampler.ownership === 'host-injected' && !SOURCE_KINDS.includes(sampler.sourceKind))
         )
           error('invalid-sampler-contract', kernel.id);
       }
@@ -221,7 +223,7 @@ export function inspectGraph(graph) {
     if (
       k.stage !== 'fragment' ||
       typeof k.entryPoint !== 'string' ||
-      !k.entryPoint ||
+      !/^[A-Za-z_][A-Za-z0-9_]*$/.test(k.entryPoint) ||
       typeof k.license !== 'string' ||
       !k.license
     )
@@ -259,6 +261,14 @@ export function inspectGraph(graph) {
       error('incomplete-resource-contract', r.id);
   }
   for (const d of graph.data) {
+    if (
+      !record(d.abi) ||
+      !Number.isSafeInteger(d.abi.minimumBytes) ||
+      d.abi.minimumBytes < 1 ||
+      !Number.isSafeInteger(d.abi.maxLogicalBytes) ||
+      d.abi.maxLogicalBytes !== d.maxCount * 4
+    )
+      error('data-abi-byte-bounds', d.id);
     if (
       !record(d.targetBindings) ||
       d.targetBindings.webgpu !== 'read-only-storage-buffer' ||
@@ -347,8 +357,7 @@ export function inspectGraph(graph) {
           error('resource-usage-mismatch', `${p.id}:${id}`);
       }
     }
-    if (!['fragment', 'host-image-filter', 'copy', 'composite'].includes(p.kind))
-      error('unknown-pass-kind', p.id);
+    if (!['fragment', 'host-image-filter'].includes(p.kind)) error('unknown-pass-kind', p.id);
     if (['fragment', 'host-image-filter'].includes(p.kind) && !kernels.has(p.kernel))
       error('missing-kernel', p.id);
     if (p.writes !== 'presentation' && !resources.has(p.writes)) error('unknown-output', p.id);
