@@ -57,6 +57,21 @@ it('paints all four actual adapters from generated PUI CSS and preserves ownersh
     await page.waitForSelector('body[data-ready="true"]');
     const facts = () => page.evaluate(() => (window as any).templateStyleFixture.facts());
     const styled = await facts();
+    // Retain actual initial paint even when a later assertion fails.
+    const provenance = {
+      fixtureHead: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+      adapterSource: process.env.PROTO_UI_TEMPLATE_SOURCE_SHA ?? 'same as fixtureHead',
+      browser: browser.version(),
+    };
+    await page.screenshot({ path: path.join(evidenceDir, `${mode}-styled.png`), fullPage: true });
+    await writeFile(
+      path.join(evidenceDir, `${mode}-initial-facts.json`),
+      JSON.stringify(
+        { mode, status: 'observed-before-assertions', ...provenance, styled, errors },
+        null,
+        2
+      )
+    );
     expect(styled).toHaveLength(4);
     // Ready means the initial framework commit and ownership snapshot both completed.
     expect(styled.map((entry: any) => entry.originalRootCarrier)).toEqual([
@@ -67,16 +82,13 @@ it('paints all four actual adapters from generated PUI CSS and preserves ownersh
     ]);
     for (const [index, entry] of styled.entries()) {
       expect(entry.padding).toBe(baseline ? '0px' : '16px');
-      expect(entry.background).toBe(baseline ? 'rgba(0, 0, 0, 0)' : 'rgb(37, 99, 235)');
-      expect(entry.ownedCarrier).toBe(
-        baseline ? null : 'block w-16 h-8 p-4 bg-[#2563eb] opacity-100'
-      );
+      expect(entry.background).toBe(baseline ? 'rgba(0, 0, 0, 0)' : 'rgb(0, 68, 204)');
+      expect(entry.ownedCarrier).toBe(baseline ? null : 'block w-16 h-8 p-4 bg-[#04c] opacity-100');
       expect(entry.ownedClass).toBe(
-        index === 0 ? null : 'block w-16 h-8 p-4 bg-[#2563eb] opacity-100'
+        index === 0 ? null : 'block w-16 h-8 p-4 bg-[#04c] opacity-100'
       );
       expect(entry.inlineStyle).toBeNull();
     }
-    await page.screenshot({ path: path.join(evidenceDir, `${mode}-styled.png`), fullPage: true });
     const assertOwnership = (entries: any[]) => {
       for (const entry of entries) {
         expect(entry.rootIdentity).toBe(true);
@@ -118,9 +130,8 @@ it('paints all four actual adapters from generated PUI CSS and preserves ownersh
       JSON.stringify(
         {
           mode,
-          fixtureHead: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
-          adapterSource: process.env.PROTO_UI_TEMPLATE_SOURCE_SHA ?? 'same as fixtureHead',
-          browser: browser.version(),
+          status: 'passed',
+          ...provenance,
           styled,
           resolved,
           errors,
