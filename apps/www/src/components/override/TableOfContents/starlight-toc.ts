@@ -133,6 +133,7 @@ export class StarlightTOC extends HTMLElement {
     // Only generated TOC destinations participate. Embedded component headings
     // (including hidden modal titles) do not own a reading-position link.
     const linkedHashes = new Set(this._links.map((link) => link.hash));
+    // 去重并保持文档顺序
     const seen = new Set<string>();
     this._headings = list.filter((h) => {
       if (!h.id || seen.has(h.id) || !linkedHashes.has('#' + encodeURIComponent(h.id)))

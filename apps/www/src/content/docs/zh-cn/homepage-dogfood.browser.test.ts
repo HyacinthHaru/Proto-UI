@@ -509,8 +509,8 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
   }, 180_000);
   it('uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence', async () => {
     const directory = path.join(
-      process.env.RUNNER_TEMP ?? os.tmpdir(),
-      'homepage-evidence',
+      process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR ??
+        path.join(process.env.RUNNER_TEMP ?? os.tmpdir(), 'homepage-evidence'),
       'contents-command'
     );
     await mkdir(directory, { recursive: true });
@@ -525,6 +525,34 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         colorScheme: 'dark',
       });
       const page = await context.newPage();
+      const pageErrors: string[] = [];
+      page.on('pageerror', (error) => pageErrors.push(error.message));
+      page.on('console', (message) => {
+        if (message.type() === 'error') pageErrors.push(`console: ${message.text()}`);
+      });
+      await page.addInitScript(() => {
+        const evidence = {
+          longTasks: [] as Array<{ start: number; duration: number }>,
+          changes: [] as Array<{ at: number; adapter: unknown }>,
+        };
+        Object.assign(window, { __contentsRuntimeEvidence: evidence });
+        document.addEventListener('proto-adapter:change', (event) => {
+          evidence.changes.push({
+            at: performance.timeOrigin + performance.now(),
+            adapter: (event as CustomEvent<{ adapter: unknown }>).detail?.adapter,
+          });
+        });
+        if (PerformanceObserver.supportedEntryTypes.includes('longtask'))
+          new PerformanceObserver((entries) => {
+            evidence.longTasks.push(
+              ...entries.getEntries().map((entry) => ({
+                start: performance.timeOrigin + entry.startTime,
+                duration: entry.duration,
+              }))
+            );
+            evidence.longTasks.splice(0, Math.max(0, evidence.longTasks.length - 100));
+          }).observe({ type: 'longtask', buffered: true });
+      });
       try {
         const route =
           family === 'shadcn'
@@ -541,11 +569,102 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           const select = page.locator('[data-adapter-select] [role="combobox"]');
           await select.click();
           const popup = await select.getAttribute('aria-controls');
+          const transitionStartedAt = Date.now();
           await page
             .locator(`[id=${JSON.stringify(popup)}]`)
             .getByRole('option', { name: LABELS[runtime], exact: true })
             .click();
-          await expect.poll(() => root.getAttribute('data-contents-runtime')).toBe(runtime);
+          const clickedAt = Date.now();
+          let originalError: unknown;
+          try {
+            await expect.poll(() => root.getAttribute('data-contents-runtime')).toBe(runtime);
+          } catch (error) {
+            originalError = error;
+          }
+          const originalCheckAt = Date.now();
+          const readTransition = () =>
+            page.evaluate((since) => {
+              const contents = document.querySelector<HTMLElement>('[data-site-contents-command]');
+              const panel = document.querySelector<HTMLElement>('[data-site-header-panel]');
+              const evidence = (
+                window as typeof window & {
+                  __contentsRuntimeEvidence?: {
+                    longTasks: Array<{ start: number; duration: number }>;
+                    changes: Array<{ at: number; adapter: unknown }>;
+                  };
+                }
+              ).__contentsRuntimeEvidence;
+              return {
+                observedAt: performance.timeOrigin + performance.now(),
+                preference: localStorage.getItem('preferred-prototypes-adapter'),
+                contents: contents ? { ...contents.dataset } : null,
+                panel: panel ? { ...panel.dataset } : null,
+                generations: [
+                  ...document.querySelectorAll<HTMLElement>(
+                    'header [data-projection-generation-host]'
+                  ),
+                ].map((element) => ({ ...element.dataset, inert: element.inert })),
+                longTasks: evidence?.longTasks.filter((entry) => entry.start >= since),
+                changes: evidence?.changes.filter((entry) => entry.at >= since),
+                resources: performance
+                  .getEntriesByType('resource')
+                  .filter(
+                    (entry) =>
+                      performance.timeOrigin + entry.startTime >= since &&
+                      new URL(entry.name).origin === location.origin
+                  )
+                  .slice(-40)
+                  .map((entry) => ({
+                    path: new URL(entry.name).pathname,
+                    start: performance.timeOrigin + entry.startTime,
+                    duration: entry.duration,
+                  })),
+              };
+            }, transitionStartedAt);
+          try {
+            const first = await readTransition();
+            let late: Awaited<ReturnType<typeof readTransition>> | null = null;
+            if (originalError) {
+              // Diagnosis only: retain the original1000ms failure even if this
+              // bounded observation later sees the requested generation commit.
+              await page
+                .waitForFunction(
+                  (target) =>
+                    document.querySelector<HTMLElement>('[data-site-contents-command]')?.dataset
+                      .contentsRuntime === target,
+                  runtime,
+                  { timeout: 3000 }
+                )
+                .catch(() => {});
+              late = await readTransition();
+              await page.screenshot({
+                path: path.join(directory, `${family}-${runtime}-failure.png`),
+              });
+            }
+            await writeFile(
+              path.join(directory, `${family}-${runtime}-transition.json`),
+              JSON.stringify(
+                {
+                  source,
+                  family,
+                  runtime,
+                  transitionStartedAt,
+                  clickedAt,
+                  originalCheckAt,
+                  originalDeadlineMs: 1000,
+                  originalError: originalError ? String(originalError) : null,
+                  first,
+                  late,
+                  pageErrors,
+                },
+                null,
+                2
+              )
+            );
+          } catch (diagnosticError) {
+            console.error('[Contents runtime evidence]', diagnosticError);
+          }
+          if (originalError) throw originalError;
           expect(await root.getAttribute('data-contents-family')).toBe(family);
           expect(await root.getAttribute('data-contents-generation')).toBe(
             await page
