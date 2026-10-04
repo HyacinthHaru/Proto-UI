@@ -470,3 +470,81 @@ test('publication intent atomically reserves its generation and defers only chan
   assert.equal(state.pending.find((x) => x.pullRequest === 487).generation, 1);
   assert.equal(state.pending.find((x) => x.pullRequest === 488).generation, 2);
 });
+
+test('only the version-one terminal command extension can select causal sweep coverage', async (t) => {
+  const production = step(
+    reduceCloudReviewLedger(emptyCloudReviewLedger({ publicationEnabled: true }), event()),
+    'claim',
+    { pullRequest: 487 }
+  );
+  for (const type of ['finishAnalysis', 'stagePublicationIntent'])
+    for (const sweepCoverageVersion of [0, 2, null, '1'])
+      await t.test(`${type}: ${JSON.stringify(sweepCoverageVersion)}`, () => {
+        assert.throws(
+          () => step(production, type, { ...analysis(), sweepCoverageVersion }),
+          /unsupported sweep coverage version/
+        );
+      });
+  const legacy = step(production, 'stagePublicationIntent', analysis()).slot.intent;
+  const versioned = step(production, 'stagePublicationIntent', {
+    ...analysis(),
+    sweepCoverageVersion: 1,
+  }).slot.intent;
+  assert.equal(legacy.analysis.sweepCoverageVersion, undefined);
+  assert.equal(versioned.analysis.sweepCoverageVersion, 1);
+  for (const field of ['id', 'packetDigest', 'bodyDigest', 'body'])
+    assert.equal(versioned[field], legacy[field]);
+  assert.deepEqual(versioned.analysis.packet, legacy.analysis.packet);
+  assert.equal(versioned.analysis.materialGeneration, production.slot.generation);
+  assert.equal(versioned.analysis.materialDeliveryId, 'delivery-1');
+});
+
+test('sweep coverage version cannot be smuggled into unrelated journal transitions', () => {
+  const production = step(
+    reduceCloudReviewLedger(emptyCloudReviewLedger({ publicationEnabled: true }), event()),
+    'claim',
+    { pullRequest: 487 }
+  );
+  const cases = [
+    [
+      emptyCloudReviewLedger({ publicationEnabled: true }),
+      {
+        type: 'captureInitialSweep',
+        sweepId: 'owner-requested-open-pr-sweep-2026-10-03',
+        pullRequests: [487],
+      },
+    ],
+    [production, event('new-event')],
+    [
+      reduceCloudReviewLedger(emptyCloudReviewLedger(), event()),
+      { type: 'claim', owner, pullRequest: 487 },
+    ],
+    [production, { type: 'abandon', owner }],
+    [claimed(), { type: 'stageIntent', owner, ...analysis() }],
+    [claimed(), { type: 'stageSimulationIntent', owner, ...analysis() }],
+    [
+      step(production, 'stagePublicationIntent', analysis()),
+      { type: 'finalizePublication', owner, response: {}, readback: {} },
+    ],
+    [
+      step(claimed(), 'stageSimulationIntent', analysis()),
+      { type: 'finalizeSimulation', owner, response: {}, readback: {} },
+    ],
+    [
+      step(production, 'stagePublicationIntent', analysis()),
+      { type: 'cancelPublicationIntent', owner, intentId: 'f'.repeat(64) },
+    ],
+  ];
+  for (const [state, command] of cases)
+    assert.throws(
+      () => reduceCloudReviewLedger(state, { ...command, sweepCoverageVersion: 1 }),
+      /unexpected command fields/,
+      command.type
+    );
+  const mismatched = structuredClone(production);
+  mismatched.material[0].generation++;
+  assert.throws(
+    () => step(mismatched, 'finishAnalysis', { ...analysis(), sweepCoverageVersion: 1 }),
+    /claimed material lineage changed/
+  );
+});

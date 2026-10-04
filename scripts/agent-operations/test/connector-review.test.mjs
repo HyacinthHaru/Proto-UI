@@ -2409,3 +2409,742 @@ test('a real stale-lease staging conflict releases only the original intent-free
     'applied'
   );
 });
+
+test('finish preflight failures release the original claim without completing its analysis', async (t) => {
+  for (const phase of [
+    'collect',
+    'identity',
+    'policy',
+    'ledger-read',
+    'packet',
+    'live-input',
+    'generation',
+  ])
+    await t.test(phase, async (t) => {
+      const context = await session(t);
+      const { f, store, transport, dir, genesis } = context;
+      const policy = structuredClone(rootPolicy);
+      const s = new ConnectorReviewSession({ policy, transport, ledger: store });
+      const packet = await parentPacket(s);
+      const read = store.read.bind(store);
+      const collect = transport.collect.bind(transport);
+      const original = read().state;
+      if (phase === 'collect')
+        transport.collect = async () => {
+          throw Error('collection unavailable');
+        };
+      if (phase === 'identity') f.permission = 'read';
+      if (phase === 'policy') policy.reviewSubmissionAuthorizations[0].status = 'paused';
+      if (phase === 'ledger-read') {
+        let once = true;
+        store.read = () => {
+          if (once) {
+            once = false;
+            throw Error('read unavailable');
+          }
+          return read();
+        };
+      }
+      if (phase === 'packet') packet.reconciliation.priorPacketDigest = 'f'.repeat(64);
+      if (phase === 'live-input') f.pr.body = 'changed after parent analysis';
+      if (phase === 'generation')
+        store.apply(read().revision, {
+          type: 'enqueue',
+          deliveryId: 'generation-before-finish',
+          pullRequest: 487,
+          eventKind: 'synchronize',
+          materialDigest: 'd'.repeat(64),
+        });
+      await assert.rejects(s.finishParentAnalysis(packet));
+      const state = new LocalCloudReviewLedger(dir, genesis).read().state;
+      assert.equal(state.slot, null);
+      assert.equal(state.pending.length, 1);
+      assert.deepEqual(state.analyses, original.analyses);
+      assert.deepEqual(state.publishedAnalyses, original.publishedAnalyses);
+      assert.deepEqual(state.publicationReceipts, original.publicationReceipts);
+      assert.deepEqual(state.deferred, original.deferred);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+      await assert.rejects(s.finishParentAnalysis(packet), /lifecycle already consumed/);
+      transport.collect = collect;
+      f.permission = 'admin';
+      const next = freshSession(context);
+      const request = await next.begin(487, {
+        kind: 'synchronize',
+        deliveryId: `finish-recover-${phase}`,
+      });
+      assert.equal(request.kind, 'proto-ui.parent-review-request');
+      assert.equal(
+        (await next.finishParentAnalysis(completePacket(request.input))).status,
+        'applied'
+      );
+      assert.equal(read().state.pending.length, 0);
+    });
+});
+
+test('real stale-lease finish and abandon conflicts release only the original owner and preserve queued work', async (t) => {
+  for (const terminal of ['finish', 'abandon'])
+    for (const pullRequest of [487, 488])
+      await t.test(`${terminal}: PR ${pullRequest} wins`, async (t) => {
+        const { f, transport, dir, genesis } = await session(t);
+        const git = (directory, ...args) =>
+          execFileSync('git', ['-C', directory, ...args], {
+            encoding: 'utf8',
+            stdio: 'pipe',
+          }).trim();
+        git(dir, 'update-ref', REMOTE_LEDGER_REF, genesis);
+        let peer;
+        let races = 0;
+        let finishes = 0;
+        let releases = 0;
+        let rejectedRevision;
+        function open(racing) {
+          const cache = mkdtempSync(path.join(tmpdir(), 'pui-terminal-race-'));
+          t.after(() => rmSync(cache, { recursive: true, force: true }));
+          git(cache, 'init', '--bare');
+          return new RemoteCloudReviewLedger(cache, genesis, {
+            checkpoint: genesis,
+            transport: {
+              readInto(directory) {
+                git(
+                  directory,
+                  'fetch',
+                  '--no-tags',
+                  '--no-write-fetch-head',
+                  dir,
+                  REMOTE_LEDGER_REF
+                );
+                return git(dir, 'rev-parse', REMOTE_LEDGER_REF);
+              },
+              publish(args) {
+                const entry = JSON.parse(
+                  git(args.directory, 'show', args.revision + ':entry.json')
+                );
+                if (racing && ['finishAnalysis', 'abandon'].includes(entry.type)) {
+                  if (entry.type === 'finishAnalysis') finishes++;
+                  else releases++;
+                  if (races < 2) {
+                    races++;
+                    if (races === 1) rejectedRevision = args.revision;
+                    assert.equal(
+                      peer.apply(peer.read().revision, {
+                        type: 'enqueue',
+                        pullRequest: races === 1 ? pullRequest : 489,
+                        deliveryId: `terminal-race-${races}`,
+                        eventKind: 'synchronize',
+                        materialDigest: String(races).repeat(64),
+                      }).status,
+                      'applied'
+                    );
+                  }
+                }
+                return ownerGitLedgerTransport({
+                  runGit(directory, command) {
+                    return git(
+                      directory,
+                      ...command.map((arg) =>
+                        arg === 'https://github.com/Proto-UI/Proto-UI.git' ? dir : arg
+                      )
+                    );
+                  },
+                }).publish(args);
+              },
+            },
+          });
+        }
+        peer = open(false);
+        const store = open(true);
+        const s = new ConnectorReviewSession({ transport, ledger: store, policy: rootPolicy });
+        const packet = await parentPacket(s);
+        if (terminal === 'finish')
+          await assert.rejects(s.finishParentAnalysis(packet), /analysis acknowledgement/);
+        else assert.equal((await s.abandonBeforeIntent()).status, 'applied');
+        const fresh = open(false);
+        const state = fresh.read().state;
+        assert.equal(state.slot, null);
+        assert.deepEqual(
+          state.pending.map((item) => item.pullRequest),
+          pullRequest === 487 ? [487, 489] : [487, 488, 489]
+        );
+        assert.deepEqual(state.analyses, []);
+        assert.deepEqual(state.publishedAnalyses, []);
+        assert.deepEqual(state.publicationReceipts, []);
+        assert.deepEqual(state.deferred, []);
+        assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+        assert.equal(races, 2);
+        assert.equal(finishes, terminal === 'finish' ? 1 : 0);
+        assert.equal(releases, terminal === 'finish' ? 2 : 3);
+        assert.equal(
+          git(dir, 'rev-list', REMOTE_LEDGER_REF).split('\n').includes(rejectedRevision),
+          false
+        );
+        await assert.rejects(s.abandonBeforeIntent(), /cannot abandon/);
+        const next = new ConnectorReviewSession({ transport, ledger: fresh, policy: rootPolicy });
+        const request = await next.begin(487, {
+          kind: 'synchronize',
+          deliveryId: 'after-terminal-race',
+        });
+        assert.equal(request.kind, 'proto-ui.parent-review-request');
+        assert.equal(
+          (await next.finishParentAnalysis(completePacket(request.input))).status,
+          'applied'
+        );
+        assert.equal(
+          fresh.read().state.pending.some((item) => item.pullRequest === 489),
+          true
+        );
+      });
+});
+
+test('consumed sessions can still explicitly release after proven unwritten cleanup failures', async (t) => {
+  for (const terminal of ['finish', 'publish', 'abandon'])
+    for (const failure of ['read', 'contention'])
+      await t.test(`${terminal}: ${failure}`, async (t) => {
+        const { f, s, store, transport } = await session(t);
+        const packet = await parentPacket(s);
+        const read = store.read.bind(store);
+        const apply = store.apply.bind(store);
+        let blocked = true;
+        let releases = 0;
+        transport.collect = async () => {
+          throw Error('collection unavailable');
+        };
+        store.read = () => {
+          if (blocked && failure === 'read') throw Error('cleanup read unavailable');
+          return read();
+        };
+        store.apply = (revision, command) => {
+          if (command.type === 'abandon') {
+            releases++;
+            if (blocked && failure === 'contention')
+              apply(revision, {
+                type: 'enqueue',
+                deliveryId: `terminal-cleanup-race-${releases}`,
+                pullRequest: 488,
+                eventKind: 'human-comment',
+                materialDigest: String(releases).repeat(64),
+              });
+          }
+          return apply(revision, command);
+        };
+        await assert.rejects(
+          terminal === 'finish'
+            ? s.finishParentAnalysis(packet)
+            : terminal === 'publish'
+              ? s.publishParentPacket(packet, assessment)
+              : s.abandonBeforeIntent(),
+          /read unavailable|contention budget/
+        );
+        assert.notEqual(read().state.slot, null);
+        assert.equal(releases, failure === 'contention' ? 3 : 0);
+        blocked = false;
+        // #used prevents another finish/publication, not original-owner cleanup.
+        const released = await s.abandonBeforeIntent();
+        assert.equal(released.status, 'applied');
+        assert.equal(released.revision, read().revision);
+        assert.equal(read().state.slot, null);
+        assert.equal(
+          read().state.pending.some((item) => item.pullRequest === 487),
+          true
+        );
+        assert.equal(
+          read().state.pending.some((item) => item.pullRequest === 488),
+          failure === 'contention'
+        );
+        assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+      });
+});
+
+test('unknown or thrown finish writes never trigger release or an analysis retry', async (t) => {
+  for (const mode of [
+    'unknown-without-write',
+    'throw-without-write',
+    'lost-finish-ack',
+    'throw-after-write',
+  ])
+    await t.test(mode, async (t) => {
+      const { f, s, store } = await session(t);
+      const packet = await parentPacket(s);
+      const apply = store.apply.bind(store);
+      let finishes = 0;
+      let releases = 0;
+      store.apply = (revision, command) => {
+        if (command.type === 'abandon') releases++;
+        if (command.type !== 'finishAnalysis') return apply(revision, command);
+        finishes++;
+        if (mode === 'throw-without-write') throw Error('finish result unavailable');
+        if (mode === 'unknown-without-write') return { status: 'unknown' };
+        apply(revision, command);
+        if (mode === 'throw-after-write') throw Error('finish result unavailable after write');
+        return { status: 'unknown' };
+      };
+      await assert.rejects(
+        s.finishParentAnalysis(packet),
+        /analysis acknowledgement|finish result unavailable/
+      );
+      await assert.rejects(s.finishParentAnalysis(packet), /lifecycle already consumed/);
+      assert.equal(finishes, 1);
+      assert.equal(releases, 0);
+      const written = ['lost-finish-ack', 'throw-after-write'].includes(mode);
+      assert.equal(store.read().state.slot === null, written);
+      assert.equal(store.read().state.analyses.length, written ? 1 : 0);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+    });
+});
+
+test('uncertain terminal Git acknowledgements stop the adapter and cannot be explicitly abandoned', async (t) => {
+  for (const terminal of ['finish', 'abandon'])
+    for (const written of [false, true])
+      await t.test(
+        `${terminal}: ${written ? 'lost applied acknowledgement' : 'unwritten unknown'}`,
+        async (t) => {
+          const { f, transport, dir, genesis } = await session(t);
+          let armed = false;
+          let updates = 0;
+          const store = new LocalCloudReviewLedger(dir, genesis, {
+            runner(command, args, options) {
+              if (armed && args.includes('update-ref')) {
+                updates++;
+                if (written) execFileSync(command, args, options);
+                throw Error('terminal Git acknowledgement unavailable');
+              }
+              return execFileSync(command, args, options);
+            },
+          });
+          const s = new ConnectorReviewSession({ policy: rootPolicy, transport, ledger: store });
+          const packet = await parentPacket(s);
+          armed = true;
+          await assert.rejects(
+            terminal === 'finish' ? s.finishParentAnalysis(packet) : s.abandonBeforeIntent(),
+            /acknowledgement|release uncertain/
+          );
+          const before = store.read();
+          assert.equal(updates, 1);
+          assert.equal(before.state.slot === null, written);
+          assert.equal(before.state.analyses.length, terminal === 'finish' && written ? 1 : 0);
+          await assert.rejects(
+            s.abandonBeforeIntent(),
+            written ? /cannot abandon/ : /uncertain update/
+          );
+          assert.deepEqual(store.read(), before);
+          assert.equal(updates, 1);
+          const restarted = new LocalCloudReviewLedger(dir, genesis);
+          if (!written)
+            assert.throws(
+              () => restarted.apply(restarted.read().revision, { type: 'abandon' }),
+              /does not own/
+            );
+          assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+        }
+      );
+});
+
+test('finish cleanup and explicit abandon reject changed ownership or a newly persisted intent', async (t) => {
+  for (const terminal of ['finish', 'abandon'])
+    for (const drift of ['owner', 'intent'])
+      await t.test(`${terminal}: ${drift}`, async (t) => {
+        const { f, s, store, transport } = await session(t);
+        const packet = await parentPacket(s);
+        const read = store.read.bind(store);
+        const apply = store.apply.bind(store);
+        const before = read();
+        let releases = 0;
+        transport.collect = async () => {
+          throw Error('collection unavailable');
+        };
+        store.read = () => {
+          const snapshot = read();
+          if (drift === 'owner') snapshot.state.slot.owner = 'e'.repeat(32);
+          else snapshot.state.slot.intent = { id: 'f'.repeat(64) };
+          return snapshot;
+        };
+        store.apply = (revision, command) => {
+          if (command.type === 'abandon') releases++;
+          return apply(revision, command);
+        };
+        await assert.rejects(
+          terminal === 'finish' ? s.finishParentAnalysis(packet) : s.abandonBeforeIntent(),
+          /original intent-free claim changed/
+        );
+        assert.equal(releases, 0);
+        assert.deepEqual(read(), before);
+        assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+      });
+});
+
+test('finish conflict and abandonment preserve the separate durable analysis and publication baselines', async (t) => {
+  for (const terminal of ['finish', 'abandon'])
+    await t.test(terminal, async (t) => {
+      const context = await session(t);
+      const { f, s, store } = context;
+      const a = completePacket(
+        (await s.begin(487, { kind: 'opened', deliveryId: 'terminal-a' })).input,
+        null,
+        ['A1']
+      );
+      assert.equal((await s.publishParentPacket(a, assessment)).status, 'published');
+      f.pr.body = 'unpublished B';
+      const second = freshSession(context);
+      const b = completePacket(
+        (await second.begin(487, { kind: 'human-comment', deliveryId: 'terminal-b' })).input,
+        a,
+        ['B1']
+      );
+      assert.equal((await second.finishParentAnalysis(b)).status, 'applied');
+      f.pr.body = 'rejected C';
+      const terminalStore = new LocalCloudReviewLedger(context.dir, context.genesis);
+      const last = new ConnectorReviewSession({
+        policy: rootPolicy,
+        transport: context.transport,
+        ledger: terminalStore,
+      });
+      const request = await last.begin(487, { kind: 'human-comment', deliveryId: 'terminal-c' });
+      const c = completePacket(request.input, b, ['C1']);
+      const baseline = store.read().state;
+      const apply = terminalStore.apply.bind(terminalStore);
+      let raced = false;
+      terminalStore.apply = (revision, command) => {
+        if (!raced && command.type === (terminal === 'finish' ? 'finishAnalysis' : 'abandon')) {
+          raced = true;
+          apply(revision, {
+            type: 'enqueue',
+            deliveryId: 'terminal-d',
+            pullRequest: 487,
+            eventKind: 'synchronize',
+            materialDigest: 'd'.repeat(64),
+          });
+        }
+        return apply(revision, command);
+      };
+      if (terminal === 'finish')
+        await assert.rejects(last.finishParentAnalysis(c), /analysis acknowledgement/);
+      else assert.equal((await last.abandonBeforeIntent()).status, 'applied');
+      const state = store.read().state;
+      assert.equal(state.slot, null);
+      assert.deepEqual(state.analyses, baseline.analyses);
+      assert.deepEqual(state.publishedAnalyses, baseline.publishedAnalyses);
+      assert.deepEqual(state.publicationReceipts, baseline.publicationReceipts);
+      assert.deepEqual(state.deferred, baseline.deferred);
+      assert.deepEqual(state.analyses[0].packet, b);
+      assert.deepEqual(state.publishedAnalyses[0].packet, a);
+      assert.equal(state.pending[0].generation > baseline.slot.generation, true);
+      assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
+    });
+});
+
+test('a completed later event generation closes its superseded captured sweep member', async (t) => {
+  for (const terminal of ['finish', 'publish'])
+    await t.test(terminal, async (t) => {
+      const context = await session(t);
+      const { f, s, store, dir, genesis } = context;
+      f.inventory = [
+        { ...f.pr, id: 487, number: 487 },
+        { ...f.pr, id: 488, number: 488 },
+      ];
+      await s.captureInitialSweep();
+      const initial = await s.beginInitialSweep(487);
+      const a = completePacket(initial.input);
+      const sweepDelivery = structuredClone(store.read().state.deliveries[0]);
+      const apply = store.apply.bind(store);
+      let raced = false;
+      store.apply = async (revision, command) => {
+        if (!raced && command.type === 'finishAnalysis') {
+          raced = true;
+          f.pr.body = 'new event material B';
+          assert.equal(
+            (
+              await freshSession(context).begin(487, {
+                kind: 'human-comment',
+                deliveryId: 'superseding-event-B',
+              })
+            ).queued,
+            true
+          );
+        }
+        return apply(revision, command);
+      };
+      await assert.rejects(s.finishParentAnalysis(a), /analysis acknowledgement/);
+      assert.equal(store.read().state.slot, null);
+      assert.deepEqual(store.read().state.initialSweep.completed, []);
+      const next = freshSession(context);
+      const request = await next.begin(487, {
+        kind: 'human-comment',
+        deliveryId: 'superseding-event-B',
+      });
+      const b = completePacket(request.input);
+      assert.deepEqual(store.read().state.initialSweep.completed, []);
+      const completed =
+        terminal === 'finish'
+          ? await next.finishParentAnalysis(b)
+          : await next.publishParentPacket(b, assessment);
+      assert.equal(completed.status, terminal === 'finish' ? 'applied' : 'published');
+      const state = new LocalCloudReviewLedger(dir, genesis).read().state;
+      assert.deepEqual(state.initialSweep.completed, [487]);
+      assert.equal(state.slot, null);
+      assert.deepEqual(state.pending, []);
+      assert.deepEqual(state.deliveries[0], sweepDelivery);
+      assert.equal(state.analyses[0].observation.executionModeSource, 'delegated-owner-event');
+      assert.deepEqual(state.analyses[0].packet, b);
+      assert.equal(state.analyses[0].sweepCoverageVersion, 1);
+      const beforeSkip = store.read();
+      assert.equal(
+        (await freshSession(context).beginInitialSweep(487)).reason,
+        'initial sweep item already completed'
+      );
+      assert.deepEqual(store.read(), beforeSkip);
+      assert.throws(
+        () => apply(store.read().revision, { ...sweepDelivery, materialDigest: 'f'.repeat(64) }),
+        /delivery id reused with different evidence/
+      );
+      assert.equal(
+        f.calls.filter((call) => call.operation === 'add_review_to_pr').length,
+        terminal === 'publish' ? 1 : 0
+      );
+    });
+});
+
+test('older fenced analysis cannot complete a later deferred sweep generation, including ABA', async (t) => {
+  for (const sequence of ['A-to-C', 'A-to-C-to-A', 'A-to-C-to-C', 'A-to-C-to-D'])
+    await t.test(sequence, async (t) => {
+      const context = await session(t);
+      const { f, s, store, transport, dir, genesis } = context;
+      await s.captureInitialSweep();
+      const a = await parentPacket(s);
+      const originalBody = f.pr.body;
+      const submit = transport.submit.bind(transport);
+      let sweepDelivery;
+      transport.submit = async (...args) => {
+        f.pr.body = 'material C after dispatch';
+        if (sequence === 'A-to-C-to-A' || sequence === 'A-to-C-to-C')
+          assert.equal(
+            (
+              await freshSession(context).begin(487, {
+                kind: 'human-comment',
+                deliveryId: 'deferred-event-C',
+              })
+            ).queued,
+            true
+          );
+        if (sequence === 'A-to-C-to-A') f.pr.body = originalBody;
+        assert.equal((await freshSession(context).beginInitialSweep(487)).queued, true);
+        sweepDelivery = structuredClone(
+          store.read().state.deliveries.find((delivery) => delivery.eventKind === 'initial-sweep')
+        );
+        if (sequence === 'A-to-C-to-D') {
+          f.pr.body = 'newer material D after sweep';
+          assert.equal(
+            (
+              await freshSession(context).begin(487, {
+                kind: 'human-comment',
+                deliveryId: 'deferred-event-D',
+              })
+            ).queued,
+            true
+          );
+        }
+        assert.deepEqual(store.read().state.initialSweep.completed, []);
+        return submit(...args);
+      };
+      assert.equal((await s.publishParentPacket(a, assessment)).status, 'published');
+      const afterOld = new LocalCloudReviewLedger(dir, genesis).read().state;
+      assert.equal(afterOld.slot, null);
+      assert.equal(afterOld.pending.length, 1);
+      assert.deepEqual(afterOld.initialSweep.completed, []);
+      assert.deepEqual(
+        afterOld.deliveries.find((delivery) => delivery.eventKind === 'initial-sweep'),
+        sweepDelivery
+      );
+      const next = freshSession(context);
+      const request = await next.begin(487, {
+        kind: 'human-comment',
+        deliveryId: 'complete-deferred-material',
+      });
+      assert.deepEqual(store.read().state.initialSweep.completed, []);
+      assert.equal(
+        (await next.finishParentAnalysis(completePacket(request.input, a))).status,
+        'applied'
+      );
+      const state = new LocalCloudReviewLedger(dir, genesis).read().state;
+      assert.deepEqual(state.initialSweep.completed, [487]);
+      assert.deepEqual(state.pending, []);
+      assert.deepEqual(
+        state.deliveries.find((delivery) => delivery.eventKind === 'initial-sweep'),
+        sweepDelivery
+      );
+      assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
+    });
+});
+
+test('superseding sweep work stays incomplete while in flight, abandoned, cancelled or unknown', async (t) => {
+  for (const terminal of ['inflight', 'abandon', 'cancelled', 'unknown'])
+    await t.test(terminal, async (t) => {
+      const context = await session(t);
+      const { f, s, store, transport } = context;
+      await s.captureInitialSweep();
+      const initial = await s.beginInitialSweep(487);
+      const sweepDelivery = structuredClone(store.read().state.deliveries[0]);
+      f.pr.body = 'superseding event B';
+      assert.equal(
+        (
+          await freshSession(context).begin(487, {
+            kind: 'human-comment',
+            deliveryId: 'unfinished-B',
+          })
+        ).queued,
+        true
+      );
+      await assert.rejects(s.finishParentAnalysis(completePacket(initial.input)));
+      assert.equal(store.read().state.slot, null);
+      const next = freshSession(context);
+      const request = await next.begin(487, { kind: 'human-comment', deliveryId: 'unfinished-B' });
+      const b = completePacket(request.input);
+      if (terminal === 'abandon')
+        assert.equal((await next.abandonBeforeIntent()).status, 'applied');
+      if (terminal === 'cancelled') {
+        const collect = transport.collect.bind(transport);
+        let collections = 0;
+        transport.collect = async (...args) => {
+          if (++collections === 2) f.pr.body = 'changed before dispatch';
+          return collect(...args);
+        };
+        assert.equal((await next.publishParentPacket(b, assessment)).status, 'cancelled');
+      }
+      if (terminal === 'unknown') {
+        f.writeBehavior = 'lost';
+        assert.equal((await next.publishParentPacket(b, assessment)).status, 'unknown');
+      }
+      const state = store.read().state;
+      assert.deepEqual(state.initialSweep.completed, []);
+      assert.equal(
+        state.pending.some((item) => item.pullRequest === 487),
+        true
+      );
+      assert.deepEqual(state.analyses, []);
+      assert.deepEqual(state.publicationReceipts, []);
+      assert.deepEqual(state.deliveries[0], sweepDelivery);
+      if (terminal === 'unknown') assert.equal(state.slot.intent.status, 'unknown');
+      assert.equal(
+        f.calls.filter((call) => call.operation === 'add_review_to_pr').length,
+        terminal === 'unknown' ? 1 : 0
+      );
+    });
+});
+
+test('an event completed before sweep capture covers identical material without changing journal commands', async (t) => {
+  const context = await session(t);
+  const { s, store, dir, genesis } = context;
+  await s.finishParentAnalysis(await parentPacket(s));
+  const before = store.read();
+  const git = (...args) =>
+    execFileSync('git', ['-C', dir, ...args], { encoding: 'utf8', stdio: 'pipe' }).trim();
+  const revisions = git('rev-list', '--reverse', before.revision).split('\n');
+  const entries = revisions.map((revision) => git('show', `${revision}:entry.json`));
+  const sweep = freshSession(context);
+  await sweep.captureInitialSweep();
+  assert.equal((await sweep.beginInitialSweep(487)).reason, 'unchanged material');
+  const state = new LocalCloudReviewLedger(dir, genesis).read().state;
+  assert.deepEqual(state.initialSweep.completed, [487]);
+  assert.deepEqual(state.analyses, before.state.analyses);
+  assert.equal(state.analyses[0].observation.executionModeSource, 'delegated-owner-event');
+  assert.equal(state.analyses[0].materialDeliveryId, 'event-1');
+  assert.equal(state.analyses[0].materialGeneration, 1);
+  assert.deepEqual(
+    revisions.map((revision) => git('show', `${revision}:entry.json`)),
+    entries
+  );
+  assert(
+    entries.every(
+      (entry) => !entry.includes('materialDeliveryId') && !entry.includes('materialGeneration')
+    )
+  );
+  assert.equal(
+    (await freshSession(context).beginInitialSweep(487)).reason,
+    'initial sweep item already completed'
+  );
+});
+
+test('fenced completion covers unchanged sweep material but never an uncaptured delivery', async (t) => {
+  for (const sweepDelivery of [false, true])
+    await t.test(sweepDelivery ? 'same fenced material' : 'no sweep delivery', async (t) => {
+      const context = await session(t);
+      const { s, store, transport } = context;
+      await s.captureInitialSweep();
+      const packet = await parentPacket(s);
+      const submit = transport.submit.bind(transport);
+      transport.submit = async (...args) => {
+        if (sweepDelivery)
+          assert.equal((await freshSession(context).beginInitialSweep(487)).queued, true);
+        assert.deepEqual(store.read().state.deferred, []);
+        assert.deepEqual(store.read().state.initialSweep.completed, []);
+        return submit(...args);
+      };
+      assert.equal((await s.publishParentPacket(packet, assessment)).status, 'published');
+      assert.deepEqual(store.read().state.initialSweep.completed, sweepDelivery ? [487] : []);
+      assert.deepEqual(store.read().state.pending, []);
+    });
+});
+
+test('historical sweep ABA journals replay unchanged while marked later completion forbids reopening', async (t) => {
+  for (const marked of [false, true])
+    await t.test(marked ? 'version one' : 'field-less historical commands', (t) => {
+      const { store, dir, genesis } = ledger(t);
+      const apply = (ledger, command) => {
+        const result = ledger.apply(ledger.read().revision, command);
+        assert.equal(result.status, 'applied');
+        return result;
+      };
+      const material = (deliveryId, digest, eventKind = 'human-comment') => ({
+        type: 'enqueue',
+        deliveryId,
+        pullRequest: 487,
+        eventKind,
+        materialDigest: digest.repeat(64),
+      });
+      const sweep = material(`${INITIAL_SWEEP_ID}:487`, 'a', 'initial-sweep');
+      apply(store, { type: 'captureInitialSweep', sweepId: INITIAL_SWEEP_ID, pullRequests: [487] });
+      apply(store, sweep);
+      apply(store, { type: 'claim', pullRequest: 487 });
+      apply(store, { type: 'abandon' });
+      const eventB = new LocalCloudReviewLedger(dir, genesis);
+      apply(eventB, material('historical-event-B', 'b'));
+      apply(eventB, { type: 'claim', pullRequest: 487 });
+      const b = analysis({ pullRequestBody: 'B' });
+      apply(eventB, {
+        type: 'finishAnalysis',
+        ...b,
+        ...(marked ? { sweepCoverageVersion: 1 } : {}),
+      });
+      assert.deepEqual(eventB.read().state.initialSweep.completed, marked ? [487] : []);
+      const later = new LocalCloudReviewLedger(dir, genesis);
+      apply(later, material('historical-event-A-recurs', 'a'));
+      assert.equal(apply(later, sweep).noOp, true);
+      apply(later, { type: 'claim', pullRequest: 487 });
+      const a = analysis({ pullRequestBody: 'A' });
+      a.observation.executionModeSource = 'delegated-owner-initial-sweep';
+      a.packet.reconciliation.priorPacketDigest = computeReviewPacketDigest(b.packet);
+      a.packet.reconciliation.priorReviewedHeadSha = b.packet.headSha;
+      if (marked)
+        assert.throws(
+          () => apply(later, { type: 'finishAnalysis', ...a }),
+          /initial sweep inventory is absent or completed/
+        );
+      else apply(later, { type: 'finishAnalysis', ...a });
+      const before = later.read();
+      const git = (...args) =>
+        execFileSync('git', ['-C', dir, ...args], { encoding: 'utf8', stdio: 'pipe' }).trim();
+      const revisions = git('rev-list', '--reverse', before.revision).split('\n');
+      const entries = revisions.map((revision) => git('show', `${revision}:entry.json`));
+      const reopened = new LocalCloudReviewLedger(dir, genesis, {
+        checkpoint: before.revision,
+      }).read();
+      assert.deepEqual(reopened, before);
+      assert.deepEqual(reopened.state.initialSweep.completed, [487]);
+      assert.deepEqual(
+        revisions.map((revision) => git('show', `${revision}:entry.json`)),
+        entries
+      );
+      assert.equal(
+        entries.some((entry) => Object.hasOwn(JSON.parse(entry), 'sweepCoverageVersion')),
+        marked
+      );
+    });
+});

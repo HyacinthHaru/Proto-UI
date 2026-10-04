@@ -59,6 +59,8 @@ export function emptyCloudReviewLedger({ publicationEnabled = false } = {}) {
 
 export function validateCloudReviewAnalysis(command, state) {
   const { input, packet, liveInput, observation } = command;
+  if (Object.hasOwn(command, 'sweepCoverageVersion'))
+    assert(command.sweepCoverageVersion === 1, 'unsupported sweep coverage version');
   keys(observation, [
     'executionMode',
     'executionModeSource',
@@ -153,12 +155,19 @@ export function validateCloudReviewAnalysis(command, state) {
       'durable prior analysis is unavailable'
     );
   }
+  const material = state.material.find((item) => item.pullRequest === input.pullRequest);
+  assert(material?.generation === state.slot.generation, 'claimed material lineage changed');
   return {
     input,
     packet,
     observation,
     ...(dualBaseline ? { analysisReconciliation: command.analysisReconciliation } : {}),
-    materialDigest: state.material.find((item) => item.pullRequest === input.pullRequest).digest,
+    ...(Object.hasOwn(command, 'sweepCoverageVersion')
+      ? { sweepCoverageVersion: command.sweepCoverageVersion }
+      : {}),
+    materialDigest: material.digest,
+    materialGeneration: material.generation,
+    materialDeliveryId: material.deliveryId,
   };
 }
 
@@ -167,7 +176,14 @@ function admitMaterial(state, command) {
   if (material?.digest === command.materialDigest) return;
   state.generation += 1;
   state.material = state.material.filter((item) => item.pullRequest !== command.pullRequest);
-  state.material.push({ pullRequest: command.pullRequest, digest: command.materialDigest });
+  // Derived only while replaying an admitted material change. Deferred commands
+  // acquire their lineage here when drained, never from the currently fenced slot.
+  state.material.push({
+    pullRequest: command.pullRequest,
+    digest: command.materialDigest,
+    generation: state.generation,
+    deliveryId: command.deliveryId,
+  });
   state.pending = state.pending.filter((item) => item.pullRequest !== command.pullRequest);
   state.pending.push({ pullRequest: command.pullRequest, generation: state.generation });
 }
@@ -175,16 +191,49 @@ function admitMaterial(state, command) {
 function completeCoveredSweep(state, analysis) {
   const pullRequest = analysis.input.pullRequest;
   if (
-    state.initialSweep?.sweepId === INITIAL_SWEEP_ID &&
-    state.initialSweep.pullRequests.includes(pullRequest) &&
-    !state.initialSweep.completed.includes(pullRequest) &&
-    state.deliveries.some(
-      (delivery) =>
-        delivery.eventKind === 'initial-sweep' &&
-        delivery.deliveryId === `${INITIAL_SWEEP_ID}:${pullRequest}` &&
-        delivery.pullRequest === pullRequest &&
-        delivery.materialDigest === analysis.materialDigest
+    state.initialSweep?.sweepId !== INITIAL_SWEEP_ID ||
+    !state.initialSweep.pullRequests.includes(pullRequest) ||
+    state.initialSweep.completed.includes(pullRequest)
+  )
+    return;
+  // Field-less historical commands retain exact-material coverage. Promoting a
+  // historical B here could make its later, then-valid initial-source A finish
+  // fail replay because completed would have changed earlier in that history.
+  if (analysis.sweepCoverageVersion !== 1) {
+    if (
+      state.deliveries.some(
+        (delivery) =>
+          delivery.eventKind === 'initial-sweep' &&
+          delivery.deliveryId === `${INITIAL_SWEEP_ID}:${pullRequest}` &&
+          delivery.pullRequest === pullRequest &&
+          delivery.materialDigest === analysis.materialDigest
+      )
     )
+      state.initialSweep.completed.push(pullRequest);
+    return;
+  }
+  // Journal order distinguishes an actual later generation from an old fenced
+  // analysis of the same digest (A -> C -> A). Include deferred deliveries when
+  // locating what the sweep observed; they need not have been admitted yet.
+  const deliveries = state.deliveries.filter((delivery) => delivery.pullRequest === pullRequest);
+  const sweep = deliveries.findIndex(
+    (delivery) =>
+      delivery.eventKind === 'initial-sweep' &&
+      delivery.deliveryId === `${INITIAL_SWEEP_ID}:${pullRequest}`
+  );
+  if (sweep < 0) return;
+  let requiredStart = sweep;
+  while (
+    requiredStart > 0 &&
+    deliveries[requiredStart - 1].materialDigest === deliveries[sweep].materialDigest
+  )
+    requiredStart--;
+  const analyzedStart = deliveries.findIndex(
+    (delivery) => delivery.deliveryId === analysis.materialDeliveryId
+  );
+  if (
+    analyzedStart >= requiredStart &&
+    deliveries[analyzedStart].materialDigest === analysis.materialDigest
   )
     state.initialSweep.completed.push(pullRequest);
 }
@@ -197,7 +246,10 @@ function drainDeferred(state) {
 
 function complete(state, analysis = null) {
   if (analysis) {
-    if (analysis.observation.executionModeSource === 'delegated-owner-initial-sweep')
+    if (
+      analysis.sweepCoverageVersion !== 1 &&
+      analysis.observation.executionModeSource === 'delegated-owner-initial-sweep'
+    )
       state.initialSweep.completed.push(state.slot.pullRequest);
     else completeCoveredSweep(state, analysis);
     state.analyses = state.analyses.filter(
@@ -395,6 +447,10 @@ export function reduceCloudReviewLedger(previous, command) {
         'packet',
         'liveInput',
         'observation',
+        ...(['finishAnalysis', 'stagePublicationIntent'].includes(command.type) &&
+        Object.hasOwn(command, 'sweepCoverageVersion')
+          ? ['sweepCoverageVersion']
+          : []),
         ...(command.type === 'stagePublicationIntent' &&
         Object.hasOwn(command, 'analysisReconciliation')
           ? ['analysisReconciliation']

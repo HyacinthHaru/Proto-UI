@@ -337,10 +337,10 @@ export class ConnectorReviewSession {
       const snapshot = await this.#ledger.read();
       assert(
         this.#claim?.intent === null && hash(snapshot.state.slot) === hash(this.#claim),
-        'original intent-free claim changed before release'
+        'cannot abandon: original intent-free claim changed before release'
       );
       const released = await this.#ledger.apply(snapshot.revision, { type: 'abandon' });
-      if (released.status === 'applied') return;
+      if (released.status === 'applied') return released;
       assert(released.status === 'conflict', 'intent-free claim release uncertain; no retry');
     }
     throw new Error('intent-free claim release contention budget exhausted');
@@ -361,6 +361,7 @@ export class ConnectorReviewSession {
       this.#refreshPolicy();
       const command = {
         type: 'stagePublicationIntent',
+        sweepCoverageVersion: 1,
         analysisReconciliation,
         input: this.#initial.input,
         packet,
@@ -498,10 +499,8 @@ export class ConnectorReviewSession {
     }
   }
   async abandonBeforeIntent() {
-    const snapshot = await this.#ledger.read();
-    assert(snapshot.state.slot?.intent === null, 'cannot abandon a persisted or uncertain intent');
     this.#used = true;
-    return this.#ledger.apply(snapshot.revision, { type: 'abandon' });
+    return this.#releaseUnstagedClaim();
   }
   async finishParentAnalysis(packet) {
     assert(
@@ -509,27 +508,50 @@ export class ConnectorReviewSession {
       'parent-review request required; lifecycle already consumed'
     );
     this.#used = true;
-    const live = await this.#transport.collect(this.#initial.input.pullRequest);
-    assert(
-      hash(identity(live)) === hash(identity(this.#initial)),
-      'live identity/permission changed'
-    );
-    const snapshot = await this.#ledger.read();
-    this.#refreshPolicy();
-    return this.#ledger.apply(snapshot.revision, {
-      type: 'finishAnalysis',
-      input: this.#initial.input,
-      packet,
-      liveInput: live.input,
-      observation: {
-        executionMode: 'autonomous',
-        executionModeSource: this.#source,
-        reviewerId: live.reviewerId,
-        reviewerLogin: live.viewerLogin,
-        authorId: live.authorId,
-        authorLogin: live.authorLogin,
-        policyDigest: hash(this.#policy),
-      },
-    });
+    let finishingStarted = false;
+    try {
+      const live = await this.#transport.collect(this.#initial.input.pullRequest);
+      assert(
+        hash(identity(live)) === hash(identity(this.#initial)),
+        'live identity/permission changed'
+      );
+      const snapshot = await this.#ledger.read();
+      this.#refreshPolicy();
+      const command = {
+        type: 'finishAnalysis',
+        sweepCoverageVersion: 1,
+        input: this.#initial.input,
+        packet,
+        liveInput: live.input,
+        observation: {
+          executionMode: 'autonomous',
+          executionModeSource: this.#source,
+          reviewerId: live.reviewerId,
+          reviewerLogin: live.viewerLogin,
+          authorId: live.authorId,
+          authorLogin: live.authorLogin,
+          policyDigest: hash(this.#policy),
+        },
+      };
+      // Separate deterministic rejection from an uncertain journal write, just
+      // as publication staging does. The adapter validates again under CAS.
+      validateCloudReviewAnalysis(command, snapshot.state);
+      finishingStarted = true;
+      const finished = await this.#ledger.apply(snapshot.revision, command);
+      if (finished.status === 'conflict') finishingStarted = false;
+      assert(finished.status === 'applied', 'analysis acknowledgement unavailable; never retry');
+      return finished;
+    } catch (error) {
+      // Releasing a proven unwritten finish preserves pending work; it must
+      // never be returned as a durable completion of the rejected analysis.
+      if (!finishingStarted) {
+        try {
+          await this.#releaseUnstagedClaim();
+        } catch (failure) {
+          error.message += `; claim release unknown: ${failure.message}`;
+        }
+      }
+      throw error;
+    }
   }
 }
