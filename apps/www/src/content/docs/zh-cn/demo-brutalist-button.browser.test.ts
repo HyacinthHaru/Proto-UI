@@ -18,7 +18,7 @@ import {
 const BUTTON_ROUTE = '/en/ui-libraries/brutalist/components/button/';
 const BUTTON_SELECTOR =
   '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]';
-const BUTTON_COUNT = 12;
+const BUTTON_COUNT = 10;
 const BUTTON_RUNTIMES = ['wc', 'react', 'vue', 'vue2'] as const satisfies readonly RuntimeId[];
 const VIEWPORT = { width: 1440, height: 900 } as const;
 const EVIDENCE_DIR = process.env.PROTO_UI_BROWSER_EVIDENCE_DIR;
@@ -178,20 +178,6 @@ describe.sequential('Brutalist Button browser regressions', () => {
           /(?:^|, )rgb\(0, 0, 0\) 4px 4px 0px 0px$/
         );
         await persistFrame(interactionFrame, runtime, 'rest');
-        const ghost = buttons.nth(10);
-        const ghostRest = await styleOf(ghost);
-        expect(ghostRest.borderColor).toBe('rgba(0, 0, 0, 0)');
-        expect(ghostRest.transform).toBe('none');
-        expect(ghostRest.boxShadow).not.toContain('4px 4px');
-        await ghost.hover();
-        const ghostHover = await styleOf(ghost);
-        expect(ghostHover.transform).toBe('none');
-        expect(ghostHover.boxShadow).not.toContain('4px 4px');
-        await page.mouse.down();
-        expect((await styleOf(ghost)).transform).toBe('none');
-        await page.mouse.up();
-        await persistFrame(interactionFrame, runtime, 'ghost-hover');
-        expect(await buttons.nth(11).getAttribute('aria-disabled')).toBe('true');
 
         await solid.hover();
         await waitForState(page, 0, 'data-hovered', true);

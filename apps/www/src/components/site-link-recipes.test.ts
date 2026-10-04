@@ -35,3 +35,33 @@ describe('consumer navigation density preserves native selection and family iden
     expect(linkSurfaceProps('shadcn', 'toc', 'minimal', visible)).not.toHaveProperty('inView');
   });
 });
+
+for (const appearance of ['brand', 'nav'] as const) {
+  it(`projects Brutalist ${appearance} through public Surface/Text while preserving quiet Shadcn`, () => {
+    expect(linkSurfaceProps('brutalist', appearance, 'minimal')).toMatchObject({
+      variant: 'secondary',
+      border: 'all',
+      elevation: 'raised',
+      radius: 'default',
+    });
+    expect(linkSurfaceLayout('brutalist', appearance, 'minimal')).toMatchObject({
+      padding: '0.5rem 0.75rem',
+      marginRight: '0.25rem',
+      marginBottom: '0.25rem',
+    });
+    const facts = { ...idle, hovered: true, pressed: true, focusVisible: true };
+    expect(linkSurfaceProps('brutalist', appearance, 'minimal', facts)).toMatchObject({
+      hovered: true,
+      pressed: true,
+      focusVisible: true,
+    });
+    expect(linkTextProps(appearance, facts, 'brutalist').decoration).toBe(
+      appearance === 'nav' ? 'underline' : 'none'
+    );
+    expect(linkSurfaceProps('shadcn', appearance, 'minimal')).toMatchObject({
+      variant: 'transparent',
+      border: 'none',
+      elevation: 'none',
+    });
+  });
+}

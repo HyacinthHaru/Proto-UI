@@ -27,7 +27,11 @@ const localeActions = otherLocale
         text: config.locales![otherLocale].label || otherLocale,
         link: localizedUrl(Astro.url, otherLocale, context.trailingSlash).pathname,
         variant: 'minimal' as const,
-        attrs: { 'data-home-locale': otherLocale, hreflang: otherLocale },
+        attrs: {
+          'data-home-locale': otherLocale,
+          'data-site-link-appearance': 'nav',
+          hreflang: otherLocale,
+        },
       },
     ]
   : [];

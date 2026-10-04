@@ -40,7 +40,7 @@ afterEach(async () => {
 
 for (const family of ['shadcn', 'brutalist'] as const)
   for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
-    it(`${family}/${runtime}: retains ghost/default props and the same Select owners through Header moves, locks and theme updates`, async () => {
+    it(`${family}/${runtime}: retains family-specific Header props and the same Select owners through Header moves, locks and theme updates`, async () => {
       const compact = Object.assign(new EventTarget(), { matches: false });
       vi.spyOn(window, 'matchMedia').mockReturnValue(compact as MediaQueryList);
       document.body.innerHTML = `<header data-site-header><div data-site-header-context><div data-site-header-preferences><div id="mount"></div></div></div><div data-site-header-panel><div data-site-header-compact-context></div></div><button id="menu">Navigation</button></header>`;
@@ -63,6 +63,7 @@ for (const family of ['shadcn', 'brutalist'] as const)
             label: 'Runtime',
             wrapValue: true,
             triggerAppearance: 'ghost',
+            brutalistTriggerAppearance: 'elevated',
             compactTriggerAppearance: 'default',
             options: [{ value: runtime, label: 'Current runtime' }],
             onValueChange() {},
@@ -71,6 +72,7 @@ for (const family of ['shadcn', 'brutalist'] as const)
             label: 'Style',
             wrapValue: true,
             triggerAppearance: 'ghost',
+            brutalistTriggerAppearance: 'elevated',
             compactTriggerAppearance: 'default',
             options: [{ value: family, label: family }],
             onValueChange() {},
@@ -112,8 +114,10 @@ for (const family of ['shadcn', 'brutalist'] as const)
           expect(trigger.dataset.projectionRuntime).toBe(runtime);
           expect(
             trigger.getAttribute('data-pui-style')!.split(/\s+/).includes('border-transparent')
-          ).toBe(!compact.matches);
-          expect(trigger.getAttribute('data-pui-style')).not.toContain('shadow-[4px_4px_0_0_#000]');
+          ).toBe(family === 'shadcn' && !compact.matches);
+          expect(
+            trigger.getAttribute('data-pui-style')!.includes('shadow-[4px_4px_0_0_#000]')
+          ).toBe(family === 'brutalist');
           expect(trigger.style.boxShadow).toBe('');
         }
       };

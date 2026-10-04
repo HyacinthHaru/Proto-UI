@@ -45,12 +45,12 @@ Config v1 supports one enabled style preset. `proto-ui add` rejects a Brutalist 
 
 | Prop       | Values                                             | Default             |
 | ---------- | -------------------------------------------------- | ------------------- |
-| `variant`  | `solid` \| `surface` \| `destructive` \| `ghost`   | `solid`             |
+| `variant`  | `solid` \| `surface` \| `destructive`              | `solid`             |
 | `color`    | `main` \| `mint` \| `lavender` \| `coral` \| `sky` | `main` (solid only) |
 | `size`     | `default` \| `sm` \| `lg` \| `icon`                | `default`           |
 | `disabled` | `boolean`                                          | `false`             |
 
-Every fill co-selects its foreground. Solid accents keep black text in both Light and Dark. The original variants retain their structural black border and hard shadow. The current draft adds opt-in `ghost`: transparent resting border/fill, theme foreground, neutral hover/press without displacement, and the same Base focus/disabled/activation semantics. Removing the variant restores `solid`. This addition does not change the immutable published rc.7 package. No `outline` variant is introduced.
+Every fill co-selects its foreground. Solid accents keep black text in both Light and Dark. There is no `outline` variant: structural 2px borders are part of the shared grammar.
 
 ## Badge and Card boundaries
 

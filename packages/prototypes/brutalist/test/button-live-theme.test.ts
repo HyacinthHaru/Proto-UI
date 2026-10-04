@@ -84,26 +84,6 @@ describe('prototypes/brutalist: button live-theme DOM', () => {
     document.querySelectorAll('[data-brutalist-theme-scope]').forEach((n) => n.remove());
   });
 
-  for (const disabled of [false, true])
-    it(`repaints ghost foreground without pointer input, disabled=${disabled}`, async () => {
-      // T-BRUTALIST-BUTTON-0001-CASE-GHOST
-      injectTokenStyles();
-      const { wrapper, el } = mount('ghost', disabled);
-      await Promise.resolve();
-      await Promise.resolve();
-      expect(cssVar(el, 'color')).toBe('#000000');
-      expect(cssVar(el, 'background-color')).toBe('transparent');
-      applyTheme(wrapper, DARK_VARS);
-      await Promise.resolve();
-      await Promise.resolve();
-      expect(cssVar(el, 'color')).toBe('#f5f5f5');
-      expect(cssVar(el, 'background-color')).toBe('transparent');
-      applyTheme(wrapper, LIGHT_VARS);
-      await Promise.resolve();
-      await Promise.resolve();
-      expect(cssVar(el, 'color')).toBe('#000000');
-    });
-
   // T-BRUTALIST-BUTTON-0001-CASE-8 / live theme
   it('repaints surface fills Light -> Dark -> Light without pointer events', async () => {
     injectTokenStyles();

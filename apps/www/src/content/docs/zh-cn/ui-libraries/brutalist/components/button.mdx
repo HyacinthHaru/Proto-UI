@@ -13,7 +13,3 @@ Button projection 继承 Base Button 语义，只增加 Neo-Brutalist 视觉差�
 <div class="brutalist-demo-frame">
   <PrototypePreviewer demoId="demo-brutalist-button" initialRuntime="wc" />
 </div>
-
-## 轻量外观
-
-既有 `solid`、`surface`、`destructive` 保留黑框与硬影反馈。`variant="ghost"` 是显式Proto UI视觉扩展：静止边框/填色透明且无硬影，hover/press使用中性主题表面而不移动控件。焦点ring、disabled门控与激活仍继承Base Button；`color` 仍只影响 `solid`。移除 `variant` 后恢复 `solid` 及原有反馈。上方示例包含可用与禁用的ghost Button。

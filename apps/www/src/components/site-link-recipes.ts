@@ -28,19 +28,21 @@ export function linkSurfaceProps(
   const action =
     ['action', 'icon', 'pagination'].includes(appearance) &&
     !['minimal', 'link'].includes(emphasis);
+  const framedNavigation = family === 'brutalist' && ['brand', 'nav'].includes(appearance);
+  const framed = action || framedNavigation;
   const row = appearance === 'sidebar' || appearance === 'toc';
   return {
     variant:
       row && (facts.current || (family === 'brutalist' && facts.hovered))
         ? 'accent'
-        : action
+        : framed
           ? emphasis === 'primary' && appearance === 'action'
             ? 'solid'
             : family === 'brutalist'
               ? 'secondary'
               : 'outline'
           : 'transparent',
-    radius: action
+    radius: framed
       ? family === 'brutalist'
         ? 'default'
         : 'lg'
@@ -49,10 +51,10 @@ export function linkSurfaceProps(
           ? 'default'
           : 'md'
         : 'none',
-    border: action ? 'all' : 'none',
-    elevation: action && family === 'brutalist' ? 'raised' : 'none',
+    border: framed ? 'all' : 'none',
+    elevation: framed && family === 'brutalist' ? 'raised' : 'none',
     focusVisible: facts.focusVisible,
-    hovered: action || row ? facts.hovered : false,
+    hovered: framed || row ? facts.hovered : false,
     pressed: facts.pressed,
     current: row && facts.current,
   };
@@ -94,8 +96,9 @@ export function linkSurfaceLayout(
   const row = appearance === 'sidebar' || appearance === 'toc' || appearance === 'pagination';
   const raised =
     family === 'brutalist' &&
-    ['action', 'icon', 'pagination'].includes(appearance) &&
-    ['primary', 'secondary'].includes(emphasis);
+    (['brand', 'nav'].includes(appearance) ||
+      (['action', 'icon', 'pagination'].includes(appearance) &&
+        ['primary', 'secondary'].includes(emphasis)));
   const size: Record<string, string> =
     appearance === 'icon'
       ? { width: '2.75rem', height: '2.75rem', padding: '0' }
@@ -111,7 +114,12 @@ export function linkSurfaceLayout(
               }
             : {
                 minHeight: appearance === 'text' ? '1.5rem' : '2.75rem',
-                padding: appearance === 'text' ? '0' : '0.5rem 0',
+                padding:
+                  appearance === 'text'
+                    ? '0'
+                    : family === 'brutalist'
+                      ? '0.5rem 0.75rem'
+                      : '0.5rem 0',
               };
   return {
     pointerEvents: 'none',

@@ -28,7 +28,7 @@ const BUTTON_BASE_TOKENS = [
   'select-none',
   'font-sans',
   'font-medium',
-  'rounded-base',
+  BRUTALIST_STRUCTURE_TOKENS,
 ].join(' ');
 
 /**
@@ -53,7 +53,6 @@ const SOLID_COLOR_TOKENS: Record<BrutalistButtonColor, string> = {
 const VARIANT_FILL_TOKENS: Record<Exclude<BrutalistButtonVariant, 'solid'>, string> = {
   surface: `${BRUTALIST_STRUCTURE_TOKENS} bg-secondary-background text-foreground`,
   destructive: `${BRUTALIST_STRUCTURE_TOKENS} bg-destructive text-destructive-foreground`,
-  ghost: 'rounded-base border-2 border-transparent bg-transparent text-foreground shadow-none',
 };
 
 // P-BRUTALIST-BUTTON-SIZE-PROP
@@ -73,7 +72,7 @@ const button = definePrototype<BrutalistButtonProps, BrutalistButtonExposes>({
       variant: {
         type: 'enum',
         empty: 'fallback',
-        options: ['solid', 'surface', 'destructive', 'ghost'],
+        options: ['solid', 'surface', 'destructive'],
       },
       color: {
         type: 'enum',
@@ -129,39 +128,15 @@ const button = definePrototype<BrutalistButtonProps, BrutalistButtonExposes>({
 
     // P-BRUTALIST-BUTTON-INTERACTION — hover feedback
     def.rule({
-      when: (w) =>
-        w.all(
-          w.any(
-            w.prop('variant').eq('solid'),
-            w.prop('variant').eq('surface'),
-            w.prop('variant').eq('destructive')
-          ),
-          w.state(hovered).eq(true)
-        ),
+      when: (w) => w.state(hovered).eq(true),
       intent: (i) =>
         i.feedback.style.use(tw(`${BRUTALIST_HOVER_LIFT_TOKENS} ${BRUTALIST_MOTION_HIT_TOKENS}`)),
     });
     // P-BRUTALIST-BUTTON-INTERACTION — press snap
     def.rule({
-      when: (w) =>
-        w.all(
-          w.any(
-            w.prop('variant').eq('solid'),
-            w.prop('variant').eq('surface'),
-            w.prop('variant').eq('destructive')
-          ),
-          w.state(pressed).eq(true)
-        ),
+      when: (w) => w.state(pressed).eq(true),
       intent: (i) =>
         i.feedback.style.use(tw(`${BRUTALIST_PRESS_TOKENS} ${BRUTALIST_MOTION_HIT_TOKENS}`)),
-    });
-    def.rule({
-      when: (w) =>
-        w.all(
-          w.prop('variant').eq('ghost'),
-          w.any(w.state(hovered).eq(true), w.state(pressed).eq(true))
-        ),
-      intent: (i) => i.feedback.style.use(tw('bg-secondary-background text-foreground')),
     });
     // P-BRUTALIST-BUTTON-INTERACTION — focus-visible ring
     def.rule({

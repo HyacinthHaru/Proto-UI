@@ -13,7 +13,3 @@ The Button projection inherits Base Button semantics and adds only the Neo-Bruta
 <div class="brutalist-demo-frame">
   <PrototypePreviewer demoId="demo-brutalist-button" initialRuntime="wc" />
 </div>
-
-## Quiet presentation
-
-The existing `solid`, `surface` and `destructive` variants keep their black frame and hard-shadow feedback. `variant="ghost"` is an opt-in Proto UI visual extension with a transparent resting border/fill and no hard shadow. Hover/press use the neutral theme surface without moving the control. Focus ring, disabled gating and activation remain inherited from Base Button; `color` still affects only `solid`. Removing `variant` restores `solid` and its original feedback. The example includes enabled and disabled ghost Buttons.

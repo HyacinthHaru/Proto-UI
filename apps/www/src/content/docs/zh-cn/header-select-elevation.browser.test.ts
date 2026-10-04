@@ -6,11 +6,16 @@ import type { Browser, Locator, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, RUNTIMES, startServer, stopServer } from './browser-harness';
 import { revealHeaderPreferences } from './site-header-browser';
+import {
+  headerPopupSettled,
+  readHeaderPopupPaint,
+  popupOptionContrast,
+} from './header-popup-evidence';
 import { measureHeaderPreferenceFocusRing } from './site-header-breakpoint-evidence';
 
 const LABELS = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' } as const;
-const appearance = process.env.PROTO_UI_HEADER_SELECT_APPEARANCE ?? 'ghost';
-if (appearance !== 'flat' && appearance !== 'ghost')
+const appearance = process.env.PROTO_UI_HEADER_SELECT_APPEARANCE ?? 'family';
+if (appearance !== 'flat' && appearance !== 'family')
   throw new Error('Unknown Header appearance expectation');
 const output =
   process.env.PROTO_UI_HEADER_SELECT_EVIDENCE_DIR ??
@@ -61,9 +66,26 @@ async function choose(page: Page, control: 'runtime' | 'family', label: string) 
     .click();
 }
 async function sample(select: Locator) {
+  await expect
+    .poll(() =>
+      select.evaluate((element) =>
+        element
+          .getAnimations({ subtree: true })
+          .every(
+            (animation) => animation.playState === 'finished' || animation.playState === 'idle'
+          )
+      )
+    )
+    .toBe(true);
   return select.evaluate((element) => {
     const rect = element.getBoundingClientRect();
     const style = getComputedStyle(element);
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 1;
+    const context = canvas.getContext('2d')!;
+    context.fillStyle = style.borderTopColor;
+    context.fillRect(0, 0, 1, 1);
+    const borderAlpha = context.getImageData(0, 0, 1, 1).data[3];
     const hit = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
     return {
       x: rect.x,
@@ -74,6 +96,7 @@ async function sample(select: Locator) {
       radius: style.borderTopLeftRadius,
       border: style.borderTopWidth,
       borderColor: style.borderTopColor,
+      borderAlpha,
       background: style.backgroundColor,
       tokens: element.getAttribute('data-pui-style'),
       font: style.fontFamily,
@@ -86,6 +109,25 @@ async function sample(select: Locator) {
     };
   });
 }
+async function headerLinkPaint(link: Locator) {
+  return link.evaluate((anchor) => {
+    const surface = anchor.querySelector<HTMLElement>('[data-pui-root]')!;
+    const text = surface.querySelector<HTMLElement>('[data-pui-root]')!;
+    const paint = getComputedStyle(surface);
+    return {
+      tag: anchor.localName,
+      href: anchor.getAttribute('href'),
+      surface: surface.getAttribute('data-projection-prototype'),
+      tokens: surface.getAttribute('data-pui-style'),
+      textTokens: text.getAttribute('data-pui-style'),
+      border: paint.borderTopWidth,
+      shadow: paint.boxShadow,
+      transform: paint.transform,
+      focused: anchor === document.activeElement,
+      nestedInteractive: anchor.querySelectorAll('button, [role="button"], [tabindex]').length,
+    };
+  });
+}
 async function keyboardFocus(page: Page, select: Locator) {
   // Escape already returned to this Trigger. Traverse away and back using
   // genuine keyboard input, without DOM focus or synthetic focus-visible state.
@@ -94,7 +136,7 @@ async function keyboardFocus(page: Page, select: Locator) {
   expect(await select.evaluate((element) => document.activeElement === element)).toBe(true);
 }
 
-describe.sequential('Header public ghost presentation and labelled compact fields', () => {
+describe.sequential('Header public family presentation and labelled compact fields', () => {
   for (const family of appearance === 'flat' ? ['brutalist'] : ['shadcn', 'brutalist'])
     for (const runtime of RUNTIMES)
       for (const theme of ['light', 'dark'] as const) {
@@ -131,6 +173,52 @@ describe.sequential('Header public ghost presentation and labelled compact field
               await choose(page, 'runtime', LABELS[runtime]);
               await ready(page, runtime);
             }
+            if (appearance === 'family' && family === 'brutalist') {
+              const links = page.locator(
+                '#home-brand [data-projection-generation-state="active"] a, #home-navigation-desktop [data-projection-generation-state="active"] a'
+              );
+              expect(await links.count()).toBe(4);
+              for (let index = 0; index < 4; index++) {
+                const link = links.nth(index);
+                await page.mouse.move(0, 900);
+                const rest = await headerLinkPaint(link);
+                expect(rest.tag).toBe('a');
+                expect(rest.href).toBeTruthy();
+                expect(rest.surface).toBe('brutalist-surface-root');
+                expect(rest.textTokens).toContain('font-sans');
+                expect(rest.border).toBe('2px');
+                expect(rest.shadow).toContain('4px 4px 0px');
+                expect(rest.nestedInteractive).toBe(0);
+                await capture(`1440-link-${index}-rest`);
+                await link.hover();
+                await expect
+                  .poll(async () => (await headerLinkPaint(link)).transform)
+                  .toBe('matrix(1, 0, 0, 1, 4, 4)');
+                const hovered = await headerLinkPaint(link);
+                await capture(`1440-link-${index}-hover`);
+                await page.mouse.down();
+                const pressed = await headerLinkPaint(link);
+                expect(pressed.transform).toBe(hovered.transform);
+                await capture(`1440-link-${index}-press`);
+                await page.mouse.move(0, 900);
+                await page.mouse.up();
+                await link.focus();
+                await page.keyboard.press('Tab');
+                await page.keyboard.press('Shift+Tab');
+                const focused = await headerLinkPaint(link);
+                expect(focused.focused).toBe(true);
+                expect(focused.tokens).toContain('ring-2');
+                await capture(`1440-link-${index}-focus`);
+                measurements.push({
+                  stage: 'native-header-link',
+                  index,
+                  rest,
+                  hovered,
+                  pressed,
+                  focused,
+                });
+              }
+            }
             for (const width of [1440, 390]) {
               await page.setViewportSize({ width, height: 1000 });
               await revealHeaderPreferences(page);
@@ -153,18 +241,26 @@ describe.sequential('Header public ghost presentation and labelled compact field
                   expect(rest.weight).toBe('500');
                   expect(rest.font).toContain('DM Sans');
                 }
-                if (appearance === 'ghost') {
+                if (appearance === 'family' && family === 'shadcn') {
                   expect(rest.tokens?.split(/\s+/).includes('border-transparent')).toBe(
                     width === 1440
                   );
-                  if (width === 1440) expect(rest.borderColor).toBe('rgba(0, 0, 0, 0)');
+                  if (width === 1440) expect(rest.borderAlpha).toBe(0);
                 }
-                expect(rest.shadow.includes('4px 4px 0px 0px')).toBe(false);
+                expect(rest.shadow.includes('4px 4px 0px 0px')).toBe(
+                  appearance === 'family' && family === 'brutalist'
+                );
                 await capture(`${width}-${control}-rest`);
                 await select.hover();
                 const hovered = await sample(select);
-                expect(hovered.x - rest.x).toBeCloseTo(0, 1);
-                expect(hovered.y - rest.y).toBeCloseTo(0, 1);
+                expect(hovered.x - rest.x).toBeCloseTo(
+                  appearance === 'family' && family === 'brutalist' ? 4 : 0,
+                  1
+                );
+                expect(hovered.y - rest.y).toBeCloseTo(
+                  appearance === 'family' && family === 'brutalist' ? 4 : 0,
+                  1
+                );
                 expect(hovered.shadow.includes('4px 4px 0px 0px')).toBe(false);
                 expect(hovered.hit).toBe(true);
                 await capture(`${width}-${control}-hover`);
@@ -173,13 +269,38 @@ describe.sequential('Header public ghost presentation and labelled compact field
                 expect(pressed.x).toBeCloseTo(hovered.x, 1);
                 expect(pressed.y).toBeCloseTo(
                   hovered.y +
-                    (appearance === 'ghost' && family === 'shadcn' && width === 390 ? 1 : 0),
+                    (appearance === 'family' && family === 'shadcn' && width === 390 ? 1 : 0),
                   1
                 );
+                await capture(`${width}-${control}-press`);
                 await page.mouse.up();
                 const id = await select.getAttribute('aria-controls');
                 const popup = page.locator(`[id=${JSON.stringify(id)}]`);
                 await popup.waitFor({ state: 'visible' });
+                measurements.push({
+                  stage: 'popup-first-visible',
+                  width,
+                  control,
+                  paint: await popup.evaluate(readHeaderPopupPaint),
+                });
+                await expect.poll(() => popup.evaluate(headerPopupSettled)).toBe(true);
+                const popupPaint = await popup.evaluate(readHeaderPopupPaint);
+                measurements.push({ stage: 'popup-settled', width, control, paint: popupPaint });
+                expect(popupPaint.opacity).toBe(1);
+                expect(popupPaint.backgroundRgba[3]).toBe(255);
+                for (const option of popupPaint.options) {
+                  expect(option.opacity).toBe(1);
+                  expect(option.colorRgba[3]).toBe(255);
+                  expect(
+                    popupOptionContrast(
+                      option.colorRgba,
+                      option.backgroundRgba,
+                      popupPaint.backgroundRgba
+                    ),
+                    `${family}/${theme}/${width}/${option.text} settled option contrast`
+                  ).toBeGreaterThanOrEqual(4.5);
+                }
+
                 // Content retains its own family presentation; ghost affects Trigger only.
                 const popupShadow = await popup.evaluate(
                   (element) => getComputedStyle(element).boxShadow
@@ -191,6 +312,7 @@ describe.sequential('Header public ghost presentation and labelled compact field
                 }
                 await capture(`${width}-${control}-popup`);
                 await page.keyboard.press('Escape');
+                await popup.waitFor({ state: 'hidden' });
                 await page.waitForFunction(
                   (id) => document.activeElement?.getAttribute('aria-controls') === id,
                   id
@@ -251,7 +373,7 @@ describe.sequential('Header public ghost presentation and labelled compact field
             // checks cannot detect feedback that moves its own hit owner away.
             const edgeTargets = [
               { id: 'runtime', locator: trigger(page, 'runtime') },
-              ...(appearance === 'ghost'
+              ...(appearance === 'family'
                 ? [
                     {
                       id: 'theme-button',
@@ -300,7 +422,7 @@ describe.sequential('Header public ghost presentation and labelled compact field
                   frames,
                 });
                 await capture(`390-${target.id}-${edge}-edge`);
-                if (appearance === 'ghost') {
+                if (appearance === 'family' && family === 'shadcn') {
                   expect(
                     frames.every(
                       (frame) =>

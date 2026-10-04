@@ -76,8 +76,6 @@ export const BRUTALIST_STYLE_TOKENS: string[] = [
   'data-[hidden]:hidden',
   'data-[hovered]:bg-coral',
   'data-[hovered]:border-black',
-  'data-[hovered]:data-[pressed]:bg-secondary-background',
-  'data-[hovered]:data-[pressed]:text-foreground',
   'data-[hovered]:hit-envelope-translate-1',
   'data-[hovered]:not-[data-active]:not-[data-pressed]:border-black',
   'data-[hovered]:not-[data-pressed]:not-[data-selected]:bg-secondary-background',

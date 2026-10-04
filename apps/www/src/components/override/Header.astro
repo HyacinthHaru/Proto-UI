@@ -88,7 +88,7 @@ const navigation = [
       <div class="site-header-context" data-site-header-context>
         <div class="site-header-runtime" data-site-header-preferences>
           <span class="site-header-runtime-label">{zh ? '预览 Runtime' : 'Preview runtime'}</span>
-          <AdapterSelect />
+          <AdapterSelect brutalistTriggerAppearance="elevated" />
         </div>
         {Astro.locals.starlightRoute.hasSidebar && (
           <div
@@ -109,7 +109,7 @@ const navigation = [
           data-site-button
           data-site-control-family={family}
           data-site-menu-button
-          data-variant="ghost"
+          data-variant={family === 'brutalist' ? 'surface' : 'ghost'}
           data-size="icon"
           aria-label={menuLabel}
           aria-expanded="false"

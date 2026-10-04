@@ -69,17 +69,6 @@ cases:
       - P-BRUTALIST-BUTTON-LIGHT-DARK
       - P-BRUTALIST-BUTTON-PAIR-INVARIANT
     expectation: p-brutalist-button-live-theme-browser
-  - id: T-BRUTALIST-BUTTON-0001-CASE-GHOST
-    title: Ghost withdraws structural paint and motion while preserving Base state and default restoration
-    covers:
-      - P-BRUTALIST-BUTTON-VARIANT-PROP
-      - P-BRUTALIST-BUTTON-DEFAULTS
-      - P-BRUTALIST-BUTTON-PAIR-INVARIANT
-      - P-BRUTALIST-BUTTON-INTERACTION
-      - P-BRUTALIST-BUTTON-VISUAL-GRAMMAR
-      - P-BRUTALIST-BUTTON-LIGHT-DARK
-      - P-BRUTALIST-BUTTON-LIVE-THEME
-    expectation: brutalist-button-ghost-states-and-default-restoration
 implementations:
   - id: prototypes-brutalist-button-contract
     kind: module-test
@@ -95,7 +84,6 @@ implementations:
       - T-BRUTALIST-BUTTON-0001-CASE-6
       - T-BRUTALIST-BUTTON-0001-CASE-7
       - T-BRUTALIST-BUTTON-0001-CASE-9
-      - T-BRUTALIST-BUTTON-0001-CASE-GHOST
     exercises:
       - P-BASE-BUTTON
       - P-BRUTALIST-BUTTON
@@ -106,7 +94,6 @@ implementations:
     required: true
     consumesCases:
       - T-BRUTALIST-BUTTON-0001-CASE-8
-      - T-BRUTALIST-BUTTON-0001-CASE-GHOST
     exercises:
       - P-BRUTALIST-BUTTON
   - id: www-brutalist-button-live-theme-browser
@@ -167,10 +154,6 @@ revisions:
     summary: >-
       Introduced draft Brutalist Button coverage mapped 1:1 to the rc.7 P criteria (API, pairs, interaction, Light/Dark, live theme). Not present in the immutable rc.6 snapshot.
 
-
-  - version: 0.3.0-alpha.1
-    change: revised
-    summary: Added ghost active-state/default-restoration and live host-theme module coverage.
 
 tags:
   - test

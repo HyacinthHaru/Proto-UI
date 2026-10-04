@@ -196,7 +196,7 @@ function initializeButton(button: HTMLElement): void {
     // Family-specific public variants, never recolor a foreign Button.
     props.variant =
       button.localName === 'wc-brutalist-button' &&
-      ['outline', 'secondary'].includes(button.dataset.variant)
+      ['ghost', 'outline', 'secondary'].includes(button.dataset.variant)
         ? 'surface'
         : button.dataset.variant;
   }
@@ -259,11 +259,11 @@ function initializeSelect(root: SiteSelectRoot): void {
       ...(root.closest('[data-site-header]')
         ? {
             appearance:
-              !root.closest('[data-site-header-panel]') &&
-              !root.ownerDocument.defaultView?.matchMedia?.('(max-width: 47.999rem)').matches
-                ? 'ghost'
-                : family === 'brutalist'
-                  ? 'flat'
+              family === 'brutalist'
+                ? (trigger.dataset.appearance ?? 'flat')
+                : !root.closest('[data-site-header-panel]') &&
+                    !root.ownerDocument.defaultView?.matchMedia?.('(max-width: 47.999rem)').matches
+                  ? 'ghost'
                   : 'default',
           }
         : {}),

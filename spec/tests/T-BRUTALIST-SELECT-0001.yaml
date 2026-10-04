@@ -66,15 +66,6 @@ cases:
       - P-BRUTALIST-SELECT-TRIGGER-DEFAULTS
       - P-BRUTALIST-SELECT-CONTENT-VISUAL-GRAMMAR
     expectation: p-brutalist-select-trigger-opt-in-elevation
-  - id: T-BRUTALIST-SELECT-0001-CASE-9
-    title: Ghost presentation and default restoration preserve inherited command ownership
-    covers:
-      - P-BRUTALIST-SELECT-TRIGGER-APPEARANCE
-      - P-BRUTALIST-SELECT-TRIGGER-DEFAULTS
-      - P-BRUTALIST-SELECT-TRIGGER-PLACEHOLDER-STATE
-      - P-BRUTALIST-SELECT-TRIGGER-INTERACTION
-      - P-BRUTALIST-SELECT-TRIGGER-VISUAL-GRAMMAR
-    expectation: select-trigger-ghost-restores-default-without-stale-paint-or-motion
 implementations:
   - id: prototypes-brutalist-select-contract
     kind: module-test
@@ -90,7 +81,6 @@ implementations:
       - T-BRUTALIST-SELECT-0001-CASE-6
       - T-BRUTALIST-SELECT-0001-CASE-7
       - T-BRUTALIST-SELECT-0001-CASE-8
-      - T-BRUTALIST-SELECT-0001-CASE-9
     exercises:
       - P-BASE-SELECT
       - P-BASE-SELECT-CONTENT
@@ -109,26 +99,13 @@ implementations:
     required: true
     consumesCases: [T-BRUTALIST-SELECT-0001-CASE-8]
     exercises: [P-BRUTALIST-SELECT-TRIGGER, P-BRUTALIST-SELECT-CONTENT]
-  - id: website-header-select-appearance-browser
+  - id: website-header-select-elevation-browser
     kind: adapter-test
     status: planned
     path: apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts
     required: false
-    consumesCases:
-      - T-BRUTALIST-SELECT-0001-CASE-9
+    consumesCases: [T-BRUTALIST-SELECT-0001-CASE-8]
     exercises: [P-BRUTALIST-SELECT-TRIGGER, P-BRUTALIST-SELECT-CONTENT]
-    notes:
-      - Source-bound Header ghost/default rendering across families and four runtimes; immutable flat baseline remains a labeled historical negative. Explicit elevated compatibility is retained by the separate module fixture.
-  - id: website-brutalist-header-ghost-runtime
-    kind: adapter-test
-    status: passing
-    path: apps/www/src/components/header-ghost-appearance.test.ts
-    required: true
-    consumesCases:
-      - T-BRUTALIST-SELECT-0001-CASE-9
-    exercises:
-      - P-BRUTALIST-SELECT-TRIGGER
-      - P-BASE-SELECT-TRIGGER
 
 verifies:
   prototypes:
@@ -158,10 +135,6 @@ revisions:
     summary: >-
       Introduced draft Brutalist Select coverage mapped to the rc.7 P criteria (size, defaults, placeholder, chevron, selected pair, indicator, transition). Not present in the immutable rc.6 snapshot.
 
-
-  - version: 0.3.0-alpha.1
-    change: revised
-    summary: Added explicit ghost and active-state/default-restoration module coverage; hosted exact-head appearance evidence remains required.
 
 tags:
   - test

@@ -45,7 +45,7 @@ export type ProjectionControlConfig<Value extends string> = Readonly<{
   wrapValue?: boolean;
   /** Explicit Brutalist Trigger presentation; other families keep their own recipe. */
   brutalistTriggerAppearance?: 'flat' | 'elevated';
-  /** Consumer presentation; default maps to the family's existing default. */
+  /** Shadcn presentation; Brutalist retains its separate explicit appearance. */
   triggerAppearance?: 'default' | 'ghost';
   compactTriggerAppearance?: 'default' | 'ghost';
   options: readonly ProjectionControlOption<Value>[];
@@ -491,17 +491,12 @@ function triggerAppearance(
   prototypeId: string,
   compact = false
 ): string | undefined {
+  if (prototypeId === 'brutalist-select-trigger') return config.brutalistTriggerAppearance;
   const appearance =
     compact && config.compactTriggerAppearance
       ? config.compactTriggerAppearance
       : config.triggerAppearance;
-  if (appearance)
-    return appearance === 'ghost'
-      ? 'ghost'
-      : prototypeId === 'brutalist-select-trigger'
-        ? 'flat'
-        : 'default';
-  return prototypeId === 'brutalist-select-trigger' ? config.brutalistTriggerAppearance : undefined;
+  return appearance;
 }
 
 function createSelectControl<Value extends string>(

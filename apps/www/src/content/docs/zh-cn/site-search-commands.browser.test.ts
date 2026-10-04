@@ -569,7 +569,9 @@ describe.sequential('Search family Button commands', () => {
             // Both Header families consume public ghost Buttons; labelled
             // compact preferences and ordinary form fields keep their defaults.
             const triggerTokens = await trigger.getAttribute('data-pui-style');
-            expect(triggerTokens).toContain('bg-transparent');
+            expect(triggerTokens).toContain(
+              family === 'brutalist' ? 'bg-secondary-background' : 'bg-transparent'
+            );
             {
               expect(triggerTokens).toContain('border-transparent');
               const rest = await trigger.evaluate((node) => ({
@@ -590,7 +592,9 @@ describe.sequential('Search family Button commands', () => {
               .toBe(true);
             expect(await dialog.getAttribute('data-test-open-count')).toBe('1');
             expect(await close.evaluate((button) => button.localName)).toBe(`wc-${family}-button`);
-            expect(await close.getAttribute('data-pui-style')).toContain('bg-transparent');
+            expect(await close.getAttribute('data-pui-style')).toContain(
+              family === 'brutalist' ? 'bg-secondary-background' : 'bg-transparent'
+            );
             await capture(page, id, 'open');
             await close.locator('svg').click();
             await expect

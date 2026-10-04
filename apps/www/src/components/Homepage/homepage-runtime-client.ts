@@ -159,14 +159,18 @@ export function createHomepageContent(
                     rootTag: 'span',
                     ref: `home-link-text-${index}`,
                     props: {
-                      ...linkTextProps(siteLinkAppearance(link), {
-                        hovered: false,
-                        pressed: false,
-                        focusVisible: false,
-                        current:
-                          link.hasAttribute('aria-current') &&
-                          link.getAttribute('aria-current') !== 'false',
-                      }),
+                      ...linkTextProps(
+                        siteLinkAppearance(link),
+                        {
+                          hovered: false,
+                          pressed: false,
+                          focusVisible: false,
+                          current:
+                            link.hasAttribute('aria-current') &&
+                            link.getAttribute('aria-current') !== 'false',
+                        },
+                        family
+                      ),
                     },
                     children: [
                       link.textContent?.trim() || link.getAttribute('aria-label') || 'Link',
@@ -190,7 +194,7 @@ export function createHomepageContent(
         fontFamily: 'inherit',
       },
       props: {
-        variant: 'ghost',
+        variant: family === 'brutalist' ? 'surface' : 'ghost',
         size: group.root.dataset.homepageThemeIcon === 'true' ? 'icon' : 'default',
       },
       children:
@@ -221,7 +225,7 @@ export function createHomepageContent(
         padding: '0',
         fontFamily: 'inherit',
       },
-      props: { variant: 'ghost', size: 'icon' },
+      props: { variant: family === 'brutalist' ? 'surface' : 'ghost', size: 'icon' },
       children: [
         { kind: 'box', className: 'site-header-menu-icon', attrs: { 'aria-hidden': 'true' } },
         {
@@ -399,6 +403,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       label: root.dataset.runtimeLabel || 'Page runtime',
       wrapValue: true,
       triggerAppearance: 'ghost',
+      brutalistTriggerAppearance: 'elevated',
       compactTriggerAppearance: 'default',
       options: AdapterIds.map((value) => ({ value, label: LABELS[value] })),
       onValueChange: requestRuntime,
@@ -407,6 +412,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       label: root.dataset.familyLabel || demo?.root.dataset.familyLabel || 'Page library',
       wrapValue: true,
       triggerAppearance: 'ghost',
+      brutalistTriggerAppearance: 'elevated',
       compactTriggerAppearance: 'default',
       options: [
         { value: 'shadcn', label: 'Shadcn' },
