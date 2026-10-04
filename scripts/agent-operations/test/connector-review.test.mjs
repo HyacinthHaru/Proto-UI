@@ -229,6 +229,108 @@ test('connector arguments bind permission, paginated inventory and Bot identitie
   assert.equal(live.input.checks[0].workflowPath, '.github/workflows/ci.yml');
   assert(f.calls.some((c) => c.args.url?.includes('/comments?per_page=100&page=3')));
 });
+for (const count of [2, 101]) {
+  test(`file pagination collects ${count} distinct paths sharing a blob SHA`, async () => {
+    const f = fixture();
+    f.files = Array.from({ length: count }, (_, i) => ({
+      filename: `packages/core/src/file-${i}.ts`,
+      status: 'modified',
+      sha: (i + 1).toString(16).padStart(40, '0'),
+    }));
+    f.files.at(-1).sha = f.files[0].sha;
+    f.pr.changed_files = count;
+    const live = await new ConnectorReviewTransport(f.call).collect(487);
+    assert.deepEqual(
+      live.input.changedFiles.map((file) => file.path),
+      f.files.map((file) => file.filename)
+    );
+    assert.deepEqual(
+      f.calls
+        .filter((call) => call.args.url?.includes('/files?'))
+        .map((call) => Number(new URL(call.args.url).searchParams.get('page'))),
+      Array.from({ length: Math.ceil(count / 100) + 1 }, (_, i) => i + 1)
+    );
+  });
+  test(`file pagination rejects repeated paths among ${count} distinct blob SHAs`, async () => {
+    const f = fixture();
+    f.files = Array.from({ length: count }, (_, i) => ({
+      filename: `packages/core/src/file-${i}.ts`,
+      status: 'modified',
+      sha: (i + 1).toString(16).padStart(40, '0'),
+    }));
+    f.files.at(-1).filename = f.files[0].filename;
+    f.pr.changed_files = count;
+    await assert.rejects(
+      new ConnectorReviewTransport(f.call).collect(487),
+      /duplicate\/repeated pagination item/
+    );
+  });
+}
+test('non-file pagination retains ID and commit SHA duplicate checks across pages', async () => {
+  for (const endpoint of [
+    '/pulls',
+    '/pulls/487/commits',
+    '/pulls/487/reviews',
+    '/issues/487/comments',
+    '/pulls/487/comments',
+    '/actions/runs',
+    '/commits/head/check-runs',
+    '/commits/head/statuses',
+  ]) {
+    const rows = Array.from({ length: 101 }, (_, i) => ({
+      ...(endpoint.endsWith('/commits') ? {} : { id: i + 1 }),
+      sha: (i + 1).toString(16).padStart(40, '0'),
+      filename: `distinct-path-${i}.ts`,
+    }));
+    const key = endpoint.endsWith('/commits') ? 'sha' : 'id';
+    rows.at(-1)[key] = rows[0][key];
+    const transport = new ConnectorReviewTransport(async (operation, args) => {
+      assert.equal(operation, 'fetch');
+      const start = (Number(new URL(args.url).searchParams.get('page')) - 1) * 100;
+      return result({ content: JSON.stringify(rows.slice(start, start + 100)) });
+    });
+    await assert.rejects(transport.pages(endpoint), /duplicate\/repeated pagination item/);
+  }
+});
+test('pagination still rejects changed totals, incomplete inventories and exhausted page budgets', async () => {
+  for (const [response, expected] of [
+    [
+      (page) => ({ total_count: page === 1 ? 1 : 2, workflow_runs: page === 1 ? [{ id: 1 }] : [] }),
+      /pagination total changed/,
+    ],
+    [
+      (page) => ({ total_count: 2, workflow_runs: page === 1 ? [{ id: 1 }] : [] }),
+      /pagination inventory incomplete/,
+    ],
+    [(page) => ({ workflow_runs: [{ id: page }] }), /pagination budget exceeded/],
+  ]) {
+    const pages = [];
+    const transport = new ConnectorReviewTransport(async (operation, args) => {
+      assert.equal(operation, 'fetch');
+      const page = Number(new URL(args.url).searchParams.get('page'));
+      pages.push(page);
+      return result({ content: JSON.stringify(response(page)) });
+    });
+    await assert.rejects(transport.pages('/actions/runs', 'workflow_runs'), expected);
+    assert(pages.length <= 30);
+  }
+});
+test('file pagination still requires filenames and the live PR file count', async () => {
+  for (const [mutate, expected] of [
+    [
+      (f) => {
+        delete f.files[0].filename;
+        f.files[0].sha = sha('c');
+      },
+      /duplicate\/repeated pagination item/,
+    ],
+    [(f) => f.pr.changed_files++, /file\/commit inventory does not bind the live PR/],
+  ]) {
+    const f = fixture();
+    mutate(f);
+    await assert.rejects(new ConnectorReviewTransport(f.call).collect(487), expected);
+  }
+});
 test('coverage gaps, duplicate pages, workflow ambiguity and owner PR fail closed', async () => {
   for (const mutate of [
     (f) => {
