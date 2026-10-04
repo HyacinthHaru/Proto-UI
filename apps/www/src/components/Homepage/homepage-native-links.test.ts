@@ -139,7 +139,7 @@ it('retains full visual identity on every fact update and clears the disposed ge
   for (const [ref, props] of project.mock.calls) {
     expect(ref).toBe('home-link-surface-0');
     expect(props).toMatchObject({
-      variant: 'outline',
+      variant: 'secondary',
       radius: 'default',
       border: 'all',
       elevation: 'raised',
@@ -157,7 +157,7 @@ it('retains full visual identity on every fact update and clears the disposed ge
   expect(project).toHaveBeenLastCalledWith(
     'home-link-surface-0',
     expect.objectContaining({
-      variant: 'outline',
+      variant: 'secondary',
       elevation: 'raised',
       hovered: false,
       pressed: false,

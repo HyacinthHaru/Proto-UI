@@ -37,20 +37,20 @@ export function Summary() {
 
 ## 输入
 
-| Prop           | Values                                               | Default   |
-| -------------- | ---------------------------------------------------- | --------- |
-| `variant`      | `transparent`, `outline`, `muted`, `accent`, `solid` | `outline` |
-| `radius`       | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full`    | `default` |
-| `border`       | `all`, `bottom`, `none`                              | `all`     |
-| `elevation`    | `none`, `raised`                                     | `none`    |
-| `hovered`      | boolean                                              | `false`   |
-| `focusVisible` | boolean                                              | `false`   |
-| `pressed`      | boolean                                              | `false`   |
-| `current`      | boolean                                              | `false`   |
+| Prop           | Values                                                            | Default   |
+| -------------- | ----------------------------------------------------------------- | --------- |
+| `variant`      | `transparent`, `outline`, `muted`, `accent`, `solid`, `secondary` | `outline` |
+| `radius`       | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full`                 | `default` |
+| `border`       | `all`, `bottom`, `none`                                           | `all`     |
+| `elevation`    | `none`, `raised`                                                  | `none`    |
+| `hovered`      | boolean                                                           | `false`   |
+| `focusVisible` | boolean                                                           | `false`   |
+| `pressed`      | boolean                                                           | `false`   |
+| `current`      | boolean                                                           | `false`   |
 
 四个布尔值都是现有语义 owner 提供的事实；Surface 不自行检测指针、焦点、键盘、选择或导航状态。它没有 exposed state、event、method、无障碍 role 或 native property。`current` 是呈现输入，不是 `aria-current` 实现；需要真实 Button 时应组合受治理的 Button 协议。
 
-移除输入后恢复默认值。默认圆角和绘制由各家族决定，共用 prop 词汇不等于外观一致。内容与布局继续归消费者；当带风格的 Text 子项需要保留外层 Surface 前景时，使用 `tone="inherit"`。
+移除输入后恢复默认值。Base 规范化 `secondary` 而不绘制；各风格投射独立于 elevation 选择次级表面。默认圆角和绘制由各家族决定，共用 prop 词汇不等于外观一致。内容与布局继续归消费者；当带风格的 Text 子项需要保留外层 Surface 前景时，使用 `tone="inherit"`。
 
 ## Host 与 Compiler 边界
 

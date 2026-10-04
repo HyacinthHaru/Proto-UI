@@ -1,7 +1,13 @@
+import { retainHappyDomMutationCallbacks } from '../../../../scripts/test/happy-dom-mutation-keepalive.mjs';
+let observerKeeper: ReturnType<typeof retainHappyDomMutationCallbacks>;
+beforeAll(() => {
+  observerKeeper = retainHappyDomMutationCallbacks(window);
+});
+afterAll(() => observerKeeper.restore());
 import { headerSurfaceParticipant } from './site-header-surface';
 import { renderDemo } from './PrototypePreviewer/demo-renderer';
 import { loadPrototypes } from './PrototypePreviewer/prototype-modules';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { siteTypographyParticipant, collectSiteTypographyTargets } from './site-typography';
 import { initDocumentationTypography } from './site-typography-client';
 import { createProjectionScopeController } from './PrototypePreviewer/projection-scope';
@@ -219,6 +225,10 @@ describe('typography scope transaction and bounded setup', () => {
     const header = document.createElement('header');
     header.dataset.homepageRuntime = '';
     header.innerHTML = `<output data-homepage-runtime-status></output><div data-homepage-actions data-homepage-controls="runtime"><div data-homepage-fallback><a href="/docs/">Docs</a></div><div data-homepage-mount></div></div>`;
+    header.insertAdjacentHTML(
+      'beforeend',
+      `<div data-homepage-actions><div data-homepage-fallback>${['github', 'discord', 'x', 'bluesky'].map((icon) => `<a href="https://example.test/${icon}" aria-label="${icon}" data-site-link-icon="${icon}" data-site-link-appearance="icon"></a>`).join('')}</div><div data-homepage-mount></div></div>`
+    );
     document.body.prepend(header);
     const heading = document.querySelector<HTMLElement>('h1')!;
     const handle = initHomepageRuntime(header)!;

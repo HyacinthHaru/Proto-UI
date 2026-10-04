@@ -9,6 +9,121 @@ import type { Browser } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { RUNTIMES, launchBrowser, selectRuntime, startServer, stopServer } from './browser-harness';
 
+type ShellTrace = {
+  atMs: number;
+  slots: {
+    generation: string | null;
+    phase: string | null;
+    runtime: string | null;
+    hostHidden: boolean;
+    hostInert: boolean;
+    hostDisplay: string | null;
+    blockedByAncestor: boolean;
+    borrowedContent: boolean;
+    prototypeCount: number;
+    active: boolean;
+  }[];
+};
+type ShellRecorder = {
+  traces: ShellTrace[];
+  events: { name: string; atMs: number; detail: unknown; slots: ShellTrace['slots'] }[];
+};
+
+function readyEventHasExpectedOwner(event: ShellRecorder['events'][number]): boolean {
+  const active = event.slots.filter((slot) => slot.active);
+  const detail = event.detail as { id?: string; runtime?: string } | null;
+  const expected =
+    event.name === 'runtime:changed'
+      ? detail?.id
+      : event.name === 'previewer:mounted'
+        ? detail?.runtime
+        : undefined;
+  return (
+    !!expected &&
+    (RUNTIMES as readonly string[]).includes(expected) &&
+    active.length === 1 &&
+    active[0].runtime === expected
+  );
+}
+
+function installShellRecorder() {
+  const state: ShellRecorder = { traces: [], events: [] };
+  (window as typeof window & { __passiveAtomEvidence: ShellRecorder }).__passiveAtomEvidence =
+    state;
+  let previous = '';
+  const capture = () => {
+    const preview = document.querySelector('[data-previewer-id]');
+    if (!preview) return;
+    const slots = [...preview.querySelectorAll<HTMLElement>('[data-passive-shell-slot]')].map(
+      (slot) => {
+        const surface = slot.closest<HTMLElement>('.pui-runtime-preview-surface');
+        const host = surface?.parentElement;
+        let blockedByAncestor = false;
+        for (
+          let ancestor: HTMLElement | null = slot;
+          ancestor && ancestor !== preview;
+          ancestor = ancestor.parentElement
+        ) {
+          const style = getComputedStyle(ancestor);
+          if (
+            ancestor.hidden ||
+            ancestor.inert ||
+            style.display === 'none' ||
+            style.visibility === 'hidden'
+          )
+            blockedByAncestor = true;
+        }
+        const borrowedContent = Boolean(
+          slot.querySelector('[data-demo-ref="__website_runtime_preview_surface__-content"]')
+        );
+        const prototypeCount = slot.querySelectorAll('[data-pui-root]').length;
+        return {
+          generation: surface?.dataset.projectionGeneration ?? null,
+          phase: surface?.dataset.projectionState ?? host?.dataset.projectionState ?? null,
+          runtime: surface?.dataset.projectionRuntime ?? null,
+          hostHidden: host?.hidden ?? false,
+          hostInert: host?.inert ?? false,
+          hostDisplay: host ? getComputedStyle(host).display : null,
+          blockedByAncestor,
+          borrowedContent,
+          prototypeCount,
+          active: !blockedByAncestor && borrowedContent && prototypeCount > 0,
+        };
+      }
+    );
+    const key = JSON.stringify(slots);
+    if (key !== previous) {
+      previous = key;
+      state.traces.push({ atMs: performance.now(), slots });
+    }
+  };
+  for (const name of ['runtime:changed', 'previewer:mounted']) {
+    document.addEventListener(name, (event) => {
+      capture();
+      state.events.push({
+        name,
+        atMs: performance.now(),
+        detail: (event as CustomEvent).detail,
+        slots: state.traces.at(-1)?.slots ?? [],
+      });
+    });
+  }
+  new MutationObserver(capture).observe(document, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: [
+      'hidden',
+      'inert',
+      'style',
+      'class',
+      'data-projection-generation',
+      'data-projection-state',
+      'data-projection-runtime',
+    ],
+  });
+}
+
 const subjects = [
   ...(['base', 'shadcn', 'brutalist'] as const).map((family) => ({ family, atom: 'text' })),
   ...(['base', 'shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'] as const).map(
@@ -74,25 +189,92 @@ describe.sequential('Public passive atom documentation previews', () => {
       const page = await context.newPage();
       const errors: string[] = [];
       page.on('pageerror', (error) => errors.push(error.message));
+      await page.addInitScript(installShellRecorder);
       const name = `${locale}-${family}-${atom}-${runtime}`;
       try {
         await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded' });
         const preview = page.locator('[data-previewer-id]').first();
+        const readinessDeadline = Date.now() + 20_000;
         await selectRuntime(page, preview, runtime, '[data-pui-root]', 4);
-        await preview
-          .locator('[data-passive-shell-slot]')
-          .waitFor({ state: 'attached', timeout: 20_000 });
-        expect(await preview.locator('[data-passive-shell-slot]').count()).toBe(1);
+        if (Date.now() >= readinessDeadline)
+          throw new Error('Passive atom readiness exceeded its original 20-second budget');
+        // A preparing hidden/empty candidate is not another active content owner.
+        // Keep every observed candidate in the trace; never use .first() to hide duplicates.
+        await page.waitForFunction(
+          () => {
+            const state = (window as typeof window & { __passiveAtomEvidence: ShellRecorder })
+              .__passiveAtomEvidence;
+            const latest = state.traces.at(-1);
+            return latest?.slots.filter((slot) => slot.active).length === 1;
+          },
+          undefined,
+          { timeout: Math.max(1, readinessDeadline - Date.now()) }
+        );
+        await page.waitForFunction(
+          () => {
+            const preview = document.querySelector('[data-previewer-id]');
+            return [...(preview?.querySelectorAll<HTMLElement>('[role="listbox"]') ?? [])].every(
+              (listbox) => {
+                for (let node: HTMLElement | null = listbox; node; node = node.parentElement) {
+                  const style = getComputedStyle(node);
+                  if (node.hidden || style.display === 'none' || style.visibility === 'hidden')
+                    return true;
+                }
+                return listbox.getClientRects().length === 0;
+              }
+            );
+          },
+          undefined,
+          { timeout: Math.max(1, readinessDeadline - Date.now()) }
+        );
+        if (Date.now() >= readinessDeadline)
+          throw new Error(
+            'Passive atom frame/menu readiness exceeded its original 20-second budget'
+          );
+        const shellEvidence = await page.evaluate(
+          () =>
+            (window as typeof window & { __passiveAtomEvidence: ShellRecorder })
+              .__passiveAtomEvidence
+        );
+        expect(
+          shellEvidence.traces.every(
+            (trace) => trace.slots.filter((slot) => slot.active).length <= 1
+          )
+        ).toBe(true);
+        expect(shellEvidence.events.length).toBeGreaterThan(0);
+        expect(shellEvidence.events.every(readyEventHasExpectedOwner)).toBe(true);
         const facts = await preview.evaluate((root) => {
           const host =
             root.querySelector<HTMLElement>('[data-projection-content]') ??
             root.querySelector<HTMLElement>('.host');
           if (!host) throw new Error('Public preview host is missing');
-          const boundary = host.querySelector<HTMLElement>(
-            '[data-demo-ref="__website_runtime_preview_surface__"]'
-          );
-          const content =
-            host.querySelector<HTMLElement>('[data-passive-shell-slot]') ?? boundary ?? host;
+          const slots = [...host.querySelectorAll<HTMLElement>('[data-passive-shell-slot]')];
+          const active = slots.filter((slot) => {
+            if (
+              !slot.querySelector('[data-demo-ref="__website_runtime_preview_surface__-content"]')
+            )
+              return false;
+            for (
+              let ancestor: HTMLElement | null = slot;
+              ancestor && ancestor !== root;
+              ancestor = ancestor.parentElement
+            ) {
+              const style = getComputedStyle(ancestor);
+              if (
+                ancestor.hidden ||
+                ancestor.inert ||
+                style.display === 'none' ||
+                style.visibility === 'hidden'
+              )
+                return false;
+            }
+            return slot.querySelectorAll('[data-pui-root]').length > 0;
+          });
+          if (active.length !== 1)
+            throw new Error(
+              `Expected exactly one active borrowed-content frame, got ${active.length}`
+            );
+          const content = active[0];
           const nodes = [...content.querySelectorAll<HTMLElement>('[data-pui-root]')];
           return nodes.map((node) => {
             const style = getComputedStyle(node);
@@ -147,6 +329,7 @@ describe.sequential('Public passive atom documentation previews', () => {
               viewport: { width: 1280, height: 1000 },
               theme: 'light',
               facts,
+              shellEvidence,
               errors,
             },
             null,
@@ -154,6 +337,29 @@ describe.sequential('Public passive atom documentation previews', () => {
           )
         );
       } catch (error) {
+        const shellEvidence = await page.evaluate(
+          () =>
+            (window as typeof window & { __passiveAtomEvidence?: ShellRecorder })
+              .__passiveAtomEvidence ?? null
+        );
+        await writeFile(
+          path.join(evidence, `${name}-failure.json`),
+          JSON.stringify(
+            {
+              sourceSha,
+              sourceDirty,
+              sourceSnapshotSha256,
+              runId,
+              route,
+              runtime,
+              error: String(error),
+              shellEvidence,
+              errors,
+            },
+            null,
+            2
+          )
+        );
         await page.screenshot({ path: path.join(evidence, `${name}-failure.png`), fullPage: true });
         throw error;
       } finally {

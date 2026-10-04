@@ -272,6 +272,8 @@ async function linkPaint(link: Locator) {
   return link.evaluate((anchor) => {
     const surface = anchor.querySelector<HTMLElement>('[data-pui-root]')!;
     const style = getComputedStyle(surface);
+    const textSurface = surface.querySelector<HTMLElement>('[data-pui-root]');
+    const textStyle = textSurface ? getComputedStyle(textSurface) : style;
     const box = surface.getBoundingClientRect();
     const nativeBox = anchor.getBoundingClientRect();
     // Observe the painted body's edge midpoints, not its decorative shadow or
@@ -307,12 +309,13 @@ async function linkPaint(link: Locator) {
     }
     return {
       tokens: (surface.getAttribute('data-pui-style') ?? '').split(/\s+/),
+      textTokens: (textSurface?.getAttribute('data-pui-style') ?? '').split(/\s+/),
       background: style.backgroundColor,
       shadow: style.boxShadow,
       transform: style.transform,
-      weight: style.fontWeight,
-      font: style.fontFamily,
-      decoration: style.textDecorationLine,
+      weight: textStyle.fontWeight,
+      font: textStyle.fontFamily,
+      decoration: textStyle.textDecorationLine,
       whiteSpace: style.whiteSpace,
       ringWidth: style.getPropertyValue('--pui-ring-width').trim(),
       ringOffset: style.getPropertyValue('--pui-ring-offset-width').trim(),
@@ -362,8 +365,8 @@ async function assertSocialPaint(
   if (family === 'brutalist') {
     // Accepted #800 Button-like role: settle +4/+4 into its 4px shadow.
     expect(baseline.shadow).toContain('4px 4px 0px');
-    expect(baseline.font).toContain('DM Sans');
-    expect(baseline.weight).toBe('500');
+    // SVG-only content has no typography subject. Text is verified on the
+    // actual public Text owner by assertHostCurrentProjection below.
     expect(hovered.transform).toBe('matrix(1, 0, 0, 1, 4, 4)');
     expect(hovered.tokens).toContain('shadow-none');
     expect(hovered.shadow).not.toBe(baseline.shadow);
@@ -428,16 +431,16 @@ async function assertSocialPaint(
 async function assertHostCurrentProjection(link: Locator, family: string) {
   const baseline = await linkPaint(link);
   if (family === 'brutalist') {
-    expect(baseline.tokens).toContain('font-sans');
+    expect(baseline.textTokens).toContain('font-sans');
     expect(baseline.font).toContain('DM Sans');
   }
   const original = await link.getAttribute('aria-current');
   // Explicit host fixture, not a claim that route selection changed itself.
   await link.evaluate((anchor) => anchor.setAttribute('aria-current', 'page'));
   try {
-    await expect.poll(async () => (await linkPaint(link)).tokens).toContain('underline');
+    await expect.poll(async () => (await linkPaint(link)).textTokens).toContain('underline');
     const current = await linkPaint(link);
-    expect(current.tokens).toContain('font-semibold');
+    expect(current.textTokens).toContain('font-semibold');
     expect(current.decoration).toContain('underline');
     expect(current.decoration).not.toBe(baseline.decoration);
     expect(Number(current.weight)).toBeGreaterThan(Number(baseline.weight));
@@ -986,94 +989,132 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
     try {
       await page.goto(`${baseUrl}/en/ui-libraries/shadcn/button/`, { waitUntil: 'networkidle' });
       await page.locator('.pagination-links a[data-site-link-enhanced]').first().waitFor();
-      for (const endpoint of ['text', 'container'] as const) {
-        await page.evaluate((kind) => {
-          const link = document.querySelector<HTMLAnchorElement>(
-            '.pagination-links a[data-site-link-enhanced]'
-          )!;
-          const label = link.querySelector<HTMLElement>('.link-title')!;
-          const node = kind === 'text' ? label.firstChild! : label;
-          const end = kind === 'text' ? node.textContent!.length : node.childNodes.length;
-          const selection = document.getSelection()!;
-          selection.setBaseAndExtent(node, 0, node, end);
-          (window as any).__paginationSelection = {
-            link,
-            label,
-            node,
-            end,
-            text: selection.toString(),
-            href: link.getAttribute('href'),
-          };
-        }, endpoint);
-        for (const family of ['brutalist', 'shadcn'] as const) {
-          await page.evaluate((value) => {
-            document.documentElement.dataset.siteLibraryFamily = value;
-          }, family);
-          await page.waitForFunction(
-            (value) =>
-              Array.from(
-                document.querySelectorAll('.pagination-links a[data-site-link-enhanced]')
-              ).every((link) => link.firstElementChild?.localName === `wc-site-${value}-surface`),
-            family
+      for (const endpoint of ['text', 'container', 'text-wrapper', 'surface-wrapper'] as const)
+        for (const direction of ['forward', 'backward'] as const) {
+          await page.evaluate(
+            ({ kind, direction }) => {
+              const link = document.querySelector<HTMLAnchorElement>(
+                '.pagination-links a[data-site-link-enhanced]'
+              )!;
+              const label = link.querySelector<HTMLElement>('.link-title')!;
+              const node =
+                kind === 'text'
+                  ? label.firstChild!
+                  : kind === 'container'
+                    ? label
+                    : kind === 'text-wrapper'
+                      ? label.closest('[data-site-link-text]')!
+                      : link.firstElementChild!;
+              const end = kind === 'text' ? node.textContent!.length : node.childNodes.length;
+              const selection = document.getSelection()!;
+              selection.setBaseAndExtent(
+                node,
+                direction === 'backward' ? end : 0,
+                node,
+                direction === 'backward' ? 0 : end
+              );
+              (window as any).__paginationSelection = {
+                link,
+                label,
+                node,
+                end,
+                text: selection.toString(),
+                href: link.getAttribute('href'),
+                direction,
+                wrapper: kind.endsWith('wrapper'),
+              };
+            },
+            { kind: endpoint, direction }
           );
-          const evidence = await page.evaluate(() => {
-            const saved = (window as any).__paginationSelection;
-            const selection = document.getSelection()!;
-            return {
-              sameLink: saved.link.isConnected,
-              sameLabel: saved.label.isConnected,
-              anchor: selection.anchorNode === saved.node,
-              focus: selection.focusNode === saved.node,
-              anchorOffset: selection.anchorOffset,
-              focusOffset: selection.focusOffset,
-              expectedEnd: saved.end,
-              text: selection.toString(),
-              expectedText: saved.text,
-              sameHref: saved.link.getAttribute('href') === saved.href,
-              layout: Array.from(
-                document.querySelectorAll<HTMLAnchorElement>(
-                  '.pagination-links a[data-site-link-enhanced]'
-                )
-              ).map((link) => {
-                const surface = link.firstElementChild!;
-                const arrow = surface.querySelector('svg')!;
-                const label = surface.querySelector('[data-site-link-text]')!;
-                return {
-                  rel: link.rel,
-                  marker: surface.hasAttribute('data-site-link-content'),
-                  siblings: arrow.parentElement === label.parentElement,
-                  arrowLeft: arrow.getBoundingClientRect().left,
-                  labelLeft: label.getBoundingClientRect().left,
-                };
-              }),
-            };
-          });
-          expect(evidence).toMatchObject({
-            sameLink: true,
-            sameLabel: true,
-            anchor: true,
-            focus: true,
-            anchorOffset: 0,
-            sameHref: true,
-          });
-          expect(evidence.focusOffset).toBe(evidence.expectedEnd);
-          expect(evidence.text).toBe(evidence.expectedText);
-          for (const item of evidence.layout) {
-            expect(item.marker).toBe(true);
-            expect(item.siblings).toBe(true);
-            if (item.rel === 'next') expect(item.arrowLeft).toBeGreaterThan(item.labelLeft);
-            else expect(item.arrowLeft).toBeLessThan(item.labelLeft);
+          for (const family of ['brutalist', 'shadcn'] as const) {
+            await page.evaluate((value) => {
+              document.documentElement.dataset.siteLibraryFamily = value;
+            }, family);
+            await page.waitForFunction(
+              (value) =>
+                Array.from(
+                  document.querySelectorAll('.pagination-links a[data-site-link-enhanced]')
+                ).every((link) => link.firstElementChild?.localName === `wc-site-${value}-surface`),
+              family
+            );
+            const evidence = await page.evaluate(() => {
+              const saved = (window as any).__paginationSelection;
+              const selection = document.getSelection()!;
+              return {
+                sameLink: saved.link.isConnected,
+                sameLabel: saved.label.isConnected,
+                anchor: saved.wrapper
+                  ? saved.link.contains(selection.anchorNode)
+                  : selection.anchorNode === saved.node,
+                focus: saved.wrapper
+                  ? saved.link.contains(selection.focusNode)
+                  : selection.focusNode === saved.node,
+                anchorOffset: selection.anchorOffset,
+                wrapperRetired: saved.wrapper ? !saved.node.isConnected : false,
+                wrapper: saved.wrapper,
+                backward:
+                  !selection.isCollapsed &&
+                  !(
+                    selection.getRangeAt(0).startContainer === selection.anchorNode &&
+                    selection.getRangeAt(0).startOffset === selection.anchorOffset
+                  ),
+                focusOffset: selection.focusOffset,
+                expectedEnd: saved.end,
+                text: selection.toString(),
+                expectedText: saved.text,
+                sameHref: saved.link.getAttribute('href') === saved.href,
+                layout: Array.from(
+                  document.querySelectorAll<HTMLAnchorElement>(
+                    '.pagination-links a[data-site-link-enhanced]'
+                  )
+                ).map((link) => {
+                  const surface = link.firstElementChild!;
+                  const arrow = surface.querySelector('svg')!;
+                  const label = surface.querySelector('[data-site-link-text]')!;
+                  return {
+                    rel: link.rel,
+                    marker: surface.hasAttribute('data-site-link-content'),
+                    siblings: arrow.parentElement === label.parentElement,
+                    arrowLeft: arrow.getBoundingClientRect().left,
+                    labelLeft: label.getBoundingClientRect().left,
+                  };
+                }),
+              };
+            });
+            expect(evidence).toMatchObject({
+              sameLink: true,
+              sameLabel: true,
+              anchor: true,
+              focus: true,
+
+              sameHref: true,
+            });
+            expect(evidence.backward).toBe(direction === 'backward');
+            if (!evidence.wrapper) {
+              expect(evidence.anchorOffset).toBe(
+                direction === 'backward' ? evidence.expectedEnd : 0
+              );
+              expect(evidence.focusOffset).toBe(
+                direction === 'backward' ? 0 : evidence.expectedEnd
+              );
+            } else expect(evidence.wrapperRetired).toBe(true);
+            expect(evidence.text).toBe(evidence.expectedText);
+            for (const item of evidence.layout) {
+              expect(item.marker).toBe(true);
+              expect(item.siblings).toBe(true);
+              if (item.rel === 'next') expect(item.arrowLeft).toBeGreaterThan(item.labelLeft);
+              else expect(item.arrowLeft).toBeLessThan(item.labelLeft);
+            }
+            await captureLinks(
+              page,
+              `docs-pagination-${endpoint}-${direction}-${family}`,
+              family,
+              'wc',
+              'native-directional-selection-retained',
+              evidence
+            );
           }
-          await captureLinks(
-            page,
-            `docs-pagination-${endpoint}-${family}`,
-            family,
-            'wc',
-            'native-directional-selection-retained',
-            evidence
-          );
         }
-      }
     } finally {
       await context.close();
     }

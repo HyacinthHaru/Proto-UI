@@ -57,6 +57,10 @@ export const ShadcnSurfaceRoot = definePrototype<SurfaceRootProps, SurfaceRootEx
       intent: (i) => i.feedback.style.use(tw('bg-background text-foreground')),
     });
     def.rule({
+      when: (w) => w.prop('variant').eq('secondary'),
+      intent: (i) => i.feedback.style.use(tw('bg-secondary text-secondary-foreground')),
+    });
+    def.rule({
       when: (w) => w.prop('variant').eq('muted'),
       intent: (i) => i.feedback.style.use(tw('bg-muted text-foreground')),
     });

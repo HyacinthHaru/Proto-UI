@@ -1,4 +1,10 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { retainHappyDomMutationCallbacks } from '../../../../scripts/test/happy-dom-mutation-keepalive.mjs';
+let observerKeeper: ReturnType<typeof retainHappyDomMutationCallbacks>;
+beforeAll(() => {
+  observerKeeper = retainHappyDomMutationCallbacks(window);
+});
+afterAll(() => observerKeeper.restore());
+import { afterAll, beforeAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { initCodeSurface, initSiteCodeSurfaces, type CodeSurfaceHandle } from './site-code-surface';
 import { BRUTALIST_THEME } from '../../../../packages/prototypes/brutalist/src/theme';
 import { WEBSITE_SHADCN_THEME_TOKENS } from './PrototypePreviewer/projection-theme';

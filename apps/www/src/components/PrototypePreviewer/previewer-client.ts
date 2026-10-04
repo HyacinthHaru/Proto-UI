@@ -251,6 +251,12 @@ export function initPreviewer(options: PreviewerOptions) {
         host,
         isCurrent: () => !destroyed && myVersion === version,
       });
+      try {
+        await surface.ready;
+      } catch (error) {
+        await result.destroy();
+        throw error;
+      }
       if (destroyed || myVersion !== version) {
         await result.destroy();
         return;

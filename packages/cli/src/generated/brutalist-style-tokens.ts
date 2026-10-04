@@ -273,6 +273,7 @@ export const BRUTALIST_STYLE_TOKENS: string[] = [
   'translate-x-1',
   'translate-x-5',
   'translate-y-1',
+  'translate-y-px',
   'underline',
   'w-0.5',
   'w-12',

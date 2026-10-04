@@ -14,7 +14,7 @@ criteria:
       en: Surface introduces no role, tabindex, focus request, event listener, activation, semantic state, native property forwarding or exposed method. Authored content remains in its original semantic ownership. Observed presentation inputs are not an event simulation or an independent interaction truth.
   - id: P-SHADCN-SURFACE-INPUTS
     text:
-      en: Inputs are variant transparent|outline|muted|accent|solid, radius default|none|sm|md|lg|xl|full, border all|bottom|none, elevation none|raised, and boolean hovered/focusVisible/pressed/current. Defaults are outline/default/all/none and all false. Absent inputs restore defaults. Family is not a Surface prop.
+      en: Inputs are variant transparent|outline|secondary|muted|accent|solid, radius default|none|sm|md|lg|xl|full, border all|bottom|none, elevation none|raised, and boolean hovered/focusVisible/pressed/current. Defaults are outline/default/all/none and all false. Absent inputs restore defaults. Family is not a Surface prop.
   - id: P-SHADCN-SURFACE-PROJECTION
     text:
       en: The family inherits asSurfaceRoot and owns its finite fill, border, radius, depth and observed-feedback recipes through rule/feedback.style. Surface does not choose font, text size or content. Pointer hit ownership stays with the semantic host. Unsupported native lowering remains diagnostic, never an inferred support claim.

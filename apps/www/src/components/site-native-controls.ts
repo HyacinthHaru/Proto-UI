@@ -1,4 +1,7 @@
-import { withNativeContentLease } from './PrototypePreviewer/native-content-lease';
+import {
+  withNativeContentLease,
+  registerNativeContentContainer,
+} from './PrototypePreviewer/native-content-lease';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import ShadcnSurface from '@proto.ui/prototypes-shadcn/surface';
 import BrutalistSurface from '@proto.ui/prototypes-brutalist/surface';
@@ -105,7 +108,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     if (link.closest('[data-homepage-actions]') || bindings.has(link)) continue;
     let alive = true;
     const appearance = siteLinkAppearance(link);
-    const restoreCaption = preparePaginationCaption(link);
+    let restoreCaption = () => {};
     let family: SiteLibraryFamily =
       document.documentElement.dataset.siteLibraryFamily === 'brutalist'
         ? 'brutalist'
@@ -118,6 +121,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     const content = Array.from(link.childNodes);
     const composeContent = () => {
       surface.dataset.siteLinkContent = '';
+      registerNativeContentContainer(surface, content);
       texts = [];
       for (const node of content) {
         if (
@@ -129,14 +133,18 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
         } else {
           const text = document.createElement(`wc-site-${family}-text`);
           text.dataset.siteLinkText = '';
+          registerNativeContentContainer(text, [node]);
           text.append(node);
           surface.append(text);
           texts.push(text);
         }
       }
     };
-    composeContent();
-    link.append(surface);
+    withNativeContentLease(link, () => {
+      restoreCaption = preparePaginationCaption(link);
+      composeContent();
+      link.append(surface);
+    });
     link.classList.add('site-native-link');
     link.dataset.siteLinkEnhanced = 'true';
     link.dataset.siteLinkAppearance = appearance;
@@ -203,11 +211,13 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
       observer.disconnect();
       media?.removeEventListener?.('change', update);
       bindings.delete(link);
-      restoreCaption();
-      if (surface.parentElement === link) {
-        surface.replaceWith(...content);
-        delete link.dataset.siteLinkEnhanced;
-      }
+      withNativeContentLease(link, () => {
+        restoreCaption();
+        if (surface.parentElement === link) {
+          surface.replaceWith(...content);
+          delete link.dataset.siteLinkEnhanced;
+        }
+      });
     };
     bindings.set(link, release);
     releases.push(release);

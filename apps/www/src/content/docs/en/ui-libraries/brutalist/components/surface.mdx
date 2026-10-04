@@ -37,20 +37,20 @@ The `/surface` subpath and package root export `surfaceRoot`; `SurfaceRootProps`
 
 ## Inputs
 
-| Prop           | Values                                               | Default   |
-| -------------- | ---------------------------------------------------- | --------- |
-| `variant`      | `transparent`, `outline`, `muted`, `accent`, `solid` | `outline` |
-| `radius`       | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full`    | `default` |
-| `border`       | `all`, `bottom`, `none`                              | `all`     |
-| `elevation`    | `none`, `raised`                                     | `none`    |
-| `hovered`      | boolean                                              | `false`   |
-| `focusVisible` | boolean                                              | `false`   |
-| `pressed`      | boolean                                              | `false`   |
-| `current`      | boolean                                              | `false`   |
+| Prop           | Values                                                            | Default   |
+| -------------- | ----------------------------------------------------------------- | --------- |
+| `variant`      | `transparent`, `outline`, `muted`, `accent`, `solid`, `secondary` | `outline` |
+| `radius`       | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full`                 | `default` |
+| `border`       | `all`, `bottom`, `none`                                           | `all`     |
+| `elevation`    | `none`, `raised`                                                  | `none`    |
+| `hovered`      | boolean                                                           | `false`   |
+| `focusVisible` | boolean                                                           | `false`   |
+| `pressed`      | boolean                                                           | `false`   |
+| `current`      | boolean                                                           | `false`   |
 
 The four booleans are facts supplied by the existing semantic owner. Surface does not detect pointer, focus, keyboard, selection or navigation state itself. It owns no exposed state, event, method, accessible role or native property. `current` is a presentation input, not an `aria-current` implementation. A caller that needs a real Button should compose the governed Button protocol.
 
-Removing an input restores its default. Default radius and paint are family-specific; a shared prop vocabulary does not imply identical appearance. Content and layout remain consumer-owned. Use Text with `tone="inherit"` when a styled Text child must retain the enclosing Surface foreground.
+Removing an input restores its default. `secondary` uses the Brutalist secondary background and ordinary foreground, independently of elevation. Default radius and paint are family-specific; a shared prop vocabulary does not imply identical appearance. Content and layout remain consumer-owned. Use Text with `tone="inherit"` when a styled Text child must retain the enclosing Surface foreground.
 
 ## Host and Compiler boundary
 

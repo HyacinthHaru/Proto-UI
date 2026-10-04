@@ -270,8 +270,13 @@ export function initProjectedPreviewer(options: ProjectedPreviewerOptions): void
           componentId
         ]!.recipeId
       );
-      const surface = createRuntimePreviewSurface(originalDemo, projectionFamilyId);
-      const candidate = await materializeProjectionCandidate(request, {
+      const surface = createRuntimePreviewSurface(
+        originalDemo,
+        projectionFamilyId,
+        resolveProjectionThemeSurfaceStyle(projectionFamilyId, mount),
+        request.selection.runtimeId as RuntimeId
+      );
+      const childCandidate = await materializeProjectionCandidate(request, {
         mount,
         ownerId,
         componentId,
@@ -282,6 +287,21 @@ export function initProjectedPreviewer(options: ProjectedPreviewerOptions): void
           recipe: runtimePreviewRecipe(projectionFamilyId, componentId),
         },
       });
+      try {
+        await surface.ready;
+      } catch (error) {
+        await childCandidate.dispose();
+        throw error;
+      }
+      const candidate: MaterializedProjectionCandidate = {
+        ...childCandidate,
+        setThemeSurfaceStyle(theme) {
+          childCandidate.setThemeSurfaceStyle(theme);
+          void surface
+            .setAppearance(projectionFamilyId, theme)
+            .catch((error) => console.error('[RuntimeBox] Shell theme update failed.', error));
+        },
+      };
       if (
         !destroyed &&
         intentRevision === desiredIntentRevision &&

@@ -65,7 +65,7 @@ describe('RuntimeBox canvas composition', () => {
     expect(cleanup).toHaveBeenCalledTimes(1);
   });
 
-  it('declares only the original recipe closure plus the one actual app surface', () => {
+  it('keeps content and independent shell recipe closures separate', () => {
     for (const family of ['shadcn', 'brutalist'] as const) {
       for (const component of ['button', 'select', 'dialog', 'tooltip', 'scroll-area'] as const) {
         const original = (PROJECTION_FAMILY_MANIFESTS[family] as ProjectionFamilyManifest).families[
@@ -76,10 +76,7 @@ describe('RuntimeBox canvas composition', () => {
           continue;
         }
         const recipe = runtimePreviewRecipe(family, component);
-        expect(recipe.prototypeIds).toEqual([
-          ...original.recipePrototypeIds,
-          `${family}-surface-root`,
-        ]);
+        expect(recipe.prototypeIds).toEqual([...original.recipePrototypeIds]);
         expect(recipe.rootPrototypeId).not.toBe(`${family}-surface-root`);
       }
     }
@@ -137,10 +134,7 @@ describe('RuntimeBox canvas composition', () => {
           runtime
         );
         expect(surface.demo.root.kind).toBe('box');
-        expect(runtimePreviewRecipe(family, 'button').prototypeIds).toEqual([
-          `${family}-button`,
-          `${family}-surface-root`,
-        ]);
+        expect(runtimePreviewRecipe(family, 'button').prototypeIds).toEqual([`${family}-button`]);
         expect(() => runtimePreviewRecipe(family, 'select')).toThrow(/unavailable/);
         const host = document.createElement('div');
         document.body.append(host);
@@ -182,9 +176,7 @@ describe('RuntimeBox canvas composition', () => {
     expect(() => createRuntimePreviewSurface(child, unknown)).toThrow(/unsupported canvas family/);
     const surface = createRuntimePreviewSurface(child, 'brutalist');
     expect(() => surface.setAppearance(unknown, {})).toThrow(/unsupported canvas family/);
-    expect(runtimePreviewRecipe('brutalist', 'button').prototypeIds).toContain(
-      'brutalist-surface-root'
-    );
+    expect(runtimePreviewRecipe('brutalist', 'button').prototypeIds).toEqual(['brutalist-button']);
   });
 
   it('rejects a child ref collision instead of taking over the demonstrated instance', () => {

@@ -9,6 +9,7 @@ on:
       - 'packages/prototypes/**'
       - 'packages/cli/**'
       - 'scripts/test/runtime-test-plan.mjs'
+      - 'scripts/test/passive-atom-docs-evidence.test.mjs'
       - 'package.json'
       - 'pnpm-lock.yaml'
   workflow_dispatch:
@@ -51,6 +52,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          node --test scripts/test/passive-atom-docs-evidence.test.mjs
           mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"
           git rev-parse HEAD > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
           "$CHROME_PATH" --version > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/browser-version.txt"

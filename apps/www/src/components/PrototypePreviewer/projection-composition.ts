@@ -349,7 +349,7 @@ function assertReservedRefsAvailable(node: DemoChild): void {
   for (const child of node.children ?? []) assertReservedRefsAvailable(child);
 }
 
-function assertProjectionRecipeClosure(
+export function assertProjectionRecipeClosure(
   node: DemoChild,
   requiredPrototypeIds: readonly string[],
   recipeId: string

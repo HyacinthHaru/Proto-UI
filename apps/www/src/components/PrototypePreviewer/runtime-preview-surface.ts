@@ -124,7 +124,8 @@ export function createRuntimePreviewSurface(
   };
 }
 
-/** Add exactly this app surface to the original accepted content closure. */
+/** The content owner declares only its actual tree. The independent shell
+ * validates its own one-Prototype recipe before rendering. */
 export function runtimePreviewRecipe(
   family: ProjectionFamilyId,
   component: ProjectionComponentId
@@ -135,7 +136,7 @@ export function runtimePreviewRecipe(
   if (!recipe) throw new Error(`[RuntimeBox] unavailable ${family}/${component} recipe.`);
   return {
     id: `website-runtime-preview:${recipe.recipeId}`,
-    prototypeIds: [...recipe.recipePrototypeIds, surfacePrototypeId(family)],
+    prototypeIds: [...recipe.recipePrototypeIds],
     rootPrototypeId: resolveProjectionPart(family, component, 'root').prototypeId,
   };
 }
