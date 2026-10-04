@@ -330,3 +330,27 @@ fn a_root_reported_ended_first_takes_its_thumb_with_it(cx: &mut TestAppContext) 
     assert!(composed.rendered().is_empty());
     assert!(composed.ends_requested().is_empty());
 }
+
+#[gpui::test]
+fn detaching_a_parent_view_does_not_promote_its_slot_session_to_the_window_root(
+    cx: &mut TestAppContext,
+) {
+    let mut composed = Composed::open(cx);
+    composed.receive(peer(recorded("root")));
+    composed.receive(peer(recorded("thumb")));
+    assert_eq!(composed.rendered(), [ROOT, THUMB]);
+
+    composed.receive(peer(vec![json!({
+        "kind": "projection.detach",
+        "sessionId": ROOT,
+        "viewEpoch": 1,
+    })]));
+
+    assert!(composed.is_open(ROOT), "the root instance remains alive");
+    assert!(composed.is_open(THUMB), "the child instance remains alive");
+    assert!(
+        composed.rendered().is_empty(),
+        "the thumb is placed only inside the root's slot and must not become a top-level view: {:?}",
+        composed.rendered()
+    );
+}

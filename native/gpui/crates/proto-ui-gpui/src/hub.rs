@@ -957,9 +957,17 @@ impl ProtoHostView {
                 Some((id.as_str(), root))
             })
             .collect();
-        let placed: HashSet<SessionId> = roots
-            .values()
-            .flat_map(SurfaceNode::placed_sessions)
+        // A session placed in another's slot renders only there, also while
+        // that instance has no view to place it in.
+        let placed: HashSet<SessionId> = self
+            .hub
+            .sessions
+            .iter()
+            .flat_map(|(_, session)| session.config.slots.values().flatten())
+            .filter_map(|child| match child {
+                SurfaceChild::Session(session) => Some(session.clone()),
+                _ => None,
+            })
             .collect();
         self.surfaces = self
             .hub
