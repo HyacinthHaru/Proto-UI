@@ -496,11 +496,33 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
   };
 };
 
-// Shared with the runner's popup acceptance: Playwright visibility alone admits
+// Shared with every runner target: Playwright visibility alone admits
 // opacity-zero and fully clipped boxes. This observes the same paint limits as
 // the captured frame and never mutates the subject.
 export const readContrastPaintedVisibility = (element: Element) =>
   paintedVisibility(element, [...element.getClientRects()]);
+
+// The runner and instrument calibration consume this exact browser function.
+// Supported bounds/opacity/clipping are required in addition to native state;
+// this is a source-model observation, not proof against arbitrary occlusion.
+export const readContrastTargetObservation = (element: Element) => {
+  const visibility = readContrastPaintedVisibility(element);
+  return {
+    achieved: visibility.visible && visibility.classification === 'source-model-visible',
+    visibility,
+    prototype: element.getAttribute('data-projection-prototype'),
+    text: element.textContent,
+    focused: document.activeElement === element,
+    focusVisible: element.matches(':focus-visible'),
+    hovered: element.matches(':hover'),
+    nativeActive: element.matches(':active'),
+    ariaPressed: element.getAttribute('aria-pressed'),
+    ariaSelected: element.getAttribute('aria-selected'),
+    ariaChecked: element.getAttribute('aria-checked'),
+    ariaExpanded: element.getAttribute('aria-expanded'),
+    shadow: getComputedStyle(element).boxShadow,
+  };
+};
 
 export const readContrastPointerPair = (
   element: Element,
@@ -864,6 +886,10 @@ export const collectContrastFrame = async ({
       ];
       if (placeholderInk?.alpha !== 1 || placeholderStyle?.opacity !== '1')
         placeholderLimits.push('unsupported-placeholder-alpha');
+      if (placeholderStyle && placeholderStyle.webkitTextFillColor !== placeholderStyle.color)
+        placeholderLimits.push('unsupported-placeholder-text-fill-color');
+      if (placeholderStyle && placeholderStyle.textShadow !== 'none')
+        placeholderLimits.push('unsupported-placeholder-text-shadow');
       if (inactive) placeholderLimits.push('inactive-component');
       const placeholder = placeholderStyle
         ? {

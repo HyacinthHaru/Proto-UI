@@ -1,13 +1,9 @@
 name: Brutalist contrast audit evidence
 
 on:
+  # The rendered source closure includes adapters, runtime, recipes, theme,
+  # generated style inputs and docs composition. Avoid an incomplete allowlist.
   pull_request:
-    paths:
-      - '.github/workflows/brutalist-contrast-evidence.yml'
-      - 'apps/www/scripts/audit-brutalist-contrast.mts'
-      - 'apps/www/scripts/contrast-*.mjs'
-      - 'apps/www/scripts/contrast-probe.browser.ts'
-      - 'apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts'
 
 permissions:
   contents: read

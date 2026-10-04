@@ -7,6 +7,7 @@ import { isDeepStrictEqual } from 'node:util';
 import { transform } from 'esbuild';
 import { readContrastProvenance } from './contrast-provenance.mjs';
 import { createContrastReportJournal } from './contrast-report-journal.mjs';
+import { parseContrastRuntimeOptions, contrastHeldBinaryTargets } from './contrast-audit-plan.mjs';
 import { BRUTALIST_THEME } from '../../../packages/prototypes/brutalist/src/theme';
 import type { Browser, BrowserContext, Page, Locator } from 'playwright-core';
 import {
@@ -113,6 +114,8 @@ function plannedStates(family: string): string[] {
   if (['toggle', 'switch', 'checkbox'].includes(family)) states.push('keyboard-activation');
   if (family === 'tabs') states.push('keyboard-selection-overview', 'selected-and-pointer-held');
   if (family === 'toggle') states.push('already-active', 'active-and-pointer-held');
+  for (const target of contrastHeldBinaryTargets(family))
+    states.push(`${target.state}-and-pointer-held`);
   if (family === 'tooltip') states.push('hover-open', 'focus-open');
   if (family === 'hover-card') states.push('hover-open', 'focus-open');
   if (['dropdown-menu', 'select', 'dialog'].includes(family)) states.push('open');
@@ -130,29 +133,31 @@ function plannedStates(family: string): string[] {
   if (family === 'scroll-area') states.push('scroll-end', 'wheel-both-axes');
   return states;
 }
-const cases: Case[] = selectedFamilies.flatMap((family) =>
-  runtimes.flatMap((runtime) =>
-    themes.map((theme) => ({
-      family,
-      runtime,
-      theme,
-      route: `/en/ui-libraries/brutalist/components/${family}/`,
-      status: 'pending' as const,
-      plannedStates: plannedStates(family),
-      achievedTargets: [],
-      errors: [],
-      ...(family === 'spinner'
-        ? {
-            motionContext: {
-              requestedReducedMotion: 'reduce' as const,
-              scope: 'Styled-only Spinner static reduced-motion rest observation only.',
-              uncovered: ['Normal-motion 1000ms linear infinite rotation and timing sequence.'],
-            },
-          }
-        : {}),
-    }))
-  )
-);
+// Populate this matrix only after reading each exact page's declared runtimes.
+// A discovery failure remains a failed case; it never silently removes a family.
+const cases: Case[] = [];
+const runtimeAvailability: Record<string, unknown> = {};
+function createCase(family: string, runtime: string, theme: string): Case {
+  return {
+    family,
+    runtime,
+    theme,
+    route: `/en/ui-libraries/brutalist/components/${family}/`,
+    status: 'pending',
+    plannedStates: plannedStates(family),
+    achievedTargets: [],
+    errors: [],
+    ...(family === 'spinner'
+      ? {
+          motionContext: {
+            requestedReducedMotion: 'reduce' as const,
+            scope: 'Styled-only Spinner static reduced-motion rest observation only.',
+            uncovered: ['Normal-motion 1000ms linear infinite rotation and timing sequence.'],
+          },
+        }
+      : {}),
+  };
+}
 // An existing directory, including an old failed attempt, is never reused.
 await mkdir(resolve(output, '..'), { recursive: true });
 await mkdir(output);
@@ -191,12 +196,14 @@ const report: Record<string, unknown> = {
     ),
   },
   selectedFamilies,
+  runtimeAvailability,
   runtimes,
   themes,
   cases,
   frames,
   failedCases: failures,
   evidenceDebt: [
+    'Interactive anatomy multiplicities are still unresolved: identity/lease checks do not yet prove every always-authored recipe part materialized, including conditional portal subtrees. No complete-family audit claim.',
     'All cue necessity and required/redundant/decorative classifications remain independent-review debt; no frame is automatically a WCAG verdict.',
     'Passive-family acceptance covers only the current recipe identity multiplicities, anatomy, ownership and visible physical regions at rest. Auxiliary controls are observed at rest only; their interactions, prop transitions and semantic criteria remain uncovered.',
     'Portable Transition entered state is not directly exposed on every runtime DOM; modal entry observations use owned visibility and completed authored CSS animations, not an invented transition attribute.',
@@ -212,6 +219,7 @@ const report: Record<string, unknown> = {
   scope:
     'Selected current documented Brutalist consumers only; no historical attempt is merged or cleared by this run.',
   methodology: [
+    "runtimes is the supported adapter universe; runtimeAvailability records each exact source-bound page declaration. Only that page's available runtimes become cases, and discovery failures remain unresolved. The case matrix is frozen before the first journal checkpoint and any frame capture.",
     'Schema 3 stores each started/result frame once in a create-only journal and references immutable PNG/facts files. report.json is an atomic current manifest while running; final reports materialize compact frame references once. Replay readContrastReportJournal(output) after interruption; incomplete attempts remain unresolved.',
     'Native reader controls choose runtime/theme. Native pointer and keyboard input change subject state; helpers never write subject CSS, attributes or state.',
     'General keyboard focus uses a programmatic seed followed by native Tab/Shift+Tab; not a whole-page Tab-order claim. Modal CloseIcon uses native Tab inside the modal.',
@@ -243,7 +251,8 @@ async function persist(reason: string, changedCase?: Case): Promise<void> {
   };
   await journal.persist(reason, report, changedCase);
 }
-await persist('initial');
+// The journal registers an immutable case identity matrix at its first checkpoint.
+// Runtime discovery must finish before that checkpoint; no frame starts before it.
 let browser: Browser | undefined;
 let browserProbe = '';
 let phase = 'source-provenance';
@@ -374,6 +383,7 @@ async function projectionObservation(page: Page, item: Case): Promise<Observatio
             owner &&
             generation &&
             previewer.getAttribute('data-demo-id') === expected.recipeId &&
+            previewer.getAttribute('data-runtimes') === expected.serializedRuntimes &&
             scope?.dataset.projectionState === 'ready' &&
             scope.dataset.projectionFamily === 'brutalist' &&
             scope.dataset.projectionRuntime === expected.runtime &&
@@ -413,6 +423,7 @@ async function projectionObservation(page: Page, item: Case): Promise<Observatio
       },
       {
         recipeId: manifest.recipeId,
+        serializedRuntimes: (runtimeAvailability[item.family] as { serialized: string }).serialized,
         family: item.family,
         runtime: item.runtime,
         rootPrototypeId: manifest.parts.root.prototypeId,
@@ -472,6 +483,12 @@ async function capture(
     await writeFile(join(output, `${name}.facts.json`), factsJSON, { flag: 'wx' });
     frame.factsFile = { path: `${name}.facts.json`, digest: digest(factsJSON) };
     frame.targetObservation = await observe();
+    const physicalTarget = primary(page.locator('[data-previewer-id]').first(), item.family);
+    if (physicalTarget) {
+      frame.primaryPaint = await targetObservation(physicalTarget);
+      if (!(frame.primaryPaint as Observation).achieved)
+        throw new Error('Interactive family primary target is not supported painted content.');
+    }
     const after = await fingerprint(page);
     frame.afterFingerprintDigest = digest(after);
     const projectionAfter = await projectionObservation(page, item);
@@ -880,21 +897,13 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
   );
 }
 async function targetObservation(target: Locator): Promise<Observation> {
-  return target.evaluate((element) => ({
-    achieved:
-      element.getBoundingClientRect().width > 0 && element.getBoundingClientRect().height > 0,
-    prototype: element.getAttribute('data-projection-prototype'),
-    text: element.textContent,
-    focused: document.activeElement === element,
-    focusVisible: element.matches(':focus-visible'),
-    hovered: element.matches(':hover'),
-    nativeActive: element.matches(':active'),
-    ariaPressed: element.getAttribute('aria-pressed'),
-    ariaSelected: element.getAttribute('aria-selected'),
-    ariaChecked: element.getAttribute('aria-checked'),
-    ariaExpanded: element.getAttribute('aria-expanded'),
-    shadow: getComputedStyle(element).boxShadow,
-  }));
+  return target.evaluate((element) =>
+    (
+      globalThis as typeof globalThis & {
+        puiContrastProbe: typeof import('./contrast-probe.browser');
+      }
+    ).puiContrastProbe.readContrastTargetObservation(element)
+  );
 }
 async function requireTarget(
   target: Locator,
@@ -992,6 +1001,7 @@ async function pointerJourney(
         return {
           ...after,
           achieved:
+            after.achieved &&
             popupBefore === false &&
             popupAfter &&
             (family === 'dialog' || after.ariaExpanded === 'true') &&
@@ -1397,14 +1407,21 @@ async function tabsObservation(
     selected === 'Details'
       ? 'Dark mode keeps black shadows on warm paper.'
       : 'Hard borders, loud yellow, no radius.';
+  const overviewTarget = await targetObservation(overview);
+  const detailsTarget = await targetObservation(details);
+  const panelTarget = (await panel.count()) === 1 ? await targetObservation(panel) : null;
   return {
     achieved:
+      overviewTarget.achieved &&
+      detailsTarget.achieved &&
+      panelTarget?.achieved === true &&
       (await overview.getAttribute('aria-selected')) === String(selected === 'Overview') &&
       (await details.getAttribute('aria-selected')) === String(selected === 'Details') &&
       (await panel.count()) === 1 &&
       (await panel.innerText()).trim() === expectedText,
-    overview: await targetObservation(overview),
-    details: await targetObservation(details),
+    overview: overviewTarget,
+    details: detailsTarget,
+    panelTarget,
     panel: await panel.allTextContents(),
   };
 }
@@ -1455,6 +1472,7 @@ try {
     ['theme', new URL('../../../packages/prototypes/brutalist/src/theme.ts', import.meta.url)],
     ['provenance-guard', new URL('./contrast-provenance.mjs', import.meta.url)],
     ['report-journal', new URL('./contrast-report-journal.mjs', import.meta.url)],
+    ['audit-plan', new URL('./contrast-audit-plan.mjs', import.meta.url)],
     ['browser-harness', new URL('../src/content/docs/zh-cn/browser-harness.ts', import.meta.url)],
     [
       'projection-manifest',
@@ -1512,8 +1530,62 @@ try {
   phase = 'browser-launch';
   browser = await launchBrowser();
   report.browser = browser.version();
-  await persist('ready');
+  phase = 'runtime-discovery';
+  for (const family of selectedFamilies) {
+    const context = await browser.newContext({ viewport });
+    try {
+      await verifyServedSource();
+      const page = await context.newPage();
+      page.setDefaultTimeout(20_000);
+      page.setDefaultNavigationTimeout(30_000);
+      const route = `/en/ui-libraries/brutalist/components/${family}/`;
+      const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+      if (
+        !response?.ok() ||
+        response.headers()['x-proto-ui-contrast-server'] !== servedSource!.serverId
+      )
+        throw new Error(
+          'Runtime availability page is not from the current source-bound audit server.'
+        );
+      const previewer = page.locator('[data-previewer-id]').first();
+      await previewer.waitFor({ state: 'visible' });
+      const recipeId = (PROJECTION_FAMILY_MANIFESTS.brutalist as ProjectionFamilyManifest).families[
+        family
+      ].recipeId;
+      if ((await previewer.getAttribute('data-demo-id')) !== recipeId)
+        throw new Error('Runtime availability belongs to another authored recipe.');
+      const serialized = await previewer.getAttribute('data-runtimes');
+      const available = parseContrastRuntimeOptions(serialized, runtimes) as string[];
+      runtimeAvailability[family] = {
+        route,
+        recipeId,
+        serialized,
+        available,
+        unavailable: runtimes.filter((runtime) => !available.includes(runtime)),
+        basis:
+          'Exact source-bound preview data-runtimes; unavailable adapters are outside this route, not observed or certified.',
+      };
+      for (const runtime of available)
+        for (const theme of themes) cases.push(createCase(family, runtime, theme));
+    } catch (error) {
+      const failed = createCase(family, 'undiscovered', 'undiscovered');
+      failed.status = 'failed';
+      failed.errors.push({ phase, error: message(error) });
+      cases.push(failed);
+      failures.push({
+        family,
+        phase,
+        error: message(error),
+        disposition: 'Unresolved runtime availability; family not excluded.',
+      });
+      runtimeAvailability[family] = { status: 'failed', error: message(error) };
+    } finally {
+      await context.close();
+    }
+  }
+  await persist('initial');
   for (const item of cases) {
+    if (item.status === 'failed') continue;
     const { family, runtime, theme } = item;
     let context: BrowserContext | undefined;
     item.status = 'running';
@@ -1610,11 +1682,15 @@ try {
       );
       if (family === 'tooltip') {
         const portal = await tooltipPortal(page, target);
-        await capture(page, item, 'hover-open', async () => ({
-          achieved:
-            (await portal.isVisible()) && (await targetObservation(target)).hovered === true,
-          portal: await targetObservation(portal),
-        }));
+        await capture(page, item, 'hover-open', async () => {
+          const trigger = await targetObservation(target);
+          const content = await targetObservation(portal);
+          return {
+            achieved: trigger.achieved && content.achieved && trigger.hovered === true,
+            trigger,
+            portal: content,
+          };
+        });
       }
       if (family === 'hover-card') {
         await capture(page, item, 'hover-open', () => hoverCardObservation(page, target, 'hover'));
@@ -1684,11 +1760,15 @@ try {
       }
       if (family === 'tooltip') {
         const portal = await tooltipPortal(page, target);
-        await capture(page, item, 'focus-open', async () => ({
-          achieved:
-            (await portal.isVisible()) && (await targetObservation(target)).focused === true,
-          portal: await targetObservation(portal),
-        }));
+        await capture(page, item, 'focus-open', async () => {
+          const trigger = await targetObservation(target);
+          const content = await targetObservation(portal);
+          return {
+            achieved: trigger.achieved && content.achieved && trigger.focused === true,
+            trigger,
+            portal: content,
+          };
+        });
       }
       if (family === 'hover-card') {
         await capture(page, item, 'focus-open', async () => {
@@ -1793,8 +1873,17 @@ try {
                 );
                 const expected =
                   edge === 'first' ? candidates[0] : edge === 'last' ? candidates.at(-1) : focused;
+                const focusedPaint = focused
+                  ? (
+                      globalThis as typeof globalThis & {
+                        puiContrastProbe: typeof import('./contrast-probe.browser');
+                      }
+                    ).puiContrastProbe.readContrastTargetObservation(focused)
+                  : null;
                 return {
+                  focusedPaint,
                   achieved:
+                    focusedPaint?.achieved === true &&
                     focused?.getAttribute('role') === role &&
                     popup.contains(focused) &&
                     focused === expected,
@@ -1839,11 +1928,15 @@ try {
         try {
           const observeSelected = async (): Promise<Observation> => {
             const value = await overview.evaluate((element, expected) => {
-              const rect = element.getBoundingClientRect();
+              const target = (
+                globalThis as typeof globalThis & {
+                  puiContrastProbe: typeof import('./contrast-probe.browser');
+                }
+              ).puiContrastProbe.readContrastTargetObservation(element);
               const style = getComputedStyle(element);
               return {
-                achieved:
-                  element === expected && element.isConnected && rect.width > 0 && rect.height > 0,
+                ...target,
+                achieved: target.achieved && element === expected && element.isConnected,
                 samePhysicalTarget: element === expected,
                 prototype: element.getAttribute('data-projection-prototype'),
                 owner: element.getAttribute('data-projection-owner'),
@@ -1994,6 +2087,58 @@ try {
           return item.binaryKeyboardActivation;
         });
       }
+      for (const planned of contrastHeldBinaryTargets(family)) {
+        const heldTarget = previewer.locator(
+          `[data-projection-content] [data-pui-root][data-demo-ref="${planned.ref}"]`
+        );
+        if ((await heldTarget.count()) !== 1)
+          throw new Error(
+            `${family}: authored ${planned.ref} held-state target is missing or ambiguous.`
+          );
+        const physical = await heldTarget.elementHandle();
+        if (!physical) throw new Error(`${family}: held-state physical target missing.`);
+        try {
+          const before = await targetObservation(heldTarget);
+          if (!before.achieved || before.ariaChecked !== planned.ariaChecked)
+            throw new Error(`${family}: ${planned.ref} does not have its authored initial state.`);
+          await heldTarget.hover();
+          const bounds = await physical.boundingBox();
+          if (!bounds) throw new Error(`${family}: held-state target lacks physical bounds.`);
+          await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+          await page.mouse.down();
+          try {
+            await capture(page, item, `${planned.state}-and-pointer-held`, async () => {
+              const held = await targetObservation(heldTarget);
+              const samePhysicalTarget = await heldTarget.evaluate(
+                (element, original) => element === original,
+                physical
+              );
+              return {
+                ...held,
+                achieved:
+                  held.achieved &&
+                  samePhysicalTarget &&
+                  held.nativeActive === true &&
+                  held.ariaChecked === planned.ariaChecked,
+                samePhysicalTarget,
+                authoredRef: planned.ref,
+                expectedAriaChecked: planned.ariaChecked,
+                releasedBefore: before,
+                criterion:
+                  family === 'switch'
+                    ? 'P-BRUTALIST-SWITCH-INTERACTION (draft)'
+                    : 'P-BRUTALIST-CHECKBOX-STATE-PRESENTATION (draft)',
+                basis:
+                  'Native pointer remains held on the same authored checked/mixed control through PNG and facts. Visual cues are recorded, not independently classified.',
+              };
+            });
+          } finally {
+            await page.mouse.up();
+          }
+        } finally {
+          await physical.dispose();
+        }
+      }
       if (family === 'toggle') {
         const active = previewer.getByRole('button', { name: 'Active', exact: true });
         await capture(page, item, 'already-active', () =>
@@ -2018,6 +2163,7 @@ try {
               rawShadowLayers: layers,
               visibleShadowLayers: visibleLayers,
               achieved:
+                value.achieved &&
                 value.ariaPressed === 'true' &&
                 value.nativeActive === true &&
                 visibleLayers.length === 1 &&

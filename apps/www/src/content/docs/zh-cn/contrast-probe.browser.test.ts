@@ -9,6 +9,7 @@ import type {
   readContrastState,
   readContrastPaintedVisibility,
   readContrastPointerPair,
+  readContrastTargetObservation,
 } from '../../../../scripts/contrast-probe.browser';
 import { launchBrowser } from './browser-harness';
 
@@ -19,6 +20,7 @@ declare global {
       readContrastState: typeof readContrastState;
       readContrastPaintedVisibility: typeof readContrastPaintedVisibility;
       readContrastPointerPair: typeof readContrastPointerPair;
+      readContrastTargetObservation: typeof readContrastTargetObservation;
     };
   }
 }
@@ -127,6 +129,71 @@ describe('contrast probe / real Chromium instrument calibration', () => {
       expect(observations.unsupported.classification).toBe('unsupported');
     } finally {
       await context.close();
+    }
+  });
+
+  it('rejects unpainted exact interactive targets despite native focus, hover and held state', async () => {
+    const context = await browser.newContext({ viewport: { width: 800, height: 600 } });
+    const page = await context.newPage();
+    try {
+      await page.setContent(fixture('<button id="target" data-pui-root>Native target</button>'));
+      await page.addScriptTag({ content: bundle });
+      const target = page.locator('#target');
+      const observe = () =>
+        target.evaluate((element) =>
+          window.puiContrastProbe.readContrastTargetObservation(element)
+        );
+      await target.focus();
+      await target.hover();
+      await page.mouse.down();
+      try {
+        expect(await observe()).toMatchObject({
+          achieved: true,
+          focused: true,
+          hovered: true,
+          nativeActive: true,
+        });
+        // Only the isolated instrument fixture is mutated, never a component page.
+        await target.evaluate((element) => {
+          element.style.opacity = '0';
+        });
+        const bounds = await target.boundingBox();
+        expect(bounds!.width > 0 && bounds!.height > 0).toBe(true);
+        expect(await target.isVisible()).toBe(true);
+        expect(await observe()).toMatchObject({
+          achieved: false,
+          focused: true,
+          hovered: true,
+          nativeActive: true,
+        });
+      } finally {
+        await page.mouse.up();
+      }
+    } finally {
+      await context.close();
+    }
+  });
+
+  it('withholds placeholder ratios when text fill or shadow overrides plain color', async () => {
+    const frame = await calibrate(`
+      <style>
+        #fill::placeholder { -webkit-text-fill-color: #fff; }
+        #shadow::placeholder { text-shadow: 1px 1px #fff; }
+      </style>
+      <textarea data-pui-root data-demo-ref="normal-placeholder" placeholder="Normal"></textarea>
+      <textarea id="fill" data-pui-root data-demo-ref="fill-placeholder" placeholder="Fill override"></textarea>
+      <textarea id="shadow" data-pui-root data-demo-ref="shadow-placeholder" placeholder="Shadow override"></textarea>
+    `);
+    expect(surface(frame, 'normal-placeholder').placeholder?.ratio).toBeCloseTo(21, 8);
+    for (const [ref, limit] of [
+      ['fill-placeholder', 'unsupported-placeholder-text-fill-color'],
+      ['shadow-placeholder', 'unsupported-placeholder-text-shadow'],
+    ]) {
+      const placeholder = surface(frame, ref).placeholder!;
+      expect(placeholder.shown).toBe(true);
+      expect(placeholder.ratio).toBeNull();
+      expect(placeholder.classification).toBe('unsupported');
+      expect(placeholder.limits).toContain(limit);
     }
   });
 
