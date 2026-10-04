@@ -95,6 +95,67 @@ describe('private material through real WC and Feedback', () => {
     expect(host.style.isolation).toBe('auto');
     host.remove();
   });
+  it('reads styles from the new document after adopting a retained host', () => {
+    const host = document.createElement('div');
+    host.style.color = 'rgb(0, 0, 0)';
+    document.body.append(host);
+    const sink = createOpaqueMaterialVisualSink(host, createOwnedTwTokenApplier(host));
+    const material = {
+      config: button.modules![0].config as OwnedMaterialConfig,
+      pressed: false,
+      disabled: false,
+      bindingsReady: true,
+    };
+    sink.commit(finalStyleFrame(tw('rounded-full'), 1, 1, material));
+    const frame = document.createElement('iframe');
+    document.body.append(frame);
+    const target = frame.contentWindow!;
+    const readStyle = vi.spyOn(target, 'getComputedStyle');
+    target.document.body.append(target.document.adoptNode(host));
+    sink.commit(finalStyleFrame(tw('rounded-full'), 1, 2, material));
+    expect(readStyle).toHaveBeenCalledWith(host);
+    expect(host.dataset.materialQuality).toBe('opaque-fallback');
+    sink.release(1);
+    readStyle.mockRestore();
+    frame.remove();
+  });
+
+  it('unwinds acquired resources when preference subscription fails', () => {
+    const host = document.createElement('div');
+    const off = vi.fn(() => {
+      throw new Error('cleanup failure');
+    });
+    const release = vi.fn();
+    const remove = vi.spyOn(HTMLCanvasElement.prototype, 'removeEventListener');
+    const failure = new Error('preference setup failed');
+    expect(() =>
+      createOwnedTextureVisualSink(
+        host,
+        createOwnedTwTokenApplier(host),
+        null,
+        { current: () => null, subscribe: () => off },
+        {
+          current: () => ({
+            reducedMotion: 'reduce',
+            reducedTransparency: 'reduce',
+            contrast: 'more',
+            forcedColors: 'active',
+          }),
+          subscribe: () => {
+            throw failure;
+          },
+        },
+        { mount() {}, release }
+      )
+    ).toThrow(failure);
+    expect(off).toHaveBeenCalledOnce();
+    expect(release).toHaveBeenCalledOnce();
+    expect(remove.mock.calls.map(([name]) => name)).toEqual(
+      expect.arrayContaining(['webglcontextlost', 'webglcontextrestored'])
+    );
+    remove.mockRestore();
+  });
+
   it('completes all teardown actions and preserves the first unsubscribe failure', () => {
     const host = document.createElement('div');
     host.style.color = 'rgb(0, 0, 0)';

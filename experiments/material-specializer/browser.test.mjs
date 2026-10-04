@@ -126,6 +126,15 @@ try {
   await capture('06-source-loss');
   await page.evaluate(() => window.probe.source(true));
   assert.equal((await state()).quality, 'experimental-owned-texture');
+  await page.evaluate(() => window.probe.invalidSource());
+  assert.equal((await state()).reason, 'invalid-owned-source');
+  assert.equal(
+    await page.evaluate(() => window.probe.pixels()),
+    'data:,',
+    'invalid replacement clears the superseded source'
+  );
+  await capture('10-invalid-source-cleared');
+  await page.evaluate(() => window.probe.source(true));
   const beforeMove = await state();
   const beforeMovePixels = await page.evaluate(() => window.probe.pixels());
   await page.evaluate(() => window.probe.move(41, 17));
@@ -147,6 +156,45 @@ try {
   const movedFrame = (await state()).materialFrame;
   await page.evaluate(() => window.probe.move(0, 0));
   await page.waitForFunction((frame) => window.probe.state().materialFrame > frame, movedFrame);
+  await page.evaluate(() => {
+    const iframe = document.createElement('iframe');
+    iframe.style.width = '900px';
+    iframe.style.height = '720px';
+    document.body.append(iframe);
+    const target = iframe.contentWindow;
+    Object.defineProperty(target, 'devicePixelRatio', { value: 2 });
+    const copiedStyle = target.document.createElement('style');
+    copiedStyle.textContent = Array.from(document.styleSheets)
+      .flatMap((sheet) => Array.from(sheet.cssRules, (rule) => rule.cssText))
+      .join('\n');
+    target.document.head.append(copiedStyle);
+    window.adoptedScene = document.querySelector('#scene');
+    window.adoptionFrame = iframe;
+    target.document.body.append(target.document.adoptNode(window.adoptedScene));
+  });
+  await page.waitForFunction(() => {
+    const host = window.adoptedScene.querySelector('#glass');
+    const canvas = host.querySelector('canvas');
+    return (
+      host.dataset.materialQuality === 'experimental-owned-texture' &&
+      canvas.width === Math.ceil(host.getBoundingClientRect().width * 2)
+    );
+  });
+  await page.evaluate(() => {
+    document.body.insertBefore(
+      document.adoptNode(window.adoptedScene),
+      document.querySelector('footer')
+    );
+    window.adoptionFrame.remove();
+  });
+  await page.waitForFunction(() => {
+    const host = document.querySelector('#glass');
+    return (
+      host.dataset.materialQuality === 'experimental-owned-texture' &&
+      host.querySelector('canvas').width ===
+        Math.ceil(host.getBoundingClientRect().width * devicePixelRatio)
+    );
+  });
   await page.evaluate(() => {
     const canvas = document.querySelector('#glass canvas');
     const gl = canvas.getContext('webgl');

@@ -594,6 +594,11 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       }
     }
 
+    adoptedCallback() {
+      // A retained view must reproject against its current document and host capabilities.
+      this._controller?.update();
+    }
+
     disconnectedCallback() {
       this._pendingOwnedTokens = this._applier ? Array.from(this._applier.getOwned()) : null;
       this._applier?.clear();

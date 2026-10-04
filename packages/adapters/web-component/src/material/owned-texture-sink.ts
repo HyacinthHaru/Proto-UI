@@ -61,7 +61,7 @@ export function createOwnedTextureVisualSink(
   preferences: MaterialPreferences,
   surface: OwnedVisualSurface = createOwnedVisualSurface(host, host.shadowRoot ?? host)
 ): FinalStyleSink {
-  const canvas = document.createElement('canvas');
+  const canvas = host.ownerDocument.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
   canvas.dataset.puiMaterial = 'owned-texture';
   Object.assign(canvas.style, {
@@ -115,7 +115,7 @@ export function createOwnedTextureVisualSink(
   let preparedPixels: Uint8Array | null = null;
   let resolvedForeground: number[] | null = null;
   let observer: ResizeObserver | null = null;
-  const ownerWindow = host.ownerDocument.defaultView;
+  let ownerWindow = host.ownerDocument.defaultView;
   let geometryFrame: number | null = null;
   let renderedGeneration = -1;
   let renderedGeometry: number[] | null = null;
@@ -140,11 +140,12 @@ export function createOwnedTextureVisualSink(
               rect.y,
               rect.width,
               rect.height,
-              ownerWindow.devicePixelRatio,
+              host.ownerDocument.defaultView?.devicePixelRatio ?? NaN,
               ...current.bounds(host),
             ]
           : null;
         if (
+          host.ownerDocument.defaultView !== ownerWindow ||
           !current ||
           current.generation !== renderedGeneration ||
           !next ||
@@ -304,6 +305,14 @@ export function createOwnedTextureVisualSink(
     }
     painting = true;
     try {
+      const currentWindow = host.ownerDocument.defaultView;
+      if (currentWindow !== ownerWindow) {
+        stopGeometryWatch();
+        ownerWindow = currentWindow;
+        observer?.disconnect();
+        observer = ownerWindow?.ResizeObserver ? new ownerWindow.ResizeObserver(repaint) : null;
+        observer?.observe(host);
+      }
       const material = last.material;
       if (!material) {
         canvas.style.display = 'none';
@@ -331,7 +340,8 @@ export function createOwnedTextureVisualSink(
       // Remove competing Proto-owned fill before publishing fallback or enhancement.
       restoreOwnedInline();
       style.apply(last.style.tokens.filter((token) => !paint(token)));
-      const css = getComputedStyle(host);
+      const css = ownerWindow?.getComputedStyle(host);
+      if (!css) throw new Error('owner-document-unavailable');
       const parsed = css.color.match(
         /^rgba?\(\s*([\d.]+)[, ]+([\d.]+)[, ]+([\d.]+)(?:\s*[,/]\s*([\d.]+))?\s*\)$/
       );
@@ -397,11 +407,13 @@ export function createOwnedTextureVisualSink(
         !(texture.pixels instanceof Uint8Array) ||
         texture.pixels.length !== texture.width * texture.height * 4
       ) {
+        freeGPU();
         fallback('invalid-owned-source');
         return;
       }
       for (let i = 3; i < texture.pixels.length; i += 4)
         if (texture.pixels[i] !== 255) {
+          freeGPU();
           fallback('source-not-opaque');
           return;
         }
@@ -431,7 +443,7 @@ export function createOwnedTextureVisualSink(
         fallback('geometry-unavailable');
         return;
       }
-      const dpr = devicePixelRatio;
+      const dpr = ownerWindow?.devicePixelRatio ?? NaN;
       const width = Math.ceil(rect.width * dpr),
         height = Math.ceil(rect.height * dpr);
       const radius = Math.min(parseFloat(radii[0]), rect.width / 2, rect.height / 2);
@@ -543,11 +555,33 @@ export function createOwnedTextureVisualSink(
   };
   canvas.addEventListener('webglcontextlost', onLost);
   canvas.addEventListener('webglcontextrestored', onRestored);
-  const offSource = source.subscribe(repaint),
+  let offSource = () => {};
+  let offPreferences = () => {};
+  try {
+    offSource = source.subscribe(repaint);
     offPreferences = preferences.subscribe(repaint);
-  if (typeof ResizeObserver !== 'undefined') {
-    observer = new ResizeObserver(repaint);
-    observer.observe(host);
+    if (ownerWindow?.ResizeObserver) {
+      observer = new ownerWindow.ResizeObserver(repaint);
+      observer.observe(host);
+    }
+  } catch (error) {
+    retired = true;
+    for (const cleanup of [
+      offSource,
+      offPreferences,
+      () => observer?.disconnect(),
+      () => canvas.removeEventListener('webglcontextlost', onLost),
+      () => canvas.removeEventListener('webglcontextrestored', onRestored),
+      freeGPU,
+      () => surface.release(canvas),
+    ]) {
+      try {
+        cleanup();
+      } catch {
+        /* Preserve the construction failure after every unwind. */
+      }
+    }
+    throw error;
   }
   return {
     commit(frame) {

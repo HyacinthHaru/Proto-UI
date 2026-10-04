@@ -181,6 +181,11 @@ const probe = {
     current = value ? texture() : null;
     for (const listener of sourceListeners) listener();
   },
+  invalidSource() {
+    generation++;
+    current = { ...texture(), pixels: new Uint8Array(4) };
+    for (const listener of sourceListeners) listener();
+  },
   preparation(mode: string) {
     if (!['normal', 'throw', 'short', 'transparent'].includes(mode))
       throw new Error('unknown mode');
