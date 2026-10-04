@@ -5,6 +5,12 @@ const SOURCE_KINDS = [
   'reconstructed-scene',
   'video-frame',
 ];
+const APPLICATION_SOURCE_ALTERNATIVES = ['owned-image', 'owned-video-frame'];
+function validSourceAlternatives(value) {
+  if (!Array.isArray(value) || !value.length || new Set(value).size !== value.length) return false;
+  for (const kind of value) if (!APPLICATION_SOURCE_ALTERNATIVES.includes(kind)) return false;
+  return true;
+}
 const LICENSE_LABELS = new Set([
   'blocked-IQ-transitive-provenance',
   'MIT-chain-review',
@@ -160,12 +166,19 @@ export function inspectGraph(graph) {
         if (
           typeof sampler.name !== 'string' ||
           !sampler.name ||
+          !nonempty(sampler.resource) ||
           !['host-injected', 'application-bound'].includes(sampler.ownership) ||
           (sampler.ownership === 'application-bound' &&
             !APPLICATION_TEXTURE_KINDS.includes(sampler.resourceKind)) ||
           (sampler.ownership === 'host-injected' && !SOURCE_KINDS.includes(sampler.sourceKind))
         )
           error('invalid-sampler-contract', kernel.id);
+        if (
+          sampler.resourceKind === 'application-texture'
+            ? !validSourceAlternatives(sampler.sourceKinds)
+            : sampler.sourceKinds !== undefined
+        )
+          error('invalid-sampler-source-alternatives', kernel.id);
       }
   }
   for (const pass of graph.passes) {
@@ -272,6 +285,12 @@ export function inspectGraph(graph) {
   }
   for (const s of graph.sources) {
     if (!SOURCE_KINDS.includes(s.kind)) error('unknown-source-kind', s.id);
+    if (
+      s.kind === 'application-texture'
+        ? !validSourceAlternatives(s.sourceKinds)
+        : s.sourceKinds !== undefined
+    )
+      error('invalid-source-alternatives', s.id);
     if (
       !nonempty(s.space) ||
       !alphaContract(s.alpha) ||
@@ -484,6 +503,16 @@ export function inspectGraph(graph) {
       if (!Object.hasOwn(p.bindings, sampler.name))
         error('missing-sampler-binding', `${p.id}:${sampler.name}`);
       const bound = resources.get(p.bindings?.[sampler.name]);
+      if (!resources.has(sampler.resource) || p.bindings[sampler.name] !== sampler.resource)
+        error('sampler-resource-identity', `${p.id}:${sampler.name}`);
+      if (
+        sampler.resourceKind === 'application-texture' &&
+        !sourceCompatibility(
+          { kind: sampler.resourceKind, sourceKinds: sampler.sourceKinds },
+          bound
+        ).compatible
+      )
+        error('sampler-source-alternatives', `${p.id}:${sampler.name}`);
       if (
         sampler.ownership === 'host-injected' &&
         (bound?.kind !== sampler.sourceKind || bound?.reservedSampler !== sampler.slot)
@@ -725,12 +754,27 @@ export function inspectGraph(graph) {
   };
 }
 export function sourceCompatibility(required, provided) {
-  if (!SOURCE_KINDS.includes(required) || !SOURCE_KINDS.includes(provided))
+  const descriptor = (value) => (typeof value === 'string' ? { kind: value } : value);
+  required = descriptor(required);
+  provided = descriptor(provided);
+  if (!SOURCE_KINDS.includes(required?.kind) || !SOURCE_KINDS.includes(provided?.kind))
     return { compatible: false, reason: 'unknown-source-kind' };
-  return required === provided
-    ? { compatible: true }
-    : {
-        compatible: false,
-        reason: 'source-kind-mismatch; no implicit reconstruction or capture substitution',
-      };
+  for (const source of [required, provided])
+    if (
+      source.kind === 'application-texture'
+        ? !validSourceAlternatives(source.sourceKinds)
+        : source.sourceKinds !== undefined
+    )
+      return { compatible: false, reason: 'invalid-source-alternatives' };
+  if (required.kind !== provided.kind)
+    return {
+      compatible: false,
+      reason: 'source-kind-mismatch; no implicit reconstruction or capture substitution',
+    };
+  if (
+    required.kind === 'application-texture' &&
+    provided.sourceKinds.some((kind) => !required.sourceKinds.includes(kind))
+  )
+    return { compatible: false, reason: 'source-alternative-mismatch' };
+  return { compatible: true };
 }

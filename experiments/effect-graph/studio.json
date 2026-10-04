@@ -20,7 +20,9 @@
         {
           "name": "u_bgTexture",
           "ownership": "application-bound",
-          "resourceKind": "application-texture"
+          "resourceKind": "application-texture",
+          "resource": "media",
+          "sourceKinds": ["owned-image", "owned-video-frame"]
         }
       ],
       "samplerBinding": "named",
@@ -54,7 +56,8 @@
         {
           "name": "u_prevPassTexture",
           "ownership": "application-bound",
-          "resourceKind": "color-texture"
+          "resourceKind": "color-texture",
+          "resource": "background"
         }
       ],
       "samplerBinding": "named",
@@ -84,7 +87,8 @@
         {
           "name": "u_prevPassTexture",
           "ownership": "application-bound",
-          "resourceKind": "color-texture"
+          "resourceKind": "color-texture",
+          "resource": "vertical-blur"
         }
       ],
       "samplerBinding": "named",
@@ -114,12 +118,14 @@
         {
           "name": "u_bg",
           "ownership": "application-bound",
-          "resourceKind": "color-texture"
+          "resourceKind": "color-texture",
+          "resource": "background"
         },
         {
           "name": "u_blurredBg",
           "ownership": "application-bound",
-          "resourceKind": "color-texture"
+          "resourceKind": "color-texture",
+          "resource": "blurred"
         }
       ],
       "samplerBinding": "named",

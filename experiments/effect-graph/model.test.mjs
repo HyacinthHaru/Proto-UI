@@ -66,7 +66,8 @@ test('copied or reconstructed texture never silently satisfies a live backdrop r
       .compatible,
     false
   );
-  assert.equal(sourceCompatibility('application-texture', 'application-texture').compatible, true);
+  const image = { kind: 'application-texture', sourceKinds: ['owned-image'] };
+  assert.equal(sourceCompatibility(image, image).compatible, true);
 });
 test('structural success does not clear an unresolved license or claim compilation', async () => {
   const result = inspectGraph(await load('studio'));
@@ -681,4 +682,70 @@ test('all reflected uniforms retain exact ordered float-slot ranges', async () =
     graph.uniformBlocks[0].fields[3].count = count;
     assert.equal(inspectGraph(graph).valid, false);
   }
+});
+
+test('pinned sampler identities preserve sharp and blurred inputs at the same resource kind', async () => {
+  for (const bindings of [
+    { u_bg: 'background', u_blurredBg: 'background' },
+    { u_bg: 'blurred', u_blurredBg: 'background' },
+    { u_bg: 'blurred', u_blurredBg: 'blurred' },
+  ]) {
+    const graph = await load('studio');
+    graph.passes[3].bindings = bindings;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'sampler-resource-identity'));
+  }
+  const missing = await load('studio');
+  delete missing.kernels[3].samplers[1].resource;
+  assert(inspectGraph(missing).errors.some((e) => e.code === 'invalid-sampler-contract'));
+  const unknown = await load('studio');
+  unknown.kernels[3].samplers[1].resource = 'missing';
+  assert(inspectGraph(unknown).errors.some((e) => e.code === 'sampler-resource-identity'));
+});
+
+test('application source alternatives are recognized, explicit and used for compatibility', async () => {
+  const reconstructed = await load('studio');
+  reconstructed.sources[0].sourceKinds = ['owned-image', 'reconstructed-scene'];
+  assert(inspectGraph(reconstructed).errors.some((e) => e.code === 'invalid-source-alternatives'));
+  const application = (sourceKinds) => ({ kind: 'application-texture', sourceKinds });
+  const image = application(['owned-image']);
+  const video = application(['owned-video-frame']);
+  const both = application(['owned-image', 'owned-video-frame']);
+  assert.equal(sourceCompatibility(both, image).compatible, true);
+  assert.equal(sourceCompatibility(both, video).compatible, true);
+  assert.equal(sourceCompatibility(image, video).compatible, false);
+  assert.equal(sourceCompatibility(image, both).compatible, false);
+  assert.equal(sourceCompatibility('application-texture', 'application-texture').compatible, false);
+  for (const alternatives of [
+    undefined,
+    [],
+    ['owned-image', 'owned-image'],
+    ['owned-vdieo-frame'],
+    ['reconstructed-scene'],
+    [null],
+    {},
+  ]) {
+    const graph = await load('studio');
+    if (alternatives === undefined) delete graph.sources[0].sourceKinds;
+    else graph.sources[0].sourceKinds = alternatives;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-source-alternatives'));
+    assert.equal(sourceCompatibility(both, application(alternatives)).compatible, false);
+    assert.equal(sourceCompatibility(application(alternatives), both).compatible, false);
+  }
+  assert.equal(sourceCompatibility(both, application(new Array(1))).compatible, false);
+  assert.equal(sourceCompatibility(image, 'reconstructed-scene').compatible, false);
+  assert.equal(sourceCompatibility('video-frame', video).compatible, false);
+  const invalidRequirement = await load('studio');
+  delete invalidRequirement.kernels[0].samplers[0].sourceKinds;
+  assert(
+    inspectGraph(invalidRequirement).errors.some(
+      (e) => e.code === 'invalid-sampler-source-alternatives'
+    )
+  );
+  const misplaced = await load('flutter');
+  misplaced.sources[0].sourceKinds = ['owned-image'];
+  assert(inspectGraph(misplaced).errors.some((e) => e.code === 'invalid-source-alternatives'));
+  const mismatch = await load('studio');
+  mismatch.kernels[0].samplers[0].sourceKinds = ['owned-image'];
+  mismatch.sources[0].sourceKinds = ['owned-video-frame'];
+  assert(inspectGraph(mismatch).errors.some((e) => e.code === 'sampler-source-alternatives'));
 });

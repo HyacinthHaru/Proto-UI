@@ -40,13 +40,15 @@
           "name": "uBackgroundTexture",
           "ownership": "host-injected",
           "slot": 0,
-          "sourceKind": "host-compositor-backdrop"
+          "sourceKind": "host-compositor-backdrop",
+          "resource": "backdrop"
         },
         {
           "name": "uGeometryTexture",
           "ownership": "application-bound",
           "slot": 1,
-          "resourceKind": "data-texture"
+          "resourceKind": "data-texture",
+          "resource": "geometry"
         }
       ],
       "samplerBinding": "indexed",
