@@ -180,9 +180,15 @@ describe.sequential('Header public ghost presentation and labelled compact field
                 const id = await select.getAttribute('aria-controls');
                 const popup = page.locator(`[id=${JSON.stringify(id)}]`);
                 await popup.waitFor({ state: 'visible' });
-                expect(await popup.evaluate((element) => getComputedStyle(element).boxShadow)).toBe(
-                  'none'
+                // Content retains its own family presentation; ghost affects Trigger only.
+                const popupShadow = await popup.evaluate(
+                  (element) => getComputedStyle(element).boxShadow
                 );
+                if (family === 'brutalist') expect(popupShadow).toBe('none');
+                else {
+                  expect(await popup.getAttribute('data-pui-style')).toContain('shadow-md');
+                  expect(popupShadow).not.toBe('none');
+                }
                 await capture(`${width}-${control}-popup`);
                 await page.keyboard.press('Escape');
                 await page.waitForFunction(

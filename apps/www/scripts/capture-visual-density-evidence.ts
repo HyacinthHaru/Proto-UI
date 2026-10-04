@@ -87,7 +87,12 @@ try {
     })),
   ];
   const variants = quickPreview
-    ? [{ width: 1440, locale: 'zh-cn', theme: 'dark' as const, family: 'shadcn' as const }]
+    ? (['shadcn', 'brutalist'] as const).map((family) => ({
+        width: 1440,
+        locale: 'zh-cn',
+        theme: 'dark' as const,
+        family,
+      }))
     : fullVariants;
   for (const v of variants)
     for (const target of quickPreview ? (['docs'] as const) : (['home', 'docs'] as const)) {
@@ -307,12 +312,17 @@ try {
                     requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
                   )
               );
-              entry.anchorLanding = await page.evaluate(() => {
+              const landing = await page.evaluate(() => {
                 const heading = document.getElementById(decodeURIComponent(location.hash.slice(1)));
                 return {
                   hash: location.hash,
                   scrollY,
                   scrollPaddingTop: getComputedStyle(document.documentElement).scrollPaddingTop,
+                  maximumScrollY: Math.max(
+                    0,
+                    document.documentElement.scrollHeight - document.documentElement.clientHeight
+                  ),
+                  viewportHeight: innerHeight,
                   header: document.querySelector('header')?.getBoundingClientRect().toJSON(),
                   heading: heading?.getBoundingClientRect().toJSON(),
                   scrollMarginTop: heading ? getComputedStyle(heading).scrollMarginTop : null,
@@ -324,8 +334,27 @@ try {
                   ),
                 };
               });
+              entry.anchorLanding = landing;
               await save();
-              if (kind === 'candidate')
+              // A short page can already fit the full target while native scrolling
+              // is clamped at the bottom. Its reading-position current stays valid.
+              const targetReachedCurrentLine =
+                !!landing.heading && landing.heading.top <= (landing.header?.height ?? 0) + 33;
+              if (kind === 'candidate' && !targetReachedCurrentLine) {
+                assert.ok(
+                  Math.abs(landing.scrollY - landing.maximumScrollY) <= 1,
+                  'Only actual bottom clamping permits a non-current target'
+                );
+                assert.ok(
+                  landing.heading &&
+                    landing.heading.top >= 0 &&
+                    landing.heading.bottom <= landing.viewportHeight,
+                  'The clamped native target must already be fully visible'
+                );
+                entry.anchorConstraint =
+                  'Native scroll is bottom-clamped; target is already visible, current follows reading position';
+              }
+              if (kind === 'candidate' && targetReachedCurrentLine)
                 await page.waitForFunction(
                   (href) =>
                     [...document.querySelectorAll<HTMLAnchorElement>('.right-sidebar a')]

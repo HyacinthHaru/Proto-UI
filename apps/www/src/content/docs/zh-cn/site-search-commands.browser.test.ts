@@ -146,7 +146,11 @@ async function captureFailure(page: Page) {
     await capture(page, entry.id, `late-observation-${entry.stage}`).catch((error) =>
       console.warn('[Search evidence] Late observation unavailable', error)
     );
-    if (entry.stage === 'initial-ready' && !entry.startupProfileRecorded) {
+    if (
+      entry.stage === 'initial-ready' &&
+      entry.initialPollFailure &&
+      !entry.startupProfileRecorded
+    ) {
       entry.startupProfileRecorded = true;
       // An isolated follow-on navigation attributes CPU cost. Profiling never
       // runs during the original 1000ms acceptance observation or replaces it.
@@ -562,13 +566,11 @@ describe.sequential('Search family Button commands', () => {
             );
             expect(await trigger.getAttribute('role')).toBe('button');
             await expect.poll(() => page.locator('html').getAttribute('data-theme')).toBe(theme);
-            // Sibling Header commands use real Shadcn ghost Buttons; fields
-            // retain their independent Select border. Brutalist stays surface.
+            // Both Header families consume public ghost Buttons; labelled
+            // compact preferences and ordinary form fields keep their defaults.
             const triggerTokens = await trigger.getAttribute('data-pui-style');
-            expect(triggerTokens).toContain(
-              family === 'brutalist' ? 'bg-secondary-background' : 'bg-transparent'
-            );
-            if (family === 'shadcn') {
+            expect(triggerTokens).toContain('bg-transparent');
+            {
               expect(triggerTokens).toContain('border-transparent');
               const rest = await trigger.evaluate((node) => ({
                 border: getComputedStyle(node).borderTopColor,
@@ -588,9 +590,7 @@ describe.sequential('Search family Button commands', () => {
               .toBe(true);
             expect(await dialog.getAttribute('data-test-open-count')).toBe('1');
             expect(await close.evaluate((button) => button.localName)).toBe(`wc-${family}-button`);
-            expect(await close.getAttribute('data-pui-style')).toContain(
-              family === 'brutalist' ? 'bg-secondary-background' : 'bg-transparent'
-            );
+            expect(await close.getAttribute('data-pui-style')).toContain('bg-transparent');
             await capture(page, id, 'open');
             await close.locator('svg').click();
             await expect

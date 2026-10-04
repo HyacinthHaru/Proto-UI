@@ -196,7 +196,7 @@ function initializeButton(button: HTMLElement): void {
     // Family-specific public variants, never recolor a foreign Button.
     props.variant =
       button.localName === 'wc-brutalist-button' &&
-      ['ghost', 'outline', 'secondary'].includes(button.dataset.variant)
+      ['outline', 'secondary'].includes(button.dataset.variant)
         ? 'surface'
         : button.dataset.variant;
   }

@@ -17,7 +17,7 @@ describe('Demo consumer narrow-layout constraints', () => {
     expect(buttonDemo.root.className).toContain('min-w-0');
     expect(buttonDemo.root.className).toContain('max-w-full');
     const buttons = children(buttonDemo.root as DemoSpec['root']);
-    expect(buttons).toHaveLength(10);
+    expect(buttons).toHaveLength(12);
     for (const button of buttons) {
       expect(button.kind).toBe('proto');
       if (button.kind !== 'proto') continue;

@@ -244,7 +244,8 @@ describe('site family projections', () => {
     expect(button.dataset.siteControlFamily).toBe('brutalist');
     expect(button.getAttribute('data-pui-style')).toContain('border-2');
     expect(button.getAttribute('data-pui-style')).toContain('rounded-base');
-    expect(button.getAttribute('data-pui-style')).toContain('bg-secondary-background');
+    expect(button.getAttribute('data-pui-style')).toContain('bg-transparent');
+    expect(button.getAttribute('data-pui-style')).toContain('border-transparent');
     expect(button.getAttribute('data-pui-style')).not.toContain('rounded-md');
   });
 
@@ -401,4 +402,19 @@ it('bounds the existing local adapter field without clipping enlarged value text
   expect(value.style.whiteSpace).toBe('normal');
   expect(value.style.overflowWrap).toBe('anywhere');
   expect(trigger.getAttribute('data-pui-style')).toContain('border');
+});
+
+it('passes the now-public Brutalist ghost variant through the actual WC initializer', async () => {
+  document.body.innerHTML =
+    '<header data-site-header><wc-brutalist-button data-site-button data-variant="ghost" data-size="icon">Menu</wc-brutalist-button></header>';
+  initSiteShadcnControls(document);
+  await settle();
+  const button = document.querySelector<HTMLElement>('wc-brutalist-button')!;
+  const tokens = button.getAttribute('data-pui-style')!;
+  expect(button.getAttribute('role')).toBe('button');
+  expect(tokens).toContain('border-transparent');
+  expect(tokens).toContain('bg-transparent');
+  expect(tokens).not.toContain('border-black');
+  expect(tokens).not.toContain('shadow-[4px_4px_0_0_#000]');
+  expect(button.style.width).toBe('2.75rem');
 });
