@@ -85,6 +85,7 @@ export function classifyFlatTabPaint({ shadow, transform, translate }) {
 // then request the opposite row with a real key and observe that exact focus.
 // No delay, synthetic focus, or state mutation substitutes for these barriers.
 export async function establishNativeItemPointerBaseline({
+  waitForPaint,
   waitForEntry,
   pressEdge,
   waitForOther,
@@ -92,6 +93,7 @@ export async function establishNativeItemPointerBaseline({
   expectedSelection,
   identity,
 }) {
+  await waitForPaint();
   await waitForEntry();
   await pressEdge();
   await waitForOther();

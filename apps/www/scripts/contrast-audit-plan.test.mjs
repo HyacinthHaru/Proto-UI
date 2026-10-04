@@ -188,6 +188,9 @@ test('native item baseline waits for deferred entry and exact other focus before
   });
   const before = { achieved: true, focused: false, hovered: false, ariaSelected: 'true' };
   const result = establishNativeItemPointerBaseline({
+    waitForPaint: async () => {
+      calls.push('paint-settled');
+    },
     waitForEntry: async () => {
       calls.push('entry');
       await entry;
@@ -208,18 +211,21 @@ test('native item baseline waits for deferred entry and exact other focus before
     expectedSelection: 'true',
     identity: 'selected',
   });
-  assert.deepEqual(calls, ['entry']);
+  assert.deepEqual(calls, ['paint-settled']);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.deepEqual(calls, ['paint-settled', 'entry']);
   releaseEntry();
   await new Promise((resolve) => setImmediate(resolve));
-  assert.deepEqual(calls, ['entry', 'native-End', 'other']);
+  assert.deepEqual(calls, ['paint-settled', 'entry', 'native-End', 'other']);
   releaseOther();
   assert.equal(await result, before);
-  assert.deepEqual(calls, ['entry', 'native-End', 'other', 'read']);
+  assert.deepEqual(calls, ['paint-settled', 'entry', 'native-End', 'other', 'read']);
 });
 
 test('native item baseline preserves absent-focus and strict target-state failures', async () => {
   const valid = { achieved: true, focused: false, hovered: false, ariaSelected: 'true' };
   const common = {
+    waitForPaint: async () => {},
     waitForEntry: async () => {},
     pressEdge: async () => {},
     waitForOther: async () => {},
@@ -270,4 +276,27 @@ test('native item baseline preserves absent-focus and strict target-state failur
     /other focus missing/
   );
   assert.equal(read, false);
+});
+
+test('an unsettled authored entry fails before native focus or input is attempted', async () => {
+  let touched = false;
+  const forbidden = async () => {
+    touched = true;
+    throw new Error('unexpected later step');
+  };
+  await assert.rejects(
+    establishNativeItemPointerBaseline({
+      waitForPaint: async () => {
+        throw new Error('authored animation did not settle');
+      },
+      waitForEntry: forbidden,
+      pressEdge: forbidden,
+      waitForOther: forbidden,
+      readTarget: forbidden,
+      expectedSelection: null,
+      identity: 'default',
+    }),
+    /authored animation did not settle/
+  );
+  assert.equal(touched, false);
 });

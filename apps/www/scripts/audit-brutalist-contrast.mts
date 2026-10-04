@@ -1206,6 +1206,10 @@ async function popupItemPointerJourneys(page: Page, item: Case, trigger: Locator
     (item.pointerItemBaselines ??= []).push(baselineRecord);
     phase = `item-pointer-baseline:${row.identity}`;
     const before = await establishNativeItemPointerBaseline({
+      waitForPaint: async () => {
+        baselineRecord.stage = 'waiting-authored-entry-paint';
+        baselineRecord.settledFingerprint = await stableFingerprint(page);
+      },
       waitForEntry: async () => {
         baselineRecord.stage = 'waiting-native-entry';
         const entry = popup.locator(
