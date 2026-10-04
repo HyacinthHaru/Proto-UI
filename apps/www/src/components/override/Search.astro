@@ -475,7 +475,9 @@ const loadingLabel = isChinese ? '正在加载搜索…' : 'Loading search…';
 
       window.addEventListener('DOMContentLoaded', () => {
         if (import.meta.env.DEV) return;
-        const onIdle = window.requestIdleCallback || ((cb) => setTimeout(() => cb(), 1));
+        const onIdle =
+          window.requestIdleCallback ||
+          ((cb) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1));
         onIdle(async () => {
           await ensureSearchReady();
         });

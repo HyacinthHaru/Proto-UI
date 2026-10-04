@@ -23,3 +23,7 @@ The real matrix identified three unresolved callback arguments in existing Searc
 Focused timer probes pass; an intermediate full checker suite passed 638/638 with no skips, including the resolver negative controls. Final full-suite and real-matrix results, exact pushed SHA, fresh required CI and independent review are recorded in the PR evidence comment. Earlier-head results are not treated as proof for a later source. Production bundle and full browser CI remain necessary before integration. No merge is performed by this repair.
 
 Co-author by OpenAI Dots
+
+## Type-check follow-through
+
+The first published repair's full workspace check rejected `resolve()` because the inferred polling promise requires a value; its runtime value is explicitly retained as `undefined`. The subsequent full Astro phase exposed the missing `IdleRequestCallback` deadline in the existing Search/TOC timer fallback once it became a direct callable invocation. Those fallback callbacks now receive `{ didTimeout: false, timeRemaining: () => 0 }`: the timer has no known idle budget, and no request timeout was supplied. The two exact source fingerprints are refreshed after this bounded repair. No type assertion or disabled diagnostic masks the missing arguments. Earlier failed runs remain failure evidence, and final exact-head types/CI must pass independently.
