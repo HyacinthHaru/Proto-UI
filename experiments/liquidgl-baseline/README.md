@@ -13,7 +13,7 @@ The candidate is [naughtyduk/liquidGL 3.0.0 at 88f681a](https://github.com/naugh
 - Test a single capsule and larger surface, then two lenses sharing a renderer. Observe optical controls at fixed geometry and pointer movement. Measure reconstruction freshness separately. Shared stacking is not shape fusion; neither the baseline nor its screenshots establish Base semantics or a portable Prototype
 - Compare default optical parameters against explicit no-refraction/no-bevel controls. Retain outputs even when a negative control or cleanup assertion fails. Pixel change proves effect presence only, not Apple fidelity
 - Capture evidence and pure recording in separate browser contexts with the same source/viewport; no locator screenshots during recording. Record source SHA, upstream hash, Chrome/Node versions, backend, elapsed frame samples, viewport, source class and all errors
-- Exercise individual destroy, last-lens destroy, repeated destroy, interrupted preparation, resize and re-create. Record actual effects on style, shared renderer, workers, callbacks and GPU resources. Public `destroy` availability alone is not cleanup proof
+- Executed cleanup coverage is individual destroy after readiness, last-lens destroy, and repeated destroy, observing pointer-style restoration and canvas/style removal. Interrupted preparation, resize/re-create, worker/callback retirement and GPU-resource lifetime instrumentation remain follow-up targets. Public `destroy` availability alone is not cleanup proof
 
 ## Source inspection findings before execution
 
@@ -42,3 +42,9 @@ The actual images exposed an ownership mistake in our fixture: its isolated stac
 Source `036c2221f514e01021c5f109783cecff18e94edd` passed [run 37145152891](https://github.com/Proto-UI/Proto-UI/actions/runs/37145152891). The visible/hidden foreground control differs by 586 pixels; the normal/zero-optics ROI differs by 4975 pixels. Both observations establish the tested paint difference, not a visual-quality score. No script errors or non-loopback requests were observed.
 
 The repaired fixture also produced a 15.56-second fixed-viewport recording with zero screenshot calls. Background text still competes with foreground readability, and dynamically registered text still shows a double image near the end. [Source-bound images and recording context](https://github.com/Proto-UI/Proto-UI/pull/807) remain evidence of those limitations. Repository CI and exact-byte/license checks passed; the Vercel preview failed at the free deployment quota. No later documentation-only commit changes the renderer or relabels these images as newly rendered.
+
+## Review correction to the observation harness
+
+The original historical pixel differences above were captured with animated specular lighting and therefore did not isolate only foreground visibility or refraction/bevel. Preserve them as historical observations, not causal optical/foreground controls. The corrected observation context disables specular animation and first requires two unchanged-state captures to be pixel-identical. The separate pure recording explicitly retains animated specular lighting and makes no pixel-control claim.
+
+Caught console errors, renderer warnings and WebGL context-loss events are now recorded and fail the evidence assertion, alongside uncaught page errors. Other warnings remain in the report for inspection. Earlier reports observed only uncaught page exceptions; their empty error list is not proof that no caught renderer failure occurred. The exact-head browser run is required to validate these revised controls. Vendor bytes, fixed upstream revision and isolated execution scope are unchanged.

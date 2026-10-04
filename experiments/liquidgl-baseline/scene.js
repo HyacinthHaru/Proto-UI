@@ -3,6 +3,7 @@
   const query = new URLSearchParams(location.search);
   const requested = query.get('engine') === 'webgl' ? 'webgl' : 'auto';
   const control = query.get('control') === 'zero' ? 'zero' : 'normal';
+  const animatedSpecular = query.get('animated') === '1';
   const status = document.getElementById('status');
   const originalStyles = [...document.querySelectorAll('.lens')].map((el) => ({
     id: el.id,
@@ -30,7 +31,7 @@
     magnify: 1,
     tint: null,
     shadow: true,
-    specular: true,
+    specular: animatedSpecular,
     reveal: 'none',
     draggable: false,
   });
@@ -42,6 +43,7 @@
       elapsedMs: performance.now() - startedAt,
       requestedEngine: requested,
       control,
+      animatedSpecular,
       sourceKind: 'reconstructed-scene',
       backend:
         backend?.constructor.name ?? (renderer ? 'preparing-or-unavailable' : 'css-or-disposed'),

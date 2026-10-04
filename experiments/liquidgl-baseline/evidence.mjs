@@ -4,6 +4,7 @@ import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { recordBrowserSignal } from './diagnostics.mjs';
 const require = createRequire(new URL('../../apps/www/package.json', import.meta.url));
 const { chromium } = require('playwright-core');
 const directory = process.env.LIQUIDGL_EVIDENCE_DIR;
@@ -53,6 +54,8 @@ const report = {
   screenshotCalls: 0,
   samples: [],
   errors: [],
+  browserSignals: [],
+  opticalControlLighting: record ? 'animated-specular-recording-only' : 'specular-disabled',
   externalRequestsBlocked: [],
   status: 'not-run',
 };
@@ -78,10 +81,21 @@ try {
     return route.abort('blockedbyclient');
   });
   const page = await context.newPage();
-  page.on('pageerror', (error) => report.errors.push(error.message));
+  page.on('pageerror', (error) => recordBrowserSignal(report, 'pageerror', error.message));
+  page.on('console', (message) => {
+    if (['error', 'warning'].includes(message.type()))
+      recordBrowserSignal(report, message.type(), message.text());
+  });
+  await page.addInitScript(() => {
+    document.addEventListener(
+      'webglcontextlost',
+      () => console.error('[baseline] WebGL context lost'),
+      true
+    );
+  });
   video = page.video();
   async function load(control = 'normal') {
-    await page.goto(`${origin}/?control=${control}`);
+    await page.goto(`${origin}/?control=${control}&animated=${record ? '1' : '0'}`);
     await page.waitForFunction(
       () => ['gpu', 'fallback'].includes(document.body.dataset.ready),
       undefined,
@@ -124,6 +138,13 @@ try {
       : 'recorded-fallback-unavailable';
   } else {
     const normal = await capture('upstream-normal');
+    await page.waitForTimeout(150);
+    const repeated = await capture('negative-unchanged-frame');
+    assert.equal(
+      repeated,
+      normal,
+      'Static same-state control must be pixel-identical before interpreting A/B differences'
+    );
     await page.locator('.caption').evaluateAll((nodes) =>
       nodes.forEach((node) => {
         node.style.visibility = 'hidden';

@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'experiments/liquidgl-baseline/**'
+      - 'apps/www/package.json'
+      - 'pnpm-lock.yaml'
       - '.github/workflows/liquidgl-upstream-baseline.yml'
 permissions:
   contents: read

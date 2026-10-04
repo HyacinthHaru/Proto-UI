@@ -27,3 +27,21 @@ test('the complete license and excluded-asset boundary stay with the script', as
   assert.match(license, /Exclusion of Assets/);
   assert.match(license, /applies only to the source code/);
 });
+
+test('caught renderer diagnostics cannot produce an empty error report', async () => {
+  const { recordBrowserSignal } = await import('./diagnostics.mjs');
+  const report = { errors: [], browserSignals: [] };
+  for (const [type, text] of [
+    ['pageerror', 'uncaught fixture failure'],
+    ['error', 'Shader error compile failed'],
+    ['error', 'liquidGL: Dynamic element capture failed.'],
+    ['warning', 'liquidGL: WebGPU device lost: device removed'],
+    ['warning', 'liquidGL: WebGPU region upload failed'],
+    ['error', '[baseline] WebGL context lost'],
+  ])
+    recordBrowserSignal(report, type, text);
+  assert.equal(report.errors.length, 6);
+  recordBrowserSignal(report, 'warning', 'browser performance observation');
+  assert.equal(report.errors.length, 6);
+  assert.equal(report.browserSignals.length, 7, 'nonfatal diagnostics stay visible');
+});
