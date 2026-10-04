@@ -1,10 +1,12 @@
 import { cap, type StyleHandle } from '@proto.ui/core';
+import type { OwnedMaterialFrame } from './owned-slot';
 
 /** Private draft seam. A final style input is not an admitted material frame. */
 export type FinalStyleFrame = Readonly<{
   view: number;
   revision: number;
   style: Readonly<{ kind: 'tw'; tokens: readonly string[] }>;
+  material: OwnedMaterialFrame | null;
 }>;
 
 /**
@@ -25,11 +27,13 @@ export const FINAL_STYLE_SINK_CAP = cap<FinalStyleSink>(
 export function finalStyleFrame(
   style: StyleHandle,
   view: number,
-  revision: number
+  revision: number,
+  material: OwnedMaterialFrame | null = null
 ): FinalStyleFrame {
   return Object.freeze({
     view,
     revision,
+    material,
     style: Object.freeze({ kind: 'tw' as const, tokens: Object.freeze([...style.tokens]) }),
   });
 }

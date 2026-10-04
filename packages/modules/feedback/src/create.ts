@@ -12,6 +12,7 @@ import type {
   FeedbackRuntimeStyleDisposer,
 } from './types';
 import { EFFECTS_CAP } from './caps';
+import { createOwnedMaterialBinding } from './material/owned-slot';
 import {
   FINAL_STYLE_SINK_CAP,
   finalStyleFrame,
@@ -38,6 +39,10 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
         private visualSink: FinalStyleSink | null = null;
         private visualSinkView = 0;
         private pendingProjection: StyleHandle | null = null;
+        private material = createOwnedMaterialBinding(init.declarations, deps, () => {
+          this.markDirty();
+          this.flushIfPossible();
+        });
 
         /** setup-only */
         useStyle(handles: StyleHandle[]): () => void {
@@ -134,6 +139,13 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
         }
 
         /** pure snapshot */
+        shouldRetainStyleRule(tokens: readonly string[]): boolean {
+          return (
+            this.material !== null &&
+            tokens.some((token) => /^(bg-|backdrop-|shadow|rounded|text-)/.test(token))
+          );
+        }
+
         exportMerged(): StyleHandle {
           const { tokens } = this.recorder.export();
           return { kind: 'tw', tokens };
@@ -153,6 +165,7 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
             this.releaseVisualSink();
           }
           if (phase === 'mounting') {
+            this.material?.connect();
             // A fresh view epoch owns a fresh EffectsPort. Replay the retained
             // instance style before the host commit so the first materialized
             // frame already carries its baseline tokens.
@@ -196,7 +209,9 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
               const sink = this.caps.get(FINAL_STYLE_SINK_CAP);
               this.visualSink = sink;
               this.visualSinkView = this.viewEpoch;
-              sink.commit(finalStyleFrame(handle, this.viewEpoch, revision));
+              sink.commit(
+                finalStyleFrame(handle, this.viewEpoch, revision, this.material?.snapshot() ?? null)
+              );
             } else {
               const effects = this.caps.get(EFFECTS_CAP);
               effects.queueStyle(handle);
@@ -284,6 +299,7 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
           try {
             this.releaseVisualSink();
           } finally {
+            this.material?.dispose();
             this.recorder = new FeedbackStyleRecorder();
             this.dirty = false;
             this.pendingProjection = null;
@@ -351,6 +367,7 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
       return {
         facade,
         port: {
+          shouldRetainStyleRule: (tokens) => impl.shouldRetainStyleRule(tokens),
           applyMergedStyle: (h) => impl.applyMergedStyle(h),
           useStyleRuntime: (...handles) => impl.useStyleRuntime(handles),
           replaceStyleRuntime: (previous, ...handles) =>
@@ -380,5 +397,6 @@ export const FeedbackModuleDef = defineModule({
   name: 'feedback',
   resourceOwnership: 'mixed',
   deps: [],
+  optionalDeps: ['expose', 'state'],
   create: createFeedbackModule,
 });

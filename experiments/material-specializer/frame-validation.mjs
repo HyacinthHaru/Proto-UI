@@ -16,7 +16,17 @@ export function validateFrame(frame) {
     !frame ||
     typeof frame !== 'object' ||
     Object.keys(frame).sort().join('|') !==
-      ['viewport', 'textureSize', 'bounds', 'subpixel', 'boxSize', 'dpr', 'pressed', 'disabled']
+      [
+        'viewport',
+        'textureSize',
+        'bounds',
+        'subpixel',
+        'boxSize',
+        'dpr',
+        'radius',
+        'pressed',
+        'disabled',
+      ]
         .sort()
         .join('|')
   )
@@ -45,6 +55,10 @@ export function validateFrame(frame) {
   )
     throw new Error('Source bounds exceed the owned texture');
   if (
+    typeof frame.radius !== 'number' ||
+    !Number.isFinite(frame.radius) ||
+    frame.radius < 0 ||
+    frame.radius > 2048 ||
     typeof frame.dpr !== 'number' ||
     !Number.isFinite(frame.dpr) ||
     frame.dpr < 0.5 ||

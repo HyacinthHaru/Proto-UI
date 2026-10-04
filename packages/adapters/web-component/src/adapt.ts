@@ -60,6 +60,9 @@ import {
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
 import { createWebEffectsPort } from './runtime/effects-port';
+import { getExperimentalVisualConsumer } from './runtime/experimental-visual-consumer';
+import { OWNED_MATERIAL_ID } from '../../../modules/feedback/src/material/owned-slot';
+import { createOpaqueMaterialVisualSink } from './material/owned-texture-sink';
 import { createWebComponentModules, createWebComponentOwnerModules } from './runtime/modules';
 import { createWebComponentHostSession } from './runtime/session';
 import type { WebComponentAdapterConstructor } from './types';
@@ -432,6 +435,11 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             router,
             rawPropsSource,
             effectsPort: createWebEffectsPort(applier),
+            finalStyleSink:
+              getExperimentalVisualConsumer(proto)?.(thisEl, applier) ??
+              (proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
+                ? createOpaqueMaterialVisualSink(thisEl, applier)
+                : undefined),
             getMeta,
             colorSchemeSource,
             preferenceSource,

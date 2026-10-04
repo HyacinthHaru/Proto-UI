@@ -1,4 +1,16 @@
-# Private owned-texture material source specializer
+# Private semantic material and owned-scene host experiment
+
+The current candidate uses a real Base-derived Prototype whose declaration names only refractive material, a style-owned rounded shape, an owned-scene sampling relation, a opaque fallback with its foreground explicitly resolved from final style, and Button press semantics. It does not expose a shader language, renderer preset, texture format, uniform, binding slot, pass, pipeline or synchronization primitive. The compiler privately selects the audited fixed liquidGL backend for its implemented WebGL target. Other targets remain explicitly unsupported; the high-level declaration is not restricted to GLSL's vocabulary.
+
+Feedback owns observation of the existing Base state handles and publishes material state with the same final post-patch style input. Material-relevant fill/geometry/text Rules remain in the runtime evaluator; unrelated selector lowering remains available. The WC Adapter consumes the slot through a reusable visual host. Without an explicitly installed experimental GPU consumer, it produces authored opaque CSS fallback with `material-support-unavailable`. That degradation loses refraction, owned-scene sampling and optical press response; it does not claim visual equivalence.
+
+The reusable host accepts an owned RGBA source lease, uses one final style-derived geometry, resolves preference/source failure to opaque fallback, and retires GPU/source subscriptions on view release. A private registration installs the generated program for the test consumer; it is not a public family or backend admission. The current source generation still reports `not-admitted`: target source generation, actual GPU execution and stable platform admission are distinct results.
+
+Build the isolated fixture with `node --import tsx experiments/material-specializer/build-browser.mjs /tmp/pui-material-browser`. Run its browser evidence with `CHROME_PATH=<installed Chrome> node experiments/material-specializer/browser.test.mjs /tmp/pui-material-browser /tmp/pui-material-evidence`. The browser harness permits only its own localhost page and resources, contains no account credentials, and does not deploy. It captures pointer press/release, keyboard activation, disabled state, injected safety preference loss, source loss, context loss/restoration and replacement-owner mount. Injected preference cases are not OS-setting changes. The source manifest, exact kernel license and NOTICE accompany the evidence.
+
+Local logical evidence passes; real GPU execution for this candidate is pending its exact-head CI. The local browser process restriction is preserved rather than bypassed. Do not use #807 frames as this Prototype's output. Passing the bounded experiment will not prove arbitrary graph compilation, native parity, group/morph/fusion, all Base families or full Prototype AOT.
+
+## Historical source-only checkpoint (2638b696)
 
 This is a source-only experiment, not a published Proto-UI component or completed material backend. It contains a real `definePrototype` that consumes `asButton()` and declares a finite experimental effect through the existing `Prototype.modules` mechanism. The build-time specializer explicitly consumes that declaration or reports unsupported; it emits fixed shader modules, a direct target ABI writer and a finite resource plan. It does not execute a shader or acquire a source.
 

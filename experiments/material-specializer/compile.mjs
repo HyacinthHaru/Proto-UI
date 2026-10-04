@@ -1,10 +1,19 @@
 // Build-time specialization only. This file never evaluates upstream JavaScript or GPU code.
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-export const DECLARATION_ID = 'experimental/material-owned-texture-v1';
+export const DECLARATION_ID = 'experimental/feedback-material-v1';
 const root = new URL('./', import.meta.url);
 const modules = JSON.parse(readFileSync(new URL('modules.json', root), 'utf8'));
-const knownTargets = ['webgl-es100', 'webgpu', 'gpui', 'flutter', 'qt', 'generic-wc'];
+const knownTargets = [
+  'webgl-es100',
+  'webgpu',
+  'vulkan',
+  'gles',
+  'gpui',
+  'flutter',
+  'qt',
+  'generic-wc',
+];
 const keys = (value, names) =>
   value !== null &&
   typeof value === 'object' &&
@@ -38,35 +47,38 @@ export function compileMaterialDeclarations(declarations, target) {
     return deny('unconsumed-module', declaration?.id ?? 'missing', 'unsupported');
   const c = declaration.config;
   if (
-    !keys(c, ['version', 'preset', 'source', 'shape', 'fallback', 'bindings']) ||
+    !keys(c, ['version', 'material', 'sampling', 'shape', 'fallback', 'interaction']) ||
     c.version !== 1 ||
-    c.preset !== 'liquidgl-owned-surface-v1'
+    !keys(c.material, ['kind', 'variant']) ||
+    c.material.kind !== 'refractive' ||
+    c.material.variant !== 'regular'
   )
-    return deny('unsupported-config', 'Only the named versioned finite preset is understood');
+    return deny('unsupported-config', 'Only the versioned finite semantic material is understood');
   if (
-    !keys(c.source, ['kind', 'slot']) ||
-    c.source.kind !== 'owned-texture' ||
-    c.source.slot !== 'scene'
+    !keys(c.sampling, ['kind', 'slot']) ||
+    c.sampling.kind !== 'owned-scene' ||
+    c.sampling.slot !== 'scene'
   )
     return deny('source-kind-mismatch', 'This profile cannot acquire live or reconstructed DOM');
   if (
-    !keys(c.shape, ['kind', 'radius']) ||
+    !keys(c.shape, ['kind', 'geometry']) ||
     c.shape.kind !== 'rounded-rect' ||
-    !finite(c.shape.radius, 0, 128)
+    c.shape.geometry !== 'style'
   )
-    return deny('invalid-shape', 'A bounded shared radius is required');
+    return deny('invalid-shape', 'Geometry must be resolved once from final style');
   if (
-    !Array.isArray(c.fallback) ||
-    c.fallback.length !== 4 ||
-    ![0, 1, 2, 3].every((i) => Object.hasOwn(c.fallback, i) && finite(c.fallback[i], 0, 1)) ||
-    c.fallback[3] !== 1
+    !keys(c.fallback, ['fill', 'foreground']) ||
+    c.fallback.foreground !== 'style' ||
+    ![c.fallback.fill].every(
+      (color) =>
+        Array.isArray(color) &&
+        color.length === 4 &&
+        [0, 1, 2, 3].every((i) => Object.hasOwn(color, i) && finite(color[i], 0, 1)) &&
+        color[3] === 1
+    )
   )
     return deny('incomplete-fallback', 'Fully opaque authored RGBA is required');
-  if (
-    !keys(c.bindings, ['pressed', 'disabled']) ||
-    c.bindings.pressed !== 'pressed' ||
-    c.bindings.disabled !== 'disabled'
-  )
+  if (!keys(c.interaction, ['kind']) || c.interaction.kind !== 'button-press')
     return deny(
       'unsupported-state-binding',
       'The current profile binds only declared Base Button boolean state'
@@ -95,7 +107,7 @@ export function compileMaterialDeclarations(declarations, target) {
     [
       'u_radius',
       'float',
-      `Math.min(${c.shape.radius} * frame.dpr, frame.boxSize[0]/2, frame.boxSize[1]/2)`,
+      'Math.min(frame.radius * frame.dpr, frame.boxSize[0]/2, frame.boxSize[1]/2)',
     ],
     ['u_time', 'float', '0'],
     ['u_specular', 'bool', '0'],
@@ -155,12 +167,17 @@ export function compileMaterialDeclarations(declarations, target) {
       historyFrames: 0,
     },
     geometry: {
-      radiusSource: 'material declaration',
-      logicalRadius: c.shape.radius,
+      radiusSource: 'final style geometry',
       hostBorderRadius: 'same resolved and clamped radius',
     },
-    fallback: { rgba: [...c.fallback], reasonRequired: true },
-    stateBindings: { ...c.bindings },
+    fallback: {
+      rgba: [...c.fallback.fill],
+      foreground: { source: 'final-style' },
+      reasonRequired: true,
+    },
+    stateBindings: { pressed: 'pressed', disabled: 'disabled' },
+    selectedBackend: 'liquidgl-owned-surface-v1',
+    degradation: { css: ['refraction', 'owned-scene-sampling', 'optical-press-response'] },
     unsupported: [
       'live-compositor-backdrop',
       'reconstructed-scene',

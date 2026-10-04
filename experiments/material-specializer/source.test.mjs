@@ -8,6 +8,7 @@ import { createHash } from 'node:crypto';
 import button from './button.proto.ts';
 import { compileMaterialDeclarations, DECLARATION_ID } from './compile.mjs';
 import { executeWithHost } from '@proto.ui/runtime';
+import { FINAL_STYLE_SINK_CAP } from '../../packages/modules/feedback/src/material/final-style-sink.ts';
 import { EVENT_GLOBAL_TARGET_CAP, EVENT_ROOT_TARGET_CAP } from '@proto.ui/module-event';
 import {
   AS_TRIGGER_GET_PROTO_CAP,
@@ -25,6 +26,7 @@ const frame = () => ({
   subpixel: [0, 0],
   boxSize: [172, 60],
   dpr: 1,
+  radius: 24,
   pressed: false,
   disabled: false,
 });
@@ -33,14 +35,29 @@ test('the real Prototype carries a finite declaration with no host object or cal
   assert.equal(button.modules.length, 1);
   assert.equal(button.modules[0].id, DECLARATION_ID);
   assert.deepEqual(JSON.parse(JSON.stringify(button.modules[0].config)), button.modules[0].config);
-  assert(Object.isFrozen(button.modules[0].config.source));
+  assert(Object.isFrozen(button.modules[0].config.sampling));
+  assert(
+    !/liquidgl|webgl|glsl|uniform|texture|binding|pipeline/i.test(
+      JSON.stringify(button.modules[0].config)
+    ),
+    'Prototype stays at material/sampling/shape/interaction semantics'
+  );
   const result = compile();
   assert.equal(result.kind, 'generated');
   assert.equal(result.execution, 'not-admitted');
   assert.equal(result.diagnostics[0].code, 'host-commit-unimplemented');
 });
 test('the declaration has explicit rejection on generic and unimplemented targets', () => {
-  for (const target of ['generic-wc', 'webgpu', 'gpui', 'flutter', 'qt', 'unknown']) {
+  for (const target of [
+    'generic-wc',
+    'webgpu',
+    'vulkan',
+    'gles',
+    'gpui',
+    'flutter',
+    'qt',
+    'unknown',
+  ]) {
     const result = compile(button.modules, target);
     assert.equal(result.kind, 'unsupported');
     assert(!result.files);
@@ -57,7 +74,7 @@ test('the declaration has explicit rejection on generic and unimplemented target
 test('source kinds do not silently substitute for the requested owned texture', () => {
   for (const kind of ['host-compositor-backdrop', 'reconstructed-scene', 'video-frame']) {
     const declarations = copy();
-    declarations[0].config.source.kind = kind;
+    declarations[0].config.sampling.kind = kind;
     assert.equal(compile(declarations).diagnostics[0].code, 'source-kind-mismatch');
   }
 });
@@ -73,13 +90,13 @@ test('unsupported author escapes and nonfinite geometry are rejected', () => {
     assert.equal(compile(d).kind, 'invalid');
   }
   const d = copy();
-  d[0].config.bindings.pressed = 'invented';
+  d[0].config.interaction.kind = 'invented';
   assert.equal(compile(d).kind, 'invalid');
 });
 test('fallback remains completely authored and opaque', () => {
   for (const color of [[0, 0, 0, 0.5], [0, 0, 0], [0, 0, NaN, 1], new Array(4)]) {
     const d = copy();
-    d[0].config.fallback = color;
+    d[0].config.fallback.fill = color;
     assert.equal(compile(d).kind, 'invalid');
   }
   assert.deepEqual(compile().resourcePlan.fallback.rgba, [0.94, 0.94, 0.96, 1]);
@@ -146,13 +163,19 @@ test('generated direct writer executes own JavaScript against a spy, never a GPU
     values.pressed = 1;
     assert.throws(() => writeFrame(gl, locations, values), /state or DPR/);
     assert.equal(calls.length, 0);
+    values.pressed = false;
+    values.bounds = [0.9, 0.2, 0.3, 0.2];
+    assert.throws(() => writeFrame(gl, locations, values), /bounds/);
+    assert.equal(calls.length, 0);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
 });
-test('source-only runtime proof preserves the Base Button state owner and reset', async () => {
+test('real Runtime publishes Base Button material state through Feedback and disposes ownership', async () => {
   const root = new EventTarget(),
     global = new EventTarget();
+  const visualFrames = [];
+  const releases = [];
   const host = {
     prototypeName: button.name,
     getRawProps: () => ({}),
@@ -163,6 +186,19 @@ test('source-only runtime proof preserves the Base Button state owner and reset'
       fn();
     },
     onRuntimeReady(wiring) {
+      wiring.attach('feedback', [
+        [
+          FINAL_STYLE_SINK_CAP,
+          {
+            commit(frame) {
+              visualFrames.push(frame);
+            },
+            release(view) {
+              releases.push(view);
+            },
+          },
+        ],
+      ]);
       wiring.attach('event', [
         [EVENT_ROOT_TARGET_CAP, () => root],
         [EVENT_GLOBAL_TARGET_CAP, () => global],
@@ -181,14 +217,20 @@ test('source-only runtime proof preserves the Base Button state owner and reset'
   assert.equal(pressed.get(), false);
   root.dispatchEvent(new CustomEvent('pointer.down'));
   assert.equal(pressed.get(), true);
+  assert.equal(visualFrames.at(-1).material.pressed, true);
+  assert.equal(visualFrames.at(-1).material.bindingsReady, true);
+  assert(Object.isFrozen(visualFrames.at(-1).material.config.fallback.fill));
   root.dispatchEvent(new CustomEvent('pointer.cancel'));
   assert.equal(pressed.get(), false);
   root.dispatchEvent(new CustomEvent('pointer.down'));
   controller.applyRawProps({ disabled: true });
   assert.equal(disabled.get(), true);
   assert.equal(pressed.get(), false);
-  assert(!controller.getRuleStyleTokens().some((t) => /^(bg-|backdrop-|rounded-)/.test(t)));
+  assert.equal(visualFrames.at(-1).material.disabled, true);
+  assert.equal(visualFrames.at(-1).material.pressed, false);
+  assert(!controller.getRuleStyleTokens().some((t) => /^(bg-|backdrop-)/.test(t)));
   await invokeUnmounted();
+  assert(releases.length > 0);
   assert.throws(() => pressed.get(), /disposed/);
   assert.equal(
     compile(button.modules, 'generic-wc').kind,
