@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { readFileSync } from 'node:fs';
 import { PROJECTION_FAMILY_MANIFESTS } from '../src/components/PrototypePreviewer/projection-families.ts';
 import { compileContrastAnatomy, compareContrastAnatomy } from './contrast-anatomy.mjs';
 
@@ -244,4 +245,124 @@ test('extra materialized copies cannot satisfy authored multiplicities', async (
   const result = compareContrastAnatomy(plan, sample);
   assert.equal(result.achieved, false);
   assert.equal(result.extras.length, 1);
+});
+
+// Raw source-bound native observations from the failing f8894c3c PR run. This
+// reruns only the structural model, not Chromium, paint, or interaction input.
+const native = JSON.parse(
+  readFileSync(new URL('./fixtures/contrast-anatomy-f889-native.json', import.meta.url), 'utf8')
+);
+for (const frame of native.frames)
+  test(`replays recorded native anatomy: ${frame.name}`, async () => {
+    const plan = await load(frame.family);
+    const observed = { ...frame.observed, surfaces: native.surfaceSets[frame.surfaceSet] };
+    const result = compareContrastAnatomy(plan, observed, {
+      requirePrimaryOpen: frame.requirePrimaryOpen,
+    });
+    assert.equal(result.achieved, true, JSON.stringify(result));
+  });
+
+const replay = (frame) =>
+  structuredClone({ ...frame.observed, surfaces: native.surfaceSets[frame.surfaceSet] });
+const retainedFrame = (family) =>
+  native.frames.find(
+    (frame) => frame.family === family && frame.runtime === 'wc' && frame.theme === 'light'
+  );
+const retainedContent = (sample) =>
+  sample.surfaces.find((surface) => surface.prototypeId.endsWith('-content') && surface.id === '');
+// These are explicit negative mutations of recorded observations. They are
+// structural-model controls, not claims that a browser produced these states.
+for (const family of ['dropdown-menu', 'select', 'dialog', 'tooltip', 'tabs']) {
+  test(`${family} retained shell cannot borrow identity, paint, lease, parent or portal ownership`, async () => {
+    const plan = await load(family);
+    const frame = retainedFrame(family);
+    const mutations = {
+      'wrong active ID': (shell) => (shell.id = 'unrelated-active-target'),
+      'painted shell': (shell) => {
+        shell.painted = true;
+        shell.visibility = { visible: true, classification: 'source-model-visible', limits: [] };
+      },
+      'unsupported hidden claim': (shell) => (shell.visibility.classification = 'unsupported'),
+      'stale shell lease': (shell) => (shell.currentLease = false),
+      'wrong authored parent': (shell, sample) => (shell.parent = sample.primary),
+      'unbound detached portal': (shell) => {
+        shell.withinContent = false;
+        shell.parent = null;
+      },
+      'duplicate shell': (shell, sample) =>
+        sample.surfaces.push({ ...shell, uid: 'duplicate-shell' }),
+      'duplicate owner': (_shell, sample) =>
+        sample.surfaces.push({
+          ...sample.surfaces.find((surface) => surface.prototypeId === plan.rootPrototypeId),
+          uid: 'duplicate-owner',
+        }),
+    };
+    for (const [name, mutate] of Object.entries(mutations)) {
+      const sample = replay(frame);
+      mutate(retainedContent(sample), sample);
+      assert.equal(compareContrastAnatomy(plan, sample).achieved, false, name);
+    }
+    const stale = replay(frame);
+    stale.currentLease = false;
+    assert.equal(compareContrastAnatomy(plan, stale).achieved, false);
+  });
+}
+
+for (const family of ['dropdown-menu', 'select', 'dialog']) {
+  test(`${family} retained shell requires all authored hidden children and cannot replace an open target`, async () => {
+    const plan = await load(family);
+    const frame = retainedFrame(family);
+    const missing = replay(frame);
+    const shell = retainedContent(missing);
+    const child = missing.surfaces.find((surface) => surface.parent === shell.uid);
+    missing.surfaces = missing.surfaces.filter((surface) => surface !== child);
+    assert.equal(compareContrastAnatomy(plan, missing).achieved, false);
+    const exposed = replay(frame);
+    const exposedChild = exposed.surfaces.find((surface) => surface.uid === child.uid);
+    exposedChild.painted = true;
+    exposedChild.visibility = { visible: true, classification: 'source-model-visible', limits: [] };
+    assert.equal(compareContrastAnatomy(plan, exposed).achieved, false);
+    const opened = replay(frame);
+    const trigger = opened.surfaces.find((surface) => surface.uid === opened.primary);
+    trigger.ariaExpanded = 'true';
+    assert.equal(compareContrastAnatomy(plan, opened).achieved, false, 'empty ID is not open');
+    retainedContent(opened).id = trigger.controls[0];
+    assert.equal(compareContrastAnatomy(plan, opened).achieved, false, 'hidden is not open paint');
+    const duplicatePortal = replay(frame);
+    const portal = { ...retainedContent(duplicatePortal), uid: 'extra-portal', parent: null };
+    portal.withinContent = false;
+    portal.id = trigger.controls[0];
+    duplicatePortal.surfaces.push(portal);
+    assert.equal(compareContrastAnatomy(plan, duplicatePortal).achieved, false);
+  });
+}
+
+test('retained Tooltip shells stay within their exact Root and never satisfy required open capture', async () => {
+  const plan = await load('tooltip');
+  const sample = replay(retainedFrame('tooltip'));
+  const shells = sample.surfaces.filter((surface) => surface.prototypeId.endsWith('-content'));
+  shells[0].parent = shells[1].parent;
+  assert.equal(compareContrastAnatomy(plan, sample).achieved, false);
+  const closed = replay(retainedFrame('tooltip'));
+  assert.equal(compareContrastAnatomy(plan, closed, { requirePrimaryOpen: true }).achieved, false);
+  const trigger = closed.surfaces.find((surface) => surface.uid === closed.primary);
+  trigger.descriptions = ['active-tooltip'];
+  retainedContent(closed).id = 'active-tooltip';
+  assert.equal(compareContrastAnatomy(plan, closed, { requirePrimaryOpen: true }).achieved, false);
+});
+
+test('retained inactive Tabs shell cannot satisfy selected or keepMounted view requirements', async () => {
+  const plan = await load('tabs');
+  const sample = replay(retainedFrame('tabs'));
+  const inactive = sample.surfaces.find((surface) => surface.ariaSelected === 'false');
+  inactive.ariaSelected = 'true';
+  inactive.controls = ['active-panel'];
+  assert.equal(compareContrastAnatomy(plan, sample).achieved, false);
+  retainedContent(sample).id = 'active-panel';
+  assert.equal(compareContrastAnatomy(plan, sample).achieved, false);
+  const kept = structuredClone(plan);
+  kept.instances.find(
+    (node) => node.part === 'content' && node.props.value === 'details'
+  ).props.keepMounted = true;
+  assert.equal(compareContrastAnatomy(kept, replay(retainedFrame('tabs'))).achieved, false);
 });

@@ -58,10 +58,15 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
   const used = new Set();
   const omitted = new Set();
   const unpaintedBoundaries = new Set();
+  const retainedShellBoundaries = new Set();
   const expectations = [];
   const byPath = new Map(plan.instances.map((instance) => [instance.path, instance]));
   const actual = observed.surfaces;
   const sameParent = (surface, parent) => surface.parent === (parent?.uid ?? null);
+  const knownHidden = (surface) =>
+    surface.painted === false &&
+    surface.visibility?.visible === false &&
+    surface.visibility.classification === 'exempt-not-visible';
   const ownerFor = (instance) => {
     let owner = byPath.get(instance.parent);
     while (owner && owner.prototypeId !== plan.rootPrototypeId) owner = byPath.get(owner.parent);
@@ -80,6 +85,14 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
     const found = eligible[0];
     matched.set(instance.path, found);
     used.add(found.uid);
+    if (
+      retainedShellBoundaries.has(instance.boundary) &&
+      (!found.withinContent || found.currentLease !== true || !knownHidden(found))
+    )
+      reject(
+        instance,
+        'Retained owner-shell descendants must stay hidden under the current lease.'
+      );
     // A hidden unchecked Indicator remains authored anatomy. Checked/mixed
     // Indicator and every Switch Thumb must be painted at the frame boundary.
     const parent = matched.get(instance.parent);
@@ -203,29 +216,40 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
       reject(instance, 'Unrelated portaled parts cannot be assigned across multiple roots.');
       continue;
     }
-    const candidates =
-      !required && !ids.length && ['selected', 'description'].includes(instance.policy)
-        ? []
-        : actual.filter(
-            (surface) =>
-              surface.prototypeId === instance.prototypeId &&
-              surface.ref === instance.ref &&
-              // An ID relation never substitutes for the authored parent of
-              // in-content structure. Tabs Content has no portal boundary;
-              // only genuinely detached popup parts may lose physical parentage.
-              (surface.withinContent
-                ? sameParent(surface, parent)
-                : instance.policy !== 'selected') &&
-              (ids.length
-                ? ids.includes(surface.id)
-                : sameParent(surface, ownerPhysical) || !surface.withinContent)
-          );
+    // L1 detach may retain a hidden owner shell and authored descendants, before
+    // a view epoch projects its target ID (C-LIFECYCLE-0008-J). That shell is
+    // structural evidence only: it cannot satisfy an open/selected relation,
+    // borrow a portal exception, or turn unsupported paint into hidden proof.
+    const retainedClosedShell = (surface) =>
+      !required &&
+      surface.withinContent &&
+      sameParent(surface, parent) &&
+      surface.currentLease === true &&
+      surface.id === '' &&
+      knownHidden(surface);
+    const mayMatchRelation =
+      required || ids.length > 0 || !['selected', 'description'].includes(instance.policy);
+    const candidates = actual.filter(
+      (surface) =>
+        surface.prototypeId === instance.prototypeId &&
+        surface.ref === instance.ref &&
+        // An ID relation never substitutes for the authored parent of
+        // in-content structure. Tabs Content has no portal boundary;
+        // only genuinely detached popup parts may lose physical parentage.
+        (surface.withinContent ? sameParent(surface, parent) : instance.policy !== 'selected') &&
+        (retainedClosedShell(surface) ||
+          (mayMatchRelation &&
+            (ids.length
+              ? ids.includes(surface.id)
+              : sameParent(surface, ownerPhysical) || !surface.withinContent)))
+    );
     if (candidates.length > 1) {
       reject(instance, 'Ambiguous or duplicate materialized conditional part.');
       continue;
     }
     accept(instance, candidates, required, instance.policy);
     const content = matched.get(instance.path);
+    if (content && retainedClosedShell(content)) retainedShellBoundaries.add(instance.path);
     if (paintRequired && content && !content.painted)
       reject(
         instance,
@@ -247,6 +271,6 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
     })),
     omitted: [...omitted],
     basis:
-      'Exact authored recipe instances, native current state/relations and current projection lease; closed detached subtrees are omitted only by their existing Base presence boundary. Not full semantic or cue conformance.',
+      'Exact authored recipe instances, native current state/relations and current projection lease; closed detached subtrees may be omitted, or retained as exact hidden in-content owner shells without active target identity. Not full semantic or cue conformance.',
   };
 }
