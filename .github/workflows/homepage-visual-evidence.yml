@@ -426,7 +426,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
-      DENSITY_BASELINE_SHA: fbd90df092369e6d2aab73c66848f4236ba83a29
+      DENSITY_BASELINE_SHA: ec6e5710d0aaeee6d5844f9c996c1d7ca594aa31
+      DENSITY_FOLLOWUP_BASELINE_SHA: fbd90df092369e6d2aab73c66848f4236ba83a29
     steps:
       - uses: actions/checkout@v4
         with:
@@ -437,6 +438,11 @@ jobs:
         with:
           ref: ${{ env.DENSITY_BASELINE_SHA }}
           path: baseline
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DENSITY_FOLLOWUP_BASELINE_SHA }}
+          path: followup-baseline
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
@@ -452,7 +458,7 @@ jobs:
           CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
           "$CHROME" --version | tee "$RUNNER_TEMP/visual-density/browser.txt"
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
-          for worktree in baseline candidate; do
+          for worktree in baseline followup-baseline candidate; do
             (
               cd "$worktree"
               corepack pnpm@10.32.1 install --frozen-lockfile --ignore-scripts
@@ -461,11 +467,11 @@ jobs:
           done
       - name: Capture the first same-page sidebar before view
         if: ${{ !cancelled() }}
-        working-directory: baseline
+        working-directory: followup-baseline
         timeout-minutes: 3
         run: |
           node --import tsx "$GITHUB_WORKSPACE/candidate/apps/www/scripts/capture-visual-density-evidence.ts" \
-            --revision-kind baseline --expected-revision "$DENSITY_BASELINE_SHA" --quick-preview \
+            --revision-kind baseline --expected-revision "$DENSITY_FOLLOWUP_BASELINE_SHA" --quick-preview \
             --out "$RUNNER_TEMP/visual-density/first-pair/baseline"
       - name: Capture the first same-page sidebar after view
         if: ${{ !cancelled() }}

@@ -28,6 +28,10 @@ Local workspace typechecking was killed with exit137 in the shared resource-cons
 
 An additional native-order negative control after the first push found that prepending the decorative note plane made the original title stop matching `:first-child`, allowing the existing paragraph-spacing rule to add an unintended top gap. Four real adapter cases failed this retained structural assertion. Appending the absolutely positioned passive plane keeps the native title first; the full23 passive-surface cases pass after the correction. The initial121 test set had preserved node identity but had not asserted this CSS-relevant sibling fact.
 
+Current-head review then found a second closing path: `toggle()` had flipped visibility directly, so click-only/programmatic Menu activation could bypass the new nested-Select cleanup even though ordinary pointerdown masked the issue. Four real Select tests failed at4c2 (two families, direct toggle and click-only), and the closing toggle now delegates to the same `close(true)` path. The browser probe exercises click-only Menu closure in each of the four runtime generations before its actual Back journey. This later failure is not erased by the earlier green CI or132 inspected4c2 pictures.
+
+The density workflow also restores its original ec6 whole-increment baseline. A separate fbd checkout serves only the latest-feedback first pair; changing the feedback comparison no longer replaces the original83-file change's before tree. The evidence contract tests bind these two distinct purposes. All original4c2/fbd images and results remain historical, source-labeled evidence.
+
 ## Review and delivery
 
 Continue on #816 above the synchronized #777 base. Publish a per-commit progress report and replace pending visual debt with this source's actual images. Do not relabel d657/fbd screenshots as the new source. Resolve the three exact review threads only after the new implementation and hosted browser evidence establish their fixes. Independent maintainer approval and the real external Vercel quota failure remain separate integration gates.

@@ -49,7 +49,7 @@ const report = {
     .digest('hex'),
   startedAt: new Date().toISOString(),
   procedure:
-    'Clean exact checkout, actual public family atoms, real Chromium pointer/keyboard/wheel input. DOM reads plus framing scroll only; the one explicitly labeled stress case changes host text size to 200%.',
+    'Clean exact checkout and actual public family atoms. Pointer/keyboard/wheel journeys include explicitly labelled click-only programmatic Menu activation and authored same-document history fixtures traversed through real browser Back. The labelled stress cases change host text size to 200%.',
   limits:
     '390/430 CSS-pixel mobile simulations, not a physical OnePlus 13T or complete assistive-technology/engine coverage. 320px/200% is stress-only.',
   cases,
@@ -198,6 +198,18 @@ try {
               ) {
                 await runtime.click();
                 const popup = await runtime.getAttribute('aria-controls');
+                // Deliberately click without pointerdown: an accessibility or
+                // programmatic activation cannot rely on outside-press cleanup.
+                await homeMenu(page).evaluate((element) => (element as HTMLElement).click());
+                await page.locator(`[id=${JSON.stringify(popup)}]`).waitFor({ state: 'hidden' });
+                assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'false');
+                assert.equal(await runtime.getAttribute('aria-expanded'), 'false');
+                assert.ok(
+                  await homeMenu(page).evaluate((element) => element === document.activeElement)
+                );
+                await screenshot(`${target}-click-only-close`);
+                await homeMenu(page).click();
+                await runtime.click();
                 await page.evaluate(() => history.pushState(null, '', '#header-runtime-history'));
                 await page.goBack();
                 await page.locator(`[id=${JSON.stringify(popup)}]`).waitFor({ state: 'hidden' });

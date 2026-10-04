@@ -336,7 +336,11 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     },
     toggle() {
       if (destroyed || !enhanced) return;
-      open = !open;
+      if (open) {
+        close(true);
+        return;
+      }
+      open = true;
       sync();
       if (open) {
         document.dispatchEvent(new CustomEvent(SITE_HEADER_OPEN_EVENT));

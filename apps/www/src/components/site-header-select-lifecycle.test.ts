@@ -46,6 +46,24 @@ function fixture(family: 'shadcn' | 'brutalist', compact = true) {
 
 describe('Header keeps actual Select lifetime inside its visible owner', () => {
   for (const family of ['shadcn', 'brutalist'] as const) {
+    for (const activation of ['toggle', 'click-only'] as const) {
+      it(`${family}: ${activation} closes the real child before hiding the menu`, async () => {
+        const { header, select, trigger, menu } = fixture(family);
+        menu.addEventListener('click', () => disclosure!.toggle());
+        disclosure!.toggle();
+        await settle();
+        trigger.click();
+        await settle();
+        expect(select.getExposes?.().open?.get?.()).toBe(true);
+        if (activation === 'toggle') disclosure!.toggle();
+        else menu.click(); // No preceding pointerdown/outside-press to mask this path.
+        await settle();
+        expect(select.getExposes?.().open?.get?.()).toBe(false);
+        expect(trigger.getAttribute('aria-expanded')).toBe('false');
+        expect(header.querySelector<HTMLElement>('[data-site-header-panel]')!.hidden).toBe(true);
+        expect(document.activeElement).toBe(menu);
+      });
+    }
     for (const event of ['popstate', 'pageshow']) {
       it(`${family}: ${event} closes the real portaled Select before its parent`, async () => {
         const { header, select, trigger, menu } = fixture(family);
