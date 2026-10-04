@@ -220,12 +220,12 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
     // a view epoch projects its target ID (C-LIFECYCLE-0008-J). That shell is
     // structural evidence only: it cannot satisfy an open/selected relation,
     // borrow a portal exception, or turn unsupported paint into hidden proof.
+    const anonymousOwnerShell = (surface) =>
+      !required && surface.withinContent && surface.id === '';
     const retainedClosedShell = (surface) =>
-      !required &&
-      surface.withinContent &&
+      anonymousOwnerShell(surface) &&
       sameParent(surface, parent) &&
       surface.currentLease === true &&
-      surface.id === '' &&
       knownHidden(surface);
     const mayMatchRelation =
       required || ids.length > 0 || !['selected', 'description'].includes(instance.policy);
@@ -238,7 +238,8 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
         // only genuinely detached popup parts may lose physical parentage.
         (surface.withinContent ? sameParent(surface, parent) : instance.policy !== 'selected') &&
         (retainedClosedShell(surface) ||
-          (mayMatchRelation &&
+          (!anonymousOwnerShell(surface) &&
+            mayMatchRelation &&
             (ids.length
               ? ids.includes(surface.id)
               : sameParent(surface, ownerPhysical) || !surface.withinContent)))

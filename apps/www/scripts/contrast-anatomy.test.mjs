@@ -366,3 +366,30 @@ test('retained inactive Tabs shell cannot satisfy selected or keepMounted view r
   ).props.keepMounted = true;
   assert.equal(compareContrastAnatomy(kept, replay(retainedFrame('tabs'))).achieved, false);
 });
+
+test('anonymous in-content Mask cannot bypass closed-shell guards but a portaled leave remains allowed', async () => {
+  const plan = await load('dialog');
+  const frame = retainedFrame('dialog');
+  for (const kind of ['painted', 'unsupported', 'stale']) {
+    const sample = replay(frame);
+    const mask = sample.surfaces.find((surface) => surface.prototypeId === 'brutalist-dialog-mask');
+    if (kind === 'painted') {
+      mask.painted = true;
+      mask.visibility = { visible: true, classification: 'source-model-visible', limits: [] };
+    }
+    if (kind === 'unsupported') mask.visibility.classification = 'unsupported';
+    if (kind === 'stale') mask.currentLease = false;
+    assert.equal(compareContrastAnatomy(plan, sample).achieved, false, kind);
+  }
+  // A relation-free Mask can legitimately remain in its body portal while
+  // logical open is false and leave is unfinished. This is a model control.
+  const leaving = replay(frame);
+  const portal = leaving.surfaces.find(
+    (surface) => surface.prototypeId === 'brutalist-dialog-mask'
+  );
+  portal.parent = null;
+  portal.withinContent = false;
+  portal.painted = true;
+  portal.visibility = { visible: true, classification: 'source-model-visible', limits: [] };
+  assert.equal(compareContrastAnatomy(plan, leaving).achieved, true);
+});
