@@ -29,9 +29,19 @@ function collect(window) {
     window,
     document: window.document,
     MutationObserver: window.MutationObserver,
+    Node: window.Node,
     getComputedStyle: window.getComputedStyle.bind(window),
     performance: window.performance,
     require(id) {
+      if (id.endsWith('/document-font-probe')) {
+        const helper = ts.transpileModule(
+          readFileSync('apps/www/src/components/PrototypePreviewer/document-font-probe.ts', 'utf8'),
+          { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } }
+        ).outputText;
+        const helperContext = { exports: {}, document: window.document, Node: window.Node };
+        runInNewContext(helper, helperContext);
+        return helperContext.exports;
+      }
       if (id === 'vitest')
         return {
           beforeAll: (action) => hooks.push(action),
@@ -56,7 +66,7 @@ function collect(window) {
     },
   };
   runInNewContext(
-    `${output}\nglobalThis.installRecorder = installShellRecorder; globalThis.matchesReadyOwner = readyEventHasExpectedOwner; globalThis.documentTypographySelector = DOCUMENT_TYPOGRAPHY_SELECTOR;`,
+    `${output}\nglobalThis.installRecorder = installShellRecorder; globalThis.matchesReadyOwner = readyEventHasExpectedOwner; globalThis.documentTypographySelector = DOCUMENT_TYPOGRAPHY_SELECTOR; globalThis.findFontSample = document_font_probe_1.findDocumentFontSample;`,
     context
   );
   return {
@@ -65,6 +75,7 @@ function collect(window) {
     install: context.installRecorder,
     matchesReadyOwner: context.matchesReadyOwner,
     documentTypographySelector: context.documentTypographySelector,
+    findFontSample: context.findFontSample,
   };
 }
 function shell({ hidden = false, inert = false, borrowed = true, generation = 1, display } = {}) {
@@ -174,4 +185,16 @@ test('document font probe matches the actual MarkdownContent override, not an up
   assert.equal(nodes.length, 1);
   assert.match(nodes[0].textContent, /中文内容/);
   assert.equal(window.document.querySelector('.sl-markdown-content > p'), null);
+});
+
+test('font probe reaches authored text inside the real Text carrier and distinguishes CJK from code', () => {
+  const window = new Window();
+  window.document.body.innerHTML =
+    '<div data-doc-flow><p><span data-typography-carrier><span data-pui-root><span data-slot><code>shadcn-surface-root</code><span id="actual-text"> 是通用 Surface 原子。</span></span></span></span></p></div>';
+  const { findFontSample, documentTypographySelector } = collect(window);
+  assert.equal(findFontSample(documentTypographySelector, true).id, 'actual-text');
+  assert.equal(findFontSample(documentTypographySelector, false).localName, 'code');
+  window.document.getElementById('actual-text').textContent = 'English only';
+  assert.equal(findFontSample(documentTypographySelector, true), null);
+  assert.equal(findFontSample('[data-missing]', false), null);
 });

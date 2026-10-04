@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import type { Browser } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { findDocumentFontSample } from '../../../components/PrototypePreviewer/document-font-probe';
 import { RUNTIMES, launchBrowser, selectRuntime, startServer, stopServer } from './browser-harness';
 
 const DOCUMENT_TYPOGRAPHY_SELECTOR = '[data-doc-flow] > p:first-of-type';
@@ -341,21 +342,40 @@ describe.sequential('Public passive atom documentation previews', () => {
                 lineHeight: css.lineHeight,
               };
             });
+          documentTypography = { selector, computed, renderedSample: null, platformFonts: [] };
           const cdp = await context.newCDPSession(page);
           try {
             await cdp.send('DOM.enable');
             await cdp.send('CSS.enable');
-            const { root } = await cdp.send('DOM.getDocument');
-            const { nodeId } = await cdp.send('DOM.querySelector', {
-              nodeId: root.nodeId,
-              selector,
+            await cdp.send('DOM.getDocument');
+            // Typography preserves the native paragraph but projects authored text
+            // through a nested Text slot. Query the real text-bearing element,
+            // as the existing typography evidence does, not its empty native owner.
+            const { result } = await cdp.send('Runtime.evaluate', {
+              expression: `(${findDocumentFontSample.toString()})(${JSON.stringify(selector)}, ${locale === 'zh-cn'})`,
+              objectGroup: 'passive-atom-document-fonts',
             });
+            expect(result.objectId, 'An actual text-bearing document element').toBeTruthy();
+            const { nodeId } = await cdp.send('DOM.requestNode', { objectId: result.objectId! });
             expect(nodeId).toBeGreaterThan(0);
+            const sample = await cdp.send('Runtime.callFunctionOn', {
+              objectId: result.objectId!,
+              functionDeclaration: `function() {
+                const css = getComputedStyle(this);
+                return { tag: this.localName, text: this.textContent,
+                  directText: Array.from(this.childNodes).filter(node => node.nodeType === Node.TEXT_NODE).map(node => node.textContent),
+                  family: css.fontFamily,
+                  size: css.fontSize, weight: css.fontWeight, lineHeight: css.lineHeight };
+              }`,
+              returnByValue: true,
+            });
             const { fonts } = await cdp.send('CSS.getPlatformFontsForNode', { nodeId });
             documentTypography = {
-              scope: 'Mixed-script first-paragraph sample; whole-page visual inspection required',
+              scope:
+                'Actual text-bearing element within first paragraph; whole-page visual inspection required',
               selector,
               computed,
+              renderedSample: sample.result.value,
               platformFonts: fonts,
             };
             expect(fonts.some((font) => font.glyphCount > 0)).toBe(true);
@@ -366,6 +386,9 @@ describe.sequential('Public passive atom documentation previews', () => {
               );
             }
           } finally {
+            await cdp.send('Runtime.releaseObjectGroup', {
+              objectGroup: 'passive-atom-document-fonts',
+            });
             await cdp.detach();
           }
           await page.screenshot({ path: path.join(evidence, documentCapture), fullPage: true });
