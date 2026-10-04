@@ -12,6 +12,10 @@ import {
   INITIAL_SWEEP_AUTHORIZATION,
   INITIAL_SWEEP_ID,
 } from '../connector-review-session.mjs';
+import {
+  cloudReviewMaterialDigest,
+  cloudReviewMaterialReceipts,
+} from '../cloud-review-material.mjs';
 import { LocalCloudReviewLedger } from '../local-cloud-review-ledger.mjs';
 import {
   RemoteCloudReviewLedger,
@@ -3147,4 +3151,633 @@ test('historical sweep ABA journals replay unchanged while marked later completi
         marked
       );
     });
+});
+
+test('probe own-review arriving before receipt leaves no undrainable pending', async (t) => {
+  const { f, s, store, transport, dir, genesis } = await session(t);
+  const packet = await parentPacket(s);
+  const submit = transport.submit.bind(transport);
+  let wake;
+  transport.submit = async (...args) => {
+    const receipt = await submit(...args);
+    const lateStore = new LocalCloudReviewLedger(dir, genesis);
+    const late = new ConnectorReviewSession({ transport, ledger: lateStore, policy: rootPolicy });
+    wake = await late.begin(487, {
+      kind: 'human-review',
+      deliveryId: 'probe-own-before-finalize',
+      reviewId: receipt.id,
+    });
+    assert.equal(lateStore.read().state.deferred.length, 1);
+    return receipt;
+  };
+  const published = await s.publishParentPacket(packet, assessment);
+  assert.equal(published.status, 'published');
+  assert.equal(wake.queued, true);
+  const before = store.read();
+  const freshStore = new LocalCloudReviewLedger(dir, genesis);
+  const fresh = new ConnectorReviewSession({ transport, ledger: freshStore, policy: rootPolicy });
+  const replay = await fresh.begin(487, {
+    kind: 'human-review',
+    deliveryId: 'probe-own-before-finalize',
+    reviewId: '99',
+  });
+  const after = store.read();
+  assert.equal(published.followUpQueued, false);
+  assert.equal(published.followUpRequired, false);
+  assert.equal(replay.skipped, true);
+  assert.equal(before.revision, after.revision);
+  assert.deepEqual(after.state.pending, []);
+});
+
+// Exact production journal transport, with only its URL replaced by a local bare
+// Git fixture. Connector read/write responses remain deterministic test data.
+async function ownWakeContext(t, remote = false) {
+  const context = await session(t);
+  if (!remote) {
+    context.openLedger = () => new LocalCloudReviewLedger(context.dir, context.genesis);
+    return context;
+  }
+  const git = (directory, ...args) =>
+    execFileSync('git', ['-C', directory, ...args], {
+      encoding: 'utf8',
+      stdio: 'pipe',
+    }).trim();
+  git(context.dir, 'update-ref', REMOTE_LEDGER_REF, context.genesis);
+  context.openLedger = () => {
+    const directory = mkdtempSync(path.join(tmpdir(), 'pui-own-wake-cache-'));
+    t.after(() => rmSync(directory, { recursive: true, force: true }));
+    git(directory, 'init', '--bare');
+    return new RemoteCloudReviewLedger(directory, context.genesis, {
+      checkpoint: context.genesis,
+      transport: {
+        readInto(cache) {
+          git(cache, 'fetch', '--no-tags', '--no-write-fetch-head', context.dir, REMOTE_LEDGER_REF);
+          return git(context.dir, 'rev-parse', REMOTE_LEDGER_REF);
+        },
+        publish(args) {
+          return ownerGitLedgerTransport({
+            runGit(cache, argv) {
+              return git(
+                cache,
+                ...argv.map((arg) =>
+                  arg === 'https://github.com/Proto-UI/Proto-UI.git' ? context.dir : arg
+                )
+              );
+            },
+          }).publish(args);
+        },
+      },
+    });
+  };
+  context.store = context.openLedger();
+  context.s = ownWakeSession(context, context.store);
+  return context;
+}
+function ownWakeSession(context, store = context.openLedger()) {
+  return new ConnectorReviewSession({
+    transport: context.transport,
+    ledger: store,
+    policy: rootPolicy,
+  });
+}
+const ownWakeEvent = (deliveryId = 'own-before-receipt', reviewId = '99') => ({
+  kind: 'human-review',
+  deliveryId,
+  reviewId,
+});
+function addOtherReview(f) {
+  f.reviews.push({
+    id: 700,
+    node_id: 'PRR_700',
+    user: author,
+    commit_id: f.pr.head.sha,
+    state: 'COMMENTED',
+    body: 'Independent human observation',
+    submitted_at: '2026-10-03T00:05:00Z',
+  });
+}
+const ownWakeChanges = {
+  body: (f) => {
+    f.pr.body = 'Concurrent body change';
+  },
+  head: (f) => {
+    f.pr.head.sha = sha('c');
+    f.commits[0].sha = sha('c');
+    for (const check of f.checks) check.head_sha = sha('c');
+    for (const run of f.runs) run.head_sha = sha('c');
+  },
+  base: (f) => {
+    f.pr.base.sha = sha('c');
+  },
+  'base-ref': (f) => {
+    f.pr.base.ref = 'release';
+  },
+  'human-review': addOtherReview,
+  'human-comment': (f) => {
+    f.comments.push({
+      id: 7,
+      node_id: 'C7',
+      user: author,
+      body: 'Human comment',
+      updated_at: '2026-10-03T00:04:00Z',
+    });
+  },
+};
+
+test('own receipt normalization handles both event orders and fresh journal replay', async (t) => {
+  for (const remote of [false, true])
+    for (const ordering of ['before-receipt', 'after-receipt'])
+      await t.test(`${remote ? 'production-local-Git' : 'local'}/${ordering}`, async (t) => {
+        const context = await ownWakeContext(t, remote);
+        const { s, store, transport, f } = context;
+        const packet = await parentPacket(s);
+        const initial = store.read().state.material[0];
+        const submit = transport.submit.bind(transport);
+        if (ordering === 'before-receipt')
+          transport.submit = async (...args) => {
+            const receipt = await submit(...args);
+            assert.equal((await ownWakeSession(context).begin(487, ownWakeEvent())).queued, true);
+            const during = store.read().state;
+            assert.equal(during.deferred.length, 1);
+            assert.equal(during.publicationReceipts.length, 0);
+            assert.equal(during.slot.generation, initial.generation);
+            assert.equal(during.material[0].digest, initial.digest);
+            return receipt;
+          };
+        const published = await s.publishParentPacket(packet, assessment);
+        assert.equal(published.status, 'published');
+        assert.equal(published.followUpQueued, false);
+        assert.equal(published.followUpRequired, false);
+        const before = store.read();
+        const restart = context.openLedger();
+        assert.deepEqual(restart.read().state, before.state);
+        const replay = await ownWakeSession(context, restart).begin(487, ownWakeEvent());
+        assert.equal(replay.skipped, true);
+        assert.equal(store.read().revision, before.revision);
+        assert.deepEqual(before.state.pending, []);
+        assert.deepEqual(before.state.deferred, []);
+        assert.equal(before.state.generation, initial.generation);
+        assert.deepEqual(before.state.analyses[0].input.reviews, []);
+        assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
+        if (ordering === 'before-receipt') {
+          const delivery = before.state.deliveries.at(-1);
+          assert.equal(delivery.reviewMaterial.input.reviews.length, 1);
+          assert.notEqual(delivery.materialDigest, initial.digest);
+          assert.equal(
+            cloudReviewMaterialDigest(
+              delivery.reviewMaterial,
+              cloudReviewMaterialReceipts(before.state)
+            ),
+            initial.digest
+          );
+        }
+      });
+});
+
+test('own review hints retain concurrent non-own material before and after receipt', async (t) => {
+  for (const remote of [false, true])
+    for (const ordering of ['before-receipt', 'after-receipt'])
+      for (const [change, mutate] of Object.entries(ownWakeChanges))
+        await t.test(
+          `${remote ? 'production-local-Git' : 'local'}/${ordering}/${change}`,
+          async (t) => {
+            const context = await ownWakeContext(t, remote);
+            const { s, store, transport, f } = context;
+            const packet = await parentPacket(s);
+            const submit = transport.submit.bind(transport);
+            if (ordering === 'before-receipt')
+              transport.submit = async (...args) => {
+                const receipt = await submit(...args);
+                mutate(f);
+                assert.equal(
+                  (await ownWakeSession(context).begin(487, ownWakeEvent())).queued,
+                  true
+                );
+                return receipt;
+              };
+            const published = await s.publishParentPacket(packet, assessment);
+            assert.equal(published.status, 'published');
+            if (ordering === 'after-receipt') mutate(f);
+            else {
+              assert.equal(published.followUpQueued, true);
+              assert.equal(published.followUpRequired, true);
+            }
+            const next = ownWakeSession(context);
+            const request = await next.begin(487, ownWakeEvent());
+            assert.equal(request.kind, 'proto-ui.parent-review-request');
+            assert(
+              request.input.reviews.some((review) => review.id === 'PRR_99'),
+              'canonical reviewer input must retain the published review'
+            );
+            assert(store.read().state.slot.generation > 1);
+            await next.finishParentAnalysis(completePacket(request.input, packet));
+            assert.deepEqual(context.openLedger().read().state.pending, []);
+            assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
+          }
+        );
+});
+
+test('deferred own event preserves non-own ABA and sweep causal generations', async (t) => {
+  for (const remote of [false, true])
+    for (const sweepAfterChange of [false, true])
+      await t.test(
+        `${remote ? 'production-local-Git' : 'local'}/sweep-after-C=${sweepAfterChange}`,
+        async (t) => {
+          const context = await ownWakeContext(t, remote);
+          const { s, store, transport, f } = context;
+          await s.captureInitialSweep();
+          const packet = await parentPacket(s);
+          if (!sweepAfterChange) await ownWakeSession(context).beginInitialSweep(487);
+          const submit = transport.submit.bind(transport);
+          transport.submit = async (...args) => {
+            const receipt = await submit(...args);
+            await ownWakeSession(context).begin(487, ownWakeEvent());
+            f.pr.body = 'C';
+            await ownWakeSession(context).begin(487, {
+              kind: 'human-comment',
+              deliveryId: 'non-own-C',
+            });
+            f.pr.body = 'fixture';
+            if (sweepAfterChange) await ownWakeSession(context).beginInitialSweep(487);
+            else
+              await ownWakeSession(context).begin(487, {
+                kind: 'human-comment',
+                deliveryId: 'non-own-A',
+              });
+            assert.equal(store.read().state.deferred.length, 3);
+            return receipt;
+          };
+          assert.equal((await s.publishParentPacket(packet, assessment)).followUpQueued, true);
+          const after = context.openLedger().read().state;
+          assert.equal(after.generation, 3);
+          assert.equal(after.pending[0].generation, 3);
+          assert.deepEqual(after.initialSweep.completed, sweepAfterChange ? [] : [487]);
+          const next = ownWakeSession(context);
+          const request = await next.begin(487, ownWakeEvent());
+          assert.equal(request.kind, 'proto-ui.parent-review-request');
+          await next.finishParentAnalysis(completePacket(request.input, packet));
+          assert.deepEqual(context.openLedger().read().state.initialSweep.completed, [487]);
+          assert.deepEqual(context.openLedger().read().state.pending, []);
+        }
+      );
+});
+
+test('unconfirmed own-looking reviews remain deferred and unknown owners cannot be adopted', async (t) => {
+  for (const remote of [false, true])
+    await t.test(remote ? 'production-local-Git' : 'local', async (t) => {
+      const context = await ownWakeContext(t, remote);
+      const { s, store, transport, f } = context;
+      const packet = await parentPacket(s);
+      const submit = transport.submit.bind(transport);
+      transport.submit = async (...args) => {
+        await submit(...args);
+        await ownWakeSession(context).begin(487, ownWakeEvent());
+        throw new Error('receipt acknowledgement unavailable');
+      };
+      assert.equal((await s.publishParentPacket(packet, assessment)).status, 'unknown');
+      const before = store.read();
+      const restarted = context.openLedger();
+      assert.equal(
+        (await ownWakeSession(context, restarted).begin(487, ownWakeEvent())).queued,
+        true
+      );
+      assert.equal(store.read().revision, before.revision);
+      assert.equal(before.state.deferred.length, 1);
+      assert.equal(before.state.publicationReceipts.length, 0);
+      assert.equal(before.state.slot.intent.status, 'unknown');
+      assert.throws(
+        () => restarted.consumePublicationAttempt(before.state.slot.intent.id),
+        /fresh, stopped or restarted/
+      );
+      assert.throws(
+        () =>
+          restarted.apply(restarted.read().revision, {
+            type: 'finalizePublication',
+            response: {},
+            readback: {},
+          }),
+        /does not own/
+      );
+      assert.throws(
+        () => store.consumePublicationAttempt(before.state.slot.intent.id),
+        /deferred|already consumed/
+      );
+      assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
+    });
+});
+
+test('an own review ID never discards a live object with a mismatched receipt binding', async (t) => {
+  const changes = {
+    id: (review) => {
+      review.id = 100;
+    },
+    node: (review) => {
+      review.node_id = 'PRR_100';
+    },
+    'actor-id': (review) => {
+      review.user = { ...owner, id: 123 };
+    },
+    'actor-login': (review) => {
+      review.user = { ...owner, login: 'other-human' };
+    },
+    'unknown-actor': (review) => {
+      review.user = null;
+    },
+    head: (review) => {
+      review.commit_id = sha('c');
+    },
+    state: (review) => {
+      review.state = 'DISMISSED';
+    },
+    body: (review) => {
+      review.body += ' edited';
+    },
+  };
+  for (const [name, mutate] of Object.entries(changes))
+    await t.test(name, async (t) => {
+      const context = await ownWakeContext(t);
+      const { s, store, transport, f } = context;
+      const packet = await parentPacket(s);
+      const submit = transport.submit.bind(transport);
+      transport.submit = async (...args) => {
+        const receipt = await submit(...args);
+        mutate(f.reviews[0]);
+        assert.equal((await ownWakeSession(context).begin(487, ownWakeEvent())).queued, true);
+        return receipt;
+      };
+      const published = await s.publishParentPacket(packet, assessment);
+      assert.equal(published.status, 'published');
+      assert.equal(published.followUpQueued, true);
+      assert.equal(store.read().state.pending[0].generation, 2);
+      const next = ownWakeSession(context);
+      const request = await next.begin(487, ownWakeEvent());
+      assert.equal(request.kind, 'proto-ui.parent-review-request');
+      assert.equal(request.input.reviews.length, 1);
+      assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
+    });
+});
+
+test('same own delivery cannot rewrite evidence, while a distinct eligible event drains real changes', async (t) => {
+  const context = await ownWakeContext(t);
+  const { s, store, transport, f } = context;
+  const packet = await parentPacket(s);
+  const submit = transport.submit.bind(transport);
+  transport.submit = async (...args) => {
+    const receipt = await submit(...args);
+    await ownWakeSession(context).begin(487, ownWakeEvent());
+    return receipt;
+  };
+  await s.publishParentPacket(packet, assessment);
+  const prefix = store.read();
+  const original = structuredClone(prefix.state.deliveries.at(-1));
+  f.pr.body = 'Real material after receipt';
+  await assert.rejects(
+    ownWakeSession(context).begin(487, ownWakeEvent()),
+    /delivery id reused with different evidence/
+  );
+  assert.equal(store.read().revision, prefix.revision);
+  const next = ownWakeSession(context);
+  const request = await next.begin(487, {
+    kind: 'human-comment',
+    deliveryId: 'new-material-event',
+  });
+  assert.equal(request.kind, 'proto-ui.parent-review-request');
+  await next.finishParentAnalysis(completePacket(request.input, packet));
+  assert.deepEqual(store.read().state.pending, []);
+  assert.deepEqual(
+    store.read().state.deliveries.find((d) => d.deliveryId === original.deliveryId),
+    original
+  );
+  // A later own-ID hint cannot bypass the earlier delivery's immutable evidence,
+  // even when the latest material has already completed and would otherwise skip.
+  const finished = store.read();
+  await assert.rejects(
+    ownWakeSession(context).begin(487, ownWakeEvent()),
+    /delivery id reused with different evidence/
+  );
+  assert.equal(store.read().revision, finished.revision);
+});
+
+test('confirmed transport receipt without durable finalization cannot suppress the own wakeup', async (t) => {
+  const context = await ownWakeContext(t);
+  const { s, store, transport } = context;
+  const packet = await parentPacket(s);
+  const submit = transport.submit.bind(transport);
+  transport.submit = async (...args) => {
+    const receipt = await submit(...args);
+    await ownWakeSession(context).begin(487, ownWakeEvent());
+    return receipt;
+  };
+  const apply = store.apply.bind(store);
+  store.apply = (revision, command) =>
+    command.type === 'finalizePublication' ? { status: 'unknown' } : apply(revision, command);
+  const published = await s.publishParentPacket(packet, assessment);
+  assert.equal(published.status, 'unknown');
+  assert.equal(published.publicationConfirmed, true);
+  const before = store.read();
+  assert.equal(before.state.publicationReceipts.length, 0);
+  assert.equal(before.state.deferred.length, 1);
+  assert.equal((await ownWakeSession(context).begin(487, ownWakeEvent())).queued, true);
+  assert.equal(store.read().revision, before.revision);
+});
+
+test('field-less own-event history stays unchanged rather than being silently migrated', async (t) => {
+  const { store, dir, genesis } = ledger(t);
+  const apply = (command) => store.apply(store.read().revision, command);
+  const first = {
+    type: 'enqueue',
+    deliveryId: 'legacy-before',
+    pullRequest: 487,
+    eventKind: 'synchronize',
+    materialDigest: 'a'.repeat(64),
+  };
+  apply(first);
+  apply({ type: 'claim', pullRequest: 487 });
+  apply({ type: 'stagePublicationIntent', ...analysis() });
+  const intent = store.read().state.slot.intent;
+  store.consumePublicationAttempt(intent.id);
+  const own = {
+    ...first,
+    deliveryId: 'legacy-own-before-receipt',
+    eventKind: 'human-review',
+    materialDigest: 'b'.repeat(64),
+  };
+  apply(own);
+  const receipt = {
+    repositoryId: intent.repositoryId,
+    pullRequest: 487,
+    id: '99',
+    nodeId: 'PRR_99',
+    authorId: intent.principalId,
+    authorLogin: intent.principalLogin,
+    commitId: intent.headSha,
+    state: 'APPROVED',
+    body: intent.body,
+  };
+  apply({ type: 'finalizePublication', response: receipt, readback: receipt });
+  const before = store.read();
+  const git = (...args) =>
+    execFileSync('git', ['-C', dir, ...args], { encoding: 'utf8', stdio: 'pipe' }).trim();
+  const revisions = git('rev-list', '--reverse', before.revision).split('\n');
+  const entries = revisions.map((revision) => git('show', `${revision}:entry.json`));
+  const reopened = new LocalCloudReviewLedger(dir, genesis, { checkpoint: before.revision });
+  assert.deepEqual(reopened.read(), before);
+  assert.equal(before.state.pending[0].generation, 2);
+  assert.equal(before.state.material[0].digest, own.materialDigest);
+  assert.deepEqual(cloudReviewMaterialReceipts(before.state), []);
+  assert.equal(Object.hasOwn(before.state.publicationReceipts[0], 'review'), false);
+  assert.equal(reopened.apply(before.revision, own).noOp, true);
+  assert.deepEqual(reopened.read(), before);
+  assert(entries.every((entry) => !Object.hasOwn(JSON.parse(entry), 'reviewMaterial')));
+  assert.deepEqual(
+    revisions.map((revision) => git('show', `${revision}:entry.json`)),
+    entries
+  );
+});
+
+test('versioned finalization requires exact node identity while old receipts retain their old semantics', async (t) => {
+  for (const versioned of [false, true])
+    for (const node of ['missing', 'mismatch'])
+      await t.test(`${versioned ? 'versioned' : 'field-less'}/${node}`, async (t) => {
+        const { store } = ledger(t);
+        const input = analysis().input;
+        const reviewMaterial = { version: 1, input, reviewIdentities: [] };
+        const apply = (c) => store.apply(store.read().revision, c);
+        apply({
+          type: 'enqueue',
+          pullRequest: 487,
+          deliveryId: 'node-binding',
+          eventKind: 'opened',
+          materialDigest: versioned ? cloudReviewMaterialDigest(reviewMaterial) : 'a'.repeat(64),
+          ...(versioned ? { reviewMaterial } : {}),
+        });
+        apply({ type: 'claim', pullRequest: 487 });
+        apply({
+          type: 'stagePublicationIntent',
+          ...analysis(),
+          ...(versioned ? { receiptNormalizationVersion: 1 } : {}),
+        });
+        const intent = store.read().state.slot.intent;
+        store.consumePublicationAttempt(intent.id);
+        const receipt = {
+          repositoryId: intent.repositoryId,
+          pullRequest: 487,
+          id: '99',
+          authorId: intent.principalId,
+          authorLogin: intent.principalLogin,
+          commitId: intent.headSha,
+          state: 'APPROVED',
+          body: intent.body,
+          ...(node === 'mismatch' ? { nodeId: 'PRR_99' } : {}),
+        };
+        const before = store.read();
+        const command = {
+          type: 'finalizePublication',
+          response: receipt,
+          readback: { ...receipt, ...(node === 'mismatch' ? { nodeId: 'PRR_OTHER' } : {}) },
+        };
+        if (versioned) {
+          assert.throws(() => apply(command), /versioned receipt node identity/);
+          assert.deepEqual(store.read(), before);
+        } else {
+          assert.equal(apply(command).status, 'applied');
+          assert.equal(store.read().state.slot, null);
+        }
+      });
+});
+
+test('new publication after coalescing a legacy pending material uses new receipt normalization', async (t) => {
+  const context = await ownWakeContext(t);
+  const { s, store, transport } = context;
+  const live = await transport.collect(487);
+  const raw = { version: 1, input: live.input, reviewIdentities: live.reviewIdentities };
+  store.apply(store.read().revision, {
+    type: 'enqueue',
+    deliveryId: 'legacy-pending-before-upgrade',
+    pullRequest: 487,
+    eventKind: 'opened',
+    materialDigest: cloudReviewMaterialDigest(raw),
+  });
+  const packet = await parentPacket(s);
+  assert.equal(store.read().state.material[0].deliveryId, 'legacy-pending-before-upgrade');
+  const submit = transport.submit.bind(transport);
+  transport.submit = async (...args) => {
+    const receipt = await submit(...args);
+    await ownWakeSession(context).begin(487, ownWakeEvent());
+    return receipt;
+  };
+  const published = await s.publishParentPacket(packet, assessment);
+  assert.equal(published.status, 'published');
+  assert.deepEqual(store.read().state.pending, []);
+});
+
+test('explicit POST node identity echoes bind raw readback before an own wakeup can be normalized', async (t) => {
+  for (const field of ['node_id', 'nodeId'])
+    for (const mode of ['matching', 'omitted', 'contradictory', 'null'])
+      await t.test(`${field}/${mode}`, async (t) => {
+        const context = await ownWakeContext(t);
+        const { store, f } = context;
+        context.transport = new ConnectorReviewTransport(async (operation, args) => {
+          const response = await f.call(operation, args);
+          if (operation !== 'add_review_to_pr') return response;
+          // The API created the object; its event arrives before transport GET
+          // readback/normalization. Neither the intent nor the hint proves it.
+          assert.equal((await ownWakeSession(context).begin(487, ownWakeEvent())).queued, true);
+          assert.equal(store.read().state.deferred.length, 1);
+          return result({
+            id: 99,
+            ...(mode === 'omitted'
+              ? {}
+              : {
+                  [field]: mode === 'matching' ? 'PRR_99' : mode === 'null' ? null : 'PRR_WRONG',
+                }),
+            state: 'APPROVED',
+          });
+        });
+        const s = ownWakeSession(context, store);
+        const packet = await parentPacket(s);
+        const published = await s.publishParentPacket(packet, assessment);
+        const before = store.read();
+        if (mode === 'matching' || mode === 'omitted') {
+          assert.equal(published.status, 'published');
+          assert.equal(published.followUpQueued, false);
+          assert.equal(before.state.publicationReceipts.length, 1);
+          assert.deepEqual(before.state.pending, []);
+          assert.deepEqual(before.state.deferred, []);
+          assert.equal(before.state.slot, null);
+          assert.equal((await ownWakeSession(context).begin(487, ownWakeEvent())).skipped, true);
+        } else {
+          assert.equal(published.status, 'unknown');
+          assert.match(published.reason, /review response node-id contradiction/);
+          assert.equal(published.publicationConfirmed, false);
+          assert.equal(published.retryAllowed, false);
+          assert.equal(before.state.publicationReceipts.length, 0);
+          assert.equal(before.state.slot.intent.status, 'unknown');
+          assert.equal(before.state.deferred.length, 1);
+          assert.equal(before.state.pending[0].generation, 1);
+          const restarted = context.openLedger();
+          assert.equal(
+            (await ownWakeSession(context, restarted).begin(487, ownWakeEvent())).queued,
+            true
+          );
+          assert.throws(
+            () => restarted.consumePublicationAttempt(before.state.slot.intent.id),
+            /fresh, stopped or restarted/
+          );
+          assert.throws(
+            () =>
+              store.apply(store.read().revision, {
+                type: 'cancelPublicationIntent',
+                intentId: before.state.slot.intent.id,
+              }),
+            /already consumed/
+          );
+          await assert.rejects(
+            s.publishParentPacket(packet, assessment),
+            /one publication attempt/
+          );
+        }
+        assert.equal(store.read().revision, before.revision);
+        assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
+      });
 });

@@ -12,7 +12,15 @@ import {
   LEDGER_REPOSITORY,
   INITIAL_SWEEP_ID,
   validateCloudReviewAnalysis,
+  reduceCloudReviewLedger,
 } from './cloud-review-ledger.mjs';
+
+import {
+  validateCloudReviewMaterial,
+  cloudReviewMaterialDigest,
+  cloudReviewMaterialReceipts,
+  matchesCloudReviewMaterialReceipt,
+} from './cloud-review-material.mjs';
 
 export const CONNECTOR_AUTHORIZATION = 'proto-ui-cloud-owner-review-v1';
 const assert = (condition, message) => {
@@ -169,40 +177,51 @@ export class ConnectorReviewSession {
       before.state.publicationEnabled === true,
       'production ledger must be explicitly provisioned'
     );
-    // Ignore only a proven review object published by this ledger, not every
-    // human comment/review under the delegated account.
+    const reviewMaterial = {
+      version: 1,
+      input: live.input,
+      reviewIdentities: live.reviewIdentities,
+    };
+    validateCloudReviewMaterial(reviewMaterial, LEDGER_REPOSITORY, pullRequest);
+    const receipts = cloudReviewMaterialReceipts(before.state);
+    const digest = cloudReviewMaterialDigest(reviewMaterial, receipts);
+    // A proven own-review hint may save a no-op journal write only after all
+    // other collected material was compared. Never discard concurrent changes.
     if (
+      event.kind === 'human-review' &&
       event.reviewId &&
-      before.state.publicationReceipts.some(
-        (r) => r.pullRequest === pullRequest && r.id === String(event.reviewId)
-      )
+      receipts.some(
+        (receipt) =>
+          receipt.id === String(event.reviewId) &&
+          live.input.reviews.some((_, index) =>
+            matchesCloudReviewMaterialReceipt(reviewMaterial, index, receipt)
+          )
+      ) &&
+      before.state.material.some(
+        (item) => item.pullRequest === pullRequest && item.digest === digest
+      ) &&
+      !before.state.pending.some((item) => item.pullRequest === pullRequest) &&
+      !before.state.deferred.some((item) => item.pullRequest === pullRequest)
     ) {
+      const existing = before.state.deliveries.find((item) => item.deliveryId === event.deliveryId);
+      assert(
+        !existing ||
+          (existing.pullRequest === pullRequest &&
+            existing.eventKind === event.kind &&
+            existing.reviewMaterial &&
+            existing.materialDigest === cloudReviewMaterialDigest(reviewMaterial)),
+        'delivery id reused with different evidence'
+      );
       return { skipped: true, reason: 'own published review wake-up', publicationAllowed: false };
     }
-    const material = {
-      headSha: live.input.headSha,
-      baseSha: live.input.baseSha,
-      baseRefName: live.input.baseRefName,
-      state: live.input.pullRequestState,
-      draft: live.input.isDraft,
-      body: live.input.pullRequestBody,
-      commits: live.input.commits,
-      files: live.input.changedFiles,
-      reviews: live.input.reviews.filter(
-        (review) =>
-          !before.state.publicationReceipts.some((receipt) => receipt.nodeId === review.id)
-      ),
-      comments: live.input.comments,
-      replies: live.input.replies,
-      threads: live.input.threads,
-    };
     this.#refreshPolicy();
     const queued = await this.#ledger.apply(before.revision, {
       type: 'enqueue',
       deliveryId: event.deliveryId,
       pullRequest,
       eventKind: event.kind,
-      materialDigest: hash(material),
+      materialDigest: cloudReviewMaterialDigest(reviewMaterial),
+      reviewMaterial,
     });
     assert(queued.status === 'applied', 'enqueue not confirmed; stop without retry');
     const admitted = await this.#ledger.read();
@@ -313,17 +332,19 @@ export class ConnectorReviewSession {
           hash(snapshot.state.slot.intent) === hash(intent),
         'fenced publication intent changed during receipt persistence'
       );
-      const followUpQueued =
-        snapshot.state.deferred.some((x) => x.pullRequest === intent.pullRequest) ||
-        snapshot.state.pending.some(
-          (x) =>
-            x.pullRequest === intent.pullRequest && x.generation !== snapshot.state.slot.generation
-        );
-      const finalized = await this.#ledger.apply(snapshot.revision, {
+      const command = {
         type: 'finalizePublication',
         response: receipt,
         readback: receipt,
+      };
+      // Compute follow-up from the exact candidate after receipt-aware draining,
+      // not the raw deferred list that still includes an unconfirmed self echo.
+      const next = reduceCloudReviewLedger(snapshot.state, {
+        ...command,
+        owner: snapshot.state.slot.owner,
       });
+      const followUpQueued = next.pending.some((item) => item.pullRequest === intent.pullRequest);
+      const finalized = await this.#ledger.apply(snapshot.revision, command);
       if (finalized.status === 'applied') return { finalized, followUpQueued };
       assert(
         finalized.status === 'conflict',
@@ -362,6 +383,7 @@ export class ConnectorReviewSession {
       const command = {
         type: 'stagePublicationIntent',
         sweepCoverageVersion: 1,
+        receiptNormalizationVersion: 1,
         analysisReconciliation,
         input: this.#initial.input,
         packet,

@@ -9,6 +9,12 @@ import {
   verifyReconciliation,
 } from './review-runtime.mjs';
 
+import {
+  validateCloudReviewMaterial,
+  cloudReviewMaterialDigest,
+  cloudReviewMaterialReceipts,
+} from './cloud-review-material.mjs';
+
 export const INITIAL_SWEEP_ID = 'cyjin-yl-owner-requested-open-pr-sweep-2026-10-04';
 export const LEDGER_REPOSITORY = 'github.com:Proto-UI/Proto-UI';
 export const LEDGER_PRINCIPAL = Object.freeze({ id: '19223209', login: 'cyjin-yl' });
@@ -61,6 +67,8 @@ export function validateCloudReviewAnalysis(command, state) {
   const { input, packet, liveInput, observation } = command;
   if (Object.hasOwn(command, 'sweepCoverageVersion'))
     assert(command.sweepCoverageVersion === 1, 'unsupported sweep coverage version');
+  if (Object.hasOwn(command, 'receiptNormalizationVersion'))
+    assert(command.receiptNormalizationVersion === 1, 'unsupported receipt normalization version');
   keys(observation, [
     'executionMode',
     'executionModeSource',
@@ -165,22 +173,32 @@ export function validateCloudReviewAnalysis(command, state) {
     ...(Object.hasOwn(command, 'sweepCoverageVersion')
       ? { sweepCoverageVersion: command.sweepCoverageVersion }
       : {}),
+    ...(Object.hasOwn(command, 'receiptNormalizationVersion')
+      ? { receiptNormalizationVersion: command.receiptNormalizationVersion }
+      : {}),
     materialDigest: material.digest,
     materialGeneration: material.generation,
     materialDeliveryId: material.deliveryId,
   };
 }
 
+function materialDigest(state, command) {
+  return command.reviewMaterial
+    ? cloudReviewMaterialDigest(command.reviewMaterial, cloudReviewMaterialReceipts(state))
+    : command.materialDigest;
+}
+
 function admitMaterial(state, command) {
+  const digest = materialDigest(state, command);
   const material = state.material.find((item) => item.pullRequest === command.pullRequest);
-  if (material?.digest === command.materialDigest) return;
+  if (material?.digest === digest) return;
   state.generation += 1;
   state.material = state.material.filter((item) => item.pullRequest !== command.pullRequest);
   // Derived only while replaying an admitted material change. Deferred commands
   // acquire their lineage here when drained, never from the currently fenced slot.
   state.material.push({
     pullRequest: command.pullRequest,
-    digest: command.materialDigest,
+    digest,
     generation: state.generation,
     deliveryId: command.deliveryId,
   });
@@ -225,7 +243,8 @@ function completeCoveredSweep(state, analysis) {
   let requiredStart = sweep;
   while (
     requiredStart > 0 &&
-    deliveries[requiredStart - 1].materialDigest === deliveries[sweep].materialDigest
+    materialDigest(state, deliveries[requiredStart - 1]) ===
+      materialDigest(state, deliveries[sweep])
   )
     requiredStart--;
   const analyzedStart = deliveries.findIndex(
@@ -233,7 +252,7 @@ function completeCoveredSweep(state, analysis) {
   );
   if (
     analyzedStart >= requiredStart &&
-    deliveries[analyzedStart].materialDigest === analysis.materialDigest
+    materialDigest(state, deliveries[analyzedStart]) === analysis.materialDigest
   )
     state.initialSweep.completed.push(pullRequest);
 }
@@ -301,7 +320,14 @@ export function reduceCloudReviewLedger(previous, command) {
       completed: [],
     };
   } else if (command.type === 'enqueue') {
-    keys(command, ['type', 'deliveryId', 'pullRequest', 'eventKind', 'materialDigest']);
+    keys(command, [
+      'type',
+      'deliveryId',
+      'pullRequest',
+      'eventKind',
+      'materialDigest',
+      ...(Object.hasOwn(command, 'reviewMaterial') ? ['reviewMaterial'] : []),
+    ]);
     pr(command.pullRequest);
     assert(
       typeof command.deliveryId === 'string' && /^[A-Za-z0-9._:-]{1,160}$/.test(command.deliveryId),
@@ -314,11 +340,19 @@ export function reduceCloudReviewLedger(previous, command) {
       assert(
         existing.pullRequest === command.pullRequest &&
           existing.eventKind === command.eventKind &&
-          existing.materialDigest === command.materialDigest,
+          existing.materialDigest === command.materialDigest &&
+          Object.hasOwn(existing, 'reviewMaterial') === Object.hasOwn(command, 'reviewMaterial'),
         'delivery id reused with different evidence'
       );
-      return state;
     }
+    if (Object.hasOwn(command, 'reviewMaterial')) {
+      validateCloudReviewMaterial(command.reviewMaterial, LEDGER_REPOSITORY, command.pullRequest);
+      assert(
+        cloudReviewMaterialDigest(command.reviewMaterial) === command.materialDigest,
+        'review material digest mismatch'
+      );
+    }
+    if (existing) return state;
     if (command.eventKind === 'initial-sweep') {
       assert(
         state.initialSweep?.pullRequests.includes(command.pullRequest) &&
@@ -334,11 +368,11 @@ export function reduceCloudReviewLedger(previous, command) {
     if (state.slot?.intent?.dispatchFenced && state.slot.pullRequest === command.pullRequest) {
       // Persist the wake-up, but serialize its generation after this dispatch.
       // No event is dropped or allowed to invalidate a reserved generation.
-      const latest =
-        state.deferred.findLast((item) => item.pullRequest === command.pullRequest)
-          ?.materialDigest ??
-        state.material.find((item) => item.pullRequest === command.pullRequest)?.digest;
-      if (latest !== command.materialDigest) state.deferred.push(command);
+      const previous = state.deferred.findLast((item) => item.pullRequest === command.pullRequest);
+      const latest = previous
+        ? materialDigest(state, previous)
+        : state.material.find((item) => item.pullRequest === command.pullRequest)?.digest;
+      if (latest !== materialDigest(state, command)) state.deferred.push(command);
     } else admitMaterial(state, command);
     if (
       command.eventKind === 'initial-sweep' &&
@@ -348,7 +382,7 @@ export function reduceCloudReviewLedger(previous, command) {
       const analysis = state.analyses.find(
         (item) => item.input.pullRequest === command.pullRequest
       );
-      if (analysis?.materialDigest === command.materialDigest)
+      if (analysis?.materialDigest === materialDigest(state, command))
         completeCoveredSweep(state, analysis);
     }
   } else if (command.type === 'claim') {
@@ -416,6 +450,14 @@ export function reduceCloudReviewLedger(previous, command) {
           command.response.id === command.readback.id,
         'simulation response and exact receipt readback must match'
       );
+      const projected = publishing && intent.analysis.receiptNormalizationVersion === 1;
+      if (projected)
+        assert(
+          typeof command.response.nodeId === 'string' &&
+            command.response.nodeId.length > 0 &&
+            command.response.nodeId === command.readback.nodeId,
+          'versioned receipt node identity must match exact readback'
+        );
       if (publishing)
         state.publicationReceipts.push({
           pullRequest: intent.pullRequest,
@@ -424,6 +466,7 @@ export function reduceCloudReviewLedger(previous, command) {
           nodeId: command.response.nodeId ?? null,
           bodyDigest: intent.bodyDigest,
           packetDigest: intent.packetDigest,
+          ...(projected ? { review: command.response } : {}),
         });
       complete(state, {
         ...intent.analysis,
@@ -450,6 +493,10 @@ export function reduceCloudReviewLedger(previous, command) {
         ...(['finishAnalysis', 'stagePublicationIntent'].includes(command.type) &&
         Object.hasOwn(command, 'sweepCoverageVersion')
           ? ['sweepCoverageVersion']
+          : []),
+        ...(command.type === 'stagePublicationIntent' &&
+        Object.hasOwn(command, 'receiptNormalizationVersion')
+          ? ['receiptNormalizationVersion']
           : []),
         ...(command.type === 'stagePublicationIntent' &&
         Object.hasOwn(command, 'analysisReconciliation')
