@@ -1,3 +1,4 @@
+import { declareTextControl } from '@proto.ui/module-text-control';
 import { describe, it, expect, vi } from 'vitest';
 import { definePrototype, tw } from '@proto.ui/core';
 import { asButton } from '@proto.ui/prototypes-base/button';
@@ -95,6 +96,64 @@ describe('private material through real WC and Feedback', () => {
     expect(host.style.isolation).toBe('auto');
     host.remove();
   });
+  it('retires adapter and owner resources when the visual consumer fails before attachment', async () => {
+    const beforeDispose = vi.fn();
+    const states: Array<{ get(): boolean }> = [];
+    const prototype = definePrototype({
+      name: `material-construction-failure-${++id}`,
+      modules: [declareTextControl({ content: 'plain-text', lineMode: 'single', engine: 'host' })],
+      setup(def) {
+        states.push(def.state.bool('alive', true));
+        def.lifecycle.onBeforeDispose(beforeDispose);
+        return () => null;
+      },
+    });
+    const failure = new Error('consumer setup failed');
+    const off = installExperimentalVisualConsumer(prototype, (_host, style) => {
+      style.apply(['rounded-full']);
+      throw failure;
+    });
+    const add = vi.spyOn(HTMLInputElement.prototype, 'addEventListener');
+    const remove = vi.spyOn(HTMLInputElement.prototype, 'removeEventListener');
+    const Constructor = AdaptToWebComponent(prototype);
+    const host = new Constructor();
+    try {
+      expect(() => document.body.append(host)).toThrow(failure);
+      await settle();
+      expect(beforeDispose).toHaveBeenCalledOnce();
+      expect(() => states[0].get()).toThrow(/disposed/);
+      expect(host.querySelector('[data-pui-style]')).toBeNull();
+      const focusAdds = add.mock.calls
+        .map((args, i) => ({ args, target: add.mock.contexts[i] }))
+        .filter(
+          ({ args, target }) =>
+            ['focus', 'blur'].includes(String(args[0])) && target instanceof HTMLInputElement
+        );
+      expect(focusAdds).toHaveLength(2);
+      for (const { args, target } of focusAdds)
+        expect(
+          remove.mock.calls.some(
+            (call, i) =>
+              remove.mock.contexts[i] === target && call[0] === args[0] && call[1] === args[1]
+          )
+        ).toBe(true);
+      host.remove();
+      await settle();
+      expect(beforeDispose).toHaveBeenCalledOnce();
+      off();
+      document.body.append(host);
+      await settle();
+      expect(states).toHaveLength(2);
+      expect(states[1].get()).toBe(true);
+    } finally {
+      off();
+      host.remove();
+      await settle();
+      add.mockRestore();
+      remove.mockRestore();
+    }
+  });
+
   it('restores application diagnostics and preserves a later external metadata write', () => {
     const host = document.createElement('div');
     host.style.color = 'rgb(0, 0, 0)';
