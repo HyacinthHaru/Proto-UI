@@ -1,5 +1,5 @@
 import { assertProjectionRecipeClosure } from './projection-composition';
-import { withNativeContentLease } from './native-content-lease';
+import { registerNativeContentContainer, withNativeContentLease } from './native-content-lease';
 import { createProjectionScopeController } from './projection-scope';
 import { renderDemo } from './demo-renderer';
 import { loadPrototypes } from './prototype-modules';
@@ -27,6 +27,12 @@ export function createPassiveShellComposition(options: {
 }) {
   const { mount, content } = options;
   const home = content.parentNode!;
+  // These new owner carriers must not become shrink-to-fit flex items.
+  // The original demo still owns its own width/overflow inside the canvas.
+  for (const carrier of [mount, home as HTMLElement]) {
+    carrier.style.width = '100%';
+    carrier.style.minWidth = '0';
+  }
   const nextSibling = content.nextSibling;
   const document = mount.ownerDocument;
   let alive = true;
@@ -45,6 +51,8 @@ export function createPassiveShellComposition(options: {
       if (!alive) throw new Error('Passive shell composition disposed');
       const host = document.createElement('div');
       host.hidden = true;
+      host.style.width = '100%';
+      host.style.minWidth = '0';
       mount.append(host);
       let rendered: DemoRenderResult | undefined;
       try {
@@ -69,6 +77,8 @@ export function createPassiveShellComposition(options: {
           setup(context) {
             const slot = context.refs.slot!;
             const surface = context.refs[options.surfaceRef ?? 'shell']!;
+            registerNativeContentContainer(slot, [content]);
+            registerNativeContentContainer(surface, [content]);
             slot.style.display = 'contents';
             content.style.display = 'contents';
             surface.dataset.projectionPrototype = prototypeId;

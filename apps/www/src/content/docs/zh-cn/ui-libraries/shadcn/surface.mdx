@@ -37,20 +37,30 @@ export function Summary() {
 
 ## 输入
 
-| Prop           | Values                                                            | Default   |
-| -------------- | ----------------------------------------------------------------- | --------- |
-| `variant`      | `transparent`, `outline`, `muted`, `accent`, `solid`, `secondary` | `outline` |
-| `radius`       | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full`                 | `default` |
-| `border`       | `all`, `bottom`, `none`                                           | `all`     |
-| `elevation`    | `none`, `raised`                                                  | `none`    |
-| `hovered`      | boolean                                                           | `false`   |
-| `focusVisible` | boolean                                                           | `false`   |
-| `pressed`      | boolean                                                           | `false`   |
-| `current`      | boolean                                                           | `false`   |
+| Prop | Values | Default |
+| --- | --- | --- |
+| `variant` | `transparent`, `outline`, `secondary`, `muted`, `accent`, `solid`, `scrim` | `outline` |
+| `radius` | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full` | `default` |
+| `border` | `all`, `bottom`, `none` | `all` |
+| `elevation` | `none`, `raised` | `none` |
+| `transitionState` | `closed`, `entering`, `entered`, `leaving` | `entered` |
+| `fade` | boolean | `false` |
+| `hovered` | boolean | `false` |
+| `focusVisible` | boolean | `false` |
+| `pressed` | boolean | `false` |
+| `current` | boolean | `false` |
 
-四个布尔值都是现有语义 owner 提供的事实；Surface 不自行检测指针、焦点、键盘、选择或导航状态。它没有 exposed state、event、method、无障碍 role 或 native property。`current` 是呈现输入，不是 `aria-current` 实现；需要真实 Button 时应组合受治理的 Button 协议。
+`hovered`、`focusVisible`、`pressed`、`current` 都是现有语义 owner 提供的事实；Surface 不自行检测指针、焦点、键盘、选择或导航状态。它没有 exposed state、event、method、无障碍 role 或 native property。`current` 是呈现输入，不是 `aria-current` 实现；需要真实 Button 时应组合受治理的 Button 协议。
 
 移除输入后恢复默认值。`secondary` 选择家族的次级前景/背景，不通过 elevation 推断变体。默认圆角和绘制由各家族决定，共用 prop 词汇不等于外观一致。内容与布局继续归消费者；当带风格的 Text 子项需要保留外层 Surface 前景时，使用 `tone="inherit"`。
+
+## 观察已有 Transition
+
+`fade` 显式启用家族拥有的 opacity 呈现。在带风格投射中，`fade=true` 时 `closed`、`leaving` 对应 opacity 0，`entering`、`entered` 对应 opacity 1。`transitionState` 是既有 [Transition owner](/zh-cn/ui-libraries/base/transition/) 提供的事实；Surface 不创建第二个时钟、调度策略、阶段事件或完成信号。`fade=false` 时，阶段输入不会启用这组 opacity 映射。
+
+Web 的 `surface-fade` token 消费 `--pui-surface-transition-duration`，默认 `0ms`。Web composition 可通过该变量传入既有 owner 解析后的 duration，并负责验证毫秒数有限且非负。不存在通用 220ms 默认值，也没有 Surface duration prop。reduced-motion 与起始 opacity 属于有界 Web 样式行为，不证明原生目标支持动态 CSS 变量。
+
+`scrim` 选择家族的常规遮暗绘制，不增加材质采样、模糊或折射。opacity 0 不代表禁用、inert、卸载或移除语义 owner：交互门控、presence 与焦点仍归既有 Dialog/Transition 等语义 owner，Surface 不接管这些责任。
 
 ## Host 与 Compiler 边界
 

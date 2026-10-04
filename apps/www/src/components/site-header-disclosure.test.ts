@@ -163,6 +163,31 @@ describe('shared website navigation disclosure', () => {
     expect(root.dataset.siteMenuOpen).toBe('false');
   });
 
+  it('lets an open nested Select consume immediate Escape before its delayed focus entry', () => {
+    const { root } = fixture();
+    disclosure!.enhance();
+    disclosure!.toggle();
+    const trigger = root.querySelector<HTMLElement>('[data-runtime]')!;
+    const popup = document.createElement('div');
+    popup.id = 'immediate-nested';
+    popup.setAttribute('role', 'listbox');
+    document.body.append(popup);
+    trigger.setAttribute('aria-controls', popup.id);
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.addEventListener(
+      'keydown',
+      () => {
+        trigger.setAttribute('aria-expanded', 'false');
+        popup.remove();
+      },
+      { once: true }
+    );
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(root.dataset.siteMenuOpen).toBe('true');
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(root.dataset.siteMenuOpen).toBe('false');
+  });
+
   it('does not treat an unrelated portaled listbox as Header-owned', () => {
     const { root } = fixture();
     disclosure!.enhance();

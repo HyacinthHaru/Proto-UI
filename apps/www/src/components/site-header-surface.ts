@@ -75,7 +75,7 @@ export function headerSurfaceParticipant(header: HTMLElement) {
               ref: 'header-surface',
               className: 'site-header-popup-surface',
               props: { ...panelSurfaceProps('popup') },
-              surfaceStyle: panelSurfaceLayout,
+              surfaceStyle: { ...panelSurfaceLayout, display: 'flex', flexDirection: 'column' },
               children: [
                 { kind: 'box', ref: 'header-native-slot', className: 'site-header-native-slot' },
               ],

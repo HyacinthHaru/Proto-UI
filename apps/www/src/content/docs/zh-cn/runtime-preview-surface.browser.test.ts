@@ -411,6 +411,92 @@ describe('RuntimeBox single actual Prototype surface', () => {
     }
   }, 90000);
 
+  for (const runtime of RUNTIMES)
+    it(`${runtime}: preserves forward/backward generated shell and slot Selection endpoints`, async () => {
+      const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+      try {
+        await page.addInitScript(
+          (runtime) => localStorage.setItem('preferred-prototypes-adapter', runtime),
+          runtime
+        );
+        await page.goto(`${baseUrl}/zh-cn/ui-libraries/base/image/`, { waitUntil: 'networkidle' });
+        const root = page.locator('[data-demo-id="demo-base-image"]');
+        await ready(root, runtime);
+        for (const boundary of ['.pui-runtime-preview-surface', '[data-passive-shell-slot]']) {
+          for (const backward of [false, true]) {
+            const before = await root.evaluate(
+              (root, { boundary, backward }) => {
+                const wrapper = root.querySelector(boundary)!;
+                const content = root.querySelector(
+                  '[data-demo-ref="__website_runtime_preview_surface__-content"]'
+                )!;
+                const selection = document.getSelection()!;
+                selection.setBaseAndExtent(
+                  wrapper,
+                  backward ? wrapper.childNodes.length : 0,
+                  wrapper,
+                  backward ? 0 : wrapper.childNodes.length
+                );
+                (root as any).__selectionSource = content;
+                return {
+                  text: selection.toString(),
+                  family: root.getAttribute('data-site-library-family'),
+                };
+              },
+              { boundary, backward }
+            );
+            expect(before.text.length).toBeGreaterThan(0);
+            const family = before.family === 'brutalist' ? 'shadcn' : 'brutalist';
+            await root.evaluate(
+              (root, family) => root.setAttribute('data-site-library-family', family),
+              family
+            );
+            await expect
+              .poll(() =>
+                root.locator('.pui-runtime-preview-surface').getAttribute('data-projection-family')
+              )
+              .toBe(family);
+            const after = await root.evaluate((root) => {
+              const selection = document.getSelection()!;
+              const source = (root as any).__selectionSource;
+              return {
+                text: selection.toString(),
+                connected: source.isConnected,
+                same:
+                  source ===
+                  root.querySelector(
+                    '[data-demo-ref="__website_runtime_preview_surface__-content"]'
+                  ),
+                anchor: selection.anchorOffset,
+                focus: selection.focusOffset,
+                anchorParent: selection.anchorNode === source.parentNode,
+                focusParent: selection.focusNode === source.parentNode,
+              };
+            });
+            expect(after).toMatchObject({
+              text: before.text,
+              connected: true,
+              same: true,
+              anchorParent: true,
+              focusParent: true,
+              anchor: backward ? 1 : 0,
+              focus: backward ? 0 : 1,
+            });
+            await capture(
+              page,
+              root,
+              `selection-${runtime}-${boundary.includes('slot') ? 'slot' : 'surface'}-${backward ? 'backward' : 'forward'}`,
+              family,
+              runtime,
+              await measure(root, family, [24, 16, 24, 16])
+            );
+          }
+        }
+      } finally {
+        await page.close();
+      }
+    }, 90000);
+
   it('keeps overview titles, destinations and fallback readable without JavaScript', async () => {
     const context = await browser.newContext({
       javaScriptEnabled: false,

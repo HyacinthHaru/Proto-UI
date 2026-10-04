@@ -39,7 +39,7 @@ async function capture(page: Page, name: string) {
         ? getComputedStyle(el.querySelector('img')!).visibility
         : null,
       mediaOpacity: el.querySelector('img')
-        ? getComputedStyle(el.querySelector('img')!).opacity
+        ? getComputedStyle(el.querySelector('[data-docs-image-source-surface]')!).opacity
         : null,
     })),
     panels: Array.from(document.querySelectorAll('[data-docs-image-content]')).map((el) => ({
@@ -138,8 +138,14 @@ async function recordNextMotion(page: Page, input: 'pointerdown' | 'keydown') {
               y: rect.y,
               width: rect.width,
               height: rect.height,
-              opacity: Number(getComputedStyle(mask).opacity),
-              sourceOpacity: source ? Number(getComputedStyle(source).opacity) : null,
+              opacity: Number(
+                getComputedStyle(mask.querySelector('[data-docs-image-scrim]')!).opacity
+              ),
+              sourceOpacity: source
+                ? Number(
+                    getComputedStyle(source.closest('[data-docs-image-source-surface]')!).opacity
+                  )
+                : null,
             });
           }
           if (time - start < 550) requestAnimationFrame(sample);
@@ -229,7 +235,7 @@ describe('automatic documentation image preview in real Chromium', () => {
               exact: true,
             });
             expect(await trigger.count(), 'exact source image accessible name').toBe(1);
-            expect(await trigger.isEnabled(), 'private semantic trigger is usable').toBe(true);
+            expect(await trigger.isEnabled(), 'public Base semantic trigger is usable').toBe(true);
             if (width < 500) await trigger.tap();
             else await trigger.click();
             await entered(page);
@@ -261,7 +267,8 @@ describe('automatic documentation image preview in real Chromium', () => {
             expect(style.bottom).toBeLessThanOrEqual(901);
             expect(style.borderRadius).toBe('0px');
             const mask = await page.locator('[data-docs-image-mask]').evaluate((el) => ({
-              opacity: getComputedStyle(el).backgroundColor,
+              opacity: getComputedStyle(el.querySelector('[data-docs-image-scrim]')!)
+                .backgroundColor,
               backdropFilter: getComputedStyle(el).backdropFilter,
             }));
             expect(mask.opacity).toBe('rgba(0, 0, 0, 0.8)');
@@ -291,7 +298,12 @@ describe('automatic documentation image preview in real Chromium', () => {
             await closed(page);
             expect(await trigger.evaluate((el) => el === document.activeElement)).toBe(true);
             expect(await trigger.getAttribute('data-focus-visible')).not.toBeNull();
-            expect(await trigger.evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe('none');
+            expect(
+              await trigger.evaluate(
+                (el) =>
+                  getComputedStyle(el.querySelector('[data-docs-image-trigger-surface]')!).boxShadow
+              )
+            ).not.toBe('none');
             await capture(page, `${width}-${colorScheme}-${family}-keyboard-focus`);
             if (width === 390 && family === 'brutalist') {
               await page.evaluate(() => {
@@ -361,7 +373,9 @@ describe('automatic documentation image preview in real Chromium', () => {
         await page.waitForFunction(
           () => {
             const mask = document.querySelector('[data-docs-image-mask]');
-            const opacity = mask && Number(getComputedStyle(mask).opacity);
+            const opacity =
+              mask &&
+              Number(getComputedStyle(mask.querySelector('[data-docs-image-scrim]')!).opacity);
             return opacity && opacity > 0.1 && opacity < 0.8;
           },
           undefined,
@@ -392,7 +406,9 @@ describe('automatic documentation image preview in real Chromium', () => {
         await page.waitForFunction(
           () => {
             const mask = document.querySelector('[data-docs-image-mask]');
-            const opacity = mask && Number(getComputedStyle(mask).opacity);
+            const opacity =
+              mask &&
+              Number(getComputedStyle(mask.querySelector('[data-docs-image-scrim]')!).opacity);
             return opacity && opacity > 0.1 && opacity < 0.8;
           },
           undefined,
@@ -450,7 +466,9 @@ describe('automatic documentation image preview in real Chromium', () => {
       await page.waitForFunction(
         () => {
           const mask = document.querySelector('[data-docs-image-mask]');
-          const opacity = mask && Number(getComputedStyle(mask).opacity);
+          const opacity =
+            mask &&
+            Number(getComputedStyle(mask.querySelector('[data-docs-image-scrim]')!).opacity);
           return opacity && opacity > 0.5 && opacity < 0.8;
         },
         undefined,
@@ -584,7 +602,7 @@ describe('automatic documentation image preview in real Chromium', () => {
         const facts = await source.evaluate((el) => ({
           alt: el.getAttribute('alt'),
           src: el.getAttribute('src'),
-          opacity: getComputedStyle(el).opacity,
+          opacity: getComputedStyle(el.closest('[data-docs-image-source-surface]')!).opacity,
           visibility: getComputedStyle(el).visibility,
           transition: getComputedStyle(el).transition,
           inlineTransition: {
@@ -845,7 +863,7 @@ describe('automatic documentation image preview in real Chromium', () => {
         expect(await page.locator('.docs-image-full').getAttribute('src')).toContain(
           `whitepaper-conditional-consistency.${locale}.svg`
         );
-        const canvas = await page.locator('.docs-image-full').evaluate((el) => ({
+        const canvas = await page.locator('[data-docs-image-canvas]').evaluate((el) => ({
           background: getComputedStyle(el).backgroundColor,
           padding: getComputedStyle(el).padding,
           border: getComputedStyle(el).borderTopWidth,
@@ -977,7 +995,16 @@ describe('automatic documentation image preview in real Chromium', () => {
       await page.keyboard.press('Escape');
       await closed(page);
       expect(await trigger.evaluate((el) => el === document.activeElement)).toBe(true);
-      expect(await trigger.evaluate((el) => getComputedStyle(el).outlineStyle)).not.toBe('none');
+      const focusPaint = await trigger
+        .locator('[data-docs-image-trigger-surface]')
+        .evaluate((el) => ({
+          style: getComputedStyle(el).outlineStyle,
+          color: getComputedStyle(el).outlineColor,
+          width: getComputedStyle(el).outlineWidth,
+        }));
+      expect(focusPaint.style).toBe('solid');
+      expect(focusPaint.width).toBe('2px');
+      expect(focusPaint.color).not.toBe('rgba(0, 0, 0, 0)');
       await capture(page, 'forced-colors-keyboard-focus');
     } finally {
       await context.close();

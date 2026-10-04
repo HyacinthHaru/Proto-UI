@@ -122,6 +122,11 @@ describe.each(runtimes)('real %s passive Surface', (runtime) => {
             current: true,
           },
           { variant: 'transparent', border: 'none', radius: 'none' },
+          ...(['closed', 'entering', 'entered', 'leaving'] as const).map((transitionState) => ({
+            variant: 'scrim' as const,
+            fade: true,
+            transitionState,
+          })),
           {},
         ] as SurfaceRootProps[]) {
           await mounted.update(props);
@@ -135,6 +140,13 @@ describe.each(runtimes)('real %s passive Surface', (runtime) => {
           if (family === 'base') expect(tokens).toBe('');
           else {
             expect(tokens).not.toMatch(/font-|text-(sm|base|lg|xl)/);
+            if (props.fade) {
+              expect(tokens).toContain('surface-fade');
+              expect(tokens).toContain('bg-black/80');
+              expect(tokens).toContain(
+                ['closed', 'leaving'].includes(props.transitionState!) ? 'opacity-0' : 'opacity-100'
+              );
+            } else expect(tokens).not.toContain('surface-fade');
             if (props.focusVisible) expect(tokens).toContain('ring-2');
             if (props.radius === 'full') expect(tokens).toContain('rounded-full');
           }

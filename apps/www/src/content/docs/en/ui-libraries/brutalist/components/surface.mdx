@@ -37,20 +37,30 @@ The `/surface` subpath and package root export `surfaceRoot`; `SurfaceRootProps`
 
 ## Inputs
 
-| Prop           | Values                                                            | Default   |
-| -------------- | ----------------------------------------------------------------- | --------- |
-| `variant`      | `transparent`, `outline`, `muted`, `accent`, `solid`, `secondary` | `outline` |
-| `radius`       | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full`                 | `default` |
-| `border`       | `all`, `bottom`, `none`                                           | `all`     |
-| `elevation`    | `none`, `raised`                                                  | `none`    |
-| `hovered`      | boolean                                                           | `false`   |
-| `focusVisible` | boolean                                                           | `false`   |
-| `pressed`      | boolean                                                           | `false`   |
-| `current`      | boolean                                                           | `false`   |
+| Prop | Values | Default |
+| --- | --- | --- |
+| `variant` | `transparent`, `outline`, `secondary`, `muted`, `accent`, `solid`, `scrim` | `outline` |
+| `radius` | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full` | `default` |
+| `border` | `all`, `bottom`, `none` | `all` |
+| `elevation` | `none`, `raised` | `none` |
+| `transitionState` | `closed`, `entering`, `entered`, `leaving` | `entered` |
+| `fade` | boolean | `false` |
+| `hovered` | boolean | `false` |
+| `focusVisible` | boolean | `false` |
+| `pressed` | boolean | `false` |
+| `current` | boolean | `false` |
 
-The four booleans are facts supplied by the existing semantic owner. Surface does not detect pointer, focus, keyboard, selection or navigation state itself. It owns no exposed state, event, method, accessible role or native property. `current` is a presentation input, not an `aria-current` implementation. A caller that needs a real Button should compose the governed Button protocol.
+`hovered`, `focusVisible`, `pressed` and `current` are facts supplied by the existing semantic owner. Surface does not detect pointer, focus, keyboard, selection or navigation state itself. It owns no exposed state, event, method, accessible role or native property. `current` is a presentation input, not an `aria-current` implementation. A caller that needs a real Button should compose the governed Button protocol.
 
 Removing an input restores its default. `secondary` uses the Brutalist secondary background and ordinary foreground, independently of elevation. Default radius and paint are family-specific; a shared prop vocabulary does not imply identical appearance. Content and layout remain consumer-owned. Use Text with `tone="inherit"` when a styled Text child must retain the enclosing Surface foreground.
+
+## Observe an existing Transition
+
+`fade` opts into family-owned opacity presentation. In a styled projection, `fade=true` makes `closed` and `leaving` map to opacity zero, while `entering` and `entered` map to opacity one. The `transitionState` is a fact from the existing [Transition owner](/en/ui-libraries/base/transition/); Surface creates no second clock, scheduling policy, phase events or completion signal. With `fade=false`, phase input does not enable this opacity mapping.
+
+The Web `surface-fade` token consumes `--pui-surface-transition-duration`, defaulting to `0ms`. A Web composition can forward the existing owner's resolved duration through this variable; it must validate finite, non-negative milliseconds. There is no universal 220ms default and no Surface duration prop. Reduced-motion handling and starting opacity are bounded Web style behavior, not proof that native targets support dynamic CSS variables.
+
+`scrim` selects the family's conventional dimming paint. It adds no material sampling, blur or refraction. Opacity zero is not an instruction to disable, make inert, unmount or remove semantic ownership: the existing Dialog/Transition or other semantic owner still gates interaction, presence and focus. Surface does not manage any of those responsibilities.
 
 ## Host and Compiler boundary
 

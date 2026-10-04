@@ -180,8 +180,29 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
       trigger.getAttribute('aria-controls')?.split(/\s+/).includes(popup.id)
     );
   };
+  const nestedEscape = new WeakSet<KeyboardEvent>();
+  const captureEscapeOwner = (event: KeyboardEvent) => {
+    if (event.key !== 'Escape' || !open) return;
+    // Read ownership before the nested Select handles and closes this sample.
+    // Its delayed initial focus may still be on its trigger.
+    const nestedOpen = [...root.querySelectorAll('[aria-controls][aria-expanded="true"]')].some(
+      (trigger) =>
+        trigger
+          .getAttribute('aria-controls')
+          ?.split(/\s+/)
+          .some((id) => {
+            const popup = document.getElementById(id);
+            return (
+              popup?.matches('[role="listbox"], [data-site-select-content]') &&
+              !popup.closest('[hidden], [inert]')
+            );
+          })
+    );
+    if (nestedOpen) nestedEscape.add(event);
+  };
   const onEscape = (event: KeyboardEvent) => {
-    if (event.key !== 'Escape' || event.defaultPrevented || !open) return;
+    if (event.key !== 'Escape' || event.defaultPrevented || !open || nestedEscape.has(event))
+      return;
     // A Select or another nested overlay owns its own Escape first.
     const target = event.target instanceof (window?.Element ?? Element) ? event.target : null;
     if (ownsSelectPopup(target) || target?.closest('[role="dialog"]')) return;
@@ -235,6 +256,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
       else frame.style.removeProperty('--header-height');
     }
     compact?.removeEventListener('change', onBreakpoint);
+    document.removeEventListener('keydown', captureEscapeOwner, true);
     document.removeEventListener('keydown', onEscape);
     document.removeEventListener('pointerdown', onOutside);
     document.removeEventListener(SITE_CONTENTS_OPEN_EVENT, onContentsOpen);
@@ -307,6 +329,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     destroy,
   };
   compact?.addEventListener('change', onBreakpoint);
+  document.addEventListener('keydown', captureEscapeOwner, true);
   document.addEventListener('keydown', onEscape);
   document.addEventListener('pointerdown', onOutside);
   document.addEventListener(SITE_CONTENTS_OPEN_EVENT, onContentsOpen);

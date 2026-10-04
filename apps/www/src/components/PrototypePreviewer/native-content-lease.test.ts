@@ -58,3 +58,32 @@ describe('native source boundary normalization', () => {
     expect(restore).not.toHaveBeenCalled();
   });
 });
+
+describe('passive shell ancestor boundary ownership', () => {
+  for (const [anchor, focus] of [
+    [0, 1],
+    [1, 0],
+  ]) {
+    it(`restores registered ancestor endpoints ${anchor} → ${focus} for the retained source scope`, () => {
+      const { source, oldSurface, nextText, move } = fixture(true);
+      const selection = document.getSelection()!;
+      selection.setBaseAndExtent(oldSurface, anchor!, oldSurface, focus!);
+      vi.spyOn(selection, 'focusOffset', 'get').mockReturnValue(focus!);
+      const restore = vi.spyOn(selection, 'setBaseAndExtent');
+      withNativeContentLease(source, move);
+      expect(restore).toHaveBeenLastCalledWith(nextText, anchor, nextText, focus);
+    });
+  }
+  it('does not claim an unrelated registered container', () => {
+    const { source, oldSurface, move } = fixture(true);
+    const other = document.createElement('div');
+    other.textContent = 'Other owner';
+    document.body.append(other);
+    registerNativeContentContainer(oldSurface, [other]);
+    const selection = document.getSelection()!;
+    selection.setBaseAndExtent(oldSurface, 0, oldSurface, 1);
+    const restore = vi.spyOn(selection, 'setBaseAndExtent');
+    withNativeContentLease(source, move);
+    expect(restore).not.toHaveBeenCalled();
+  });
+});

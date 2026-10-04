@@ -1187,7 +1187,10 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
 
         const brand = page.locator('.site-header a[data-site-link-appearance="brand"]').first();
         expect(await brand.getAttribute('role')).toBeNull();
-        expect(await brand.locator('[data-pui-root]').count()).toBe(1);
+        expect(await brand.locator('[data-pui-root]').count()).toBe(2);
+        expect(await brand.locator('[data-pui-style~="bg-transparent"]').count()).toBe(1);
+        expect(await brand.locator('[data-pui-style~="font-semibold"]').count()).toBe(1);
+        expect(await brand.locator('[role], [tabindex]').count()).toBe(0);
         await captureLinks(
           page,
           `nav-${family}-${colorScheme}-brand-focus`,
@@ -1246,7 +1249,13 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
             background: root.backgroundColor,
             border: root.borderTopWidth,
             shadow: root.boxShadow,
-            directChild: title.parentElement?.parentElement === anchor.firstElementChild,
+            directChild:
+              title.parentElement?.parentElement?.matches(
+                '[data-site-link-text][data-pui-root]'
+              ) === true &&
+              title.parentElement.parentElement.parentElement === anchor.firstElementChild &&
+              title.parentElement.contains(caption) &&
+              anchor.firstElementChild?.matches('[data-site-link-content][data-pui-root]') === true,
             nativeNameOnly:
               anchor.getAttribute('role') === null && !anchor.querySelector('a,button,[tabindex]'),
           };
@@ -1311,7 +1320,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         const focus = await assertNavigationFocus(page, sidebar);
         expect(
           await sidebar
-            .locator('[data-pui-root]')
+            .locator('[data-site-link-content]')
             .evaluate((surface) => surface.getBoundingClientRect().height)
         ).toBeGreaterThanOrEqual(44);
         await captureLinks(

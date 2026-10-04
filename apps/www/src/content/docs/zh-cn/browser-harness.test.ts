@@ -37,6 +37,28 @@ describe('runtime evidence counts the original demonstrated slot', () => {
         __vue__: {},
       });
   }
+  it('does not admit a generic renderer until its public commit and passive shell both exist', async () => {
+    mount('react');
+    const root = document.querySelector<HTMLElement>('[data-previewer-id]')!;
+    delete root.dataset.projectionMode;
+    const select = document.createElement('div');
+    select.dataset.adapterSelectRoot = '';
+    select.dataset.value = 'react';
+    root.append(select);
+    let committed: string | null = null;
+    Object.assign(root, { __previewer__: { getCurrentRuntime: () => committed } });
+    const surface = root.querySelector<HTMLElement>('.pui-runtime-preview-surface')!;
+    const original = surface.firstElementChild!;
+    surface.replaceWith(original);
+    expect(await observed('react')).toBe(false);
+    original.replaceWith(surface);
+    surface.append(original);
+    expect(await observed('react')).toBe(false);
+    committed = 'react';
+    expect(await observed('react')).toBe(true);
+    committed = 'vue';
+    expect(await observed('react')).toBe(false);
+  });
   it('keeps the remaining-component paint measurements on the same original slot', () => {
     const source = readFileSync(
       'apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts',

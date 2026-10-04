@@ -316,6 +316,12 @@ describe.sequential('Public passive atom documentation previews', () => {
         }
         expect(errors).toEqual([]);
         await preview.screenshot({ path: path.join(evidence, `${name}.png`) });
+        const documentCapture =
+          family === 'shadcn' && atom === 'surface' && runtime === 'wc'
+            ? `${name}-document.png`
+            : null;
+        if (documentCapture)
+          await page.screenshot({ path: path.join(evidence, documentCapture), fullPage: true });
         await writeFile(
           path.join(evidence, `${name}.json`),
           JSON.stringify(
@@ -328,6 +334,7 @@ describe.sequential('Public passive atom documentation previews', () => {
               runtime,
               viewport: { width: 1280, height: 1000 },
               theme: 'light',
+              captures: { preview: `${name}.png`, document: documentCapture },
               facts,
               shellEvidence,
               errors,

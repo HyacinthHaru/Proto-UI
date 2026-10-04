@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mountDocumentationImagePreview } from './documentation-image-preview';
-import type { PreviewControl } from './documentation-image-controls';
+import { setPreviewSurfaceDuration, type PreviewControl } from './documentation-image-controls';
 import { sharedImageHitPoint } from './documentation-image-preview.test-utils';
 import { getElementProps } from '@proto.ui/adapter-web-component';
 let dispose: (() => void) | undefined;
@@ -54,22 +54,30 @@ describe('documentation image native hit probe', () => {
   });
 });
 describe('documentation image viewer PUI integration', () => {
-  it('uses a private Base Button thumbnail without family variants or moving hover feedback', async () => {
+  it('composes a public Base Button thumbnail without family variants or moving hover feedback', async () => {
     document.documentElement.dataset.siteLibraryFamily = 'brutalist';
     const { trigger, root } = await fixture();
     expect(getElementProps(trigger)).not.toHaveProperty('variant');
-    expect(trigger.getAttribute('data-pui-style')).toContain('docs-image-zoom-trigger');
+    expect(
+      trigger.querySelector('[data-docs-image-trigger-surface]')?.getAttribute('data-pui-style')
+    ).toContain('bg-transparent');
     trigger.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
     trigger.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     await settle();
     expect(trigger.getExposes?.().hovered.get()).toBe(true);
     expect(trigger.getExposes?.().pressed.get()).toBe(true);
-    expect(trigger.getAttribute('data-pui-style')).not.toMatch(/translate-|scale-|shadow-/);
-    expect(trigger.getAttribute('data-pui-style')).toContain('data-[focus-visible]:ring-2');
+    expect(
+      trigger.querySelector('[data-docs-image-trigger-surface]')?.getAttribute('data-pui-style')
+    ).not.toMatch(/translate-|scale-|shadow-/);
+
     trigger.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
     trigger.getExposes?.().focusSelf({ reason: 'keyboard' });
     expect(trigger.getExposes?.().focusVisible.get()).toBe(true);
     expect(trigger.getAttribute('data-focus-visible')).not.toBeNull();
+    await settle();
+    expect(
+      trigger.querySelector('[data-docs-image-trigger-surface]')?.getAttribute('data-pui-style')
+    ).toContain('ring-2');
     trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await settle();
     expect(root.getExposes?.().open.get()).toBe(true);
@@ -213,7 +221,9 @@ describe('documentation image viewer PUI integration', () => {
     await settle();
     const trigger = document.querySelector('[data-docs-image-trigger]')! as PreviewControl;
     expect(trigger.localName).toBe('docs-preview-brutalist-image-trigger');
-    expect(trigger.getAttribute('data-pui-style')).toContain('docs-image-zoom-trigger');
+    expect(
+      trigger.querySelector('[data-docs-image-trigger-surface]')?.getAttribute('data-pui-style')
+    ).toContain('bg-transparent');
     trigger.focus();
     trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await settle();
@@ -225,4 +235,15 @@ describe('documentation image viewer PUI integration', () => {
     expect(document.querySelector('[data-docs-image-content]')).toBeNull();
     expect(document.body.style.overflow).toBe('');
   });
+});
+
+it('validates the controlled public Surface duration instead of accepting arbitrary CSS', () => {
+  const surface = document.createElement('div');
+  setPreviewSurfaceDuration(surface, 220);
+  expect(surface.style.getPropertyValue('--pui-surface-transition-duration')).toBe('220ms');
+  for (const invalid of [-1, NaN, Infinity])
+    expect(() => setPreviewSurfaceDuration(surface, invalid)).toThrow('Invalid Surface duration');
+  expect(surface.style.getPropertyValue('--pui-surface-transition-duration')).toBe('220ms');
+  setPreviewSurfaceDuration(surface, 0);
+  expect(surface.style.getPropertyValue('--pui-surface-transition-duration')).toBe('0ms');
 });

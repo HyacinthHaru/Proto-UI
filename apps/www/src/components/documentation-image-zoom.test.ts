@@ -41,13 +41,15 @@ describe('borderless image presentation / maintainer request #796', () => {
     expect(requests.at(-1)).toMatchObject({ reason: 'outside.press', focusReason: 'pointer' });
     expect(document.activeElement).toBe(trigger);
   });
-  it('uses a private Base Dialog projection without an original-size toolbar', async () => {
+  it('composes public Base Dialog and Surface without an original-size toolbar', async () => {
     const { content } = await fixture();
     expect(content.getAttribute('role')).toBe('dialog');
     expect(content.getAttribute('aria-modal')).toBe('true');
     expect(document.querySelector('[data-docs-image-zoom]')).toBeNull();
     expect(content.querySelector('header')).toBeNull();
-    expect(content.getAttribute('data-pui-style')).toContain('docs-image-zoom-content');
+    expect(
+      content.querySelector('[data-docs-image-canvas]')?.getAttribute('data-pui-style')
+    ).toContain('bg-background');
     expect(content.querySelector('[data-docs-image-close]')).not.toBeNull();
     expect(content.querySelector('.docs-image-accessible-description')?.textContent).toContain(
       'Diagram caption'
@@ -92,7 +94,9 @@ describe('borderless image presentation / maintainer request #796', () => {
     await settle();
     expect(content.dataset.docsImageReturn).toBe('fade');
     expect(content.style.getPropertyValue('--docs-image-origin-transform')).toBe('none');
-    expect(content.style.getPropertyValue('--docs-image-closed-opacity')).toBe('0');
+    expect(
+      content.querySelector('[data-docs-image-canvas]')?.getAttribute('data-pui-style')
+    ).toContain('opacity-0');
   });
   it('does not recover an invalid return rectangle merely because focus scrolls the source back', async () => {
     let sourceTop = 40;

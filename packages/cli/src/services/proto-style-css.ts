@@ -72,6 +72,12 @@ const colorVars = new Set([
 ]);
 
 const staticUtilities: Record<string, string[]> = {
+  'forced-colors-focus-outline': ['outline: 2px solid transparent;', 'outline-offset: 2px;'],
+  'surface-fade': [
+    'transition-property: opacity;',
+    'transition-duration: var(--pui-surface-transition-duration, 0ms);',
+    'transition-timing-function: linear;',
+  ],
   absolute: ['position: absolute;'],
   // A translated, 2px-bordered interactive host retains the union of its rest
   // and painted bodies. This pseudo-element is part of the same native owner,
@@ -264,8 +270,8 @@ const staticUtilities: Record<string, string[]> = {
   'top-auto': ['top: auto;'],
   'opacity-65': ['opacity: 0.65;'],
   'opacity-70': ['opacity: 0.7;'],
-  'opacity-100': ['opacity: 1;'],
   'opacity-0': ['opacity: 0;'],
+  'opacity-100': ['opacity: 1;'],
   'opacity-50': ['opacity: 0.5;'],
   'ring-inset': ['--pui-ring-inset: inset;'],
   'ring-0': ['--pui-ring-width: 0px;', ...ringShadow()],
@@ -504,6 +510,27 @@ export function renderProtoStyleTokenCss(tokens: string[]): string {
     }
     lines.push('  }');
     lines.push('');
+  }
+
+  if (tokens.includes('surface-fade')) {
+    lines.push(
+      '  @media (prefers-reduced-motion: reduce) {',
+      '    :where([data-pui-style~="surface-fade"]) { transition-duration: 0ms; }',
+      '  }',
+      '  @starting-style {',
+      '    :where([data-pui-style~="surface-fade"][data-pui-style~="opacity-100"]) { opacity: 0; }',
+      '  }',
+      ''
+    );
+  }
+
+  if (tokens.includes('forced-colors-focus-outline')) {
+    lines.push(
+      '  @media (forced-colors: active) {',
+      '    :where([data-pui-style~="forced-colors-focus-outline"]) { outline-color: Highlight; }',
+      '  }',
+      ''
+    );
   }
 
   if (unknown.length > 0) {

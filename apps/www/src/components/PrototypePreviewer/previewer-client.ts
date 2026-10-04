@@ -261,11 +261,18 @@ export function initPreviewer(options: PreviewerOptions) {
         await result.destroy();
         return;
       }
-      currentDemo = { id, destroy: result.destroy };
-      activeSurface = surface;
       // Page family may change while the renderer is awaiting its framework.
       // Commit the latest consumer input before publishing this active view.
       family = runtimePreviewFamily(root);
+      // Await the latest family as well as the first shell. A slow renderer may
+      // have started before the page selection changed.
+      await surface.setAppearance(family, resolveProjectionThemeSurfaceStyle(family, root));
+      if (destroyed || myVersion !== version) {
+        await result.destroy();
+        return;
+      }
+      currentDemo = { id, destroy: result.destroy };
+      activeSurface = surface;
       const watchTheme = () =>
         watchProjectionThemeSurfaceStyle(family, root, (theme) => {
           if (!destroyed && myVersion === version && activeSurface === surface) {

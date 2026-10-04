@@ -220,10 +220,7 @@ fn parses_every_colour_a_theme_can_produce() {
                             // declared omission diagnostic; all other colors must parse.
                             if token == "text-inherit" && property == "color" {
                                 assert_eq!(value, "inherit");
-                                assert!(matches!(
-                                    parse(&value),
-                                    Err(ColorError::Unsupported(_))
-                                ));
+                                assert!(matches!(parse(&value), Err(ColorError::Unsupported(_))));
                                 inherited_text_diagnostics += 1;
                                 continue;
                             }

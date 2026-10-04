@@ -113,7 +113,7 @@ Text 与 Surface 页面记录 PR #777 实际增加的可复用工作区原子。
 - Base Input 在该基线已有源码和编目归属，但缺少 Base 详情路由。[PR #812](https://github.com/Proto-UI/Proto-UI/pull/812) 补充双语 API 页面和真实的四种 Web runtime 预览；Shadcn Input 页面不能代替 Base 协议文档。
 - [PR #808](https://github.com/Proto-UI/Proto-UI/pull/808) 增加 Bootstrap Checkbox Root/Indicator、Switch Root/Thumb、Toggle、Input、Textarea、Separator。六个新增家族页覆盖八个新增部件，加上 Button 共七类组件、九个部件，仍是部分 draft 家族；上面的 main 基线表不会提前把这些条目当成已集成。
 - [Material 实验](/zh-cn/ui-libraries/liquid-glass/material-experiment/) 单独记录 PR #809 的 `experimental-owned-material-button`，不与现有 stage-0 Liquid Glass Button 混淆。它不是已发布的库导出，也不代表通用 Compiler 支持。
-- [PR #777](https://github.com/Proto-UI/Proto-UI/pull/777) 引入过以页面命名的实现。这些 `site-*` 名称是迁移债务，不是获准的新增库。可复用原子必须拥有自己的语义，并经由适用的 Adapter 或 Compiler 路径消费；文档不能把页面专用包装确立为最终架构。
+- [PR #777](https://github.com/Proto-UI/Proto-UI/pull/777) 曾引入五个 `site-*` 定义；当前工作区用可复用 Text/Surface 与既有 Lucide 组合替代。三个 image-zoom 定义（两个继承自 main，一个新增）也由后续依赖移除。文档图片预览改为组合已有 Button/Dialog owner 与公开 Surface 绘制，不准入页面专用 API；日期审计保留精确源码身份和迁移检查点。
 
 ## 让新增原型同时进入文档
 

@@ -250,10 +250,17 @@ export async function selectRuntime(
       const selectedValue = fixed ? scope?.dataset.projectionRuntime : legacySelect?.dataset.value;
       if (!root || !host || !content || selectedValue !== selectedRuntime) return false;
       if (fixed && scope?.dataset.projectionState !== 'ready') return false;
+      if (
+        !fixed &&
+        (
+          root as HTMLElement & { __previewer__?: { getCurrentRuntime(): string | null } }
+        ).__previewer__?.getCurrentRuntime() !== selectedRuntime
+      )
+        return false;
       const surfaces = content.querySelectorAll<HTMLElement>(
         '.pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"]'
       );
-      if (surfaces.length > 1) return false;
+      if (surfaces.length !== 1) return false;
       const surface = surfaces[0];
       if (
         surface &&
@@ -266,7 +273,7 @@ export async function selectRuntime(
       // RuntimeBox owns this one reserved passive boundary. Count and inspect
       // the original demonstrated slot, not that additional Website Prototype.
       // No arbitrary Prototype root is filtered, including extra real siblings.
-      const demonstrated = surface ?? content;
+      const demonstrated = surface!;
       const firstRoot = demonstrated.querySelector<HTMLElement>('[data-pui-root]');
       if (demonstrated.querySelectorAll(selector).length !== count || !firstRoot) return false;
       if (selectedRuntime === 'wc') return firstRoot.tagName.startsWith('WC-');
