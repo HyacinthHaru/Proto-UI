@@ -20,6 +20,8 @@ export type MaterialProgram = {
   vertex: string;
   fragment: string;
   uniforms: readonly { name: string }[];
+  /** Optional compiled preparation of already-owned opaque RGBA pixels. */
+  prepareSource?(pixels: Uint8Array, width: number, height: number): Uint8Array;
   writeFrame(
     gl: WebGLRenderingContext,
     locations: Record<string, WebGLUniformLocation | null>,
@@ -86,6 +88,9 @@ export function createOwnedTextureVisualSink(
   let again = false;
   let highestSource = -1;
   let paints = 0;
+  let preparedSource: OwnedTexture | null = null;
+  let preparedGeneration = -1;
+  let preparedPixels: Uint8Array | null = null;
   let resolvedForeground: number[] | null = null;
   let observer: ResizeObserver | null = null;
 
@@ -134,6 +139,9 @@ export function createOwnedTextureVisualSink(
     delete host.dataset.materialRadius;
   }
   function freeGPU() {
+    preparedSource = null;
+    preparedPixels = null;
+    preparedGeneration = -1;
     if (!gl) return;
     for (const texture of textures) gl.deleteTexture(texture);
     if (buffer) gl.deleteBuffer(buffer);
@@ -326,6 +334,17 @@ export function createOwnedTextureVisualSink(
           fallback('source-not-opaque');
           return;
         }
+      if (preparedSource !== texture || preparedGeneration !== texture.generation) {
+        const nextPixels =
+          program.prepareSource?.(texture.pixels, texture.width, texture.height) ?? texture.pixels;
+        if (!(nextPixels instanceof Uint8Array) || nextPixels.length !== texture.pixels.length)
+          throw new Error('invalid-prepared-source');
+        for (let i = 3; i < nextPixels.length; i += 4)
+          if (nextPixels[i] !== 255) throw new Error('prepared-source-not-opaque');
+        preparedSource = texture;
+        preparedGeneration = texture.generation;
+        preparedPixels = nextPixels;
+      }
       const rect = host.getBoundingClientRect();
       const radii = [
         css.borderTopLeftRadius,
@@ -388,7 +407,7 @@ export function createOwnedTextureVisualSink(
         0,
         g.RGBA,
         g.UNSIGNED_BYTE,
-        texture.pixels
+        preparedPixels
       );
       program.writeFrame(g, locations, frame);
       g.clearColor(0, 0, 0, 0);

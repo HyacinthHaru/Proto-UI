@@ -43,7 +43,7 @@ const built = await build({
           const selected = args.path === 'material-baseline-program' ? baseline : result;
           return {
             loader: 'js',
-            contents: `${selected.files['uniforms.mjs']}\nexport default {vertex:${JSON.stringify(selected.files['lens.vert'])},fragment:${JSON.stringify(selected.files['lens.frag'])},uniforms:${JSON.stringify(selected.uniformABI)},writeFrame};`,
+            contents: `${selected.files['uniforms.mjs']}\n${selected.files['prefilter.mjs']}\nexport default {vertex:${JSON.stringify(selected.files['lens.vert'])},fragment:${JSON.stringify(selected.files['lens.frag'])},uniforms:${JSON.stringify(selected.uniformABI)},writeFrame,prepareSource};`,
           };
         });
       },

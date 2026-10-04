@@ -116,7 +116,7 @@ export function compileMaterialDeclarations(declarations, target, diagnosticProf
         : 'frame.pressed && !frame.disabled ? 0.12 : 0.06',
     ],
     ['u_bevelWidth', 'float', baseline ? '0.15' : '0.22'],
-    ['u_frost', 'float', baseline ? '0' : 'frame.pressed && !frame.disabled ? 0.6 : 1.2'],
+    ['u_frost', 'float', '0'],
     [
       'u_radius',
       'float',
@@ -190,7 +190,15 @@ export function compileMaterialDeclarations(declarations, target, diagnosticProf
     },
     stateBindings: { pressed: 'pressed', disabled: 'disabled' },
     selectedBackend: 'liquidgl-owned-surface-v1',
-    opticalProfile: baseline ? 'source-157-control' : 'regular-readable-v2',
+    opticalProfile: baseline ? 'source-157-control' : 'regular-readable-v3',
+    sourcePreparation: baseline
+      ? null
+      : {
+          kind: 'separable-gaussian',
+          radius: 3,
+          weights: [1, 6, 15, 20, 15, 6, 1],
+          source: 'owned-rgba-only',
+        },
     degradation: { css: ['refraction', 'owned-scene-sampling', 'optical-press-response'] },
     unsupported: [
       'live-compositor-backdrop',
@@ -221,6 +229,9 @@ export function compileMaterialDeclarations(declarations, target, diagnosticProf
       'lens.vert': vertex,
       'lens.frag': fragment,
       'uniforms.mjs': writer,
+      'prefilter.mjs': baseline
+        ? 'export const prepareSource = undefined;\n'
+        : readFileSync(new URL('source-prefilter.mjs', root), 'utf8'),
       'resource-plan.json': JSON.stringify(resourcePlan, null, 2) + '\n',
       LICENSE: license,
       NOTICE: notice,

@@ -241,3 +241,21 @@ test('real Runtime publishes Base Button material state through Feedback and dis
     'An unconsumed module is not enhanced material support'
   );
 });
+
+test('deterministic owned-source preparation preserves constants, opacity and ownership', async () => {
+  const { prepareSource } = await import('./source-prefilter.mjs');
+  const constant = new Uint8Array(9 * 7 * 4);
+  for (let i = 0; i < constant.length; i += 4) constant.set([80, 130, 210, 255], i);
+  const copy = constant.slice();
+  assert.deepEqual(prepareSource(constant, 9, 7), copy);
+  assert.deepEqual(constant, copy);
+  const stripes = constant.slice();
+  for (let i = 0; i < stripes.length; i += 4) stripes[i] = ((i / 4) % 2) * 255;
+  const first = prepareSource(stripes, 9, 7);
+  assert.deepEqual(first, prepareSource(stripes, 9, 7));
+  assert(first.every((v, i) => i % 4 !== 3 || v === 255));
+  assert(first[4 * (3 * 9 + 4)] > 80 && first[4 * (3 * 9 + 4)] < 175);
+  assert.throws(() => prepareSource(stripes, 0, 7), /invalid-prefilter-source/);
+  stripes[3] = 0;
+  assert.throws(() => prepareSource(stripes, 9, 7), /opaque/);
+});

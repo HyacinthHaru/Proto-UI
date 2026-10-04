@@ -69,6 +69,7 @@ try {
   const initialPixels = await page.evaluate(() => window.probe.pixels());
   assert(initialPixels?.startsWith('data:image/png'));
   await capture('01-rest');
+  const preparedAtRest = (await state()).preparationCount;
   const bounds = await page.locator('#glass').boundingBox();
   await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
   await page.mouse.down();
@@ -81,6 +82,11 @@ try {
     'actual shader output must change with Base pressed state'
   );
   await capture('02-pointer-pressed');
+  assert.equal(
+    (await state()).preparationCount,
+    preparedAtRest,
+    'press reuses owned-source preparation'
+  );
   await page.mouse.up();
   assert.equal((await state()).pressed, false);
   assert.equal((await state()).clicks, 1);
@@ -232,6 +238,16 @@ try {
     }
     visualComparisons.push(comparison);
   }
+  await page.evaluate(() => window.probe.scene('checker'));
+  const preparationsBeforeFailure = (await state()).preparationCount;
+  for (const mode of ['throw', 'short', 'transparent']) {
+    await page.evaluate((mode) => window.probe.preparation(mode), mode);
+    assert.equal((await state()).quality, 'opaque-fallback');
+    await capture(`preparation-${mode}-fallback`);
+    await page.evaluate(() => window.probe.preparation('normal'));
+    assert.equal((await state()).quality, 'experimental-owned-texture');
+  }
+  assert((await state()).preparationCount >= preparationsBeforeFailure + 6);
   await control.close();
   await writeFile(
     resolve(evidence, 'visual-comparisons.json'),

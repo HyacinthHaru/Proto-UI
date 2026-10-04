@@ -78,11 +78,23 @@ const preferences: MaterialPreferences = {
     return () => preferenceListeners.delete(fn);
   },
 };
+let preparationCount = 0;
+let preparationMode = 'normal';
+const candidateProgram = {
+  ...program,
+  prepareSource(pixels: Uint8Array, width: number, height: number) {
+    preparationCount++;
+    if (preparationMode === 'throw') throw new Error('diagnostic-preparation-failure');
+    if (preparationMode === 'short') return new Uint8Array(4);
+    if (preparationMode === 'transparent') return new Uint8Array(pixels.length);
+    return program.prepareSource(pixels, width, height);
+  },
+};
 installExperimentalVisualConsumer(button, (host, style) =>
   createOwnedTextureVisualSink(
     host,
     style,
-    diagnosticBaseline ? baselineProgram : program,
+    diagnosticBaseline ? baselineProgram : candidateProgram,
     {
       current: () => current,
       subscribe: (fn) => {
@@ -112,7 +124,8 @@ const probe = {
   state() {
     const exposes = element.getExposes();
     return {
-      profile: diagnosticBaseline ? 'source-157-control' : 'regular-readable-v2',
+      profile: diagnosticBaseline ? 'source-157-control' : 'regular-readable-v3',
+      preparationCount,
       pressed: exposes.pressed.get(),
       disabled: exposes.disabled.get(),
       focused: exposes.focused.get(),
@@ -136,6 +149,14 @@ const probe = {
   source(value: boolean) {
     generation++;
     current = value ? texture() : null;
+    for (const listener of sourceListeners) listener();
+  },
+  preparation(mode: string) {
+    if (!['normal', 'throw', 'short', 'transparent'].includes(mode))
+      throw new Error('unknown mode');
+    preparationMode = mode;
+    generation++;
+    current = texture();
     for (const listener of sourceListeners) listener();
   },
   scene(kind: string) {
