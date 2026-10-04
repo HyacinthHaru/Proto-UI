@@ -430,6 +430,112 @@
       "type": "f32",
       "owner": "view",
       "distinctFrom": "matte-dpr"
+    },
+    {
+      "id": "uSize",
+      "type": "vec2<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uOpticalProps",
+      "type": "vec4<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uShapeSettings",
+      "type": "vec2<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uShapeData",
+      "type": "f32",
+      "owner": "application-frame-state",
+      "count": 112
+    },
+    {
+      "id": "uNativeEdge",
+      "type": "f32",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uGeometryOffset",
+      "type": "vec2<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uGeometrySize",
+      "type": "vec2<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uGlassColor",
+      "type": "vec4<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uLightConfig",
+      "type": "vec3<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uLightDirection",
+      "type": "vec2<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uWhiten",
+      "type": "f32",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uWhitenGated",
+      "type": "f32",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uPinchStrength",
+      "type": "f32",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uBackgroundFallback",
+      "type": "vec4<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uEdgeConfig",
+      "type": "vec4<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uPlatformViewMode",
+      "type": "f32",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uBodyMode",
+      "type": "f32",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uTouchPosition",
+      "type": "vec2<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uTouchIntensity",
+      "type": "f32",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uRimConfig",
+      "type": "vec3<f32>",
+      "owner": "application-frame-state"
+    },
+    {
+      "id": "uLensModel",
+      "type": "f32",
+      "owner": "application-frame-state"
     }
   ],
   "featurePreconditions": [

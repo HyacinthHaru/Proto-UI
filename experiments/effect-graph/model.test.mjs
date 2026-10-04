@@ -335,3 +335,68 @@ test('graph member identifiers cannot be empty even when references agree', asyn
     assert(inspectGraph(graph).errors.some((e) => e.code === 'duplicate-or-invalid-id'));
   }
 });
+
+test('binding names are unique across texture and data inputs of a kernel', async () => {
+  const graph = await load('studio');
+  graph.kernels[3].samplers[1].name = 'u_bg';
+  delete graph.passes[3].bindings.u_blurredBg;
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'duplicate-binding-name'));
+  const mixed = await load('studio');
+  mixed.kernels[1].dataBindings[0].name = 'u_prevPassTexture';
+  assert(inspectGraph(mixed).errors.some((e) => e.code === 'duplicate-binding-name'));
+});
+
+test('frame inputs declare every extent, coordinate and uniform value dependency', async () => {
+  const missing = await load('flutter');
+  delete missing.frameInputs;
+  assert.equal(inspectGraph(missing).valid, false);
+  const original = await load('flutter');
+  for (const id of ['matte-dpr', 'geometry-pixel-budget', 'matte-transform', 'uShapeData']) {
+    const graph = structuredClone(original);
+    graph.frameInputs = graph.frameInputs.filter((input) => input.id !== id);
+    assert(
+      inspectGraph(graph).errors.some((e) => e.code === 'missing-frame-input'),
+      id
+    );
+  }
+});
+
+test('the pinned host size uniform retains its reserved reflected float slots', async () => {
+  for (const slots of [undefined, [2, 3], [0], [0, 0]]) {
+    const graph = await load('flutter');
+    const binding = graph.uniformBlocks[1].fields.find((f) => f.name === 'uSize').binding;
+    if (slots === undefined) delete binding.floatSlots;
+    else binding.floatSlots = slots;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'host-uniform-slot-contract'));
+  }
+});
+
+test('declared shape count and stride fit the pinned bounded float array', async () => {
+  for (const [key, value] of [
+    ['maxShapes', undefined],
+    ['shapeStrideFloats', undefined],
+    ['maxShapes', 100],
+    ['shapeStrideFloats', 0],
+    ['maxShapes', 1.5],
+  ]) {
+    const graph = await load('flutter');
+    if (value === undefined) delete graph.limits[key];
+    else graph.limits[key] = value;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'shape-capacity-mismatch'));
+  }
+});
+
+test('unknown license labels cannot erase unresolved provenance diagnostics', async () => {
+  const graph = await load('studio');
+  graph.kernels[0].license = 'blockd-IQ-transitive-provenance';
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'unknown-license-gate'));
+});
+
+test('target requirements remain nonempty, unique declared capability names', async () => {
+  for (const requirements of [undefined, [], [''], ['   '], ['one', 'one'], [42]]) {
+    const graph = await load('flutter');
+    if (requirements === undefined) delete graph.requirements;
+    else graph.requirements = requirements;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-capability-requirements'));
+  }
+});

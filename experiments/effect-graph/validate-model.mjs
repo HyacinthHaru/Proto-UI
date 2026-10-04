@@ -5,6 +5,11 @@ const SOURCE_KINDS = [
   'reconstructed-scene',
   'video-frame',
 ];
+const LICENSE_LABELS = new Set([
+  'blocked-IQ-transitive-provenance',
+  'MIT-chain-review',
+  'MIT-Tim-Lehmann-and-Sebastian-Degenaar-notices-required',
+]);
 const nonempty = (value) => typeof value === 'string' && value.trim().length > 0;
 // Inspection-only data model. It neither loads shader code nor grants execution capability.
 export function inspectGraph(graph) {
@@ -54,6 +59,7 @@ export function inspectGraph(graph) {
       graph?.data,
       graph?.passes,
       graph?.uniformBlocks,
+      graph?.frameInputs,
     ].every(Array.isArray)
   )
     return {
@@ -63,8 +69,23 @@ export function inspectGraph(graph) {
     };
   // Validate the shapes consumed below before walking their members. These are
   // inspection diagnostics for plain data, not a sandbox for arbitrary objects.
-  for (const key of ['kernels', 'sources', 'resources', 'data', 'passes', 'uniformBlocks'])
+  for (const key of [
+    'kernels',
+    'sources',
+    'resources',
+    'data',
+    'passes',
+    'uniformBlocks',
+    'frameInputs',
+  ])
     if (!records(graph[key])) error('invalid-collection-member', key);
+  if (
+    !strings(graph.requirements) ||
+    !graph.requirements.length ||
+    !graph.requirements.every(nonempty) ||
+    new Set(graph.requirements).size !== graph.requirements.length
+  )
+    error('invalid-capability-requirements', 'graph');
   if (errors.length) return invalid();
   for (const kernel of graph.kernels) {
     if (!strings(kernel.uniformBlocks)) error('missing-kernel-uniform-block', kernel.id);
@@ -77,10 +98,17 @@ export function inspectGraph(graph) {
       )
     )
       error('invalid-data-binding-contract', kernel.id);
-    const samplerSlots = new Set();
+    const samplerSlots = new Set(),
+      bindingNames = new Set();
+    for (const binding of records(kernel.dataBindings) ? kernel.dataBindings : []) {
+      if (bindingNames.has(binding.name)) error('duplicate-binding-name', kernel.id);
+      bindingNames.add(binding.name);
+    }
     if (!records(kernel.samplers)) error('invalid-sampler-contract', kernel.id);
     else
       for (const sampler of kernel.samplers) {
+        if (bindingNames.has(sampler.name)) error('duplicate-binding-name', kernel.id);
+        bindingNames.add(sampler.name);
         if (kernel.samplerBinding === 'indexed') {
           if (!Number.isInteger(sampler.slot) || sampler.slot < 0 || samplerSlots.has(sampler.slot))
             error('invalid-sampler-slot', kernel.id);
@@ -149,7 +177,16 @@ export function inspectGraph(graph) {
   const kernels = named(graph.kernels, 'kernels'),
     resources = named([...graph.sources, ...graph.resources, ...graph.data], 'resources'),
     passes = named(graph.passes, 'passes'),
-    blocks = named(graph.uniformBlocks, 'uniform-blocks');
+    blocks = named(graph.uniformBlocks, 'uniform-blocks'),
+    frameInputs = named(graph.frameInputs, 'frame-inputs');
+  for (const input of frameInputs.values()) {
+    if (!nonempty(input.type) || !nonempty(input.owner)) error('invalid-frame-input', input.id);
+    if (
+      input.distinctFrom !== undefined &&
+      (!frameInputs.has(input.distinctFrom) || input.distinctFrom === input.id)
+    )
+      error('missing-frame-input', input.id);
+  }
   const external = new Set([...graph.sources, ...graph.data].map((x) => x.id));
   for (const k of kernels.values()) {
     if (
@@ -165,6 +202,7 @@ export function inspectGraph(graph) {
       !/^[0-9a-f]{40}$/.test(k.upstream.gitBlob)
     )
       error('unpinned-kernel', k.id);
+    if (!LICENSE_LABELS.has(k.license)) error('unknown-license-gate', k.id);
     if (k.execution !== 'not-admitted') error('unsupported-execution-claim', k.id);
     if (
       k.stage !== 'fragment' ||
@@ -182,9 +220,19 @@ export function inspectGraph(graph) {
     if (!s.space || !s.alpha || !s.freshness || !s.format)
       error('incomplete-source-contract', s.id);
   }
-  for (const r of graph.resources)
+  for (const r of graph.resources) {
+    for (const key of ['dprBinding', 'pixelBudgetBinding'])
+      if (r.extent?.[key] !== undefined && !frameInputs.has(r.extent[key]))
+        error('missing-frame-input', `${r.id}:${key}`);
+    if (r.coordinateBindings !== undefined) {
+      if (!strings(r.coordinateBindings)) error('invalid-coordinate-bindings', r.id);
+      else
+        for (const id of r.coordinateBindings)
+          if (!frameInputs.has(id)) error('missing-frame-input', `${r.id}:${id}`);
+    }
     if (!r.format || !r.extent || !r.space || !r.alpha || !r.clear)
       error('incomplete-resource-contract', r.id);
+  }
   for (const d of graph.data)
     if (
       d.type !== 'bounded-array<f32>' ||
@@ -280,6 +328,31 @@ export function inspectGraph(graph) {
       )
         error('invalid-uniform', block.id);
       names.add(field.name);
+      if (field.binding?.kind === 'frame-value') {
+        const input = frameInputs.get(field.binding.id);
+        if (!input || input.type !== field.type || input.count !== field.count)
+          error('missing-frame-input', `${block.id}:${field.name}`);
+      }
+      if (field.binding?.kind === 'host-injected') {
+        if (
+          block.abi !== 'flutter-reflected-float-slots' ||
+          field.binding.id !== 'ImageFilter.shader.inputSize' ||
+          field.type !== 'vec2<f32>' ||
+          JSON.stringify(field.binding.floatSlots) !== '[0,1]'
+        )
+          error('host-uniform-slot-contract', field.name);
+      }
+      if (block.abi === 'flutter-reflected-float-slots' && field.name === 'uShapeData') {
+        const { maxShapes, shapeStrideFloats } = graph.limits ?? {};
+        if (
+          !Number.isInteger(maxShapes) ||
+          maxShapes < 1 ||
+          !Number.isInteger(shapeStrideFloats) ||
+          shapeStrideFloats < 1 ||
+          maxShapes * shapeStrideFloats !== field.count
+        )
+          error('shape-capacity-mismatch', field.name);
+      }
       if (
         field.count !== undefined &&
         (!Number.isInteger(field.count) || field.count < 1 || field.count > 4096)

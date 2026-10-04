@@ -579,5 +579,6 @@
     "GLSL/WGSL blur filename axes require per-variant mapping; names are not parity evidence",
     "WGSL is the upstream STEP9 specialization only",
     "No physical format/filter/ABI/target compilation or visual validation has run"
-  ]
+  ],
+  "frameInputs": []
 }
