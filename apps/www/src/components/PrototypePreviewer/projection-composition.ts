@@ -1,3 +1,4 @@
+import { bindSiteSelectDismissal } from '../site-select-dismissal';
 import { siteTextRecipe } from '../site-text-recipes';
 import type { RuntimeId } from './runtimes/registry';
 import {
@@ -820,6 +821,16 @@ export function createProjectionComposition(
         }
         trigger.setAttribute('aria-label', options.controls[id].label);
         const config = options.controls[id] as ProjectionControlConfig<string>;
+        appearanceCleanups.push(
+          bindSiteSelectDismissal(context.refs[CONTROL_REFS[id].box]!, (reason) => {
+            if (activeContext === context)
+              context.api.call(rootRef, 'requestOpen', {
+                open: false,
+                reason,
+                focusReason: 'programmatic',
+              });
+          })
+        );
         if (config.compactTriggerAppearance) {
           const compact = view.matchMedia?.('(max-width: 47.999rem)');
           const applyAppearance = () => {

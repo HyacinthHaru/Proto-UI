@@ -190,6 +190,26 @@ try {
               await readyHome(page, target);
               assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'true');
               if (kind === 'candidate') assert.ok(await homeMenu(page).isVisible());
+              if (
+                kind === 'candidate' &&
+                width === 390 &&
+                locale === 'zh-cn' &&
+                theme === 'light'
+              ) {
+                await runtime.click();
+                const popup = await runtime.getAttribute('aria-controls');
+                await page.evaluate(() => history.pushState(null, '', '#header-runtime-history'));
+                await page.goBack();
+                await page.locator(`[id=${JSON.stringify(popup)}]`).waitFor({ state: 'hidden' });
+                assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'false');
+                assert.equal(await runtime.getAttribute('aria-expanded'), 'false');
+                assert.equal(
+                  await page.locator(`[id=${JSON.stringify(popup)}]`).isVisible(),
+                  false
+                );
+                await screenshot(`${target}-history-close`);
+                await homeMenu(page).click();
+              }
             }
             const originalTheme = await page.locator('html').getAttribute('data-theme');
             const themeControl = page.locator('.site-header-theme [data-demo-ref="home-theme"]');

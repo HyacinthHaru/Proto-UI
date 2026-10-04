@@ -1,5 +1,6 @@
 /** Application-owned navigation disclosure. Button owns command activation;
  * the website owns navigation visibility, ARIA relationships and return focus. */
+import { closeSiteSelects } from './site-select-dismissal';
 export interface SiteHeaderDisclosure {
   bindButton(button: HTMLElement): () => void;
   enhance(): void;
@@ -174,6 +175,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     if (!open || destroyed) return;
     const focused = document.activeElement;
     const hidingFocus = !!focused && (!!panel?.contains(focused) || ownsSelectPopup(focused));
+    if (panel) closeSiteSelects(panel, 'parent.dismiss');
     open = false;
     sync();
     if (restoreFocus || hidingFocus) activeButton()?.focus({ preventScroll: true });
@@ -238,7 +240,20 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   const onContentsOpen = () => close();
   // Do not create a history entry for a non-modal disclosure. Real browser
   // Back/Forward (including a restored bfcache page) must never resurrect it.
-  const onHistory = () => close();
+  const onHistory = () => {
+    const focused = document.activeElement;
+    const popup = focused?.closest('[role="listbox"], [data-site-select-content]');
+    const trigger = popup?.id
+      ? [...root.querySelectorAll<HTMLElement>('[aria-controls]')].find((item) =>
+          item.getAttribute('aria-controls')?.split(/\s+/).includes(popup.id)
+        )
+      : undefined;
+    const wasOpen = open;
+    closeSiteSelects(root, 'history');
+    close(!!trigger);
+    if (!wasOpen && trigger?.isConnected && !trigger.closest('[hidden], [inert]'))
+      trigger.focus({ preventScroll: true });
+  };
   const destroy = () => {
     if (destroyed) return;
     destroyed = true;

@@ -1,3 +1,4 @@
+import { bindSiteSelectDismissal } from './site-select-dismissal';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import brutalistButton from '@proto.ui/prototypes-brutalist/button';
 import {
@@ -235,6 +236,11 @@ function initializeSelect(root: SiteSelectRoot): void {
   const family = root.localName.includes('brutalist') ? 'brutalist' : 'shadcn';
   root.dataset.siteControlFamily = family;
   const initialized = root.dataset.siteShadcnInitialized === '1';
+  bindSiteSelectDismissal(root, (reason) => {
+    const exposes = root.getExposes?.() as SelectCloseExposes | undefined;
+    if (exposes?.open?.get?.() === true)
+      exposes.requestOpen?.({ open: false, reason, focusReason: 'programmatic' });
+  });
   if (!initialized) {
     // `data-value` is owned by the adapter's exposed-state projection, so it
     // is intentionally not used as an authoring input. Keep the SSR seed in a
@@ -261,7 +267,8 @@ function initializeSelect(root: SiteSelectRoot): void {
             appearance:
               family === 'brutalist'
                 ? (trigger.dataset.appearance ?? 'flat')
-                : !root.closest('[data-site-header-panel]') &&
+                : (!!root.closest('[data-site-header-preferences]') ||
+                      !root.closest('[data-site-header-panel]')) &&
                     !root.ownerDocument.defaultView?.matchMedia?.('(max-width: 47.999rem)').matches
                   ? 'ghost'
                   : 'default',

@@ -426,7 +426,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
-      DENSITY_BASELINE_SHA: ec6e5710d0aaeee6d5844f9c996c1d7ca594aa31
+      DENSITY_BASELINE_SHA: fbd90df092369e6d2aab73c66848f4236ba83a29
     steps:
       - uses: actions/checkout@v4
         with:

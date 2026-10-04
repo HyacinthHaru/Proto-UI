@@ -167,10 +167,15 @@ it('keeps one Header close toggle and lets short compact menus shrink to their c
   expect(css).toContain("[data-site-menu-open='true'] .site-header-menu-icon::before");
 });
 
-it('aligns framed brand-to-nav and nav-to-nav visual gaps without extra first-item space', () => {
+it('spaces unframed text separately from framed controls without changing compact navigation', () => {
   const css = readFileSync('apps/www/src/styles/site-header.css', 'utf8');
   const nav = css.match(/\.site-header-navigation\s*\{([^}]+)\}/)![1];
-  expect(nav).toContain('gap: 0.75rem');
-  expect(nav).toContain('margin-inline-start: 0.5rem');
-  expect(css).toMatch(/flex-wrap: nowrap;\s*gap: 0.75rem/);
+  expect(nav).toContain('gap: var(--site-header-navigation-gap)');
+  expect(nav).toContain('calc(var(--site-header-brand-navigation-gap) - 0.25rem)');
+  expect(css).toContain('--site-header-navigation-gap: 1.5rem');
+  const framed = css.match(
+    /\[data-site-library-family='brutalist'\] \.site-header\s*\{([^}]+)\}/
+  )![1];
+  expect(framed).toContain('--site-header-navigation-gap: 0.75rem');
+  expect(framed).toContain('--site-header-brand-navigation-gap: 0.75rem');
 });

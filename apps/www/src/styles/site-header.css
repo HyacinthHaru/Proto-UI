@@ -5,6 +5,8 @@
   --site-control-height: 2.75rem;
   --site-select-control-height: 2.25rem;
   --site-select-control-padding-block: 0.25rem;
+  --site-header-navigation-gap: 1.5rem;
+  --site-header-brand-navigation-gap: 2rem;
   box-sizing: border-box;
   position: relative;
   display: grid;
@@ -21,6 +23,12 @@
   font-family: var(--font-sans);
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+[data-site-library-family='brutalist'] .site-header {
+  /* Framed controls include their own inset and hard-shadow extent. Text-only
+     Shadcn links instead need space measured from the visible glyph edges. */
+  --site-header-navigation-gap: 0.75rem;
+  --site-header-brand-navigation-gap: 0.75rem;
 }
 .site-header :is(button, a, select) {
   font-family: inherit;
@@ -72,12 +80,12 @@
   grid-area: navigation;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-inline-start: 0.5rem;
+  gap: var(--site-header-navigation-gap);
+  margin-inline-start: calc(var(--site-header-brand-navigation-gap) - 0.25rem);
 }
 .site-header-navigation :is(.home-actions-fallback, .home-runtime-actions) {
   flex-wrap: nowrap;
-  gap: 0.75rem;
+  gap: var(--site-header-navigation-gap);
 }
 .site-header .site-header-navigation a {
   display: inline-flex;

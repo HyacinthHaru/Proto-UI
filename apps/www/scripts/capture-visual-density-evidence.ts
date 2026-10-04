@@ -91,7 +91,7 @@ try {
     ? (['shadcn', 'brutalist'] as const).map((family) => ({
         width: 1440,
         locale: 'zh-cn',
-        theme: 'dark' as const,
+        theme: family === 'shadcn' ? ('light' as const) : ('dark' as const),
         family,
       }))
     : fullVariants;
@@ -213,6 +213,48 @@ try {
               headings.every((heading) => heading.querySelector('[data-typography-prototype]'))
             );
           });
+          if (kind === 'candidate')
+            await page.waitForSelector('.starlight-aside--note[data-note-surface-view="ready"]');
+          if (kind === 'candidate')
+            await page.waitForFunction(() => {
+              const title = document.querySelector<HTMLElement>(
+                '.starlight-aside--note .starlight-aside__title [data-typography-prototype]'
+              );
+              return title?.dataset.typographyRole === 'label';
+            });
+          entry.information = await page
+            .locator('.starlight-aside--note')
+            .first()
+            .evaluate((note) => {
+              const surface = note.querySelector<HTMLElement>('.site-note-surface-paint');
+              const title = note.querySelector<HTMLElement>(
+                '.starlight-aside__title [data-typography-prototype]'
+              );
+              const style = surface ? getComputedStyle(surface) : getComputedStyle(note);
+              return {
+                label: note.getAttribute('aria-label'),
+                text: note.textContent,
+                prototype: surface?.getAttribute('data-projection-prototype') ?? null,
+                titlePrototype: title?.dataset.typographyPrototype ?? null,
+                radius: style.borderTopLeftRadius,
+                border: style.borderTopWidth,
+                background: style.backgroundColor,
+                semanticTag: note.localName,
+                passiveRole: surface?.getAttribute('role') ?? null,
+                passiveTabindex: surface?.getAttribute('tabindex') ?? null,
+                iconCount: note.querySelectorAll('.starlight-aside__icon').length,
+              };
+            });
+          if (kind === 'candidate') {
+            const info = entry.information as Record<string, unknown>;
+            assert.equal(info.prototype, 'shadcn-surface-root');
+            assert.equal(info.titlePrototype, 'shadcn-text-root');
+            assert.equal(info.semanticTag, 'aside');
+            assert.equal(info.passiveRole, null);
+            assert.equal(info.passiveTabindex, null);
+            assert.equal(info.iconCount, 1);
+            assert.ok(parseFloat(String(info.radius)) > 0);
+          }
           const rhythm = await page.evaluate(() => ({
             headings: [...document.querySelectorAll<HTMLElement>('main :is(h2,h3,h4)')].map(
               (heading) => {
@@ -239,6 +281,98 @@ try {
           }));
           entry.rhythm = rhythm;
           await shot('initial');
+          if (v.width === 1440) {
+            const spacing = await page.evaluate(() => {
+              const header = document.querySelector<HTMLElement>('[data-docs-site-header]')!;
+              const brand = header.querySelector<HTMLElement>('.site-header-brand a')!;
+              const links = [
+                ...header.querySelectorAll<HTMLElement>('[data-site-header-desktop-navigation] a'),
+              ];
+              return {
+                brandToNav:
+                  links[0]!.getBoundingClientRect().left - brand.getBoundingClientRect().right,
+                navGaps: links
+                  .slice(1)
+                  .map(
+                    (link, i) =>
+                      link.getBoundingClientRect().left - links[i]!.getBoundingClientRect().right
+                  ),
+              };
+            });
+            entry.headerSpacing = spacing;
+            if (kind === 'candidate') {
+              assert.ok(Math.abs(spacing.brandToNav - 32) <= 1);
+              for (const gap of spacing.navGaps) assert.ok(Math.abs(gap - 24) <= 1);
+            }
+            const intermediate = [];
+            for (const width of [1024, 1279]) {
+              await page.setViewportSize({ width, height: 1000 });
+              const visible = await page.locator('.right-sidebar-container').isVisible();
+              intermediate.push({ width, tocVisible: visible });
+              await shot(`toc-${width}`);
+              if (kind === 'candidate')
+                assert.equal(visible, false, 'TOC keeps its existing xl visibility boundary');
+            }
+            entry.intermediateToc = intermediate;
+            const trigger = page.locator(
+              '[data-docs-site-header] [data-adapter-select-root] [role="combobox"]'
+            );
+            await page.setViewportSize({ width: 390, height: 1000 });
+            await page.waitForFunction(
+              () =>
+                !!document.querySelector(
+                  '[data-site-header-compact-context] [data-site-header-preferences]'
+                )
+            );
+            await page.locator('[data-site-menu-button]').click();
+            await trigger.click();
+            const popup = await trigger.getAttribute('aria-controls');
+            // The fixture creates a same-document history entry; traversal is
+            // the browser's real Back operation, not a dispatched popstate.
+            await page.evaluate(() => history.pushState(null, '', '#header-history-regression'));
+            await page.goBack();
+            await page.waitForFunction(
+              () =>
+                document.querySelector('[data-site-menu-button]')?.getAttribute('aria-expanded') ===
+                'false'
+            );
+            if (kind === 'candidate')
+              await page.locator(`[id=${JSON.stringify(popup)}]`).waitFor({ state: 'hidden' });
+            const historyState = {
+              menuOpen: await page.locator('[data-site-menu-button]').getAttribute('aria-expanded'),
+              selectOpen: await trigger.getAttribute('aria-expanded'),
+              popupVisible: await page.locator(`[id=${JSON.stringify(popup)}]`).isVisible(),
+            };
+            entry.historyClose = historyState;
+            await shot('history-close');
+            if (kind === 'candidate')
+              assert.deepEqual(historyState, {
+                menuOpen: 'false',
+                selectOpen: 'false',
+                popupVisible: false,
+              });
+            else if (historyState.popupVisible) await page.keyboard.press('Escape');
+            await page.setViewportSize({ width: 1440, height: 1000 });
+            await page.waitForFunction(
+              () =>
+                !!document.querySelector(
+                  '[data-site-header-context] [data-site-header-preferences]'
+                )
+            );
+            if (kind === 'candidate')
+              await page.waitForFunction(() =>
+                document
+                  .querySelector(
+                    '[data-docs-site-header] [data-adapter-select-root] [role="combobox"]'
+                  )
+                  ?.getAttribute('data-pui-style')
+                  ?.includes('border-transparent')
+              );
+            entry.restoredDesktopTrigger = await trigger.getAttribute('data-pui-style');
+            await shot('desktop-restored');
+            if (kind === 'candidate')
+              assert.match(String(entry.restoredDesktopTrigger), /border-transparent/);
+          }
           assert.ok(rhythm.headings.some((heading) => heading.tag === 'h2'));
           assert.ok(rhythm.overflow <= 1);
           if (kind === 'candidate') {
