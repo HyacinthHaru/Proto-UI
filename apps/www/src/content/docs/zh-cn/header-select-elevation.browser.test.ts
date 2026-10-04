@@ -106,6 +106,7 @@ async function sample(select: Locator) {
       generation: element.getAttribute('data-projection-generation'),
       focused: document.activeElement === element,
       focusVisible: element.matches(':focus-visible'),
+      pressed: element.hasAttribute('data-pressed'),
     };
   });
 }
@@ -276,13 +277,26 @@ describe.sequential('Header public family presentation and labelled compact fiel
                 expect(hovered.hit).toBe(true);
                 await capture(`${width}-${control}-hover`);
                 await page.mouse.down();
-                const pressed = await sample(select);
-                expect(pressed.x).toBeCloseTo(hovered.x, 1);
-                expect(pressed.y).toBeCloseTo(
+                const firstPressed = await sample(select);
+                measurements.push({
+                  stage: 'press-first-sample',
+                  width,
+                  control,
+                  paint: firstPressed,
+                });
+                const pressedY =
                   hovered.y +
-                    (appearance === 'family' && family === 'shadcn' && width === 390 ? 1 : 0),
-                  1
-                );
+                  (appearance === 'family' && family === 'shadcn' && width === 390 ? 1 : 0);
+                // React may publish the inherited state before its prop+state
+                // visual rule is committed. Keep the exact pose, waiting for
+                // the real held press rather than sampling that boundary once.
+                await expect.poll(() => select.getAttribute('data-pressed')).not.toBeNull();
+                await expect.poll(async () => (await sample(select)).y).toBeCloseTo(pressedY, 1);
+                const pressed = await sample(select);
+                measurements.push({ stage: 'press-settled', width, control, paint: pressed });
+                expect(pressed.pressed).toBe(true);
+                expect(pressed.x).toBeCloseTo(hovered.x, 1);
+                expect(pressed.y).toBeCloseTo(pressedY, 1);
                 await capture(`${width}-${control}-press`);
                 await page.mouse.up();
                 const id = await select.getAttribute('aria-controls');

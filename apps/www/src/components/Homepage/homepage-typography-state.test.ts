@@ -359,15 +359,36 @@ describe('homepage passive typography refresh preserves real gallery state', () 
       else span.dataset.siteTypography = 'caption';
       const target = change === 'new marker' ? span : h1;
       const role = change === 'change role' ? 'h2' : change === 'remove role' ? 'h1' : 'caption';
-      await expect
-        .poll(
-          () =>
-            target
-              .querySelector('[data-typography-prototype]')
-              ?.getAttribute('data-typography-role'),
-          { timeout: 500 }
-        )
-        .toBe(role);
+      const observationStarted = performance.now();
+      try {
+        await expect
+          .poll(
+            () =>
+              target
+                .querySelector('[data-typography-prototype]')
+                ?.getAttribute('data-typography-role'),
+            { timeout: 500 }
+          )
+          .toBe(role);
+      } catch (error) {
+        // Retain the original deadline/failure; distinguish missing observer
+        // admission from a pending materialization on a contended runner.
+        console.error('[homepage-typography-role-diagnostic]', {
+          change,
+          role,
+          elapsedMs: performance.now() - observationStarted,
+          authoredRole: target.getAttribute('data-site-typography'),
+          projectedRole: target
+            .querySelector('[data-typography-prototype]')
+            ?.getAttribute('data-typography-role'),
+          baseline,
+          materializations: preparation.count,
+          page: handle?.getSnapshot(),
+          connected: target.isConnected,
+          batches: document.querySelectorAll('[data-site-typography-batch]').length,
+        });
+        throw error;
+      }
       // Real observer deliveries and self-authored projection metadata must not
       // cause another materialization after this passive batch is published.
       await new Promise((resolve) => setTimeout(resolve, 100));

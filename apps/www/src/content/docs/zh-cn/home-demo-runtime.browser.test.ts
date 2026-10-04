@@ -487,8 +487,10 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           await expect
             .poll(() => trigger.evaluate((element) => element.hasAttribute('data-pressed')))
             .toBe(true);
+          expect(await trigger.getAttribute('data-pui-style')).toContain('border-transparent');
           const pressed = await trigger.boundingBox();
-          expect(pressed?.y).toBeCloseTo(before.y + 1, 1);
+          // Desktop Shadcn ghost retains pressed semantics without field displacement.
+          expect(pressed?.y).toBeCloseTo(before.y, 1);
           await page.mouse.up();
           await expect
             .poll(() => trigger.evaluate((element) => element.hasAttribute('data-pressed')))
