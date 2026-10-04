@@ -109,8 +109,15 @@ try {
             const rect = panel.getBoundingClientRect();
             const header = panel.closest('[data-site-header]')!.getBoundingClientRect();
             const surface = panel.querySelector<HTMLElement>('.site-header-popup-surface')!;
-            const body = panel.querySelector<HTMLElement>('[data-site-header-panel-body]');
-            const close = panel.querySelector<HTMLElement>('[data-demo-ref="home-menu-close"]');
+            const body = panel.querySelector<HTMLElement>('.site-header-native-slot');
+            // Measure the final meaningful row, not a stretchable wrapper that
+            // could itself conceal a forced blank footer.
+            const content = panel.querySelector<HTMLElement>(
+              '.site-header-settings > .site-header-setting:last-child'
+            );
+            const close = panel
+              .closest('[data-site-header]')
+              ?.querySelector<HTMLElement>('.site-header-menu [data-demo-ref="home-menu"]');
             return {
               left: rect.left,
               right: rect.right,
@@ -123,6 +130,10 @@ try {
               bodyHeight: body?.clientHeight,
               bodyOverflow: body && getComputedStyle(body).overflowY,
               closeHeight: close?.getBoundingClientRect().height,
+              extraCloseCount: panel.querySelectorAll(
+                '[data-demo-ref="home-menu-close"], [data-site-menu-close]'
+              ).length,
+              trailingSpace: content ? rect.bottom - content.getBoundingClientRect().bottom : null,
               documentOverflow: document.documentElement.scrollWidth - innerWidth,
             };
           });
@@ -136,7 +147,12 @@ try {
               'Mobile panel fills safe viewport width'
             );
             assert.ok(Math.abs(menu.top - menu.headerBottom - 5) <= 1);
-            assert.ok(Math.abs(menu.bottom - 836) <= 1, 'Mobile panel uses the remaining viewport');
+            assert.ok(menu.bottom <= 837, 'Mobile content fits inside the available viewport');
+            assert.equal(menu.extraCloseCount, 0, 'The Header toggle is the single close control');
+            assert.ok(
+              menu.trailingSpace !== null && menu.trailingSpace >= 0 && menu.trailingSpace <= 24,
+              'Natural-height menu has no forced blank area after its content'
+            );
             assert.ok((menu.closeHeight ?? 0) >= 44 && (menu.bodyHeight ?? 0) > 250);
             assert.equal(menu.bodyOverflow, 'auto');
           }
@@ -146,7 +162,7 @@ try {
           await page.keyboard.press('Enter');
           assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'true');
           if (kind === 'candidate') {
-            await page.locator('[data-demo-ref="home-menu-close"]').click();
+            await homeMenu(page).click();
             assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'false');
             assert.ok(await homeMenu(page).evaluate((e) => e === document.activeElement));
             await page.keyboard.press('Space');
@@ -173,9 +189,24 @@ try {
                 .click();
               await readyHome(page, target);
               assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'true');
-              if (kind === 'candidate')
-                assert.ok(await page.locator('[data-demo-ref="home-menu-close"]').isVisible());
+              if (kind === 'candidate') assert.ok(await homeMenu(page).isVisible());
             }
+            const originalTheme = await page.locator('html').getAttribute('data-theme');
+            const themeControl = page.locator('.site-header-theme [data-demo-ref="home-theme"]');
+            await themeControl.click();
+            await page.waitForFunction(
+              (previous) => document.documentElement.dataset.theme !== previous,
+              originalTheme
+            );
+            assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'true');
+            assert.ok(
+              await page.evaluate(() => document.documentElement.scrollWidth - innerWidth <= 1)
+            );
+            await themeControl.click();
+            await page.waitForFunction(
+              (previous) => document.documentElement.dataset.theme === previous,
+              originalTheme
+            );
             await page.locator('#home-navigation-mobile [data-homepage-mount] a').first().click();
             await page.waitForURL(`**/${locale}/start-here/what-you-saw/`);
             assert.equal(
@@ -186,7 +217,7 @@ try {
             await readyHome(page);
             assert.equal(await homeMenu(page).getAttribute('aria-expanded'), 'false');
             entry.navigationJourneys =
-              'Escape, Enter/Space, Close, nested Select Escape, WC/React/Vue/Vue2 replacement, native navigation and browser Back';
+              'Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back';
           }
           await page.goto(`${base}/${locale}/ui-libraries/base/transition/`, {
             waitUntil: 'networkidle',
@@ -204,7 +235,7 @@ try {
           const docsMenu = page.locator('[data-site-menu-button]');
           await docsMenu.click();
           if (kind === 'candidate') {
-            await page.locator('[data-site-menu-close]').click();
+            await docsMenu.click();
             assert.ok(await docsMenu.evaluate((e) => e === document.activeElement));
           } else await page.keyboard.press('Escape');
           const shell = page.locator('[data-code-shell]:visible').first();
@@ -273,6 +304,59 @@ try {
             'Copy preserves exact source payload'
           );
           entry.copy = 'Exact raw source copied after native source scrolling';
+          if (!quickPreview) {
+            await page.goto(`${base}/${locale}/start-here/quick-start/`, {
+              waitUntil: 'networkidle',
+            });
+            const shortShell = page
+              .locator('[data-code-example] [data-code-shell]:visible')
+              .first();
+            await shortShell.waitFor({ state: 'visible' });
+            await page.waitForFunction(
+              () =>
+                [
+                  ...document.querySelectorAll<HTMLElement>(
+                    '[data-code-example] [data-code-shell]'
+                  ),
+                ].find((e) => e.checkVisibility())?.dataset.codeExpanded === 'true'
+            );
+            const shortSource = shortShell.locator('pre');
+            const shortCopy = shortShell.locator('[data-copy] [data-demo-ref="copy-button"]');
+            await shortCopy.waitFor({ state: 'visible' });
+            await shortShell.scrollIntoViewIfNeeded();
+            const shortFacts = await shortSource.evaluate((e) => ({
+              height: e.clientHeight,
+              fullHeight: e.scrollHeight,
+              lineHeight: parseFloat(getComputedStyle(e).lineHeight),
+              text: e.querySelector('code')?.getAttribute('data-raw-code'),
+              documentOverflow: document.documentElement.scrollWidth - innerWidth,
+            }));
+            assert.ok(
+              shortFacts.text && shortFacts.text.split('\n').length === 1,
+              'The real short example is one install command'
+            );
+            assert.ok(
+              shortFacts.height > 0 && shortFacts.height <= shortFacts.lineHeight + 1,
+              'Short code keeps its natural one-line height'
+            );
+            assert.ok(shortFacts.documentOverflow <= 1);
+            await screenshot('code-short-natural');
+            assert.equal(await shortCopy.getAttribute('data-copy-state'), 'idle');
+            await shortCopy.click();
+            await page.waitForFunction(
+              () =>
+                [...document.querySelectorAll<HTMLElement>('[data-code-example] [data-code-shell]')]
+                  .find((e) => e.checkVisibility())
+                  ?.querySelector('[data-demo-ref="copy-button"]')
+                  ?.getAttribute('data-copy-state') === 'success'
+            );
+            assert.equal(
+              await page.evaluate(() => navigator.clipboard.readText()),
+              shortFacts.text
+            );
+            entry.shortCode = { ...shortFacts, copy: 'Exact one-line command copied' };
+          }
+
           assert.deepEqual(errors, []);
           entry.outcome = 'passed';
         } catch (error) {
@@ -303,8 +387,8 @@ try {
           document.documentElement.style.fontSize = '200%';
         });
         await homeMenu(page).click();
-        const body = page.locator('[data-site-header-panel-body]');
-        const close = page.locator('[data-demo-ref="home-menu-close"]');
+        const body = page.locator('.site-header-native-slot');
+        const close = homeMenu(page);
         const before = await close.boundingBox();
         const bounds = await body.boundingBox();
         assert.ok(bounds && before);
@@ -317,13 +401,13 @@ try {
         await page.mouse.wheel(0, 1000);
         await page.waitForFunction(
           (previous) =>
-            (document.querySelector('[data-site-header-panel-body]')?.scrollTop ?? 0) > previous,
+            (document.querySelector('.site-header-native-slot')?.scrollTop ?? 0) > previous,
           initialScroll
         );
         const after = await close.boundingBox();
         assert.ok(
           after && Math.abs(before.y - after.y) <= 1,
-          'Close stays reachable while menu content scrolls'
+          'The single Header close toggle stays reachable while menu content scrolls'
         );
         assert.ok(after.y >= 0 && after.y + after.height <= 640);
         assert.ok(

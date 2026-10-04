@@ -8,14 +8,13 @@ import {
 let disclosure: SiteHeaderDisclosure | undefined;
 let destroyContents: (() => void) | undefined;
 let query: MediaQueryList;
-function fixture(mobile = true, withHeading = false) {
+function fixture(mobile = true) {
   const target = new EventTarget();
   query = Object.assign(target, { matches: mobile }) as MediaQueryList;
   vi.spyOn(window, 'matchMedia').mockReturnValue(query);
   document.body.innerHTML = `<header data-site-header>
     <nav data-site-header-desktop-navigation><a href="/docs/">Docs</a></nav>
     <div data-site-header-panel id="navigation-panel">
-      ${withHeading ? '<div data-site-header-panel-heading><button data-close>Close</button></div>' : ''}
       <nav data-site-header-navigation><a href="/docs/">Docs</a></nav><div data-site-header-compact-context></div>
       <div data-site-header-settings id="settings-panel"><a href="/zh-cn/">简体中文</a></div>
     </div>
@@ -578,17 +577,4 @@ describe('compact navigation viewport and history', () => {
     expect(panel.hidden).toBe(true);
     expect(push).not.toHaveBeenCalled();
   });
-});
-
-it('restores trigger focus when the compact Close row disappears at the desktop breakpoint', async () => {
-  const { root, button } = fixture(true, true);
-  disclosure!.enhance();
-  disclosure!.toggle();
-  await Promise.resolve();
-  const close = root.querySelector<HTMLElement>('[data-close]')!;
-  expect(document.activeElement).toBe(close);
-  Object.defineProperty(query, 'matches', { value: false, configurable: true });
-  query.dispatchEvent(new Event('change'));
-  expect(close.closest<HTMLElement>('[data-site-header-panel-heading]')!.hidden).toBe(true);
-  expect(document.activeElement).toBe(button);
 });

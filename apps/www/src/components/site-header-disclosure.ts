@@ -20,7 +20,6 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   const document = root.ownerDocument;
   const window = document.defaultView;
   const panel = root.querySelector<HTMLElement>('[data-site-header-panel]');
-  const panelHeader = root.querySelector<HTMLElement>('[data-site-header-panel-heading]');
   const navigation = root.querySelector<HTMLElement>('[data-site-header-navigation]');
   const desktopNavigation = root.querySelector<HTMLElement>(
     '[data-site-header-desktop-navigation]'
@@ -161,7 +160,6 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     if (desktopNavigation) desktopNavigation.hidden = !!compact?.matches;
     if (navigation) navigation.hidden = !compact?.matches || (enhanced && !open);
     if (panel) panel.hidden = enhanced && !open;
-    if (panelHeader) panelHeader.hidden = !compact?.matches;
     if (settings) settings.hidden = enhanced && !open;
     movePreferences(compactLayout);
     if (focusInPreferences && focused?.isConnected && !focused.closest('[hidden], [inert]'))
@@ -233,9 +231,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     sync();
     if (
       focused &&
-      [navigation, desktopNavigation, panelHeader].some(
-        (region) => region?.hidden && region.contains(focused)
-      )
+      [navigation, desktopNavigation].some((region) => region?.hidden && region.contains(focused))
     )
       activeButton()?.focus();
   };

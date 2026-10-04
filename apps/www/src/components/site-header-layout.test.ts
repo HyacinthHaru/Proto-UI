@@ -115,3 +115,16 @@ it('lets enhanced social anchors enclose the Prototype motion extent without fix
   expect(block).toMatch(/(?:^|[;\n])\s*height:\s*auto/);
   expect(block).not.toMatch(/(?:^|[;\n])\s*(?:width|height):\s*2\.75rem/);
 });
+
+it('keeps one Header close toggle and lets short compact menus shrink to their content', () => {
+  for (const path of ['Homepage/HomepageRuntime.astro', 'override/Header.astro']) {
+    const source = readFileSync(`apps/www/src/components/${path}`, 'utf8');
+    expect(source).not.toContain('data-site-menu-close');
+    expect(source).not.toContain('closeMenuButton');
+    expect(source).not.toContain('site-header-panel-heading');
+  }
+  const css = readFileSync('apps/www/src/styles/site-header.css', 'utf8');
+  expect(css).not.toMatch(/(?:^|[;\n])\s*height:\s*var\(--site-header-panel-max-height/);
+  expect(css).toContain('max-height: var(--site-header-panel-max-height');
+  expect(css).toContain("[data-site-menu-open='true'] .site-header-menu-icon::before");
+});

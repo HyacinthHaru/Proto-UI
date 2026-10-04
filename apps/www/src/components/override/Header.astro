@@ -55,20 +55,6 @@ const navigation = [
       <div class="site-header-panel" id="site-header-panel" data-site-header-panel>
         <div data-site-header-surface-mount />
         <div data-site-header-panel-content>
-          <div class="site-header-panel-heading" data-site-header-panel-heading>
-            <span>{menuLabel}</span>
-            <Button
-              data-site-button
-              data-site-control-family={family}
-              data-site-menu-close
-              data-variant={family === 'brutalist' ? 'surface' : 'ghost'}
-              data-size="icon"
-              aria-label={zh ? '关闭导航' : 'Close navigation'}
-              title={zh ? '关闭导航' : 'Close navigation'}
-            >
-              <span class="site-header-close-icon" aria-hidden="true" />
-            </Button>
-          </div>
           <div data-site-header-panel-body>
             <nav
               class="site-header-navigation site-header-popup-navigation"
@@ -139,7 +125,7 @@ const navigation = [
 }
 
 <script>
-  import { initSiteControls, isSiteButtonActivation } from '../site-shadcn-controls';
+  import { initSiteControls } from '../site-shadcn-controls';
   import { initSiteHeaderDisclosure } from '../site-header-disclosure';
   import { initDocumentationHeaderSurface } from '../site-header-surface';
   const initialize = () => {
@@ -154,11 +140,6 @@ const navigation = [
         if (event instanceof CustomEvent) disclosure.toggle();
       };
       button.addEventListener('click', onClick);
-      const closeButton = root.querySelector<HTMLElement>('[data-site-menu-close]');
-      const onClose = (event: Event) => {
-        if (isSiteButtonActivation(event)) disclosure.close(true);
-      };
-      closeButton?.addEventListener('click', onClose);
       button.dataset.siteMenuBound = 'true';
       disclosure.enhance();
       document.addEventListener(
@@ -166,7 +147,6 @@ const navigation = [
         () => {
           void surface?.destroy();
           button.removeEventListener('click', onClick);
-          closeButton?.removeEventListener('click', onClose);
           unbind();
           delete button.dataset.siteMenuBound;
         },

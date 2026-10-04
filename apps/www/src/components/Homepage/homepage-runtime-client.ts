@@ -72,7 +72,6 @@ type Group = {
   theme: boolean;
   runtime: boolean;
   menu?: boolean;
-  closeMenu?: boolean;
   disclosure?: SiteHeaderDisclosure;
 };
 type HomepageHandle = { destroy(): Promise<void>; getSnapshot(): ProjectionScopeSnapshot };
@@ -123,7 +122,6 @@ export function createHomepageContent(
   isActive: () => boolean,
   family: SiteLibraryFamily = 'shadcn'
 ): DemoSpec {
-  const menuRef = group.closeMenu ? 'home-menu-close' : 'home-menu';
   const children: DemoNode[] = group.links.map((link, index) => {
     const attrs: Record<string, string> = {};
     for (const name of ANCHOR_ATTRIBUTES) {
@@ -215,7 +213,7 @@ export function createHomepageContent(
     children.push({
       kind: 'proto',
       prototypeId: resolveProjectionPart(family, 'button', 'root').prototypeId,
-      ref: menuRef,
+      ref: 'home-menu',
       surfaceStyle: {
         minHeight: 'var(--site-control-height, 2.75rem)',
         height: '2.75rem',
@@ -225,11 +223,7 @@ export function createHomepageContent(
       },
       props: { variant: family === 'shadcn' ? 'ghost' : 'surface', size: 'icon' },
       children: [
-        {
-          kind: 'box',
-          className: group.closeMenu ? 'site-header-close-icon' : 'site-header-menu-icon',
-          attrs: { 'aria-hidden': 'true' },
-        },
+        { kind: 'box', className: 'site-header-menu-icon', attrs: { 'aria-hidden': 'true' } },
         {
           kind: 'box',
           className: 'home-theme-accessible-label',
@@ -247,13 +241,10 @@ export function createHomepageContent(
         isActive,
         group.root.dataset.homepageThemeLabel || 'Toggle theme'
       );
-      const menuButton = context.refs[menuRef];
-      const unbindMenu =
-        menuButton && !group.closeMenu ? group.disclosure?.bindButton(menuButton) : undefined;
+      const menuButton = context.refs['home-menu'];
+      const unbindMenu = menuButton && group.disclosure?.bindButton(menuButton);
       const toggleMenu = () => {
-        if (!isActive()) return;
-        if (group.closeMenu) group.disclosure?.close(true);
-        else group.disclosure?.toggle();
+        if (isActive()) group.disclosure?.toggle();
       };
       const onMenuClick = (event: Event) => {
         if (event instanceof (context.host.ownerDocument.defaultView?.CustomEvent ?? CustomEvent))
@@ -265,7 +256,7 @@ export function createHomepageContent(
           group.root.dataset.homepageMenuLabel || 'Navigation and settings'
         );
         if (runtime === 'wc') menuButton.addEventListener('click', onMenuClick);
-        else context.api.setProps(menuRef, { onClick: toggleMenu });
+        else context.api.setProps('home-menu', { onClick: toggleMenu });
       }
       const cleanupLinkFacts = group.links.map((_link, index) => {
         const link = context.refs[`home-link-${index}`] as HTMLAnchorElement | undefined;
@@ -314,7 +305,8 @@ export function createHomepageContent(
         for (const cleanup of cleanupLinkFacts) cleanup();
         unbindMenu?.();
         menuButton?.removeEventListener('click', onMenuClick);
-        if (menuButton && runtime !== 'wc') context.api.setProps(menuRef, { onClick: () => {} });
+        if (menuButton && runtime !== 'wc')
+          context.api.setProps('home-menu', { onClick: () => {} });
         for (const { link, listener } of listeners) link.removeEventListener('click', listener);
       };
     },
@@ -347,7 +339,6 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       theme: !!fallback.querySelector('[data-homepage-theme]'),
       runtime: group.dataset.homepageControls === 'runtime',
       menu: !!fallback.querySelector('[data-homepage-menu]'),
-      closeMenu: group.dataset.homepageMenuClose === 'true',
       disclosure,
     };
   });
