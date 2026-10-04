@@ -210,6 +210,12 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
             (surface) =>
               surface.prototypeId === instance.prototypeId &&
               surface.ref === instance.ref &&
+              // An ID relation never substitutes for the authored parent of
+              // in-content structure. Tabs Content has no portal boundary;
+              // only genuinely detached popup parts may lose physical parentage.
+              (surface.withinContent
+                ? sameParent(surface, parent)
+                : instance.policy !== 'selected') &&
               (ids.length
                 ? ids.includes(surface.id)
                 : sameParent(surface, ownerPhysical) || !surface.withinContent)

@@ -114,6 +114,11 @@ for (const family of ['select', 'dropdown-menu', 'dialog'])
     assert.equal(compareContrastAnatomy(plan, closed).achieved, true);
     trigger.ariaExpanded = 'true';
     assert.equal(compareContrastAnatomy(plan, closed).achieved, false);
+    const inlineContent = sample.surfaces.find((surface) => surface.uid === content.path);
+    assert.equal(compareContrastAnatomy(plan, sample).achieved, true);
+    inlineContent.parent = trigger.uid;
+    assert.equal(compareContrastAnatomy(plan, sample).achieved, false);
+    inlineContent.parent = content.parent;
     for (const surface of sample.surfaces) {
       const node = plan.instances.find((node) => node.path === surface.uid);
       if (node.policy) surface.parent = null;
@@ -136,6 +141,15 @@ test('selected Tabs panel follows authored value and current controls, inactive 
   }
   const hidden = panels.find((node) => node.props.value === 'details');
   sample.surfaces = sample.surfaces.filter((surface) => surface.uid !== hidden.path);
+  assert.equal(compareContrastAnatomy(plan, sample).achieved, true);
+  const selected = sample.surfaces.find((surface) => surface.uid === panels[0].path);
+  selected.parent = plan.instances.find((node) => node.part === 'list').path;
+  assert.equal(compareContrastAnatomy(plan, sample).achieved, false);
+  selected.parent = null;
+  selected.withinContent = false;
+  assert.equal(compareContrastAnatomy(plan, sample).achieved, false);
+  selected.parent = panels[0].parent;
+  selected.withinContent = true;
   assert.equal(compareContrastAnatomy(plan, sample).achieved, true);
   sample.surfaces = sample.surfaces.filter((surface) => surface.uid !== panels[0].path);
   assert.equal(compareContrastAnatomy(plan, sample).achieved, false);
