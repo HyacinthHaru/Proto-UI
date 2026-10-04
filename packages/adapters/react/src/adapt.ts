@@ -231,6 +231,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         setHostStyle({ tokens, revision });
       };
       const [shouldExist, setShouldExist] = runtime.useState(!supportsOwnerContext);
+      const projectionReadyRef = runtime.useRef(false);
       const viewReadyRef = runtime.useRef(false);
       const focusTargetReadyListenersRef = runtime.useRef<Set<() => void>>(new Set());
       const focusTargetRetryScheduledRef = runtime.useRef(false);
@@ -403,6 +404,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           if (ownerRef.current?.hasView) void ownerRef.current.detachView();
           setHostTokens([]);
           pendingRevealStyleRevisionRef.current = null;
+          projectionReadyRef.current = false;
           viewReadyRef.current = false;
           focusTargetRetryCountRef.current = 0;
           return;
@@ -473,12 +475,14 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           },
           // A child of a detached ancestor still mounts and attaches its own
           // view, so readiness has to consult the subtree, not just this host.
-          // Native focus must wait for reveal and event delivery; otherwise its
-          // host event is dropped and Focus never observes the requested fact.
+          // A11y identity, blur and entry bind to the committed physical view.
+          // Only native requests awaiting observed facts need the event gate;
+          // conflating them loses one-shot operations during update commits.
           isViewReady: () =>
-            viewReadyRef.current &&
-            eventGate.isEnabled() &&
+            projectionReadyRef.current &&
+            !viewDisposed &&
             !rootRef.current?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+          isNativeFocusReady: () => viewReadyRef.current && eventGate.isEnabled(),
           getCurrentElement: () => rootRef.current,
           subscribeTargetReady: (listener) => {
             focusTargetReadyListenersRef.current.add(listener);
@@ -528,6 +532,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         ownerDisposalRef.current?.retain();
         return () => {
           pendingRevealStyleRevisionRef.current = null;
+          projectionReadyRef.current = false;
           viewReadyRef.current = false;
           focusTargetRetryCountRef.current = 0;
           const cleanupRoot = rootRef.current;
@@ -545,6 +550,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           const wasReady = viewReadyRef.current;
           const signal = pendingSignalRef.current;
           pendingSignalRef.current = null;
+          projectionReadyRef.current = true;
 
           // Runtime finalizes rule-driven view effects from CommitSignal.done().
           // Keep a newly attached root pending until that flush has reached a

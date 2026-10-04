@@ -157,7 +157,7 @@ describe.sequential('Select first paint with the popup never opened', () => {
 });
 
 describe.sequential('React Select retained native entry focus', () => {
-  it('observes selected Paper focus before Home and End move to Ink', async () => {
+  it('observes selected entry and native End/Home without committing selection', async () => {
     const { context, page, previewer } = await openRoute(browser, baseUrl, SELECT_ROUTE, {
       width: 1440,
       height: 900,
@@ -189,16 +189,17 @@ describe.sequential('React Select retained native entry focus', () => {
         });
       // Use page input: locator.press() would focus the option first and mask
       // a missing native entry event by injecting the fact navigation needs.
-      await page.keyboard.press('Home');
+      await page.keyboard.press('End');
       await expect
-        .poll(() => readFocus(paper), { message: 'react/Home' })
+        .poll(() => readFocus(ink), { message: 'react/End' })
         .toEqual({
           nativeFocused: true,
           observedFocused: true,
         });
-      await page.keyboard.press('End');
+      // Home must move from a non-first member; an ignored Home cannot pass.
+      await page.keyboard.press('Home');
       await expect
-        .poll(() => readFocus(ink), { message: 'react/End' })
+        .poll(() => readFocus(paper), { message: 'react/Home' })
         .toEqual({
           nativeFocused: true,
           observedFocused: true,
