@@ -80,6 +80,7 @@ export function subscribeFocusSurfaceReady(
   instance: LogicalInstanceToken,
   listener: () => void
 ): () => void {
+  let disposed = false;
   let owner: LogicalInstanceToken | undefined;
   let releaseReady: (() => void) | undefined;
   let releaseSource: (() => void) | undefined;
@@ -98,6 +99,8 @@ export function subscribeFocusSurfaceReady(
       releaseReady = slot.source?.subscribe(listener);
     };
     const sourceChanged = () => {
+      // A source-change snapshot can outlive this owner binding or subscription.
+      if (disposed || owner !== nextOwner) return;
       bindReady();
       listener();
     };
@@ -107,10 +110,13 @@ export function subscribeFocusSurfaceReady(
   };
   bindOwner();
   const releaseSurface = subscribeLogicalTriggerSurface(instance, () => {
+    if (disposed) return;
     bindOwner();
     listener();
   });
   return () => {
+    if (disposed) return;
+    disposed = true;
     releaseSurface();
     releaseReady?.();
     releaseSource?.();

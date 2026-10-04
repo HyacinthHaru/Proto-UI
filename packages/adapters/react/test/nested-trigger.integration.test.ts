@@ -12,6 +12,15 @@ import {
 
 import { createReactAdapter } from '../src';
 import type { ReactAdapterHandle } from '../src/adapt';
+import {
+  bindLogicalParent,
+  getLogicalTriggerSurfaceRoot,
+  isNativeFocusTargetReady,
+  markProtoInstance,
+  mergeLogicalTriggerGroup,
+  registerNativeFocusReadiness,
+  subscribeFocusSurfaceReady,
+} from '../src/platform/instance-tree';
 
 type ButtonConsumerExposes = {
   focusSelf: ButtonExposes['focusSelf']['fn'];
@@ -19,14 +28,55 @@ type ButtonConsumerExposes = {
 };
 
 const mountedRoots: Array<{ unmount(): void }> = [];
+const readinessCleanups: Array<() => void> = [];
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 afterEach(async () => {
   for (const root of mountedRoots.splice(0)) {
     await act(async () => root.unmount());
   }
+  for (const cleanup of readinessCleanups.splice(0).reverse()) cleanup();
   document.body.replaceChildren();
 });
+
+function createReadinessChain() {
+  const outer = document.createElement('div');
+  const requester = document.createElement('div');
+  const previous = document.createElement('div');
+  const next = document.createElement('button');
+  previous.tabIndex = 0;
+  document.body.appendChild(outer);
+  outer.appendChild(requester);
+  requester.appendChild(previous);
+  previous.appendChild(next);
+  const anchor = markProtoInstance(outer, button);
+  const instance = markProtoInstance(requester, button);
+  const oldOwner = markProtoInstance(previous, button);
+  const newOwner = markProtoInstance(next, button);
+  bindLogicalParent(instance, anchor);
+  bindLogicalParent(oldOwner, instance);
+  bindLogicalParent(newOwner, oldOwner);
+  for (const token of [anchor, instance, oldOwner]) mergeLogicalTriggerGroup(token, anchor);
+  return { anchor, instance, oldOwner, newOwner, previous, next };
+}
+
+function createReadinessProvider(target: HTMLElement) {
+  let ready = false;
+  const listeners = new Set<() => void>();
+  return {
+    source: {
+      isReady: () => ready && target.isConnected,
+      subscribe(listener: () => void) {
+        listeners.add(listener);
+        return () => listeners.delete(listener);
+      },
+    },
+    publishReady() {
+      ready = true;
+      for (const listener of Array.from(listeners)) listener();
+    },
+  };
+}
 
 describe('adapter-react: nested trigger routing', () => {
   it('defers outer native focus until the resolved inner Trigger surface is ready', async () => {
@@ -132,5 +182,72 @@ describe('adapter-react: nested trigger routing', () => {
 
     expect(innerClick).toHaveBeenCalledOnce();
     expect(outerClick).toHaveBeenCalledOnce();
+  });
+});
+
+describe('adapter-react: controlled readiness source dispatch', () => {
+  // Injected passive providers expose source-change reentry. Physical DOM focus
+  // is observed here; the real React commit-window case above owns lifecycle evidence.
+  it('keeps the current owner wake-up after an older source callback was copied', async () => {
+    const scene = createReadinessChain();
+    await Promise.resolve();
+    await Promise.resolve();
+    const original = createReadinessProvider(scene.previous);
+    const next = createReadinessProvider(scene.next);
+    const cleanupOriginal = registerNativeFocusReadiness(scene.oldOwner, original.source);
+    readinessCleanups.push(cleanupOriginal);
+    readinessCleanups.push(registerNativeFocusReadiness(scene.newOwner, next.source));
+    let changeOwner = false;
+    readinessCleanups.push(
+      subscribeFocusSurfaceReady(scene.anchor, () => {
+        if (!changeOwner) return;
+        changeOwner = false;
+        mergeLogicalTriggerGroup(scene.newOwner, scene.anchor);
+      })
+    );
+    readinessCleanups.push(
+      subscribeFocusSurfaceReady(scene.instance, () => {
+        const target = getLogicalTriggerSurfaceRoot(scene.instance);
+        if (target && isNativeFocusTargetReady(target)) target.focus();
+      })
+    );
+    const replacement = createReadinessProvider(scene.previous);
+    changeOwner = true;
+    readinessCleanups.push(registerNativeFocusReadiness(scene.oldOwner, replacement.source));
+    cleanupOriginal();
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(document.activeElement).not.toBe(scene.next);
+    next.publishReady();
+    expect(document.activeElement).toBe(scene.next);
+  });
+
+  it('does not recreate a released consumer from a copied source callback', async () => {
+    const scene = createReadinessChain();
+    await Promise.resolve();
+    await Promise.resolve();
+    const original = createReadinessProvider(scene.previous);
+    readinessCleanups.push(registerNativeFocusReadiness(scene.oldOwner, original.source));
+    let releaseConsumer: (() => void) | undefined;
+    let disposeConsumer = false;
+    readinessCleanups.push(
+      subscribeFocusSurfaceReady(scene.anchor, () => {
+        if (!disposeConsumer) return;
+        disposeConsumer = false;
+        releaseConsumer?.();
+      })
+    );
+    releaseConsumer = subscribeFocusSurfaceReady(scene.instance, () => {
+      const target = getLogicalTriggerSurfaceRoot(scene.instance);
+      if (target && isNativeFocusTargetReady(target)) target.focus();
+    });
+    readinessCleanups.push(releaseConsumer);
+    const replacement = createReadinessProvider(scene.previous);
+    disposeConsumer = true;
+    readinessCleanups.push(registerNativeFocusReadiness(scene.oldOwner, replacement.source));
+    await Promise.resolve();
+    await Promise.resolve();
+    replacement.publishReady();
+    expect(document.activeElement).not.toBe(scene.previous);
   });
 });
