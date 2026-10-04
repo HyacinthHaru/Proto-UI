@@ -31,6 +31,12 @@ describe.sequential('Base Input live documentation RuntimeBox', () => {
       locale + '/%s: real Base editors and runtime replacement',
       async (runtime) => {
         const context = await browser.newContext({ viewport: { width: 960, height: 800 } });
+        // Explicit unavailable-CDN condition, not a mocked framework or editor.
+        const blockedFrameworkRequests: string[] = [];
+        await context.route('https://esm.sh/**', async (route) => {
+          blockedFrameworkRequests.push(route.request().url());
+          await route.abort('blockedbyclient');
+        });
         const page = await context.newPage();
         const errors: string[] = [];
         page.on('pageerror', (error) => errors.push(error.message));
@@ -141,6 +147,7 @@ describe.sequential('Base Input live documentation RuntimeBox', () => {
               .inputValue()
           ).toBe('Owner-controlled value');
           expect(errors).toEqual([]);
+          expect(blockedFrameworkRequests).toEqual([]);
         } finally {
           await context.close();
         }
