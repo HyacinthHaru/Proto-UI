@@ -55,6 +55,20 @@ Within the established envelope, favor implementing, preserving, or extending th
 
 When blocked, preserve the candidate and useful negative evidence, explain the constraint and attempted remedies, and propose the smallest decision or prerequisite needed to continue. Continue independent authorized work; do not fabricate success, relax permissions, or spend unbounded resources to avoid reporting a blocker.
 
+## Decide package-budget ceilings
+
+Within an authorized development task, the Agent may decide and implement a bounded numeric increase to the whole-entry package-budget ceilings in `scripts/analysis/package-budgets.mjs` when an already accepted capability justifies its measured cost. The numeric increase does not require an additional human gate. This is an engineering decision about package bytes, not authority to accept a new capability or waive another gate.
+
+Keep each increase a separately reviewable numeric transaction, in a dedicated commit or focused PR linked to the capability. Apply the evidence discipline from [the package-budget decision](https://github.com/Proto-UI/Proto-UI/issues/654#issuecomment-5677625733):
+
+1. Identify the accepted capability, exact baseline and candidate revisions, affected entries, old and proposed ceilings, measured growth, and resulting headroom. Explain why that bounded margin is sufficient; do not raise a threshold merely to turn a failing check green.
+2. Use repository CI with the pinned toolchain as the canonical before/after measurement. Retain Node, esbuild, platform/architecture, zlib, minified artifact hashes, gzip level and build/compression parameters. Local diagnostics do not overrule contradictory canonical CI.
+3. Attribute dominant growth and first investigate accidental dependency closure, duplicate Runtime copies, dead code and avoidable eager inclusion. Preserve correct semantics rather than introducing harmful gzip micro-optimizations. Distinguish accepted product growth from toolchain/compression drift; isolate unchanged source across old/new environments before rebasing for drift.
+4. Measure the integrated combination when related changes affect the same entries. Do not add isolated deltas or reuse stale feature-only measurements as proof of combined headroom. Re-run the canonical blocking gate for the final candidate, including after integration changes.
+5. Preserve the blocking whole-entry gate, its measurement shape and external dependency boundary. Consumer/profile measurements remain supplementary diagnostics. Keep earlier red runs and failed alternatives visible; a numeric transaction does not retroactively turn them into passes.
+
+Independent review, trusted CI/DCO, exact-head integration, live permission and current authorization remain required. Missing evidence is work to collect, not a reason to request approval of an unsupported number or bypass the gate. An unresolved product-direction choice still needs its normal decision. Publication, release, access, secrets, rulesets, security disclosure and provenance exceptions retain their existing boundaries. This rule does not expand other budgets or spending limits, and `pui-govern` remains read-only.
+
 ## Default to completion
 
 When authority and the bounded request determine the result, continue through implementation, validation, documentation, review response, ready-for-review, and exact-head integration without inventing another approval checkpoint. Treat a request to implement, advance, or finish the bounded work as authorization for its normal local edits, signed-off commits, and owned or explicitly authorized branch updates; re-read the live target before each external write.
