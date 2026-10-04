@@ -149,6 +149,38 @@ async function paint(control: Locator) {
   });
 }
 
+// Capture at the physical editor before its runtime restores a controlled owner value.
+// Read-only listener: neither synthetic events nor direct value writes are evidence.
+async function observeNativeInputs(editor: Locator) {
+  await editor.evaluate((element) => {
+    const trace: NativeEditorInput[] = [];
+    (
+      element as HTMLElement & { __bootstrapNativeInputTrace: NativeEditorInput[] }
+    ).__bootstrapNativeInputTrace = trace;
+    element.addEventListener(
+      'input',
+      (event) => {
+        const input = event as InputEvent;
+        trace.push({
+          type: input.type,
+          inputType: input.inputType,
+          data: input.data,
+          composing: input.isComposing,
+          isTrusted: input.isTrusted,
+          value: (element as HTMLInputElement | HTMLTextAreaElement).value,
+        });
+      },
+      { capture: true }
+    );
+  });
+  return () =>
+    editor.evaluate(
+      (element) =>
+        (element as HTMLElement & { __bootstrapNativeInputTrace: NativeEditorInput[] })
+          .__bootstrapNativeInputTrace
+    );
+}
+
 // Do not start even a local socket when this file is collected outside the authorized job.
 // The workflow's explicit opt-in is not a publication/deployment permission.
 describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browser evidence', () => {
@@ -482,30 +514,7 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
           (element, marker) => element.setAttribute('data-editor-identity', marker),
           marker
         );
-        // Observe actual native events without dispatching or patching the owner.
-        await editor.evaluate((element) => {
-          const trace: unknown[] = [];
-          (
-            element as HTMLElement & { __bootstrapNativeInputTrace?: unknown[] }
-          ).__bootstrapNativeInputTrace = trace;
-          element.addEventListener('input', (event) => {
-            const input = event as InputEvent;
-            trace.push({
-              type: input.type,
-              inputType: input.inputType,
-              data: input.data,
-              composing: input.isComposing,
-              isTrusted: input.isTrusted,
-              value: (element as HTMLInputElement | HTMLTextAreaElement).value,
-            });
-          });
-        });
-        const nativeInputs = () =>
-          editor.evaluate(
-            (element) =>
-              (element as HTMLElement & { __bootstrapNativeInputTrace: NativeEditorInput[] })
-                .__bootstrapNativeInputTrace
-          );
+        const nativeInputs = await observeNativeInputs(editor);
         // Keep the strict single-edit count oracle for BOTH physical editor kinds.
         await editor.fill('Changed');
         await expect.poll(() => state(runtime, ref, 'value')).toBe('Changed');
@@ -583,15 +592,59 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
           exact: true,
         });
         const controlledRef = `${ref}Controlled`;
+        const controlledNativeInputs = await observeNativeInputs(controlled);
+        for (const blocked of ['disabled', 'readOnly'] as const) {
+          await setProps(runtime, controlledRef, { [blocked]: true });
+          await expect
+            .poll(() =>
+              controlled.evaluate(
+                (element, property) =>
+                  (element as HTMLInputElement | HTMLTextAreaElement)[property],
+                blocked
+              )
+            )
+            .toBe(true);
+          await controlled.press('End');
+          await controlled.press('X');
+          expect(await controlled.inputValue()).toBe(initial);
+          expect(await controlledNativeInputs()).toEqual([]);
+          expect(await requests(runtime, controlledRef, 'valueChange')).toEqual([]);
+          await setProps(runtime, controlledRef, { [blocked]: false });
+          await expect
+            .poll(() =>
+              controlled.evaluate(
+                (element, property) =>
+                  (element as HTMLInputElement | HTMLTextAreaElement)[property],
+                blocked
+              )
+            )
+            .toBe(false);
+        }
         await controlled.fill('Requested');
         await expect.poll(() => controlled.inputValue()).toBe(initial);
         expect(await state(runtime, controlledRef, 'value')).toBe(initial);
         const emitted = await requests(runtime, controlledRef, 'valueChange');
         expect(emitted).toHaveLength(1);
-        expect(emitted[0].detail).toMatchObject({ value: 'Requested', composing: false });
+        expect(emitted[0].detail).toEqual({
+          value: 'Requested',
+          composing: false,
+          data: 'Requested',
+          inputType: 'insertText',
+        });
+        assertNativeValueChangeSequence(await controlledNativeInputs(), emitted);
         await setProps(runtime, controlledRef, { value: 'Accepted' });
         await expect.poll(() => controlled.inputValue()).toBe('Accepted');
         expect(await state(runtime, controlledRef, 'value')).toBe('Accepted');
+        expect(await requests(runtime, controlledRef, 'valueChange')).toEqual(emitted);
+        const native = await controlledNativeInputs();
+        assertNativeValueChangeSequence(native, emitted);
+        observations.push({
+          runtime,
+          ref: controlledRef,
+          stage: 'controlled-owner-acceptance',
+          nativeInputs: native,
+          valueChangeRequests: emitted,
+        });
       }
       expect(await host(runtime).locator('input,textarea,[contenteditable="true"]').count()).toBe(
         4
