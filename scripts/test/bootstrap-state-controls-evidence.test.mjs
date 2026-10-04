@@ -153,3 +153,18 @@ test('runner-dependent evidence paths are evaluated only in supported step env c
     );
   }
 });
+
+test('native-sequence oracle remains discriminating and runs with the browser evidence', () => {
+  const helper = 'apps/www/src/content/docs/zh-cn/native-editor-evidence.ts';
+  const tests = 'apps/www/src/content/docs/zh-cn/native-editor-evidence.test.ts';
+  for (const file of [helper, tests]) assert.ok(workflow.on.pull_request.paths.includes(file));
+  const execution = workflow.jobs['browser-evidence'].steps.find(
+    (step) => step.env?.PROTO_UI_BOOTSTRAP_BROWSER_EVIDENCE
+  );
+  assert.ok(execution.run.includes(tests));
+  assert.match(browser, /await editor\.fill\('Changed'\)/);
+  assert.match(browser, /requests\(runtime, ref, 'valueChange'\)\)\.length\)\.toBe\(1\)/);
+  assert.match(browser, /await editor\.fill\('Changed\\nSecond line'\)/);
+  assert.match(browser, /assertNativeValueChangeSequence\(native, emitted\)/);
+  assert.match(readFileSync(helper, 'utf8'), /assert\.deepEqual/);
+});

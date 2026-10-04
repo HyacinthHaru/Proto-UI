@@ -6,6 +6,7 @@ import path from 'node:path';
 import type { Browser, BrowserContext, Locator, Page } from 'playwright-core';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer, RUNTIMES } from './browser-harness';
+import { assertNativeValueChangeSequence, type NativeEditorInput } from './native-editor-evidence';
 
 const ROUTE = '/en/test/bootstrap-state-controls/';
 const VIEWPORT = { width: 1440, height: 1100 };
@@ -481,9 +482,7 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
           (element, marker) => element.setAttribute('data-editor-identity', marker),
           marker
         );
-        // Read-only native/expose attribution probe: preserve the failing count
-        // until actual browser events distinguish multiple native edits from
-        // duplicate outward delivery. No dispatch, value write or owner patch.
+        // Observe actual native events without dispatching or patching the owner.
         await editor.evaluate((element) => {
           const trace: unknown[] = [];
           (
@@ -501,8 +500,16 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
             });
           });
         });
-        await editor.fill(ref === 'textarea' ? 'Changed\nSecond line' : 'Changed');
-        await expect.poll(() => state(runtime, ref, 'value')).toBe(await editor.inputValue());
+        const nativeInputs = () =>
+          editor.evaluate(
+            (element) =>
+              (element as HTMLElement & { __bootstrapNativeInputTrace: NativeEditorInput[] })
+                .__bootstrapNativeInputTrace
+          );
+        // Keep the strict single-edit count oracle for BOTH physical editor kinds.
+        await editor.fill('Changed');
+        await expect.poll(() => state(runtime, ref, 'value')).toBe('Changed');
+        expect(await editor.inputValue()).toBe('Changed');
         observations.push({
           runtime,
           ref,
@@ -515,6 +522,33 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
           valueChangeRequests: await requests(runtime, ref, 'valueChange'),
         });
         expect((await requests(runtime, ref, 'valueChange')).length).toBe(1);
+        assertNativeValueChangeSequence(
+          await nativeInputs(),
+          await requests(runtime, ref, 'valueChange')
+        );
+        if (ref === 'textarea') {
+          // A single Playwright fill is not necessarily one native input. Chromium
+          // 154 emits three trusted inputs for this multiline text (run 37184204831).
+          // C-TEXT-CONTROL-0001-C requires ALL of them, in native order, not coalescing.
+          const before = (await nativeInputs()).length;
+          await editor.fill('Changed\nSecond line');
+          await expect.poll(() => state(runtime, ref, 'value')).toBe('Changed\nSecond line');
+          expect(await editor.inputValue()).toBe('Changed\nSecond line');
+          const native = await nativeInputs();
+          const emitted = await requests(runtime, ref, 'valueChange');
+          observations.push({
+            runtime,
+            ref,
+            stage: 'multiline-native-sequence',
+            nativeInputs: native,
+            valueChangeRequests: emitted,
+          });
+          expect(native.length).toBeGreaterThan(before);
+          assertNativeValueChangeSequence(native, emitted);
+          expect(await editor.getAttribute('data-editor-identity')).toBe(marker);
+        }
+
+        const initialCount = (await nativeInputs()).length;
         const value = await editor.inputValue();
         for (const disabled of [true, false, true, false]) {
           await setProps(runtime, ref, { disabled });
@@ -522,7 +556,7 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
           if (disabled) {
             await editor.press('X');
             expect(await editor.inputValue()).toBe(value);
-            expect((await requests(runtime, ref, 'valueChange')).length).toBe(1);
+            expect((await requests(runtime, ref, 'valueChange')).length).toBe(initialCount);
           }
           expect(await editor.getAttribute('data-editor-identity')).toBe(marker);
         }
@@ -531,13 +565,18 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
         await editor.press('End');
         await editor.press('X');
         expect(await editor.inputValue()).toBe(value);
-        expect((await requests(runtime, ref, 'valueChange')).length).toBe(1);
+        expect((await requests(runtime, ref, 'valueChange')).length).toBe(initialCount);
         await setProps(runtime, ref, { readOnly: false });
         await expect.poll(() => editor.getAttribute('readonly')).toBeNull();
         await editor.fill('Restored');
         await expect.poll(() => state(runtime, ref, 'value')).toBe('Restored');
-        expect((await requests(runtime, ref, 'valueChange')).length).toBe(2);
+        expect((await requests(runtime, ref, 'valueChange')).length).toBe(initialCount + 1);
         expect(await editor.getAttribute('data-editor-identity')).toBe(marker);
+
+        assertNativeValueChangeSequence(
+          await nativeInputs(),
+          await requests(runtime, ref, 'valueChange')
+        );
 
         const controlled = host(runtime).getByRole('textbox', {
           name: controlledName,
