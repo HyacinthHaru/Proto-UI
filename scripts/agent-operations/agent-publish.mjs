@@ -417,6 +417,12 @@ export function runPublishCli(argv, options = {}) {
         pull.head?.repo?.full_name?.toLowerCase() !== `${sourceOwner}/${name}`.toLowerCase()
       )
         throw new Error('existing PR head/base binding changed');
+      // PR and backing Issue IDs are different GitHub platform objects.
+      // Match a PR creation acknowledgement to the re-read PR, not its Issue.
+      return exactPublished(pull, body, viewer, {
+        number: item.number,
+        title: args.get('--title'),
+      });
     }
     return item;
   }

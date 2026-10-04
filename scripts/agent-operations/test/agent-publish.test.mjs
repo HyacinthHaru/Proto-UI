@@ -168,7 +168,11 @@ function server({
         else issues.push(published);
       }
       if (unknown) throw new Error('synthetic connection lost after possible server write');
-      return JSON.stringify(published);
+      return JSON.stringify(
+        pull && endpoint.endsWith('/pulls')
+          ? { ...published, id: 110, node_id: 'PR_created' }
+          : published
+      );
     }
     if (endpoint.includes('/issues/7/comments?')) return JSON.stringify(comments);
     if (pull && endpoint.includes('/branches/'))
@@ -189,6 +193,9 @@ function server({
       });
     if (pull && endpoint.endsWith('/pulls/10'))
       return JSON.stringify({
+        ...issues[0],
+        id: 110,
+        node_id: 'PR_created',
         base: { ref: 'main' },
         head: {
           ref: 'fixture-contributor-branch',
