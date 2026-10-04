@@ -242,6 +242,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
+  isFocusAcquisitionReady: () => boolean;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -338,7 +339,11 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       [
         FOCUS_REQUEST_FOCUS_CAP,
         (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
-          if (!target.isConnected || (kind === 'native' && !isNativeFocusTargetReady(target))) {
+          if (
+            !args.isFocusAcquisitionReady() ||
+            !target.isConnected ||
+            (kind === 'native' && !isNativeFocusTargetReady(target))
+          ) {
             return false;
           }
           target.focus(

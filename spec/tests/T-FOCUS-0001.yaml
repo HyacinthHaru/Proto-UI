@@ -140,6 +140,17 @@ cases:
       - Discriminating red/green execution uses the installed React runtime in a simulated DOM. It neither injects gate state nor synthesizes focus facts, and does not claim native browser or all-version conformance.
 
 implementations:
+  - id: focus-entry-rejected-request-lifecycle
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-entry-readiness.contract.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-ENTRY-HOST-DELEGATION
+      - T-FOCUS-0001-CASE-ENTRY-DISABLE
+      - T-FOCUS-0001-CASE-PENDING-HOST-TARGET
+    notes:
+      - Rejected entry acquisition re-resolves current host targets, retains only the latest intent and preserves cancellation and retained-view boundaries without fabricating region facts.
   - id: runtime-focus-contract
     kind: runtime-test
     status: passing
@@ -291,6 +302,9 @@ exercises:
       coverageImpact: exercises-test-surface
       note: Bounded real React commit fixtures, including nested resolved-owner readiness, and the selected-entry/End/Home Chromium journey exercise current Focus and observation delivery, not the whole React version range or profile.
 revisions:
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added rejected entry acquisition lifecycle evidence without broadening first-request no-target policy.
   - version: 0.3.0-alpha.0
     change: strengthened
     summary: Bound the focus-visible native-equality case to the runtime focus contract and the React and Vue adapter focus tests, which jointly prove the measurable and fallback halves.

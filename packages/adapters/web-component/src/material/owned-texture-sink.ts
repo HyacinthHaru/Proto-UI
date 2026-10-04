@@ -6,6 +6,7 @@ import { createOwnedVisualSurface, type OwnedVisualSurface } from '../visual-sur
 import type { OwnedTokenApplier } from '../feedback-style';
 
 export type OwnedTexture = {
+  /** Monotonic provider revision; pixels and texture dimensions are immutable within a revision. Snapshot objects may be fresh on each read. */
   generation: number;
   width: number;
   height: number;
@@ -60,7 +61,7 @@ export function createOwnedTextureVisualSink(
   preferences: MaterialPreferences,
   surface: OwnedVisualSurface = createOwnedVisualSurface(host, host.shadowRoot ?? host)
 ): FinalStyleSink {
-  const canvas = document.createElement('canvas');
+  const canvas = host.ownerDocument.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
   canvas.dataset.puiMaterial = 'owned-texture';
   Object.assign(canvas.style, {
@@ -114,6 +115,52 @@ export function createOwnedTextureVisualSink(
   let preparedPixels: Uint8Array | null = null;
   let resolvedForeground: number[] | null = null;
   let observer: ResizeObserver | null = null;
+  let ownerWindow = host.ownerDocument.defaultView;
+  let geometryFrame: number | null = null;
+  let renderedGeneration = -1;
+  let renderedGeometry: number[] | null = null;
+  const sameSnapshot = (a: OwnedTexture | null, b: OwnedTexture) =>
+    a !== null && a.generation === b.generation && a.width === b.width && a.height === b.height;
+  function stopGeometryWatch() {
+    if (geometryFrame !== null) ownerWindow?.cancelAnimationFrame(geometryFrame);
+    geometryFrame = null;
+  }
+  function watchGeometry() {
+    if (retired || canvas.style.display !== 'block' || geometryFrame !== null || !ownerWindow)
+      return;
+    geometryFrame = ownerWindow.requestAnimationFrame(() => {
+      geometryFrame = null;
+      if (retired || canvas.style.display !== 'block') return;
+      try {
+        const current = source.current();
+        const rect = host.getBoundingClientRect();
+        const next = current
+          ? [
+              rect.x,
+              rect.y,
+              rect.width,
+              rect.height,
+              host.ownerDocument.defaultView?.devicePixelRatio ?? NaN,
+              ...current.bounds(host),
+            ]
+          : null;
+        if (
+          host.ownerDocument.defaultView !== ownerWindow ||
+          !current ||
+          current.generation !== renderedGeneration ||
+          !next ||
+          !renderedGeometry ||
+          next.length !== renderedGeometry.length ||
+          next.some((value, i) => value !== renderedGeometry![i])
+        )
+          repaint();
+      } catch {
+        freeGPU();
+        fallback('geometry-observation-failed');
+      }
+      watchGeometry();
+    });
+  }
 
   function clearDiagnostics() {
     for (const key of [
@@ -126,6 +173,7 @@ export function createOwnedTextureVisualSink(
       delete host.dataset[key];
   }
   function unavailable(reason: string) {
+    stopGeometryWatch();
     canvas.style.display = 'none';
     freeGPU();
     restoreOwnedInline();
@@ -145,6 +193,7 @@ export function createOwnedTextureVisualSink(
     return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
   };
   function fallback(reason: string) {
+    stopGeometryWatch();
     canvas.style.display = 'none';
     restoreOwnedInline();
     const fill = last?.material?.config?.fallback?.fill;
@@ -160,6 +209,11 @@ export function createOwnedTextureVisualSink(
     delete host.dataset.materialRadius;
   }
   function freeGPU() {
+    // Revoked leases must not leave readable pixels in preserveDrawingBuffer.
+    stopGeometryWatch();
+    canvas.width = 0;
+    canvas.height = 0;
+    renderedGeometry = null;
     preparedSource = null;
     preparedPixels = null;
     preparedGeneration = -1;
@@ -251,6 +305,14 @@ export function createOwnedTextureVisualSink(
     }
     painting = true;
     try {
+      const currentWindow = host.ownerDocument.defaultView;
+      if (currentWindow !== ownerWindow) {
+        stopGeometryWatch();
+        ownerWindow = currentWindow;
+        observer?.disconnect();
+        observer = ownerWindow?.ResizeObserver ? new ownerWindow.ResizeObserver(repaint) : null;
+        observer?.observe(host);
+      }
       const material = last.material;
       if (!material) {
         canvas.style.display = 'none';
@@ -278,7 +340,8 @@ export function createOwnedTextureVisualSink(
       // Remove competing Proto-owned fill before publishing fallback or enhancement.
       restoreOwnedInline();
       style.apply(last.style.tokens.filter((token) => !paint(token)));
-      const css = getComputedStyle(host);
+      const css = ownerWindow?.getComputedStyle(host);
+      if (!css) throw new Error('owner-document-unavailable');
       const parsed = css.color.match(
         /^rgba?\(\s*([\d.]+)[, ]+([\d.]+)[, ]+([\d.]+)(?:\s*[,/]\s*([\d.]+))?\s*\)$/
       );
@@ -344,15 +407,17 @@ export function createOwnedTextureVisualSink(
         !(texture.pixels instanceof Uint8Array) ||
         texture.pixels.length !== texture.width * texture.height * 4
       ) {
+        freeGPU();
         fallback('invalid-owned-source');
         return;
       }
       for (let i = 3; i < texture.pixels.length; i += 4)
         if (texture.pixels[i] !== 255) {
+          freeGPU();
           fallback('source-not-opaque');
           return;
         }
-      if (preparedSource !== texture || preparedGeneration !== texture.generation) {
+      if (!sameSnapshot(preparedSource, texture) || preparedGeneration !== texture.generation) {
         const nextPixels =
           program.prepareSource?.(texture.pixels, texture.width, texture.height) ?? texture.pixels;
         if (!(nextPixels instanceof Uint8Array) || nextPixels.length !== texture.pixels.length)
@@ -378,7 +443,7 @@ export function createOwnedTextureVisualSink(
         fallback('geometry-unavailable');
         return;
       }
-      const dpr = devicePixelRatio;
+      const dpr = ownerWindow?.devicePixelRatio ?? NaN;
       const width = Math.ceil(rect.width * dpr),
         height = Math.ceil(rect.height * dpr);
       const radius = Math.min(parseFloat(radii[0]), rect.width / 2, rect.height / 2);
@@ -448,10 +513,12 @@ export function createOwnedTextureVisualSink(
           fallback('rendered-contrast-unsafe');
           return;
         }
-      if (source.current() !== texture) {
+      if (!sameSnapshot(source.current(), texture)) {
+        freeGPU();
         fallback('source-replaced-during-frame');
         return;
       }
+      if (!ownerWindow?.requestAnimationFrame) throw new Error('geometry-observer-unavailable');
       if (css.position === 'static') ownInline('position', 'relative');
       ownInline('isolation', 'isolate');
       surface.mount(canvas);
@@ -462,6 +529,9 @@ export function createOwnedTextureVisualSink(
       host.dataset.materialFrame = String(++paints);
       host.dataset.materialPhase = material.pressed && !material.disabled ? 'pressed' : 'rest';
       host.dataset.materialRadius = String(radius);
+      renderedGeneration = texture.generation;
+      renderedGeometry = [rect.x, rect.y, rect.width, rect.height, dpr, ...frame.bounds];
+      watchGeometry();
     } catch (error) {
       freeGPU();
       fallback(error instanceof Error ? error.message : 'material-frame-failed');
@@ -485,11 +555,33 @@ export function createOwnedTextureVisualSink(
   };
   canvas.addEventListener('webglcontextlost', onLost);
   canvas.addEventListener('webglcontextrestored', onRestored);
-  const offSource = source.subscribe(repaint),
+  let offSource = () => {};
+  let offPreferences = () => {};
+  try {
+    offSource = source.subscribe(repaint);
     offPreferences = preferences.subscribe(repaint);
-  if (typeof ResizeObserver !== 'undefined') {
-    observer = new ResizeObserver(repaint);
-    observer.observe(host);
+    if (ownerWindow?.ResizeObserver) {
+      observer = new ownerWindow.ResizeObserver(repaint);
+      observer.observe(host);
+    }
+  } catch (error) {
+    retired = true;
+    for (const cleanup of [
+      offSource,
+      offPreferences,
+      () => observer?.disconnect(),
+      () => canvas.removeEventListener('webglcontextlost', onLost),
+      () => canvas.removeEventListener('webglcontextrestored', onRestored),
+      freeGPU,
+      () => surface.release(canvas),
+    ]) {
+      try {
+        cleanup();
+      } catch {
+        /* Preserve the construction failure after every unwind. */
+      }
+    }
+    throw error;
   }
   return {
     commit(frame) {
@@ -505,6 +597,7 @@ export function createOwnedTextureVisualSink(
       let failed = false;
       let firstError: unknown;
       for (const cleanup of [
+        stopGeometryWatch,
         offSource,
         offPreferences,
         () => observer?.disconnect(),

@@ -3,17 +3,25 @@ on:
   pull_request:
     paths:
       - 'experiments/material-specializer/**'
-      - 'packages/modules/feedback/**'
-      - 'packages/adapters/web-component/**'
-      - 'packages/modules/rule-expose-state-web/**'
+      - 'packages/**'
+      - 'scripts/build/**'
+      - 'apps/www/package.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig*.json'
       - '.github/workflows/material-source-specializer.yml'
   push:
     branches: [main]
     paths:
       - 'experiments/material-specializer/**'
-      - 'packages/modules/feedback/**'
-      - 'packages/adapters/web-component/**'
-      - 'packages/modules/rule-expose-state-web/**'
+      - 'packages/**'
+      - 'scripts/build/**'
+      - 'apps/www/package.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig*.json'
       - '.github/workflows/material-source-specializer.yml'
 permissions:
   contents: read

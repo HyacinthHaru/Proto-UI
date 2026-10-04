@@ -124,6 +124,38 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
             .poll(() => horizontal.evaluate((el, key) => el.style.getPropertyValue(key), INSET))
             .toBe(`${family.thickness}px`);
           const before = await rect(viewport);
+          const passive = horizontal.locator(
+            ':scope > span[data-pui-style~="pointer-events-none"]'
+          );
+          const readPassive = () =>
+            passive.evaluate((outer) => {
+              const inner = outer.firstElementChild!;
+              const r = outer.getBoundingClientRect();
+              const outerStyle = getComputedStyle(outer),
+                innerStyle = getComputedStyle(inner);
+              return {
+                x: r.x + scrollX,
+                y: r.y + scrollY,
+                width: r.width,
+                height: r.height,
+                overflow: outerStyle.overflow,
+                pointerEvents: outerStyle.pointerEvents,
+                innerPointerEvents: innerStyle.pointerEvents,
+                background: innerStyle.backgroundColor,
+                borderColor: innerStyle.borderLeftColor,
+                borderStyle: innerStyle.borderLeftStyle,
+                borderLeft: innerStyle.borderLeftWidth,
+                borderTop: innerStyle.borderTopWidth,
+                carrier: inner.getAttribute('data-pui-style'),
+                hasControlIdentity: [outer, inner].some(
+                  (node) =>
+                    node.hasAttribute('data-pui-root') ||
+                    node.hasAttribute('role') ||
+                    node.hasAttribute('tabindex')
+                ),
+              };
+            });
+          await capture('before-corner-assertions', { privateSurfaceCount: await passive.count() });
           const checkCorner = async () => {
             const [v, h, surface] = await Promise.all([
               rect(vertical),
@@ -155,7 +187,29 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
               { vRef: family.vertical, hRef: family.horizontal }
             );
             expect(hit).toEqual({ found: true, inRoot: true, isControl: false });
-            return { vertical: v, horizontal: h, viewport: surface, hit };
+            expect(await passive.count()).toBe(1);
+            expect(
+              await vertical.locator(':scope > span[data-pui-style~="pointer-events-none"]').count()
+            ).toBe(0);
+            const paint = await readPassive();
+            close(paint.x, v.x);
+            close(paint.y, h.y);
+            close(paint.width, v.width);
+            close(paint.height, h.height);
+            expect(paint.pointerEvents).toBe('none');
+            expect(paint.innerPointerEvents).toBe('none');
+            expect(paint.overflow).toBe('hidden');
+            expect(paint.hasControlIdentity).toBe(false);
+            expect(paint.background).not.toBe('rgba(0, 0, 0, 0)');
+            expect(paint.background).not.toBe('transparent');
+            expect(paint.carrier).toContain(
+              family.name === 'brutalist' ? 'bg-lavender' : 'bg-muted'
+            );
+            expect(paint.borderColor).not.toBe('rgba(0, 0, 0, 0)');
+            expect(paint.borderStyle).toBe('solid');
+            expect(paint.borderLeft).toBe('2px');
+            expect(paint.borderTop).toBe('2px');
+            return { vertical: v, horizontal: h, viewport: surface, hit, passive: paint };
           };
           const initial = await checkCorner();
           await capture('initial', initial);
@@ -237,6 +291,10 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
             .poll(() => horizontal.evaluate((el, key) => el.style.getPropertyValue(key), INSET))
             .toBe('0px');
           close((await rect(horizontal)).width, before.width);
+          const zeroReservation = await readPassive();
+          close(zeroReservation.width, 0);
+          expect(zeroReservation.overflow).toBe('hidden');
+          await capture('zero-reservation', { passive: zeroReservation });
           await vertical.evaluate((el) => el.style.removeProperty('display'));
           await expect
             .poll(() => horizontal.evaluate((el, key) => el.style.getPropertyValue(key), INSET))
@@ -247,6 +305,13 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
             .toBe('22.5px');
           const resized = await rect(horizontal);
           close(resized.width + 22.5, before.width);
+          const fractionalCorner = await readPassive();
+          close(fractionalCorner.width, 22.5);
+          close(fractionalCorner.x, resized.x + resized.width);
+          await capture('fractional-reservation', {
+            horizontal: resized,
+            passive: fractionalCorner,
+          });
           await vertical.evaluate((el) => el.style.removeProperty('width'));
           await expect
             .poll(() => horizontal.evaluate((el, key) => el.style.getPropertyValue(key), INSET))

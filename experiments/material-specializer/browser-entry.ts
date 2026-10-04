@@ -78,6 +78,7 @@ function texture(): OwnedTexture {
   };
 }
 let current: OwnedTexture | null = texture();
+let clonedSnapshots = false;
 const sourceListeners = new Set<() => void>();
 const preferenceListeners = new Set<() => void>();
 let safe = true;
@@ -111,7 +112,7 @@ installExperimentalVisualConsumer(fixtureButton, (host, style, surface) =>
     style,
     diagnosticBaseline ? baselineProgram : candidateProgram,
     {
-      current: () => current,
+      current: () => (current && clonedSnapshots ? { ...current } : current),
       subscribe: (fn) => {
         sourceListeners.add(fn);
         return () => sourceListeners.delete(fn);
@@ -145,6 +146,8 @@ const probe = {
     return {
       profile: diagnosticBaseline ? 'source-157-control' : 'regular-readable-v3',
       preparationCount,
+      materialFrame: Number(element.dataset.materialFrame ?? 0),
+      sourceGeneration: generation,
       viewMode,
       surfaceRoot: element.shadowRoot ? 'shadow' : 'light',
       canvasDirect:
@@ -178,6 +181,11 @@ const probe = {
     current = value ? texture() : null;
     for (const listener of sourceListeners) listener();
   },
+  invalidSource() {
+    generation++;
+    current = { ...texture(), pixels: new Uint8Array(4) };
+    for (const listener of sourceListeners) listener();
+  },
   preparation(mode: string) {
     if (!['normal', 'throw', 'short', 'transparent'].includes(mode))
       throw new Error('unknown mode');
@@ -193,6 +201,14 @@ const probe = {
     generation++;
     current = texture();
     for (const listener of sourceListeners) listener();
+  },
+  clonedSnapshots(value: boolean) {
+    clonedSnapshots = value;
+    for (const listener of sourceListeners) listener();
+  },
+  move(x: number, y: number) {
+    element.style.left = `${310 + x}px`;
+    element.style.top = `${216 + y}px`;
   },
   pixels() {
     return (element.shadowRoot ?? element).querySelector('canvas')?.toDataURL();

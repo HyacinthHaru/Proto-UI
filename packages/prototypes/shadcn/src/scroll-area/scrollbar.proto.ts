@@ -17,6 +17,8 @@ const scrollAreaScrollbar = definePrototype<
       );
     }
 
+    def.props.watch(['orientation'], (run) => run.update());
+
     def.feedback.style.use(tw(SCROLLBAR_SURFACE_TOKENS));
     def.rule({
       when: (when) => when.state(state.orientation).eq('vertical'),
@@ -36,6 +38,24 @@ const scrollAreaScrollbar = definePrototype<
           )
         ),
     });
+    return (renderer) => [
+      renderer.r.slot(),
+      ...(renderer.read.props.get().orientation === 'horizontal'
+        ? [
+            renderer.el(
+              'span',
+              {
+                style: tw(
+                  'pointer-events-none absolute left-[calc(100%_+_2px)] top-[-2px] w-[var(--proto-ui-scroll-track-end-inset,0px)] h-[calc(100%_+_4px)] overflow-hidden'
+                ),
+              },
+              renderer.el('span', {
+                style: tw('absolute inset-0 bg-muted border-l-2 border-t-2 border-border'),
+              })
+            ),
+          ]
+        : []),
+    ];
   },
 });
 

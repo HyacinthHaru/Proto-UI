@@ -137,7 +137,10 @@ class FocusModuleImpl extends ModuleBase {
   private hostEventsWired = false;
   private scopeEventsWired = false;
   private rovingEventsWired = false;
-  private pendingFocusRequest: { options?: FocusRequestOptions; syncFacts: boolean } | undefined;
+  private pendingFocusRequest:
+    | { kind: 'target'; options?: FocusRequestOptions; syncFacts: boolean }
+    | { kind: 'entry'; options?: FocusRequestOptions }
+    | undefined;
   private offTargetReady: (() => void) | undefined;
   private lastHostFocusableTarget: HTMLElement | null = null;
   private lastHostEntryTarget: HTMLElement | null = null;
@@ -860,7 +863,7 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   private queuePendingFocus(options: FocusRequestOptions | undefined, syncFacts: boolean) {
-    this.pendingFocusRequest = { options, syncFacts };
+    this.pendingFocusRequest = { kind: 'target', options, syncFacts };
   }
 
   private clearPendingFocus(): void {
@@ -871,7 +874,8 @@ class FocusModuleImpl extends ModuleBase {
     const pending = this.pendingFocusRequest;
     if (!pending || !this.getRootTarget() || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) return false;
     this.pendingFocusRequest = undefined;
-    if (pending.syncFacts) this.requestFocus(pending.options);
+    if (pending.kind === 'entry') this.requestEntryFocus(pending.options);
+    else if (pending.syncFacts) this.requestFocus(pending.options);
     else this.requestNativeFocus(pending.options);
     return true;
   }
@@ -916,7 +920,13 @@ class FocusModuleImpl extends ModuleBase {
   requestEntryFocus(options?: FocusRequestOptions): void {
     if (!this.entryDeclared || this.entryConfig.disabled) return;
     const target = this.getRootTarget();
-    if (!target || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) return;
+    if (!target || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) {
+      // Preserve latest-wins for an already retained intent without turning
+      // a first request with no resolvable host into a new waiting policy.
+      if (this.pendingFocusRequest) this.pendingFocusRequest = { kind: 'entry', options };
+      return;
+    }
+    this.clearPendingFocus();
 
     const resolved = this.caps.has(FOCUS_RESOLVE_ENTRY_TARGET_CAP)
       ? this.caps.get(FOCUS_RESOLVE_ENTRY_TARGET_CAP)(target, this.entryConfig)
@@ -924,7 +934,9 @@ class FocusModuleImpl extends ModuleBase {
         ? target
         : null;
     if (!resolved) return;
-    this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options, 'entry');
+    if (this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options, 'entry') === false) {
+      this.pendingFocusRequest = { kind: 'entry', options };
+    }
   }
 
   private requestNativeFocusDirect(options?: FocusRequestOptions): FocusRequestOutcome {
@@ -1081,6 +1093,7 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   setEntryDisabled(disabled: boolean): void {
+    if (disabled && this.pendingFocusRequest?.kind === 'entry') this.clearPendingFocus();
     this.entryConfig = Object.freeze({
       ...this.entryConfig,
       disabled,
