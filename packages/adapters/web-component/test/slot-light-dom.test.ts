@@ -1,6 +1,6 @@
 // packages/adapters/web-component/test/slot-light-dom.test.ts
 import { describe, it, expect } from 'vitest';
-import type { Prototype } from '@proto.ui/core';
+import { tw, type Prototype } from '@proto.ui/core';
 import { AdaptToWebComponent } from '@proto.ui/adapter-web-component';
 
 describe('adapter-web-component light DOM slot (v0)', () => {
@@ -144,5 +144,99 @@ describe('adapter-web-component light DOM slot (v0)', () => {
     el.update();
     await new Promise<void>((r) => setTimeout(r, 0));
     expect(el.innerHTML).toBe('Actions<i>owned</i>');
+  });
+
+  it('clears owned nodes and the old observer while preserving pending and later caller mutations', async () => {
+    let decorated = true;
+    const P: Prototype = {
+      name: 'x-light-slot-cleanup-transition',
+      setup() {
+        return (r) =>
+          decorated
+            ? [
+                r.slot(),
+                r.el(
+                  'span',
+                  { style: tw('p-4') },
+                  r.el('span', { style: tw('opacity-50') }, 'owned')
+                ),
+              ]
+            : r.slot();
+      },
+    };
+    AdaptToWebComponent(P);
+    const root = document.createElement(P.name) as HTMLElement & { update(): void };
+    const caller = document.createElement('b');
+    caller.className = 'caller-class';
+    caller.setAttribute('data-pui-style', 'p-8');
+    const text = document.createTextNode('caller-text');
+    root.append(caller, text);
+    document.body.append(root);
+    const deliverMutations = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+    try {
+      await deliverMutations();
+      const oldOwned = [...root.querySelectorAll('span')];
+      const pending = document.createElement('i');
+      root.append(pending); // No observer delivery before switching to slot-only.
+      decorated = false;
+      root.update();
+      await deliverMutations();
+      expect([...root.childNodes]).toEqual([caller, text, pending]);
+      expect(root.querySelectorAll('span')).toHaveLength(0);
+      for (const node of oldOwned) expect(root.contains(node)).toBe(false);
+
+      const later = document.createElement('em');
+      root.append(later);
+      pending.remove();
+      await deliverMutations();
+      expect([...root.childNodes]).toEqual([caller, text, later]);
+      expect(caller.className).toBe('caller-class');
+      expect(caller.getAttribute('data-pui-style')).toBe('p-8');
+
+      decorated = true;
+      root.update();
+      await deliverMutations();
+      expect(root.querySelectorAll('span')).toHaveLength(2);
+      expect(root.querySelector('b')).toBe(caller);
+      expect(root.querySelector('em')).toBe(later);
+      expect(root.querySelector('i')).toBeNull();
+      for (const node of oldOwned) expect(root.contains(node)).toBe(false);
+      later.remove();
+      await deliverMutations();
+      decorated = false;
+      root.update();
+      await deliverMutations();
+      expect([...root.childNodes]).toEqual([caller, text]);
+    } finally {
+      root.remove();
+    }
+  });
+
+  it('initial and repeated slot-only commits do not mutate caller children', async () => {
+    const P: Prototype = {
+      name: 'x-light-slot-only-no-owned',
+      setup() {
+        return (r) => r.slot();
+      },
+    };
+    AdaptToWebComponent(P);
+    const root = document.createElement(P.name) as HTMLElement & { update(): void };
+    const caller = document.createElement('b');
+    const text = document.createTextNode('caller-text');
+    root.append(caller, text);
+    const mutations: MutationRecord[] = [];
+    const observer = new MutationObserver((records) => mutations.push(...records));
+    observer.observe(root, { childList: true, subtree: true });
+    try {
+      document.body.append(root);
+      root.update();
+      for (let i = 0; i < 8; i++) await Promise.resolve();
+      expect(mutations).toEqual([]);
+      expect(observer.takeRecords()).toEqual([]);
+      expect([...root.childNodes]).toEqual([caller, text]);
+    } finally {
+      observer.disconnect();
+      root.remove();
+    }
   });
 });
