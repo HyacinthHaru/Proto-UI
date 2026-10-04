@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { createA11ySemanticObjectRef, definePrototype } from '@proto.ui/core';
-import { FOCUS_ROOT_TARGET_CAP } from '@proto.ui/module-focus';
+import {
+  FOCUS_ROOT_TARGET_CAP,
+  FOCUS_REQUEST_FOCUS_CAP,
+  FOCUS_BLUR_CAP,
+} from '@proto.ui/module-focus';
 import { A11Y_PROJECT_CAP, type A11yProjector } from '@proto.ui/module-a11y';
 import { createReactModules } from '../src/runtime/modules';
 import {
@@ -12,10 +16,11 @@ import {
 afterEach(() => document.body.replaceChildren());
 
 describe('React Focus target readiness', () => {
-  it('withholds a connected target until both view effects and event ingress are ready', () => {
+  it('withholds focus acquisition without hiding the connected target from blur and projection', () => {
     const prototype = definePrototype({ name: 'react-focus-readiness-control', setup() {} });
     const instanceToken = createLogicalInstance(prototype);
     const target = document.createElement('div');
+    target.tabIndex = 0;
     document.body.append(target);
     markProtoInstance(target, prototype, instanceToken);
     let effectsReady = true;
@@ -31,7 +36,7 @@ describe('React Focus target readiness', () => {
       setExposes() {},
       runInCallbackScope: (fn: () => void) => fn(),
       isViewReady: () => effectsReady,
-      isFocusTargetReady: () => focusReady,
+      isFocusAcquisitionReady: () => focusReady,
       getCurrentElement: () => target,
       subscribeTargetReady: () => () => {},
       retryTargetReady() {},
@@ -43,7 +48,15 @@ describe('React Focus target readiness', () => {
     try {
       // This controlled temporal split is the reported native boundary: the
       // physical target exists, but a host:focus event would still be dropped.
-      expect(getTarget()).toBeNull();
+      expect(getTarget()).toBe(target);
+      const caps = new Map(modules.focus({ prototypeName: prototype.name }));
+      const request = caps.get(FOCUS_REQUEST_FOCUS_CAP) as (target: HTMLElement) => boolean;
+      const blur = caps.get(FOCUS_BLUR_CAP) as (target: HTMLElement) => void;
+      expect(request(target)).toBe(false);
+      expect(document.activeElement).not.toBe(target);
+      target.focus();
+      blur(getTarget()!);
+      expect(document.activeElement).not.toBe(target);
       const project = new Map(modules.a11y({ prototypeName: prototype.name })).get(
         A11Y_PROJECT_CAP
       ) as A11yProjector;
@@ -59,6 +72,8 @@ describe('React Focus target readiness', () => {
       expect(target.getAttribute('aria-label')).toBe('Readiness control');
       project.dispose?.();
       focusReady = true;
+      expect(request(target)).toBe(true);
+      expect(document.activeElement).toBe(target);
       expect(getTarget()).toBe(target);
       effectsReady = false;
       expect(getTarget()).toBeNull();
