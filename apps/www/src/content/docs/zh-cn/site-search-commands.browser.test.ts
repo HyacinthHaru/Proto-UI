@@ -690,13 +690,13 @@ for (const width of [1280, 1440, 2048]) {
           expect(geometry.commands).toHaveLength(3);
           expect(Math.abs(geometry.search.height - 44)).toBeLessThanOrEqual(1);
           for (const selector of geometry.selectors) {
-            expect(Math.abs(selector.trigger.height - 44)).toBeLessThanOrEqual(1);
+            expect(Math.abs(selector.trigger.height - 36)).toBeLessThanOrEqual(1);
             expect(Math.abs(selector.trigger.bottom - geometry.search.bottom)).toBeLessThanOrEqual(
               1
             );
-            expect(Math.abs(selector.trigger.center - geometry.search.center)).toBeLessThanOrEqual(
-              1
-            );
+            expect(
+              Math.abs(selector.trigger.center - geometry.search.center - 4)
+            ).toBeLessThanOrEqual(1);
             expect(selector.label.bottom).toBeLessThanOrEqual(selector.trigger.y + 1);
             expect(selector.trigger.scrollWidth - selector.trigger.clientWidth).toBeLessThanOrEqual(
               1

@@ -322,7 +322,9 @@ describe('site family projections', () => {
       expect(trigger.style.width).toBe('100%');
       expect(trigger.style.minWidth).toBe('0');
       expect(trigger.style.maxWidth).toBe('100%');
-      expect(trigger.style.minHeight).toBe('var(--site-control-height, 2.75rem)');
+      expect(trigger.style.minHeight).toBe(
+        'var(--site-select-control-height, var(--site-control-height, 2.75rem))'
+      );
       expect(value.style.minWidth).toBe('0');
       expect(value.style.flex).toBe('1 1 auto');
       expect(value.style.overflow).toBe('hidden');
@@ -358,7 +360,9 @@ it.each(['shadcn', 'brutalist'] as const)(
     const value = document.querySelector<HTMLElement>(`wc-${family}-select-value`)!;
     expect(trigger.getAttribute('role')).toBe('combobox');
     expect(trigger.style.height).toBe('auto');
-    expect(trigger.style.minHeight).toBe('var(--site-control-height, 2.75rem)');
+    expect(trigger.style.minHeight).toBe(
+      'var(--site-select-control-height, var(--site-control-height, 2.75rem))'
+    );
     expect(trigger.style.fontSize).toBe('0.875rem');
     expect(trigger.getAttribute('data-pui-style')).toContain('h-8');
     expect(trigger.getAttribute('data-pui-style')?.includes('shadow-[4px_4px_0_0_#000]')).toBe(

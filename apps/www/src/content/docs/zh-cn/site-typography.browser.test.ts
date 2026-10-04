@@ -491,7 +491,7 @@ describe.sequential('native SiteTypography rendered evidence', () => {
                     await page.waitForFunction(
                       () =>
                         document.querySelector(
-                          '[data-site-typography="slogan"] [data-pui-style~="text-3xl"]'
+                          '[data-site-typography="slogan"] [data-pui-style~="text-2xl"]'
                         ),
                       undefined,
                       { timeout: 15_000 }

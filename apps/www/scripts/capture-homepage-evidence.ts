@@ -1032,7 +1032,9 @@ try {
             assert.ok(
               globalControls.every(
                 (control) =>
-                  control.width >= 120 && control.height >= 44 && control.fullValueVisible
+                  control.width >= 120 &&
+                  control.height >= (viewport.width < 768 ? 44 : 36) &&
+                  control.fullValueVisible
               ),
               'Global selected values and targets must be fully visible'
             );

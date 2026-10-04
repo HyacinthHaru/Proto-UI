@@ -141,7 +141,7 @@ describe('homepage passive typography refresh preserves real gallery state', () 
           .poll(() =>
             document.querySelector('h1 [data-typography-prototype]')?.getAttribute('data-pui-style')
           )
-          .toContain('text-3xl');
+          .toContain('text-2xl');
       } else {
         const heading = document.createElement('h2');
         heading.textContent = 'New source heading';
@@ -203,7 +203,7 @@ describe('homepage passive typography refresh preserves real gallery state', () 
       // Cleanup mutations must not automatically retry the same failed source.
       // A genuine new source revision permits another passive attempt.
       document.querySelector('h1')!.append(' updated');
-      await expect.poll(() => surface().getAttribute('data-pui-style')).toContain('text-3xl');
+      await expect.poll(() => surface().getAttribute('data-pui-style')).toContain('text-2xl');
       expect(note()).toBe(before.input);
     });
   }
@@ -229,7 +229,7 @@ describe('homepage passive typography refresh preserves real gallery state', () 
     await expect.poll(() => added.querySelector('[data-typography-prototype]')).not.toBeNull();
     expect(pending.activate).not.toHaveBeenCalled();
     expect(pending.dispose).toHaveBeenCalledOnce();
-    expect(surface().getAttribute('data-pui-style')).toContain('text-5xl');
+    expect(surface().getAttribute('data-pui-style')).toContain('text-4xl');
     expect(document.querySelector('h1')!.textContent).toBe('Latest translated source');
     expect(handle!.getSnapshot()).toEqual(before.snapshot);
     expect(note()).toBe(before.input);
@@ -269,7 +269,7 @@ describe('homepage passive typography refresh preserves real gallery state', () 
   it('whole-page publication rollback restores the latest locally refreshed typography and live gallery', async () => {
     const before = await editGallery();
     resize(true);
-    await expect.poll(() => surface().getAttribute('data-pui-style')).toContain('text-3xl');
+    await expect.poll(() => surface().getAttribute('data-pui-style')).toContain('text-2xl');
     const refreshedSurface = surface();
     const applyFamily = siteFamily.applySiteLibraryFamily;
     vi.spyOn(console, 'error').mockImplementation(() => {});

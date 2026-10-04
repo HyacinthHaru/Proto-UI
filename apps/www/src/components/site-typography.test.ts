@@ -113,7 +113,7 @@ describe('batched real typography adapters and stable native semantic owners', (
       const surface = heading.querySelector<HTMLElement>('[data-typography-prototype]')!;
       expect(surface.dataset.typographyRuntime).toBe(runtime);
       expect(surface.style.getPropertyValue('--pui-font-sans')).toContain('system-ui');
-      expect(surface.getAttribute('data-pui-style')).toContain('text-5xl');
+      expect(surface.getAttribute('data-pui-style')).toContain('text-4xl');
       expect(surface.getAttribute('data-pui-style')).toContain('font-semibold');
       expect(surface.getAttribute('data-pui-style')).not.toContain('pointer-events-none');
       if (runtime !== 'wc') expect(surface.localName).toBe('span');

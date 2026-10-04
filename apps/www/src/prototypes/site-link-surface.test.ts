@@ -63,7 +63,7 @@ for (const family of ['shadcn', 'brutalist'] as const)
             surfaceStyle: layout,
           });
           surface.update();
-          setElementProps(text, { ...linkTextProps(appearance, facts) });
+          setElementProps(text, { ...linkTextProps(appearance, facts, family) });
           text.update();
           await settle();
           expect(surface.style.pointerEvents).toBe('none');
@@ -85,7 +85,13 @@ for (const family of ['shadcn', 'brutalist'] as const)
             expect(tokens).toContain(facts.pressed ? 'translate-y-1' : 'shadow-[4px_4px_0_0_#000]');
           else if (family === 'brutalist') expect(tokens).not.toContain('shadow-');
           expect(text.getAttribute('data-pui-style')).toContain(
-            facts.current || appearance === 'brand' ? 'font-semibold' : 'font-medium'
+            family === 'shadcn' && (appearance === 'sidebar' || appearance === 'toc')
+              ? facts.current
+                ? 'font-medium'
+                : 'font-normal'
+              : facts.current || appearance === 'brand'
+                ? 'font-semibold'
+                : 'font-medium'
           );
           link.focus();
           expect(document.activeElement).toBe(link);

@@ -1212,6 +1212,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         await toc.click();
         expect(new URL(page.url()).hash).toBe(new URL(hash!, page.url()).hash);
         await expect.poll(() => toc.getAttribute('in-view')).not.toBeNull();
+        await expect.poll(() => toc.getAttribute('aria-current')).toBe('true');
         await expect
           .poll(async () => (await linkPaint(toc)).tokens)
           .toContain(family === 'brutalist' ? 'bg-main' : 'bg-accent');

@@ -276,7 +276,7 @@ export function createHomepageContent(
             });
             if (context.refs[`home-link-text-${index}`])
               context.api.setProps(`home-link-text-${index}`, {
-                ...linkTextProps(siteLinkAppearance(group.links[index]!), facts),
+                ...linkTextProps(siteLinkAppearance(group.links[index]!), facts, family),
               });
           },
           { isActive }

@@ -545,7 +545,7 @@ function createSelectControl<Value extends string>(
       width: '100%',
       minWidth: '0',
       maxWidth: '100%',
-      minHeight: 'var(--site-control-height, 2.25rem)',
+      minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
       ...(config.wrapValue ? { height: 'auto' } : {}),
     },
     children: [value],

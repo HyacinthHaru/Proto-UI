@@ -177,7 +177,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
       };
       setElementProps(surface, props);
       const textProps = {
-        ...linkTextProps(appearance, facts),
+        ...linkTextProps(appearance, facts, family),
         surfaceStyle: { ...theme, minWidth: '0' },
       };
       for (const text of texts) setElementProps(text, textProps);

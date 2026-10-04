@@ -3,13 +3,12 @@ export type NativeLinkFacts = Readonly<{
   focusVisible: boolean;
   pressed: boolean;
   current: boolean;
+  /** Visibility is a weaker TOC cue, never a second navigation-current owner. */
+  inView?: boolean;
 }>;
 
 function isCurrent(link: HTMLAnchorElement): boolean {
-  return (
-    (link.hasAttribute('aria-current') && link.getAttribute('aria-current') !== 'false') ||
-    (link.dataset.siteLinkAppearance === 'toc' && link.hasAttribute('in-view'))
-  );
+  return link.hasAttribute('aria-current') && link.getAttribute('aria-current') !== 'false';
 }
 
 /** Observe browser-owned facts without intercepting or synthesizing navigation.
@@ -30,6 +29,7 @@ export function bindNativeLinkFacts(
     pressed,
     focusVisible: focusVisible(),
     current: isCurrent(link),
+    inView: link.dataset.siteLinkAppearance === 'toc' && link.hasAttribute('in-view'),
   });
   const publish = () => {
     if (alive && link.isConnected && (options.isActive?.() ?? true)) project(snapshot());
@@ -101,6 +101,7 @@ export function bindNativeLinkFacts(
       focusVisible: false,
       pressed: false,
       current: isCurrent(link),
+      inView: link.dataset.siteLinkAppearance === 'toc' && link.hasAttribute('in-view'),
     });
   };
 }

@@ -259,6 +259,38 @@ try {
           }));
           entry.code = initialSource;
           await screenshot('code-expanded');
+          if (kind === 'candidate') {
+            const backplate = shell.locator('[data-demo-ref="copy-backplate"]');
+            const plate = await backplate.evaluate((e) => {
+              const style = getComputedStyle(e);
+              const canvas = document.createElement('canvas');
+              canvas.width = canvas.height = 1;
+              const ctx = canvas.getContext('2d')!;
+              ctx.fillStyle = style.backgroundColor;
+              ctx.fillRect(0, 0, 1, 1);
+              return {
+                prototype: e.getAttribute('data-projection-prototype'),
+                alpha: ctx.getImageData(0, 0, 1, 1).data[3],
+                role: e.getAttribute('role'),
+                tabindex: e.getAttribute('tabindex'),
+              };
+            });
+            assert.equal(plate.prototype, 'shadcn-surface-root');
+            assert.equal(plate.alpha, 255);
+            assert.equal(plate.role, null);
+            assert.equal(plate.tabindex, null);
+            entry.copyBackplate = plate;
+          }
+          await copy.hover();
+          await screenshot('copy-hover');
+          await page.mouse.move(0, 0);
+          await source.focus();
+          await page.keyboard.press('Shift+Tab');
+          assert.ok(
+            await copy.evaluate((e) => e === document.activeElement && e.matches(':focus-visible'))
+          );
+          await screenshot('copy-keyboard-focus');
+
           if (kind === 'candidate')
             assert.ok(initialSource.height > 144, 'Expanded reading is no longer capped at 9rem');
           assert.ok(initialSource.documentOverflow <= 1);
@@ -376,6 +408,7 @@ try {
       const context = await browser.newContext({
         viewport: { width: 320, height: 640 },
         reducedMotion: 'reduce',
+        permissions: ['clipboard-read', 'clipboard-write'],
       });
       const page = await context.newPage();
       const entry: Record<string, unknown> = { id, stressOnly: true, width: 320, textPercent: 200 };
@@ -417,6 +450,81 @@ try {
         entry.screenshots = [`${id}-scrolled.png`];
         await close.click();
         assert.ok(await homeMenu(page).evaluate((e) => e === document.activeElement));
+        for (const [sourceKind, route] of [
+          ['long', 'ui-libraries/base/transition/'],
+          ['short', 'start-here/quick-start/'],
+        ] as const) {
+          await page.goto(`${base}/${locale}/${route}`, { waitUntil: 'networkidle' });
+          await page.waitForSelector('[data-code-panel-init="1"]:visible');
+          await page.evaluate(() => {
+            document.documentElement.style.fontSize = '200%';
+          });
+          if (sourceKind === 'long')
+            await page.waitForFunction(() => {
+              const shell = [...document.querySelectorAll<HTMLElement>('[data-code-shell]')].find(
+                (e) => e.checkVisibility()
+              );
+              const previewer = shell?.closest('[data-previewer-id]') as
+                | (HTMLElement & { __previewer__?: { getCurrentRuntime(): string | null } })
+                | null;
+              return !!previewer?.__previewer__?.getCurrentRuntime();
+            });
+          const shell = page.locator('[data-code-shell]:visible').first();
+          const toggle = shell.locator('[data-code-toggle]');
+          if (await toggle.isVisible()) await toggle.click();
+          const source = shell.locator('pre');
+          const copy = shell.locator('[data-copy] [data-demo-ref="copy-button"]');
+          await copy.waitFor({ state: 'visible' });
+          await shell.scrollIntoViewIfNeeded();
+          const facts = await source.evaluate((e) => ({
+            height: e.clientHeight,
+            fullHeight: e.scrollHeight,
+            width: e.clientWidth,
+            fullWidth: e.scrollWidth,
+            lineHeight: parseFloat(getComputedStyle(e).lineHeight),
+            raw: e.querySelector('code')?.getAttribute('data-raw-code'),
+            documentOverflow: document.documentElement.scrollWidth - innerWidth,
+          }));
+          assert.ok(
+            facts.documentOverflow <= 1 && facts.height > 0 && facts.height <= 417,
+            'Enlarged source fits its independent viewport'
+          );
+          if (sourceKind === 'short')
+            assert.ok(
+              facts.height <= facts.lineHeight + 1,
+              'Enlarged short source still has natural one-line height'
+            );
+          await source.focus();
+          if (facts.fullHeight > facts.height + 1) {
+            await page.keyboard.press('PageDown');
+            await page.waitForFunction(
+              () => (document.activeElement as HTMLElement)?.scrollTop > 0
+            );
+          }
+          if (facts.fullWidth > facts.width + 1) {
+            await page.keyboard.press('ArrowRight');
+            await page.waitForFunction(
+              () => (document.activeElement as HTMLElement)?.scrollLeft > 0
+            );
+          }
+          const filename = `${id}-code-${sourceKind}.png`;
+          await page.screenshot({ path: path.join(out, filename) });
+          (entry.screenshots as string[]).push(filename);
+          assert.equal(await copy.getAttribute('data-copy-state'), 'idle');
+          await copy.click();
+          await page.waitForFunction(
+            () =>
+              [...document.querySelectorAll<HTMLElement>('[data-code-shell]')]
+                .find((e) => e.checkVisibility())
+                ?.querySelector('[data-demo-ref="copy-button"]')
+                ?.getAttribute('data-copy-state') === 'success'
+          );
+          assert.equal(await page.evaluate(() => navigator.clipboard.readText()), facts.raw);
+          entry[`code-${sourceKind}`] = {
+            ...facts,
+            copy: 'Exact source copied after enlarged keyboard scroll',
+          };
+        }
         entry.outcome = 'passed';
       } catch (error) {
         entry.outcome = 'failed';

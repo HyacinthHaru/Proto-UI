@@ -51,17 +51,31 @@ export function linkSurfaceProps(
         : 'none',
     border: action ? 'all' : 'none',
     elevation: action && family === 'brutalist' ? 'raised' : 'none',
-    ...facts,
+    focusVisible: facts.focusVisible,
     hovered: action || row ? facts.hovered : false,
     pressed: facts.pressed,
     current: row && facts.current,
   };
 }
-export function linkTextProps(appearance: SiteLinkAppearance, facts = initial): TextRootProps {
+export function linkTextProps(
+  appearance: SiteLinkAppearance,
+  facts = initial,
+  family: SiteLibraryFamily = 'shadcn'
+): TextRootProps {
+  const quietNavigation = family === 'shadcn' && (appearance === 'sidebar' || appearance === 'toc');
   return {
     size: appearance === 'brand' ? 'base' : 'sm',
-    tone: appearance === 'toc' && !facts.hovered && !facts.current ? 'muted' : 'inherit',
-    weight: facts.current || appearance === 'brand' ? 'semibold' : 'medium',
+    tone:
+      appearance === 'toc' && !facts.hovered && !facts.current && !facts.inView
+        ? 'muted'
+        : 'inherit',
+    weight: quietNavigation
+      ? facts.current
+        ? 'medium'
+        : 'normal'
+      : facts.current || appearance === 'brand'
+        ? 'semibold'
+        : 'medium',
     font: 'body',
     leading: 'normal',
     tracking: appearance === 'brand' ? 'tight' : 'normal',
@@ -91,7 +105,7 @@ export function linkSurfaceLayout(
           ? { minHeight: '2.25rem', padding: '0.25rem 0.75rem', gap: '0.375rem' }
           : appearance === 'sidebar' || appearance === 'toc'
             ? {
-                minHeight: appearance === 'toc' ? '1.5rem' : '2.75rem',
+                minHeight: 'var(--site-navigation-row-height, 2rem)',
                 padding: '0.25rem 0.5rem',
                 gap: '0.5rem',
               }

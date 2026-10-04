@@ -25,8 +25,8 @@ export function siteTextRecipe(
   const size: TextRootProps['size'] =
     role === 'slogan'
       ? compact
-        ? '3xl'
-        : '5xl'
+        ? '2xl'
+        : '4xl'
       : role === 'tagline'
         ? compact
           ? 'base'

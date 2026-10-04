@@ -3,6 +3,7 @@
 .site-header {
   --site-header-row-height: 4rem;
   --site-control-height: 2.75rem;
+  --site-select-control-height: 2.25rem;
   box-sizing: border-box;
   position: relative;
   display: grid;
@@ -335,6 +336,7 @@
 @media (max-width: 47.999rem) {
   .site-header {
     --site-header-row-height: 3.5rem;
+    --site-select-control-height: 2.75rem;
     grid-template-columns: minmax(0, 1fr) 2.75rem 2.75rem 2.75rem;
     grid-template-areas: 'brand search theme menu' 'context context context context';
     padding-inline: 1rem;

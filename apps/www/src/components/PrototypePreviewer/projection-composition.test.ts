@@ -128,7 +128,7 @@ describe('Website projection composition', () => {
           width: '100%',
           minWidth: '0',
           maxWidth: '100%',
-          minHeight: 'var(--site-control-height, 2.25rem)',
+          minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
         },
       });
       expect(part('value')).toMatchObject({
@@ -1009,7 +1009,9 @@ it('keeps full-value wrapping an explicit consumer opt-in rather than changing p
       },
     });
     expect(trigger).toMatchObject({
-      surfaceStyle: { minHeight: 'var(--site-control-height, 2.25rem)' },
+      surfaceStyle: {
+        minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
+      },
     });
     if (wrapValue) {
       expect(value).toMatchObject({
