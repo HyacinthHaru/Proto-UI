@@ -10,8 +10,16 @@ import type {
   readContrastPaintedVisibility,
   readContrastPointerPair,
   readContrastTargetObservation,
+  readContrastAnatomy,
 } from '../../../../scripts/contrast-probe.browser';
 import { launchBrowser } from './browser-harness';
+import {
+  compileContrastAnatomy,
+  compareContrastAnatomy,
+} from '../../../../scripts/contrast-anatomy.mjs';
+import { PROJECTION_FAMILY_MANIFESTS } from '../../../components/PrototypePreviewer/projection-families';
+import switchDemo from './demo-brutalist-switch.demo';
+import checkboxDemo from './demo-brutalist-checkbox.demo';
 
 declare global {
   interface Window {
@@ -21,6 +29,7 @@ declare global {
       readContrastPaintedVisibility: typeof readContrastPaintedVisibility;
       readContrastPointerPair: typeof readContrastPointerPair;
       readContrastTargetObservation: typeof readContrastTargetObservation;
+      readContrastAnatomy: typeof readContrastAnatomy;
     };
   }
 }
@@ -129,6 +138,68 @@ describe('contrast probe / real Chromium instrument calibration', () => {
       expect(observations.unsupported.classification).toBe('unsupported');
     } finally {
       await context.close();
+    }
+  });
+
+  it('collects exact current-lease anatomy and rejects omitted real-recipe Thumb and Indicator instances', async () => {
+    for (const [family, demo, rootRef] of [
+      ['switch', switchDemo, 'releaseAlertsSwitch'],
+      ['checkbox', checkboxDemo, 'checkedCheckbox'],
+      ['checkbox', checkboxDemo, 'mixedCheckbox'],
+    ] as const) {
+      const plan = compileContrastAnatomy(
+        demo,
+        PROJECTION_FAMILY_MANIFESTS.brutalist.families[family]
+      );
+      // Instrument-only DOM realizes the real recipe topology and ARIA facts.
+      // It is not a substitute for rendering the shipped prototypes/adapters.
+      const markup = (parent: string | null): string =>
+        plan.instances
+          .filter((node) => node.parent === parent)
+          .map((node) => {
+            const checked = node.props.defaultIndeterminate
+              ? 'mixed'
+              : node.props.defaultChecked
+                ? 'true'
+                : 'false';
+            return `<div data-pui-root data-projection-prototype="${node.prototypeId}" ${node.ref ? `data-demo-ref="${node.ref}"` : ''} ${node.part === 'root' ? `role="${family}" aria-checked="${checked}"` : ''}>${markup(node.path)}</div>`;
+          })
+          .join('');
+      const context = await browser.newContext({ viewport: { width: 800, height: 1200 } });
+      try {
+        const page = await context.newPage();
+        await page.setContent(
+          fixture(`
+          <section data-projection-content>${markup(null)}</section>
+          <div data-projection-control="runtime"><div data-pui-root aria-controls="reader-popup"></div></div>
+          <div id="reader-popup" data-pui-root><div data-pui-root></div></div>
+        `)
+        );
+        await page.locator('#reader-popup').evaluate((popup) => document.body.append(popup));
+        await page
+          .locator('[data-projection-scope]')
+          .evaluate((scope) => scope.setAttribute('data-projection-state', 'ready'));
+        await page.locator('[data-pui-root]').evaluateAll((roots) => {
+          for (const root of roots) {
+            root.setAttribute('data-projection-owner', 'calibration');
+            root.setAttribute('data-projection-generation', '1');
+          }
+        });
+        await page.addScriptTag({ content: bundle });
+        const observe = () => page.evaluate(() => window.puiContrastProbe.readContrastAnatomy());
+        expect(compareContrastAnatomy(plan, await observe()).achieved).toBe(true);
+        const owner = page.locator(`[data-demo-ref="${rootRef}"]`);
+        const before = await owner.getAttribute('aria-checked');
+        await owner.locator('[data-pui-root]').evaluate((part) => part.remove());
+        expect(await owner.getAttribute('aria-checked')).toBe(before);
+        const after = await observe();
+        expect(after.surfaces.some((surface) => surface.prototypeId === plan.rootPrototypeId)).toBe(
+          true
+        );
+        expect(compareContrastAnatomy(plan, after).achieved).toBe(false);
+      } finally {
+        await context.close();
+      }
     }
   });
 

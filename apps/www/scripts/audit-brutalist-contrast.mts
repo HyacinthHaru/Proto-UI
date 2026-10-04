@@ -7,7 +7,12 @@ import { isDeepStrictEqual } from 'node:util';
 import { transform } from 'esbuild';
 import { readContrastProvenance } from './contrast-provenance.mjs';
 import { createContrastReportJournal } from './contrast-report-journal.mjs';
-import { parseContrastRuntimeOptions, contrastHeldBinaryTargets } from './contrast-audit-plan.mjs';
+import {
+  parseContrastRuntimeOptions,
+  contrastHeldBinaryTargets,
+  assertContrastCaseCoverage,
+} from './contrast-audit-plan.mjs';
+import { compileContrastAnatomy, compareContrastAnatomy } from './contrast-anatomy.mjs';
 import { BRUTALIST_THEME } from '../../../packages/prototypes/brutalist/src/theme';
 import type { Browser, BrowserContext, Page, Locator } from 'playwright-core';
 import {
@@ -203,7 +208,7 @@ const report: Record<string, unknown> = {
   frames,
   failedCases: failures,
   evidenceDebt: [
-    'Interactive anatomy multiplicities are still unresolved: identity/lease checks do not yet prove every always-authored recipe part materialized, including conditional portal subtrees. No complete-family audit claim.',
+    'Recipe-derived anatomy checks cover current authored identities, multiplicities, parent ownership and native conditional presence. They are not general anatomy protocol conformance or proof of every visual cue; full native family evidence remains separate.',
     'All cue necessity and required/redundant/decorative classifications remain independent-review debt; no frame is automatically a WCAG verdict.',
     'Passive-family acceptance covers only the current recipe identity multiplicities, anatomy, ownership and visible physical regions at rest. Auxiliary controls are observed at rest only; their interactions, prop transitions and semantic criteria remain uncovered.',
     'Portable Transition entered state is not directly exposed on every runtime DOM; modal entry observations use owned visibility and completed authored CSS animations, not an invented transition attribute.',
@@ -431,6 +436,46 @@ async function projectionObservation(page: Page, item: Case): Promise<Observatio
       }
     );
 }
+const anatomyPlans = new Map<string, ReturnType<typeof compileContrastAnatomy>>();
+async function anatomyObservation(page: Page, item: Case, state: string): Promise<Observation> {
+  let plan = anatomyPlans.get(item.family);
+  if (!plan) {
+    const manifest = (PROJECTION_FAMILY_MANIFESTS.brutalist as ProjectionFamilyManifest).families[
+      item.family
+    ];
+    const resolution = resolveProjectionRecipe(manifest.recipeId);
+    if (resolution.projectionFamilyId !== 'brutalist' || resolution.familyId !== item.family)
+      throw new Error('Anatomy recipe does not match the requested Brutalist family.');
+    const demo = (
+      await import(
+        new URL(`../src/content/docs/zh-cn/${manifest.recipeId}.demo.ts`, import.meta.url).href
+      )
+    ).default as DemoSpec;
+    assertDemoSpec(demo);
+    plan = compileContrastAnatomy(demo, manifest);
+    anatomyPlans.set(item.family, plan);
+  }
+  const target = primary(page.locator('[data-previewer-id]').first(), item.family);
+  if (!target) throw new Error('Interactive anatomy has no current primary target.');
+  const observed = await target.evaluate((element) =>
+    (
+      globalThis as typeof globalThis & {
+        puiContrastProbe: typeof import('./contrast-probe.browser');
+      }
+    ).puiContrastProbe.readContrastAnatomy(element)
+  );
+  const requirePrimaryOpen =
+    ['tooltip', 'hover-card'].includes(item.family) &&
+    ['hover', 'hover-open', 'keyboard-focus', 'focus-open'].includes(state);
+  return {
+    ...compareContrastAnatomy(plan, observed, { requirePrimaryOpen }),
+    owner: observed.owner,
+    generation: observed.generation,
+    observed,
+    requestedFrame: state,
+    requirePrimaryOpen,
+  };
+}
 async function capture(
   page: Page,
   item: Case,
@@ -454,6 +499,10 @@ async function capture(
     frame.beforeFingerprintDigest = digest(before);
     const projectionBefore = await projectionObservation(page, item);
     frame.projectionBefore = projectionBefore;
+    const anatomyBefore = passiveFamilies.has(item.family)
+      ? null
+      : await anatomyObservation(page, item, state);
+    frame.anatomyBefore = anatomyBefore;
     if (!projectionBefore.achieved)
       throw new Error('Requested Brutalist recipe/component/runtime or current lease is missing.');
     // Default caret hiding writes native editor styles; preserve the reader's
@@ -493,6 +542,10 @@ async function capture(
     frame.afterFingerprintDigest = digest(after);
     const projectionAfter = await projectionObservation(page, item);
     frame.projectionAfter = projectionAfter;
+    const anatomyAfter = passiveFamilies.has(item.family)
+      ? null
+      : await anatomyObservation(page, item, state);
+    frame.anatomyAfter = anatomyAfter;
     const sameProjectionLease =
       projectionBefore.owner === projectionAfter.owner &&
       projectionBefore.generation === projectionAfter.generation;
@@ -518,6 +571,10 @@ async function capture(
     if (!projectionAfter.achieved || !sameProjectionLease)
       throw new Error(
         'Requested Brutalist projection changed during capture; raw attempt retained.'
+      );
+    if (anatomyBefore && (!anatomyBefore.achieved || !anatomyAfter?.achieved))
+      throw new Error(
+        'Authored materialized anatomy or current conditional subtree is missing; raw frame retained.'
       );
     if (!(frame.targetObservation as Observation).achieved)
       throw new Error(`Requested target predicate not achieved: ${state}.`);
@@ -1473,6 +1530,7 @@ try {
     ['provenance-guard', new URL('./contrast-provenance.mjs', import.meta.url)],
     ['report-journal', new URL('./contrast-report-journal.mjs', import.meta.url)],
     ['audit-plan', new URL('./contrast-audit-plan.mjs', import.meta.url)],
+    ['anatomy-model', new URL('./contrast-anatomy.mjs', import.meta.url)],
     ['browser-harness', new URL('../src/content/docs/zh-cn/browser-harness.ts', import.meta.url)],
     [
       'projection-manifest',
@@ -1583,6 +1641,7 @@ try {
       await context.close();
     }
   }
+  assertContrastCaseCoverage(selectedFamilies, cases);
   await persist('initial');
   for (const item of cases) {
     if (item.status === 'failed') continue;

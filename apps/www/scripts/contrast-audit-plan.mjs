@@ -30,3 +30,14 @@ export function contrastHeldBinaryTargets(family) {
     ];
   return [];
 }
+
+export function assertContrastCaseCoverage(selectedFamilies, cases) {
+  if (
+    !selectedFamilies.length ||
+    !cases.length ||
+    selectedFamilies.some((family) => !cases.some((item) => item.family === family))
+  )
+    throw new Error(
+      'Every requested family needs observed runtime cases or an explicit unresolved discovery case; empty evidence cannot succeed.'
+    );
+}

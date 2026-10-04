@@ -2,7 +2,11 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { parse } from 'yaml';
-import { parseContrastRuntimeOptions, contrastHeldBinaryTargets } from './contrast-audit-plan.mjs';
+import {
+  parseContrastRuntimeOptions,
+  contrastHeldBinaryTargets,
+  assertContrastCaseCoverage,
+} from './contrast-audit-plan.mjs';
 
 const official = ['wc', 'react', 'vue', 'vue2'];
 test('page-specific runtime planning keeps three-runtime Tooltip separate from four-runtime pages', () => {
@@ -66,4 +70,20 @@ test('held journey references cover the real authored enabled non-default binary
       authored
     );
   }
+});
+
+test('unsupported runtime availability cannot become zero-case success for a requested family', () => {
+  assert.throws(() => parseContrastRuntimeOptions('["native"]', official), /runtime/);
+  assert.throws(() => parseContrastRuntimeOptions('[]', official), /runtime/);
+  assert.throws(() => assertContrastCaseCoverage(['tooltip'], []), /empty evidence/);
+  assert.throws(
+    () => assertContrastCaseCoverage(['tooltip', 'switch'], [{ family: 'switch' }]),
+    /requested family/
+  );
+  assert.doesNotThrow(() =>
+    assertContrastCaseCoverage(
+      ['tooltip'],
+      [{ family: 'tooltip', runtime: 'undiscovered', status: 'failed' }]
+    )
+  );
 });

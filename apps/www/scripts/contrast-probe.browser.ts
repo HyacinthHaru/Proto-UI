@@ -524,6 +524,67 @@ export const readContrastTargetObservation = (element: Element) => {
   };
 };
 
+// Structural observation only; the Node audit compares this current lease to
+// the exact authored recipe. Reader toolbar portals are excluded by their own
+// controls relations, not by assuming all portals belong to the product.
+export const readContrastAnatomy = (primary: Element | null = null) => {
+  const scope = document.querySelector<HTMLElement>('[data-projection-scope]');
+  const content = scope?.querySelector<HTMLElement>('[data-projection-content]');
+  const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
+  const generation = scope?.dataset.projectionGeneration;
+  const all = [...document.querySelectorAll<HTMLElement>('[data-pui-root]')];
+  const readerIds = new Set(
+    [...(scope?.querySelectorAll('[data-projection-control] [aria-controls]') ?? [])].flatMap(
+      (element) => (element.getAttribute('aria-controls') ?? '').split(/\s+/).filter(Boolean)
+    )
+  );
+  const readerPortals = all.filter((element) => readerIds.has(element.id));
+  const roots = all.filter(
+    (element) =>
+      (content?.contains(element) ||
+        (element.dataset.projectionOwner === owner &&
+          element.dataset.projectionGeneration === generation)) &&
+      !element.closest('[data-projection-control]') &&
+      !readerPortals.some((portal) => portal.contains(element))
+  );
+  const indices = new Map(roots.map((element, index) => [element, index]));
+  const surfaces = roots.map((element, uid) => {
+    let parent = composedParent(element);
+    while (parent && !indices.has(parent as HTMLElement)) parent = composedParent(parent);
+    const visibility = readContrastPaintedVisibility(element);
+    return {
+      uid,
+      parent: parent ? indices.get(parent as HTMLElement)! : null,
+      prototypeId: element.dataset.projectionPrototype ?? null,
+      ref: element.getAttribute('data-demo-ref'),
+      id: element.id,
+      role: element.getAttribute('role'),
+      controls: (element.getAttribute('aria-controls') ?? '').split(/\s+/).filter(Boolean),
+      descriptions: (element.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean),
+      ariaChecked: element.getAttribute('aria-checked'),
+      ariaSelected: element.getAttribute('aria-selected'),
+      ariaExpanded: element.getAttribute('aria-expanded'),
+      hovered: element.matches(':hover'),
+      focused: document.activeElement === element,
+      withinContent: !!content?.contains(element),
+      currentLease:
+        element.dataset.projectionOwner === owner &&
+        element.dataset.projectionGeneration === generation,
+      painted: visibility.visible && visibility.classification === 'source-model-visible',
+      visibility,
+    };
+  });
+  return {
+    owner: owner ?? null,
+    generation: generation ?? null,
+    primary: primary ? (indices.get(primary as HTMLElement) ?? null) : null,
+    currentLease:
+      !!(owner && generation && content && scope?.dataset.projectionState === 'ready') &&
+      surfaces.every((surface) => surface.currentLease),
+    surfaces,
+  };
+};
+
 export const readContrastPointerPair = (
   element: Element,
   expected: { fill: string; foreground: string },
