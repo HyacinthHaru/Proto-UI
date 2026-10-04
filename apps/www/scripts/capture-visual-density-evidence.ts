@@ -527,6 +527,21 @@ try {
               .locator('.right-sidebar a[data-site-link-appearance="toc"]:visible')
               .nth(1);
             if (await toc.count()) {
+              // Reproduction fixture: embedded galleries can contribute hidden
+              // headings that are intentionally absent from the generated TOC.
+              await page.evaluate(() => {
+                const fixture = document.createElement('div');
+                fixture.hidden = true;
+                fixture.dataset.densityUnlinkedHeadingFixture = '';
+                const heading = document.createElement('h3');
+                heading.id = 'density-unlinked-modal-title';
+                heading.textContent = 'Embedded gallery modal';
+                fixture.append(heading);
+                document.querySelector('main')!.append(fixture);
+                window.dispatchEvent(new Event('resize'));
+              });
+              entry.unlinkedHeadingFixture =
+                'Hidden embedded h3 without a generated TOC link; original page words unchanged';
               const href = await toc.getAttribute('href');
               await toc.click();
               await page.waitForFunction(
@@ -603,6 +618,10 @@ try {
                   ).length,
                   1
                 );
+              await page.evaluate(() => {
+                document.querySelector('[data-density-unlinked-heading-fixture]')?.remove();
+                window.dispatchEvent(new Event('resize'));
+              });
               if (kind === 'candidate') {
                 await page.evaluate(() => {
                   document.documentElement.style.fontSize = '200%';

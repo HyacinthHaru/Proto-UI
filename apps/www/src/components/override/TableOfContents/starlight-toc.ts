@@ -130,10 +130,13 @@ export class StarlightTOC extends HTMLElement {
     if (title instanceof HTMLHeadingElement) list.push(title);
     nodes.forEach((h) => list.push(h));
 
-    // 去重并保持文档顺序
+    // Only generated TOC destinations participate. Embedded component headings
+    // (including hidden modal titles) do not own a reading-position link.
+    const linkedHashes = new Set(this._links.map((link) => link.hash));
     const seen = new Set<string>();
     this._headings = list.filter((h) => {
-      if (!h.id || seen.has(h.id)) return false;
+      if (!h.id || seen.has(h.id) || !linkedHashes.has('#' + encodeURIComponent(h.id)))
+        return false;
       seen.add(h.id);
       return true;
     });
