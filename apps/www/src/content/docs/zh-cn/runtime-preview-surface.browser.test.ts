@@ -419,8 +419,8 @@ describe('RuntimeBox single actual Prototype surface', () => {
           (runtime) => localStorage.setItem('preferred-prototypes-adapter', runtime),
           runtime
         );
-        await page.goto(`${baseUrl}/zh-cn/ui-libraries/base/button/`, { waitUntil: 'networkidle' });
-        const root = page.locator('[data-demo-id="demo-base-button"]');
+        await page.goto(`${baseUrl}/zh-cn/ui-libraries/base/image/`, { waitUntil: 'networkidle' });
+        const root = page.locator('[data-demo-id="demo-base-image"]');
         await ready(root, runtime);
         for (const boundary of ['.pui-runtime-preview-surface', '[data-passive-shell-slot]']) {
           for (const backward of [false, true]) {

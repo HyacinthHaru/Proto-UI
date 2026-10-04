@@ -1249,7 +1249,13 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
             background: root.backgroundColor,
             border: root.borderTopWidth,
             shadow: root.boxShadow,
-            directChild: title.parentElement?.parentElement === anchor.firstElementChild,
+            directChild:
+              title.parentElement?.parentElement?.matches(
+                '[data-site-link-text][data-pui-root]'
+              ) === true &&
+              title.parentElement.parentElement.parentElement === anchor.firstElementChild &&
+              title.parentElement.contains(caption) &&
+              anchor.firstElementChild?.matches('[data-site-link-content][data-pui-root]') === true,
             nativeNameOnly:
               anchor.getAttribute('role') === null && !anchor.querySelector('a,button,[tabindex]'),
           };
