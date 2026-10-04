@@ -66,6 +66,14 @@ try {
     { timeout: 10000 }
   );
   assert.equal((await state()).phase, 'rest');
+  const beforeCloning = (await state()).preparationCount;
+  await page.evaluate(() => window.probe.clonedSnapshots(true));
+  assert.equal((await state()).quality, 'experimental-owned-texture');
+  assert.equal(
+    (await state()).preparationCount,
+    beforeCloning,
+    'fresh object snapshots reuse an immutable generation'
+  );
   const initialPixels = await page.evaluate(() => window.probe.pixels());
   assert(initialPixels?.startsWith('data:image/png'));
   await capture('01-rest');
@@ -110,9 +118,35 @@ try {
   assert.equal((await state()).quality, 'experimental-owned-texture');
   await page.evaluate(() => window.probe.source(false));
   assert.equal((await state()).quality, 'opaque-fallback');
+  assert.equal(
+    await page.evaluate(() => window.probe.pixels()),
+    'data:,',
+    'source lease loss clears the retained drawing buffer'
+  );
   await capture('06-source-loss');
   await page.evaluate(() => window.probe.source(true));
   assert.equal((await state()).quality, 'experimental-owned-texture');
+  const beforeMove = await state();
+  const beforeMovePixels = await page.evaluate(() => window.probe.pixels());
+  await page.evaluate(() => window.probe.move(41, 17));
+  await page.waitForFunction(
+    (frame) => window.probe.state().materialFrame > frame,
+    beforeMove.materialFrame
+  );
+  assert.equal(
+    (await state()).sourceGeneration,
+    beforeMove.sourceGeneration,
+    'movement does not forge a new source revision'
+  );
+  assert.notEqual(
+    await page.evaluate(() => window.probe.pixels()),
+    beforeMovePixels,
+    'moving bounds resample the unchanged scene'
+  );
+  await capture('09-position-only-resampling');
+  const movedFrame = (await state()).materialFrame;
+  await page.evaluate(() => window.probe.move(0, 0));
+  await page.waitForFunction((frame) => window.probe.state().materialFrame > frame, movedFrame);
   await page.evaluate(() => {
     const canvas = document.querySelector('#glass canvas');
     const gl = canvas.getContext('webgl');
@@ -123,8 +157,16 @@ try {
   await capture('07-context-loss');
   await page.evaluate(() => window.loss.restoreContext());
   await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
-  await page.evaluate(() => window.probe.remove());
+  await page.evaluate(() => {
+    window.retiredCanvas = document.querySelector('#glass canvas');
+    window.probe.remove();
+  });
   await page.waitForTimeout(30);
+  assert.equal(
+    await page.evaluate(() => window.retiredCanvas.toDataURL()),
+    'data:,',
+    'terminal release clears pixels even through a retained canvas reference'
+  );
   // Destroyed owner must unsubscribe from all source and preference callbacks.
   await page.evaluate(() => window.probe.remount());
   await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');

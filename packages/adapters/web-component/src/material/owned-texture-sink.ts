@@ -6,6 +6,7 @@ import { createOwnedVisualSurface, type OwnedVisualSurface } from '../visual-sur
 import type { OwnedTokenApplier } from '../feedback-style';
 
 export type OwnedTexture = {
+  /** Monotonic provider revision; pixels and texture dimensions are immutable within a revision. Snapshot objects may be fresh on each read. */
   generation: number;
   width: number;
   height: number;
@@ -114,6 +115,51 @@ export function createOwnedTextureVisualSink(
   let preparedPixels: Uint8Array | null = null;
   let resolvedForeground: number[] | null = null;
   let observer: ResizeObserver | null = null;
+  const ownerWindow = host.ownerDocument.defaultView;
+  let geometryFrame: number | null = null;
+  let renderedGeneration = -1;
+  let renderedGeometry: number[] | null = null;
+  const sameSnapshot = (a: OwnedTexture | null, b: OwnedTexture) =>
+    a !== null && a.generation === b.generation && a.width === b.width && a.height === b.height;
+  function stopGeometryWatch() {
+    if (geometryFrame !== null) ownerWindow?.cancelAnimationFrame(geometryFrame);
+    geometryFrame = null;
+  }
+  function watchGeometry() {
+    if (retired || canvas.style.display !== 'block' || geometryFrame !== null || !ownerWindow)
+      return;
+    geometryFrame = ownerWindow.requestAnimationFrame(() => {
+      geometryFrame = null;
+      if (retired || canvas.style.display !== 'block') return;
+      try {
+        const current = source.current();
+        const rect = host.getBoundingClientRect();
+        const next = current
+          ? [
+              rect.x,
+              rect.y,
+              rect.width,
+              rect.height,
+              ownerWindow.devicePixelRatio,
+              ...current.bounds(host),
+            ]
+          : null;
+        if (
+          !current ||
+          current.generation !== renderedGeneration ||
+          !next ||
+          !renderedGeometry ||
+          next.length !== renderedGeometry.length ||
+          next.some((value, i) => value !== renderedGeometry![i])
+        )
+          repaint();
+      } catch {
+        freeGPU();
+        fallback('geometry-observation-failed');
+      }
+      watchGeometry();
+    });
+  }
 
   function clearDiagnostics() {
     for (const key of [
@@ -126,6 +172,7 @@ export function createOwnedTextureVisualSink(
       delete host.dataset[key];
   }
   function unavailable(reason: string) {
+    stopGeometryWatch();
     canvas.style.display = 'none';
     freeGPU();
     restoreOwnedInline();
@@ -145,6 +192,7 @@ export function createOwnedTextureVisualSink(
     return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
   };
   function fallback(reason: string) {
+    stopGeometryWatch();
     canvas.style.display = 'none';
     restoreOwnedInline();
     const fill = last?.material?.config?.fallback?.fill;
@@ -160,6 +208,11 @@ export function createOwnedTextureVisualSink(
     delete host.dataset.materialRadius;
   }
   function freeGPU() {
+    // Revoked leases must not leave readable pixels in preserveDrawingBuffer.
+    stopGeometryWatch();
+    canvas.width = 0;
+    canvas.height = 0;
+    renderedGeometry = null;
     preparedSource = null;
     preparedPixels = null;
     preparedGeneration = -1;
@@ -352,7 +405,7 @@ export function createOwnedTextureVisualSink(
           fallback('source-not-opaque');
           return;
         }
-      if (preparedSource !== texture || preparedGeneration !== texture.generation) {
+      if (!sameSnapshot(preparedSource, texture) || preparedGeneration !== texture.generation) {
         const nextPixels =
           program.prepareSource?.(texture.pixels, texture.width, texture.height) ?? texture.pixels;
         if (!(nextPixels instanceof Uint8Array) || nextPixels.length !== texture.pixels.length)
@@ -448,10 +501,12 @@ export function createOwnedTextureVisualSink(
           fallback('rendered-contrast-unsafe');
           return;
         }
-      if (source.current() !== texture) {
+      if (!sameSnapshot(source.current(), texture)) {
+        freeGPU();
         fallback('source-replaced-during-frame');
         return;
       }
+      if (!ownerWindow?.requestAnimationFrame) throw new Error('geometry-observer-unavailable');
       if (css.position === 'static') ownInline('position', 'relative');
       ownInline('isolation', 'isolate');
       surface.mount(canvas);
@@ -462,6 +517,9 @@ export function createOwnedTextureVisualSink(
       host.dataset.materialFrame = String(++paints);
       host.dataset.materialPhase = material.pressed && !material.disabled ? 'pressed' : 'rest';
       host.dataset.materialRadius = String(radius);
+      renderedGeneration = texture.generation;
+      renderedGeometry = [rect.x, rect.y, rect.width, rect.height, dpr, ...frame.bounds];
+      watchGeometry();
     } catch (error) {
       freeGPU();
       fallback(error instanceof Error ? error.message : 'material-frame-failed');
@@ -505,6 +563,7 @@ export function createOwnedTextureVisualSink(
       let failed = false;
       let firstError: unknown;
       for (const cleanup of [
+        stopGeometryWatch,
         offSource,
         offPreferences,
         () => observer?.disconnect(),
