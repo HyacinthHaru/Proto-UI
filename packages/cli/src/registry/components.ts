@@ -728,6 +728,24 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
   'base-textarea': base('base-textarea', 'Base Textarea', 'textareaRoot', 'BaseTextareaRoot'),
   'base-image': base('base-image', 'Base Image', 'imageRoot', 'BaseImageRoot'),
 
+  'base-collapsible': baseCompound('base-collapsible', 'Base Collapsible', [
+    {
+      prototypeImport: 'collapsibleRoot',
+      exportBaseName: 'BaseCollapsibleRoot',
+      elementName: 'proto-ui-base-collapsible-root',
+    },
+    {
+      prototypeImport: 'collapsibleTrigger',
+      exportBaseName: 'BaseCollapsibleTrigger',
+      elementName: 'proto-ui-base-collapsible-trigger',
+    },
+    {
+      prototypeImport: 'collapsibleContent',
+      exportBaseName: 'BaseCollapsibleContent',
+      elementName: 'proto-ui-base-collapsible-content',
+    },
+  ]),
+
   'base-switch': baseCompound('base-switch', 'base Switch', [
     {
       prototypeImport: 'switchRoot',

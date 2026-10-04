@@ -21,6 +21,8 @@ const READY_ROUTES = [
   '/en/test/new-projection-families/',
   '/en/test/liquid-glass-material/',
   '/en/ui-libraries/base/image/',
+  '/en/ui-libraries/base/collapsible/',
+  '/zh-cn/ui-libraries/base/collapsible/',
   '/en/start-here/quick-start/',
   '/en/ui-libraries/shadcn/select/',
   '/en/ui-libraries/shadcn/input/',

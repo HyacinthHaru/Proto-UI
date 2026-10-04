@@ -283,11 +283,6 @@ export function createRuntimeSession<P extends PropsBaseType>(
   kernel.viewIntent.subscribe(({ present }) => {
     moduleHub.getPort<A11yPort>('a11y')?.prepareViewPresence(present);
   });
-  setInstancePhase('alive');
-  callbackScope.run(run, () => {
-    for (const cb of lifecycle.created) cb(run);
-  });
-  emit({ type: 'instance.created' });
 
   const mount = (): Promise<void> => {
     if (instancePhase !== 'alive') {
@@ -486,6 +481,27 @@ export function createRuntimeSession<P extends PropsBaseType>(
 
     return disposePending;
   };
+
+  setInstancePhase('alive');
+  try {
+    callbackScope.run(run, () => {
+      for (const cb of lifecycle.created) cb(run);
+    });
+  } catch (error) {
+    // No session reaches the host on failure. Release logical resources while
+    // its owner capabilities still exist, before host wiring is revoked.
+    try {
+      void dispose().catch((cleanupError) => {
+        queueMicrotask(() => {
+          throw cleanupError;
+        });
+      });
+    } catch (cleanupError) {
+      throw new AggregateError([error, cleanupError]);
+    }
+    throw error;
+  }
+  emit({ type: 'instance.created' });
 
   if (host.presenceLifecycle === 'session') {
     moduleHub.getPort<PresencePort>('presence')?.setLifecycleDriver({

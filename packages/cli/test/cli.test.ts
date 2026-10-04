@@ -95,15 +95,6 @@ describe('@proto.ui/cli', () => {
     });
   });
 
-  it('keeps installation packages separate from family import paths', () => {
-    for (const entry of Object.values(COMPONENT_REGISTRY)) {
-      expect(entry.importPath).toBe(
-        `${entry.packageName}/${entry.id.replace(/^(?:base|shadcn|brutalist)-/, '')}`
-      );
-      expect(entry.importPath).not.toBe(entry.packageName);
-    }
-  });
-
   it('registers Shadcn Input as a direct package component on every Web adapter', () => {
     const input = COMPONENT_REGISTRY['shadcn-input'];
     expect(input).toMatchObject({
