@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { definePrototype, tw } from '@proto.ui/core';
+import { AdaptToWebComponent } from '@proto.ui/adapter-web-component';
 import { createVueAdapter } from '@proto.ui/adapter-vue';
 import { createVue2Adapter } from '@proto.ui/adapter-vue2';
 import { VueAny, flushVue } from '../../../packages/adapters/vue/test/utils/vue';
@@ -13,6 +14,37 @@ import { captureTemplateOwnership } from './fixtures/template-style/ownership';
 // The ownership boundary is identical with and without a child style carrier.
 // This suite also runs against the pinned pre-carrier adapter inputs.
 describe('Template browser fixture initial ownership boundary', () => {
+  it('wc retains its existing caller carrier alongside root feedback at the ready boundary', async () => {
+    const proto = definePrototype({
+      name: 'template-ready-wc',
+      setup(def) {
+        def.feedback.style.use(tw('p-1'));
+        return (r) => r.el('section', [r.el('span', { style: tw('p-4') }, 'owned'), r.slot()]);
+      },
+    });
+    AdaptToWebComponent(proto);
+    const host = document.createElement('div');
+    const root = document.createElement(proto.name);
+    root.setAttribute('data-pui-style', 'p-8');
+    const slot = document.createElement('b');
+    slot.setAttribute('data-caller-slot', '');
+    root.append(slot);
+    host.append(root);
+    document.body.append(host);
+    try {
+      // WC's existing feedback sink preserves caller-owned tokens; the three
+      // framework root renderers have their own existing projection behavior.
+      expect(root.getAttribute('data-pui-style')).toBe('p-8 p-1');
+      const snapshot = await captureTemplateOwnership([{ host }], async () => {
+        await Promise.resolve();
+      });
+      expect(snapshot.originalRoots).toEqual([root]);
+      expect(snapshot.originalSlots).toEqual([slot]);
+      expect(snapshot.originalRootCarriers).toEqual(['p-8 p-1']);
+    } finally {
+      host.remove();
+    }
+  });
   it.each(['vue', 'vue2'])(
     '%s snapshots the committed root and slot only after settlement',
     async (runtime) => {

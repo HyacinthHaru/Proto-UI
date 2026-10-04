@@ -60,7 +60,7 @@ it('paints all four actual adapters from generated PUI CSS and preserves ownersh
     expect(styled).toHaveLength(4);
     // Ready means the initial framework commit and ownership snapshot both completed.
     expect(styled.map((entry: any) => entry.originalRootCarrier)).toEqual([
-      'p-1',
+      'p-8 p-1', // WC keeps the caller-owned carrier before its own feedback contribution.
       'p-1',
       'p-1',
       'p-1',
