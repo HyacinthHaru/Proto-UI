@@ -146,15 +146,15 @@ test('generated direct writer executes own JavaScript against a spy, never a GPU
     const values = frame();
     writeFrame(gl, locations, values);
     assert.equal(calls.length, 27);
-    assert.equal(calls.find((c) => c.location === 'u_bevelDepth').value, 0.08);
+    assert.equal(calls.find((c) => c.location === 'u_bevelDepth').value, 0.06);
     calls.length = 0;
     values.pressed = true;
     writeFrame(gl, locations, values);
-    assert.equal(calls.find((c) => c.location === 'u_bevelDepth').value, 0.1);
+    assert.equal(calls.find((c) => c.location === 'u_bevelDepth').value, 0.12);
     calls.length = 0;
     values.disabled = true;
     writeFrame(gl, locations, values);
-    assert.equal(calls.find((c) => c.location === 'u_bevelDepth').value, 0.08);
+    assert.equal(calls.find((c) => c.location === 'u_bevelDepth').value, 0.06);
     assert.deepEqual(calls.find((c) => c.location === 'u_shadowMapping').value, [0, 0, 0, 0]);
     assert.equal(calls.find((c) => c.location === 'u_radius').value, 24);
     calls.length = 0;

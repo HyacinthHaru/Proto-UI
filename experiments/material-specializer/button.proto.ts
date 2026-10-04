@@ -2,7 +2,7 @@ import { definePrototype, tw } from '@proto.ui/core';
 import { asButton, type ButtonExposes, type ButtonProps } from '@proto.ui/prototypes-base/button';
 import { declareMaterial } from './module';
 
-// This source-only Prototype is deliberately not in the public family catalog.
+// This experimental Prototype is deliberately not in the public family catalog.
 // The private specializer must admit/consume its declaration explicitly.
 export default definePrototype<ButtonProps, ButtonExposes>({
   name: 'experimental-owned-material-button',

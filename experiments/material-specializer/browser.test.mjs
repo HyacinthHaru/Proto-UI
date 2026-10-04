@@ -125,6 +125,127 @@ try {
   assert.equal((await state()).sourceListeners, 1);
   assert.equal((await state()).preferenceListeners, 1);
   await capture('08-remounted');
+  // Compare the unchanged source-157 control and current internally compiled
+  // regular profile on exactly the same owned scenes and Prototype geometry.
+  const control = await context.newPage();
+  control.on('pageerror', (error) => errors.push(String(error)));
+  await control.goto(`${origin}/?profile=source-157-control`);
+  await control.waitForFunction(() => window.ready === true);
+  const framePixels = (target) =>
+    target.evaluate(() => {
+      const c = document.querySelector('#glass canvas');
+      const gl = c.getContext('webgl');
+      const data = new Uint8Array(c.width * c.height * 4);
+      gl.readPixels(0, 0, c.width, c.height, gl.RGBA, gl.UNSIGNED_BYTE, data);
+      return { width: c.width, height: c.height, data: Array.from(data) };
+    });
+  const variation = ({ width, height, data }) => {
+    let sum = 0,
+      count = 0;
+    for (let y = Math.ceil(height * 0.25); y < height * 0.75; y++)
+      for (let x = Math.ceil(width * 0.25); x < width * 0.75 - 1; x++) {
+        const i = (y * width + x) * 4;
+        for (let c = 0; c < 3; c++) sum += Math.abs(data[i + c] - data[i + 4 + c]);
+        count += 3;
+      }
+    return sum / count;
+  };
+  const delta = (a, b) => {
+    assert.equal(a.width, b.width);
+    assert.equal(a.height, b.height);
+    let changed = 0,
+      count = 0,
+      total = 0;
+    for (let i = 0; i < a.data.length; i += 4) {
+      if (a.data[i + 3] < 250 || b.data[i + 3] < 250) continue;
+      const d = Math.max(...[0, 1, 2].map((c) => Math.abs(a.data[i + c] - b.data[i + c])));
+      if (d > 4) changed++;
+      total += d;
+      count++;
+    }
+    return { changedRatio: changed / count, meanMaxChannelDelta: total / count };
+  };
+  const visualComparisons = [];
+  for (const scene of ['checker', 'text', 'solid', 'light', 'dark']) {
+    await page.evaluate((kind) => window.probe.scene(kind), scene);
+    await control.evaluate((kind) => window.probe.scene(kind), scene);
+    const candidate = await state();
+    const baseline = await control.evaluate(() => window.probe.state());
+    await page.screenshot({ path: resolve(evidence, `visual-${scene}-rest.png`) });
+    await control.screenshot({ path: resolve(evidence, `control-157-${scene}.png`) });
+    if (scene === 'dark') {
+      assert.equal(candidate.quality, 'opaque-fallback');
+      assert.equal(candidate.reason, 'rendered-contrast-unsafe');
+      visualComparisons.push({
+        scene,
+        candidate,
+        baseline,
+        scope: 'explicit readable degradation',
+      });
+      continue;
+    }
+    assert.equal(candidate.quality, 'experimental-owned-texture', scene);
+    assert.equal(baseline.quality, 'experimental-owned-texture', scene);
+    const before = await framePixels(control),
+      after = await framePixels(page);
+    const comparison = {
+      scene,
+      candidate,
+      baseline,
+      delta: delta(before, after),
+      baselineVariation: variation(before),
+      candidateVariation: variation(after),
+    };
+    await writeFile(
+      resolve(evidence, `comparison-${scene}.json`),
+      JSON.stringify(comparison, null, 2)
+    );
+    if (scene === 'text') {
+      assert(
+        comparison.candidateVariation < comparison.baselineVariation * 0.85,
+        'regular material must reduce owned background text high-frequency competition'
+      );
+    }
+    if (scene === 'solid')
+      assert(
+        comparison.delta.meanMaxChannelDelta > 3,
+        'regular material must visibly differ from a plain uniform source'
+      );
+    if (scene === 'checker' || scene === 'text') {
+      const r = await page.locator('#glass').boundingBox();
+      await page.mouse.move(r.x + r.width / 2, r.y + r.height / 2);
+      await page.mouse.down();
+      assert.equal((await state()).pressed, true);
+      const pressed = await framePixels(page);
+      comparison.pressDelta = delta(after, pressed);
+      await writeFile(
+        resolve(evidence, `comparison-${scene}.json`),
+        JSON.stringify(comparison, null, 2)
+      );
+      assert(
+        comparison.pressDelta.changedRatio > 0.15,
+        'Base press must change more than a thin fringe of actual material pixels'
+      );
+      await page.screenshot({ path: resolve(evidence, `visual-${scene}-pressed.png`) });
+      await page.mouse.up();
+      assert.equal((await state()).pressed, false);
+    }
+    visualComparisons.push(comparison);
+  }
+  await control.close();
+  await writeFile(
+    resolve(evidence, 'visual-comparisons.json'),
+    JSON.stringify(
+      {
+        source: JSON.parse(await readFile(resolve(root, 'source.json'), 'utf8')),
+        control: 'source-157-control, same current fixture and original kernel',
+        acceptance: 'measured optical/readability controls, visual acceptance still required',
+        comparisons: visualComparisons,
+      },
+      null,
+      2
+    )
+  );
   assert.deepEqual(errors, []);
   assert.equal(externalRequests, 0);
   await writeFile(

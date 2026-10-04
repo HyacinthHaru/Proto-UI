@@ -7,24 +7,42 @@ import {
   type MaterialPreferences,
 } from '@proto.ui/adapter-web-component/internal/owned-texture-sink';
 import program from 'material-program';
+import baselineProgram from 'material-baseline-program';
+const diagnosticBaseline =
+  new URL(location.href).searchParams.get('profile') === 'source-157-control';
 
 const scene = document.querySelector<HTMLElement>('#scene')!;
 const backdrop = document.querySelector<HTMLCanvasElement>('#backdrop')!;
 const pixels = new Uint8Array(800 * 480 * 4);
-for (let y = 0; y < 480; y++)
-  for (let x = 0; x < 800; x++) {
-    const i = (y * 800 + x) * 4;
-    const band = ((Math.floor(x / 28) + Math.floor(y / 44)) % 2) * 65;
-    pixels[i] = 135 + band + Math.round((x / 800) * 45);
-    pixels[i + 1] = 140 + Math.round((y / 480) * 95);
-    pixels[i + 2] = 230 - band;
-    pixels[i + 3] = 255;
+function drawScene(kind = 'checker') {
+  backdrop.width = 800;
+  backdrop.height = 480;
+  const context = backdrop.getContext('2d')!;
+  if (kind === 'checker') {
+    for (let y = 0; y < 480; y++)
+      for (let x = 0; x < 800; x++) {
+        const i = (y * 800 + x) * 4;
+        const band = ((Math.floor(x / 28) + Math.floor(y / 44)) % 2) * 65;
+        pixels[i] = 135 + band + Math.round((x / 800) * 45);
+        pixels[i + 1] = 140 + Math.round((y / 480) * 95);
+        pixels[i + 2] = 230 - band;
+        pixels[i + 3] = 255;
+      }
+    context.putImageData(new ImageData(new Uint8ClampedArray(pixels), 800, 480), 0, 0);
+  } else {
+    // Owned procedural scene pixels, never DOM capture or imported imagery.
+    context.fillStyle = kind === 'dark' ? '#182239' : kind === 'solid' ? '#b9c4d1' : '#e7edf5';
+    context.fillRect(0, 0, 800, 480);
+    if (kind === 'text') {
+      context.fillStyle = '#8991a0';
+      context.font = '600 18px system-ui';
+      for (let y = 20; y < 480; y += 27)
+        context.fillText('OWNED SCENE  ·  FIELD NOTES 024  ·  TYPE & LIGHT  ·  OWNED SCENE', 10, y);
+    }
+    pixels.set(context.getImageData(0, 0, 800, 480).data);
   }
-backdrop.width = 800;
-backdrop.height = 480;
-backdrop
-  .getContext('2d')!
-  .putImageData(new ImageData(new Uint8ClampedArray(pixels), 800, 480), 0, 0);
+}
+drawScene();
 let generation = 1;
 function texture(): OwnedTexture {
   return {
@@ -64,7 +82,7 @@ installExperimentalVisualConsumer(button, (host, style) =>
   createOwnedTextureVisualSink(
     host,
     style,
-    program,
+    diagnosticBaseline ? baselineProgram : program,
     {
       current: () => current,
       subscribe: (fn) => {
@@ -94,6 +112,7 @@ const probe = {
   state() {
     const exposes = element.getExposes();
     return {
+      profile: diagnosticBaseline ? 'source-157-control' : 'regular-readable-v2',
       pressed: exposes.pressed.get(),
       disabled: exposes.disabled.get(),
       focused: exposes.focused.get(),
@@ -117,6 +136,14 @@ const probe = {
   source(value: boolean) {
     generation++;
     current = value ? texture() : null;
+    for (const listener of sourceListeners) listener();
+  },
+  scene(kind: string) {
+    if (!['checker', 'text', 'solid', 'light', 'dark'].includes(kind))
+      throw new Error('unknown scene');
+    drawScene(kind);
+    generation++;
+    current = texture();
     for (const listener of sourceListeners) listener();
   },
   pixels() {

@@ -17,6 +17,7 @@ const paths = Object.fromEntries(
 const out = resolve(process.argv[2] || '/tmp/pui-material-browser');
 await mkdir(out, { recursive: true });
 const result = compileMaterialDeclarations(button.modules, 'webgl-es100');
+const baseline = compileMaterialDeclarations(button.modules, 'webgl-es100', 'source-157-control');
 if (result.kind !== 'generated') throw new Error(JSON.stringify(result.diagnostics));
 for (const [name, content] of Object.entries(result.files))
   await writeFile(resolve(out, name), content);
@@ -34,14 +35,17 @@ const built = await build({
     {
       name: 'fixed-material-program',
       setup(build) {
-        build.onResolve({ filter: /^material-program$/ }, () => ({
-          path: 'fixed-program',
+        build.onResolve({ filter: /^material-(baseline-)?program$/ }, (args) => ({
+          path: args.path,
           namespace: 'material',
         }));
-        build.onLoad({ filter: /.*/, namespace: 'material' }, () => ({
-          loader: 'js',
-          contents: `${result.files['uniforms.mjs']}\nexport default {vertex:${JSON.stringify(result.files['lens.vert'])},fragment:${JSON.stringify(result.files['lens.frag'])},uniforms:${JSON.stringify(result.uniformABI)},writeFrame};`,
-        }));
+        build.onLoad({ filter: /.*/, namespace: 'material' }, (args) => {
+          const selected = args.path === 'material-baseline-program' ? baseline : result;
+          return {
+            loader: 'js',
+            contents: `${selected.files['uniforms.mjs']}\nexport default {vertex:${JSON.stringify(selected.files['lens.vert'])},fragment:${JSON.stringify(selected.files['lens.frag'])},uniforms:${JSON.stringify(selected.uniformABI)},writeFrame};`,
+          };
+        });
       },
     },
   ],
@@ -83,6 +87,7 @@ await writeFile(
       revision,
       packageMode: packed ? 'built-package-artifacts' : 'workspace-source',
       shader: '88f681ab7035fd55b04f63edff1841e32c4199e9',
+      opticalProfile: result.resourcePlan.opticalProfile,
       execution: 'pending-browser-evidence',
     },
     null,

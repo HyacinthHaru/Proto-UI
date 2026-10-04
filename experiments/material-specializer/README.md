@@ -46,3 +46,11 @@ The complex glass effect is being used to find and fill reusable visual-expressi
 No target GPU reflection/compilation, alpha/color pixel fidelity, browser consumer, native backend or real visual commit is accepted by these tests. `execution: not-admitted` remains in every result. A target-specific effect writer is narrower than full Prototype props/events/lifecycle AOT.
 
 Independent source-only review confirmed the literal/ABI/license and real declaration/state tests. Integration still has two explicit mismatches to resolve: this experiment's static radius is only a shader parameter, whereas C-FEEDBACK-MATERIAL-0001-GEOMETRY requires a single final style-owned geometry; and the emitted opaque fallback fill is not a complete visual fallback including foreground, safe preferences and source lease. Neither is treated as completed by the source tests.
+
+## Regular profile visual calibration (2026-10-04)
+
+The next candidate changes the internally compiled regular profile while retaining the audited kernel bytes and high-level Prototype declaration. Bounded source-space scattering and fixed illumination make the surface distinguishable, while Base pressed changes magnification, refraction and optical depth. There is no continuous animation, new observer, author-side shader field or new source/backend capability. The former source-157 parameter set is retained only as an explicit same-scene diagnostic control.
+
+The owned-scene fixture now includes procedural text, a uniform mid-tone, a light surface and a dark contrast-negative surface in addition to the original checker. GPU readback compares material pixels at identical geometry: reduced central high-frequency text variation, visible uniform-source separation and a nontrivial press footprint. These gates supplement actual image inspection; they cannot establish Apple fidelity or subjective visual acceptance. The existing contrast check must still choose opaque fallback for an unsafe dark source.
+
+Exact-head browser A/B images and measurements are uploaded before the emitted-package phase so visual review need not wait for the longer aggregate/package jobs. This candidate's rendered outcome remains pending until that run is inspected. Previous source-bound images and rejected appearances remain historical evidence. Public whole-entry budget thresholds and implementation are unchanged.

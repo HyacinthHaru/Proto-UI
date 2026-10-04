@@ -34,7 +34,10 @@ function readKernel(index, name) {
   return text;
 }
 
-export function compileMaterialDeclarations(declarations, target) {
+export function compileMaterialDeclarations(declarations, target, diagnosticProfile = null) {
+  if (diagnosticProfile !== null && diagnosticProfile !== 'source-157-control')
+    return deny('unknown-diagnostic-profile', String(diagnosticProfile));
+  const baseline = diagnosticProfile === 'source-157-control';
   if (!knownTargets.includes(target)) return deny('unknown-target', target, 'unsupported');
   if (!Array.isArray(declarations) || declarations.length !== 1)
     return deny(
@@ -99,26 +102,36 @@ export function compileMaterialDeclarations(declarations, target) {
     ['u_resolution', 'vec2', 'frame.viewport'],
     ['u_textureResolution', 'vec2', 'frame.textureSize'],
     ['u_bounds', 'vec4', 'frame.bounds'],
-    ['u_refraction', 'float', '0.01'],
+    [
+      'u_refraction',
+      'float',
+      baseline ? '0.01' : 'frame.pressed && !frame.disabled ? 0.018 : 0.008',
+    ],
     ['u_aberration', 'float', '0'],
-    ['u_bevelDepth', 'float', 'frame.pressed && !frame.disabled ? 0.10 : 0.08'],
-    ['u_bevelWidth', 'float', '0.15'],
-    ['u_frost', 'float', '0'],
+    [
+      'u_bevelDepth',
+      'float',
+      baseline
+        ? 'frame.pressed && !frame.disabled ? 0.10 : 0.08'
+        : 'frame.pressed && !frame.disabled ? 0.12 : 0.06',
+    ],
+    ['u_bevelWidth', 'float', baseline ? '0.15' : '0.22'],
+    ['u_frost', 'float', baseline ? '0' : 'frame.pressed && !frame.disabled ? 0.6 : 1.2'],
     [
       'u_radius',
       'float',
       'Math.min(frame.radius * frame.dpr, frame.boxSize[0]/2, frame.boxSize[1]/2)',
     ],
     ['u_time', 'float', '0'],
-    ['u_specular', 'bool', '0'],
+    ['u_specular', 'bool', baseline ? '0' : '1'],
     ['u_revealProgress', 'float', '1'],
     ['u_revealType', 'int', '0'],
     ['u_tiltX', 'float', '0'],
     ['u_tiltY', 'float', '0'],
-    ['u_magnify', 'float', '1'],
+    ['u_magnify', 'float', baseline ? '1' : 'frame.pressed && !frame.disabled ? 1.08 : 1.025'],
     ['u_subpixel', 'vec2', 'frame.subpixel'],
     ['u_boxSize', 'vec2', 'frame.boxSize'],
-    ['u_tint', 'vec4', '[1,1,1,0]'],
+    ['u_tint', 'vec4', baseline ? '[1,1,1,0]' : '[1.05,1.05,1.06,0.45]'],
     ['u_stack', 'sampler2D', '1'],
     ['u_stackMapping', 'vec4', '[0,0,0,0]'],
     ['u_stackRegion', 'vec4', '[0,0,0,0]'],
@@ -177,6 +190,7 @@ export function compileMaterialDeclarations(declarations, target) {
     },
     stateBindings: { pressed: 'pressed', disabled: 'disabled' },
     selectedBackend: 'liquidgl-owned-surface-v1',
+    opticalProfile: baseline ? 'source-157-control' : 'regular-readable-v2',
     degradation: { css: ['refraction', 'owned-scene-sampling', 'optical-press-response'] },
     unsupported: [
       'live-compositor-backdrop',
