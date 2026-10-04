@@ -11,6 +11,7 @@ import { createVue2Adapter } from '@proto.ui/adapter-vue2';
 import { AdaptToWebComponent } from '@proto.ui/adapter-web-component';
 import { configureTemplateStyle } from '../../../../../packages/adapters/web-component/src/style';
 import { CALLER_STYLE, OWNED_STYLE } from './tokens';
+import { captureTemplateOwnership } from './ownership';
 
 type Entry = { host: HTMLElement; update(): void; dispose(): void };
 const entries: Entry[] = [];
@@ -115,53 +116,55 @@ async function settle() {
     requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
   );
 }
-const originalSlots = entries.map(({ host }) => host.querySelector('[data-caller-slot]'));
-const originalRoots = entries.map(({ host }) => host.querySelector('[data-pui-root]'));
-const originalRootCarriers = originalRoots.map((root) => root?.getAttribute('data-pui-style'));
-(window as any).templateStyleFixture = {
-  async update(next: string) {
-    phase = next;
-    entries.forEach((entry) => entry.update());
-    await settle();
-  },
-  async resolver() {
-    configureTemplateStyle({
-      tw: (input) => {
-        resolverInput = input;
-        return 'padding: 3px; background-color: rgb(22, 163, 74);';
-      },
-    });
-    phase = 'styled';
-    entries[0]!.update();
-    await settle();
-  },
-  facts() {
-    return entries.map(({ host }, index) => {
-      const root = host.querySelector('[data-pui-root]');
-      const owned = host.querySelector('span');
-      const slot = host.querySelector('[data-caller-slot]');
-      return {
-        rootIdentity: root === originalRoots[index],
-        rootCarrier: root?.getAttribute('data-pui-style'),
-        originalRootCarrier: originalRootCarriers[index],
-        slotIdentity: slot === originalSlots[index],
-        slotClass: slot?.className,
-        slotCarrier: slot?.getAttribute('data-pui-style'),
-        ownedCarrier: owned?.getAttribute('data-pui-style'),
-        ownedClass: owned?.getAttribute('class'),
-        padding: owned ? getComputedStyle(owned).paddingTop : null,
-        background: owned ? getComputedStyle(owned).backgroundColor : null,
-        inlineStyle: owned?.getAttribute('style'),
-        resolverInput,
-      };
-    });
-  },
-  async dispose() {
-    entries.forEach((entry) => entry.dispose());
-    configureTemplateStyle({});
-    await settle();
-  },
-};
-void settle().then(() => {
+async function initializeFixture() {
+  const { originalRoots, originalSlots, originalRootCarriers } = await captureTemplateOwnership(
+    entries,
+    settle
+  );
+  (window as any).templateStyleFixture = {
+    async update(next: string) {
+      phase = next;
+      entries.forEach((entry) => entry.update());
+      await settle();
+    },
+    async resolver() {
+      configureTemplateStyle({
+        tw: (input) => {
+          resolverInput = input;
+          return 'padding: 3px; background-color: rgb(22, 163, 74);';
+        },
+      });
+      phase = 'styled';
+      entries[0]!.update();
+      await settle();
+    },
+    facts() {
+      return entries.map(({ host }, index) => {
+        const root = host.querySelector('[data-pui-root]');
+        const owned = host.querySelector('span');
+        const slot = host.querySelector('[data-caller-slot]');
+        return {
+          rootIdentity: root === originalRoots[index],
+          rootCarrier: root?.getAttribute('data-pui-style'),
+          originalRootCarrier: originalRootCarriers[index],
+          slotIdentity: slot === originalSlots[index],
+          slotClass: slot?.className,
+          slotCarrier: slot?.getAttribute('data-pui-style'),
+          ownedCarrier: owned?.getAttribute('data-pui-style'),
+          ownedClass: owned?.getAttribute('class'),
+          padding: owned ? getComputedStyle(owned).paddingTop : null,
+          background: owned ? getComputedStyle(owned).backgroundColor : null,
+          inlineStyle: owned?.getAttribute('style'),
+          resolverInput,
+        };
+      });
+    },
+    async dispose() {
+      entries.forEach((entry) => entry.dispose());
+      configureTemplateStyle({});
+      await settle();
+    },
+  };
   document.body.dataset.ready = 'true';
-});
+}
+void initializeFixture();

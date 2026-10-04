@@ -58,6 +58,13 @@ it('paints all four actual adapters from generated PUI CSS and preserves ownersh
     const facts = () => page.evaluate(() => (window as any).templateStyleFixture.facts());
     const styled = await facts();
     expect(styled).toHaveLength(4);
+    // Ready means the initial framework commit and ownership snapshot both completed.
+    expect(styled.map((entry: any) => entry.originalRootCarrier)).toEqual([
+      'p-1',
+      'p-1',
+      'p-1',
+      'p-1',
+    ]);
     for (const [index, entry] of styled.entries()) {
       expect(entry.padding).toBe(baseline ? '0px' : '16px');
       expect(entry.background).toBe(baseline ? 'rgba(0, 0, 0, 0)' : 'rgb(37, 99, 235)');

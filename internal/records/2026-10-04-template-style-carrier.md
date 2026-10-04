@@ -26,3 +26,9 @@ Local Chromium execution is unavailable in this cloud sandbox. No browser result
 ## Provenance
 
 Original repository-local changes assisted by OpenAI Codex: implementation, tests, fixture, workflow and this record. Existing repository patterns were reused; no third-party implementation or private code was supplied. No human review is claimed. DCO sign-off uses the authorized contributor's existing identity; independent review is tracked separately.
+
+## Independent review: initial fixture commit boundary
+
+Fresh independent review found a fixture-only P1: the initial slot and root-carrier snapshots were captured before Vue/Vue 2 committed their initial view. The native browser run [37226659184](https://github.com/Proto-UI/Proto-UI/actions/runs/37226659184) independently failed in its baseline phase with `p-1` compared to the prematurely captured `null`. This is failed verification, not evidence of a production ownership defect; the candidate browser phase had not run.
+
+The fixture now awaits the existing initial framework/frame settlement, captures and validates all three original ownership snapshots, then publishes its API and ready marker. All update, resolver and disposal assertions remain. A new real Vue/Vue 2 readiness regression observes the actual pre-commit missing slot/carrier, proves capture stays pending across the readiness gate, and checks the committed identity and `p-1` carrier. It passes 2/2 against both the pinned pre-carrier implementation and the candidate; the candidate's existing eight checks also pass. Deliberately removing the awaited settlement makes both readiness cases fail. The four production changes are untouched. Fresh exact-head browser artifacts and full CI remain pending after this repair; earlier captures are not relabeled as the repaired head.
