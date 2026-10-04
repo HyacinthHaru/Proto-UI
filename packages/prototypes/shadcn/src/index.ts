@@ -178,6 +178,36 @@ export type {
 } from './dialog/types';
 export { ShadcnTextareaRoot, shadcnTextareaRoot } from './textarea';
 export type { ShadcnTextareaRootProps, ShadcnTextareaRootExposes } from './textarea';
+export { ShadcnInputRoot, shadcnInputRoot } from './input';
+export type { ShadcnInputRootProps, ShadcnInputRootExposes } from './input';
+export {
+  ShadcnScrollAreaRoot,
+  ShadcnScrollAreaViewport,
+  ShadcnScrollAreaScrollbar,
+  ShadcnScrollAreaThumb,
+  shadcnScrollAreaRoot,
+  shadcnScrollAreaViewport,
+  shadcnScrollAreaScrollbar,
+  shadcnScrollAreaThumb,
+} from './scroll-area';
+export type {
+  ShadcnScrollAreaRootProps,
+  ShadcnScrollAreaRootExposes,
+  ShadcnScrollAreaRootStateHandles,
+  ShadcnScrollAreaRootAsHookContract,
+  ShadcnScrollAreaViewportProps,
+  ShadcnScrollAreaViewportExposes,
+  ShadcnScrollAreaViewportStateHandles,
+  ShadcnScrollAreaViewportAsHookContract,
+  ShadcnScrollAreaScrollbarProps,
+  ShadcnScrollAreaScrollbarExposes,
+  ShadcnScrollAreaScrollbarStateHandles,
+  ShadcnScrollAreaScrollbarAsHookContract,
+  ShadcnScrollAreaThumbProps,
+  ShadcnScrollAreaThumbExposes,
+  ShadcnScrollAreaThumbStateHandles,
+  ShadcnScrollAreaThumbAsHookContract,
+} from './scroll-area';
 export {
   ShadcnTooltipGroup,
   ShadcnTooltipRoot,
@@ -205,3 +235,25 @@ export type {
   ShadcnTooltipContentStateHandles,
   ShadcnTooltipContentAsHookContract,
 } from './tooltip';
+export {
+  ShadcnRadioGroupRoot,
+  ShadcnRadioGroupItem,
+  ShadcnRadioGroupIndicator,
+  shadcnRadioGroupRoot,
+  shadcnRadioGroupItem,
+  shadcnRadioGroupIndicator,
+} from './radio-group';
+export type {
+  ShadcnRadioGroupRootProps,
+  ShadcnRadioGroupRootExposes,
+  ShadcnRadioGroupRootStateHandles,
+  ShadcnRadioGroupRootAsHookContract,
+  ShadcnRadioGroupItemProps,
+  ShadcnRadioGroupItemExposes,
+  ShadcnRadioGroupItemStateHandles,
+  ShadcnRadioGroupItemAsHookContract,
+  ShadcnRadioGroupIndicatorProps,
+  ShadcnRadioGroupIndicatorExposes,
+  ShadcnRadioGroupIndicatorStateHandles,
+  ShadcnRadioGroupIndicatorAsHookContract,
+} from './radio-group';

@@ -2,7 +2,7 @@
 import PrototypePreviewer from './PrototypePreviewer/PrototypePreviewer.astro';
 
 type Locale = 'en' | 'zh-cn';
-type LibraryId = 'base' | 'shadcn' | 'brutalist';
+type LibraryId = 'base' | 'shadcn' | 'brutalist' | 'bootstrap-2-3-2' | 'liquid-glass';
 
 interface Props {
   library: LibraryId;
@@ -21,6 +21,28 @@ const { library, locale = 'en' } = Astro.props as Props;
 const isZh = locale === 'zh-cn';
 
 const entriesByLibrary: Record<LibraryId, PrototypeEntry[]> = {
+  'bootstrap-2-3-2': [
+    {
+      id: 'button',
+      name: 'Button',
+      demoId: 'demo-bootstrap-2-3-2-button',
+      description: isZh
+        ? '2.3.2 渐变与内阴影，继承 Base Button。'
+        : '2.3.2 raised gradients and inset shadows over Base Button.',
+      href: './button/',
+    },
+  ],
+  'liquid-glass': [
+    {
+      id: 'button',
+      name: 'Button',
+      demoId: 'demo-liquid-glass-button',
+      description: isZh
+        ? '按实时偏好与宿主能力选择透明模糊或不透明回退。'
+        : 'Live preference/support-gated translucency and blur, with an opaque fallback.',
+      href: './button/',
+    },
+  ],
   base: [
     {
       id: 'button',
@@ -205,6 +227,15 @@ const entriesByLibrary: Record<LibraryId, PrototypeEntry[]> = {
       href: './toggle/',
     },
     {
+      id: 'input',
+      name: 'Input',
+      demoId: 'demo-shadcn-input',
+      description: isZh
+        ? '保留宿主编辑生命周期与原生文本选择的单行输入。'
+        : 'A single-line input preserving host-owned editing and native text selection.',
+      href: './input/',
+    },
+    {
       id: 'textarea',
       name: 'Textarea',
       demoId: 'demo-shadcn-textarea',
@@ -221,6 +252,24 @@ const entriesByLibrary: Record<LibraryId, PrototypeEntry[]> = {
         ? '带 mixed 状态的三态勾选框。'
         : 'A tri-state tick box that also carries mixed.',
       href: './checkbox/',
+    },
+    {
+      id: 'radio-group',
+      name: 'Radio Group',
+      demoId: 'demo-shadcn-radio-group',
+      description: isZh
+        ? '组级单选、键盘导航与圆点状态呈现。'
+        : 'Group-owned selection, keyboard navigation, and circular feedback.',
+      href: './radio-group/',
+    },
+    {
+      id: 'scroll-area',
+      name: 'Scroll Area',
+      demoId: 'demo-shadcn-scroll-area',
+      description: isZh
+        ? '由同一宿主滚动面驱动的细轨道与圆角滑块。'
+        : 'Slim tracks and rounded thumbs driven by one host scrolling surface.',
+      href: './scroll-area/',
     },
     {
       id: 'switch',
@@ -406,6 +455,15 @@ const entriesByLibrary: Record<LibraryId, PrototypeEntry[]> = {
       href: './components/skeleton/',
     },
     {
+      id: 'spinner',
+      name: 'Spinner',
+      demoId: 'demo-brutalist-spinner',
+      description: isZh
+        ? '仅工作区可用的 Spinner draft；npm 单包 0.2.0 和 0.3.0-alpha.1 均不含此组件，0.3 生态发行仍为 draft。'
+        : 'Workspace-only Spinner draft, absent from npm package versions 0.2.0 and 0.3.0-alpha.1; the 0.3 ecosystem train remains draft.',
+      href: './components/spinner/',
+    },
+    {
       id: 'scroll-area',
       name: 'Scroll Area',
       demoId: 'demo-brutalist-scroll-area',
@@ -478,7 +536,6 @@ const copy = isZh
               demoId={entry.demoId}
               initialRuntime="wc"
               toolbar={false}
-              runtimes={['wc']}
               codePanel={false}
               lazy
             />

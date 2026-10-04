@@ -17,9 +17,13 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 // can exceed its own hook timeout and fall back to spawning its own server.
 // Warm every route the suites wait on.
 const READY_ROUTES = [
+  '/en/test/style-isolation/',
+  '/en/test/new-projection-families/',
+  '/en/test/liquid-glass-material/',
   '/en/ui-libraries/base/image/',
   '/en/start-here/quick-start/',
   '/en/ui-libraries/shadcn/select/',
+  '/en/ui-libraries/shadcn/input/',
   '/en/ui-libraries/base/scroll-area/',
   '/en/ui-libraries/base/textarea/',
   '/en/ui-libraries/brutalist/components/badge/',
@@ -44,6 +48,7 @@ const READY_ROUTES = [
   '/zh-cn/start-here/quick-start/',
   '/zh-cn/internal/demo-matrix/',
   '/zh-cn/ui-libraries/shadcn/select/',
+  '/zh-cn/ui-libraries/shadcn/scroll-area/',
   '/zh-cn/ui-libraries/brutalist/components/checkbox/',
   '/zh-cn/ui-libraries/shadcn/tooltip/',
 ];

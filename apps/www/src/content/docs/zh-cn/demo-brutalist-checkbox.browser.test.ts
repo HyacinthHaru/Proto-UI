@@ -81,7 +81,8 @@ async function surfacePaint(locator: Locator, variables: SurfaceVariables): Prom
     };
 
     const style = getComputedStyle(element);
-    const rootStyle = getComputedStyle(document.documentElement);
+    // Lane variables live on the projected presentation scope, not :root; the
+    // surface's own computed style is the consumer-owned theme boundary.
     return {
       background: paint(style.backgroundColor),
       color: paint(style.color),
@@ -90,9 +91,9 @@ async function surfacePaint(locator: Locator, variables: SurfaceVariables): Prom
       borderRadius: style.borderTopLeftRadius,
       boxShadow: style.boxShadow,
       variables: {
-        background: paint(rootStyle.getPropertyValue(expectedVariables.background).trim()),
-        color: paint(rootStyle.getPropertyValue(expectedVariables.color).trim()),
-        border: paint(rootStyle.getPropertyValue(expectedVariables.border).trim()),
+        background: paint(style.getPropertyValue(expectedVariables.background).trim()),
+        color: paint(style.getPropertyValue(expectedVariables.color).trim()),
+        border: paint(style.getPropertyValue(expectedVariables.border).trim()),
       },
     };
   }, variables);
@@ -257,7 +258,7 @@ describe.sequential('Brutalist Checkbox browser acceptance', () => {
             expect(paint.border, `${label}/${state}/border`).toBe(paint.variables.border);
             expect(paint.borderWidth, `${label}/${state}/border-width`).toBe('2px');
             expect(paint.borderRadius, `${label}/${state}/border-radius`).toBe('0px');
-            expect(paint.boxShadow, `${label}/${state}/hard-shadow`).toContain('3px 3px 0px');
+            expect(paint.boxShadow, `${label}/${state}/flat-surface`).toBe('none');
 
             const box = await geometry(surface, `${label}/${state}/geometry`);
             expect(Math.abs(box.width - 20), `${label}/${state}/width`).toBeLessThanOrEqual(

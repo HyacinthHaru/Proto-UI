@@ -209,6 +209,7 @@ const baseCompound = (
   );
 
 export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
+  'shadcn-input': shadcn('shadcn-input', 'shadcn Input', 'shadcnInputRoot', 'ShadcnInputRoot'),
   'shadcn-button': shadcn('shadcn-button', 'shadcn Button', 'shadcnButton', 'ShadcnButton'),
   'shadcn-toggle': shadcn('shadcn-toggle', 'shadcn Toggle', 'shadcnToggle', 'ShadcnToggle'),
   'shadcn-separator': shadcn(
@@ -353,6 +354,47 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     },
   ]),
 
+  'shadcn-radio-group': shadcnCompound('shadcn-radio-group', 'shadcn Radio Group', [
+    {
+      prototypeImport: 'shadcnRadioGroupRoot',
+      exportBaseName: 'ShadcnRadioGroupRoot',
+      elementName: 'proto-ui-shadcn-radio-group-root',
+    },
+    {
+      prototypeImport: 'shadcnRadioGroupItem',
+      exportBaseName: 'ShadcnRadioGroupItem',
+      elementName: 'proto-ui-shadcn-radio-group-item',
+    },
+    {
+      prototypeImport: 'shadcnRadioGroupIndicator',
+      exportBaseName: 'ShadcnRadioGroupIndicator',
+      elementName: 'proto-ui-shadcn-radio-group-indicator',
+    },
+  ]),
+
+  'shadcn-scroll-area': shadcnCompound('shadcn-scroll-area', 'shadcn Scroll Area', [
+    {
+      prototypeImport: 'shadcnScrollAreaRoot',
+      exportBaseName: 'ShadcnScrollAreaRoot',
+      elementName: 'proto-ui-shadcn-scroll-area-root',
+    },
+    {
+      prototypeImport: 'shadcnScrollAreaViewport',
+      exportBaseName: 'ShadcnScrollAreaViewport',
+      elementName: 'proto-ui-shadcn-scroll-area-viewport',
+    },
+    {
+      prototypeImport: 'shadcnScrollAreaScrollbar',
+      exportBaseName: 'ShadcnScrollAreaScrollbar',
+      elementName: 'proto-ui-shadcn-scroll-area-scrollbar',
+    },
+    {
+      prototypeImport: 'shadcnScrollAreaThumb',
+      exportBaseName: 'ShadcnScrollAreaThumb',
+      elementName: 'proto-ui-shadcn-scroll-area-thumb',
+    },
+  ]),
+
   'shadcn-tooltip': shadcnCompound('shadcn-tooltip', 'shadcn Tooltip', [
     {
       prototypeImport: 'shadcnTooltipGroup',
@@ -463,6 +505,12 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     'Brutalist Skeleton',
     'brutalistSkeletonRoot',
     'BrutalistSkeletonRoot'
+  ),
+  'brutalist-spinner': brutalist(
+    'brutalist-spinner',
+    'Brutalist Spinner',
+    'brutalistSpinnerRoot',
+    'BrutalistSpinnerRoot'
   ),
   'brutalist-textarea': brutalist(
     'brutalist-textarea',

@@ -2,7 +2,7 @@ export type FeedbackStyleAuthoringExpectation =
   | 'setup-style-plan-recorded'
   | 'setup-style-plan-unused'
   | 'author-token-accepted'
-  | 'author-token-rejected';
+  | 'selection-token-accepted-other-variants-rejected';
 
 export type FeedbackStyleAuthoringCase = {
   id: string;
@@ -39,12 +39,12 @@ export const FEEDBACK_STYLE_AUTHORING_CASES = [
     expectation: 'author-token-accepted',
   },
   {
-    id: 'variant-token-rejected',
-    title: 'stateful variant syntax is rejected from author-side style tokens',
+    id: 'selection-token-allowlist',
+    title: 'only the static text-selection pseudo-element variant is accepted',
     specCase: 'T-FEEDBACK-STYLE-0001-CASE-TOKEN-PURITY',
-    covers: ['C-FEEDBACK-STYLE-0004-A', 'C-FEEDBACK-STYLE-0004-B'],
-    tokens: ['hover:bg-white', 'data-[disabled]:opacity-50'],
-    expectation: 'author-token-rejected',
+    covers: ['C-FEEDBACK-STYLE-0004-A', 'C-FEEDBACK-STYLE-0004-B', 'C-FEEDBACK-STYLE-0004-F'],
+    tokens: ['selection:bg-primary', 'hover:bg-white', 'data-[disabled]:opacity-50'],
+    expectation: 'selection-token-accepted-other-variants-rejected',
   },
 ] as const satisfies readonly FeedbackStyleAuthoringCase[];
 

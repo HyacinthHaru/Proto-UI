@@ -22,14 +22,14 @@ const report = (args) =>
     encoding: 'utf8',
     maxBuffer: 1 << 25,
   });
-const ids = 'C-A11Y-PART-RELATIONSHIP-0001,T-A11Y-PART-RELATIONSHIP-0001';
+const ids = 'D-IMAGE-VIEW-PROJECTION-0001,T-IMAGE-VIEW-0001';
 
 test('release lifecycle CLI distinguishes scoped review from full-inventory completion', () => {
   const scoped = report(['--check', '--entities', ids, '--json']);
   assert.equal(scoped.status, 0, scoped.stderr);
   const data = JSON.parse(scoped.stdout);
   assert.equal(data.basis, 'current-catalog');
-  assert.equal(data.summary.reviewedDrafts, 2);
+  assert.equal(data.summary.reviewedDrafts, 11);
   assert.ok(data.unreviewedEntities.length > 0);
   assert.equal(
     data.rows
@@ -190,28 +190,40 @@ test('authoring preserves identities across deletion, replacement, and file move
     assert.equal(promotedMove.status, 1);
     assert.match(promotedMove.stderr, /updated lifecycleRationale/);
     assert.match(promotedMove.stderr, /new admission revision/);
+    assert.match(promotedMove.stderr, /historical activation requires/);
     const draft = parse(original);
     writeFileSync(
       movedPath,
       JSON.stringify({
         ...draft,
         status: 'active',
-        activeSince: '0.3.0-alpha.0',
+        activeSince: '0.3.0-alpha.1',
         lifecycleRationale: 'The proposed admission was reviewed.',
         revisions: [
           ...(draft.revisions ?? []),
           {
-            version: '0.3.0-alpha.0',
+            version: '0.3.0-alpha.1',
             change: 'admitted',
             summary: 'Admission was reviewed.',
           },
         ],
       })
     );
+    const relationshipTestPath = path.join(
+      fixture,
+      'spec/tests/T-A11Y-PART-RELATIONSHIP-0001.yaml'
+    );
+    const relationshipTestSource = readFileSync(relationshipTestPath, 'utf8');
+    const incompleteEvidence = parse(relationshipTestSource);
+    incompleteEvidence.implementations.find(
+      (implementation) => implementation.id === 'runtime-a11y-part-relationship-contract'
+    ).status = 'planned';
+    writeFileSync(relationshipTestPath, JSON.stringify(incompleteEvidence));
     const incompletePromotion = check();
     assert.equal(incompletePromotion.status, 1);
     assert.match(incompletePromotion.stderr, /admission activation-blocked/);
     assert.match(incompletePromotion.stderr, /admission criterion-needs-evidence/);
+    writeFileSync(relationshipTestPath, relationshipTestSource);
     rmSync(movedPath);
     const deleted = check();
     assert.equal(deleted.status, 1);
@@ -242,8 +254,8 @@ test('authoring preserves identities across deletion, replacement, and file move
       type: 'contract',
       title: 'New admission',
       status: 'active',
-      since: '0.3.0-alpha.0',
-      activeSince: '0.3.0-alpha.0',
+      since: '0.3.0-alpha.1',
+      activeSince: '0.3.0-alpha.1',
       lifecycleRationale: 'The initial admission was reviewed.',
     };
     const newPath = path.join(fixture, 'spec/contracts/C-REVIEW-UNTRACKED-0001.yaml');
@@ -263,7 +275,7 @@ test('authoring preserves identities across deletion, replacement, and file move
         type: 'test',
         title: 'Admission evidence',
         status: 'draft',
-        since: '0.3.0-alpha.0',
+        since: '0.3.0-alpha.1',
         lifecycleRationale: 'The execution map remains under review.',
         verifies: { contracts: [newActive.id] },
         cases: [

@@ -22,7 +22,7 @@ Prototype library package intended to be consumed together with Proto UI adapter
 ## Install
 
 ```bash
-npm install @proto.ui/prototypes-shadcn@0.3.0-alpha.0
+npm install @proto.ui/prototypes-shadcn@0.3.0-alpha.1
 ```
 
 ## Family Imports
@@ -33,14 +33,27 @@ Prefer anatomy-family subpaths so only the selected Shadcn family and its corres
 import { shadcnButton } from '@proto.ui/prototypes-shadcn/button';
 import { shadcnSelectRoot, shadcnSelectTrigger } from '@proto.ui/prototypes-shadcn/select';
 import {
+  shadcnScrollAreaRoot,
+  shadcnScrollAreaViewport,
+  shadcnScrollAreaScrollbar,
+  shadcnScrollAreaThumb,
+} from '@proto.ui/prototypes-shadcn/scroll-area';
+import {
   shadcnTooltipGroup,
   shadcnTooltipRoot,
   shadcnTooltipTrigger,
   shadcnTooltipContent,
 } from '@proto.ui/prototypes-shadcn/tooltip';
+import {
+  shadcnRadioGroupRoot,
+  shadcnRadioGroupItem,
+  shadcnRadioGroupIndicator,
+} from '@proto.ui/prototypes-shadcn/radio-group';
 ```
 
 The root package export remains available for compatibility. Shadcn families do not depend on sibling Shadcn families.
+
+Radio Group composes its three parts explicitly. Base owns the selected value, Collection, roving focus, selection requests, and accessibility; Shadcn adds the circular control and passive selected dot. The family has no native form, `asChild`, public orientation/loop, or visual-variant API. Its catalog entries remain draft.
 
 ## Internal Structure
 
@@ -51,7 +64,9 @@ The root package export remains available for compatibility. Shadcn families do 
 - `src/dropdown/`
 - `src/hover-card/`
 - `src/index.ts`
+- `src/radio-group/`
 - `src/select/`
+- `src/scroll-area/`
 - `src/switch/`
 - `src/tabs/`
 - `src/toggle/`

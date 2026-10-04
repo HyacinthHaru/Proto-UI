@@ -1,8 +1,9 @@
-import { resolveWebFocusEntryTarget } from '@proto.ui/adapter-base';
+import { orderFocusTargetsByDocument, resolveWebFocusEntryTarget } from '@proto.ui/adapter-base';
 import {
   cancelWebEventDefaultAction,
   createCapsWiring,
   createWebMoveGestureHost,
+  type HostSurfaceProjection,
   type LogicalInstanceToken,
 } from '@proto.ui/adapter-base';
 import {
@@ -50,6 +51,7 @@ import {
   FOCUS_BLUR_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
   FOCUS_IS_NATIVELY_FOCUSABLE_CAP,
+  FOCUS_ORDER_CAP,
   FOCUS_PARENT_CAP,
   FOCUS_RESOLVE_ENTRY_TARGET_CAP,
   FOCUS_REQUEST_FOCUS_CAP,
@@ -90,6 +92,10 @@ import { RULE_EXPOSE_STATE_WEB_NATIVE_VARIANT_POLICY_CAP } from '@proto.ui/modul
 import {
   RULE_META_GET_CAP,
   RULE_META_COLOR_SCHEME_SOURCE_CAP,
+  RULE_META_PREFERENCE_SOURCE_CAP,
+  RULE_META_STYLE_SUPPORT_SOURCE_CAP,
+  type StyleSupportInvalidationSource,
+  type PreferenceInvalidationSource,
   type ColorSchemeInvalidationSource,
 } from '@proto.ui/module-rule-meta';
 import { createWebScrollSurfaceHost, SCROLL_SURFACE_HOST_CAP } from '@proto.ui/module-scroll';
@@ -143,6 +149,8 @@ type WebComponentOwnerModulesArgs<Props extends PropsBaseType> = {
   imageViewTarget: HTMLImageElement | null;
   getMeta: (key: string) => unknown;
   colorSchemeSource?: ColorSchemeInvalidationSource;
+  preferenceSource?: PreferenceInvalidationSource;
+  styleSupportSource?: StyleSupportInvalidationSource;
   exposeStateWebMode?: {
     allowContinuousAttr?: boolean;
     allowStringVar?: boolean;
@@ -156,7 +164,16 @@ type WebComponentOwnerModulesArgs<Props extends PropsBaseType> = {
 export function createWebComponentOwnerModules<Props extends PropsBaseType>(
   args: WebComponentOwnerModulesArgs<Props>
 ) {
-  const { el, instanceToken, rawPropsSource, getMeta, colorSchemeSource, setExposes } = args;
+  const {
+    el,
+    instanceToken,
+    rawPropsSource,
+    getMeta,
+    colorSchemeSource,
+    preferenceSource,
+    styleSupportSource,
+    setExposes,
+  } = args;
   const getTriggerSurface = () => {
     if (args.textControlTarget) return args.textControlTarget;
     if (args.imageViewTarget) return args.imageViewTarget;
@@ -266,6 +283,10 @@ export function createWebComponentOwnerModules<Props extends PropsBaseType>(
       ...(colorSchemeSource
         ? [[RULE_META_COLOR_SCHEME_SOURCE_CAP, colorSchemeSource] as const]
         : []),
+      ...(preferenceSource ? [[RULE_META_PREFERENCE_SOURCE_CAP, preferenceSource] as const] : []),
+      ...(styleSupportSource
+        ? [[RULE_META_STYLE_SUPPORT_SOURCE_CAP, styleSupportSource] as const]
+        : []),
     ])
     .use('rule-expose-state-web', [
       [RULE_EXPOSE_STATE_WEB_NATIVE_VARIANT_POLICY_CAP, createExposeStateWebNativeVariantPolicy],
@@ -280,6 +301,7 @@ export function createWebComponentOwnerModules<Props extends PropsBaseType>(
 
 export function createWebComponentModules<Props extends PropsBaseType>(args: {
   el: HTMLElement;
+  surfaceProjection: HostSurfaceProjection<HTMLElement>;
   instanceToken: LogicalInstanceToken;
   router: {
     rootTarget: EventTarget;
@@ -291,6 +313,8 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   imageViewTarget: HTMLImageElement | null;
   getMeta: (key: string) => unknown;
   colorSchemeSource?: ColorSchemeInvalidationSource;
+  preferenceSource?: PreferenceInvalidationSource;
+  styleSupportSource?: StyleSupportInvalidationSource;
   exposeStateWebMode?: {
     allowContinuousAttr?: boolean;
     allowStringVar?: boolean;
@@ -311,6 +335,8 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
     effectsPort,
     getMeta,
     colorSchemeSource,
+    preferenceSource,
+    styleSupportSource,
     exposeStateWebMode,
     scrollProjection,
     setExposes,
@@ -363,8 +389,18 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       [
         A11Y_PROJECT_CAP,
         createWebA11yProjector(
-          () => physicalControl() ?? physicalImage() ?? getConnectedTriggerSurface(),
-          (listener) => subscribeLogicalTriggerSurface(instanceToken, listener)
+          () => {
+            const surface = args.surfaceProjection.getSurfaceTarget();
+            return surface === el ? getConnectedTriggerSurface() : surface;
+          },
+          (listener) => {
+            const offSurface = args.surfaceProjection.subscribeSurfaceTarget(listener);
+            const offTrigger = subscribeLogicalTriggerSurface(instanceToken, listener);
+            return () => {
+              offSurface();
+              offTrigger();
+            };
+          }
         ),
       ],
     ])
@@ -394,6 +430,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       [FOCUS_TARGET_READY_CAP, subscribeFocusTarget],
       [FOCUS_ROOT_TARGET_CAP, () => physicalControl() ?? getTriggerSurface()],
       [FOCUS_IS_NATIVELY_FOCUSABLE_CAP, (target: HTMLElement) => isNativelyFocusable(target)],
+      [FOCUS_ORDER_CAP, orderFocusTargetsByDocument],
       [
         FOCUS_SET_FOCUSABLE_CAP,
         (target: HTMLElement, enabled: boolean, options?: { programmatic?: boolean }) => {
@@ -488,6 +525,10 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       [RULE_META_GET_CAP, getMeta],
       ...(colorSchemeSource
         ? [[RULE_META_COLOR_SCHEME_SOURCE_CAP, colorSchemeSource] as const]
+        : []),
+      ...(preferenceSource ? [[RULE_META_PREFERENCE_SOURCE_CAP, preferenceSource] as const] : []),
+      ...(styleSupportSource
+        ? [[RULE_META_STYLE_SUPPORT_SOURCE_CAP, styleSupportSource] as const]
         : []),
     ])
     .use('rule-expose-state-web', [

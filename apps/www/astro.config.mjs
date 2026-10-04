@@ -53,7 +53,7 @@ function resolveProtoUiSource(id) {
       .replace(/\.d\.ts$/, '.ts')
       .replace(/\.js$/, '.ts');
     const sourcePath = path.resolve(packageRoot, sourceTarget);
-    if (fs.existsSync(sourcePath)) return sourcePath;
+    if (fs.existsSync(sourcePath)) return sourcePath.split(path.sep).join('/');
   }
   return null;
 }
@@ -147,7 +147,7 @@ export default defineConfig({
       head: [
         {
           tag: 'style',
-          content: '@layer base, starlight, components, utilities, proto-ui, code-surfaces;',
+          content: '@layer theme, base, starlight, proto-ui, components, utilities, code-surfaces;',
         },
         // 双 theme-color
         {
@@ -434,6 +434,17 @@ export default defineConfig({
                   slug: 'ui-libraries/shadcn/checkbox',
                 },
                 {
+                  label: 'Radio Group',
+                  translations: { en: 'Radio Group', 'zh-CN': 'Radio Group' },
+                  slug: 'ui-libraries/shadcn/radio-group',
+                },
+                {
+                  label: 'Scroll Area',
+                  translations: { en: 'Scroll Area', 'zh-CN': 'Scroll Area' },
+                  slug: 'ui-libraries/shadcn/scroll-area',
+                  badge: inProgressBadge,
+                },
+                {
                   label: 'Dialog',
                   translations: { en: 'Dialog', 'zh-CN': 'Dialog' },
                   slug: 'ui-libraries/shadcn/dialog',
@@ -475,6 +486,11 @@ export default defineConfig({
                   slug: 'ui-libraries/shadcn/tabs',
                 },
                 {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/shadcn/input',
+                },
+                {
                   label: 'Textarea',
                   translations: { en: 'Textarea', 'zh-CN': 'Textarea' },
                   slug: 'ui-libraries/shadcn/textarea',
@@ -494,6 +510,38 @@ export default defineConfig({
                   label: 'Icon Library',
                   translations: { en: 'Icon Library', 'zh-CN': '图标库' },
                   slug: 'ui-libraries/lucide',
+                },
+              ],
+            },
+            {
+              label: 'Bootstrap 2.3.2',
+              translations: { en: 'Bootstrap 2.3.2', 'zh-CN': 'Bootstrap 2.3.2' },
+              items: [
+                {
+                  label: 'Overview',
+                  translations: { en: 'Overview', 'zh-CN': '概览' },
+                  slug: 'ui-libraries/bootstrap-2-3-2',
+                },
+                {
+                  label: 'Button',
+                  translations: { en: 'Button', 'zh-CN': 'Button' },
+                  slug: 'ui-libraries/bootstrap-2-3-2/button',
+                },
+              ],
+            },
+            {
+              label: 'Liquid Glass',
+              translations: { en: 'Liquid Glass', 'zh-CN': 'Liquid Glass' },
+              items: [
+                {
+                  label: 'Overview',
+                  translations: { en: 'Overview', 'zh-CN': '概览' },
+                  slug: 'ui-libraries/liquid-glass',
+                },
+                {
+                  label: 'Button',
+                  translations: { en: 'Button', 'zh-CN': 'Button' },
+                  slug: 'ui-libraries/liquid-glass/button',
                 },
               ],
             },

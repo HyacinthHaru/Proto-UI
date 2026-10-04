@@ -104,6 +104,28 @@ describe('@proto.ui/cli', () => {
     }
   });
 
+  it('registers Shadcn Input as a direct package component on every Web adapter', () => {
+    const input = COMPONENT_REGISTRY['shadcn-input'];
+    expect(input).toMatchObject({
+      packageName: '@proto.ui/prototypes-shadcn',
+      importPath: '@proto.ui/prototypes-shadcn/input',
+      stylePreset: 'shadcn',
+      items: [
+        {
+          prototypeImport: 'shadcnInputRoot',
+          reactExport: 'ShadcnInputRoot',
+          elementName: 'proto-ui-shadcn-input',
+        },
+      ],
+    });
+    for (const adapter of ['react', 'vue', 'vue2', 'wc'] as const) {
+      const source = renderHostIndex(adapter, ['shadcn-input']);
+      expect(source).toContain('@proto.ui/prototypes-shadcn/input');
+      expect(source).toContain('ShadcnInputRoot');
+      if (adapter === 'wc') expect(source).toContain('proto-ui-shadcn-input');
+    }
+  });
+
   it('registers the promoted Brutalist families and both Textarea projections', () => {
     const brutalistIds = Object.keys(COMPONENT_REGISTRY)
       .filter((id) => id.startsWith('brutalist-'))
@@ -119,6 +141,7 @@ describe('@proto.ui/cli', () => {
       'brutalist-select',
       'brutalist-separator',
       'brutalist-skeleton',
+      'brutalist-spinner',
       'brutalist-switch',
       'brutalist-tabs',
       'brutalist-textarea',
@@ -196,7 +219,7 @@ describe('@proto.ui/cli', () => {
     expect(react).toContain('export const BaseTextareaRoot = adapt(textareaRoot);');
     expect(react).toContain('export const BrutalistTextareaRoot = adapt(brutalistTextareaRoot);');
 
-    for (const adapter of ['react', 'vue', 'wc'] as const) {
+    for (const adapter of ['react', 'vue', 'vue2', 'wc'] as const) {
       const source = renderHostIndex(adapter, brutalistIds);
       for (const id of brutalistIds) {
         const entry = COMPONENT_REGISTRY[id];
@@ -206,11 +229,70 @@ describe('@proto.ui/cli', () => {
           const exportName =
             adapter === 'react'
               ? item.reactExport
-              : adapter === 'vue'
+              : adapter === 'vue' || adapter === 'vue2'
                 ? item.vueExport
                 : item.wcExport;
           expect(source).toContain(exportName);
         }
+      }
+    }
+  });
+
+  it('registers the exact Shadcn Radio Group parts without injecting an Indicator', () => {
+    const entry = COMPONENT_REGISTRY['shadcn-radio-group'];
+    expect(entry).toMatchObject({
+      packageName: '@proto.ui/prototypes-shadcn',
+      importPath: '@proto.ui/prototypes-shadcn/radio-group',
+      stylePreset: 'shadcn',
+      items: [
+        { prototypeImport: 'shadcnRadioGroupRoot', reactExport: 'ShadcnRadioGroupRoot' },
+        { prototypeImport: 'shadcnRadioGroupItem', reactExport: 'ShadcnRadioGroupItem' },
+        {
+          prototypeImport: 'shadcnRadioGroupIndicator',
+          reactExport: 'ShadcnRadioGroupIndicator',
+        },
+      ],
+    });
+    expect(entry.items).toHaveLength(3);
+    expect(entry.preset).toBeUndefined();
+
+    for (const adapter of ['react', 'vue', 'vue2', 'wc'] as const) {
+      const source = renderHostIndex(adapter, ['shadcn-radio-group']);
+      expect(source).toContain("from '@proto.ui/prototypes-shadcn/radio-group'");
+      for (const part of entry.items) expect(source).toContain(part.prototypeImport);
+      expect(source).not.toContain('default-indicator');
+    }
+  });
+
+  it('registers the exact shadcn Scroll Area family facade', () => {
+    expect(COMPONENT_REGISTRY['shadcn-scroll-area']).toMatchObject({
+      packageName: '@proto.ui/prototypes-shadcn',
+      importPath: '@proto.ui/prototypes-shadcn/scroll-area',
+      stylePreset: 'shadcn',
+      items: [
+        { prototypeImport: 'shadcnScrollAreaRoot', reactExport: 'ShadcnScrollAreaRoot' },
+        {
+          prototypeImport: 'shadcnScrollAreaViewport',
+          reactExport: 'ShadcnScrollAreaViewport',
+        },
+        {
+          prototypeImport: 'shadcnScrollAreaScrollbar',
+          reactExport: 'ShadcnScrollAreaScrollbar',
+        },
+        { prototypeImport: 'shadcnScrollAreaThumb', reactExport: 'ShadcnScrollAreaThumb' },
+      ],
+    });
+
+    for (const adapter of ['react', 'vue', 'wc'] as const) {
+      const source = renderHostIndex(adapter, ['shadcn-scroll-area']);
+      expect(source).toContain("from '@proto.ui/prototypes-shadcn/scroll-area'");
+      for (const prototypeImport of [
+        'shadcnScrollAreaRoot',
+        'shadcnScrollAreaViewport',
+        'shadcnScrollAreaScrollbar',
+        'shadcnScrollAreaThumb',
+      ]) {
+        expect(source).toContain(prototypeImport);
       }
     }
   });
@@ -231,7 +313,7 @@ describe('@proto.ui/cli', () => {
       ],
     });
 
-    for (const host of ['react', 'vue', 'wc'] as const) {
+    for (const host of ['react', 'vue', 'vue2', 'wc'] as const) {
       const source = renderHostIndex(host, ['base-image']);
       expect(source).toContain("import { imageRoot } from '@proto.ui/prototypes-base/image';");
       expect(source).toContain(
@@ -244,10 +326,12 @@ describe('@proto.ui/cli', () => {
     const root = renderRootIndex({
       react: ['base-image'],
       vue: ['base-image'],
+      vue2: ['base-image'],
       wc: ['base-image'],
     });
     expect(root).toContain("export { BaseImageRoot as ReactBaseImageRoot } from './react';");
     expect(root).toContain("export { BaseImageRoot as VueBaseImageRoot } from './vue';");
+    expect(root).toContain("export { BaseImageRoot as Vue2BaseImageRoot } from './vue2';");
     expect(root).toContain("export { BaseImageRootElement } from './wc';");
   });
 
@@ -264,7 +348,7 @@ describe('@proto.ui/cli', () => {
       ],
     });
 
-    for (const adapter of ['react', 'vue', 'wc'] as const) {
+    for (const adapter of ['react', 'vue', 'vue2', 'wc'] as const) {
       const source = renderHostIndex(adapter, ['shadcn-tooltip']);
       expect(source).toContain("from '@proto.ui/prototypes-shadcn/tooltip'");
       for (const prototypeImport of [
@@ -343,7 +427,7 @@ describe('@proto.ui/cli', () => {
   it('materializes Base Live Region and Async Region facades for every adapter', () => {
     const componentIds = ['base-live-region', 'base-async-region'];
 
-    for (const host of ['react', 'vue'] as const) {
+    for (const host of ['react', 'vue', 'vue2'] as const) {
       const source = renderHostIndex(host, componentIds);
       expect(source).toContain(
         `import { liveRegionRoot } from '@proto.ui/prototypes-base/live-region';`
@@ -366,6 +450,7 @@ describe('@proto.ui/cli', () => {
     const root = renderRootIndex({
       react: componentIds,
       vue: componentIds,
+      vue2: componentIds,
       wc: componentIds,
     });
     expect(root).toContain(
@@ -376,7 +461,13 @@ describe('@proto.ui/cli', () => {
     );
     expect(root).toContain(`export { BaseLiveRegionRoot as VueBaseLiveRegionRoot } from './vue';`);
     expect(root).toContain(
+      `export { BaseLiveRegionRoot as Vue2BaseLiveRegionRoot } from './vue2';`
+    );
+    expect(root).toContain(
       `export { BaseAsyncRegionRoot as VueBaseAsyncRegionRoot } from './vue';`
+    );
+    expect(root).toContain(
+      `export { BaseAsyncRegionRoot as Vue2BaseAsyncRegionRoot } from './vue2';`
     );
     expect(root).toContain(`export { BaseLiveRegionRootElement } from './wc';`);
     expect(root).toContain(`export { BaseAsyncRegionRootElement } from './wc';`);
@@ -395,6 +486,14 @@ describe('@proto.ui/cli', () => {
     expect(vue).toContain('const resolvedDefaultPart = slots.thumb');
     expect(vue).toContain('child.type === ShadcnSwitchThumb');
 
+    const vue2 = renderHostIndex('vue2', ['shadcn-switch']);
+    expect(vue2).toContain("import { createVue2Adapter } from '@proto.ui/adapter-vue2';");
+    expect(vue2).toContain('extend: Vue.extend.bind(Vue)');
+    expect(vue2).toContain('export const ShadcnSwitch = {');
+    expect(vue2).toContain('child.componentOptions?.Ctor === ShadcnSwitchThumb');
+    expect(vue2).toContain('this.$scopedSlots?.thumb?.() ?? this.$slots.thumb');
+    expect(vue2).toContain('return h(ShadcnSwitchRoot, {');
+
     const wc = renderHostIndex('wc', ['shadcn-switch']);
     expect(wc).toContain('export class ShadcnSwitchElement extends ShadcnSwitchRootElement');
     expect(wc).toContain("!this.hasAttribute('data-pui-no-default-thumb')");
@@ -406,10 +505,12 @@ describe('@proto.ui/cli', () => {
     const root = renderRootIndex({
       react: ['shadcn-switch'],
       vue: ['shadcn-switch'],
+      vue2: ['shadcn-switch'],
       wc: ['shadcn-switch'],
     });
     expect(root).toContain('ShadcnSwitch as ReactShadcnSwitch');
     expect(root).toContain('ShadcnSwitch as VueShadcnSwitch');
+    expect(root).toContain('ShadcnSwitch as Vue2ShadcnSwitch');
     expect(root).toContain('export { ShadcnSwitchElement }');
   });
 
@@ -424,6 +525,10 @@ describe('@proto.ui/cli', () => {
 
     const vue = renderHostIndex('vue', ['shadcn-dialog']);
     expect(vue).toContain('const resolvedDefaultPart = slots.close');
+
+    const vue2 = renderHostIndex('vue2', ['shadcn-dialog']);
+    expect(vue2).toContain('this.$scopedSlots?.close?.() ?? this.$slots.close');
+    expect(vue2).toContain('child.componentOptions?.Ctor === ShadcnDialogCloseIcon');
 
     const wc = renderHostIndex('wc', ['shadcn-dialog']);
     expect(wc).toContain(
@@ -446,6 +551,7 @@ describe('@proto.ui/cli', () => {
     const addHelp = runCli(process.cwd(), ['add', '--help']);
     expect(addHelp.status).toBe(0);
     expect(addHelp.stdout).toContain('proto-ui add <host> <component>');
+    expect(addHelp.stdout).toContain('proto-ui add vue2 shadcn-button');
     expect(addHelp.stdout).toContain('generates proto-ui/components/<host>/index.ts');
   });
 
@@ -466,17 +572,27 @@ describe('@proto.ui/cli', () => {
     );
     const styleCss = await fs.readFile(path.join(cwd, 'src/styles/proto-ui-style.css'), 'utf8');
     const themeCss = await fs.readFile(path.join(cwd, 'src/styles/shadcn-theme.css'), 'utf8');
+    // T-WEB-STYLE-BASELINE-0001-CASE-PROTO-LAYER-PLACEMENT
+    // T-PROTOTYPE-STYLE-CLOSURE-0001-CASE-GENERATED-LAYER-SLOT
+    const baselineAt = tokensCss.indexOf(
+      `  [data-pui-style],\n  [data-pui-style]::before,\n  [data-pui-style]::after {`
+    );
+    const protoLayerAt = tokensCss.indexOf('@layer proto-ui {');
+    const firstTokenAt = tokensCss.indexOf(':where([data-pui-style~="bg-primary"])');
 
     expect(tokensCss).toContain(`[data-pui-style~="bg-primary"]`);
     expect(tokensCss).toContain(
-      `[data-pui-style],\n[data-pui-style]::before,\n[data-pui-style]::after {`
+      `  [data-pui-style],\n  [data-pui-style]::before,\n  [data-pui-style]::after {`
     );
+    expect(baselineAt).toBeGreaterThan(protoLayerAt);
+    expect(baselineAt).toBeLessThan(firstTokenAt);
     expect(tokensCss).toContain('box-sizing: border-box;');
     expect(tokensCss).toContain(`data-[active]:bg-muted"])[data-active]`);
     expect(tokensCss).toContain(
       `data-[hovered]:not-[data-active]:bg-muted"])[data-hovered]:not([data-active])`
     );
     expect(tokensCss).toContain(`data-[checked]:bg-primary"])[data-checked]`);
+    expect(tokensCss).toContain(`data-[checked]:opacity-100"])[data-checked]`);
     expect(tokensCss).toContain(`[data-pui-style~="animate-in"]`);
     expect(tokensCss).toContain(`[data-pui-style~="animate-out"]`);
     expect(tokensCss).toContain(`[data-pui-style~="fade-in-0"]`);
@@ -488,7 +604,12 @@ describe('@proto.ui/cli', () => {
     expect(tokensCss).not.toContain(`aria-checked:bg-primary"])[aria-checked='true']`);
     expect(tokensCss).not.toContain('@source');
     expect(tokensCss).not.toContain('Unsupported Proto UI style tokens');
-    expect(styleCss).toContain(`@import './shadcn-theme.css';`);
+    expect(styleCss).toContain('@layer theme, proto-ui;');
+    expect(styleCss.indexOf('@layer theme, proto-ui;')).toBeLessThan(
+      styleCss.indexOf(`@import './shadcn-theme.css' layer(theme);`)
+    );
+    expect(styleCss).toContain(`@import './shadcn-theme.css' layer(theme);`);
+    expect(styleCss).not.toContain(`@import './shadcn-theme.css';`);
     expect(styleCss).toContain(`@import './proto-ui-tokens.generated.css';`);
     expect(themeCss).toContain('--pui-background');
     expect(themeCss).not.toContain('--background:');
@@ -537,7 +658,7 @@ describe('@proto.ui/cli', () => {
     expect(tokensCss).toContain(`[data-pui-style~="px-0.5"]`);
     expect(tokensCss).toContain(`data-[checked]:translate-x-[calc(100%_-_2px)]"])[data-checked]`);
     expect(tokensCss).toContain('--pui-translate-x: calc(100% - 2px);');
-    expect(tokensCss).toContain(`data-[checked]:bg-sky"])[data-checked]`);
+    expect(tokensCss).toContain(`data-[checked]:bg-main"])[data-checked]`);
     expect(tokensCss).not.toContain(`data-[checked]:pl-[20px]"])[data-checked]`);
     expect(tokensCss).toContain(`data-[checked]:bg-primary"])[data-checked]`);
     expect(tokensCss).toContain(`data-[selected]:bg-background"])[data-selected]`);
@@ -610,6 +731,76 @@ describe('@proto.ui/cli', () => {
     expect(rootIndex).toContain(`export { ShadcnButton as ReactShadcnButton } from './react';`);
     expect(config.components.react).toEqual(['shadcn-button']);
   });
+
+  it('adds a Vue 2 facade without installing packages when --no-install is used', async () => {
+    const cwd = await createTempProject('pui-cli-add-vue2', {
+      name: 'pui-cli-add-vue2',
+      private: true,
+      dependencies: {
+        vue: '~2.6.14',
+      },
+    });
+
+    expect(runCli(cwd, ['init', '--no-interactive', '--no-styles']).status).toBe(0);
+    const result = runCli(cwd, ['add', 'vue2', 'shadcn-button', '--no-install']);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain(`@proto.ui/adapter-vue2@${cliVersion}`);
+    expect(result.stdout).toContain(`@proto.ui/prototypes-shadcn@${cliVersion}`);
+
+    const vue2Index = await fs.readFile(
+      path.join(cwd, 'proto-ui/components/vue2/index.ts'),
+      'utf8'
+    );
+    const rootIndex = await fs.readFile(path.join(cwd, 'proto-ui/components/index.ts'), 'utf8');
+    const config = JSON.parse(await fs.readFile(path.join(cwd, 'proto-ui/config.json'), 'utf8'));
+
+    expect(vue2Index).toContain(`import { createVue2Adapter } from '@proto.ui/adapter-vue2';`);
+    expect(vue2Index).toContain(`extend: Vue.extend.bind(Vue)`);
+    expect(vue2Index).toContain(`export const ShadcnButton = adapt(shadcnButton);`);
+    expect(rootIndex).toContain(`export { ShadcnButton as Vue2ShadcnButton } from './vue2';`);
+    expect(config.components.vue2).toEqual(['shadcn-button']);
+  });
+
+  it('rejects a Vue 3 dependency before generating a Vue 2 facade', async () => {
+    const cwd = await createTempProject('pui-cli-add-vue2-incompatible-runtime', {
+      name: 'pui-cli-add-vue2-incompatible-runtime',
+      private: true,
+      dependencies: {
+        vue: '^3.5.0',
+      },
+    });
+
+    expect(runCli(cwd, ['init', '--no-interactive', '--no-styles']).status).toBe(0);
+    const result = runCli(cwd, ['add', 'vue2', 'shadcn-button', '--no-install']);
+
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain('Vue 2 runtime must satisfy >=2.6.0 <2.7');
+    await expect(fs.stat(path.join(cwd, 'proto-ui/components/vue2/index.ts'))).rejects.toThrow();
+  });
+
+  it.each(['2.7.16', '^2.6.14', '2.6.14-beta.1', '~2.6.14-beta.1'])(
+    'rejects Vue range %s before generating a Vue 2 facade',
+    async (vue) => {
+      const cwd = await createTempProject(
+        `pui-cli-add-vue2-incompatible-${vue.replace(/[^A-Za-z0-9]/g, '-')}`,
+        {
+          name: 'pui-cli-add-vue2-trial-runtime',
+          private: true,
+          dependencies: {
+            vue,
+          },
+        }
+      );
+
+      expect(runCli(cwd, ['init', '--no-interactive', '--no-styles']).status).toBe(0);
+      const result = runCli(cwd, ['add', 'vue2', 'shadcn-button', '--no-install']);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toContain('Vue 2 runtime must satisfy >=2.6.0 <2.7');
+      await expect(fs.stat(path.join(cwd, 'proto-ui/components/vue2/index.ts'))).rejects.toThrow();
+    }
+  );
 
   it('adds the complete shadcn Select React facade', async () => {
     const cwd = await createTempProject('pui-cli-add-shadcn-select', {
@@ -710,14 +901,14 @@ describe('@proto.ui/cli', () => {
     );
 
     expect(config.styles.preset).toBe('brutalist');
-    expect(theme).toContain('--pui-background: #f5f5f5');
+    expect(theme).toContain('--pui-background: #dcebfe');
     expect(theme).toContain(':root.dark');
-    expect(theme).toContain('--pui-canary: #FEF08A');
-    expect(theme).toContain('--pui-mint: #A7F3D0');
-    expect(theme).toContain('--pui-lavender: #DDD6FE');
-    expect(theme).toContain('--pui-coral: #FECDD3');
-    expect(theme).toContain('--pui-sky: #BAE6FD');
-    expect(theme).toContain('--pui-radius-sm: 2px');
+    expect(theme).toContain('--pui-canary: #FACC00');
+    expect(theme).toContain('--pui-mint: #05E17A');
+    expect(theme).toContain('--pui-lavender: #7A83FF');
+    expect(theme).toContain('--pui-coral: #FF4D50');
+    expect(theme).toContain('--pui-sky: #5294FF');
+    expect(theme).toContain('--pui-radius-sm: 3px');
   });
 
   it('allows Brutalist add with styles disabled and emits an actionable ownership note', async () => {

@@ -1647,6 +1647,96 @@ describe('ordinary lifecycle reporting', () => {
     }
   );
 
+  it.each(['test-verifies', 'entity-verifies'])(
+    'retains each %s anchor scope without overriding another verification path',
+    (direction) => {
+      const secondCriterion = `${contractId}-B`;
+      const secondCase = `${testId}-CASE-TWO`;
+      const entity = contract({
+        criteria: [
+          { id: criterionId, text: 'The first requirement is verified.' },
+          { id: secondCriterion, text: 'The second requirement is verified.' },
+        ],
+      });
+      const test = testEntity('passing');
+      test.cases.push({
+        id: secondCase,
+        title: 'Second requirement',
+        covers: [secondCriterion],
+        expectation: 'second-result',
+        notes: [],
+      });
+      test.implementations.push({
+        ...test.implementations[0],
+        id: 'second-runtime',
+        consumesCases: [secondCase],
+      });
+      const target = {
+        id: direction === 'test-verifies' ? contractId : testId,
+        anchors: [direction === 'test-verifies' ? criterionId : caseId],
+        since: version,
+        until: '0.4.0',
+      };
+      test.verifies = undefined;
+      if (direction === 'test-verifies') test.verifies = { contracts: [target] };
+      else entity.verifies = { tests: [target] };
+      const workspace = createSpecWorkspace([entity, test]);
+      const rowAt = (selectedVersion = version) =>
+        getSpecLifecycleReport(workspace, selectedVersion).rows.find(
+          (row) => row.entityId === contractId
+        )!;
+      const active = {
+        ...entity,
+        status: 'active' as const,
+        activeSince: version,
+        lifecycleRationale: 'Conformance has been reviewed.',
+        revisions: [{ version, change: 'admitted', summary: 'Admission was reviewed.' }],
+      };
+      expect(rowAt().gaps).toContainEqual(
+        expect.objectContaining({
+          code: 'criterion-needs-evidence',
+          message: expect.stringContaining(secondCriterion),
+        })
+      );
+      expect(rowAt().evidence.map((item) => item.implementationId)).toEqual(['runtime']);
+      expect(checkSpecLifecycleAuthoring(entity, active, workspace, version)).toContainEqual(
+        expect.stringContaining(secondCriterion)
+      );
+
+      // Independently declared verification paths remain additive at their versions.
+      const wholeTarget = {
+        id: direction === 'test-verifies' ? testId : contractId,
+        since: '0.3.0',
+      };
+      if (direction === 'test-verifies') entity.verifies = { tests: [wholeTarget] };
+      else test.verifies = { contracts: [wholeTarget] };
+      expect(rowAt().gaps).toContainEqual(
+        expect.objectContaining({ code: 'criterion-needs-evidence' })
+      );
+      expect(rowAt('0.3.0').gaps).toEqual([]);
+      wholeTarget.since = version;
+      expect(rowAt().gaps).toEqual([]);
+      if (direction === 'test-verifies') entity.verifies = undefined;
+      else test.verifies = undefined;
+      test.exercises = { contracts: [{ id: contractId }] };
+      expect(rowAt().evidence).toHaveLength(2);
+      expect(rowAt().gaps).toContainEqual(
+        expect.objectContaining({ code: 'criterion-needs-evidence' })
+      );
+      test.exercises = undefined;
+
+      target.anchors.push(direction === 'test-verifies' ? secondCriterion : secondCase);
+      expect(rowAt().gaps).toEqual([]);
+      expect(checkSpecLifecycleAuthoring(entity, active, workspace, version)).toEqual([]);
+      target.anchors = [];
+      expect(rowAt().gaps).toEqual([]);
+      target.since = '0.3.0';
+      expect(rowAt().evidence).toEqual([]);
+      expect(rowAt('0.3.0').gaps).toEqual([]);
+      expect(rowAt('0.4.0').evidence).toEqual([]);
+    }
+  );
+
   it('does not turn a bounded implementation follow-up into an activation block', () => {
     const test = testEntity('passing');
     test.implementations.push({
@@ -1715,11 +1805,11 @@ describe('ordinary lifecycle reporting', () => {
     });
   });
 
-  it('proves the real A11y relationship slice remains draft while the rest remains unreviewed', async () => {
+  it('keeps the implemented A11y relationship slice draft while unrelated drafts remain unreviewed', async () => {
     const root = process.cwd();
     const workspace = await loadSpecWorkspaceFromDirectory(path.join(root, 'spec'));
     expect(workspace.issues).toEqual([]);
-    const report = await loadSpecLifecycleReport(root, '0.3.0-alpha.0', workspace);
+    const report = await loadSpecLifecycleReport(root, '0.3.0-alpha.1', workspace);
     const ids = ['C-A11Y-PART-RELATIONSHIP-0001', 'T-A11Y-PART-RELATIONSHIP-0001'];
     const rows = report.rows.filter((row) => ids.includes(row.entityId));
     expect(rows).toHaveLength(2);
@@ -1728,7 +1818,7 @@ describe('ordinary lifecycle reporting', () => {
       expect(row.disposition?.disposition).toBe('remain-draft');
       expect(row.activationBlockers).toHaveLength(1);
       expect(
-        row.evidence.filter((item) => item.required && item.status === 'planned')
+        row.evidence.filter((item) => item.required && item.status === 'passing')
       ).toHaveLength(6);
     }
     expect(checkSpecLifecycleDispositions(report, ids)).toEqual([]);

@@ -23,6 +23,14 @@ function getPrototypeIdFromPath(path: string): string | null {
  * value: 动态导入函数
  */
 const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
+  'bootstrap-2-3-2-button': async () => {
+    const mod = await import('@proto.ui/prototypes-bootstrap-2-3-2/button');
+    registerPrototype('bootstrap-2-3-2-button', mod.default);
+  },
+  'liquid-glass-button': async () => {
+    const mod = await import('@proto.ui/prototypes-liquid-glass/button');
+    registerPrototype('liquid-glass-button', mod.default);
+  },
   'base-button': async () => {
     const mod = await import('@proto.ui/prototypes-base');
     registerPrototype('base-button', mod.button);
@@ -94,6 +102,10 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
   'brutalist-skeleton-root': async () => {
     const mod = await import('@proto.ui/prototypes-brutalist/skeleton');
     registerPrototype('brutalist-skeleton-root', mod.BrutalistSkeletonRoot);
+  },
+  'brutalist-spinner-root': async () => {
+    const mod = await import('@proto.ui/prototypes-brutalist/spinner');
+    registerPrototype('brutalist-spinner-root', mod.BrutalistSpinnerRoot);
   },
   'base-separator-root': async () => {
     const mod = await import('@proto.ui/prototypes-base/separator');
@@ -554,6 +566,35 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('@proto.ui/prototypes-shadcn/checkbox');
     registerPrototype('shadcn-checkbox-indicator', mod.shadcnCheckboxIndicator);
   },
+  'shadcn-radio-group-root': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/radio-group');
+    registerPrototype('shadcn-radio-group-root', mod.shadcnRadioGroupRoot);
+  },
+  'shadcn-radio-group-item': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/radio-group');
+    registerPrototype('shadcn-radio-group-item', mod.shadcnRadioGroupItem);
+  },
+  'shadcn-radio-group-indicator': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/radio-group');
+    registerPrototype('shadcn-radio-group-indicator', mod.shadcnRadioGroupIndicator);
+  },
+  // Runtime-selected preview registry keeps the public Scroll Area package import lazy.
+  'shadcn-scroll-area-root': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/scroll-area');
+    registerPrototype('shadcn-scroll-area-root', mod.shadcnScrollAreaRoot);
+  },
+  'shadcn-scroll-area-viewport': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/scroll-area');
+    registerPrototype('shadcn-scroll-area-viewport', mod.shadcnScrollAreaViewport);
+  },
+  'shadcn-scroll-area-scrollbar': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/scroll-area');
+    registerPrototype('shadcn-scroll-area-scrollbar', mod.shadcnScrollAreaScrollbar);
+  },
+  'shadcn-scroll-area-thumb': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/scroll-area');
+    registerPrototype('shadcn-scroll-area-thumb', mod.shadcnScrollAreaThumb);
+  },
   // Runtime-selected preview registry keeps the real public family import lazy.
   'brutalist-checkbox-root': async () => {
     const mod = await import('@proto.ui/prototypes-brutalist/checkbox');
@@ -583,6 +624,10 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
   'shadcn-textarea-root': async () => {
     const mod = await import('@proto.ui/prototypes-shadcn/textarea');
     registerPrototype('shadcn-textarea-root', mod.default);
+  },
+  'shadcn-input-root': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/input');
+    registerPrototype('shadcn-input-root', mod.default);
   },
   'shadcn-dialog-footer': async () => {
     const mod = await import('../../../../../packages/prototypes/shadcn/src/dialog/footer.proto');

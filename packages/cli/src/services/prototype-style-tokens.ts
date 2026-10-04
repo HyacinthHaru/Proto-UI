@@ -1458,6 +1458,17 @@ function resolveKnownAsHookStateHandles(node) {
     ]);
   }
 
+  if (hookName === 'asRadioGroupItem') {
+    return new Map([...COMMAND_STATE_VARIANTS, ['checked', 'data-[checked]']]);
+  }
+
+  if (hookName === 'asRadioGroupIndicator') {
+    return new Map([
+      ['checked', 'data-[checked]'],
+      ['disabled', 'data-[disabled]'],
+    ]);
+  }
+
   if (hookName === 'asScrollAreaViewport') {
     return new Map([
       ['focused', 'data-[focused]'],
@@ -1541,11 +1552,29 @@ function resolveKnownAsHookStateHandles(node) {
     ]);
   }
 
+  if (hookName === 'asInputRoot') {
+    return new Map([
+      ['value', 'data-[value]'],
+      ['disabled', 'data-[disabled]'],
+      ['readOnly', 'data-[read-only]'],
+      ['focused', 'data-[focused]'],
+      ['focusVisible', 'data-[focus-visible]'],
+      ['composing', 'data-[composing]'],
+    ]);
+  }
+
   if (hookName === 'asAsyncRegionRoot') {
     return new Map([['busy', 'data-[busy]']]);
   }
 
-  if (hookName === 'asSeparatorRoot') {
+  if (hookName === 'asScrollAreaViewport') {
+    return new Map([
+      ['focused', 'data-[focused]'],
+      ['focusVisible', 'data-[focus-visible]'],
+    ]);
+  }
+
+  if (hookName === 'asSeparatorRoot' || hookName === 'asScrollAreaScrollbar') {
     return new Map([['orientation', 'data-[orientation]']]);
   }
 

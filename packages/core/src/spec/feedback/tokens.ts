@@ -1,10 +1,56 @@
 // packages/core/src/spec/feedback/tokens.ts
 
+// Arbitrary values may legitimately contain punctuation (calc, var, quoted
+// content, colors). Only unescaped structure outside those values is a selector.
+function selectionPayloadHasSelectorSyntax(token: string): boolean {
+  let bracketDepth = 0;
+  let quote: string | undefined;
+  let escaped = false;
+  for (let index = 0; index < token.length; index += 1) {
+    const character = token[index];
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (character === '\\') {
+      escaped = true;
+      continue;
+    }
+    if (bracketDepth > 0) {
+      if (quote) {
+        if (character === quote) quote = undefined;
+      } else if (character === "'" || character === '"') {
+        quote = character;
+      } else if (character === '[') {
+        bracketDepth += 1;
+      } else if (character === ']') {
+        bracketDepth -= 1;
+      }
+      continue;
+    }
+    if (character === '[') {
+      // Utility arbitrary values use `-[...]`; a bare attribute selector does not.
+      if (index === 0 || token[index - 1] !== '-') return true;
+      bracketDepth = 1;
+      continue;
+    }
+    if (character === ']') return true;
+    if (/[&>+~,*|#]/.test(character)) return true;
+    if (
+      character === '.' &&
+      !(/[0-9]/.test(token[index - 1] ?? '') && /[0-9]/.test(token[index + 1] ?? ''))
+    ) {
+      return true;
+    }
+  }
+  return bracketDepth !== 0 || quote !== undefined || escaped;
+}
+
 /**
  * Validate a Tailwind-flavored token for feedback v0.
  *
  * Forbidden:
- * - ':' (variants / pseudo / selector)
+ * - ':' (variants / pseudo / selector), except one allowlisted `selection:` prefix
  *
  * Allowed:
  * - arbitrary values in brackets: `w-[2px]`, `h-[var(--x)]`
@@ -32,6 +78,16 @@ export function assertTwTokenV0(token: string, ctx?: string): void {
   }
 
   if (token.includes(':')) {
+    const selectionPrefix = 'selection:';
+    if (token.startsWith(selectionPrefix) && !token.slice(selectionPrefix.length).includes(':')) {
+      if (selectionPayloadHasSelectorSyntax(token.slice(selectionPrefix.length))) {
+        throw new Error(
+          `[feedback] invalid tw token${where}: selector-like selection payload is forbidden in "${token}"`
+        );
+      }
+      assertTwTokenV0(token.slice(selectionPrefix.length), ctx);
+      return;
+    }
     throw new Error(`[feedback] invalid tw token${where}: forbidden character ":" in "${token}"`);
   }
 

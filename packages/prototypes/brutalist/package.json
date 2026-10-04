@@ -1,6 +1,6 @@
 {
   "name": "@proto.ui/prototypes-brutalist",
-  "version": "0.3.0-alpha.0",
+  "version": "0.3.0-alpha.1",
   "private": false,
   "type": "module",
   "sideEffects": false,
@@ -54,6 +54,11 @@
       "types": "./dist/skeleton/index.d.ts",
       "import": "./dist/skeleton/index.js",
       "default": "./dist/skeleton/index.js"
+    },
+    "./spinner": {
+      "types": "./dist/spinner/index.d.ts",
+      "import": "./dist/spinner/index.js",
+      "default": "./dist/spinner/index.js"
     },
     "./toggle": {
       "types": "./dist/toggle/index.d.ts",
@@ -136,10 +141,18 @@
   ],
   "files": [
     "dist/",
-    "README.md"
+    "README.md",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
     "build": "node ../../../scripts/build/public-packages.mjs --package @proto.ui/prototypes-brutalist",
     "prepack": "pnpm run build"
+  },
+  "protoUi": {
+    "release": {
+      "thirdPartyNotices": [
+        "THIRD_PARTY_NOTICES.md"
+      ]
+    }
   }
 }
