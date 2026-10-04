@@ -93,6 +93,8 @@ export const SHADCN_STYLE_TOKENS: string[] = [
   'data-[hovered]:bg-muted',
   'data-[hovered]:bg-primary/80',
   'data-[hovered]:bg-secondary/80',
+  'data-[hovered]:data-[pressed]:bg-accent',
+  'data-[hovered]:data-[pressed]:text-accent-foreground',
   'data-[hovered]:not-[data-active]:bg-muted',
   'data-[hovered]:not-[data-active]:text-foreground',
   'data-[hovered]:not-[data-checked]:bg-input',

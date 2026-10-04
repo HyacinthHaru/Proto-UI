@@ -291,7 +291,9 @@ try {
             }
           if (kind === 'candidate') assert.equal(facts.bodySize, 16);
           if (v.width === 1440) {
-            const toc = page.locator('.right-sidebar a[data-site-link-appearance="toc"]').nth(1);
+            const toc = page
+              .locator('.right-sidebar a[data-site-link-appearance="toc"]:visible')
+              .nth(1);
             if (await toc.count()) {
               const href = await toc.getAttribute('href');
               await toc.click();
@@ -327,7 +329,7 @@ try {
                 await page.waitForFunction(
                   (href) =>
                     [...document.querySelectorAll<HTMLAnchorElement>('.right-sidebar a')]
-                      .find((a) => a.getAttribute('href') === href)
+                      .find((a) => a.checkVisibility() && a.getAttribute('href') === href)
                       ?.getAttribute('aria-current') === 'true',
                   href
                 );
@@ -350,7 +352,7 @@ try {
                   document.documentElement.style.fontSize = '200%';
                 });
                 const overview = page
-                  .locator('.right-sidebar a[data-site-link-appearance="toc"]')
+                  .locator('.right-sidebar a[data-site-link-appearance="toc"]:visible')
                   .first();
                 await overview.click();
                 await page.waitForFunction(() => {

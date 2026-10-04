@@ -59,6 +59,7 @@ const diagnosticPages = new Map<
     initialPollFailure?: { at: number; message: string; cause: string | null };
     requests: unknown[];
     lateObservation?: { budgetMs: number; elapsedMs: number; ready: boolean };
+    startupProfileRecorded?: boolean;
   }
 >();
 function stage(page: Page, id: string, step: string) {
@@ -145,6 +146,68 @@ async function captureFailure(page: Page) {
     await capture(page, entry.id, `late-observation-${entry.stage}`).catch((error) =>
       console.warn('[Search evidence] Late observation unavailable', error)
     );
+    if (entry.stage === 'initial-ready' && !entry.startupProfileRecorded) {
+      entry.startupProfileRecorded = true;
+      // An isolated follow-on navigation attributes CPU cost. Profiling never
+      // runs during the original 1000ms acceptance observation or replaces it.
+      const context = await browser.newContext({ viewport: page.viewportSize() ?? undefined });
+      const diagnostic = await context.newPage();
+      const session = await context.newCDPSession(diagnostic);
+      const target = page.url();
+      try {
+        if (new URL(target).origin !== new URL(baseUrl).origin)
+          throw new Error('Diagnostic must remain on the owned test server');
+        await session.send('Profiler.enable');
+        await session.send('Profiler.start');
+        await diagnostic.addInitScript(installSearchStartupTrace);
+        await diagnostic.goto(target, { waitUntil: 'domcontentloaded', timeout: 15_000 });
+        await diagnostic
+          .waitForFunction(
+            () =>
+              document
+                .querySelector(
+                  'site-search [data-projection-generation-state="active"] [data-open-modal]'
+                )
+                ?.getAttribute('aria-disabled') === 'false',
+            undefined,
+            { timeout: 8_000 }
+          )
+          .catch(() => {});
+        const { profile } = await session.send('Profiler.stop');
+        const trace = await diagnostic.evaluate(
+          () => (window as any).__puiSearchStartup?.snapshot() ?? null
+        );
+        await writeFile(
+          path.join(evidenceDirectory, `${entry.id}-post-failure-startup.cpuprofile.json`),
+          JSON.stringify(
+            {
+              source,
+              diagnosticOnly: true,
+              originalFailurePreserved: true,
+              originalReadiness: entry.initialReadiness,
+              target,
+              viewport: page.viewportSize(),
+              profile,
+              trace,
+            },
+            null,
+            2
+          )
+        );
+      } catch (error) {
+        await writeFile(
+          path.join(evidenceDirectory, `${entry.id}-post-failure-profile-error.json`),
+          JSON.stringify(
+            { source, diagnosticOnly: true, originalFailurePreserved: true, error: String(error) },
+            null,
+            2
+          )
+        );
+      } finally {
+        await session.detach().catch(() => {});
+        await context.close();
+      }
+    }
   }
 }
 afterEach(async () => {

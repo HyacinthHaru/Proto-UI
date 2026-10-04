@@ -68,7 +68,7 @@ export function contentsCommandParticipant(header: HTMLElement) {
         !!candidate &&
         candidate.host.dataset.projectionGenerationState === 'active' &&
         !candidate.host.inert;
-      const props = { variant: family === 'brutalist' ? 'surface' : 'ghost', size: 'icon' };
+      const props = { variant: 'ghost', size: 'icon' };
       candidate = await materializeProjectionCandidate(request, {
         mount,
         ownerId: `${owner}-${namespace}`,

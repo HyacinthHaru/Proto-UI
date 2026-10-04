@@ -33,7 +33,7 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     // P-BRUTALIST-SELECT-TRIGGER-SIZE-PROP: public `size` enum `sm | default`; P-BRUTALIST-SELECT-TRIGGER-DEFAULTS restores `default`.
     def.props.define({
       size: { type: 'enum', empty: 'fallback', options: ['sm', 'default'] },
-      appearance: { type: 'enum', empty: 'fallback', options: ['flat', 'elevated'] },
+      appearance: { type: 'enum', empty: 'fallback', options: ['flat', 'elevated', 'ghost'] },
     });
     def.props.setDefaults({ size: 'default', appearance: 'flat' });
 
@@ -48,9 +48,18 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     // P-BRUTALIST-SELECT-TRIGGER-VISUAL-GRAMMAR: resting combobox surface (5px radius, border-2 black, no shadow, bg-main with paired ink and DM Sans 500).
     def.feedback.style.use(
       tw(
-        'flex items-center justify-between gap-2 rounded-base border-2 border-black bg-main text-main-foreground font-sans font-medium px-3 py-2 text-sm whitespace-nowrap outline-none select-none'
+        'flex items-center justify-between gap-2 rounded-base border-2 font-sans font-medium px-3 py-2 text-sm whitespace-nowrap outline-none select-none'
       )
     );
+    def.rule({
+      when: (w) => w.any(w.prop('appearance').eq('flat'), w.prop('appearance').eq('elevated')),
+      intent: (i) => i.feedback.style.use(tw('border-black bg-main text-main-foreground')),
+    });
+    def.rule({
+      when: (w) => w.prop('appearance').eq('ghost'),
+      intent: (i) =>
+        i.feedback.style.use(tw('border-transparent bg-transparent text-foreground shadow-none')),
+    });
     // P-BRUTALIST-SELECT-TRIGGER-INTERACTION rules (size→h tokens, placeholder→paired ink, flat hover/press, focus-visible ring, disabled fade).
     def.rule({
       when: (w) => w.prop('size').eq('default'),
@@ -78,16 +87,36 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     });
     // P-BRUTALIST-SELECT-TRIGGER-PLACEHOLDER-STATE: placeholder keeps paired ink on the main fill (muted ink fails 4.5:1 in both themes).
     def.rule({
-      when: (w) => w.state(placeholder).eq(true),
+      when: (w) =>
+        w.all(
+          w.any(w.prop('appearance').eq('flat'), w.prop('appearance').eq('elevated')),
+          w.state(placeholder).eq(true)
+        ),
       intent: (i) => i.feedback.style.use(tw('text-main-foreground')),
     });
     def.rule({
-      when: (w) => w.state(hovered).eq(true),
+      when: (w) =>
+        w.all(
+          w.any(w.prop('appearance').eq('flat'), w.prop('appearance').eq('elevated')),
+          w.state(hovered).eq(true)
+        ),
       intent: (i) => i.feedback.style.use(tw('border-black')),
     });
     def.rule({
-      when: (w) => w.state(pressed).eq(true),
+      when: (w) =>
+        w.all(
+          w.any(w.prop('appearance').eq('flat'), w.prop('appearance').eq('elevated')),
+          w.state(pressed).eq(true)
+        ),
       intent: (i) => i.feedback.style.use(tw('border-black')),
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('appearance').eq('ghost'),
+          w.any(w.state(hovered).eq(true), w.state(pressed).eq(true))
+        ),
+      intent: (i) => i.feedback.style.use(tw('bg-secondary-background text-foreground')),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),

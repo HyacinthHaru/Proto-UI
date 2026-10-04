@@ -164,7 +164,9 @@ describe('Docs Contents actual family Button command', () => {
         const tokens = button.getAttribute('data-pui-style')!;
         expect(tokens).toContain(family === 'shadcn' ? 'border-transparent' : 'rounded-base');
         expect(tokens).toContain(family === 'shadcn' ? 'bg-transparent' : 'border-2');
-        if (family === 'brutalist') expect(tokens).toContain('shadow-[4px_4px_0_0_#000]');
+        expect(tokens).toContain('border-transparent');
+        expect(tokens).toContain('bg-transparent');
+        expect(tokens).not.toContain('shadow-[4px_4px_0_0_#000]');
         click(button);
         await settle();
         expect(button.getAttribute('aria-expanded')).toBe('true');

@@ -190,7 +190,7 @@ export function createHomepageContent(
         fontFamily: 'inherit',
       },
       props: {
-        variant: family === 'shadcn' ? 'ghost' : 'surface',
+        variant: 'ghost',
         size: group.root.dataset.homepageThemeIcon === 'true' ? 'icon' : 'default',
       },
       children:
@@ -221,7 +221,7 @@ export function createHomepageContent(
         padding: '0',
         fontFamily: 'inherit',
       },
-      props: { variant: family === 'shadcn' ? 'ghost' : 'surface', size: 'icon' },
+      props: { variant: 'ghost', size: 'icon' },
       children: [
         { kind: 'box', className: 'site-header-menu-icon', attrs: { 'aria-hidden': 'true' } },
         {
@@ -398,14 +398,16 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     runtime: {
       label: root.dataset.runtimeLabel || 'Page runtime',
       wrapValue: true,
-      brutalistTriggerAppearance: 'elevated',
+      triggerAppearance: 'ghost',
+      compactTriggerAppearance: 'default',
       options: AdapterIds.map((value) => ({ value, label: LABELS[value] })),
       onValueChange: requestRuntime,
     },
     family: {
       label: root.dataset.familyLabel || demo?.root.dataset.familyLabel || 'Page library',
       wrapValue: true,
-      brutalistTriggerAppearance: 'elevated',
+      triggerAppearance: 'ghost',
+      compactTriggerAppearance: 'default',
       options: [
         { value: 'shadcn', label: 'Shadcn' },
         { value: 'brutalist', label: 'Brutalist' },

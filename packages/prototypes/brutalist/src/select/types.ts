@@ -22,8 +22,8 @@ export type BrutalistSelectRootAsHookContract = SelectRootAsHookContract;
 
 export interface BrutalistSelectTriggerProps extends SelectTriggerProps {
   size?: 'sm' | 'default';
-  /** Flat by default; elevated explicitly groups this Trigger with raised commands. */
-  appearance?: 'flat' | 'elevated';
+  /** Flat by default; elevated adds depth and ghost is an opt-in transparent presentation. */
+  appearance?: 'flat' | 'elevated' | 'ghost';
 }
 export type BrutalistSelectTriggerExposes = SelectTriggerExposes;
 export type BrutalistSelectTriggerAsHookContract = SelectTriggerAsHookContract;

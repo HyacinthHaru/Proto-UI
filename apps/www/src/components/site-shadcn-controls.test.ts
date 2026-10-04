@@ -368,9 +368,8 @@ it.each(['shadcn', 'brutalist'] as const)(
     );
     expect(trigger.style.fontSize).toBe('0.875rem');
     expect(trigger.getAttribute('data-pui-style')).toContain('h-8');
-    expect(trigger.getAttribute('data-pui-style')?.includes('shadow-[4px_4px_0_0_#000]')).toBe(
-      family === 'brutalist'
-    );
+    expect(trigger.getAttribute('data-pui-style')).toContain('border-transparent');
+    expect(trigger.getAttribute('data-pui-style')).not.toContain('shadow-[4px_4px_0_0_#000]');
     expect(value.style.whiteSpace).toBe('normal');
     expect(value.style.overflow).toBe('visible');
     expect(value.style.overflowWrap).toBe('anywhere');
@@ -380,9 +379,8 @@ it.each(['shadcn', 'brutalist'] as const)(
     expect(trigger.getAttribute('role')).toBe('combobox');
     expect(value.textContent).toBe('Web Components');
     expect(value.style.whiteSpace).toBe('normal');
-    expect(trigger.getAttribute('data-pui-style')?.includes('shadow-[4px_4px_0_0_#000]')).toBe(
-      family === 'brutalist'
-    );
+    expect(trigger.getAttribute('data-pui-style')).toContain('border-transparent');
+    expect(trigger.getAttribute('data-pui-style')).not.toContain('shadow-[4px_4px_0_0_#000]');
   }
 );
 

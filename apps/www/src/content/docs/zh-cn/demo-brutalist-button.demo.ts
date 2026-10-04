@@ -85,6 +85,22 @@ export default {
         props: { variant: 'surface', disabled: true },
         children: ['Disabled surface'],
       },
+      {
+        kind: 'proto',
+        prototypeId: 'brutalist-button',
+        surfaceStyle: textButtonLayout,
+        ref: 'ghost',
+        props: { variant: 'ghost' },
+        children: ['Ghost'],
+      },
+      {
+        kind: 'proto',
+        prototypeId: 'brutalist-button',
+        surfaceStyle: textButtonLayout,
+        ref: 'disabledGhost',
+        props: { variant: 'ghost', disabled: true },
+        children: ['Disabled ghost'],
+      },
     ],
   },
 } satisfies DemoSpec;

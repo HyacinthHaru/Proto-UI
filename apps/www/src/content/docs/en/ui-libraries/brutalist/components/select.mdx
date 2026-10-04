@@ -16,6 +16,8 @@ Select keeps Base value-class presentation parts and selection semantics under a
 
 ## Trigger appearance
 
-The default Trigger follows the upstream Select: a flat 5px-rounded, 2px black frame with DM Sans 500. `appearance="elevated"` is an explicit Proto UI extension for a Trigger grouped with raised commands, such as the Header Runtime and Style controls. Its hard black shadow is 4px right/down at rest; hover or press moves the Trigger 4px right/down and removes that shadow. Press does not add another offset.
+The default `appearance="flat"` keeps the 5px-rounded, 2px black frame, main fill and paired ink shown above. `appearance="elevated"` remains an opt-in Proto UI extension: a 4px right/down hard shadow at rest, with the same 4px hover/press displacement that clears the shadow.
 
-Set the prop on `brutalist-select-trigger`, not Root or Content. `appearance="flat"`, omission, or removing the prop restores the flat default. `size="sm" | "default"`, the paired fill/ink, focus ring, keyboard selection and disabled behavior are unchanged. Content stays flat in either appearance. Page CSS must not add a replacement shadow.
+`appearance="ghost"` is a separate opt-in Proto UI extension. Its resting border and fill are transparent, with theme-dependent foreground and no hard shadow. Hover/press use the neutral surface without movement; the hard keyboard focus ring remains visible in both themes. Main-fill black ink never leaks into the transparent dark appearance.
+
+Set `appearance` on `brutalist-select-trigger`, not Root or Content. Omitting or removing it restores `flat`, even during interaction. Size, chevron, Base selection, keyboard navigation, disabled behavior and flat Content are unchanged. Form fields keep the default; consumers choose the public input rather than overriding family paint with CSS.

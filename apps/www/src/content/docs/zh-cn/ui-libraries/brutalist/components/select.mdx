@@ -16,6 +16,8 @@ Select 在 Neo-Brutalist 表面语言下保留 Base 的 value-class presentation
 
 ## Trigger 外观
 
-默认 Trigger 遵循上游 Select：5px 圆角、2px 黑边、DM Sans 500，保持扁平。`appearance="elevated"` 是显式 Proto UI 扩展，供与有硬影命令同组的 Trigger 使用，例如 Header 的 Runtime 与 Style 控件。静止态为向右/下 4px 黑色硬影；hover 或 press 将 Trigger 向右/下移动 4px 并去除硬影，press 不叠加第二次位移。
+默认 `appearance="flat"` 保留上方示例的5px圆角、2px黑框、main fill及配对ink。`appearance="elevated"` 仍是显式Proto UI扩展：静止态向右/下4px硬影，hover/press沿同方向移动4px并去除硬影。
 
-此 prop 设置在 `brutalist-select-trigger`，不设在 Root 或 Content。`appearance="flat"`、缺省或移除 prop 都恢复扁平默认值。`size="sm" | "default"`、配对 fill/ink、焦点 ring、键盘选择及 disabled 行为不变；两种外观的 Content 都保持扁平。页面 CSS 不应另外补影。
+`appearance="ghost"` 是另一项显式Proto UI扩展。静止边框与填色透明，使用随主题变化的前景且无硬影；hover/press使用中性表面，不移动，明暗主题均保留清晰的硬键盘焦点ring。main fill的黑色ink不会进入深色透明外观。
+
+`appearance` 设置在 `brutalist-select-trigger`，不设在Root或Content；缺省或移除时即使在交互中也恢复 `flat`。size、chevron、Base选择、键盘导航、disabled与扁平Content不变。表单字段保留默认，consumer通过公共输入选择外观，不用页面CSS覆盖家族paint。

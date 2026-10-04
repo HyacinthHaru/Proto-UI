@@ -256,7 +256,20 @@ function initializeSelect(root: SiteSelectRoot): void {
   if (trigger) {
     applyProps(trigger, {
       size: trigger.dataset.size ?? 'default',
-      ...(family === 'brutalist' && trigger.dataset.appearance
+      ...(root.closest('[data-site-header]')
+        ? {
+            appearance:
+              !root.closest('[data-site-header-panel]') &&
+              !root.ownerDocument.defaultView?.matchMedia?.('(max-width: 47.999rem)').matches
+                ? 'ghost'
+                : family === 'brutalist'
+                  ? 'flat'
+                  : 'default',
+          }
+        : {}),
+      ...(family === 'brutalist' &&
+      !root.closest('[data-site-header]') &&
+      trigger.dataset.appearance
         ? { appearance: trigger.dataset.appearance }
         : {}),
       disabled: trigger.dataset.disabled === 'true',

@@ -1,7 +1,7 @@
 import type { ButtonExposes, ButtonProps } from '@proto.ui/prototypes-base/button';
 
-/** Fill role. Every Brutalist control already carries a structural 2px outline. */
-export type BrutalistButtonVariant = 'solid' | 'surface' | 'destructive';
+/** Fill role; ghost keeps a transparent border while the original variants retain their black frame. */
+export type BrutalistButtonVariant = 'solid' | 'surface' | 'destructive' | 'ghost';
 
 /**
  * Accent fill for `variant="solid"`.

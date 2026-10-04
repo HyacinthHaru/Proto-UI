@@ -237,3 +237,47 @@ describe('prototypes/brutalist: button', () => {
     }
   });
 });
+
+it('keeps ghost light while restoring the original variant during live interaction', () => {
+  // T-BRUTALIST-BUTTON-0001-CASE-GHOST
+  const rawPropsRef: { current: Record<string, unknown> } = { current: { variant: 'solid' } };
+  const { host, rootTarget, globalTarget } = createButtonHost(rawPropsRef);
+  const { controller } = executeWithHost(button as any, host as any);
+  rootTarget.dispatchEvent(new CustomEvent('pointer.enter'));
+  rootTarget.dispatchEvent(new CustomEvent('pointer.down'));
+  expect(controller.getRuleStyleTokens()).toContain('translate-x-1');
+  rawPropsRef.current = { variant: 'ghost', color: 'coral' };
+  controller.applyRawProps(rawPropsRef.current as any);
+  let tokens = controller.getRuleStyleTokens();
+  expect(tokens).toContain('border-transparent');
+  expect(tokens).toContain('bg-secondary-background');
+  expect(tokens).toContain('text-foreground');
+  for (const old of [
+    'border-black',
+    'bg-main',
+    'bg-coral',
+    'text-coral-foreground',
+    'translate-x-1',
+    'translate-y-1',
+    'hit-envelope-translate-1',
+    'shadow-[4px_4px_0_0_#000]',
+  ])
+    expect(tokens).not.toContain(old);
+  rootTarget.dispatchEvent(new CustomEvent('pointer.up'));
+  rootTarget.dispatchEvent(new CustomEvent('pointer.leave'));
+  tokens = controller.getRuleStyleTokens();
+  expect(tokens).toContain('bg-transparent');
+  globalTarget.dispatchEvent(new CustomEvent('key.down'));
+  rootTarget.dispatchEvent(new CustomEvent('host:focus'));
+  expect(controller.getRuleStyleTokens()).toContain('ring-2');
+  rawPropsRef.current = { variant: 'ghost', disabled: true };
+  controller.applyRawProps(rawPropsRef.current as any);
+  expect(controller.getRuleStyleTokens()).toContain('pointer-events-none');
+  rawPropsRef.current = {};
+  controller.applyRawProps(rawPropsRef.current as any);
+  tokens = controller.getRuleStyleTokens();
+  expect(tokens).toContain('bg-main');
+  expect(tokens).toContain('border-black');
+  expect(tokens).toContain('shadow-[4px_4px_0_0_#000]');
+  expect(tokens).not.toContain('border-transparent');
+});
