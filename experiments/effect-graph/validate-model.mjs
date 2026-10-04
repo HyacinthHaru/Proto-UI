@@ -1,3 +1,5 @@
+import { inspectInterfaceFacts } from './interface-facts.mjs';
+
 const SOURCE_KINDS = [
   'application-texture',
   'host-compositor-backdrop',
@@ -750,6 +752,7 @@ export function inspectGraph(graph) {
       'unsupported-graph-budget',
       'first inspection model has no temporal or writeable-storage effects'
     );
+  errors.push(...inspectInterfaceFacts(graph));
   return {
     valid: errors.length === 0,
     errors,

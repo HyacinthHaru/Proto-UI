@@ -603,5 +603,6 @@
     "WGSL is the upstream STEP9 specialization only",
     "No physical format/filter/ABI/target compilation or visual validation has run"
   ],
-  "frameInputs": []
+  "frameInputs": [],
+  "interfaceId": "studio-f7b28c3-four-pass-v1"
 }

@@ -219,7 +219,10 @@ test('packed widths distinguish vector size from padding and reject unmodeled st
   // checks a field's byte length, not complete struct layout or reflection.
   const vector = await load('studio');
   vector.uniformBlocks[0].fields = [{ name: 'probe', type: 'vec3<f32>', offset: 0, bytes: 12 }];
-  assert.equal(inspectGraph(vector).valid, true);
+  const result = inspectGraph(vector);
+  assert(!result.errors.some((error) => error.code === 'uniform-byte-size'));
+  // A valid synthetic field width is not the pinned Studio shader's interface.
+  assert(result.errors.some((error) => error.code === 'source-interface-fact-mismatch'));
   vector.uniformBlocks[0].fields[0].bytes = 16;
   assert(inspectGraph(vector).errors.some((e) => e.code === 'uniform-byte-size'));
   for (const field of [
@@ -769,4 +772,107 @@ test('indexed sampler declarations preserve their reflected source order', async
   const reordered = await load('flutter');
   reordered.kernels.find((kernel) => kernel.id === 'render').samplers.reverse();
   assert(inspectGraph(reordered).errors.some((error) => error.code === 'reflected-sampler-slot'));
+});
+
+test('pinned packed fields cannot exchange same-sized source offsets', async () => {
+  const graph = await load('studio');
+  const fields = graph.uniformBlocks[0].fields;
+  const width = fields.find((field) => field.name === 'u_shapeWidth');
+  const height = fields.find((field) => field.name === 'u_shapeHeight');
+  [width.offset, height.offset] = [height.offset, width.offset];
+  assert.equal(inspectGraph(graph).valid, false);
+});
+
+test('a scenario cannot replace a pinned physical intermediate contract with another profile', async () => {
+  const graph = await load('studio');
+  Object.assign(graph.resources[0], {
+    format: 'host-managed-ui-image',
+    filter: 'Flutter-FilterQuality.medium',
+    wrap: 'shader-clamp-0-1',
+  });
+  assert.equal(inspectGraph(graph).valid, false);
+});
+
+test('same-typed frame producers cannot replace the pinned uniform semantic binding', async () => {
+  for (const replacement of ['uTouchPosition', 'uGeometrySize']) {
+    const graph = await load('flutter');
+    graph.uniformBlocks[1].fields.find((field) => field.name === 'uGeometryOffset').binding.id =
+      replacement;
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+  const swapped = await load('flutter');
+  const offset = swapped.uniformBlocks[1].fields.find((field) => field.name === 'uGeometryOffset');
+  const size = swapped.uniformBlocks[1].fields.find((field) => field.name === 'uGeometrySize');
+  [offset.binding, size.binding] = [size.binding, offset.binding];
+  assert.equal(inspectGraph(swapped).valid, false);
+});
+
+test('mutating both source and sampler claims cannot redefine the pinned live input', async () => {
+  const graph = await load('flutter');
+  graph.sources[0].kind = 'reconstructed-scene';
+  graph.kernels[1].samplers[0].sourceKind = 'reconstructed-scene';
+  assert.equal(inspectGraph(graph).valid, false);
+});
+
+test('interface facts are immutable and cannot be supplied or replaced by a scenario', async () => {
+  const { getInterfaceFacts } = await import('./interface-facts.mjs');
+  const graph = await load('studio');
+  const facts = getInterfaceFacts(graph.interfaceId);
+  assert(Object.isFrozen(facts));
+  assert(Object.isFrozen(facts.assertions.uniformBlocks[0].fields[0]));
+  assert.throws(() => {
+    facts.assertions.uniformBlocks[0].fields[0].offset = 999;
+  }, TypeError);
+  const forged = structuredClone(facts);
+  graph.resources[0].format = 'host-managed-ui-image';
+  graph.resources[0].filter = 'Flutter-FilterQuality.medium';
+  graph.resources[0].wrap = 'shader-clamp-0-1';
+  Object.assign(forged.assertions.resources[0], graph.resources[0]);
+  graph.interfaceFacts = forged;
+  assert.equal(inspectGraph(graph, forged).valid, false);
+  assert.equal(getInterfaceFacts(graph.interfaceId).assertions.resources[0].format, 'rgba16float');
+});
+
+test('interface selection binds every kernel to its exact repository commit path and blob', async () => {
+  for (const key of ['repo', 'commit', 'path', 'gitBlob']) {
+    const graph = await load('studio');
+    graph.kernels[0].upstream[key] =
+      key === 'repo' ? 'other/project' : key === 'path' ? 'other.wgsl' : 'a'.repeat(40);
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+  const unknown = await load('studio');
+  unknown.interfaceId = 'caller-provided';
+  assert.equal(inspectGraph(unknown).valid, false);
+  const crossProfile = await load('studio');
+  crossProfile.interfaceId = (await load('flutter')).interfaceId;
+  assert.equal(inspectGraph(crossProfile).valid, false);
+});
+
+test('equivalent serialized scenarios select the same independent source facts', async () => {
+  const { getInterfaceFacts } = await import('./interface-facts.mjs');
+  for (const name of ['studio', 'flutter']) {
+    const graph = await load(name);
+    const equivalent = JSON.parse(JSON.stringify(graph));
+    assert.equal(inspectGraph(equivalent).valid, true);
+    assert.equal(inspectGraph(equivalent).execution, 'not-admitted');
+    assert.notEqual(
+      getInterfaceFacts(graph.interfaceId).assertions.kernels[0],
+      equivalent.kernels[0]
+    );
+  }
+  const imageOnly = await load('studio');
+  imageOnly.sources[0].sourceKinds = ['owned-image'];
+  assert.equal(inspectGraph(imageOnly).valid, true);
+});
+
+test('the pinned budgeted matte retains its budget binding and producer contract', async () => {
+  const missing = await load('flutter');
+  delete missing.resources[0].extent.pixelBudgetBinding;
+  assert.equal(inspectGraph(missing).valid, false);
+  const renamed = await load('flutter');
+  renamed.resources[0].extent.pixelBudgetBinding = 'matte-dpr';
+  assert.equal(inspectGraph(renamed).valid, false);
+  const wrongType = await load('flutter');
+  wrongType.frameInputs.find((input) => input.id === 'geometry-pixel-budget').type = 'f32';
+  assert.equal(inspectGraph(wrongType).valid, false);
 });
