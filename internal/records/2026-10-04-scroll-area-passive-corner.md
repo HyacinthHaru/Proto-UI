@@ -17,3 +17,9 @@ The passive-corner test is red twice against the unchanged styled Scrollbar sour
 Focused family, Base, shared host geometry, four-adapter Move journey, style renderer and private-corner tests are run before commit, as are narrow TypeScript, prototype catalog, runtime test plan and generated style/GPUI checks. Generated preset and native fixture artifacts are regenerated from source, never patched by hand.
 
 The normal PR-triggered corner workflow compares the same 1100-by-900 browser viewport and actual family root crops. Its candidate checks now include passive paint, no control identity, pointer-inert inheritance, strict corner hit testing, fractional 22.5-pixel width, zero-reservation clipping, hidden tracks, overflow transitions, both-axis drag and unchanged focus geometry. Exact-source PNGs remain pending the new native CI run. The old geometry-only screenshots are not evidence of this fill. Independent acceptance and the actual combined package budget remain separate gates; existing budget thresholds are not loosened to make this candidate pass.
+
+## Native inventory follow-up
+
+Exact candidate `8ee2e4ab` failed macOS style-map completeness: the new Web-only `height: calc(100% + 2px)` and `calc(100% + 4px)` declarations were absent from GPUI's explicit unmapped-value inventory. GPUI's definite length cannot combine a parent fraction and fixed pixels without layout context. The follow-up records both exact values with their family-specific border rationale, rather than pretending they map to 100% or weakening the inventory assertion. Native macOS CI must confirm the inventory matches; no GPUI corner support is claimed.
+
+Local `cargo fmt` could not run because this cloud executor has no Cargo binary. The new Rust inventory entry validation remains pending the normal macOS CI job; no local Rust pass is claimed.
