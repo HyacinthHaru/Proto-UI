@@ -12682,3 +12682,494 @@ test('timer compilation admission: proven callable handlers and shadowed timers 
     assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }), expression);
   }
 });
+
+function probeReview(id, kind, source, ext = 'ts', bind = true) {
+  const root = createRoot();
+  const file =
+    kind === 'website'
+      ? `apps/www/src/${/^mdx?$/u.test(ext) ? 'content/docs' : 'components'}/ReviewProbe.${ext}`
+      : `apps/agent-harness/src/run/ReviewProbe.${ext}`;
+  fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+  fs.writeFileSync(path.join(root, file), source);
+  writeValidMatrices(root, {}, kind === 'harness' ? { Path: file } : {}, {
+    websiteBindings: kind === 'website' && bind ? [[file, ['www.shell.primary-nav']]] : [],
+  });
+  const issues = collectCoverageMatrixIssues({ rootDir: root });
+  return issues;
+}
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    [
+      'XHTML NS script',
+      "const s=document.createElementNS('http://www.w3.org/1999/xhtml','script');s.src='https://cdn.example/runtime.js';document.body.append(s);",
+      true,
+    ],
+    [
+      'ordinary script control',
+      "const s=document.createElement('script');s.src='https://cdn.example/runtime.js';document.body.append(s);",
+      true,
+    ],
+    [
+      'qualified NS script',
+      "const s=globalThis.document.createElementNS('http://www.w3.org/1999/xhtml','script');s.src='https://cdn.example/runtime.js';document.body.append(s);",
+      true,
+    ],
+    [
+      'NS inline body',
+      "const s=document.createElementNS('http://www.w3.org/1999/xhtml','script');s.textContent='alert(1)';document.body.append(s);",
+      true,
+    ],
+    [
+      'NS shadowed document control',
+      "function f(document){const s=document.createElementNS('http://www.w3.org/1999/xhtml','script');s.src='https://cdn.example/runtime.js';}",
+      false,
+    ],
+  ])
+    test(`reviewed entry boundaries: 4560 ${kind} ${name}`, () => {
+      const issues = probeReview('4176574560', kind, source);
+      assert.equal(
+        issues.some((x) => /(?:external|dynamic) executable script|unverified/.test(x)),
+        reject
+      );
+    });
+  for (const [name, markup, reject] of [
+    [
+      'javascript anchor',
+      `<a href="javascript:import('https://cdn.example/runtime.js')">Run</a>`,
+      true,
+    ],
+    [
+      'mixed-case and tab URL',
+      `<a href=" \tJaVaScRiPt:import('https://cdn.example/runtime.js')">Run</a>`,
+      true,
+    ],
+    [
+      'encoded javascript anchor',
+      `<a href="java&#115;cript:import('https://cdn.example/runtime.js')">Run</a>`,
+      true,
+    ],
+    [
+      'form action',
+      `<form action="javascript:import('https://cdn.example/runtime.js')"><button>Run</button></form>`,
+      true,
+    ],
+    [
+      'button formaction',
+      `<form><button formaction="javascript:import('https://cdn.example/runtime.js')">Run</button></form>`,
+      true,
+    ],
+    ['normal href control', '<a href="https://example.com">Run</a>', false],
+    [
+      'comment control',
+      `<!-- <a href="javascript:import('https://cdn.example/runtime.js')">Run</a> -->`,
+      false,
+    ],
+    [
+      'data example control',
+      `<p data-example="javascript:import('https://cdn.example/runtime.js')">Run</p>`,
+      false,
+    ],
+  ])
+    test(`reviewed entry boundaries: 6499 ${kind} ${name}`, () => {
+      const issues = probeReview('4176576499', kind, markup, 'html');
+      assert.equal(
+        issues.some((x) => /unverified|executable/.test(x)),
+        reject
+      );
+    });
+}
+for (const owner of ['document', 'window.document', 'self.document', 'globalThis.document']) {
+  for (const [name, source] of [
+    ['hidden', `${owner}.body.hidden=true;`],
+    ['listener', `${owner}.querySelector('button').addEventListener('click',()=>{});`],
+    ['alias', `const doc=${owner};doc.querySelector('button').addEventListener('click',()=>{});`],
+  ])
+    test(`reviewed entry boundaries: 4565 ${owner} ${name}`, () => {
+      const issues = probeReview('4176574565', 'harness', source);
+      assert.equal(
+        issues.some((x) => /forbidden interaction/.test(x)),
+        true
+      );
+    });
+}
+for (const owner of ['window', 'self', 'globalThis'])
+  test(`reviewed entry boundaries: 4565 shadowed ${owner} control`, () => {
+    const source = `function run(${owner}){${owner}.document.body.hidden=true;${owner}.document.querySelector('button').addEventListener('click',()=>{});}`;
+    assert.deepEqual(probeReview('4176574565', 'harness', source), []);
+  });
+for (const [name, source, bind, reject] of [
+  ['details', '<details><summary>Title</summary>Body</details>', false, true],
+  ['form button', '<form><button>Submit</button></form>', false, true],
+  ['input', '<input type="text" />', false, true],
+  ['select', '<select><option>One</option></select>', false, true],
+  ['textarea', '<textarea />', false, true],
+  ['event control', '<button onClick={()=>{}}>Submit</button>', false, true],
+  ['bound native control', '<details><summary>Title</summary>Body</details>', true, false],
+  ['fenced control', '```html\n<details><summary>Title</summary>Body</details>\n```', false, false],
+  ['inline code control', '`<button>Example</button>`', false, false],
+  ['comment control', '<!-- <button>Example</button> -->', false, false],
+  ['custom name control', '<Details><Summary>Title</Summary>Body</Details>', false, false],
+  ['static native control', '<article><h2>Title</h2><p>Text</p></article>', false, false],
+])
+  test(`reviewed entry boundaries: 6501 ${name}`, () => {
+    const issues = probeReview('4176576501', 'website', source, 'mdx', bind);
+    assert.equal(
+      issues.some((x) => /interactive website source.*not bound/.test(x)),
+      reject
+    );
+  });
+for (const file of [
+  'scripts/coverage-matrices/README.md',
+  'internal/website/self-hosting-coverage-matrix.md',
+])
+  test(`reviewed entry boundaries: 4562 ${file}`, () => {
+    const content = fs.readFileSync(new URL(`../../../${file}`, import.meta.url), 'utf8');
+    assert.ok(
+      !content.includes('Node 22'),
+      `${file} retains stale Node 22 operational instruction`
+    );
+  });
+
+for (const extension of ['html', 'astro', 'tsx', 'mdx']) {
+  for (const kind of extension === 'html' || extension === 'tsx'
+    ? ['website', 'harness']
+    : ['website']) {
+    test(`reviewed navigation formats: ${kind} ${extension} rejects literal execution`, () => {
+      for (const source of [
+        `<a href="java&#x73;cript:alert(1)">Run</a>`,
+        `<a href="java&#x09;script:alert(1)">Run</a>`,
+        `<area href="javascript:alert(1)" />`,
+        `<input type="submit" formaction="javascript:alert(1)" />`,
+        ...(extension === 'html'
+          ? []
+          : [
+              `<a href={'javascript:alert(1)'}>Run</a>`,
+              ...(extension === 'mdx' ? [] : ['<form action={`javascript:alert(1)`} />']),
+            ]),
+      ])
+        assert.ok(
+          probeReview('4176576499', kind, source, extension).some((issue) =>
+            /executable navigation URL.*unverified/.test(issue)
+          ),
+          source
+        );
+    });
+    test(`reviewed navigation formats: ${kind} ${extension} retains inert values`, () => {
+      for (const source of [
+        `<a href="https://example.com?a=1&amp;b=2">Run</a>`,
+        `<a href="/docs/javascript:example">Run</a>`,
+        `<p title="javascript:alert(1)">Example</p>`,
+        ...(extension === 'html'
+          ? []
+          : [
+              `<Link href="javascript:alert(1)">Business prop</Link>`,
+              `<a href={target}>Run</a>`,
+              `<a href={'java&#x73;cript:alert(1)'}>Literal ampersand in expression</a>`,
+            ]),
+      ])
+        assert.ok(
+          !probeReview('4176576499', kind, source, extension).some((issue) =>
+            /executable navigation URL/.test(issue)
+          ),
+          source
+        );
+    });
+  }
+}
+for (const owner of ['window', 'self', 'globalThis']) {
+  test(`reviewed document receivers: ${owner} properties and collections`, () => {
+    for (const source of [
+      `${owner}['document']['body'].hidden = true;`,
+      `${owner}.document.documentElement.inert = true;`,
+      `${owner}.document.activeElement.disabled = true;`,
+      `const doc=${owner}.document;doc.body.hidden=true;`,
+      `const {body}= ${owner}.document;body.hidden=true;`,
+      `${owner}.document.querySelectorAll('button')[0].addEventListener('click',()=>{});`,
+      `${owner}.document.querySelector('button').onclick=()=>{};`,
+    ])
+      assert.ok(
+        probeReview('4176574565', 'harness', source).some((issue) =>
+          /forbidden interaction/.test(issue)
+        ),
+        source
+      );
+  });
+  test(`reviewed document receivers: ${owner} local definitions stay separate`, () => {
+    for (const source of [
+      `const ${owner}={document:business};${owner}.document.body.hidden=true;`,
+      `${owner}.document.body.hidden=true;const ${owner}={document:business};`,
+      `function ${owner}(){};${owner}.document.body.hidden=true;`,
+      `class ${owner}{};${owner}.document.body.hidden=true;`,
+    ])
+      assert.ok(
+        !probeReview('4176574565', 'harness', source).some((issue) =>
+          /forbidden interaction/.test(issue)
+        ),
+        source
+      );
+  });
+}
+test('reviewed XHTML namespace: direct receiver forms and namespace controls', () => {
+  for (const [source, reject] of [
+    [
+      `const s=document.createElementNS('http://www.w3.org/1999/xhtml','x:script');s.src='https://cdn.example/runtime.js';`,
+      true,
+    ],
+    [
+      `const s=document.createElementNS('http://www.w3.org/1999/xhtml','script');s.setAttribute('src','https://cdn.example/runtime.js');`,
+      true,
+    ],
+    [
+      `Object.assign(document.createElementNS('http://www.w3.org/1999/xhtml','script'),{src:'https://cdn.example/runtime.js'});`,
+      true,
+    ],
+    [
+      `const s=document.createElementNS('http://www.w3.org/1999/xhtml','script');Reflect.set(s,'src','https://cdn.example/runtime.js');`,
+      true,
+    ],
+    [
+      `const s=document.createElementNS('urn:business','script');s.src='https://cdn.example/runtime.js';`,
+      false,
+    ],
+    [
+      `const s=document.createElementNS('http://www.w3.org/1999/xhtml','Script');s.src='https://cdn.example/runtime.js';`,
+      false,
+    ],
+  ])
+    assert.equal(
+      probeReview('4176574560', 'website', source).some((issue) => /executable script/.test(issue)),
+      reject,
+      source
+    );
+});
+test('reviewed native MDX: nested live controls and prose boundaries', () => {
+  for (const [source, reject] of [
+    ['# Title\n\nA paragraph.\n\n<details>\n<summary>More</summary>\nBody\n</details>', true],
+    ['<section>\n    <details>\n        <summary>More</summary>\n    </details>\n</section>', true],
+    ['{"<details><summary>Example</summary></details>"}', false],
+    ['<Widget label="<button>Example</button>" />', false],
+    ['    <button>Indented example</button>', false],
+    ['<a href="/docs">Ordinary document link</a>', false],
+  ])
+    assert.equal(
+      probeReview('4176576501', 'website', source, 'mdx', false).some((issue) =>
+        /interactive website source.*not bound/.test(issue)
+      ),
+      reject,
+      source
+    );
+});
+for (const extension of ['mdx', 'vue', 'svelte'])
+  test(`reviewed navigation formats: prose and templates ${extension}`, () => {
+    const prefix = extension === 'mdx' ? '# Title\n\nOrdinary documentation paragraph.\n\n' : '';
+    const source = `${prefix}<a href="javascript:alert(1)">Run</a>`;
+    assert.ok(
+      probeReview('4176576499', 'website', source, extension).some((issue) =>
+        /executable navigation URL.*unverified/.test(issue)
+      ),
+      source
+    );
+  });
+
+for (const owner of ['window', 'self', 'globalThis']) {
+  test(`reviewed document receivers: ${owner} expression wrappers preserve provenance`, () => {
+    for (const expression of [`(${owner})`, `${owner}!`, `(${owner} as typeof ${owner})`])
+      assert.ok(
+        probeReview('4176574565', 'harness', `${expression}.document.body.hidden=true;`).some(
+          (issue) => /forbidden interaction/.test(issue)
+        ),
+        expression
+      );
+  });
+  test(`reviewed document receivers: ${owner} named function expression is locally shadowed`, () => {
+    assert.deepEqual(
+      probeReview(
+        '4176574565',
+        'harness',
+        `const run=function ${owner}(){${owner}.document.body.hidden=true;};`
+      ),
+      []
+    );
+    assert.ok(
+      probeReview(
+        '4176574565',
+        'harness',
+        `const run=function ${owner}(){business();};${owner}.document.body.hidden=true;`
+      ).some((issue) => /forbidden interaction/.test(issue))
+    );
+  });
+}
+for (const extension of ['md', 'mdx'])
+  test(`reviewed native Markdown: ${extension} element name case`, () => {
+    for (const tag of ['button', 'details', 'input']) {
+      const source = `<${tag.toUpperCase()}>Text</${tag.toUpperCase()}>`;
+      assert.equal(
+        probeReview('4176576501', 'website', source, extension, false).some((issue) =>
+          /interactive website source.*not bound/.test(issue)
+        ),
+        extension === 'md',
+        source
+      );
+    }
+  });
+test('reviewed native Markdown: raw HTML URL case and inert JSX-looking value', () => {
+  assert.ok(
+    probeReview('4176576499', 'website', '<A HREF="javascript:alert(1)">Run</A>', 'md').some(
+      (issue) => /executable navigation URL.*unverified/.test(issue)
+    )
+  );
+  assert.ok(
+    !probeReview(
+      '4176576499',
+      'website',
+      `<a href={'javascript:alert(1)'}>This is HTML</a>`,
+      'md'
+    ).some((issue) => /executable navigation URL/.test(issue))
+  );
+});
+
+for (const owner of ['window', 'self', 'globalThis'])
+  test(`reviewed document receivers: ${owner} named class is locally shadowed`, () => {
+    assert.deepEqual(
+      probeReview(
+        '4176574565',
+        'harness',
+        `const run=class ${owner}{static run(){${owner}.document.body.hidden=true;}};`
+      ),
+      []
+    );
+    assert.ok(
+      probeReview(
+        '4176574565',
+        'harness',
+        `const run=class ${owner}{};${owner}.document.body.hidden=true;`
+      ).some((issue) => /forbidden interaction/.test(issue))
+    );
+  });
+test('reviewed document receivers: inner temporal dead zone does not reuse outer DOM aliases', () => {
+  for (const source of [
+    `const doc=window.document;{doc.body.hidden=true;const doc={body:{}};}`,
+    `const node=window.document.querySelector('button');{node.hidden=true;const node={};}`,
+  ])
+    assert.deepEqual(probeReview('4176574565', 'harness', source), [], source);
+  assert.ok(
+    probeReview(
+      '4176574565',
+      'harness',
+      `const doc=window.document;{const other={};doc.body.hidden=true;}`
+    ).some((issue) => /forbidden interaction/.test(issue))
+  );
+});
+
+test('reviewed native MDX: ESM literal examples are not rendered controls or URLs', () => {
+  for (const source of [
+    `export const example = '<a href="javascript:alert(1)">Run</a>';`,
+    `export const example = '<button>Example</button>';`,
+    `export const Example = () => '<button>Example</button>';`,
+    `export default '<button>Example</button>';`,
+    'export const example = `😀<button>Example</button>`;',
+    `export const example = '<button>Example</button>';\n\nOrdinary prose.`,
+  ])
+    assert.deepEqual(probeReview('4176576501', 'website', source, 'mdx', false), [], source);
+  assert.ok(
+    probeReview(
+      '4176576501',
+      'website',
+      'export const Example=()=> <button>Live</button>;',
+      'mdx',
+      false
+    ).some((issue) => /interactive website source.*not bound/.test(issue))
+  );
+  assert.ok(
+    probeReview(
+      '4176576499',
+      'website',
+      `export const Example=()=> <a href="javascript:alert(1)">Live</a>;`,
+      'mdx'
+    ).some((issue) => /executable navigation URL.*unverified/.test(issue))
+  );
+});
+
+test('reviewed native MDX: ESM comments and regex literals remain data', () => {
+  for (const source of [
+    "export const example = /* <button>Example</button> */ 'plain';",
+    'export const pattern = /<button>/;',
+    'export const value = 1; // <button>Example</button>',
+    'export const value = 1; // <a href="javascript:alert(1)">Example</a>',
+    'export const value = /* <a href="javascript:alert(1)">Example</a> */ 1;',
+  ])
+    assert.deepEqual(probeReview('4176576501', 'website', source, 'mdx', false), [], source);
+  assert.ok(
+    probeReview(
+      '4176576501',
+      'website',
+      'export const Example=()=> <p>/*<button>Live</button>*/</p>;',
+      'mdx',
+      false
+    ).some((issue) => /interactive website source.*not bound/.test(issue))
+  );
+});
+test('reviewed native MDX: exported JSX attributes retain transparent expression wrappers', () => {
+  for (const expression of [
+    "('javascript:alert(1)')",
+    "(('javascript:alert(1)'))",
+    "('javascript:alert(1)' as string)",
+    "('javascript:alert(1)' satisfies string)",
+    "('javascript:alert(1)')!",
+    '(`javascript:alert(1)`)',
+  ])
+    for (const source of [
+      `export const Example=()=> <a href={${expression}}>Live</a>;`,
+      `export const Example=<a href={${expression}}>Live</a>;`,
+    ])
+      assert.ok(
+        probeReview('4176576499', 'website', source, 'mdx').some((issue) =>
+          /executable navigation URL.*unverified/.test(issue)
+        ),
+        source
+      );
+});
+
+for (const [name, source] of [
+  [
+    'backtick fence',
+    '```mdx\nexport const Example=()=> <a href="javascript:alert(1)">Live</a>;\n```',
+  ],
+  ['tilde fence', '~~~mdx\nexport const Example=()=> <a href="javascript:alert(1)">Live</a>;\n~~~'],
+  ['indented example', '    export const Example=()=> <a href="javascript:alert(1)">Live</a>;'],
+  ['inline example', '`export const Example=()=> <a href="javascript:alert(1)">Live</a>;`'],
+  [
+    'quoted tilde fence',
+    '> ~~~mdx\n> export const Example=()=> <a href="javascript:alert(1)">Live</a>;\n> ~~~',
+  ],
+  ['HTML comment', '<!--\nexport const Example=()=> <a href="javascript:alert(1)">Live</a>;\n-->'],
+]) {
+  test(`reviewed native MDX: ESM scan keeps ${name} inert`, () => {
+    const issues = probeReview('4176576499', 'website', source, 'mdx', false);
+    assert.ok(!issues.some((issue) => /executable navigation URL/.test(issue)));
+  });
+}
+
+test('reviewed native MDX: real exported templates survive example and comment exclusion', () => {
+  for (const prefix of [
+    '~~~mdx\nexport const Example=()=> <a href="https://example.com">Example</a>;\n~~~\n\n',
+    '> ~~~mdx\n> export const Example=()=> <a href="https://example.com">Example</a>;\n> ~~~\n\n',
+    '<!-- inert example -->\n',
+    "export const commentExample = '<!--';\n",
+  ]) {
+    const source = prefix + 'export const Live=()=> <a href={(`javascript:alert(1)`)}>Live</a>;';
+    assert.ok(
+      probeReview('4176576499', 'website', source, 'mdx').some((issue) =>
+        /executable navigation URL/.test(issue)
+      ),
+      source
+    );
+  }
+  const inertCommentAttribute =
+    'export const Example=()=> <a href="<!--x-->javascript:alert(1)">Text</a>;';
+  assert.ok(
+    !probeReview('4176576499', 'website', inertCommentAttribute, 'mdx').some((issue) =>
+      /executable navigation URL/.test(issue)
+    )
+  );
+});

@@ -1149,7 +1149,7 @@ function loadGovernanceSnapshot(rootDir, issues) {
   return { issues: issueMap, pullRequests: pullRequestMap };
 }
 
-function stripMarkdownCode(content) {
+function stripMarkdownCode(content, { preserveInlineCode = false } = {}) {
   let fence = null;
   const mdxBlockTags = [];
   const updateMdxBlockTags = (visibleLine) => {
@@ -1171,7 +1171,8 @@ function stripMarkdownCode(content) {
   const withoutFences = content
     .split(/\r?\n/)
     .map((line) => {
-      const fenceRun = line.match(/^[ \t]*(`{3,}|~{3,})/u)?.[1];
+      const fenceLine = line.replace(/^(?: {0,3}>[ \t]?)+/u, '');
+      const fenceRun = fenceLine.match(/^[ \t]*(`{3,}|~{3,})/u)?.[1];
       if (!fence && fenceRun) {
         fence = { character: fenceRun[0], length: fenceRun.length };
         return '';
@@ -1190,7 +1191,7 @@ function stripMarkdownCode(content) {
         return line;
       }
 
-      const closingRun = line.match(/^[ \t]*(`+|~+)[ \t]*$/u)?.[1];
+      const closingRun = fenceLine.match(/^[ \t]*(`+|~+)[ \t]*$/u)?.[1];
       if (closingRun && closingRun[0] === fence.character && closingRun.length >= fence.length) {
         fence = null;
       }
@@ -1198,7 +1199,9 @@ function stripMarkdownCode(content) {
     })
     .join('\n');
 
-  return withoutFences.replace(/(?<!`)(`+)(?!`)[\s\S]*?(?<!`)\1(?!`)/gu, '');
+  return preserveInlineCode
+    ? withoutFences
+    : withoutFences.replace(/(?<!`)(`+)(?!`)[\s\S]*?(?<!`)\1(?!`)/gu, '');
 }
 
 function sourceTextForInteractionScan(absolutePath) {
@@ -1286,13 +1289,25 @@ function domReceiverBindings(sourceFile) {
   const bindingsByName = new Map();
   const lexicalScope = (node) => {
     for (let current = node.parent; current; current = current.parent) {
-      if (ts.isBlock(current) || ts.isFunctionLike(current) || ts.isSourceFile(current)) {
+      if (
+        ts.isBlock(current) ||
+        ts.isFunctionLike(current) ||
+        ts.isClassLike(current) ||
+        ts.isSourceFile(current)
+      ) {
         return current;
       }
     }
     return sourceFile;
   };
-  const addBinding = (name, node, initializer, intrinsicallyDom, destructuredProperties = null) => {
+  const addBinding = (
+    name,
+    node,
+    initializer,
+    intrinsicallyDom,
+    destructuredProperties = null,
+    scope = lexicalScope(node)
+  ) => {
     const bindings = bindingsByName.get(name) ?? [];
     bindings.push({
       destructuredProperties,
@@ -1300,7 +1315,7 @@ function domReceiverBindings(sourceFile) {
       intrinsicallyDom,
       node,
       position: node.getStart(sourceFile),
-      scope: lexicalScope(node),
+      scope,
     });
     bindingsByName.set(name, bindings);
   };
@@ -1340,6 +1355,17 @@ function domReceiverBindings(sourceFile) {
     }
   };
   const collect = (node) => {
+    if ((ts.isFunctionExpression(node) || ts.isClassExpression(node)) && node.name)
+      addBinding(node.name.text, node, null, false, null, node);
+    if (
+      (ts.isFunctionDeclaration(node) ||
+        ts.isClassDeclaration(node) ||
+        ts.isImportClause(node) ||
+        ts.isImportSpecifier(node) ||
+        ts.isNamespaceImport(node)) &&
+      node.name
+    )
+      addBinding(node.name.text, node, null, false);
     if (ts.isParameter(node) || ts.isVariableDeclaration(node)) {
       collectBindingName(
         node.name,
@@ -1368,17 +1394,28 @@ function domReceiverBindings(sourceFile) {
     const usePosition = useNode.getStart(sourceFile);
     const bindings = bindingsByName.get(name) ?? [];
     for (let scope = lexicalScope(useNode); scope; scope = lexicalScope(scope)) {
-      const binding = bindings
-        .filter((entry) => entry.scope === scope && entry.position < usePosition)
-        .sort((left, right) => right.position - left.position)[0];
-      if (binding) return binding;
+      const entries = bindings.filter((entry) => entry.scope === scope);
+      if (entries.length > 0)
+        return (
+          entries
+            .filter((entry) => entry.position < usePosition)
+            .sort((left, right) => right.position - left.position)[0] ?? null
+        );
       if (ts.isSourceFile(scope)) break;
     }
     return null;
   };
+  const hasLocalBinding = (name, useNode) => {
+    for (let scope = lexicalScope(useNode); scope; scope = lexicalScope(scope)) {
+      if ((bindingsByName.get(name) ?? []).some((entry) => entry.scope === scope)) return true;
+      if (ts.isSourceFile(scope)) break;
+    }
+    return false;
+  };
   const isIdentifierDomReceiver = (name, useNode, visitedBindings = new Set()) => {
     const binding = latestBinding(name, useNode);
-    if (!binding) return name === 'document' || name === 'window';
+    if (!binding)
+      return (name === 'document' || name === 'window') && !hasLocalBinding(name, useNode);
     if (binding.intrinsicallyDom) return true;
     if (!binding.initializer || visitedBindings.has(binding)) return false;
     visitedBindings.add(binding);
@@ -1396,8 +1433,7 @@ function domReceiverBindings(sourceFile) {
       }
       if (
         /^(?:body|documentElement|activeElement)$/u.test(lastProperty) &&
-        ts.isIdentifier(owner) &&
-        owner.text === 'document'
+        isBrowserDocumentExpression(owner, sourceFile, receiverBindings, useNode, visitedBindings)
       ) {
         return true;
       }
@@ -1429,8 +1465,54 @@ function domReceiverBindings(sourceFile) {
       visitedBindings
     );
   };
-  const receiverBindings = { isIdentifierDomCollection, isIdentifierDomReceiver, latestBinding };
+  const receiverBindings = {
+    isIdentifierDomCollection,
+    isIdentifierDomReceiver,
+    latestBinding,
+    hasLocalBinding,
+  };
   return receiverBindings;
+}
+
+function isBrowserDocumentExpression(
+  expression,
+  sourceFile,
+  receiverBindings,
+  useNode,
+  seen = new Set()
+) {
+  const candidate = unwrapTypeScriptExpression(expression);
+  if (ts.isIdentifier(candidate)) {
+    const binding = receiverBindings.latestBinding(candidate.text, useNode);
+    if (!binding)
+      return (
+        candidate.text === 'document' && !receiverBindings.hasLocalBinding('document', useNode)
+      );
+    if (
+      !binding.initializer ||
+      binding.destructuredProperties ||
+      seen.has(binding) ||
+      seen.size >= 64
+    )
+      return false;
+    seen.add(binding);
+    return isBrowserDocumentExpression(
+      binding.initializer,
+      sourceFile,
+      receiverBindings,
+      binding.node,
+      seen
+    );
+  }
+  const member = staticMemberAccess(candidate);
+  const owner = member && unwrapTypeScriptExpression(member.receiver);
+  return Boolean(
+    member?.name === 'document' &&
+    owner &&
+    ts.isIdentifier(owner) &&
+    /^(?:window|self|globalThis)$/u.test(owner.text) &&
+    !receiverBindings.hasLocalBinding(owner.text, useNode)
+  );
 }
 
 function isDomAcquisitionCall(expression, sourceFile, receiverBindings, useNode, visitedBindings) {
@@ -1533,13 +1615,13 @@ function isDomReceiverExpression(
   if (isDomAcquisitionCall(candidate, sourceFile, receiverBindings, useNode, visitedBindings)) {
     return true;
   }
+  if (isBrowserDocumentExpression(candidate, sourceFile, receiverBindings, useNode)) return true;
   const member = staticMemberAccess(candidate);
   if (!member) return false;
   const owner = unwrapTypeScriptExpression(member.receiver);
   if (
     /^(?:body|documentElement|activeElement)$/u.test(member.name) &&
-    ts.isIdentifier(owner) &&
-    owner.text === 'document'
+    isBrowserDocumentExpression(owner, sourceFile, receiverBindings, useNode, visitedBindings)
   ) {
     return true;
   }
@@ -1769,9 +1851,16 @@ function astContainsInteractiveRuntime(content, { harnessGeometry = false } = {}
   return found;
 }
 
-function jsxOpeningTagCandidates(content) {
+function jsxOpeningTagCandidates(content, { includeOffsets = false, commentRanges = null } = {}) {
   const candidates = [];
   for (let start = 0; start < content.length; start += 1) {
+    if (content.startsWith('<!--', start)) {
+      const end = content.indexOf('-->', start + 4);
+      commentRanges?.push({ start, end: end < 0 ? content.length : end + 3 });
+      if (end < 0) break;
+      start = end + 2;
+      continue;
+    }
     if (content[start] !== '<' || !/[A-Za-z]/u.test(content[start + 1] ?? '')) continue;
 
     let braceDepth = 0;
@@ -1799,7 +1888,9 @@ function jsxOpeningTagCandidates(content) {
       }
       if (character === '<' && braceDepth === 0) break;
       if (character === '>' && braceDepth === 0) {
-        candidates.push(content.slice(start, cursor + 1));
+        candidates.push(
+          includeOffsets ? { start, end: cursor + 1 } : content.slice(start, cursor + 1)
+        );
         start = cursor;
         break;
       }
@@ -1809,7 +1900,7 @@ function jsxOpeningTagCandidates(content) {
 }
 
 function maskStringsInMdxBraceExpressions(content) {
-  const characters = [...content];
+  const characters = content.split('');
   let braceDepth = 0;
   let quote = null;
   let escaped = false;
@@ -2096,12 +2187,84 @@ function publicSvgSourceIssues(content) {
   return [...reasons];
 }
 
+function maskMdxEsmLiteralText(content, absolutePath) {
+  if (!/\.mdx$/iu.test(absolutePath)) return content;
+  const parsed = ts.createSourceFile(
+    'document.mdx',
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX
+  );
+  const characters = content.split('');
+  const erase = (start, end) => {
+    for (let index = start; index < end; index += 1)
+      if (!/[\r\n]/u.test(characters[index])) characters[index] = ' ';
+  };
+  const mask = (node, insideJsx = false) => {
+    insideJsx ||=
+      ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node) || ts.isJsxFragment(node);
+    if (!insideJsx) {
+      for (const position of [node.pos, node.end])
+        for (const comment of [
+          ...(ts.getLeadingCommentRanges(content, position) ?? []),
+          ...(ts.getTrailingCommentRanges(content, position) ?? []),
+        ])
+          erase(comment.pos, comment.end);
+    }
+    let owner = node;
+    while (
+      owner.parent &&
+      owner.parent.expression === owner &&
+      unwrapTypeScriptExpression(owner.parent) !== owner.parent
+    )
+      owner = owner.parent;
+    const jsxAttributeValue =
+      ts.isJsxAttribute(owner.parent) ||
+      (ts.isJsxExpression(owner.parent) && ts.isJsxAttribute(owner.parent.parent));
+    if (
+      (ts.isStringLiteralLike(node) ||
+        ts.isTemplateLiteralToken(node) ||
+        node.kind === ts.SyntaxKind.RegularExpressionLiteral) &&
+      !jsxAttributeValue
+    ) {
+      erase(node.getStart(parsed), node.end);
+      return;
+    }
+    ts.forEachChild(node, (child) => mask(child, insideJsx));
+  };
+  for (const statement of parsed.statements) {
+    if (
+      ts.isImportDeclaration(statement) ||
+      ts.isExportDeclaration(statement) ||
+      ts.isExportAssignment(statement) ||
+      statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)
+    )
+      mask(statement);
+  }
+  return characters.join('');
+}
+
+function containsNativeMdxControl(content, absolutePath) {
+  if (!/\.mdx?$/iu.test(absolutePath)) return false;
+  const markup = markupSourceForJsxFallback(
+    maskMdxEsmLiteralText(content, absolutePath),
+    absolutePath
+  );
+  const nativeTag = new RegExp(
+    '^<(?:button|details|summary|form|input|select|textarea|option|optgroup|dialog)(?=[\\s/>])',
+    /\.md$/iu.test(absolutePath) ? 'iu' : 'u'
+  );
+  return jsxOpeningTagCandidates(markup).some((tag) => nativeTag.test(tag));
+}
+
 function containsInteractiveSource(content, absolutePath) {
   if (/\.svg$/i.test(absolutePath)) return publicSvgSourceIssues(content).length > 0;
   if (/\.[cm]?[jt]sx?$/i.test(absolutePath)) {
     return astContainsInteractiveRuntime(content) || containsJsxEventHandler(content, absolutePath);
   }
   return (
+    containsNativeMdxControl(content, absolutePath) ||
     (/\.mdx?$/i.test(absolutePath) && astContainsInteractiveRuntime(content)) ||
     INTERACTIVE_SOURCE_PATTERNS.some((pattern) => pattern.test(content)) ||
     containsJsxEventHandler(content, absolutePath)
@@ -3974,11 +4137,20 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
     const candidate = unwrapTypeScriptExpression(expression);
     if (!ts.isCallExpression(candidate) || !candidate.arguments[0]) return null;
     const member = staticMemberAccess(candidate.expression);
+    const ordinaryTag =
+      member?.name === 'createElement' &&
+      ts.isStringLiteralLike(candidate.arguments[0]) &&
+      candidate.arguments[0].text.toLowerCase() === tagName;
+    const namespacedTag =
+      member?.name === 'createElementNS' &&
+      ts.isStringLiteralLike(candidate.arguments[0]) &&
+      candidate.arguments[0].text === 'http://www.w3.org/1999/xhtml' &&
+      candidate.arguments[1] &&
+      ts.isStringLiteralLike(candidate.arguments[1]) &&
+      candidate.arguments[1].text.split(':').at(-1) === tagName;
     return Boolean(
       member &&
-      member.name === 'createElement' &&
-      ts.isStringLiteralLike(candidate.arguments[0]) &&
-      candidate.arguments[0].text.toLowerCase() === tagName &&
+      (ordinaryTag || namespacedTag) &&
       (isDomReceiverExpression(member.receiver, sourceFile, receiverBindings, candidate) ||
         resolveLocalValue(member.receiver, candidate, new Set(), (receiver, useNode) =>
           isBrowserGlobal(receiver, useNode, ['document'])
@@ -4390,6 +4562,19 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       ts.isIdentifier(node.tagName)
     ) {
       const tag = node.tagName.text;
+      for (const attribute of node.attributes.properties) {
+        if (!ts.isJsxAttribute(attribute)) continue;
+        const name = attribute.name.getText(sourceFile);
+        if (!isNavigationUrlAttribute(tag, name) || !attribute.initializer) continue;
+        const quoted = ts.isStringLiteralLike(attribute.initializer);
+        const value = quoted
+          ? attribute.initializer
+          : ts.isJsxExpression(attribute.initializer) && attribute.initializer.expression
+            ? unwrapTypeScriptExpression(attribute.initializer.expression)
+            : null;
+        if (value && ts.isStringLiteralLike(value) && isExecutableNavigationUrl(value.text, quoted))
+          specifiers.push(UNVERIFIED_NAVIGATION_URL_SPECIFIER);
+      }
       if (!harnessPreviewBoundary && /^(?:iframe|object|embed|webview)$/u.test(tag))
         specifiers.push(UNREVIEWED_WEBSITE_EMBED_SPECIFIER);
       if (tag === 'script') {
@@ -4677,6 +4862,29 @@ function isExecutableScriptType(type) {
 const DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER = '<dynamic executable script src>';
 const UNREVIEWED_WEBSITE_EMBED_SPECIFIER = '<unreviewed Website embed>';
 const UNVERIFIED_MARKUP_HANDLER_SPECIFIER = '<unverified markup event handler>';
+const UNVERIFIED_NAVIGATION_URL_SPECIFIER = '<unverified executable navigation URL>';
+function isNavigationUrlAttribute(tag, name) {
+  return (
+    (/^(?:a|area)$/u.test(tag) && /^(?:href|xlink:href)$/u.test(name)) ||
+    (tag === 'form' && name === 'action') ||
+    (/^(?:button|input)$/u.test(tag) && name.toLowerCase() === 'formaction') ||
+    (/^(?:iframe|frame)$/u.test(tag) && name === 'src') ||
+    (tag === 'object' && name === 'data')
+  );
+}
+function isExecutableNavigationUrl(value, decodeEntities = false) {
+  // HTML/JSX attribute text decodes character references before URL parsing;
+  // JavaScript expression strings do not. This never evaluates URL payloads.
+  if (decodeEntities && value.includes('&')) {
+    const parsed = parseHtml(`<a href="${value.replaceAll('"', '&quot;')}"></a>`);
+    const find = (node) =>
+      node.tagName === 'a'
+        ? node.attrs.find((attr) => attr.name === 'href')?.value
+        : (node.childNodes ?? []).map(find).find((result) => result !== undefined);
+    value = find(parsed) ?? value;
+  }
+  return /^javascript:/iu.test(normalizeBrowserResourceUrl(value));
+}
 const UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER = '<unverified runtime compilation>';
 const DYNAMIC_STYLESHEET_LINK_SPECIFIER = '<dynamic stylesheet href>';
 const DYNAMIC_STYLESHEET_REL_SPECIFIER = '<dynamic stylesheet relation>';
@@ -5158,6 +5366,11 @@ function markupEventHandlerSpecifiers(content, absolutePath, options) {
     if (/\.html?$/iu.test(absolutePath)) {
       const visit = (node) => {
         for (const attribute of node.attrs ?? []) {
+          if (
+            isNavigationUrlAttribute(node.tagName, attribute.name) &&
+            isExecutableNavigationUrl(attribute.value)
+          )
+            specifiers.push(UNVERIFIED_NAVIGATION_URL_SPECIFIER);
           if (!NATIVE_EVENT_ATTRIBUTE_NAMES.has(attribute.name.toLowerCase())) continue;
           const location =
             node.sourceCodeLocation?.attrs?.[
@@ -5195,6 +5408,25 @@ function markupEventHandlerSpecifiers(content, absolutePath, options) {
           specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
         if (nativeElement) {
           for (const attribute of node.attributes ?? []) {
+            if (isNavigationUrlAttribute(node.name, attribute.name.toLowerCase())) {
+              let value = attribute.value;
+              if (attribute.kind === 'expression') {
+                const expression = ts.createSourceFile(
+                  'attribute.ts',
+                  `(${value})`,
+                  ts.ScriptTarget.Latest,
+                  true
+                );
+                const statement = expression.statements[0];
+                const literal =
+                  statement && ts.isExpressionStatement(statement)
+                    ? unwrapTypeScriptExpression(statement.expression)
+                    : null;
+                value = literal && ts.isStringLiteralLike(literal) ? literal.text : '';
+              }
+              if (isExecutableNavigationUrl(value, attribute.kind !== 'expression'))
+                specifiers.push(UNVERIFIED_NAVIGATION_URL_SPECIFIER);
+            }
             if (!NATIVE_EVENT_ATTRIBUTE_NAMES.has(attribute.name.toLowerCase())) continue;
             const raw = attribute.raw ?? '';
             const literal =
@@ -5212,6 +5444,77 @@ function markupEventHandlerSpecifiers(content, absolutePath, options) {
     specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
   }
   return specifiers;
+}
+
+function templateNavigationUrlSpecifiers(content, absolutePath, options) {
+  if (!/\.(?:mdx?|vue|svelte)$/iu.test(absolutePath)) return [];
+  const raw = /\.mdx?$/iu.test(absolutePath)
+    ? maskMdxEsmLiteralText(stripMarkdownCode(content), absolutePath)
+    : markupSourceForJsxFallback(content, absolutePath);
+  // Mask expression strings to locate real tags, but inspect the original
+  // attribute bytes. Preserve UTF-16 offsets even when a string contains emoji.
+  const masked = maskStringsInMdxBraceExpressions(raw);
+  const found = new Set();
+  if (/\.mdx$/iu.test(absolutePath)) {
+    // Preserve JavaScript template literals, but never re-admit Markdown code
+    // blocks or HTML comments through the separate ESM attribute pass. The tag
+    // scanner keeps comment-looking text inside quoted attributes intact.
+    const esmText = maskMdxEsmLiteralText(content, absolutePath);
+    const commentRanges = [];
+    jsxOpeningTagCandidates(esmText, { commentRanges });
+    const characters = esmText.split('');
+    for (const { start, end } of commentRanges)
+      for (let index = start; index < end; index += 1)
+        if (!/[\r\n]/u.test(characters[index])) characters[index] = ' ';
+    const esm = ts.createSourceFile(
+      'document.mdx',
+      stripMarkdownCode(characters.join(''), { preserveInlineCode: true }),
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX
+    );
+    for (const statement of esm.statements) {
+      if (
+        !(
+          ts.isExportAssignment(statement) ||
+          statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)
+        )
+      )
+        continue;
+      for (const specifier of scriptModuleSpecifiers(
+        statement.getText(esm),
+        'mdx-esm.tsx',
+        options
+      ))
+        if (specifier === UNVERIFIED_NAVIGATION_URL_SPECIFIER) found.add(specifier);
+    }
+  }
+  for (const { start, end } of jsxOpeningTagCandidates(masked, { includeOffsets: true })) {
+    const candidate = raw.slice(start, end);
+    const name = candidate.match(/^<([A-Za-z][\w:-]*)/u)?.[1];
+    const nativeName = /\.md$/iu.test(absolutePath) ? name?.toLowerCase() : name;
+    if (!/^(?:a|area|form|button|input|iframe|frame|object)$/u.test(nativeName ?? '')) continue;
+    const parsed = parseHtml(candidate);
+    const visit = (node) => {
+      for (const attribute of node.attrs ?? [])
+        if (
+          isNavigationUrlAttribute(node.tagName, attribute.name) &&
+          isExecutableNavigationUrl(attribute.value)
+        )
+          found.add(UNVERIFIED_NAVIGATION_URL_SPECIFIER);
+      for (const child of node.childNodes ?? []) visit(child);
+      if (node.content) visit(node.content);
+    };
+    visit(parsed);
+    if (!/\.md$/iu.test(absolutePath))
+      for (const specifier of scriptModuleSpecifiers(
+        candidate.replace(/\/?\s*>$/u, ' />'),
+        'native-navigation.tsx',
+        options
+      ))
+        if (specifier === UNVERIFIED_NAVIGATION_URL_SPECIFIER) found.add(specifier);
+  }
+  return [...found];
 }
 
 function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
@@ -5239,6 +5542,7 @@ function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
   }
   if (/\.(?:astro|vue|svelte)$/i.test(absolutePath)) {
     return [
+      ...templateNavigationUrlSpecifiers(content, absolutePath, options),
       ...markupEventHandlerSpecifiers(content, absolutePath, options),
       ...stylesheetLinkSpecifiers(content).filter(
         (specifier) =>
@@ -5256,7 +5560,10 @@ function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
     ];
   }
   const source = /\.mdx?$/i.test(absolutePath) ? stripMarkdownCode(content) : content;
-  return scriptModuleSpecifiers(source, absolutePath, options);
+  return [
+    ...templateNavigationUrlSpecifiers(content, absolutePath, options),
+    ...scriptModuleSpecifiers(source, absolutePath, options),
+  ];
 }
 
 function viteGlobPatternGroupsForWebsiteSource(absolutePath) {
@@ -5602,6 +5909,8 @@ function guardedWebsiteImport(
       resolvedPath: null,
     };
   }
+  if (specifier === UNVERIFIED_NAVIGATION_URL_SPECIFIER)
+    return { category: 'unverified-navigation-url', resolvedPath: null };
   if (specifier === UNVERIFIED_MARKUP_HANDLER_SPECIFIER)
     return { category: 'unverified-markup-handler', resolvedPath: null };
   if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
@@ -6157,6 +6466,8 @@ function guardedHarnessImport(rootDir, canonicalRootDir, sourcePath, specifier) 
       resolvedPath: null,
     };
   }
+  if (specifier === UNVERIFIED_NAVIGATION_URL_SPECIFIER)
+    return { category: 'unverified-navigation-url', resolvedPath: null };
   if (specifier === UNVERIFIED_MARKUP_HANDLER_SPECIFIER)
     return { category: 'unverified-markup-handler', resolvedPath: null };
   if (specifier === UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER)
@@ -6711,6 +7022,12 @@ function validateWebsiteRawImports(rootDir, relativePath, issues) {
       );
       continue;
     }
+    if (rawImport.category === 'unverified-navigation-url') {
+      issues.push(
+        `${relativePath}: executable navigation URL in \`${rawImport.sourcePath}\` is unverified; javascript: payloads are not admitted`
+      );
+      continue;
+    }
     if (rawImport.category === 'unverified-markup-handler') {
       issues.push(
         `${relativePath}: unverified markup event handler in \`${rawImport.sourcePath}\` requires a statically readable literal body without an unreviewed executable resource entry`
@@ -6940,6 +7257,12 @@ function discoverHarnessRawImports(rootDir) {
 
 function validateHarnessRawImports(rootDir, relativePath, issues) {
   for (const rawImport of discoverHarnessRawImports(rootDir)) {
+    if (rawImport.category === 'unverified-navigation-url') {
+      issues.push(
+        `${relativePath}: executable navigation URL in \`${rawImport.sourcePath}\` is unverified; javascript: payloads are not admitted`
+      );
+      continue;
+    }
     if (rawImport.category === 'unverified-markup-handler') {
       issues.push(
         `${relativePath}: unverified markup event handler in \`${rawImport.sourcePath}\` requires a statically readable literal body without an unreviewed executable resource entry`
