@@ -42,6 +42,7 @@ import {
   setElementProps,
   unbindController,
 } from './props';
+import { createOwnedVisualSurface } from './visual-surface';
 import { SlotProjector } from './slot-projector';
 import { createOwnedTwTokenApplier } from './feedback-style';
 import { installDebugHooks, removeDebugHooks } from './debug/hooks';
@@ -444,7 +445,11 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
               ? createOwnedMaterialBinding
               : undefined,
             finalStyleSink:
-              getExperimentalVisualConsumer(proto)?.(thisEl, applier) ??
+              getExperimentalVisualConsumer(proto)?.(
+                thisEl,
+                applier,
+                createOwnedVisualSurface(thisEl, thisRoot)
+              ) ??
               (proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
                 ? createOpaqueMaterialVisualSink(thisEl, applier)
                 : undefined),

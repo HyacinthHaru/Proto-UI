@@ -262,6 +262,45 @@ try {
       2
     )
   );
+  for (const view of ['shadow', 'nested']) {
+    const surfacePage = await context.newPage();
+    surfacePage.on('pageerror', (error) => errors.push(String(error)));
+    await surfacePage.goto(`${origin}/?view=${view}`);
+    await surfacePage.waitForFunction(
+      () => window.probe?.state().quality === 'experimental-owned-texture'
+    );
+    const before = await surfacePage.evaluate(() => window.probe.state());
+    assert.equal(before.canvasDirect, true, `${view}: canvas belongs to the adapter root`);
+    assert.equal(before.surfaceRoot, view === 'shadow' ? 'shadow' : 'light');
+    const rest = await surfacePage.evaluate(() => window.probe.pixels());
+    await surfacePage.screenshot({ path: resolve(evidence, `surface-${view}-rest.png`) });
+    await surfacePage.evaluate(() => window.probe.update());
+    await surfacePage.waitForTimeout(30);
+    assert.equal((await surfacePage.evaluate(() => window.probe.state())).canvasDirect, true);
+    const target = surfacePage.locator('#glass');
+    const rect = await target.boundingBox();
+    await surfacePage.mouse.move(rect.x + rect.width / 2, rect.y + rect.height / 2);
+    await surfacePage.mouse.down();
+    const pressed = await surfacePage.evaluate(() => window.probe.state());
+    assert.equal(pressed.pressed, true);
+    assert.equal(pressed.phase, 'pressed');
+    assert.notEqual(await surfacePage.evaluate(() => window.probe.pixels()), rest);
+    await surfacePage.screenshot({ path: resolve(evidence, `surface-${view}-pressed.png`) });
+    await surfacePage.mouse.up();
+    await target.focus();
+    await surfacePage.keyboard.press('Space');
+    assert.equal((await surfacePage.evaluate(() => window.probe.state())).clicks, 2);
+    observations.push({
+      name: `surface-${view}-input-and-recommit`,
+      ...(await surfacePage.evaluate(() => window.probe.state())),
+    });
+    await surfacePage.evaluate(() => window.probe.remove());
+    await surfacePage.waitForTimeout(30);
+    const released = await surfacePage.evaluate(() => window.probe.listeners());
+    assert.equal(released.sourceListeners, 0);
+    assert.equal(released.preferenceListeners, 0);
+    await surfacePage.close();
+  }
   assert.deepEqual(errors, []);
   assert.equal(externalRequests, 0);
   await writeFile(

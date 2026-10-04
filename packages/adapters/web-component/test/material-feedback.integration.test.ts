@@ -1,12 +1,16 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { definePrototype, tw } from '@proto.ui/core';
 import { asButton } from '@proto.ui/prototypes-base/button';
 import { AdaptToWebComponent, setElementProps } from '../src';
 import { installExperimentalVisualConsumer } from '../src/runtime/experimental-visual-consumer';
 import type { FinalStyleFrame } from '../../../modules/feedback/src/material/final-style-sink';
 import button from '../../../../experiments/material-specializer/button.proto';
-import { createOpaqueMaterialVisualSink } from '../src/material/owned-texture-sink';
+import {
+  createOpaqueMaterialVisualSink,
+  createOwnedTextureVisualSink,
+} from '../src/material/owned-texture-sink';
 import { createOwnedTwTokenApplier } from '../src/feedback-style';
+import { createIntentBuilder } from '../../../modules/rule/src/intent-builder';
 import { finalStyleFrame } from '../../../modules/feedback/src/material/final-style-sink';
 import type { OwnedMaterialConfig } from '../../../modules/feedback/src/material/owned-slot';
 const settle = () => new Promise((resolve) => setTimeout(resolve, 20));
@@ -42,6 +46,157 @@ describe('private material through real WC and Feedback', () => {
     sink.release(1);
     host.remove();
   });
+  it('preserves shadow feedback without adding enhancement stacking to fallback', () => {
+    const host = document.createElement('div');
+    host.style.color = 'rgb(0, 0, 0)';
+    document.body.append(host);
+    const sink = createOpaqueMaterialVisualSink(host, createOwnedTwTokenApplier(host));
+    sink.commit(
+      finalStyleFrame(tw('shadow-md'), 1, 1, {
+        config: button.modules![0].config as OwnedMaterialConfig,
+        pressed: false,
+        disabled: false,
+        bindingsReady: true,
+      })
+    );
+    expect(host.getAttribute('data-pui-style')).toContain('shadow-md');
+    expect(host.dataset.materialReason).toBe('material-support-unavailable');
+    expect(host.style.position).toBe('');
+    expect(host.style.isolation).toBe('');
+    expect(host.querySelector('canvas')).toBeNull();
+    sink.release(1);
+    host.remove();
+  });
+  it('returns only owned inline values and preserves later external values and priorities', () => {
+    const host = document.createElement('div');
+    Object.assign(host.style, { color: 'rgb(0, 0, 0)', background: 'rgb(20, 40, 60)' });
+    document.body.append(host);
+    const sink = createOpaqueMaterialVisualSink(host, createOwnedTwTokenApplier(host));
+    const material = {
+      config: button.modules![0].config as OwnedMaterialConfig,
+      pressed: false,
+      disabled: false,
+      bindingsReady: true,
+    };
+    sink.commit(finalStyleFrame(tw('rounded-full'), 1, 1, material));
+    host.style.setProperty('background', 'rgb(10, 30, 50)', 'important');
+    host.style.setProperty('position', 'fixed', 'important');
+    host.style.setProperty('isolation', 'auto', 'important');
+    host.style.color = 'rgb(255, 255, 255)';
+    sink.commit(finalStyleFrame(tw('rounded-full'), 1, 2, material));
+    expect(host.dataset.materialQuality).toBe('unavailable');
+    expect(host.style.background).toBe('rgb(10, 30, 50)');
+    expect(host.style.color).toBe('rgb(255, 255, 255)');
+    sink.release(1);
+    expect(host.style.background).toBe('rgb(10, 30, 50)');
+    expect(host.style.getPropertyPriority('background')).toBe('important');
+    expect(host.style.position).toBe('fixed');
+    expect(host.style.getPropertyPriority('position')).toBe('important');
+    expect(host.style.isolation).toBe('auto');
+    host.remove();
+  });
+  it('completes all teardown actions and preserves the first unsubscribe failure', () => {
+    const host = document.createElement('div');
+    host.style.color = 'rgb(0, 0, 0)';
+    host.style.background = 'rgb(20, 40, 60)';
+    document.body.append(host);
+    const first = new Error('source unsubscribe failed');
+    const offSource = vi.fn(() => {
+      throw first;
+    });
+    const offPreferences = vi.fn(() => {
+      throw new Error('preference unsubscribe failed');
+    });
+    const releaseSurface = vi.fn((node: HTMLElement) => node.remove());
+    const disconnect = vi.fn();
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe() {}
+        disconnect = disconnect;
+      }
+    );
+    try {
+      const sink = createOwnedTextureVisualSink(
+        host,
+        createOwnedTwTokenApplier(host),
+        null,
+        { current: () => null, subscribe: () => offSource },
+        {
+          current: () => ({
+            reducedMotion: 'unknown',
+            reducedTransparency: 'unknown',
+            contrast: 'unknown',
+            forcedColors: 'unknown',
+          }),
+          subscribe: () => offPreferences,
+        },
+        { mount() {}, release: releaseSurface }
+      );
+      sink.commit(
+        finalStyleFrame(tw('rounded-full'), 1, 1, {
+          config: button.modules![0].config as OwnedMaterialConfig,
+          pressed: false,
+          disabled: false,
+          bindingsReady: true,
+        })
+      );
+      expect(() => sink.release(1)).toThrow(first);
+      expect(offSource).toHaveBeenCalledOnce();
+      expect(offPreferences).toHaveBeenCalledOnce();
+      expect(disconnect).toHaveBeenCalledOnce();
+      expect(releaseSurface).toHaveBeenCalledOnce();
+      expect(host.style.background).toBe('rgb(20, 40, 60)');
+      expect(host.getAttribute('data-pui-style')).toBeNull();
+      expect(host.dataset.materialQuality).toBeUndefined();
+      expect(() => sink.release(1)).not.toThrow();
+    } finally {
+      vi.unstubAllGlobals();
+      host.remove();
+    }
+  });
+  for (const shadow of [false, true])
+    it(`owns its visual surface across nested slot commits (shadow=${shadow})`, async () => {
+      const probe = definePrototype({
+        name: `material-surface-${++id}`,
+        modules: button.modules,
+        setup() {
+          asButton();
+          return (r) => r.el('div', [r.slot()]);
+        },
+      });
+      let canvas: HTMLCanvasElement;
+      const off = installExperimentalVisualConsumer(probe, (_host, _style, surface) => {
+        canvas = document.createElement('canvas');
+        return {
+          commit() {
+            surface.mount(canvas);
+          },
+          release() {
+            surface.release(canvas);
+          },
+        };
+      });
+      const C = AdaptToWebComponent(probe, { shadow });
+      const el = new C();
+      const label = document.createElement('span');
+      label.textContent = 'Continue';
+      el.append(label);
+      document.body.append(el);
+      await settle();
+      const root = el.shadowRoot ?? el;
+      expect(canvas!.parentNode).toBe(root);
+      expect(root.querySelector('div canvas')).toBeNull();
+      el.update();
+      await settle();
+      expect(canvas!.parentNode).toBe(root);
+      expect(root.querySelector('div canvas')).toBeNull();
+      expect(el.contains(label)).toBe(true);
+      el.remove();
+      await settle();
+      expect(canvas!.parentNode).toBeNull();
+      off();
+    });
   it('rejects an unreadable fallback as a whole and preserves text, focus and disabled semantics', async () => {
     const C = AdaptToWebComponent(button, { registerAs: `material-button-${++id}` });
     const el = new C();
@@ -114,6 +269,12 @@ describe('private material through real WC and Feedback', () => {
     await settle();
     expect(el.querySelector('canvas')).toBeNull();
   });
+  it('rejects authored variant syntax before material Rule lowering', () => {
+    for (const token of ['dark:bg-red-500', 'hover:text-blue-500', 'focus:rounded-lg']) {
+      const { builder } = createIntentBuilder();
+      expect(() => builder.feedback.style.use(tw(token))).toThrow('forbidden character ":"');
+    }
+  });
   it('retains material-relevant Rule evaluation while unrelated selectors can still lower', async () => {
     const probe = definePrototype({
       name: `material-rule-${++id}`,
@@ -143,6 +304,11 @@ describe('private material through real WC and Feedback', () => {
     document.body.append(el);
     await settle();
     expect(frames.at(-1)?.style.tokens.some((t) => t.includes(':bg-red-500'))).toBe(false);
+    expect(
+      frames
+        .at(-1)
+        ?.style.tokens.some((t) => t.includes('text-blue-500') || t.includes('rounded-lg'))
+    ).toBe(false);
     expect(frames.at(-1)?.style.tokens.some((t) => t.includes(':opacity-50'))).toBe(true);
     el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0, buttons: 1 }));
     await settle();
