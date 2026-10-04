@@ -45,3 +45,14 @@ test('caught renderer diagnostics cannot produce an empty error report', async (
   assert.equal(report.errors.length, 6);
   assert.equal(report.browserSignals.length, 7, 'nonfatal diagnostics stay visible');
 });
+
+test('expected CSS fallback remains observable without claiming a renderer failure', async () => {
+  const { recordBrowserSignal } = await import('./diagnostics.mjs');
+  const report = { errors: [], browserSignals: [] };
+  const text = 'liquidGL: WebGPU/WebGL not available – falling back to CSS backdrop-filter.';
+  recordBrowserSignal(report, 'warning', text);
+  assert.deepEqual(report.errors, []);
+  assert.deepEqual(report.browserSignals, [{ type: 'warning', text }]);
+  recordBrowserSignal(report, 'warning', 'liquidGL: WebGPU device lost: unexpected failure');
+  assert.equal(report.errors.length, 1);
+});
