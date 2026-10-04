@@ -19,9 +19,14 @@ import {
   ownerGitLedgerTransport,
 } from '../remote-cloud-review-ledger.mjs';
 import { computeSelfAssessmentResultDigest } from '../assessment-runtime.mjs';
-import { computeReviewPacketDigest, renderReviewBody } from '../review-runtime.mjs';
+import {
+  authorizePullRequestMerge,
+  computeReviewPacketDigest,
+  renderReviewBody,
+} from '../review-runtime.mjs';
 import { assessment, assessmentSnapshot } from './fixtures/connector-assessment.mjs';
 import { analysis } from './fixtures/cloud-review.mjs';
+import { publishReview, refreshPacket, reviewSnapshot } from './fixtures/review-publication.mjs';
 
 const sha = (c) => c.repeat(40);
 const owner = { login: 'guangliang2019', id: 52768321, type: 'User' };
@@ -480,6 +485,98 @@ test('v5 keeps full messages, unknown review authors and fresh bound approval pe
     },
   ]);
   assert.equal(f.calls.filter((c) => c.operation === 'get_repo_collaborator_permission').length, 2);
+});
+
+for (const [observed, canonical, canApprove] of [
+  ['admin', 'admin', true],
+  ['maintain', 'write', true],
+  ['write', 'write', true],
+  ['triage', 'read', false],
+  ['read', 'read', false],
+  ['none', 'none', false],
+]) {
+  test(`connector reviewer permission ${observed} preserves canonical ${canonical} approval eligibility`, async () => {
+    const f = fixture();
+    const published = publishReview(reviewSnapshot({ reviews: [], threads: [] }));
+    const reviewer = published.input.reviews[0];
+    f.reviews = [
+      {
+        id: 5,
+        node_id: reviewer.id,
+        user: { login: reviewer.author, id: 456, type: 'User' },
+        state: reviewer.state,
+        commit_id: reviewer.commitSha,
+        body: reviewer.body,
+        submitted_at: reviewer.submittedAt,
+      },
+    ];
+    const call = f.call;
+    f.call = (operation, args) =>
+      operation === 'get_repo_collaborator_permission' && args.username === reviewer.author
+        ? result({ permission: observed, role_name: 'admin' })
+        : call(operation, args);
+    const live = await new ConnectorReviewTransport(f.call).collect(487);
+    assert.deepEqual(live.input.reviewerPermissions, [
+      {
+        login: reviewer.author,
+        permission: canonical,
+        source: 'github-rest-collaborator-permission',
+        endpoint: `repos/Proto-UI/Proto-UI/collaborators/${reviewer.author}/permission`,
+        repositoryId: published.input.repositoryId,
+        headSha: published.input.headSha,
+      },
+    ]);
+    // Exercise the unchanged canonical merge gate using the collected permission,
+    // with a genuine fixture publication receipt and all other facts held fixed.
+    published.input.reviewerPermissions = live.input.reviewerPermissions;
+    const decision = authorizePullRequestMerge({
+      ...published,
+      packet: refreshPacket(published.publishedPacket, published.input),
+      liveInput: structuredClone(published.input),
+      executionMode: 'human-assisted',
+      executionModeSource: 'current-user',
+      authorizationId: 'explicit-current-user',
+      policy: {},
+      credentialCanMerge: true,
+      credentialPermission: 'WRITE',
+      credentialCanBypass: false,
+      actor: 'contributor',
+      ciConclusion: 'success',
+      dcoConclusion: 'success',
+      mergeable: 'MERGEABLE',
+      mergeStateStatus: 'CLEAN',
+    });
+    assert.equal(decision.allowed, canApprove);
+    if (!canApprove) assert.match(decision.reason, /verified current repository write permission/);
+    assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+  });
+}
+
+test('connector rejects unknown reviewer permissions without upgrading role metadata', async () => {
+  for (const permission of [undefined, null, '', 'custom-role', 'MAINTAIN', 'TRIAGE']) {
+    const f = fixture();
+    f.reviews = [
+      {
+        id: 5,
+        node_id: 'R5',
+        user: { login: 'independent-reviewer', id: 456, type: 'User' },
+        state: 'APPROVED',
+        commit_id: sha('b'),
+        body: '',
+        submitted_at: '2026-10-03T00:01:00Z',
+      },
+    ];
+    const call = f.call;
+    f.call = (operation, args) =>
+      operation === 'get_repo_collaborator_permission' && args.username === 'independent-reviewer'
+        ? result({ permission, role_name: 'admin' })
+        : call(operation, args);
+    await assert.rejects(
+      new ConnectorReviewTransport(f.call).collect(487),
+      /approval reviewer permission unavailable/
+    );
+    assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+  }
 });
 
 test('missing, failed or counterfeit DCO and incomplete trusted CI cannot authorize approval', async (t) => {

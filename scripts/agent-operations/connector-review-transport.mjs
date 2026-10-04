@@ -324,13 +324,21 @@ export class ConnectorReviewTransport {
         repository_full_name: CONNECTOR_REPOSITORY,
         username: reviewer,
       });
+      // The connector may expose GitHub roles instead of legacy base permissions.
+      // Keep canonical approval eligibility unchanged; role_name cannot upgrade it.
+      const permission =
+        observed.permission === 'maintain'
+          ? 'write'
+          : observed.permission === 'triage'
+            ? 'read'
+            : observed.permission;
       assert(
-        ['admin', 'write', 'read', 'none'].includes(observed.permission),
+        ['admin', 'write', 'read', 'none'].includes(permission),
         'approval reviewer permission unavailable'
       );
       input.reviewerPermissions.push({
         login: reviewer,
-        permission: observed.permission,
+        permission,
         source: 'github-rest-collaborator-permission',
         endpoint: `repos/${CONNECTOR_REPOSITORY}/collaborators/${encodeURIComponent(reviewer)}/permission`,
         repositoryId: LEDGER_REPOSITORY,
