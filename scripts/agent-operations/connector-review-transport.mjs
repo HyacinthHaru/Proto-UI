@@ -380,6 +380,11 @@ export class ConnectorReviewTransport {
     );
     return {
       input,
+      reviewIdentities: reviews.map((review) => ({
+        nodeId: review.node_id,
+        id: numeric(review.id) ? String(review.id) : null,
+        authorId: numeric(review.user?.id) ? String(review.user.id) : null,
+      })),
       viewerLogin: profile.nickname,
       reviewerId: String(profile.id),
       authorLogin: pr.user.login,
@@ -439,6 +444,9 @@ export class ConnectorReviewTransport {
       'returned review id cannot be uniquely read back; outcome unknown'
     );
     const live = matches[0];
+    for (const field of ['node_id', 'nodeId'])
+      if (Object.hasOwn(returned, field))
+        assert(returned[field] === live.node_id, 'review response node-id contradiction');
     const echoedAuthor = returned.author ?? returned.user;
     if (echoedAuthor?.login !== undefined)
       assert(echoedAuthor.login === LEDGER_PRINCIPAL.login, 'review response actor contradiction');
