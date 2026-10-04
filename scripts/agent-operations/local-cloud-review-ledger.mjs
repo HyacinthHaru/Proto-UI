@@ -2,7 +2,12 @@
 import { execFileSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { realpathSync } from 'node:fs';
-import { emptyCloudReviewLedger, reduceCloudReviewLedger } from './cloud-review-ledger.mjs';
+import {
+  emptyCloudReviewLedger,
+  reduceCloudReviewLedger,
+  LEDGER_PRINCIPAL,
+  LEDGER_REPOSITORY,
+} from './cloud-review-ledger.mjs';
 
 export const LOCAL_LEDGER_REF = 'refs/heads/proto-ui-review-ledger-candidate';
 const SHA = /^[a-f0-9]{40}$/;
@@ -16,6 +21,29 @@ const MAX_BYTES = 8 * 1024 * 1024;
 const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
+
+function genesisPayload(publicationEnabled, principal = LEDGER_PRINCIPAL) {
+  assert(typeof publicationEnabled === 'boolean', 'explicit ledger mode required');
+  const legacy = publicationEnabled
+    ? { ...ROOT, kind: 'proto-ui.owner-review-ledger', publicationEnabled: true }
+    : ROOT;
+  if (principal === null) return legacy; // Explicit historical fixture; never admitted by the owner remote adapter.
+  assert(
+    principal &&
+      Object.keys(principal).sort().join(',') === 'id,login' &&
+      typeof principal.id === 'string' &&
+      /^[1-9][0-9]*$/.test(principal.id) &&
+      typeof principal.login === 'string' &&
+      /^[a-z0-9-]{1,39}$/i.test(principal.login),
+    'invalid genesis principal'
+  );
+  return {
+    ...legacy,
+    schemaVersion: 2,
+    repositoryId: LEDGER_REPOSITORY,
+    principal: { id: principal.id, login: principal.login },
+  };
+}
 
 export class LocalCloudReviewLedger {
   #repo;
@@ -61,11 +89,9 @@ export class LocalCloudReviewLedger {
     });
   }
 
-  static initialize(directory, { publicationEnabled = false } = {}) {
+  static initialize(directory, { publicationEnabled = false, principal = LEDGER_PRINCIPAL } = {}) {
     assert(typeof publicationEnabled === 'boolean', 'explicit ledger mode required');
-    const root = publicationEnabled
-      ? { ...ROOT, kind: 'proto-ui.owner-review-ledger', publicationEnabled: true }
-      : ROOT;
+    const root = genesisPayload(publicationEnabled, principal);
     // Initialization is explicit and local; callers initialize the empty bare Git
     // repository themselves. No credentials, network or state branch in origin.
     const repo = realpathSync(directory);
@@ -122,12 +148,10 @@ export class LocalCloudReviewLedger {
         assert(
           parents.length === 0 &&
             (JSON.stringify(entry) === JSON.stringify(ROOT) ||
-              JSON.stringify(entry) ===
-                JSON.stringify({
-                  ...ROOT,
-                  kind: 'proto-ui.owner-review-ledger',
-                  publicationEnabled: true,
-                })),
+              JSON.stringify(entry) === JSON.stringify(genesisPayload(true, null)) ||
+              (entry.schemaVersion === 2 &&
+                JSON.stringify(entry) ===
+                  JSON.stringify(genesisPayload(entry.publicationEnabled, entry.principal)))),
           'invalid pinned genesis'
         );
         publicationEnabled = entry.publicationEnabled;

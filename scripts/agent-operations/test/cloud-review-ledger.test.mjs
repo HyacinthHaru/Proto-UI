@@ -91,10 +91,10 @@ test('canonical target, exact head/base/input, principal and event provenance bi
       a.observation.reviewerLogin = 'other';
     },
     (a) => {
-      a.observation.authorId = '52768321';
+      a.observation.authorId = '19223209';
     },
     (a) => {
-      a.observation.authorLogin = 'GUANGLIANG2019';
+      a.observation.authorLogin = 'CYJIN-YL';
     },
     (a) => {
       a.observation.authorId = '';
@@ -173,8 +173,8 @@ test('unknown intent blocks every release, later head and other PR; receipt matc
     id: '100',
     repositoryId: LEDGER_REPOSITORY,
     pullRequest: 487,
-    authorId: '52768321',
-    authorLogin: 'guangliang2019',
+    authorId: '19223209',
+    authorLogin: 'cyjin-yl',
     commitId: sha('b'),
     state: 'APPROVED',
     body: intent.body,

@@ -71,9 +71,9 @@ export function analysis(overrides = {}) {
     observation: {
       executionMode: 'autonomous',
       executionModeSource: 'delegated-owner-event',
-      reviewerId: '52768321',
-      reviewerLogin: 'guangliang2019',
-      authorId: '19223209',
+      reviewerId: '19223209',
+      reviewerLogin: 'cyjin-yl',
+      authorId: '123',
       authorLogin: 'contributor',
       policyDigest: 'f'.repeat(64),
     },

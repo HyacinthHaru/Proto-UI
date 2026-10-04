@@ -86,14 +86,14 @@ export class ConnectorReviewTransport {
     return current.head.sha;
   }
   async collectInitialSweep() {
-    const profile = await this.call('get_profile', {});
+    const profile = await this.call('get_user_login', {});
     assert(
-      String(profile.id) === LEDGER_PRINCIPAL.id && profile.nickname === LEDGER_PRINCIPAL.login,
+      String(profile.id) === LEDGER_PRINCIPAL.id && profile.login === LEDGER_PRINCIPAL.login,
       'connected principal is not the delegated owner'
     );
     const permission = await this.call('get_repo_collaborator_permission', {
       repository_full_name: CONNECTOR_REPOSITORY,
-      username: profile.nickname,
+      username: profile.login,
     });
     assert(
       ['admin', 'maintain', 'write'].includes(permission.permission),
@@ -128,14 +128,14 @@ export class ConnectorReviewTransport {
   }
   async collect(pullRequest, externalEvidence = []) {
     assert(Number.isSafeInteger(pullRequest) && pullRequest > 0, 'invalid pull request');
-    const profile = await this.call('get_profile', {});
+    const profile = await this.call('get_user_login', {});
     assert(
-      String(profile.id) === LEDGER_PRINCIPAL.id && profile.nickname === LEDGER_PRINCIPAL.login,
+      String(profile.id) === LEDGER_PRINCIPAL.id && profile.login === LEDGER_PRINCIPAL.login,
       'connected principal is not the delegated owner'
     );
     const permissionArgs = {
       repository_full_name: CONNECTOR_REPOSITORY,
-      username: profile.nickname,
+      username: profile.login,
     };
     const permission = await this.call('get_repo_collaborator_permission', permissionArgs);
     // The authenticated invocation binds the subject. Redundant echoed user or
@@ -371,7 +371,7 @@ export class ConnectorReviewTransport {
     );
     return {
       input,
-      viewerLogin: profile.nickname,
+      viewerLogin: profile.login,
       reviewerId: String(profile.id),
       authorLogin: pr.user.login,
       authorId: String(pr.user.id),

@@ -1,9 +1,10 @@
+import { LEDGER_PRINCIPAL, LEDGER_REPOSITORY } from './cloud-review-ledger.mjs';
 // Remote-state protocol. The default Git transport is read-only.
 // The exact-parent owner transport is separately selected; tests use local Git.
 import { execFileSync } from 'node:child_process';
 import { LocalCloudReviewLedger, LOCAL_LEDGER_REF } from './local-cloud-review-ledger.mjs';
 
-export const REMOTE_LEDGER_REF = 'refs/heads/proto-ui-review-ledger';
+export const REMOTE_LEDGER_REF = 'refs/heads/proto-ui-review-ledger-' + LEDGER_PRINCIPAL.login;
 const FETCHED_REF = 'refs/heads/proto-ui-review-ledger-fetched';
 const SHA = /^[a-f0-9]{40}$/;
 const assert = (condition, message) => {
@@ -85,6 +86,14 @@ export class RemoteCloudReviewLedger {
     const tip = this.#transport.readInto(this.#directory);
     assert(SHA.test(tip), 'remote transport returned an invalid revision');
     git(this.#directory, ['update-ref', LOCAL_LEDGER_REF, tip]); // local cache only
+    const root = JSON.parse(git(this.#directory, ['show', this.#genesis + ':entry.json']));
+    assert(
+      root.schemaVersion === 2 &&
+        root.repositoryId === LEDGER_REPOSITORY &&
+        root.principal?.id === LEDGER_PRINCIPAL.id &&
+        root.principal?.login === LEDGER_PRINCIPAL.login,
+      'remote ledger genesis does not match selected owner principal'
+    );
     // A separate verifier may read after a failed push without adopting its
     // process owner or trusting its speculative local candidate as a remote tip.
     new LocalCloudReviewLedger(this.#directory, this.#genesis, { checkpoint: this.#checkpoint });

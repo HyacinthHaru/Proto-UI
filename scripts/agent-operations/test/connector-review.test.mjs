@@ -24,7 +24,7 @@ import { assessment, assessmentSnapshot } from './fixtures/connector-assessment.
 import { analysis } from './fixtures/cloud-review.mjs';
 
 const sha = (c) => c.repeat(40);
-const owner = { login: 'guangliang2019', id: 52768321, type: 'User' };
+const owner = { login: 'cyjin-yl', id: 19223209, type: 'User' };
 const author = { login: 'contributor', id: 123, type: 'User' };
 const rootPolicy = parse(
   readFileSync(
@@ -110,7 +110,7 @@ function fixture() {
   });
   f.call = async (operation, args) => {
     f.calls.push({ operation, args });
-    if (operation === 'get_profile') return result({ id: String(owner.id), nickname: owner.login });
+    if (operation === 'get_user_login') return result({ id: owner.id, login: owner.login });
     if (operation === 'get_repo_collaborator_permission') {
       assert.equal(args.repository_full_name, 'Proto-UI/Proto-UI');
       assert.equal(typeof args.username, 'string');
@@ -1337,8 +1337,8 @@ const intakeBindingMutations = [
   ['executionMode', 'human-assisted'],
   ['executionModeSource', 'schedule'],
   ['mutationClass', 'metadata'],
-  ['principalId', '19223209'],
-  ['principalLogin', 'cyjin-yl'],
+  ['principalId', '52768321'],
+  ['principalLogin', 'guangliang2019'],
 ];
 for (const operation of ['event', 'capture', 'initial-begin'])
   for (const [field, wrong] of intakeBindingMutations)

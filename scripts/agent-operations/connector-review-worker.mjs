@@ -47,7 +47,7 @@ const pending = new Map();
 const send = (message) => process.stdout.write(JSON.stringify(message) + '\n');
 const allowed = new Set([
   'fetch',
-  'get_profile',
+  'get_user_login',
   'get_repo_collaborator_permission',
   'list_pull_request_review_threads',
 ]);

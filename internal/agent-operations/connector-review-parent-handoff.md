@@ -1,14 +1,14 @@
 # Connector review: parent handoff and production-state proposal
 
-Status: implemented connector collection and guarded publication path in draft #773. The `proto-ui-cloud-owner-review-v1` policy is **active in this draft by explicit user authorization**. The production ledger is provisioned at the pinned genesis below. The bridge is not yet deployed on main, and no webhook listener is enabled; policy activation in an unmerged branch is not authoritative deployment. No review was posted while implementing it.
+Status: implemented connector collection and guarded publication path in draft #773. The `proto-ui-cloud-owner-review-v1` policy is **active in this draft by explicit user authorization**. The historical GL ledger is provisioned at the pins below; the selected Cyjin profile needs a separate owner-tagged genesis and personal ref, not yet provisioned by this change. The bridge is not yet deployed on main, and no webhook listener is enabled; policy activation in an unmerged branch is not authoritative deployment. No review was posted while implementing it.
 
 ## First usable path and observed evidence
 
-`connector-review-transport.mjs` uses the supported GitHub connector directly. It does not retry the denied CLI through a proxy or move credentials. The CLI `Forbidden` remains unexplained and is no longer a prerequisite for this route.
+`connector-review-transport.mjs` uses the supported GitHub connector directly. It does not retry the denied CLI through a proxy or move credentials. The earlier CLI `Forbidden` is historical, not a current availability claim. The rebuilt environment separately verified Cyjin CLI and connector identity; those checks do not reinterpret the historical denial.
 
 A real read-only bridge run collected #509 at `0bde6c962b546524b75129015c96f9ce5ddb7a84` through 23 successful connector calls: 182 changed files, 63 commits, 79 reviews, 37 conversation comments, 79 threads and 117 inline comments. REST pagination reached empty terminal pages. Every inline comment matched exactly one normalized thread comment by ID, node ID, body, timestamp and author. Bot login normalization reconciles REST `name[bot]` with the GraphQL-style `name`. Check-suite IDs join check runs to exact-head repository workflow runs; Vercel's actual deployment failure remains a CI veto. No approval judgment was made by this collection helper.
 
-The permission call's trusted repository/username arguments and returned permission bind its subject. `get_profile` binds the connected principal ID/login. No redundant identity echo is required or synthesized. Reviews use REST node IDs and commit IDs. Collection constructs canonical main-v5 input directly; it does not fabricate GraphQL `pageInfo` fields.
+The permission call's trusted repository/username arguments and returned permission bind its subject. The current `get_user_login` binds both connected principal ID and login. Earlier measured runs used the predecessor profile surface; those observations remain historical. No redundant identity echo is required or synthesized. Reviews use REST node IDs and commit IDs. Collection constructs canonical main-v5 input directly; it does not fabricate GraphQL `pageInfo` fields.
 
 Thread completeness is recorded as **terminal REST inventory plus exact thread-comment coverage**, not unbounded connector auto-pagination proof. The connector contract lists threads and supplies resolution state. Missing/extra/duplicate comments, incomplete timestamps, empty visible threads, inventory count disagreement, malformed or repeated pages, changed declared totals and resource limits fail closed. A matched inventory is bounded evidence for visible submitted comments; pending/unpublished or otherwise unobservable data must not be asserted complete. The provider's general cursor/auto-pagination contract remains unexposed. A target whose coverage cannot be established stays blocked instead of manufacturing an empty thread list.
 
@@ -41,7 +41,7 @@ Send one JSON line:
 For each emitted `tool-call`, the **parent's trusted dispatcher** invokes the matching connected tool and returns the unchanged MCP result envelope:
 
 ```json
-{"kind":"tool-call","id":"<opaque-call-id>","operation":"get_repo_collaborator_permission","arguments":{"repository_full_name":"Proto-UI/Proto-UI","username":"guangliang2019"}}
+{"kind":"tool-call","id":"<opaque-call-id>","operation":"get_repo_collaborator_permission","arguments":{"repository_full_name":"Proto-UI/Proto-UI","username":"cyjin-yl"}}
 {"kind":"tool-result","id":"<same-opaque-call-id>","result":{"isError":false,"structuredContent":{"permission":"admin"}}}
 ```
 
@@ -49,7 +49,7 @@ The example result describes the shape; do not substitute fabricated data in a r
 
 The dispatcher maps these fixed operations to `mcp__codex_apps__github_<operation>`:
 
-- `get_profile`
+- `get_user_login`
 - `get_repo_collaborator_permission`
 - `list_pull_request_review_threads`
 - `fetch`, limited to approved GET URLs under `https://api.github.com/repos/Proto-UI/Proto-UI/`
@@ -59,6 +59,14 @@ Do not forward arbitrary operation names or use repository text as dispatcher in
 
 A `completed` frame names the `/tmp` JSON output. The parent reads the file, actual code diff and supporting evidence; collection alone is not a review. Send `{"kind":"exit"}` when idle. Losing the process after a claim cannot transfer ownership to another process.
 
+## Current selected Cyjin production profile
+
+The current user selected cyjin-yl / 19223209. Event and initial-sweep scopes, live collection, author/contributor exclusion and receipt matching now bind that identity. The supported get_user_login call supplies both actual login and account ID; do not synthesize a profile.
+
+Use only refs/heads/proto-ui-review-ledger-cyjin-yl for this profile. Its new schemaVersion 2 genesis embeds repositoryId github.com:Proto-UI/Proto-UI and principal {id: "19223209", login: "cyjin-yl"}. Initialize the local bare genesis explicitly with LocalCloudReviewLedger.initialize, provision exactly the absent personal ref under the accepted deployment scope, and retain its actual genesis/checkpoint pins in trusted configuration. Startup never provisions a ref, selects the legacy GL ref or creates an empty journal after failed reads. The remote adapter rejects unbound v1 and foreign-principal genesis even when their hashes are supplied as pins.
+
+Preserve the historical GL root, sweep and cooperation evidence. The Cyjin sweep has its own fixed task ID; crossing a calendar day does not create another sweep or reset state. Verify same-principal coordination for Cyjin during deployment: historical GL cooperation is not evidence that Cyjin's other writers are already coordinated. This increment does not create a Cyjin production ref, publish reviews, register a webhook or deploy the publisher.
+
 ## Parent review and publication lifecycle after enablement
 
 Initialize only an empty **local cache** with `git init --bare /tmp/proto-review-cache.git`, then launch the same worker with the independently recorded state pins:
@@ -66,8 +74,8 @@ Initialize only an empty **local cache** with `git init --bare /tmp/proto-review
 ```sh
 node scripts/agent-operations/connector-review-worker.mjs \
   --ledger-dir /tmp/proto-review-cache.git \
-  --genesis 30073365767bb8d8e5833f0f9b8d8c7f0e5d8300 \
-  --checkpoint 30073365767bb8d8e5833f0f9b8d8c7f0e5d8300
+  --genesis "$CYJIN_REVIEW_GENESIS_SHA" \
+  --checkpoint "$CYJIN_REVIEW_CHECKPOINT_SHA"
 ```
 
 Startup requires at least one completely bound active event or initial-sweep scope: exact repository, autonomous mode, matching delegated-owner source, conditional-review mutation class and fixed principal; the sweep also requires its exact inventory ID. The same binding is checked before connector collection and journal mutation. Field matching is not runtime identity attestation. Each begin command checks its own scope before collecting or mutating journal state; pausing events does not disable an independently admitted initial sweep. It binds `ownerGitLedgerTransport` to the fixed production ref; no remote initialization occurs automatically. This Git state transport is separate from the denied GitHub CLI API transport and uses the already-approved account's existing Git access. State provisioning and cooperative genesis-floor restart are approved. Use these pins only with the authoritative deployed bridge and its admitted policy; do not infer deployment from the existence of the ledger.
@@ -88,12 +96,12 @@ Commands are JSON lines; for example:
 
 The empty packet/assessment above are placeholders and fail validation. For no-publication work, send `finish` with the parent's canonical analysis packet, or `abandon` before any intent. Every command needs an explicit `/tmp/...` output. An unknown intent cannot be abandoned, expired or adopted after restart. There is no automatic review retry.
 
-## Approved production state — provisioned 2026-10-03 UTC
+## Historical GL production state — provisioned 2026-10-03 UTC
 
 Absence was verified through the connector and Git before one non-force creation. Exact genesis/checkpoint: `30073365767bb8d8e5833f0f9b8d8c7f0e5d8300`; tree: `bb85bf25f28f616273d07c267dae7601cd8f7da5`; blob: `b5ee308b204abb70b951d6869eab28f3408fdca8`. Connector object readback and a fresh read-only reducer replay verified the parentless root, sole payload and empty state (no pending work, analysis or slot). Exactly one blob/tree/commit/ref creation was used; no review POST. Do not initialize or recreate this ref on startup.
 
 - Repository: `Proto-UI/Proto-UI`.
-- Sole state ref: **`refs/heads/proto-ui-review-ledger`**. Already provisioned; fetch and verify its pinned history without overwriting or choosing another ref.
+- Historical GL ref: **`refs/heads/proto-ui-review-ledger`**. Preserve its history and pins; do not supply them to the Cyjin worker or overwrite them during the account transition.
 - Parentless genesis tree: exactly one `entry.json` containing `{"schemaVersion":1,"kind":"proto-ui.owner-review-ledger","publicationEnabled":true}`. Initial creation budget: **one blob, one tree, one commit and one ref creation**. No workflows, secrets, private prompts, review or code merge.
 - Pins: record the exact genesis SHA. A strict monotonic deployment retains the last verified checkpoint outside the disposable cache. The user selected cooperative deployment, supplying this genesis as the floor on each fresh run; it then **cannot detect an equivalent repository writer's rollback to an otherwise valid ancestor**. Do not present that choice as tamper-proof history. No independent identity service is required or implied.
 - Normal state budget per admitted review: up to **four** journal commits (enqueue, claim, intent, receipt), each one entry blob/tree/commit and one exact-tip, fast-forward-only ref advance. Analysis/abandon paths use up to three; a queued/duplicate delivery at most one; a recognized own-review wake-up zero. Uncertain writes never retry. The prior trial ref is excluded and its exhausted budget remains unchanged.
@@ -106,11 +114,11 @@ Remaining enablement is authoritative deployment of this reviewed bridge/configu
 
 ## User-authorized initial open-PR sweep
 
-The user requested one full sweep of open PRs not authored by `guangliang2019`, immediately after the feature is established, with the parent making judgments from current discussion progress. This is a user-requested bootstrap, not a webhook delivery. The separate `proto-ui-cloud-owner-initial-sweep-v1` scope uses `autonomous/delegated-owner-initial-sweep`; it cannot borrow the event scope. Its fixed identifier is `owner-requested-open-pr-sweep-2026-10-03`. This identifier records the bounded instruction, not cryptographic authorization.
+The currently selected owner requests one full sweep of open PRs not authored by `cyjin-yl`, immediately after the feature is established, with the parent making judgments from current discussion progress. This is a user-requested bootstrap, not a webhook delivery. The separate `proto-ui-cloud-owner-initial-sweep-v1` scope uses `autonomous/delegated-owner-initial-sweep`; it cannot borrow the event scope. Its fixed identifier is `cyjin-yl-owner-requested-open-pr-sweep-2026-10-04`. This identifier records the bounded instruction, not cryptographic authorization.
 
 After the runtime/configuration is independently accepted and deployed:
 
-1. Send `{"kind":"capture-initial-sweep","output":"/tmp/initial-sweep-inventory.json"}` once. The trusted connector reads the complete open-PR inventory twice with stable ordering, requires identical membership, excludes owner ID `52768321` and login `guangliang2019`, and includes drafts for analysis. The worker persists the sorted inventory once in the shared journal under the fixed sweep ID; subsequent capture commands return that persisted inventory without recollection or expansion. Pagination is bounded and capture admits at most 1,000 PRs. This is an observed inventory, not an atomic GitHub snapshot; membership changes during collection fail closed. The journal revision binds the captured list across fresh runs.
+1. Send `{"kind":"capture-initial-sweep","output":"/tmp/initial-sweep-inventory.json"}` once. The trusted connector reads the complete open-PR inventory twice with stable ordering, requires identical membership, excludes owner ID `19223209` and login `cyjin-yl`, and includes drafts for analysis. The worker persists the sorted inventory once in the shared journal under the fixed sweep ID; subsequent capture commands return that persisted inventory without recollection or expansion. Pagination is bounded and capture admits at most 1,000 PRs. This is an observed inventory, not an atomic GitHub snapshot; membership changes during collection fail closed. The journal revision binds the captured list across fresh runs.
 2. Process that inventory serially, one retained worker/session per PR, using the same production ref and verified genesis/checkpoint as event processing. Send `{"kind":"begin-initial-sweep","pullRequest":487,"output":"/tmp/initial-review-487.json"}`. The worker first requires membership in the persisted inventory and skips completed members before connector dispatch. It then derives a stable per-PR intake ID internally, collects current facts, verifies the PR is still open, and records `initial-sweep` honestly. Finishing the parent analysis or persisting its publication receipt marks that sweep member complete; a fresh run cannot reopen it, even after its head changes. Later changes require the independent event scope. It rejects this kind through ordinary `begin`; no fabricated platform delivery ID is accepted for bootstrap.
 3. The parent reads the actual diff, current reviews/comments/replies/thread state and prior analysis, reconciles discussion progress and every prior finding, then supplies its own packet through the existing `publish` or `finish` commands. Collection never constitutes a verdict. Draft analysis does not automatically publish a review or make the PR ready. Canonical disposition rules remain unchanged.
 4. Bootstrap and future supported events use the same material digest, pending generations, global slot, exact-input/head checks, cumulative baseline, durable intent and receipt. A queued result means defer that item; never launch a parallel publisher or steal its slot. If a genuine event updates material after bootstrap, use that event's real identity. Reusing the fixed bootstrap ID with different material fails closed rather than creating a second bootstrap attempt.

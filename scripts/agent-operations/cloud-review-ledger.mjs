@@ -9,9 +9,9 @@ import {
   verifyReconciliation,
 } from './review-runtime.mjs';
 
-export const INITIAL_SWEEP_ID = 'owner-requested-open-pr-sweep-2026-10-03';
+export const INITIAL_SWEEP_ID = 'cyjin-yl-owner-requested-open-pr-sweep-2026-10-04';
 export const LEDGER_REPOSITORY = 'github.com:Proto-UI/Proto-UI';
-export const LEDGER_PRINCIPAL = Object.freeze({ id: '52768321', login: 'guangliang2019' });
+export const LEDGER_PRINCIPAL = Object.freeze({ id: '19223209', login: 'cyjin-yl' });
 const HEX = /^[a-f0-9]{64}$/;
 const OWNER = /^[a-f0-9]{32}$/;
 const EVENT_KINDS = new Set([

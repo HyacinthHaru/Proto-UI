@@ -25,7 +25,7 @@ const assessment = {
   validated: true,
   capability: { band: 'C4', recommendedReviewClasses: ['review-governed-implementation-slice'] },
 };
-const actor = { id: 52768321, login: 'guangliang2019' };
+const actor = { id: 19223209, login: 'cyjin-yl' };
 const other = { id: 123, login: 'contributor' };
 const sha = (char) => char.repeat(40);
 const connection = (nodes) => ({ nodes, pageInfo: { hasNextPage: false } });
