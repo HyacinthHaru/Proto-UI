@@ -13,6 +13,7 @@ export const BrutalistScrollAreaScrollbar = definePrototype<
   setup(def) {
     // Keep Base scrollbar semantics via as-hook; size from props for reliable CSS tokens.
     asScrollAreaScrollbar();
+    def.props.watch(['orientation'], (run) => run.update());
     def.feedback.style.use(tw('flex select-none touch-none bg-lavender p-0.5'));
     def.rule({
       when: (w) => w.prop('orientation').eq('vertical'),
@@ -32,6 +33,23 @@ export const BrutalistScrollAreaScrollbar = definePrototype<
           )
         ),
     });
-    return (renderer) => [renderer.r.slot()];
+    return (renderer) => [
+      renderer.r.slot(),
+      ...(renderer.read.props.get().orientation === 'horizontal'
+        ? [
+            renderer.el(
+              'span',
+              {
+                style: tw(
+                  'pointer-events-none absolute left-[100%] top-[-2px] w-[var(--proto-ui-scroll-track-end-inset,0px)] h-[calc(100%_+_2px)] overflow-hidden'
+                ),
+              },
+              renderer.el('span', {
+                style: tw('absolute inset-0 bg-lavender border-l-2 border-t-2 border-foreground'),
+              })
+            ),
+          ]
+        : []),
+    ];
   },
 });
