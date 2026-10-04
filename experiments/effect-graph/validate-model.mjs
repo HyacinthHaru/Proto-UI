@@ -101,6 +101,7 @@ export function inspectGraph(graph) {
     error('invalid-capability-requirements', 'graph');
   if (errors.length) return invalid();
   for (const kernel of graph.kernels) {
+    if (!kernel.invalidation) error('missing-kernel-invalidation', kernel.id);
     if (!strings(kernel.uniformBlocks)) error('missing-kernel-uniform-block', kernel.id);
     if (!['named', 'indexed'].includes(kernel.samplerBinding))
       error('invalid-sampler-binding-mode', kernel.id);
@@ -142,7 +143,7 @@ export function inspectGraph(graph) {
       error('invalid-pass-bindings', pass.id);
   }
   for (const block of graph.uniformBlocks) {
-    if (!records(block.fields)) error('invalid-uniform-fields', block.id);
+    if (!records(block.fields) || !block.fields.length) error('invalid-uniform-fields', block.id);
     else if (
       block.fields.some((field) => typeof field.name !== 'string' || typeof field.type !== 'string')
     )
@@ -257,7 +258,21 @@ export function inspectGraph(graph) {
     )
       error('incomplete-resource-contract', r.id);
   }
-  for (const d of graph.data)
+  for (const d of graph.data) {
+    if (
+      !record(d.targetBindings) ||
+      d.targetBindings.webgpu !== 'read-only-storage-buffer' ||
+      d.targetBindings.webgl2 !== 'uniform-array' ||
+      d.targetBindings.flutter !== 'requires-specialization-or-unavailable'
+    )
+      error('invalid-data-access-mode', d.id);
+    if (
+      d.id === 'blur-weights' &&
+      (!Number.isInteger(graph.limits?.blurRadius) ||
+        graph.limits.blurRadius < 1 ||
+        graph.limits.blurRadius >= d.maxCount)
+    )
+      error('blur-capacity-mismatch', d.id);
     if (
       d.type !== 'bounded-array<f32>' ||
       !Number.isInteger(d.maxCount) ||
@@ -265,6 +280,7 @@ export function inspectGraph(graph) {
       d.maxCount > 4096
     )
       error('unbounded-data-buffer', d.id);
+  }
   const writers = new Map();
   for (const p of passes.values()) {
     if (record(p.update) && p.update.kind === 'any-dirty') {
@@ -292,6 +308,45 @@ export function inspectGraph(graph) {
       ].includes(p.update)
     )
       error('invalid-pass-update', p.id);
+    const requiredUpdate = kernels.get(p.kernel)?.invalidation;
+    if (
+      requiredUpdate !== undefined &&
+      (typeof requiredUpdate === 'string'
+        ? p.update !== requiredUpdate
+        : !record(requiredUpdate) ||
+          requiredUpdate.kind !== 'any-dirty' ||
+          !strings(requiredUpdate.dependencies) ||
+          !record(p.update) ||
+          p.update.kind !== 'any-dirty' ||
+          !Array.isArray(p.update.dependencies) ||
+          requiredUpdate.dependencies.some(
+            (dependency) => !p.update.dependencies.includes(dependency)
+          ))
+    )
+      error('kernel-invalidation-mismatch', p.id);
+    if (
+      p.kind === 'fragment' &&
+      !['upstream-fullscreen-quad', 'geometry-matte-bounds'].includes(p.drawDomain)
+    )
+      error('missing-draw-domain', p.id);
+    if (p.kind === 'host-image-filter' && p.blend !== 'premultiplied-source-over')
+      error('invalid-host-blend', p.id);
+    const interfaceNames = [
+      ...(kernels.get(p.kernel)?.samplers ?? []),
+      ...(kernels.get(p.kernel)?.dataBindings ?? []),
+    ].map((input) => input.name);
+    for (const name of Object.keys(p.bindings))
+      if (!interfaceNames.includes(name)) error('unknown-pass-binding', `${p.id}:${name}`);
+    for (const id of [...p.reads, p.writes]) {
+      const resource = graph.resources.find((resource) => resource.id === id);
+      if (resource && resource.format !== 'host-managed-ui-image') {
+        if (
+          !strings(resource.usages) ||
+          !resource.usages.includes(id === p.writes ? 'render-attachment' : 'texture-binding')
+        )
+          error('resource-usage-mismatch', `${p.id}:${id}`);
+      }
+    }
     if (!['fragment', 'host-image-filter', 'copy', 'composite'].includes(p.kind))
       error('unknown-pass-kind', p.id);
     if (['fragment', 'host-image-filter'].includes(p.kind) && !kernels.has(p.kernel))
@@ -400,6 +455,7 @@ export function inspectGraph(graph) {
               (v) =>
                 typeof v === 'number' &&
                 Number.isFinite(v) &&
+                Number.isFinite(Math.fround(v)) &&
                 (field.type === 'i32'
                   ? Number.isInteger(v) && v >= -2147483648 && v <= 2147483647
                   : field.type === 'u32'

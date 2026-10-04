@@ -18,7 +18,8 @@
       "uniformBlocks": ["geometry"],
       "samplers": [],
       "samplerBinding": "indexed",
-      "dataBindings": []
+      "dataBindings": [],
+      "invalidation": "geometry-or-layout-or-optical-profile-dirty"
     },
     {
       "id": "render",
@@ -48,7 +49,8 @@
         }
       ],
       "samplerBinding": "indexed",
-      "dataBindings": []
+      "dataBindings": [],
+      "invalidation": "compositor-or-uniform-frame"
     }
   ],
   "sources": [
@@ -119,7 +121,8 @@
       "dependsOn": [],
       "bindings": {},
       "update": "geometry-or-layout-or-optical-profile-dirty",
-      "uniformBlocks": ["geometry"]
+      "uniformBlocks": ["geometry"],
+      "drawDomain": "geometry-matte-bounds"
     },
     {
       "id": "render-pass",

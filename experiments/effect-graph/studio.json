@@ -24,7 +24,17 @@
         }
       ],
       "samplerBinding": "named",
-      "dataBindings": []
+      "dataBindings": [],
+      "invalidation": {
+        "kind": "any-dirty",
+        "dependencies": [
+          "source:media",
+          "uniform:main",
+          "geometry",
+          "derived-morph-state",
+          "pointer-spring-state"
+        ]
+      }
     },
     {
       "id": "blur-v",
@@ -52,7 +62,8 @@
           "name": "u_blurWeights",
           "type": "bounded-array<f32>"
         }
-      ]
+      ],
+      "invalidation": "upstream-or-blur-parameter-dirty"
     },
     {
       "id": "blur-h",
@@ -80,7 +91,8 @@
           "name": "u_blurWeights",
           "type": "bounded-array<f32>"
         }
-      ]
+      ],
+      "invalidation": "upstream-or-blur-parameter-dirty"
     },
     {
       "id": "main",
@@ -108,7 +120,8 @@
         }
       ],
       "samplerBinding": "named",
-      "dataBindings": []
+      "dataBindings": [],
+      "invalidation": "frame-bindings-dirty"
     }
   ],
   "sources": [

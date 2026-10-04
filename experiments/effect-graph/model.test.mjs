@@ -458,3 +458,88 @@ test('resource contract values have usable types, including unresolved alpha and
     assert(inspectGraph(graph).errors.some((e) => e.code === 'incomplete-resource-contract'));
   }
 });
+
+test('read-only data target mappings cannot disappear or become writable', async () => {
+  for (const bindings of [
+    undefined,
+    {},
+    {
+      webgpu: 'read-write-storage-buffer',
+      webgl2: 'uniform-array',
+      flutter: 'requires-specialization-or-unavailable',
+    },
+  ]) {
+    const graph = await load('studio');
+    if (bindings === undefined) delete graph.data[0].targetBindings;
+    else graph.data[0].targetBindings = bindings;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-data-access-mode'));
+  }
+});
+
+test('blur radius fits the declared read-only weight capacity', async () => {
+  for (const radius of [undefined, 0, -1, 1.5, 201, 10000]) {
+    const graph = await load('studio');
+    if (radius === undefined) delete graph.limits.blurRadius;
+    else graph.limits.blurRadius = radius;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'blur-capacity-mismatch'));
+  }
+});
+
+test('a pass cannot substitute another kernel invalidation policy or drop a dependency', async () => {
+  const graph = await load('studio');
+  graph.passes[0].update = 'frame-bindings-dirty';
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'kernel-invalidation-mismatch'));
+  const dep = await load('studio');
+  dep.passes[0].update.dependencies = ['source:media', 'uniform:main'];
+  assert(inspectGraph(dep).errors.some((e) => e.code === 'kernel-invalidation-mismatch'));
+});
+
+test('pass binding keys exactly follow their declared kernel interface', async () => {
+  const graph = await load('studio');
+  graph.passes[0].bindings.notInKernel = 'media';
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'unknown-pass-binding'));
+  const omitted = await load('studio');
+  omitted.kernels[0].samplers = [];
+  assert(inspectGraph(omitted).errors.some((e) => e.code === 'unknown-pass-binding'));
+});
+
+test('floating constants stay finite at target f32 precision', async () => {
+  for (const value of [1e300, -1e300]) {
+    const graph = await load('flutter');
+    graph.uniformBlocks[1].fields.find((f) => f.name === 'uGlassColor').binding = {
+      kind: 'constant',
+      value: [value, 0, 0, 1],
+    };
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-constant-uniform'));
+  }
+});
+
+test('referenced uniform layouts cannot be empty', async () => {
+  const graph = await load('studio');
+  graph.uniformBlocks[0].fields = [];
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-uniform-fields'));
+});
+
+test('host-image-filter presentation retains its premultiplied blend contract', async () => {
+  for (const blend of [undefined, {}, 'additive']) {
+    const graph = await load('flutter');
+    if (blend === undefined) delete graph.passes[1].blend;
+    else graph.passes[1].blend = blend;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'invalid-host-blend'));
+  }
+});
+
+test('physical intermediate usages cover every sampling and render edge', async () => {
+  for (const usages of [undefined, ['render-attachment'], ['texture-binding']]) {
+    const graph = await load('studio');
+    if (usages === undefined) delete graph.resources[0].usages;
+    else graph.resources[0].usages = usages;
+    assert(inspectGraph(graph).errors.some((e) => e.code === 'resource-usage-mismatch'));
+  }
+});
+
+test('fragment passes require a recognized draw domain', async () => {
+  const graph = await load('studio');
+  graph.passes.forEach((pass) => delete pass.drawDomain);
+  assert(inspectGraph(graph).errors.some((e) => e.code === 'missing-draw-domain'));
+});
