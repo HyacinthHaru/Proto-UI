@@ -212,8 +212,8 @@ describe.sequential('Public passive atom documentation previews', () => {
         );
         await page.waitForFunction(
           () => {
-            const preview = document.querySelector('[data-previewer-id]');
-            return [...(preview?.querySelectorAll<HTMLElement>('[role="listbox"]') ?? [])].every(
+            // Select content is portalled outside the preview; observe its real document surface.
+            return [...document.querySelectorAll<HTMLElement>('[role="listbox"]')].every(
               (listbox) => {
                 for (let node: HTMLElement | null = listbox; node; node = node.parentElement) {
                   const style = getComputedStyle(node);

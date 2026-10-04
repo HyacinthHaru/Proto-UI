@@ -37,7 +37,17 @@ These are observed source identities, **not an approved final architecture**. Do
 | `site-code-surface` | `apps/www/src/prototypes/site-code-surface.proto.ts` | Compose generic Surface, Text and existing parts. Code panel syntax formatting and layout must not become another page-specific protocol. |
 | `site-link-surface` | `apps/www/src/prototypes/site-link-surface.proto.ts` | Compose supported atoms while the native anchor remains the sole navigation owner; do not invent a cross-platform Link protocol or synthetic button navigation. |
 | `site-copy-feedback-icon` | `apps/www/src/prototypes/site-copy-feedback-icon.proto.ts` | Compose existing Lucide semantics with consumer state; do not admit another private icon family. |
-| `website-image-zoom-content`, `website-image-zoom-mask` | `apps/www/src/components/documentation-image-zoom.proto.ts` | Existing main Dialog-derived page-specific styles; recorded as a separate migration gap, not silently declared fixed by the homepage change. Preserve Dialog/Transition semantics when replacing the private projection. |
+| `website-image-zoom-content`, `website-image-zoom-mask` | `apps/www/src/components/documentation-image-zoom.proto.ts` | Content and Mask originated on main (#797); #777 also changes Mask pointer-down default prevention. They remain page-specific projection debt. Preserve Dialog/Transition, dismissal and return-focus semantics during migration. |
+
+### Image-zoom inventory correction (09:10 UTC)
+
+The first audit compared the two definitions on main but missed the additional definition in the homepage branch. The complete checkpoint contains **three** website-specific identities in `apps/www/src/components/documentation-image-zoom.proto.ts`:
+
+- `website-image-zoom-content`: inherited from main (#797), based on Dialog Content with page-specific transition styling.
+- `website-image-zoom-mask`: inherited from main (#797), additionally modified by #777 to prevent pointer-down default behavior from stealing restored focus.
+- `website-image-zoom-trigger`: newly introduced by #777, based on Base Button with `docs-image-zoom-trigger` styling and a focus-visible rule.
+
+Thus this is not entirely pre-existing debt. The next migration must reuse existing governed parts and reusable atoms while preserving activation, dismiss/return-focus, native link and image-content behavior. No additional website-private API is admitted by this inventory. The earlier omission is retained here as a correction rather than silently claiming the first audit had already covered the new Trigger.
 
 ## Experiment boundaries
 
@@ -62,3 +72,9 @@ The first exact docs-head run, `833460b21ae32b40e1981509db828a7a19db39d5`, compl
 The dependency has advanced to `36cec84151f848b61d3f7d4a537ea4d76954ae6c`. It repairs real caller recipe closure, selected-runtime forwarding and awaiting shell readiness, alongside the bounded source fixes recorded in #777. Surface's new `secondary` variant is reflected in both locales. This documentation branch merges the dependency normally, preserving the original docs commit and its evidence history.
 
 The next browser probe records every slot's hidden/inert/display state, borrowed content, atom count, generation, visible phase (null when not exposed) and ready-event timestamp/snapshot. Hidden or empty preparing/retiring candidates remain in the record; two visible borrowed-content owners remain a failure. Ready events must themselves expose exactly one active content owner matching the runtime named by that event. Runtime selection, active-frame readiness and native listbox exit share the existing 20-second budget; no sleep, animation disabling, widened deadline or first-match filtering is used. Five socket-free negative-control tests verify this distinction and the unchanged 64-case registration. Final rendered results remain pending until that exact committed candidate runs.
+
+## 09:17 UTC exact-head result
+
+Run `37191245429` on docs head `0b2048f8e606f6a185b9f03cddd3da371bbfd000` passed all 64 browser cases. Downloaded artifact `11298897954` contains 64 original PNGs and 64 JSON reports; every report has that source SHA, `sourceDirty: false`, and no page errors. Across all recorded states the maximum raw slot count was one and the maximum active owner count was one; all 176 ready-event snapshots passed runtime ownership. No second slot had to be excluded for this actual successful run. The earlier 833460b2 failures remain historical negative evidence.
+
+The screenshot exit guard is further narrowed to the real document-owned listboxes, because Select portals its content outside the preview root. This preserves the original readiness deadline while preventing a menu outside the preview subtree from being omitted from capture readiness. This observation changes the screenshot probe, not the atoms' interaction contract. Aggregate repository checks and the three image-zoom migrations remain separate from the successful bounded atom-docs run.
