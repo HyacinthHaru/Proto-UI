@@ -15079,3 +15079,1090 @@ for (const source of [
     const { options } = markupPromotionFixture(source, { extension: 'ts' });
     assert.doesNotThrow(() => validateCoverageMatrices(options));
   });
+
+for (const kind of ['website', 'harness']) {
+  for (const attribute of ['href', 'xlink:href']) {
+    test(`runtime entry review red: SVG ${kind} ${attribute}`, () => {
+      const issues = probeReview(
+        '48645',
+        kind,
+        `<svg><script ${attribute}="https://cdn.example/runtime.js"></script></svg>`,
+        'html'
+      );
+      assert.ok(
+        issues.some((issue) => /external executable (?:worker )?script/u.test(issue)),
+        issues.join('\n')
+      );
+    });
+  }
+  test(`runtime entry review red: WASM ${kind} streaming`, () => {
+    const issues = probeReview(
+      '48651',
+      kind,
+      `WebAssembly.instantiateStreaming(fetch('https://cdn.example/runtime.wasm'), imports);`
+    );
+    assert.ok(
+      issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+      issues.join('\n')
+    );
+  });
+  test(`runtime entry review control: WASM ${kind} shadow`, () => {
+    const issues = probeReview(
+      '48651',
+      kind,
+      `function run(WebAssembly){WebAssembly.instantiateStreaming(fetch('https://cdn.example/runtime.wasm'), imports);}`
+    );
+    assert.equal(issues.length, 0, issues.join('\n'));
+  });
+  test(`runtime entry review control: SVG ${kind} geometry`, () => {
+    const issues = probeReview('48645', kind, `<svg><path d="M0 0 L4 4" /></svg>`, 'html');
+    assert.equal(issues.length, 0, issues.join('\n'));
+  });
+}
+for (const linked of [true, false]) {
+  test(`runtime entry review ${linked ? 'red' : 'control'}: promotion retargeted module link`, () => {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const directory = path.dirname(path.join(root, implementationPath));
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      `---\nimport './helper.test.ts';\n---\n<main>Search</main>`
+    );
+    fs.writeFileSync(path.join(directory, 'old.test.ts'), 'export const answer=1;');
+    fs.writeFileSync(path.join(directory, 'new.test.ts'), 'export const answer=2;');
+    const link = path.join(directory, 'helper.test.ts');
+    if (linked) fs.symlinkSync('old.test.ts', link);
+    else fs.writeFileSync(link, 'export const answer=1;');
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    if (linked) {
+      fs.unlinkSync(link);
+      fs.symlinkSync('new.test.ts', link);
+      assert.match(
+        validationMessage(root, promotionOptions(revision)),
+        /promotion module.*symlink.*unverified/u
+      );
+    } else
+      assert.doesNotThrow(() =>
+        validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+      );
+  });
+}
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    ['compile bytes', 'WebAssembly.compile(bytes);', true],
+    ['compile streaming', 'WebAssembly.compileStreaming(response);', true],
+    ['instantiate bytes', 'WebAssembly.instantiate(bytes, imports);', true],
+    ['qualified window', 'window.WebAssembly.instantiate(bytes, imports);', true],
+    ['qualified self', "self['WebAssembly']['compileStreaming'](response);", true],
+    ['qualified global', 'globalThis.WebAssembly.instantiateStreaming(response, imports);', true],
+    ['method alias', 'const compile=WebAssembly.compile;compile(bytes);', true],
+    ['namespace alias', 'const wasm=globalThis.WebAssembly;wasm.compile(bytes);', true],
+    ['call', 'WebAssembly.instantiate.call(null,bytes,imports);', true],
+    ['apply', 'WebAssembly.compile.apply(null,[bytes]);', true],
+    ['Reflect apply', 'Reflect.apply(WebAssembly.compile,null,[bytes]);', true],
+    ['Module constructor', 'new WebAssembly.Module(bytes);', true],
+    ['Instance constructor', 'new window.WebAssembly.Instance(module, imports);', true],
+    ['shadow namespace', 'const WebAssembly={compile(){}};WebAssembly.compile(bytes);', false],
+    ['shadow qualified', 'function run(window){window.WebAssembly.compile(bytes);}', false],
+    [
+      'business member',
+      'const engine={WebAssembly:{compile(){}}};engine.WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'business method alias',
+      'const engine={compile(){}};const compile=engine.compile;compile(bytes);',
+      false,
+    ],
+    ['Memory', 'new WebAssembly.Memory({initial:1});', false],
+    ['Table', "new WebAssembly.Table({initial:1,element:'anyfunc'});", false],
+    ['validate', 'WebAssembly.validate(bytes);', false],
+    ['feature test', "typeof WebAssembly.instantiateStreaming === 'function';", false],
+    ['type declaration', 'type Compiled=WebAssembly.Module;', false],
+  ])
+    test(`runtime entry review WASM boundaries: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-boundary', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+}
+for (const ext of ['html', 'astro', 'md', 'mdx', 'vue', 'svelte', 'tsx']) {
+  for (const [name, markup, reject] of [
+    ['href', '<svg><script href="https://cdn.example/runtime.js"></script></svg>', true],
+    ['legacy', '<svg><script xlink:href="https://cdn.example/runtime.js"></script></svg>', true],
+    [
+      'href priority',
+      '<svg><script href="./local.js" xlink:href="https://cdn.example/runtime.js"></script></svg>',
+      false,
+    ],
+    ['empty href priority', '<svg><script href="" xlink:href="./local.js"></script></svg>', true],
+    ['dynamic href', '<svg><script href={source} xlink:href="./local.js"></script></svg>', true],
+    [
+      'JSON type',
+      '<svg><script type="application/json" href="https://cdn.example/runtime.js"></script></svg>',
+      false,
+    ],
+    ['HTML href inert', '<script href="https://cdn.example/runtime.js"></script>', false],
+    [
+      'foreignObject HTML href',
+      '<svg><foreignObject><script href="https://cdn.example/runtime.js"></script></foreignObject></svg>',
+      false,
+    ],
+    ['SVG src inert', '<svg><script src="https://cdn.example/runtime.js"></script></svg>', false],
+    ['geometry', '<svg><path d="M0 0 L2 2" /></svg>', false],
+  ])
+    test(`runtime entry review SVG formats: ${ext} ${name}`, () => {
+      const source =
+        ext === 'tsx'
+          ? `export const Icon=()=>(${markup});`
+          : ext === 'vue'
+            ? `<template>${markup}</template>`
+            : markup;
+      const issues = probeReview('svg-formats', 'website', source, ext);
+      assert.equal(
+        issues.some((issue) =>
+          /external executable (?:worker )?script|dynamic executable script/u.test(issue)
+        ),
+        reject || (ext === 'tsx' && name === 'href priority'),
+        issues.join('\n')
+      );
+      if (name === 'href priority')
+        assert.equal(
+          issues.some((issue) => /external executable (?:worker )?script/u.test(issue)),
+          false,
+          issues.join('\n')
+        );
+    });
+}
+
+for (const mode of ['directory', 'ancestor', 'dangling', 'cycle', 'escape', 'regular-changed']) {
+  test(`runtime entry review promotion module paths: ${mode}`, () => {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const directory = path.dirname(path.join(root, implementationPath));
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    const nested = mode === 'ancestor' ? 'nested/' : '';
+    const imported =
+      mode === 'directory' || mode === 'ancestor'
+        ? `helpers/${nested}helper.test.ts`
+        : 'helper.test.ts';
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      `---\nimport './${imported}';\n---\n<main>Search</main>`
+    );
+    for (const [name, value] of [
+      ['old', 1],
+      ['new', 2],
+    ]) {
+      fs.mkdirSync(path.join(directory, name, nested), { recursive: true });
+      fs.writeFileSync(
+        path.join(directory, name, nested, 'helper.test.ts'),
+        `export const value=${value};`
+      );
+    }
+    const link = path.join(
+      directory,
+      mode === 'directory' || mode === 'ancestor' ? 'helpers' : 'helper.test.ts'
+    );
+    if (mode === 'regular-changed') fs.writeFileSync(link, 'export const value=1;');
+    else
+      fs.symlinkSync(
+        mode === 'directory' || mode === 'ancestor' ? 'old' : 'old/helper.test.ts',
+        link
+      );
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    if (mode === 'regular-changed') {
+      fs.writeFileSync(link, 'export const value=2;');
+      assert.match(
+        validationMessage(root, promotionOptions(revision)),
+        /promoted dependency.*helper\.test\.ts.*differs from evidence Commit/u
+      );
+      return;
+    }
+    fs.unlinkSync(link);
+    if (mode === 'escape') {
+      const outside = createRoot();
+      fs.writeFileSync(path.join(outside, 'helper.test.ts'), 'export const value=2;');
+      fs.symlinkSync(path.join(outside, 'helper.test.ts'), link);
+    } else
+      fs.symlinkSync(
+        mode === 'dangling' ? 'missing.test.ts' : mode === 'cycle' ? 'helper.test.ts' : 'new',
+        link
+      );
+    assert.match(
+      validationMessage(root, promotionOptions(revision)),
+      /promotion module.*symlink.*unverified/u
+    );
+  });
+}
+for (const ext of ['astro', 'mdx', 'vue', 'svelte', 'tsx']) {
+  for (const [name, markup] of [
+    ['component Script', '<svg><Script href="https://cdn.example/runtime.js" /></svg>'],
+    ['component Svg', '<Svg><script href="https://cdn.example/runtime.js"></script></Svg>'],
+    ['HTML data href', '<svg><script data-href="https://cdn.example/runtime.js"></script></svg>'],
+  ])
+    test(`runtime entry review SVG native identity: ${ext} ${name}`, () => {
+      const source =
+        ext === 'tsx'
+          ? `export const Icon=()=>(${markup});`
+          : ext === 'vue'
+            ? `<template>${markup}</template>`
+            : markup;
+      const issues = probeReview('svg-native', 'website', source, ext);
+      assert.equal(
+        issues.some((issue) =>
+          /external executable (?:worker )?script|dynamic executable script/u.test(issue)
+        ),
+        false,
+        issues.join('\n')
+      );
+    });
+}
+for (const ext of ['md', 'mdx']) {
+  for (const [name, source] of [
+    ['fenced', '```html\n<svg><script href="https://cdn.example/runtime.js"></script></svg>\n```'],
+    ['inline code', '`<svg><script href="https://cdn.example/runtime.js"></script></svg>`'],
+    ['comment', '<!-- <svg><script href="https://cdn.example/runtime.js"></script></svg> -->'],
+  ])
+    test(`runtime entry review SVG examples: ${ext} ${name}`, () => {
+      const issues = probeReview('svg-examples', 'website', source, ext);
+      assert.equal(
+        issues.some((issue) => /external executable (?:worker )?script/u.test(issue)),
+        false,
+        issues.join('\n')
+      );
+    });
+}
+test('runtime entry review SVG parser oracle: native namespaces and href precedence', () => {
+  const tree = parseHtmlFragment(
+    '<svg><script href="./local.js" xlink:href="https://cdn.example/runtime.js"></script><foreignObject><script href="https://cdn.example/html.js"></script></foreignObject></svg>'
+  );
+  const nodes = [];
+  const visit = (node) => {
+    if (node.tagName === 'script') nodes.push(node);
+    for (const child of node.childNodes ?? []) visit(child);
+  };
+  visit(tree);
+  assert.equal(nodes[0].namespaceURI, 'http://www.w3.org/2000/svg');
+  assert.equal(nodes[1].namespaceURI, 'http://www.w3.org/1999/xhtml');
+  assert.deepEqual(
+    nodes[0].attrs.map(({ name, prefix, namespace, value }) => [name, prefix, namespace, value]),
+    [
+      ['href', undefined, undefined, './local.js'],
+      ['href', 'xlink', 'http://www.w3.org/1999/xlink', 'https://cdn.example/runtime.js'],
+    ]
+  );
+});
+for (const ext of ['mdx', 'tsx'])
+  test(`runtime entry review SVG React XLink spelling: ${ext}`, () => {
+    const markup = '<svg><script xlinkHref="https://cdn.example/runtime.js" /></svg>';
+    const issues = probeReview(
+      'svg-xlink',
+      'website',
+      ext === 'tsx' ? `export const Icon=()=>(${markup});` : markup,
+      ext
+    );
+    assert.ok(
+      issues.some((issue) => /external executable (?:worker )?script/u.test(issue)),
+      issues.join('\n')
+    );
+  });
+test('runtime entry review SVG MDX ESM examples stay inert after source selection', () => {
+  const issues = probeReview(
+    'svg-mdx-esm',
+    'website',
+    'export const example = `😀<svg><script href="https://cdn.example/runtime.js"></script></svg>`;',
+    'mdx'
+  );
+  assert.equal(issues.length, 0, issues.join('\n'));
+});
+
+test('runtime entry review WASM package boundary: retains layer-identity inspection without promotion admission', () => {
+  const root = createRoot();
+  const implementationPath = 'apps/www/src/components/override/Search.astro';
+  const directory = path.join(root, 'node_modules/example-wasm');
+  fs.mkdirSync(directory, { recursive: true });
+  fs.writeFileSync(
+    path.join(directory, 'package.json'),
+    JSON.stringify({ name: 'example-wasm', type: 'module', exports: './index.mjs' })
+  );
+  fs.writeFileSync(
+    path.join(directory, 'index.mjs'),
+    'export const compile=(bytes)=>WebAssembly.compile(bytes);'
+  );
+  fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, implementationPath),
+    "---\nimport {compile} from 'example-wasm';\n---\n<main>Search</main>"
+  );
+  const websiteBindings = [[implementationPath, ['www.shell.search']]];
+  writeValidMatrices(root, {}, {}, { websiteBindings });
+  assert.deepEqual(collectCoverageMatrixIssues({ rootDir: root }), []);
+  const revision = commitFixtureRoot(root);
+  writeSelfHostedPromotion(root, revision, { websiteBindings });
+  assert.match(
+    validationMessage(root, promotionOptions(revision)),
+    /promotion package.*(?:unrecognized|unverified)/u
+  );
+});
+for (const [ext, markup] of [
+  ['astro', '<svg><script {...attrs}></script></svg>'],
+  ['mdx', '<svg><script {...attrs}></script></svg>'],
+  ['vue', '<template><svg><script v-bind="attrs"></script></svg></template>'],
+  ['vue', '<template><svg><script :[name]="value"></script></svg></template>'],
+])
+  test(`runtime entry review SVG opaque source: ${ext} ${markup}`, () => {
+    const issues = probeReview('svg-opaque', 'website', markup, ext);
+    assert.ok(
+      issues.some((issue) => /dynamic executable script/u.test(issue)),
+      issues.join('\n')
+    );
+  });
+test('runtime entry review SVG MDX lowercased xlinkhref is an unrelated prop', () => {
+  const issues = probeReview(
+    'svg-xlink-case',
+    'website',
+    '<svg><script xlinkhref="https://cdn.example/runtime.js" /></svg>',
+    'mdx'
+  );
+  assert.equal(issues.length, 0, issues.join('\n'));
+});
+for (const markup of [
+  '<script-widget src="https://cdn.example/runtime.js"></script-widget>',
+  '<svg><script:custom src="https://cdn.example/runtime.js"></script:custom></svg>',
+])
+  test(`runtime entry review SVG complete native name: ${markup}`, () => {
+    const issues = probeReview('svg-complete-name', 'website', markup, 'html');
+    assert.equal(
+      issues.some((issue) => /external executable (?:worker )?script/u.test(issue)),
+      false,
+      issues.join('\n')
+    );
+  });
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    ['object parameter', 'function run({WebAssembly}){WebAssembly.compile(bytes);}', false],
+    [
+      'renamed parameter',
+      'function run({engine:WebAssembly}){WebAssembly.instantiate(bytes,imports);}',
+      false,
+    ],
+    ['array parameter', 'function run([WebAssembly]){WebAssembly.compile(bytes);}', false],
+    ['qualified parameter', 'function run({window}){window.WebAssembly.compile(bytes);}', false],
+    ['business variable', 'const {WebAssembly}=business;WebAssembly.compile(bytes);', false],
+    ['catch binding', 'try{run()}catch({WebAssembly}){WebAssembly.compile(bytes);}', false],
+    ['true global extraction', 'const {WebAssembly}=globalThis;WebAssembly.compile(bytes);', true],
+    ['renamed native namespace', 'const {WebAssembly:wasm}=globalThis;wasm.compile(bytes);', true],
+    ['native method extraction', 'const {compile}=globalThis.WebAssembly;compile(bytes);', true],
+    [
+      'renamed native method',
+      'const {instantiate:load}=globalThis.WebAssembly;load(bytes,imports);',
+      true,
+    ],
+    ['ordinary global', 'WebAssembly.compile(bytes);', true],
+    ['qualified global', 'window.WebAssembly.instantiateStreaming(response,imports);', true],
+  ])
+    test(`WASM binding review red: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-binding-review', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+}
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    [
+      'nested business parameter',
+      'function f({nested:{engine:WebAssembly}}){WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'nested array business parameter',
+      'function f([{engine:WebAssembly}]){WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'rest object business parameter',
+      'function f({...WebAssembly}){WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'rest array business parameter',
+      'function f([...WebAssembly]){WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'default business parameter',
+      'function f({WebAssembly={compile(){}}}={}){WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'default qualified business parameter',
+      'function f({window={WebAssembly:{compile(){}}}}={}){window.WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'destructured globalThis business',
+      'function f({globalThis}){globalThis.WebAssembly.compile(bytes);}',
+      false,
+    ],
+    ['destructured self business', 'function f({self}){self.WebAssembly.compile(bytes);}', false],
+    [
+      'nested catch business',
+      'try{f()}catch({engine:{WebAssembly}}){WebAssembly.compile(bytes);}',
+      false,
+    ],
+    ['catch lifetime', 'try{f()}catch({WebAssembly}){}WebAssembly.compile(bytes);', true],
+    ['block lifetime', '{const {WebAssembly}=business;}WebAssembly.compile(bytes);', true],
+    [
+      'function var lifetime',
+      'function f(){if(flag){var {WebAssembly}=business;}WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'function var hoist',
+      'function f(){WebAssembly.compile(bytes);if(flag){var {WebAssembly}=business;}}',
+      false,
+    ],
+    ['TDZ shadow', 'function f(){WebAssembly.compile(bytes);const {WebAssembly}=business;}', false],
+    [
+      'let loop shadow',
+      'for(let {WebAssembly}=business;flag;){WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'let loop lifetime',
+      'for(let {WebAssembly}=business;flag;){}WebAssembly.compile(bytes);',
+      true,
+    ],
+    ['for-of shadow', 'for(const {WebAssembly} of businesses){WebAssembly.compile(bytes);}', false],
+    [
+      'for-of lifetime',
+      'for(const {WebAssembly} of businesses){}WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'var loop lifetime',
+      'function f(){for(var {WebAssembly} of businesses){}WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'named function expression',
+      'const f=function WebAssembly(){WebAssembly.compile(bytes);};',
+      false,
+    ],
+    [
+      'named class expression',
+      'const C=class WebAssembly{run(){WebAssembly.compile(bytes);}};',
+      false,
+    ],
+    [
+      'native nested projection',
+      'const {window:{WebAssembly:{compile:run}}}=globalThis;run(bytes);',
+      true,
+    ],
+    [
+      'native qualified alias',
+      'const {window:w}=globalThis;w.WebAssembly.instantiate(bytes,imports);',
+      true,
+    ],
+    [
+      'native constructor extraction',
+      'const {Module:Compiled}=globalThis.WebAssembly;new Compiled(bytes);',
+      true,
+    ],
+    [
+      'native Instance extraction',
+      'const {Instance:Loaded}=WebAssembly;new Loaded(module,imports);',
+      true,
+    ],
+    [
+      'native static computed',
+      'const {["WebAssembly"]:wasm}=globalThis;const {["compile"]:run}=wasm;run(bytes);',
+      true,
+    ],
+    ['native literal array', 'const [wasm]=[globalThis.WebAssembly];wasm.compile(bytes);', true],
+    [
+      'native nested literal',
+      'const [{engine:{compile:run}}]=[{engine:WebAssembly}];run(bytes);',
+      true,
+    ],
+    [
+      'business literal nested',
+      'const [{engine:WebAssembly}]=[{engine:{compile(){}}}];WebAssembly.compile(bytes);',
+      false,
+    ],
+    ['native rest unsupported', 'const {...wasm}=WebAssembly;wasm.compile(bytes);', true],
+    [
+      'native global rest unsupported',
+      'const {...scope}=globalThis;scope.WebAssembly.compile(bytes);',
+      true,
+    ],
+    ['business rest', 'const {...WebAssembly}=business;WebAssembly.compile(bytes);', false],
+    [
+      'business literal rest',
+      'const {...WebAssembly}={nested:{compile(){}}};WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'native default possible',
+      'const {missing:wasm=WebAssembly}=business;wasm.compile(bytes);',
+      true,
+    ],
+    [
+      'native parameter default possible',
+      'function f({wasm=globalThis.WebAssembly}={}){wasm.compile(bytes);}',
+      true,
+    ],
+    [
+      'native root parameter default possible',
+      'function f({WebAssembly}=globalThis){WebAssembly.compile(bytes);}',
+      true,
+    ],
+    [
+      'business default remains shadow',
+      'const {WebAssembly={compile(){}}}=business;WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'native computed unknown unsupported',
+      'const {[key]:wasm}=globalThis;wasm.compile(bytes);',
+      true,
+    ],
+    ['native method default unknown', 'const {compile=business}=WebAssembly;compile(bytes);', true],
+    [
+      'business Reflect destructuring',
+      'function f({Reflect}){Reflect.apply(WebAssembly.compile,null,[bytes]);}',
+      false,
+    ],
+    [
+      'native Reflect destructuring',
+      'const {Reflect}=globalThis;Reflect.apply(WebAssembly.compile,null,[bytes]);',
+      true,
+    ],
+    [
+      'native hoisted alias initialization',
+      'function f(){if(flag){var {WebAssembly:wasm}=globalThis;}wasm.compile(bytes);}',
+      true,
+    ],
+    [
+      'assignment stays in sibling scope',
+      'const wasm=business;function f(wasm){wasm=WebAssembly;}wasm.compile(bytes);',
+      false,
+    ],
+    ['native assigned alias', 'let run;run=WebAssembly.compile;run(bytes);', true],
+    [
+      'safe method destructuring',
+      'const {validate,Memory,Table}=WebAssembly;validate(bytes);new Memory({initial:1});new Table({element:"anyfunc",initial:1});',
+      false,
+    ],
+  ])
+    test(`WASM binding review boundaries: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-binding-boundaries', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+}
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    [
+      'known global rest exclusion',
+      'const {WebAssembly,...scope}=globalThis;scope.WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'known method rest exclusion',
+      'const {compile,...wasm}=WebAssembly;wasm.compile(bytes);',
+      false,
+    ],
+    [
+      'nonexcluded native rest method',
+      'const {compile,...wasm}=WebAssembly;wasm.instantiate(bytes,imports);',
+      true,
+    ],
+    [
+      'known rest safe method',
+      'const {...wasm}=WebAssembly;wasm.validate(bytes);new wasm.Memory({initial:1});',
+      false,
+    ],
+    [
+      'rest native fallback',
+      'const {WebAssembly,...scope}=globalThis;const {WebAssembly:wasm=globalThis.WebAssembly}=scope;wasm.compile(bytes);',
+      true,
+    ],
+    [
+      'literal rest exclusion',
+      'const {native,...scope}={native:WebAssembly};scope.native.compile(bytes);',
+      false,
+    ],
+    [
+      'literal array rest exclusion',
+      'const [native,...scopes]=[WebAssembly,{compile(){}}];scopes[0].compile(bytes);',
+      false,
+    ],
+    [
+      'literal array rest native',
+      'const [data,...scopes]=[{},WebAssembly];scopes[0].compile(bytes);',
+      true,
+    ],
+  ])
+    test(`WASM binding review rest projections: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-binding-rest', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    [
+      'defined business method excludes default',
+      'const {compile=WebAssembly.compile}={compile(){}};compile(bytes);',
+      false,
+    ],
+    [
+      'defined business object excludes default',
+      'const {engine:wasm=WebAssembly}={engine:{compile(){}}};wasm.compile(bytes);',
+      false,
+    ],
+    [
+      'defined array value excludes default',
+      'const [wasm=WebAssembly]=[{compile(){}}];wasm.compile(bytes);',
+      false,
+    ],
+    [
+      'missing property uses native default',
+      'const {engine:wasm=WebAssembly}={};wasm.compile(bytes);',
+      true,
+    ],
+    [
+      'explicit business overrides native spread',
+      'const {compile}={...WebAssembly,compile(){}};compile(bytes);',
+      false,
+    ],
+    [
+      'safe builtin extraction default unused',
+      'const {validate=WebAssembly.compile}=WebAssembly;validate(bytes);',
+      false,
+    ],
+  ])
+    test(`WASM binding review default projections: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-binding-defaults', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    ['unknown window call is not a WASM entry', 'window[name](value);', false],
+    ['unknown global call is not a WASM entry', 'globalThis[name](value);', false],
+    ['unknown worker call is not a WASM entry', 'self[name](value);', false],
+    [
+      'unknown native namespace projection stays unsupported',
+      'globalThis[name].compile(bytes);',
+      true,
+    ],
+    ['unknown native method stays unsupported', 'WebAssembly[name](bytes);', true],
+  ])
+    test(`WASM binding review unknown projections: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-binding-unknown', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    [
+      'static block var is local',
+      'class Scope{static{var {WebAssembly}=business;WebAssembly.compile(bytes);}}',
+      false,
+    ],
+    [
+      'static block var does not hide later global',
+      'class Scope{static{var {WebAssembly}=business;}}WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'namespace var is local',
+      'namespace Scope{var {WebAssembly}=business;WebAssembly.compile(bytes);}',
+      false,
+    ],
+    [
+      'namespace var does not hide later global',
+      'namespace Scope{var {WebAssembly}=business;}WebAssembly.compile(bytes);',
+      true,
+    ],
+  ])
+    test(`WASM binding review var containers: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-binding-var-containers', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    ['enum value shadows global', 'enum WebAssembly{compile}WebAssembly.compile(bytes);', false],
+    [
+      'namespace value shadows global',
+      'namespace WebAssembly{export const compile=business;}WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'import equals value shadows global',
+      'import WebAssembly=business.engine;WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'type-only name does not shadow value',
+      'type WebAssembly={compile:unknown};WebAssembly.compile(bytes);',
+      true,
+    ],
+  ])
+    test(`WASM binding review TypeScript names: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-binding-typescript', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    [
+      'ambient const',
+      'declare const WebAssembly: typeof globalThis.WebAssembly; WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'ambient window',
+      'declare const window: Window & typeof globalThis; window.WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'ambient namespace',
+      'declare namespace WebAssembly { function compile(bytes: Uint8Array): Promise<unknown>; } WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'pure type namespace',
+      'namespace WebAssembly { export interface Options { value: string } } WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'type-only import',
+      'import type {WebAssembly} from "./types"; WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'inline type import',
+      'import {type WebAssembly} from "./types"; WebAssembly.compile(bytes);',
+      true,
+    ],
+    ['type alias control', 'type WebAssembly={compile:unknown}; WebAssembly.compile(bytes);', true],
+    [
+      'real namespace control',
+      'namespace WebAssembly { export const compile=(bytes:unknown)=>bytes; } WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'business const control',
+      'const WebAssembly={compile(bytes:unknown){return bytes}}; WebAssembly.compile(bytes);',
+      false,
+    ],
+    ['qualified native control', 'globalThis.WebAssembly.compile(bytes);', true],
+  ])
+    test(`WASM erasure review red: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-erasure-review', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    ['ambient let global', 'declare let WebAssembly:unknown;WebAssembly.compile(bytes);', true],
+    [
+      'ambient destructured global',
+      'declare const {WebAssembly}:typeof globalThis;WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'ambient class',
+      'declare class WebAssembly{static compile(bytes:unknown):void}WebAssembly.compile(bytes);',
+      true,
+    ],
+    ['ambient function', 'declare function WebAssembly():void;WebAssembly.compile(bytes);', true],
+    ['overload signature erased', 'function WebAssembly():void;WebAssembly.compile(bytes);', true],
+    [
+      'actual overload implementation',
+      'function WebAssembly():void;function WebAssembly(){}WebAssembly.compile(bytes);',
+      false,
+    ],
+    ['ambient enum', 'declare enum WebAssembly{compile}WebAssembly.compile(bytes);', true],
+    ['runtime enum', 'enum WebAssembly{compile}WebAssembly.compile(bytes);', false],
+    [
+      'const enum value or rewrite',
+      'const enum WebAssembly{compile=0}WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'ambient const enum remains unverified',
+      'declare const enum WebAssembly{compile=0}WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'const enum namespace remains unverified',
+      'namespace WebAssembly{export const enum Code{compile=0}}WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'nested pure namespace',
+      'namespace WebAssembly.Types{export type Options={value:string}}WebAssembly.compile(bytes);',
+      true,
+    ],
+    ['empty namespace', 'namespace WebAssembly{}WebAssembly.compile(bytes);', true],
+    [
+      'namespace with emitted shell',
+      'namespace WebAssembly{export declare const other:number;}WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'nested value namespace',
+      'namespace WebAssembly.Nested{export const value=1;}WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'ambient nested namespace',
+      'declare namespace WebAssembly.Nested{const value:number;}WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'ambient member inside real namespace',
+      'namespace Scope{declare const WebAssembly:unknown;export function run(){WebAssembly.compile(bytes);}}',
+      true,
+    ],
+    [
+      'declare module ancestor',
+      'declare module "types"{namespace WebAssembly{const compile:unknown;}}WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'declare global ancestor',
+      'declare global{const WebAssembly:unknown;}WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'type-only default import',
+      'import type WebAssembly from "./types";WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'type-only namespace import',
+      'import type * as WebAssembly from "./types";WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'mixed import type shadow',
+      'import {type WebAssembly,run} from "./types";run();WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'mixed import value shadow',
+      'import {WebAssembly,type Options} from "./types";WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'mixed default value import',
+      'import WebAssembly,{type Options} from "./types";WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'real namespace import',
+      'import * as WebAssembly from "./types";WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'renamed type import',
+      'import {type Engine as WebAssembly,run} from "./types";run();WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'renamed value import',
+      'import {Engine as WebAssembly,type Options} from "./types";WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'type-only import equals',
+      'import type WebAssembly=business.engine;WebAssembly.compile(bytes);',
+      true,
+    ],
+    [
+      'real abstract class',
+      'abstract class WebAssembly{static compile(bytes:unknown){return bytes}}WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'ambient plus real value merge',
+      'declare namespace WebAssembly{interface Options{}}const WebAssembly={compile(){}};WebAssembly.compile(bytes);',
+      false,
+    ],
+    [
+      'erased qualifier stays native',
+      'import {type Window as window,run} from "./types";run();window.WebAssembly.compile(bytes);',
+      true,
+    ],
+  ])
+    test(`WASM erasure review boundaries: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-erasure-boundaries', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+
+test('WASM erasure review oracle: erased syntax retains native call without runtime binding', () => {
+  const ts = createRequire(import.meta.url)('typescript');
+  for (const source of [
+    'declare const WebAssembly:typeof globalThis.WebAssembly;',
+    'declare namespace WebAssembly{function compile(bytes:unknown):unknown;}',
+    'namespace WebAssembly{export interface Options{value:string}}',
+    'namespace WebAssembly.Types{export type Options={value:string}}',
+    'import type {WebAssembly} from "./types";',
+    'import {type WebAssembly,run} from "./types";run();',
+  ]) {
+    const result = ts.transpileModule(source + 'WebAssembly.compile(bytes);', {
+      fileName: 'probe.ts',
+      compilerOptions: {
+        target: ts.ScriptTarget.ESNext,
+        module: ts.ModuleKind.ESNext,
+        isolatedModules: true,
+      },
+      reportDiagnostics: true,
+    });
+    assert.equal(result.diagnostics.length, 0, source);
+    assert.match(result.outputText, /WebAssembly\.compile\(bytes\)/u);
+    const emitted = ts.createSourceFile(
+      'emitted.js',
+      result.outputText,
+      ts.ScriptTarget.Latest,
+      true
+    );
+    assert.equal(
+      emitted.statements.some(
+        (statement) =>
+          (ts.isVariableStatement(statement) &&
+            statement.declarationList.declarations.some(
+              (d) => d.name.getText(emitted) === 'WebAssembly'
+            )) ||
+          (ts.isImportDeclaration(statement) &&
+            statement.importClause?.namedBindings?.elements?.some(
+              (e) => e.name.text === 'WebAssembly'
+            ))
+      ),
+      false,
+      result.outputText
+    );
+  }
+});
+test('WASM erasure review oracle: value namespace and const enum remain emission-sensitive', () => {
+  const ts = createRequire(import.meta.url)('typescript');
+  for (const source of [
+    'namespace WebAssembly{export const compile=(bytes:unknown)=>bytes;}',
+    'namespace WebAssembly{export declare const other:number;}',
+    'const enum WebAssembly{compile=0}',
+    'namespace WebAssembly{export const enum Code{compile=0}}',
+  ]) {
+    const result = ts.transpileModule(source + 'WebAssembly.compile(bytes);', {
+      fileName: 'probe.ts',
+      compilerOptions: {
+        target: ts.ScriptTarget.ESNext,
+        module: ts.ModuleKind.ESNext,
+        isolatedModules: true,
+      },
+      reportDiagnostics: true,
+    });
+    assert.equal(result.diagnostics.length, 0, source);
+    assert.match(result.outputText, /var WebAssembly;/u);
+  }
+});
+test('WASM erasure review oracle: const enum references can rewrite without executing generated code', () => {
+  const ts = createRequire(import.meta.url)('typescript');
+  for (const ambient of [false, true]) {
+    const source = `${ambient ? 'declare ' : ''}const enum WebAssembly{compile=0}\nconst entry=WebAssembly.compile;`;
+    const file = '/virtual-wasm-enum.ts';
+    const options = {
+      target: ts.ScriptTarget.ESNext,
+      module: ts.ModuleKind.ESNext,
+      noLib: true,
+      noResolve: true,
+      preserveConstEnums: false,
+    };
+    const outputs = [];
+    const host = {
+      getSourceFile: (name) =>
+        name === file ? ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true) : undefined,
+      getDefaultLibFileName: () => '',
+      writeFile: (_name, text) => outputs.push(text),
+      getCurrentDirectory: () => '/virtual',
+      getDirectories: () => [],
+      fileExists: (name) => name === file,
+      readFile: (name) => (name === file ? source : undefined),
+      getCanonicalFileName: (name) => name,
+      useCaseSensitiveFileNames: () => true,
+      getNewLine: () => '\n',
+    };
+    const result = ts.createProgram([file], options, host).emit();
+    assert.equal(result.emitSkipped, false);
+    assert.equal(outputs.length, 1);
+    assert.match(outputs[0], /const entry = 0/u);
+    assert.doesNotMatch(outputs[0], /var WebAssembly/u);
+    const isolated = ts.transpileModule(source, {
+      fileName: 'probe.ts',
+      compilerOptions: {
+        target: ts.ScriptTarget.ESNext,
+        module: ts.ModuleKind.ESNext,
+        isolatedModules: true,
+      },
+    }).outputText;
+    assert.match(isolated, /const entry = WebAssembly\.compile/u);
+  }
+});

@@ -4755,7 +4755,388 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
           (member.name === 'audioWorklet' && isAudioContext(member.receiver, node, visited)))
       );
     });
+  // WASM native provenance has its own complete lexical environment. Merely
+  // binding a name suppresses the global; it does not prove the bound value.
+  // Keep the older DOM/ownership receiver classifiers outside this repair.
+  const wasmBindings = new Map();
+  const wasmAssignments = [];
+  const wasmScope = (node, functionOnly = false) => {
+    for (let current = node.parent; current; current = current.parent) {
+      if (
+        ts.isFunctionLike(current) ||
+        ts.isSourceFile(current) ||
+        ts.isClassStaticBlockDeclaration(current) ||
+        ts.isModuleBlock(current) ||
+        (!functionOnly &&
+          (ts.isBlock(current) ||
+            ts.isCatchClause(current) ||
+            ts.isForStatement(current) ||
+            ts.isForOfStatement(current) ||
+            ts.isForInStatement(current) ||
+            ts.isCaseBlock(current) ||
+            ts.isClassExpression(current) ||
+            ts.isClassDeclaration(current)))
+      )
+        return current;
+    }
+    return null;
+  };
+  const wasmPropertyKey = (name) =>
+    ts.isIdentifier(name) || ts.isStringLiteralLike(name) || ts.isNumericLiteral(name)
+      ? name.text
+      : ts.isComputedPropertyName(name) && ts.isStringLiteralLike(name.expression)
+        ? name.expression.text
+        : null;
+  // TypeScript-only syntax is not a runtime shadow. Use the locked parser's
+  // namespace instance classification rather than guessing from child names.
+  // Const-enum-only namespaces/ambient const enums depend on emit options:
+  // they cannot certify that a same-named browser value was replaced.
+  const wasmBindingEmission = (node) => {
+    if (ts.isFunctionDeclaration(node) && !node.body) return 'erased';
+    let ambient = sourceFile.isDeclarationFile;
+    for (let current = node; current; current = current.parent) {
+      if (
+        (ts.isImportClause(current) ||
+          ts.isImportSpecifier(current) ||
+          ts.isImportEqualsDeclaration(current)) &&
+        current.isTypeOnly
+      )
+        return 'erased';
+      if (
+        ts.canHaveModifiers(current) &&
+        ts.getModifiers(current)?.some((modifier) => modifier.kind === ts.SyntaxKind.DeclareKeyword)
+      )
+        ambient = true;
+    }
+    if (ambient)
+      return ts.isEnumDeclaration(node) &&
+        ts.getModifiers(node)?.some((modifier) => modifier.kind === ts.SyntaxKind.ConstKeyword)
+        ? 'rewrite'
+        : 'erased';
+    if (ts.isModuleDeclaration(node)) {
+      const state = ts.getModuleInstanceState(node);
+      if (state === ts.ModuleInstanceState.NonInstantiated) return 'erased';
+      if (state === ts.ModuleInstanceState.ConstEnumOnly) return 'rewrite';
+    }
+    return 'runtime';
+  };
+  const addWasmNames = (name, declaration, steps = []) => {
+    const emission = wasmBindingEmission(declaration);
+    if (emission === 'erased') return;
+
+    if (ts.isIdentifier(name)) {
+      const entries = wasmBindings.get(name.text) ?? [];
+      const variable = ts.isVariableDeclaration(declaration);
+      const hoisted =
+        variable &&
+        ts.isVariableDeclarationList(declaration.parent) &&
+        !(declaration.parent.flags & ts.NodeFlags.BlockScoped);
+      entries.push({
+        node: declaration,
+        steps,
+        initializer: declaration.initializer ?? null,
+        rewrite: emission === 'rewrite',
+        scope: wasmScope(declaration, hoisted),
+        position: declaration.getStart(sourceFile),
+      });
+      wasmBindings.set(name.text, entries);
+      return;
+    }
+    for (const [index, element] of name.elements.entries()) {
+      if (!ts.isBindingElement(element)) continue;
+      const property = element.propertyName ?? element.name;
+      const key = ts.isArrayBindingPattern(name)
+        ? String(index)
+        : ts.isIdentifier(property) ||
+            ts.isStringLiteralLike(property) ||
+            ts.isNumericLiteral(property)
+          ? property.text
+          : ts.isComputedPropertyName(property) && ts.isStringLiteralLike(property.expression)
+            ? property.expression.text
+            : null;
+      addWasmNames(element.name, declaration, [
+        ...steps,
+        {
+          key,
+          rest: Boolean(element.dotDotDotToken),
+          fallback: element.initializer ?? null,
+          excluded: ts.isObjectBindingPattern(name)
+            ? name.elements
+                .slice(0, index)
+                .map((previous) => wasmPropertyKey(previous.propertyName ?? previous.name))
+                .filter((key) => key !== null)
+            : [],
+          restIndex: ts.isArrayBindingPattern(name) ? index : null,
+        },
+      ]);
+    }
+  };
+  const collectWasmBindings = (node) => {
+    if (ts.isVariableDeclaration(node) || ts.isParameter(node)) addWasmNames(node.name, node);
+    else if (
+      (ts.isFunctionDeclaration(node) ||
+        ts.isClassDeclaration(node) ||
+        ts.isEnumDeclaration(node) ||
+        ts.isImportEqualsDeclaration(node) ||
+        (ts.isModuleDeclaration(node) && ts.isIdentifier(node.name)) ||
+        ts.isImportClause(node) ||
+        ts.isImportSpecifier(node) ||
+        ts.isNamespaceImport(node)) &&
+      node.name
+    )
+      addWasmNames(node.name, node);
+    if (
+      (ts.isFunctionExpression(node) || ts.isClassExpression(node)) &&
+      node.name &&
+      wasmBindingEmission(node) !== 'erased'
+    ) {
+      addWasmNames(node.name, node);
+      wasmBindings.get(node.name.text).at(-1).scope = node;
+    }
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isIdentifier(node.left)
+    )
+      wasmAssignments.push(node);
+    ts.forEachChild(node, collectWasmBindings);
+  };
+  collectWasmBindings(sourceFile);
+  const wasmBindingAt = (name, at) => {
+    for (let scope = wasmScope(at); scope; scope = wasmScope(scope)) {
+      const entries = (wasmBindings.get(name) ?? []).filter((entry) => entry.scope === scope);
+      if (entries.length) return entries;
+    }
+    return [];
+  };
+  const wasmMethods = new Set([
+    'compile',
+    'compileStreaming',
+    'instantiate',
+    'instantiateStreaming',
+  ]);
+  const wasmConstructors = new Set(['Module', 'Instance']);
+  const wasmGlobals = new Set(['globalThis', 'window', 'self']);
+  const wasmUnboundValue = (name) =>
+    new Set(
+      name === 'WebAssembly'
+        ? ['wasm']
+        : name === 'Reflect'
+          ? ['reflect']
+          : wasmGlobals.has(name)
+            ? ['global']
+            : ['unknown']
+    );
+  const wasmMayContainNative = (values, at, seen, depth = 0) => {
+    if (depth >= 64) return false;
+    return [...values].some((value) => {
+      if (typeof value === 'string') return !['defined', 'undefined', 'unknown'].includes(value);
+      if (value.restSource !== undefined)
+        return wasmMayContainNative(new Set([value.restSource]), at, seen, depth + 1);
+      const members = ts.isArrayLiteralExpression(value)
+        ? value.elements
+        : value.properties.flatMap((property) =>
+            ts.isPropertyAssignment(property)
+              ? [property.initializer]
+              : ts.isShorthandPropertyAssignment(property)
+                ? [property.name]
+                : ts.isSpreadAssignment(property)
+                  ? [property.expression]
+                  : []
+          );
+      return members.some((member) =>
+        wasmMayContainNative(wasmValue(member, at, new Set(seen)), at, seen, depth + 1)
+      );
+    });
+  };
+  const projectWasmValue = (
+    values,
+    key,
+    at,
+    seen,
+    rest = false,
+    excluded = [],
+    restIndex = null
+  ) => {
+    const result = new Set();
+    for (const value of values) {
+      if (value === 'defined' || value === 'undefined') {
+        result.add('undefined');
+        continue;
+      }
+      if (value === 'unknown') {
+        result.add('unknown');
+        continue;
+      }
+      if (rest) {
+        result.add({ restSource: value, excluded: new Set(excluded), restIndex });
+        continue;
+      }
+      if (typeof value !== 'string' && value.restSource !== undefined) {
+        if (value.excluded.has(key)) {
+          result.add('undefined');
+          continue;
+        }
+        const projectedKey =
+          value.restIndex !== null && /^(?:0|[1-9][0-9]*)$/u.test(key ?? '')
+            ? String(Number(key) + value.restIndex)
+            : key;
+        for (const projected of projectWasmValue(
+          new Set([value.restSource]),
+          projectedKey,
+          at,
+          seen
+        ))
+          result.add(projected);
+        if (typeof value.restSource === 'string') result.add('undefined');
+      } else if (typeof value !== 'string') {
+        if (key === null) {
+          // Literal aggregates containing a native source retain uncertainty;
+          // a rest/default is not a claim that native properties were copied.
+          if (wasmMayContainNative(new Set([value]), at, seen)) result.add('unknown-native');
+          continue;
+        }
+        let projected = new Set(['undefined']);
+        if (ts.isArrayLiteralExpression(value)) {
+          const member = value.elements[Number(key)];
+          if (member && !ts.isOmittedExpression(member))
+            projected = wasmValue(member, at, new Set(seen));
+        } else
+          for (const property of value.properties) {
+            if (ts.isPropertyAssignment(property) && wasmPropertyKey(property.name) === key)
+              projected = wasmValue(property.initializer, at, new Set(seen));
+            else if (ts.isShorthandPropertyAssignment(property) && property.name.text === key)
+              projected = wasmValue(property.name, at, new Set(seen));
+            else if (ts.isMethodDeclaration(property) && wasmPropertyKey(property.name) === key)
+              projected = new Set(['defined']);
+            else if (ts.isSpreadAssignment(property)) {
+              for (const spread of projectWasmValue(
+                wasmValue(property.expression, at, new Set(seen)),
+                key,
+                at,
+                new Set(seen)
+              ))
+                projected.add(spread);
+            }
+          }
+        for (const value of projected) result.add(value);
+      } else if (value === 'unknown-native') result.add('unknown-native');
+      else if (key === null) result.add(value === 'wasm' ? 'unknown-native' : 'unknown-container');
+      else if (value === 'unknown-container' && wasmMethods.has(key)) result.add(`method:${key}`);
+      else if (value === 'unknown-container' && wasmConstructors.has(key))
+        result.add(`constructor:${key}`);
+      else if (value === 'unknown-container' && key === 'WebAssembly') result.add('wasm');
+      else if (value === 'global' && wasmGlobals.has(key)) result.add('global');
+      else if (value === 'global' && key === 'WebAssembly') result.add('wasm');
+      else if (value === 'global' && key === 'Reflect') result.add('reflect');
+      else if (value === 'wasm' && wasmMethods.has(key)) result.add(`method:${key}`);
+      else if (value === 'wasm' && wasmConstructors.has(key)) result.add(`constructor:${key}`);
+      else if (value === 'wasm' && /^(?:Memory|Table|Global|Tag|Exception|validate)$/u.test(key))
+        result.add('defined');
+      else result.add('unknown');
+    }
+    return result;
+  };
+  const wasmValue = (expression, at, seen = new Set()) => {
+    if (!expression || seen.size >= 64) return new Set(['unknown']);
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isIdentifier(candidate)) {
+      const bindings = wasmBindingAt(candidate.text, at);
+      if (bindings.length) {
+        const result = new Set();
+        for (const binding of bindings) {
+          if (binding.position >= at.getStart(sourceFile) || seen.has(binding)) continue;
+          const visited = new Set(seen).add(binding);
+          let values = wasmValue(binding.initializer, binding.node, visited);
+          if (binding.rewrite)
+            for (const possible of wasmUnboundValue(candidate.text)) values.add(possible);
+          for (const step of binding.steps) {
+            values = projectWasmValue(
+              values,
+              step.key,
+              binding.node,
+              visited,
+              step.rest,
+              step.excluded,
+              step.restIndex
+            );
+            if (
+              step.fallback &&
+              (values.size === 0 ||
+                values.has('unknown') ||
+                values.has('undefined') ||
+                values.has('unknown-native') ||
+                values.has('unknown-container'))
+            )
+              for (const fallback of wasmValue(step.fallback, binding.node, visited))
+                values.add(fallback);
+          }
+          // Track only assignments bound to this declaration, never same-name
+          // assignments under a different parameter/block/catch/loop scope.
+          for (const assignment of wasmAssignments)
+            if (
+              assignment.left.text === candidate.text &&
+              assignment.getStart(sourceFile) < at.getStart(sourceFile) &&
+              wasmBindingAt(candidate.text, assignment).includes(binding)
+            )
+              for (const value of wasmValue(assignment.right, assignment, visited))
+                values.add(value);
+          for (const value of values) result.add(value);
+        }
+        return result;
+      }
+      return wasmUnboundValue(candidate.text);
+    }
+    const member = staticMemberAccess(candidate);
+    if (member)
+      return projectWasmValue(wasmValue(member.receiver, at, seen), member.name, at, seen);
+    if (ts.isElementAccessExpression(candidate))
+      return projectWasmValue(
+        wasmValue(candidate.expression, at, seen),
+        ts.isNumericLiteral(candidate.argumentExpression)
+          ? candidate.argumentExpression.text
+          : null,
+        at,
+        seen
+      );
+    if (ts.isObjectLiteralExpression(candidate) || ts.isArrayLiteralExpression(candidate))
+      return new Set([candidate]);
+    if (
+      ts.isFunctionExpression(candidate) ||
+      ts.isArrowFunction(candidate) ||
+      ts.isClassExpression(candidate) ||
+      ts.isStringLiteralLike(candidate) ||
+      ts.isNumericLiteral(candidate) ||
+      [ts.SyntaxKind.TrueKeyword, ts.SyntaxKind.FalseKeyword, ts.SyntaxKind.NullKeyword].includes(
+        candidate.kind
+      )
+    )
+      return new Set(['defined']);
+    return new Set(['unknown']);
+  };
+  const isNativeWasmEntry = (expression, useNode, constructors = false) =>
+    [...wasmValue(expression, useNode)].some(
+      (value) =>
+        typeof value === 'string' &&
+        (value === 'unknown-native' || value.startsWith(constructors ? 'constructor:' : 'method:'))
+    );
   const visit = (node) => {
+    if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+      const member = staticMemberAccess(node.expression);
+      if (
+        isNativeWasmEntry(node.expression, node, ts.isNewExpression(node)) ||
+        (ts.isCallExpression(node) &&
+          member &&
+          /^(?:call|apply|bind)$/u.test(member.name) &&
+          isNativeWasmEntry(member.receiver, node)) ||
+        (ts.isCallExpression(node) &&
+          member?.name === 'apply' &&
+          wasmValue(member.receiver, node).has('reflect') &&
+          node.arguments[0] &&
+          isNativeWasmEntry(node.arguments[0], node))
+      )
+        specifiers.push(UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER);
+    }
     if (ts.isCallExpression(node)) {
       const isTimer = (expression) =>
         resolveLocalValue(expression, node, new Set(), (candidate, useNode) =>
@@ -4815,11 +5196,11 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         const attributes = new Map();
         let opaque = false;
         for (const attribute of node.attributes.properties) {
-          if (!ts.isJsxAttribute(attribute) || !ts.isIdentifier(attribute.name)) {
+          if (!ts.isJsxAttribute(attribute)) {
             opaque = true;
             continue;
           }
-          const name = attribute.name.text;
+          const name = attribute.name.getText(sourceFile);
           if (attributes.has(name)) opaque = true;
           const initializer = attribute.initializer;
           attributes.set(
@@ -4827,6 +5208,23 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
             initializer && ts.isJsxExpression(initializer) ? initializer.expression : initializer
           );
         }
+        let svg = false;
+        for (let ancestor = node.parent; ancestor; ancestor = ancestor.parent) {
+          if (!ts.isJsxElement(ancestor) || ancestor.openingElement === node) continue;
+          const name = ancestor.openingElement.tagName.getText(sourceFile);
+          if (name === 'foreignObject') break;
+          if (name === 'svg') {
+            svg = true;
+            break;
+          }
+        }
+        const sourceName = svg
+          ? attributes.has('href')
+            ? 'href'
+            : attributes.has('xlinkHref')
+              ? 'xlinkHref'
+              : 'xlink:href'
+          : 'src';
         const typeNode = attributes.get('type');
         const type = typeNode && ts.isStringLiteralLike(typeNode) ? typeNode.text : null;
         if (
@@ -4837,8 +5235,8 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         else if (type?.trim().toLowerCase() === 'importmap')
           specifiers.push(DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER);
         else if (isExecutableScriptType(type)) {
-          if (attributes.has('src'))
-            specifiers.push(scriptElementSourceSpecifier(attributes.get('src')));
+          if (attributes.has(sourceName))
+            specifiers.push(scriptElementSourceSpecifier(attributes.get(sourceName)));
           else if (
             attributes.has('dangerouslySetInnerHTML') ||
             (ts.isJsxOpeningElement(node) &&
@@ -5204,7 +5602,7 @@ function staticMarkupResourceUrl(openingTag, name) {
 // Tokenize entire attributes, never suffix-match names or scan inside values.
 // This is shared by literal HTML and template opening tags; expression-valued
 // attributes remain opaque instead of being interpreted as HTML strings.
-function markupAttributeTokens(openingTag) {
+function markupAttributeTokens(openingTag, caseSensitive = false) {
   const attributes = new Map();
   let cursor = openingTag.match(/^<[^\s/>]+/u)?.[0].length ?? openingTag.length;
   while (cursor < openingTag.length) {
@@ -5212,7 +5610,8 @@ function markupAttributeTokens(openingTag) {
     if (!openingTag[cursor] || openingTag[cursor] === '>') break;
     const start = cursor;
     while (cursor < openingTag.length && !/[\t\n\r\f /=>]/u.test(openingTag[cursor])) cursor += 1;
-    const name = openingTag.slice(start, cursor).toLowerCase();
+    const authoredName = openingTag.slice(start, cursor);
+    const name = caseSensitive ? authoredName : authoredName.toLowerCase();
     if (!name) {
       cursor += 1;
       continue;
@@ -5381,28 +5780,87 @@ const DYNAMIC_STYLESHEET_REL_SPECIFIER = '<dynamic stylesheet relation>';
 const DYNAMIC_DOCUMENT_BASE_SPECIFIER = '<dynamic document base href>';
 const DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER = '<dynamic executable script type>';
 
-function externalScriptModuleSpecifiers(content) {
-  return jsxOpeningTagCandidates(content)
-    .filter((openingTag) => /^<script\b/iu.test(openingTag))
-    .flatMap((openingTag) => {
-      const hasSrc = hasMarkupAttribute(openingTag, 'src', ':src', 'v-bind:src');
+function externalScriptModuleSpecifiers(content, absolutePath = 'source.html') {
+  let markup = content;
+  if (/\.mdx?$/iu.test(absolutePath)) {
+    try {
+      markup = maskMdxEsmLiteralText(markdownResourceSource(content, absolutePath), absolutePath);
+    } catch {
+      return [DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER];
+    }
+  }
+  markup = markup.replace(/^---[ \t]*\r?\n[\s\S]*?\r?\n---[ \t]*(?:\r?\n|$)/u, '');
+  const framework = !/\.(?:html?|md)$/iu.test(absolutePath);
+  const masked = framework ? maskStringsInMdxBraceExpressions(markup) : markup;
+  // HTML parsing supplies foreign-content and integration-point namespaces.
+  // Capitalized framework components must not become native SVG/script tags
+  // merely because the HTML tokenizer folds their spelling.
+  const parseable = framework ? masked.replace(/(<\/?)[A-Z]/gu, '$1x') : masked;
+  const svgScripts = new Set();
+  const inspect = (node) => {
+    if (
+      node.namespaceURI === 'http://www.w3.org/2000/svg' &&
+      node.tagName === 'script' &&
+      node.sourceCodeLocation?.startTag
+    )
+      svgScripts.add(node.sourceCodeLocation.startTag.startOffset);
+    for (const child of node.childNodes ?? []) inspect(child);
+    if (node.content) inspect(node.content);
+  };
+  inspect(parseHtmlFragment(parseable, { sourceCodeLocationInfo: true }));
+  inspect(parseHtml(parseable, { sourceCodeLocationInfo: true }));
+  return jsxOpeningTagCandidates(masked, { includeOffsets: true })
+    .filter(({ start, end }) =>
+      (framework ? /^<script(?=[\t\n\r\f />])/u : /^<script(?=[\t\n\r\f />])/iu).test(
+        markup.slice(start, end)
+      )
+    )
+    .flatMap(({ start, end }) => {
+      const openingTag = markup.slice(start, end);
+      const svg = svgScripts.has(start);
+      if (
+        svg &&
+        framework &&
+        [...markupAttributeTokens(openingTag).keys()].some(
+          (name) =>
+            name.startsWith('{') ||
+            name === 'v-bind' ||
+            name.startsWith('v-bind:[') ||
+            name.startsWith(':[')
+        )
+      )
+        return [DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER];
+      // SVG2 href wins by presence, including an opaque/empty value. The
+      // deprecated XLink attribute is a fallback, never an additional load.
+      const sourceName = svg
+        ? hasMarkupAttribute(openingTag, 'href', ':href', 'v-bind:href')
+          ? 'href'
+          : /\.mdx$/iu.test(absolutePath) &&
+              markupAttributeTokens(openingTag, true).has('xlinkHref')
+            ? 'xlinkhref'
+            : 'xlink:href'
+        : 'src';
+      const hasSource = hasMarkupAttribute(
+        openingTag,
+        sourceName,
+        `:${sourceName}`,
+        `v-bind:${sourceName}`
+      );
       const type = staticMarkupAttribute(openingTag, 'type');
       const dynamicType =
         dynamicMarkupAttribute(openingTag, 'type') ||
         (type !== null && hasHtmlCharacterReference(type));
-      if (hasSrc && dynamicType) return [DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER];
-      if (!isExecutableScriptType(type) || !hasSrc) return [];
-
-      if (dynamicMarkupAttribute(openingTag, 'src')) {
+      if (hasSource && dynamicType) return [DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER];
+      if (!isExecutableScriptType(type) || !hasSource) return [];
+      if (dynamicMarkupAttribute(openingTag, sourceName))
         return [DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER];
-      }
-      const specifier = staticMarkupResourceUrl(openingTag, 'src');
-      if (!specifier || /[{}\x60]/u.test(specifier) || hasHtmlCharacterReference(specifier)) {
+      const specifier = staticMarkupResourceUrl(openingTag, sourceName);
+      if (!specifier || /[{}\x60]/u.test(specifier) || hasHtmlCharacterReference(specifier))
         return [DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER];
-      }
       return [specifier];
     });
 }
+
 function documentBaseSpecifiers(content) {
   return jsxOpeningTagCandidates(content)
     .filter((openingTag) => /^<base\b/iu.test(openingTag))
@@ -6763,10 +7221,8 @@ function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
         (specifier) =>
           !specifier.startsWith('<') && !/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(specifier)
       ),
-      ...externalScriptModuleSpecifiers(content).filter(
-        (specifier) =>
-          specifier !== DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER &&
-          specifier !== DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER
+      ...externalScriptModuleSpecifiers(content, absolutePath).filter(
+        (specifier) => specifier !== DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER
       ),
       ...embeddedScriptSegments(content).flatMap((segment) =>
         scriptModuleSpecifiers(segment, absolutePath, options)
@@ -6781,10 +7237,8 @@ function moduleSpecifiersForWebsiteSource(absolutePath, options = {}) {
         (specifier) =>
           !specifier.startsWith('<') && !/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(specifier)
       ),
-      ...externalScriptModuleSpecifiers(content).filter(
-        (specifier) =>
-          specifier !== DYNAMIC_EXECUTABLE_SCRIPT_SPECIFIER &&
-          specifier !== DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER
+      ...externalScriptModuleSpecifiers(content, absolutePath).filter(
+        (specifier) => specifier !== DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER
       ),
       ...embeddedScriptSegments(content).flatMap((segment) =>
         scriptModuleSpecifiers(segment, absolutePath, options)
@@ -7909,6 +8363,7 @@ export function promotionBarePackageTargets(root, specifier, metadata) {
     );
   metadata.add(configPath);
   const assertRepositoryFile = (target) => {
+    assertPromotionModulePath(root, target);
     if (!fs.existsSync(target) || !fs.statSync(target).isFile()) throw unverified();
     const canonical = fs.realpathSync(target);
     const relative = path.relative(root, canonical);
@@ -8016,6 +8471,29 @@ function promotionResourcePath(root, canonicalRoot, sourcePath, viteRoot, kind, 
   return resource;
 }
 
+// Retain authored module identity before realpath can erase a historical link.
+// Ordinary consumer resolution still supports canonical in-repository imports;
+// this stricter rule applies only when comparing source bytes with evidence.
+function assertPromotionModulePath(root, target) {
+  const relative = path.relative(path.resolve(root), path.resolve(target));
+  if (relative.startsWith('..') || path.isAbsolute(relative))
+    throw new Error('promotion module resolves outside the repository; remains unverified');
+  let component = path.resolve(root);
+  for (const part of relative.split(path.sep)) {
+    component = path.join(component, part);
+    let stat;
+    try {
+      stat = fs.lstatSync(component, { throwIfNoEntry: false });
+    } catch (error) {
+      if (error.code === 'ENOENT' || error.code === 'ENOTDIR') break;
+      throw error;
+    }
+    if (stat?.isSymbolicLink())
+      throw new Error('promotion module dependency symlink remains unverified');
+    if (!stat) break;
+  }
+}
+
 function reachableSourcePaths(
   candidates,
   aliasConfig = { aliases: new Map(), unsupported: new Set() },
@@ -8093,6 +8571,7 @@ function reachableSourcePaths(
       variants
         .map((candidate) => candidateByPath.get(candidate) ?? candidate)
         .filter((candidate) => {
+          if (promotionPackages) assertPromotionModulePath(root, candidate);
           const canonical = fs.existsSync(candidate)
             ? fs.realpathSync(candidate)
             : canonicalImportTarget(candidate);
@@ -8144,6 +8623,7 @@ function reachableSourcePaths(
   const visitedContexts = new Set();
   while (pending.length > 0) {
     const { sourcePath, viteRoot } = pending.pop();
+    if (promotionPackages) assertPromotionModulePath(root, sourcePath);
     const sourceRelative = path.relative(canonicalRoot, fs.realpathSync(sourcePath));
     if (sourceRelative.startsWith('..') || path.isAbsolute(sourceRelative))
       throw new Error('Source import resolves outside the repository');
@@ -8307,7 +8787,7 @@ function discoverWebsiteRawImports(rootDir) {
           resolvedPath: null,
         });
       }
-      for (const specifier of externalScriptModuleSpecifiers(markup)) {
+      for (const specifier of externalScriptModuleSpecifiers(content, absolutePath)) {
         if (specifier === DYNAMIC_EXECUTABLE_SCRIPT_TYPE_SPECIFIER) {
           rawImports.push({
             sourcePath,
@@ -8418,7 +8898,7 @@ function validateWebsiteRawImports(rootDir, relativePath, issues) {
     }
     if (rawImport.category === 'unverified-runtime-compilation') {
       issues.push(
-        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function and string-or-unresolved timer entry points require an explicit reviewed admission`
+        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function, WebAssembly and string-or-unresolved timer entry points require an explicit reviewed admission`
       );
       continue;
     }
@@ -8665,7 +9145,7 @@ function validateHarnessRawImports(rootDir, relativePath, issues) {
     }
     if (rawImport.category === 'unverified-runtime-compilation') {
       issues.push(
-        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function and string-or-unresolved timer entry points require an explicit reviewed admission`
+        `${relativePath}: runtime code compilation in \`${rawImport.sourcePath}\` is unverified; recognized eval/Function, WebAssembly and string-or-unresolved timer entry points require an explicit reviewed admission`
       );
       continue;
     }
