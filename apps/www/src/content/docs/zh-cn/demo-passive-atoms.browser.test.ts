@@ -9,6 +9,8 @@ import type { Browser } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { RUNTIMES, launchBrowser, selectRuntime, startServer, stopServer } from './browser-harness';
 
+const DOCUMENT_TYPOGRAPHY_SELECTOR = '[data-doc-flow] > p:first-of-type';
+
 type ShellTrace = {
   atMs: number;
   slots: {
@@ -325,7 +327,7 @@ describe.sequential('Public passive atom documentation previews', () => {
             : null;
         if (documentCapture) {
           await page.evaluate(() => document.fonts.ready);
-          const selector = '.sl-markdown-content > p';
+          const selector = DOCUMENT_TYPOGRAPHY_SELECTOR;
           const computed = await page
             .locator(selector)
             .first()

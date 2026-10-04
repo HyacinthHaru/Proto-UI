@@ -56,7 +56,7 @@ function collect(window) {
     },
   };
   runInNewContext(
-    `${output}\nglobalThis.installRecorder = installShellRecorder; globalThis.matchesReadyOwner = readyEventHasExpectedOwner;`,
+    `${output}\nglobalThis.installRecorder = installShellRecorder; globalThis.matchesReadyOwner = readyEventHasExpectedOwner; globalThis.documentTypographySelector = DOCUMENT_TYPOGRAPHY_SELECTOR;`,
     context
   );
   return {
@@ -64,6 +64,7 @@ function collect(window) {
     hooks,
     install: context.installRecorder,
     matchesReadyOwner: context.matchesReadyOwner,
+    documentTypographySelector: context.documentTypographySelector,
   };
 }
 function shell({ hidden = false, inert = false, borrowed = true, generation = 1, display } = {}) {
@@ -160,4 +161,17 @@ test('bilingual evidence installs real CJK fonts and retains font provenance', (
   assert.match(steps[fonts].run, /fc-list ':lang=zh-cn'/);
   assert.match(steps[fonts].run, /font-environment\.txt/);
   assert.match(steps[fonts].run, /test -n/);
+});
+
+test('document font probe matches the actual MarkdownContent override, not an upstream wrapper', () => {
+  const source = readFileSync('apps/www/src/components/override/MarkdownContent.astro', 'utf8');
+  const opening = source.match(/<div[^>]*\bdata-doc-flow[^>]*>/)?.[0];
+  assert.ok(opening, 'The probe must stay bound to the actual document-flow owner');
+  const window = new Window();
+  window.document.body.innerHTML = `${opening}<p><code>shadcn-surface-root</code> 中文内容</p><p>Second paragraph</p></div>`;
+  const { documentTypographySelector } = collect(window);
+  const nodes = window.document.querySelectorAll(documentTypographySelector);
+  assert.equal(nodes.length, 1);
+  assert.match(nodes[0].textContent, /中文内容/);
+  assert.equal(window.document.querySelector('.sl-markdown-content > p'), null);
 });
