@@ -1,0 +1,61 @@
+---
+title: 'Surface'
+description: 'Base passive visual surface with consumer-owned semantic and interaction facts.'
+---
+
+import PrototypePreviewer from '@/components/PrototypePreviewer/PrototypePreviewer.astro';
+
+`base-surface-root` is a draft workspace Surface atom. It preserves one content slot and consumes visual inputs without becoming a Button, link, code panel, preview panel, or page-specific component. Base normalizes the input vocabulary and remains visually neutral. Family projections own fill, border, radius, elevation and state feedback.
+
+<PrototypePreviewer
+  demoId="demo-base-surface"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+/>
+
+The demo passes explicit passive states into real package prototypes. The focus and press samples are visual facts, not clickable or focusable controls. Outer spacing and the inner content padding belong to the example. No event handler is added to make a Surface pretend to be a Button.
+
+## Use Surface
+
+```tsx
+import * as React from 'react';
+import { createReactAdapter } from '@proto.ui/adapter-react';
+import { surfaceRoot } from '@proto.ui/prototypes-base/surface';
+
+const Surface = createReactAdapter(React)(surfaceRoot);
+
+export function Summary() {
+  return (
+    <Surface variant="muted" radius="md" border="none">
+      <div style={{ padding: '1rem' }}>Saved locally</div>
+    </Surface>
+  );
+}
+```
+
+The `/surface` subpath and package root export `surfaceRoot`; `SurfaceRootProps` and `SurfaceRootExposes` describe the shared contract. Base additionally exports `asSurfaceRoot` and `SurfaceRootAsHookContract` for family authoring. Do not put a Surface inside an interactive owner and give it another role, tab stop or activation handler. When using a native anchor, retain navigation, keyboard behavior, target and download on that anchor.
+
+## Inputs
+
+| Prop           | Values                                               | Default   |
+| -------------- | ---------------------------------------------------- | --------- |
+| `variant`      | `transparent`, `outline`, `muted`, `accent`, `solid` | `outline` |
+| `radius`       | `default`, `none`, `sm`, `md`, `lg`, `xl`, `full`    | `default` |
+| `border`       | `all`, `bottom`, `none`                              | `all`     |
+| `elevation`    | `none`, `raised`                                     | `none`    |
+| `hovered`      | boolean                                              | `false`   |
+| `focusVisible` | boolean                                              | `false`   |
+| `pressed`      | boolean                                              | `false`   |
+| `current`      | boolean                                              | `false`   |
+
+The four booleans are facts supplied by the existing semantic owner. Surface does not detect pointer, focus, keyboard, selection or navigation state itself. It owns no exposed state, event, method, accessible role or native property. `current` is a presentation input, not an `aria-current` implementation. A caller that needs a real Button should compose the governed Button protocol.
+
+Removing an input restores its default. Default radius and paint are family-specific; a shared prop vocabulary does not imply identical appearance. Content and layout remain consumer-owned. Use Text with `tone="inherit"` when a styled Text child must retain the enclosing Surface foreground.
+
+## Host and Compiler boundary
+
+Surface uses the ordinary public Prototype, Props and Feedback paths. The bounded conformance slice exercises Web Components, React, Vue 3 and Vue 2. The source-built CLI registers `<family>-surface` for those four facade targets, and the Web style compiler consumes the actual family tokens; `gpui` facade generation is explicitly unsupported. Its supported Web adapter and compiler evidence must be read separately: successfully displaying a Web projection is not proof of complete native support or arbitrary Prototype AOT. No host-specific material backend, screenshot capture, navigation service or code renderer is hidden in Surface. Unsupported target or style diagnostics must remain explicit instead of being treated as equivalent output.
+
+## Authority
+
+`P-BASE-SURFACE` and `T-SURFACE-0001` govern this draft slice. Source: `packages/prototypes/base/src/surface/`.
