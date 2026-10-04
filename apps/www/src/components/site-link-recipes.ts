@@ -36,7 +36,9 @@ export function linkSurfaceProps(
         : action
           ? emphasis === 'primary' && appearance === 'action'
             ? 'solid'
-            : 'outline'
+            : family === 'brutalist'
+              ? 'secondary'
+              : 'outline'
           : 'transparent',
     radius: action
       ? family === 'brutalist'

@@ -1,3 +1,4 @@
+import { assertProjectionRecipeClosure } from './projection-composition';
 import { withNativeContentLease } from './native-content-lease';
 import { createProjectionScopeController } from './projection-scope';
 import { renderDemo } from './demo-renderer';
@@ -6,7 +7,7 @@ import {
   applyProjectionThemeSurfaceStyle,
   type ProjectionThemeSurfaceStyle,
 } from './projection-theme';
-import type { DemoRenderResult } from './demo-types';
+import type { DemoRenderResult, DemoSpec } from './demo-types';
 import type { RuntimeId } from './runtimes/registry';
 
 /** Composition lease, not a host runtime: existing public renderers own each
@@ -47,42 +48,44 @@ export function createPassiveShellComposition(options: {
       mount.append(host);
       let rendered: DemoRenderResult | undefined;
       try {
+        const demo: DemoSpec = {
+          type: 'demo',
+          root: {
+            kind: 'proto',
+            prototypeId,
+            ref: options.surfaceRef ?? 'shell',
+            className: options.className,
+            props: options.props(request.selection.projectionFamilyId),
+            surfaceStyle: { ...options.layout, ...theme },
+            children: [
+              {
+                kind: 'box',
+                ref: 'slot',
+                attrs: { 'data-passive-shell-slot': '' },
+                children: [],
+              },
+            ],
+          },
+          setup(context) {
+            const slot = context.refs.slot!;
+            const surface = context.refs[options.surfaceRef ?? 'shell']!;
+            slot.style.display = 'contents';
+            content.style.display = 'contents';
+            surface.dataset.projectionPrototype = prototypeId;
+            surface.dataset.projectionRuntime = options.runtime;
+            surface.dataset.projectionFamily = request.selection.projectionFamilyId;
+            surface.dataset.projectionGeneration = String(request.generation);
+            slots.set(request.generation, slot);
+            surfaces.set(request.generation, surface);
+            applyProjectionThemeSurfaceStyle(surface, theme);
+          },
+        };
+        assertProjectionRecipeClosure(demo.root, [prototypeId], `passive-shell:${prototypeId}`);
         rendered = await renderDemo({
           runtime: options.runtime,
           host,
           isCurrent: () => alive,
-          demo: {
-            type: 'demo',
-            root: {
-              kind: 'proto',
-              prototypeId,
-              ref: options.surfaceRef ?? 'shell',
-              className: options.className,
-              props: options.props(request.selection.projectionFamilyId),
-              surfaceStyle: { ...options.layout, ...theme },
-              children: [
-                {
-                  kind: 'box',
-                  ref: 'slot',
-                  attrs: { 'data-passive-shell-slot': '' },
-                  children: [],
-                },
-              ],
-            },
-            setup(context) {
-              const slot = context.refs.slot!;
-              const surface = context.refs[options.surfaceRef ?? 'shell']!;
-              slot.style.display = 'contents';
-              content.style.display = 'contents';
-              surface.dataset.projectionPrototype = prototypeId;
-              surface.dataset.projectionRuntime = options.runtime;
-              surface.dataset.projectionFamily = request.selection.projectionFamilyId;
-              surface.dataset.projectionGeneration = String(request.generation);
-              slots.set(request.generation, slot);
-              surfaces.set(request.generation, surface);
-              applyProjectionThemeSurfaceStyle(surface, theme);
-            },
-          },
+          demo,
         });
         return {
           activate() {

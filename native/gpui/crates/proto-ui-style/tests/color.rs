@@ -196,6 +196,7 @@ fn reports_rather_than_approximates_what_it_cannot_do() {
 #[test]
 fn parses_every_colour_a_theme_can_produce() {
     let mut checked = 0usize;
+    let mut inherited_text_diagnostics = 0usize;
     let mut custom_properties_checked = std::collections::BTreeSet::new();
     let mut unresolved = 0usize;
 
@@ -214,6 +215,18 @@ fn parses_every_colour_a_theme_can_produce() {
                     }
                     match theme.substitute(raw) {
                         Substitution::Resolved(value) => {
+                            // CSS inheritance is an instruction requiring the parent
+                            // text style, not a theme color literal. Keep this exact
+                            // declared omission diagnostic; all other colors must parse.
+                            if token == "text-inherit" && property == "color" {
+                                assert_eq!(value, "inherit");
+                                assert!(matches!(
+                                    parse(&value),
+                                    Err(ColorError::Unsupported(_))
+                                ));
+                                inherited_text_diagnostics += 1;
+                                continue;
+                            }
                             parse(&value).unwrap_or_else(|error| {
                                 panic!(
                                     "{language}/{scheme:?} {token} {property} = {value}: {error:?}"
@@ -237,6 +250,7 @@ fn parses_every_colour_a_theme_can_produce() {
 
     // Guards against the loop silently finding nothing, which would make the
     // whole test vacuous.
+    assert!(inherited_text_diagnostics > 0);
     assert!(checked > 200, "only checked {checked} colours");
     assert!(unresolved > 0, "the cross-language case disappeared");
     assert_eq!(

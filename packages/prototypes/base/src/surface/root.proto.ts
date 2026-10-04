@@ -6,7 +6,7 @@ function setupSurfaceRoot(def: DefHandle<SurfaceRootProps, SurfaceRootExposes>) 
     variant: {
       type: 'enum',
       empty: 'fallback',
-      options: ['transparent', 'outline', 'muted', 'accent', 'solid'],
+      options: ['transparent', 'outline', 'secondary', 'muted', 'accent', 'solid'],
     },
     radius: {
       type: 'enum',

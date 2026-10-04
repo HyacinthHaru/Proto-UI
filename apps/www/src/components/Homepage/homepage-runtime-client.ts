@@ -428,7 +428,10 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       const component = desiredComponent;
       const work = groups.map(async (group) => {
         const ids = [
-          ...(group.links.length ? [`${family}-surface-root`, `${family}-text-root`] : []),
+          ...(group.links.length ? [`${family}-surface-root`] : []),
+          ...(group.links.some((link) => siteLinkIcon(link) === 'none')
+            ? [`${family}-text-root`]
+            : []),
           ...(group.theme || group.menu
             ? [resolveProjectionPart(family, 'button', 'root').prototypeId]
             : []),

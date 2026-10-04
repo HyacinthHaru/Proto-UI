@@ -75,6 +75,11 @@ for (const family of ['shadcn', 'brutalist'] as const)
           expect(text.contains(source)).toBe(true);
           expect(link.textContent).toBe('Original text');
           const tokens = surface.getAttribute('data-pui-style')!;
+          if (raised && emphasis === 'secondary') {
+            expect(tokens).toContain('bg-secondary-background');
+            expect(tokens).not.toContain('bg-muted');
+          }
+          if (!raised && facts.pressed) expect(tokens).toContain('translate-y-px');
           expect(tokens.includes('ring-2')).toBe(facts.focusVisible);
           if (raised)
             expect(tokens).toContain(facts.pressed ? 'translate-y-1' : 'shadow-[4px_4px_0_0_#000]');

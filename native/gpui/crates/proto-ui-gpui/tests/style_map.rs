@@ -746,7 +746,10 @@ fn text_presentation_preserves_explicit_unmapped_diagnostics() {
 
 #[test]
 fn text_inherited_tone_reports_unsupported_value_without_parent_style() {
-    let mapped = map(&resolve(&["text-inherit"], "shadcn"), LengthContext::default());
+    let mapped = map(
+        &resolve(&["text-inherit"], "shadcn"),
+        LengthContext::default(),
+    );
     assert!(mapped.unmapped.iter().any(|(property, value, reason)| {
         property == "color" && value == "inherit" && *reason == Unmapped::UnsupportedValue
     }));
