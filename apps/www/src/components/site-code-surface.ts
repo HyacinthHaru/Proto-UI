@@ -1,3 +1,4 @@
+import { createHiddenFirstActivation } from './hidden-first-activation';
 import { surfacePrototypeId } from './surface-recipes';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from './adapter-preference';
 import { isRuntimeId, type RuntimeId } from './PrototypePreviewer/runtimes/registry';
@@ -229,6 +230,9 @@ export function initSiteCodeSurfaces(doc: Document = document): () => void {
     return existing.dispose;
   }
   const roots = new Map<HTMLElement, CodeSurfaceHandle>();
+  const activation = createHiddenFirstActivation(doc, (root) => {
+    if (!roots.has(root)) roots.set(root, initCodeSurface(root));
+  });
   const remove = (root: HTMLElement) => {
     const handle = roots.get(root);
     roots.delete(root);
@@ -237,7 +241,7 @@ export function initSiteCodeSurfaces(doc: Document = document): () => void {
   const scan = () => {
     for (const root of roots.keys()) if (!root.isConnected) remove(root);
     for (const root of doc.querySelectorAll<HTMLElement>('[data-site-code-surface]')) {
-      if (!roots.has(root)) roots.set(root, initCodeSurface(root));
+      if (!roots.has(root)) activation.add(root);
     }
   };
   const observer = new doc.defaultView!.MutationObserver(scan);
@@ -246,6 +250,7 @@ export function initSiteCodeSurfaces(doc: Document = document): () => void {
     if (disposed) return;
     disposed = true;
     observer.disconnect();
+    activation.dispose();
     doc.removeEventListener('astro:before-swap', dispose);
     for (const root of roots.keys()) remove(root);
     documents.delete(doc);

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from './adapter-preference';
 import { initDocumentationSearchCommands, searchCommandParticipant } from './site-search-commands';
 import { initCopyCommand } from './site-copy-command';
+import { initSiteCopyCommands } from './site-copy-client';
 
 // Fail closed if any command's real loader graph evaluates the complete catalog.
 // This is deliberately not a mock of the icon Prototype, renderer or Adapter.
@@ -290,4 +291,54 @@ describe('bounded command icons through real loaders and Adapters (host-unit evi
     expect(root.querySelector('[role="status"]')?.textContent).toBe('Copied');
     expect(catalog.evaluations).toBe(0);
   }, 20_000);
+});
+
+describe('real Copy bootstrap reveal ownership', () => {
+  for (const runtime of ['wc', 'react', 'vue', 'vue2']) {
+    it(`${runtime}: reads current inputs on reveal and retains pending work across hide/show`, async () => {
+      localStorage.setItem(PREFERRED_ADAPTER_KEY, 'wc');
+      document.documentElement.dataset.siteLibraryFamily = 'shadcn';
+      const panel = document.createElement('div');
+      panel.dataset.adapterPanel = runtime;
+      panel.style.display = 'none';
+      const root = document.createElement('div');
+      root.dataset.siteCopy = '';
+      root.dataset.siteCopyText = 'Retained original source';
+      panel.append(root);
+      document.body.append(panel);
+      let resolve!: () => void;
+      const writeText = vi.fn(
+        () =>
+          new Promise<void>((done) => {
+            resolve = done;
+          })
+      );
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
+      const dispose = initSiteCopyCommands();
+      cleanups.push(dispose);
+      expect(root.querySelector('[data-pui-root]')).toBeNull();
+      localStorage.setItem(PREFERRED_ADAPTER_KEY, runtime);
+      document.documentElement.dataset.siteLibraryFamily = 'brutalist';
+      panel.style.display = '';
+      await vi.waitFor(() => expect(root.dataset.copyView).toBe('ready'));
+      expect(root.dataset.copyRuntime).toBe(runtime);
+      expect(root.dataset.copyFamily).toBe('brutalist');
+      const button = root.querySelector<HTMLElement>('[data-demo-ref="copy-button"]')!;
+      button.click();
+      await vi.waitFor(() => expect(button.dataset.copyState).toBe('pending'));
+      panel.style.display = 'none';
+      await Promise.resolve();
+      panel.style.display = '';
+      await Promise.resolve();
+      expect(root.querySelector('[data-demo-ref="copy-button"]')).toBe(button);
+      expect(button.dataset.copyState).toBe('pending');
+      expect(writeText).toHaveBeenCalledOnce();
+      expect(writeText).toHaveBeenCalledWith('Retained original source');
+      resolve();
+      await vi.waitFor(() => expect(button.dataset.copyState).toBe('success'));
+      expect(root.querySelectorAll('svg')).toHaveLength(4);
+      document.dispatchEvent(new Event('astro:before-swap'));
+      await vi.waitFor(() => expect(button.isConnected).toBe(false));
+    });
+  }
 });

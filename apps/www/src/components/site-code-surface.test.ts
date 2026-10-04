@@ -285,4 +285,39 @@ describe('actual passive CodeSurface projection', () => {
     },
     20000
   );
+  it('defers hidden-panel surfaces, reads current preference on reveal and retains mounted state', async () => {
+    const { root, code } = fixture();
+    const panel = document.createElement('div');
+    panel.dataset.adapterPanel = 'react';
+    panel.style.display = 'none';
+    root.before(panel);
+    panel.append(root);
+    releases.push(initSiteCodeSurfaces());
+    expect(root.querySelector('.site-code-surface-mount')).toBeNull();
+    localStorage.setItem('preferred-prototypes-adapter', 'vue2');
+    panel.style.display = '';
+    await vi.waitFor(() => expect(root.dataset.codeSurfaceView).toBe('ready'));
+    expect(root.dataset.codeSurfaceRuntime).toBe('vue2');
+    const mount = root.querySelector('.site-code-surface-mount');
+    panel.hidden = true;
+    panel.hidden = false;
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(root.querySelector('.site-code-surface-mount')).toBe(mount);
+    expect(root.querySelector('code')).toBe(code);
+  });
+  it.each(['remove', 'swap', 'dispose'] as const)(
+    'cancels hidden surface activation on %s',
+    async (action) => {
+      const { root } = fixture();
+      root.hidden = true;
+      const dispose = initSiteCodeSurfaces();
+      releases.push(dispose);
+      if (action === 'remove') root.remove();
+      if (action === 'swap') document.dispatchEvent(new Event('astro:before-swap'));
+      if (action === 'dispose') dispose();
+      root.hidden = false;
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(root.querySelector('.site-code-surface-mount')).toBeNull();
+    }
+  );
 });
