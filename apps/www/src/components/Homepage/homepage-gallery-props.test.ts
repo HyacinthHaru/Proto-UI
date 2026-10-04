@@ -53,6 +53,16 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       );
     }
     if (family === 'brutalist') {
+      const tabsList = host.querySelector<HTMLElement>('[role="tablist"]')!;
+      expect(tabsList).not.toBeNull();
+      expect(host.querySelectorAll('[role="tab"]')).toHaveLength(2);
+      expect(tabsList.style.flexWrap).toBe('wrap');
+      expect(tabsList.style.height).toBe('auto');
+      expect(tabsList.style.minHeight).toBe('3rem');
+      for (const trigger of host.querySelectorAll<HTMLElement>('[role="tab"]')) {
+        expect(trigger.style.whiteSpace).toBe('normal');
+        expect(trigger.style.maxWidth).toBe('100%');
+      }
       const authored = content.demo.root;
       const visit = (node: unknown): any[] => {
         if (!node || typeof node !== 'object') return [];

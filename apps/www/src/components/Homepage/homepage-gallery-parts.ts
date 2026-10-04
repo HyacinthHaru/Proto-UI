@@ -56,6 +56,28 @@ export function createHomepageGalleryParts(
       ...(/-(?:button|dialog-trigger|dropdown-menu-trigger)$/.test(id)
         ? { surfaceStyle: homepageCommandLayout(family) }
         : {}),
+      ...(id === 'brutalist-tabs-list'
+        ? {
+            surfaceStyle: {
+              minWidth: '0',
+              maxWidth: '100%',
+              width: '100%',
+              height: 'auto',
+              minHeight: '3rem',
+              flexWrap: 'wrap',
+            },
+          }
+        : {}),
+      ...(id === 'brutalist-tabs-trigger'
+        ? {
+            surfaceStyle: {
+              minWidth: '0',
+              maxWidth: '100%',
+              whiteSpace: 'normal',
+              overflowWrap: 'anywhere',
+            },
+          }
+        : {}),
     };
   };
   const part = (kind: Parameters<typeof resolveProjectionPart>[1], name = 'root') =>

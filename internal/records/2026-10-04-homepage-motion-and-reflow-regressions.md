@@ -39,3 +39,9 @@ Normal integration of main `d4bdb66b54d68625fb3da1109a76e0829c1e77d7` preserves 
 Final local commands and hosted outcomes remain source-bound in the ensuing progress receipt. Both real browser matrices and the immutable-baseline evidence disposition still need exact-head review before integration.
 
 The Header comparison now distinguishes its oracle roles. Only immutable flat source `8856a7112e86aa974f2ba388c3b8b70417268394`, 390px Runtime focus, is admitted as the already-measured historical clipped-ring negative. All eight prior baseline artifacts reached that exact point after both desktop controls passed. The test records the raw ring observation, asserts `unclipped=false`, captures the negative and terminates with `historical-negative-reproduced`; it does not claim the unvisited remainder of that old source passed. Any different source or unexpected earlier result still fails. The candidate continues to require `unclipped=true` and its complete rest/hover/press/focus/popup/reparent/edge matrix. No `continue-on-error` or protection change is used.
+
+## ce10ed55 narrow-layout follow-through
+
+The exact `ce10ed552b6147de2dffd4c2ff47e8e27c1241cd` run passed both Header oracle roles and all isolated homepage command/surface suites, including Search. Its typography report now passes every Shadcn case; only the four Brutalist English 320px/200% cases remain. The entire new overflow inventory contains one element: the editor's actual `brutalist-tabs-trigger` labelled `Preview`, x=188.90625 and width=157.125 (right=346.03125).
+
+The remaining repair supplies layout inputs to that real gallery Tabs list/trigger: the list may wrap and grow above its existing h-12 minimum, and the trigger label may wrap within the available width. Base Tabs state, focus/keyboard ownership, labels, font weights and family paint remain unchanged. This is a source-bound follow-through from the new browser measurement, not a relaxed viewport assertion.
