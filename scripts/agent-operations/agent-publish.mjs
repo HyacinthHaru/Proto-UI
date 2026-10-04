@@ -102,16 +102,25 @@ function tools(options) {
   function api(endpoint, { method, input, paginate = false } = {}) {
     const args = ['api'];
     if (method) args.push('--method', method);
-    if (paginate) args.push('--paginate', '--slurp');
+    // Older supported gh clients lack --slurp. One compact JSON array per
+    // page preserves literal body newlines and complete pagination portably.
+    if (paginate) args.push('--paginate', '--jq', '. | @json');
     args.push(endpoint);
     if (input !== undefined) args.push('--input', '-');
     const text = run('gh', args, input === undefined ? {} : { input: JSON.stringify(input) });
+    if (paginate) {
+      if (!text.trim()) throw new Error('GitHub pagination returned no page evidence');
+      const pages = text
+        .trim()
+        .split(/\r?\n/)
+        .map((line) => JSON.parse(line));
+      if (!pages.every(Array.isArray))
+        throw new Error('GitHub pagination returned an invalid shape');
+      return pages.flat();
+    }
     const payload = JSON.parse(text);
     if (payload?.errors?.length) throw new Error('GitHub returned GraphQL errors');
-    if (!paginate) return payload;
-    if (!Array.isArray(payload) || !payload.every(Array.isArray))
-      throw new Error('GitHub pagination returned an invalid shape');
-    return payload.flat();
+    return payload;
   }
   return { run, api, cwd };
 }

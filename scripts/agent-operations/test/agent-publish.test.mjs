@@ -170,7 +170,7 @@ function server({
       if (unknown) throw new Error('synthetic connection lost after possible server write');
       return JSON.stringify(published);
     }
-    if (endpoint.includes('/issues/7/comments?')) return JSON.stringify([comments]);
+    if (endpoint.includes('/issues/7/comments?')) return JSON.stringify(comments);
     if (pull && endpoint.includes('/branches/'))
       return JSON.stringify({
         commit: { sha: endpoint.endsWith('/main') ? 'd'.repeat(40) : 'c'.repeat(40) },
@@ -197,7 +197,7 @@ function server({
         },
       });
     if (endpoint.includes('/issues/comments/10')) return JSON.stringify(comments[0]);
-    if (endpoint.includes('/issues?')) return JSON.stringify([issues]);
+    if (endpoint.includes('/issues?')) return JSON.stringify(issues);
     if (endpoint.endsWith('/issues/10')) return JSON.stringify(issues[0]);
     if (endpoint.endsWith('/issues/7')) {
       targetReads++;
@@ -301,6 +301,43 @@ test('Issue create sends one full body and never mutates labels or ownership sta
   assert.deepEqual(Object.keys(gh.writes[0].input).sort(), ['body', 'title']);
   assert.ok(gh.issues[0].body.includes(renderModelTraceDisclosure(f.record.receipt)));
   assert.equal(f.record.receipt.result.modelId, null);
+});
+
+test('a later compact JSON page preserves multiline evidence and prevents duplicate publication', (t) => {
+  const f = fixture(t, {
+    failed: true,
+    body: 'Synthetic evidence line one.\nLine two remains intact.\n',
+  });
+  const gh = server();
+  const argv = ['comment', ...f.args, '--number', '7', '--body-file', f.bodyPath];
+  assert.equal(runPublishCli(argv, { runner: gh.runner, now: f.now }).status, 'published');
+  const runner = (binary, args, options) => {
+    if (args.some((arg) => arg.includes('/issues/7/comments?'))) {
+      return `${JSON.stringify([{ id: 99, body: 'Unrelated earlier page' }])}\n${JSON.stringify(gh.comments)}\n`;
+    }
+    return gh.runner(binary, args, options);
+  };
+  assert.equal(runPublishCli(argv, { runner, now: f.now }).status, 'already-published');
+  assert.ok(gh.comments[0].body.startsWith(f.body));
+  assert.equal(gh.writes.length, 1);
+});
+
+test('missing pagination frames are not an empty collection and cannot authorize a duplicate write', (t) => {
+  const f = fixture(t, { failed: true });
+  const gh = server();
+  const runner = (binary, args, options) =>
+    args.some((arg) => arg.includes('/issues/7/comments?'))
+      ? ' \n\t'
+      : gh.runner(binary, args, options);
+  assert.throws(
+    () =>
+      runPublishCli(['comment', ...f.args, '--number', '7', '--body-file', f.bodyPath], {
+        runner,
+        now: f.now,
+      }),
+    /page evidence/
+  );
+  assert.equal(gh.writes.length, 0);
 });
 
 test('PR creation preserves authorized collaborative history at the exact pushed source', (t) => {
