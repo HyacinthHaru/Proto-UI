@@ -102,18 +102,30 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
         );
     }
   }
+  const links = [
+    ...scope.querySelectorAll<HTMLElement>(
+      'a[data-site-native-link], a[data-site-native-button], .sidebar-pane .top-level a[href], .sidebar-pane .top-level summary, .pagination-links a[href], sl-toc a[href]'
+    ),
+  ].filter((link) => !link.closest('[data-homepage-actions]') && !bindings.has(link));
+  if (!links.length) return () => {};
+  const readFamily = (): SiteLibraryFamily =>
+    document.documentElement.dataset.siteLibraryFamily === 'brutalist'
+      ? 'brutalist'
+      : resolveSiteLibraryFamily(view.location.pathname);
+  // All native controls in this initialization batch consume one closed root
+  // theme. Do not interleave the same computed-style read with every Surface
+  // write, or reread it when only a native hover/press/current fact changes.
+  let batchFamily = readFamily();
+  let batchTheme = resolveProjectionThemeSurfaceStyle(batchFamily, document.documentElement);
+  let themeFingerprint = JSON.stringify(batchTheme);
+  let batchAlive = true;
+  const updates = new Set<() => void>();
   const releases: Array<() => void> = [];
-  for (const link of scope.querySelectorAll<HTMLElement>(
-    'a[data-site-native-link], a[data-site-native-button], .sidebar-pane .top-level a[href], .sidebar-pane .top-level summary, .pagination-links a[href], sl-toc a[href]'
-  )) {
-    if (link.closest('[data-homepage-actions]') || bindings.has(link)) continue;
+  for (const link of links) {
     let alive = true;
     const appearance = siteLinkAppearance(link);
     let restoreCaption = () => {};
-    let family: SiteLibraryFamily =
-      document.documentElement.dataset.siteLibraryFamily === 'brutalist'
-        ? 'brutalist'
-        : resolveSiteLibraryFamily(view.location.pathname);
+    let family = batchFamily;
     let surface = document.createElement(`wc-site-${family}-surface`);
     let texts: HTMLElement[] = [];
     // Original arrows and text regions remain separate flex items, in source
@@ -155,10 +167,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     let facts = { hovered: false, pressed: false, focusVisible: false, current: false };
     const update = () => {
       if (!alive) return;
-      const nextFamily: SiteLibraryFamily =
-        document.documentElement.dataset.siteLibraryFamily === 'brutalist'
-          ? 'brutalist'
-          : resolveSiteLibraryFamily(view.location.pathname);
+      const nextFamily = batchFamily;
       if (nextFamily !== family) {
         const previous = surface;
         family = nextFamily;
@@ -168,7 +177,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
           previous.replaceWith(surface);
         });
       }
-      const theme = resolveProjectionThemeSurfaceStyle(family, document.documentElement);
+      const theme = batchTheme;
       const props = {
         ...linkSurfaceProps(family, appearance, siteLinkEmphasis(link), facts),
         surfaceStyle: {
@@ -192,25 +201,18 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
         }
       });
     };
+    updates.add(update);
     const unbind = bindNativeLinkFacts(link, (next) => {
       facts = next;
       update();
     });
-    const observer = new view.MutationObserver(update);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class', 'data-theme', 'data-site-library-family'],
-    });
-    const media = view.matchMedia?.('(prefers-color-scheme: dark)');
-    media?.addEventListener?.('change', update);
     const release = () => {
       if (!alive) return;
       // The fact bridge clears its contribution before the binding is torn
       // down; no queued replay may modify the new page/generation afterwards.
+      updates.delete(update);
       unbind();
       alive = false;
-      observer.disconnect();
-      media?.removeEventListener?.('change', update);
       bindings.delete(link);
       withNativeContentLease(link, () => {
         restoreCaption();
@@ -223,7 +225,30 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     bindings.set(link, release);
     releases.push(release);
   }
+  const refreshTheme = () => {
+    if (!batchAlive) return;
+    const nextFamily = readFamily();
+    const nextTheme = resolveProjectionThemeSurfaceStyle(nextFamily, document.documentElement);
+    const nextFingerprint = JSON.stringify(nextTheme);
+    if (nextFamily === batchFamily && nextFingerprint === themeFingerprint) return;
+    batchFamily = nextFamily;
+    batchTheme = nextTheme;
+    themeFingerprint = nextFingerprint;
+    for (const update of updates) update();
+  };
+  const observer = new view.MutationObserver(refreshTheme);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class', 'data-theme', 'style', 'data-site-library-family'],
+  });
+  const media = view.matchMedia?.('(prefers-color-scheme: dark)');
+  media?.addEventListener?.('change', refreshTheme);
   return () => {
+    if (!batchAlive) return;
+    batchAlive = false;
+    observer.disconnect();
+    media?.removeEventListener?.('change', refreshTheme);
     for (const release of releases) release();
+    updates.clear();
   };
 }
