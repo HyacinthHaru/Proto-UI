@@ -62,6 +62,11 @@
       "import": "./dist/hover-card/index.js",
       "default": "./dist/hover-card/index.js"
     },
+    "./input": {
+      "types": "./dist/input/index.d.ts",
+      "import": "./dist/input/index.js",
+      "default": "./dist/input/index.js"
+    },
     "./select": {
       "types": "./dist/select/index.d.ts",
       "import": "./dist/select/index.js",

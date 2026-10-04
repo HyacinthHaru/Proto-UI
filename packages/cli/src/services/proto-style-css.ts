@@ -738,6 +738,7 @@ function hasMotionReduceVariant(token: string): boolean {
 }
 
 function applyVariant(selector: string, variant: string): string[] {
+  if (variant === 'selection') return [`${selector}::selection`];
   if (variant === 'hover') return [`${selector}:hover`];
   if (variant === 'active') return [`${selector}:active`];
   if (variant === 'disabled') return [`${selector}:disabled`];

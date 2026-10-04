@@ -67,12 +67,14 @@ describe('Feedback catalog boundary', () => {
     expect(() => f.style.suppress(tw('bg-red-500'))).toThrow();
     expect(() => f.style.clearPatch()).toThrow();
     expect(() => f.style.use(tw('hover:opacity-100'))).toThrow();
+    f.style.use(tw('selection:bg-primary'));
     f.port.useStyleUnsafe(tw('hover:opacity-100'));
     f.mount();
     expect(() => f.style.use(tw('opacity-100'))).toThrow();
     expect(() => lateRemove()).toThrow();
     expect(f.style.exportMerged().tokens).toContain('text-white');
     expect(() => f.style.patch(tw('hover:opacity-100'))).toThrow();
+    expect(() => f.style.patch(tw('selection:bg-primary'))).not.toThrow();
     expect(() => f.style.patch(tw('data-pui-style'))).toThrow();
   });
 

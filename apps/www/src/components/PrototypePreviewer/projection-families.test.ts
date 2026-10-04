@@ -26,7 +26,7 @@ const EXPECTED_SHARED_BASE_FAMILY_IDS = [
 ] as const;
 
 const EXPECTED_COMPONENT_IDS = {
-  shadcn: [...EXPECTED_SHARED_BASE_FAMILY_IDS, 'checkbox', 'radio-group'],
+  shadcn: [...EXPECTED_SHARED_BASE_FAMILY_IDS, 'input', 'checkbox', 'radio-group'],
   brutalist: [
     ...EXPECTED_SHARED_BASE_FAMILY_IDS,
     'badge',
@@ -59,6 +59,7 @@ const EXPECTED_REQUIRED_PART_IDS = {
     'footer',
   ],
   separator: ['root'],
+  input: ['root'],
   textarea: ['root'],
   checkbox: ['root', 'indicator'],
   'radio-group': ['root', 'item', 'indicator'],
@@ -253,6 +254,7 @@ const EXPECTED_RECIPE_PROTOTYPE_IDS = {
       'shadcn-button',
     ],
     separator: ['shadcn-separator-root'],
+    input: ['shadcn-input-root'],
     textarea: ['shadcn-textarea-root'],
   },
   brutalist: {
@@ -355,6 +357,12 @@ const EXPECTED_FAMILIES = {
       baseFamilyId: 'P-BASE-TEXTAREA',
       recipeId: 'demo-shadcn-textarea',
       root: { basePrototypeId: 'P-BASE-TEXTAREA', prototypeId: 'shadcn-textarea-root' },
+    },
+    input: {
+      baseFamilyId: 'P-BASE-INPUT',
+      recipeId: 'demo-shadcn-input',
+      recipePrototypeIds: ['shadcn-input-root'],
+      root: { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'shadcn-input-root' },
     },
   },
   brutalist: {

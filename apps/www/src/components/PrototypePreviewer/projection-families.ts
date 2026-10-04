@@ -294,6 +294,17 @@ const SHADCN_MANIFEST = {
         },
       },
     },
+    input: {
+      baseFamilyId: 'P-BASE-INPUT',
+      recipeId: 'demo-shadcn-input',
+      recipePrototypeIds: ['shadcn-input-root'],
+      parts: {
+        root: {
+          basePrototypeId: 'P-BASE-INPUT',
+          prototypeId: 'shadcn-input-root',
+        },
+      },
+    },
     checkbox: {
       baseFamilyId: 'P-BASE-CHECKBOX',
       recipeId: 'demo-shadcn-checkbox',
