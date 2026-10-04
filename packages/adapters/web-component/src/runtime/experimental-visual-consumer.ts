@@ -1,11 +1,13 @@
 import type { Prototype } from '@proto.ui/core';
 import type { FinalStyleSink } from '@proto.ui/module-feedback/internal/final-style-sink';
+import type { OwnedVisualSurface } from '../visual-surface';
 import type { OwnedTokenApplier } from '../feedback-style';
 
 /** Private test/development admission; intentionally absent from package exports. */
 export type ExperimentalVisualConsumer = (
   host: HTMLElement,
-  style: OwnedTokenApplier
+  style: OwnedTokenApplier,
+  surface: OwnedVisualSurface
 ) => FinalStyleSink;
 const consumers = new WeakMap<object, ExperimentalVisualConsumer>();
 export function installExperimentalVisualConsumer(

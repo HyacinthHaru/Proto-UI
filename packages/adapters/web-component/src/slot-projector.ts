@@ -1,5 +1,7 @@
 // packages/adapters/web-component/src/slot-projector.ts
 
+import { isOwnedVisualNode } from './visual-surface';
+
 export class SlotProjector {
   private el: HTMLElement;
 
@@ -41,7 +43,7 @@ export class SlotProjector {
 
     // 2) 再收集 custom element 的 direct children 中 “非 owned” 的节点（用户 appendChild 到 el）
     for (const n of Array.from(this.el.childNodes)) {
-      if (this.owned.has(n)) continue;
+      if (this.owned.has(n) || isOwnedVisualNode(this.el, n)) continue;
       // 注意：这里 n 可能是用户刚 append 的节点，此时还没投影
       pool.push(n);
     }
@@ -86,7 +88,7 @@ export class SlotProjector {
       if (m.type !== 'childList') continue;
       if (m.target !== this.el) continue; // 只处理 direct children 的新增
       for (const n of Array.from(m.addedNodes)) {
-        if (this.owned.has(n)) continue;
+        if (this.owned.has(n) || isOwnedVisualNode(this.el, n)) continue;
         // Ignore nodes that are already projected in-place before slotEnd.
         // This prevents re-moving the same node and creating a mutation loop.
         if (!this.shouldMoveToSlot(n)) continue;

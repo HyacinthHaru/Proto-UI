@@ -2,6 +2,7 @@ import type {
   FinalStyleFrame,
   FinalStyleSink,
 } from '@proto.ui/module-feedback/internal/final-style-sink';
+import { createOwnedVisualSurface, type OwnedVisualSurface } from '../visual-surface';
 import type { OwnedTokenApplier } from '../feedback-style';
 
 export type OwnedTexture = {
@@ -46,9 +47,9 @@ const rgba = (value: unknown): value is readonly number[] =>
   );
 const color = (v: readonly number[]) =>
   `rgba(${v[0] * 255}, ${v[1] * 255}, ${v[2] * 255}, ${v[3]})`;
-const paint = (token: string) => /^(bg-|backdrop-|shadow)/.test(token.split(':').at(-1)!);
+const paint = (token: string) => /^(bg-|backdrop-)/.test(token.split(':').at(-1)!);
 const relevantSelector = (token: string) =>
-  token.includes(':') && /^(bg-|backdrop-|shadow|rounded|text-)/.test(token.split(':').at(-1)!);
+  token.includes(':') && /^(bg-|backdrop-|rounded|text-)/.test(token.split(':').at(-1)!);
 
 /** Private, bounded, reusable owned-RGBA consumer. Never captures DOM or loads a URL. */
 export function createOwnedTextureVisualSink(
@@ -56,7 +57,8 @@ export function createOwnedTextureVisualSink(
   style: OwnedTokenApplier,
   program: MaterialProgram | null,
   source: OwnedTextureSource,
-  preferences: MaterialPreferences
+  preferences: MaterialPreferences,
+  surface: OwnedVisualSurface = createOwnedVisualSurface(host, host.shadowRoot ?? host)
 ): FinalStyleSink {
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -70,12 +72,31 @@ export function createOwnedTextureVisualSink(
     zIndex: '-1',
     display: 'none',
   });
-  const saved = {
-    background: host.style.background,
-    position: host.style.position,
-    isolation: host.style.isolation,
-    color: host.style.color,
-  };
+  const ownedInline = new Map<string, { before: [string, string]; applied: [string, string] }>();
+  const inline = (name: string): [string, string] => [
+    host.style.getPropertyValue(name),
+    host.style.getPropertyPriority(name),
+  ];
+  function restoreOwnedInline() {
+    for (const [name, entry] of ownedInline) {
+      const current = inline(name);
+      if (current[0] === entry.applied[0] && current[1] === entry.applied[1]) {
+        if (entry.before[0]) host.style.setProperty(name, ...entry.before);
+        else host.style.removeProperty(name);
+      }
+    }
+    ownedInline.clear();
+  }
+  function ownInline(name: string, value: string) {
+    const existing = ownedInline.get(name);
+    const current = inline(name);
+    const before =
+      existing && current[0] === existing.applied[0] && current[1] === existing.applied[1]
+        ? existing.before
+        : current;
+    host.style.setProperty(name, value);
+    ownedInline.set(name, { before, applied: inline(name) });
+  }
   let gl: WebGLRenderingContext | null = null;
   let pipeline: WebGLProgram | null = null;
   let buffer: WebGLBuffer | null = null;
@@ -107,7 +128,7 @@ export function createOwnedTextureVisualSink(
   function unavailable(reason: string) {
     canvas.style.display = 'none';
     freeGPU();
-    Object.assign(host.style, saved);
+    restoreOwnedInline();
     if (last) style.apply([...last.style.tokens]);
     clearDiagnostics();
     host.dataset.materialQuality = 'unavailable';
@@ -125,13 +146,13 @@ export function createOwnedTextureVisualSink(
   };
   function fallback(reason: string) {
     canvas.style.display = 'none';
+    restoreOwnedInline();
     const fill = last?.material?.config?.fallback?.fill;
     if (!rgba(fill) || !resolvedForeground || contrast(fill, resolvedForeground) < 4.5) {
       unavailable('complete-readable-fallback-unavailable');
       return;
     }
-    host.style.background = color(fill);
-    host.style.color = color(resolvedForeground);
+    ownInline('background', color(fill));
     host.dataset.materialQuality = 'opaque-fallback';
     host.dataset.materialReason = reason;
     host.dataset.materialPhase =
@@ -235,7 +256,7 @@ export function createOwnedTextureVisualSink(
         canvas.style.display = 'none';
         style.apply([...last.style.tokens]);
         freeGPU();
-        Object.assign(host.style, saved);
+        restoreOwnedInline();
         clearDiagnostics();
         resolvedForeground = null;
         return;
@@ -255,7 +276,7 @@ export function createOwnedTextureVisualSink(
       )
         throw new Error('invalid-material-declaration');
       // Remove competing Proto-owned fill before publishing fallback or enhancement.
-      Object.assign(host.style, saved);
+      restoreOwnedInline();
       style.apply(last.style.tokens.filter((token) => !paint(token)));
       const css = getComputedStyle(host);
       const parsed = css.color.match(
@@ -274,9 +295,6 @@ export function createOwnedTextureVisualSink(
         return;
       }
       fallback('preparing');
-      if (css.position === 'static') host.style.position = 'relative';
-      host.style.isolation = 'isolate';
-      if (canvas.parentElement !== host) host.prepend(canvas);
       if (last.style.tokens.some(paint)) {
         fallback('conflicting-authored-paint');
         return;
@@ -434,7 +452,10 @@ export function createOwnedTextureVisualSink(
         fallback('source-replaced-during-frame');
         return;
       }
-      host.style.background = 'transparent';
+      if (css.position === 'static') ownInline('position', 'relative');
+      ownInline('isolation', 'isolate');
+      surface.mount(canvas);
+      ownInline('background', 'transparent');
       canvas.style.display = 'block';
       host.dataset.materialQuality = 'experimental-owned-texture';
       host.dataset.materialReason = 'rendered';
@@ -481,21 +502,33 @@ export function createOwnedTextureVisualSink(
     release() {
       if (retired) return;
       retired = true;
-      offSource();
-      offPreferences();
-      observer?.disconnect();
-      canvas.removeEventListener('webglcontextlost', onLost);
-      canvas.removeEventListener('webglcontextrestored', onRestored);
-      freeGPU();
-      canvas.remove();
-      style.clear();
-      Object.assign(host.style, saved);
-      delete host.dataset.materialQuality;
-      delete host.dataset.materialReason;
-      delete host.dataset.materialFrame;
-      delete host.dataset.materialPhase;
-      delete host.dataset.materialRadius;
-      last = null;
+      let failed = false;
+      let firstError: unknown;
+      for (const cleanup of [
+        offSource,
+        offPreferences,
+        () => observer?.disconnect(),
+        () => canvas.removeEventListener('webglcontextlost', onLost),
+        () => canvas.removeEventListener('webglcontextrestored', onRestored),
+        freeGPU,
+        () => surface.release(canvas),
+        () => style.clear(),
+        restoreOwnedInline,
+        clearDiagnostics,
+        () => {
+          last = null;
+        },
+      ]) {
+        try {
+          cleanup();
+        } catch (error) {
+          if (!failed) {
+            failed = true;
+            firstError = error;
+          }
+        }
+      }
+      if (failed) throw firstError;
     },
   };
 }

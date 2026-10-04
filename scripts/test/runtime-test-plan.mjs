@@ -25,6 +25,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts',

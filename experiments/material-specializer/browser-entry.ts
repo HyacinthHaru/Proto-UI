@@ -1,4 +1,6 @@
 import button from './button.proto';
+import { definePrototype } from '@proto.ui/core';
+import type { ButtonProps, ButtonExposes } from '@proto.ui/prototypes-base/button';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import { installExperimentalVisualConsumer } from '@proto.ui/adapter-web-component/internal/visual-consumer';
 import {
@@ -8,6 +10,19 @@ import {
 } from '@proto.ui/adapter-web-component/internal/owned-texture-sink';
 import program from 'material-program';
 import baselineProgram from 'material-baseline-program';
+const viewMode = new URL(location.href).searchParams.get('view') ?? 'light';
+// Test-only view topology; the Base Button/material declaration is unchanged.
+const fixtureButton =
+  viewMode === 'nested'
+    ? definePrototype<ButtonProps, ButtonExposes>({
+        ...button,
+        name: 'experimental-material-nested-view',
+        setup(def) {
+          button.setup(def);
+          return (r) => r.el('span', [r.slot()]);
+        },
+      })
+    : button;
 const diagnosticBaseline =
   new URL(location.href).searchParams.get('profile') === 'source-157-control';
 
@@ -90,7 +105,7 @@ const candidateProgram = {
     return program.prepareSource(pixels, width, height);
   },
 };
-installExperimentalVisualConsumer(button, (host, style) =>
+installExperimentalVisualConsumer(fixtureButton, (host, style, surface) =>
   createOwnedTextureVisualSink(
     host,
     style,
@@ -102,10 +117,14 @@ installExperimentalVisualConsumer(button, (host, style) =>
         return () => sourceListeners.delete(fn);
       },
     },
-    preferences
+    preferences,
+    surface
   )
 );
-const Button = AdaptToWebComponent(button, { registerAs: 'owned-material-button' });
+const Button = AdaptToWebComponent(fixtureButton, {
+  registerAs: 'owned-material-button',
+  shadow: viewMode === 'shadow',
+});
 let element = new Button();
 let clicks = 0;
 function mount() {
@@ -126,6 +145,11 @@ const probe = {
     return {
       profile: diagnosticBaseline ? 'source-157-control' : 'regular-readable-v3',
       preparationCount,
+      viewMode,
+      surfaceRoot: element.shadowRoot ? 'shadow' : 'light',
+      canvasDirect:
+        (element.shadowRoot ?? element).querySelector('canvas')?.parentNode ===
+        (element.shadowRoot ?? element),
       pressed: exposes.pressed.get(),
       disabled: exposes.disabled.get(),
       focused: exposes.focused.get(),
@@ -138,6 +162,9 @@ const probe = {
       sourceListeners: sourceListeners.size,
       preferenceListeners: preferenceListeners.size,
     };
+  },
+  listeners() {
+    return { sourceListeners: sourceListeners.size, preferenceListeners: preferenceListeners.size };
   },
   disabled(value: boolean) {
     setElementProps(element, { disabled: value });
@@ -168,7 +195,10 @@ const probe = {
     for (const listener of sourceListeners) listener();
   },
   pixels() {
-    return element.querySelector('canvas')?.toDataURL();
+    return (element.shadowRoot ?? element).querySelector('canvas')?.toDataURL();
+  },
+  update() {
+    element.update();
   },
   remove() {
     element.remove();
