@@ -130,3 +130,25 @@ A manual-only, opt-in diagnostic now samples just the Shadcn dark/390 case throu
 ### 11:40 UTC supported one-time diagnostic trigger
 
 No direct workflow dispatch was made: the CI inspection leaf is read-only and the governed collaboration CLI has no new-dispatch action. The authorized test-implementation path permits feature-branch test/workflow source changes. The ordinary PR workflow therefore keeps its complete normal matrix and adds a separate diagnostic job gated to PR #815's single synchronize event whose `before` SHA is `87b927f4bca02484806e588a53029c577f828279`. Later pushes do not match that boundary. The temporary job will be removed after attribution; it neither replaces a normal check nor changes token permissions, secrets or branch protection. The sampler remains disabled outside this explicit job.
+
+## 11:55 UTC diagnostic attribution and cleanup
+
+The one-time job executed on `2e4880639f90d0df6848ce6936a97c01be5be95e` in run `37199747581`, retaining clean-source CPU artifact `11302692461`. Its ordinary atom job separately passed all 64 cases (artifact `11302318563`); no profiled result is substituted for those standard tests. The sampled single Search case met its initial assertion in this run, but retains explicit overhead/warmup caveats and does not erase the earlier 61b deadline failure.
+
+Weighted samples attribute the 576ms task mainly to `SocialIcons` / `initSiteNativeControls` initialization and its queued refresh, followed by native-control theme/style refresh. `syncOwnedSurfaceStyles` is a prominent self-cost hotspot. Source inspection identifies raw-prop delivery followed by queued `.setProps` delivery, but removing the replay would violate the existing raw-prop/update rendering boundary. The bounded next product candidate is an actual-inline-value-and-priority CSSOM write guard, preserving external-write reassertion, target migration, cleanup restoration and explicit render timing. This is a separate product-performance investigation, not a documentation or font-probe repair; no such guard is implemented in this docs branch.
+
+The temporary profile job, Search hooks and helper tests are removed after retaining the original artifacts and history. Normal documentation evidence remains. Final ordinary CI must bind the resulting docs head, and any separate performance dependency must be explicitly integrated and revalidated.
+
+### 12:01 UTC clean-checkout fixture correction
+
+The 2e general job disproved the earlier cwd-only explanation: both new font fixtures still failed with ENOENT at the correctly resolved absolute theme path, while 3701 other cases passed. `apps/www/src/styles/shadcn-theme.css` is intentionally generated and git-ignored; local builds had left it present, whereas the general-test job had not generated it. The Node URL change did not solve that dependency.
+
+The fixture now uses tracked `SHADCN_THEME_CSS` and the same pure `renderPrefixedThemeCss` function as the actual CLI theme command. With the generated stylesheet temporarily absent, both real-family projection tests pass from the repository root and when invoked from `apps/www`, without regenerating the missing file. This keeps real theme inputs and production Adapter materialization while removing both cwd and local-build contamination. The original two CI failures remain recorded; the correction must still pass the final clean CI job.
+
+## 12:17 UTC bounded product-performance integration
+
+A separate product commit is now integrated as `fe8db6a3a498d12182f48bd8de4b0fb3c41a93fe`, cherry-picked with provenance from `e789aae57d83a2dca5aa25e4d6a61b4033ed355c` (whose parent is the frozen `ec6e5710` dependency). This is explicitly a WC implementation optimization accompanying the documentation work, not a font-probe change or new prototype API.
+
+The final guard skips a CSSOM write only for a **nonempty custom property** whose live inline value and priority already match. All standard CSS properties and empty values retain their original setter behavior. The earlier broad guard (`00fd3eaa`, locally mapped to unpublished `2e990132`) was rejected after independent review found empty-shorthand clearing and logical/physical ordering counterexamples; it is not in the published branch's ancestry. The final record preserves those failures. Ownership bookkeeping, external-write reassertion, target migration, cleanup restoration, raw prop delivery and explicit update timing remain unchanged.
+
+On the final isolated candidate, the same 14 focused assertions produce three expected failures on the original baseline, five standard-CSS failures on the rejected broad guard, and 14 passes on the restricted guard. All 269 WC tests, 129 dependent/conformance tests, workspace types and formatting pass. Internal independent review reran 14/14 and found no remaining blocker; this is not a GitHub approval or a measured startup guarantee. The integrated documentation/guard/recipe focused selection also passes; final ordinary clean CI, real Search under its original one-second limit, theme/family changes and source-bound visual evidence remain required after the combined push.

@@ -329,19 +329,17 @@ describe.sequential('Public passive atom documentation previews', () => {
         if (documentCapture) {
           await page.evaluate(() => document.fonts.ready);
           const selector = DOCUMENT_TYPOGRAPHY_SELECTOR;
-          const computed = await page
-            .locator(selector)
-            .first()
-            .evaluate((node) => {
-              const css = getComputedStyle(node);
-              return {
-                text: node.textContent,
-                family: css.fontFamily,
-                size: css.fontSize,
-                weight: css.fontWeight,
-                lineHeight: css.lineHeight,
-              };
-            });
+          const computed = await page.locator(selector).evaluate((node) => {
+            const css = getComputedStyle(node);
+            return {
+              text: node.textContent,
+              html: node.innerHTML,
+              family: css.fontFamily,
+              size: css.fontSize,
+              weight: css.fontWeight,
+              lineHeight: css.lineHeight,
+            };
+          });
           documentTypography = { selector, computed, renderedSample: null, platformFonts: [] };
           const cdp = await context.newCDPSession(page);
           try {

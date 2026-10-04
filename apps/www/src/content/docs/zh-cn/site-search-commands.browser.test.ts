@@ -4,7 +4,6 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { revealHeaderPreferences } from './site-header-browser';
-import { startSearchCpuProfile, type SearchCpuProfile } from './site-search-cpu-profile';
 import type { Browser, Page, Request } from 'playwright-core';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
@@ -59,7 +58,6 @@ const diagnosticPages = new Map<
     initialReadiness?: SearchReadinessEvidence;
     initialPollFailure?: { at: number; message: string; cause: string | null };
     requests: unknown[];
-    cpuProfile?: SearchCpuProfile;
     lateObservation?: { budgetMs: number; elapsedMs: number; ready: boolean };
   }
 >();
@@ -155,9 +153,6 @@ afterEach(async () => {
     await entry.writes;
     if (!page.isClosed()) {
       await captureFailure(page);
-      await entry.cpuProfile
-        ?.stop('afterEach failure cleanup')
-        .catch((error) => console.warn('[Search CPU profile] capture failed', error));
       await page.context().close();
     }
   }
@@ -461,13 +456,6 @@ describe.sequential('Search family Button commands', () => {
           await page.addInitScript(installSearchStartupTrace);
           const id = `${family}-${theme}-${width}`;
           stage(page, id, 'navigate');
-          diagnosticPages.get(page)!.cpuProfile = await startSearchCpuProfile({
-            page,
-            id,
-            source,
-            directory: evidenceDirectory,
-            enabled: process.env.PROTO_UI_SEARCH_CPU_PROFILE,
-          });
           try {
             const response = await page.goto(`${baseUrl}${searchRoute(family)}`, {
               waitUntil: 'networkidle',
@@ -505,10 +493,6 @@ describe.sequential('Search family Button commands', () => {
               };
               throw error;
             }
-            await diagnosticPages
-              .get(page)!
-              .cpuProfile?.stop('initial readiness passed')
-              .catch((error) => console.warn('[Search CPU profile] capture failed', error));
             await page.evaluate(() => (window as any).__puiSearchStartup?.stop());
             expect(await trigger.evaluate((button) => button.localName)).toBe(
               `wc-${family}-button`
@@ -583,10 +567,6 @@ describe.sequential('Search family Button commands', () => {
             await captureFailure(page);
             throw error;
           } finally {
-            await diagnosticPages
-              .get(page)!
-              .cpuProfile?.stop('initial readiness or journey failed')
-              .catch((error) => console.warn('[Search CPU profile] capture failed', error));
             await context.close();
           }
         }, 60_000);

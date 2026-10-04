@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs';
-import { URL as NodeURL } from 'node:url';
+import { SHADCN_THEME_CSS } from '../../../../../packages/cli/src/legacy/type';
+import { renderPrefixedThemeCss } from '../../../../../packages/cli/src/services/proto-style-css';
 import { WEBSITE_SHADCN_THEME_TOKENS } from './projection-theme';
 import { afterEach, describe, expect, it } from 'vitest';
 import { siteTypographyParticipant } from '../site-typography';
@@ -18,10 +18,9 @@ describe('document font sample through actual Text projection', () => {
       document.body.innerHTML =
         '<main data-site-family-scope><div data-doc-flow><p><code>shadcn-surface-root</code> 是 draft 工作区 Surface 原子。<a href="/zh-cn/ui-libraries/base/surface/">Base Surface</a></p></div></main>';
       const root = document.querySelector<HTMLElement>('main')!;
-      const css = readFileSync(
-        new NodeURL('../../styles/shadcn-theme.css', import.meta.url),
-        'utf8'
-      );
+      // The website CSS is generated and intentionally absent in a clean checkout.
+      // Use the same tracked input and pure renderer as the actual CLI command.
+      const css = renderPrefixedThemeCss(SHADCN_THEME_CSS);
       for (const name of WEBSITE_SHADCN_THEME_TOKENS) {
         const value = css.match(new RegExp(`--pui-${name}:\\s*([^;]+);`))?.[1];
         expect(value, `Actual website theme token ${name}`).toBeTruthy();
