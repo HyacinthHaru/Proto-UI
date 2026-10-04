@@ -166,5 +166,8 @@ test('native-sequence oracle remains discriminating and runs with the browser ev
   assert.match(browser, /requests\(runtime, ref, 'valueChange'\)\)\.length\)\.toBe\(1\)/);
   assert.match(browser, /await editor\.fill\('Changed\\nSecond line'\)/);
   assert.match(browser, /assertNativeValueChangeSequence\(native, emitted\)/);
+  assert.match(browser, /await page\.locator\('h1'\)\.click\(\)/);
+  assert.match(browser, /expect\(await nativeInputs\(\)\)\.toEqual\(recoveredNativeInputs\)/);
+  assert.match(browser, /toEqual\(recoveredRequests\)/);
   assert.match(readFileSync(helper, 'utf8'), /assert\.deepEqual/);
 });

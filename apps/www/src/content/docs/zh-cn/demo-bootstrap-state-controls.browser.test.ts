@@ -593,6 +593,8 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
         });
         const controlledRef = `${ref}Controlled`;
         const controlledNativeInputs = await observeNativeInputs(controlled);
+        const recoveredNativeInputs = await nativeInputs();
+        const recoveredRequests = await requests(runtime, ref, 'valueChange');
         for (const blocked of ['disabled', 'readOnly'] as const) {
           await setProps(runtime, controlledRef, { [blocked]: true });
           await expect
@@ -604,11 +606,19 @@ describe.skipIf(!enabled).sequential('Bootstrap state-controls exact-head browse
               )
             )
             .toBe(true);
+          // A disabled target cannot take keyboard focus. Clear the previous
+          // editor through a real non-editable click before trying to type;
+          // otherwise Locator.press can send X to that still-focused sibling.
+          await page.locator('h1').click();
+          expect(await editor.evaluate((element) => element.matches(':focus'))).toBe(false);
           await controlled.press('End');
           await controlled.press('X');
           expect(await controlled.inputValue()).toBe(initial);
           expect(await controlledNativeInputs()).toEqual([]);
           expect(await requests(runtime, controlledRef, 'valueChange')).toEqual([]);
+          expect(await editor.inputValue()).toBe('Restored');
+          expect(await nativeInputs()).toEqual(recoveredNativeInputs);
+          expect(await requests(runtime, ref, 'valueChange')).toEqual(recoveredRequests);
           await setProps(runtime, controlledRef, { [blocked]: false });
           await expect
             .poll(() =>
