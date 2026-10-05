@@ -5,6 +5,19 @@ status: draft
 since: 0.1.0
 summary: Runtime and bounded React/Vue evidence for asFocusable target facts, asFocusEntry region policy, setup-only configuration, disabled focus requests, autofocus, scopes, native reveal readiness, one-shot commit effects, and nested surface-owner readiness.
 cases:
+  - id: T-FOCUS-0001-CASE-INTENT-IDENTITY
+    title: Explicit requests create a private intent while readiness and Center replay retain its identity
+    covers: [C-AS-FOCUSABLE-0001-G, C-AS-FOCUS-ENTRY-0001-H]
+    expectation: new-native-programmatic-entry-scope-and-roving-requests-supersede-while-current-policy-replay-and-target-replacement-retain-the-pending-intent
+    notes:
+      - Controlled host capabilities observe request identity and application count. This does not establish native layout or full scope/roving behavior.
+  - id: T-FOCUS-0001-CASE-INTENT-RETRY-BOUND
+    title: Each new acquisition intent receives bounded retries without renewing failed same-intent replay
+    covers: [C-AS-FOCUSABLE-0001-G, C-AS-FOCUS-ENTRY-0001-H, HC-FOCUS-TARGET-0001-C]
+    expectation: all-three-request-kinds-renew-after-explicit-supersession-but-repeated-rejection-and-preexisting-root-focus-do-not-renew-the-pending-budget
+    notes:
+      - Real framework tests control only host rejection and frame delivery; omitted or reused author options still produce distinct explicit intents.
+      - An already-focused independent root is not evidence that a requested descendant acquired focus.
   - id: T-FOCUS-0001-CASE-FOCUSABLE-ONCE
     title: Repeated asFocusable calls reuse one handle and record privileged once trace
     covers:
@@ -202,6 +215,44 @@ cases:
       - Discriminating red/green execution uses installed framework runtimes in a simulated DOM. It neither injects gate state nor synthesizes focus facts, and does not claim native browser or all-version conformance.
 
 implementations:
+  - id: four-web-adapter-native-intent-retry-bound
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/base/test/focus-intent-retries.browser.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-INTENT-RETRY-BOUND]
+    notes:
+      - The isolated four-runtime fixture exercises real CSS focus rejection and frame delivery. Exact candidate native CI is required; controlled-host tests do not substitute for it.
+  - id: runtime-focus-intent-identity
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-intent-identity.contract.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-INTENT-IDENTITY]
+  - id: adapter-react-focus-intent-retry-bound
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-INTENT-RETRY-BOUND]
+  - id: adapter-vue-focus-intent-retry-bound
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-INTENT-RETRY-BOUND]
+  - id: adapter-vue2-focus-intent-retry-bound
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue2/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-INTENT-RETRY-BOUND]
+  - id: adapter-web-component-focus-intent-retry-bound
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/web-component/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-INTENT-RETRY-BOUND]
   - id: adapter-vue-native-request-readiness
     kind: adapter-test
     status: needs-review
@@ -455,6 +506,9 @@ exercises:
       coverageImpact: exercises-test-surface
       note: Bounded real React commit fixtures, including nested resolved-owner readiness, and the selected-entry/End/Home Chromium journey exercise current Focus and observation delivery, not the whole React version range or profile.
 revisions:
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added narrow intent-identity and all-kind bounded-retry evidence across four Web Adapters without claiming unrelated scope, roving, or complete profile conformance.
   - version: 0.3.0-alpha.1
     change: strengthened
     summary: Added bounded Vue required-kind admission and retry evidence, and ordinary owner disappearance/teardown cases for React and Vue; no lifecycle or full-profile promotion.

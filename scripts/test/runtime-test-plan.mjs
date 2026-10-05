@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 export const BROWSER_SUITES = Object.freeze([
   'apps/www/test/template-style.browser.test.ts',
+  'packages/adapters/base/test/focus-intent-retries.browser.test.ts',
   'packages/adapters/react/test/focus-entry-readiness.browser.test.ts',
   'packages/adapters/vue/test/focus-request-readiness.browser.test.ts',
   'apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts',
@@ -17,6 +18,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-base-image.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-base-input.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts',

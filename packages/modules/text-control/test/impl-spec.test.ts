@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { TextControlEvent, TextControlLineMode, TextControlPatch } from '@proto.ui/core';
 import { CapsVault, SYS_CAP, type SystemCaps } from '@proto.ui/module-base';
 import {
@@ -736,6 +736,210 @@ it.each([
     } finally {
       h.module.hooks.dispose?.();
       target.remove();
+    }
+  }
+);
+
+describe.each(['single', 'multiline'] as const)(
+  'interrupted %s composition boundaries',
+  (lineMode) => {
+    it.each([
+      ['compositionstart', true],
+      ['input', true],
+      ['input', false],
+      ['compositionend', false],
+    ] as const)('settles %s (%s) when callback prework throws', (type, composing) => {
+      let beforeRun = () => {};
+      const h = createHarness(true, lineMode, () => beforeRun());
+      const control = h.module.facade.declare();
+      h.module.hooks.onMountPhase?.('mounted', 1);
+      h.sys.phase = 'callback';
+      control.sync({ valueMode: 'controlled', value: 'owner' });
+      h.connectionBox.current!.onEvent(event('compositionstart', 'candidate', true));
+      beforeRun = () => {
+        throw new Error('prework failed');
+      };
+      expect(() => h.connectionBox.current!.onEvent(event(type, 'candidate', composing))).toThrow(
+        'prework failed'
+      );
+      expect(control.snapshot()?.composing).toBe(composing);
+      control.sync({ value: 'recovered' });
+      expect(h.getLatestPatch().value).toBe(composing ? undefined : 'recovered');
+      h.module.hooks.onMountPhase?.('detached', 1);
+    });
+
+    it.each([false, true])(
+      'does not clear a newer composition when interrupted (new lease=%s)',
+      (replaceLease) => {
+        let beforeRun = () => {};
+        const h = createHarness(true, lineMode, () => beforeRun());
+        const control = h.module.facade.declare();
+        h.module.hooks.onMountPhase?.('mounted', 1);
+        h.sys.phase = 'callback';
+        control.sync({ valueMode: 'controlled', value: 'owner' });
+        const old = h.connectionBox.current!;
+        old.onEvent(event('compositionstart', 'old candidate', true));
+        beforeRun = () => {
+          beforeRun = () => {};
+          if (replaceLease) {
+            h.module.hooks.onMountPhase?.('detached', 1);
+            h.module.hooks.onMountPhase?.('mounted', 2);
+          }
+          h.connectionBox.current!.onEvent(event('compositionstart', 'new candidate', true));
+          throw new Error('old prework failed');
+        };
+        expect(() => old.onEvent(event('compositionend', 'old candidate'))).toThrow(
+          'old prework failed'
+        );
+        expect(control.snapshot()?.composing).toBe(true);
+        control.sync({ value: 'new owner' });
+        expect(h.getLatestPatch().value).toBeUndefined();
+        h.connectionBox.current!.onEvent(event('compositionend', 'new candidate'));
+        control.sync({ value: 'recovered' });
+        expect(h.getLatestPatch().value).toBe('recovered');
+        h.module.hooks.onMountPhase?.('detached', replaceLease ? 2 : 1);
+      }
+    );
+  }
+);
+
+it.each([false, true])(
+  'settles composition after a throwing listener without overwriting nested input (%s)',
+  (nested) => {
+    const h = createHarness();
+    const control = h.module.facade.declare();
+    control.on('compositionend', () => {
+      if (nested)
+        h.connectionBox.current!.onEvent(event('compositionstart', 'new candidate', true));
+      throw new Error('listener failed');
+    });
+    h.module.hooks.onMountPhase?.('mounted', 1);
+    h.sys.phase = 'callback';
+    control.sync({ valueMode: 'controlled', value: 'owner' });
+    h.connectionBox.current!.onEvent(event('compositionstart', 'old candidate', true));
+    expect(() =>
+      h.connectionBox.current!.onEvent(event('compositionend', 'old candidate'))
+    ).toThrow('listener failed');
+    expect(control.snapshot()?.composing).toBe(nested);
+    control.sync({ value: 'recovered' });
+    expect(h.getLatestPatch().value).toBe(nested ? undefined : 'recovered');
+    h.module.hooks.onMountPhase?.('detached', 1);
+  }
+);
+
+it('does not deliver a superseded event after newer composition enters during prework', () => {
+  let beforeRun = () => {};
+  const h = createHarness(true, 'multiline', () => beforeRun());
+  const control = h.module.facade.declare();
+  const seen: string[] = [];
+  control.on('compositionend', () => seen.push('obsolete end'));
+  h.module.hooks.onMountPhase?.('mounted', 1);
+  h.sys.phase = 'callback';
+  control.sync({ valueMode: 'controlled', value: 'owner' });
+  h.connectionBox.current!.onEvent(event('compositionstart', 'old candidate', true));
+  beforeRun = () => {
+    beforeRun = () => {};
+    h.connectionBox.current!.onEvent(event('compositionstart', 'new candidate', true));
+  };
+  h.connectionBox.current!.onEvent(event('compositionend', 'old candidate'));
+  expect(seen).toEqual([]);
+  expect(control.snapshot()?.composing).toBe(true);
+  h.module.hooks.onMountPhase?.('detached', 1);
+});
+
+it.each(['has', 'get'] as const)(
+  'settles native completion even when callback capability %s throws',
+  (stage) => {
+    const h = createHarness(true, 'multiline', () => {}),
+      control = h.module.facade.declare();
+    h.module.hooks.onMountPhase?.('mounted', 1);
+    h.sys.phase = 'callback';
+    control.sync({ valueMode: 'controlled', value: 'owner' });
+    h.connectionBox.current!.onEvent(event('compositionstart', 'draft', true));
+    const original = h.vault[stage].bind(h.vault);
+    const spy = vi.spyOn(h.vault, stage).mockImplementation(((cap: any) => {
+      if (cap === TEXT_CONTROL_RUN_IN_CALLBACK_CAP) throw new Error('cap lookup failed');
+      return original(cap);
+    }) as any);
+    try {
+      expect(() => h.connectionBox.current!.onEvent(event('compositionend', 'draft'))).toThrow(
+        'cap lookup failed'
+      );
+      expect(control.snapshot()?.composing).toBe(false);
+      control.sync({ value: 'recovered' });
+      expect(h.getPatchValue()).toBe('recovered');
+    } finally {
+      spy.mockRestore();
+      h.module.hooks.dispose?.();
+    }
+  }
+);
+it.each([false, true])(
+  'does not settle an old failing lookup over new composition (new lease=%s)',
+  (replace) => {
+    const h = createHarness(true, 'multiline', () => {}),
+      control = h.module.facade.declare();
+    h.module.hooks.onMountPhase?.('mounted', 1);
+    h.sys.phase = 'callback';
+    control.sync({ valueMode: 'controlled', value: 'owner' });
+    h.connectionBox.current!.onEvent(event('compositionstart', 'old', true));
+    const original = h.vault.get.bind(h.vault);
+    let armed = true;
+    const spy = vi.spyOn(h.vault, 'get').mockImplementation(((cap: any) => {
+      if (cap === TEXT_CONTROL_RUN_IN_CALLBACK_CAP && armed) {
+        armed = false;
+        if (replace) {
+          h.module.hooks.onMountPhase?.('detached', 1);
+          h.module.hooks.onMountPhase?.('mounted', 2);
+        }
+        h.connectionBox.current!.onEvent(event('compositionstart', 'new', true));
+        throw new Error('lookup interrupted');
+      }
+      return original(cap);
+    }) as any);
+    try {
+      expect(() => h.connectionBox.current!.onEvent(event('compositionend', 'old'))).toThrow(
+        'lookup interrupted'
+      );
+      expect(control.snapshot()?.composing).toBe(true);
+      control.sync({ value: 'owner-new' });
+      expect(h.getLatestPatch().value).toBeUndefined();
+    } finally {
+      spy.mockRestore();
+      h.module.hooks.dispose?.();
+    }
+  }
+);
+it.each([false, true])(
+  'preserves latest facts and releases prelude when deferred restoration throws (nested=%s)',
+  (nested) => {
+    let fail = false;
+    const h = createHarness(true, 'multiline', () => {
+        if (fail) {
+          fail = false;
+          if (nested)
+            h.connectionBox.current!.onEvent(event('compositionstart', 'new draft', true));
+          throw new Error('restore prework');
+        }
+      }),
+      control = h.module.facade.declare();
+    h.module.hooks.onMountPhase?.('mounted', 1);
+    h.sys.phase = 'callback';
+    control.sync({ valueMode: 'controlled', value: 'owner' });
+    h.connectionBox.current!.onEvent(event('compositionstart', 'old draft', true));
+    const tasks: Array<() => void> = [];
+    const queue = vi.spyOn(globalThis, 'queueMicrotask').mockImplementation((fn) => tasks.push(fn));
+    try {
+      h.connectionBox.current!.onEvent(event('compositionend', 'old draft'));
+      expect(tasks).toHaveLength(1);
+      fail = true;
+      expect(() => tasks.shift()!()).toThrow('restore prework');
+      expect(control.snapshot()?.composing).toBe(nested);
+      control.sync({ value: 'recovered' });
+      expect(h.getLatestPatch().value).toBe(nested ? undefined : 'recovered');
+    } finally {
+      queue.mockRestore();
+      h.module.hooks.dispose?.();
     }
   }
 );

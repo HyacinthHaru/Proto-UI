@@ -68,6 +68,7 @@ import {
   FOCUS_SET_ENTRY_FOCUSABLE_CAP,
   FOCUS_SET_FOCUSABLE_CAP,
   FOCUS_TARGET_READY_CAP,
+  type FocusRequestKind,
 } from '@proto.ui/module-focus';
 import {
   createWebHitParticipationHostBridge,
@@ -335,6 +336,8 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   isViewReady: () => boolean;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
+  onFocusIntent?: () => void;
+  onFocusAcquired?: () => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
 }) {
   const {
@@ -362,6 +365,8 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   };
   // A11y must project while the rematerialized host is still behind the reveal
   // barrier; focus remains gated until that host is ready for interaction.
+  let requestIntent: FocusRequestOptions | undefined;
+  let requestKind: FocusRequestKind | undefined;
   const getTriggerSurface = () => (args.isViewReady() ? getConnectedTriggerSurface() : null);
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
@@ -473,14 +478,20 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       ],
       [
         FOCUS_REQUEST_FOCUS_CAP,
-        (target: HTMLElement, options?: FocusRequestOptions) => {
+        (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
+          if (requestIntent !== options || requestKind !== kind) {
+            requestIntent = options;
+            requestKind = kind;
+            args.onFocusIntent?.();
+          }
           target.focus(
             typeof options?.preventScroll === 'boolean'
               ? { preventScroll: options.preventScroll }
               : undefined
           );
           const applied = target.ownerDocument.activeElement === target;
-          if (!applied) args.retryTargetReady();
+          if (applied) args.onFocusAcquired?.();
+          else args.retryTargetReady();
           return applied;
         },
       ],
