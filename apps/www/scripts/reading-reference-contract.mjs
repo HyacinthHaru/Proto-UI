@@ -127,14 +127,20 @@ export function pngDimensions(bytes) {
   return { width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20) };
 }
 
-export function observationFailures(observation, requestedCase) {
+export function observationFailures(
+  observation,
+  requestedCase,
+  expectedViewport = READING_VIEWPORT
+) {
   const failures = [...observation.errors];
   const viewport = observation.viewport;
   if (
-    viewport.innerWidth !== READING_VIEWPORT.width ||
-    viewport.innerHeight !== READING_VIEWPORT.height
+    viewport.innerWidth !== expectedViewport.width ||
+    viewport.innerHeight !== expectedViewport.height
   )
-    failures.push('Actual viewport differs from 1180x757 CSS px.');
+    failures.push(
+      `Actual viewport differs from ${expectedViewport.width}x${expectedViewport.height} CSS px.`
+    );
   if (viewport.devicePixelRatio !== 1 || viewport.visualViewport?.scale !== 1)
     failures.push('Actual DPR/visual viewport scale differs from 1.');
   for (const zoom of [viewport.rootZoom, viewport.bodyZoom])

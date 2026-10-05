@@ -4,6 +4,12 @@ import os from 'node:os';
 import path from 'node:path';
 import { collectReadingReference } from './reading-reference-collector.mjs';
 import {
+  collectReadingBreakpoint,
+  readingBreakpointFailures,
+  READING_BREAKPOINT_CASES,
+} from './reading-reference-breakpoints.mjs';
+import { readReadingReflow } from '../src/content/docs/zh-cn/reading-reflow-evidence.ts';
+import {
   allowOwnRequest,
   hashReadingObservation,
   observationFailures,
@@ -18,6 +24,12 @@ import {
 import { launchBrowser } from '../src/content/docs/zh-cn/browser-harness.ts';
 import { startReadingPreview, verifyReadingBuild } from './reading-reference-production.mjs';
 
+const breakpointMode = process.argv.includes('--breakpoints');
+if (process.argv.slice(2).some((argument) => argument !== '--breakpoints'))
+  throw new Error('Only the optional --breakpoints profile is supported.');
+const requestedCases = breakpointMode ? READING_BREAKPOINT_CASES : READING_CASES;
+const reportFilename = breakpointMode ? 'reading-breakpoints.json' : 'reading-reference.json';
+
 // This independent runner does not enter or alter the existing browser matrix.
 // Run from the repository root using node --import tsx and a clean candidate.
 // The matching production-build.json receipt and unchanged dist bytes are required.
@@ -26,8 +38,12 @@ const out = path.resolve(
 );
 const report = {
   schemaVersion: 1,
-  purpose:
-    'Matched candidate reading-reference observation; not design acceptance, production attribution or clicked hit-testing.',
+  profile: breakpointMode
+    ? 'normal-desktop-breakpoints-and-separate-text-stress'
+    : 'matched-reference',
+  purpose: breakpointMode
+    ? 'Normal desktop reading breakpoint regression diagnosis with separately labelled enlarged-text controls; not visual acceptance or browser zoom simulation.'
+    : 'Matched candidate reading-reference observation; not design acceptance, production attribution or clicked hit-testing.',
   startedAtUTC: new Date().toISOString(),
   externalProductionReference: {
     kind: 'externally-observed-reference',
@@ -35,7 +51,8 @@ const report = {
     sourceBinding: 'unknown; collect separately, do not attribute it to the candidate',
   },
   requested: {
-    viewport: READING_VIEWPORT,
+    viewport: breakpointMode ? null : READING_VIEWPORT,
+    cases: requestedCases,
     deviceScaleFactor: 1,
     browserZoom:
       '100% fresh non-persistent browser context; verify actual DPR, visual viewport scale and CSS zoom',
@@ -59,7 +76,7 @@ const report = {
 };
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const save = () =>
-  writeFile(path.join(out, 'reading-reference.json'), `${JSON.stringify(report, null, 2)}\n`);
+  writeFile(path.join(out, reportFilename), `${JSON.stringify(report, null, 2)}\n`);
 let browser;
 let preview;
 await mkdir(out, { recursive: true });
@@ -74,6 +91,16 @@ try {
     path: 'apps/www/scripts/reading-reference-collector.mjs',
     sha256: sha256(await readFile(new URL('./reading-reference-collector.mjs', import.meta.url))),
   };
+  if (breakpointMode)
+    report.breakpointCollectors = await Promise.all(
+      [
+        'apps/www/scripts/reading-reference-breakpoints.mjs',
+        'apps/www/src/content/docs/zh-cn/reading-reflow-evidence.ts',
+      ].map(async (filename) => ({
+        path: filename,
+        sha256: sha256(await readFile(filename)),
+      }))
+    );
   await save();
   report.build = await verifyReadingBuild({
     out,
@@ -86,7 +113,8 @@ try {
   report.sourceAfterServerStart = readSourceBinding(process.env.PROTO_UI_EXPECTED_HEAD);
   browser = await launchBrowser();
   report.environment.browserVersion = browser.version();
-  for (const target of READING_CASES) {
+  for (const target of requestedCases) {
+    const viewport = target.viewport ?? READING_VIEWPORT;
     const entry = {
       ...target,
       originalURL: `${baseUrl}${target.route}`,
@@ -100,8 +128,8 @@ try {
     };
     report.cases.push(entry);
     const context = await browser.newContext({
-      viewport: READING_VIEWPORT,
-      screen: READING_VIEWPORT,
+      viewport,
+      screen: viewport,
       deviceScaleFactor: 1,
       colorScheme: 'light',
       reducedMotion: 'no-preference',
@@ -156,11 +184,10 @@ try {
       });
       if (
         !fullPage &&
-        (dimensions.width !== READING_VIEWPORT.width ||
-          dimensions.height !== READING_VIEWPORT.height)
+        (dimensions.width !== viewport.width || dimensions.height !== viewport.height)
       )
         throw new Error(
-          `Raw viewport PNG dimensions are ${dimensions.width}x${dimensions.height}, not 1180x757.`
+          `Raw viewport PNG dimensions are ${dimensions.width}x${dimensions.height}, not ${viewport.width}x${viewport.height}.`
         );
     };
     try {
@@ -232,12 +259,22 @@ try {
           ),
         target.colorScheme
       );
+      if (target.stressOnly)
+        await page.evaluate(() => {
+          document.documentElement.style.fontSize = '200%';
+        });
       await page.evaluate(async () => {
         await document.fonts.ready;
         await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       });
       entry.observation = hashReadingObservation(await page.evaluate(collectReadingReference));
-      entry.observationFailures = observationFailures(entry.observation, target);
+      if (breakpointMode) {
+        entry.breakpoint = await page.evaluate(collectReadingBreakpoint);
+        entry.reflow = await page.evaluate(readReadingReflow);
+      }
+      entry.observationFailures = breakpointMode
+        ? readingBreakpointFailures(entry.observation, entry.breakpoint, entry.reflow, target)
+        : observationFailures(entry.observation, target);
       await screenshot('viewport', false);
       await screenshot('full', true);
       entry.observationFailures.push(
@@ -296,5 +333,5 @@ if (report.failures.length) {
   process.exitCode = 1;
 } else
   console.log(
-    `Observed ${report.cases.length} source-bound reading cases. Report: ${path.join(out, 'reading-reference.json')}. Visual review remains separate.`
+    `Observed ${report.cases.length} source-bound reading cases. Report: ${path.join(out, reportFilename)}. Visual review remains separate.`
   );

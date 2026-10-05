@@ -33,7 +33,7 @@ export function readReadingReflow() {
     overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
     boxes,
     visibleTocLinks: [...document.querySelectorAll<HTMLElement>('.right-sidebar-panel sl-toc a')]
-      .filter((link) => link.checkVisibility())
+      .filter((link) => link.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }))
       .map((link) => ({
         label: link.textContent?.trim(),
         ...link.getBoundingClientRect().toJSON(),

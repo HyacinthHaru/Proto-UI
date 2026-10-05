@@ -8,6 +8,8 @@ on:
       - 'apps/www/scripts/search-production-preview.mjs'
       - 'apps/www/package.json'
       - 'scripts/test/reading-reference-evidence.test.mjs'
+      - 'scripts/test/reading-reference-breakpoints.test.mjs'
+      - 'apps/www/src/content/docs/zh-cn/reading-reflow-evidence.ts'
       - 'apps/www/src/content/docs/zh-cn/start-here/quick-start.mdx'
       - 'apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/radio-group.mdx'
       - 'apps/www/src/content/docs/zh-cn/browser-harness.ts'
@@ -74,8 +76,9 @@ jobs:
           "$CHROME" --version | tee "$RUNNER_TEMP/reading-reference/browser-environment.txt"
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
       - name: Verify bounded source and collector contracts
-        run: node --test scripts/test/reading-reference-evidence.test.mjs
+        run: node --test scripts/test/reading-reference-evidence.test.mjs scripts/test/reading-reference-breakpoints.test.mjs
       - name: Build the exact clean candidate and bind production bytes
+        id: build
         timeout-minutes: 10
         env:
           ASTRO_TELEMETRY_DISABLED: '1'
@@ -97,6 +100,17 @@ jobs:
           timeout --signal=TERM --kill-after=10s 600s \
             node --import tsx apps/www/scripts/capture-reading-reference.mjs \
             2>&1 | tee "$PROTO_UI_READING_EVIDENCE_DIR/runner.log"
+      - name: Diagnose normal desktop boundaries and separate enlarged-text controls
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        env:
+          ASTRO_TELEMETRY_DISABLED: '1'
+          PROTO_UI_EXPECTED_HEAD: ${{ env.CANDIDATE_SHA }}
+          PROTO_UI_READING_EVIDENCE_DIR: ${{ runner.temp }}/reading-reference
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=10s 600s \
+            node --import tsx apps/www/scripts/capture-reading-reference.mjs --breakpoints \
+            2>&1 | tee "$PROTO_UI_READING_EVIDENCE_DIR/breakpoint-runner.log"
       - name: Retain original PNGs, measurements and failures
         if: always()
         uses: actions/upload-artifact@v4

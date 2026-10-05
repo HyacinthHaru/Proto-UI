@@ -236,7 +236,8 @@ describe('bounded reading-reference runner and workflow', () => {
       [...new Set(READING_CASES.map(({ route }) => route))],
       ['/zh-cn/start-here/quick-start/', '/zh-cn/ui-libraries/shadcn/radio-group/']
     );
-    assert.match(runner, /for \(const target of READING_CASES\)/);
+    assert.match(runner, /for \(const target of requestedCases\)/);
+    assert.match(runner, /const viewport = target.viewport \?\? READING_VIEWPORT/);
     assert.match(runner, /browser-harness\.ts/);
     assert.match(runner, /deviceScaleFactor: 1/);
     assert.match(runner, /serviceWorkers: 'block'/);
@@ -642,7 +643,7 @@ describe('bounded reading-reference runner and workflow', () => {
     png.writeUInt32BE(757, 20);
     assert.deepEqual(pngDimensions(png), READING_VIEWPORT);
     assert.throws(() => pngDimensions(Buffer.from([255, 216, 255])), /original PNG/);
-    assert.match(runner, /dimensions\.width !== READING_VIEWPORT\.width/);
+    assert.match(runner, /dimensions\.width !== viewport\.width/);
     for (const field of [
       'mtimeUTC',
       'originalURL',
