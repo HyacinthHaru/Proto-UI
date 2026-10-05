@@ -4,6 +4,7 @@ import {
   BRUTALIST_DISABLED_TOKENS,
   BRUTALIST_FOCUS_TOKENS,
   BRUTALIST_HOVER_LIFT_TOKENS,
+  BRUTALIST_MOTION_HIT_TOKENS,
   BRUTALIST_PRESS_TOKENS,
   BRUTALIST_STRUCTURE_TOKENS,
 } from '../style';
@@ -128,12 +129,14 @@ const button = definePrototype<BrutalistButtonProps, BrutalistButtonExposes>({
     // P-BRUTALIST-BUTTON-INTERACTION — hover feedback
     def.rule({
       when: (w) => w.state(hovered).eq(true),
-      intent: (i) => i.feedback.style.use(tw(BRUTALIST_HOVER_LIFT_TOKENS)),
+      intent: (i) =>
+        i.feedback.style.use(tw(`${BRUTALIST_HOVER_LIFT_TOKENS} ${BRUTALIST_MOTION_HIT_TOKENS}`)),
     });
     // P-BRUTALIST-BUTTON-INTERACTION — press snap
     def.rule({
       when: (w) => w.state(pressed).eq(true),
-      intent: (i) => i.feedback.style.use(tw(BRUTALIST_PRESS_TOKENS)),
+      intent: (i) =>
+        i.feedback.style.use(tw(`${BRUTALIST_PRESS_TOKENS} ${BRUTALIST_MOTION_HIT_TOKENS}`)),
     });
     // P-BRUTALIST-BUTTON-INTERACTION — focus-visible ring
     def.rule({

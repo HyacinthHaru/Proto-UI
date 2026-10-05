@@ -23,6 +23,38 @@ function getPrototypeIdFromPath(path: string): string | null {
  * value: 动态导入函数
  */
 const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
+  'base-surface-root': async () => {
+    const mod = await import('@proto.ui/prototypes-base/surface');
+    registerPrototype('base-surface-root', mod.default);
+  },
+  'base-text-root': async () => {
+    const mod = await import('@proto.ui/prototypes-base/text');
+    registerPrototype('base-text-root', mod.default);
+  },
+  'shadcn-text-root': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/text');
+    registerPrototype('shadcn-text-root', mod.default);
+  },
+  'shadcn-surface-root': async () => {
+    const mod = await import('@proto.ui/prototypes-shadcn/surface');
+    registerPrototype('shadcn-surface-root', mod.default);
+  },
+  'brutalist-text-root': async () => {
+    const mod = await import('@proto.ui/prototypes-brutalist/text');
+    registerPrototype('brutalist-text-root', mod.default);
+  },
+  'brutalist-surface-root': async () => {
+    const mod = await import('@proto.ui/prototypes-brutalist/surface');
+    registerPrototype('brutalist-surface-root', mod.default);
+  },
+  'liquid-glass-surface-root': async () => {
+    const mod = await import('@proto.ui/prototypes-liquid-glass/surface');
+    registerPrototype('liquid-glass-surface-root', mod.default);
+  },
+  'bootstrap-2-3-2-surface-root': async () => {
+    const mod = await import('@proto.ui/prototypes-bootstrap-2-3-2/surface');
+    registerPrototype('bootstrap-2-3-2-surface-root', mod.default);
+  },
   'bootstrap-2-3-2-button': async () => {
     const mod = await import('@proto.ui/prototypes-bootstrap-2-3-2/button');
     registerPrototype('bootstrap-2-3-2-button', mod.default);
@@ -319,9 +351,37 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('../../../../../packages/prototypes/shadcn/src/toggle/index');
     registerPrototype('shadcn-toggle', mod.default);
   },
+  'lucide-circle-alert-icon': async () => {
+    const mod = await import('../../../../../packages/prototypes/lucide/src/icons/circle-alert');
+    registerPrototype('lucide-circle-alert-icon', mod.default);
+  },
+  'lucide-check-icon': async () => {
+    const mod = await import('../../../../../packages/prototypes/lucide/src/icons/check');
+    registerPrototype('lucide-check-icon', mod.default);
+  },
+  'lucide-loader-circle-icon': async () => {
+    const mod = await import('../../../../../packages/prototypes/lucide/src/icons/loader-circle');
+    registerPrototype('lucide-loader-circle-icon', mod.default);
+  },
+  'lucide-copy-icon': async () => {
+    const mod = await import('../../../../../packages/prototypes/lucide/src/icons/copy');
+    registerPrototype('lucide-copy-icon', mod.default);
+  },
   'lucide-icon': async () => {
     const mod = await import('../../../../../packages/prototypes/lucide/src/icon/index');
     registerPrototype('lucide-icon', mod.default);
+  },
+  'lucide-search-icon': async () => {
+    const mod = await import('../../../../../packages/prototypes/lucide/src/icons/search');
+    registerPrototype('lucide-search-icon', mod.default);
+  },
+  'lucide-list-icon': async () => {
+    const mod = await import('@proto.ui/prototypes-lucide/icons/list');
+    registerPrototype('lucide-list-icon', mod.default);
+  },
+  'lucide-x-icon': async () => {
+    const mod = await import('../../../../../packages/prototypes/lucide/src/icons/x');
+    registerPrototype('lucide-x-icon', mod.default);
   },
   'shadcn-separator-root': async () => {
     const mod = await import('@proto.ui/prototypes-shadcn/separator');
