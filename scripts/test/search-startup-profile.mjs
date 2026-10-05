@@ -15,6 +15,16 @@ export const SEARCH_PROFILE = Object.freeze({
   maxTraceEvents: 60_000,
   maxTraceBytes: 24 * 1024 * 1024,
 });
+export const SEARCH_PROFILE_PHASE_NAMES = Object.freeze([
+  'pui-search:probe-installed',
+  'pui-search:owners-observed',
+  'pui-search:definition-observed',
+  'pui-search:open-materialized-observed',
+  'pui-search:close-materialized-observed',
+  'pui-search:retry-materialized-observed',
+  'pui-search:atomic-active-observed',
+  'pui-search:capture-end',
+]);
 export const SEARCH_SCENARIOS = Object.freeze({
   'shadcn-dark-1440': Object.freeze({
     appSha: '7669713a853211bb36995039d3c16569799c3e88',
@@ -131,7 +141,8 @@ export function safeCpuProfile(profile, origin) {
 export function safeTimelineEvent(event, origin) {
   // Retain browser timing and public source locations only, never arbitrary
   // trace payloads (request headers, bodies, DOM, screenshots or script source).
-  if (event.cat?.includes('user_timing') && !event.name?.startsWith('pui-search:')) return null;
+  if (event.cat?.includes('user_timing') && !SEARCH_PROFILE_PHASE_NAMES.includes(event.name))
+    return null;
   const result = {};
   for (const key of ['cat', 'name', 'ph', 'pid', 'tid', 'ts', 'dur', 'tts', 'tdur'])
     if (typeof event[key] === 'number' || typeof event[key] === 'string')
@@ -219,12 +230,155 @@ export async function recordReadiness(page, oracle, save, now = Date.now) {
   return { evidence, onTime };
 }
 
+/** Exclude only known scheduler wrappers; unknown semantic events stay eligible. */
+export function isTimelineSchedulerNoise(event) {
+  const categories = String(event.cat ?? '')
+    .split(',')
+    .filter(Boolean);
+  if (categories.length && categories.every((category) => ['toplevel', 'mojom'].includes(category)))
+    return true;
+  return (
+    event.name === 'RunTask' &&
+    categories.length > 0 &&
+    categories.every((category) =>
+      ['disabled-by-default-devtools.timeline', 'toplevel'].includes(category)
+    )
+  );
+}
+
+/** Serialized into the page after the original verdict and bounded late observation. */
+export function readProfileCoverage(knownPhaseNames) {
+  performance.mark('pui-search:capture-end');
+  return performance
+    .getEntriesByType('mark')
+    .filter((entry) => knownPhaseNames.includes(entry.name))
+    .map((entry) => ({ name: entry.name, startTime: entry.startTime }));
+}
+
+export function validateTimelineCoverage(events, expectedMarks, cpuClock) {
+  const issues = [];
+  const expected = Array.isArray(expectedMarks) ? expectedMarks : [];
+  const names = expected.map((mark) => mark.name);
+  const validMarks =
+    expected.length >= 2 &&
+    expected.length <= 16 &&
+    new Set(names).size === names.length &&
+    names.includes('pui-search:probe-installed') &&
+    names.includes('pui-search:capture-end') &&
+    expected.every(
+      (mark) =>
+        typeof mark.name === 'string' &&
+        SEARCH_PROFILE_PHASE_NAMES.includes(mark.name) &&
+        Number.isFinite(mark.startTime) &&
+        mark.startTime >= 0
+    );
+  if (!validMarks) return { complete: false, issues: ['Missing or invalid browser mark coverage'] };
+  const matched = [];
+  for (const mark of expected) {
+    const candidates = events.filter(
+      (event) =>
+        event.name === mark.name && String(event.cat).split(',').includes('blink.user_timing')
+    );
+    if (candidates.length !== 1) {
+      issues.push(`Missing or duplicate trace mark: ${mark.name}`);
+      continue;
+    }
+    const event = candidates[0];
+    if (
+      !['I', 'R'].includes(event.ph) ||
+      ![event.pid, event.tid, event.ts].every(Number.isFinite)
+    ) {
+      issues.push(`Invalid trace mark: ${mark.name}`);
+      continue;
+    }
+    matched.push({ ...mark, pid: event.pid, tid: event.tid, ts: event.ts });
+  }
+  const renderer = matched[0] && { pid: matched[0].pid, tid: matched[0].tid };
+  if (!renderer || matched.some((mark) => mark.pid !== renderer.pid || mark.tid !== renderer.tid))
+    issues.push('Stage marks do not identify one renderer thread');
+  if (
+    renderer &&
+    !events.some(
+      (event) =>
+        event.ph === 'M' &&
+        event.name === 'thread_name' &&
+        event.pid === renderer.pid &&
+        event.tid === renderer.tid &&
+        event.args?.name === 'CrRendererMain'
+    )
+  )
+    issues.push('Renderer main-thread metadata is missing');
+  const start = matched.find((mark) => mark.name === 'pui-search:probe-installed');
+  const end = matched.find((mark) => mark.name === 'pui-search:capture-end');
+  const rendererEvents = renderer
+    ? events.filter(
+        (event) =>
+          event.pid === renderer.pid &&
+          event.tid === renderer.tid &&
+          event.ph === 'X' &&
+          Number.isFinite(event.ts) &&
+          Number.isFinite(event.dur) &&
+          start &&
+          end &&
+          event.ts + event.dur >= start.ts &&
+          event.ts <= end.ts
+      )
+    : [];
+  const semanticKinds = {
+    javascript: rendererEvents.some((event) =>
+      ['FunctionCall', 'EvaluateScript', 'v8.run', 'v8.callFunction', 'v8.evaluateModule'].includes(
+        event.name
+      )
+    ),
+    render: rendererEvents.some((event) =>
+      ['Layout', 'UpdateLayoutTree', 'RecalculateStyles'].includes(event.name)
+    ),
+  };
+  if (!semanticKinds.javascript || !semanticKinds.render)
+    issues.push('Renderer JavaScript/render timing coverage is missing');
+  const offsets = matched.map((mark) => mark.ts - mark.startTime * 1000);
+  const spreadUs = offsets.length ? Math.max(...offsets) - Math.min(...offsets) : null;
+  if (spreadUs === null || spreadUs > 1000)
+    issues.push('Browser/trace clock alignment exceeds 1000us diagnostic tolerance');
+
+  if (!start || !end || end.startTime <= start.startTime || end.ts <= start.ts)
+    issues.push('Missing or reversed capture boundaries');
+  if (
+    !cpuClock ||
+    !Number.isFinite(cpuClock.startTime) ||
+    !Number.isFinite(cpuClock.endTime) ||
+    !start ||
+    !end ||
+    cpuClock.startTime > start.ts ||
+    cpuClock.endTime < end.ts
+  )
+    issues.push('CPU clock does not enclose the renderer capture boundaries');
+  return {
+    complete: issues.length === 0,
+    issues,
+    renderer,
+    semanticKinds,
+    expectedMarkCount: expected.length,
+    matchedMarkCount: matched.length,
+    offsetSpreadUs: spreadUs,
+    originMonotonicUs: offsets.length ? (Math.max(...offsets) + Math.min(...offsets)) / 2 : null,
+    fromMs: start?.startTime ?? null,
+    toMs: end?.startTime ?? null,
+  };
+}
+
 export function createProfileCapture(cdp, directory, origin, wait = bounded) {
   let count = 0;
   let bytes = 0;
   let dropped = 0;
   let stopping;
   let startRequested = false;
+  let received = 0;
+  let schedulerExcluded = 0;
+  let privacyExcluded = 0;
+  let expectedMarks;
+  let cpuClock;
+  let coverage = { complete: false, issues: ['Capture has not been validated'] };
   const events = [];
   const failures = [];
   const cpu = {
@@ -240,6 +394,7 @@ export function createProfileCapture(cdp, directory, origin, wait = bounded) {
     endAttempted: false,
     ended: false,
     eof: false,
+    backendDataLoss: null,
     persisted: false,
   };
   const summary = () => ({
@@ -251,11 +406,16 @@ export function createProfileCapture(cdp, directory, origin, wait = bounded) {
     cpu: { ...cpu },
     timeline: { ...timeline },
     failures: [...failures],
+    filter: { version: 1, received, schedulerExcluded, privacyExcluded },
+    coverage,
+    cpuClock,
     complete:
       cpu.persisted &&
       timeline.started &&
       timeline.eof &&
       timeline.persisted &&
+      timeline.backendDataLoss === false &&
+      coverage.complete &&
       failures.length === 0 &&
       dropped === 0,
   });
@@ -274,8 +434,16 @@ export function createProfileCapture(cdp, directory, origin, wait = bounded) {
   writeFileSync(journal, '');
   const collect = ({ value }) => {
     for (const raw of value) {
+      received++;
+      if (isTimelineSchedulerNoise(raw)) {
+        schedulerExcluded++;
+        continue;
+      }
       const event = safeTimelineEvent(raw, origin);
-      if (!event) continue;
+      if (!event) {
+        privacyExcluded++;
+        continue;
+      }
       const text = `${JSON.stringify(event)}\n`;
       if (
         count >= SEARCH_PROFILE.maxTraceEvents ||
@@ -299,8 +467,18 @@ export function createProfileCapture(cdp, directory, origin, wait = bounded) {
   const eof = new Promise((resolve) => {
     resolveEof = resolve;
   });
-  const complete = () => {
+  const complete = (event) => {
+    if (timeline.eof) return;
     timeline.eof = true;
+    timeline.backendDataLoss =
+      typeof event?.dataLossOccurred === 'boolean' ? event.dataLossOccurred : null;
+    if (timeline.backendDataLoss !== false)
+      fail(
+        'timeline backend data loss',
+        timeline.backendDataLoss === true
+          ? 'CDP reported lost trace data'
+          : 'CDP data-loss status is unavailable'
+      );
     resolveEof();
   };
   cdp.on('Tracing.dataCollected', collect);
@@ -319,6 +497,7 @@ export function createProfileCapture(cdp, directory, origin, wait = bounded) {
     try {
       const { profile } = await command('Profiler.stop');
       cpu.stopped = true;
+      cpuClock = { startTime: profile.startTime, endTime: profile.endTime };
       writeFileSync(
         path.join(directory, 'startup.cpuprofile'),
         JSON.stringify(safeCpuProfile(profile, origin))
@@ -362,7 +541,7 @@ export function createProfileCapture(cdp, directory, origin, wait = bounded) {
         status();
         await command('Tracing.start', {
           categories:
-            'toplevel,devtools.timeline,v8,blink.user_timing,disabled-by-default-devtools.timeline',
+            'devtools.timeline,v8,blink.user_timing,disabled-by-default-devtools.timeline',
           transferMode: 'ReportEvents',
         });
         timeline.started = true;
@@ -373,6 +552,18 @@ export function createProfileCapture(cdp, directory, origin, wait = bounded) {
         throw error;
       }
     },
+    setCoverage(marks) {
+      assert.ok(!stopping, 'Browser coverage must be recorded before stopping');
+      if (
+        !Array.isArray(marks) ||
+        marks.some((mark) => !SEARCH_PROFILE_PHASE_NAMES.includes(mark?.name))
+      ) {
+        expectedMarks = undefined;
+        fail('coverage input', 'Unrecognized Search phase mark');
+        return;
+      }
+      expectedMarks = marks.map((mark) => ({ name: mark.name, startTime: mark.startTime }));
+    },
     stop() {
       // Main-path completion and finally share one settled promise. A failed
       // channel cannot replay stop commands or suppress the other channel.
@@ -380,6 +571,8 @@ export function createProfileCapture(cdp, directory, origin, wait = bounded) {
         await Promise.all([stopCpu(), stopTimeline()]);
         cdp.off('Tracing.dataCollected', collect);
         cdp.off('Tracing.tracingComplete', complete);
+        coverage = validateTimelineCoverage(events, expectedMarks, cpuClock);
+        if (!coverage.complete) fail('timeline coverage', coverage.issues.join('; '));
         try {
           timeline.persisted = true;
           writeFileSync(
@@ -541,21 +734,32 @@ export async function runSearchProfile(
       );
     report.lateObservation.completedAt = Date.now();
     save('late-observation-result', report.lateObservation);
-    if (profileCapture) report.profile = await profileCapture.stop();
+    if (profileCapture) {
+      profileCapture.setCoverage(
+        await bounded(
+          page.evaluate(readProfileCoverage, SEARCH_PROFILE_PHASE_NAMES),
+          'capture coverage'
+        )
+      );
+      report.profile = await profileCapture.stop();
+    }
     const observed = await bounded(
-      page.evaluate(() => ({
-        startup: window.__puiSearchStartup?.snapshot(),
-        navigation: performance.getEntriesByType('navigation').map((entry) => entry.toJSON()),
-        resources: performance
-          .getEntriesByType('resource')
-          .slice(0, 1500)
-          .map((entry) => entry.toJSON()),
-        resourceCount: performance.getEntriesByType('resource').length,
-        marks: performance
-          .getEntriesByType('mark')
-          .filter((entry) => entry.name.startsWith('pui-search:'))
-          .map((entry) => ({ name: entry.name, startTime: entry.startTime })),
-      })),
+      page.evaluate(
+        (knownPhaseNames) => ({
+          startup: window.__puiSearchStartup?.snapshot(),
+          navigation: performance.getEntriesByType('navigation').map((entry) => entry.toJSON()),
+          resources: performance
+            .getEntriesByType('resource')
+            .slice(0, 1500)
+            .map((entry) => entry.toJSON()),
+          resourceCount: performance.getEntriesByType('resource').length,
+          marks: performance
+            .getEntriesByType('mark')
+            .filter((entry) => knownPhaseNames.includes(entry.name))
+            .map((entry) => ({ name: entry.name, startTime: entry.startTime })),
+        }),
+        SEARCH_PROFILE_PHASE_NAMES
+      ),
       'observer capture'
     );
     // Whitelist timing fields instead of publishing arbitrary PerformanceEntry data.
@@ -568,6 +772,11 @@ export async function runSearchProfile(
           )
           .concat([['name', safeUrl(entry.name, origin)]])
       );
+    observed.marks = observed.marks
+      .filter(
+        (mark) => SEARCH_PROFILE_PHASE_NAMES.includes(mark.name) && Number.isFinite(mark.startTime)
+      )
+      .map((mark) => ({ name: mark.name, startTime: mark.startTime }));
     observed.navigation = observed.navigation.map(timing);
     observed.resources = observed.resources.map(timing);
     if (observed.startup)

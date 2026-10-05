@@ -9,6 +9,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, RUNTIMES, startServer, stopServer } from './browser-harness';
 import { nativeLinkEvidenceIssues } from './site-native-link-evidence';
 import socialDestinations from '../../../../../../shared/links.json';
+import { safeError, safeUrl } from '../../../../../../scripts/test/search-startup-profile.mjs';
 
 let browser: Browser;
 let baseUrl: string;
@@ -48,7 +49,7 @@ async function captureLinks(
         source: evidenceSource,
         capturedAt: new Date().toISOString(),
         screenshot: file,
-        url: page.url(),
+        url: safeUrl(page.url(), baseUrl),
         viewport: page.viewportSize(),
         family,
         runtime,
@@ -989,6 +990,115 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       }
     }
   }, 90_000);
+
+  it('projects a same-event CSSOM theme edit by the next frame after native focus', async () => {
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 1000 },
+      colorScheme: 'light',
+    });
+    const page = await context.newPage();
+    let phase = 'navigation';
+    try {
+      await page.goto(`${baseUrl}/zh-cn/ui-libraries/shadcn/button/`, { waitUntil: 'networkidle' });
+      const links = page.locator(
+        '.sidebar-pane .top-level a[data-site-link-enhanced]:not([aria-current="page"]):visible'
+      );
+      phase = 'waiting for two enhanced inactive sidebar anchors';
+      await links.nth(1).waitFor();
+      await links.first().scrollIntoViewIfNeeded();
+      await page.mouse.move(0, 0);
+      phase = 'installing same-event CSSOM observation';
+      await links.evaluateAll((links) => {
+        const [first, second] = links as HTMLAnchorElement[];
+        const style = document.createElement('style');
+        document.head.append(style);
+        // Installed after the native fact bridge. Its first sample precedes
+        // this CSSOM edit; actual focus publishes another fact in this event.
+        (window as Window & { __nativeThemeFrame?: Promise<unknown> }).__nativeThemeFrame =
+          new Promise((resolve) => {
+            first.addEventListener(
+              'pointerenter',
+              () => {
+                style.sheet!.insertRule(':root{--pui-foreground:#ff0000!important}');
+                second.focus();
+                requestAnimationFrame(() => {
+                  const text = second.querySelector<HTMLElement>('wc-site-shadcn-text')!;
+                  resolve({
+                    rootTheme: getComputedStyle(document.documentElement)
+                      .getPropertyValue('--pui-foreground')
+                      .trim(),
+                    textTheme: text.style.getPropertyValue('--pui-foreground').trim(),
+                    textColor: getComputedStyle(text).color,
+                    focused: document.activeElement === second,
+                    nativeOwnerRetained: text.closest('a') === second,
+                  });
+                });
+              },
+              { once: true }
+            );
+          });
+      });
+      phase = 'triggering native pointerenter';
+      await links.first().hover();
+      phase = 'reading the first animation frame';
+      const observed = await page.evaluate(
+        () => (window as Window & { __nativeThemeFrame?: Promise<unknown> }).__nativeThemeFrame
+      );
+      await captureLinks(
+        page,
+        'docs-shadcn-cssom-focus-next-frame',
+        'shadcn',
+        'wc',
+        'native-pointerenter; CSSOM-theme-edit; native-focus; first-frame-observation',
+        observed
+      );
+      phase = 'asserting first-frame palette and native focus';
+      expect(observed).toEqual({
+        rootTheme: '#ff0000',
+        textTheme: '#ff0000',
+        textColor: 'rgb(255, 0, 0)',
+        focused: true,
+        nativeOwnerRetained: true,
+      });
+    } catch (error) {
+      // Keep the original failure, including a failed precondition. Do not
+      // leave a selector timeout without the actual sidebar marker values.
+      const sidebar = await page
+        .evaluate(() => {
+          const anchors = Array.from(
+            document.querySelectorAll<HTMLAnchorElement>('.sidebar-pane .top-level a')
+          ).map((link) => ({
+            href: new URL(link.href).pathname,
+            ariaCurrent: link.getAttribute('aria-current'),
+            enhanced: link.dataset.siteLinkEnhanced ?? null,
+            visible: link.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }),
+            publicText: !!link.querySelector('wc-site-shadcn-text'),
+          }));
+          return {
+            route: location.pathname,
+            total: anchors.length,
+            visibleInactiveEnhanced: anchors.filter(
+              (anchor) => anchor.visible && anchor.enhanced && anchor.ariaCurrent !== 'page'
+            ).length,
+            anchors: anchors.slice(0, 40),
+          };
+        })
+        .catch((diagnosticError) => ({ diagnosticError: safeError(diagnosticError, baseUrl) }));
+      await captureLinks(
+        page,
+        'docs-shadcn-cssom-focus-next-frame-failure',
+        'shadcn',
+        'wc',
+        phase,
+        { error: safeError(error, baseUrl), sidebar }
+      ).catch((captureError) =>
+        console.error('CSSOM fixture diagnostic capture failed', safeError(captureError, baseUrl))
+      );
+      throw error;
+    } finally {
+      await context.close();
+    }
+  }, 60_000);
 
   it('preserves real pagination selection endpoints and arrow layout through family replacement', async () => {
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
