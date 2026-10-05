@@ -169,7 +169,8 @@ export function readPreviewSource(media: HTMLImageElement | SVGSVGElement): Prev
 export function isPreviewCandidate(
   media: Element,
   content: Element,
-  existingTrigger?: Element
+  existingTrigger?: Element,
+  ownedPresentation?: readonly Element[]
 ): boolean {
   if (!content.contains(media)) return false;
   if (
@@ -189,7 +190,11 @@ export function isPreviewCandidate(
     parent && parent !== content;
     parent = parent.parentElement
   ) {
-    if (parent === existingTrigger) continue;
+    if (
+      parent === existingTrigger ||
+      (ownedPresentation?.includes(parent) && !!existingTrigger?.contains(parent))
+    )
+      continue;
     if (hasHandler(parent)) return false;
     if (parent === legacy) continue;
     if (parent.matches(INTERACTIVE) || parent.localName.includes('-')) return false;

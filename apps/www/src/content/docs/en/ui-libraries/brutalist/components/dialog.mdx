@@ -22,3 +22,7 @@ The panel keeps Base Dialog semantics and command wiring while using an industri
 <div class="brutalist-demo-frame">
   <PrototypePreviewer demoId="demo-brutalist-dialog" initialRuntime="wc" />
 </div>
+
+## Draft workspace inheritance
+
+The current workspace also inherits the bounded [Base Mask pointer-default behavior](/en/ui-libraries/base/dialog/): participating Mask prevents its root-scoped pointer default from stealing restored focus, while passthrough remains unprevented and Content retains dismissal ownership. This draft revision is separate from any previously published family version; it introduces no new styled Dialog props.
