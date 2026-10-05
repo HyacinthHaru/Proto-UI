@@ -86,3 +86,94 @@ for (const runtime of ['react', 'vue', 'vue2', 'wc'] as const) {
     }
   });
 }
+
+for (const runtime of ['react', 'vue', 'vue2', 'wc'] as const) {
+  it.each(['programmatic', 'native', 'entry'] as const)(
+    `${runtime} ordinary commits preserve an exhausted %s same-view layout budget`,
+    async (kind) => {
+      const context = await browser.newContext();
+      try {
+        const page = await context.newPage();
+        await page.setContent('<!doctype html><body></body>');
+        await page.addScriptTag({ content: bundle });
+        const result = await page.evaluate(
+          ({ runtime, kind }) =>
+            window.focusIntentNative.observeSameViewCommitBudget(runtime, kind),
+          { runtime, kind }
+        );
+        console.info('[native-same-view-budget]', JSON.stringify({ runtime, kind, ...result }));
+        expect(result).toEqual({
+          sameRoot: true,
+          rejected: true,
+          commitsStillPending: [true, true],
+          freshAcquired: true,
+          focused: kind === 'entry' ? null : true,
+          trustedFocusEvents: 1,
+        });
+      } finally {
+        await context.close();
+      }
+    }
+  );
+}
+
+for (const runtime of ['vue2', 'wc'] as const) {
+  it.each(['programmatic', 'native', 'entry'] as const)(
+    `${runtime} preserves a fresh %s request issued from onUnmounted`,
+    async (kind) => {
+      const context = await browser.newContext();
+      try {
+        const page = await context.newPage();
+        await page.setContent('<!doctype html><body></body>');
+        await page.addScriptTag({ content: bundle });
+        const result = await page.evaluate(
+          ({ runtime, kind }) => window.focusIntentNative.observeNewTeardownRequest(runtime, kind),
+          { runtime, kind }
+        );
+        console.info('[native-new-teardown-request]', JSON.stringify({ runtime, kind, ...result }));
+        expect(result.during).toHaveLength(1);
+        expect(result.during[0].connected).toBe(true);
+        if (kind !== 'programmatic')
+          expect(result.during[0]).toEqual({ connected: true, active: false, focused: false });
+        else if (runtime === 'vue2')
+          expect(result.during[0]).toEqual({ connected: true, active: true, focused: true });
+        else {
+          // WC already hides its retained shell. If CSS rejects the programmatic
+          // effect, it stays pending; acceptance must synchronize its own facts.
+          expect(result.during[0].focused).toBe(result.during[0].active);
+        }
+        expect(result.after).toEqual({ active: true, focused: true });
+        expect(result.trustedReadyFocusEvents).toBe(1);
+      } finally {
+        await context.close();
+      }
+    }
+  );
+}
+
+for (const runtime of ['react', 'vue', 'vue2', 'wc'] as const) {
+  it(`${runtime} preserves native blur-listener reentrant focus across the old disable stack`, async () => {
+    const context = await browser.newContext();
+    try {
+      const page = await context.newPage();
+      await page.setContent('<!doctype html><body></body>');
+      await page.addScriptTag({ content: bundle });
+      const result = await page.evaluate(
+        (runtime) => window.focusIntentNative.observeBlurReentry(runtime),
+        runtime
+      );
+      console.info('[native-blur-reentry]', JSON.stringify({ runtime, ...result }));
+      const focused = { active: true, focused: true, focusable: true };
+      expect(result).toEqual({
+        initial: focused,
+        during: [focused],
+        after: focused,
+        settled: focused,
+        trustedBlurEvents: 1,
+        trustedFocusEvents: 2,
+      });
+    } finally {
+      await context.close();
+    }
+  });
+}

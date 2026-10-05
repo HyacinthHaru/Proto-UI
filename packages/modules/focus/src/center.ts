@@ -31,6 +31,15 @@ export type FocusCenterEntry = {
   /** The host's order for a navigation this entry owns, if the host has one. */
   orderTargets?: FocusOrderTargets;
   requestFocus(options?: FocusRequestOptions, behavior?: FocusRequestBehavior): FocusRequestOutcome;
+  /** Reserve execution ownership before host getters or scope policy can reenter. */
+  prepareFocusRequest?(
+    options?: FocusRequestOptions,
+    behavior?: FocusRequestBehavior
+  ): {
+    isCurrent(): boolean;
+    apply(): FocusRequestOutcome;
+    finish(): void;
+  };
   hasPendingFocus(): boolean;
   clearFocus(reason: unknown): void;
   setScopeActive(active: boolean): void;
@@ -47,6 +56,7 @@ export class FocusCenter {
   private readonly activeScopes: ActiveScopeRecord[] = [];
   private readonly lastFocusedByScope = new Map<FocusInstanceToken, FocusInstanceToken>();
   private currentFocused: FocusInstanceToken | null = null;
+  private ownerEpoch = 0;
   private readonly pendingRovingEntries = new Map<
     FocusInstanceToken,
     {
@@ -65,7 +75,10 @@ export class FocusCenter {
   remove(instance: FocusInstanceToken): void {
     this.entries.delete(instance);
     this.pendingRovingEntries.delete(instance);
-    if (this.currentFocused === instance) this.currentFocused = null;
+    if (this.currentFocused === instance) {
+      this.currentFocused = null;
+      this.ownerEpoch += 1;
+    }
     this.lastFocusedByScope.delete(instance);
     for (const [scope, focused] of this.lastFocusedByScope) {
       if (focused === instance) this.lastFocusedByScope.delete(scope);
@@ -79,7 +92,10 @@ export class FocusCenter {
 
   detach(instance: FocusInstanceToken): void {
     this.entries.delete(instance);
-    if (this.currentFocused === instance) this.currentFocused = null;
+    if (this.currentFocused === instance) {
+      this.currentFocused = null;
+      this.ownerEpoch += 1;
+    }
     for (const [scope, focused] of this.lastFocusedByScope) {
       if (focused === instance) this.lastFocusedByScope.delete(scope);
     }
@@ -173,10 +189,11 @@ export class FocusCenter {
     return Array.from(this.entries.values()).find((entry) => entry.getFacts().focused) ?? null;
   }
 
-  private clearOtherFocusedEntries(next: FocusCenterEntry, reason: unknown): void {
+  private clearOtherFocusedEntries(next: FocusCenterEntry, reason: unknown, epoch: number): void {
     for (const entry of this.entries.values()) {
+      if (epoch !== this.ownerEpoch) return;
       if (entry.instance === next.instance) continue;
-      if (!entry.isFocusable()) continue;
+      if (!entry.isFocusable() && !entry.hasPendingFocus()) continue;
       const facts = entry.getFacts();
       if (!facts.focused && !facts.focusVisible && !facts.active && !entry.hasPendingFocus()) {
         continue;
@@ -229,31 +246,37 @@ export class FocusCenter {
     behavior?: FocusRequestBehavior
   ): FocusRequestOutcome {
     options = retainFocusRequestIntent(options);
-    // A pre-projection request cannot be gated reliably yet: the logical parent
-    // may be established by the same adapter commit that supplies the target.
-    // Retain it on the entry and re-run the normal gate when that commit lands.
-    if (!entry.getRootTarget()) {
-      return entry.requestFocus(options, behavior);
+    const execution = entry.prepareFocusRequest?.(options, behavior);
+    const current = () => execution?.isCurrent() ?? true;
+    const apply = () => (execution ? execution.apply() : entry.requestFocus(options, behavior));
+    try {
+      if (!current()) return 'rejected';
+      // A pre-projection request is retained until its logical parent and target exist.
+      const target = entry.getRootTarget();
+      if (!current()) return 'rejected';
+      if (!target) {
+        const outcome = apply();
+        return current() ? outcome : 'rejected';
+      }
+      const allowed = behavior?.bypassGate || this.requestFocusAllowed(entry);
+      if (!current()) return 'rejected';
+      if (!allowed) {
+        const scope = this.getTopActiveScope();
+        entry.pushWarning(
+          `[Focus] requestFocus ignored: active scope ${String(
+            scope?.getScopeConfig().key?.meta?.debugLabel ?? scope?.instance ?? 'unknown'
+          )} does not contain the requesting focus target.`
+        );
+        return 'rejected';
+      }
+      const outcome = apply();
+      if (!current()) return 'rejected';
+      if (outcome !== 'applied') return outcome;
+      if (behavior?.syncFacts !== false) this.noteFocused(entry);
+      return current() ? 'applied' : 'rejected';
+    } finally {
+      execution?.finish();
     }
-    if (!behavior?.bypassGate && !this.requestFocusAllowed(entry)) {
-      const scope = this.getTopActiveScope();
-      entry.pushWarning(
-        `[Focus] requestFocus ignored: active scope ${String(
-          scope?.getScopeConfig().key?.meta?.debugLabel ?? scope?.instance ?? 'unknown'
-        )} does not contain the requesting focus target.`
-      );
-      return 'rejected';
-    }
-    const outcome = entry.requestFocus(options, behavior);
-    if (outcome === 'rejected') return 'rejected';
-    if (outcome === 'pending') return 'pending';
-    // A shared surface can report another member as its native focus owner.
-    // Only programmatic requests own facts after accepted application.
-    if (behavior?.syncFacts !== false) {
-      this.clearOtherFocusedEntries(entry, options?.reason ?? 'focus.request');
-      this.noteFocused(entry);
-    }
-    return 'applied';
   }
 
   requestFocus(
@@ -265,8 +288,11 @@ export class FocusCenter {
   }
 
   noteFocused(entry: FocusCenterEntry): void {
-    this.clearOtherFocusedEntries(entry, 'focus.host:focus');
+    const epoch = ++this.ownerEpoch;
+    // Claim the transfer before callbacks: a nested owner must stop old cleanup.
     this.currentFocused = entry.instance;
+    this.clearOtherFocusedEntries(entry, 'focus.host:focus', epoch);
+    if (epoch !== this.ownerEpoch) return;
     for (const record of this.activeScopes) {
       const scope = this.entries.get(record.scope);
       if (!scope?.isScopeProvider()) continue;

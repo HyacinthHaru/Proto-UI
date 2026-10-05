@@ -56,6 +56,9 @@ import {
   bindLogicalEventTarget,
   resolveLogicalTriggerEventRouteForTarget,
   markProtoInstance,
+  registerNativeFocusReadiness,
+  isFocusTargetOwnerReady,
+  subscribeFocusTargetOwnerReady,
   unbindProtoInstance,
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
@@ -275,6 +278,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
       const owner = createViewEpochOwner<Props>({ prototypeName: tagName });
       let currentEventGate: ReturnType<typeof createEventGate> | null = null;
+      let focusIngressReady = false;
       let currentRouter: ReturnType<typeof createWebProtoEventRouter> | null = null;
 
       const clearSlotProjector = () => {
@@ -333,7 +337,13 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             dispose: () => owner.disposeView(),
           },
           onLifecycleCheckpoint: opt.diagnostics?.onLifecycleCheckpoint,
-          onLifecycleEvent: opt.diagnostics?.onLifecycleEvent,
+          onLifecycleEvent: (event) => {
+            opt.diagnostics?.onLifecycleEvent?.(event);
+            if (event.type === 'mount.phase') {
+              focusIngressReady = event.phase === 'mounted';
+              if (focusIngressReady) this[NOTIFY_FOCUS_TARGET_READY]();
+            }
+          },
           getSlotProjector: () => this._slotProjector,
           ensureSlotProjector: () => {
             if (!this._slotProjector) this._slotProjector = new SlotProjector(thisEl);
@@ -408,24 +418,72 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
         let disposed = false;
         let focusRetryGeneration = 0;
+        let releaseRequestedTargetReady: (() => void) | undefined;
+        const releaseNativeReadiness = registerNativeFocusReadiness(
+          this._instanceToken,
+          {
+            isReady: () =>
+              !disposed &&
+              focusIngressReady &&
+              eventGate.isEnabled() &&
+              thisEl.isConnected &&
+              !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+            // Text controls use a physical control target while logical ownership
+            // stays on the custom element. Both are roots of this same view.
+            getNativeTarget: () => this._textControlTarget ?? thisEl,
+            subscribe: (listener) => {
+              this._focusTargetReadyListeners.add(listener);
+              return () => this._focusTargetReadyListeners.delete(listener);
+            },
+          },
+          { deferPublication: true }
+        );
         const disposeView = () => {
           if (disposed) return;
           disposed = true;
-          eventGate.disable();
-          eventGate.dispose();
-          unbindLogicalEventTarget(this._instanceToken, router.rootTarget);
-          router.dispose();
-          disposeFocusBridge?.();
-          disposeFocusBridge = null;
-          applier.clear();
-          releaseRenderedChildren();
-          if (currentEventGate === eventGate) {
-            currentEventGate = null;
-            this._focusTargetRetryScheduled = false;
+          const releases = [
+            () => eventGate.disable(),
+            () => eventGate.dispose(),
+            () => {
+              const release = releaseRequestedTargetReady;
+              releaseRequestedTargetReady = undefined;
+              release?.();
+            },
+            () => unbindLogicalEventTarget(this._instanceToken, router.rootTarget),
+            () => router.dispose(),
+            () => {
+              const release = disposeFocusBridge;
+              disposeFocusBridge = null;
+              release?.();
+            },
+            () => applier.clear(),
+            releaseRenderedChildren,
+            () => {
+              if (currentEventGate === eventGate) {
+                currentEventGate = null;
+                this._focusTargetRetryScheduled = false;
+              }
+              if (currentRouter === router) currentRouter = null;
+              if (this._applier === applier) this._applier = null;
+              this._hostDisplay?.sync();
+            },
+            // Invalidation can synchronously replay user focus. Release the
+            // old view first, and retain that failure after all cleanup.
+            releaseNativeReadiness,
+          ];
+          let failed = false;
+          let firstError: unknown;
+          for (const release of releases) {
+            try {
+              release();
+            } catch (error) {
+              if (!failed) {
+                failed = true;
+                firstError = error;
+              }
+            }
           }
-          if (currentRouter === router) currentRouter = null;
-          if (this._applier === applier) this._applier = null;
-          this._hostDisplay?.sync();
+          if (failed) throw firstError;
         };
 
         owner.attachView({
@@ -446,7 +504,20 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             scrollProjection,
             setExposes,
             runInCallbackScope,
-            isViewReady: () => thisEl.isConnected && !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+            isViewReady: () =>
+              !disposed && thisEl.isConnected && !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+            isEntryAcquisitionReady: (target) => {
+              releaseRequestedTargetReady?.();
+              releaseRequestedTargetReady = undefined;
+              if (isFocusTargetOwnerReady(target)) return true;
+              releaseRequestedTargetReady = subscribeFocusTargetOwnerReady(target, () => {
+                if (disposed) return;
+                releaseRequestedTargetReady?.();
+                releaseRequestedTargetReady = undefined;
+                this[NOTIFY_FOCUS_TARGET_READY]();
+              });
+              return false;
+            },
             subscribeTargetReady: (listener: () => void) => {
               this._focusTargetReadyListeners.add(listener);
               return () => this._focusTargetReadyListeners.delete(listener);
@@ -457,6 +528,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
               this._focusTargetRetryCount = 0;
             },
             onFocusAcquired: () => {
+              releaseRequestedTargetReady?.();
+              releaseRequestedTargetReady = undefined;
               this._focusTargetRetryCount = 0;
             },
             retryTargetReady: () => {
@@ -485,6 +558,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           createSession: createHostSession,
         });
         setViewDetached(false);
+        releaseNativeReadiness.publish();
       };
 
       let latestIntentVersion = 0;

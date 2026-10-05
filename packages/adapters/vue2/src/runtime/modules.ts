@@ -111,7 +111,8 @@ import {
   getLogicalTriggerSurfaceRoot,
   mergeLogicalTriggerGroup,
   setProtoParent,
-  subscribeLogicalTriggerSurface,
+  subscribeFocusSurfaceReady,
+  isNativeFocusTargetReady,
 } from '../platform/instance-tree';
 
 type Vue2OwnerModulesArgs<Props extends PropsBaseType> = {
@@ -265,6 +266,7 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
+  isEntryAcquisitionReady: (target: HTMLElement) => boolean;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -296,7 +298,7 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
   };
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
-    const offSurface = subscribeLogicalTriggerSurface(instanceToken, listener);
+    const offSurface = subscribeFocusSurfaceReady(instanceToken, listener);
     return () => {
       offReady();
       offSurface();
@@ -378,7 +380,12 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
             requestKind = kind;
             args.onFocusIntent?.();
           }
-          if (!target.isConnected) return false;
+          if (
+            !target.isConnected ||
+            (kind === 'native' && !isNativeFocusTargetReady(target)) ||
+            (kind === 'entry' && !args.isEntryAcquisitionReady(target))
+          )
+            return false;
           target.focus(
             typeof options?.preventScroll === 'boolean'
               ? { preventScroll: options.preventScroll }

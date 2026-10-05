@@ -111,6 +111,8 @@ import {
   releaseTriggerSurface,
   mergeLogicalTriggerGroup,
   subscribeLogicalTriggerSurface,
+  subscribeFocusSurfaceReady,
+  isNativeFocusTargetReady,
 } from '../platform/instance-tree';
 
 const TRIGGER_OWNER_MARK = Symbol.for('@proto.ui/as-trigger/confirm-owner');
@@ -324,6 +326,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
+  isEntryAcquisitionReady: (target: HTMLElement) => boolean;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
   onFocusIntent?: () => void;
@@ -360,7 +363,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   const getTriggerSurface = () => (args.isViewReady() ? getConnectedTriggerSurface() : null);
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
-    const offSurface = subscribeLogicalTriggerSurface(instanceToken, listener);
+    const offSurface = subscribeFocusSurfaceReady(instanceToken, listener);
     return () => {
       offReady();
       offSurface();
@@ -468,6 +471,12 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
             requestKind = kind;
             args.onFocusIntent?.();
           }
+          if (
+            !target.isConnected ||
+            (kind === 'native' && !isNativeFocusTargetReady(target)) ||
+            (kind === 'entry' && !args.isEntryAcquisitionReady(target))
+          )
+            return false;
           target.focus(
             typeof options?.preventScroll === 'boolean'
               ? { preventScroll: options.preventScroll }

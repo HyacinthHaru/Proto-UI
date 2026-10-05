@@ -17,7 +17,10 @@ import {
 import { resolveWebFocusEntryTarget } from '../../../adapters/base/src/platform/focus-entry';
 
 let identity = 0;
-async function fixture(dual = false) {
+async function fixture(
+  dual = false,
+  options: { bridgeHostEvents?: boolean; selfEntry?: boolean } = {}
+) {
   let entry!: ReturnType<typeof asFocusEntry>;
   let focusable: ReturnType<typeof asFocusable> | undefined;
   const initialRoot = document.createElement('div');
@@ -26,6 +29,12 @@ async function fixture(dual = false) {
   first.textContent = 'old';
   initialRoot.append(first);
   document.body.append(initialRoot);
+  if (options.bridgeHostEvents) {
+    // Controlled host translation: physical DOM focus/blur enters Runtime's
+    // logical host events. This is not a native-browser proof.
+    initialRoot.addEventListener('focus', () => initialRoot.dispatchEvent(new Event('host:focus')));
+    initialRoot.addEventListener('blur', () => initialRoot.dispatchEvent(new Event('host:blur')));
+  }
   let currentRoot: HTMLElement | null = initialRoot;
   let accept = false;
   const listeners = new Set<() => void>();
@@ -36,7 +45,11 @@ async function fixture(dual = false) {
     name: `entry-pending-${++identity}`,
     setup() {
       entry = asFocusEntry();
-      entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+      entry.configure(
+        options.selfEntry
+          ? { strategy: 'self', fallback: 'self' }
+          : { strategy: 'descendant-first', fallback: 'none' }
+      );
       if (dual) focusable = asFocusable();
       return (r) => r.el('div');
     },
@@ -424,3 +437,67 @@ it('does not introduce a pending entry for a first request with no current root'
     await f.cleanup();
   }
 });
+
+it.each(['programmatic', 'native'] as const)(
+  'a first no-root entry is a no-op over an existing pending %s target request',
+  async (kind) => {
+    const f = await fixture(true, { bridgeHostEvents: true });
+    try {
+      f.setRoot(null);
+      if (kind === 'native') f.focusable!.focusSelf({ reason: 'keyboard', preventScroll: true });
+      else f.focusable!.focus({ reason: 'keyboard', preventScroll: true });
+      f.entry.focus({ reason: 'pointer', preventScroll: false });
+      expect(f.attempts).toHaveLength(0);
+      f.setRoot(f.initialRoot);
+      f.setAccept(true);
+      f.ready();
+      expect(f.applied).toEqual([
+        { target: f.initialRoot, options: { reason: 'keyboard', preventScroll: true } },
+      ]);
+      expect(document.activeElement).toBe(f.initialRoot);
+      expect(f.focusable!.focused.get()).toBe(true);
+    } finally {
+      await f.cleanup();
+    }
+  }
+);
+
+it.each([
+  ['disable', 'programmatic'],
+  ['disable', 'native'],
+  ['disable', 'entry'],
+  ['blur', 'programmatic'],
+  ['blur', 'native'],
+  ['blur', 'entry'],
+] as const)(
+  '%s preserves facts from a synchronous newer %s request in its blur observer',
+  async (operation, kind) => {
+    const f = await fixture(true, { bridgeHostEvents: true, selfEntry: true });
+    try {
+      f.setAccept(true);
+      f.focusable!.focus({ reason: 'keyboard' });
+      expect(f.focusable!.focused.get()).toBe(true);
+      let observations = 0;
+      f.initialRoot.addEventListener(
+        'blur',
+        () => {
+          observations++;
+          f.focusable!.setDisabled(false);
+          if (kind === 'entry') f.entry.focus({ reason: 'keyboard' });
+          else if (kind === 'native') f.focusable!.focusSelf({ reason: 'keyboard' });
+          else f.focusable!.focus({ reason: 'keyboard' });
+          expect(document.activeElement).toBe(f.initialRoot);
+          expect(f.focusable!.focused.get()).toBe(true);
+        },
+        { once: true }
+      );
+      if (operation === 'disable') f.focusable!.setDisabled(true);
+      else f.focusable!.blur();
+      expect(observations).toBe(1);
+      expect(document.activeElement).toBe(f.initialRoot);
+      expect(f.port.getFacts()).toMatchObject({ focused: true, active: true, hasFocused: true });
+    } finally {
+      await f.cleanup();
+    }
+  }
+);
