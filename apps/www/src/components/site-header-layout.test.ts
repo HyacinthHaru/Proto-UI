@@ -28,7 +28,7 @@ it('reflows enlarged desktop reading columns and Header by container space, pres
   const header = readFileSync('apps/www/src/styles/site-header.css', 'utf8');
   expect(frame).toContain('container: docs-canvas / inline-size');
   expect(frame).toContain('lg:[--sidebar-width:15rem]');
-  expect(columns).toContain('@container docs-canvas (max-width: 80rem)');
+  expect(columns).toContain('@container docs-canvas (max-width: 72rem)');
   expect(columns).toContain('class="docs-reading-columns lg:sl-flex"');
   expect(columns).toMatch(/\.right-sidebar-container[\s\S]*width: 100%/);
   expect(columns).toMatch(
@@ -36,6 +36,45 @@ it('reflows enlarged desktop reading columns and Header by container space, pres
   );
   expect(header).toContain('@container docs-page (max-width: 68.749rem)');
   expect(header).toContain('@container docs-page (max-width: 42rem)');
+});
+
+describe('reading reflow query boundaries (source arithmetic, not browser paint)', () => {
+  const columns = readFileSync('apps/www/src/components/override/TwoColumnContent.astro', 'utf8');
+  const query = columns.match(
+    /@media \(min-width: ([\d.]+)rem\)\s*\{\s*@container docs-canvas \(max-width: ([\d.]+)rem\)/
+  );
+  // Media rem uses the initial font; container rem follows the root font. Read
+  // the actual owner thresholds so restoring the inclusive 80/80 defect fails.
+  const reflows = (viewport: number, contentWidth: number, root: number) => {
+    expect(query).not.toBeNull();
+    return viewport >= Number(query![1]) * 16 && contentWidth <= Number(query![2]) * root;
+  };
+
+  it('keeps the ordinary desktop TOC lateral through the padded overlap and its neighbours', () => {
+    for (const viewport of [1279, 1280, 1281, 1296, 1312, 1313, 1327, 1328, 1360, 1361, 1440])
+      for (const scrollbar of [0, 15]) {
+        // PageFrame caps the border box at 85rem; global.css pads each side by
+        // 1rem. The 15px case is a modelled classic scrollbar, not a capture.
+        const contentWidth = Math.min(viewport - scrollbar, 85 * 16) - 2 * 16;
+        expect(reflows(viewport, contentWidth, 16), `${viewport}px, scrollbar ${scrollbar}`).toBe(
+          false
+        );
+      }
+  });
+
+  it('retains root-relative enlarged reflow at the existing column budget and viewport gate', () => {
+    const columnBudget = Number(columns.match(/@media \(min-width: ([\d.]+)rem\)/)![1]);
+    expect(Number(query![2])).toBe(columnBudget);
+    expect(reflows(1440, 1440 - 2 * 32, 32)).toBe(true);
+    expect(reflows(1279, 1279 - 2 * 32, 32)).toBe(false);
+    for (const root of [20, 24, 32]) {
+      const boundary = columnBudget * root;
+      const viewport = boundary + 2 * root;
+      expect(reflows(viewport - 1, boundary - 1, root)).toBe(true);
+      expect(reflows(viewport, boundary, root)).toBe(true);
+      expect(reflows(viewport + 1, boundary + 1, root)).toBe(false);
+    }
+  });
 });
 
 describe('Docs header offset targets the actual MarkdownContent wrapper', () => {

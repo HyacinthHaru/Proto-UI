@@ -74,10 +74,12 @@ const mainPaneClass = isSplash
 <style>
   /* Viewport media queries use the initial font size. The actual reading canvas
      must also respond to enlarged root text, before the old column arithmetic
-     compresses the TOC into individual letters. Keep the same native TOC in
-     normal flow; no hidden duplicate or new disclosure owner is needed. */
+     compresses the TOC into individual letters. Use the existing 72rem column
+     budget in root-relative canvas space: an 80rem container limit overlaps
+     the normal 80rem viewport because docs-shell has inline padding. Keep the
+     same native TOC in normal flow without a duplicate or new disclosure. */
   @media (min-width: 80rem) {
-    @container docs-canvas (max-width: 80rem) {
+    @container docs-canvas (max-width: 72rem) {
       .docs-reading-columns {
         display: flex;
         flex-direction: column;
