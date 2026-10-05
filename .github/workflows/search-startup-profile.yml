@@ -13,6 +13,9 @@ permissions:
 jobs:
   diagnose:
     # This diagnostic is scoped to the current repair, not a new repository gate.
+    # Its exit status requires complete capture, including cleanup/source checks.
+    # Historical readiness misses remain FAIL in artifacts and the step summary;
+    # current-product Search CI retains its separate, unchanged 1000ms gate.
     if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.number == 777 && github.event.pull_request.head.repo.full_name == github.repository)
     env:
       APP_SHA: ${{ matrix.scenario.app_sha }}
