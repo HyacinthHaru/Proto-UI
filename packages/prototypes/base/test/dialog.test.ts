@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Prototype } from '@proto.ui/core';
 import { styleContains } from '../../test-utils/style';
 import {
@@ -22,13 +22,56 @@ import type {
   DialogContentExposes,
 } from '../src/dialog/types';
 
-AdaptToWebComponent(dialogRoot as any);
-AdaptToWebComponent(dialogTrigger as any);
-AdaptToWebComponent(dialogMask as any);
-AdaptToWebComponent(dialogContent as any);
-AdaptToWebComponent(dialogTitle as any);
-AdaptToWebComponent(dialogDescription as any);
-AdaptToWebComponent(dialogClose as any);
+const ownedElements = new Set<HTMLElement>();
+const lifecycle = new Map<string, { created: number; disposed: number }>();
+const dialogPrototypes = [
+  dialogRoot,
+  dialogTrigger,
+  dialogMask,
+  dialogContent,
+  dialogTitle,
+  dialogDescription,
+  dialogClose,
+];
+
+for (const proto of dialogPrototypes) {
+  AdaptToWebComponent(proto as any, {
+    diagnostics: {
+      onLifecycleEvent(event) {
+        const counts = lifecycle.get(proto.name) ?? { created: 0, disposed: 0 };
+        if (event.type === 'instance.created') counts.created++;
+        if (event.type === 'instance.dispose.done') counts.disposed++;
+        lifecycle.set(proto.name, counts);
+      },
+    },
+  });
+}
+
+function createDialogElement(tagName: string): HTMLElement {
+  const element = document.createElement(tagName);
+  ownedElements.add(element);
+  return element;
+}
+
+beforeEach(() => {
+  lifecycle.clear();
+  ownedElements.clear();
+});
+
+async function disposeOwnedDialogElements(): Promise<void> {
+  // The fixture owns every Custom Element it created, including parts whose
+  // physical portal no longer sits inside Root. Observe actual terminal
+  // lifecycle completion before Happy DOM destroys their owner document.
+  for (const element of ownedElements) {
+    if (element.isConnected) element.remove();
+  }
+  await expect
+    .poll(() => [...lifecycle].filter(([, counts]) => counts.created !== counts.disposed))
+    .toEqual([]);
+  expect([...ownedElements].every((element) => !element.isConnected)).toBe(true);
+}
+
+afterEach(disposeOwnedDialogElements);
 
 async function flushViewReconciliation(): Promise<void> {
   await Promise.resolve();
@@ -47,11 +90,11 @@ async function completeTransitions(...elements: any[]): Promise<void> {
 
 describe('prototypes/base: dialog', () => {
   it('uncontrolled root toggles open from trigger click and closes from close click', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
-    const close = document.createElement('base-dialog-close') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
+    const close = createDialogElement('base-dialog-close') as any;
 
     root.appendChild(trigger);
     root.appendChild(mask);
@@ -86,11 +129,11 @@ describe('prototypes/base: dialog', () => {
   });
 
   it('controlled root keeps prop state while trigger and close emit openChange requests', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
-    const close = document.createElement('base-dialog-close') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
+    const close = createDialogElement('base-dialog-close') as any;
     const requests: any[] = [];
     root.addEventListener('openChange', (event: Event) => {
       requests.push((event as CustomEvent).detail);
@@ -149,10 +192,10 @@ describe('prototypes/base: dialog', () => {
   });
 
   it('controlled dismissal emits requests without closing before the owner updates open', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
     const requests: any[] = [];
     root.addEventListener('openChange', (event: Event) => {
       requests.push((event as CustomEvent).detail);
@@ -184,7 +227,7 @@ describe('prototypes/base: dialog', () => {
 
   it('controlled root methods emit requests without replacing the owner open fact', async () => {
     // T-BASE-DIALOG-0001-CASE-CONTROLLED-METHODS
-    const root = document.createElement('base-dialog-root') as any;
+    const root = createDialogElement('base-dialog-root') as any;
     const requests: any[] = [];
     root.addEventListener('openChange', (event: Event) => {
       requests.push((event as CustomEvent).detail);
@@ -224,10 +267,10 @@ describe('prototypes/base: dialog', () => {
   it('Trigger and Close command surfaces prevent focused Space default actions', async () => {
     // T-BASE-DIALOG-TRIGGER-0001-CASE-COMMAND
     // T-BASE-DIALOG-CLOSE-0001-CASE-COMMAND
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const content = document.createElement('base-dialog-content') as any;
-    const close = document.createElement('base-dialog-close') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const content = createDialogElement('base-dialog-content') as any;
+    const close = createDialogElement('base-dialog-close') as any;
     setElementProps(root, { defaultOpen: true });
     content.appendChild(close);
     root.append(trigger, content);
@@ -251,10 +294,10 @@ describe('prototypes/base: dialog', () => {
   });
 
   it('ESC closes dialog content', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
 
     setElementProps(root, { defaultOpen: true });
     root.appendChild(trigger);
@@ -282,10 +325,10 @@ describe('prototypes/base: dialog', () => {
   });
 
   it('outside press closes dialog content', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
 
     setElementProps(root, { defaultOpen: true });
     root.appendChild(trigger);
@@ -314,10 +357,10 @@ describe('prototypes/base: dialog', () => {
 
   it('projects only live Title and Description relationships and falls back to Root a11yLabel', async () => {
     // T-BASE-DIALOG-CONTENT-0001-CASE-A11Y
-    const root = document.createElement('base-dialog-root') as any;
-    const content = document.createElement('base-dialog-content') as any;
-    const title = document.createElement('base-dialog-title') as any;
-    const description = document.createElement('base-dialog-description') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const content = createDialogElement('base-dialog-content') as any;
+    const title = createDialogElement('base-dialog-title') as any;
+    const description = createDialogElement('base-dialog-description') as any;
 
     setElementProps(root, { defaultOpen: true, a11yLabel: 'Settings' });
     root.appendChild(content);
@@ -357,9 +400,9 @@ describe('prototypes/base: dialog', () => {
     // T-BASE-DIALOG-DESCRIPTION-0001-CASE-ALERT
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     try {
-      const root = document.createElement('base-dialog-root') as any;
-      const content = document.createElement('base-dialog-content') as any;
-      const description = document.createElement('base-dialog-description') as any;
+      const root = createDialogElement('base-dialog-root') as any;
+      const content = createDialogElement('base-dialog-content') as any;
+      const description = createDialogElement('base-dialog-description') as any;
       setElementProps(root, { defaultOpen: true, alert: true, a11yLabel: 'Confirm action' });
       content.appendChild(description);
       root.appendChild(content);
@@ -383,11 +426,11 @@ describe('prototypes/base: dialog', () => {
   });
 
   it('alert=true prevents outside press from closing but ESC still closes', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
-    const description = document.createElement('base-dialog-description') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
+    const description = createDialogElement('base-dialog-description') as any;
 
     setElementProps(root, { defaultOpen: true, alert: true });
     content.appendChild(description);
@@ -423,10 +466,10 @@ describe('prototypes/base: dialog', () => {
   });
 
   it('mask and content transition states synchronize with root.open changes', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
 
     root.appendChild(trigger);
     root.appendChild(mask);
@@ -471,12 +514,12 @@ describe('prototypes/base: dialog', () => {
 
   it('keeps Content dismissal ownership when only Mask detaches before reopen', async () => {
     // These custom element tags were registered with the corresponding prototypes above.
-    const root = document.createElement('base-dialog-root') as WebComponentAdapterElement<
+    const root = createDialogElement('base-dialog-root') as WebComponentAdapterElement<
       Prototype<DialogRootProps, DialogRootExposes>
     >;
-    const trigger = document.createElement('base-dialog-trigger');
-    const mask = document.createElement('base-dialog-mask');
-    const content = document.createElement('base-dialog-content') as WebComponentAdapterElement<
+    const trigger = createDialogElement('base-dialog-trigger');
+    const mask = createDialogElement('base-dialog-mask');
+    const content = createDialogElement('base-dialog-content') as WebComponentAdapterElement<
       Prototype<DialogContentProps, DialogContentExposes>
     >;
     root.append(trigger, mask, content);
@@ -523,11 +566,11 @@ describe('prototypes/base: dialog', () => {
 
   // T-BASE-DIALOG-MASK-0001-CASE-DEFAULT-ACTION
   it('prevents participating Mask background pointer defaults while Content owns dismissal and focus return', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
-    const close = document.createElement('base-dialog-close');
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
+    const close = createDialogElement('base-dialog-close');
     const input = document.createElement('input');
     content.append(close, input);
     root.append(trigger, mask, content);
@@ -555,17 +598,17 @@ describe('prototypes/base: dialog', () => {
   });
 
   it('leaves passthrough pointer defaults and Content controls/keyboard untouched', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
     const input = document.createElement('input');
     const button = document.createElement('button');
     const clicked = vi.fn();
     button.addEventListener('click', clicked);
     content.append(input, button);
     setElementProps(root, { defaultOpen: true, alert: true });
-    const description = document.createElement('base-dialog-description');
+    const description = createDialogElement('base-dialog-description');
     description.textContent = 'Confirm this action';
     content.append(description);
     root.append(trigger, mask, content);
@@ -601,10 +644,10 @@ describe('prototypes/base: dialog', () => {
   });
 
   it('mask passthrough projects pointer-events none without changing dialog open state', async () => {
-    const root = document.createElement('base-dialog-root') as any;
-    const trigger = document.createElement('base-dialog-trigger') as any;
-    const mask = document.createElement('base-dialog-mask') as any;
-    const content = document.createElement('base-dialog-content') as any;
+    const root = createDialogElement('base-dialog-root') as any;
+    const trigger = createDialogElement('base-dialog-trigger') as any;
+    const mask = createDialogElement('base-dialog-mask') as any;
+    const content = createDialogElement('base-dialog-content') as any;
 
     setElementProps(root, { defaultOpen: true });
     setElementProps(mask, { passthrough: true });
@@ -630,4 +673,29 @@ describe('prototypes/base: dialog', () => {
     root.remove();
     await Promise.resolve();
   });
+});
+
+it('fixture disposes each owned open portal exactly once while preserving unrelated DOM', async () => {
+  const unrelated = document.createElement('div');
+  const root = createDialogElement('base-dialog-root');
+  const mask = createDialogElement('base-dialog-mask');
+  const content = createDialogElement('base-dialog-content');
+  setElementProps(root, { defaultOpen: true });
+  root.append(mask, content);
+  document.body.append(unrelated, root);
+  try {
+    await flushViewReconciliation();
+    expect([...document.body.children]).toContain(mask);
+    expect([...document.body.children]).toContain(content);
+    await disposeOwnedDialogElements();
+    expect(unrelated.isConnected).toBe(true);
+    expect([...document.body.children]).toEqual([unrelated]);
+    for (const element of [root, mask, content]) {
+      expect(lifecycle.get(element.localName)).toEqual({ created: 1, disposed: 1 });
+    }
+    await disposeOwnedDialogElements();
+    for (const counts of lifecycle.values()) expect(counts).toEqual({ created: 1, disposed: 1 });
+  } finally {
+    unrelated.remove();
+  }
 });
