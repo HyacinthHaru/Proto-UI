@@ -153,7 +153,7 @@ async function captureFailure(page: Page) {
     ) {
       entry.startupProfileRecorded = true;
       // An isolated follow-on navigation attributes CPU cost. Profiling never
-      // runs during the original 1000ms acceptance observation or replaces it.
+      // runs during the original 5000ms acceptance observation or replaces it.
       const context = await browser.newContext({ viewport: page.viewportSize() ?? undefined });
       const diagnostic = await context.newPage();
       const session = await context.newCDPSession(diagnostic);
