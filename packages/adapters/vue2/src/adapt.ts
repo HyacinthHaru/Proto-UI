@@ -638,7 +638,19 @@ function initSession<Props extends PropsBaseType>(
   if (!targetProto || !targetOptions) return;
 
   state.lastInitRoot = rootEl;
-  markProtoInstance(rootEl, targetProto as Prototype<any>, state.instanceToken);
+  try {
+    markProtoInstance(rootEl, targetProto as Prototype<any>, state.instanceToken);
+  } catch (error) {
+    // Marker publication can replay focus before this view has a disposer.
+    // Roll back this root only; a reentrant replacement owns its own binding.
+    try {
+      unbindProtoInstance(state.instanceToken, rootEl);
+    } catch {
+      /* original error wins */
+    }
+    if (state.lastInitRoot === rootEl) state.lastInitRoot = null;
+    throw error;
+  }
   state.boundRoot = rootEl;
 
   const eventGate = createEventGate();

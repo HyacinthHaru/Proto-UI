@@ -403,7 +403,19 @@ export function createVueAdapter(runtime: VueRuntime) {
           if (!rootEl || rootEl === lastInitRoot) return;
           lastInitRoot = rootEl;
 
-          markProtoInstance(rootEl, proto as Prototype<any>, instanceToken);
+          try {
+            markProtoInstance(rootEl, proto as Prototype<any>, instanceToken);
+          } catch (error) {
+            // Marker publication can replay a pending request before a view
+            // disposer exists. Roll back only this root, retaining the first error.
+            try {
+              unbindProtoInstance(instanceToken, rootEl);
+            } catch {
+              /* original error wins */
+            }
+            if (lastInitRoot === rootEl) lastInitRoot = null;
+            throw error;
+          }
           boundRoot = rootEl;
 
           const eventGate = createEventGate();
@@ -420,36 +432,62 @@ export function createVueAdapter(runtime: VueRuntime) {
           let viewDisposed = false;
           let focusRetryGeneration = 0;
           let releaseRequestedTargetReady: (() => void) | undefined;
-          const releaseNativeReadiness = registerNativeFocusReadiness(instanceToken, {
-            isReady: () =>
-              !viewDisposed &&
-              shouldExist.value &&
-              viewReady &&
-              eventGate.isEnabled() &&
-              rootRef.value === rootEl &&
-              rootEl.isConnected &&
-              !rootEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
-            subscribe: (listener) => {
-              focusTargetReadyListeners.add(listener);
-              return () => focusTargetReadyListeners.delete(listener);
+          const releaseNativeReadiness = registerNativeFocusReadiness(
+            instanceToken,
+            {
+              isReady: () =>
+                !viewDisposed &&
+                shouldExist.value &&
+                viewReady &&
+                eventGate.isEnabled() &&
+                rootRef.value === rootEl &&
+                rootEl.isConnected &&
+                !rootEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+              subscribe: (listener) => {
+                focusTargetReadyListeners.add(listener);
+                return () => focusTargetReadyListeners.delete(listener);
+              },
             },
-          });
+            { deferPublication: true }
+          );
           const disposeView = () => {
             if (viewDisposed) return;
             viewDisposed = true;
-            eventGate.disable();
-            eventGate.dispose();
-            releaseRequestedTargetReady?.();
-            releaseRequestedTargetReady = undefined;
-            releaseNativeReadiness();
-            unbindLogicalEventTarget(instanceToken, router.rootTarget);
-            router.dispose();
-            unbindProtoInstance(instanceToken, boundRoot ?? undefined);
-            if (boundRoot === rootEl) boundRoot = null;
-            if (eventGateRef.value === eventGate) {
-              eventGateRef.value = null;
-              focusTargetRetryScheduled = false;
+            const releases = [
+              () => eventGate.disable(),
+              () => eventGate.dispose(),
+              () => {
+                const release = releaseRequestedTargetReady;
+                releaseRequestedTargetReady = undefined;
+                release?.();
+              },
+              () => unbindLogicalEventTarget(instanceToken, router.rootTarget),
+              () => router.dispose(),
+              () => unbindProtoInstance(instanceToken, rootEl),
+              () => {
+                if (boundRoot === rootEl) boundRoot = null;
+                if (eventGateRef.value === eventGate) {
+                  eventGateRef.value = null;
+                  focusTargetRetryScheduled = false;
+                }
+              },
+              // Publish invalidation after releasing old bindings. Pending focus
+              // callbacks may throw; every old-view release must still complete.
+              releaseNativeReadiness,
+            ];
+            let failed = false;
+            let firstError: unknown;
+            for (const release of releases) {
+              try {
+                release();
+              } catch (error) {
+                if (!failed) {
+                  failed = true;
+                  firstError = error;
+                }
+              }
             }
+            if (failed) throw firstError;
           };
 
           const effectsPort = createVueEffectsPort((tokens) => {
@@ -547,6 +585,7 @@ export function createVueAdapter(runtime: VueRuntime) {
           if (kernel && kernel.run) {
             (kernel.run as any).host = { get: () => rootRef.value };
           }
+          releaseNativeReadiness.publish();
         };
 
         runtime.onMounted(() => {
@@ -617,8 +656,12 @@ export function createVueAdapter(runtime: VueRuntime) {
         );
 
         runtime.onBeforeUnmount(() => {
-          void owner.dispose();
-          lastInitRoot = null;
+          try {
+            // Vue observes rejected lifecycle promises through errorHandler.
+            return owner.dispose();
+          } finally {
+            lastInitRoot = null;
+          }
         });
 
         return () => {
