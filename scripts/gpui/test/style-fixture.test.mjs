@@ -37,6 +37,17 @@ test('a declaration that holds only under a media condition is not recorded', ()
   assert.equal(tokens['animate-spin'].animation, undefined);
 });
 
+test('selection tokens are neither element declarations nor no-op markers', () => {
+  const fixture = JSON.parse(readFileSync(FIXTURE, 'utf8'));
+  assert.equal(fixture.tokens.flex.display, 'flex');
+  assert.ok(fixture.noDeclarations.includes('peer'));
+  for (const token of ['selection:bg-primary', 'selection:text-primary-foreground']) {
+    assert.equal(fixture.tokens[token], undefined, `${token} must not style the whole element`);
+    assert.ok(!fixture.order.includes(token), `${token} has no element declaration order`);
+    assert.ok(!fixture.noDeclarations.includes(token), `${token} must remain diagnosable`);
+  }
+});
+
 test('the Spinner single border-color intent retains the existing native declaration gaps', () => {
   const tokens = JSON.parse(readFileSync(FIXTURE, 'utf8')).tokens;
   // Same declarations as the former border-current + border-t-transparent pair.
@@ -161,4 +172,12 @@ test('family shadow and Liquid blur inputs remain recorded without claiming nati
       'var(--pui-ring-offset-shadow, 0 0 #0000), var(--pui-ring-shadow, 0 0 #0000), var(--pui-shadow, 0 0 #0000)'
     );
   }
+});
+
+test('Web pseudo-element envelopes remain an explicit native diagnostic gap', () => {
+  const fixture = JSON.parse(readFileSync(FIXTURE, 'utf8'));
+  assert.ok(fixture.unsupportedSelectors.includes('hit-envelope-translate-1'));
+  assert.equal(fixture.tokens['hit-envelope-translate-1'], undefined);
+  assert.ok(!fixture.noDeclarations.includes('hit-envelope-translate-1'));
+  assert.ok(!fixture.order.includes('hit-envelope-translate-1'));
 });

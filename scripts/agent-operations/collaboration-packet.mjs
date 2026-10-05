@@ -1,3 +1,9 @@
+import {
+  ownerAuthorizationFromArgs,
+  ownerCollaborationScope,
+  ownerAuthorizationAllows,
+  ownerSkillEligibility,
+} from './owner-authorization.mjs';
 import fs from 'node:fs';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -30,6 +36,7 @@ import {
   loadSkillRegistry,
   skillRegistryRoot,
   validateSkillHandoff,
+  requireCompletedHandoff,
 } from './skill-registry.mjs';
 
 const POLICY_PATH = new URL(
@@ -53,8 +60,32 @@ function usage() {
 const OPTIONS = new Map([
   ['thread-revision', new Set(['--repository', '--pull-request', '--thread'])],
   ['request-digest', new Set(['--request'])],
-  ['validate', new Set(['--mode', '--mode-source', '--request', '--handoff', '--assessment'])],
-  ['apply', new Set(['--mode', '--mode-source', '--request', '--handoff', '--assessment'])],
+  [
+    'validate',
+    new Set([
+      '--mode',
+      '--mode-source',
+      '--request',
+      '--handoff',
+      '--assessment',
+      '--owner-authorization',
+      '--owner-key',
+      '--owner-grant',
+    ]),
+  ],
+  [
+    'apply',
+    new Set([
+      '--mode',
+      '--mode-source',
+      '--request',
+      '--handoff',
+      '--assessment',
+      '--owner-authorization',
+      '--owner-key',
+      '--owner-grant',
+    ]),
+  ],
 ]);
 
 export function parseCollaborationCli(argv) {
@@ -112,7 +143,11 @@ function loadInvocationContext(args) {
   establishExecutionMode(executionMode, executionModeSource);
   // Preserve the independent operator declaration before reading task-authored
   // artifacts. This binding cannot authenticate a caller that controls both.
-  return Object.freeze({ executionMode, executionModeSource });
+  return Object.freeze({
+    executionMode,
+    executionModeSource,
+    ownerAuthorization: ownerAuthorizationFromArgs(args),
+  });
 }
 
 function loadCollaborationHandoff(path, invocationContext) {
@@ -122,6 +157,7 @@ function loadCollaborationHandoff(path, invocationContext) {
       throw new Error(`handoff ${field} does not match the independent invocation declaration`);
     }
   }
+  requireCompletedHandoff(handoff);
   const routed = validateSkillHandoff(handoff, loadSkillRegistry());
   if (routed.nextSkill?.id !== 'pui-collaborate') {
     throw new Error('handoff must select pui-collaborate');
@@ -134,10 +170,18 @@ function loadCollaborationHandoff(path, invocationContext) {
 
 function validateExecution(request, args, policy, invocationContext, routed) {
   const selfAssessment = loadAssessment(args.get('--assessment'), policy, request);
-  validateCollaborationHandoffBinding(request, routed.handoff, { selfAssessment });
+  validateCollaborationHandoffBinding(request, routed.handoff, {
+    selfAssessment,
+    ownerAuthorization: invocationContext.ownerAuthorization,
+  });
   const eligibility = evaluateSkillEligibility(routed.nextSkill, {
     executionMode: invocationContext.executionMode,
     selfAssessment,
+    entrypoint: routed.handoff.entrypoint,
+    ownerAuthorization: invocationContext.ownerAuthorization,
+    executionModeSource: invocationContext.executionModeSource,
+    repositoryId: request.repositoryId,
+    scopeId: ownerCollaborationScope(request),
   });
   if (!eligibility.eligible) throw new Error(eligibility.reason);
   if (

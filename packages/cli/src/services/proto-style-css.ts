@@ -72,7 +72,24 @@ const colorVars = new Set([
 ]);
 
 const staticUtilities: Record<string, string[]> = {
+  'forced-colors-focus-outline': ['outline: 2px solid transparent;', 'outline-offset: 2px;'],
+  'surface-fade': [
+    'transition-property: opacity;',
+    'transition-duration: var(--pui-surface-transition-duration, 0ms);',
+    'transition-timing-function: linear;',
+  ],
   absolute: ['position: absolute;'],
+  // A translated, 2px-bordered interactive host retains the union of its rest
+  // and painted bodies. This pseudo-element is part of the same native owner,
+  // so state updates cannot replace a child that received pointerdown.
+  'hit-envelope-translate-1': [
+    "content: '';",
+    'position: absolute;',
+    'top: calc(-0.25rem - 2px);',
+    'left: calc(-0.25rem - 2px);',
+    'right: -2px;',
+    'bottom: -2px;',
+  ],
   fixed: ['position: fixed;'],
   relative: ['position: relative;'],
   block: ['display: block;'],
@@ -189,7 +206,13 @@ const staticUtilities: Record<string, string[]> = {
   'leading-6': ['line-height: 1.5rem;'],
   'leading-relaxed': ['line-height: 1.625;'],
   'leading-none': ['line-height: 1;'],
+  'leading-tight': ['line-height: 1.25;'],
+  'leading-snug': ['line-height: 1.375;'],
+  'leading-normal': ['line-height: 1.5;'],
   'tracking-tight': ['letter-spacing: -0.025em;'],
+  'tracking-normal': ['letter-spacing: 0;'],
+  italic: ['font-style: italic;'],
+  'not-italic': ['font-style: normal;'],
   'text-left': ['text-align: left;'],
   'text-xs': ['font-size: 0.75rem;', 'line-height: 1rem;'],
   'text-sm': ['font-size: 0.875rem;', 'line-height: 1.25rem;'],
@@ -197,9 +220,16 @@ const staticUtilities: Record<string, string[]> = {
   'text-lg': ['font-size: 1.125rem;', 'line-height: 1.75rem;'],
   'text-[0.8rem]': ['font-size: 0.8rem;'],
   'text-xl': ['font-size: 1.25rem;', 'line-height: 1.75rem;'],
+  'text-2xl': ['font-size: 1.5rem;', 'line-height: 2rem;'],
+  'text-3xl': ['font-size: 1.875rem;', 'line-height: 2.25rem;'],
+  'text-4xl': ['font-size: 2.25rem;', 'line-height: 2.5rem;'],
+  'text-5xl': ['font-size: 3rem;', 'line-height: 1;'],
   underline: ['text-decoration-line: underline;'],
+  'no-underline': ['text-decoration-line: none;'],
+  'line-through': ['text-decoration-line: line-through;'],
   'underline-offset-4': ['text-underline-offset: 4px;'],
   border: ['border-width: 1px;', 'border-style: solid;'],
+  'border-0': ['border-width: 0px;'],
   'border-2': ['border-width: 2px;', 'border-style: solid;'],
   'border-b-2': ['border-bottom-width: 2px;', 'border-bottom-style: solid;'],
   'border-t-2': ['border-top-width: 2px;', 'border-top-style: solid;'],
@@ -228,6 +258,7 @@ const staticUtilities: Record<string, string[]> = {
   'bg-yellow-300': ['background-color: #fde047;'],
   'text-ink': ['color: var(--pui-foreground);'],
   'text-current': ['color: currentColor;'],
+  'text-inherit': ['color: inherit;'],
   'text-card-foreground': ['color: var(--pui-card-foreground);'],
   'text-gray-500': ['color: #6b7280;'],
   'inset-0': ['inset: 0px;'],
@@ -239,8 +270,8 @@ const staticUtilities: Record<string, string[]> = {
   'top-auto': ['top: auto;'],
   'opacity-65': ['opacity: 0.65;'],
   'opacity-70': ['opacity: 0.7;'],
-  'opacity-100': ['opacity: 1;'],
   'opacity-0': ['opacity: 0;'],
+  'opacity-100': ['opacity: 1;'],
   'opacity-50': ['opacity: 0.5;'],
   'ring-inset': ['--pui-ring-inset: inset;'],
   'ring-0': ['--pui-ring-width: 0px;', ...ringShadow()],
@@ -479,6 +510,27 @@ export function renderProtoStyleTokenCss(tokens: string[]): string {
     }
     lines.push('  }');
     lines.push('');
+  }
+
+  if (tokens.includes('surface-fade')) {
+    lines.push(
+      '  @media (prefers-reduced-motion: reduce) {',
+      '    :where([data-pui-style~="surface-fade"]) { transition-duration: 0ms; }',
+      '  }',
+      '  @starting-style {',
+      '    :where([data-pui-style~="surface-fade"][data-pui-style~="opacity-100"]) { opacity: 0; }',
+      '  }',
+      ''
+    );
+  }
+
+  if (tokens.includes('forced-colors-focus-outline')) {
+    lines.push(
+      '  @media (forced-colors: active) {',
+      '    :where([data-pui-style~="forced-colors-focus-outline"]) { outline-color: Highlight; }',
+      '  }',
+      ''
+    );
   }
 
   if (unknown.length > 0) {
@@ -721,6 +773,8 @@ function buildSelectors(
     ]);
   }
 
+  if (parts.at(-1) === 'hit-envelope-translate-1')
+    selectors = selectors.map((selector) => `${selector}::before`);
   return selectors;
 }
 
@@ -733,6 +787,7 @@ function hasMotionReduceVariant(token: string): boolean {
 }
 
 function applyVariant(selector: string, variant: string): string[] {
+  if (variant === 'selection') return [`${selector}::selection`];
   if (variant === 'hover') return [`${selector}:hover`];
   if (variant === 'active') return [`${selector}:active`];
   if (variant === 'disabled') return [`${selector}:disabled`];

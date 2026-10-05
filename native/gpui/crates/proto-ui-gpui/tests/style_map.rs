@@ -9,7 +9,9 @@
 use std::collections::BTreeSet;
 
 use gpui::{AbsoluteLength, DefiniteLength, Display, Length, Position};
-use proto_ui_gpui::style::{map, Unmapped};
+use proto_ui_gpui::style::{
+    map, style_for_feedback_tokens, style_for_tokens, StyleIssue, Unmapped,
+};
 use proto_ui_style::length::LengthContext;
 use proto_ui_style::{themes, vocabulary, ColorScheme, Substitution};
 
@@ -24,6 +26,108 @@ fn resolve(tokens: &[&str], language: &str) -> proto_ui_style::ResolvedStyle {
         }
     }
     resolved
+}
+
+#[test]
+fn an_empty_declaration_set_is_an_identity_refinement() {
+    let mapped = map(&declared(&[]), LengthContext::default());
+    assert!(mapped.is_complete(), "unexpected: {:?}", mapped.unmapped);
+    assert_eq!(mapped.refinement.position, None);
+    assert_eq!(mapped.refinement.display, None);
+    assert_eq!(mapped.refinement.background, None);
+}
+
+#[test]
+fn an_empty_token_list_does_not_invent_a_static_position_request() {
+    let mapped = style_for_tokens([], None, LengthContext::default());
+    assert!(mapped.issues.is_empty(), "unexpected: {:?}", mapped.issues);
+    assert_eq!(mapped.refinement.position, None);
+}
+
+#[test]
+fn an_unknown_token_is_still_reported_when_no_declarations_resolve() {
+    let token = "not-a-proto-token";
+    let mapped = style_for_tokens([token], None, LengthContext::default());
+    assert_eq!(mapped.issues, [StyleIssue::UnknownToken(token.into())]);
+    assert_eq!(mapped.refinement.position, None);
+}
+
+#[test]
+fn a_missing_theme_variable_is_still_reported_when_no_declarations_remain() {
+    let mapped = style_for_tokens(["bg-background"], None, LengthContext::default());
+    assert_eq!(
+        mapped.issues,
+        [StyleIssue::UnresolvedVariable {
+            property: "background-color".into(),
+            variable: "var(--pui-background)".into(),
+        }]
+    );
+    assert_eq!(mapped.refinement.background, None);
+    assert_eq!(mapped.refinement.position, None);
+}
+
+#[test]
+fn feedback_refines_the_host_root_without_inventing_a_position() {
+    let hidden = style_for_feedback_tokens(["hidden"], None, LengthContext::default());
+    assert!(hidden.issues.is_empty(), "unexpected: {:?}", hidden.issues);
+    assert_eq!(hidden.refinement.display, Some(Display::None));
+    assert_eq!(hidden.refinement.position, None);
+
+    let cleared = style_for_feedback_tokens([], None, LengthContext::default());
+    assert!(
+        cleared.issues.is_empty(),
+        "unexpected: {:?}",
+        cleared.issues
+    );
+    assert_eq!(cleared.refinement.display, None);
+    assert_eq!(cleared.refinement.position, None);
+}
+
+#[test]
+fn feedback_insets_need_an_authored_supported_position() {
+    let unspecified = style_for_feedback_tokens(["left-1/2"], None, LengthContext::default());
+    assert_eq!(unspecified.refinement.position, None);
+    assert_eq!(unspecified.refinement.inset.left, None);
+    assert_eq!(
+        unspecified.issues,
+        [StyleIssue::Unmapped {
+            property: "left".into(),
+            value: "50%".into(),
+            reason: Unmapped::UnsupportedValue,
+        }]
+    );
+
+    let absolute =
+        style_for_feedback_tokens(["absolute", "left-1/2"], None, LengthContext::default());
+    assert!(
+        absolute.issues.is_empty(),
+        "unexpected: {:?}",
+        absolute.issues
+    );
+    assert_eq!(absolute.refinement.position, Some(Position::Absolute));
+    assert_eq!(
+        absolute.refinement.inset.left,
+        Some(Length::Definite(DefiniteLength::Fraction(0.5)))
+    );
+}
+
+#[test]
+fn feedback_keeps_unsupported_positions_and_unknown_tokens_as_errors() {
+    let fixed = style_for_feedback_tokens(["fixed"], None, LengthContext::default());
+    assert_eq!(fixed.refinement.position, None);
+    assert_eq!(
+        fixed.issues,
+        [StyleIssue::Unmapped {
+            property: "position".into(),
+            value: "fixed".into(),
+            reason: Unmapped::UnsupportedValue,
+        }]
+    );
+    let unknown = style_for_feedback_tokens(["not-a-proto-token"], None, LengthContext::default());
+    assert_eq!(
+        unknown.issues,
+        [StyleIssue::UnknownToken("not-a-proto-token".into())]
+    );
 }
 
 #[test]
@@ -287,7 +391,7 @@ fn reports_a_property_it_cannot_express() {
 ///
 /// Every entry here is deliberate, not an oversight: each needs work beyond a
 /// property assignment, and each is named in the plan as its own slice.
-const EXPECTED_UNMAPPED: [&str; 30] = [
+const EXPECTED_UNMAPPED: [&str; 31] = [
     // Composed paint that needs BoxShadow construction from the ring/shadow
     // custom properties rather than a single declaration.
     "box-shadow",
@@ -319,6 +423,7 @@ const EXPECTED_UNMAPPED: [&str; 30] = [
     "transition-property",
     "transition-timing-function",
     // Text properties this layer has not mapped yet.
+    "font-style",
     "letter-spacing",
     "text-align",
     "text-decoration-line",
@@ -331,7 +436,12 @@ const EXPECTED_UNMAPPED: [&str; 30] = [
 /// This is a separate list from the property inventory on purpose. `width` is
 /// mapped; `width: fit-content` is not. Recording the pair keeps the property
 /// inventory from claiming that `width` never reaches a surface.
-const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 8] = [
+const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 9] = [
+    (
+        "color",
+        "inherit",
+        "Text's inherited ink requires a parent text style; the single-surface mapper does not resolve CSS inheritance.",
+    ),
     (
         "width",
         "fit-content",
@@ -713,6 +823,39 @@ fn liquid_alpha_maps_but_the_recorded_blur_remains_explicitly_unsupported() {
         property == "backdrop-filter"
             && value == "blur(4px)"
             && *reason == Unmapped::UnknownProperty
+    }));
+    assert!(!mapped.is_complete());
+}
+
+// T-TEXT-0001-CASE-NATIVE-LIMITS: these declarations are known, but no native
+// italic/tracking/decoration support is claimed until the mapper realizes them.
+#[test]
+fn text_presentation_preserves_explicit_unmapped_diagnostics() {
+    let mapped = map(
+        &resolve(&["italic", "tracking-tight", "underline"], "shadcn"),
+        LengthContext::default(),
+    );
+    for property in ["font-style", "letter-spacing", "text-decoration-line"] {
+        assert!(
+            mapped
+                .unmapped
+                .iter()
+                .any(|(name, _, reason)| name == property && *reason == Unmapped::UnknownProperty),
+            "missing explicit diagnostic for {property}: {:?}",
+            mapped.unmapped
+        );
+    }
+    assert!(!mapped.is_complete());
+}
+
+#[test]
+fn text_inherited_tone_reports_unsupported_value_without_parent_style() {
+    let mapped = map(
+        &resolve(&["text-inherit"], "shadcn"),
+        LengthContext::default(),
+    );
+    assert!(mapped.unmapped.iter().any(|(property, value, reason)| {
+        property == "color" && value == "inherit" && *reason == Unmapped::UnsupportedValue
     }));
     assert!(!mapped.is_complete());
 }
