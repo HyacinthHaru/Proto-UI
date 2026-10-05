@@ -118,6 +118,8 @@ function server({
   foreignCommit = false,
   permission = 'WRITE',
   sourceOwner = 'fixture-owner',
+  sourceName = null,
+  liveSourceName = null,
   protectedBranch = false,
   repositoryId = REPOSITORY,
   login = LOGIN,
@@ -139,10 +141,10 @@ function server({
     html_url: 'fixture://issue/7',
   };
   const fullName = repositoryId.slice('github.com:'.length);
+  const sourceFullName = `${sourceOwner}/${sourceName ?? fullName.split('/')[1]}`;
   const runner = (binary, args, options) => {
     if (binary === 'git' && pull) {
-      if (args[0] === 'config')
-        return `https://github.com/${sourceOwner}/${fullName.split('/')[1]}.git\n`;
+      if (args[0] === 'config') return `https://github.com/${sourceFullName}.git\n`;
       if (args[0] === 'symbolic-ref') return 'fixture-contributor-branch\n';
       if (args[0] === 'rev-parse') return `${revision.headSha}\n`;
       if (args[0] === 'check-ref-format') return '';
@@ -166,6 +168,24 @@ function server({
         },
       });
     if (method !== 'GET') {
+      if (pull && endpoint.endsWith('/pulls')) {
+        const parts = input.head.split(':');
+        const requestedOwner = parts.length === 2 ? parts[0] : fullName.split('/')[0];
+        if (
+          parts.length > 2 ||
+          requestedOwner.toLowerCase() !== sourceOwner.toLowerCase() ||
+          parts.at(-1) !== 'fixture-contributor-branch'
+        )
+          throw new Error('requested head branch is unavailable in the source repository');
+      }
+      if (
+        pull &&
+        endpoint.endsWith('/pulls') &&
+        sourceFullName !== fullName &&
+        (sourceOwner === fullName.split('/')[0] || input.head_repo !== undefined) &&
+        input.head_repo !== sourceFullName.split('/')[1]
+      )
+        throw new Error('fork request must select its actual head repository');
       writes.push({ method, endpoint, input });
       const number = 10 + comments.length + issues.length;
       let published;
@@ -187,7 +207,7 @@ function server({
                 head: {
                   ref: 'fixture-contributor-branch',
                   sha: revision.headSha,
-                  repo: { full_name: `${sourceOwner}/${fullName.split('/')[1]}` },
+                  repo: { full_name: sourceFullName },
                 },
               }
             : {}),
@@ -204,6 +224,8 @@ function server({
           : published
       );
     }
+    if (pull && endpoint === `repos/${sourceFullName}`)
+      return JSON.stringify({ full_name: liveSourceName ?? sourceFullName });
     if (endpoint.includes('/issues/7/comments?')) return JSON.stringify(comments);
     if (pull && endpoint.includes('/branches/'))
       return JSON.stringify({
@@ -555,7 +577,63 @@ test('a public READ contributor can propose the exact fork head without rewritin
   );
   assert.equal(result.status, 'published');
   assert.equal(gh.writes.length, 1);
-  assert.equal(gh.writes[0].input.head, head);
+});
+
+for (const sourceOwner of [LOGIN, 'fixture-owner']) {
+  test(`renamed ${sourceOwner} fork publishes once and reconciles its actual source repository`, (t) => {
+    const f = fixture(t, { failed: true });
+    const gh = server({ pull: true, sourceOwner, sourceName: 'renamed-fork' });
+    const argv = [
+      'pull-request',
+      'create',
+      ...f.args,
+      '--title',
+      'Synthetic renamed fork',
+      '--body-file',
+      f.bodyPath,
+      '--base',
+      'main',
+      '--head',
+      `${sourceOwner}:fixture-contributor-branch`,
+    ];
+    const published = runPublishCli(argv, { runner: gh.runner, now: f.now });
+    assert.equal(published.status, 'published');
+    const repeated = runPublishCli(argv, { runner: gh.runner, now: f.now });
+    assert.equal(repeated.status, 'already-published');
+    assert.equal(repeated.url, published.url);
+    assert.equal(gh.writes.length, 1);
+  });
+}
+
+test('fork creation rejects a changed live source identity before publication', (t) => {
+  const f = fixture(t, { failed: true });
+  const gh = server({
+    pull: true,
+    sourceOwner: LOGIN,
+    sourceName: 'renamed-fork',
+    liveSourceName: `${LOGIN}/different-repository`,
+  });
+  assert.throws(
+    () =>
+      runPublishCli(
+        [
+          'pull-request',
+          'create',
+          ...f.args,
+          '--title',
+          'Synthetic renamed fork',
+          '--body-file',
+          f.bodyPath,
+          '--base',
+          'main',
+          '--head',
+          `${LOGIN}:fixture-contributor-branch`,
+        ],
+        { runner: gh.runner, now: f.now }
+      ),
+    /source repository differs/
+  );
+  assert.equal(gh.writes.length, 0);
 });
 
 test('already disclosed approved evidence is published byte-for-byte without another marker', (t) => {

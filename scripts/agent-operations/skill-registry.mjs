@@ -264,7 +264,7 @@ function validateArtifact(artifact, index, handoff) {
       artifact.reference.length <= 1000,
     `handoff.artifacts[${index}].reference is invalid`
   );
-  if (artifact.digest !== undefined)
+  if (artifact.type === 'modeltrace-record' || artifact.digest !== undefined)
     assert(DIGEST.test(artifact.digest), `handoff.artifacts[${index}].digest is invalid`);
 }
 

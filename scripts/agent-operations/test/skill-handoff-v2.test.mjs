@@ -91,7 +91,7 @@ test('completed v1 remains compatible; completed v2 still requires producer outp
     /duplicates type/
   );
 });
-test('v1 and v2 admit the identity producer while keeping its measured record singleton', () => {
+test('v1 and v2 require a content-bound identity record and keep it singleton', () => {
   const current = base({
     fromId: 'pui-agent-identify',
     nextSkillId: null,
@@ -104,11 +104,22 @@ test('v1 and v2 admit the identity producer while keeping its measured record si
   legacy.schemaVersion = 1;
   for (const handoff of [legacy, current]) {
     assert.equal(accepted(handoff).nextSkill, null);
+    for (const value of [undefined, digest]) {
+      const unbound = structuredClone(handoff);
+      const record = unbound.artifacts.find((artifact) => artifact.type === 'modeltrace-record');
+      delete record.digest;
+      if (value !== undefined) record.digest = value;
+      assert.equal(structural(unbound), false);
+      assert.throws(() => validateSkillHandoff(unbound, registry));
+    }
     assert.throws(
       () =>
         validateSkillHandoff({
           ...handoff,
-          artifacts: [...handoff.artifacts, a('modeltrace-record', 'fixture:other-model')],
+          artifacts: [
+            ...handoff.artifacts,
+            a('modeltrace-record', 'fixture:other-model', { digest: 'sha256:' + digest }),
+          ],
         }),
       /duplicates type/
     );
@@ -116,7 +127,10 @@ test('v1 and v2 admit the identity producer while keeping its measured record si
   assert.equal(
     structural({
       ...current,
-      artifacts: [...current.artifacts, a('modeltrace-record', 'fixture:other-model')],
+      artifacts: [
+        ...current.artifacts,
+        a('modeltrace-record', 'fixture:other-model', { digest: 'sha256:' + digest }),
+      ],
     }),
     false
   );

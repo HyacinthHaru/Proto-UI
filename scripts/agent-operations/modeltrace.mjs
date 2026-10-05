@@ -321,11 +321,32 @@ export function computeModelTraceReceiptDigest(receipt) {
   return hash(content);
 }
 
+function assertModelTraceScope(receipt, context, repositoryId = context.repositoryId) {
+  // Compare GitHub owner/repo casing without changing any content-bound artifact.
+  const repository = isRepository(repositoryId) ? repositoryId.toLowerCase() : null;
+  assert(
+    repository !== null &&
+      receipt.scope.repositoryId.toLowerCase() === repository &&
+      context.repositoryId.toLowerCase() === repository &&
+      receipt.scope.sessionDigest === hash(context.sessionId) &&
+      receipt.scope.contextDigest === context.contextDigest &&
+      receipt.scope.routeDigest === context.routeDigest,
+    'repository/session/context/provider route changed; repeat all three probes'
+  );
+  assert(
+    isDeepStrictEqual(receipt.declared, context.declared),
+    'declared system/harness labels changed; repeat all three probes'
+  );
+}
+
 export function buildModelTraceRecord(challenge, response, { previous = null } = {}) {
   validateChallenge(challenge);
   validateResponse(response, challenge);
+  if (previous !== null) {
+    validateModelTraceReceipt(previous);
+    assertModelTraceScope(previous, challenge.context);
+  }
   const reference = loadBank();
-  if (previous !== null) validateModelTraceReceipt(previous);
   const anomalies = new Set(['context-uncalibrated', 'unknown-model-not-excluded']);
   const counts = [];
   const sampleDigests = [];
@@ -635,19 +656,7 @@ export function assertModelTraceFresh(
       now.getTime() < time(receipt.expiresAt, 'expiresAt'),
     'measurement expired or is from the future; repeat all three probes'
   );
-  assert(
-    isDeepStrictEqual(receipt.scope, {
-      repositoryId,
-      sessionDigest: hash(context.sessionId),
-      contextDigest: context.contextDigest,
-      routeDigest: context.routeDigest,
-    }) && context.repositoryId === repositoryId,
-    'repository/session/context/provider route changed; repeat all three probes'
-  );
-  assert(
-    isDeepStrictEqual(receipt.declared, context.declared),
-    'declared system/harness labels changed; repeat all three probes'
-  );
+  assertModelTraceScope(receipt, context, repositoryId);
   return receipt;
 }
 

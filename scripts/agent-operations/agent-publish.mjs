@@ -221,19 +221,26 @@ function pullBinding(io, args, viewer) {
   if (branch === base || branch === viewer.defaultBranch)
     throw new Error('PR requires a distinct contributor head branch');
   const sourceOwner = parts.length === 2 ? parts[0] : owner;
-  const sourceRepository = `github.com:${sourceOwner}/${name}`;
-  if (checkoutRepository(io).toLowerCase() !== sourceRepository.toLowerCase())
+  const sourceRepository = checkoutRepository(io);
+  const source = parseRepositoryId(sourceRepository);
+  if (!sameLogin(source.owner, sourceOwner))
     throw new Error('PR source repository differs from checkout origin');
+  const liveSource = io.api(`repos/${source.owner}/${source.name}`);
+  if (
+    liveSource?.full_name?.toLowerCase() !==
+    sourceRepository.slice('github.com:'.length).toLowerCase()
+  )
+    throw new Error('live PR source repository differs from checkout origin');
   if (io.run('git', ['symbolic-ref', '--short', 'HEAD']).trim() !== branch)
     throw new Error('PR head branch differs from checkout branch');
   const localSha = io.run('git', ['rev-parse', 'HEAD']).trim();
-  const liveBranch = io.api(`repos/${sourceOwner}/${name}/branches/${encodeURIComponent(branch)}`);
+  const liveBranch = io.api(
+    `repos/${source.owner}/${source.name}/branches/${encodeURIComponent(branch)}`
+  );
   const baseBranch = io.api(`repos/${owner}/${name}/branches/${encodeURIComponent(base)}`);
   if (liveBranch?.commit?.sha !== localSha || !baseBranch?.commit?.sha)
     throw new Error('PR source must be pushed and bound to exact local HEAD/base');
-  const compare = io.api(
-    `repos/${owner}/${name}/compare/${encodeURIComponent(base)}...${encodeURIComponent(head)}`
-  );
+  const compare = io.api(`repos/${owner}/${name}/compare/${baseBranch.commit.sha}...${localSha}`);
   if (
     !Array.isArray(compare?.commits) ||
     compare.commits.length === 0 ||
@@ -242,7 +249,11 @@ function pullBinding(io, args, viewer) {
   ) {
     throw new Error('complete PR contributor commit attribution is unavailable');
   }
-  return { headSha: localSha, baseSha: baseBranch.commit.sha };
+  return {
+    headSha: localSha,
+    baseSha: baseBranch.commit.sha,
+    sourceRepository: liveSource.full_name.toLowerCase(),
+  };
 }
 
 function target(io, endpoint, number) {
@@ -425,13 +436,12 @@ export function runPublishCli(argv, options = {}) {
   if (command === 'update-body' && !sameLogin(before.user?.login, viewer.login))
     throw new Error('body replacement requires a credential-owned Issue or PR');
   function samePullBinding(pull) {
-    const sourceOwner = args.get('--head').includes(':') ? args.get('--head').split(':')[0] : owner;
     return (
       pull.base?.ref === args.get('--base') &&
       pull.base?.sha === branch.baseSha &&
       pull.head?.ref === args.get('--head').split(':').at(-1) &&
       pull.head?.sha === branch.headSha &&
-      pull.head?.repo?.full_name?.toLowerCase() === `${sourceOwner}/${name}`.toLowerCase()
+      pull.head?.repo?.full_name?.toLowerCase() === branch.sourceRepository
     );
   }
   function findPublished() {
@@ -522,6 +532,8 @@ export function runPublishCli(argv, options = {}) {
       base: args.get('--base'),
       head: args.get('--head'),
     };
+    if (branch.sourceRepository !== `${owner}/${name}`.toLowerCase())
+      input.head_repo = branch.sourceRepository.split('/')[1];
   }
   if (command === 'comment') route = `${endpoint}/issues/${number}/comments`;
   if (command === 'update-body') {

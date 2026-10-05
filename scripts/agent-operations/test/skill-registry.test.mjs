@@ -166,18 +166,38 @@ for (const [nextSkillId, types] of [
       humanGates: [],
       notes: [],
     };
-    assert.equal(validateSkillHandoff(handoff, registry).nextSkill.id, nextSkillId);
-    assert.throws(
-      () =>
-        validateSkillHandoff(
-          {
-            ...handoff,
-            artifacts: handoff.artifacts.filter((item) => item.type !== 'modeltrace-record'),
-          },
-          registry
-        ),
-      /modeltrace-record/
-    );
+    const current = {
+      ...handoff,
+      schemaVersion: 2,
+      outcome: 'completed',
+      binding: {
+        repositoryId: 'github.com:Proto-UI/Proto-UI',
+        scopeId: 'fixture:record-routing',
+        headSha: 'a'.repeat(40),
+        reviewInputDigest: null,
+      },
+    };
+    for (const version of [handoff, current]) {
+      assert.equal(validateSkillHandoff(version, registry).nextSkill.id, nextSkillId);
+      assert.throws(
+        () =>
+          validateSkillHandoff(
+            {
+              ...version,
+              artifacts: version.artifacts.filter((item) => item.type !== 'modeltrace-record'),
+            },
+            registry
+          ),
+        /modeltrace-record/
+      );
+      for (const value of [undefined, 'sha256:invalid']) {
+        const unbound = structuredClone(version);
+        const record = unbound.artifacts.find((item) => item.type === 'modeltrace-record');
+        delete record.digest;
+        if (value !== undefined) record.digest = value;
+        assert.throws(() => validateSkillHandoff(unbound, registry));
+      }
+    }
   });
 }
 

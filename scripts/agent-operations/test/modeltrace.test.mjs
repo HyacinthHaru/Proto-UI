@@ -246,6 +246,92 @@ test('expiry, changed task/provider/session and future clocks require a new meas
     { ...f.context, declared: { systemModel: 'gpt-5.4', harnessModel: null } },
   ])
     assert.throws(() => assertModelTraceFresh(receipt, context, { now: NOW }), /changed/);
+  assert.throws(
+    () =>
+      assertModelTraceFresh(receipt, f.context, {
+        repositoryId: 'github.com:another/repository',
+        now: NOW,
+      }),
+    /repository\/session\/context\/provider route changed/
+  );
+});
+
+test('freshness accepts equivalent GitHub casing without rewriting the receipt or context', () => {
+  const f = fixture({ failed: true });
+  const original = JSON.stringify(f.record);
+  for (const repositoryId of ['github.com:FiXtUrE/repository', 'github.com:fixture/RePoSiToRy']) {
+    const context = { ...f.context, repositoryId };
+    const originalContext = JSON.stringify(context);
+    assert.equal(assertModelTraceFresh(f.record.receipt, context, { now: NOW }), f.record.receipt);
+    assert.equal(
+      assertModelTraceFresh(f.record.receipt, f.context, { repositoryId, now: NOW }),
+      f.record.receipt
+    );
+    assert.equal(JSON.stringify(context), originalContext);
+    assert.equal(JSON.stringify(f.record), original);
+  }
+});
+
+for (const [key, value] of [
+  ['repositoryId', 'github.com:another/repository'],
+  ['sessionDigest', 'c'.repeat(64)],
+  ['contextDigest', 'c'.repeat(64)],
+  ['routeDigest', 'c'.repeat(64)],
+]) {
+  test(`a structurally valid prior receipt with a foreign ${key} cannot become a retest`, () => {
+    const f = fixture({ failed: true });
+    const prior = structuredClone(f.record.receipt);
+    prior.scope[key] = value;
+    prior.id = `sha256:${computeModelTraceReceiptDigest(prior)}`;
+    validateModelTraceReceipt(prior);
+    assert.throws(
+      () => buildModelTraceRecord(f.challenge, f.response, { previous: prior }),
+      /repository\/session\/context\/provider route changed/
+    );
+  });
+}
+
+for (const key of ['systemModel', 'harnessModel']) {
+  test(`prior admission and freshness require exact ${key} declarations`, () => {
+    const f = fixture({
+      declared: { systemModel: 'gpt-5.4', harnessModel: 'gpt-5.4' },
+      failed: true,
+    });
+    const context = { ...f.context, declared: { ...f.context.declared, [key]: 'GPT-5.4' } };
+    const prior = structuredClone(f.record.receipt);
+    prior.declared[key] = context.declared[key];
+    prior.id = `sha256:${computeModelTraceReceiptDigest(prior)}`;
+    validateModelTraceReceipt(prior);
+    assert.throws(
+      () => buildModelTraceRecord(f.challenge, f.response, { previous: prior }),
+      /declared system\/harness labels changed/
+    );
+    assert.throws(
+      () => assertModelTraceFresh(f.record.receipt, context, { now: NOW }),
+      /declared system\/harness labels changed/
+    );
+  });
+}
+
+test('same-scope expired prior evidence retains its digest across equivalent GitHub casing', () => {
+  const f = fixture({ failed: true });
+  for (const repositoryId of [
+    f.context.repositoryId,
+    'github.com:FiXtUrE/repository',
+    'github.com:fixture/RePoSiToRy',
+  ]) {
+    const prior = structuredClone(f.record.receipt);
+    prior.scope.repositoryId = repositoryId;
+    prior.measuredAt = new Date(Date.parse(prior.measuredAt) - 60 * 60_000).toISOString();
+    prior.expiresAt = new Date(Date.parse(prior.expiresAt) - 60 * 60_000).toISOString();
+    prior.id = `sha256:${computeModelTraceReceiptDigest(prior)}`;
+    const original = JSON.stringify(prior);
+    const record = buildModelTraceRecord(f.challenge, f.response, { previous: prior });
+    assert.equal(record.receipt.priorReceiptDigest, prior.id.slice(7));
+    assert.equal(record.receipt.anomalies.includes('retest-inconsistent'), false);
+    assert.equal(JSON.stringify(record.previous), original);
+    assert.equal(assertModelTraceFresh(record.receipt, f.context, { now: NOW }), record.receipt);
+  }
 });
 
 test('failed retests remain failed, not a fabricated model mismatch', () => {
