@@ -20,7 +20,7 @@ criteria:
       en: The family inherits asSurfaceRoot and owns its finite fill, border, radius, depth and observed-feedback recipes through rule/feedback.style. Surface does not choose font, text size or content. Pointer hit ownership stays with the semantic host. Fade projects only the existing Transition owner phase; it does not create a clock, lifecycle, inertness or interaction state. Web surface-fade consumes --pui-surface-transition-duration, default 0ms, supplied only from finite nonnegative duration milliseconds by its composition owner. Reduced-motion uses 0ms. Scrim lowers to black at 80 percent opacity. Unsupported native lowering, including unresolved CSS duration variables and starting-style selectors, remains diagnostic, never an inferred support claim.
   - id: P-LIQUID-GLASS-SURFACE-ENTRIES
     text:
-      en: The public package root and /surface subpath expose Surface, with CLI registration for adapter facade consumption. Partial-family Surface defaults to neutral opaque outline presentation (transparent and scrim are ordinary fills, not material effects) and does not expand material or unrelated component compatibility guarantees.
+      en: The private workspace package root and /surface source subpath expose Surface for internal Adapter and compiler consumption. This unpublished, release-excluded package is not offered by public CLI add or its interactive choices. Partial-family Surface defaults to neutral opaque outline presentation (transparent and scrim are ordinary fills, not material effects) and does not expand material or unrelated component compatibility guarantees.
 sources:
   - path: packages/prototypes/liquid-glass/src/surface/root.proto.ts
   - path: packages/prototypes/liquid-glass/src/surface/index.ts

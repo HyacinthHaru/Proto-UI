@@ -209,22 +209,6 @@ const baseCompound = (
   );
 
 export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
-  'bootstrap-2-3-2-surface': defineSimple(
-    'bootstrap-2-3-2-surface',
-    'Bootstrap 2.3.2 Surface',
-    '@proto.ui/prototypes-bootstrap-2-3-2',
-    '@proto.ui/prototypes-bootstrap-2-3-2/surface',
-    'surfaceRoot',
-    'Bootstrap232SurfaceRoot'
-  ),
-  'liquid-glass-surface': defineSimple(
-    'liquid-glass-surface',
-    'Liquid Glass Surface',
-    '@proto.ui/prototypes-liquid-glass',
-    '@proto.ui/prototypes-liquid-glass/surface',
-    'surfaceRoot',
-    'LiquidGlassSurfaceRoot'
-  ),
   'base-surface': base('base-surface', 'Base Surface', 'surfaceRoot', 'BaseSurfaceRoot'),
   'shadcn-surface': shadcn('shadcn-surface', 'Shadcn Surface', 'surfaceRoot', 'ShadcnSurfaceRoot'),
   'brutalist-surface': brutalist(

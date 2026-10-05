@@ -19,6 +19,7 @@ import * as siteFamily from '../site-library-family';
 
 type Handle = NonNullable<ReturnType<typeof initHomepageRuntime>>;
 let handle: Handle | undefined;
+const preferenceListeners: EventListener[] = [];
 function fixture(withDemo = false) {
   document.body.innerHTML = `<header data-homepage-runtime data-runtime-label="Page runtime"><output data-homepage-runtime-status></output>
   <div id="navigation" data-homepage-actions data-homepage-controls="runtime"><div data-homepage-fallback><a href="/docs/" data-home-action-variant="minimal">Docs</a><button data-homepage-theme>Theme</button></div><div data-homepage-mount></div></div></header>
@@ -63,6 +64,8 @@ beforeEach(() => {
 afterEach(async () => {
   await handle?.destroy();
   handle = undefined;
+  for (const listener of preferenceListeners.splice(0))
+    document.removeEventListener('proto-adapter:change', listener);
   document.body.replaceChildren();
   vi.restoreAllMocks();
 });
@@ -490,5 +493,174 @@ describe('Search participates in the existing homepage generation', () => {
       expect(item.dispose).toHaveBeenCalledOnce();
     }
     expect(error).toHaveBeenCalled();
+  });
+});
+
+describe('pending homepage runtime preference intent', () => {
+  async function begin() {
+    localStorage.setItem('preferred-prototypes-adapter', 'wc');
+    const root = fixture();
+    handle = initHomepageRuntime(root);
+    await settle();
+    const controls = fakes.materialize.mock.calls[0]![1].controls;
+    const values: string[] = [];
+    const listener: EventListener = (event) => {
+      const detail = (event as CustomEvent).detail;
+      if (detail?.source === root) values.push(detail.adapter);
+    };
+    document.addEventListener('proto-adapter:change', listener);
+    preferenceListeners.push(listener);
+    const published = () => values;
+    return { root, controls, published };
+  }
+  async function pending() {
+    const current = await begin();
+    const gate = deferred<ReturnType<typeof candidate>>();
+    fakes.materialize.mockImplementationOnce(() => gate.promise);
+    current.controls.runtime.onValueChange('react');
+    await settle();
+    expect(current.published()).toEqual([]);
+    expect(localStorage.getItem('preferred-prototypes-adapter')).toBe('wc');
+    return { ...current, gate };
+  }
+  for (const axis of ['family', 'component'] as const) {
+    it(`carries user intent through a superseding ${axis} coordinator request exactly once`, async () => {
+      const { root, controls, published, gate } = await pending();
+      try {
+        // Component is a coordinator callback boundary; the current homepage
+        // does not expose an additional component picker to native users.
+        controls[axis].onValueChange(axis === 'family' ? 'brutalist' : 'switch');
+        await settle();
+        expect(root.dataset.runtimeState).toBe('ready');
+        expect(handle!.getSnapshot().selection.runtimeId).toBe('react');
+        expect(localStorage.getItem('preferred-prototypes-adapter')).toBe('react');
+        expect(published()).toEqual(['react']);
+        gate.resolve(candidate());
+        await settle();
+        expect(published()).toEqual(['react']);
+      } finally {
+        gate.resolve(candidate());
+      }
+    });
+  }
+  it('discards a never-committed intent after superseding failure and does not publish it on a later family success', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { root, controls, published, gate } = await pending();
+    try {
+      fakes.materialize.mockRejectedValueOnce(new Error('family preparation failed'));
+      controls.family.onValueChange('brutalist');
+      await settle();
+      expect(root.dataset.runtimeState).toBe('error');
+      expect(handle!.getSnapshot().selection.runtimeId).toBe('wc');
+      gate.resolve(candidate());
+      await settle();
+      controls.family.onValueChange('brutalist');
+      await settle();
+      expect(root.dataset.runtimeState).toBe('ready');
+      expect(localStorage.getItem('preferred-prototypes-adapter')).toBe('wc');
+      expect(published()).toEqual([]);
+    } finally {
+      gate.resolve(candidate());
+    }
+  });
+  it('retains the one pending intent across repeated same-runtime selections', async () => {
+    const { controls, published, gate } = await pending();
+    try {
+      const count = fakes.materialize.mock.calls.length;
+      controls.runtime.onValueChange('react');
+      expect(fakes.materialize.mock.calls).toHaveLength(count);
+      controls.family.onValueChange('brutalist');
+      await settle();
+      controls.runtime.onValueChange('react');
+      gate.resolve(candidate());
+      await settle();
+      expect(published()).toEqual(['react']);
+    } finally {
+      gate.resolve(candidate());
+    }
+  });
+  it('replaces pending intent when the user explicitly selects the old runtime again', async () => {
+    const { controls, published, gate } = await pending();
+    try {
+      controls.runtime.onValueChange('wc');
+      await settle();
+      gate.resolve(candidate());
+      await settle();
+      expect(handle!.getSnapshot().selection.runtimeId).toBe('wc');
+      expect(localStorage.getItem('preferred-prototypes-adapter')).toBe('wc');
+      expect(published()).toEqual(['wc']);
+    } finally {
+      gate.resolve(candidate());
+    }
+  });
+  it('does not publish after teardown or resurrect late pending candidates', async () => {
+    const { published, gate } = await pending();
+    const destruction = handle!.destroy();
+    gate.resolve(candidate());
+    await destruction;
+    handle = undefined;
+    await settle();
+    expect(localStorage.getItem('preferred-prototypes-adapter')).toBe('wc');
+    expect(published()).toEqual([]);
+  });
+  it('still notifies the document once if optional preference storage throws', async () => {
+    const { controls, published, gate } = await pending();
+    try {
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+        throw new Error('storage blocked');
+      });
+      controls.family.onValueChange('brutalist');
+      await settle();
+      expect(handle!.getSnapshot().selection.runtimeId).toBe('react');
+      expect(published()).toEqual(['react']);
+    } finally {
+      gate.resolve(candidate());
+    }
+  });
+  it('does not republish an external adapter request as a pending homepage choice', async () => {
+    const { controls, published, gate } = await pending();
+    try {
+      document.dispatchEvent(
+        new CustomEvent('proto-adapter:change', { detail: { adapter: 'vue' } })
+      );
+      await settle();
+      controls.family.onValueChange('brutalist');
+      await settle();
+      expect(handle!.getSnapshot().selection.runtimeId).toBe('vue');
+      expect(published()).toEqual([]);
+      expect(localStorage.getItem('preferred-prototypes-adapter')).toBe('wc');
+    } finally {
+      gate.resolve(candidate());
+    }
+  });
+  it('publishes only the already-committed runtime retained by a later failed family request', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const retired = deferred<void>();
+    const old = candidate();
+    old.dispose.mockImplementation(() => retired.promise);
+    fakes.materialize.mockResolvedValueOnce(old);
+    const { root, controls, published } = await begin();
+    try {
+      controls.runtime.onValueChange('react');
+      await settle();
+      expect(handle!.getSnapshot().phase).toBe('ready');
+      expect(handle!.getSnapshot().selection.runtimeId).toBe('react');
+      expect(published()).toEqual([]);
+      fakes.materialize.mockRejectedValueOnce(new Error('later family failed'));
+      controls.family.onValueChange('brutalist');
+      await settle();
+      expect(root.dataset.runtimeState).toBe('error');
+      expect(handle!.getSnapshot().selection).toEqual({
+        runtimeId: 'react',
+        projectionFamilyId: 'shadcn',
+      });
+      expect(localStorage.getItem('preferred-prototypes-adapter')).toBe('react');
+      expect(published()).toEqual(['react']);
+      retired.resolve();
+      await settle();
+      expect(published()).toEqual(['react']);
+    } finally {
+      retired.resolve();
+    }
   });
 });

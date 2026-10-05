@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { renderHostIndex } from '../src/services/codegen';
 import { collectProtoStyleTokens } from '../src/services/prototype-style-tokens';
 import { renderProtoStyleTokenCss } from '../src/services/proto-style-css';
-import { COMPONENT_REGISTRY } from '../src/registry/components';
+import { COMPONENT_REGISTRY, listComponentChoices } from '../src/registry/components';
 
 describe('Surface public compiler consumption', () => {
   it.each(['shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'])(
@@ -37,7 +37,7 @@ describe('Surface public compiler consumption', () => {
     }
   );
   // T-TEXT-0001-CASE-PUBLIC
-  it.each(['base', 'shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'])(
+  it.each(['base', 'shadcn', 'brutalist'])(
     'exports %s Surface and generates all four public Adapter facades',
     (family) => {
       const entry = COMPONENT_REGISTRY[`${family}-surface`];
@@ -45,15 +45,11 @@ describe('Surface public compiler consumption', () => {
       const manifest = JSON.parse(
         readFileSync(`packages/prototypes/${family}/package.json`, 'utf8')
       );
-      expect(manifest.exports['./surface']).toEqual(
-        family === 'bootstrap-2-3-2' || family === 'liquid-glass'
-          ? { types: './src/surface/index.ts', default: './src/surface/index.ts' }
-          : {
-              types: './dist/surface/index.d.ts',
-              import: './dist/surface/index.js',
-              default: './dist/surface/index.js',
-            }
-      );
+      expect(manifest.exports['./surface']).toEqual({
+        types: './dist/surface/index.d.ts',
+        import: './dist/surface/index.js',
+        default: './dist/surface/index.js',
+      });
       for (const runtime of ['wc', 'react', 'vue', 'vue2']) {
         const code = renderHostIndex(runtime, [`${family}-surface`]);
         expect(code).toContain(`from '@proto.ui/prototypes-${family}/surface'`);
@@ -64,6 +60,36 @@ describe('Surface public compiler consumption', () => {
       }
     }
   );
+
+  it.each(['bootstrap-2-3-2', 'liquid-glass'])(
+    'keeps %s Surface source exports available only inside the workspace',
+    (family) => {
+      const manifest = JSON.parse(
+        readFileSync(`packages/prototypes/${family}/package.json`, 'utf8')
+      );
+      expect(manifest.private).toBe(true);
+      expect(manifest.protoUi.release.scan).toBe(false);
+      expect(manifest.exports['./surface']).toEqual({
+        types: './src/surface/index.ts',
+        default: './src/surface/index.ts',
+      });
+      expect(COMPONENT_REGISTRY).not.toHaveProperty(`${family}-surface`);
+      expect(listComponentChoices().map((choice) => choice.value)).not.toContain(
+        `${family}-surface`
+      );
+    }
+  );
+
+  it('offers only publishable packages through the public component registry', () => {
+    for (const entry of Object.values(COMPONENT_REGISTRY)) {
+      const family = entry.packageName.replace('@proto.ui/prototypes-', '');
+      const manifest = JSON.parse(
+        readFileSync(`packages/prototypes/${family}/package.json`, 'utf8')
+      );
+      expect(manifest.private, entry.id).not.toBe(true);
+      expect(manifest.protoUi?.release?.scan, entry.id).not.toBe(false);
+    }
+  });
 
   // T-TEXT-0001-CASE-LIMITS
   it('reports unsupported targets and unknown style tokens instead of inventing parity', () => {

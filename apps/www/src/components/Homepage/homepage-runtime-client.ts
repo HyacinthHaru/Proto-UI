@@ -390,6 +390,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   let destroyed = false;
   let epoch = 0;
   let desiredRuntime = initialRuntime;
+  let pendingRuntimePreference: Readonly<{ runtime: RuntimeId }> | undefined;
   let activeCandidates: MaterializedProjectionCandidate[] = [];
   let activeTypography: MaterializedProjectionCandidate | undefined;
   let typographyEpoch = 0;
@@ -622,7 +623,34 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       if (mount) restoreProjectionControlFocus(mount, key, commit.generation, origin);
     },
   });
-  const observe = (promise: Promise<ProjectionScopeSnapshot>, publishPreference: boolean) => {
+  const publishRuntimePreference = (
+    snapshot: ProjectionScopeSnapshot,
+    intent: typeof pendingRuntimePreference
+  ) => {
+    if (
+      !intent ||
+      pendingRuntimePreference !== intent ||
+      snapshot.phase !== 'ready' ||
+      snapshot.generation === 0 ||
+      snapshot.selection.runtimeId !== intent.runtime
+    )
+      return;
+    // Consume before storage/event side effects can reenter. The preference
+    // belongs to this successful runtime intent, not an individual request.
+    pendingRuntimePreference = undefined;
+    try {
+      document.defaultView?.localStorage.setItem(PREFERRED_ADAPTER_KEY, intent.runtime);
+    } catch {
+      /* Optional preference. */
+    }
+    document.dispatchEvent(
+      new CustomEvent(PREFERRED_ADAPTER_EVENT, {
+        detail: { adapter: intent.runtime, source: root },
+      })
+    );
+  };
+  const observe = (promise: Promise<ProjectionScopeSnapshot>) => {
+    const preferenceIntent = pendingRuntimePreference;
     const requestEpoch = ++epoch;
     setStatus('loading', desiredRuntime);
     void promise
@@ -633,34 +661,27 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
         desiredComponent = committedComponent;
         setStatus('ready', desiredRuntime);
         onTypographyChange();
-        if (publishPreference) {
-          try {
-            document.defaultView?.localStorage.setItem(PREFERRED_ADAPTER_KEY, desiredRuntime);
-          } catch {
-            /* Optional preference. */
-          }
-          document.dispatchEvent(
-            new CustomEvent(PREFERRED_ADAPTER_EVENT, {
-              detail: { adapter: desiredRuntime, source: root },
-            })
-          );
-        }
+        publishRuntimePreference(snapshot, preferenceIntent);
       })
       .catch((error) => {
         if (destroyed || requestEpoch !== epoch) return;
-        desiredRuntime = controller.getSnapshot().selection.runtimeId as RuntimeId;
-        desiredFamily = requireSiteLibraryFamily(
-          controller.getSnapshot().selection.projectionFamilyId
-        );
+        const snapshot = controller.getSnapshot();
+        desiredRuntime = snapshot.selection.runtimeId as RuntimeId;
+        desiredFamily = requireSiteLibraryFamily(snapshot.selection.projectionFamilyId);
         desiredComponent = committedComponent;
         setStatus('error', desiredRuntime);
         console.error('[HomepageRuntime] retained previous generation or native SSR links.', error);
         onTypographyChange();
+        // A failed family/component request may retain a runtime that already
+        // committed while its older request was still awaiting retirement.
+        publishRuntimePreference(snapshot, preferenceIntent);
+        if (pendingRuntimePreference === preferenceIntent) pendingRuntimePreference = undefined;
       });
   };
   function requestRuntime(runtime: RuntimeId): void {
     if (destroyed || runtime === desiredRuntime) return;
     desiredRuntime = runtime;
+    pendingRuntimePreference = { runtime };
     observe(
       controller.request(
         { runtimeId: runtime, projectionFamilyId: desiredFamily },
@@ -669,8 +690,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           focusKey: PROJECTION_FOCUS_KEYS.runtime,
           focusOrigin: document.activeElement,
         }
-      ),
-      true
+      )
     );
   }
   function requestFamily(value: ProjectionFamilyId): void {
@@ -686,8 +706,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           focusKey: PROJECTION_FOCUS_KEYS.family,
           focusOrigin: document.activeElement,
         }
-      ),
-      false
+      )
     );
   }
   function requestComponent(component: SharedBaseFamilyId): void {
@@ -701,26 +720,20 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           focusKey: PROJECTION_FOCUS_KEYS.component,
           focusOrigin: document.activeElement,
         }
-      ),
-      false
+      )
     );
   }
   const onAdapterChange = (event: Event) => {
     const detail = (event as CustomEvent<{ adapter?: unknown; source?: unknown }>).detail;
-    if (
-      detail?.source === root ||
-      !isRuntimeId(detail?.adapter) ||
-      detail.adapter === desiredRuntime ||
-      destroyed
-    )
-      return;
+    if (detail?.source === root || !isRuntimeId(detail?.adapter) || destroyed) return;
+    pendingRuntimePreference = undefined;
+    if (detail.adapter === desiredRuntime) return;
     desiredRuntime = detail.adapter;
     observe(
       controller.request(
         { runtimeId: desiredRuntime, projectionFamilyId: desiredFamily },
         { force: desiredComponent !== committedComponent }
-      ),
-      false
+      )
     );
   };
   document.addEventListener(PREFERRED_ADAPTER_EVENT, onAdapterChange);
@@ -737,6 +750,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const destroy = () =>
     (destroyPromise ??= (async () => {
       destroyed = true;
+      pendingRuntimePreference = undefined;
       epoch++;
       typographyEpoch++;
       observer.disconnect();
@@ -842,6 +856,6 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   });
   document.addEventListener('astro:before-swap', onBeforeSwap);
   ownedRoot.__homepageRuntime__ = { destroy, getSnapshot: () => controller.getSnapshot() };
-  observe(controller.start(), false);
+  observe(controller.start());
   return ownedRoot.__homepageRuntime__;
 }
