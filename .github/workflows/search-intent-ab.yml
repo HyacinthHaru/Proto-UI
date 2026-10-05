@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/search-intent-ab.yml'
       - 'scripts/test/search-intent-ab*.mjs'
+      - 'scripts/test/search-intent-index*.mjs'
       - 'apps/www/src/components/override/Search.astro'
       - 'apps/www/src/components/site-search-commands.ts'
   workflow_dispatch:
@@ -40,7 +41,7 @@ jobs:
         with:
           node-version: 24
       - name: Probe negative controls (no browser)
-        run: node --test candidate/scripts/test/search-intent-ab.test.mjs
+        run: node --test candidate/scripts/test/search-intent-ab.test.mjs candidate/scripts/test/search-intent-index.test.mjs
       - name: Prepare the same-tree counterfactual
         run: |
           set -euo pipefail

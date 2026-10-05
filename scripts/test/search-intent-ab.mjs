@@ -6,7 +6,8 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
-import { readFile, writeFile, readdir, mkdir, stat } from 'node:fs/promises';
+import { readFile, writeFile, readdir, mkdir, stat, cp } from 'node:fs/promises';
+import { validateIndexPair, validateResultLinks } from './search-intent-index.mjs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -207,6 +208,10 @@ export async function buildBoundary(root) {
   return {
     index,
     uiAssets,
+    nativeHtml: await fileMap(
+      dist,
+      (await walk(dist)).filter((file) => file.endsWith('.html'))
+    ),
     routeHtmlSha256: sha256(await readFile(path.join(dist, PLAN.route, 'index.html'))),
   };
 }
@@ -557,8 +562,45 @@ export function validateSample(s) {
   }
 }
 
-async function serve(root) {
+export function validateBuildAfterCapture(before, after) {
+  assert.deepEqual(after, before, 'Native HTML, UI bundle or index changed during capture');
+}
+export function validateServedIndex(file, body, manifest) {
+  assert.ok(Object.hasOwn(manifest, file), 'Served index asset absent from its native manifest');
+  const digest = sha256(body);
+  assert.equal(digest, manifest[file], 'Served index bytes differ from the native build manifest');
+  return { path: file, sha256: digest, bytes: body.length };
+}
+export async function readServedAsset(
+  base,
+  pathname,
+  indexManifest,
+  indexRequests,
+  indexErrors,
+  method = 'GET'
+) {
+  try {
+    let file = path.resolve(base, `.${pathname}`);
+    if (!file.startsWith(base + path.sep)) throw new Error('Outside static root');
+    if ((await stat(file)).isDirectory()) file = path.join(file, 'index.html');
+    const body = await readFile(file);
+    if (pathname.startsWith('/pagefind/')) {
+      assert.ok(indexRequests.length < 2000, 'Index request evidence limit exceeded');
+      indexRequests.push({
+        ...validateServedIndex(pathname.slice('/pagefind/'.length), body, indexManifest),
+        method,
+      });
+    }
+    return { file, body };
+  } catch (error) {
+    if (pathname.startsWith('/pagefind/')) indexErrors.push(String(error));
+    throw error;
+  }
+}
+async function serve(root, indexManifest) {
   const base = path.resolve(root, 'apps/www/dist');
+  const indexRequests = [];
+  const indexErrors = [];
   const mime = {
     '.html': 'text/html',
     '.js': 'text/javascript',
@@ -572,10 +614,14 @@ async function serve(root) {
   const server = createServer(async (req, res) => {
     try {
       const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
-      let file = path.resolve(base, `.${pathname}`);
-      if (!file.startsWith(base + path.sep)) throw new Error('Outside static root');
-      if ((await stat(file)).isDirectory()) file = path.join(file, 'index.html');
-      const body = await readFile(file);
+      const { file, body } = await readServedAsset(
+        base,
+        pathname,
+        indexManifest,
+        indexRequests,
+        indexErrors,
+        req.method
+      );
       res.writeHead(200, {
         'Content-Type': mime[path.extname(file)] ?? 'application/octet-stream',
         'Content-Length': body.length,
@@ -593,6 +639,8 @@ async function serve(root) {
   });
   return {
     origin: `http://127.0.0.1:${server.address().port}`,
+    indexRequests,
+    indexErrors,
     close: () => {
       server.closeAllConnections();
       return new Promise((resolve, reject) =>
@@ -610,7 +658,7 @@ function bounded(promise, ms, label) {
     }),
   ]).finally(() => clearTimeout(timer));
 }
-async function sample(browser, server, source, variant, mode, iteration, out) {
+async function sample(browser, server, source, variant, mode, iteration, out, resultRoots) {
   const id = `${variant}-${mode}-${iteration}`;
   const dir = path.join(out, id);
   await mkdir(dir, { recursive: true });
@@ -841,6 +889,23 @@ async function sample(browser, server, source, variant, mode, iteration, out) {
         stage = 'query';
         await page.locator('site-search .pagefind-ui__search-input').fill('Button');
         await page.waitForFunction(() => Number.isFinite(window.__intentSearch.result));
+        // Preserve the first-result timestamp, then wait for all currently
+        // rendered Pagefind result placeholders before checking their targets.
+        await page.waitForFunction(
+          () => !document.querySelector('site-search .pagefind-ui__loading')
+        );
+        // Check every actual result/subresult destination, not only the Button
+        // match used for the latency endpoint. Each retains both native HTMLs.
+        report.actualResultLinks = await page
+          .locator('site-search .pagefind-ui__result-link')
+          .evaluateAll((links) =>
+            links.map((link) => ({ href: link.href, text: link.textContent?.trim() ?? '' }))
+          );
+        report.resultAnchorValidation = await validateResultLinks(
+          report.actualResultLinks,
+          server.origin,
+          ...resultRoots
+        );
         stage = 'reopen';
         await page.keyboard.press('Escape');
         await page.waitForFunction(() => !document.querySelector('site-search dialog')?.open);
@@ -941,7 +1006,26 @@ export async function run(baseline, candidate, out, expectedSha = process.env.CA
     baseline: await buildBoundary(baseline),
     candidate: await buildBoundary(candidate),
   };
-  validateIndexes(builds.baseline.index, builds.candidate.index);
+  // Preserve each independently generated native index before checking it.
+  // Random SSR anchor IDs make full index-byte identity an invalid assumption.
+  for (const [variant, root] of Object.entries({ baseline, candidate }))
+    await cp(path.join(root, 'apps/www/dist/pagefind'), path.join(out, 'native-index', variant), {
+      recursive: true,
+      errorOnExist: true,
+      force: false,
+    });
+  await json(path.join(out, 'native-build-boundaries.json'), { source, builds });
+  let indexComparison;
+  try {
+    indexComparison = await validateIndexPair(
+      path.join(baseline, 'apps/www/dist'),
+      path.join(candidate, 'apps/www/dist')
+    );
+  } catch (error) {
+    await json(path.join(out, 'index-boundary-failure.json'), { error: String(error) });
+    throw error;
+  }
+  await json(path.join(out, 'index-semantic-comparison.json'), indexComparison);
   assert.equal(
     builds.baseline.uiAssets[0].sha256,
     builds.candidate.uiAssets[0].sha256,
@@ -968,6 +1052,9 @@ export async function run(baseline, candidate, out, expectedSha = process.env.CA
   const boundary = {
     source,
     builds,
+    indexPolicy:
+      'Each source serves its own untouched native index. Runtime/WASM/index shards match byte-for-byte; only five proven non-heading random anchor ID classes may differ after strict corpus and HTML-target verification. Native fragment/metadata compression bytes can differ; query/reopen timing is descriptive, not a pure causal or identical-index comparison.',
+    indexComparison,
     plan: PLAN,
     expectedSamples,
     browser: browser.version(),
@@ -989,7 +1076,7 @@ export async function run(baseline, candidate, out, expectedSha = process.env.CA
   const deadline = Date.now() + PLAN.totalTimeoutMs;
   try {
     for (const [variant, root] of Object.entries({ baseline, candidate }))
-      servers[variant] = await serve(root);
+      servers[variant] = await serve(root, builds[variant].index);
     const attempt = async (variant, mode, iteration) => {
       // Reserve the full sample plus final observation/screenshot/cleanup.
       // Stop with explicit missing attempts rather than leave an async loop
@@ -1006,7 +1093,8 @@ export async function run(baseline, candidate, out, expectedSha = process.env.CA
           variant,
           mode,
           iteration,
-          out
+          out,
+          [path.join(baseline, 'apps/www/dist'), path.join(candidate, 'apps/www/dist')]
         )
       );
     };
@@ -1021,6 +1109,10 @@ export async function run(baseline, candidate, out, expectedSha = process.env.CA
       source,
       'Application source changed during capture'
     );
+    for (const [variant, root] of Object.entries({ baseline, candidate })) {
+      validateBuildAfterCapture(builds[variant], await buildBoundary(root));
+      assert.deepEqual(servers[variant].indexErrors, [], 'Native index changed while serving');
+    }
     assert.equal(samples.length, expectedSamples);
     assert.ok(
       samples.every((s) => s.status === 'complete'),
@@ -1055,6 +1147,15 @@ export async function run(baseline, candidate, out, expectedSha = process.env.CA
     await json(path.join(out, 'summary.json'), {
       expectedSamples,
       completedSamples: samples.length,
+      servedNativeIndexes: Object.fromEntries(
+        Object.entries(servers).map(([variant, server]) => [
+          variant,
+          {
+            requests: server.indexRequests,
+            errors: server.indexErrors,
+          },
+        ])
+      ),
       groups,
       samples: samples.map((s) => ({ id: s.id, status: s.status })),
       error: failure ? String(failure) : null,

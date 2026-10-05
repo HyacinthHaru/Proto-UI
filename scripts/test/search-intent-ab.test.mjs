@@ -2,10 +2,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdtemp, mkdir, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { runInNewContext } from 'node:vm';
 import {
+  validateBuildAfterCapture,
+  readServedAsset,
+  validateServedIndex,
   sourcePairFiles,
   BASE_SHA,
   PRODUCT_PATHS,
@@ -524,5 +528,67 @@ test('real Git paths preserve Unicode, whitespace and newlines while rejecting u
     );
   } finally {
     await rm(root, { recursive: true, force: true });
+  }
+});
+
+test('actual served native index bytes must match their original manifest', () => {
+  const body = Buffer.from('native index');
+  const digest = createHash('sha256').update(body).digest('hex');
+  const manifest = { 'pagefind.js': digest };
+  assert.equal(validateServedIndex('pagefind.js', body, manifest).sha256, digest);
+  assert.throws(() => validateServedIndex('pagefind.js', body, {}), /absent/);
+  assert.throws(
+    () => validateServedIndex('pagefind.js', Buffer.from('wrong or changed index'), manifest),
+    /bytes differ/
+  );
+  assert.equal(
+    validateServedIndex('pagefind.js', body, manifest).sha256,
+    digest,
+    'Later restoration cannot erase the failed actual serving assertion'
+  );
+});
+
+test('the real static read path retains a missing index error after file restoration', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'search-index-serving-'));
+  const file = path.join(root, 'pagefind/pagefind.js');
+  const body = Buffer.from('native index');
+  const manifest = { 'pagefind.js': createHash('sha256').update(body).digest('hex') };
+  const requests = [],
+    errors = [];
+  try {
+    await mkdir(path.dirname(file));
+    await writeFile(file, body);
+    await readServedAsset(root, '/pagefind/pagefind.js', manifest, requests, errors);
+    await rm(file);
+    await assert.rejects(
+      readServedAsset(root, '/pagefind/pagefind.js', manifest, requests, errors),
+      /ENOENT/
+    );
+    await writeFile(file, body);
+    await readServedAsset(root, '/pagefind/pagefind.js', manifest, requests, errors);
+    assert.equal(requests.length, 2);
+    assert.equal(errors.length, 1, 'Actual failed serving cannot disappear after restoration');
+    await writeFile(file, 'wrong index');
+    await assert.rejects(
+      readServedAsset(root, '/pagefind/pagefind.js', manifest, requests, errors),
+      /bytes differ/
+    );
+    assert.equal(errors.length, 2);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test('post-capture boundary rejects native HTML, UI or index changes', () => {
+  const before = {
+    nativeHtml: { 'index.html': 'original' },
+    uiAssets: [{ sha256: 'ui' }],
+    index: { 'pagefind.js': 'runtime' },
+  };
+  validateBuildAfterCapture(before, structuredClone(before));
+  for (const field of ['nativeHtml', 'uiAssets', 'index']) {
+    const after = structuredClone(before);
+    after[field] = { changed: 'bytes' };
+    assert.throws(() => validateBuildAfterCapture(before, after), /changed during capture/);
   }
 });
