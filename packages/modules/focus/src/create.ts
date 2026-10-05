@@ -969,6 +969,10 @@ class FocusModuleImpl extends ModuleBase {
 
   blur(): void {
     this.clearPendingFocus();
+    this.blurTarget();
+  }
+
+  private blurTarget(): void {
     const target = this.getRootTarget();
     if (target && this.caps.has(FOCUS_BLUR_CAP)) {
       this.caps.get(FOCUS_BLUR_CAP)(target);
@@ -1072,7 +1076,11 @@ class FocusModuleImpl extends ModuleBase {
       defaultOnly: this.sys?.execPhase?.() === 'setup',
     });
     if (disabled) {
-      this.blur();
+      // Target eligibility does not own an enabled entry region's intent.
+      // Cancel before native blur so synchronous observers can still replace
+      // or explicitly cancel that intent without restoring an obsolete slot.
+      if (this.pendingFocusRequest?.kind === 'target') this.clearPendingFocus();
+      this.blurTarget();
     }
     this.syncHostFocusable();
     this.syncCenter();

@@ -6,6 +6,7 @@ import { EVENT_ROOT_TARGET_CAP, EVENT_GLOBAL_TARGET_CAP } from '@proto.ui/module
 import {
   FOCUS_ROOT_TARGET_CAP,
   FOCUS_REQUEST_FOCUS_CAP,
+  FOCUS_BLUR_CAP,
   FOCUS_TARGET_READY_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
   FOCUS_PARENT_CAP,
@@ -30,6 +31,7 @@ async function fixture(dual = false) {
   const listeners = new Set<() => void>();
   const attempts: Array<{ target: HTMLElement; options: FocusRequestOptions | undefined }> = [];
   const applied: Array<{ target: HTMLElement; options: FocusRequestOptions | undefined }> = [];
+  const blurred: HTMLElement[] = [];
   const proto = definePrototype({
     name: `entry-pending-${++identity}`,
     setup() {
@@ -54,6 +56,13 @@ async function fixture(dual = false) {
         [FOCUS_INSTANCE_TOKEN_CAP, {}],
         [FOCUS_PARENT_CAP, () => null],
         [FOCUS_ROOT_TARGET_CAP, () => currentRoot],
+        [
+          FOCUS_BLUR_CAP,
+          (target: HTMLElement) => {
+            blurred.push(target);
+            target.blur();
+          },
+        ],
         [
           FOCUS_RESOLVE_ENTRY_TARGET_CAP,
           (root: HTMLElement, config: FocusEntryConfig) =>
@@ -92,6 +101,7 @@ async function fixture(dual = false) {
     first,
     attempts,
     applied,
+    blurred,
     listeners,
     ready,
     setAccept: (value: boolean) => (accept = value),
@@ -106,6 +116,127 @@ async function fixture(dual = false) {
 }
 
 describe('entry pending lifecycle boundaries', () => {
+  it.each([
+    ['target', 'target disable', false],
+    ['target', 'entry disable', true],
+    ['target', 'explicit blur', false],
+    ['target-self', 'target disable', false],
+    ['target-self', 'entry disable', true],
+    ['target-self', 'explicit blur', false],
+    ['entry', 'target disable', true],
+    ['entry', 'entry disable', false],
+    ['entry', 'explicit blur', false],
+  ] as const)(
+    'pending %s followed by %s preserves intent: %s',
+    async (request, cancel, preserved) => {
+      const f = await fixture(true);
+      try {
+        const options = { reason: 'keyboard', preventScroll: true } as const;
+        if (request === 'entry') f.entry.focus(options);
+        else if (request === 'target-self') f.focusable!.focusSelf(options);
+        else f.focusable!.focus(options);
+        expect(f.attempts).toHaveLength(1);
+        expect(f.applied).toHaveLength(0);
+
+        if (cancel === 'target disable') f.focusable!.setDisabled(true);
+        else if (cancel === 'entry disable') f.entry.setDisabled(true);
+        else f.focusable!.blur();
+        if (!preserved) {
+          // Re-enable before readiness so rejection cannot hide a stale slot.
+          f.focusable!.setDisabled(false);
+          f.entry.setDisabled(false);
+        }
+        f.setAccept(true);
+        f.ready();
+        expect(f.applied).toEqual(
+          preserved ? [{ target: request === 'entry' ? f.first : f.initialRoot, options }] : []
+        );
+        if (preserved) {
+          expect(document.activeElement).toBe(request === 'entry' ? f.first : f.initialRoot);
+        } else {
+          // Re-enabling eligibility cannot recreate a cancelled request.
+          f.focusable!.setDisabled(false);
+          f.entry.setDisabled(false);
+          f.ready();
+          expect(f.applied).toHaveLength(0);
+        }
+        if (request === 'entry') {
+          expect(f.port.getFacts()).toMatchObject({
+            focused: false,
+            focusVisible: false,
+            active: false,
+          });
+          f.ready();
+          expect(f.applied).toHaveLength(preserved ? 1 : 0);
+        }
+      } finally {
+        await f.cleanup();
+      }
+    }
+  );
+
+  it.each(['preserve', 'entry disable', 'explicit blur', 'new entry'] as const)(
+    'target disable respects synchronous native blur observers: %s',
+    async (action) => {
+      const f = await fixture(true);
+      try {
+        f.setAccept(true);
+        f.focusable!.focus({ reason: 'keyboard' });
+        expect(document.activeElement).toBe(f.initialRoot);
+        expect(f.focusable!.focused.get()).toBe(true);
+        f.setAccept(false);
+        f.entry.focus({ reason: 'keyboard', preventScroll: true });
+
+        let blurEvents = 0;
+        f.initialRoot.addEventListener(
+          'blur',
+          () => {
+            blurEvents++;
+            if (action === 'entry disable') f.entry.setDisabled(true);
+            else if (action === 'explicit blur') f.focusable!.blur();
+            else if (action === 'new entry')
+              f.entry.focus({ reason: 'pointer', preventScroll: false });
+          },
+          { once: true }
+        );
+        f.focusable!.setDisabled(true);
+        expect(blurEvents).toBe(1);
+        expect(f.blurred[0]).toBe(f.initialRoot);
+        expect(document.activeElement).not.toBe(f.initialRoot);
+        expect(f.port.getFacts()).toMatchObject({
+          focused: false,
+          focusVisible: false,
+          active: false,
+        });
+
+        const replacement = document.createElement('button');
+        f.first.replaceWith(replacement);
+        // Cancellation must survive re-enable before the first replay attempt.
+        f.entry.setDisabled(false);
+        f.setAccept(true);
+        f.ready();
+        f.ready();
+        const replays = f.applied.slice(1);
+        expect(replays).toEqual(
+          action === 'preserve' || action === 'new entry'
+            ? [
+                {
+                  target: replacement,
+                  options:
+                    action === 'new entry'
+                      ? { reason: 'pointer', preventScroll: false }
+                      : { reason: 'keyboard', preventScroll: true },
+                },
+              ]
+            : []
+        );
+        expect(f.focusable!.focused.get()).toBe(false);
+      } finally {
+        await f.cleanup();
+      }
+    }
+  );
+
   it('retries only the latest rejected entry intent and does not fabricate region facts', async () => {
     const f = await fixture();
     try {
