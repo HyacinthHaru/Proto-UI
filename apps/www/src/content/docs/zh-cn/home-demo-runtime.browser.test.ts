@@ -2,6 +2,11 @@
 
 import { revealHeaderPreferences } from './site-header-browser';
 import type { Browser, Locator, Page } from 'playwright-core';
+import { execFileSync } from 'node:child_process';
+import { mkdir, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import { safeError, safeUrl } from '../../../../../../scripts/test/search-startup-profile.mjs';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { RUNTIMES, launchBrowser, startServer, stopServer } from './browser-harness';
 
@@ -439,6 +444,37 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
               shadow: style.boxShadow,
               columns: getComputedStyle(fields).gridTemplateColumns.split(' ').length,
               triggerHeight: trigger.getBoundingClientRect().height,
+              triggerConnected: trigger.isConnected,
+              triggerGeneration: trigger.closest<HTMLElement>('[data-projection-generation-state]')
+                ?.dataset.projectionGenerationState,
+              compact: matchMedia('(max-width: 47.999rem)').matches,
+              menuOpen:
+                document.querySelector<HTMLElement>('[data-site-header]')?.dataset.siteMenuOpen,
+              preferencesDock: document
+                .querySelector('[data-site-header-preferences]')
+                ?.parentElement?.hasAttribute('data-site-header-compact-context')
+                ? 'compact'
+                : 'desktop',
+              triggerAncestors: (() => {
+                const ancestors = [];
+                for (
+                  let node: HTMLElement | null = trigger;
+                  node && ancestors.length < 12;
+                  node = node.parentElement
+                ) {
+                  const computed = getComputedStyle(node);
+                  ancestors.push({
+                    tag: node.tagName,
+                    hidden: node.hidden,
+                    inert: node.inert,
+                    display: computed.display,
+                    visibility: computed.visibility,
+                    opacity: computed.opacity,
+                    height: node.getBoundingClientRect().height,
+                  });
+                }
+                return ancestors;
+              })(),
               fits:
                 rect.left >= 0 && rect.right <= innerWidth && root.scrollWidth <= root.clientWidth,
             };
@@ -446,7 +482,44 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
           expect(geometry.border).toBe('0px');
           expect(geometry.shadow).toBe('none');
           expect(geometry.columns).toBe(width >= 1200 ? 4 : width >= 640 ? 2 : 1);
-          expect(geometry.triggerHeight).toBeGreaterThanOrEqual(44);
+          if (geometry.triggerHeight < 44) {
+            // The geometry above is the original failed sample. The screenshot
+            // below is separately timed and never replaces that assertion.
+            try {
+              const directory = path.join(
+                process.env.RUNNER_TEMP ?? os.tmpdir(),
+                'homepage-evidence',
+                'responsive-layout'
+              );
+              await mkdir(directory, { recursive: true });
+              const id = `family-trigger-${colorScheme}-${width}`;
+              const diagnostic = {
+                source: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+                sourceDirty:
+                  execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim() !==
+                  '',
+                colorScheme,
+                width,
+                geometry,
+                url: safeUrl(page.url(), baseUrl),
+                recordedAt: new Date().toISOString(),
+              };
+              await writeFile(
+                path.join(directory, `${id}.json`),
+                JSON.stringify(diagnostic, null, 2)
+              );
+              await page.screenshot({ path: path.join(directory, `${id}.png`) });
+            } catch (error) {
+              console.error(
+                'Responsive Header diagnostic capture failed',
+                safeError(error, baseUrl)
+              );
+            }
+          }
+          expect(
+            geometry.triggerHeight,
+            JSON.stringify({ colorScheme, width, geometry })
+          ).toBeGreaterThanOrEqual(44);
           expect(geometry.fits, `${colorScheme} ${width}px overflow`).toBe(true);
         }
         expect(await home.locator('[data-projection-control="component"]').count()).toBe(0);

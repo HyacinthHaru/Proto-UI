@@ -1004,6 +1004,10 @@ describe('native navigation precondition evidence', () => {
         },
       };
       const page = {
+        async waitForFunction(predicate) {
+          assert.equal(typeof predicate, 'function');
+          order.push('preferences-docked');
+        },
         locator(selector) {
           if (selector === '[data-site-header] [data-site-header-preferences]') return preferences;
           if (selector.includes('home-menu')) return menu;
@@ -1014,7 +1018,7 @@ describe('native navigation precondition evidence', () => {
       if (stuck) await assert.rejects(result, /closing surface remained visible/);
       else await result;
       assert.deepEqual(order, [
-        ...(compact ? ['open-menu', 'preferences-visible'] : []),
+        ...(compact ? ['preferences-docked', 'open-menu', 'preferences-visible'] : []),
         'open',
         'select-current',
         'actual-portal-hidden',

@@ -601,6 +601,7 @@ export async function runSearchProfile(
     enterDirectory = (root) => process.chdir(root),
     loadModule = (file) => import(pathToFileURL(file).href),
     createCapture = createProfileCapture,
+    monotonicNow = () => performance.now(),
   } = {}
 ) {
   assert.ok(['unprofiled', 'profiled'].includes(mode));
@@ -644,9 +645,34 @@ export async function runSearchProfile(
     ],
   };
   write('boundary', boundary);
-  let browser, context, stopServer, profileCapture;
+  let browser, context, stopServer, profileCapture, observation;
+  let observationCaptured = false;
+  const errors = [];
   let origin = 'http://127.0.0.1';
-  const report = { caseId, mode, outcome: 'incomplete', failures: [], blockedRequests: 0 };
+  const report = {
+    caseId,
+    mode,
+    // Preserve the original observed outcome and every readiness/operational failure.
+    outcome: 'incomplete',
+    failures: [],
+    // Capture success is independent of subject readiness and waits for teardown.
+    captureOutcome: 'incomplete',
+    captureFailures: [],
+    blockedRequests: 0,
+  };
+  const captureFailure = (failure) => {
+    if (!report.captureFailures.includes(failure)) report.captureFailures.push(failure);
+    if (!report.failures.includes(failure)) report.failures.push(failure);
+    report.captureOutcome = 'failure';
+    report.outcome = 'failure';
+  };
+  const checkRunErrors = () => {
+    if (errors.length) captureFailure('Page errors occurred; inspect observation.json');
+    if (report.blockedRequests)
+      captureFailure(
+        'Non-local requests were blocked; the local-only run is not equivalent to normal CI'
+      );
+  };
   const save = (stage, data = {}) => {
     const value = { stage, at: new Date().toISOString(), ...data };
     appendFileSync(path.join(directory, 'progress.ndjson'), `${JSON.stringify(value)}\n`);
@@ -694,7 +720,6 @@ export async function runSearchProfile(
     const page = await context.newPage();
     page.setDefaultTimeout(SEARCH_PROFILE.operationTimeoutMs);
     page.setDefaultNavigationTimeout(SEARCH_PROFILE.operationTimeoutMs);
-    const errors = [];
     page.on('pageerror', (error) => {
       if (errors.length < 20) errors.push(safeError(error, origin));
     });
@@ -718,22 +743,42 @@ export async function runSearchProfile(
     // Capture late atomic activation for diagnosis only. Never replace readiness.
     report.lateObservation = { startedAt: Date.now(), budgetMs: SEARCH_PROFILE.lateObservationMs };
     save('late-observation');
-    await page
-      .waitForFunction(
+    // Measure the wait itself with a monotonic clock; file/IPC time before it
+    // cannot turn an early or unrelated error into a completed observation.
+    const lateStartedAt = monotonicNow();
+    try {
+      await page.waitForFunction(
         () => document.querySelector('site-search')?.getAttribute('data-search-view') === 'ready',
         undefined,
         { timeout: SEARCH_PROFILE.lateObservationMs }
-      )
-      .then(
-        () => {
-          report.lateObservation.ready = true;
-        },
-        () => {
-          report.lateObservation.ready = false;
-        }
       );
-    report.lateObservation.completedAt = Date.now();
-    save('late-observation-result', report.lateObservation);
+      report.lateObservation.ready = true;
+      report.lateObservation.outcome = 'ready';
+    } catch (error) {
+      const elapsedMs = monotonicNow() - lateStartedAt;
+      report.lateObservation.error = safeError(error, origin);
+      // Only the locked Playwright wait's recognized, full-budget timeout is
+      // evidence of not becoming ready. Protocol/unknown/early errors are not.
+      if (
+        error instanceof Error &&
+        error.name === 'TimeoutError' &&
+        error.message.startsWith(
+          `page.waitForFunction: Timeout ${SEARCH_PROFILE.lateObservationMs}ms exceeded.`
+        ) &&
+        Number.isFinite(elapsedMs) &&
+        elapsedMs >= SEARCH_PROFILE.lateObservationMs
+      ) {
+        report.lateObservation.ready = false;
+        report.lateObservation.outcome = 'timeout';
+      } else {
+        report.lateObservation.outcome = 'error';
+        captureFailure(`Late observation failed: ${report.lateObservation.error}`);
+      }
+    } finally {
+      report.lateObservation.elapsedMs = monotonicNow() - lateStartedAt;
+      report.lateObservation.completedAt = Date.now();
+      save('late-observation-result', report.lateObservation);
+    }
     if (profileCapture) {
       profileCapture.setCoverage(
         await bounded(
@@ -784,28 +829,27 @@ export async function runSearchProfile(
         ...entry,
         name: safeUrl(entry.name, origin),
       }));
-    write('observation', { ...observed, errors });
-    if (errors.length) report.failures.push('Page errors occurred; inspect observation.json');
-    if (report.blockedRequests)
-      report.failures.push(
-        'Non-local requests were blocked; the local-only run is not equivalent to normal CI'
-      );
+    observation = { ...observed, errors };
+    write('observation', observation);
+    observationCaptured = true;
+    checkRunErrors();
     if (report.profile && !report.profile.complete)
-      report.failures.push('CPU/timeline capture incomplete; inspect profile-status.json');
+      captureFailure('CPU/timeline capture incomplete; inspect profile-status.json');
     report.outcome = report.failures.length ? 'failure' : 'captured';
   } catch (error) {
-    report.failures.push(safeError(error, origin));
-    report.outcome = 'failure';
+    captureFailure(safeError(error, origin));
     save('failure', { failures: report.failures });
   } finally {
     // Write the original outcome first, including failures before navigation.
     write('result', report);
     if (profileCapture) {
-      report.profile = await profileCapture.stop();
-      const incomplete = 'CPU/timeline capture incomplete; inspect profile-status.json';
-      if (!report.profile.complete && !report.failures.includes(incomplete))
-        report.failures.push(incomplete);
-      if (report.failures.length) report.outcome = 'failure';
+      try {
+        report.profile = await profileCapture.stop();
+        if (!report.profile.complete)
+          captureFailure('CPU/timeline capture incomplete; inspect profile-status.json');
+      } catch (error) {
+        captureFailure(safeError(error, origin));
+      }
       write('result', report);
     }
     for (const [label, cleanup] of [
@@ -817,8 +861,7 @@ export async function runSearchProfile(
       try {
         await bounded(cleanup(), `${label} cleanup`, 15_000);
       } catch (error) {
-        report.failures.push(safeError(error, origin));
-        report.outcome = 'failure';
+        captureFailure(safeError(error, origin));
         write('result', report);
       }
     }
@@ -826,12 +869,70 @@ export async function runSearchProfile(
       report.appAfter = identifySource(appRoot, appSha);
       report.probeAfter = identifySource(probeRoot, probeSha);
     } catch (error) {
-      report.failures.push(safeError(error, origin));
-      report.outcome = 'failure';
+      captureFailure(safeError(error, origin));
     }
+    // Page errors or blocked requests arriving during teardown still fail capture.
+    checkRunErrors();
+    if (observation) {
+      try {
+        write('observation', observation);
+      } catch (error) {
+        captureFailure(safeError(error, origin));
+      }
+    }
+    report.captureOutcome = report.captureFailures.length
+      ? 'failure'
+      : observationCaptured
+        ? 'captured'
+        : 'incomplete';
     write('result', report);
   }
   return report;
+}
+
+/** Only complete diagnostic collection controls this lane's process status. */
+export function searchProfileExitCode(report) {
+  return report.captureOutcome === 'captured' ? 0 : 1;
+}
+
+export function searchProfileSummary(report) {
+  const scenario = searchScenario(report.caseId);
+  const onTime = report.readiness?.onTime;
+  const readiness =
+    onTime === true
+      ? 'PASS (onTime=true)'
+      : onTime === false
+        ? 'FAIL (onTime=false)'
+        : 'NOT OBSERVED';
+  const evidence = report.readiness?.evidence;
+  const lines = [
+    `### Search diagnostic: ${report.caseId} / ${report.mode}`,
+    '',
+    `- Historical application SHA: ${scenario.appSha}`,
+    `- Historical subject readiness: ${readiness}; original 1000ms deadline`,
+  ];
+  if (
+    evidence &&
+    [evidence.startedAt, evidence.deadline, evidence.observedReadyAt].every(Number.isFinite)
+  ) {
+    const elapsed = evidence.observedReadyAt - evidence.startedAt;
+    const late = evidence.observedReadyAt - evidence.deadline;
+    lines.push(`- Observer readiness: +${elapsed}ms${late > 0 ? ` (${late}ms late)` : ''}`);
+  }
+  if (report.lateObservation)
+    lines.push(
+      `- Late observation: ${(report.lateObservation.outcome ?? 'incomplete').toUpperCase()}`
+    );
+  lines.push(
+    `- Observed outcome: ${report.outcome}`,
+    `- Diagnostic capture: ${report.captureOutcome.toUpperCase()}`,
+    `- Capture failures: ${report.captureFailures.length}; blocked requests: ${report.blockedRequests}`,
+    '',
+    'Readiness failures remain in readiness.json and result.json even when capture succeeds.',
+    'This job reports diagnostic capture integrity only. Current-product CI is unchanged; this is not a performance-acceptance result.',
+    ''
+  );
+  return `${lines.join('\n')}\n`;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -847,5 +948,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     appSha: process.env.PROTO_UI_PROFILE_APP_SHA,
     probeSha: process.env.PROTO_UI_PROFILE_PROBE_SHA,
   });
-  process.exit(report.outcome === 'captured' ? 0 : 1);
+  const summary = searchProfileSummary(report);
+  console.log(summary);
+  if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
+  process.exit(searchProfileExitCode(report));
 }
