@@ -187,11 +187,6 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
         }
       }
     };
-    withNativeContentLease(link, () => {
-      restoreCaption = preparePaginationCaption(link);
-      composeContent();
-      link.append(surface);
-    });
     link.classList.add('site-native-link');
     link.dataset.siteLinkEnhanced = 'true';
     link.dataset.siteLinkAppearance = appearance;
@@ -199,18 +194,9 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     link.removeAttribute('data-slot');
     link.removeAttribute('data-site-native-button');
     let facts = { hovered: false, pressed: false, focusVisible: false, current: false };
-    const update = () => {
-      if (!alive) return;
-      const nextFamily = batchFamily;
-      if (nextFamily !== family) {
-        const previous = surface;
-        family = nextFamily;
-        surface = document.createElement(`wc-site-${family}-surface`);
-        withNativeContentLease(link, () => {
-          composeContent();
-          previous.replaceWith(surface);
-        });
-      }
+    let initialized = false;
+    let propsRevision = 0;
+    const applyProps = () => {
       const theme = batchTheme;
       const props = {
         ...linkSurfaceProps(family, appearance, siteLinkEmphasis(link), facts),
@@ -219,21 +205,59 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
           ...linkSurfaceLayout(family, appearance, siteLinkEmphasis(link), facts),
         },
       };
-      setElementProps(surface, props);
       const textProps = {
         ...linkTextProps(appearance, facts, family),
         surfaceStyle: { ...theme, minWidth: '0' },
       };
-      for (const text of texts) setElementProps(text, textProps);
-      // Direct props can arrive during Custom Element upgrade. Replay only
-      // while this exact native link binding still owns the surface.
-      queueMicrotask(() => {
-        if (alive && surface.isConnected) {
-          (surface as HTMLElement & { setProps?: (props: unknown) => void }).setProps?.(props);
-          for (const text of texts)
-            (text as HTMLElement & { setProps?: (props: unknown) => void }).setProps?.(textProps);
+      const owner = surface;
+      const revision = ++propsRevision;
+      const ownsSnapshot = () => alive && surface === owner && propsRevision === revision;
+      const targets: Array<
+        [
+          HTMLElement & { setProps?: (props: Record<string, unknown>) => void },
+          Record<string, unknown>,
+        ]
+      > = [
+        [surface, props],
+        ...texts.map((text): [HTMLElement, Record<string, unknown>] => [text, textProps]),
+      ];
+      for (const [target, next] of targets) {
+        // A real setter may synchronously publish newer native facts, replace
+        // this family or release the binding. Never continue its stale batch.
+        if (!ownsSnapshot()) return () => {};
+        // Pre-connected raw props are consumed by the Adapter's first mount.
+        // Existing instances use the public setter once: it also updates the
+        // controller, so a separate raw write plus replay would repeat styles.
+        if (target.isConnected && typeof target.setProps === 'function') target.setProps(next);
+        else setElementProps(target, next);
+      }
+      return () => {
+        if (!ownsSnapshot()) return;
+        // Normal registered elements expose setProps synchronously on connect.
+        // Retain a bounded upgrade fallback only when that method is missing,
+        // and never replay a retired family, binding or superseded snapshot.
+        for (const [target, next] of targets) {
+          if (typeof target.setProps === 'function') continue;
+          queueMicrotask(() => {
+            if (ownsSnapshot() && target.isConnected) target.setProps?.(next);
+          });
         }
-      });
+      };
+    };
+    const update = () => {
+      if (!alive || !initialized) return;
+      if (batchFamily !== family) {
+        const previous = surface;
+        family = batchFamily;
+        surface = document.createElement(`wc-site-${family}-surface`);
+        let replayPending = () => {};
+        withNativeContentLease(link, () => {
+          composeContent();
+          replayPending = applyProps();
+          previous.replaceWith(surface);
+        });
+        replayPending();
+      } else applyProps()();
     };
     updates.add(update);
     const unbind = bindNativeLinkFacts(link, (next) => {
@@ -241,6 +265,22 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
       // A changed theme already broadcasts this owner's latest facts.
       if (!sampleFactsTheme()) update();
     });
+    let replayPending = () => {};
+    try {
+      withNativeContentLease(link, () => {
+        restoreCaption = preparePaginationCaption(link);
+        composeContent();
+        replayPending = applyProps();
+        link.append(surface);
+      });
+      initialized = true;
+      replayPending();
+    } catch (error) {
+      updates.delete(update);
+      alive = false;
+      unbind();
+      throw error;
+    }
     const release = () => {
       if (!alive) return;
       // The fact bridge clears its contribution before the binding is torn

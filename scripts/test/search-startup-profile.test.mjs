@@ -14,6 +14,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
+import * as profileModule from './search-startup-profile.mjs';
 import {
   SEARCH_PROFILE,
   SEARCH_PROFILE_PHASE_NAMES,
@@ -392,6 +393,8 @@ test('requires two exact clean SHAs and rejects a dirty probe masquerading as or
       probeSha: sha,
     });
     assert.equal(report.outcome, 'failure');
+    assert.equal(report.captureOutcome, 'failure');
+    assert.equal(profileModule.searchProfileExitCode(report), 1);
     assert.ok(read(directory, 'boundary.json').originalFailure);
     assert.ok(
       read(directory, 'result.json').failures.some((failure) =>
@@ -653,6 +656,16 @@ async function fakeVisit(
     readyAt = 900,
     coverageInput = coverageMarks,
     observedMarks = [],
+    blockedHttp = false,
+    blockedWebSocket = false,
+    pageErrorAt,
+    cleanupFailure,
+    dirtyAt,
+    observationThrows = false,
+    extraTraceEvents = [],
+    beforeCleanup,
+    lateError,
+    lateElapsedMs = 0,
     ...cdpOptions
   } = {}
 ) {
@@ -667,14 +680,20 @@ async function fakeVisit(
   };
   page.goto = async (url, options) => {
     calls.push(['visit', url, options]);
+    if (pageErrorAt === 'visit') page.emit('pageerror', new Error('Synthetic page error'));
     return { ok: () => true };
   };
-  page.waitForFunction = async () => {
+  let monotonicTime = 0;
+  page.waitForFunction = async (_predicate, _args, options) => {
     calls.push(['late-observation']);
+    assert.equal(options.timeout, 10000);
+    monotonicTime += lateElapsedMs;
+    if (lateError) throw lateError;
   };
   page.evaluate = async (fn, args) => {
     if (fn === readProfileCoverage) {
       calls.push(['coverage']);
+      cdp.emit('Tracing.dataCollected', { value: extraTraceEvents });
       return coverageInput;
     }
     if (args?.startedAt !== undefined) {
@@ -689,6 +708,7 @@ async function fakeVisit(
       };
     }
     calls.push(['snapshot']);
+    if (observationThrows) throw new Error('Synthetic observation failure');
     return {
       startup: { resources: [] },
       navigation: [],
@@ -698,12 +718,27 @@ async function fakeVisit(
     };
   };
   const context = {
-    route: async () => {},
-    routeWebSocket: async () => {},
+    route: async (_pattern, handler) => {
+      if (blockedHttp)
+        await handler({
+          request: () => ({ url: () => 'https://outside.invalid/' }),
+          abort: async (reason) => calls.push(['http-abort', reason]),
+        });
+    },
+    routeWebSocket: async (_pattern, handler) => {
+      if (blockedWebSocket)
+        handler({
+          url: () => 'wss://outside.invalid/',
+          close: () => calls.push(['websocket-close']),
+        });
+    },
     newPage: async () => page,
     newCDPSession: async () => cdp,
     close: async () => {
       calls.push(['context-close']);
+      beforeCleanup?.(read(directory, 'result.json'));
+      if (pageErrorAt === 'cleanup') page.emit('pageerror', new Error('Synthetic late page error'));
+      if (cleanupFailure === 'context') throw new Error('Synthetic context cleanup failure');
     },
   };
   const browser = {
@@ -714,6 +749,7 @@ async function fakeVisit(
     },
     close: async () => {
       calls.push(['browser-close']);
+      if (cleanupFailure === 'browser') throw new Error('Synthetic browser cleanup failure');
     },
   };
   const harness = {
@@ -724,9 +760,11 @@ async function fakeVisit(
     launchBrowser: async () => browser,
     stopServer: async () => {
       calls.push(['server-stop']);
+      if (cleanupFailure === 'server') throw new Error('Synthetic server cleanup failure');
     },
   };
   const caseId = 'shadcn-light-390';
+  const identityCalls = new Map();
   const report = await runSearchProfile(
     {
       appRoot: '/fake/app',
@@ -738,10 +776,21 @@ async function fakeVisit(
       caseId,
     },
     {
-      identifySource: (_root, sha) => ({ sha, dirty: false }),
+      identifySource: (root, sha) => {
+        const count = (identityCalls.get(root) ?? 0) + 1;
+        identityCalls.set(root, count);
+        if (
+          (dirtyAt === 'warmup' && root === '/fake/app' && count === 2) ||
+          (dirtyAt === 'app-after' && root === '/fake/app' && count === 3) ||
+          (dirtyAt === 'probe-after' && root === '/fake/probe' && count === 2)
+        )
+          throw new Error('Checkout must be clean');
+        return { sha, dirty: false };
+      },
       digestFile: () => 'b'.repeat(64),
       readSource: () => readFileSync(new URL('./run-runtime-tests.mjs', import.meta.url), 'utf8'),
       enterDirectory: () => {},
+      monotonicNow: () => monotonicTime,
       loadModule: async (file) => {
         if (file.endsWith('site-search-evidence.ts')) return oracle;
         assert.ok(file.endsWith('browser-harness.ts'));
@@ -760,6 +809,9 @@ for (const mode of ['unprofiled', 'profiled']) {
     try {
       const { report, calls, cdp } = await fakeVisit(directory, { mode });
       assert.equal(report.outcome, 'captured');
+      assert.equal(report.captureOutcome, 'captured');
+      assert.deepEqual(report.captureFailures, []);
+      assert.equal(profileModule.searchProfileExitCode(report), 0);
       assert.equal(report.readiness.onTime, true);
       assert.equal(calls.filter(([name]) => name === 'visit').length, 1);
       assert.equal(calls.find(([name]) => name === 'visit')[2].waitUntil, 'networkidle');
@@ -798,6 +850,8 @@ for (const partial of [
     try {
       const { report, calls, cdp } = await fakeVisit(directory, { ...partial, readyAt: 1149 });
       assert.equal(report.outcome, 'failure');
+      assert.equal(report.captureOutcome, 'failure');
+      assert.equal(profileModule.searchProfileExitCode(report), 1);
       assert.equal(report.profile.complete, false);
       if (!partial.traceStart) {
         assert.equal(report.readiness.onTime, false);
@@ -1199,6 +1253,8 @@ test('full runner failure artifacts also exclude unexpected coverage and observa
       observedMarks: contaminated,
     });
     assert.equal(report.outcome, 'failure');
+    assert.equal(report.captureOutcome, 'failure');
+    assert.equal(profileModule.searchProfileExitCode(report), 1);
     assert.equal(report.profile.complete, false);
     assert.ok(!JSON.stringify(report).includes(syntheticPhaseSentinel));
     assert.ok(existsSync(path.join(directory, 'observation.json')));
@@ -1208,3 +1264,220 @@ test('full runner failure artifacts also exclude unexpected coverage and observa
     rmSync(directory, { recursive: true, force: true });
   }
 });
+
+for (const mode of ['unprofiled', 'profiled']) {
+  test(`complete ${mode} capture preserves the original +149ms readiness failure independently`, async () => {
+    const directory = temp();
+    try {
+      const { report, calls } = await fakeVisit(directory, {
+        mode,
+        readyAt: 1149,
+        beforeCleanup: (pending) => {
+          assert.equal(pending.captureOutcome, 'incomplete');
+          assert.equal(profileModule.searchProfileExitCode(pending), 1);
+          assert.equal(pending.outcome, 'failure');
+        },
+      });
+      assert.equal(report.captureOutcome, 'captured');
+      assert.deepEqual(report.captureFailures, []);
+      assert.equal(profileModule.searchProfileExitCode(report), 0);
+      assert.equal(report.outcome, 'failure');
+      assert.deepEqual(report.failures, ['Original 1000ms initial-ready deadline failed']);
+      assert.equal(report.readiness.onTime, false);
+      assert.equal(report.readiness.evidence.deadline - report.readiness.evidence.startedAt, 1000);
+      assert.equal(
+        report.readiness.evidence.observedReadyAt - report.readiness.evidence.deadline,
+        149
+      );
+      assert.deepEqual(read(directory, 'readiness.json'), report.readiness);
+      assert.deepEqual(read(directory, 'result.json'), report);
+      assert.equal(calls.filter(([name]) => name === 'visit').length, 1);
+      const summary = profileModule.searchProfileSummary(report);
+      assert.match(summary, /Historical subject readiness: FAIL/);
+      assert.match(summary, /onTime=false/);
+      assert.match(summary, /1149ms/);
+      assert.match(summary, /149ms late/);
+      assert.match(summary, /Diagnostic capture: CAPTURED/);
+      assert.match(summary, /Observed outcome: failure/);
+      assert.match(summary, /9e183f7a7d69e61d17d62d92e3ccdacd00196833/);
+      assert.match(summary, /Current-product CI is unchanged/);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+}
+
+for (const control of [
+  { blockedHttp: true },
+  { blockedWebSocket: true },
+  { pageErrorAt: 'visit' },
+  { pageErrorAt: 'cleanup' },
+  { cleanupFailure: 'context' },
+  { cleanupFailure: 'browser' },
+  { cleanupFailure: 'server' },
+  { dirtyAt: 'warmup' },
+  { dirtyAt: 'app-after' },
+  { dirtyAt: 'probe-after' },
+  { observationThrows: true },
+  { backendLoss: true },
+]) {
+  test(`capture remains failed with original readiness miss: ${JSON.stringify(control)}`, async () => {
+    const directory = temp();
+    try {
+      const { report } = await fakeVisit(directory, { ...control, readyAt: 1149 });
+      assert.equal(report.captureOutcome, 'failure');
+      assert.equal(report.outcome, 'failure');
+      assert.ok(report.captureFailures.length > 0);
+      assert.ok(report.captureFailures.every((failure) => report.failures.includes(failure)));
+      assert.equal(
+        report.captureFailures.includes('Original 1000ms initial-ready deadline failed'),
+        false
+      );
+      assert.equal(profileModule.searchProfileExitCode(report), 1);
+      assert.deepEqual(read(directory, 'result.json'), report);
+      if (report.readiness) {
+        assert.equal(report.readiness.onTime, false);
+        assert.equal(
+          report.readiness.evidence.observedReadyAt - report.readiness.evidence.deadline,
+          149
+        );
+      }
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+}
+
+test('retention overflow remains a capture failure even when readiness failure is separated', async () => {
+  const directory = temp();
+  try {
+    const { report } = await fakeVisit(directory, {
+      readyAt: 1149,
+      extraTraceEvents: Array.from({ length: SEARCH_PROFILE.maxTraceEvents + 1 }, () => ({
+        name: 'FunctionCall',
+        cat: 'devtools.timeline',
+        ph: 'X',
+        pid: 1,
+        tid: 2,
+        ts: 12500,
+        dur: 1,
+      })),
+    });
+    assert.equal(report.readiness.onTime, false);
+    assert.equal(report.profile.truncated, true);
+    assert.equal(report.profile.complete, false);
+    assert.equal(report.captureOutcome, 'failure');
+    assert.equal(profileModule.searchProfileExitCode(report), 1);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('the CLI uses the capture verdict and publishes both verdicts without masking failures', () => {
+  assert.match(source, /process.exit\(searchProfileExitCode\(report\)\)/);
+  assert.match(source, /process.env.GITHUB_STEP_SUMMARY/);
+  assert.match(source, /appendFileSync\(process.env.GITHUB_STEP_SUMMARY, summary\)/);
+  assert.equal(profileModule.searchProfileExitCode({ outcome: 'captured' }), 1);
+  assert.equal(profileModule.searchProfileExitCode({ captureOutcome: 'incomplete' }), 1);
+  assert.equal(profileModule.searchProfileExitCode({ captureOutcome: 'failure' }), 1);
+});
+
+test('summary exposes readiness and capture separately without echoing error payloads', () => {
+  const summary = profileModule.searchProfileSummary({
+    caseId: 'shadcn-dark-1440',
+    mode: 'profiled',
+    outcome: 'failure',
+    failures: ['https://outside.invalid/?token=summary-private'],
+    captureOutcome: 'failure',
+    captureFailures: ['summary-private'],
+    blockedRequests: 1,
+  });
+  assert.match(summary, /Historical subject readiness: NOT OBSERVED/);
+  assert.match(summary, /Diagnostic capture: FAILURE/);
+  assert.match(summary, /Capture failures: 1; blocked requests: 1/);
+  assert.doesNotMatch(summary, /summary-private|token=/);
+});
+
+// Match the locked Playwright error's public name/message shape without adding
+// a dependency to this browser-free suite, which runs before dependency install.
+const lateTimeout = (message = 'page.waitForFunction: Timeout 10000ms exceeded.') =>
+  Object.assign(new Error(message), { name: 'TimeoutError' });
+
+for (const mode of ['unprofiled', 'profiled']) {
+  for (const [label, lateError, lateElapsedMs] of [
+    ['ordinary error', new Error('Synthetic late-observation failure'), 10000],
+    ['protocol error', new Error(`Protocol error at ${origin}/session?token=late-private`), 10000],
+    ['early timeout', lateTimeout(), 0],
+    ['insufficient budget', lateTimeout(), 9999],
+    ['wrong timeout budget', lateTimeout('page.waitForFunction: Timeout 9000ms exceeded.'), 10000],
+    ['unknown timeout source', lateTimeout('Synthetic unclassified timeout'), 10000],
+  ]) {
+    test(`${mode} rejects late-observation ${label} without losing original failure or cleanup`, async () => {
+      const directory = temp();
+      try {
+        const { report, calls } = await fakeVisit(directory, {
+          mode,
+          readyAt: 1149,
+          lateError,
+          lateElapsedMs,
+        });
+        assert.equal(report.readiness.onTime, false);
+        assert.equal(
+          report.readiness.evidence.observedReadyAt - report.readiness.evidence.deadline,
+          149
+        );
+        assert.ok(report.failures.includes('Original 1000ms initial-ready deadline failed'));
+        assert.equal(report.lateObservation.outcome, 'error');
+        assert.equal(report.lateObservation.ready, undefined);
+        assert.equal(report.lateObservation.elapsedMs, lateElapsedMs);
+        assert.ok(report.lateObservation.error);
+        assert.equal(report.captureOutcome, 'failure');
+        assert.equal(profileModule.searchProfileExitCode(report), 1);
+        assert.ok(
+          report.captureFailures.some((failure) => failure.startsWith('Late observation failed:'))
+        );
+        assert.equal(report.outcome, 'failure');
+        if (mode === 'profiled') assert.equal(report.profile.complete, true);
+        for (const name of ['context-close', 'browser-close', 'server-stop'])
+          assert.equal(calls.filter(([label]) => label === name).length, 1);
+        assert.deepEqual(read(directory, 'result.json'), report);
+        assert.equal(existsSync(path.join(directory, 'observation.json')), true);
+        for (const file of readdirSync(directory))
+          assert.doesNotMatch(readFileSync(path.join(directory, file), 'utf8'), /late-private/);
+        assert.match(profileModule.searchProfileSummary(report), /Late observation: ERROR/);
+      } finally {
+        rmSync(directory, { recursive: true, force: true });
+      }
+    });
+  }
+  test(`${mode} retains a full-budget late TimeoutError as an observed non-ready result`, async () => {
+    const directory = temp();
+    try {
+      const { report } = await fakeVisit(directory, {
+        mode,
+        readyAt: 1149,
+        lateError: lateTimeout(),
+        lateElapsedMs: 10000,
+      });
+      assert.equal(report.readiness.onTime, false);
+      assert.equal(
+        report.readiness.evidence.observedReadyAt - report.readiness.evidence.deadline,
+        149
+      );
+      assert.equal(report.lateObservation.ready, false);
+      assert.equal(report.lateObservation.outcome, 'timeout');
+      assert.equal(report.lateObservation.budgetMs, 10000);
+      assert.equal(report.lateObservation.elapsedMs, 10000);
+      assert.match(report.lateObservation.error, /TimeoutError.*Timeout 10000ms exceeded/);
+      assert.equal(report.captureOutcome, 'captured');
+      assert.equal(profileModule.searchProfileExitCode(report), 0);
+      assert.equal(report.outcome, 'failure');
+      assert.deepEqual(report.failures, ['Original 1000ms initial-ready deadline failed']);
+      assert.deepEqual(report.captureFailures, []);
+      assert.deepEqual(read(directory, 'result.json'), report);
+      assert.match(profileModule.searchProfileSummary(report), /Late observation: TIMEOUT/);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+}
