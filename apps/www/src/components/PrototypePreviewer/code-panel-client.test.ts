@@ -1,4 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { readCopyText } from '../site-copy-client';
+import { createCopyController } from '../site-copy-controller';
 import { initCodePanels, refreshCodePanel } from './code-panel-client';
 
 function panelMarkup(id: string, raw = 'const exact = "<&";', projected = false): string {
@@ -7,7 +9,7 @@ function panelMarkup(id: string, raw = 'const exact = "<&";', projected = false)
   return `<figure data-code-shell id="${id}">
     <div data-code-inner>
       <${buttonTag} type="button" data-copy aria-label="Copy code"><span data-copy-text>copy</span></${buttonTag}>
-      <div data-code-content><pre class="proto-previewer__code"><code data-raw-code="${escaped}">${raw}</code></pre></div>
+      <div data-code-content><pre class="proto-previewer__code" tabindex="0"><code data-raw-code="${escaped}">${raw}</code></pre></div>
       <${buttonTag} type="button" data-code-toggle aria-expanded="false">View code</${buttonTag}>
     </div>
   </figure>`;
@@ -61,8 +63,12 @@ describe('CodePanel client', () => {
     const shell = document.querySelector<HTMLElement>('[data-code-shell]')!;
     setMeasurements(shell, { fullHeight: 48 });
     initCodePanels(document);
-    shell.querySelector<HTMLButtonElement>('[data-copy]')!.click();
-    await Promise.resolve();
+    const owner = createCopyController({
+      readText: () => readCopyText(shell.querySelector('[data-copy]')!),
+      writeText: (text) => navigator.clipboard.writeText(text),
+    });
+    await owner.copy();
+    owner.dispose();
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('const exact = "<&";');
   });
 
@@ -138,7 +144,7 @@ describe('CodePanel client', () => {
     expect(shell.dataset.codeExpanded).toBe('true');
 
     shell.querySelector<HTMLElement>('[data-code-content]')!.innerHTML =
-      '<pre class="proto-previewer__code"><code data-raw-code="replacement">replacement</code></pre>';
+      '<pre class="proto-previewer__code" tabindex="0"><code data-raw-code="replacement">replacement</code></pre>';
     setMeasurements(shell, { fullHeight: 400 });
     refreshCodePanel(shell, { reset: true });
     expect(shell.dataset.codeExpanded).toBe('false');
@@ -153,4 +159,17 @@ describe('CodePanel client', () => {
     expect(shell.dataset.codePanelInit).toBe('1');
     expect(shell.dataset.codeExpanded).toBe('true');
   });
+});
+
+it('moves focus from the disappearing expansion Button to the native code viewport', () => {
+  document.body.innerHTML = panelMarkup('keyboard', 'line\n'.repeat(80));
+  const shell = document.querySelector<HTMLElement>('[data-code-shell]')!;
+  setMeasurements(shell, { fullHeight: 400 });
+  initCodePanels(document);
+  const toggle = shell.querySelector<HTMLButtonElement>('[data-code-toggle]')!;
+  toggle.focus();
+  toggle.click();
+  expect(toggle.hidden).toBe(true);
+  expect(document.activeElement).toBe(shell.querySelector('pre'));
+  document.body.replaceChildren();
 });

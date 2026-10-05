@@ -81,7 +81,13 @@ fn keeps_unknown_apart_from_marker() {
 
     // A typo, a Tailwind class this compiler does not implement, and a
     // variant-carrying token all have to be reported rather than ignored.
-    for token in ["flexx", "sr-only", "data-[hovered]:bg-accent", ""] {
+    for token in [
+        "flexx",
+        "sr-only",
+        "data-[hovered]:bg-accent",
+        "",
+        "hit-envelope-translate-1",
+    ] {
         assert_eq!(vocabulary.resolve(token), Resolution::Unknown, "{token}");
     }
 }
@@ -112,6 +118,33 @@ fn resolves_a_list_by_the_cascade() {
     let text = vocabulary.resolve_all(["text-sm"]);
     assert_eq!(text.get("font-size"), Some("0.875rem"));
     assert_eq!(text.get("line-height"), Some("1.25rem"));
+}
+
+#[test]
+fn selection_targets_remain_diagnostic_without_becoming_element_paint() {
+    let vocabulary = vocabulary();
+    let baseline = vocabulary.resolve_all(["relative", "bg-white", "text-foreground"]);
+    assert!(baseline.unknown.is_empty());
+    assert!(baseline.get("background-color").is_some());
+    assert!(baseline.get("color").is_some());
+
+    let selected = vocabulary.resolve_all([
+        "relative",
+        "bg-white",
+        "text-foreground",
+        "selection:bg-primary",
+        "selection:text-primary-foreground",
+    ]);
+    assert_eq!(selected.declarations, baseline.declarations);
+    assert_eq!(
+        selected.unknown,
+        ["selection:bg-primary", "selection:text-primary-foreground"]
+    );
+    for token in &selected.unknown {
+        assert_eq!(vocabulary.resolve(token), Resolution::Unknown);
+        assert_eq!(vocabulary.cascade_position(token), None);
+    }
+    assert_eq!(vocabulary.resolve("peer"), Resolution::NoDeclarations);
 }
 
 #[test]

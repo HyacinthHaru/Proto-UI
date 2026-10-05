@@ -178,6 +178,8 @@ export type {
 } from './dialog/types';
 export { ShadcnTextareaRoot, shadcnTextareaRoot } from './textarea';
 export type { ShadcnTextareaRootProps, ShadcnTextareaRootExposes } from './textarea';
+export { ShadcnInputRoot, shadcnInputRoot } from './input';
+export type { ShadcnInputRootProps, ShadcnInputRootExposes } from './input';
 export {
   ShadcnScrollAreaRoot,
   ShadcnScrollAreaViewport,
@@ -255,3 +257,8 @@ export type {
   ShadcnRadioGroupIndicatorStateHandles,
   ShadcnRadioGroupIndicatorAsHookContract,
 } from './radio-group';
+export * from './text';
+
+export { default as ShadcnSurfaceRoot, surfaceRoot } from './surface';
+
+export type { SurfaceRootProps, SurfaceRootExposes } from './surface';

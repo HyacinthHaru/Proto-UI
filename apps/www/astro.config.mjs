@@ -14,6 +14,7 @@ import { rehypeEnhancedImage } from './src/utils/rehype-enhanced-image.js';
 import { whitepaperRedirectFragments } from './src/utils/whitepaper-redirect-fragments.mjs';
 import { remarkConceptDirective } from './src/utils/remark-concept-directive.js';
 import { codeThemes } from './src/components/PrototypePreviewer/code-themes.mjs';
+import { siteCopyPlugin } from './src/utils/expressive-code-copy.mjs';
 
 const PROTO_UI_PREFIX = '@proto.ui/';
 const repositoryRoot = fileURLToPath(new URL('../..', import.meta.url));
@@ -115,6 +116,8 @@ export default defineConfig({
         }),
       ],
       expressiveCode: {
+        frames: { showCopyToClipboardButton: false },
+        plugins: [siteCopyPlugin()],
         themes: Object.values(codeThemes),
         useStarlightUiThemeColors: false,
         useDarkModeMediaQuery: false,
@@ -378,6 +381,11 @@ export default defineConfig({
                   slug: 'ui-libraries/base/radio-group',
                 },
                 {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/base/input',
+                },
+                {
                   label: 'Textarea',
                   translations: { en: 'Textarea', 'zh-CN': 'Textarea' },
                   slug: 'ui-libraries/base/textarea',
@@ -486,6 +494,11 @@ export default defineConfig({
                   slug: 'ui-libraries/shadcn/tabs',
                 },
                 {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/shadcn/input',
+                },
+                {
                   label: 'Textarea',
                   translations: { en: 'Textarea', 'zh-CN': 'Textarea' },
                   slug: 'ui-libraries/shadcn/textarea',
@@ -505,6 +518,38 @@ export default defineConfig({
                   label: 'Icon Library',
                   translations: { en: 'Icon Library', 'zh-CN': '图标库' },
                   slug: 'ui-libraries/lucide',
+                },
+              ],
+            },
+            {
+              label: 'Bootstrap 2.3.2',
+              translations: { en: 'Bootstrap 2.3.2', 'zh-CN': 'Bootstrap 2.3.2' },
+              items: [
+                {
+                  label: 'Overview',
+                  translations: { en: 'Overview', 'zh-CN': '概览' },
+                  slug: 'ui-libraries/bootstrap-2-3-2',
+                },
+                {
+                  label: 'Button',
+                  translations: { en: 'Button', 'zh-CN': 'Button' },
+                  slug: 'ui-libraries/bootstrap-2-3-2/button',
+                },
+              ],
+            },
+            {
+              label: 'Liquid Glass',
+              translations: { en: 'Liquid Glass', 'zh-CN': 'Liquid Glass' },
+              items: [
+                {
+                  label: 'Overview',
+                  translations: { en: 'Overview', 'zh-CN': '概览' },
+                  slug: 'ui-libraries/liquid-glass',
+                },
+                {
+                  label: 'Button',
+                  translations: { en: 'Button', 'zh-CN': 'Button' },
+                  slug: 'ui-libraries/liquid-glass/button',
                 },
               ],
             },
