@@ -3,7 +3,7 @@ type: test
 title: Focus target and scope runtime contract tests
 status: draft
 since: 0.1.0
-summary: Runtime and bounded React evidence for asFocusable target facts, asFocusEntry region policy, setup-only configuration, disabled focus requests, autofocus, scopes, native reveal readiness, one-shot commit effects, and nested surface-owner readiness.
+summary: Runtime and bounded React/Vue evidence for asFocusable target facts, asFocusEntry region policy, setup-only configuration, disabled focus requests, autofocus, scopes, native reveal readiness, one-shot commit effects, and nested surface-owner readiness.
 cases:
   - id: T-FOCUS-0001-CASE-FOCUSABLE-ONCE
     title: Repeated asFocusable calls reuse one handle and record privileged once trace
@@ -82,6 +82,24 @@ cases:
       - C-AS-FOCUS-ENTRY-0001-H
       - HC-FOCUS-TARGET-0001-D
     expectation: nested-owner-focus-and-facts-advance-together-after-readiness-unless-cancelled
+  - id: T-FOCUS-0001-CASE-OWNER-READINESS-SUBSCRIPTION
+    title: Target-specific readiness subscriptions rebind current sources and release stale callbacks
+    covers:
+      - HC-FOCUS-TARGET-0001-C
+      - HC-FOCUS-TARGET-0001-D
+    expectation: actual-owner-readiness-and-native-root-admission-remain-releasable-through-source-and-surface-replacement
+    notes:
+      - Controlled private readiness sources establish subscription and admission mechanics, not native browser delivery or a complete Adapter profile.
+  - id: T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE
+    title: Rejected entry re-resolves after an ordinary event owner disappears without focusing its departing node
+    covers:
+      - C-AS-FOCUS-ENTRY-0001-H
+      - HC-FOCUS-TARGET-0001-C
+      - HC-FOCUS-TARGET-0001-D
+    expectation: absent-owner-invalidates-after-dom-commit-and-current-policy-selects-ready-fallback-unless-cancelled
+    notes:
+      - Owner disappearance is invalidation rather than readiness; a still-closed replacement source retains its own readiness subscription.
+      - Controlled bridge and actual framework teardown tests distinguish DOM-first retained hide from cleanup-first terminal removal. They do not claim native browser conformance.
   - id: T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION
     title: Completed descendant acquisition does not exhaust readiness retries for subsequent entry requests
     covers:
@@ -180,10 +198,70 @@ cases:
       - HC-FOCUS-TARGET-0001-D
     expectation: closed-inner-owner-defers-outer-native-focus-then-physical-and-inner-observed-focus-agree
     notes:
-      - The real React nested Trigger fixture requests outer focusSelf from the inner onUpdated callback while the resolved inner owner's native observation gate is closed; it observes no physical application then and matching physical/inner focused facts after readiness.
-      - Discriminating red/green execution uses the installed React runtime in a simulated DOM. It neither injects gate state nor synthesizes focus facts, and does not claim native browser or all-version conformance.
+      - Real React and Vue nested Trigger fixtures request outer focusSelf from the inner onUpdated callback while the resolved inner owner's native observation gate is closed; they observe no physical application then and matching physical/inner focused facts after readiness.
+      - Discriminating red/green execution uses installed framework runtimes in a simulated DOM. It neither injects gate state nor synthesizes focus facts, and does not claim native browser or all-version conformance.
 
 implementations:
+  - id: adapter-vue-native-request-readiness
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/vue/test/focus-request-readiness.browser.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
+      - T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
+      - T-FOCUS-0001-CASE-NATIVE-SURFACE-OWNER-READINESS
+      - T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE
+    notes:
+      - The isolated actual-Vue browser fixture is registered in the canonical runtime plan and bundles successfully. Execution is pending exact-head CI; local browser access is blocked, so no native Vue pass is claimed.
+  - id: adapter-vue-request-kind-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-request-readiness.integration.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-NATIVE-SURFACE-OWNER-READINESS
+      - T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
+      - T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
+      - T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE
+    notes:
+      - Actual Vue lifecycle in happy-dom covers onUpdated programmatic/native/entry ordering, nested owner readiness, cancellation, entry-only fact ownership, owner teardown and superseding commits. Native Vue browser delivery remains separate evidence.
+  - id: adapter-vue-entry-retry-lifecycle
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-entry-retries.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION]
+    notes:
+      - Actual Vue with controlled focus rejection and frame delivery checks distinct entry budgets, obsolete scheduled callbacks and retained view replacement; this is not browser layout evidence.
+  - id: adapter-vue-private-owner-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-owner-readiness.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-OWNER-READINESS-SUBSCRIPTION]
+  - id: adapter-react-private-owner-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-entry-owner-readiness.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-OWNER-READINESS-SUBSCRIPTION]
+  - id: react-entry-owner-disappearance-bridge
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-entry-owner-disappearance.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE]
+    notes:
+      - Actual Focus Module with controlled owner sources covers both removal orders, queued cancellation/supersession/disposal and replacement-source ownership.
+  - id: react-entry-owner-disposal-lifecycle
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-entry-owner-disposal.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE]
+    notes:
+      - Actual React lifecycle in happy-dom requests entry during child onUnmounted; terminal removal rejects the departing connected node and reaches the ready sibling without another requester update.
   - id: adapter-react-entry-owner-and-retry
     kind: adapter-test
     status: passing
@@ -201,6 +279,7 @@ implementations:
     path: packages/adapters/react/test/focus-entry-readiness.browser.test.ts
     required: true
     consumesCases:
+      - T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE
       - T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
       - T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION
       - T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
@@ -362,6 +441,11 @@ verifies:
         - HC-FOCUS-TARGET-0001-D
 exercises:
   adapters:
+    - id: A-VUE-3-0001
+      since: 0.3.0-alpha.1
+      anchors: [A-VUE-3-0001-FOCUS]
+      coverageImpact: exercises-test-surface
+      note: Bounded installed-Vue lifecycle and controlled readiness/retry fixtures exercise required-kind admission and cleanup; they do not establish every Vue version or the complete Adapter profile.
     - id: A-REACT-18-19-0001
       since: 0.3.0-alpha.1
       anchors:
@@ -371,6 +455,9 @@ exercises:
       coverageImpact: exercises-test-surface
       note: Bounded real React commit fixtures, including nested resolved-owner readiness, and the selected-entry/End/Home Chromium journey exercise current Focus and observation delivery, not the whole React version range or profile.
 revisions:
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added bounded Vue required-kind admission and retry evidence, and ordinary owner disappearance/teardown cases for React and Vue; no lifecycle or full-profile promotion.
   - version: 0.3.0-alpha.1
     change: strengthened
     summary: Bound the owner-approved programmatic/native/entry readiness split to real onUpdated controls and preserved existing #811 native, entry, A11y and retained-owner assertions.

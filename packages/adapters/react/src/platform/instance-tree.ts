@@ -93,14 +93,32 @@ export function subscribeFocusTargetOwnerReady(
   const instance = getLogicalTriggerGroupAnchor(initialOwner);
   // Keep the logical identity even if its old physical target is removed.
   // Surface changes rebind readiness before Focus re-resolves entry policy.
-  return subscribeFocusSurfaceReady(
+  let disposed = false;
+  let invalidationQueued = false;
+  const off = subscribeFocusSurfaceReady(
     instance,
     () => {
       const owner = getLogicalTriggerSurfaceOwner(instance);
-      if (nativeFocusReadiness.get(owner)?.source?.isReady()) listener();
+      const source = nativeFocusReadiness.get(owner)?.source;
+      if (source?.isReady()) listener();
+      else if (!source && !invalidationQueued) {
+        // Losing an ordinary owner invalidates the resolved target; it does
+        // not make that target ready. Let the host finish synchronous DOM
+        // removal before Focus re-resolves another descendant or fallback.
+        invalidationQueued = true;
+        queueMicrotask(() => {
+          invalidationQueued = false;
+          const currentOwner = getLogicalTriggerSurfaceOwner(instance);
+          if (!disposed && !nativeFocusReadiness.get(currentOwner)?.source) listener();
+        });
+      }
     },
     true
   );
+  return () => {
+    disposed = true;
+    off();
+  };
 }
 
 export function subscribeFocusSurfaceReady(

@@ -3,7 +3,7 @@ type: test
 title: Four Adapter Focus entry and logical roving translation
 status: draft
 since: 0.3.0-alpha.0
-summary: Bounded React capability and real framework evidence distinguish acquisition readiness, committed blur, entry delegation and logical roving.
+summary: Bounded React/Vue capability and real framework evidence distinguish acquisition readiness, committed blur, entry delegation and logical roving.
 cases:
   - id: T-FOCUS-0002-CASE-UNUSABLE-NATIVE
     title: Hidden inputs and unassociated areas cannot suppress entry fallback
@@ -32,11 +32,11 @@ cases:
     notes:
       - The controlled capability test checks one registered root; it does not establish roving navigation, nested owner replacement or full Adapter conformance.
   - id: T-FOCUS-0002-CASE-UPDATED-BLUR
-    title: React onUpdated blur clears the committed physical target and its observed focused fact
+    title: onUpdated blur clears the committed physical target and its observed focused fact
     covers: [HC-FOCUS-TARGET-0001-B, HC-FOCUS-TARGET-0001-D]
     expectation: updated-blur-removes-physical-focus-and-clears-observed-focused-fact-despite-acquisition-gate
     notes:
-      - The real React lifecycle test has one focusable target and does not construct a roving owner or perform navigation.
+      - The real React and Vue lifecycle tests use one focusable target for this blur case and do not establish roving navigation.
   - id: T-FOCUS-0002-CASE-ROVING
     title: Logical roving moves to eligible targets outside Tab order and clears stale facts across fresh owners
     covers:
@@ -52,6 +52,18 @@ cases:
       ]
     expectation: logical-roving-programmatic-focus-observed-owner-replacement-disabled-rejection
 implementations:
+  - id: vue-focus-acquisition-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-target-readiness.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0002-CASE-ACQUISITION-READINESS]
+  - id: vue-focus-updated-native-blur
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-request-readiness.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0002-CASE-UPDATED-BLUR]
   - id: react-focus-acquisition-readiness
     kind: adapter-test
     status: passing

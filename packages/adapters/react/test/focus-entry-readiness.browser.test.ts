@@ -95,3 +95,27 @@ it.each(['programmatic', 'native', 'entry'] as const)(
     }
   }
 );
+
+it.each(['retained-hide', 'terminal-unmount'] as const)(
+  'native entry re-resolves after ordinary owner %s without focusing the departing node',
+  async (mode) => {
+    const context = await browser.newContext();
+    try {
+      const page = await context.newPage();
+      await page.setContent('<!doctype html><body></body>');
+      await page.addScriptTag({ content: bundle });
+      const result = await page.evaluate(
+        (mode) => window.focusEntryNative.observeOrdinaryOwnerDisposal(mode),
+        mode
+      );
+      console.info('[native-entry-owner-disposal]', JSON.stringify({ mode, ...result }));
+      expect(result.oldConnected).toBe(false);
+      expect(result.oldFocusEvents).toBe(0);
+      expect(result.fallbackActive).toBe(true);
+      expect(result.fallbackFocused).toBe(true);
+      expect(result.trustedFallbackFocusEvents).toBe(1);
+    } finally {
+      await context.close();
+    }
+  }
+);
