@@ -1,3 +1,4 @@
+import { createFocusRequestIntent, retainFocusRequestIntent } from './request-intent';
 import type {
   FocusRequestOptions,
   FocusRovingKey,
@@ -51,6 +52,7 @@ export class FocusCenter {
     {
       op: 'first' | 'last' | 'selected';
       options?: FocusRovingEntryRequestOptions;
+      intent: FocusRequestOptions;
       attempted?: FocusInstanceToken;
     }
   >();
@@ -226,6 +228,7 @@ export class FocusCenter {
     options?: FocusRequestOptions,
     behavior?: FocusRequestBehavior
   ): FocusRequestOutcome {
+    options = retainFocusRequestIntent(options);
     // A pre-projection request cannot be gated reliably yet: the logical parent
     // may be established by the same adapter commit that supplies the target.
     // Retain it on the entry and re-run the normal gate when that commit lands.
@@ -420,6 +423,25 @@ export class FocusCenter {
       entryRequest?: FocusRovingEntryRequestOptions;
     }
   ): boolean {
+    return this.applyFocusInRoving(
+      provider,
+      op,
+      options,
+      createFocusRequestIntent({
+        reason: options?.entryRequest?.reason ?? 'keyboard',
+        preventScroll: options?.entryRequest?.preventScroll,
+      })
+    );
+  }
+
+  private applyFocusInRoving(
+    provider: FocusCenterEntry,
+    op: 'first' | 'last' | 'next' | 'prev' | 'selected',
+    options:
+      | { requireFocusedMember?: boolean; entryRequest?: FocusRovingEntryRequestOptions }
+      | undefined,
+    intent: FocusRequestOptions
+  ): boolean {
     // The provider handle survives view detachment. A deferred entry request is
     // therefore also a semantic re-registration point for the provider; Items
     // may attach before the provider's own host view callback in React/Vue.
@@ -430,6 +452,7 @@ export class FocusCenter {
         this.pendingRovingEntries.set(provider.instance, {
           op,
           options: options.entryRequest,
+          intent,
         });
         return true;
       }
@@ -472,18 +495,12 @@ export class FocusCenter {
     // intent while the host request is still on the stack. A pending outcome
     // is restored below with the member that was actually attempted.
     this.pendingRovingEntries.delete(provider.instance);
-    const outcome = this.requestFocusOutcome(
-      target,
-      {
-        reason: options?.entryRequest?.reason ?? 'keyboard',
-        preventScroll: options?.entryRequest?.preventScroll,
-      },
-      { syncFacts: true }
-    );
+    const outcome = this.requestFocusOutcome(target, intent, { syncFacts: true });
     if (outcome === 'pending' && options?.entryRequest?.defer) {
       this.pendingRovingEntries.set(provider.instance, {
         op: op as 'first' | 'last' | 'selected',
         options: options.entryRequest,
+        intent,
         attempted: target.instance,
       });
     } else {
@@ -509,7 +526,12 @@ export class FocusCenter {
         continue;
       }
       if (this.getRovingMembers(provider).length === 0) continue;
-      this.focusInRoving(provider, pending.op, { entryRequest: pending.options });
+      this.applyFocusInRoving(
+        provider,
+        pending.op,
+        { entryRequest: pending.options },
+        pending.intent
+      );
     }
   }
 }

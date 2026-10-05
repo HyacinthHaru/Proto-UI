@@ -57,6 +57,7 @@ import {
   FOCUS_RUN_IN_CALLBACK_CAP,
   FOCUS_SET_FOCUSABLE_CAP,
   FOCUS_TARGET_READY_CAP,
+  type FocusRequestKind,
 } from '@proto.ui/module-focus';
 import {
   createWebHitParticipationHostBridge,
@@ -267,6 +268,8 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
+  onFocusIntent?: () => void;
+  onFocusAcquired?: () => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
 }) {
   const {
@@ -285,6 +288,8 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
     setExposes,
   } = args;
 
+  let requestIntent: FocusRequestOptions | undefined;
+  let requestKind: FocusRequestKind | undefined;
   const getTriggerSurface = () => {
     const target = getLogicalTriggerSurfaceRoot(instanceToken);
     return args.isViewReady() && target?.isConnected ? target : null;
@@ -367,7 +372,12 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
       ],
       [
         FOCUS_REQUEST_FOCUS_CAP,
-        (target: HTMLElement, options?: FocusRequestOptions) => {
+        (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
+          if (requestIntent !== options || requestKind !== kind) {
+            requestIntent = options;
+            requestKind = kind;
+            args.onFocusIntent?.();
+          }
           if (!target.isConnected) return false;
           target.focus(
             typeof options?.preventScroll === 'boolean'
@@ -375,7 +385,8 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
               : undefined
           );
           const applied = target.ownerDocument.activeElement === target;
-          if (!applied) args.retryTargetReady();
+          if (applied) args.onFocusAcquired?.();
+          else args.retryTargetReady();
           return applied;
         },
       ],

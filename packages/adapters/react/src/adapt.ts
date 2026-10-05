@@ -519,7 +519,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             });
             return false;
           },
-          onEntryIntent: () => {
+          onFocusIntent: () => {
             focusRetryGeneration += 1;
             focusTargetRetryScheduledRef.current = false;
             focusTargetRetryCountRef.current = 0;

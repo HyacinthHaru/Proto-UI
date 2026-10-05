@@ -239,7 +239,6 @@ export function createVueAdapter(runtime: VueRuntime) {
           const target = rootRef.value;
           if (!viewReady || !target?.isConnected) return;
           for (const listener of Array.from(focusTargetReadyListeners)) listener();
-          if (target.ownerDocument.activeElement === target) focusTargetRetryCount = 0;
         };
 
         const subs = new Set<() => void>();
@@ -501,7 +500,7 @@ export function createVueAdapter(runtime: VueRuntime) {
               });
               return false;
             },
-            onEntryIntent: () => {
+            onFocusIntent: () => {
               focusRetryGeneration += 1;
               focusTargetRetryScheduled = false;
               focusTargetRetryCount = 0;

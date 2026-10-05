@@ -214,3 +214,59 @@ it('releases old scheduled retry state across retained view replacement', async 
     vi.restoreAllMocks();
   }
 });
+
+it('does not renew a rejected descendant entry budget because its dual-role root remains focused', async () => {
+  const frames: FrameRequestCallback[] = [];
+  vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+    frames.push(callback);
+    return frames.length;
+  });
+  const proto = definePrototype({
+    name: 'vue-focused-root-rejected-descendant-budget',
+    setup(def) {
+      const target = asFocusable();
+      const entry = asFocusEntry();
+      entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+      def.expose.state('focused', target.focused);
+      def.expose.method('focusRoot', () => target.focus());
+      def.expose.method('enter', () => entry.focus());
+      return (r) => r.el('button', 'Rejecting descendant');
+    },
+  });
+  const mounted = createMountedVueAdapterWithOptions(proto);
+  try {
+    await flushVue();
+    await flushVue();
+    const root = mounted.root!;
+    const descendant = root.querySelector('button')!;
+    await settle(() => mounted.vm.getExposes().focusRoot());
+    expect(document.activeElement).toBe(root);
+    expect(mounted.vm.getExposes().focused.get()).toBe(true);
+    expect(frames).toHaveLength(0);
+    const focus = vi.spyOn(descendant, 'focus').mockImplementation(() => {});
+    await settle(() => mounted.vm.getExposes().enter());
+    // Exercise more than the three allowed two-frame retries, but never drain
+    // an unbounded queue: the old root-success inference would keep it alive.
+    for (let round = 0; frames.length && round < 10; round++) {
+      const pending = frames.splice(0);
+      await settle(() => {
+        for (const callback of pending) callback(performance.now());
+      });
+    }
+    const observed = {
+      attempts: focus.mock.calls.length,
+      queuedFrames: frames.length,
+      rootActive: document.activeElement === root,
+      rootFocused: mounted.vm.getExposes().focused.get(),
+    };
+    console.info('[vue-descendant-retry-bound]', JSON.stringify(observed));
+    expect(observed).toEqual({
+      attempts: 4,
+      queuedFrames: 0,
+      rootActive: true,
+      rootFocused: true,
+    });
+  } finally {
+    mounted.unmount();
+  }
+});

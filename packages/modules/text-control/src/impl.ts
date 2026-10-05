@@ -45,6 +45,7 @@ export class TextControlModuleImpl extends ModuleBase {
   private host: TextControlHost | null = null;
   private lease: TextControlHostLease | null = null;
   private leaseEpoch = 0;
+  private eventGeneration = 0;
 
   constructor(
     caps: CapsVaultView,
@@ -195,6 +196,7 @@ export class TextControlModuleImpl extends ModuleBase {
 
   private receive(event: TextControlEvent): void {
     const epoch = this.leaseEpoch;
+    const generation = ++this.eventGeneration;
     // Canonicalize CR/LF to LF at the module boundary before state, snapshot, and listener routing.
     const canonicalEvent: TextControlEvent = Object.freeze({
       ...event,
@@ -205,48 +207,57 @@ export class TextControlModuleImpl extends ModuleBase {
     // Protect both a starting composition and a finishing native candidate
     // from those stale owner values until the actual event callback begins.
     this.composing ||= canonicalEvent.composing;
-    if (this.valueMode === 'uncontrolled' && canonicalEvent.type === 'input') {
-      this.value = canonicalEvent.value;
-    }
+    try {
+      if (this.valueMode === 'uncontrolled' && canonicalEvent.type === 'input') {
+        this.value = canonicalEvent.value;
+      }
 
-    const runInCallback = this.caps.has(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
-      ? this.caps.get(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
-      : (callback: () => void) => callback();
-    const inCurrentCallback = (callback: () => void) => {
-      const previousPrelude = this.callbackPrelude;
-      const prelude = { epoch };
-      this.callbackPrelude = prelude;
-      const releasePrelude = () => {
-        if (this.callbackPrelude === prelude) this.callbackPrelude = previousPrelude;
-      };
-      try {
-        runInCallback(() => {
+      const runInCallback = this.caps.has(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
+        ? this.caps.get(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
+        : (callback: () => void) => callback();
+      const inCurrentCallback = (callback: () => void) => {
+        const previousPrelude = this.callbackPrelude;
+        const prelude = { epoch };
+        this.callbackPrelude = prelude;
+        const releasePrelude = () => {
+          if (this.callbackPrelude === prelude) this.callbackPrelude = previousPrelude;
+        };
+        try {
+          runInCallback(() => {
+            releasePrelude();
+            if (epoch === this.leaseEpoch) callback();
+          });
+        } finally {
           releasePrelude();
-          if (epoch === this.leaseEpoch) callback();
-        });
-      } finally {
-        releasePrelude();
-      }
-    };
-    inCurrentCallback(() => {
-      this.composing = canonicalEvent.composing;
-      const run = this.sys.getCallbackCtx() as RunHandle<PropsBaseType> | undefined;
-      if (!run) return;
-      for (const listener of this.listeners) {
-        if (listener.type === canonicalEvent.type) listener.callback(run, canonicalEvent);
-      }
-    });
+        }
+      };
+      inCurrentCallback(() => {
+        if (generation !== this.eventGeneration) return;
+        this.composing = canonicalEvent.composing;
+        const run = this.sys.getCallbackCtx() as RunHandle<PropsBaseType> | undefined;
+        if (!run) return;
+        for (const listener of this.listeners) {
+          if (listener.type === canonicalEvent.type) listener.callback(run, canonicalEvent);
+        }
+      });
 
-    const mustRestoreControlledValue =
-      this.valueMode === 'controlled' &&
-      ((event.type === 'input' && !event.composing) || event.type === 'compositionend');
-    if (!mustRestoreControlledValue) return;
-    queueMicrotask(() => {
-      // Re-enter the current callback boundary so pending accepted owner props
-      // reconcile before restoring value, rather than writing a stale owner
-      // value and destroying the native caret before the next commit.
-      if (epoch === this.leaseEpoch) inCurrentCallback(() => this.syncLease());
-    });
+      const mustRestoreControlledValue =
+        this.valueMode === 'controlled' &&
+        ((event.type === 'input' && !event.composing) || event.type === 'compositionend');
+      if (!mustRestoreControlledValue) return;
+      queueMicrotask(() => {
+        // Re-enter the current callback boundary so pending accepted owner props
+        // reconcile before restoring value, rather than writing a stale owner
+        // value and destroying the native caret before the next commit.
+        if (epoch === this.leaseEpoch) inCurrentCallback(() => this.syncLease());
+      });
+    } finally {
+      // Native composition facts survive a failed callback prelude. An older
+      // event must never settle over a newer event or a replacement lease.
+      if (epoch === this.leaseEpoch && generation === this.eventGeneration) {
+        this.composing = canonicalEvent.composing;
+      }
+    }
   }
 
   private canonicalize(value: string): string {

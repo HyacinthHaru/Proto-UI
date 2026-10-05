@@ -639,8 +639,11 @@ function initSession<Props extends PropsBaseType>(
   });
   bindLogicalEventTarget(state.instanceToken, router.rootTarget);
   state.viewDisposed = false;
+  let viewDisposed = false;
+  let focusRetryGeneration = 0;
   const disposeView = () => {
-    if (state.viewDisposed) return;
+    if (viewDisposed) return;
+    viewDisposed = true;
     state.viewDisposed = true;
     eventGate.disable();
     eventGate.dispose();
@@ -648,7 +651,10 @@ function initSession<Props extends PropsBaseType>(
     router.dispose();
     unbindProtoInstance(state.instanceToken, state.boundRoot ?? undefined);
     if (state.boundRoot === rootEl) state.boundRoot = null;
-    if (state.eventGate === eventGate) state.eventGate = null;
+    if (state.eventGate === eventGate) {
+      state.eventGate = null;
+      state.focusTargetRetryScheduled = false;
+    }
   };
 
   const effectsPort = createVue2EffectsPort((tokens) => {
@@ -689,6 +695,14 @@ function initSession<Props extends PropsBaseType>(
       state.focusTargetReadyListeners.add(listener);
       return () => state.focusTargetReadyListeners.delete(listener);
     },
+    onFocusIntent: () => {
+      focusRetryGeneration += 1;
+      state.focusTargetRetryScheduled = false;
+      state.focusTargetRetryCount = 0;
+    },
+    onFocusAcquired: () => {
+      state.focusTargetRetryCount = 0;
+    },
     retryTargetReady: () => {
       if (
         state.focusTargetRetryScheduled ||
@@ -698,9 +712,11 @@ function initSession<Props extends PropsBaseType>(
       }
       state.focusTargetRetryScheduled = true;
       state.focusTargetRetryCount += 1;
+      const generation = focusRetryGeneration;
       scheduleAfterWebLayout(
         getRootElement(vm),
         () => {
+          if (viewDisposed || generation !== focusRetryGeneration) return;
           state.focusTargetRetryScheduled = false;
           notifyFocusTargetReady(vm);
         },
@@ -806,7 +822,6 @@ function notifyFocusTargetReady(vm: any) {
   const target = getRootElement(vm);
   if (!state.viewReady || !target?.isConnected) return;
   for (const listener of Array.from(state.focusTargetReadyListeners)) listener();
-  if (target.ownerDocument.activeElement === target) state.focusTargetRetryCount = 0;
 }
 
 function setViewReady(vm: any, value: boolean) {

@@ -17,6 +17,16 @@ describe('Focus readiness evidence boundaries', () => {
       ['HC-FOCUS-TARGET-0001-D'],
     ],
     [
+      'react-focus-updated-entry-replay',
+      'T-FOCUS-0002-CASE-UPDATED-ENTRY',
+      [
+        'C-AS-FOCUS-ENTRY-0001-G',
+        'C-AS-FOCUS-ENTRY-0001-H',
+        'C-AS-FOCUSABLE-0001-G',
+        'HC-FOCUS-TARGET-0001-D',
+      ],
+    ],
+    [
       'react-focus-updated-native-blur',
       'T-FOCUS-0002-CASE-UPDATED-BLUR',
       ['HC-FOCUS-TARGET-0001-B', 'HC-FOCUS-TARGET-0001-D'],
@@ -30,6 +40,21 @@ describe('Focus readiness evidence boundaries', () => {
     expect(implementation?.consumesCases).toEqual([caseId]);
     expect(entity?.cases.find((candidate) => candidate.id === caseId)?.covers).toEqual(covers);
   });
+
+  it.each(['react', 'vue', 'vue2', 'web-component'])(
+    'keeps %s retry evidence independent of full-profile and roving claims',
+    (adapter) => {
+      const entity = workspace.entities.find((candidate) => candidate.id === 'T-FOCUS-0001');
+      const implementation = entity?.implementations.find(
+        (candidate) => candidate.id === `adapter-${adapter}-focus-intent-retry-bound`
+      );
+      expect(implementation?.consumesCases).toEqual(['T-FOCUS-0001-CASE-INTENT-RETRY-BOUND']);
+      expect(
+        entity?.cases.find((candidate) => candidate.id === 'T-FOCUS-0001-CASE-INTENT-RETRY-BOUND')
+          ?.covers
+      ).toEqual(['C-AS-FOCUSABLE-0001-G', 'C-AS-FOCUS-ENTRY-0001-H', 'HC-FOCUS-TARGET-0001-C']);
+    }
+  );
 
   it.each([
     ['M-FOCUS-0001', 'M-FOCUS-0001-G'],

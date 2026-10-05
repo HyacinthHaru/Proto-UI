@@ -1,3 +1,4 @@
+import { createFocusRequestIntent, retainFocusRequestIntent } from './request-intent';
 import {
   type FocusFacts,
   type FocusEntryConfig,
@@ -134,11 +135,12 @@ class FocusModuleImpl extends ModuleBase {
   private keyboardModality = false;
   private currentHostFocusTarget: unknown = null;
   private hostFocusTargetGeneration = 0;
+  private focusApplicationVersion = 0;
   private hostEventsWired = false;
   private scopeEventsWired = false;
   private rovingEventsWired = false;
   private pendingFocusRequest:
-    | { kind: 'target'; options?: FocusRequestOptions; syncFacts: boolean }
+    | { kind: 'target'; options: FocusRequestOptions; syncFacts: boolean }
     | { kind: 'entry'; options: FocusRequestOptions }
     | undefined;
   private offTargetReady: (() => void) | undefined;
@@ -255,9 +257,13 @@ class FocusModuleImpl extends ModuleBase {
     if (!this.caps.has(FOCUS_TARGET_READY_CAP)) return;
     this.offTargetReady = this.caps.get(FOCUS_TARGET_READY_CAP)(() => {
       this.runInCallbackScope(() => {
+        const applicationVersion = this.focusApplicationVersion;
         this.syncCenter();
         this.syncHostFocusable();
         this.syncHostEntry();
+        // Center may already replay a deferred roving request during upsert.
+        // Do not apply that same pending intent twice for one readiness signal.
+        if (applicationVersion !== this.focusApplicationVersion) return;
         if (this.fulfillPendingFocus()) return;
         // A portal or retained view epoch can replace/move the native target
         // after logical focus was already granted. Re-project that established
@@ -340,13 +346,16 @@ class FocusModuleImpl extends ModuleBase {
       orderTargets: (targets) =>
         this.caps.has(FOCUS_ORDER_CAP) ? this.caps.get(FOCUS_ORDER_CAP)(targets) : null,
       requestFocus: (options?: FocusRequestOptions, behavior?: FocusRequestBehavior) => {
+        // Center-originated scope/roving requests also need distinct identity.
+        // An owned snapshot is a pending replay and must retain its budget.
+        const intent = retainFocusRequestIntent(options);
         let outcome: FocusRequestOutcome = 'rejected';
         this.runInCallbackScope(() => {
           if (behavior?.syncFacts === false) {
-            outcome = this.requestNativeFocusDirect(options);
+            outcome = this.requestNativeFocusDirect(intent);
             return;
           }
-          outcome = this.requestFocusDirect(options);
+          outcome = this.requestFocusDirect(intent);
         });
         return outcome;
       },
@@ -862,7 +871,7 @@ class FocusModuleImpl extends ModuleBase {
     this.syncCenter();
   }
 
-  private queuePendingFocus(options: FocusRequestOptions | undefined, syncFacts: boolean) {
+  private queuePendingFocus(options: FocusRequestOptions, syncFacts: boolean) {
     this.pendingFocusRequest = { kind: 'target', options, syncFacts };
   }
 
@@ -875,12 +884,11 @@ class FocusModuleImpl extends ModuleBase {
     if (!pending || !this.getRootTarget() || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) return false;
     this.pendingFocusRequest = undefined;
     if (pending.kind === 'entry') this.applyEntryFocus(pending.options);
-    else if (pending.syncFacts) this.requestFocus(pending.options);
-    else this.requestNativeFocus(pending.options);
+    else this.applyTargetFocus(pending.options, pending.syncFacts);
     return true;
   }
 
-  private requestFocusDirect(options?: FocusRequestOptions): FocusRequestOutcome {
+  private requestFocusDirect(options: FocusRequestOptions): FocusRequestOutcome {
     if (!this.focusableDeclared || this.focusableConfig.disabled) return 'rejected';
     const target = this.getRootTarget();
     if (!target || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) {
@@ -888,6 +896,7 @@ class FocusModuleImpl extends ModuleBase {
       return 'pending';
     }
     this.clearPendingFocus();
+    this.focusApplicationVersion += 1;
     const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(target, options, 'programmatic');
     if (applied === false) {
       this.queuePendingFocus(options, true);
@@ -908,19 +917,24 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   requestFocus(options?: FocusRequestOptions): void {
+    this.applyTargetFocus(createFocusRequestIntent(options), true);
+  }
+
+  private applyTargetFocus(options: FocusRequestOptions, syncFacts: boolean): void {
     if (!this.focusableDeclared || this.focusableConfig.disabled) return;
     const entry = this.createCenterEntry();
     if (!entry) {
-      this.requestFocusDirect(options);
+      if (syncFacts) this.requestFocusDirect(options);
+      else this.requestNativeFocusDirect(options);
       return;
     }
-    FOCUS_CENTER.requestFocus(entry, options, { syncFacts: true });
+    FOCUS_CENTER.requestFocus(entry, options, { syncFacts });
   }
 
   requestEntryFocus(options?: FocusRequestOptions): void {
     // A private snapshot identifies this distinct intent even when callers
     // reuse options. Readiness replay keeps this same snapshot and retry budget.
-    this.applyEntryFocus({ ...options });
+    this.applyEntryFocus(createFocusRequestIntent(options));
   }
 
   private applyEntryFocus(options: FocusRequestOptions): void {
@@ -940,12 +954,13 @@ class FocusModuleImpl extends ModuleBase {
         ? target
         : null;
     if (!resolved) return;
+    this.focusApplicationVersion += 1;
     if (this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options, 'entry') === false) {
       this.pendingFocusRequest = { kind: 'entry', options };
     }
   }
 
-  private requestNativeFocusDirect(options?: FocusRequestOptions): FocusRequestOutcome {
+  private requestNativeFocusDirect(options: FocusRequestOptions): FocusRequestOutcome {
     if (!this.focusableDeclared || this.focusableConfig.disabled) return 'rejected';
     if (options?.reason === 'keyboard') this.keyboardModality = true;
     else if (options?.reason === 'pointer') this.keyboardModality = false;
@@ -955,6 +970,7 @@ class FocusModuleImpl extends ModuleBase {
       return 'pending';
     }
     this.clearPendingFocus();
+    this.focusApplicationVersion += 1;
     const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(target, options, 'native');
     if (applied === false) {
       this.queuePendingFocus(options, false);
@@ -964,13 +980,7 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   private requestNativeFocus(options?: FocusRequestOptions): void {
-    if (!this.focusableDeclared || this.focusableConfig.disabled) return;
-    const entry = this.createCenterEntry();
-    if (!entry) {
-      this.requestNativeFocusDirect(options);
-      return;
-    }
-    FOCUS_CENTER.requestFocus(entry, options, { syncFacts: false });
+    this.applyTargetFocus(createFocusRequestIntent(options), false);
   }
 
   blur(): void {
