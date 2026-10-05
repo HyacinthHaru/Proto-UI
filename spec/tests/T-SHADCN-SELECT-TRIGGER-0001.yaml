@@ -58,6 +58,18 @@ implementations:
     exercises:
       - P-SHADCN-SELECT-TRIGGER
       - P-BASE-SELECT-TRIGGER
+  - id: website-shadcn-empty-ghost-foreground-browser
+    kind: adapter-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts
+    required: false
+    consumesCases:
+      - T-SHADCN-SELECT-TRIGGER-0001-CASE-GHOST
+    exercises:
+      - P-SHADCN-SELECT-TRIGGER
+      - P-BASE-SELECT-TRIGGER
+    notes:
+      - Bounded WC real-input light/dark foreground and inherited Value paint; current execution evidence is reported separately.
   - id: website-shadcn-header-ghost-runtime
     kind: adapter-test
     status: passing

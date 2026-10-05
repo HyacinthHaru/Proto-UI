@@ -175,6 +175,51 @@ describe('prototypes/shadcn: select', () => {
   });
 });
 
+it('withdraws placeholder foreground only during ghost hover or press', async () => {
+  // T-SHADCN-SELECT-TRIGGER-0001-CASE-GHOST
+  vi.useFakeTimers();
+  const { trigger, value } = createSelect({ trigger: { appearance: 'ghost' } });
+  await settle();
+  const hasMutedForeground = () =>
+    styleContains(trigger, 'text-muted-foreground') ||
+    (trigger.hasAttribute('data-placeholder') &&
+      styleContains(trigger, 'data-[placeholder]:text-muted-foreground'));
+  expect(trigger.hasAttribute('data-placeholder')).toBe(true);
+  expect(value.textContent).toBe('Select a framework');
+  expect(hasMutedForeground()).toBe(true);
+
+  trigger.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+  await flush();
+  expect(trigger.getExposes().hovered.get()).toBe(true);
+  expect(styleContains(trigger, 'text-accent-foreground')).toBe(true);
+  expect(hasMutedForeground()).toBe(false);
+
+  trigger.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true }));
+  // Touch can press without entering the pointer-hover state.
+  trigger.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch' }));
+  await flush();
+  expect(trigger.getExposes().hovered.get()).toBe(false);
+  expect(trigger.getExposes().pressed.get()).toBe(true);
+  expect(styleContains(trigger, 'text-accent-foreground')).toBe(true);
+  expect(hasMutedForeground()).toBe(false);
+
+  trigger.setProps({});
+  await flush();
+  expect(trigger.getExposes().pressed.get()).toBe(true);
+  expect(hasMutedForeground()).toBe(true);
+  expect(styleContains(trigger, 'text-accent-foreground')).toBe(false);
+  trigger.setProps({ appearance: 'ghost' });
+  await flush();
+  expect(hasMutedForeground()).toBe(false);
+  expect(styleContains(trigger, 'text-accent-foreground')).toBe(true);
+
+  trigger.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerType: 'touch' }));
+  await flush();
+  expect(trigger.getExposes().pressed.get()).toBe(false);
+  expect(hasMutedForeground()).toBe(true);
+  expect(styleContains(trigger, 'text-accent-foreground')).toBe(false);
+});
+
 it('supports ghost presentation and restores default while inherited states stay live', async () => {
   // T-SHADCN-SELECT-TRIGGER-0001-CASE-GHOST
   vi.useFakeTimers();

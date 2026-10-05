@@ -128,7 +128,7 @@ export const SHADCN_STYLE_TOKENS: string[] = [
   'data-[orientation=vertical]:top-0',
   'data-[orientation=vertical]:w-2.5',
   'data-[orientation=vertical]:w-px',
-  'data-[placeholder]:text-muted-foreground',
+  'data-[placeholder]:not-[data-hovered]:not-[data-pressed]:text-muted-foreground',
   'data-[pressed]:bg-accent/80',
   'data-[pressed]:bg-input/70',
   'data-[pressed]:bg-muted',

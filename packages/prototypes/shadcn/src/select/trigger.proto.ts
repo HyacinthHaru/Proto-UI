@@ -65,7 +65,14 @@ const selectTrigger = definePrototype<ShadcnSelectTriggerProps, ShadcnSelectTrig
       intent: (i) => i.feedback.style.use(tw('h-8')),
     });
     def.rule({
-      when: (w) => w.state(placeholder).eq(true),
+      when: (w) =>
+        w.all(
+          w.state(placeholder).eq(true),
+          w.any(
+            w.prop('appearance').eq('default'),
+            w.all(w.state(hovered).eq(false), w.state(pressed).eq(false))
+          )
+        ),
       intent: (i) => i.feedback.style.use(tw('text-muted-foreground')),
     });
     def.rule({

@@ -12,6 +12,7 @@ on:
       - 'apps/www/src/components/override/AdapterSelect.astro'
       - 'apps/www/src/components/site-shadcn-controls.ts'
       - 'apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts'
+      - 'apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts'
   workflow_dispatch:
 
 # Actual public Header pages only. No deployment, secrets, write permissions,
@@ -83,6 +84,19 @@ jobs:
             corepack pnpm@10.32.1 exec vitest run --no-file-parallelism \
             apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts \
             2>&1 | tee "$RUNNER_TEMP/header-select-elevation/browser.log"
+      - name: Empty ghost Select actual paint and capture
+        if: matrix.appearance == 'family'
+        working-directory: subject
+        env:
+          PROTO_UI_HEADER_SELECT_SUBJECT_SHA: ${{ env.CANDIDATE_SHA }}
+          PROTO_UI_GHOST_SELECT_EVIDENCE_DIR: ${{ runner.temp }}/header-select-elevation/empty-ghost
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=10s 180s \
+            corepack pnpm@10.32.1 exec vitest run --no-file-parallelism \
+            apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts \
+            -t 'paints empty ghost Select text' \
+            2>&1 | tee "$RUNNER_TEMP/header-select-elevation/empty-ghost.log"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
