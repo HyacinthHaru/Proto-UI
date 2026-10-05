@@ -3,7 +3,7 @@ type: test
 title: Focus target and scope runtime contract tests
 status: draft
 since: 0.1.0
-summary: Runtime contract tests for asFocusable target facts, asFocusEntry region policy, setup-only configuration, disabled focus requests, autofocus, and asFocusScope singleton/empty-container behavior.
+summary: Runtime and bounded React evidence for asFocusable target facts, asFocusEntry region policy, setup-only configuration, disabled focus requests, autofocus, scopes, native reveal readiness, one-shot commit effects, and nested surface-owner readiness.
 cases:
   - id: T-FOCUS-0001-CASE-FOCUSABLE-ONCE
     title: Repeated asFocusable calls reuse one handle and record privileged once trace
@@ -57,11 +57,42 @@ cases:
       - C-AS-FOCUS-ENTRY-0001-E
       - C-AS-FOCUS-ENTRY-0001-F
       - C-FOCUS-0001-G
+      - C-FOCUS-0001-H
     expectation: role-scoped-disable-preserves-unrelated-intent-and-synchronous-blur-observer-decisions
     notes:
       - Re-enabling a cancelled role before readiness must not resurrect its previous request.
       - Target disable still blurs the physical target and clears its facts while preserving enabled entry replay.
       - Synchronous native blur observers may cancel or supersede entry intent; a captured old slot must not be restored afterward.
+  - id: T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
+    title: Programmatic facts synchronize immediately while native and entry wait for their actual owner ingress
+    covers:
+      - C-AS-FOCUS-ENTRY-0001-H
+      - M-FOCUS-0001-G
+      - HC-FOCUS-TARGET-0001-D
+    expectation: real-onUpdated-programmatic-true-true-native-and-entry-false-false-then-true-true
+  - id: T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
+    title: Entry acquisition waits for the actual target owner's event ingress and preserves cancellation
+    covers:
+      - C-AS-FOCUS-ENTRY-0001-E
+      - C-AS-FOCUS-ENTRY-0001-F
+      - C-AS-FOCUS-ENTRY-0001-G
+      - C-FOCUS-0001-D
+      - C-FOCUS-0001-G
+      - C-FOCUS-0001-H
+      - C-AS-FOCUS-ENTRY-0001-H
+      - HC-FOCUS-TARGET-0001-D
+    expectation: nested-owner-focus-and-facts-advance-together-after-readiness-unless-cancelled
+  - id: T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION
+    title: Completed descendant acquisition does not exhaust readiness retries for subsequent entry requests
+    covers:
+      - C-AS-FOCUSABLE-0001-G
+      - C-AS-FOCUS-ENTRY-0001-G
+      - C-FOCUS-0001-D
+      - C-AS-FOCUS-ENTRY-0001-H
+    expectation: repeated-rejection-then-success-remains-live-with-bounded-persistent-rejection
+    notes:
+      - The React model deliberately controls focus rejection and frame delivery; it is not native-browser evidence.
+      - The native fixture uses connected display-none descendants and real focus and frame delivery without patching host APIs.
   - id: T-FOCUS-0001-CASE-UNIQUE-OWNER
     title: A new host focus owner clears stale focus facts from the previous owner
     covers:
@@ -108,8 +139,73 @@ cases:
     notes:
       - Native :focus-visible equality is governed by the state-backed observed handles criterion (C-AS-FOCUSABLE-0001-C), not the disabled-rejects-focus criterion (C-AS-FOCUSABLE-0001-E).
     expectation: focus-visible-equals-native-result-when-supported-modality-fallback-when-unsupported
+  - id: T-FOCUS-0001-CASE-REACT-NATIVE-REVEAL
+    title: React Select selected entry and native End/Home agree with observed focus without committing selection
+    covers:
+      - C-FOCUS-0001-C
+      - C-FOCUS-0001-D
+      - M-FOCUS-0001-B
+      - M-FOCUS-0001-C
+      - M-FOCUS-0001-G
+      - HC-FOCUS-TARGET-0001-B
+      - HC-FOCUS-TARGET-0001-C
+      - HC-FOCUS-TARGET-0001-D
+    expectation: selected-entry-then-end-home-native-and-observed-focus-agree-selection-unchanged
+    notes:
+      - The actual React Select browser journey opens through the trigger; only the component requests selected-entry focus. DOM activeElement and data-focused must both identify Paper, then Ink after End, then Paper after Home.
+      - Page keyboard input does not pre-focus an option. Final aria-selected remains true for Paper and false for Ink; this is not selection-commit evidence.
+      - This retained Chromium/installed-React journey is bounded native evidence, not all React versions, other preview runtimes, native GPUI, or a complete Focus matrix. It does not independently test the closed resolved-owner boundary.
+  - id: T-FOCUS-0001-CASE-REACT-ONE-SHOT-OPERATIONS
+    title: React onUpdated one-shot blur and descendant entry effects apply during the commit window
+    covers:
+      - C-FOCUS-0001-C
+      - C-FOCUS-0001-G
+      - C-AS-FOCUS-ENTRY-0001-G
+      - M-FOCUS-0001-D
+      - M-FOCUS-0001-G
+      - HC-FOCUS-TARGET-0001-B
+      - HC-FOCUS-TARGET-0001-D
+    expectation: updated-blur-clears-physical-and-observed-focus-and-entry-focuses-descendant
+    notes:
+      - Real React createRoot/act fixtures assert that onUpdated blur removes physical focus and clears the exposed focused fact, and that onUpdated entry.focus reaches the descendant button.
+      - These kept assertions establish one-shot blur and entry effects, not every programmatic request branch or an independent proof that descendant entry declares no facts.
+  - id: T-FOCUS-0001-CASE-NATIVE-SURFACE-OWNER-READINESS
+    title: Outer native focus waits for the resolved inner Trigger surface owner to become ready
+    covers:
+      - C-FOCUS-0001-D
+      - M-FOCUS-0001-B
+      - M-FOCUS-0001-G
+      - HC-FOCUS-TARGET-0001-A
+      - HC-FOCUS-TARGET-0001-C
+      - HC-FOCUS-TARGET-0001-D
+    expectation: closed-inner-owner-defers-outer-native-focus-then-physical-and-inner-observed-focus-agree
+    notes:
+      - The real React nested Trigger fixture requests outer focusSelf from the inner onUpdated callback while the resolved inner owner's native observation gate is closed; it observes no physical application then and matching physical/inner focused facts after readiness.
+      - Discriminating red/green execution uses the installed React runtime in a simulated DOM. It neither injects gate state nor synthesizes focus facts, and does not claim native browser or all-version conformance.
 
 implementations:
+  - id: adapter-react-entry-owner-and-retry
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-entry-review-regressions.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
+      - T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION
+      - T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
+    notes:
+      - Real React lifecycle and happy-dom establish nested event-ingress ordering; controlled host rejection and frame delivery establish retry bookkeeping and its bound.
+  - id: adapter-react-entry-native-owner-and-retry
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/react/test/focus-entry-readiness.browser.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
+      - T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION
+      - T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
+    notes:
+      - Real-browser execution is included in the canonical runtime test plan; local execution is blocked by Chromium process-singleton socket permissions, so no local native pass is claimed.
   - id: focus-entry-rejected-request-lifecycle
     kind: runtime-test
     status: passing
@@ -177,6 +273,42 @@ implementations:
     required: true
     consumesCases:
       - T-FOCUS-0001-CASE-NAV-PARTICIPATION
+  - id: adapter-react-one-shot-focus-operations
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-REACT-ONE-SHOT-OPERATIONS
+    exercises:
+      - A-REACT-18-19-0001
+    notes:
+      - "Selectors: 'applies onUpdated blur to the previously focused physical target' and 'applies descendant entry focus requested from onUpdated'. Both passed in the retained PR #811 final affected run; this catalog edit is not a fresh execution."
+      - Uses real React commit fixtures in the simulated DOM; no native-browser or full Adapter-profile conformance claim.
+  - id: adapter-react-select-native-reveal
+    kind: adapter-test
+    status: passing
+    path: apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-REACT-NATIVE-REVEAL
+    exercises:
+      - A-REACT-18-19-0001
+    notes:
+      - "Selector: 'observes selected entry and native End/Home without committing selection'. Passed in the retained PR #811 final native run. The two other passing tests in that file do not extend this native Focus case to other runtimes."
+      - Actual Chromium and installed React demo evidence only; typecheck and two-parameter provider compatibility are not normative execution evidence.
+  - id: adapter-react-native-surface-owner-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/nested-trigger.integration.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-NATIVE-SURFACE-OWNER-READINESS
+    exercises:
+      - A-REACT-18-19-0001
+    notes:
+      - "Selector: 'defers outer native focus until the resolved inner Trigger surface is ready'. Red exposes premature physical application without the inner observed fact; green preserves that fact after owner readiness."
+      - This bounded installed-React simulated-DOM integration does not certify native browser layout, the full React version range, or other Adapter realizations.
 verifies:
   contracts:
     - id: C-FOCUS-0001
@@ -186,6 +318,7 @@ verifies:
         - C-FOCUS-0001-E
         - C-FOCUS-0001-F
         - C-FOCUS-0001-G
+        - C-FOCUS-0001-H
     - id: C-AS-FOCUSABLE-0001
       anchors:
         - C-AS-FOCUSABLE-0001-A
@@ -210,7 +343,40 @@ verifies:
         - C-AS-FOCUS-ENTRY-0001-E
         - C-AS-FOCUS-ENTRY-0001-F
         - C-AS-FOCUS-ENTRY-0001-G
+        - C-AS-FOCUS-ENTRY-0001-H
+  modules:
+    - id: M-FOCUS-0001
+      since: 0.3.0-alpha.1
+      anchors:
+        - M-FOCUS-0001-B
+        - M-FOCUS-0001-C
+        - M-FOCUS-0001-D
+        - M-FOCUS-0001-G
+  hostCaps:
+    - id: HC-FOCUS-TARGET-0001
+      since: 0.3.0-alpha.1
+      anchors:
+        - HC-FOCUS-TARGET-0001-A
+        - HC-FOCUS-TARGET-0001-B
+        - HC-FOCUS-TARGET-0001-C
+        - HC-FOCUS-TARGET-0001-D
+exercises:
+  adapters:
+    - id: A-REACT-18-19-0001
+      since: 0.3.0-alpha.1
+      anchors:
+        - A-REACT-18-19-0001-FOCUS
+        - A-REACT-18-19-0001-F
+        - A-REACT-18-19-0001-I
+      coverageImpact: exercises-test-surface
+      note: Bounded real React commit fixtures, including nested resolved-owner readiness, and the selected-entry/End/Home Chromium journey exercise current Focus and observation delivery, not the whole React version range or profile.
 revisions:
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Bound the owner-approved programmatic/native/entry readiness split to real onUpdated controls and preserved existing #811 native, entry, A11y and retained-owner assertions.
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Bound role cancellation to its explicit draft criterion and added actual-owner and repeated-entry readiness controls, with native execution pending.
   - version: 0.3.0-alpha.1
     change: strengthened
     summary: Added dual-role target, target-self and entry cancellation controls with synchronous native blur observer reentry.
@@ -259,6 +425,9 @@ revisions:
   - version: 0.1.12
     change: refined
     summary: Added Web projection coverage that sequentially excluded roving members remain programmatically focusable.
+  - version: 0.3.0-alpha.1
+    change: refined
+    summary: Mapped React native selected-entry/End/Home and onUpdated blur/entry evidence to privileged request distinctions; added executed nested resolved-surface-owner red/green evidence without claiming broader host conformance.
 tags:
   - focus
   - as-focusable
