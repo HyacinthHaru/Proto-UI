@@ -1,3 +1,4 @@
+import { ownerAuthorizationFromArgs, ownerCollaborationScope } from './owner-authorization.mjs';
 import fs from 'node:fs';
 import { loadModelTraceRecord, readModelTraceJson } from './modeltrace.mjs';
 import process from 'node:process';
@@ -31,6 +32,7 @@ import {
   loadSkillRegistry,
   skillRegistryRoot,
   validateSkillHandoff,
+  requireCompletedHandoff,
 } from './skill-registry.mjs';
 
 const POLICY_PATH = new URL(
@@ -43,8 +45,8 @@ function usage() {
     'Usage:',
     '  pnpm agent:collaborate -- thread-revision --repository <github.com:owner/repo> --pull-request <number> --thread <thread-id>',
     '  pnpm agent:collaborate -- request-digest --request <request.json>',
-    '  pnpm agent:collaborate -- validate --mode human-assisted|autonomous --mode-source <trusted-source> --request <request.json> --handoff <handoff.json> [--assessment <result.json>]',
-    '  pnpm agent:collaborate -- apply --mode human-assisted|autonomous --mode-source <trusted-source> --request <request.json> --handoff <handoff.json> [--assessment <result.json>]',
+    '  pnpm agent:collaborate -- validate --mode human-assisted|autonomous --mode-source <trusted-source> --request <request.json> --handoff <handoff.json> --record <record.json> --context <context.json> [--assessment <result.json>] [--owner-authorization <state.json> --owner-key <public.pem> --owner-grant <grant-id>]',
+    '  pnpm agent:collaborate -- apply --mode human-assisted|autonomous --mode-source <trusted-source> --request <request.json> --handoff <handoff.json> --record <record.json> --context <context.json> [--assessment <result.json>] [--owner-authorization <state.json> --owner-key <public.pem> --owner-grant <grant-id>]',
     '',
     'validate and apply require mode and source declared independently by the launcher/operator, matching the handoff. These arguments are declarations, not runtime attestation.',
     'apply performs a fresh live GitHub preflight, checks admission for one declared purpose-bound action, emits an idempotent no-op when already satisfied, or attempts exactly one mutation. A thrown/unknown write is reconciled once and is never retried blindly.',
@@ -64,6 +66,9 @@ const OPTIONS = new Map([
       '--assessment',
       '--record',
       '--context',
+      '--owner-authorization',
+      '--owner-key',
+      '--owner-grant',
     ]),
   ],
   [
@@ -76,6 +81,9 @@ const OPTIONS = new Map([
       '--assessment',
       '--record',
       '--context',
+      '--owner-authorization',
+      '--owner-key',
+      '--owner-grant',
     ]),
   ],
 ]);
@@ -135,7 +143,11 @@ function loadInvocationContext(args) {
   establishExecutionMode(executionMode, executionModeSource);
   // Preserve the independent operator declaration before reading task-authored
   // artifacts. This binding cannot authenticate a caller that controls both.
-  return Object.freeze({ executionMode, executionModeSource });
+  return Object.freeze({
+    executionMode,
+    executionModeSource,
+    ownerAuthorization: ownerAuthorizationFromArgs(args),
+  });
 }
 
 function loadCollaborationHandoff(path, invocationContext) {
@@ -145,6 +157,7 @@ function loadCollaborationHandoff(path, invocationContext) {
       throw new Error(`handoff ${field} does not match the independent invocation declaration`);
     }
   }
+  requireCompletedHandoff(handoff);
   const routed = validateSkillHandoff(handoff, loadSkillRegistry());
   if (routed.nextSkill?.id !== 'pui-collaborate') {
     throw new Error('handoff must select pui-collaborate');
@@ -157,10 +170,18 @@ function loadCollaborationHandoff(path, invocationContext) {
 
 function validateExecution(request, args, policy, invocationContext, routed) {
   const selfAssessment = loadAssessment(args.get('--assessment'), policy, request);
-  validateCollaborationHandoffBinding(request, routed.handoff, { selfAssessment });
+  validateCollaborationHandoffBinding(request, routed.handoff, {
+    selfAssessment,
+    ownerAuthorization: invocationContext.ownerAuthorization,
+  });
   const eligibility = evaluateSkillEligibility(routed.nextSkill, {
     executionMode: invocationContext.executionMode,
     selfAssessment,
+    entrypoint: routed.handoff.entrypoint,
+    ownerAuthorization: invocationContext.ownerAuthorization,
+    executionModeSource: invocationContext.executionModeSource,
+    repositoryId: request.repositoryId,
+    scopeId: ownerCollaborationScope(request),
   });
   if (!eligibility.eligible) throw new Error(eligibility.reason);
   if (

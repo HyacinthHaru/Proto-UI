@@ -2622,3 +2622,309 @@ for (const [name, mutate] of [
     assert.equal(reads, 0);
   });
 }
+
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { generateKeyPairSync, sign } from 'node:crypto';
+import { loadOwnerAuthorization, ownerDelegationSigningBytes } from '../owner-authorization.mjs';
+function writerOwner(t, actions = ['integrate']) {
+  const dir = mkdtempSync(path.join(tmpdir(), 'pui-owner-merge-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const keys = generateKeyPairSync('ed25519'),
+    statePath = path.join(dir, 'state.json'),
+    publicKeyPath = path.join(dir, 'key.pub');
+  writeFileSync(publicKeyPath, keys.publicKey.export({ type: 'spki', format: 'pem' }));
+  const grant = {
+    id: 'owner-merge-boundary',
+    generation: 1,
+    status: 'active',
+    grantor: { id: 19223209, login: 'cyjin-yl' },
+    actor: 'cyjin-yl',
+    repositoryId,
+    actions,
+    scopeIds: ['pull-request:487'],
+    baseRefName: 'main',
+    decisionReference: 'fixture:trusted-decision',
+  };
+  let revision = 0;
+  const save = (status = 'active', overrides = {}) => {
+    const payload = {
+      schemaVersion: 1,
+      kind: 'proto-ui.owner-delegation-state',
+      revision: ++revision,
+      grants: [{ ...grant, generation: revision, status, ...overrides }],
+    };
+    writeFileSync(
+      statePath,
+      JSON.stringify({
+        payload,
+        signature: sign(null, ownerDelegationSigningBytes(payload), keys.privateKey).toString(
+          'base64'
+        ),
+      })
+    );
+  };
+  save();
+  return {
+    save,
+    proof: loadOwnerAuthorization({ statePath, publicKeyPath, grantId: grant.id }),
+    id: grant.id,
+  };
+}
+test('bound owner grant reaches actual merge writer once and is revalidated before PUT', (t) => {
+  for (const revokeAt of ['none', 'collection', 'last-base-read']) {
+    const owner = writerOwner(t),
+      f = mergeFixture({
+        alterAuthorization(x) {
+          x.raw.data.viewer.login = 'cyjin-yl';
+          Object.assign(x.authorizationContext, {
+            actor: 'cyjin-yl',
+            executionMode: 'autonomous',
+            executionModeSource: 'schedule',
+            authorizationId: owner.id,
+            ownerAuthorization: owner.proof,
+            selfAssessment: null,
+          });
+        },
+      });
+    const runner = (command, args, options) => {
+      const result = f.runner(command, args, options);
+      if (
+        (revokeAt === 'collection' && args.includes('graphql')) ||
+        (revokeAt === 'last-base-read' &&
+          args.includes('repos/Proto-UI/Proto-UI/git/ref/heads/main'))
+      )
+        owner.save('revoked');
+      return result;
+    };
+    const opts = {
+      ...mergeOptions,
+      authorizationId: owner.id,
+      authorizationContext: f.authorizationContext,
+    };
+    if (revokeAt !== 'none') {
+      assert.throws(
+        () => submitGitHubMerge(repositoryId, 487, opts, runner, fastVerification),
+        /owner|authorization|eligibility/
+      );
+      assert.equal(f.writes, 0);
+    } else {
+      const result = submitGitHubMerge(repositoryId, 487, opts, runner, fastVerification);
+      assert.equal(result.merged, true);
+      assert.equal(f.writes, 1);
+    }
+  }
+});
+
+test('owner review writer rechecks grant, target and permission before its single POST', (t) => {
+  for (const failure of ['none', 'revoked', 'narrowed', 'permission', 'target']) {
+    const owner = writerOwner(t, ['review']),
+      a = mergeAuthorizationFixture();
+    a.raw.data.viewer.login = 'cyjin-yl';
+    const packet = { ...a.authorizationContext.packet, recommendedAction: 'COMMENT' };
+    const body = renderReviewBody(packet),
+      context = {
+        ...a.authorizationContext,
+        packet,
+        actor: 'cyjin-yl',
+        executionMode: 'autonomous',
+        executionModeSource: 'schedule',
+        authorizationId: owner.id,
+        ownerAuthorization: owner.proof,
+      };
+    let writes = 0;
+    const runner = (command, args, options) => {
+      if (args.includes('graphql')) {
+        if (failure === 'revoked') owner.save('revoked');
+        if (failure === 'narrowed') owner.save('active', { scopeIds: ['pull-request:488'] });
+        if (failure === 'permission') a.raw.data.repository.viewerPermission = 'READ';
+        if (failure === 'target') a.raw.data.repository.pullRequest.state = 'CLOSED';
+      }
+      if (args.includes('POST')) {
+        writes++;
+        return JSON.stringify({
+          id: 765,
+          node_id: 'PRR_owner_boundary',
+          user: { login: 'cyjin-yl' },
+          state: 'COMMENTED',
+          commit_id: sha('b'),
+          body,
+          html_url: 'https://github.com/Proto-UI/Proto-UI/pull/487#pullrequestreview-765',
+        });
+      }
+      return a.runner(command, args, options);
+    };
+    const invoke = () =>
+      submitGitHubReview(
+        repositoryId,
+        487,
+        { commitId: sha('b'), event: 'COMMENT', body },
+        runner,
+        {
+          reviewerLogin: 'cyjin-yl',
+          authorizationContext: context,
+          modelTrace: context.modelTrace,
+          modelTraceContext: context.modelTraceContext,
+        }
+      );
+    if (failure === 'none') {
+      assert.equal(invoke().status, 'applied');
+      assert.equal(writes, 1);
+    } else {
+      assert.throws(invoke, /boundary|no POST attempted|live canonical/);
+      assert.equal(writes, 0);
+    }
+  }
+});
+
+test('review writer treats an exact newly published review as duplicate but never hides other live drift', (t) => {
+  for (const drift of [false, true]) {
+    const owner = writerOwner(t, ['review']),
+      a = mergeAuthorizationFixture();
+    a.raw.data.viewer.login = 'cyjin-yl';
+    const packet = { ...a.authorizationContext.packet, recommendedAction: 'COMMENT' },
+      body = renderReviewBody(packet),
+      context = {
+        ...a.authorizationContext,
+        packet,
+        actor: 'cyjin-yl',
+        executionMode: 'autonomous',
+        executionModeSource: 'schedule',
+        authorizationId: owner.id,
+        ownerAuthorization: owner.proof,
+      };
+    let writes = 0;
+    const runner = (command, args, options) => {
+      if (args.includes('graphql')) {
+        a.raw.data.repository.pullRequest.reviews.nodes.push({
+          id: 'PRR_race_duplicate',
+          author: { login: 'cyjin-yl' },
+          state: 'COMMENTED',
+          commit: { oid: sha('b') },
+          submittedAt: '2026-08-23T06:05:00Z',
+          body,
+        });
+        if (drift) a.raw.data.repository.pullRequest.body += ' changed independently';
+      }
+      if (args.includes('POST')) writes++;
+      return a.runner(command, args, options);
+    };
+    const invoke = () =>
+      submitGitHubReview(
+        repositoryId,
+        487,
+        { commitId: sha('b'), event: 'COMMENT', body },
+        runner,
+        {
+          reviewerLogin: 'cyjin-yl',
+          authorizationContext: context,
+          modelTrace: context.modelTrace,
+          modelTraceContext: context.modelTraceContext,
+        }
+      );
+    if (drift) assert.throws(invoke);
+    else assert.equal(invoke().status, 'duplicate');
+    assert.equal(writes, 0);
+  }
+});
+
+test('APPROVE publication delta may add only the bound reviewer permission and remains blocked by revocation or other material', (t) => {
+  for (const failure of ['none', 'revoked', 'material']) {
+    const owner = writerOwner(t, ['review']),
+      a = mergeAuthorizationFixture();
+    a.raw.data.viewer.login = 'cyjin-yl';
+    const packet = a.authorizationContext.packet,
+      body = renderReviewBody(packet),
+      context = {
+        ...a.authorizationContext,
+        actor: 'cyjin-yl',
+        executionMode: 'autonomous',
+        executionModeSource: 'schedule',
+        authorizationId: owner.id,
+        ownerAuthorization: owner.proof,
+      };
+    let writes = 0;
+    const runner = (command, args, options) => {
+      if (args.includes('graphql')) {
+        a.raw.data.repository.pullRequest.reviews.nodes.push({
+          id: 'PRR_owner_duplicate_approval',
+          author: { login: 'cyjin-yl' },
+          state: 'APPROVED',
+          commit: { oid: sha('b') },
+          submittedAt: '2026-08-23T06:05:00Z',
+          body,
+        });
+        if (failure === 'revoked') owner.save('revoked');
+        if (failure === 'material') a.raw.data.repository.pullRequest.body += ' material drift';
+      }
+      if (args.includes('repos/Proto-UI/Proto-UI/collaborators/cyjin-yl/permission'))
+        return JSON.stringify({ user: { login: 'cyjin-yl' }, permission: 'write' });
+      if (args.includes('POST')) writes++;
+      return a.runner(command, args, options);
+    };
+    const invoke = () =>
+      submitGitHubReview(
+        repositoryId,
+        487,
+        { commitId: sha('b'), event: 'APPROVE', body },
+        runner,
+        {
+          reviewerLogin: 'cyjin-yl',
+          authorizationContext: context,
+          modelTrace: context.modelTrace,
+          modelTraceContext: context.modelTraceContext,
+        }
+      );
+    if (failure === 'none') assert.equal(invoke().status, 'duplicate');
+    else assert.throws(invoke);
+    assert.equal(writes, 0);
+  }
+});
+
+test('durable owner review grant cannot replace a measurement expiring during the final permission read', (t) => {
+  const owner = writerOwner(t, ['review']);
+  const a = mergeAuthorizationFixture();
+  a.raw.data.viewer.login = 'cyjin-yl';
+  const context = {
+    ...a.authorizationContext,
+    packet: { ...a.authorizationContext.packet, recommendedAction: 'COMMENT' },
+    actor: 'cyjin-yl',
+    executionMode: 'autonomous',
+    executionModeSource: 'schedule',
+    authorizationId: owner.id,
+    ownerAuthorization: owner.proof,
+  };
+  const body = renderReviewBody(context.packet);
+  const clock = Date.parse(context.modelTrace.measuredAt) + 1;
+  t.mock.timers.enable({ apis: ['Date'], now: clock });
+  let permissionReads = 0;
+  let writes = 0;
+  const runner = (command, args, options) => {
+    if (args.includes('POST')) writes += 1;
+    const result = a.runner(command, args, options);
+    if (args.includes('repos/Proto-UI/Proto-UI/collaborators/independent-reviewer/permission')) {
+      permissionReads += 1;
+      t.mock.timers.tick(Date.parse(context.modelTrace.expiresAt) - clock + 1);
+    }
+    return result;
+  };
+  assert.throws(
+    () =>
+      submitGitHubReview(
+        repositoryId,
+        487,
+        { commitId: sha('b'), event: 'COMMENT', body },
+        runner,
+        {
+          reviewerLogin: 'cyjin-yl',
+          authorizationContext: context,
+          modelTrace: context.modelTrace,
+          modelTraceContext: context.modelTraceContext,
+        }
+      ),
+    /expired/
+  );
+  assert.equal(permissionReads, 1);
+  assert.equal(writes, 0);
+});
