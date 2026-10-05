@@ -521,6 +521,85 @@ describe('prototypes/base: dialog', () => {
     }
   });
 
+  // T-BASE-DIALOG-MASK-0001-CASE-DEFAULT-ACTION
+  it('prevents participating Mask background pointer defaults while Content owns dismissal and focus return', async () => {
+    const root = document.createElement('base-dialog-root') as any;
+    const trigger = document.createElement('base-dialog-trigger') as any;
+    const mask = document.createElement('base-dialog-mask') as any;
+    const content = document.createElement('base-dialog-content') as any;
+    const close = document.createElement('base-dialog-close');
+    const input = document.createElement('input');
+    content.append(close, input);
+    root.append(trigger, mask, content);
+    document.body.append(root);
+
+    try {
+      await flushViewReconciliation();
+      trigger.focus();
+      trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await flushViewReconciliation();
+      await completeTransitions(mask, content);
+      input.focus();
+      expect(root.getExposes().open.get()).toBe(true);
+      const backgroundDown = new PointerEvent('pointerdown', { bubbles: true, cancelable: true });
+      mask.dispatchEvent(backgroundDown);
+      expect(backgroundDown.defaultPrevented).toBe(true);
+      await flushViewReconciliation();
+      expect(root.getExposes().open.get()).toBe(false);
+      await completeTransitions(mask, content);
+      expect(document.activeElement).toBe(trigger);
+    } finally {
+      root.remove();
+      await flushViewReconciliation();
+    }
+  });
+
+  it('leaves passthrough pointer defaults and Content controls/keyboard untouched', async () => {
+    const root = document.createElement('base-dialog-root') as any;
+    const trigger = document.createElement('base-dialog-trigger') as any;
+    const mask = document.createElement('base-dialog-mask') as any;
+    const content = document.createElement('base-dialog-content') as any;
+    const input = document.createElement('input');
+    const button = document.createElement('button');
+    const clicked = vi.fn();
+    button.addEventListener('click', clicked);
+    content.append(input, button);
+    setElementProps(root, { defaultOpen: true, alert: true });
+    const description = document.createElement('base-dialog-description');
+    description.textContent = 'Confirm this action';
+    content.append(description);
+    root.append(trigger, mask, content);
+    document.body.append(root);
+    try {
+      await completeTransitions(mask, content);
+      for (const passthrough of [true, false, true]) {
+        setElementProps(mask, { passthrough });
+        await flushViewReconciliation();
+        const backgroundDown = new PointerEvent('pointerdown', { bubbles: true, cancelable: true });
+        mask.dispatchEvent(backgroundDown);
+        expect(backgroundDown.defaultPrevented).toBe(!passthrough);
+        // Mask never bypasses Content's Alert Dialog dismissal policy.
+        expect(root.getExposes().open.get()).toBe(true);
+      }
+      for (const target of [input, button]) {
+        const down = new PointerEvent('pointerdown', { bubbles: true, cancelable: true });
+        target.dispatchEvent(down);
+        expect(down.defaultPrevented).toBe(false);
+      }
+      const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+      button.dispatchEvent(click);
+      expect(click.defaultPrevented).toBe(false);
+      expect(clicked).toHaveBeenCalledOnce();
+      const key = new KeyboardEvent('keydown', { key: 'a', bubbles: true, cancelable: true });
+      input.dispatchEvent(key);
+      expect(key.defaultPrevented).toBe(false);
+      expect(root.getExposes().open.get()).toBe(true);
+    } finally {
+      root.remove();
+      await flushViewReconciliation();
+    }
+  });
+
   it('mask passthrough projects pointer-events none without changing dialog open state', async () => {
     const root = document.createElement('base-dialog-root') as any;
     const trigger = document.createElement('base-dialog-trigger') as any;

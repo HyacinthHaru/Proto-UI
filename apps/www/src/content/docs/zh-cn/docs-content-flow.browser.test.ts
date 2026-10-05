@@ -116,6 +116,12 @@ async function readFlowFacts(page: Page): Promise<FlowFacts> {
 async function readSelectFacts(page: Page): Promise<SelectFacts> {
   await page.locator('[data-previewer-id][data-inited="1"]').first().waitFor({ state: 'visible' });
 
+  // data-inited marks startup admission, not the asynchronous projection commit.
+  // Observe the actual controls before measuring the completed document flow.
+  await page
+    .locator('[data-previewer-id] .pui-projection-controls')
+    .first()
+    .waitFor({ state: 'attached' });
   return page.evaluate(() => {
     const flow = document.querySelector<HTMLElement>('[data-doc-flow]');
     const previewer = flow?.querySelector<HTMLElement>(':scope > [data-previewer-id]');

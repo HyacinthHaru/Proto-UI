@@ -21,6 +21,10 @@
     "./theme": {
       "types": "./src/theme.ts",
       "default": "./src/theme.ts"
+    },
+    "./surface": {
+      "types": "./src/surface/index.ts",
+      "default": "./src/surface/index.ts"
     }
   },
   "dependencies": {
