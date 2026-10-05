@@ -653,3 +653,38 @@ test('keeps accepted stage-zero material sources inside their exact demonstratio
     );
   }
 });
+
+for (const family of ['react', 'vue', 'vue2'])
+  for (const dynamic of [false, true])
+    test(`runtime entry flags: ${family} rejects direct entry with dynamic=${dynamic}`, () => {
+      const graph = graphFixture();
+      const runtime = graph.chunks.find((chunk) => chunk.fileName === `_astro/${family}.js`);
+      runtime.isEntry = true;
+      runtime.isDynamicEntry = dynamic;
+      assert.ok(
+        collectWebsiteProductionBundleIssues({ graph }).some((issue) =>
+          /runtime chunk.*must be dynamic-only/u.test(issue)
+        )
+      );
+    });
+for (const family of ['react', 'vue', 'vue2', 'wc'])
+  for (const isEntry of [false, true])
+    test(`runtime entry flags: named ${family} facade ${isEntry ? 'rejects dual entry' : 'allows dynamic only'}`, () => {
+      const graph = graphFixture();
+      const name = `_astro/named-${family}.js`;
+      graph.chunks.push(
+        chunk(name, {
+          isEntry,
+          isDynamicEntry: true,
+          facadeModuleId: `apps/www/src/components/PrototypePreviewer/runtimes/${family}-runtime.ts`,
+          moduleIds: [],
+        })
+      );
+      graph.chunks
+        .find((chunk) => chunk.fileName === '_astro/home-demo.js')
+        .dynamicImports.push(name);
+      const issues = collectWebsiteProductionBundleIssues({ graph });
+      if (isEntry)
+        assert.ok(issues.some((issue) => /runtime chunk.*must be dynamic-only/u.test(issue)));
+      else assert.deepEqual(issues, []);
+    });

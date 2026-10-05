@@ -5321,6 +5321,160 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
       ? nativeLiteralString(binding.initializer, binding.node, new Set(seen).add(binding))
       : null;
   };
+  const scriptResourceSpecifier = (node) => {
+    const constructor = unwrapTypeScriptExpression(node.expression);
+    const member = staticMemberAccess(constructor);
+    const owner = member && unwrapTypeScriptExpression(member.receiver);
+    const mayBeNative = (name) => {
+      const bindings = wasmBindingAt(name, node);
+      return bindings.length === 0 || bindings.some((binding) => binding.rewrite);
+    };
+    const nativeUrl = ts.isIdentifier(constructor)
+      ? constructor.text === 'URL' && mayBeNative('URL')
+      : member?.name === 'URL' &&
+        ts.isIdentifier(owner) &&
+        wasmGlobals.has(owner.text) &&
+        mayBeNative(owner.text);
+    if (!nativeUrl || !node.arguments?.[1]) return null;
+    const base = staticMemberAccess(unwrapTypeScriptExpression(node.arguments[1]));
+    const meta = base && unwrapTypeScriptExpression(base.receiver);
+    if (
+      base?.name !== 'url' ||
+      !ts.isMetaProperty(meta) ||
+      meta.keywordToken !== ts.SyntaxKind.ImportKeyword
+    )
+      return null;
+    const target = nativeLiteralString(node.arguments[0], node);
+    // Directory/base metadata is not a file asset. Other bases (location,
+    // localization, business URLs) never enter this module-relative profile.
+    if (target !== null && /^(?:\.{0,2}|(?:\.{1,2}\/)+)$/u.test(target)) return null;
+    return `${SCRIPT_RESOURCE_SPECIFIER_PREFIX}${JSON.stringify(target)}>`;
+  };
+  const nodeModuleImports = new Map();
+  for (const entries of wasmBindings.values())
+    for (const binding of entries) {
+      let declaration = binding.node;
+      while (declaration && !ts.isImportDeclaration(declaration)) declaration = declaration.parent;
+      if (
+        !declaration ||
+        !ts.isStringLiteralLike(declaration.moduleSpecifier) ||
+        !['node:module', 'module'].includes(declaration.moduleSpecifier.text)
+      )
+        continue;
+      if (ts.isImportSpecifier(binding.node)) {
+        const importedName = (binding.node.propertyName ?? binding.node.name).text;
+        if (importedName === 'createRequire') nodeModuleImports.set(binding, 'factory');
+        else if (importedName === 'default') nodeModuleImports.set(binding, 'module');
+      } else if (ts.isNamespaceImport(binding.node) || ts.isImportClause(binding.node))
+        nodeModuleImports.set(binding, 'module');
+    }
+  const nodeLoaderCaptured = (binding, at) =>
+    ts.isFunctionLike(wasmScope(at, true)) && wasmScope(at, true) !== wasmScope(binding.node, true);
+  const nodeLoaderBindingVisible = (binding, at) =>
+    binding.position < at.getStart(sourceFile) || nodeLoaderCaptured(binding, at);
+  const nodeLoaderAssignmentVisible = (binding, assignment, at) =>
+    assignment.end <= at.getStart(sourceFile) || nodeLoaderCaptured(binding, at);
+  // A bounded resolver may run out of depth before reaching an import. Check
+  // only its finite lexical dependency graph before making that opaque: a
+  // deep business alias beside an unused Node import is not native evidence.
+  const nodeLoaderMayBeNative = (expression, at) => {
+    const pending = [[expression, at]];
+    const visited = new Set();
+    while (pending.length) {
+      const [value, context] = pending.pop();
+      if (!value) continue;
+      const candidate = unwrapTypeScriptExpression(value);
+      if (ts.isIdentifier(candidate)) {
+        for (const binding of wasmBindingAt(candidate.text, context)) {
+          if (nodeModuleImports.has(binding)) return true;
+          if (!nodeLoaderBindingVisible(binding, context)) continue;
+          const key = `${binding.position}:${candidate.text}:${context.getStart(sourceFile)}`;
+          if (visited.has(key)) continue;
+          visited.add(key);
+          if (
+            !binding.steps.some(
+              (step) => !step.rest && step.key !== null && step.key !== 'createRequire'
+            )
+          )
+            pending.push([binding.initializer, binding.node]);
+          for (const assignment of wasmAssignmentsByName.get(candidate.text) ?? [])
+            if (
+              nodeLoaderAssignmentVisible(binding, assignment, context) &&
+              wasmBindingAt(candidate.text, assignment).includes(binding)
+            )
+              pending.push([assignment.right, assignment]);
+        }
+      } else if (ts.isCallExpression(candidate)) pending.push([candidate.expression, candidate]);
+      else {
+        const member = staticMemberAccess(candidate);
+        if (member?.name === 'createRequire') pending.push([member.receiver, context]);
+      }
+    }
+    return false;
+  };
+  const nodeLoaderValue = (expression, at, seen = new Set()) => {
+    if (!expression) return new Set();
+    if (seen.size >= 64) return new Set(nodeLoaderMayBeNative(expression, at) ? ['opaque'] : []);
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isIdentifier(candidate)) {
+      const result = new Set();
+      for (const binding of wasmBindingAt(candidate.text, at)) {
+        const imported = nodeModuleImports.get(binding);
+        if (imported) {
+          result.add(imported);
+          continue;
+        }
+        if (!nodeLoaderBindingVisible(binding, at)) continue;
+        const visitKey = `node-loader:${binding.position}:${candidate.text}:${at.getStart(sourceFile)}`;
+        if (seen.has(visitKey)) {
+          if (nodeLoaderMayBeNative(expression, at)) result.add('opaque');
+          continue;
+        }
+        const visited = new Set(seen).add(visitKey);
+        let values = nodeLoaderValue(binding.initializer, binding.node, visited);
+        for (const step of binding.steps)
+          values = new Set(
+            [...values].flatMap((value) =>
+              value === 'opaque' || step.rest || step.key === null
+                ? ['opaque']
+                : value === 'module' && step.key === 'createRequire'
+                  ? ['factory']
+                  : []
+            )
+          );
+        for (const assignment of wasmAssignmentsByName.get(candidate.text) ?? [])
+          if (
+            nodeLoaderAssignmentVisible(binding, assignment, at) &&
+            wasmBindingAt(candidate.text, assignment).includes(binding)
+          ) {
+            const assigned = nodeLoaderValue(assignment.right, assignment, visited);
+            // Rebound native loader/factory values are unverified; do not
+            // invent a control-flow proof or taint ordinary business aliases.
+            if (values.size > 0 || assigned.size > 0) values = new Set(['opaque']);
+          }
+        if (binding.position >= at.getStart(sourceFile) && values.size > 0)
+          values = new Set(['opaque']);
+        for (const value of values) result.add(value);
+      }
+      return result;
+    }
+    if (ts.isCallExpression(candidate)) {
+      const factory = nodeLoaderValue(candidate.expression, candidate, seen);
+      return new Set(factory.has('factory') ? ['loader'] : factory.has('opaque') ? ['opaque'] : []);
+    }
+    const member = staticMemberAccess(candidate);
+    if (member)
+      return new Set(
+        [...nodeLoaderValue(member.receiver, at, seen)].flatMap((value) =>
+          value === 'opaque'
+            ? ['opaque']
+            : value === 'module' && member.name === 'createRequire'
+              ? ['factory']
+              : []
+        )
+      );
+    return new Set();
+  };
   const inspectNavigationValue = (expression, at) => {
     const literal = nativeLiteralString(expression, at);
     if (literal === null) specifiers.push(UNVERIFIED_DOM_RESOURCE_SPECIFIER);
@@ -5347,6 +5501,18 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
     return 'unknown';
   };
   const visit = (node) => {
+    if (ts.isCallExpression(node) && nodeModuleImports.size > 0) {
+      const loader = nodeLoaderValue(node.expression, node);
+      if (loader.has('loader') || loader.has('opaque')) {
+        // The Node factory's resolution base/result is not this parser's
+        // ordinary import resolver. Keep consumption unverified instead of
+        // manufacturing relative edges. Literal governed package identities
+        // are retained for the existing installed-package layer inspection.
+        specifiers.push(UNRESOLVED_DYNAMIC_REQUIRE_SPECIFIER);
+        const target = nativeLiteralString(node.arguments[0], node);
+        if (target?.startsWith('@proto.ui/')) specifiers.push(target);
+      }
+    }
     const assignmentTarget =
       ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken
         ? unwrapTypeScriptExpression(node.left)
@@ -5827,6 +5993,8 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
     } else if (ts.isNewExpression(node)) {
       const workerSpecifier = workerEntrySpecifier(node);
       if (workerSpecifier) specifiers.push(workerSpecifier);
+      const resourceSpecifier = scriptResourceSpecifier(node);
+      if (resourceSpecifier) specifiers.push(resourceSpecifier);
     }
     ts.forEachChild(node, visit);
   };
@@ -6024,6 +6192,10 @@ function literalHtmlHasUnreviewedEntry(html, specifiers) {
   return unverified;
 }
 const UNVERIFIED_NAVIGATION_URL_SPECIFIER = '<unverified executable navigation URL>';
+const SCRIPT_RESOURCE_SPECIFIER_PREFIX = '<module-relative script resource ';
+function isScriptResourceSpecifier(specifier) {
+  return specifier.startsWith(SCRIPT_RESOURCE_SPECIFIER_PREFIX) && specifier.endsWith('>');
+}
 function isNavigationUrlAttribute(tag, name) {
   return (
     (/^(?:a|area)$/u.test(tag) && /^(?:href|xlink:href)$/u.test(name)) ||
@@ -6201,7 +6373,12 @@ const REVIEWED_ASTRO_IMPORTS = Object.freeze({
   vue: 'https://esm.sh/vue@3',
 });
 
-function astroHeadImportMapIssues(rootDir, localStylesheets = [], inlineStyles = []) {
+function astroHeadImportMapIssues(
+  rootDir,
+  localStylesheets = [],
+  inlineStyles = [],
+  { promotion = false } = {}
+) {
   const sourcePath = 'apps/www/astro.config.mjs';
   const absolutePath = path.join(rootDir, sourcePath);
   if (!fs.existsSync(absolutePath)) return [];
@@ -6290,6 +6467,14 @@ function astroHeadImportMapIssues(rootDir, localStylesheets = [], inlineStyles =
         }
         if (opaque) {
           reject('dynamic head resource attributes are unverified');
+          continue;
+        }
+        if (
+          promotion &&
+          tag.toLowerCase() === 'base' &&
+          [...attrs.keys()].some((name) => name.toLowerCase() === 'href')
+        ) {
+          reject('promotion document base href resolution is unverified');
           continue;
         }
         const markup = `<${tag.toLowerCase()} ${attributes.join(' ')}>`;
@@ -6852,7 +7037,7 @@ function authoredVueResourceTags(content, absolutePath) {
   }
 }
 
-function authoredResourceTags(content, absolutePath) {
+function authoredResourceTags(content, absolutePath, { documentBaseContext = false } = {}) {
   if (/\.vue$/iu.test(absolutePath)) return authoredVueResourceTags(content, absolutePath);
   const tags = [];
   const literal = (node) => {
@@ -6919,7 +7104,7 @@ function authoredResourceTags(content, absolutePath) {
       ? raw
       : maskStringsInMdxBraceExpressions(raw);
   if (/\.(?:html?|md)$/iu.test(absolutePath)) {
-    const inspectHtml = (node) => {
+    const inspectHtml = (node, inTemplate = false) => {
       if (node.sourceCodeLocation?.startTag) {
         const attributes = new Map(
           (node.attrs ?? []).map((attribute) => {
@@ -6936,13 +7121,46 @@ function authoredResourceTags(content, absolutePath) {
             ];
           })
         );
-        tags.push({ name: node.tagName, attributes, opaque: false, jsx: false });
+        tags.push({
+          name: node.tagName,
+          attributes,
+          opaque: false,
+          jsx: false,
+          inertDocumentBase: inTemplate || node.namespaceURI !== 'http://www.w3.org/1999/xhtml',
+        });
       }
-      for (const child of node.childNodes ?? []) inspectHtml(child);
-      if (node.content) inspectHtml(node.content);
+      for (const child of node.childNodes ?? []) inspectHtml(child, inTemplate);
+      if (node.content) inspectHtml(node.content, true);
     };
     inspectHtml(parseHtml(raw, { sourceCodeLocationInfo: true }));
-  } else
+  } else {
+    const inertBaseRanges = [];
+    if (documentBaseContext && /<base\b/iu.test(raw)) {
+      // The lexical fallback retains authored tags for several formats. For
+      // base only, preserve parser-proven raw-text/template ancestry so text
+      // resembling markup cannot change the document-base classification.
+      try {
+        const parsed = parseAstro(raw, { position: true });
+        if (!parsed.diagnostics.some((diagnostic) => diagnostic.severity === 1)) {
+          const visit = (node, foreignContent = false) => {
+            const childIsForeign =
+              foreignContent || (node.type === 'element' && /^(?:svg|math)$/u.test(node.name));
+            if (
+              !foreignContent &&
+              node.type === 'element' &&
+              /^(?:style|textarea|title|template)$/u.test(node.name) &&
+              Number.isInteger(node.position?.start?.offset) &&
+              Number.isInteger(node.position?.end?.offset)
+            )
+              inertBaseRanges.push([node.position.start.offset, node.position.end.offset]);
+            else for (const child of node.children ?? []) visit(child, childIsForeign);
+          };
+          visit(parsed.ast);
+        }
+      } catch {
+        /* No proven inert context: preserve the unverified base. */
+      }
+    }
     for (const { start, end } of jsxOpeningTagCandidates(masked, { includeOffsets: true })) {
       const candidate = raw.slice(start, end);
       const source = ts.createSourceFile(
@@ -6954,6 +7172,8 @@ function authoredResourceTags(content, absolutePath) {
       );
       const count = tags.length;
       inspectJsx(source);
+      if (inertBaseRanges.some(([from, to]) => start >= from && start < to))
+        for (const tag of tags.slice(count)) tag.inertDocumentBase = true;
       if (source.parseDiagnostics.length) {
         if (tags.length > count) tags.at(-1).opaque = true;
         else {
@@ -6962,6 +7182,7 @@ function authoredResourceTags(content, absolutePath) {
         }
       }
     }
+  }
   return tags;
 }
 
@@ -6989,7 +7210,22 @@ function promotionMarkupResourceUrls(absolutePath) {
     image: ['href', 'xlink:href', 'xlinkHref'],
     input: ['src'],
   };
-  for (const { name, attributes, opaque } of authoredResourceTags(content, absolutePath)) {
+  for (const { name, attributes, opaque, inertDocumentBase } of authoredResourceTags(
+    content,
+    absolutePath,
+    { documentBaseContext: true }
+  )) {
+    // Document bases affect relative markup/inline-style resources across the
+    // rendered page. Source-file-relative lookup is not evidence for that URL.
+    if (
+      name === 'base' &&
+      !inertDocumentBase &&
+      (opaque ||
+        [...attributes.keys()].some((key) =>
+          ['href', ':href', 'v-bind:href', 'v-bind'].includes(key.toLowerCase())
+        ))
+    )
+      throw new Error(`promotion document base href in ${absolutePath} remains unverified`);
     const names = attributesByTag[name];
     if (!names) continue;
     if (
@@ -8386,6 +8622,7 @@ function inspectBarePackageEntry(rootDir, canonicalRootDir, entryPath, websiteAl
     }
     const dependencySpecifiers = [];
     for (const originalSpecifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
+      if (isScriptResourceSpecifier(originalSpecifier)) continue;
       const mapped = resolvePackageImports(originalSpecifier, sourcePath);
       if (mapped === null) {
         const result = {
@@ -8698,7 +8935,15 @@ export function promotionBarePackageTargets(root, specifier, metadata) {
   throw unverified();
 }
 
-function promotionResourcePath(root, canonicalRoot, sourcePath, viteRoot, kind, url) {
+function promotionResourcePath(
+  root,
+  canonicalRoot,
+  sourcePath,
+  viteRoot,
+  kind,
+  url,
+  { directoryMetadataRevision = null } = {}
+) {
   let resourcePath;
   try {
     resourcePath = decodeURIComponent(url.split(/[?#]/u, 1)[0]);
@@ -8722,7 +8967,10 @@ function promotionResourcePath(root, canonicalRoot, sourcePath, viteRoot, kind, 
       ]
     : [path.resolve(path.dirname(sourcePath), resourcePath)];
   const resource = bases.find(
-    (candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()
+    (candidate) =>
+      fs.existsSync(candidate) &&
+      (fs.statSync(candidate).isFile() ||
+        (directoryMetadataRevision && fs.statSync(candidate).isDirectory()))
   );
   if (!resource)
     throw new Error(`promotion ${kind} resource URL ${url} is unresolved; remains unverified`);
@@ -8739,6 +8987,37 @@ function promotionResourcePath(root, canonicalRoot, sourcePath, viteRoot, kind, 
     const parent = path.dirname(component);
     if (parent === component) break;
     component = parent;
+  }
+  if (directoryMetadataRevision && fs.statSync(resource).isDirectory()) {
+    // A current directory alone is not proof of metadata: an evidenced asset
+    // file may have been replaced by a directory. Require a historical tree.
+    const historicalType = spawnSync(
+      'git',
+      [
+        'cat-file',
+        '-t',
+        `${directoryMetadataRevision}:${path.relative(root, resource).replaceAll('\\', '/')}`,
+      ],
+      { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
+    );
+    if (historicalType.status !== 0 || historicalType.stdout.trim() !== 'tree')
+      throw new Error(`promotion ${kind} resource directory metadata remains unverified`);
+    return null;
+  }
+  if (directoryMetadataRevision) {
+    const relative = path.relative(root, resource).replaceAll('\\', '/');
+    const historicalEntry = spawnSync(
+      'git',
+      ['ls-tree', '-z', directoryMetadataRevision, '--', `:(literal)${relative}`],
+      { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
+    );
+    // git-show on mode 120000 returns link text, not the historical resource.
+    // A current regular file must not make those bytes into capture evidence.
+    if (
+      historicalEntry.status !== 0 ||
+      !/^(?:100644|100755) blob [0-9a-f]+\t/u.test(historicalEntry.stdout)
+    )
+      throw new Error(`promotion ${kind} resource historical file identity remains unverified`);
   }
   return resource;
 }
@@ -8770,7 +9049,7 @@ function reachableSourcePaths(
   candidates,
   aliasConfig = { aliases: new Map(), unsupported: new Set() },
   root = process.cwd(),
-  { promotionPackages = false } = {}
+  { promotionPackages = false, promotionRevision = null } = {}
 ) {
   const canonicalRoot = fs.realpathSync(root);
   const packageMetadata = new Set();
@@ -8871,7 +9150,9 @@ function reachableSourcePaths(
     if (fs.existsSync(config)) {
       const localStylesheets = [];
       const inlineStyles = [];
-      const configIssues = astroHeadImportMapIssues(root, localStylesheets, inlineStyles);
+      const configIssues = astroHeadImportMapIssues(root, localStylesheets, inlineStyles, {
+        promotion: true,
+      });
       if (configIssues.length) throw new Error('promotion config head resources remain unverified');
       const viteRoot = path.join(root, 'apps/www');
       for (const url of promotionStyleResourceUrls(config, inlineStyles))
@@ -8923,6 +9204,31 @@ function reachableSourcePaths(
       }
     }
     for (const specifier of moduleSpecifiersForWebsiteSource(sourcePath)) {
+      if (isScriptResourceSpecifier(specifier)) {
+        if (promotionPackages) {
+          const url = JSON.parse(specifier.slice(SCRIPT_RESOURCE_SPECIFIER_PREFIX.length, -1));
+          if (
+            typeof url !== 'string' ||
+            url !== url.trim() ||
+            /[\u0000-\u001f\u007f]/u.test(url) ||
+            /^(?:[a-z][a-z\d+.-]*:|\/\/)/iu.test(url)
+          )
+            throw new Error(`promotion script resource URL in ${sourcePath} remains unverified`);
+          const resource = promotionResourcePath(
+            root,
+            canonicalRoot,
+            sourcePath,
+            viteRoot,
+            'script',
+            url,
+            { directoryMetadataRevision: promotionRevision }
+          );
+          // Native URL construction supplies a resource edge, never an
+          // executable module edge, even if the file contains source text.
+          if (resource) reachable.add(resource);
+        }
+        continue;
+      }
       if (specifier === UNVERIFIED_DOM_RESOURCE_SPECIFIER) {
         if (promotionPackages)
           throw new Error(`promotion DOM-authored resource in ${sourcePath} remains unverified`);
@@ -9089,6 +9395,7 @@ function discoverWebsiteRawImports(rootDir) {
       }
     }
     for (const specifier of moduleSpecifiersForWebsiteSource(absolutePath)) {
+      if (isScriptResourceSpecifier(specifier)) continue;
       const guardedImport = guardedWebsiteImport(
         rootDir,
         canonicalRootDir,
@@ -9347,6 +9654,7 @@ function discoverHarnessRawImports(rootDir) {
     for (let specifier of moduleSpecifiersForWebsiteSource(absolutePath, {
       harnessPreviewBoundary: true,
     })) {
+      if (isScriptResourceSpecifier(specifier)) continue;
       if (specifier === '<unreviewed Harness preview>') {
         rawImports.push({
           sourcePath,
@@ -10253,7 +10561,7 @@ function evidenceCommitMetadata(
     sourceImplementationRoots,
     aliasConfig,
     rootDir,
-    { promotionPackages: true }
+    { promotionPackages: true, promotionRevision: commit }
   );
   for (const absoluteDependencyPath of sourceDependencyPaths) {
     const canonicalDependencyPath = canonicalImportTarget(absoluteDependencyPath);

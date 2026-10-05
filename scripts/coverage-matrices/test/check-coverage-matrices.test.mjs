@@ -577,7 +577,7 @@ function pngChunk(type, payload) {
   return Buffer.concat([length, typeAndPayload, crc]);
 }
 
-function indexedPng({ includePalette, pixel = 0, bitDepth = 1 }) {
+function indexedPng({ includePalette, pixel = 0, bitDepth = 1, color = [0xff, 0x00, 0x00] }) {
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(1, 0);
   ihdr.writeUInt32BE(1, 4);
@@ -587,7 +587,7 @@ function indexedPng({ includePalette, pixel = 0, bitDepth = 1 }) {
   const chunks = [
     Buffer.from('89504e470d0a1a0a', 'hex'),
     pngChunk('IHDR', ihdr),
-    ...(includePalette ? [pngChunk('PLTE', Buffer.from([0xff, 0x00, 0x00]))] : []),
+    ...(includePalette ? [pngChunk('PLTE', Buffer.from(color))] : []),
     pngChunk('IDAT', scanline),
     pngChunk('IEND', Buffer.alloc(0)),
   ];
@@ -16683,3 +16683,591 @@ for (const kind of ['website', 'harness'])
       assert.deepEqual(probeReview('wasm-cache-opaque', kind, source), []);
     });
   }
+
+function scriptAssetPromotionFixture(
+  source,
+  {
+    extension = 'astro',
+    assetPath = 'apps/www/src/components/override/surface.png',
+    bytes = indexedPng({ includePalette: true }),
+    prepare,
+  } = {}
+) {
+  const root = createRoot();
+  const implementationPath = `apps/www/src/components/override/Search.${extension}`;
+  const websiteBindings = [[implementationPath, ['www.shell.search']]];
+  fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+  fs.writeFileSync(path.join(root, implementationPath), source);
+  fs.mkdirSync(path.dirname(path.join(root, assetPath)), { recursive: true });
+  fs.writeFileSync(path.join(root, assetPath), bytes);
+  prepare?.(root);
+  writeValidMatrices(root, { Path: implementationPath }, {}, { websiteBindings });
+  const revision = commitFixtureRoot(root);
+  writeSelfHostedPromotion(root, revision, {
+    websiteBindings,
+    matrixOverrides: { Path: implementationPath },
+  });
+  return { root, assetPath, options: { rootDir: root, ...promotionOptions(revision) } };
+}
+
+for (const [name, source, extension] of [
+  ['fetch resource', `<script>fetch(new URL('./surface.png', import.meta.url));</script>`, 'astro'],
+  ['ordinary import control', `<script>import './surface.png';</script>`, 'astro'],
+  ['globalThis URL', `const asset = new globalThis.URL('./surface.png', import.meta.url);`, 'ts'],
+  ['window URL', `const asset = new window.URL('./surface.png', import.meta.url);`, 'tsx'],
+  [
+    'self URL',
+    `<script>const asset = new self.URL('./surface.png', import.meta.url);</script>`,
+    'vue',
+  ],
+  [
+    'local const target',
+    `<script>const assetPath = './surface.png'; fetch(new URL(assetPath, import.meta.url));</script>`,
+    'svelte',
+  ],
+  [
+    'query and fragment',
+    `<script>fetch(new URL('./surface.png?version=1#surface', import.meta.url));</script>`,
+    'html',
+  ],
+  ['encoded filename', `export const asset = new URL('./%73urface.png', import.meta.url);`, 'mdx'],
+  [
+    'static computed url base',
+    `<script>fetch(new URL('./surface.png', import.meta['url']));</script>`,
+    'astro',
+  ],
+  [
+    'type-only shadow is erased',
+    `<script>declare const URL: unknown; fetch(new URL('./surface.png', import.meta.url));</script>`,
+    'astro',
+  ],
+  [
+    'wrapped static URL and base',
+    `<script>fetch(new ((globalThis).URL)('./surface.png', ((import.meta).url)));</script>`,
+    'astro',
+  ],
+  [
+    'const-enum rewrite cannot certify a shadow',
+    `<script>declare const enum URL { value = 1 } fetch(new URL('./surface.png', import.meta.url));</script>`,
+    'astro',
+  ],
+  [
+    'separate business scope',
+    `<script>function business(URL) { new URL('./missing.png', import.meta.url); } fetch(new URL('./surface.png', import.meta.url));</script>`,
+    'astro',
+  ],
+]) {
+  test(`script asset closure: ${name} accepts unchanged and rejects valid red-to-blue PNG bytes`, () => {
+    const { root, assetPath, options } = scriptAssetPromotionFixture(source, { extension });
+    assert.deepEqual(collectCoverageMatrixIssues(options), []);
+    fs.writeFileSync(
+      path.join(root, assetPath),
+      indexedPng({ includePalette: true, color: [0, 0, 255] })
+    );
+    assert.match(
+      validationMessage(root, options),
+      /promoted dependency.*surface\.png.*differs from evidence Commit/u
+    );
+  });
+}
+
+for (const [name, source] of [
+  [
+    'parameter shadow',
+    `function business(URL) { return new URL('./missing.png', import.meta.url); }`,
+  ],
+  ['array shadow', `const [URL] = business; new URL('./missing.png', import.meta.url);`],
+  ['rest shadow', `const { ...URL } = business; new URL('./missing.png', import.meta.url);`],
+  ['catch shadow', `try {} catch (URL) { new URL('./missing.png', import.meta.url); }`],
+  [
+    'hoisted var shadow',
+    `function business() { new URL('./missing.png', import.meta.url); var URL; }`,
+  ],
+  ['TDZ shadow', `{ new URL('./missing.png', import.meta.url); const URL = business; }`],
+  [
+    'named class shadow',
+    `const business = class URL { method() { return new URL('./missing.png', import.meta.url); } };`,
+  ],
+  [
+    'global owner shadow',
+    `function business({globalThis}) { return new globalThis.URL('./missing.png', import.meta.url); }`,
+  ],
+  ['ordinary location base', `new URL('/zh-cn/docs', window.location.href);`],
+  ['ordinary localization base', `new URL('/en/docs', 'https://example.com/');`],
+  ['base metadata', `new URL('.', import.meta.url); new URL('../', import.meta.url);`],
+  ['config directory metadata', `fileURLToPath(new URL('./assets', import.meta.url));`],
+]) {
+  test(`script asset closure: ${name} preserves supported promotion`, () => {
+    const { options } = scriptAssetPromotionFixture(`<script>${source}</script>`, {
+      prepare(root) {
+        const directory = path.join(root, 'apps/www/src/components/override/assets');
+        fs.mkdirSync(directory);
+        fs.writeFileSync(path.join(directory, 'metadata.txt'), 'directory fixture');
+      },
+    });
+    assert.deepEqual(collectCoverageMatrixIssues(options), []);
+  });
+}
+
+for (const [name, target] of [
+  ['opaque target', 'assetPath'],
+  ['dynamic template', '`./${name}.png`'],
+  ['remote asset', `'https://cdn.example/surface.png'`],
+  ['protocol-relative asset', `'//cdn.example/surface.png'`],
+  ['padded remote asset', `' https://cdn.example/surface.png'`],
+  ['missing asset', `'./missing.png'`],
+  ['invalid percent encoding', `'./surface%GG.png'`],
+  ['encoded NUL', `'./surface%00.png'`],
+  ['encoded backslash', `'./surface%5c.png'`],
+  ['literal control', `'./sur\\tface.png'`],
+  ['public-root escape', `'/%2e%2e/%2e%2e/surface.png'`],
+  ['repository escape', `'../../../../../../surface.png'`],
+  ['const shadow cannot borrow target', `pathName`],
+]) {
+  test(`script asset closure: ${name} remains unverified`, () => {
+    const source =
+      name === 'const shadow cannot borrow target'
+        ? `const pathName='./surface.png'; function load([pathName]) { fetch(new URL(pathName, import.meta.url)); }`
+        : `fetch(new URL(${target}, import.meta.url));`;
+    const { root, options } = scriptAssetPromotionFixture(`<script>${source}</script>`);
+    assert.match(validationMessage(root, options), /promotion script resource.*unverified/u);
+  });
+}
+
+for (const mode of ['file', 'directory']) {
+  test(`script asset closure: ${mode} symlink remains unverified`, () => {
+    const target = mode === 'file' ? './linked.png' : './linked/surface.png';
+    const { root, options } = scriptAssetPromotionFixture(
+      `<script>fetch(new URL('${target}', import.meta.url));</script>`,
+      {
+        prepare(root) {
+          const directory = path.join(root, 'apps/www/src/components/override');
+          fs.symlinkSync(
+            mode === 'file' ? 'surface.png' : '.',
+            path.join(directory, mode === 'file' ? 'linked.png' : 'linked'),
+            mode === 'file' ? 'file' : 'dir'
+          );
+        },
+      }
+    );
+    assert.match(
+      validationMessage(root, options),
+      /promotion script resource.*symlink.*unverified/u
+    );
+  });
+}
+
+for (const [name, assetPath, url] of [
+  ['opaque binary bytes', 'apps/www/src/components/override/surface.bin', './surface.bin'],
+  ['font bytes', 'apps/www/src/components/override/surface.woff2', './surface.woff2'],
+  [
+    'source-like extension outside module roots',
+    'assets/surface.js',
+    '../../../../../assets/surface.js',
+  ],
+]) {
+  test(`script asset closure: ${name} remains a resource-only edge`, () => {
+    const { root, options } = scriptAssetPromotionFixture(
+      `<script>fetch(new URL('${url}', import.meta.url));</script>`,
+      {
+        assetPath,
+        bytes: Buffer.from(
+          "import '@proto.ui/runtime'; throw new Error('must not execute or traverse');"
+        ),
+      }
+    );
+    assert.deepEqual(collectCoverageMatrixIssues(options), []);
+    fs.writeFileSync(path.join(root, assetPath), Buffer.from("import '@proto.ui/core';"));
+    assert.match(
+      validationMessage(root, options),
+      /promoted dependency.*surface\.(?:bin|js|woff2).*differs from evidence Commit/u
+    );
+  });
+}
+
+test('script asset closure: replacing an evidenced file with a directory cannot become metadata', () => {
+  const { root, assetPath, options } = scriptAssetPromotionFixture(
+    `<script>fetch(new URL('./surface.png', import.meta.url));</script>`
+  );
+  assert.deepEqual(collectCoverageMatrixIssues(options), []);
+  fs.unlinkSync(path.join(root, assetPath));
+  fs.mkdirSync(path.join(root, assetPath));
+  assert.match(
+    validationMessage(root, options),
+    /promotion script resource directory metadata.*unverified/u
+  );
+});
+
+for (const kind of ['website', 'harness']) {
+  test(`script asset closure: ${kind} ordinary source scan does not promote resource or opaque URL to module`, () => {
+    assert.deepEqual(
+      probeReview(
+        '4182138189',
+        kind,
+        `fetch(new URL('./surface.png', import.meta.url)); fetch(new URL(opaque, import.meta.url));`,
+        'ts'
+      ),
+      []
+    );
+  });
+}
+
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    [
+      'named native loader',
+      "import {createRequire} from 'node:module';const load=createRequire(import.meta.url);load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'renamed native loader',
+      "import {createRequire as make} from 'node:module';const load=make(import.meta.url);load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'namespace native loader',
+      "import * as nodeModule from 'node:module';const load=nodeModule.createRequire(import.meta.url);load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'default native loader',
+      "import nodeModule from 'node:module';const load=nodeModule.createRequire(import.meta.url);load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'native factory and loader aliases',
+      "import {createRequire as make} from 'node:module';const factory=make;const load=factory(import.meta.url);const consume=load;consume('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'native unused factory result',
+      "import {createRequire} from 'node:module';const load=createRequire(import.meta.url);",
+      false,
+    ],
+    [
+      'business factory name',
+      "function createRequire(){return ()=>{}}const load=createRequire(import.meta.url);load('@proto.ui/runtime');",
+      false,
+    ],
+    [
+      'business namespace factory',
+      "const nodeModule={createRequire(){return ()=>{}}};const load=nodeModule.createRequire(import.meta.url);load('@proto.ui/runtime');",
+      false,
+    ],
+    [
+      'business parameter shadows native factory',
+      "import {createRequire} from 'node:module';function go(createRequire){const load=createRequire(import.meta.url);load('@proto.ui/runtime');}",
+      false,
+    ],
+    [
+      'business destructured parameter shadows native factory',
+      "import {createRequire} from 'node:module';function go({createRequire}){const load=createRequire(import.meta.url);load('@proto.ui/runtime');}",
+      false,
+    ],
+    [
+      'builtin spelling',
+      "import {createRequire} from 'module';createRequire(import.meta.url)('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'namespace destructure',
+      "import * as native from 'node:module';const {createRequire: make}=native;const load=make(import.meta.url);load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'relative unknown loader base',
+      "import {createRequire} from 'node:module';const load=createRequire(otherBase);load('./ordinary.js');",
+      true,
+    ],
+    [
+      'dynamic loader target',
+      "import {createRequire} from 'node:module';const load=createRequire(import.meta.url);load(target);",
+      true,
+    ],
+    [
+      'native mutable assignment',
+      "import {createRequire} from 'node:module';let load;load=createRequire(import.meta.url);load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'native reassigned to business remains unverified',
+      "import {createRequire} from 'node:module';let load=createRequire(import.meta.url);load=business;load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'business reassigned native',
+      "import {createRequire} from 'node:module';let load=business;load=createRequire(import.meta.url);load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'inert resolve path',
+      "import {createRequire} from 'node:module';const load=createRequire(import.meta.url);load.resolve('@proto.ui/runtime');",
+      false,
+    ],
+    [
+      'same named different imported factory',
+      "import {promisify as createRequire} from 'node:util';const load=createRequire(()=>{});load('@proto.ui/runtime');",
+      false,
+    ],
+    [
+      'business assignment beside native import',
+      "import {createRequire} from 'node:module';let load=business;load=load;load('@proto.ui/runtime');",
+      false,
+    ],
+    [
+      'type only factory',
+      "import type {createRequire} from 'node:module';const load=createRequire(import.meta.url);load('@proto.ui/runtime');",
+      false,
+    ],
+    [
+      'native import after lexical use',
+      "const load=createRequire(import.meta.url);load('@proto.ui/runtime');import {createRequire} from 'node:module';",
+      true,
+    ],
+    [
+      'business deep aliases beside native import',
+      `import {createRequire} from 'node:module';const a0=business;${Array.from({ length: 70 }, (_, i) => `const a${i + 1}=a${i};`).join('')}a70('@proto.ui/runtime');`,
+      false,
+    ],
+    [
+      'native deep aliases',
+      `import {createRequire} from 'node:module';const a0=createRequire(import.meta.url);${Array.from({ length: 70 }, (_, i) => `const a${i + 1}=a${i};`).join('')}a70('@proto.ui/runtime');`,
+      true,
+    ],
+    [
+      'named default namespace import',
+      "import {default as native} from 'node:module';const load=native.createRequire(import.meta.url);load('@proto.ui/runtime');",
+      true,
+    ],
+    [
+      'later captured loader',
+      "import {createRequire} from 'node:module';function run(){load('@proto.ui/runtime');}const load=createRequire(import.meta.url);run();",
+      true,
+    ],
+    [
+      'later captured factory',
+      "import {createRequire} from 'node:module';function run(){const load=make(import.meta.url);load('@proto.ui/runtime');}const make=createRequire;run();",
+      true,
+    ],
+    [
+      'later captured business factory',
+      "import {createRequire} from 'node:module';function run(){const load=make();load('@proto.ui/runtime');}const make=()=>()=>{};run();",
+      false,
+    ],
+    [
+      'same evaluation domain TDZ',
+      "import {createRequire} from 'node:module';load('@proto.ui/runtime');const load=()=>{};",
+      false,
+    ],
+    [
+      'deep inert builtin helper',
+      `import * as native from 'node:module';const a0=native.isBuiltin;${Array.from({ length: 70 }, (_, i) => `const a${i + 1}=a${i};`).join('')}a70('@proto.ui/runtime');`,
+      false,
+    ],
+    [
+      'later captured native assignment',
+      "import {createRequire} from 'node:module';let load;function run(){load('@proto.ui/runtime');}load=createRequire(import.meta.url);run();",
+      true,
+    ],
+    [
+      'later captured business assignment',
+      "import {createRequire} from 'node:module';let load;function run(){load('@proto.ui/runtime');}load=()=>{};run();",
+      false,
+    ],
+    [
+      'deep destructured builtin helper',
+      `import * as native from 'node:module';const {isBuiltin:a0}=native;${Array.from({ length: 70 }, (_, i) => `const a${i + 1}=a${i};`).join('')}a70('@proto.ui/runtime');`,
+      false,
+    ],
+    [
+      'ordinary factory import inert',
+      "import {createRequire} from 'node:module';const description='createRequire(import.meta.url)';",
+      false,
+    ],
+  ])
+    test(`native Node loader followup: ${kind} ${name}`, () => {
+      const issues = probeReview('node-loader', kind, source);
+      assert.equal(
+        issues.some((issue) => /raw Proto UI import|unresolved dynamic require/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject)
+        assert.deepEqual(
+          [
+            'business deep aliases beside native import',
+            'deep inert builtin helper',
+            'deep destructured builtin helper',
+          ].includes(name)
+            ? issues.filter((issue) => !/runtime code compilation.*unverified/u.test(issue))
+            : issues,
+          []
+        );
+    });
+test('native Node loader followup: Astro frontmatter is an owned import consumer', () => {
+  const issues = probeReview(
+    'node-loader-frontmatter',
+    'website',
+    "---\nimport {createRequire} from 'node:module';const load=createRequire(import.meta.url);load('@proto.ui/runtime');\n---\n<main>Static</main>",
+    'astro'
+  );
+  assert.ok(
+    issues.some((issue) => /raw Proto UI import|unresolved dynamic require/u.test(issue)),
+    issues.join('\n')
+  );
+});
+
+test('script asset closure: historical symlink text cannot become current resource bytes', () => {
+  const { root, options } = scriptAssetPromotionFixture(
+    `<script>fetch(new URL('./linked.bin', import.meta.url));</script>`,
+    {
+      prepare(root) {
+        const dir = path.join(root, 'apps/www/src/components/override');
+        fs.writeFileSync(path.join(dir, 'payload.bin'), 'actual resource');
+        fs.symlinkSync('payload.bin', path.join(dir, 'linked.bin'));
+      },
+    }
+  );
+  assert.match(validationMessage(root, options), /promotion script resource.*symlink.*unverified/u);
+  const linked = path.join(root, 'apps/www/src/components/override/linked.bin');
+  fs.unlinkSync(linked);
+  fs.writeFileSync(linked, 'payload.bin');
+  assert.match(
+    validationMessage(root, options),
+    /promotion script resource historical file identity.*unverified/u
+  );
+});
+
+for (const [extension, source] of [
+  ['astro', '<base href="/assets/"><img src="surface.png" alt="probe">'],
+  ['html', '<base href="/assets/"><img src="surface.png" alt="probe">'],
+  ['md', '<base href="/assets/">\n\n![probe](surface.png)'],
+  ['mdx', '<base href="/assets/" />\n<img src="surface.png" alt="probe" />'],
+  ['tsx', 'export const surface=<><base href="/assets/"/><img src="surface.png" alt="probe"/></>;'],
+  ['vue', '<template><base href="/assets/"><img src="surface.png" alt="probe"></template>'],
+  ['svelte', '<base href="/assets/"><img src="surface.png" alt="probe">'],
+])
+  test(`document base promotion: ${extension} rejects decoy-relative asset evidence`, () => {
+    const { root, options } = scriptAssetPromotionFixture(source, {
+      extension,
+      prepare(root) {
+        const dir = path.join(root, 'apps/www/public/assets');
+        fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(path.join(dir, 'surface.png'), indexedPng({ includePalette: true }));
+      },
+    });
+    assert.match(validationMessage(root, options), /promotion document base href.*unverified/u);
+    fs.writeFileSync(
+      path.join(root, 'apps/www/public/assets/surface.png'),
+      indexedPng({ includePalette: true, color: [0, 0, 255] })
+    );
+    assert.match(validationMessage(root, options), /promotion document base href.*unverified/u);
+  });
+for (const [name, source, extension] of [
+  ['target only', '<base target="_blank"><img src="surface.png" alt="probe">', 'astro'],
+  ['comment', '<!-- <base href="/assets/"> --><img src="surface.png" alt="probe">', 'html'],
+  [
+    'script example',
+    `<script>const example='<base href="/assets/">';</script><img src="surface.png" alt="probe">`,
+    'astro',
+  ],
+  ['fenced example', '```html\n<base href="/assets/">\n```\n\n![probe](surface.png)', 'md'],
+  [
+    'custom component',
+    'export const surface=<><Base href="/assets/"/><img src="surface.png" alt="probe"/></>;',
+    'tsx',
+  ],
+])
+  test(`document base promotion: ${name} keeps ordinary bound asset`, () => {
+    const { root, assetPath, options } = scriptAssetPromotionFixture(source, { extension });
+    assert.deepEqual(collectCoverageMatrixIssues(options), []);
+    fs.writeFileSync(
+      path.join(root, assetPath),
+      indexedPng({ includePalette: true, color: [0, 0, 255] })
+    );
+    assert.match(validationMessage(root, options), /promoted dependency.*surface\.png.*differs/u);
+  });
+for (const source of [
+  '<base href="../assets/"><img src="surface.png">',
+  '<base href=""><img src="surface.png">',
+  '<base href={location}><img src="surface.png">',
+  '<base {...props}><img src="surface.png">',
+])
+  test(`document base promotion: remains unverified ${source}`, () => {
+    const { root, options } = scriptAssetPromotionFixture(source);
+    assert.match(validationMessage(root, options), /promotion document base href.*unverified/u);
+  });
+test('document base promotion: local Astro head base cannot authorize page-relative resources', () => {
+  const { root, options } = scriptAssetPromotionFixture('<img src="surface.png">', {
+    prepare(root) {
+      fs.writeFileSync(
+        path.join(root, 'apps/www/astro.config.mjs'),
+        `export default {head:[{tag:'base',attrs:{href:'/assets/'}}]};`
+      );
+    },
+  });
+  assert.match(
+    validationMessage(root, options),
+    /promotion config head resources remain unverified/u
+  );
+});
+
+for (const extension of ['astro', 'tsx', 'svelte', 'html', 'vue', 'mdx'])
+  for (const attribute of ['HREF', 'hReF'])
+    test(`document base promotion: ${extension} ${attribute} is not a case escape`, () => {
+      const raw = `<base ${attribute}="/assets/"/><img src="surface.png"/>`;
+      const source = extension === 'tsx' ? `export const sample=<>${raw}</>;` : raw;
+      const { root, options } = scriptAssetPromotionFixture(source, { extension });
+      assert.match(validationMessage(root, options), /promotion document base href.*unverified/u);
+    });
+for (const attribute of ['HREF', 'hReF'])
+  test(`document base promotion: Astro head ${attribute} is not a case escape`, () => {
+    const { root, options } = scriptAssetPromotionFixture('<img src="surface.png">', {
+      prepare(root) {
+        fs.writeFileSync(
+          path.join(root, 'apps/www/astro.config.mjs'),
+          `export default {head:[{tag:'BASE',attrs:{${attribute}:'/assets/'}}]};`
+        );
+      },
+    });
+    assert.match(
+      validationMessage(root, options),
+      /promotion config head resources remain unverified/u
+    );
+  });
+for (const [name, source, extension] of [
+  ['style comment', '<style>/* <base href="/assets/"> */</style><img src="surface.png">', 'astro'],
+  ['textarea text', '<textarea><base href="/assets/"></textarea><img src="surface.png">', 'astro'],
+  ['title text', '<title><base href="/assets/"></title><img src="surface.png">', 'astro'],
+  ['HTML template', '<template><base href="/assets/"></template><img src="surface.png">', 'html'],
+  ['Astro template', '<template><base href="/assets/"></template><img src="surface.png">', 'astro'],
+  [
+    'Svelte style comment',
+    '<style>/* <base href="/assets/"> */</style><img src="surface.png">',
+    'svelte',
+  ],
+  ['data attribute', '<base data-href="/assets/"><img src="surface.png">', 'astro'],
+])
+  test(`document base promotion: ${name} preserves bound bytes`, () => {
+    const { root, assetPath, options } = scriptAssetPromotionFixture(source, { extension });
+    assert.deepEqual(collectCoverageMatrixIssues(options), []);
+    fs.writeFileSync(
+      path.join(root, assetPath),
+      indexedPng({ includePalette: true, color: [0, 0, 255] })
+    );
+    assert.match(validationMessage(root, options), /promoted dependency.*surface\.png.*differs/u);
+  });
+test('document base promotion: inert template does not hide a later active base', () => {
+  const { root, options } = scriptAssetPromotionFixture(
+    '<template><base href="/safe/"></template><base href="/assets/"><img src="surface.png">',
+    { extension: 'html' }
+  );
+  assert.match(validationMessage(root, options), /promotion document base href.*unverified/u);
+});
+
+test('document base promotion: foreign title cannot borrow HTML text-only admission', () => {
+  const { root, options } = scriptAssetPromotionFixture(
+    '<svg><title><base href="/assets/"></title></svg><img src="surface.png">'
+  );
+  assert.match(validationMessage(root, options), /promotion document base href.*unverified/u);
+});

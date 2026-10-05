@@ -295,6 +295,16 @@ export function collectWebsiteProductionBundleIssues({
       );
     }
   }
+  for (const runtimeChunk of chunks) {
+    if (
+      (REVIEWED_DEMONSTRATION_RUNTIME_FACADES.has(runtimeChunk.facadeModuleId) ||
+        reviewedNullFacadeRuntimeModules(runtimeChunk).length > 0) &&
+      (runtimeChunk.isEntry || !runtimeChunk.isDynamicEntry)
+    )
+      issues.push(
+        `reviewed demonstration runtime chunk \`${runtimeChunk.fileName}\` must be dynamic-only; direct static entries are not reviewed`
+      );
+  }
   const shellRoots = chunks.filter(
     (chunk) =>
       chunk.isEntry &&
