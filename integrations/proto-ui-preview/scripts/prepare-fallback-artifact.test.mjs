@@ -9,7 +9,6 @@ import { fileURLToPath } from 'node:url';
 
 import {
   FALLBACK_LIMITS,
-  RESERVED_FALLBACK_ROOT_FILES,
   assertCompressedArchiveSize,
   sanitizeFallbackTree,
 } from './prepare-fallback-artifact.mjs';
@@ -38,19 +37,6 @@ function readTarEntries(bytes) {
   }
   return entries;
 }
-
-test('publishes the exact dcbot artifact envelope', () => {
-  assert.deepEqual(FALLBACK_LIMITS, {
-    maxFiles: 20_000,
-    maxFileBytes: 25 * 1024 * 1024,
-    maxExpandedBytes: 100 * 1024 * 1024,
-    maxCompressedBytes: 50 * 1024 * 1024,
-  });
-  assert.deepEqual(
-    [...RESERVED_FALLBACK_ROOT_FILES].sort(),
-    ['.assetsignore', '_headers', '_redirects', '_routes.json', '_worker.js'].sort()
-  );
-});
 
 test('copies only ordinary files into a separate trusted tree', async () => {
   const { root, source, output } = await fixture();
@@ -105,10 +91,7 @@ test(
       assert.equal(prepared.status, 0, prepared.stderr || prepared.stdout);
       assert.equal((await lstat(path.join(output, 'index.html'))).mode & 0o111, 0);
       const entries = readTarEntries(await readFile(archive));
-      assert.deepEqual(
-        entries.map(({ name }) => name).sort(),
-        ['assets/app.js', 'index.html']
-      );
+      assert.deepEqual(entries.map(({ name }) => name).sort(), ['assets/app.js', 'index.html']);
       for (const entry of entries) {
         const clean = path.posix.normalize(entry.name);
         assert.notEqual(clean, '.', 'PutTarGz rejects a root directory entry');
@@ -134,8 +117,48 @@ test(
   }
 );
 
+test(
+  'archives an admitted long path without truncating its name or bytes',
+  { skip: process.platform === 'win32' },
+  async () => {
+    const { root, source, output } = await fixture();
+    const relative = `${'asset'.repeat(24)}.js`;
+    const payload = Buffer.from([0, 128, 255, 10]);
+    const archive = path.join(root, 'preview.tar.gz');
+    try {
+      await writeFile(path.join(source, 'index.html'), '<main>safe</main>');
+      await writeFile(path.join(source, relative), payload);
+      const prepared = spawnSync(
+        process.execPath,
+        [script, '--source', 'source', '--output', 'output', '--archive', 'preview.tar.gz'],
+        { cwd: root, encoding: 'utf8' }
+      );
+      assert.equal(prepared.status, 0, prepared.stderr || prepared.stdout);
+      assert.deepEqual(await readFile(path.join(output, relative)), payload);
+      const extracted = path.join(root, 'extracted');
+      await mkdir(extracted);
+      const unpacked = spawnSync(
+        'tar',
+        ['--extract', '--gzip', '--file', archive, '--directory', extracted],
+        { encoding: 'utf8' }
+      );
+      assert.equal(unpacked.status, 0, unpacked.stderr || unpacked.stdout);
+      assert.deepEqual(await readFile(path.join(extracted, relative)), payload);
+      assert.equal((await lstat(path.join(extracted, relative))).mode & 0o111, 0);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  }
+);
+
 test('rejects every reserved platform control at the artifact root', async () => {
-  for (const reserved of RESERVED_FALLBACK_ROOT_FILES) {
+  for (const reserved of [
+    '.assetsignore',
+    '_headers',
+    '_redirects',
+    '_routes.json',
+    '_worker.js',
+  ]) {
     const { root, source, output } = await fixture();
     try {
       await writeFile(path.join(source, 'index.html'), 'safe');

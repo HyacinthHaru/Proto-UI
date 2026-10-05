@@ -23,6 +23,10 @@ jobs:
 
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
 
     outputs:
       pr: ${{ steps.resolve.outputs.pr }}
@@ -35,165 +39,112 @@ jobs:
       author_login: ${{ steps.resolve.outputs.author_login }}
       author_id: ${{ steps.resolve.outputs.author_id }}
     steps:
-      # This job receives no deployment secrets. Its only purpose is to derive
-      # a stable PR-number lock from GitHub API state instead of trusting the
-      # workflow run title, which pull-request code can change.
-      - name: Resolve the immutable PR lock key
-        id: resolve
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
-        with:
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const runId = Number(context.payload.workflow_run?.id || context.payload.client_payload?.build_run_id);
-            const expectedRepo = `${owner}/${repo}`;
-            const { data: run } = await github.rest.actions.getWorkflowRun({
-              owner, repo, run_id: runId,
-            });
-            if (!["pull_request", "workflow_dispatch"].includes(run.event) || run.conclusion !== "success" ||
-                run.repository.full_name !== expectedRepo) {
-              core.setFailed(`Refusing unrelated run ${runId}`);
-              return;
-            }
-            const { data: workflow } = await github.rest.actions.getWorkflow({
-              owner, repo, workflow_id: run.workflow_id,
-            });
-            if (workflow.path !== ".github/workflows/poppy-preview-build.yml") {
-              core.setFailed(`Refusing run ${runId}: artifact came from ${workflow.path}`);
-              return;
-            }
-            if (run.event === "workflow_dispatch") {
-              const { data: repository } = await github.rest.repos.get({ owner, repo });
-              if (run.head_repository?.id !== run.repository.id || run.head_branch !== repository.default_branch) {
-                core.setFailed(`Refusing run ${runId}: manual build did not execute from the trusted default branch`);
-                return;
-              }
-            }
-            const artifacts = await github.paginate(
-              github.rest.actions.listWorkflowRunArtifacts,
-              { owner, repo, run_id: runId, per_page: 100 },
-            );
-            const pattern = /^poppy-preview-([1-9][0-9]*)-([0-9a-f]{40})-([1-9][0-9]*)$/;
-            const matches = artifacts.flatMap((artifact) => {
-              const match = pattern.exec(artifact.name);
-              return match && !artifact.expired && Number(match[3]) === run.run_attempt
-                ? [{ artifact, pr: Number(match[1]), sha: match[2] }]
-                : [];
-            });
-            if (matches.length !== 1) {
-              core.setFailed(`Refusing run ${runId}: expected exactly one valid Poppy artifact`);
-              return;
-            }
-            const candidate = matches[0];
-            const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: candidate.pr });
-            if (pr.state !== "open" || pr.head.sha !== candidate.sha) {
-              core.setFailed(`Refusing run ${runId}: artifact no longer matches the live open PR head`);
-              return;
-            }
-            if (run.event === "pull_request") {
-              const associations = run.pull_requests || [];
-              const associated = associations.length === 0 || associations.some((item) => item.number === pr.number);
-              if (!associated || !run.head_repository?.id || pr.head.repo?.id !== run.head_repository.id ||
-                  (run.head_branch && run.head_branch !== pr.head.ref)) {
-                core.setFailed(`Refusing run ${runId}: workflow run is not bound to this PR head repository`);
-                return;
-              }
-            }
-            core.setOutput("pr", String(pr.number));
-            core.setOutput("head_sha", candidate.sha);
-            core.setOutput("project", `poppy-proto-ui-pr-${candidate.pr}`);
-            core.setOutput("artifact_id", String(candidate.artifact.id));
-            core.setOutput("artifact_size", String(candidate.artifact.size_in_bytes));
-            core.setOutput("run_id", String(run.id));
-            core.setOutput("run_attempt", String(run.run_attempt));
-            core.setOutput("author_login", pr.user.login);
-            core.setOutput("author_id", String(pr.user.id));
-
-  report-failed-build:
-    name: Report a failed PR build
-    if: >-
-      (github.event_name == 'repository_dispatch' && github.event.client_payload.build_succeeded != true) || ((github.event.workflow_run.event == 'pull_request' || github.event.workflow_run.event == 'workflow_dispatch') && github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.repository.full_name == github.repository)
-
-
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Check out trusted reporting code
+      - name: Check out trusted admission tooling
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ github.event.repository.default_branch }}
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Bind the failed run to its still-current pull request
+      - name: Resolve the immutable PR lock key
         id: resolve
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const runId = Number(context.payload.workflow_run?.id || context.payload.client_payload?.build_run_id);
-            const { data: run } = await github.rest.actions.getWorkflowRun({
-              owner, repo, run_id: runId,
+            const { resolvePreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const { binding } = await resolvePreviewBuild({
+              github, context,
+              runId: Number(context.payload.workflow_run?.id || context.payload.client_payload?.build_run_id),
+              kind: 'success',
             });
-            const { data: workflow } = await github.rest.actions.getWorkflow({
-              owner, repo, workflow_id: run.workflow_id,
+            for (const [key, value] of Object.entries(binding)) core.setOutput(key, value);
+
+  resolve-failed-build:
+    name: Bind the failed build to a live pull request
+    if: >-
+      (github.event_name == 'repository_dispatch' && github.event.client_payload.build_succeeded != true) || ((github.event.workflow_run.event == 'pull_request' || github.event.workflow_run.event == 'workflow_dispatch') && github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.repository.full_name == github.repository)
+
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
+
+    outputs:
+      pr: ${{ steps.resolve.outputs.pr }}
+      head_sha: ${{ steps.resolve.outputs.head_sha }}
+      project: ${{ steps.resolve.outputs.project }}
+      artifact_id: ${{ steps.resolve.outputs.artifact_id }}
+      artifact_size: ${{ steps.resolve.outputs.artifact_size }}
+      run_id: ${{ steps.resolve.outputs.run_id }}
+      run_attempt: ${{ steps.resolve.outputs.run_attempt }}
+      author_login: ${{ steps.resolve.outputs.author_login }}
+      author_id: ${{ steps.resolve.outputs.author_id }}
+    steps:
+      - name: Check out trusted admission tooling
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Resolve the immutable failed-build PR lock key
+        id: resolve
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        with:
+          script: |
+            const { resolvePreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const { binding } = await resolvePreviewBuild({
+              github, context,
+              runId: Number(context.payload.workflow_run?.id || context.payload.client_payload?.build_run_id),
+              kind: 'failed',
             });
-            if (!["pull_request", "workflow_dispatch"].includes(run.event) || run.conclusion === "success" ||
-                run.repository.full_name !== `${owner}/${repo}` ||
-                workflow.path !== ".github/workflows/poppy-preview-build.yml") {
-              core.setFailed(`Refusing unrelated failed run ${runId}`);
-              return;
-            }
-            if (run.event === "workflow_dispatch") {
-              const { data: repository } = await github.rest.repos.get({ owner, repo });
-              if (run.head_repository?.id !== run.repository.id || run.head_branch !== repository.default_branch) {
-                core.setFailed(`Refusing failed run ${runId}: manual build did not execute from the trusted default branch`);
-                return;
-              }
-            }
-            const artifacts = await github.paginate(
-              github.rest.actions.listWorkflowRunArtifacts,
-              { owner, repo, run_id: runId, per_page: 100 },
-            );
-            const pattern = /^poppy-preview-binding-([1-9][0-9]*)-([0-9a-f]{40})-([1-9][0-9]*)$/;
-            const matches = artifacts.flatMap((artifact) => {
-              const match = pattern.exec(artifact.name);
-              return match && !artifact.expired && Number(match[3]) === run.run_attempt
-                ? [{ pr: Number(match[1]), sha: match[2], attempt: Number(match[3]) }]
-                : [];
+            for (const [key, value] of Object.entries(binding)) core.setOutput(key, value);
+
+  report-failed-build:
+    name: Report a failed PR build
+    needs: resolve-failed-build
+    if: needs.resolve-failed-build.outputs.pr != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    concurrency:
+      group: poppy-preview-pr-${{ needs.resolve-failed-build.outputs.pr }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Check out trusted admission tooling
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Admit the current failed build after acquiring the per-PR lock
+        id: resolve
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-failed-build.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-failed-build.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-failed-build.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-failed-build.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-failed-build.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'failed',
             });
-            if (matches.length !== 1) {
-              core.notice(`Failed run ${runId} has no unique immutable PR binding; leaving status in Actions only.`);
-              core.setOutput("report", "false");
-              return;
-            }
-            const candidate = matches[0];
-            const number = candidate.pr;
-            const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: number });
-            if (pr.state !== "open" || pr.head.sha !== candidate.sha) {
-              core.notice(`Failed run ${runId} is stale or cannot be bound exactly; leaving the current preview unchanged.`);
-              core.setOutput("report", "false");
-              return;
-            }
-            if (run.event === "pull_request") {
-              const associated = (run.pull_requests || []).find((item) => item.number === number);
-              if (!associated || associated.head?.sha !== pr.head.sha ||
-                  associated.head?.repo?.id !== pr.head.repo?.id) {
-                core.notice(`Failed run ${runId} is not associated with the live PR head; leaving the current preview unchanged.`);
-                core.setOutput("report", "false");
-                return;
-              }
-            }
-            core.setOutput("report", "true");
-            core.setOutput("pr", String(pr.number));
-            core.setOutput("head_sha", pr.head.sha);
-            core.setOutput("author_login", pr.user.login);
-            core.setOutput("author_id", String(pr.user.id));
-            core.setOutput("project", `poppy-proto-ui-pr-${pr.number}`);
-            core.setOutput("run_id", String(runId));
-            core.setOutput("run_attempt", String(candidate.attempt));
+            core.setOutput('report', 'true');
+            for (const [key, value] of Object.entries(binding)) core.setOutput(key, value);
 
       - name: Revoke the failed head on the central Poppy control plane
         id: revoke-central
@@ -234,8 +185,31 @@ jobs:
         shell: bash
         run: node integrations/proto-ui-preview/scripts/report.mjs failed
 
-      - name: Maintain the sticky failure comment
+      - name: Readmit the current build before updating the sticky card
+        id: comment-live
         if: always() && steps.resolve.outputs.report == 'true' && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success')
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-failed-build.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-failed-build.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-failed-build.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-failed-build.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-failed-build.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'failed',
+            });
+
+      - name: Maintain the sticky failure comment
+        if: always() && steps.comment-live.outcome == 'success' && steps.resolve.outputs.report == 'true' && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success')
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -275,18 +249,28 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Revalidate the open pull request and exact head after acquiring the lock
+      - name: Admit the latest open-PR build after acquiring the lock
         id: live
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
         with:
           script: |
-            const { data: pr } = await github.rest.pulls.get({
-              ...context.repo,
-              pull_number: Number('${{ needs.resolve-deploy.outputs.pr }}'),
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
             });
-            if (pr.state !== 'open' || pr.head.sha !== '${{ needs.resolve-deploy.outputs.head_sha }}') {
-              core.setFailed('Refusing stale fallback publication after the per-PR lock');
-            }
+
       - name: Reject oversized fallback artifact before extraction
         id: size
         if: steps.live.outcome == 'success'
@@ -350,19 +334,28 @@ jobs:
           PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
         shell: bash
         run: node integrations/proto-ui-preview/scripts/upload-poppy-artifact.mjs
-      - name: Revalidate the open pull request and exact head before marking Ready
+      - name: Admit the latest build before marking Ready
         id: final-live
         if: steps.upload.outcome == 'success'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
         with:
           script: |
-            const { data: pr } = await github.rest.pulls.get({
-              ...context.repo,
-              pull_number: Number('${{ needs.resolve-deploy.outputs.pr }}'),
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
             });
-            if (pr.state !== 'open' || pr.head.sha !== '${{ needs.resolve-deploy.outputs.head_sha }}') {
-              core.setFailed('Refusing to mark a stale fallback artifact Ready');
-            }
 
       - name: Report fallback ready to Poppy
         id: ready
@@ -383,10 +376,33 @@ jobs:
         shell: bash
         run: node integrations/proto-ui-preview/scripts/report.mjs ready
 
+      - name: Readmit the current build before failure revocation
+        id: failure-live
+        if: always() && steps.live.outcome == 'success' && steps.ready.outcome != 'success'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
+            });
+
       - name: Report a failed fallback deployment to the central control plane
         id: failed-central
         if: >-
-          always() && steps.live.outcome == 'success' && steps.ready.outcome != 'success'
+          always() && steps.failure-live.outcome == 'success' && steps.ready.outcome != 'success'
 
 
         continue-on-error: true
@@ -408,7 +424,7 @@ jobs:
       - name: Report a failed fallback deployment to Poppy
         id: failed
         if: >-
-          always() && steps.live.outcome == 'success' && steps.ready.outcome != 'success'
+          always() && steps.failure-live.outcome == 'success' && steps.ready.outcome != 'success'
 
 
         continue-on-error: true
@@ -431,9 +447,32 @@ jobs:
       # Revocation must land before the sticky comment: a same-head Ready
       # deployment keeps passing Poppy authorization until every control plane
       # that may own it records the Failed lifecycle for this SHA.
+      - name: Readmit the current build before updating the sticky card
+        id: comment-live
+        if: always() && steps.live.outcome == 'success' && (steps.ready.outcome == 'success' || (steps.failed-central.outcome == 'success' && steps.failed.outcome == 'success'))
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
+            });
+
       - name: Maintain the sticky fallback comment
         id: comment
-        if: always() && steps.live.outcome == 'success' && (steps.ready.outcome == 'success' || (steps.failed-central.outcome == 'success' && steps.failed.outcome == 'success'))
+        if: always() && steps.comment-live.outcome == 'success' && steps.live.outcome == 'success' && (steps.ready.outcome == 'success' || (steps.failed-central.outcome == 'success' && steps.failed.outcome == 'success'))
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -474,8 +513,31 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Admit the latest open-PR build after acquiring the lock
+        id: live
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
+            });
+
       - name: Revoke the current head on the central Poppy control plane
         id: revoke-central
+        if: steps.live.outcome == 'success'
         continue-on-error: true
         env:
           POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
@@ -494,7 +556,7 @@ jobs:
 
       - name: Revoke the current head on the configured fallback control plane
         id: revoke-fallback
-        if: vars.POPPY_PREVIEW_FALLBACK_ORIGIN != ''
+        if: always() && steps.live.outcome == 'success' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != ''
         continue-on-error: true
         env:
           POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
@@ -515,9 +577,32 @@ jobs:
       # Revocation must land before the sticky comment: a same-head Ready
       # deployment keeps passing Poppy authorization until every control plane
       # that may own it records the Failed lifecycle for this SHA.
+      - name: Readmit the current build before updating the sticky card
+        id: comment-live
+        if: always() && steps.live.outcome == 'success' && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success')
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
+            });
+
       - name: Maintain the sticky fallback comment
         id: comment
-        if: always() && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success')
+        if: always() && steps.comment-live.outcome == 'success' && steps.live.outcome == 'success' && steps.revoke-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.revoke-fallback.outcome == 'success')
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -532,7 +617,7 @@ jobs:
 
       - name: Fail when the same-head revocation did not converge
         if: >-
-          always() && (steps.revoke-central.outcome != 'success' || (vars.POPPY_PREVIEW_FALLBACK_ORIGIN != '' && steps.revoke-fallback.outcome != 'success'))
+          always() && (steps.live.outcome != 'success' || steps.revoke-central.outcome != 'success' || (vars.POPPY_PREVIEW_FALLBACK_ORIGIN != '' && steps.revoke-fallback.outcome != 'success'))
 
 
         shell: bash
@@ -565,93 +650,28 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Resolve and verify run, PR, head, and artifact
+      - name: Admit the latest open-PR build after acquiring the lock
         id: resolve
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
         with:
           script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const runId = Number(context.payload.workflow_run?.id || context.payload.client_payload?.build_run_id);
-            const expectedRepo = `${owner}/${repo}`;
-
-            const { data: run } = await github.rest.actions.getWorkflowRun({
-              owner, repo, run_id: runId,
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
             });
-            if (!["pull_request", "workflow_dispatch"].includes(run.event) || run.conclusion !== "success") {
-              core.setFailed(`Refusing run ${runId}: unexpected event or conclusion`);
-              return;
-            }
-            if (run.repository.full_name !== expectedRepo) {
-              core.setFailed(`Refusing run ${runId}: unexpected base repository`);
-              return;
-            }
-            const { data: workflow } = await github.rest.actions.getWorkflow({
-              owner, repo, workflow_id: run.workflow_id,
-            });
-            if (workflow.path !== ".github/workflows/poppy-preview-build.yml") {
-              core.setFailed(`Refusing run ${runId}: artifact came from ${workflow.path}`);
-              return;
-            }
-
-            if (run.event === "workflow_dispatch") {
-              const { data: repository } = await github.rest.repos.get({ owner, repo });
-              if (run.head_repository?.id !== run.repository.id || run.head_branch !== repository.default_branch) {
-                core.setFailed(`Refusing run ${runId}: manual build did not execute from the trusted default branch`);
-                return;
-              }
-            }
-
-            const artifacts = await github.paginate(
-              github.rest.actions.listWorkflowRunArtifacts,
-              { owner, repo, run_id: runId, per_page: 100 },
-            );
-            const artifactPattern = /^poppy-preview-([1-9][0-9]*)-([0-9a-f]{40})-([1-9][0-9]*)$/;
-            const matches = artifacts.flatMap((artifact) => {
-              const match = artifactPattern.exec(artifact.name);
-              return match && !artifact.expired && Number(match[3]) === run.run_attempt
-                ? [{ artifact, prNumber: Number(match[1]), headSHA: match[2], runAttempt: Number(match[3]) }]
-                : [];
-            });
-            if (matches.length !== 1) {
-              core.setFailed(`Refusing run ${runId}: expected exactly one valid non-expired Poppy artifact`);
-              return;
-            }
-            const candidate = matches[0];
-            if (!Number.isSafeInteger(candidate.prNumber) || candidate.prNumber < 1) {
-              core.setFailed(`Refusing run ${runId}: malformed artifact PR number`);
-              return;
-            }
-            if (candidate.artifact.size_in_bytes > 500 * 1024 * 1024) {
-              core.setFailed(`Refusing run ${runId}: artifact exceeds the 500 MiB safety limit`);
-              return;
-            }
-
-            const { data: pr } = await github.rest.pulls.get({
-              owner, repo, pull_number: candidate.prNumber,
-            });
-            if (pr.state !== "open" || pr.head.sha !== candidate.headSHA) {
-              core.setFailed(`Refusing run ${runId}: artifact no longer matches the live open PR head`);
-              return;
-            }
-            if (run.event === "pull_request") {
-              const associations = run.pull_requests || [];
-              const associated = associations.length === 0 || associations.some((item) => item.number === pr.number);
-              if (!associated || !run.head_repository?.id || pr.head.repo?.id !== run.head_repository.id ||
-                  (run.head_branch && run.head_branch !== pr.head.ref)) {
-                core.setFailed(`Refusing run ${runId}: workflow run is not bound to this PR head repository`);
-                return;
-              }
-            }
-
-            core.setOutput("pr", String(pr.number));
-            core.setOutput("head_sha", pr.head.sha);
-            core.setOutput("author_login", pr.user.login);
-            core.setOutput("author_id", String(pr.user.id));
-            core.setOutput("artifact_id", String(candidate.artifact.id));
-            core.setOutput("project", `poppy-proto-ui-pr-${pr.number}`);
-            core.setOutput("run_id", String(runId));
-            core.setOutput("run_attempt", String(candidate.runAttempt));
+            for (const [key, value] of Object.entries(binding)) core.setOutput(key, value);
 
       - name: Mark the current head as building in Poppy
         env:
@@ -772,10 +792,33 @@ jobs:
           echo "Pages asset readiness probe did not become healthy" >&2
           exit 1
 
+      - name: Admit the latest build before marking Ready
+        id: final-live
+        if: steps.publish.outputs.exit_code == '0' && steps.deployed.outcome == 'success' && steps.assets-ready.outcome == 'success'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
+            });
+
       - name: Report the ready deployment to Poppy
         id: ready
         if: >-
-          always() && steps.publish.outputs.exit_code == '0' && steps.deployed.outcome == 'success' && steps.assets-ready.outcome == 'success'
+          always() && steps.final-live.outcome == 'success' && steps.publish.outputs.exit_code == '0' && steps.deployed.outcome == 'success' && steps.assets-ready.outcome == 'success'
 
 
         env:
@@ -792,10 +835,33 @@ jobs:
         shell: bash
         run: node integrations/proto-ui-preview/scripts/report.mjs ready
 
+      - name: Readmit the current build before failure revocation
+        id: failure-live
+        if: always() && steps.resolve.outcome == 'success' && steps.ready.outcome != 'success'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
+            });
+
       - name: Report a failed deployment to Poppy
         id: failed-central
         if: >-
-          always() && steps.resolve.outputs.pr != '' && (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' || steps.assets-ready.outcome != 'success' || steps.ready.outcome != 'success')
+          always() && steps.failure-live.outcome == 'success' && steps.resolve.outputs.pr != '' && (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' || steps.assets-ready.outcome != 'success' || steps.ready.outcome != 'success')
 
 
         continue-on-error: true
@@ -817,7 +883,7 @@ jobs:
       - name: Report a failed Pages deployment to the configured fallback control plane
         id: failed-fallback
         if: >-
-          always() && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != '' && steps.resolve.outputs.pr != '' && (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' || steps.assets-ready.outcome != 'success' || steps.ready.outcome != 'success')
+          always() && steps.failure-live.outcome == 'success' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != '' && steps.resolve.outputs.pr != '' && (steps.publish.outputs.exit_code != '0' || steps.deployed.outcome != 'success' || steps.assets-ready.outcome != 'success' || steps.ready.outcome != 'success')
 
 
         continue-on-error: true
@@ -837,8 +903,31 @@ jobs:
         shell: bash
         run: node integrations/proto-ui-preview/scripts/report.mjs failed
 
+      - name: Readmit the current build before updating the sticky card
+        id: comment-live
+        if: always() && steps.resolve.outcome == 'success' && steps.resolve.outputs.pr != '' && (steps.ready.outcome == 'success' || (steps.failed-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.failed-fallback.outcome == 'success')))
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
+          PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
+          PREVIEW_RUN_ID: ${{ needs.resolve-deploy.outputs.run_id }}
+          PREVIEW_RUN_ATTEMPT: ${{ needs.resolve-deploy.outputs.run_attempt }}
+          PREVIEW_ARTIFACT_ID: ${{ needs.resolve-deploy.outputs.artifact_id }}
+        with:
+          script: |
+            const { admitPreviewBuild } = await import(`${process.env.GITHUB_WORKSPACE}/integrations/proto-ui-preview/scripts/build-admission.mjs`);
+            const expected = {
+              pr: process.env.PREVIEW_PR, head_sha: process.env.PREVIEW_SHA,
+              run_id: process.env.PREVIEW_RUN_ID, run_attempt: process.env.PREVIEW_RUN_ATTEMPT,
+              artifact_id: process.env.PREVIEW_ARTIFACT_ID,
+            };
+            const binding = await admitPreviewBuild({
+              github, context, runId: Number(expected.run_id), expected,
+              kind: 'success',
+            });
+
       - name: Maintain the sticky PR comment
-        if: always() && steps.resolve.outputs.pr != '' && (steps.ready.outcome == 'success' || (steps.failed-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.failed-fallback.outcome == 'success')))
+        if: always() && steps.comment-live.outcome == 'success' && steps.resolve.outcome == 'success' && steps.resolve.outputs.pr != '' && (steps.ready.outcome == 'success' || (steps.failed-central.outcome == 'success' && (vars.POPPY_PREVIEW_FALLBACK_ORIGIN == '' || steps.failed-fallback.outcome == 'success')))
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
