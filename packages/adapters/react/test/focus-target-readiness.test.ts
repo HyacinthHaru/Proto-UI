@@ -4,6 +4,7 @@ import {
   FOCUS_ROOT_TARGET_CAP,
   FOCUS_REQUEST_FOCUS_CAP,
   FOCUS_BLUR_CAP,
+  type FocusRequestKind,
 } from '@proto.ui/module-focus';
 import { A11Y_PROJECT_CAP, type A11yProjector } from '@proto.ui/module-a11y';
 import { createReactModules } from '../src/runtime/modules';
@@ -11,6 +12,7 @@ import {
   createLogicalInstance,
   markProtoInstance,
   unbindProtoInstance,
+  registerNativeFocusReadiness,
 } from '../src/platform/instance-tree';
 
 afterEach(() => document.body.replaceChildren());
@@ -36,11 +38,15 @@ describe('React Focus target readiness', () => {
       setExposes() {},
       runInCallbackScope: (fn: () => void) => fn(),
       isViewReady: () => effectsReady,
-      isFocusAcquisitionReady: () => focusReady,
+      isEntryAcquisitionReady: () => focusReady,
       getCurrentElement: () => target,
       subscribeTargetReady: () => () => {},
       retryTargetReady() {},
     };
+    const releaseReadiness = registerNativeFocusReadiness(instanceToken, {
+      isReady: () => focusReady,
+      subscribe: () => () => {},
+    });
     const modules = createReactModules(args);
     const getTarget = new Map(modules.focus({ prototypeName: prototype.name })).get(
       FOCUS_ROOT_TARGET_CAP
@@ -50,11 +56,17 @@ describe('React Focus target readiness', () => {
       // physical target exists, but a host:focus event would still be dropped.
       expect(getTarget()).toBe(target);
       const caps = new Map(modules.focus({ prototypeName: prototype.name }));
-      const request = caps.get(FOCUS_REQUEST_FOCUS_CAP) as (target: HTMLElement) => boolean;
+      const request = caps.get(FOCUS_REQUEST_FOCUS_CAP) as (
+        target: HTMLElement,
+        options: undefined,
+        kind: FocusRequestKind
+      ) => boolean;
       const blur = caps.get(FOCUS_BLUR_CAP) as (target: HTMLElement) => void;
-      expect(request(target)).toBe(false);
+      expect(request(target, undefined, 'native')).toBe(false);
+      expect(request(target, undefined, 'entry')).toBe(false);
       expect(document.activeElement).not.toBe(target);
-      target.focus();
+      expect(request(target, undefined, 'programmatic')).toBe(true);
+      expect(document.activeElement).toBe(target);
       blur(getTarget()!);
       expect(document.activeElement).not.toBe(target);
       const project = new Map(modules.a11y({ prototypeName: prototype.name })).get(
@@ -72,7 +84,7 @@ describe('React Focus target readiness', () => {
       expect(target.getAttribute('aria-label')).toBe('Readiness control');
       project.dispose?.();
       focusReady = true;
-      expect(request(target)).toBe(true);
+      expect(request(target, undefined, 'native')).toBe(true);
       expect(document.activeElement).toBe(target);
       expect(getTarget()).toBe(target);
       effectsReady = false;
@@ -81,6 +93,7 @@ describe('React Focus target readiness', () => {
       target.remove();
       expect(getTarget()).toBeNull();
     } finally {
+      releaseReadiness();
       unbindProtoInstance(target);
     }
   });

@@ -138,3 +138,56 @@ export async function observeRepeatedEntry() {
     host.remove();
   }
 }
+
+export async function observeFocusKind(kind: 'programmatic' | 'native' | 'entry') {
+  let request = false;
+  let trustedFocusEvents = 0;
+  const during: Array<{ active: boolean; focused: boolean }> = [];
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host);
+  const ref = React.createRef<any>();
+  const proto = definePrototype({
+    name: `native-request-kind-${kind}`,
+    setup(def) {
+      const target = asFocusable();
+      const entry = asFocusEntry();
+      entry.configure({ strategy: 'self', fallback: 'self' });
+      def.expose.state('focused', target.focused);
+      def.lifecycle.onUpdated(() => {
+        if (!request) return;
+        request = false;
+        if (kind === 'programmatic') target.focus();
+        else if (kind === 'native') target.focusSelf();
+        else entry.focus();
+        during.push({
+          active: document.activeElement === host.querySelector('button'),
+          focused: target.focused.get(),
+        });
+      });
+      return () => 'Actual request kind';
+    },
+  });
+  const Component = createReactAdapter(React)(proto, { rootTag: 'button' });
+  try {
+    await act(async () => root.render(React.createElement(Component, { ref })));
+    await layoutFrames(3);
+    const target = host.querySelector('button')!;
+    target.addEventListener('focus', (event) => {
+      if (event.isTrusted) trustedFocusEvents++;
+    });
+    request = true;
+    await act(async () => ref.current.update());
+    return {
+      during,
+      after: {
+        active: document.activeElement === target,
+        focused: ref.current.getExposes().focused.get(),
+      },
+      trustedFocusEvents,
+    };
+  } finally {
+    await act(async () => root.unmount());
+    host.remove();
+  }
+}

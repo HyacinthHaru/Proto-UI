@@ -888,7 +888,7 @@ class FocusModuleImpl extends ModuleBase {
       return 'pending';
     }
     this.clearPendingFocus();
-    const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(target, options);
+    const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(target, options, 'programmatic');
     if (applied === false) {
       this.queuePendingFocus(options, true);
       return 'pending';
@@ -934,7 +934,7 @@ class FocusModuleImpl extends ModuleBase {
         ? target
         : null;
     if (!resolved) return;
-    if (this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options) === false) {
+    if (this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options, 'entry') === false) {
       this.pendingFocusRequest = { kind: 'entry', options };
     }
   }
@@ -949,7 +949,7 @@ class FocusModuleImpl extends ModuleBase {
       return 'pending';
     }
     this.clearPendingFocus();
-    const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(target, options);
+    const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(target, options, 'native');
     if (applied === false) {
       this.queuePendingFocus(options, false);
       return 'pending';

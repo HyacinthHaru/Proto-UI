@@ -60,6 +60,7 @@ import {
   FOCUS_RUN_IN_CALLBACK_CAP,
   FOCUS_SET_FOCUSABLE_CAP,
   FOCUS_TARGET_READY_CAP,
+  type FocusRequestKind,
 } from '@proto.ui/module-focus';
 import {
   createWebHitParticipationHostBridge,
@@ -108,9 +109,10 @@ import {
   getLogicalPrototype,
   getLogicalRoot,
   getLogicalTriggerSurfaceRoot,
+  isNativeFocusTargetReady,
   mergeLogicalTriggerGroup,
   setProtoParent,
-  subscribeLogicalTriggerSurface,
+  subscribeFocusSurfaceReady,
 } from '../platform/instance-tree';
 
 type ReactOwnerModulesArgs<Props extends PropsBaseType> = {
@@ -240,7 +242,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
-  isFocusAcquisitionReady: (target: HTMLElement) => boolean;
+  isEntryAcquisitionReady: (target: HTMLElement) => boolean;
   onFocusAcquired?: () => void;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
@@ -269,7 +271,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   };
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
-    const offSurface = subscribeLogicalTriggerSurface(instanceToken, listener);
+    const offSurface = subscribeFocusSurfaceReady(instanceToken, listener);
     return () => {
       offReady();
       offSurface();
@@ -337,8 +339,13 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       ],
       [
         FOCUS_REQUEST_FOCUS_CAP,
-        (target: HTMLElement, options?: FocusRequestOptions) => {
-          if (!args.isFocusAcquisitionReady(target) || !target.isConnected) return false;
+        (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
+          if (
+            !target.isConnected ||
+            (kind === 'native' && !isNativeFocusTargetReady(target)) ||
+            (kind === 'entry' && !args.isEntryAcquisitionReady(target))
+          )
+            return false;
           target.focus(
             typeof options?.preventScroll === 'boolean'
               ? { preventScroll: options.preventScroll }

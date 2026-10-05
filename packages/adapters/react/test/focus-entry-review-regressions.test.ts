@@ -188,3 +188,57 @@ it('renews bounded layout retries after each successful descendant entry', async
     host.remove();
   }
 });
+
+it.each(['programmatic', 'native', 'entry'] as const)(
+  'keeps %s request and fact ownership through the real onUpdated gate',
+  async (kind) => {
+    let request = false;
+    const during: Array<{ active: boolean; focused: boolean }> = [];
+    const host = document.createElement('div');
+    document.body.append(host);
+    const root = createRoot(host);
+    const ref = React.createRef<any>();
+    const proto = definePrototype({
+      name: `entry-review-kind-${kind}`,
+      setup(def) {
+        const target = asFocusable();
+        const entry = asFocusEntry();
+        entry.configure({ strategy: 'self', fallback: 'self' });
+        def.expose.state('focused', target.focused);
+        def.lifecycle.onUpdated(() => {
+          if (!request) return;
+          request = false;
+          if (kind === 'programmatic') target.focus();
+          else if (kind === 'native') target.focusSelf();
+          else entry.focus();
+          during.push({
+            active: document.activeElement === host.querySelector('button'),
+            focused: target.focused.get(),
+          });
+        });
+        return () => 'Explicit request kind';
+      },
+    });
+    const Component = createReactAdapter(React)(proto, { rootTag: 'button' });
+    try {
+      await act(async () => root.render(React.createElement(Component, { ref })));
+      request = true;
+      await act(async () => ref.current.update());
+      const result = {
+        during,
+        after: {
+          active: document.activeElement === host.querySelector('button'),
+          focused: ref.current.getExposes().focused.get(),
+        },
+      };
+      console.info('[focus-kind-review]', JSON.stringify({ kind, ...result }));
+      expect(result).toEqual({
+        during: [{ active: kind === 'programmatic', focused: kind === 'programmatic' }],
+        after: { active: true, focused: true },
+      });
+    } finally {
+      await act(async () => root.unmount());
+      host.remove();
+    }
+  }
+);

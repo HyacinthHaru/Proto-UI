@@ -68,3 +68,27 @@ it('native connected descendant entry gets fresh retries after each actual CSS r
     await context.close();
   }
 });
+
+it.each(['programmatic', 'native', 'entry'] as const)(
+  'native host preserves the approved %s request/fact rule',
+  async (kind) => {
+    const context = await browser.newContext();
+    try {
+      const page = await context.newPage();
+      await page.setContent('<!doctype html><body></body>');
+      await page.addScriptTag({ content: bundle });
+      const result = await page.evaluate(
+        (kind) => window.focusEntryNative.observeFocusKind(kind),
+        kind
+      );
+      console.info('[native-focus-kind]', JSON.stringify({ kind, ...result }));
+      expect(result).toEqual({
+        during: [{ active: kind === 'programmatic', focused: kind === 'programmatic' }],
+        after: { active: true, focused: true },
+        trustedFocusEvents: 1,
+      });
+    } finally {
+      await context.close();
+    }
+  }
+);

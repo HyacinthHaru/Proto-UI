@@ -55,6 +55,13 @@ criteria:
     dependsOn:
       contracts:
         - C-FOCUS-0001
+  - id: C-AS-FOCUS-ENTRY-0001-H
+    text:
+      en: A resolved entry target whose event-owning view cannot yet observe focus must reject acquisition without fabricating facts. Focus retains only the latest distinct entry intent and re-resolves its target on readiness, respecting role disable, explicit blur, supersession, retained-view and terminal-disposal boundaries. A first entry request without any resolvable host target remains a no-op; this does not create a pending target request or transfer descendant fact ownership to the entry region.
+      zh-CN: 已解析的 entry target 若其 event-owning view 尚不能观察 focus，必须拒绝 acquisition 而不得伪造 facts。Focus 只保留最新的独立 entry intent，在 readiness 时重新解析目标，并遵守 role disable、显式 blur、取代、retained-view 与 terminal-disposal 边界。首次 entry request 若没有任何可解析 host target，仍为 no-op；这不创建 pending target request，也不把后代 fact ownership 转给 entry region。
+    dependsOn:
+      contracts:
+        - C-FOCUS-0001
 sources:
   - path: internal/records/2026-07-05-focus-entry-delegation.zh-CN.md
   - path: packages/hooks/src/as-focus-entry.ts
@@ -75,6 +82,9 @@ verifies:
   tests:
     - T-FOCUS-0001
 revisions:
+  - version: 0.3.0-alpha.1
+    change: refined
+    summary: Owner-approved rejected entry retention follows actual-owner readiness without changing first-request no-target behavior or target fact ownership.
   - version: 0.3.0-alpha.1
     change: refined
     summary: Clarified entry-role pending cancellation and non-resurrection independently of target-role eligibility.

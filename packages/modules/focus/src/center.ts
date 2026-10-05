@@ -244,11 +244,12 @@ export class FocusCenter {
     const outcome = entry.requestFocus(options, behavior);
     if (outcome === 'rejected') return 'rejected';
     if (outcome === 'pending') return 'pending';
-    this.clearOtherFocusedEntries(entry, options?.reason ?? 'focus.request');
+    // A shared surface can report another member as its native focus owner.
+    // Only programmatic requests own facts after accepted application.
     if (behavior?.syncFacts !== false) {
-      this.currentFocused = entry.instance;
+      this.clearOtherFocusedEntries(entry, options?.reason ?? 'focus.request');
+      this.noteFocused(entry);
     }
-    this.noteFocused(entry);
     return 'applied';
   }
 
