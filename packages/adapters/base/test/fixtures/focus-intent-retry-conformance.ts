@@ -113,6 +113,84 @@ export function focusIntentRetryConformance(
     }
 
     it.each(['entry', 'native', 'programmatic'] as const)(
+      'preserves an exhausted %s layout budget across ordinary same-view commits',
+      async (kind) => {
+        let run: any;
+        const proto = definePrototype({
+          name: `retry-${adapter}-ordinary-commit-${kind}`,
+          setup(def) {
+            const target = asFocusable();
+            const entry = asFocusEntry();
+            entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+            def.lifecycle.onCreated((value) => {
+              run = value;
+            });
+            def.expose.method('request', () => {
+              if (kind === 'entry') entry.focus();
+              else if (kind === 'native') target.focusSelf();
+              else target.focus();
+            });
+            def.expose.method('update', () => run.update());
+            return (r) => r.el('button', 'Rejected through unrelated commits');
+          },
+        });
+        const mounted = await mount(proto);
+        const root = mounted.root;
+        const currentTarget = () =>
+          kind === 'entry' ? mounted.root.querySelector('button')! : mounted.root;
+        const frames: FrameRequestCallback[] = [];
+        const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+          frames.push(callback);
+          return frames.length;
+        });
+        const focus = HTMLElement.prototype.focus;
+        let attempts = 0;
+        let accept = false;
+        const focusSpy = vi.spyOn(HTMLElement.prototype, 'focus').mockImplementation(function (
+          this: HTMLElement,
+          options?: FocusOptions
+        ) {
+          if (this !== currentTarget()) {
+            focus.call(this, options);
+            return;
+          }
+          attempts++;
+          if (accept) focus.call(this, options);
+        });
+        const flushFrames = async () => {
+          for (let round = 0; frames.length && round < 12; round++) {
+            const callbacks = frames.splice(0);
+            await mounted.act(() => callbacks.forEach((callback) => callback(performance.now())));
+          }
+          expect(frames).toHaveLength(0);
+        };
+        try {
+          await mounted.act(() => mounted.getExposes().request());
+          await flushFrames();
+          expect(attempts).toBe(4);
+          for (let update = 0; update < 3; update++) {
+            await mounted.act(() => mounted.getExposes().update());
+            expect(mounted.root).toBe(root);
+            // A commit can make a direct readiness attempt. It cannot replenish
+            // the three-frame budget for the same pending intent/view epoch.
+            expect(frames).toHaveLength(0);
+          }
+          attempts = 0;
+          await mounted.act(() => mounted.getExposes().request());
+          await flushFrames();
+          expect(attempts).toBe(4);
+          accept = true;
+          await mounted.act(() => mounted.getExposes().request());
+          expect(document.activeElement).toBe(currentTarget());
+        } finally {
+          focusSpy.mockRestore();
+          raf.mockRestore();
+          await mounted.unmount();
+        }
+      }
+    );
+
+    it.each(['entry', 'native', 'programmatic'] as const)(
       'ignores old-view frames after a retained replacement and a newer %s intent',
       async (kind) => {
         let run: any;

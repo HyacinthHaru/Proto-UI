@@ -58,6 +58,9 @@ import {
   createLogicalInstance,
   resolveLogicalTriggerEventRouteForTarget,
   markProtoInstance,
+  registerNativeFocusReadiness,
+  isFocusTargetOwnerReady,
+  subscribeFocusTargetOwnerReady,
   unbindProtoInstance,
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
@@ -135,6 +138,7 @@ type Vue2InternalState<Props extends PropsBaseType> = {
   focusTargetReadyListeners: Set<() => void>;
   focusTargetRetryScheduled: boolean;
   focusTargetRetryCount: number;
+  focusIngressReady: boolean;
   propWatchDisposer: (() => void) | null;
 };
 
@@ -263,6 +267,7 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
         focusTargetReadyListeners: new Set(),
         focusTargetRetryScheduled: false,
         focusTargetRetryCount: 0,
+        focusIngressReady: false,
         propWatchDisposer: null,
       } as Vue2InternalState<Props>;
       state.scopedExposesReader = createScopedExposesReader(() => state.invoke);
@@ -342,7 +347,10 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
               dispose: () => state.owner.disposeView(),
             },
             onLifecycleCheckpoint: opt.diagnostics?.onLifecycleCheckpoint,
-            onLifecycleEvent: opt.diagnostics?.onLifecycleEvent,
+            onLifecycleEvent: (event) => {
+              opt.diagnostics?.onLifecycleEvent?.(event);
+              trackFocusIngress(vm, event);
+            },
             onCommit: (children, signal) => {
               state.pendingCommit = true;
               state.pendingSignal = signal;
@@ -591,10 +599,16 @@ function setShouldExist(runtime: Vue2Runtime, vm: any, present: boolean) {
     return;
   }
   state.eventGate?.disable?.();
-  if (state.owner.hasView) void state.owner.detachView();
-  state.lastInitRoot = null;
-  setVmField(vm, '__puiHostTokens', []);
-  setViewReady(vm, false);
+  try {
+    if (state.owner.hasView) void state.owner.detachView();
+  } finally {
+    // A callback can restore presence while the old view is being released.
+    if (!vm.__puiShouldExist && !state.owner.hasView) {
+      state.lastInitRoot = null;
+      setVmField(vm, '__puiHostTokens', []);
+      setViewReady(vm, false);
+    }
+  }
 }
 
 function initSession<Props extends PropsBaseType>(
@@ -641,20 +655,67 @@ function initSession<Props extends PropsBaseType>(
   state.viewDisposed = false;
   let viewDisposed = false;
   let focusRetryGeneration = 0;
+  let releaseRequestedTargetReady: (() => void) | undefined;
+  const releaseNativeReadiness = registerNativeFocusReadiness(
+    state.instanceToken,
+    {
+      isReady: () =>
+        !viewDisposed &&
+        state.viewReady &&
+        state.focusIngressReady &&
+        !state.terminalDisposed &&
+        state.hostActive &&
+        vm.__puiShouldExist &&
+        eventGate.isEnabled() &&
+        getRootElement(vm) === rootEl &&
+        rootEl.isConnected &&
+        !rootEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+      subscribe: (listener) => {
+        state.focusTargetReadyListeners.add(listener);
+        return () => state.focusTargetReadyListeners.delete(listener);
+      },
+    },
+    { deferPublication: true }
+  );
   const disposeView = () => {
     if (viewDisposed) return;
     viewDisposed = true;
     state.viewDisposed = true;
-    eventGate.disable();
-    eventGate.dispose();
-    unbindLogicalEventTarget(state.instanceToken, router.rootTarget);
-    router.dispose();
-    unbindProtoInstance(state.instanceToken, state.boundRoot ?? undefined);
-    if (state.boundRoot === rootEl) state.boundRoot = null;
-    if (state.eventGate === eventGate) {
-      state.eventGate = null;
-      state.focusTargetRetryScheduled = false;
+    const releases = [
+      () => eventGate.disable(),
+      () => eventGate.dispose(),
+      () => {
+        const release = releaseRequestedTargetReady;
+        releaseRequestedTargetReady = undefined;
+        release?.();
+      },
+      () => unbindLogicalEventTarget(state.instanceToken, router.rootTarget),
+      () => router.dispose(),
+      () => unbindProtoInstance(state.instanceToken, rootEl),
+      () => {
+        if (state.boundRoot === rootEl) state.boundRoot = null;
+        if (state.eventGate === eventGate) {
+          state.eventGate = null;
+          state.focusTargetRetryScheduled = false;
+        }
+      },
+      // Publish invalidation after releasing old bindings. A pending request
+      // can synchronously call user-controlled focus and throw here.
+      releaseNativeReadiness,
+    ];
+    let failed = false;
+    let firstError: unknown;
+    for (const release of releases) {
+      try {
+        release();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          firstError = error;
+        }
+      }
     }
+    if (failed) throw firstError;
   };
 
   const effectsPort = createVue2EffectsPort((tokens) => {
@@ -689,7 +750,21 @@ function initSession<Props extends PropsBaseType>(
       fn();
     },
     isViewReady: () =>
-      state.viewReady && !getRootElement(vm)?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+      state.viewReady &&
+      !viewDisposed &&
+      !getRootElement(vm)?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+    isEntryAcquisitionReady: (target) => {
+      releaseRequestedTargetReady?.();
+      releaseRequestedTargetReady = undefined;
+      if (isFocusTargetOwnerReady(target)) return true;
+      releaseRequestedTargetReady = subscribeFocusTargetOwnerReady(target, () => {
+        if (viewDisposed) return;
+        releaseRequestedTargetReady?.();
+        releaseRequestedTargetReady = undefined;
+        notifyFocusTargetReady(vm);
+      });
+      return false;
+    },
     getCurrentElement: () => getRootElement(vm),
     subscribeTargetReady: (listener) => {
       state.focusTargetReadyListeners.add(listener);
@@ -701,6 +776,8 @@ function initSession<Props extends PropsBaseType>(
       state.focusTargetRetryCount = 0;
     },
     onFocusAcquired: () => {
+      releaseRequestedTargetReady?.();
+      releaseRequestedTargetReady = undefined;
       state.focusTargetRetryCount = 0;
     },
     retryTargetReady: () => {
@@ -751,7 +828,10 @@ function initSession<Props extends PropsBaseType>(
           afterVueCommit(runtime, vm, () => finishPendingCommit(vm));
         },
         onLifecycleCheckpoint: targetOptions.onLifecycleCheckpoint,
-        onLifecycleEvent: targetOptions.onLifecycleEvent,
+        onLifecycleEvent: (event) => {
+          targetOptions.onLifecycleEvent?.(event);
+          trackFocusIngress(vm, event);
+        },
         onAfterUnmount: () => {
           state.scopedExposesReader.invalidate();
           state.invoke = null;
@@ -770,6 +850,7 @@ function initSession<Props extends PropsBaseType>(
   if (kernel && kernel.run) {
     (kernel.run as any).host = { get: () => getRootElement(vm) };
   }
+  releaseNativeReadiness.publish();
 }
 
 function getLogicalProtoFromState<Props extends PropsBaseType>(
@@ -805,16 +886,25 @@ function notifyPropsChange(vm: any, autoUpdate: boolean) {
   if (autoUpdate) state.controller?.update();
 }
 
+function trackFocusIngress(vm: any, event: RuntimeLifecycleEvent) {
+  if (event.type !== 'mount.phase') return;
+  const state = getState(vm);
+  state.focusIngressReady = event.phase === 'mounted';
+  if (state.focusIngressReady) notifyFocusTargetReady(vm);
+}
+
 function finishPendingCommit(vm: any) {
   const state = getState(vm);
   if (!state.pendingCommit) return;
   state.pendingCommit = false;
-  state.viewReady = true;
-  state.focusTargetRetryCount = 0;
-  state.eventGate?.enable();
-  notifyFocusTargetReady(vm);
-  state.pendingSignal?.done?.();
+  const signal = state.pendingSignal;
   state.pendingSignal = null;
+  state.viewReady = true;
+  state.eventGate?.enable();
+  signal?.done?.();
+  // Remount event listeners and Runtime callback scope are live only after
+  // acknowledgement. onUpdated retains Vue2's existing enabled-gate timing.
+  notifyFocusTargetReady(vm);
 }
 
 function notifyFocusTargetReady(vm: any) {

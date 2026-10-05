@@ -369,7 +369,6 @@ export function createVueAdapter(runtime: VueRuntime) {
             pendingSignal = null;
             await runtime.nextTick();
             viewReady = true;
-            focusTargetRetryCount = 0;
             notifyFocusTargetReady();
             signal?.done?.();
             // A lifecycle callback can synchronously commit again or detach.

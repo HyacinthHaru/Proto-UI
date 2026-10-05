@@ -1,5 +1,6 @@
 import { definePrototype, type Prototype } from '@proto.ui/core';
-import { asFocusEntry, asFocusable } from '@proto.ui/hooks';
+import { asFocusEntry, asFocusable, asTextControl } from '@proto.ui/hooks';
+import { declareTextControl } from '@proto.ui/module-text-control';
 import { mountNativeFocusIntentReact } from '../../../react/test/fixtures/focus-intent-mount-native';
 import { createMountedVueAdapter, flushVue } from '../../../vue/test/utils/vue';
 import { createMountedVue2Adapter, flushVue2 } from '../../../vue2/test/utils/vue2';
@@ -194,6 +195,196 @@ export async function observeFocusedRootBudget(runtime: Runtime) {
       trustedDescendantFocusEvents,
     };
   } finally {
+    await mounted.unmount();
+  }
+}
+
+export async function observeSameViewCommitBudget(runtime: Runtime, kind: Kind) {
+  let run: any;
+  const proto = definePrototype({
+    name: `native-same-view-budget-${runtime}-${kind}`,
+    setup(def) {
+      def.lifecycle.onCreated((value) => {
+        run = value;
+      });
+      def.expose.method('update', () => run.update());
+      if (kind === 'entry') {
+        const entry = asFocusEntry();
+        entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+        def.expose.method('request', () => entry.focus());
+      } else {
+        const target = asFocusable();
+        def.expose.state('focused', target.focused);
+        def.expose.method('request', () =>
+          kind === 'native' ? target.focusSelf() : target.focus()
+        );
+      }
+      return (r) => r.el('button', 'Rejected across unrelated updates');
+    },
+  });
+  const mounted = await mount(runtime, proto);
+  const initialRoot = mounted.root;
+  const target = () => (kind === 'entry' ? mounted.root.querySelector('button')! : mounted.root);
+  const rejectionStyle = document.createElement('style');
+  rejectionStyle.textContent = 'body[data-focus-intent-reject] { display: none !important; }';
+  document.head.append(rejectionStyle);
+  let trustedFocusEvents = 0;
+  const observe = (event: FocusEvent) => {
+    if (event.isTrusted && event.target === target()) trustedFocusEvents++;
+  };
+  document.addEventListener('focus', observe, true);
+  try {
+    await frames(3);
+    // The fixture owns this body attribute. Framework commits cannot erase the
+    // CSS rejection, even when a raw descendant is replaced during an update.
+    document.body.setAttribute('data-focus-intent-reject', '');
+    await mounted.act(() => mounted.getExposes().request());
+    const rejected = document.activeElement !== target();
+    await frames(8);
+    const commitsStillPending: boolean[] = [];
+    for (let commit = 0; commit < 2; commit++) {
+      await mounted.act(() => mounted.getExposes().update());
+      document.body.removeAttribute('data-focus-intent-reject');
+      await frames(3);
+      commitsStillPending.push(document.activeElement !== target());
+      document.body.setAttribute('data-focus-intent-reject', '');
+    }
+    await mounted.act(() => mounted.getExposes().request());
+    document.body.removeAttribute('data-focus-intent-reject');
+    await frames(3);
+    return {
+      sameRoot: mounted.root === initialRoot,
+      rejected,
+      commitsStillPending,
+      freshAcquired: document.activeElement === target(),
+      focused: kind === 'entry' ? null : mounted.getExposes().focused.get(),
+      trustedFocusEvents,
+    };
+  } finally {
+    document.removeEventListener('focus', observe, true);
+    document.body.removeAttribute('data-focus-intent-reject');
+    rejectionStyle.remove();
+    await mounted.unmount();
+  }
+}
+
+export async function observeNewTeardownRequest(runtime: 'vue2' | 'wc', kind: Kind) {
+  let run: any;
+  let request = false;
+  let oldTarget: HTMLElement;
+  const during: Array<{ connected: boolean; active: boolean; focused: boolean }> = [];
+  const proto = definePrototype({
+    name: `native-new-teardown-${runtime}-${kind}`,
+    modules:
+      runtime === 'wc'
+        ? [declareTextControl({ content: 'plain-text', lineMode: 'multiline', engine: 'host' })]
+        : undefined,
+    setup(def) {
+      if (runtime === 'wc') asTextControl();
+      const target = asFocusable();
+      const entry = asFocusEntry();
+      entry.configure({ strategy: 'self', fallback: 'self' });
+      def.expose.state('focused', target.focused);
+      def.lifecycle.onCreated((value) => {
+        run = value;
+      });
+      def.expose('view', {
+        hide: () => run.lifecycle.setPresent(false),
+        show: () => run.lifecycle.setPresent(true),
+      });
+      def.lifecycle.onUnmounted(() => {
+        if (!request) return;
+        request = false;
+        if (kind === 'programmatic') target.focus();
+        else if (kind === 'native') target.focusSelf();
+        else entry.focus();
+        during.push({
+          connected: oldTarget.isConnected,
+          active: document.activeElement === oldTarget,
+          focused: target.focused.get(),
+        });
+      });
+      return () => (runtime === 'wc' ? null : 'Connected Vue2 teardown target');
+    },
+  });
+  const mounted = await mount(runtime, proto);
+  const target = () =>
+    runtime === 'wc' ? mounted.root.querySelector<HTMLElement>('textarea')! : mounted.root;
+  let trustedReadyFocusEvents = 0;
+  const observe = (event: FocusEvent) => {
+    if (event.isTrusted && event.target === target()) trustedReadyFocusEvents++;
+  };
+  try {
+    await frames(3);
+    oldTarget = target();
+    request = true;
+    await mounted.act(() => mounted.getExposes().view.hide());
+    document.addEventListener('focus', observe, true);
+    await mounted.act(() => mounted.getExposes().view.show());
+    await frames(3);
+    return {
+      during,
+      after: {
+        active: document.activeElement === target(),
+        focused: mounted.getExposes().focused.get(),
+      },
+      trustedReadyFocusEvents,
+    };
+  } finally {
+    request = false;
+    document.removeEventListener('focus', observe, true);
+    await mounted.unmount();
+  }
+}
+
+// Exercise the native blur stack itself: re-enable and programmatic focus are
+// issued synchronously by an actual DOM listener, through public test exposes.
+export async function observeBlurReentry(runtime: Runtime) {
+  const proto = definePrototype({
+    name: `native-blur-reentry-${runtime}`,
+    setup(def) {
+      const target = asFocusable();
+      def.expose.state('focused', target.focused);
+      def.expose.state('focusable', target.focusable);
+      def.expose.method('request', () => target.focus());
+      def.expose.method('disable', () => target.setDisabled(true));
+      def.expose.method('restore', () => {
+        target.setDisabled(false);
+        target.focus();
+      });
+      return () => 'Native blur reentry';
+    },
+  });
+  const mounted = await mount(runtime, proto);
+  let trustedBlurEvents = 0,
+    trustedFocusEvents = 0;
+  const during: Array<{ active: boolean; focused: boolean; focusable: boolean }> = [];
+  const root = mounted.root;
+  const snapshot = () => ({
+    active: document.activeElement === root,
+    focused: mounted.getExposes().focused.get(),
+    focusable: mounted.getExposes().focusable.get(),
+  });
+  const onFocus = (event: FocusEvent) => {
+    if (event.isTrusted) trustedFocusEvents++;
+  };
+  const onBlur = (event: FocusEvent) => {
+    if (event.isTrusted) trustedBlurEvents++;
+    mounted.getExposes().restore();
+    during.push(snapshot());
+  };
+  root.addEventListener('focus', onFocus);
+  try {
+    await mounted.act(() => mounted.getExposes().request());
+    const initial = snapshot();
+    root.addEventListener('blur', onBlur, { once: true });
+    await mounted.act(() => mounted.getExposes().disable());
+    const after = snapshot();
+    await frames(3);
+    return { initial, during, after, settled: snapshot(), trustedBlurEvents, trustedFocusEvents };
+  } finally {
+    root.removeEventListener('focus', onFocus);
+    root.removeEventListener('blur', onBlur);
     await mounted.unmount();
   }
 }
