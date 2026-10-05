@@ -11,6 +11,7 @@ import {
 } from '@proto.ui/module-anatomy';
 import { CONTEXT_INSTANCE_TOKEN_CAP, CONTEXT_PARENT_CAP } from '@proto.ui/module-context';
 import {
+  COLLAPSIBLE_CONTEXT,
   COLLAPSIBLE_FAMILY,
   asCollapsibleContent,
   asCollapsibleRoot,
@@ -28,6 +29,23 @@ for (const [role, prototype] of [
   AdaptToWebComponent(prototype, { registerAs: `x-collapsible-base-${role}` });
 }
 
+const InspectionRoot = definePrototype({
+  name: 'x-collapsible-inspection-root',
+  setup(def) {
+    asCollapsibleRoot();
+    let owner: any;
+    def.lifecycle.onCreated((run) => {
+      owner = run;
+    });
+    def.expose.method(
+      'partCount',
+      (role: string) => owner.anatomy.partsOf(COLLAPSIBLE_FAMILY, role).length
+    );
+    def.expose.method('contextOpen', () => owner.context.read(COLLAPSIBLE_CONTEXT).open);
+  },
+});
+AdaptToWebComponent(InspectionRoot);
+
 async function flush() {
   for (let index = 0; index < 8; index++) await Promise.resolve();
 }
@@ -43,9 +61,10 @@ async function until(predicate: () => boolean) {
 
 function fixture(
   rootProps: Record<string, unknown> = {},
-  contentProps: Record<string, unknown> = {}
+  contentProps: Record<string, unknown> = {},
+  rootName = 'x-collapsible-base-root'
 ) {
-  const root = document.createElement('x-collapsible-base-root') as any;
+  const root = document.createElement(rootName) as any;
   const trigger = document.createElement('x-collapsible-base-trigger') as any;
   const content = document.createElement('x-collapsible-base-content') as any;
   const requests: Array<{ open: boolean; reason: string }> = [];
@@ -195,18 +214,63 @@ describe('Base Collapsible consumer contract', () => {
     }
   });
 
-  it('rejects an already-created Trigger moved into a domain with an existing Trigger', async () => {
+  it('withdraws a Trigger moved outside all Proto ancestors from its former logical domain', async () => {
+    // T-BASE-COLLAPSIBLE-0001-CASE-DOMAIN-ISOLATION
+    const source = fixture({ defaultOpen: true }, {}, InspectionRoot.name);
+    const outside = document.createElement('div');
+    const host = document.createElement('div');
+    host.append(source.root, outside);
+    try {
+      document.body.append(host);
+      await until(() => !!source.trigger.getAttribute('aria-controls'));
+      const expanded = source.trigger.getExposes().expanded;
+      expect(source.root.getExposes().partCount('trigger')).toBe(1);
+      expect(() => outside.append(source.trigger)).toThrowError(
+        expect.objectContaining({ code: 'ANATOMY_CLAIM_INVALID' })
+      );
+      await flush();
+      expect(source.root.getExposes().partCount('trigger')).toBe(0);
+      expect(source.trigger.hasAttribute('aria-controls')).toBe(false);
+      expect(source.trigger.getExposes().expanded).toBe(expanded);
+      expect(source.root.getExposes().open.get()).toBe(true);
+      expect(source.requests).toEqual([]);
+    } finally {
+      host.remove();
+      await flush();
+    }
+  });
+
+  it('preserves accepted Trigger membership after rejection and permits a later valid adoption', async () => {
     // T-BASE-COLLAPSIBLE-0001-CASE-ANATOMY-CARDINALITY: reuse is not creation.
-    const source = fixture();
-    const destination = fixture();
+    const source = fixture({}, {}, InspectionRoot.name);
+    const destination = fixture({}, {}, InspectionRoot.name);
     const host = document.createElement('div');
     host.append(source.root, destination.root);
     try {
       document.body.append(host);
       await until(() => source.trigger.tabIndex === 0 && destination.trigger.tabIndex === 0);
+      const expanded = source.trigger.getExposes().expanded;
       expect(() => destination.root.append(source.trigger)).toThrowError(
         expect.objectContaining({ code: 'COLLAPSIBLE_DUPLICATE_PART' })
       );
+      await flush();
+      expect(source.root.getExposes().partCount('trigger')).toBe(1);
+      expect(destination.root.getExposes().partCount('trigger')).toBe(1);
+      expect(source.trigger.getExposes().expanded).toBe(expanded);
+      expect(source.requests.concat(destination.requests)).toEqual([]);
+
+      destination.trigger.remove();
+      await flush();
+      destination.root.append(source.trigger);
+      await until(() => source.trigger.tabIndex === 0);
+      expect(source.root.getExposes().partCount('trigger')).toBe(0);
+      expect(destination.root.getExposes().partCount('trigger')).toBe(1);
+      source.trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await until(() => expanded.get());
+      expect(source.root.getExposes().open.get()).toBe(false);
+      expect(destination.root.getExposes().open.get()).toBe(true);
+      expect(destination.requests).toEqual([{ open: true, reason: 'pointer' }]);
+      expect(source.requests).toEqual([]);
     } finally {
       source.trigger.remove();
       host.remove();
@@ -246,10 +310,10 @@ describe('Base Collapsible consumer contract', () => {
     }
   });
 
-  it('rejects an already-created Content moved into a domain with an existing Content', async () => {
+  it('restores accepted Content membership after a rejected adoption without replacing its identity', async () => {
     // T-BASE-COLLAPSIBLE-0001-CASE-ANATOMY-CARDINALITY: Content has its own lifetime.
-    const source = fixture({ defaultOpen: true });
-    const destination = fixture({ defaultOpen: true });
+    const source = fixture({ defaultOpen: true }, {}, InspectionRoot.name);
+    const destination = fixture({}, {}, InspectionRoot.name);
     const host = document.createElement('div');
     host.append(source.root, destination.root);
     try {
@@ -257,11 +321,32 @@ describe('Base Collapsible consumer contract', () => {
       await until(
         () =>
           !!source.trigger.getAttribute('aria-controls') &&
-          !!destination.trigger.getAttribute('aria-controls')
+          destination.content.hasAttribute('data-pui-view-detached')
       );
+      const open = source.content.getExposes().open;
       expect(() => destination.root.append(source.content)).toThrowError(
         expect.objectContaining({ code: 'COLLAPSIBLE_DUPLICATE_PART' })
       );
+      await flush();
+      expect(source.root.getExposes().partCount('content')).toBe(1);
+      expect(destination.root.getExposes().partCount('content')).toBe(1);
+      expect(source.content.getExposes().open).toBe(open);
+      expect(open.get()).toBe(true);
+      expect(destination.content.getExposes().open.get()).toBe(false);
+      expect(source.requests.concat(destination.requests)).toEqual([]);
+
+      destination.content.remove();
+      await flush();
+      destination.root.append(source.content);
+      await until(() => !open.get());
+      expect(source.root.getExposes().partCount('content')).toBe(0);
+      expect(destination.root.getExposes().partCount('content')).toBe(1);
+      expect(source.content.getExposes().open).toBe(open);
+      destination.root.getExposes().openCollapsible();
+      await until(() => destination.trigger.getAttribute('aria-controls') === source.content.id);
+      expect(open.get()).toBe(true);
+      expect(destination.requests).toEqual([{ open: true, reason: 'programmatic' }]);
+      expect(source.requests).toEqual([]);
     } finally {
       source.content.remove();
       host.remove();
@@ -298,6 +383,112 @@ describe('Base Collapsible consumer contract', () => {
       expect(root.getExposes().open.get()).toBe(false);
     } finally {
       root.remove();
+      await flush();
+    }
+  });
+
+  it('keeps a newer reentrant request canonical when an older Trigger resumes context synchronization', async () => {
+    // T-BASE-COLLAPSIBLE-0001-CASE-UNCONTROLLED
+    // T-BASE-COLLAPSIBLE-0001-CASE-DOMAIN-ISOLATION
+    const source = fixture();
+    const destination = fixture({ disabled: true }, {}, InspectionRoot.name);
+    const host = document.createElement('div');
+    let off: (() => void) | undefined;
+    try {
+      document.body.append(source.root);
+      await until(() => source.trigger.getAttribute('aria-expanded') === 'false');
+      host.append(destination.root);
+      document.body.append(host);
+      await until(() => destination.trigger.getExposes().disabled.get());
+      destination.trigger.remove();
+      await flush();
+      destination.root.append(source.trigger);
+      await until(() => source.trigger.getExposes().disabled.get());
+      let requestsFromSubscriber = 0;
+      off = source.trigger.getExposes().disabled.subscribe((event: any) => {
+        if (event.type === 'next' && event.next === false) {
+          requestsFromSubscriber++;
+          destination.root.getExposes().openCollapsible();
+        }
+      });
+      setElementProps(destination.root, { disabled: false });
+      await until(() => destination.requests.length > 0);
+      await flush();
+      expect(requestsFromSubscriber).toBe(1);
+      expect(destination.requests).toEqual([{ open: true, reason: 'programmatic' }]);
+      expect(destination.root.getExposes().open.get()).toBe(true);
+      expect(destination.root.getExposes().contextOpen()).toBe(true);
+      expect(source.trigger.getExposes().expanded.get()).toBe(true);
+      expect(destination.content.getExposes().open.get()).toBe(true);
+      expect(source.requests).toEqual([]);
+    } finally {
+      off?.();
+      source.trigger.remove();
+      source.root.remove();
+      host.remove();
+      await flush();
+    }
+  });
+
+  it('signals every accepted nested request without replaying it during later synchronization', async () => {
+    // T-BASE-COLLAPSIBLE-0001-CASE-UNCONTROLLED: signals are requests, not stale truth.
+    const source = fixture();
+    const destination = fixture({}, {}, InspectionRoot.name);
+    const host = document.createElement('div');
+    let off: (() => void) | undefined;
+    try {
+      document.body.append(source.root);
+      await until(() => source.trigger.tabIndex === 0);
+      host.append(destination.root);
+      document.body.append(host);
+      await until(() => destination.trigger.tabIndex === 0);
+      destination.trigger.remove();
+      await flush();
+      destination.root.append(source.trigger);
+      await until(() => source.trigger.tabIndex === 0);
+      let nestedRequests = 0;
+      off = source.trigger.getExposes().expanded.subscribe((event: any) => {
+        if (event.type === 'next' && event.next === true) {
+          nestedRequests++;
+          destination.root.getExposes().close();
+        }
+      });
+      source.trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await flush();
+      expect(nestedRequests).toBe(1);
+      // Callback order is not a portable guarantee; neither accepted envelope may disappear.
+      expect(destination.requests).toEqual(
+        expect.arrayContaining([
+          { open: true, reason: 'pointer' },
+          { open: false, reason: 'programmatic' },
+        ])
+      );
+      expect(destination.requests).toHaveLength(2);
+      expect(destination.root.getExposes().open.get()).toBe(false);
+      expect(destination.root.getExposes().contextOpen()).toBe(false);
+      expect(source.trigger.getExposes().expanded.get()).toBe(false);
+      expect(destination.content.getExposes().open.get()).toBe(false);
+      off?.();
+      off = undefined;
+
+      setElementProps(destination.root, { disabled: true });
+      await flush();
+      setElementProps(destination.root, { disabled: false });
+      await flush();
+      expect(destination.requests).toHaveLength(2);
+      destination.root.getExposes().openCollapsible();
+      await until(() => destination.content.getExposes().open.get());
+      expect(destination.requests).toHaveLength(3);
+      expect(destination.requests[2]).toEqual({ open: true, reason: 'programmatic' });
+      expect(destination.root.getExposes().open.get()).toBe(true);
+      expect(destination.root.getExposes().contextOpen()).toBe(true);
+      expect(source.trigger.getExposes().expanded.get()).toBe(true);
+      expect(source.requests).toEqual([]);
+    } finally {
+      off?.();
+      source.trigger.remove();
+      source.root.remove();
+      host.remove();
       await flush();
     }
   });
@@ -620,10 +811,14 @@ describe('Base Collapsible consumer contract', () => {
           owner = run;
         });
         def.expose.method('present', (present: boolean) => owner.lifecycle.setPresent(present));
+        def.expose.method(
+          'partCount',
+          (role: string) => owner.anatomy.partsOf(COLLAPSIBLE_FAMILY, role).length
+        );
       },
     });
     AdaptToWebComponent(Root);
-    const source = fixture();
+    const source = fixture({}, {}, InspectionRoot.name);
     const destination = fixture();
     const root = document.createElement(Root.name) as any;
     root.append(destination.trigger, destination.content);
@@ -645,6 +840,13 @@ describe('Base Collapsible consumer contract', () => {
       expect(() => root.append(source.content)).toThrowError(
         expect.objectContaining({ code: 'COLLAPSIBLE_DUPLICATE_PART' })
       );
+      await flush();
+      expect(source.root.getExposes().partCount('content')).toBe(1);
+      expect(root.getExposes().partCount('content')).toBe(1);
+      expect(destination.content.getExposes().open).toBe(retainedOpen);
+      root.getExposes().present(true);
+      await until(() => !root.hasAttribute('data-pui-view-detached'));
+      expect(root.getExposes().partCount('content')).toBe(1);
     } finally {
       source.content.remove();
       host.remove();

@@ -56,7 +56,10 @@ import {
   createLogicalInstance,
   bindLogicalEventTarget,
   resolveLogicalTriggerEventRouteForTarget,
+  getLogicalParent,
+  getLogicalRoot,
   markProtoInstance,
+  setProtoParent,
   unbindProtoInstance,
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
@@ -217,10 +220,25 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       this._focusTargetRetryCount = 0;
 
       if (this._mountedOnce) {
-        // Refresh the logical parent link after a synchronous DOM move.
-        markProtoInstance(this, proto as Prototype<any>, this._instanceToken);
-        // Logical membership remains live when either view is detached.
-        this._anatomyPort?.syncStructure();
+        const previousParent = getLogicalParent(this._instanceToken);
+        const previousRoot = previousParent ? getLogicalRoot(previousParent) : null;
+        try {
+          // WC ownership follows its current tree, unlike renderer-owned portals.
+          setProtoParent(this, null);
+          markProtoInstance(this, proto as Prototype<any>, this._instanceToken);
+          // Logical membership remains live when either view is detached.
+          this._anatomyPort?.syncStructure();
+        } catch (error) {
+          // Rejected adoption must not commit a new logical domain. The native
+          // DOM move is author-owned; reconcile retained membership signatures.
+          try {
+            setProtoParent(this, previousRoot);
+            this._anatomyPort?.syncStructure();
+          } catch (rollbackError) {
+            throw new AggregateError([error, rollbackError]);
+          }
+          throw error;
+        }
         if (this._pendingOwnedTokens?.length) {
           this._applier?.apply(this._pendingOwnedTokens);
         }

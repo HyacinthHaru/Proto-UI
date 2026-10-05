@@ -46,7 +46,8 @@ function setupCollapsibleRoot(def: DefHandle<CollapsibleRootProps, CollapsibleRo
   });
   const open = openState.getState!('open')!;
   def.expose.event('openChange', { payload: 'json' });
-  let lastRequestVersion = 0;
+  let reportedThrough = 0;
+  let reportedAhead: Set<number> | undefined;
 
   const syncContext = (run: RunHandle<CollapsibleRootProps>, publishInitial = false) => {
     const nextOpen = open.get();
@@ -63,13 +64,26 @@ function setupCollapsibleRoot(def: DefHandle<CollapsibleRootProps, CollapsibleRo
   };
 
   def.context.subscribe(COLLAPSIBLE_CONTEXT, (run, next) => {
-    snapshot = next;
-    if (next.requestVersion === lastRequestVersion) return;
-    lastRequestVersion = next.requestVersion;
-    // P-BASE-COLLAPSIBLE-REQUEST-ONLY: controlled requests do not mutate open.
-    if (!next.controlled) {
-      open.set(next.requestedOpen, 'reason: collapsible uncontrolled request');
+    // A nested subscriber can supersede the publication currently being dispatched.
+    snapshot = run.context.read(COLLAPSIBLE_CONTEXT);
+    const version = next.requestVersion;
+    const newRequest = version > reportedThrough && !reportedAhead?.has(version);
+    if (newRequest) {
+      // Keep every accepted envelope, even when nested delivery reaches Root first.
+      // The ordinary ordered path needs no allocation or retained request history.
+      if (version === reportedThrough + 1) {
+        reportedThrough = version;
+        while (reportedAhead?.delete(reportedThrough + 1)) reportedThrough++;
+      } else {
+        (reportedAhead ??= new Set()).add(version);
+      }
     }
+    // Only the current provider determines canonical truth, never a stale envelope.
+    if (!snapshot.controlled && open.get() !== snapshot.open) {
+      open.set(snapshot.open, 'reason: collapsible uncontrolled request');
+    }
+    if (!newRequest) return;
+    // P-BASE-COLLAPSIBLE-REQUEST-ONLY: each accepted request signals exactly once.
     run.expose.emit('openChange', {
       open: next.requestedOpen,
       reason: next.requestReason!,
