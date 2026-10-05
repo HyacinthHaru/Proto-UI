@@ -1423,7 +1423,27 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         await expect
           .poll(async () => (await linkPaint(toc)).tokens)
           .toContain(family === 'brutalist' ? 'bg-main' : 'bg-accent');
-        expect(await page.locator('sl-toc > div[aria-hidden]').count()).toBe(0);
+        // #843 restores one passive geometry mount, painted only by the
+        // existing public family Surface. Keep rejecting legacy private paint.
+        const range = page.locator('sl-toc > [data-site-toc-highlight][aria-hidden="true"]');
+        expect(await range.count()).toBe(1);
+        expect(await range.getAttribute('role')).toBeNull();
+        expect(await range.getAttribute('tabindex')).toBeNull();
+        const rangeSurface = range.locator(`:scope > wc-site-${family}-surface[data-pui-root]`);
+        expect(await rangeSurface.count()).toBe(1);
+        await expect.poll(() => rangeSurface.getAttribute('data-pui-style')).toContain('bg-muted');
+        expect(
+          await range.locator('[role], [tabindex], a, button, input, select, textarea').count()
+        ).toBe(0);
+        expect(await range.evaluate((element) => getComputedStyle(element).pointerEvents)).toBe(
+          'none'
+        );
+        expect(await range.evaluate((element) => getComputedStyle(element).visibility)).toBe(
+          'visible'
+        );
+        expect(
+          await page.locator('sl-toc > div[aria-hidden]:not([data-site-toc-highlight])').count()
+        ).toBe(0);
         await captureLinks(
           page,
           `nav-${family}-${colorScheme}-toc-current`,
