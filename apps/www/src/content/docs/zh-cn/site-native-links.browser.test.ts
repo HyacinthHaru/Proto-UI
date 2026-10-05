@@ -585,6 +585,13 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
             labels[runtime]
           );
           await ready(page, runtime, family);
+          const heroCTA = page.locator(
+            '[data-projection-generation-state="active"] a[data-home-action-icon="external"]'
+          );
+          expect(await heroCTA.count()).toBe(1);
+          expect((await heroCTA.textContent())?.trim()).toBe('试试 Demo');
+          expect(await heroCTA.getAttribute('href')).toBe('#home-demo-previewer');
+          expect(await heroCTA.locator('svg[aria-hidden="true"]').count()).toBe(1);
           await openSettings(page);
           // Each journey measures viewport hit targets. Earlier keyboard/focus
           // actions may scroll the document while the Header remains sticky.
@@ -1128,12 +1135,24 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
     const page = await context.newPage();
     try {
       await page.goto(`${baseUrl}/zh-cn/`, { waitUntil: 'networkidle' });
+      const heroCTA = page.locator('[data-homepage-fallback] a[data-home-action-icon="external"]');
+      expect(await heroCTA.count()).toBe(1);
+      expect((await heroCTA.textContent())?.trim()).toBe('试试 Demo');
+      expect(await heroCTA.getAttribute('href')).toBe('#home-demo-previewer');
+      expect(await heroCTA.locator('svg[aria-hidden="true"]').count()).toBe(1);
       const links = page.locator('#home-social a');
       expect(await links.count()).toBe(4);
       for (let index = 0; index < 4; index++) {
         expect(await links.nth(index).isVisible()).toBe(true);
         expect(await links.nth(index).getAttribute('href')).toMatch(/^https:\/\//);
       }
+      await captureLinks(
+        page,
+        'hero-cta-no-js',
+        'shadcn',
+        'native-no-js',
+        'configured-external-icon'
+      );
     } finally {
       await context.close();
     }
