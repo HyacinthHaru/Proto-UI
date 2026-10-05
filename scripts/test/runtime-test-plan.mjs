@@ -1,5 +1,6 @@
 export const BROWSER_SUITES = Object.freeze([
   'apps/www/test/template-style.browser.test.ts',
+  'packages/adapters/react/test/focus-entry-readiness.browser.test.ts',
   'apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts',
   'apps/www/test/evidence/brutalist-fonts.browser.test.ts',
   'apps/www/src/components/documentation-image-preview.browser.test.ts',

@@ -76,6 +76,48 @@ export function isNativeFocusTargetReady(target: HTMLElement): boolean {
   );
 }
 
+// Entry can resolve an ordinary descendant rather than the owner's Root.
+// Reuse the same private readiness registry as native Trigger acquisition;
+// event-route ownership identifies the view that must observe native focus.
+export function isFocusTargetOwnerReady(target: HTMLElement): boolean {
+  const owner = getLogicalEventRouteSurfaceForTarget(target);
+  return !!owner && nativeFocusReadiness.get(owner)?.source?.isReady() === true;
+}
+
+export function subscribeFocusTargetOwnerReady(
+  target: HTMLElement,
+  listener: () => void
+): () => void {
+  const owner = getLogicalEventRouteSurfaceForTarget(target);
+  if (!owner) return () => {};
+  const slot = readinessSlot(owner);
+  let disposed = false;
+  let releaseReady: (() => void) | undefined;
+  const bindReady = () => {
+    releaseReady?.();
+    const source = slot.source;
+    const ready = () => {
+      if (!disposed && slot.source === source && source?.isReady()) listener();
+    };
+    releaseReady = source?.subscribe(ready);
+  };
+  const sourceChanged = () => {
+    if (disposed) return;
+    bindReady();
+    // Unregistration alone is not readiness. Preserve retained entry until a
+    // current view can accept it, then let Focus re-resolve the current target.
+    if (slot.source?.isReady()) listener();
+  };
+  slot.listeners.add(sourceChanged);
+  bindReady();
+  return () => {
+    if (disposed) return;
+    disposed = true;
+    slot.listeners.delete(sourceChanged);
+    releaseReady?.();
+  };
+}
+
 export function subscribeFocusSurfaceReady(
   instance: LogicalInstanceToken,
   listener: () => void

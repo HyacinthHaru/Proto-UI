@@ -49,6 +49,8 @@ import {
   resolveLogicalTriggerEventRouteForTarget,
   markProtoInstance,
   registerNativeFocusReadiness,
+  isFocusTargetOwnerReady,
+  subscribeFocusTargetOwnerReady,
   unbindProtoInstance,
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
@@ -243,7 +245,6 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           return;
         }
         for (const listener of Array.from(focusTargetReadyListenersRef.current)) listener();
-        if (target.ownerDocument.activeElement === target) focusTargetRetryCountRef.current = 0;
       };
 
       const controllerRef = runtime.useRef<RuntimeController | null>(null);
@@ -431,6 +432,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         });
         bindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
         let viewDisposed = false;
+        let releaseRequestedTargetReady: (() => void) | undefined;
         const releaseNativeReadiness = registerNativeFocusReadiness(instanceTokenRef.current, {
           isReady: () =>
             !viewDisposed &&
@@ -449,6 +451,8 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           viewDisposed = true;
           eventGate.disable();
           eventGate.dispose();
+          releaseRequestedTargetReady?.();
+          releaseRequestedTargetReady = undefined;
           releaseNativeReadiness();
           unbindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
           router.dispose();
@@ -490,18 +494,32 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           },
           // A child of a detached ancestor still mounts and attaches its own
           // view, so readiness has to consult the subtree, not just this host.
-          // A11y identity, blur and entry bind to the committed physical view.
-          // Only native requests awaiting observed facts need the event gate;
-          // conflating them loses one-shot operations during update commits.
+          // Physical/A11y binding and blur use the committed view. Acquisition
+          // separately applies the native or entry owner's observation gate;
+          // programmatic requests retain their synchronous Module-fact rule.
           isViewReady: () =>
             projectionReadyRef.current &&
             !viewDisposed &&
             !rootRef.current?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
-          // Native focus must not precede host-event ingress: focusSelf relies
-          // on the real focus event to establish facts used by roving navigation.
-          // A11y/style projection still uses the earlier effects-ready boundary.
-          isFocusAcquisitionReady: () =>
-            viewReadyRef.current && eventGateRef.current?.isEnabled() === true,
+          // Entry does not own descendant facts. Wait for the actual target's
+          // event owner without gating the shared physical target getter.
+          isEntryAcquisitionReady: (target) => {
+            releaseRequestedTargetReady?.();
+            releaseRequestedTargetReady = undefined;
+            if (isFocusTargetOwnerReady(target)) return true;
+            releaseRequestedTargetReady = subscribeFocusTargetOwnerReady(target, () => {
+              if (viewDisposed) return;
+              releaseRequestedTargetReady?.();
+              releaseRequestedTargetReady = undefined;
+              notifyFocusTargetReady();
+            });
+            return false;
+          },
+          onFocusAcquired: () => {
+            releaseRequestedTargetReady?.();
+            releaseRequestedTargetReady = undefined;
+            focusTargetRetryCountRef.current = 0;
+          },
           getCurrentElement: () => rootRef.current,
           subscribeTargetReady: (listener) => {
             focusTargetReadyListenersRef.current.add(listener);

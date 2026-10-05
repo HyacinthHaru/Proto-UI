@@ -242,7 +242,8 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
-  isFocusAcquisitionReady: () => boolean;
+  isEntryAcquisitionReady: (target: HTMLElement) => boolean;
+  onFocusAcquired?: () => void;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -340,19 +341,19 @@ export function createReactModules<Props extends PropsBaseType>(args: {
         FOCUS_REQUEST_FOCUS_CAP,
         (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
           if (
-            !args.isFocusAcquisitionReady() ||
             !target.isConnected ||
-            (kind === 'native' && !isNativeFocusTargetReady(target))
-          ) {
+            (kind === 'native' && !isNativeFocusTargetReady(target)) ||
+            (kind === 'entry' && !args.isEntryAcquisitionReady(target))
+          )
             return false;
-          }
           target.focus(
             typeof options?.preventScroll === 'boolean'
               ? { preventScroll: options.preventScroll }
               : undefined
           );
           const applied = target.ownerDocument.activeElement === target;
-          if (!applied) args.retryTargetReady();
+          if (applied) args.onFocusAcquired?.();
+          else args.retryTargetReady();
           return applied;
         },
       ],
