@@ -197,7 +197,10 @@ export class TextControlModuleImpl extends ModuleBase {
       value: this.canonicalize(event.value),
       data: typeof event.data === 'string' ? this.canonicalize(event.data) : event.data,
     });
-    this.composing = canonicalEvent.composing;
+    // CallbackScope may drain older props before it invokes our listener.
+    // Protect both a starting composition and a finishing native candidate
+    // from those stale owner values until the actual event callback begins.
+    this.composing ||= canonicalEvent.composing;
     if (this.valueMode === 'uncontrolled' && canonicalEvent.type === 'input') {
       this.value = canonicalEvent.value;
     }
@@ -206,6 +209,8 @@ export class TextControlModuleImpl extends ModuleBase {
       ? this.caps.get(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
       : (callback: () => void) => callback();
     runInCallback(() => {
+      if (epoch !== this.leaseEpoch) return;
+      this.composing = canonicalEvent.composing;
       const run = this.sys.getCallbackCtx() as RunHandle<PropsBaseType> | undefined;
       if (!run) return;
       for (const listener of this.listeners) {

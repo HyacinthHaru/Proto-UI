@@ -3,6 +3,7 @@ import type { TextControlEvent, TextControlLineMode, TextControlPatch } from '@p
 import { CapsVault, SYS_CAP, type SystemCaps } from '@proto.ui/module-base';
 import {
   TEXT_CONTROL_HOST_CAP,
+  TEXT_CONTROL_RUN_IN_CALLBACK_CAP,
   type TextControlHost,
   type TextControlHostConnection,
   type TextControlHostLease,
@@ -56,7 +57,11 @@ function event(type: TextControlEvent['type'], value: string, composing = false)
   return { type, value, composing, data: null, inputType: null };
 }
 
-function createHarness(withHost = true, lineMode: TextControlLineMode = 'multiline') {
+function createHarness(
+  withHost = true,
+  lineMode: TextControlLineMode = 'multiline',
+  beforeRun?: () => void
+) {
   const sys = createSystemCaps();
   const vault = new CapsVault();
   const connectionBox: { current: TextControlHostConnection | null } = { current: null };
@@ -84,7 +89,21 @@ function createHarness(withHost = true, lineMode: TextControlLineMode = 'multili
       return lease;
     },
   };
-  if (withHost) vault.attach([[TEXT_CONTROL_HOST_CAP, host]]);
+  if (withHost)
+    vault.attach([
+      [TEXT_CONTROL_HOST_CAP, host],
+      ...(beforeRun
+        ? [
+            [
+              TEXT_CONTROL_RUN_IN_CALLBACK_CAP,
+              (callback: () => void) => {
+                beforeRun();
+                callback();
+              },
+            ] as const,
+          ]
+        : []),
+    ]);
   const module = createTextControlModule({
     init: {
       prototypeName: 'x-textarea',
@@ -455,4 +474,64 @@ it('T-TEXT-CONTROL-0001-CASE-CANCEL: listener cancellation is setup-only', () =>
   off();
   h.sys.phase = 'callback';
   expect(off).toThrow('illegal phase');
+});
+
+// C-TEXT-CONTROL-0001-D/E/F/G: CallbackScope drains pending props before
+// invoking the event listener. This controlled prelude reproduces that order.
+describe('TextControl composition across callback-scope entry', () => {
+  it.each(['compositionstart', 'input', 'compositionend'] as const)(
+    'protects the native candidate while old props drain before %s',
+    async (type) => {
+      let beforeRun = () => {};
+      const h = createHarness(true, 'multiline', () => beforeRun());
+      const control = h.module.facade.declare();
+      const seen: Array<{ value: string; composing: boolean }> = [];
+      control.on(type, (_run, next) => {
+        seen.push({ value: next.value, composing: next.composing });
+        if (!next.composing) control.sync({ value: next.value });
+      });
+      h.module.hooks.onMountPhase?.('mounted', 1);
+      h.sys.phase = 'callback';
+      control.sync({ valueMode: 'controlled', value: 'A备' });
+      const connection = h.connectionBox.current!;
+      if (type === 'compositionend') connection.onEvent(event('compositionstart', 'A备', true));
+      h.setPatchValue('A备注');
+      const during: Array<{ value: string; composing: boolean }> = [];
+      beforeRun = () => {
+        control.sync({ value: 'A备' });
+        during.push({ value: h.getPatchValue(), composing: control.snapshot()!.composing });
+      };
+      connection.onEvent(event(type, 'A备注', type !== 'compositionend'));
+      expect(during).toEqual([{ value: 'A备注', composing: true }]);
+      expect(seen).toEqual([{ value: 'A备注', composing: type !== 'compositionend' }]);
+      await Promise.resolve();
+      expect(h.getPatchValue()).toBe('A备注');
+      h.module.hooks.onMountPhase?.('detached', 1);
+    }
+  );
+
+  it.each(['compositionstart', 'compositionend'] as const)(
+    'does not deliver an old %s after the callback prelude replaces the lease',
+    async (type) => {
+      let beforeRun = () => {};
+      const h = createHarness(true, 'multiline', () => beforeRun());
+      const control = h.module.facade.declare();
+      const seen: TextControlEvent[] = [];
+      control.on(type, (_run, next) => seen.push(next));
+      h.module.hooks.onMountPhase?.('mounted', 1);
+      h.sys.phase = 'callback';
+      control.sync({ valueMode: 'controlled', value: 'owner' });
+      const old = h.connectionBox.current!;
+      if (type === 'compositionend') old.onEvent(event('compositionstart', 'owner', true));
+      beforeRun = () => {
+        h.module.hooks.onMountPhase?.('detached', 1);
+        h.module.hooks.onMountPhase?.('mounted', 2);
+      };
+      old.onEvent(event(type, 'obsolete', type !== 'compositionend'));
+      await Promise.resolve();
+      expect(seen).toEqual([]);
+      expect(control.snapshot()).toEqual({ value: 'owner', composing: false });
+      h.module.hooks.onMountPhase?.('detached', 2);
+    }
+  );
 });
