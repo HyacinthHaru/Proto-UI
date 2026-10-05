@@ -12,6 +12,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/test/radio-group-entry.browser.test.ts',
   'apps/workspace/test/lifecycle.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-base-image.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts',
