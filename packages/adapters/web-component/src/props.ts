@@ -182,9 +182,20 @@ function syncOwnedSurfaceStyles(binding: SurfaceBinding, value: unknown) {
 
   for (const [property, style] of next) {
     const owned = binding.ownedStyles.get(property);
-    const previousValue = owned?.previousValue ?? target.style.getPropertyValue(property);
-    const previousPriority = owned?.previousPriority ?? target.style.getPropertyPriority(property);
-    target.style.setProperty(property, style.value, style.priority);
+    const currentValue = target.style.getPropertyValue(property);
+    const currentPriority = target.style.getPropertyPriority(property);
+    const previousValue = owned?.previousValue ?? currentValue;
+    const previousPriority = owned?.previousPriority ?? currentPriority;
+    // Only nonempty custom properties can skip an equal live declaration. Standard CSS
+    // setters may remove shorthand longhands or reorder logical/physical declarations.
+    const unchangedCustomProperty =
+      property.startsWith('--') &&
+      style.value !== '' &&
+      currentValue === style.value &&
+      currentPriority === style.priority;
+    if (!unchangedCustomProperty) {
+      target.style.setProperty(property, style.value, style.priority);
+    }
     binding.ownedStyles.set(
       property,
       Object.freeze({

@@ -68,6 +68,18 @@ function setupDialogMask(def: DefHandle<DialogMaskProps, DialogMaskExposes>): vo
     present: transition.isPresent,
   });
   const open = def.state.bool('open', false);
+
+  // P-BASE-DIALOG-MASK-DEFAULT-ACTION: Content still owns outside dismissal
+  // and focus restoration. Do not let the participating backdrop's native
+  // pointer default steal that restored focus after Content handles the press.
+  // This is the Mask-owned root event, not a global interception policy.
+  def.event.on('pointer.down', (run, event) => {
+    if (run.props.get().passthrough) return;
+    event.control.requestDefaultActionPrevention({
+      reason: 'dialog-mask.background-pointer',
+      source: 'base-dialog-mask',
+    });
+  });
   let hitRegionDispose: (() => void) | null = null;
   let hitSyncDisposed = false;
 

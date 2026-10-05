@@ -3,10 +3,10 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "generate:proto-ui-style": "corepack pnpm@10.32.1 --dir ../.. --filter @proto.ui/cli build && node ../../packages/cli/bin/proto-ui.js theme shadcn --out ./src/styles/shadcn-theme.css && node ../../packages/cli/bin/proto-ui.js tokens --input ../../packages/prototypes --out ./src/styles/proto-ui-tokens.generated.css --shadow-out ./src/styles/proto-ui-shadow-style.generated.js && node ../../packages/cli/bin/proto-ui.js style --out ./src/styles/proto-ui-style.css --theme-import ./shadcn-theme.css --tokens-import ./proto-ui-tokens.generated.css",
+    "generate:proto-ui-style": "corepack pnpm@10.32.1 --dir ../.. --filter @proto.ui/cli build && node ../../packages/cli/bin/proto-ui.js theme shadcn --out ./src/styles/shadcn-theme.css && node ./scripts/generate-website-prototype-tokens.mjs && node ../../packages/cli/bin/proto-ui.js style --out ./src/styles/proto-ui-style.css --theme-import ./shadcn-theme.css --tokens-import ./proto-ui-tokens.generated.css",
     "generate:prototype-tokens": "corepack pnpm@10.32.1 run generate:proto-ui-style",
     "generate:setup:shadcn:cli": "proto-ui shadcn --styles-dir ./src/styles",
-    "generate:proto-ui-tokens:cli": "proto-ui tokens --input ../../packages/prototypes --out ./src/styles/proto-ui-tokens.generated.css",
+    "generate:proto-ui-tokens:cli": "corepack pnpm@10.32.1 --dir ../.. --filter @proto.ui/cli build && node ./scripts/generate-website-prototype-tokens.mjs",
     "generate:proto-ui-style:cli": "proto-ui style --out ./src/styles/proto-ui-style.css --theme-import ./shadcn-theme.css --tokens-import ./proto-ui-tokens.generated.css",
     "generate:theme:shadcn:cli": "proto-ui theme shadcn --out ./src/styles/shadcn-theme.css",
     "generate-code": "tsx scripts/example_code_generation/cli.ts",
@@ -36,6 +36,8 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "astro": "^5.6.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "sharp": "^0.34.2",
     "shiki": "^3.22.0",
     "starlight-llms-txt": "0.7.0",
@@ -44,7 +46,8 @@
     "unist-util-visit": "^5.0.0",
     "vue": "^3.5.13",
     "@proto.ui/prototypes-bootstrap-2-3-2": "workspace:*",
-    "@proto.ui/prototypes-liquid-glass": "workspace:*"
+    "@proto.ui/prototypes-liquid-glass": "workspace:*",
+    "vue2-runtime": "npm:vue@2.6.14"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",

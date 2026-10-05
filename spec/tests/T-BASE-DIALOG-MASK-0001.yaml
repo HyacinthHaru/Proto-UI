@@ -23,7 +23,26 @@ cases:
       - P-BASE-DIALOG-MASK-PASSTHROUGH
       - P-BASE-DIALOG-MASK-NO-DISMISS
     expectation: dialog-mask-passthrough-does-not-change-dialog-open
+  - id: T-BASE-DIALOG-MASK-0001-CASE-DEFAULT-ACTION
+    title: Participating Mask protects Content focus return without intercepting passthrough or Content controls
+    covers:
+      - P-BASE-DIALOG-MASK-DEFAULT-ACTION
+      - P-BASE-DIALOG-MASK-NO-DISMISS
+      - P-BASE-DIALOG-MASK-PASSTHROUGH
+    expectation: dialog-mask-default-prevention-respects-content-owner-and-passthrough
+  - id: T-BASE-DIALOG-MASK-0001-CASE-POINTER-OWNER
+    title: Root pointer routing excludes independent descendant owners and retains native bubbling
+    covers:
+      - C-EVENT-0003-E
+    expectation: ancestor-mask-cannot-consume-descendant-owned-pointer-down
 implementations:
+  - id: web-pointer-root-owner-contract
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/base/test/contract/pointer-root-ownership.v0.contract.test.ts
+    required: true
+    consumesCases:
+      - T-BASE-DIALOG-MASK-0001-CASE-POINTER-OWNER
   - id: prototypes-base-dialog-mask-contract
     kind: module-test
     status: passing
@@ -33,18 +52,23 @@ implementations:
       - T-BASE-DIALOG-MASK-0001-CASE-DEFAULT-FOCUS
       - T-BASE-DIALOG-MASK-0001-CASE-PRESENCE
       - T-BASE-DIALOG-MASK-0001-CASE-PARTICIPATION
+      - T-BASE-DIALOG-MASK-0001-CASE-DEFAULT-ACTION
     exercises: [P-BASE-DIALOG-MASK]
 verifies:
+  contracts:
+    - id: C-EVENT-0003
+      anchors: [C-EVENT-0003-E]
   prototypes:
     - id: P-BASE-DIALOG-MASK
       anchors:
         - P-BASE-DIALOG-MASK-PRESENCE
         - P-BASE-DIALOG-MASK-PASSTHROUGH
         - P-BASE-DIALOG-MASK-NO-DISMISS
+        - P-BASE-DIALOG-MASK-DEFAULT-ACTION
 exercises: { prototypes: [P-BASE-DIALOG-MASK] }
 revisions:
-  - version: 0.3.0-alpha.0
-    change: revised
-    summary: Added backdrop default-focus prevention evidence without assigning dismissal ownership to Mask.
+  - version: 0.3.0-alpha.1
+    change: extended
+    summary: Added real Web Component default-prevention, Content focus-return, Alert Dialog policy and passthrough transition coverage; arbitrary unowned Mask descendants are outside this case.
   - { version: 0.2.0-rc.0, change: introduced, summary: Added Dialog Mask protocol coverage. }
 tags: [prototype, base, dialog, mask, test]

@@ -1,178 +1,160 @@
-import { existsSync, readdirSync } from 'node:fs';
-import path from 'node:path';
+import { globSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
-// The assignment was balanced from PR #652 run 35487857309 and checked against
-// exact-head run 35490492252. Keep it explicit: S3/S4/S2 dominate file counts.
-export const BROWSER_SHARDS = Object.freeze(
-  [
-    // 299.450s on exact-head run 35490492252
-    [
-      'apps/www/src/content/docs/zh-cn/demo-shadow-split-s3.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts',
-      'apps/www/test/message-composition.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts',
-    ],
-    // 276.683s on exact-head run 35490492252
-    [
-      'apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts',
-      // 6.478s on main run 35951805853; keep the new suite on the lightest shard.
-      'apps/www/src/content/docs/zh-cn/demo-shadcn-dialog.browser.test.ts',
-      // 6.619s on main run 35501437043.
-      'apps/www/test/radio-group-entry.browser.test.ts',
-      // 23.371s on PR #667 run 35507086643.
-      'apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts',
-      // Required Scroll end-follow browser evidence merged from PR #623.
-      'apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts',
-      // New from main at merge dc8bf26; unmeasured, kept on the lightest shard
-      // per the shadcn-dialog precedent.
-      'apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts',
-      'apps/www/test/evidence/brutalist-fonts.browser.test.ts',
-      'apps/www/src/components/documentation-image-preview.browser.test.ts',
-      'apps/www/test/preferences.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
-    ],
-    // 281.639s on exact-head run 35490492252
-    [
-      'apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts',
-      'packages/adapters/web-component/test/shadow-closeout.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts',
-      'apps/www/test/button-view-lifetime.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts',
-    ],
-    // 291.014s on exact-head run 35490492252
-    [
-      'apps/www/src/content/docs/zh-cn/demo-shadow-split-s1.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-base-image.browser.test.ts',
-      'apps/www/test/color-scheme.browser.test.ts',
-      'apps/workspace/test/lifecycle.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts',
-      'apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts',
-    ],
-  ].map((shard) => Object.freeze(shard))
-);
+export const BROWSER_SUITES = Object.freeze([
+  'apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts',
+  'apps/www/test/evidence/brutalist-fonts.browser.test.ts',
+  'apps/www/src/components/documentation-image-preview.browser.test.ts',
+  'apps/www/test/message-composition.browser.test.ts',
+  'apps/www/test/color-scheme.browser.test.ts',
+  'apps/www/test/preferences.browser.test.ts',
+  'apps/www/test/button-view-lifetime.browser.test.ts',
+  'apps/www/test/radio-group-entry.browser.test.ts',
+  'apps/workspace/test/lifecycle.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-base-image.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-base-input.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadow-split-s1.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadow-split-s3.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadcn-dialog.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
+  'packages/adapters/web-component/test/shadow-closeout.browser.test.ts',
+]);
 
-export const BROWSER_SUITES = Object.freeze(BROWSER_SHARDS.flat());
+// Built Pagefind evidence uses its dedicated production owner, never the dev server.
+export const PRODUCTION_BROWSER_SUITES = Object.freeze([
+  'apps/www/src/content/docs/zh-cn/site-search-production.browser.test.ts',
+]);
 
-const DISCOVERY_ROOTS = ['apps', 'packages'];
-const IGNORED_DIRECTORIES = new Set(['.astro', 'dist', 'node_modules']);
+// Bound each CI worker to a deterministic share of the complete development inventory.
+// Sorted round-robin assignment is deterministic and never changes local coverage.
+export const BROWSER_SHARD_COUNT = 8;
 
-export function discoverBrowserSuites(root) {
-  const suites = [];
-  const visit = (directory) => {
-    for (const entry of readdirSync(directory, { withFileTypes: true })) {
-      if (entry.isDirectory()) {
-        if (!IGNORED_DIRECTORIES.has(entry.name)) visit(path.join(directory, entry.name));
-      } else if (entry.isFile() && entry.name.endsWith('.browser.test.ts')) {
-        suites.push(
-          path.relative(root, path.join(directory, entry.name)).split(path.sep).join('/')
-        );
-      }
-    }
-  };
-  for (const directory of DISCOVERY_ROOTS.map((name) => path.join(root, name))) {
-    if (existsSync(directory)) visit(directory);
-  }
-  return suites.sort();
+export function discoverBrowserSuites(root = fileURLToPath(new URL('../../', import.meta.url))) {
+  return [
+    ...new Set(
+      globSync(
+        [
+          'packages/**/*.browser.test.ts',
+          'internal/contracts/__tests__/**/*.browser.test.ts',
+          'apps/**/test/**/*.browser.test.ts',
+          'apps/www/src/**/*.browser.test.ts',
+        ],
+        { cwd: root, exclude: ['**/node_modules/**', '**/dist/**'] }
+      )
+    ),
+  ]
+    .map((suite) => suite.replaceAll('\\', '/'))
+    .sort();
 }
 
-export function validateBrowserTestPlan(discoveredSuites, browserShards = BROWSER_SHARDS) {
-  if (browserShards.length !== 4) {
-    throw new Error(`expected 4 browser shards, received ${browserShards.length}`);
-  }
-  const empty = browserShards.flatMap((shard, index) => (shard.length ? [] : [index + 1]));
-  if (empty.length) throw new Error(`empty browser shard: ${empty.join(', ')}`);
-
-  const assigned = browserShards.flat();
-  const seen = new Set();
-  const duplicates = new Set();
-  for (const suite of assigned) {
-    if (seen.has(suite)) duplicates.add(suite);
-    seen.add(suite);
-  }
-  if (duplicates.size) {
-    throw new Error(`duplicate browser suite assignment: ${[...duplicates].sort().join(', ')}`);
-  }
-
-  const discovered = new Set(discoveredSuites);
-  const missingAssignments = [...discovered].filter((suite) => !seen.has(suite)).sort();
-  const unknownEntries = [...seen].filter((suite) => !discovered.has(suite)).sort();
-  if (missingAssignments.length || unknownEntries.length) {
+export function assertBrowserInventory(
+  discovered = discoverBrowserSuites(),
+  development = BROWSER_SUITES,
+  production = PRODUCTION_BROWSER_SUITES
+) {
+  const registered = [...development, ...production];
+  if (new Set(registered).size !== registered.length)
+    throw new Error('Duplicate browser suite registration');
+  const missing = discovered.filter((suite) => !registered.includes(suite));
+  const stale = registered.filter((suite) => !discovered.includes(suite));
+  if (missing.length || stale.length)
     throw new Error(
-      `browser suite manifest mismatch; missing assignments: ${missingAssignments.join(', ') || 'none'}; unknown manifest entries: ${unknownEntries.join(', ') || 'none'}`
+      `Browser inventory mismatch: unregistered=${missing.join(', ')}; missing=${stale.join(', ')}`
     );
-  }
-  return assigned;
 }
 
-function nonBrowserPhase() {
-  return {
-    label: 'non-browser tests',
-    needsServer: false,
-    args: BROWSER_SUITES.flatMap((suite) => ['--exclude', suite]),
-  };
+export function browserShards(suites = BROWSER_SUITES, count = BROWSER_SHARD_COUNT) {
+  if (
+    !Number.isInteger(count) ||
+    count < 1 ||
+    count > suites.length ||
+    new Set(suites).size !== suites.length
+  )
+    throw new Error('Browser shards must be nonempty and suites unique');
+  const sorted = [...suites].sort();
+  return Array.from({ length: count }, (_, index) =>
+    sorted.filter((_, position) => position % count === index)
+  );
 }
 
-function browserPhase(files, label) {
-  return {
-    label,
-    needsServer: true,
-    // Keep files serial inside each hosted-runner shard. Every shard owns an
-    // independent dev server, so the cross-runner critical path is parallel.
-    args: ['--no-file-parallelism', ...files],
-  };
-}
-
-export function createRuntimeTestPlan(rawArgs, options = {}) {
-  const args = rawArgs[0] === '--' ? rawArgs.slice(1) : rawArgs;
-  const { scope, shard, discoveredSuites = BROWSER_SUITES } = options;
-  validateBrowserTestPlan(discoveredSuites);
-
-  if (args.length > 0) {
-    if (scope || shard) {
-      throw new Error('focused Vitest arguments cannot be combined with CI scope');
-    }
-    return [{ label: 'focused Vitest arguments', needsServer: false, args }];
-  }
-
-  if (!scope || scope === 'full') {
-    if (shard) throw new Error('full test scope does not accept a browser shard');
-    return [
-      nonBrowserPhase(),
-      browserPhase(BROWSER_SUITES, `all browser suites (${BROWSER_SUITES.length} files)`),
-    ];
-  }
-  if (scope === 'non-browser') {
-    if (shard) throw new Error('non-browser test scope does not accept a shard');
-    return [nonBrowserPhase()];
-  }
-  if (scope !== 'browser') throw new Error(`unknown test scope: ${scope}`);
-
-  const match = typeof shard === 'string' ? /^(\d+)\/(\d+)$/.exec(shard) : null;
+export function selectBrowserShard(shard) {
+  const match = /^(\d+)\/(\d+)$/.exec(shard ?? '');
   const index = Number(match?.[1]);
-  const total = Number(match?.[2]);
-  if (!match || total !== BROWSER_SHARDS.length || index < 1 || index > total) {
+  const count = Number(match?.[2]);
+  if (count !== BROWSER_SHARD_COUNT || index < 1 || index > count)
     throw new Error(
-      `invalid browser shard ${String(shard)}; expected 1/${BROWSER_SHARDS.length} through ${BROWSER_SHARDS.length}/${BROWSER_SHARDS.length}`
+      `Expected browser shard 1/${BROWSER_SHARD_COUNT} through ${BROWSER_SHARD_COUNT}/${BROWSER_SHARD_COUNT}`
     );
+  return browserShards()[index - 1];
+}
+
+export function createRuntimeTestPlan(rawArgs, { phase, shard } = {}) {
+  const args = rawArgs[0] === '--' ? rawArgs.slice(1) : rawArgs;
+  if (phase !== undefined && !['general', 'browser'].includes(phase))
+    throw new Error(`Unknown runtime phase: ${phase}`);
+  if (shard !== undefined && phase !== 'browser')
+    throw new Error('A runtime shard requires the browser phase');
+  if (args.length > 0) {
+    if (phase) throw new Error('CI runtime phases cannot be combined with focused Vitest filters');
+    return [{ needsServer: false, args }];
   }
-  const files = BROWSER_SHARDS[index - 1];
-  return [browserPhase(files, `browser shard ${index}/${total} (${files.length} files)`)];
+  assertBrowserInventory();
+  const plan = [
+    {
+      needsServer: false,
+      args: [...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].flatMap((suite) => [
+        '--exclude',
+        suite,
+      ]),
+    },
+    {
+      needsServer: true,
+      // One dev server compiles for every suite, so running the files in
+      // parallel makes them queue behind each other and blow their own
+      // readiness timeouts. Keep the browser matrix sequential so every
+      // route receives a complete, reproducible evidence pass.
+      args: [
+        '--no-file-parallelism',
+        ...(phase === 'browser' ? selectBrowserShard(shard) : BROWSER_SUITES),
+      ],
+    },
+  ];
+  return phase === 'general' ? [plan[0]] : phase === 'browser' ? [plan[1]] : plan;
 }
