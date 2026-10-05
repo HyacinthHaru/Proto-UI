@@ -1,8 +1,16 @@
 // @vitest-environment node
 
+import { execFileSync } from 'node:child_process';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { Browser, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { RUNTIMES, launchBrowser, openRoute, startServer, stopServer } from './browser-harness';
+import {
+  matrixHostsReady,
+  collectMatrixInteractiveFacts,
+  type InteractiveFact,
+} from './demo-matrix-observation';
 
 const MATRIX_ROUTE = '/zh-cn/internal/demo-matrix/';
 
@@ -13,15 +21,23 @@ type MatrixFacts = {
   errors: number;
   errorDetails: string[];
   overflow: number;
+  overflowDetails: Array<{
+    demoId: string;
+    adapter: string;
+    tag: string;
+    ref: string | null;
+    className: string;
+    text: string;
+    left: number;
+    right: number;
+    width: number;
+    outside: number;
+    clippingAncestor: string | null;
+  }>;
   adapterColumns: string;
   adapterColumnCount: number;
   runtimeRows: Record<string, number>;
   unavailable: string[];
-};
-
-type InteractiveFact = {
-  role: string;
-  name: string;
 };
 
 const INTERACTIVE_ROLES = [
@@ -52,17 +68,9 @@ async function waitForMatrix(page: Page): Promise<void> {
     { timeout: 60_000 }
   );
 
-  // Framework loaders settle after the preview roots are marked initialized;
-  // wait for the final host content so a slow import cannot be reported as a
-  // false matrix failure.
-  await page.waitForFunction(
-    () =>
-      [...document.querySelectorAll<HTMLElement>('[data-previewer-id] .host')].every(
-        (host) => host.childElementCount > 0 || host.textContent?.includes('[Preview Error]')
-      ),
-    undefined,
-    { timeout: 60_000 }
-  );
+  // A connected skeleton or laid-out staging generation is not a completed
+  // projection. Observe the existing commit boundary, never signature parity.
+  await page.waitForFunction(matrixHostsReady, undefined, { timeout: 60_000 });
 }
 
 async function readMatrixFacts(page: Page): Promise<MatrixFacts> {
@@ -104,6 +112,45 @@ async function readMatrixFacts(page: Page): Promise<MatrixFacts> {
           `${previewer.closest('.demo-matrix__adapter')?.getAttribute('aria-label')} (${previewer.getAttribute('data-previewer-id')}): ${previewer.textContent}`
       ),
       overflow: root.scrollWidth - root.clientWidth,
+      // Keep raw geometry, including which descendants are inside an intentional
+      // scroll/clip surface. Such content is useful diagnosis, not page overflow.
+      overflowDetails: Array.from(
+        document.querySelectorAll<HTMLElement>('.demo-matrix__adapter, .demo-matrix__adapter *')
+      )
+        .flatMap((element) => {
+          const rect = element.getBoundingClientRect();
+          if (!rect.width || !rect.height || (rect.left >= 0 && rect.right <= root.clientWidth))
+            return [];
+          let clippingAncestor: string | null = null;
+          for (let ancestor = element.parentElement; ancestor; ancestor = ancestor.parentElement) {
+            if (
+              ['auto', 'scroll', 'hidden', 'clip'].includes(getComputedStyle(ancestor).overflowX)
+            ) {
+              clippingAncestor = `${ancestor.tagName.toLowerCase()}[data-demo-ref="${ancestor.getAttribute('data-demo-ref') ?? ''}"]`;
+              break;
+            }
+          }
+          return [
+            {
+              demoId: element.closest('.demo-matrix__item')?.id ?? '',
+              adapter: element.closest('.demo-matrix__adapter')?.getAttribute('aria-label') ?? '',
+              tag: element.tagName.toLowerCase(),
+              ref: element.getAttribute('data-demo-ref'),
+              className: element.getAttribute('class') ?? '',
+              text: (element.textContent ?? '').trim().replace(/\s+/g, ' ').slice(0, 160),
+              left: rect.left,
+              right: rect.right,
+              width: rect.width,
+              outside: Math.max(-rect.left, rect.right - root.clientWidth),
+              clippingAncestor,
+            },
+          ];
+        })
+        .sort(
+          (a, b) =>
+            Number(!!a.clippingAncestor) - Number(!!b.clippingAncestor) || b.outside - a.outside
+        )
+        .slice(0, 40),
       adapterColumns: firstGrid ? getComputedStyle(firstGrid).gridTemplateColumns : '',
       adapterColumnCount: firstColumns.size,
       runtimeRows,
@@ -121,61 +168,7 @@ async function readMatrixFacts(page: Page): Promise<MatrixFacts> {
  * matrix surface until the corresponding trigger opens them.
  */
 async function readInteractiveFacts(page: Page): Promise<Record<string, InteractiveFact[][]>> {
-  return page.evaluate((interactiveRoles) => {
-    const roles = new Set<string>(interactiveRoles);
-    const accessibleName = (element: HTMLElement): string => {
-      const labelledBy = element.getAttribute('aria-labelledby');
-      const labelledText = labelledBy
-        ? labelledBy
-            .split(/\s+/)
-            .map((id) => document.getElementById(id)?.textContent ?? '')
-            .join(' ')
-        : '';
-      return (
-        element.getAttribute('aria-label') ||
-        labelledText ||
-        element.getAttribute('title') ||
-        element.textContent ||
-        ''
-      )
-        .trim()
-        .replace(/\s+/g, ' ');
-    };
-    const visible = (element: HTMLElement): boolean => {
-      const rect = element.getBoundingClientRect();
-      const style = getComputedStyle(element);
-      return (
-        rect.width > 0 &&
-        rect.height > 0 &&
-        style.display !== 'none' &&
-        style.visibility !== 'hidden'
-      );
-    };
-
-    const result: Record<string, InteractiveFact[][]> = {};
-    document.querySelectorAll<HTMLElement>('.demo-matrix__item').forEach((item) => {
-      result[item.id] = Array.from(
-        item.querySelectorAll<HTMLElement>(
-          ':scope > .demo-matrix__adapters > .demo-matrix__adapter:not([data-unavailable])'
-        )
-      ).map((adapter) =>
-        Array.from(adapter.querySelectorAll<HTMLElement>('[role],button,input,select,textarea'))
-          .filter((element) => {
-            const role = element.getAttribute('role');
-            return (
-              ((role && roles.has(role)) ||
-                ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(element.tagName)) &&
-              visible(element)
-            );
-          })
-          .map((element) => ({
-            role: element.getAttribute('role') || element.tagName.toLowerCase(),
-            name: accessibleName(element),
-          }))
-      );
-    });
-    return result;
-  }, INTERACTIVE_ROLES);
+  return page.evaluate(collectMatrixInteractiveFacts, INTERACTIVE_ROLES);
 }
 
 async function chooseGlobalAdapter(page: Page, runtime: string): Promise<void> {
@@ -197,6 +190,45 @@ async function chooseGlobalAdapter(page: Page, runtime: string): Promise<void> {
 
 let browser: Browser;
 let baseUrl = '';
+
+async function persistNarrowMatrix(page: Page, width: number, facts: MatrixFacts): Promise<void> {
+  const evidenceRoot =
+    process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR ?? process.env.PROTO_UI_BROWSER_EVIDENCE_DIR;
+  if (!evidenceRoot) return;
+  const directory = join(evidenceRoot, 'demo-matrix');
+  await mkdir(directory, { recursive: true });
+  const source = {
+    sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+    dirty: !!execFileSync('git', ['status', '--porcelain', '--untracked-files=all'], {
+      encoding: 'utf8',
+    }).trim(),
+  };
+  const demoId =
+    facts.overflowDetails.find((detail) => !detail.clippingAncestor)?.demoId ||
+    'demo-base-transition';
+  const screenshot = `matrix-${width}.png`;
+  await writeFile(
+    join(directory, `matrix-${width}.json`),
+    JSON.stringify(
+      {
+        schemaVersion: 1,
+        source,
+        capturedAt: new Date().toISOString(),
+        screenshot,
+        viewport: page.viewportSize(),
+        screenshotDemoId: demoId,
+        facts,
+      },
+      null,
+      2
+    )
+  );
+  // Persist the primary overflow/owner facts before screenshot acquisition.
+  await page
+    .locator(`[id="${demoId}"] .demo-matrix__adapter`)
+    .first()
+    .screenshot({ path: join(directory, screenshot) });
+}
 
 beforeAll(async () => {
   baseUrl = await startServer(MATRIX_ROUTE);
@@ -224,7 +256,7 @@ describe.sequential('Website Demo Matrix browser smoke', () => {
       expect(facts.previewers).toBe(facts.demos * RUNTIMES.length);
       expect(facts.initialized).toBe(facts.previewers);
       expect(facts.errors, facts.errorDetails.join('\n\n')).toBe(0);
-      expect(facts.overflow).toBeLessThanOrEqual(0);
+      expect(facts.overflow, JSON.stringify(facts.overflowDetails, null, 2)).toBeLessThanOrEqual(0);
       expect(facts.adapterColumnCount).toBe(RUNTIMES.length);
       for (const runtime of RUNTIMES) {
         expect(facts.runtimeRows[runtime], runtime).toBe(facts.demos);
@@ -241,7 +273,7 @@ describe.sequential('Website Demo Matrix browser smoke', () => {
         ).toBe(true);
         expect(
           new Set(signatures.map((signature) => JSON.stringify(signature))).size,
-          `${demoId} accessible controls differ across runtimes`
+          `${demoId} accessible controls differ across runtimes: ${JSON.stringify(signatures)}`
         ).toBeLessThanOrEqual(1);
       }
 
@@ -275,8 +307,11 @@ describe.sequential('Website Demo Matrix browser smoke', () => {
       try {
         await waitForMatrix(page);
         const facts = await readMatrixFacts(page);
+        await persistNarrowMatrix(page, width, facts);
         expect(facts.errors, facts.errorDetails.join('\n\n')).toBe(0);
-        expect(facts.overflow).toBeLessThanOrEqual(0);
+        expect(facts.overflow, JSON.stringify(facts.overflowDetails, null, 2)).toBeLessThanOrEqual(
+          0
+        );
         expect(facts.adapterColumnCount).toBe(1);
         expect(facts.unavailable).toEqual([]);
         expect(facts.previewers).toBe(facts.demos * RUNTIMES.length);

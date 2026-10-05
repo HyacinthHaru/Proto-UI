@@ -46,3 +46,5 @@ If you are still deciding what kind of Prototype work you have:
 These guides do not infer a general Adapter contribution workflow from the incomplete Module, Host Capability, and Adapter-profile catalog. See [Adapter Contribution Guide Deferred](/en/build/adapter-guide/) for that boundary.
 
 Use the [Prototype Author Checklist](/en/build/prototypes/checklist/) before opening a pull request.
+
+[Prototype documentation coverage](/en/build/prototypes/documentation-coverage/)
