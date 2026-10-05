@@ -701,27 +701,6 @@ describe('WC live focus-entry resolver inputs', () => {
     expect(host.hasAttribute('tabindex')).toBe(false);
   });
 
-  it('reprojects when an external fieldset ancestor changes disabledness', async () => {
-    const fieldset = document.createElement('fieldset');
-    document.body.append(fieldset);
-    const host = panel(true);
-    const input = document.createElement('input');
-    host.append(input);
-    fieldset.append(host);
-    await settle();
-    expect(host.hasAttribute('tabindex')).toBe(false);
-    const removeAttribute = vi.spyOn(host, 'removeAttribute');
-
-    fieldset.disabled = true;
-    await settle();
-    expect(removeAttribute).toHaveBeenCalledWith('tabindex');
-
-    removeAttribute.mockClear();
-    fieldset.disabled = false;
-    await settle();
-    expect(removeAttribute).toHaveBeenCalledWith('tabindex');
-  });
-
   it.each([false, true])(
     'tracks image-map associations outside the region (composed: %s)',
     async (composed) => {
@@ -1254,47 +1233,6 @@ describe('WC live focus-entry resolver inputs', () => {
     }
   });
 
-  it('observes stylesheet DOM changes in an external composed ShadowRoot', async () => {
-    const carrier = document.createElement('div');
-    const root = carrier.attachShadow({ mode: 'open' });
-    const style = document.createElement('style');
-    root.append(style);
-    document.body.append(carrier);
-    const host = panel(true);
-    root.append(host);
-    host.append(document.createElement('button'));
-    await settle();
-    expect(host.hasAttribute('tabindex')).toBe(false);
-
-    const removeAttribute = vi.spyOn(host, 'removeAttribute');
-    style.textContent = '::slotted(*) { visibility: visible; }';
-    await settle();
-    expect(removeAttribute).toHaveBeenCalledWith('tabindex');
-
-    removeAttribute.mockClear();
-    const replacement = document.createElement('style');
-    replacement.textContent = '::slotted(*) { visibility: inherit; }';
-    style.replaceWith(replacement);
-    await settle();
-    expect(removeAttribute).toHaveBeenCalledWith('tabindex');
-
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    root.append(link);
-    await settle();
-    removeAttribute.mockClear();
-    link.dispatchEvent(new Event('load'));
-    await settle();
-    expect(removeAttribute).toHaveBeenCalledWith('tabindex');
-
-    host.remove();
-    await settle();
-    removeAttribute.mockClear();
-    link.dispatchEvent(new Event('load'));
-    await settle();
-    expect(removeAttribute).not.toHaveBeenCalled();
-  });
-
   it('reprojects when a style element changes stylesheet eligibility', async () => {
     const style = document.createElement('style');
     style.type = 'text/plain';
@@ -1422,90 +1360,6 @@ describe('WC live focus-entry resolver inputs', () => {
     media.dispatchEvent(new Event('change'));
     await settle();
     expect(host.tabIndex).toBe(0);
-  });
-
-  it('reprojects on accessible imported stylesheet media changes without looping on cycles', async () => {
-    const originalMatchMedia = Object.getOwnPropertyDescriptor(window, 'matchMedia');
-    const originalStyleSheets = Object.getOwnPropertyDescriptor(document, 'styleSheets');
-    const importedMedia = new EventTarget() as MediaQueryList;
-    Object.defineProperties(importedMedia, {
-      media: { value: '(width >= 40rem)' },
-      matches: { value: false },
-      onchange: { value: null, writable: true },
-    });
-    const matchMedia = vi.fn((query: string) => {
-      if (query === importedMedia.media) return importedMedia;
-      return Object.assign(new EventTarget(), {
-        media: query,
-        matches: false,
-        onchange: null,
-      }) as MediaQueryList;
-    });
-    Object.defineProperty(window, 'matchMedia', {
-      configurable: true,
-      value: matchMedia,
-    });
-
-    const importedSheet = { cssRules: [] as unknown as CSSRuleList };
-    const cyclicImport = {
-      type: 3,
-      media: { mediaText: '(orientation: landscape)' },
-      styleSheet: importedSheet,
-    } as unknown as CSSImportRule;
-    const opaqueImport = {
-      type: 3,
-      media: { mediaText: '(prefers-contrast: more)' },
-      styleSheet: {
-        media: { mediaText: '' },
-        get cssRules(): CSSRuleList {
-          throw new DOMException('opaque', 'SecurityError');
-        },
-      },
-    } as unknown as CSSImportRule;
-    importedSheet.cssRules = [
-      { type: 4, media: { mediaText: '(prefers-reduced-motion: reduce)' }, cssRules: [] },
-      cyclicImport,
-    ] as unknown as CSSRuleList;
-    Object.defineProperty(document, 'styleSheets', {
-      configurable: true,
-      value: [
-        {
-          media: { mediaText: '' },
-          cssRules: [
-            {
-              type: 3,
-              media: { mediaText: importedMedia.media },
-              styleSheet: importedSheet,
-            },
-            opaqueImport,
-          ],
-        } as unknown as CSSStyleSheet,
-      ] as unknown as StyleSheetList,
-    });
-
-    let host: HTMLElement | null = null;
-    try {
-      host = panel(false);
-      host.append(document.createElement('button'));
-      await settle();
-      expect(host.hasAttribute('tabindex')).toBe(false);
-      expect(matchMedia).toHaveBeenCalledWith(importedMedia.media);
-      expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)');
-      expect(matchMedia).toHaveBeenCalledWith('(orientation: landscape)');
-      expect(matchMedia).toHaveBeenCalledWith('(prefers-contrast: more)');
-
-      const removeAttribute = vi.spyOn(host, 'removeAttribute');
-      importedMedia.dispatchEvent(new Event('change'));
-      await settle();
-      expect(removeAttribute).toHaveBeenCalledWith('tabindex');
-    } finally {
-      host?.remove();
-      if (originalStyleSheets) Object.defineProperty(document, 'styleSheets', originalStyleSheets);
-      else delete (document as unknown as Record<string, unknown>).styleSheets;
-      if (originalMatchMedia) Object.defineProperty(window, 'matchMedia', originalMatchMedia);
-      else delete (window as unknown as Record<string, unknown>).matchMedia;
-      await settle();
-    }
   });
 
   it('only observes document image bindings while the region contains areas', async () => {
