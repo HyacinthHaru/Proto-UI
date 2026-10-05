@@ -1,13 +1,22 @@
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs';
+import {
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+  existsSync,
+  readdirSync,
+} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
 import {
   SEARCH_PROFILE,
+  SEARCH_PROFILE_PHASE_NAMES,
   SEARCH_SCENARIOS,
   searchScenario,
   allowedLocalUrl,
@@ -22,6 +31,9 @@ import {
   safeUrl,
   sourceIdentity,
   createProfileCapture,
+  isTimelineSchedulerNoise,
+  validateTimelineCoverage,
+  readProfileCoverage,
 } from './search-startup-profile.mjs';
 
 const origin = 'http://127.0.0.1:4321';
@@ -284,7 +296,8 @@ test('CPU and timeline artifacts are sanitized and retained with no screenshot o
             timeDeltas: [1000],
           },
         };
-      if (command === 'Tracing.end') queueMicrotask(() => cdp.emit('Tracing.tracingComplete'));
+      if (command === 'Tracing.end')
+        queueMicrotask(() => cdp.emit('Tracing.tracingComplete', { dataLossOccurred: false }));
       return {};
     };
     const stop = await startProfile(cdp, directory, origin);
@@ -317,7 +330,8 @@ test('timeline cap is explicit evidence debt rather than unbounded buffering', a
     const cdp = new EventEmitter();
     cdp.send = async (command) => {
       if (command === 'Profiler.stop') return { profile: { nodes: [] } };
-      if (command === 'Tracing.end') queueMicrotask(() => cdp.emit('Tracing.tracingComplete'));
+      if (command === 'Tracing.end')
+        queueMicrotask(() => cdp.emit('Tracing.tracingComplete', { dataLossOccurred: false }));
       return {};
     };
     const stop = await startProfile(cdp, directory, origin);
@@ -462,7 +476,24 @@ test('failed timeline completion preserves already captured CPU and incremental 
   }
 });
 
-function fakeCdp({ cpuStop, traceStart, traceEnd, missingEof = false } = {}) {
+const coverageMarks = [
+  { name: 'pui-search:probe-installed', startTime: 1 },
+  { name: 'pui-search:owners-observed', startTime: 2 },
+  { name: 'pui-search:capture-end', startTime: 5 },
+];
+const coverageEvents = () => [
+  { name: 'thread_name', ph: 'M', pid: 1, tid: 2, ts: 0, args: { name: 'CrRendererMain' } },
+  ...coverageMarks.map((mark) => ({
+    name: mark.name,
+    cat: 'blink.user_timing',
+    ph: 'I',
+    pid: 1,
+    tid: 2,
+    ts: 10000 + mark.startTime * 1000,
+  })),
+];
+
+function fakeCdp({ cpuStop, traceStart, traceEnd, missingEof = false, backendLoss = false } = {}) {
   const cdp = new EventEmitter();
   cdp.commands = [];
   cdp.send = async (command, args) => {
@@ -472,6 +503,8 @@ function fakeCdp({ cpuStop, traceStart, traceEnd, missingEof = false } = {}) {
       if (cpuStop === 'timeout') return new Promise(() => {});
       return {
         profile: {
+          startTime: 0,
+          endTime: 100000,
           nodes: [
             {
               id: 1,
@@ -485,10 +518,36 @@ function fakeCdp({ cpuStop, traceStart, traceEnd, missingEof = false } = {}) {
     }
     if (command === 'Tracing.start') {
       if (traceStart === 'throws') throw new Error('Trace start rejected');
-      cdp.emit('Tracing.dataCollected', { value: [{ name: 'Layout', ts: 100, dur: 30 }] });
+      cdp.emit('Tracing.dataCollected', {
+        value: [
+          ...coverageEvents().slice(0, -1),
+          {
+            name: 'FunctionCall',
+            cat: 'devtools.timeline',
+            ph: 'X',
+            pid: 1,
+            tid: 2,
+            ts: 12000,
+            dur: 100,
+          },
+          {
+            name: 'Layout',
+            cat: 'devtools.timeline',
+            ph: 'X',
+            pid: 1,
+            tid: 2,
+            ts: 13000,
+            dur: 500,
+          },
+        ],
+      });
     }
     if (command === 'Tracing.end') {
-      if (!missingEof) queueMicrotask(() => cdp.emit('Tracing.tracingComplete'));
+      cdp.emit('Tracing.dataCollected', { value: coverageEvents().slice(-1) });
+      if (!missingEof)
+        queueMicrotask(() =>
+          cdp.emit('Tracing.tracingComplete', { dataLossOccurred: backendLoss })
+        );
       if (traceEnd === 'throws') throw new Error('Trace end rejected');
     }
     return {};
@@ -587,7 +646,16 @@ test('Tracing.end rejection still observes independent EOF and retains its own f
   }
 });
 
-async function fakeVisit(directory, { mode = 'profiled', readyAt = 900, ...cdpOptions } = {}) {
+async function fakeVisit(
+  directory,
+  {
+    mode = 'profiled',
+    readyAt = 900,
+    coverageInput = coverageMarks,
+    observedMarks = [],
+    ...cdpOptions
+  } = {}
+) {
   const oracle = await import('../../apps/www/src/content/docs/zh-cn/site-search-evidence.ts');
   const calls = [];
   const cdp = fakeCdp(cdpOptions);
@@ -605,6 +673,10 @@ async function fakeVisit(directory, { mode = 'profiled', readyAt = 900, ...cdpOp
     calls.push(['late-observation']);
   };
   page.evaluate = async (fn, args) => {
+    if (fn === readProfileCoverage) {
+      calls.push(['coverage']);
+      return coverageInput;
+    }
     if (args?.startedAt !== undefined) {
       assert.equal(fn, oracle.readSearchReadyWithinBudget);
       calls.push(['readiness', args.startedAt]);
@@ -622,7 +694,7 @@ async function fakeVisit(directory, { mode = 'profiled', readyAt = 900, ...cdpOp
       navigation: [],
       resources: [],
       resourceCount: 0,
-      marks: [],
+      marks: observedMarks,
     };
   };
   const context = {
@@ -766,7 +838,372 @@ test('CPU persistence failure retains a completed timeline and explicit partial 
     assert.equal(partial.timeline.persisted, true);
     assert.equal(partial.complete, false);
     assert.ok(partial.failures.some((failure) => failure.phase === 'CPU stop/persist'));
-    assert.equal(read(directory, 'timeline.json').traceEvents[0].name, 'Layout');
+    assert.ok(
+      read(directory, 'timeline.json').traceEvents.some((event) => event.name === 'Layout')
+    );
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('scheduler exclusion precedes retention while semantic and unknown events remain eligible', () => {
+  for (const event of [
+    { name: 'ThreadControllerImpl::RunTask', cat: 'toplevel' },
+    { name: 'Receive mojo message', cat: 'toplevel,mojom' },
+    { name: 'RunTask', cat: 'disabled-by-default-devtools.timeline' },
+  ])
+    assert.equal(isTimelineSchedulerNoise(event), true);
+  for (const name of [
+    'Layout',
+    'UpdateLayoutTree',
+    'RecalculateStyles',
+    'MajorGC',
+    'FunctionCall',
+    'EvaluateScript',
+    'FutureSemanticEvent',
+  ])
+    assert.equal(isTimelineSchedulerNoise({ name, cat: 'devtools.timeline' }), false);
+  assert.equal(isTimelineSchedulerNoise({ name: 'RunTask', cat: 'v8,toplevel' }), false);
+  assert.equal(
+    isTimelineSchedulerNoise({
+      name: 'FutureStyleInvalidation',
+      cat: 'disabled-by-default-devtools.timeline',
+    }),
+    false
+  );
+  const sourceCategories = source.match(/categories:\s*'([^']+)'/)[1].split(',');
+  assert.ok(!sourceCategories.includes('toplevel'));
+  for (const category of [
+    'devtools.timeline',
+    'v8',
+    'blink.user_timing',
+    'disabled-by-default-devtools.timeline',
+  ])
+    assert.ok(sourceCategories.includes(category));
+  assert.equal(SEARCH_PROFILE.maxTraceEvents, 60_000);
+  assert.equal(SEARCH_PROFILE.maxTraceBytes, 24 * 1024 * 1024);
+});
+
+function completeCoverageEvents() {
+  return [
+    ...coverageEvents(),
+    {
+      name: 'FunctionCall',
+      cat: 'devtools.timeline',
+      ph: 'X',
+      pid: 1,
+      tid: 2,
+      ts: 12000,
+      dur: 100,
+    },
+    { name: 'Layout', cat: 'devtools.timeline', ph: 'X', pid: 1, tid: 2, ts: 13000, dur: 500 },
+  ];
+}
+
+test('coverage binds every observed mark to one renderer thread and CPU clock without requiring ready', () => {
+  const coverage = validateTimelineCoverage(completeCoverageEvents(), coverageMarks, {
+    startTime: 0,
+    endTime: 100000,
+  });
+  assert.equal(coverage.complete, true);
+  assert.deepEqual(coverage.renderer, { pid: 1, tid: 2 });
+  assert.equal(coverage.originMonotonicUs, 10000);
+  assert.equal(coverage.offsetSpreadUs, 0);
+  assert.equal(coverage.fromMs, 1);
+  assert.equal(coverage.toMs, 5);
+  assert.ok(
+    !coverageMarks.some((mark) => mark.name.includes('ready') || mark.name.includes('active'))
+  );
+});
+
+for (const [name, change] of [
+  [
+    'missing end mark',
+    (events) => events.filter((event) => event.name !== 'pui-search:capture-end'),
+  ],
+  [
+    'duplicate mark',
+    (events) => [
+      ...events,
+      { ...events.find((event) => event.name === 'pui-search:probe-installed') },
+    ],
+  ],
+  [
+    'wrong thread',
+    (events) =>
+      events.map((event) =>
+        event.name === 'pui-search:capture-end' ? { ...event, tid: 99 } : event
+      ),
+  ],
+  [
+    'wrong clock',
+    (events) =>
+      events.map((event) =>
+        event.name === 'pui-search:capture-end' ? { ...event, ts: event.ts + 2000 } : event
+      ),
+  ],
+  ['missing renderer metadata', (events) => events.filter((event) => event.ph !== 'M')],
+  ['missing semantic timings', (events) => events.filter((event) => event.ph !== 'X')],
+]) {
+  test(`coverage fails closed for ${name}`, () => {
+    assert.equal(
+      validateTimelineCoverage(change(completeCoverageEvents()), coverageMarks, {
+        startTime: 0,
+        endTime: 100000,
+      }).complete,
+      false
+    );
+  });
+}
+
+test('missing browser marks or a CPU clock outside the renderer boundaries cannot be complete', () => {
+  assert.equal(
+    validateTimelineCoverage(completeCoverageEvents(), undefined, { startTime: 0, endTime: 100000 })
+      .complete,
+    false
+  );
+  assert.equal(
+    validateTimelineCoverage(completeCoverageEvents(), coverageMarks, {
+      startTime: 13000,
+      endTime: 14000,
+    }).complete,
+    false
+  );
+});
+
+test('more than 60000 scheduler events cannot displace later relevant evidence or mark coverage', async () => {
+  const directory = temp();
+  try {
+    const cdp = fakeCdp();
+    const capture = createProfileCapture(cdp, directory, origin, fastWait);
+    await capture.start();
+    cdp.emit('Tracing.dataCollected', {
+      value: [
+        ...Array.from({ length: 60010 }, () => ({
+          name: 'RunTask',
+          cat: 'disabled-by-default-devtools.timeline',
+          ph: 'X',
+          pid: 9,
+          tid: 9,
+          ts: 1,
+          dur: 1,
+        })),
+        {
+          name: 'UpdateLayoutTree',
+          cat: 'blink,devtools.timeline',
+          ph: 'X',
+          pid: 1,
+          tid: 2,
+          ts: 13000,
+          dur: 800,
+        },
+      ],
+    });
+    capture.setCoverage(coverageMarks);
+    const result = await capture.stop();
+    assert.equal(result.filter.schedulerExcluded, 60010);
+    assert.equal(result.dropped, 0);
+    assert.equal(result.truncated, false);
+    assert.equal(result.complete, true);
+    assert.ok(
+      read(directory, 'timeline.json').traceEvents.some(
+        (event) => event.name === 'UpdateLayoutTree'
+      )
+    );
+    assert.equal(
+      result.filter.received,
+      result.eventCount +
+        result.dropped +
+        result.filter.schedulerExcluded +
+        result.filter.privacyExcluded
+    );
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+for (const backendLoss of [true, undefined]) {
+  test(`backend data-loss status ${String(backendLoss)} fails even with all stage marks`, async () => {
+    const directory = temp();
+    try {
+      const cdp = fakeCdp({ missingEof: true });
+      const capture = createProfileCapture(cdp, directory, origin, fastWait);
+      await capture.start();
+      capture.setCoverage(coverageMarks);
+      const stopping = capture.stop();
+      queueMicrotask(() =>
+        cdp.emit(
+          'Tracing.tracingComplete',
+          backendLoss === undefined ? {} : { dataLossOccurred: backendLoss }
+        )
+      );
+      const partial = await stopping;
+      assert.equal(partial.coverage.complete, true);
+      assert.equal(partial.complete, false);
+      assert.ok(partial.failures.some((failure) => failure.phase === 'timeline backend data loss'));
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+}
+
+test('a failed original readiness deadline can still produce complete scoped profiling evidence', async () => {
+  const directory = temp();
+  try {
+    const { report } = await fakeVisit(directory, { readyAt: 1149 });
+    assert.equal(report.readiness.onTime, false);
+    assert.equal(report.profile.complete, true);
+    assert.equal(report.outcome, 'failure');
+    assert.deepEqual(report.failures, ['Original 1000ms initial-ready deadline failed']);
+    const progress = readFileSync(path.join(directory, 'progress.ndjson'), 'utf8');
+    assert.ok(
+      progress.indexOf('initial-ready-result') < progress.indexOf('late-observation-result')
+    );
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('semantic timing evidence outside the marked capture window is insufficient', () => {
+  const outside = completeCoverageEvents().map((event) =>
+    event.ph === 'X' ? { ...event, ts: 200000 } : event
+  );
+  assert.equal(
+    validateTimelineCoverage(outside, coverageMarks, { startTime: 0, endTime: 100000 }).complete,
+    false
+  );
+});
+
+test('semantic overflow still fails even when all renderer/clock coverage marks were retained', async () => {
+  const directory = temp();
+  try {
+    const cdp = fakeCdp();
+    const send = cdp.send;
+    cdp.send = async (command, args) => {
+      if (command === 'Tracing.end') {
+        queueMicrotask(() => cdp.emit('Tracing.tracingComplete', { dataLossOccurred: false }));
+        return {};
+      }
+      return send(command, args);
+    };
+    const capture = createProfileCapture(cdp, directory, origin, fastWait);
+    await capture.start();
+    cdp.emit('Tracing.dataCollected', {
+      value: [
+        ...coverageEvents().slice(-1),
+        ...Array.from({ length: 60000 }, () => ({
+          name: 'Layout',
+          cat: 'devtools.timeline',
+          ph: 'X',
+          pid: 1,
+          tid: 2,
+          ts: 13000,
+          dur: 1,
+        })),
+      ],
+    });
+    capture.setCoverage(coverageMarks);
+    const partial = await capture.stop();
+    assert.equal(partial.eventCount, 60000);
+    assert.equal(partial.coverage.complete, true);
+    assert.equal(partial.filter.schedulerExcluded, 0);
+    assert.ok(partial.dropped > 0);
+    assert.equal(partial.truncated, true);
+    assert.equal(partial.complete, false);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+const syntheticPrivatePhase = `pui-search:${origin}/mark?token=synthetic-review-sentinel`;
+const syntheticPhaseSentinel = 'synthetic-review-sentinel';
+
+test('serialized browser coverage reader admits only fixed phase names', () => {
+  const entries = [coverageMarks[0], { name: syntheticPrivatePhase, startTime: 3 }];
+  const result = runInNewContext(`(${readProfileCoverage.toString()})(knownNames)`, {
+    knownNames: [...SEARCH_PROFILE_PHASE_NAMES],
+    performance: {
+      mark: (name) => entries.push({ name, startTime: 5 }),
+      getEntriesByType: () => entries,
+    },
+  });
+  assert.deepEqual(
+    Array.from(result, (entry) => entry.name),
+    ['pui-search:probe-installed', 'pui-search:capture-end']
+  );
+  assert.ok(!JSON.stringify(result).includes(syntheticPhaseSentinel));
+  assert.equal(
+    safeTimelineEvent({ name: syntheticPrivatePhase, cat: 'blink.user_timing' }, origin),
+    null
+  );
+});
+
+test('pure coverage diagnostics never echo an unknown phase name or its query', () => {
+  const marks = [...coverageMarks, { name: syntheticPrivatePhase, startTime: 3 }];
+  const result = validateTimelineCoverage(completeCoverageEvents(), marks, {
+    startTime: 0,
+    endTime: 100000,
+  });
+  assert.equal(result.complete, false);
+  assert.ok(!JSON.stringify(result).includes(syntheticPhaseSentinel));
+  assert.ok(!JSON.stringify(result).includes('token='));
+});
+
+function assertNoSyntheticPhaseInFiles(directory) {
+  for (const file of readdirSync(directory)) {
+    const contents = readFileSync(path.join(directory, file), 'utf8');
+    assert.equal(
+      contents.includes(syntheticPhaseSentinel),
+      false,
+      `Unexpected synthetic marker in ${file}`
+    );
+    assert.equal(contents.includes('token='), false, `Unexpected query in ${file}`);
+  }
+}
+
+test('the review synthetic phase cannot leak through journal, timeline, status or returned summary', async () => {
+  const directory = temp();
+  try {
+    const cdp = fakeCdp();
+    const capture = createProfileCapture(cdp, directory, origin, fastWait);
+    await capture.start();
+    capture.setCoverage([...coverageMarks, { name: syntheticPrivatePhase, startTime: 3 }]);
+    cdp.emit('Tracing.dataCollected', {
+      value: [
+        {
+          name: syntheticPrivatePhase,
+          cat: 'blink.user_timing',
+          ph: 'I',
+          pid: 1,
+          tid: 2,
+          ts: 13000,
+        },
+      ],
+    });
+    const result = await capture.stop();
+    assert.equal(result.complete, false);
+    assert.ok(result.failures.some((failure) => failure.phase === 'coverage input'));
+    assert.ok(!JSON.stringify(result).includes(syntheticPhaseSentinel));
+    assertNoSyntheticPhaseInFiles(directory);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('full runner failure artifacts also exclude unexpected coverage and observation phase names', async () => {
+  const directory = temp();
+  try {
+    const contaminated = [...coverageMarks, { name: syntheticPrivatePhase, startTime: 3 }];
+    const { report } = await fakeVisit(directory, {
+      coverageInput: contaminated,
+      observedMarks: contaminated,
+    });
+    assert.equal(report.outcome, 'failure');
+    assert.equal(report.profile.complete, false);
+    assert.ok(!JSON.stringify(report).includes(syntheticPhaseSentinel));
+    assert.ok(existsSync(path.join(directory, 'observation.json')));
+    assert.ok(existsSync(path.join(directory, 'result.json')));
+    assertNoSyntheticPhaseInFiles(directory);
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }
