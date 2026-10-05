@@ -459,7 +459,10 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           router.dispose();
           unbindProtoInstance(instanceTokenRef.current, boundRootRef.current ?? undefined);
           if (boundRootRef.current === rootEl) boundRootRef.current = null;
-          if (eventGateRef.current === eventGate) eventGateRef.current = null;
+          if (eventGateRef.current === eventGate) {
+            eventGateRef.current = null;
+            focusTargetRetryScheduledRef.current = false;
+          }
         };
 
         const effectsPort = createReactEffectsPort((tokens) => {

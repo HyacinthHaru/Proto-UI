@@ -18,3 +18,11 @@ The graph regression's four assertions fail on the original mappings and pass af
 The native browser fixture additionally retains CSS rejection for the three two-frame layout retries, submits a distinct entry request while still rejected, then removes the CSS rejection and observes actual focus. This new assertion is not yet locally verified: the default sandbox rejects Chromium's socket and the escalated runner fails before command execution. Exact-head CI/native execution remains required.
 
 The pre-main source package budget still fails: React 88,056 / 87,500 gzip bytes and Vue 87,256 / 87,200 on Node 24.19.0. Current-main integration and remeasurement are separate evidence; no ceiling was raised and no source-only budget success is claimed. Independent review and exact-head CI remain pending.
+
+## Independent-review follow-up and current-main integration
+
+Fresh independent review reproduced two additional boundaries before publication. A second closed-gate surface replacement could leave the subscription on the already removed first member; entry now subscribes through the stable logical group anchor, and the existing base surface notification includes that anchor even when its own view is no longer a member. This covers consecutive fallback/replacement and an empty group receiving a new member, without claiming arbitrary logical reparent support. Review also found that a disposed view's queued callback correctly stopped delivery but left the shared scheduled flag set; current-view disposal now releases that scheduling ownership without allowing an obsolete callback to clear a replacement view's work.
+
+The original red evidence is retained. The expanded React lifecycle and four-web-Adapter Trigger suite passes 23 tests across eight files. Current main `b27e93a2f3b0dfae52dfa7f0473cca3f19d0d56f` is merged with history preserved; its single React readiness conflict retains acquisition-only gating and independent committed projection/blur.
+
+The previously green #826 combination included the independent #824 budget proposal (`f48d895709fe58f861b3a37fb1e66948018f0028`), which is absent from current main. Its larger ceilings are not imported by this repair. Current-main source therefore retains a separate budget blocker; native CI and independent platform approval are also still required.

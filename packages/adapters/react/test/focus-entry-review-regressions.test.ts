@@ -278,3 +278,80 @@ it.each(['programmatic', 'native', 'entry'] as const)(
     }
   }
 );
+
+it('releases old scheduled retry state across retained view replacement', async () => {
+  const frames: FrameRequestCallback[] = [];
+  vi.spyOn(window, 'requestAnimationFrame').mockImplementation((fn) => {
+    frames.push(fn);
+    return frames.length;
+  });
+  const flush = async () => {
+    for (let i = 0; frames.length && i < 20; i++) {
+      const pending = frames.splice(0);
+      await act(async () => {
+        for (const fn of pending) fn(performance.now());
+      });
+    }
+    expect(frames).toHaveLength(0);
+  };
+  let run: any;
+  const proto = definePrototype({
+    name: 'review-disposed-focus-retry',
+    setup(def) {
+      const target = asFocusable();
+      def.lifecycle.onCreated((r) => {
+        run = r;
+      });
+      def.expose.method('focus', () => target.focus());
+      def.expose.method('blur', () => target.blur());
+      def.expose('view', {
+        hide: () => run.lifecycle.setPresent(false),
+        show: () => run.lifecycle.setPresent(true),
+      });
+      return () => 'target';
+    },
+  });
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host),
+    ref = React.createRef<any>(),
+    Component = createReactAdapter(React)(proto, { rootTag: 'button' });
+  try {
+    await act(async () => root.render(React.createElement(Component, { ref })));
+    await flush();
+    const oldTarget = host.querySelector('button')!;
+    vi.spyOn(oldTarget, 'focus').mockImplementation(() => {});
+    await act(async () => ref.current.getExposes().focus());
+    expect(frames.length).toBeGreaterThan(0);
+    await act(async () => ref.current.getExposes().view.hide());
+    await flush();
+    await act(async () => ref.current.getExposes().view.show());
+    await flush();
+    const target = host.querySelector('button')!;
+    expect(target).not.toBe(oldTarget);
+    await act(async () => ref.current.getExposes().blur());
+    const native = target.focus.bind(target);
+    let reject = true;
+    let attempts = 0;
+    vi.spyOn(target, 'focus').mockImplementation((opts) => {
+      attempts++;
+      if (reject) {
+        reject = false;
+        return;
+      }
+      native(opts);
+    });
+    await act(async () => ref.current.getExposes().focus());
+    await flush();
+    console.info('retained view new request', {
+      attempts,
+      active: document.activeElement === target,
+    });
+    expect(attempts).toBe(2);
+    expect(document.activeElement).toBe(target);
+  } finally {
+    await act(async () => root.unmount());
+    host.remove();
+    vi.restoreAllMocks();
+  }
+});

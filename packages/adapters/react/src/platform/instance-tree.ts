@@ -88,8 +88,9 @@ export function subscribeFocusTargetOwnerReady(
   target: HTMLElement,
   listener: () => void
 ): () => void {
-  const instance = getLogicalEventRouteSurfaceForTarget(target);
-  if (!instance) return () => {};
+  const initialOwner = getLogicalEventRouteSurfaceForTarget(target);
+  if (!initialOwner) return () => {};
+  const instance = getLogicalTriggerGroupAnchor(initialOwner);
   // Keep the logical identity even if its old physical target is removed.
   // Surface changes rebind readiness before Focus re-resolves entry policy.
   return subscribeFocusSurfaceReady(

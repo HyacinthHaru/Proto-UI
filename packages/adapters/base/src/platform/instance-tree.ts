@@ -146,6 +146,12 @@ export function createInstanceTreeMarkers(
       if (memberRoot && member !== surface) options.releaseTriggerSurface?.(memberRoot);
       for (const listener of TRIGGER_SURFACE_LISTENERS.get(member) ?? []) listener();
     }
+    // The logical group anchor outlives its own physical membership. Retained
+    // observers must see later fallback/replacement surfaces even while its
+    // view is detached (including an empty group receiving a new member).
+    if (!members.has(owner)) {
+      for (const listener of TRIGGER_SURFACE_LISTENERS.get(owner) ?? []) listener();
+    }
   }
   function notifyInstanceLifecycle(token: LogicalInstanceToken): void {
     for (const listener of TRIGGER_SURFACE_LISTENERS.get(token) ?? []) listener();

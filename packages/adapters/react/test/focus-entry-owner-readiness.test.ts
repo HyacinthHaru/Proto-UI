@@ -4,6 +4,7 @@ import {
   createLogicalInstance,
   bindLogicalParent,
   mergeLogicalTriggerGroup,
+  getLogicalTriggerSurfaceOwner,
   markProtoInstance,
   unbindProtoInstance,
   registerNativeFocusReadiness,
@@ -172,3 +173,82 @@ it('rebinds a rejected entry to the fallback event owner after the old Trigger s
     root.remove();
   }
 });
+
+it.each([false, true])(
+  'follows consecutive closed-gate replacements with anchor detached: %s',
+  async (detachAnchor) => {
+    const proto = definePrototype({ name: 'review-owner-churn', setup() {} });
+    const outer = createLogicalInstance(proto),
+      oldInner = createLogicalInstance(proto),
+      newInner = createLogicalInstance(proto);
+    bindLogicalParent(oldInner, outer);
+    const root = document.createElement('div'),
+      oldTarget = document.createElement('button'),
+      newTarget = document.createElement('button');
+    root.append(oldTarget);
+    document.body.append(root);
+    markProtoInstance(root, proto, outer);
+    markProtoInstance(oldTarget, proto, oldInner);
+    mergeLogicalTriggerGroup(oldInner, outer);
+    await Promise.resolve();
+    await Promise.resolve();
+    let readyOuter = false,
+      readyOld = false,
+      readyNew = false,
+      notifications = 0;
+    const outerListeners = new Set<() => void>(),
+      oldListeners = new Set<() => void>(),
+      newListeners = new Set<() => void>();
+    const register = (token: any, ready: () => boolean, listeners: Set<() => void>) =>
+      registerNativeFocusReadiness(token, {
+        isReady: ready,
+        subscribe: (fn) => {
+          listeners.add(fn);
+          return () => listeners.delete(fn);
+        },
+      });
+    const releaseOuter = register(outer, () => readyOuter, outerListeners),
+      releaseOld = register(oldInner, () => readyOld, oldListeners);
+    let releaseNew: undefined | (() => void);
+    const off = subscribeFocusTargetOwnerReady(oldTarget, () => notifications++);
+    try {
+      releaseOld();
+      unbindProtoInstance(oldInner, oldTarget);
+      oldTarget.remove();
+      expect(getLogicalTriggerSurfaceOwner(oldInner)).toBe(outer);
+      expect(outerListeners.size).toBe(1);
+      expect(notifications).toBe(0);
+      if (detachAnchor) {
+        releaseOuter();
+        unbindProtoInstance(outer, root);
+      }
+      bindLogicalParent(newInner, outer);
+      root.append(newTarget);
+      markProtoInstance(newTarget, proto, newInner);
+      mergeLogicalTriggerGroup(newInner, outer);
+      releaseNew = register(newInner, () => readyNew, newListeners);
+      await Promise.resolve();
+      await Promise.resolve();
+      expect(getLogicalTriggerSurfaceOwner(oldInner)).toBe(newInner);
+      console.info('second replacement subscription sizes', {
+        outer: outerListeners.size,
+        old: oldListeners.size,
+        replacement: newListeners.size,
+      });
+      readyNew = true;
+      for (const fn of [...newListeners]) fn();
+      expect(notifications).toBe(1);
+      expect(outerListeners.size).toBe(0);
+      expect(newListeners.size).toBe(1);
+    } finally {
+      off();
+      releaseOld();
+      releaseNew?.();
+      releaseOuter();
+      unbindProtoInstance(newInner, newTarget);
+      unbindProtoInstance(oldInner, oldTarget);
+      unbindProtoInstance(outer, root);
+      root.remove();
+    }
+  }
+);
