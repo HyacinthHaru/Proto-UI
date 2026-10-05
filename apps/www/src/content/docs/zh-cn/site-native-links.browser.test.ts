@@ -990,6 +990,74 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
     }
   }, 90_000);
 
+  it('projects a same-event CSSOM theme edit by the next frame after native focus', async () => {
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 1000 },
+      colorScheme: 'light',
+    });
+    const page = await context.newPage();
+    try {
+      await page.goto(`${baseUrl}/zh-cn/ui-libraries/shadcn/button/`, { waitUntil: 'networkidle' });
+      const links = page.locator(
+        '.sidebar-pane .top-level a[data-site-link-enhanced]:not([aria-current]):visible'
+      );
+      await links.nth(1).waitFor();
+      await links.first().scrollIntoViewIfNeeded();
+      await page.mouse.move(0, 0);
+      await links.evaluateAll((links) => {
+        const [first, second] = links as HTMLAnchorElement[];
+        const style = document.createElement('style');
+        document.head.append(style);
+        // Installed after the native fact bridge. Its first sample precedes
+        // this CSSOM edit; actual focus publishes another fact in this event.
+        (window as Window & { __nativeThemeFrame?: Promise<unknown> }).__nativeThemeFrame =
+          new Promise((resolve) => {
+            first.addEventListener(
+              'pointerenter',
+              () => {
+                style.sheet!.insertRule(':root{--pui-foreground:#ff0000!important}');
+                second.focus();
+                requestAnimationFrame(() => {
+                  const text = second.querySelector<HTMLElement>('wc-site-shadcn-text')!;
+                  resolve({
+                    rootTheme: getComputedStyle(document.documentElement)
+                      .getPropertyValue('--pui-foreground')
+                      .trim(),
+                    textTheme: text.style.getPropertyValue('--pui-foreground').trim(),
+                    textColor: getComputedStyle(text).color,
+                    focused: document.activeElement === second,
+                    nativeOwnerRetained: text.closest('a') === second,
+                  });
+                });
+              },
+              { once: true }
+            );
+          });
+      });
+      await links.first().hover();
+      const observed = await page.evaluate(
+        () => (window as Window & { __nativeThemeFrame?: Promise<unknown> }).__nativeThemeFrame
+      );
+      await captureLinks(
+        page,
+        'docs-shadcn-cssom-focus-next-frame',
+        'shadcn',
+        'wc',
+        'native-pointerenter; CSSOM-theme-edit; native-focus; first-frame-observation',
+        observed
+      );
+      expect(observed).toEqual({
+        rootTheme: '#ff0000',
+        textTheme: '#ff0000',
+        textColor: 'rgb(255, 0, 0)',
+        focused: true,
+        nativeOwnerRetained: true,
+      });
+    } finally {
+      await context.close();
+    }
+  }, 60_000);
+
   it('preserves real pagination selection endpoints and arrow layout through family replacement', async () => {
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const page = await context.newPage();
