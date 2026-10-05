@@ -212,33 +212,40 @@ export class TextControlModuleImpl extends ModuleBase {
     const runInCallback = this.caps.has(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
       ? this.caps.get(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
       : (callback: () => void) => callback();
-    const previousPrelude = this.callbackPrelude;
-    const prelude = { epoch };
-    this.callbackPrelude = prelude;
-    const releasePrelude = () => {
-      if (this.callbackPrelude === prelude) this.callbackPrelude = previousPrelude;
-    };
-    try {
-      runInCallback(() => {
+    const inCurrentCallback = (callback: () => void) => {
+      const previousPrelude = this.callbackPrelude;
+      const prelude = { epoch };
+      this.callbackPrelude = prelude;
+      const releasePrelude = () => {
+        if (this.callbackPrelude === prelude) this.callbackPrelude = previousPrelude;
+      };
+      try {
+        runInCallback(() => {
+          releasePrelude();
+          if (epoch === this.leaseEpoch) callback();
+        });
+      } finally {
         releasePrelude();
-        if (epoch !== this.leaseEpoch) return;
-        this.composing = canonicalEvent.composing;
-        const run = this.sys.getCallbackCtx() as RunHandle<PropsBaseType> | undefined;
-        if (!run) return;
-        for (const listener of this.listeners) {
-          if (listener.type === canonicalEvent.type) listener.callback(run, canonicalEvent);
-        }
-      });
-    } finally {
-      releasePrelude();
-    }
+      }
+    };
+    inCurrentCallback(() => {
+      this.composing = canonicalEvent.composing;
+      const run = this.sys.getCallbackCtx() as RunHandle<PropsBaseType> | undefined;
+      if (!run) return;
+      for (const listener of this.listeners) {
+        if (listener.type === canonicalEvent.type) listener.callback(run, canonicalEvent);
+      }
+    });
 
     const mustRestoreControlledValue =
       this.valueMode === 'controlled' &&
       ((event.type === 'input' && !event.composing) || event.type === 'compositionend');
     if (!mustRestoreControlledValue) return;
     queueMicrotask(() => {
-      if (epoch === this.leaseEpoch) this.syncLease();
+      // Re-enter the current callback boundary so pending accepted owner props
+      // reconcile before restoring value, rather than writing a stale owner
+      // value and destroying the native caret before the next commit.
+      if (epoch === this.leaseEpoch) inCurrentCallback(() => this.syncLease());
     });
   }
 
