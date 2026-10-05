@@ -9,6 +9,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, RUNTIMES, startServer, stopServer } from './browser-harness';
 import { nativeLinkEvidenceIssues } from './site-native-link-evidence';
 import socialDestinations from '../../../../../../shared/links.json';
+import { safeError, safeUrl } from '../../../../../../scripts/test/search-startup-profile.mjs';
 
 let browser: Browser;
 let baseUrl: string;
@@ -48,7 +49,7 @@ async function captureLinks(
         source: evidenceSource,
         capturedAt: new Date().toISOString(),
         screenshot: file,
-        url: page.url(),
+        url: safeUrl(page.url(), baseUrl),
         viewport: page.viewportSize(),
         family,
         runtime,
@@ -996,14 +997,17 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       colorScheme: 'light',
     });
     const page = await context.newPage();
+    let phase = 'navigation';
     try {
       await page.goto(`${baseUrl}/zh-cn/ui-libraries/shadcn/button/`, { waitUntil: 'networkidle' });
       const links = page.locator(
-        '.sidebar-pane .top-level a[data-site-link-enhanced]:not([aria-current]):visible'
+        '.sidebar-pane .top-level a[data-site-link-enhanced]:not([aria-current="page"]):visible'
       );
+      phase = 'waiting for two enhanced inactive sidebar anchors';
       await links.nth(1).waitFor();
       await links.first().scrollIntoViewIfNeeded();
       await page.mouse.move(0, 0);
+      phase = 'installing same-event CSSOM observation';
       await links.evaluateAll((links) => {
         const [first, second] = links as HTMLAnchorElement[];
         const style = document.createElement('style');
@@ -1034,7 +1038,9 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
             );
           });
       });
+      phase = 'triggering native pointerenter';
       await links.first().hover();
+      phase = 'reading the first animation frame';
       const observed = await page.evaluate(
         () => (window as Window & { __nativeThemeFrame?: Promise<unknown> }).__nativeThemeFrame
       );
@@ -1046,6 +1052,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         'native-pointerenter; CSSOM-theme-edit; native-focus; first-frame-observation',
         observed
       );
+      phase = 'asserting first-frame palette and native focus';
       expect(observed).toEqual({
         rootTheme: '#ff0000',
         textTheme: '#ff0000',
@@ -1053,6 +1060,41 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
         focused: true,
         nativeOwnerRetained: true,
       });
+    } catch (error) {
+      // Keep the original failure, including a failed precondition. Do not
+      // leave a selector timeout without the actual sidebar marker values.
+      const sidebar = await page
+        .evaluate(() => {
+          const anchors = Array.from(
+            document.querySelectorAll<HTMLAnchorElement>('.sidebar-pane .top-level a')
+          ).map((link) => ({
+            href: new URL(link.href).pathname,
+            ariaCurrent: link.getAttribute('aria-current'),
+            enhanced: link.dataset.siteLinkEnhanced ?? null,
+            visible: link.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }),
+            publicText: !!link.querySelector('wc-site-shadcn-text'),
+          }));
+          return {
+            route: location.pathname,
+            total: anchors.length,
+            visibleInactiveEnhanced: anchors.filter(
+              (anchor) => anchor.visible && anchor.enhanced && anchor.ariaCurrent !== 'page'
+            ).length,
+            anchors: anchors.slice(0, 40),
+          };
+        })
+        .catch((diagnosticError) => ({ diagnosticError: safeError(diagnosticError, baseUrl) }));
+      await captureLinks(
+        page,
+        'docs-shadcn-cssom-focus-next-frame-failure',
+        'shadcn',
+        'wc',
+        phase,
+        { error: safeError(error, baseUrl), sidebar }
+      ).catch((captureError) =>
+        console.error('CSSOM fixture diagnostic capture failed', safeError(captureError, baseUrl))
+      );
+      throw error;
     } finally {
       await context.close();
     }

@@ -25,6 +25,7 @@ import {
 } from './runtime-ci.mjs';
 import { waitForServerReadiness } from './server-readiness.mjs';
 import { fileURLToPath } from 'node:url';
+import { safeError, safeUrl } from './search-startup-profile.mjs';
 
 import {
   BROWSER_SUITES,
@@ -657,11 +658,103 @@ describe('native navigation observation contracts (no browser or server)', () =>
       assert.equal(window.document.querySelector(selector).getAttribute('aria-current'), 'false');
       assert.equal(
         (browserSource.match(/:not\(\[aria-current="page"\]\):visible/g) ?? []).length,
-        2
+        3
       );
       assert.doesNotMatch(browserSource, /:not\(\[aria-current\]\)/);
     } finally {
       window.happyDOM.abort();
+    }
+  });
+
+  it('redacts URL-bearing errors at all CSSOM fixture diagnostic exits while preserving the failure', async () => {
+    let diagnosticCatch;
+    const findCatch = (node) => {
+      if (
+        ts.isCatchClause(node) &&
+        node.getText(ast).includes('CSSOM fixture diagnostic capture failed')
+      )
+        diagnosticCatch = node;
+      ts.forEachChild(node, findCatch);
+    };
+    findCatch(ast);
+    assert.ok(diagnosticCatch);
+    const baseUrl = 'http://127.0.0.1:4321';
+    for (const url of [
+      `${baseUrl}/docs/?token=secret#fragment`,
+      'http://username:password@127.0.0.1:4321/docs/?token=secret#fragment',
+      'ws://127.0.0.1:4321/socket?token=secret#fragment',
+      'https://outside.invalid/?token=secret#fragment',
+    ]) {
+      const original = new Error(`navigation failed ${url}`);
+      const diagnosticError = new Error(`diagnostic failed ${url}`);
+      const captureError = new Error(`capture failed ${url}`);
+      const logs = [];
+      let evidence;
+      const capture = runInNewContext(
+        ts.transpileModule(`(async (error) => ${diagnosticCatch.block.getText(ast)})`, {
+          compilerOptions: { target: ts.ScriptTarget.ES2022 },
+        }).outputText,
+        {
+          baseUrl,
+          safeError,
+          phase: 'precondition',
+          page: { evaluate: () => Promise.reject(diagnosticError) },
+          captureLinks: async (...args) => {
+            evidence = args[5];
+            throw captureError;
+          },
+          console: { error: (...args) => logs.push(args) },
+        }
+      );
+      await assert.rejects(capture(original), (error) => error === original);
+      assert.equal(evidence.error, safeError(original, baseUrl));
+      assert.equal(evidence.sidebar.diagnosticError, safeError(diagnosticError, baseUrl));
+      assert.equal(logs[0][1], safeError(captureError, baseUrl));
+      assert.doesNotMatch(
+        JSON.stringify({ evidence, logs }),
+        /secret|fragment|username|password|token=/
+      );
+    }
+  });
+
+  it('redacts captured page URLs through the shared URL sanitizer', async () => {
+    const captureFunction = ast.statements.find(
+      (node) => ts.isFunctionDeclaration(node) && node.name?.text === 'captureLinks'
+    );
+    assert.ok(captureFunction);
+    const baseUrl = 'http://127.0.0.1:4321';
+    for (const url of [
+      `${baseUrl}/docs/?token=secret#fragment`,
+      'http://username:password@127.0.0.1:4321/docs/?token=secret#fragment',
+      'ws://127.0.0.1:4321/socket?token=secret',
+      'https://outside.invalid/?token=secret',
+    ]) {
+      let evidence;
+      const capture = runInNewContext(expression(captureFunction), {
+        baseUrl,
+        safeUrl,
+        path,
+        evidenceDirectory: '/tmp/fixture-evidence',
+        evidenceSource: {},
+        mkdir: async () => {},
+        writeFile: async (_file, contents) => {
+          evidence = JSON.parse(contents);
+        },
+      });
+      await capture(
+        {
+          screenshot: async () => {},
+          evaluate: async () => ({}),
+          url: () => url,
+          viewportSize: () => ({}),
+        },
+        'case',
+        'shadcn',
+        'wc',
+        'failed'
+      );
+      assert.equal(evidence.url, safeUrl(url, baseUrl));
+      assert.doesNotMatch(evidence.url, /secret|fragment|username|password|token=/);
     }
   });
 
