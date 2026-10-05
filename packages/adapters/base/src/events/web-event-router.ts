@@ -273,6 +273,9 @@ export function createWebProtoEventRouter(opt: {
   unsubs.push(
     listen(rootEl, 'pointerdown', (e) => {
       if (!isEnabled()) return;
+      // C-EVENT-0003-E: the root path uses the same owner boundary as its
+      // global/portal fallback. A descendant owner's input is not our input.
+      if (!shouldRouteToCurrentRoot(e, { includeActiveFallback: false })) return;
       suppressFollowupDirectClick = false;
       emit(protoRootBus, 'pointer.down', e);
     })

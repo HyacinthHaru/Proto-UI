@@ -1,12 +1,8 @@
 import { setElementProps } from '@proto.ui/adapter-web-component';
-import { createReactAdapter, type ReactRuntime } from '@proto.ui/adapter-react';
-import { createVueAdapter, type VueRuntime as AdapterVueRuntime } from '@proto.ui/adapter-vue';
-import { createVue2Adapter } from '@proto.ui/adapter-vue2';
+import type { ReactRuntime } from '@proto.ui/adapter-react';
+import type { VueRuntime as AdapterVueRuntime } from '@proto.ui/adapter-vue';
 import type { Prototype } from '@proto.ui/core';
 import { getPrototype } from './registry';
-import { loadReact } from './runtimes/react-runtime';
-import { loadVue } from './runtimes/vue-runtime';
-import { loadVue2, toVue2ComponentData, toVue2Runtime } from './runtimes/vue2-runtime';
 import { claimHostMount, type HostMountLease } from './runtimes/host-mount';
 import type {
   DemoChild,
@@ -17,6 +13,28 @@ import type {
 } from './demo-types';
 import { ensurePreviewWcRegistered } from './wc-registry';
 import type { RuntimeId } from './runtimes/registry';
+
+// Share acquisition across concurrently prepared commands/surfaces. Failed
+// acquisition remains retryable; successful module namespaces are stable.
+function lazyModules<T>(load: () => Promise<T>): () => Promise<T> {
+  let pending: Promise<T> | undefined;
+  return () => {
+    pending ??= load().catch((error) => {
+      pending = undefined;
+      throw error;
+    });
+    return pending;
+  };
+}
+const reactModules = lazyModules(() =>
+  Promise.all([import('@proto.ui/adapter-react'), import('./runtimes/react-runtime')])
+);
+const vueModules = lazyModules(() =>
+  Promise.all([import('@proto.ui/adapter-vue'), import('./runtimes/vue-runtime')])
+);
+const vue2Modules = lazyModules(() =>
+  Promise.all([import('@proto.ui/adapter-vue2'), import('./runtimes/vue2-runtime')])
+);
 
 type PropsBaseType = Record<string, unknown>;
 
@@ -40,13 +58,13 @@ export async function prepareDemoRuntime(runtime: RuntimeId): Promise<void> {
     case 'wc':
       return;
     case 'react':
-      await loadReact();
+      await (await reactModules())[1].loadReact();
       return;
     case 'vue':
-      await loadVue();
+      await (await vueModules())[1].loadVue();
       return;
     case 'vue2':
-      await loadVue2();
+      await (await vue2Modules())[1].loadVue2();
       return;
     default:
       throw unsupportedRuntime(runtime);
@@ -154,7 +172,7 @@ function renderDemoNodeWc(node: DemoChild, parent: HTMLElement, instances: HTMLE
     return;
   }
   if (node.kind === 'box') {
-    const el = document.createElement('div');
+    const el = document.createElement(node.tag ?? 'div');
     for (const [name, value] of Object.entries(node.attrs ?? {})) {
       el.setAttribute(name, value);
     }
@@ -275,6 +293,10 @@ async function renderDemoReact(
 ): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
+  // Non-WC modules join the graph only when this runtime is selected. A
+  // superseded owner must not proceed to CDN loading after that import boundary.
+  const [{ createReactAdapter }, { loadReact }] = await reactModules();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const { React, ReactDOM } = await loadReact();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createReactAdapter({
@@ -287,8 +309,8 @@ async function renderDemoReact(
 
   function initProps(node: DemoChild) {
     if (typeof node === 'string' || node.kind === 'text') return;
-    if (node.kind === 'proto' && node.ref && node.props) {
-      propsMap.set(node.ref, { ...node.props });
+    if (node.kind === 'proto' && node.ref) {
+      propsMap.set(node.ref, { ...(node.props ?? {}) });
     }
     for (const child of node.children ?? []) initProps(child);
   }
@@ -300,7 +322,7 @@ async function renderDemoReact(
     if (node.kind === 'box') {
       const kids = (node.children ?? []).map((child) => renderNode(child));
       return React.createElement(
-        'div',
+        node.tag ?? 'div',
         { ...node.attrs, className: node.className, 'data-demo-ref': node.ref },
         ...kids
       );
@@ -308,10 +330,11 @@ async function renderDemoReact(
 
     const proto = getPrototype(node.prototypeId);
     const scopedCache = getScopedComponentCache(reactComponentCache, adapter);
-    let Component = scopedCache.get(node.prototypeId);
+    const componentKey = `${node.prototypeId}:${node.rootTag ?? 'div'}`;
+    let Component = scopedCache.get(componentKey);
     if (!Component) {
-      Component = adapter(proto as Prototype<PropsBaseType>);
-      scopedCache.set(node.prototypeId, Component);
+      Component = adapter(proto as Prototype<PropsBaseType>, { rootTag: node.rootTag });
+      scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child));
     const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
@@ -336,8 +359,11 @@ async function renderDemoReact(
     }
   ).createRoot(host);
   let cleanup: void | (() => void);
+  const pendingRefreshFrames = new Set<number>();
   if (
     !lease.commit(() => {
+      for (const frame of pendingRefreshFrames) cancelAnimationFrame(frame);
+      pendingRefreshFrames.clear();
       const currentCleanup = cleanup;
       cleanup = undefined;
       runCleanupSteps([
@@ -351,10 +377,9 @@ async function renderDemoReact(
     return EMPTY_DEMO_RENDER;
   }
 
-  const flushReact = <T>(fn: () => T): T => {
-    const flushSync = (ReactDOM as { flushSync?: <R>(callback: () => R) => R }).flushSync;
-    return typeof flushSync === 'function' ? flushSync(fn) : fn();
-  };
+  const flushSync = (ReactDOM as { flushSync?: <R>(callback: () => R) => R }).flushSync;
+  const flushReact = <T>(fn: () => T): T =>
+    typeof flushSync === 'function' ? flushSync(fn) : fn();
 
   function renderTree() {
     return renderNode(demo.root);
@@ -388,14 +413,24 @@ async function renderDemoReact(
       return inst?.getExposes?.();
     },
     setProps(ref, next) {
+      if (!ownsLease(opt, lease)) return;
       const current = propsMap.get(ref);
       if (!current) return;
       Object.assign(current, next);
       flushReact(() => root.render(renderTree()));
-      componentRefs.get(ref)?.update?.();
-      // React root rendering may commit asynchronously. Refresh the retained
-      // Proto owner only after the adapter has received the new props.
-      requestAnimationFrame(() => componentRefs.get(ref)?.update?.());
+      // An owner refresh can close its event gate until React commits the
+      // resulting effects. Finish that commit before a materializer may
+      // expose this generation, just as public calls above already do.
+      flushReact(() => componentRefs.get(ref)?.update?.());
+      if (typeof flushSync !== 'function') {
+        // Older renderers without a synchronous commit still need the retained
+        // owner refreshed after props delivery. This frame belongs to the lease.
+        const frame = requestAnimationFrame(() => {
+          pendingRefreshFrames.delete(frame);
+          if (ownsLease(opt, lease)) componentRefs.get(ref)?.update?.();
+        });
+        pendingRefreshFrames.add(frame);
+      }
     },
   };
 
@@ -414,6 +449,8 @@ async function renderDemoVue(
 ): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
+  const [{ createVueAdapter }, { loadVue }] = await vueModules();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const Vue = await loadVue();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createVueAdapter(Vue as unknown as AdapterVueRuntime);
@@ -423,8 +460,8 @@ async function renderDemoVue(
 
   function initProps(node: DemoChild) {
     if (typeof node === 'string' || node.kind === 'text') return;
-    if (node.kind === 'proto' && node.ref && node.props) {
-      propsMap[node.ref] = { ...node.props };
+    if (node.kind === 'proto' && node.ref) {
+      propsMap[node.ref] = { ...(node.props ?? {}) };
     }
     for (const child of node.children ?? []) initProps(child);
   }
@@ -436,7 +473,7 @@ async function renderDemoVue(
     if (node.kind === 'box') {
       const kids = (node.children ?? []).map((child) => renderNode(child));
       return Vue.h(
-        'div',
+        node.tag ?? 'div',
         {
           ...node.attrs,
           class: node.className,
@@ -453,10 +490,11 @@ async function renderDemoVue(
 
     const proto = getPrototype(node.prototypeId);
     const scopedCache = getScopedComponentCache(vueComponentCache, adapter);
-    let Component = scopedCache.get(node.prototypeId);
+    const componentKey = `${node.prototypeId}:${node.rootTag ?? 'div'}`;
+    let Component = scopedCache.get(componentKey);
     if (!Component) {
-      Component = adapter(proto as Prototype<PropsBaseType>);
-      scopedCache.set(node.prototypeId, Component);
+      Component = adapter(proto as Prototype<PropsBaseType>, { rootTag: node.rootTag });
+      scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child));
     const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
@@ -518,9 +556,9 @@ async function renderDemoVue(
       if (propsMap[ref]) {
         Object.assign(propsMap[ref], next);
       }
-      // Wait until reactive props/attrs have reached the adapter. Calling the
-      // controller in the same stack would re-read the previous attrs value.
-      void Vue.nextTick(() => componentRefs.get(ref)?.update?.());
+      // The actual Vue adapter reconciles changed host props after its commit.
+      // An additional controller update can replace that pending feedback
+      // commit with an unchanged one and lose a later controlled prop's paint.
     },
   };
 
@@ -539,6 +577,9 @@ async function renderDemoVue2(
 ): Promise<DemoRenderResult> {
   const { host, demo } = opt;
 
+  const [{ createVue2Adapter }, { loadVue2, toVue2ComponentData, toVue2Runtime }] =
+    await vue2Modules();
+  if (!ownsLease(opt, lease)) return abandonLease(lease);
   const Vue = await loadVue2();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createVue2Adapter(toVue2Runtime(Vue));
@@ -570,7 +611,7 @@ async function renderDemoVue2(
     if (node.kind === 'box') {
       const kids = (node.children ?? []).map((child) => renderNode(child, h));
       return h(
-        'div',
+        node.tag ?? 'div',
         {
           class: node.className,
           attrs: {
@@ -584,10 +625,11 @@ async function renderDemoVue2(
 
     const proto = getPrototype(node.prototypeId);
     const scopedCache = getScopedComponentCache(vueComponentCache, adapter);
-    let Component = scopedCache.get(node.prototypeId);
+    const componentKey = `${node.prototypeId}:${node.rootTag ?? 'div'}`;
+    let Component = scopedCache.get(componentKey);
     if (!Component) {
-      Component = adapter(proto as Prototype<PropsBaseType>);
-      scopedCache.set(node.prototypeId, Component);
+      Component = adapter(proto as Prototype<PropsBaseType>, { rootTag: node.rootTag });
+      scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child, h));
     const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
@@ -666,10 +708,8 @@ async function renderDemoVue2(
         setReactive(propsMap[ref], key, value);
       }
       app.$forceUpdate?.();
-      void nextVue2(Vue).then(() => {
-        refreshComponentRefs(app);
-        componentRefs.get(ref)?.update?.();
-      });
+      // Vue2's adapter owns host-prop notification and the resulting update.
+      // Public call/getExposes refresh component refs when they are consumed.
     },
   };
 
