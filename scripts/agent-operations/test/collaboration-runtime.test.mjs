@@ -1438,6 +1438,31 @@ test('receipt validation binds the request and rejects impossible mutation count
   );
 });
 
+test('schema-v2 receipt ingestion rejects attribution from another repository', () => {
+  const request = metadataRequest();
+  const preState = metadataLive();
+  const receipt = buildCollaborationReceipt({
+    request,
+    preState,
+    postState: preState,
+    actor: 'maintainer',
+    outcome: 'no-op',
+    mutationCount: 0,
+    reconciliationCount: 0,
+    platformObject: null,
+    verifiedAt: '2026-08-27T01:00:11.000Z',
+    verification: 'live-state-matches-desired',
+    note: 'Synthetic receipt ingestion control.',
+    modelTrace,
+  });
+  const foreign = {
+    ...receipt,
+    modelTrace: modelTraceFixture('github.com:Other/Other').modelTrace,
+  };
+  assert.throws(() => validateCollaborationReceipt(foreign), /repository/);
+  assert.throws(() => validateCollaborationReceipt(foreign, request), /repository/);
+});
+
 test('update-branch no-op is bound to the exact base and rejects an unrelated stale head', () => {
   const base = metadataRequest();
   const request = seal({

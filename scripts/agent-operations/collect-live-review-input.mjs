@@ -1131,6 +1131,7 @@ export function submitGitHubMerge(
           commit.parents[0]?.sha !== expectedBaseSha
         )
           throw new Error('resulting merge parent differs from the inspected base');
+        assertModelTraceDisclosure(commit.message, authorizationContext.modelTrace, 'commit');
         return {
           merged: true,
           reconciled: false,

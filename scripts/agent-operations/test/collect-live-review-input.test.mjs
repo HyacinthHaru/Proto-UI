@@ -749,6 +749,7 @@ function mergeFixture({
   alterAuthorization = null,
   previewAuthorization = false,
   historicalMessage = null,
+  storedCommit = {},
 } = {}) {
   const currentAuthorization = mergeAuthorizationFixture({
     previewAuthorization,
@@ -814,7 +815,12 @@ function mergeFixture({
           object: { type: 'commit', sha: branchSha ?? open.base.sha },
         });
       if (args[1] === `repos/Proto-UI/Proto-UI/git/commits/${sha('c')}`)
-        return json({ sha: sha('c'), parents: [{ sha: parentSha }] });
+        return json({
+          sha: sha('c'),
+          parents: [{ sha: parentSha }],
+          message: `Squash commit\n\n${renderModelTraceDisclosure(currentAuthorization.authorizationContext.modelTrace, 'commit')}`,
+          ...storedCommit,
+        });
       assert.equal(args[1], 'repos/Proto-UI/Proto-UI/pulls/487');
       if (writes === 0) return json(open);
       const observation = after[postReads++] ?? merged;
@@ -1073,6 +1079,47 @@ test('merge preserves historical identity and DCO text as quotations, never curr
         .join('\n')
     )
   );
+});
+
+test('acknowledged squash without a stored ModelTrace trailer cannot report success', () => {
+  const fixture = mergeFixture({ storedCommit: { message: undefined } });
+  assert.throws(
+    () =>
+      submitGitHubMerge(
+        repositoryId,
+        487,
+        { ...mergeOptions, authorizationContext: fixture.authorizationContext },
+        fixture.runner,
+        fastVerification
+      ),
+    /merge PUT succeeded.*ModelTrace.*do not repeat the PUT/
+  );
+  assert.equal(fixture.writes, 1);
+  assert.equal(fixture.postReads, 1);
+});
+
+test('acknowledged squash cannot attribute a different stored ModelTrace receipt', () => {
+  const fixture = mergeFixture({
+    storedCommit: {
+      message: renderModelTraceDisclosure(
+        modelTraceFixture('github.com:Other/Other').modelTrace,
+        'commit'
+      ),
+    },
+  });
+  assert.throws(
+    () =>
+      submitGitHubMerge(
+        repositoryId,
+        487,
+        { ...mergeOptions, authorizationContext: fixture.authorizationContext },
+        fixture.runner,
+        fastVerification
+      ),
+    /merge PUT succeeded.*ModelTrace.*do not repeat the PUT/
+  );
+  assert.equal(fixture.writes, 1);
+  assert.equal(fixture.postReads, 1);
 });
 
 test('merge refuses a changed live base before any PUT', () => {
