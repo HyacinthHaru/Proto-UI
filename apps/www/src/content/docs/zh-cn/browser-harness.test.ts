@@ -222,6 +222,30 @@ describe('documentation server readiness diagnostics', () => {
     await vi.advanceTimersByTimeAsync(125_000);
     expect(await result).toBe('http://documentation.test');
     expect(fetch).toHaveBeenCalledOnce();
+    expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('redirect');
+    expect(cancel).toHaveBeenCalledOnce();
+  });
+
+  it('forwards the opted-in no-redirect boundary before any readiness follow', async () => {
+    vi.stubEnv('PROTO_UI_BROWSER_BASE_URL', 'http://documentation.test');
+    const cancel = vi.fn().mockResolvedValue(undefined);
+    const fetch = vi.fn(async (_url, options: RequestInit) => {
+      expect(options.redirect).toBe('manual');
+      return {
+        ok: false,
+        status: 302,
+        statusText: 'Found',
+        headers: new Headers({ location: 'https://outside.invalid/' }),
+        body: { cancel },
+      };
+    });
+    vi.stubGlobal('fetch', fetch);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await expect(startServer('/ready/', { rejectRedirects: true })).rejects.toMatchObject({
+      name: 'DocumentationReadinessRedirectError',
+      message: expect.stringContaining('HTTP 302'),
+    });
+    expect(fetch).toHaveBeenCalledOnce();
     expect(cancel).toHaveBeenCalledOnce();
   });
 
