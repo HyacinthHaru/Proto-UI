@@ -14,6 +14,9 @@ importers:
       '@types/node':
         specifier: ^25.6.2
         version: 25.6.2
+      ajv:
+        specifier: 8.18.0
+        version: 8.18.0
       esbuild:
         specifier: 0.25.12
         version: 0.25.12
@@ -114,9 +117,15 @@ importers:
       '@proto.ui/prototypes-base':
         specifier: workspace:*
         version: link:../../packages/prototypes/base
+      '@proto.ui/prototypes-bootstrap-2-3-2':
+        specifier: workspace:*
+        version: link:../../packages/prototypes/bootstrap-2-3-2
       '@proto.ui/prototypes-brutalist':
         specifier: workspace:*
         version: link:../../packages/prototypes/brutalist
+      '@proto.ui/prototypes-liquid-glass':
+        specifier: workspace:*
+        version: link:../../packages/prototypes/liquid-glass
       '@proto.ui/prototypes-lucide':
         specifier: workspace:*
         version: link:../../packages/prototypes/lucide
@@ -217,6 +226,9 @@ importers:
       '@proto.ui/module-a11y':
         specifier: workspace:*
         version: link:../../modules/a11y
+      '@proto.ui/module-anatomy':
+        specifier: workspace:*
+        version: link:../../modules/anatomy
       '@proto.ui/module-as-trigger':
         specifier: workspace:*
         version: link:../../modules/as-trigger
@@ -226,15 +238,24 @@ importers:
       '@proto.ui/module-event':
         specifier: workspace:*
         version: link:../../modules/event
+      '@proto.ui/module-expose':
+        specifier: workspace:*
+        version: link:../../modules/expose
       '@proto.ui/module-expose-event':
         specifier: workspace:*
         version: link:../../modules/expose-event
       '@proto.ui/module-expose-state':
         specifier: workspace:*
         version: link:../../modules/expose-state
+      '@proto.ui/module-feedback':
+        specifier: workspace:*
+        version: link:../../modules/feedback
       '@proto.ui/module-focus':
         specifier: workspace:*
         version: link:../../modules/focus
+      '@proto.ui/module-rule-meta':
+        specifier: workspace:*
+        version: link:../../modules/rule-meta
       '@proto.ui/runtime':
         specifier: workspace:*
         version: link:../../runtime
@@ -654,6 +675,9 @@ importers:
       '@proto.ui/core':
         specifier: workspace:*
         version: link:../../core
+      '@proto.ui/module-anatomy':
+        specifier: workspace:*
+        version: link:../anatomy
       '@proto.ui/module-base':
         specifier: workspace:*
         version: link:../base
@@ -1115,6 +1139,15 @@ importers:
         specifier: workspace:*
         version: link:../../runtime
 
+  packages/prototypes/bootstrap-2-3-2:
+    dependencies:
+      '@proto.ui/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@proto.ui/prototypes-base':
+        specifier: workspace:*
+        version: link:../base
+
   packages/prototypes/brutalist:
     dependencies:
       '@proto.ui/core':
@@ -1151,6 +1184,15 @@ importers:
       '@proto.ui/runtime':
         specifier: workspace:*
         version: link:../../runtime
+
+  packages/prototypes/liquid-glass:
+    dependencies:
+      '@proto.ui/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@proto.ui/prototypes-base':
+        specifier: workspace:*
+        version: link:../base
 
   packages/prototypes/lucide:
     dependencies:

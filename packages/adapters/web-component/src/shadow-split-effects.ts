@@ -1,4 +1,5 @@
 import type { EffectsPort, StyleHandle } from '@proto.ui/core';
+import { assertTwTokenV0 } from '@proto.ui/core';
 import {
   mergeRootStyleEntries,
   readRootStyleEntries,
@@ -209,8 +210,11 @@ function compiledReceiptSelector(token: string): string | null {
   const escaped = token.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
   let selector = `[${SHADOW_SPLIT_ROOT_STYLE_ATTR}~="${escaped}"]`;
   let dark = false;
-  for (const variant of splitReceiptVariants(token).slice(0, -1)) {
+  const variants = splitReceiptVariants(token).slice(0, -1);
+  for (const variant of variants) {
     if (variant === 'dark') dark = true;
+    else if (variant === 'selection' && variants.length === 1 && token.startsWith('selection:'))
+      continue;
     else if (['hover', 'active', 'disabled', 'focus-visible'].includes(variant))
       selector += `:${variant}`;
     else {
@@ -278,12 +282,17 @@ function hasExactCompiledReceipt(
   const receipt = compiledReceiptSelector(token);
   if (!receipt) return false;
   const escaped = token.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
-  const allowed = new Set([
-    receipt,
-    `${receipt}:host([data-pui-split-text-control])`,
-    `${receipt}>[${SHADOW_SPLIT_SURFACE_ATTR}]:not(input,textarea)`,
-    `${receipt}>[${SHADOW_SPLIT_SURFACE_ATTR}][data-pui-style~="${escaped}"]`,
-  ]);
+  const selection = token.startsWith('selection:');
+  const allowed = new Set(
+    selection
+      ? [`${receipt}>[${SHADOW_SPLIT_SURFACE_ATTR}][data-pui-style~="${escaped}"]::selection`]
+      : [
+          receipt,
+          `${receipt}:host([data-pui-split-text-control])`,
+          `${receipt}>[${SHADOW_SPLIT_SURFACE_ATTR}]:not(input,textarea)`,
+          `${receipt}>[${SHADOW_SPLIT_SURFACE_ATTR}][data-pui-style~="${escaped}"]`,
+        ]
+  );
   const candidates = rules.filter(({ selector }) => selector.replace(/\s/g, '').includes(receipt));
   const matching = candidates.filter(({ selector }) => {
     const branches = splitSelectorBranches(selector.replace(/\s/g, ''));
@@ -292,7 +301,7 @@ function hasExactCompiledReceipt(
   return (
     matching.length === candidates.length &&
     matching.length > 0 &&
-    (entry.roleSource === 'fallback' ||
+    ((!selection && entry.roleSource === 'fallback') ||
       matching.every(
         (rule) => hasValidDeclarationReceipt(rule) && hasCanonicalSizingRecipe(rule, entry)
       ))
@@ -404,11 +413,12 @@ export function createShadowSplitEffectsPort({
         !['w-full', 'min-h-16'].includes(entry.authorToken)
       )
         fail(entry, 'native-size');
-      if (
-        !['setup', 'rule', 'runtime'].includes(entry.origin) ||
-        !entry.authorToken ||
-        /\s|:/.test(entry.authorToken)
-      ) {
+      if (!['setup', 'rule', 'runtime'].includes(entry.origin) || !entry.authorToken) {
+        fail(entry, 'author-origin');
+      }
+      try {
+        assertTwTokenV0(entry.authorToken);
+      } catch {
         fail(entry, 'author-origin');
       }
       const canonical = resolveRootStyleEntry(entry.authorToken, entry.origin);

@@ -4,6 +4,7 @@ import {
   type TwTokenApplicationRoleResolution,
 } from './application-role';
 import { mergeTwTokensV0 } from './semantic-merge';
+import { assertTwTokenV0 } from './tokens';
 
 export type RootStyleOrigin = 'setup' | 'rule' | 'runtime';
 
@@ -20,9 +21,22 @@ export type RootStyleEffect = StyleHandle & {
 
 export function resolveRootStyleEntry(token: string, origin: RootStyleOrigin): RootStyleEntry {
   // Legacy unsafe inputs may lack the author token. Do not guess from a selector.
-  const resolution = token.includes(':')
-    ? { token, role: 'unresolved' as const, roleSource: 'unresolved' as const }
-    : classifyTwTokenApplicationRoleV0(token);
+  // Reuse author validation for its one static selection exception; this does
+  // not promote the classifier's fallback provenance or admit lowered variants.
+  if (token.includes(':')) {
+    try {
+      assertTwTokenV0(token);
+    } catch {
+      return Object.freeze({
+        token,
+        authorToken: token,
+        origin,
+        role: 'unresolved' as const,
+        roleSource: 'unresolved' as const,
+      });
+    }
+  }
+  const resolution = classifyTwTokenApplicationRoleV0(token);
   return Object.freeze({ ...resolution, authorToken: token, origin });
 }
 

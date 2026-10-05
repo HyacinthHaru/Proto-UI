@@ -12,6 +12,8 @@ import type {
 import {
   createEventGate,
   createDefaultWebColorSchemeSource,
+  createDefaultWebPreferenceSource,
+  createDefaultWebStyleSupportSource,
   createScopedExposesReader,
   createViewEpochOwner,
   createWebProtoEventRouter,
@@ -152,6 +154,10 @@ export function createVueAdapter(runtime: VueRuntime) {
     const getProps = opt.getProps ?? defaultGetProps;
     const getMeta = opt.getMeta ?? createDefaultMetaGetter();
     const colorSchemeSource = opt.getMeta ? undefined : createDefaultWebColorSchemeSource(getMeta);
+    const preferenceSource = opt.getMeta ? undefined : createDefaultWebPreferenceSource(getMeta);
+    const styleSupportSource = opt.getMeta
+      ? undefined
+      : createDefaultWebStyleSupportSource(getMeta);
     const exposeStateWebMode = opt.exposeStateWebMode;
     const scrollProjection = opt.scrollProjection;
     const autoUpdate = opt.autoUpdateOnPropsChange ?? true;
@@ -299,6 +305,8 @@ export function createVueAdapter(runtime: VueRuntime) {
             rawPropsSource,
             getMeta,
             colorSchemeSource,
+            preferenceSource,
+            styleSupportSource,
             setExposes: (record) => {
               exposesRef.value = record;
             },
@@ -354,11 +362,11 @@ export function createVueAdapter(runtime: VueRuntime) {
             await runtime.nextTick();
             viewReady = true;
             focusTargetRetryCount = 0;
-            rootRef.value?.removeAttribute(PUI_VIEW_PENDING_ATTR);
-            eventGateRef.value?.enable();
             notifyFocusTargetReady();
             pendingSignal?.done?.();
             pendingSignal = null;
+            rootRef.value?.removeAttribute(PUI_VIEW_PENDING_ATTR);
+            eventGateRef.value?.enable();
           },
           { flush: 'post' }
         );
@@ -413,6 +421,8 @@ export function createVueAdapter(runtime: VueRuntime) {
             effectsPort,
             getMeta,
             colorSchemeSource,
+            preferenceSource,
+            styleSupportSource,
             exposeStateWebMode,
             scrollProjection,
             setExposes: (record) => {

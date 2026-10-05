@@ -16,11 +16,12 @@ import {
 } from './shadow-split-test-utils';
 
 function setup(
-  tokens = ['flex', 'w-full', 'p-2', 'border-2', 'bg-primary', 'bg-black', 'dark:p-4']
+  tokens = ['flex', 'w-full', 'p-2', 'border-2', 'bg-primary', 'bg-black', 'dark:p-4'],
+  surfaceTag: 'div' | 'input' = 'div'
 ) {
   const host = document.createElement('x-split-test');
   const root = host.attachShadow({ mode: 'open' });
-  const surface = document.createElement('div');
+  const surface = document.createElement(surfaceTag);
   root.append(surface);
   surface.setAttribute('data-pui-style', 'consumer');
   const options = {
@@ -55,6 +56,43 @@ function wrapMatchingRulesInFalseSupports(cssText: string, selector: string): st
 
 // D-FEEDBACK-STYLE-ROLE-RESOLUTION-0001 K: preflight is atomic; cleanup is owned.
 describe('private Shadow split effects', () => {
+  it('admits native static selection but atomically rejects invalid receipts and variant combinations', () => {
+    const tokens = ['bg-black', 'selection:bg-primary', 'selection:text-primary-foreground'];
+    const { host, surface, effects, options } = setup(tokens, 'input');
+    effects.queueStyle(effect(tokens));
+    effects.requestFlush();
+    expect(surface.getAttribute('data-pui-style')).toBe(`consumer ${tokens.join(' ')}`);
+    const before = [host.outerHTML, surface.outerHTML];
+    expect(() =>
+      effects.queueStyle(lowerRootStyleTokens(['selection:bg-primary'], 'dark'))
+    ).toThrow(/selection:bg-primary.*missing token/);
+    effects.requestFlush();
+    expect([host.outerHTML, surface.outerHTML]).toEqual(before);
+    effects.dispose();
+
+    const selector = `:host([${ROOT}~="selection:bg-primary"]) > [${SURFACE}][data-pui-style~="selection:bg-primary"]::selection`;
+    const invalidReceipt = createShadowSplitEffectsPort({
+      ...options,
+      artifact: {
+        ...options.artifact,
+        cssText: rewriteSplitRuleDeclarations(
+          options.artifact.cssText,
+          selector,
+          (declarations) => `${declarations}--pui-split-compiled-receipt: stale;`
+        ),
+      },
+    });
+    invalidReceipt.queueStyle(effect(['bg-black']));
+    invalidReceipt.requestFlush();
+    const previous = [host.outerHTML, surface.outerHTML];
+    expect(() => invalidReceipt.queueStyle(effect(tokens))).toThrow(
+      /selection:bg-primary.*missing token/
+    );
+    invalidReceipt.requestFlush();
+    expect([host.outerHTML, surface.outerHTML]).toEqual(previous);
+    invalidReceipt.dispose();
+  });
+
   it('rejects unimplemented animated border rounding but retains fixed-border sizing animation', () => {
     const { host, surface, effects } = setup([
       'block',

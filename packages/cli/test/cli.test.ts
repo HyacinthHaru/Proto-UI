@@ -104,6 +104,28 @@ describe('@proto.ui/cli', () => {
     }
   });
 
+  it('registers Shadcn Input as a direct package component on every Web adapter', () => {
+    const input = COMPONENT_REGISTRY['shadcn-input'];
+    expect(input).toMatchObject({
+      packageName: '@proto.ui/prototypes-shadcn',
+      importPath: '@proto.ui/prototypes-shadcn/input',
+      stylePreset: 'shadcn',
+      items: [
+        {
+          prototypeImport: 'shadcnInputRoot',
+          reactExport: 'ShadcnInputRoot',
+          elementName: 'proto-ui-shadcn-input',
+        },
+      ],
+    });
+    for (const adapter of ['react', 'vue', 'vue2', 'wc'] as const) {
+      const source = renderHostIndex(adapter, ['shadcn-input']);
+      expect(source).toContain('@proto.ui/prototypes-shadcn/input');
+      expect(source).toContain('ShadcnInputRoot');
+      if (adapter === 'wc') expect(source).toContain('proto-ui-shadcn-input');
+    }
+  });
+
   it('registers the promoted Brutalist families and both Textarea projections', () => {
     const brutalistIds = Object.keys(COMPONENT_REGISTRY)
       .filter((id) => id.startsWith('brutalist-'))
@@ -119,6 +141,7 @@ describe('@proto.ui/cli', () => {
       'brutalist-select',
       'brutalist-separator',
       'brutalist-skeleton',
+      'brutalist-spinner',
       'brutalist-switch',
       'brutalist-tabs',
       'brutalist-textarea',
@@ -635,7 +658,7 @@ describe('@proto.ui/cli', () => {
     expect(tokensCss).toContain(`[data-pui-style~="px-0.5"]`);
     expect(tokensCss).toContain(`data-[checked]:translate-x-[calc(100%_-_2px)]"])[data-checked]`);
     expect(tokensCss).toContain('--pui-translate-x: calc(100% - 2px);');
-    expect(tokensCss).toContain(`data-[checked]:bg-sky"])[data-checked]`);
+    expect(tokensCss).toContain(`data-[checked]:bg-main"])[data-checked]`);
     expect(tokensCss).not.toContain(`data-[checked]:pl-[20px]"])[data-checked]`);
     expect(tokensCss).toContain(`data-[checked]:bg-primary"])[data-checked]`);
     expect(tokensCss).toContain(`data-[selected]:bg-background"])[data-selected]`);
@@ -878,14 +901,14 @@ describe('@proto.ui/cli', () => {
     );
 
     expect(config.styles.preset).toBe('brutalist');
-    expect(theme).toContain('--pui-background: #f5f5f5');
+    expect(theme).toContain('--pui-background: #dcebfe');
     expect(theme).toContain(':root.dark');
-    expect(theme).toContain('--pui-canary: #FEF08A');
-    expect(theme).toContain('--pui-mint: #A7F3D0');
-    expect(theme).toContain('--pui-lavender: #DDD6FE');
-    expect(theme).toContain('--pui-coral: #FECDD3');
-    expect(theme).toContain('--pui-sky: #BAE6FD');
-    expect(theme).toContain('--pui-radius-sm: 2px');
+    expect(theme).toContain('--pui-canary: #FACC00');
+    expect(theme).toContain('--pui-mint: #05E17A');
+    expect(theme).toContain('--pui-lavender: #7A83FF');
+    expect(theme).toContain('--pui-coral: #FF4D50');
+    expect(theme).toContain('--pui-sky: #5294FF');
+    expect(theme).toContain('--pui-radius-sm: 3px');
   });
 
   it('allows Brutalist add with styles disabled and emits an actionable ownership note', async () => {

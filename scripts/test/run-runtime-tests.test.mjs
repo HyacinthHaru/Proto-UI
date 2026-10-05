@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { globSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 import { parse as parseYaml } from 'yaml';
@@ -13,6 +13,29 @@ import {
 } from './runtime-test-plan.mjs';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
+
+it('registers every discovered browser suite exactly once in the sequential phase', () => {
+  // Mirror the runtime Vitest include roots, retaining newly added browser suites.
+  const root = fileURLToPath(new URL('../../', import.meta.url));
+  const discovered = globSync(
+    [
+      'packages/**/*.browser.test.ts',
+      'internal/contracts/__tests__/**/*.browser.test.ts',
+      'apps/**/test/**/*.browser.test.ts',
+      'apps/www/src/**/*.browser.test.ts',
+    ],
+    { cwd: root, exclude: ['**/node_modules/**', '**/dist/**'] }
+  ).map((suite) => suite.replaceAll('\\', '/'));
+  assert.deepEqual([...BROWSER_SUITES].sort(), [...new Set(discovered)].sort());
+  const [general, browser] = createRuntimeTestPlan([]);
+  assert.equal(browser.needsServer, true);
+  assert.ok(browser.args.includes('--no-file-parallelism'));
+  for (const suite of discovered) {
+    assert.equal(general.args.filter((arg) => arg === suite).length, 1);
+    assert.equal(general.args[general.args.indexOf(suite) - 1], '--exclude');
+    assert.equal(browser.args.filter((arg) => arg === suite).length, 1);
+  }
+});
 
 describe('runtime test plan', () => {
   it('assigns every discovered browser suite to exactly one nonempty shard', () => {
@@ -133,4 +156,14 @@ describe('runtime test plan', () => {
     assert.match(aggregate, /UNIT_RESULT/);
     assert.match(aggregate, /BROWSER_RESULT/);
   });
+});
+
+it('runs the Brutalist Spinner only in the shared sequential browser phase', () => {
+  const spinner = 'apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts';
+  const plan = createRuntimeTestPlan([]);
+  assert.equal(BROWSER_SUITES.filter((suite) => suite === spinner).length, 1);
+  assert.equal(plan[0].args[plan[0].args.indexOf(spinner) - 1], '--exclude');
+  assert.equal(plan[1].needsServer, true);
+  assert.ok(plan[1].args.includes('--no-file-parallelism'));
+  assert.equal(plan[1].args.filter((suite) => suite === spinner).length, 1);
 });

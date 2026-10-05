@@ -77,6 +77,7 @@ import {
 import { createPortalConcealBarrier } from './portal-conceal';
 import { adoptWebComponentPortalProjections, isWebComponentPortaled } from './portal-mount';
 import { createRebindableColorSchemeSource } from './color-scheme-source';
+import { createRebindableWebKeyedMetaSources } from './keyed-meta-sources';
 import type { WebComponentAdapterConstructor } from './types';
 import type {
   RuntimeCheckpoint,
@@ -184,7 +185,13 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     private _focusTargetReadyListeners = new Set<() => void>();
     private _focusTargetRetryScheduled = false;
     private _focusTargetRetryCount = 0;
-    private readonly _getMeta = opt.getMeta ?? createDefaultMetaGetter(() => this.ownerDocument);
+    private _defaultMetaGetter = opt.getMeta
+      ? undefined
+      : createDefaultMetaGetter(this.ownerDocument);
+    private readonly _getMeta = opt.getMeta ?? ((key: string) => this._defaultMetaGetter!(key));
+    private _defaultKeyedMetaSources:
+      | ReturnType<typeof createRebindableWebKeyedMetaSources>
+      | undefined;
     private _defaultColorSchemeSource =
       split || opt.getMeta
         ? undefined
@@ -201,6 +208,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     private _textControlTarget: WebTextControl | null = null;
     private _imageViewTarget: HTMLImageElement | null = null;
     private _surfaceProjection: HostSurfaceProjection<HTMLElement>;
+    private readonly _a11yProjection: HostSurfaceProjection<HTMLElement>;
 
     private _applier: ReturnType<typeof createOwnedTwTokenApplier> | null = null;
     private _exposes: Record<string, unknown> = {};
@@ -227,6 +235,13 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         this,
         split ? null : (this._textControlTarget ?? this._imageViewTarget ?? this)
       );
+      // C-HOST-SURFACE-PROJECTION-0001-D: an ordinary split surface only
+      // paints. Native controls retain Main's live physical a11y projection;
+      // other controls retain their logical trigger/boundary target.
+      this._a11yProjection =
+        split && !textControl && !imageView
+          ? createHostSurfaceProjection<HTMLElement>(this)
+          : this._surfaceProjection;
       bindElementSurfaceProjection(this, this._surfaceProjection);
       this._instanceToken = createLogicalInstance(proto as Prototype<any>);
       markProtoInstance(this, proto as Prototype<any>, this._instanceToken);
@@ -250,12 +265,14 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
     adoptedCallback(_oldDocument: Document, newDocument: Document) {
       this._portalConceal.cancel();
+      if (!opt.getMeta) this._defaultMetaGetter = createDefaultMetaGetter(newDocument);
       // Adoption detaches the host from its old physical tree before the
       // destination can connect it. Drop that stale logical edge here; a
       // subsequent connection will bind the destination parent. Same-document
       // portal moves deliberately retain their projected logical ownership.
       bindLogicalParent(this._instanceToken, null);
       adoptWebComponentPortalProjections(this, newDocument);
+      this._defaultKeyedMetaSources?.adoptDocument(newDocument);
       this._defaultColorSchemeSource?.adoptDocument(newDocument);
       this._globalEventTarget.setTarget(newDocument.defaultView);
       this._overlayModal.adoptDocument(newDocument);
@@ -368,6 +385,17 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       }
       const splitResources = this._splitResources;
       const ownerGetMeta = splitResources?.getMeta ?? this._getMeta;
+      const defaultKeyedMetaSources = opt.getMeta
+        ? undefined
+        : createRebindableWebKeyedMetaSources(ownerGetMeta, this.ownerDocument);
+      this._defaultKeyedMetaSources = defaultKeyedMetaSources;
+      const preferenceSource = defaultKeyedMetaSources?.preferenceSource;
+      const styleSupportSource = defaultKeyedMetaSources?.styleSupportSource;
+      const disposeDefaultKeyedMetaSources = () => {
+        defaultKeyedMetaSources?.dispose();
+        if (this._defaultKeyedMetaSources === defaultKeyedMetaSources)
+          this._defaultKeyedMetaSources = undefined;
+      };
       // Split reserves colorScheme for its retained environment, not the document getter.
       const runtimeColorSchemeSource = splitResources
         ? {
@@ -415,7 +443,11 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
       const owner = createViewEpochOwner<Props>({ prototypeName: tagName });
       this._initializationCleanup = () => {
-        void owner.dispose().catch(() => {});
+        try {
+          void owner.dispose().catch(() => {});
+        } finally {
+          disposeDefaultKeyedMetaSources();
+        }
       };
       let currentEventGate: ReturnType<typeof createEventGate> | null = null;
       let currentRouter: ReturnType<typeof createWebProtoEventRouter> | null = null;
@@ -573,12 +605,15 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           owner.attachView({
             modules: createWebComponentModules({
               el: thisEl,
+              surfaceProjection: this._a11yProjection,
               instanceToken: this._instanceToken,
               router,
               rawPropsSource,
               effectsPort: splitEffects ?? createWebEffectsPort(applier!),
               getMeta: ownerGetMeta,
               colorSchemeSource: runtimeColorSchemeSource,
+              preferenceSource,
+              styleSupportSource,
               textControlTarget: this._textControlTarget,
               imageViewTarget: this._imageViewTarget,
               overlayModal: this._overlayModal,
@@ -678,6 +713,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         rawPropsSource,
         getMeta: ownerGetMeta,
         colorSchemeSource: runtimeColorSchemeSource,
+        preferenceSource,
+        styleSupportSource,
         textControlTarget: this._textControlTarget,
         imageViewTarget: this._imageViewTarget,
         exposeStateWebMode,
@@ -720,7 +757,13 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       this._controller = controller;
       bindController(this, controller);
 
-      this._invokeUnmounted = () => owner.dispose();
+      this._invokeUnmounted = () => {
+        try {
+          return owner.dispose();
+        } finally {
+          disposeDefaultKeyedMetaSources();
+        }
+      };
       this._initializationCleanup = null;
     }
 

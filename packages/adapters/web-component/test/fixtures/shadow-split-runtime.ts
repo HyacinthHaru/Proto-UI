@@ -2,6 +2,7 @@ import {
   createViewEpochOwner,
   createEventGate,
   createWebProtoEventRouter,
+  createHostSurfaceProjection,
   type HostWiring,
   type WiringSpec,
 } from '@proto.ui/adapter-base';
@@ -151,6 +152,7 @@ export function createSplitRuntimePilot(args: {
             ...(args.webModules
               ? createWebComponentModules({
                   ...moduleArgs,
+                  surfaceProjection: createHostSurfaceProjection(host, resources.surface.element),
                   effectsPort: effects,
                   router: router!,
                   isViewReady: () => true,

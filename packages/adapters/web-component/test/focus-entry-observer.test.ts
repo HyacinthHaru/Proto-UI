@@ -3,6 +3,7 @@ import { definePrototype } from '@proto.ui/core';
 import { asFocusEntry } from '@proto.ui/hooks';
 import { FOCUS_SET_ENTRY_FOCUSABLE_CAP } from '@proto.ui/module-focus';
 import { AdaptToWebComponent } from '../src';
+import { createHostSurfaceProjection } from '@proto.ui/adapter-base';
 import {
   bindLogicalParent,
   createLogicalInstance,
@@ -189,6 +190,7 @@ describe('WC live focus-entry resolver inputs', () => {
     const owner = document.createElement('div');
     const modules = createWebComponentModules({
       el: owner,
+      surfaceProjection: createHostSurfaceProjection(owner),
       instanceToken: {} as never,
       router: { rootTarget: owner, globalTarget: window },
       rawPropsSource: { get: () => ({}), subscribe: () => () => {} },
@@ -952,6 +954,7 @@ describe('WC live focus-entry resolver inputs', () => {
 
     const modules = createWebComponentModules({
       el: outer,
+      surfaceProjection: createHostSurfaceProjection(outer),
       instanceToken: outerToken,
       router: { rootTarget: outer, globalTarget: window },
       rawPropsSource: { get: () => ({}), subscribe: () => () => {} },

@@ -5521,3 +5521,209 @@ describe('Shadow closeout native boundaries', () => {
     }
   });
 });
+
+describe('Default keyed Meta sources in native Web Components', () => {
+  it.each(['light', 'shadow', 'split'] as const)(
+    'reconciles %s consumer styles across preference changes and document adoption',
+    async (profile) => {
+      const page = await browser.newPage();
+      try {
+        await page.addScriptTag({ content: script });
+        const result = await page.evaluate(
+          async ({ profile, artifact, css }) => {
+            const p = (window as any).Closeout;
+            // Inject host facts, not Rule outcomes. Observe real generated CSS and
+            // native custom-element adoption; this is not OS-preference evidence.
+            const installFacts = (view: Window, alphaFill = true) => {
+              const values: Record<string, string> = {
+                'prefers-reduced-motion': 'no-preference',
+                'prefers-reduced-transparency': 'no-preference',
+                'prefers-contrast': 'no-preference',
+                'forced-colors': 'none',
+              };
+              const listeners = new Set<() => void>();
+              Object.defineProperty(view, 'matchMedia', {
+                configurable: true,
+                value: (query: string) => {
+                  const pair = /^\(([^:]+): ([^)]+)\)$/.exec(query);
+                  return {
+                    get matches() {
+                      return !!pair && values[pair[1]] === pair[2];
+                    },
+                    addEventListener: (_type: string, listener: () => void) =>
+                      listeners.add(listener),
+                    removeEventListener: (_type: string, listener: () => void) =>
+                      listeners.delete(listener),
+                  };
+                },
+              });
+              Object.defineProperty((view as Window & typeof globalThis).CSS, 'supports', {
+                configurable: true,
+                value: (property: string) => property !== 'background-color' || alphaFill,
+              });
+              return {
+                captureNotifications: () => [...listeners],
+                set(feature: string, value: string) {
+                  values[feature] = value;
+                  for (const listener of [...listeners]) listener();
+                },
+              };
+            };
+            const addCss = (doc: Document) => {
+              const style = doc.createElement('style');
+              style.textContent = css;
+              doc.head.append(style);
+            };
+            const settle = async () => {
+              for (let i = 0; i < 16; i++) await Promise.resolve();
+              await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+            };
+            const primary = installFacts(window);
+            addCss(document);
+            const shadow =
+              profile === 'light'
+                ? false
+                : profile === 'shadow'
+                  ? true
+                  : {
+                      mode: 'open',
+                      presentation: 'split',
+                      styleArtifact: artifact,
+                    };
+            const prototype = (name: string) =>
+              p.define({
+                name,
+                setup(def: any) {
+                  def.feedback.style.use(p.tw('bg-black'));
+                  def.rule({
+                    when: (w: any) =>
+                      w.all(
+                        w.meta('preference.reducedMotion').eq('no-preference'),
+                        w.meta('preference.reducedTransparency').eq('no-preference'),
+                        w.meta('preference.contrast').eq('no-preference'),
+                        w.meta('preference.forcedColors').eq('none'),
+                        w.meta('styleSupport.alphaFill').eq(true),
+                        w.meta('styleSupport.backdropBlur4px').eq(true)
+                      ),
+                    intent: (i: any) => i.feedback.style.use(p.tw('bg-primary')),
+                  });
+                  return () => null;
+                },
+              });
+            const C = p.adapt(prototype(`x-keyed-meta-${profile}`), { shadow });
+            const host = new C();
+            host.style.setProperty('--pui-primary', 'rgb(10, 100, 200)');
+            document.body.append(host);
+            const color = () => {
+              const target =
+                profile === 'split' ? host.shadowRoot!.querySelector('[part="surface"]')! : host;
+              return host.ownerDocument.defaultView!.getComputedStyle(target).backgroundColor;
+            };
+            await settle();
+            const initial = color();
+            primary.set('prefers-reduced-transparency', 'reduce');
+            await settle();
+            const reduced = color();
+            primary.set('prefers-reduced-transparency', 'no-preference');
+            await settle();
+            const restored = color();
+
+            const frame = document.createElement('iframe');
+            document.body.append(frame);
+            const foreign = frame.contentDocument!;
+            const destination = installFacts(frame.contentWindow!);
+            destination.set('prefers-reduced-motion', 'reduce');
+            addCss(foreign);
+            const oldPrimaryNotifications = primary.captureNotifications();
+            foreign.adoptNode(host);
+            foreign.body.append(host);
+            await settle();
+            const adopted = color();
+            destination.set('prefers-reduced-motion', 'no-preference');
+            await settle();
+            const destinationRestored = color();
+            primary.set('prefers-reduced-motion', 'reduce');
+            for (const notify of oldPrimaryNotifications) notify();
+            await settle();
+            const oldDocumentChange = color();
+
+            const unsupportedFrame = document.createElement('iframe');
+            document.body.append(unsupportedFrame);
+            const unsupported = unsupportedFrame.contentDocument!;
+            installFacts(unsupportedFrame.contentWindow!, false);
+            addCss(unsupported);
+            const oldDestinationNotifications = destination.captureNotifications();
+            unsupported.adoptNode(host);
+            unsupported.body.append(host);
+            await settle();
+            const unsupportedAdoption = color();
+
+            const Custom = p.adapt(prototype(`x-keyed-meta-custom-${profile}`), {
+              shadow,
+              getMeta: (key: string) =>
+                key.startsWith('styleSupport.')
+                  ? true
+                  : key === 'preference.forcedColors'
+                    ? 'none'
+                    : 'no-preference',
+            });
+            const custom = new Custom();
+            document.body.append(custom);
+            await settle();
+            const customTarget =
+              profile === 'split' ? custom.shadowRoot!.querySelector('[part="surface"]')! : custom;
+            const customWithoutSource = getComputedStyle(customTarget).backgroundColor;
+            host.remove();
+            await settle();
+            // A late old-document notification must not restore detached output.
+            const detached = host.outerHTML;
+            destination.set('prefers-reduced-motion', 'reduce');
+            for (const notify of oldDestinationNotifications) notify();
+            await settle();
+            const detachedUnchanged = host.outerHTML === detached;
+            primary.set('prefers-reduced-motion', 'no-preference');
+            document.adoptNode(host);
+            document.body.append(host);
+            await settle();
+            const remounted = color();
+            host.remove();
+            custom.remove();
+            frame.remove();
+            unsupportedFrame.remove();
+            return {
+              initial,
+              reduced,
+              restored,
+              adopted,
+              destinationRestored,
+              oldDocumentChange,
+              unsupportedAdoption,
+              customWithoutSource,
+              detachedUnchanged,
+              remounted,
+            };
+          },
+          {
+            profile,
+            artifact: renderProtoShadowSplitStyleArtifact(['bg-black', 'bg-primary']),
+            css: renderProtoStyleTokenCss(['bg-black', 'bg-primary']),
+          }
+        );
+        expect(result).toEqual({
+          initial: 'rgb(10, 100, 200)',
+          reduced: 'rgb(0, 0, 0)',
+          restored: 'rgb(10, 100, 200)',
+          adopted: 'rgb(0, 0, 0)',
+          destinationRestored: 'rgb(10, 100, 200)',
+          oldDocumentChange: 'rgb(10, 100, 200)',
+          unsupportedAdoption: 'rgb(0, 0, 0)',
+          customWithoutSource: 'rgb(0, 0, 0)',
+          detachedUnchanged: true,
+          remounted: 'rgb(10, 100, 200)',
+        });
+      } finally {
+        await page.close();
+      }
+    }
+  );
+});

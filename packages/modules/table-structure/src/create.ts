@@ -238,6 +238,9 @@ export class TableStructureModuleImpl extends ModuleBase {
   }
 
   private clearProjection(): void {
+    if (this.role === null) return;
+    this.applyRow(null);
+    this.applyCell(null);
     if (this.role === 'root') this.applyTable(null);
     else if (this.role === 'caption') this.applyCaption(false);
     else if (this.role === 'row') this.applyRow(null);

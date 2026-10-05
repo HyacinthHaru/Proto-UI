@@ -48,6 +48,26 @@ const template = (tokens: string) => `
 
 // D-FEEDBACK-STYLE-ROLE-RESOLUTION-0001 F/K: Template CSS is not a Root recipe.
 describe('source-scanned Shadow Template/Root separation', () => {
+  it('keeps reduced-motion Template rules in the host-local environment while preserving document fallback', async () => {
+    const tokens = 'dark:motion-reduce:animate-none dark:animate-spin dark:transition-transform';
+    const { artifact, documentCss } = await generate(template(tokens));
+    const css = artifact.cssText;
+    for (const [token, declaration] of [
+      ['dark:motion-reduce:animate-none', 'animation: none;'],
+      ['dark:animate-spin', 'animation: none;'],
+      ['dark:transition-transform', 'transition-property: none;'],
+    ]) {
+      const selector = `:where(:host([data-pui-color-scheme='dark'])) :where([data-pui-style~="${token}"])`;
+      expect(css).toContain(`${selector} {\n      ${declaration}`);
+    }
+    expect(css).not.toContain(':where(.dark)');
+    expect(css).not.toContain('data-theme');
+    expect(css).not.toContain('prefers-color-scheme');
+    expect(documentCss).toContain(':where(.dark)');
+    expect(documentCss).toContain('@media (prefers-reduced-motion: reduce)');
+    expect(documentCss).toContain('@media (prefers-color-scheme: dark)');
+  });
+
   it.each([
     `const helper = { el(_tag, props) { def.feedback.style.use(props.style); } };
      helper.el('span', { style: tw('p-[10%]') });`,

@@ -30,6 +30,16 @@ export const BROWSER_SHARDS = Object.freeze(
       'apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts',
       'apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts',
       'apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts',
+      // New from main at merge dc8bf26; unmeasured, kept on the lightest shard
+      // per the shadcn-dialog precedent.
+      'apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts',
+      'apps/www/test/evidence/brutalist-fonts.browser.test.ts',
+      'apps/www/src/components/documentation-image-preview.browser.test.ts',
+      'apps/www/test/preferences.browser.test.ts',
+      'apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts',
+      'apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts',
+      'apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts',
+      'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
     ],
     // 281.639s on exact-head run 35490492252
     [

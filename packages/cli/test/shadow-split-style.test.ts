@@ -8,6 +8,52 @@ import { validateShadowStyleArtifact } from '../../adapters/web-component/src/sh
 
 // D-FEEDBACK-STYLE-ROLE-RESOLUTION-0001 I/J: one declaration source, no second visible box.
 describe('private generated Shadow split sizing', () => {
+  it('keeps static selection styling on the surface pseudo-element without Root box contributions', () => {
+    const tokens = [
+      'selection:bg-primary',
+      'selection:text-primary-foreground',
+      'selection:text-base',
+    ];
+    const css = renderProtoShadowSplitStyleArtifact(tokens, {
+      rootTokens: tokens,
+      templateTokens: [],
+    }).cssText;
+    for (const [token, declaration] of [
+      ['selection:bg-primary', 'background-color: var(--pui-primary);'],
+      ['selection:text-primary-foreground', 'color: var(--pui-primary-foreground);'],
+      ['selection:text-base', 'font-size: 1rem;'],
+    ]) {
+      const host = `:host([data-pui-split-root-style~="${token}"])`;
+      const surface = `${host} > [data-pui-split-surface][data-pui-style~="${token}"]::selection`;
+      expect(css).toContain(`${surface} {\n    ${declaration}`);
+      const rule = css.slice(css.indexOf(`${surface} {`)).split('}')[0];
+      expect(rule).toContain('--pui-split-compiled-receipt:');
+      expect(css).not.toContain(`${host} {`);
+    }
+    for (const token of [
+      'dark:selection:bg-primary',
+      'selection:hover:bg-primary',
+      'selection::bg-primary',
+    ]) {
+      expect(() => renderProtoShadowSplitStyleArtifact([token])).toThrow(/unsupported condition/);
+    }
+  });
+
+  it('uses the selected split surface in generated reduced-motion overrides', () => {
+    const token = 'dark:transition-transform';
+    const css = renderProtoShadowSplitStyleArtifact([token], {
+      rootTokens: [token],
+      templateTokens: [],
+    }).cssText;
+    const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+    const selector = `:where(:host([data-pui-color-scheme='dark'])):host([data-pui-split-root-style~="${token}"]) > [data-pui-split-surface][data-pui-style~="${token}"]`;
+    expect(reduced).toContain(`${selector} {\n      transition-property: none;`);
+    expect(reduced).toContain('--pui-split-compiled-receipt:');
+    expect(reduced).not.toContain(':where(.dark)');
+    expect(reduced).not.toContain('data-theme');
+    expect(reduced).not.toContain('prefers-color-scheme');
+  });
+
   it('keeps native editors out of div compensation and provides a bounded native receipt', () => {
     const css = renderProtoShadowSplitStyleArtifact([
       'w-full',

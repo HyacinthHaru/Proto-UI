@@ -1,3 +1,5 @@
+import { readWebStyleSupport } from './web-style-support-source';
+import { readWebPreference } from './web-preference-source';
 export type WebColorScheme = 'light' | 'dark';
 
 const DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)';
@@ -33,12 +35,11 @@ export function resolveWebColorScheme(
 }
 
 export function createDefaultWebMetaGetter(
-  resolveDocument: () => Document | null = getDocument
+  doc = typeof document === 'undefined' ? undefined : document
 ): (key: string) => unknown {
   return (key: string) => {
-    const doc = resolveDocument();
     const view = doc ? doc.defaultView : getWindow();
-    if (key === 'colorScheme') return resolveWebColorScheme(doc, view);
+    if (key === 'colorScheme') return resolveWebColorScheme(doc ?? null, view);
 
     if (key === 'reducedMotion') {
       if (typeof view?.matchMedia === 'function') {
@@ -47,6 +48,6 @@ export function createDefaultWebMetaGetter(
       return 'no-preference';
     }
 
-    return undefined;
+    return readWebPreference(doc, key) ?? readWebStyleSupport(doc, key);
   };
 }
