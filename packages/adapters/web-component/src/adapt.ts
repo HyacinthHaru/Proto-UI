@@ -70,7 +70,11 @@ import {
   createOwnedMaterialBinding,
 } from '@proto.ui/module-feedback/internal/owned-slot';
 import { createOpaqueMaterialVisualSink } from './material/owned-texture-sink';
-import { createWebComponentModules, createWebComponentOwnerModules } from './runtime/modules';
+import {
+  createWebComponentModules,
+  createWebComponentOwnerModules,
+  type FocusIntentState,
+} from './runtime/modules';
 import { createWebComponentHostSession } from './runtime/session';
 import type { WebComponentAdapterConstructor } from './types';
 import type {
@@ -158,6 +162,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
   class ProtoElement extends HTMLElement {
     private _mountedOnce = false;
+    private _terminalDisposing = false;
+    private _terminalCleanupComplete = false;
     private _runtimeGeneration = 0;
     private _instanceToken: LogicalInstanceToken;
     private _invokeUnmounted: (() => void | Promise<void>) | null = null;
@@ -167,6 +173,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     private _focusTargetReadyListeners = new Set<() => void>();
     private _focusTargetRetryScheduled = false;
     private _focusTargetRetryCount = 0;
+    private _focusIntentState: FocusIntentState = {};
 
     private _root: Element | ShadowRoot;
     private _slotProjector: SlotProjector | null = null;
@@ -222,8 +229,9 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     }
 
     connectedCallback() {
-      this._focusTargetRetryCount = 0;
-
+      // A focus observer can reconnect this element while the old owner's
+      // cleanup is still using its fields. Start the new owner only afterward.
+      if (this._terminalDisposing) return;
       if (this._mountedOnce) {
         // Refresh the logical parent link after a synchronous DOM move.
         markProtoInstance(this, proto as Prototype<any>, this._instanceToken);
@@ -236,6 +244,11 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         schedule(() => this[NOTIFY_FOCUS_TARGET_READY]());
         return;
       }
+      // A fresh logical owner gets a fresh budget; synchronous DOM moves above
+      // retain both the request snapshot and its consumed retry allowance.
+      this._terminalCleanupComplete = false;
+      this._focusIntentState = {};
+      this._focusTargetRetryCount = 0;
       if (this._runtimeGeneration > 0) {
         this._instanceToken = createLogicalInstance(proto as Prototype<any>);
       }
@@ -367,6 +380,9 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             this._hostDisplay = null;
             unbindController(this);
             removeDebugHooks(this);
+            // This tail releases resources synchronously; the returned dispose
+            // promise may still be carrying an error through later microtasks.
+            this._terminalCleanupComplete = true;
           },
           initialMount: 'manual',
         });
@@ -544,15 +560,16 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
                 this._focusTargetReadyListeners.add(listener);
                 return () => this._focusTargetReadyListeners.delete(listener);
               },
+              focusIntentState: this._focusIntentState,
               onFocusIntent: () => {
+                this._focusTargetRetryCount = 0;
                 focusRetryGeneration += 1;
                 this._focusTargetRetryScheduled = false;
-                this._focusTargetRetryCount = 0;
               },
               onFocusAcquired: () => {
+                this._focusTargetRetryCount = 0;
                 releaseRequestedTargetReady?.();
                 releaseRequestedTargetReady = undefined;
-                this._focusTargetRetryCount = 0;
               },
               retryTargetReady: () => {
                 if (
@@ -705,6 +722,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     }
 
     disconnectedCallback() {
+      if (this._terminalDisposing) return;
       this._pendingOwnedTokens = this._applier ? Array.from(this._applier.getOwned()) : null;
       this._applier?.clear();
       this._hostDisplay?.sync();
@@ -725,25 +743,70 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           return;
         }
 
-        if (this._invokeUnmounted) {
-          const fn = this._invokeUnmounted;
-          this._invokeUnmounted = null;
-          const disposed = fn();
-          // Terminal invalidation is synchronous even though adapter cleanup
-          // exposes a Promise for callback errors. Publish the disconnected
-          // ownership state before yielding so a later reconnect cannot reuse
-          // the disposed session.
-          unbindProtoInstance(this._instanceToken, this);
-          this._controller = null;
-          this._mountedOnce = false;
-          this._pendingOwnedTokens = null;
-          await disposed;
-          return;
+        this._terminalDisposing = true;
+        const token = this._instanceToken;
+        const dispose = this._invokeUnmounted;
+        this._invokeUnmounted = null;
+        let pending: void | Promise<void>;
+        let failed = false;
+        let firstError: unknown;
+        let cleanupFailed = false;
+        let cleanupError: unknown;
+        let released = false;
+        const releaseTerminal = () => {
+          if (released) return;
+          released = true;
+          this._terminalDisposing = false;
+          if (this.isConnected)
+            queueMicrotask(() => {
+              if (this.isConnected && !this._mountedOnce && !this._terminalDisposing)
+                this.connectedCallback();
+            });
+        };
+        try {
+          try {
+            pending = dispose?.();
+          } catch (error) {
+            failed = true;
+            firstError = error;
+          }
+          // Retire the old published owner before awaiting its callback result.
+          // Reentrant connects are held until all session cleanup has settled.
+          for (const release of [
+            () => unbindProtoInstance(token, this),
+            () => {
+              this._controller = null;
+              this._mountedOnce = false;
+              this._pendingOwnedTokens = null;
+            },
+          ]) {
+            try {
+              release();
+            } catch (error) {
+              if (!cleanupFailed) {
+                cleanupFailed = true;
+                cleanupError = error;
+              }
+            }
+          }
+          // Unlock only after both the session tail and this invocation's
+          // published-owner cleanup are complete. Normal reconnect stays sync.
+          if (this._terminalCleanupComplete) releaseTerminal();
+          try {
+            await pending!;
+          } catch (error) {
+            if (!failed) {
+              failed = true;
+              firstError = error;
+            }
+          }
+        } finally {
+          // Once-only release cannot alter a newer owner while an older error
+          // promise completes after an ordinary synchronous reconnect.
+          releaseTerminal();
         }
-        unbindProtoInstance(this._instanceToken, this);
-        this._controller = null;
-        this._mountedOnce = false;
-        this._pendingOwnedTokens = null;
+        if (failed) throw firstError;
+        if (cleanupFailed) throw cleanupError;
       });
     }
   }

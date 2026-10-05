@@ -55,7 +55,11 @@ import {
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
 import { createReactEffectsPort } from './runtime/effects-port';
-import { createReactModules, createReactOwnerModules } from './runtime/modules';
+import {
+  createReactModules,
+  createReactOwnerModules,
+  type FocusIntentState,
+} from './runtime/modules';
 import { createReactHostSession } from './runtime/session';
 import { renderTemplateToReact, type ReactRuntime as ReactRenderRuntime } from './template';
 
@@ -239,6 +243,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
       const focusTargetReadyListenersRef = runtime.useRef<Set<() => void>>(new Set());
       const focusTargetRetryScheduledRef = runtime.useRef(false);
       const focusTargetRetryCountRef = runtime.useRef(0);
+      const focusIntentStateRef = runtime.useRef<FocusIntentState>({});
       const notifyFocusTargetReady = () => {
         const target = rootRef.current;
         if (!viewReadyRef.current || !eventGateRef.current?.isEnabled() || !target?.isConnected) {
@@ -408,7 +413,6 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           pendingRevealStyleRevisionRef.current = null;
           projectionReadyRef.current = false;
           viewReadyRef.current = false;
-          focusTargetRetryCountRef.current = 0;
           return;
         }
 
@@ -557,15 +561,16 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             });
             return false;
           },
+          focusIntentState: focusIntentStateRef.current,
           onFocusIntent: () => {
+            focusTargetRetryCountRef.current = 0;
             focusRetryGeneration += 1;
             focusTargetRetryScheduledRef.current = false;
-            focusTargetRetryCountRef.current = 0;
           },
           onFocusAcquired: () => {
+            focusTargetRetryCountRef.current = 0;
             releaseRequestedTargetReady?.();
             releaseRequestedTargetReady = undefined;
-            focusTargetRetryCountRef.current = 0;
           },
           getCurrentElement: () => rootRef.current,
           subscribeTargetReady: (listener) => {
@@ -621,7 +626,6 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           pendingRevealStyleRevisionRef.current = null;
           projectionReadyRef.current = false;
           viewReadyRef.current = false;
-          focusTargetRetryCountRef.current = 0;
           const cleanupRoot = rootRef.current;
           cleanupRoot?.setAttribute(PUI_VIEW_PENDING_ATTR, '');
           revealGenerationRef.current += 1;
@@ -671,7 +675,6 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
 
         pendingRevealStyleRevisionRef.current = null;
         viewReadyRef.current = true;
-        focusTargetRetryCountRef.current = 0;
         const revealedRoot = rootRef.current;
         const revealGeneration = ++revealGenerationRef.current;
         revealedRoot?.setAttribute(PUI_VIEW_REVEALING_ATTR, '');

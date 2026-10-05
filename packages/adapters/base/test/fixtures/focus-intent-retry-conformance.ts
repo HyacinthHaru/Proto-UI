@@ -254,6 +254,197 @@ export function focusIntentRetryConformance(
       }
     );
 
+    for (const kind of ['entry', 'native', 'programmatic'] as const)
+      it.each(['omitted', 'reused'] as const)(
+        `keeps the same exhausted ${kind} intent bounded across retained replacements with %s options`,
+        async (optionsMode) => {
+          const options =
+            optionsMode === 'reused' ? Object.freeze({ preventScroll: true }) : undefined;
+          let run: any;
+          const proto = definePrototype({
+            name: `retry-${adapter}-same-retained-${kind}-${optionsMode}`,
+            setup(def) {
+              const target = asFocusable();
+              const entry = asFocusEntry();
+              entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+              def.lifecycle.onCreated((value) => {
+                run = value;
+              });
+              def.expose.method('request', () => {
+                if (kind === 'entry') entry.focus(options);
+                else if (kind === 'native') target.focusSelf(options);
+                else target.focus(options);
+              });
+              def.expose('view', {
+                hide: () => run.lifecycle.setPresent(false),
+                show: () => run.lifecycle.setPresent(true),
+              });
+              return (r) => r.el('button', 'Same retained intent');
+            },
+          });
+          const mounted = await mount(proto);
+          const frames: FrameRequestCallback[] = [];
+          const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+            frames.push(callback);
+            return frames.length;
+          });
+          const nativeFocus = HTMLElement.prototype.focus;
+          let attempts = 0,
+            accept = false;
+          const focus = vi.spyOn(HTMLElement.prototype, 'focus').mockImplementation(function (
+            this: HTMLElement,
+            options?: FocusOptions
+          ) {
+            const root = mounted.root;
+            if (root && (this === root || root.contains(this))) {
+              attempts++;
+              if (!accept) return;
+            }
+            nativeFocus.call(this, options);
+          });
+          const drain = async () => {
+            for (let i = 0; frames.length && i < 12; i++) {
+              const current = frames.splice(0);
+              await mounted.act(() => current.forEach((cb) => cb(performance.now())));
+            }
+            expect(frames).toHaveLength(0);
+          };
+          try {
+            await mounted.act(() => mounted.getExposes().request());
+            await drain();
+            expect(attempts).toBe(4);
+            for (let cycle = 0; cycle < 3; cycle++) {
+              await mounted.act(() => mounted.getExposes().view.hide());
+              await mounted.act(() => mounted.getExposes().view.show());
+              await mounted.act(() => {});
+              // A newly ready physical view may try the existing intent directly.
+              // It must not allocate another frame allowance for that same intent.
+              const beforeLayout = attempts;
+              await drain();
+              expect(attempts).toBe(beforeLayout);
+            }
+            attempts = 0;
+            await mounted.act(() => mounted.getExposes().request());
+            await drain();
+            expect(attempts).toBe(4);
+            accept = true;
+            await mounted.act(() => mounted.getExposes().request());
+            const target = kind === 'entry' ? mounted.root.querySelector('button')! : mounted.root;
+            expect(document.activeElement).toBe(target);
+          } finally {
+            focus.mockRestore();
+            raf.mockRestore();
+            await mounted.unmount();
+          }
+        }
+      );
+
+    it.each(['entry', 'native', 'programmatic'] as const)(
+      'creates a fresh %s allowance for a new terminal instance',
+      async (kind) => {
+        let setups = 0;
+        const proto = definePrototype({
+          name: `retry-${adapter}-new-owner-${kind}`,
+          setup(def) {
+            const identity = ++setups,
+              target = asFocusable(),
+              entry = asFocusEntry();
+            entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+            def.expose.method('identity', () => identity);
+            def.expose.method('request', () => {
+              if (kind === 'entry') entry.focus();
+              else if (kind === 'native') target.focusSelf();
+              else target.focus();
+            });
+            return (r) => r.el('button', 'Fresh owner');
+          },
+        });
+        for (let owner = 1; owner <= 2; owner++) {
+          const mounted = await mount(proto),
+            frames: FrameRequestCallback[] = [];
+          const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            frames.push(cb);
+            return frames.length;
+          });
+          const target = kind === 'entry' ? mounted.root.querySelector('button')! : mounted.root;
+          const focus = vi.spyOn(target, 'focus').mockImplementation(() => {});
+          try {
+            expect(mounted.getExposes().identity()).toBe(owner);
+            await mounted.act(() => mounted.getExposes().request());
+            for (let i = 0; frames.length && i < 12; i++) {
+              const current = frames.splice(0);
+              await mounted.act(() => current.forEach((cb) => cb(performance.now())));
+            }
+            expect(focus).toHaveBeenCalledTimes(4);
+            expect(frames).toHaveLength(0);
+          } finally {
+            focus.mockRestore();
+            raf.mockRestore();
+            await mounted.unmount();
+          }
+        }
+      }
+    );
+
+    for (const outcome of ['older-accepted', 'older-rejected'] as const)
+      it(`${adapter}: ${outcome} does not mutate newer request budget`, async () => {
+        const proto = definePrototype({
+          name: `review-postfocus-${adapter}-${outcome}`,
+          setup(def) {
+            const f = asFocusable(),
+              entry = asFocusEntry();
+            entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+            def.expose.method('root', () => f.focus());
+            def.expose.method('child', () => entry.focus());
+            return (r) => r.el('button', 'Newer child intent');
+          },
+        });
+        const m = await mount(proto),
+          root = m.root,
+          child = root.querySelector('button')!;
+        const frames: FrameRequestCallback[] = [];
+        const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+          frames.push(cb);
+          return frames.length;
+        });
+        let nested = false,
+          childAttempts = 0;
+        const nativeRoot = root.focus.bind(root);
+        const rootSpy = vi.spyOn(root, 'focus').mockImplementation((options) => {
+          if (outcome === 'older-accepted' && !nested) {
+            nested = true;
+            m.getExposes().child();
+          }
+          nativeRoot(options);
+        });
+        const childSpy = vi.spyOn(child, 'focus').mockImplementation(() => {
+          childAttempts++;
+          if (outcome === 'older-rejected' && !nested) {
+            nested = true;
+            m.getExposes().root();
+          }
+        });
+        try {
+          await m.act(() =>
+            outcome === 'older-accepted' ? m.getExposes().root() : m.getExposes().child()
+          );
+          const before = childAttempts,
+            queued = frames.length;
+          for (let i = 0; frames.length && i < 12; i++) {
+            const c = frames.splice(0);
+            await m.act(() => c.forEach((f) => f(performance.now())));
+          }
+          const replay = childAttempts - before;
+          expect(frames.length).toBe(0);
+          if (outcome === 'older-accepted') expect(replay).toBe(3);
+          else expect(queued).toBe(0);
+        } finally {
+          rootSpy.mockRestore();
+          childSpy.mockRestore();
+          raf.mockRestore();
+          await m.unmount();
+        }
+      });
     it('keeps descendant rejection bounded while the independent root stays focused', async () => {
       const proto = definePrototype({
         name: `retry-${adapter}-dual-role-root`,

@@ -177,3 +177,32 @@ for (const runtime of ['react', 'vue', 'vue2', 'wc'] as const) {
     }
   });
 }
+
+for (const runtime of ['react', 'vue', 'vue2', 'wc'] as const) {
+  it.each(['programmatic', 'native', 'entry'] as const)(
+    `${runtime} retains an exhausted %s allowance across retained hide/show`,
+    async (kind) => {
+      const context = await browser.newContext();
+      try {
+        const page = await context.newPage();
+        await page.setContent('<!doctype html><body></body>');
+        await page.addScriptTag({ content: bundle });
+        const result = await page.evaluate(
+          ({ runtime, kind }) => window.focusIntentNative.observeRetainedViewBudget(runtime, kind),
+          { runtime, kind }
+        );
+        console.info('[native-retained-budget]', JSON.stringify({ runtime, kind, ...result }));
+        expect(result).toEqual({
+          rejected: true,
+          retainedViewsReady: [true, true],
+          replacementsStillPending: [true, true],
+          freshAcquired: true,
+          focused: kind === 'entry' ? null : true,
+          trustedFocusEvents: 1,
+        });
+      } finally {
+        await context.close();
+      }
+    }
+  );
+}

@@ -310,6 +310,12 @@ export function createWebComponentOwnerModules<Props extends PropsBaseType>(
     .build();
 }
 
+// Kept by the logical Adapter owner, across replaceable view providers.
+export type FocusIntentState = {
+  options?: FocusRequestOptions;
+  kind?: FocusRequestKind;
+};
+
 export function createWebComponentModules<Props extends PropsBaseType>(args: {
   el: HTMLElement;
   surfaceProjection: HostSurfaceProjection<HTMLElement>;
@@ -339,6 +345,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   isEntryAcquisitionReady: (target: HTMLElement) => boolean;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
+  focusIntentState?: FocusIntentState;
   onFocusIntent?: () => void;
   onFocusAcquired?: () => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
@@ -368,8 +375,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   };
   // A11y must project while the rematerialized host is still behind the reveal
   // barrier; focus remains gated until that host is ready for interaction.
-  let requestIntent: FocusRequestOptions | undefined;
-  let requestKind: FocusRequestKind | undefined;
+  const request = args.focusIntentState ?? {};
   const getTriggerSurface = () => (args.isViewReady() ? getConnectedTriggerSurface() : null);
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
@@ -482,9 +488,9 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       [
         FOCUS_REQUEST_FOCUS_CAP,
         (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
-          if (requestIntent !== options || requestKind !== kind) {
-            requestIntent = options;
-            requestKind = kind;
+          if (request.options !== options || request.kind !== kind) {
+            request.options = options;
+            request.kind = kind;
             args.onFocusIntent?.();
           }
           if (
@@ -499,8 +505,12 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
               : undefined
           );
           const applied = target.ownerDocument.activeElement === target;
-          if (applied) args.onFocusAcquired?.();
-          else args.retryTargetReady();
+          // Native focus can synchronously issue a newer request. Only the
+          // still-current intent owns success or retry-budget accounting.
+          if (request.options === options && request.kind === kind) {
+            if (applied) args.onFocusAcquired?.();
+            else args.retryTargetReady();
+          }
           return applied;
         },
       ],
@@ -610,7 +620,9 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
           },
           unmount(_el: HTMLElement) {
             if (!mountedEl) return;
-            if (originalParent) {
+            // External removal is terminal ownership release, not a portal
+            // close. Do not resurrect a detached host during module cleanup.
+            if (mountedEl.isConnected && originalParent) {
               if (originalNext && originalParent.contains(originalNext)) {
                 originalParent.insertBefore(mountedEl, originalNext);
               } else {
