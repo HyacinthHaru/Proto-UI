@@ -596,6 +596,16 @@ export const readContrastPointerPair = (
 ) => {
   const style = getComputedStyle(element);
   const visibility = readContrastPaintedVisibility(element);
+  // Geometry visibility does not establish an unmodified source color pair:
+  // fractional opacity and blending may preserve bounds and native input while
+  // changing both rendered colors. Keep this stricter guard pair-specific so
+  // ordinary visibility still describes authored partially opaque surfaces.
+  const paintLimits: string[] = [];
+  for (let current: Element | null = element; current; current = composedParent(current)) {
+    const paintStyle = getComputedStyle(current);
+    if (paintStyle.opacity !== '1') paintLimits.push('ancestor-or-target-opacity');
+    if (paintStyle.mixBlendMode !== 'normal') paintLimits.push('blend-mode');
+  }
   const canvas = document.createElement('canvas').getContext('2d');
   const normalize = (color: string): string | null => {
     if (!canvas || !CSS.supports('color', color)) return null;
@@ -613,6 +623,7 @@ export const readContrastPointerPair = (
       element.isConnected &&
       visibility.visible &&
       visibility.classification === 'source-model-visible' &&
+      paintLimits.length === 0 &&
       hovered &&
       (!held || nativeActive) &&
       fill !== null &&
@@ -620,6 +631,7 @@ export const readContrastPointerPair = (
       fill === expectedFill &&
       foreground === expectedForeground,
     visibility,
+    paintLimits: [...new Set(paintLimits)],
     hovered,
     nativeActive,
     fill,

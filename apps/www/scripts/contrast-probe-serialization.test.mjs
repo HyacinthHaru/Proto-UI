@@ -38,6 +38,9 @@ const targetObservationFixture = async () => {
     display: 'block',
     contentVisibility: 'visible',
     opacity: '1',
+    mixBlendMode: 'normal',
+    backgroundColor: '#5294ff',
+    color: '#000',
     filter: 'none',
     backdropFilter: 'none',
     clip: 'auto',
@@ -59,6 +62,7 @@ const targetObservationFixture = async () => {
     parentElement: null,
     assignedSlot: null,
     textContent: 'Native-state fixture',
+    isConnected: true,
     getRootNode: () => ({}),
     getClientRects: () => [bounds],
     getBoundingClientRect: () => bounds,
@@ -69,7 +73,11 @@ const targetObservationFixture = async () => {
   const ancestorStyle = { ...style };
   element.parentElement = ancestor;
   const sandbox = {
-    document: { activeElement: element },
+    document: {
+      activeElement: element,
+      createElement: () => ({ getContext: () => ({ fillStyle: '' }) }),
+    },
+    CSS: { supports: () => true },
     innerWidth: 800,
     innerHeight: 600,
     ShadowRoot: class {},
@@ -77,7 +85,13 @@ const targetObservationFixture = async () => {
   };
   vm.runInNewContext(compiled.code, sandbox);
   const observe = () => sandbox.puiContrastProbe.readContrastTargetObservation(element);
-  return { style, ancestorStyle, element, observe };
+  const observePair = (held = true) =>
+    sandbox.puiContrastProbe.readContrastPointerPair(
+      element,
+      { fill: '#5294ff', foreground: '#000' },
+      held
+    );
+  return { style, ancestorStyle, element, observe, observePair };
 };
 
 test('shared interactive target predicate rejects non-painted boxes without losing native state facts', async () => {
@@ -129,6 +143,33 @@ for (const placement of ['target', 'ancestor']) {
       filteredStyle[property] = 'none';
       assert.equal(observe().achieved, true);
       assert.equal(observe().visibility.classification, 'source-model-visible');
+    });
+  }
+}
+
+for (const placement of ['target', 'ancestor']) {
+  for (const [property, value, normal, limit] of [
+    ['opacity', '0.5', '1', 'ancestor-or-target-opacity'],
+    ['mixBlendMode', 'multiply', 'normal', 'blend-mode'],
+  ]) {
+    test(`pointer pair rejects ${placement} ${property} without redefining visibility`, async () => {
+      const { style, ancestorStyle, observe, observePair } = await targetObservationFixture();
+      assert.equal(observePair().achieved, true);
+      const changedStyle = placement === 'target' ? style : ancestorStyle;
+      changedStyle[property] = value;
+      // Synthetic CSSOM injection: expected tokens and native-state flags stay
+      // fixed, while the actual serialized pair predicate must reject paint.
+      assert.equal(observe().achieved, true);
+      const changed = observePair();
+      assert.equal(changed.achieved, false);
+      assert.equal(changed.hovered, true);
+      assert.equal(changed.nativeActive, true);
+      assert.equal(changed.fill, '#5294ff');
+      assert.equal(changed.foreground, '#000');
+      assert.ok(changed.paintLimits.includes(limit));
+      changedStyle[property] = normal;
+      assert.equal(observePair().achieved, true);
+      assert.deepEqual(Array.from(observePair().paintLimits), []);
     });
   }
 }

@@ -37,6 +37,8 @@ declare global {
 let browser: Browser;
 let bundle: string;
 beforeAll(async () => {
+  const startedAt = performance.now();
+  console.info('[contrast-calibration] bundle:start');
   const result = await build({
     entryPoints: [
       fileURLToPath(new URL('../../../../scripts/contrast-probe.browser.ts', import.meta.url)),
@@ -49,7 +51,14 @@ beforeAll(async () => {
     target: 'es2022',
   });
   bundle = result.outputFiles[0].text;
+  console.info(
+    `[contrast-calibration] bundle:done elapsedMs=${Math.round(performance.now() - startedAt)}`
+  );
+  console.info('[contrast-calibration] browser:start');
   browser = await launchBrowser();
+  console.info(
+    `[contrast-calibration] browser:ready elapsedMs=${Math.round(performance.now() - startedAt)}`
+  );
 });
 afterAll(async () => {
   await browser?.close();
@@ -403,6 +412,66 @@ describe('contrast probe / real Chromium instrument calibration', () => {
       await context.close();
     }
   });
+
+  for (const placement of ['target', 'ancestor'] as const) {
+    for (const [property, value, limit] of [
+      ['opacity', '0.5', 'ancestor-or-target-opacity'],
+      ['mix-blend-mode', 'multiply', 'blend-mode'],
+    ] as const) {
+      it(`rejects ${placement} ${property} for pointer pairs while native held state survives`, async () => {
+        const context = await browser.newContext({ viewport: { width: 800, height: 600 } });
+        const page = await context.newPage();
+        try {
+          await page.setContent(
+            fixture(`<div style="background:#f08080"><div id="ancestor">
+              <button id="target" data-pui-root style="background:#5294ff;color:#000">Item</button>
+            </div></div>`)
+          );
+          await page.addScriptTag({ content: bundle });
+          const target = page.locator('#target');
+          const observe = () =>
+            target.evaluate((element) =>
+              window.puiContrastProbe.readContrastPointerPair(
+                element,
+                { fill: '#5294ff', foreground: '#000' },
+                true
+              )
+            );
+          await target.hover();
+          await page.mouse.down();
+          try {
+            expect((await observe()).achieved).toBe(true);
+            await page
+              .locator(`#${placement}`)
+              .evaluate((element, input) => (element as HTMLElement).style.setProperty(...input), [
+                property,
+                value,
+              ] as [string, string]);
+            const changed = await observe();
+            expect(changed.achieved).toBe(false);
+            expect(changed.hovered).toBe(true);
+            expect(changed.nativeActive).toBe(true);
+            expect(changed.fill).toBe(changed.expectedFill);
+            expect(changed.foreground).toBe(changed.expectedForeground);
+            expect(changed.visibility.classification).toBe('source-model-visible');
+            expect(changed.paintLimits).toContain(limit);
+            await page
+              .locator(`#${placement}`)
+              .evaluate(
+                (element, property) => (element as HTMLElement).style.removeProperty(property),
+                property
+              );
+            expect((await observe()).achieved).toBe(true);
+          } finally {
+            await page.mouse.up();
+          }
+          expect((await observe()).achieved).toBe(false);
+        } finally {
+          await context.close();
+        }
+      });
+    }
+  }
 
   it('measures real text and glyph controls, not empty or descendant-only host ink', async () => {
     // Baseline falsifier: all opaque host boxes received 21:1, including empty,
