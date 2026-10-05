@@ -37,6 +37,12 @@ export const PLAN = Object.freeze({
 const sha256 = (data) => createHash('sha256').update(data).digest('hex');
 const git = (root, ...args) =>
   execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 8 * 1024 * 1024 }).trim();
+// Git's line-oriented output quotes Unicode/control characters. NUL-delimited
+// machine output preserves actual filenames, including whitespace and newlines.
+const gitPaths = (root, ...args) =>
+  execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 8 * 1024 * 1024 })
+    .split('\0')
+    .filter((name) => name !== '');
 const json = (file, value) => writeFile(file, JSON.stringify(value, null, 2) + '\n');
 
 export function semanticResult(href, text, origin) {
@@ -122,7 +128,7 @@ async function walk(root, relative = '') {
   }
   return result.sort();
 }
-export async function sourceBoundary(baseline, candidate, expectedSha) {
+export async function sourcePairFiles(baseline, candidate, expectedSha) {
   assert.match(expectedSha ?? '', /^[a-f0-9]{40}$/, 'Exact candidate SHA is required');
   for (const root of [baseline, candidate])
     assert.equal(git(root, 'rev-parse', 'HEAD'), expectedSha);
@@ -131,24 +137,25 @@ export async function sourceBoundary(baseline, candidate, expectedSha) {
     '',
     'Candidate checkout must be clean'
   );
-  const baselineChanged = git(baseline, 'diff', '--name-only', 'HEAD')
-    .split('\n')
-    .filter(Boolean)
-    .sort();
+  const baselineChanged = gitPaths(baseline, 'diff', '--name-only', '-z', 'HEAD').sort();
   assert.deepEqual(
     baselineChanged,
     [...PRODUCT_PATHS].sort(),
     'Baseline is the candidate tree with exactly the two Search files reverted'
   );
-  assert.equal(
-    git(baseline, 'ls-files', '--others', '--exclude-standard'),
-    '',
+  assert.deepEqual(
+    gitPaths(baseline, 'ls-files', '-z', '--others', '--exclude-standard'),
+    [],
     'Unexpected baseline source files'
   );
-  const pathsA = git(baseline, 'ls-files').split('\n');
-  const pathsB = git(candidate, 'ls-files').split('\n');
+  const pathsA = gitPaths(baseline, 'ls-files', '-z');
+  const pathsB = gitPaths(candidate, 'ls-files', '-z');
   const [a, b] = await Promise.all([fileMap(baseline, pathsA), fileMap(candidate, pathsB)]);
   validatePairFiles(a, b);
+  return { a, b };
+}
+export async function sourceBoundary(baseline, candidate, expectedSha) {
+  const { a, b } = await sourcePairFiles(baseline, candidate, expectedSha);
   for (const file of PRODUCT_PATHS)
     assert.equal(
       a[file],

@@ -1,8 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, mkdir, rm } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { runInNewContext } from 'node:vm';
 import {
+  sourcePairFiles,
   BASE_SHA,
   PRODUCT_PATHS,
   PLAN,
@@ -463,4 +467,62 @@ test('bounded workflow preserves original acceptance and does not copy or run hi
   assert.doesNotMatch(workflow, /REPORT\.md|46fa65|search-cold-open-parity|pull_request_target/);
   if (process.env.GITHUB_ACTIONS !== 'true')
     await assert.rejects(run('/no-baseline', '/no-candidate', '/no-output'), /supported CI runner/);
+});
+
+test('real Git paths preserve Unicode, whitespace and newlines while rejecting unrelated drift', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'search-source-boundary-'));
+  const candidate = path.join(root, 'candidate');
+  const baseline = path.join(root, 'baseline');
+  const git = (cwd, ...args) =>
+    execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  const unusual = [
+    'styles/__行文脉络.md',
+    'notes/a file.md',
+    'notes/line\nbreak.md',
+    'notes/ trailing \n',
+  ];
+  try {
+    await mkdir(candidate);
+    git(candidate, 'init');
+    git(candidate, 'config', 'core.quotePath', 'true');
+    for (const file of [...PRODUCT_PATHS, ...unusual]) {
+      await mkdir(path.dirname(path.join(candidate, file)), { recursive: true });
+      await writeFile(path.join(candidate, file), 'candidate');
+    }
+    git(candidate, 'add', '--all');
+    git(
+      candidate,
+      '-c',
+      'user.name=Test',
+      '-c',
+      'user.email=test@example.invalid',
+      'commit',
+      '-m',
+      'fixture'
+    );
+    const sha = git(candidate, 'rev-parse', 'HEAD');
+    git(candidate, 'worktree', 'add', '--detach', baseline, sha);
+    for (const file of PRODUCT_PATHS) await writeFile(path.join(baseline, file), 'baseline');
+    const pair = await sourcePairFiles(baseline, candidate, sha);
+    for (const file of unusual) {
+      assert.ok(Object.hasOwn(pair.a, file));
+      assert.equal(pair.a[file], pair.b[file]);
+    }
+    await writeFile(path.join(baseline, unusual[0]), 'unrelated change');
+    await assert.rejects(sourcePairFiles(baseline, candidate, sha), /exactly the two Search files/);
+    await writeFile(path.join(baseline, unusual[0]), 'candidate');
+    await writeFile(path.join(baseline, 'new\nfile'), 'untracked');
+    await assert.rejects(
+      sourcePairFiles(baseline, candidate, sha),
+      /Unexpected baseline source files/
+    );
+    await rm(path.join(baseline, 'new\nfile'));
+    await writeFile(path.join(candidate, unusual[1]), 'dirty candidate');
+    await assert.rejects(
+      sourcePairFiles(baseline, candidate, sha),
+      /Candidate checkout must be clean/
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });
