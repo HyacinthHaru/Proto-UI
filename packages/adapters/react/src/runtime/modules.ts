@@ -223,6 +223,12 @@ export function createReactOwnerModules<Props extends PropsBaseType>(
     .build();
 }
 
+// Kept by the logical Adapter owner, across replaceable view providers.
+export type FocusIntentState = {
+  options?: FocusRequestOptions;
+  kind?: FocusRequestKind;
+};
+
 export function createReactModules<Props extends PropsBaseType>(args: {
   el: HTMLElement;
   instanceToken: LogicalInstanceToken;
@@ -244,6 +250,8 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   isViewReady: () => boolean;
   isEntryAcquisitionReady: (target: HTMLElement) => boolean;
   onFocusAcquired?: () => void;
+  focusIntentState?: FocusIntentState;
+  onFocusIntent?: () => void;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -265,6 +273,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     setExposes,
   } = args;
 
+  const request = args.focusIntentState ?? {};
   const getTriggerSurface = () => {
     const target = getLogicalTriggerSurfaceRoot(instanceToken);
     return args.isViewReady() && target?.isConnected ? target : null;
@@ -340,6 +349,11 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       [
         FOCUS_REQUEST_FOCUS_CAP,
         (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
+          if (request.options !== options || request.kind !== kind) {
+            request.options = options;
+            request.kind = kind;
+            args.onFocusIntent?.();
+          }
           if (
             !target.isConnected ||
             (kind === 'native' && !isNativeFocusTargetReady(target)) ||
@@ -352,8 +366,12 @@ export function createReactModules<Props extends PropsBaseType>(args: {
               : undefined
           );
           const applied = target.ownerDocument.activeElement === target;
-          if (applied) args.onFocusAcquired?.();
-          else args.retryTargetReady();
+          // Native focus can synchronously issue a newer request. Only the
+          // still-current intent owns success or retry-budget accounting.
+          if (request.options === options && request.kind === kind) {
+            if (applied) args.onFocusAcquired?.();
+            else args.retryTargetReady();
+          }
           return applied;
         },
       ],

@@ -33,3 +33,9 @@ export const BRUTALIST_PANEL_TOKENS = [
 export const BRUTALIST_HOVER_LIFT_TOKENS = 'translate-x-1 translate-y-1 shadow-none';
 export const BRUTALIST_PRESS_TOKENS = 'translate-x-1 translate-y-1 shadow-none';
 export const BRUTALIST_DISABLED_TOKENS = 'pointer-events-none opacity-50';
+
+/** A translated interactive body must retain the original pointer envelope.
+ * The transparent pseudo-element belongs to the same host (no second event
+ * owner); include its 2px border because absolute insets start at the padding
+ * edge. It exists only while feedback moves the body into its hard shadow. */
+export const BRUTALIST_MOTION_HIT_TOKENS = 'relative hit-envelope-translate-1';

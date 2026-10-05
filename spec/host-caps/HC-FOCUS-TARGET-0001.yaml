@@ -29,7 +29,7 @@ criteria:
         - id: C-AS-FOCUSABLE-0001
           anchors: [C-AS-FOCUSABLE-0001-G]
         - id: C-AS-FOCUS-ENTRY-0001
-          anchors: [C-AS-FOCUS-ENTRY-0001-F, C-AS-FOCUS-ENTRY-0001-G]
+          anchors: [C-AS-FOCUS-ENTRY-0001-F, C-AS-FOCUS-ENTRY-0001-G, C-AS-FOCUS-ENTRY-0001-H]
       decisions:
         - id: D-TRIGGER-GROUP-SURFACE-0001
           anchors: [D-TRIGGER-GROUP-SURFACE-0001-C, D-TRIGGER-GROUP-SURFACE-0001-F]
@@ -47,6 +47,9 @@ sources:
   - path: packages/adapters/vue2/src/runtime/modules.ts
   - path: packages/adapters/web-component/src/runtime/modules.ts
 revisions:
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Linked criterion D's retained-entry host boundary to its governing C-AS-FOCUS-ENTRY-0001-H criterion without changing semantics or lifecycle.
   - version: 0.3.0-alpha.1
     change: refined
     summary: Owner-approved separation preserves synchronous programmatic effects and root-scoped native admission while retaining rejected entry intent until its actual event owner is ready; committed blur and A11y remain independent.

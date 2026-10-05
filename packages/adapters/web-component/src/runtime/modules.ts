@@ -60,6 +60,7 @@ import {
   FOCUS_SET_ENTRY_FOCUSABLE_CAP,
   FOCUS_SET_FOCUSABLE_CAP,
   FOCUS_TARGET_READY_CAP,
+  type FocusRequestKind,
 } from '@proto.ui/module-focus';
 import {
   createWebHitParticipationHostBridge,
@@ -110,6 +111,8 @@ import {
   releaseTriggerSurface,
   mergeLogicalTriggerGroup,
   subscribeLogicalTriggerSurface,
+  subscribeFocusSurfaceReady,
+  isNativeFocusTargetReady,
 } from '../platform/instance-tree';
 
 const TRIGGER_OWNER_MARK = Symbol.for('@proto.ui/as-trigger/confirm-owner');
@@ -299,6 +302,12 @@ export function createWebComponentOwnerModules<Props extends PropsBaseType>(
     .build();
 }
 
+// Kept by the logical Adapter owner, across replaceable view providers.
+export type FocusIntentState = {
+  options?: FocusRequestOptions;
+  kind?: FocusRequestKind;
+};
+
 export function createWebComponentModules<Props extends PropsBaseType>(args: {
   el: HTMLElement;
   surfaceProjection: HostSurfaceProjection<HTMLElement>;
@@ -323,8 +332,12 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
+  isEntryAcquisitionReady: (target: HTMLElement) => boolean;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
+  focusIntentState?: FocusIntentState;
+  onFocusIntent?: () => void;
+  onFocusAcquired?: () => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
 }) {
   const {
@@ -352,10 +365,11 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   };
   // A11y must project while the rematerialized host is still behind the reveal
   // barrier; focus remains gated until that host is ready for interaction.
+  const request = args.focusIntentState ?? {};
   const getTriggerSurface = () => (args.isViewReady() ? getConnectedTriggerSurface() : null);
   const subscribeFocusTarget = (listener: () => void) => {
     const offReady = args.subscribeTargetReady(listener);
-    const offSurface = subscribeLogicalTriggerSurface(instanceToken, listener);
+    const offSurface = subscribeFocusSurfaceReady(instanceToken, listener);
     return () => {
       offReady();
       offSurface();
@@ -457,14 +471,30 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       ],
       [
         FOCUS_REQUEST_FOCUS_CAP,
-        (target: HTMLElement, options?: FocusRequestOptions) => {
+        (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
+          if (request.options !== options || request.kind !== kind) {
+            request.options = options;
+            request.kind = kind;
+            args.onFocusIntent?.();
+          }
+          if (
+            !target.isConnected ||
+            (kind === 'native' && !isNativeFocusTargetReady(target)) ||
+            (kind === 'entry' && !args.isEntryAcquisitionReady(target))
+          )
+            return false;
           target.focus(
             typeof options?.preventScroll === 'boolean'
               ? { preventScroll: options.preventScroll }
               : undefined
           );
           const applied = target.ownerDocument.activeElement === target;
-          if (!applied) args.retryTargetReady();
+          // Native focus can synchronously issue a newer request. Only the
+          // still-current intent owns success or retry-budget accounting.
+          if (request.options === options && request.kind === kind) {
+            if (applied) args.onFocusAcquired?.();
+            else args.retryTargetReady();
+          }
           return applied;
         },
       ],
@@ -574,7 +604,9 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
           },
           unmount(_el: HTMLElement) {
             if (!mountedEl) return;
-            if (originalParent) {
+            // External removal is terminal ownership release, not a portal
+            // close. Do not resurrect a detached host during module cleanup.
+            if (mountedEl.isConnected && originalParent) {
               if (originalNext && originalParent.contains(originalNext)) {
                 originalParent.insertBefore(mountedEl, originalNext);
               } else {

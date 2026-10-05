@@ -55,7 +55,11 @@ import {
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
 import { createReactEffectsPort } from './runtime/effects-port';
-import { createReactModules, createReactOwnerModules } from './runtime/modules';
+import {
+  createReactModules,
+  createReactOwnerModules,
+  type FocusIntentState,
+} from './runtime/modules';
 import { createReactHostSession } from './runtime/session';
 import { renderTemplateToReact, type ReactRuntime as ReactRenderRuntime } from './template';
 
@@ -239,6 +243,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
       const focusTargetReadyListenersRef = runtime.useRef<Set<() => void>>(new Set());
       const focusTargetRetryScheduledRef = runtime.useRef(false);
       const focusTargetRetryCountRef = runtime.useRef(0);
+      const focusIntentStateRef = runtime.useRef<FocusIntentState>({});
       const notifyFocusTargetReady = () => {
         const target = rootRef.current;
         if (!viewReadyRef.current || !eventGateRef.current?.isEnabled() || !target?.isConnected) {
@@ -408,7 +413,6 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           pendingRevealStyleRevisionRef.current = null;
           projectionReadyRef.current = false;
           viewReadyRef.current = false;
-          focusTargetRetryCountRef.current = 0;
           return;
         }
 
@@ -417,7 +421,19 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
 
         installViewVisibilityRule(rootEl.ownerDocument);
 
-        markProtoInstance(rootEl, proto as Prototype<any>, instanceTokenRef.current);
+        try {
+          markProtoInstance(rootEl, proto as Prototype<any>, instanceTokenRef.current);
+        } catch (error) {
+          // Marker publication can replay a pending request before a view
+          // disposer exists. Roll back only this root, retaining the first error.
+          try {
+            unbindProtoInstance(instanceTokenRef.current, rootEl);
+          } catch {
+            /* original error wins */
+          }
+
+          throw error;
+        }
         boundRootRef.current = rootEl;
 
         const eventGate = createEventGate();
@@ -432,33 +448,63 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         });
         bindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
         let viewDisposed = false;
+        let focusRetryGeneration = 0;
         let releaseRequestedTargetReady: (() => void) | undefined;
-        const releaseNativeReadiness = registerNativeFocusReadiness(instanceTokenRef.current, {
-          isReady: () =>
-            !viewDisposed &&
-            viewReadyRef.current &&
-            eventGate.isEnabled() &&
-            rootRef.current === rootEl &&
-            rootEl.isConnected &&
-            !rootEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
-          subscribe: (listener) => {
-            focusTargetReadyListenersRef.current.add(listener);
-            return () => focusTargetReadyListenersRef.current.delete(listener);
+        const releaseNativeReadiness = registerNativeFocusReadiness(
+          instanceTokenRef.current,
+          {
+            isReady: () =>
+              !viewDisposed &&
+              viewReadyRef.current &&
+              eventGate.isEnabled() &&
+              rootRef.current === rootEl &&
+              rootEl.isConnected &&
+              !rootEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+            subscribe: (listener) => {
+              focusTargetReadyListenersRef.current.add(listener);
+              return () => focusTargetReadyListenersRef.current.delete(listener);
+            },
           },
-        });
+          { deferPublication: true }
+        );
         const disposeView = () => {
           if (viewDisposed) return;
           viewDisposed = true;
-          eventGate.disable();
-          eventGate.dispose();
-          releaseRequestedTargetReady?.();
-          releaseRequestedTargetReady = undefined;
-          releaseNativeReadiness();
-          unbindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
-          router.dispose();
-          unbindProtoInstance(instanceTokenRef.current, boundRootRef.current ?? undefined);
-          if (boundRootRef.current === rootEl) boundRootRef.current = null;
-          if (eventGateRef.current === eventGate) eventGateRef.current = null;
+          const releases = [
+            () => eventGate.disable(),
+            () => eventGate.dispose(),
+            () => {
+              const release = releaseRequestedTargetReady;
+              releaseRequestedTargetReady = undefined;
+              release?.();
+            },
+            () => unbindLogicalEventTarget(instanceTokenRef.current, router.rootTarget),
+            () => router.dispose(),
+            () => unbindProtoInstance(instanceTokenRef.current, rootEl),
+            () => {
+              if (boundRootRef.current === rootEl) boundRootRef.current = null;
+              if (eventGateRef.current === eventGate) {
+                eventGateRef.current = null;
+                focusTargetRetryScheduledRef.current = false;
+              }
+            },
+            // Publish invalidation after releasing old bindings. Pending focus
+            // callbacks may throw; every old-view release must still complete.
+            releaseNativeReadiness,
+          ];
+          let failed = false;
+          let firstError: unknown;
+          for (const release of releases) {
+            try {
+              release();
+            } catch (error) {
+              if (!failed) {
+                failed = true;
+                firstError = error;
+              }
+            }
+          }
+          if (failed) throw firstError;
         };
 
         const effectsPort = createReactEffectsPort((tokens) => {
@@ -515,10 +561,16 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             });
             return false;
           },
+          focusIntentState: focusIntentStateRef.current,
+          onFocusIntent: () => {
+            focusTargetRetryCountRef.current = 0;
+            focusRetryGeneration += 1;
+            focusTargetRetryScheduledRef.current = false;
+          },
           onFocusAcquired: () => {
+            focusTargetRetryCountRef.current = 0;
             releaseRequestedTargetReady?.();
             releaseRequestedTargetReady = undefined;
-            focusTargetRetryCountRef.current = 0;
           },
           getCurrentElement: () => rootRef.current,
           subscribeTargetReady: (listener) => {
@@ -534,9 +586,11 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             }
             focusTargetRetryScheduledRef.current = true;
             focusTargetRetryCountRef.current += 1;
+            const generation = focusRetryGeneration;
             scheduleAfterWebLayout(
               rootRef.current,
               () => {
+                if (viewDisposed || generation !== focusRetryGeneration) return;
                 focusTargetRetryScheduledRef.current = false;
                 notifyFocusTargetReady();
               },
@@ -560,6 +614,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         if (kernel && kernel.run) {
           (kernel.run as any).host = { get: () => rootRef.current };
         }
+        releaseNativeReadiness.publish();
       }, [shouldExist]);
 
       // React StrictMode replays layout effects. Detach immediately so view
@@ -571,13 +626,16 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           pendingRevealStyleRevisionRef.current = null;
           projectionReadyRef.current = false;
           viewReadyRef.current = false;
-          focusTargetRetryCountRef.current = 0;
           const cleanupRoot = rootRef.current;
           cleanupRoot?.setAttribute(PUI_VIEW_PENDING_ATTR, '');
           revealGenerationRef.current += 1;
           cleanupRoot?.removeAttribute(PUI_VIEW_REVEALING_ATTR);
-          void ownerRef.current?.detachView();
-          ownerDisposalRef.current?.release();
+          try {
+            void ownerRef.current?.detachView();
+          } finally {
+            // A failing readiness observer must not keep a removed instance alive.
+            ownerDisposalRef.current?.release();
+          }
         };
       }, []);
 
@@ -617,7 +675,6 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
 
         pendingRevealStyleRevisionRef.current = null;
         viewReadyRef.current = true;
-        focusTargetRetryCountRef.current = 0;
         const revealedRoot = rootRef.current;
         const revealGeneration = ++revealGenerationRef.current;
         revealedRoot?.setAttribute(PUI_VIEW_REVEALING_ATTR, '');

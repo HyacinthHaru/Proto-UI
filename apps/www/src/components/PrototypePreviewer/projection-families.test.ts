@@ -25,6 +25,20 @@ const EXPECTED_SHARED_BASE_FAMILY_IDS = [
   'textarea',
 ] as const;
 
+const EXPECTED_COMPONENT_IDS = {
+  shadcn: [...EXPECTED_SHARED_BASE_FAMILY_IDS, 'input', 'checkbox', 'radio-group'],
+  brutalist: [
+    ...EXPECTED_SHARED_BASE_FAMILY_IDS,
+    'checkbox',
+    'badge',
+    'card',
+    'skeleton',
+    'spinner',
+    'scroll-area',
+    'tooltip',
+  ],
+} as const;
+
 const EXPECTED_REQUIRED_PART_IDS = {
   button: ['root'],
   toggle: ['root'],
@@ -493,6 +507,9 @@ describe('Website projection-family manifests', () => {
         themeArtifactId: manifest.themeArtifactId,
         themeInputId: manifest.themeInputId,
       }).toEqual(EXPECTED_THEME_REFERENCES[projectionFamilyId]);
+      expect(Object.keys(manifest.families).sort()).toEqual(
+        [...EXPECTED_COMPONENT_IDS[projectionFamilyId]].sort()
+      );
 
       for (const familyId of EXPECTED_SHARED_BASE_FAMILY_IDS) {
         const expected = EXPECTED_FAMILIES[projectionFamilyId][familyId];

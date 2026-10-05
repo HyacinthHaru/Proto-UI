@@ -3,8 +3,88 @@ type: test
 title: Focus target and scope runtime contract tests
 status: draft
 since: 0.1.0
-summary: Runtime and bounded React evidence for asFocusable target facts, asFocusEntry region policy, setup-only configuration, disabled focus requests, autofocus, scopes, native reveal readiness, one-shot commit effects, and nested surface-owner readiness.
+summary: Runtime and bounded React/Vue evidence for asFocusable target facts, asFocusEntry region policy, setup-only configuration, disabled focus requests, autofocus, scopes, native reveal readiness, one-shot commit effects, and nested surface-owner readiness.
 cases:
+  - id: T-FOCUS-0001-CASE-RETAINED-INTENT-BUDGET
+    title: A pending logical intent keeps its exhausted budget across retained view replacement
+    covers: [C-AS-FOCUSABLE-0001-G, C-AS-FOCUS-ENTRY-0001-H, HC-FOCUS-TARGET-0001-C]
+    expectation: hide-show-replay-of-the-same-private-snapshot-does-not-renew-layout-retries-and-a-new-explicit-request-still-receives-its-own-budget
+    notes:
+      - The four-framework controlled matrix distinguishes lifecycle reveal frames from Focus layout retries and includes omitted/reused options and fresh logical-owner controls.
+      - Native CSS rejection and trusted event evidence remain separately bound to the exact browser candidate.
+  - id: T-FOCUS-0001-CASE-CURRENT-INTENT-ACCOUNTING
+    title: Only the still-current intent owns post-focus success and retry accounting
+    covers: [HC-FOCUS-TARGET-0001-C]
+    expectation: older-accepted-focus-does-not-clear-a-newer-failed-budget-and-older-rejected-focus-does-not-schedule-work-after-newer-success
+    notes:
+      - Actual framework tests deliberately control synchronous host focus and frame delivery. They do not establish arbitrary native exception behavior.
+  - id: T-FOCUS-0001-CASE-SAME-OWNER-LEASE-BUDGET
+    title: Same-owner lease transitions do not renew an exhausted request budget
+    covers: [HC-FOCUS-TARGET-0001-C]
+    expectation: same-logical-owner-replay-keepalive-or-connected-move-preserves-current-intent-accounting
+    notes:
+      - React effect replay is a controlled Runtime harness, not a claimed late real-React StrictMode lifecycle. Vue KeepAlive and Web Component DOM move use their actual frameworks.
+  - id: T-FOCUS-0001-CASE-WC-TERMINAL-SETTLEMENT
+    title: Web Component session cleanup and reentrant reconnect settle the old owner completely
+    covers: [HC-FOCUS-TARGET-0001-C]
+    expectation: source-notification-error-does-not-skip-session-tail-release-and-a-current-reentrant-connection-receives-a-fresh-owner-only-after-terminal-settlement
+    notes:
+      - The reported synchronous owner.dispose throw path was not reproduced. Controlled real-component evidence instead identified a skipped session tail and synchronous DOM reappend during disposal.
+      - Settlement means session resources and published-owner retirement are complete; the normal path does not wait for a Promise used only to deliver an older error. The once-release control uses an explicit transport seam, not native asynchronous presence evidence.
+  - id: T-FOCUS-0001-CASE-SOURCE-LIFETIME-EXCEPTIONS
+    title: Readiness and marker notification errors do not strand view bindings
+    covers: [HC-FOCUS-TARGET-0001-C]
+    expectation: terminal-or-failed-construction-cleanup-releases-the-owned-root-and-readiness-lease-while-preserving-original-errors-and-newer-views
+    notes:
+      - Actual React and Vue child removal distinguishes the connected terminal-cleanup window from retained hide, where the old root has already disconnected.
+      - React, Vue and Vue2 failed marker publication controls assert binding cleanup, not suppression of framework errors or preservation of an error-boundary-unmounted UI.
+      - Host failures are deliberate controlled overrides. This evidence does not establish native browser exception behavior, entry admission, or roving navigation.
+  - id: T-FOCUS-0001-CASE-REENTRANT-ACQUISITION
+    title: Synchronous target and entry effects preserve the latest admitted intent and owner facts
+    covers:
+      [
+        C-AS-FOCUSABLE-0001-G,
+        C-AS-FOCUS-ENTRY-0001-H,
+        C-FOCUS-0001-E,
+        C-FOCUS-0001-F,
+        C-FOCUS-0001-H,
+      ]
+    expectation: superseding-requests-cancellation-and-observed-owner-transfer-stop-obsolete-host-and-fact-continuations
+    notes:
+      - Controlled capabilities and actual simulated-DOM effects cover a finite target/entry transition matrix, including normal replay and exception controls; they do not establish all scope or roving reentrancy or native browser conformance.
+  - id: T-FOCUS-0001-CASE-REENTRANT-PREFLIGHT
+    title: Root and parent preflight callbacks cannot revive an obsolete request
+    covers: [C-AS-FOCUSABLE-0001-G, C-AS-FOCUS-ENTRY-0001-H, C-FOCUS-0001-E, C-FOCUS-0001-H]
+    expectation: root-policy-and-eligibility-watch-reentry-preserves-new-pending-intent-while-policy-rejection-does-not-cancel-another-accepted-owner
+    notes:
+      - The controlled host getter and policy callbacks are deliberately reentrant. This is not evidence for complete scope navigation.
+  - id: T-FOCUS-0001-CASE-SUSPENDED-ROLE-CANCELLATION
+    title: Tentative unresolved entry preserves only a still-live independent target operation
+    covers: [C-AS-FOCUS-ENTRY-0001-H, C-FOCUS-0001-H]
+    expectation: entry-disable-restores-unrelated-target-continuation-and-disabled-target-attempts-do-not-replace-entry
+  - id: T-FOCUS-0001-CASE-LEGACY-TOKEN-PREFLIGHT
+    title: Legacy root-derived instance identity does not escape request ownership
+    covers: [C-AS-FOCUSABLE-0001-G]
+    expectation: missing-instance-token-root-getter-reentry-supersedes-before-old-host-application
+  - id: T-FOCUS-0001-CASE-TEARDOWN-ACQUISITION
+    title: Retained Vue2 and Web Component teardown admission follows the actual event owner
+    covers: [HC-FOCUS-TARGET-0001-D, C-AS-FOCUS-ENTRY-0001-H]
+    expectation: native-and-entry-wait-through-closed-owner-ingress-and-current-view-replacement-while-programmatic-facts-match-accepted-effects
+    notes:
+      - Real framework tests use a simulated DOM and include nested owners and a native textarea projection; they do not by themselves prove trusted browser delivery.
+  - id: T-FOCUS-0001-CASE-INTENT-IDENTITY
+    title: Explicit requests create a private intent while readiness and Center replay retain its identity
+    covers: [C-AS-FOCUSABLE-0001-G, C-AS-FOCUS-ENTRY-0001-H]
+    expectation: new-native-programmatic-entry-scope-and-roving-requests-supersede-while-current-policy-replay-and-target-replacement-retain-the-pending-intent
+    notes:
+      - Controlled host capabilities observe request identity and application count. This does not establish native layout or full scope/roving behavior.
+  - id: T-FOCUS-0001-CASE-INTENT-RETRY-BOUND
+    title: Each new acquisition intent receives bounded retries without renewing failed same-intent replay
+    covers: [C-AS-FOCUSABLE-0001-G, C-AS-FOCUS-ENTRY-0001-H, HC-FOCUS-TARGET-0001-C]
+    expectation: all-three-request-kinds-renew-after-explicit-supersession-but-repeated-rejection-and-preexisting-root-focus-do-not-renew-the-pending-budget
+    notes:
+      - Real framework tests control only host rejection and frame delivery; omitted or reused author options still produce distinct explicit intents.
+      - An already-focused independent root is not evidence that a requested descendant acquired focus.
   - id: T-FOCUS-0001-CASE-FOCUSABLE-ONCE
     title: Repeated asFocusable calls reuse one handle and record privileged once trace
     covers:
@@ -82,6 +162,24 @@ cases:
       - C-AS-FOCUS-ENTRY-0001-H
       - HC-FOCUS-TARGET-0001-D
     expectation: nested-owner-focus-and-facts-advance-together-after-readiness-unless-cancelled
+  - id: T-FOCUS-0001-CASE-OWNER-READINESS-SUBSCRIPTION
+    title: Target-specific readiness subscriptions rebind current sources and release stale callbacks
+    covers:
+      - HC-FOCUS-TARGET-0001-C
+      - HC-FOCUS-TARGET-0001-D
+    expectation: actual-owner-readiness-and-native-root-admission-remain-releasable-through-source-and-surface-replacement
+    notes:
+      - Controlled private readiness sources establish subscription and admission mechanics, not native browser delivery or a complete Adapter profile.
+  - id: T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE
+    title: Rejected entry re-resolves after an ordinary event owner disappears without focusing its departing node
+    covers:
+      - C-AS-FOCUS-ENTRY-0001-H
+      - HC-FOCUS-TARGET-0001-C
+      - HC-FOCUS-TARGET-0001-D
+    expectation: absent-owner-invalidates-after-dom-commit-and-current-policy-selects-ready-fallback-unless-cancelled
+    notes:
+      - Owner disappearance is invalidation rather than readiness; a still-closed replacement source retains its own readiness subscription.
+      - Controlled bridge and actual framework teardown tests distinguish DOM-first retained hide from cleanup-first terminal removal. They do not claim native browser conformance.
   - id: T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION
     title: Completed descendant acquisition does not exhaust readiness retries for subsequent entry requests
     covers:
@@ -180,10 +278,196 @@ cases:
       - HC-FOCUS-TARGET-0001-D
     expectation: closed-inner-owner-defers-outer-native-focus-then-physical-and-inner-observed-focus-agree
     notes:
-      - The real React nested Trigger fixture requests outer focusSelf from the inner onUpdated callback while the resolved inner owner's native observation gate is closed; it observes no physical application then and matching physical/inner focused facts after readiness.
-      - Discriminating red/green execution uses the installed React runtime in a simulated DOM. It neither injects gate state nor synthesizes focus facts, and does not claim native browser or all-version conformance.
+      - Real React and Vue nested Trigger fixtures request outer focusSelf from the inner onUpdated callback while the resolved inner owner's native observation gate is closed; they observe no physical application then and matching physical/inner focused facts after readiness.
+      - Discriminating red/green execution uses installed framework runtimes in a simulated DOM. It neither injects gate state nor synthesizes focus facts, and does not claim native browser or all-version conformance.
 
 implementations:
+  - id: react-focus-controlled-replay-budget
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/lifecycle-strict-replay.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-SAME-OWNER-LEASE-BUDGET]
+  - id: vue-focus-keepalive-budget
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/lifecycle-keep-alive.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-SAME-OWNER-LEASE-BUDGET]
+  - id: web-component-focus-move-budget
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/web-component/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-SAME-OWNER-LEASE-BUDGET]
+  - id: web-component-focus-terminal-settlement
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/web-component/test/focus-terminal-cleanup.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-WC-TERMINAL-SETTLEMENT]
+  - id: react-focus-source-exception-cleanup
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-exception-cleanup.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-SOURCE-LIFETIME-EXCEPTIONS]
+  - id: vue-focus-source-exception-cleanup
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-exception-cleanup.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-SOURCE-LIFETIME-EXCEPTIONS]
+  - id: runtime-focus-transition-reentrancy
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-transition-reentrancy.contract.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-REENTRANT-ACQUISITION]
+  - id: runtime-focus-preflight-reentrancy
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-preflight-reentrancy.contract.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-REENTRANT-PREFLIGHT]
+  - id: runtime-focus-role-reentrancy
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-role-reentrancy.contract.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-SUSPENDED-ROLE-CANCELLATION]
+  - id: runtime-focus-fallback-reentrancy
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-fallback-reentrancy.contract.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-LEGACY-TOKEN-PREFLIGHT]
+  - id: vue2-focus-teardown-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue2/test/focus-teardown-readiness.integration.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-TEARDOWN-ACQUISITION
+      - T-FOCUS-0001-CASE-SOURCE-LIFETIME-EXCEPTIONS
+  - id: web-component-focus-teardown-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/web-component/test/focus-teardown-readiness.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-TEARDOWN-ACQUISITION]
+  - id: four-web-adapter-native-intent-retry-bound
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/base/test/focus-intent-retries.browser.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-INTENT-RETRY-BOUND
+      - T-FOCUS-0001-CASE-RETAINED-INTENT-BUDGET
+    notes:
+      - The isolated four-runtime fixture exercises real CSS focus rejection and frame delivery. Exact candidate native CI is required; controlled-host tests do not substitute for it.
+  - id: runtime-focus-intent-identity
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-intent-identity.contract.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-INTENT-IDENTITY]
+  - id: adapter-react-focus-intent-retry-bound
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-INTENT-RETRY-BOUND
+      - T-FOCUS-0001-CASE-RETAINED-INTENT-BUDGET
+      - T-FOCUS-0001-CASE-CURRENT-INTENT-ACCOUNTING
+  - id: adapter-vue-focus-intent-retry-bound
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-INTENT-RETRY-BOUND
+      - T-FOCUS-0001-CASE-RETAINED-INTENT-BUDGET
+      - T-FOCUS-0001-CASE-CURRENT-INTENT-ACCOUNTING
+  - id: adapter-vue2-focus-intent-retry-bound
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue2/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-INTENT-RETRY-BOUND
+      - T-FOCUS-0001-CASE-RETAINED-INTENT-BUDGET
+      - T-FOCUS-0001-CASE-CURRENT-INTENT-ACCOUNTING
+  - id: adapter-web-component-focus-intent-retry-bound
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/web-component/test/focus-intent-retries.integration.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-INTENT-RETRY-BOUND
+      - T-FOCUS-0001-CASE-RETAINED-INTENT-BUDGET
+      - T-FOCUS-0001-CASE-CURRENT-INTENT-ACCOUNTING
+  - id: adapter-vue-native-request-readiness
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/vue/test/focus-request-readiness.browser.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
+      - T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
+      - T-FOCUS-0001-CASE-NATIVE-SURFACE-OWNER-READINESS
+      - T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE
+    notes:
+      - The isolated actual-Vue browser fixture is registered in the canonical runtime plan and bundles successfully. Execution is pending exact-head CI; local browser access is blocked, so no native Vue pass is claimed.
+  - id: adapter-vue-request-kind-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-request-readiness.integration.test.ts
+    required: true
+    consumesCases:
+      - T-FOCUS-0001-CASE-NATIVE-SURFACE-OWNER-READINESS
+      - T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
+      - T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
+      - T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE
+    notes:
+      - Actual Vue lifecycle in happy-dom covers onUpdated programmatic/native/entry ordering, nested owner readiness, cancellation, entry-only fact ownership, owner teardown and superseding commits. Native Vue browser delivery remains separate evidence.
+  - id: adapter-vue-entry-retry-lifecycle
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-entry-retries.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION]
+    notes:
+      - Actual Vue with controlled focus rejection and frame delivery checks distinct entry budgets, obsolete scheduled callbacks and retained view replacement; this is not browser layout evidence.
+  - id: adapter-vue-private-owner-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/vue/test/focus-owner-readiness.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-OWNER-READINESS-SUBSCRIPTION]
+  - id: adapter-react-private-owner-readiness
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-entry-owner-readiness.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-OWNER-READINESS-SUBSCRIPTION]
+  - id: react-entry-owner-disappearance-bridge
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-entry-owner-disappearance.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE]
+    notes:
+      - Actual Focus Module with controlled owner sources covers both removal orders, queued cancellation/supersession/disposal and replacement-source ownership.
+  - id: react-entry-owner-disposal-lifecycle
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-entry-owner-disposal.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE]
+    notes:
+      - Actual React lifecycle in happy-dom requests entry during child onUnmounted; terminal removal rejects the departing connected node and reaches the ready sibling without another requester update.
   - id: adapter-react-entry-owner-and-retry
     kind: adapter-test
     status: passing
@@ -201,6 +485,7 @@ implementations:
     path: packages/adapters/react/test/focus-entry-readiness.browser.test.ts
     required: true
     consumesCases:
+      - T-FOCUS-0001-CASE-ENTRY-OWNER-DISAPPEARANCE
       - T-FOCUS-0001-CASE-ENTRY-ACTUAL-OWNER-READY
       - T-FOCUS-0001-CASE-ENTRY-REPEATED-REJECTION
       - T-FOCUS-0001-CASE-REQUEST-KIND-READINESS
@@ -362,6 +647,11 @@ verifies:
         - HC-FOCUS-TARGET-0001-D
 exercises:
   adapters:
+    - id: A-VUE-3-0001
+      since: 0.3.0-alpha.1
+      anchors: [A-VUE-3-0001-FOCUS]
+      coverageImpact: exercises-test-surface
+      note: Bounded installed-Vue lifecycle and controlled readiness/retry fixtures exercise required-kind admission and cleanup; they do not establish every Vue version or the complete Adapter profile.
     - id: A-REACT-18-19-0001
       since: 0.3.0-alpha.1
       anchors:
@@ -371,6 +661,21 @@ exercises:
       coverageImpact: exercises-test-surface
       note: Bounded real React commit fixtures, including nested resolved-owner readiness, and the selected-entry/End/Home Chromium journey exercise current Focus and observation delivery, not the whole React version range or profile.
 revisions:
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added logical-owner retry identity across retained views, post-focus supersession accounting, bounded lease controls and Web Component terminal settlement evidence without broadening native conformance claims.
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Distinguished connected terminal cleanup and failed marker construction from earlier retained-hide controls, without crediting native or roving conformance.
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added bounded request execution, preflight and role-cancellation reentrancy evidence plus Vue2 and Web Component teardown admission, without changing normative Focus semantics.
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added narrow intent-identity and all-kind bounded-retry evidence across four Web Adapters without claiming unrelated scope, roving, or complete profile conformance.
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added bounded Vue required-kind admission and retry evidence, and ordinary owner disappearance/teardown cases for React and Vue; no lifecycle or full-profile promotion.
   - version: 0.3.0-alpha.1
     change: strengthened
     summary: Bound the owner-approved programmatic/native/entry readiness split to real onUpdated controls and preserved existing #811 native, entry, A11y and retained-owner assertions.
