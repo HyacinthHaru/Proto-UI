@@ -254,11 +254,14 @@ describe.sequential('shadcn control documentation browser regressions', () => {
           const probe = document.createElement('span');
           element.appendChild(probe);
           const resolve = (token: string) => {
+            if (!getComputedStyle(element).getPropertyValue(token).trim()) {
+              throw new Error(`Missing public theme token: ${token}`);
+            }
             probe.style.color = `var(${token})`;
             return getComputedStyle(probe).color;
           };
-          const muted = resolve('--muted-foreground');
-          const accent = resolve('--accent-foreground');
+          const muted = resolve('--pui-muted-foreground');
+          const accent = resolve('--pui-accent-foreground');
           probe.remove();
           return {
             trigger: getComputedStyle(element).color,
