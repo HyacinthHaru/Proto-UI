@@ -12,8 +12,7 @@ const rubric = loadCapabilityRubric(
   new URL('../../../../internal/agent-operations/capability-rubric.yaml', import.meta.url)
 );
 const subject = `session:${'b'.repeat(64)}`;
-const now = Date.now();
-function makeChallenge() {
+function makeChallenge(now) {
   const questionIds = [
     'authority',
     'relations',
@@ -60,7 +59,7 @@ function makeChallenge() {
   return challenge;
 }
 
-function makeResponse(challenge) {
+function makeResponse(challenge, now) {
   const response = createCapabilityResponseTemplate(challenge);
   response.submittedAt = new Date(now).toISOString();
   for (const answer of response.answers) {
@@ -92,11 +91,17 @@ function makeEvaluation(score, criticalFailures = []) {
   };
 }
 
-export const assessment = deriveSelfAssessmentResult({
-  challenge: makeChallenge(),
-  response: makeResponse(makeChallenge()),
-  evaluation: makeEvaluation(4),
-  rubric,
-  policy,
-});
+export function createConnectorAssessment() {
+  const now = Date.now();
+  const challenge = makeChallenge(now);
+  return deriveSelfAssessmentResult({
+    challenge,
+    response: makeResponse(challenge, now),
+    evaluation: makeEvaluation(4),
+    rubric,
+    policy,
+  });
+}
+
+export const assessment = createConnectorAssessment();
 export const assessmentSnapshot = { ...assessment.scope, rubricDigest: rubric.__digest };

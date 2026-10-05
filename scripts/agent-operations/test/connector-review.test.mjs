@@ -28,7 +28,11 @@ import {
   computeReviewPacketDigest,
   renderReviewBody,
 } from '../review-runtime.mjs';
-import { assessment, assessmentSnapshot } from './fixtures/connector-assessment.mjs';
+import {
+  assessment,
+  assessmentSnapshot,
+  createConnectorAssessment,
+} from './fixtures/connector-assessment.mjs';
 import { analysis } from './fixtures/cloud-review.mjs';
 import { publishReview, refreshPacket, reviewSnapshot } from './fixtures/review-publication.mjs';
 
@@ -359,7 +363,7 @@ test('coverage gaps, duplicate pages, workflow ambiguity and owner PR fail close
 test('shipped active scope uses parent packet, exact connector request and durable attributable receipt once', async (t) => {
   const { f, s, store, dir, genesis } = await session(t);
   const packet = await parentPacket(s);
-  const done = await s.publishParentPacket(packet, assessment);
+  const done = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(done.status, 'published');
   assert.equal(done.receipt.id, '99');
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
@@ -368,7 +372,10 @@ test('shipped active scope uses parent packet, exact connector request and durab
   assert.equal(state.slot, null);
   assert.equal(state.analyses[0].publicationReceipt.id, '99');
   assert.equal(state.publicationReceipts[0].nodeId, 'PRR_99');
-  await assert.rejects(s.publishParentPacket(packet, assessment), /one publication attempt/);
+  await assert.rejects(
+    s.publishParentPacket(packet, createConnectorAssessment()),
+    /one publication attempt/
+  );
   assert.equal(store.read().state.publicationEnabled, true);
 });
 test('disabled scope and inactive genesis cannot authorize a tool review', async (t) => {
@@ -385,7 +392,7 @@ test('lost result, absent returned object ID and wrong receipt actor stay unknow
       const { f, s, store, dir, genesis } = await session(t);
       const packet = await parentPacket(s);
       f.writeBehavior = behavior;
-      const done = await s.publishParentPacket(packet, assessment);
+      const done = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(done.status, 'unknown');
       assert.equal(done.retryAllowed, false);
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
@@ -441,7 +448,7 @@ test('canonical debt/human/findings/identity/CI gates remain before connector mu
       const { f, s } = await session(t);
       const packet = await parentPacket(s);
       mutate(f, packet);
-      await assert.rejects(s.publishParentPacket(packet, assessment));
+      await assert.rejects(s.publishParentPacket(packet, createConnectorAssessment()));
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
     });
 });
@@ -465,7 +472,7 @@ test('finding-backed Request Changes publishes through the same guarded connecto
     },
   ];
   packet.reconciliation.newFindingIds = ['F1'];
-  const result = await s.publishParentPacket(packet, assessment);
+  const result = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(result.status, 'published');
   assert.equal(result.receipt.state, 'CHANGES_REQUESTED');
   assert.equal(
@@ -490,7 +497,10 @@ test('same-account receipt contradiction is rejected even when object readback m
     'active';
   const otherSession = new ConnectorReviewSession({ transport, ledger: l.store, policy });
   const otherPacket = await parentPacket(otherSession);
-  assert.equal((await otherSession.publishParentPacket(otherPacket, assessment)).status, 'unknown');
+  assert.equal(
+    (await otherSession.publishParentPacket(otherPacket, createConnectorAssessment())).status,
+    'unknown'
+  );
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
 });
 
@@ -505,7 +515,7 @@ test('permission revoked after durable intent prevents the connector request and
     if (args[1].type === 'stagePublicationIntent') f.permission = 'read';
     return applied;
   };
-  const done = await s.publishParentPacket(packet, assessment);
+  const done = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(done.status, 'cancelled');
   assert.match(done.reason, /permission unavailable/);
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
@@ -516,7 +526,10 @@ test('permission revoked after durable intent prevents the connector request and
 test('fresh session suppresses its proven own-review wakeup using durable receipt', async (t) => {
   const { f, s, dir, genesis, transport } = await session(t);
   const packet = await parentPacket(s);
-  assert.equal((await s.publishParentPacket(packet, assessment)).status, 'published');
+  assert.equal(
+    (await s.publishParentPacket(packet, createConnectorAssessment())).status,
+    'published'
+  );
   const policy = structuredClone(rootPolicy);
   policy.reviewSubmissionAuthorizations.find((x) => x.id === CONNECTOR_AUTHORIZATION).status =
     'active';
@@ -700,7 +713,7 @@ test('missing, failed or counterfeit DCO and incomplete trusted CI cannot author
       });
       const packet = await parentPacket(s);
       await assert.rejects(
-        s.publishParentPacket(packet, assessment),
+        s.publishParentPacket(packet, createConnectorAssessment()),
         /trusted DCO|successful live checks/
       );
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
@@ -721,7 +734,10 @@ test('REST validity does not invent a GitHub platform identity for an unknown co
   packet.agentEvidence.source = 'AI-executed review by ChatGPT';
   packet.agentEvidence.disposition = 'complete';
   packet.agentEvidence.debt = [];
-  await assert.rejects(s.publishParentPacket(packet, assessment), /contributor identity/);
+  await assert.rejects(
+    s.publishParentPacket(packet, createConnectorAssessment()),
+    /contributor identity/
+  );
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
 });
 
@@ -750,7 +766,7 @@ test('initial sweep and later event cumulatively reconcile findings with exact c
     },
   ];
   first.reconciliation.newFindingIds = ['F1'];
-  const done = await s.publishParentPacket(first, assessment);
+  const done = await s.publishParentPacket(first, createConnectorAssessment());
   assert.equal(done.status, 'published');
   assert.equal(done.receipt.body, renderReviewBody(first));
   const repeated = new ConnectorReviewSession({
@@ -780,7 +796,7 @@ test('initial sweep and later event cumulatively reconcile findings with exact c
   packet.reconciliation.priorReviewedHeadSha = first.headSha;
   packet.reconciliation.priorPacketDigest = computeReviewPacketDigest(first);
   packet.reconciliation.resolvedFindingIds = ['F1'];
-  const second = await next.publishParentPacket(packet, assessment);
+  const second = await next.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(second.status, 'published');
   assert.equal(second.receipt.body, renderReviewBody(packet));
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 2);
@@ -807,7 +823,7 @@ test('fresh run rejects a cleared prior pointer or omitted prior finding before 
         },
       ];
       first.reconciliation.newFindingIds = ['F1'];
-      const done = await s.publishParentPacket(first, assessment);
+      const done = await s.publishParentPacket(first, createConnectorAssessment());
       assert.equal(done.status, 'published');
       assert.equal(done.receipt.body, renderReviewBody(first));
       f.comments.push({
@@ -834,7 +850,10 @@ test('fresh run rejects a cleared prior pointer or omitted prior finding before 
         packet.reconciliation.priorReviewedHeadSha = null;
         packet.reconciliation.priorPacketDigest = null;
       } else packet.reconciliation.resolvedFindingIds = [];
-      await assert.rejects(next.publishParentPacket(packet, assessment), /prior|reconciliation/i);
+      await assert.rejects(
+        next.publishParentPacket(packet, createConnectorAssessment()),
+        /prior|reconciliation/i
+      );
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
       assert.equal(new LocalCloudReviewLedger(dir, genesis).read().state.slot, null);
     });
@@ -1047,7 +1066,10 @@ test('each intake command enforces only its own scope across all active/paused c
               packet.agentEvidence.source = 'AI-executed review by ChatGPT';
               packet.agentEvidence.disposition = 'complete';
               packet.agentEvidence.debt = [];
-              assert.equal((await s.publishParentPacket(packet, assessment)).status, 'published');
+              assert.equal(
+                (await s.publishParentPacket(packet, createConnectorAssessment())).status,
+                'published'
+              );
               assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
             } else {
               await assert.rejects(begin(), /event scope|separately admitted exact scope/);
@@ -1085,7 +1107,7 @@ test('parent assessment artifact is validated, derived and bound before any inte
         readSnapshot: () => snapshot,
       });
       const packet = await parentPacket(s);
-      let candidate = structuredClone(assessment);
+      let candidate = structuredClone(createConnectorAssessment());
       if (mode === 'flags')
         candidate = { fresh: true, validated: true, capability: assessment.capability };
       if (mode === 'digest') candidate.resultDigest = '0'.repeat(64);
@@ -1120,7 +1142,10 @@ test('live policy revocation at either publication preflight prevents POST', asy
       };
       if (when === 'before-intent') {
         revoke();
-        await assert.rejects(s.publishParentPacket(packet, assessment), /policy changed|revoked/);
+        await assert.rejects(
+          s.publishParentPacket(packet, createConnectorAssessment()),
+          /policy changed|revoked/
+        );
         assert.equal(store.read().state.slot, null);
       } else {
         const apply = store.apply.bind(store);
@@ -1129,7 +1154,7 @@ test('live policy revocation at either publication preflight prevents POST', asy
           if (args[1].type === 'stagePublicationIntent') revoke();
           return result;
         };
-        const done = await s.publishParentPacket(packet, assessment);
+        const done = await s.publishParentPacket(packet, createConnectorAssessment());
         assert.equal(done.status, 'cancelled');
         assert.match(done.reason, /policy changed|revoked/);
         assert.equal(store.read().state.slot, null);
@@ -1155,7 +1180,10 @@ test('snapshot changes after intent also fail closed without POST', async (t) =>
     if (args[1].type === 'stagePublicationIntent') snapshot.catalogDigest = '0'.repeat(64);
     return result;
   };
-  assert.equal((await s.publishParentPacket(packet, assessment)).status, 'cancelled');
+  assert.equal(
+    (await s.publishParentPacket(packet, createConnectorAssessment())).status,
+    'cancelled'
+  );
   assert.equal(store.read().state.slot, null);
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
 });
@@ -1288,7 +1316,10 @@ test('owner route retains canonical spec, discussion and finding-backed change-r
         ];
         packet.reconciliation.newFindingIds = ['F1'];
       }
-      assert.equal((await s.publishParentPacket(packet, assessment)).status, 'published');
+      assert.equal(
+        (await s.publishParentPacket(packet, createConnectorAssessment())).status,
+        'published'
+      );
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 1);
     });
 });
@@ -1316,7 +1347,10 @@ test('a generation winner or uncertain acknowledgement before the dispatch fence
         }
         return apply(revision, command);
       };
-      await assert.rejects(s.publishParentPacket(packet, assessment), /intent acknowledgement/);
+      await assert.rejects(
+        s.publishParentPacket(packet, createConnectorAssessment()),
+        /intent acknowledgement/
+      );
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
       assert.equal(
         store.read().state.slot?.intent?.status ?? null,
@@ -1342,7 +1376,7 @@ test('material arriving during final collection is persisted but prevents dispat
       });
     return live;
   };
-  const result = await s.publishParentPacket(packet, assessment);
+  const result = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(result.status, 'cancelled');
   assert.match(result.reason, /deferred before publication/);
   assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
@@ -1373,7 +1407,7 @@ test('late wake-up is serialized after dispatch and survives a fresh run without
         if (kind === 'synchronize') f.pr.head.sha = sha('c');
         return submit(...args);
       };
-      const result = await s.publishParentPacket(packet, assessment);
+      const result = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(result.status, 'published');
       assert.equal(result.reviewedHeadSha, sha('b'));
       assert.equal(result.observedHeadSha, kind === 'synchronize' ? sha('c') : sha('b'));
@@ -1396,7 +1430,7 @@ test('external head change without an admitted event queues a read-observed foll
     f.pr.head.sha = sha('c');
     return submit(...args);
   };
-  const result = await s.publishParentPacket(packet, assessment);
+  const result = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(result.reviewedHeadSha, sha('b'));
   assert.equal(result.observedHeadSha, sha('c'));
   assert.equal(result.followUpQueued, true);
@@ -1420,7 +1454,10 @@ test('fenced unknown outcome retains deferred work and cannot be adopted after r
     f.writeBehavior = 'lost';
     return submit(...args);
   };
-  assert.equal((await s.publishParentPacket(packet, assessment)).status, 'unknown');
+  assert.equal(
+    (await s.publishParentPacket(packet, createConnectorAssessment())).status,
+    'unknown'
+  );
   const fresh = new LocalCloudReviewLedger(dir, genesis);
   const state = fresh.read().state;
   assert.equal(state.slot.intent.dispatchFenced, true);
@@ -1451,7 +1488,7 @@ test('post-publication observation or paused event scope cannot cause dismissal,
         if (mode === 'unavailable') throw Error('observation unavailable');
         return sha('c');
       };
-      const result = await s.publishParentPacket(packet, assessment);
+      const result = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(result.status, 'published');
       assert.equal(result.followUpRequired, true);
       assert.equal(result.followUpQueued, false);
@@ -1482,7 +1519,7 @@ test('known receipt survives a definitive finalize conflict without a second POS
         }
         return apply(revision, command);
       };
-      const result = await s.publishParentPacket(packet, assessment);
+      const result = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(result.status, 'published');
       assert.equal(attempts, 2);
       assert.equal(result.followUpQueued, pullRequest === 487);
@@ -1526,7 +1563,7 @@ test('receipt persistence stops on uncertainty or bounded contention without rep
         });
         return apply(revision, command);
       };
-      const result = await s.publishParentPacket(packet, assessment);
+      const result = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(result.status, 'unknown');
       assert.equal(result.publicationConfirmed, true);
       assert.equal(result.receipt.commitId, sha('b'));
@@ -1560,7 +1597,7 @@ test('definitive final-input drift cancels an undispatched intent and preserves 
         }
         return result;
       };
-      const result = await s.publishParentPacket(packet, assessment);
+      const result = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(result.status, 'cancelled');
       assert.equal(result.retryAllowed, false);
       assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
@@ -1577,7 +1614,10 @@ test('definitive final-input drift cancels an undispatched intent and preserves 
         fresh.apply(fresh.read().revision, { type: 'claim', pullRequest: 488 }).status,
         'applied'
       );
-      await assert.rejects(s.publishParentPacket(packet, assessment), /one publication attempt/);
+      await assert.rejects(
+        s.publishParentPacket(packet, createConnectorAssessment()),
+        /one publication attempt/
+      );
     });
 });
 
@@ -1658,7 +1698,7 @@ test('pre-attempt cancellation retries only definitive no-write conflicts', asyn
           });
         return apply(revision, command);
       };
-      const result = await s.publishParentPacket(packet, assessment);
+      const result = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(result.status, mode === 'conflict' ? 'cancelled' : 'unknown');
       assert.equal(attempts, mode === 'conflict' ? 2 : mode === 'persistent-conflict' ? 3 : 1);
       assert.equal(result.retryAllowed, false);
@@ -1686,7 +1726,7 @@ test('consumed attempt, even with no observed POST, cannot use cancellation or t
           policy.reviewSubmissionAuthorizations[0].status = 'paused';
       };
       if (mode === 'lost-post') f.writeBehavior = 'lost';
-      const result = await s.publishParentPacket(packet, assessment);
+      const result = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(result.status, 'unknown');
       const intentId = store.read().state.slot.intent.id;
       assert.throws(
@@ -1861,7 +1901,7 @@ test('confirmed review receipt survives a real remote stale-lease race without r
   const store = open(true);
   const s = new ConnectorReviewSession({ transport, ledger: store, policy: rootPolicy });
   const packet = await parentPacket(s);
-  const published = await s.publishParentPacket(packet, assessment);
+  const published = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(published.status, 'published');
   assert.equal(receiptPushes, 2);
   assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
@@ -1926,7 +1966,10 @@ test('definitive staging conflict releases the original intent-free claim for fr
       });
     return apply(revision, command);
   };
-  await assert.rejects(s.publishParentPacket(packet, assessment), /intent acknowledgement/);
+  await assert.rejects(
+    s.publishParentPacket(packet, createConnectorAssessment()),
+    /intent acknowledgement/
+  );
   const fresh = new LocalCloudReviewLedger(dir, genesis);
   assert.equal(fresh.read().state.slot, null);
   assert.equal(fresh.read().state.pending[0].generation, 2);
@@ -1982,7 +2025,12 @@ test('closed to reopened uses its own durable event identity and a new analysis'
   );
   assert.equal(store.read().state.pending[0].generation, 2);
   assert.equal(
-    (await reopened.publishParentPacket(completePacket(request.input, first), assessment)).status,
+    (
+      await reopened.publishParentPacket(
+        completePacket(request.input, first),
+        createConnectorAssessment()
+      )
+    ).status,
     'published'
   );
 });
@@ -1992,7 +2040,7 @@ test('published A survives finish-only B and restart before publication C', asyn
   const { f, s, store } = context;
   const requestA = await s.begin(487, { kind: 'opened', deliveryId: 'sequence-a' });
   const a = completePacket(requestA.input, null, ['A1', 'A2']);
-  assert.equal((await s.publishParentPacket(a, assessment)).status, 'published');
+  assert.equal((await s.publishParentPacket(a, createConnectorAssessment())).status, 'published');
   f.pr.body = 'B material';
   const nextB = freshSession(context);
   const requestB = await nextB.begin(487, { kind: 'human-comment', deliveryId: 'sequence-b' });
@@ -2002,7 +2050,11 @@ test('published A survives finish-only B and restart before publication C', asyn
   const nextC = freshSession(context);
   const requestC = await nextC.begin(487, { kind: 'human-comment', deliveryId: 'sequence-c' });
   const c = completePacket(requestC.input, a, ['B1', 'C1']);
-  const outcome = await nextC.publishParentPacket(c, assessment, reconcilePacket(b, ['B1', 'C1']));
+  const outcome = await nextC.publishParentPacket(
+    c,
+    createConnectorAssessment(),
+    reconcilePacket(b, ['B1', 'C1'])
+  );
   assert.equal(outcome.status, 'published');
   assert.deepEqual(requestC.priorAnalysis.packet, b);
   assert.deepEqual(requestC.priorPublishedAnalysis.packet, a);
@@ -2057,7 +2109,7 @@ test('pre-staging failures release only the unchanged original claim and preserv
           eventKind: 'synchronize',
           materialDigest: 'd'.repeat(64),
         });
-      await assert.rejects(s.publishParentPacket(packet, assessment));
+      await assert.rejects(s.publishParentPacket(packet, createConnectorAssessment()));
       const state = new LocalCloudReviewLedger(dir, genesis).read().state;
       assert.equal(state.slot, null);
       assert.equal(state.pending.length, 1);
@@ -2124,7 +2176,7 @@ test('unstaged claim release retries only proven CAS conflicts and never adopts 
         return apply(revision, command);
       };
       await assert.rejects(
-        s.publishParentPacket(packet, assessment),
+        s.publishParentPacket(packet, createConnectorAssessment()),
         mode === 'conflict' ? /collection unavailable$/ : /claim release unknown/
       );
       store.read = read;
@@ -2170,7 +2222,7 @@ test('ambiguous staging and failed acknowledged-intent readback never release an
         };
         return result;
       };
-      await assert.rejects(s.publishParentPacket(packet, assessment));
+      await assert.rejects(s.publishParentPacket(packet, createConnectorAssessment()));
       store.read = read;
       assert.equal(releases, 0);
       assert.notEqual(store.read().state.slot, null);
@@ -2190,7 +2242,11 @@ test('multiple unpublished analyses remain independently reconciled across sourc
           : await s.begin(487, { kind: 'opened', deliveryId: 'multi-a' });
       const a = completePacket(initial.input, null, ['A1', 'A2']);
       if (mode === 'no-publication') await s.finishParentAnalysis(a);
-      else assert.equal((await s.publishParentPacket(a, assessment)).status, 'published');
+      else
+        assert.equal(
+          (await s.publishParentPacket(a, createConnectorAssessment())).status,
+          'published'
+        );
       let prior = a;
       for (const [index, ids] of [
         ['b', ['A1', 'B1']],
@@ -2227,7 +2283,7 @@ test('multiple unpublished analyses remain independently reconciled across sourc
         (
           await final.publishParentPacket(
             packet,
-            assessment,
+            createConnectorAssessment(),
             mode === 'no-publication' ? null : reconcilePacket(prior, ['C1', 'D1'])
           )
         ).status,
@@ -2260,7 +2316,7 @@ test('a publication cannot omit or forge either durable reconciliation baseline'
         null,
         ['A1']
       );
-      await s.publishParentPacket(a, assessment);
+      await s.publishParentPacket(a, createConnectorAssessment());
       f.pr.body = 'B material';
       const next = freshSession(context);
       const b = completePacket(
@@ -2287,7 +2343,7 @@ test('a publication cannot omit or forge either durable reconciliation baseline'
       }
       if (mode === 'string') secondary = computeReviewPacketDigest(b);
       await assert.rejects(
-        final.publishParentPacket(c, assessment, secondary),
+        final.publishParentPacket(c, createConnectorAssessment(), secondary),
         /prior|reconciliation|finding/
       );
       assert.equal(store.read().state.slot, null);
@@ -2311,7 +2367,7 @@ test('historical field-less journal replays without rewriting and can continue w
     null,
     ['A1']
   );
-  await s.publishParentPacket(a, assessment);
+  await s.publishParentPacket(a, createConnectorAssessment());
   let prior = a;
   for (const id of ['B1', 'C1']) {
     f.pr.body = id;
@@ -2335,7 +2391,13 @@ test('historical field-less journal replays without rewriting and can continue w
   const request = await final.begin(487, { kind: 'human-comment', deliveryId: 'modern-d' });
   const packet = completePacket(request.input, a, ['C1']);
   assert.equal(
-    (await final.publishParentPacket(packet, assessment, reconcilePacket(prior, ['C1']))).status,
+    (
+      await final.publishParentPacket(
+        packet,
+        createConnectorAssessment(),
+        reconcilePacket(prior, ['C1'])
+      )
+    ).status,
     'published'
   );
   assert.equal(git('rev-list', '--reverse', checkpoint), prefix);
@@ -2397,7 +2459,10 @@ test('a real stale-lease staging conflict releases only the original intent-free
   const store = open(true);
   const s = new ConnectorReviewSession({ transport, ledger: store, policy: rootPolicy });
   const packet = await parentPacket(s);
-  await assert.rejects(s.publishParentPacket(packet, assessment), /intent acknowledgement/);
+  await assert.rejects(
+    s.publishParentPacket(packet, createConnectorAssessment()),
+    /intent acknowledgement/
+  );
   const fresh = open(false);
   const state = fresh.read().state;
   assert.equal(state.slot, null);
@@ -2634,7 +2699,7 @@ test('consumed sessions can still explicitly release after proven unwritten clea
           terminal === 'finish'
             ? s.finishParentAnalysis(packet)
             : terminal === 'publish'
-              ? s.publishParentPacket(packet, assessment)
+              ? s.publishParentPacket(packet, createConnectorAssessment())
               : s.abandonBeforeIntent(),
           /read unavailable|contention budget/
         );
@@ -2785,7 +2850,10 @@ test('finish conflict and abandonment preserve the separate durable analysis and
         null,
         ['A1']
       );
-      assert.equal((await s.publishParentPacket(a, assessment)).status, 'published');
+      assert.equal(
+        (await s.publishParentPacket(a, createConnectorAssessment())).status,
+        'published'
+      );
       f.pr.body = 'unpublished B';
       const second = freshSession(context);
       const b = completePacket(
@@ -2879,7 +2947,7 @@ test('a completed later event generation closes its superseded captured sweep me
       const completed =
         terminal === 'finish'
           ? await next.finishParentAnalysis(b)
-          : await next.publishParentPacket(b, assessment);
+          : await next.publishParentPacket(b, createConnectorAssessment());
       assert.equal(completed.status, terminal === 'finish' ? 'applied' : 'published');
       const state = new LocalCloudReviewLedger(dir, genesis).read().state;
       assert.deepEqual(state.initialSweep.completed, [487]);
@@ -2948,7 +3016,10 @@ test('older fenced analysis cannot complete a later deferred sweep generation, i
         assert.deepEqual(store.read().state.initialSweep.completed, []);
         return submit(...args);
       };
-      assert.equal((await s.publishParentPacket(a, assessment)).status, 'published');
+      assert.equal(
+        (await s.publishParentPacket(a, createConnectorAssessment())).status,
+        'published'
+      );
       const afterOld = new LocalCloudReviewLedger(dir, genesis).read().state;
       assert.equal(afterOld.slot, null);
       assert.equal(afterOld.pending.length, 1);
@@ -3010,11 +3081,17 @@ test('superseding sweep work stays incomplete while in flight, abandoned, cancel
           if (++collections === 2) f.pr.body = 'changed before dispatch';
           return collect(...args);
         };
-        assert.equal((await next.publishParentPacket(b, assessment)).status, 'cancelled');
+        assert.equal(
+          (await next.publishParentPacket(b, createConnectorAssessment())).status,
+          'cancelled'
+        );
       }
       if (terminal === 'unknown') {
         f.writeBehavior = 'lost';
-        assert.equal((await next.publishParentPacket(b, assessment)).status, 'unknown');
+        assert.equal(
+          (await next.publishParentPacket(b, createConnectorAssessment())).status,
+          'unknown'
+        );
       }
       const state = store.read().state;
       assert.deepEqual(state.initialSweep.completed, []);
@@ -3081,7 +3158,10 @@ test('fenced completion covers unchanged sweep material but never an uncaptured 
         assert.deepEqual(store.read().state.initialSweep.completed, []);
         return submit(...args);
       };
-      assert.equal((await s.publishParentPacket(packet, assessment)).status, 'published');
+      assert.equal(
+        (await s.publishParentPacket(packet, createConnectorAssessment())).status,
+        'published'
+      );
       assert.deepEqual(store.read().state.initialSweep.completed, sweepDelivery ? [487] : []);
       assert.deepEqual(store.read().state.pending, []);
     });
@@ -3170,7 +3250,7 @@ test('probe own-review arriving before receipt leaves no undrainable pending', a
     assert.equal(lateStore.read().state.deferred.length, 1);
     return receipt;
   };
-  const published = await s.publishParentPacket(packet, assessment);
+  const published = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(published.status, 'published');
   assert.equal(wake.queued, true);
   const before = store.read();
@@ -3304,7 +3384,7 @@ test('own receipt normalization handles both event orders and fresh journal repl
             assert.equal(during.material[0].digest, initial.digest);
             return receipt;
           };
-        const published = await s.publishParentPacket(packet, assessment);
+        const published = await s.publishParentPacket(packet, createConnectorAssessment());
         assert.equal(published.status, 'published');
         assert.equal(published.followUpQueued, false);
         assert.equal(published.followUpRequired, false);
@@ -3355,7 +3435,7 @@ test('own review hints retain concurrent non-own material before and after recei
                 );
                 return receipt;
               };
-            const published = await s.publishParentPacket(packet, assessment);
+            const published = await s.publishParentPacket(packet, createConnectorAssessment());
             assert.equal(published.status, 'published');
             if (ordering === 'after-receipt') mutate(f);
             else {
@@ -3407,7 +3487,10 @@ test('deferred own event preserves non-own ABA and sweep causal generations', as
             assert.equal(store.read().state.deferred.length, 3);
             return receipt;
           };
-          assert.equal((await s.publishParentPacket(packet, assessment)).followUpQueued, true);
+          assert.equal(
+            (await s.publishParentPacket(packet, createConnectorAssessment())).followUpQueued,
+            true
+          );
           const after = context.openLedger().read().state;
           assert.equal(after.generation, 3);
           assert.equal(after.pending[0].generation, 3);
@@ -3434,7 +3517,10 @@ test('unconfirmed own-looking reviews remain deferred and unknown owners cannot 
         await ownWakeSession(context).begin(487, ownWakeEvent());
         throw new Error('receipt acknowledgement unavailable');
       };
-      assert.equal((await s.publishParentPacket(packet, assessment)).status, 'unknown');
+      assert.equal(
+        (await s.publishParentPacket(packet, createConnectorAssessment())).status,
+        'unknown'
+      );
       const before = store.read();
       const restarted = context.openLedger();
       assert.equal(
@@ -3505,7 +3591,7 @@ test('an own review ID never discards a live object with a mismatched receipt bi
         assert.equal((await ownWakeSession(context).begin(487, ownWakeEvent())).queued, true);
         return receipt;
       };
-      const published = await s.publishParentPacket(packet, assessment);
+      const published = await s.publishParentPacket(packet, createConnectorAssessment());
       assert.equal(published.status, 'published');
       assert.equal(published.followUpQueued, true);
       assert.equal(store.read().state.pending[0].generation, 2);
@@ -3527,7 +3613,7 @@ test('same own delivery cannot rewrite evidence, while a distinct eligible event
     await ownWakeSession(context).begin(487, ownWakeEvent());
     return receipt;
   };
-  await s.publishParentPacket(packet, assessment);
+  await s.publishParentPacket(packet, createConnectorAssessment());
   const prefix = store.read();
   const original = structuredClone(prefix.state.deliveries.at(-1));
   f.pr.body = 'Real material after receipt';
@@ -3571,7 +3657,7 @@ test('confirmed transport receipt without durable finalization cannot suppress t
   const apply = store.apply.bind(store);
   store.apply = (revision, command) =>
     command.type === 'finalizePublication' ? { status: 'unknown' } : apply(revision, command);
-  const published = await s.publishParentPacket(packet, assessment);
+  const published = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(published.status, 'unknown');
   assert.equal(published.publicationConfirmed, true);
   const before = store.read();
@@ -3706,7 +3792,7 @@ test('new publication after coalescing a legacy pending material uses new receip
     await ownWakeSession(context).begin(487, ownWakeEvent());
     return receipt;
   };
-  const published = await s.publishParentPacket(packet, assessment);
+  const published = await s.publishParentPacket(packet, createConnectorAssessment());
   assert.equal(published.status, 'published');
   assert.deepEqual(store.read().state.pending, []);
 });
@@ -3736,7 +3822,7 @@ test('explicit POST node identity echoes bind raw readback before an own wakeup 
         });
         const s = ownWakeSession(context, store);
         const packet = await parentPacket(s);
-        const published = await s.publishParentPacket(packet, assessment);
+        const published = await s.publishParentPacket(packet, createConnectorAssessment());
         const before = store.read();
         if (mode === 'matching' || mode === 'omitted') {
           assert.equal(published.status, 'published');
@@ -3773,7 +3859,7 @@ test('explicit POST node identity echoes bind raw readback before an own wakeup 
             /already consumed/
           );
           await assert.rejects(
-            s.publishParentPacket(packet, assessment),
+            s.publishParentPacket(packet, createConnectorAssessment()),
             /one publication attempt/
           );
         }
