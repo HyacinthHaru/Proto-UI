@@ -4177,7 +4177,36 @@ function externalScriptElementTarget(specifier) {
     : null;
 }
 
-function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = false } = {}) {
+// Cache only pure parser output, never filesystem reads, ownership decisions or
+// evidence. A caller still supplies the currently read complete source bytes.
+export function createScriptSpecifierCache() {
+  const entries = new Map();
+  let retainedBytes = 0;
+  return (source, fileName, options, scan) => {
+    const key = JSON.stringify([
+      fileName,
+      Boolean(options.harnessPreviewBoundary),
+      createHash('sha256').update(source).digest('hex'),
+    ]);
+    if (entries.has(key)) return [...entries.get(key)];
+    const result = scan();
+    const bytes =
+      Buffer.byteLength(key) + result.reduce((total, entry) => total + Buffer.byteLength(entry), 0);
+    if (entries.size < 4096 && retainedBytes + bytes <= 8 * 1024 * 1024) {
+      entries.set(key, [...result]);
+      retainedBytes += bytes;
+    }
+    return result;
+  };
+}
+let activeScriptSpecifierCache = null;
+function scriptModuleSpecifiers(source, fileName, options = {}) {
+  const scan = () => scanScriptModuleSpecifiers(source, fileName, options);
+  return activeScriptSpecifierCache
+    ? activeScriptSpecifierCache(source, fileName, options, scan)
+    : scan();
+}
+function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = false } = {}) {
   const sourceFile = ts.createSourceFile(
     fileName,
     source,
@@ -4614,18 +4643,6 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       }
     }
   };
-  const isGlobalNavigator = (expression, useNode) => {
-    const candidate = unwrapTypeScriptExpression(expression);
-    if (ts.isIdentifier(candidate))
-      return candidate.text === 'navigator' && !hasLocalBinding('navigator', useNode);
-    const member = staticMemberAccess(candidate);
-    return (
-      member?.name === 'navigator' &&
-      ts.isIdentifier(member.receiver) &&
-      /^(?:globalThis|self|window)$/u.test(member.receiver.text) &&
-      !hasLocalBinding(member.receiver.text, useNode)
-    );
-  };
   const isBrowserGlobal = (expression, useNode, names) => {
     const candidate = unwrapTypeScriptExpression(expression);
     if (ts.isIdentifier(candidate))
@@ -4902,12 +4919,38 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
     ts.forEachChild(node, collectWasmBindings);
   };
   collectWasmBindings(sourceFile);
-  const wasmBindingAt = (name, at) => {
-    for (let scope = wasmScope(at); scope; scope = wasmScope(scope)) {
-      const entries = (wasmBindings.get(name) ?? []).filter((entry) => entry.scope === scope);
-      if (entries.length) return entries;
+  // Minified dependency bundles reuse a few names in thousands of scopes.
+  // Index the completed, immutable inventory by its actual scope rather than
+  // filtering every same-spelled binding for every native-entry probe.
+  const wasmBindingsByScope = new WeakMap();
+  for (const [name, entries] of wasmBindings)
+    for (const entry of entries) {
+      if (!wasmBindingsByScope.has(entry.scope)) wasmBindingsByScope.set(entry.scope, new Map());
+      const scope = wasmBindingsByScope.get(entry.scope);
+      if (!scope.has(name)) scope.set(name, []);
+      scope.get(name).push(entry);
     }
-    return [];
+  const wasmAssignmentsByName = new Map();
+  for (const assignment of wasmAssignments) {
+    const name = assignment.left.text;
+    if (!wasmAssignmentsByName.has(name)) wasmAssignmentsByName.set(name, []);
+    wasmAssignmentsByName.get(name).push(assignment);
+  }
+  const wasmBindingLookups = new WeakMap();
+  const wasmBindingAt = (name, at) => {
+    if (!wasmBindingLookups.has(at)) wasmBindingLookups.set(at, new Map());
+    const cached = wasmBindingLookups.get(at);
+    if (cached.has(name)) return cached.get(name);
+    for (let scope = wasmScope(at); scope; scope = wasmScope(scope)) {
+      const entries = wasmBindingsByScope.get(scope)?.get(name);
+      if (entries?.length) {
+        cached.set(name, entries);
+        return entries;
+      }
+    }
+    const empty = [];
+    cached.set(name, empty);
+    return empty;
   };
   const wasmMethods = new Set([
     'compile',
@@ -4927,12 +4970,26 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
             ? ['global']
             : ['unknown']
     );
-  const wasmMayContainNative = (values, at, seen, depth = 0) => {
-    if (depth >= 64) return false;
+  // A budget/cycle fallback is path-dependent uncertainty, not a reusable
+  // aggregate fact. Do not let either positive or negative caches preserve it.
+  let wasmProjectionIncomplete = 0;
+  const wasmAggregateNativeContents = new WeakMap();
+  const wasmMayContainNative = (values, at, seen, depth = 0, aggregates = new Set()) => {
+    if (depth >= 64) {
+      wasmProjectionIncomplete++;
+      return true;
+    }
     return [...values].some((value) => {
       if (typeof value === 'string') return !['defined', 'undefined', 'unknown'].includes(value);
       if (value.restSource !== undefined)
-        return wasmMayContainNative(new Set([value.restSource]), at, seen, depth + 1);
+        return wasmMayContainNative(new Set([value.restSource]), at, seen, depth + 1, aggregates);
+      if (aggregates.has(value)) {
+        wasmProjectionIncomplete++;
+        return true;
+      }
+      if (wasmAggregateNativeContents.has(value)) return wasmAggregateNativeContents.get(value);
+      const visitedAggregates = new Set(aggregates).add(value);
+      const completeAtStart = wasmProjectionIncomplete;
       const members = ts.isArrayLiteralExpression(value)
         ? value.elements
         : value.properties.flatMap((property) =>
@@ -4944,11 +5001,21 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
                   ? [property.expression]
                   : []
           );
-      return members.some((member) =>
-        wasmMayContainNative(wasmValue(member, at, new Set(seen)), at, seen, depth + 1)
+      const result = members.some((member) =>
+        wasmMayContainNative(
+          wasmValue(member, member, new Set(seen)),
+          member,
+          seen,
+          depth + 1,
+          visitedAggregates
+        )
       );
+      if (completeAtStart === wasmProjectionIncomplete)
+        wasmAggregateNativeContents.set(value, result);
+      return result;
     });
   };
+  const wasmAggregateProjections = new WeakMap();
   const projectWasmValue = (
     values,
     key,
@@ -4960,6 +5027,16 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
   ) => {
     const result = new Set();
     for (const value of values) {
+      // An aggregate can return through a later spread reassignment without
+      // revisiting the binding in wasmValue's local path. Keep its projection
+      // on the same branch's path so self/mutual spreads terminate. A cycle is
+      // opaque, never proof that a possible native entry is absent.
+      if (typeof value !== 'string' && (seen.has(value) || seen.size >= 64)) {
+        wasmProjectionIncomplete++;
+        result.add('unknown-native');
+        continue;
+      }
+      const projectedSeen = typeof value === 'string' ? seen : new Set(seen).add(value);
       if (value === 'defined' || value === 'undefined') {
         result.add('undefined');
         continue;
@@ -4985,7 +5062,7 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
           new Set([value.restSource]),
           projectedKey,
           at,
-          seen
+          projectedSeen
         ))
           result.add(projected);
         if (typeof value.restSource === 'string') result.add('undefined');
@@ -4993,32 +5070,49 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         if (key === null) {
           // Literal aggregates containing a native source retain uncertainty;
           // a rest/default is not a claim that native properties were copied.
-          if (wasmMayContainNative(new Set([value]), at, seen)) result.add('unknown-native');
+          if (wasmMayContainNative(new Set([value]), at, projectedSeen))
+            result.add('unknown-native');
           continue;
         }
+        const cached = wasmAggregateProjections.get(value)?.get(key);
+        if (cached) {
+          for (const entry of cached) result.add(entry);
+          continue;
+        }
+        const completeAtStart = wasmProjectionIncomplete;
+        // Literal members capture values when this literal is evaluated, not
+        // when a later caller projects it. Later reassignments must not flow
+        // backwards into an earlier spread snapshot.
         let projected = new Set(['undefined']);
         if (ts.isArrayLiteralExpression(value)) {
           const member = value.elements[Number(key)];
           if (member && !ts.isOmittedExpression(member))
-            projected = wasmValue(member, at, new Set(seen));
+            projected = wasmValue(member, member, new Set(projectedSeen));
         } else
           for (const property of value.properties) {
             if (ts.isPropertyAssignment(property) && wasmPropertyKey(property.name) === key)
-              projected = wasmValue(property.initializer, at, new Set(seen));
+              projected = wasmValue(property.initializer, property, new Set(projectedSeen));
             else if (ts.isShorthandPropertyAssignment(property) && property.name.text === key)
-              projected = wasmValue(property.name, at, new Set(seen));
+              projected = wasmValue(property.name, property, new Set(projectedSeen));
             else if (ts.isMethodDeclaration(property) && wasmPropertyKey(property.name) === key)
               projected = new Set(['defined']);
             else if (ts.isSpreadAssignment(property)) {
               for (const spread of projectWasmValue(
-                wasmValue(property.expression, at, new Set(seen)),
+                wasmValue(property.expression, property, new Set(projectedSeen)),
                 key,
-                at,
-                new Set(seen)
+                property,
+                new Set(projectedSeen)
               ))
                 projected.add(spread);
             }
           }
+        // With the source position fixed above, static-key projection is a
+        // reusable snapshot. Share it across historical spread branches so a
+        // linear reassignment chain does not expand exponentially.
+        if (completeAtStart === wasmProjectionIncomplete) {
+          if (!wasmAggregateProjections.has(value)) wasmAggregateProjections.set(value, new Map());
+          wasmAggregateProjections.get(value).set(key, projected);
+        }
         for (const value of projected) result.add(value);
       } else if (value === 'unknown-native') result.add('unknown-native');
       else if (key === null) result.add(value === 'wasm' ? 'unknown-native' : 'unknown-container');
@@ -5038,15 +5132,28 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
     return result;
   };
   const wasmValue = (expression, at, seen = new Set()) => {
-    if (!expression || seen.size >= 64) return new Set(['unknown']);
+    if (!expression) return new Set(['unknown']);
+    if (seen.size >= 64) {
+      wasmProjectionIncomplete++;
+      return new Set(['unknown-native']);
+    }
     const candidate = unwrapTypeScriptExpression(expression);
     if (ts.isIdentifier(candidate)) {
       const bindings = wasmBindingAt(candidate.text, at);
       if (bindings.length) {
         const result = new Set();
         for (const binding of bindings) {
-          if (binding.position >= at.getStart(sourceFile) || seen.has(binding)) continue;
-          const visited = new Set(seen).add(binding);
+          if (binding.position >= at.getStart(sourceFile)) continue;
+          // Revisiting an earlier value of one binding is progress, as in
+          // a=business; b=a; a=b. Only the same binding at the same evaluation
+          // position is a cycle; the shared depth bound still limits the path.
+          const visitKey = `binding:${binding.position}:${candidate.text}:${at.getStart(sourceFile)}`;
+          if (seen.has(visitKey)) {
+            wasmProjectionIncomplete++;
+            result.add('unknown-native');
+            continue;
+          }
+          const visited = new Set(seen).add(visitKey);
           let values = wasmValue(binding.initializer, binding.node, visited);
           if (binding.rewrite)
             for (const possible of wasmUnboundValue(candidate.text)) values.add(possible);
@@ -5073,10 +5180,10 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
           }
           // Track only assignments bound to this declaration, never same-name
           // assignments under a different parameter/block/catch/loop scope.
-          for (const assignment of wasmAssignments)
+          for (const assignment of wasmAssignmentsByName.get(candidate.text) ?? [])
             if (
               assignment.left.text === candidate.text &&
-              assignment.getStart(sourceFile) < at.getStart(sourceFile) &&
+              assignment.end <= at.getStart(sourceFile) &&
               wasmBindingAt(candidate.text, assignment).includes(binding)
             )
               for (const value of wasmValue(assignment.right, assignment, visited))
@@ -5120,7 +5227,153 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         typeof value === 'string' &&
         (value === 'unknown-native' || value.startsWith(constructors ? 'constructor:' : 'method:'))
     );
+  // Reuse the complete lexical binding inventory, but project only these
+  // browser receiver identities. No business object, callback or fetched code
+  // is evaluated to discover a navigation or service-worker owner.
+  const browserGlobalValue = (name) =>
+    wasmGlobals.has(name)
+      ? 'global'
+      : ['navigator', 'location', 'document'].includes(name)
+        ? name
+        : null;
+  const projectBrowserValue = (values, key) =>
+    new Set(
+      [...values].flatMap((value) => {
+        if (value === 'opaque-browser' || key === null) return ['opaque-browser'];
+        if (value === 'global' && wasmGlobals.has(key)) return ['global'];
+        if (value === 'global' && ['navigator', 'location', 'document'].includes(key)) return [key];
+        if (value === 'document' && key === 'location') return ['location'];
+        if (value === 'navigator' && key === 'serviceWorker') return ['service-worker'];
+        if (value === 'service-worker' && key === 'register') return ['worker-register'];
+        if (value === 'location' && key === 'href') return ['location-href'];
+        if (value === 'location' && /^(?:assign|replace)$/u.test(key)) return ['location-navigate'];
+        return [];
+      })
+    );
+  const browserValue = (expression, at, seen = new Set()) => {
+    if (!expression) return new Set();
+    if (seen.size >= 64) return new Set(['opaque-browser']);
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isIdentifier(candidate)) {
+      const bindings = wasmBindingAt(candidate.text, at);
+      if (bindings.length === 0) {
+        const value = browserGlobalValue(candidate.text);
+        return new Set(value ? [value] : []);
+      }
+      const result = new Set();
+      for (const binding of bindings) {
+        if (binding.position >= at.getStart(sourceFile) || seen.has(binding)) continue;
+        const visited = new Set(seen).add(binding);
+        let values = browserValue(binding.initializer, binding.node, visited);
+        if (binding.rewrite) {
+          const value = browserGlobalValue(candidate.text);
+          if (value) values.add(value);
+        }
+        for (const step of binding.steps) {
+          values = step.rest
+            ? new Set(values.size > 0 ? ['opaque-browser'] : [])
+            : projectBrowserValue(values, step.key);
+          if ((values.size === 0 || values.has('opaque-browser')) && step.fallback)
+            for (const value of browserValue(step.fallback, binding.node, visited))
+              values.add(value);
+        }
+        for (const assignment of wasmAssignmentsByName.get(candidate.text) ?? [])
+          if (
+            assignment.left.text === candidate.text &&
+            assignment.getStart(sourceFile) < at.getStart(sourceFile) &&
+            wasmBindingAt(candidate.text, assignment).includes(binding)
+          )
+            for (const value of browserValue(assignment.right, assignment, visited))
+              values.add(value);
+        for (const value of values) result.add(value);
+      }
+      return result;
+    }
+    if (ts.isElementAccessExpression(candidate) && !staticMemberAccess(candidate)) {
+      return projectBrowserValue(browserValue(candidate.expression, at, seen), null);
+    }
+    const member = staticMemberAccess(candidate);
+    return member
+      ? projectBrowserValue(browserValue(member.receiver, at, seen), member.name)
+      : new Set();
+  };
+  const nativeConstBinding = (candidate, at, seen) => {
+    if (!ts.isIdentifier(candidate) || seen.size >= 64) return null;
+    const bindings = wasmBindingAt(candidate.text, at);
+    if (bindings.length !== 1) return null;
+    const binding = bindings[0];
+    return !seen.has(binding) &&
+      binding.position < at.getStart(sourceFile) &&
+      binding.steps.length === 0 &&
+      binding.initializer &&
+      ts.isVariableDeclaration(binding.node) &&
+      ts.isVariableDeclarationList(binding.node.parent) &&
+      binding.node.parent.flags & ts.NodeFlags.Const
+      ? binding
+      : null;
+  };
+  const nativeLiteralString = (expression, at, seen = new Set()) => {
+    if (!expression) return null;
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (ts.isStringLiteralLike(candidate)) return candidate.text;
+    const binding = nativeConstBinding(candidate, at, seen);
+    return binding
+      ? nativeLiteralString(binding.initializer, binding.node, new Set(seen).add(binding))
+      : null;
+  };
+  const inspectNavigationValue = (expression, at) => {
+    const literal = nativeLiteralString(expression, at);
+    if (literal === null) specifiers.push(UNVERIFIED_DOM_RESOURCE_SPECIFIER);
+    else if (isExecutableNavigationUrl(literal, false))
+      specifiers.push(UNVERIFIED_NAVIGATION_URL_SPECIFIER);
+  };
+  const resourceNamespace = (expression, at, seen = new Set()) => {
+    if (!expression) return 'other';
+    const candidate = unwrapTypeScriptExpression(expression);
+    if (
+      candidate.kind === ts.SyntaxKind.NullKeyword ||
+      (ts.isIdentifier(candidate) &&
+        candidate.text === 'undefined' &&
+        wasmBindingAt('undefined', at).length === 0)
+    )
+      return 'native';
+    const literal = nativeLiteralString(candidate, at);
+    if (literal !== null) return literal === '' ? 'native' : 'other';
+    if (ts.isIdentifier(candidate) && seen.size < 64) {
+      const binding = nativeConstBinding(candidate, at, seen);
+      if (binding)
+        return resourceNamespace(binding.initializer, binding.node, new Set(seen).add(binding));
+    }
+    return 'unknown';
+  };
   const visit = (node) => {
+    const assignmentTarget =
+      ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken
+        ? unwrapTypeScriptExpression(node.left)
+        : null;
+    const nativeNavigationTarget =
+      assignmentTarget &&
+      (!ts.isIdentifier(assignmentTarget) ||
+        (assignmentTarget.text === 'location' && wasmBindingAt('location', node).length === 0));
+    if (
+      (ts.isBinaryExpression(node) &&
+        node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+        !ts.isIdentifier(assignmentTarget) &&
+        browserValue(node.left, node).has('opaque-browser')) ||
+      (ts.isCallExpression(node) && browserValue(node.expression, node).has('opaque-browser'))
+    )
+      specifiers.push(UNVERIFIED_DOM_RESOURCE_SPECIFIER);
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      nativeNavigationTarget &&
+      [...browserValue(node.left, node)].some(
+        (value) => value === 'location' || value === 'location-href'
+      )
+    )
+      inspectNavigationValue(node.right, node);
+    if (ts.isCallExpression(node) && browserValue(node.expression, node).has('location-navigate'))
+      inspectNavigationValue(node.arguments[0], node);
     if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
       const member = staticMemberAccess(node.expression);
       if (
@@ -5405,14 +5658,37 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
         )
           specifiers.push(UNVERIFIED_MARKUP_HANDLER_SPECIFIER);
       }
-      const attributeName = node.arguments[0];
-      if (calledMember?.name === 'setAttribute') {
+      const namespaceAttribute = calledMember?.name === 'setAttributeNS';
+      const namespaceKind = namespaceAttribute
+        ? resourceNamespace(node.arguments[0], node)
+        : 'native';
+      const resourceAttributeCall =
+        calledMember?.name === 'setAttribute' || (namespaceAttribute && namespaceKind === 'native');
+      if (
+        namespaceKind === 'unknown' &&
+        (isScriptElementExpression(calledMember.receiver, node) ||
+          resourceElementCreation(calledMember.receiver, node, 'link'))
+      )
+        specifiers.push(UNVERIFIED_DOM_RESOURCE_SPECIFIER);
+      const resourceAttributeName = node.arguments[namespaceAttribute ? 1 : 0];
+      const resourceAttributeValue = node.arguments[namespaceAttribute ? 2 : 1];
+      if (resourceAttributeCall) {
+        const rawProperty = nativeLiteralString(resourceAttributeName, node);
         const property =
-          attributeName && ts.isStringLiteralLike(attributeName)
-            ? attributeName.text.toLowerCase()
-            : null;
-        if (property) recordLinkMutation(calledMember.receiver, property, node.arguments[1], node);
-        else {
+          rawProperty === null
+            ? null
+            : namespaceAttribute
+              ? rawProperty
+              : rawProperty.toLowerCase();
+        if (property) {
+          const literal = nativeLiteralString(resourceAttributeValue, node);
+          recordLinkMutation(
+            calledMember.receiver,
+            property,
+            literal === null ? null : ts.factory.createStringLiteral(literal),
+            node
+          );
+        } else {
           recordLinkMutation(calledMember.receiver, 'rel', null, node);
           recordLinkMutation(calledMember.receiver, 'href', null, node);
           if (isScriptElementExpression(calledMember.receiver, node))
@@ -5436,12 +5712,7 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
             : UNRESOLVED_WORKER_ENTRY_SPECIFIER
         );
       }
-      const serviceWorker =
-        calledMember?.name === 'register' ? staticMemberAccess(calledMember.receiver) : null;
-      if (
-        serviceWorker?.name === 'serviceWorker' &&
-        isGlobalNavigator(serviceWorker.receiver, node)
-      ) {
+      if (browserValue(node.expression, node).has('worker-register')) {
         const argument = node.arguments[0] && unwrapTypeScriptExpression(node.arguments[0]);
         const target =
           argument && ts.isStringLiteralLike(argument)
@@ -5457,13 +5728,14 @@ function scriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary = fal
       }
 
       if (
-        calledMember?.name === 'setAttribute' &&
+        resourceAttributeCall &&
         isScriptElementExpression(calledMember.receiver, node) &&
-        attributeName &&
-        ts.isStringLiteralLike(attributeName) &&
-        attributeName.text.toLowerCase() === 'src'
+        resourceAttributeName &&
+        (namespaceAttribute
+          ? nativeLiteralString(resourceAttributeName, node)
+          : nativeLiteralString(resourceAttributeName, node)?.toLowerCase()) === 'src'
       ) {
-        specifiers.push(scriptElementSourceSpecifier(node.arguments[1]));
+        specifiers.push(scriptElementSourceSpecifier(resourceAttributeValue));
       }
     }
     if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
@@ -11766,21 +12038,27 @@ export function collectCoverageMatrixIssues({
   headRevision = null,
   mergeRevision = null,
 } = {}) {
-  const issues = [];
-  const catalogEntries = loadCatalogEntries(rootDir, issues);
-  const governanceSnapshot = loadGovernanceSnapshot(rootDir, issues);
-  const promotionContext = { baseRevision, headRevision, mergeRevision };
-  for (const config of MATRIX_CONFIGS) {
-    validateMatrixFile(
-      rootDir,
-      config,
-      catalogEntries,
-      governanceSnapshot,
-      promotionContext,
-      issues
-    );
+  const previousCache = activeScriptSpecifierCache;
+  activeScriptSpecifierCache = createScriptSpecifierCache();
+  try {
+    const issues = [];
+    const catalogEntries = loadCatalogEntries(rootDir, issues);
+    const governanceSnapshot = loadGovernanceSnapshot(rootDir, issues);
+    const promotionContext = { baseRevision, headRevision, mergeRevision };
+    for (const config of MATRIX_CONFIGS) {
+      validateMatrixFile(
+        rootDir,
+        config,
+        catalogEntries,
+        governanceSnapshot,
+        promotionContext,
+        issues
+      );
+    }
+    return issues;
+  } finally {
+    activeScriptSpecifierCache = previousCache;
   }
-  return issues;
 }
 
 export function validateCoverageMatrices(options = {}) {

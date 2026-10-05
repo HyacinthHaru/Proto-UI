@@ -15,6 +15,7 @@ import {
   MATRIX_CONFIGS,
   boundedPackageGlobTargets,
   promotionBarePackageTargets,
+  createScriptSpecifierCache,
   collectCoverageMatrixIssues,
   validateCoverageMatrices,
 } from '../check-coverage-matrices.mjs';
@@ -12715,6 +12716,65 @@ function probeReview(id, kind, source, ext = 'ts', bind = true) {
 for (const kind of ['website', 'harness']) {
   for (const [name, source, reject] of [
     [
+      'spread reassignment with safe override',
+      'let engine={};engine={...engine,compile(){}};engine.compile(bytes);',
+      false,
+    ],
+    [
+      'spread reassignment retaining native method',
+      'let engine={compile:WebAssembly.compile};engine={...engine};engine.compile(bytes);',
+      true,
+    ],
+    [
+      'spread reassignment with native override',
+      'let engine={};engine={...engine,compile:WebAssembly.compile};engine.compile(bytes);',
+      true,
+    ],
+  ])
+    test(`WASM recursion regression: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-recursion', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+}
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, diagnostic] of [
+    [
+      'null-namespace script source',
+      "const script=document.createElement('script');script.setAttributeNS(null,'src','https://cdn.example/runtime.js');",
+      /external executable.*script/u,
+    ],
+    [
+      'location href navigation',
+      'window.location.href="javascript:import(\'https://cdn.example/runtime.js\')";',
+      /executable navigation URL.*unverified/u,
+    ],
+    [
+      'service worker alias',
+      "const worker=navigator.serviceWorker;worker.register('/worker.js');",
+      /external executable.*script.*not reviewed|worker.*unverified/u,
+    ],
+    [
+      'service worker extraction',
+      "const {serviceWorker:worker}=navigator;worker.register('/worker.js');",
+      /external executable.*script.*not reviewed|worker.*unverified/u,
+    ],
+  ])
+    test(`native entry followup red: ${kind} ${name}`, () => {
+      const issues = probeReview('native-entry-followup', kind, source);
+      assert.ok(
+        issues.some((issue) => diagnostic.test(issue)),
+        issues.join('\n')
+      );
+    });
+}
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    [
       'XHTML NS script',
       "const s=document.createElementNS('http://www.w3.org/1999/xhtml','script');s.src='https://cdn.example/runtime.js';document.body.append(s);",
       true,
@@ -16166,3 +16226,460 @@ test('WASM erasure review oracle: const enum references can rewrite without exec
     assert.match(isolated, /const entry = WebAssembly\.compile/u);
   }
 });
+
+// DOM namespace, HTML Location and ServiceWorkerContainer ownership controls.
+// These source strings are parsed only; no navigation/worker/payload is run.
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    [
+      'empty namespace',
+      "const s=document.createElement('script');s.setAttributeNS('', 'src','https://cdn.example/x.js');",
+      true,
+    ],
+    [
+      'const null namespace',
+      "const ns=null;const s=document.createElement('script');s.setAttributeNS(ns,'src','https://cdn.example/x.js');",
+      true,
+    ],
+    [
+      'undefined nullable namespace',
+      "const s=document.createElement('script');s.setAttributeNS(undefined,'src','https://cdn.example/x.js');",
+      true,
+    ],
+    [
+      'namespace preserves attribute case',
+      "const s=document.createElement('script');s.setAttributeNS(null,'SRC','https://cdn.example/x.js');",
+      false,
+    ],
+    [
+      'unrelated resource namespace',
+      "const s=document.createElement('script');s.setAttributeNS('urn:business','src','https://cdn.example/x.js');",
+      false,
+    ],
+    [
+      'business attribute receiver',
+      "const s={setAttributeNS(){}};s.setAttributeNS(null,'src','https://cdn.example/x.js');",
+      false,
+    ],
+    [
+      'ordinary attribute case',
+      "const s=document.createElement('script');s.setAttribute('SRC','https://cdn.example/x.js');",
+      true,
+    ],
+    [
+      'namespaced stylesheet',
+      "const l=document.createElement('link');l.setAttributeNS(null,'rel','stylesheet');l.setAttributeNS('','href','https://cdn.example/theme.css');",
+      true,
+    ],
+    [
+      'namespaced unrelated link',
+      "const l=document.createElement('link');l.setAttributeNS('urn:business','rel','stylesheet');l.setAttributeNS('urn:business','href','https://cdn.example/theme.css');",
+      false,
+    ],
+    ['window location', "window.location='javascript:run()';", true],
+    ['bare location', "location='javascript:run()';", true],
+    [
+      'qualified location alias',
+      "const loc=globalThis.location;loc.href='javascript:run()';",
+      true,
+    ],
+    ['document location', "document.location='javascript:run()';", true],
+    ['location assign', "location.assign('javascript:run()');", true],
+    ['location replace', "self.location.replace('javascript:run()');", true],
+    [
+      'const navigation string',
+      String.raw`const url='\tJaVa\nScRiPt:run()';location.href=url;`,
+      true,
+    ],
+    [
+      'nested location destructure',
+      "const {window:{location:loc}}=globalThis;loc.replace('javascript:run()');",
+      true,
+    ],
+    ['ordinary HTTPS navigation', "location.href='https://example.com/';", false],
+    ['relative navigation', "location.assign('/docs/');", false],
+    ['encoded HTML is inert in JS URL', "location.href='java&#115;cript:run()';", false],
+    ['business location variable', "const location={};location.href='javascript:run()';", false],
+    [
+      'business location parameter',
+      "function run({location}){location.assign('javascript:run()');}",
+      false,
+    ],
+    [
+      'business qualified parameter',
+      "function run([window]){window.location='javascript:run()';}",
+      false,
+    ],
+    [
+      'worker global qualification',
+      "const worker=self.navigator.serviceWorker;worker.register('https://cdn.example/worker.js');",
+      true,
+    ],
+    [
+      'worker nested destructure',
+      "const {navigator:{serviceWorker:worker}}=window;worker.register('/worker.js');",
+      true,
+    ],
+    [
+      'worker alias chain',
+      "const nav=navigator;const {serviceWorker}=nav;const worker=serviceWorker;worker.register('/worker.js');",
+      true,
+    ],
+    [
+      'business worker alias',
+      "const nav=business;const worker=nav.serviceWorker;worker.register('/worker.js');",
+      false,
+    ],
+    [
+      'business navigator parameter',
+      "function run({navigator}){navigator.serviceWorker.register('/worker.js');}",
+      false,
+    ],
+    [
+      'business worker parameter',
+      "function run({serviceWorker}){serviceWorker.register('/worker.js');}",
+      false,
+    ],
+    [
+      'function var shadow',
+      "function run(){if(true){var navigator=business;}navigator.serviceWorker.register('/worker.js');}",
+      false,
+    ],
+    [
+      'type-only navigator leaves runtime',
+      "declare const navigator:Navigator;navigator.serviceWorker.register('/worker.js');",
+      true,
+    ],
+    ['inert navigation example', 'const example="location.assign(\'javascript:run()\')";', false],
+  ])
+    test(`native entry followup controls: ${kind} ${name}`, () => {
+      const issues = probeReview('native-entry-controls', kind, source);
+      assert.equal(
+        issues.some((issue) =>
+          /external executable.*script|executable navigation URL|external stylesheet|worker.*unverified/u.test(
+            issue
+          )
+        ),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+}
+
+for (const [name, source] of [
+  ['dynamic navigation', 'location.href=target;'],
+  ['computed native member', 'const target=window[key];target.assign(url);'],
+  ['native rest receiver', 'const {...copy}=window;copy.location=url;'],
+  [
+    'unknown resource namespace',
+    "const s=document.createElement('script');s.setAttributeNS(namespace,'src','/entry.js');",
+  ],
+])
+  test(`native entry promotion: ${name} cannot certify opaque bytes`, () => {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      `<script>${source}</script><main>Search</main>`
+    );
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    assert.match(
+      validationMessage(root, promotionOptions(revision)),
+      /promotion DOM-authored resource.*unverified/u
+    );
+  });
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    ['location alias variable rebinding', "let loc=location;loc='javascript:run()';", false],
+    ['href variable rebinding', "let {href}=location;href='javascript:run()';", false],
+    ['alias property navigation remains', "let loc=location;loc.href='javascript:run()';", true],
+    [
+      'mutual spread safe overwrite',
+      'let a={};let b={...a};a={...b};b={...a,compile(){}};b.compile(bytes);',
+      false,
+    ],
+    [
+      'mutual spread native retained',
+      'let a={compile:WebAssembly.compile};let b={...a};a={...b};b={...a};b.compile(bytes);',
+      true,
+    ],
+    [
+      'aggregate captures earlier native',
+      'let compile=WebAssembly.compile;const snapshot={compile};compile=()=>{};snapshot.compile(bytes);',
+      true,
+    ],
+    [
+      'aggregate ignores later native',
+      'let compile=()=>{};const snapshot={compile};compile=WebAssembly.compile;snapshot.compile(bytes);',
+      false,
+    ],
+  ])
+    test(`native entry independent review: ${kind} ${name}`, () => {
+      const issues = probeReview('native-entry-independent', kind, source);
+      assert.equal(
+        issues.some((issue) =>
+          /runtime code compilation.*unverified|executable navigation URL.*unverified/u.test(issue)
+        ),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.equal(issues.length, 0, issues.join('\n'));
+    });
+}
+for (const [name, source, reject] of [
+  [
+    'array shadow navigation',
+    "const target='/safe';function go([target]){location.href=target;}",
+    true,
+  ],
+  [
+    'rest shadow navigation',
+    "const target='/safe';function go(...target){location.href=target;}",
+    true,
+  ],
+  [
+    'catch array shadow navigation',
+    "const target='/safe';try{run()}catch([target]){location.href=target;}",
+    true,
+  ],
+  [
+    'array declaration shadow navigation',
+    "const target='/safe';{const [target]=values;location.href=target;}",
+    true,
+  ],
+  [
+    'array shadow namespace',
+    "const ns='urn:business';function go([ns]){const s=document.createElement('script');s.setAttributeNS(ns,'src','/entry.js');}",
+    true,
+  ],
+  [
+    'rest shadow namespace',
+    "const ns='urn:business';function go(...ns){const s=document.createElement('script');s.setAttributeNS(ns,'src','/entry.js');}",
+    true,
+  ],
+  [
+    'native receiver depth bound',
+    `const a0=location;${Array.from({ length: 65 }, (_, i) => `const a${i + 1}=a${i};`).join('')}a65.href='javascript:run()';`,
+    true,
+  ],
+  ['opaque variable rebinding', "let target=window[key];target='safe';", false],
+])
+  test(`native entry independent promotion: ${name}`, () => {
+    const root = createRoot();
+    const implementationPath = 'apps/www/src/components/override/Search.astro';
+    const websiteBindings = [[implementationPath, ['www.shell.search']]];
+    fs.mkdirSync(path.dirname(path.join(root, implementationPath)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, implementationPath),
+      `<script>${source}</script><main>Search</main>`
+    );
+    writeValidMatrices(root, {}, {}, { websiteBindings });
+    const revision = commitFixtureRoot(root);
+    writeSelfHostedPromotion(root, revision, { websiteBindings });
+    if (reject)
+      assert.match(
+        validationMessage(root, promotionOptions(revision)),
+        /promotion DOM-authored resource.*unverified/u
+      );
+    else
+      assert.doesNotThrow(() =>
+        validateCoverageMatrices({ rootDir: root, ...promotionOptions(revision) })
+      );
+  });
+for (const count of [10, 32])
+  for (const native of [false, true]) {
+    test(`WASM spread complexity: ${count} snapshots ${native ? 'native' : 'business'}`, () => {
+      const root = createRoot();
+      const sourcePath = 'apps/www/src/components/ReviewProbe.ts';
+      const source = `let engine={compile:${native ? 'WebAssembly.compile' : '()=>{}'}};${'engine={...engine};'.repeat(count)}engine.compile(bytes);`;
+      fs.mkdirSync(path.dirname(path.join(root, sourcePath)), { recursive: true });
+      fs.writeFileSync(path.join(root, sourcePath), source);
+      writeValidMatrices(
+        root,
+        {},
+        {},
+        { websiteBindings: [[sourcePath, ['www.shell.primary-nav']]] }
+      );
+      commitFixtureRoot(root);
+      const result = spawnSync(
+        process.execPath,
+        [
+          '--max-old-space-size=256',
+          path.resolve('scripts/coverage-matrices/check-coverage-matrices.mjs'),
+        ],
+        { cwd: root, encoding: 'utf8', timeout: 10000 }
+      );
+      assert.equal(result.error, undefined, result.error?.message);
+      assert.equal(result.signal, null);
+      assert.equal(result.status, native ? 1 : 0, result.stderr);
+      if (native) assert.match(result.stderr, /runtime code compilation.*unverified/u);
+    });
+  }
+
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    [
+      'earlier object element assignment',
+      'let engine={};const options={x:(engine=WebAssembly),entry:engine.compile};options.entry(bytes);',
+      true,
+    ],
+    [
+      'earlier array element assignment',
+      'let engine={};const options=[engine=WebAssembly,engine.compile];options[1](bytes);',
+      true,
+    ],
+    [
+      'earlier spread element assignment',
+      'let engine={};const options={x:(engine=WebAssembly),...engine};options.compile(bytes);',
+      true,
+    ],
+    [
+      'later object element assignment',
+      'let engine={compile(){}};const options={entry:engine.compile,x:(engine=WebAssembly)};options.entry(bytes);',
+      false,
+    ],
+    [
+      'computed snapshot excludes later native',
+      'let ns={compile(){}};const box={ns};ns=WebAssembly;box[key].compile(bytes);',
+      false,
+    ],
+    [
+      'computed snapshot retains earlier native',
+      'let ns=WebAssembly;const box={ns};ns={compile(){}};box[key].compile(bytes);',
+      true,
+    ],
+  ])
+    test(`WASM snapshot evaluation order: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-snapshot-order', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.deepEqual(issues, []);
+    });
+
+for (const kind of ['website', 'harness'])
+  for (const computed of [false, true]) {
+    test(`WASM cached depth evidence: ${kind} ${computed ? 'computed' : 'static'} first-deep then shallow`, () => {
+      const prefix = `const a0=WebAssembly${computed ? '' : '.compile'};${Array.from({ length: 61 }, (_, i) => `const a${i + 1}=a${i};`).join('')}`;
+      const source = computed
+        ? `${prefix}const base={ns:a61};const {[key]:entry}=base;entry.compile(bytes);base[key].compile(bytes);`
+        : `${prefix}const base={compile:a61};const {compile:entry}=base;entry(bytes);base.compile(bytes);`;
+      const issues = probeReview('wasm-cache-depth', kind, source);
+      assert.ok(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        issues.join('\n')
+      );
+    });
+  }
+test('script source cache binds complete source, path and preview ownership', () => {
+  const cache = createScriptSpecifierCache();
+  let calls = 0;
+  const scan = () => [++calls + ''];
+  assert.deepEqual(cache('safe', 'a.ts', {}, scan), ['1']);
+  assert.deepEqual(cache('safe', 'a.ts', {}, scan), ['1']);
+  assert.deepEqual(cache('unsafe', 'a.ts', {}, scan), ['2']);
+  assert.deepEqual(cache('safe', 'b.ts', {}, scan), ['3']);
+  assert.deepEqual(cache('safe', 'a.ts', { harnessPreviewBoundary: true }, scan), ['4']);
+  assert.deepEqual(cache('safe', 'a.ts', { harnessPreviewBoundary: false }, scan), ['1']);
+});
+test('script source cache isolates returned arrays, exceptions and invocation instances', () => {
+  const cache = createScriptSpecifierCache();
+  const original = ['native'];
+  const first = cache('source', 'a.ts', {}, () => original);
+  first.length = 0;
+  original.push('later');
+  const second = cache('source', 'a.ts', {}, () => assert.fail('unexpected reparse'));
+  assert.deepEqual(second, ['native']);
+  second.push('consumer');
+  assert.deepEqual(
+    cache('source', 'a.ts', {}, () => assert.fail('unexpected reparse')),
+    ['native']
+  );
+  assert.throws(
+    () =>
+      cache('broken', 'a.ts', {}, () => {
+        throw new Error('parse failed');
+      }),
+    /parse failed/
+  );
+  assert.deepEqual(
+    cache('broken', 'a.ts', {}, () => ['fixed']),
+    ['fixed']
+  );
+  assert.deepEqual(
+    createScriptSpecifierCache()('source', 'a.ts', {}, () => ['fresh']),
+    ['fresh']
+  );
+});
+test('script source cache capacity falls back to complete parsing', () => {
+  const cache = createScriptSpecifierCache();
+  let calls = 0;
+  for (let i = 0; i < 4096; i++) cache('source', 'file' + i, {}, () => [++calls + '']);
+  assert.deepEqual(
+    cache('source', 'overflow', {}, () => [++calls + '']),
+    ['4097']
+  );
+  assert.deepEqual(
+    cache('source', 'overflow', {}, () => [++calls + '']),
+    ['4098']
+  );
+  assert.deepEqual(
+    cache('source', 'file0', {}, () => assert.fail('retained entry lost')),
+    ['1']
+  );
+  const largeCache = createScriptSpecifierCache();
+  const large = 'x'.repeat(8 * 1024 * 1024 + 1);
+  let largeCalls = 0;
+  for (let i = 0; i < 2; i++)
+    assert.equal(
+      largeCache('source', 'large', {}, () => {
+        largeCalls++;
+        return [large];
+      })[0],
+      large
+    );
+  assert.equal(largeCalls, 2);
+});
+
+for (const kind of ['website', 'harness'])
+  for (const [name, source, reject] of [
+    [
+      'business identity assignment',
+      'let engine=business;engine=engine;engine.compile(bytes);',
+      false,
+    ],
+    ['business earlier binding snapshot', 'let a=business;let b=a;a=b;a.compile(bytes);', false],
+    [
+      'native identity assignment',
+      'let engine=WebAssembly;engine=engine;engine.compile(bytes);',
+      true,
+    ],
+    ['native earlier binding snapshot', 'let a=WebAssembly;let b=a;a=b;a.compile(bytes);', true],
+  ])
+    test(`WASM binding visit context: ${kind} ${name}`, () => {
+      const issues = probeReview('wasm-binding-context', kind, source);
+      assert.equal(
+        issues.some((issue) => /runtime code compilation.*unverified/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+      if (!reject) assert.deepEqual(issues, []);
+    });
+
+for (const kind of ['website', 'harness'])
+  for (const computed of [false, true]) {
+    test(`WASM cached opaque isolation: ${kind} ${computed ? 'computed' : 'static'} safe deep then shallow`, () => {
+      const source = computed
+        ? `const a0={compile(){}};${Array.from({ length: 61 }, (_, i) => `const a${i + 1}=a${i};`).join('')}const base={ns:a61};const outer={entry:base[key],entry(){}};outer.entry(bytes);base[key].compile(bytes);`
+        : `const base={compile(){}};const a0={...base};${Array.from({ length: 61 }, (_, i) => `const a${i + 1}={...a${i}};`).join('')}const a62={...a61,compile(){}};a62.compile(bytes);a30.compile(bytes);`;
+      assert.deepEqual(probeReview('wasm-cache-opaque', kind, source), []);
+    });
+  }
