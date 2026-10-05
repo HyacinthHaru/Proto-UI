@@ -258,6 +258,10 @@
     "anomalies": {
       "type": "array",
       "uniqueItems": true,
+      "allOf": [
+        { "contains": { "const": "context-uncalibrated" } },
+        { "contains": { "const": "unknown-model-not-excluded" } }
+      ],
       "items": {
         "enum": [
           "context-uncalibrated",

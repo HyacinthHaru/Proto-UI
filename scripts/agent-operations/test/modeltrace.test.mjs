@@ -13,7 +13,9 @@ import {
   computeModelTraceChallengeDigest,
   computeModelTraceReceiptDigest,
   createModelTraceChallenge,
+  hasModelTraceDisclosure,
   loadModelTraceRecord,
+  readModelTraceJson,
   renderModelTraceDisclosure,
   validateModelTraceSample,
   validateModelTraceContext,
@@ -41,7 +43,8 @@ function fixture({ declared = { systemModel: null, harnessModel: null }, failed 
     schemaVersion: 1,
     kind: 'proto-ui.modeltrace-context',
     repositoryId: 'github.com:fixture/repository',
-    sessionId: 'synthetic-unit-test-not-a-model-measurement',
+    // Deterministic opaque shape for a synthetic fixture, not entropy evidence.
+    sessionId: 'd'.repeat(64),
     contextDigest: 'a'.repeat(64),
     routeDigest: 'b'.repeat(64),
     declared,
@@ -112,6 +115,22 @@ test('receipt schema and runtime admit candidate, ambiguous and partial failed c
   ]) {
     assert.equal(structuralReceipt(receipt), true, JSON.stringify(structuralReceipt.errors));
     assert.equal(validateModelTraceReceipt(receipt).result.status, status);
+  }
+});
+
+test('schema consumers cannot suppress either mandatory closed-set limitation', () => {
+  const valid = fixture({ failed: true }).record.receipt;
+  for (const omitted of [
+    ['context-uncalibrated'],
+    ['unknown-model-not-excluded'],
+    ['context-uncalibrated', 'unknown-model-not-excluded'],
+  ]) {
+    const receipt = structuredClone(valid);
+    receipt.anomalies = receipt.anomalies.filter((code) => !omitted.includes(code));
+    // Keep other legitimate codes: this defends membership, not array size.
+    assert(receipt.anomalies.includes('probe-failed'));
+    assert(receipt.anomalies.includes('system-label-unavailable'));
+    rejectsStatusReceipt(receipt, /limitations/);
   }
 });
 
@@ -240,7 +259,7 @@ test('expiry, changed task/provider/session and future clocks require a new meas
   );
   for (const context of [
     { ...f.context, repositoryId: 'github.com:another/repository' },
-    { ...f.context, sessionId: 'another-agent' },
+    { ...f.context, sessionId: 'e'.repeat(64) },
     { ...f.context, contextDigest: 'c'.repeat(64) },
     { ...f.context, routeDigest: 'c'.repeat(64) },
     { ...f.context, declared: { systemModel: 'gpt-5.4', harnessModel: null } },
@@ -334,6 +353,99 @@ test('same-scope expired prior evidence retains its digest across equivalent Git
   }
 });
 
+test('prior chronology is bounded by response start, not scoring order or challenge issuance', () => {
+  const f = fixture({ failed: true });
+  const start = NOW.getTime() + 60_000;
+  f.response.startedAt = new Date(start).toISOString();
+  f.response.completedAt = new Date(start + 60_000).toISOString();
+  for (const offset of [-1, 0, 1, 60_001]) {
+    const prior = structuredClone(f.record.receipt);
+    const ttl = Date.parse(prior.expiresAt) - Date.parse(prior.measuredAt);
+    prior.measuredAt = new Date(start + offset).toISOString();
+    prior.expiresAt = new Date(start + offset + ttl).toISOString();
+    prior.id = `sha256:${computeModelTraceReceiptDigest(prior)}`;
+    validateModelTraceReceipt(prior);
+    if (offset <= 0) {
+      const record = buildModelTraceRecord(f.challenge, f.response, { previous: prior });
+      assert.equal(record.receipt.priorReceiptDigest, prior.id.slice(7));
+      assert.equal(record.receipt.anomalies.includes('retest-inconsistent'), false);
+    } else {
+      assert.throws(
+        () => buildModelTraceRecord(f.challenge, f.response, { previous: prior }),
+        /prior measurement.*after/
+      );
+    }
+  }
+});
+
+test('fresh private admission rejects descriptive sessions without breaking historical recomputation', (t) => {
+  const directory = fs.mkdtempSync(path.join(tmpdir(), 'modeltrace-legacy-session-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const f = fixture({ failed: true });
+  for (const sessionId of ['x', 'synthetic-unit-test-not-a-model-measurement']) {
+    const context = { ...f.context, sessionId };
+    validateModelTraceContext(context);
+    assert.throws(() => createModelTraceChallenge(context, { now: NOW }), /opaque.*session/);
+    const challenge = { ...f.challenge, context };
+    const response = {
+      ...f.response,
+      challengeDigest: computeModelTraceChallengeDigest(challenge),
+    };
+    const historical = buildModelTraceRecord(challenge, response);
+    const recordPath = path.join(directory, 'legacy.json');
+    fs.writeFileSync(recordPath, JSON.stringify(historical));
+    const readback = readModelTraceJson(recordPath, 'historical record');
+    assert.deepEqual(
+      buildModelTraceRecord(readback.challenge, readback.response).receipt,
+      historical.receipt
+    );
+    assert.equal(validateModelTraceReceipt(readback.receipt), readback.receipt);
+    assertModelTraceDisclosure(renderModelTraceDisclosure(readback.receipt), readback.receipt);
+    assert.throws(
+      () => assertModelTraceFresh(readback.receipt, context, { now: NOW }),
+      /opaque.*session/
+    );
+    const challengePath = path.join(directory, 'legacy-challenge.json');
+    const responsePath = path.join(directory, 'legacy-response.json');
+    const out = path.join(directory, 'fresh-record.json');
+    fs.writeFileSync(challengePath, JSON.stringify(challenge));
+    fs.writeFileSync(responsePath, JSON.stringify(response));
+    let stdout = '';
+    assert.throws(
+      () =>
+        runModelTraceCli(
+          ['score', '--challenge', challengePath, '--response', responsePath, '--out', out],
+          {
+            now: NOW,
+            stdout: {
+              write(text) {
+                stdout += text;
+              },
+            },
+          }
+        ),
+      /opaque.*session/
+    );
+    assert.equal(fs.existsSync(out), false);
+    assert.equal(stdout, '');
+  }
+  const uuidContext = { ...f.context, sessionId: '12345678-1234-4123-8123-123456789abc' };
+  const challenge = createModelTraceChallenge(uuidContext, { now: NOW });
+  const record = buildModelTraceRecord(challenge, {
+    ...f.response,
+    challengeDigest: computeModelTraceChallengeDigest(challenge),
+  });
+  assert.equal(assertModelTraceFresh(record.receipt, uuidContext, { now: NOW }), record.receipt);
+  assert.throws(
+    () =>
+      createModelTraceChallenge(
+        { ...uuidContext, sessionId: uuidContext.sessionId.replace('-4123-', '-1123-') },
+        { now: NOW }
+      ),
+    /opaque.*session/
+  );
+});
+
 test('failed retests remain failed, not a fabricated model mismatch', () => {
   const prior = fixture().record.receipt;
   const f = fixture({ failed: true });
@@ -407,12 +519,42 @@ test('hidden and duplicate disclosures cannot satisfy visible publication', () =
   const receipt = fixture({ failed: true }).record.receipt;
   const disclosure = renderModelTraceDisclosure(receipt);
   assertModelTraceDisclosure(`Evidence\n\n${disclosure}`, receipt);
+  assert.equal(hasModelTraceDisclosure(`Evidence\n\n${disclosure}`, receipt), true);
+  assert.equal(hasModelTraceDisclosure(`<!--\n${disclosure}\n-->`, receipt), false);
+  assert.equal(hasModelTraceDisclosure(`<!--\n${disclosure}`, receipt), false);
   assert.throws(() => assertModelTraceDisclosure(`<!--\n${disclosure}\n-->`, receipt), /visible/);
   assert.throws(() => assertModelTraceDisclosure(`<!--\n${disclosure}`, receipt), /visible/);
   assert.throws(
     () => assertModelTraceDisclosure(`${disclosure}\n\n${disclosure}`, receipt),
     /visible/
   );
+  assert.throws(
+    () => hasModelTraceDisclosure(`${disclosure}\n\n${disclosure}`, receipt),
+    /visible/
+  );
+});
+
+test('visible disclosure detection admits literal examples but rejects a present wrong receipt', () => {
+  const receipt = fixture({ failed: true }).record.receipt;
+  const disclosure = renderModelTraceDisclosure(receipt);
+  for (const example of [
+    'Ordinary evidence with no disclosure.',
+    '~~~markdown\n## ModelTrace\n~~~',
+    '<!--\n## ModelTrace\n-->',
+    '    ## ModelTrace',
+    '> ## ModelTrace',
+    '`## ModelTrace`',
+    '\\## ModelTrace',
+  ]) {
+    assert.equal(hasModelTraceDisclosure(example, receipt), false);
+    assert.equal(hasModelTraceDisclosure(`${example}\n\n${disclosure}`, receipt), true);
+  }
+  const wrong = fixture({
+    failed: true,
+    declared: { systemModel: 'gpt-5.4', harnessModel: null },
+  }).record.receipt;
+  assert.throws(() => hasModelTraceDisclosure(renderModelTraceDisclosure(wrong), receipt), /exact/);
+  assert.throws(() => hasModelTraceDisclosure('## ModelTrace\n\nNot a receipt.', receipt), /exact/);
 });
 
 test('digest and repository bindings reject regex-coercible singleton arrays', () => {
@@ -445,8 +587,10 @@ test('non-rendered HTML and enclosing code cannot impersonate a standalone discl
     `<div>\n<!--\n</div>\n\n${disclosure}\n-->`,
     `<hr>\n<!--\n\n${disclosure}\n-->`,
     `<p>\n<!--\n</p>\n\n${disclosure}\n-->`,
-  ])
+  ]) {
+    assert.equal(hasModelTraceDisclosure(wrapped, receipt), false);
     assert.throws(() => assertModelTraceDisclosure(wrapped, receipt), /visible/);
+  }
 });
 
 test('canonical fenced receipt bytes cannot be reconstructed by stripping literal comments', () => {
@@ -460,6 +604,73 @@ test('canonical fenced receipt bytes cannot be reconstructed by stripping litera
     () => assertModelTraceDisclosure(`${disclosure}not-a-closing-fence`, receipt),
     /exact/
   );
+  assert.throws(
+    () => hasModelTraceDisclosure(disclosure.replace('"result"', '"res<!--x-->ult"'), receipt),
+    /exact/
+  );
+});
+
+test('challenge and score require new private outputs and expose only public summaries on stdout', (t) => {
+  const directory = fs.mkdtempSync(path.join(tmpdir(), 'modeltrace-private-cli-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const f = fixture();
+  const contextPath = path.join(directory, 'context.json');
+  const challengePath = path.join(directory, 'challenge.json');
+  const responsePath = path.join(directory, 'response.json');
+  fs.writeFileSync(contextPath, JSON.stringify(f.context));
+  fs.writeFileSync(challengePath, JSON.stringify(f.challenge));
+  fs.writeFileSync(responsePath, JSON.stringify(f.response));
+  for (const [command, inputs] of [
+    ['challenge', ['--context', contextPath]],
+    ['score', ['--challenge', challengePath, '--response', responsePath]],
+  ]) {
+    let stdout = '';
+    const options = {
+      now: NOW,
+      stdout: {
+        write(text) {
+          stdout += text;
+        },
+      },
+    };
+    assert.throws(() => runModelTraceCli([command, ...inputs], options), /private --out/);
+    assert.equal(stdout, '');
+    const out = path.join(directory, `${command}-output.json`);
+    const artifact = runModelTraceCli([command, ...inputs, '--out', out], options);
+    assert.deepEqual(JSON.parse(fs.readFileSync(out, 'utf8')), artifact);
+    assert.equal(fs.statSync(out).mode & 0o777, 0o600);
+    assert.deepEqual(JSON.parse(stdout), {
+      written: out,
+      kind: artifact.kind,
+      receiptId: artifact.receipt?.id ?? null,
+    });
+    assert.equal(stdout.includes(f.context.sessionId), false);
+    assert.equal(stdout.includes(f.response.outputs[0].text), false);
+    const original = fs.readFileSync(out, 'utf8');
+    stdout = '';
+    assert.throws(() => runModelTraceCli([command, ...inputs, '--out', out], options), /new file/);
+    assert.equal(fs.readFileSync(out, 'utf8'), original);
+    assert.equal(stdout, '');
+  }
+});
+
+test('private output preflight precedes context reads and challenge creation', (t) => {
+  const directory = fs.mkdtempSync(path.join(tmpdir(), 'modeltrace-output-preflight-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const existing = path.join(directory, 'occupied.json');
+  fs.writeFileSync(existing, 'existing private content');
+  assert.throws(
+    () =>
+      runModelTraceCli([
+        'challenge',
+        '--context',
+        path.join(directory, 'absent-context.json'),
+        '--out',
+        existing,
+      ]),
+    /new file/
+  );
+  assert.equal(fs.readFileSync(existing, 'utf8'), 'existing private content');
 });
 
 test('private --out storage cannot enter the repository through a parent symlink', (t) => {
@@ -506,7 +717,17 @@ test('canonical-equivalent prior receipts remain usable for bounded retests', (t
     JSON.stringify({ ...f.response, challengeDigest: computeModelTraceChallengeDigest(next) })
   );
   const record = runModelTraceCli(
-    ['score', '--challenge', challenge, '--response', response, '--previous', previous],
+    [
+      'score',
+      '--challenge',
+      challenge,
+      '--response',
+      response,
+      '--previous',
+      previous,
+      '--out',
+      path.join(directory, 'record.json'),
+    ],
     { now: NOW, stdout: { write() {} } }
   );
   assert.equal(record.receipt.priorReceiptDigest, f.record.receipt.id.slice(7));

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { createHash, generateKeyPairSync, sign } from 'node:crypto';
+import { createHash, generateKeyPairSync, randomBytes, sign } from 'node:crypto';
 import fs from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -17,6 +17,7 @@ import {
   computeModelTraceChallengeDigest,
   createModelTraceChallenge,
   renderModelTraceDisclosure,
+  assertModelTraceDisclosure,
 } from '../modeltrace.mjs';
 import { ownerDelegationSigningBytes } from '../owner-authorization.mjs';
 
@@ -49,7 +50,7 @@ function fixture(
     schemaVersion: 1,
     kind: 'proto-ui.modeltrace-context',
     repositoryId,
-    sessionId: 'synthetic-test-session-not-an-agent-identity',
+    sessionId: randomBytes(32).toString('hex'),
     contextDigest: 'a'.repeat(64),
     routeDigest: 'b'.repeat(64),
     declared: { systemModel: 'synthetic-fixture', harnessModel: 'synthetic-fixture' },
@@ -87,6 +88,7 @@ function fixture(
   return {
     directory,
     now,
+    context,
     record,
     recordPath,
     contextPath,
@@ -335,9 +337,11 @@ function ownerFixture(f, { scopeIds = ['*'], actions = ['implement', 'collaborat
 }
 
 function localRepository(f) {
+  const directory = path.join(f.directory, 'checkout');
+  fs.mkdirSync(directory);
   const git = (args) =>
     execFileSync('git', args, {
-      cwd: f.directory,
+      cwd: directory,
       encoding: 'utf8',
       env: {
         ...process.env,
@@ -361,24 +365,26 @@ function localRepository(f) {
     'origin',
     `https://github.com/${repositoryId.slice('github.com:'.length)}.git`,
   ]);
-  fs.writeFileSync(path.join(f.directory, 'initial.txt'), 'Synthetic repository fixture\n');
+  fs.writeFileSync(path.join(directory, 'initial.txt'), 'Synthetic repository fixture\n');
   git(['add', 'initial.txt']);
   git(['commit', '-m', 'Synthetic fixture baseline']);
   git(['update-ref', 'refs/remotes/origin/main', 'HEAD']);
   git(['checkout', '-b', 'fixture-contributor-branch']);
   const before = git(['rev-parse', 'HEAD']).trim();
   fs.writeFileSync(
-    path.join(f.directory, '.git/hooks/commit-msg'),
+    path.join(directory, '.git/hooks/commit-msg'),
     `#!/bin/sh\nexec "${process.execPath}" "${PUBLISH_SCRIPT}" check-commit-message --message-file "$1"\n`,
     { mode: 0o700 }
   );
-  fs.writeFileSync(path.join(f.directory, 'change.txt'), 'Synthetic contributor change\n');
+  fs.writeFileSync(path.join(directory, 'change.txt'), 'Synthetic contributor change\n');
   git(['add', 'change.txt']);
   const tree = git(['write-tree']).trim();
-  const messagePath = path.join(f.directory, 'message.txt');
+  const messagePath = path.join(directory, 'message.txt');
   fs.writeFileSync(messagePath, 'feat: synthetic fixture contributor commit\n');
+  const commitAttempts = [];
   const runner = (binary, args, options) => {
     assert.equal(binary, 'git', 'local commits must not acquire GitHub network privileges');
+    if (args[0] === 'commit') commitAttempts.push([...args]);
     return execFileSync(binary, args, {
       ...options,
       env: {
@@ -391,10 +397,12 @@ function localRepository(f) {
     });
   };
   return {
+    directory,
     git,
     before,
     tree,
     runner,
+    commitAttempts,
     args: [
       '--message-file',
       messagePath,
@@ -480,7 +488,7 @@ test('publishes full-length evidence to a historical CLOSED Issue with a synthet
   assert.equal(gh.writes.length, 1);
   assert.equal(gh.comments[0].body.slice(0, f.body.length), f.body);
   assert.ok(gh.comments[0].body.includes(renderModelTraceDisclosure(f.record.receipt)));
-  assert.ok(!gh.comments[0].body.includes('synthetic-test-session-not-an-agent-identity'));
+  assert.ok(!gh.comments[0].body.includes(f.context.sessionId));
   assert.equal(gh.target.state, 'closed');
   assert.equal(runPublishCli(argv, { runner: gh.runner, now: f.now }).status, 'already-published');
   assert.equal(gh.writes.length, 1);
@@ -741,15 +749,51 @@ test('already disclosed approved evidence is published byte-for-byte without ano
   assert.equal(sha256(gh.comments[0].body), sha256(approvedBody));
 });
 
-test('prepared non-rendered or comment-corrupted receipts cannot reach a GitHub mutation', (t) => {
+for (const command of ['issue create', 'pull-request create', 'comment', 'update-body']) {
+  test(`${command} appends a current visible receipt after prepared Markdown examples`, (t) => {
+    const f = fixture(t, { failed: true });
+    const disclosure = renderModelTraceDisclosure(f.record.receipt);
+    const prepared = `Disclosure format examples, not a live declaration.\n\n\`\`\`\`markdown\n${disclosure}\n\`\`\`\`\n\n<!--\n## ModelTrace\nExample only.\n-->\n\n> ## ModelTrace\n> Quoted example only.\n`;
+    fs.writeFileSync(f.bodyPath, prepared);
+    const gh = server({ pull: command === 'pull-request create' });
+    const argv = [command.split(' '), f.args, '--body-file', f.bodyPath].flat();
+    if (command.endsWith(' create')) argv.push('--title', 'Synthetic disclosure examples');
+    if (command === 'pull-request create')
+      argv.push('--base', 'main', '--head', 'fixture-contributor-branch');
+    if (command === 'comment' || command === 'update-body') argv.push('--number', '7');
+    if (command === 'update-body')
+      argv.push(
+        '--target-updated-at',
+        gh.target.updated_at,
+        '--target-body-digest',
+        sha256(gh.target.body)
+      );
+    const result = runPublishCli(argv, { runner: gh.runner, now: f.now });
+    assert.equal(result.status, 'published');
+    const published =
+      command === 'comment' ? gh.comments[0] : command === 'update-body' ? gh.target : gh.issues[0];
+    assert.equal(published.body.slice(0, prepared.length), prepared);
+    assertModelTraceDisclosure(published.body, f.record.receipt);
+    assert.ok(!published.body.includes(f.context.sessionId));
+    assert.equal(gh.writes.length, 1);
+    const repeated = runPublishCli(argv, { runner: gh.runner, now: f.now });
+    assert.equal(repeated.status, 'already-published');
+    assert.equal(repeated.url, result.url);
+    assert.equal(gh.writes.length, 1);
+  });
+}
+
+test('visible wrong malformed or duplicate receipts and still-hidden appends cannot reach a GitHub mutation', (t) => {
   const f = fixture(t, { failed: true });
   const disclosure = renderModelTraceDisclosure(f.record.receipt);
   for (const invalid of [
-    `<?\n${disclosure}\n?>`,
+    disclosure.replace(f.record.receipt.id, `sha256:${'f'.repeat(64)}`),
     disclosure.replace('"result"', '"res<!--x-->ult"'),
-    `<div>\n<!--\n</div>\n\n${disclosure}\n-->`,
-    `<hr>\n<!--\n\n${disclosure}\n-->`,
-    `<p>\n<!--\n</p>\n\n${disclosure}\n-->`,
+    `${disclosure}\n\n${disclosure}`,
+    '## ModelTrace\n\n```json\n{}\n```\n',
+    `<div>\n<!--\n</div>\n\n${disclosure}`,
+    `<hr>\n<!--\n\n${disclosure}`,
+    `<p>\n<!--\n</p>\n\n${disclosure}`,
   ]) {
     fs.writeFileSync(f.bodyPath, invalid);
     const gh = server();
@@ -907,13 +951,176 @@ test('hook exempts human commits and rejects missing or expired Agent disclosure
 
 test('contributor commit executes git signoff and the independent installed hook in a throwaway repository', (t) => {
   const f = fixture(t, { failed: true });
-  const { git, before, runner, args } = localRepository(f);
-  const result = runPublishCli(['commit', ...f.args, ...args], { runner, cwd: f.directory });
+  const { git, before, runner, args, directory, commitAttempts } = localRepository(f);
+  const result = runPublishCli(['commit', ...f.args, ...args], { runner, cwd: directory });
   assert.equal(result.status, 'published');
   assert.notEqual(git(['rev-parse', 'HEAD']).trim(), before);
+  assert.equal(git(['rev-parse', `${result.head}^1`]).trim(), before);
+  assert.equal(commitAttempts.length, 1);
   const committed = git(['log', '-1', '--format=%B']);
   assert.ok(committed.includes(renderModelTraceDisclosure(f.record.receipt, 'commit')));
   assert.ok(committed.includes(`Signed-off-by: ${LOGIN} <fixture@example.invalid>`));
+});
+
+test('a native commit on a concurrently advanced parent is unknown without retry or compensation', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  let concurrentParent;
+  const runner = (binary, args, options) => {
+    if (args[0] === 'commit' && !concurrentParent) {
+      local.git(['commit', '--allow-empty', '--only', '-m', 'Synthetic concurrent human commit']);
+      concurrentParent = local.git(['rev-parse', 'HEAD']).trim();
+    }
+    return local.runner(binary, args, options);
+  };
+  assert.throws(
+    () =>
+      runPublishCli(['commit', ...f.args, ...local.args], {
+        runner,
+        cwd: local.directory,
+        now: f.now,
+      }),
+    (error) => error instanceof PublicationUnknown && /first parent/.test(error.message)
+  );
+  const written = local.git(['rev-parse', 'HEAD']).trim();
+  assert.notEqual(written, concurrentParent);
+  assert.notEqual(concurrentParent, local.before);
+  assert.equal(local.git(['rev-parse', `${written}^1`]).trim(), concurrentParent);
+  assert.equal(local.git(['rev-parse', `${written}^{tree}`]).trim(), local.tree);
+  assertModelTraceDisclosure(
+    local.git(['log', '-1', '--format=%B', written]),
+    f.record.receipt,
+    'commit'
+  );
+  assert.equal(local.git(['rev-list', '--count', `${local.before}..HEAD`]).trim(), '2');
+  assert.equal(local.commitAttempts.length, 1);
+});
+
+for (const raced of [false, true]) {
+  test(`a native merge commit ${raced ? 'cannot borrow authorization from its second parent' : 'can publish with its exact authorized first parent'}`, (t) => {
+    const f = fixture(t, { failed: true });
+    const local = localRepository(f);
+    local.git(['reset', '--', 'change.txt']);
+    local.git(['checkout', '-b', 'fixture-side', local.before]);
+    local.git(['commit', '--allow-empty', '--only', '-m', 'Synthetic side-parent commit']);
+    const side = local.git(['rev-parse', 'HEAD']).trim();
+    local.git(['checkout', 'fixture-contributor-branch']);
+    local.git(['commit', '--allow-empty', '--only', '-m', 'Synthetic authorized-parent commit']);
+    const authorized = local.git(['rev-parse', 'HEAD']).trim();
+    const argv = ['commit', ...f.args, ...local.args];
+    argv[argv.indexOf('--expected-head') + 1] = authorized;
+    if (!raced) local.git(['merge', '--no-ff', '--no-commit', side]);
+    local.git(['add', 'change.txt']);
+    const runner = (binary, args, options) => {
+      if (raced && args[0] === 'commit') {
+        local.git(['update-ref', 'HEAD', side, authorized]);
+        local.git(['reset', '--', 'change.txt']);
+        local.git(['merge', '--no-ff', '--no-commit', authorized]);
+        local.git(['add', 'change.txt']);
+      }
+      return local.runner(binary, args, options);
+    };
+    const publish = () => runPublishCli(argv, { runner, cwd: local.directory, now: f.now });
+    if (raced) assert.throws(publish, (error) => error instanceof PublicationUnknown);
+    else {
+      const result = publish();
+      assert.equal(result.status, 'published');
+      assert.equal(result.head, local.git(['rev-parse', 'HEAD']).trim());
+    }
+    const written = local.git(['rev-parse', 'HEAD']).trim();
+    const parents = local.git(['show', '--no-patch', '--format=%P', written]).trim().split(' ');
+    assert.deepEqual(parents, raced ? [side, authorized] : [authorized, side]);
+    assert.equal(local.git(['rev-parse', `${written}^{tree}`]).trim(), local.tree);
+    assertModelTraceDisclosure(
+      local.git(['log', '-1', '--format=%B', written]),
+      f.record.receipt,
+      'commit'
+    );
+    assert.equal(local.commitAttempts.length, 1);
+  });
+}
+
+for (const alias of [false, true]) {
+  test(`private record/context ${alias ? 'outside symlinks resolving inside' : 'files inside the checkout'} cannot enter an authorized commit`, (t) => {
+    for (const option of ['--record', '--context']) {
+      const f = fixture(t, { failed: true });
+      const local = localRepository(f);
+      const privateName = `${option.slice(2)}.json`;
+      const inside = path.join(local.directory, privateName);
+      const argv = ['commit', ...f.args, ...local.args];
+      fs.copyFileSync(argv[argv.indexOf(option) + 1], inside);
+      local.git(['add', privateName]);
+      const staged = local.git(['write-tree']).trim();
+      argv[argv.indexOf('--expected-tree') + 1] = staged;
+      let input = inside;
+      let cwd = local.directory;
+      if (alias) {
+        const parentAlias = path.join(f.directory, 'outside-private-parent');
+        fs.symlinkSync(local.directory, parentAlias, 'dir');
+        input = path.join(parentAlias, privateName);
+        cwd = path.join(f.directory, 'checkout-alias');
+        fs.symlinkSync(local.directory, cwd, 'dir');
+      }
+      argv[argv.indexOf(option) + 1] = input;
+      assert.throws(() => runPublishCli(argv, { runner: local.runner, cwd, now: f.now }));
+      assert.equal(local.commitAttempts.length, 0);
+      assert.equal(local.git(['rev-parse', 'HEAD']).trim(), local.before);
+      assert.equal(local.git(['write-tree']).trim(), staged);
+      assert.equal(local.git(['ls-tree', '-r', '--name-only', 'HEAD']), 'initial.txt\n');
+    }
+  });
+}
+
+test('private input aliases wholly outside the real checkout remain usable without disclosure leaks', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  const argv = ['commit', ...f.args, ...local.args];
+  const parentAlias = path.join(f.directory, 'private-parent-alias');
+  fs.symlinkSync(f.directory, parentAlias, 'dir');
+  for (const option of ['--record', '--context']) {
+    const input = path.join(parentAlias, path.basename(argv[argv.indexOf(option) + 1]));
+    argv[argv.indexOf(option) + 1] = input;
+  }
+  const cwd = path.join(f.directory, 'checkout-alias');
+  fs.symlinkSync(local.directory, cwd, 'dir');
+  const result = runPublishCli(argv, { runner: local.runner, cwd, now: f.now });
+  assert.equal(result.status, 'published');
+  assert.equal(local.commitAttempts.length, 1);
+  assert.equal(
+    local.git(['ls-tree', '-r', '--name-only', result.head]),
+    'change.txt\ninitial.txt\n'
+  );
+  assert.equal(local.git(['rev-parse', `${result.head}^1`]).trim(), local.before);
+  const message = local.git(['log', '-1', '--format=%B', result.head]);
+  assertModelTraceDisclosure(message, f.record.receipt, 'commit');
+  assert.ok(!message.includes(f.context.sessionId));
+  assert.ok(!message.includes('"outputs"'));
+});
+
+test('a private alias retargeted into the checkout during preparation prevents commit publication', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  const inside = path.join(local.directory, path.basename(f.recordPath));
+  fs.copyFileSync(f.recordPath, inside);
+  local.git(['add', path.basename(inside)]);
+  const staged = local.git(['write-tree']).trim();
+  const alias = path.join(f.directory, 'record-parent-alias');
+  fs.symlinkSync(f.directory, alias, 'dir');
+  const argv = ['commit', ...f.args, ...local.args];
+  argv[argv.indexOf('--record') + 1] = path.join(alias, path.basename(f.recordPath));
+  argv[argv.indexOf('--expected-tree') + 1] = staged;
+  let treeReads = 0;
+  const runner = (binary, args, options) => {
+    if (args[0] === 'write-tree' && ++treeReads === 2) {
+      fs.unlinkSync(alias);
+      fs.symlinkSync(local.directory, alias, 'dir');
+    }
+    return local.runner(binary, args, options);
+  };
+  assert.throws(() => runPublishCli(argv, { runner, cwd: local.directory, now: f.now }));
+  assert.equal(local.commitAttempts.length, 0);
+  assert.equal(local.git(['rev-parse', 'HEAD']).trim(), local.before);
+  assert.equal(local.git(['write-tree']).trim(), staged);
 });
 
 test('signed owner delegation reaches commit PR creation and exact Issue comment publishers', (t) => {
@@ -923,7 +1130,7 @@ test('signed owner delegation reaches commit PR creation and exact Issue comment
   const local = localRepository(f);
   const committed = runPublishCli(['commit', ...owner.args, ...local.args], {
     runner: local.runner,
-    cwd: f.directory,
+    cwd: local.directory,
     now: f.now,
   });
   assert.equal(committed.status, 'published');
@@ -1010,14 +1217,14 @@ test('signed revocation after live preflight prevents the final publisher mutati
 test('a commit rejects staged work outside the authorized tree without consuming the index', (t) => {
   const f = fixture(t, { failed: true });
   const local = localRepository(f);
-  fs.writeFileSync(path.join(f.directory, 'user.txt'), 'Unrelated synthetic user work\n');
+  fs.writeFileSync(path.join(local.directory, 'user.txt'), 'Unrelated synthetic user work\n');
   local.git(['add', 'user.txt']);
   const staged = local.git(['diff', '--cached', '--name-only']);
   assert.throws(
     () =>
       runPublishCli(['commit', ...f.args, ...local.args], {
         runner: local.runner,
-        cwd: f.directory,
+        cwd: local.directory,
         now: f.now,
       }),
     Error
@@ -1032,7 +1239,7 @@ test('a commit rechecks index changes during preparation before writing HEAD', (
   let treesRead = 0;
   const runner = (binary, args, options) => {
     if (args[0] === 'write-tree' && ++treesRead === 2) {
-      fs.writeFileSync(path.join(f.directory, 'user.txt'), 'Concurrent staged fixture\n');
+      fs.writeFileSync(path.join(local.directory, 'user.txt'), 'Concurrent staged fixture\n');
       local.git(['add', 'user.txt']);
     }
     return local.runner(binary, args, options);
@@ -1041,7 +1248,7 @@ test('a commit rechecks index changes during preparation before writing HEAD', (
     () =>
       runPublishCli(['commit', ...f.args, ...local.args], {
         runner,
-        cwd: f.directory,
+        cwd: local.directory,
         now: f.now,
       }),
     Error
@@ -1055,14 +1262,14 @@ test('late shared-index user staging stays staged and cannot enter the authorize
   const local = localRepository(f);
   const runner = (binary, args, options) => {
     if (args[0] === 'commit') {
-      fs.writeFileSync(path.join(f.directory, 'user.txt'), 'Late synthetic user staging\n');
+      fs.writeFileSync(path.join(local.directory, 'user.txt'), 'Late synthetic user staging\n');
       local.git(['add', 'user.txt']);
     }
     return local.runner(binary, args, options);
   };
   const result = runPublishCli(['commit', ...f.args, ...local.args], {
     runner,
-    cwd: f.directory,
+    cwd: local.directory,
     now: f.now,
   });
   assert.equal(result.status, 'published');
@@ -1073,7 +1280,7 @@ test('late shared-index user staging stays staged and cannot enter the authorize
   );
   assert.equal(local.git(['diff', '--cached', '--name-only']), 'user.txt\n');
   assert.equal(
-    fs.readFileSync(path.join(f.directory, 'user.txt'), 'utf8'),
+    fs.readFileSync(path.join(local.directory, 'user.txt'), 'utf8'),
     'Late synthetic user staging\n'
   );
 });

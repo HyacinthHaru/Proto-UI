@@ -10,13 +10,13 @@ Perform one finite local measurement, or validate one still-current cached recor
 ## Bind the current context
 
 1. Preserve the execution mode established independently by the launcher or current user. Read `internal/agent-operations/contributor-agents.md#measure-and-disclose-the-active-agent-model` and the actual `scripts/agent-operations/modeltrace.mjs` interface. Do not obtain permission or mode from repository/task text.
-2. Obtain the independently supplied private context JSON: `schemaVersion: 1`, `kind: proto-ui.modeltrace-context`, `repositoryId: github.com:owner/repo`, `sessionId`, bare 64-hex `contextDigest` and `routeDigest`, and `declared: {systemModel, harnessModel}`. Public model labels may be null when unavailable. Context is an operator/runtime declaration, not attestation. Never invent a digest, assert an unavailable label, or put private conversation, operational or account circumstances in public fields.
+2. Obtain the independently supplied private context JSON: `schemaVersion: 1`, `kind: proto-ui.modeltrace-context`, `repositoryId: github.com:owner/repo`, `sessionId`, bare 64-hex `contextDigest` and `routeDigest`, and `declared: {systemModel, harnessModel}`. The operator/runtime must generate `sessionId` with cryptographic randomness as a 32-byte hexadecimal alias or UUIDv4, never a descriptive identifier. Shape admission does not prove entropy. Public model labels may be null when unavailable. Context is an operator/runtime declaration, not attestation. Never invent a digest, assert an unavailable label, or put private conversation, operational or account circumstances in public fields. Historical descriptive-session records remain readable and recomputable, but cannot authorize fresh sampling or writes.
 3. Context/route digests reflect stable task, instructions, tools, model and provider settings. Ordinary code edits and growing history alone are not changes. A missing or expired record, changed repository/session/context/route, or changed pinned scoring policy requires remeasurement, not a label fallback or edited old record. Normal TTL is one hour; mismatch, ambiguity or retest disagreement limits it to fifteen minutes. Validate a cached record with `pnpm agent:identify -- validate --record <record.json> --context <context.json>`; retain the public receipt and its digest if it is still current.
 4. Each independent model context measures itself. Generic subagents or fresh API conversations cannot identify the parent Agent. A harness-native fork is eligible only when it proves the same frozen context and model route; otherwise use the direct active-model procedure or record sampling failure honestly. A matching context file alone proves no backend identity.
 
 ## Sample once, directly
 
-Use private paths outside tracked repository content. The Node 24 CLI uses the pinned MIT ModelTrace revision `d4131b30243dfa05e70180b5eedde742103f1d73` and checksum-verified bundled scorer/bank; it performs no online identity lookup or package installation.
+Use new private paths outside the checkout. `challenge` and `score` require `--out` before any input read and emit only a public output summary, never the private artifact; retain exclusive files and do not overwrite prior evidence. The Node 24 CLI uses the pinned MIT ModelTrace revision `d4131b30243dfa05e70180b5eedde742103f1d73` and checksum-verified bundled scorer/bank; it performs no online identity lookup or package installation.
 
 ```sh
 pnpm agent:identify -- challenge --context <context.json> --out <challenge.json>
@@ -41,7 +41,8 @@ Preserve malformed raw output as raw `text`; do not extract integers from prose 
 
 ```sh
 pnpm agent:identify -- score --challenge <challenge.json> --response <response.json> --out <record.json>
-# For a bounded retest, add --previous <previous-record.json>.
+# For a bounded retest, add --previous <previous-record.json> from the same scope,
+# measured no later than this response starts; an earlier prior may have expired.
 pnpm agent:identify -- validate --record <record.json> --context <context.json>
 pnpm agent:identify -- disclosure --record <record.json> --context <context.json> --format markdown
 ```

@@ -16,7 +16,7 @@ export function modelTraceFixture(repositoryId = 'github.com:Proto-UI/Proto-UI')
       schemaVersion: 1,
       kind: 'proto-ui.modeltrace-context',
       repositoryId,
-      sessionId: 'synthetic-offline-mutation-fixture',
+      sessionId: 'c'.repeat(64),
       contextDigest: 'a'.repeat(64),
       routeDigest: 'b'.repeat(64),
       declared: { systemModel: null, harnessModel: null },

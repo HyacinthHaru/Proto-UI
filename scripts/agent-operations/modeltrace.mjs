@@ -110,7 +110,7 @@ function normalizedLabel(value) {
   return value?.toLowerCase().split('/').at(-1) ?? null;
 }
 
-export function validateModelTraceContext(context) {
+export function validateModelTraceContext(context, { fresh = false } = {}) {
   exact(
     context,
     [
@@ -135,6 +135,17 @@ export function validateModelTraceContext(context) {
       context.sessionId.length <= 200,
     'invalid private session ID'
   );
+  if (fresh) {
+    // Shape cannot prove entropy: the operator/runtime must generate this alias
+    // with cryptographic randomness, not encode a descriptive session name.
+    assert(
+      /^[a-f0-9]{64}$/i.test(context.sessionId) ||
+        /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(
+          context.sessionId
+        ),
+      'fresh admission requires a cryptographically random opaque 32-byte hex session alias or UUIDv4'
+    );
+  }
   assert(
     isHex(context.contextDigest) && isHex(context.routeDigest),
     'invalid context/route digest'
@@ -193,7 +204,7 @@ function probes() {
 }
 
 export function createModelTraceChallenge(context, { now = new Date() } = {}) {
-  validateModelTraceContext(context);
+  validateModelTraceContext(context, { fresh: true });
   loadBank();
   return {
     schemaVersion: 1,
@@ -345,6 +356,11 @@ export function buildModelTraceRecord(challenge, response, { previous = null } =
   if (previous !== null) {
     validateModelTraceReceipt(previous);
     assertModelTraceScope(previous, challenge.context);
+    assert(
+      time(previous.measuredAt, 'prior measuredAt') <=
+        time(response.startedAt, 'response startedAt'),
+      'prior measurement occurs after the current response started'
+    );
   }
   const reference = loadBank();
   const anomalies = new Set(['context-uncalibrated', 'unknown-model-not-excluded']);
@@ -650,7 +666,7 @@ export function assertModelTraceFresh(
   { repositoryId = context?.repositoryId, now = new Date() } = {}
 ) {
   validateModelTraceReceipt(receipt);
-  validateModelTraceContext(context);
+  validateModelTraceContext(context, { fresh: true });
   assert(
     time(receipt.measuredAt, 'measuredAt') <= now.getTime() &&
       now.getTime() < time(receipt.expiresAt, 'expiresAt'),
@@ -774,11 +790,12 @@ function standaloneModelTraceOffsets(text) {
   return offsets;
 }
 
-export function assertModelTraceDisclosure(text, receipt, format = 'markdown') {
+export function hasModelTraceDisclosure(text, receipt, format = 'markdown') {
   assert(typeof text === 'string', 'publication is missing its exact ModelTrace disclosure');
   const expected = renderModelTraceDisclosure(receipt, format);
   if (format === 'markdown') {
     const headings = standaloneModelTraceOffsets(text);
+    if (headings.length === 0) return false;
     const start = headings[0];
     const after = start === undefined ? '' : text.slice(start + expected.length);
     assert(
@@ -789,10 +806,22 @@ export function assertModelTraceDisclosure(text, receipt, format = 'markdown') {
     );
   } else if (format === 'commit') {
     const trailers = text.split(/\r?\n/).filter((line) => /^ModelTrace:/i.test(line));
+    if (trailers.length === 0) return false;
     assert(
       trailers.length === 1 && trailers[0] === expected,
       'commit requires one exact ModelTrace trailer'
     );
-  } else assert(text === expected, 'publication is missing its exact ModelTrace disclosure');
+  } else {
+    if (text === '') return false;
+    assert(text === expected, 'publication is missing its exact ModelTrace disclosure');
+  }
+  return true;
+}
+
+export function assertModelTraceDisclosure(text, receipt, format = 'markdown') {
+  assert(
+    hasModelTraceDisclosure(text, receipt, format),
+    'publication requires one visible, standalone exact ModelTrace disclosure'
+  );
   return receipt;
 }

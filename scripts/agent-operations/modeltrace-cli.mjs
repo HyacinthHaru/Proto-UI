@@ -9,6 +9,7 @@ import {
   loadModelTraceRecord,
   readModelTraceJson,
   renderModelTraceDisclosure,
+  validateModelTraceContext,
 } from './modeltrace.mjs';
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url));
@@ -26,7 +27,7 @@ export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdo
   const command = argv.shift();
   if (!OPTIONS.has(command) || argv.length % 2 !== 0)
     throw new Error(
-      'Usage: pnpm agent:identify -- challenge|challenge-digest|score|validate|disclosure --context|--challenge|--response|--record <file> [--previous <file>] [--out <new-private-file>] [--format markdown|commit|json]'
+      'Usage: pnpm agent:identify -- challenge|challenge-digest|score|validate|disclosure --context|--challenge|--response|--record <file> [--previous <file>] [--format markdown|commit|json]; challenge and score require --out <new-private-file>'
     );
   const args = new Map();
   for (let index = 0; index < argv.length; index += 2) {
@@ -40,6 +41,18 @@ export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdo
       throw new Error(`invalid or duplicate option: ${name}`);
     args.set(name, argv[index + 1]);
   }
+  let output;
+  let realOutput;
+  if (command === 'challenge' || command === 'score') {
+    if (!args.has('--out')) throw new Error('challenge and score require a new private --out file');
+    output = path.resolve(args.get('--out'));
+    realOutput = path.join(fs.realpathSync(path.dirname(output)), path.basename(output));
+    const relative = path.relative(fs.realpathSync(ROOT), realOutput);
+    if (relative === '' || (!relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)))
+      throw new Error('private ModelTrace challenges/records must remain outside the repository');
+    if (fs.lstatSync(realOutput, { throwIfNoEntry: false }))
+      throw new Error('private ModelTrace --out must name a new file');
+  }
   let value;
   if (command === 'challenge')
     value = createModelTraceChallenge(readModelTraceJson(args.get('--context'), 'context'), {
@@ -52,6 +65,8 @@ export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdo
       ),
     };
   else if (command === 'score') {
+    const challenge = readModelTraceJson(args.get('--challenge'), 'challenge');
+    validateModelTraceContext(challenge.context, { fresh: true });
     const previous = args.has('--previous')
       ? readModelTraceJson(args.get('--previous'), 'previous record')
       : null;
@@ -63,7 +78,7 @@ export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdo
         throw new Error('previous local record does not reproduce its fingerprint');
     }
     value = buildModelTraceRecord(
-      readModelTraceJson(args.get('--challenge'), 'challenge'),
+      challenge,
       readModelTraceJson(args.get('--response'), 'response'),
       { previous: previous?.receipt ?? null }
     );
@@ -87,12 +102,7 @@ export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdo
         : renderModelTraceDisclosure(receipt, args.get('--format') ?? 'markdown');
   }
   const text = typeof value === 'string' ? `${value}\n` : `${JSON.stringify(value, null, 2)}\n`;
-  if (args.has('--out')) {
-    const output = path.resolve(args.get('--out'));
-    const realOutput = path.join(fs.realpathSync(path.dirname(output)), path.basename(output));
-    const relative = path.relative(fs.realpathSync(ROOT), realOutput);
-    if (relative === '' || (!relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)))
-      throw new Error('private ModelTrace challenges/records must remain outside the repository');
+  if (realOutput) {
     fs.writeFileSync(realOutput, text, { flag: 'wx', mode: 0o600 });
     stdout.write(
       `${JSON.stringify({ written: output, kind: value.kind, receiptId: value.receipt?.id ?? null })}\n`

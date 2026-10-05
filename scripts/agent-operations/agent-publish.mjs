@@ -15,6 +15,7 @@ import {
   loadModelTraceRecord,
   renderModelTraceDisclosure,
   assertModelTraceDisclosure,
+  hasModelTraceDisclosure,
 } from './modeltrace.mjs';
 
 const COMMON = [
@@ -214,6 +215,15 @@ function localCommitBinding(io, args) {
   return { branch, head, tree };
 }
 
+function assertPrivateCommitInputs(io, recordPath, contextPath) {
+  const checkout = fs.realpathSync(io.run('git', ['rev-parse', '--show-toplevel']).trim());
+  for (const input of [recordPath, contextPath]) {
+    const relative = path.relative(checkout, fs.realpathSync(input));
+    if (relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative))
+      throw new Error('private ModelTrace record/context inputs must remain outside the checkout');
+  }
+}
+
 function pullBinding(io, args, viewer) {
   const { owner, name } = parseRepositoryId(args.get('--repository'));
   const base = args.get('--base');
@@ -367,6 +377,7 @@ export function runPublishCli(argv, options = {}) {
   const receipt = measure();
   const io = tools(options);
   if (command === 'commit') {
+    assertPrivateCommitInputs(io, recordPath, contextPath);
     const binding = localCommitBinding(io, args);
     // Local commits and new GitHub objects have no existing numbered target.
     // Owner delegation must explicitly grant the repository portfolio for them.
@@ -392,6 +403,7 @@ export function runPublishCli(argv, options = {}) {
       assertModelTraceDisclosure(message, measure(), 'commit');
       if (JSON.stringify(localCommitBinding(io, args)) !== JSON.stringify(binding))
         throw new Error('commit branch or staged tree changed before write');
+      assertPrivateCommitInputs(io, recordPath, contextPath);
       authorize();
       let output;
       try {
@@ -403,17 +415,30 @@ export function runPublishCli(argv, options = {}) {
           'git commit failed or outcome is unknown; inspect local HEAD before any retry'
         );
       }
-      const committed = io.run('git', ['log', '-1', '--format=%B']);
-      assertModelTraceDisclosure(committed, receipt, 'commit');
-      if (io.run('git', ['rev-parse', 'HEAD^{tree}']).trim() !== binding.tree)
+      let head;
+      try {
+        head = io.run('git', ['rev-parse', 'HEAD']).trim();
+        if (io.run('git', ['rev-parse', `${head}^1`]).trim() !== binding.head)
+          throw new PublicationUnknown(
+            'committed first parent differs from the exact authorized HEAD; inspect local history before any retry'
+          );
+        const committed = io.run('git', ['log', '-1', '--format=%B', head]);
+        assertModelTraceDisclosure(committed, receipt, 'commit');
+        if (io.run('git', ['rev-parse', `${head}^{tree}`]).trim() !== binding.tree)
+          throw new PublicationUnknown(
+            'committed tree differs from authorization; inspect local HEAD and index before any retry'
+          );
+      } catch (error) {
+        if (error instanceof PublicationUnknown) throw error;
         throw new PublicationUnknown(
-          'committed tree differs from authorization; inspect local HEAD and index before any retry'
+          'git commit completed but exact commit readback is unknown; inspect local HEAD before any retry'
         );
+      }
       return {
         status: 'published',
         command,
         output,
-        head: io.run('git', ['rev-parse', 'HEAD']).trim(),
+        head,
       };
     } finally {
       fs.rmSync(directory, { recursive: true, force: true });
@@ -425,9 +450,8 @@ export function runPublishCli(argv, options = {}) {
   const endpoint = `repos/${owner}/${name}`;
   const prepared = fs.readFileSync(args.get('--body-file'), 'utf8');
   if (!prepared.trim()) throw new Error('prepared body must be nonempty');
-  const exactPrepared = /^## ModelTrace\s*$/m.test(prepared);
-  if (exactPrepared) assertModelTraceDisclosure(prepared, receipt);
-  else if (/<!-- proto-ui-agent-publication:/i.test(prepared))
+  const exactPrepared = hasModelTraceDisclosure(prepared, receipt);
+  if (!exactPrepared && /<!-- proto-ui-agent-publication:/i.test(prepared))
     throw new Error('undisclosed prepared body must not forge a publication marker');
   const number = args.has('--number') ? Number(args.get('--number')) : null;
   let before = number === null ? null : target(io, endpoint, number);
