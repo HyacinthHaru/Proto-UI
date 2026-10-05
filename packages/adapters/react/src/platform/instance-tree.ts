@@ -88,39 +88,43 @@ export function subscribeFocusTargetOwnerReady(
   target: HTMLElement,
   listener: () => void
 ): () => void {
-  const owner = getLogicalEventRouteSurfaceForTarget(target);
-  if (!owner) return () => {};
-  const slot = readinessSlot(owner);
+  const initialOwner = getLogicalEventRouteSurfaceForTarget(target);
+  if (!initialOwner) return () => {};
+  const instance = getLogicalTriggerGroupAnchor(initialOwner);
+  // Keep the logical identity even if its old physical target is removed.
+  // Surface changes rebind readiness before Focus re-resolves entry policy.
   let disposed = false;
-  let releaseReady: (() => void) | undefined;
-  const bindReady = () => {
-    releaseReady?.();
-    const source = slot.source;
-    const ready = () => {
-      if (!disposed && slot.source === source && source?.isReady()) listener();
-    };
-    releaseReady = source?.subscribe(ready);
-  };
-  const sourceChanged = () => {
-    if (disposed) return;
-    bindReady();
-    // Unregistration alone is not readiness. Preserve retained entry until a
-    // current view can accept it, then let Focus re-resolve the current target.
-    if (slot.source?.isReady()) listener();
-  };
-  slot.listeners.add(sourceChanged);
-  bindReady();
+  let invalidationQueued = false;
+  const off = subscribeFocusSurfaceReady(
+    instance,
+    () => {
+      const owner = getLogicalTriggerSurfaceOwner(instance);
+      const source = nativeFocusReadiness.get(owner)?.source;
+      if (source?.isReady()) listener();
+      else if (!source && !invalidationQueued) {
+        // Losing an ordinary owner invalidates the resolved target; it does
+        // not make that target ready. Let the host finish synchronous DOM
+        // removal before Focus re-resolves another descendant or fallback.
+        invalidationQueued = true;
+        queueMicrotask(() => {
+          invalidationQueued = false;
+          const currentOwner = getLogicalTriggerSurfaceOwner(instance);
+          if (!disposed && !nativeFocusReadiness.get(currentOwner)?.source) listener();
+        });
+      }
+    },
+    true
+  );
   return () => {
-    if (disposed) return;
     disposed = true;
-    slot.listeners.delete(sourceChanged);
-    releaseReady?.();
+    off();
   };
 }
 
 export function subscribeFocusSurfaceReady(
   instance: LogicalInstanceToken,
-  listener: () => void
+  listener: () => void,
+  includeSelf = false
 ): () => void {
   let disposed = false;
   let owner: LogicalInstanceToken | undefined;
@@ -134,11 +138,14 @@ export function subscribeFocusSurfaceReady(
     releaseReady = undefined;
     releaseSource = undefined;
     owner = nextOwner;
-    if (owner === instance) return;
+    if (owner === instance && !includeSelf) return;
     const slot = readinessSlot(owner);
     const bindReady = () => {
       releaseReady?.();
-      releaseReady = slot.source?.subscribe(listener);
+      const source = slot.source;
+      releaseReady = source?.subscribe(() => {
+        if (!disposed && owner === nextOwner && slot.source === source) listener();
+      });
     };
     const sourceChanged = () => {
       // A source-change snapshot can outlive this owner binding or subscription.

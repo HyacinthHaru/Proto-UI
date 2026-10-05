@@ -43,7 +43,7 @@ criteria:
         - id: C-AS-FOCUSABLE-0001
           anchors: [C-AS-FOCUSABLE-0001-C, C-AS-FOCUSABLE-0001-G]
         - id: C-AS-FOCUS-ENTRY-0001
-          anchors: [C-AS-FOCUS-ENTRY-0001-F, C-AS-FOCUS-ENTRY-0001-G]
+          anchors: [C-AS-FOCUS-ENTRY-0001-F, C-AS-FOCUS-ENTRY-0001-G, C-AS-FOCUS-ENTRY-0001-H]
 satisfies:
   contracts:
     [
@@ -98,6 +98,9 @@ openQuestions:
       en: The implementation exports one shared center, and this bounded Web catalog does not admit a cross-document focus-domain policy. The ordering half of this question moved to HC-FOCUS-ORDER-0001 and criterion M-FOCUS-0001-F in 0.3.0-alpha.1.
       zh-CN: 实现导出一个共享 center，本有界 Web 编目不接纳跨 document 的 focus-domain policy。本问题的排序部分已在 0.3.0-alpha.1 移至 HC-FOCUS-ORDER-0001 与 criterion M-FOCUS-0001-F。
 revisions:
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Linked criterion G's retained-entry realization to its governing C-AS-FOCUS-ENTRY-0001-H criterion without changing semantics or lifecycle.
   - version: 0.3.0-alpha.1
     change: refined
     summary: Distinguished retained entry intent from pending target requests and preserved programmatic versus native fact ownership under the approved entry-readiness rule.

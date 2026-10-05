@@ -7,16 +7,20 @@ lifecycleRationale:
   zh-CN: >-
     初始保持 draft：该投射刚建立，当前声明的是固定 Shadcn v4 new-york Input 基线中可由 Proto UI style channel 表达并已有可执行证据的子集；placeholder、responsive 与 invalid 呈现等兼容差异仍需逐项评审和验证，因此尚未形成完整、稳定的投射保证。
 
+
   en: >-
     Initial status is draft because this projection is newly established and currently declares only the subset of the pinned Shadcn v4 new-york Input baseline that Proto UI's style channel can express with executable evidence. Placeholder, responsive, and invalid presentation differences still require individual review and verification, so the projection is not yet a complete stable guarantee.
+
 
 summary: Shadcn Input Root is an unofficial visual projection over the host-mediated Base Input protocol and deliberately exposes only the verified presentation subset.
 statement:
   zh-CN: >-
     Shadcn Input Root 是 `P-BASE-INPUT` 之上的非官方设计语言投射。它消费 `asInputRoot()`，保留单一 host-owned single-line editor 及其 value、event、IME、native props、accessibility 与 focus/blur 协议，只为可继承的 value、focusVisible、disabled state 和 dark colorScheme 增加已验证的呈现增量。兼容基线固定为 shadcn-ui/ui v4 new-york revision `f31ed81983653919dd4fe77aee4b4859f610f1dc`；不可表达或没有 Base 语义支撑的上游变体均明确记录为差异，不由本实体虚构。
 
+
   en: >-
     Shadcn Input Root is an unofficial design-language projection over `P-BASE-INPUT`. It consumes `asInputRoot()`, preserves the single host-owned single-line editor and its value, event, IME, native-prop, accessibility, and focus/blur protocol, and adds only verified presentation deltas for inherited value, focusVisible, disabled state, and dark colorScheme. Its compatibility baseline is shadcn-ui/ui v4 new-york at revision `f31ed81983653919dd4fe77aee4b4859f610f1dc`; upstream variants that are inexpressible or unsupported by Base semantics are recorded as differences rather than invented by this entity.
+
 
 criteria:
   - id: P-SHADCN-INPUT-UPSTREAM-IDENTITY
@@ -110,8 +114,10 @@ openQuestions:
       zh-CN: >-
         `C-FEEDBACK-STYLE-0004` 只允许 `selection:` 静态 pseudo-element variant；placeholder、responsive、aria-invalid、data-slot 与 className forwarding 仍不在当前投射范围。Focus/disabled/dark 分别使用继承 state 或 host metadata rule。Base Input 不拥有 invalid state，调用者也没有 className/data-slot API。该 open question 不扩大 Base 语义；若任何跟进要求改变 Base ownership，必须单独决策。
 
+
       en: >-
         `C-FEEDBACK-STYLE-0004` allows only the static `selection:` pseudo-element variant; placeholder, responsive, aria-invalid, data-slot, and className forwarding remain outside this projection. Focus, disabled, and dark are handled through inherited state or host-metadata rules. Base Input owns no invalid state, and the caller API exposes neither className nor data-slot. This question does not expand Base semantics; any follow-up that requires changing Base ownership needs a separate decision.
+
 
     blocks: [activation:P-SHADCN-INPUT]
 sources:

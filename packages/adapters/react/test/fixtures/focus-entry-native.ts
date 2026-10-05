@@ -132,7 +132,19 @@ export async function observeRepeatedEntry() {
         acquired: document.activeElement === target,
       });
     }
-    return { cycles };
+    await act(async () => target.blur());
+    target.style.display = 'none';
+    await act(async () => ref.current.getExposes().enter());
+    // Three bounded retries each cross two real animation-frame boundaries.
+    // Keep CSS rejection in place until that existing budget is exhausted.
+    await layoutFrames(8);
+    const exhausted = document.activeElement !== target;
+    await act(async () => ref.current.getExposes().enter());
+    const supersedingRejected = document.activeElement !== target;
+    target.style.removeProperty('display');
+    await layoutFrames(3);
+    const supersedingAcquired = document.activeElement === target;
+    return { cycles, exhausted, supersedingRejected, supersedingAcquired };
   } finally {
     await act(async () => root.unmount());
     host.remove();
@@ -185,6 +197,106 @@ export async function observeFocusKind(kind: 'programmatic' | 'native' | 'entry'
         focused: ref.current.getExposes().focused.get(),
       },
       trustedFocusEvents,
+    };
+  } finally {
+    await act(async () => root.unmount());
+    host.remove();
+  }
+}
+
+export async function observeOrdinaryOwnerDisposal(mode: 'retained-hide' | 'terminal-unmount') {
+  let request = false,
+    firstRun: any,
+    terminalRemove: () => void = () => {};
+  const timeline: any[] = [];
+  const outerProto = definePrototype({
+    name: `ordinary-entry-${mode}`,
+    setup(def) {
+      const entry = asFocusEntry();
+      entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+      def.expose.method('enter', () => entry.focus());
+      return (r) => r.slot();
+    },
+  });
+  const firstProto = definePrototype({
+    name: `ordinary-first-${mode}`,
+    setup(def) {
+      asFocusable();
+      def.lifecycle.onCreated((run) => (firstRun = run));
+      def.expose.method('hide', () => firstRun.lifecycle.setPresent(false));
+      def.lifecycle.onUnmounted(() => {
+        timeline.push({
+          phase: 'unmounted',
+          connected: firstNode?.isConnected,
+          active: document.activeElement === firstNode,
+        });
+        if (request) {
+          request = false;
+          outerRef.current.getExposes().enter();
+          timeline.push({ phase: 'requested', active: document.activeElement === firstNode });
+        }
+      });
+      return () => 'old';
+    },
+  });
+  const secondProto = definePrototype({
+    name: `ordinary-fallback-${mode}`,
+    setup(def) {
+      const focusable = asFocusable();
+      def.expose.state('focused', focusable.focused);
+      return () => 'fallback';
+    },
+  });
+  const adapt = createReactAdapter(React),
+    Outer = adapt(outerProto),
+    First = adapt(firstProto, { rootTag: 'button' }),
+    Second = adapt(secondProto, { rootTag: 'button' });
+  const outerRef = React.createRef<any>(),
+    firstRef = React.createRef<any>(),
+    fallbackRef = React.createRef<any>();
+  let firstNode: HTMLButtonElement | undefined;
+  function FirstSlot() {
+    const [visible, setVisible] = React.useState(true);
+    terminalRemove = () => setVisible(false);
+    return visible ? React.createElement(First, { ref: firstRef }) : null;
+  }
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host);
+  try {
+    await act(async () =>
+      root.render(
+        React.createElement(
+          Outer,
+          { ref: outerRef },
+          React.createElement(FirstSlot),
+          React.createElement(Second, { ref: fallbackRef })
+        )
+      )
+    );
+    [firstNode] = [...host.querySelectorAll('button')];
+    const fallback = [...host.querySelectorAll('button')][1]!;
+    firstNode!.addEventListener('focus', () =>
+      timeline.push({ phase: 'old-focus', connected: firstNode!.isConnected })
+    );
+    let trustedFallbackFocusEvents = 0;
+    fallback.addEventListener('focus', (event) => {
+      if (event.isTrusted) trustedFallbackFocusEvents++;
+    });
+    request = true;
+    await act(async () => {
+      if (mode === 'retained-hide') firstRef.current.getExposes().hide();
+      else terminalRemove();
+    });
+    await Promise.resolve();
+    await Promise.resolve();
+    return {
+      timeline,
+      fallbackActive: document.activeElement === fallback,
+      fallbackFocused: fallbackRef.current.getExposes().focused.get(),
+      oldConnected: firstNode!.isConnected,
+      oldFocusEvents: timeline.filter((event) => event.phase === 'old-focus').length,
+      trustedFallbackFocusEvents,
     };
   } finally {
     await act(async () => root.unmount());

@@ -64,6 +64,9 @@ it('native connected descendant entry gets fresh retries after each actual CSS r
     expect(result.cycles).toEqual(
       Array.from({ length: 4 }, () => ({ connected: true, rejected: true, acquired: true }))
     );
+    expect(result.exhausted).toBe(true);
+    expect(result.supersedingRejected).toBe(true);
+    expect(result.supersedingAcquired).toBe(true);
   } finally {
     await context.close();
   }
@@ -87,6 +90,30 @@ it.each(['programmatic', 'native', 'entry'] as const)(
         after: { active: true, focused: true },
         trustedFocusEvents: 1,
       });
+    } finally {
+      await context.close();
+    }
+  }
+);
+
+it.each(['retained-hide', 'terminal-unmount'] as const)(
+  'native entry re-resolves after ordinary owner %s without focusing the departing node',
+  async (mode) => {
+    const context = await browser.newContext();
+    try {
+      const page = await context.newPage();
+      await page.setContent('<!doctype html><body></body>');
+      await page.addScriptTag({ content: bundle });
+      const result = await page.evaluate(
+        (mode) => window.focusEntryNative.observeOrdinaryOwnerDisposal(mode),
+        mode
+      );
+      console.info('[native-entry-owner-disposal]', JSON.stringify({ mode, ...result }));
+      expect(result.oldConnected).toBe(false);
+      expect(result.oldFocusEvents).toBe(0);
+      expect(result.fallbackActive).toBe(true);
+      expect(result.fallbackFocused).toBe(true);
+      expect(result.trustedFallbackFocusEvents).toBe(1);
     } finally {
       await context.close();
     }

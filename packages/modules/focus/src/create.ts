@@ -139,7 +139,7 @@ class FocusModuleImpl extends ModuleBase {
   private rovingEventsWired = false;
   private pendingFocusRequest:
     | { kind: 'target'; options?: FocusRequestOptions; syncFacts: boolean }
-    | { kind: 'entry'; options?: FocusRequestOptions }
+    | { kind: 'entry'; options: FocusRequestOptions }
     | undefined;
   private offTargetReady: (() => void) | undefined;
   private lastHostFocusableTarget: HTMLElement | null = null;
@@ -874,7 +874,7 @@ class FocusModuleImpl extends ModuleBase {
     const pending = this.pendingFocusRequest;
     if (!pending || !this.getRootTarget() || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) return false;
     this.pendingFocusRequest = undefined;
-    if (pending.kind === 'entry') this.requestEntryFocus(pending.options);
+    if (pending.kind === 'entry') this.applyEntryFocus(pending.options);
     else if (pending.syncFacts) this.requestFocus(pending.options);
     else this.requestNativeFocus(pending.options);
     return true;
@@ -918,6 +918,12 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   requestEntryFocus(options?: FocusRequestOptions): void {
+    // A private snapshot identifies this distinct intent even when callers
+    // reuse options. Readiness replay keeps this same snapshot and retry budget.
+    this.applyEntryFocus({ ...options });
+  }
+
+  private applyEntryFocus(options: FocusRequestOptions): void {
     if (!this.entryDeclared || this.entryConfig.disabled) return;
     const target = this.getRootTarget();
     if (!target || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) {

@@ -40,6 +40,7 @@ export class TextControlModuleImpl extends ModuleBase {
   private patch: TextControlPatch = EMPTY_PATCH;
   private value = '';
   private composing = false;
+  private callbackPrelude: { epoch: number } | null = null;
   private listeners: Listener[] = [];
   private host: TextControlHost | null = null;
   private lease: TextControlHostLease | null = null;
@@ -177,7 +178,10 @@ export class TextControlModuleImpl extends ModuleBase {
 
   private effectivePatch(): TextControlPatch {
     const { value: _declaredValue, ...patchWithoutValue } = this.patch;
-    const shouldProjectValue = !(this.valueMode === 'controlled' && this.composing);
+    const shouldProjectValue = !(
+      this.valueMode === 'controlled' &&
+      (this.composing || this.callbackPrelude?.epoch === this.leaseEpoch)
+    );
     return Object.freeze({
       ...patchWithoutValue,
       valueMode: this.valueMode ?? 'uncontrolled',
@@ -197,7 +201,10 @@ export class TextControlModuleImpl extends ModuleBase {
       value: this.canonicalize(event.value),
       data: typeof event.data === 'string' ? this.canonicalize(event.data) : event.data,
     });
-    this.composing = canonicalEvent.composing;
+    // CallbackScope may drain older props before it invokes our listener.
+    // Protect both a starting composition and a finishing native candidate
+    // from those stale owner values until the actual event callback begins.
+    this.composing ||= canonicalEvent.composing;
     if (this.valueMode === 'uncontrolled' && canonicalEvent.type === 'input') {
       this.value = canonicalEvent.value;
     }
@@ -205,7 +212,24 @@ export class TextControlModuleImpl extends ModuleBase {
     const runInCallback = this.caps.has(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
       ? this.caps.get(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
       : (callback: () => void) => callback();
-    runInCallback(() => {
+    const inCurrentCallback = (callback: () => void) => {
+      const previousPrelude = this.callbackPrelude;
+      const prelude = { epoch };
+      this.callbackPrelude = prelude;
+      const releasePrelude = () => {
+        if (this.callbackPrelude === prelude) this.callbackPrelude = previousPrelude;
+      };
+      try {
+        runInCallback(() => {
+          releasePrelude();
+          if (epoch === this.leaseEpoch) callback();
+        });
+      } finally {
+        releasePrelude();
+      }
+    };
+    inCurrentCallback(() => {
+      this.composing = canonicalEvent.composing;
       const run = this.sys.getCallbackCtx() as RunHandle<PropsBaseType> | undefined;
       if (!run) return;
       for (const listener of this.listeners) {
@@ -218,7 +242,10 @@ export class TextControlModuleImpl extends ModuleBase {
       ((event.type === 'input' && !event.composing) || event.type === 'compositionend');
     if (!mustRestoreControlledValue) return;
     queueMicrotask(() => {
-      if (epoch === this.leaseEpoch) this.syncLease();
+      // Re-enter the current callback boundary so pending accepted owner props
+      // reconcile before restoring value, rather than writing a stale owner
+      // value and destroying the native caret before the next commit.
+      if (epoch === this.leaseEpoch) inCurrentCallback(() => this.syncLease());
     });
   }
 

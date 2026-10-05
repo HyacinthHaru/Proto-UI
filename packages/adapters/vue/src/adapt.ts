@@ -47,6 +47,9 @@ import {
   createLogicalInstance,
   resolveLogicalTriggerEventRouteForTarget,
   markProtoInstance,
+  registerNativeFocusReadiness,
+  isFocusTargetOwnerReady,
+  subscribeFocusTargetOwnerReady,
   unbindProtoInstance,
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
@@ -210,7 +213,8 @@ export function createVueAdapter(runtime: VueRuntime) {
         const commitVersion = runtime.ref(0);
         const hostTokens = runtime.shallowRef<string[]>([]);
         const controllerRef = runtime.ref<RuntimeController | null>(null);
-        const eventGateRef = runtime.ref<ReturnType<typeof createEventGate> | null>(null);
+        // The gate is an opaque resource: deep ref proxies break view-epoch identity checks.
+        const eventGateRef = runtime.shallowRef<ReturnType<typeof createEventGate> | null>(null);
         const exposesRef = runtime.ref<Record<string, unknown>>({});
         const invokeRef = runtime.ref<((fn: () => void) => void) | null>(null);
         const scopedExposesReader = createScopedExposesReader(() => invokeRef.value);
@@ -255,6 +259,7 @@ export function createVueAdapter(runtime: VueRuntime) {
         };
 
         let pendingCommit = false;
+        let commitGeneration = 0;
         let pendingSignal: CommitSignal | null = null;
         let hostSession: ReturnType<typeof createVueHostSession<Props>> | null = null;
         const owner = createViewEpochOwner<Props>({ prototypeName: proto.name });
@@ -279,6 +284,7 @@ export function createVueAdapter(runtime: VueRuntime) {
             onLifecycleCheckpoint: opt.diagnostics?.onLifecycleCheckpoint,
             onLifecycleEvent: opt.diagnostics?.onLifecycleEvent,
             onCommit: (children, signal) => {
+              commitGeneration += 1;
               pendingCommit = true;
               pendingSignal = signal;
               renderChildren.value = children;
@@ -358,14 +364,36 @@ export function createVueAdapter(runtime: VueRuntime) {
           async () => {
             if (!pendingCommit) return;
             pendingCommit = false;
+            const generation = commitGeneration;
+            const signal = pendingSignal;
+            const gate = eventGateRef.value;
+            pendingSignal = null;
             await runtime.nextTick();
             viewReady = true;
             focusTargetRetryCount = 0;
             notifyFocusTargetReady();
-            pendingSignal?.done?.();
-            pendingSignal = null;
+            signal?.done?.();
+            // A lifecycle callback can synchronously commit again or detach.
+            // Only this completed commit may reopen its own observation gate.
+            if (
+              generation !== commitGeneration ||
+              gate !== eventGateRef.value ||
+              !shouldExist.value
+            )
+              return;
             rootRef.value?.removeAttribute(PUI_VIEW_PENDING_ATTR);
-            eventGateRef.value?.enable();
+            gate?.enable();
+            // onUpdated can schedule a Vue removal or replacement. Announce
+            // observation readiness after that host commit has settled.
+            const readyTarget = rootRef.value;
+            runtime.nextTick().then(() => {
+              if (
+                generation === commitGeneration &&
+                gate === eventGateRef.value &&
+                rootRef.value === readyTarget
+              )
+                notifyFocusTargetReady();
+            });
           },
           { flush: 'post' }
         );
@@ -392,16 +420,38 @@ export function createVueAdapter(runtime: VueRuntime) {
           });
           bindLogicalEventTarget(instanceToken, router.rootTarget);
           let viewDisposed = false;
+          let focusRetryGeneration = 0;
+          let releaseRequestedTargetReady: (() => void) | undefined;
+          const releaseNativeReadiness = registerNativeFocusReadiness(instanceToken, {
+            isReady: () =>
+              !viewDisposed &&
+              shouldExist.value &&
+              viewReady &&
+              eventGate.isEnabled() &&
+              rootRef.value === rootEl &&
+              rootEl.isConnected &&
+              !rootEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+            subscribe: (listener) => {
+              focusTargetReadyListeners.add(listener);
+              return () => focusTargetReadyListeners.delete(listener);
+            },
+          });
           const disposeView = () => {
             if (viewDisposed) return;
             viewDisposed = true;
             eventGate.disable();
             eventGate.dispose();
+            releaseRequestedTargetReady?.();
+            releaseRequestedTargetReady = undefined;
+            releaseNativeReadiness();
             unbindLogicalEventTarget(instanceToken, router.rootTarget);
             router.dispose();
             unbindProtoInstance(instanceToken, boundRoot ?? undefined);
             if (boundRoot === rootEl) boundRoot = null;
-            if (eventGateRef.value === eventGate) eventGateRef.value = null;
+            if (eventGateRef.value === eventGate) {
+              eventGateRef.value = null;
+              focusTargetRetryScheduled = false;
+            }
           };
 
           const effectsPort = createVueEffectsPort((tokens) => {
@@ -436,7 +486,31 @@ export function createVueAdapter(runtime: VueRuntime) {
             },
             // A child of a detached ancestor still mounts and attaches its own
             // view, so readiness has to consult the subtree, not just this host.
-            isViewReady: () => viewReady && !rootRef.value?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+            // Keep committed effects/blur/A11y independent of acquisition.
+            isViewReady: () =>
+              viewReady && !viewDisposed && !rootRef.value?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+            isEntryAcquisitionReady: (target) => {
+              releaseRequestedTargetReady?.();
+              releaseRequestedTargetReady = undefined;
+              if (isFocusTargetOwnerReady(target)) return true;
+              releaseRequestedTargetReady = subscribeFocusTargetOwnerReady(target, () => {
+                if (viewDisposed) return;
+                releaseRequestedTargetReady?.();
+                releaseRequestedTargetReady = undefined;
+                notifyFocusTargetReady();
+              });
+              return false;
+            },
+            onEntryIntent: () => {
+              focusRetryGeneration += 1;
+              focusTargetRetryScheduled = false;
+              focusTargetRetryCount = 0;
+            },
+            onFocusAcquired: () => {
+              releaseRequestedTargetReady?.();
+              releaseRequestedTargetReady = undefined;
+              focusTargetRetryCount = 0;
+            },
             getCurrentElement: () => rootRef.value,
             subscribeTargetReady: (listener) => {
               focusTargetReadyListeners.add(listener);
@@ -448,9 +522,11 @@ export function createVueAdapter(runtime: VueRuntime) {
               }
               focusTargetRetryScheduled = true;
               focusTargetRetryCount += 1;
+              const generation = focusRetryGeneration;
               scheduleAfterWebLayout(
                 rootRef.value,
                 () => {
+                  if (viewDisposed || generation !== focusRetryGeneration) return;
                   focusTargetRetryScheduled = false;
                   notifyFocusTargetReady();
                 },
