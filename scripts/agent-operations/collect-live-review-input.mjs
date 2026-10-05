@@ -1,6 +1,10 @@
 import { execFileSync } from 'node:child_process';
+import { ownerAuthorizationAllows } from './owner-authorization.mjs';
 import {
   authorizePullRequestMerge,
+  authorizeReviewSubmission,
+  computeReviewInputDigest,
+  renderReviewBody,
   isExternalPreviewAuthorizationFailure,
   reviewerPermissionSubjects,
   validateReviewInputSnapshot,
@@ -527,12 +531,82 @@ export function buildLiveReviewInput(
   };
 }
 
+export function authorizeLiveReviewSubmission(context, live) {
+  const policy = context.policy;
+  return authorizeReviewSubmission({
+    packet: context.packet,
+    input: context.input,
+    liveInput: live.input,
+    executionMode: context.executionMode,
+    executionModeSource: context.executionModeSource,
+    authorizationId: context.authorizationId,
+    ownerAuthorization: context.ownerAuthorization,
+    policy,
+    selfAssessment: context.selfAssessment,
+    priorPacket: context.priorPacket ?? null,
+    credentialCanReview: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
+    reviewer: live.viewerLogin,
+    ciConclusion: summarizeLiveChecks(live.input.checks, {
+      repositoryId: context.packet.repositoryId,
+      trustedRepositoryId: policy?.trustedCiEvidence?.repositoryId,
+      trustedSource: policy?.trustedCiEvidence?.source,
+      trustedCheckNames: policy?.trustedCiEvidence?.checkNames,
+      trustedWorkflowNames: policy?.trustedCiEvidence?.workflowNames,
+      trustedWorkflowPaths: policy?.trustedCiEvidence?.workflowPaths,
+    }),
+    dcoConclusion: summarizeLiveDco(live.input.checks, {
+      repositoryId: context.packet.repositoryId,
+      trustedRepositoryId: policy?.trustedDcoEvidence?.repositoryId,
+      trustedCheckName: policy?.trustedDcoEvidence?.checkName,
+      trustedSource: policy?.trustedDcoEvidence?.source,
+      trustedProviderId: policy?.trustedDcoEvidence?.providerId,
+      trustedDetailsUrl: policy?.trustedDcoEvidence?.detailsUrl,
+    }),
+  });
+}
+
+function reviewBoundaryPublicationDelta(context, live, event, body) {
+  const known = new Set(context.input.reviews.map((review) => review.id));
+  const state = { APPROVE: 'APPROVED', REQUEST_CHANGES: 'CHANGES_REQUESTED', COMMENT: 'COMMENTED' }[
+    event
+  ];
+  const matches = live.input.reviews.filter(
+    (review) =>
+      !known.has(review.id) &&
+      review.author?.toLowerCase() === context.actor.toLowerCase() &&
+      review.commitSha === context.packet.headSha &&
+      review.state === state &&
+      review.body === body
+  );
+  if (!matches.length) return { live, duplicate: false };
+  const ids = new Set(matches.map((review) => review.id));
+  const input = structuredClone(live.input);
+  input.reviews = input.reviews.filter((review) => !ids.has(review.id));
+  if (state === 'APPROVED') {
+    const priorPermissions = new Set(
+      context.input.reviewerPermissions.map((permission) => permission.login.toLowerCase())
+    );
+    input.reviewerPermissions = input.reviewerPermissions.filter(
+      (permission) =>
+        permission.login.toLowerCase() !== context.actor.toLowerCase() ||
+        priorPermissions.has(permission.login.toLowerCase())
+    );
+  }
+  if (computeReviewInputDigest(input) !== computeReviewInputDigest(context.input))
+    throw Error('live changes exceed the exact review publication delta; no POST attempted');
+  return { live: { ...live, input }, duplicate: true };
+}
+
 export function submitGitHubReview(
   repositoryId,
   pullRequest,
   { commitId, event, body },
   runner = execFileSync,
-  { reviewerLogin = null, invocationId = `${commitId}:${event}:${body}` } = {}
+  {
+    reviewerLogin = null,
+    invocationId = `${commitId}:${event}:${body}`,
+    authorizationContext = null,
+  } = {}
 ) {
   const { owner, name } = parseRepositoryId(repositoryId);
   if (!Number.isInteger(pullRequest) || pullRequest < 1) {
@@ -547,6 +621,46 @@ export function submitGitHubReview(
   if (typeof body !== 'string') throw new Error('review submission body is invalid');
   if (typeof reviewerLogin !== 'string' || reviewerLogin.length === 0)
     throw new Error('review submission requires the verified reviewer identity');
+
+  if (authorizationContext !== null) {
+    const context = authorizationContext;
+    if (
+      !context ||
+      Array.isArray(context) ||
+      context.packet?.repositoryId !== repositoryId ||
+      context.input?.repositoryId !== repositoryId ||
+      context.packet?.pullRequest !== pullRequest ||
+      context.input?.pullRequest !== pullRequest ||
+      context.packet?.headSha !== commitId ||
+      context.input?.headSha !== commitId ||
+      context.packet?.recommendedAction !== event ||
+      context.actor !== reviewerLogin ||
+      !['ADMIN', 'MAINTAIN', 'WRITE'].includes(context.viewerPermission) ||
+      renderReviewBody(context.packet) !== body
+    )
+      throw Error('review authorization context binding is invalid; no POST attempted');
+    validateReviewInputSnapshot(context.input);
+    validateReviewPacket(context.packet, context.input);
+    const finalLive = collectLiveReviewInput(repositoryId, pullRequest, {
+      runner,
+      externalEvidence: context.externalEvidence,
+    });
+    if (
+      finalLive.viewerLogin !== context.actor ||
+      finalLive.viewerPermission !== context.viewerPermission
+    )
+      throw Error('review identity or permission changed at the final boundary; no POST attempted');
+    const publicationDelta = reviewBoundaryPublicationDelta(context, finalLive, event, body);
+    const finalAuthorization = authorizeLiveReviewSubmission(context, publicationDelta.live);
+    if (finalAuthorization.duplicate || (publicationDelta.duplicate && finalAuthorization.allowed))
+      return { status: 'duplicate', invocationId, commitId, event, reconciled: false };
+    if (!finalAuthorization.allowed)
+      throw Error(
+        'review eligibility changed at the final boundary: ' +
+          finalAuthorization.reason +
+          '; no POST attempted'
+      );
+  }
 
   const expectedState = {
     APPROVE: 'APPROVED',
@@ -736,6 +850,7 @@ export function authorizeLivePullRequestMerge(context, live) {
     executionMode: context.executionMode,
     executionModeSource: context.executionModeSource,
     authorizationId: context.authorizationId,
+    ownerAuthorization: context.ownerAuthorization,
     policy,
     selfAssessment: context.selfAssessment,
     credentialCanMerge: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
@@ -786,8 +901,7 @@ export function submitGitHubMerge(
   if (typeof baseRefName !== 'string' || baseRefName.length === 0)
     throw new Error('merge base ref is required');
   if (mergeMethod !== 'squash') throw new Error('merge method must be squash');
-  if (!['explicit-current-user', 'proto-ui-scheduled-merge-v1'].includes(authorizationId))
-    throw new Error('merge authorization is invalid');
+
   const maxAttempts = options.verificationAttempts ?? 12;
   const delayMs = options.verificationDelayMs ?? 1_000;
   const wait = options.wait ?? waitForMergeRead;
@@ -822,6 +936,19 @@ export function submitGitHubMerge(
     !['ADMIN', 'MAINTAIN', 'WRITE'].includes(authorizationContext.viewerPermission)
   )
     throw new Error('merge authorization context target binding is invalid; no PUT attempted');
+  if (
+    !['explicit-current-user', 'proto-ui-scheduled-merge-v1'].includes(authorizationId) &&
+    !ownerAuthorizationAllows(authorizationContext.ownerAuthorization, {
+      repositoryId,
+      scopeId: 'pull-request:' + pullRequest,
+      action: 'integrate',
+      actor: authorizationContext.actor,
+      authorizationId,
+      executionMode: authorizationContext.executionMode,
+      executionModeSource: authorizationContext.executionModeSource,
+    })
+  )
+    throw new Error('merge owner authorization is invalid; no PUT attempted');
   validateReviewInputSnapshot(input);
   validateReviewPacket(packet, input);
   validatePublishedReviewPacket(packet, authorizationContext.publishedPacket);
