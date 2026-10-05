@@ -3,7 +3,7 @@ type: test
 title: Feedback style authoring tests
 status: draft
 since: 0.1.0
-summary: Shared fixture and contract tests for setup-time feedback.style authoring, token values, and token purity.
+summary: Shared fixture and contract tests for setup-time feedback.style authoring, token values, the allowlisted selection variant, and token purity.
 cases:
   - id: T-FEEDBACK-STYLE-0001-CASE-SETUP-USE
     title: Setup feedback.style use records a visual style plan
@@ -25,11 +25,12 @@ cases:
       - C-FEEDBACK-STYLE-0003-B
     expectation: author-token-accepted
   - id: T-FEEDBACK-STYLE-0001-CASE-TOKEN-PURITY
-    title: Author-side feedback.style tokens cannot encode state, event, selector, or host-realization dependencies
+    title: Author-side feedback.style tokens accept only the static selection pseudo-element variant
     covers:
       - C-FEEDBACK-STYLE-0004-A
       - C-FEEDBACK-STYLE-0004-B
-    expectation: author-token-rejected
+      - C-FEEDBACK-STYLE-0004-F
+    expectation: selection-token-accepted-other-variants-rejected
 implementations:
   - id: feedback-style-authoring-fixture
     kind: fixture
@@ -50,6 +51,13 @@ implementations:
       - T-FEEDBACK-STYLE-0001-CASE-SETUP-USE
       - T-FEEDBACK-STYLE-0001-CASE-SETUP-UNUSE
       - T-FEEDBACK-STYLE-0001-CASE-AUTHOR-TOKENS
+      - T-FEEDBACK-STYLE-0001-CASE-TOKEN-PURITY
+  - id: cli-feedback-style-selection-css
+    kind: module-test
+    status: passing
+    path: packages/cli/test/proto-style-css.test.ts
+    required: true
+    consumesCases:
       - T-FEEDBACK-STYLE-0001-CASE-TOKEN-PURITY
   - id: runtime-feedback-style-setup-only-contract
     kind: runtime-test
@@ -78,10 +86,14 @@ verifies:
       anchors:
         - C-FEEDBACK-STYLE-0004-A
         - C-FEEDBACK-STYLE-0004-B
+        - C-FEEDBACK-STYLE-0004-F
 revisions:
   - version: 0.1.0
     change: introduced
     summary: Added feedback.style authoring test entity and shared fixture mapping.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Mapped evidence for accepting the single static selection prefix while rejecting other selector and state variants.
 tags:
   - feedback
   - style
