@@ -9,6 +9,7 @@ import {
   checkLocalizedRoutes,
   checkScaffolding,
   extractOverviewEntries,
+  extractSidebarSlugs,
   findStaleReleaseClaims,
 } from '../check-public-docs.mjs';
 import { publicDocPolicy } from '../public-doc-policy.mjs';
@@ -252,4 +253,36 @@ test('public spec lifecycle guides expose the activation-history boundary', () =
     'apps/www/src/content/docs/en/specifications/introduction.md: public spec lifecycle guide must explain `activeSince` as distinct from `since`.',
     'apps/www/src/content/docs/zh-cn/specifications/introduction.md: public spec lifecycle guide must state that `activeSince` may equal `since` for an identity introduced stable.',
   ]);
+});
+
+test('Shadcn Input remains reachable from both website navigation projections', async () => {
+  const root = new URL('../../../', import.meta.url);
+  const overview = await fs.readFile(
+    new URL('apps/www/src/components/PrototypeLibraryOverview.astro', root),
+    'utf8'
+  );
+  const entries = extractOverviewEntries(overview, 'PrototypeLibraryOverview.astro').get('shadcn');
+  assert.equal(entries.filter((entry) => entry.id === 'input').length, 1);
+  assert.equal(entries.find((entry) => entry.id === 'input').href, './input/');
+  assert.match(
+    overview.slice(overview.indexOf('  shadcn:'), overview.indexOf('  brutalist:')),
+    /demoId: 'demo-shadcn-input'/
+  );
+  const config = await fs.readFile(new URL('apps/www/astro.config.mjs', root), 'utf8');
+  assert.ok(extractSidebarSlugs(config).includes('ui-libraries/shadcn/input'));
+});
+
+test('both general Feedback references explain the bounded selection exception', async () => {
+  for (const locale of ['en', 'zh-cn']) {
+    const source = await fs.readFile(
+      new URL(
+        `../../../apps/www/src/content/docs/${locale}/specifications/feedback.mdx`,
+        import.meta.url
+      ),
+      'utf8'
+    );
+    assert.match(source, /selection:<style-token>/);
+    assert.match(source, /tw\('selection:bg-primary'\)/);
+    assert.match(source, /tw\('selection:hover:bg-primary'\)/);
+  }
 });

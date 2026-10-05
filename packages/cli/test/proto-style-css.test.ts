@@ -8,6 +8,25 @@ import {
 import { BRUTALIST_STYLE_TOKENS } from '../src/generated/brutalist-style-tokens';
 
 describe('proto style css renderer', () => {
+  it('keeps motion hit envelopes on the same host and behind lowered state predicates', () => {
+    const css = renderProtoStyleTokenCss([
+      'hit-envelope-translate-1',
+      'data-[hovered]:hit-envelope-translate-1',
+      'data-[pressed]:hit-envelope-translate-1',
+    ]);
+    expect(css).not.toContain('Unsupported Proto UI style tokens');
+    expect(css).toContain(`:where([data-pui-style~="hit-envelope-translate-1"])::before`);
+    expect(css).toContain(
+      `:where([data-pui-style~="data-[hovered]:hit-envelope-translate-1"])[data-hovered]::before`
+    );
+    expect(css).toContain(
+      `:where([data-pui-style~="data-[pressed]:hit-envelope-translate-1"])[data-pressed]::before`
+    );
+    expect(css).toContain('top: calc(-0.25rem - 2px);');
+    expect(css).toContain('left: calc(-0.25rem - 2px);');
+    expect(css).toContain('right: -2px;');
+    expect(css).toContain('bottom: -2px;');
+  });
   it('gives Proto UI styled elements a scoped border-box baseline without a global reset', () => {
     // T-WEB-STYLE-BASELINE-0001-CASE-PROTO-LAYER-PLACEMENT
     const css = renderProtoStyleTokenCss(['h-6', 'w-11', 'border']);
@@ -231,6 +250,21 @@ describe('proto style css renderer', () => {
       ':where([data-pui-style~="data-[hovered]:not-[data-active]:bg-muted"])[data-hovered]:not([data-active])'
     );
     expect(css).toContain('background-color: var(--pui-muted);');
+    expect(css).not.toContain('Unsupported Proto UI style tokens');
+  });
+
+  it('renders the allowlisted static text-selection pseudo-element variants', () => {
+    const css = renderProtoStyleTokenCss([
+      'selection:bg-primary',
+      'selection:text-primary-foreground',
+    ]);
+
+    expect(css).toContain(
+      ':where([data-pui-style~="selection:bg-primary"])::selection {\n    background-color: var(--pui-primary);'
+    );
+    expect(css).toContain(
+      ':where([data-pui-style~="selection:text-primary-foreground"])::selection {\n    color: var(--pui-primary-foreground);'
+    );
     expect(css).not.toContain('Unsupported Proto UI style tokens');
   });
 

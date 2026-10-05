@@ -7,6 +7,21 @@ describe('feedback.semantic-merge.v0', () => {
     expect(r.tokens).toEqual(['bg-blue-500']);
   });
 
+  it('merges selection utilities by their underlying style group, separately from element styles', () => {
+    const r = mergeTwTokensV0([
+      'bg-muted',
+      'selection:bg-primary',
+      'selection:text-primary-foreground',
+      'selection:bg-secondary',
+    ]);
+
+    expect(r.tokens).toEqual([
+      'bg-muted',
+      'selection:bg-secondary',
+      'selection:text-primary-foreground',
+    ]);
+  });
+
   it('fallback grouping: unknown tokens only conflict with identical token', () => {
     const r = mergeTwTokensV0(['foo', 'bar', 'foo']);
     // group order: foo first, bar second
