@@ -1,6 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { initHomepageRuntime } from './homepage-runtime-client';
 import * as siteFamily from '../site-library-family';
+import * as materialization from '../PrototypePreviewer/projection-materializer';
+import {
+  initAdapterSelects,
+  PREFERRED_ADAPTER_EVENT,
+  PREFERRED_ADAPTER_KEY,
+} from '../adapter-preference';
+import type { ProjectionCompositionControls } from '../PrototypePreviewer/projection-composition';
 import type { MaterializedProjectionCandidate } from '../PrototypePreviewer/projection-materializer';
 
 type TypographyCandidate = MaterializedProjectionCandidate;
@@ -442,3 +449,69 @@ describe('homepage passive typography refresh preserves real gallery state', () 
     expect(note()).toBe(before.input);
   });
 });
+
+it('publishes a committed runtime preference when a live family request supersedes its pending retirement observer', async () => {
+  const entered = deferred<void>();
+  const releaseRetirement = deferred<void>();
+  preparation.next = async (candidate) => ({
+    ...candidate,
+    async dispose() {
+      entered.resolve();
+      await releaseRetirement.promise;
+      await candidate.dispose();
+    },
+  });
+  let controls: ProjectionCompositionControls | undefined;
+  const materialize = materialization.materializeProjectionCandidate;
+  vi.spyOn(materialization, 'materializeProjectionCandidate').mockImplementation((...args) => {
+    if (args[1].controlIds?.includes('runtime')) controls = args[1].controls;
+    return materialize(...args);
+  });
+  const independent = document.createElement('div');
+  independent.dataset.adapterSelect = '';
+  independent.innerHTML =
+    '<select><option value="wc">WC</option><option value="react">React</option></select>';
+  document.body.append(independent);
+  initAdapterSelects(independent);
+  const events: string[] = [];
+  const listener = (event: Event) => events.push((event as CustomEvent).detail.adapter);
+  document.addEventListener(PREFERRED_ADAPTER_EVENT, listener);
+  try {
+    handle = initHomepageRuntime(document.querySelector('[data-homepage-runtime]')!)!;
+    await expect.poll(() => handle!.getSnapshot().phase).toBe('ready');
+    select('runtime', 'react'); // Actual current WC control event channel.
+    await entered.promise;
+    expect(handle.getSnapshot().selection.runtimeId).toBe('react');
+    expect(handle.getSnapshot().phase).toBe('ready');
+    const familyTrigger = ref('__pui_projection__family_trigger');
+    expect(
+      familyTrigger
+        .closest('[data-projection-generation-state]')!
+        .getAttribute('data-projection-generation-state')
+    ).toBe('active');
+    expect(familyTrigger.getAttribute('aria-disabled')).not.toBe('true');
+    expect(localStorage.getItem(PREFERRED_ADAPTER_KEY)).toBeNull();
+    expect(events).toEqual([]);
+    // Invoke the real active React composition's accepted family callback;
+    // this is an unlocked committed owner, not a forced event on a locked one.
+    controls!.family.onValueChange('brutalist');
+    await expect
+      .poll(() => handle!.getSnapshot().selection.projectionFamilyId, { timeout: 10000 })
+      .toBe('brutalist');
+    await expect
+      .poll(
+        () => document.querySelector<HTMLElement>('[data-homepage-runtime]')!.dataset.runtimeState
+      )
+      .toBe('ready');
+    expect(handle.getSnapshot().selection.runtimeId).toBe('react');
+    expect(localStorage.getItem(PREFERRED_ADAPTER_KEY)).toBe('react');
+    expect(independent.querySelector('select')!.value).toBe('react');
+    expect(events).toEqual(['react']);
+    releaseRetirement.resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(events).toEqual(['react']);
+  } finally {
+    releaseRetirement.resolve();
+    document.removeEventListener(PREFERRED_ADAPTER_EVENT, listener);
+  }
+}, 15000);
