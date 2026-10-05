@@ -187,3 +187,8 @@ export type {
   BrutalistDialogCloseExposes,
   BrutalistDialogCloseAsHookContract,
 } from './dialog';
+export * from './text';
+
+export { default as BrutalistSurfaceRoot, surfaceRoot } from './surface';
+
+export type { SurfaceRootProps, SurfaceRootExposes } from './surface';
