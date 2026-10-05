@@ -94,100 +94,136 @@ it.each(['apply', 'entry-disable', 'explicit-blur'] as const)(
   }
 );
 
-it('renews bounded layout retries after each successful descendant entry', async () => {
-  // Controlled host rejection and layout delivery; actual React Adapter/Focus
-  // implementation owns the pending slot and retry count. No ingress gate or
-  // expected focus facts are injected. This is simulated-DOM evidence.
-  const frames: FrameRequestCallback[] = [];
-  vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
-    frames.push(callback);
-    return frames.length;
-  });
-  const flushLayout = async () => {
-    for (let round = 0; frames.length && round < 20; round++) {
-      const pending = frames.splice(0);
-      await act(async () => {
-        for (const callback of pending) callback(performance.now());
-      });
-    }
-    expect(frames).toHaveLength(0);
-  };
-  const proto = definePrototype({
-    name: 'entry-review-repeated-retry',
-    setup(def) {
-      const entry = asFocusEntry();
-      entry.configure({ strategy: 'descendant-first', fallback: 'none' });
-      def.expose.method('enter', () => entry.focus());
-      return (r) => r.el('button', 'Descendant target');
-    },
-  });
-  const host = document.createElement('div');
-  document.body.append(host);
-  const root = createRoot(host);
-  const ref = React.createRef<any>();
-  const Component = createReactAdapter(React)(proto);
-  try {
-    await act(async () => root.render(React.createElement(Component, { ref })));
-    await flushLayout();
-    const target = host.querySelector('button')!;
-    const nativeFocus = target.focus.bind(target);
-    let rejectNext = false;
-    let rejectAlways = false;
-    const attempts: boolean[] = [];
-    vi.spyOn(target, 'focus').mockImplementation((options) => {
-      const reject = rejectAlways || rejectNext;
-      rejectNext = false;
-      attempts.push(!reject);
-      if (!reject) nativeFocus(options);
+it.each(['omitted', 'reused'] as const)(
+  'renews bounded layout retries for distinct entry intents with %s options',
+  async (optionsMode) => {
+    // Controlled host rejection and layout delivery; actual React Adapter/Focus
+    // implementation owns the pending slot and retry count. No ingress gate or
+    // expected focus facts are injected. This is simulated-DOM evidence.
+    const frames: FrameRequestCallback[] = [];
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      frames.push(callback);
+      return frames.length;
     });
-    const observed: Array<{ cycle: number; active: boolean; attempts: boolean[] }> = [];
-    // Repeated already-applicable entry stays immediate, without layout retry.
-    for (let cycle = 0; cycle < 2; cycle++) {
-      await act(async () => target.blur());
-      attempts.length = 0;
-      await act(async () => ref.current.getExposes().enter());
-      expect(document.activeElement).toBe(target);
-      expect(attempts).toEqual([true]);
+    const flushLayout = async () => {
+      for (let round = 0; frames.length && round < 20; round++) {
+        const pending = frames.splice(0);
+        await act(async () => {
+          for (const callback of pending) callback(performance.now());
+        });
+      }
       expect(frames).toHaveLength(0);
-    }
-    for (let cycle = 0; cycle < 4; cycle++) {
+    };
+    const sharedOptions =
+      optionsMode === 'reused' ? Object.freeze({ preventScroll: true }) : undefined;
+    const proto = definePrototype({
+      name: 'entry-review-repeated-retry',
+      setup(def) {
+        const entry = asFocusEntry();
+        entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+        def.expose.method('enter', () => entry.focus(sharedOptions));
+        return (r) => r.el('button', 'Descendant target');
+      },
+    });
+    const host = document.createElement('div');
+    document.body.append(host);
+    const root = createRoot(host);
+    const ref = React.createRef<any>();
+    const Component = createReactAdapter(React)(proto);
+    try {
+      await act(async () => root.render(React.createElement(Component, { ref })));
+      await flushLayout();
+      const target = host.querySelector('button')!;
+      const nativeFocus = target.focus.bind(target);
+      let rejectNext = false;
+      let rejectAlways = false;
+      const attempts: boolean[] = [];
+      vi.spyOn(target, 'focus').mockImplementation((options) => {
+        const reject = rejectAlways || rejectNext;
+        rejectNext = false;
+        attempts.push(!reject);
+        if (!reject) nativeFocus(options);
+      });
+      const observed: Array<{ cycle: number; active: boolean; attempts: boolean[] }> = [];
+      // Repeated already-applicable entry stays immediate, without layout retry.
+      for (let cycle = 0; cycle < 2; cycle++) {
+        await act(async () => target.blur());
+        attempts.length = 0;
+        await act(async () => ref.current.getExposes().enter());
+        expect(document.activeElement).toBe(target);
+        expect(attempts).toEqual([true]);
+        expect(frames).toHaveLength(0);
+      }
+      for (let cycle = 0; cycle < 4; cycle++) {
+        await act(async () => target.blur());
+        attempts.length = 0;
+        rejectNext = true;
+        await act(async () => ref.current.getExposes().enter());
+        expect(document.activeElement).not.toBe(target);
+        await flushLayout();
+        observed.push({
+          cycle,
+          active: document.activeElement === target,
+          attempts: [...attempts],
+        });
+      }
+      console.info('[entry-retry-review]', JSON.stringify(observed));
+      expect(observed).toEqual(
+        [0, 1, 2, 3].map((cycle) => ({ cycle, active: true, attempts: [false, true] }))
+      );
+      // Resetting after success must not remove the per-request retry bound.
       await act(async () => target.blur());
       attempts.length = 0;
-      rejectNext = true;
+      rejectAlways = true;
       await act(async () => ref.current.getExposes().enter());
-      expect(document.activeElement).not.toBe(target);
       await flushLayout();
-      observed.push({ cycle, active: document.activeElement === target, attempts: [...attempts] });
+      expect(attempts).toEqual([false, false, false, false]);
+      expect(document.activeElement).not.toBe(target);
+      rejectAlways = false;
+      // A distinct request must receive its own bounded retry budget without a
+      // requester commit, including callers that reuse the same options value.
+      rejectNext = true;
+      attempts.length = 0;
+      await act(async () => ref.current.getExposes().enter());
+      await flushLayout();
+      expect(attempts).toEqual([false, true]);
+      expect(document.activeElement).toBe(target);
+      await act(async () => target.blur());
+      rejectAlways = true;
+      attempts.length = 0;
+      await act(async () => ref.current.getExposes().enter());
+      await flushLayout();
+      expect(attempts).toEqual([false, false, false, false]);
+      rejectAlways = false;
+      // A real later commit can announce readiness for the retained request.
+      await act(async () => ref.current.update());
+      await flushLayout();
+      expect(document.activeElement).toBe(target);
+      await act(async () => target.blur());
+      rejectNext = true;
+      attempts.length = 0;
+      await act(async () => ref.current.getExposes().enter());
+      await flushLayout();
+      expect(attempts).toEqual([false, true]);
+      expect(document.activeElement).toBe(target);
+      // Supersession while an old retry is queued cannot donate an extra retry
+      // or let the obsolete callback clear the new intent's scheduled state.
+      await act(async () => target.blur());
+      rejectAlways = true;
+      attempts.length = 0;
+      await act(async () => {
+        ref.current.getExposes().enter();
+        ref.current.getExposes().enter();
+      });
+      await flushLayout();
+      expect(attempts).toEqual([false, false, false, false, false]);
+      expect(document.activeElement).not.toBe(target);
+    } finally {
+      await act(async () => root.unmount());
+      host.remove();
     }
-    console.info('[entry-retry-review]', JSON.stringify(observed));
-    expect(observed).toEqual(
-      [0, 1, 2, 3].map((cycle) => ({ cycle, active: true, attempts: [false, true] }))
-    );
-    // Resetting after success must not remove the per-request retry bound.
-    await act(async () => target.blur());
-    attempts.length = 0;
-    rejectAlways = true;
-    await act(async () => ref.current.getExposes().enter());
-    await flushLayout();
-    expect(attempts).toEqual([false, false, false, false]);
-    expect(document.activeElement).not.toBe(target);
-    rejectAlways = false;
-    // A real later commit can announce readiness for the retained request.
-    await act(async () => ref.current.update());
-    await flushLayout();
-    expect(document.activeElement).toBe(target);
-    await act(async () => target.blur());
-    rejectNext = true;
-    attempts.length = 0;
-    await act(async () => ref.current.getExposes().enter());
-    await flushLayout();
-    expect(attempts).toEqual([false, true]);
-    expect(document.activeElement).toBe(target);
-  } finally {
-    await act(async () => root.unmount());
-    host.remove();
   }
-});
+);
 
 it.each(['programmatic', 'native', 'entry'] as const)(
   'keeps %s request and fact ownership through the real onUpdated gate',

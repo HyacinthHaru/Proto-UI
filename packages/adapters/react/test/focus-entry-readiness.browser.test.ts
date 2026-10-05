@@ -64,6 +64,9 @@ it('native connected descendant entry gets fresh retries after each actual CSS r
     expect(result.cycles).toEqual(
       Array.from({ length: 4 }, () => ({ connected: true, rejected: true, acquired: true }))
     );
+    expect(result.exhausted).toBe(true);
+    expect(result.supersedingRejected).toBe(true);
+    expect(result.supersedingAcquired).toBe(true);
   } finally {
     await context.close();
   }

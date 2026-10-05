@@ -244,6 +244,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   isViewReady: () => boolean;
   isEntryAcquisitionReady: (target: HTMLElement) => boolean;
   onFocusAcquired?: () => void;
+  onEntryIntent?: () => void;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -265,6 +266,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     setExposes,
   } = args;
 
+  let entryIntent: FocusRequestOptions | undefined;
   const getTriggerSurface = () => {
     const target = getLogicalTriggerSurfaceRoot(instanceToken);
     return args.isViewReady() && target?.isConnected ? target : null;
@@ -340,6 +342,10 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       [
         FOCUS_REQUEST_FOCUS_CAP,
         (target: HTMLElement, options: FocusRequestOptions | undefined, kind: FocusRequestKind) => {
+          if (kind === 'entry' && entryIntent !== options) {
+            entryIntent = options;
+            args.onEntryIntent?.();
+          }
           if (
             !target.isConnected ||
             (kind === 'native' && !isNativeFocusTargetReady(target)) ||

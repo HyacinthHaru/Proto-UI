@@ -88,39 +88,24 @@ export function subscribeFocusTargetOwnerReady(
   target: HTMLElement,
   listener: () => void
 ): () => void {
-  const owner = getLogicalEventRouteSurfaceForTarget(target);
-  if (!owner) return () => {};
-  const slot = readinessSlot(owner);
-  let disposed = false;
-  let releaseReady: (() => void) | undefined;
-  const bindReady = () => {
-    releaseReady?.();
-    const source = slot.source;
-    const ready = () => {
-      if (!disposed && slot.source === source && source?.isReady()) listener();
-    };
-    releaseReady = source?.subscribe(ready);
-  };
-  const sourceChanged = () => {
-    if (disposed) return;
-    bindReady();
-    // Unregistration alone is not readiness. Preserve retained entry until a
-    // current view can accept it, then let Focus re-resolve the current target.
-    if (slot.source?.isReady()) listener();
-  };
-  slot.listeners.add(sourceChanged);
-  bindReady();
-  return () => {
-    if (disposed) return;
-    disposed = true;
-    slot.listeners.delete(sourceChanged);
-    releaseReady?.();
-  };
+  const instance = getLogicalEventRouteSurfaceForTarget(target);
+  if (!instance) return () => {};
+  // Keep the logical identity even if its old physical target is removed.
+  // Surface changes rebind readiness before Focus re-resolves entry policy.
+  return subscribeFocusSurfaceReady(
+    instance,
+    () => {
+      const owner = getLogicalTriggerSurfaceOwner(instance);
+      if (nativeFocusReadiness.get(owner)?.source?.isReady()) listener();
+    },
+    true
+  );
 }
 
 export function subscribeFocusSurfaceReady(
   instance: LogicalInstanceToken,
-  listener: () => void
+  listener: () => void,
+  includeSelf = false
 ): () => void {
   let disposed = false;
   let owner: LogicalInstanceToken | undefined;
@@ -134,11 +119,14 @@ export function subscribeFocusSurfaceReady(
     releaseReady = undefined;
     releaseSource = undefined;
     owner = nextOwner;
-    if (owner === instance) return;
+    if (owner === instance && !includeSelf) return;
     const slot = readinessSlot(owner);
     const bindReady = () => {
       releaseReady?.();
-      releaseReady = slot.source?.subscribe(listener);
+      const source = slot.source;
+      releaseReady = source?.subscribe(() => {
+        if (!disposed && owner === nextOwner && slot.source === source) listener();
+      });
     };
     const sourceChanged = () => {
       // A source-change snapshot can outlive this owner binding or subscription.

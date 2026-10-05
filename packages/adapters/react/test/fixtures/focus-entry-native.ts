@@ -132,7 +132,19 @@ export async function observeRepeatedEntry() {
         acquired: document.activeElement === target,
       });
     }
-    return { cycles };
+    await act(async () => target.blur());
+    target.style.display = 'none';
+    await act(async () => ref.current.getExposes().enter());
+    // Three bounded retries each cross two real animation-frame boundaries.
+    // Keep CSS rejection in place until that existing budget is exhausted.
+    await layoutFrames(8);
+    const exhausted = document.activeElement !== target;
+    await act(async () => ref.current.getExposes().enter());
+    const supersedingRejected = document.activeElement !== target;
+    target.style.removeProperty('display');
+    await layoutFrames(3);
+    const supersedingAcquired = document.activeElement === target;
+    return { cycles, exhausted, supersedingRejected, supersedingAcquired };
   } finally {
     await act(async () => root.unmount());
     host.remove();

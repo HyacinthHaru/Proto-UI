@@ -432,6 +432,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         });
         bindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
         let viewDisposed = false;
+        let focusRetryGeneration = 0;
         let releaseRequestedTargetReady: (() => void) | undefined;
         const releaseNativeReadiness = registerNativeFocusReadiness(instanceTokenRef.current, {
           isReady: () =>
@@ -515,6 +516,11 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             });
             return false;
           },
+          onEntryIntent: () => {
+            focusRetryGeneration += 1;
+            focusTargetRetryScheduledRef.current = false;
+            focusTargetRetryCountRef.current = 0;
+          },
           onFocusAcquired: () => {
             releaseRequestedTargetReady?.();
             releaseRequestedTargetReady = undefined;
@@ -534,9 +540,11 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             }
             focusTargetRetryScheduledRef.current = true;
             focusTargetRetryCountRef.current += 1;
+            const generation = focusRetryGeneration;
             scheduleAfterWebLayout(
               rootRef.current,
               () => {
+                if (viewDisposed || generation !== focusRetryGeneration) return;
                 focusTargetRetryScheduledRef.current = false;
                 notifyFocusTargetReady();
               },
