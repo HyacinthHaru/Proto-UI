@@ -5,6 +5,11 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { establishExecutionMode } from './skill-registry.mjs';
+import {
+  ownerAuthorizationFromArgs,
+  ownerAuthorizationAllows,
+  ownerCollaborationScope,
+} from './owner-authorization.mjs';
 import { MAX_LIVE_RESPONSE_BYTES, parseRepositoryId } from './collect-live-review-input.mjs';
 import {
   loadModelTraceRecord,
@@ -20,8 +25,9 @@ const COMMON = [
   '--authorization',
   '--repository',
 ];
+const OWNER_OPTIONS = ['--owner-authorization', '--owner-key', '--owner-grant'];
 const OPTIONS = new Map([
-  ['commit', [...COMMON, '--message-file', '--branch', '--expected-head']],
+  ['commit', [...COMMON, '--message-file', '--branch', '--expected-head', '--expected-tree']],
   ['issue create', [...COMMON, '--title', '--body-file']],
   ['pull-request create', [...COMMON, '--title', '--body-file', '--base', '--head']],
   ['comment', [...COMMON, '--number', '--body-file']],
@@ -52,7 +58,8 @@ export function parsePublishCli(argv) {
   for (let i = 0; i < values.length; i += 2) {
     const key = values[i];
     const value = values[i + 1];
-    if (!OPTIONS.get(command).includes(key)) throw new Error(`unexpected option: ${key}`);
+    if (!OPTIONS.get(command).includes(key) && !OWNER_OPTIONS.includes(key))
+      throw new Error(`unexpected option: ${key}`);
     if (args.has(key)) throw new Error(`duplicate option: ${key}`);
     if (!value || value.startsWith('--')) throw new Error(`missing value: ${key}`);
     args.set(key, value);
@@ -62,13 +69,20 @@ export function parsePublishCli(argv) {
     if (!args.has(key)) throw new Error(`${key} is required`);
   }
   establishExecutionMode(args.get('--mode'), args.get('--mode-source'));
-  if (args.get('--authorization') !== 'explicit-current-user') {
+  const ownerOptions = OWNER_OPTIONS.filter((key) => args.has(key));
+  if (ownerOptions.length !== 0 && ownerOptions.length !== OWNER_OPTIONS.length)
+    throw new Error('all trusted owner launcher arguments are required');
+  if (args.get('--authorization') === 'explicit-current-user') {
+    if (args.get('--mode') !== 'human-assisted')
+      throw new Error('autonomous execution cannot claim explicit-current-user authorization');
+  } else if (
+    ownerOptions.length !== OWNER_OPTIONS.length ||
+    args.get('--authorization') !== args.get('--owner-grant')
+  ) {
     throw new Error(
-      'publisher requires explicit-current-user; standing scopes are not activated here'
+      'publisher requires explicit-current-user or verified owner delegation; generic standing scopes are not activated here'
     );
   }
-  if (args.get('--mode') !== 'human-assisted')
-    throw new Error('autonomous execution cannot claim explicit-current-user authorization');
   for (const key of OPTIONS.get(command)) if (!args.has(key)) throw new Error(`${key} is required`);
   parseRepositoryId(args.get('--repository'));
   if (args.has('--number') && !/^[1-9][0-9]*$/.test(args.get('--number')))
@@ -83,6 +97,8 @@ export function parsePublishCli(argv) {
   }
   if (command === 'commit' && !/^[a-f0-9]{40,64}$/.test(args.get('--expected-head')))
     throw new Error('--expected-head must be an exact commit SHA');
+  if (command === 'commit' && !/^[a-f0-9]{40,64}$/.test(args.get('--expected-tree')))
+    throw new Error('--expected-tree must be an exact authorized tree SHA');
   return { command, args };
 }
 
@@ -179,15 +195,18 @@ function localCommitBinding(io, args) {
   const head = io.run('git', ['rev-parse', 'HEAD']).trim();
   if (branch !== args.get('--branch') || head !== args.get('--expected-head'))
     throw new Error('local branch or exact HEAD binding changed');
+  const tree = io.run('git', ['write-tree']).trim();
+  if (tree !== args.get('--expected-tree'))
+    throw new Error('staged index differs from the exact authorized tree');
   if (['main', 'master'].includes(branch))
     throw new Error(
       'commit requires the explicitly authorized contributor branch, not a default branch'
     );
   io.run('git', ['check-ref-format', '--branch', branch]);
   // Creating a local commit grants no GitHub privilege. The operator authorizes
-  // this exact branch/head; the configured signer still owns DCO responsibility.
+  // this exact branch/head/tree; the configured signer still owns DCO responsibility.
   // Existing contributor history and protected push rules are not model identity.
-  return { branch, head };
+  return { branch, head, tree };
 }
 
 function pullBinding(io, args, viewer) {
@@ -289,6 +308,22 @@ export function runCommitMessageHook(messagePath, options = {}) {
 export function runPublishCli(argv, options = {}) {
   const { command, args } = parsePublishCli(argv);
   const repositoryId = args.get('--repository');
+  const ownerAuthorization = ownerAuthorizationFromArgs(args);
+  const authorize = (scopeId, actor) => {
+    if (args.get('--authorization') === 'explicit-current-user') return;
+    if (
+      !ownerAuthorizationAllows(ownerAuthorization, {
+        repositoryId,
+        scopeId,
+        action: command === 'commit' ? 'implement' : 'collaborate',
+        actor,
+        authorizationId: args.get('--authorization'),
+        executionMode: args.get('--mode'),
+        executionModeSource: args.get('--mode-source'),
+      })
+    )
+      throw new Error('publisher owner delegation does not authorize this exact operation');
+  };
   const recordPath = path.resolve(args.get('--record'));
   const contextPath = path.resolve(args.get('--context'));
   // Recompute the private raw samples. Never substitute a system/harness model.
@@ -298,6 +333,9 @@ export function runPublishCli(argv, options = {}) {
   const io = tools(options);
   if (command === 'commit') {
     const binding = localCommitBinding(io, args);
+    // Local commits and new GitHub objects have no existing numbered target.
+    // Owner delegation must explicitly grant the repository portfolio for them.
+    authorize();
     const prepared = fs.readFileSync(args.get('--message-file'), 'utf8');
     if (!prepared.trim() || /^ModelTrace:/m.test(prepared))
       throw new Error(
@@ -308,18 +346,22 @@ export function runPublishCli(argv, options = {}) {
     try {
       const messagePath = path.join(directory, 'message');
       fs.writeFileSync(messagePath, message, { mode: 0o600 });
-      if (JSON.stringify(localCommitBinding(io, args)) !== JSON.stringify(binding))
-        throw new Error('commit branch changed before write');
+      const commitEnvironment = {
+        ...process.env,
+        GIT_INDEX_FILE: path.join(directory, 'index'),
+        PUI_AGENT: '1',
+        PUI_MODELTRACE_RECORD: recordPath,
+        PUI_MODELTRACE_CONTEXT: contextPath,
+      };
+      io.run('git', ['read-tree', binding.tree], { env: commitEnvironment });
       assertModelTraceDisclosure(message, measure(), 'commit');
+      if (JSON.stringify(localCommitBinding(io, args)) !== JSON.stringify(binding))
+        throw new Error('commit branch or staged tree changed before write');
+      authorize();
       let output;
       try {
         output = io.run('git', ['commit', '--signoff', '--file', messagePath], {
-          env: {
-            ...process.env,
-            PUI_AGENT: '1',
-            PUI_MODELTRACE_RECORD: recordPath,
-            PUI_MODELTRACE_CONTEXT: contextPath,
-          },
+          env: commitEnvironment,
         });
       } catch {
         throw new PublicationUnknown(
@@ -328,6 +370,10 @@ export function runPublishCli(argv, options = {}) {
       }
       const committed = io.run('git', ['log', '-1', '--format=%B']);
       assertModelTraceDisclosure(committed, receipt, 'commit');
+      if (io.run('git', ['rev-parse', 'HEAD^{tree}']).trim() !== binding.tree)
+        throw new PublicationUnknown(
+          'committed tree differs from authorization; inspect local HEAD and index before any retry'
+        );
       return {
         status: 'published',
         command,
@@ -349,6 +395,14 @@ export function runPublishCli(argv, options = {}) {
   else if (/<!-- proto-ui-agent-publication:/i.test(prepared))
     throw new Error('undisclosed prepared body must not forge a publication marker');
   const number = args.has('--number') ? Number(args.get('--number')) : null;
+  let before = number === null ? null : target(io, endpoint, number);
+  const branch = command === 'pull-request create' ? pullBinding(io, args, viewer) : null;
+  const scopeId = before
+    ? ownerCollaborationScope({
+        target: { kind: before.pull_request ? 'pull-request' : 'issue', number },
+      })
+    : undefined;
+  authorize(scopeId, viewer.login);
   const publicationDigest = sha256(
     JSON.stringify({
       repositoryId,
@@ -357,6 +411,7 @@ export function runPublishCli(argv, options = {}) {
       title: args.get('--title') ?? null,
       base: args.get('--base') ?? null,
       head: args.get('--head') ?? null,
+      ...(branch ?? {}),
       prepared,
     })
   );
@@ -366,11 +421,19 @@ export function runPublishCli(argv, options = {}) {
   const body = exactPrepared
     ? prepared
     : `${prepared}${prepared.endsWith('\n') ? '\n' : '\n\n'}${renderModelTraceDisclosure(receipt, 'markdown')}\n\n${marker}\n`;
-  let before = number === null ? null : target(io, endpoint, number);
-  const branch = command === 'pull-request create' ? pullBinding(io, args, viewer) : null;
   if (before?.locked) throw new Error('target is locked');
   if (command === 'update-body' && !sameLogin(before.user?.login, viewer.login))
     throw new Error('body replacement requires a credential-owned Issue or PR');
+  function samePullBinding(pull) {
+    const sourceOwner = args.get('--head').includes(':') ? args.get('--head').split(':')[0] : owner;
+    return (
+      pull.base?.ref === args.get('--base') &&
+      pull.base?.sha === branch.baseSha &&
+      pull.head?.ref === args.get('--head').split(':').at(-1) &&
+      pull.head?.sha === branch.headSha &&
+      pull.head?.repo?.full_name?.toLowerCase() === `${sourceOwner}/${name}`.toLowerCase()
+    );
+  }
   function findPublished() {
     if (command === 'update-body') {
       const current = target(io, endpoint, number);
@@ -382,12 +445,18 @@ export function runPublishCli(argv, options = {}) {
       command === 'comment'
         ? `${endpoint}/issues/${number}/comments?per_page=100`
         : `${endpoint}/issues?state=all&creator=${encodeURIComponent(viewer.login)}&per_page=100`;
-    const items = io
+    let items = io
       .api(route, { paginate: true })
       .filter(
         (item) =>
           typeof item.body === 'string' &&
           (marker === null ? item.body === body : item.body.includes(marker))
+      );
+    // An approved immutable body has no added marker. Bind those matches to
+    // actual PR revisions rather than borrowing an older closed PR's bytes.
+    if (marker === null && branch)
+      items = items.filter(
+        (item) => item.pull_request && samePullBinding(io.api(`${endpoint}/pulls/${item.number}`))
       );
     if (items.length > 1)
       throw new Error('multiple publication markers exist; refusing duplicate publication');
@@ -407,16 +476,7 @@ export function runPublishCli(argv, options = {}) {
     if (command === 'pull-request create') {
       if (!item.pull_request) throw new Error('publication marker belongs to an Issue, not a PR');
       const pull = io.api(`${endpoint}/pulls/${item.number}`);
-      const sourceOwner = args.get('--head').includes(':')
-        ? args.get('--head').split(':')[0]
-        : owner;
-      if (
-        pull.base?.ref !== args.get('--base') ||
-        pull.head?.ref !== args.get('--head').split(':').at(-1) ||
-        pull.head?.sha !== branch.headSha ||
-        pull.head?.repo?.full_name?.toLowerCase() !== `${sourceOwner}/${name}`.toLowerCase()
-      )
-        throw new Error('existing PR head/base binding changed');
+      if (!samePullBinding(pull)) throw new Error('existing PR head/base binding changed');
       // PR and backing Issue IDs are different GitHub platform objects.
       // Match a PR creation acknowledgement to the re-read PR, not its Issue.
       return exactPublished(pull, body, viewer, {
@@ -446,6 +506,7 @@ export function runPublishCli(argv, options = {}) {
   if (findPublished())
     throw new Error('publication appeared during preflight; rerun read-only reconciliation');
   assertModelTraceDisclosure(body, measure(), 'markdown');
+  authorize(scopeId, viewer.login);
   let route;
   let method = 'POST';
   let input = { body };

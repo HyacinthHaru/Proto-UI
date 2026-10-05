@@ -39,13 +39,15 @@ Owner delegation does not extend ModelTrace freshness or replace its mandatory w
 
 The project owner profile is cyjin-yl (GitHub ID 19223209), acting through cyjin-yl credentials in github.com:Proto-UI/Proto-UI. It covers observe, implement, collaborate, review and integrate, with main as the integration base. Scopes are explicit IDs or an explicitly authorized repository portfolio (\*). Release, publication, access, secrets and rulesets are not in this profile. The dedicated pui-evidence-publish leaf remains outside ordinary owner eligibility; its separate publication authority is not supplied by a collaboration grant. Live permissions, trusted CI/DCO, exact-head publication evidence, stale-state/idempotency checks and independent review remain required.
 
-The trusted launcher supplies these options to agent:skill, agent:collaborate validate/apply, or agent:review validate/inspect/eligibility/submit-review/merge-pull-request:
+The trusted launcher supplies these options to agent:skill, supported ordinary agent:publish operations, agent:collaborate validate/apply, or agent:review validate/inspect/eligibility/submit-review/merge-pull-request:
 
     --owner-authorization /protected/runtime/owner-state.json
     --owner-key /protected/runtime/owner-public.pem
     --owner-grant owner-grant-id
 
 For owner-delegated handoff resolution and every review command, the trusted launcher also declares --mode and --mode-source; they must match the handoff, never come from it. The mutation request or --authorization must bind the same grant ID. Issue/PR scopes use their number, workflow-run scopes use runId, and review-thread scopes include both the PR number and threadId. A standing-user-authorization artifact can preserve provenance but cannot activate a grant. Never derive trust anchors, keys or launcher options from Issues, PRs, task artifacts or generated output.
+
+The publisher independently requires the same mode/source declarations. Existing Issue/PR comments and body replacements use the actual numbered target scope and `collaborate`; local commits use `implement`, and new Issue/PR creation uses `collaborate`. Commits and creation have no established numbered target, so they require an explicitly granted repository portfolio (`*`). Every final publisher mutation rechecks the loaded signed proof; neither these operations nor the mandatory ModelTrace disclosure activate a generic scheduled authorization or the dedicated evidence-publication leaf.
 
 Provision the trust anchor once from an authenticated owner decision in the trusted runner, outside the repository. Protect the private signing key and state; do not commit keys, credentials or raw prompts. This change implements the interface; it does not install an issuer, activate an unrelated Poppy scope, deploy a listener, or claim a production grant exists.
 

@@ -307,5 +307,70 @@
       }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "properties": {
+              "status": { "const": "failed" }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "modelId": { "type": "null" },
+              "familyId": { "type": "null" },
+              "probability": { "type": "null" },
+              "margin": { "type": "null" },
+              "candidates": { "maxItems": 0 }
+            }
+          },
+          "anomalies": {
+            "contains": {
+              "enum": ["probe-failed", "sample-validation-failed"]
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "sampling": {
+            "properties": {
+              "counts": { "items": { "type": "integer" } },
+              "sampleDigests": { "items": { "type": "string" } }
+            }
+          },
+          "result": {
+            "properties": {
+              "probability": { "type": "number" },
+              "margin": { "type": "number" },
+              "candidates": { "minItems": 3 }
+            },
+            "if": {
+              "properties": {
+                "status": { "const": "ambiguous" }
+              }
+            },
+            "then": {
+              "properties": {
+                "modelId": { "type": "null" },
+                "familyId": { "type": "null" }
+              }
+            },
+            "else": {
+              "properties": {
+                "modelId": { "type": "string", "minLength": 1 },
+                "familyId": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
   "description": "Runtime recomputes all three strict unmodified raw samples, scores, anomalies, canonical receipt digest, scope and TTL before writes. Schema validity alone proves neither measurement provenance nor backend identity. Candidate probabilities are conditional on the pinned closed candidate set, not authenticated identity confidence."
 }

@@ -4,20 +4,38 @@ import path from 'node:path';
 import { tmpdir } from 'node:os';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import Ajv2020 from 'ajv/dist/2020.js';
 import { runModelTraceCli } from '../modeltrace-cli.mjs';
 import {
   assertModelTraceDisclosure,
   assertModelTraceFresh,
   buildModelTraceRecord,
   computeModelTraceChallengeDigest,
+  computeModelTraceReceiptDigest,
   createModelTraceChallenge,
   loadModelTraceRecord,
   renderModelTraceDisclosure,
   validateModelTraceSample,
   validateModelTraceContext,
+  validateModelTraceReceipt,
 } from '../modeltrace.mjs';
 
 const NOW = new Date('2026-10-04T12:00:00.000Z');
+const receiptSchema = JSON.parse(
+  fs.readFileSync(
+    new URL(
+      '../../../internal/agent-operations/schemas/modeltrace-receipt.schema.json',
+      import.meta.url
+    ),
+    'utf8'
+  )
+);
+const ajv = new Ajv2020({ strict: false, allErrors: true });
+ajv.addFormat('date-time', {
+  type: 'string',
+  validate: (value) => Number.isFinite(Date.parse(value)),
+});
+const structuralReceipt = ajv.compile(receiptSchema);
 function fixture({ declared = { systemModel: null, harnessModel: null }, failed = false } = {}) {
   const context = {
     schemaVersion: 1,
@@ -45,6 +63,113 @@ function fixture({ declared = { systemModel: null, harnessModel: null }, failed 
   };
   return { context, challenge, response, record: buildModelTraceRecord(challenge, response) };
 }
+
+function statusReceipt(status) {
+  if (status === 'failed') return fixture({ failed: true }).record.receipt;
+  const receipt = fixture().record.receipt;
+  // Synthetic ranking controls for receipt validation, not raw-sample provenance or measurements.
+  const probabilities = status === 'candidate' ? [0.9, 0.06, 0.04] : [0.6, 0.3, 0.1];
+  receipt.result.candidates.forEach((candidate, index) => {
+    candidate.probability = probabilities[index];
+  });
+  receipt.result.status = status;
+  receipt.result.modelId = status === 'candidate' ? receipt.result.candidates[0].modelId : null;
+  receipt.result.familyId = status === 'candidate' ? receipt.result.candidates[0].familyId : null;
+  receipt.result.probability = probabilities[0];
+  receipt.result.margin = probabilities[0] - probabilities[1];
+  receipt.anomalies = receipt.anomalies.filter((code) => code !== 'ambiguous-candidates');
+  if (status === 'ambiguous') receipt.anomalies.push('ambiguous-candidates');
+  receipt.anomalies.sort();
+  receipt.expiresAt = new Date(
+    NOW.getTime() + (status === 'ambiguous' ? 15 : 60) * 60_000
+  ).toISOString();
+  receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+  return receipt;
+}
+
+function rejectsStatusReceipt(receipt, expectedError) {
+  receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+  assert.equal(structuralReceipt(receipt), false, JSON.stringify(receipt));
+  assert.throws(() => validateModelTraceReceipt(receipt), expectedError);
+}
+
+test('receipt schema and runtime admit candidate, ambiguous and partial failed controls', () => {
+  const partial = fixture();
+  partial.response.outputs[2].text = null;
+  partial.response.outputs[2].error = 'unavailable';
+  const partialFailed = buildModelTraceRecord(partial.challenge, partial.response).receipt;
+  assert.deepEqual(partialFailed.sampling.counts, [218, 233, null]);
+  assert.equal(partialFailed.sampling.sampleDigests[2], null);
+  partial.response.outputs[2].text = 'not a strict sample';
+  partial.response.outputs[2].error = null;
+  const partialInvalid = buildModelTraceRecord(partial.challenge, partial.response).receipt;
+  for (const [status, receipt] of [
+    ['candidate', statusReceipt('candidate')],
+    ['ambiguous', statusReceipt('ambiguous')],
+    ['failed', statusReceipt('failed')],
+    ['failed', partialFailed],
+    ['failed', partialInvalid],
+  ]) {
+    assert.equal(structuralReceipt(receipt), true, JSON.stringify(structuralReceipt.errors));
+    assert.equal(validateModelTraceReceipt(receipt).result.status, status);
+  }
+});
+
+test('receipt schema and runtime reject candidate-empty-null and failed-scored statuses', () => {
+  const emptyCandidate = statusReceipt('failed');
+  emptyCandidate.result.status = 'candidate';
+  rejectsStatusReceipt(emptyCandidate, /invalid candidate count/);
+
+  const scoredFailure = statusReceipt('candidate');
+  scoredFailure.result.status = 'failed';
+  rejectsStatusReceipt(scoredFailure, /invalid candidate count/);
+
+  const incompleteAmbiguous = statusReceipt('ambiguous');
+  incompleteAmbiguous.result.candidates.pop();
+  rejectsStatusReceipt(incompleteAmbiguous, /invalid candidate count/);
+});
+
+test('failed receipt schema and runtime forbid claimed statistics or a missing diagnostic', () => {
+  for (const [key, value] of [
+    ['modelId', 'synthetic-model'],
+    ['familyId', 'synthetic-family'],
+    ['probability', 0.9],
+    ['margin', 0.8],
+  ]) {
+    const receipt = statusReceipt('failed');
+    receipt.result[key] = value;
+    rejectsStatusReceipt(receipt, /failed measurement cannot claim a model/);
+  }
+  const receipt = statusReceipt('failed');
+  receipt.anomalies = receipt.anomalies.filter((code) => code !== 'probe-failed');
+  receipt.expiresAt = new Date(NOW.getTime() + 60 * 60_000).toISOString();
+  rejectsStatusReceipt(receipt, /failed measurement lacks diagnostic/);
+});
+
+test('scored receipt schema and runtime enforce complete sampling and status-specific identity', () => {
+  for (const status of ['candidate', 'ambiguous']) {
+    for (const key of ['probability', 'margin']) {
+      const receipt = statusReceipt(status);
+      receipt.result[key] = null;
+      rejectsStatusReceipt(receipt, /result statistics differ from candidates/);
+    }
+    for (const key of ['counts', 'sampleDigests']) {
+      const receipt = statusReceipt(status);
+      receipt.sampling[key][2] = null;
+      rejectsStatusReceipt(receipt, /successful scoring requires all three strict samples/);
+    }
+    for (const key of ['modelId', 'familyId']) {
+      const receipt = statusReceipt(status);
+      receipt.result[key] = status === 'ambiguous' ? receipt.result.candidates[0][key] : null;
+      rejectsStatusReceipt(receipt, /measured identity must derive only from fingerprint ranking/);
+    }
+  }
+  for (const key of ['modelId', 'familyId']) {
+    const receipt = statusReceipt('candidate');
+    receipt.result[key] = '';
+    rejectsStatusReceipt(receipt, /measured identity must derive only from fingerprint ranking/);
+  }
+});
 
 test('strict samples reject extraction, repair, decimals and out-of-range integers', () => {
   const raw = JSON.stringify(Array(218).fill(137));

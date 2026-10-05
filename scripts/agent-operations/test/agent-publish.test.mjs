@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
+import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import fs from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -18,6 +18,7 @@ import {
   createModelTraceChallenge,
   renderModelTraceDisclosure,
 } from '../modeltrace.mjs';
+import { ownerDelegationSigningBytes } from '../owner-authorization.mjs';
 
 const REPOSITORY = 'github.com:fixture-owner/fixture-repository';
 const LOGIN = 'fixture-contributor';
@@ -35,14 +36,19 @@ const LAUNCH = [
 
 function fixture(
   t,
-  { body = 'Synthetic offline publication fixture.\n', now = new Date(), failed = false } = {}
+  {
+    body = 'Synthetic offline publication fixture.\n',
+    now = new Date(),
+    failed = false,
+    repositoryId = REPOSITORY,
+  } = {}
 ) {
   const directory = fs.mkdtempSync(path.join(tmpdir(), 'agent-publish-fixture-'));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
   const context = {
     schemaVersion: 1,
     kind: 'proto-ui.modeltrace-context',
-    repositoryId: REPOSITORY,
+    repositoryId,
     sessionId: 'synthetic-test-session-not-an-agent-identity',
     contextDigest: 'a'.repeat(64),
     routeDigest: 'b'.repeat(64),
@@ -86,7 +92,15 @@ function fixture(
     contextPath,
     bodyPath,
     body,
-    args: [...LAUNCH, '--repository', REPOSITORY, '--record', recordPath, '--context', contextPath],
+    args: [
+      ...LAUNCH,
+      '--repository',
+      repositoryId,
+      '--record',
+      recordPath,
+      '--context',
+      contextPath,
+    ],
     env: {
       ...process.env,
       PUI_AGENT: '1',
@@ -105,6 +119,9 @@ function server({
   permission = 'WRITE',
   sourceOwner = 'fixture-owner',
   protectedBranch = false,
+  repositoryId = REPOSITORY,
+  login = LOGIN,
+  revision = { headSha: 'c'.repeat(40), baseSha: 'd'.repeat(40) },
 } = {}) {
   const comments = [];
   const issues = [];
@@ -118,14 +135,16 @@ function server({
     state: 'closed',
     locked: false,
     updated_at: '2026-10-04T00:00:00Z',
-    user: { login: LOGIN },
+    user: { login },
     html_url: 'fixture://issue/7',
   };
+  const fullName = repositoryId.slice('github.com:'.length);
   const runner = (binary, args, options) => {
     if (binary === 'git' && pull) {
-      if (args[0] === 'config') return `https://github.com/${sourceOwner}/fixture-repository.git\n`;
+      if (args[0] === 'config')
+        return `https://github.com/${sourceOwner}/${fullName.split('/')[1]}.git\n`;
       if (args[0] === 'symbolic-ref') return 'fixture-contributor-branch\n';
-      if (args[0] === 'rev-parse') return `${'c'.repeat(40)}\n`;
+      if (args[0] === 'rev-parse') return `${revision.headSha}\n`;
       if (args[0] === 'check-ref-format') return '';
     }
     assert.equal(binary, 'gh');
@@ -137,9 +156,9 @@ function server({
     if (endpoint === 'graphql')
       return JSON.stringify({
         data: {
-          viewer: { login: LOGIN },
+          viewer: { login },
           repository: {
-            nameWithOwner: 'fixture-owner/fixture-repository',
+            nameWithOwner: fullName,
             viewerPermission: permission,
             isArchived: false,
             defaultBranchRef: { name: 'main' },
@@ -148,19 +167,30 @@ function server({
       });
     if (method !== 'GET') {
       writes.push({ method, endpoint, input });
+      const number = 10 + comments.length + issues.length;
       let published;
       if (method === 'PATCH')
         published = { ...target, ...input, updated_at: '2026-10-04T00:01:00Z' };
       else
         published = {
-          id: 10,
-          number: 10,
+          id: number,
+          number,
           node_id: 'I_created',
           ...input,
-          user: { login: LOGIN },
+          user: { login },
           updated_at: '2026-10-04T00:01:00Z',
-          html_url: 'fixture://publication/10',
-          ...(pull ? { pull_request: { url: 'fixture://pull/10' } } : {}),
+          html_url: `fixture://publication/${number}`,
+          ...(pull
+            ? {
+                pull_request: { url: `fixture://pull/${number}` },
+                base: { ref: 'main', sha: revision.baseSha },
+                head: {
+                  ref: 'fixture-contributor-branch',
+                  sha: revision.headSha,
+                  repo: { full_name: `${sourceOwner}/${fullName.split('/')[1]}` },
+                },
+              }
+            : {}),
         };
       if (!unknown || applyUnknown) {
         if (endpoint.endsWith('/comments')) comments.push(published);
@@ -170,14 +200,14 @@ function server({
       if (unknown) throw new Error('synthetic connection lost after possible server write');
       return JSON.stringify(
         pull && endpoint.endsWith('/pulls')
-          ? { ...published, id: 110, node_id: 'PR_created' }
+          ? { ...published, id: 100 + number, node_id: 'PR_created' }
           : published
       );
     }
     if (endpoint.includes('/issues/7/comments?')) return JSON.stringify(comments);
     if (pull && endpoint.includes('/branches/'))
       return JSON.stringify({
-        commit: { sha: endpoint.endsWith('/main') ? 'd'.repeat(40) : 'c'.repeat(40) },
+        commit: { sha: endpoint.endsWith('/main') ? revision.baseSha : revision.headSha },
         protected: protectedBranch,
       });
     if (pull && endpoint.includes('/compare/'))
@@ -185,27 +215,25 @@ function server({
         total_commits: 1,
         commits: [
           {
-            sha: 'c'.repeat(40),
-            author: { login: foreignCommit ? 'another-contributor' : LOGIN },
-            committer: { login: LOGIN },
+            sha: revision.headSha,
+            author: { login: foreignCommit ? 'another-contributor' : login },
+            committer: { login },
           },
         ],
       });
-    if (pull && endpoint.endsWith('/pulls/10'))
-      return JSON.stringify({
-        ...issues[0],
-        id: 110,
-        node_id: 'PR_created',
-        base: { ref: 'main' },
-        head: {
-          ref: 'fixture-contributor-branch',
-          sha: 'c'.repeat(40),
-          repo: { full_name: `${sourceOwner}/fixture-repository` },
-        },
-      });
-    if (endpoint.includes('/issues/comments/10')) return JSON.stringify(comments[0]);
+    if (pull && /\/pulls\/\d+$/.test(endpoint)) {
+      const item = issues.find((item) => item.number === Number(endpoint.split('/').at(-1)));
+      return JSON.stringify({ ...item, id: 100 + item.number, node_id: 'PR_created' });
+    }
+    if (/\/issues\/comments\/\d+$/.test(endpoint))
+      return JSON.stringify(
+        comments.find((item) => item.id === Number(endpoint.split('/').at(-1)))
+      );
     if (endpoint.includes('/issues?')) return JSON.stringify(issues);
-    if (endpoint.endsWith('/issues/10')) return JSON.stringify(issues[0]);
+    if (/\/issues\/\d+$/.test(endpoint) && !endpoint.endsWith('/issues/7'))
+      return JSON.stringify(
+        issues.find((item) => item.number === Number(endpoint.split('/').at(-1)))
+      );
     if (endpoint.endsWith('/issues/7')) {
       targetReads++;
       return JSON.stringify(
@@ -217,6 +245,135 @@ function server({
     throw new Error(`unexpected fixture endpoint: ${endpoint}`);
   };
   return { runner, writes, comments, issues, target };
+}
+
+function ownerFixture(f, { scopeIds = ['*'], actions = ['implement', 'collaborate'] } = {}) {
+  // This disposable signer is a synthetic trust anchor, never a production grant.
+  const { privateKey, publicKey } = generateKeyPairSync('ed25519');
+  const statePath = path.join(f.directory, 'owner-state.json');
+  const keyPath = path.join(f.directory, 'owner.pub');
+  fs.writeFileSync(keyPath, publicKey.export({ type: 'spki', format: 'pem' }));
+  const grant = {
+    id: 'synthetic-publisher-owner',
+    generation: 1,
+    status: 'active',
+    grantor: { login: 'cyjin-yl', id: 19223209 },
+    actor: 'cyjin-yl',
+    repositoryId: 'github.com:Proto-UI/Proto-UI',
+    actions,
+    scopeIds,
+    baseRefName: 'main',
+    decisionReference: 'fixture:synthetic-owner-decision',
+  };
+  const save = (current = grant, revision = 1) => {
+    const payload = {
+      schemaVersion: 1,
+      kind: 'proto-ui.owner-delegation-state',
+      revision,
+      grants: [current],
+    };
+    fs.writeFileSync(
+      statePath,
+      JSON.stringify({
+        payload,
+        signature: sign(null, ownerDelegationSigningBytes(payload), privateKey).toString('base64'),
+      })
+    );
+  };
+  save();
+  return {
+    grant,
+    save,
+    args: [
+      '--mode',
+      'autonomous',
+      '--mode-source',
+      'schedule',
+      '--authorization',
+      grant.id,
+      '--owner-authorization',
+      statePath,
+      '--owner-key',
+      keyPath,
+      '--owner-grant',
+      grant.id,
+      ...f.args.slice(LAUNCH.length),
+    ],
+  };
+}
+
+function localRepository(f) {
+  const git = (args) =>
+    execFileSync('git', args, {
+      cwd: f.directory,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        PUI_AGENT: '0',
+        GIT_AUTHOR_NAME: LOGIN,
+        GIT_AUTHOR_EMAIL: 'fixture@example.invalid',
+        GIT_COMMITTER_NAME: LOGIN,
+        GIT_COMMITTER_EMAIL: 'fixture@example.invalid',
+      },
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+  git(['init', '--initial-branch=main']);
+  git(['config', 'user.name', LOGIN]);
+  git(['config', 'user.email', 'fixture@example.invalid']);
+  git(['config', 'commit.gpgsign', 'false']);
+  git(['config', 'core.hooksPath', '.git/hooks']);
+  const repositoryId = f.args[f.args.indexOf('--repository') + 1];
+  git([
+    'remote',
+    'add',
+    'origin',
+    `https://github.com/${repositoryId.slice('github.com:'.length)}.git`,
+  ]);
+  fs.writeFileSync(path.join(f.directory, 'initial.txt'), 'Synthetic repository fixture\n');
+  git(['add', 'initial.txt']);
+  git(['commit', '-m', 'Synthetic fixture baseline']);
+  git(['update-ref', 'refs/remotes/origin/main', 'HEAD']);
+  git(['checkout', '-b', 'fixture-contributor-branch']);
+  const before = git(['rev-parse', 'HEAD']).trim();
+  fs.writeFileSync(
+    path.join(f.directory, '.git/hooks/commit-msg'),
+    `#!/bin/sh\nexec "${process.execPath}" "${PUBLISH_SCRIPT}" check-commit-message --message-file "$1"\n`,
+    { mode: 0o700 }
+  );
+  fs.writeFileSync(path.join(f.directory, 'change.txt'), 'Synthetic contributor change\n');
+  git(['add', 'change.txt']);
+  const tree = git(['write-tree']).trim();
+  const messagePath = path.join(f.directory, 'message.txt');
+  fs.writeFileSync(messagePath, 'feat: synthetic fixture contributor commit\n');
+  const runner = (binary, args, options) => {
+    assert.equal(binary, 'git', 'local commits must not acquire GitHub network privileges');
+    return execFileSync(binary, args, {
+      ...options,
+      env: {
+        ...(options.env ?? process.env),
+        GIT_AUTHOR_NAME: LOGIN,
+        GIT_AUTHOR_EMAIL: 'fixture@example.invalid',
+        GIT_COMMITTER_NAME: LOGIN,
+        GIT_COMMITTER_EMAIL: 'fixture@example.invalid',
+      },
+    });
+  };
+  return {
+    git,
+    before,
+    tree,
+    runner,
+    args: [
+      '--message-file',
+      messagePath,
+      '--branch',
+      'fixture-contributor-branch',
+      '--expected-head',
+      before,
+      '--expected-tree',
+      tree,
+    ],
+  };
 }
 
 for (const declaration of ['--record', '--context', '--mode', '--mode-source', '--authorization']) {
@@ -581,73 +738,237 @@ test('hook exempts human commits and rejects missing or expired Agent disclosure
 
 test('contributor commit executes git signoff and the independent installed hook in a throwaway repository', (t) => {
   const f = fixture(t, { failed: true });
-  const git = (args) =>
-    execFileSync('git', args, {
-      cwd: f.directory,
-      encoding: 'utf8',
-      env: {
-        ...process.env,
-        PUI_AGENT: '0',
-        GIT_AUTHOR_NAME: LOGIN,
-        GIT_AUTHOR_EMAIL: 'fixture@example.invalid',
-        GIT_COMMITTER_NAME: LOGIN,
-        GIT_COMMITTER_EMAIL: 'fixture@example.invalid',
-      },
-    });
-  git(['init', '--initial-branch=main']);
-  git(['config', 'user.name', LOGIN]);
-  git(['config', 'user.email', 'fixture@example.invalid']);
-  git(['config', 'commit.gpgsign', 'false']);
-  git(['config', 'core.hooksPath', '.git/hooks']);
-  git(['remote', 'add', 'origin', 'https://github.com/fixture-owner/fixture-repository.git']);
-  fs.writeFileSync(path.join(f.directory, 'initial.txt'), 'Synthetic repository fixture\n');
-  git(['add', 'initial.txt']);
-  git(['commit', '-m', 'Synthetic fixture baseline']);
-  git(['update-ref', 'refs/remotes/origin/main', 'HEAD']);
-  git(['checkout', '-b', 'fixture-contributor-branch']);
-  const before = git(['rev-parse', 'HEAD']).trim();
-  fs.writeFileSync(
-    path.join(f.directory, '.git/hooks/commit-msg'),
-    `#!/bin/sh\nexec "${process.execPath}" "${PUBLISH_SCRIPT}" check-commit-message --message-file "$1"\n`,
-    { mode: 0o700 }
-  );
-  fs.writeFileSync(path.join(f.directory, 'change.txt'), 'Synthetic contributor change\n');
-  git(['add', 'change.txt']);
-  const messagePath = path.join(f.directory, 'message.txt');
-  fs.writeFileSync(messagePath, 'feat: synthetic fixture contributor commit\n');
-  const runner = (binary, args, options) => {
-    assert.equal(
-      binary,
-      'git',
-      'local commits must not require GitHub network or email privileges'
-    );
-    return execFileSync(binary, args, {
-      ...options,
-      env: {
-        ...(options.env ?? process.env),
-        GIT_AUTHOR_NAME: LOGIN,
-        GIT_AUTHOR_EMAIL: 'fixture@example.invalid',
-        GIT_COMMITTER_NAME: LOGIN,
-        GIT_COMMITTER_EMAIL: 'fixture@example.invalid',
-      },
-    });
-  };
-  const result = runPublishCli(
-    [
-      'commit',
-      ...f.args,
-      '--message-file',
-      messagePath,
-      '--branch',
-      'fixture-contributor-branch',
-      '--expected-head',
-      before,
-    ],
-    { runner, cwd: f.directory }
-  );
+  const { git, before, runner, args } = localRepository(f);
+  const result = runPublishCli(['commit', ...f.args, ...args], { runner, cwd: f.directory });
   assert.equal(result.status, 'published');
   assert.notEqual(git(['rev-parse', 'HEAD']).trim(), before);
   const committed = git(['log', '-1', '--format=%B']);
   assert.ok(committed.includes(renderModelTraceDisclosure(f.record.receipt, 'commit')));
   assert.ok(committed.includes(`Signed-off-by: ${LOGIN} <fixture@example.invalid>`));
+});
+
+test('signed owner delegation reaches commit PR creation and exact Issue comment publishers', (t) => {
+  const repositoryId = 'github.com:Proto-UI/Proto-UI';
+  const f = fixture(t, { failed: true, repositoryId });
+  const owner = ownerFixture(f);
+  const local = localRepository(f);
+  const committed = runPublishCli(['commit', ...owner.args, ...local.args], {
+    runner: local.runner,
+    cwd: f.directory,
+    now: f.now,
+  });
+  assert.equal(committed.status, 'published');
+  assert.equal(local.git(['rev-parse', 'HEAD^{tree}']).trim(), local.tree);
+  const gh = server({ repositoryId, login: 'cyjin-yl', sourceOwner: 'Proto-UI', pull: true });
+  const pull = runPublishCli(
+    [
+      'pull-request',
+      'create',
+      ...owner.args,
+      '--title',
+      'Synthetic delegated PR',
+      '--body-file',
+      f.bodyPath,
+      '--base',
+      'main',
+      '--head',
+      'fixture-contributor-branch',
+    ],
+    { runner: gh.runner, now: f.now }
+  );
+  assert.equal(pull.status, 'published');
+  const comments = server({ repositoryId, login: 'cyjin-yl' });
+  const scoped = ownerFixture(f, { scopeIds: ['issue:7'], actions: ['collaborate'] });
+  const comment = runPublishCli(
+    ['comment', ...scoped.args, '--number', '7', '--body-file', f.bodyPath],
+    { runner: comments.runner, now: f.now }
+  );
+  assert.equal(comment.status, 'published');
+  assert.equal(
+    comments.comments[0].body.split(renderModelTraceDisclosure(f.record.receipt)).length,
+    2
+  );
+  assert.equal(gh.writes.length, 1);
+  assert.equal(comments.writes.length, 1);
+});
+
+test('publisher owner grants cannot cross exact target kind actor or action', (t) => {
+  const repositoryId = 'github.com:Proto-UI/Proto-UI';
+  for (const boundary of ['target-kind', 'actor', 'action']) {
+    const f = fixture(t, { failed: true, repositoryId });
+    const owner = ownerFixture(f, {
+      scopeIds: ['issue:7'],
+      actions: boundary === 'action' ? ['implement'] : ['collaborate'],
+    });
+    const gh = server({ repositoryId, login: boundary === 'actor' ? LOGIN : 'cyjin-yl' });
+    if (boundary === 'target-kind') gh.target.pull_request = { url: 'fixture://pull/7' };
+    assert.throws(
+      () =>
+        runPublishCli(['comment', ...owner.args, '--number', '7', '--body-file', f.bodyPath], {
+          runner: gh.runner,
+          now: f.now,
+        }),
+      Error
+    );
+    assert.equal(gh.writes.length, 0, boundary);
+    assert.equal(gh.target.body, 'Original body');
+  }
+});
+
+test('signed revocation after live preflight prevents the final publisher mutation', (t) => {
+  const repositoryId = 'github.com:Proto-UI/Proto-UI';
+  const f = fixture(t, { failed: true, repositoryId });
+  const owner = ownerFixture(f, { scopeIds: ['issue:7'], actions: ['collaborate'] });
+  const gh = server({ repositoryId, login: 'cyjin-yl' });
+  let viewerReads = 0;
+  const runner = (binary, args, options) => {
+    if (args.includes('graphql') && ++viewerReads === 2)
+      owner.save({ ...owner.grant, generation: 2, status: 'revoked' }, 2);
+    return gh.runner(binary, args, options);
+  };
+  assert.throws(
+    () =>
+      runPublishCli(['comment', ...owner.args, '--number', '7', '--body-file', f.bodyPath], {
+        runner,
+        now: f.now,
+      }),
+    Error
+  );
+  assert.equal(viewerReads, 2);
+  assert.equal(gh.writes.length, 0);
+});
+
+test('a commit rejects staged work outside the authorized tree without consuming the index', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  fs.writeFileSync(path.join(f.directory, 'user.txt'), 'Unrelated synthetic user work\n');
+  local.git(['add', 'user.txt']);
+  const staged = local.git(['diff', '--cached', '--name-only']);
+  assert.throws(
+    () =>
+      runPublishCli(['commit', ...f.args, ...local.args], {
+        runner: local.runner,
+        cwd: f.directory,
+        now: f.now,
+      }),
+    Error
+  );
+  assert.equal(local.git(['rev-parse', 'HEAD']).trim(), local.before);
+  assert.equal(local.git(['diff', '--cached', '--name-only']), staged);
+});
+
+test('a commit rechecks index changes during preparation before writing HEAD', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  let treesRead = 0;
+  const runner = (binary, args, options) => {
+    if (args[0] === 'write-tree' && ++treesRead === 2) {
+      fs.writeFileSync(path.join(f.directory, 'user.txt'), 'Concurrent staged fixture\n');
+      local.git(['add', 'user.txt']);
+    }
+    return local.runner(binary, args, options);
+  };
+  assert.throws(
+    () =>
+      runPublishCli(['commit', ...f.args, ...local.args], {
+        runner,
+        cwd: f.directory,
+        now: f.now,
+      }),
+    Error
+  );
+  assert.equal(local.git(['rev-parse', 'HEAD']).trim(), local.before);
+  assert.equal(local.git(['diff', '--cached', '--name-only']), 'change.txt\nuser.txt\n');
+});
+
+test('late shared-index user staging stays staged and cannot enter the authorized commit', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  const runner = (binary, args, options) => {
+    if (args[0] === 'commit') {
+      fs.writeFileSync(path.join(f.directory, 'user.txt'), 'Late synthetic user staging\n');
+      local.git(['add', 'user.txt']);
+    }
+    return local.runner(binary, args, options);
+  };
+  const result = runPublishCli(['commit', ...f.args, ...local.args], {
+    runner,
+    cwd: f.directory,
+    now: f.now,
+  });
+  assert.equal(result.status, 'published');
+  assert.equal(local.git(['rev-parse', 'HEAD^{tree}']).trim(), local.tree);
+  assert.equal(
+    local.git(['diff-tree', '--no-commit-id', '--name-only', '-r', 'HEAD']),
+    'change.txt\n'
+  );
+  assert.equal(local.git(['diff', '--cached', '--name-only']), 'user.txt\n');
+  assert.equal(
+    fs.readFileSync(path.join(f.directory, 'user.txt'), 'utf8'),
+    'Late synthetic user staging\n'
+  );
+});
+
+test('reused branch publication binds both exact revisions and keeps each closed PR idempotent', (t) => {
+  const f = fixture(t, { failed: true });
+  const revision = { headSha: 'c'.repeat(40), baseSha: 'd'.repeat(40) };
+  const gh = server({ pull: true, revision });
+  const argv = [
+    'pull-request',
+    'create',
+    ...f.args,
+    '--title',
+    'Synthetic reused contributor branch',
+    '--body-file',
+    f.bodyPath,
+    '--base',
+    'main',
+    '--head',
+    'fixture-contributor-branch',
+  ];
+  const first = runPublishCli(argv, { runner: gh.runner, now: f.now });
+  gh.issues[0].state = 'closed';
+  revision.headSha = 'e'.repeat(40);
+  const second = runPublishCli(argv, { runner: gh.runner, now: f.now });
+  assert.equal(second.status, 'published');
+  assert.notEqual(second.url, first.url);
+  assert.equal(runPublishCli(argv, { runner: gh.runner, now: f.now }).status, 'already-published');
+  assert.equal(gh.writes.length, 2);
+  gh.issues[1].state = 'closed';
+  revision.baseSha = 'f'.repeat(40);
+  const third = runPublishCli(argv, { runner: gh.runner, now: f.now });
+  assert.equal(third.status, 'published');
+  assert.notEqual(third.url, second.url);
+  assert.equal(runPublishCli(argv, { runner: gh.runner, now: f.now }).status, 'already-published');
+  assert.equal(gh.writes.length, 3);
+});
+
+test('revision idempotency also preserves an already approved PR body byte-for-byte', (t) => {
+  const f = fixture(t, { failed: true });
+  const prepared = `${f.body}\n${renderModelTraceDisclosure(f.record.receipt)}\n`;
+  fs.writeFileSync(f.bodyPath, prepared);
+  const revision = { headSha: 'c'.repeat(40), baseSha: 'd'.repeat(40) };
+  const gh = server({ pull: true, revision });
+  const argv = [
+    'pull-request',
+    'create',
+    ...f.args,
+    '--title',
+    'Synthetic immutable prepared PR',
+    '--body-file',
+    f.bodyPath,
+    '--base',
+    'main',
+    '--head',
+    'fixture-contributor-branch',
+  ];
+  const first = runPublishCli(argv, { runner: gh.runner, now: f.now });
+  gh.issues[0].state = 'closed';
+  revision.headSha = 'e'.repeat(40);
+  const second = runPublishCli(argv, { runner: gh.runner, now: f.now });
+  assert.equal(second.status, 'published');
+  assert.notEqual(second.url, first.url);
+  assert.equal(runPublishCli(argv, { runner: gh.runner, now: f.now }).status, 'already-published');
+  assert.equal(gh.writes.length, 2);
+  for (const issue of gh.issues) assert.equal(issue.body, prepared);
 });
