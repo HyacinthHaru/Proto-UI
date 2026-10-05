@@ -68,6 +68,9 @@ function metrics(host: HTMLElement) {
     foregroundWrites: writes.filter(
       (entry) => entry.style === host.style && entry.property === '--pui-foreground'
     ).length,
+    minWidthWrites: writes.filter(
+      (entry) => entry.style === host.style && entry.property === 'min-width'
+    ).length,
     mounts: probe.events.filter((entry) => entry.host === host && entry.type === 'mount.render')
       .length,
     renders: probe.events.filter((entry) => entry.host === host && entry.type === 'update.render')
@@ -172,11 +175,22 @@ it('uses one public update per existing atom and retains pressed/current facts',
     expect(setters[index]).toHaveBeenCalledTimes(1);
     expect(metrics(node).raw - before[index].raw).toBe(1);
     expect(metrics(node).normalizations - before[index].normalizations).toBe(1);
-    expect(metrics(node).foregroundWrites - before[index].foregroundWrites).toBe(1);
+    // This child already deduplicates equal live custom properties.
+    expect(metrics(node).foregroundWrites - before[index].foregroundWrites).toBe(0);
+    expect(metrics(node).minWidthWrites - before[index].minWidthWrites).toBe(1);
+    expect(node.style.getPropertyValue('--pui-foreground')).toBe('#222222');
     expect(metrics(node).controllerUpdates - before[index].controllerUpdates).toBe(1);
   }
   expect(nodes[0].getAttribute('data-pui-style')?.split(/\s+/)).toContain('translate-y-px');
   expect(nodes[1].getAttribute('data-pui-style')?.split(/\s+/)).toContain('underline');
+  const beforeThemeChange = nodes.map(metrics);
+  document.documentElement.style.setProperty('--pui-foreground', '#ff0000');
+  await settle();
+  for (const [index, node] of nodes.entries()) {
+    expect(metrics(node).foregroundWrites - beforeThemeChange[index].foregroundWrites).toBe(1);
+    expect(node.style.getPropertyValue('--pui-foreground')).toBe('#ff0000');
+    expect(setters[index]).toHaveBeenCalledTimes(2);
+  }
 });
 
 it('prepares a fresh family with the current pressed facts before connection', async () => {
