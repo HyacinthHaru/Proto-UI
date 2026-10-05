@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import { createRequire } from 'node:module';
 import { createServer } from 'node:http';
@@ -19,9 +19,20 @@ import {
   pngDimensions,
   readSourceBinding,
   routeOwnResponse,
+  safeEvidenceURL,
+  sanitizeDiagnostic,
   READING_CASES,
   READING_VIEWPORT,
 } from '../../apps/www/scripts/reading-reference-contract.mjs';
+
+import {
+  beginReadingBuild,
+  finishReadingBuild,
+  readingBuildInventory,
+  startReadingPreview,
+  verifyReadingBuild,
+  READING_PREVIEW_PORT,
+} from '../../apps/www/scripts/reading-reference-production.mjs';
 
 const collectorPath = 'apps/www/scripts/reading-reference-collector.mjs';
 const runner = readFileSync('apps/www/scripts/capture-reading-reference.mjs', 'utf8');
@@ -230,7 +241,7 @@ describe('bounded reading-reference runner and workflow', () => {
     assert.match(runner, /deviceScaleFactor: 1/);
     assert.match(runner, /serviceWorkers: 'block'/);
   });
-  it('rejects external URLs including deceptive origins while allowing its own HMR', () => {
+  it('rejects external URLs and admits only same-origin WebSocket URLs', () => {
     const base = 'http://127.0.0.1:4321';
     for (const target of [`${base}/route`, 'ws://127.0.0.1:4321/'])
       assert.equal(allowOwnRequest(target, base), true);
@@ -360,7 +371,7 @@ describe('bounded reading-reference runner and workflow', () => {
       assert.deepEqual(aborts, [external ? 'blockedbyclient' : 'failed']);
     }
   });
-  it('binds the no-follow API contract to the locked Playwright implementation and preserves HMR', () => {
+  it('binds no-follow to locked Playwright and preserves the strict WebSocket origin gate', () => {
     const require = createRequire(import.meta.url);
     const packagePath = require.resolve('playwright-core/package.json', {
       paths: [path.resolve('apps/www')],
@@ -374,7 +385,8 @@ describe('bounded reading-reference runner and workflow', () => {
       /redirectStatus\.includes\(response\.statusCode\) && options\.maxRedirects >= 0/
     );
     assert.match(runner, /routeOwnResponse\(route, baseUrl/);
-    assert.match(runner, /startServer\(\s*READING_ROUTES\.map[\s\S]*?rejectRedirects: true/);
+    assert.match(runner, /startReadingPreview\(\)/);
+    assert.doesNotMatch(runner, /startServer\(|stopServer\(/);
     assert.doesNotMatch(runner, /route\.continue\(/);
     assert.match(
       runner,
@@ -463,6 +475,165 @@ describe('bounded reading-reference runner and workflow', () => {
       }
     }
   );
+  it('redacts query/fragment/user-info before preserving URL failures and error messages', async () => {
+    const diagnostic =
+      'WebSocket ws://127.0.0.1:5173/channel?fixture_token=not-a-real-secret#fixture failed';
+    assert.equal(sanitizeDiagnostic(diagnostic), 'WebSocket ws://127.0.0.1:5173/channel failed');
+    assert.equal(
+      safeEvidenceURL('https://fixture:password@outside.invalid/path?a=1#b'),
+      'https://outside.invalid/path'
+    );
+    assert.equal(safeEvidenceURL('/relative?fixture=one#two'), '/relative');
+    assert.equal(
+      allowOwnRequest('ws://127.0.0.1:5173/', 'http://127.0.0.1:4398'),
+      false,
+      'Do not widen ownership to arbitrary loopback ports'
+    );
+    const failures = [];
+    await routeOwnResponse(
+      {
+        request: () => ({ url: () => 'https://outside.invalid/path?fixture_token=value#fragment' }),
+        abort: async () => {},
+      },
+      'http://127.0.0.1:4398',
+      (failure) => failures.push(failure)
+    );
+    assert.equal(failures[0].url, 'https://outside.invalid/path');
+    const sanitized = sanitizeDiagnostic(
+      'Error at http://127.0.0.1:4398/a?x=1#y and https://outside.invalid/b?z=2'
+    );
+    assert.equal(sanitized, 'Error at http://127.0.0.1:4398/a and https://outside.invalid/b');
+    for (const location of [
+      '/relative?fixture_token=fixture-value#fragment',
+      '../relative?fixture_token=fixture-value#fragment',
+      '//fixture-user:fixture-pass@outside.invalid/relative?fixture_token=fixture-value#fragment',
+    ]) {
+      const diagnostic = sanitizeDiagnostic(
+        `Error: Refusing documentation readiness redirect: http://127.0.0.1:4398/doc -> HTTP 302 Location ${location}`
+      );
+      assert.ok(!diagnostic.includes('fixture_token'), diagnostic);
+      assert.ok(!diagnostic.includes('fixture-value'), diagnostic);
+      assert.ok(!diagnostic.includes('fixture-pass'), diagnostic);
+      assert.ok(!diagnostic.includes('#fragment'), diagnostic);
+      assert.match(diagnostic, /Location .*relative$/);
+    }
+    assert.match(runner, /safeEvidenceURL\(socket\.url\(\)\)/);
+    assert.match(runner, /safeEvidenceURL\(request\.url\(\)\)/);
+    assert.match(runner, /entry\.error = sanitizeDiagnostic/);
+  });
+  it('binds production output to the clean source before preview and rejects changed or absent bytes', async () => {
+    const temp = mkdtempSync(path.join(os.tmpdir(), 'reading-production-'));
+    const root = path.join(temp, 'repo');
+    const out = path.join(temp, 'evidence');
+    mkdirSync(root);
+    const git = (args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+    try {
+      git(['init', '--quiet']);
+      writeFileSync(path.join(root, '.gitignore'), '/apps/www/dist/\n');
+      git(['add', '.gitignore']);
+      git([
+        '-c',
+        'user.name=Contract Fixture',
+        '-c',
+        'user.email=fixture@example.invalid',
+        '-c',
+        'commit.gpgsign=false',
+        'commit',
+        '--quiet',
+        '-m',
+        'Fixture',
+      ]);
+      const expectedHead = git(['rev-parse', 'HEAD']);
+      const options = { root, out, expectedHead };
+      await beginReadingBuild(options);
+      for (const route of new Set(READING_CASES.map(({ route }) => route))) {
+        const directory = path.join(root, 'apps/www/dist', route.slice(1));
+        mkdirSync(directory, { recursive: true });
+        writeFileSync(
+          path.join(directory, 'index.html'),
+          '<main>Structural build fixture only</main>'
+        );
+      }
+      const receipt = await finishReadingBuild(options);
+      assert.equal(receipt.sourceBeforeBuild.actualGitHead, expectedHead);
+      assert.equal(receipt.sourceAfterBuild.actualGitHead, expectedHead);
+      assert.equal(receipt.inventory.fileCount, 2);
+      assert.equal((await verifyReadingBuild(options)).inventory.sha256, receipt.inventory.sha256);
+      const html = path.join(root, 'apps/www/dist/zh-cn/start-here/quick-start/index.html');
+      writeFileSync(html, 'Changed bytes after receipt');
+      await assert.rejects(verifyReadingBuild(options), /bytes changed/);
+      rmSync(html);
+      await assert.rejects(
+        readingBuildInventory(path.join(root, 'apps/www/dist')),
+        /Missing production reading route/
+      );
+      const incorrect = { ...receipt, sourceBeforeBuild: { actualGitHead: '0'.repeat(40) } };
+      writeFileSync(path.join(out, 'production-build.json'), JSON.stringify(incorrect));
+      await assert.rejects(verifyReadingBuild(options), /does not match/);
+    } finally {
+      rmSync(temp, { recursive: true, force: true });
+    }
+    assert.ok(runner.indexOf('verifyReadingBuild(') < runner.indexOf('startReadingPreview()'));
+  });
+  it('owns the supported production preview, rejects fallback and keeps readiness no-follow', async () => {
+    const calls = [];
+    const reports = [];
+    let stopped = 0;
+    const preview = {
+      server: { address: () => ({ address: '127.0.0.1', port: READING_PREVIEW_PORT }) },
+      closed: () => new Promise(() => {}),
+      stop: async () => {
+        stopped += 1;
+      },
+    };
+    const owned = await startReadingPreview(
+      { root: '/fixture' },
+      {
+        start: async (config) => {
+          assert.deepEqual(config, { root: '/fixture/apps/www', port: READING_PREVIEW_PORT });
+          return preview;
+        },
+        readiness: async (url, options) => {
+          calls.push(url);
+          assert.equal(options.rejectRedirects, true);
+          options.report('Probe http://127.0.0.1:4398/path?fixture_token=value');
+        },
+        report: (message) => reports.push(message),
+      }
+    );
+    assert.equal(owned.mode, 'astro-production-preview-no-hmr');
+    assert.equal(calls.length, 2);
+    assert.ok(calls.every((url) => new URL(url).port === String(READING_PREVIEW_PORT)));
+    assert.ok(reports.every((line) => !line.includes('fixture_token')));
+    assert.equal(stopped, 0);
+    await owned.preview.stop();
+    await assert.rejects(
+      startReadingPreview(
+        {},
+        {
+          start: async () => ({
+            ...preview,
+            server: { address: () => ({ address: '127.0.0.1', port: 5173 }) },
+          }),
+        }
+      ),
+      /exact owned loopback/
+    );
+    assert.equal(stopped, 2);
+    await assert.rejects(
+      startReadingPreview(
+        {},
+        {
+          start: async () => preview,
+          readiness: async () => {
+            throw new Error('fixture readiness failure');
+          },
+        }
+      ),
+      /fixture readiness failure/
+    );
+    assert.equal(stopped, 3);
+  });
   it('reads PNG dimensions from original bytes and rejects JPEG/downscaled claims', () => {
     const png = Buffer.alloc(24);
     Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]).copy(png);
@@ -523,6 +694,8 @@ describe('bounded reading-reference runner and workflow', () => {
   it('retains failures, uses read-only exact-head checkout and an independent bounded job', () => {
     assert.deepEqual(workflow.permissions, { contents: 'read' });
     for (const owner of [
+      'apps/www/scripts/search-production-preview.mjs',
+      'apps/www/package.json',
       'apps/www/src/content/docs/zh-cn/start-here/quick-start.mdx',
       'apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/radio-group.mdx',
       'apps/www/src/content/docs/zh-cn/browser-harness.ts',
@@ -545,11 +718,20 @@ describe('bounded reading-reference runner and workflow', () => {
     assert.deepEqual(Object.keys(workflow.jobs), ['capture']);
     const job = workflow.jobs.capture;
     assert.equal(job.strategy, undefined);
-    assert.equal(job['timeout-minutes'], 15);
+    assert.equal(job['timeout-minutes'], 25);
+    const build = job.steps.find(
+      (step) => step.name === 'Build the exact clean candidate and bind production bytes'
+    );
+    assert.equal(build['timeout-minutes'], 10);
+    assert.ok(build.run.indexOf('begin-build') < build.run.indexOf('--filter apps-www build'));
+    assert.ok(build.run.indexOf('--filter apps-www build') < build.run.indexOf('finish-build'));
+    assert.equal(build.env.PROTO_UI_EXPECTED_HEAD, '${{ env.CANDIDATE_SHA }}');
     const checkout = job.steps.find(({ uses }) => uses === 'actions/checkout@v4');
     assert.equal(checkout.with.ref, '${{ env.CANDIDATE_SHA }}');
     assert.equal(checkout.with['persist-credentials'], false);
-    const capture = job.steps.find((step) => step.env?.PROTO_UI_EXPECTED_HEAD);
+    const capture = job.steps.find(
+      (step) => step.name === 'Capture two routes and both themes at the actual reference viewport'
+    );
     assert.match(capture.run, /timeout --signal=TERM --kill-after=10s 600s/);
     assert.match(
       capture.run,

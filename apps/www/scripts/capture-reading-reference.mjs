@@ -10,18 +10,17 @@ import {
   pngDimensions,
   readSourceBinding,
   routeOwnResponse,
+  safeEvidenceURL,
+  sanitizeDiagnostic,
   READING_CASES,
-  READING_ROUTES,
   READING_VIEWPORT,
 } from './reading-reference-contract.mjs';
-import {
-  launchBrowser,
-  startServer,
-  stopServer,
-} from '../src/content/docs/zh-cn/browser-harness.ts';
+import { launchBrowser } from '../src/content/docs/zh-cn/browser-harness.ts';
+import { startReadingPreview, verifyReadingBuild } from './reading-reference-production.mjs';
 
 // This independent runner does not enter or alter the existing browser matrix.
 // Run from the repository root using node --import tsx and a clean candidate.
+// The matching production-build.json receipt and unchanged dist bytes are required.
 const out = path.resolve(
   process.env.PROTO_UI_READING_EVIDENCE_DIR ?? path.join(os.tmpdir(), 'proto-ui-reading-reference')
 );
@@ -62,12 +61,13 @@ const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const save = () =>
   writeFile(path.join(out, 'reading-reference.json'), `${JSON.stringify(report, null, 2)}\n`);
 let browser;
+let preview;
 await mkdir(out, { recursive: true });
 try {
   // Never use the harness's externally supplied URL escape hatch in this task.
   if (process.env.PROTO_UI_BROWSER_BASE_URL)
     throw new Error(
-      'This runner only starts its own local docs server; PROTO_UI_BROWSER_BASE_URL is not allowed.'
+      'This runner only starts its own production preview; PROTO_UI_BROWSER_BASE_URL is not allowed.'
     );
   report.source = readSourceBinding(process.env.PROTO_UI_EXPECTED_HEAD);
   report.collector = {
@@ -75,12 +75,14 @@ try {
     sha256: sha256(await readFile(new URL('./reading-reference-collector.mjs', import.meta.url))),
   };
   await save();
-  const baseUrl = await startServer(
-    READING_ROUTES.map(({ route }) => route),
-    { rejectRedirects: true }
-  );
-  if (new URL(baseUrl).hostname !== '127.0.0.1')
-    throw new Error('Expected the harness-owned loopback server.');
+  report.build = await verifyReadingBuild({
+    out,
+    expectedHead: process.env.PROTO_UI_EXPECTED_HEAD,
+  });
+  const ownedPreview = await startReadingPreview();
+  preview = ownedPreview.preview;
+  const baseUrl = ownedPreview.baseUrl;
+  report.server = { mode: ownedPreview.mode, address: ownedPreview.address };
   report.sourceAfterServerStart = readSourceBinding(process.env.PROTO_UI_EXPECTED_HEAD);
   browser = await launchBrowser();
   report.environment.browserVersion = browser.version();
@@ -115,15 +117,20 @@ try {
     await context.routeWebSocket('**/*', (socket) => {
       if (allowOwnRequest(socket.url(), baseUrl)) socket.connectToServer();
       else {
-        entry.blockedExternalRequests.push(socket.url());
+        entry.blockedExternalRequests.push(safeEvidenceURL(socket.url()));
         socket.close();
       }
     });
     const page = await context.newPage();
     page.setDefaultTimeout(30_000);
-    page.on('pageerror', (error) => entry.pageErrors.push(error.message));
+    page.on('pageerror', (error) => entry.pageErrors.push(sanitizeDiagnostic(error.message)));
     page.on('requestfailed', (request) =>
-      entry.failedRequests.push({ url: request.url(), error: request.failure()?.errorText ?? null })
+      entry.failedRequests.push({
+        url: safeEvidenceURL(request.url()),
+        error: request.failure()?.errorText
+          ? sanitizeDiagnostic(request.failure().errorText)
+          : null,
+      })
     );
     const screenshot = async (kind, fullPage) => {
       const filename = `${target.id}-${kind}.png`;
@@ -162,7 +169,7 @@ try {
         timeout: 60_000,
       });
       entry.httpStatus = response?.status() ?? null;
-      entry.finalURL = page.url();
+      entry.finalURL = safeEvidenceURL(page.url());
       if (entry.httpStatus !== 200) throw new Error(`Document HTTP status ${entry.httpStatus}`);
       await page.locator('main[data-pagefind-body]').waitFor({ state: 'visible' });
       // The external reference uses a light OS preference and the site's real
@@ -245,16 +252,16 @@ try {
       entry.outcome = 'observed';
     } catch (error) {
       entry.outcome = 'failed';
-      entry.error = error instanceof Error ? error.stack : String(error);
-      entry.finalURL = page.url();
-      report.failures.push(`${target.id}: ${String(error)}`);
+      entry.error = sanitizeDiagnostic(error instanceof Error ? error.stack : String(error));
+      entry.finalURL = safeEvidenceURL(page.url());
+      report.failures.push(`${target.id}: ${sanitizeDiagnostic(error)}`);
       if (!entry.observation)
         entry.observation = await page
           .evaluate(collectReadingReference)
           .then(hashReadingObservation)
-          .catch((failure) => ({ collectionError: String(failure) }));
+          .catch((failure) => ({ collectionError: sanitizeDiagnostic(failure) }));
       await screenshot('failure-viewport', false).catch((failure) => {
-        entry.screenshotFailure = String(failure);
+        entry.screenshotFailure = sanitizeDiagnostic(failure);
       });
     } finally {
       entry.finishedAtUTC = new Date().toISOString();
@@ -263,13 +270,23 @@ try {
     }
   }
   report.sourceAfterCapture = readSourceBinding(process.env.PROTO_UI_EXPECTED_HEAD);
+  const finalBuild = await verifyReadingBuild({
+    out,
+    expectedHead: process.env.PROTO_UI_EXPECTED_HEAD,
+  });
+  report.buildAfterCapture = {
+    verifiedAtUTC: new Date().toISOString(),
+    inventorySha256: finalBuild.inventory.sha256,
+  };
 } catch (error) {
-  report.failures.push(error instanceof Error ? error.stack : String(error));
+  report.failures.push(sanitizeDiagnostic(error instanceof Error ? error.stack : String(error)));
 } finally {
   await browser
     ?.close()
-    .catch((error) => report.failures.push(`Browser cleanup: ${String(error)}`));
-  await stopServer().catch((error) => report.failures.push(`Server cleanup: ${String(error)}`));
+    .catch((error) => report.failures.push(`Browser cleanup: ${sanitizeDiagnostic(error)}`));
+  await preview
+    ?.stop()
+    .catch((error) => report.failures.push(`Preview cleanup: ${sanitizeDiagnostic(error)}`));
   report.finishedAtUTC = new Date().toISOString();
   report.outcome = report.failures.length ? 'failed' : 'observed';
   await save();

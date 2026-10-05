@@ -1,5 +1,7 @@
 # Matched reading-reference evidence (2026-10-05)
 
+Execution follow-up: the initial development-server capture failed on the separate HMR origin. The current production-preview procedure and retained failure evidence are recorded in [the follow-up](2026-10-05-reading-production-preview-repair.md). The original procedure below describes the initial tooling revision.
+
 This increment adds observation tooling and an opt-in test-harness redirect boundary above `213d03a10e6572d0d2ac79260055d41a7b9bb6f3`. It changes no authored MDX, fonts, colors, sizes, runtime, semantic source, Base/family implementation or isolation mode. Earlier CI for that revision remains historical when this tooling creates a new head.
 
 ## Boundary and authority

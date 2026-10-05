@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/reading-reference-evidence.yml'
       - 'apps/www/scripts/*reading-reference*'
+      - 'apps/www/scripts/search-production-preview.mjs'
+      - 'apps/www/package.json'
       - 'scripts/test/reading-reference-evidence.test.mjs'
       - 'apps/www/src/content/docs/zh-cn/start-here/quick-start.mdx'
       - 'apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/radio-group.mdx'
@@ -47,7 +49,7 @@ env:
 jobs:
   capture:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -71,11 +73,23 @@ jobs:
           CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
           "$CHROME" --version | tee "$RUNNER_TEMP/reading-reference/browser-environment.txt"
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
-          corepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar
       - name: Verify bounded source and collector contracts
         run: node --test scripts/test/reading-reference-evidence.test.mjs
+      - name: Build the exact clean candidate and bind production bytes
+        timeout-minutes: 10
+        env:
+          ASTRO_TELEMETRY_DISABLED: '1'
+          PROTO_UI_EXPECTED_HEAD: ${{ env.CANDIDATE_SHA }}
+          PROTO_UI_READING_EVIDENCE_DIR: ${{ runner.temp }}/reading-reference
+        run: |
+          set -euo pipefail
+          node apps/www/scripts/reading-reference-production.mjs begin-build
+          corepack pnpm@10.32.1 --filter apps-www build \
+            2>&1 | tee "$PROTO_UI_READING_EVIDENCE_DIR/build.log"
+          node apps/www/scripts/reading-reference-production.mjs finish-build
       - name: Capture two routes and both themes at the actual reference viewport
         env:
+          ASTRO_TELEMETRY_DISABLED: '1'
           PROTO_UI_EXPECTED_HEAD: ${{ env.CANDIDATE_SHA }}
           PROTO_UI_READING_EVIDENCE_DIR: ${{ runner.temp }}/reading-reference
         run: |

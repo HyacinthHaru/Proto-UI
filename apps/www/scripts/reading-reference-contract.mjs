@@ -54,7 +54,7 @@ export function allowOwnRequest(url, baseUrl) {
 export async function routeOwnResponse(route, baseUrl, recordFailure) {
   const url = route.request().url();
   if (!allowOwnRequest(url, baseUrl) || !/^https?:/.test(url)) {
-    recordFailure({ kind: 'external-request', url });
+    recordFailure({ kind: 'external-request', url: safeEvidenceURL(url) });
     await route.abort('blockedbyclient');
     return 'blocked-external';
   }
@@ -67,9 +67,9 @@ export async function routeOwnResponse(route, baseUrl, recordFailure) {
     if (status >= 300 && status < 400) {
       recordFailure({
         kind: 'redirect-response',
-        url,
+        url: safeEvidenceURL(url),
         status,
-        location: response.headers().location ?? null,
+        location: response.headers().location ? safeEvidenceURL(response.headers().location) : null,
       });
       await route.abort('blockedbyclient');
       return 'blocked-redirect';
@@ -77,13 +77,43 @@ export async function routeOwnResponse(route, baseUrl, recordFailure) {
     await route.fulfill({ response });
     return 'fulfilled';
   } catch (error) {
-    recordFailure({ kind: 'request-error', url, error: String(error) });
+    recordFailure({
+      kind: 'request-error',
+      url: safeEvidenceURL(url),
+      error: sanitizeDiagnostic(error),
+    });
     await route.abort('failed').catch(() => {});
     return 'failed-request';
   } finally {
     // APIRequestContext otherwise retains every font/module/image response.
     await response?.dispose();
   }
+}
+
+/** Diagnostics retain origin/path only; query, fragment and user-info may be transient secrets. */
+export function safeEvidenceURL(value) {
+  try {
+    const relative = !/^[a-z][a-z0-9+.-]*:/i.test(value);
+    const url = new URL(value, 'http://evidence.invalid');
+    url.username = '';
+    url.password = '';
+    url.search = '';
+    url.hash = '';
+    return relative ? url.pathname : url.href;
+  } catch {
+    return '[invalid-url-redacted]';
+  }
+}
+
+export function sanitizeDiagnostic(value) {
+  return String(value)
+    .replace(/\b(?:https?|wss?):\/\/[^\s"'<>`]+/gi, (url) => safeEvidenceURL(url))
+    .replace(/(\bLocation:?[\t ]+)([^\r\n]*)/gi, (_match, label, location) => {
+      if (location === '(absent)') return `${label}${location}`;
+      // A rejected Location can be relative or protocol-relative. Preserve only
+      // a valid URL's safe path; never persist arbitrary header text as a URL.
+      return `${label}${/[\s"'<>`]/.test(location) ? '[location-redacted]' : safeEvidenceURL(location)}`;
+    });
 }
 
 export function pngDimensions(bytes) {

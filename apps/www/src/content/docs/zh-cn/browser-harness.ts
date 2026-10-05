@@ -74,11 +74,10 @@ export async function chromeExecutable(): Promise<string> {
   throw new Error('Chrome/Chromium is required; set CHROME_PATH to its executable.');
 }
 
-async function waitForServer(url: string, rejectRedirects = false): Promise<void> {
+async function waitForServer(url: string): Promise<void> {
   try {
     await waitForServerReadiness(url, {
       timeoutMs: 120_000,
-      rejectRedirects,
       server: devServer,
       readOutput: () => serverOutput,
     });
@@ -96,10 +95,7 @@ function recordServerOutput(chunk: Buffer): void {
   serverOutput = `${serverOutput}${chunk.toString()}`.slice(-20_000);
 }
 
-async function spawnServer(
-  readyRoutes: readonly string[],
-  rejectRedirects = false
-): Promise<string> {
+async function spawnServer(readyRoutes: readonly string[]): Promise<string> {
   const port = await availablePort();
   const executable = process.platform === 'win32' ? 'corepack.cmd' : 'corepack';
   devServer = spawn(
@@ -130,20 +126,16 @@ async function spawnServer(
   devServer.stderr?.on('data', recordServerOutput);
 
   const url = `http://127.0.0.1:${port}`;
-  for (const readyRoute of readyRoutes) await waitForServer(`${url}${readyRoute}`, rejectRedirects);
+  for (const readyRoute of readyRoutes) await waitForServer(`${url}${readyRoute}`);
   return url;
 }
 
-export async function startServer(
-  readyRouteOrRoutes: string | readonly string[],
-  options: { rejectRedirects?: boolean } = {}
-): Promise<string> {
+export async function startServer(readyRouteOrRoutes: string | readonly string[]): Promise<string> {
   const readyRoutes =
     typeof readyRouteOrRoutes === 'string' ? [readyRouteOrRoutes] : readyRouteOrRoutes;
   const externalBaseUrl = process.env.PROTO_UI_BROWSER_BASE_URL?.replace(/\/$/, '');
   if (externalBaseUrl) {
-    for (const readyRoute of readyRoutes)
-      await waitForServer(`${externalBaseUrl}${readyRoute}`, options.rejectRedirects);
+    for (const readyRoute of readyRoutes) await waitForServer(`${externalBaseUrl}${readyRoute}`);
     return externalBaseUrl;
   }
 
@@ -153,18 +145,12 @@ export async function startServer(
   let lastError: unknown;
   for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
-      return await spawnServer(readyRoutes, options.rejectRedirects);
+      return await spawnServer(readyRoutes);
     } catch (error) {
       lastError = error;
       await stopServer();
       devServer = null;
       serverOutput = '';
-      if (
-        options.rejectRedirects &&
-        error instanceof Error &&
-        error.name === 'DocumentationReadinessRedirectError'
-      )
-        throw error;
     }
   }
   throw lastError;
