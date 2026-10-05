@@ -93,3 +93,22 @@ export function checkAnimatedRun(frames) {
     failures.push('Shared highlight node was replaced during scroll');
   return { summary, failures };
 }
+
+/** A timer from an earlier frame can run after a controlled input changes layout.
+ * Classify by the captured input epoch, never by the observed current value. */
+export function classifyFrameSamples(frames, expectedEpoch) {
+  const beforeFrame = frames.filter((frame) => frame.sampledInputEpoch !== frame.inputEpoch);
+  const postFrame = frames.filter((frame) => frame.sampledInputEpoch === frame.inputEpoch);
+  const failures = [];
+  if (!postFrame.some((frame) => frame.inputEpoch === expectedEpoch))
+    failures.push(`No post-rAF sample for input epoch ${expectedEpoch}`);
+  const invalid = postFrame.filter(
+    (frame) =>
+      frame.connected && (frame.current.length !== 1 || frame.current[0] !== frame.expectedCurrent)
+  );
+  if (invalid.length)
+    failures.push(
+      `${invalid.length} post-rAF samples have missing/nonunique/wrong native current; first at ${invalid[0].t}ms`
+    );
+  return { beforeFrame, postFrame, failures };
+}

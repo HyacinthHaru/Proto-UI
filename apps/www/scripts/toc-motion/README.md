@@ -45,3 +45,17 @@ All captures are the actual running candidate. Family and font-size signal injec
 The runner checks the candidate only. Historical baseline `411c354cfb` used a different unmarked highlight with no passive public Surface. It must be captured separately without rewriting its DOM; candidate evidence does not by itself establish historical visual parity.
 
 Source bound means a clean exact Git head and a verified production-build receipt before and after capture. Syntax/helper test passes are not browser passes. Preserve the first failed run, fix any diagnosed runner or product defect, and rerun the unchanged acceptance boundary. The eight-mode Chromium matrix excludes mobile TOC, other browser engines, screen readers and whole-site elapsed performance; those remain separate scopes. Actual screenshots and continuous compositor frames still require visual review.
+
+## First-run corrections and real navigation
+
+Run [37345952274](https://github.com/Proto-UI/Proto-UI/actions/runs/37345952274) on `0b44648eed1baff8e095ff4f05bc4402fa6b049d` retained two failures. The root-font reflow sample at 10440.8ms was a timer queued by frame 470, before the first product invalidation rAF callback at 10441.5ms in frame 471. It read the newly injected CSS while incorrectly labeling itself post-invalidation. Sampling now binds the input epoch at rAF scheduling; crossed-epoch samples remain in `preFrameDiagnostics`, while every same-epoch current assertion and the final-epoch nonempty/rest check remain mandatory. There is no first-N-frame exemption or filtering by current value. Negative controls reject same-epoch wrong current and an entirely excluded observation set.
+
+The initial delayed-font fixture held no requests: the default Shadcn route did not use its declared DM Sans face. The corrected controlled fixture applies the existing `--font-sans` input and calls `document.fonts.load` for the existing same-origin DM Sans font. It requires a held network path, real loading/loadingdone transition and the returned loaded DM Sans face. Geometry change is reported rather than assumed.
+
+The signal-injection matrix covers the actual TOC/native-link family Surface; it does not claim the whole Header has changed family. A separate normal journey clicks the real sidebar into the Brutalist design-contract route, uses its native TOC and returns through browser history to the Shadcn route. No invented family preference event is used.
+
+## Unmodified historical comparison
+
+`original/` is a separately bound observer for exact subject `411c354cfbf76e9da34eafa90f1c8a7b973d043c`. The CI job builds that detached subject once after the candidate capture and uses the same installed browser/fonts for three normal-motion transitions. It locates the original direct `div[aria-hidden=true]` with `bg-primary/5` without adding markers, preserves its first-left/last-right 16px/4px target, and records old current or geometry defects as historical findings. Modern public-Surface requirements are never imposed on that old DOM.
+
+The modern runner/helper and historical subject each retain full-SHA, clean-tree and build-byte bindings. Original source is not patched. Its own installed Astro supplies the preview; the existing same-origin/no-redirect guard remains in force. Historical capture failure fails the job, while historical behavioral findings remain explicit observations rather than fake baseline success. Actual original/candidate compositor frames still require visual comparison.

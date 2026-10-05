@@ -6,6 +6,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { execFileSync } from 'node:child_process';
 import {
+  classifyFrameSamples,
   checkAnimatedRun,
   checkRestingFrame,
   inspectMotion,
@@ -36,7 +37,8 @@ const report = {
     scroll:
       'Playwright mouse.wheel, browser-applied native scrolling; actual offset captured separately',
     anchor: 'native anchor click',
-    family: 'explicit supported document family signal injection; not a family-picker UX test',
+    family:
+      'controlled TOC/native-link family signal; not a family-picker UX or whole-Header settlement claim',
     fontStress: 'injected root font-size reflow, separately labeled; not browser zoom',
     lifecycle: 'controlled remove/reinsert of actual sl-toc; no synthetic product callbacks',
   },
@@ -86,6 +88,8 @@ function installObserver() {
     frames: [],
     stage: 'initial',
     sampling: false,
+    inputEpoch: 0,
+    inputEvents: [],
     updates: [],
     mutations: [],
     events: [],
@@ -153,6 +157,7 @@ function installObserver() {
     return {
       t: performance.now(),
       frameId,
+      inputEpoch: state.inputEpoch,
       stage: state.stage,
       scrollY,
       connected: host.isConnected,
@@ -320,12 +325,22 @@ function installObserver() {
       }),
     { passive: true }
   );
-  const tick = () => {
+  const tick = (frameTimestamp) => {
     frameId++;
     if (state.sampling) {
       const stage = state.stage;
+      const sampledInputEpoch = state.inputEpoch;
       setTimeout(() => {
-        if (state.sampling && state.stage === stage) state.frames.push(state.read());
+        if (state.sampling && state.stage === stage) {
+          const sample = state.read();
+          sample.sampledInputEpoch = sampledInputEpoch;
+          sample.frameTimestamp = frameTimestamp;
+          sample.samplePhase =
+            sampledInputEpoch === sample.inputEpoch
+              ? 'task after rAF for the same input epoch'
+              : 'input changed after this rAF; diagnostic only';
+          state.frames.push(sample);
+        }
       }, 0);
     }
     state.raf = requestAnimationFrame(tick);
@@ -357,16 +372,13 @@ async function finishStage(page, entry) {
     s.sampling = false;
     return s.frames;
   });
-  const invalidCurrent = entry.frames.filter(
-    (frame) =>
-      frame.connected && (frame.current.length !== 1 || frame.current[0] !== frame.expectedCurrent)
-  );
-  if (invalidCurrent.length)
-    checks(entry, [
-      `${invalidCurrent.length} post-rAF samples have missing/nonunique/wrong native current; first at ${invalidCurrent[0].t}ms`,
-    ]);
+  entry.inputEpoch = await page.evaluate(() => window.__tocEvidence.inputEpoch);
+  const classified = classifyFrameSamples(entry.frames, entry.inputEpoch);
+  entry.preFrameDiagnostics = classified.beforeFrame;
+  entry.postFrameCount = classified.postFrame.length;
+  checks(entry, classified.failures);
   entry.summary = inspectMotion(entry.frames);
-  entry.rest = entry.frames.at(-1);
+  entry.rest = classified.postFrame.at(-1);
   checks(entry, checkRestingFrame(entry.rest));
   const file = `${entry.name}.png`;
   await page.screenshot({ path: path.join(out, file), scale: 'css' });
@@ -411,12 +423,20 @@ async function makeContext(options = {}) {
 }
 async function ready(page) {
   await page.goto(report.baseUrl + route, { waitUntil: 'networkidle' });
+  await observeReady(page);
+}
+async function observeReady(page) {
   await page.waitForFunction(() => {
     const h = document.querySelector('sl-toc [data-site-toc-highlight]');
     return h?.hasAttribute('data-toc-range-ready') && h?.hasAttribute('data-toc-range-visible');
   });
   await page.evaluate(() => document.fonts.ready);
-  await page.evaluate(installObserver);
+  // History can restore the same document through BFCache. Reuse that test
+  // observer rather than stacking instrumentation over its restored lifetime.
+  const alreadyObserved = await page.evaluate(
+    () => window.__tocEvidence?.host === document.querySelector('.right-sidebar sl-toc')
+  );
+  if (!alreadyObserved) await page.evaluate(installObserver);
   await waitFrames(page, 30);
 }
 async function screencast(page) {
@@ -562,7 +582,6 @@ try {
     if (decodeURIComponent(entry.actualHash) !== decodeURIComponent(entry.expectedHash))
       checks(entry, ['Native anchor hash did not reach target']);
   });
-  await stopRecording();
   await addCase('viewport-resize', async (entry) => {
     await startStage(page, entry.name);
     await page.setViewportSize({ width: 1366, height: 760 });
@@ -574,7 +593,13 @@ try {
   await addCase('font-reflow-stress', async (entry) => {
     await startStage(page, entry.name);
     entry.before = await page.evaluate(() => window.__tocEvidence.read());
-    await page.evaluate(() => (document.documentElement.style.fontSize = '112.5%'));
+    entry.trigger = await page.evaluate(() => {
+      const state = window.__tocEvidence;
+      const event = { kind: 'root-font-size', epoch: ++state.inputEpoch, t: performance.now() };
+      state.inputEvents.push(event);
+      document.documentElement.style.fontSize = '112.5%';
+      return event;
+    });
     await page.evaluate(() => document.fonts.ready);
     await waitFrames(page, 40);
     await finishStage(page, entry);
@@ -582,6 +607,7 @@ try {
     entry.attribution =
       'Controlled larger-text CSS reflow; fonts.ready awaited. Not a browser zoom or delayed font loading test.';
   });
+  await stopRecording();
   await page.evaluate(() => document.documentElement.style.removeProperty('font-size'));
   await waitFrames(page, 35);
   await addCase('native-theme-toggle', async (entry) => {
@@ -787,6 +813,62 @@ try {
         });
         await matrixContext.close();
       }
+  const navigationContext = await makeContext(),
+    navigationPage = await navigationContext.newPage();
+  await ready(navigationPage);
+  await addCase('native-library-navigation-brutalist', async (entry) => {
+    entry.attribution =
+      'Native sidebar link into the supported Brutalist documentation route; no family signal injection.';
+    entry.before = await navigationPage.evaluate(() => window.__tocEvidence.read());
+    const destination = '/zh-cn/ui-libraries/brutalist/design-contract/';
+    const link = navigationPage.locator(`.sidebar-pane a[href="${destination}"]`).first();
+    const ancestors = link.locator('xpath=ancestor::details');
+    for (let index = 0; index < (await ancestors.count()); index++) {
+      const details = ancestors.nth(index);
+      if (!(await details.evaluate((element) => element.open)))
+        await details.locator(':scope > summary').click();
+    }
+    await Promise.all([navigationPage.waitForURL(report.baseUrl + destination), link.click()]);
+    await observeReady(navigationPage);
+    await startStage(navigationPage, entry.name);
+    await navigationPage.mouse.move(700, 550);
+    for (let index = 0; index < 8; index++) {
+      await navigationPage.mouse.wheel(0, 180);
+      await waitFrames(navigationPage, 5);
+    }
+    const anchor = navigationPage.locator('.right-sidebar sl-toc a').nth(1);
+    entry.expectedHash = await anchor.getAttribute('href');
+    await anchor.click();
+    await waitFrames(navigationPage, 40);
+    await finishStage(navigationPage, entry);
+    entry.actualURL = navigationPage.url();
+    entry.headerFamilyInputs = await navigationPage
+      .locator('header [data-site-control-family]')
+      .evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-site-control-family')));
+    if (
+      entry.before.surface?.tag !== 'wc-site-shadcn-surface' ||
+      entry.rest.surface?.tag !== 'wc-site-brutalist-surface'
+    )
+      checks(entry, ['Real library navigation did not acquire the route-owned TOC family']);
+    if (
+      decodeURIComponent(new URL(entry.actualURL).hash) !== decodeURIComponent(entry.expectedHash)
+    )
+      checks(entry, ['Real Brutalist-route native anchor failed']);
+  });
+  await addCase('native-library-history-return', async (entry) => {
+    for (let index = 0; index < 2 && new URL(navigationPage.url()).pathname !== route; index++)
+      await navigationPage.goBack({ waitUntil: 'domcontentloaded' });
+    if (new URL(navigationPage.url()).pathname !== route)
+      throw Error('Native Back did not return to the Shadcn documentation route');
+    await observeReady(navigationPage);
+    await startStage(navigationPage, entry.name);
+    await navigationPage.mouse.wheel(0, 350);
+    await waitFrames(navigationPage, 40);
+    await finishStage(navigationPage, entry);
+    if (entry.rest.surface?.tag !== 'wc-site-shadcn-surface')
+      checks(entry, ['Returned page retained the wrong TOC family']);
+  });
+  await navigationContext.close();
   const nojs = await makeContext({ javaScriptEnabled: false }),
     nojsPage = await nojs.newPage();
   await addCase('no-javascript', async (entry) => {
@@ -798,15 +880,13 @@ try {
     entry.expectedHash = await link.getAttribute('href');
     await link.click();
     entry.actualHash = new URL(nojsPage.url()).hash;
-    entry.geometry = await nojsPage
-      .locator('[data-site-toc-highlight]')
-      .evaluateAll((nodes) =>
-        nodes.map((h) => ({
-          visibility: getComputedStyle(h).visibility,
-          opacity: getComputedStyle(h).opacity,
-          ready: h.hasAttribute('data-toc-range-ready'),
-        }))
-      );
+    entry.geometry = await nojsPage.locator('[data-site-toc-highlight]').evaluateAll((nodes) =>
+      nodes.map((h) => ({
+        visibility: getComputedStyle(h).visibility,
+        opacity: getComputedStyle(h).opacity,
+        ready: h.hasAttribute('data-toc-range-ready'),
+      }))
+    );
     if (entry.geometry.some((h) => h.ready || (h.visibility !== 'hidden' && h.opacity !== '0')))
       checks(entry, ['Unenhanced shared mount paints with JavaScript disabled']);
     if (decodeURIComponent(entry.actualHash) !== decodeURIComponent(entry.expectedHash))
@@ -839,6 +919,16 @@ try {
       await fontPage.goto(report.baseUrl + route, { waitUntil: 'domcontentloaded' });
       await fontPage.waitForFunction(() => document.querySelector('sl-toc [data-toc-range-ready]'));
       await fontPage.evaluate(installObserver);
+      entry.attribution =
+        'Controlled use of the existing self-hosted DM Sans FontFace and --font-sans input; real own-site font bytes are delayed, never a synthetic loading event.';
+      await fontPage.evaluate(() => {
+        document.documentElement.style.setProperty(
+          '--font-sans',
+          '"DM Sans", ui-sans-serif, sans-serif'
+        );
+        window.__tocEvidence.requestedFont = document.fonts.load('16px "DM Sans"', 'Proto UI');
+      });
+      await fontPage.waitForFunction(() => document.fonts.status === 'loading');
       await waitFrames(fontPage, 8);
       entry.before = await fontPage.evaluate(() => ({
         frame: window.__tocEvidence.read(),
@@ -857,6 +947,12 @@ try {
       await startStage(fontPage, entry.name);
       released = true;
       release();
+      entry.loadedFaces = await fontPage.evaluate(async () =>
+        (await window.__tocEvidence.requestedFont).map((font) => ({
+          family: font.family,
+          status: font.status,
+        }))
+      );
       await fontPage.evaluate(() => document.fonts.ready);
       await waitFrames(fontPage, 35);
       await finishStage(fontPage, entry);
@@ -867,6 +963,7 @@ try {
       }));
       entry.measuredGeometryChanged = !rectNear(entry.before.frame.target, entry.rest.target);
       if (
+        !entry.loadedFaces?.some((face) => face.family === 'DM Sans' && face.status === 'loaded') ||
         !entry.heldFontPaths.length ||
         entry.before.fontStatus !== 'loading' ||
         entry.after.fontStatus !== 'loaded' ||
