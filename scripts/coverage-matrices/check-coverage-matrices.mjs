@@ -6305,7 +6305,27 @@ function externalScriptModuleSpecifiers(content, absolutePath = 'source.html') {
     });
 }
 
-function documentBaseSpecifiers(content) {
+function documentBaseSpecifiers(content, absolutePath) {
+  if (/\.vue$/iu.test(absolutePath)) {
+    try {
+      return authoredVueResourceTags(content, absolutePath)
+        .filter(({ name }) => name === 'base')
+        .flatMap(({ attributes }) => {
+          for (const name of attributes.keys())
+            if (name.toLowerCase() === ':href' || name === 'v-bind')
+              return [DYNAMIC_DOCUMENT_BASE_SPECIFIER];
+          const href = attributes.get('href');
+          if (!href) return [];
+          if (href.encoded || /[{}\x60]/u.test(href.value))
+            return [DYNAMIC_DOCUMENT_BASE_SPECIFIER];
+          const url = normalizeBrowserResourceUrl(href.value);
+          if (!url) return [DYNAMIC_DOCUMENT_BASE_SPECIFIER];
+          return /^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(url) ? [url] : [];
+        });
+    } catch {
+      return [DYNAMIC_DOCUMENT_BASE_SPECIFIER];
+    }
+  }
   return jsxOpeningTagCandidates(content)
     .filter((openingTag) => /^<base\b/iu.test(openingTag))
     .flatMap((openingTag) => {
@@ -6478,7 +6498,7 @@ function astroHeadImportMapIssues(
           continue;
         }
         const markup = `<${tag.toLowerCase()} ${attributes.join(' ')}>`;
-        for (const specifier of documentBaseSpecifiers(markup))
+        for (const specifier of documentBaseSpecifiers(markup, absolutePath))
           issues.push({
             sourcePath,
             specifier,
@@ -7020,9 +7040,13 @@ function authoredVueResourceTags(content, absolutePath) {
             encoded: hasHtmlCharacterReference(property.loc.source),
           });
         } else if (property.type === VueNodeTypes.DIRECTIVE) {
+          // Binding modifiers change delivery, not the bound native attribute.
+          // Keep v-pre attributes inert; dynamic/object bindings stay opaque.
           const name =
-            property.name === 'bind' && property.arg?.isStatic && property.arg.content === 'style'
-              ? ':style'
+            property.name === 'bind'
+              ? property.arg?.isStatic
+                ? `:${property.arg.content}`
+                : 'v-bind'
               : property.rawName;
           attributes.set(name, {
             value: null,
@@ -9346,7 +9370,7 @@ function discoverWebsiteRawImports(rootDir) {
           category: 'unreviewed-embed',
           resolvedPath: null,
         });
-      for (const specifier of documentBaseSpecifiers(markup)) {
+      for (const specifier of documentBaseSpecifiers(markup, absolutePath)) {
         rawImports.push({
           sourcePath,
           specifier,
@@ -9627,7 +9651,7 @@ function discoverHarnessRawImports(rootDir) {
           category: 'production-import-map',
           resolvedPath: null,
         });
-      for (const specifier of documentBaseSpecifiers(content))
+      for (const specifier of documentBaseSpecifiers(content, absolutePath))
         rawImports.push({
           sourcePath,
           specifier,

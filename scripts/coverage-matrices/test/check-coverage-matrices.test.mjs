@@ -17271,3 +17271,118 @@ test('document base promotion: foreign title cannot borrow HTML text-only admiss
   );
   assert.match(validationMessage(root, options), /promotion document base href.*unverified/u);
 });
+
+test('Vue directive modifier promotion: base property binding cannot certify a decoy-relative asset', () => {
+  const { root, options } = scriptAssetPromotionFixture(
+    `<template><base v-bind:href.prop="'/assets/'"><img src="surface.png"></template>`,
+    {
+      extension: 'vue',
+      prepare(root) {
+        const directory = path.join(root, 'apps/www/public/assets');
+        fs.mkdirSync(directory, { recursive: true });
+        fs.writeFileSync(
+          path.join(directory, 'surface.png'),
+          indexedPng({ includePalette: true, color: [0, 0, 255] })
+        );
+      },
+    }
+  );
+  assert.match(validationMessage(root, options), /promotion document base href.*unverified/u);
+});
+
+test('Vue directive modifier promotion: resource property binding is not a static byte-bound URL', () => {
+  const { root, options } = scriptAssetPromotionFixture(
+    `<template><img :src.prop="'surface.png'"></template>`,
+    { extension: 'vue' }
+  );
+  assert.match(validationMessage(root, options), /promotion markup resource URL.*unverified/u);
+});
+
+test('Vue directive modifier promotion: v-pre keeps directive-looking base text inert and binds resource bytes', () => {
+  const { root, assetPath, options } = scriptAssetPromotionFixture(
+    `<template><section v-pre><base v-bind:href.prop="'/assets/'"><img src="surface.png"></section></template>`,
+    { extension: 'vue' }
+  );
+  assert.deepEqual(collectCoverageMatrixIssues(options), []);
+  fs.writeFileSync(
+    path.join(root, assetPath),
+    indexedPng({ includePalette: true, color: [0, 0, 255] })
+  );
+  assert.match(validationMessage(root, options), /promoted dependency.*surface\.png.*differs/u);
+});
+
+test('Vue directive modifier Website: native base property binding remains unverified', () => {
+  const issues = probeReview(
+    'vue-base-modifier',
+    'website',
+    `<template><base :href.prop="'https://cdn.example/'"><main>Static</main></template>`,
+    'vue'
+  );
+  assert.ok(
+    issues.some((issue) => /(?:dynamic|external) document base href/u.test(issue)),
+    issues.join('\n')
+  );
+});
+
+test('Vue directive modifier Website: v-pre retains inert directive-looking base attributes', () => {
+  assert.deepEqual(
+    probeReview(
+      'vue-base-modifier-inert',
+      'website',
+      `<template><section v-pre><base :href.prop="'https://cdn.example/'"></section></template>`,
+      'vue'
+    ),
+    []
+  );
+});
+
+test('Vue directive modifier Website: literal HTML attributes do not acquire Vue binding semantics', () => {
+  assert.deepEqual(
+    probeReview(
+      'html-base-modifier-inert',
+      'website',
+      `<base :href.prop="'https://cdn.example/'"><main>Static</main>`,
+      'html'
+    ),
+    []
+  );
+});
+
+test('Vue native base Website: browser preprocessing cannot hide an external href', () => {
+  const issues = probeReview(
+    'vue-base-preprocessing',
+    'website',
+    '<template><base href=" \thttps://cdn.example/\r\n "><main>Static</main></template>',
+    'vue'
+  );
+  assert.ok(
+    issues.some((issue) => /external document base href/u.test(issue)),
+    issues.join('\n')
+  );
+});
+
+test('Vue native base Website: unsupported template parsing retains an unverified issue', () => {
+  const issues = probeReview(
+    'vue-base-unparsed',
+    'website',
+    '<template lang="pug">base(href="https://cdn.example/")</template>',
+    'vue'
+  );
+  assert.ok(
+    issues.some((issue) => /dynamic document base href/u.test(issue)),
+    issues.join('\n')
+  );
+});
+
+test('Vue native base Website: bound HTML href names remain case-insensitive', () => {
+  const issues = probeReview(
+    'vue-base-bound-case',
+    'website',
+    `<template><base v-bind:HREF.attr="'https://cdn.example/'"></template>`,
+    'vue'
+  );
+  assert.ok(
+    issues.some((issue) => /dynamic document base href/u.test(issue)),
+    issues.join('\n')
+  );
+});
