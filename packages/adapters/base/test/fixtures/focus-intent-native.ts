@@ -388,3 +388,84 @@ export async function observeBlurReentry(runtime: Runtime) {
     await mounted.unmount();
   }
 }
+
+export async function observeRetainedViewBudget(runtime: Runtime, kind: Kind) {
+  let run: any;
+  const proto = definePrototype({
+    name: `native-retained-view-budget-${runtime}-${kind}`,
+    setup(def) {
+      def.lifecycle.onCreated((value) => {
+        run = value;
+      });
+      def.expose('view', {
+        hide: () => run.lifecycle.setPresent(false),
+        show: () => run.lifecycle.setPresent(true),
+      });
+      if (kind === 'entry') {
+        const entry = asFocusEntry();
+        entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+        def.expose.method('request', () => entry.focus());
+      } else {
+        const target = asFocusable();
+        def.expose.state('focused', target.focused);
+        def.expose.method('request', () =>
+          kind === 'native' ? target.focusSelf() : target.focus()
+        );
+      }
+      return (r) => r.el('button', 'Rejected across retained replacements');
+    },
+  });
+  const mounted = await mount(runtime, proto);
+  const target = () => (kind === 'entry' ? mounted.root.querySelector('button')! : mounted.root);
+  const rejectionStyle = document.createElement('style');
+  rejectionStyle.textContent = 'body[data-focus-intent-reject] { display: none !important; }';
+  document.head.append(rejectionStyle);
+  let trustedFocusEvents = 0;
+  const observe = (event: FocusEvent) => {
+    if (event.isTrusted && event.target === target()) trustedFocusEvents++;
+  };
+  document.addEventListener('focus', observe, true);
+  try {
+    await frames(3);
+    // The fixture owns this body attribute. Framework commits cannot erase the
+    // CSS rejection, even when a raw descendant is replaced during an update.
+    document.body.setAttribute('data-focus-intent-reject', '');
+    await mounted.act(() => mounted.getExposes().request());
+    const rejected = document.activeElement !== target();
+    await frames(8);
+    const replacementsStillPending: boolean[] = [];
+    const retainedViewsReady: boolean[] = [];
+    for (let commit = 0; commit < 2; commit++) {
+      await mounted.act(() => mounted.getExposes().view.hide());
+      await mounted.act(() => mounted.getExposes().view.show());
+      // Drain framework commit/microtask work before lifting the independently
+      // owned CSS rejection; do not issue a newer request to make it ready.
+      await mounted.act(() => {});
+      retainedViewsReady.push(
+        mounted.root.isConnected &&
+          !mounted.root.hasAttribute('data-pui-view-pending') &&
+          !mounted.root.hasAttribute('data-pui-view-detached')
+      );
+      document.body.removeAttribute('data-focus-intent-reject');
+      await frames(3);
+      replacementsStillPending.push(document.activeElement !== target());
+      document.body.setAttribute('data-focus-intent-reject', '');
+    }
+    await mounted.act(() => mounted.getExposes().request());
+    document.body.removeAttribute('data-focus-intent-reject');
+    await frames(3);
+    return {
+      rejected,
+      retainedViewsReady,
+      replacementsStillPending,
+      freshAcquired: document.activeElement === target(),
+      focused: kind === 'entry' ? null : mounted.getExposes().focused.get(),
+      trustedFocusEvents,
+    };
+  } finally {
+    document.removeEventListener('focus', observe, true);
+    document.body.removeAttribute('data-focus-intent-reject');
+    rejectionStyle.remove();
+    await mounted.unmount();
+  }
+}

@@ -48,11 +48,25 @@ describe('Focus readiness evidence boundaries', () => {
       const implementation = entity?.implementations.find(
         (candidate) => candidate.id === `adapter-${adapter}-focus-intent-retry-bound`
       );
-      expect(implementation?.consumesCases).toEqual(['T-FOCUS-0001-CASE-INTENT-RETRY-BOUND']);
+      expect(implementation?.consumesCases).toEqual([
+        'T-FOCUS-0001-CASE-INTENT-RETRY-BOUND',
+        'T-FOCUS-0001-CASE-RETAINED-INTENT-BUDGET',
+        'T-FOCUS-0001-CASE-CURRENT-INTENT-ACCOUNTING',
+      ]);
       expect(
         entity?.cases.find((candidate) => candidate.id === 'T-FOCUS-0001-CASE-INTENT-RETRY-BOUND')
           ?.covers
       ).toEqual(['C-AS-FOCUSABLE-0001-G', 'C-AS-FOCUS-ENTRY-0001-H', 'HC-FOCUS-TARGET-0001-C']);
+      expect(
+        entity?.cases.find(
+          (candidate) => candidate.id === 'T-FOCUS-0001-CASE-RETAINED-INTENT-BUDGET'
+        )?.covers
+      ).toEqual(['C-AS-FOCUSABLE-0001-G', 'C-AS-FOCUS-ENTRY-0001-H', 'HC-FOCUS-TARGET-0001-C']);
+      expect(
+        entity?.cases.find(
+          (candidate) => candidate.id === 'T-FOCUS-0001-CASE-CURRENT-INTENT-ACCOUNTING'
+        )?.covers
+      ).toEqual(['HC-FOCUS-TARGET-0001-C']);
     }
   );
 

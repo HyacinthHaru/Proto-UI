@@ -65,7 +65,11 @@ import {
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
 import { createVue2EffectsPort } from './runtime/effects-port';
-import { createVue2Modules, createVue2OwnerModules } from './runtime/modules';
+import {
+  createVue2Modules,
+  createVue2OwnerModules,
+  type FocusIntentState,
+} from './runtime/modules';
 import { createVue2HostSession } from './runtime/session';
 import { renderTemplateToVue2 } from './template';
 
@@ -138,6 +142,7 @@ type Vue2InternalState<Props extends PropsBaseType> = {
   focusTargetReadyListeners: Set<() => void>;
   focusTargetRetryScheduled: boolean;
   focusTargetRetryCount: number;
+  focusIntentState: FocusIntentState;
   focusIngressReady: boolean;
   propWatchDisposer: (() => void) | null;
 };
@@ -267,6 +272,7 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
         focusTargetReadyListeners: new Set(),
         focusTargetRetryScheduled: false,
         focusTargetRetryCount: 0,
+        focusIntentState: {},
         focusIngressReady: false,
         propWatchDisposer: null,
       } as Vue2InternalState<Props>;
@@ -782,15 +788,16 @@ function initSession<Props extends PropsBaseType>(
       state.focusTargetReadyListeners.add(listener);
       return () => state.focusTargetReadyListeners.delete(listener);
     },
+    focusIntentState: state.focusIntentState,
     onFocusIntent: () => {
+      state.focusTargetRetryCount = 0;
       focusRetryGeneration += 1;
       state.focusTargetRetryScheduled = false;
-      state.focusTargetRetryCount = 0;
     },
     onFocusAcquired: () => {
+      state.focusTargetRetryCount = 0;
       releaseRequestedTargetReady?.();
       releaseRequestedTargetReady = undefined;
-      state.focusTargetRetryCount = 0;
     },
     retryTargetReady: () => {
       if (
@@ -929,7 +936,6 @@ function notifyFocusTargetReady(vm: any) {
 function setViewReady(vm: any, value: boolean) {
   const state = getState(vm);
   state.viewReady = value;
-  state.focusTargetRetryCount = 0;
   setVmField(vm, '__puiViewReady', value);
   forceUpdate(vm);
 }

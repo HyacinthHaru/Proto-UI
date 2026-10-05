@@ -54,7 +54,7 @@ import {
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
 import { createVueEffectsPort } from './runtime/effects-port';
-import { createVueModules, createVueOwnerModules } from './runtime/modules';
+import { createVueModules, createVueOwnerModules, type FocusIntentState } from './runtime/modules';
 import { createVueHostSession } from './runtime/session';
 import { renderTemplateToVue, type VueRuntime as VueRenderRuntime } from './template';
 
@@ -235,6 +235,7 @@ export function createVueAdapter(runtime: VueRuntime) {
         const focusTargetReadyListeners = new Set<() => void>();
         let focusTargetRetryScheduled = false;
         let focusTargetRetryCount = 0;
+        const focusIntentState: FocusIntentState = {};
         const notifyFocusTargetReady = () => {
           const target = rootRef.value;
           if (!viewReady || !target?.isConnected) return;
@@ -537,15 +538,16 @@ export function createVueAdapter(runtime: VueRuntime) {
               });
               return false;
             },
+            focusIntentState: focusIntentState,
             onFocusIntent: () => {
+              focusTargetRetryCount = 0;
               focusRetryGeneration += 1;
               focusTargetRetryScheduled = false;
-              focusTargetRetryCount = 0;
             },
             onFocusAcquired: () => {
+              focusTargetRetryCount = 0;
               releaseRequestedTargetReady?.();
               releaseRequestedTargetReady = undefined;
-              focusTargetRetryCount = 0;
             },
             getCurrentElement: () => rootRef.value,
             subscribeTargetReady: (listener) => {
@@ -607,7 +609,6 @@ export function createVueAdapter(runtime: VueRuntime) {
         });
         runtime.onDeactivated?.(() => {
           viewReady = false;
-          focusTargetRetryCount = 0;
           rootRef.value?.setAttribute(PUI_VIEW_PENDING_ATTR, '');
           if (owner.hasView) void owner.detachView();
           lastInitRoot = null;
@@ -621,7 +622,6 @@ export function createVueAdapter(runtime: VueRuntime) {
           async (val: boolean) => {
             if (val) {
               viewReady = false;
-              focusTargetRetryCount = 0;
               await runtime.nextTick();
               initSession();
             } else {
@@ -629,7 +629,6 @@ export function createVueAdapter(runtime: VueRuntime) {
               if (owner.hasView) void owner.detachView();
               hostTokens.value = [];
               viewReady = false;
-              focusTargetRetryCount = 0;
               // The host element survives a detach now, so the same element has
               // to be able to initialize a second time. Without this the reopen
               // path skips initSession and binds against a disposed router.
