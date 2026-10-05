@@ -53,6 +53,44 @@ async function createTempProject(name: string, packageJson: Record<string, unkno
 }
 
 describe('@proto.ui/cli', () => {
+  it.each(['bootstrap-2-3-2', 'liquid-glass'])(
+    'rejects private %s Surface before planning an install or writing a facade',
+    async (family) => {
+      const dir = await createTempProject('private-surface', {
+        name: 'private-surface-consumer',
+        dependencies: { react: '^19.0.0', 'react-dom': '^19.0.0' },
+      });
+      try {
+        await fs.mkdir(path.join(dir, 'proto-ui'));
+        const configPath = path.join(dir, 'proto-ui/config.json');
+        const originalConfig = JSON.stringify({
+          version: 1,
+          rootDir: 'proto-ui',
+          stylesDir: 'src/styles',
+          styles: { enabled: false, preset: null },
+          adapters: {},
+          components: {},
+        });
+        await fs.writeFile(configPath, originalConfig);
+        const result = runCli(dir, [
+          'add',
+          'react',
+          `${family}-surface`,
+          '--no-install',
+          '--no-interactive',
+        ]);
+        expect(result.status).not.toBe(0);
+        expect(result.stderr).toContain(`unsupported component "${family}-surface"`);
+        expect(result.stdout).not.toContain('npm install');
+        expect(result.stdout).not.toContain('generated');
+        expect(await fs.readFile(configPath, 'utf8')).toBe(originalConfig);
+        await expect(fs.access(path.join(dir, 'proto-ui/components'))).rejects.toThrow();
+      } finally {
+        await fs.rm(dir, { recursive: true, force: true });
+      }
+    }
+  );
+
   it('keeps the deferred Brutalist Tooltip family out of proto-ui add', () => {
     expect(COMPONENT_REGISTRY).not.toHaveProperty('brutalist-tooltip');
   });

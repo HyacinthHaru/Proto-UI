@@ -253,20 +253,16 @@ export function initPreviewer(options: PreviewerOptions) {
       });
       try {
         await surface.ready;
+        if (!destroyed && myVersion === version) {
+          // The renderer already owns a framework root and setup resources.
+          // Keep all unpublished shell preparation inside its cleanup boundary.
+          family = runtimePreviewFamily(root);
+          await surface.setAppearance(family, resolveProjectionThemeSurfaceStyle(family, root));
+        }
       } catch (error) {
         await result.destroy();
         throw error;
       }
-      if (destroyed || myVersion !== version) {
-        await result.destroy();
-        return;
-      }
-      // Page family may change while the renderer is awaiting its framework.
-      // Commit the latest consumer input before publishing this active view.
-      family = runtimePreviewFamily(root);
-      // Await the latest family as well as the first shell. A slow renderer may
-      // have started before the page selection changed.
-      await surface.setAppearance(family, resolveProjectionThemeSurfaceStyle(family, root));
       if (destroyed || myVersion !== version) {
         await result.destroy();
         return;
