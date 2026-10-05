@@ -1,3 +1,4 @@
+import { homeActionIcon, appendHomeActionGlyph } from './home-action-icons';
 import {
   linkSurfaceProps,
   linkSurfaceLayout,
@@ -58,6 +59,7 @@ const ANCHOR_ATTRIBUTES = [
   'aria-describedby',
   'aria-labelledby',
   'data-site-link-icon',
+  'data-home-action-icon',
   'download',
   'hreflang',
   'data-home-locale',
@@ -172,6 +174,15 @@ export function createHomepageContent(
                       link.textContent?.trim() || link.getAttribute('aria-label') || 'Link',
                     ],
                   },
+                  ...(homeActionIcon(link.dataset.homeActionIcon)
+                    ? [
+                        {
+                          kind: 'box' as const,
+                          tag: 'span' as const,
+                          ref: `home-action-glyph-${index}`,
+                        },
+                      ]
+                    : []),
                 ],
         },
       ],
@@ -263,6 +274,9 @@ export function createHomepageContent(
         if (!link) return () => {};
         const icon = siteLinkIcon(group.links[index]!);
         if (icon !== 'none') appendSiteLinkGlyph(context.refs[`home-link-glyph-${index}`]!, icon);
+        const actionIcon = homeActionIcon(group.links[index]!.dataset.homeActionIcon);
+        if (icon === 'none' && actionIcon)
+          appendHomeActionGlyph(context.refs[`home-action-glyph-${index}`]!, actionIcon);
         return bindNativeLinkFacts(
           link,
           (facts) => {

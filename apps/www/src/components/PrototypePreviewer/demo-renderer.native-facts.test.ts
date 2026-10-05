@@ -175,3 +175,55 @@ describe('native link facts through actual renderer props', () => {
     }, 20_000);
   }
 });
+
+// The configured hero icon supplements the authored CTA; it is not an icon-only
+// social link and must survive the real public Surface/Text projection.
+describe('configured hero action glyph', () => {
+  for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const)
+    for (const family of ['shadcn', 'brutalist'] as const)
+      it(`${runtime}/${family}: preserves text, destination and decorative external glyph`, async () => {
+        const host = document.createElement('div');
+        document.body.append(host);
+        const source = document.createElement('a');
+        source.href = '#home-demo-previewer';
+        source.textContent = '试试 Demo';
+        source.dataset.homeActionVariant = 'minimal';
+        source.dataset.homeActionIcon = 'external';
+        const view = await renderDemo({
+          runtime,
+          host,
+          demo: createHomepageContent(
+            {
+              root: host,
+              mount: host,
+              fallback: host,
+              ownerId: 'hero-icon',
+              links: [source],
+              theme: false,
+              runtime: false,
+            },
+            runtime,
+            () => true,
+            family
+          ),
+        });
+        cleanups.push(() => view.destroy());
+        const link = host.querySelector('a')!;
+        expect(link.textContent).toBe('试试 Demo');
+        expect(link.getAttribute('href')).toBe('#home-demo-previewer');
+        const glyph = link.querySelector('svg');
+        expect(glyph).not.toBeNull();
+        expect(glyph!.getAttribute('aria-hidden')).toBe('true');
+        expect(link.querySelectorAll('svg')).toHaveLength(1);
+        expect(link.querySelector('[data-demo-ref="home-link-text-0"]')).not.toBeNull();
+        link.dispatchEvent(new PointerEvent('pointerenter'));
+        link.dispatchEvent(new PointerEvent('pointerdown', { button: 0, bubbles: true }));
+        link.focus();
+        window.dispatchEvent(new PointerEvent('pointerup', { button: 0 }));
+        await Promise.resolve();
+        expect(link.querySelector('svg')).toBe(glyph);
+        expect(link.textContent).toBe('试试 Demo');
+        expect(document.activeElement).toBe(link);
+        expect(host.querySelectorAll('a')).toHaveLength(1);
+      }, 20_000);
+});

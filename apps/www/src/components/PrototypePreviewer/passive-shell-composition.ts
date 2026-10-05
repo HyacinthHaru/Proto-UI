@@ -36,7 +36,7 @@ export function createPassiveShellComposition(options: {
   const nextSibling = content.nextSibling;
   const document = mount.ownerDocument;
   let alive = true;
-  let theme = options.theme;
+  let requestedTheme = { ...options.theme };
   const slots = new Map<number, HTMLElement>();
   const surfaces = new Map<number, HTMLElement>();
   const move = (parent: Node, before: Node | null = null) =>
@@ -46,6 +46,9 @@ export function createPassiveShellComposition(options: {
   const controller = createProjectionScopeController({
     initialSelection: { runtimeId: options.runtime, projectionFamilyId: options.family },
     async materialize(request) {
+      // Capture before loading: each hidden candidate owns the theme supplied
+      // with its family request, and exposes both through the scope commit.
+      const theme = requestedTheme;
       const prototypeId = options.prototypeId(request.selection.projectionFamilyId);
       await loadPrototypes([prototypeId]);
       if (!alive) throw new Error('Passive shell composition disposed');
@@ -140,8 +143,14 @@ export function createPassiveShellComposition(options: {
     ready,
     async update(family: string, nextTheme: ProjectionThemeSurfaceStyle) {
       if (!alive) return;
-      theme = nextTheme;
-      for (const surface of surfaces.values()) applyProjectionThemeSurfaceStyle(surface, theme);
+      requestedTheme = { ...nextTheme };
+      const current = controller.getSnapshot();
+      // Same-family theme edits remain immediate. A replacement's theme must
+      // never recolor the retained generation or another pending candidate.
+      if (current.selection.projectionFamilyId === family) {
+        const surface = surfaces.get(current.generation);
+        if (surface) applyProjectionThemeSurfaceStyle(surface, requestedTheme);
+      }
       await controller.request({ runtimeId: options.runtime, projectionFamilyId: family });
     },
     destroy() {
