@@ -287,6 +287,18 @@ it('coalesces geometry reads before writes, skips unchanged writes and retires p
   resize!([], {} as ResizeObserver);
   flush();
   expect(range.style.height).toBe('96px');
+  // A real rendering opportunity delivers ResizeObserver after layout and
+  // before paint. Current must be repaired in that callback, without another
+  // frame in which the resized page and old selection are painted together.
+  secondTop = 0;
+  window.dispatchEvent(new Event('scroll'));
+  expect(frames.size).toBe(1);
+  resize!([], {} as ResizeObserver);
+  expect(frames.size).toBe(0);
+  expect(toc.querySelector('[aria-current="true"]')?.getAttribute('href')).toBe('#next');
+  writes.mockClear();
+  resize!([], {} as ResizeObserver);
+  expect(writes).not.toHaveBeenCalled();
   secondTop = 1200;
   window.dispatchEvent(new Event('hashchange'));
   flush();

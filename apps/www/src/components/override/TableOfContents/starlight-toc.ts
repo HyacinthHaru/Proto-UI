@@ -263,6 +263,18 @@ export class StarlightTOC extends HTMLElement {
       range.setAttribute('data-toc-range-visible', '');
   }
 
+  private flushObservedLayout() {
+    if (!this._initialized || !this.isConnected) return;
+    // ResizeObserver runs after layout and before paint. Deferring this
+    // invalidation to another rAF paints one frame with the old current/range
+    // after fonts or wrapping have already moved the headings. Reuse the same
+    // read-before-write pass and consume any queued scroll invalidation.
+    if (this._rafId !== undefined) cancelAnimationFrame(this._rafId);
+    this._rafId = undefined;
+    this._rafScheduled = false;
+    this.updateVisibleNow();
+  }
+
   /** ===== 新增：rAF 节流封装 ===== */
   private scheduleVisibleUpdate() {
     if (this._rafScheduled) return;
@@ -291,7 +303,7 @@ export class StarlightTOC extends HTMLElement {
     window.addEventListener('pageshow', this._onLayout);
     document.fonts?.addEventListener('loadingdone', this._onLayout);
     if (typeof ResizeObserver !== 'undefined') {
-      this._layoutObserver = new ResizeObserver(this._onLayout);
+      this._layoutObserver = new ResizeObserver(() => this.flushObservedLayout());
       // Content/font/runtime layout can change without a viewport resize.
       for (const target of [this, document.querySelector('main'), document.querySelector('header')])
         if (target) this._layoutObserver.observe(target);

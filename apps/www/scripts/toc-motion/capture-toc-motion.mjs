@@ -215,6 +215,7 @@ function installObserver() {
   window.requestAnimationFrame = (callback) =>
     originalRaf.call(window, (timestamp) => {
       const before = state.animationTimestamp;
+      state.lastAnimationTimestamp = timestamp;
       state.animationTimestamp = timestamp;
       try {
         return callback.call(window, timestamp);
@@ -269,7 +270,8 @@ function installObserver() {
       const update = {
         t: performance.now(),
         frameId,
-        animationTimestamp: state.animationTimestamp,
+        animationTimestamp: state.animationTimestamp ?? state.lastAnimationTimestamp,
+        renderPhase: state.animationTimestamp === undefined ? 'after-rAF-layout-or-task' : 'rAF',
         stage: state.stage,
         connected: this.isConnected,
         reads: [],
@@ -730,11 +732,16 @@ try {
       report.failures.push(`No instrumented product updates during ${stage}`);
   report.performance.normalUpdateCount = normalUpdates.length;
   const frameCounts = new Map();
-  for (const update of normalUpdates)
+  for (const update of normalUpdates) {
+    if (!Number.isFinite(update.animationTimestamp))
+      report.failures.push('Continuous-scroll update has no measured animation-frame timestamp');
+    // Include layout/ResizeObserver updates in their actual rendering frame,
+    // rather than grouping every non-rAF callback into one undefined bucket.
     frameCounts.set(
       update.animationTimestamp,
       (frameCounts.get(update.animationTimestamp) ?? 0) + 1
     );
+  }
   report.performance.maxUpdatesPerMeasuredFrame = Math.max(0, ...frameCounts.values());
   if (report.performance.maxUpdatesPerMeasuredFrame > 1)
     report.failures.push(
@@ -867,6 +874,30 @@ try {
     await finishStage(navigationPage, entry);
     if (entry.rest.surface?.tag !== 'wc-site-shadcn-surface')
       checks(entry, ['Returned page retained the wrong TOC family']);
+  });
+  await addCase('native-library-history-forward-keyboard', async (entry) => {
+    await navigationPage.goForward({ waitUntil: 'domcontentloaded' });
+    if (new URL(navigationPage.url()).pathname !== '/zh-cn/ui-libraries/brutalist/design-contract/')
+      throw Error('Native Forward did not restore the Brutalist documentation route');
+    await observeReady(navigationPage);
+    const anchor = navigationPage.locator('.right-sidebar sl-toc a').nth(1);
+    entry.expectedHash = await anchor.getAttribute('href');
+    // Focus is assigned by the harness; activation itself is a native Enter.
+    entry.attribution =
+      'Browser Forward restores the real library route; harness focuses its native TOC anchor, then real keyboard Enter activates it. Not a full Tab-order claim.';
+    await anchor.focus();
+    await startStage(navigationPage, entry.name);
+    await navigationPage.keyboard.press('Enter');
+    await waitFrames(navigationPage, 40);
+    await finishStage(navigationPage, entry);
+    entry.actualHash = new URL(navigationPage.url()).hash;
+    if (
+      entry.rest.surface?.tag !== 'wc-site-brutalist-surface' ||
+      decodeURIComponent(entry.actualHash) !== decodeURIComponent(entry.expectedHash)
+    )
+      checks(entry, [
+        'Forward/keyboard did not restore the route-owned TOC and native destination',
+      ]);
   });
   await navigationContext.close();
   const nojs = await makeContext({ javaScriptEnabled: false }),
