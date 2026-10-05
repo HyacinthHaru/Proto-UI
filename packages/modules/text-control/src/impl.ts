@@ -40,6 +40,7 @@ export class TextControlModuleImpl extends ModuleBase {
   private patch: TextControlPatch = EMPTY_PATCH;
   private value = '';
   private composing = false;
+  private callbackPrelude: { epoch: number } | null = null;
   private listeners: Listener[] = [];
   private host: TextControlHost | null = null;
   private lease: TextControlHostLease | null = null;
@@ -177,7 +178,10 @@ export class TextControlModuleImpl extends ModuleBase {
 
   private effectivePatch(): TextControlPatch {
     const { value: _declaredValue, ...patchWithoutValue } = this.patch;
-    const shouldProjectValue = !(this.valueMode === 'controlled' && this.composing);
+    const shouldProjectValue = !(
+      this.valueMode === 'controlled' &&
+      (this.composing || this.callbackPrelude?.epoch === this.leaseEpoch)
+    );
     return Object.freeze({
       ...patchWithoutValue,
       valueMode: this.valueMode ?? 'uncontrolled',
@@ -208,15 +212,26 @@ export class TextControlModuleImpl extends ModuleBase {
     const runInCallback = this.caps.has(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
       ? this.caps.get(TEXT_CONTROL_RUN_IN_CALLBACK_CAP)
       : (callback: () => void) => callback();
-    runInCallback(() => {
-      if (epoch !== this.leaseEpoch) return;
-      this.composing = canonicalEvent.composing;
-      const run = this.sys.getCallbackCtx() as RunHandle<PropsBaseType> | undefined;
-      if (!run) return;
-      for (const listener of this.listeners) {
-        if (listener.type === canonicalEvent.type) listener.callback(run, canonicalEvent);
-      }
-    });
+    const previousPrelude = this.callbackPrelude;
+    const prelude = { epoch };
+    this.callbackPrelude = prelude;
+    const releasePrelude = () => {
+      if (this.callbackPrelude === prelude) this.callbackPrelude = previousPrelude;
+    };
+    try {
+      runInCallback(() => {
+        releasePrelude();
+        if (epoch !== this.leaseEpoch) return;
+        this.composing = canonicalEvent.composing;
+        const run = this.sys.getCallbackCtx() as RunHandle<PropsBaseType> | undefined;
+        if (!run) return;
+        for (const listener of this.listeners) {
+          if (listener.type === canonicalEvent.type) listener.callback(run, canonicalEvent);
+        }
+      });
+    } finally {
+      releasePrelude();
+    }
 
     const mustRestoreControlledValue =
       this.valueMode === 'controlled' &&

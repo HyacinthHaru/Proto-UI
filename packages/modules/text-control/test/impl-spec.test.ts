@@ -479,9 +479,14 @@ it('T-TEXT-CONTROL-0001-CASE-CANCEL: listener cancellation is setup-only', () =>
 // C-TEXT-CONTROL-0001-D/E/F/G: CallbackScope drains pending props before
 // invoking the event listener. This controlled prelude reproduces that order.
 describe('TextControl composition across callback-scope entry', () => {
-  it.each(['compositionstart', 'input', 'compositionend'] as const)(
-    'protects the native candidate while old props drain before %s',
-    async (type) => {
+  it.each([
+    ['compositionstart', true],
+    ['input', true],
+    ['input', false],
+    ['compositionend', false],
+  ] as const)(
+    'protects the native candidate while old props drain before %s (composing=%s)',
+    async (type, composing) => {
       let beforeRun = () => {};
       const h = createHarness(true, 'multiline', () => beforeRun());
       const control = h.module.facade.declare();
@@ -501,9 +506,11 @@ describe('TextControl composition across callback-scope entry', () => {
         control.sync({ value: 'A备' });
         during.push({ value: h.getPatchValue(), composing: control.snapshot()!.composing });
       };
-      connection.onEvent(event(type, 'A备注', type !== 'compositionend'));
-      expect(during).toEqual([{ value: 'A备注', composing: true }]);
-      expect(seen).toEqual([{ value: 'A备注', composing: type !== 'compositionend' }]);
+      connection.onEvent(event(type, 'A备注', composing));
+      expect(during).toEqual([
+        { value: 'A备注', composing: type === 'compositionend' || composing },
+      ]);
+      expect(seen).toEqual([{ value: 'A备注', composing }]);
       await Promise.resolve();
       expect(h.getPatchValue()).toBe('A备注');
       h.module.hooks.onMountPhase?.('detached', 1);
@@ -531,7 +538,27 @@ describe('TextControl composition across callback-scope entry', () => {
       await Promise.resolve();
       expect(seen).toEqual([]);
       expect(control.snapshot()).toEqual({ value: 'owner', composing: false });
+      expect(h.getPatchValue()).toBe('owner');
       h.module.hooks.onMountPhase?.('detached', 2);
     }
   );
+});
+
+it('releases an interrupted event prelude so later owner values still project', () => {
+  let interrupt = false;
+  const h = createHarness(true, 'multiline', () => {
+    if (interrupt) throw new Error('prelude interrupted');
+  });
+  const control = h.module.facade.declare();
+  h.module.hooks.onMountPhase?.('mounted', 1);
+  h.sys.phase = 'callback';
+  control.sync({ valueMode: 'controlled', value: 'owner' });
+  interrupt = true;
+  h.setPatchValue('proposal');
+  expect(() => h.connectionBox.current!.onEvent(event('input', 'proposal'))).toThrow(
+    'prelude interrupted'
+  );
+  control.sync({ value: 'recovered' });
+  expect(h.getPatchValue()).toBe('recovered');
+  h.module.hooks.onMountPhase?.('detached', 1);
 });
