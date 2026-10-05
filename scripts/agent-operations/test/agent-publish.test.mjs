@@ -122,6 +122,8 @@ function server({
   sourceOwner = 'fixture-owner',
   sourceName = null,
   liveSourceName = null,
+  sourceBranch = 'fixture-contributor-branch',
+  baseBranch = 'main',
   comparisonPages = null,
   protectedBranch = false,
   repositoryId = REPOSITORY,
@@ -148,7 +150,7 @@ function server({
   const runner = (binary, args, options) => {
     if (binary === 'git' && pull) {
       if (args[0] === 'config') return `https://github.com/${sourceFullName}.git\n`;
-      if (args[0] === 'symbolic-ref') return 'fixture-contributor-branch\n';
+      if (args[0] === 'symbolic-ref') return `${sourceBranch}\n`;
       if (args[0] === 'rev-parse') return `${revision.headSha}\n`;
       if (args[0] === 'check-ref-format') return '';
     }
@@ -177,7 +179,7 @@ function server({
         if (
           parts.length > 2 ||
           requestedOwner.toLowerCase() !== sourceOwner.toLowerCase() ||
-          parts.at(-1) !== 'fixture-contributor-branch'
+          parts.at(-1) !== sourceBranch
         )
           throw new Error('requested head branch is unavailable in the source repository');
       }
@@ -206,9 +208,9 @@ function server({
           ...(pull
             ? {
                 pull_request: { url: `fixture://pull/${number}` },
-                base: { ref: 'main', sha: revision.baseSha },
+                base: { ref: baseBranch, sha: revision.baseSha },
                 head: {
-                  ref: 'fixture-contributor-branch',
+                  ref: sourceBranch,
                   sha: revision.headSha,
                   repo: { full_name: sourceFullName },
                 },
@@ -232,7 +234,12 @@ function server({
     if (endpoint.includes('/issues/7/comments?')) return JSON.stringify(comments);
     if (pull && endpoint.includes('/branches/'))
       return JSON.stringify({
-        commit: { sha: endpoint.endsWith('/main') ? revision.baseSha : revision.headSha },
+        commit: {
+          sha:
+            endpoint === `repos/${fullName}/branches/${encodeURIComponent(baseBranch)}`
+              ? revision.baseSha
+              : revision.headSha,
+        },
         protected: protectedBranch,
       });
     if (pull && endpoint.includes('/compare/') && comparisonPages) {
@@ -703,6 +710,71 @@ for (const sourceOwner of [LOGIN, 'fixture-owner']) {
     assert.equal(gh.writes.length, 1);
   });
 }
+
+test('a fork default branch can propose the same base name or a different upstream base', (t) => {
+  for (const [sourceOwner, baseBranch] of [
+    [LOGIN, 'main'],
+    ['fixture-owner', 'develop'],
+  ]) {
+    const f = fixture(t, { failed: true });
+    const gh = server({
+      pull: true,
+      sourceOwner,
+      sourceName: 'renamed-fork',
+      sourceBranch: 'main',
+      baseBranch,
+    });
+    const argv = [
+      'pull-request',
+      'create',
+      ...f.args,
+      '--title',
+      'Synthetic default branch fork',
+      '--body-file',
+      f.bodyPath,
+      '--base',
+      baseBranch,
+      '--head',
+      `${sourceOwner}:main`,
+    ];
+    const published = runPublishCli(argv, { runner: gh.runner, now: f.now });
+    assert.equal(published.status, 'published');
+    assert.equal(
+      runPublishCli(argv, { runner: gh.runner, now: f.now }).status,
+      'already-published'
+    );
+    assert.equal(gh.writes.length, 1);
+  }
+});
+
+test('same-repository base and default branches cannot become contributor PR heads', (t) => {
+  for (const [sourceBranch, baseBranch] of [
+    ['develop', 'develop'],
+    ['main', 'develop'],
+  ]) {
+    const f = fixture(t, { failed: true });
+    const gh = server({ pull: true, sourceBranch, baseBranch });
+    assert.throws(() =>
+      runPublishCli(
+        [
+          'pull-request',
+          'create',
+          ...f.args,
+          '--title',
+          'Synthetic same repository branch',
+          '--body-file',
+          f.bodyPath,
+          '--base',
+          baseBranch,
+          '--head',
+          sourceBranch,
+        ],
+        { runner: gh.runner, now: f.now }
+      )
+    );
+    assert.equal(gh.writes.length, 0);
+  }
+});
 
 test('fork creation rejects a changed live source identity before publication', (t) => {
   const f = fixture(t, { failed: true });

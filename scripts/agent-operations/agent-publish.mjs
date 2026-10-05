@@ -233,8 +233,6 @@ function pullBinding(io, args, viewer) {
   const branch = parts.at(-1);
   io.run('git', ['check-ref-format', '--branch', branch]);
   io.run('git', ['check-ref-format', '--branch', base]);
-  if (branch === base || branch === viewer.defaultBranch)
-    throw new Error('PR requires a distinct contributor head branch');
   const sourceOwner = parts.length === 2 ? parts[0] : owner;
   const sourceRepository = checkoutRepository(io);
   const source = parseRepositoryId(sourceRepository);
@@ -246,6 +244,11 @@ function pullBinding(io, args, viewer) {
     sourceRepository.slice('github.com:'.length).toLowerCase()
   )
     throw new Error('live PR source repository differs from checkout origin');
+  if (
+    liveSource.full_name.toLowerCase() === `${owner}/${name}`.toLowerCase() &&
+    (branch === base || branch === viewer.defaultBranch)
+  )
+    throw new Error('PR requires a distinct contributor head branch');
   if (io.run('git', ['symbolic-ref', '--short', 'HEAD']).trim() !== branch)
     throw new Error('PR head branch differs from checkout branch');
   const localSha = io.run('git', ['rev-parse', 'HEAD']).trim();
