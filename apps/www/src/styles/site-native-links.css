@@ -78,3 +78,33 @@ a[data-site-link-enhanced] > [data-site-link-content] {
   white-space: nowrap;
   border: 0;
 }
+
+/* Consumer row geometry passed through the real Surface's surfaceStyle input.
+   Paint, type and interaction feedback stay with public family primitives. */
+:root {
+  --site-navigation-row-height: 2rem;
+}
+@media (max-width: 63.999rem) {
+  :root {
+    --site-navigation-row-height: 2.75rem;
+  }
+}
+
+/* Summary remains the browser-owned disclosure target; only the existing
+   family Surface/Text children paint it. Native caret artwork is retained. */
+.sidebar-pane .top-level summary[data-site-link-enhanced] {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  outline: none;
+}
+.sidebar-pane summary[data-site-link-enhanced] .caret {
+  color: inherit;
+}
