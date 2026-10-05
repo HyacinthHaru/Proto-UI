@@ -150,6 +150,7 @@ implementations:
       - Focused assertions executed with the real Web Component owner under happy-dom, including controlled requests, synthetic Enter/Space, L1/retention, controls, domains, terminal replacement and all three authored asHooks.
       - Added discriminating synchronous-owner-acceptance, live Trigger/Content reparent and maximum, and detached Content wake cases after independent source review. Settled minimum inspects real ready parts, not a new completion signal or continuous minimum.
       - Additional executed regressions cover controlled/disabled requests during Root L1, interrupted Trigger pointer facts, and initial replacement-Root admission of already-created detached duplicates. Negative minimum conformance queries the actual Runtime Anatomy port after a controlled host acknowledges its mount commit, rather than adding an author-facing completion flag or automatic throw.
+      - Executed cold adoption preserves an already-detached Trigger's logical identity while rebinding expanded and disabled to its new default-closed Root before rematerialization. Live adoption of an already-detached Content into a retained detached Root rejects the second logical role through existing membership guards, without keeping view-order observers alive.
       - Compiled generated CLI-consumer provenance is recorded separately with the change. No native input, browser paint, OS accessibility or complete relationship-service conformance is claimed.
   - id: adapter-web-component-collapsible-contract
     kind: adapter-test

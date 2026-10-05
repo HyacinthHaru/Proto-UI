@@ -48,17 +48,17 @@ function setupCollapsibleRoot(def: DefHandle<CollapsibleRootProps, CollapsibleRo
   def.expose.event('openChange', { payload: 'json' });
   let lastRequestVersion = 0;
 
-  const syncContext = (run: RunHandle<CollapsibleRootProps>) => {
+  const syncContext = (run: RunHandle<CollapsibleRootProps>, publishInitial = false) => {
     const nextOpen = open.get();
     const controlled = run.props.isProvided('open');
     const disabled = !!run.props.get().disabled;
     if (
-      snapshot.open === nextOpen &&
-      snapshot.controlled === controlled &&
-      snapshot.disabled === disabled
-    )
-      return;
-    snapshot = { ...snapshot, open: nextOpen, controlled, disabled };
+      snapshot.open !== nextOpen ||
+      snapshot.controlled !== controlled ||
+      snapshot.disabled !== disabled
+    ) {
+      snapshot = { ...snapshot, open: nextOpen, controlled, disabled };
+    } else if (!publishInitial) return;
     run.context.update(COLLAPSIBLE_CONTEXT, snapshot);
   };
 
@@ -88,7 +88,8 @@ function setupCollapsibleRoot(def: DefHandle<CollapsibleRootProps, CollapsibleRo
   def.lifecycle.onCreated((run) => {
     rejectDuplicateCollapsiblePart(run, 'trigger');
     rejectDuplicateCollapsiblePart(run, 'content');
-    syncContext(run);
+    // Adopted alive parts need the initial owner fact even when it is the default.
+    syncContext(run, true);
   });
   def.props.watch(['open', 'disabled'], (run) => syncContext(run));
   open.watch((run, event) => {

@@ -551,6 +551,107 @@ describe('Base Collapsible consumer contract', () => {
     }
   });
 
+  it('rebinds a cold-adopted detached Trigger before its view rematerializes', async () => {
+    // T-BASE-COLLAPSIBLE-0001-CASE-DOMAIN-ISOLATION
+    // T-BASE-COLLAPSIBLE-0001-CASE-L1-LIFECYCLE
+    const Trigger = definePrototype({
+      name: 'x-collapsible-cold-adopted-trigger',
+      setup(def) {
+        asCollapsibleTrigger();
+        let owner: any;
+        def.lifecycle.onCreated((run) => {
+          owner = run;
+        });
+        def.expose.method('present', (present: boolean) => owner.lifecycle.setPresent(present));
+      },
+    });
+    AdaptToWebComponent(Trigger);
+    const source = fixture({ defaultOpen: true, disabled: true });
+    const closed = fixture();
+    const trigger = document.createElement(Trigger.name) as any;
+    source.root.replaceChildren(trigger, source.content);
+    const destination = document.createElement('x-collapsible-base-root') as any;
+    const destinationRequests: Array<{ open: boolean; reason: string }> = [];
+    destination.addEventListener('openChange', (event: Event) => {
+      destinationRequests.push((event as CustomEvent).detail);
+    });
+    const host = document.createElement('div');
+    host.append(source.root, closed.root);
+    try {
+      document.body.append(host);
+      await until(
+        () =>
+          trigger.getAttribute('aria-expanded') === 'true' &&
+          trigger.getExposes().disabled.get() &&
+          closed.content.hasAttribute('data-pui-view-detached')
+      );
+      const exposes = trigger.getExposes();
+      const expanded = exposes.expanded;
+      exposes.present(false);
+      await until(() => trigger.hasAttribute('data-pui-view-detached'));
+      // Both parts already exist; the new Root starts with its default snapshot.
+      destination.append(trigger, closed.content);
+      host.append(destination);
+      await flush();
+      expect(destination.getExposes().open.get()).toBe(false);
+      expect(expanded.get()).toBe(false);
+      expect(exposes.disabled.get()).toBe(false);
+      exposes.present(true);
+      await until(() => !trigger.hasAttribute('data-pui-view-detached'));
+      expect(trigger.getExposes().expanded).toBe(expanded);
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(trigger.tabIndex).toBe(0);
+      expect(source.requests.concat(closed.requests, destinationRequests)).toEqual([]);
+    } finally {
+      destination.remove();
+      host.remove();
+      await flush();
+    }
+  });
+
+  it('rejects a reused detached Content while its destination Root view is detached', async () => {
+    // T-BASE-COLLAPSIBLE-0001-CASE-ANATOMY-CARDINALITY
+    const Root = definePrototype({
+      name: 'x-collapsible-detached-max-root',
+      setup(def) {
+        asCollapsibleRoot();
+        let owner: any;
+        def.lifecycle.onCreated((run) => {
+          owner = run;
+        });
+        def.expose.method('present', (present: boolean) => owner.lifecycle.setPresent(present));
+      },
+    });
+    AdaptToWebComponent(Root);
+    const source = fixture();
+    const destination = fixture();
+    const root = document.createElement(Root.name) as any;
+    root.append(destination.trigger, destination.content);
+    const host = document.createElement('div');
+    host.append(source.root, root);
+    try {
+      document.body.append(host);
+      await until(
+        () =>
+          source.content.hasAttribute('data-pui-view-detached') &&
+          destination.content.hasAttribute('data-pui-view-detached')
+      );
+      const retainedOpen = destination.content.getExposes().open;
+      root.getExposes().present(false);
+      await until(() => root.hasAttribute('data-pui-view-detached'));
+      // View withdrawal must not be mistaken for terminal child disposal.
+      expect(destination.content.parentElement).toBe(root);
+      expect(destination.content.getExposes().open).toBe(retainedOpen);
+      expect(() => root.append(source.content)).toThrowError(
+        expect.objectContaining({ code: 'COLLAPSIBLE_DUPLICATE_PART' })
+      );
+    } finally {
+      source.content.remove();
+      host.remove();
+      await flush();
+    }
+  });
+
   it('reports absent required roles through conformance after actual Runtime mount readiness', async () => {
     const token = {};
     const target = document.createElement('div');
