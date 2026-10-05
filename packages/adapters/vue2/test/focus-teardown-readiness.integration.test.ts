@@ -408,3 +408,80 @@ it('ignores stale publication and release after a source is replaced or disposed
     f.cleanup();
   }
 });
+
+it('Vue2 releases failed remount marker bindings after focus observer throw and later hide', async () => {
+  let run: any;
+  const errors: any[] = [];
+  const Outer = createVue2Adapter(Vue2RuntimeAny)(
+    definePrototype({
+      name: 'review-vue2-marker-outer',
+      setup(def) {
+        asButton();
+        const f = asFocusable();
+        def.expose.method('request', () => f.focus());
+        return (r) => r.slot();
+      },
+    })
+  );
+  const Inner = createVue2Adapter(Vue2RuntimeAny)(
+    definePrototype({
+      name: 'review-vue2-marker-inner',
+      setup(def) {
+        asButton();
+        def.lifecycle.onCreated((r) => (run = r));
+        def.expose.method('hide', () => run.lifecycle.setPresent(false));
+        def.expose.method('show', () => run.lifecycle.setPresent(true));
+        return (r) => r.el('span', 'Owned view child');
+      },
+    })
+  );
+  const App = Vue2Any.extend({
+    render(h: any) {
+      return h(Outer, { ref: 'outer' }, [h(Inner, { ref: 'inner' })]);
+    },
+  });
+  const app = new App().$mount();
+  document.body.append(app.$el);
+  await flushVue2();
+  await flushVue2();
+  const outer = app.$refs.outer,
+    inner = app.$refs.inner,
+    old = inner.$el,
+    token = readiness.getLogicalEventRouteSurfaceForTarget(old)!,
+    outerRoot = outer.$el;
+  inner.getExposes().hide();
+  await flushVue2();
+  await flushVue2();
+  const prev = Vue2Any.config.errorHandler;
+  Vue2Any.config.errorHandler = (error: any) => errors.push(error);
+  const failure = new Error('vue2 new-target focus failure');
+  const spy = vi.spyOn(HTMLElement.prototype, 'focus').mockImplementation(function (
+    this: HTMLElement
+  ) {
+    if (this !== outerRoot) throw failure;
+  });
+  try {
+    outer.getExposes().request();
+    inner.getExposes().show();
+    await flushVue2();
+    await flushVue2();
+    spy.mockRestore();
+    inner.getExposes().hide();
+    await flushVue2();
+    expect(readiness.getLogicalRoot(token)).toBeNull();
+    expect(errors).toContain(failure);
+    inner.getExposes().show();
+    await flushVue2();
+    await flushVue2();
+    const recovered = readiness.getLogicalRoot(token)!;
+    expect(recovered.isConnected).toBe(true);
+    expect(readiness.isNativeFocusTargetReady(recovered)).toBe(true);
+    outer.getExposes().request();
+    expect(document.activeElement).toBe(recovered);
+  } finally {
+    spy.mockRestore();
+    Vue2Any.config.errorHandler = prev;
+    app.$destroy();
+    app.$el.remove();
+  }
+});

@@ -55,16 +55,38 @@ function readinessSlot(instance: LogicalInstanceToken): NativeFocusReadinessSlot
 
 export function registerNativeFocusReadiness(
   instance: LogicalInstanceToken,
-  source: NativeFocusReadiness
-): () => void {
+  source: NativeFocusReadiness,
+  options?: { deferPublication?: boolean }
+): (() => void) & { publish(): void } {
   const slot = readinessSlot(instance);
   slot.source = source;
-  for (const listener of Array.from(slot.listeners)) listener();
-  return () => {
+  const notify = () => {
+    let failed = false;
+    let firstError: unknown;
+    for (const listener of Array.from(slot.listeners)) {
+      try {
+        listener();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          firstError = error;
+        }
+      }
+    }
+    if (failed) throw firstError;
+  };
+  const release = () => {
     if (slot.source !== source) return;
     slot.source = null;
-    for (const listener of Array.from(slot.listeners)) listener();
+    notify();
   };
+  const publish = () => {
+    if (slot.source === source) notify();
+  };
+  // Adapters first retain this release lease, finish constructing their view,
+  // then publish. A throwing focus observer cannot strand an unowned source.
+  if (!options?.deferPublication) publish();
+  return Object.assign(release, { publish });
 }
 
 export function isNativeFocusTargetReady(target: HTMLElement): boolean {
