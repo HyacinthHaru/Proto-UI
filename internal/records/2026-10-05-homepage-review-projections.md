@@ -17,3 +17,9 @@ Eight red-first cases across WC/React/Vue/Vue2 and Shadcn/Brutalist failed on th
 ## Integration boundary
 
 The separately reviewed passive-shell theme transaction fix is another existing thread in the same parent PR. Preserve all source history and independent failures. These changes must first land on #777's source branch under a fresh head/permission check, then propagate by normal history-preserving integration to dependent #815/#816. Child-PR-only fixes would leave the reviewed parent wrong. Formal GitHub thread/comment updates remain subject to the repository collaboration CLI and its authentication; local independent review is not a platform approval.
+
+## Actual schema-boundary correction
+
+The first published source `11a9da80f43f63fd64e6610059e4aa516f97d675` failed the two newly added native-browser assertions in Homepage run `37297308865`, job `111721481113`: both SSR and enhanced queries found zero configured hero icons. The other seven native-link cases passed. This is a real application boundary omission, not a timing flake or a reason to weaken the assertions.
+
+The installed Starlight 0.35.3 schema normalizes named frontmatter icons to `{ type: 'icon', name: 'external' }` before `Hero.astro` passes them to `HomeActions`. The original mapper handled only the raw string, while its synthetic renderer fixtures bypassed schema normalization. A new test reads both unchanged actual homepage MDX frontmatters through the installed public `docsSchema` and reproduces this missing mapping. The bounded mapper now accepts this named external object as well as the original string; raw HTML icons, unknown names and malformed objects remain excluded. No authored content, browser expectation or public Prototype API changes.

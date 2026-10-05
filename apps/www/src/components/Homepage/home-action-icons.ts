@@ -7,7 +7,12 @@ export const HOME_ACTION_ICONS = {
 } as const;
 export type HomeActionIcon = keyof typeof HOME_ACTION_ICONS;
 export function homeActionIcon(value: unknown): HomeActionIcon | undefined {
-  return value === 'external' ? value : undefined;
+  if (value === 'external') return value;
+  // Starlight's content schema normalizes named frontmatter icons before SSR.
+  // Raw HTML icons and other names are deliberately outside this bounded mapping.
+  if (value && typeof value === 'object' && 'type' in value && 'name' in value)
+    return value.type === 'icon' && value.name === 'external' ? 'external' : undefined;
+  return undefined;
 }
 export function appendHomeActionGlyph(slot: HTMLElement, icon: HomeActionIcon): void {
   const source = HOME_ACTION_ICONS[icon];
