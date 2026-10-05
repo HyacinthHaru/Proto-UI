@@ -38,8 +38,8 @@ criteria:
         - D-FOCUS-ENTRY-DELEGATION-0001
   - id: C-AS-FOCUS-ENTRY-0001-E
     text:
-      zh-CN: focus entry handle 必须支持运行时禁用与启用，以便由 current、hidden、disabled 等状态控制顺序焦点参与。
-      en: The focus entry handle must support runtime disabling and enabling so states such as current, hidden, and disabled can control sequential focus participation.
+      zh-CN: focus entry handle 必须支持运行时禁用与启用，以便由 current、hidden、disabled 等状态控制顺序焦点参与。entry disabled 必须取消该 entry role 的 pending request，不得取消独立 target role 的 pending request；重新启用不得复活已取消的 request。
+      en: The focus entry handle must support runtime disabling and enabling so states such as current, hidden, and disabled can control sequential focus participation. Entry disabled must cancel that entry role's pending request without cancelling an independent target role's pending request; re-enabling must not resurrect a cancelled request.
   - id: C-AS-FOCUS-ENTRY-0001-F
     text:
       zh-CN: focus entry 不得自动声明 `focused`、`focusVisible`、`active` 或 roving membership；需要这些 target-level facts 的原型必须显式使用 `asFocusable()` 或其他对应能力。
@@ -75,6 +75,9 @@ verifies:
   tests:
     - T-FOCUS-0001
 revisions:
+  - version: 0.3.0-alpha.1
+    change: refined
+    summary: Clarified entry-role pending cancellation and non-resurrection independently of target-role eligibility.
   - version: 0.1.0
     change: introduced
     summary: Added asFocusEntry as the first focus entry region hook for descendant-first tabpanel behavior.

@@ -240,7 +240,8 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
-  isFocusAcquisitionReady: () => boolean;
+  isFocusAcquisitionReady: (target: HTMLElement) => boolean;
+  onFocusAcquired?: () => void;
   getCurrentElement: () => HTMLElement | null;
   subscribeTargetReady: (listener: () => void) => () => void;
   retryTargetReady: () => void;
@@ -337,14 +338,15 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       [
         FOCUS_REQUEST_FOCUS_CAP,
         (target: HTMLElement, options?: FocusRequestOptions) => {
-          if (!args.isFocusAcquisitionReady() || !target.isConnected) return false;
+          if (!args.isFocusAcquisitionReady(target) || !target.isConnected) return false;
           target.focus(
             typeof options?.preventScroll === 'boolean'
               ? { preventScroll: options.preventScroll }
               : undefined
           );
           const applied = target.ownerDocument.activeElement === target;
-          if (!applied) args.retryTargetReady();
+          if (applied) args.onFocusAcquired?.();
+          else args.retryTargetReady();
           return applied;
         },
       ],

@@ -48,6 +48,9 @@ import {
   createLogicalInstance,
   resolveLogicalTriggerEventRouteForTarget,
   markProtoInstance,
+  registerNativeFocusReadiness,
+  isFocusTargetOwnerReady,
+  subscribeFocusTargetOwnerReady,
   unbindProtoInstance,
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
@@ -240,7 +243,6 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         const target = rootRef.current;
         if (!viewReadyRef.current || !target?.isConnected) return;
         for (const listener of Array.from(focusTargetReadyListenersRef.current)) listener();
-        if (target.ownerDocument.activeElement === target) focusTargetRetryCountRef.current = 0;
       };
 
       const controllerRef = runtime.useRef<RuntimeController | null>(null);
@@ -428,11 +430,28 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         });
         bindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
         let viewDisposed = false;
+        let releaseRequestedTargetReady: (() => void) | undefined;
+        const releaseNativeReadiness = registerNativeFocusReadiness(instanceTokenRef.current, {
+          isReady: () =>
+            !viewDisposed &&
+            viewReadyRef.current &&
+            eventGate.isEnabled() &&
+            rootRef.current === rootEl &&
+            rootEl.isConnected &&
+            !rootEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+          subscribe: (listener) => {
+            focusTargetReadyListenersRef.current.add(listener);
+            return () => focusTargetReadyListenersRef.current.delete(listener);
+          },
+        });
         const disposeView = () => {
           if (viewDisposed) return;
           viewDisposed = true;
           eventGate.disable();
           eventGate.dispose();
+          releaseRequestedTargetReady?.();
+          releaseRequestedTargetReady = undefined;
+          releaseNativeReadiness();
           unbindLogicalEventTarget(instanceTokenRef.current, router.rootTarget);
           router.dispose();
           unbindProtoInstance(instanceTokenRef.current, boundRootRef.current ?? undefined);
@@ -479,8 +498,22 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           // Native focus must not precede host-event ingress: focusSelf relies
           // on the real focus event to establish facts used by roving navigation.
           // A11y/style projection still uses the earlier effects-ready boundary.
-          isFocusAcquisitionReady: () =>
-            viewReadyRef.current && eventGateRef.current?.isEnabled() === true,
+          isFocusAcquisitionReady: (target) => {
+            releaseRequestedTargetReady?.();
+            releaseRequestedTargetReady = undefined;
+            if (!viewReadyRef.current || eventGateRef.current?.isEnabled() !== true) return false;
+            if (isFocusTargetOwnerReady(target)) return true;
+            releaseRequestedTargetReady = subscribeFocusTargetOwnerReady(target, () => {
+              if (viewDisposed) return;
+              releaseRequestedTargetReady?.();
+              releaseRequestedTargetReady = undefined;
+              notifyFocusTargetReady();
+            });
+            return false;
+          },
+          onFocusAcquired: () => {
+            focusTargetRetryCountRef.current = 0;
+          },
           getCurrentElement: () => rootRef.current,
           subscribeTargetReady: (listener) => {
             focusTargetReadyListenersRef.current.add(listener);
