@@ -931,3 +931,181 @@ test('jointly blanking a sampler declaration and its binding cannot match a pinn
   delete pass.bindings.u_bgTexture;
   assert.equal(inspectGraph(graph).valid, false);
 });
+
+test('the fixed shape recipe pins count and record stride independently', async () => {
+  const graph = await load('flutter');
+  Object.assign(graph.limits, { maxShapes: 14, shapeStrideFloats: 8 });
+  assert.equal(inspectGraph(graph).valid, false);
+});
+
+test('a coherent replacement pass cannot bypass the selected recipe kernel', async () => {
+  const graph = await load('flutter');
+  graph.passes[1] = {
+    ...structuredClone(graph.passes[0]),
+    id: 'render-pass',
+    writes: 'presentation',
+  };
+  assert.equal(inspectGraph(graph).valid, false);
+});
+
+test('geometry channels retain the complete pinned normal height and coverage encoding', async () => {
+  for (const encoding of [undefined, {}, { RG: 'height', B: 'normal', A: 'opaque' }]) {
+    const graph = await load('flutter');
+    if (encoding === undefined) delete graph.resources[0].encoding;
+    else graph.resources[0].encoding = encoding;
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+});
+
+test('each recipe pins the draw domain of its fragment passes', async () => {
+  for (const [name, index, domain] of [
+    ['studio', 3, 'geometry-matte-bounds'],
+    ['flutter', 0, 'upstream-fullscreen-quad'],
+  ]) {
+    const graph = await load(name);
+    graph.passes[index].drawDomain = domain;
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+});
+
+test('intermediate extents cannot select an unreviewed allocation recipe', async () => {
+  const graph = await load('studio');
+  graph.resources[0].extent = { basis: 'one-pixel', scale: [0.01, 0.01] };
+  assert.equal(inspectGraph(graph).valid, false);
+});
+
+test('target requirements cannot drop capabilities required by the fixed recipe', async () => {
+  for (const requirements of [['same-frame-topological-order'], ['typo']]) {
+    const graph = await load('studio');
+    graph.requirements = requirements;
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+});
+
+test('reserved automatic inputs contain exactly the host uniform and sampler inventory', async () => {
+  for (const inventory of [
+    undefined,
+    ['invented'],
+    ['uSize'],
+    ['uBackgroundTexture'],
+    ['uSize', 'uSize', 'uBackgroundTexture'],
+  ]) {
+    const graph = await load('flutter');
+    if (inventory === undefined) delete graph.uniformBlocks[1].reservedAutoInputs;
+    else graph.uniformBlocks[1].reservedAutoInputs = inventory;
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+});
+
+test('unsupported variants and correlated recipe overrides cannot add execution fields', async () => {
+  for (const mutate of [
+    (g) => {
+      g.selectedVariant = 'captured-image';
+    },
+    (g) => {
+      g.execution = 'admitted';
+    },
+    (g) => {
+      g.passes[1].overrideKernel = 'geometry';
+    },
+    (g) => {
+      g.resources[0].extent.unbounded = true;
+    },
+    (g) => {
+      g.variants[0].status = 'admitted';
+    },
+    (g) => {
+      g.kernels[0].invalidation = 'frame-bindings-dirty';
+      g.passes[0].update = 'frame-bindings-dirty';
+    },
+  ]) {
+    const graph = await load('flutter');
+    mutate(graph);
+    assert.equal(inspectGraph(graph).valid, false);
+  }
+  const extra = await load('studio');
+  extra.limits.passes = 8;
+  extra.resources.push({ ...structuredClone(extra.resources[0]), id: 'extra-target' });
+  extra.passes.push({
+    ...structuredClone(extra.passes[0]),
+    id: 'extra-pass',
+    writes: 'extra-target',
+  });
+  assert.equal(inspectGraph(extra).valid, false);
+  const changedOrder = await load('studio');
+  changedOrder.passes[3].dependsOn = ['background-pass'];
+  assert.equal(inspectGraph(changedOrder).valid, false);
+  const reindexed = await load('flutter');
+  reindexed.kernels[1].samplers.reverse();
+  reindexed.kernels[1].samplers.forEach((sampler, index) => {
+    sampler.slot = index;
+  });
+  assert.equal(inspectGraph(reindexed).valid, false);
+});
+
+test('equivalent named collections and capability sets retain the same fixed recipe', async () => {
+  for (const name of ['studio', 'flutter']) {
+    const graph = await load(name);
+    graph.kernels.reverse();
+    graph.passes.reverse();
+    graph.uniformBlocks.reverse();
+    graph.frameInputs.reverse();
+    graph.requirements.reverse();
+    for (const pass of graph.passes) {
+      pass.reads.reverse();
+      pass.dependsOn.reverse();
+    }
+    graph.purpose = 'Equivalent inspection scenario with unchanged execution contract';
+    assert.equal(inspectGraph(graph).valid, true);
+  }
+  const image = await load('studio');
+  image.sources[0].sourceKinds = ['owned-image'];
+  assert.equal(inspectGraph(image).valid, true);
+});
+
+test('every execution leaf and every object extension is checked by the closed recipe', async (t) => {
+  let checked = 0;
+  // These are reader explanations, never executable selectors or obligations
+  // that a renderer can interpret. Everything else in these fixtures is closed.
+  const prose = (path) =>
+    path[0] === 'purpose' ||
+    path[0] === 'caveats' ||
+    path.at(-1) === 'obligation' ||
+    (path[0] === 'featurePreconditions' && path.at(-1) === 'reason') ||
+    (path[0] === 'coordinateMapping' &&
+      ['geometryBounds', 'geometrySize', 'matteRasterDpr', 'source'].includes(path[1]));
+  for (const name of ['studio', 'flutter']) {
+    const original = await load(name);
+    const cases = [];
+    function walk(value, path = []) {
+      if (value && typeof value === 'object') {
+        if (!Array.isArray(value)) cases.push({ path, extend: true });
+        for (const [key, child] of Object.entries(value)) walk(child, [...path, key]);
+      } else if (!prose(path)) cases.push({ path, value });
+    }
+    walk(original);
+    for (const entry of cases) {
+      const graph = structuredClone(original);
+      let node = graph;
+      for (const key of entry.extend ? entry.path : entry.path.slice(0, -1)) node = node[key];
+      if (entry.extend) node.unreviewedExecutionField = true;
+      else
+        node[entry.path.at(-1)] =
+          typeof entry.value === 'number'
+            ? entry.value + 10000
+            : typeof entry.value === 'boolean'
+              ? !entry.value
+              : `${entry.value}__changed`;
+      const result = inspectGraph(graph);
+      assert.equal(
+        result.valid,
+        false,
+        `${name}:${entry.path.join('.')}${entry.extend ? ' + field' : ''}`
+      );
+      assert.equal(result.execution, 'not-admitted');
+      checked++;
+    }
+  }
+  assert(checked > 700);
+  t.diagnostic(`Checked ${checked} execution-leaf and object-extension mutations.`);
+});

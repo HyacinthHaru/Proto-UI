@@ -203,8 +203,48 @@ function flutterFrameInputs() {
   ];
 }
 
+// These are the selected inspection recipes, not claims that upstream has only
+// one valid pipeline. Changing them requires source evidence and recipe review.
+const studioBackgroundUpdate = {
+  kind: 'any-dirty',
+  dependencies: [
+    'source:media',
+    'uniform:main',
+    'geometry',
+    'derived-morph-state',
+    'pointer-spring-state',
+  ],
+};
+const unknownColor = { status: 'unresolved' };
+const studioUpdates = {
+  bg: studioBackgroundUpdate,
+  'blur-v': 'upstream-or-blur-parameter-dirty',
+  'blur-h': 'upstream-or-blur-parameter-dirty',
+  main: 'frame-bindings-dirty',
+};
+const flutterUpdates = {
+  geometry: 'geometry-or-layout-or-optical-profile-dirty',
+  render: 'compositor-or-uniform-frame',
+};
+const studioPass = (id, kernel, reads, writes, dependsOn, bindings, block) => ({
+  id,
+  kind: 'fragment',
+  kernel,
+  reads,
+  writes,
+  dependsOn,
+  bindings,
+  update: studioUpdates[kernel],
+  uniformBlocks: [block],
+  drawDomain: 'upstream-fullscreen-quad',
+});
+
 const registry = {
   'studio-f7b28c3-four-pass-v1': {
+    choices: {
+      'graph.sources.media.sourceKinds': { kind: 'nonempty-subset' },
+      'graph.limits.passes': { kind: 'integer-range', minimum: 4, maximum: 8 },
+    },
     evidenceSources: [
       studioSource('src/App.tsx', 'dd1c0ee0b9377699fd1e212d1b1c06d59cf57042'),
       studioSource('src/utils/GPUUtils.ts', '1effd7c0c4f162ecd2233bb0c3976de33d61698e'),
@@ -213,6 +253,93 @@ const registry = {
       // GPUUtils writes the shared host buffer using the main ABI. Background
       // declares the last, unused f32 as padding; it has the same byte layout.
       backgroundFinalField: { block: 'main', name: '_pad1', offset: 156, bytes: 4, unused: true },
+    },
+    recipeAssertions: {
+      schemaVersion: 1,
+      id: 'studio-four-pass-inspection',
+      interfaceId: 'studio-f7b28c3-four-pass-v1',
+      kernels: Object.entries(studioUpdates).map(([id, invalidation]) => ({ id, invalidation })),
+      sources: [
+        {
+          id: 'media',
+          sourceKinds: ['owned-image', 'owned-video-frame'],
+          alpha: unknownColor,
+          fallback: 'owned-neutral-1px',
+          colorSpace: unknownColor,
+          orientation: unknownColor,
+        },
+      ],
+      resources: ['background', 'vertical-blur', 'blurred'].map((id) => ({
+        id,
+        extent: { basis: 'viewport', scale: [1, 1] },
+        alpha: unknownColor,
+        clear: 'transparent',
+        colorSpace: unknownColor,
+        orientation: unknownColor,
+        observedDepth: {
+          webgl2: { format: 'DEPTH_COMPONENT24', usage: 'attached-depth-buffer' },
+          webgpu: { format: 'depth24plus', usage: 'allocated-unused-helper-resource' },
+        },
+      })),
+      data: [
+        {
+          id: 'blur-weights',
+          type: 'bounded-array<f32>',
+          maxCount: 201,
+          targetBindings: {
+            webgpu: 'read-only-storage-buffer',
+            webgl2: 'uniform-array',
+            flutter: 'requires-specialization-or-unavailable',
+          },
+          abi: { minimumBytes: 16, maxLogicalBytes: 804 },
+        },
+      ],
+      passes: [
+        studioPass(
+          'background-pass',
+          'bg',
+          ['media'],
+          'background',
+          [],
+          { u_bgTexture: 'media' },
+          'main'
+        ),
+        studioPass(
+          'vertical-blur-pass',
+          'blur-v',
+          ['background', 'blur-weights'],
+          'vertical-blur',
+          ['background-pass'],
+          { u_prevPassTexture: 'background', u_blurWeights: 'blur-weights' },
+          'blur'
+        ),
+        studioPass(
+          'horizontal-blur-pass',
+          'blur-h',
+          ['vertical-blur', 'blur-weights'],
+          'blurred',
+          ['vertical-blur-pass'],
+          { u_prevPassTexture: 'vertical-blur', u_blurWeights: 'blur-weights' },
+          'blur'
+        ),
+        studioPass(
+          'main-pass',
+          'main',
+          ['background', 'blurred'],
+          'presentation',
+          ['background-pass', 'horizontal-blur-pass'],
+          { u_bg: 'background', u_blurredBg: 'blurred' },
+          'main'
+        ),
+      ],
+      requirements: [
+        'renderable-filterable-rgba16float',
+        'fragment-texture-sampling',
+        'bounded-read-only-data-buffer-or-specialized-uniform-array',
+        'same-frame-topological-order',
+      ],
+      limits: { passes: 4, blurRadius: 200, historyFrames: 0, storageWrites: false },
+      frameInputs: [],
     },
     assertions: {
       kernels: [
@@ -280,6 +407,9 @@ const registry = {
     },
   },
   'flutter-c35d7e1-live-v1': {
+    choices: {
+      'graph.limits.passes': { kind: 'integer-range', minimum: 2, maximum: 8 },
+    },
     evidenceSources: [
       flutterSource(
         'lib/src/engine/rendering/liquid_glass_render_object.dart',
@@ -294,6 +424,105 @@ const registry = {
         '2c8848abf42f9da668c8c32606e1e6f5b300988d'
       ),
     ],
+    recipeAssertions: {
+      schemaVersion: 1,
+      id: 'flutter-geometry-live-render-inspection',
+      interfaceId: 'flutter-c35d7e1-live-v1',
+      kernels: Object.entries(flutterUpdates).map(([id, invalidation]) => ({ id, invalidation })),
+      sources: [{ id: 'backdrop', colorSpace: unknownColor, orientation: unknownColor }],
+      resources: [
+        {
+          id: 'geometry',
+          alpha: 'encoded-SDF-coverage',
+          clear: 'kernel-neutral',
+          encoding: {
+            RG: 'unit-normal-xy mapped -1..1 to 0..1',
+            B: 'height normalized by thickness',
+            A: 'edge coverage',
+          },
+          physicalChannelPreservation: 'unverified-provider-obligation',
+          coordinateBindings: [
+            'geometry-local-bounds',
+            'matte-transform',
+            'enclosing-filter-pass-rect',
+            'screen-device-pixel-ratio',
+          ],
+          colorSpace: unknownColor,
+          orientation: unknownColor,
+        },
+      ],
+      data: [],
+      passes: [
+        {
+          id: 'geometry-pass',
+          kind: 'fragment',
+          kernel: 'geometry',
+          reads: [],
+          writes: 'geometry',
+          dependsOn: [],
+          bindings: {},
+          update: flutterUpdates.geometry,
+          uniformBlocks: ['geometry'],
+          drawDomain: 'geometry-matte-bounds',
+        },
+        {
+          id: 'render-pass',
+          kind: 'host-image-filter',
+          kernel: 'render',
+          reads: ['backdrop', 'geometry'],
+          writes: 'presentation',
+          dependsOn: ['geometry-pass'],
+          bindings: { uBackgroundTexture: 'backdrop', uGeometryTexture: 'geometry' },
+          update: flutterUpdates.render,
+          blend: 'premultiplied-source-over',
+          uniformBlocks: ['render'],
+        },
+      ],
+      uniformBlocks: [{ id: 'render', reservedAutoInputs: ['uSize', 'uBackgroundTexture'] }],
+      requirements: [
+        'live-compositor-image-filter',
+        'fragment-program',
+        'geometry-data-channel-preservation',
+        'same-frame-source-geometry-coherence',
+      ],
+      limits: {
+        passes: 2,
+        maxShapes: 16,
+        shapeStrideFloats: 7,
+        historyFrames: 0,
+        storageWrites: false,
+      },
+      variants: [
+        {
+          id: 'captured-image',
+          status: 'not-modeled',
+          sourceKind: 'application-owned-captured-texture',
+          requiredChanges: [
+            'replace host-image-filter with direct application fragment draw',
+            'manually bind uSize and sampler0 instead of live host injection',
+            'provide capture-to-filter transform and explicit frame freshness',
+          ],
+          qualityChange: 'distinct-from-live-compositor',
+        },
+      ],
+      extensionsNotYetModeled: [
+        'optional scoped backdrop blur',
+        'frost weight/dstIn/alternate-row compositing',
+        'foreground placement stages',
+        'morph controller state/velocity producer',
+      ],
+      coordinateMapping: {
+        kind: 'flutter-live-screen-to-pass',
+        resource: 'geometry',
+        bindings: {
+          bounds: 'geometry-local-bounds',
+          transform: 'matte-transform',
+          screenDpr: 'screen-device-pixel-ratio',
+          passRect: 'enclosing-filter-pass-rect',
+          matteDpr: 'matte-dpr',
+        },
+      },
+    },
     assertions: {
       kernels: [
         flutterKernel(
@@ -375,6 +604,54 @@ const registry = {
   },
 };
 
+function collectionKey(entries) {
+  return ['id', 'name', 'feature'].find(
+    (key) =>
+      entries.length &&
+      entries.every((entry) => entry && typeof entry === 'object' && typeof entry[key] === 'string')
+  );
+}
+
+// Combine two independently reviewed constant tables, never scenario input.
+// An overlapping source fact and recipe policy must agree; policy cannot replace
+// source authority while this module initializes.
+function mergeContract(source, recipe) {
+  if (source === undefined) return structuredClone(recipe);
+  if (recipe === undefined) return structuredClone(source);
+  if (Array.isArray(source) && Array.isArray(recipe)) {
+    const key = collectionKey(source) ?? collectionKey(recipe);
+    if (key)
+      return [
+        ...source.map((entry) =>
+          mergeContract(
+            entry,
+            recipe.find((other) => other[key] === entry[key])
+          )
+        ),
+        ...recipe
+          .filter((entry) => !source.some((other) => other[key] === entry[key]))
+          .map((entry) => structuredClone(entry)),
+      ];
+  } else if (
+    source &&
+    recipe &&
+    typeof source === 'object' &&
+    typeof recipe === 'object' &&
+    !Array.isArray(source) &&
+    !Array.isArray(recipe)
+  ) {
+    return Object.fromEntries(
+      [...new Set([...Object.keys(source), ...Object.keys(recipe)])].map((key) => [
+        key,
+        mergeContract(source[key], recipe[key]),
+      ])
+    );
+  }
+  if (JSON.stringify(source) !== JSON.stringify(recipe))
+    throw new Error('Conflicting fixed source and recipe contracts');
+  return structuredClone(source);
+}
+
 function deepFreeze(value) {
   if (value && typeof value === 'object' && !Object.isFrozen(value)) {
     for (const child of Object.values(value)) deepFreeze(child);
@@ -382,6 +659,8 @@ function deepFreeze(value) {
   }
   return value;
 }
+for (const facts of Object.values(registry))
+  facts.contract = mergeContract(facts.assertions, facts.recipeAssertions);
 deepFreeze(registry);
 
 // There is no injection/registration API. The caller receives a recursively
@@ -390,31 +669,84 @@ export function getInterfaceFacts(id) {
   return typeof id === 'string' && Object.hasOwn(registry, id) ? registry[id] : undefined;
 }
 
-// Compare only reviewed interface facts; descriptive scenario prose and genuine
-// scene choices remain outside this source-fidelity layer. Named collections are
-// matched by identity, while positional/scalar arrays retain their ordering.
+const setFields = new Set([
+  'requirements',
+  'reads',
+  'dependsOn',
+  'uniformBlocks',
+  'usages',
+  'dependencies',
+  'coordinateBindings',
+  'reservedAutoInputs',
+  'requiredHostUniforms',
+  'sourceKinds',
+]);
+const proseFields = {
+  graph: { purpose: 'string', caveats: 'strings' },
+  'graph.coordinateMapping': {
+    geometryBounds: 'strings',
+    geometrySize: 'string',
+    matteRasterDpr: 'string',
+    source: 'string',
+  },
+};
+function documentationField(path, key, value) {
+  const type =
+    proseFields[path]?.[key] ??
+    (/^graph\.(sources|resources)\.[^.]+\.(alpha|colorSpace|orientation)$/.test(path) &&
+    key === 'obligation'
+      ? 'string'
+      : undefined) ??
+    (/^graph\.featurePreconditions\.[^.]+$/.test(path) && key === 'reason' ? 'string' : undefined);
+  const text = (item) => typeof item === 'string' && item.trim().length > 0;
+  return type === 'string'
+    ? text(value)
+    : type === 'strings' && Array.isArray(value) && value.every(text);
+}
+
+// This is a closed contract for two recipes, not an extensible graph validator.
+// Only listed prose and registered choices (source subset and bounded pass
+// budget) vary. Pass identity plus fixed dependency edges determine execution
+// order; collection order alone does not. inspectGraph separately retains the
+// positional ABI checks for reflected fields and indexed sampler declarations.
 export function inspectInterfaceFacts(graph) {
   const facts = getInterfaceFacts(graph?.interfaceId);
   if (!facts) return [{ code: 'unknown-source-interface', detail: graph?.interfaceId }];
   const mismatches = [];
   function compare(actual, expected, path) {
+    const choice = facts.choices[path];
+    if (choice?.kind === 'integer-range') {
+      if (!Number.isInteger(actual) || actual < choice.minimum || actual > choice.maximum)
+        mismatches.push(path);
+      return;
+    }
     if (Array.isArray(expected)) {
+      if (choice?.kind === 'nonempty-subset') {
+        if (
+          !Array.isArray(actual) ||
+          !actual.length ||
+          new Set(actual).size !== actual.length ||
+          actual.some((value) => !expected.includes(value))
+        )
+          mismatches.push(path);
+        return;
+      }
       if (!Array.isArray(actual) || actual.length !== expected.length) {
         mismatches.push(path);
         return;
       }
-      const key =
-        expected.length &&
-        expected.every(
-          (entry) => entry && typeof entry === 'object' && typeof entry.id === 'string'
+      if (
+        expected.every((entry) => typeof entry === 'string') &&
+        setFields.has(path.split('.').at(-1))
+      ) {
+        if (
+          new Set(actual).size !== actual.length ||
+          actual.some((value) => !expected.includes(value))
         )
-          ? 'id'
-          : expected.length &&
-              expected.every(
-                (entry) => entry && typeof entry === 'object' && typeof entry.name === 'string'
-              )
-            ? 'name'
-            : null;
+          mismatches.push(path);
+        return;
+      }
+      const key = collectionKey(expected);
       for (const [index, entry] of expected.entries())
         compare(
           key ? actual.find((value) => value?.[key] === entry[key]) : actual[index],
@@ -423,11 +755,15 @@ export function inspectInterfaceFacts(graph) {
         );
     } else if (expected && typeof expected === 'object') {
       if (!actual || typeof actual !== 'object' || Array.isArray(actual)) mismatches.push(path);
-      else
+      else {
         for (const [key, value] of Object.entries(expected))
           compare(actual[key], value, `${path}.${key}`);
+        for (const key of Object.keys(actual))
+          if (!Object.hasOwn(expected, key) && !documentationField(path, key, actual[key]))
+            mismatches.push(`${path}.${key}`);
+      }
     } else if (actual !== expected) mismatches.push(path);
   }
-  compare(graph, facts.assertions, 'graph');
+  compare(graph, facts.contract, 'graph');
   return mismatches.map((detail) => ({ code: 'source-interface-fact-mismatch', detail }));
 }

@@ -700,6 +700,26 @@ export function inspectGraph(graph) {
       if (uniform && uniform.binding?.kind !== 'host-injected')
         error('host-binding-ownership', name);
     }
+    const automaticInputs = [
+      ...block.fields
+        .filter((field) => field.binding?.kind === 'host-injected')
+        .map((field) => field.name),
+      ...graph.kernels
+        .filter((kernel) => kernel.uniformBlocks.includes(block.id))
+        .flatMap((kernel) =>
+          kernel.samplers
+            .filter((sampler) => sampler.ownership === 'host-injected')
+            .map((sampler) => sampler.name)
+        ),
+    ];
+    const inventory = block.reservedAutoInputs ?? [];
+    if (new Set(inventory).size !== inventory.length)
+      error('invalid-reserved-auto-input', block.id);
+    for (const name of inventory)
+      if (automaticInputs.filter((input) => input === name).length !== 1)
+        error('invalid-reserved-auto-input', `${block.id}:${name}`);
+    for (const name of automaticInputs)
+      if (!inventory.includes(name)) error('missing-reserved-auto-input', `${block.id}:${name}`);
   }
   for (const condition of graph.featurePreconditions ?? []) {
     if (condition.mode === 'host-required') {
