@@ -32,7 +32,7 @@ function assertColor(color: string) {
   for (const surface of surfaces)
     expect(surface.style.getPropertyValue('--pui-foreground')).toBe(color);
 }
-it('reads once at initialization and once for a shared interaction batch, not per owner or fact', async () => {
+it('reads once at initialization and at most twice for a shared interaction burst', async () => {
   releases.push(initSiteNativeControls());
   await settle();
   expect(theme.read).toHaveBeenCalledTimes(1);
@@ -46,7 +46,7 @@ it('reads once at initialization and once for a shared interaction batch, not pe
     link.dispatchEvent(new Event('pointerleave'));
   }
   await settle();
-  expect(theme.read).toHaveBeenCalledTimes(2);
+  expect(theme.read).toHaveBeenCalledTimes(3);
 });
 it('refreshes implicit stylesheet inputs on the next interaction without broadcasting an unchanged palette', async () => {
   releases.push(initSiteNativeControls());
@@ -59,18 +59,18 @@ it('refreshes implicit stylesheet inputs on the next interaction without broadca
   first.dispatchEvent(new Event('pointerenter'));
   second.dispatchEvent(new MouseEvent('pointerdown', { button: 0 }));
   await settle();
-  expect(theme.read).toHaveBeenCalledTimes(2);
+  expect(theme.read).toHaveBeenCalledTimes(3);
   expect(mutations).toHaveLength(0);
   theme.color = '#0000ff'; // External stylesheet/CSSOM update, no root attribute event.
   first.dispatchEvent(new Event('pointerleave'));
   second.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
   await settle();
-  expect(theme.read).toHaveBeenCalledTimes(3);
+  expect(theme.read).toHaveBeenCalledTimes(5);
   assertColor('#0000ff');
   expect(mutations.length).toBeGreaterThan(0);
   observer.disconnect();
 });
-it('ignores interactions outside its targets and removes the shared capture listeners on release', async () => {
+it('ignores interactions outside its targets and stops sampling after release', async () => {
   const release = initSiteNativeControls();
   releases.push(release);
   await settle();
@@ -153,6 +153,132 @@ it('broadcasts a live color-scheme change once and releases its media listener',
   assertColor('#eeeeee');
   release();
   media.dispatchEvent(new Event('change'));
+  await settle();
+  expect(theme.read).toHaveBeenCalledTimes(2);
+});
+
+it.each(['pointerup', 'blur'])(
+  'samples CSSOM changes on window %s facts without per-owner reads',
+  async (event) => {
+    releases.push(initSiteNativeControls());
+    await settle();
+    for (const link of document.querySelectorAll('a,summary'))
+      link.dispatchEvent(new MouseEvent('pointerdown', { button: 0 }));
+    await settle();
+    for (const surface of document.querySelectorAll('wc-site-shadcn-surface'))
+      expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).toContain('translate-y-px');
+    const reads = theme.read.mock.calls.length;
+    theme.color = '#fedcba';
+    window.dispatchEvent(new Event(event));
+    await settle();
+    expect(theme.read).toHaveBeenCalledTimes(reads + 2);
+    assertColor('#fedcba');
+    for (const surface of document.querySelectorAll('wc-site-shadcn-surface'))
+      expect(surface.getAttribute('data-pui-style')?.split(/\s+/)).not.toContain('translate-y-px');
+  }
+);
+
+it('keeps next-current-fact CSSOM sampling and the child reading-specific text feedback', async () => {
+  releases.push(initSiteNativeControls());
+  await settle();
+  theme.color = '#123abc';
+  const link = document.querySelector('a')!;
+  const tokens = () =>
+    link.querySelector('wc-site-shadcn-text')!.getAttribute('data-pui-style')?.split(/\s+/);
+  expect(tokens()).toContain('font-normal');
+  link.setAttribute('aria-current', 'page');
+  await settle();
+  expect(theme.read).toHaveBeenCalledTimes(2);
+  assertColor('#123abc');
+  expect(tokens()).toContain('font-medium');
+  expect(tokens()).not.toContain('font-normal');
+  expect(tokens()).not.toContain('font-semibold');
+});
+
+it('settles a CSSOM palette change between two synchronous native fact publications', async () => {
+  releases.push(initSiteNativeControls());
+  await settle();
+  const [first, second] = [...document.querySelectorAll('a')];
+  first.dispatchEvent(new Event('pointerenter'));
+  theme.color = '#ff0000'; // No root attribute event; both facts occur in the same task.
+  second.focus();
+  await settle();
+  expect(document.activeElement).toBe(second);
+  assertColor('#ff0000');
+});
+
+it('resamples later microtask facts and preserves the final per-owner interaction order', async () => {
+  releases.push(initSiteNativeControls());
+  await settle();
+  const [first, second] = [...document.querySelectorAll('a')];
+  first.dispatchEvent(new Event('pointerenter'));
+  first.dispatchEvent(new MouseEvent('pointerdown', { button: 0 }));
+  theme.color = '#ff0000';
+  first.dispatchEvent(new Event('pointercancel'));
+  queueMicrotask(() => {
+    theme.color = '#0000ff';
+    second.dispatchEvent(new MouseEvent('pointerdown', { button: 0 }));
+  });
+  await settle();
+  assertColor('#0000ff');
+  expect(
+    first.querySelector('wc-site-shadcn-surface')!.getAttribute('data-pui-style')?.split(/\s+/)
+  ).not.toContain('translate-y-px');
+  expect(
+    second.querySelector('wc-site-shadcn-surface')!.getAttribute('data-pui-style')?.split(/\s+/)
+  ).toContain('translate-y-px');
+});
+
+it('cancels a dirty trailing sample when its batch is released before the microtask', async () => {
+  const release = initSiteNativeControls();
+  releases.push(release);
+  await settle();
+  const [first, second] = [...document.querySelectorAll('a')];
+  const retiredSurfaces = [first.firstChild, second.firstChild];
+  first.dispatchEvent(new Event('pointerenter'));
+  theme.color = '#ff0000';
+  second.dispatchEvent(new Event('focus'));
+  const reads = theme.read.mock.calls.length;
+  release();
+  await settle();
+  expect(theme.read).toHaveBeenCalledTimes(reads);
+  expect(document.querySelector('[data-site-link-content]')).toBeNull();
+  expect(retiredSurfaces.every((surface) => !surface!.isConnected)).toBe(true);
+});
+
+it('rebuilds the actual family even when its injected closed palette is identical', async () => {
+  const links = [...document.querySelectorAll('a')];
+  const content = links.map((link) => link.firstChild);
+  releases.push(initSiteNativeControls());
+  await settle();
+  for (const family of ['brutalist', 'shadcn']) {
+    document.documentElement.dataset.siteLibraryFamily = family;
+    await settle();
+    expect(document.querySelectorAll(`wc-site-${family}-surface`)).toHaveLength(3);
+    assertColor('#222222');
+    for (const [index, link] of links.entries()) {
+      expect(link.querySelector(`wc-site-${family}-text`)!.firstChild).toBe(content[index]);
+      expect(link.getAttribute('href')).toBe(`/${String.fromCharCode(97 + index)}/`);
+    }
+  }
+});
+
+it('isolates successive batches and cancels old queued work on immediate release/reinitialization', async () => {
+  const firstRelease = initSiteNativeControls();
+  firstRelease();
+  theme.color = '#abcdef';
+  const secondRelease = initSiteNativeControls();
+  releases.push(secondRelease);
+  await settle();
+  expect(theme.read).toHaveBeenCalledTimes(2);
+  assertColor('#abcdef');
+  firstRelease();
+  assertColor('#abcdef');
+  secondRelease();
+  expect(document.querySelectorAll('[data-site-link-content]')).toHaveLength(0);
+  theme.color = '#fedcba';
+  document.documentElement.classList.add('dark');
+  window.dispatchEvent(new Event('blur'));
   await settle();
   expect(theme.read).toHaveBeenCalledTimes(2);
 });

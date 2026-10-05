@@ -112,14 +112,48 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     document.documentElement.dataset.siteLibraryFamily === 'brutalist'
       ? 'brutalist'
       : resolveSiteLibraryFamily(view.location.pathname);
-  // All native controls in this initialization batch consume one closed root
-  // theme. Do not interleave the same computed-style read with every Surface
-  // write or independently resolve it for each owner's hover/press facts.
+  // Read one closed root theme before any native owner in this batch writes
+  // its public Surface/Text. Each binding keeps its own native facts/content.
   let batchFamily = readFamily();
   let batchTheme = resolveProjectionThemeSurfaceStyle(batchFamily, document.documentElement);
   let themeFingerprint = JSON.stringify(batchTheme);
   let batchAlive = true;
+  let initializing = true;
   const updates = new Set<() => void>();
+  const refreshTheme = () => {
+    if (!batchAlive) return false;
+    const nextFamily = readFamily();
+    const nextTheme = resolveProjectionThemeSurfaceStyle(nextFamily, document.documentElement);
+    const nextFingerprint = JSON.stringify(nextTheme);
+    if (nextFamily === batchFamily && nextFingerprint === themeFingerprint) return false;
+    batchFamily = nextFamily;
+    batchTheme = nextTheme;
+    themeFingerprint = nextFingerprint;
+    for (const update of updates) update();
+    return true;
+  };
+  // CSSOM edits have no general mutation event. Preserve next-fact sampling
+  // through the existing native bridge, including window pointerup/blur and
+  // current-link changes. Sample immediately, then once at the microtask tail
+  // if later facts were coalesced: a handler may edit CSSOM and focus another
+  // owner synchronously. Initial facts still use only the pre-write snapshot.
+  let factsSampled = false;
+  let factsNeedRefresh = false;
+  const sampleFactsTheme = () => {
+    if (initializing || !batchAlive) return false;
+    if (factsSampled) {
+      factsNeedRefresh = true;
+      return false;
+    }
+    factsSampled = true;
+    queueMicrotask(() => {
+      const needsRefresh = factsNeedRefresh;
+      factsNeedRefresh = false;
+      factsSampled = false;
+      if (needsRefresh) refreshTheme();
+    });
+    return refreshTheme();
+  };
   const releases: Array<() => void> = [];
   for (const link of links) {
     let alive = true;
@@ -204,7 +238,8 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     updates.add(update);
     const unbind = bindNativeLinkFacts(link, (next) => {
       facts = next;
-      update();
+      // A changed theme already broadcasts this owner's latest facts.
+      if (!sampleFactsTheme()) update();
     });
     const release = () => {
       if (!alive) return;
@@ -225,17 +260,7 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
     bindings.set(link, release);
     releases.push(release);
   }
-  const refreshTheme = () => {
-    if (!batchAlive) return;
-    const nextFamily = readFamily();
-    const nextTheme = resolveProjectionThemeSurfaceStyle(nextFamily, document.documentElement);
-    const nextFingerprint = JSON.stringify(nextTheme);
-    if (nextFamily === batchFamily && nextFingerprint === themeFingerprint) return;
-    batchFamily = nextFamily;
-    batchTheme = nextTheme;
-    themeFingerprint = nextFingerprint;
-    for (const update of updates) update();
-  };
+  initializing = false;
   const observer = new view.MutationObserver(refreshTheme);
   observer.observe(document.documentElement, {
     attributes: true,
@@ -243,45 +268,11 @@ export function initSiteNativeControls(scope: ParentNode = document): () => void
   });
   const media = view.matchMedia?.('(prefers-color-scheme: dark)');
   media?.addEventListener?.('change', refreshTheme);
-  // Stylesheet/CSSOM palette edits have no general mutation event. Preserve the
-  // previous next-interaction visibility without a global patch or polling:
-  // sample once before this batch's first native interaction, then share that
-  // snapshot for all owners/facts in the same microtask turn. Unchanged themes
-  // do not broadcast, and initialization performs no extra interaction sample.
-  const targets = new Set(links);
-  let interactionSampled = false;
-  const sampleInteractionTheme = (event: Event) => {
-    if (!batchAlive || interactionSampled) return;
-    const target = event.target;
-    if (!(target instanceof view.Element)) return;
-    const owner = target.closest<HTMLElement>('[data-site-link-enhanced]');
-    if (!owner || !targets.has(owner)) return;
-    interactionSampled = true;
-    queueMicrotask(() => {
-      interactionSampled = false;
-    });
-    refreshTheme();
-  };
-  const interactionEvents = [
-    'pointerenter',
-    'pointerleave',
-    'pointerdown',
-    'pointerup',
-    'pointercancel',
-    'focus',
-    'blur',
-    'keydown',
-    'keyup',
-  ];
-  for (const event of interactionEvents)
-    document.addEventListener(event, sampleInteractionTheme, true);
   return () => {
     if (!batchAlive) return;
     batchAlive = false;
     observer.disconnect();
     media?.removeEventListener?.('change', refreshTheme);
-    for (const event of interactionEvents)
-      document.removeEventListener(event, sampleInteractionTheme, true);
     for (const release of releases) release();
     updates.clear();
   };
