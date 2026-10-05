@@ -29,6 +29,16 @@ The v2 schema enumerates kinds and singleton counts. Runtime also rejects duplic
 
 Generate with pnpm agent:skill:schema; verify with pnpm agent:skill:schema -- --check. Tests execute AJV draft-2020-12 as well as runtime validation. Never hand-edit the generated schema.
 
+## Unchanged constrained terminal
+
+A leaf with `allowedNextSkillIds` cannot evade its required continuation by setting `nextSkillId: null`. A pre-edit stop instead supplies the actual received handoff:
+
+    pnpm agent:skill -- --handoff blocked-output.json --prior-handoff received-input.json
+
+The received handoff must validate and select the output's source leaf. Both handoffs retain the same format, entrypoint, mode/source and v2 binding. Every required input material retains its reference, digest and metadata, including all v2 candidates and reports. Candidate digests are required for this stop. Added transaction material, changed references/digests, missing context and binding drift reject. V1/v2 structure and ordinary unconstrained terminals are unchanged.
+
+This is a structural unchanged-input check, not authentication of opaque references or their contents. Agents still inspect the actual candidate and record blockers; a self-declared note or supplied predecessor cannot prove that a file is truthful. After a numeric edit, `pui-package-budget` continues through `pui-validate` and its final-candidate evidence.
+
 ## Durable owner authorization
 
 A trusted owner decision can authorize ordinary work across turns and scheduled invocations. Ending a turn, restarting a process or aging an assessment does not expire that decision. Covered work uses assessment for calibration, not admission. Uncovered autonomous work retains existing ceilings and standing-scope rules. A schedule remains autonomous.

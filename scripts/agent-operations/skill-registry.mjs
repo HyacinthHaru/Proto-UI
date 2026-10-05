@@ -6,6 +6,7 @@ import {
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isDeepStrictEqual } from 'node:util';
 import YAML from 'yaml';
 
 const DEFAULT_ROOT = path.resolve(fileURLToPath(new URL('../..', import.meta.url)));
@@ -466,7 +467,44 @@ function validateHandoffV2State(handoff, registry) {
   }
 }
 
-export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
+function validateUnchangedTerminal(handoff, priorHandoff, source, registry) {
+  assert(
+    priorHandoff?.nextSkillId === handoff.fromId,
+    'constrained terminal requires the handoff received by its source leaf'
+  );
+  validateSkillHandoff(priorHandoff, registry);
+  for (const key of ['schemaVersion', 'entrypoint', 'executionMode', 'executionModeSource'])
+    assert(priorHandoff[key] === handoff[key], 'terminal cannot change ' + key);
+  if (handoff.schemaVersion === 2)
+    assert(
+      isDeepStrictEqual(priorHandoff.binding, handoff.binding),
+      'terminal cannot change its received binding'
+    );
+  const required = new Set(source.requires);
+  const received = new Map();
+  for (const artifact of priorHandoff.artifacts)
+    if (required.has(artifact.type))
+      received.set(artifact.type + '\u0000' + artifact.reference, artifact);
+  let retained = 0;
+  for (const artifact of handoff.artifacts) {
+    if (!required.has(artifact.type)) continue;
+    const previous = received.get(artifact.type + '\u0000' + artifact.reference);
+    assert(
+      previous && isDeepStrictEqual(previous, artifact),
+      'constrained terminal must retain its received ' + artifact.type + ' unchanged'
+    );
+    if (artifact.type === 'candidate-change')
+      assert(artifact.digest !== undefined, 'unchanged terminal candidate requires its digest');
+    retained++;
+  }
+  assert(retained === received.size, 'constrained terminal must retain every received input');
+}
+
+export function validateSkillHandoff(
+  handoff,
+  registry = loadSkillRegistry(),
+  { priorHandoff = null } = {}
+) {
   assertExactKeys(
     handoff,
     [
@@ -607,7 +645,11 @@ export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
     );
   }
 
-  if (handoff.nextSkillId === null) return { handoff, nextSkill: null };
+  if (handoff.nextSkillId === null) {
+    if (fromLeaf?.allowedNextSkillIds)
+      validateUnchangedTerminal(handoff, priorHandoff, fromLeaf, registry);
+    return { handoff, nextSkill: null };
+  }
   if (fromLeaf?.allowedNextSkillIds) {
     assert(
       fromLeaf.allowedNextSkillIds.includes(handoff.nextSkillId),

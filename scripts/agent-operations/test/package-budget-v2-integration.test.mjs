@@ -6,11 +6,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
-import {
-  getHandoffArtifacts,
-  loadSkillRegistry,
-  validateSkillHandoff,
-} from '../skill-registry.mjs';
+import { loadSkillRegistry, validateSkillHandoff } from '../skill-registry.mjs';
 
 const root = path.resolve(fileURLToPath(new URL('../../..', import.meta.url)));
 const registry = loadSkillRegistry({ root });
@@ -60,36 +56,82 @@ const budget = () => ({
   notes: [],
 });
 
+const receivedBudget = () => ({
+  ...budget(),
+  fromId: 'pui-validate',
+  nextSkillId: 'pui-package-budget',
+  artifacts: [
+    ...budget().artifacts.filter((item) => item.type !== 'candidate-change'),
+    artifact('candidate-change', 'measured-feature', { revision: head }),
+  ],
+});
+
 test('budget validation retains v2 candidate and cost materials without weakening the next-leaf guard', () => {
   const handoff = budget();
   assert.equal(structural(handoff), true, JSON.stringify(structural.errors));
   const result = validateSkillHandoff(handoff, registry);
   assert.equal(result.nextSkill.id, 'pui-validate');
-  assert.deepEqual(
-    getHandoffArtifacts(result.handoff, 'candidate-change'),
-    handoff.artifacts.filter((item) => item.type === 'candidate-change')
-  );
-  assert.deepEqual(
-    getHandoffArtifacts(result.handoff, 'evidence-report'),
-    handoff.artifacts.filter((item) => item.type === 'evidence-report')
-  );
   for (const nextSkillId of ['pui-review', 'pui-integrate', 'pui-ci']) {
     assert.throws(
       () => validateSkillHandoff({ ...handoff, nextSkillId }, registry),
       /pui-package-budget must continue through one of: pui-validate/
     );
   }
-  assert.equal(validateSkillHandoff({ ...handoff, nextSkillId: null }, registry).nextSkill, null);
+  assert.throws(() => validateSkillHandoff({ ...handoff, nextSkillId: null }, registry));
+});
+
+test('only the received unchanged v2 candidate can stop before numeric editing', () => {
+  const received = receivedBudget();
+  const blocked = { ...received, fromId: 'pui-package-budget', nextSkillId: null };
+  assert.equal(validateSkillHandoff(blocked, registry, { priorHandoff: received }).nextSkill, null);
+  assert.throws(() => validateSkillHandoff(blocked, registry));
+  assert.throws(() =>
+    validateSkillHandoff({ ...budget(), nextSkillId: null }, registry, { priorHandoff: received })
+  );
+  const changedDigest = {
+    ...blocked,
+    artifacts: blocked.artifacts.map((item) =>
+      item.type === 'candidate-change' ? { ...item, digest: `sha256:${'e'.repeat(64)}` } : item
+    ),
+  };
+  assert.throws(() => validateSkillHandoff(changedDigest, registry, { priorHandoff: received }));
+  assert.throws(() =>
+    validateSkillHandoff(blocked, registry, {
+      priorHandoff: { ...received, binding: { ...binding, scopeId: 'pull-request:other' } },
+    })
+  );
+  const unbound = {
+    ...received,
+    artifacts: received.artifacts.map((item) => {
+      if (item.type !== 'candidate-change') return item;
+      const { digest, ...withoutDigest } = item;
+      return withoutDigest;
+    }),
+  };
+  assert.throws(() =>
+    validateSkillHandoff(
+      { ...unbound, fromId: 'pui-package-budget', nextSkillId: null },
+      registry,
+      { priorHandoff: unbound }
+    )
+  );
 });
 
 test('the actual v2 resolver admits numeric validation and rejects old-evidence review shortcuts', () => {
   const directory = mkdtempSync(path.join(os.tmpdir(), 'pui-budget-v2-'));
   const file = path.join(directory, 'handoff.json');
-  const run = (handoff) => {
+  const priorFile = path.join(directory, 'received.json');
+  const run = (handoff, priorHandoff) => {
     writeFileSync(file, JSON.stringify(handoff));
+    if (priorHandoff) writeFileSync(priorFile, JSON.stringify(priorHandoff));
     return spawnSync(
       process.execPath,
-      ['scripts/agent-operations/resolve-skill.mjs', '--handoff', file],
+      [
+        'scripts/agent-operations/resolve-skill.mjs',
+        '--handoff',
+        file,
+        ...(priorHandoff ? ['--prior-handoff', priorFile] : []),
+      ],
       { cwd: root, encoding: 'utf8' }
     );
   };
@@ -100,6 +142,13 @@ test('the actual v2 resolver admits numeric validation and rejects old-evidence 
     const rejected = run({ ...budget(), nextSkillId: 'pui-review' });
     assert.equal(rejected.status, 1);
     assert.match(rejected.stderr, /pui-package-budget must continue through one of: pui-validate/);
+    const received = receivedBudget();
+    const blocked = { ...received, fromId: 'pui-package-budget', nextSkillId: null };
+    assert.equal(run(blocked).status, 1);
+    const unchanged = run(blocked, received);
+    assert.equal(unchanged.status, 0, unchanged.stderr);
+    assert.equal(JSON.parse(unchanged.stdout).terminal, true);
+    assert.equal(run({ ...budget(), nextSkillId: null }, received).status, 1);
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

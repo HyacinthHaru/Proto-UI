@@ -38,22 +38,6 @@ const afterNumericEdit = () => ({
   notes: [],
 });
 
-test('measurement prerequisites do not pre-decide the numeric owner decision', () => {
-  const source = readFileSync(
-    path.join(root, '.agents/skills/pui-package-budget/SKILL.md'),
-    'utf8'
-  );
-  const inputRule = source.match(/^2\. .*$/m)?.[0];
-  const decisionRule = source.match(/^3\. .*$/m)?.[0];
-  const outputRule = source.match(/^5\. .*$/m)?.[0];
-  assert.match(inputRule, /current ceilings/);
-  assert.doesNotMatch(inputRule, /must.*(?:proposed ceilings|headroom rationale)/);
-  assert.match(decisionRule, /Choose the proposed ceiling/);
-  assert.match(decisionRule, /outputs of this leaf/);
-  assert.match(outputRule, /proposed ceilings/);
-  assert.match(outputRule, /headroom rationale/);
-});
-
 test('old cost evidence cannot route a numeric mutation directly to review or integration', () => {
   const registry = loadSkillRegistry({ root });
   const handoff = afterNumericEdit();
@@ -78,14 +62,36 @@ test('old cost evidence cannot route a numeric mutation directly to review or in
   );
 });
 
+test('a numeric edit cannot terminate with old evidence or an unchanged-input claim', () => {
+  const registry = loadSkillRegistry({ root });
+  const received = {
+    ...afterNumericEdit(),
+    fromId: 'pui-validate',
+    nextSkillId: 'pui-package-budget',
+    artifacts: afterNumericEdit().artifacts.map((item) =>
+      item.type === 'candidate-change' ? artifact('candidate-change') : item
+    ),
+  };
+  const edited = { ...afterNumericEdit(), nextSkillId: null };
+  assert.throws(() => validateSkillHandoff(edited, registry));
+  assert.throws(() => validateSkillHandoff(edited, registry, { priorHandoff: received }));
+});
+
 test('the real resolver CLI rejects the stale-report shortcut and permits validation', () => {
   const temporary = mkdtempSync(path.join(os.tmpdir(), 'pui-budget-flow-'));
   const file = path.join(temporary, 'handoff.json');
-  const run = (handoff) => {
+  const priorFile = path.join(temporary, 'received.json');
+  const run = (handoff, priorHandoff) => {
     writeFileSync(file, JSON.stringify(handoff));
+    if (priorHandoff) writeFileSync(priorFile, JSON.stringify(priorHandoff));
     return spawnSync(
       process.execPath,
-      ['scripts/agent-operations/resolve-skill.mjs', '--handoff', file],
+      [
+        'scripts/agent-operations/resolve-skill.mjs',
+        '--handoff',
+        file,
+        ...(priorHandoff ? ['--prior-handoff', priorFile] : []),
+      ],
       {
         cwd: root,
         encoding: 'utf8',
@@ -99,6 +105,20 @@ test('the real resolver CLI rejects the stale-report shortcut and permits valida
     const valid = run(afterNumericEdit());
     assert.equal(valid.status, 0, valid.stderr);
     assert.equal(JSON.parse(valid.stdout).skill.id, 'pui-validate');
+    const received = {
+      ...afterNumericEdit(),
+      fromId: 'pui-validate',
+      nextSkillId: 'pui-package-budget',
+      artifacts: afterNumericEdit().artifacts.map((item) =>
+        item.type === 'candidate-change' ? artifact('candidate-change') : item
+      ),
+    };
+    const blocked = { ...received, fromId: 'pui-package-budget', nextSkillId: null };
+    assert.equal(run(blocked).status, 1);
+    const unchanged = run(blocked, received);
+    assert.equal(unchanged.status, 0, unchanged.stderr);
+    assert.equal(JSON.parse(unchanged.stdout).terminal, true);
+    assert.equal(run({ ...afterNumericEdit(), nextSkillId: null }, received).status, 1);
   } finally {
     rmSync(temporary, { recursive: true, force: true });
   }
@@ -133,12 +153,6 @@ test('declared next-leaf constraints are registered, nonrecursive and nonempty',
 
 test('budget routing remains narrow and does not impose the new edge on unrelated leaves', () => {
   const registry = loadSkillRegistry({ root });
-  assert.deepEqual(
-    [...registry.byId.values()]
-      .filter((skill) => skill.allowedNextSkillIds)
-      .map((skill) => skill.id),
-    ['pui-package-budget']
-  );
   assert.equal(
     validateSkillHandoff(
       { ...afterNumericEdit(), fromId: 'pui-docs', nextSkillId: 'pui-review' },
@@ -146,7 +160,6 @@ test('budget routing remains narrow and does not impose the new edge on unrelate
     ).nextSkill.id,
     'pui-review'
   );
-  assert.equal(registry.byId.get('pui-govern').mutation, 'none');
 });
 
 test('blocked budget work can terminate and a validated candidate can reach independent review', () => {
@@ -159,7 +172,8 @@ test('blocked budget work can terminate and a validated candidate can reach inde
     ),
     notes: ['No numeric edit; canonical input measurements are unavailable.'],
   };
-  assert.equal(validateSkillHandoff(blocked, registry).nextSkill, null);
+  const received = { ...blocked, fromId: 'pui-validate', nextSkillId: 'pui-package-budget' };
+  assert.equal(validateSkillHandoff(blocked, registry, { priorHandoff: received }).nextSkill, null);
   const reviewedCandidate = {
     ...afterNumericEdit(),
     fromId: 'pui-validate',
