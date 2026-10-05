@@ -20,7 +20,7 @@ cases:
       ]
     expectation: Native content remains and the passive child has no role, tabindex or activation channel across updates.
   - id: T-SURFACE-0001-CASE-COMPILER
-    title: Public exports, four Web facades and honest unsupported targets
+    title: Public facades, private workspace exports and honest unsupported targets
     covers:
       [
         P-BASE-SURFACE-ENTRIES,
@@ -29,7 +29,7 @@ cases:
         P-BOOTSTRAP-2-3-2-SURFACE-ENTRIES,
         P-LIQUID-GLASS-SURFACE-ENTRIES,
       ]
-    expectation: All declared tokens produce Web CSS, public entries generate each Web facade, and unsupported target or token remains an explicit error or diagnostic.
+    expectation: All declared tokens produce Web CSS, publishable entries generate each Web facade, private family source exports remain workspace-only and absent from public CLI choices, and unsupported target or token remains an explicit error or diagnostic.
 implementations:
   - id: surface-public-compiler
     kind: module-test
