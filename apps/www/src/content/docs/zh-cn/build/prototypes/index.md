@@ -66,3 +66,5 @@ Proto UI 的原型语法并不是为了让所有人都频繁发明新原型。�
 - 只有现有协议无法表达一个已证明独立的信息通路主体时，才提出新的 Base Prototype
 
 新的 Base subject 先用 proposal、candidate graph、draft entity 与测试证据证明独立信息通路；唯一需要单独解决的是 Base identity admission。熟悉的组件名或风格库需求本身都不是 admission 证据。
+
+[原型文档覆盖索引](/zh-cn/build/prototypes/documentation-coverage/)
