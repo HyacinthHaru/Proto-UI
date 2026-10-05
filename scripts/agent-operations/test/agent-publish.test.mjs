@@ -343,7 +343,10 @@ function ownerFixture(f, { scopeIds = ['*'], actions = ['implement', 'collaborat
   };
 }
 
-function localRepository(f) {
+function localRepository(
+  f,
+  { branch = 'fixture-contributor-branch', defaultBranch = 'main' } = {}
+) {
   const directory = path.join(f.directory, 'checkout');
   fs.mkdirSync(directory);
   const git = (args) =>
@@ -377,6 +380,7 @@ function localRepository(f) {
   git(['commit', '-m', 'Synthetic fixture baseline']);
   git(['update-ref', 'refs/remotes/origin/main', 'HEAD']);
   git(['checkout', '-b', 'fixture-contributor-branch']);
+  if (branch !== 'fixture-contributor-branch') git(['branch', '-M', branch]);
   const before = git(['rev-parse', 'HEAD']).trim();
   fs.writeFileSync(
     path.join(directory, '.git/hooks/commit-msg'),
@@ -389,8 +393,17 @@ function localRepository(f) {
   const messagePath = path.join(directory, 'message.txt');
   fs.writeFileSync(messagePath, 'feat: synthetic fixture contributor commit\n');
   const commitAttempts = [];
+  const repositoryMetadata = {
+    full_name: repositoryId.slice('github.com:'.length),
+    default_branch: defaultBranch,
+  };
   const runner = (binary, args, options) => {
-    assert.equal(binary, 'git', 'local commits must not acquire GitHub network privileges');
+    if (binary === 'gh') {
+      assert.deepEqual(args, ['api', `repos/${repositoryId.slice('github.com:'.length)}`]);
+      assert.equal(options.input, undefined, 'commit repository metadata is read-only');
+      return JSON.stringify(repositoryMetadata);
+    }
+    assert.equal(binary, 'git', 'commit fixtures allow only native Git and configured REST reads');
     if (args[0] === 'commit') commitAttempts.push([...args]);
     return execFileSync(binary, args, {
       ...options,
@@ -410,11 +423,12 @@ function localRepository(f) {
     tree,
     runner,
     commitAttempts,
+    repositoryMetadata,
     args: [
       '--message-file',
       messagePath,
       '--branch',
-      'fixture-contributor-branch',
+      branch,
       '--expected-head',
       before,
       '--expected-tree',
@@ -821,6 +835,40 @@ test('already disclosed approved evidence is published byte-for-byte without ano
   assert.equal(sha256(gh.comments[0].body), sha256(approvedBody));
 });
 
+test('Issue creation can reuse disclosed bytes without borrowing another title or a PR identity', (t) => {
+  for (const priorKind of ['different-title-issue', 'same-title-pr']) {
+    const f = fixture(t, { failed: true });
+    const body = `Synthetic reused template.\n\n${renderModelTraceDisclosure(f.record.receipt)}\n`;
+    fs.writeFileSync(f.bodyPath, body);
+    const gh = server();
+    const title = 'Distinct legitimate Issue';
+    gh.issues.push({
+      id: 61,
+      number: 61,
+      node_id: priorKind === 'same-title-pr' ? 'PR_prior' : 'I_prior',
+      title: priorKind === 'same-title-pr' ? title : 'Earlier different Issue',
+      body,
+      state: 'closed',
+      locked: false,
+      updated_at: '2026-10-04T00:00:00Z',
+      user: { login: LOGIN },
+      html_url: 'fixture://prior/61',
+      ...(priorKind === 'same-title-pr' ? { pull_request: { url: 'fixture://prior-pr/61' } } : {}),
+    });
+    const argv = ['issue', 'create', ...f.args, '--title', title, '--body-file', f.bodyPath];
+    const result = runPublishCli(argv, { runner: gh.runner, now: f.now });
+    assert.equal(result.status, 'published');
+    assert.equal(gh.writes.length, 1);
+    assert.equal(gh.issues[1].title, title);
+    assert.equal(gh.issues[1].body, body);
+    assert.equal(gh.issues[1].pull_request, undefined);
+    const repeated = runPublishCli(argv, { runner: gh.runner, now: f.now });
+    assert.equal(repeated.status, 'already-published');
+    assert.equal(repeated.url, result.url);
+    assert.equal(gh.writes.length, 1);
+  }
+});
+
 for (const command of ['issue create', 'pull-request create', 'comment', 'update-body']) {
   test(`${command} appends a current visible receipt after prepared Markdown examples`, (t) => {
     const f = fixture(t, { failed: true });
@@ -1032,6 +1080,145 @@ test('contributor commit executes git signoff and the independent installed hook
   const committed = git(['log', '-1', '--format=%B']);
   assert.ok(committed.includes(renderModelTraceDisclosure(f.record.receipt, 'commit')));
   assert.ok(committed.includes(`Signed-off-by: ${LOGIN} <fixture@example.invalid>`));
+});
+
+for (const defaultBranch of ['develop', 'trunk']) {
+  test(`a native commit cannot write the actual repository default ${defaultBranch}`, (t) => {
+    const f = fixture(t, { failed: true });
+    const local = localRepository(f, { branch: defaultBranch, defaultBranch });
+    assert.throws(
+      () =>
+        runPublishCli(['commit', ...f.args, ...local.args], {
+          runner: local.runner,
+          cwd: local.directory,
+          now: f.now,
+        }),
+      /not a default branch/
+    );
+    assert.equal(local.commitAttempts.length, 0);
+    assert.equal(local.git(['rev-parse', 'HEAD']).trim(), local.before);
+    assert.equal(local.git(['write-tree']).trim(), local.tree);
+  });
+}
+
+for (const [branch, defaultBranch] of [
+  ['main', 'develop'],
+  ['master', 'trunk'],
+]) {
+  test(`an authorized native ${branch} commit publishes once when the actual default is ${defaultBranch}`, (t) => {
+    const f = fixture(t, { failed: true });
+    const local = localRepository(f, { branch, defaultBranch });
+    local.repositoryMetadata.full_name = local.repositoryMetadata.full_name.toUpperCase();
+    const result = runPublishCli(['commit', ...f.args, ...local.args], {
+      runner: local.runner,
+      cwd: local.directory,
+      now: f.now,
+    });
+    assert.equal(result.status, 'published');
+    assert.equal(local.commitAttempts.length, 1);
+    assert.equal(local.git(['rev-parse', 'HEAD']).trim(), result.head);
+    assert.equal(local.git(['rev-list', '--count', `${local.before}..HEAD`]).trim(), '1');
+    assert.equal(local.git(['rev-parse', `${result.head}^1`]).trim(), local.before);
+    assert.equal(local.git(['rev-parse', `${result.head}^{tree}`]).trim(), local.tree);
+    const committed = local.git(['log', '-1', '--format=%B', result.head]);
+    assertModelTraceDisclosure(committed, f.record.receipt, 'commit');
+    assert.ok(committed.includes(`Signed-off-by: ${LOGIN} <fixture@example.invalid>`));
+  });
+}
+
+for (const [boundary, metadata] of [
+  ['missing repository', null],
+  ['missing repository identity', { default_branch: 'develop' }],
+  [
+    'foreign repository',
+    { full_name: 'another-owner/fixture-repository', default_branch: 'develop' },
+  ],
+  ['missing default branch', { full_name: 'fixture-owner/fixture-repository' }],
+  ['empty default branch', { full_name: 'fixture-owner/fixture-repository', default_branch: '' }],
+  [
+    'non-string default branch',
+    { full_name: 'fixture-owner/fixture-repository', default_branch: 7 },
+  ],
+  [
+    'invalid branch name',
+    { full_name: 'fixture-owner/fixture-repository', default_branch: 'invalid branch' },
+  ],
+  [
+    'checkout shorthand',
+    { full_name: 'fixture-owner/fixture-repository', default_branch: '@{-1}' },
+  ],
+]) {
+  test(`${boundary} REST metadata cannot authorize a native commit`, (t) => {
+    const f = fixture(t, { failed: true });
+    const local = localRepository(f);
+    const runner = (binary, args, options) => {
+      if (binary === 'gh') {
+        local.runner(binary, args, options);
+        return JSON.stringify(metadata);
+      }
+      return local.runner(binary, args, options);
+    };
+    assert.throws(() =>
+      runPublishCli(['commit', ...f.args, ...local.args], {
+        runner,
+        cwd: local.directory,
+        now: f.now,
+      })
+    );
+    assert.equal(local.commitAttempts.length, 0);
+    assert.equal(local.git(['rev-parse', 'HEAD']).trim(), local.before);
+    assert.equal(local.git(['write-tree']).trim(), local.tree);
+  });
+}
+
+test('checkout origin must match the authorized repository before collecting default metadata', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  local.git([
+    'remote',
+    'set-url',
+    'origin',
+    'https://github.com/another-owner/fixture-repository.git',
+  ]);
+  const runner = (binary, args, options) => {
+    assert.notEqual(binary, 'gh', 'foreign checkout must not use requested or source metadata');
+    return local.runner(binary, args, options);
+  };
+  assert.throws(
+    () =>
+      runPublishCli(['commit', ...f.args, ...local.args], {
+        runner,
+        cwd: local.directory,
+        now: f.now,
+      }),
+    /commit repository differs from checkout origin/
+  );
+  assert.equal(local.commitAttempts.length, 0);
+  assert.equal(local.git(['rev-parse', 'HEAD']).trim(), local.before);
+  assert.equal(local.git(['write-tree']).trim(), local.tree);
+});
+
+test('changed default metadata blocks a native commit even when both defaults differ from the authorized branch', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f, { defaultBranch: 'develop' });
+  let repositoryReads = 0;
+  const runner = (binary, args, options) => {
+    if (binary === 'gh' && ++repositoryReads === 2)
+      local.repositoryMetadata.default_branch = 'trunk';
+    return local.runner(binary, args, options);
+  };
+  assert.throws(
+    () =>
+      runPublishCli(['commit', ...f.args, ...local.args], {
+        runner,
+        cwd: local.directory,
+        now: f.now,
+      }),
+    /changed before write/
+  );
+  assert.equal(local.commitAttempts.length, 0);
+  assert.equal(local.git(['rev-parse', 'HEAD']).trim(), local.before);
+  assert.equal(local.git(['write-tree']).trim(), local.tree);
 });
 
 test('a native commit on a concurrently advanced parent is unknown without retry or compensation', (t) => {

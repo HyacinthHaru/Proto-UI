@@ -197,6 +197,19 @@ function localCommitBinding(io, args) {
   const repositoryId = args.get('--repository');
   if (checkoutRepository(io).toLowerCase() !== repositoryId.toLowerCase())
     throw new Error('commit repository differs from checkout origin');
+  const { owner, name } = parseRepositoryId(repositoryId);
+  const repository = io.api(`repos/${owner}/${name}`);
+  if (
+    typeof repository?.full_name !== 'string' ||
+    repository.full_name.toLowerCase() !== `${owner}/${name}`.toLowerCase() ||
+    typeof repository?.default_branch !== 'string' ||
+    !repository.default_branch ||
+    repository.default_branch.includes('@{')
+  )
+    throw new Error('live commit repository or default branch is unavailable');
+  const defaultBranch = repository.default_branch;
+  // --branch expands checkout shorthands; metadata must name a literal branch.
+  io.run('git', ['check-ref-format', '--branch', defaultBranch]);
   const branch = io.run('git', ['symbolic-ref', '--short', 'HEAD']).trim();
   const head = io.run('git', ['rev-parse', 'HEAD']).trim();
   if (branch !== args.get('--branch') || head !== args.get('--expected-head'))
@@ -204,7 +217,7 @@ function localCommitBinding(io, args) {
   const tree = io.run('git', ['write-tree']).trim();
   if (tree !== args.get('--expected-tree'))
     throw new Error('staged index differs from the exact authorized tree');
-  if (['main', 'master'].includes(branch))
+  if (branch === defaultBranch)
     throw new Error(
       'commit requires the explicitly authorized contributor branch, not a default branch'
     );
@@ -212,7 +225,7 @@ function localCommitBinding(io, args) {
   // Creating a local commit grants no GitHub privilege. The operator authorizes
   // this exact branch/head/tree; the configured signer still owns DCO responsibility.
   // Existing contributor history and protected push rules are not model identity.
-  return { branch, head, tree };
+  return { branch, head, tree, defaultBranch };
 }
 
 function assertPrivateCommitInputs(io, recordPath, contextPath) {
@@ -405,7 +418,9 @@ export function runPublishCli(argv, options = {}) {
       io.run('git', ['read-tree', binding.tree], { env: commitEnvironment });
       assertModelTraceDisclosure(message, measure(), 'commit');
       if (JSON.stringify(localCommitBinding(io, args)) !== JSON.stringify(binding))
-        throw new Error('commit branch or staged tree changed before write');
+        throw new Error(
+          'commit branch, HEAD, staged tree or repository default changed before write'
+        );
       assertPrivateCommitInputs(io, recordPath, contextPath);
       authorize();
       let output;
@@ -519,6 +534,8 @@ export function runPublishCli(argv, options = {}) {
       items = items.filter(
         (item) => item.pull_request && samePullBinding(io.api(`${endpoint}/pulls/${item.number}`))
       );
+    if (marker === null && command === 'issue create')
+      items = items.filter((item) => !item.pull_request && item.title === args.get('--title'));
     if (items.length > 1)
       throw new Error('multiple publication markers exist; refusing duplicate publication');
     if (!items.length) return null;

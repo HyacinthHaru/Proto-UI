@@ -21,6 +21,12 @@ const OPTIONS = new Map([
   ['disclosure', ['--record', '--context', '--format']],
 ]);
 
+function assertOutsideRepository(realPath, label) {
+  const relative = path.relative(fs.realpathSync(ROOT), realPath);
+  if (relative === '' || (!relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)))
+    throw new Error(`private ModelTrace ${label} must remain outside the repository`);
+}
+
 export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdout } = {}) {
   argv = [...argv];
   if (argv[0] === '--') argv.shift();
@@ -47,9 +53,7 @@ export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdo
     if (!args.has('--out')) throw new Error('challenge and score require a new private --out file');
     output = path.resolve(args.get('--out'));
     realOutput = path.join(fs.realpathSync(path.dirname(output)), path.basename(output));
-    const relative = path.relative(fs.realpathSync(ROOT), realOutput);
-    if (relative === '' || (!relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)))
-      throw new Error('private ModelTrace challenges/records must remain outside the repository');
+    assertOutsideRepository(realOutput, 'challenges/records');
     if (fs.lstatSync(realOutput, { throwIfNoEntry: false }))
       throw new Error('private ModelTrace --out must name a new file');
   }
@@ -65,6 +69,10 @@ export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdo
       ),
     };
   else if (command === 'score') {
+    for (const option of ['--challenge', '--response', '--previous']) {
+      if (args.has(option))
+        assertOutsideRepository(fs.realpathSync(args.get(option)), option.slice(2));
+    }
     const challenge = readModelTraceJson(args.get('--challenge'), 'challenge');
     validateModelTraceContext(challenge.context, { fresh: true });
     const previous = args.has('--previous')

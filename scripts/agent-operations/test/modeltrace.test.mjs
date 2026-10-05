@@ -224,6 +224,121 @@ test('model declarations cannot select the fingerprint or become a failed-probe 
   assert.equal(failed.record.receipt.trust.backendAuthenticated, false);
 });
 
+test('public receipts reject suppressed declaration anomalies after digest and TTL rebinding', () => {
+  const candidate = statusReceipt('candidate');
+  const measured = candidate.result.modelId;
+  const other = candidate.result.candidates.find((item) => item.modelId !== measured).modelId;
+  const declarationCodes = [
+    'system-label-mismatch',
+    'harness-label-mismatch',
+    'declaration-conflict',
+    'declared-model-not-in-bank',
+    'system-label-unavailable',
+    'harness-label-unavailable',
+  ];
+  for (const [status, declared, expected, omitted, ttl] of [
+    [
+      'candidate',
+      { systemModel: other, harnessModel: measured },
+      ['system-label-mismatch', 'declaration-conflict'],
+      'system-label-mismatch',
+      15,
+    ],
+    [
+      'candidate',
+      { systemModel: measured, harnessModel: other },
+      ['harness-label-mismatch', 'declaration-conflict'],
+      'harness-label-mismatch',
+      15,
+    ],
+    [
+      'candidate',
+      { systemModel: null, harnessModel: measured },
+      ['system-label-unavailable'],
+      'system-label-unavailable',
+      60,
+    ],
+    [
+      'candidate',
+      { systemModel: measured, harnessModel: null },
+      ['harness-label-unavailable'],
+      'harness-label-unavailable',
+      60,
+    ],
+    [
+      'failed',
+      { systemModel: 'synthetic-unlisted-model', harnessModel: 'synthetic-unlisted-model' },
+      ['declared-model-not-in-bank'],
+      'declared-model-not-in-bank',
+      15,
+    ],
+    [
+      'failed',
+      { systemModel: measured, harnessModel: other },
+      ['declaration-conflict'],
+      'declaration-conflict',
+      15,
+    ],
+  ]) {
+    const receipt = statusReceipt(status);
+    receipt.declared = declared;
+    receipt.anomalies = [
+      ...receipt.anomalies.filter((code) => !declarationCodes.includes(code)),
+      ...expected,
+    ].sort();
+    receipt.expiresAt = new Date(NOW.getTime() + ttl * 60_000).toISOString();
+    receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+    assert.equal(validateModelTraceReceipt(receipt), receipt);
+    receipt.anomalies = receipt.anomalies.filter((code) => code !== omitted);
+    receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+    assert.equal(structuralReceipt(receipt), true, JSON.stringify(structuralReceipt.errors));
+    assert.throws(() => validateModelTraceReceipt(receipt));
+  }
+
+  // A digest is unkeyed: changing a supported declaration must not hide its
+  // mismatch or keep the original one-hour validity window.
+  const receipt = structuredClone(candidate);
+  receipt.declared = { systemModel: measured, harnessModel: null };
+  receipt.anomalies = receipt.anomalies.filter((code) => code !== 'system-label-unavailable');
+  receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+  assert.equal(validateModelTraceReceipt(receipt), receipt);
+  receipt.declared.systemModel = other;
+  receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+  assert.equal(Date.parse(receipt.expiresAt) - Date.parse(receipt.measuredAt), 60 * 60_000);
+  assert.equal(structuralReceipt(receipt), true, JSON.stringify(structuralReceipt.errors));
+  assert.throws(() => validateModelTraceReceipt(receipt));
+});
+
+test('public receipts reject spurious declarations without changing normalized label semantics', () => {
+  const receipt = statusReceipt('candidate');
+  const measured = receipt.result.modelId;
+  receipt.declared = { systemModel: `fixture/${measured.toUpperCase()}`, harnessModel: measured };
+  receipt.anomalies = receipt.anomalies.filter(
+    (code) => !['system-label-unavailable', 'harness-label-unavailable'].includes(code)
+  );
+  receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+  assert.equal(validateModelTraceReceipt(receipt), receipt);
+  for (const code of [
+    'system-label-mismatch',
+    'harness-label-mismatch',
+    'declaration-conflict',
+    'declared-model-not-in-bank',
+    'system-label-unavailable',
+    'harness-label-unavailable',
+  ]) {
+    const forged = structuredClone(receipt);
+    forged.anomalies.push(code);
+    forged.anomalies.sort();
+    const short = ['system-label-mismatch', 'harness-label-mismatch', 'declaration-conflict'];
+    forged.expiresAt = new Date(
+      NOW.getTime() + (short.includes(code) ? 15 : 60) * 60_000
+    ).toISOString();
+    forged.id = `sha256:${computeModelTraceReceiptDigest(forged)}`;
+    assert.equal(structuralReceipt(forged), true, JSON.stringify(structuralReceipt.errors));
+    assert.throws(() => validateModelTraceReceipt(forged));
+  }
+});
+
 test('an invalid third probe cannot be scored as a two-query identity', () => {
   const f = fixture();
   f.response.outputs[2].text = 'prose containing 1, 2, 3';
@@ -522,16 +637,10 @@ test('hidden and duplicate disclosures cannot satisfy visible publication', () =
   assert.equal(hasModelTraceDisclosure(`Evidence\n\n${disclosure}`, receipt), true);
   assert.equal(hasModelTraceDisclosure(`<!--\n${disclosure}\n-->`, receipt), false);
   assert.equal(hasModelTraceDisclosure(`<!--\n${disclosure}`, receipt), false);
-  assert.throws(() => assertModelTraceDisclosure(`<!--\n${disclosure}\n-->`, receipt), /visible/);
-  assert.throws(() => assertModelTraceDisclosure(`<!--\n${disclosure}`, receipt), /visible/);
-  assert.throws(
-    () => assertModelTraceDisclosure(`${disclosure}\n\n${disclosure}`, receipt),
-    /visible/
-  );
-  assert.throws(
-    () => hasModelTraceDisclosure(`${disclosure}\n\n${disclosure}`, receipt),
-    /visible/
-  );
+  assert.throws(() => assertModelTraceDisclosure(`<!--\n${disclosure}\n-->`, receipt));
+  assert.throws(() => assertModelTraceDisclosure(`<!--\n${disclosure}`, receipt));
+  assert.throws(() => assertModelTraceDisclosure(`${disclosure}\n\n${disclosure}`, receipt));
+  assert.throws(() => hasModelTraceDisclosure(`${disclosure}\n\n${disclosure}`, receipt));
 });
 
 test('visible disclosure detection admits literal examples but rejects a present wrong receipt', () => {
@@ -553,8 +662,21 @@ test('visible disclosure detection admits literal examples but rejects a present
     failed: true,
     declared: { systemModel: 'gpt-5.4', harnessModel: null },
   }).record.receipt;
-  assert.throws(() => hasModelTraceDisclosure(renderModelTraceDisclosure(wrong), receipt), /exact/);
-  assert.throws(() => hasModelTraceDisclosure('## ModelTrace\n\nNot a receipt.', receipt), /exact/);
+  assert.throws(() => hasModelTraceDisclosure(renderModelTraceDisclosure(wrong), receipt));
+  assert.throws(() => hasModelTraceDisclosure('## ModelTrace\n\nNot a receipt.', receipt));
+});
+
+test('raw HTML ModelTrace sections cannot compete with a canonical visible disclosure', () => {
+  const receipt = fixture({ failed: true }).record.receipt;
+  const disclosure = renderModelTraceDisclosure(receipt);
+  for (const heading of ['<h2>ModelTrace</h2>', '<h2><span>ModelTrace</span></h2>']) {
+    assert.throws(() => hasModelTraceDisclosure(heading, receipt));
+    assert.throws(() => assertModelTraceDisclosure(`${heading}\n\n${disclosure}`, receipt));
+    const example = `~~~html\n${heading}\n~~~`;
+    assert.equal(hasModelTraceDisclosure(example, receipt), false);
+    assert.equal(hasModelTraceDisclosure(`${example}\n\n${disclosure}`, receipt), true);
+    assert.equal(hasModelTraceDisclosure(`<!-- ${heading} -->\n\n${disclosure}`, receipt), true);
+  }
 });
 
 test('digest and repository bindings reject regex-coercible singleton arrays', () => {
@@ -699,6 +821,92 @@ test('private --out storage cannot enter the repository through a parent symlink
     /outside the repository/
   );
   assert.equal(fs.existsSync(path.join(inside, 'private.json')), false);
+});
+
+test('score rejects checkout inputs and directory aliases without writing a private record', (t) => {
+  const outside = fs.mkdtempSync(path.join(tmpdir(), 'modeltrace-private-input-'));
+  const root = fileURLToPath(new URL('../../..', import.meta.url));
+  const inside = fs.mkdtempSync(path.join(root, '.modeltrace-input-fixture-'));
+  t.after(() => {
+    fs.rmSync(outside, { recursive: true, force: true });
+    fs.rmSync(inside, { recursive: true, force: true });
+  });
+  const f = fixture();
+  for (const directory of [inside, outside]) {
+    fs.writeFileSync(path.join(directory, 'challenge.json'), JSON.stringify(f.challenge));
+    fs.writeFileSync(path.join(directory, 'response.json'), JSON.stringify(f.response));
+    fs.writeFileSync(path.join(directory, 'previous.json'), JSON.stringify(f.record));
+  }
+  const insideAlias = path.join(outside, 'checkout-alias');
+  const outsideAlias = path.join(outside, 'private-alias');
+  fs.symlinkSync(inside, insideAlias);
+  fs.symlinkSync(outside, outsideAlias);
+  for (const name of ['challenge', 'response', 'previous']) {
+    for (const directory of [inside, insideAlias]) {
+      const out = path.join(
+        outside,
+        `denied-${name}-${directory === inside ? 'direct' : 'alias'}.json`
+      );
+      let stdout = '';
+      assert.throws(() =>
+        runModelTraceCli(
+          [
+            'score',
+            '--challenge',
+            path.join(name === 'challenge' ? directory : outside, 'challenge.json'),
+            '--response',
+            path.join(name === 'response' ? directory : outside, 'response.json'),
+            '--previous',
+            path.join(name === 'previous' ? directory : outside, 'previous.json'),
+            '--out',
+            out,
+          ],
+          {
+            now: NOW,
+            stdout: {
+              write(text) {
+                stdout += text;
+              },
+            },
+          }
+        )
+      );
+      assert.equal(fs.existsSync(out), false);
+      assert.equal(stdout, '');
+    }
+  }
+  const out = path.join(outside, 'admitted.json');
+  let stdout = '';
+  const record = runModelTraceCli(
+    [
+      'score',
+      '--challenge',
+      path.join(outsideAlias, 'challenge.json'),
+      '--response',
+      path.join(outsideAlias, 'response.json'),
+      '--previous',
+      path.join(outsideAlias, 'previous.json'),
+      '--out',
+      out,
+    ],
+    {
+      now: NOW,
+      stdout: {
+        write(text) {
+          stdout += text;
+        },
+      },
+    }
+  );
+  assert.deepEqual(record.receipt.result, f.record.receipt.result);
+  assert.equal(record.receipt.priorReceiptDigest, f.record.receipt.id.slice(7));
+  assert.deepEqual(JSON.parse(fs.readFileSync(out, 'utf8')), record);
+  assert.equal(fs.statSync(out).mode & 0o777, 0o600);
+  assert.deepEqual(JSON.parse(stdout), {
+    written: out,
+    kind: record.kind,
+    receiptId: record.receipt.id,
+  });
 });
 
 test('canonical-equivalent prior receipts remain usable for bounded retests', (t) => {

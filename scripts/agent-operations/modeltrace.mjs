@@ -15,16 +15,19 @@ const COUNTS = [218, 233, 247];
 const HOUR = 60 * 60 * 1000;
 const SHORT_TTL = 15 * 60 * 1000;
 const METHODS = ['active-model-literals', 'same-context-native-forks'];
-const ANOMALIES = [
-  'context-uncalibrated',
-  'unknown-model-not-excluded',
-  'ambiguous-candidates',
+const DECLARATION_ANOMALIES = [
   'system-label-mismatch',
   'harness-label-mismatch',
   'declaration-conflict',
   'declared-model-not-in-bank',
   'system-label-unavailable',
   'harness-label-unavailable',
+];
+const ANOMALIES = [
+  'context-uncalibrated',
+  'unknown-model-not-excluded',
+  'ambiguous-candidates',
+  ...DECLARATION_ANOMALIES,
   'retest-inconsistent',
   'probe-failed',
   'sample-validation-failed',
@@ -108,6 +111,29 @@ function labels(value) {
 
 function normalizedLabel(value) {
   return value?.toLowerCase().split('/').at(-1) ?? null;
+}
+
+function declarationAnomalies(declared, result, reference, anomalies = new Set()) {
+  for (const [key, label] of Object.entries(declared)) {
+    const model = normalizedLabel(label);
+    if (model === null)
+      anomalies.add(
+        key === 'systemModel' ? 'system-label-unavailable' : 'harness-label-unavailable'
+      );
+    else {
+      if (!reference.models.some((item) => item.id === model))
+        anomalies.add('declared-model-not-in-bank');
+      if (result.modelId !== null && model !== result.modelId)
+        anomalies.add(key === 'systemModel' ? 'system-label-mismatch' : 'harness-label-mismatch');
+    }
+  }
+  if (
+    declared.systemModel !== null &&
+    declared.harnessModel !== null &&
+    normalizedLabel(declared.systemModel) !== normalizedLabel(declared.harnessModel)
+  )
+    anomalies.add('declaration-conflict');
+  return anomalies;
 }
 
 export function validateModelTraceContext(context, { fresh = false } = {}) {
@@ -419,25 +445,7 @@ export function buildModelTraceRecord(challenge, response, { previous = null } =
     };
   }
   const declared = structuredClone(challenge.context.declared);
-  for (const [key, label] of Object.entries(declared)) {
-    const model = normalizedLabel(label);
-    if (model === null)
-      anomalies.add(
-        key === 'systemModel' ? 'system-label-unavailable' : 'harness-label-unavailable'
-      );
-    else {
-      if (!reference.models.some((item) => item.id === model))
-        anomalies.add('declared-model-not-in-bank');
-      if (result.modelId !== null && model !== result.modelId)
-        anomalies.add(key === 'systemModel' ? 'system-label-mismatch' : 'harness-label-mismatch');
-    }
-  }
-  if (
-    declared.systemModel !== null &&
-    declared.harnessModel !== null &&
-    normalizedLabel(declared.systemModel) !== normalizedLabel(declared.harnessModel)
-  )
-    anomalies.add('declaration-conflict');
+  declarationAnomalies(declared, result, reference, anomalies);
   if (
     previous?.result.modelId !== null &&
     previous?.result.modelId !== undefined &&
@@ -644,6 +652,13 @@ export function validateModelTraceReceipt(receipt) {
     );
   }
   labels(receipt.declared);
+  const expectedDeclarations = declarationAnomalies(receipt.declared, result, reference);
+  assert(
+    DECLARATION_ANOMALIES.every(
+      (code) => receipt.anomalies.includes(code) === expectedDeclarations.has(code)
+    ),
+    'declaration anomalies differ from declared labels and measured result'
+  );
   assert(
     receipt.priorReceiptDigest === null || isHex(receipt.priorReceiptDigest),
     'invalid previous receipt digest'
@@ -742,6 +757,15 @@ let markdownVisibilityTools;
 let lastVisibilityText;
 let lastVisibilityOffsets;
 
+function htmlText(node) {
+  if (node.type === 'text') return node.value;
+  let text = '';
+  if (node.children) {
+    for (const child of node.children) text += htmlText(child);
+  }
+  return text;
+}
+
 function standaloneModelTraceOffsets(text) {
   if (text === lastVisibilityText) return lastVisibilityOffsets;
   if (!markdownVisibilityTools) {
@@ -777,11 +801,16 @@ function standaloneModelTraceOffsets(text) {
     toHtml(toHast(ast, { allowDangerousHtml: true }), { allowDangerousHtml: true }),
     { fragment: true }
   );
-  const visible = new Set(
-    html.children
-      .filter((node) => node.type === 'element' && node.tagName === 'h2')
-      .map((node) => node.properties.id)
-  );
+  const visible = new Set();
+  for (const node of html.children) {
+    if (node.type !== 'element' || node.tagName !== 'h2') continue;
+    const id = node.properties.id;
+    assert(
+      (typeof id === 'string' && id.startsWith(marker)) || htmlText(node).trim() !== 'ModelTrace',
+      'visible raw HTML ModelTrace headings cannot supply or compete with the canonical disclosure'
+    );
+    visible.add(id);
+  }
   const offsets = headings
     .filter((node) => visible.has(`${marker}${node.position.start.offset}`))
     .map((node) => node.position.start.offset);
