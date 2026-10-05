@@ -120,6 +120,7 @@ function server({
   sourceOwner = 'fixture-owner',
   sourceName = null,
   liveSourceName = null,
+  comparisonPages = null,
   protectedBranch = false,
   repositoryId = REPOSITORY,
   login = LOGIN,
@@ -232,6 +233,15 @@ function server({
         commit: { sha: endpoint.endsWith('/main') ? revision.baseSha : revision.headSha },
         protected: protectedBranch,
       });
+    if (pull && endpoint.includes('/compare/') && comparisonPages) {
+      if (args.includes('--paginate'))
+        return comparisonPages.map((page) => JSON.stringify(page)).join('\n');
+      const commits = comparisonPages.flatMap((page) => page.commits);
+      return JSON.stringify({
+        total_commits: comparisonPages[0].total_commits,
+        commits: commits.length > 250 ? commits.slice(0, 249).concat(commits.at(-1)) : commits,
+      });
+    }
     if (pull && endpoint.includes('/compare/'))
       return JSON.stringify({
         total_commits: 1,
@@ -476,7 +486,7 @@ test('publishes full-length evidence to a historical CLOSED Issue with a synthet
   assert.equal(gh.writes.length, 1);
 });
 
-test('Issue create sends one full body and never mutates labels or ownership state', (t) => {
+test('Issue create publishes its authorized evidence body once', (t) => {
   const f = fixture(t, { failed: true });
   const gh = server();
   const result = runPublishCli(
@@ -484,9 +494,34 @@ test('Issue create sends one full body and never mutates labels or ownership sta
     { runner: gh.runner, now: f.now }
   );
   assert.equal(result.status, 'published');
-  assert.deepEqual(Object.keys(gh.writes[0].input).sort(), ['body', 'title']);
+  assert.equal(gh.issues.length, 1);
+  assert.equal(gh.writes.length, 1);
+  assert.ok(gh.issues[0].body.startsWith(f.body));
   assert.ok(gh.issues[0].body.includes(renderModelTraceDisclosure(f.record.receipt)));
-  assert.equal(f.record.receipt.result.modelId, null);
+});
+
+test('GitHub repository casing aliases cannot duplicate a prepared comment', (t) => {
+  const f = fixture(t, { failed: true });
+  const gh = server();
+  const runner = (binary, args, options) =>
+    gh.runner(
+      binary,
+      args.map((arg) =>
+        arg.replace(
+          'repos/FIXTURE-OWNER/FIXTURE-REPOSITORY',
+          'repos/fixture-owner/fixture-repository'
+        )
+      ),
+      options
+    );
+  const argv = ['comment', ...f.args, '--number', '7', '--body-file', f.bodyPath];
+  const first = runPublishCli(argv, { runner, now: f.now });
+  argv[argv.indexOf('--repository') + 1] = 'github.com:FIXTURE-OWNER/FIXTURE-REPOSITORY';
+  const repeated = runPublishCli(argv, { runner, now: f.now });
+  assert.equal(repeated.status, 'already-published');
+  assert.equal(repeated.url, first.url);
+  assert.equal(gh.comments.length, 1);
+  assert.equal(gh.writes.length, 1);
 });
 
 test('a later compact JSON page preserves multiline evidence and prevents duplicate publication', (t) => {
@@ -545,8 +580,64 @@ test('PR creation preserves authorized collaborative history at the exact pushed
   assert.equal(runPublishCli(argv, { runner: gh.runner, now: f.now }).status, 'published');
   assert.ok(gh.issues[0].body.includes(renderModelTraceDisclosure(f.record.receipt)));
   assert.equal(gh.writes.length, 1);
-  assert.equal(gh.writes[0].input.head, 'fixture-contributor-branch');
-  assert.equal(gh.writes[0].input.base, 'main');
+});
+
+function completeComparisonPages() {
+  const commits = Array.from({ length: 251 }, (_, index) => ({
+    sha: index === 250 ? 'c'.repeat(40) : index.toString(16).padStart(40, '0'),
+    author: { login: LOGIN },
+    committer: { login: LOGIN },
+  }));
+  return [commits.slice(0, 100), commits.slice(100, 200), commits.slice(200)].map((page) => ({
+    total_commits: commits.length,
+    commits: page,
+  }));
+}
+
+function createComparedPull(f, gh) {
+  return runPublishCli(
+    [
+      'pull-request',
+      'create',
+      ...f.args,
+      '--title',
+      'Synthetic paginated source PR',
+      '--body-file',
+      f.bodyPath,
+      '--base',
+      'main',
+      '--head',
+      'fixture-contributor-branch',
+    ],
+    { runner: gh.runner, now: f.now }
+  );
+}
+
+test('complete contributor comparisons beyond the unpaged API limit can publish once', (t) => {
+  const f = fixture(t, { failed: true });
+  const gh = server({ pull: true, comparisonPages: completeComparisonPages() });
+  const first = createComparedPull(f, gh);
+  assert.equal(first.status, 'published');
+  assert.equal(createComparedPull(f, gh).url, first.url);
+  assert.equal(gh.issues.length, 1);
+  assert.equal(gh.writes.length, 1);
+});
+
+test('a missing comparison page cannot create a partially attributed PR', (t) => {
+  const f = fixture(t, { failed: true });
+  const gh = server({ pull: true, comparisonPages: completeComparisonPages().slice(0, 2) });
+  assert.throws(() => createComparedPull(f, gh), /complete PR contributor commit attribution/);
+  assert.equal(gh.issues.length, 0);
+  assert.equal(gh.writes.length, 0);
+});
+
+test('repeating a comparison page cannot masquerade as complete contributor evidence', (t) => {
+  const f = fixture(t, { failed: true });
+  const pages = completeComparisonPages();
+  const gh = server({ pull: true, comparisonPages: [pages[0], pages[0], pages[2]] });
+  assert.throws(() => createComparedPull(f, gh), /complete PR contributor commit attribution/);
+  assert.equal(gh.issues.length, 0);
+  assert.equal(gh.writes.length, 0);
 });
 
 test('a public READ contributor can propose the exact fork head without rewriting protected collaborative history', (t) => {

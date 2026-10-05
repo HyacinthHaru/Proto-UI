@@ -707,9 +707,19 @@ export function loadModelTraceRecord({ recordPath, contextPath, repositoryId, no
 export function renderModelTraceDisclosure(receipt, format = 'markdown') {
   validateModelTraceReceipt(receipt);
   if (format === 'commit') return `ModelTrace: ${canonical(receipt)}`;
-  if (format === 'json') return JSON.stringify(receipt, null, 2);
-  assert(format === 'markdown', 'unsupported disclosure format');
-  return `## ModelTrace\n\nClosed-set fingerprint attribution only; not authenticated backend identity, permission or acceptance. Unknown models are not excluded.\n\n\`\`\`json\n${JSON.stringify(receipt, null, 2)}\n\`\`\``;
+  assert(format === 'json' || format === 'markdown', 'unsupported disclosure format');
+  const json = JSON.stringify(
+    receipt,
+    (_key, value) => {
+      if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
+      const ordered = {};
+      for (const key of Object.keys(value).sort()) ordered[key] = value[key];
+      return ordered;
+    },
+    2
+  );
+  if (format === 'json') return json;
+  return `## ModelTrace\n\nClosed-set fingerprint attribution only; not authenticated backend identity, permission or acceptance. Unknown models are not excluded.\n\n\`\`\`json\n${json}\n\`\`\``;
 }
 
 let markdownVisibilityTools;

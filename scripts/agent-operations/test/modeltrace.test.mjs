@@ -372,6 +372,29 @@ test('raw samples are re-scored before use and never appear in public disclosure
   );
 });
 
+test('public receipt bytes and sealed disclosures survive nested JSON key reordering', () => {
+  const receipt = fixture().record.receipt;
+  const reorder = (value) =>
+    Array.isArray(value)
+      ? value.map(reorder)
+      : value && typeof value === 'object'
+        ? Object.fromEntries(
+            Object.keys(value)
+              .reverse()
+              .map((key) => [key, reorder(value[key])])
+          )
+        : value;
+  const reordered = reorder(receipt);
+  validateModelTraceReceipt(reordered);
+  assert.equal(computeModelTraceReceiptDigest(reordered), computeModelTraceReceiptDigest(receipt));
+  for (const format of ['commit', 'json', 'markdown']) {
+    const sealed = renderModelTraceDisclosure(receipt, format);
+    assert.equal(renderModelTraceDisclosure(reordered, format), sealed);
+    if (format !== 'json') assertModelTraceDisclosure(sealed, reordered, format);
+  }
+  assert.deepEqual(JSON.parse(renderModelTraceDisclosure(reordered, 'json')), receipt);
+});
+
 test('responses cannot be relabelled as a fresh challenge or another sampler', () => {
   const f = fixture();
   const next = createModelTraceChallenge(f.context, { now: NOW });

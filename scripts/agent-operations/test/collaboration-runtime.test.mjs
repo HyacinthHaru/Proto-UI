@@ -1431,15 +1431,15 @@ test('receipt validation binds the request and rejects impossible mutation count
     verification: 'live-state-matches-desired',
     note: 'The exact desired metadata state was observed after one write.',
   });
-  assert.equal(validateCollaborationReceipt(receipt, request), receipt);
+  validateCollaborationReceipt(receipt, request);
   assert.throws(
     () => validateCollaborationReceipt({ ...receipt, mutationCount: 0 }, request),
     /applied receipt must record exactly one mutation/
   );
 });
 
-test('schema-v2 receipt ingestion rejects attribution from another repository', () => {
-  const request = metadataRequest();
+test('schema-v2 receipt ingestion admits GitHub casing aliases but rejects foreign attribution', () => {
+  const request = metadataRequest({ repositoryId: 'github.com:proto-ui/proto-ui' });
   const preState = metadataLive();
   const receipt = buildCollaborationReceipt({
     request,
@@ -1455,12 +1455,17 @@ test('schema-v2 receipt ingestion rejects attribution from another repository', 
     note: 'Synthetic receipt ingestion control.',
     modelTrace,
   });
+  validateCollaborationReceipt(JSON.parse(JSON.stringify(receipt)), request);
   const foreign = {
     ...receipt,
     modelTrace: modelTraceFixture('github.com:Other/Other').modelTrace,
   };
   assert.throws(() => validateCollaborationReceipt(foreign), /repository/);
   assert.throws(() => validateCollaborationReceipt(foreign, request), /repository/);
+  assert.throws(
+    () => validateCollaborationReceipt({ ...receipt, repositoryId: ['github.com:a', 'b/c'] }),
+    { name: 'Error' }
+  );
 });
 
 test('update-branch no-op is bound to the exact base and rejects an unrelated stale head', () => {

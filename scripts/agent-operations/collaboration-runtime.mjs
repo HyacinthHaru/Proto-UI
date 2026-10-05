@@ -1035,15 +1035,18 @@ export function validateCollaborationReceipt(receipt, request = null) {
     'collaboration receipt'
   );
   assert([1, 2].includes(receipt.schemaVersion), 'receipt.schemaVersion must be 1 or 2');
+  assert(
+    typeof receipt.repositoryId === 'string' && REPOSITORY_ID.test(receipt.repositoryId),
+    'receipt.repositoryId is invalid'
+  );
   if (receipt.schemaVersion === 2) {
     validateModelTraceReceipt(receipt.modelTrace);
     assert(
-      receipt.modelTrace.scope.repositoryId === receipt.repositoryId,
+      receipt.modelTrace.scope.repositoryId.toLowerCase() === receipt.repositoryId.toLowerCase(),
       'receipt ModelTrace repository does not match collaboration repository'
     );
   }
   assert(receipt.kind === 'proto-ui.collaboration-receipt', 'receipt.kind is invalid');
-  assert(REPOSITORY_ID.test(receipt.repositoryId), 'receipt.repositoryId is invalid');
   string(receipt.authorizationId, 'receipt.authorizationId', { max: 200 });
   assert(COLLABORATION_ACTIONS.includes(receipt.action), 'receipt.action is invalid');
   if (receipt.action === 'resolve-fixed-review-thread') {

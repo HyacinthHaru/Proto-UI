@@ -118,7 +118,7 @@ function tools(options) {
   function api(endpoint, { method, input, paginate = false } = {}) {
     const args = ['api'];
     if (method) args.push('--method', method);
-    // Older supported gh clients lack --slurp. One compact JSON array per
+    // Older supported gh clients lack --slurp. One compact JSON value per
     // page preserves literal body newlines and complete pagination portably.
     if (paginate) args.push('--paginate', '--jq', '. | @json');
     args.push(endpoint);
@@ -130,6 +130,11 @@ function tools(options) {
         .trim()
         .split(/\r?\n/)
         .map((line) => JSON.parse(line));
+      if (paginate === 'pages') {
+        if (!pages.every((page) => page && typeof page === 'object' && !Array.isArray(page)))
+          throw new Error('GitHub pagination returned an invalid page shape');
+        return pages;
+      }
       if (!pages.every(Array.isArray))
         throw new Error('GitHub pagination returned an invalid shape');
       return pages.flat();
@@ -240,15 +245,34 @@ function pullBinding(io, args, viewer) {
   const baseBranch = io.api(`repos/${owner}/${name}/branches/${encodeURIComponent(base)}`);
   if (liveBranch?.commit?.sha !== localSha || !baseBranch?.commit?.sha)
     throw new Error('PR source must be pushed and bound to exact local HEAD/base');
-  const compare = io.api(`repos/${owner}/${name}/compare/${baseBranch.commit.sha}...${localSha}`);
-  if (
-    !Array.isArray(compare?.commits) ||
-    compare.commits.length === 0 ||
-    compare.total_commits !== compare.commits.length ||
-    compare.commits.at(-1)?.sha !== localSha
-  ) {
+  const comparisons = io.api(
+    `repos/${owner}/${name}/compare/${baseBranch.commit.sha}...${localSha}?per_page=100`,
+    { paginate: 'pages' }
+  );
+  const total = comparisons[0]?.total_commits;
+  if (!Number.isSafeInteger(total) || total <= 0)
     throw new Error('complete PR contributor commit attribution is unavailable');
+  const commits = new Set();
+  let lastSha;
+  for (const comparison of comparisons) {
+    if (
+      comparison.total_commits !== total ||
+      !Array.isArray(comparison.commits) ||
+      comparison.commits.length === 0 ||
+      comparison.commits.length > 100
+    )
+      throw new Error('complete PR contributor commit attribution is unavailable');
+    for (const commit of comparison.commits) {
+      if (!/^[a-f0-9]{40,64}$/.test(commit?.sha ?? '') || commits.has(commit.sha))
+        throw new Error('complete PR contributor commit attribution is unavailable');
+      commits.add(commit.sha);
+      lastSha = commit.sha;
+    }
+    if (commits.size > total)
+      throw new Error('complete PR contributor commit attribution is unavailable');
   }
+  if (commits.size !== total || lastSha !== localSha)
+    throw new Error('complete PR contributor commit attribution is unavailable');
   return {
     headSha: localSha,
     baseSha: baseBranch.commit.sha,
@@ -416,7 +440,7 @@ export function runPublishCli(argv, options = {}) {
   authorize(scopeId, viewer.login);
   const publicationDigest = sha256(
     JSON.stringify({
-      repositoryId,
+      repositoryId: repositoryId.toLowerCase(),
       command,
       number,
       title: args.get('--title') ?? null,
