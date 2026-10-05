@@ -23,6 +23,13 @@ vi.mock('./projection-theme', () => ({
   watchProjectionThemeSurfaceStyle: projection.watchTheme,
 }));
 
+vi.mock('./demo-modules', () => ({
+  loadDemo: async () => ({
+    type: 'demo',
+    root: { kind: 'proto', prototypeId: 'shadcn-button', children: ['Demo'] },
+  }),
+}));
+
 vi.mock('./code-panel-client', () => ({ refreshCodePanel: codePanel.refresh }));
 
 import { initProjectedPreviewer } from './projected-previewer-client';
@@ -397,11 +404,10 @@ describe('PrototypePreviewer fixed-family projection', () => {
     latestControls().runtime.onValueChange('react');
     await vi.waitFor(() => expect(root.dataset.projectionState).toBe('error'));
 
-    expect(candidates).toHaveLength(2);
+    expect(candidates).toHaveLength(1);
+    expect(projection.materialize).toHaveBeenCalledTimes(1); // Reject before allocating a replacement.
     expect(candidates[0]!.dispose).not.toHaveBeenCalled();
     expect(candidates[0]!.setLocked).toHaveBeenLastCalledWith(false);
-    expect(candidates[1]!.activate).not.toHaveBeenCalled();
-    expect(candidates[1]!.dispose).toHaveBeenCalledTimes(1);
     expect(root.dataset.projectionFamily).toBe('shadcn');
     expect(root.dataset.projectionComponent).toBe('button');
     expect(root.dataset.projectionRuntime).toBe('wc');
