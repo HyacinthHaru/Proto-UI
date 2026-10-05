@@ -387,6 +387,61 @@ describe('Base Collapsible consumer contract', () => {
     }
   });
 
+  it('preserves settled focus admission across both disabled-observer owner reversals', async () => {
+    // T-BASE-COLLAPSIBLE-0001-CASE-DISABLED: notification cannot restore stale Focus policy.
+    const { root, trigger, content, requests } = fixture({ open: true, disabled: true });
+    let off: (() => void) | undefined;
+    try {
+      document.body.append(root);
+      await until(() => trigger.getExposes().disabled.get() && trigger.tabIndex === -1);
+      let disabledRestorations = 0;
+      off = trigger.getExposes().disabled.subscribe((event: any) => {
+        if (event.type === 'next' && event.next === false && disabledRestorations === 0) {
+          disabledRestorations++;
+          setElementProps(root, { open: true, disabled: true });
+        }
+      });
+      setElementProps(root, { open: true, disabled: false });
+      await flush();
+      expect(disabledRestorations).toBe(1);
+      expect(trigger.getExposes().disabled.get()).toBe(true);
+      expect(trigger.tabIndex).toBe(-1);
+      trigger.getExposes().focusSelf({ preventScroll: true });
+      await flush();
+      expect(document.activeElement).not.toBe(trigger);
+      expect(root.getExposes().open.get()).toBe(true);
+      expect(content.getExposes().open.get()).toBe(true);
+      expect(requests).toEqual([]);
+      off?.();
+      off = undefined;
+
+      setElementProps(root, { open: true, disabled: false });
+      await until(() => trigger.tabIndex === 0);
+      let enabledRestorations = 0;
+      off = trigger.getExposes().disabled.subscribe((event: any) => {
+        if (event.type === 'next' && event.next === true && enabledRestorations === 0) {
+          enabledRestorations++;
+          setElementProps(root, { open: true, disabled: false });
+        }
+      });
+      setElementProps(root, { open: true, disabled: true });
+      await flush();
+      expect(enabledRestorations).toBe(1);
+      expect(trigger.getExposes().disabled.get()).toBe(false);
+      expect(trigger.tabIndex).toBe(0);
+      trigger.getExposes().focusSelf({ preventScroll: true });
+      await flush();
+      expect(document.activeElement).toBe(trigger);
+      expect(root.getExposes().open.get()).toBe(true);
+      expect(content.getExposes().open.get()).toBe(true);
+      expect(requests).toEqual([]);
+    } finally {
+      off?.();
+      root.remove();
+      await flush();
+    }
+  });
+
   it('keeps a newer reentrant request canonical when an older Trigger resumes context synchronization', async () => {
     // T-BASE-COLLAPSIBLE-0001-CASE-UNCONTROLLED
     // T-BASE-COLLAPSIBLE-0001-CASE-DOMAIN-ISOLATION
@@ -483,6 +538,70 @@ describe('Base Collapsible consumer contract', () => {
       expect(destination.root.getExposes().open.get()).toBe(true);
       expect(destination.root.getExposes().contextOpen()).toBe(true);
       expect(source.trigger.getExposes().expanded.get()).toBe(true);
+      expect(source.requests).toEqual([]);
+    } finally {
+      off?.();
+      source.trigger.remove();
+      source.root.remove();
+      host.remove();
+      await flush();
+    }
+  });
+
+  it('preserves accepted disclosure and future request signals across reentrant disabled props', async () => {
+    // T-BASE-COLLAPSIBLE-0001-CASE-UNCONTROLLED
+    // T-BASE-COLLAPSIBLE-0001-CASE-DISABLED: synchronization cannot undo an accepted request.
+    const source = fixture();
+    const destination = fixture({}, {}, InspectionRoot.name);
+    const host = document.createElement('div');
+    let off: (() => void) | undefined;
+    try {
+      document.body.append(source.root);
+      await until(() => source.trigger.tabIndex === 0);
+      host.append(destination.root);
+      document.body.append(host);
+      await until(() => destination.trigger.tabIndex === 0);
+      destination.trigger.remove();
+      await flush();
+      destination.root.append(source.trigger);
+      await until(() => source.trigger.tabIndex === 0);
+      let propUpdates = 0;
+      off = source.trigger.getExposes().expanded.subscribe((event: any) => {
+        if (event.type === 'next' && event.next === true) {
+          propUpdates++;
+          setElementProps(destination.root, { disabled: true });
+        }
+      });
+      source.trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await flush();
+      expect(propUpdates).toBe(1);
+      expect(destination.root.getExposes().open.get()).toBe(true);
+      expect(destination.root.getExposes().contextOpen()).toBe(true);
+      expect(source.trigger.getExposes().expanded.get()).toBe(true);
+      expect(source.trigger.getExposes().disabled.get()).toBe(true);
+      expect(source.trigger.tabIndex).toBe(-1);
+      expect(destination.content.getExposes().open.get()).toBe(true);
+      expect(destination.requests).toEqual([{ open: true, reason: 'pointer' }]);
+      destination.root.getExposes().close();
+      expect(destination.requests).toEqual([{ open: true, reason: 'pointer' }]);
+      off?.();
+      off = undefined;
+
+      setElementProps(destination.root, { disabled: false });
+      await flush();
+      expect(destination.requests).toEqual([{ open: true, reason: 'pointer' }]);
+      destination.root.getExposes().close();
+      await until(() => !destination.content.getExposes().open.get());
+      destination.root.getExposes().openCollapsible();
+      await until(() => destination.content.getExposes().open.get());
+      expect(destination.root.getExposes().open.get()).toBe(true);
+      expect(destination.root.getExposes().contextOpen()).toBe(true);
+      expect(source.trigger.getExposes().expanded.get()).toBe(true);
+      expect(destination.requests).toEqual([
+        { open: true, reason: 'pointer' },
+        { open: false, reason: 'programmatic' },
+        { open: true, reason: 'programmatic' },
+      ]);
       expect(source.requests).toEqual([]);
     } finally {
       off?.();

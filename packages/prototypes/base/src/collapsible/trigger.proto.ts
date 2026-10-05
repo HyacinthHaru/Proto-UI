@@ -58,13 +58,18 @@ function setupCollapsibleTrigger(
   const syncContext = (run: RunHandle<CollapsibleTriggerProps>) => {
     rejectDuplicateCollapsiblePart(run, 'trigger');
     // A synchronous owner response may supersede this notification's snapshot.
-    const context = run.context.read(COLLAPSIBLE_CONTEXT);
     // P-BASE-COLLAPSIBLE-TRIGGER-EXPANDED, P-BASE-COLLAPSIBLE-TRIGGER-DISABLED
-    expanded.set(context.open, 'reason: collapsible canonical expansion');
-    const effectiveDisabled = context.disabled || !!run.props.get().disabled;
+    expanded.set(
+      run.context.read(COLLAPSIBLE_CONTEXT).open,
+      'reason: collapsible canonical expansion'
+    );
+    // An expansion observer can publish new owner props before disabled is derived.
+    const effectiveDisabled =
+      run.context.read(COLLAPSIBLE_CONTEXT).disabled || !!run.props.get().disabled;
     disabled.set(effectiveDisabled, 'reason: collapsible effective disabled');
-    focusable.setDisabled(effectiveDisabled);
-    if (effectiveDisabled) clearTransient();
+    // Disabled observers may synchronously supersede this owner input.
+    focusable.setDisabled(disabled.get());
+    if (disabled.get()) clearTransient();
   };
   def.context.subscribe(COLLAPSIBLE_CONTEXT, syncContext);
   def.lifecycle.onCreated(syncContext);

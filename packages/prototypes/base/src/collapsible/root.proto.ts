@@ -5,7 +5,6 @@ import {
   COLLAPSIBLE_FAMILY,
   rejectDuplicateCollapsiblePart,
   requestCollapsibleOpen,
-  type CollapsibleContextValue,
   type CollapsibleOpenReason,
 } from './shared';
 import type {
@@ -24,15 +23,14 @@ function setupCollapsibleRoot(def: DefHandle<CollapsibleRootProps, CollapsibleRo
   });
   def.props.setDefaults({ defaultOpen: false, disabled: false });
 
-  let snapshot: CollapsibleContextValue = {
+  def.context.provide(COLLAPSIBLE_CONTEXT, {
     open: false,
     controlled: false,
     disabled: false,
     requestedOpen: false,
     requestReason: null,
     requestVersion: 0,
-  };
-  def.context.provide(COLLAPSIBLE_CONTEXT, snapshot);
+  });
 
   // P-BASE-COLLAPSIBLE-DEFAULT-OPEN, P-BASE-COLLAPSIBLE-CONTROLLED
   // Existing protocol-neutral helper owns initialization and controlled prop sync.
@@ -50,22 +48,29 @@ function setupCollapsibleRoot(def: DefHandle<CollapsibleRootProps, CollapsibleRo
   let reportedAhead: Set<number> | undefined;
 
   const syncContext = (run: RunHandle<CollapsibleRootProps>, publishInitial = false) => {
-    const nextOpen = open.get();
+    const snapshot = run.context.read(COLLAPSIBLE_CONTEXT);
     const controlled = run.props.isProvided('open');
+    // A pending uncontrolled request may reach parts before this Root callback.
+    const nextOpen =
+      !controlled && snapshot.requestVersion > reportedThrough ? snapshot.open : open.get();
     const disabled = !!run.props.get().disabled;
     if (
       snapshot.open !== nextOpen ||
       snapshot.controlled !== controlled ||
       snapshot.disabled !== disabled
     ) {
-      snapshot = { ...snapshot, open: nextOpen, controlled, disabled };
-    } else if (!publishInitial) return;
-    run.context.update(COLLAPSIBLE_CONTEXT, snapshot);
+      run.context.update(COLLAPSIBLE_CONTEXT, {
+        ...snapshot,
+        open: nextOpen,
+        controlled,
+        disabled,
+      });
+    } else if (publishInitial) run.context.update(COLLAPSIBLE_CONTEXT, snapshot);
   };
 
   def.context.subscribe(COLLAPSIBLE_CONTEXT, (run, next) => {
     // A nested subscriber can supersede the publication currently being dispatched.
-    snapshot = run.context.read(COLLAPSIBLE_CONTEXT);
+    const snapshot = run.context.read(COLLAPSIBLE_CONTEXT);
     const version = next.requestVersion;
     const newRequest = version > reportedThrough && !reportedAhead?.has(version);
     if (newRequest) {
@@ -95,7 +100,7 @@ function setupCollapsibleRoot(def: DefHandle<CollapsibleRootProps, CollapsibleRo
       if (parts.length > 1) rejectDuplicateCollapsiblePart(run, role);
       // Rebind reused, including detached, parts to this owner's current fact.
       // This is structural synchronization, not a disclosure request.
-      run.context.update(COLLAPSIBLE_CONTEXT, snapshot);
+      syncContext(run, true);
     });
   }
 
