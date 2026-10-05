@@ -7,8 +7,10 @@ lifecycleRationale:
   zh-CN: >-
     本 Test 保持 draft：首版投射目前有本地契约测试与四个 Web Adapter 的浏览器 evidence，但完整 Base/Adapter parity、待处理 compatibility 差异及人工视觉确认尚未完成，因而不足以作为已审阅稳定 conformance contract。
 
+
   en: >-
     This Test remains draft because the initial projection currently has local contract tests and browser evidence across four Web Adapters, but complete Base/Adapter parity, remaining compatibility differences, and human visual confirmation are not yet closed; it is not a reviewed stable conformance contract.
+
 
 summary: Covers Shadcn Input identity, exact export, inherited single-line editor ownership, verified visual subset including native text selection, state-driven presentation, contentless behavior, and compatibility boundary.
 cases:

@@ -21,3 +21,7 @@ import BrutalistPageStyle from '@/components/BrutalistPageStyle.astro';
 <div class="brutalist-demo-frame">
   <PrototypePreviewer demoId="demo-brutalist-dialog" initialRuntime="wc" />
 </div>
+
+## Draft 工作区继承
+
+当前工作区还继承有界的 [Base Mask 指针默认行为](/zh-cn/ui-libraries/base/dialog/)：participating Mask 阻止自身 root-scoped 指针默认动作夺走已恢复焦点，passthrough 不阻止，关闭策略仍归 Content。这项 draft 修订与先前发布的家族版本分开，不新增风格化 Dialog props。
