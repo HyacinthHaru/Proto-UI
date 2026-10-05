@@ -49,6 +49,19 @@ cases:
       - C-FOCUS-0001-C
       - C-AS-FOCUSABLE-0001-C
     expectation: focus-facts-observed-state-handles
+  - id: T-FOCUS-0001-CASE-ROLE-SCOPED-CANCELLATION
+    title: Target and entry disable cancel only their own pending intent while explicit blur cancels either
+    covers:
+      - C-AS-FOCUSABLE-0001-E
+      - C-AS-FOCUSABLE-0001-G
+      - C-AS-FOCUS-ENTRY-0001-E
+      - C-AS-FOCUS-ENTRY-0001-F
+      - C-FOCUS-0001-G
+    expectation: role-scoped-disable-preserves-unrelated-intent-and-synchronous-blur-observer-decisions
+    notes:
+      - Re-enabling a cancelled role before readiness must not resurrect its previous request.
+      - Target disable still blurs the physical target and clears its facts while preserving enabled entry replay.
+      - Synchronous native blur observers may cancel or supersede entry intent; a captured old slot must not be restored afterward.
   - id: T-FOCUS-0001-CASE-UNIQUE-OWNER
     title: A new host focus owner clears stale focus facts from the previous owner
     covers:
@@ -106,6 +119,7 @@ implementations:
       - T-FOCUS-0001-CASE-ENTRY-HOST-DELEGATION
       - T-FOCUS-0001-CASE-ENTRY-DISABLE
       - T-FOCUS-0001-CASE-PENDING-HOST-TARGET
+      - T-FOCUS-0001-CASE-ROLE-SCOPED-CANCELLATION
     notes:
       - Rejected entry acquisition re-resolves current host targets, retains only the latest intent and preserves cancellation and retained-view boundaries without fabricating region facts.
   - id: runtime-focus-contract
@@ -197,6 +211,9 @@ verifies:
         - C-AS-FOCUS-ENTRY-0001-F
         - C-AS-FOCUS-ENTRY-0001-G
 revisions:
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added dual-role target, target-self and entry cancellation controls with synchronous native blur observer reentry.
   - version: 0.3.0-alpha.1
     change: strengthened
     summary: Added rejected entry acquisition lifecycle evidence without broadening first-request no-target policy.
