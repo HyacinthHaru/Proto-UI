@@ -5,7 +5,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
-import type { Browser, BrowserContext } from 'playwright-core';
+import type { Browser, BrowserContext, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type {
   ContrastFrame,
@@ -39,6 +39,8 @@ declare global {
 }
 
 let browser: Browser;
+let firstVisibilityContext: BrowserContext | undefined;
+let firstVisibilityPage: Page | undefined;
 let bundle: string;
 let calibrationPhaseSequence = 0;
 const recordCalibrationFile = async (name: string, contents: string | Buffer) => {
@@ -93,13 +95,27 @@ beforeAll(async () => {
     console.info(
       `[contrast-calibration] browser:ready elapsedMs=${Math.round(performance.now() - startedAt)}`
     );
+    // The first real renderer page is browser bootstrap, not a paint assertion.
+    // Keep it for the first test: no discarded warm-up, retry or deadline change.
+    await recordCalibrationPhase('first-context-start');
+    firstVisibilityContext = await browser.newContext({ viewport: { width: 800, height: 600 } });
+    await recordCalibrationPhase('first-page-start');
+    firstVisibilityPage = await firstVisibilityContext.newPage();
+    await recordCalibrationPhase('first-page-ready');
+    console.info(
+      `[contrast-calibration] first-page:ready elapsedMs=${Math.round(performance.now() - startedAt)}`
+    );
   } catch (error) {
     await recordCalibrationPhase('setup-failed', error);
     throw error;
   }
 }, 30_000);
 afterAll(async () => {
-  await browser?.close();
+  try {
+    await firstVisibilityContext?.close();
+  } finally {
+    await browser?.close();
+  }
 });
 
 // Instrument calibration only: these authored DOM/CSS subjects are not shipped
@@ -209,7 +225,8 @@ const surface = (frame: ContrastFrame, ref: string) => {
 
 describe('contrast probe / real Chromium instrument calibration', () => {
   it('rejects transparent and clipped popup acceptance despite Playwright visibility', async () => {
-    let context: BrowserContext | undefined;
+    const context = firstVisibilityContext;
+    const page = firstVisibilityPage;
     const startedAt = performance.now();
     const phase = async (name: string, error?: unknown) => {
       console.info(
@@ -218,10 +235,7 @@ describe('contrast probe / real Chromium instrument calibration', () => {
       await recordCalibrationPhase(`popup-visibility-${name}`, error);
     };
     try {
-      await phase('context-start');
-      context = await browser.newContext({ viewport: { width: 800, height: 600 } });
-      await phase('page-start');
-      const page = await context.newPage();
+      if (!context || !page) throw new Error('First calibration page bootstrap is missing.');
       await phase('fixture-start');
       await page.setContent(
         fixture(`
@@ -263,6 +277,8 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     } finally {
       await phase('context-close-start');
       await context?.close();
+      firstVisibilityContext = undefined;
+      firstVisibilityPage = undefined;
       await phase('context-closed');
     }
   });
