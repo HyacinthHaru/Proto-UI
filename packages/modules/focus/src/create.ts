@@ -1150,7 +1150,7 @@ class FocusModuleImpl extends ModuleBase {
       this.clearPendingFocus();
       this.focusApplicationVersion += 1;
       const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options, 'entry');
-      if (applied !== false) this.entryAcquisitionVersion += 1;
+      if (current() && applied !== false) this.entryAcquisitionVersion += 1;
       if (current() && applied === false) this.pendingFocusRequest = { kind: 'entry', options };
     } catch (error) {
       if (current() && !operation.admitted) restorePrevious();

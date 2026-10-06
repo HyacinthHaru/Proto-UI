@@ -369,3 +369,49 @@ it('preserves an acquired self-entry while a subsequent observer entry awaits it
     await f.cleanup();
   }
 });
+
+it.each([
+  'disable entry',
+  'disable then reenable entry',
+  'explicit no target',
+  'explicit blur',
+] as const)(
+  'does not count an entry cancelled inside accepted host focus as a surviving acquisition: %s',
+  async (action) => {
+    const f = await fixture(true, false, true);
+    try {
+      f.setResolved(f.root);
+      f.setImpl((el, _options, kind) => {
+        el.focus();
+        if (kind === 'entry') {
+          if (action === 'explicit blur') f.focusable.blur();
+          else if (action === 'explicit no target') {
+            f.setResolved(null);
+            f.entry.focus();
+          } else {
+            f.entry.setDisabled(true);
+            if (action === 'disable then reenable entry') f.entry.setDisabled(false);
+          }
+        }
+        return true;
+      });
+      f.focusable.focus();
+      f.setEligibleObserver((next) => {
+        if (!next) f.entry.focus({ preventScroll: true });
+      });
+      f.focusable.setDisabled(true);
+      expect(document.activeElement).not.toBe(f.root);
+      expect(f.port.getFacts()).toMatchObject({
+        focused: false,
+        active: false,
+        focusVisible: false,
+      });
+      f.setResolved(f.root);
+      f.ready();
+      expect(document.activeElement).not.toBe(f.root);
+      expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(1);
+    } finally {
+      await f.cleanup();
+    }
+  }
+);
