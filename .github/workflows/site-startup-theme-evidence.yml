@@ -69,11 +69,16 @@ jobs:
       - name: Bind the same probe to both exact source revisions
         run: |
           mkdir -p "$RUNNER_TEMP/site-startup"
-          PROBE=apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts
-          cp "candidate/$PROBE" "subject/$PROBE"
+          # This complete relative-import closure is candidate-owned for both subjects.
+          for PROBE in \
+            apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts \
+            apps/www/src/content/docs/zh-cn/browser-harness.ts \
+            scripts/test/server-readiness.mjs; do
+            cp "candidate/$PROBE" "subject/$PROBE"
+            sha256sum "subject/$PROBE" >> "$RUNNER_TEMP/site-startup/probe-sha256.txt"
+          done
           git -C subject rev-parse HEAD > "$RUNNER_TEMP/site-startup/subject-sha.txt"
           git -C candidate rev-parse HEAD > "$RUNNER_TEMP/site-startup/probe-sha.txt"
-          sha256sum "subject/$PROBE" > "$RUNNER_TEMP/site-startup/probe-sha256.txt"
           python3 -m http.server 4356 --bind 127.0.0.1 --directory subject/apps/www/dist > "$RUNNER_TEMP/site-startup/server.log" 2>&1 &
       - name: Capture production cold-load, theme and Select journeys
         working-directory: subject

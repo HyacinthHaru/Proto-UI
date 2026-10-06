@@ -133,40 +133,42 @@ for (const width of [2048, 390, 430, 320]) {
             dark
           );
           await frames(page);
-          const facts = await page.evaluate(() => {
-            const header = document.querySelector<HTMLElement>('[data-homepage-runtime]')!;
-            const canonical = getComputedStyle(header);
-            const language = document.querySelector<HTMLElement>(
-              '#home-language [data-projection-generation-state="active"] a'
-            )!;
-            const surfaces = [
-              ...document.querySelectorAll<HTMLElement>(
-                '#home-language [data-projection-generation-state="active"] [data-projection-scope], #home-social [data-projection-generation-state="active"] [data-projection-scope]'
-              ),
-            ];
-            return {
-              open: header.dataset.siteMenuOpen,
-              theme: document.documentElement.dataset.theme,
-              canonical: {
-                background: canonical.getPropertyValue('--pui-background').trim(),
-                foreground: canonical.getPropertyValue('--pui-foreground').trim(),
-              },
-              language: {
-                text: language?.textContent,
-                width: language?.getBoundingClientRect().width,
-                height: language?.getBoundingClientRect().height,
-              },
-              surfaces: surfaces.map((element) => ({
-                background: getComputedStyle(element).getPropertyValue('--pui-background').trim(),
-                foreground: getComputedStyle(element).getPropertyValue('--pui-foreground').trim(),
-              })),
-              overflow: document.documentElement.scrollWidth > innerWidth,
-            };
-          });
+          const readFacts = () =>
+            page.evaluate(() => {
+              const header = document.querySelector<HTMLElement>('[data-homepage-runtime]')!;
+              const canonical = getComputedStyle(header);
+              const language = document.querySelector<HTMLElement>(
+                '#home-language [data-projection-generation-state="active"] a'
+              )!;
+              const surfaces = [
+                ...document.querySelectorAll<HTMLElement>(
+                  '#home-language [data-projection-generation-state="active"] [data-projection-scope], #home-social [data-projection-generation-state="active"] [data-projection-scope]'
+                ),
+              ];
+              return {
+                open: header.dataset.siteMenuOpen,
+                theme: document.documentElement.dataset.theme,
+                canonical: {
+                  background: canonical.getPropertyValue('--pui-background').trim(),
+                  foreground: canonical.getPropertyValue('--pui-foreground').trim(),
+                },
+                language: {
+                  text: language?.textContent,
+                  width: language?.getBoundingClientRect().width,
+                  height: language?.getBoundingClientRect().height,
+                },
+                surfaces: surfaces.map((element) => ({
+                  background: getComputedStyle(element).getPropertyValue('--pui-background').trim(),
+                  foreground: getComputedStyle(element).getPropertyValue('--pui-foreground').trim(),
+                })),
+                overflow: document.documentElement.scrollWidth > innerWidth,
+              };
+            });
+          const immediateFacts = await readFacts();
           await capture(
             page,
             `home-${width}-${dark ? 'dark' : 'light'}-immediate-${records.length}`,
-            { ...facts, phase: 'immediate' }
+            { ...immediateFacts, phase: 'immediate' }
           );
           await page.waitForFunction(() =>
             [...document.querySelectorAll('[data-site-header], [data-home-showcase]')].every(
@@ -176,19 +178,21 @@ for (const width of [2048, 390, 430, 320]) {
                   .every((animation) => animation.playState !== 'running' && !animation.pending)
             )
           );
+          const settledFacts = await readFacts();
           await capture(
             page,
             `home-${width}-${dark ? 'dark' : 'light'}-settled-${records.length}`,
-            { ...facts, phase: 'settled' }
+            { ...settledFacts, phase: 'settled' }
           );
-          if (!baseline) {
-            expect(facts.open).toBe('true');
-            expect(facts.language.text).toContain('English');
-            expect(facts.language.width).toBeGreaterThan(20);
-            expect(facts.surfaces).toHaveLength(2);
-            for (const surface of facts.surfaces) expect(surface).toEqual(facts.canonical);
-            expect(facts.overflow).toBe(false);
-          }
+          if (!baseline)
+            for (const facts of [immediateFacts, settledFacts]) {
+              expect(facts.open).toBe('true');
+              expect(facts.language.text).toContain('English');
+              expect(facts.language.width).toBeGreaterThan(20);
+              expect(facts.surfaces).toHaveLength(2);
+              for (const surface of facts.surfaces) expect(surface).toEqual(facts.canonical);
+              expect(facts.overflow).toBe(false);
+            }
         }
         await page.keyboard.press('Escape');
         await menu(page).click();
@@ -363,152 +367,187 @@ for (const width of [2048, 390, 430]) {
 
 for (const width of [2048, 390]) {
   for (const route of ['/zh-cn/', '/en/ui-libraries/shadcn/dialog/']) {
-    it(`${route} ${width}px records actual DialogMask paint and preference fallbacks`, async () => {
-      const context = await browser.newContext({
-        viewport: { width, height: width === 2048 ? 1237 : 900 },
-        colorScheme: 'light',
-      });
-      const page = await context.newPage();
-      try {
-        await page.goto(`${baseUrl}${route}`);
-        if (route === '/zh-cn/') await homeReady(page);
-        const trigger = page
-          .locator(
-            route === '/zh-cn/'
-              ? '[data-home-showcase] [aria-haspopup="dialog"]'
-              : '[data-previewer-id] [aria-haspopup="dialog"]'
-          )
-          .first();
-        await trigger.waitFor();
-        await trigger.click();
-        const mask = page.locator('[data-pui-style~="backdrop-blur-xs"]').last();
-        await mask.waitFor({ state: 'visible' });
-        await page.waitForFunction(() => {
-          const mask = document.querySelector('[data-pui-style~="backdrop-blur-xs"]');
-          return mask?.getAttribute('data-transition-state') === 'entered';
+    for (const runtime of route === '/zh-cn/' && width === 390 ? ['wc', 'react'] : ['wc']) {
+      it(`${route} ${runtime} ${width}px records actual DialogMask paint and preference fallbacks`, async () => {
+        const context = await browser.newContext({
+          viewport: { width, height: width === 2048 ? 1237 : 900 },
+          colorScheme: 'light',
         });
-        const maskHandle = await mask.elementHandle();
-        if (!maskHandle) throw new Error('Visible DialogMask handle is missing');
-        const read = () =>
-          maskHandle.evaluate((element) => ({
-            backdropFilter: getComputedStyle(element).backdropFilter,
-            background: getComputedStyle(element).backgroundColor,
-            backgroundAlpha: (() => {
-              const canvas = document.createElement('canvas');
-              const ctx = canvas.getContext('2d')!;
-              ctx.fillStyle = getComputedStyle(element).backgroundColor;
-              ctx.fillRect(0, 0, 1, 1);
-              return ctx.getImageData(0, 0, 1, 1).data[3]! / 255;
-            })(),
-            connected: element.isConnected,
-            opacity: getComputedStyle(element).opacity,
-            rect: element.getBoundingClientRect().toJSON(),
-            reducedTransparency: matchMedia('(prefers-reduced-transparency: reduce)').matches,
-            forcedColors: matchMedia('(forced-colors: active)').matches,
-          }));
-        const settleMask = async () => {
-          await maskHandle.evaluate(async (element) => {
-            await Promise.all(
-              element.getAnimations().map((animation) => animation.finished.catch(() => {}))
-            );
-          });
-          await frames(page);
-        };
-        await settleMask();
-        const normal = await read();
-        await capture(
-          page,
-          `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-normal`,
-          normal
+        await context.addInitScript(
+          (runtime) => localStorage.setItem('preferred-prototypes-adapter', runtime),
+          runtime
         );
-        if (!baseline) {
-          expect(normal.reducedTransparency).toBe(false);
-          expect(normal.forcedColors).toBe(false);
-          expect(normal.backdropFilter).toBe('blur(4px)');
-          expect(normal.backgroundAlpha).toBeCloseTo(0.5, 2);
-          expect(Number(normal.opacity)).toBe(1);
-        }
-        const cdp = await context.newCDPSession(page);
-        const retainedFocus = await page.evaluateHandle(() => document.activeElement);
-        const setMaterialMedia = async (
-          reducedTransparency: 'reduce' | 'no-preference',
-          forcedColors: 'active' | 'none'
-        ) => {
-          await cdp.send('Emulation.setEmulatedMedia', {
-            features: [
-              { name: 'prefers-color-scheme', value: 'light' },
-              { name: 'prefers-reduced-transparency', value: reducedTransparency },
-              { name: 'forced-colors', value: forcedColors },
-            ],
+        const page = await context.newPage();
+        try {
+          await page.goto(`${baseUrl}${route}`);
+          if (route === '/zh-cn/') {
+            await homeReady(page);
+            expect(await page.locator('[data-homepage-runtime]').getAttribute('data-runtime')).toBe(
+              runtime
+            );
+          }
+          const trigger = page
+            .locator(
+              route === '/zh-cn/'
+                ? '[data-home-showcase] [aria-haspopup="dialog"]'
+                : '[data-previewer-id] [aria-haspopup="dialog"]'
+            )
+            .first();
+          await trigger.waitFor();
+          await trigger.click();
+          if (runtime === 'react') {
+            await page.getByRole('dialog').waitFor({ state: 'visible' });
+            await page.evaluate(async () => {
+              await Promise.all(
+                document.getAnimations().map((animation) => animation.finished.catch(() => {}))
+              );
+            });
+            await capture(
+              page,
+              `dialog-home-${width}-react-open-diagnostic`,
+              await page.evaluate(() =>
+                [...document.querySelectorAll<HTMLElement>('[data-pui-style~=fixed]')].map(
+                  (element) => ({
+                    tokens: element.getAttribute('data-pui-style'),
+                    transition: element.getAttribute('data-transition-state'),
+                    background: getComputedStyle(element).backgroundColor,
+                    backdrop: getComputedStyle(element).backdropFilter,
+                    opacity: getComputedStyle(element).opacity,
+                    rect: element.getBoundingClientRect().toJSON(),
+                  })
+                )
+              )
+            );
+          }
+          const mask = page.locator('[data-pui-style~="backdrop-blur-xs"]').last();
+          await mask.waitFor({ state: 'visible' });
+          await page.waitForFunction(() => {
+            const mask = document.querySelector('[data-pui-style~="backdrop-blur-xs"]');
+            return mask?.getAttribute('data-transition-state') === 'entered';
           });
+          const maskHandle = await mask.elementHandle();
+          if (!maskHandle) throw new Error('Visible DialogMask handle is missing');
+          const read = () =>
+            maskHandle.evaluate((element) => ({
+              backdropFilter: getComputedStyle(element).backdropFilter,
+              background: getComputedStyle(element).backgroundColor,
+              backgroundAlpha: (() => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d')!;
+                ctx.fillStyle = getComputedStyle(element).backgroundColor;
+                ctx.fillRect(0, 0, 1, 1);
+                return ctx.getImageData(0, 0, 1, 1).data[3]! / 255;
+              })(),
+              connected: element.isConnected,
+              opacity: getComputedStyle(element).opacity,
+              rect: element.getBoundingClientRect().toJSON(),
+              reducedTransparency: matchMedia('(prefers-reduced-transparency: reduce)').matches,
+              forcedColors: matchMedia('(forced-colors: active)').matches,
+            }));
+          const settleMask = async () => {
+            await maskHandle.evaluate(async (element) => {
+              await Promise.all(
+                element.getAnimations().map((animation) => animation.finished.catch(() => {}))
+              );
+            });
+            await frames(page);
+          };
           await settleMask();
-          if (!baseline)
-            expect(await retainedFocus.evaluate((node) => node === document.activeElement)).toBe(
-              true
-            );
-        };
-        await setMaterialMedia('reduce', 'none');
-        const reduced = await read();
-        await capture(
-          page,
-          `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-reduced-transparency`,
-          reduced
-        );
-        if (!baseline) {
-          expect(reduced.reducedTransparency).toBe(true);
-          expect(reduced.forcedColors).toBe(false);
-          expect(reduced.backdropFilter).toBe('none');
-          expect(reduced.backgroundAlpha).toBe(1);
-          expect(reduced.connected).toBe(true);
+          const normal = await read();
+          await capture(
+            page,
+            `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}${runtime === 'wc' ? '' : '-react'}-normal`,
+            normal
+          );
+          if (!baseline) {
+            expect(normal.reducedTransparency).toBe(false);
+            expect(normal.forcedColors).toBe(false);
+            expect(normal.backdropFilter).toBe('blur(4px)');
+            expect(normal.backgroundAlpha).toBeCloseTo(0.5, 2);
+            expect(Number(normal.opacity)).toBe(1);
+          }
+          const cdp = await context.newCDPSession(page);
+          const retainedFocus = await page.evaluateHandle(() => document.activeElement);
+          const setMaterialMedia = async (
+            reducedTransparency: 'reduce' | 'no-preference',
+            forcedColors: 'active' | 'none'
+          ) => {
+            await cdp.send('Emulation.setEmulatedMedia', {
+              features: [
+                { name: 'prefers-color-scheme', value: 'light' },
+                { name: 'prefers-reduced-transparency', value: reducedTransparency },
+                { name: 'forced-colors', value: forcedColors },
+              ],
+            });
+            await settleMask();
+            if (!baseline)
+              expect(await retainedFocus.evaluate((node) => node === document.activeElement)).toBe(
+                true
+              );
+          };
+          await setMaterialMedia('reduce', 'none');
+          const reduced = await read();
+          await capture(
+            page,
+            `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}${runtime === 'wc' ? '' : '-react'}-reduced-transparency`,
+            reduced
+          );
+          if (!baseline) {
+            expect(reduced.reducedTransparency).toBe(true);
+            expect(reduced.forcedColors).toBe(false);
+            expect(reduced.backdropFilter).toBe('none');
+            expect(reduced.backgroundAlpha).toBe(1);
+            expect(reduced.connected).toBe(true);
+          }
+          await setMaterialMedia('no-preference', 'active');
+          const forced = await read();
+          await capture(
+            page,
+            `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}${runtime === 'wc' ? '' : '-react'}-forced-colors`,
+            forced
+          );
+          if (!baseline) {
+            expect(forced.reducedTransparency).toBe(false);
+            expect(forced.forcedColors).toBe(true);
+            expect(forced.backdropFilter).toBe('none');
+            expect(forced.backgroundAlpha).toBe(1);
+            expect(forced.connected).toBe(true);
+          }
+          await setMaterialMedia('reduce', 'active');
+          const combined = await read();
+          await capture(
+            page,
+            `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}${runtime === 'wc' ? '' : '-react'}-combined-preferences`,
+            combined
+          );
+          if (!baseline) {
+            expect(combined.reducedTransparency).toBe(true);
+            expect(combined.forcedColors).toBe(true);
+            expect(combined.backdropFilter).toBe('none');
+            expect(combined.backgroundAlpha).toBe(1);
+            expect(combined.connected).toBe(true);
+          }
+          await setMaterialMedia('no-preference', 'none');
+          const restored = await read();
+          await capture(
+            page,
+            `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}${runtime === 'wc' ? '' : '-react'}-restored`,
+            restored
+          );
+          if (!baseline) {
+            expect(restored.reducedTransparency).toBe(false);
+            expect(restored.forcedColors).toBe(false);
+            expect(restored.backdropFilter).toBe('blur(4px)');
+            expect(restored.backgroundAlpha).toBeCloseTo(0.5, 2);
+            expect(Number(restored.opacity)).toBe(1);
+            expect(restored.connected).toBe(true);
+          }
+          await page.keyboard.press('Escape');
+        } finally {
+          await context.close();
         }
-        await setMaterialMedia('no-preference', 'active');
-        const forced = await read();
-        await capture(
-          page,
-          `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-forced-colors`,
-          forced
-        );
-        if (!baseline) {
-          expect(forced.reducedTransparency).toBe(false);
-          expect(forced.forcedColors).toBe(true);
-          expect(forced.backdropFilter).toBe('none');
-          expect(forced.backgroundAlpha).toBe(1);
-          expect(forced.connected).toBe(true);
-        }
-        await setMaterialMedia('reduce', 'active');
-        const combined = await read();
-        await capture(
-          page,
-          `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-combined-preferences`,
-          combined
-        );
-        if (!baseline) {
-          expect(combined.reducedTransparency).toBe(true);
-          expect(combined.forcedColors).toBe(true);
-          expect(combined.backdropFilter).toBe('none');
-          expect(combined.backgroundAlpha).toBe(1);
-          expect(combined.connected).toBe(true);
-        }
-        await setMaterialMedia('no-preference', 'none');
-        const restored = await read();
-        await capture(
-          page,
-          `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-restored`,
-          restored
-        );
-        if (!baseline) {
-          expect(restored.reducedTransparency).toBe(false);
-          expect(restored.forcedColors).toBe(false);
-          expect(restored.backdropFilter).toBe('blur(4px)');
-          expect(restored.backgroundAlpha).toBeCloseTo(0.5, 2);
-          expect(Number(restored.opacity)).toBe(1);
-          expect(restored.connected).toBe(true);
-        }
-        await page.keyboard.press('Escape');
-      } finally {
-        await context.close();
-      }
-    }, 90_000);
+      }, 90_000);
+    }
   }
 }
 
@@ -590,4 +629,85 @@ for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/components/card/'
       await context.close();
     }
   }, 60_000);
+}
+
+for (const width of [2048, 390]) {
+  for (const outcome of ['publish', 'failure'] as const) {
+    it(`retains legacy preview status during a delayed module (${width}, ${outcome})`, async () => {
+      const page = await browser.newPage({
+        viewport: { width, height: width === 2048 ? 1237 : 900 },
+      });
+      let release!: () => void;
+      let intercepted = false;
+      const gate = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      await page.route('**/demo-base-button.demo.*.js', async (route) => {
+        intercepted = true;
+        await gate;
+        if (outcome === 'failure') await route.abort('failed');
+        else await route.continue();
+      });
+      try {
+        const response = await page.goto(`${baseUrl}/zh-cn/ui-libraries/base/button/`, {
+          waitUntil: 'domcontentloaded',
+        });
+        expect(response?.status()).toBe(200);
+        await expect.poll(() => intercepted).toBe(true);
+        const preview = page.locator('.proto-previewer[data-demo-id="demo-base-button"]');
+        await expect.poll(() => preview.getAttribute('data-inited')).toBe('1');
+        const pending = await preview.evaluate((root) => {
+          const status = root.querySelector<HTMLElement>('[role="status"]');
+          const host = root.querySelector<HTMLElement>('.host')!;
+          return {
+            statusConnected: Boolean(status?.isConnected),
+            statusText: status?.textContent,
+            statusRect: status?.getBoundingClientRect().toJSON(),
+            hostInert: host.inert,
+            hostVisibility: getComputedStyle(host).visibility,
+            overflow: document.documentElement.scrollWidth > innerWidth,
+          };
+        });
+        await capture(page, `legacy-${width}-${outcome}-module-held`, pending);
+        if (!baseline) {
+          expect(pending.statusConnected).toBe(true);
+          expect(pending.statusText).toContain('正在加载交互示例');
+          expect(pending.statusRect!.height).toBeGreaterThan(100);
+          expect(pending.hostInert).toBe(true);
+          expect(pending.hostVisibility).toBe('hidden');
+          expect(pending.overflow).toBe(false);
+        }
+        release();
+        if (outcome === 'failure')
+          await expect.poll(() => preview.textContent()).toContain('[Preview Error]');
+        else
+          await page.waitForFunction(
+            () =>
+              (
+                document.querySelector(
+                  '.proto-previewer[data-demo-id="demo-base-button"]'
+                ) as HTMLElement & { __previewer__?: { getCurrentRuntime(): string } }
+              )?.__previewer__?.getCurrentRuntime() === 'wc'
+          );
+        const settled = await preview.evaluate((root) => {
+          const host = root.querySelector<HTMLElement>('.host')!;
+          return {
+            statusCount: root.querySelectorAll('[role="status"]').length,
+            hostInert: host.inert,
+            hostVisibility: getComputedStyle(host).visibility,
+            text: host.textContent,
+          };
+        });
+        await capture(page, `legacy-${width}-${outcome}-settled`, settled);
+        if (!baseline) {
+          expect(settled.statusCount).toBe(0);
+          expect(settled.hostInert).toBe(false);
+          expect(settled.hostVisibility).toBe('visible');
+        }
+      } finally {
+        release();
+        await page.close();
+      }
+    }, 60_000);
+  }
 }

@@ -47,6 +47,25 @@ describe('startup source invariants (not browser paint)', () => {
     expect(probe).toContain('expect(reduced.forcedColors).toBe(false)');
     expect(probe).toContain('expect(restored.backgroundAlpha).toBeCloseTo(0.5, 2)');
   });
+  it('resamples settled facts and copies the candidate probe dependency closure', () => {
+    const probe = read('apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts');
+    expect(probe).toContain('const immediateFacts = await readFacts()');
+    expect(probe).toContain('const settledFacts = await readFacts()');
+    expect(probe).toContain('for (const facts of [immediateFacts, settledFacts])');
+    const workflow = YAML.parse(read('.github/workflows/site-startup-theme-evidence.yml'));
+    const bind = workflow.jobs.capture.steps.find(
+      (step: { name?: string }) =>
+        step.name === 'Bind the same probe to both exact source revisions'
+    ).run;
+    for (const path of [
+      'apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts',
+      'apps/www/src/content/docs/zh-cn/browser-harness.ts',
+      'scripts/test/server-readiness.mjs',
+    ])
+      expect(bind).toContain(path);
+    expect(bind).toContain('cp "candidate/$PROBE" "subject/$PROBE"');
+    expect(bind).toContain('sha256sum "subject/$PROBE" >>');
+  });
   it('schedules its production-only suite when a theme or underlying adapter changes', () => {
     const workflow = YAML.parse(read('.github/workflows/site-startup-theme-evidence.yml'));
     expect(workflow.on.pull_request.paths).toEqual(
