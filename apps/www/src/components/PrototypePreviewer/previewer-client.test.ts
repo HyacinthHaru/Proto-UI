@@ -13,7 +13,6 @@ const demoSpies = vi.hoisted(() => ({
 }));
 
 vi.mock('./runtimes/registry', () => ({
-  AdapterIds: ['wc', 'vue2'],
   runtimeLoaders: {
     wc: async () => ({
       id: 'wc',
@@ -140,41 +139,24 @@ describe('PrototypePreviewer adapter preference synchronization', () => {
     await (root as any).__previewer__.destroy();
   });
 
-  it('does not demand a static module loader again after a direct custom loader succeeds', async () => {
+  it('ignores legacy data-loader URLs and keeps the static prototype module path', async () => {
     const root = createPreviewerRoot();
-    const prototypeId = 'custom-loader-only-prototype';
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-    prototypeSpies.loadMany.mockImplementation(async (ids: string[]) => {
-      if (ids.includes(prototypeId))
-        throw new Error('Custom Prototype has no static module loader');
-    });
-    const loader =
+    root.dataset.loader =
       'data:text/javascript,' +
       encodeURIComponent('document.documentElement.dataset.runtimeCustomLoader = "loaded";');
     initPreviewer({
       root,
-      prototypeId,
-      loader,
+      prototypeId: 'demo',
       initialRuntime: 'wc',
-      demoProps: { label: 'Original props' },
+      demoProps: {},
       runtimeList: ['wc'],
     });
     try {
-      await vi.waitFor(() =>
-        expect(document.documentElement.dataset.runtimeCustomLoader).toBe('loaded')
-      );
-      await vi.waitFor(() => expect(prototypeSpies.loadMany).toHaveBeenCalled());
+      await vi.waitFor(() => expect(demoSpies.render).toHaveBeenCalled());
+      expect(document.documentElement.dataset.runtimeCustomLoader).toBeUndefined();
       expect(prototypeSpies.loadMany).toHaveBeenCalledWith([]);
-      await vi.waitFor(() => expect((root as any).__previewer__.getCurrentRuntime()).toBe('wc'));
-      expect(demoSpies.render.mock.calls[0]![0].demo.root.children[1].children[0]).toEqual({
-        kind: 'proto',
-        prototypeId,
-        props: { label: 'Original props' },
-      });
     } finally {
       await (root as any).__previewer__.destroy();
-      delete document.documentElement.dataset.runtimeCustomLoader;
-      consoleError.mockRestore();
     }
   });
 
