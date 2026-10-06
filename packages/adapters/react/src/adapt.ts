@@ -579,6 +579,13 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             focusRetryGeneration += 1;
             focusTargetRetryScheduledRef.current = false;
           },
+          onFocusPendingReleased: () => {
+            focusRetryGeneration += 1;
+            focusTargetRetryScheduledRef.current = false;
+            const release = releaseRequestedTargetReady;
+            releaseRequestedTargetReady = undefined;
+            release?.();
+          },
           onFocusAcquired: () => {
             focusTargetRetryCountRef.current = 0;
             // Completion retires queued work for this intent in the current view.

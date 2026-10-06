@@ -556,6 +556,13 @@ export function createVueAdapter(runtime: VueRuntime) {
               focusRetryGeneration += 1;
               focusTargetRetryScheduled = false;
             },
+            onFocusPendingReleased: () => {
+              focusRetryGeneration += 1;
+              focusTargetRetryScheduled = false;
+              const release = releaseRequestedTargetReady;
+              releaseRequestedTargetReady = undefined;
+              release?.();
+            },
             onFocusAcquired: () => {
               focusTargetRetryCount = 0;
               // Completion retires queued work for this intent in the current view.

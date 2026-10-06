@@ -346,3 +346,281 @@ describe('Center policy epoch controls', () => {
     }
   });
 });
+
+// C-AS-FOCUSABLE-0001-G and C-AS-FOCUS-ENTRY-0001-E/H: an author
+// options read is an observable boundary before host/Center preflight too.
+describe('author options snapshot reentrancy', () => {
+  const kinds = ['programmatic', 'native', 'entry'] as const;
+  const boundaries = [
+    'reason',
+    'preventScroll',
+    'ownKeys',
+    'getOwnPropertyDescriptor',
+    'get',
+  ] as const;
+  type Boundary = (typeof boundaries)[number];
+  function reentrantOptions(boundary: Boundary, effect: () => void): FocusRequestOptions {
+    let armed = true;
+    const fire = () => {
+      if (!armed) return;
+      armed = false;
+      effect();
+    };
+    const options: FocusRequestOptions = { reason: 'keyboard', preventScroll: false };
+    if (boundary === 'reason' || boundary === 'preventScroll') {
+      Object.defineProperty(options, boundary, {
+        enumerable: true,
+        get() {
+          fire();
+          return boundary === 'reason' ? 'keyboard' : false;
+        },
+      });
+      return options;
+    }
+    return new Proxy(options, {
+      ownKeys(target) {
+        if (boundary === 'ownKeys') fire();
+        return Reflect.ownKeys(target);
+      },
+      getOwnPropertyDescriptor(target, key) {
+        if (boundary === 'getOwnPropertyDescriptor') fire();
+        return Reflect.getOwnPropertyDescriptor(target, key);
+      },
+      get(target, key, receiver) {
+        if (boundary === 'get') fire();
+        return Reflect.get(target, key, receiver);
+      },
+    });
+  }
+
+  for (const oldKind of kinds) {
+    for (const next of kinds) {
+      for (const boundary of boundaries) {
+        for (const pending of [false, true]) {
+          it(`${oldKind} ${boundary} preserves newer ${next} ${pending ? 'pending' : 'applied'} request`, async () => {
+            const f = await fixture();
+            try {
+              f.setImpl(() => !pending);
+              f.request(
+                oldKind,
+                reentrantOptions(boundary, () => {
+                  f.request(next, { reason: 'pointer', preventScroll: true });
+                })
+              );
+              expect(f.attempts.map(({ options, kind }) => ({ options, kind }))).toEqual([
+                { options: { reason: 'pointer', preventScroll: true }, kind: next },
+              ]);
+              const latest = f.attempts[0].options;
+              if (pending) {
+                f.setImpl(() => true);
+                f.ready();
+                expect(f.attempts).toHaveLength(2);
+                expect(f.attempts[1].options).toBe(latest);
+              }
+              expect(f.port.getFacts()).toMatchObject({
+                focused: next === 'programmatic',
+                active: next === 'programmatic',
+                focusVisible: false,
+              });
+            } finally {
+              await f.cleanup();
+            }
+          });
+        }
+      }
+    }
+    for (const cancel of ['blur', 'disable-reenable'] as const) {
+      it(`${oldKind} options cannot revive a request after ${cancel}`, async () => {
+        const f = await fixture();
+        try {
+          f.setImpl(() => true);
+          f.request(
+            oldKind,
+            reentrantOptions('reason', () => {
+              if (cancel === 'blur') f.focusable.blur();
+              else if (oldKind === 'entry') {
+                f.entry.setDisabled(true);
+                f.entry.setDisabled(false);
+              } else {
+                f.focusable.setDisabled(true);
+                f.focusable.setDisabled(false);
+              }
+            })
+          );
+          f.ready();
+          expect(f.attempts).toEqual([]);
+          expect(f.port.getFacts()).toMatchObject({ focused: false, active: false });
+        } finally {
+          await f.cleanup();
+        }
+      });
+    }
+    it(`${oldKind} snapshots options once and retains that snapshot on readiness`, async () => {
+      const f = await fixture();
+      try {
+        let reads = 0;
+        f.request(oldKind, {
+          get reason(): FocusRequestOptions['reason'] {
+            reads++;
+            return 'keyboard';
+          },
+          preventScroll: true,
+        });
+        const snapshot = f.attempts[0].options;
+        f.ready();
+        expect(reads).toBe(1);
+        expect(f.attempts[1].options).toBe(snapshot);
+      } finally {
+        await f.cleanup();
+      }
+    });
+    it(`${oldKind} snapshot remains newer than an earlier pending readiness replay`, async () => {
+      const f = await fixture();
+      try {
+        f.focusable.focus({ reason: 'pointer' });
+        f.request(
+          oldKind,
+          reentrantOptions('reason', () => f.ready())
+        );
+        expect(f.attempts.at(-1)?.options).toEqual({ reason: 'keyboard', preventScroll: false });
+        expect(f.attempts.at(-1)?.kind).toBe(oldKind);
+        f.setImpl(() => true);
+        f.ready();
+        expect(f.attempts.at(-1)?.options).toEqual({ reason: 'keyboard', preventScroll: false });
+        expect(f.attempts.at(-1)?.kind).toBe(oldKind);
+      } finally {
+        await f.cleanup();
+      }
+    });
+    it(`${oldKind} throwing options do not lose readiness for an earlier request`, async () => {
+      const f = await fixture();
+      try {
+        f.focusable.focus({ reason: 'pointer' });
+        const earlier = f.attempts[0].options;
+        const error = new Error('author options failed after readiness');
+        f.setImpl(() => true);
+        expect(() =>
+          f.request(
+            oldKind,
+            reentrantOptions('reason', () => {
+              f.ready();
+              throw error;
+            })
+          )
+        ).toThrow(error);
+        expect(f.attempts).toHaveLength(2);
+        expect(f.attempts[1].options).toBe(earlier);
+        expect(f.port.getFacts()).toMatchObject({ focused: true, active: true });
+      } finally {
+        await f.cleanup();
+      }
+    });
+    it(`${oldKind} throwing options leave an earlier pending request intact`, async () => {
+      const f = await fixture();
+      try {
+        f.focusable.focus({ reason: 'pointer' });
+        const earlier = f.attempts[0].options;
+        const error = new Error('author options failed');
+        expect(() =>
+          f.request(
+            oldKind,
+            reentrantOptions('reason', () => {
+              throw error;
+            })
+          )
+        ).toThrow(error);
+        f.setImpl(() => true);
+        f.ready();
+        expect(f.attempts).toHaveLength(2);
+        expect(f.attempts[1].options).toBe(earlier);
+      } finally {
+        await f.cleanup();
+      }
+    });
+    it(`${oldKind} options error preserves a newer pending request`, async () => {
+      const f = await fixture();
+      try {
+        const error = new Error('author options failed');
+        expect(() =>
+          f.request(
+            oldKind,
+            reentrantOptions('reason', () => {
+              f.focusable.focus({ reason: 'pointer' });
+              throw error;
+            })
+          )
+        ).toThrow(error);
+        f.setImpl(() => true);
+        f.ready();
+        expect(f.attempts).toHaveLength(2);
+        expect(f.attempts.every(({ options }) => options?.reason === 'pointer')).toBe(true);
+      } finally {
+        await f.cleanup();
+      }
+    });
+  }
+
+  for (const noOp of ['unresolved-entry', 'disabled-entry'] as const) {
+    it(`${noOp} options do not lose earlier pending target readiness`, async () => {
+      const f = await fixture();
+      try {
+        f.focusable.focus({ reason: 'pointer' });
+        const earlier = f.attempts[0].options;
+        if (noOp === 'unresolved-entry') f.setResolved(null);
+        else f.entry.setDisabled(true);
+        f.setImpl(() => true);
+        f.request(
+          'entry',
+          reentrantOptions('reason', () => f.ready())
+        );
+        expect(f.attempts).toHaveLength(2);
+        expect(f.attempts[1].options).toBe(earlier);
+        expect(f.port.getFacts()).toMatchObject({ focused: true, active: true });
+      } finally {
+        await f.cleanup();
+      }
+    });
+  }
+
+  it('throwing options do not lose established-owner readiness projection', async () => {
+    const f = await fixture();
+    try {
+      f.setImpl(() => true);
+      f.focusable.focus({ reason: 'pointer' });
+      const error = new Error('author options failed after readiness');
+      expect(() =>
+        f.request(
+          'entry',
+          reentrantOptions('reason', () => {
+            f.ready();
+            throw error;
+          })
+        )
+      ).toThrow(error);
+      expect(f.attempts.map(({ kind }) => kind)).toEqual(['programmatic', 'native']);
+      expect(f.port.getFacts()).toMatchObject({ focused: true, active: true });
+    } finally {
+      await f.cleanup();
+    }
+  });
+
+  it('first unresolved nested entry remains a no-op during target options snapshot', async () => {
+    const f = await fixture();
+    try {
+      f.setImpl(() => true);
+      f.request(
+        'programmatic',
+        reentrantOptions('reason', () => {
+          f.setResolved(null);
+          f.entry.focus({ reason: 'pointer' });
+        })
+      );
+      expect(f.attempts.map(({ options, kind }) => ({ options, kind }))).toEqual([
+        { options: { reason: 'keyboard', preventScroll: false }, kind: 'programmatic' },
+      ]);
+      expect(f.port.getFacts()).toMatchObject({ focused: true, active: true, focusVisible: true });
+    } finally {
+      await f.cleanup();
+    }
+  });
+});

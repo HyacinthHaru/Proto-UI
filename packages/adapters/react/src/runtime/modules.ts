@@ -49,6 +49,7 @@ import {
 } from '@proto.ui/module-expose-state-web';
 import {
   FOCUS_BLUR_CAP,
+  FOCUS_RELEASE_PENDING_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
   FOCUS_IS_NATIVELY_FOCUSABLE_CAP,
   FOCUS_ORDER_CAP,
@@ -250,6 +251,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   isViewReady: () => boolean;
   isEntryAcquisitionReady: (target: HTMLElement) => boolean;
   onFocusAcquired?: () => void;
+  onFocusPendingReleased?: () => void;
   focusIntentState?: FocusIntentState;
   onFocusIntent?: () => void;
   getCurrentElement: () => HTMLElement | null;
@@ -322,6 +324,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       [FOCUS_INSTANCE_TOKEN_CAP, instanceToken],
       [FOCUS_PARENT_CAP, (inst: unknown) => getLogicalParent(inst as LogicalInstanceToken)],
       [FOCUS_TARGET_READY_CAP, subscribeFocusTarget],
+      [FOCUS_RELEASE_PENDING_CAP, () => args.onFocusPendingReleased?.()],
       [FOCUS_ROOT_TARGET_CAP, getTriggerSurface],
       [FOCUS_IS_NATIVELY_FOCUSABLE_CAP, isNativelyFocusable],
       [FOCUS_ORDER_CAP, orderFocusTargetsByDocument],

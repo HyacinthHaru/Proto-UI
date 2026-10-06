@@ -607,6 +607,13 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
                 focusRetryGeneration += 1;
                 this._focusTargetRetryScheduled = false;
               },
+              onFocusPendingReleased: () => {
+                focusRetryGeneration += 1;
+                this._focusTargetRetryScheduled = false;
+                const release = releaseRequestedTargetReady;
+                releaseRequestedTargetReady = undefined;
+                release?.();
+              },
               onFocusAcquired: () => {
                 this._focusTargetRetryCount = 0;
                 // Completion retires queued work for this intent in the current view.

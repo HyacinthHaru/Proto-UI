@@ -799,6 +799,13 @@ function initSession<Props extends PropsBaseType>(
       focusRetryGeneration += 1;
       state.focusTargetRetryScheduled = false;
     },
+    onFocusPendingReleased: () => {
+      focusRetryGeneration += 1;
+      state.focusTargetRetryScheduled = false;
+      const release = releaseRequestedTargetReady;
+      releaseRequestedTargetReady = undefined;
+      release?.();
+    },
     onFocusAcquired: () => {
       state.focusTargetRetryCount = 0;
       // Completion retires queued work for this intent in the current view.
