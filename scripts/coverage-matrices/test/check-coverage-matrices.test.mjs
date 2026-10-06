@@ -17519,3 +17519,201 @@ for (const [source, specifiers] of [
       )
     );
   });
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    ['window open', `window.open("javascript:run()");`, true],
+    ['open alias', `const launch=window.open;launch("javascript:run()");`, true],
+    ['bare open', `open("javascript:run()");`, true],
+    ['business open', `const window={open(){}};window.open("javascript:run()");`, false],
+    ['ordinary open', `window.open("https://example.com/");`, false],
+    [
+      'animation worklet',
+      `CSS.animationWorklet.addModule('https://cdn.example/runtime.js');`,
+      true,
+    ],
+    ['layout worklet', `CSS.layoutWorklet.addModule('https://cdn.example/runtime.js');`, true],
+    [
+      'business CSS',
+      `const CSS={layoutWorklet:{addModule(){}}};CSS.layoutWorklet.addModule('https://cdn.example/runtime.js');`,
+      false,
+    ],
+    ['anchor property', `const a=document.createElement('a');a.href='javascript:run()';`, true],
+    [
+      'anchor attribute',
+      `const a=document.createElement('a');a.setAttribute('href','javascript:run()');`,
+      true,
+    ],
+    [
+      'anchor namespace attribute',
+      `const a=document.createElement('a');a.setAttributeNS(null,'href','javascript:run()');`,
+      true,
+    ],
+    ['business href', `const a={};a.href='javascript:run()';`, false],
+    ['ordinary anchor', `const a=document.createElement('a');a.href='/docs/';`, false],
+    [
+      'namespaced unrelated anchor',
+      `const a=document.createElement('a');a.setAttributeNS('urn:business','href','javascript:run()');`,
+      false,
+    ],
+    [
+      'JSX stylesheet',
+      `export const View=()=> <link rel="stylesheet" href="https://cdn.example/theme.css"/>;`,
+      true,
+    ],
+    [
+      'JSX dynamic stylesheet',
+      `export const View=()=> <link rel="stylesheet" href={target}/>;`,
+      true,
+    ],
+    [
+      'JSX custom Link',
+      `export const View=()=> <Link rel="stylesheet" href="https://cdn.example/theme.css"/>;`,
+      false,
+    ],
+    [
+      'JSX prefetch',
+      `export const View=()=> <link rel="prefetch" href="https://cdn.example/theme.css"/>;`,
+      false,
+    ],
+    [
+      'inert link text',
+      `const text='<link rel="stylesheet" href="https://cdn.example/theme.css"/>';`,
+      false,
+    ],
+  ])
+    test(`unpublished review closure: ${kind} ${name}`, () => {
+      const issues = probeReview('unpublished-review-closure', kind, source, 'tsx');
+      assert.equal(
+        issues.some((issue) =>
+          /executable navigation URL|external executable.*script|external stylesheet|dynamic stylesheet/u.test(
+            issue
+          )
+        ),
+        reject,
+        issues.join('\n')
+      );
+    });
+}
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    ['open destructure', `const {open:launch}=self;launch('javascript:run()');`, true],
+    ['open global member', `globalThis['open']('javascript:run()');`, true],
+    ['open parameter shadow', `function run(open){open('javascript:run()');}`, false],
+    ['global window parameter', `function run(window){window.open('javascript:run()');}`, false],
+    [
+      'ordinary business method',
+      `const business={open(){}};business.open('javascript:run()');`,
+      false,
+    ],
+    [
+      'worklet alias',
+      `const worklet=CSS.layoutWorklet;worklet.addModule('https://cdn.example/runtime.js');`,
+      true,
+    ],
+    [
+      'CSS parameter shadow',
+      `function run(CSS){CSS.animationWorklet.addModule('https://cdn.example/runtime.js');}`,
+      false,
+    ],
+    [
+      'button action IDL',
+      `const b=document.createElement('button');b.formAction='javascript:run()';`,
+      true,
+    ],
+    [
+      'button lowercase expando',
+      `const b=document.createElement('button');b.formaction='javascript:run()';`,
+      false,
+    ],
+    [
+      'button attribute',
+      `const b=document.createElement('button');b.setAttribute('FORMACTION','javascript:run()');`,
+      true,
+    ],
+    [
+      'button namespace case',
+      `const b=document.createElement('button');b.setAttributeNS(null,'formAction','javascript:run()');`,
+      false,
+    ],
+    [
+      'anchor alias',
+      `const a=document.createElement('a');const link=a;link.href='javascript:run()';`,
+      true,
+    ],
+    [
+      'anchor reassigned business',
+      `let a=document.createElement('a');a={};a.href='javascript:run()';`,
+      false,
+    ],
+    [
+      'document shadow',
+      `function run(document){const a=document.createElement('a');a.href='javascript:run()';}`,
+      false,
+    ],
+    [
+      'JSX const style',
+      `const href='https://cdn.example/theme.css';export const View=()=> <link rel={'stylesheet'} href={href}/>;`,
+      true,
+    ],
+    [
+      'JSX local style',
+      `export const View=()=> <link rel={'stylesheet'} href={'/theme.css'}/>;`,
+      false,
+    ],
+    ['JSX link spread', `export const View=()=> <link {...props}/>;`, true],
+    ['JSX no href', `export const View=()=> <link rel="stylesheet"/>;`, false],
+    [
+      'JSX icon',
+      `export const View=()=> <link rel="icon" href="https://cdn.example/icon.svg"/>;`,
+      false,
+    ],
+    [
+      'JSX encoded relation',
+      `export const View=()=> <link rel="style&#115;heet" href="https://cdn.example/theme.css"/>;`,
+      true,
+    ],
+  ])
+    test(`unpublished review boundaries: ${kind} ${name}`, () => {
+      const issues = probeReview('unpublished-review-boundaries', kind, source, 'tsx');
+      assert.equal(
+        issues.some((issue) =>
+          /executable navigation URL|external executable.*script|external stylesheet|dynamic stylesheet/u.test(
+            issue
+          )
+        ),
+        reject,
+        issues.join('\n')
+      );
+    });
+}
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source] of [
+    [
+      'HTML xlink property',
+      `const a=document.createElement('a');a['xlink:href']='javascript:run()';`,
+    ],
+    [
+      'HTML xlink attribute',
+      `const a=document.createElement('a');a.setAttribute('xlink:href','javascript:run()');`,
+    ],
+    [
+      'HTML xlink no namespace',
+      `const a=document.createElement('a');a.setAttributeNS(null,'xlink:href','javascript:run()');`,
+    ],
+    [
+      'HTML href nonnull namespace',
+      `const a=document.createElement('a');a.setAttributeNS('urn:business','href','javascript:run()');`,
+    ],
+  ])
+    test(`unpublished review independent control: ${kind} ${name}`, () => {
+      const issues = probeReview('unpublished-review-independent', kind, source, 'tsx');
+      assert.equal(
+        issues.some((issue) => /executable navigation URL/u.test(issue)),
+        false,
+        issues.join('\n')
+      );
+    });
+}

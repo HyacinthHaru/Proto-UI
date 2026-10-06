@@ -4813,7 +4813,8 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
       const member = staticMemberAccess(candidate);
       return Boolean(
         member &&
-        ((member.name === 'paintWorklet' && isBrowserGlobal(member.receiver, node, ['CSS'])) ||
+        ((['paintWorklet', 'animationWorklet', 'layoutWorklet'].includes(member.name) &&
+          isBrowserGlobal(member.receiver, node, ['CSS'])) ||
           (member.name === 'audioWorklet' && isAudioContext(member.receiver, node, visited)))
       );
     });
@@ -5278,7 +5279,7 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
   const browserGlobalValue = (name) =>
     wasmGlobals.has(name)
       ? 'global'
-      : ['navigator', 'location', 'document'].includes(name)
+      : ['navigator', 'location', 'document', 'open'].includes(name)
         ? name
         : null;
   const projectBrowserValue = (values, key) =>
@@ -5286,7 +5287,8 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
       [...values].flatMap((value) => {
         if (value === 'opaque-browser' || key === null) return ['opaque-browser'];
         if (value === 'global' && wasmGlobals.has(key)) return ['global'];
-        if (value === 'global' && ['navigator', 'location', 'document'].includes(key)) return [key];
+        if (value === 'global' && ['navigator', 'location', 'document', 'open'].includes(key))
+          return [key];
         if (value === 'document' && key === 'location') return ['location'];
         if (value === 'navigator' && key === 'serviceWorker') return ['service-worker'];
         if (value === 'service-worker' && key === 'register') return ['worker-register'];
@@ -5457,10 +5459,44 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
     }
     return false;
   };
+  // Cache completed lexical results, not path-dependent cycle/depth fallbacks.
+  // A result records every binding/use-context it consulted and its alias depth:
+  // a different caller may reuse it only outside that ancestry and depth limit.
+  const nodeLoaderCompleted = new WeakMap();
+  const nodeLoaderFrames = [];
+  let nodeLoaderFallbacks = 0;
   const nodeLoaderValue = (expression, at, seen = new Set()) => {
     if (!expression) return new Set();
-    if (seen.size >= 64) return new Set(nodeLoaderMayBeNative(expression, at) ? ['opaque'] : []);
+    if (seen.size >= 64) {
+      nodeLoaderFallbacks += 1;
+      return new Set(nodeLoaderMayBeNative(expression, at) ? ['opaque'] : []);
+    }
     const candidate = unwrapTypeScriptExpression(expression);
+    const cached = nodeLoaderCompleted.get(candidate)?.get(at);
+    if (
+      cached &&
+      seen.size + cached.depth < 64 &&
+      ![...cached.dependencies].some((key) => seen.has(key))
+    ) {
+      for (const frame of nodeLoaderFrames) {
+        for (const key of cached.dependencies) frame.dependencies.add(key);
+        frame.depth = Math.max(frame.depth, seen.size - frame.startDepth + cached.depth);
+      }
+      return new Set(cached.values);
+    }
+    const frame = { dependencies: new Set(), startDepth: seen.size, depth: 0 };
+    const fallbacks = nodeLoaderFallbacks;
+    nodeLoaderFrames.push(frame);
+    const result = resolveNodeLoaderValue(candidate, at, seen);
+    nodeLoaderFrames.pop();
+    if (fallbacks === nodeLoaderFallbacks) {
+      const entries = nodeLoaderCompleted.get(candidate) ?? new WeakMap();
+      entries.set(at, { ...frame, values: new Set(result) });
+      nodeLoaderCompleted.set(candidate, entries);
+    }
+    return result;
+  };
+  const resolveNodeLoaderValue = (candidate, at, seen) => {
     if (ts.isIdentifier(candidate)) {
       const result = new Set();
       for (const binding of wasmBindingAt(candidate.text, at)) {
@@ -5471,8 +5507,13 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
         }
         if (!nodeLoaderBindingVisible(binding, at)) continue;
         const visitKey = `node-loader:${binding.position}:${candidate.text}:${at.getStart(sourceFile)}`;
+        for (const frame of nodeLoaderFrames) {
+          frame.dependencies.add(visitKey);
+          frame.depth = Math.max(frame.depth, seen.size + 1 - frame.startDepth);
+        }
         if (seen.has(visitKey)) {
-          if (nodeLoaderMayBeNative(expression, at)) result.add('opaque');
+          nodeLoaderFallbacks += 1;
+          if (nodeLoaderMayBeNative(candidate, at)) result.add('opaque');
           continue;
         }
         const visited = new Set(seen).add(visitKey);
@@ -5520,6 +5561,16 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
       );
     return new Set();
   };
+  const isNativeNavigationProperty = (receiver, property, at, attribute = false) =>
+    ['a', 'area', 'form', 'button', 'input', 'iframe', 'frame', 'object'].some(
+      (tag) =>
+        (['button', 'input'].includes(tag)
+          ? property === (attribute ? 'formaction' : 'formAction')
+          : ['a', 'area'].includes(tag)
+            ? property === 'href'
+            : isNavigationUrlAttribute(tag, property)) &&
+        Boolean(resourceElementCreation(receiver, at, tag))
+    );
   const inspectNavigationValue = (expression, at) => {
     const literal = nativeLiteralString(expression, at);
     if (literal === null) specifiers.push(UNVERIFIED_DOM_RESOURCE_SPECIFIER);
@@ -5583,7 +5634,12 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
       )
     )
       inspectNavigationValue(node.right, node);
-    if (ts.isCallExpression(node) && browserValue(node.expression, node).has('location-navigate'))
+    if (
+      ts.isCallExpression(node) &&
+      [...browserValue(node.expression, node)].some(
+        (value) => value === 'location-navigate' || value === 'open'
+      )
+    )
       inspectNavigationValue(node.arguments[0], node);
     if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
       const member = staticMemberAccess(node.expression);
@@ -5653,6 +5709,40 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
             : null;
         if (value && ts.isStringLiteralLike(value) && isExecutableNavigationUrl(value.text, quoted))
           specifiers.push(UNVERIFIED_NAVIGATION_URL_SPECIFIER);
+      }
+      if (tag === 'link') {
+        const attributes = new Map();
+        let opaque = false;
+        for (const attribute of node.attributes.properties) {
+          if (!ts.isJsxAttribute(attribute)) {
+            opaque = true;
+            continue;
+          }
+          const name = attribute.name.getText(sourceFile);
+          if (attributes.has(name)) opaque = true;
+          const init = attribute.initializer;
+          const value = init && ts.isJsxExpression(init) ? init.expression : init;
+          const literal = nativeLiteralString(value, node);
+          attributes.set(
+            name,
+            ts.isStringLiteralLike(init ?? {}) && literal?.includes('&') ? null : literal
+          );
+        }
+        if (opaque) specifiers.push(DYNAMIC_STYLESHEET_REL_SPECIFIER);
+        else if (attributes.has('href')) {
+          const rel = attributes.get('rel');
+          if (attributes.has('rel') && rel === null)
+            specifiers.push(DYNAMIC_STYLESHEET_REL_SPECIFIER);
+          else if (rel?.toLowerCase().split(/\s+/u).includes('stylesheet')) {
+            const href = attributes.get('href');
+            if (href === null) specifiers.push(DYNAMIC_STYLESHEET_LINK_SPECIFIER);
+            else {
+              const normalized = normalizeBrowserResourceUrl(href);
+              if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(normalized))
+                specifiers.push(`${EXTERNAL_STYLESHEET_ELEMENT_SPECIFIER_PREFIX}${normalized}>`);
+            }
+          }
+        }
       }
       if (!harnessPreviewBoundary && /^(?:iframe|object|embed|webview)$/u.test(tag))
         specifiers.push(UNREVIEWED_WEBSITE_EMBED_SPECIFIER);
@@ -5769,6 +5859,14 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
           recordLinkMutation(receiver, 'href', null, node);
         }
       }
+      if (
+        assignedProperty &&
+        isNativeNavigationProperty(assignedProperty.receiver, assignedProperty.name, node)
+      )
+        inspectNavigationValue(
+          node.operatorToken.kind === ts.SyntaxKind.EqualsToken ? node.right : undefined,
+          node
+        );
       if (assignedProperty) {
         recordLinkMutation(assignedProperty.receiver, assignedProperty.name, node.right, node);
         if (
@@ -5891,6 +5989,8 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
             : namespaceAttribute
               ? rawProperty
               : rawProperty.toLowerCase();
+        if (property && isNativeNavigationProperty(calledMember.receiver, property, node, true))
+          inspectNavigationValue(resourceAttributeValue, node);
         if (property) {
           const literal = nativeLiteralString(resourceAttributeValue, node);
           recordLinkMutation(
