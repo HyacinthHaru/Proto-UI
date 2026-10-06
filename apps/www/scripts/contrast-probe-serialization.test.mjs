@@ -322,7 +322,7 @@ const targetObservationFixture = async () => {
       { fill: '#5294ff', foreground: '#000' },
       held
     );
-  return { style, ancestorStyle, element, observe, observePair };
+  return { style, ancestorStyle, element, ancestor, sandbox, observe, observePair };
 };
 
 for (const overflow of ['hidden', 'clip', 'auto', 'scroll']) {
@@ -475,3 +475,224 @@ test('pointer pair keeps an opaque target over unrelated ancestor image and oute
   style.boxShadow = 'black 4px 4px 0px 0px';
   assert.equal(observePair().achieved, true);
 });
+
+for (const kind of ['direct', 'native', 'placeholder']) {
+  for (const defect of ['stroke', 'zero-size'])
+    test(`${kind} text ink limit builder rejects ${defect} glyph paint`, async () => {
+      const source = await readFile(
+        new URL('./contrast-probe.browser.ts', import.meta.url),
+        'utf8'
+      );
+      const marker =
+        kind === 'direct'
+          ? 'const limits = [...textBackdrop.limits'
+          : kind === 'native'
+            ? 'const textLimits = [...backdrop.limits'
+            : 'const placeholderLimits = [';
+      const start = source.indexOf(marker);
+      const end = source.indexOf(
+        kind === 'direct'
+          ? 'const large ='
+          : kind === 'native'
+            ? 'const directRun ='
+            : 'const placeholder =',
+        start
+      );
+      assert.ok(start > 0 && end > start);
+      const name =
+        kind === 'direct' ? 'limits' : kind === 'native' ? 'textLimits' : 'placeholderLimits';
+      const compiled = await transform(`${source.slice(start, end)}; return ${name};`, {
+        loader: 'ts',
+      });
+      const read = new Function(
+        'style',
+        'textStyle',
+        'placeholderStyle',
+        'backdrop',
+        'textBackdrop',
+        'visibility',
+        'textVisibility',
+        'text',
+        'textInk',
+        'placeholderInk',
+        'inactive',
+        'parent',
+        'nativeText',
+        'element',
+        compiled.code
+      );
+      const style = {
+        color: '#000',
+        fontSize: '16px',
+        webkitTextFillColor: '#000',
+        textShadow: 'none',
+        opacity: '1',
+        textIndent: '0px',
+        webkitTextStrokeWidth: '0px',
+      };
+      const clean = { limits: [], alpha: 1 };
+      const observe = () =>
+        read(
+          style,
+          style,
+          style,
+          clean,
+          clean,
+          clean,
+          clean,
+          clean,
+          clean,
+          clean,
+          false,
+          { namespaceURI: 'http://www.w3.org/1999/xhtml' },
+          true,
+          { scrollLeft: 0, scrollTop: 0 }
+        );
+      assert.deepEqual(observe(), []);
+      if (defect === 'stroke') {
+        for (const width of ['0.5px', '2px']) {
+          style.webkitTextStrokeWidth = width;
+          assert.ok(
+            observe().includes(
+              kind === 'placeholder'
+                ? 'unsupported-placeholder-text-stroke'
+                : 'unsupported-text-stroke'
+            )
+          );
+        }
+        style.webkitTextStrokeWidth = '0px';
+      } else {
+        style.fontSize = '0px';
+        assert.ok(
+          observe().includes(
+            kind === 'placeholder' ? 'unsupported-placeholder-font-size' : 'unsupported-font-size'
+          )
+        );
+        style.fontSize = '16px';
+      }
+      assert.deepEqual(observe(), []);
+    });
+}
+
+for (const family of ['badge', 'card', 'skeleton', 'separator', 'spinner']) {
+  test(`actual ${family} passive caller rejects rounded clip false visibility`, async () => {
+    const { style, ancestorStyle, element, ancestor, sandbox } = await targetObservationFixture();
+    const source = await readFile(
+      new URL('./audit-brutalist-contrast.mts', import.meta.url),
+      'utf8'
+    );
+    const start = source.indexOf(
+      '  return page.evaluate(\n    (input) => {',
+      source.indexOf('async function passiveSurfaceObservation')
+    );
+    const end = source.indexOf('\n    },\n    {\n      family,', start);
+    assert.ok(start > 0 && end > start);
+    const callback = source.slice(
+      start + '  return page.evaluate(\n    '.length,
+      end + '\n    }'.length
+    );
+    const compiled = await transform(`globalThis.readPassive = ${callback};`, { loader: 'ts' });
+    const identity = `brutalist-${family}`;
+    element.dataset = {
+      projectionOwner: 'owner',
+      projectionGeneration: '1',
+      projectionPrototype: identity,
+    };
+    element.hasAttribute = (name) => name === 'data-pui-root';
+    element.getAttribute = (name) => (name === 'data-demo-ref' ? 'root' : null);
+    element.closest = () => null;
+    element.getAnimations = () => [];
+    ancestor.hasAttribute = () => false;
+    ancestor.getBoundingClientRect = () => ({
+      x: 10,
+      y: 10,
+      left: 10,
+      top: 10,
+      right: 110,
+      bottom: 110,
+      width: 100,
+      height: 100,
+    });
+    ancestor.clientWidth = ancestor.clientHeight = 100;
+    const corner = { x: 10, y: 10, left: 10, top: 10, right: 18, bottom: 18, width: 8, height: 8 };
+    element.getClientRects = () => [corner];
+    element.getBoundingClientRect = () => corner;
+    Object.assign(style, {
+      animationName: 'none',
+      borderTopColor: 'rgba(0, 0, 0, 0)',
+      borderRightColor: '#000',
+      borderBottomColor: '#000',
+      borderLeftColor: '#000',
+      borderTopWidth: '2px',
+      borderRightWidth: '2px',
+      borderBottomWidth: '2px',
+      borderLeftWidth: '2px',
+    });
+    const content = { contains: (node) => node === element };
+    sandbox.document.querySelectorAll = () => [element];
+    sandbox.matchMedia = () => ({ matches: true });
+    sandbox.puiContrastProbe = {
+      ...sandbox.puiContrastProbe,
+      readContrastAuditSubject: () => ({
+        observation: { achieved: true },
+        content,
+        retained: content,
+        shell: null,
+        owner: 'owner',
+        generation: '1',
+      }),
+    };
+    vm.runInNewContext(compiled.code, sandbox);
+    const input = {
+      family,
+      subject: {},
+      rootPrototypeId: identity,
+      expected: [
+        {
+          prototypeId: identity,
+          expectedCount: 1,
+          visibilityRequirement: 'visible-physical-region',
+        },
+      ],
+      instances: [{ prototypeId: identity, ref: 'root', ancestorPrototypeIds: [] }],
+      sourceUnsupported: [],
+    };
+    const observe = () => sandbox.readPassive(input);
+    assert.equal(observe().achieved, true);
+    ancestorStyle.overflowX = ancestorStyle.overflowY = 'hidden';
+    ancestorStyle.borderTopLeftRadius =
+      ancestorStyle.borderTopRightRadius =
+      ancestorStyle.borderBottomLeftRadius =
+      ancestorStyle.borderBottomRightRadius =
+        '50px';
+    const clipped = observe();
+    assert.equal(clipped.achieved, false);
+    assert.ok(clipped.surfaces[0].visibilityLimits.includes('unsupported-rounded-overflow-clip'));
+    const center = {
+      x: 25,
+      y: 25,
+      left: 25,
+      top: 25,
+      right: 45,
+      bottom: 35,
+      width: 20,
+      height: 10,
+    };
+    element.getClientRects = () => [center];
+    element.getBoundingClientRect = () => center;
+    ancestorStyle.borderTopLeftRadius =
+      ancestorStyle.borderTopRightRadius =
+      ancestorStyle.borderBottomLeftRadius =
+      ancestorStyle.borderBottomRightRadius =
+        '5px';
+    assert.equal(observe().achieved, true); // Shared fixed-px safe interior remains supported.
+    style.opacity = '0';
+    assert.equal(observe().achieved, false);
+    style.opacity = '1';
+    element.dataset.projectionOwner = 'foreign-owner';
+    assert.equal(observe().achieved, false);
+    element.dataset.projectionOwner = 'owner';
+    ancestorStyle.overflowX = ancestorStyle.overflowY = 'visible';
+    assert.equal(observe().achieved, true);
+  });
+}

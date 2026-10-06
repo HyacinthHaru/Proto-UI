@@ -735,6 +735,60 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     });
   }
 
+  it('withholds all text-source ratios for stroke or zero-size ink while keeping independent fill', async () => {
+    const frame = await calibrate(
+      `
+      <style>#stroke-placeholder::placeholder { -webkit-text-stroke: 1px #fff; } #zero-placeholder::placeholder { font-size: 0; }</style>
+      <div data-pui-root data-demo-ref="plain-text">Plain text</div>
+      <div data-pui-root data-demo-ref="stroke-text" style="-webkit-text-stroke:1px #fff">Stroked text</div>
+      <div data-pui-root data-demo-ref="stroke-descendant"><span style="-webkit-text-stroke:1px #fff">Stroked descendant</span></div>
+      <textarea data-pui-root data-demo-ref="plain-native">Native value</textarea>
+      <textarea data-pui-root data-demo-ref="stroke-native" style="-webkit-text-stroke:1px #fff">Stroked native value</textarea>
+      <textarea data-pui-root data-demo-ref="plain-placeholder" placeholder="Plain placeholder"></textarea>
+      <textarea id="stroke-placeholder" data-pui-root data-demo-ref="stroke-placeholder" placeholder="Stroked placeholder"></textarea>
+      <div data-pui-root data-demo-ref="zero-text" style="font-size:0">Zero-size direct text</div>
+      <textarea data-pui-root data-demo-ref="zero-native" style="font-size:0">Zero-size native value</textarea>
+      <textarea id="zero-placeholder" data-pui-root data-demo-ref="zero-placeholder" placeholder="Zero-size placeholder"></textarea>
+    `,
+      'all-text-stroke-domains'
+    );
+    for (const ref of ['plain-text', 'plain-native'])
+      expect(surface(frame, ref).textContrast?.ratio).toBeCloseTo(21, 8);
+    expect(surface(frame, 'plain-placeholder').placeholder?.ratio).toBeCloseTo(21, 8);
+    for (const ref of ['stroke-text', 'stroke-descendant', 'stroke-native'])
+      expect(surface(frame, ref).textContrast).toBeNull();
+    for (const ref of ['stroke-text', 'stroke-native'])
+      expect(surface(frame, ref).textContrastDisposition.limits).toContain(
+        'unsupported-text-stroke'
+      );
+    for (const ref of ['stroke-text', 'stroke-descendant']) {
+      const runs = surface(frame, ref).textRuns;
+      expect(runs.length).toBeGreaterThan(0);
+      for (const run of runs) {
+        expect(run.ratio).toBeNull();
+        expect(run.classification).toBe('unsupported');
+        expect(run.limits).toContain('unsupported-text-stroke');
+      }
+    }
+    const placeholder = surface(frame, 'stroke-placeholder').placeholder!;
+    expect(placeholder.shown).toBe(true);
+    expect(placeholder.ratio).toBeNull();
+    expect(placeholder.classification).toBe('unsupported');
+    expect(placeholder.limits).toContain('unsupported-placeholder-text-stroke');
+    for (const ref of ['zero-text', 'zero-native']) {
+      const item = surface(frame, ref);
+      expect(item.rect.width).toBeGreaterThan(0);
+      expect(item.rect.height).toBeGreaterThan(0);
+      expect(item.textContrast).toBeNull();
+      expect(item.textContrastDisposition.limits).toContain('unsupported-font-size');
+    }
+    const zeroPlaceholder = surface(frame, 'zero-placeholder').placeholder!;
+    expect(zeroPlaceholder.shown).toBe(true);
+    expect(zeroPlaceholder.ratio).toBeNull();
+    expect(zeroPlaceholder.limits).toContain('unsupported-placeholder-font-size');
+    for (const item of frame.surfaces) expect(item.paint.fill).toEqual([255, 255, 255, 255]);
+  });
+
   it('measures real text and glyph controls, not empty or descendant-only host ink', async () => {
     // Baseline falsifier: all opaque host boxes received 21:1, including empty,
     // SVG-only, child-only and empty-placeholder boxes with no direct black text.

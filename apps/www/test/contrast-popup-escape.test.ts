@@ -220,7 +220,11 @@ async function preview(family: Family, runtime: Runtime = 'wc') {
   const baseline = browserBefore({ family, trigger, popup, owner, generation });
   expect(baseline.observation.achieved, JSON.stringify(baseline.observation)).toBe(true);
   const record: any = {};
-  const run = async (suppressEscape = false, afterEscape?: () => void) =>
+  const run = async (
+    suppressEscape = false,
+    afterEscape?: () => void,
+    beforeReadAfter?: () => void
+  ) =>
     establishContrastPopupEscapeBaseline({
       family,
       record,
@@ -245,7 +249,10 @@ async function preview(family: Family, runtime: Runtime = 'wc') {
       waitForFocus: async () => {
         await vi.waitFor(() => expect(document.activeElement).toBe(trigger));
       },
-      readAfter: async () => browserAfter(baseline),
+      readAfter: async () => {
+        beforeReadAfter?.();
+        return browserAfter(baseline);
+      },
     });
   return {
     trigger,
@@ -276,6 +283,10 @@ for (const family of ['tooltip', 'dropdown-menu', 'select'] as const) {
         if (family === 'select') {
           expect(result.after.selectionUnchanged).toBe(true);
           expect(result.after.triggerText).toBe('Paper');
+          expect(result.after.retiredOptions).toBe(runtime === 'react' || runtime === 'vue');
+          expect(mounted.baseline.options.every(({ element }: any) => !element.isConnected)).toBe(
+            runtime === 'react' || runtime === 'vue'
+          );
           if (result.after.retainedOptions)
             expect(result.after.selection).toEqual(result.before.selection);
         }
@@ -482,3 +493,200 @@ it('hover-card: rejects same-ID replacement and unintended focus restoration', a
     }
   }
 });
+
+for (const mutation of [
+  'selection-missing',
+  'owner',
+  'generation',
+  'partial-retirement',
+  'selection-changed',
+] as const) {
+  it(`Select rejects connected invalid options after Escape: ${mutation}`, async () => {
+    const restore = measurements();
+    const mounted = await preview('select', 'wc');
+    try {
+      await expect(
+        mounted.run(false, undefined, () => {
+          const beforeFault = browserAfter(mounted.baseline);
+          expect(beforeFault.sameOwnedPopup).toBe(true);
+          expect(beforeFault.closed).toBe(true);
+          expect(beforeFault.triggerFocused).toBe(true);
+          expect(beforeFault.selectionUnchanged).toBe(true);
+          expect(beforeFault.retainedOptions).toBe(true);
+          const option = mounted.baseline.options[0].element as HTMLElement;
+          if (mutation === 'selection-missing') option.removeAttribute('aria-selected');
+          else if (mutation === 'owner')
+            option.setAttribute('data-projection-owner', 'foreign-owner');
+          else if (mutation === 'generation')
+            option.setAttribute('data-projection-generation', 'stale');
+          else if (mutation === 'partial-retirement') option.remove();
+          else option.setAttribute('aria-selected', 'false');
+        })
+      ).rejects.toThrow('focus/selection baseline');
+      expect(mounted.record.after.sameOwnedPopup).toBe(true);
+      expect(mounted.record.after.closed).toBe(true);
+      expect(mounted.record.after.triggerFocused).toBe(true);
+      expect(mounted.record.after.triggerText).toBe('Paper');
+      expect(mounted.record.after.selectionUnchanged).toBe(false);
+      expect(mounted.record.achieved).toBe(false);
+    } finally {
+      await mounted.destroy();
+      restore();
+    }
+  });
+}
+
+it('select/vue2: public Root preserves selection when the whole closed option view withdraws', async () => {
+  const restore = measurements();
+  const mounted = await preview('select', 'vue2');
+  try {
+    // The closed view has no secondary ARIA witness. The same live Root's
+    // public value/textValue projection, not inferred retirement, proves
+    // selection preservation (P-BASE-SELECT; M-EXPOSE-STATE-WEB-0001 B/C).
+    await mounted.run();
+    const after = mounted.record.after;
+    expect(after.sameOwnedPopup).toBe(true);
+    expect(after.closed).toBe(true);
+    expect(after.triggerFocused).toBe(true);
+    expect(after.ariaExpanded).toBe('false');
+    expect(after.triggerText).toBe(mounted.baseline.observation.triggerText);
+    expect(mounted.popup.hasAttribute('data-pui-view-detached')).toBe(true);
+    for (const { element } of mounted.baseline.options) {
+      expect(element.isConnected).toBe(true);
+      expect(mounted.popup.contains(element)).toBe(true);
+      expect(element.hasAttribute('data-pui-root')).toBe(true);
+      expect(element.getAttribute('data-projection-owner')).toBe(
+        mounted.baseline.observation.owner
+      );
+      expect(element.getAttribute('data-projection-generation')).toBe(
+        mounted.baseline.observation.generation
+      );
+      expect(element.getAttribute('role')).toBeNull();
+      expect(element.getAttribute('aria-selected')).toBeNull();
+    }
+    expect(after.retiredOptions).toBe(false);
+    expect(after.retainedOptions).toBe(false);
+    expect(after.optionViewWithdrawn).toBe(true);
+    expect(after.rootSelectionUnchanged).toBe(true);
+    expect(after.rootSelection).toEqual({ value: 'paper', textValue: 'Paper', open: false });
+    expect(after.selectionUnchanged).toBe(true);
+    expect(mounted.record.achieved).toBe(true);
+  } finally {
+    await mounted.destroy();
+    restore();
+  }
+});
+
+for (const mutation of [
+  'value',
+  'text-value',
+  'missing-value',
+  'missing-text-value',
+  'replacement',
+  'toolbar',
+  'owner',
+  'generation',
+  'open',
+] as const) {
+  it(`Select rejects invalid public Root witness: ${mutation}`, async () => {
+    const restore = measurements();
+    const mounted = await preview('select', 'vue2');
+    let replacement: Element | undefined;
+    try {
+      await expect(
+        mounted.run(false, undefined, () => {
+          expect(browserAfter(mounted.baseline).rootSelectionUnchanged).toBe(true);
+          const root = mounted.baseline.selectRoot as HTMLElement;
+          if (mutation === 'replacement') {
+            replacement = root.cloneNode(false) as Element;
+            replacement.append(...root.childNodes);
+            root.replaceWith(replacement);
+          } else if (mutation === 'toolbar') {
+            const toolbarRoot = [
+              ...document.querySelectorAll(
+                '[data-pui-root][data-projection-prototype="brutalist-select-root"]'
+              ),
+            ].find(
+              (element) =>
+                element !== root &&
+                element.getAttribute('data-projection-owner') === mounted.baseline.observation.owner
+            )!;
+            expect(toolbarRoot).toBeTruthy();
+            expect(toolbarRoot.contains(mounted.trigger)).toBe(false);
+            // Matching labels/lease cannot authorize a different physical Root.
+            toolbarRoot.setAttribute('data-value', 'paper');
+            toolbarRoot.setAttribute('data-text-value', 'Paper');
+            toolbarRoot.removeAttribute('data-open');
+            mounted.baseline.selectRoot = toolbarRoot;
+          } else if (mutation === 'missing-value') root.removeAttribute('data-value');
+          else if (mutation === 'missing-text-value') root.removeAttribute('data-text-value');
+          else if (mutation === 'owner') root.setAttribute('data-projection-owner', 'foreign');
+          else if (mutation === 'generation')
+            root.setAttribute('data-projection-generation', 'stale');
+          else if (mutation === 'open') root.setAttribute('data-open', '');
+          else root.setAttribute(`data-${mutation}`, mutation === 'value' ? 'ink' : 'Ink');
+        })
+      ).rejects.toThrow('focus/selection baseline');
+      expect(mounted.record.after.selectionUnchanged).toBe(false);
+      expect(mounted.record.achieved).toBe(false);
+    } finally {
+      replacement?.remove();
+      await mounted.destroy();
+      restore();
+    }
+  });
+}
+
+for (const mutation of [
+  'owner',
+  'generation',
+  'partial-retirement',
+  'partial-withdrawal',
+] as const) {
+  it(`Select rejects damaged fully withdrawn option view: ${mutation}`, async () => {
+    const restore = measurements();
+    const mounted = await preview('select', 'vue2');
+    try {
+      await expect(
+        mounted.run(false, undefined, () => {
+          const beforeFault = browserAfter(mounted.baseline);
+          expect(beforeFault.rootSelectionUnchanged).toBe(true);
+          expect(beforeFault.optionViewWithdrawn).toBe(true);
+          const option = mounted.baseline.options[0].element;
+          if (mutation === 'owner') option.setAttribute('data-projection-owner', 'foreign');
+          else if (mutation === 'generation')
+            option.setAttribute('data-projection-generation', 'stale');
+          else if (mutation === 'partial-retirement') option.remove();
+          else option.setAttribute('role', 'option');
+        })
+      ).rejects.toThrow('focus/selection baseline');
+      expect(mounted.record.after.rootSelectionUnchanged).toBe(true);
+      expect(mounted.record.after.optionViewWithdrawn).toBe(false);
+      expect(mounted.record.after.selectionUnchanged).toBe(false);
+    } finally {
+      await mounted.destroy();
+      restore();
+    }
+  });
+}
+
+for (const field of ['data-value', 'data-text-value'] as const) {
+  it(`Select requires public Root ${field} before Escape`, async () => {
+    const restore = measurements();
+    const mounted = await preview('select');
+    try {
+      mounted.baseline.selectRoot.removeAttribute(field);
+      const before = browserBefore({
+        family: 'select',
+        trigger: mounted.trigger,
+        popup: mounted.popup,
+        owner: mounted.baseline.observation.owner,
+        generation: mounted.baseline.observation.generation,
+      });
+      expect(before.observation.achieved).toBe(false);
+    } finally {
+      await mounted.destroy();
+      restore();
+    }
+  });
+}

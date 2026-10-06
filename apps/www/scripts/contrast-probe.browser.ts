@@ -1222,9 +1222,12 @@ const collectContrastFrameInScope = async (
             textBackdrop = background(parent);
           const limits = [...textBackdrop.limits, ...textInk.limits, ...textVisibility.limits];
           if (textInk.alpha !== 1) limits.push('unsupported-translucent-text-ink');
+          if (!(parseFloat(textStyle.fontSize) > 0)) limits.push('unsupported-font-size');
           if (textStyle.webkitTextFillColor !== textStyle.color)
             limits.push('unsupported-text-fill-color');
           if (textStyle.textShadow !== 'none') limits.push('unsupported-text-shadow');
+          if (parseFloat(textStyle.webkitTextStrokeWidth) !== 0)
+            limits.push('unsupported-text-stroke');
           if (parent.namespaceURI === 'http://www.w3.org/2000/svg')
             limits.push('unsupported-svg-text-ink');
           if (inactive) limits.push('inactive-component');
@@ -1342,6 +1345,10 @@ const collectContrastFrameInScope = async (
         placeholderLimits.push('unsupported-placeholder-text-fill-color');
       if (placeholderStyle && placeholderStyle.textShadow !== 'none')
         placeholderLimits.push('unsupported-placeholder-text-shadow');
+      if (placeholderStyle && parseFloat(placeholderStyle.webkitTextStrokeWidth) !== 0)
+        placeholderLimits.push('unsupported-placeholder-text-stroke');
+      if (placeholderStyle && !(parseFloat(placeholderStyle.fontSize) > 0))
+        placeholderLimits.push('unsupported-placeholder-font-size');
       if (inactive) placeholderLimits.push('inactive-component');
       const placeholder = placeholderStyle
         ? {
@@ -1367,9 +1374,11 @@ const collectContrastFrameInScope = async (
         : '';
       const textLimits = [...backdrop.limits, ...visibility.limits, ...text.limits];
       if (text.alpha !== 1) textLimits.push('unsupported-translucent-text-ink');
+      if (!(parseFloat(style.fontSize) > 0)) textLimits.push('unsupported-font-size');
       if (inactive) textLimits.push('inactive-component');
       if (style.webkitTextFillColor !== style.color) textLimits.push('unsupported-text-fill-color');
       if (style.textShadow !== 'none') textLimits.push('unsupported-text-shadow');
+      if (parseFloat(style.webkitTextStrokeWidth) !== 0) textLimits.push('unsupported-text-stroke');
       if (
         nativeText &&
         (element.scrollLeft || element.scrollTop || parseFloat(style.textIndent) !== 0)

@@ -774,11 +774,12 @@ async function passiveSurfaceObservation(
   }));
   return page.evaluate(
     (input) => {
-      const boundary = (
+      const probe = (
         globalThis as typeof globalThis & {
           puiContrastProbe: typeof import('./contrast-probe.browser');
         }
-      ).puiContrastProbe.readContrastAuditSubject(input.subject);
+      ).puiContrastProbe;
+      const boundary = probe.readContrastAuditSubject(input.subject);
       const { content, retained, shell, owner, generation } = boundary;
       const ready = boundary.observation.achieved;
       const surfaces = [...document.querySelectorAll<HTMLElement>('[data-pui-root]')]
@@ -795,14 +796,18 @@ async function passiveSurfaceObservation(
         .map((element) => {
           const rect = element.getBoundingClientRect();
           const own = getComputedStyle(element);
+          const paintVisibility = probe.readContrastPaintedVisibility(element);
           let visible =
+            paintVisibility.visible &&
             own.visibility === 'visible' &&
             [...element.getClientRects()].some((box) => box.width > 0 && box.height > 0);
           let left = 0,
             top = 0,
             right = innerWidth,
             bottom = innerHeight;
-          const limits: string[] = [];
+          // Shared calibrated paint-domain limits apply to passive regions too.
+          // Keep this reader's additional conservative region restrictions.
+          const limits: string[] = [...paintVisibility.limits];
           const ancestorPrototypeIds: string[] = [];
           for (
             let current: HTMLElement | null = element;
@@ -906,6 +911,7 @@ async function passiveSurfaceObservation(
                 }
               : {}),
             visible,
+            paintVisibility,
             bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
             visibilityLimits: [...new Set(limits)],
           };
