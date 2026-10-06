@@ -233,7 +233,43 @@ function selectSurfaceStyle(element: HTMLElement, kind: 'root' | 'trigger' | 'va
   };
 }
 
+const nativeFallbackFocusLeases = new WeakMap<HTMLElement, () => void>();
+
+/** Finish a reader's already-focused native navigation before changing its
+ * activation semantics to a Select. The prepared Select stays out of layout
+ * and the accessibility tree until that native interaction actually ends. */
+function retainFocusedNativeSelectFallback(root: SiteSelectRoot): void {
+  const fallback = root.nextElementSibling;
+  const document = root.ownerDocument;
+  if (
+    !fallback?.matches('[data-site-select-fallback]') ||
+    !fallback.contains(document.activeElement)
+  ) {
+    nativeFallbackFocusLeases.get(root)?.();
+    return;
+  }
+  if (nativeFallbackFocusLeases.has(root)) return;
+  root.dataset.siteSelectFallbackRetained = 'true';
+  const release = () => {
+    fallback.removeEventListener('focusout', onFocusOut);
+    delete root.dataset.siteSelectFallbackRetained;
+    nativeFallbackFocusLeases.delete(root);
+  };
+  const onFocusOut = (event: Event) => {
+    const next = (event as FocusEvent).relatedTarget;
+    if (next instanceof Node && fallback.contains(next)) return;
+    // A Surface publication synchronously moves and restores the same native
+    // node. Observe the completed focus transaction, never guess with a timer.
+    queueMicrotask(() => {
+      if (!fallback.isConnected || !fallback.contains(document.activeElement)) release();
+    });
+  };
+  fallback.addEventListener('focusout', onFocusOut);
+  nativeFallbackFocusLeases.set(root, release);
+}
+
 function initializeSelect(root: SiteSelectRoot): void {
+  retainFocusedNativeSelectFallback(root);
   const family = root.localName.includes('brutalist') ? 'brutalist' : 'shadcn';
   root.dataset.siteControlFamily = family;
   const initialized = root.dataset.siteShadcnInitialized === '1';

@@ -77,7 +77,7 @@ const labelId = `language-select-label-${Math.random().toString(36).slice(2)}`;
       }
     </SelectContent>
   </SelectRoot>
-  <span class="language-select-fallback">
+  <span class="language-select-fallback" data-site-select-fallback>
     {
       localeOptions
         .filter((option) => !option.isCurrent)
@@ -91,7 +91,13 @@ const labelId = `language-select-label-${Math.random().toString(36).slice(2)}`;
 </div>
 
 <style>
-  .language-select-wrapper [data-site-shadcn-initialized='1'] ~ .language-select-fallback {
+  .language-select-wrapper
+    [data-site-shadcn-initialized='1']:not([data-site-select-fallback-retained])
+    + .language-select-fallback {
+    display: none;
+  }
+
+  .language-select-wrapper [data-site-select-root][data-site-select-fallback-retained] {
     display: none;
   }
 

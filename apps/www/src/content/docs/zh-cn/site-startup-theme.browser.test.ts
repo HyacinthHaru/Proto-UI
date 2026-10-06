@@ -279,6 +279,7 @@ for (const width of [2048, 390, 430]) {
           isNative,
         });
         let focusedHref: string | null = null;
+        let nativeFocusRetained: (() => Promise<boolean>) | undefined;
         if (isNative) {
           await fallback.press('Enter');
           expect(await page.locator('[data-site-header-settings]').isVisible()).toBe(true);
@@ -292,6 +293,10 @@ for (const width of [2048, 390, 430]) {
           const link = page.locator('[data-site-header-settings] a[href]').first();
           await link.focus();
           focusedHref = await link.getAttribute('href');
+          const nativeNode = await link.elementHandle();
+          if (nativeNode)
+            nativeFocusRetained = () =>
+              nativeNode.evaluate((node) => node.isConnected && node === document.activeElement);
         }
         release();
         await page.waitForLoadState('load');
@@ -324,6 +329,28 @@ for (const width of [2048, 390, 430]) {
           expect(await page.evaluate(() => document.activeElement?.getAttribute('href'))).toBe(
             focusedHref
           );
+          if (route.includes('/card/')) {
+            expect(await nativeFocusRetained?.()).toBe(true);
+            const locale = page.locator('.language-select-wrapper');
+            const nativeFallback = locale.locator('[data-site-select-fallback]');
+            const realSelect = locale.locator('[data-site-select-root]');
+            expect(await nativeFallback.isVisible()).toBe(true);
+            expect(await realSelect.isVisible()).toBe(false);
+            expect(await locale.getByRole('combobox').count()).toBe(0);
+            if (width === 2048) {
+              await page.keyboard.press('Enter');
+              await page.waitForURL(`${baseUrl}${focusedHref}`);
+              expect(new URL(page.url()).pathname).toBe(focusedHref);
+            } else {
+              await page.keyboard.press(width === 390 ? 'Tab' : 'Shift+Tab');
+              await expect.poll(() => realSelect.isVisible()).toBe(true);
+              expect(await nativeFallback.isVisible()).toBe(false);
+              expect(await locale.getByRole('combobox').count()).toBe(1);
+              expect(await page.evaluate(() => document.activeElement === document.body)).toBe(
+                false
+              );
+            }
+          }
         }
       } finally {
         release();
