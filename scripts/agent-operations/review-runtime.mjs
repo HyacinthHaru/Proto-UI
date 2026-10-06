@@ -1,10 +1,7 @@
-import {
-  ownerAuthorizationFromArgs,
-  ownerAuthorizationAllows,
-  ownerSkillEligibility,
-} from './owner-authorization.mjs';
+import { ownerAuthorizationAllows } from './owner-authorization.mjs';
 import { createHash } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
+import { assertModelTraceDisclosure, assertModelTraceFresh } from './modeltrace.mjs';
 
 // Match the existing governed live-response bound for this supplied artifact.
 export const MAX_PUBLISHED_REVIEW_PACKET_BYTES = 64 * 1024 * 1024;
@@ -1385,10 +1382,20 @@ export function authorizeReviewSubmission({
   dcoConclusion,
   ownerAuthorization = null,
   priorPacket = null,
+  modelTrace,
+  modelTraceContext,
 }) {
   assert(['human-assisted', 'autonomous'].includes(executionMode), 'execution mode is invalid');
   validateReviewMutationInput(input);
   validateReviewPacket(packet, input);
+  assertModelTraceFresh(modelTrace, modelTraceContext, { repositoryId: packet.repositoryId });
+  if (packet.schemaVersion !== 2)
+    return {
+      allowed: false,
+      reason:
+        'current Agent review writes require a schema v2 evidence packet; legacy v1 is read-only',
+    };
+  assertModelTraceDisclosure(renderReviewBody(packet), modelTrace);
   verifyLiveReviewInput(packet, liveInput);
   const revision = inspectReviewRevision(packet, input, liveInput.headSha, null, liveInput.baseSha);
   if (revision.stale) {
@@ -1642,11 +1649,14 @@ export function authorizePullRequestMerge({
   dcoConclusion,
   mergeable,
   mergeStateStatus,
+  modelTrace,
+  modelTraceContext,
   ownerAuthorization = null,
 }) {
   assert(['human-assisted', 'autonomous'].includes(executionMode), 'execution mode is invalid');
   validateReviewMutationInput(input);
   validateReviewPacket(packet, input);
+  assertModelTraceFresh(modelTrace, modelTraceContext, { repositoryId: packet.repositoryId });
   verifyLiveReviewInput(packet, liveInput);
   const revision = inspectReviewRevision(packet, input, liveInput.headSha, null, liveInput.baseSha);
   if (revision.stale) {
