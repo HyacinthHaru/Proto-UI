@@ -179,6 +179,13 @@ function commitWebComponentChildren(args: {
   }
 
   if (isSlotOnly(children)) {
+    const projector = getSlotProjector();
+    if (projector) {
+      // Preserve caller nodes before dropping the previous owned-node boundary.
+      // An initial slot-only view has no projector and leaves its children alone.
+      const slotPool = projector.collectSlotPoolBeforeCommit();
+      root.replaceChildren(...slotPool);
+    }
     clearSlotProjector();
     eventGate.enable();
     return;
