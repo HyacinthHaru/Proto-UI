@@ -462,6 +462,15 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   private syncCenter() {
+    // Readiness can arrive during setup before any Focus role is declared.
+    // Such a partially constructed module owns no Center entry to publish.
+    if (
+      !this.focusableDeclared &&
+      !this.entryDeclared &&
+      !this.scopeDeclared &&
+      !this.rovingDeclared
+    )
+      return;
     const entry = this.createCenterEntry();
     if (!entry) return;
     FOCUS_CENTER.upsert(entry);
@@ -1255,12 +1264,16 @@ class FocusModuleImpl extends ModuleBase {
       this.cancelFocusOperation('target');
       if (this.pendingFocusRequest?.kind === 'target') this.clearPendingFocus();
     }
+    const operation = this.focusOperation;
+    const epoch = this.focusFactsEpoch;
     this.setFocusState(this.focusableOwned, this.focusableDeclared && !disabled, reason, {
       defaultOnly: this.sys?.execPhase?.() === 'setup',
     });
     // State observers can re-enable and acquire before this transition resumes.
     if (this.focusableConfig !== config) return;
-    if (disabled) this.blurTarget();
+    if (disabled && operation === this.focusOperation && epoch === this.focusFactsEpoch) {
+      this.blurTarget();
+    }
     if (this.focusableConfig !== config) return;
     this.syncHostFocusable();
     if (this.focusableConfig !== config) return;
