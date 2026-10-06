@@ -251,7 +251,7 @@ describe.sequential('Website Demo Matrix browser smoke', () => {
       await waitForMatrix(page);
       const facts = await readMatrixFacts(page);
       expect(facts.demos).toBeGreaterThan(0);
-      // D-IMAGE-VIEW-PROJECTION-0001-E admits all four official Web adapters.
+      // The internal matrix deliberately compares each prototype across supported Web adapters.
       expect(facts.unavailable).toEqual([]);
       expect(facts.previewers).toBe(facts.demos * RUNTIMES.length);
       expect(facts.initialized).toBe(facts.previewers);
@@ -273,7 +273,7 @@ describe.sequential('Website Demo Matrix browser smoke', () => {
         ).toBe(true);
         expect(
           new Set(signatures.map((signature) => JSON.stringify(signature))).size,
-          `${demoId} accessible controls differ across runtimes: ${JSON.stringify(signatures)}`
+          `${demoId} accessible controls differ across runtimes: ${JSON.stringify(Object.fromEntries(RUNTIMES.map((runtime, index) => [runtime, signatures[index]])))}`
         ).toBeLessThanOrEqual(1);
       }
 

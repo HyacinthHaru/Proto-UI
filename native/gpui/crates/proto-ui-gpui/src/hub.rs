@@ -967,9 +967,10 @@ impl ProtoHostView {
             .sessions
             .iter()
             .flat_map(|(_, session)| session.config.slots.values().flatten())
-            .filter_map(|child| match child {
-                SurfaceChild::Session(session) => Some(session.clone()),
-                _ => None,
+            .flat_map(|child| match child {
+                SurfaceChild::Session(session) => vec![session.clone()],
+                SurfaceChild::Surface(surface) => surface.placed_sessions(),
+                SurfaceChild::Text(_) => Vec::new(),
             })
             .collect();
         self.surfaces = self
