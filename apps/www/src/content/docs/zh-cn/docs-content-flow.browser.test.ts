@@ -5,7 +5,8 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 
 const ORDINARY_FLOW_GAP_PX = 16;
-const SECTION_FLOW_GAP_PX = 64;
+// Current website reading recipe; native heading semantics and ordinary flow remain unchanged.
+const SECTION_FLOW_GAP_PX = 40;
 const GAP_TOLERANCE_PX = 0.5;
 
 const VIEWPORTS = [
@@ -116,6 +117,12 @@ async function readFlowFacts(page: Page): Promise<FlowFacts> {
 async function readSelectFacts(page: Page): Promise<SelectFacts> {
   await page.locator('[data-previewer-id][data-inited="1"]').first().waitFor({ state: 'visible' });
 
+  // data-inited marks startup admission, not the asynchronous projection commit.
+  // Observe the actual controls before measuring the completed document flow.
+  await page
+    .locator('[data-previewer-id] .pui-projection-controls')
+    .first()
+    .waitFor({ state: 'attached' });
   return page.evaluate(() => {
     const flow = document.querySelector<HTMLElement>('[data-doc-flow]');
     const previewer = flow?.querySelector<HTMLElement>(':scope > [data-previewer-id]');

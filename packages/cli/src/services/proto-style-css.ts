@@ -1,5 +1,6 @@
 const PUI_STYLE_ATTR = 'data-pui-style';
 const SYSTEM_DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)';
+const SYSTEM_REDUCED_MOTION_MEDIA_QUERY = '(prefers-reduced-motion: reduce)';
 const SYSTEM_THEME_FALLBACK_ROOT =
   ":root:not(.dark):not(.light):not([data-theme='dark']):not([data-theme='light'])";
 
@@ -71,15 +72,33 @@ const colorVars = new Set([
 ]);
 
 const staticUtilities: Record<string, string[]> = {
+  'forced-colors-focus-outline': ['outline: 2px solid transparent;', 'outline-offset: 2px;'],
+  'surface-fade': [
+    'transition-property: opacity;',
+    'transition-duration: var(--pui-surface-transition-duration, 0ms);',
+    'transition-timing-function: linear;',
+  ],
   absolute: ['position: absolute;'],
+  // A translated, 2px-bordered interactive host retains the union of its rest
+  // and painted bodies. This pseudo-element is part of the same native owner,
+  // so state updates cannot replace a child that received pointerdown.
+  'hit-envelope-translate-1': [
+    "content: '';",
+    'position: absolute;',
+    'top: calc(-0.25rem - 2px);',
+    'left: calc(-0.25rem - 2px);',
+    'right: -2px;',
+    'bottom: -2px;',
+  ],
   fixed: ['position: fixed;'],
   relative: ['position: relative;'],
   block: ['display: block;'],
   flex: ['display: flex;'],
   'inline-flex': ['display: inline-flex;'],
-  'flex-1': ['flex: 1 1 0%;'],
+  'inline-block': ['display: inline-block;'],
   grid: ['display: grid;'],
   hidden: ['display: none;'],
+  'flex-1': ['flex: 1 1 0%;'],
   'flex-col': ['flex-direction: column;'],
   'flex-row': ['flex-direction: row;'],
   'flex-wrap': ['flex-wrap: wrap;'],
@@ -128,6 +147,13 @@ const staticUtilities: Record<string, string[]> = {
     'animation-timing-function: ease;',
     'animation-fill-mode: both;',
   ],
+  'animate-spin': [
+    'animation-name: pui-spin;',
+    'animation-duration: 1000ms;',
+    'animation-timing-function: linear;',
+    'animation-iteration-count: infinite;',
+  ],
+  'animate-none': ['animation: none;'],
   'fade-in-0': ['--pui-enter-opacity: 0;'],
   'fade-out-0': ['--pui-exit-opacity: 0;'],
   'zoom-in-95': ['--pui-enter-scale: 0.95;'],
@@ -152,6 +178,11 @@ const staticUtilities: Record<string, string[]> = {
     'transition-duration: 150ms;',
   ],
   'transition-none': ['transition-property: none;'],
+  'transition-transform': [
+    'transition-property: transform;',
+    'transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);',
+    'transition-duration: 150ms;',
+  ],
   'transition-colors': [
     'transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;',
     'transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);',
@@ -160,8 +191,10 @@ const staticUtilities: Record<string, string[]> = {
   'duration-150': ['transition-duration: 150ms;', '--pui-animation-duration: 150ms;'],
   'duration-200': ['transition-duration: 200ms;', '--pui-animation-duration: 200ms;'],
   'ease-in-out': ['transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);'],
+  'font-normal': ['font-weight: 400;'],
   'font-medium': ['font-weight: 500;'],
   'font-black': ['font-weight: 900;'],
+  'font-sans': ['font-family: var(--pui-font-sans, ui-sans-serif, system-ui, sans-serif);'],
   'font-heading': ['font-family: var(--pui-font-heading, ui-sans-serif, system-ui, sans-serif);'],
   'font-semibold': ['font-weight: 600;'],
   'font-bold': ['font-weight: 700;'],
@@ -169,10 +202,17 @@ const staticUtilities: Record<string, string[]> = {
     'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;',
   ],
   uppercase: ['text-transform: uppercase;'],
+  'leading-5': ['line-height: 1.25rem;'],
   'leading-6': ['line-height: 1.5rem;'],
   'leading-relaxed': ['line-height: 1.625;'],
   'leading-none': ['line-height: 1;'],
+  'leading-tight': ['line-height: 1.25;'],
+  'leading-snug': ['line-height: 1.375;'],
+  'leading-normal': ['line-height: 1.5;'],
   'tracking-tight': ['letter-spacing: -0.025em;'],
+  'tracking-normal': ['letter-spacing: 0;'],
+  italic: ['font-style: italic;'],
+  'not-italic': ['font-style: normal;'],
   'text-left': ['text-align: left;'],
   'text-xs': ['font-size: 0.75rem;', 'line-height: 1rem;'],
   'text-sm': ['font-size: 0.875rem;', 'line-height: 1.25rem;'],
@@ -180,20 +220,35 @@ const staticUtilities: Record<string, string[]> = {
   'text-lg': ['font-size: 1.125rem;', 'line-height: 1.75rem;'],
   'text-[0.8rem]': ['font-size: 0.8rem;'],
   'text-xl': ['font-size: 1.25rem;', 'line-height: 1.75rem;'],
+  'text-2xl': ['font-size: 1.5rem;', 'line-height: 2rem;'],
+  'text-3xl': ['font-size: 1.875rem;', 'line-height: 2.25rem;'],
+  'text-4xl': ['font-size: 2.25rem;', 'line-height: 2.5rem;'],
+  'text-5xl': ['font-size: 3rem;', 'line-height: 1;'],
   underline: ['text-decoration-line: underline;'],
+  'no-underline': ['text-decoration-line: none;'],
+  'line-through': ['text-decoration-line: line-through;'],
   'underline-offset-4': ['text-underline-offset: 4px;'],
   border: ['border-width: 1px;', 'border-style: solid;'],
+  'border-0': ['border-width: 0px;'],
   'border-2': ['border-width: 2px;', 'border-style: solid;'],
   'border-b-2': ['border-bottom-width: 2px;', 'border-bottom-style: solid;'],
   'border-t-2': ['border-top-width: 2px;', 'border-top-style: solid;'],
   'border-b': ['border-bottom-width: 1px;', 'border-bottom-style: solid;'],
   'border-l-2': ['border-left-width: 2px;', 'border-left-style: solid;'],
   'border-ink': ['border-color: var(--pui-foreground);'],
+  'border-current': ['border-color: currentColor;'],
+  'border-t-transparent': ['border-top-color: transparent;'],
+  // One v0 border-color intent, lowered to the existing declaration vocabulary.
+  'border-[transparent_currentColor_currentColor_currentColor]': [
+    'border-color: currentColor;',
+    'border-top-color: transparent;',
+  ],
   'border-black': ['border-color: #000;'],
   'border-foreground': ['border-color: var(--pui-foreground);'],
   'border-transparent': ['border-color: transparent;'],
   'bg-transparent': ['background-color: transparent;'],
   'bg-black': ['background-color: #000;'],
+  'bg-white': ['background-color: #fff;'],
   'bg-foreground': ['background-color: var(--pui-foreground);'],
   'bg-canvas': ['background-color: var(--pui-background);'],
   'bg-paper': ['background-color: var(--pui-background);'],
@@ -203,6 +258,7 @@ const staticUtilities: Record<string, string[]> = {
   'bg-yellow-300': ['background-color: #fde047;'],
   'text-ink': ['color: var(--pui-foreground);'],
   'text-current': ['color: currentColor;'],
+  'text-inherit': ['color: inherit;'],
   'text-card-foreground': ['color: var(--pui-card-foreground);'],
   'text-gray-500': ['color: #6b7280;'],
   'inset-0': ['inset: 0px;'],
@@ -212,9 +268,10 @@ const staticUtilities: Record<string, string[]> = {
   'right-0': ['right: 0px;'],
   'right-full': ['right: 100%;'],
   'top-auto': ['top: auto;'],
+  'opacity-65': ['opacity: 0.65;'],
   'opacity-70': ['opacity: 0.7;'],
-  'opacity-100': ['opacity: 1;'],
   'opacity-0': ['opacity: 0;'],
+  'opacity-100': ['opacity: 1;'],
   'opacity-50': ['opacity: 0.5;'],
   'ring-inset': ['--pui-ring-inset: inset;'],
   'ring-0': ['--pui-ring-width: 0px;', ...ringShadow()],
@@ -223,6 +280,25 @@ const staticUtilities: Record<string, string[]> = {
   'ring-offset-0': ['--pui-ring-offset-width: 0px;'],
   'ring-offset-2': ['--pui-ring-offset-width: 2px;'],
   'ring-offset-background': ['--pui-ring-offset-color: var(--pui-background);'],
+  // Controlled v2.3.2 paint vocabulary: one bg token owns both fallback and image.
+  'bg-[#e6e6e6]': ['background-color: #e6e6e6;', 'background-image: none;'],
+  'bg-[#04c]': ['background-color: #04c;', 'background-image: none;'],
+  'bg-[linear-gradient(#fff,#e6e6e6)]': [
+    'background-color: #f5f5f5;',
+    'background-image: linear-gradient(to bottom, #fff, #e6e6e6);',
+  ],
+  'bg-[linear-gradient(#08c,#04c)]': [
+    'background-color: #006dcc;',
+    'background-image: linear-gradient(to bottom, #08c, #04c);',
+  ],
+  'shadow-[inset_0_1px_0_rgb(255_255_255/20%),0_1px_2px_rgb(0_0_0/5%)]': [
+    '--pui-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), 0 1px 2px rgb(0 0 0 / 0.05);',
+    ...composedShadow(),
+  ],
+  'shadow-[inset_0_2px_4px_rgb(0_0_0/15%),0_1px_2px_rgb(0_0_0/5%)]': [
+    '--pui-shadow: inset 0 2px 4px rgb(0 0 0 / 0.15), 0 1px 2px rgb(0 0 0 / 0.05);',
+    ...composedShadow(),
+  ],
   'shadow-xs': ['--pui-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);', ...composedShadow()],
   'shadow-sm': [
     '--pui-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);',
@@ -346,7 +422,24 @@ export function renderProtoStyleTokenCss(tokens: string[]): string {
     );
   }
 
+  if (
+    rules.some((rule) => {
+      const utility = splitVariants(rule.token).at(-1);
+      return utility === 'animate-spin';
+    })
+  ) {
+    lines.push(
+      '  @keyframes pui-spin {',
+      '    to {',
+      '      transform: rotate(360deg);',
+      '    }',
+      '  }',
+      ''
+    );
+  }
+
   for (const rule of rules) {
+    if (hasMotionReduceVariant(rule.token)) continue;
     const selectors = buildSelectors(rule.token);
     if (selectors.length === 0 || rule.css.length === 0) continue;
     lines.push(`  ${selectors.join(',\n  ')} {`);
@@ -355,7 +448,10 @@ export function renderProtoStyleTokenCss(tokens: string[]): string {
     lines.push('');
   }
 
-  const systemDarkRules = rules.filter((rule) => hasDarkVariant(rule.token));
+  // Reduced-motion variants must not apply under the dark preference alone.
+  const systemDarkRules = rules.filter(
+    (rule) => hasDarkVariant(rule.token) && !hasMotionReduceVariant(rule.token)
+  );
   if (systemDarkRules.length > 0) {
     lines.push(`  @media ${SYSTEM_DARK_MEDIA_QUERY} {`);
     for (const rule of systemDarkRules) {
@@ -368,6 +464,73 @@ export function renderProtoStyleTokenCss(tokens: string[]): string {
     }
     lines.push('  }');
     lines.push('');
+  }
+
+  const motionReduceRules = rules.filter((rule) => hasMotionReduceVariant(rule.token));
+  const spinRules = rules.filter((rule) => splitVariants(rule.token).at(-1) === 'animate-spin');
+  const reducedMotionBlocks: CssRule[] = [...motionReduceRules];
+  // P-BRUTALIST-SPINNER-MOTION-REDUCED-MOTION: whenever animate-spin projects,
+  // a generated @media (prefers-reduced-motion: reduce) rule removes the
+  // animation on the spinning surface itself while the open edge stays as a
+  // non-color orientation cue.
+  if (spinRules.length > 0) {
+    for (const rule of spinRules) {
+      reducedMotionBlocks.push({ token: rule.token, css: ['animation: none;'] });
+    }
+  }
+  // Switch and future transform-only transitions remain instantaneous when
+  // the host requests reduced motion. Keep host media syntax in CSS projection,
+  // never in the prototype's variant-free v0 tokens.
+  for (const rule of rules.filter(
+    (rule) => splitVariants(rule.token).at(-1) === 'transition-transform'
+  )) {
+    reducedMotionBlocks.push({ token: rule.token, css: ['transition-property: none;'] });
+  }
+  if (reducedMotionBlocks.length > 0) {
+    lines.push(`  @media ${SYSTEM_REDUCED_MOTION_MEDIA_QUERY} {`);
+    for (const rule of reducedMotionBlocks) {
+      const selectors = buildSelectors(rule.token);
+      if (selectors.length === 0 || rule.css.length === 0) continue;
+      lines.push(`    ${selectors.join(',\n    ')} {`);
+      for (const decl of rule.css) lines.push(`      ${decl}`);
+      lines.push('    }');
+      lines.push('');
+    }
+    const systemDarkMotionRules = reducedMotionBlocks.filter((rule) => hasDarkVariant(rule.token));
+    if (systemDarkMotionRules.length > 0) {
+      lines.push(`    @media ${SYSTEM_DARK_MEDIA_QUERY} {`);
+      for (const rule of systemDarkMotionRules) {
+        const selectors = buildSelectors(rule.token, { systemPreferenceFallback: true });
+        if (selectors.length === 0 || rule.css.length === 0) continue;
+        lines.push(`      ${selectors.join(',\n      ')} {`);
+        for (const decl of rule.css) lines.push(`        ${decl}`);
+        lines.push('      }');
+      }
+      lines.push('    }');
+    }
+    lines.push('  }');
+    lines.push('');
+  }
+
+  if (tokens.includes('surface-fade')) {
+    lines.push(
+      '  @media (prefers-reduced-motion: reduce) {',
+      '    :where([data-pui-style~="surface-fade"]) { transition-duration: 0ms; }',
+      '  }',
+      '  @starting-style {',
+      '    :where([data-pui-style~="surface-fade"][data-pui-style~="opacity-100"]) { opacity: 0; }',
+      '  }',
+      ''
+    );
+  }
+
+  if (tokens.includes('forced-colors-focus-outline')) {
+    lines.push(
+      '  @media (forced-colors: active) {',
+      '    :where([data-pui-style~="forced-colors-focus-outline"]) { outline-color: Highlight; }',
+      '  }',
+      ''
+    );
   }
 
   if (unknown.length > 0) {
@@ -535,6 +698,7 @@ function renderColorUtility(utility: string): string[] | null {
 }
 
 function renderRoundedUtility(utility: string): string[] | null {
+  if (utility === 'rounded-base') return ['border-radius: var(--pui-radius);'];
   if (utility === 'rounded-none') return ['border-radius: 0;'];
   if (utility === 'rounded-full') return ['border-radius: 9999px;'];
   if (utility === 'rounded-xl') return ['border-radius: var(--pui-radius-xl);'];
@@ -590,6 +754,9 @@ function buildSelectors(
       dark = true;
       continue;
     }
+    if (variant === 'motion-reduce') {
+      continue;
+    }
     selectors = selectors.flatMap((selector) => applyVariant(selector, variant));
   }
 
@@ -606,6 +773,8 @@ function buildSelectors(
     ]);
   }
 
+  if (parts.at(-1) === 'hit-envelope-translate-1')
+    selectors = selectors.map((selector) => `${selector}::before`);
   return selectors;
 }
 
@@ -613,7 +782,12 @@ function hasDarkVariant(token: string): boolean {
   return splitVariants(token).slice(0, -1).includes('dark');
 }
 
+function hasMotionReduceVariant(token: string): boolean {
+  return splitVariants(token).slice(0, -1).includes('motion-reduce');
+}
+
 function applyVariant(selector: string, variant: string): string[] {
+  if (variant === 'selection') return [`${selector}::selection`];
   if (variant === 'hover') return [`${selector}:hover`];
   if (variant === 'active') return [`${selector}:active`];
   if (variant === 'disabled') return [`${selector}:disabled`];

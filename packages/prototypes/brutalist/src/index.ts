@@ -161,6 +161,7 @@ export {
 } from './dialog';
 
 export * from './scroll-area';
+export * from './spinner';
 export * from './tooltip';
 export * from './checkbox';
 export type {
@@ -186,3 +187,8 @@ export type {
   BrutalistDialogCloseExposes,
   BrutalistDialogCloseAsHookContract,
 } from './dialog';
+export * from './text';
+
+export { default as BrutalistSurfaceRoot, surfaceRoot } from './surface';
+
+export type { SurfaceRootProps, SurfaceRootExposes } from './surface';

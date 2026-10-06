@@ -163,7 +163,9 @@ async function separatorGeometry(locator: Locator): Promise<SeparatorGeometry> {
 }
 
 function roots(previewer: Locator): Locator {
-  return previewer.locator('[data-projection-content] [data-pui-root]');
+  return previewer.locator(
+    '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+  );
 }
 
 async function expectVisibility(locator: Locator, visible: boolean, label: string): Promise<void> {
@@ -256,6 +258,7 @@ async function selectRuntimeWithDiagnostics(
 }
 
 function nonTransparentShadowLayers(boxShadow: string): string[] {
+  if (boxShadow === 'none') return [];
   return boxShadow
     .split(/,\s*(?=(?:rgba?|oklab|rgb)\()/u)
     .filter((layer) => !layer.includes('rgba(0, 0, 0, 0)'));
@@ -284,9 +287,9 @@ function parseShadowLayer(layer: string): ShadowLayer {
   };
 }
 
-function expectSquareBorder(surface: SurfaceFacts, label: string): void {
+function expectRoundedBorder(surface: SurfaceFacts, label: string): void {
   expect(surface.borderWidths, `${label}/border-widths`).toEqual(Array(4).fill('2px'));
-  expect(surface.borderRadii, `${label}/radius`).toEqual(Array(4).fill('0px'));
+  expect(surface.borderRadii, `${label}/radius`).toEqual(Array(4).fill('5px'));
 }
 
 function expectBorderColors(surface: SurfaceFacts, expectedColor: string, label: string): void {
@@ -299,8 +302,10 @@ function expectHardFrame(
   shadowColor: string,
   label: string
 ): void {
-  expectSquareBorder(surface, label);
-  expectExactHardShadow(surface.boxShadow, shadowOffset, shadowColor, label);
+  expectRoundedBorder(surface, label);
+  if (shadowOffset === 'none')
+    expect(nonTransparentShadowLayers(surface.boxShadow), `${label}/no-shadow`).toHaveLength(0);
+  else expectExactHardShadow(surface.boxShadow, shadowOffset, shadowColor, label);
 }
 
 function expectExactHardShadow(
@@ -327,7 +332,7 @@ function expectExactHardShadow(
 
 /**
  * The active Brutalist Toggle keeps a persistent, color-independent inset ink
- * frame (`inset 0 0 0 2px #000`) beside its resting outset hard shadow. This
+ * frame (`inset 0 0 0 2px #000`) on its otherwise flat surface. This
  * asserts the parsed inset layer's flag, zero-blur geometry, and black ink.
  */
 function expectInsetFrame(boxShadow: string, label: string): void {
@@ -426,7 +431,7 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
             '--pui-coral-foreground',
           ]);
           const [expectedBorder] = await resolvedThemeColors(opened.page, 'borderTopColor', [
-            '--pui-foreground',
+            '--pui-border',
           ]);
           expect(
             allFacts.map((surface) => surface.backgroundColor),
@@ -444,7 +449,10 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           ).toBe(true);
           for (const [index, surface] of allFacts.entries()) {
             const label = `${runtime}/${colorScheme}/badge-${index}`;
-            expectExactHardShadow(surface.boxShadow, '2px', expectedBorder, `${label}`);
+            expect(
+              nonTransparentShadowLayers(surface.boxShadow),
+              `${label}/no-shadow`
+            ).toHaveLength(0);
             expect(surface.role, `${label}/role`).toBeNull();
             expect(surface.tabIndex, `${label}/tabindex`).toBe(-1);
             await expectPassiveFocus(badges.nth(index), label);
@@ -452,13 +460,16 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
             expect(surface.ariaPressed, `${label}/aria-pressed`).toBeNull();
             expect(surface.ariaLive, `${label}/aria-live`).toBeNull();
             expect(surface.borderWidths, `${label}/border-widths`).toEqual(Array(4).fill('2px'));
-            expect(surface.borderRadii, `${label}/radius`).toEqual(Array(4).fill('0px'));
-            expect(surface.boxShadow, `${label}/shadow`).toContain('2px 2px 0px 0px');
+            expect(surface.borderRadii, `${label}/radius`).toEqual(Array(4).fill('5px'));
+            expect(
+              nonTransparentShadowLayers(surface.boxShadow),
+              `${label}/no-shadow`
+            ).toHaveLength(0);
             expect(surface.backgroundImage, `${label}/background-image`).toBe('none');
             expect(surface.fontFamily.split(',')[0].trim().toLowerCase(), `${label}/font`).toMatch(
-              /mono/
+              /dm sans/
             );
-            expect(surface.textTransform, `${label}/case`).toBe('uppercase');
+            expect(surface.textTransform, `${label}/case`).toBe('none');
           }
         }
       }
@@ -479,9 +490,9 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           const [expectedBackground, expectedForeground, expectedBorder] = await Promise.all([
             resolvedThemeColors(opened.page, 'backgroundColor', ['--pui-background']),
             resolvedThemeColors(opened.page, 'color', ['--pui-foreground']),
-            resolvedThemeColors(opened.page, 'borderTopColor', ['--pui-foreground']),
+            resolvedThemeColors(opened.page, 'borderTopColor', ['--pui-border']),
           ]).then(([background, foreground, border]) => [background[0], foreground[0], border[0]]);
-          expectHardFrame(surface, '6px', expectedBorder, `${runtime}/${colorScheme}/card`);
+          expectHardFrame(surface, '4px', expectedBorder, `${runtime}/${colorScheme}/card`);
           expect(surface.backgroundColor, `${runtime}/${colorScheme}/card/background`).toBe(
             expectedBackground
           );
@@ -693,8 +704,8 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
             })
           );
           const [expectedBackground, expectedBorder] = await Promise.all([
-            resolvedThemeColors(opened.page, 'backgroundColor', ['--pui-lavender']),
-            resolvedThemeColors(opened.page, 'borderTopColor', ['--pui-foreground']),
+            resolvedThemeColors(opened.page, 'backgroundColor', ['--pui-secondary-background']),
+            resolvedThemeColors(opened.page, 'borderTopColor', ['--pui-border']),
           ]).then(([background, border]) => [background[0], border[0]]);
           expect(
             await opened.previewer.locator('[data-demo-ref="skeleton-canary"]').count(),
@@ -711,17 +722,23 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
             expect(surface.ariaLive, `${label}/aria-live`).toBeNull();
             expect(surface.ariaBusy, `${label}/aria-busy`).toBeNull();
             expect(surface.borderWidths, `${label}/border-widths`).toEqual(Array(4).fill('2px'));
-            expectExactHardShadow(surface.boxShadow, '2px', expectedBorder, `${label}`);
+            expect(
+              nonTransparentShadowLayers(surface.boxShadow),
+              `${label}/no-shadow`
+            ).toHaveLength(0);
             expect(surface.borderColors, `${label}/border-colors`).toEqual(
               Array(4).fill(expectedBorder)
             );
-            expect(surface.borderRadii, `${label}/radius`).toEqual(Array(4).fill('0px'));
+            expect(surface.borderRadii, `${label}/radius`).toEqual(Array(4).fill('5px'));
             expect(surface.backgroundColor, `${label}/background`).toBe(expectedBackground);
             expect(surface.backgroundImage, `${label}/background-image`).toBe('none');
             expect(surface.animationName, `${label}/animation`).toBe('none');
             expect(surface.animationDuration, `${label}/animation-duration`).toBe('0s');
             expect(surface.transitionDuration, `${label}/transition-duration`).toBe('0s');
-            expect(surface.boxShadow, `${label}/shadow`).toContain('2px 2px 0px 0px');
+            expect(
+              nonTransparentShadowLayers(surface.boxShadow),
+              `${label}/no-shadow`
+            ).toHaveLength(0);
             expect(Number.parseFloat(surface.width), `${label}/width`).toBeGreaterThan(0);
             expect(Number.parseFloat(surface.height), `${label}/height`).toBeGreaterThan(0);
           }
@@ -738,6 +755,47 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
       for (const runtime of TEST_RUNTIMES) {
         await selectRuntime(opened.page, opened.previewer, runtime, '[data-pui-root]', 4);
         const toggles = roots(opened.previewer);
+        // Closing the runtime menu can leave the pointer over a newly mounted
+        // Toggle. Preserve that real input state before establishing the resting
+        // precondition; the exact resting shadow assertions below stay unchanged.
+        const inputStateAfterRuntimeSelection = await toggles.evaluateAll((elements) =>
+          elements.map((element, index) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              index,
+              label: element.textContent?.trim(),
+              hovered: element.getAttribute('data-hovered'),
+              pressed: element.getAttribute('data-pressed'),
+              focusVisible: element.getAttribute('data-focus-visible'),
+              pointerOverSurface: element.matches(':hover'),
+              boxShadow: getComputedStyle(element).boxShadow,
+              bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+            };
+          })
+        );
+        console.log(
+          '[Brutalist Toggle before resting measurement]',
+          JSON.stringify({ runtime, surfaces: inputStateAfterRuntimeSelection })
+        );
+        await opened.page.mouse.move(0, 0);
+        await opened.page.waitForFunction(
+          () => {
+            const controls = document.querySelectorAll(
+              '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+            );
+            return (
+              controls.length === 4 &&
+              [...controls].every(
+                (element) =>
+                  !element.hasAttribute('data-hovered') &&
+                  !element.hasAttribute('data-pressed') &&
+                  !element.matches(':hover')
+              )
+            );
+          },
+          undefined,
+          { timeout: 10_000 }
+        );
         const factsBefore = await toggles.evaluateAll((elements) =>
           elements.map((element) => {
             const style = getComputedStyle(element);
@@ -828,14 +886,11 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           expect(surface.borderColors, `${label}/border-colors`).toEqual(
             Array(4).fill('rgb(0, 0, 0)')
           );
-          expect(surface.borderRadii, `${label}/radius`).toEqual(Array(4).fill('0px'));
-          expectExactHardShadow(
-            surface.boxShadow,
-            '3px',
-            'rgb(0, 0, 0)',
-            label,
-            index === 1 ? 2 : 1
-          );
+          expect(surface.borderRadii, `${label}/radius`).toEqual(Array(4).fill('5px'));
+          expect(
+            nonTransparentShadowLayers(surface.boxShadow),
+            `${label}/flat-active-marker`
+          ).toHaveLength(index === 1 ? 1 : 0);
           expect(surface.backdropFilter, `${label}/backdrop-filter`).toBe('none');
           if (index === 1) {
             expectInsetFrame(surface.boxShadow, label);
@@ -875,7 +930,7 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           (target) =>
             target instanceof HTMLElement &&
             !target.hasAttribute('data-hovered') &&
-            getComputedStyle(target).boxShadow.includes('3px 3px 0px 0px'),
+            getComputedStyle(target).boxShadow === 'none',
           firstElement,
           { timeout: 10_000 }
         );
@@ -957,13 +1012,10 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           expect(surface.borderColors, `${label}/border-colors`).toEqual(
             Array(4).fill('rgb(0, 0, 0)')
           );
-          expectExactHardShadow(
-            surface.boxShadow,
-            '3px',
-            'rgb(0, 0, 0)',
-            label,
-            index === 1 ? 2 : 1
-          );
+          expect(
+            nonTransparentShadowLayers(surface.boxShadow),
+            `${label}/flat-active-marker`
+          ).toHaveLength(index === 1 ? 1 : 0);
           expect(surface.backdropFilter, `${label}/backdrop-filter`).toBe('none');
           if (index === 1) {
             expectInsetFrame(surface.boxShadow, label);
@@ -988,7 +1040,9 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           '[data-pui-root]',
           3
         );
-        const nodes = opened.previewer.locator('[data-projection-content] [data-pui-root]');
+        const nodes = opened.previewer.locator(
+          '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+        );
         const trigger = nodes.nth(1);
         await opened.page.mouse.move(5, 5);
         const triggerElement = await trigger.elementHandle();
@@ -999,12 +1053,12 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
             !target.hasAttribute('data-hovered') &&
             !target.hasAttribute('data-pressed') &&
             !target.hasAttribute('data-open') &&
-            getComputedStyle(target).boxShadow.includes('3px 3px 0px 0px'),
+            getComputedStyle(target).boxShadow.includes('4px 4px 0px 0px'),
           triggerElement,
           { timeout: 10_000 }
         );
         const panelText = opened.page
-          .getByText('A square hard-shadowed preview panel.', { exact: true })
+          .getByText('A rounded, flat preview panel.', { exact: true })
           .last();
         const triggerSurface = await facts(trigger);
         const [expectedTriggerBackground] = await resolvedThemeColors(
@@ -1028,9 +1082,9 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           'none'
         );
         expectBorderColors(triggerSurface, 'rgb(0, 0, 0)', `${runtime}/hover-trigger`);
-        expect(triggerSurface.fontWeight, `${runtime}/hover-trigger/weight`).toBe('700');
-        expect(triggerSurface.textTransform, `${runtime}/hover-trigger/case`).toBe('uppercase');
-        expectHardFrame(triggerSurface, '3px', 'rgb(0, 0, 0)', `${runtime}/hover-trigger`);
+        expect(triggerSurface.fontWeight, `${runtime}/hover-trigger/weight`).toBe('500');
+        expect(triggerSurface.textTransform, `${runtime}/hover-trigger/case`).toBe('none');
+        expectHardFrame(triggerSurface, '4px', 'rgb(0, 0, 0)', `${runtime}/hover-trigger`);
         expect(triggerSurface.role, `${runtime}/hover-trigger/role`).toBeNull();
         expect(triggerSurface.tabIndex, `${runtime}/hover-trigger/tabindex`).toBeGreaterThanOrEqual(
           0
@@ -1046,12 +1100,12 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
         const [expectedPanelBackground] = await resolvedThemeColors(
           opened.page,
           'backgroundColor',
-          ['--pui-secondary-background']
+          ['--pui-background']
         );
         const [expectedPanelForeground] = await resolvedThemeColors(opened.page, 'color', [
           '--pui-foreground',
         ]);
-        expectHardFrame(panelSurface, '3px', 'rgb(0, 0, 0)', `${runtime}/hover-panel`);
+        expectHardFrame(panelSurface, 'none', 'rgb(0, 0, 0)', `${runtime}/hover-panel`);
         expect(panelSurface.backgroundColor, `${runtime}/hover-panel/background`).toBe(
           expectedPanelBackground
         );
@@ -1083,7 +1137,7 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           '0.2s'
         );
 
-        await trigger.dispatchEvent('pointerleave');
+        await opened.page.mouse.move(5, 5);
         await expectVisibility(panelText, false, `${runtime}/hover-pointer-close`);
         await trigger.focus();
         expect(
@@ -1092,11 +1146,13 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
         ).toBe(true);
         await expectVisibility(panelText, true, `${runtime}/hover-focus-open`);
         await trigger.evaluate((element) => (element as HTMLElement).blur());
-        await trigger.dispatchEvent('pointerleave');
+        await opened.page.mouse.move(5, 5);
         await expectVisibility(panelText, false, `${runtime}/hover-focus-close`);
         await applyColorScheme(opened.page, 'dark');
         const darkTrigger = opened.previewer
-          .locator('[data-projection-content] [data-pui-root]')
+          .locator(
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+          )
           .nth(1);
         const darkTriggerElement = await darkTrigger.elementHandle();
         if (!darkTriggerElement) throw new Error('Dark Hover Card trigger was not materialized.');
@@ -1106,19 +1162,19 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
             !target.hasAttribute('data-hovered') &&
             !target.hasAttribute('data-pressed') &&
             !target.hasAttribute('data-focus-visible') &&
-            getComputedStyle(target).boxShadow.includes('3px 3px 0px 0px'),
+            getComputedStyle(target).boxShadow.includes('4px 4px 0px 0px'),
           darkTriggerElement,
           { timeout: 10_000 }
         );
         const darkTriggerRestSurface = await facts(darkTrigger);
         expectHardFrame(
           darkTriggerRestSurface,
-          '3px',
+          '4px',
           'rgb(0, 0, 0)',
           `${runtime}/dark/hover-trigger/rest`
         );
         const darkPanelText = opened.page
-          .getByText('A square hard-shadowed preview panel.', { exact: true })
+          .getByText('A rounded, flat preview panel.', { exact: true })
           .last();
         await darkTrigger.focus();
         await expectVisibility(darkPanelText, true, `${runtime}/dark/hover-focus-open`);
@@ -1144,7 +1200,7 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           darkTriggerSurface.backdropFilter,
           `${runtime}/dark/hover-trigger/backdrop-filter`
         ).toBe('none');
-        expectSquareBorder(darkTriggerSurface, `${runtime}/dark/hover-trigger`);
+        expectRoundedBorder(darkTriggerSurface, `${runtime}/dark/hover-trigger`);
         expectBorderColors(darkTriggerSurface, 'rgb(0, 0, 0)', `${runtime}/dark/hover-trigger`);
         expect(
           darkPanelSurface.backgroundImage,
@@ -1157,13 +1213,13 @@ describe.sequential('remaining Brutalist component browser coverage', () => {
           darkPanelSurface.animationDuration,
           `${runtime}/dark/hover-panel/animation-duration`
         ).toBe('0.2s');
-        expectHardFrame(darkPanelSurface, '3px', 'rgb(0, 0, 0)', `${runtime}/dark/hover-panel`);
+        expectHardFrame(darkPanelSurface, 'none', 'rgb(0, 0, 0)', `${runtime}/dark/hover-panel`);
         expectBorderColors(darkPanelSurface, 'rgb(0, 0, 0)', `${runtime}/dark/hover-panel`);
         expect(darkPanelSurface.outlineColor, `${runtime}/dark/hover-panel/outline-color`).toBe(
           'rgba(0, 0, 0, 0)'
         );
         const [darkPanelBackground] = await resolvedThemeColors(opened.page, 'backgroundColor', [
-          '--pui-secondary-background',
+          '--pui-background',
         ]);
         const [darkPanelForeground] = await resolvedThemeColors(opened.page, 'color', [
           '--pui-foreground',

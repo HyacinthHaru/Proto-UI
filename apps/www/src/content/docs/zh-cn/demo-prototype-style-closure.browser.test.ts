@@ -1,6 +1,8 @@
 // @vitest-environment node
 
-import type { Browser, BrowserContext, Page } from 'playwright-core';
+import { mkdir, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import type { Browser, BrowserContext, Page, Response } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import {
   COLOR_SCHEMES,
@@ -12,6 +14,7 @@ import {
 } from './browser-harness';
 
 const ROUTE = '/en/test/style-isolation/';
+const WEBSITE_ROUTE = '/en/ui-libraries/shadcn/select/';
 const VIEWPORT = { width: 1440, height: 1200 };
 const CONSUMER_THEME_PAINT = {
   light: {
@@ -29,31 +32,88 @@ let context: BrowserContext;
 let page: Page;
 let baseUrl = '';
 
-async function openStandaloneTheme(colorScheme: ColorScheme): Promise<void> {
-  await page.emulateMedia({ colorScheme });
-  await page.goto(`${baseUrl}${ROUTE}?theme=${colorScheme}`, { waitUntil: 'networkidle' });
-  await page.waitForFunction(
-    () =>
-      document.documentElement.dataset.styleIsolationReady === 'true' ||
-      document.documentElement.dataset.styleIsolationReady === 'error',
-    undefined,
-    { timeout: 90_000 }
-  );
-  const fixture = await page.evaluate(() => ({
-    error: document.documentElement.dataset.styleIsolationError ?? null,
-    theme: document.documentElement.dataset.theme ?? null,
-  }));
-  if (fixture.error) throw new Error(`Style-isolation fixture failed to mount:\n${fixture.error}`);
-  expect(fixture.theme, 'consumer theme must be active before Adapter mount').toBe(colorScheme);
-  await page.evaluate(
-    () =>
-      new Promise<void>((resolve) =>
-        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
-      )
-  );
-  // Textarea and Button intentionally transition color for 150ms. This suite
-  // verifies stable endpoints, not an arbitrary in-flight interpolation.
-  await page.waitForTimeout(200);
+type ThemeJourneyBudget = { navigationMs: number; readyMs: number };
+
+async function openStandaloneTheme(
+  colorScheme: ColorScheme,
+  budget?: ThemeJourneyBudget
+): Promise<void> {
+  const started = performance.now();
+  const requestedUrl = `${baseUrl}${ROUTE}?theme=${colorScheme}`;
+  let httpStatus: number | null = null;
+  const responseObserved = (response: Response) => {
+    if (response.request().isNavigationRequest() && response.frame() === page.mainFrame()) {
+      httpStatus = response.status();
+    }
+  };
+  const stage = async <T>(name: string, action: () => Promise<T>): Promise<T> => {
+    if (!budget) return action();
+    const stageStarted = performance.now();
+    const report = (state: string, error?: unknown) =>
+      console.info(
+        '[style-endpoint-journey]',
+        JSON.stringify({
+          colorScheme,
+          stage: name,
+          state,
+          requestedUrl,
+          route: page.url(),
+          httpStatus,
+          stageElapsedMs: Math.round(performance.now() - stageStarted),
+          totalElapsedMs: Math.round(performance.now() - started),
+          ...(error === undefined ? {} : { error: String(error) }),
+        })
+      );
+    report('started');
+    try {
+      const result = await action();
+      report('passed');
+      return result;
+    } catch (error) {
+      report('failed', error);
+      throw error;
+    }
+  };
+  if (budget) page.on('response', responseObserved);
+  try {
+    await stage('emulate-media', () => page.emulateMedia({ colorScheme }));
+    await stage('navigation', async () => {
+      const response = await page.goto(requestedUrl, {
+        waitUntil: 'networkidle',
+        ...(budget ? { timeout: budget.navigationMs } : {}),
+      });
+      httpStatus = response?.status() ?? httpStatus;
+    });
+    await stage('ready', async () => {
+      await page.waitForFunction(
+        () =>
+          document.documentElement.dataset.styleIsolationReady === 'true' ||
+          document.documentElement.dataset.styleIsolationReady === 'error',
+        undefined,
+        { timeout: budget?.readyMs ?? 90_000 }
+      );
+      const fixture = await page.evaluate(() => ({
+        error: document.documentElement.dataset.styleIsolationError ?? null,
+        theme: document.documentElement.dataset.theme ?? null,
+      }));
+      if (fixture.error)
+        throw new Error(`Style-isolation fixture failed to mount:\n${fixture.error}`);
+      expect(fixture.theme, 'consumer theme must be active before Adapter mount').toBe(colorScheme);
+    });
+    await stage('stable-paint', async () => {
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+          )
+      );
+      // Existing endpoint settling for the intentional 150ms color transition.
+      // No extra sleep or retry is added by the bounded journey diagnostics.
+      await page.waitForTimeout(200);
+    });
+  } finally {
+    if (budget) page.off('response', responseObserved);
+  }
 }
 
 type TokenPaint = {
@@ -94,7 +154,7 @@ async function readTokenPaint(): Promise<TokenPaint> {
 }
 
 beforeAll(async () => {
-  baseUrl = await startServer(ROUTE);
+  baseUrl = await startServer([ROUTE, WEBSITE_ROUTE]);
   browser = await launchBrowser();
   context = await browser.newContext({ viewport: VIEWPORT });
   page = await context.newPage();
@@ -232,35 +292,176 @@ describe.sequential('Prototype style closure without Website CSS', () => {
     }
   });
 
-  it('keeps Website theme defaults below consumer layers when Starlight declares first', async () => {
+  it('keeps Website Prototype defaults below normalized consumer layers when Starlight declares first', async () => {
     // T-PROTOTYPE-STYLE-CLOSURE-0001-CASE-CASCADE-LAYER-OWNERSHIP
-    await page.goto(`${baseUrl}/en/ui-libraries/shadcn/select/`, { waitUntil: 'networkidle' });
+    const observations = [];
+    const evidenceDir = process.env.PROTO_UI_STYLE_LAYER_EVIDENCE_DIR;
+    if (evidenceDir) await mkdir(evidenceDir, { recursive: true });
+    for (const colorScheme of COLOR_SCHEMES) {
+      await page.emulateMedia({ colorScheme });
+      await page.goto(`${baseUrl}${WEBSITE_ROUTE}`, { waitUntil: 'networkidle' });
+      await page.waitForFunction(
+        (theme) => document.documentElement.dataset.theme === theme,
+        colorScheme
+      );
 
-    const layerWinner = await page.evaluate(() => {
-      const style = document.createElement('style');
-      style.textContent = `
+      // A real consumer fixture in the integrated Starlight host. Classes enter
+      // through DemoNode.className's normalized Adapter channel, never by
+      // mutating a rendered control or replacing generated Prototype CSS.
+      const fixture = await page.evaluateHandle(async (runtimes) => {
+        const rendererUrl = '/src/components/PrototypePreviewer/demo-renderer.ts';
+        const modulesUrl = '/src/components/PrototypePreviewer/prototype-modules.ts';
+        // Vitest rewrites lexical import() for its Node SSR runner. Keep this
+        // fixture's module loading in the real browser realm instead.
+        const browserImport = new Function('url', 'return import(url)') as (
+          url: string
+        ) => Promise<unknown>;
+        const { renderDemo } = (await browserImport(
+          rendererUrl
+        )) as typeof import('../../../components/PrototypePreviewer/demo-renderer');
+        const { loadPrototypes } = (await browserImport(
+          modulesUrl
+        )) as typeof import('../../../components/PrototypePreviewer/prototype-modules');
+        await loadPrototypes(['shadcn-textarea-root']);
+        const root = document.createElement('section');
+        root.dataset.styleLayerFixture = '';
+        root.style.cssText =
+          'display: grid; gap: 16px; width: 760px; max-width: 100%; padding: 16px';
+        document.querySelector('main')!.append(root);
+        const style = document.createElement('style');
+        style.textContent = `
         @layer theme {
           [data-layer-order-probe] { --layer-order-probe: theme; }
         }
         @layer utilities {
           [data-layer-order-probe] { --layer-order-probe: consumer; }
+          .pui-layer-utilities { padding: 5px 7px; }
+        }
+        @layer components {
+          .pui-layer-components { padding: 24px 32px; }
         }
       `;
-      document.head.append(style);
-
-      const probe = document.createElement('div');
-      probe.dataset.layerOrderProbe = '';
-      document.body.append(probe);
-      return getComputedStyle(probe).getPropertyValue('--layer-order-probe').trim();
-    });
-
-    expect(layerWinner).toBe('consumer');
-  });
+        document.head.append(style);
+        const probe = document.createElement('div');
+        probe.dataset.layerOrderProbe = '';
+        root.append(probe);
+        const views: Awaited<ReturnType<typeof renderDemo>>[] = [];
+        try {
+          const runtimesObserved = [];
+          for (const runtime of runtimes) {
+            const host = document.createElement('div');
+            root.append(host);
+            views.push(
+              await renderDemo({
+                host,
+                runtime,
+                demo: {
+                  type: 'demo',
+                  root: {
+                    kind: 'box',
+                    children: [
+                      { kind: 'box', children: [`${runtime}: default / components / utilities`] },
+                      ...['', 'pui-layer-components', 'pui-layer-utilities'].map((className) => ({
+                        kind: 'proto' as const,
+                        prototypeId: 'shadcn-textarea-root',
+                        className,
+                        props: {
+                          defaultValue: `${runtime}: ${className || 'Prototype default'}`,
+                          rows: 2,
+                        },
+                      })),
+                    ],
+                  },
+                },
+              })
+            );
+            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+            const controls = [...host.querySelectorAll<HTMLTextAreaElement>('textarea')];
+            const read = (control: HTMLTextAreaElement) => {
+              const computed = getComputedStyle(control);
+              return {
+                padding: computed.padding,
+                projected: Boolean(control.dataset.puiStyle),
+                inlinePadding: control.style.getPropertyValue('padding'),
+                inlinePriority: control.style.getPropertyPriority('padding'),
+              };
+            };
+            if (controls.length !== 3) throw new Error(`${runtime}: expected three real Textareas`);
+            runtimesObserved.push({
+              runtime,
+              defaults: read(controls[0]),
+              components: {
+                ...read(controls[1]),
+                normalizedClass: controls[1].classList.contains('pui-layer-components'),
+              },
+              utilities: {
+                ...read(controls[2]),
+                normalizedClass: controls[2].classList.contains('pui-layer-utilities'),
+              },
+            });
+          }
+          return {
+            layerWinner: getComputedStyle(probe).getPropertyValue('--layer-order-probe').trim(),
+            runtimesObserved,
+            async cleanup() {
+              for (const view of views.reverse()) await view.destroy();
+              root.remove();
+              style.remove();
+            },
+          };
+        } catch (error) {
+          for (const view of views.reverse()) await view.destroy();
+          root.remove();
+          style.remove();
+          throw error;
+        }
+      }, RUNTIMES);
+      try {
+        observations.push({
+          colorScheme,
+          ...(await fixture.evaluate(({ cleanup: _cleanup, ...measured }) => measured)),
+        });
+        if (evidenceDir) {
+          await page
+            .locator('[data-style-layer-fixture]')
+            .screenshot({ path: path.join(evidenceDir, `${colorScheme}.png`) });
+        }
+      } finally {
+        await fixture.evaluate(async (subject) => subject.cleanup());
+        await fixture.dispose();
+      }
+    }
+    if (evidenceDir)
+      await writeFile(
+        path.join(evidenceDir, 'observations.json'),
+        JSON.stringify(observations, null, 2)
+      );
+    const expectedControl = { projected: true, inlinePadding: '', inlinePriority: '' };
+    for (const { colorScheme, layerWinner, runtimesObserved } of observations) {
+      expect(layerWinner, `${colorScheme}/theme control`).toBe('consumer');
+      for (const { runtime, defaults, components, utilities } of runtimesObserved) {
+        expect(defaults, `${colorScheme}/${runtime}/Prototype control`).toEqual({
+          ...expectedControl,
+          padding: '8px 12px',
+        });
+        expect(components, `${colorScheme}/${runtime}/components override`).toEqual({
+          ...expectedControl,
+          padding: '24px 32px',
+          normalizedClass: true,
+        });
+        expect(utilities, `${colorScheme}/${runtime}/utilities override`).toEqual({
+          ...expectedControl,
+          padding: '5px 7px',
+          normalizedClass: true,
+        });
+      }
+    }
+  }, 90_000);
 
   it('activates distinct Light and Dark token endpoints', async () => {
-    await openStandaloneTheme('light');
+    await openStandaloneTheme('light', { navigationMs: 10_000, readyMs: 10_000 });
     const light = await readTokenPaint();
-    await openStandaloneTheme('dark');
+    await openStandaloneTheme('dark', { navigationMs: 10_000, readyMs: 10_000 });
     const dark = await readTokenPaint();
 
     expect(light.foreground, 'foreground theme delta').not.toBe(dark.foreground);
@@ -278,7 +479,7 @@ describe.sequential('Prototype style closure without Website CSS', () => {
         colorScheme: getComputedStyle(document.documentElement).colorScheme,
       }))
     ).toEqual({ theme: 'dark', colorScheme: 'dark' });
-  });
+  }, 30_000);
 
   for (const colorScheme of COLOR_SCHEMES) {
     it(`keeps Textarea and Button presentation closed in ${colorScheme} mode`, async () => {

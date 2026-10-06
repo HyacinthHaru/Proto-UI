@@ -209,6 +209,23 @@ const baseCompound = (
   );
 
 export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
+  'base-surface': base('base-surface', 'Base Surface', 'surfaceRoot', 'BaseSurfaceRoot'),
+  'shadcn-surface': shadcn('shadcn-surface', 'Shadcn Surface', 'surfaceRoot', 'ShadcnSurfaceRoot'),
+  'brutalist-surface': brutalist(
+    'brutalist-surface',
+    'Brutalist Surface',
+    'surfaceRoot',
+    'BrutalistSurfaceRoot'
+  ),
+  'base-text': base('base-text', 'Base Text', 'textRoot', 'BaseTextRoot'),
+  'shadcn-text': shadcn('shadcn-text', 'shadcn Text', 'shadcnTextRoot', 'ShadcnTextRoot'),
+  'brutalist-text': brutalist(
+    'brutalist-text',
+    'Brutalist Text',
+    'brutalistTextRoot',
+    'BrutalistTextRoot'
+  ),
+  'shadcn-input': shadcn('shadcn-input', 'shadcn Input', 'shadcnInputRoot', 'ShadcnInputRoot'),
   'shadcn-button': shadcn('shadcn-button', 'shadcn Button', 'shadcnButton', 'ShadcnButton'),
   'shadcn-toggle': shadcn('shadcn-toggle', 'shadcn Toggle', 'shadcnToggle', 'ShadcnToggle'),
   'shadcn-separator': shadcn(
@@ -504,6 +521,12 @@ export const COMPONENT_REGISTRY: Record<string, ComponentEntry> = {
     'Brutalist Skeleton',
     'brutalistSkeletonRoot',
     'BrutalistSkeletonRoot'
+  ),
+  'brutalist-spinner': brutalist(
+    'brutalist-spinner',
+    'Brutalist Spinner',
+    'brutalistSpinnerRoot',
+    'BrutalistSpinnerRoot'
   ),
   'brutalist-textarea': brutalist(
     'brutalist-textarea',

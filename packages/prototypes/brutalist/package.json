@@ -55,6 +55,11 @@
       "import": "./dist/skeleton/index.js",
       "default": "./dist/skeleton/index.js"
     },
+    "./spinner": {
+      "types": "./dist/spinner/index.d.ts",
+      "import": "./dist/spinner/index.js",
+      "default": "./dist/spinner/index.js"
+    },
     "./toggle": {
       "types": "./dist/toggle/index.d.ts",
       "import": "./dist/toggle/index.js",
@@ -109,6 +114,16 @@
       "types": "./dist/checkbox/index.d.ts",
       "import": "./dist/checkbox/index.js",
       "default": "./dist/checkbox/index.js"
+    },
+    "./text": {
+      "types": "./dist/text/index.d.ts",
+      "import": "./dist/text/index.js",
+      "default": "./dist/text/index.js"
+    },
+    "./surface": {
+      "types": "./dist/surface/index.d.ts",
+      "import": "./dist/surface/index.js",
+      "default": "./dist/surface/index.js"
     }
   },
   "description": "Neo-Brutalist Proto UI prototype library with package and CLI family imports.",
@@ -136,10 +151,18 @@
   ],
   "files": [
     "dist/",
-    "README.md"
+    "README.md",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
     "build": "node ../../../scripts/build/public-packages.mjs --package @proto.ui/prototypes-brutalist",
     "prepack": "pnpm run build"
+  },
+  "protoUi": {
+    "release": {
+      "thirdPartyNotices": [
+        "THIRD_PARTY_NOTICES.md"
+      ]
+    }
   }
 }

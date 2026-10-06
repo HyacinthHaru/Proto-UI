@@ -7,10 +7,13 @@
  * re-reading its tables. A table transcription can drift silently; a recorded
  * result of the real compiler cannot.
  *
- * Only un-varianted tokens are recorded. State variants (`data-[hovered]:`,
- * `dark:`, ...) are a Web lowering performed by `rule-expose-state-web`; a
- * host without CSS selectors never receives them, because its Rules stay on
- * the default plan and evaluate to a flat token list.
+ * Only un-varianted tokens are recorded as element declarations. State
+ * variants (`data-[hovered]:`, `dark:`, ...) are Web lowering performed by
+ * `rule-expose-state-web`; native Rules instead evaluate to a flat token list.
+ * The author-side static `selection:` target is a separate case: Web maps it
+ * to `::selection`, but this GPUI vocabulary has no selection realization.
+ * Keep it outside both declarations and noDeclarations so the Rust consumer
+ * reports UnknownToken rather than silently painting or ignoring the target.
  *
  * Scope is the Prototype token set only. Website demo `className`s are a
  * different system: they go through the site's real Tailwind, and this
@@ -37,6 +40,9 @@ import { BRUTALIST_THEME_CSS } from '../../packages/cli/src/generated/brutalist-
 import { SHADCN_THEME_CSS } from '../../packages/cli/src/legacy/type';
 import { BRUTALIST_STYLE_TOKENS } from '../../packages/cli/src/generated/brutalist-style-tokens';
 import { SHADCN_STYLE_TOKENS } from '../../packages/cli/src/generated/shadcn-style-tokens';
+import { DRAFT_FAMILY_STYLE_TOKENS } from '../../packages/cli/src/generated/draft-family-style-tokens';
+import { renderThemeCss as renderBootstrapTheme } from '../../packages/prototypes/bootstrap-2-3-2/src/theme';
+import { renderThemeCss as renderLiquidGlassTheme } from '../../packages/prototypes/liquid-glass/src/theme';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const OUT = path.join(ROOT, 'native/gpui/fixtures/style-tokens.json');
@@ -65,7 +71,7 @@ function collectBaseTokens(): string[] {
   return [...tokens];
 }
 
-/** A token that carries a `:` variant is a Web lowering and is out of scope. */
+/** Only tokens targeting the element itself belong in this declaration fixture. */
 function isUnvarianted(token: string): boolean {
   let depth = 0;
   for (const character of token) {
@@ -85,11 +91,28 @@ type TokenRule = { token: string; declarations: Record<string, string> };
  * a host without CSS inheritance needs none of it, and recording it would make
  * every token's fixture entry identical noise.
  */
-function extractRules(css: string, tokens: string[]): { rules: TokenRule[]; order: string[] } {
+function extractRules(
+  css: string,
+  tokens: string[]
+): { rules: TokenRule[]; order: string[]; unsupportedSelectors: string[] } {
   const wanted = new Map(tokens.map((token) => [token, [] as string[]]));
   const order: string[] = [];
+  // A rule inside `@media` holds only under its condition, which a token's
+  // entry cannot carry, so only the unconditional rules are recorded.
+  const conditional: Array<[number, number]> = [];
+  for (const media of css.matchAll(/@media[^{]*\{/g)) {
+    let depth = 1;
+    let end = media.index! + media[0].length;
+    while (depth > 0 && end < css.length) {
+      if (css[end] === '{') depth += 1;
+      else if (css[end] === '}') depth -= 1;
+      end += 1;
+    }
+    conditional.push([media.index!, end]);
+  }
   const rulePattern = /:where\(\[data-pui-style~="((?:[^"\\]|\\.)*)"\]\)\s*\{([^}]*)\}/g;
   for (const match of css.matchAll(rulePattern)) {
+    if (conditional.some(([start, end]) => match.index! > start && match.index! < end)) continue;
     const token = match[1]!.replace(/\\(.)/g, '$1');
     const body = match[2]!;
     if (!wanted.has(token)) continue;
@@ -103,8 +126,17 @@ function extractRules(css: string, tokens: string[]): { rules: TokenRule[]; orde
     wanted.get(token)!.push(body);
   }
 
+  // Pseudo-element paint/hit geometry belongs to a generated Web box, not the
+  // native owner. Never flatten it onto GPUI or call it a harmless marker.
+  const pseudoTokens = new Set(
+    [
+      ...css.matchAll(/:where\(\[data-pui-style~="((?:[^"\\]|\\.)*)"\]\)::(?:before|after)\s*\{/g),
+    ].map((match) => match[1]!.replace(/\\(.)/g, '$1'))
+  );
+  const unsupportedSelectors = tokens.filter((token) => pseudoTokens.has(token));
   const rules: TokenRule[] = [];
   for (const token of tokens) {
+    if (pseudoTokens.has(token)) continue;
     const bodies = wanted.get(token) ?? [];
     const declarations: Record<string, string> = {};
     for (const body of bodies) {
@@ -118,7 +150,7 @@ function extractRules(css: string, tokens: string[]): { rules: TokenRule[]; orde
     }
     rules.push({ token, declarations });
   }
-  return { rules, order };
+  return { rules, order: order.filter((token) => !pseudoTokens.has(token)), unsupportedSelectors };
 }
 
 /**
@@ -182,15 +214,25 @@ function themePath(argv: readonly string[]): string {
 }
 
 function buildThemeFixture(): string {
+  // Use the family renderers, not copied palettes. They default to prefixed
+  // variables, so request raw names before the common CLI prefix/radius pass.
+  const familyOptions = {
+    variablePrefix: '',
+    darkSelector: ":root.dark, :root[data-theme='dark']",
+  };
   const themes = {
     shadcn: extractTheme(renderPrefixedThemeCss(SHADCN_THEME_CSS)),
     brutalist: extractTheme(renderPrefixedThemeCss(BRUTALIST_THEME_CSS)),
+    'bootstrap-2-3-2': extractTheme(renderPrefixedThemeCss(renderBootstrapTheme(familyOptions))),
+    'liquid-glass': extractTheme(renderPrefixedThemeCss(renderLiquidGlassTheme(familyOptions))),
   };
   const fixture = {
     note: 'Generated by scripts/gpui/generate-style-fixture.mts from the TypeScript compiler. Do not edit by hand.',
     sources: {
       shadcn: 'packages/cli/src/legacy/type.ts (SHADCN_THEME_CSS)',
       brutalist: 'packages/cli/src/generated/brutalist-theme.ts (BRUTALIST_THEME_CSS)',
+      'bootstrap-2-3-2': 'packages/prototypes/bootstrap-2-3-2/src/theme.ts (renderThemeCss)',
+      'liquid-glass': 'packages/prototypes/liquid-glass/src/theme.ts (renderThemeCss)',
       renderer: 'packages/cli/src/services/proto-style-css.ts (renderPrefixedThemeCss)',
     },
     counts: Object.fromEntries(
@@ -232,10 +274,11 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
     ...collectBaseTokens(),
     ...SHADCN_STYLE_TOKENS,
     ...BRUTALIST_STYLE_TOKENS,
+    ...Object.values(DRAFT_FAMILY_STYLE_TOKENS).flat(),
   ]);
   const tokens = [...union].filter(isUnvarianted).sort();
   const css = renderProtoStyleTokenCss(tokens);
-  const { rules, order } = extractRules(css, tokens);
+  const { rules, order, unsupportedSelectors } = extractRules(css, tokens);
 
   const compiled = rules.filter((rule) => Object.keys(rule.declarations).length > 0);
   const marker = rules.filter((rule) => Object.keys(rule.declarations).length === 0);
@@ -247,6 +290,7 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
       tokens: tokens.length,
       compiled: compiled.length,
       noDeclarations: marker.length,
+      unsupportedSelectors: unsupportedSelectors.length,
     },
     /** Tokens the compiler resolves to declarations. */
     tokens: Object.fromEntries(compiled.map((rule) => [rule.token, rule.declarations])),
@@ -268,6 +312,9 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
      * silently rendering it unstyled.
      */
     noDeclarations: marker.map((rule) => rule.token),
+    // Deliberately absent from the native vocabulary: existing UnknownToken
+    // diagnostics expose this Web-only gap instead of silently dropping it.
+    unsupportedSelectors,
   };
 
   const serialized = `${JSON.stringify(fixture, null, 2)}\n`;

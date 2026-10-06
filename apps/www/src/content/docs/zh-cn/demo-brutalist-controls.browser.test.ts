@@ -1,6 +1,7 @@
 // @vitest-environment node
 
 import { spawn, type ChildProcess } from 'node:child_process';
+import { waitForServerReadiness } from '../../../../../../scripts/test/server-readiness.mjs';
 import { access } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import {
@@ -8,6 +9,7 @@ import {
   type Browser,
   type BrowserContext,
   type Locator,
+  type JSHandle,
   type Page,
 } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -101,20 +103,18 @@ async function chromeExecutable(): Promise<string> {
 }
 
 async function waitForServer(url: string): Promise<void> {
-  const deadline = Date.now() + 120_000;
-  while (Date.now() < deadline) {
-    if (devServer && devServer.exitCode !== null) {
-      throw new Error(`Documentation dev server exited early.\n${serverOutput}`);
-    }
-    try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(2_000) });
-      if (response.ok) return;
-    } catch {
-      // The dev server is still starting.
-    }
-    await new Promise((resolve) => setTimeout(resolve, 250));
+  try {
+    await waitForServerReadiness(url, {
+      timeoutMs: 120_000,
+      server: devServer,
+      readOutput: () => serverOutput,
+    });
+  } catch (error) {
+    console.error(
+      `[browser-harness] readiness failed: ${error instanceof Error ? error.message : String(error)}`
+    );
+    throw error;
   }
-  throw new Error(`Timed out waiting for ${url}.\n${serverOutput}`);
 }
 
 function recordServerOutput(chunk: Buffer): void {
@@ -234,7 +234,9 @@ type TextareaFocusSnapshot = {
 
 async function wcTextareaFocusSnapshot(previewer: Locator): Promise<TextareaFocusSnapshot> {
   return previewer.evaluate((root) => {
-    const host = root.querySelector<HTMLElement>('[data-projection-content] [data-pui-root]');
+    const host = root.querySelector<HTMLElement>(
+      '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+    );
     const textarea = root.querySelector<HTMLTextAreaElement>('textarea');
     if (!host || !textarea) throw new Error('Web Component Textarea projection is missing.');
     const exposes = (
@@ -470,61 +472,212 @@ const CANARY_VALUES: Record<string, string> = {
   '--pui-destructive-foreground': 'rgb(16, 17, 18)',
 };
 
-async function applyCanaryTheme(page: Page, on: boolean): Promise<void> {
-  await page.evaluate(
-    ({ enabled, values, refs }) => {
-      for (const ref of refs) {
-        const surface = document.querySelector<HTMLElement>(
-          `[data-previewer-id] [data-demo-ref="${ref}"]`
-        );
-        if (!surface) throw new Error(`The Brutalist Button demo must render ${ref}.`);
-        for (const [name, value] of Object.entries(values)) {
-          if (enabled) surface.style.setProperty(name, value);
-          else surface.style.removeProperty(name);
+type CanaryThemeOwner = {
+  candidate: {
+    activate(): void;
+    setThemeSurfaceStyle(theme: Record<string, string>): void;
+    dispose(): void | Promise<void>;
+  };
+  mount: HTMLElement;
+  theme: Record<string, string>;
+  nodes: Record<string, HTMLElement>;
+  events: Array<Record<string, unknown>>;
+  expectedRestamp: string;
+};
+
+async function createCanaryThemeOwner(
+  page: Page,
+  runtime: string
+): Promise<JSHandle<CanaryThemeOwner>> {
+  // A string expression stays native in the browser; Vitest's SSR transform
+  // must not replace import() with its Node-side private loader helper.
+  const nativeImport = await page.evaluateHandle<(path: string) => Promise<any>>(`(path) => {
+    const allowed = [
+      '/src/components/PrototypePreviewer/projection-materializer.ts',
+      '/src/components/PrototypePreviewer/projection-theme.ts'
+    ];
+    if (!allowed.includes(path)) throw new Error('Unapproved canary module path');
+    return import(path);
+  }`);
+  let factoryFailed = false;
+  try {
+    return await page.evaluateHandle(
+      async ({ runtimeId, refs, loadModule }) => {
+        const materializerUrl = '/src/components/PrototypePreviewer/projection-materializer.ts';
+        const themeUrl = '/src/components/PrototypePreviewer/projection-theme.ts';
+        const { materializeProjectionCandidate } = await loadModule(materializerUrl);
+        const { resolveProjectionThemeSurfaceStyle } = await loadModule(themeUrl);
+        const mount = document.createElement('div');
+        mount.dataset.theme = 'light';
+        document.body.appendChild(mount);
+        let candidate: CanaryThemeOwner['candidate'] | undefined;
+        try {
+          candidate = await materializeProjectionCandidate(
+            { selection: { runtimeId, projectionFamilyId: 'brutalist' }, generation: 1 },
+            {
+              mount,
+              ownerId: `button-canary-${runtimeId}-${crypto.randomUUID()}`,
+              componentId: 'button',
+              controlIds: [],
+              controls: {
+                runtime: {
+                  label: 'Runtime',
+                  options: [{ value: runtimeId, label: runtimeId }],
+                  onValueChange() {},
+                },
+                family: {
+                  label: 'Family',
+                  options: [{ value: 'brutalist', label: 'Brutalist' }],
+                  onValueChange() {},
+                },
+                component: {
+                  label: 'Component',
+                  options: [{ value: 'button', label: 'Button' }],
+                  onValueChange() {},
+                },
+              },
+            }
+          );
+          if (!candidate) throw new Error('The materializer must return a controlled candidate.');
+          candidate.activate();
+          const nodes = Object.fromEntries(
+            refs.map((ref) => {
+              const node = mount.querySelector<HTMLElement>(`[data-demo-ref="${ref}"]`);
+              if (!node) throw new Error(`The controlled Button projection must render ${ref}.`);
+              return [ref, node];
+            })
+          );
+          return {
+            candidate,
+            mount,
+            nodes,
+            theme: resolveProjectionThemeSurfaceStyle('brutalist', mount),
+            events: [],
+            expectedRestamp: '',
+          };
+        } catch (error) {
+          try {
+            await candidate?.dispose();
+          } finally {
+            mount.remove();
+          }
+          throw error;
         }
-      }
-    },
-    { enabled: on, values: CANARY_VALUES, refs: Object.keys(BUTTON_FILLS) }
-  );
+      },
+      { runtimeId: runtime, refs: Object.keys(BUTTON_FILLS), loadModule: nativeImport }
+    );
+  } catch (error) {
+    factoryFailed = true;
+    throw error;
+  } finally {
+    try {
+      await nativeImport.dispose();
+    } catch (error) {
+      if (!factoryFailed) throw error;
+      console.warn('Canary native loader cleanup failed', error);
+    }
+  }
 }
 
-async function buttonFills(page: Page): Promise<Record<keyof typeof BUTTON_FILLS, ButtonFill>> {
-  return page.evaluate((fills) => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1;
-    canvas.height = 1;
-    const context = canvas.getContext('2d', { willReadFrequently: true });
-    if (!context) throw new Error('Canvas 2D context is required to resolve painted colours.');
+async function applyCanaryTheme(
+  page: Page,
+  owner: JSHandle<CanaryThemeOwner>,
+  on: boolean
+): Promise<void> {
+  await owner.evaluate(
+    (state, { enabled, values }) => {
+      state.candidate.setThemeSurfaceStyle(enabled ? { ...state.theme, ...values } : state.theme);
+      for (const [ref, surface] of Object.entries(state.nodes)) {
+        if (
+          !surface.isConnected ||
+          state.mount.querySelector(`[data-demo-ref="${ref}"]`) !== surface
+        )
+          throw new Error(`Owner theme update replaced the ${ref} node.`);
+      }
+      const node = state.nodes.surface;
+      const property = '--pui-secondary-background';
+      state.expectedRestamp = enabled ? values[property] : state.theme[property];
+      state.events.push({
+        step: enabled ? 'owner-canary' : 'owner-restore',
+        value: node.style.getPropertyValue(property),
+        sameNode: state.mount.querySelector('[data-demo-ref="surface"]') === node,
+      });
+      // Force an observable owner restamp, not a delay: removing the inline
+      // value makes the next matching value evidence of a real write.
+      node.style.removeProperty(property);
+      node.classList.toggle('button-canary-restamp-probe');
+      state.events.push({
+        step: 'marker-change',
+        value: node.style.getPropertyValue(property),
+        owner: node.dataset.projectionOwner,
+        generation: node.dataset.projectionGeneration,
+      });
+    },
+    { enabled: on, values: CANARY_VALUES }
+  );
+  await page.waitForFunction(
+    (state) =>
+      Object.entries(state.nodes).every(
+        ([ref, surface]) =>
+          surface.isConnected && state.mount.querySelector(`[data-demo-ref="${ref}"]`) === surface
+      ) &&
+      state.nodes.surface.style.getPropertyValue('--pui-secondary-background').trim() ===
+        state.expectedRestamp,
+    owner,
+    { timeout: 10_000 }
+  );
+  await owner.evaluate((state) => {
+    state.events.push({
+      step: 'restamp-observed',
+      value: state.nodes.surface.style.getPropertyValue('--pui-secondary-background'),
+      sameNode: state.mount.querySelector('[data-demo-ref="surface"]') === state.nodes.surface,
+    });
+  });
+}
 
-    const paint = (color: string): string => {
-      context.clearRect(0, 0, 1, 1);
-      context.fillStyle = '#000';
-      context.fillStyle = color;
-      context.fillRect(0, 0, 1, 1);
-      return Array.from(context.getImageData(0, 0, 1, 1).data).join(',');
-    };
+async function buttonFills(
+  page: Page,
+  scope?: JSHandle<HTMLElement>
+): Promise<Record<keyof typeof BUTTON_FILLS, ButtonFill>> {
+  return page.evaluate(
+    ({ fills, scopeRoot }) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1;
+      canvas.height = 1;
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      if (!context) throw new Error('Canvas 2D context is required to resolve painted colours.');
 
-    const result: Record<string, unknown> = {};
-    for (const [ref, [backgroundVar, colorVar]] of Object.entries(fills)) {
-      const element = document.querySelector<HTMLElement>(
-        `[data-previewer-id] [data-demo-ref="${ref}"]`
-      );
-      if (!element) throw new Error(`The Brutalist Button demo must render ${ref}.`);
-      const style = getComputedStyle(element);
-      result[ref] = {
-        background: paint(style.backgroundColor),
-        color: paint(style.color),
-        opacity: style.opacity,
-        variables: {
-          background: paint(style.getPropertyValue(backgroundVar).trim()),
-          color: paint(style.getPropertyValue(colorVar).trim()),
-        },
-        hovered: element.hasAttribute('data-hovered'),
-        pressed: element.hasAttribute('data-pressed'),
+      const paint = (color: string): string => {
+        context.clearRect(0, 0, 1, 1);
+        context.fillStyle = '#000';
+        context.fillStyle = color;
+        context.fillRect(0, 0, 1, 1);
+        return Array.from(context.getImageData(0, 0, 1, 1).data).join(',');
       };
-    }
-    return result as Record<string, ButtonFill>;
-  }, BUTTON_FILLS);
+
+      const result: Record<string, unknown> = {};
+      for (const [ref, [backgroundVar, colorVar]] of Object.entries(fills)) {
+        const element = (scopeRoot ?? document).querySelector<HTMLElement>(
+          `${scopeRoot ? '' : '[data-previewer-id] '}[data-demo-ref="${ref}"]`
+        );
+        if (!element) throw new Error(`The Brutalist Button demo must render ${ref}.`);
+        const style = getComputedStyle(element);
+        result[ref] = {
+          background: paint(style.backgroundColor),
+          color: paint(style.color),
+          opacity: style.opacity,
+          variables: {
+            background: paint(style.getPropertyValue(backgroundVar).trim()),
+            color: paint(style.getPropertyValue(colorVar).trim()),
+          },
+          hovered: element.hasAttribute('data-hovered'),
+          pressed: element.hasAttribute('data-pressed'),
+        };
+      }
+      return result as Record<string, ButtonFill>;
+    },
+    { fills: BUTTON_FILLS, scopeRoot: scope }
+  );
 }
 
 beforeAll(async () => {
@@ -576,7 +729,11 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
     try {
       for (const runtime of RUNTIMES) {
         await selectRuntime(page, previewer, runtime, '[role="tab"]', 2);
-        const root = previewer.locator('[data-projection-content] > [data-pui-root]').first();
+        const root = previewer
+          .locator(
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+          )
+          .first();
         const before = await root.boundingBox();
         expect(before, runtime).not.toBeNull();
 
@@ -609,7 +766,11 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
     try {
       for (const runtime of RUNTIMES) {
         await selectRuntime(page, previewer, runtime, '[data-pui-root]', 5);
-        const trigger = previewer.locator('[data-projection-content] [data-pui-root]').nth(1);
+        const trigger = previewer
+          .locator(
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+          )
+          .nth(1);
         await trigger.click();
         await expect.poll(() => page.getByRole('menu').count(), { message: runtime }).toBe(1);
         await page.waitForTimeout(200);
@@ -695,7 +856,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
       expect(paint.text, frame).toContain(expectedText);
       expect(paint.tabIndex, frame).toBe(-1);
       expect(paint.interactive, frame).toBe(0);
-      expect(paint.borderRadius, frame).toBe('0px');
+      expect(paint.borderRadius, frame).toBe('5px');
       expect(paint.borderWidth, frame).toBe('2px');
       // The preview frame and the renderer-owned body portal must resolve one shared theme.
       const resolved = await page.evaluate(() => {
@@ -710,7 +871,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         const readPaint = (parent: HTMLElement) => {
           const probe = document.createElement('div');
           probe.style.color = 'var(--pui-foreground)';
-          probe.style.backgroundColor = 'var(--pui-background)';
+          probe.style.backgroundColor = 'var(--pui-secondary-background)';
           parent.appendChild(probe);
           const style = getComputedStyle(probe);
           const result = {
@@ -726,18 +887,17 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         };
       });
       expect(resolved.boundary, frame).toEqual(resolved.portal);
-      expect(paint.backgroundColor, frame).toBe(resolved.boundary.foreground);
-      expect(paint.color, frame).toBe(resolved.boundary.background);
-      expect(paint.borderColor, frame).toBe(resolved.boundary.foreground);
-      // The hard shadow must resolve to the same active foreground token as the border.
-      expect(paint.boxShadow, frame).toContain(resolved.boundary.foreground);
-      expect(paint.boxShadow, frame).toContain('4px 4px 0px');
-      expect(paint.fontFamily.toLowerCase(), frame).toContain('mono');
-      expect(paint.fontSize, frame).toBe('12px');
-      expect(Number(paint.fontWeight), frame).toBeGreaterThanOrEqual(700);
-      expect(paint.textTransform, frame).toBe('uppercase');
+      expect(paint.backgroundColor, frame).toBe(resolved.boundary.background);
+      expect(paint.color, frame).toBe(resolved.boundary.foreground);
+      expect(paint.borderColor, frame).toBe('rgb(0, 0, 0)');
+      // The source-aligned popup is flat in either portal location.
+      expect(paint.boxShadow, frame).toBe('none');
+      expect(paint.fontFamily.toLowerCase(), frame).toContain('dm sans');
+      expect(paint.fontSize, frame).toBe('14px');
+      expect(Number(paint.fontWeight), frame).toBe(500);
+      expect(paint.textTransform, frame).toBe('none');
       expect(paint.paddingInline, frame).toBe('12px');
-      expect(paint.paddingBlock, frame).toBe('8px');
+      expect(paint.paddingBlock, frame).toBe('6px');
       expect(paint.width, frame).toBeGreaterThan(20);
       expect(paint.height, frame).toBeGreaterThan(20);
       return paint;
@@ -755,7 +915,9 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         await applyHostTheme(page, 'light');
         // Scoped to the rendered host: the previewer chrome is Proto UI too, so
         // a previewer-wide count is not evidence about this demo.
-        const roots = previewer.locator('[data-projection-content] [data-pui-root]');
+        const roots = previewer.locator(
+          '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+        );
         expect(await roots.count(), runtime).toBe(7);
         expect(await roots.nth(0).getAttribute('data-pui-root'), runtime).toBe('');
         const firstTrigger = roots.filter({ hasText: 'Hover or focus for details' }).last();
@@ -892,24 +1054,118 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
       width: viewportWidth,
       height: 844,
     });
-    const widths: number[] = [];
+    const widths: Array<{ runtime: RuntimeId; width: number }> = [];
 
     try {
       for (const runtime of RUNTIMES) {
         await selectRuntime(page, previewer, runtime, '[data-demo-ref="scrollbar"]', 1);
-        const root = previewer.locator('[data-projection-content] [data-pui-root]').first();
+        const root = previewer
+          .locator(
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
+          )
+          .first();
         const scrollbar = previewer.locator('[data-demo-ref="scrollbar"]').first();
         const rootBox = await root.boundingBox();
         const scrollbarBox = await scrollbar.boundingBox();
         expect(rootBox, runtime).not.toBeNull();
         expect(scrollbarBox, runtime).not.toBeNull();
 
-        widths.push(rootBox!.width);
+        widths.push({ runtime, width: rootBox!.width });
+        const layoutChain = await previewer.evaluate((element) => {
+          const selectors = [
+            '[data-projection-generation-state="active"]',
+            '[data-projection-scope]',
+            '.pui-projection-controls',
+            '[data-projection-control="runtime"]',
+            '[data-projection-control="runtime"] [role="combobox"]',
+            '[data-projection-control="runtime"] [data-projection-prototype$="select-value"]',
+            '[data-projection-content]',
+            '[data-projection-content] > div',
+            '[data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]',
+          ];
+          return {
+            viewportWidth: innerWidth,
+            documentWidth: document.documentElement.scrollWidth,
+            nodes: selectors.map((selector) => {
+              const node = element.querySelector<HTMLElement>(selector);
+              if (!node) return { selector, missing: true } as const;
+              const rect = node.getBoundingClientRect();
+              const style = getComputedStyle(node);
+              return {
+                selector,
+                tag: node.tagName,
+                text: node.textContent?.trim().slice(0, 100),
+                x: rect.x,
+                width: rect.width,
+                contentLeft:
+                  rect.x + parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft),
+                contentRight:
+                  rect.right - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight),
+                clientWidth: node.clientWidth,
+                scrollWidth: node.scrollWidth,
+                display: style.display,
+                cssWidth: style.width,
+                minWidth: style.minWidth,
+                maxWidth: style.maxWidth,
+                boxSizing: style.boxSizing,
+                padding: style.padding,
+                flex: style.flex,
+                gridTemplateColumns: style.gridTemplateColumns,
+                runtime: node.dataset.projectionRuntime,
+                generation: node.dataset.projectionGeneration,
+                state: node.dataset.projectionState,
+                prototype: node.dataset.projectionPrototype,
+              };
+            }),
+          };
+        });
+        console.info('Scroll Area 320px layout chain', JSON.stringify({ runtime, ...layoutChain }));
+        const layoutBox = (selector: string) => {
+          const node = layoutChain.nodes.find((entry) => entry.selector === selector);
+          if (!node || node.missing === true) {
+            throw new Error(`${runtime}/${selector}: expected rendered layout node.`);
+          }
+          return node;
+        };
+        const scopeBox = layoutBox('[data-projection-scope]');
+        const controlsBox = layoutBox('.pui-projection-controls');
+        const contentBox = layoutBox('[data-projection-content]');
+        const runtimeControlBox = layoutBox('[data-projection-control="runtime"]');
+        // Document overflow alone cannot detect children clipped by the preview frame.
+        for (const [name, box] of [
+          ['toolbar', controlsBox],
+          ['content', contentBox],
+        ] as const) {
+          expect(box.x, `${runtime}/${name}/scope-left`).toBeGreaterThanOrEqual(
+            scopeBox.contentLeft - GEOMETRY_EPSILON
+          );
+          expect(box.x + box.width, `${runtime}/${name}/scope-right`).toBeLessThanOrEqual(
+            scopeBox.contentRight + GEOMETRY_EPSILON
+          );
+        }
+        expect(
+          runtimeControlBox.x,
+          `${runtime}/runtime-control/toolbar-left`
+        ).toBeGreaterThanOrEqual(controlsBox.contentLeft - GEOMETRY_EPSILON);
+        expect(
+          runtimeControlBox.x + runtimeControlBox.width,
+          `${runtime}/runtime-control/toolbar-right`
+        ).toBeLessThanOrEqual(controlsBox.contentRight + GEOMETRY_EPSILON);
+        expect(rootBox!.x, `${runtime}/root/content-left`).toBeGreaterThanOrEqual(
+          contentBox.contentLeft - GEOMETRY_EPSILON
+        );
+        expect(rootBox!.x + rootBox!.width, `${runtime}/root/content-right`).toBeLessThanOrEqual(
+          contentBox.contentRight + GEOMETRY_EPSILON
+        );
         expect(rootBox!.x, runtime).toBeGreaterThanOrEqual(-GEOMETRY_EPSILON);
         expect(rootBox!.x + rootBox!.width, runtime).toBeLessThanOrEqual(
           viewportWidth + GEOMETRY_EPSILON
         );
         expect(scrollbarBox!.x, runtime).toBeGreaterThanOrEqual(rootBox!.x);
+        expect(
+          scrollbarBox!.x + scrollbarBox!.width,
+          `${runtime}/scrollbar/root-right`
+        ).toBeLessThanOrEqual(rootBox!.x + rootBox!.width + GEOMETRY_EPSILON);
         expect(scrollbarBox!.x + scrollbarBox!.width, runtime).toBeLessThanOrEqual(
           viewportWidth + GEOMETRY_EPSILON
         );
@@ -921,7 +1177,11 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         ).toBe(0);
       }
 
-      expect(Math.max(...widths) - Math.min(...widths)).toBeLessThanOrEqual(GEOMETRY_EPSILON);
+      const measuredWidths = widths.map(({ width }) => width);
+      expect(
+        Math.max(...measuredWidths) - Math.min(...measuredWidths),
+        `Scroll Area width parity: ${JSON.stringify(widths)}`
+      ).toBeLessThanOrEqual(GEOMETRY_EPSILON);
     } finally {
       await context.close();
     }
@@ -951,7 +1211,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         await page.waitForFunction(
           () => {
             const root = document.querySelector<HTMLElement>(
-              '[data-previewer-id] [data-projection-content] [data-pui-root]'
+              '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
             );
             return (
               root?.hasAttribute('data-focused') === true && root.hasAttribute('data-focus-visible')
@@ -980,7 +1240,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
           () =>
             !document
               .querySelector<HTMLElement>(
-                '[data-previewer-id] [data-projection-content] [data-pui-root]'
+                '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
               )
               ?.hasAttribute('data-focused')
         );
@@ -993,7 +1253,7 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
           () =>
             document
               .querySelector<HTMLElement>(
-                '[data-previewer-id] [data-projection-content] [data-pui-root]'
+                '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [data-pui-root]'
               )
               ?.hasAttribute('data-focused') === true
         );
@@ -1304,31 +1564,102 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         expect(restored.surface.color, `${runtime}/restored-ink`).toBe(painted.light.surface.color);
 
         // Both schemes above are palettes an implementation could hard-code.
-        // Every variable this case reads is now moved to a value in neither, and
-        // each to a different one, so a fill can only match by resolving the
-        // variable it names.
-        await applyCanaryTheme(page, true);
-        const canary = await buttonFills(page);
-        for (const [ref, fill] of Object.entries(canary)) {
-          const key = ref as keyof typeof BUTTON_FILLS;
-          const label = `${runtime}/canary/${ref}`;
-          const [backgroundVar] = BUTTON_FILLS[key];
-          if (backgroundVar in CANARY_VALUES) {
-            // A theme-following fill has to land on the moved variable. A pair
-            // hard-coded to a value both palettes share satisfies both schemes
-            // and fails here, which is the whole point of the canary.
-            expect(fill.background, `${label}/background`).toBe(fill.variables.background);
-            expect(fill.color, `${label}/color`).toBe(fill.variables.color);
-            expect(fill.background, `${label}/moved`).not.toBe(painted.light[key].background);
-            expect(fill.color, `${label}/ink-moved`).not.toBe(painted.light[key].color);
-            continue;
+        // Exercise arbitrary values through a test-owned real candidate's
+        // public owner channel. The Website Light/Dark integration above stays
+        // unchanged; direct child writes bypass its theme owner (#764).
+        const owner = await createCanaryThemeOwner(page, runtime);
+        let scope: JSHandle<HTMLElement> | undefined;
+        let canaryFailed = false;
+        try {
+          scope = await owner.getProperty('mount');
+          const baseline = await buttonFills(page, scope);
+          await applyCanaryTheme(page, owner, true);
+          const canary = await buttonFills(page, scope);
+          for (const [ref, fill] of Object.entries(canary)) {
+            const key = ref as keyof typeof BUTTON_FILLS;
+            const label = `${runtime}/canary/${ref}`;
+            const [backgroundVar] = BUTTON_FILLS[key];
+            if (backgroundVar in CANARY_VALUES) {
+              // A theme-following fill has to land on the moved variable. A pair
+              // hard-coded to a value both palettes share satisfies both schemes
+              // and fails here, which is the whole point of the canary.
+              expect(fill.background, `${label}/background`).toBe(fill.variables.background);
+              expect(fill.color, `${label}/color`).toBe(fill.variables.color);
+              expect(fill.background, `${label}/moved`).not.toBe(baseline[key].background);
+              expect(fill.color, `${label}/ink-moved`).not.toBe(baseline[key].color);
+              continue;
+            }
+            // A fixed accent pair owns no theme variable to follow, so moving the
+            // surface and destructive variables must leave it exactly where it was.
+            expect(fill.background, `${label}/fixed`).toBe(baseline[key].background);
+            expect(fill.color, `${label}/fixed-ink`).toBe(baseline[key].color);
           }
-          // A fixed accent pair owns no theme variable to follow, so moving the
-          // surface and destructive variables must leave it exactly where it was.
-          expect(fill.background, `${label}/fixed`).toBe(painted.light[key].background);
-          expect(fill.color, `${label}/fixed-ink`).toBe(painted.light[key].color);
+          await applyCanaryTheme(page, owner, false);
+          expect(await buttonFills(page, scope), `${runtime}/canary/owner-restored`).toEqual(
+            baseline
+          );
+        } catch (error) {
+          canaryFailed = true;
+          throw error;
+        } finally {
+          try {
+            const evidence = await owner.evaluate(
+              (state, properties) => ({
+                events: state.events,
+                expectedRestamp: state.expectedRestamp,
+                nodes: Object.fromEntries(
+                  Object.entries(state.nodes).map(([ref, node]) => [
+                    ref,
+                    {
+                      connected: node.isConnected,
+                      sameNode: state.mount.querySelector(`[data-demo-ref="${ref}"]`) === node,
+                      inline: Object.fromEntries(
+                        properties.map((name) => [name, node.style.getPropertyValue(name)])
+                      ),
+                      background: getComputedStyle(node).backgroundColor,
+                    },
+                  ])
+                ),
+              }),
+              Object.keys(CANARY_VALUES)
+            );
+            console.info(
+              'BUTTON_CANARY_OWNER_EVIDENCE',
+              JSON.stringify({ runtime, outcome: canaryFailed ? 'failed' : 'passed', ...evidence })
+            );
+          } catch (error) {
+            console.warn('BUTTON_CANARY_OWNER_EVIDENCE unavailable', error);
+          }
+          let cleanupFailed = false;
+          let cleanupFailure: unknown;
+          const cleanup = async (action: () => void | Promise<void>) => {
+            try {
+              await action();
+            } catch (error) {
+              if (!cleanupFailed) cleanupFailure = error;
+              cleanupFailed = true;
+              console.warn('Button canary cleanup failed', error);
+            }
+          };
+          try {
+            await cleanup(() =>
+              owner.evaluate(async (state) => {
+                try {
+                  await state.candidate.dispose();
+                } finally {
+                  state.mount.remove();
+                }
+              })
+            );
+          } finally {
+            try {
+              await cleanup(() => scope?.dispose());
+            } finally {
+              await cleanup(() => owner.dispose());
+            }
+          }
+          if (cleanupFailed && !canaryFailed) throw cleanupFailure;
         }
-        await applyCanaryTheme(page, false);
       }
     } finally {
       await context.close();
