@@ -711,3 +711,25 @@ for (const [name, change] of [
     );
   });
 }
+
+test('REST file ceiling admits 3000 and rejects 3001 before any file listing', () => {
+  const makeFixture = (total) => {
+    const fixture = paginationFixture({ large: false });
+    fixture.data.files.length = 0;
+    for (let index = 0; index < total; index++)
+      fixture.data.files.push({ filename: `synthetic/file-${index}.mjs`, status: 'modified' });
+    fixture.state.changedFiles = total;
+    return fixture;
+  };
+  const supported = makeFixture(3000);
+  const live = collectLiveReviewInput(repositoryId, 487, { runner: supported.runner });
+  validateReviewInputSnapshot(live.input);
+  assert.equal(live.input.changedFiles.length, 3000);
+
+  const impossible = makeFixture(3001);
+  assert.throws(() => collectLiveReviewInput(repositoryId, 487, { runner: impossible.runner }));
+  assert.equal(
+    impossible.calls.filter((call) => call.args.some((arg) => arg.includes('/files?'))).length,
+    0
+  );
+});

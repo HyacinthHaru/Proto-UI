@@ -3,6 +3,7 @@ import { isDeepStrictEqual } from 'node:util';
 // Explicit resource limits, not permission to return a partial connection.
 export const MAX_CONNECTION_PAGES = 100;
 export const MAX_CONNECTION_ITEMS = 10_000;
+const MAX_REST_FILES = 3_000;
 const PAGE_INFO = 'totalCount pageInfo { hasNextPage endCursor }';
 const PR_FIELDS = `
   id number updatedAt state isDraft mergeable mergeStateStatus viewerCanMergeAsAdmin
@@ -295,6 +296,11 @@ export function collectReviewSnapshot({ owner, name, pullRequest, read }) {
     return result;
   }
   const pr = raw.data.repository.pullRequest;
+  const count = pr.changedFiles;
+  if (!Number.isSafeInteger(count) || count < 1 || count > MAX_REST_FILES)
+    throw new Error(
+      `live changed-file count is malformed or exceeds the ${MAX_REST_FILES}-file REST ceiling`
+    );
   for (const field of Object.keys(FIELDS)) {
     pr[field] = collectConnection(pr[field], {
       label: field,
@@ -342,9 +348,6 @@ export function collectReviewSnapshot({ owner, name, pullRequest, read }) {
   });
   head.statusCheckRollup.contexts = contexts;
 
-  const count = pr.changedFiles;
-  if (!Number.isSafeInteger(count) || count < 1 || count > MAX_CONNECTION_ITEMS)
-    throw new Error('live changed-file count is malformed or exceeds the collection bound');
   const files = [];
   const paths = new Set();
   for (let page = 1; files.length < count && page <= MAX_CONNECTION_PAGES; page += 1) {
