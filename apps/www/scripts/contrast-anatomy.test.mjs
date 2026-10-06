@@ -393,3 +393,67 @@ test('anonymous in-content Mask cannot bypass closed-shell guards but a portaled
   portal.visibility = { visible: true, classification: 'source-model-visible', limits: [] };
   assert.equal(compareContrastAnatomy(plan, leaving).achieved, true);
 });
+
+// Actual 30e605a4 failed frames: first Tooltip is focused/open; native Tab briefly
+// visited its sibling, whose correctly hidden in-content view retains stable ID
+// and role after the accepted WC slot-preservation change. No pixels are replayed.
+const retainedTooltipNative = JSON.parse(
+  readFileSync(
+    new URL('./fixtures/contrast-anatomy-30e-tooltip-native.json', import.meta.url),
+    'utf8'
+  )
+);
+for (const frame of retainedTooltipNative.frames)
+  test(`replays recorded 30e Tooltip retained identity: ${frame.name}`, async () => {
+    const plan = await load('tooltip');
+    assert.equal(frame.beforeFingerprintDigest, frame.afterFingerprintDigest);
+    const result = compareContrastAnatomy(plan, frame.observed, {
+      requirePrimaryOpen: frame.requirePrimaryOpen,
+    });
+    assert.equal(result.achieved, true, JSON.stringify(result));
+  });
+
+for (const [name, mutate] of Object.entries({
+  'painted inactive view': (part) => {
+    part.painted = true;
+    part.visibility = { visible: true, classification: 'source-model-visible', limits: [] };
+  },
+  'unsupported hidden classification': (part) => (part.visibility.classification = 'unsupported'),
+  'stale retained lease': (part) => (part.currentLease = false),
+  'wrong authored parent': (part, sample) => (part.parent = sample.primary),
+  'unbound hidden portal': (part) => {
+    part.withinContent = false;
+    part.parent = null;
+  },
+  'wrong retained role': (part) => (part.role = 'dialog'),
+  'missing retained role': (part) => (part.role = null),
+  'duplicate retained view': (part, sample) =>
+    sample.surfaces.push({ ...structuredClone(part), uid: 'duplicate' }),
+  'duplicate identity on another part': (part, sample) =>
+    (sample.surfaces.find((surface) => surface.uid === sample.primary).id = part.id),
+  'foreign description relation': (part, sample) =>
+    sample.surfaces.find((surface) => surface.uid === sample.primary).descriptions.push(part.id),
+  'foreign control relation': (part, sample) =>
+    sample.surfaces.find((surface) => surface.uid === sample.primary).controls.push(part.id),
+  'hidden primary content': (_part, sample) => {
+    const trigger = sample.surfaces.find((surface) => surface.uid === sample.primary);
+    const content = sample.surfaces.find((surface) => trigger.descriptions.includes(surface.id));
+    content.painted = false;
+    content.visibility = { visible: false, classification: 'exempt-not-visible', limits: [] };
+  },
+  'stale observation lease': (_part, sample) => (sample.currentLease = false),
+}))
+  test(`retained stable Tooltip identity rejects ${name}`, async () => {
+    const frame = retainedTooltipNative.frames[0];
+    const sample = structuredClone(frame.observed);
+    const part = sample.surfaces.find(
+      (surface) => surface.prototypeId === 'brutalist-tooltip-content' && !surface.painted
+    );
+    assert.equal(part.role, 'tooltip');
+    mutate(part, sample);
+    assert.equal(
+      compareContrastAnatomy(await load('tooltip'), sample, { requirePrimaryOpen: true }).achieved,
+      false,
+      name
+    );
+  });

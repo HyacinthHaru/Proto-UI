@@ -227,6 +227,24 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
       sameParent(surface, parent) &&
       surface.currentLease === true &&
       knownHidden(surface);
+    // Tooltip Content owns a stable ID/role independently of presence
+    // (P-BASE-TOOLTIP-CONTENT-SEMANTICS). A preserved hidden in-content view
+    // is structural evidence only, never an open description or portal.
+    const retainedHiddenTooltip = (surface) =>
+      instance.policy === 'description' &&
+      !required &&
+      ids.length === 0 &&
+      surface.withinContent &&
+      sameParent(surface, parent) &&
+      surface.currentLease === true &&
+      knownHidden(surface) &&
+      typeof surface.id === 'string' &&
+      surface.id.length > 0 &&
+      surface.role === 'tooltip' &&
+      actual.filter((part) => part.id === surface.id).length === 1 &&
+      actual.every(
+        (part) => !part.controls.includes(surface.id) && !part.descriptions.includes(surface.id)
+      );
     const mayMatchRelation =
       required || ids.length > 0 || !['selected', 'description'].includes(instance.policy);
     const candidates = actual.filter(
@@ -238,6 +256,7 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
         // only genuinely detached popup parts may lose physical parentage.
         (surface.withinContent ? sameParent(surface, parent) : instance.policy !== 'selected') &&
         (retainedClosedShell(surface) ||
+          retainedHiddenTooltip(surface) ||
           (!anonymousOwnerShell(surface) &&
             mayMatchRelation &&
             (ids.length
@@ -250,7 +269,8 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
     }
     accept(instance, candidates, required, instance.policy);
     const content = matched.get(instance.path);
-    if (content && retainedClosedShell(content)) retainedShellBoundaries.add(instance.path);
+    if (content && (retainedClosedShell(content) || retainedHiddenTooltip(content)))
+      retainedShellBoundaries.add(instance.path);
     if (paintRequired && content && !content.painted)
       reject(
         instance,
@@ -272,6 +292,6 @@ export function compareContrastAnatomy(plan, observed, { requirePrimaryOpen = fa
     })),
     omitted: [...omitted],
     basis:
-      'Exact authored recipe instances, native current state/relations and current projection lease; closed detached subtrees may be omitted, or retained as exact hidden in-content owner shells without active target identity. Not full semantic or cue conformance.',
+      'Exact authored recipe instances, native current state/relations and current projection lease; closed detached subtrees may be omitted, or retained as exact hidden in-content owner shells. Tooltip may retain its unique stable ID/role only without an active relation. Not full semantic or cue conformance.',
   };
 }
