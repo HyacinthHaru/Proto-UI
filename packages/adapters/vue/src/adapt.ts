@@ -239,7 +239,19 @@ export function createVueAdapter(runtime: VueRuntime) {
         const notifyFocusTargetReady = () => {
           const target = rootRef.value;
           if (!viewReady || !target?.isConnected) return;
-          for (const listener of Array.from(focusTargetReadyListeners)) listener();
+          let failed = false;
+          let firstError: unknown;
+          for (const listener of Array.from(focusTargetReadyListeners)) {
+            try {
+              listener();
+            } catch (error) {
+              if (!failed) {
+                failed = true;
+                firstError = error;
+              }
+            }
+          }
+          if (failed) throw firstError;
         };
 
         const subs = new Set<() => void>();
@@ -610,8 +622,11 @@ export function createVueAdapter(runtime: VueRuntime) {
         runtime.onDeactivated?.(() => {
           viewReady = false;
           rootRef.value?.setAttribute(PUI_VIEW_PENDING_ATTR, '');
-          if (owner.hasView) void owner.detachView();
-          lastInitRoot = null;
+          try {
+            if (owner.hasView) return owner.detachView();
+          } finally {
+            if (!owner.hasView) lastInitRoot = null;
+          }
         });
         runtime.onActivated?.(() => {
           runtime.nextTick().then(initSession);
@@ -626,13 +641,19 @@ export function createVueAdapter(runtime: VueRuntime) {
               initSession();
             } else {
               eventGateRef.value?.disable?.();
-              if (owner.hasView) void owner.detachView();
-              hostTokens.value = [];
-              viewReady = false;
-              // The host element survives a detach now, so the same element has
-              // to be able to initialize a second time. Without this the reopen
-              // path skips initSession and binds against a disposed router.
-              lastInitRoot = null;
+              try {
+                if (owner.hasView) return owner.detachView();
+              } finally {
+                // Release errors must not strand the retained host's init marker.
+                // A synchronously attached replacement owns its own bookkeeping.
+                if (!owner.hasView) {
+                  lastInitRoot = null;
+                  if (!shouldExist.value) {
+                    hostTokens.value = [];
+                    viewReady = false;
+                  }
+                }
+              }
             }
           },
           { flush: 'post' }

@@ -723,7 +723,19 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     }
 
     private [NOTIFY_FOCUS_TARGET_READY](): void {
-      for (const listener of Array.from(this._focusTargetReadyListeners)) listener();
+      let failed = false;
+      let firstError: unknown;
+      for (const listener of Array.from(this._focusTargetReadyListeners)) {
+        try {
+          listener();
+        } catch (error) {
+          if (!failed) {
+            failed = true;
+            firstError = error;
+          }
+        }
+      }
+      if (failed) throw firstError;
     }
 
     disconnectedCallback() {

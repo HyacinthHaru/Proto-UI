@@ -249,7 +249,19 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         if (!viewReadyRef.current || !eventGateRef.current?.isEnabled() || !target?.isConnected) {
           return;
         }
-        for (const listener of Array.from(focusTargetReadyListenersRef.current)) listener();
+        let failed = false;
+        let firstError: unknown;
+        for (const listener of Array.from(focusTargetReadyListenersRef.current)) {
+          try {
+            listener();
+          } catch (error) {
+            if (!failed) {
+              failed = true;
+              firstError = error;
+            }
+          }
+        }
+        if (failed) throw firstError;
       };
 
       const controllerRef = runtime.useRef<RuntimeController | null>(null);
