@@ -208,6 +208,40 @@ try {
   await page.evaluate(() => document.documentElement.style.setProperty('--test-opacity', '1'));
   await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
   await capture('12-theme-contrast-restored');
+  await page.evaluate(() => {
+    document.querySelector('#scene').style.opacity = '0.2';
+  });
+  await page.waitForFunction(() => window.probe.state().quality === 'unavailable');
+  assert.equal(
+    await page.evaluate(() => window.probe.pixels()),
+    'data:,',
+    'ancestor opacity withdraws retained enhanced pixels'
+  );
+  await capture('12a-ancestor-opacity-unavailable');
+  await page.evaluate(() => {
+    document.querySelector('#scene').style.opacity = '1';
+  });
+  await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
+  for (const transform of ['rotate(8deg)', 'skewX(12deg)']) {
+    await page.evaluate((value) => {
+      document.querySelector('#scene').style.transform = value;
+    }, transform);
+    await page.waitForFunction(() => window.probe.state().reason === 'geometry-unavailable');
+    assert.equal(
+      await page.evaluate(() => document.querySelector('#glass canvas')?.style.display),
+      'none'
+    );
+    await capture(
+      transform.startsWith('rotate')
+        ? '12b-ancestor-rotation-fallback'
+        : '12c-ancestor-skew-fallback'
+    );
+    await page.evaluate(() => {
+      document.querySelector('#scene').style.transform = 'none';
+    });
+    await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
+  }
+  await capture('12d-ancestor-context-restored');
 
   await page.evaluate(() => {
     const iframe = document.createElement('iframe');

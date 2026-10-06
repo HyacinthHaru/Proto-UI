@@ -49,6 +49,60 @@ const simpleProto = (callbacks: string[] = []): Prototype =>
   });
 
 describe('runtime contract: lifecycle transition matrix (v1)', () => {
+  for (const stage of ['begin', 'unmounted'] as const)
+    for (const throws of [false, true])
+      it(`does not repeat unmount callbacks when disposal reenters from ${stage} (throws=${throws})`, async () => {
+        const { host, signals, scheduled, events } = createControlledHost();
+        const failure = new Error('unmount callback after disposal reentry');
+        let terminal: Promise<void> | undefined;
+        let session: ReturnType<typeof createRuntimeSession>;
+        let alive!: { get(): boolean };
+        const reenter = () => {
+          terminal = session.dispose();
+          void terminal.catch(() => {});
+          expect(alive.get()).toBe(true);
+          if (throws) throw failure;
+        };
+        const begin = vi.fn(() => {
+          if (stage === 'begin') reenter();
+        });
+        host.onUnmountBegin = begin;
+        const before = vi.fn();
+        const unmounted = vi.fn(() => {
+          if (stage === 'unmounted') reenter();
+          expect(alive.get()).toBe(true);
+        });
+        const proto = definePrototype({
+          name: 'dispose-from-unmounted',
+          setup(def) {
+            alive = def.state.bool('alive', true);
+            def.lifecycle.onUnmounted(unmounted);
+            def.lifecycle.onBeforeDispose(before);
+            return (run) => run.el('div', 'ok');
+          },
+        });
+        session = createRuntimeSession(proto, host);
+        const mounting = session.mount();
+        signals.shift()!.done();
+        scheduled.shift()!();
+        await mounting;
+        const unmounting = session.unmount();
+        if (throws) {
+          await expect(unmounting).rejects.toBe(failure);
+          await expect(terminal).rejects.toBe(failure);
+        } else {
+          await unmounting;
+          await terminal;
+        }
+        expect(unmounted).toHaveBeenCalledOnce();
+        expect(begin).toHaveBeenCalledOnce();
+        expect(before).toHaveBeenCalledOnce();
+        expect(events.filter((event) => event.type === 'unmount.begin')).toHaveLength(1);
+        expect(events.filter((event) => event.type === 'unmount.done')).toHaveLength(1);
+        expect(session.instancePhase).toBe('disposed');
+        expect(session.mountPhase).toBe('detached');
+      });
+
   it('invalidates a mount whose host commit completes after unmount', async () => {
     const project = vi.fn();
     const callbacks: string[] = [];

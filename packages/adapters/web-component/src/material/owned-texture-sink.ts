@@ -52,6 +52,32 @@ const paint = (token: string) => /^(bg-|backdrop-)/.test(token.split(':').at(-1)
 const relevantSelector = (token: string) =>
   token.includes(':') && /^(bg-|backdrop-|rounded|text-)/.test(token.split(':').at(-1)!);
 
+// A finite axis-aligned, opaque profile cannot prove contrast or texture mapping
+// through arbitrary ancestor compositing. Walk the composed tree (including slots
+// and shadow hosts) rather than treating non-inherited CSS as host-local.
+function composedPaintInputs(host: HTMLElement): string[] {
+  const inputs: string[] = [];
+  const seen = new Set<Element>();
+  let element: Element | null = host;
+  while (element && !seen.has(element)) {
+    seen.add(element);
+    const css = element.ownerDocument.defaultView?.getComputedStyle(element);
+    inputs.push(
+      css?.opacity || '1',
+      css?.transform || 'none',
+      css?.rotate || 'none',
+      css?.scale || 'none',
+      css?.translate || 'none'
+    );
+    const root = element.getRootNode();
+    element =
+      element.assignedSlot ??
+      element.parentElement ??
+      (root.nodeType === 11 && 'host' in root ? (root as ShadowRoot).host : null);
+  }
+  return inputs;
+}
+
 /** Private, bounded, reusable owned-RGBA consumer. Never captures DOM or loads a URL. */
 export function createOwnedTextureVisualSink(
   host: HTMLElement,
@@ -155,6 +181,7 @@ export function createOwnedTextureVisualSink(
           css?.borderBottomRightRadius ?? '',
           css?.color ?? '',
           css?.opacity ?? '',
+          ...composedPaintInputs(host),
         ];
         if (
           host.ownerDocument.defaultView !== ownerWindow ||
@@ -376,6 +403,7 @@ export function createOwnedTextureVisualSink(
       style.apply(last.style.tokens.filter((token) => !paint(token)));
       const css = ownerWindow?.getComputedStyle(host);
       if (!css) throw new Error('owner-document-unavailable');
+      const paintInputs = composedPaintInputs(host);
       const parsed = css.color.match(
         /^rgba?\(\s*([\d.]+)[, ]+([\d.]+)[, ]+([\d.]+)(?:\s*[,/]\s*([\d.]+))?\s*\)$/
       );
@@ -385,7 +413,7 @@ export function createOwnedTextureVisualSink(
           : null;
       if (
         !rgba(resolvedForeground) ||
-        (css.opacity && Number(css.opacity) !== 1) ||
+        paintInputs.some((value, index) => index % 5 === 0 && Number(value) !== 1) ||
         contrast(c.fallback.fill, resolvedForeground) < 4.5
       ) {
         unavailable('complete-readable-fallback-unavailable');
@@ -470,7 +498,7 @@ export function createOwnedTextureVisualSink(
         css.borderBottomRightRadius,
       ];
       if (
-        css.transform !== 'none' ||
+        paintInputs.some((value, index) => index % 5 !== 0 && value !== 'none') ||
         !radii.every((value) => /^\d+(\.\d+)?px$/.test(value)) ||
         !radii.every((value) => value === radii[0])
       ) {
@@ -576,6 +604,7 @@ export function createOwnedTextureVisualSink(
         ...radii,
         css.color,
         css.opacity,
+        ...paintInputs,
       ];
       watchGeometry();
     } catch (error) {
