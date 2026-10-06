@@ -930,7 +930,19 @@ function notifyFocusTargetReady(vm: any) {
   const state = getState(vm);
   const target = getRootElement(vm);
   if (!state.viewReady || !target?.isConnected) return;
-  for (const listener of Array.from(state.focusTargetReadyListeners)) listener();
+  let failed = false;
+  let firstError: unknown;
+  for (const listener of Array.from(state.focusTargetReadyListeners)) {
+    try {
+      listener();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        firstError = error;
+      }
+    }
+  }
+  if (failed) throw firstError;
 }
 
 function setViewReady(vm: any, value: boolean) {
