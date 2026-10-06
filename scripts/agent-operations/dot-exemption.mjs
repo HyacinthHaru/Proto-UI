@@ -1,3 +1,6 @@
+import { randomBytes } from 'node:crypto';
+import { createRequire } from 'node:module';
+
 // An owner-authorized role disclosure, deliberately not a ModelTrace receipt.
 // This module neither samples a model nor grants repository/action permission.
 export const DOT_EXEMPTION = 'owner-authorized-2026-10-06';
@@ -18,8 +21,85 @@ export function isDotExemption(args) {
   return true;
 }
 
+let markdownTools;
+function textContent(node) {
+  if (node.type === 'text') return node.value;
+  if (node.type === 'break' || (node.type === 'element' && node.tagName === 'br')) return '\n';
+  return (node.children ?? []).map(textContent).join('');
+}
+function disclosureParagraph(value) {
+  // A lone ordinary field such as "Agent: browser" is task prose, not an
+  // identity block. A paired Agent/ModelTrace block is a disclosure candidate.
+  return /^Agent:/im.test(value) && /^ModelTrace:/im.test(value);
+}
+function visibleDisclosureOffsets(text) {
+  if (!markdownTools) {
+    const require = createRequire(import.meta.url);
+    markdownTools = {
+      fromMarkdown: require('mdast-util-from-markdown').fromMarkdown,
+      toHast: require('mdast-util-to-hast').toHast,
+      toHtml: require('hast-util-to-html').toHtml,
+      fromHtml: require('hast-util-from-html').fromHtml,
+    };
+  }
+  const { fromMarkdown, toHast, toHtml, fromHtml } = markdownTools;
+  const ast = fromMarkdown(text);
+  const marker = `pui-dot-disclosure-${randomBytes(16).toString('hex')}-`;
+  const candidates = new Map();
+  for (const node of ast.children) {
+    const value = textContent(node);
+    const kind =
+      node.type === 'paragraph' && disclosureParagraph(value)
+        ? 'dot'
+        : node.type === 'heading' && node.depth === 2 && value === 'ModelTrace'
+          ? 'measured'
+          : null;
+    if (!kind) continue;
+    const id = `${marker}${node.position.start.offset}`;
+    node.data = { hProperties: { id } };
+    candidates.set(id, { kind, offset: node.position.start.offset, end: node.position.end.offset });
+  }
+  // Parse one continuous serialization so comments/raw-HTML nesting cannot
+  // expose an AST node that the rendered document actually hides. Only root
+  // paragraphs can identify dot; quoted/fenced/HTML examples cannot.
+  const html = fromHtml(
+    toHtml(toHast(ast, { allowDangerousHtml: true }), { allowDangerousHtml: true }),
+    { fragment: true }
+  );
+  const offsets = [];
+  for (const node of html.children) {
+    if (node.type !== 'element') continue;
+    const candidate = candidates.get(node.properties?.id);
+    if (
+      candidate?.kind === 'measured' ||
+      (node.tagName === 'h2' && textContent(node).trim() === 'ModelTrace')
+    )
+      throw new Error(
+        'dot disclosure cannot substitute or compete with a visible fingerprint receipt'
+      );
+    if (candidate?.kind === 'dot' && node.tagName === 'p') offsets.push(candidate);
+    else if (node.tagName === 'p' && disclosureParagraph(textContent(node)))
+      throw new Error('raw HTML cannot supply or compete with the canonical dot disclosure');
+  }
+  return offsets;
+}
+
 export function hasDotDisclosure(text, format = 'markdown') {
   if (typeof text !== 'string') throw new Error('dot disclosure requires text');
+  if (format === 'markdown') {
+    const offsets = visibleDisclosureOffsets(text);
+    if (offsets.length === 0) return false;
+    const { offset: start, end } = offsets[0];
+    const after = text.slice(start + DOT_DISCLOSURE.length);
+    if (
+      offsets.length !== 1 ||
+      text.slice(start, end) !== DOT_DISCLOSURE ||
+      (after !== '' && !after.startsWith('\n'))
+    )
+      throw new Error('dot publication requires one visible standalone exact disclosure');
+    return true;
+  }
+  if (format !== 'commit') throw new Error('unsupported dot disclosure format');
   const agents = text.split(/\r?\n/).filter((line) => /^Agent:/i.test(line));
   const traces = text.split(/\r?\n/).filter((line) => /^ModelTrace:/i.test(line));
   if (agents.length === 0 && traces.length === 0) return false;
@@ -30,19 +110,10 @@ export function hasDotDisclosure(text, format = 'markdown') {
     traces[0] !== DOT_DISCLOSURE.split('\n')[1]
   )
     throw new Error('dot publication requires one exact Agent and not-measured disclosure');
-  // Markdown disclosure is first so a preceding fence, quote or raw-HTML
-  // comment cannot hide it. Commit messages have no Markdown visibility model.
-  const start = format === 'commit' ? text.indexOf(DOT_DISCLOSURE) : 0;
+  const start = text.indexOf(DOT_DISCLOSURE);
   const after = text.slice(start + DOT_DISCLOSURE.length);
-  if (
-    start < 0 ||
-    !text.startsWith(DOT_DISCLOSURE, start) ||
-    (after !== '' && !after.startsWith('\n')) ||
-    /^## ModelTrace\s*$/m.test(text)
-  )
-    throw new Error(
-      'dot disclosure must be exact and visible; no fingerprint receipt may be substituted'
-    );
+  if (start < 0 || (after !== '' && !after.startsWith('\n')))
+    throw new Error('dot commit disclosure must be exact');
   return true;
 }
 

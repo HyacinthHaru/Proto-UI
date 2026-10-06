@@ -9,6 +9,7 @@ import {
   DOT_DISCLOSURE,
   DOT_EXEMPTION,
   isDotExemption,
+  hasDotDisclosure,
   assertDotDisclosure,
 } from '../dot-exemption.mjs';
 import { parsePublishCli, runCommitMessageHook, runPublishCli } from '../agent-publish.mjs';
@@ -116,7 +117,6 @@ for (const [name, text] of [
   ['code fence', `\`\`\`text\n${DOT_DISCLOSURE}\n\`\`\``],
   ['HTML comment', `<!--\n${DOT_DISCLOSURE}\n-->`],
   ['HTML hidden', `<div hidden>\n\n${DOT_DISCLOSURE}\n\n</div>`],
-  ['body prefix', `Some text\n\n${DOT_DISCLOSURE}`],
   ['duplicated', `${DOT_DISCLOSURE}\n\n${DOT_DISCLOSURE}`],
   ['wrong role', DOT_DISCLOSURE.replace('Agent: dot', 'Agent: other')],
   ['fake fingerprint', `${DOT_DISCLOSURE}\n\n## ModelTrace\n\n{"modelId":"fake"}`],
@@ -286,3 +286,37 @@ test('real local commit preserves exact tree/head, runs the hook and adds own DC
   assert.match(message, /Signed-off-by: Synthetic Contributor <synthetic@example.invalid>/);
   assert.throws(() => runPublishCli(args, { cwd: checkout, runner }), /HEAD binding changed/);
 });
+
+test('only visible standalone disclosure blocks identify dot in Markdown', () => {
+  for (const body of [
+    'Agent: browser',
+    `\`\`\`text\n${DOT_DISCLOSURE}\n\`\`\``,
+    `> ${DOT_DISCLOSURE.replaceAll('\n', '\n> ')}`,
+    `<pre>\n${DOT_DISCLOSURE}\n</pre>`,
+    `<!--\n${DOT_DISCLOSURE}\n-->`,
+    `<div hidden>\n\n${DOT_DISCLOSURE}\n\n</div>`,
+  ]) {
+    assert.equal(hasDotDisclosure(body), false);
+    assertDotDisclosure(`${DOT_DISCLOSURE}\n\n${body}`);
+  }
+  assertDotDisclosure(`Approved body.\n\n${DOT_DISCLOSURE}`);
+  assert.throws(() =>
+    assertDotDisclosure(`${DOT_DISCLOSURE}\n\n ${DOT_DISCLOSURE.replaceAll('\n', '\n ')}`)
+  );
+});
+
+for (const evidence of [
+  'Agent: browser',
+  `\`\`\`text\n${DOT_DISCLOSURE}\n\`\`\``,
+  `<pre>\n${DOT_DISCLOSURE}\n</pre>`,
+])
+  test(`publisher preserves ordinary or quoted evidence: ${evidence.slice(0, 20)}`, (t) => {
+    const f = files(t),
+      server = syntheticCommentServer();
+    fs.writeFileSync(f.body, evidence);
+    const args = COMMENT.map((x) => (x === '/unused' ? f.body : x));
+    assert.equal(runPublishCli(args, { runner: server.runner }).status, 'published');
+    assert.equal(server.writes(), 1);
+    assert(server.comments[0].body.includes(evidence));
+    assertDotDisclosure(server.comments[0].body);
+  });
