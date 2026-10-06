@@ -19,3 +19,7 @@ All 739 AgentOps tests pass. `check-agent-operations` and `check-contributor-ski
 ## Trust boundary
 
 This enforces consistency and refresh against a supplied predecessor. It does not authenticate that predecessor, open or hash opaque referenced contents, or prove that tests actually ran. A caller controlling both handoffs can forge both; a changed digest is not evidence of truthful execution. V1 has no revision metadata and only gains unchanged-candidate/different-report comparison; v2 adds declared revision/result binding. Review still inspects real artifacts and exact-head canonical checks under existing independent review rules. No new user authority, approval or merge admission comes from this comparison.
+
+## Publication sign-off follow-up
+
+The connector published source commit `0ce6663e23ac26e40b7fd5d53b6a8c7c64f8af90` under cyjin-yl's existing public `cyjin.yl <chenyejin2004@foxmail.com>` author identity. Its initial trailer mistakenly used the same account's older Gmail identity from parent d012d863, so DCO correctly requested remediation. The following author-remediation commit adds the matching certification for that self-authored contribution without rewriting any history. Only this publication record changes; all implementation and test files retain the independently reviewed bytes. Hosted checks must be evaluated on the resulting final head.
