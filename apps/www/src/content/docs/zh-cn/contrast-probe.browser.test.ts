@@ -246,6 +246,45 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     }
   });
 
+  it('withholds rounded overflow corner paint instead of accepting rectangular bounds', async () => {
+    const frame = await calibrate(
+      `
+      <div style="position:absolute;left:40px;top:40px;width:700px;height:220px;background:white">
+        <style>
+          .clip-parent { position:absolute; top:40px; width:100px; height:100px; background:white; }
+          .clip-parent > [data-pui-root] { position:absolute; left:0; top:0; width:8px; height:8px; min-height:0; margin:0; background:black; }
+        </style>
+        <div class="clip-parent" style="left:40px;overflow:hidden;border-radius:50%"><div data-pui-root data-demo-ref="rounded-hidden"></div></div>
+        <div class="clip-parent" style="left:180px;overflow:clip;border-radius:50%"><div data-pui-root data-demo-ref="rounded-clip"></div></div>
+        <div class="clip-parent" style="left:320px;overflow:hidden;border-radius:0"><div data-pui-root data-demo-ref="square-hidden"></div></div>
+        <div class="clip-parent" style="left:460px;overflow:visible;border-radius:50%"><div data-pui-root data-demo-ref="rounded-visible"></div></div>
+        <div class="clip-parent" style="left:600px;overflow:hidden;border-radius:40px"><div data-pui-root data-demo-ref="fixed-px-center" style="left:46px;top:46px"></div></div>
+      </div>
+    `,
+      'rounded-overflow-clips'
+    );
+    for (const [ref, x, y] of [
+      ['rounded-hidden', 80, 80],
+      ['rounded-clip', 220, 80],
+      ['square-hidden', 360, 80],
+      ['rounded-visible', 500, 80],
+      ['fixed-px-center', 686, 126],
+    ] as const) {
+      const target = surface(frame, ref);
+      expect(target.rect).toEqual({ x, y, width: 8, height: 8 });
+      expect(target.visible).toBe(true); // Bounds, not a claim about clipped pixels.
+      if (ref === 'rounded-hidden' || ref === 'rounded-clip') {
+        expect(target.visibility.classification).toBe('unsupported');
+        expect(target.visibility.limits).toContain('unsupported-rounded-overflow-clip');
+        expect(target.exterior).toEqual([]);
+      } else {
+        expect(target.visibility.classification).toBe('source-model-visible');
+        expect(target.visibility.limits).toEqual([]);
+        expect(target.exterior).toHaveLength(12);
+      }
+    }
+  });
+
   for (const placement of ['target', 'ancestor'] as const) {
     for (const [property, value] of [
       ['filter', 'opacity(0)'],

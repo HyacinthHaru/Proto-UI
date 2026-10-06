@@ -233,6 +233,7 @@ const stateProperties = [
   'translate',
   'rotate',
   'scale',
+  'zoom',
   'perspective',
   'transform-style',
   'overflow-x',
@@ -444,6 +445,19 @@ const translationOnly = (style: CSSStyleDeclaration): boolean => {
 
 const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf = false) => {
   const limits: string[] = [];
+  const roundedOverflowClips: {
+    prototype: string | null;
+    owner: string | null;
+    generation: string | null;
+    radii: string[];
+    overflowX: string;
+    overflowY: string;
+    fixedPx: boolean;
+    safeInteriorOverlap: boolean;
+    whollyInsideSafeRect: boolean;
+    boxCount: number;
+    safeRect: { left: number; right: number; top: number; bottom: number } | null;
+  }[] = [];
   const own = getComputedStyle(element);
   if (own.visibility !== 'visible')
     return {
@@ -485,6 +499,78 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
     if (!translationOnly(style)) limits.push('unsupported-transformed-paint');
     if (style.contain.includes('paint')) limits.push('unsupported-paint-containment');
     const rect = current.getBoundingClientRect();
+    // Admit only a small proof domain: fixed-px rounded clipping cannot affect
+    // a whole box inside the central inscribed rectangle. Other curved clips
+    // remain unknown; intersecting client bounds are not proof of painted ink.
+    const cornerRadii = [
+      style.borderTopLeftRadius,
+      style.borderTopRightRadius,
+      style.borderBottomRightRadius,
+      style.borderBottomLeftRadius,
+    ];
+    if (
+      (clipSelf || current !== element) &&
+      (style.overflowX !== 'visible' || style.overflowY !== 'visible') &&
+      cornerRadii.some(
+        (radius) => radius && radius.split(/\s+/).some((axis) => parseFloat(axis) !== 0)
+      )
+    ) {
+      const fixed = cornerRadii.map((radius) => {
+        if (!/^(?:\d+(?:\.\d+)?|\.\d+)px(?:\s+(?:\d+(?:\.\d+)?|\.\d+)px)?$/.test(radius))
+          return null;
+        const axes = radius.split(/\s+/).map(parseFloat);
+        return [axes[0], axes[1] ?? axes[0]];
+      });
+      let safelyInside = false;
+      let safeInteriorOverlap = false;
+      let safeRect: { left: number; right: number; top: number; bottom: number } | null = null;
+      const fixedPx = fixed.every((radius) => radius !== null) && translationOnly(style);
+      if (fixedPx) {
+        const radiusX = Math.max(...fixed.map((radius) => radius![0]));
+        const radiusY = Math.max(...fixed.map((radius) => radius![1]));
+        const safeLeft = Math.max(rect.left + current.clientLeft, rect.left + radiusX);
+        const safeRight = Math.min(
+          rect.left + current.clientLeft + current.clientWidth,
+          rect.right - radiusX
+        );
+        const safeTop = Math.max(rect.top + current.clientTop, rect.top + radiusY);
+        const safeBottom = Math.min(
+          rect.top + current.clientTop + current.clientHeight,
+          rect.bottom - radiusY
+        );
+        safelyInside = nonempty.every(
+          (box) =>
+            box.left >= safeLeft &&
+            box.right <= safeRight &&
+            box.top >= safeTop &&
+            box.bottom <= safeBottom
+        );
+        safeRect = { left: safeLeft, right: safeRight, top: safeTop, bottom: safeBottom };
+        safeInteriorOverlap = nonempty.every(
+          (box) =>
+            Math.min(box.right, safeRight) > Math.max(box.left, safeLeft) &&
+            Math.min(box.bottom, safeBottom) > Math.max(box.top, safeTop)
+        );
+      }
+      roundedOverflowClips.push({
+        prototype: current.getAttribute('data-projection-prototype'),
+        owner: current.getAttribute('data-projection-owner'),
+        generation: current.getAttribute('data-projection-generation'),
+        radii: cornerRadii,
+        overflowX: style.overflowX,
+        overflowY: style.overflowY,
+        fixedPx,
+        safeInteriorOverlap,
+        whollyInsideSafeRect: safelyInside,
+        boxCount: nonempty.length,
+        safeRect,
+      });
+      if (!safelyInside) limits.push('unsupported-rounded-overflow-clip');
+    }
+    // A non-unit zoom anywhere in the chain invalidates the fixed-CSS-pixel
+    // proof above; do not reinterpret transformed physical lengths as radii.
+    if (style.zoom && style.zoom !== 'normal' && Number(style.zoom) !== 1)
+      limits.push('unsupported-zoomed-paint');
     if ((clipSelf || current !== element) && style.overflowX !== 'visible') {
       left = Math.max(left, rect.left + current.clientLeft);
       right = Math.min(right, rect.left + current.clientLeft + current.clientWidth);
@@ -510,6 +596,7 @@ const paintedVisibility = (element: Element, boxes: readonly DOMRect[], clipSelf
     visible,
     classification: limits.length ? 'unsupported' : 'source-model-visible',
     limits: [...new Set(limits)],
+    ...(roundedOverflowClips.length ? { roundedOverflowClips } : {}),
   };
 };
 

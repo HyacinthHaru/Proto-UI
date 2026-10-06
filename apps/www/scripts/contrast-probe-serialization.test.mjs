@@ -266,9 +266,14 @@ const targetObservationFixture = async () => {
     translate: 'none',
     rotate: 'none',
     scale: 'none',
+    zoom: '1',
     contain: 'none',
     overflowX: 'visible',
     overflowY: 'visible',
+    borderTopLeftRadius: '0px',
+    borderTopRightRadius: '0px',
+    borderBottomRightRadius: '0px',
+    borderBottomLeftRadius: '0px',
     boxShadow: 'none',
   };
   const bounds = { x: 10, y: 10, left: 10, top: 10, right: 50, bottom: 40, width: 40, height: 30 };
@@ -283,7 +288,14 @@ const targetObservationFixture = async () => {
     getAttribute: () => null,
     matches: () => true,
   };
-  const ancestor = { ...element, textContent: '' };
+  const ancestor = {
+    ...element,
+    textContent: '',
+    clientLeft: 0,
+    clientTop: 0,
+    clientWidth: 40,
+    clientHeight: 30,
+  };
   const ancestorStyle = { ...style };
   element.parentElement = ancestor;
   const sandbox = {
@@ -307,6 +319,44 @@ const targetObservationFixture = async () => {
     );
   return { style, ancestorStyle, element, observe, observePair };
 };
+
+for (const overflow of ['hidden', 'clip', 'auto', 'scroll']) {
+  test(`shared target acceptance withholds rounded ${overflow} clipping without inventing hidden bounds`, async () => {
+    const { ancestorStyle, observe } = await targetObservationFixture();
+    ancestorStyle.overflowX = overflow;
+    ancestorStyle.overflowY = overflow;
+    assert.equal(observe().achieved, true); // Square clipping control.
+    ancestorStyle.borderTopLeftRadius = '50%';
+    const rounded = observe();
+    assert.equal(rounded.achieved, false);
+    assert.equal(rounded.visibility.visible, true); // Intersecting bounds remain evidence.
+    assert.equal(rounded.visibility.classification, 'unsupported');
+    assert.ok(rounded.visibility.limits.includes('unsupported-rounded-overflow-clip'));
+    ancestorStyle.borderTopLeftRadius = '5px';
+    const center = {
+      x: 20,
+      y: 20,
+      left: 20,
+      top: 20,
+      right: 30,
+      bottom: 30,
+      width: 10,
+      height: 10,
+    };
+    // Proof applies only when the entire target lies in the unaffected rectangle.
+    const fixture = await targetObservationFixture();
+    fixture.ancestorStyle.overflowX = fixture.ancestorStyle.overflowY = overflow;
+    fixture.ancestorStyle.borderTopLeftRadius = '5px';
+    fixture.element.getClientRects = () => [center];
+    fixture.element.getBoundingClientRect = () => center;
+    assert.equal(fixture.observe().achieved, true);
+    fixture.ancestorStyle.zoom = '2';
+    assert.equal(fixture.observe().achieved, false);
+    assert.ok(fixture.observe().visibility.limits.includes('unsupported-zoomed-paint'));
+    ancestorStyle.overflowX = ancestorStyle.overflowY = 'visible';
+    assert.equal(observe().achieved, true); // Radius alone is not clipping.
+  });
+}
 
 test('shared interactive target predicate rejects non-painted boxes without losing native state facts', async () => {
   const { style, element, observe } = await targetObservationFixture();
