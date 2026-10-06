@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { paginationFixture, withReviewTransportMetadata } from './fixtures/review-pagination.mjs';
 import {
   computeReviewInputDigest,
   agentEvidenceMarker,
@@ -165,6 +166,7 @@ function payload(overrides = {}) {
                       state: 'FAILURE',
                       targetUrl: 'https://ci.example/1',
                       createdAt: '2026-08-23T06:00:00Z',
+                      creator: null,
                     },
                   ],
                   pageInfo: { hasNextPage: false },
@@ -641,6 +643,7 @@ function mergeAuthorizationFixture({ previewAuthorization = false } = {}) {
       checkSuite: {
         app: { id: 'MDM6QXBwMTg2MQ==', slug: 'dco' },
         repository: { nameWithOwner: 'Proto-UI/Proto-UI' },
+        workflowRun: null,
       },
     },
   ];
@@ -656,9 +659,9 @@ function mergeAuthorizationFixture({ previewAuthorization = false } = {}) {
   }
   const permission = { user: { login: 'independent-reviewer' }, permission: 'write' };
   const runner = (_command, args) => {
-    if (args.includes('graphql')) return JSON.stringify(raw);
-    if (args.includes('repos/Proto-UI/Proto-UI/pulls/487/files?per_page=100'))
-      return JSON.stringify([[changedFiles[0]]]);
+    if (args.includes('graphql')) return JSON.stringify(withReviewTransportMetadata(raw));
+    if (args.includes('repos/Proto-UI/Proto-UI/pulls/487/files?per_page=100&page=1'))
+      return JSON.stringify([changedFiles[0]]);
     if (args.includes('repos/Proto-UI/Proto-UI/collaborators/independent-reviewer/permission'))
       return JSON.stringify(permission);
     throw new Error(`Unexpected authorization read: ${args.join(' ')}`);
@@ -1552,7 +1555,7 @@ test('pull-request merge binds the successful response to the inspected head and
     'repos/Proto-UI/Proto-UI/pulls/487/merge',
     '--input',
   ]);
-  assert.equal(fixture.calls.length, 8);
+  assert.equal(fixture.calls.length, 13);
   assert.equal(fixture.writes, 1);
   assert.equal(result.liveHeadSha, sha('b'));
   assert.equal(result.mergedAt, '2026-08-27T01:00:10Z');
@@ -1594,7 +1597,7 @@ test('pull-request merge binds the successful response to the inspected head and
   );
   assert.equal(unknown.writes, 1);
   assert.equal(unknown.postReads, 1);
-  assert.equal(unknown.calls.length, 7);
+  assert.equal(unknown.calls.length, 12);
 });
 
 test('live collector fails closed when the REST changed-file list is incomplete', () => {
@@ -1920,7 +1923,7 @@ test('live collector consumes a canonical changed-file response above the legacy
     patch: `+${'changed line\n'.repeat(1000)}`,
   }));
   graphqlPayload.data.repository.pullRequest.changedFiles = files.length;
-  const filePagesJson = JSON.stringify([files]);
+  const filePagesJson = JSON.stringify(files);
   assert.ok(
     filePagesJson.length > 1024 * 1024,
     'the regression changed-file response must exceed the legacy 1 MiB default'
@@ -1929,103 +1932,29 @@ test('live collector consumes a canonical changed-file response above the legacy
   const result = collectLiveReviewInput('github.com:Proto-UI/Proto-UI', 487, {
     runner(command, args, options) {
       seenOptions.push(options);
-      return args.includes('graphql') ? JSON.stringify(graphqlPayload) : filePagesJson;
+      return args.includes('graphql')
+        ? JSON.stringify(withReviewTransportMetadata(graphqlPayload))
+        : filePagesJson;
     },
   });
   assert.equal(result.input.changedFiles.length, files.length);
   assert.ok(
-    seenOptions.length === 2 &&
+    seenOptions.length === 6 &&
       seenOptions.every((options) => options.maxBuffer === MAX_LIVE_RESPONSE_BYTES),
     'every live collection call must carry the documented payload bound'
   );
 });
 
 test('live collector paginates reviews and review threads before canonical validation', () => {
-  const initial = payload();
-  initial.data.repository.pullRequest.reviews.pageInfo = {
-    hasNextPage: true,
-    endCursor: 'reviews-page-1',
-  };
-  initial.data.repository.pullRequest.reviewThreads.pageInfo = {
-    hasNextPage: true,
-    endCursor: 'threads-page-1',
-  };
-  const calls = [];
-  const result = collectLiveReviewInput(repositoryId, 487, {
-    runner(_command, args, options) {
-      calls.push({ args, options });
-      if (args.includes('repos/Proto-UI/Proto-UI/collaborators/later-reviewer/permission'))
-        return JSON.stringify({
-          user: { login: 'later-reviewer' },
-          permission: 'write',
-          role_name: 'maintain',
-        });
-      if (!args.includes('graphql')) return JSON.stringify([changedFiles]);
-      const query = args.find((value) => value.startsWith('query='));
-      if (query.includes('reviews(first: 100, after: $cursor)')) {
-        return JSON.stringify({
-          data: {
-            repository: {
-              pullRequest: {
-                reviews: {
-                  nodes: [
-                    {
-                      id: 'PRR_review_2',
-                      author: { login: 'later-reviewer' },
-                      state: 'APPROVED',
-                      commit: { oid: sha('b') },
-                      submittedAt: '2026-08-23T07:00:00Z',
-                      body: 'Later review',
-                    },
-                  ],
-                  pageInfo: { hasNextPage: false, endCursor: 'reviews-page-2' },
-                },
-              },
-            },
-          },
-        });
-      }
-      if (query.includes('reviewThreads(first: 100, after: $cursor)')) {
-        return JSON.stringify({
-          data: {
-            repository: {
-              pullRequest: {
-                reviewThreads: {
-                  nodes: [
-                    {
-                      id: 'PRR_kwT2',
-                      isResolved: false,
-                      comments: {
-                        nodes: [
-                          {
-                            databaseId: 1002,
-                            author: { login: 'later-reviewer' },
-                            body: 'Later thread',
-                            updatedAt: '2026-08-23T07:30:00Z',
-                          },
-                        ],
-                        pageInfo: { hasNextPage: false },
-                      },
-                    },
-                  ],
-                  pageInfo: { hasNextPage: false, endCursor: 'threads-page-2' },
-                },
-              },
-            },
-          },
-        });
-      }
-      return JSON.stringify(initial);
-    },
-  });
-
-  assert.equal(result.input.reviews.length, 2);
-  assert.equal(result.input.threads.length, 2);
-  assert.equal(result.input.replies.length, 2);
-  assert.equal(calls.length, 5);
+  const { runner, calls } = paginationFixture();
+  const result = collectLiveReviewInput(repositoryId, 487, { runner });
+  assert.equal(result.input.reviews.length, 105);
+  assert.equal(result.input.threads.length, 102);
+  assert.equal(result.input.replies.length, 202);
   assert.equal(result.input.reviewerPermissions[0].permission, 'write');
-  assert.ok(calls.slice(1, 3).every(({ args }) => args.includes('-F')));
-  assert.ok(calls.slice(1, 3).every(({ args }) => args.some((value) => value.includes('cursor='))));
+  for (const operation of ['ProtoUiReviewReviews', 'ProtoUiReviewReviewThreads']) {
+    assert.equal(calls.filter((call) => call.operation === operation).length, 2);
+  }
 });
 
 test('live collector fails on the explicit documented payload bound instead of an incidental ENOBUFS', () => {
@@ -2266,33 +2195,21 @@ for (const pageInfo of [undefined, null, {}, { hasNextPage: 'false' }, { hasNext
 }
 
 test('live review pagination rejects repeated continuation cursors', () => {
-  const initial = payload();
-  initial.data.repository.pullRequest.reviews.pageInfo = { hasNextPage: true, endCursor: 'repeat' };
-  let reads = 0;
+  const fixture = paginationFixture({
+    large: false,
+    mutate({ response, args, data }) {
+      if (!args.includes('graphql')) return;
+      const reviews = response.data.repository.pullRequest.reviews;
+      reviews.totalCount = 2;
+      reviews.nodes = structuredClone(data.reviews);
+      reviews.pageInfo = { hasNextPage: true, endCursor: 'repeat' };
+    },
+  });
   assert.throws(
-    () =>
-      collectLiveReviewInput(repositoryId, 487, {
-        runner(_command, args) {
-          reads += 1;
-          if (reads > 3) throw new Error('test safety guard: cursor never advances');
-          if (reads === 1) return JSON.stringify(initial);
-          return JSON.stringify({
-            data: {
-              repository: {
-                pullRequest: {
-                  reviews: {
-                    nodes: [],
-                    pageInfo: { hasNextPage: true, endCursor: 'repeat' },
-                  },
-                },
-              },
-            },
-          });
-        },
-      }),
+    () => collectLiveReviewInput(repositoryId, 487, { runner: fixture.runner }),
     /repeated.*cursor/
   );
-  assert.equal(reads, 2);
+  assert.equal(fixture.calls.length, 2);
 });
 
 function approvalPayload() {
@@ -2309,14 +2226,15 @@ for (const permission of ['admin', 'write', 'read', 'none']) {
       now: () => new Date('2026-10-01T15:00:00Z'),
       runner(_command, args) {
         calls.push(args);
-        if (args.includes('graphql')) return JSON.stringify(approvalPayload());
+        if (args.includes('graphql'))
+          return JSON.stringify(withReviewTransportMetadata(approvalPayload()));
         if (args.includes('repos/Proto-UI/Proto-UI/collaborators/earlier-reviewer/permission'))
           return JSON.stringify({
             user: { login: 'earlier-reviewer' },
             permission,
             role_name: 'admin',
           });
-        return JSON.stringify([changedFiles]);
+        return JSON.stringify(changedFiles);
       },
     });
     assert.deepEqual(live.input.reviewerPermissions, [
@@ -2330,7 +2248,7 @@ for (const permission of ['admin', 'write', 'read', 'none']) {
       },
     ]);
     assert.equal(live.permissionsObservedAt, '2026-10-01T15:00:00.000Z');
-    assert.equal(calls.length, 3);
+    assert.equal(calls.length, 8);
   });
 }
 
@@ -2374,10 +2292,11 @@ test('permission read denial remains a fail-closed read error with no alternate 
 
 test('fresh permission observations change the receipt clock but not unchanged canonical facts', () => {
   const runner = (_command, args) => {
-    if (args.includes('graphql')) return JSON.stringify(approvalPayload());
+    if (args.includes('graphql'))
+      return JSON.stringify(withReviewTransportMetadata(approvalPayload()));
     if (args.some((arg) => arg.endsWith('/permission')))
       return JSON.stringify({ user: { login: 'earlier-reviewer' }, permission: 'write' });
-    return JSON.stringify([changedFiles]);
+    return JSON.stringify(changedFiles);
   };
   const first = collectLiveReviewInput(repositoryId, 487, {
     runner,
@@ -2451,3 +2370,243 @@ for (const [name, mutate] of [
     assert.equal(reads, 0);
   });
 }
+
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { generateKeyPairSync, sign } from 'node:crypto';
+import { loadOwnerAuthorization, ownerDelegationSigningBytes } from '../owner-authorization.mjs';
+function writerOwner(t, actions = ['integrate']) {
+  const dir = mkdtempSync(path.join(tmpdir(), 'pui-owner-merge-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const keys = generateKeyPairSync('ed25519'),
+    statePath = path.join(dir, 'state.json'),
+    publicKeyPath = path.join(dir, 'key.pub');
+  writeFileSync(publicKeyPath, keys.publicKey.export({ type: 'spki', format: 'pem' }));
+  const grant = {
+    id: 'owner-merge-boundary',
+    generation: 1,
+    status: 'active',
+    grantor: { id: 19223209, login: 'cyjin-yl' },
+    actor: 'cyjin-yl',
+    repositoryId,
+    actions,
+    scopeIds: ['pull-request:487'],
+    baseRefName: 'main',
+    decisionReference: 'fixture:trusted-decision',
+  };
+  let revision = 0;
+  const save = (status = 'active', overrides = {}) => {
+    const payload = {
+      schemaVersion: 1,
+      kind: 'proto-ui.owner-delegation-state',
+      revision: ++revision,
+      grants: [{ ...grant, status, ...overrides }],
+    };
+    writeFileSync(
+      statePath,
+      JSON.stringify({
+        payload,
+        signature: sign(null, ownerDelegationSigningBytes(payload), keys.privateKey).toString(
+          'base64'
+        ),
+      })
+    );
+  };
+  save();
+  return {
+    save,
+    proof: loadOwnerAuthorization({ statePath, publicKeyPath, grantId: grant.id }),
+    id: grant.id,
+  };
+}
+test('bound owner grant reaches actual merge writer once and is revalidated before PUT', (t) => {
+  for (const revoke of [false, true]) {
+    const owner = writerOwner(t),
+      f = mergeFixture({
+        alterAuthorization(x) {
+          x.raw.data.viewer.login = 'cyjin-yl';
+          Object.assign(x.authorizationContext, {
+            actor: 'cyjin-yl',
+            executionMode: 'autonomous',
+            executionModeSource: 'schedule',
+            authorizationId: owner.id,
+            ownerAuthorization: owner.proof,
+            selfAssessment: null,
+          });
+        },
+      });
+    const runner = (command, args, options) => {
+      if (revoke && args.includes('graphql')) owner.save('revoked');
+      return f.runner(command, args, options);
+    };
+    const opts = {
+      ...mergeOptions,
+      authorizationId: owner.id,
+      authorizationContext: f.authorizationContext,
+    };
+    if (revoke) {
+      assert.throws(
+        () => submitGitHubMerge(repositoryId, 487, opts, runner, fastVerification),
+        /owner|authorization|eligibility/
+      );
+      assert.equal(f.writes, 0);
+    } else {
+      const result = submitGitHubMerge(repositoryId, 487, opts, runner, fastVerification);
+      assert.equal(result.merged, true);
+      assert.equal(f.writes, 1);
+    }
+  }
+});
+
+test('owner review writer rechecks grant, target and permission before its single POST', (t) => {
+  for (const failure of ['none', 'revoked', 'narrowed', 'permission', 'target']) {
+    const owner = writerOwner(t, ['review']),
+      a = mergeAuthorizationFixture();
+    a.raw.data.viewer.login = 'cyjin-yl';
+    const packet = { ...a.authorizationContext.packet, recommendedAction: 'COMMENT' };
+    const body = renderReviewBody(packet),
+      context = {
+        ...a.authorizationContext,
+        packet,
+        actor: 'cyjin-yl',
+        executionMode: 'autonomous',
+        executionModeSource: 'schedule',
+        authorizationId: owner.id,
+        ownerAuthorization: owner.proof,
+      };
+    let writes = 0;
+    const runner = (command, args, options) => {
+      if (args.includes('graphql')) {
+        if (failure === 'revoked') owner.save('revoked');
+        if (failure === 'narrowed') owner.save('active', { scopeIds: ['pull-request:488'] });
+        if (failure === 'permission') a.raw.data.repository.viewerPermission = 'READ';
+        if (failure === 'target') a.raw.data.repository.pullRequest.state = 'CLOSED';
+      }
+      if (args.includes('POST')) {
+        writes++;
+        return JSON.stringify({
+          id: 765,
+          node_id: 'PRR_owner_boundary',
+          user: { login: 'cyjin-yl' },
+          state: 'COMMENTED',
+          commit_id: sha('b'),
+          body,
+          html_url: 'https://github.com/Proto-UI/Proto-UI/pull/487#pullrequestreview-765',
+        });
+      }
+      return a.runner(command, args, options);
+    };
+    const invoke = () =>
+      submitGitHubReview(
+        repositoryId,
+        487,
+        { commitId: sha('b'), event: 'COMMENT', body },
+        runner,
+        { reviewerLogin: 'cyjin-yl', authorizationContext: context }
+      );
+    if (failure === 'none') {
+      assert.equal(invoke().status, 'applied');
+      assert.equal(writes, 1);
+    } else {
+      assert.throws(invoke, /boundary|no POST attempted|live canonical/);
+      assert.equal(writes, 0);
+    }
+  }
+});
+
+test('review writer treats an exact newly published review as duplicate but never hides other live drift', (t) => {
+  for (const drift of [false, true]) {
+    const owner = writerOwner(t, ['review']),
+      a = mergeAuthorizationFixture();
+    a.raw.data.viewer.login = 'cyjin-yl';
+    const packet = { ...a.authorizationContext.packet, recommendedAction: 'COMMENT' },
+      body = renderReviewBody(packet),
+      context = {
+        ...a.authorizationContext,
+        packet,
+        actor: 'cyjin-yl',
+        executionMode: 'autonomous',
+        executionModeSource: 'schedule',
+        authorizationId: owner.id,
+        ownerAuthorization: owner.proof,
+      };
+    let writes = 0;
+    let reads = 0;
+    const runner = (command, args, options) => {
+      if (args.includes('graphql') && reads++ === 0) {
+        a.raw.data.repository.pullRequest.reviews.nodes.push({
+          id: 'PRR_race_duplicate',
+          author: { login: 'cyjin-yl' },
+          state: 'COMMENTED',
+          commit: { oid: sha('b') },
+          submittedAt: '2026-08-23T06:05:00Z',
+          body,
+        });
+        if (drift) a.raw.data.repository.pullRequest.body += ' changed independently';
+      }
+      if (args.includes('POST')) writes++;
+      return a.runner(command, args, options);
+    };
+    const invoke = () =>
+      submitGitHubReview(
+        repositoryId,
+        487,
+        { commitId: sha('b'), event: 'COMMENT', body },
+        runner,
+        { reviewerLogin: 'cyjin-yl', authorizationContext: context }
+      );
+    if (drift) assert.throws(invoke);
+    else assert.equal(invoke().status, 'duplicate');
+    assert.equal(writes, 0);
+  }
+});
+
+test('APPROVE publication delta may add only the bound reviewer permission and remains blocked by revocation or other material', (t) => {
+  for (const failure of ['none', 'revoked', 'material']) {
+    const owner = writerOwner(t, ['review']),
+      a = mergeAuthorizationFixture();
+    a.raw.data.viewer.login = 'cyjin-yl';
+    const packet = a.authorizationContext.packet,
+      body = renderReviewBody(packet),
+      context = {
+        ...a.authorizationContext,
+        actor: 'cyjin-yl',
+        executionMode: 'autonomous',
+        executionModeSource: 'schedule',
+        authorizationId: owner.id,
+        ownerAuthorization: owner.proof,
+      };
+    let writes = 0;
+    let reads = 0;
+    const runner = (command, args, options) => {
+      if (args.includes('graphql') && reads++ === 0) {
+        a.raw.data.repository.pullRequest.reviews.nodes.push({
+          id: 'PRR_owner_duplicate_approval',
+          author: { login: 'cyjin-yl' },
+          state: 'APPROVED',
+          commit: { oid: sha('b') },
+          submittedAt: '2026-08-23T06:05:00Z',
+          body,
+        });
+        if (failure === 'revoked') owner.save('revoked');
+        if (failure === 'material') a.raw.data.repository.pullRequest.body += ' material drift';
+      }
+      if (args.includes('repos/Proto-UI/Proto-UI/collaborators/cyjin-yl/permission'))
+        return JSON.stringify({ user: { login: 'cyjin-yl' }, permission: 'write' });
+      if (args.includes('POST')) writes++;
+      return a.runner(command, args, options);
+    };
+    const invoke = () =>
+      submitGitHubReview(
+        repositoryId,
+        487,
+        { commitId: sha('b'), event: 'APPROVE', body },
+        runner,
+        { reviewerLogin: 'cyjin-yl', authorizationContext: context }
+      );
+    if (failure === 'none') assert.equal(invoke().status, 'duplicate');
+    else assert.throws(invoke);
+    assert.equal(writes, 0);
+  }
+});

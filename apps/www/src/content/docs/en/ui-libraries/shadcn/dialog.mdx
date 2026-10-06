@@ -82,3 +82,7 @@ Set `alert` on `ShadcnDialogRoot`, not Content, to request `role="alertdialog"`.
 - Default close: [P-SHADCN-DIALOG-CLOSE-ICON](https://github.com/Proto-UI/Proto-UI/blob/main/spec/prototypes/P-SHADCN-DIALOG-CLOSE-ICON.yaml)
 - Base protocol: [P-BASE-DIALOG](https://github.com/Proto-UI/Proto-UI/blob/main/spec/prototypes/P-BASE-DIALOG.yaml)
 - Source: [packages/prototypes/shadcn/src/dialog](https://github.com/Proto-UI/Proto-UI/tree/main/packages/prototypes/shadcn/src/dialog)
+
+## Draft workspace inheritance
+
+The current workspace also inherits the bounded [Base Mask pointer-default behavior](/en/ui-libraries/base/dialog/): participating Mask prevents its root-scoped pointer default from stealing restored focus, while passthrough remains unprevented and Content retains dismissal ownership. This draft revision is separate from any previously published family version; it introduces no new styled Dialog props.

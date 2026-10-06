@@ -1,6 +1,12 @@
+import {
+  ownerAuthorizationFromArgs,
+  ownerAuthorizationAllows,
+  ownerSkillEligibility,
+} from './owner-authorization.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isDeepStrictEqual } from 'node:util';
 import YAML from 'yaml';
 
 const DEFAULT_ROOT = path.resolve(fileURLToPath(new URL('../..', import.meta.url)));
@@ -117,6 +123,8 @@ export function validateSkillRegistryDocument(registry, policy, { root = DEFAULT
         'requires',
         'produces',
         ...(Object.hasOwn(skill, 'conditionalProduces') ? ['conditionalProduces'] : []),
+        ...(Object.hasOwn(skill, 'allowedNextSkillIds') ? ['allowedNextSkillIds'] : []),
+        ...(Object.hasOwn(skill, 'interruptions') ? ['interruptions'] : []),
       ],
       label
     );
@@ -170,6 +178,19 @@ export function validateSkillRegistryDocument(registry, policy, { root = DEFAULT
     );
     assertStringList(skill.requires, `${label}.requires`, { nonempty: true });
     assertStringList(skill.produces, `${label}.produces`, { nonempty: true });
+    if (Object.hasOwn(skill, 'allowedNextSkillIds')) {
+      assert(
+        Array.isArray(skill.allowedNextSkillIds) && skill.allowedNextSkillIds.length > 0,
+        `${label}.allowedNextSkillIds must be a non-empty array`
+      );
+      const nextIds = new Set();
+      for (const nextId of skill.allowedNextSkillIds) {
+        assert(ID.test(nextId ?? ''), `${label}.allowedNextSkillIds contains an invalid id`);
+        assert(!nextIds.has(nextId), `${label}.allowedNextSkillIds duplicates ${nextId}`);
+        assert(nextId !== skill.id, `${label}.allowedNextSkillIds cannot select itself`);
+        nextIds.add(nextId);
+      }
+    }
     if (Object.hasOwn(skill, 'conditionalProduces')) {
       assert(
         Array.isArray(skill.conditionalProduces) && skill.conditionalProduces.length > 0,
@@ -198,6 +219,36 @@ export function validateSkillRegistryDocument(registry, policy, { root = DEFAULT
     }
   }
 
+  for (const skill of registry.skills) {
+    for (const nextId of skill.allowedNextSkillIds ?? []) {
+      const next = registry.skills.find((candidate) => candidate.id === nextId);
+      assert(next, `${skill.id}.allowedNextSkillIds names an unregistered leaf: ${nextId}`);
+      assert(
+        skill.entrypoints.some((entrypoint) => next.entrypoints.includes(entrypoint)),
+        `${skill.id}.allowedNextSkillIds has no compatible entrypoint with ${nextId}`
+      );
+    }
+    if (skill.interruptions) {
+      assertExactKeys(skill.interruptions, ['destinations', 'terminal'], 'skill interruptions');
+      assert(
+        typeof skill.interruptions.terminal === 'boolean',
+        'interruption terminal flag is invalid'
+      );
+      assert(
+        Array.isArray(skill.interruptions.destinations) &&
+          new Set(skill.interruptions.destinations).size ===
+            skill.interruptions.destinations.length,
+        'interruption routes are invalid'
+      );
+      for (const destination of skill.interruptions.destinations) {
+        const target = registry.skills.find((entry) => entry.id === destination);
+        assert(
+          target && target.id !== skill.id && target.mutation === 'none',
+          'interruption route must be read-only and non-recursive'
+        );
+      }
+    }
+  }
   return {
     ...registry,
     byId: new Map(registry.skills.map((skill) => [skill.id, Object.freeze({ ...skill })])),
@@ -214,10 +265,19 @@ export function loadSkillRegistry({ root = DEFAULT_ROOT } = {}) {
   return validateSkillRegistryDocument(registry, policy, { root });
 }
 
-function validateArtifact(artifact, index) {
+function validateArtifact(artifact, index, handoff) {
   const allowed =
     artifact && typeof artifact === 'object' && !Array.isArray(artifact)
-      ? Object.keys(artifact).every((key) => ['type', 'reference', 'digest'].includes(key))
+      ? Object.keys(artifact).every((key) =>
+          [
+            'type',
+            'reference',
+            'digest',
+            ...(handoff.schemaVersion === 2
+              ? ['scopeId', 'repositoryId', 'revision', 'result']
+              : []),
+          ].includes(key)
+        )
       : false;
   assert(allowed, `handoff.artifacts[${index}] has an invalid shape`);
   assert(ARTIFACT.test(artifact.type ?? ''), `handoff.artifacts[${index}].type is invalid`);
@@ -231,7 +291,283 @@ function validateArtifact(artifact, index) {
     assert(DIGEST.test(artifact.digest), `handoff.artifacts[${index}].digest is invalid`);
 }
 
-export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
+export const REPEATABLE_HANDOFF_ARTIFACTS = Object.freeze(['candidate-change', 'evidence-report']);
+export function getHandoffArtifacts(handoff, type) {
+  return handoff.artifacts.filter((artifact) => artifact.type === type);
+}
+export function requireCompletedHandoff(handoff) {
+  assert(
+    handoff.outcome !== 'interrupted',
+    'interrupted handoff cannot supply completed review or mutation evidence'
+  );
+  return handoff;
+}
+function validateHandoffV2State(handoff, registry) {
+  assert(['completed', 'interrupted'].includes(handoff.outcome), 'handoff outcome is invalid');
+  assertExactKeys(
+    handoff.binding,
+    ['repositoryId', 'scopeId', 'headSha', 'reviewInputDigest'],
+    'handoff.binding'
+  );
+  assert(
+    typeof handoff.binding.repositoryId === 'string' &&
+      handoff.binding.repositoryId.startsWith('github.com:') &&
+      handoff.binding.repositoryId.split('/').length === 2 &&
+      handoff.binding.repositoryId.split('/')[0].length > 11 &&
+      handoff.binding.repositoryId.split('/')[1].length > 0 &&
+      !/\s/.test(handoff.binding.repositoryId),
+    'invalid repository binding'
+  );
+  assert(
+    typeof handoff.binding.scopeId === 'string' &&
+      handoff.binding.scopeId.length > 0 &&
+      handoff.binding.scopeId.length <= 120,
+    'invalid scope binding'
+  );
+  assert(/^[a-f0-9]{40}$/.test(handoff.binding.headSha), 'invalid head binding');
+  assert(
+    handoff.binding.reviewInputDigest === null ||
+      /^[a-f0-9]{64}$/.test(handoff.binding.reviewInputDigest),
+    'invalid input binding'
+  );
+  if (handoff.outcome === 'interrupted') {
+    const source = registry.byId.get(handoff.fromId);
+    assert(source?.interruptions, 'source leaf does not admit interruption');
+    assertExactKeys(
+      handoff.interruption,
+      ['reason', 'pendingScope', 'pendingFindingIds', 'resumeSkillId'],
+      'handoff.interruption'
+    );
+    assert(
+      typeof handoff.interruption.reason === 'string' &&
+        handoff.interruption.reason.length > 0 &&
+        handoff.interruption.reason.length <= 2000,
+      'invalid interruption reason'
+    );
+    for (const key of ['pendingScope', 'pendingFindingIds']) {
+      const values = handoff.interruption[key];
+      assert(
+        Array.isArray(values) &&
+          values.every(
+            (value) => typeof value === 'string' && value.length > 0 && value.length <= 1000
+          ) &&
+          new Set(values).size === values.length,
+        'invalid pending work'
+      );
+    }
+    assert(handoff.interruption.pendingScope.length > 0, 'unfinished scope is missing');
+    assert(handoff.interruption.resumeSkillId === handoff.fromId, 'resume source differs');
+    assert(
+      handoff.binding.reviewInputDigest !== null,
+      'interrupted review requires exact input binding'
+    );
+    const priorInputs = Array.isArray(handoff.artifacts)
+      ? handoff.artifacts.filter((a) => a.type === 'review-input')
+      : [];
+    assert(
+      priorInputs.length === 1 &&
+        priorInputs[0].digest === 'sha256:' + handoff.binding.reviewInputDigest &&
+        priorInputs[0].revision === handoff.binding.headSha,
+      'interrupted review requires its bound prior input artifact'
+    );
+    if (handoff.nextSkillId === null)
+      assert(source.interruptions.terminal === true, 'terminal interruption is not admitted');
+    else {
+      assert(
+        source.interruptions.destinations.includes(handoff.nextSkillId),
+        'interruption destination is not admitted'
+      );
+      assert(
+        registry.byId.get(handoff.nextSkillId)?.mutation === 'none',
+        'interruption cannot admit a mutation'
+      );
+    }
+    assert(handoff.resume === undefined, 'interruption cannot also be a resume');
+  } else {
+    assert(
+      handoff.interruption === undefined,
+      'completed handoff cannot retain unfinished outcome'
+    );
+    if (handoff.resume !== undefined) {
+      assertExactKeys(
+        handoff.resume,
+        [
+          'interruptedHandoffReference',
+          'interruptedHandoffDigest',
+          'sourceSkillId',
+          'previousHeadSha',
+          'previousReviewInputDigest',
+          'pendingScope',
+          'pendingFindingIds',
+        ],
+        'handoff.resume'
+      );
+      assert(
+        typeof handoff.resume.interruptedHandoffReference === 'string' &&
+          handoff.resume.interruptedHandoffReference.length > 0 &&
+          handoff.resume.interruptedHandoffReference.length <= 1000,
+        'resume receipt reference is missing'
+      );
+      assert(
+        DIGEST.test(handoff.resume.interruptedHandoffDigest),
+        'resume receipt digest is invalid'
+      );
+      assert(
+        handoff.nextSkillId === handoff.resume.sourceSkillId &&
+          registry.byId.has(handoff.resume.sourceSkillId),
+        'resume must return to original leaf'
+      );
+      assert(
+        /^[a-f0-9]{40}$/.test(handoff.resume.previousHeadSha) &&
+          /^[a-f0-9]{64}$/.test(handoff.resume.previousReviewInputDigest),
+        'resume prior binding is invalid'
+      );
+      assert(
+        Array.isArray(handoff.resume.pendingScope) &&
+          handoff.resume.pendingScope.length > 0 &&
+          Array.isArray(handoff.resume.pendingFindingIds),
+        'resume pending work is missing'
+      );
+      for (const values of [handoff.resume.pendingScope, handoff.resume.pendingFindingIds]) {
+        assert(
+          values.every(
+            (value) => typeof value === 'string' && value.length > 0 && value.length <= 1000
+          ) && new Set(values).size === values.length,
+          'resume pending work is invalid'
+        );
+      }
+      assert(
+        registry.byId.get(handoff.resume.sourceSkillId)?.interruptions,
+        'resume source does not admit interruption'
+      );
+      assert(
+        handoff.artifacts.some(
+          (a) =>
+            a.type === 'interruption-receipt' &&
+            a.reference === handoff.resume.interruptedHandoffReference &&
+            a.digest === handoff.resume.interruptedHandoffDigest
+        ),
+        'resume must retain its bound interruption receipt'
+      );
+      assert(
+        handoff.artifacts.some(
+          (a) =>
+            a.type === 'review-input' &&
+            a.digest === 'sha256:' + handoff.binding.reviewInputDigest &&
+            a.revision === handoff.binding.headSha
+        ),
+        'resume input does not bind current head and digest'
+      );
+      assert(
+        handoff.artifacts.some((a) => a.type === 'review-input') &&
+          handoff.binding.reviewInputDigest !== null,
+        'resume needs refreshed current input'
+      );
+    }
+  }
+}
+
+function validateUnchangedTerminal(handoff, priorHandoff, source, registry) {
+  assert(
+    priorHandoff?.nextSkillId === handoff.fromId,
+    'constrained terminal requires the handoff received by its source leaf'
+  );
+  validateSkillHandoff(priorHandoff, registry);
+  for (const key of ['schemaVersion', 'entrypoint', 'executionMode', 'executionModeSource'])
+    assert(priorHandoff[key] === handoff[key], 'terminal cannot change ' + key);
+  if (handoff.schemaVersion === 2)
+    assert(
+      isDeepStrictEqual(priorHandoff.binding, handoff.binding),
+      'terminal cannot change its received binding'
+    );
+  const required = new Set(source.requires);
+  const received = new Map();
+  for (const artifact of priorHandoff.artifacts)
+    if (required.has(artifact.type))
+      received.set(artifact.type + '\u0000' + artifact.reference, artifact);
+  let retained = 0;
+  for (const artifact of handoff.artifacts) {
+    if (!required.has(artifact.type)) continue;
+    const previous = received.get(artifact.type + '\u0000' + artifact.reference);
+    assert(
+      previous && isDeepStrictEqual(previous, artifact),
+      'constrained terminal must retain its received ' + artifact.type + ' unchanged'
+    );
+    if (artifact.type === 'candidate-change')
+      assert(artifact.digest !== undefined, 'unchanged terminal candidate requires its digest');
+    retained++;
+  }
+  assert(retained === received.size, 'constrained terminal must retain every received input');
+  if (source.id === 'pui-package-budget')
+    assert(
+      handoff.notes.some((note) => note.trim().length > 0),
+      'package-budget terminal requires a blocker or refresh-work note'
+    );
+}
+
+function validateRefreshedEvidence(handoff, priorHandoff, registry) {
+  assert(
+    priorHandoff?.nextSkillId === 'pui-validate',
+    'validation review requires the handoff received by pui-validate'
+  );
+  validateSkillHandoff(priorHandoff, registry);
+  for (const key of ['schemaVersion', 'entrypoint', 'executionMode', 'executionModeSource'])
+    assert(handoff[key] === priorHandoff[key], 'validation cannot change ' + key);
+  if (handoff.schemaVersion === 2)
+    for (const key of ['repositoryId', 'scopeId', 'headSha'])
+      assert(handoff.binding[key] === priorHandoff.binding[key], 'validation cannot change ' + key);
+  const currentCandidates = (value, allowUnboundRevision = false) =>
+    getHandoffArtifacts(value, 'candidate-change').filter(
+      (artifact) =>
+        value.schemaVersion === 1 ||
+        artifact.revision === value.binding.headSha ||
+        (allowUnboundRevision && artifact.revision === undefined)
+    );
+  const received = currentCandidates(priorHandoff, true);
+  const emitted = currentCandidates(handoff);
+  assert(received.length > 0, 'validation requires current candidate materials');
+  assert(
+    received.length === emitted.length &&
+      received.every((artifact) =>
+        emitted.some((candidate) => {
+          if (candidate.digest === undefined) return false;
+          // Validation owns measuring an optional, previously unbound input.
+          // This permits only enrichment, not changes to an existing binding.
+          // It does not authenticate the supplied digest or referenced bytes.
+          const bound = { ...artifact };
+          if (bound.digest === undefined) bound.digest = candidate.digest;
+          if (handoff.schemaVersion === 2 && bound.revision === undefined)
+            bound.revision = handoff.binding.headSha;
+          return isDeepStrictEqual(candidate, bound);
+        })
+      ),
+    'validation must retain received candidate identities and existing bindings'
+  );
+  const previousReports = getHandoffArtifacts(priorHandoff, 'evidence-report');
+  const fresh = getHandoffArtifacts(handoff, 'evidence-report').filter(
+    (artifact) =>
+      artifact.digest !== undefined &&
+      !previousReports.some((previous) =>
+        previous.digest === undefined
+          ? previous.reference === artifact.reference
+          : previous.digest === artifact.digest
+      )
+  );
+  assert(
+    fresh.some(
+      (artifact) =>
+        handoff.schemaVersion === 1 ||
+        (artifact.revision === handoff.binding.headSha && artifact.result !== undefined)
+    ),
+    'validation review requires a new current-candidate evidence report'
+  );
+}
+
+export function validateSkillHandoff(
+  handoff,
+  registry = loadSkillRegistry(),
+  { priorHandoff = null } = {}
+) {
   assertExactKeys(
     handoff,
     [
@@ -245,10 +581,35 @@ export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
       'artifacts',
       'humanGates',
       'notes',
+      ...(handoff?.schemaVersion === 2
+        ? [
+            'outcome',
+            'binding',
+            ...(Object.hasOwn(handoff, 'interruption') ? ['interruption'] : []),
+            ...(Object.hasOwn(handoff, 'resume') ? ['resume'] : []),
+          ]
+        : []),
     ],
     'handoff'
   );
-  assert(handoff.schemaVersion === 1, 'handoff.schemaVersion must be 1');
+  assert([1, 2].includes(handoff.schemaVersion), 'handoff.schemaVersion must be 1 or 2');
+  if (handoff.schemaVersion === 2) {
+    validateHandoffV2State(handoff, registry);
+    const kinds = new Set(
+      registry.skills
+        .flatMap((skill) => [
+          ...skill.requires,
+          ...skill.produces,
+          ...(skill.conditionalProduces ?? []).map((value) => value.artifact),
+        ])
+        .concat(['interruption-receipt', 'prior-review-input', 'standing-user-authorization'])
+    );
+    assert(
+      Array.isArray(handoff.artifacts) &&
+        handoff.artifacts.every((artifact) => kinds.has(artifact?.type)),
+      'handoff v2 contains an undeclared artifact kind'
+    );
+  }
   assert(handoff.kind === 'proto-ui.skill-handoff', 'handoff.kind is invalid');
   assert(Object.hasOwn(registry.entrypoints, handoff.entrypoint), 'handoff.entrypoint is invalid');
   assert(EXECUTION_MODES.includes(handoff.executionMode), 'handoff.executionMode is invalid');
@@ -275,12 +636,39 @@ export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
     'handoff.artifacts must not be empty'
   );
   const artifactTypes = new Set();
+  const artifactIdentities = new Set();
   handoff.artifacts.forEach((artifact, index) => {
-    validateArtifact(artifact, index);
-    assert(!artifactTypes.has(artifact.type), `handoff.artifacts duplicates type ${artifact.type}`);
+    validateArtifact(artifact, index, handoff);
+    const identity = artifact.type + '\u0000' + artifact.reference;
+    assert(
+      !artifactIdentities.has(identity),
+      'handoff.artifacts duplicates type/reference identity ' + artifact.type
+    );
+    artifactIdentities.add(identity);
+    if (handoff.schemaVersion === 2) {
+      if (artifact.scopeId !== undefined)
+        assert(artifact.scopeId === handoff.binding.scopeId, 'artifact scope mismatch');
+      if (artifact.repositoryId !== undefined)
+        assert(
+          artifact.repositoryId === handoff.binding.repositoryId,
+          'artifact repository mismatch'
+        );
+      if (artifact.revision !== undefined)
+        assert(/^[a-f0-9]{40}$/.test(artifact.revision), 'artifact revision is invalid');
+      if (artifact.result !== undefined)
+        assert(
+          ['passed', 'failed', 'not-run', 'partial'].includes(artifact.result),
+          'artifact result is invalid'
+        );
+    }
+    assert(
+      (handoff.schemaVersion === 2 && REPEATABLE_HANDOFF_ARTIFACTS.includes(artifact.type)) ||
+        !artifactTypes.has(artifact.type),
+      'handoff.artifacts duplicates type ' + artifact.type
+    );
     artifactTypes.add(artifact.type);
   });
-  if (fromLeaf) {
+  if (fromLeaf && handoff.outcome !== 'interrupted') {
     for (const produced of fromLeaf.produces) {
       assert(
         artifactTypes.has(produced),
@@ -320,7 +708,17 @@ export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
     );
   }
 
-  if (handoff.nextSkillId === null) return { handoff, nextSkill: null };
+  if (handoff.nextSkillId === null) {
+    if (fromLeaf?.allowedNextSkillIds)
+      validateUnchangedTerminal(handoff, priorHandoff, fromLeaf, registry);
+    return { handoff, nextSkill: null };
+  }
+  if (fromLeaf?.allowedNextSkillIds) {
+    assert(
+      fromLeaf.allowedNextSkillIds.includes(handoff.nextSkillId),
+      `handoff from ${fromLeaf.id} must continue through one of: ${fromLeaf.allowedNextSkillIds.join(', ')}`
+    );
+  }
   assert(
     handoff.nextSkillId !== handoff.fromId,
     'handoff cannot recursively select its source skill'
@@ -337,6 +735,11 @@ export function validateSkillHandoff(handoff, registry = loadSkillRegistry()) {
       `handoff lacks artifact required by ${nextSkill.id}: ${required}`
     );
   }
+  if (nextSkill.id === 'pui-package-budget')
+    for (const candidate of getHandoffArtifacts(handoff, 'candidate-change'))
+      assert(candidate.digest !== undefined, 'package-budget entry candidate requires its digest');
+  if (handoff.fromId === 'pui-validate' && nextSkill.id === 'pui-review')
+    validateRefreshedEvidence(handoff, priorHandoff, registry);
   return { handoff, nextSkill };
 }
 
@@ -360,7 +763,18 @@ export function establishExecutionMode(requestedMode, source) {
   return requestedMode;
 }
 
-export function evaluateSkillEligibility(skill, { executionMode, selfAssessment = null } = {}) {
+export function evaluateSkillEligibility(
+  skill,
+  {
+    executionMode,
+    selfAssessment = null,
+    ownerAuthorization = null,
+    repositoryId = null,
+    scopeId = null,
+    executionModeSource = null,
+    entrypoint = null,
+  } = {}
+) {
   assert(EXECUTION_MODES.includes(executionMode), 'execution mode is invalid');
   if (executionMode === 'human-assisted') {
     return {
@@ -370,6 +784,15 @@ export function evaluateSkillEligibility(skill, { executionMode, selfAssessment 
         'current human direction governs task choice; assessment calibrates review and evidence',
     };
   }
+  const delegated = ownerSkillEligibility(skill, {
+    ownerAuthorization,
+    executionMode,
+    repositoryId,
+    scopeId,
+    executionModeSource,
+    entrypoint,
+  });
+  if (delegated) return delegated;
   if (['pui-orient', 'pui-assess'].includes(skill.id)) {
     return {
       eligible: true,
