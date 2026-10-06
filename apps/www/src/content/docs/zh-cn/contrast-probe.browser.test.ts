@@ -1,7 +1,11 @@
 // @vitest-environment node
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
-import type { Browser } from 'playwright-core';
+import type { Browser, BrowserContext } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type {
   ContrastFrame,
@@ -36,29 +40,63 @@ declare global {
 
 let browser: Browser;
 let bundle: string;
+let calibrationPhaseSequence = 0;
+const recordCalibrationFile = async (name: string, contents: string | Buffer) => {
+  if (!process.env.RUNNER_TEMP) return;
+  try {
+    const output = join(process.env.RUNNER_TEMP, 'contrast-evidence', 'calibration');
+    await mkdir(output, { recursive: true });
+    await writeFile(join(output, name), contents, { flag: 'wx' });
+  } catch (error) {
+    // Diagnostic failures must not replace the original setup/capture/assertion.
+    console.error(`[contrast-calibration] ${name} evidence save failed:`, error);
+  }
+};
+const recordCalibrationPhase = async (phase: string, error?: unknown) =>
+  recordCalibrationFile(
+    `${String(calibrationPhaseSequence++).padStart(3, '0')}-${phase}.json`,
+    JSON.stringify(
+      {
+        phase,
+        observedAt: new Date().toISOString(),
+        error: error === undefined ? undefined : String(error).slice(0, 2000),
+      },
+      null,
+      2
+    )
+  );
 beforeAll(async () => {
   const startedAt = performance.now();
-  console.info('[contrast-calibration] bundle:start');
-  const result = await build({
-    entryPoints: [
-      fileURLToPath(new URL('../../../../scripts/contrast-probe.browser.ts', import.meta.url)),
-    ],
-    bundle: true,
-    write: false,
-    format: 'iife',
-    globalName: 'puiContrastProbe',
-    platform: 'browser',
-    target: 'es2022',
-  });
-  bundle = result.outputFiles[0].text;
-  console.info(
-    `[contrast-calibration] bundle:done elapsedMs=${Math.round(performance.now() - startedAt)}`
-  );
-  console.info('[contrast-calibration] browser:start');
-  browser = await launchBrowser();
-  console.info(
-    `[contrast-calibration] browser:ready elapsedMs=${Math.round(performance.now() - startedAt)}`
-  );
+  await recordCalibrationPhase('bundle-start');
+  try {
+    console.info('[contrast-calibration] bundle:start');
+    const result = await build({
+      entryPoints: [
+        fileURLToPath(new URL('../../../../scripts/contrast-probe.browser.ts', import.meta.url)),
+      ],
+      bundle: true,
+      write: false,
+      format: 'iife',
+      globalName: 'puiContrastProbe',
+      platform: 'browser',
+      target: 'es2022',
+    });
+    bundle = result.outputFiles[0].text;
+    await recordCalibrationPhase('bundle-ready');
+    console.info(
+      `[contrast-calibration] bundle:done elapsedMs=${Math.round(performance.now() - startedAt)}`
+    );
+    console.info('[contrast-calibration] browser:start');
+    await recordCalibrationPhase('browser-start');
+    browser = await launchBrowser();
+    await recordCalibrationPhase('browser-ready');
+    console.info(
+      `[contrast-calibration] browser:ready elapsedMs=${Math.round(performance.now() - startedAt)}`
+    );
+  } catch (error) {
+    await recordCalibrationPhase('setup-failed', error);
+    throw error;
+  }
 }, 30_000);
 afterAll(async () => {
   await browser?.close();
@@ -76,12 +114,15 @@ const fixture = (markup: string) => `<!doctype html><html data-theme="light"><he
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 </style></head><body><main data-projection-scope="calibration" data-projection-owner="calibration" data-projection-generation="1">${markup}</main></body></html>`;
 
-const calibrate = async (markup: string): Promise<ContrastFrame> => {
-  const context = await browser.newContext({
-    viewport: { width: 800, height: 900 },
-    deviceScaleFactor: 1,
-  });
+const calibrate = async (markup: string, diagnosticName?: string): Promise<ContrastFrame> => {
+  let context: BrowserContext | undefined;
+  let phase = 'context-start';
+  if (diagnosticName) await recordCalibrationPhase(`${diagnosticName}-${phase}`);
   try {
+    context = await browser.newContext({
+      viewport: { width: 800, height: 900 },
+      deviceScaleFactor: 1,
+    });
     const page = await context.newPage();
     await page.setContent(fixture(markup));
     await page.locator('[data-pui-root]').evaluateAll((elements) => {
@@ -92,16 +133,71 @@ const calibrate = async (markup: string): Promise<ContrastFrame> => {
     });
     await page.addScriptTag({ content: bundle });
     await page.evaluate(() => document.fonts.ready);
-    const image = (await page.screenshot({ type: 'png', caret: 'initial' })).toString('base64');
+    phase = 'png-start';
+    if (diagnosticName) await recordCalibrationPhase(`${diagnosticName}-${phase}`);
+    const png = await page.screenshot({ type: 'png', caret: 'initial' });
+    const image = png.toString('base64');
+    if (diagnosticName) {
+      await recordCalibrationFile(`${diagnosticName}.png`, png);
+      await recordCalibrationFile(`${diagnosticName}.html`, fixture(markup));
+      await recordCalibrationPhase(`${diagnosticName}-png-captured`);
+    }
+    phase = 'facts-start';
     // Keep paint falsifiers independent of the new fingerprint API so a
     // preserved old probe fails on its bad ratios, not a missing export.
-    return await page.evaluate(
+    const frame = await page.evaluate(
       (image) =>
         window.puiContrastProbe.collectContrastFrame({ image, family: 'instrument-calibration' }),
       image
     );
+    if (diagnosticName) await recordCalibrationPhase(`${diagnosticName}-facts-collected`);
+    // Keep the exact failing calibration source and pixels in the existing CI
+    // artifact directory. A failed calibration never reaches the audit runner.
+    // This only records the observed subject; it changes no paint or assertion.
+    if (diagnosticName && process.env.RUNNER_TEMP) {
+      try {
+        const sourceHead = execFileSync(
+          'git',
+          ['-C', fileURLToPath(new URL('.', import.meta.url)), 'rev-parse', 'HEAD'],
+          { encoding: 'utf8' }
+        ).trim();
+        const hash = (bytes: string | Buffer) => createHash('sha256').update(bytes).digest('hex');
+        await recordCalibrationFile(
+          `${diagnosticName}.json`,
+          JSON.stringify(
+            {
+              sourceHead,
+              observedAt: new Date().toISOString(),
+              fixtureSha256: hash(fixture(markup)),
+              probeBundleSha256: hash(bundle),
+              pngSha256: hash(png),
+              pngSize: { width: png.readUInt32BE(16), height: png.readUInt32BE(20) },
+              viewport: await page.evaluate(() => ({
+                width: innerWidth,
+                height: innerHeight,
+                devicePixelRatio,
+                scrollX,
+                scrollY,
+                scrollWidth: document.documentElement.scrollWidth,
+                scrollHeight: document.documentElement.scrollHeight,
+              })),
+              frame,
+            },
+            null,
+            2
+          )
+        );
+      } catch (error) {
+        // Preserve the original calibration assertion even if diagnostics fail.
+        console.error(`[contrast-calibration] ${diagnosticName} evidence save failed:`, error);
+      }
+    }
+    return frame;
+  } catch (error) {
+    if (diagnosticName) await recordCalibrationPhase(`${diagnosticName}-${phase}-failed`, error);
+    throw error;
   } finally {
-    await context.close();
+    await context?.close();
   }
 };
 
@@ -586,7 +682,8 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     // Border style is an instrument-domain boundary. Native CSSOM and PNG
     // neighbors are observed here; no assertion assumes a dash gap location.
     // The old source model emitted 21:1 for all three unsupported border styles.
-    const frame = await calibrate(`
+    const frame = await calibrate(
+      `
       <div style="background:white;padding:16px">
         <div data-pui-root data-demo-ref="solid" style="border:4px solid black">Solid control</div>
         <div data-pui-root data-demo-ref="dashed" style="border:4px dashed black">Dashed border</div>
@@ -598,7 +695,9 @@ describe('contrast probe / real Chromium instrument calibration', () => {
       <div style="background:black;padding:16px">
         <div data-pui-root data-demo-ref="fill" style="border:4px dashed black">Independent white fill</div>
       </div>
-    `);
+    `,
+      'border-style-domain'
+    );
     const mixed: Record<string, string> = {
       top: 'dashed',
       right: 'solid',
@@ -607,8 +706,17 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     };
     for (const ref of ['solid', 'dashed', 'dotted', 'double', 'mixed', 'zero', 'fill']) {
       const target = surface(frame, ref);
-      expect(target.exterior).toHaveLength(12);
+      expect(target.exterior, ref).toHaveLength(12);
       for (const edge of target.exterior) {
+        const observed = JSON.stringify({
+          ref,
+          devicePixelRatio: frame.devicePixelRatio,
+          rect: target.rect,
+          style: target.style,
+          paint: target.paint,
+          border: target.borders[edge.side],
+          edge,
+        });
         const expectedStyle =
           ref === 'mixed'
             ? mixed[edge.side]
@@ -617,20 +725,22 @@ describe('contrast probe / real Chromium instrument calibration', () => {
               : ref === 'zero'
                 ? 'solid'
                 : ref;
-        expect(target.borders[edge.side].style).toBe(expectedStyle);
-        expect(target.borders[edge.side].width).toBe(ref === 'zero' ? 0 : 4);
-        expect(edge.point?.rgb).toEqual(ref === 'fill' ? [0, 0, 0] : [255, 255, 255]);
+        expect(target.borders[edge.side].style, observed).toBe(expectedStyle);
+        expect(target.borders[edge.side].width, observed).toBe(ref === 'zero' ? 0 : 4);
+        expect(edge.point?.rgb, observed).toEqual(ref === 'fill' ? [0, 0, 0] : [255, 255, 255]);
         if (expectedStyle === 'solid' && ref !== 'zero') {
-          expect(edge.innerBorderVsBackground).toBeCloseTo(21, 8);
-          expect(edge.opaqueBorderVsPixel).toBeCloseTo(21, 8);
-          expect(target.borders[edge.side].limits).toEqual([]);
+          expect(edge.innerBorderVsBackground, observed).toBeCloseTo(21, 8);
+          expect(edge.opaqueBorderVsPixel, observed).toBeCloseTo(21, 8);
+          expect(target.borders[edge.side].limits, observed).toEqual([]);
         } else {
-          expect(edge.innerBorderVsBackground).toBeNull();
-          expect(edge.opaqueBorderVsPixel).toBeNull();
+          expect(edge.innerBorderVsBackground, observed).toBeNull();
+          expect(edge.opaqueBorderVsPixel, observed).toBeNull();
           if (expectedStyle !== 'solid')
-            expect(target.borders[edge.side].limits).toContain('unsupported-border-style');
+            expect(target.borders[edge.side].limits, observed).toContain(
+              'unsupported-border-style'
+            );
         }
-        expect(edge.opaqueFillVsPixel).toBeCloseTo(ref === 'fill' ? 21 : 1, 8);
+        expect(edge.opaqueFillVsPixel, observed).toBeCloseTo(ref === 'fill' ? 21 : 1, 8);
       }
     }
   });
