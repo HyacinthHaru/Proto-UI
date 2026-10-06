@@ -66,8 +66,10 @@ const cases = [
   // internal/records/2026-10-06-focus-startup-budget-reconciliation.json
   // Necessary +29-byte ceiling for the reviewed remount/Text Control/Feedback union;
   // internal/records/2026-10-06-react-remount-text-control-budget.json
-  ['adapter-react root', 'packages/adapters/react/src/index.ts', 91_029],
-  ['adapter-vue root', 'packages/adapters/vue/src/index.ts', 90_800],
+  // Exact #832 + merged Template/Scroll integration; no speculative headroom.
+  // internal/records/2026-10-06-template-scroll-focus-budget.json
+  ['adapter-react root', 'packages/adapters/react/src/index.ts', 91_175],
+  ['adapter-vue root', 'packages/adapters/vue/src/index.ts', 90_949],
   // The earlier #652 shadow split baseline proposal measured 84,683 gzip at
   // head dd820b30 (main at ddac15da: 75,664 with the same toolchain). Its
   // prior 97,000 ceiling rationale is retained here; current proposal:
