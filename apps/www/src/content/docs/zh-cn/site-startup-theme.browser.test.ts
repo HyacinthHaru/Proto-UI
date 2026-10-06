@@ -69,7 +69,8 @@ async function firstScreen(page: Page) {
   return page.evaluate(() => {
     const frame = document.querySelector('.site-page-frame')!;
     const heading = document.querySelector('h1')!;
-    const preview = document.querySelector('.proto-previewer .host');
+    const preview = document.querySelector<HTMLElement>('.proto-previewer .host');
+    const status = preview?.querySelector<HTMLElement>('.proto-previewer__skeleton');
     return {
       background: getComputedStyle(frame).backgroundColor,
       color: getComputedStyle(frame).color,
@@ -77,7 +78,9 @@ async function firstScreen(page: Page) {
       headingFontFamily: getComputedStyle(heading).fontFamily,
       headingTop: heading.getBoundingClientRect().top,
       previewHeight: preview?.getBoundingClientRect().height ?? null,
-      previewText: preview?.textContent?.trim() ?? null,
+      previewText: preview?.innerText.trim() ?? null,
+      statusBorder: status ? getComputedStyle(status).borderTopWidth : null,
+      statusBackground: status ? getComputedStyle(status).backgroundColor : null,
       bodyWidth: document.documentElement.scrollWidth,
       viewportWidth: innerWidth,
     };
@@ -234,83 +237,100 @@ for (const width of [2048, 390, 430, 320]) {
   });
 }
 
-for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/components/card/']) {
-  it(`${route} has a usable native cold-load disclosure before scripts complete`, async () => {
-    const context = await browser.newContext({ viewport: { width: 2048, height: 1237 } });
-    const page = await context.newPage();
-    let release!: () => void;
-    const gate = new Promise<void>((resolve) => {
-      release = resolve;
-    });
-    await page.route('**/*', async (request) => {
-      if (request.request().resourceType() === 'script') await gate;
-      await request.continue().catch(() => {});
-    });
-    try {
-      const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'commit' });
-      expect(response?.status()).toBe(200);
-      await page.locator('h1').waitFor();
-      if (route.includes('/card/')) expect(await page.locator('h1').innerText()).toContain('Card');
-      await page.waitForFunction(() => {
-        const styles = [
-          ...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'),
-        ].filter((link) => link.media !== 'print');
-        return (
-          styles.length > 0 &&
-          styles.every((link) => link.sheet !== null) &&
-          getComputedStyle(document.querySelector('[data-site-header]')!).display === 'grid'
-        );
+for (const width of [2048, 390, 430]) {
+  for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/components/card/']) {
+    it(`${route} ${width}px has a usable native cold-load disclosure before scripts complete`, async () => {
+      const context = await browser.newContext({
+        viewport: { width, height: width === 2048 ? 1237 : 900 },
       });
-      const initial = await firstScreen(page);
-      const settingsVisible = await page.locator('[data-site-header-settings]').isVisible();
-      const fallback = page.locator('[data-site-header-fallback-summary]');
-      const isNative = (await fallback.count()) === 1;
-      await capture(page, `cold-${route.includes('card') ? 'card' : 'home'}`, {
-        scriptsHeld: true,
-        initial,
-        settingsVisible,
-        isNative,
+      const page = await context.newPage();
+      let release!: () => void;
+      const gate = new Promise<void>((resolve) => {
+        release = resolve;
       });
-      let focusedHref: string | null = null;
-      if (isNative) {
-        await fallback.press('Enter');
-        expect(await page.locator('[data-site-header-settings]').isVisible()).toBe(true);
-        await capture(page, `cold-native-open-${route.includes('card') ? 'card' : 'home'}`, {
-          scriptsHeld: true,
+      await page.route('**/*', async (request) => {
+        if (request.request().resourceType() === 'script') await gate;
+        await request.continue().catch(() => {});
+      });
+      try {
+        const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'commit' });
+        expect(response?.status()).toBe(200);
+        await page.locator('h1').waitFor();
+        if (route.includes('/card/'))
+          expect(await page.locator('h1').innerText()).toContain('Card');
+        await page.waitForFunction(() => {
+          const styles = [
+            ...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'),
+          ].filter((link) => link.media !== 'print');
+          return (
+            styles.length > 0 &&
+            styles.every((link) => link.sheet !== null) &&
+            getComputedStyle(document.querySelector('[data-site-header]')!).display === 'grid'
+          );
         });
-        const link = page.locator('[data-site-header-settings] a[href]').first();
-        await link.focus();
-        focusedHref = await link.getAttribute('href');
+        const initial = await firstScreen(page);
+        const settingsVisible = await page.locator('[data-site-header-settings]').isVisible();
+        const fallback = page.locator('[data-site-header-fallback-summary]');
+        const isNative = (await fallback.count()) === 1;
+        await capture(page, `cold-${route.includes('card') ? 'card' : 'home'}-${width}`, {
+          scriptsHeld: true,
+          initial,
+          settingsVisible,
+          isNative,
+        });
+        let focusedHref: string | null = null;
+        if (isNative) {
+          await fallback.press('Enter');
+          expect(await page.locator('[data-site-header-settings]').isVisible()).toBe(true);
+          await capture(
+            page,
+            `cold-native-open-${route.includes('card') ? 'card' : 'home'}-${width}`,
+            {
+              scriptsHeld: true,
+            }
+          );
+          const link = page.locator('[data-site-header-settings] a[href]').first();
+          await link.focus();
+          focusedHref = await link.getAttribute('href');
+        }
+        release();
+        await page.waitForLoadState('load');
+        await page.waitForSelector('[data-site-menu-ready]', { timeout: 45_000 });
+        if (route.includes('/card/'))
+          await page
+            .locator('.proto-previewer .pui-runtime-preview-surface')
+            .first()
+            .waitFor({ timeout: 45_000 });
+        const loaded = await firstScreen(page);
+        await capture(page, `loaded-${route.includes('card') ? 'card' : 'home'}-${width}`, {
+          scriptsReleased: true,
+          loaded,
+        });
+        if (!baseline) {
+          expect(isNative).toBe(true);
+          expect(settingsVisible).toBe(false);
+          expect(initial.bodyWidth).toBeLessThanOrEqual(initial.viewportWidth + 1);
+          expect(loaded.bodyWidth).toBeLessThanOrEqual(loaded.viewportWidth + 1);
+          expect(loaded.background).toBe(initial.background);
+          expect(loaded.headingFontSize).toBe(initial.headingFontSize);
+          if (route.includes('/card/')) {
+            expect(Number.parseFloat(initial.statusBorder ?? '0')).toBeGreaterThan(0);
+            expect(initial.previewText).toContain('正文和源码已可阅读');
+            expect(loaded.statusBorder).toBeNull();
+          }
+          expect(await page.locator('[data-site-header]').getAttribute('data-site-menu-open')).toBe(
+            'true'
+          );
+          expect(await page.evaluate(() => document.activeElement?.getAttribute('href'))).toBe(
+            focusedHref
+          );
+        }
+      } finally {
+        release();
+        await context.close();
       }
-      release();
-      await page.waitForSelector('[data-site-menu-ready]', { timeout: 45_000 });
-      if (route.includes('/card/'))
-        await page
-          .locator('.proto-previewer .pui-runtime-preview-surface')
-          .first()
-          .waitFor({ timeout: 45_000 });
-      const loaded = await firstScreen(page);
-      await capture(page, `loaded-${route.includes('card') ? 'card' : 'home'}`, {
-        scriptsReleased: true,
-        loaded,
-      });
-      if (!baseline) {
-        expect(isNative).toBe(true);
-        expect(settingsVisible).toBe(false);
-        expect(loaded.background).toBe(initial.background);
-        expect(loaded.headingFontSize).toBe(initial.headingFontSize);
-        expect(await page.locator('[data-site-header]').getAttribute('data-site-menu-open')).toBe(
-          'true'
-        );
-        expect(await page.evaluate(() => document.activeElement?.getAttribute('href'))).toBe(
-          focusedHref
-        );
-      }
-    } finally {
-      release();
-      await context.close();
-    }
-  }, 90_000);
+    }, 90_000);
+  }
 }
 
 for (const width of [2048, 390]) {

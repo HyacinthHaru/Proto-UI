@@ -167,9 +167,18 @@ const isZh = Astro.url.pathname.startsWith('/zh-cn/');
   >
     <div class="proto-previewer__preview" role="region" aria-live="polite">
       <div class="host">
-        <span class="proto-previewer__skeleton" role="status">
-          {isZh ? '正在加载交互示例…' : 'Loading interactive preview…'}
-        </span>
+        <div class="proto-previewer__skeleton" role="status">
+          <span class="proto-previewer__loading-title">
+            {isZh ? '正在加载交互示例…' : 'Loading interactive preview…'}
+          </span>
+          <span class="proto-previewer__loading-detail">
+            {
+              isZh
+                ? '正文和源码已可阅读，交互控件就绪后会显示在这里。'
+                : 'The article and source are ready to read. Interactive controls will appear here when ready.'
+            }
+          </span>
+        </div>
         <noscript>
           <style is:inline>
             .proto-previewer__skeleton {

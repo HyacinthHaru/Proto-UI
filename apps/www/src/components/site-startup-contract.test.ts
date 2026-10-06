@@ -21,6 +21,18 @@ describe('startup source invariants (not browser paint)', () => {
     expect(host).toContain(height);
     expect(fallback).toContain(height);
   });
+  it('keeps the shared loading presentation bounded to pre-enhancement owners', () => {
+    const css = read('apps/www/src/styles/site-startup.css');
+    expect(css).toContain("[data-site-select-root]:not([data-site-shadcn-initialized='1'])");
+    expect(css).toContain('.site-header:not([data-site-menu-ready])');
+    expect(css).toContain('var(--color-background)');
+    expect(css).toContain('var(--site-surface-border-width, 1px)');
+    expect(css).toContain('@media (forced-colors: active)');
+    expect(css).not.toMatch(/opacity:|backdrop-filter:|animation:|data-pui-style/);
+    const source = read('apps/www/src/components/PrototypePreviewer/PrototypePreviewer.astro');
+    expect(source).toContain('正文和源码已可阅读');
+    expect(source).toContain('class="proto-previewer__skeleton" role="status"');
+  });
   it('schedules its production-only suite when a theme or underlying adapter changes', () => {
     const workflow = YAML.parse(read('.github/workflows/site-startup-theme-evidence.yml'));
     expect(workflow.on.pull_request.paths).toEqual(

@@ -412,6 +412,10 @@ jobs:
       - name: Install
         run: corepack pnpm@"${PROTO_PNPM_VERSION}" install --frozen-lockfile
 
+      - name: Disable the development toolbar before public-page browser tests
+        run: |
+          corepack pnpm@"${PROTO_PNPM_VERSION}" --filter apps-www exec astro preferences disable devToolbar
+          corepack pnpm@"${PROTO_PNPM_VERSION}" --filter apps-www exec astro preferences get devToolbar.enabled
       - name: Install and identify the bounded video evidence toolchain
         run: |
           set -euo pipefail

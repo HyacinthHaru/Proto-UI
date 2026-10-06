@@ -19,6 +19,11 @@ on:
       - 'package.json'
       - 'pnpm-lock.yaml'
   workflow_dispatch:
+    inputs:
+      baseline_sha:
+        description: 'Optional exact historical subject SHA for diagnostic capture; candidate/probe remain this ref'
+        required: false
+        type: string
 permissions:
   contents: read
 concurrency:
@@ -26,7 +31,7 @@ concurrency:
   cancel-in-progress: true
 env:
   CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-  BASELINE_SHA: 48b80f8b8b0b94dbac04919e3516bc6a1ed2c37c
+  BASELINE_SHA: ${{ inputs.baseline_sha || '48b80f8b8b0b94dbac04919e3516bc6a1ed2c37c' }}
 jobs:
   capture:
     runs-on: ubuntu-24.04
@@ -36,6 +41,8 @@ jobs:
       matrix:
         subject: [baseline, candidate]
     steps:
+      - name: Require immutable subject identity
+        run: '[[ "$BASELINE_SHA" =~ ^[0-9a-f]{40}$ ]]'
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.CANDIDATE_SHA }}

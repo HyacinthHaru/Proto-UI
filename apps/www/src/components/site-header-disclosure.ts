@@ -255,6 +255,11 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     if (!wasOpen && trigger?.isConnected && !trigger.closest('[hidden], [inert]'))
       trigger.focus({ preventScroll: true });
   };
+  // Initial pageshow can follow delayed module enhancement. Only bfcache
+  // restoration is history navigation; it must not erase native startup intent.
+  const onPageShow = (event: PageTransitionEvent) => {
+    if (event.persisted) onHistory();
+  };
   const destroy = () => {
     if (destroyed) return;
     destroyed = true;
@@ -285,7 +290,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     document.removeEventListener('pointerdown', onOutside);
     document.removeEventListener(SITE_CONTENTS_OPEN_EVENT, onContentsOpen);
     window?.removeEventListener('popstate', onHistory);
-    window?.removeEventListener('pageshow', onHistory);
+    window?.removeEventListener('pageshow', onPageShow);
     document.removeEventListener('astro:before-swap', destroy);
     panel?.removeEventListener('click', onNavigation);
     buttons.clear();
@@ -374,7 +379,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   document.addEventListener('pointerdown', onOutside);
   document.addEventListener(SITE_CONTENTS_OPEN_EVENT, onContentsOpen);
   window?.addEventListener('popstate', onHistory);
-  window?.addEventListener('pageshow', onHistory);
+  window?.addEventListener('pageshow', onPageShow);
   document.addEventListener('astro:before-swap', destroy);
   panel?.addEventListener('click', onNavigation);
   disclosures.set(root, handle);
