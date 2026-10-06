@@ -46,6 +46,7 @@ import { EXPOSE_EVENT_SINK_CAP } from '@proto.ui/module-expose-event';
 import { EXPOSES_RECORD_SINK_CAP } from '@proto.ui/module-expose-state';
 import {
   FOCUS_BLUR_CAP,
+  FOCUS_RELEASE_PENDING_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
   FOCUS_IS_NATIVELY_FOCUSABLE_CAP,
   FOCUS_ORDER_CAP,
@@ -279,6 +280,7 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
   focusIntentState?: FocusIntentState;
   onFocusIntent?: () => void;
   onFocusAcquired?: () => void;
+  onFocusPendingReleased?: () => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
 }) {
   const {
@@ -354,6 +356,7 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
       [FOCUS_INSTANCE_TOKEN_CAP, instanceToken],
       [FOCUS_PARENT_CAP, (inst: unknown) => getLogicalParent(inst as LogicalInstanceToken)],
       [FOCUS_TARGET_READY_CAP, subscribeFocusTarget],
+      [FOCUS_RELEASE_PENDING_CAP, () => args.onFocusPendingReleased?.()],
       [FOCUS_ROOT_TARGET_CAP, getTriggerSurface],
       [FOCUS_IS_NATIVELY_FOCUSABLE_CAP, isNativelyFocusable],
       [FOCUS_ORDER_CAP, orderFocusTargetsByDocument],

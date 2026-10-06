@@ -415,3 +415,48 @@ it.each([
     }
   }
 );
+
+it.each(['pending', 'acquired self', 'acquired child'] as const)(
+  'target disable distinguishes acquisition from pending intent inside root getter: %s',
+  async (action) => {
+    const f = await fixture();
+    let accepts = action !== 'pending';
+    try {
+      f.setImpl((el, _options, kind) => {
+        if (kind === 'entry' && !accepts) return false;
+        el.focus();
+        return true;
+      });
+      f.focusable.focus({ reason: 'keyboard' });
+      expect(document.activeElement).toBe(f.root);
+      if (action === 'acquired self') f.setResolved(f.root);
+      let once = true;
+      f.setRootImpl(() => {
+        if (once) {
+          once = false;
+          f.entry.focus({ reason: 'keyboard', preventScroll: true });
+        }
+        return f.root;
+      });
+      f.focusable.setDisabled(true);
+      expect(document.activeElement === f.root).toBe(action === 'acquired self');
+      if (action === 'pending') {
+        expect(f.port.getFacts()).toMatchObject({
+          focused: false,
+          active: false,
+          focusVisible: false,
+        });
+        accepts = true;
+        f.ready();
+        expect(document.activeElement).toBe(f.child);
+        expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(2);
+        expect(f.attempts.at(-1)?.options).toEqual({ reason: 'keyboard', preventScroll: true });
+      } else {
+        expect(document.activeElement).toBe(action === 'acquired self' ? f.root : f.child);
+        expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(1);
+      }
+    } finally {
+      await f.cleanup();
+    }
+  }
+);

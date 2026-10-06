@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { definePrototype, type Prototype } from '@proto.ui/core';
-import { asFocusEntry, asFocusable } from '@proto.ui/hooks';
+import { asFocusEntry, asFocusable, asFocusScope } from '@proto.ui/hooks';
 
 type Mounted = {
   root: HTMLElement;
@@ -17,10 +17,98 @@ export function focusIntentRetryConformance(
   tree: {
     getLogicalEventRouteSurfaceForTarget(target: HTMLElement): any;
     markProtoInstance(target: HTMLElement, proto: Prototype<any>, token: any): any;
+    createLogicalInstance(proto: Prototype<any>): any;
+    unbindProtoInstance(token: any, target: HTMLElement): any;
+    registerNativeFocusReadiness(
+      token: any,
+      readiness: { isReady(): boolean; subscribe(fn: () => void): () => void }
+    ): () => void;
   },
   mount: (proto: Prototype<any, any>) => Promise<Mounted>
 ) {
   describe(`${adapter}: stable focus intent retry identity`, () => {
+    it.each([
+      'entry disable',
+      'blur',
+      'explicit no target',
+      'new target',
+      'scope-rejected target',
+      'keep pending',
+    ] as const)('releases a cancelled entry owner lease: %s', async (action) => {
+      const proto = definePrototype({
+        name: `cancel-entry-owner-${adapter}-${action.replaceAll(' ', '-')}`,
+        setup(def) {
+          const target = asFocusable();
+          const entry = asFocusEntry();
+          entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+          def.expose.method('focusRoot', () => target.focus());
+          def.expose.method('entry', () => entry.focus({ preventScroll: true }));
+          def.expose.method('cancel', () => {
+            if (action === 'keep pending') return;
+            if (action === 'entry disable') entry.setDisabled(true);
+            else if (action === 'blur') target.blur();
+            else if (action === 'new target' || action === 'scope-rejected target') target.focus();
+            else entry.focus();
+          });
+          return (r) => r.el('button', 'Waiting descendant');
+        },
+      });
+      const mounted = await mount(proto);
+      const blocker =
+        action === 'scope-rejected target'
+          ? await mount(
+              definePrototype({
+                name: `cancel-entry-blocker-${adapter}`,
+                setup(def) {
+                  const scope = asFocusScope();
+                  scope.configure({ trap: true, entry: 'manual' });
+                  def.expose.method('activate', () => scope.activate());
+                  return (r) => r.el('button', 'Scope blocker');
+                },
+              })
+            )
+          : undefined;
+      const child = mounted.root.querySelector('button')!;
+      const owner = tree.createLogicalInstance(proto);
+      tree.markProtoInstance(child, proto, owner);
+      const listeners = new Set<() => void>();
+      let ready = false;
+      const release = tree.registerNativeFocusReadiness(owner, {
+        isReady: () => ready,
+        subscribe: (fn) => {
+          listeners.add(fn);
+          return () => {
+            listeners.delete(fn);
+          };
+        },
+      });
+      const focus = vi.spyOn(mounted.root, 'focus');
+      try {
+        await mounted.act(() => mounted.getExposes().focusRoot());
+        await mounted.act(() => mounted.getExposes().entry());
+        expect(listeners.size).toBe(1);
+        const stale = [...listeners];
+        if (action === 'explicit no target') child.disabled = true;
+        if (blocker) await blocker.act(() => blocker.getExposes().activate());
+        await mounted.act(() => mounted.getExposes().cancel());
+        expect(listeners.size).toBe(action === 'keep pending' ? 1 : 0);
+        const before = focus.mock.calls.length;
+        ready = true;
+        await mounted.act(() => stale.forEach((fn) => fn()));
+        expect(focus.mock.calls.length).toBe(before);
+        if (action === 'keep pending') {
+          expect(document.activeElement).toBe(child);
+          expect(listeners.size).toBe(0);
+        }
+      } finally {
+        focus.mockRestore();
+        release();
+        tree.unbindProtoInstance(owner, child);
+        await blocker?.unmount();
+        await mounted.unmount();
+      }
+    });
+
     for (const kind of ['entry', 'native', 'programmatic'] as const) {
       it.each(['omitted', 'reused'] as const)(
         `${kind} renews only explicit intent with %s options`,

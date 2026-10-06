@@ -32,6 +32,7 @@ import type { EventPort } from '@proto.ui/module-event';
 import type { StateFacade, StatePort } from '@proto.ui/module-state';
 import {
   FOCUS_BLUR_CAP,
+  FOCUS_RELEASE_PENDING_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
   FOCUS_IS_NATIVELY_FOCUSABLE_CAP,
   FOCUS_ORDER_CAP,
@@ -124,6 +125,8 @@ type FocusOperation = {
   kind: 'target' | 'entry';
   inFlight: boolean;
   admitted: boolean;
+  snapshottingOptions?: boolean;
+  deferredReadiness?: boolean;
   cancelled?: boolean;
   previous?: FocusOperation;
 };
@@ -320,6 +323,57 @@ class FocusModuleImpl extends ModuleBase {
       return;
     }
     this.statePort.set(handle, next, reason, this.getCallbackCtx());
+  }
+
+  private withFocusRequestIntent(
+    kind: FocusOperation['kind'],
+    options: FocusRequestOptions | undefined,
+    apply: (intent: FocusRequestOptions) => void
+  ): void {
+    const previous = this.focusOperation;
+    const applicationVersion = this.focusApplicationVersion;
+    // Author getters and Proxy traps may request or cancel focus while options
+    // are copied. Reserve tentative ownership without consuming older pending
+    // intent: a throwing snapshot or first unresolved nested entry is a no-op.
+    const operation: FocusOperation = {
+      kind,
+      inFlight: true,
+      admitted: false,
+      snapshottingOptions: true,
+      previous,
+    };
+    this.focusOperation = operation;
+    let failed = false;
+    try {
+      const intent = createFocusRequestIntent(options);
+      if (this.focusOperation === operation && !operation.cancelled) {
+        this.focusOperation = this.liveFocusPredecessor(previous);
+        apply(intent);
+      }
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      if (this.focusOperation === operation) {
+        this.focusOperation = this.liveFocusPredecessor(previous);
+      }
+      operation.inFlight = false;
+      operation.previous = undefined;
+      // Do not lose readiness if snapshotting threw or entry remained a no-op.
+      // An actual application has already consumed the signal's opportunity.
+      if (operation.deferredReadiness && applicationVersion === this.focusApplicationVersion) {
+        try {
+          if (this.pendingFocusRequest) this.fulfillPendingFocus();
+          else if (this.focusedState.get()) {
+            this.requestNativeFocus({
+              reason: this.focusVisibleState.get() ? 'keyboard' : 'programmatic',
+            });
+          }
+        } catch (error) {
+          if (!failed) throw error;
+        }
+      }
+    }
   }
 
   private beginFocusOperation(kind: FocusOperation['kind']): FocusOperation {
@@ -998,9 +1052,16 @@ class FocusModuleImpl extends ModuleBase {
 
   private clearPendingFocus(): void {
     this.pendingFocusRequest = undefined;
+    if (this.caps.has(FOCUS_RELEASE_PENDING_CAP)) this.caps.get(FOCUS_RELEASE_PENDING_CAP)();
   }
 
   private fulfillPendingFocus(): boolean {
+    // A synchronous readiness signal from an options accessor must not replay
+    // the older pending intent over the explicit request being snapshotted.
+    if (this.focusOperation?.snapshottingOptions) {
+      this.focusOperation.deferredReadiness = true;
+      return true;
+    }
     const pending = this.pendingFocusRequest;
     if (!pending) return false;
     const target = this.getRootTarget();
@@ -1080,7 +1141,7 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   requestFocus(options?: FocusRequestOptions): void {
-    this.applyTargetFocus(createFocusRequestIntent(options), true);
+    this.withFocusRequestIntent('target', options, (intent) => this.applyTargetFocus(intent, true));
   }
 
   private applyTargetFocus(options: FocusRequestOptions, syncFacts: boolean): void {
@@ -1100,7 +1161,7 @@ class FocusModuleImpl extends ModuleBase {
   requestEntryFocus(options?: FocusRequestOptions): void {
     // A private snapshot identifies this distinct intent even when callers
     // reuse options. Readiness replay keeps this same snapshot and retry budget.
-    this.applyEntryFocus(createFocusRequestIntent(options));
+    this.withFocusRequestIntent('entry', options, (intent) => this.applyEntryFocus(intent));
   }
 
   private applyEntryFocus(options: FocusRequestOptions, intent?: { replay: boolean }): void {
@@ -1166,7 +1227,9 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   private requestNativeFocus(options?: FocusRequestOptions): void {
-    this.applyTargetFocus(createFocusRequestIntent(options), false);
+    this.withFocusRequestIntent('target', options, (intent) =>
+      this.applyTargetFocus(intent, false)
+    );
   }
 
   blur(): void {
@@ -1175,11 +1238,18 @@ class FocusModuleImpl extends ModuleBase {
     this.blurTarget();
   }
 
-  private blurTarget(): void {
+  private blurTarget(disabling = false): void {
     const epoch = this.focusFactsEpoch;
     const operation = this.focusOperation;
+    const acquisition = this.entryAcquisitionVersion;
     const target = this.getRootTarget();
-    if (epoch !== this.focusFactsEpoch || operation !== this.focusOperation) return;
+    // A root getter may create a pending entry while disable is clearing old
+    // physical focus. Only an actual acquisition or newer facts protect it.
+    if (
+      epoch !== this.focusFactsEpoch ||
+      (disabling ? acquisition !== this.entryAcquisitionVersion : operation !== this.focusOperation)
+    )
+      return;
     if (target && this.caps.has(FOCUS_BLUR_CAP)) this.caps.get(FOCUS_BLUR_CAP)(target);
     // A native observer or accepted effect may already have settled newer facts.
     if (epoch === this.focusFactsEpoch) this.clearFocusFacts('blur');
@@ -1291,7 +1361,7 @@ class FocusModuleImpl extends ModuleBase {
       acquisition === this.entryAcquisitionVersion &&
       epoch === this.focusFactsEpoch
     ) {
-      this.blurTarget();
+      this.blurTarget(true);
     }
     if (this.focusableConfig !== config) return;
     this.syncHostFocusable();
