@@ -406,18 +406,48 @@ for (const width of [2048, 390]) {
             reducedTransparency: matchMedia('(prefers-reduced-transparency: reduce)').matches,
             forcedColors: matchMedia('(forced-colors: active)').matches,
           }));
+        const settleMask = async () => {
+          await maskHandle.evaluate(async (element) => {
+            await Promise.all(
+              element.getAnimations().map((animation) => animation.finished.catch(() => {}))
+            );
+          });
+          await frames(page);
+        };
+        await settleMask();
         const normal = await read();
         await capture(
           page,
           `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-normal`,
           normal
         );
-        if (!baseline) expect(normal.backdropFilter).toBe('blur(4px)');
+        if (!baseline) {
+          expect(normal.reducedTransparency).toBe(false);
+          expect(normal.forcedColors).toBe(false);
+          expect(normal.backdropFilter).toBe('blur(4px)');
+          expect(normal.backgroundAlpha).toBeCloseTo(0.5, 2);
+          expect(Number(normal.opacity)).toBe(1);
+        }
         const cdp = await context.newCDPSession(page);
-        await cdp.send('Emulation.setEmulatedMedia', {
-          features: [{ name: 'prefers-reduced-transparency', value: 'reduce' }],
-        });
-        await frames(page);
+        const retainedFocus = await page.evaluateHandle(() => document.activeElement);
+        const setMaterialMedia = async (
+          reducedTransparency: 'reduce' | 'no-preference',
+          forcedColors: 'active' | 'none'
+        ) => {
+          await cdp.send('Emulation.setEmulatedMedia', {
+            features: [
+              { name: 'prefers-color-scheme', value: 'light' },
+              { name: 'prefers-reduced-transparency', value: reducedTransparency },
+              { name: 'forced-colors', value: forcedColors },
+            ],
+          });
+          await settleMask();
+          if (!baseline)
+            expect(await retainedFocus.evaluate((node) => node === document.activeElement)).toBe(
+              true
+            );
+        };
+        await setMaterialMedia('reduce', 'none');
         const reduced = await read();
         await capture(
           page,
@@ -426,12 +456,12 @@ for (const width of [2048, 390]) {
         );
         if (!baseline) {
           expect(reduced.reducedTransparency).toBe(true);
+          expect(reduced.forcedColors).toBe(false);
           expect(reduced.backdropFilter).toBe('none');
           expect(reduced.backgroundAlpha).toBe(1);
           expect(reduced.connected).toBe(true);
         }
-        await page.emulateMedia({ forcedColors: 'active' });
-        await frames(page);
+        await setMaterialMedia('no-preference', 'active');
         const forced = await read();
         await capture(
           page,
@@ -439,26 +469,41 @@ for (const width of [2048, 390]) {
           forced
         );
         if (!baseline) {
+          expect(forced.reducedTransparency).toBe(false);
           expect(forced.forcedColors).toBe(true);
           expect(forced.backdropFilter).toBe('none');
           expect(forced.backgroundAlpha).toBe(1);
           expect(forced.connected).toBe(true);
         }
-        await page.emulateMedia({ forcedColors: 'none' });
-        await cdp.send('Emulation.setEmulatedMedia', {
-          features: [
-            { name: 'prefers-reduced-transparency', value: 'no-preference' },
-            { name: 'forced-colors', value: 'none' },
-          ],
-        });
-        await frames(page);
+        await setMaterialMedia('reduce', 'active');
+        const combined = await read();
+        await capture(
+          page,
+          `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-combined-preferences`,
+          combined
+        );
+        if (!baseline) {
+          expect(combined.reducedTransparency).toBe(true);
+          expect(combined.forcedColors).toBe(true);
+          expect(combined.backdropFilter).toBe('none');
+          expect(combined.backgroundAlpha).toBe(1);
+          expect(combined.connected).toBe(true);
+        }
+        await setMaterialMedia('no-preference', 'none');
         const restored = await read();
         await capture(
           page,
           `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-restored`,
           restored
         );
-        if (!baseline) expect(restored.backdropFilter).toBe('blur(4px)');
+        if (!baseline) {
+          expect(restored.reducedTransparency).toBe(false);
+          expect(restored.forcedColors).toBe(false);
+          expect(restored.backdropFilter).toBe('blur(4px)');
+          expect(restored.backgroundAlpha).toBeCloseTo(0.5, 2);
+          expect(Number(restored.opacity)).toBe(1);
+          expect(restored.connected).toBe(true);
+        }
         await page.keyboard.press('Escape');
       } finally {
         await context.close();

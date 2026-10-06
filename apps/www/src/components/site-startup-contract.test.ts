@@ -33,6 +33,20 @@ describe('startup source invariants (not browser paint)', () => {
     expect(source).toContain('正文和源码已可阅读');
     expect(source).toContain('class="proto-previewer__skeleton" role="status"');
   });
+  it('isolates each material preference and also captures their combination and restoration', () => {
+    const probe = read('apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts');
+    for (const pair of [
+      "'reduce', 'none'",
+      "'no-preference', 'active'",
+      "'reduce', 'active'",
+      "'no-preference', 'none'",
+    ]) {
+      expect(probe).toContain(`setMaterialMedia(${pair})`);
+    }
+    expect(probe).toContain('expect(forced.reducedTransparency).toBe(false)');
+    expect(probe).toContain('expect(reduced.forcedColors).toBe(false)');
+    expect(probe).toContain('expect(restored.backgroundAlpha).toBeCloseTo(0.5, 2)');
+  });
   it('schedules its production-only suite when a theme or underlying adapter changes', () => {
     const workflow = YAML.parse(read('.github/workflows/site-startup-theme-evidence.yml'));
     expect(workflow.on.pull_request.paths).toEqual(
