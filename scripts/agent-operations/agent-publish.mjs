@@ -455,7 +455,7 @@ export function runPublishCli(argv, options = {}) {
     if (
       !prepared.trim() ||
       /^ModelTrace:/m.test(prepared) ||
-      (dotExempt && /^Agent:/im.test(prepared))
+      (dotExempt && /^[\t ]*(?:Agent|ModelTrace):/im.test(prepared))
     )
       throw new Error(
         'prepared commit message must be nonempty and have no existing ModelTrace trailer'

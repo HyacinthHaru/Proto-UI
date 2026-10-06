@@ -145,6 +145,49 @@ test('commit hook validates dot declaration and rejects mixed/partial inputs', (
   assert.equal(runCommitMessageHook('/unused', { env: {} }).status, 'human-exempt');
 });
 
+for (const field of [' Agent: other', '\tAgent: other', ' ModelTrace: fake', '\tModelTrace: fake'])
+  test(`commit disclosure and native hook reject indented field: ${JSON.stringify(field)}`, (t) => {
+    const f = files(t);
+    fs.writeFileSync(f.body, `Subject\n\n${DOT_DISCLOSURE}\n\n${field}\n`);
+    assert.throws(() => assertDotDisclosure(fs.readFileSync(f.body, 'utf8'), 'commit'), /exact/);
+    assert.throws(() =>
+      execFileSync(
+        process.execPath,
+        [
+          path.join(ROOT, 'scripts/agent-operations/agent-publish.mjs'),
+          'check-commit-message',
+          '--message-file',
+          f.body,
+        ],
+        { env: { ...process.env, ...environment }, stdio: 'pipe' }
+      )
+    );
+  });
+
+test('native dot hook omits undefined measured env values and rejects actual string values', (t) => {
+  const f = files(t);
+  fs.writeFileSync(f.body, `Subject\n\n${DOT_DISCLOSURE}\n`);
+  const argv = [
+    path.join(ROOT, 'scripts/agent-operations/agent-publish.mjs'),
+    'check-commit-message',
+    '--message-file',
+    f.body,
+  ];
+  const env = {
+    ...process.env,
+    ...environment,
+    PUI_MODELTRACE_RECORD: undefined,
+    PUI_MODELTRACE_CONTEXT: undefined,
+  };
+  execFileSync(process.execPath, argv, { env, stdio: 'pipe' });
+  assert.throws(() =>
+    execFileSync(process.execPath, argv, {
+      env: { ...env, PUI_MODELTRACE_RECORD: 'undefined' },
+      stdio: 'pipe',
+    })
+  );
+});
+
 function syntheticCommentServer({ drift = false, unknown = false, actorDrift = false } = {}) {
   let targetReads = 0;
   let viewerReads = 0;
@@ -260,10 +303,24 @@ test('real local commit preserves exact tree/head, runs the hook and adds own DC
   fs.copyFileSync(path.join(ROOT, '.husky/commit-msg'), path.join(hooks, 'commit-msg'));
   fs.chmodSync(path.join(hooks, 'commit-msg'), 0o755);
   git('config', 'core.hooksPath', hooks);
-  const runner = (binary, args, options) =>
-    binary === 'gh'
-      ? JSON.stringify({ full_name: 'fixture-owner/fixture-repo', default_branch: 'main' })
-      : execFileSync(binary, args, { ...options, cwd: checkout });
+  let commitAttempts = 0;
+  const runner = (binary, args, options) => {
+    if (binary === 'gh')
+      return JSON.stringify({ full_name: 'fixture-owner/fixture-repo', default_branch: 'main' });
+    if (args[0] === 'commit') {
+      commitAttempts++;
+      const child = execFileSync(
+        process.execPath,
+        [
+          '-e',
+          "console.log(JSON.stringify({agent:process.env.PUI_AGENT_NAME,record:Object.hasOwn(process.env,'PUI_MODELTRACE_RECORD'),context:Object.hasOwn(process.env,'PUI_MODELTRACE_CONTEXT')}))",
+        ],
+        { env: options.env, encoding: 'utf8' }
+      );
+      assert.deepEqual(JSON.parse(child), { agent: 'dot', record: false, context: false });
+    }
+    return execFileSync(binary, args, { ...options, cwd: checkout });
+  };
   const args = [
     'commit',
     ...COMMON,
@@ -277,8 +334,21 @@ test('real local commit preserves exact tree/head, runs the hook and adds own DC
     '--expected-tree',
     tree,
   ];
+  for (const field of [
+    ' Agent: other',
+    '\tAgent: other',
+    ' ModelTrace: fake',
+    '\tModelTrace: fake',
+  ]) {
+    fs.writeFileSync(f.body, `Subject\n\n${field}\n`);
+    assert.throws(() => runPublishCli(args, { cwd: checkout, runner }), /prepared commit message/);
+    assert.equal(commitAttempts, 0);
+    assert.equal(git('rev-parse', 'HEAD'), head);
+  }
+  fs.writeFileSync(f.body, 'Subject\n\n  Ordinary indented body.\n');
   const result = runPublishCli(args, { cwd: checkout, runner });
   assert.equal(result.status, 'published');
+  assert.equal(commitAttempts, 1);
   assert.equal(git('rev-parse', 'HEAD^1'), head);
   assert.equal(git('rev-parse', 'HEAD^{tree}'), tree);
   const message = git('log', '-1', '--format=%B');
@@ -335,6 +405,9 @@ for (const body of [
   '| Agent: dot |\n| --- |\n| ModelTrace: fake |',
   '| Ordinary header |\n| --- |\n| ModelTrace: fake |',
   '| Ordinary | Agent: dot |\n| --- | --- |\n| Value | Other |',
+  'Claim[^1]\n\n[^1]: Agent: dot',
+  'Claim[^1]\n\n[^1]: ModelTrace: fake',
+  'Claim[^1]\n\n[^1]: ## ModelTrace',
 ])
   test(`partial or nested visible identity is rejected: ${body.slice(0, 32)}`, (t) => {
     const f = files(t),
@@ -364,6 +437,8 @@ test('GFM tables and raw-root ordinary fields remain evidence without attributio
     '| Code example |\n| --- |\n| `Agent: dot` |\n| `ModelTrace: fake` |',
     '> | Agent: dot |\n> | --- |\n> | ModelTrace: fake |',
     '</div>\nAgent: browser<br>Ordinary content',
+    'Claim[^1]\n\n[^1]: Agent: browser',
+    'Claim[^1]\n\n[^1]: `Agent: dot`',
   ]) {
     assert.equal(hasDotDisclosure(body), false);
     const f = files(t),

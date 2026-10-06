@@ -137,8 +137,8 @@ export function hasDotDisclosure(text, format = 'markdown') {
     return true;
   }
   if (format !== 'commit') throw new Error('unsupported dot disclosure format');
-  const agents = text.split(/\r?\n/).filter((line) => /^Agent:/i.test(line));
-  const traces = text.split(/\r?\n/).filter((line) => /^ModelTrace:/i.test(line));
+  const agents = text.split(/\r?\n/).filter((line) => /^\s*Agent:/i.test(line));
+  const traces = text.split(/\r?\n/).filter((line) => /^\s*ModelTrace:/i.test(line));
   if (agents.length === 0 && traces.length === 0) return false;
   if (
     agents.length !== 1 ||
