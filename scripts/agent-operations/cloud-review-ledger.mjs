@@ -7,6 +7,7 @@ import {
   validateReviewPacket,
   verifyLiveReviewInput,
   verifyReconciliation,
+  isExactGovernedReviewDuplicate,
 } from './review-runtime.mjs';
 
 import {
@@ -25,6 +26,7 @@ const EVENT_KINDS = new Set([
   'opened',
   'reopened',
   'ready_for_review',
+  'converted_to_draft',
   'closed',
   'synchronize',
   'human-review',
@@ -65,6 +67,12 @@ export function emptyCloudReviewLedger({ publicationEnabled = false } = {}) {
 
 export function validateCloudReviewAnalysis(command, state) {
   const { input, packet, liveInput, observation } = command;
+  const duplicateCompletion = Object.hasOwn(command, 'duplicateReviewCompletionVersion');
+  if (duplicateCompletion)
+    assert(
+      command.type === 'finishAnalysis' && command.duplicateReviewCompletionVersion === 1,
+      'unsupported duplicate completion version'
+    );
   if (Object.hasOwn(command, 'sweepCoverageVersion'))
     assert(command.sweepCoverageVersion === 1, 'unsupported sweep coverage version');
   if (Object.hasOwn(command, 'receiptNormalizationVersion'))
@@ -128,7 +136,7 @@ export function validateCloudReviewAnalysis(command, state) {
   const published = state.publishedAnalyses.find(
     (item) => item.input.pullRequest === input.pullRequest
   );
-  const prior = dualBaseline ? (published ?? latest) : latest;
+  const prior = dualBaseline || duplicateCompletion ? (published ?? latest) : latest;
   if (dualBaseline) {
     const separateAnalysis =
       latest &&
@@ -145,7 +153,14 @@ export function validateCloudReviewAnalysis(command, state) {
         'separate analysis reconciliation is not applicable'
       );
   }
-  if (prior) {
+  if (duplicateCompletion) {
+    assert(
+      prior &&
+        !liveInput.isDraft &&
+        isExactGovernedReviewDuplicate(packet, liveInput, LEDGER_PRINCIPAL.login, prior.packet),
+      'exact governed duplicate and durable predecessor are required'
+    );
+  } else if (prior) {
     verifyReconciliation(packet, prior.packet);
     // Canonical runtime validates each referenced ID; require total prior coverage too.
     const classified = new Set([
@@ -170,6 +185,7 @@ export function validateCloudReviewAnalysis(command, state) {
     packet,
     observation,
     ...(dualBaseline ? { analysisReconciliation: command.analysisReconciliation } : {}),
+    ...(duplicateCompletion ? { duplicateReviewCompletionVersion: 1 } : {}),
     ...(Object.hasOwn(command, 'sweepCoverageVersion')
       ? { sweepCoverageVersion: command.sweepCoverageVersion }
       : {}),
@@ -263,7 +279,7 @@ function drainDeferred(state) {
   for (const command of deferred) admitMaterial(state, command);
 }
 
-function complete(state, analysis = null) {
+function complete(state, analysis = null, preserveAnalysis = false) {
   if (analysis) {
     if (
       analysis.sweepCoverageVersion !== 1 &&
@@ -271,10 +287,12 @@ function complete(state, analysis = null) {
     )
       state.initialSweep.completed.push(state.slot.pullRequest);
     else completeCoveredSweep(state, analysis);
-    state.analyses = state.analyses.filter(
-      (item) => item.input.pullRequest !== state.slot.pullRequest
-    );
-    state.analyses.push(analysis);
+    if (!preserveAnalysis) {
+      state.analyses = state.analyses.filter(
+        (item) => item.input.pullRequest !== state.slot.pullRequest
+      );
+      state.analyses.push(analysis);
+    }
     if (analysis.publicationReceipt) {
       state.publishedAnalyses = state.publishedAnalyses.filter(
         (item) => item.input.pullRequest !== state.slot.pullRequest
@@ -498,13 +516,18 @@ export function reduceCloudReviewLedger(previous, command) {
         Object.hasOwn(command, 'receiptNormalizationVersion')
           ? ['receiptNormalizationVersion']
           : []),
+        ...(command.type === 'finishAnalysis' &&
+        Object.hasOwn(command, 'duplicateReviewCompletionVersion')
+          ? ['duplicateReviewCompletionVersion']
+          : []),
         ...(command.type === 'stagePublicationIntent' &&
         Object.hasOwn(command, 'analysisReconciliation')
           ? ['analysisReconciliation']
           : []),
       ]);
       const analysis = validateCloudReviewAnalysis(command, state);
-      if (command.type === 'finishAnalysis') complete(state, analysis);
+      if (command.type === 'finishAnalysis')
+        complete(state, analysis, analysis.duplicateReviewCompletionVersion === 1);
       else {
         assert(
           ['APPROVE', 'REQUEST_CHANGES'].includes(command.packet.recommendedAction),

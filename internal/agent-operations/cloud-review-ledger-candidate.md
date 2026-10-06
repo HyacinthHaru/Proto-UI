@@ -47,7 +47,7 @@ For analysis, the reducer reuses `validateReviewPacket`, `verifyLiveReviewInput`
 
 ## Validation and evidence
 
-Run on Node 22:
+Run on Node.js 24:
 
 ```sh
 node --test scripts/agent-operations/test/cloud-review-ledger.test.mjs

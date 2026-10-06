@@ -26,6 +26,7 @@ import { computeSelfAssessmentResultDigest } from '../assessment-runtime.mjs';
 import {
   authorizePullRequestMerge,
   computeReviewPacketDigest,
+  computeReviewInputDigest,
   renderReviewBody,
 } from '../review-runtime.mjs';
 import {
@@ -34,6 +35,7 @@ import {
   createConnectorAssessment,
 } from './fixtures/connector-assessment.mjs';
 import { analysis } from './fixtures/cloud-review.mjs';
+import { reduceCloudReviewLedger } from '../cloud-review-ledger.mjs';
 import { publishReview, refreshPacket, reviewSnapshot } from './fixtures/review-publication.mjs';
 
 const sha = (c) => c.repeat(40);
@@ -3866,4 +3868,264 @@ test('explicit POST node identity echoes bind raw readback before an own wakeup 
         assert.equal(store.read().revision, before.revision);
         assert.equal(f.calls.filter((call) => call.operation === 'add_review_to_pr').length, 1);
       });
+});
+
+test('draft publication remains analysis-only before any intent or POST', async (t) => {
+  for (const sweep of [false, true])
+    for (const findings of [[], ['DRAFT1']])
+      await t.test(
+        (sweep ? 'sweep' : 'event') + '/' + (findings.length ? 'REQUEST_CHANGES' : 'APPROVE'),
+        async (t) => {
+          const context = await session(t, {
+            modify: (f) => {
+              f.pr.draft = true;
+            },
+          });
+          const { s, f, store } = context;
+          if (sweep) await s.captureInitialSweep();
+          const request = sweep
+            ? await s.beginInitialSweep(487)
+            : await s.begin(487, { kind: 'opened', deliveryId: 'draft-publish' });
+          const packet = completePacket(request.input, null, findings);
+          await assert.rejects(
+            s.publishParentPacket(packet, createConnectorAssessment()),
+            /draft.*analysis-only/
+          );
+          assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+          assert.equal(store.read().state.slot, null);
+          assert.equal(store.read().state.publicationReceipts.length, 0);
+        }
+      );
+});
+
+test('canonical duplicate publication completes durably without replacing prior analysis or POST', async (t) => {
+  for (const ids of [[], ['DUP1']])
+    await t.test(ids.length ? 'REQUEST_CHANGES' : 'APPROVE', async (t) => {
+      const context = await session(t);
+      const { s, f, store } = context;
+      const initial = await s.begin(487, {
+        kind: 'opened',
+        deliveryId: 'before-external-publication',
+      });
+      const original = completePacket(initial.input, null, ids);
+      await s.finishParentAnalysis(original);
+      f.reviews.push({
+        id: 199,
+        node_id: 'PRR_199',
+        user: owner,
+        commit_id: original.headSha,
+        state: ids.length ? 'CHANGES_REQUESTED' : 'APPROVED',
+        body: renderReviewBody(original),
+        submitted_at: '2026-10-03T00:03:00Z',
+      });
+      const next = freshSession(context);
+      const request = await next.begin(487, {
+        kind: 'human-review',
+        deliveryId: 'external-governed-review',
+      });
+      assert.equal(request.kind, 'proto-ui.parent-review-request');
+      const packet = {
+        ...structuredClone(original),
+        reviewInputDigest: computeReviewInputDigest(request.input),
+        observedAt: '2026-10-03T00:04:00Z',
+      };
+      const done = await next.publishParentPacket(packet, createConnectorAssessment());
+      assert.equal(done.status, 'duplicate');
+      assert.equal(done.submitted, false);
+      const state = store.read().state;
+      assert.equal(state.slot, null);
+      assert.deepEqual(state.pending, []);
+      assert.equal(
+        computeReviewPacketDigest(state.analyses[0].packet),
+        computeReviewPacketDigest(original)
+      );
+      assert.equal(state.publicationReceipts.length, 0);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+      const later = freshSession(context);
+      assert.equal(
+        (await later.begin(487, { kind: 'human-review', deliveryId: 'same-disposition-again' }))
+          .skipped,
+        true
+      );
+    });
+});
+
+test('review instructions distinguish the governed CLI and exact owner-plugin writer', () => {
+  const skill = readFileSync(
+    new URL('../../../.agents/skills/pui-review/SKILL.md', import.meta.url),
+    'utf8'
+  );
+  assert(skill.includes('only supported local CLI review mutation path'));
+  assert(skill.includes('governed tokenless owner-plugin writer'));
+  assert(skill.includes('proto-ui-cloud-owner-review-v1'));
+  assert(skill.includes('not an independent alternate writer'));
+  assert(skill.includes('pending-runtime-identity'));
+});
+
+test('converted-to-draft preserves its own lifecycle and still permits only analysis', async (t) => {
+  const context = await session(t);
+  const { s, f, store } = context;
+  const initial = await s.begin(487, { kind: 'opened', deliveryId: 'open-before-draft' });
+  const original = completePacket(initial.input);
+  await s.finishParentAnalysis(original);
+  f.pr.draft = true;
+  const next = freshSession(context);
+  const request = await next.begin(487, {
+    kind: 'converted_to_draft',
+    deliveryId: 'real-draft-transition',
+  });
+  assert.equal(request.input.isDraft, true);
+  const packet = completePacket(request.input, request.priorAnalysis.packet);
+  packet.recommendedAction = 'COMMENT';
+  await next.finishParentAnalysis(packet);
+  assert.equal(store.read().state.deliveries.at(-1).eventKind, 'converted_to_draft');
+  assert.equal(store.read().state.slot, null);
+  assert.deepEqual(store.read().state.pending, []);
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+});
+
+test('first initial-sweep capture returns the confirmed inventory without a second capture', async (t) => {
+  const { s, f, store } = await session(t);
+  const first = await s.captureInitialSweep();
+  assert.equal(first.status, 'applied');
+  assert.deepEqual(first.inventory, store.read().state.initialSweep);
+  assert.deepEqual(first.inventory.pullRequests, [487]);
+  const generation = store.read().revision;
+  const repeated = await s.captureInitialSweep();
+  assert.deepEqual(repeated.inventory, first.inventory);
+  assert.equal(store.read().revision, generation);
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+});
+
+test('cloud ledger validation runbook uses the actual Node 24 baseline', () => {
+  const guide = readFileSync(
+    new URL('../../../internal/agent-operations/cloud-review-ledger-candidate.md', import.meta.url),
+    'utf8'
+  );
+  assert.match(guide, /Node(?:\.js)?\s+24/);
+  assert.doesNotMatch(guide, /Node(?:\.js)?\s+22/);
+});
+
+test('duplicate completion version and exact review binding fail closed before a journal write', async (t) => {
+  for (const mode of [
+    'version-zero',
+    'version-two',
+    'version-null',
+    'wrong-state',
+    'wrong-body',
+    'wrong-author',
+  ])
+    await t.test(mode, async (t) => {
+      const context = await session(t);
+      const { s, f, store } = context;
+      const initial = await s.begin(487, {
+        kind: 'opened',
+        deliveryId: 'prior-duplicate-negative',
+      });
+      const original = completePacket(initial.input);
+      await s.finishParentAnalysis(original);
+      f.reviews.push({
+        id: 299,
+        node_id: 'PRR_299',
+        user: owner,
+        commit_id: original.headSha,
+        state: 'APPROVED',
+        body: renderReviewBody(original),
+        submitted_at: '2026-10-03T00:03:00Z',
+      });
+      const activeStore = new LocalCloudReviewLedger(context.dir, context.genesis);
+      const next = new ConnectorReviewSession({
+        transport: context.transport,
+        ledger: activeStore,
+        policy: structuredClone(rootPolicy),
+      });
+      const request = await next.begin(487, {
+        kind: 'human-review',
+        deliveryId: 'duplicate-negative',
+      });
+      const packet = {
+        ...structuredClone(original),
+        reviewInputDigest: computeReviewInputDigest(request.input),
+        observedAt: '2026-10-03T00:04:00Z',
+      };
+      const apply = activeStore.apply.bind(activeStore);
+      let finishAttempts = 0;
+      activeStore.apply = (revision, command) => {
+        if (command.type === 'finishAnalysis') {
+          finishAttempts += 1;
+          const altered = structuredClone(command);
+          if (mode.startsWith('version-'))
+            altered.duplicateReviewCompletionVersion =
+              mode === 'version-zero' ? 0 : mode === 'version-two' ? 2 : null;
+          if (mode === 'wrong-state') altered.liveInput.reviews[0].state = 'COMMENTED';
+          if (mode === 'wrong-body') altered.liveInput.reviews[0].body += ' changed';
+          if (mode === 'wrong-author') altered.liveInput.reviews[0].author = 'different-owner';
+          const before = store.read().state;
+          assert.throws(
+            () => reduceCloudReviewLedger(before, { ...altered, owner: before.slot.owner }),
+            /duplicate completion version|input.*changed|review input|exact governed duplicate|stale|reviewer permission has no exact-head approval subject/i
+          );
+          assert.deepEqual(store.read().state, before);
+          return apply(revision, command);
+        }
+        return apply(revision, command);
+      };
+      assert.equal(
+        (await next.publishParentPacket(packet, createConnectorAssessment())).status,
+        'duplicate'
+      );
+      assert.equal(finishAttempts, 1);
+      assert.equal(store.read().state.slot, null);
+      assert.equal(store.read().state.pending.length, 0);
+      assert.equal(
+        computeReviewPacketDigest(store.read().state.analyses[0].packet),
+        computeReviewPacketDigest(original)
+      );
+      assert.equal(store.read().state.publicationReceipts.length, 0);
+      assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
+    });
+});
+
+test('unknown duplicate-completion acknowledgement never releases or transfers its owned slot', async (t) => {
+  const context = await session(t);
+  const { s, f, store } = context;
+  const first = await s.begin(487, { kind: 'opened', deliveryId: 'unknown-duplicate-prior' });
+  const original = completePacket(first.input);
+  await s.finishParentAnalysis(original);
+  f.reviews.push({
+    id: 399,
+    node_id: 'PRR_399',
+    user: owner,
+    commit_id: original.headSha,
+    state: 'APPROVED',
+    body: renderReviewBody(original),
+    submitted_at: '2026-10-03T00:03:00Z',
+  });
+  const activeStore = new LocalCloudReviewLedger(context.dir, context.genesis);
+  const next = new ConnectorReviewSession({
+    transport: context.transport,
+    ledger: activeStore,
+    policy: structuredClone(rootPolicy),
+  });
+  const request = await next.begin(487, {
+    kind: 'human-review',
+    deliveryId: 'unknown-duplicate-current',
+  });
+  const packet = {
+    ...structuredClone(original),
+    reviewInputDigest: computeReviewInputDigest(request.input),
+    observedAt: '2026-10-03T00:04:00Z',
+  };
+  const before = structuredClone(store.read().state.slot);
+  const apply = activeStore.apply.bind(activeStore);
+  activeStore.apply = (revision, command) =>
+    command.type === 'finishAnalysis' ? { status: 'unknown' } : apply(revision, command);
+  await assert.rejects(
+    next.publishParentPacket(packet, createConnectorAssessment()),
+    /analysis acknowledgement unavailable/
+  );
+  assert.deepEqual(store.read().state.slot, before);
+  assert.equal(store.read().state.pending.length, 1);
+  assert.equal(store.read().state.publicationReceipts.length, 0);
+  assert.equal(f.calls.filter((c) => c.operation === 'add_review_to_pr').length, 0);
 });

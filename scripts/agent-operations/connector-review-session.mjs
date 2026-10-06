@@ -107,11 +107,20 @@ export class ConnectorReviewSession {
       return { status: 'captured', inventory: before.state.initialSweep };
     const pullRequests = await this.#transport.collectInitialSweep();
     this.#refreshPolicy();
-    return this.#ledger.apply(before.revision, {
+    const applied = await this.#ledger.apply(before.revision, {
       type: 'captureInitialSweep',
       sweepId: INITIAL_SWEEP_ID,
       pullRequests,
     });
+    if (applied.status !== 'applied') return applied;
+    const confirmed = await this.#ledger.read();
+    this.#refreshPolicy();
+    assert(
+      confirmed.state.initialSweep?.sweepId === INITIAL_SWEEP_ID &&
+        hash(confirmed.state.initialSweep.pullRequests) === hash(pullRequests),
+      'captured inventory readback mismatch'
+    );
+    return { ...applied, inventory: confirmed.state.initialSweep };
   }
   #checkSweepScope() {
     assert(
@@ -128,6 +137,7 @@ export class ConnectorReviewSession {
           'opened',
           'reopened',
           'ready_for_review',
+          'converted_to_draft',
           'closed',
           'synchronize',
           'human-review',
@@ -253,7 +263,7 @@ export class ConnectorReviewSession {
         'Parent inspects actual diff and evidence, reconciles prior findings, and supplies its own packet; helper does not judge.',
     };
   }
-  #authorize(packet, live, assessment) {
+  #authorize(packet, live, assessment, permitDuplicate = false) {
     this.#refreshPolicy();
     validateSelfAssessmentResult(assessment, this.#policy);
     const snapshot = this.#readSnapshot();
@@ -284,6 +294,7 @@ export class ConnectorReviewSession {
         packet.humanGates.length === 0,
       'complete evidence and no human-maintainer judgment gate required'
     );
+    assert(!live.input.isDraft, 'draft pull requests are analysis-only');
     const authorization = authorizeReviewSubmission({
       packet,
       input: this.#initial.input,
@@ -314,7 +325,10 @@ export class ConnectorReviewSession {
         trustedWorkflowPaths: this.#policy.trustedCiEvidence?.workflowPaths,
       }),
     });
-    assert(authorization.allowed, `canonical publication gate: ${authorization.reason}`);
+    assert(
+      authorization.allowed || (permitDuplicate && authorization.duplicate),
+      `canonical publication gate: ${authorization.reason}`
+    );
     assert(
       isConnectorReviewScopeActive(this.#policy, this.#authorizationId),
       'standing scope principal or complete binding mismatch'
@@ -375,9 +389,21 @@ export class ConnectorReviewSession {
     let live;
     let intent;
     let stagingStarted = false;
+    let terminalStarted = false;
     try {
       live = await this.#transport.collect(this.#initial.input.pullRequest);
-      this.#authorize(packet, live, assessment);
+      const authorization = this.#authorize(packet, live, assessment, true);
+      if (authorization.duplicate) {
+        terminalStarted = true;
+        const finished = await this.#completeParentAnalysis(packet, true);
+        return {
+          ...finished,
+          status: 'duplicate',
+          duplicate: true,
+          submitted: false,
+          publicationConfirmed: false,
+        };
+      }
       const before = await this.#ledger.read();
       this.#refreshPolicy();
       const command = {
@@ -412,7 +438,7 @@ export class ConnectorReviewSession {
     } catch (error) {
       // Read-only/preflight failures or a definitive no-write fence conflict
       // cannot have dispatched. Never infer that from an ambiguous stage/readback.
-      if (!stagingStarted) {
+      if (!stagingStarted && !terminalStarted) {
         try {
           await this.#releaseUnstagedClaim();
         } catch (failure) {
@@ -530,6 +556,9 @@ export class ConnectorReviewSession {
       'parent-review request required; lifecycle already consumed'
     );
     this.#used = true;
+    return this.#completeParentAnalysis(packet);
+  }
+  async #completeParentAnalysis(packet, duplicateCompletion = false) {
     let finishingStarted = false;
     try {
       const live = await this.#transport.collect(this.#initial.input.pullRequest);
@@ -542,6 +571,7 @@ export class ConnectorReviewSession {
       const command = {
         type: 'finishAnalysis',
         sweepCoverageVersion: 1,
+        ...(duplicateCompletion ? { duplicateReviewCompletionVersion: 1 } : {}),
         input: this.#initial.input,
         packet,
         liveInput: live.input,
