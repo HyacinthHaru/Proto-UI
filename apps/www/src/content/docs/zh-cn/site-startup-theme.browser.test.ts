@@ -33,7 +33,17 @@ async function capture(page: Page, id: string, facts: unknown) {
   let image;
   if (output) {
     const file = `${id}.png`;
-    await page.screenshot({ path: path.join(output, file) });
+    // A deliberately held module keeps document.fonts.ready pending. Capture
+    // the actual compositor pixels without changing fonts, CSS or DOM and
+    // without turning this cold-load observation into a full-load wait.
+    const cdp = await page.context().newCDPSession(page);
+    const pixels = await cdp.send('Page.captureScreenshot', {
+      format: 'png',
+      fromSurface: true,
+      captureBeyondViewport: false,
+    });
+    await cdp.detach();
+    await writeFile(path.join(output, file), Buffer.from(pixels.data, 'base64'));
     image = {
       file,
       sha256: createHash('sha256')
@@ -41,7 +51,37 @@ async function capture(page: Page, id: string, facts: unknown) {
         .digest('hex'),
     };
   }
-  records.push({ id, revision, viewport: page.viewportSize(), url: page.url(), facts, image });
+  records.push({
+    id,
+    revision,
+    viewport: page.viewportSize(),
+    url: page.url(),
+    rendering: await page.evaluate(() => ({
+      dpr: devicePixelRatio,
+      readyState: document.readyState,
+      fonts: document.fonts.status,
+    })),
+    facts,
+    image,
+  });
+}
+async function firstScreen(page: Page) {
+  return page.evaluate(() => {
+    const frame = document.querySelector('.site-page-frame')!;
+    const heading = document.querySelector('h1')!;
+    const preview = document.querySelector('.proto-previewer .host');
+    return {
+      background: getComputedStyle(frame).backgroundColor,
+      color: getComputedStyle(frame).color,
+      headingFontSize: getComputedStyle(heading).fontSize,
+      headingFontFamily: getComputedStyle(heading).fontFamily,
+      headingTop: heading.getBoundingClientRect().top,
+      previewHeight: preview?.getBoundingClientRect().height ?? null,
+      previewText: preview?.textContent?.trim() ?? null,
+      bodyWidth: document.documentElement.scrollWidth,
+      viewportWidth: innerWidth,
+    };
+  });
 }
 async function frames(page: Page) {
   await page.evaluate(
@@ -120,7 +160,24 @@ for (const width of [2048, 390, 430, 320]) {
               overflow: document.documentElement.scrollWidth > innerWidth,
             };
           });
-          await capture(page, `home-${width}-${dark ? 'dark' : 'light'}-${records.length}`, facts);
+          await capture(
+            page,
+            `home-${width}-${dark ? 'dark' : 'light'}-immediate-${records.length}`,
+            { ...facts, phase: 'immediate' }
+          );
+          await page.waitForFunction(() =>
+            [...document.querySelectorAll('[data-site-header], [data-home-showcase]')].every(
+              (root) =>
+                root
+                  .getAnimations({ subtree: true })
+                  .every((animation) => animation.playState !== 'running' && !animation.pending)
+            )
+          );
+          await capture(
+            page,
+            `home-${width}-${dark ? 'dark' : 'light'}-settled-${records.length}`,
+            { ...facts, phase: 'settled' }
+          );
           if (!baseline) {
             expect(facts.open).toBe('true');
             expect(facts.language.text).toContain('English');
@@ -177,7 +234,7 @@ for (const width of [2048, 390, 430, 320]) {
   });
 }
 
-for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/card/']) {
+for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/components/card/']) {
   it(`${route} has a usable native cold-load disclosure before scripts complete`, async () => {
     const context = await browser.newContext({ viewport: { width: 2048, height: 1237 } });
     const page = await context.newPage();
@@ -190,14 +247,27 @@ for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/card/']) {
       await request.continue().catch(() => {});
     });
     try {
-      await page.goto(`${baseUrl}${route}`, { waitUntil: 'commit' });
+      const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'commit' });
+      expect(response?.status()).toBe(200);
       await page.locator('h1').waitFor();
-      await page.waitForFunction(() => document.styleSheets.length > 0);
+      if (route.includes('/card/')) expect(await page.locator('h1').innerText()).toContain('Card');
+      await page.waitForFunction(() => {
+        const styles = [
+          ...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'),
+        ].filter((link) => link.media !== 'print');
+        return (
+          styles.length > 0 &&
+          styles.every((link) => link.sheet !== null) &&
+          getComputedStyle(document.querySelector('[data-site-header]')!).display === 'grid'
+        );
+      });
+      const initial = await firstScreen(page);
       const settingsVisible = await page.locator('[data-site-header-settings]').isVisible();
       const fallback = page.locator('[data-site-header-fallback-summary]');
       const isNative = (await fallback.count()) === 1;
       await capture(page, `cold-${route.includes('card') ? 'card' : 'home'}`, {
         scriptsHeld: true,
+        initial,
         settingsVisible,
         isNative,
       });
@@ -214,12 +284,21 @@ for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/card/']) {
       }
       release();
       await page.waitForSelector('[data-site-menu-ready]', { timeout: 45_000 });
+      if (route.includes('/card/'))
+        await page
+          .locator('.proto-previewer .pui-runtime-preview-surface')
+          .first()
+          .waitFor({ timeout: 45_000 });
+      const loaded = await firstScreen(page);
       await capture(page, `loaded-${route.includes('card') ? 'card' : 'home'}`, {
         scriptsReleased: true,
+        loaded,
       });
       if (!baseline) {
         expect(isNative).toBe(true);
         expect(settingsVisible).toBe(false);
+        expect(loaded.background).toBe(initial.background);
+        expect(loaded.headingFontSize).toBe(initial.headingFontSize);
         expect(await page.locator('[data-site-header]').getAttribute('data-site-menu-open')).toBe(
           'true'
         );
@@ -260,10 +339,20 @@ for (const width of [2048, 390]) {
           const mask = document.querySelector('[data-pui-style~="backdrop-blur-xs"]');
           return mask?.getAttribute('data-transition-state') === 'entered';
         });
+        const maskHandle = await mask.elementHandle();
+        if (!maskHandle) throw new Error('Visible DialogMask handle is missing');
         const read = () =>
-          mask.evaluate((element) => ({
+          maskHandle.evaluate((element) => ({
             backdropFilter: getComputedStyle(element).backdropFilter,
             background: getComputedStyle(element).backgroundColor,
+            backgroundAlpha: (() => {
+              const canvas = document.createElement('canvas');
+              const ctx = canvas.getContext('2d')!;
+              ctx.fillStyle = getComputedStyle(element).backgroundColor;
+              ctx.fillRect(0, 0, 1, 1);
+              return ctx.getImageData(0, 0, 1, 1).data[3]! / 255;
+            })(),
+            connected: element.isConnected,
             opacity: getComputedStyle(element).opacity,
             rect: element.getBoundingClientRect().toJSON(),
             reducedTransparency: matchMedia('(prefers-reduced-transparency: reduce)').matches,
@@ -281,20 +370,47 @@ for (const width of [2048, 390]) {
           features: [{ name: 'prefers-reduced-transparency', value: 'reduce' }],
         });
         await frames(page);
+        const reduced = await read();
         await capture(
           page,
           `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-reduced-transparency`,
-          { observationOnly: true, ...(await read()) }
+          reduced
         );
+        if (!baseline) {
+          expect(reduced.reducedTransparency).toBe(true);
+          expect(reduced.backdropFilter).toBe('none');
+          expect(reduced.backgroundAlpha).toBe(1);
+          expect(reduced.connected).toBe(true);
+        }
         await page.emulateMedia({ forcedColors: 'active' });
         await frames(page);
+        const forced = await read();
         await capture(
           page,
           `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-forced-colors`,
-          { observationOnly: true, ...(await read()) }
+          forced
         );
-        // Preference captures expose actual current behavior. Their visual
-        // acceptance stays open; these observations are not a fallback pass.
+        if (!baseline) {
+          expect(forced.forcedColors).toBe(true);
+          expect(forced.backdropFilter).toBe('none');
+          expect(forced.backgroundAlpha).toBe(1);
+          expect(forced.connected).toBe(true);
+        }
+        await page.emulateMedia({ forcedColors: 'none' });
+        await cdp.send('Emulation.setEmulatedMedia', {
+          features: [
+            { name: 'prefers-reduced-transparency', value: 'no-preference' },
+            { name: 'forced-colors', value: 'none' },
+          ],
+        });
+        await frames(page);
+        const restored = await read();
+        await capture(
+          page,
+          `dialog-${route === '/zh-cn/' ? 'home' : 'docs'}-${width}-restored`,
+          restored
+        );
+        if (!baseline) expect(restored.backdropFilter).toBe('blur(4px)');
         await page.keyboard.press('Escape');
       } finally {
         await context.close();
@@ -303,7 +419,7 @@ for (const width of [2048, 390]) {
   }
 }
 
-for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/card/']) {
+for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/components/card/']) {
   it(`${route} keeps native navigation and truthful preview text with JavaScript disabled`, async () => {
     const context = await browser.newContext({
       javaScriptEnabled: false,
@@ -314,6 +430,13 @@ for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/card/']) {
       await page.goto(`${baseUrl}${route}`);
       const fallback = page.locator('[data-site-header-fallback-summary]');
       const isNative = (await fallback.count()) === 1;
+      const settingsVisibleInitially = await page
+        .locator('[data-site-header-settings]')
+        .isVisible();
+      await capture(page, `noscript-${route.includes('card') ? 'card' : 'home'}-390-closed`, {
+        javaScriptEnabled: false,
+        settingsVisibleInitially,
+      });
       if (isNative) await fallback.click();
       await capture(page, `noscript-${route.includes('card') ? 'card' : 'home'}-390`, {
         javaScriptEnabled: false,
@@ -330,6 +453,45 @@ for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/card/']) {
             'JavaScript'
           );
         }
+      }
+    } finally {
+      await context.close();
+    }
+  }, 60_000);
+}
+
+for (const route of ['/zh-cn/', '/zh-cn/ui-libraries/brutalist/components/card/']) {
+  it(`${route} retains readable native navigation after all external scripts fail`, async () => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 900 } });
+    const page = await context.newPage();
+    await page.route('**/*', (request) =>
+      request.request().resourceType() === 'script' ? request.abort('failed') : request.continue()
+    );
+    try {
+      const response = await page.goto(`${baseUrl}${route}`);
+      expect(response?.status()).toBe(200);
+      await page.locator('h1').waitFor();
+      const initial = await firstScreen(page);
+      const settingsVisible = await page.locator('[data-site-header-settings]').isVisible();
+      await capture(page, `failed-scripts-${route.includes('card') ? 'card' : 'home'}-390`, {
+        externalScriptsAborted: true,
+        initial,
+        settingsVisible,
+      });
+      const summary = page.locator('[data-site-header-fallback-summary]');
+      if (await summary.count()) {
+        await summary.click();
+        await capture(page, `failed-scripts-open-${route.includes('card') ? 'card' : 'home'}-390`, {
+          externalScriptsAborted: true,
+        });
+      }
+      if (!baseline) {
+        expect(settingsVisible).toBe(false);
+        expect(await summary.count()).toBe(1);
+        expect(await page.locator('[data-site-header-settings] a[href]').first().isVisible()).toBe(
+          true
+        );
+        expect(initial.bodyWidth).toBeLessThanOrEqual(390);
       }
     } finally {
       await context.close();

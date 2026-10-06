@@ -1,3 +1,4 @@
+import { PREFERRED_ADAPTER_KEY } from './adapter-preference-key';
 import { bindSiteSelectDismissal } from './site-select-dismissal';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import brutalistButton from '@proto.ui/prototypes-brutalist/button';
@@ -245,7 +246,27 @@ function initializeSelect(root: SiteSelectRoot): void {
     // `data-value` is owned by the adapter's exposed-state projection, so it
     // is intentionally not used as an authoring input. Keep the SSR seed in a
     // separate data attribute that the runtime will not overwrite.
-    const value = root.dataset.siteInitialValue ?? '';
+    let value = root.dataset.siteInitialValue ?? '';
+    if (root.hasAttribute('data-adapter-select-root')) {
+      try {
+        const saved = root.ownerDocument.defaultView?.localStorage.getItem(PREFERRED_ADAPTER_KEY);
+        if (
+          saved &&
+          [
+            ...root.querySelectorAll(
+              'wc-shadcn-select-item[data-value], wc-brutalist-select-item[data-value]'
+            ),
+          ].some(
+            (item) =>
+              item.closest('[data-site-select-root]') === root &&
+              item.getAttribute('data-value') === saved
+          )
+        )
+          value = saved;
+      } catch {
+        /* A blocked preference store retains the declared default. */
+      }
+    }
     updateSelectProps(root, {
       value,
       disabled: root.dataset.disabled === 'true',

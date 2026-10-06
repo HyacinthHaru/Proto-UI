@@ -425,3 +425,22 @@ it('maps a legacy ghost alias to the existing public Brutalist surface variant',
   expect(tokens).toContain('shadow-[4px_4px_0_0_#000]');
   expect(button.style.width).toBe('2.75rem');
 });
+
+it.each(['react', 'vue', 'vue2'])(
+  'reads saved %s before the first Adapter Select props are projected',
+  async (saved) => {
+    registerSiteShadcnControls();
+    localStorage.setItem('preferred-prototypes-adapter', saved);
+    document.body.innerHTML = `<div><wc-shadcn-select-root data-site-select-root data-adapter-select-root data-site-initial-value="wc"><wc-shadcn-select-trigger><wc-shadcn-select-value>Runtime</wc-shadcn-select-value></wc-shadcn-select-trigger><wc-shadcn-select-content>${['wc', 'react', 'vue', 'vue2'].map((value) => `<wc-shadcn-select-item data-value="${value}" data-text-value="${value}">${value}</wc-shadcn-select-item>`).join('')}</wc-shadcn-select-content></wc-shadcn-select-root></div>`;
+    try {
+      initSiteShadcnControls(document);
+      await settle();
+      expect(
+        selectValue(document.querySelector<SiteSelectRoot>('[data-adapter-select-root]')!)
+      ).toBe(saved);
+    } finally {
+      localStorage.clear();
+      document.body.replaceChildren();
+    }
+  }
+);
