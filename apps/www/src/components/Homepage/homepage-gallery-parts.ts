@@ -4,7 +4,7 @@ import {
   resolveProjectionPart,
   type ProjectionFamilyId,
 } from '../PrototypePreviewer/projection-families';
-import type { RuntimeId } from '../PrototypePreviewer/runtimes/registry';
+import type { RuntimeId } from '../PrototypePreviewer/runtimes/ids';
 import { surfacePrototypeId, panelSurfaceProps, panelSurfaceLayout } from '../surface-recipes';
 
 /** Consumer geometry only: retain family paint and the public default height,
