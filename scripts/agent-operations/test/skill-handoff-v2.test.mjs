@@ -360,3 +360,64 @@ test('resume strips mutation and standing authorization artifacts from interrupt
     assert.equal(accepted(result).nextSkill.id, 'pui-review');
   }
 });
+
+test('resume retains validation enrichment of an optional candidate binding', () => {
+  const x = resumeArgs(),
+    current = x.continuation.binding,
+    review = x.currentArtifacts.find((a) => a.type === 'review-input');
+  const authority = a('authority-map'),
+    semantic = a('semantic-authorization');
+  const ci = base({
+    fromId: 'pui-ci',
+    nextSkillId: 'pui-spec',
+    binding,
+    artifacts: [a('ci-report', 'fixture:diagnosis', { result: 'failed' }), authority, semantic],
+  });
+  const repair = base({
+    fromId: 'pui-spec',
+    nextSkillId: 'pui-validate',
+    binding: current,
+    artifacts: [
+      authority,
+      semantic,
+      a('candidate-change', 'fixture:repair', {
+        revision: current.headSha,
+        digest: 'sha256:' + 'd'.repeat(64),
+      }),
+    ],
+  });
+  const validation = base({
+    fromId: 'pui-validate',
+    nextSkillId: 'pui-review',
+    binding: current,
+    artifacts: [
+      authority,
+      repair.artifacts[2],
+      a('evidence-report', 'fixture:fixed', {
+        revision: current.headSha,
+        result: 'passed',
+        digest: 'sha256:' + 'e'.repeat(64),
+      }),
+      review,
+    ],
+  });
+  validation.artifacts[1] = { ...validation.artifacts[1] };
+  delete repair.artifacts[2].digest;
+  delete repair.artifacts[2].revision;
+  x.continuation = [ci, repair, validation];
+  const result = resumeSkillHandoff(x, registry);
+  assert.equal(accepted(result, repair).nextSkill.id, 'pui-review');
+  assert.equal(result.fromId, 'pui-validate');
+  assert.equal(result.artifacts.filter((a) => a.reference === 'fixture:repair').length, 1);
+  assert.equal(
+    result.artifacts.some((a) => a.reference === 'fixture:diagnosis' && a.result === 'failed'),
+    true
+  );
+  assert.equal(
+    result.artifacts.some((a) => a.reference === 'fixture:prior' && a.result === 'partial'),
+    true
+  );
+  const skipped = structuredClone(x);
+  skipped.continuation = [ci, validation];
+  assert.throws(() => resumeSkillHandoff(skipped, registry), /skips a routed leaf/);
+});

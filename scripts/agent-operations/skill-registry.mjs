@@ -516,32 +516,42 @@ function validateRefreshedEvidence(handoff, priorHandoff, registry) {
   if (handoff.schemaVersion === 2)
     for (const key of ['repositoryId', 'scopeId', 'headSha'])
       assert(handoff.binding[key] === priorHandoff.binding[key], 'validation cannot change ' + key);
-  const currentCandidates = (value) =>
+  const currentCandidates = (value, allowUnboundRevision = false) =>
     getHandoffArtifacts(value, 'candidate-change').filter(
-      (artifact) => value.schemaVersion === 1 || artifact.revision === value.binding.headSha
+      (artifact) =>
+        value.schemaVersion === 1 ||
+        artifact.revision === value.binding.headSha ||
+        (allowUnboundRevision && artifact.revision === undefined)
     );
-  const received = currentCandidates(priorHandoff);
+  const received = currentCandidates(priorHandoff, true);
   const emitted = currentCandidates(handoff);
-  assert(
-    received.length > 0 && received.every((artifact) => artifact.digest !== undefined),
-    'validation requires digest-bound current candidate materials'
-  );
+  assert(received.length > 0, 'validation requires current candidate materials');
   assert(
     received.length === emitted.length &&
       received.every((artifact) =>
-        emitted.some((candidate) => isDeepStrictEqual(candidate, artifact))
+        emitted.some((candidate) => {
+          if (candidate.digest === undefined) return false;
+          // Validation owns measuring an optional, previously unbound input.
+          // This permits only enrichment, not changes to an existing binding.
+          // It does not authenticate the supplied digest or referenced bytes.
+          const bound = { ...artifact };
+          if (bound.digest === undefined) bound.digest = candidate.digest;
+          if (handoff.schemaVersion === 2 && bound.revision === undefined)
+            bound.revision = handoff.binding.headSha;
+          return isDeepStrictEqual(candidate, bound);
+        })
       ),
-    'validation must retain its received current candidate materials unchanged'
+    'validation must retain received candidate identities and existing bindings'
   );
   const previousReports = getHandoffArtifacts(priorHandoff, 'evidence-report');
-  assert(
-    previousReports.every((artifact) => artifact.digest !== undefined),
-    'validation received evidence requires digests for freshness comparison'
-  );
   const fresh = getHandoffArtifacts(handoff, 'evidence-report').filter(
     (artifact) =>
       artifact.digest !== undefined &&
-      !previousReports.some((previous) => previous.digest === artifact.digest)
+      !previousReports.some((previous) =>
+        previous.digest === undefined
+          ? previous.reference === artifact.reference
+          : previous.digest === artifact.digest
+      )
   );
   assert(
     fresh.some(

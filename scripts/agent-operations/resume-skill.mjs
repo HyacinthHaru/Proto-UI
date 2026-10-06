@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import { pathToFileURL } from 'node:url';
+import { isDeepStrictEqual } from 'node:util';
 import {
   loadSkillRegistry,
   requireCompletedHandoff,
@@ -60,8 +61,17 @@ export function resumeSkillHandoff(
       (a) => a.type === artifact.type && a.reference === artifact.reference
     );
     if (previous) {
-      if (JSON.stringify(previous) !== JSON.stringify(artifact))
+      const enriched = { ...previous };
+      if (artifact.type === 'candidate-change') {
+        // The continuation steps were validated above. Preserve their allowed
+        // missing-to-bound enrichment instead of treating it as a conflicting edit.
+        for (const field of ['digest', 'revision'])
+          if (enriched[field] === undefined && artifact[field] !== undefined)
+            enriched[field] = artifact[field];
+      }
+      if (!isDeepStrictEqual(enriched, artifact))
         throw Error('resume has conflicting provenance for ' + artifact.reference);
+      Object.assign(previous, enriched);
     } else materials.push(structuredClone(artifact));
   };
   const replaceTypes = new Set(
