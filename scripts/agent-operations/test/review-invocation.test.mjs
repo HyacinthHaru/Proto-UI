@@ -40,7 +40,7 @@ function fixture(t, command) {
     entrypoint: 'development',
     executionMode: 'human-assisted',
     executionModeSource: 'current-user',
-    fromId: merge ? 'pui-review' : 'pui-validate',
+    fromId: merge ? 'pui-review' : 'pui-dev', // Invocation-only fixture.
     nextSkillId: merge ? 'pui-integrate' : 'pui-review',
     artifacts: merge
       ? [

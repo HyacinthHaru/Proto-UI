@@ -29,6 +29,16 @@ The v2 schema enumerates kinds and singleton counts. Runtime also rejects duplic
 
 Generate with pnpm agent:skill:schema; verify with pnpm agent:skill:schema -- --check. Tests execute AJV draft-2020-12 as well as runtime validation. Never hand-edit the generated schema.
 
+## Unchanged constrained terminal
+
+A leaf with `allowedNextSkillIds` cannot evade its required continuation by setting `nextSkillId: null`. A pre-edit stop instead supplies the actual received handoff:
+
+    pnpm agent:skill -- --handoff blocked-output.json --prior-handoff received-input.json
+
+The received handoff must validate and select the output's source leaf. Both handoffs retain the same format, entrypoint, mode/source and v2 binding. Every required input material retains its reference, digest and metadata, including all v2 candidates and reports. Candidate digests are required for this stop. Added transaction material, changed references/digests, missing context and binding drift reject. V1/v2 structure and ordinary unconstrained terminals are unchanged.
+
+This is a structural unchanged-input check, not authentication of opaque references or their contents. Agents still inspect the actual candidate and record blockers; a self-declared note or supplied predecessor cannot prove that a file is truthful. After a numeric edit, `pui-package-budget` continues through `pui-validate` and its final-candidate evidence.
+
 ## Durable owner authorization
 
 A trusted owner decision can authorize ordinary work across turns and scheduled invocations. Ending a turn, restarting a process or aging an assessment does not expire that decision. Covered work uses assessment for calibration, not admission. Uncovered autonomous work retains existing ceilings and standing-scope rules. A schedule remains autonomous.
@@ -60,3 +70,13 @@ A v2 review or integration consumer binds repositoryId, canonical scopeId pull-r
 Resume retains evidence and pending work but strips mutation-authorization and standing-user-authorization from every interrupted/continuation source. Actual current authorization remains in the trusted invocation, not in carried materials.
 
 At the final review boundary an exact newly published review can be an idempotent duplicate/no-write. Only that new exact reviewer/head/state/body and its newly required approval permission may be removed for canonical comparison with the recorded input. Other changes reject, and current identity, permission, CI and owner authorization are still checked. The no-op does not attribute another invocation's POST to this one.
+
+### Validation-to-review evidence refresh
+
+Every `pui-validate -> pui-review` transition supplies its actual received handoff using `--prior-handoff` in the skill resolver and review CLI (`validate`, `inspect`, `eligibility`, `submit-review`). Missing predecessors fail closed. Current candidate materials retain their identities and existing fields; v2 also preserves repository, scope and head. Validation may add a missing digest after computing the actual artifact hash, and a missing v2 revision becomes the current head. It may not change a previously supplied digest or revision. V1 replaces the singleton evidence report with a new digest. V2 can retain historical reports, but adds a new digest- and result-bound report for the current head. Renaming a received report without changing its digest is not refresh. For received reports without digests, require a new report reference plus a digest. This is a structural distinction only: it cannot detect aliases for identical bytes. No general handoff parser opens references, hashes files, fetches URLs or grants new filesystem access. Validation performs authorized artifact inspection and hashing as part of its existing evidence work.
+
+Resume validates each continuation against the preceding step and retains that actual validation input for subsequent review CLI use. This is a structural evidence contract, not authentication of supplied references, report contents, canonical CI or user authority. Existing review-intake routes that do not originate at validation are unchanged; do not relabel a real validation transition to evade its required predecessor.
+
+A fresh report may record `passed`, `failed`, `partial` or `not-run`; freshness is not a green result. Review and integration independently enforce their required evidence and acceptance conditions.
+
+During resume, missing candidate bindings can be coalesced only for the exact already-validated adjacent validation input/output pair, and only when the input first introduced that candidate reference. A repair or later refresh cannot reuse an earlier interrupted/historical reference to assign different provenance; use a distinct candidate reference and preserve the historical material.

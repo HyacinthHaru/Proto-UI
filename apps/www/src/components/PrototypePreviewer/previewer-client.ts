@@ -9,7 +9,7 @@ import {
   watchProjectionThemeSurfaceStyle,
 } from './projection-theme';
 import { releaseHostMount } from './runtimes/host-mount';
-import type { RuntimeId } from './runtimes/registry';
+import type { RuntimeId } from './runtimes/ids';
 import { refreshCodePanel } from './code-panel-client';
 import {
   initSiteShadcnControls,
@@ -30,7 +30,6 @@ interface PreviewerOptions {
   initialRuntime: RuntimeId;
   demoProps: Record<string, unknown>;
   runtimeList: RuntimeId[];
-  loader?: string; // 动态导入路径
   projectionFamilyId?: ProjectionFamilyId;
   projectionComponentId?: ProjectionComponentId;
   projectionToolbar?: boolean;
@@ -53,7 +52,7 @@ export function initPreviewer(options: PreviewerOptions) {
     });
   }
 
-  const { root, prototypeId, demoId, initialRuntime, demoProps, runtimeList, loader } = options;
+  const { root, prototypeId, demoId, initialRuntime, demoProps, runtimeList } = options;
 
   // 防重复初始化
   if (root.dataset.inited === '1') {
@@ -170,15 +169,6 @@ export function initPreviewer(options: PreviewerOptions) {
 
     loaderPromise = (async () => {
       try {
-        // 方式1：使用自定义 loader（废弃的旧方式，保留兼容）
-        if (loader) {
-          const baseUrl = import.meta.url.replace(/\/[^/]+$/, '/');
-          const modulePath = new URL(loader, baseUrl).href;
-          await import(/* @vite-ignore */ modulePath);
-          return;
-        }
-
-        // 方式2：自动按需加载（推荐）
         if (!prototypeId) {
           throw new Error('[PrototypePreviewer] missing prototypeId');
         }

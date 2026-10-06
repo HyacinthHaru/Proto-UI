@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { globSync, mkdtempSync, rmSync, mkdirSync } from 'node:fs';
+import fs, { globSync, mkdtempSync, rmSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { describe, it } from 'node:test';
@@ -34,6 +34,7 @@ import {
   browserShards,
   selectBrowserShard,
   PRODUCTION_BROWSER_SUITES,
+  corepackInvocation,
   createRuntimeTestPlan,
 } from './runtime-test-plan.mjs';
 import {
@@ -201,6 +202,31 @@ it('registers every discovered browser suite exactly once in its explicit browse
 });
 
 describe('runtime test plan', () => {
+  it('keeps forwarded Vitest arguments out of the Windows command shell', () => {
+    const source = fs.readFileSync(new URL('./run-runtime-tests.mjs', import.meta.url), 'utf8');
+    const runVitest = source.match(/async function runVitest[\s\S]*?\n\}\n/u)?.[0] ?? '';
+    assert.match(runVitest, /spawn\(process\.execPath,[\s\S]*?shell: false/u);
+    assert.doesNotMatch(runVitest, /shell:\s*process\.platform/u);
+  });
+
+  it('keeps the direct Node and Astro child out of the Windows command shell', () => {
+    const source = fs.readFileSync(new URL('./run-runtime-tests.mjs', import.meta.url), 'utf8');
+    const startServer = source.match(/async function startServer[\s\S]*?\n\}\n/u)?.[0] ?? '';
+    assert.match(startServer, /spawn\(\s*process\.execPath,\s*\[astroCli,[\s\S]*?shell: false/u);
+    assert.doesNotMatch(startServer, /shell:\s*process\.platform/u);
+  });
+
+  it('launches the Windows Corepack shim through a shell', () => {
+    assert.deepEqual(corepackInvocation('win32'), {
+      executable: 'corepack.cmd',
+      shell: true,
+    });
+    assert.deepEqual(corepackInvocation('linux'), {
+      executable: 'corepack',
+      shell: false,
+    });
+  });
+
   it('classifies every website browser suite into the shared-server phase', () => {
     const scan = (directory) =>
       readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -242,14 +268,33 @@ describe('runtime test plan', () => {
     );
   });
 
+  it('lets an exact single browser suite use its standalone server', () => {
+    const suite = BROWSER_SUITES[0];
+
+    for (const filter of [suite, `./${suite}`, path.resolve(suite)]) {
+      for (const args of [[filter], ['--reporter=dot', filter], [filter, '--reporter=dot']]) {
+        assert.deepEqual(createRuntimeTestPlan(args), [
+          {
+            needsServer: false,
+            args,
+          },
+        ]);
+      }
+    }
+  });
+
   it('isolates browser suites behind one shared documentation server in a full run', () => {
     assert.deepEqual(createRuntimeTestPlan([]), [
       {
         needsServer: false,
-        args: [...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].flatMap((suite) => [
-          '--exclude',
-          suite,
-        ]),
+        args: [
+          '--minWorkers=1',
+          '--maxWorkers=2',
+          ...[...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].flatMap((suite) => [
+            '--exclude',
+            suite,
+          ]),
+        ],
       },
       {
         needsServer: true,
@@ -1619,4 +1664,13 @@ describe('CI evidence directory context availability', () => {
       assert.ok(declared < run.indexOf('git rev-parse HEAD'));
     });
   }
+});
+
+it('the executable runtime runner parses before any test phase starts', () => {
+  const result = spawnSync(
+    process.execPath,
+    ['--check', path.resolve('scripts/test/run-runtime-tests.mjs')],
+    { encoding: 'utf8' }
+  );
+  assert.equal(result.status, 0, result.stderr);
 });
