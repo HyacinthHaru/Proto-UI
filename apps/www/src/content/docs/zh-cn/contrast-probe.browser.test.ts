@@ -545,6 +545,143 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     }
   });
 
+  it('withholds generated pseudo-layer pairs and numeric ink while retaining original pixels', async () => {
+    const context = await browser.newContext({
+      viewport: { width: 800, height: 700 },
+      deviceScaleFactor: 1,
+    });
+    const page = await context.newPage();
+    try {
+      await page.setContent(
+        fixture(`
+        <style>
+          main { display:grid; grid-template-columns:220px 220px; gap:24px; padding:24px; }
+          .cell { position:relative; width:220px; height:64px; }
+          [data-pui-root] { position:relative; width:220px; height:64px; min-height:64px; margin:0; border:2px solid black; }
+          .before::before, .after::after, .ancestor::after, .hidden::before {
+            content:""; position:absolute; inset:0; background:white; z-index:2; pointer-events:none;
+          }
+          .none::before { content:none; }
+          .hidden::before { display:none; }
+        </style>
+        <div class="cell"><button data-pui-root data-demo-ref="plain">Plain text</button></div>
+        <div class="cell"><button class="before" data-pui-root data-demo-ref="before">Covered text <span>child</span><svg><rect width="20" height="20" fill="black" /></svg></button></div>
+        <div class="cell"><button class="after" data-pui-root data-demo-ref="after">Covered text</button></div>
+        <div class="cell ancestor"><button data-pui-root data-demo-ref="ancestor">Covered text</button></div>
+        <div class="cell"><button class="none" data-pui-root data-demo-ref="none">No generated layer</button></div>
+        <div class="cell"><button class="hidden" data-pui-root data-demo-ref="hidden">Display-none layer</button></div>
+        <div class="cell ancestor"><textarea data-pui-root data-demo-ref="native">Covered native value</textarea></div>
+        <div class="cell ancestor"><textarea data-pui-root data-demo-ref="placeholder" placeholder="Covered placeholder"></textarea></div>
+      `)
+      );
+      await page.locator('[data-pui-root]').evaluateAll((elements) => {
+        for (const element of elements) {
+          element.setAttribute('data-projection-owner', 'calibration');
+          element.setAttribute('data-projection-generation', '1');
+        }
+      });
+      await page.addScriptTag({ content: bundle });
+      const pairs: Record<string, unknown> = {};
+      for (const ref of ['plain', 'before', 'after', 'ancestor', 'none', 'hidden']) {
+        const target = page.locator(`[data-demo-ref="${ref}"]`);
+        await target.hover();
+        await page.mouse.down();
+        try {
+          const pair = await target.evaluate((element) =>
+            window.puiContrastProbe.readContrastPointerPair(
+              element,
+              { fill: '#fff', foreground: '#000' },
+              true
+            )
+          );
+          pairs[ref] = pair;
+          expect(pair.hovered).toBe(true);
+          expect(pair.nativeActive).toBe(true);
+          expect(pair.fill).toBe(pair.expectedFill);
+          expect(pair.foreground).toBe(pair.expectedForeground);
+          const unsupported = ['before', 'after', 'ancestor'].includes(ref);
+          expect(pair.achieved).toBe(!unsupported);
+          if (unsupported)
+            expect(pair.paintLimits).toContain('unsupported-generated-pseudo-element');
+          else expect(pair.paintLimits).toEqual([]);
+        } finally {
+          await page.mouse.up();
+        }
+      }
+      const png = await page.screenshot({ type: 'png', caret: 'initial' });
+      await recordCalibrationFile('generated-pseudo-layers.png', png);
+      const image = png.toString('base64');
+      const frame = await page.evaluate(
+        (image) =>
+          window.puiContrastProbe.collectContrastFrame({ image, family: 'instrument-calibration' }),
+        image
+      );
+      const pixels = await page.evaluate(async (image) => {
+        const bitmap = await createImageBitmap(
+          new Blob([Uint8Array.from(atob(image), (value) => value.charCodeAt(0))], {
+            type: 'image/png',
+          })
+        );
+        const canvas = document.createElement('canvas');
+        canvas.width = bitmap.width;
+        canvas.height = bitmap.height;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(bitmap, 0, 0);
+        bitmap.close();
+        return Object.fromEntries(
+          ['before', 'after', 'ancestor', 'native', 'placeholder'].map((ref) => {
+            const rect = document
+              .querySelector(`[data-demo-ref="${ref}"]`)!
+              .getBoundingClientRect();
+            const x = Math.floor(rect.x + rect.width / 2),
+              y = Math.floor(rect.y + rect.height / 2);
+            return [ref, { x, y, rgba: Array.from(ctx.getImageData(x, y, 1, 1).data) }];
+          })
+        );
+      }, image);
+      for (const ref of ['plain', 'none', 'hidden'])
+        expect(surface(frame, ref).textContrast?.ratio).toBeCloseTo(21, 8);
+      for (const ref of ['before', 'after', 'ancestor', 'native', 'placeholder']) {
+        const target = surface(frame, ref);
+        expect(target.paint.limits).toContain('unsupported-generated-pseudo-element');
+        expect(target.textContrast).toBeNull();
+        expect(target.textRuns.every((run) => run.ratio === null)).toBe(true);
+        expect(target.exterior).toHaveLength(12);
+        expect(
+          target.exterior.every(
+            (edge) =>
+              edge.innerBorderVsBackground === null &&
+              edge.opaqueBorderVsPixel === null &&
+              edge.opaqueFillVsPixel === null
+          )
+        ).toBe(true);
+        expect(pixels[ref].rgba).toEqual([255, 255, 255, 255]);
+      }
+      expect(surface(frame, 'placeholder').placeholder?.ratio).toBeNull();
+      expect(
+        surface(frame, 'before').glyphs.every(
+          (glyph) => glyph.fillContrast === null && glyph.strokeContrast === null
+        )
+      ).toBe(true);
+      await recordCalibrationFile(
+        'generated-pseudo-layers.json',
+        JSON.stringify(
+          {
+            sourceHead: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+            pngSha256: createHash('sha256').update(png).digest('hex'),
+            frame,
+            pairs,
+            pixels,
+          },
+          null,
+          2
+        )
+      );
+    } finally {
+      await context.close();
+    }
+  });
+
   it('requires real pointer state and both painted colors for item pair acceptance', async () => {
     const context = await browser.newContext({ viewport: { width: 800, height: 600 } });
     const page = await context.newPage();

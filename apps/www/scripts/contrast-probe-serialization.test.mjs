@@ -696,3 +696,106 @@ for (const family of ['badge', 'card', 'skeleton', 'separator', 'spinner']) {
     assert.equal(observe().achieved, true);
   });
 }
+
+for (const placement of ['target', 'ancestor']) {
+  for (const pseudo of ['::before', '::after']) {
+    test(`pointer pair withholds generated ${placement} ${pseudo} while preserving native facts`, async () => {
+      const f = await targetObservationFixture();
+      const original = f.sandbox.getComputedStyle;
+      const layer = { content: 'none', display: 'block', opacity: '1' };
+      const owner = placement === 'target' ? f.element : f.ancestor;
+      f.sandbox.getComputedStyle = (element, which) =>
+        which
+          ? element === owner && which === pseudo
+            ? layer
+            : { content: 'none', display: 'block' }
+          : original(element);
+      assert.equal(f.observePair().achieved, true);
+      Object.assign(layer, {
+        content: '""',
+        position: 'absolute',
+        inset: '0px',
+        backgroundColor: '#fff',
+      });
+      for (const held of [false, true]) {
+        const result = f.observePair(held);
+        assert.equal(result.fill, result.expectedFill);
+        assert.equal(result.foreground, result.expectedForeground);
+        assert.equal(result.hovered, true);
+        assert.equal(result.nativeActive, true);
+        assert.equal(result.achieved, false);
+        assert.ok(result.paintLimits.includes('unsupported-generated-pseudo-element'));
+      }
+      for (const content of ['none', 'normal', '']) {
+        layer.content = content;
+        assert.equal(f.observePair().achieved, true);
+      }
+      layer.content = '""';
+      layer.display = 'none';
+      assert.equal(f.observePair().achieved, true);
+    });
+  }
+}
+
+for (const placement of ['target', 'ancestor']) {
+  for (const pseudo of ['::before', '::after']) {
+    test(`numeric paint background withholds generated ${placement} ${pseudo}`, async () => {
+      const source = await readFile(
+        new URL('./contrast-probe.browser.ts', import.meta.url),
+        'utf8'
+      );
+      const helper = source.slice(
+        source.indexOf('const generatedPseudoPaintLimits ='),
+        source.indexOf('export const readContrastPointerPair')
+      );
+      const start = source.indexOf('  const background = (element: Element)');
+      const end = source.indexOf('\n  return {\n    family,', start);
+      assert.ok(start > 0 && end > start);
+      const compiled = await transform(
+        `${helper}\n${source.slice(start, end)}\nreturn background(element);`,
+        { loader: 'ts' }
+      );
+      const read = new Function(
+        'getComputedStyle',
+        'paint',
+        'composedParent',
+        'HTMLSlotElement',
+        'element',
+        compiled.code
+      );
+      const ancestor = { parent: null };
+      const target = { parent: ancestor };
+      const owner = placement === 'target' ? target : ancestor;
+      const layer = { content: 'none', display: 'block' };
+      const plain = {
+        opacity: '1',
+        filter: 'none',
+        backdropFilter: 'none',
+        mixBlendMode: 'normal',
+        backgroundImage: 'none',
+        backgroundClip: 'border-box',
+        backgroundColor: '#fff',
+      };
+      const observe = () =>
+        read(
+          (element, which) =>
+            which
+              ? element === owner && which === pseudo
+                ? layer
+                : { content: 'none', display: 'block' }
+              : plain,
+          () => ({ rgba: [255, 255, 255, 255], alpha: 1, limits: [] }),
+          (element) => element.parent,
+          class {},
+          target
+        );
+      assert.deepEqual(observe(), { rgba: [255, 255, 255, 255], limits: [] });
+      layer.content = '""';
+      const altered = observe();
+      assert.equal(altered.rgba, null);
+      assert.ok(altered.limits.includes('unsupported-generated-pseudo-element'));
+      layer.display = 'none';
+      assert.deepEqual(observe(), { rgba: [255, 255, 255, 255], limits: [] });
+    });
+  }
+}

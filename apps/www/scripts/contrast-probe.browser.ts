@@ -932,6 +932,19 @@ export const readSubjectContrastAnatomy = (
   return readContrastAnatomyInScope(primary, boundary.scope, boundary);
 };
 
+// Generated layers can cover a target without changing its own color tokens.
+// This finite source model does not reconstruct their geometry/stacking. Keep
+// raw observations, but withhold paint metrics unless the layer is not generated
+// or is explicitly display:none. Ordinary sibling overlay coverage stays unverified.
+const generatedPseudoPaintLimits = (element: Element): string[] => {
+  for (const pseudo of ['::before', '::after']) {
+    const style = getComputedStyle(element, pseudo);
+    if (style.content && !['none', 'normal'].includes(style.content) && style.display !== 'none')
+      return ['unsupported-generated-pseudo-element'];
+  }
+  return [];
+};
+
 export const readContrastPointerPair = (
   element: Element,
   expected: { fill: string; foreground: string },
@@ -946,6 +959,7 @@ export const readContrastPointerPair = (
   const paintLimits: string[] = [];
   for (let current: Element | null = element; current; current = composedParent(current)) {
     const paintStyle = getComputedStyle(current);
+    paintLimits.push(...generatedPseudoPaintLimits(current));
     if (paintStyle.opacity !== '1') paintLimits.push('ancestor-or-target-opacity');
     if (paintStyle.mixBlendMode !== 'normal') paintLimits.push('blend-mode');
   }
@@ -1087,6 +1101,7 @@ const collectContrastFrameInScope = async (
     let current: Element | null = element;
     while (current) {
       const style = getComputedStyle(current);
+      limits.push(...generatedPseudoPaintLimits(current));
       if (style.opacity !== '1') limits.push('ancestor-or-target-opacity');
       if (style.filter !== 'none' || style.backdropFilter !== 'none')
         limits.push('filter-or-backdrop-filter');
@@ -1184,7 +1199,12 @@ const collectContrastFrameInScope = async (
         parseFloat(style.fontSize) >= 24 ||
         (parseFloat(style.fontSize) >= 18.6666666667 && parseInt(style.fontWeight) >= 700);
       const inkUnmodified = !backdrop.limits.some((limit) =>
-        ['ancestor-or-target-opacity', 'filter-or-backdrop-filter', 'blend-mode'].includes(limit)
+        [
+          'ancestor-or-target-opacity',
+          'filter-or-backdrop-filter',
+          'blend-mode',
+          'unsupported-generated-pseudo-element',
+        ].includes(limit)
       );
       const borders: ContrastSurface['borders'] = {};
       for (const side of ['top', 'right', 'bottom', 'left']) {
