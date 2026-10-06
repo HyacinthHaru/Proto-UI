@@ -943,3 +943,82 @@ it.each([false, true])(
     }
   }
 );
+
+// C-TEXT-CONTROL-0001-B/D/E/G: a queued owner patch must reach the
+// current editor even when a change event, rather than input, drains it.
+describe.each(['single', 'multiline'] as const)('Web %s change callback preludes', (lineMode) => {
+  it.each([false, true])(
+    'projects a queued owner value while retaining native change facts (same value=%s)',
+    async (sameValue) => {
+      let pendingOwner: string | undefined;
+      const h = createHarness(false, lineMode);
+      const target = document.createElement(lineMode === 'single' ? 'input' : 'textarea');
+      document.body.append(target);
+      const control = h.module.facade.declare();
+      h.vault.attach([
+        [TEXT_CONTROL_HOST_CAP, createWebTextControlHost(() => target)],
+        [
+          TEXT_CONTROL_RUN_IN_CALLBACK_CAP,
+          (callback: () => void) => {
+            if (pendingOwner !== undefined) {
+              const value = pendingOwner;
+              pendingOwner = undefined;
+              control.sync({ value });
+            }
+            callback();
+          },
+        ],
+      ]);
+      const seen: TextControlEvent[] = [];
+      control.on('change', (_run, next) => seen.push(next));
+      h.module.hooks.onMountPhase?.('mounted', 1);
+      h.sys.phase = 'callback';
+      control.sync({ valueMode: 'controlled', value: 'original' });
+      target.focus();
+      try {
+        target.value = 'native candidate';
+        target.setSelectionRange(3, 3);
+        pendingOwner = sameValue ? target.value : 'queued owner';
+        target.dispatchEvent(new Event('change'));
+        await Promise.resolve();
+        expect(control.snapshot()).toEqual({
+          value: sameValue ? 'native candidate' : 'queued owner',
+          composing: false,
+        });
+        expect(target.value).toBe(sameValue ? 'native candidate' : 'queued owner');
+        expect(seen).toEqual([event('change', 'native candidate')]);
+        if (sameValue) {
+          expect(target.selectionStart).toBe(3);
+          expect(target.selectionEnd).toBe(3);
+        }
+      } finally {
+        h.module.hooks.dispose?.();
+        target.remove();
+      }
+    }
+  );
+
+  it('keeps change-triggered owner patches out of an active composition', async () => {
+    let beforeRun = () => {};
+    const h = createHarness(true, lineMode, () => beforeRun());
+    const control = h.module.facade.declare();
+    h.module.hooks.onMountPhase?.('mounted', 1);
+    h.sys.phase = 'callback';
+    control.sync({ valueMode: 'controlled', value: 'owner' });
+    const connection = h.connectionBox.current!;
+    connection.onEvent(event('compositionstart', 'candidate', true));
+    h.setPatchValue('candidate');
+    beforeRun = () => {
+      beforeRun = () => {};
+      control.sync({ value: 'queued owner' });
+    };
+    connection.onEvent(event('change', 'candidate', true));
+    await Promise.resolve();
+    expect(h.getPatchValue()).toBe('candidate');
+    expect(control.snapshot()).toEqual({ value: 'queued owner', composing: true });
+    connection.onEvent(event('compositionend', 'candidate'));
+    await Promise.resolve();
+    expect(h.getPatchValue()).toBe('queued owner');
+    h.module.hooks.dispose?.();
+  });
+});
