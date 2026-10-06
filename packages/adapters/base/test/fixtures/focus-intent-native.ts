@@ -1,3 +1,9 @@
+import { isWebFocusTargetActive } from '@proto.ui/adapter-base';
+import { FOCUS_CENTER } from '../../../../modules/focus/src/center';
+import * as ReactFocusTree from '../../../react/src/platform/instance-tree';
+import * as VueFocusTree from '../../../vue/src/platform/instance-tree';
+import * as Vue2FocusTree from '../../../vue2/src/platform/instance-tree';
+import * as WCFocusTree from '../../../web-component/src/platform/instance-tree';
 import { definePrototype, type Prototype } from '@proto.ui/core';
 import { asFocusEntry, asFocusable, asTextControl } from '@proto.ui/hooks';
 import { declareTextControl } from '@proto.ui/module-text-control';
@@ -18,7 +24,7 @@ const microtasks = async () => {
 
 // These mount helpers use each Adapter's actual installed framework. No focus,
 // event-gate, frame, or eligibility API is replaced or patched by this fixture.
-async function mount(runtime: Runtime, proto: Prototype<any, any>) {
+async function mount(runtime: Runtime, proto: Prototype<any, any>, shadow = false) {
   if (runtime === 'react') return mountNativeFocusIntentReact(proto);
   if (runtime === 'vue') {
     const mounted = createMountedVueAdapter(proto);
@@ -52,7 +58,7 @@ async function mount(runtime: Runtime, proto: Prototype<any, any>) {
       unmount: async () => mounted.unmount(),
     };
   }
-  AdaptToWebComponent(proto);
+  AdaptToWebComponent(proto, { shadow });
   const root = document.createElement(proto.name) as HTMLElement & { getExposes(): any };
   document.body.append(root);
   await microtasks();
@@ -467,5 +473,107 @@ export async function observeRetainedViewBudget(runtime: Runtime, kind: Kind) {
     document.body.removeAttribute('data-focus-intent-reject');
     rejectionStyle.remove();
     await mounted.unmount();
+  }
+}
+
+// Native-browser controls: no focus/frame APIs are patched. A target reference
+// only reads the active element of its own tree, including an owned closed root.
+export async function observeShadowAcquisition(
+  runtime: Runtime,
+  mode: 'open' | 'closed' | 'nested' | 'own-control',
+  kind: Kind
+) {
+  const ownControl = mode === 'own-control';
+  const proto = definePrototype({
+    name: `native-shadow-focus-${runtime}-${mode}-${kind}`,
+    ...(ownControl
+      ? {
+          modules: [
+            declareTextControl({ content: 'plain-text', lineMode: 'single', engine: 'host' }),
+          ],
+        }
+      : {}),
+    setup(def) {
+      if (ownControl) asTextControl();
+      const target = asFocusable(),
+        entry = asFocusEntry();
+      entry.configure({ strategy: 'self', fallback: 'self' });
+      def.expose.state('focused', target.focused);
+      def.expose.method('request', () => {
+        const options = { reason: 'keyboard' as const, preventScroll: true };
+        if (kind === 'entry') entry.focus(options);
+        else if (kind === 'native') target.focusSelf(options);
+        else target.focus(options);
+      });
+      return () => null;
+    },
+  });
+  const mounted = await mount(runtime, proto, ownControl);
+  const host = document.createElement('div');
+  document.body.append(host);
+  try {
+    if (!ownControl) {
+      let root = host.attachShadow({ mode: mode === 'closed' ? 'closed' : 'open' });
+      if (mode === 'nested') {
+        const inner = document.createElement('div');
+        root.append(inner);
+        root = inner.attachShadow({ mode: 'closed' });
+      }
+      root.append(runtime === 'wc' ? mounted.root : mounted.root.parentElement!);
+    }
+    await frames(3);
+    const target = ownControl ? mounted.root.shadowRoot!.querySelector('input')! : mounted.root;
+    let trustedFocusEvents = 0;
+    target.addEventListener('focus', (event) => {
+      if (event.isTrusted) trustedFocusEvents++;
+    });
+    await mounted.act(() => mounted.getExposes().request());
+    await frames(8);
+    const tree = { react: ReactFocusTree, vue: VueFocusTree, vue2: Vue2FocusTree, wc: WCFocusTree }[
+      runtime
+    ];
+    const token = tree.getLogicalEventRouteSurfaceForTarget(target);
+    const entry = (FOCUS_CENTER as any).entries.get(token);
+    return {
+      retargeted: document.activeElement === (ownControl ? mounted.root : host),
+      activeInOwnRoot: (target.getRootNode() as Document | ShadowRoot).activeElement === target,
+      knownOwner: !!entry,
+      pending: entry?.hasPendingFocus() ?? null,
+      focused: mounted.getExposes().focused.get(),
+      trustedFocusEvents,
+    };
+  } finally {
+    await mounted.unmount();
+    host.remove();
+  }
+}
+
+export function observeDelegatedShadowFocus() {
+  const host = document.createElement('div');
+  host.tabIndex = 0;
+  const root = host.attachShadow({ mode: 'closed', delegatesFocus: true });
+  const first = document.createElement('button'),
+    second = document.createElement('button');
+  root.append(first, second);
+  document.body.append(host);
+  try {
+    host.focus();
+    const delegated = {
+      hostRetargeted: document.activeElement === host,
+      firstActive: isWebFocusTargetActive(first),
+      secondActive: isWebFocusTargetActive(second),
+    };
+    second.focus();
+    const moved = {
+      firstActive: isWebFocusTargetActive(first),
+      secondActive: isWebFocusTargetActive(second),
+    };
+    second.blur();
+    const blurred = isWebFocusTargetActive(second);
+    first.focus();
+    host.remove();
+    return { delegated, moved, blurred, detached: isWebFocusTargetActive(first) };
+  } finally {
+    host.remove();
   }
 }

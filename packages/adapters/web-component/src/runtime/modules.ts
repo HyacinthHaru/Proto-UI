@@ -1,4 +1,8 @@
-import { orderFocusTargetsByDocument, resolveWebFocusEntryTarget } from '@proto.ui/adapter-base';
+import {
+  isWebFocusTargetActive,
+  orderFocusTargetsByDocument,
+  resolveWebFocusEntryTarget,
+} from '@proto.ui/adapter-base';
 import {
   cancelWebEventDefaultAction,
   createCapsWiring,
@@ -508,7 +512,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
               ? { preventScroll: options.preventScroll }
               : undefined
           );
-          const applied = target.ownerDocument.activeElement === target;
+          const applied = isWebFocusTargetActive(target);
           // Native focus can synchronously issue a newer request. Only the
           // still-current intent owns success or retry-budget accounting.
           if (request.options === options && request.kind === kind) {

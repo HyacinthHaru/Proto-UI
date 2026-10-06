@@ -206,3 +206,75 @@ for (const runtime of ['react', 'vue', 'vue2', 'wc'] as const) {
     }
   );
 }
+
+for (const runtime of ['react', 'vue', 'vue2', 'wc'] as const) {
+  for (const mode of ['open', 'closed', 'nested'] as const) {
+    for (const kind of ['programmatic', 'native', 'entry'] as const) {
+      it(`native ${runtime} ${kind} accepts focus inside ${mode} shadow root`, async () => {
+        const context = await browser.newContext();
+        try {
+          const page = await context.newPage();
+          await page.setContent('<!doctype html><body></body>');
+          await page.addScriptTag({ content: bundle });
+          const result = await page.evaluate(
+            ({ runtime, mode, kind }) =>
+              window.focusIntentNative.observeShadowAcquisition(runtime, mode, kind),
+            { runtime, mode, kind }
+          );
+          expect(result).toEqual({
+            retargeted: true,
+            activeInOwnRoot: true,
+            knownOwner: true,
+            pending: false,
+            focused: true,
+            trustedFocusEvents: 1,
+          });
+        } finally {
+          await context.close();
+        }
+      });
+    }
+  }
+}
+for (const kind of ['programmatic', 'native', 'entry'] as const) {
+  it(`native WC shadow text-control ${kind} completes without pending retries`, async () => {
+    const context = await browser.newContext();
+    try {
+      const page = await context.newPage();
+      await page.setContent('<!doctype html><body></body>');
+      await page.addScriptTag({ content: bundle });
+      const result = await page.evaluate(
+        (kind) => window.focusIntentNative.observeShadowAcquisition('wc', 'own-control', kind),
+        kind
+      );
+      expect(result).toEqual({
+        retargeted: true,
+        activeInOwnRoot: true,
+        knownOwner: true,
+        pending: false,
+        focused: true,
+        trustedFocusEvents: 1,
+      });
+    } finally {
+      await context.close();
+    }
+  });
+}
+it('native delegatesFocus keeps sibling, blur and detached ownership distinct', async () => {
+  const context = await browser.newContext();
+  try {
+    const page = await context.newPage();
+    await page.setContent('<!doctype html><body></body>');
+    await page.addScriptTag({ content: bundle });
+    expect(
+      await page.evaluate(() => window.focusIntentNative.observeDelegatedShadowFocus())
+    ).toEqual({
+      delegated: { hostRetargeted: true, firstActive: true, secondActive: false },
+      moved: { firstActive: false, secondActive: true },
+      blurred: false,
+      detached: false,
+    });
+  } finally {
+    await context.close();
+  }
+});

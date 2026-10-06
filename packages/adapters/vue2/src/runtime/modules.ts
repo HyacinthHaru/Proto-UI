@@ -4,7 +4,11 @@ import {
   createWebImageViewHost,
 } from '@proto.ui/module-image-view';
 import type { FocusEntryConfig } from '@proto.ui/core';
-import { orderFocusTargetsByDocument, resolveWebFocusEntryTarget } from '@proto.ui/adapter-base';
+import {
+  isWebFocusTargetActive,
+  orderFocusTargetsByDocument,
+  resolveWebFocusEntryTarget,
+} from '@proto.ui/adapter-base';
 import {
   createCapsWiring,
   createWebMoveGestureHost,
@@ -400,7 +404,7 @@ export function createVue2Modules<Props extends PropsBaseType>(args: {
               ? { preventScroll: options.preventScroll }
               : undefined
           );
-          const applied = target.ownerDocument.activeElement === target;
+          const applied = isWebFocusTargetActive(target);
           // Native focus can synchronously issue a newer request. Only the
           // still-current intent owns success or retry-budget accounting.
           if (request.options === options && request.kind === kind) {
