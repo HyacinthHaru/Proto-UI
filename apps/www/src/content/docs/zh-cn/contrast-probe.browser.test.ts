@@ -648,6 +648,68 @@ describe('contrast probe / real Chromium instrument calibration', () => {
               property,
               value,
             ] as [string, string]);
+          if (placement === 'ancestor') {
+            // Native buttons can reset inherited text-shadow. First retain the
+            // unaffected target as a positive control, then explicitly author
+            // inheritance so this counterexample actually paints on the target.
+            if (property === 'text-shadow') {
+              const implicitShadow = await target.evaluate(
+                (element) => getComputedStyle(element).textShadow
+              );
+              await recordCalibrationFile(
+                'pointer-pair-text-shadow-implicit.json',
+                JSON.stringify(
+                  {
+                    sourceHead: execFileSync('git', ['rev-parse', 'HEAD'], {
+                      encoding: 'utf8',
+                    }).trim(),
+                    implicitShadow,
+                  },
+                  null,
+                  2
+                )
+              );
+              // Do not make a browser's UA default part of the support contract.
+              await target.evaluate(
+                (element) => ((element as HTMLElement).style.textShadow = 'none')
+              );
+              expect(await target.evaluate((element) => getComputedStyle(element).textShadow)).toBe(
+                'none'
+              );
+              expect((await observe()).achieved).toBe(true);
+            }
+            await target.evaluate(
+              (element, property) =>
+                (element as HTMLElement).style.setProperty(property, 'inherit'),
+              property
+            );
+            const effective = await target.evaluate(
+              (element, property) => ({
+                target: getComputedStyle(element).getPropertyValue(property),
+                ancestor: getComputedStyle(element.parentElement!).getPropertyValue(property),
+              }),
+              property
+            );
+            expect(effective.target).toBe(effective.ancestor);
+            expect(effective.target).not.toBe(
+              property === '-webkit-text-stroke-width' ? '0px' : 'none'
+            );
+            await recordCalibrationFile(
+              `pointer-pair-${property}-inherited.json`,
+              JSON.stringify(
+                {
+                  sourceHead: execFileSync('git', ['rev-parse', 'HEAD'], {
+                    encoding: 'utf8',
+                  }).trim(),
+                  property,
+                  effective,
+                  observation: await observe(),
+                },
+                null,
+                2
+              )
+            );
+          }
           const changed = await observe();
           expect(changed.achieved).toBe(false);
           expect(changed.paintLimits).toContain(limit);
