@@ -166,11 +166,13 @@ describe('prototypes/brutalist: button', () => {
     expect(tokens).toContain('shadow-none');
     expect(tokens).toContain('translate-x-1');
     expect(tokens).toContain('translate-y-1');
+    expect(tokens).toContain('hit-envelope-translate-1');
 
     rootTarget.dispatchEvent(new CustomEvent('pointer.down'));
     tokens = controller.getRuleStyleTokens();
     expect(tokens).toContain('translate-x-1');
     expect(tokens).toContain('translate-y-1');
+    expect(tokens).toContain('hit-envelope-translate-1');
     expect(tokens).toContain('shadow-none');
 
     rootTarget.dispatchEvent(new CustomEvent('pointer.up'));
