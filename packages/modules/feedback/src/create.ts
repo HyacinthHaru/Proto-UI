@@ -94,7 +94,16 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
           previous?.({ flush: false });
           const next = handles.length > 0 ? this.recorder.use(...handles) : null;
           this.markDirty();
-          this.flushIfPossible();
+          try {
+            this.flushIfPossible();
+          } catch (error) {
+            // Rule's semantic replacement is complete even if the host fails.
+            // Return its disposer so subsequent evaluations can remove it, and
+            // let later semantic observers run. Projection remains retryable.
+            queueMicrotask(() => {
+              throw error;
+            });
+          }
           return next ? this.createRuntimeStyleDisposer(next) : null;
         }
 

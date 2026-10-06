@@ -64,7 +64,9 @@ const cases = [
   // Current #832 + #809 startup reconciliation: React 91,000 / Vue 90,800,
   // with 217 / 193 bytes of headroom; earlier records above retain history.
   // internal/records/2026-10-06-focus-startup-budget-reconciliation.json
-  ['adapter-react root', 'packages/adapters/react/src/index.ts', 91_000],
+  // Necessary +29-byte ceiling for the reviewed remount/Text Control/Feedback union;
+  // internal/records/2026-10-06-react-remount-text-control-budget.json
+  ['adapter-react root', 'packages/adapters/react/src/index.ts', 91_029],
   ['adapter-vue root', 'packages/adapters/vue/src/index.ts', 90_800],
   // The earlier #652 shadow split baseline proposal measured 84,683 gzip at
   // head dd820b30 (main at ddac15da: 75,664 with the same toolchain). Its
