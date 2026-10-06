@@ -735,6 +735,116 @@ for (const [entry, owner] of siteOwners) {
     }
     return { graph, root };
   }
+  function addReviewedBridgeTarget(graph, target) {
+    const bridge = graph.chunks.find((item) => item.fileName === '_astro/site-shadcn-controls.js');
+    bridge.moduleIds.push(target);
+    graph.modules.push({ id: target, imports: [], dynamicImports: [] });
+    graph.modules
+      .find((item) => item.id === 'apps/www/src/components/site-shadcn-controls.ts')
+      .imports.push(target);
+    return bridge;
+  }
+  for (const target of [
+    'packages/adapters/web-component/src/adapt.ts',
+    'packages/adapters/web-component/src/material/owned-texture-sink.ts',
+    'packages/adapters/web-component/src/runtime/experimental-visual-consumer.ts',
+    'packages/adapters/web-component/src/visual-surface.ts',
+  ]) {
+    for (const placement of ['owner', 'bridge', 'renderer']) {
+      for (const field of ['imports', 'dynamicImports']) {
+        test(`bridge origin: ${entry} rejects ${placement} ${field} bypass to ${target}`, () => {
+          const { graph, root } = siteGraph();
+          const bridge = addReviewedBridgeTarget(graph, target);
+          assert.deepEqual(collectWebsiteProductionBundleIssues({ graph }), []);
+          const container =
+            placement === 'owner'
+              ? root
+              : placement === 'bridge'
+                ? bridge
+                : graph.chunks.find((item) => item.fileName === '_astro/shared-renderer.js');
+          const foreign = 'apps/www/src/components/unrelated-bridge-feature.ts';
+          container.moduleIds.push(foreign);
+          graph.modules.push({ id: foreign, imports: [], dynamicImports: [], [field]: [target] });
+          assert.ok(
+            collectWebsiteProductionBundleIssues({ graph }).some(
+              (issue) =>
+                issue.includes('unowned importer edge') &&
+                issue.includes(foreign) &&
+                issue.includes(target)
+            )
+          );
+        });
+      }
+    }
+  }
+  for (const api of ['site-shadcn-controls.ts', 'site-native-controls.ts']) {
+    test(`bridge origin: ${entry} accepts exact ${api} and its helper but rejects helper bypass`, () => {
+      const { graph, root } = siteGraph();
+      const target = 'packages/adapters/web-component/src/adapt.ts';
+      const bridge = addReviewedBridgeTarget(graph, target);
+      const id = `apps/www/src/components/${api}`;
+      let ownerRecord = graph.modules.find((item) => item.id === id);
+      if (!ownerRecord) {
+        ownerRecord = { id, imports: [], dynamicImports: [] };
+        graph.modules.push(ownerRecord);
+        bridge.moduleIds.push(id);
+      }
+      const helper = 'apps/www/src/components/reviewed-bridge-helper.ts';
+      bridge.moduleIds.push(helper);
+      graph.modules.push({ id: helper, imports: [target], dynamicImports: [] });
+      ownerRecord.imports.push(helper);
+      graph.modules.find((item) => item.id === `apps/www/src/components/${owner}`).imports.push(id);
+      assert.deepEqual(collectWebsiteProductionBundleIssues({ graph }), []);
+      const foreign = 'apps/www/src/components/unrelated-helper-caller.ts';
+      root.moduleIds.push(foreign);
+      graph.modules.push({ id: foreign, imports: [helper], dynamicImports: [] });
+      assert.ok(
+        collectWebsiteProductionBundleIssues({ graph }).some(
+          (issue) => issue.includes(foreign) && issue.includes(target)
+        )
+      );
+    });
+    test(`bridge origin: ${entry} rejects ${api} query lookalike`, () => {
+      const { graph, root } = siteGraph();
+      const target = 'packages/adapters/web-component/src/adapt.ts';
+      addReviewedBridgeTarget(graph, target);
+      const id = `apps/www/src/components/${api}?foreign`;
+      root.moduleIds.push(id);
+      graph.modules.push({ id, imports: [target], dynamicImports: [] });
+      assert.ok(
+        collectWebsiteProductionBundleIssues({ graph }).some(
+          (issue) => issue.includes(id) && issue.includes(target)
+        )
+      );
+    });
+  }
+  test(`bridge origin: ${entry} does not let controls API acquire an unreviewed framework target`, () => {
+    const { graph, root } = siteGraph();
+    const target = 'packages/adapters/web-component/src/adapt.ts';
+    addReviewedBridgeTarget(graph, target);
+    const api = graph.modules.find(
+      (item) => item.id === 'apps/www/src/components/site-shadcn-controls.ts'
+    );
+    api.dynamicImports.push('packages/adapters/react/src/index.ts');
+    root.dynamicImports.push('_astro/react.js');
+    assert.ok(
+      collectWebsiteProductionBundleIssues({ graph }).some(
+        (issue) =>
+          issue.includes('site-shadcn-controls.ts') &&
+          issue.includes('packages/adapters/react/src/index.ts')
+      )
+    );
+  });
+  test(`bridge origin: ${entry} permits an unemitted foreign record and inert cycle`, () => {
+    const { graph } = siteGraph();
+    const target = 'packages/adapters/web-component/src/adapt.ts';
+    addReviewedBridgeTarget(graph, target);
+    graph.modules.push(
+      { id: 'unemitted-one', imports: ['unemitted-two', target], dynamicImports: [] },
+      { id: 'unemitted-two', imports: ['unemitted-one'], dynamicImports: [] }
+    );
+    assert.deepEqual(collectWebsiteProductionBundleIssues({ graph }), []);
+  });
   test(`site runtime exact owner: ${entry}`, () => {
     const { graph } = siteGraph();
     assert.doesNotThrow(() => validateWebsiteProductionBundle({ graph }));
