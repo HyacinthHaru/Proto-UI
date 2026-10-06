@@ -35,3 +35,8 @@ export * from './async-region';
 export { default as asyncRegionRoot } from './async-region';
 export * from './image';
 export * from './table';
+export * from './text';
+
+export { default as BaseSurfaceRoot, surfaceRoot, asSurfaceRoot } from './surface';
+
+export type { SurfaceRootProps, SurfaceRootExposes } from './surface';

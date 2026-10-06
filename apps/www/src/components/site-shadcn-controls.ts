@@ -1,4 +1,13 @@
+import { bindSiteSelectDismissal } from './site-select-dismissal';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
+import brutalistButton from '@proto.ui/prototypes-brutalist/button';
+import {
+  selectContent as brutalistSelectContent,
+  selectItem as brutalistSelectItem,
+  selectRoot as brutalistSelectRoot,
+  selectTrigger as brutalistSelectTrigger,
+  selectValue as brutalistSelectValue,
+} from '@proto.ui/prototypes-brutalist/select';
 import shadcnButton from '@proto.ui/prototypes-shadcn/button';
 import {
   selectContent as shadcnSelectContent,
@@ -10,10 +19,16 @@ import {
 
 /**
  * Site chrome is part of the Proto UI dogfood surface. Keep registration in a
- * single place so every page uses the same Shadcn projections and never
+ * single place so every page uses the matching library projections and never
  * accidentally defines a second constructor for a preview element.
  */
 const siteProjections = [
+  ['wc-brutalist-button', brutalistButton],
+  ['wc-brutalist-select-root', brutalistSelectRoot],
+  ['wc-brutalist-select-trigger', brutalistSelectTrigger],
+  ['wc-brutalist-select-value', brutalistSelectValue],
+  ['wc-brutalist-select-content', brutalistSelectContent],
+  ['wc-brutalist-select-item', brutalistSelectItem],
   ['wc-shadcn-button', shadcnButton],
   ['wc-shadcn-select-root', shadcnSelectRoot],
   ['wc-shadcn-select-trigger', shadcnSelectTrigger],
@@ -44,8 +59,10 @@ const pendingSelectReplays = new WeakSet<SiteSelectRoot>();
 export function isSiteButtonActivation(event: Event): boolean {
   const currentTarget = event.currentTarget;
   return (
-    !(currentTarget instanceof HTMLElement && currentTarget.localName === 'wc-shadcn-button') ||
-    event instanceof CustomEvent
+    !(
+      currentTarget instanceof HTMLElement &&
+      currentTarget.matches('wc-shadcn-button, wc-brutalist-button')
+    ) || event instanceof CustomEvent
   );
 }
 
@@ -85,7 +102,7 @@ function closeSelectAfterValueChange(root: SiteSelectRoot): void {
   });
 }
 
-export function registerSiteShadcnControls(): void {
+export function registerSiteControls(): void {
   for (const [tagName, prototype] of siteProjections) {
     if (customElements.get(tagName)) continue;
     const constructor = AdaptToWebComponent(prototype, {
@@ -134,18 +151,96 @@ function applyProps(element: HTMLElement, props: Record<string, unknown>): void 
   queueMicrotask(() => (element as SiteSelectRoot).setProps?.(props));
 }
 
+/** Header sizing is a consumer override through the adapter's normalized
+ * surfaceStyle input, not an external selector competing with Proto styles. */
+function headerSurfaceStyle(element: HTMLElement, kind: 'button' | 'root' | 'trigger' | 'value') {
+  if (!element.closest('[data-site-header]')) return undefined;
+  if (kind === 'root') return { width: '100%', minWidth: '0', maxWidth: '100%' };
+  const docsRuntime = !!element.closest('[data-docs-site-header] [data-adapter-select]');
+  if (kind === 'value')
+    return {
+      display: 'block',
+      minWidth: '0',
+      flex: '1 1 auto',
+      overflow: docsRuntime ? 'visible' : 'hidden',
+      textOverflow: docsRuntime ? 'clip' : 'ellipsis',
+      whiteSpace: docsRuntime ? 'normal' : 'nowrap',
+      ...(docsRuntime ? { overflowWrap: 'anywhere' } : {}),
+    };
+  if (kind === 'trigger')
+    return {
+      width: '100%',
+      minWidth: '0',
+      maxWidth: '100%',
+      minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.75rem))',
+      paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
+      ...(docsRuntime ? { height: 'auto' } : {}),
+      fontFamily: 'inherit',
+      fontSize: '0.875rem',
+    };
+  return {
+    width: '2.75rem',
+    height: '2.75rem',
+    minHeight: '2.75rem',
+    padding: '0',
+    fontFamily: 'inherit',
+  };
+}
+
 function initializeButton(button: HTMLElement): void {
+  button.dataset.siteControlFamily = button.localName.includes('brutalist')
+    ? 'brutalist'
+    : 'shadcn';
   if (button.dataset.siteShadcnInitialized === '1') return;
   const props: Record<string, unknown> = {};
-  if (button.dataset.variant) props.variant = button.dataset.variant;
+  if (button.dataset.variant) {
+    // Family-specific public variants, never recolor a foreign Button.
+    props.variant =
+      button.localName === 'wc-brutalist-button' &&
+      ['ghost', 'outline', 'secondary'].includes(button.dataset.variant)
+        ? 'surface'
+        : button.dataset.variant;
+  }
   if (button.dataset.size) props.size = button.dataset.size;
   if (button.dataset.disabled === 'true') props.disabled = true;
+  const surfaceStyle = headerSurfaceStyle(button, 'button');
+  if (surfaceStyle) props.surfaceStyle = surfaceStyle;
   applyProps(button, props);
   button.dataset.siteShadcnInitialized = '1';
 }
 
+/** Local demo runtime fields can be narrower than their value at enlarged
+ * text sizes. Bound only this existing consumer, through its public surface. */
+function selectSurfaceStyle(element: HTMLElement, kind: 'root' | 'trigger' | 'value') {
+  const header = headerSurfaceStyle(element, kind);
+  if (header) return header;
+  if (!element.closest('[data-adapter-select]')) return undefined;
+  if (kind === 'value')
+    return {
+      display: 'block',
+      minWidth: '0',
+      flex: '1 1 auto',
+      whiteSpace: 'normal',
+      overflowWrap: 'anywhere',
+      overflow: 'visible',
+    };
+  return {
+    width: '100%',
+    minWidth: '0',
+    maxWidth: '100%',
+    ...(kind === 'trigger' ? { height: 'auto' } : {}),
+  };
+}
+
 function initializeSelect(root: SiteSelectRoot): void {
+  const family = root.localName.includes('brutalist') ? 'brutalist' : 'shadcn';
+  root.dataset.siteControlFamily = family;
   const initialized = root.dataset.siteShadcnInitialized === '1';
+  bindSiteSelectDismissal(root, (reason) => {
+    const exposes = root.getExposes?.() as SelectCloseExposes | undefined;
+    if (exposes?.open?.get?.() === true)
+      exposes.requestOpen?.({ open: false, reason, focusReason: 'programmatic' });
+  });
   if (!initialized) {
     // `data-value` is owned by the adapter's exposed-state projection, so it
     // is intentionally not used as an authoring input. Keep the SSR seed in a
@@ -155,57 +250,104 @@ function initializeSelect(root: SiteSelectRoot): void {
       value,
       disabled: root.dataset.disabled === 'true',
       closeOnSelect: true,
+      ...(selectSurfaceStyle(root, 'root')
+        ? { surfaceStyle: selectSurfaceStyle(root, 'root') }
+        : {}),
     });
   }
 
-  const trigger = root.querySelector<HTMLElement>('wc-shadcn-select-trigger');
+  const trigger = root.querySelector<HTMLElement>(
+    'wc-shadcn-select-trigger, wc-brutalist-select-trigger'
+  );
   if (trigger) {
     applyProps(trigger, {
       size: trigger.dataset.size ?? 'default',
+      ...(root.closest('[data-site-header]')
+        ? {
+            appearance:
+              family === 'brutalist'
+                ? (trigger.dataset.appearance ?? 'flat')
+                : (!!root.closest('[data-site-header-preferences]') ||
+                      !root.closest('[data-site-header-panel]')) &&
+                    !root.ownerDocument.defaultView?.matchMedia?.('(max-width: 47.999rem)').matches
+                  ? 'ghost'
+                  : 'default',
+          }
+        : {}),
+      ...(family === 'brutalist' &&
+      !root.closest('[data-site-header]') &&
+      trigger.dataset.appearance
+        ? { appearance: trigger.dataset.appearance }
+        : {}),
       disabled: trigger.dataset.disabled === 'true',
+      ...(selectSurfaceStyle(trigger, 'trigger')
+        ? { surfaceStyle: selectSurfaceStyle(trigger, 'trigger') }
+        : {}),
     });
   }
 
-  const valuePart = root.querySelector<HTMLElement>('wc-shadcn-select-value');
-  if (valuePart) applyProps(valuePart, { placeholder: valuePart.dataset.placeholder ?? '' });
+  const valuePart = root.querySelector<HTMLElement>(
+    'wc-shadcn-select-value, wc-brutalist-select-value'
+  );
+  if (valuePart) {
+    applyProps(valuePart, {
+      placeholder: valuePart.dataset.placeholder ?? '',
+      ...(selectSurfaceStyle(valuePart, 'value')
+        ? { surfaceStyle: selectSurfaceStyle(valuePart, 'value') }
+        : {}),
+    });
+  }
 
-  const content = root.querySelector<HTMLElement>('wc-shadcn-select-content');
+  const content = root.querySelector<HTMLElement>(
+    'wc-shadcn-select-content, wc-brutalist-select-content'
+  );
   if (content) {
+    // Portaled content needs its own family theme rather than root inheritance.
+    content.dataset.siteControlFamily = family;
     applyProps(content, {
       position: content.dataset.position ?? 'popper',
       align: content.dataset.align ?? 'start',
     });
   }
 
-  root.querySelectorAll<HTMLElement>('wc-shadcn-select-item').forEach((item) => {
-    applyProps(item, {
-      value: item.dataset.value ?? '',
-      textValue: item.dataset.textValue ?? item.textContent?.trim() ?? '',
-      disabled: item.dataset.disabled === 'true',
+  root
+    .querySelectorAll<HTMLElement>('wc-shadcn-select-item, wc-brutalist-select-item')
+    .forEach((item) => {
+      applyProps(item, {
+        value: item.dataset.value ?? '',
+        textValue: item.dataset.textValue ?? item.textContent?.trim() ?? '',
+        disabled: item.dataset.disabled === 'true',
+      });
     });
-  });
 
   closeSelectAfterValueChange(root);
   root.dataset.siteShadcnInitialized = '1';
 }
 
-/** Initialize all site-owned Shadcn projections in a document. */
-export function initSiteShadcnControls(root: ParentNode = document): void {
-  registerSiteShadcnControls();
+/** Initialize only site-owned, actual family projections in a document. */
+export function initSiteControls(root: ParentNode = document): void {
+  registerSiteControls();
 
-  if (root instanceof HTMLElement && root.matches('wc-shadcn-button[data-site-shadcn-button]')) {
+  if (
+    root instanceof HTMLElement &&
+    root.matches('wc-shadcn-button[data-site-shadcn-button], [data-site-button]')
+  ) {
     initializeButton(root);
   }
   root
-    .querySelectorAll<HTMLElement>('wc-shadcn-button[data-site-shadcn-button]')
+    .querySelectorAll<HTMLElement>('wc-shadcn-button[data-site-shadcn-button], [data-site-button]')
     .forEach(initializeButton);
 
   const selectRoots: SiteSelectRoot[] = [];
-  if (root instanceof HTMLElement && root.matches('wc-shadcn-select-root[data-site-select-root]')) {
+  if (root instanceof HTMLElement && root.matches('[data-site-select-root]')) {
     selectRoots.push(root as SiteSelectRoot);
   }
   root
-    .querySelectorAll<SiteSelectRoot>('wc-shadcn-select-root[data-site-select-root]')
+    .querySelectorAll<SiteSelectRoot>('[data-site-select-root]')
     .forEach((select) => selectRoots.push(select));
   selectRoots.forEach(initializeSelect);
 }
+
+// Compatibility names for existing website consumers.
+export const registerSiteShadcnControls = registerSiteControls;
+export const initSiteShadcnControls = initSiteControls;

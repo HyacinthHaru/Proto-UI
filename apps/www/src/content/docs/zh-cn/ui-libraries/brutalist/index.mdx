@@ -26,3 +26,7 @@ Brutalist 是 Proto UI 贡献者原创并维护的 Neo-Brutalist 设计语言投
 - 生命周期边界：稳定 package 发布不会自动提升其中每个 prototype contract。各 catalog entity 仍保留自身的 active、draft、deprecated 或 removed 状态；适用保证以组件页和所链接的 spec entity 为准。
 - 0.2.0 package surface：root 以及 `./button`、`./badge`、`./card`、`./toggle`、`./switch`、`./tabs`、`./hover-card`、`./dropdown`、`./select`、`./dialog`、`./scroll-area`、`./separator`、`./skeleton`、`./textarea` subpath。
 - 维护：已进入 0.2 launch-commitment set；后续语义变化与长期所有权仍由 Proto UI governance 决定。
+
+## 被动原子
+
+[Text](/zh-cn/ui-libraries/brutalist/components/text/) 与 [Surface](/zh-cn/ui-libraries/brutalist/components/surface/) 是当前工作区的 draft 可复用呈现原子。它们保留原有语义 owner，不代表完整家族或原生/Compiler 覆盖。

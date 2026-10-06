@@ -14,6 +14,7 @@ import { rehypeEnhancedImage } from './src/utils/rehype-enhanced-image.js';
 import { whitepaperRedirectFragments } from './src/utils/whitepaper-redirect-fragments.mjs';
 import { remarkConceptDirective } from './src/utils/remark-concept-directive.js';
 import { codeThemes } from './src/components/PrototypePreviewer/code-themes.mjs';
+import { siteCopyPlugin } from './src/utils/expressive-code-copy.mjs';
 
 const PROTO_UI_PREFIX = '@proto.ui/';
 const repositoryRoot = fileURLToPath(new URL('../..', import.meta.url));
@@ -115,6 +116,8 @@ export default defineConfig({
         }),
       ],
       expressiveCode: {
+        frames: { showCopyToClipboardButton: false },
+        plugins: [siteCopyPlugin()],
         themes: Object.values(codeThemes),
         useStarlightUiThemeColors: false,
         useDarkModeMediaQuery: false,
@@ -381,6 +384,11 @@ export default defineConfig({
                   label: 'Radio Group',
                   translations: { en: 'Radio Group', 'zh-CN': 'Radio Group' },
                   slug: 'ui-libraries/base/radio-group',
+                },
+                {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/base/input',
                 },
                 {
                   label: 'Textarea',
