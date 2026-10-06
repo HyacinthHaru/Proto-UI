@@ -326,6 +326,8 @@ class FocusModuleImpl extends ModuleBase {
     // Readiness replay keeps its intent while getting a new guarded execution.
     const operation: FocusOperation = { kind, inFlight: true, admitted: kind === 'target' };
     this.focusOperation = operation;
+    // An enabled target request supersedes older intent before Center admission.
+    if (kind === 'target') this.clearPendingFocus();
     return operation;
   }
 
