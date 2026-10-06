@@ -155,7 +155,10 @@ test('numeric candidates refresh existing validation evidence before independent
       artifact('review-input'),
     ],
   };
-  assert.equal(validateSkillHandoff(review, registry).nextSkill.id, 'pui-review');
+  assert.equal(
+    validateSkillHandoff(review, registry, { priorHandoff: candidate }).nextSkill.id,
+    'pui-review'
+  );
   for (const type of ['authority-map', 'evidence-report', 'review-input']) {
     assert.throws(
       () =>

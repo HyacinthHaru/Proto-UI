@@ -70,3 +70,11 @@ A v2 review or integration consumer binds repositoryId, canonical scopeId pull-r
 Resume retains evidence and pending work but strips mutation-authorization and standing-user-authorization from every interrupted/continuation source. Actual current authorization remains in the trusted invocation, not in carried materials.
 
 At the final review boundary an exact newly published review can be an idempotent duplicate/no-write. Only that new exact reviewer/head/state/body and its newly required approval permission may be removed for canonical comparison with the recorded input. Other changes reject, and current identity, permission, CI and owner authorization are still checked. The no-op does not attribute another invocation's POST to this one.
+
+### Validation-to-review evidence refresh
+
+Every `pui-validate -> pui-review` transition supplies its actual received handoff using `--prior-handoff` in the skill resolver and review CLI (`validate`, `inspect`, `eligibility`, `submit-review`). Missing predecessors fail closed. Current candidate materials retain their identities, digests and metadata; v2 also preserves repository, scope and head. V1 replaces the singleton evidence report with a new digest. V2 can retain historical reports, but adds a new digest- and result-bound report for the current head. Renaming a received report without changing its digest is not refresh. Received reports need digests so the comparison is meaningful.
+
+Resume validates each continuation against the preceding step and retains that actual validation input for subsequent review CLI use. This is a structural evidence contract, not authentication of supplied references, report contents, canonical CI or user authority. Existing review-intake routes that do not originate at validation are unchanged; do not relabel a real validation transition to evade its required predecessor.
+
+A fresh report may record `passed`, `failed`, `partial` or `not-run`; freshness is not a green result. Review and integration independently enforce their required evidence and acceptance conditions.

@@ -578,7 +578,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
         entrypoint: 'development',
         executionMode: 'human-assisted',
         executionModeSource: 'current-user',
-        fromId: 'pui-validate',
+        fromId: 'pui-dev', // This fixture starts at review intake, not a validation transition.
         nextSkillId: 'pui-review',
         artifacts: [
           { type: 'authority-map', reference: 'review authority map' },
@@ -1246,7 +1246,7 @@ test('agent:review submit-review consumes the bound prior packet before any live
         entrypoint: 'development',
         executionMode: 'human-assisted',
         executionModeSource: 'current-user',
-        fromId: 'pui-validate',
+        fromId: 'pui-dev', // This fixture starts at review intake, not a validation transition.
         nextSkillId: 'pui-review',
         artifacts: [
           { type: 'authority-map', reference: 'review authority map' },
@@ -2171,7 +2171,7 @@ test('agent:review CLI validates and inspects the same packet contract used by t
         entrypoint: 'development',
         executionMode: 'human-assisted',
         executionModeSource: 'current-user',
-        fromId: 'pui-validate',
+        fromId: 'pui-dev', // This fixture starts at review intake, not a validation transition.
         nextSkillId: 'pui-review',
         artifacts: [
           { type: 'authority-map', reference: 'review authority map' },

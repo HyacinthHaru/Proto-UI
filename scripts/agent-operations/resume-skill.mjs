@@ -17,7 +17,9 @@ export function resumeSkillHandoff(
     throw Error('continuation must begin at the routed interruption leaf');
   for (const [index, step] of chain.entries()) {
     requireCompletedHandoff(step);
-    validateSkillHandoff(step, registry);
+    if (index && chain[index - 1].nextSkillId !== step.fromId)
+      throw Error('continuation chain skips a routed leaf');
+    validateSkillHandoff(step, registry, { priorHandoff: index ? chain[index - 1] : interrupted });
     if (step.schemaVersion !== 2 || step.resume)
       throw Error('resume requires completed v2 continuation steps');
     for (const key of ['entrypoint', 'executionMode', 'executionModeSource'])
@@ -119,7 +121,9 @@ export function resumeSkillHandoff(
       pendingFindingIds: [...interrupted.interruption.pendingFindingIds],
     },
   };
-  validateSkillHandoff(result, registry);
+  validateSkillHandoff(result, registry, {
+    priorHandoff: chain.length > 1 ? chain.at(-2) : interrupted,
+  });
   return result;
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

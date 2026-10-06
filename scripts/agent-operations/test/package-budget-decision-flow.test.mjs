@@ -193,7 +193,11 @@ test('blocked budget work can terminate and a validated candidate can reach inde
         : item
     ),
   };
-  assert.equal(validateSkillHandoff(reviewedCandidate, registry).nextSkill.id, 'pui-review');
+  assert.equal(
+    validateSkillHandoff(reviewedCandidate, registry, { priorHandoff: afterNumericEdit() })
+      .nextSkill.id,
+    'pui-review'
+  );
   for (const type of ['evidence-report', 'review-input', 'candidate-change']) {
     assert.throws(
       () =>

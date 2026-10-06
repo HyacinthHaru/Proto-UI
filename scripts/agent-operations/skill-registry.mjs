@@ -505,6 +505,54 @@ function validateUnchangedTerminal(handoff, priorHandoff, source, registry) {
     );
 }
 
+function validateRefreshedEvidence(handoff, priorHandoff, registry) {
+  assert(
+    priorHandoff?.nextSkillId === 'pui-validate',
+    'validation review requires the handoff received by pui-validate'
+  );
+  validateSkillHandoff(priorHandoff, registry);
+  for (const key of ['schemaVersion', 'entrypoint', 'executionMode', 'executionModeSource'])
+    assert(handoff[key] === priorHandoff[key], 'validation cannot change ' + key);
+  if (handoff.schemaVersion === 2)
+    for (const key of ['repositoryId', 'scopeId', 'headSha'])
+      assert(handoff.binding[key] === priorHandoff.binding[key], 'validation cannot change ' + key);
+  const currentCandidates = (value) =>
+    getHandoffArtifacts(value, 'candidate-change').filter(
+      (artifact) => value.schemaVersion === 1 || artifact.revision === value.binding.headSha
+    );
+  const received = currentCandidates(priorHandoff);
+  const emitted = currentCandidates(handoff);
+  assert(
+    received.length > 0 && received.every((artifact) => artifact.digest !== undefined),
+    'validation requires digest-bound current candidate materials'
+  );
+  assert(
+    received.length === emitted.length &&
+      received.every((artifact) =>
+        emitted.some((candidate) => isDeepStrictEqual(candidate, artifact))
+      ),
+    'validation must retain its received current candidate materials unchanged'
+  );
+  const previousReports = getHandoffArtifacts(priorHandoff, 'evidence-report');
+  assert(
+    previousReports.every((artifact) => artifact.digest !== undefined),
+    'validation received evidence requires digests for freshness comparison'
+  );
+  const fresh = getHandoffArtifacts(handoff, 'evidence-report').filter(
+    (artifact) =>
+      artifact.digest !== undefined &&
+      !previousReports.some((previous) => previous.digest === artifact.digest)
+  );
+  assert(
+    fresh.some(
+      (artifact) =>
+        handoff.schemaVersion === 1 ||
+        (artifact.revision === handoff.binding.headSha && artifact.result !== undefined)
+    ),
+    'validation review requires a new current-candidate evidence report'
+  );
+}
+
 export function validateSkillHandoff(
   handoff,
   registry = loadSkillRegistry(),
@@ -680,6 +728,8 @@ export function validateSkillHandoff(
   if (nextSkill.id === 'pui-package-budget')
     for (const candidate of getHandoffArtifacts(handoff, 'candidate-change'))
       assert(candidate.digest !== undefined, 'package-budget entry candidate requires its digest');
+  if (handoff.fromId === 'pui-validate' && nextSkill.id === 'pui-review')
+    validateRefreshedEvidence(handoff, priorHandoff, registry);
   return { handoff, nextSkill };
 }
 

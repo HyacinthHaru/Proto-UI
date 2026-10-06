@@ -68,9 +68,9 @@ function interrupted(o = {}) {
     ...o,
   });
 }
-function accepted(h) {
+function accepted(h, priorHandoff = null) {
   assert.equal(structural(h), true, JSON.stringify(structural.errors));
-  return validateSkillHandoff(h, registry);
+  return validateSkillHandoff(h, registry, { priorHandoff });
 }
 test('completed v1 remains compatible; completed v2 still requires producer output', () => {
   const h = base();
@@ -220,8 +220,15 @@ function resumeArgs() {
         revision: currentBinding.headSha,
         digest: 'sha256:' + currentBinding.reviewInputDigest,
       }),
-      a('candidate-change', 'fixture:repair', { revision: currentBinding.headSha }),
-      a('evidence-report', 'fixture:fixed', { revision: currentBinding.headSha, result: 'passed' }),
+      a('candidate-change', 'fixture:repair', {
+        revision: currentBinding.headSha,
+        digest: 'sha256:' + 'd'.repeat(64),
+      }),
+      a('evidence-report', 'fixture:fixed', {
+        revision: currentBinding.headSha,
+        result: 'passed',
+        digest: 'sha256:' + 'e'.repeat(64),
+      }),
     ],
   };
 }
@@ -297,7 +304,10 @@ test('resume preserves a routed diagnose/repair/validate chain without flattenin
     artifacts: [
       authority,
       semantic,
-      a('candidate-change', 'fixture:repair', { revision: current.headSha }),
+      a('candidate-change', 'fixture:repair', {
+        revision: current.headSha,
+        digest: 'sha256:' + 'd'.repeat(64),
+      }),
     ],
   });
   const validation = base({
@@ -307,13 +317,17 @@ test('resume preserves a routed diagnose/repair/validate chain without flattenin
     artifacts: [
       authority,
       repair.artifacts[2],
-      a('evidence-report', 'fixture:fixed', { revision: current.headSha, result: 'passed' }),
+      a('evidence-report', 'fixture:fixed', {
+        revision: current.headSha,
+        result: 'passed',
+        digest: 'sha256:' + 'e'.repeat(64),
+      }),
       review,
     ],
   });
   x.continuation = [ci, repair, validation];
   const result = resumeSkillHandoff(x, registry);
-  assert.equal(accepted(result).nextSkill.id, 'pui-review');
+  assert.equal(accepted(result, repair).nextSkill.id, 'pui-review');
   assert.equal(result.fromId, 'pui-validate');
   assert.equal(result.artifacts.filter((a) => a.reference === 'fixture:repair').length, 1);
   assert.equal(
