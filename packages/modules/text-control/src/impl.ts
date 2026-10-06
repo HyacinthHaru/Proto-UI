@@ -224,11 +224,28 @@ export class TextControlModuleImpl extends ModuleBase {
         const releasePrelude = () => {
           if (this.callbackPrelude === prelude) this.callbackPrelude = previousPrelude;
         };
+        let callbackRan = false;
         try {
           runInCallback(() => {
             releasePrelude();
-            if (epoch === this.leaseEpoch) callback();
+            if (epoch === this.leaseEpoch) {
+              callbackRan = true;
+              callback();
+            }
           });
+        } catch (error) {
+          // An interrupted end event must not strand the provisional `||=`
+          // above: settle the composing state the callback would have
+          // assigned so a controlled owner regains the completed candidate.
+          // A newer event owns the state now; never roll it back.
+          if (
+            !callbackRan &&
+            generation === this.eventGeneration &&
+            this.composing !== canonicalEvent.composing
+          ) {
+            this.composing = canonicalEvent.composing;
+          }
+          throw error;
         } finally {
           releasePrelude();
         }

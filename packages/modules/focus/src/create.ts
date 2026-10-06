@@ -996,9 +996,15 @@ class FocusModuleImpl extends ModuleBase {
     const target = this.getRootTarget();
     if (this.pendingFocusRequest !== pending) return true;
     if (!target || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) return false;
-    this.pendingFocusRequest = undefined;
-    if (pending.kind === 'entry') this.applyEntryFocus(pending.options);
-    else this.applyTargetFocus(pending.options, pending.syncFacts);
+    if (pending.kind === 'entry') {
+      // Do not pre-clear an entry replay: applyEntryFocus keeps the slot when
+      // the replacement target has not mounted yet, so readiness from the
+      // later commit can still fulfill the same intent.
+      this.applyEntryFocus(pending.options, { replay: true });
+    } else {
+      this.pendingFocusRequest = undefined;
+      this.applyTargetFocus(pending.options, pending.syncFacts);
+    }
     return true;
   }
 
@@ -1087,7 +1093,7 @@ class FocusModuleImpl extends ModuleBase {
     this.applyEntryFocus(createFocusRequestIntent(options));
   }
 
-  private applyEntryFocus(options: FocusRequestOptions): void {
+  private applyEntryFocus(options: FocusRequestOptions, intent?: { replay: boolean }): void {
     if (!this.entryDeclared || this.entryConfig.disabled) return;
     const previous = this.focusOperation;
     const retainedEntry =
@@ -1120,7 +1126,12 @@ class FocusModuleImpl extends ModuleBase {
       if (!current()) return;
       if (!resolved) {
         if (retainedEntry) {
-          this.clearPendingFocus();
+          // Only a replay preserves its intent across the temporary
+          // no-target gap before a replacement commits. An explicit newer
+          // request whose policy result is no-target ends the retained
+          // intent instead of reviving it later.
+          if (intent?.replay) this.pendingFocusRequest = { kind: 'entry', options };
+          else this.clearPendingFocus();
           this.focusOperation = undefined;
         } else restorePrevious();
         return;
@@ -1255,12 +1266,17 @@ class FocusModuleImpl extends ModuleBase {
       this.cancelFocusOperation('target');
       if (this.pendingFocusRequest?.kind === 'target') this.clearPendingFocus();
     }
+    // Synchronous state observers below may drive a still-enabled entry role
+    // to acquire the same root; that newer admission bumps the version.
+    const applicationVersion = this.focusApplicationVersion;
     this.setFocusState(this.focusableOwned, this.focusableDeclared && !disabled, reason, {
       defaultOnly: this.sys?.execPhase?.() === 'setup',
     });
     // State observers can re-enable and acquire before this transition resumes.
     if (this.focusableConfig !== config) return;
-    if (disabled) this.blurTarget();
+    // Never blur a newer entry acquisition that landed during the observer
+    // window; the target-role config identity alone cannot see it.
+    if (disabled && this.focusApplicationVersion === applicationVersion) this.blurTarget();
     if (this.focusableConfig !== config) return;
     this.syncHostFocusable();
     if (this.focusableConfig !== config) return;
