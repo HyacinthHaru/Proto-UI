@@ -25,6 +25,7 @@ const borderRatioFixture = async () => {
     'exterior',
     'inactive',
     'inkUnmodified',
+    'rectangularPerimeter',
     'borders',
     'backdrop',
     'fill',
@@ -46,6 +47,7 @@ const borderRatioFixture = async () => {
     alpha = 1,
     inactive = false,
     inkUnmodified = true,
+    rectangularPerimeter = true,
     color = [0, 0, 0, 255],
   } = {}) => {
     const ink = () => ({ rgba: color, alpha, limits: [] });
@@ -67,6 +69,7 @@ const borderRatioFixture = async () => {
       sides.map((side) => ({ side, point: { x: 1, y: 1, rgb: [255, 255, 255] } })),
       inactive,
       inkUnmodified,
+      rectangularPerimeter,
       borders,
       { rgba: [255, 255, 255, 255] },
       { rgba: [255, 255, 255, 255], alpha: 1, limits: [] },
@@ -125,16 +128,76 @@ test('border source ratios retain solid low/high contrasts and existing withhold
     { color: null },
     { inactive: true },
     { inkUnmodified: false },
+    { rectangularPerimeter: false },
   ]) {
     for (const edge of measure(options).exterior) {
       assert.equal(edge.innerBorderVsBackground, null);
       assert.equal(edge.opaqueBorderVsPixel, null);
       assert.equal(
         edge.opaqueFillVsPixel,
-        options.inactive || options.inkUnmodified === false ? null : 1
+        options.inactive ||
+          options.inkUnmodified === false ||
+          options.rectangularPerimeter === false
+          ? null
+          : 1
       );
     }
   }
+});
+
+test('shadow source metrics withhold unsupported receiving sides without rejecting covered negative offsets', async () => {
+  const source = await readFile(new URL('./contrast-probe.browser.ts', import.meta.url), 'utf8');
+  const start = source.indexOf('const shadowParts: string[] = [];');
+  const end = source.indexOf('      return {\n        prototype:', start);
+  assert.ok(start >= 0 && end > start);
+  const compiled = await transform(`${source.slice(start, end)}; return shadows;`, {
+    loader: 'ts',
+  });
+  const measure = new Function(
+    'style',
+    'rect',
+    'measurablePerimeter',
+    'rectangularPerimeter',
+    'inkUnmodified',
+    'paint',
+    'sample',
+    'contrast',
+    'backdrop',
+    'visibility',
+    'perimeterLimits',
+    compiled.code
+  );
+  const read = (x, y, spread, rectangular = true) =>
+    measure(
+      { boxShadow: `rgb(0, 0, 0) ${x}px ${y}px 0px ${spread}px` },
+      { x: 40, y: 40, right: 140, bottom: 80, width: 100, height: 40 },
+      true,
+      rectangular,
+      true,
+      () => ({ rgba: [0, 0, 0, 255], alpha: 1, limits: [] }),
+      (x, y) => ({ x, y, rgb: [255, 255, 255] }),
+      () => 21,
+      { rgba: [255, 255, 255, 255] },
+      { limits: [] },
+      rectangular ? [] : ['unsupported-rounded-perimeter']
+    )[0];
+  for (const args of [
+    [0, 0, 0],
+    [-8, -6, 0],
+    [60, 60, -21],
+  ]) {
+    assert.deepEqual(read(...args).receiving, [
+      { side: 'right', point: null, ratio: null },
+      { side: 'bottom', point: null, ratio: null },
+    ]);
+  }
+  assert.deepEqual(read(-2, -3, 8).receiving, [
+    { side: 'right', point: { x: 147, y: 57, rgb: [255, 255, 255] }, ratio: 21 },
+    { side: 'bottom', point: { x: 88, y: 86, rgb: [255, 255, 255] }, ratio: 21 },
+  ]);
+  assert.deepEqual(read(-8, 6, 0).receiving[0], { side: 'right', point: null, ratio: null });
+  assert.equal(read(-8, 6, 0).receiving[1].ratio, 21);
+  assert.deepEqual(read(8, 6, 0, false).receiving, []);
 });
 
 test('browser-side Focus diagnostics run without Node transpiler helpers', async () => {

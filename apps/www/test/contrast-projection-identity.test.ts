@@ -7,7 +7,11 @@ import ts from 'typescript';
 import { transformSync } from 'esbuild';
 import { pathToFileURL } from 'node:url';
 import { initDocumentationHeaderSurface } from '../src/components/site-header-surface';
-import { establishContrastPopupEscapeBaseline } from '../scripts/contrast-popup-escape.mjs';
+import {
+  establishContrastPopupEscapeBaseline,
+  readContrastPopupEscapeBefore,
+  readContrastPopupEscapeAfter,
+} from '../scripts/contrast-popup-escape.mjs';
 import { compileContrastAnatomy, compareContrastAnatomy } from '../scripts/contrast-anatomy.mjs';
 import {
   assertDemoSpec,
@@ -1816,7 +1820,7 @@ function escapeRunnerBlock(source = runnerSource) {
     )
   );
 }
-for (const family of ['tooltip', 'dropdown-menu', 'select']) {
+for (const family of ['tooltip', 'dropdown-menu', 'select', 'dialog']) {
   for (const closes of [true, false]) {
     it(`${family}: actual runner ${closes ? 'continues only after verified Escape' : 'does not let pointer/focus reset mask swallowed Escape'}`, async () => {
       const calls: string[] = [];
@@ -1910,3 +1914,158 @@ it('Escape integration retains exact handles, current subject leases, helper pro
   );
   expect(runnerSource).toContain('not a sibling warm-window timing or Group handoff journey');
 });
+
+for (const outcome of ['restored', 'focus-refused', 'changed-lease'] as const) {
+  it(`Dialog exact caller and acquisition: ${outcome} ${outcome === 'restored' ? 'allows' : 'blocks'} the later manual reset`, async () => {
+    // Execute both the real CLI branch and real auditedPopupEscape function.
+    // Only observations/transport are controlled here; the separate suite
+    // drives the actual authored Dialog through all four installed Adapters.
+    const calls: string[] = [];
+    const subject = {};
+    const trigger = {
+      dispose: async () => {
+        calls.push('dispose-trigger');
+      },
+    };
+    const popup = {
+      waitForElementState: async (state: string) => {
+        expect(state).toBe('hidden');
+        calls.push('hidden');
+      },
+      dispose: async () => {
+        calls.push('dispose-popup');
+      },
+    };
+    const before = { observation: { achieved: true, family: 'dialog' }, trigger };
+    const baseline = {
+      evaluate: async (fn: (value: typeof before) => unknown) => fn(before),
+      dispose: async () => {
+        calls.push('dispose-baseline');
+      },
+    };
+    const after = {
+      sameOwnedPopup: true,
+      closed: true,
+      triggerFocused: true,
+      ariaExpanded: 'false',
+    };
+    const controlled = {};
+    let leases = 0;
+    const page = {
+      keyboard: {
+        press: async (key: string) => {
+          calls.push(key);
+        },
+      },
+      mouse: {
+        move: async () => {
+          calls.push('pointer-reset');
+        },
+      },
+      locator: (selector: string) => {
+        expect(selector).toBe('[id="dialog-owned"]');
+        return controlled;
+      },
+      evaluate: async (fn: Function, value: unknown) => {
+        if (fn === readContrastPopupEscapeAfter) {
+          expect(value).toBe(baseline);
+          calls.push('after');
+          return after;
+        }
+        expect(value).toBe(subject);
+        expect(fn.toString()).toContain('readContrastAuditSubject');
+        calls.push('lease');
+        return {
+          achieved: true,
+          owner: 'current',
+          generation: ++leases === 2 && outcome === 'changed-lease' ? '2' : '1',
+        };
+      },
+      evaluateHandle: async (fn: unknown, input: Record<string, unknown>) => {
+        expect(fn).toBe(readContrastPopupEscapeBefore);
+        expect(input).toEqual({
+          family: 'dialog',
+          trigger,
+          popup,
+          owner: 'current',
+          generation: '1',
+        });
+        calls.push('snapshot');
+        return baseline;
+      },
+      waitForFunction: async (fn: Function, value: unknown) => {
+        expect(value).toBe(baseline);
+        expect(fn.toString()).toContain('document.activeElement === value.trigger');
+        calls.push('focus-check');
+        if (outcome === 'focus-refused') throw new Error('Dialog Trigger focus missing.');
+      },
+    };
+    const target = {
+      elementHandle: async () => trigger,
+      getAttribute: async (name: string) => {
+        expect(name).toBe('aria-controls');
+        return 'dialog-owned';
+      },
+      focus: async () => {
+        calls.push('focus-reset');
+      },
+    };
+    const popupLocator = { count: async () => 1, elementHandle: async () => popup };
+    const owned = async (_page: unknown, prototype: string) => {
+      expect(_page).toBe(page);
+      expect(prototype).toBe('brutalist-dialog-content');
+      return {
+        and: (identity: unknown) => {
+          expect(identity).toBe(controlled);
+          return popupLocator;
+        },
+      };
+    };
+    const audited = new Function(
+      'caseSubject',
+      'tooltipPortal',
+      'owned',
+      'readContrastPopupEscapeBefore',
+      'readContrastPopupEscapeAfter',
+      'establishContrastPopupEscapeBaseline',
+      javascript(`${declaration('auditedPopupEscape')};return auditedPopupEscape;`)
+    )(
+      () => subject,
+      () => {
+        throw new Error('Wrong Tooltip path');
+      },
+      owned,
+      readContrastPopupEscapeBefore,
+      readContrastPopupEscapeAfter,
+      establishContrastPopupEscapeBaseline
+    );
+    const auditCase = item('wc', 'dialog') as AuditCase & {
+      escapeTransition?: Record<string, unknown>;
+    };
+    const run = escapeRunnerBlock()(page, auditCase, target, audited, () => {
+      throw new Error('Dialog bypassed the Escape barrier');
+    });
+    if (outcome === 'restored') {
+      await run();
+      expect(auditCase.escapeTransition?.achieved).toBe(true);
+      expect(auditCase.escapeTransition?.criterion).toContain('P-BASE-DIALOG-CONTENT-FOCUS');
+      expect(calls.slice(-3)).toEqual(['pointer-reset', 'focus-reset', 'Tab']);
+    } else {
+      await expect(run()).rejects.toThrow(
+        outcome === 'focus-refused'
+          ? 'Dialog Trigger focus missing'
+          : 'subject changed during Escape'
+      );
+      expect(auditCase.escapeTransition?.achieved).toBe(false);
+      expect(calls).not.toContain('pointer-reset');
+      expect(calls).not.toContain('focus-reset');
+      expect(calls).not.toContain('Tab');
+    }
+    expect(calls.indexOf('hidden')).toBeLessThan(calls.indexOf('focus-check'));
+    expect(calls.filter((call) => call.startsWith('dispose-'))).toEqual([
+      'dispose-baseline',
+      'dispose-popup',
+      'dispose-trigger',
+    ]);
+  });
+}

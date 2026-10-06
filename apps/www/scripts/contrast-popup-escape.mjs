@@ -6,6 +6,7 @@ export function readContrastPopupEscapeBefore({ family, trigger, popup, owner, g
     tooltip: 'brutalist-tooltip-content',
     'dropdown-menu': 'brutalist-dropdown-content',
     select: 'brutalist-select-content',
+    dialog: 'brutalist-dialog-content',
   }[family];
   const visibility = globalThis.puiContrastProbe.readContrastPaintedVisibility(popup);
   const related =

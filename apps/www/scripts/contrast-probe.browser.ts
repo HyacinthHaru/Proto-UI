@@ -115,6 +115,7 @@ interface ContrastSurface {
   textContrast: { ratio: number; threshold: number; basis: string } | null;
   textContrastDisposition: { classification: string; limits: string[] };
   visibility: { classification: string; limits: string[] };
+  perimeterLimits: string[];
   exterior: {
     side: string;
     point: ContrastPoint | null;
@@ -1062,6 +1063,17 @@ const collectContrastFrameInScope = async (
       // Visible bounds are evidence even when their paint geometry is unsupported.
       // Only fully supported, unclipped rectangles may supply perimeter metrics.
       const measurablePerimeter = visibility.classification === 'source-model-visible';
+      // Bounding-box fractions need not touch a rounded outline. Preserve the
+      // sampled pixels, but do not infer border/fill adjacency from them.
+      const perimeterLimits = [
+        style.borderTopLeftRadius,
+        style.borderTopRightRadius,
+        style.borderBottomRightRadius,
+        style.borderBottomLeftRadius,
+      ].some((radius) => radius.split(/\s+/).some((axis) => parseFloat(axis) !== 0))
+        ? ['unsupported-rounded-perimeter']
+        : [];
+      const rectangularPerimeter = measurablePerimeter && !perimeterLimits.length;
       const largeText =
         parseFloat(style.fontSize) >= 24 ||
         (parseFloat(style.fontSize) >= 18.6666666667 && parseInt(style.fontWeight) >= 700);
@@ -1303,23 +1315,23 @@ const collectContrastFrameInScope = async (
           blur = Number(matched[4]),
           spread = Number(matched[5]),
           inset = Boolean(matched[6]);
-        const hardOpaque = measurablePerimeter && inkUnmodified && ink.alpha === 1 && blur === 0;
+        const hardOpaque = rectangularPerimeter && inkUnmodified && ink.alpha === 1 && blur === 0;
         const receiving =
           !inset && hardOpaque
             ? [
                 {
                   side: 'right',
-                  point: sample(
-                    rect.right + Math.max(0, x + spread) + 1,
-                    rect.y + rect.height / 2 + y
-                  ),
+                  point:
+                    x + spread > 0 && rect.width + 2 * spread > 0 && rect.height + 2 * spread > 0
+                      ? sample(rect.right + x + spread + 1, rect.y + rect.height / 2 + y)
+                      : null,
                 },
                 {
                   side: 'bottom',
-                  point: sample(
-                    rect.x + rect.width / 2 + x,
-                    rect.bottom + Math.max(0, y + spread) + 1
-                  ),
+                  point:
+                    y + spread > 0 && rect.width + 2 * spread > 0 && rect.height + 2 * spread > 0
+                      ? sample(rect.x + rect.width / 2 + x, rect.bottom + y + spread + 1)
+                      : null,
                 },
               ]
             : [];
@@ -1327,7 +1339,7 @@ const collectContrastFrameInScope = async (
           raw,
           ink: ink.rgba,
           alpha: ink.alpha,
-          limits: [...ink.limits, ...visibility.limits],
+          limits: [...ink.limits, ...visibility.limits, ...perimeterLimits],
           x,
           y,
           blur,
@@ -1347,7 +1359,7 @@ const collectContrastFrameInScope = async (
           limitation: inset
             ? 'Inset CSS ink versus ancestor-background source model only; no receiving pixels measured. Child paint may adjoin the ring; rendered adjacency, visibility and cue necessity remain unresolved.'
             : hardOpaque
-              ? 'CSS ink versus recorded receiving pixel; signed/layered geometry, shadow visibility and cue necessity remain unresolved.'
+              ? 'CSS ink versus recorded receiving pixel only for positive right/bottom shadow extension and nonempty spread geometry; unsupported sides have null points/ratios. Layered geometry, shadow visibility and cue necessity remain unresolved.'
               : 'Alpha, unsupported color/geometry, clipping, blur, opacity/filter/blend or hidden shadow; no opaque-shadow metric.',
         };
       });
@@ -1425,11 +1437,13 @@ const collectContrastFrameInScope = async (
           limits: textLimits,
         },
         visibility,
+        perimeterLimits,
         exterior: exterior.map(({ side, point }) => ({
           side,
           point,
           innerBorderVsBackground:
             !inactive &&
+            rectangularPerimeter &&
             inkUnmodified &&
             borders[side].style === 'solid' &&
             borders[side].alpha === 1 &&
@@ -1440,6 +1454,7 @@ const collectContrastFrameInScope = async (
               : null,
           opaqueBorderVsPixel:
             !inactive &&
+            rectangularPerimeter &&
             inkUnmodified &&
             borders[side].style === 'solid' &&
             borders[side].alpha === 1 &&
@@ -1450,6 +1465,7 @@ const collectContrastFrameInScope = async (
               : null,
           opaqueFillVsPixel:
             !inactive &&
+            rectangularPerimeter &&
             inkUnmodified &&
             !fill.limits.length &&
             fill.alpha === 1 &&

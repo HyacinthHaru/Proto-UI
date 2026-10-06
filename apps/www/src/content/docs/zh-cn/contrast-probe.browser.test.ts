@@ -682,6 +682,8 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     // Border style is an instrument-domain boundary. Native CSSOM and PNG
     // neighbors are observed here; no assertion assumes a dash gap location.
     // The old source model emitted 21:1 for all three unsupported border styles.
+    // The native zero-width label's Z painted into its left exterior sample.
+    // Inset only that label; retain its zero border and original border-box.
     const frame = await calibrate(
       `
       <div style="background:white;padding:16px">
@@ -690,7 +692,7 @@ describe('contrast probe / real Chromium instrument calibration', () => {
         <div data-pui-root data-demo-ref="dotted" style="border:4px dotted black">Dotted border</div>
         <div data-pui-root data-demo-ref="double" style="border:4px double black">Double border</div>
         <div data-pui-root data-demo-ref="mixed" style="border:4px black;border-style:dashed solid dotted double">Mixed sides</div>
-        <div data-pui-root data-demo-ref="zero" style="border:0 solid black">Zero width</div>
+        <div data-pui-root data-demo-ref="zero" style="border:0 solid black;text-indent:4px">Zero width</div>
       </div>
       <div style="background:black;padding:16px">
         <div data-pui-root data-demo-ref="fill" style="border:4px dashed black">Independent white fill</div>
@@ -704,8 +706,21 @@ describe('contrast probe / real Chromium instrument calibration', () => {
       bottom: 'dotted',
       left: 'double',
     };
+    // Preserve every original 733397ae1 native box, including the six controls
+    // whose paint and layout are not changed by the borderless-label repair.
+    const top: Record<string, number> = {
+      solid: 48,
+      dashed: 88,
+      dotted: 128,
+      double: 168,
+      mixed: 208,
+      zero: 248,
+      fill: 328,
+    };
+    expect(frame.devicePixelRatio).toBe(1);
     for (const ref of ['solid', 'dashed', 'dotted', 'double', 'mixed', 'zero', 'fill']) {
       const target = surface(frame, ref);
+      expect(target.rect, ref).toEqual({ x: 40, y: top[ref], width: 220, height: 32 });
       expect(target.exterior, ref).toHaveLength(12);
       for (const edge of target.exterior) {
         const observed = JSON.stringify({
@@ -743,6 +758,20 @@ describe('contrast probe / real Chromium instrument calibration', () => {
         expect(edge.opaqueFillVsPixel, observed).toBeCloseTo(ref === 'fill' ? 21 : 1, 8);
       }
     }
+    // Pair the unchanged exterior pixels/boxes above with the observed text
+    // Range: only the zero-width label moves from native x=40 to x=44.
+    const snapshots = JSON.parse(frame.stateFingerprint).surfaces as {
+      host: { attributes: [string, string][] };
+      target: [unknown, [{ text?: string; rects?: number[][] }, unknown][]];
+    }[];
+    const zero = snapshots.find((entry) =>
+      entry.host.attributes.some(([name, value]) => name === 'data-demo-ref' && value === 'zero')
+    );
+    expect(zero?.target[1]).toHaveLength(1);
+    const label = zero!.target[1][0][0];
+    expect(label.text).toBe('Zero width');
+    expect(label.rects).toHaveLength(1);
+    expect(label.rects?.[0]?.[0]).toBe(44);
   });
 
   it('retains fractional CSS alpha before raster bytes can round it opaque', async () => {
@@ -832,6 +861,73 @@ describe('contrast probe / real Chromium instrument calibration', () => {
         { side: 'bottom', point: { x: 208, y: y + 47, rgb: [255, 255, 255] }, ratio: 21 },
       ]);
     }
+  });
+
+  it('withholds rounded perimeter metrics without discarding sampled pixels or text', async () => {
+    const frame = await calibrate(
+      `
+      <div style="position:absolute;left:40px;top:40px;width:700px;height:600px;background:white">
+        <div data-pui-root data-demo-ref="round" style="width:100px;height:100px;border:4px solid black;border-radius:50%;box-shadow:8px 6px 0 0 black">Round</div>
+        <div data-pui-root data-demo-ref="elliptical" style="border-radius:0 20% / 0 30%;border:4px solid black">Ellipse</div>
+        <div data-pui-root data-demo-ref="square" style="border-radius:0;border:4px solid black">Square</div>
+      </div>
+    `,
+      'rounded-perimeter'
+    );
+    for (const ref of ['round', 'elliptical']) {
+      const target = surface(frame, ref);
+      expect(target.exterior).toHaveLength(12);
+      for (const edge of target.exterior) {
+        expect(edge.point).not.toBeNull();
+        expect(edge.innerBorderVsBackground).toBeNull();
+        expect(edge.opaqueBorderVsPixel).toBeNull();
+        expect(edge.opaqueFillVsPixel).toBeNull();
+      }
+      expect(target.perimeterLimits).toEqual(['unsupported-rounded-perimeter']);
+    }
+    expect(surface(frame, 'round').shadows[0].receiving).toEqual([]);
+    expect(surface(frame, 'round').shadows[0].limits).toContain('unsupported-rounded-perimeter');
+    expect(surface(frame, 'square').perimeterLimits).toEqual([]);
+    expect(surface(frame, 'square').exterior[0].opaqueBorderVsPixel).toBe(21);
+  });
+
+  it('withholds unpainted shadow sides while retaining negative offsets covered by spread', async () => {
+    const frame = await calibrate(
+      `
+      <div style="position:absolute;left:40px;top:40px;width:700px;height:700px;background:white">
+        <style>.shadow-case { width:100px; height:40px; margin:30px; }</style>
+        <div data-pui-root data-demo-ref="zero-shadow" class="shadow-case" style="box-shadow:0 0 0 0 black"></div>
+        <div data-pui-root data-demo-ref="negative-shadow" class="shadow-case" style="box-shadow:-8px -6px 0 0 black"></div>
+        <div data-pui-root data-demo-ref="mixed-shadow" class="shadow-case" style="box-shadow:-8px 6px 0 0 black"></div>
+        <div data-pui-root data-demo-ref="spread-shadow" class="shadow-case" style="box-shadow:-2px -3px 0 8px black"></div>
+        <div data-pui-root data-demo-ref="collapsed-shadow" class="shadow-case" style="box-shadow:60px 60px 0 -21px black"></div>
+      </div>
+    `,
+      'signed-shadow-sides'
+    );
+    for (const ref of ['zero-shadow', 'negative-shadow', 'collapsed-shadow']) {
+      expect(surface(frame, ref).shadows[0].receiving).toEqual([
+        { side: 'right', point: null, ratio: null },
+        { side: 'bottom', point: null, ratio: null },
+      ]);
+    }
+    const mixed = surface(frame, 'mixed-shadow').shadows[0].receiving!;
+    expect(mixed[0]).toEqual({ side: 'right', point: null, ratio: null });
+    expect(mixed[1].point?.rgb).toEqual([255, 255, 255]);
+    expect(mixed[1].ratio).toBe(21);
+    const spread = surface(frame, 'spread-shadow');
+    expect(spread.shadows[0].receiving).toEqual([
+      {
+        side: 'right',
+        point: { x: spread.rect.x + 107, y: spread.rect.y + 17, rgb: [255, 255, 255] },
+        ratio: 21,
+      },
+      {
+        side: 'bottom',
+        point: { x: spread.rect.x + 48, y: spread.rect.y + 46, rgb: [255, 255, 255] },
+        ratio: 21,
+      },
+    ]);
   });
 
   it('keeps transformed visible bounds without inventing rectangular edge or shadow ratios', async () => {

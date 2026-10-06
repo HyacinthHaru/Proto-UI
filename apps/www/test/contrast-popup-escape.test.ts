@@ -36,7 +36,7 @@ vi.mock('../src/components/PrototypePreviewer/runtimes/vue2-runtime', async (ori
   return { ...current, loadVue2: async () => require('vue') };
 });
 
-type Family = 'tooltip' | 'dropdown-menu' | 'select';
+type Family = 'tooltip' | 'dropdown-menu' | 'select' | 'dialog';
 type Runtime = 'wc' | 'react' | 'vue' | 'vue2';
 // Playwright serializes these exact callback bodies without their Node closure.
 const browserBefore = (input: unknown) =>
@@ -184,7 +184,16 @@ async function preview(family: Family, runtime: Runtime = 'wc') {
   document.body.append(previousFocus);
   previousFocus.focus();
   if (family === 'tooltip') trigger.dispatchEvent(new Event('pointerenter'));
-  else trigger.click();
+  else {
+    // Happy DOM click() omits native pointer-down focus. Dialog's existing
+    // pointer journey establishes this Trigger as the pre-open focus owner.
+    if (family === 'dialog') {
+      await vi.waitFor(() => expect(trigger.getAttribute('tabindex')).toBe('0'));
+      trigger.focus();
+      expect(document.activeElement).toBe(trigger);
+    }
+    trigger.click();
+  }
   let popup!: HTMLElement;
   await vi.waitFor(
     () => {
@@ -376,3 +385,39 @@ it('refuses ambiguous Select labels before sending Escape', async () => {
     restore();
   }
 });
+
+for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+  it(`dialog/${runtime}: Escape closes the same popup and restores the pre-open Trigger`, async () => {
+    const restore = measurements();
+    const mounted = await preview('dialog', runtime);
+    try {
+      const result = await mounted.run();
+      expect(result.achieved).toBe(true);
+      expect(result.after.closed).toBe(true);
+      expect(result.after.sameOwnedPopup).toBe(true);
+      expect(result.after.triggerFocused).toBe(true);
+      expect(result.after.ariaExpanded).toBe('false');
+      expect(document.activeElement).toBe(mounted.trigger);
+    } finally {
+      await mounted.destroy();
+      await restore();
+    }
+  });
+  it(`dialog/${runtime}: closed Content cannot hide failed host Trigger restoration`, async () => {
+    const restore = measurements();
+    const mounted = await preview('dialog', runtime);
+    const focus = vi.spyOn(mounted.trigger, 'focus').mockImplementation(() => {});
+    try {
+      await expect(mounted.run()).rejects.toThrow();
+      expect(mounted.record.stage).toBe('waiting-escape-focus');
+      expect(mounted.record.achieved).toBe(false);
+      expect(browserAfter(mounted.baseline).closed).toBe(true);
+      expect(document.activeElement).not.toBe(mounted.trigger);
+      expect(focus).toHaveBeenCalled();
+    } finally {
+      focus.mockRestore();
+      await mounted.destroy();
+      await restore();
+    }
+  });
+}

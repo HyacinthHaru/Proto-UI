@@ -1039,7 +1039,11 @@ async function auditedPopupEscape(page: Page, item: Case, target: Locator): Prom
         : (
             await owned(
               page,
-              family === 'select' ? 'brutalist-select-content' : 'brutalist-dropdown-content'
+              family === 'dialog'
+                ? 'brutalist-dialog-content'
+                : family === 'select'
+                  ? 'brutalist-select-content'
+                  : 'brutalist-dropdown-content'
             )
           ).and(page.locator(`[id=${JSON.stringify(controlledId)}]`));
     if ((await popupLocator.count()) !== 1)
@@ -1055,13 +1059,15 @@ async function auditedPopupEscape(page: Page, item: Case, target: Locator): Prom
     });
     const record = (item.escapeTransition = {
       basis:
-        'Existing Escape input closes the same physical owned popup before any pointer/focus reset; Tooltip preserves prior focus, Dropdown/Select restore Trigger, Select preserves observed selection.',
+        'Existing Escape input closes the same physical owned popup before any pointer/focus reset; Tooltip preserves prior focus, Dropdown/Select/Dialog restore Trigger, Select preserves observed selection.',
       criterion:
         family === 'tooltip'
           ? 'P-BASE-TOOLTIP-CONTENT-OVERLAY / ESCAPE (draft)'
           : family === 'select'
             ? 'P-BASE-SELECT-CONTENT-DISMISS / P-BASE-SELECT-SELECTION-INVARIANT (draft)'
-            : 'P-BASE-DROPDOWN-MENU-CONTENT-DISMISS (draft)',
+            : family === 'dialog'
+              ? 'P-BASE-DIALOG-CONTENT-FOCUS / DISMISS (draft)'
+              : 'P-BASE-DROPDOWN-MENU-CONTENT-DISMISS (draft)',
     });
     await establishContrastPopupEscapeBaseline({
       family,
@@ -1981,15 +1987,9 @@ try {
       // Dismiss open menus before testing the trigger's native keyboard route.
       // No pointer/focus reset may mask this exact Escape transition.
       phase = 'escape-attribution';
-      if (['tooltip', 'dropdown-menu', 'select'].includes(family))
+      if (['tooltip', 'dropdown-menu', 'select', 'dialog'].includes(family))
         await auditedPopupEscape(page, item, target);
-      else {
-        await page.keyboard.press('Escape');
-        if (family === 'dialog')
-          await (await owned(page, 'brutalist-dialog-content'))
-            .first()
-            .waitFor({ state: 'hidden' });
-      }
+      else await page.keyboard.press('Escape');
       await page.mouse.move(0, 0);
       await target.focus();
       await page.keyboard.press('Tab');
