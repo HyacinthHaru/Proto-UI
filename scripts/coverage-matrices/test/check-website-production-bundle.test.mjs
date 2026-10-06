@@ -715,11 +715,86 @@ for (const [entry, owner] of siteOwners) {
         dynamicImports: ['_astro/react.js', '_astro/vue.js', '_astro/vue2.js'],
       })
     );
+    graph.modules = graph.chunks
+      .flatMap((item) => item.moduleIds)
+      .map((id) => ({
+        id,
+        imports: [],
+        dynamicImports: [],
+      }));
+    graph.modules.find((item) => item.id.endsWith('/demo-renderer.ts')).dynamicImports = [
+      'react',
+      'vue',
+      'vue2',
+    ].map((family) => `apps/www/src/components/PrototypePreviewer/runtimes/${family}-runtime.ts`);
+    for (const family of ['react', 'vue', 'vue2']) {
+      const runtime = `apps/www/src/components/PrototypePreviewer/runtimes/${family}-runtime.ts`;
+      graph.modules.find((item) => item.id === runtime).imports = graph.chunks
+        .find((item) => item.fileName === `_astro/${family}.js`)
+        .moduleIds.filter((id) => id !== runtime);
+    }
     return { graph, root };
   }
   test(`site runtime exact owner: ${entry}`, () => {
     const { graph } = siteGraph();
     assert.doesNotThrow(() => validateWebsiteProductionBundle({ graph }));
+  });
+  for (const placement of ['renderer', 'runtime', 'runtime-static-helper']) {
+    test(`site module ownership: ${entry} rejects shared ${placement} foreign adapter edge`, () => {
+      const { graph } = siteGraph();
+      const renderer = graph.chunks.find((item) => item.fileName === '_astro/shared-renderer.js');
+      const runtime = graph.chunks.find((item) => item.fileName === '_astro/react.js');
+      let importer = placement === 'renderer' ? renderer : runtime;
+      if (placement === 'runtime-static-helper') {
+        importer = chunk('_astro/shared-helper.js');
+        graph.chunks.push(importer);
+        runtime.imports.push(importer.fileName);
+      }
+      const foreign = 'apps/www/src/components/unrelated-feature.ts';
+      const adapter = 'packages/adapters/react/src/unreviewed.ts';
+      importer.moduleIds.push(foreign);
+      importer.dynamicImports.push('_astro/unreviewed.js');
+      graph.chunks.push(
+        chunk('_astro/unreviewed.js', { isDynamicEntry: true, moduleIds: [adapter] })
+      );
+      graph.modules.push(
+        { id: foreign, imports: [], dynamicImports: [adapter] },
+        { id: adapter, imports: [], dynamicImports: [] }
+      );
+      assert.ok(
+        collectWebsiteProductionBundleIssues({ graph }).some(
+          (issue) => issue.includes('outside its renderer closure') && issue.includes(adapter)
+        )
+      );
+    });
+  }
+  for (const defect of ['missing', 'duplicate', 'dangling', 'malformed', 'missing-renderer']) {
+    test(`site module provenance: ${entry} rejects ${defect}`, () => {
+      const { graph } = siteGraph();
+      if (defect === 'missing') delete graph.modules;
+      if (defect === 'duplicate') graph.modules.push(graph.modules[0]);
+      if (defect === 'dangling') graph.modules[0].imports.push('missing-module');
+      if (defect === 'malformed') graph.modules[0].imports = 'not-an-array';
+      if (defect === 'missing-renderer')
+        graph.modules = graph.modules.filter((item) => !item.id.endsWith('/demo-renderer.ts'));
+      assert.ok(
+        collectWebsiteProductionBundleIssues({ graph }).some((issue) =>
+          issue.includes('module-edge provenance')
+        )
+      );
+    });
+  }
+  test(`site module ownership: ${entry} allows unrelated inert co-location`, () => {
+    const { graph } = siteGraph();
+    graph.chunks
+      .find((item) => item.fileName === '_astro/shared-renderer.js')
+      .moduleIds.push('apps/www/src/components/inert-feature.ts');
+    graph.modules.push({
+      id: 'apps/www/src/components/inert-feature.ts',
+      imports: [],
+      dynamicImports: [],
+    });
+    assert.deepEqual(collectWebsiteProductionBundleIssues({ graph }), []);
   });
   for (const defect of [
     'missing owner',
@@ -772,3 +847,38 @@ test('rejects a runtime facade paired with another runtime source identity', () 
     )
   );
 });
+
+for (const moduleId of [
+  'packages/adapters/web-component/src/material/owned-texture-sink.ts',
+  'packages/adapters/web-component/src/runtime/experimental-visual-consumer.ts',
+  'packages/adapters/web-component/src/visual-surface.ts',
+]) {
+  test(`accepted WC support stays in exact bridge: ${moduleId}`, () => {
+    const graph = graphFixture();
+    graph.chunks
+      .find((item) => item.fileName === '_astro/site-shadcn-controls.js')
+      .moduleIds.push(moduleId);
+    assert.deepEqual(collectWebsiteProductionBundleIssues({ graph }), []);
+  });
+  for (const placement of ['sibling', 'bridge-dependency', 'lookalike']) {
+    test(`accepted WC support rejects ${placement}: ${moduleId}`, () => {
+      const graph = graphFixture();
+      const bridge = graph.chunks.find(
+        (item) => item.fileName === '_astro/site-shadcn-controls.js'
+      );
+      if (placement === 'lookalike')
+        bridge.moduleIds.push(moduleId.replace('.ts', '-unreviewed.ts'));
+      else {
+        graph.chunks.push(chunk('_astro/foreign-support.js', { moduleIds: [moduleId] }));
+        (placement === 'sibling' ? graph.chunks[0] : bridge).imports.push(
+          '_astro/foreign-support.js'
+        );
+      }
+      assert.ok(
+        collectWebsiteProductionBundleIssues({ graph }).some((issue) =>
+          issue.includes('statically reaches forbidden')
+        )
+      );
+    });
+  }
+}

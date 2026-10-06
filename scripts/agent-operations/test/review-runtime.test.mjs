@@ -23,6 +23,7 @@ import {
   verifyReconciliation,
 } from '../review-runtime.mjs';
 import { agentEvidence } from './fixtures/agent-evidence.mjs';
+import { withReviewTransportMetadata } from './fixtures/review-pagination.mjs';
 
 const root = path.resolve(fileURLToPath(new URL('../../..', import.meta.url)));
 const policy = parseYaml(
@@ -500,7 +501,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
     writeFileSync(
       fixturePath,
       JSON.stringify({
-        payload: {
+        payload: withReviewTransportMetadata({
           data: {
             viewer: { login: 'agent' },
             repository: {
@@ -537,7 +538,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
               },
             },
           },
-        },
+        }),
         filePages: [
           input.changedFiles.map((file) => ({ filename: file.path, status: file.status })),
         ],
@@ -555,7 +556,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
         assert.equal(command, 'gh');
         appendFileSync(process.env.PUI_REVIEW_TEST_CALLS, JSON.stringify(args) + '\\n');
         if (args[1] === 'graphql') return JSON.stringify(fixture.payload);
-        if (args.includes('--paginate')) return JSON.stringify(fixture.filePages);
+        if (args.some((arg) => arg.includes('/files?per_page=100&page=1'))) return JSON.stringify(fixture.filePages[0]);
         if (args.includes('POST')) {
           const request = JSON.parse(options.input);
           return JSON.stringify({
