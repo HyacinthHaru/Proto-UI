@@ -62,6 +62,12 @@ const REQUIRED_ADAPTER_FAMILIES = Object.freeze(['react', 'vue', 'vue2']);
 const REVIEWED_WEB_COMPONENT_HOST_MODULE =
   'apps/www/src/components/PrototypePreviewer/wc-registry.ts';
 const REVIEWED_WEBSITE_CONTROL_MODULE = 'apps/www/src/components/site-shadcn-controls.ts';
+// Existing exact source owners in WEBSITE_RAW_IMPORT_ALLOWLIST. Native links
+// have their own Surface/Text WC bridge; neither boundary admits React/Vue.
+const REVIEWED_WEBSITE_CONTROL_APIS = new Set([
+  REVIEWED_WEBSITE_CONTROL_MODULE,
+  'apps/www/src/components/site-native-controls.ts',
+]);
 // Exact Adapter modules reviewed for the site-control bridge closure.
 // #801 adds the two source providers imported by the same WC adapt entry;
 // exact-head production graph verification remains required for their placement.
@@ -619,6 +625,50 @@ export function collectWebsiteProductionBundleIssues({
             if (!rendererModules.has(importer) && bypassTargets.has(importer)) {
               issues.push(
                 `reviewed Website runtime entry \`${shellRoot.facadeModuleId}\` has an unowned importer edge bypassing its renderer: ${importer} -> ${bypassTargets.get(importer)}`
+              );
+            }
+          }
+        }
+        // A reviewed bridge target still needs importer provenance. Trace it
+        // separately: only this target class may stop at the exact controls API;
+        // sharing a visited map with other targets could hide an unsafe origin.
+        const bridgeOwnedModules = new Set(
+          [...REVIEWED_WEBSITE_CONTROL_APIS].flatMap((id) => [
+            ...closure(modulesById, id, ['imports', 'dynamicImports']),
+          ])
+        );
+        const bridgeBypassTargets = new Map();
+        const bridgePending = [];
+        for (const fileName of completeClosure) {
+          for (const id of chunksByFileName.get(fileName)?.moduleIds ?? []) {
+            if (reviewedBridgeModules.has(id)) {
+              bridgeBypassTargets.set(id, id);
+              bridgePending.push(id);
+            }
+          }
+        }
+        for (let cursor = 0; cursor < bridgePending.length; cursor++) {
+          const target = bridgePending[cursor];
+          for (const importer of importers.get(target) ?? []) {
+            if (
+              importer === REVIEWED_RENDERER_MODULE ||
+              REVIEWED_WEBSITE_CONTROL_APIS.has(importer) ||
+              bridgeBypassTargets.has(importer)
+            )
+              continue;
+            bridgeBypassTargets.set(importer, bridgeBypassTargets.get(target));
+            bridgePending.push(importer);
+          }
+        }
+        for (const fileName of completeClosure) {
+          for (const importer of chunksByFileName.get(fileName)?.moduleIds ?? []) {
+            if (
+              !rendererModules.has(importer) &&
+              !bridgeOwnedModules.has(importer) &&
+              bridgeBypassTargets.has(importer)
+            ) {
+              issues.push(
+                `reviewed Website runtime entry \`${shellRoot.facadeModuleId}\` has an unowned importer edge bypassing its site-control bridge: ${importer} -> ${bridgeBypassTargets.get(importer)}`
               );
             }
           }
