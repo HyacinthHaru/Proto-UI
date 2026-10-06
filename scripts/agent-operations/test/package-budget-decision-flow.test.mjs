@@ -113,7 +113,12 @@ test('the real resolver CLI rejects the stale-report shortcut and permits valida
         item.type === 'candidate-change' ? artifact('candidate-change') : item
       ),
     };
-    const blocked = { ...received, fromId: 'pui-package-budget', nextSkillId: null };
+    const blocked = {
+      ...received,
+      fromId: 'pui-package-budget',
+      nextSkillId: null,
+      notes: ['Canonical input measurements are unavailable; no numeric edit. Collect them first.'],
+    };
     assert.equal(run(blocked).status, 1);
     const unchanged = run(blocked, received);
     assert.equal(unchanged.status, 0, unchanged.stderr);
@@ -170,7 +175,7 @@ test('blocked budget work can terminate and a validated candidate can reach inde
     artifacts: afterNumericEdit().artifacts.map((item) =>
       item.type === 'candidate-change' ? artifact('candidate-change') : item
     ),
-    notes: ['No numeric edit; canonical input measurements are unavailable.'],
+    notes: ['No numeric edit; canonical input measurements are unavailable. Collect them first.'],
   };
   const received = { ...blocked, fromId: 'pui-validate', nextSkillId: 'pui-package-budget' };
   assert.equal(validateSkillHandoff(blocked, registry, { priorHandoff: received }).nextSkill, null);

@@ -80,10 +80,50 @@ test('budget validation retains v2 candidate and cost materials without weakenin
   assert.throws(() => validateSkillHandoff({ ...handoff, nextSkillId: null }, registry));
 });
 
+test('numeric v2 entry requires a digest on every candidate material', () => {
+  const received = receivedBudget();
+  received.artifacts.push(artifact('candidate-change', 'related-feature', { revision: head }));
+  assert.equal(validateSkillHandoff(received, registry).nextSkill.id, 'pui-package-budget');
+  for (const candidate of received.artifacts.filter((item) => item.type === 'candidate-change')) {
+    const digestless = {
+      ...received,
+      artifacts: received.artifacts.map((item) => {
+        if (item.reference !== candidate.reference) return item;
+        const { digest, ...withoutDigest } = item;
+        return withoutDigest;
+      }),
+    };
+    assert.throws(() => validateSkillHandoff(digestless, registry));
+    assert.equal(
+      validateSkillHandoff(
+        { ...digestless, fromId: 'pui-regression', nextSkillId: 'pui-validate' },
+        registry
+      ).nextSkill.id,
+      'pui-validate'
+    );
+  }
+});
+
 test('only the received unchanged v2 candidate can stop before numeric editing', () => {
   const received = receivedBudget();
-  const blocked = { ...received, fromId: 'pui-package-budget', nextSkillId: null };
+  const blocked = {
+    ...received,
+    fromId: 'pui-package-budget',
+    nextSkillId: null,
+    notes: ['Canonical provenance is incomplete; no numeric edit. Refresh candidate measurements.'],
+  };
   assert.equal(validateSkillHandoff(blocked, registry, { priorHandoff: received }).nextSkill, null);
+  for (const notes of [[], [' \t\n ', '']]) {
+    assert.throws(() =>
+      validateSkillHandoff({ ...blocked, notes }, registry, { priorHandoff: received })
+    );
+  }
+  assert.equal(
+    validateSkillHandoff({ ...blocked, notes: ['', ...blocked.notes] }, registry, {
+      priorHandoff: received,
+    }).nextSkill,
+    null
+  );
   assert.throws(() => validateSkillHandoff(blocked, registry));
   assert.throws(() =>
     validateSkillHandoff({ ...budget(), nextSkillId: null }, registry, { priorHandoff: received })
@@ -143,7 +183,14 @@ test('the actual v2 resolver admits numeric validation and rejects old-evidence 
     assert.equal(rejected.status, 1);
     assert.match(rejected.stderr, /pui-package-budget must continue through one of: pui-validate/);
     const received = receivedBudget();
-    const blocked = { ...received, fromId: 'pui-package-budget', nextSkillId: null };
+    const blocked = {
+      ...received,
+      fromId: 'pui-package-budget',
+      nextSkillId: null,
+      notes: [
+        'Canonical provenance is incomplete; no numeric edit. Refresh candidate measurements.',
+      ],
+    };
     assert.equal(run(blocked).status, 1);
     const unchanged = run(blocked, received);
     assert.equal(unchanged.status, 0, unchanged.stderr);

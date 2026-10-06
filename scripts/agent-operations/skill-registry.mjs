@@ -498,6 +498,11 @@ function validateUnchangedTerminal(handoff, priorHandoff, source, registry) {
     retained++;
   }
   assert(retained === received.size, 'constrained terminal must retain every received input');
+  if (source.id === 'pui-package-budget')
+    assert(
+      handoff.notes.some((note) => note.trim().length > 0),
+      'package-budget terminal requires a blocker or refresh-work note'
+    );
 }
 
 export function validateSkillHandoff(
@@ -672,6 +677,9 @@ export function validateSkillHandoff(
       `handoff lacks artifact required by ${nextSkill.id}: ${required}`
     );
   }
+  if (nextSkill.id === 'pui-package-budget')
+    for (const candidate of getHandoffArtifacts(handoff, 'candidate-change'))
+      assert(candidate.digest !== undefined, 'package-budget entry candidate requires its digest');
   return { handoff, nextSkill };
 }
 

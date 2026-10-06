@@ -75,6 +75,25 @@ test('numeric entry rejects each missing authority, measurement or implementatio
   }
 });
 
+test('numeric entry requires a digest-bound candidate without changing other leaves', () => {
+  const registry = loadSkillRegistry({ root });
+  const handoff = incoming();
+  assert.equal(validateSkillHandoff(handoff, registry).nextSkill.id, 'pui-package-budget');
+  const digestless = {
+    ...handoff,
+    artifacts: handoff.artifacts.map((item) => {
+      if (item.type !== 'candidate-change') return item;
+      const { digest, ...withoutDigest } = item;
+      return withoutDigest;
+    }),
+  };
+  assert.throws(() => validateSkillHandoff(digestless, registry));
+  assert.equal(
+    validateSkillHandoff({ ...digestless, nextSkillId: 'pui-validate' }, registry).nextSkill.id,
+    'pui-validate'
+  );
+});
+
 test('a governance observation does not become numeric mutation authority', () => {
   const registry = loadSkillRegistry({ root });
   const governance = registry.byId.get('pui-govern');
@@ -197,6 +216,17 @@ test('the numeric leaf can honestly terminate before editing by retaining its me
   };
   const result = validateSkillHandoff(blocked, registry, { priorHandoff: preparation });
   assert.equal(result.nextSkill, null);
+  for (const notes of [[], [' \t\n ', '']]) {
+    assert.throws(() =>
+      validateSkillHandoff({ ...blocked, notes }, registry, { priorHandoff: preparation })
+    );
+  }
+  assert.equal(
+    validateSkillHandoff({ ...blocked, notes: ['', ...blocked.notes] }, registry, {
+      priorHandoff: preparation,
+    }).nextSkill,
+    null
+  );
   assert.throws(
     () =>
       validateSkillHandoff(
