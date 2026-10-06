@@ -33,6 +33,8 @@ function quotedOrHidden(node) {
 function textContent(node) {
   if (quotedOrHidden(node)) return '';
   if (node.type === 'text') return node.value;
+  if (node.type === 'image') return node.alt ?? '';
+  if (node.type === 'element' && node.tagName === 'img') return node.properties?.alt ?? '';
   if (node.type === 'break' || (node.type === 'element' && node.tagName === 'br')) return '\n';
   return (node.children ?? []).map(textContent).join('');
 }
@@ -65,7 +67,7 @@ function visibleDisclosureOffsets(text) {
     const kind =
       node.type === 'paragraph' && disclosureParagraph(value)
         ? 'dot'
-        : node.type === 'heading' && node.depth === 2 && value === 'ModelTrace'
+        : node.type === 'heading' && /^ModelTrace$/i.test(value.trim())
           ? 'measured'
           : null;
     if (!kind) continue;
@@ -101,7 +103,7 @@ function visibleDisclosureOffsets(text) {
       const candidate = candidates.get(node.properties?.id);
       if (
         candidate?.kind === 'measured' ||
-        (node.tagName === 'h2' && textContent(node).trim() === 'ModelTrace')
+        (/^h[1-6]$/.test(node.tagName) && /^ModelTrace$/i.test(textContent(node).trim()))
       )
         throw new Error(
           'dot disclosure cannot substitute or compete with a visible fingerprint receipt'

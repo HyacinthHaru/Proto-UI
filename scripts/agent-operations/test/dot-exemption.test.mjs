@@ -408,6 +408,13 @@ for (const body of [
   'Claim[^1]\n\n[^1]: Agent: dot',
   'Claim[^1]\n\n[^1]: ModelTrace: fake',
   'Claim[^1]\n\n[^1]: ## ModelTrace',
+  '![ModelTrace: fake](missing.png)',
+  '![Agent: dot](missing.png)',
+  '<img src="missing.png" alt="Agent: dot">',
+  '<img src="missing.png" alt="ModelTrace: fake">',
+  '# ModelTrace\n\nClaimed fingerprint',
+  '### ModelTrace\n\nClaimed fingerprint',
+  '## modeltrace\n\nClaimed fingerprint',
 ])
   test(`partial or nested visible identity is rejected: ${body.slice(0, 32)}`, (t) => {
     const f = files(t),
@@ -439,6 +446,11 @@ test('GFM tables and raw-root ordinary fields remain evidence without attributio
     '</div>\nAgent: browser<br>Ordinary content',
     'Claim[^1]\n\n[^1]: Agent: browser',
     'Claim[^1]\n\n[^1]: `Agent: dot`',
+    '![Ordinary screenshot](missing.png)',
+    '> ![ModelTrace: fake](missing.png)',
+    '`![ModelTrace: fake](missing.png)`',
+    '<div hidden><img alt="Agent: dot" src="missing.png"></div>',
+    '## ModelTrace usage notes\n\nDocumentation topic.',
   ]) {
     assert.equal(hasDotDisclosure(body), false);
     const f = files(t),
@@ -449,5 +461,16 @@ test('GFM tables and raw-root ordinary fields remain evidence without attributio
     assert.equal(server.writes(), 1);
     assert(server.comments[0].body.includes(body));
     assertDotDisclosure(server.comments[0].body);
+  }
+});
+
+test('all Markdown and HTML heading levels reserve the case-insensitive receipt title', () => {
+  for (let level = 1; level <= 6; level++) {
+    for (const title of ['ModelTrace', 'modeltrace', 'MODELTRACE']) {
+      for (const heading of [`${'#'.repeat(level)} ${title}`, `<h${level}>${title}</h${level}>`]) {
+        assert.throws(() => assertDotDisclosure(`${DOT_DISCLOSURE}\n\n${heading}`), /receipt/);
+        assertDotDisclosure(`${DOT_DISCLOSURE}\n\n> ${heading}`);
+      }
+    }
   }
 });
