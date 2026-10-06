@@ -218,7 +218,9 @@ export class TextControlModuleImpl extends ModuleBase {
       const inCurrentCallback = (callback: () => void) => {
         const previousPrelude = this.callbackPrelude;
         const prelude = { epoch };
-        this.callbackPrelude = prelude;
+        // Change has no deferred native-candidate restoration. Let queued owner
+        // patches project normally; active composition remains protected separately.
+        if (canonicalEvent.type !== 'change') this.callbackPrelude = prelude;
         const releasePrelude = () => {
           if (this.callbackPrelude === prelude) this.callbackPrelude = previousPrelude;
         };
