@@ -768,6 +768,101 @@ for (const [entry, owner] of siteOwners) {
       );
     });
   }
+  for (const placement of ['renderer', 'runtime', 'helper']) {
+    for (const field of ['imports', 'dynamicImports']) {
+      for (const targetKind of ['adapter', 'runtime', 'shared-barrel']) {
+        test(`site importer edge: ${entry} rejects ${placement} ${field} to existing ${targetKind}`, () => {
+          const { graph } = siteGraph();
+          const renderer = graph.chunks.find(
+            (item) => item.fileName === '_astro/shared-renderer.js'
+          );
+          const runtime = graph.chunks.find((item) => item.fileName === '_astro/react.js');
+          let shared = placement === 'renderer' ? renderer : runtime;
+          if (placement === 'helper') {
+            shared = chunk('_astro/helper.js');
+            graph.chunks.push(shared);
+            runtime.imports.push(shared.fileName);
+          }
+          const foreign = 'apps/www/src/components/unrelated-feature.ts';
+          const adapterId = 'packages/adapters/react/src/index.ts';
+          const runtimeId = 'apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts';
+          let target = targetKind === 'runtime' ? runtimeId : adapterId;
+          if (targetKind === 'shared-barrel') {
+            target = 'apps/www/src/components/runtime-barrel.ts';
+            runtime.moduleIds.push(target);
+            graph.modules.push({ id: target, imports: [adapterId], dynamicImports: [] });
+            graph.modules.find((item) => item.id === runtimeId).imports.push(target);
+          }
+          shared.moduleIds.push(foreign);
+          shared[field].push(runtime.fileName);
+          graph.modules.push({ id: foreign, imports: [], dynamicImports: [], [field]: [target] });
+          assert.ok(
+            collectWebsiteProductionBundleIssues({ graph }).some(
+              (issue) =>
+                issue.includes('unowned importer edge') &&
+                issue.includes(foreign) &&
+                issue.includes(adapterId)
+            )
+          );
+        });
+      }
+    }
+  }
+  test(`site importer edge: ${entry} rejects owner bypass directly to existing Adapter`, () => {
+    const { graph, root } = siteGraph();
+    const ownerId = `apps/www/src/components/${owner}`;
+    graph.modules
+      .find((item) => item.id === ownerId)
+      .dynamicImports.push('packages/adapters/react/src/index.ts');
+    root.dynamicImports.push('_astro/react.js');
+    assert.ok(
+      collectWebsiteProductionBundleIssues({ graph }).some(
+        (issue) => issue.includes('unowned importer edge') && issue.includes(ownerId)
+      )
+    );
+  });
+  test(`site importer edge: ${entry} preserves renderer API boundary and inert cycles`, () => {
+    const { graph } = siteGraph();
+    const renderer = graph.chunks.find((item) => item.fileName === '_astro/shared-renderer.js');
+    const one = 'apps/www/src/components/inert-one.ts',
+      two = 'apps/www/src/components/inert-two.ts';
+    renderer.moduleIds.push(one, two);
+    graph.modules.push(
+      { id: one, imports: [two], dynamicImports: [] },
+      {
+        id: two,
+        imports: [one, 'apps/www/src/components/PrototypePreviewer/demo-renderer.ts'],
+        dynamicImports: [],
+      }
+    );
+    assert.deepEqual(collectWebsiteProductionBundleIssues({ graph }), []);
+  });
+  test(`site importer edge: ${entry} rejects missing co-located importer provenance`, () => {
+    const { graph } = siteGraph();
+    graph.chunks
+      .find((item) => item.fileName === '_astro/shared-renderer.js')
+      .moduleIds.push('apps/www/src/components/unrecorded.ts');
+    assert.ok(
+      collectWebsiteProductionBundleIssues({ graph }).some((issue) =>
+        issue.includes('module-edge provenance')
+      )
+    );
+  });
+  test(`site importer edge: ${entry} renderer query lookalike is not an API boundary`, () => {
+    const { graph } = siteGraph();
+    const id = 'apps/www/src/components/PrototypePreviewer/demo-renderer.ts?foreign';
+    graph.chunks.find((item) => item.fileName === '_astro/shared-renderer.js').moduleIds.push(id);
+    graph.modules.push({
+      id,
+      imports: [],
+      dynamicImports: ['packages/adapters/react/src/index.ts'],
+    });
+    assert.ok(
+      collectWebsiteProductionBundleIssues({ graph }).some(
+        (issue) => issue.includes('unowned importer edge') && issue.includes(id)
+      )
+    );
+  });
   for (const defect of ['missing', 'duplicate', 'dangling', 'malformed', 'missing-renderer']) {
     test(`site module provenance: ${entry} rejects ${defect}`, () => {
       const { graph } = siteGraph();

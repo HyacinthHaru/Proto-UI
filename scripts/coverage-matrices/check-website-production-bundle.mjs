@@ -568,6 +568,10 @@ export function collectWebsiteProductionBundleIssues({
         if ([...record.imports, ...record.dynamicImports].some((id) => !modulesById.has(id)))
           validModuleGraph = false;
       }
+      for (const fileName of completeClosure) {
+        if ((chunksByFileName.get(fileName)?.moduleIds ?? []).some((id) => !modulesById.has(id)))
+          validModuleGraph = false;
+      }
       if (!validModuleGraph || !modulesById.has(REVIEWED_RENDERER_MODULE)) {
         issues.push(
           `reviewed Website runtime entry \`${shellRoot.facadeModuleId}\` requires complete renderer module-edge provenance`
@@ -576,6 +580,53 @@ export function collectWebsiteProductionBundleIssues({
       const rendererModules = validModuleGraph
         ? closure(modulesById, REVIEWED_RENDERER_MODULE, ['imports', 'dynamicImports'])
         : new Set();
+      // Target membership does not authorize another importer's edge to that
+      // same target. Find forbidden dependencies reachable without passing
+      // through the reviewed renderer API, preserving importer identities.
+      const bypassTargets = new Map();
+      if (validModuleGraph) {
+        const importers = new Map();
+        for (const record of modulesById.values()) {
+          for (const target of [...record.imports, ...record.dynamicImports]) {
+            if (!importers.has(target)) importers.set(target, new Set());
+            importers.get(target).add(record.id);
+          }
+        }
+        const reviewedBridgeModules = new Set(
+          [...reviewedWebsiteControlChunks]
+            .flatMap((fileName) => chunksByFileName.get(fileName)?.moduleIds ?? [])
+            .filter(isReviewedWebsiteControlAdapterModule)
+        );
+        const pending = [];
+        for (const fileName of completeClosure) {
+          for (const id of chunksByFileName.get(fileName)?.moduleIds ?? []) {
+            if (
+              (forbiddenFrameworkFamily(id) !== null || isProtoUiAdapterModule(id)) &&
+              !reviewedBridgeModules.has(id)
+            ) {
+              bypassTargets.set(id, id);
+              pending.push(id);
+            }
+          }
+        }
+        for (let cursor = 0; cursor < pending.length; cursor++) {
+          const target = pending[cursor];
+          for (const importer of importers.get(target) ?? []) {
+            if (importer === REVIEWED_RENDERER_MODULE || bypassTargets.has(importer)) continue;
+            bypassTargets.set(importer, bypassTargets.get(target));
+            pending.push(importer);
+          }
+        }
+        for (const fileName of completeClosure) {
+          for (const importer of chunksByFileName.get(fileName)?.moduleIds ?? []) {
+            if (!rendererModules.has(importer) && bypassTargets.has(importer)) {
+              issues.push(
+                `reviewed Website runtime entry \`${shellRoot.facadeModuleId}\` has an unowned importer edge bypassing its renderer: ${importer} -> ${bypassTargets.get(importer)}`
+              );
+            }
+          }
+        }
+      }
       for (const fileName of completeClosure) {
         if (staticClosure.has(fileName)) continue;
         for (const moduleId of chunksByFileName.get(fileName)?.moduleIds ?? []) {
