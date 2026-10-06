@@ -5,6 +5,8 @@ import { EventEmitter } from 'node:events';
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer, request } from 'node:http';
 import os from 'node:os';
+import { createRequire } from 'node:module';
+import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { describe, it } from 'node:test';
 
@@ -114,7 +116,77 @@ async function serve(t, root) {
   };
 }
 
+// Evaluate only the checked-in plugin-list expression with inert production
+// factories. This checks the actual opt-in wiring without executing Astro config.
+function configuredPlugins(root, flag) {
+  const config = readFileSync(new URL('../astro.config.mjs', import.meta.url), 'utf8');
+  const start = config.indexOf('    plugins: [\n      ...(process.env.PROTO_UI_CONTRAST_AUDIT');
+  assert.ok(start >= 0, 'The reviewed audit plugin-list expression must exist');
+  const end = config.indexOf('\n    ],', start);
+  assert.ok(end > start);
+  const expression = config.slice(start + '    plugins: '.length, end + '\n    ]'.length);
+  return new Function(
+    'process',
+    'contrastProvenancePlugin',
+    'repositoryRoot',
+    'protoUiSourcePlugin',
+    'websiteBundleGraphPlugin',
+    'tailwindcss',
+    `return (${expression});`
+  )(
+    { env: { PROTO_UI_CONTRAST_AUDIT: flag } },
+    contrastProvenancePlugin,
+    root,
+    { name: 'source-control' },
+    () => ({ name: 'bundle-graph-control' }),
+    () => ({ name: 'tailwind-control' })
+  );
+}
+
 describe('contrast source provenance', () => {
+  for (const flag of [undefined, '0', '1']) {
+    it(`installs the audit plugin only for explicit flag ${String(flag)}`, (t) => {
+      const root = repository(t);
+      const plugins = configuredPlugins(root, flag);
+      const audit = plugins.filter((plugin) => plugin.name === contrastProvenancePlugin(root).name);
+      assert.equal(audit.length, flag === '1' ? 1 : 0);
+      assert.deepEqual(
+        plugins.slice(-3).map((plugin) => plugin.name),
+        ['source-control', 'bundle-graph-control', 'tailwind-control']
+      );
+      if (audit.length) {
+        assert.equal(audit[0].apply, 'serve');
+        for (const hook of [
+          'resolveId',
+          'load',
+          'transform',
+          'buildStart',
+          'generateBundle',
+          'writeBundle',
+        ])
+          assert.equal(audit[0][hook], undefined, `Audit profile must not install ${hook}`);
+      }
+    });
+  }
+
+  it('the installed Vite production resolver excludes the audit plugin even when opted in', async (t) => {
+    const root = repository(t);
+    const require = createRequire(new URL('../package.json', import.meta.url));
+    const vitePath = createRequire(require.resolve('astro')).resolve('vite');
+    const { resolveConfig } = await import(pathToFileURL(vitePath).href);
+    const plugins = configuredPlugins(root, '1');
+    const auditName = contrastProvenancePlugin(root).name;
+    assert.ok(plugins.some((plugin) => plugin.name === auditName));
+    const resolved = await resolveConfig(
+      { root, configFile: false, plugins, logLevel: 'silent' },
+      'build'
+    );
+    assert.equal(
+      resolved.plugins.some((plugin) => plugin.name === auditName),
+      false
+    );
+  });
+
   it('pins the full clean HEAD tree and exact generated CSS bytes reproducibly', (t) => {
     const root = repository(t);
     const expected = {
