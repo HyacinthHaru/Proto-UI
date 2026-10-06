@@ -14,6 +14,11 @@ import {
 } from '../scripts/contrast-popup-escape.mjs';
 import { compileContrastAnatomy, compareContrastAnatomy } from '../scripts/contrast-anatomy.mjs';
 import {
+  KnownUnsupportedContrastDomain,
+  isKnownUnsupportedContrastCase,
+  isUnresolvedContrastCase,
+} from '../scripts/contrast-known-unsupported.mjs';
+import {
   assertDemoSpec,
   collectPrototypeIds,
 } from '../src/components/PrototypePreviewer/demo-types';
@@ -782,6 +787,9 @@ it('stores failed coordinates through the actual readiness call site, case catch
       'journal',
       'report',
       'console',
+      'KnownUnsupportedContrastDomain',
+      'isKnownUnsupportedContrastCase',
+      'isUnresolvedContrastCase',
       javascript(`
         const cases = report.cases;
         const frames = journal.frames;
@@ -797,7 +805,17 @@ it('stores failed coordinates through the actual readiness call site, case catch
           await persist('final');
         };
       `)
-    )(mounted.page, auditCase, assertProjectionReadiness, journal, report, { error: vi.fn() });
+    )(
+      mounted.page,
+      auditCase,
+      assertProjectionReadiness,
+      journal,
+      report,
+      { error: vi.fn() },
+      KnownUnsupportedContrastDomain,
+      isKnownUnsupportedContrastCase,
+      isUnresolvedContrastCase
+    );
     await run();
     expect(auditCase.status).toBe('failed');
     expect(auditCase.projectionReadinessFailure?.achieved).toBe(false);

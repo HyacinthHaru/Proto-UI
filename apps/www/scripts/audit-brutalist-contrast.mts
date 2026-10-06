@@ -1,4 +1,10 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import {
+  classifyKnownUnsupportedContrastFrame,
+  KnownUnsupportedContrastDomain,
+  isKnownUnsupportedContrastCase,
+  isUnresolvedContrastCase,
+} from './contrast-known-unsupported.mjs';
 import { execFileSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
 import { resolve, join } from 'node:path';
@@ -88,7 +94,8 @@ type Case = {
   runtime: string;
   theme: string;
   route: string;
-  status: 'pending' | 'running' | 'observed' | 'failed';
+  status: 'pending' | 'running' | 'observed' | 'failed' | 'known-unsupported';
+  knownUnsupported?: Record<string, unknown>;
   plannedStates: string[];
   achievedTargets: string[];
   errors: { phase: string; error: string }[];
@@ -262,6 +269,7 @@ const report: Record<string, unknown> = {
   evidenceDebt: [
     'Recipe-derived anatomy checks cover current authored identities, multiplicities, parent ownership and native conditional presence. They are not general anatomy protocol conformance or proof of every visual cue; full native family evidence remains separate.',
     'All cue necessity and required/redundant/decorative classifications remain independent-review debt; no frame is automatically a WCAG verdict.',
+    'Only the declared ScrollArea rest fixed-px owned rounded-overflow profile may end known-unsupported after complete PNG/fact identity pairing. It earns no achieved target or numeric approval; unexecuted targets and runtime/theme cases are counted explicitly. Follow-up: https://github.com/Proto-UI/Proto-UI/issues/853. Other unsupported domains and hidden or changed identity remain failures.',
     'Passive-family acceptance covers only the current recipe identity multiplicities, anatomy, ownership and visible physical regions at rest. Auxiliary controls are observed at rest only; their interactions, prop transitions and semantic criteria remain uncovered.',
     'Portable Transition entered state is not directly exposed on every runtime DOM; modal entry observations use owned visibility and completed authored CSS animations, not an invented transition attribute.',
     'Spinner snapshots request and observe the real reduced-motion preference only for Spinner cases. Normal-motion rotation/timing and parent composition interactions remain uncovered; no Spinner hover or keyboard-focus claim.',
@@ -297,15 +305,28 @@ async function persist(reason: string, changedCase?: Case): Promise<void> {
     collectedFrames: frames.length,
     pngFactMatchedFrames: journal.matchedFrames,
     achievedTargetPredicates: cases.reduce((sum, item) => sum + item.achievedTargets.length, 0),
-    unresolvedRuntimeThemeCases: cases.filter((item) => item.status !== 'observed').length,
+    expectedRuntimeThemeCases: cases.length,
+    observedRuntimeThemeCases: cases.filter((item) => item.status === 'observed').length,
+    knownUnsupportedRuntimeThemeCases: cases.filter(isKnownUnsupportedContrastCase).length,
+    knownUnsupportedPairedRawFrames: frames.filter((frame) => frame.status === 'known-unsupported')
+      .length,
+    knownUnsupportedUnexecutedTargets: cases
+      .filter(isKnownUnsupportedContrastCase)
+      .reduce(
+        (sum, item) =>
+          sum + item.plannedStates.filter((state) => !item.achievedTargets.includes(state)).length,
+        0
+      ),
+    unresolvedRuntimeThemeCases: cases.filter(isUnresolvedContrastCase).length,
     distinctUnresolvedFamilies: new Set(
-      cases.filter((item) => item.status !== 'observed').map((item) => item.family)
+      cases.filter(isUnresolvedContrastCase).map((item) => item.family)
     ).size,
     caseCoverage: cases.map((item) => ({
       family: item.family,
       runtime: item.runtime,
       theme: item.theme,
       status: item.status,
+      ...(item.knownUnsupported ? { knownUnsupported: item.knownUnsupported } : {}),
       missingTargets: item.plannedStates.filter((state) => !item.achievedTargets.includes(state)),
     })),
     conformance: 'not evaluated; frame count and target predicate count are not full conformance',
@@ -580,8 +601,6 @@ async function capture(
     const physicalTarget = primary(casePreviewer(page), item.family);
     if (physicalTarget) {
       frame.primaryPaint = await targetObservation(physicalTarget);
-      if (!(frame.primaryPaint as Observation).achieved)
-        throw new Error('Interactive family primary target is not supported painted content.');
     }
     const after = await fingerprint(page);
     frame.afterFingerprintDigest = digest(after);
@@ -634,13 +653,21 @@ async function capture(
       );
     if (!(frame.targetObservation as Observation).achieved)
       throw new Error(`Requested target predicate not achieved: ${state}.`);
+    if (physicalTarget && !(frame.primaryPaint as Observation).achieved) {
+      const known = classifyKnownUnsupportedContrastFrame(item, frame);
+      if (!known)
+        throw new Error('Interactive family primary target is not supported painted content.');
+      frame.status = 'known-unsupported';
+      frame.knownUnsupported = known;
+      throw new KnownUnsupportedContrastDomain(known);
+    }
     frame.status = 'matched';
     item.achievedTargets.push(state);
     console.log(
       `Captured ${name}: PNG/facts matched; target predicate achieved, cues unclassified.`
     );
   } catch (error) {
-    frame.status = 'failed';
+    if (!(error instanceof KnownUnsupportedContrastDomain)) frame.status = 'failed';
     frame.error = message(error);
     throw error;
   } finally {
@@ -1741,6 +1768,7 @@ try {
     ['runner', new URL('./audit-brutalist-contrast.mts', import.meta.url)],
     ['probe', new URL('./contrast-probe.browser.ts', import.meta.url)],
     ['popup-escape', new URL('./contrast-popup-escape.mjs', import.meta.url)],
+    ['known-unsupported-domain', new URL('./contrast-known-unsupported.mjs', import.meta.url)],
     ['theme', new URL('../../../packages/prototypes/brutalist/src/theme.ts', import.meta.url)],
     ['provenance-guard', new URL('./contrast-provenance.mjs', import.meta.url)],
     ['surface-recipes', new URL('../src/components/surface-recipes.ts', import.meta.url)],
@@ -2520,18 +2548,42 @@ try {
       await verifyServedSource();
       item.status = 'observed';
     } catch (error) {
-      item.status = 'failed';
-      item.errors.push({ phase, error: message(error) });
-      failures.push({
-        family,
-        runtime,
-        theme,
-        phase,
-        error: message(error),
-        disposition: 'unresolved case; achieved earlier targets retained, not excluded or passing',
-      });
-      console.error(`${family}/${runtime}/${theme}: ${phase}: ${message(error)}`);
-      await persist('failure', item);
+      let knownUnsupported: KnownUnsupportedContrastDomain | undefined;
+      if (error instanceof KnownUnsupportedContrastDomain) {
+        try {
+          phase = 'source-provenance';
+          await verifyServedSource();
+          knownUnsupported = error;
+        } catch (sourceError) {
+          // A known paint limit never bypasses end-of-case source verification.
+          // Route drift through the same failed-case journal path below.
+          error = sourceError;
+        }
+      }
+      if (knownUnsupported) {
+        item.status = 'known-unsupported';
+        item.knownUnsupported = knownUnsupported.observation;
+        // The classifier ran only after all original pairing/anatomy checks.
+        // No later state is exercised and no target is added to achievedTargets.
+        console.warn(
+          `${family}/${runtime}/${theme}: known-unsupported ${knownUnsupported.observation.domain}; no painted/numeric acceptance; follow-up ${knownUnsupported.observation.followup}`
+        );
+        await persist('known-unsupported', item);
+      } else {
+        item.status = 'failed';
+        item.errors.push({ phase, error: message(error) });
+        failures.push({
+          family,
+          runtime,
+          theme,
+          phase,
+          error: message(error),
+          disposition:
+            'unresolved case; achieved earlier targets retained, not excluded or passing',
+        });
+        console.error(`${family}/${runtime}/${theme}: ${phase}: ${message(error)}`);
+        await persist('failure', item);
+      }
     } finally {
       if (context) {
         try {
@@ -2586,14 +2638,20 @@ try {
     }
   }
   report.completedAt = new Date().toISOString();
-  const unresolved = cases.filter((item) => item.status !== 'observed');
+  const unresolved = cases.filter(isUnresolvedContrastCase);
+  const knownUnsupported = cases.filter(isKnownUnsupportedContrastCase);
   report.disposition =
     unresolved.length || report.fatalError || report.browserCleanupError
       ? 'partial observation; unresolved evidence retained'
-      : 'planned target observations collected; conformance and acceptance not evaluated';
+      : knownUnsupported.length
+        ? 'Declared known-unsupported domains retained; other planned observations collected. Unsupported cases have no achieved targets or numeric acceptance.'
+        : 'planned target observations collected; conformance and acceptance not evaluated';
   await persist('final');
   console.log(
     `Recorded ${frames.length} raw frame attempts; ${unresolved.length} unresolved runtime/theme cases in ${new Set(unresolved.map((item) => item.family)).size} distinct families. No conformance approval or Issue closure implied. Report: ${join(output, 'report.json')}`
+  );
+  console.log(
+    `Known-unsupported: ${knownUnsupported.length} runtime/theme cases; ${knownUnsupported.map((item) => `${item.family}/${item.runtime}/${item.theme}`).join(', ') || 'none'}. Their missing planned targets remain unexecuted; no numeric acceptance. Tracking: https://github.com/Proto-UI/Proto-UI/issues/853`
   );
   if (unresolved.length) process.exitCode = 1;
 }

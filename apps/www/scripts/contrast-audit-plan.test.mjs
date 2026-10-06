@@ -300,3 +300,378 @@ test('an unsettled authored entry fails before native focus or input is attempte
   );
   assert.equal(touched, false);
 });
+
+// Controlled receipt inputs exercise the exact narrow classification policy;
+// native paint/geometry evidence remains the source-bound browser artifact.
+const knownDomain = await import('./contrast-known-unsupported.mjs');
+function roundedFrameFixture() {
+  const visibility = {
+    visible: true,
+    classification: 'unsupported',
+    limits: ['unsupported-rounded-overflow-clip'],
+    roundedOverflowClips: [
+      {
+        prototype: 'brutalist-scroll-area-root',
+        owner: 'owner',
+        generation: '1',
+        radii: ['5px', '5px', '5px', '5px'],
+        overflowX: 'hidden',
+        overflowY: 'hidden',
+        fixedPx: true,
+        safeInteriorOverlap: true,
+        whollyInsideSafeRect: false,
+        boxCount: 1,
+        safeRect: { left: 15, top: 15, right: 105, bottom: 105 },
+      },
+    ],
+  };
+  const item = {
+    family: 'scroll-area',
+    runtime: 'react',
+    theme: 'light',
+    status: 'running',
+    plannedStates: ['rest', 'hover', 'keyboard-focus', 'scroll-end', 'wheel-both-axes'],
+    achievedTargets: [],
+    errors: [],
+  };
+  const projection = { achieved: true, owner: 'owner', generation: '1' };
+  const frame = {
+    family: item.family,
+    runtime: item.runtime,
+    theme: item.theme,
+    requestedState: 'rest',
+    projectionBefore: { ...projection },
+    projectionAfter: { ...projection },
+    anatomyBefore: { ...projection },
+    anatomyAfter: { ...projection },
+    targetObservation: { achieved: true },
+    sameProjectionLease: true,
+    sameMeasurementLease: true,
+    primaryPaint: { prototype: 'brutalist-scroll-area-viewport', achieved: false, visibility },
+    beforeFingerprintDigest: 'sha256:fixture',
+    afterFingerprintDigest: 'sha256:fixture',
+    image: { path: 'rest.png', digest: 'sha256:image' },
+    factsFile: { path: 'rest.facts.json', digest: 'sha256:facts' },
+    facts: {
+      owner: 'owner',
+      generation: '1',
+      stateFingerprintDigest: 'sha256:fixture',
+      surfaces: [
+        {
+          prototype: 'brutalist-scroll-area-root',
+          visible: true,
+          visibility: { classification: 'source-model-visible', limits: [] },
+        },
+        {
+          prototype: 'brutalist-scroll-area-viewport',
+          visible: true,
+          visibility: structuredClone(visibility),
+        },
+      ],
+    },
+  };
+  return { item, frame };
+}
+test('declared rounded ScrollArea is retained as unmeasured, never achieved or hidden', () => {
+  const { item, frame } = roundedFrameFixture();
+  const result = knownDomain.classifyKnownUnsupportedContrastFrame(item, frame);
+  assert.equal(result.achieved, false);
+  assert.equal(result.numericAcceptance, 'not-evaluated');
+  assert.equal(result.followup, 'https://github.com/Proto-UI/Proto-UI/issues/853');
+  assert.deepEqual(result.unexecutedTargets, item.plannedStates);
+  item.status = 'known-unsupported';
+  item.knownUnsupported = result;
+  assert.equal(knownDomain.isUnresolvedContrastCase(item), false);
+  assert.deepEqual(item.achievedTargets, []);
+  assert.equal(knownDomain.isKnownUnsupportedContrastCase(item), true);
+});
+for (const [name, damage] of [
+  [
+    'different family',
+    ({ item }) => {
+      item.family = 'tooltip';
+    },
+  ],
+  [
+    'later journey',
+    ({ frame }) => {
+      frame.requestedState = 'hover';
+    },
+  ],
+  [
+    'prior achieved target',
+    ({ item }) => {
+      item.achievedTargets.push('rest');
+    },
+  ],
+  [
+    'actual hidden primary',
+    ({ frame }) => {
+      frame.primaryPaint.visibility.visible = false;
+    },
+  ],
+  [
+    'hidden physical part',
+    ({ frame }) => {
+      frame.facts.surfaces[0].visible = false;
+    },
+  ],
+  [
+    'extra paint domain',
+    ({ frame }) => {
+      frame.primaryPaint.visibility.limits.push('unsupported-filter-or-backdrop-filter');
+    },
+  ],
+  [
+    'other part paint domain',
+    ({ frame }) => {
+      frame.facts.surfaces[0].visibility = {
+        classification: 'unsupported',
+        limits: ['unsupported-clip-path-or-mask'],
+      };
+    },
+  ],
+  [
+    'unknown radius units',
+    ({ frame }) => {
+      frame.primaryPaint.visibility.roundedOverflowClips[0].fixedPx = false;
+    },
+  ],
+  [
+    'clipped corner only',
+    ({ frame }) => {
+      frame.primaryPaint.visibility.roundedOverflowClips[0].safeInteriorOverlap = false;
+    },
+  ],
+  [
+    'extra clipping ancestor',
+    ({ frame }) => {
+      frame.primaryPaint.visibility.roundedOverflowClips.push(
+        frame.primaryPaint.visibility.roundedOverflowClips[0]
+      );
+    },
+  ],
+  [
+    'foreign clip owner',
+    ({ frame }) => {
+      frame.primaryPaint.visibility.roundedOverflowClips[0].owner = 'other';
+    },
+  ],
+  [
+    'changed clip epoch',
+    ({ frame }) => {
+      frame.primaryPaint.visibility.roundedOverflowClips[0].generation = '2';
+    },
+  ],
+  [
+    'unexpected clip kind',
+    ({ frame }) => {
+      frame.primaryPaint.visibility.roundedOverflowClips[0].overflowX = 'scroll';
+    },
+  ],
+  [
+    'missing primary facts',
+    ({ frame }) => {
+      frame.facts.surfaces.pop();
+    },
+  ],
+  [
+    'wrong projection',
+    ({ frame }) => {
+      frame.projectionBefore.achieved = false;
+    },
+  ],
+  [
+    'missing anatomy',
+    ({ frame }) => {
+      frame.anatomyAfter.achieved = false;
+    },
+  ],
+  [
+    'failed state predicate',
+    ({ frame }) => {
+      frame.targetObservation.achieved = false;
+    },
+  ],
+  [
+    'changed lease',
+    ({ frame }) => {
+      frame.sameProjectionLease = false;
+    },
+  ],
+  [
+    'changed physical fingerprint',
+    ({ frame }) => {
+      frame.afterFingerprintDigest = 'sha256:replacement';
+    },
+  ],
+  [
+    'facts epoch mismatch',
+    ({ frame }) => {
+      frame.facts.generation = '2';
+    },
+  ],
+  [
+    'missing raw image',
+    ({ frame }) => {
+      frame.image = null;
+    },
+  ],
+  [
+    'missing facts receipt',
+    ({ frame }) => {
+      frame.factsFile = null;
+    },
+  ],
+])
+  test(`known-unsupported policy rejects ${name}`, () => {
+    const fixture = roundedFrameFixture();
+    damage(fixture);
+    assert.equal(
+      knownDomain.classifyKnownUnsupportedContrastFrame(fixture.item, fixture.frame),
+      null
+    );
+    fixture.item.status = 'failed';
+    assert.equal(knownDomain.isUnresolvedContrastCase(fixture.item), true);
+  });
+
+test('actual capture preserves paired raw evidence for known domain and still fails hidden/identity faults', async () => {
+  const { transform } = await import('esbuild');
+  const source = await readFile(new URL('./audit-brutalist-contrast.mts', import.meta.url), 'utf8');
+  const start = source.indexOf('async function capture('),
+    end = source.indexOf('\nfunction primary(', start);
+  assert.ok(start > 0 && end > start);
+  const compiled = (await transform(source.slice(start, end), { loader: 'ts', target: 'es2022' }))
+    .code;
+  for (const fault of ['none', 'hidden', 'identity', 'source-drift']) {
+    const { item, frame: receipt } = roundedFrameFixture();
+    const writes = [];
+    let stored;
+    const state = JSON.stringify({ owner: 'owner', generation: '1' });
+    const digest = (value) => (value === state ? 'sha256:fixture' : 'sha256:artifact');
+    const facts = { ...receipt.facts, stateFingerprint: state };
+    const page = {
+      screenshot: async () => Buffer.from('controlled PNG transport'),
+      url: () => '/fixture',
+      evaluate: async () => facts,
+    };
+    const captures = [];
+    const deps = {
+      journal: {
+        beginFrame: async () => {},
+        finishFrame: async (_name, frame) => {
+          stored = structuredClone(frame);
+        },
+      },
+      stableFingerprint: async () => state,
+      projectionObservation: async () => receipt.projectionBefore,
+      passiveFamilies: new Set(),
+      anatomyObservation: async () => receipt.anatomyBefore,
+      output: '/fixture',
+      digest,
+      writeFile: async (path) => {
+        writes.push(path);
+      },
+      join: (a, b) => `${a}/${b}`,
+      primary: () => ({}),
+      casePreviewer: () => ({}),
+      caseSubject: () => ({}),
+      targetObservation: async () =>
+        fault === 'hidden'
+          ? {
+              ...receipt.primaryPaint,
+              visibility: {
+                visible: false,
+                classification: 'exempt-not-visible',
+                limits: ['ancestor-or-target-hidden'],
+              },
+            }
+          : receipt.primaryPaint,
+      fingerprint: async () =>
+        fault === 'identity' ? JSON.stringify({ owner: 'other', generation: '2' }) : state,
+      measurementLeaseMatches: () => true,
+      message: (error) => String(error),
+      persist: async () => {},
+      classifyKnownUnsupportedContrastFrame: knownDomain.classifyKnownUnsupportedContrastFrame,
+      KnownUnsupportedContrastDomain: knownDomain.KnownUnsupportedContrastDomain,
+      console: { log: (value) => captures.push(value) },
+    };
+    const capture = new Function(...Object.keys(deps), `let phase; ${compiled};return capture;`)(
+      ...Object.values(deps)
+    );
+    let thrown;
+    try {
+      await capture(page, item, 'rest', async () => receipt.targetObservation);
+    } catch (error) {
+      thrown = error;
+    }
+    assert.ok(thrown instanceof Error);
+    if (fault === 'none') assert.ok(thrown instanceof knownDomain.KnownUnsupportedContrastDomain);
+    const catchMarker = '    } catch (error) {\n      let knownUnsupported';
+    const catchStart = source.indexOf(catchMarker);
+    const catchEnd = source.indexOf('    } finally {', catchStart);
+    assert.ok(catchStart > 0 && catchEnd > catchStart);
+    const catchBody = source.slice(catchStart + '    } catch (error) {'.length, catchEnd);
+    const failures = [];
+    const caught = new Function(
+      'item',
+      'error',
+      'failures',
+      'KnownUnsupportedContrastDomain',
+      'persist',
+      'message',
+      'console',
+      'verifyServedSource',
+      (
+        await transform(
+          `return async () => { const {family,runtime,theme}=item; let phase='capture:rest'; ${catchBody} };`,
+          { loader: 'ts' }
+        )
+      ).code
+    )(
+      item,
+      thrown,
+      failures,
+      knownDomain.KnownUnsupportedContrastDomain,
+      async () => {},
+      String,
+      {
+        warn: () => {},
+        error: () => {},
+      },
+      async () => {
+        if (fault === 'source-drift') throw new Error('Served source drift');
+      }
+    );
+    await caught();
+    assert.equal(knownDomain.isUnresolvedContrastCase(item), fault !== 'none');
+    assert.equal(failures.length, fault === 'none' ? 0 : 1);
+    assert.deepEqual(item.plannedStates, [
+      'rest',
+      'hover',
+      'keyboard-focus',
+      'scroll-end',
+      'wheel-both-axes',
+    ]);
+    if (fault === 'none') {
+      assert.equal(item.status, 'known-unsupported');
+      assert.deepEqual(item.knownUnsupported.unexecutedTargets, item.plannedStates);
+    } else assert.equal(item.status, 'failed');
+    assert.ok(writes.some((path) => path.endsWith('.png')));
+    assert.ok(writes.some((path) => path.endsWith('.facts.json')));
+    assert.deepEqual(item.achievedTargets, []);
+    assert.equal(captures.length, 0);
+    if (fault === 'none' || fault === 'source-drift') {
+      assert.equal(stored.status, 'known-unsupported');
+      assert.equal(stored.sameProjectionLease, true);
+      assert.equal(stored.sameMeasurementLease, true);
+      assert.equal(stored.knownUnsupported.achieved, false);
+      assert.equal(stored.beforeFingerprintDigest, stored.afterFingerprintDigest);
+    } else assert.equal(stored.status, 'failed');
+    if (fault === 'source-drift') {
+      assert.equal(item.errors[0].phase, 'source-provenance');
+      assert.match(item.errors[0].error, /Served source drift/);
+      assert.equal(item.knownUnsupported, undefined);
+    }
+  }
+});

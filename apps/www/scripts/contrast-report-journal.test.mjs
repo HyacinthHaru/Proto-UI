@@ -80,6 +80,61 @@ async function allFiles(root) {
 }
 
 describe('contrast report journal', () => {
+  it('retains known-unsupported raw frames without counting matched or achieved targets', async (t) => {
+    const { output, journal, report } = await fixture(t);
+    const item = report.cases[0];
+    item.family = 'scroll-area';
+    item.status = 'known-unsupported';
+    item.knownUnsupported = {
+      domain: 'scroll-area-rounded-overflow-paint',
+      followup: 'https://github.com/Proto-UI/Proto-UI/issues/853',
+      achieved: false,
+      numericAcceptance: 'not-evaluated',
+    };
+    const name = 'scroll-area-react-light-rest';
+    const png = Buffer.from('controlled raw PNG receipt');
+    await writeFile(path.join(output, name + '.png'), png);
+    const facts = { limits: ['unsupported-rounded-overflow-clip'], ratio: null };
+    const bytes = JSON.stringify(facts);
+    await writeFile(path.join(output, name + '.facts.json'), bytes);
+    const frame = {
+      family: 'scroll-area',
+      runtime: 'react',
+      theme: 'light',
+      requestedState: 'rest',
+      status: 'known-unsupported',
+      image: { path: name + '.png', digest: digest(png) },
+      factsFile: { path: name + '.facts.json', digest: digest(bytes) },
+      facts,
+      knownUnsupported: item.knownUnsupported,
+      sameProjectionLease: true,
+      sameMeasurementLease: true,
+    };
+    await journal.beginFrame(name, { ...frame, status: 'attempting' });
+    await journal.finishFrame(name, frame);
+    report.summary = {
+      collectedFrames: 1,
+      pngFactMatchedFrames: 0,
+      achievedTargetPredicates: 0,
+      knownUnsupportedRuntimeThemeCases: 1,
+      knownUnsupportedPairedRawFrames: 1,
+    };
+    await journal.persist('known-unsupported', report, item);
+    await journal.persist('final', report);
+    const replay = await readContrastReportJournal(output);
+    assert.equal(journal.matchedFrames, 0);
+    assert.equal(replay.frames[0].status, 'known-unsupported');
+    assert.deepEqual(replay.cases[0].achievedTargets, []);
+    assert.deepEqual(replay.cases[0].plannedStates, ['rest', 'hover']);
+    assert.equal(replay.cases[0].knownUnsupported.achieved, false);
+    assert.equal(replay.summary.knownUnsupportedPairedRawFrames, 1);
+    assert.deepEqual(await readFile(path.join(output, replay.frames[0].image.path)), png);
+    assert.deepEqual(
+      JSON.parse(await readFile(path.join(output, replay.frames[0].factsFile.path), 'utf8')),
+      facts
+    );
+  });
+
   it('preserves null unsupported border facts without making matched frames a contrast verdict', async (t) => {
     const { output, journal, report } = await fixture(t);
     const name = 'unsupported-border';
