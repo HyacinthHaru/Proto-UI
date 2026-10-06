@@ -106,12 +106,21 @@ test('receipt schema and runtime admit candidate, ambiguous and partial failed c
   partial.response.outputs[2].text = 'not a strict sample';
   partial.response.outputs[2].error = null;
   const partialInvalid = buildModelTraceRecord(partial.challenge, partial.response).receipt;
+  assert.equal(partialInvalid.sampling.counts[2], null);
+  assert.notEqual(partialInvalid.sampling.sampleDigests[2], null);
+  partial.response.outputs[0].text = null;
+  partial.response.outputs[0].error = 'timeout';
+  const mixedFailure = buildModelTraceRecord(partial.challenge, partial.response).receipt;
+  assert.deepEqual(mixedFailure.sampling.counts, [null, 233, null]);
+  assert.equal(mixedFailure.sampling.sampleDigests[0], null);
+  assert.notEqual(mixedFailure.sampling.sampleDigests[2], null);
   for (const [status, receipt] of [
     ['candidate', statusReceipt('candidate')],
     ['ambiguous', statusReceipt('ambiguous')],
     ['failed', statusReceipt('failed')],
     ['failed', partialFailed],
     ['failed', partialInvalid],
+    ['failed', mixedFailure],
   ]) {
     assert.equal(structuralReceipt(receipt), true, JSON.stringify(structuralReceipt.errors));
     assert.equal(validateModelTraceReceipt(receipt).result.status, status);
@@ -165,8 +174,63 @@ test('failed receipt schema and runtime forbid claimed statistics or a missing d
   rejectsStatusReceipt(receipt, /failed measurement lacks diagnostic/);
 });
 
+test('digest-rebound failed receipts must retain producer-consistent sampling diagnostics', () => {
+  const f = fixture();
+  f.response.outputs[2].text = 'not a strict sample';
+  const invalid = buildModelTraceRecord(f.challenge, f.response).receipt;
+  f.response.outputs[0].text = null;
+  f.response.outputs[0].error = 'unavailable';
+  const mixed = buildModelTraceRecord(f.challenge, f.response).receipt;
+
+  const completeFailure = statusReceipt('failed');
+  completeFailure.sampling = fixture().record.receipt.sampling;
+  const missingValidDigest = structuredClone(mixed);
+  missingValidDigest.sampling.sampleDigests[1] = null;
+  const mislabelledProbe = statusReceipt('failed');
+  mislabelledProbe.anomalies = mislabelledProbe.anomalies
+    .map((code) => (code === 'probe-failed' ? 'sample-validation-failed' : code))
+    .sort();
+  const mislabelledInvalid = structuredClone(invalid);
+  mislabelledInvalid.anomalies = mislabelledInvalid.anomalies
+    .map((code) => (code === 'sample-validation-failed' ? 'probe-failed' : code))
+    .sort();
+  const missingMixedProbe = structuredClone(mixed);
+  missingMixedProbe.anomalies = missingMixedProbe.anomalies.filter(
+    (code) => code !== 'probe-failed'
+  );
+  const missingMixedValidation = structuredClone(mixed);
+  missingMixedValidation.anomalies = missingMixedValidation.anomalies.filter(
+    (code) => code !== 'sample-validation-failed'
+  );
+  for (const receipt of [
+    completeFailure,
+    missingValidDigest,
+    mislabelledProbe,
+    mislabelledInvalid,
+    missingMixedProbe,
+    missingMixedValidation,
+  ]) {
+    receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+    // The structural schema permits these shapes; public admission owns the
+    // cross-field consistency even after the caller rebinds the content digest.
+    assert.equal(structuralReceipt(receipt), true, JSON.stringify(structuralReceipt.errors));
+    assert.throws(() => validateModelTraceReceipt(receipt));
+  }
+});
+
 test('scored receipt schema and runtime enforce complete sampling and status-specific identity', () => {
   for (const status of ['candidate', 'ambiguous']) {
+    for (const code of ['probe-failed', 'sample-validation-failed']) {
+      const receipt = statusReceipt(status);
+      receipt.anomalies.push(code);
+      receipt.anomalies.sort();
+      // Rebind TTL as well as content so policy freshness cannot hide a
+      // successful result's spurious sampling-failure diagnostic.
+      receipt.expiresAt = statusReceipt('failed').expiresAt;
+      receipt.id = `sha256:${computeModelTraceReceiptDigest(receipt)}`;
+      assert.equal(structuralReceipt(receipt), true, JSON.stringify(structuralReceipt.errors));
+      assert.throws(() => validateModelTraceReceipt(receipt));
+    }
     for (const key of ['probability', 'margin']) {
       const receipt = statusReceipt(status);
       receipt.result[key] = null;
@@ -669,13 +733,36 @@ test('visible disclosure detection admits literal examples but rejects a present
 test('raw HTML ModelTrace sections cannot compete with a canonical visible disclosure', () => {
   const receipt = fixture({ failed: true }).record.receipt;
   const disclosure = renderModelTraceDisclosure(receipt);
-  for (const heading of ['<h2>ModelTrace</h2>', '<h2><span>ModelTrace</span></h2>']) {
+  for (const heading of [
+    '<h2>ModelTrace</h2>',
+    '<h2><span>ModelTrace</span></h2>',
+    '<div><h2>ModelTrace</h2></div>',
+    '<section><div><h2><span>Model</span>Trace</h2></div></section>',
+  ]) {
     assert.throws(() => hasModelTraceDisclosure(heading, receipt));
     assert.throws(() => assertModelTraceDisclosure(`${heading}\n\n${disclosure}`, receipt));
-    const example = `~~~html\n${heading}\n~~~`;
+    assert.throws(() => assertModelTraceDisclosure(`${disclosure}\n\n${heading}`, receipt));
+    for (const example of [
+      `~~~html\n${heading}\n~~~`,
+      `<!-- ${heading} -->`,
+      `> ${heading}`,
+      `<blockquote>${heading}</blockquote>`,
+      `<div><blockquote>${heading}</blockquote></div>`,
+      `\`${heading}\``,
+      heading.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
+    ]) {
+      assert.equal(hasModelTraceDisclosure(example, receipt), false);
+      assert.equal(hasModelTraceDisclosure(`${example}\n\n${disclosure}`, receipt), true);
+    }
+  }
+  for (const example of [
+    '<div><h2>Other evidence</h2></div>',
+    '- ## ModelTrace',
+    '<div>\n\n## ModelTrace\n\n</div>',
+    `> ${disclosure.replaceAll('\n', '\n> ')}`,
+  ]) {
     assert.equal(hasModelTraceDisclosure(example, receipt), false);
     assert.equal(hasModelTraceDisclosure(`${example}\n\n${disclosure}`, receipt), true);
-    assert.equal(hasModelTraceDisclosure(`<!-- ${heading} -->\n\n${disclosure}`, receipt), true);
   }
 });
 

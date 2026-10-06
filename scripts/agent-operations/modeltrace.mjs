@@ -620,6 +620,10 @@ export function validateModelTraceReceipt(receipt) {
       receipt.anomalies.some((code) => ['probe-failed', 'sample-validation-failed'].includes(code)),
       'failed measurement lacks diagnostic'
     );
+    assert(
+      receipt.sampling.counts.some((n) => n === null),
+      'failed measurement requires a missing valid sample'
+    );
   } else {
     assert(
       result.candidates.every(
@@ -651,6 +655,23 @@ export function validateModelTraceReceipt(receipt) {
       'successful scoring requires all three strict samples'
     );
   }
+  assert(
+    receipt.sampling.counts.every(
+      (count, index) => count === null || receipt.sampling.sampleDigests[index] !== null
+    ),
+    'valid sample counts require retained sample digests'
+  );
+  assert(
+    receipt.anomalies.includes('probe-failed') ===
+      receipt.sampling.counts.some(
+        (count, index) => count === null && receipt.sampling.sampleDigests[index] === null
+      ) &&
+      receipt.anomalies.includes('sample-validation-failed') ===
+        receipt.sampling.counts.some(
+          (count, index) => count === null && receipt.sampling.sampleDigests[index] !== null
+        ),
+    'failure diagnostics differ from retained sampling facts'
+  );
   labels(receipt.declared);
   const expectedDeclarations = declarationAnomalies(receipt.declared, result, reference);
   assert(
@@ -781,20 +802,29 @@ function standaloneModelTraceOffsets(text) {
   }
   const { fromMarkdown, toHast, toHtml, fromHtml } = markdownVisibilityTools;
   const ast = fromMarkdown(text);
-  const headings = ast.children.filter(
-    (node) =>
-      node.type === 'heading' &&
-      node.depth === 2 &&
-      node.children.length === 1 &&
-      node.children[0].type === 'text' &&
-      node.children[0].value === 'ModelTrace'
-  );
+  const headings = [];
   // Ephemeral AST-only markers bind original headings through HTML parsing.
   // Raw HTML cannot forge them or rescue a canonical field hidden in a comment.
   const marker = `pui-modeltrace-${randomBytes(16).toString('hex')}-`;
-  for (const heading of headings) {
-    heading.data = { hProperties: { id: `${marker}${heading.position.start.offset}` } };
+  function markHeadings(parent) {
+    if (!parent.children) return;
+    for (const node of parent.children) {
+      if (
+        node.type === 'heading' &&
+        node.depth === 2 &&
+        node.children.length === 1 &&
+        node.children[0].type === 'text' &&
+        node.children[0].value === 'ModelTrace'
+      ) {
+        node.data = { hProperties: { id: `${marker}${node.position.start.offset}` } };
+        // Nested Markdown examples are not raw HTML, but only root sections
+        // can supply the canonical standalone disclosure.
+        if (parent === ast) headings.push(node);
+      }
+      markHeadings(node);
+    }
   }
+  markHeadings(ast);
   // Parse one continuous serialization. Per-node raw AST reparsing resets HTML
   // tokenizer state and can lose a comment spanning Markdown node boundaries.
   const html = fromHtml(
@@ -802,15 +832,24 @@ function standaloneModelTraceOffsets(text) {
     { fragment: true }
   );
   const visible = new Set();
-  for (const node of html.children) {
-    if (node.type !== 'element' || node.tagName !== 'h2') continue;
-    const id = node.properties.id;
-    assert(
-      (typeof id === 'string' && id.startsWith(marker)) || htmlText(node).trim() !== 'ModelTrace',
-      'visible raw HTML ModelTrace headings cannot supply or compete with the canonical disclosure'
-    );
-    visible.add(id);
+  function inspectHtml(parent) {
+    if (!parent.children) return;
+    for (const node of parent.children) {
+      // Explicit quoted examples remain non-disclosures, including raw HTML.
+      if (node.type === 'element' && node.tagName === 'blockquote') continue;
+      if (node.type === 'element' && node.tagName === 'h2') {
+        const id = node.properties.id;
+        assert(
+          (typeof id === 'string' && id.startsWith(marker)) ||
+            htmlText(node).trim() !== 'ModelTrace',
+          'visible raw HTML ModelTrace headings cannot supply or compete with the canonical disclosure'
+        );
+        if (parent === html) visible.add(id);
+      }
+      inspectHtml(node);
+    }
   }
+  inspectHtml(html);
   const offsets = headings
     .filter((node) => visible.has(`${marker}${node.position.start.offset}`))
     .map((node) => node.position.start.offset);

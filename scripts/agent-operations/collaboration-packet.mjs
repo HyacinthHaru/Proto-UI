@@ -45,10 +45,11 @@ function usage() {
     'Usage:',
     '  pnpm agent:collaborate -- thread-revision --repository <github.com:owner/repo> --pull-request <number> --thread <thread-id>',
     '  pnpm agent:collaborate -- request-digest --request <request.json>',
-    '  pnpm agent:collaborate -- validate --mode human-assisted|autonomous --mode-source <trusted-source> --request <request.json> --handoff <handoff.json> --record <record.json> --context <context.json> [--assessment <result.json>] [--owner-authorization <state.json> --owner-key <public.pem> --owner-grant <grant-id>]',
+    '  pnpm agent:collaborate -- validate --mode human-assisted|autonomous --mode-source <trusted-source> --request <request.json> --handoff <handoff.json> [--assessment <result.json>] [--owner-authorization <state.json> --owner-key <public.pem> --owner-grant <grant-id>]',
     '  pnpm agent:collaborate -- apply --mode human-assisted|autonomous --mode-source <trusted-source> --request <request.json> --handoff <handoff.json> --record <record.json> --context <context.json> [--assessment <result.json>] [--owner-authorization <state.json> --owner-key <public.pem> --owner-grant <grant-id>]',
     '',
     'validate and apply require mode and source declared independently by the launcher/operator, matching the handoff. These arguments are declarations, not runtime attestation.',
+    'apply additionally requires --record and --context for a fresh private ModelTrace load, scope check, and exact reference/digest binding before any live GitHub dependency.',
     'apply performs a fresh live GitHub preflight, checks admission for one declared purpose-bound action, emits an idempotent no-op when already satisfied, or attempts exactly one mutation. A thrown/unknown write is reconciled once and is never retried blindly.',
   ].join('\n');
 }
@@ -240,6 +241,18 @@ export function runCollaborationCli(argv, dependencies = {}) {
   // collection, live GitHub reads, or any other external dependency is called.
   const routed = loadCollaborationHandoff(args.get('--handoff'), invocationContext);
   const request = readRequest(args.get('--request'));
+  const policy = (dependencies.loadPolicy ?? loadCapabilityPolicy)(POLICY_PATH);
+  const execution = validateExecution(request, args, policy, invocationContext, routed);
+  if (command === 'validate') {
+    return {
+      valid: true,
+      requestDigest: request.requestDigest,
+      action: request.action,
+      ...invocationContext,
+      eligibility: execution.eligibility,
+    };
+  }
+
   const modelTrace = loadModelTraceRecord({
     recordPath: args.get('--record'),
     contextPath: args.get('--context'),
@@ -257,18 +270,6 @@ export function runCollaborationCli(argv, dependencies = {}) {
     throw new Error(
       'request and handoff must bind the --record reference and measured receipt digest'
     );
-  const policy = (dependencies.loadPolicy ?? loadCapabilityPolicy)(POLICY_PATH);
-  const execution = validateExecution(request, args, policy, invocationContext, routed);
-  if (command === 'validate') {
-    return {
-      valid: true,
-      requestDigest: request.requestDigest,
-      action: request.action,
-      ...invocationContext,
-      eligibility: execution.eligibility,
-      modelTrace,
-    };
-  }
 
   const collectState = dependencies.collectState ?? collectLiveCollaborationState;
   const preState = collectState(request, { runner: dependencies.runner });
