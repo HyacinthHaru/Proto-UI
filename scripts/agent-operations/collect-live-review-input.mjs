@@ -1,6 +1,13 @@
 import { execFileSync } from 'node:child_process';
+import { isDeepStrictEqual } from 'node:util';
+import { canonicalReplyId, collectReviewSnapshot, QUERY } from './review-pagination.mjs';
+export { QUERY };
+import { ownerAuthorizationAllows } from './owner-authorization.mjs';
 import {
   authorizePullRequestMerge,
+  authorizeReviewSubmission,
+  computeReviewInputDigest,
+  renderReviewBody,
   isExternalPreviewAuthorizationFailure,
   reviewerPermissionSubjects,
   validateReviewInputSnapshot,
@@ -18,123 +25,6 @@ const FAILED_CONCLUSIONS = new Set([
   'STARTUP_FAILURE',
 ]);
 const SUCCESSFUL_CONCLUSIONS = new Set(['SUCCESS', 'SKIPPED', 'NEUTRAL']);
-
-// GitHub GraphQL schema facts (verified against the live schema):
-// - PullRequestReviewThread has no updatedAt; the latest comment updatedAt is authoritative.
-// - Commit.statusCheckRollup takes no `first`; contexts are read through statusCheckRollup.contexts(first:).
-export const QUERY = `
-query($owner: String!, $name: String!, $number: Int!) {
-  viewer { login }
-  repository(owner: $owner, name: $name) {
-    viewerPermission
-    pullRequest(number: $number) {
-      state
-      isDraft
-      mergeable
-      mergeStateStatus
-      viewerCanMergeAsAdmin
-      changedFiles
-      body
-      baseRefName
-      baseRefOid
-      headRefOid
-      author { login }
-      commits(first: 100) {
-        nodes {
-          commit {
-            oid
-            message
-            author { name email user { login } }
-            committer { name email user { login } }
-            signature {
-              __typename
-              ... on GpgSignature { isValid wasSignedByGitHub }
-              ... on SshSignature { isValid wasSignedByGitHub }
-            }
-            statusCheckRollup {
-              contexts(first: 100) {
-                nodes {
-                  __typename
-                  ... on CheckRun {
-                    name
-                    status
-                    conclusion
-                    completedAt
-                    detailsUrl
-                    checkSuite {
-                      app { id slug }
-                      repository { nameWithOwner }
-                      workflowRun {
-                        file { path }
-                        workflow { name }
-                      }
-                    }
-                  }
-                  ... on StatusContext { context state targetUrl createdAt creator { login __typename } }
-                }
-                pageInfo { hasNextPage }
-              }
-            }
-          }
-        }
-        pageInfo { hasNextPage }
-      }
-      reviews(first: 100) {
-        nodes { id author { login } state commit { oid } submittedAt body }
-        pageInfo { hasNextPage endCursor }
-      }
-      comments(first: 100) {
-        nodes { id author { login } body updatedAt }
-        pageInfo { hasNextPage }
-      }
-      reviewThreads(first: 100) {
-        nodes {
-          id
-          isResolved
-          comments(first: 100) {
-            nodes { databaseId author { login } body updatedAt }
-            pageInfo { hasNextPage }
-          }
-        }
-        pageInfo { hasNextPage endCursor }
-      }
-    }
-  }
-}
-`;
-
-const REVIEWS_PAGE_QUERY = `
-query($owner: String!, $name: String!, $number: Int!, $cursor: String!) {
-  repository(owner: $owner, name: $name) {
-    pullRequest(number: $number) {
-      reviews(first: 100, after: $cursor) {
-        nodes { id author { login } state commit { oid } submittedAt body }
-        pageInfo { hasNextPage endCursor }
-      }
-    }
-  }
-}
-`;
-
-const REVIEW_THREADS_PAGE_QUERY = `
-query($owner: String!, $name: String!, $number: Int!, $cursor: String!) {
-  repository(owner: $owner, name: $name) {
-    pullRequest(number: $number) {
-      reviewThreads(first: 100, after: $cursor) {
-        nodes {
-          id
-          isResolved
-          comments(first: 100) {
-            nodes { databaseId author { login } body updatedAt }
-            pageInfo { hasNextPage }
-          }
-        }
-        pageInfo { hasNextPage endCursor }
-      }
-    }
-  }
-}
-`;
 
 // Governed payload bound for one live collection response. Node's incidental
 // 1 MiB child-process stdout default previously killed collection with an
@@ -161,51 +51,6 @@ function ghJson(args, runner = execFileSync) {
     throw error;
   }
   return JSON.parse(stdout);
-}
-
-function collectRemainingConnectionPages({
-  connection,
-  field,
-  query,
-  owner,
-  name,
-  pullRequest,
-  runner,
-}) {
-  assertConnectionShape(connection?.nodes, connection?.pageInfo, field);
-  const seenCursors = new Set();
-  while (connection.pageInfo.hasNextPage === true) {
-    const cursor = connection.pageInfo.endCursor;
-    if (typeof cursor !== 'string' || cursor.length === 0) {
-      throw new Error(`live ${field} collection cannot continue without an end cursor`);
-    }
-    if (seenCursors.has(cursor)) throw new Error(`live ${field} pagination repeated a cursor`);
-    seenCursors.add(cursor);
-    const raw = ghJson(
-      [
-        'api',
-        'graphql',
-        '-f',
-        `query=${query}`,
-        '-F',
-        `owner=${owner}`,
-        '-F',
-        `name=${name}`,
-        '-F',
-        `number=${pullRequest}`,
-        '-F',
-        `cursor=${cursor}`,
-      ],
-      runner
-    );
-    if (raw.errors?.length) {
-      throw new Error(`live ${field} collection failed: ${raw.errors[0].message}`);
-    }
-    const page = raw.data?.repository?.pullRequest?.[field];
-    assertConnectionShape(page?.nodes, page?.pageInfo, field);
-    connection.nodes.push(...page.nodes);
-    connection.pageInfo = page.pageInfo;
-  }
 }
 
 function assertConnectionShape(nodes, pageInfo, label) {
@@ -452,7 +297,7 @@ export function buildLiveReviewInput(
     });
     for (const comment of thread.comments?.nodes ?? []) {
       replies.push({
-        id: String(comment.databaseId),
+        id: canonicalReplyId(comment),
         threadId: thread.id,
         updatedAt: comment.updatedAt,
         author: comment.author?.login ?? 'ghost',
@@ -527,12 +372,82 @@ export function buildLiveReviewInput(
   };
 }
 
+export function authorizeLiveReviewSubmission(context, live) {
+  const policy = context.policy;
+  return authorizeReviewSubmission({
+    packet: context.packet,
+    input: context.input,
+    liveInput: live.input,
+    executionMode: context.executionMode,
+    executionModeSource: context.executionModeSource,
+    authorizationId: context.authorizationId,
+    ownerAuthorization: context.ownerAuthorization,
+    policy,
+    selfAssessment: context.selfAssessment,
+    priorPacket: context.priorPacket ?? null,
+    credentialCanReview: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
+    reviewer: live.viewerLogin,
+    ciConclusion: summarizeLiveChecks(live.input.checks, {
+      repositoryId: context.packet.repositoryId,
+      trustedRepositoryId: policy?.trustedCiEvidence?.repositoryId,
+      trustedSource: policy?.trustedCiEvidence?.source,
+      trustedCheckNames: policy?.trustedCiEvidence?.checkNames,
+      trustedWorkflowNames: policy?.trustedCiEvidence?.workflowNames,
+      trustedWorkflowPaths: policy?.trustedCiEvidence?.workflowPaths,
+    }),
+    dcoConclusion: summarizeLiveDco(live.input.checks, {
+      repositoryId: context.packet.repositoryId,
+      trustedRepositoryId: policy?.trustedDcoEvidence?.repositoryId,
+      trustedCheckName: policy?.trustedDcoEvidence?.checkName,
+      trustedSource: policy?.trustedDcoEvidence?.source,
+      trustedProviderId: policy?.trustedDcoEvidence?.providerId,
+      trustedDetailsUrl: policy?.trustedDcoEvidence?.detailsUrl,
+    }),
+  });
+}
+
+function reviewBoundaryPublicationDelta(context, live, event, body) {
+  const known = new Set(context.input.reviews.map((review) => review.id));
+  const state = { APPROVE: 'APPROVED', REQUEST_CHANGES: 'CHANGES_REQUESTED', COMMENT: 'COMMENTED' }[
+    event
+  ];
+  const matches = live.input.reviews.filter(
+    (review) =>
+      !known.has(review.id) &&
+      review.author?.toLowerCase() === context.actor.toLowerCase() &&
+      review.commitSha === context.packet.headSha &&
+      review.state === state &&
+      review.body === body
+  );
+  if (!matches.length) return { live, duplicate: false };
+  const ids = new Set(matches.map((review) => review.id));
+  const input = structuredClone(live.input);
+  input.reviews = input.reviews.filter((review) => !ids.has(review.id));
+  if (state === 'APPROVED') {
+    const priorPermissions = new Set(
+      context.input.reviewerPermissions.map((permission) => permission.login.toLowerCase())
+    );
+    input.reviewerPermissions = input.reviewerPermissions.filter(
+      (permission) =>
+        permission.login.toLowerCase() !== context.actor.toLowerCase() ||
+        priorPermissions.has(permission.login.toLowerCase())
+    );
+  }
+  if (computeReviewInputDigest(input) !== computeReviewInputDigest(context.input))
+    throw Error('live changes exceed the exact review publication delta; no POST attempted');
+  return { live: { ...live, input }, duplicate: true };
+}
+
 export function submitGitHubReview(
   repositoryId,
   pullRequest,
   { commitId, event, body },
   runner = execFileSync,
-  { reviewerLogin = null, invocationId = `${commitId}:${event}:${body}` } = {}
+  {
+    reviewerLogin = null,
+    invocationId = `${commitId}:${event}:${body}`,
+    authorizationContext = null,
+  } = {}
 ) {
   const { owner, name } = parseRepositoryId(repositoryId);
   if (!Number.isInteger(pullRequest) || pullRequest < 1) {
@@ -547,6 +462,46 @@ export function submitGitHubReview(
   if (typeof body !== 'string') throw new Error('review submission body is invalid');
   if (typeof reviewerLogin !== 'string' || reviewerLogin.length === 0)
     throw new Error('review submission requires the verified reviewer identity');
+
+  if (authorizationContext !== null) {
+    const context = authorizationContext;
+    if (
+      !context ||
+      Array.isArray(context) ||
+      context.packet?.repositoryId !== repositoryId ||
+      context.input?.repositoryId !== repositoryId ||
+      context.packet?.pullRequest !== pullRequest ||
+      context.input?.pullRequest !== pullRequest ||
+      context.packet?.headSha !== commitId ||
+      context.input?.headSha !== commitId ||
+      context.packet?.recommendedAction !== event ||
+      context.actor !== reviewerLogin ||
+      !['ADMIN', 'MAINTAIN', 'WRITE'].includes(context.viewerPermission) ||
+      renderReviewBody(context.packet) !== body
+    )
+      throw Error('review authorization context binding is invalid; no POST attempted');
+    validateReviewInputSnapshot(context.input);
+    validateReviewPacket(context.packet, context.input);
+    const finalLive = collectLiveReviewInput(repositoryId, pullRequest, {
+      runner,
+      externalEvidence: context.externalEvidence,
+    });
+    if (
+      finalLive.viewerLogin !== context.actor ||
+      finalLive.viewerPermission !== context.viewerPermission
+    )
+      throw Error('review identity or permission changed at the final boundary; no POST attempted');
+    const publicationDelta = reviewBoundaryPublicationDelta(context, finalLive, event, body);
+    const finalAuthorization = authorizeLiveReviewSubmission(context, publicationDelta.live);
+    if (finalAuthorization.duplicate || (publicationDelta.duplicate && finalAuthorization.allowed))
+      return { status: 'duplicate', invocationId, commitId, event, reconciled: false };
+    if (!finalAuthorization.allowed)
+      throw Error(
+        'review eligibility changed at the final boundary: ' +
+          finalAuthorization.reason +
+          '; no POST attempted'
+      );
+  }
 
   const expectedState = {
     APPROVE: 'APPROVED',
@@ -736,6 +691,7 @@ export function authorizeLivePullRequestMerge(context, live) {
     executionMode: context.executionMode,
     executionModeSource: context.executionModeSource,
     authorizationId: context.authorizationId,
+    ownerAuthorization: context.ownerAuthorization,
     policy,
     selfAssessment: context.selfAssessment,
     credentialCanMerge: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
@@ -786,8 +742,7 @@ export function submitGitHubMerge(
   if (typeof baseRefName !== 'string' || baseRefName.length === 0)
     throw new Error('merge base ref is required');
   if (mergeMethod !== 'squash') throw new Error('merge method must be squash');
-  if (!['explicit-current-user', 'proto-ui-scheduled-merge-v1'].includes(authorizationId))
-    throw new Error('merge authorization is invalid');
+
   const maxAttempts = options.verificationAttempts ?? 12;
   const delayMs = options.verificationDelayMs ?? 1_000;
   const wait = options.wait ?? waitForMergeRead;
@@ -822,6 +777,19 @@ export function submitGitHubMerge(
     !['ADMIN', 'MAINTAIN', 'WRITE'].includes(authorizationContext.viewerPermission)
   )
     throw new Error('merge authorization context target binding is invalid; no PUT attempted');
+  if (
+    !['explicit-current-user', 'proto-ui-scheduled-merge-v1'].includes(authorizationId) &&
+    !ownerAuthorizationAllows(authorizationContext.ownerAuthorization, {
+      repositoryId,
+      scopeId: 'pull-request:' + pullRequest,
+      action: 'integrate',
+      actor: authorizationContext.actor,
+      authorizationId,
+      executionMode: authorizationContext.executionMode,
+      executionModeSource: authorizationContext.executionModeSource,
+    })
+  )
+    throw new Error('merge owner authorization is invalid; no PUT attempted');
   validateReviewInputSnapshot(input);
   validateReviewPacket(packet, input);
   validatePublishedReviewPacket(packet, authorizationContext.publishedPacket);
@@ -1048,68 +1016,61 @@ export function collectCurrentReviewerPermissions(input, options = {}) {
   });
 }
 
+// These bounds cover both complete stability scans, including permissions and
+// REST files. A bound/failure aborts the entire invocation without partial input.
+export const MAX_LIVE_COLLECTION_REQUESTS = 1000;
+export const MAX_LIVE_COLLECTION_BYTES = 256 * 1024 * 1024;
+
 export function collectLiveReviewInput(repositoryId, pullRequest, options = {}) {
   const { owner, name } = parseRepositoryId(repositoryId);
+  if (!Number.isSafeInteger(pullRequest) || pullRequest < 1)
+    throw new Error('live collection pull request is invalid');
   const externalEvidence = Array.isArray(options.externalEvidence) ? options.externalEvidence : [];
   const runner = options.runner ?? execFileSync;
-  const raw = ghJson(
-    [
-      'api',
-      'graphql',
-      '-f',
-      `query=${QUERY}`,
-      '-F',
-      `owner=${owner}`,
-      '-F',
-      `name=${name}`,
-      '-F',
-      `number=${pullRequest}`,
-    ],
-    runner
-  );
-  if (raw.errors?.length) {
-    throw new Error(`live review-input collection failed: ${raw.errors[0].message}`);
+  let requests = 0;
+  let bytes = 0;
+  const boundedRunner = (...args) => {
+    if (++requests > MAX_LIVE_COLLECTION_REQUESTS)
+      throw new Error(`live collection exceeds the ${MAX_LIVE_COLLECTION_REQUESTS}-request bound`);
+    const response = runner(...args);
+    bytes += Buffer.byteLength(response, 'utf8');
+    if (bytes > MAX_LIVE_COLLECTION_BYTES)
+      throw new Error(
+        `live collection exceeds the ${MAX_LIVE_COLLECTION_BYTES}-byte cumulative payload bound`
+      );
+    return response;
+  };
+  function collect() {
+    const snapshot = collectReviewSnapshot({
+      owner,
+      name,
+      pullRequest,
+      read: (args) => ghJson(args, boundedRunner),
+    });
+    const live = buildLiveReviewInput(
+      snapshot.raw,
+      repositoryId,
+      pullRequest,
+      externalEvidence,
+      snapshot.files
+    );
+    live.input.reviewerPermissions = collectCurrentReviewerPermissions(live.input, {
+      runner: boundedRunner,
+    });
+    validateReviewInputSnapshot(live.input);
+    snapshot.verifyState();
+    return { live, anchor: snapshot.anchor };
   }
-  const livePullRequest = raw.data?.repository?.pullRequest;
-  if (!livePullRequest) throw new Error('live pull-request payload is malformed');
-  collectRemainingConnectionPages({
-    connection: livePullRequest.reviews,
-    field: 'reviews',
-    query: REVIEWS_PAGE_QUERY,
-    owner,
-    name,
-    pullRequest,
-    runner,
-  });
-  collectRemainingConnectionPages({
-    connection: livePullRequest.reviewThreads,
-    field: 'reviewThreads',
-    query: REVIEW_THREADS_PAGE_QUERY,
-    owner,
-    name,
-    pullRequest,
-    runner,
-  });
-  const filePages = ghJson(
-    [
-      'api',
-      '--paginate',
-      '--slurp',
-      `repos/${owner}/${name}/pulls/${pullRequest}/files?per_page=100`,
-    ],
-    runner
-  );
-  if (!Array.isArray(filePages) || !filePages.every(Array.isArray)) {
-    throw new Error('live changed-file collection is malformed');
-  }
-  const changedFiles = filePages.flat();
-  const live = buildLiveReviewInput(raw, repositoryId, pullRequest, externalEvidence, changedFiles);
-  live.input.reviewerPermissions = collectCurrentReviewerPermissions(live.input, { runner });
-  validateReviewInputSnapshot(live.input);
-  // Stable permission facts belong to the digest. Freshness comes from the
-  // mandatory live fetch on every collection, not a caller-supplied timestamp.
-  // Keep wall-clock observation metadata outside the hash so unchanged facts
-  // can still be compared at the action boundary.
-  live.permissionsObservedAt = (options.now ?? (() => new Date()))().toISOString();
-  return live;
+  // Two complete observations detect same-count edits/deletions, nested replies,
+  // changed check provenance and permission drift, not only head/count changes.
+  // This is bounded stability checking, not a server-side atomic snapshot.
+  const before = collect();
+  const after = collect();
+  if (
+    !isDeepStrictEqual(before.anchor, after.anchor) ||
+    computeReviewInputDigest(before.live.input) !== computeReviewInputDigest(after.live.input)
+  )
+    throw new Error('live review-input material state changed between complete collection scans');
+  after.live.permissionsObservedAt = (options.now ?? (() => new Date()))().toISOString();
+  return after.live;
 }

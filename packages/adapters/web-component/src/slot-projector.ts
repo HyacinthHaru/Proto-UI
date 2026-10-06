@@ -1,5 +1,7 @@
 // packages/adapters/web-component/src/slot-projector.ts
 
+import { isOwnedVisualNode } from './visual-surface';
+
 export class SlotProjector {
   private el: HTMLElement;
 
@@ -36,7 +38,7 @@ export class SlotProjector {
       if (this.el.contains(node) || (!this.slotEnd && !node.parentNode)) candidates.add(node);
     }
     for (const node of Array.from(this.el.childNodes)) {
-      if (!this.owned.has(node)) candidates.add(node);
+      if (!this.owned.has(node) && !isOwnedVisualNode(this.el, node)) candidates.add(node);
     }
     const roots = [...candidates].filter((node) => {
       for (let parent = node.parentNode; parent && parent !== this.el; parent = parent.parentNode) {
@@ -87,7 +89,7 @@ export class SlotProjector {
       if (m.type !== 'childList') continue;
       if (m.target !== this.el) continue; // 只处理 direct children 的新增
       for (const n of Array.from(m.addedNodes)) {
-        if (this.owned.has(n)) continue;
+        if (this.owned.has(n) || isOwnedVisualNode(this.el, n)) continue;
         // Ignore nodes that are already projected in-place before slotEnd.
         // This prevents re-moving the same node and creating a mutation loop.
         if (!this.shouldMoveToSlot(n)) continue;

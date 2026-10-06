@@ -23,6 +23,7 @@ import {
   verifyReconciliation,
 } from '../review-runtime.mjs';
 import { agentEvidence } from './fixtures/agent-evidence.mjs';
+import { withReviewTransportMetadata } from './fixtures/review-pagination.mjs';
 
 const root = path.resolve(fileURLToPath(new URL('../../..', import.meta.url)));
 const policy = parseYaml(
@@ -500,7 +501,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
     writeFileSync(
       fixturePath,
       JSON.stringify({
-        payload: {
+        payload: withReviewTransportMetadata({
           data: {
             viewer: { login: 'agent' },
             repository: {
@@ -537,7 +538,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
               },
             },
           },
-        },
+        }),
         filePages: [
           input.changedFiles.map((file) => ({ filename: file.path, status: file.status })),
         ],
@@ -555,7 +556,7 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
         assert.equal(command, 'gh');
         appendFileSync(process.env.PUI_REVIEW_TEST_CALLS, JSON.stringify(args) + '\\n');
         if (args[1] === 'graphql') return JSON.stringify(fixture.payload);
-        if (args.includes('--paginate')) return JSON.stringify(fixture.filePages);
+        if (args.some((arg) => arg.includes('/files?per_page=100&page=1'))) return JSON.stringify(fixture.filePages[0]);
         if (args.includes('POST')) {
           const request = JSON.parse(options.input);
           return JSON.stringify({
@@ -582,14 +583,30 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
         nextSkillId: 'pui-review',
         artifacts: [
           { type: 'authority-map', reference: 'review authority map' },
-          { type: 'candidate-change', reference: 'bounded candidate change' },
-          { type: 'evidence-report', reference: 'validation evidence' },
+          {
+            type: 'candidate-change',
+            reference: 'bounded candidate change',
+            digest: 'sha256:' + 'c'.repeat(64),
+          },
+          {
+            type: 'evidence-report',
+            reference: 'validation evidence',
+            digest: 'sha256:' + 'd'.repeat(64),
+          },
           { type: 'review-input', reference: inputPath },
         ],
         humanGates: [],
         notes: [],
       })
     );
+    const receivedPath = path.join(directory, 'received-validation-input.json');
+    const receivedValidationInput = JSON.parse(readFileSync(handoffPath, 'utf8'));
+    receivedValidationInput.fromId = 'pui-regression';
+    receivedValidationInput.nextSkillId = 'pui-validate';
+    receivedValidationInput.artifacts = receivedValidationInput.artifacts.filter(
+      (a) => a.type !== 'evidence-report'
+    );
+    writeFileSync(receivedPath, JSON.stringify(receivedValidationInput));
     const submit = (candidate, priorArgs = []) => {
       writeFileSync(packetPath, JSON.stringify(candidate));
       writeFileSync(callsPath, '');
@@ -611,6 +628,8 @@ test('submit-review CLI binds rendered live prior metadata before the mocked Git
             packetPath,
             '--handoff',
             handoffPath,
+            '--prior-handoff',
+            receivedPath,
             '--authorization',
             'explicit-current-user',
             ...priorArgs,
@@ -880,6 +899,34 @@ test('canonical review input is insensitive to top-level comment connection orde
       ),
     /duplicates comment id/
   );
+});
+
+test('completing an existing commit-progress comment invalidates same-head review evidence', () => {
+  const progress = {
+    id: 'IC_PROGRESS',
+    author: 'contributor',
+    body: `<!-- agent-commit-progress:Proto-UI/Proto-UI#487:${sha('b')} -->\nUI capture pending: preview startup failed.`,
+    updatedAt: '2026-08-23T02:00:00.000Z',
+  };
+  const pending = reviewInput({ comments: [progress] });
+  const previousPacket = packet({}, pending);
+  assert.equal(verifyLiveReviewInput(previousPacket, structuredClone(pending)), true);
+
+  const completed = reviewInput({
+    comments: [
+      {
+        ...progress,
+        body: `${progress.body}\nCompletion update: startup repaired; synthetic fixture capture https://example.com/commit-b.png; Web Component, 1280x800, light theme.`,
+      },
+    ],
+  });
+  // The comment ID, timestamp, and head are unchanged; its evidence body alone changed.
+  assert.notEqual(computeReviewInputDigest(completed), computeReviewInputDigest(pending));
+  assert.throws(
+    () => verifyLiveReviewInput(previousPacket, completed),
+    /live canonical review input does not match/
+  );
+  assert.equal(verifyLiveReviewInput(packet({}, completed), completed), true);
 });
 
 test('review input v5 binds identities, changed files, and check provenance while classifying spec entities', () => {
@@ -1218,7 +1265,7 @@ test('agent:review submit-review consumes the bound prior packet before any live
         entrypoint: 'development',
         executionMode: 'human-assisted',
         executionModeSource: 'current-user',
-        fromId: 'pui-validate',
+        fromId: 'pui-dev', // This fixture starts at review intake, not a validation transition.
         nextSkillId: 'pui-review',
         artifacts: [
           { type: 'authority-map', reference: 'review authority map' },
@@ -2147,14 +2194,30 @@ test('agent:review CLI validates and inspects the same packet contract used by t
         nextSkillId: 'pui-review',
         artifacts: [
           { type: 'authority-map', reference: 'review authority map' },
-          { type: 'candidate-change', reference: 'bounded candidate change' },
-          { type: 'evidence-report', reference: 'validation evidence' },
+          {
+            type: 'candidate-change',
+            reference: 'bounded candidate change',
+            digest: 'sha256:' + 'c'.repeat(64),
+          },
+          {
+            type: 'evidence-report',
+            reference: 'validation evidence',
+            digest: 'sha256:' + 'd'.repeat(64),
+          },
           { type: 'review-input', reference: inputPath },
         ],
         humanGates: [],
         notes: [],
       })
     );
+    const receivedPath = path.join(directory, 'received-validation-input.json');
+    const receivedValidationInput = JSON.parse(readFileSync(handoffPath, 'utf8'));
+    receivedValidationInput.fromId = 'pui-regression';
+    receivedValidationInput.nextSkillId = 'pui-validate';
+    receivedValidationInput.artifacts = receivedValidationInput.artifacts.filter(
+      (a) => a.type !== 'evidence-report'
+    );
+    writeFileSync(receivedPath, JSON.stringify(receivedValidationInput));
     const validation = JSON.parse(
       execFileSync(
         process.execPath,
@@ -2167,6 +2230,8 @@ test('agent:review CLI validates and inspects the same packet contract used by t
           inputPath,
           '--handoff',
           handoffPath,
+          '--prior-handoff',
+          receivedPath,
         ],
         {
           cwd: root,
@@ -2187,6 +2252,8 @@ test('agent:review CLI validates and inspects the same packet contract used by t
           inputPath,
           '--handoff',
           handoffPath,
+          '--prior-handoff',
+          receivedPath,
           '--current-base',
           sha('a'),
           '--current-head',
@@ -2209,6 +2276,8 @@ test('agent:review CLI validates and inspects the same packet contract used by t
           'eligibility',
           '--handoff',
           handoffPath,
+          '--prior-handoff',
+          receivedPath,
           '--review-class',
           'review-cross-domain-semantics',
         ],

@@ -35,6 +35,16 @@ export function diffBy<T, K = T>(
   return { added, removed };
 }
 
+/** Current follows document heading geometry, never a projected child or a
+ * large wrapper that happened to enter IntersectionObserver first. */
+export function currentHeadingIndex(tops: readonly number[], viewportTop: number): number {
+  if (tops.length === 0) return -1;
+  for (let i = tops.length - 1; i >= 0; i--) {
+    if (tops[i] <= viewportTop) return i;
+  }
+  return 0;
+}
+
 type VisibleSection = {
   id: string;
   heading: HTMLHeadingElement;
@@ -51,16 +61,27 @@ export class StarlightTOC extends HTMLElement {
   private _links: HTMLAnchorElement[] = [];
   private _visible: VisibleSection[] = [];
   private _rafScheduled = false;
+  private _rafId: number | undefined;
+  private _idleId: number | undefined;
+  private _idleUsesTimeout = false;
+  private _initialized = false;
+  private _observer: IntersectionObserver | undefined;
+  private _resizeTimer: number | undefined;
+  private _layoutObserver: ResizeObserver | undefined;
+  private _highlight: HTMLElement | null = null;
+  private _onLayout = () => this.scheduleVisibleUpdate();
   private _onScroll = () => this.scheduleVisibleUpdate();
   private _onResize = () => {
-    // 布局变化大，重收集并更新一次
     this.collectHeadings();
     this.scheduleVisibleUpdate();
-    // 同时走原有的 observer resize 逻辑（保持原功能）
-    // 这里不触碰原 observer 的实现，仍交由 init 中的 resize 监听处理
+    this._observer?.disconnect();
+    this._observer = undefined;
+    window.clearTimeout(this._resizeTimer);
+    this._resizeTimer = window.setTimeout(() => {
+      this._resizeTimer = undefined;
+      this.observeCurrent();
+    }, 200);
   };
-  private _highlightEl?: HTMLDivElement;
-  private _rafToken = 0;
 
   /** 对外只读：当前“可见小节”列表（顺序按文档流） */
   public get visibleSections(): ReadonlyArray<VisibleSection> {
@@ -83,42 +104,18 @@ export class StarlightTOC extends HTMLElement {
     this._current = link;
   }
 
-  private onIdle = (cb: IdleRequestCallback) =>
-    (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
-
-  constructor() {
-    super();
-    this.onIdle(() => this.init());
-  }
-
   connectedCallback() {
-    // 确保容器可作为定位上下文
-    this.classList.add('relative'); // Tailwind
-    // 惰性创建高亮背景
-    if (!this._highlightEl) {
-      const el = document.createElement('div');
-      el.setAttribute('aria-hidden', 'true');
-      el.className = [
-        // 视觉
-        'bg-primary/5', // 10% 透明度
-        'rounded-sm',
-        // 布局
-        'absolute',
-        'pointer-events-none',
-        // 动画
-        'transition-all',
-        'duration-300',
-        'ease-out',
-        // 初始状态
-        'opacity-0',
-      ].join(' ');
-      // 起始位移以便过渡更顺滑（可选）
-      el.style.inset = '0px auto auto 0px';
-      el.style.width = '0px';
-      el.style.height = '0px';
-      this.appendChild(el);
-      this._highlightEl = el;
-    }
+    if (this._initialized || this._idleId !== undefined) return;
+    const initialize = () => {
+      this._idleId = undefined;
+      if (!this.isConnected || this._initialized) return;
+      this._initialized = true;
+      this.init();
+    };
+    this._idleUsesTimeout = !window.requestIdleCallback;
+    this._idleId = this._idleUsesTimeout
+      ? window.setTimeout(initialize, 1)
+      : window.requestIdleCallback(initialize);
   }
 
   /** ===== 新增：收集参与 TOC 的 heading 与链接 ===== */
@@ -136,10 +133,14 @@ export class StarlightTOC extends HTMLElement {
     if (title instanceof HTMLHeadingElement) list.push(title);
     nodes.forEach((h) => list.push(h));
 
+    // Only generated TOC destinations participate. Embedded component headings
+    // (including hidden modal titles) do not own a reading-position link.
+    const linkedHashes = new Set(this._links.map((link) => link.hash));
     // 去重并保持文档顺序
     const seen = new Set<string>();
     this._headings = list.filter((h) => {
-      if (!h.id || seen.has(h.id)) return false;
+      if (!h.id || seen.has(h.id) || !linkedHashes.has('#' + encodeURIComponent(h.id)))
+        return false;
       seen.add(h.id);
       return true;
     });
@@ -167,50 +168,6 @@ export class StarlightTOC extends HTMLElement {
     return docTop + rect.top;
   }
 
-  // 根据 _visible[0] 到 _visible[last] 更新高亮矩形
-  private updateHighlight() {
-    const bg = this._highlightEl!;
-    // 没有任何可见 link -> 隐藏
-    if (!this._visible.length) {
-      bg.style.opacity = '0';
-      // 也可以把尺寸收起，避免残留
-      bg.style.width = '0px';
-      bg.style.height = '0px';
-      return;
-    }
-    const horizontalPadding = 16;
-    const verticalPadding = 4;
-
-    // 取第一个与最后一个 link
-    const first = this._visible[0].link;
-    const last = this._visible[this._visible.length - 1].link;
-
-    // 计算相对当前 TOC 容器的矩形
-    const containerRect = this.getBoundingClientRect();
-    const firstRect = first.getBoundingClientRect();
-    const lastRect = last.getBoundingClientRect();
-
-    // 左上对齐第一个；右下对齐最后一个
-    const left = firstRect.left - containerRect.left + this.scrollLeft - horizontalPadding;
-    const top = firstRect.top - containerRect.top + this.scrollTop - verticalPadding;
-    const right = lastRect.right - containerRect.left + this.scrollLeft + horizontalPadding;
-    const bottom = lastRect.bottom - containerRect.top + this.scrollTop + verticalPadding;
-
-    const width = Math.max(0, right - left);
-    const height = Math.max(0, bottom - top);
-
-    // rAF 合帧，避免抖动
-    cancelAnimationFrame(this._rafToken);
-    this._rafToken = requestAnimationFrame(() => {
-      // 只用定位 + 尺寸，过渡交给 Tailwind 的 transition-all
-      bg.style.left = `${left}px`;
-      bg.style.top = `${top}px`;
-      bg.style.width = `${width}px`;
-      bg.style.height = `${height}px`;
-      bg.style.opacity = '1';
-    });
-  }
-
   // 替换：用 [headingTop, nextHeadingTop) 区间判断“可见小节”
   private updateVisibleNow() {
     const { top: vpTop, bottom: vpBottom } = this.getViewportBounds();
@@ -222,11 +179,16 @@ export class StarlightTOC extends HTMLElement {
         this._visible = [];
         this.emitVisibleChange();
       }
+      this.writeHighlight(null);
       return;
     }
 
     // 预先算好每个标题的绝对 top
     const tops = heads.map((h) => this.getHeadingTop(h));
+    const currentHeading = heads[currentHeadingIndex(tops, vpTop)];
+    const currentLink = this._links.find(
+      (link) => link.hash === '#' + encodeURIComponent(currentHeading.id)
+    );
 
     const next: VisibleSection[] = [];
     for (let i = 0; i < n; i++) {
@@ -243,6 +205,12 @@ export class StarlightTOC extends HTMLElement {
       }
     }
 
+    // Finish the shared range reads before publishing current/in-view writes.
+    // This adds at most three rect reads per existing TOC frame, not one per link.
+    const geometry = this.readHighlight(next);
+    if (currentLink) this.current = currentLink;
+    this.writeHighlight(geometry);
+
     // 只在实际变化时触发
     const { added, removed } = diffBy(this._visible, next, (s) => s.id);
     const changed = added.length > 0 || removed.length > 0;
@@ -256,103 +224,100 @@ export class StarlightTOC extends HTMLElement {
       });
       this._visible = next;
       this.emitVisibleChange();
-      this.updateHighlight();
     }
+  }
+
+  private readHighlight(sections: readonly VisibleSection[]) {
+    if (!this._highlight || !sections.length) return null;
+    const first = sections[0].link;
+    const last = sections[sections.length - 1].link;
+    if (!first || !last) return null;
+    const container = this.getBoundingClientRect();
+    const start = first.getBoundingClientRect();
+    const end = last === first ? start : last.getBoundingClientRect();
+    if (!container.width || !start.width || !end.height) return null;
+    const left = Math.min(start.left, end.left) - container.left + this.scrollLeft;
+    const top = start.top - container.top + this.scrollTop;
+    const width = Math.max(start.right, end.right) - Math.min(start.left, end.left);
+    const height = end.bottom - start.top;
+    return height > 0 ? { left, top, width, height } : null;
+  }
+
+  private writeHighlight(geometry: ReturnType<StarlightTOC['readHighlight']>) {
+    const range = this._highlight;
+    if (!range) return;
+    if (!geometry) {
+      range.removeAttribute('data-toc-range-visible');
+      return;
+    }
+    const values = {
+      transform: `translate(${geometry.left}px, ${geometry.top}px)`,
+      width: `${geometry.width}px`,
+      height: `${geometry.height}px`,
+    };
+    for (const [property, value] of Object.entries(values)) {
+      if (range.style.getPropertyValue(property) !== value)
+        range.style.setProperty(property, value);
+    }
+    if (!range.hasAttribute('data-toc-range-visible'))
+      range.setAttribute('data-toc-range-visible', '');
+  }
+
+  private flushObservedLayout() {
+    if (!this._initialized || !this.isConnected) return;
+    // ResizeObserver runs after layout and before paint. Deferring this
+    // invalidation to another rAF paints one frame with the old current/range
+    // after fonts or wrapping have already moved the headings. Reuse the same
+    // read-before-write pass and consume any queued scroll invalidation.
+    if (this._rafId !== undefined) cancelAnimationFrame(this._rafId);
+    this._rafId = undefined;
+    this._rafScheduled = false;
+    this.updateVisibleNow();
   }
 
   /** ===== 新增：rAF 节流封装 ===== */
   private scheduleVisibleUpdate() {
     if (this._rafScheduled) return;
     this._rafScheduled = true;
-    requestAnimationFrame(() => {
+    this._rafId = requestAnimationFrame(() => {
+      this._rafId = undefined;
       this._rafScheduled = false;
-      this.updateVisibleNow();
-      this.updateHighlight();
+      if (this.isConnected) this.updateVisibleNow();
     });
   }
 
   private init = (): void => {
-    /** All the links in the table of contents. */
-    const links = [...this.querySelectorAll('a')];
-
-    /** Test if an element is a table-of-contents heading. */
-    const isHeading = (el: Element): el is HTMLHeadingElement => {
-      if (el instanceof HTMLHeadingElement) {
-        // Special case for page title h1
-        if (el.id === PAGE_TITLE_ID) return true;
-        // Check the heading level is within the user-configured limits for the ToC
-        const level = el.tagName[1];
-        if (level) {
-          const int = parseInt(level, 10);
-          if (int >= this.minH && int <= this.maxH) return true;
-        }
-      }
-      return false;
-    };
-
-    /** Walk up the DOM to find the nearest heading. */
-    const getElementHeading = (el: Element | null): HTMLHeadingElement | null => {
-      if (!el) return null;
-      const origin = el;
-      while (el) {
-        if (isHeading(el)) return el;
-        // Assign the previous sibling’s last, most deeply nested child to el.
-        el = el.previousElementSibling;
-        while (el?.lastElementChild) {
-          el = el.lastElementChild;
-        }
-        // Look for headings amongst siblings.
-        const h = getElementHeading(el);
-        if (h) return h;
-      }
-      // Walk back up the parent.
-      return getElementHeading(origin.parentElement);
-    };
-
-    /** Handle intersections and set the current link to the heading for the current intersection. */
-    const setCurrent: IntersectionObserverCallback = (entries) => {
-      for (const { isIntersecting, target } of entries) {
-        if (!isIntersecting) continue;
-        const heading = getElementHeading(target);
-        if (!heading) continue;
-        const link = links.find((link) => link.hash === '#' + encodeURIComponent(heading.id));
-        if (link) {
-          this.current = link;
-          break;
-        }
-      }
-    };
-
-    // Observe elements with an `id` (most likely headings) and their siblings.
-    // Also observe direct children of `.content` to include elements before
-    // the first heading.
-    const toObserve = document.querySelectorAll('main [id], main [id] ~ *, main .content > *');
-
-    let observer: IntersectionObserver | undefined;
-    const observe = () => {
-      if (observer) return;
-      observer = new IntersectionObserver(setCurrent, { rootMargin: this.getRootMargin() });
-      toObserve.forEach((h) => observer!.observe(h));
-    };
-    observe();
-
-    let timeout: NodeJS.Timeout;
-    window.addEventListener('resize', () => {
-      // Disable intersection observer while window is resizing.
-      if (observer) {
-        observer.disconnect();
-        observer = undefined;
-      }
-      clearTimeout(timeout);
-      timeout = setTimeout(() => this.onIdle(observe), 200);
-    });
-
+    // Upgraded HTML and parser-created custom elements attach children at
+    // different points; acquire the authored current link after idle setup.
+    this._current = this.querySelector<HTMLAnchorElement>('a[aria-current="true"]');
     /** ===== 新增：初始化“可见小节”维护 ===== */
+    this.minH = parseInt(this.dataset.minH || '2', 10);
+    this.maxH = parseInt(this.dataset.maxH || '3', 10);
+    this._highlight = this.querySelector<HTMLElement>('[data-site-toc-highlight]');
     this.collectHeadings(); // 1) 收集标题
+    this.observeCurrent();
     this.updateVisibleNow(); // 2) 初始化完成后立刻计算一次
     window.addEventListener('scroll', this._onScroll, { passive: true }); // 3) 监听滚动
     window.addEventListener('resize', this._onResize); //    监听尺寸变化
+    window.addEventListener('hashchange', this._onLayout);
+    window.addEventListener('pageshow', this._onLayout);
+    document.fonts?.addEventListener('loadingdone', this._onLayout);
+    if (typeof ResizeObserver !== 'undefined') {
+      this._layoutObserver = new ResizeObserver(() => this.flushObservedLayout());
+      // Content/font/runtime layout can change without a viewport resize.
+      for (const target of [this, document.querySelector('main'), document.querySelector('header')])
+        if (target) this._layoutObserver.observe(target);
+    }
   };
+
+  private observeCurrent() {
+    if (this._observer || !this.isConnected) return;
+    // Entries are invalidation only; large wrappers never get their own current.
+    this._observer = new IntersectionObserver(() => this.scheduleVisibleUpdate(), {
+      rootMargin: this.getRootMargin(),
+    });
+    this._headings.forEach((heading) => this._observer!.observe(heading));
+  }
 
   private getRootMargin(): `-${number}px 0% ${number}px` {
     const navBarHeight = document.querySelector('header')?.getBoundingClientRect().height || 0;
@@ -370,6 +335,27 @@ export class StarlightTOC extends HTMLElement {
   disconnectedCallback() {
     window.removeEventListener('scroll', this._onScroll);
     window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('hashchange', this._onLayout);
+    window.removeEventListener('pageshow', this._onLayout);
+    document.fonts?.removeEventListener('loadingdone', this._onLayout);
+    this._layoutObserver?.disconnect();
+    this._layoutObserver = undefined;
+    this.writeHighlight(null);
+    this._highlight = null;
+    if (this._idleId !== undefined) {
+      if (this._idleUsesTimeout) window.clearTimeout(this._idleId);
+      else window.cancelIdleCallback?.(this._idleId);
+    }
+    if (this._rafId !== undefined) cancelAnimationFrame(this._rafId);
+    window.clearTimeout(this._resizeTimer);
+    this._observer?.disconnect();
+    for (const section of this._visible) section.link?.removeAttribute('in-view');
+    this._idleId = this._rafId = this._resizeTimer = undefined;
+    this._observer = undefined;
+    this._initialized = this._rafScheduled = false;
+    this._visible = [];
+    this._headings = [];
+    this._links = [];
   }
 }
 

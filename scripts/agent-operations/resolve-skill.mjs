@@ -1,3 +1,8 @@
+import {
+  ownerAuthorizationFromArgs,
+  ownerAuthorizationAllows,
+  ownerSkillEligibility,
+} from './owner-authorization.mjs';
 import fs from 'node:fs';
 import process from 'node:process';
 import {
@@ -16,27 +21,35 @@ import {
 import { skillRegistryRoot } from './skill-registry.mjs';
 
 function usage() {
-  return 'Usage: pnpm agent:skill -- <leaf-id> --mode human-assisted|autonomous --mode-source <trusted-source> [--assessment <result.json>] | --handoff <handoff.json> [--assessment <result.json>]\n';
+  return 'Usage: pnpm agent:skill -- <leaf-id> --mode human-assisted|autonomous --mode-source <trusted-source> [--assessment <result.json>] | --handoff <handoff.json> [--prior-handoff <received-handoff.json>] [--assessment <result.json>]\n';
 }
 
 function parse(argv) {
   if (argv[0] === '--') argv = argv.slice(1);
   const handoffIndex = argv.indexOf('--handoff');
+  const priorHandoffIndex = argv.indexOf('--prior-handoff');
   const modeIndex = argv.indexOf('--mode');
   const modeSourceIndex = argv.indexOf('--mode-source');
   const assessmentIndex = argv.indexOf('--assessment');
+  const ownerSupplied = ['--owner-authorization', '--owner-key', '--owner-grant'].some((name) =>
+    argv.includes(name)
+  );
   const args = {};
   if (handoffIndex >= 0) args.handoffPath = argv[handoffIndex + 1];
   else if (argv[0] && !argv[0].startsWith('-')) args.id = argv[0];
+  if (priorHandoffIndex >= 0) args.priorHandoffPath = argv[priorHandoffIndex + 1];
   if (modeIndex >= 0) args.executionMode = argv[modeIndex + 1];
   if (modeSourceIndex >= 0) args.executionModeSource = argv[modeSourceIndex + 1];
   if (assessmentIndex >= 0) args.assessmentPath = argv[assessmentIndex + 1];
   if (
-    ((args.handoffPath && modeIndex < 0 && modeSourceIndex < 0) ||
+    ((args.handoffPath &&
+      ((!ownerSupplied && modeIndex < 0 && modeSourceIndex < 0) ||
+        (ownerSupplied && modeIndex >= 0 && modeSourceIndex >= 0))) ||
       (args.id && modeIndex >= 0 && modeSourceIndex >= 0)) &&
-    ![handoffIndex, modeIndex, modeSourceIndex, assessmentIndex].some(
+    ![handoffIndex, priorHandoffIndex, modeIndex, modeSourceIndex, assessmentIndex].some(
       (i) => i >= 0 && !argv[i + 1]
     ) &&
+    (priorHandoffIndex < 0 || handoffIndex >= 0) &&
     (modeIndex < 0 || modeSourceIndex >= 0)
   )
     return args;
@@ -45,13 +58,28 @@ function parse(argv) {
 
 try {
   const args = parse(process.argv.slice(2));
+  const ownerArgs = new Map();
+  for (const name of ['--owner-authorization', '--owner-key', '--owner-grant']) {
+    const i = process.argv.indexOf(name);
+    if (i >= 0) ownerArgs.set(name, process.argv[i + 1]);
+  }
+  const ownerAuthorization = ownerAuthorizationFromArgs(ownerArgs);
   const registry = loadSkillRegistry();
   let skill;
   let terminal = false;
   let handoff = null;
   if (args.handoffPath) {
     handoff = JSON.parse(fs.readFileSync(args.handoffPath, 'utf8'));
-    const result = validateSkillHandoff(handoff, registry);
+    if (ownerAuthorization) {
+      establishExecutionMode(args.executionMode, args.executionModeSource);
+      for (const key of ['executionMode', 'executionModeSource'])
+        if (handoff[key] !== args[key])
+          throw Error('delegated handoff ' + key + ' differs from trusted invocation');
+    }
+    const priorHandoff = args.priorHandoffPath
+      ? JSON.parse(fs.readFileSync(args.priorHandoffPath, 'utf8'))
+      : null;
+    const result = validateSkillHandoff(handoff, registry, { priorHandoff });
     skill = result.nextSkill;
     terminal = skill === null;
   } else {
@@ -72,11 +100,20 @@ try {
     const fresh = isSelfAssessmentFresh(result, snapshot);
     selfAssessment = { ...result, fresh, validated: true };
   }
+  const ownerContext = {
+    ownerAuthorization,
+    entrypoint: handoff?.entrypoint ?? 'development',
+    executionMode,
+    repositoryId: handoff?.binding?.repositoryId ?? ownerAuthorization?.repositoryId,
+    scopeId: handoff?.binding?.scopeId,
+    executionModeSource: args.executionModeSource ?? handoff?.executionModeSource,
+  };
   const directAutonomousTransition =
     !args.handoffPath &&
     executionMode === 'autonomous' &&
     skill &&
-    !['pui-orient', 'pui-assess'].includes(skill.id);
+    !['pui-orient', 'pui-assess'].includes(skill.id) &&
+    !ownerSkillEligibility(skill, ownerContext);
   const eligibility = directAutonomousTransition
     ? {
         eligible: false,
@@ -84,7 +121,7 @@ try {
         reason: 'autonomous transitions must arrive through a validated pui-orient handoff',
       }
     : executionMode && skill
-      ? evaluateSkillEligibility(skill, { executionMode, selfAssessment })
+      ? evaluateSkillEligibility(skill, { executionMode, selfAssessment, ...ownerContext })
       : null;
   const blocked = eligibility?.eligible === false;
   const output = terminal
@@ -106,6 +143,9 @@ try {
             mutation: skill.mutation,
             requires: skill.requires,
             produces: skill.produces,
+            ...(skill.allowedNextSkillIds
+              ? { allowedNextSkillIds: skill.allowedNextSkillIds }
+              : {}),
           },
         };
   process.stdout.write(`${JSON.stringify(output, null, 2)}\n`);

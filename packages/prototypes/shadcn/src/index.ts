@@ -257,3 +257,8 @@ export type {
   ShadcnRadioGroupIndicatorStateHandles,
   ShadcnRadioGroupIndicatorAsHookContract,
 } from './radio-group';
+export * from './text';
+
+export { default as ShadcnSurfaceRoot, surfaceRoot } from './surface';
+
+export type { SurfaceRootProps, SurfaceRootExposes } from './surface';
