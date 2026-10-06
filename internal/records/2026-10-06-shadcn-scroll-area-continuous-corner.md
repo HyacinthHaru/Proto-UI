@@ -1,0 +1,32 @@
+# Shadcn Scroll Area: continuous corner
+
+## Request and baseline
+
+The maintainer rejected the isolated lower-right square introduced by #779 and requested a comparison with Apple and shadcn design. This is Issue #861's bounded visual correction at baseline `20b1f06f505555b50fb9aaf4aada5be475f507b5`, after the earlier geometry and private-style prerequisites merged. The earlier records retain their historical intent and evidence. The private feedback image is not a repository asset.
+
+The audience is a documentation reader trying both native scrolling axes and draggable custom indicators. Scrollability must remain apparent; the intersection is not a button or a status indicator. A separate muted tile and two divider strokes overstate its importance. The desired result is a continuous content surface with unobtrusive rounded indicators and a consistent outer silhouette.
+
+## Reference comparison
+
+Inspected 2026-10-06:
+
+- The existing pinned [shadcn source](https://github.com/shadcn-ui/ui/blob/f31ed81983653919dd4fe77aee4b4859f610f1dc/apps/v4/registry/new-york-v4/ui/scroll-area.tsx) has an unstyled Corner. Its tracks use one-pixel padding and a transparent axis-side border, with a rounded `bg-border` Thumb. The consumer chooses the Root's frame; the Viewport inherits its radius. Current [official documentation](https://ui.shadcn.com/docs/components/scroll-area) and current official Radix source were also inspected; the documentation currently redirects to a Base UI variant. That evolving page does not replace the frozen comparison baseline or grant API equivalence.
+- Apple's [Scroll views HIG](https://developer.apple.com/design/human-interface-guidelines/scroll-views) describes unobtrusive indicators, typically appearing during scrolling, and familiar gestures/keyboard behavior. [AppKit preferredScrollerStyle](https://developer.apple.com/documentation/appkit/nsscroller/preferredscrollerstyle) derives overlay or legacy presentation from preferences and input devices. These are separate presentation modes; there is no universal Apple corner tile or blur requirement to copy.
+
+Proto UI keeps its documented deltas: the Viewport's fixed `rounded-md`, clipped Root, two-pixel transparent track borders, absolute physical edge placement and fallible composed preference. This repair does not implement upstream auto-hide, inherited radius, Radix DOM, or macOS system behavior. Existing MIT attribution in the Shadcn package remains unchanged. No third-party code is executed or new asset copied.
+
+## Ownership and implementation
+
+`P-BASE-SCROLL-AREA` keeps exactly Root, Viewport, Scrollbar and Thumb. The Scroll host owns `--proto-ui-scroll-track-end-inset`, actual opposite-track thickness, control measurements, endpoints and requests. That implementation is unchanged. The removed Shadcn spans were only passive paint, not layout reservations. Removing the extra rendering watcher is safe because Base already watches and projects orientation; caller slots no longer share their track with a private subtree.
+
+`P-SHADCN-SCROLL-AREA-SCROLLBAR-CORNER` remains draft and now requires the underlying Root surface to continue through the reserved intersection without a tile or divider. The public prototype owns the correction; there is no website CSS mask. The demo adds existing `rounded-md` to its consumer-owned Root so its outline agrees with the existing Viewport, without changing content, dimensions, or adding an API. Brutalist's separate corner paint is untouched.
+
+Generated Shadcn style and GPUI inventories are regenerated from source. The now-unemitted `height: calc(100% + 4px)` value is removed from GPUI's exact unmapped inventory, not mapped as a newly supported length. Brutalist's remaining `+ 2px` limitation stays explicit.
+
+## Evidence
+
+A real Web Component regression failed against baseline because the horizontal Scrollbar added the extra gray-corner spans. It now asserts no extra paint/control and stable caller slots through repeated horizontal/vertical changes and disposal. Existing Base/shared-host tests retain the measured insets, hidden/opposite-track cases, fractional geometry and drag behavior.
+
+The source-bound Actions harness keeps both actual families and all four Web runtimes. For Shadcn it checks absent paint, transparent track backgrounds, matching Root/Viewport radii and strict non-control hit testing. It retains two-axis dragging, unchanged focus geometry, hidden tracks, fractional thickness and overflow transitions. Same-size initial and double-end light/dark captures are made for baseline and candidate. Reduced-motion and forced-color captures are distinct observations for visual inspection, not geometry-based contrast certification.
+
+Local Chromium launch failed on a socket permission error before any page rendered. The `tsx` executable also could not create its IPC socket; its equivalent Node `--import tsx` entry runs the generator without that IPC dependency. Native screenshots, exact-head repository CI, macOS inventory validation and independent acceptance remain pending at this first publication. Source/unit evidence is not claimed as native visual acceptance. Horizontal RTL normalization remains the documented deferred host scope; this paint-only repair does not add or claim it.

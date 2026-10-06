@@ -481,13 +481,6 @@ const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 11] = [
          this Web-only passive presentation is explicitly unmapped, not rounded to 100%.",
     ),
     (
-        "height",
-        "calc(100% + 4px)",
-        "Shadcn Scroll Area's private Web corner accounts for both track borders. \
-         GPUI cannot add a fixed border length to a parent fraction without layout context; \
-         this Web-only passive presentation is explicitly unmapped, not rounded to 100%.",
-    ),
-    (
         "position",
         "fixed",
         "GPUI absolute positioning is ancestor-relative and cannot preserve CSS viewport-fixed behavior.",
