@@ -47,6 +47,8 @@ const cases = [
   // Independent #809 material lifetime baseline; coordinated with #819's
   // narrower React allowance, not a feature-local gate bypass. Evidence:
   // internal/records/2026-10-04-material-budget-transaction.json
+  // Current #832 + #809 startup reconciliation: 69,200 cap, 247-byte headroom.
+  // internal/records/2026-10-06-focus-startup-budget-reconciliation.json
   ['runtime root', 'packages/runtime/src/index.ts', 69_200],
   // #623 scroll end-follow, #625 direct-reference transport, and the earlier
   // #652 baseline proposal were measured on merge-ref main c473eae3 at React
@@ -59,6 +61,9 @@ const cases = [
   // #549 adds 2,593 / 2,613 gzip bytes over main 9d9552bb: 85,351 / 85,093.
   // Independent terminal cleanup/reentry follow-up, with exact combined evidence:
   // internal/records/2026-10-04-material-terminal-budget-followup.json
+  // Current #832 + #809 startup reconciliation: React 91,000 / Vue 90,800,
+  // with 217 / 193 bytes of headroom; earlier records above retain history.
+  // internal/records/2026-10-06-focus-startup-budget-reconciliation.json
   ['adapter-react root', 'packages/adapters/react/src/index.ts', 91_000],
   ['adapter-vue root', 'packages/adapters/vue/src/index.ts', 90_800],
   // The earlier #652 shadow split baseline proposal measured 84,683 gzip at
