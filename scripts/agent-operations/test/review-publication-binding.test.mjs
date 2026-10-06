@@ -12,7 +12,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { readPublishedReviewPacket } from '../published-review-packet.mjs';
 import { modelTraceFixture, writeModelTraceFixture } from './fixtures/modeltrace.mjs';
 
@@ -757,7 +757,7 @@ test('merge CLI rejects missing, oversized, and unbound originals before any Git
         process.execPath,
         [
           '--import',
-          preloadPath,
+          pathToFileURL(preloadPath).href,
           path.join(root, 'scripts/agent-operations/review-packet.mjs'),
           'merge-pull-request',
           '--mode',

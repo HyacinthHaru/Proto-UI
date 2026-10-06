@@ -3,7 +3,7 @@ import searchIcon from '../../../../packages/prototypes/lucide/src/icons/search'
 import closeIcon from '../../../../packages/prototypes/lucide/src/icons/x';
 import { registerPrototype } from './PrototypePreviewer/registry';
 import { PREFERRED_ADAPTER_EVENT, PREFERRED_ADAPTER_KEY } from './adapter-preference';
-import { isRuntimeId, type RuntimeId } from './PrototypePreviewer/runtimes/registry';
+import { isRuntimeId, type RuntimeId } from './PrototypePreviewer/runtimes/ids';
 import {
   createProjectionScopeController,
   type ProjectionScopeCommit,

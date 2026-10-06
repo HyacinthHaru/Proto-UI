@@ -1,6 +1,6 @@
 import { bindSiteSelectDismissal } from '../site-select-dismissal';
 import { siteTextRecipe } from '../site-text-recipes';
-import type { RuntimeId } from './runtimes/registry';
+import type { RuntimeId } from './runtimes/ids';
 import {
   assertDemoSpec,
   type DemoBoxAttrs,

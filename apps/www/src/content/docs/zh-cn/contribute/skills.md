@@ -68,15 +68,16 @@ Handoff 携带有类型的产物，最多指向一个下个 skill。终态 hando
 
 检查类叶子保持只读 intake 与诊断；credential 边界用于保护观察过程，并不限制后续 skill 链。`pui-collaborate` 会在 current-user 或 standing authorization 下执行一个 exact-target、可逆的 metadata、update-branch、ready-for-review、thread、review-request、status-comment 或 CI recheck 动作。其注册 runtime 会核验 purpose-bound request digest 与最新 live state，只执行零次或一次 mutation，对未知结果仅 reconciliation 一次且不盲目重试，并返回经过 schema 校验的 receipt；review disposition 与 merge 继续使用各自独立的 exact-head 叶子。
 
-| Skill                   | 完成的一次转换                                         |
-| ----------------------- | ------------------------------------------------------ |
-| `pui-issue`             | 从一段 Issue 队列得到协作状态报告                      |
-| `pui-pr`                | 从一段 PR 队列得到集成状态报告                         |
-| `pui-ci`                | 从一次 workflow 故障得到归属与证据图                   |
-| `pui-govern`            | 从一个协作问题得到治理漂移报告                         |
-| `pui-deploy`            | 从一个交付面得到与 revision 绑定的证据报告             |
-| `pui-deps`              | 从一个依赖问题得到影响和风险报告                       |
+| Skill | 完成的一次转换 |
+| --- | --- |
+| `pui-issue` | 从一段 Issue 队列得到协作状态报告 |
+| `pui-pr` | 从一段 PR 队列得到集成状态报告 |
+| `pui-ci` | 从一次 workflow 故障得到归属与证据图 |
+| `pui-govern` | 从一个协作问题得到治理漂移报告 |
+| `pui-deploy` | 从一个交付面得到与 revision 绑定的证据报告 |
+| `pui-deps` | 从一个依赖问题得到影响和风险报告 |
 | `pui-dependency-update` | 从已治理依赖报告得到有边界的 manifest 与 lockfile 更新 |
+| `pui-package-budget` | 从已接受能力的成本证据得到有边界的包体数值预算事务；保留阻断检查与独立复核 |
 
 ## 准备和核验发布
 

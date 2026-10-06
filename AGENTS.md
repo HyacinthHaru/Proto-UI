@@ -26,6 +26,8 @@ Read `internal/agent-operations/contributor-agents.md` before selecting work aut
 
 An Agent defaults to selecting and claiming ready, bounded, unclaimed work with explicit acceptance and validation boundaries, then continues through implementation, evidence, review response, ready-for-review, and exact-head integration while current-user or standing authorization covers those transitions. Returning no eligible work is correct, but routine review, commit grouping, or merge mechanics are not reasons to stop. Pause only when existing authority leaves product direction unresolved or the next action is privileged or difficult to reverse, such as publication, release, access, secrets, rulesets, security disclosure, or a provenance exception. Never manufacture a task, bypass a real `needs semantic decision` boundary, or treat a high assessment score as semantic authority.
 
+For an accepted capability within authorized work, Agents may decide bounded numeric package-budget increases without an additional human gate. Follow [`pui-dev`'s package-budget evidence rules](.agents/skills/pui-dev/SKILL.md#decide-package-budget-ceilings); canonical measurements, separately reviewable transactions, independent review and all other gates remain required.
+
 ## Authority and conflicts
 
 `spec/**` is the machine-governed source of truth for the project, but entity lifecycle matters:

@@ -49,6 +49,7 @@ export function createViewEpochOwner<P extends PropsBaseType>(args: {
   let viewIntent: ViewIntentSnapshot | null = null;
   let unsubscribeIntent: (() => void) | null = null;
   let disposed = false;
+  let viewVersion = 0;
 
   const disposeView = () => {
     const current = viewDisposer;
@@ -109,6 +110,7 @@ export function createViewEpochOwner<P extends PropsBaseType>(args: {
       }
 
       disposeView();
+      const version = ++viewVersion;
       viewDisposer = input.disposeView;
 
       if (!wiring) {
@@ -118,12 +120,40 @@ export function createViewEpochOwner<P extends PropsBaseType>(args: {
         return session;
       }
 
-      wiring.replace(input.modules);
-      if (!session) {
-        throw new Error(`[AdapterHost] missing session for ${args.prototypeName}`);
+      try {
+        wiring.replace(input.modules);
+        if (!session) {
+          throw new Error(`[AdapterHost] missing session for ${args.prototypeName}`);
+        }
+        void session.mount();
+        return session;
+      } catch (error) {
+        // Roll back only this failed lease; cleanup can synchronously attach a
+        // replacement, whose disposer and capabilities must remain untouched.
+        if (viewVersion === version) {
+          viewDisposer = null;
+          try {
+            // A first-frame failure can leave the Runtime in its mounting phase.
+            // End that failed epoch before a replacement capability can replay.
+            void session?.unmount().catch(() => {});
+          } catch {
+            /* Continue releasing the failed view after a lifecycle error. */
+          }
+          try {
+            input.disposeView();
+          } catch {
+            /* Preserve the original attach failure while restoring owner caps. */
+          }
+          if (viewVersion === version && wiring && ownerModules) {
+            try {
+              wiring.replace(ownerModules);
+            } catch {
+              /* Keep the owning attach error, not a secondary release error. */
+            }
+          }
+        }
+        throw error;
       }
-      void session.mount();
-      return session;
     },
     detachView() {
       const result = session?.unmount() ?? Promise.resolve();

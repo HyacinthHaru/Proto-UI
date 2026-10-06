@@ -68,15 +68,16 @@ A handoff carries typed artifacts and at most one next skill. A terminal handoff
 
 The inspection leaves are read-only intake and diagnosis transitions. Their credential boundary protects observation; it does not cap the follow-on skill chain. `pui-collaborate` then applies one exact-target reversible metadata, update-branch, ready-for-review, thread, review-request, status-comment, or CI-recheck action under current-user or standing authorization. Its registered runtime verifies a purpose-bound request digest and fresh live state, performs zero or one mutation, reconciles an unknown outcome once without retrying, and returns a schema-validated receipt. Review disposition and merge retain their separate exact-head leaves.
 
-| Skill                   | One transition                                                       |
-| ----------------------- | -------------------------------------------------------------------- |
-| `pui-issue`             | Bounded Issue portfolio to an operations report                      |
-| `pui-pr`                | Bounded pull-request portfolio to an integration-state report        |
-| `pui-ci`                | One workflow failure to an owning evidence map                       |
-| `pui-govern`            | One collaboration question to a governance drift report              |
-| `pui-deploy`            | One delivery surface to a revision-bound evidence report             |
-| `pui-deps`              | One dependency question to an impact and risk report                 |
+| Skill | One transition |
+| --- | --- |
+| `pui-issue` | Bounded Issue portfolio to an operations report |
+| `pui-pr` | Bounded pull-request portfolio to an integration-state report |
+| `pui-ci` | One workflow failure to an owning evidence map |
+| `pui-govern` | One collaboration question to a governance drift report |
+| `pui-deploy` | One delivery surface to a revision-bound evidence report |
+| `pui-deps` | One dependency question to an impact and risk report |
 | `pui-dependency-update` | Governed dependency report to a bounded manifest and lockfile update |
+| `pui-package-budget` | Accepted capability cost evidence to a bounded numeric package-budget transaction; preserves the blocking gate and independent review |
 
 ## Prepare and audit a release
 

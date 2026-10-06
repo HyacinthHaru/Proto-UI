@@ -31,6 +31,7 @@ Load only the skill needed for the current transition. The list below is routing
 - use `pui-issue` or `pui-pr` for bounded queue inspection, then `pui-collaborate` for an authorized exact-target metadata, update-branch, ready-for-review, thread, review-request, status-comment, or CI-recheck mutation;
 - use `pui-evidence-publish` only for one prepared, separately authorized additive Issue evidence comment after `pui-issue`; evidence preparation/uploads remain separate authorized work;
 - use `pui-ci`, `pui-govern`, `pui-deploy`, or `pui-deps` for the corresponding bounded read-only operational question, then `pui-dependency-update` for an assessed governed manifest or lockfile update;
+- use `pui-package-budget` for a separately reviewable numeric package-budget transaction after the accepted capability, canonical cost evidence, authority map and implementation authorization are present; a governance or CI report alone does not authorize the mutation;
 - use `pui-spec` or `pui-contract` after the corresponding semantic scope is governed;
 - use `pui-adapter-assess` for a bounded Adapter question and `pui-adapter` when the target slice is governed or accepted;
 - use `pui-module`, `pui-host`, `pui-adapter`, or `pui-prototype` when existing authority or the current bounded request determines the implementation result;
@@ -63,6 +64,22 @@ Within the established envelope, favor implementing, preserving, or extending th
 5. **Report:** distinguish implemented behavior, passed checks, failed or unrun checks, remaining work, and actual gates. Continue eligible work until the requested outcome is verified or a concrete blocker requires escalation. Keep formal independent review and publication as their separately governed transitions.
 
 When blocked, preserve the candidate and useful negative evidence, explain the constraint and attempted remedies, and propose the smallest decision or prerequisite needed to continue. Continue independent authorized work; do not fabricate success, relax permissions, or spend unbounded resources to avoid reporting a blocker.
+
+## Decide package-budget ceilings
+
+Within an authorized development task, the Agent may decide and implement a bounded numeric increase to the whole-entry package-budget ceilings in `scripts/analysis/package-budgets.mjs` when an already accepted capability justifies its measured cost. The numeric increase does not require an additional human gate. This is an engineering decision about package bytes, not authority to accept a new capability or waive another gate.
+
+Resolve `pui-package-budget` for this standalone mutation. It consumes `capability-envelope`, `authority-map`, the measured `candidate-change`, `evidence-report` and `implementation-authorization`, and returns the numeric transaction and its supporting record as one `candidate-change`. If its measurement report is absent, first route the accepted capability candidate through `pui-validate` to produce `evidence-report`; a raw `pui-ci` report alone is insufficient. After the numeric edit, `pui-validate` supplies current-candidate evidence before `pui-review`: replace the singleton report in v1, or retain distinct revision/result-bound historical reports alongside the new report in v2. Retain prior measurements by reference in the transaction record; their presence never implies a current pass. Route a numeric-only repair back to `pui-package-budget` with the existing authorization and refreshed evidence. A broader implementation repair belongs to its owning leaf. `pui-ci` and `pui-govern` remain read-only observation routes.
+
+Keep each increase a separately reviewable numeric transaction, in a dedicated commit or focused PR linked to the capability. Apply the evidence discipline from [the package-budget decision](https://github.com/Proto-UI/Proto-UI/issues/654#issuecomment-5677625733):
+
+1. Identify the accepted capability, exact baseline and candidate revisions, affected entries, old and proposed ceilings, measured growth, and resulting headroom. Explain why that bounded margin is sufficient; do not raise a threshold merely to turn a failing check green.
+2. Use repository CI with the pinned toolchain as the canonical before/after measurement. Retain Node, esbuild, platform/architecture, zlib, minified artifact hashes, gzip level and build/compression parameters. Local diagnostics do not overrule contradictory canonical CI.
+3. Attribute dominant growth and first investigate accidental dependency closure, duplicate Runtime copies, dead code and avoidable eager inclusion. Preserve correct semantics rather than introducing harmful gzip micro-optimizations. Distinguish accepted product growth from toolchain/compression drift; isolate unchanged source across old/new environments before rebasing for drift.
+4. Measure the integrated combination when related changes affect the same entries. Do not add isolated deltas or reuse stale feature-only measurements as proof of combined headroom. Re-run the canonical blocking gate for the final candidate, including after integration changes.
+5. Preserve the blocking whole-entry gate, its measurement shape and external dependency boundary. Consumer/profile measurements remain supplementary diagnostics. Keep earlier red runs and failed alternatives visible; a numeric transaction does not retroactively turn them into passes.
+
+Independent review, trusted CI/DCO, exact-head integration, live permission and current authorization remain required. Missing evidence is work to collect, not a reason to request approval of an unsupported number or bypass the gate. An unresolved product-direction choice still needs its normal decision. Publication, release, access, secrets, rulesets, security disclosure and provenance exceptions retain their existing boundaries. This rule does not expand other budgets or spending limits, and `pui-govern` remains read-only.
 
 ## Default to completion
 

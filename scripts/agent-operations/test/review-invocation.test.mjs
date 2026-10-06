@@ -4,7 +4,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { computeReviewInputDigest, computeReviewPacketDigest } from '../review-runtime.mjs';
 import { publicationRoundTrip } from './fixtures/review-publication.mjs';
 import { writeModelTraceFixture } from './fixtures/modeltrace.mjs';
@@ -44,7 +44,7 @@ function fixture(t, command) {
     entrypoint: 'development',
     executionMode: 'human-assisted',
     executionModeSource: 'current-user',
-    fromId: merge ? 'pui-review' : 'pui-validate',
+    fromId: merge ? 'pui-review' : 'pui-dev', // Invocation-only fixture.
     nextSkillId: merge ? 'pui-integrate' : 'pui-review',
     artifacts: merge
       ? [
@@ -107,7 +107,7 @@ function fixture(t, command) {
         process.execPath,
         [
           '--import',
-          preloadPath,
+          pathToFileURL(preloadPath).href,
           path.join(root, 'scripts/agent-operations/review-packet.mjs'),
           command,
           ...invocationArgs,

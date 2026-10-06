@@ -4,7 +4,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadSkillRegistry, resolveSkill, validateSkillHandoff } from '../skill-registry.mjs';
 import { computeReviewInputDigest, computeReviewPacketDigest } from '../review-runtime.mjs';
 import { publicationRoundTrip } from './fixtures/review-publication.mjs';
@@ -73,7 +73,7 @@ function withIntegrationFiles(run) {
         process.execPath,
         [
           '--import',
-          preloadPath,
+          pathToFileURL(preloadPath).href,
           path.join(root, 'scripts/agent-operations/review-packet.mjs'),
           'merge-pull-request',
           '--mode',
