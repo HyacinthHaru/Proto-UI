@@ -866,13 +866,33 @@ describe('contrast probe / real Chromium instrument calibration', () => {
   it('withholds border-image ink ratios independently of the fill model', async () => {
     const frame = await calibrate(
       `
-      <div style="position:absolute;left:40px;top:40px;width:700px;height:500px;background:white">
+      <div style="position:absolute;left:40px;top:40px;width:700px;height:500px;box-sizing:border-box;padding:24px;background:white">
         <div data-pui-root data-demo-ref="image-border" style="border:8px solid black;border-image:linear-gradient(white,white) 1">Border image</div>
         <div data-pui-root data-demo-ref="color-border" style="border:8px solid black">Solid control</div>
       </div>
     `,
       'border-image-domain'
     );
+    // Keep all four one-pixel exterior neighborhoods inside the white receiver.
+    // Without padding, x=39 on the left sampled the black page outside its x=40 edge.
+    expect(frame.devicePixelRatio).toBe(1);
+    for (const [ref, y] of [
+      ['image-border', 72],
+      ['color-border', 120],
+    ] as const) {
+      const target = surface(frame, ref);
+      expect(target.rect).toEqual({ x: 64, y, width: 220, height: 40 });
+      expect(
+        target.exterior.map(({ side, point }) => ({ side, x: point?.x, y: point?.y }))
+      ).toEqual(
+        [0.25, 0.5, 0.75].flatMap((fraction) => [
+          { side: 'top', x: 64 + 220 * fraction, y: y - 1 },
+          { side: 'left', x: 63, y: y + 40 * fraction },
+          { side: 'bottom', x: 64 + 220 * fraction, y: y + 41 },
+          { side: 'right', x: 285, y: y + 40 * fraction },
+        ])
+      );
+    }
     const image = surface(frame, 'image-border');
     for (const edge of image.exterior) {
       expect(edge.innerBorderVsBackground).toBeNull();
