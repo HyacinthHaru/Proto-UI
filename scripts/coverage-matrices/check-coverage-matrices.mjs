@@ -9482,9 +9482,69 @@ function reachableSourcePaths(
 // Existing local static browser-default baseline, not a general iframe allowance.
 const REVIEWED_STYLE_BASELINE_EMBED_SHA256 =
   '6b4aab88932f3e54de9a87ff75e022630b2b1198511a8cadbc05aa1e61cf5c95';
+function maskAuthoredMarkupComments(content, sourcePath) {
+  const ranges = [];
+  try {
+    if (/\.html?$/iu.test(sourcePath)) {
+      const visit = (node) => {
+        if (node.nodeName === '#comment' && node.sourceCodeLocation)
+          ranges.push([node.sourceCodeLocation.startOffset, node.sourceCodeLocation.endOffset]);
+        for (const child of node.childNodes ?? []) visit(child);
+        if (node.content) visit(node.content);
+      };
+      visit(parseHtml(content, { sourceCodeLocationInfo: true }));
+    } else if (/\.astro$/iu.test(sourcePath)) {
+      const result = parseAstro(content, { position: true });
+      if (result.diagnostics.some((diagnostic) => diagnostic.severity === 1)) return content;
+      const commentPositions = [];
+      const visit = (node) => {
+        if (node.type === 'comment' && node.position)
+          commentPositions.push([node.position.start.offset, node.position.end.offset]);
+        for (const child of node.children ?? []) visit(child);
+      };
+      visit(result.ast);
+      if (commentPositions.length === 0) return content;
+      // Astro reports UTF-8 byte offsets; parse5 reports JavaScript code units.
+      // Convert only requested boundaries in one pass, without allocating a
+      // source-length map or repeatedly decoding prefixes for every comment.
+      const requested = new Set(commentPositions.flat());
+      const codeUnitOffsets = new Map();
+      let byteOffset = 0;
+      let codeUnitOffset = 0;
+      for (const character of content) {
+        if (requested.has(byteOffset)) codeUnitOffsets.set(byteOffset, codeUnitOffset);
+        byteOffset += Buffer.byteLength(character, 'utf8');
+        codeUnitOffset += character.length;
+      }
+      if (requested.has(byteOffset)) codeUnitOffsets.set(byteOffset, codeUnitOffset);
+      for (const [startByte, endByte] of commentPositions) {
+        const offset = codeUnitOffsets.get(startByte);
+        const end = codeUnitOffsets.get(endByte);
+        if (offset === undefined || end === undefined) continue;
+        // Astro's comment start excludes the four ASCII delimiter bytes.
+        const start = content.startsWith('<!--', offset) ? offset : offset - 4;
+        if (
+          start >= 0 &&
+          content.startsWith('<!--', start) &&
+          end >= offset &&
+          end <= content.length
+        )
+          ranges.push([start, end]);
+      }
+    }
+  } catch {
+    // Do not erase unproven bytes. The existing tag lexer remains the fallback.
+    return content;
+  }
+  const characters = content.split('');
+  for (const [start, end] of ranges)
+    for (let index = start; index < end; index += 1)
+      if (characters[index] !== '\n' && characters[index] !== '\r') characters[index] = ' ';
+  return characters.join('');
+}
 function unreviewedWebsiteEmbeds(content, sourcePath) {
   const markup = markupSourceForJsxFallback(
-    content.replace(/<!--[\s\S]*?-->/gu, '').replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/giu, ''),
+    maskAuthoredMarkupComments(content, sourcePath),
     sourcePath
   );
   if (markup === null) return [];
@@ -9818,7 +9878,7 @@ function discoverHarnessRawImports(rootDir) {
   for (const absolutePath of candidates) {
     const sourcePath = path.relative(rootDir, absolutePath).replaceAll('\\', '/');
     if (/\.html?$/i.test(absolutePath)) {
-      const content = fs.readFileSync(absolutePath, 'utf8').replace(/<!--[\s\S]*?-->/gu, '');
+      const content = maskAuthoredMarkupComments(fs.readFileSync(absolutePath, 'utf8'), sourcePath);
       const markup = markupSourceForJsxFallback(content, absolutePath);
       if (
         jsxOpeningTagCandidates(markup).some((tag) =>

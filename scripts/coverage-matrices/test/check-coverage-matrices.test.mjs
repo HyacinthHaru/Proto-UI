@@ -17817,3 +17817,120 @@ for (const kind of ['website', 'harness']) {
       );
     });
 }
+
+for (const [kind, extension] of [
+  ['website', 'html'],
+  ['website', 'astro'],
+  ['harness', 'html'],
+]) {
+  for (const [name, source, rejects] of [
+    [
+      'quoted markers surround native embed',
+      '<div data-open="<!--"></div><iframe src="/preview"></iframe><div data-close="-->"></div>',
+      true,
+    ],
+    ['real comment is inert', '<!-- <iframe src="/preview"></iframe> -->', false],
+    [
+      'quoted markers without embed',
+      '<div data-open="<!--"></div><div data-close="-->"></div>',
+      false,
+    ],
+    [
+      'script string stays inert',
+      '<script>const sample="<iframe src=\'/preview\'></iframe>";</script>',
+      false,
+    ],
+  ])
+    test(`embed comment parser review: ${kind} ${extension} ${name}`, () => {
+      const issues = probeReview('embed-comment-parser', kind, source, extension);
+      assert.equal(
+        issues.some((issue) =>
+          /unreviewed.*(?:embed|preview)|(?:embed|preview).*not reviewed/iu.test(issue)
+        ),
+        rejects,
+        issues.join('\n')
+      );
+    });
+}
+
+for (const [kind, extension] of [
+  ['website', 'html'],
+  ['website', 'astro'],
+  ['harness', 'html'],
+]) {
+  for (const [name, source, rejects] of [
+    [
+      'Unicode before actual comment',
+      '😀<!-- <iframe src="/example"></iframe> --><p>Text</p>',
+      false,
+    ],
+    [
+      'Unicode before quoted markers',
+      '😀<div data-open="<!--"></div><iframe src="/preview"></iframe><div data-close="-->"></div>',
+      true,
+    ],
+    ['actual comment does not join tag bytes', '<i<!-- note -->frame src="/preview">', false],
+    [
+      'quoted markers in one tag',
+      '<div title="<!-- marker -->"><iframe src="/preview"></iframe></div>',
+      true,
+    ],
+    [
+      'newline comments retain following embed',
+      '<!-- example\n<iframe src="/example"></iframe>\n-->\n<iframe src="/preview"></iframe>',
+      true,
+    ],
+  ])
+    test(`embed comment parser boundaries: ${kind} ${extension} ${name}`, () => {
+      const issues = probeReview('embed-comment-parser-boundaries', kind, source, extension);
+      assert.equal(
+        issues.some((issue) =>
+          /unreviewed.*(?:embed|preview)|(?:embed|preview).*not reviewed/iu.test(issue)
+        ),
+        rejects,
+        issues.join('\n')
+      );
+    });
+}
+
+for (const [kind, extension] of [
+  ['website', 'html'],
+  ['website', 'astro'],
+  ['harness', 'html'],
+])
+  test(`embed comment parser UTF-16 suffix: ${kind} ${extension}`, () => {
+    const issues = probeReview(
+      'embed-comment-utf16-suffix',
+      kind,
+      '😀<!-- inert --><iframe src="/preview"></iframe>',
+      extension
+    );
+    assert.ok(
+      issues.some((issue) =>
+        /unreviewed.*(?:embed|preview)|(?:embed|preview).*not reviewed/iu.test(issue)
+      ),
+      issues.join('\n')
+    );
+  });
+
+for (const [kind, extension] of [
+  ['website', 'html'],
+  ['website', 'astro'],
+  ['harness', 'html'],
+]) {
+  for (const text of ['é', '中', '😀', 're\u0301el', 'réel 😀\r\n<iframe/>'])
+    test(`embed comment parser non-ASCII body: ${kind} ${extension} ${JSON.stringify(text)}`, () => {
+      const issues = probeReview(
+        'embed-comment-unicode-body',
+        kind,
+        `<!-- ${text} --><iframe src="/real"></iframe>`,
+        extension
+      );
+      assert.ok(
+        issues.some((issue) =>
+          /unreviewed.*(?:embed|preview)|(?:embed|preview).*not reviewed/iu.test(issue)
+        ),
+        issues.join('\n')
+      );
+    });
+}
