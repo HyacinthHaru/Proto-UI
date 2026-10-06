@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { withReviewTransportMetadata } from './review-pagination.mjs';
 import { collectLiveReviewInput, submitGitHubReview } from '../../collect-live-review-input.mjs';
 import {
   computeReviewInputDigest,
@@ -261,11 +262,12 @@ export function publicationRoundTrip({ existingApproval = false } = {}) {
     collectLiveReviewInput(before.repositoryId, before.pullRequest, {
       runner(_command, args) {
         reads.push(args);
-        if (args.includes('graphql')) return JSON.stringify(githubPayload);
-        if (args.includes('repos/Proto-UI/Proto-UI/pulls/487/files?per_page=100'))
-          return JSON.stringify([
-            before.changedFiles.map((file) => ({ filename: file.path, status: file.status })),
-          ]);
+        if (args.includes('graphql'))
+          return JSON.stringify(withReviewTransportMetadata(githubPayload));
+        if (args.includes('repos/Proto-UI/Proto-UI/pulls/487/files?per_page=100&page=1'))
+          return JSON.stringify(
+            before.changedFiles.map((file) => ({ filename: file.path, status: file.status }))
+          );
         if (args.includes('repos/Proto-UI/Proto-UI/collaborators/independent-reviewer/permission'))
           return JSON.stringify({ user: { login: 'independent-reviewer' }, permission: 'write' });
         throw new Error(`unexpected fake read: ${args.join(' ')}`);
@@ -313,6 +315,6 @@ export function publicationRoundTrip({ existingApproval = false } = {}) {
     reviewInputDigest: computeReviewInputDigest(collected),
     observedAt: '2026-08-27T06:02:00Z',
   };
-  assert.equal(reads.length, existingApproval ? 6 : 5);
+  assert.equal(reads.length, existingApproval ? 16 : 14);
   return { before, reviewed, collected, mergePacket, body };
 }
