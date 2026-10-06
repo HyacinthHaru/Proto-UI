@@ -388,6 +388,8 @@ fn the_peer_hears_the_order_the_views_show_in_when_it_changes(cx: &mut TestAppCo
     // The thumb ends, and the order changes once.
     composed.receive(vec![ended(THUMB)]);
     assert_eq!(orders(composed.outbox()), [vec![ROOT.to_string()]]);
+}
+
 // Review regression GPUI756-F1R: a host-owned wrapper is a supported slot
 // child, and placement must remain recursive while its parent has no view.
 #[gpui::test]
