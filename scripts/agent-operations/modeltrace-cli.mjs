@@ -111,7 +111,10 @@ export function runModelTraceCli(argv, { now = new Date(), stdout = process.stdo
   }
   const text = typeof value === 'string' ? `${value}\n` : `${JSON.stringify(value, null, 2)}\n`;
   if (realOutput) {
-    fs.writeFileSync(realOutput, text, { flag: 'wx', mode: 0o600 });
+    const writeParent = fs.realpathSync(path.dirname(realOutput));
+    const writePath = path.join(writeParent, path.basename(realOutput));
+    assertOutsideRepository(writePath, 'challenges/records');
+    fs.writeFileSync(writePath, text, { flag: 'wx', mode: 0o600 });
     stdout.write(
       `${JSON.stringify({ written: output, kind: value.kind, receiptId: value.receipt?.id ?? null })}\n`
     );

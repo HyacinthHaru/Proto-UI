@@ -127,6 +127,80 @@ test('receipt schema and runtime admit candidate, ambiguous and partial failed c
   }
 });
 
+test('receipt schema and runtime retain producer-admitted positional boundaries and null failures', () => {
+  for (const counts of [
+    [120, 129, 136],
+    [273, 292, 309],
+  ]) {
+    const f = fixture();
+    f.response.outputs.forEach((output, index) => {
+      output.text = JSON.stringify(Array(counts[index]).fill(137));
+    });
+    const complete = buildModelTraceRecord(f.challenge, f.response).receipt;
+    assert.deepEqual(complete.sampling.counts, counts);
+    assert.notEqual(complete.result.status, 'failed');
+    assert(complete.anomalies.includes('count-deviation'));
+    assert.equal(structuralReceipt(complete), true, JSON.stringify(structuralReceipt.errors));
+    assert.equal(validateModelTraceReceipt(complete), complete);
+
+    for (let missing = 0; missing < 3; missing += 1) {
+      for (const invalidSample of [false, true]) {
+        const response = structuredClone(f.response);
+        response.outputs[missing].text = invalidSample ? 'not a strict sample' : null;
+        response.outputs[missing].error = invalidSample ? null : 'unavailable';
+        const receipt = buildModelTraceRecord(f.challenge, response).receipt;
+        assert.equal(receipt.result.status, 'failed');
+        assert.deepEqual(
+          receipt.sampling.counts,
+          counts.map((n, index) => (index === missing ? null : n))
+        );
+        assert.equal(receipt.sampling.sampleDigests[missing] === null, !invalidSample);
+        assert(
+          receipt.anomalies.includes(invalidSample ? 'sample-validation-failed' : 'probe-failed')
+        );
+        assert(receipt.anomalies.includes('count-deviation'));
+        assert.equal(structuralReceipt(receipt), true, JSON.stringify(structuralReceipt.errors));
+        assert.equal(validateModelTraceReceipt(receipt), receipt);
+      }
+    }
+  }
+});
+
+test('digest-rebound receipts cannot claim counts outside the corresponding producer range', () => {
+  const exact = [218, 233, 247];
+  const impossible = [
+    [80, 80, 80],
+    [309, 233, 247],
+  ];
+  for (const [index, bounds] of [
+    [120, 273],
+    [129, 292],
+    [136, 309],
+  ].entries()) {
+    for (const count of [bounds[0] - 1, bounds[1] + 1]) {
+      const counts = [...exact];
+      counts[index] = count;
+      impossible.push(counts);
+    }
+  }
+  for (const counts of impossible) {
+    const receipt = statusReceipt('candidate');
+    receipt.sampling.counts = counts;
+    receipt.anomalies.push('count-deviation');
+    receipt.anomalies.sort();
+    rejectsStatusReceipt(receipt, /invalid sample counts/);
+  }
+
+  const partial = fixture();
+  partial.response.outputs[2].text = null;
+  partial.response.outputs[2].error = 'unavailable';
+  const failed = buildModelTraceRecord(partial.challenge, partial.response).receipt;
+  failed.sampling.counts[0] = 309;
+  failed.anomalies.push('count-deviation');
+  failed.anomalies.sort();
+  rejectsStatusReceipt(failed, /invalid sample counts/);
+});
+
 test('schema consumers cannot suppress either mandatory closed-set limitation', () => {
   const valid = fixture({ failed: true }).record.receipt;
   for (const omitted of [

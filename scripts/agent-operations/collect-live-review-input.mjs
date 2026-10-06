@@ -1044,6 +1044,10 @@ export function submitGitHubMerge(
       .split('\n')
       .map((line) => `> ${line}`)
       .join('\n');
+  // GitHub appends commit_message to commit_title. Bind the subject to the
+  // numeric target, never PR/commit title defaults that could add an unquoted
+  // ModelTrace trailer after an irreversible PUT.
+  const commitTitle = `Integrate pull request #${pullRequest}`;
   const commitMessage = [
     `Reviewed PR body:\n${quoteHistory(input.pullRequestBody)}`,
     ...input.commits.map(
@@ -1051,7 +1055,11 @@ export function submitGitHubMerge(
     ),
     renderModelTraceDisclosure(authorizationContext.modelTrace, 'commit'),
   ].join('\n\n');
-  assertModelTraceDisclosure(commitMessage, authorizationContext.modelTrace, 'commit');
+  assertModelTraceDisclosure(
+    `${commitTitle}\n\n${commitMessage}`,
+    authorizationContext.modelTrace,
+    'commit'
+  );
   // Revalidate after the last live read and sealed message construction. Owner
   // revocation and measurement expiry remain independent of the exact head,
   // trusted checks, publication and narrow preview-authorization exception.
@@ -1076,6 +1084,7 @@ export function submitGitHubMerge(
           input: JSON.stringify({
             sha: headSha,
             merge_method: mergeMethod,
+            commit_title: commitTitle,
             commit_message: commitMessage,
           }),
           stdio: ['pipe', 'pipe', 'pipe'],

@@ -279,6 +279,13 @@ function validateChallenge(challenge) {
   return challenge;
 }
 
+function withinSampleCountBounds(count, expectedCount) {
+  return (
+    count >= Math.max(80, Math.ceil(expectedCount * 0.55)) &&
+    count <= Math.ceil(expectedCount * 1.25)
+  );
+}
+
 // Do not use the upstream permissive parseNumbers for validation: extracting
 // integers from prose, decimals or damaged JSON changes the measured sample.
 export function validateModelTraceSample(raw, expectedCount) {
@@ -302,8 +309,7 @@ export function validateModelTraceSample(raw, expectedCount) {
     'sample integer outside 1..355'
   );
   assert(
-    numbers.length >= Math.max(80, Math.ceil(expectedCount * 0.55)) &&
-      numbers.length <= Math.ceil(expectedCount * 1.25),
+    withinSampleCountBounds(numbers.length, expectedCount),
     'sample count outside upstream tolerance'
   );
   return numbers;
@@ -570,7 +576,8 @@ export function validateModelTraceReceipt(receipt) {
     Array.isArray(receipt.sampling.counts) &&
       receipt.sampling.counts.length === 3 &&
       receipt.sampling.counts.every(
-        (n) => n === null || (Number.isInteger(n) && n >= 80 && n <= 309)
+        (n, index) =>
+          n === null || (Number.isInteger(n) && withinSampleCountBounds(n, COUNTS[index]))
       ),
     'invalid sample counts'
   );

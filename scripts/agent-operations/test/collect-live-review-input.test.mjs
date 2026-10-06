@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { execFileSync } from 'node:child_process';
 import {
   computeReviewInputDigest,
   agentEvidenceMarker,
@@ -9,7 +10,11 @@ import { readFileSync } from 'node:fs';
 import { parse as parseYaml } from 'yaml';
 import { agentEvidence } from './fixtures/agent-evidence.mjs';
 import { modelTraceFixture } from './fixtures/modeltrace.mjs';
-import { computeModelTraceReceiptDigest, renderModelTraceDisclosure } from '../modeltrace.mjs';
+import {
+  assertModelTraceDisclosure,
+  computeModelTraceReceiptDigest,
+  renderModelTraceDisclosure,
+} from '../modeltrace.mjs';
 import {
   QUERY,
   assertNoTruncation,
@@ -607,6 +612,8 @@ test('review submission binds the GitHub Review API write to the inspected commi
 function mergeAuthorizationFixture({
   previewAuthorization = false,
   historicalMessage = null,
+  baseSha = sha('a'),
+  headSha = sha('b'),
 } = {}) {
   const policy = parseYaml(
     readFileSync(
@@ -616,11 +623,14 @@ function mergeAuthorizationFixture({
   );
   const raw = payload();
   const pull = raw.data.repository.pullRequest;
+  pull.baseRefOid = baseSha;
+  pull.headRefOid = headSha;
+  pull.commits.nodes[0].commit.oid = headSha;
   if (historicalMessage !== null) pull.commits.nodes[0].commit.message = historicalMessage;
   pull.changedFiles = 1;
   pull.comments.nodes = [];
   pull.reviewThreads.nodes = [];
-  const evidence = agentEvidence(sha('b'));
+  const evidence = agentEvidence(headSha);
   if (previewAuthorization) {
     pull.mergeStateStatus = 'UNSTABLE';
     evidence.debt.push({
@@ -711,7 +721,7 @@ function mergeAuthorizationFixture({
     id: 'PRR_independent',
     author: { login: 'independent-reviewer' },
     state: 'APPROVED',
-    commit: { oid: sha('b') },
+    commit: { oid: headSha },
     submittedAt: '2026-08-23T06:00:00Z',
     body: renderReviewBody(publishedPacket),
   });
@@ -838,6 +848,157 @@ const mergeOptions = {
   mergeMethod: 'squash',
 };
 const fastVerification = { verificationAttempts: 3, verificationDelayMs: 0, wait() {} };
+
+test('squash writer preserves canonical disclosure in real Git despite a ModelTrace PR-title default', (t) => {
+  // GitHub transport, credentials, reviews and CI below are explicitly simulated;
+  // the resulting squash object and its readback are finite real sandbox Git.
+  const directory = mkdtempSync(path.join(tmpdir(), 'pui-squash-title-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const env = Object.fromEntries(
+    Object.entries(process.env).filter(([name]) => !name.startsWith('GIT_'))
+  );
+  Object.assign(env, {
+    GIT_CONFIG_NOSYSTEM: '1',
+    GIT_CONFIG_GLOBAL: '/dev/null',
+    GIT_AUTHOR_NAME: 'Synthetic sandbox contributor',
+    GIT_AUTHOR_EMAIL: 'sandbox@example.invalid',
+    GIT_COMMITTER_NAME: 'Synthetic sandbox transport',
+    GIT_COMMITTER_EMAIL: 'transport@example.invalid',
+    GIT_AUTHOR_DATE: '2026-08-23T06:00:00Z',
+    GIT_COMMITTER_DATE: '2026-08-23T06:00:00Z',
+  });
+  const git = (args, input) =>
+    execFileSync('git', args, {
+      cwd: directory,
+      env,
+      input,
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+      timeout: 10_000,
+    });
+  git(['init', '--bare', '--template=']);
+  const tree = git(['mktree'], '').trim();
+  const baseSha = git(['commit-tree', tree], 'Synthetic base\n').trim();
+  const historicalMessage =
+    'Prior contributor change\n\nModelTrace: historical measurement\nSigned-off-by: Prior Contributor <prior@example.invalid>';
+  const headSha = git(['commit-tree', tree, '-p', baseSha], historicalMessage).trim();
+  const fixture = mergeAuthorizationFixture({ baseSha, headSha, historicalMessage });
+  const { authorizationContext } = fixture;
+  const prTitle = 'ModelTrace: improve attribution';
+  const open = {
+    number: 487,
+    title: prTitle,
+    body: authorizationContext.input.pullRequestBody,
+    state: 'open',
+    draft: false,
+    merged: false,
+    mergeable: true,
+    mergeable_state: 'clean',
+    head: { sha: headSha },
+    base: { sha: baseSha, ref: 'main', repo: { full_name: 'Proto-UI/Proto-UI' } },
+  };
+  let squashSha;
+  let writes = 0;
+  const readCommit = (oid) => {
+    const object = git(['cat-file', 'commit', oid]);
+    const boundary = object.indexOf('\n\n');
+    return {
+      sha: oid,
+      parents: object
+        .slice(0, boundary)
+        .split('\n')
+        .filter((line) => line.startsWith('parent '))
+        .map((line) => ({ sha: line.slice(7) })),
+      message: object.slice(boundary + 2),
+    };
+  };
+  const runner = (command, args, options) => {
+    assert.equal(command, 'gh');
+    if (
+      args.includes('graphql') ||
+      args.some((arg) => arg.includes('/files?per_page=100') || arg.includes('/collaborators/'))
+    )
+      return fixture.runner(command, args, options);
+    const json = (value) =>
+      `${args.includes('--include') ? 'HTTP/2.0 200 OK\r\nContent-Type: application/json\r\n\r\n' : ''}${JSON.stringify(value)}`;
+    if (args.includes('PUT')) {
+      assert.equal(args[3], 'repos/Proto-UI/Proto-UI/pulls/487/merge');
+      const request = JSON.parse(options.input);
+      assert.equal(request.sha, headSha);
+      assert.equal(request.merge_method, 'squash');
+      writes += 1;
+      // Model documented commit_title + appended commit_message semantics,
+      // falling back to the configured PR-title default only when omitted.
+      const message = `${request.commit_title ?? prTitle}\n\n${request.commit_message}\n`;
+      squashSha = git(['commit-tree', tree, '-p', baseSha], message).trim();
+      return json({ merged: true, sha: squashSha, message: 'Simulated squash' });
+    }
+    assert.equal(args[0], 'api');
+    if (args[1] === 'repos/Proto-UI/Proto-UI/pulls/487')
+      return json(
+        squashSha
+          ? {
+              ...open,
+              state: 'closed',
+              merged: true,
+              merge_commit_sha: squashSha,
+              merged_at: '2026-08-27T01:00:10Z',
+            }
+          : open
+      );
+    if (args[1] === 'repos/Proto-UI/Proto-UI/git/ref/heads/main')
+      return json({ ref: 'refs/heads/main', object: { type: 'commit', sha: baseSha } });
+    if (squashSha && args[1] === `repos/Proto-UI/Proto-UI/git/commits/${squashSha}`)
+      return json(readCommit(squashSha));
+    throw new Error(`Unexpected simulated GitHub endpoint: ${args.join(' ')}`);
+  };
+  // Control: the repository default really is rejected by the unchanged
+  // disclosure parser; no test-only acceptance exception hides a second line.
+  const defaultSha = git(
+    ['commit-tree', tree, '-p', baseSha],
+    `${prTitle}\n\n${renderModelTraceDisclosure(authorizationContext.modelTrace, 'commit')}\n`
+  ).trim();
+  assert.throws(
+    () =>
+      assertModelTraceDisclosure(
+        readCommit(defaultSha).message,
+        authorizationContext.modelTrace,
+        'commit'
+      ),
+    /ModelTrace/
+  );
+  const receipt = submitGitHubMerge(
+    repositoryId,
+    487,
+    {
+      ...mergeOptions,
+      baseRefName: 'main',
+      headSha,
+      expectedBaseSha: baseSha,
+      authorizationContext,
+    },
+    runner,
+    fastVerification
+  );
+  const stored = readCommit(receipt.mergeCommitSha);
+  assert.equal(writes, 1);
+  assert.equal(receipt.mergeCommitSha, squashSha);
+  assert.equal(receipt.headSha, headSha);
+  assert.equal(receipt.mergeParentSha, baseSha);
+  assert.deepEqual(stored.parents, [{ sha: baseSha }]);
+  assertModelTraceDisclosure(stored.message, authorizationContext.modelTrace, 'commit');
+  assert.ok(!/^ModelTrace:/i.test(stored.message.split('\n')[0]));
+  assert.ok(stored.message.includes(`Reviewed commit ${headSha}:`));
+  assert.ok(
+    stored.message.includes(
+      historicalMessage
+        .split('\n')
+        .map((line) => `> ${line}`)
+        .join('\n')
+    )
+  );
+  assert.ok(stored.message.includes(`Reviewed PR body:\n> ${open.body}`));
+});
 
 for (const permission of ['WRITE', 'MAINTAIN']) {
   test(`merge writer preserves verified preview authorization with live ${permission} permission`, () => {

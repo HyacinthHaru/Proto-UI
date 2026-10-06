@@ -1077,9 +1077,69 @@ test('contributor commit executes git signoff and the independent installed hook
   assert.notEqual(git(['rev-parse', 'HEAD']).trim(), before);
   assert.equal(git(['rev-parse', `${result.head}^1`]).trim(), before);
   assert.equal(commitAttempts.length, 1);
-  const committed = git(['log', '-1', '--format=%B']);
-  assert.ok(committed.includes(renderModelTraceDisclosure(f.record.receipt, 'commit')));
-  assert.ok(committed.includes(`Signed-off-by: ${LOGIN} <fixture@example.invalid>`));
+  const committed = git(['log', '-1', '--format=format:%B']);
+  const disclosure = renderModelTraceDisclosure(f.record.receipt, 'commit');
+  assert.equal(
+    committed,
+    `feat: synthetic fixture contributor commit\n\n${disclosure}\nSigned-off-by: ${LOGIN} <fixture@example.invalid>\n`
+  );
+});
+
+test('commit.cleanup=strip cannot alter the authorized message when cleanup=verbatim is used', (t) => {
+  const f = fixture(t, { failed: true });
+  const { git, before, runner, args, directory, commitAttempts } = localRepository(f);
+  git(['config', 'commit.cleanup', 'strip']);
+  const messagePath = path.join(directory, 'message.txt');
+  fs.writeFileSync(messagePath, 'feat: synthetic fixture\n\n# internal comment\n  indented text\n');
+  const result = runPublishCli(['commit', ...f.args, ...args], { runner, cwd: directory });
+  assert.equal(result.status, 'published');
+  assert.equal(commitAttempts.length, 1);
+  const committed = git(['log', '-1', '--format=format:%B']);
+  const disclosure = renderModelTraceDisclosure(f.record.receipt, 'commit');
+  assert.equal(
+    committed,
+    `feat: synthetic fixture\n\n# internal comment\n  indented text\n\n${disclosure}\nSigned-off-by: ${LOGIN} <fixture@example.invalid>\n`
+  );
+});
+
+test('a native commit with an altered authorized body cannot report publication success', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  const runner = (binary, args, options) => {
+    if (binary === 'git' && args[0] === 'commit') {
+      const messagePath = args[args.indexOf('--file') + 1];
+      fs.writeFileSync(messagePath, `Unapproved body\n${fs.readFileSync(messagePath, 'utf8')}`);
+    }
+    return local.runner(binary, args, options);
+  };
+  assert.throws(
+    () => runPublishCli(['commit', ...f.args, ...local.args], { runner, cwd: local.directory }),
+    PublicationUnknown
+  );
+  assert.equal(local.commitAttempts.length, 1);
+  const committed = local.git(['log', '-1', '--format=format:%B']);
+  assert.ok(committed.startsWith('Unapproved body\n'));
+  assertModelTraceDisclosure(committed, f.record.receipt, 'commit');
+});
+
+test('configured log output encoding cannot change the verified stored message', (t) => {
+  const f = fixture(t, { failed: true });
+  const local = localRepository(f);
+  local.git(['config', 'i18n.commitEncoding', 'UTF-8']);
+  local.git(['config', 'i18n.logOutputEncoding', 'ISO-8859-1']);
+  fs.writeFileSync(path.join(local.directory, 'message.txt'), 'feat: café\n');
+  const result = runPublishCli(['commit', ...f.args, ...local.args], {
+    runner: local.runner,
+    cwd: local.directory,
+  });
+  assert.equal(result.status, 'published');
+  assert.equal(local.commitAttempts.length, 1);
+  const object = local.git(['cat-file', 'commit', result.head]);
+  const message = object.slice(object.indexOf('\n\n') + 2);
+  assert.equal(
+    message,
+    `feat: café\n\n${renderModelTraceDisclosure(f.record.receipt, 'commit')}\nSigned-off-by: ${LOGIN} <fixture@example.invalid>\n`
+  );
 });
 
 for (const defaultBranch of ['develop', 'trunk']) {

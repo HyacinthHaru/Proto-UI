@@ -425,9 +425,13 @@ export function runPublishCli(argv, options = {}) {
       authorize();
       let output;
       try {
-        output = io.run('git', ['commit', '--signoff', '--file', messagePath], {
-          env: commitEnvironment,
-        });
+        output = io.run(
+          'git',
+          ['commit', '--signoff', '--cleanup=verbatim', '--file', messagePath],
+          {
+            env: commitEnvironment,
+          }
+        );
       } catch {
         throw new PublicationUnknown(
           'git commit failed or outcome is unknown; inspect local HEAD before any retry'
@@ -440,8 +444,18 @@ export function runPublishCli(argv, options = {}) {
           throw new PublicationUnknown(
             'committed first parent differs from the exact authorized HEAD; inspect local history before any retry'
           );
-        const committed = io.run('git', ['log', '-1', '--format=%B', head]);
-        assertModelTraceDisclosure(committed, receipt, 'commit');
+        const commitObject = io.run('git', ['cat-file', 'commit', head]);
+        const messageStart = commitObject.indexOf('\n\n');
+        const committer = commitObject
+          .slice(0, messageStart)
+          .match(/^committer (.+) -?\d+ [+-]\d{4}$/m)?.[1];
+        if (messageStart < 0 || !committer)
+          throw new Error('committed object body or committer is unavailable');
+        const expectedCommitted = `${message}Signed-off-by: ${committer}\n`;
+        if (commitObject.slice(messageStart + 2) !== expectedCommitted)
+          throw new PublicationUnknown(
+            'committed message differs from the authorized preparation plus sign-off; inspect local HEAD before any retry'
+          );
         if (io.run('git', ['rev-parse', `${head}^{tree}`]).trim() !== binding.tree)
           throw new PublicationUnknown(
             'committed tree differs from authorization; inspect local HEAD and index before any retry'

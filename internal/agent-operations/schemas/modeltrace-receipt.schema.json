@@ -109,18 +109,45 @@
           "type": "array",
           "minItems": 3,
           "maxItems": 3,
-          "items": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 80,
-                "maximum": 309
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
+          "prefixItems": [
+            {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 120,
+                  "maximum": 273
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 129,
+                  "maximum": 292
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 136,
+                  "maximum": 309
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          ],
+          "items": false
         },
         "sampleDigests": {
           "type": "array",
