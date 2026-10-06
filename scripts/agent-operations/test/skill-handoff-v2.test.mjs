@@ -417,6 +417,19 @@ test('resume retains validation enrichment of an optional candidate binding', ()
     result.artifacts.some((a) => a.reference === 'fixture:prior' && a.result === 'partial'),
     true
   );
+  for (const bindAtRepair of [false, true]) {
+    const reusedHistory = structuredClone(x);
+    const historical = reusedHistory.interrupted.artifacts.find(
+      (a) => a.type === 'candidate-change'
+    );
+    historical.reference = 'fixture:repair';
+    if (bindAtRepair) reusedHistory.continuation[1].artifacts[2] = { ...validation.artifacts[1] };
+    assert.throws(() => resumeSkillHandoff(reusedHistory, registry), /conflicting provenance/);
+  }
+  const refreshReuse = resumeArgs();
+  refreshReuse.currentArtifacts.find((a) => a.type === 'candidate-change').reference =
+    refreshReuse.interrupted.artifacts.find((a) => a.type === 'candidate-change').reference;
+  assert.throws(() => resumeSkillHandoff(refreshReuse, registry), /conflicting provenance/);
   const skipped = structuredClone(x);
   skipped.continuation = [ci, validation];
   assert.throws(() => resumeSkillHandoff(skipped, registry), /skips a routed leaf/);

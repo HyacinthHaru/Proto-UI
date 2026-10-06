@@ -56,15 +56,22 @@ export function resumeSkillHandoff(
   )
     throw Error('resume refresh cannot introduce approval or authorization');
   const materials = [];
-  const add = (artifact) => {
+  const origins = new Map();
+  const add = (artifact, origin = null, validationInput = null) => {
     const previous = materials.find(
       (a) => a.type === artifact.type && a.reference === artifact.reference
     );
     if (previous) {
       const enriched = { ...previous };
-      if (artifact.type === 'candidate-change') {
-        // The continuation steps were validated above. Preserve their allowed
-        // missing-to-bound enrichment instead of treating it as a conflicting edit.
+      if (
+        artifact.type === 'candidate-change' &&
+        validationInput !== null &&
+        origins.get(previous) === origin - 1 &&
+        validationInput.artifacts.some((input) => isDeepStrictEqual(input, previous))
+      ) {
+        // Only the already-validated adjacent input/output pair may enrich a
+        // candidate first introduced by that input. Historical references cannot
+        // be reclaimed by a repair, a later validation, or currentArtifacts.
         for (const field of ['digest', 'revision'])
           if (enriched[field] === undefined && artifact[field] !== undefined)
             enriched[field] = artifact[field];
@@ -72,27 +79,38 @@ export function resumeSkillHandoff(
       if (!isDeepStrictEqual(enriched, artifact))
         throw Error('resume has conflicting provenance for ' + artifact.reference);
       Object.assign(previous, enriched);
-    } else materials.push(structuredClone(artifact));
+    } else {
+      const material = structuredClone(artifact);
+      materials.push(material);
+      origins.set(material, origin);
+    }
   };
   const replaceTypes = new Set(
     currentArtifacts
       .map((a) => a.type)
       .filter((t) => !['candidate-change', 'evidence-report'].includes(t))
   );
-  for (const artifact of [...interrupted.artifacts, ...chain.flatMap((step) => step.artifacts)]) {
-    if (
-      [
-        'review-packet',
-        'published-review-packet',
-        'interruption-receipt',
-        'prior-review-input',
-        'mutation-authorization',
-        'standing-user-authorization',
-      ].includes(artifact.type) ||
-      replaceTypes.has(artifact.type)
-    )
-      continue;
-    add(artifact);
+  for (const [position, source] of [interrupted, ...chain].entries()) {
+    const origin = position - 1;
+    const validationInput =
+      origin > 0 && source.fromId === 'pui-validate' && source.nextSkillId === 'pui-review'
+        ? chain[origin - 1]
+        : null;
+    for (const artifact of source.artifacts) {
+      if (
+        [
+          'review-packet',
+          'published-review-packet',
+          'interruption-receipt',
+          'prior-review-input',
+          'mutation-authorization',
+          'standing-user-authorization',
+        ].includes(artifact.type) ||
+        replaceTypes.has(artifact.type)
+      )
+        continue;
+      add(artifact, origin, validationInput);
+    }
   }
   const receiptDigest =
     'sha256:' + createHash('sha256').update(JSON.stringify(interrupted)).digest('hex');

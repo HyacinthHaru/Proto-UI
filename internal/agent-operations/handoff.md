@@ -78,3 +78,5 @@ Every `pui-validate -> pui-review` transition supplies its actual received hando
 Resume validates each continuation against the preceding step and retains that actual validation input for subsequent review CLI use. This is a structural evidence contract, not authentication of supplied references, report contents, canonical CI or user authority. Existing review-intake routes that do not originate at validation are unchanged; do not relabel a real validation transition to evade its required predecessor.
 
 A fresh report may record `passed`, `failed`, `partial` or `not-run`; freshness is not a green result. Review and integration independently enforce their required evidence and acceptance conditions.
+
+During resume, missing candidate bindings can be coalesced only for the exact already-validated adjacent validation input/output pair, and only when the input first introduced that candidate reference. A repair or later refresh cannot reuse an earlier interrupted/historical reference to assign different provenance; use a distinct candidate reference and preserve the historical material.
