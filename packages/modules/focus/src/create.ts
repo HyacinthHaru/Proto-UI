@@ -144,6 +144,7 @@ class FocusModuleImpl extends ModuleBase {
   private currentHostFocusTarget: unknown = null;
   private hostFocusTargetGeneration = 0;
   private focusApplicationVersion = 0;
+  private entryAcquisitionVersion = 0;
   private focusOperation: FocusOperation | undefined;
   private focusFactsEpoch = 0;
   private hostEventsWired = false;
@@ -1149,6 +1150,7 @@ class FocusModuleImpl extends ModuleBase {
       this.clearPendingFocus();
       this.focusApplicationVersion += 1;
       const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options, 'entry');
+      if (applied !== false) this.entryAcquisitionVersion += 1;
       if (current() && applied === false) this.pendingFocusRequest = { kind: 'entry', options };
     } catch (error) {
       if (current() && !operation.admitted) restorePrevious();
@@ -1275,22 +1277,18 @@ class FocusModuleImpl extends ModuleBase {
       this.cancelFocusOperation('target');
       if (this.pendingFocusRequest?.kind === 'target') this.clearPendingFocus();
     }
-    // Synchronous state observers below may drive a still-enabled entry role
-    // to acquire the same root; that newer admission bumps the version.
-    const applicationVersion = this.focusApplicationVersion;
-    const operation = this.focusOperation;
+    const acquisition = this.entryAcquisitionVersion;
     const epoch = this.focusFactsEpoch;
     this.setFocusState(this.focusableOwned, this.focusableDeclared && !disabled, reason, {
       defaultOnly: this.sys?.execPhase?.() === 'setup',
     });
     // State observers can re-enable and acquire before this transition resumes.
     if (this.focusableConfig !== config) return;
-    // Never blur a newer entry acquisition that landed during the observer
-    // window; the target-role config identity alone cannot see it.
+    // A rejected replacement entry owns its pending intent, not the old
+    // physical focus. Only successful entry acquisition protects that focus.
     if (
       disabled &&
-      this.focusApplicationVersion === applicationVersion &&
-      operation === this.focusOperation &&
+      acquisition === this.entryAcquisitionVersion &&
       epoch === this.focusFactsEpoch
     ) {
       this.blurTarget();

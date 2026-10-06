@@ -240,6 +240,7 @@ export class TextControlModuleImpl extends ModuleBase {
           // A newer event owns the state now; never roll it back.
           if (
             !callbackRan &&
+            epoch === this.leaseEpoch &&
             generation === this.eventGeneration &&
             this.composing !== canonicalEvent.composing
           ) {

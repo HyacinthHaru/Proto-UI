@@ -1022,3 +1022,31 @@ describe.each(['single', 'multiline'] as const)('Web %s change callback preludes
     h.module.hooks.dispose?.();
   });
 });
+
+it.each(['compositionstart', 'input'] as const)(
+  'does not carry an interrupted old %s into a replacement lease',
+  (type) => {
+    let beforeRun = () => {};
+    const h = createHarness(true, 'multiline', () => beforeRun());
+    const control = h.module.facade.declare();
+    h.module.hooks.onMountPhase?.('mounted', 1);
+    h.sys.phase = 'callback';
+    control.sync({ valueMode: 'controlled', value: 'owner' });
+    const old = h.connectionBox.current!;
+    const failure = new Error('old lease prelude failure');
+    beforeRun = () => {
+      beforeRun = () => {};
+      h.module.hooks.onMountPhase?.('detached', 1);
+      h.module.hooks.onMountPhase?.('mounted', 2);
+      throw failure;
+    };
+    try {
+      expect(() => old.onEvent(event(type, 'old candidate', true))).toThrow(failure);
+      expect(control.snapshot()?.composing).toBe(false);
+      control.sync({ value: 'new owner' });
+      expect(h.getLatestPatch().value).toBe('new owner');
+    } finally {
+      h.module.hooks.dispose?.();
+    }
+  }
+);
