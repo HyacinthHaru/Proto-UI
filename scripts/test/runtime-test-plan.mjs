@@ -60,6 +60,13 @@ export const PRODUCTION_BROWSER_SUITES = Object.freeze([
 // Sorted round-robin assignment is deterministic and never changes local coverage.
 export const BROWSER_SHARD_COUNT = 8;
 
+export function corepackInvocation(platform = process.platform) {
+  return {
+    executable: platform === 'win32' ? 'corepack.cmd' : 'corepack',
+    shell: platform === 'win32',
+  };
+}
+
 export function discoverBrowserSuites(root = fileURLToPath(new URL('../../', import.meta.url))) {
   return [
     ...new Set(
@@ -133,10 +140,18 @@ export function createRuntimeTestPlan(rawArgs, { phase, shard } = {}) {
   const plan = [
     {
       needsServer: false,
-      args: [...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].flatMap((suite) => [
-        '--exclude',
-        suite,
-      ]),
+      // Bound process fan-out so a large core count cannot starve the 5s
+      // fixture timeouts or the CLI subprocess tests on developer machines.
+      // Vitest derives a CPU-count-based minimum unless both bounds are
+      // provided; on high-core machines that minimum can exceed maxWorkers.
+      args: [
+        '--minWorkers=1',
+        '--maxWorkers=2',
+        ...[...BROWSER_SUITES, ...PRODUCTION_BROWSER_SUITES].flatMap((suite) => [
+          '--exclude',
+          suite,
+        ]),
+      ],
     },
     {
       needsServer: true,

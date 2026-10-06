@@ -1,5 +1,5 @@
 schemaVersion: 2
-policyVersion: 2026-09-19.agent-forward-evidence-comment-1
+policyVersion: 2026-10-04.package-budget-route-1
 principle: local assessment decides how far an Agent may go alone, not whether it may participate with a human; governed ready work proceeds automatically up to live permission and repository rules
 executionModes:
   human-assisted:
@@ -51,6 +51,7 @@ bands:
       - repair-bounded-regression
       - implement-governed-tests
       - update-governed-dependency
+      - update-governed-package-budget
       - integrate-reviewed-pull-request
       - maintain-collaboration-state
     autonomousMutationCeiling: feature-branch-or-conditional-collaboration
