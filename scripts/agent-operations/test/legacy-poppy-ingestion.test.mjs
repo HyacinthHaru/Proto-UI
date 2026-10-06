@@ -240,7 +240,7 @@ function withCliFixtures(run) {
         entrypoint: 'development',
         executionMode: 'human-assisted',
         executionModeSource: 'current-user',
-        fromId: 'pui-validate',
+        fromId: 'pui-dev', // This fixture starts at review intake, not a validation transition.
         nextSkillId: 'pui-review',
         artifacts: [
           { type: 'authority-map', reference: 'legacy compatibility contract' },

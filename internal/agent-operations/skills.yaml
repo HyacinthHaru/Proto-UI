@@ -1,5 +1,5 @@
 schemaVersion: 2
-registryVersion: 2026-09-19.agent-forward-evidence-1
+registryVersion: 2026-10-04.package-budget-validation-route-2
 entrypoints:
   development: pui-dev
   maintenance: pui-maintain
@@ -7,6 +7,7 @@ compositionRules:
   - resolve exactly one leaf for the current transition
   - load only the resolved loadPath
   - pass explicit artifacts through a validated handoff
+  - honor a source leaf's declared allowedNextSkillIds before loading its next leaf
   - treat assessment as advice in human-assisted mode
   - enforce the fresh self-assessed ceiling before every autonomous transition
   - revalidate live permission and current authorization at every external action
@@ -278,6 +279,23 @@ skills:
     mutation: feature-branch
     requires: [capability-envelope, dependency-report, authority-map, implementation-authorization]
     produces: [candidate-change]
+  - id: pui-package-budget
+    entrypoints: [development]
+    loadPath: .agents/skills/pui-package-budget/SKILL.md
+    transition: accepted capability cost evidence -> bounded numeric package-budget transaction
+    autonomousMinimumBand: C2
+    taskClass: update-governed-package-budget
+    mutation: feature-branch
+    requires:
+      [
+        capability-envelope,
+        authority-map,
+        candidate-change,
+        evidence-report,
+        implementation-authorization,
+      ]
+    produces: [candidate-change]
+    allowedNextSkillIds: [pui-validate]
   - id: pui-release-prep
     entrypoints: [development]
     loadPath: .agents/skills/pui-release-prep/SKILL.md
