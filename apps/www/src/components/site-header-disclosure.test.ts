@@ -578,3 +578,24 @@ describe('compact navigation viewport and history', () => {
     expect(push).not.toHaveBeenCalled();
   });
 });
+
+it('adopts an open native fallback disclosure without closing its focused content', () => {
+  document.body.innerHTML = `<header data-site-header><details data-site-header-panel id="native-panel" open><summary data-site-header-fallback-summary>Navigation</summary><div data-site-header-settings><a href="/en/">English</a></div></details><button data-menu>Menu</button></header>`;
+  const root = document.querySelector<HTMLElement>('header')!;
+  const panel = root.querySelector<HTMLDetailsElement>('details')!;
+  const link = panel.querySelector('a')!;
+  const button = root.querySelector('button')!;
+  link.focus();
+  disclosure = initSiteHeaderDisclosure(root);
+  disclosure.bindButton(button);
+  disclosure.enhance();
+  expect(panel.open).toBe(true);
+  expect(panel.hidden).toBe(false);
+  expect(button.getAttribute('aria-expanded')).toBe('true');
+  expect(document.activeElement).toBe(link);
+  disclosure.close();
+  expect(panel.hidden).toBe(true);
+  disclosure.destroy();
+  expect(panel.hidden).toBe(false);
+  expect(panel.open).toBe(false);
+});

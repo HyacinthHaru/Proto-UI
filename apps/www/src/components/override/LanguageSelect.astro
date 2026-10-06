@@ -58,7 +58,9 @@ const labelId = `language-select-label-${Math.random().toString(36).slice(2)}`;
       data-size="sm"
       class="language-select min-w-24"
     >
-      <SelectValue data-placeholder="Select language" />
+      <SelectValue data-placeholder="Select language">
+        {localeOptions.find((option) => option.value === selectedLocale)?.label}
+      </SelectValue>
     </SelectTrigger>
     <SelectContent
       data-site-select-content

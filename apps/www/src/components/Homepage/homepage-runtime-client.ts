@@ -380,13 +380,6 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   let activeFamily: SiteLibraryFamily = initialFamily;
   let desiredComponent: SharedBaseFamilyId = demo?.initialComponent ?? 'button';
   let committedComponent = desiredComponent;
-  const roots = [
-    ...groups.map((group) => group.root),
-    ...(demo ? [demo.root] : []),
-    ...(headerSurface ? [headerSurface.root] : []),
-    ...(search?.mounts ?? []),
-    typography.root,
-  ];
   let destroyed = false;
   let epoch = 0;
   let desiredRuntime = initialRuntime;
@@ -552,10 +545,8 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       if (!prepared) throw new Error('[HomepageRuntime] prepared page generation is missing.');
       const next = prepared.candidates;
       const family = requireSiteLibraryFamily(commit.selection.projectionFamilyId);
-      for (let index = 0; index < next.length; index++)
-        next[index]!.setThemeSurfaceStyle(
-          resolveProjectionThemeSurfaceStyle(family, roots[index]!)
-        );
+      const theme = resolveProjectionThemeSurfaceStyle(family, root);
+      for (const candidate of next) candidate.setThemeSurfaceStyle(theme);
       const demoPublication = demo?.prepareCommit(commit, prepared.component);
       const headerPublication = headerSurface?.prepareCommit(commit);
       const searchPublication = search?.prepareCommit(commit);
@@ -740,10 +731,11 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
   const stopThemes = (['shadcn', 'brutalist'] as const).map((family) =>
     watchProjectionThemeSurfaceStyle(family, root, () => {
       if (destroyed || family !== activeFamily) return;
-      for (let index = 0; index < activeCandidates.length; index++)
-        activeCandidates[index]!.setThemeSurfaceStyle(
-          resolveProjectionThemeSurfaceStyle(family, roots[index]!)
-        );
+      // All participants share the page's theme input. Nested language/social
+      // mounts inherit a retained Surface's explicit old theme until this
+      // transaction finishes, so they must never become theme sources.
+      const theme = resolveProjectionThemeSurfaceStyle(family, root);
+      for (const candidate of activeCandidates) candidate.setThemeSurfaceStyle(theme);
     })
   );
   let destroyPromise: Promise<void> | undefined;
@@ -801,9 +793,7 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           recheck = true;
           return;
         }
-        candidate.setThemeSurfaceStyle(
-          resolveProjectionThemeSurfaceStyle(activeFamily, typography.root)
-        );
+        candidate.setThemeSurfaceStyle(resolveProjectionThemeSurfaceStyle(activeFamily, root));
         try {
           candidate.activate();
         } catch (error) {

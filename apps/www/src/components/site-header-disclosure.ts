@@ -36,6 +36,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   let pendingPositionFrame: number | null = null;
   let enhanced = false;
   let open = false;
+  const nativePanel = panel?.localName === 'details' ? (panel as HTMLDetailsElement) : null;
   let destroyed = false;
   // Docs offsets follow the actual header, including font enlargement and
   // wrapped values. The existing disclosure owns this one measurement source.
@@ -291,6 +292,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     if (navigation) navigation.hidden = false;
     if (desktopNavigation) desktopNavigation.hidden = false;
     if (panel) panel.hidden = false;
+    if (nativePanel) nativePanel.open = open;
     if (settings) settings.hidden = false;
     root.removeAttribute('data-site-menu-ready');
     root.removeAttribute('data-site-menu-open');
@@ -331,6 +333,12 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     },
     enhance() {
       if (destroyed) return;
+      if (!enhanced && nativePanel) {
+        // The browser owns initial disclosure while code loads or fails. Adopt
+        // its state once; the existing application controller then takes over.
+        open = nativePanel.open;
+        nativePanel.open = true;
+      }
       enhanced = true;
       sync();
     },
