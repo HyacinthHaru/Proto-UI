@@ -102,6 +102,11 @@ const REVIEWED_WEBSITE_CONTROL_ADAPTER_MODULES = new Set([
   'packages/adapters/web-component/src/platform/instance-tree.ts',
   'packages/adapters/web-component/src/platform/meta.ts',
   'packages/adapters/web-component/src/props.ts',
+  // Accepted WC-owned opaque fallback/visual-node bookkeeping; this does not
+  // admit shader/compiler assets or opt-in installation into ordinary shells.
+  'packages/adapters/web-component/src/material/owned-texture-sink.ts',
+  'packages/adapters/web-component/src/runtime/experimental-visual-consumer.ts',
+  'packages/adapters/web-component/src/visual-surface.ts',
   'packages/adapters/web-component/src/runtime/effects-port.ts',
   'packages/adapters/web-component/src/runtime/modules.ts',
   'packages/adapters/web-component/src/runtime/session.ts',
@@ -537,18 +542,47 @@ export function collectWebsiteProductionBundleIssues({
       }
     }
     if (reviewedSiteRoots.has(shellRoot.fileName)) {
-      const rendererRoots = chunks.filter((chunk) =>
-        chunk.moduleIds.map(moduleIdWithoutQuery).includes(REVIEWED_RENDERER_MODULE)
-      );
-      const rendererClosure = new Set(
-        rendererRoots.flatMap((chunk) => [
-          ...closure(chunksByFileName, chunk.fileName, ['imports', 'dynamicImports']),
-        ])
-      );
+      // Follow module-owned edges, not every edge of a shared renderer chunk.
+      // Module identity (including queries) must remain exact throughout this
+      // traversal; chunk membership alone never supplies importer provenance.
+      const moduleRecords = bundleGraph.modules;
+      const modulesById = new Map();
+      let validModuleGraph = Array.isArray(moduleRecords);
+      for (const record of Array.isArray(moduleRecords) ? moduleRecords : []) {
+        if (
+          !record ||
+          typeof record.id !== 'string' ||
+          !record.id ||
+          modulesById.has(record.id) ||
+          !['imports', 'dynamicImports'].every(
+            (field) =>
+              Array.isArray(record[field]) && record[field].every((id) => typeof id === 'string')
+          )
+        ) {
+          validModuleGraph = false;
+          continue;
+        }
+        modulesById.set(record.id, record);
+      }
+      for (const record of modulesById.values()) {
+        if ([...record.imports, ...record.dynamicImports].some((id) => !modulesById.has(id)))
+          validModuleGraph = false;
+      }
+      if (!validModuleGraph || !modulesById.has(REVIEWED_RENDERER_MODULE)) {
+        issues.push(
+          `reviewed Website runtime entry \`${shellRoot.facadeModuleId}\` requires complete renderer module-edge provenance`
+        );
+      }
+      const rendererModules = validModuleGraph
+        ? closure(modulesById, REVIEWED_RENDERER_MODULE, ['imports', 'dynamicImports'])
+        : new Set();
       for (const fileName of completeClosure) {
-        if (staticClosure.has(fileName) || rendererClosure.has(fileName)) continue;
+        if (staticClosure.has(fileName)) continue;
         for (const moduleId of chunksByFileName.get(fileName)?.moduleIds ?? []) {
-          if (forbiddenFrameworkFamily(moduleId) !== null || isProtoUiAdapterModule(moduleId)) {
+          if (
+            (forbiddenFrameworkFamily(moduleId) !== null || isProtoUiAdapterModule(moduleId)) &&
+            !rendererModules.has(moduleId)
+          ) {
             issues.push(
               `reviewed Website runtime entry \`${shellRoot.facadeModuleId}\` reaches Adapter module outside its renderer closure: ${moduleId}`
             );

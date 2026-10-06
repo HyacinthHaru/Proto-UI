@@ -462,6 +462,15 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   private syncCenter() {
+    // Readiness can arrive during setup before any Focus role is declared.
+    // Such a partially constructed module owns no Center entry to publish.
+    if (
+      !this.focusableDeclared &&
+      !this.entryDeclared &&
+      !this.scopeDeclared &&
+      !this.rovingDeclared
+    )
+      return;
     const entry = this.createCenterEntry();
     if (!entry) return;
     FOCUS_CENTER.upsert(entry);
@@ -1269,6 +1278,8 @@ class FocusModuleImpl extends ModuleBase {
     // Synchronous state observers below may drive a still-enabled entry role
     // to acquire the same root; that newer admission bumps the version.
     const applicationVersion = this.focusApplicationVersion;
+    const operation = this.focusOperation;
+    const epoch = this.focusFactsEpoch;
     this.setFocusState(this.focusableOwned, this.focusableDeclared && !disabled, reason, {
       defaultOnly: this.sys?.execPhase?.() === 'setup',
     });
@@ -1276,7 +1287,14 @@ class FocusModuleImpl extends ModuleBase {
     if (this.focusableConfig !== config) return;
     // Never blur a newer entry acquisition that landed during the observer
     // window; the target-role config identity alone cannot see it.
-    if (disabled && this.focusApplicationVersion === applicationVersion) this.blurTarget();
+    if (
+      disabled &&
+      this.focusApplicationVersion === applicationVersion &&
+      operation === this.focusOperation &&
+      epoch === this.focusFactsEpoch
+    ) {
+      this.blurTarget();
+    }
     if (this.focusableConfig !== config) return;
     this.syncHostFocusable();
     if (this.focusableConfig !== config) return;

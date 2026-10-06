@@ -17,7 +17,7 @@ import {
 
 type Kind = 'programmatic' | 'native' | 'entry';
 let identity = 10000;
-async function fixture(haveRequestCap = true, declareScope = false) {
+async function fixture(haveRequestCap = true, declareScope = false, selfEntry = false) {
   let scope: ReturnType<typeof asFocusScope> | undefined;
   let parentToken: unknown = null;
   let parentObserver: (() => void) | undefined;
@@ -55,7 +55,11 @@ async function fixture(haveRequestCap = true, declareScope = false) {
         scope.configure({ entry: 'manual' });
       }
       entry = asFocusEntry();
-      entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+      entry.configure(
+        selfEntry
+          ? { strategy: 'self', fallback: 'self' }
+          : { strategy: 'descendant-first', fallback: 'none' }
+      );
       focusable = asFocusable();
       focusable.focusable.watch((_ctx, event) => {
         if (event.type === 'next') eligibleObserver(event.next);
@@ -261,3 +265,34 @@ describe('tentative entry parent chain', () => {
     }
   });
 });
+
+it.each(['new entry', 'no target', 'entry disabled', 'new blur'] as const)(
+  'target disable preserves the latest eligible observer operation: %s',
+  async (action) => {
+    const f = await fixture(true, false, true);
+    try {
+      f.setResolved(f.root);
+      f.setImpl((el) => {
+        el.focus();
+        return true;
+      });
+      f.focusable.focus();
+      expect(document.activeElement).toBe(f.root);
+      if (action === 'no target') f.setResolved(null);
+      if (action === 'entry disabled') f.entry.setDisabled(true);
+      f.setEligibleObserver((next) => {
+        if (next) return;
+        if (action === 'new blur') f.focusable.blur();
+        else f.entry.focus({ reason: 'pointer' });
+      });
+      f.focusable.setDisabled(true);
+      expect(f.focusable.focusable.get()).toBe(false);
+      expect(document.activeElement === f.root).toBe(action === 'new entry');
+      expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(
+        action === 'new entry' ? 1 : 0
+      );
+    } finally {
+      await f.cleanup();
+    }
+  }
+);
