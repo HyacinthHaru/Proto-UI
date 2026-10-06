@@ -6,6 +6,8 @@ import { join, resolve } from 'node:path';
 import ts from 'typescript';
 import { transformSync } from 'esbuild';
 import { pathToFileURL } from 'node:url';
+import { initDocumentationHeaderSurface } from '../src/components/site-header-surface';
+import { establishContrastPopupEscapeBaseline } from '../scripts/contrast-popup-escape.mjs';
 import { compileContrastAnatomy, compareContrastAnatomy } from '../scripts/contrast-anatomy.mjs';
 import {
   assertDemoSpec,
@@ -191,34 +193,51 @@ function javascript(source: string): string {
 
 // Importing the CLI runner would execute top-level server/browser setup. Compile
 // its actual private functions instead; no copied predicate can drift from it.
+const subjectFunctions = ['bindCaseSubject', 'caseSubject', 'casePreviewer', 'releaseCaseSubject'];
+function bindTestReaders(raw: any, subjects: WeakMap<object, unknown>) {
+  const invoke = (name: string, page: any, auditCase: AuditCase, args: unknown[]) =>
+    subjects.has(page)
+      ? raw[name](...args)
+      : raw
+          .bindCaseSubject(page, page.locator('[data-previewer-id]').first(), auditCase)
+          .then(() => raw[name](...args));
+  return {
+    ...raw,
+    raw,
+    projectionObservation: (page: any, auditCase: AuditCase) =>
+      invoke('projectionObservation', page, auditCase, [page, auditCase]),
+    assertProjectionReadiness: (page: any, auditCase: AuditCase) =>
+      invoke('assertProjectionReadiness', page, auditCase, [page, auditCase]),
+    anatomyObservation: (page: any, auditCase: AuditCase, state: string) =>
+      invoke('anatomyObservation', page, auditCase, [page, auditCase, state]),
+    passiveSurfaceObservation: (page: any, family: string, runtime: Runtime) =>
+      invoke('passiveSurfaceObservation', page, item(runtime, family), [page, family, runtime]),
+  };
+}
 function auditor(withReadiness = false) {
   const names = [
     'projectionExpectation',
+    ...subjectFunctions,
     'projectionObservation',
     ...(withReadiness ? ['assertProjectionReadiness'] : []),
   ];
   const availability = Object.fromEntries(
-    declarations.map((declaration) => [
-      declaration.family,
-      { serialized: JSON.stringify(declaration.runtimes) },
-    ])
+    declarations.map((entry) => [entry.family, { serialized: JSON.stringify(entry.runtimes) }])
   );
-  return new Function(
+  const caseSubjects = new WeakMap<object, unknown>();
+  const raw = new Function(
     'PROJECTION_FAMILY_MANIFESTS',
     'runtimeAvailability',
     'surfacePrototypeId',
-    // Match tsx's helper-emitting mode and serialize the browser callback below.
-    // A closure-only transform helper must not accidentally pass these controls.
+    'caseSubjects',
     transformSync(names.map(declaration).join('\n'), {
       loader: 'ts',
       target: 'es2022',
       keepNames: true,
       minifyWhitespace: true,
     }).code + `\nreturn {${names.join(',')}};`
-  )(PROJECTION_FAMILY_MANIFESTS, availability, surfacePrototypeId) as {
-    projectionObservation(page: unknown, item: AuditCase): Promise<IdentityObservation>;
-    assertProjectionReadiness(page: unknown, item: AuditCase): Promise<void>;
-  };
+  )(PROJECTION_FAMILY_MANIFESTS, availability, surfacePrototypeId, caseSubjects);
+  return bindTestReaders(raw, caseSubjects);
 }
 
 function item(runtime: Runtime = 'wc', family = 'button'): AuditCase {
@@ -234,20 +253,7 @@ function item(runtime: Runtime = 'wc', family = 'button'): AuditCase {
 }
 
 function pageFor(root: HTMLElement) {
-  return {
-    locator(selector: string) {
-      expect(selector).toBe('[data-previewer-id]');
-      return {
-        first: () => ({
-          evaluate: (fn: (element: HTMLElement, expected: unknown) => unknown, expected: unknown) =>
-            new Function('element', 'expected', `return (${fn.toString()})(element, expected);`)(
-              root,
-              expected
-            ),
-        }),
-      };
-    },
-  };
+  return pipelinePage(root);
 }
 
 let fixtureId = 0;
@@ -386,22 +392,11 @@ it('preserves the 17 declared primary recipes and 134 page/runtime/theme cases, 
 });
 
 it('binds every admitted family to the actual producer recipe without importing its renderer into the CLI', async () => {
-  const { projectionObservation } = auditor();
+  const { projectionExpectation } = auditor();
   const families = Object.keys(PROJECTION_FAMILY_MANIFESTS.brutalist.families);
   expect(families).toHaveLength(17);
   for (const family of families) {
-    let expected!: Record<string, unknown>;
-    const page = {
-      locator: () => ({
-        first: () => ({
-          evaluate: (_fn: unknown, input: Record<string, unknown>) => {
-            expected = input;
-            return { achieved: false };
-          },
-        }),
-      }),
-    };
-    await projectionObservation(page, item('wc', family));
+    const expected = projectionExpectation(item('wc', family));
     const production = runtimePreviewRecipe('brutalist', family as ProjectionComponentId);
     expect(expected.contentRecipeId, family).toBe(production.id);
     expect(expected.prototypeIds, family).toEqual(production.prototypeIds);
@@ -859,6 +854,10 @@ function pipeline(family: string) {
   const recipe = productionDemos[`../src/content/docs/zh-cn/demo-brutalist-${family}.demo.ts`];
   expect(recipe, family).toBeDefined();
   const names = [
+    ...subjectFunctions,
+    'fingerprint',
+    'settle',
+    'owned',
     'projectionObservation',
     'primary',
     'anatomyObservation',
@@ -920,13 +919,15 @@ function pipeline(family: string) {
     compileContrastAnatomy,
     compareContrastAnatomy,
     anatomyPlans: new Map(),
+    caseSubjects: new WeakMap<object, unknown>(),
     __recipe: recipe,
   };
-  return new Function(
+  const raw = new Function(
     ...Object.keys(namesAndValues),
     transformSync(replay, { loader: 'ts', target: 'es2022', keepNames: true }).code +
       `;return {${names.join(',')}};`
   )(...Object.values(namesAndValues));
+  return bindTestReaders(raw, namesAndValues.caseSubjects);
 }
 function pipelinePage(root: HTMLElement, beforeRead?: () => () => void) {
   const evaluate = (fn: Function, ...args: unknown[]) => {
@@ -937,26 +938,41 @@ function pipelinePage(root: HTMLElement, beforeRead?: () => () => void) {
       restore?.();
     }
   };
-  const locator = (element: Element | null): any => ({
-    first: () => locator(element),
-    locator: (selector: string) => locator(element?.querySelector(selector) ?? null),
+  const locator = (select: () => Element[]): any => ({
+    first: () => locator(() => select().slice(0, 1)),
+    last: () => locator(() => select().slice(-1)),
+    elementHandle: async () => {
+      if (select().length !== 1) throw new Error('Ambiguous/missing test bridge locator.');
+      return Object.assign(select()[0], { dispose: vi.fn() });
+    },
+    getAttribute: async (name: string) => select()[0]?.getAttribute(name) ?? null,
+    locator: (selector: string) =>
+      locator(() => select().flatMap((element) => [...element.querySelectorAll(selector)])),
     getByRole: (role: string, options: { name: string }) =>
-      locator(
-        [...element!.querySelectorAll(`[role="${role}"]`)].find(
-          (node) => node.textContent?.trim() === options.name
-        ) ?? null
+      locator(() =>
+        select()
+          .flatMap((element) => [...element.querySelectorAll(`[role="${role}"]`)])
+          .filter((node) => node.textContent?.trim() === options.name)
       ),
     evaluate: (fn: Function, expected?: unknown) => {
-      if (!element) throw new Error('Actual audit primary selector did not resolve.');
-      return evaluate(fn, element, expected);
+      if (select().length !== 1) throw new Error('Actual audit selector is missing or ambiguous.');
+      return evaluate(fn, select()[0], expected);
     },
+    evaluateAll: (fn: Function) => evaluate(fn, select()),
   });
   return {
     locator: (selector: string) =>
-      locator(selector === '[data-previewer-id]' ? root : document.querySelector(selector)),
+      locator(() =>
+        selector === '[data-previewer-id]' ? [root] : [...document.querySelectorAll(selector)]
+      ),
     evaluate: (fn: Function, expected?: unknown) => evaluate(fn, expected),
+    waitForFunction: async (fn: Function, expected: unknown, options: { timeout: number }) => {
+      expect([10_000, 20_000]).toContain(options.timeout);
+      if (!evaluate(fn, expected)) throw new Error('Controlled observation is not ready.');
+    },
   };
 }
+
 function controlledMeasurementInputs() {
   const bounds = {
     x: 20,
@@ -1309,11 +1325,9 @@ it('loads the serialized shared probe before the production readiness call and s
     runnerSource.indexOf('await assertProjectionReadiness(page, item)')
   );
   const anatomy = declaration('anatomyObservation');
-  expect(anatomy).toContain('readContrastAnatomy(element, expected)');
-  expect(anatomy).toContain('projectionExpectation(item)');
-  expect(declaration('passiveSurfaceObservation')).toContain(
-    'identity: projectionExpectation({ family, runtime })'
-  );
+  expect(anatomy).toContain('readSubjectContrastAnatomy(element, subject)');
+  expect(anatomy).toContain('caseSubject(page)');
+  expect(declaration('passiveSurfaceObservation')).toContain('subject: caseSubject(page)');
 });
 
 // Execute the real case-entry statements from selector wait through injection
@@ -1321,7 +1335,7 @@ it('loads the serialized shared probe before the production readiness call and s
 // test: the real producer has already been given the requested initial runtime.
 function actualReadinessEntry() {
   const start = runnerSource.lastIndexOf(
-    "      const previewer = page.locator('[data-previewer-id]').first();"
+    "      let previewer = page.locator('[data-previewer-id]').first();"
   );
   const end = runnerSource.indexOf('      await applyColorScheme(page, theme', start);
   expect(start).toBeGreaterThan(0);
@@ -1330,11 +1344,11 @@ function actualReadinessEntry() {
     'page',
     'runtime',
     'item',
-    'assertProjectionReadiness',
+    'audit',
     'choosePreviewRuntime',
     'browserProbe',
     javascript(
-      `return async function() { let phase; ${runnerSource.slice(start, end)} return phase; }`
+      `return async function() { const {assertProjectionReadiness,bindCaseSubject,casePreviewer} = audit; let phase; ${runnerSource.slice(start, end)} return phase; }`
     )
   );
 }
@@ -1347,6 +1361,8 @@ function startupPage(root: HTMLElement, events: string[], beforeGuard?: () => ()
   observer.observe(root, { subtree: true, childList: true, attributes: true });
   const locator = (select: () => Element[]): any => ({
     select,
+    elementHandle: async () =>
+      select()[0] ? Object.assign(select()[0], { dispose: vi.fn() }) : null,
     first: () => locator(() => select().slice(0, 1)),
     and: (other: { select: () => Element[] }) =>
       locator(() => select().filter((element) => other.select().includes(element))),
@@ -1393,6 +1409,16 @@ function startupPage(root: HTMLElement, events: string[], beforeGuard?: () => ()
   return {
     observations,
     dispose: () => observer.disconnect(),
+    evaluate: (fn: Function, subject: unknown) => {
+      events.push('guard');
+      expect(events).toContain('inject');
+      const restore = beforeGuard?.();
+      try {
+        return new Function('subject', `return (${fn.toString()})(subject);`)(subject);
+      } finally {
+        restore?.();
+      }
+    },
     locator: (selector: string) => locator(() => [...document.querySelectorAll(selector)]),
     addScriptTag: async ({ content }: { content: string }) => {
       expect(content).toBe('actual-probe');
@@ -1420,7 +1446,7 @@ for (const runtime of runtimes) {
           page,
           runtime,
           item(runtime),
-          auditor(true).assertProjectionReadiness,
+          auditor(true),
           async () => {
             events.push('requested-runtime-already-selected');
           },
@@ -1479,7 +1505,7 @@ it('actual production entry fails a missing shell without entering generic calib
         page,
         'wc',
         auditCase,
-        auditor(true).assertProjectionReadiness,
+        auditor(true),
         async () => {},
         'actual-probe'
       );
@@ -1493,4 +1519,394 @@ it('actual production entry fails a missing shell without entering generic calib
     }
   });
   await mounted.destroy();
+});
+
+async function productionHeader() {
+  history.replaceState({}, '', '/en/ui-libraries/brutalist/components/button/');
+  const header = document.createElement('header');
+  header.dataset.siteHeader = '';
+  header.innerHTML =
+    '<div data-site-header-panel><div data-site-header-surface-mount></div><div data-site-header-panel-content><nav><a href="/en/start-here/">Docs</a></nav><input aria-label="Setting draft" value="unchanged"></div></div>';
+  document.body.prepend(header);
+  const controller = initDocumentationHeaderSurface(header)!;
+  await vi.waitFor(() =>
+    expect(
+      header.querySelector<HTMLElement>('[data-site-header-panel]')?.dataset.headerSurfaceGeneration
+    ).toBeTruthy()
+  );
+  return {
+    header,
+    surface: header.querySelector<HTMLElement>('[data-pui-root]')!,
+    destroy: async () => {
+      await controller.destroy();
+      header.remove();
+    },
+  };
+}
+for (const runtime of runtimes) {
+  it(`${runtime}: an earlier real Header cannot own subject anatomy, fingerprint or settling`, async () => {
+    localStorage.clear();
+    vi.stubGlobal('visualViewport', null);
+    const header = await productionHeader();
+    const mounted = await preview(runtime, 'button');
+    const restore = controlledMeasurementInputs();
+    const animations = Object.getOwnPropertyDescriptor(Element.prototype, 'getAnimations');
+    Object.defineProperty(Element.prototype, 'getAnimations', {
+      configurable: true,
+      value: () => [],
+    });
+    try {
+      const readers = pipeline('button'),
+        page = pipelinePage(mounted.root);
+      const identity = await readers.projectionObservation(page, item(runtime));
+      expect(identity.achieved).toBe(true);
+      const anatomy = await readers.anatomyObservation(page, item(runtime), 'rest');
+      expect(anatomy.achieved).toBe(true);
+      expect(anatomy.owner).toBe(identity.owner);
+      const before = await readers.fingerprint(page);
+      expect(JSON.parse(before).owner).toBe(identity.owner);
+      mounted.physical.style.color = 'rgb(12, 34, 56)';
+      expect(await readers.fingerprint(page)).not.toBe(before);
+      mounted.physical.style.color = '';
+      header.surface.style.backgroundColor = 'rgb(90, 80, 70)';
+      expect(await readers.fingerprint(page)).toBe(before);
+      header.surface.setAttribute('data-transition-state', 'entering');
+      await expect(readers.settle(page)).resolves.toBeUndefined();
+      mounted.physical.setAttribute('data-transition-state', 'entering');
+      await expect(readers.settle(page)).rejects.toThrow('not ready');
+      mounted.physical.removeAttribute('data-transition-state');
+      document.body.append(header.header);
+      expect((await readers.anatomyObservation(page, item(runtime), 'rest')).owner).toBe(
+        identity.owner
+      );
+      expect(await readers.fingerprint(page)).toBe(before);
+      await readers.releaseCaseSubject(page);
+      expect((mounted.root as any).dispose).toHaveBeenCalledOnce();
+      await expect(readers.raw.fingerprint(page)).rejects.toThrow('has not been bound');
+    } finally {
+      mounted.physical.removeAttribute('data-transition-state');
+      if (animations) Object.defineProperty(Element.prototype, 'getAnimations', animations);
+      else delete (Element.prototype as any).getAnimations;
+      restore();
+      await mounted.destroy();
+      await header.destroy();
+      vi.unstubAllGlobals();
+    }
+  });
+}
+it('a frozen subject survives sibling order/rebuild and owns its body roots, then fails on replacement', async () => {
+  vi.stubGlobal('visualViewport', null);
+  const header = await productionHeader();
+  const first = await preview('wc', 'button');
+  const subject = await preview('wc', 'button');
+  const restore = controlledMeasurementInputs();
+  try {
+    const readers = pipeline('button'),
+      page = pipelinePage(subject.root);
+    await readers.bindCaseSubject(
+      page,
+      page.locator(`[data-previewer-id="${subject.root.dataset.previewerId}"]`),
+      item()
+    );
+    const owner = (await readers.raw.projectionObservation(page, item())).owner;
+    expect(owner).toBe(subject.scope.dataset.projectionScope);
+    document.body.prepend(first.root);
+    await (first.root as any).__previewer__.switchRuntime('react');
+    expect(JSON.parse(await readers.fingerprint(page)).owner).toBe(owner);
+    const undo = moveNode(subject.physical, document.body);
+    try {
+      const owned = await readers.owned(page, 'brutalist-button');
+      const nodes = await owned.evaluateAll((elements: Element[]) => elements);
+      expect(nodes).toContain(subject.physical);
+      expect(nodes.some((node: Element) => first.root.contains(node))).toBe(false);
+      expect(nodes).toHaveLength(10);
+    } finally {
+      undo();
+    }
+    const duplicate = document.createElement('section');
+    duplicate.dataset.previewerId = subject.root.dataset.previewerId;
+    document.body.prepend(duplicate);
+    try {
+      await expect(readers.fingerprint(page)).rejects.toThrow('subject lease is invalid');
+    } finally {
+      duplicate.remove();
+    }
+    const replacement = document.createElement('section');
+    replacement.dataset.previewerId = subject.root.dataset.previewerId;
+    subject.root.replaceWith(replacement);
+    let rejected: Promise<unknown>;
+    try {
+      rejected = readers.fingerprint(page);
+    } finally {
+      replacement.replaceWith(subject.root);
+    }
+    await expect(rejected!).rejects.toThrow('subject lease is invalid');
+    expect(JSON.parse(await readers.fingerprint(page)).owner).toBe(owner);
+  } finally {
+    restore();
+    await subject.destroy();
+    await first.destroy();
+    await header.destroy();
+    vi.unstubAllGlobals();
+  }
+});
+it('production measurement entries require an explicit subject and never use calibration fallback', async () => {
+  const mounted = await preview();
+  try {
+    const probe = (globalThis as any).puiContrastProbe;
+    expect(() => probe.readSubjectContrastState()).toThrow('Explicit audit');
+    expect(() => probe.readSubjectContrastAnatomy(mounted.physical)).toThrow('Explicit audit');
+    expect(() => probe.collectSubjectContrastFrame({ image: '', family: 'button' })).toThrow(
+      'Explicit audit'
+    );
+    const readers = pipeline('button'),
+      page = pipelinePage(mounted.root);
+    await expect(readers.raw.projectionObservation(page, item())).rejects.toThrow(
+      'has not been bound'
+    );
+    await readers.bindCaseSubject(page, page.locator('[data-previewer-id]').first(), item());
+    await expect(
+      readers.bindCaseSubject(page, page.locator('[data-previewer-id]').first(), item())
+    ).rejects.toThrow('already has');
+    const subject = readers.caseSubject(page);
+    expect(() => probe.readSubjectContrastState({ ...subject, expected: undefined })).toThrow(
+      'Explicit audit'
+    );
+    expect(() => probe.readSubjectContrastState({ ...subject, previewer: document.body })).toThrow(
+      'subject lease is invalid'
+    );
+  } finally {
+    await mounted.destroy();
+  }
+});
+
+function measurementComparator() {
+  return new Function(
+    javascript(declaration('measurementLeaseMatches')) + ';return measurementLeaseMatches;'
+  )() as (projection: unknown, observations: unknown[]) => boolean;
+}
+it('rejects the real 1aadd Header-owned facts even when all fingerprint digests matched', () => {
+  // Official run37398687310/binary first Button journal and facts. No synthetic
+  // paint is substituted for this archived wrong-subject measurement.
+  const projection = { owner: 'pp-s2ix5ion289', generation: '1' };
+  const headerFacts = { owner: 'site-header-surface-1', generation: '1' };
+  const matches = measurementComparator();
+  expect(matches(projection, [headerFacts, headerFacts, headerFacts])).toBe(false);
+  expect(matches(projection, [projection, projection, null])).toBe(true);
+  for (const bad of [
+    undefined,
+    {},
+    { owner: projection.owner, generation: '2' },
+    { owner: 'other', generation: '1' },
+  ])
+    expect(matches(projection, [projection, bad])).toBe(false);
+  expect(matches({}, [{}, null])).toBe(false);
+});
+it('capture cross-binds anatomy, facts and all three raw fingerprint leases to the selected projection', () => {
+  const capture = declaration('capture');
+  for (const expression of [
+    'measurementLeaseMatches(projectionBefore',
+    'facts,',
+    'anatomyBefore,',
+    'anatomyAfter,',
+    'JSON.parse(before)',
+    'JSON.parse(facts.stateFingerprint)',
+    'JSON.parse(after)',
+    '!sameMeasurementLease',
+  ])
+    expect(capture).toContain(expression);
+});
+
+// Controlled white raster only tests actual fact-collector routing and complete
+// producer surfaces. It is not a native PNG, CSS or contrast acceptance result.
+for (const runtime of runtimes) {
+  it(`${runtime}: actual facts collector samples the selected previewer with a real Header before it`, async () => {
+    vi.stubGlobal('visualViewport', null);
+    const header = await productionHeader();
+    const mounted = await preview(runtime, 'button');
+    const restoreGeometry = controlledMeasurementInputs();
+    vi.stubGlobal(
+      'Image',
+      class {
+        src = '';
+        naturalWidth = 100;
+        naturalHeight = 100;
+        async decode() {}
+      }
+    );
+    const context = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(
+      () =>
+        ({
+          drawImage() {},
+          getImageData() {
+            return { data: new Uint8ClampedArray([255, 255, 255, 255]) };
+          },
+        }) as any
+    );
+    try {
+      const readers = pipeline('button'),
+        page = pipelinePage(mounted.root);
+      const expected = await readers.projectionObservation(page, item(runtime));
+      const facts = await (globalThis as any).puiContrastProbe.collectSubjectContrastFrame({
+        image: 'controlled-white-raster',
+        family: 'button',
+        subject: readers.caseSubject(page),
+      });
+      expect(facts.owner).toBe(expected.owner);
+      expect(facts.generation).toBe(expected.generation);
+      expect(JSON.parse(facts.stateFingerprint).owner).toBe(expected.owner);
+      expect(facts.surfaces).toHaveLength(10);
+      expect(facts.surfaces.every((surface: any) => surface.prototype === 'brutalist-button')).toBe(
+        true
+      );
+      expect(facts.surfaces.some((surface: any) => surface.ref === 'header-surface')).toBe(false);
+      expect(measurementComparator()(expected, [facts, JSON.parse(facts.stateFingerprint)])).toBe(
+        true
+      );
+    } finally {
+      context.mockRestore();
+      restoreGeometry();
+      await mounted.destroy();
+      await header.destroy();
+      vi.unstubAllGlobals();
+    }
+  });
+}
+
+it('all production ownership consumers use the frozen case subject; global Focus diagnostics are labeled', () => {
+  for (const name of [
+    'settle',
+    'fingerprint',
+    'projectionObservation',
+    'anatomyObservation',
+    'passiveSurfaceObservation',
+    'owned',
+    'tooltipPortal',
+  ]) {
+    const source = declaration(name);
+    expect(source, name).not.toMatch(/document\.querySelector[^\n]*data-projection-scope/);
+    expect(source, name).not.toContain("locator('[data-previewer-id]').first()");
+    expect(source, name).toMatch(/caseSubject\(page\)|casePreviewer\(page\)/);
+  }
+  expect(declaration('capture')).toContain('collectSubjectContrastFrame(input)');
+  expect(declaration('fingerprint')).toContain('readSubjectContrastState(subject)');
+  expect(declaration('failedKeyboardDiagnostics')).toContain('requestedSubject:');
+  expect(declaration('failedKeyboardDiagnostics')).toContain('Global Focus center diagnostics');
+  expect(runnerSource).toContain('finally {\n            await context.close();');
+  expect(runnerSource).toContain('await releaseCaseSubject(casePage)');
+});
+
+// Actual CLI transition statements, with controlled observations to isolate
+// orchestration. The separate Escape suite supplies real producer/Adapter facts.
+function escapeRunnerBlock(source = runnerSource) {
+  const start = source.indexOf(
+    "      // Dismiss open menus before testing the trigger's native keyboard route."
+  );
+  const end = source.indexOf("      if (family === 'hover-card')", start);
+  expect(start).toBeGreaterThan(0);
+  expect(end).toBeGreaterThan(start);
+  return new Function(
+    'page',
+    'item',
+    'target',
+    'auditedPopupEscape',
+    'owned',
+    javascript(
+      `return async function() { const {family}=item; let phase; ${source.slice(start, end)} return phase; };`
+    )
+  );
+}
+for (const family of ['tooltip', 'dropdown-menu', 'select']) {
+  for (const closes of [true, false]) {
+    it(`${family}: actual runner ${closes ? 'continues only after verified Escape' : 'does not let pointer/focus reset mask swallowed Escape'}`, async () => {
+      const calls: string[] = [];
+      const page = {
+        keyboard: {
+          press: async (key: string) => {
+            calls.push(key);
+          },
+        },
+        mouse: {
+          move: async () => {
+            calls.push('pointer-reset');
+          },
+        },
+      };
+      const target = {
+        focus: async () => {
+          calls.push('focus-reset');
+        },
+      };
+      const auditCase = item('wc', family) as AuditCase & {
+        escapeTransition?: Record<string, unknown>;
+      };
+      const audited = async (_page: unknown, actualCase: typeof auditCase, _target: unknown) => {
+        expect(actualCase).toBe(auditCase);
+        const record = (actualCase.escapeTransition = {});
+        await establishContrastPopupEscapeBaseline({
+          family,
+          record,
+          readBefore: async () => ({ achieved: true, family }),
+          pressEscape: () => page.keyboard.press('Escape'),
+          waitForClosed: async () => {
+            calls.push('closed-check');
+            if (!closes) throw new Error('Exact popup stayed open.');
+          },
+          waitForFocus: async () => {
+            calls.push('focus-check');
+          },
+          readAfter: async () => ({
+            sameOwnedPopup: true,
+            closed: true,
+            focusPreserved: true,
+            descriptionRemoved: true,
+            triggerFocused: true,
+            ariaExpanded: 'false',
+            selectionUnchanged: true,
+          }),
+        });
+      };
+      const run = escapeRunnerBlock()(page, auditCase, target, audited, () => {
+        throw new Error('Wrong family branch');
+      });
+      if (closes) {
+        await run();
+        expect(auditCase.escapeTransition?.achieved).toBe(true);
+        expect(calls).toEqual([
+          'Escape',
+          'closed-check',
+          ...(family === 'tooltip' ? [] : ['focus-check']),
+          'pointer-reset',
+          'focus-reset',
+          'Tab',
+        ]);
+      } else {
+        await expect(run()).rejects.toThrow('Exact popup stayed open');
+        expect(calls).toEqual(['Escape', 'closed-check']);
+        expect(auditCase.escapeTransition?.achieved).toBe(false);
+      }
+    });
+  }
+}
+it('Escape integration retains exact handles, current subject leases, helper provenance and bounded Tooltip claims', () => {
+  const source = declaration('auditedPopupEscape');
+  for (const required of [
+    'caseSubject(page)',
+    'tooltipPortal(page, target)',
+    'controlledId',
+    'evaluateHandle(readContrastPopupEscapeBefore',
+    "waitForElementState('hidden')",
+    'readContrastPopupEscapeAfter',
+    'afterLease.owner !== beforeLease.owner',
+    'afterLease.generation !== beforeLease.generation',
+    'await baseline?.dispose()',
+    'await popup?.dispose()',
+    'await trigger.dispose()',
+  ])
+    expect(source).toContain(required);
+  expect(source).not.toMatch(/\.focus\(|\.click\(|mouse\.move/);
+  expect(runnerSource).toContain(
+    "['popup-escape', new URL('./contrast-popup-escape.mjs', import.meta.url)]"
+  );
+  expect(runnerSource).toContain('not a sibling warm-window timing or Group handoff journey');
 });

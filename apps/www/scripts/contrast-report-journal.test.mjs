@@ -80,6 +80,45 @@ async function allFiles(root) {
 }
 
 describe('contrast report journal', () => {
+  it('preserves null unsupported border facts without making matched frames a contrast verdict', async (t) => {
+    const { output, journal, report } = await fixture(t);
+    const name = 'unsupported-border';
+    const facts = {
+      borders: { top: { style: 'dashed', limits: ['unsupported-border-style'] } },
+      exterior: [
+        {
+          side: 'top',
+          innerBorderVsBackground: null,
+          opaqueBorderVsPixel: null,
+          opaqueFillVsPixel: 1,
+        },
+      ],
+      cueDisposition: 'unclassified observation',
+    };
+    await journal.beginFrame(name, { status: 'attempting', facts: null });
+    const contents = JSON.stringify(facts);
+    const factsFile = { path: `${name}.facts.json`, digest: digest(contents) };
+    await writeFile(path.join(output, factsFile.path), contents, { flag: 'wx' });
+    await journal.finishFrame(name, { status: 'matched', facts, factsFile });
+    report.disposition = 'planned target observations collected; conformance not evaluated';
+    report.summary.conformance = 'not evaluated';
+    await journal.persist('final', report);
+    const replay = await readContrastReportJournal(output);
+    const stored = JSON.parse(
+      await readFile(path.join(output, replay.frames[0].frameFile.path), 'utf8')
+    );
+    assert.deepEqual(stored.frame, { status: 'matched', factsFile });
+    const recovered = JSON.parse(
+      await readFile(path.join(output, stored.frame.factsFile.path), 'utf8')
+    );
+    assert.deepEqual(recovered, facts);
+    assert.equal(recovered.exterior[0].innerBorderVsBackground, null);
+    assert.equal(recovered.exterior[0].opaqueBorderVsPixel, null);
+    assert.equal(recovered.cueDisposition, 'unclassified observation');
+    assert.equal(replay.summary.conformance, 'not evaluated');
+    assert.equal(replay.disposition, report.disposition);
+  });
+
   it('stores facts once, compact manifests during capture, and one final report', async (t) => {
     const context = await fixture(t);
     const { output, journal, report } = context;

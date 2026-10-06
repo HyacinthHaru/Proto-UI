@@ -167,3 +167,33 @@ test('toolbar setup preserves all 17 families, bounded jobs and exact-head evide
   assert.match(observe.run, /seq 1 180/);
   assert.match(observe.run, /audit-brutalist-contrast\.mts/);
 });
+
+// Native startup is infrastructure setup, not a product latency assertion.
+// Keep this allowance on this one hook; calibration test bodies and the shard
+// deadline remain unchanged. This contract runs before native calibration.
+const calibrationPath = 'apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts';
+function assertCalibrationStartupBound(source) {
+  const hook = source.match(/beforeAll\(async \(\) => \{([\s\S]*?)\n\}, ([\d_]+)\);/);
+  assert.ok(hook, 'The instrument startup hook must have an explicit finite allowance.');
+  assert.equal(Number(hook[2].replaceAll('_', '')), 30_000);
+  assert.equal((source.match(/beforeAll\(/g) ?? []).length, 1);
+  assert.equal((hook[1].match(/await launchBrowser\(\)/g) ?? []).length, 1);
+  assert.doesNotMatch(source, /hookTimeout\s*:|vi\.setConfig|testTimeout\s*:/);
+}
+
+test('only the instrument startup hook has an explicit 30-second allowance', () => {
+  assertCalibrationStartupBound(readFileSync(calibrationPath, 'utf8'));
+});
+for (const [label, change] of [
+  ['default hook limit', (s) => s.replace('}, 30_000);', '});')],
+  ['unbounded limit', (s) => s.replace('}, 30_000);', '}, 0);')],
+  ['larger implicit scope', (s) => s.replace('}, 30_000);', '}, 60_000);')],
+  ['global hook override', (s) => `${s}\nvi.setConfig({ hookTimeout: 30_000 });`],
+]) {
+  test(`instrument startup contract rejects ${label}`, () => {
+    assert.throws(
+      () => assertCalibrationStartupBound(change(readFileSync(calibrationPath, 'utf8'))),
+      assert.AssertionError
+    );
+  });
+}

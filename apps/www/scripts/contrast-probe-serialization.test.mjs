@@ -4,6 +4,139 @@ import test from 'node:test';
 import vm from 'node:vm';
 import { transform } from 'esbuild';
 
+// Execute the real source-reader loop and emitted exterior expression with
+// controlled CSSOM/paint inputs. This is a model-domain regression, not native
+// evidence that a sampled point lands on a dash, gap or double-border stripe.
+const borderRatioFixture = async () => {
+  const source = await readFile(new URL('./contrast-probe.browser.ts', import.meta.url), 'utf8');
+  const borderStart = source.indexOf("for (const side of ['top', 'right', 'bottom', 'left']) {");
+  const borderEnd = source.indexOf('const nodes: Node[] = [];', borderStart);
+  const exteriorStart = source.indexOf('exterior: exterior.map(') + 'exterior: '.length;
+  const exteriorEnd = source.indexOf('\n        cueDisposition:', exteriorStart);
+  assert.ok(borderStart >= 0 && borderEnd > borderStart);
+  assert.ok(exteriorStart >= 'exterior: '.length && exteriorEnd > exteriorStart);
+  const readBorders = new Function(
+    'style',
+    'border',
+    'paint',
+    `const borders = {}; ${source.slice(borderStart, borderEnd)} return borders;`
+  );
+  const readExterior = new Function(
+    'exterior',
+    'inactive',
+    'inkUnmodified',
+    'borders',
+    'backdrop',
+    'fill',
+    'contrast',
+    `return ${source.slice(exteriorStart, exteriorEnd).trim().replace(/,$/, '')};`
+  );
+  const sides = ['top', 'right', 'bottom', 'left'];
+  const luminance = (color) =>
+    color
+      .slice(0, 3)
+      .map((channel) => channel / 255)
+      .map((value) => (value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4))
+      .reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+  const contrast = (a, b) =>
+    (Math.max(luminance(a), luminance(b)) + 0.05) / (Math.min(luminance(a), luminance(b)) + 0.05);
+  return ({
+    styles = {},
+    width = 4,
+    alpha = 1,
+    inactive = false,
+    inkUnmodified = true,
+    color = [0, 0, 0, 255],
+  } = {}) => {
+    const ink = () => ({ rgba: color, alpha, limits: [] });
+    const borders = readBorders(
+      {
+        getPropertyValue: (property) => {
+          const [, side, kind] = property.split('-');
+          return kind === 'style'
+            ? (styles[side] ?? 'solid')
+            : kind === 'width'
+              ? `${width}px`
+              : 'black';
+        },
+      },
+      ink(),
+      ink
+    );
+    const exterior = readExterior(
+      sides.map((side) => ({ side, point: { x: 1, y: 1, rgb: [255, 255, 255] } })),
+      inactive,
+      inkUnmodified,
+      borders,
+      { rgba: [255, 255, 255, 255] },
+      { rgba: [255, 255, 255, 255], alpha: 1, limits: [] },
+      contrast
+    );
+    return { borders, exterior };
+  };
+};
+
+for (const style of [
+  'dashed',
+  'dotted',
+  'double',
+  'none',
+  'hidden',
+  'groove',
+  'ridge',
+  'inset',
+  'outset',
+]) {
+  test(`border source ratios withhold unsupported ${style} geometry independently per side`, async () => {
+    const measure = await borderRatioFixture();
+    for (const side of ['top', 'right', 'bottom', 'left']) {
+      const { borders, exterior } = measure({ styles: { [side]: style } });
+      for (const edge of exterior) {
+        if (edge.side === side) {
+          assert.equal(edge.innerBorderVsBackground, null);
+          assert.equal(edge.opaqueBorderVsPixel, null);
+          assert.equal(borders[side].style, style);
+          assert.ok(borders[side].limits.includes('unsupported-border-style'));
+        } else {
+          assert.equal(edge.innerBorderVsBackground, 21);
+          assert.equal(edge.opaqueBorderVsPixel, 21);
+          assert.equal(borders[edge.side].style, 'solid');
+          assert.deepEqual(borders[edge.side].limits, []);
+        }
+        assert.equal(edge.opaqueFillVsPixel, 1);
+      }
+    }
+  });
+}
+
+test('border source ratios retain solid low/high contrasts and existing withholding guards', async () => {
+  const measure = await borderRatioFixture();
+  for (const edge of measure().exterior) {
+    assert.equal(edge.innerBorderVsBackground, 21);
+    assert.equal(edge.opaqueBorderVsPixel, 21);
+  }
+  for (const edge of measure({ color: [255, 255, 255, 255] }).exterior) {
+    assert.equal(edge.innerBorderVsBackground, 1);
+    assert.equal(edge.opaqueBorderVsPixel, 1);
+  }
+  for (const options of [
+    { width: 0 },
+    { alpha: 0.999 },
+    { color: null },
+    { inactive: true },
+    { inkUnmodified: false },
+  ]) {
+    for (const edge of measure(options).exterior) {
+      assert.equal(edge.innerBorderVsBackground, null);
+      assert.equal(edge.opaqueBorderVsPixel, null);
+      assert.equal(
+        edge.opaqueFillVsPixel,
+        options.inactive || options.inkUnmodified === false ? null : 1
+      );
+    }
+  }
+});
+
 test('browser-side Focus diagnostics run without Node transpiler helpers', async () => {
   const source = await readFile(new URL('./contrast-probe.browser.ts', import.meta.url), 'utf8');
   const compiled = await transform(source, {

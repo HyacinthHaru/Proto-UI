@@ -59,7 +59,7 @@ beforeAll(async () => {
   console.info(
     `[contrast-calibration] browser:ready elapsedMs=${Math.round(performance.now() - startedAt)}`
   );
-});
+}, 30_000);
 afterAll(async () => {
   await browser?.close();
 });
@@ -580,6 +580,59 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     expect(surface(frame, 'padding-clip').paint.limits).toContain(
       'unsupported-background-clip-perimeter'
     );
+  });
+
+  it('withholds non-solid border ratios per side while preserving solid and fill evidence', async () => {
+    // Border style is an instrument-domain boundary. Native CSSOM and PNG
+    // neighbors are observed here; no assertion assumes a dash gap location.
+    // The old source model emitted 21:1 for all three unsupported border styles.
+    const frame = await calibrate(`
+      <div style="background:white;padding:16px">
+        <div data-pui-root data-demo-ref="solid" style="border:4px solid black">Solid control</div>
+        <div data-pui-root data-demo-ref="dashed" style="border:4px dashed black">Dashed border</div>
+        <div data-pui-root data-demo-ref="dotted" style="border:4px dotted black">Dotted border</div>
+        <div data-pui-root data-demo-ref="double" style="border:4px double black">Double border</div>
+        <div data-pui-root data-demo-ref="mixed" style="border:4px black;border-style:dashed solid dotted double">Mixed sides</div>
+        <div data-pui-root data-demo-ref="zero" style="border:0 solid black">Zero width</div>
+      </div>
+      <div style="background:black;padding:16px">
+        <div data-pui-root data-demo-ref="fill" style="border:4px dashed black">Independent white fill</div>
+      </div>
+    `);
+    const mixed: Record<string, string> = {
+      top: 'dashed',
+      right: 'solid',
+      bottom: 'dotted',
+      left: 'double',
+    };
+    for (const ref of ['solid', 'dashed', 'dotted', 'double', 'mixed', 'zero', 'fill']) {
+      const target = surface(frame, ref);
+      expect(target.exterior).toHaveLength(12);
+      for (const edge of target.exterior) {
+        const expectedStyle =
+          ref === 'mixed'
+            ? mixed[edge.side]
+            : ref === 'fill'
+              ? 'dashed'
+              : ref === 'zero'
+                ? 'solid'
+                : ref;
+        expect(target.borders[edge.side].style).toBe(expectedStyle);
+        expect(target.borders[edge.side].width).toBe(ref === 'zero' ? 0 : 4);
+        expect(edge.point?.rgb).toEqual(ref === 'fill' ? [0, 0, 0] : [255, 255, 255]);
+        if (expectedStyle === 'solid' && ref !== 'zero') {
+          expect(edge.innerBorderVsBackground).toBeCloseTo(21, 8);
+          expect(edge.opaqueBorderVsPixel).toBeCloseTo(21, 8);
+          expect(target.borders[edge.side].limits).toEqual([]);
+        } else {
+          expect(edge.innerBorderVsBackground).toBeNull();
+          expect(edge.opaqueBorderVsPixel).toBeNull();
+          if (expectedStyle !== 'solid')
+            expect(target.borders[edge.side].limits).toContain('unsupported-border-style');
+        }
+        expect(edge.opaqueFillVsPixel).toBeCloseTo(ref === 'fill' ? 21 : 1, 8);
+      }
+    }
   });
 
   it('retains fractional CSS alpha before raster bytes can round it opaque', async () => {

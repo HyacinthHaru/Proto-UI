@@ -100,7 +100,7 @@ interface ContrastSurface {
   } | null;
   borders: Record<
     string,
-    { color: number[] | null; alpha: number | null; width: number; limits: string[] }
+    { color: number[] | null; alpha: number | null; width: number; style: string; limits: string[] }
   >;
   shadows: ContrastShadow[];
   scroll: {
@@ -148,8 +148,7 @@ const composedChildren = (node: Node): Node[] => {
   return [...(node instanceof Element && node.shadowRoot ? node.shadowRoot : node).childNodes];
 };
 
-const currentProjection = () => {
-  const scope = document.querySelector<HTMLElement>('[data-projection-scope]');
+const currentProjection = (scope: HTMLElement | null) => {
   const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
   const generation = scope?.dataset.projectionGeneration;
   if (!owner || !generation) throw new Error('Current projection lease missing.');
@@ -251,8 +250,8 @@ const stateProperties = [
   'content',
 ] as const;
 
-export const readContrastState = (): string => {
-  const { scope, owner, generation, surfaces } = currentProjection();
+const readContrastStateInScope = (scope: HTMLElement | null): string => {
+  const { owner, generation, surfaces } = currentProjection(scope);
   const snapshot = (node: Node): unknown => {
     if (!stateNodes.has(node)) stateNodes.set(node, nextStateNode++);
     if (!(node instanceof Element)) {
@@ -347,6 +346,14 @@ export const readContrastState = (): string => {
     })),
   });
 };
+
+// Legacy instrument entry: calibration pages deliberately have no Previewer.
+// The production runner uses the separate required-subject entry below.
+export const readContrastState = (): string =>
+  readContrastStateInScope(document.querySelector<HTMLElement>('[data-projection-scope]'));
+
+export const readSubjectContrastState = (subject: ContrastAuditSubject): string =>
+  readContrastStateInScope(requireContrastAuditSubject(subject).scope);
 
 type SolidPaint = { rgba: number[] | null; alpha: number | null; limits: string[] };
 const paint = (color: string): SolidPaint => {
@@ -696,26 +703,67 @@ export const readContrastProjectionBoundary = (
   return { observation, scope, content, retained, shell, owner, generation };
 };
 
+export interface ContrastAuditSubject {
+  previewer: HTMLElement;
+  previewerId: string;
+  expected: ContrastProjectionExpectation;
+}
+
+// Required production input, bound once by the caller to its selected physical
+// Previewer. Never rediscover it by document order or fall back to calibration.
+export const readContrastAuditSubject = (subject: ContrastAuditSubject) => {
+  if (
+    !subject ||
+    !(subject.previewer instanceof HTMLElement) ||
+    !subject.expected ||
+    typeof subject.previewerId !== 'string' ||
+    !subject.previewerId
+  )
+    throw new Error('Explicit audit Previewer subject and expectation are required.');
+  const boundary = readContrastProjectionBoundary(subject.previewer, subject.expected);
+  const matchingSubjects = [
+    ...document.querySelectorAll<HTMLElement>('[data-previewer-id]'),
+  ].filter((element) => element.dataset.previewerId === subject.previewerId);
+  const valid =
+    subject.previewer.isConnected &&
+    subject.previewer.dataset.previewerId === subject.previewerId &&
+    matchingSubjects.length === 1 &&
+    matchingSubjects[0] === subject.previewer;
+  return {
+    ...boundary,
+    observation: {
+      ...boundary.observation,
+      achieved: valid && boundary.observation.achieved,
+      observed: {
+        ...boundary.observation.observed,
+        subject: {
+          expectedPreviewerId: subject.previewerId,
+          previewerId: subject.previewer.dataset.previewerId ?? null,
+          connected: subject.previewer.isConnected,
+          matchingSubjectCount: matchingSubjects.length,
+        },
+      },
+    },
+  };
+};
+const requireContrastAuditSubject = (subject: ContrastAuditSubject) => {
+  const boundary = readContrastAuditSubject(subject);
+  if (!boundary.observation.achieved)
+    throw new Error('The selected audit Previewer identity or current subject lease is invalid.');
+  return boundary;
+};
+
 // Structural observation only; the Node audit compares this current lease to
 // the exact authored recipe. Reader toolbar portals are excluded by their own
 // controls relations, not by assuming all portals belong to the product.
-export const readContrastAnatomy = (
-  primary: Element | null = null,
-  expected?: ContrastProjectionExpectation
+const readContrastAnatomyInScope = (
+  primary: Element | null,
+  scope: HTMLElement | null,
+  boundary: ReturnType<typeof readContrastAuditSubject> | null
 ) => {
-  const scope = document.querySelector<HTMLElement>('[data-projection-scope]');
   const content = scope?.querySelector<HTMLElement>('[data-projection-content]');
   const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
   const generation = scope?.dataset.projectionGeneration;
-  // Instrument calibration deliberately has no Website shell. The production
-  // auditor always supplies a manifest/case expectation; a broken production
-  // boundary cannot choose or fall back to that calibration-only mode.
-  const boundary = expected
-    ? readContrastProjectionBoundary(
-        document.querySelector<HTMLElement>('[data-previewer-id]')!,
-        expected
-      )
-    : null;
   const authoredContent = boundary ? boundary.retained : content;
   const all = [...document.querySelectorAll<HTMLElement>('[data-pui-root]')];
   const readerIds = new Set(
@@ -772,6 +820,21 @@ export const readContrastAnatomy = (
     surfaces,
     projection: boundary?.observation ?? null,
   };
+};
+
+// Explicitly separate instrument compatibility from production subject reads.
+export const readContrastAnatomy = (primary: Element | null = null) =>
+  readContrastAnatomyInScope(
+    primary,
+    document.querySelector<HTMLElement>('[data-projection-scope]'),
+    null
+  );
+export const readSubjectContrastAnatomy = (
+  primary: Element | null,
+  subject: ContrastAuditSubject
+) => {
+  const boundary = readContrastAuditSubject(subject);
+  return readContrastAnatomyInScope(primary, boundary.scope, boundary);
 };
 
 export const readContrastPointerPair = (
@@ -868,13 +931,16 @@ export const readContrastFocusDiagnostics = (center: any, url: string) => {
   };
 };
 
-export const collectContrastFrame = async ({
-  image,
-  family,
-}: {
-  image: string;
-  family: string;
-}): Promise<ContrastFrame> => {
+const collectContrastFrameInScope = async (
+  {
+    image,
+    family,
+  }: {
+    image: string;
+    family: string;
+  },
+  resolveScope: () => HTMLElement | null
+): Promise<ContrastFrame> => {
   const luminance = (color: readonly number[]) => {
     const linear = color.slice(0, 3).map((channel) => {
       const value = channel / 255;
@@ -904,8 +970,9 @@ export const collectContrastFrame = async ({
   };
   // No further await: this fingerprint and the facts below belong to one
   // synchronous read after image decoding. The runner compares it to pre-PNG.
-  const stateFingerprint = readContrastState();
-  const { owner, generation, surfaces } = currentProjection();
+  const scope = resolveScope();
+  const stateFingerprint = readContrastStateInScope(scope);
+  const { owner, generation, surfaces } = currentProjection(scope);
   const background = (element: Element): { rgba: number[] | null; limits: string[] } => {
     const chain: SolidPaint[] = [],
       limits: string[] = [];
@@ -1001,17 +1068,18 @@ export const collectContrastFrame = async ({
       const inkUnmodified = !backdrop.limits.some((limit) =>
         ['ancestor-or-target-opacity', 'filter-or-backdrop-filter', 'blend-mode'].includes(limit)
       );
-      const borders: Record<
-        string,
-        { color: number[] | null; alpha: number | null; width: number; limits: string[] }
-      > = {};
+      const borders: ContrastSurface['borders'] = {};
       for (const side of ['top', 'right', 'bottom', 'left']) {
         const ink = side === 'top' ? border : paint(style.getPropertyValue(`border-${side}-color`));
+        const borderStyle = style.getPropertyValue(`border-${side}-style`);
         borders[side] = {
           color: ink.rgba,
           alpha: ink.alpha,
           width: parseFloat(style.getPropertyValue(`border-${side}-width`)),
-          limits: ink.limits,
+          style: borderStyle,
+          // Source ink is not continuous adjacency for dash gaps, double
+          // stripes or other unsupported styles. Keep this limit side-local.
+          limits: [...ink.limits, ...(borderStyle === 'solid' ? [] : ['unsupported-border-style'])],
         };
       }
       const nodes: Node[] = [];
@@ -1363,6 +1431,7 @@ export const collectContrastFrame = async ({
           innerBorderVsBackground:
             !inactive &&
             inkUnmodified &&
+            borders[side].style === 'solid' &&
             borders[side].alpha === 1 &&
             borders[side].color &&
             borders[side].width > 0 &&
@@ -1372,6 +1441,7 @@ export const collectContrastFrame = async ({
           opaqueBorderVsPixel:
             !inactive &&
             inkUnmodified &&
+            borders[side].style === 'solid' &&
             borders[side].alpha === 1 &&
             borders[side].color &&
             borders[side].width > 0 &&
@@ -1393,4 +1463,18 @@ export const collectContrastFrame = async ({
       };
     }),
   };
+};
+
+// Calibration remains a distinct entry. Missing production subjects never use it.
+export const collectContrastFrame = (input: { image: string; family: string }) =>
+  collectContrastFrameInScope(input, () =>
+    document.querySelector<HTMLElement>('[data-projection-scope]')
+  );
+export const collectSubjectContrastFrame = (input: {
+  image: string;
+  family: string;
+  subject: ContrastAuditSubject;
+}) => {
+  requireContrastAuditSubject(input.subject);
+  return collectContrastFrameInScope(input, () => requireContrastAuditSubject(input.subject).scope);
 };

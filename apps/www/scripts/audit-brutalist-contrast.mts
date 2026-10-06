@@ -8,6 +8,11 @@ import { transform } from 'esbuild';
 import { readContrastProvenance } from './contrast-provenance.mjs';
 import { createContrastReportJournal } from './contrast-report-journal.mjs';
 import {
+  establishContrastPopupEscapeBaseline,
+  readContrastPopupEscapeBefore,
+  readContrastPopupEscapeAfter,
+} from './contrast-popup-escape.mjs';
+import {
   parseContrastRuntimeOptions,
   contrastHeldBinaryTargets,
   assertContrastCaseCoverage,
@@ -17,7 +22,14 @@ import {
 import { compileContrastAnatomy, compareContrastAnatomy } from './contrast-anatomy.mjs';
 import { BRUTALIST_THEME } from '../../../packages/prototypes/brutalist/src/theme';
 import { surfacePrototypeId } from '../src/components/surface-recipes';
-import type { Browser, BrowserContext, Page, Locator } from 'playwright-core';
+import type {
+  Browser,
+  BrowserContext,
+  Page,
+  Locator,
+  ElementHandle,
+  JSHandle,
+} from 'playwright-core';
 import {
   PROJECTION_FAMILY_MANIFESTS,
   resolveProjectionRecipe,
@@ -91,7 +103,42 @@ type Case = {
   binaryKeyboardActivation?: Observation;
   pointerItemBaselines?: Record<string, unknown>[];
   projectionReadinessFailure?: Observation;
+  escapeTransition?: Record<string, unknown>;
 };
+type AuditSubject = {
+  previewer: ElementHandle<HTMLElement>;
+  previewerId: string;
+  expected: import('./contrast-probe.browser').ContrastProjectionExpectation;
+};
+const caseSubjects = new WeakMap<Page, AuditSubject>();
+async function bindCaseSubject(page: Page, previewer: Locator, item: Case): Promise<void> {
+  if (caseSubjects.has(page)) throw new Error('An audit page already has a selected subject.');
+  const handle = await previewer.elementHandle();
+  if (!handle) throw new Error('Selected audit Previewer is missing.');
+  const previewerId = await handle.getAttribute('data-previewer-id');
+  if (!previewerId) {
+    await handle.dispose();
+    throw new Error('Selected audit Previewer has no identity.');
+  }
+  caseSubjects.set(page, {
+    previewer: handle as ElementHandle<HTMLElement>,
+    previewerId,
+    expected: projectionExpectation(item),
+  });
+}
+function caseSubject(page: Page): AuditSubject {
+  const subject = caseSubjects.get(page);
+  if (!subject) throw new Error('The case-selected audit subject has not been bound.');
+  return subject;
+}
+function casePreviewer(page: Page): Locator {
+  return page.locator(`[data-previewer-id=${JSON.stringify(caseSubject(page).previewerId)}]`);
+}
+async function releaseCaseSubject(page: Page): Promise<void> {
+  const subject = caseSubjects.get(page);
+  caseSubjects.delete(page);
+  await subject?.previewer.dispose();
+}
 const passiveFamilies = new Set(['badge', 'card', 'skeleton', 'separator', 'spinner']);
 function plannedStates(family: string): string[] {
   const states = ['rest'];
@@ -218,6 +265,7 @@ const report: Record<string, unknown> = {
     'Passive-family acceptance covers only the current recipe identity multiplicities, anatomy, ownership and visible physical regions at rest. Auxiliary controls are observed at rest only; their interactions, prop transitions and semantic criteria remain uncovered.',
     'Portable Transition entered state is not directly exposed on every runtime DOM; modal entry observations use owned visibility and completed authored CSS animations, not an invented transition attribute.',
     'Spinner snapshots request and observe the real reduced-motion preference only for Spinner cases. Normal-motion rotation/timing and parent composition interactions remain uncovered; no Spinner hover or keyboard-focus claim.',
+    'Tooltip hover/focus observations target the first authored Root only. The second Root is structural anatomy coverage, not a sibling warm-window timing or Group handoff journey; dedicated Tooltip semantic/browser evidence remains separate.',
     'Hover Card focus-open observes the current one-Root zero-delay demo against draft P-BASE-HOVER-CARD-INTERACTION-INTENT after an independently closed non-hover baseline; not protocol conformance.',
   ],
   authority: [
@@ -304,8 +352,14 @@ async function verifyServedSource(): Promise<void> {
 
 async function settle(page: Page): Promise<void> {
   await page.waitForFunction(
-    () => {
-      const scope = document.querySelector<HTMLElement>('[data-projection-scope]');
+    (subject) => {
+      const boundary = (
+        globalThis as typeof globalThis & {
+          puiContrastProbe: typeof import('./contrast-probe.browser');
+        }
+      ).puiContrastProbe.readContrastAuditSubject(subject);
+      if (!boundary.observation.achieved) return false;
+      const scope = boundary.scope;
       const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
       const generation = scope?.dataset.projectionGeneration;
       if (!owner || !generation || scope?.dataset.projectionState !== 'ready') return false;
@@ -330,17 +384,19 @@ async function settle(page: Page): Promise<void> {
         })
       );
     },
-    undefined,
+    caseSubject(page),
     { timeout: 20_000 }
   );
 }
 async function fingerprint(page: Page): Promise<string> {
-  return page.evaluate(() =>
-    (
-      globalThis as typeof globalThis & {
-        puiContrastProbe: typeof import('./contrast-probe.browser');
-      }
-    ).puiContrastProbe.readContrastState()
+  return page.evaluate(
+    (subject) =>
+      (
+        globalThis as typeof globalThis & {
+          puiContrastProbe: typeof import('./contrast-probe.browser');
+        }
+      ).puiContrastProbe.readSubjectContrastState(subject),
+    caseSubject(page)
   );
 }
 async function stableFingerprint(page: Page): Promise<string> {
@@ -381,19 +437,18 @@ function projectionExpectation(
   };
 }
 async function projectionObservation(page: Page, item: Case): Promise<Observation> {
-  return page
-    .locator('[data-previewer-id]')
-    .first()
-    .evaluate(
-      (previewer, expected) =>
-        (
-          globalThis as typeof globalThis & {
-            puiContrastProbe: typeof import('./contrast-probe.browser');
-          }
-        ).puiContrastProbe.readContrastProjectionBoundary(previewer as HTMLElement, expected)
-          .observation,
-      projectionExpectation(item)
-    );
+  const subject = caseSubject(page);
+  if (subject.expected.family !== item.family || subject.expected.runtime !== item.runtime)
+    throw new Error('Observation does not match the frozen case subject.');
+  return page.evaluate(
+    (subject) =>
+      (
+        globalThis as typeof globalThis & {
+          puiContrastProbe: typeof import('./contrast-probe.browser');
+        }
+      ).puiContrastProbe.readContrastAuditSubject(subject).observation,
+    subject
+  );
 }
 async function assertProjectionReadiness(page: Page, item: Case): Promise<void> {
   const observation = await projectionObservation(page, item);
@@ -423,16 +478,16 @@ async function anatomyObservation(page: Page, item: Case, state: string): Promis
     plan = compileContrastAnatomy(demo, manifest);
     anatomyPlans.set(item.family, plan);
   }
-  const target = primary(page.locator('[data-previewer-id]').first(), item.family);
+  const target = primary(casePreviewer(page), item.family);
   if (!target) throw new Error('Interactive anatomy has no current primary target.');
   const observed = await target.evaluate(
-    (element, expected) =>
+    (element, subject) =>
       (
         globalThis as typeof globalThis & {
           puiContrastProbe: typeof import('./contrast-probe.browser');
         }
-      ).puiContrastProbe.readContrastAnatomy(element, expected),
-    projectionExpectation(item)
+      ).puiContrastProbe.readSubjectContrastAnatomy(element, subject),
+    caseSubject(page)
   );
   const requirePrimaryOpen =
     ['tooltip', 'hover-card'].includes(item.family) &&
@@ -445,6 +500,23 @@ async function anatomyObservation(page: Page, item: Case, state: string): Promis
     requestedFrame: state,
     requirePrimaryOpen,
   };
+}
+function measurementLeaseMatches(projection: unknown, observations: readonly unknown[]): boolean {
+  const expected = projection as { owner?: unknown; generation?: unknown } | null;
+  if (
+    !expected ||
+    typeof expected.owner !== 'string' ||
+    !expected.owner ||
+    typeof expected.generation !== 'string' ||
+    !expected.generation
+  )
+    return false;
+  return observations.every((value) => {
+    if (value === null) return true; // Explicitly absent passive anatomy only.
+    if (!value || typeof value !== 'object') return false;
+    const observed = value as { owner?: unknown; generation?: unknown };
+    return observed.owner === expected.owner && observed.generation === expected.generation;
+  });
 }
 async function capture(
   page: Page,
@@ -493,8 +565,8 @@ async function capture(
           globalThis as typeof globalThis & {
             puiContrastProbe: typeof import('./contrast-probe.browser');
           }
-        ).puiContrastProbe.collectContrastFrame(input),
-      { image: png.toString('base64'), family: item.family }
+        ).puiContrastProbe.collectSubjectContrastFrame(input),
+      { image: png.toString('base64'), family: item.family, subject: caseSubject(page) }
     );
     const { stateFingerprint, ...storedFacts } = facts;
     frame.facts = { ...storedFacts, stateFingerprintDigest: digest(stateFingerprint) };
@@ -502,7 +574,7 @@ async function capture(
     await writeFile(join(output, `${name}.facts.json`), factsJSON, { flag: 'wx' });
     frame.factsFile = { path: `${name}.facts.json`, digest: digest(factsJSON) };
     frame.targetObservation = await observe();
-    const physicalTarget = primary(page.locator('[data-previewer-id]').first(), item.family);
+    const physicalTarget = primary(casePreviewer(page), item.family);
     if (physicalTarget) {
       frame.primaryPaint = await targetObservation(physicalTarget);
       if (!(frame.primaryPaint as Observation).achieved)
@@ -521,6 +593,16 @@ async function capture(
       projectionBefore.generation === projectionAfter.generation &&
       projectionBefore.shellGeneration === projectionAfter.shellGeneration;
     frame.sameProjectionLease = sameProjectionLease;
+    const sameMeasurementLease = measurementLeaseMatches(projectionBefore, [
+      facts,
+      anatomyBefore,
+      anatomyAfter,
+      JSON.parse(before),
+      JSON.parse(facts.stateFingerprint),
+      JSON.parse(after),
+    ]);
+    frame.sameMeasurementLease = sameMeasurementLease;
+
     if (before !== facts.stateFingerprint || before !== after) {
       const mismatchJSON =
         JSON.stringify(
@@ -539,7 +621,7 @@ async function capture(
         'PNG/fact state mismatch: physical state or projection lease changed; raw attempt retained, no retry.'
       );
     }
-    if (!projectionAfter.achieved || !sameProjectionLease)
+    if (!projectionAfter.achieved || !sameProjectionLease || !sameMeasurementLease)
       throw new Error(
         'Requested Brutalist projection changed during capture; raw attempt retained.'
       );
@@ -587,6 +669,12 @@ async function passiveSurfaceObservation(
   family: string,
   runtime: string
 ): Promise<Observation> {
+  if (
+    caseSubject(page).expected.family !== family ||
+    caseSubject(page).expected.runtime !== runtime
+  )
+    throw new Error('Passive observation does not match the frozen case subject.');
+
   const manifest = (PROJECTION_FAMILY_MANIFESTS.brutalist as ProjectionFamilyManifest).families[
     family
   ];
@@ -656,12 +744,11 @@ async function passiveSurfaceObservation(
   }));
   return page.evaluate(
     (input) => {
-      const previewer = document.querySelector<HTMLElement>('[data-previewer-id]')!;
       const boundary = (
         globalThis as typeof globalThis & {
           puiContrastProbe: typeof import('./contrast-probe.browser');
         }
-      ).puiContrastProbe.readContrastProjectionBoundary(previewer, input.identity);
+      ).puiContrastProbe.readContrastAuditSubject(input.subject);
       const { content, retained, shell, owner, generation } = boundary;
       const ready = boundary.observation.achieved;
       const surfaces = [...document.querySelectorAll<HTMLElement>('[data-pui-root]')]
@@ -913,7 +1000,7 @@ async function passiveSurfaceObservation(
     },
     {
       family,
-      identity: projectionExpectation({ family, runtime }),
+      subject: caseSubject(page),
       recipeId: manifest.recipeId,
       recipePath,
       rootPrototypeId: manifest.parts.root?.prototypeId,
@@ -922,6 +1009,84 @@ async function passiveSurfaceObservation(
       sourceUnsupported,
     }
   );
+}
+async function auditedPopupEscape(page: Page, item: Case, target: Locator): Promise<void> {
+  const family = item.family;
+  const trigger = await target.elementHandle();
+  if (!trigger) throw new Error(`${family}: Escape trigger missing.`);
+  let popup: Awaited<ReturnType<Locator['elementHandle']>> = null;
+  let baseline: JSHandle<ReturnType<typeof readContrastPopupEscapeBefore>> | undefined;
+  const lease = async () =>
+    page.evaluate((subject) => {
+      const boundary = (
+        globalThis as typeof globalThis & {
+          puiContrastProbe: typeof import('./contrast-probe.browser');
+        }
+      ).puiContrastProbe.readContrastAuditSubject(subject);
+      return {
+        achieved: boundary.observation.achieved,
+        owner: boundary.owner,
+        generation: boundary.generation,
+      };
+    }, caseSubject(page));
+  try {
+    const beforeLease = await lease();
+    if (!beforeLease.achieved) throw new Error(`${family}: Escape subject lease is invalid.`);
+    const controlledId = await target.getAttribute('aria-controls');
+    const popupLocator =
+      family === 'tooltip'
+        ? await tooltipPortal(page, target)
+        : (
+            await owned(
+              page,
+              family === 'select' ? 'brutalist-select-content' : 'brutalist-dropdown-content'
+            )
+          ).and(page.locator(`[id=${JSON.stringify(controlledId)}]`));
+    if ((await popupLocator.count()) !== 1)
+      throw new Error(`${family}: Escape requires exactly one controlled owned popup.`);
+    popup = await popupLocator.elementHandle();
+    if (!popup) throw new Error(`${family}: Escape popup missing.`);
+    baseline = await page.evaluateHandle(readContrastPopupEscapeBefore, {
+      family,
+      trigger,
+      popup,
+      owner: beforeLease.owner,
+      generation: beforeLease.generation,
+    });
+    const record = (item.escapeTransition = {
+      basis:
+        'Existing Escape input closes the same physical owned popup before any pointer/focus reset; Tooltip preserves prior focus, Dropdown/Select restore Trigger, Select preserves observed selection.',
+      criterion:
+        family === 'tooltip'
+          ? 'P-BASE-TOOLTIP-CONTENT-OVERLAY / ESCAPE (draft)'
+          : family === 'select'
+            ? 'P-BASE-SELECT-CONTENT-DISMISS / P-BASE-SELECT-SELECTION-INVARIANT (draft)'
+            : 'P-BASE-DROPDOWN-MENU-CONTENT-DISMISS (draft)',
+    });
+    await establishContrastPopupEscapeBaseline({
+      family,
+      record,
+      readBefore: () => baseline!.evaluate((value) => value.observation),
+      pressEscape: () => page.keyboard.press('Escape'),
+      waitForClosed: () => popup!.waitForElementState('hidden'),
+      waitForFocus: () =>
+        page.waitForFunction((value) => document.activeElement === value.trigger, baseline!),
+      readAfter: async () => {
+        const afterLease = await lease();
+        if (
+          !afterLease.achieved ||
+          afterLease.owner !== beforeLease.owner ||
+          afterLease.generation !== beforeLease.generation
+        )
+          throw new Error(`${family}: subject changed during Escape dismissal.`);
+        return page.evaluate(readContrastPopupEscapeAfter, baseline!);
+      },
+    });
+  } finally {
+    await baseline?.dispose();
+    await popup?.dispose();
+    await trigger.dispose();
+  }
 }
 async function targetObservation(target: Locator): Promise<Observation> {
   return target.evaluate((element) =>
@@ -1066,13 +1231,15 @@ async function pointerJourney(
   }
 }
 async function owned(page: Page, prototype: string): Promise<Locator> {
-  const lease = await page
-    .locator('[data-projection-scope]')
-    .first()
-    .evaluate((scope: HTMLElement) => ({
-      owner: scope.dataset.projectionOwner ?? scope.dataset.projectionScope,
-      generation: scope.dataset.projectionGeneration,
-    }));
+  const lease = await page.evaluate((subject) => {
+    const boundary = (
+      globalThis as typeof globalThis & {
+        puiContrastProbe: typeof import('./contrast-probe.browser');
+      }
+    ).puiContrastProbe.readContrastAuditSubject(subject);
+    if (!boundary.observation.achieved) throw new Error('Selected audit subject is invalid.');
+    return { owner: boundary.owner, generation: boundary.generation };
+  }, caseSubject(page));
   if (!lease.owner || !lease.generation) throw new Error('Current projection lease missing.');
   return page.locator(
     `[data-pui-root][data-projection-prototype=${JSON.stringify(prototype)}][data-projection-owner=${JSON.stringify(lease.owner)}][data-projection-generation=${JSON.stringify(lease.generation)}]`
@@ -1087,13 +1254,20 @@ async function failedKeyboardDiagnostics(page: Page): Promise<Record<string, unk
   );
   try {
     return await page.evaluate(
-      async (url) =>
-        (
+      async ({ url, subject }) => {
+        const probe = (
           globalThis as typeof globalThis & {
             puiContrastProbe: typeof import('./contrast-probe.browser');
           }
-        ).puiContrastProbe.readContrastFocusDiagnostics((await import(url)).FOCUS_CENTER, url),
-      moduleURL.href
+        ).puiContrastProbe;
+        return {
+          ...probe.readContrastFocusDiagnostics((await import(url)).FOCUS_CENTER, url),
+          requestedSubject: probe.readContrastAuditSubject(subject).observation,
+          diagnosticScope:
+            'Global Focus center diagnostics with the selected subject attached; never an owner-selection or acceptance source.',
+        };
+      },
+      { url: moduleURL.href, subject: caseSubject(page) }
     );
   } catch (error) {
     return { unavailable: message(error), source: moduleURL.href };
@@ -1365,9 +1539,14 @@ async function tooltipPortal(page: Page, target: Locator): Promise<Locator> {
   if (!handle) throw new Error('Tooltip physical trigger missing.');
   try {
     await page.waitForFunction(
-      (trigger) => {
-        const scope = document.querySelector<HTMLElement>('[data-projection-scope]');
-        const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
+      ({ trigger, subject }) => {
+        const boundary = (
+          globalThis as typeof globalThis & {
+            puiContrastProbe: typeof import('./contrast-probe.browser');
+          }
+        ).puiContrastProbe.readContrastAuditSubject(subject);
+        if (!boundary.observation.achieved) return false;
+        const { scope, owner } = boundary;
         return (trigger.getAttribute('aria-describedby') ?? '').split(/\s+/).some((id) => {
           const element = document.getElementById(id);
           return (
@@ -1380,7 +1559,7 @@ async function tooltipPortal(page: Page, target: Locator): Promise<Locator> {
           );
         });
       },
-      handle,
+      { trigger: handle, subject: caseSubject(page) },
       { timeout: 10_000 }
     );
   } finally {
@@ -1547,6 +1726,7 @@ try {
   const sourceFiles = [
     ['runner', new URL('./audit-brutalist-contrast.mts', import.meta.url)],
     ['probe', new URL('./contrast-probe.browser.ts', import.meta.url)],
+    ['popup-escape', new URL('./contrast-popup-escape.mjs', import.meta.url)],
     ['theme', new URL('../../../packages/prototypes/brutalist/src/theme.ts', import.meta.url)],
     ['provenance-guard', new URL('./contrast-provenance.mjs', import.meta.url)],
     ['surface-recipes', new URL('../src/components/surface-recipes.ts', import.meta.url)],
@@ -1669,6 +1849,7 @@ try {
     if (item.status === 'failed') continue;
     const { family, runtime, theme } = item;
     let context: BrowserContext | undefined;
+    let casePage: Page | undefined;
     item.status = 'running';
     phase = 'context-creation';
     try {
@@ -1682,6 +1863,7 @@ try {
         ...(item.motionContext ? { reducedMotion: item.motionContext.requestedReducedMotion } : {}),
       });
       const page = await context.newPage();
+      casePage = page;
       page.setDefaultTimeout(20_000);
       page.setDefaultNavigationTimeout(30_000);
       phase = 'route-opening';
@@ -1697,8 +1879,10 @@ try {
         if (!item.motionContext.observedReducedMotion)
           throw new Error('Spinner reduced-motion preference was requested but not observed.');
       }
-      const previewer = page.locator('[data-previewer-id]').first();
+      let previewer = page.locator('[data-previewer-id]').first();
       await previewer.waitFor({ state: 'visible' });
+      await bindCaseSubject(page, previewer, item);
+      previewer = casePreviewer(page);
       phase = 'runtime-theme-readiness';
       await choosePreviewRuntime(page, previewer, runtime as (typeof runtimes)[number]);
       await previewer
@@ -1795,9 +1979,17 @@ try {
         await pointerJourney(page, item, target, previewer);
       }
       // Dismiss open menus before testing the trigger's native keyboard route.
-      await page.keyboard.press('Escape');
-      if (family === 'dialog')
-        await (await owned(page, 'brutalist-dialog-content')).first().waitFor({ state: 'hidden' });
+      // No pointer/focus reset may mask this exact Escape transition.
+      phase = 'escape-attribution';
+      if (['tooltip', 'dropdown-menu', 'select'].includes(family))
+        await auditedPopupEscape(page, item, target);
+      else {
+        await page.keyboard.press('Escape');
+        if (family === 'dialog')
+          await (await owned(page, 'brutalist-dialog-content'))
+            .first()
+            .waitFor({ state: 'hidden' });
+      }
       await page.mouse.move(0, 0);
       await target.focus();
       await page.keyboard.press('Tab');
@@ -2335,7 +2527,11 @@ try {
     } finally {
       if (context) {
         try {
-          await context.close();
+          try {
+            if (casePage) await releaseCaseSubject(casePage);
+          } finally {
+            await context.close();
+          }
         } catch (error) {
           item.status = 'failed';
           item.errors.push({ phase: 'context-cleanup', error: message(error) });
