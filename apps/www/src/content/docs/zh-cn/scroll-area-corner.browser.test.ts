@@ -2,6 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { computedRgbAlpha } from './scroll-area-corner-color';
 import type { Browser, Locator } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import {
@@ -221,10 +222,14 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
               });
               expect(parseFloat(paint.rootRadius)).toBeGreaterThan(0);
               expect(paint.viewportRadius).toBe(paint.rootRadius);
+              const trackPaint: Array<{ background: string; alpha: number | null }> = [];
               for (const track of [vertical, horizontal]) {
-                expect(await track.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
-                  'rgba(0, 0, 0, 0)'
+                const background = await track.evaluate(
+                  (el) => getComputedStyle(el).backgroundColor
                 );
+                const alpha = computedRgbAlpha(background);
+                expect(alpha, `computed track background: ${background}`).toBe(0);
+                trackPaint.push({ background, alpha });
                 expect(
                   await track
                     .locator(':scope > span[data-pui-style~="pointer-events-none"]')
@@ -237,6 +242,7 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
                 viewport: surface,
                 hit,
                 continuousCorner: paint,
+                trackPaint,
               };
             }
             expect(await passive.count()).toBe(1);
@@ -326,6 +332,9 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
             await page.emulateMedia({ reducedMotion: 'reduce' });
             await capture('end-reduced-motion', await checkCorner());
             await page.emulateMedia({ reducedMotion: 'no-preference', forcedColors: 'active' });
+            await capture('end-forced-colors-before-assertions', {
+              viewport: await rect(viewport),
+            });
             // Retain actual forced-color output for separate visible-indicator review.
             // Geometry passing alone is not a contrast or paint certification.
             await capture('end-forced-colors', {
