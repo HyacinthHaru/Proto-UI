@@ -436,7 +436,7 @@ const EXPECTED_UNMAPPED: [&str; 31] = [
 /// This is a separate list from the property inventory on purpose. `width` is
 /// mapped; `width: fit-content` is not. Recording the pair keeps the property
 /// inventory from claiming that `width` never reaches a surface.
-const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 11] = [
+const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 10] = [
     (
         "color",
         "inherit",

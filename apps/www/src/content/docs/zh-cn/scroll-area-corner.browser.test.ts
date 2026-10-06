@@ -110,6 +110,26 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
                   runtime,
                   state,
                   facts,
+                  thumbPaint: await Promise.all(
+                    [vThumb, hThumb].map((thumb) =>
+                      thumb.evaluate((el) => {
+                        const box = el.getBoundingClientRect();
+                        const style = getComputedStyle(el);
+                        return {
+                          x: box.x + scrollX,
+                          y: box.y + scrollY,
+                          width: box.width,
+                          height: box.height,
+                          boxSizing: style.boxSizing,
+                          backgroundClip: style.backgroundClip,
+                          background: style.backgroundColor,
+                          borderColor: style.borderTopColor,
+                          borderWidth: style.borderTopWidth,
+                          borderStyle: style.borderTopStyle,
+                        };
+                      })
+                    )
+                  ),
                 },
                 null,
                 2
@@ -269,6 +289,28 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
           };
           const initial = await checkCorner();
           await capture('initial', initial);
+          if (family.name === 'shadcn') {
+            for (const [axis, thumb] of [
+              ['vertical', vThumb],
+              ['horizontal', hThumb],
+            ] as const) {
+              const style = await thumb.evaluate((el) => {
+                const s = getComputedStyle(el);
+                return {
+                  boxSizing: s.boxSizing,
+                  backgroundClip: s.backgroundClip,
+                  borderWidth: s.borderTopWidth,
+                  borderColor: s.borderTopColor,
+                };
+              });
+              expect(style.boxSizing).toBe('border-box');
+              expect(style.backgroundClip).toBe('border-box');
+              expect(style.borderWidth).toBe('1px');
+              expect(computedRgbAlpha(style.borderColor)).toBe(0);
+              const box = await rect(thumb);
+              close(axis === 'vertical' ? box.width : box.height, 6);
+            }
+          }
           // Real input exercises the shortened travel through the shared Move host.
           for (const [axis, thumb] of [
             ['vertical', vThumb],
@@ -337,22 +379,35 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
             });
             // Retain actual forced-color output for separate visible-indicator review.
             // Geometry passing alone is not a contrast or paint certification.
+            const forcedThumbs = await Promise.all(
+              [vThumb, hThumb].map((thumb) =>
+                thumb.evaluate((el) => {
+                  const style = getComputedStyle(el);
+                  return {
+                    background: style.backgroundColor,
+                    borderColor: style.borderTopColor,
+                    borderWidth: style.borderTopWidth,
+                    borderStyle: style.borderTopStyle,
+                    display: style.display,
+                    forcedColorAdjust: style.forcedColorAdjust,
+                  };
+                })
+              )
+            );
+            const forcedSurface = await root.evaluate((el) => getComputedStyle(el).backgroundColor);
             await capture('end-forced-colors', {
               geometry: await checkCorner(),
-              thumbs: await Promise.all(
-                [vThumb, hThumb].map((thumb) =>
-                  thumb.evaluate((el) => {
-                    const style = getComputedStyle(el);
-                    return {
-                      background: style.backgroundColor,
-                      borderColor: style.borderColor,
-                      borderWidth: style.borderWidth,
-                      display: style.display,
-                    };
-                  })
-                )
-              ),
+              surface: forcedSurface,
+              thumbs: forcedThumbs,
             });
+            for (const paint of forcedThumbs) {
+              expect(paint.display).not.toBe('none');
+              expect(paint.borderWidth).toBe('1px');
+              expect(paint.borderStyle).toBe('solid');
+              expect(computedRgbAlpha(paint.borderColor)).toBe(1);
+              expect(paint.borderColor).not.toBe(forcedSurface);
+              expect(paint.forcedColorAdjust).toBe('auto');
+            }
             await page.emulateMedia({ forcedColors: 'none' });
           }
           await page.keyboard.press('Tab');
@@ -432,6 +487,55 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
             .poll(() => vThumb.evaluate((el) => getComputedStyle(el).display))
             .not.toBe('none');
           await checkCorner();
+          if (family.name === 'shadcn') {
+            // Exercise the existing Web host's 18px minimum without changing
+            // its geometry implementation or adding a portable size guarantee.
+            const originalSize = await content.evaluate((el) => {
+              const style = (el as HTMLElement).style;
+              const original = { width: style.width, height: style.height };
+              style.width = '10000px';
+              style.height = '10000px';
+              return original;
+            });
+            await viewport.evaluate((el) => el.scrollTo(0, 0));
+            for (const thumb of [vThumb, hThumb]) {
+              await expect
+                .poll(() =>
+                  thumb.evaluate((el) => el.style.getPropertyValue('--proto-ui-scroll-thumb-size'))
+                )
+                .toBe('18px');
+              await expect
+                .poll(() =>
+                  thumb.evaluate((el) =>
+                    el.style.getPropertyValue('--proto-ui-scroll-thumb-offset')
+                  )
+                )
+                .toBe('0px');
+            }
+            close((await rect(vThumb)).height, 18);
+            close((await rect(hThumb)).width, 18);
+            await capture('minimum-thumbs-start', await checkCorner());
+            await viewport.evaluate((el) => el.scrollTo(el.scrollWidth, el.scrollHeight));
+            await expect
+              .poll(() =>
+                viewport.evaluate((el) => el.scrollHeight - el.clientHeight - el.scrollTop)
+              )
+              .toBeLessThanOrEqual(1);
+            const [v, h, vt, ht] = await Promise.all([
+              rect(vertical),
+              rect(horizontal),
+              rect(vThumb),
+              rect(hThumb),
+            ]);
+            close(vt.y + vt.height, v.y + v.height - 2);
+            close(ht.x + ht.width, h.x + h.width - 2);
+            await capture('minimum-thumbs-end', await checkCorner());
+            await content.evaluate((el, original) => {
+              const style = (el as HTMLElement).style;
+              style.width = original.width;
+              style.height = original.height;
+            }, originalSize);
+          }
         }
       } finally {
         await context.close();
