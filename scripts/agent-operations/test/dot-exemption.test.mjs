@@ -320,3 +320,34 @@ for (const evidence of [
     assert(server.comments[0].body.includes(evidence));
     assertDotDisclosure(server.comments[0].body);
   });
+
+for (const body of [
+  'Agent: dot',
+  DOT_DISCLOSURE.split('\n')[1],
+  'Agent: dot\n\n' + DOT_DISCLOSURE.split('\n').slice(1).join('\n'),
+  'Agent: dot\nModelTrace: unknown',
+  '<div><h2>ModelTrace</h2><p>Claimed fingerprint</p></div>',
+  '<section><div><p>' + DOT_DISCLOSURE.replaceAll('\n', '<br>') + '</p></div></section>',
+  '<div>' + DOT_DISCLOSURE.replaceAll('\n', '<br>') + '</div>',
+])
+  test(`partial or nested visible identity is rejected: ${body.slice(0, 32)}`, (t) => {
+    const f = files(t),
+      server = syntheticCommentServer();
+    fs.writeFileSync(f.body, body);
+    const args = COMMENT.map((x) => (x === '/unused' ? f.body : x));
+    assert.throws(() => runPublishCli(args, { runner: server.runner }), /disclosure|receipt/);
+    assert.equal(server.writes(), 0);
+    assert.throws(() => assertDotDisclosure(`${DOT_DISCLOSURE}\n\n${body}`));
+  });
+
+test('nested explicit examples are retained without becoming a second identity', () => {
+  for (const body of [
+    '<div><pre>' + DOT_DISCLOSURE + '</pre></div>',
+    '<div><blockquote><h2>ModelTrace</h2><p>Example</p></blockquote></div>',
+    '<div hidden><h2>ModelTrace</h2><p>Hidden example</p></div>',
+    '<div><code>' + DOT_DISCLOSURE + '</code></div>',
+  ]) {
+    assert.equal(hasDotDisclosure(body), false);
+    assertDotDisclosure(`${DOT_DISCLOSURE}\n\n${body}`);
+  }
+});

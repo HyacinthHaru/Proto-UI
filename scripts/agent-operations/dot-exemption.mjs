@@ -22,15 +22,24 @@ export function isDotExemption(args) {
 }
 
 let markdownTools;
+function quotedOrHidden(node) {
+  return (
+    ['blockquote', 'code', 'inlineCode'].includes(node.type) ||
+    (node.type === 'element' &&
+      (['blockquote', 'pre', 'code', 'script', 'style', 'template'].includes(node.tagName) ||
+        Object.hasOwn(node.properties ?? {}, 'hidden')))
+  );
+}
 function textContent(node) {
+  if (quotedOrHidden(node)) return '';
   if (node.type === 'text') return node.value;
   if (node.type === 'break' || (node.type === 'element' && node.tagName === 'br')) return '\n';
   return (node.children ?? []).map(textContent).join('');
 }
 function disclosureParagraph(value) {
-  // A lone ordinary field such as "Agent: browser" is task prose, not an
-  // identity block. A paired Agent/ModelTrace block is a disclosure candidate.
-  return /^Agent:/im.test(value) && /^ModelTrace:/im.test(value);
+  // Reserve dot's own role and the ModelTrace namespace even when partial.
+  // An unrelated task field such as "Agent: browser" remains ordinary prose.
+  return /^\s*Agent:\s*dot\b/im.test(value) || /^\s*ModelTrace:/im.test(value);
 }
 function visibleDisclosureOffsets(text) {
   if (!markdownTools) {
@@ -67,20 +76,27 @@ function visibleDisclosureOffsets(text) {
     { fragment: true }
   );
   const offsets = [];
-  for (const node of html.children) {
-    if (node.type !== 'element') continue;
-    const candidate = candidates.get(node.properties?.id);
-    if (
-      candidate?.kind === 'measured' ||
-      (node.tagName === 'h2' && textContent(node).trim() === 'ModelTrace')
-    )
-      throw new Error(
-        'dot disclosure cannot substitute or compete with a visible fingerprint receipt'
-      );
-    if (candidate?.kind === 'dot' && node.tagName === 'p') offsets.push(candidate);
-    else if (node.tagName === 'p' && disclosureParagraph(textContent(node)))
-      throw new Error('raw HTML cannot supply or compete with the canonical dot disclosure');
+  function inspect(parent) {
+    for (const node of parent.children ?? []) {
+      if (node.type !== 'element' || quotedOrHidden(node)) continue;
+      const candidate = candidates.get(node.properties?.id);
+      if (
+        candidate?.kind === 'measured' ||
+        (node.tagName === 'h2' && textContent(node).trim() === 'ModelTrace')
+      )
+        throw new Error(
+          'dot disclosure cannot substitute or compete with a visible fingerprint receipt'
+        );
+      if (candidate?.kind === 'dot' && node.tagName === 'p' && parent === html)
+        offsets.push(candidate);
+      else if (disclosureParagraph(textContent(node)))
+        throw new Error(
+          'nested or raw HTML cannot supply or compete with the canonical dot disclosure'
+        );
+      inspect(node);
+    }
   }
+  inspect(html);
   return offsets;
 }
 
