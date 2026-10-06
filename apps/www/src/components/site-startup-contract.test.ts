@@ -50,5 +50,7 @@ describe('startup source invariants (not browser paint)', () => {
     expect(probe).toContain('/zh-cn/ui-libraries/brutalist/components/card/');
     expect(probe).toContain('Page.captureScreenshot');
     expect(probe).toContain('response?.status()).toBe(200)');
+    expect(probe).toContain("page.locator('[data-site-header-settings] .language-select-wrapper')");
+    expect(probe).toContain('expect(await locale.count()).toBe(1)');
   });
 });

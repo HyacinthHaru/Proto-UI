@@ -331,7 +331,8 @@ for (const width of [2048, 390, 430]) {
           );
           if (route.includes('/card/')) {
             expect(await nativeFocusRetained?.()).toBe(true);
-            const locale = page.locator('.language-select-wrapper');
+            const locale = page.locator('[data-site-header-settings] .language-select-wrapper');
+            expect(await locale.count()).toBe(1);
             const nativeFallback = locale.locator('[data-site-select-fallback]');
             const realSelect = locale.locator('[data-site-select-root]');
             expect(await nativeFallback.isVisible()).toBe(true);
