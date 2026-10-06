@@ -12,7 +12,6 @@ import { createServer } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { corepackInvocation, createRuntimeTestPlan } from './runtime-test-plan.mjs';
-import { createRuntimeTestPlan } from './runtime-test-plan.mjs';
 import { runtimeSelection, assertVitestReport, writeJson, ciContext } from './runtime-ci.mjs';
 import { waitForServerReadiness } from './server-readiness.mjs';
 import {

@@ -5691,6 +5691,16 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
       )
     )
       specifiers.push(UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER);
+    // Function receives the template array as constructor input and compiles
+    // it after string coercion. eval as a tag receives a non-string and does
+    // not share this behavior. No template body or payload is evaluated here.
+    if (
+      ts.isTaggedTemplateExpression(node) &&
+      resolveLocalValue(node.tag, node, new Set(), (candidate, useNode) =>
+        isBrowserGlobal(candidate, useNode, ['Function'])
+      )
+    )
+      specifiers.push(UNVERIFIED_RUNTIME_COMPILATION_SPECIFIER);
     if (
       /\.[cm]?[jt]sx?$/iu.test(fileName) &&
       (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
@@ -6023,8 +6033,27 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
             : UNRESOLVED_WORKER_ENTRY_SPECIFIER
         );
       }
-      if (browserValue(node.expression, node).has('worker-register')) {
-        const argument = node.arguments[0] && unwrapTypeScriptExpression(node.arguments[0]);
+      let workerRegistration = browserValue(node.expression, node).has('worker-register');
+      let workerArgument = node.arguments[0];
+      if (
+        calledMember &&
+        ['call', 'apply'].includes(calledMember.name) &&
+        browserValue(calledMember.receiver, node).has('worker-register')
+      ) {
+        workerRegistration = true;
+        const args = node.arguments[1] && unwrapTypeScriptExpression(node.arguments[1]);
+        workerArgument =
+          calledMember.name === 'call'
+            ? node.arguments[1]
+            : args &&
+                ts.isArrayLiteralExpression(args) &&
+                args.elements.length > 0 &&
+                !ts.isSpreadElement(args.elements[0])
+              ? args.elements[0]
+              : undefined;
+      }
+      if (workerRegistration) {
+        const argument = workerArgument && unwrapTypeScriptExpression(workerArgument);
         const target =
           argument && ts.isStringLiteralLike(argument)
             ? argument.text

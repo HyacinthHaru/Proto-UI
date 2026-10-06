@@ -1632,3 +1632,12 @@ describe('CI evidence directory context availability', () => {
     });
   }
 });
+
+it('the executable runtime runner parses before any test phase starts', () => {
+  const result = spawnSync(
+    process.execPath,
+    ['--check', path.resolve('scripts/test/run-runtime-tests.mjs')],
+    { encoding: 'utf8' }
+  );
+  assert.equal(result.status, 0, result.stderr);
+});

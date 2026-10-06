@@ -17717,3 +17717,103 @@ for (const kind of ['website', 'harness']) {
       );
     });
 }
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    [
+      'worker call',
+      `navigator.serviceWorker.register.call(navigator.serviceWorker,'https://cdn.example/worker.js');`,
+      true,
+    ],
+    [
+      'worker apply',
+      `navigator.serviceWorker.register.apply(navigator.serviceWorker,['https://cdn.example/worker.js']);`,
+      true,
+    ],
+    [
+      'worker alias call',
+      `const sw=navigator.serviceWorker;const register=sw.register;register.call(sw,'https://cdn.example/worker.js');`,
+      true,
+    ],
+    [
+      'business register call',
+      `const sw={register(){}};sw.register.call(sw,'https://cdn.example/worker.js');`,
+      false,
+    ],
+    [
+      'shadowed navigator call',
+      `function run(navigator){navigator.serviceWorker.register.call(navigator.serviceWorker,'https://cdn.example/worker.js');}`,
+      false,
+    ],
+    ['Function tag', 'Function`return import("https://cdn.example/runtime.js")`();', true],
+    ['Function alias tag', 'const compile=Function;compile`return 1`;', true],
+    ['global Function tag', 'globalThis.Function`return 1`;', true],
+    ['business Function tag', 'const Function=(parts)=>parts;Function`return 1`;', false],
+    ['eval tag does not compile', 'eval`return 1`;', false],
+    ['inert template', 'const text=`return import("https://cdn.example/runtime.js")`;', false],
+  ])
+    registerInvocationReviewTest(kind, name, source, reject);
+}
+function registerInvocationReviewTest(kind, name, source, reject) {
+  test(`new entry invocation review: ${kind} ${name}`, () => {
+    const issues = probeReview('new-entry-invocations', kind, source, 'ts');
+    assert.equal(
+      issues.some((issue) =>
+        /external executable.*script|unresolved Worker\/SharedWorker entry|runtime code compilation.*unverified/u.test(
+          issue
+        )
+      ),
+      reject,
+      issues.join('\n')
+    );
+  });
+}
+
+for (const kind of ['website', 'harness']) {
+  for (const [name, source, reject] of [
+    [
+      'worker apply empty',
+      `navigator.serviceWorker.register.apply(navigator.serviceWorker,[]);`,
+      true,
+    ],
+    [
+      'worker apply opaque',
+      `navigator.serviceWorker.register.apply(navigator.serviceWorker,args);`,
+      true,
+    ],
+    [
+      'worker apply spread',
+      `navigator.serviceWorker.register.apply(navigator.serviceWorker,[...args]);`,
+      true,
+    ],
+    [
+      'worker apply alias',
+      `const sw=navigator.serviceWorker;const register=sw.register;register.apply(sw,['https://cdn.example/worker.js']);`,
+      true,
+    ],
+    [
+      'business apply',
+      `const sw={register(){}};sw.register.apply(sw,['https://cdn.example/worker.js']);`,
+      false,
+    ],
+    ['Function tagged parameter', 'function run(Function){Function`return 1`;}', false],
+    ['Function prototype tag', 'Function.prototype`return 1`;', false],
+    [
+      'Function member business',
+      'const service={Function:(parts)=>parts};service.Function`return 1`;',
+      false,
+    ],
+  ])
+    test(`new entry invocation boundaries: ${kind} ${name}`, () => {
+      const issues = probeReview('new-entry-invocation-boundaries', kind, source, 'ts');
+      assert.equal(
+        issues.some((issue) =>
+          /external executable.*script|unresolved Worker\/SharedWorker entry|runtime code compilation.*unverified/u.test(
+            issue
+          )
+        ),
+        reject,
+        issues.join('\n')
+      );
+    });
+}
