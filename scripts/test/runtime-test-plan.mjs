@@ -2,6 +2,7 @@ import { globSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 export const BROWSER_SUITES = Object.freeze([
+  'apps/www/test/template-style.browser.test.ts',
   'apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts',
   'apps/www/test/evidence/brutalist-fonts.browser.test.ts',
   'apps/www/src/components/documentation-image-preview.browser.test.ts',
@@ -30,6 +31,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts',
