@@ -16,6 +16,7 @@ import {
 } from './contrast-audit-plan.mjs';
 import { compileContrastAnatomy, compareContrastAnatomy } from './contrast-anatomy.mjs';
 import { BRUTALIST_THEME } from '../../../packages/prototypes/brutalist/src/theme';
+import { surfacePrototypeId } from '../src/components/surface-recipes';
 import type { Browser, BrowserContext, Page, Locator } from 'playwright-core';
 import {
   PROJECTION_FAMILY_MANIFESTS,
@@ -89,6 +90,7 @@ type Case = {
   hoverCardClosedBaseline?: Observation;
   binaryKeyboardActivation?: Observation;
   pointerItemBaselines?: Record<string, unknown>[];
+  projectionReadinessFailure?: Observation;
 };
 const passiveFamilies = new Set(['badge', 'card', 'skeleton', 'separator', 'spinner']);
 function plannedStates(family: string): string[] {
@@ -359,85 +361,48 @@ async function stableFingerprint(page: Page): Promise<string> {
   if (stableFrames < 2) throw new Error('Measured state did not stabilize before capture.');
   return previous;
 }
-async function projectionObservation(page: Page, item: Case): Promise<Observation> {
+function projectionExpectation(
+  item: Pick<Case, 'family' | 'runtime'>
+): import('./contrast-probe.browser').ContrastProjectionExpectation {
   const manifest = (PROJECTION_FAMILY_MANIFESTS.brutalist as ProjectionFamilyManifest).families[
     item.family
   ];
-  if (!manifest?.parts.root)
-    return { achieved: false, reason: 'Requested family has no authored projection root.' };
+  if (!manifest?.parts.root) throw new Error('Requested family has no authored projection root.');
+  return {
+    recipeId: manifest.recipeId,
+    // Pinned against the real runtimePreviewRecipe producer for every family.
+    contentRecipeId: `website-runtime-preview:${manifest.recipeId}`,
+    shellPrototypeId: surfacePrototypeId('brutalist'),
+    serializedRuntimes: (runtimeAvailability[item.family] as { serialized: string }).serialized,
+    family: item.family,
+    runtime: item.runtime,
+    rootPrototypeId: manifest.parts.root.prototypeId,
+    prototypeIds: manifest.recipePrototypeIds,
+  };
+}
+async function projectionObservation(page: Page, item: Case): Promise<Observation> {
   return page
     .locator('[data-previewer-id]')
     .first()
     .evaluate(
-      (previewer, expected) => {
-        const scopes = previewer.querySelectorAll<HTMLElement>('[data-projection-scope]');
-        const scope = scopes.length === 1 ? scopes[0] : null;
-        const contents = scope?.querySelectorAll<HTMLElement>('[data-projection-content]');
-        const content = contents?.length === 1 ? contents[0] : null;
-        const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
-        const generation = scope?.dataset.projectionGeneration;
-        const roots = [...(content?.querySelectorAll<HTMLElement>('[data-pui-root]') ?? [])];
-        const invalidRoots = roots.filter(
-          (root) =>
-            root.dataset.projectionOwner !== owner ||
-            root.dataset.projectionGeneration !== generation ||
-            !expected.prototypeIds.includes(root.dataset.projectionPrototype ?? '')
-        );
-        const rootPresent = roots.some(
-          (root) => root.dataset.projectionPrototype === expected.rootPrototypeId
-        );
-        return {
-          achieved: !!(
-            owner &&
-            generation &&
-            previewer.getAttribute('data-demo-id') === expected.recipeId &&
-            previewer.getAttribute('data-runtimes') === expected.serializedRuntimes &&
-            scope?.dataset.projectionState === 'ready' &&
-            scope.dataset.projectionFamily === 'brutalist' &&
-            scope.dataset.projectionRuntime === expected.runtime &&
-            content?.dataset.projectionOwner === owner &&
-            content.dataset.projectionGeneration === generation &&
-            content.dataset.projectionFamily === 'brutalist' &&
-            content.dataset.projectionRuntime === expected.runtime &&
-            content.dataset.projectionId === expected.family &&
-            content.dataset.projectionPrototype === expected.rootPrototypeId &&
-            rootPresent &&
-            !invalidRoots.length
-          ),
-          owner: owner ?? null,
-          generation: generation ?? null,
-          expected,
-          observed: {
-            recipeId: previewer.getAttribute('data-demo-id'),
-            scopeCount: scopes.length,
-            contentCount: contents?.length ?? 0,
-            state: scope?.dataset.projectionState ?? null,
-            family: scope?.dataset.projectionFamily ?? null,
-            runtime: scope?.dataset.projectionRuntime ?? null,
-            contentFamily: content?.dataset.projectionFamily ?? null,
-            contentRuntime: content?.dataset.projectionRuntime ?? null,
-            componentId: content?.dataset.projectionId ?? null,
-            rootPrototypeId: content?.dataset.projectionPrototype ?? null,
-            rootPresent,
-            invalidRoots: invalidRoots.map((root) => ({
-              prototypeId: root.dataset.projectionPrototype ?? null,
-              owner: root.dataset.projectionOwner ?? null,
-              generation: root.dataset.projectionGeneration ?? null,
-            })),
-          },
-          boundary:
-            'Requested authored Brutalist recipe/component/runtime and current lease, checked before and after every PNG/fact frame; not semantic conformance.',
-        };
-      },
-      {
-        recipeId: manifest.recipeId,
-        serializedRuntimes: (runtimeAvailability[item.family] as { serialized: string }).serialized,
-        family: item.family,
-        runtime: item.runtime,
-        rootPrototypeId: manifest.parts.root.prototypeId,
-        prototypeIds: manifest.recipePrototypeIds,
-      }
+      (previewer, expected) =>
+        (
+          globalThis as typeof globalThis & {
+            puiContrastProbe: typeof import('./contrast-probe.browser');
+          }
+        ).puiContrastProbe.readContrastProjectionBoundary(previewer as HTMLElement, expected)
+          .observation,
+      projectionExpectation(item)
     );
+}
+async function assertProjectionReadiness(page: Page, item: Case): Promise<void> {
+  const observation = await projectionObservation(page, item);
+  if (!observation.achieved) {
+    // Preserve the failed coordinates before the case catch journals the error.
+    // This is unresolved identity evidence, never a frame or contrast result.
+    item.projectionReadinessFailure = observation;
+    throw new Error('Ready previewer is not the requested Brutalist recipe/component/runtime.');
+  }
 }
 const anatomyPlans = new Map<string, ReturnType<typeof compileContrastAnatomy>>();
 async function anatomyObservation(page: Page, item: Case, state: string): Promise<Observation> {
@@ -460,12 +425,14 @@ async function anatomyObservation(page: Page, item: Case, state: string): Promis
   }
   const target = primary(page.locator('[data-previewer-id]').first(), item.family);
   if (!target) throw new Error('Interactive anatomy has no current primary target.');
-  const observed = await target.evaluate((element) =>
-    (
-      globalThis as typeof globalThis & {
-        puiContrastProbe: typeof import('./contrast-probe.browser');
-      }
-    ).puiContrastProbe.readContrastAnatomy(element)
+  const observed = await target.evaluate(
+    (element, expected) =>
+      (
+        globalThis as typeof globalThis & {
+          puiContrastProbe: typeof import('./contrast-probe.browser');
+        }
+      ).puiContrastProbe.readContrastAnatomy(element, expected),
+    projectionExpectation(item)
   );
   const requirePrimaryOpen =
     ['tooltip', 'hover-card'].includes(item.family) &&
@@ -551,7 +518,8 @@ async function capture(
     frame.anatomyAfter = anatomyAfter;
     const sameProjectionLease =
       projectionBefore.owner === projectionAfter.owner &&
-      projectionBefore.generation === projectionAfter.generation;
+      projectionBefore.generation === projectionAfter.generation &&
+      projectionBefore.shellGeneration === projectionAfter.shellGeneration;
     frame.sameProjectionLease = sameProjectionLease;
     if (before !== facts.stateFingerprint || before !== after) {
       const mismatchJSON =
@@ -614,7 +582,11 @@ function primary(previewer: Locator, family: string): Locator | null {
   )[family];
   return selector ? previewer.locator(`[data-projection-content] ${selector}`).first() : null;
 }
-async function passiveSurfaceObservation(page: Page, family: string): Promise<Observation> {
+async function passiveSurfaceObservation(
+  page: Page,
+  family: string,
+  runtime: string
+): Promise<Observation> {
   const manifest = (PROJECTION_FAMILY_MANIFESTS.brutalist as ProjectionFamilyManifest).families[
     family
   ];
@@ -684,33 +656,24 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
   }));
   return page.evaluate(
     (input) => {
-      const scope = document.querySelector<HTMLElement>('[data-projection-scope]');
-      const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
-      const generation = scope?.dataset.projectionGeneration;
-      const contents = [
-        ...(scope?.querySelectorAll<HTMLElement>('[data-projection-content]') ?? []),
-      ];
-      const content = contents.length === 1 ? contents[0] : null;
-      const ready = !!(
-        owner &&
-        generation &&
-        scope?.dataset.projectionState === 'ready' &&
-        scope.dataset.projectionFamily === 'brutalist' &&
-        scope.closest<HTMLElement>('[data-previewer-id]')?.dataset.demoId === input.recipeId &&
-        content?.dataset.projectionOwner === owner &&
-        content.dataset.projectionGeneration === generation &&
-        content.dataset.projectionId === input.family &&
-        content.dataset.projectionPrototype === input.rootPrototypeId
-      );
+      const previewer = document.querySelector<HTMLElement>('[data-previewer-id]')!;
+      const boundary = (
+        globalThis as typeof globalThis & {
+          puiContrastProbe: typeof import('./contrast-probe.browser');
+        }
+      ).puiContrastProbe.readContrastProjectionBoundary(previewer, input.identity);
+      const { content, retained, shell, owner, generation } = boundary;
+      const ready = boundary.observation.achieved;
       const surfaces = [...document.querySelectorAll<HTMLElement>('[data-pui-root]')]
         .filter(
           (element) =>
-            content?.contains(element) ||
-            (owner &&
-              generation &&
-              element.dataset.projectionOwner === owner &&
-              element.dataset.projectionGeneration === generation &&
-              !element.closest('[data-projection-control]'))
+            !(ready && element === shell) &&
+            (content?.contains(element) ||
+              (owner &&
+                generation &&
+                element.dataset.projectionOwner === owner &&
+                element.dataset.projectionGeneration === generation &&
+                !element.closest('[data-projection-control]')))
         )
         .map((element) => {
           const rect = element.getBoundingClientRect();
@@ -768,7 +731,9 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
                   ancestorRect.top + current.clientTop + current.clientHeight
                 );
               }
-              if (content?.contains(current) && current.hasAttribute('data-pui-root'))
+              // Identity ancestry stops at the borrowed recipe boundary; the
+              // visibility/paint loop still measures every physical ancestor.
+              if (retained?.contains(current) && current.hasAttribute('data-pui-root'))
                 ancestorPrototypeIds.unshift(current.dataset.projectionPrototype ?? '');
             }
           }
@@ -792,7 +757,7 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
               !!generation &&
               element.dataset.projectionOwner === owner &&
               element.dataset.projectionGeneration === generation,
-            withinContent: !!content?.contains(element),
+            withinContent: !!retained?.contains(element),
             ancestorPrototypeIds,
             ref: element.getAttribute('data-demo-ref'),
             text: element.textContent,
@@ -907,6 +872,7 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
         owner: owner ?? null,
         generation: generation ?? null,
         ready,
+        projection: boundary.observation,
         expectationSource: {
           manifest: 'apps/www/src/components/PrototypePreviewer/projection-families.ts',
           recipe: input.recipePath,
@@ -947,6 +913,7 @@ async function passiveSurfaceObservation(page: Page, family: string): Promise<Ob
     },
     {
       family,
+      identity: projectionExpectation({ family, runtime }),
       recipeId: manifest.recipeId,
       recipePath,
       rootPrototypeId: manifest.parts.root?.prototypeId,
@@ -1582,6 +1549,7 @@ try {
     ['probe', new URL('./contrast-probe.browser.ts', import.meta.url)],
     ['theme', new URL('../../../packages/prototypes/brutalist/src/theme.ts', import.meta.url)],
     ['provenance-guard', new URL('./contrast-provenance.mjs', import.meta.url)],
+    ['surface-recipes', new URL('../src/components/surface-recipes.ts', import.meta.url)],
     ['report-journal', new URL('./contrast-report-journal.mjs', import.meta.url)],
     ['audit-plan', new URL('./contrast-audit-plan.mjs', import.meta.url)],
     ['anatomy-model', new URL('./contrast-anatomy.mjs', import.meta.url)],
@@ -1734,19 +1702,23 @@ try {
       phase = 'runtime-theme-readiness';
       await choosePreviewRuntime(page, previewer, runtime as (typeof runtimes)[number]);
       await previewer
+        .and(
+          page.locator(
+            `[data-previewer-id][data-projection-state="ready"][data-projection-runtime="${runtime}"]`
+          )
+        )
         .locator(
           `[data-projection-scope][data-projection-family="brutalist"][data-projection-runtime="${runtime}"][data-projection-state="ready"]`
         )
         .waitFor({ state: 'attached' });
-      if (!(await projectionObservation(page, item)).achieved)
-        throw new Error('Ready previewer is not the requested Brutalist recipe/component/runtime.');
+      await page.addScriptTag({ content: browserProbe });
+      await assertProjectionReadiness(page, item);
       await applyColorScheme(page, theme as (typeof themes)[number]);
       await previewer.scrollIntoViewIfNeeded();
       await page.mouse.move(0, 0);
-      await page.addScriptTag({ content: browserProbe });
       const rest = async () => {
         if (passiveFamilies.has(family)) {
-          const observation = await passiveSurfaceObservation(page, family);
+          const observation = await passiveSurfaceObservation(page, family, runtime);
           item.passiveSurfaceCoverage = observation;
           if (item.motionContext)
             item.motionContext.observedReducedMotion = observation.observedReducedMotion === true;
@@ -1763,7 +1735,7 @@ try {
           );
         phase = 'passive-surface-acceptance';
         const captured = item.passiveSurfaceCoverage;
-        const current = await passiveSurfaceObservation(page, family);
+        const current = await passiveSurfaceObservation(page, family, runtime);
         const capturedLeaseMatches =
           current.owner === captured?.owner && current.generation === captured?.generation;
         item.passiveSurfaceCoverage = {

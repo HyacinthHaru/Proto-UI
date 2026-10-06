@@ -528,14 +528,195 @@ export const readContrastTargetObservation = (element: Element) => {
   };
 };
 
+export interface ContrastProjectionExpectation {
+  recipeId: string;
+  contentRecipeId: string;
+  shellPrototypeId: string;
+  serializedRuntimes: string;
+  family: string;
+  runtime: string;
+  rootPrototypeId: string;
+  prototypeIds: readonly string[];
+}
+
+// Private audit-only resolver. Every production reader revalidates the exact
+// requested identity and both ownership boundaries at its own observation time.
+// DOM references stay in this browser probe; only observation is serialized.
+export const readContrastProjectionBoundary = (
+  previewer: HTMLElement,
+  expected: ContrastProjectionExpectation
+) => {
+  const scopes = previewer.querySelectorAll<HTMLElement>('[data-projection-scope]');
+  const scope = scopes.length === 1 ? scopes[0] : null;
+  const contents = scope?.querySelectorAll<HTMLElement>('[data-projection-content]');
+  const content = contents?.length === 1 ? contents[0] : null;
+  const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
+  const generation = scope?.dataset.projectionGeneration;
+  // The RuntimeBox shell is a separate one-Prototype owner. Its reserved
+  // DOM boundary is already used by the website browser readiness helper;
+  // it must never become an extra allowed Prototype in the authored recipe.
+  const shells = content?.querySelectorAll<HTMLElement>(
+    '[data-demo-ref="__website_runtime_preview_surface__"]'
+  );
+  const shell = shells?.length === 1 ? shells[0] : null;
+  const mounts = content?.querySelectorAll<HTMLElement>(
+    '[data-demo-ref="__website_runtime_preview_surface__-mount"]'
+  );
+  const mount = mounts?.length === 1 ? mounts[0] : null;
+  const retainedContents = content?.querySelectorAll<HTMLElement>(
+    '[data-demo-ref="__website_runtime_preview_surface__-content"]'
+  );
+  const retained = retainedContents?.length === 1 ? retainedContents[0] : null;
+  const slots = shell?.querySelectorAll<HTMLElement>('[data-passive-shell-slot]');
+  const slot = slots?.length === 1 ? slots[0] : null;
+  const host = mount?.childElementCount === 1 ? mount.firstElementChild : null;
+  const coordinatesMatch = [mount, retained].every(
+    (element) =>
+      !!element &&
+      element.dataset.projectionOwner === owner &&
+      element.dataset.projectionGeneration === generation &&
+      element.dataset.projectionFamily === 'brutalist' &&
+      element.dataset.projectionRuntime === expected.runtime
+  );
+  const shellGeneration = shell?.dataset.projectionGeneration ?? null;
+  const shellBoundary = !!(
+    shell &&
+    shell.isConnected &&
+    shell.classList.contains('pui-runtime-preview-surface') &&
+    shell.hasAttribute('data-pui-root') &&
+    !shell.hasAttribute('data-projection-owner') &&
+    shell.dataset.projectionPrototype === expected.shellPrototypeId &&
+    shell.dataset.projectionFamily === 'brutalist' &&
+    shell.dataset.projectionRuntime === expected.runtime &&
+    shellGeneration &&
+    /^[1-9]\d*$/.test(shellGeneration) &&
+    mount?.hasAttribute('data-passive-shell-mount') &&
+    coordinatesMatch &&
+    host &&
+    !host.hasAttribute('hidden') &&
+    host.contains(shell) &&
+    slot &&
+    slot.closest('[data-pui-root]') === shell &&
+    retained?.parentElement === slot
+  );
+  const allRoots = [...(content?.querySelectorAll<HTMLElement>('[data-pui-root]') ?? [])];
+  const roots = [...(retained?.querySelectorAll<HTMLElement>('[data-pui-root]') ?? [])];
+  const misplacedRoots = allRoots.filter((root) => root !== shell && !roots.includes(root));
+  const invalidRoots = roots.filter(
+    (root) =>
+      root.dataset.projectionOwner !== owner ||
+      root.dataset.projectionGeneration !== generation ||
+      !expected.prototypeIds.includes(root.dataset.projectionPrototype ?? '')
+  );
+  const rootPresent = roots.some(
+    (root) => root.dataset.projectionPrototype === expected.rootPrototypeId
+  );
+  const observation = {
+    achieved: !!(
+      owner &&
+      generation &&
+      previewer.getAttribute('data-demo-id') === expected.recipeId &&
+      previewer.getAttribute('data-runtimes') === expected.serializedRuntimes &&
+      previewer.dataset.projectionComponent === expected.family &&
+      previewer.dataset.projectionFamily === 'brutalist' &&
+      previewer.dataset.projectionState === 'ready' &&
+      previewer.dataset.projectionRuntime === expected.runtime &&
+      scope?.dataset.projectionState === 'ready' &&
+      scope.dataset.projectionFamily === 'brutalist' &&
+      scope.dataset.projectionRuntime === expected.runtime &&
+      content?.dataset.projectionOwner === owner &&
+      content.dataset.projectionGeneration === generation &&
+      content.dataset.projectionFamily === 'brutalist' &&
+      content.dataset.projectionRuntime === expected.runtime &&
+      content.dataset.projectionId === expected.contentRecipeId &&
+      content.dataset.projectionPrototype === expected.rootPrototypeId &&
+      !content.hasAttribute('data-pui-root') &&
+      shellBoundary &&
+      !misplacedRoots.length &&
+      rootPresent &&
+      !invalidRoots.length
+    ),
+    owner: owner ?? null,
+    generation: generation ?? null,
+    shellGeneration,
+    expected,
+    observed: {
+      recipeId: previewer.getAttribute('data-demo-id'),
+      serializedRuntimes: previewer.getAttribute('data-runtimes'),
+      scopeCount: scopes.length,
+      contentCount: contents?.length ?? 0,
+      state: scope?.dataset.projectionState ?? null,
+      family: scope?.dataset.projectionFamily ?? null,
+      runtime: scope?.dataset.projectionRuntime ?? null,
+      contentFamily: content?.dataset.projectionFamily ?? null,
+      contentRuntime: content?.dataset.projectionRuntime ?? null,
+      componentId: previewer.dataset.projectionComponent ?? null,
+      contentRecipeId: content?.dataset.projectionId ?? null,
+      contentOwner: content?.dataset.projectionOwner ?? null,
+      contentGeneration: content?.dataset.projectionGeneration ?? null,
+      previewerState: previewer.dataset.projectionState ?? null,
+      previewerFamily: previewer.dataset.projectionFamily ?? null,
+      previewerRuntime: previewer.dataset.projectionRuntime ?? null,
+      shell: {
+        boundaryValid: shellBoundary,
+        count: shells?.length ?? 0,
+        mountCount: mounts?.length ?? 0,
+        retainedContentCount: retainedContents?.length ?? 0,
+        slotCount: slots?.length ?? 0,
+        prototypeId: shell?.dataset.projectionPrototype ?? null,
+        family: shell?.dataset.projectionFamily ?? null,
+        runtime: shell?.dataset.projectionRuntime ?? null,
+        generation: shellGeneration,
+        owner: shell?.dataset.projectionOwner ?? null,
+        ownershipBasis:
+          'Reserved published DOM boundary under the current lease-bearing mount; the independent controller owner is not published or certified.',
+        mountOwner: mount?.dataset.projectionOwner ?? null,
+        mountGeneration: mount?.dataset.projectionGeneration ?? null,
+        retainedOwner: retained?.dataset.projectionOwner ?? null,
+        retainedGeneration: retained?.dataset.projectionGeneration ?? null,
+        rendererHostHidden: host?.hasAttribute('hidden') ?? null,
+        slotOwnsRetainedContent: !!slot && retained?.parentElement === slot,
+      },
+      rootPrototypeId: content?.dataset.projectionPrototype ?? null,
+      rootPresent,
+      invalidRoots: invalidRoots.map((root) => ({
+        prototypeId: root.dataset.projectionPrototype ?? null,
+        owner: root.dataset.projectionOwner ?? null,
+        generation: root.dataset.projectionGeneration ?? null,
+      })),
+      misplacedRoots: misplacedRoots.map((root) => ({
+        prototypeId: root.dataset.projectionPrototype ?? null,
+        owner: root.dataset.projectionOwner ?? null,
+        generation: root.dataset.projectionGeneration ?? null,
+      })),
+    },
+    boundary:
+      'Requested authored Brutalist recipe/component/runtime and current lease, checked before and after every PNG/fact frame; not semantic conformance.',
+  };
+  return { observation, scope, content, retained, shell, owner, generation };
+};
+
 // Structural observation only; the Node audit compares this current lease to
 // the exact authored recipe. Reader toolbar portals are excluded by their own
 // controls relations, not by assuming all portals belong to the product.
-export const readContrastAnatomy = (primary: Element | null = null) => {
+export const readContrastAnatomy = (
+  primary: Element | null = null,
+  expected?: ContrastProjectionExpectation
+) => {
   const scope = document.querySelector<HTMLElement>('[data-projection-scope]');
   const content = scope?.querySelector<HTMLElement>('[data-projection-content]');
   const owner = scope?.dataset.projectionOwner ?? scope?.dataset.projectionScope;
   const generation = scope?.dataset.projectionGeneration;
+  // Instrument calibration deliberately has no Website shell. The production
+  // auditor always supplies a manifest/case expectation; a broken production
+  // boundary cannot choose or fall back to that calibration-only mode.
+  const boundary = expected
+    ? readContrastProjectionBoundary(
+        document.querySelector<HTMLElement>('[data-previewer-id]')!,
+        expected
+      )
+    : null;
+  const authoredContent = boundary ? boundary.retained : content;
   const all = [...document.querySelectorAll<HTMLElement>('[data-pui-root]')];
   const readerIds = new Set(
     [...(scope?.querySelectorAll('[data-projection-control] [aria-controls]') ?? [])].flatMap(
@@ -545,6 +726,7 @@ export const readContrastAnatomy = (primary: Element | null = null) => {
   const readerPortals = all.filter((element) => readerIds.has(element.id));
   const roots = all.filter(
     (element) =>
+      !(boundary?.observation.achieved && element === boundary.shell) &&
       (content?.contains(element) ||
         (element.dataset.projectionOwner === owner &&
           element.dataset.projectionGeneration === generation)) &&
@@ -570,7 +752,7 @@ export const readContrastAnatomy = (primary: Element | null = null) => {
       ariaExpanded: element.getAttribute('aria-expanded'),
       hovered: element.matches(':hover'),
       focused: document.activeElement === element,
-      withinContent: !!content?.contains(element),
+      withinContent: !!authoredContent?.contains(element),
       currentLease:
         element.dataset.projectionOwner === owner &&
         element.dataset.projectionGeneration === generation,
@@ -583,9 +765,12 @@ export const readContrastAnatomy = (primary: Element | null = null) => {
     generation: generation ?? null,
     primary: primary ? (indices.get(primary as HTMLElement) ?? null) : null,
     currentLease:
-      !!(owner && generation && content && scope?.dataset.projectionState === 'ready') &&
+      (boundary
+        ? boundary.observation.achieved
+        : !!(owner && generation && content && scope?.dataset.projectionState === 'ready')) &&
       surfaces.every((surface) => surface.currentLease),
     surfaces,
+    projection: boundary?.observation ?? null,
   };
 };
 

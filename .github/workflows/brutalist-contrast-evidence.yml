@@ -44,11 +44,19 @@ jobs:
           corepack pnpm@10.32.1 install --frozen-lockfile
           CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
+      - name: Disable the development toolbar before public-page evidence
+        run: |
+          set -euo pipefail
+          corepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar
+          TOOLBAR_SETTING=$(NO_COLOR=1 corepack pnpm@10.32.1 --filter apps-www exec astro preferences get devToolbar.enabled)
+          printf '%s\n' "$TOOLBAR_SETTING"
+          grep -Eq '^◉ devToolbar\.enabled is set to[[:space:]]+false[[:space:]]*$' <<< "$TOOLBAR_SETTING"
       - name: Calibrate paint acceptance and bounded evidence storage
         run: |
           node --test apps/www/scripts/contrast-report-journal.test.mjs \
             apps/www/scripts/contrast-audit-plan.test.mjs \
-            apps/www/scripts/contrast-anatomy.test.mjs
+            apps/www/scripts/contrast-anatomy.test.mjs \
+            scripts/test/brutalist-contrast-toolbar.test.mjs
           corepack pnpm@10.32.1 exec vitest run \
             apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts \
             --maxWorkers=1 --minWorkers=1
