@@ -439,7 +439,8 @@ function localRepository(
 
 for (const declaration of ['--record', '--context', '--mode', '--mode-source', '--authorization']) {
   test(`rejects missing ${declaration} before mutation`, (t) => {
-    const f = fixture(t);
+    // Parser rejection does not need successful synthetic fingerprint samples.
+    const f = fixture(t, { failed: true });
     const argv = ['comment', ...f.args, '--number', '7', '--body-file', f.bodyPath];
     const index = argv.indexOf(declaration);
     argv.splice(index, 2);
@@ -459,7 +460,8 @@ for (const declaration of ['--record', '--context', '--mode', '--mode-source', '
 }
 
 test('strict options and independent authorization cannot be supplied by an artifact', (t) => {
-  const f = fixture(t);
+  // These checks inspect declarations only, never execute the fingerprint scorer.
+  const f = fixture(t, { failed: true });
   const argv = ['comment', ...f.args, '--number', '7', '--body-file', f.bodyPath];
   assert.throws(() => parsePublishCli([...argv, '--labels', 'feature']), /unexpected option/);
   assert.throws(() => parsePublishCli([...argv, '--record', f.recordPath]), /duplicate option/);
