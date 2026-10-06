@@ -483,8 +483,13 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
         state.activationVersion += 1;
         setViewReady(this, false);
         getRootElement(this)?.setAttribute(PUI_VIEW_PENDING_ATTR, '');
-        if (state.owner.hasView) void state.owner.detachView();
-        state.lastInitRoot = null;
+        try {
+          if (state.owner.hasView) return state.owner.detachView();
+        } finally {
+          // A failed old release must not strand the cached KeepAlive root.
+          // A synchronously attached replacement owns its own init marker.
+          if (!state.owner.hasView) state.lastInitRoot = null;
+        }
       },
       beforeDestroy() {
         const state = getState<Props>(this);
@@ -930,7 +935,19 @@ function notifyFocusTargetReady(vm: any) {
   const state = getState(vm);
   const target = getRootElement(vm);
   if (!state.viewReady || !target?.isConnected) return;
-  for (const listener of Array.from(state.focusTargetReadyListeners)) listener();
+  let failed = false;
+  let firstError: unknown;
+  for (const listener of Array.from(state.focusTargetReadyListeners)) {
+    try {
+      listener();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        firstError = error;
+      }
+    }
+  }
+  if (failed) throw firstError;
 }
 
 function setViewReady(vm: any, value: boolean) {
