@@ -254,7 +254,12 @@ const targetObservationFixture = async () => {
     opacity: '1',
     mixBlendMode: 'normal',
     backgroundColor: '#5294ff',
+    backgroundImage: 'none',
+    backgroundClip: 'border-box',
     color: '#000',
+    webkitTextFillColor: '#000',
+    webkitTextStrokeWidth: '0px',
+    textShadow: 'none',
     filter: 'none',
     backdropFilter: 'none',
     clip: 'auto',
@@ -437,3 +442,36 @@ for (const placement of ['target', 'ancestor']) {
     });
   }
 }
+
+for (const [property, value, normal, limit] of [
+  ['backgroundImage', 'linear-gradient(white, white)', 'none', 'unsupported-background-image'],
+  ['webkitTextFillColor', '#fff', '#000', 'unsupported-text-fill-color'],
+  ['textShadow', 'white 0px 0px 3px', 'none', 'unsupported-text-shadow'],
+  ['webkitTextStrokeWidth', '2px', '0px', 'unsupported-text-stroke'],
+  ['boxShadow', 'white 0px 0px 0px 100px inset', 'none', 'unsupported-inset-shadow'],
+  ['backgroundClip', 'text', 'border-box', 'unsupported-background-clip'],
+]) {
+  test(`pointer pair rejects alternate ${property} while tokens and native facts survive`, async () => {
+    const { style, observe, observePair } = await targetObservationFixture();
+    assert.equal(observePair().achieved, true);
+    style[property] = value;
+    assert.equal(observe().achieved, true);
+    const changed = observePair();
+    assert.equal(changed.achieved, false);
+    assert.equal(changed.hovered, true);
+    assert.equal(changed.nativeActive, true);
+    assert.equal(changed.fill, changed.expectedFill);
+    assert.equal(changed.foreground, changed.expectedForeground);
+    assert.ok(changed.paintLimits.includes(limit));
+    style[property] = normal;
+    assert.equal(observePair().achieved, true);
+  });
+}
+
+test('pointer pair keeps an opaque target over unrelated ancestor image and outer shadow', async () => {
+  const { style, ancestorStyle, observePair } = await targetObservationFixture();
+  ancestorStyle.backgroundImage = 'linear-gradient(white, white)';
+  ancestorStyle.boxShadow = 'white 0px 0px 0px 100px inset';
+  style.boxShadow = 'black 4px 4px 0px 0px';
+  assert.equal(observePair().achieved, true);
+});

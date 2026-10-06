@@ -198,6 +198,8 @@ const stateProperties = [
   'position',
   'color',
   '-webkit-text-fill-color',
+  '-webkit-text-stroke-width',
+  '-webkit-text-stroke-color',
   'background-color',
   'background-image',
   'background-clip',
@@ -957,6 +959,18 @@ export const readContrastPointerPair = (
   const foreground = normalize(style.color);
   const expectedFill = normalize(expected.fill);
   const expectedForeground = normalize(expected.foreground);
+  // This predicate certifies the target's simple CSS color pair, not every
+  // possible renderer layer. Effective target values include inherited text
+  // replacement. An opaque target does not borrow an ancestor background or
+  // inset shadow, so do not blanket-reject those unrelated ancestor paints.
+  if (style.backgroundImage !== 'none') paintLimits.push('unsupported-background-image');
+  if (style.backgroundClip.split(',').some((clip) => /^(text|content-box)$/.test(clip.trim())))
+    paintLimits.push('unsupported-background-clip');
+  if (normalize(style.webkitTextFillColor) !== foreground)
+    paintLimits.push('unsupported-text-fill-color');
+  if (style.textShadow !== 'none') paintLimits.push('unsupported-text-shadow');
+  if (parseFloat(style.webkitTextStrokeWidth) !== 0) paintLimits.push('unsupported-text-stroke');
+  if (/\binset\b/.test(style.boxShadow)) paintLimits.push('unsupported-inset-shadow');
   const hovered = element.matches(':hover');
   const nativeActive = element.matches(':active');
   return {

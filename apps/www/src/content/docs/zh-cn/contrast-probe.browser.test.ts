@@ -608,6 +608,71 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     }
   }
 
+  for (const [placement, property, value, limit] of [
+    ['target', 'background-image', 'linear-gradient(white, white)', 'unsupported-background-image'],
+    ['target', '-webkit-text-fill-color', 'white', 'unsupported-text-fill-color'],
+    ['ancestor', '-webkit-text-fill-color', 'white', 'unsupported-text-fill-color'],
+    ['target', 'text-shadow', 'white 0px 0px 3px', 'unsupported-text-shadow'],
+    ['ancestor', 'text-shadow', 'white 0px 0px 3px', 'unsupported-text-shadow'],
+    ['target', '-webkit-text-stroke-width', '2px', 'unsupported-text-stroke'],
+    ['ancestor', '-webkit-text-stroke-width', '2px', 'unsupported-text-stroke'],
+    ['target', 'box-shadow', 'white 0px 0px 0px 100px inset', 'unsupported-inset-shadow'],
+    ['target', 'background-clip', 'text', 'unsupported-background-clip'],
+  ] as const) {
+    it(`withholds pointer pair for ${placement} ${property} without changing native facts`, async () => {
+      const context = await browser.newContext({ viewport: { width: 800, height: 600 } });
+      const page = await context.newPage();
+      try {
+        await page.setContent(
+          fixture(`<div id="ancestor">
+          <button id="target" data-pui-root style="background:#5294ff;color:#000">Item</button>
+        </div>`)
+        );
+        await page.addScriptTag({ content: bundle });
+        const target = page.locator('#target');
+        const observe = () =>
+          target.evaluate((element) =>
+            window.puiContrastProbe.readContrastPointerPair(
+              element,
+              { fill: '#5294ff', foreground: '#000' },
+              true
+            )
+          );
+        await target.hover();
+        await page.mouse.down();
+        try {
+          expect((await observe()).achieved).toBe(true);
+          await page
+            .locator(`#${placement}`)
+            .evaluate((element, input) => (element as HTMLElement).style.setProperty(...input), [
+              property,
+              value,
+            ] as [string, string]);
+          const changed = await observe();
+          expect(changed.achieved).toBe(false);
+          expect(changed.paintLimits).toContain(limit);
+          expect(changed.visibility.classification).toBe('source-model-visible');
+          expect(changed.hovered).toBe(true);
+          expect(changed.nativeActive).toBe(true);
+          expect(changed.fill).toBe(changed.expectedFill);
+          expect(changed.foreground).toBe(changed.expectedForeground);
+          await page
+            .locator(`#${placement}`)
+            .evaluate(
+              (element, property) => (element as HTMLElement).style.removeProperty(property),
+              property
+            );
+          expect((await observe()).achieved).toBe(true);
+        } finally {
+          await page.mouse.up();
+        }
+        expect((await observe()).achieved).toBe(false);
+      } finally {
+        await context.close();
+      }
+    });
+  }
+
   it('measures real text and glyph controls, not empty or descendant-only host ink', async () => {
     // Baseline falsifier: all opaque host boxes received 21:1, including empty,
     // SVG-only, child-only and empty-placeholder boxes with no direct black text.
