@@ -35,6 +35,12 @@ importers:
       happy-dom:
         specifier: ^15.0.0
         version: 15.11.7
+      hast-util-from-html:
+        specifier: 2.0.3
+        version: 2.0.3
+      hast-util-to-html:
+        specifier: 9.0.5
+        version: 9.0.5
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -44,6 +50,12 @@ importers:
       lint-staged:
         specifier: ^16.3.1
         version: 16.4.0
+      mdast-util-from-markdown:
+        specifier: 2.0.3
+        version: 2.0.3
+      mdast-util-to-hast:
+        specifier: 13.2.1
+        version: 13.2.1
       npm:
         specifier: ^11.14.1
         version: 11.14.1
