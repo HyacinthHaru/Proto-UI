@@ -569,6 +569,12 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
       const previousStatus = status?.textContent ?? null;
       return {
         publish() {
+          // A reader can use native fallback navigation while async code is
+          // loading. Carry focus to the same destination before hiding it.
+          const nativeFocus = groups.flatMap((group) => {
+            const index = group.links.findIndex((link) => link === document.activeElement);
+            return index < 0 ? [] : [{ group, index }];
+          })[0];
           activeCandidates = next;
           activeTypography = prepared.typography;
           activeFamily = family;
@@ -582,6 +588,13 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
           searchPublication?.publish();
           setStatus('ready', commit.selection.runtimeId as RuntimeId);
           disclosure?.enhance();
+          if (nativeFocus) {
+            nativeFocus.group.mount
+              .querySelector<HTMLElement>(
+                `[data-projection-generation-state="active"] [data-demo-ref="home-link-${nativeFocus.index}"]`
+              )
+              ?.focus({ preventScroll: true });
+          }
         },
         rollback() {
           activeCandidates = previous;

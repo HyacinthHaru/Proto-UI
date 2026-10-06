@@ -35,3 +35,13 @@ Co-author by OpenAI Dots
 - Verify the existing Shadcn DialogMask's blur actually paints on the homepage dialog and the corresponding document example. Its current explicit Prototype token is backdrop-blur-xs; a token-only assertion does not establish backdrop pixels.
 - Select and nonmodal navigation popups use readable opaque surfaces in the current official reference. Do not smear their text or apply blanket blur to every overlay. If the header is made translucent, choose a reusable appearance owner and verify readable fallback under reduced transparency, forced colors and unavailable support rather than using a page-only decorative patch.
 - Native CI is pending, including no-script/cold-load behavior, open-theme-close-reopen and mobile screenshot inspection. No full Shadcn parity claim is made from the current three bounded repairs.
+
+## Initial navigation focus and no-script completion
+
+A second pass found two upgrade-boundary gaps, each demonstrated by a new failing test before correction: a focused native summary became hidden instead of transferring to the real menu Button; and a focused native homepage language link stayed in the hidden fallback rather than transferring to its same destination in the first real generation. The latter test runs the actual WC materializer and public Surface/Text composition. Both now pass; the three directly affected suites pass 67 tests. The expanded six-file suite passed 109 tests, and final docs types passed again across 448 files with 0 errors and 0 warnings (4 hints).
+
+No-script documentation exposes native locale links, and previews show the truthful JavaScript requirement instead of an endless loading label. The production probe now uses native touch taps at phone widths, keeps a focused open fallback through script release, explicitly tests no-script 390px navigation, and captures real homepage/document DialogMask rendering with default, reduced-transparency and forced-colors inputs. Preference captures are observations pending visual assessment, not a fallback-success claim.
+
+Production build of the candidate completed: 284 pages, 279 Pagefind-indexed pages. Exact-head CI for the first published head was still queued as of 2026-10-06 11:15 UTC; no browser screenshot or hosted pass existed yet.
+
+Pinned upstream inspection confirmed SelectContent uses opaque popover tokens and the site header uses opaque background; adding blur to those merely for purported upstream parity would be incorrect. The upstream DialogOverlay is black/50 without blur; Proto UI's blur is an existing project extension, whose actual rendering remains subject to the added evidence.

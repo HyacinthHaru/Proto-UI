@@ -333,6 +333,8 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     },
     enhance() {
       if (destroyed) return;
+      const summaryFocused =
+        !enhanced && !!nativePanel?.querySelector('summary')?.contains(document.activeElement);
       if (!enhanced && nativePanel) {
         // The browser owns initial disclosure while code loads or fails. Adopt
         // its state once; the existing application controller then takes over.
@@ -341,6 +343,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
       }
       enhanced = true;
       sync();
+      if (summaryFocused) activeButton()?.focus({ preventScroll: true });
     },
     toggle() {
       if (destroyed || !enhanced) return;
