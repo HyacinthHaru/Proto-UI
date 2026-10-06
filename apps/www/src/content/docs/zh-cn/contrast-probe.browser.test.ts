@@ -209,9 +209,20 @@ const surface = (frame: ContrastFrame, ref: string) => {
 
 describe('contrast probe / real Chromium instrument calibration', () => {
   it('rejects transparent and clipped popup acceptance despite Playwright visibility', async () => {
-    const context = await browser.newContext({ viewport: { width: 800, height: 600 } });
-    const page = await context.newPage();
+    let context: BrowserContext | undefined;
+    const startedAt = performance.now();
+    const phase = async (name: string, error?: unknown) => {
+      console.info(
+        `[contrast-calibration] popup-visibility:${name} elapsedMs=${Math.round(performance.now() - startedAt)}`
+      );
+      await recordCalibrationPhase(`popup-visibility-${name}`, error);
+    };
     try {
+      await phase('context-start');
+      context = await browser.newContext({ viewport: { width: 800, height: 600 } });
+      await phase('page-start');
+      const page = await context.newPage();
+      await phase('fixture-start');
       await page.setContent(
         fixture(`
         <div id="normal" data-pui-root>Painted popup</div>
@@ -221,11 +232,14 @@ describe('contrast probe / real Chromium instrument calibration', () => {
         <div id="unsupported" data-pui-root style="clip-path:inset(100%)">Unsupported clip</div>
       `)
       );
+      await phase('probe-install-start');
       await page.addScriptTag({ content: bundle });
+      await phase('native-visibility-start');
       // This is the original runner's false-positive acceptance, reproduced on
       // unchanged native Playwright semantics rather than a missing import.
       for (const id of ['transparent', 'ancestor', 'clipped'])
         expect(await page.locator(`#${id}`).isVisible()).toBe(true);
+      await phase('paint-observation-start');
       const observations = await page.evaluate(() =>
         Object.fromEntries(
           ['normal', 'transparent', 'ancestor', 'clipped', 'unsupported'].map((id) => [
@@ -234,6 +248,7 @@ describe('contrast probe / real Chromium instrument calibration', () => {
           ])
         )
       );
+      await phase('assertions-start');
       expect(observations.normal).toMatchObject({
         visible: true,
         classification: 'source-model-visible',
@@ -241,8 +256,14 @@ describe('contrast probe / real Chromium instrument calibration', () => {
       for (const id of ['transparent', 'ancestor', 'clipped'])
         expect(observations[id].visible).toBe(false);
       expect(observations.unsupported.classification).toBe('unsupported');
+      await phase('assertions-passed');
+    } catch (error) {
+      await phase('failed', error);
+      throw error;
     } finally {
-      await context.close();
+      await phase('context-close-start');
+      await context?.close();
+      await phase('context-closed');
     }
   });
 
