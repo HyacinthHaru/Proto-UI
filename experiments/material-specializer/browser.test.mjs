@@ -66,6 +66,36 @@ try {
     { timeout: 10000 }
   );
   assert.equal((await state()).phase, 'rest');
+  const selectionStyle = await page.evaluate(() => {
+    const host = document.querySelector('#glass');
+    document.documentElement.style.setProperty('--pui-primary', 'rgb(12, 100, 180)');
+    document.documentElement.style.setProperty('--pui-primary-foreground', 'rgb(255, 255, 255)');
+    const selection = getComputedStyle(host, '::selection');
+    return {
+      tokens: host.getAttribute('data-pui-style'),
+      background: selection.backgroundColor,
+      color: selection.color,
+    };
+  });
+  assert.ok(selectionStyle.tokens.includes('selection:bg-primary'));
+  assert.ok(selectionStyle.tokens.includes('selection:text-primary-foreground'));
+  assert.equal(selectionStyle.background, 'rgb(12, 100, 180)');
+  assert.equal(selectionStyle.color, 'rgb(255, 255, 255)');
+  await page.evaluate(() => {
+    const host = document.querySelector('#glass');
+    host.style.userSelect = 'text';
+    const range = document.createRange();
+    range.selectNodeContents(host);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+  });
+  assert.ok(await page.evaluate(() => window.getSelection().toString().includes('Continue')));
+  await capture('00-selection-pseudo-surface');
+  await page.evaluate(() => {
+    window.getSelection().removeAllRanges();
+    document.querySelector('#glass').style.userSelect = '';
+  });
+
   const beforeCloning = (await state()).preparationCount;
   await page.evaluate(() => window.probe.clonedSnapshots(true));
   assert.equal((await state()).quality, 'experimental-owned-texture');

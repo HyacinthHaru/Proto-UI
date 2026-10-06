@@ -48,9 +48,13 @@ const rgba = (value: unknown): value is readonly number[] =>
   );
 const color = (v: readonly number[]) =>
   `rgba(${v[0] * 255}, ${v[1] * 255}, ${v[2] * 255}, ${v[3]})`;
-const paint = (token: string) => /^(bg-|backdrop-)/.test(token.split(':').at(-1)!);
+const selectionSurface = (token: string) => /^selection:[^:]+$/u.test(token);
+const paint = (token: string) =>
+  !selectionSurface(token) && /^(bg-|backdrop-)/.test(token.split(':').at(-1)!);
 const relevantSelector = (token: string) =>
-  token.includes(':') && /^(bg-|backdrop-|rounded|text-)/.test(token.split(':').at(-1)!);
+  !selectionSurface(token) &&
+  token.includes(':') &&
+  /^(bg-|backdrop-|rounded|text-)/.test(token.split(':').at(-1)!);
 
 // A finite axis-aligned, opaque profile cannot prove contrast or texture mapping
 // through arbitrary ancestor compositing. Walk the composed tree (including slots

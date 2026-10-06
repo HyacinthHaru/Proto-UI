@@ -1,6 +1,6 @@
 import { declareTextControl } from '@proto.ui/module-text-control';
 import { describe, it, expect, vi } from 'vitest';
-import { definePrototype, tw } from '@proto.ui/core';
+import { definePrototype, tw, type RunHandle } from '@proto.ui/core';
 import { asButton } from '@proto.ui/prototypes-base/button';
 import { AdaptToWebComponent, setElementProps } from '../src';
 import { installExperimentalVisualConsumer } from '../src/runtime/experimental-visual-consumer';
@@ -68,6 +68,29 @@ describe('private material through real WC and Feedback', () => {
     sink.release(1);
     host.remove();
   });
+  for (const token of ['selection:bg-primary', 'selection:text-primary-foreground'])
+    it(`preserves static pseudo-element ${token} outside material host paint`, () => {
+      const host = document.createElement('div');
+      host.style.color = 'rgb(0, 0, 0)';
+      document.body.append(host);
+      const sink = createOpaqueMaterialVisualSink(host, createOwnedTwTokenApplier(host));
+      try {
+        sink.commit(
+          finalStyleFrame(tw(token), 1, 1, {
+            config: button.modules![0].config as OwnedMaterialConfig,
+            pressed: false,
+            disabled: false,
+            bindingsReady: true,
+          })
+        );
+        expect(host.getAttribute('data-pui-style')).toContain(token);
+        expect(host.dataset.materialReason).toBe('material-support-unavailable');
+      } finally {
+        sink.release(1);
+        host.remove();
+      }
+    });
+
   it('returns only owned inline values and preserves later external values and priorities', () => {
     const host = document.createElement('div');
     Object.assign(host.style, { color: 'rgb(0, 0, 0)', background: 'rgb(20, 40, 60)' });
@@ -348,6 +371,79 @@ describe('private material through real WC and Feedback', () => {
       add.mockRestore();
       remove.mockRestore();
     }
+  });
+
+  it('releases a failed remount sink before retry while preserving the logical owner', async () => {
+    let run!: RunHandle<any>;
+    let alive!: { get(): boolean };
+    const failure = new Error('remount material replay failed');
+    const releases: ReturnType<typeof vi.fn>[] = [];
+    let created = 0;
+    const prototype = definePrototype({
+      name: `material-remount-failure-${++id}`,
+      setup(def) {
+        alive = def.state.bool('alive', true);
+        def.lifecycle.onCreated((value) => {
+          run = value;
+        });
+        def.expose('view', {
+          show: () => run.lifecycle.setPresent(true),
+          hide: () => run.lifecycle.setPresent(false),
+        });
+        def.feedback.style.use(tw('rounded-full'));
+        return (renderer) => renderer.el('span', 'owned view');
+      },
+    });
+    const off = installExperimentalVisualConsumer(prototype, () => {
+      const number = ++created;
+      const release = vi.fn();
+      releases.push(release);
+      return {
+        commit() {
+          if (number === 2) throw failure;
+        },
+        release,
+      };
+    });
+    const errors: unknown[] = [];
+    const scheduleMicrotask = globalThis.queueMicrotask;
+    const microtask = vi.spyOn(globalThis, 'queueMicrotask').mockImplementation((callback) => {
+      scheduleMicrotask(() => {
+        try {
+          callback();
+        } catch (error) {
+          errors.push(error);
+        }
+      });
+    });
+    const Constructor = AdaptToWebComponent(prototype, { schedule: (task) => task() });
+    const host = new Constructor();
+    try {
+      document.body.append(host);
+      await settle();
+      (host as any).getExposes().view.hide();
+      await settle();
+      expect(releases[0]).toHaveBeenCalledOnce();
+      (host as any).getExposes().view.show();
+      await settle();
+      expect(errors).toEqual([failure]);
+      expect(releases[1]).toHaveBeenCalledOnce();
+      expect(alive.get()).toBe(true);
+      (host as any).getExposes().view.hide();
+      await settle();
+      (host as any).getExposes().view.show();
+      await settle();
+      expect(created).toBe(3);
+      expect(host.textContent).toContain('owned view');
+      expect(releases[2]).not.toHaveBeenCalled();
+      expect(errors).toEqual([failure]);
+    } finally {
+      host.remove();
+      await settle();
+      off();
+      microtask.mockRestore();
+    }
+    expect(releases[2]).toHaveBeenCalledOnce();
   });
 
   it('restores application diagnostics and preserves a later external metadata write', () => {

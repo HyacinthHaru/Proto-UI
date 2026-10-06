@@ -22,7 +22,7 @@ export default definePrototype<ButtonProps, ButtonExposes>({
     // Geometry and foreground remain style-owned; material owns only fill.
     def.feedback.style.use(
       tw(
-        'inline-flex items-center justify-center px-5 py-2 text-sm font-medium select-none cursor-pointer rounded-full text-foreground'
+        'inline-flex items-center justify-center px-5 py-2 text-sm font-medium select-none cursor-pointer rounded-full text-foreground selection:bg-primary selection:text-primary-foreground'
       )
     );
     def.rule({
