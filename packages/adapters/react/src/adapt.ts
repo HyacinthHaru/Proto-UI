@@ -581,6 +581,9 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           },
           onFocusAcquired: () => {
             focusTargetRetryCountRef.current = 0;
+            // Completion retires queued work for this intent in the current view.
+            focusRetryGeneration += 1;
+            focusTargetRetryScheduledRef.current = false;
             releaseRequestedTargetReady?.();
             releaseRequestedTargetReady = undefined;
           },

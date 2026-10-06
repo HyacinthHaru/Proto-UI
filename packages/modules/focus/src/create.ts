@@ -144,6 +144,7 @@ class FocusModuleImpl extends ModuleBase {
   private currentHostFocusTarget: unknown = null;
   private hostFocusTargetGeneration = 0;
   private focusApplicationVersion = 0;
+  private entryAcquisitionVersion = 0;
   private focusOperation: FocusOperation | undefined;
   private focusFactsEpoch = 0;
   private hostEventsWired = false;
@@ -1005,9 +1006,15 @@ class FocusModuleImpl extends ModuleBase {
     const target = this.getRootTarget();
     if (this.pendingFocusRequest !== pending) return true;
     if (!target || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) return false;
-    this.pendingFocusRequest = undefined;
-    if (pending.kind === 'entry') this.applyEntryFocus(pending.options);
-    else this.applyTargetFocus(pending.options, pending.syncFacts);
+    if (pending.kind === 'entry') {
+      // Do not pre-clear an entry replay: applyEntryFocus keeps the slot when
+      // the replacement target has not mounted yet, so readiness from the
+      // later commit can still fulfill the same intent.
+      this.applyEntryFocus(pending.options, { replay: true });
+    } else {
+      this.pendingFocusRequest = undefined;
+      this.applyTargetFocus(pending.options, pending.syncFacts);
+    }
     return true;
   }
 
@@ -1096,7 +1103,7 @@ class FocusModuleImpl extends ModuleBase {
     this.applyEntryFocus(createFocusRequestIntent(options));
   }
 
-  private applyEntryFocus(options: FocusRequestOptions): void {
+  private applyEntryFocus(options: FocusRequestOptions, intent?: { replay: boolean }): void {
     if (!this.entryDeclared || this.entryConfig.disabled) return;
     const previous = this.focusOperation;
     const retainedEntry =
@@ -1129,7 +1136,12 @@ class FocusModuleImpl extends ModuleBase {
       if (!current()) return;
       if (!resolved) {
         if (retainedEntry) {
-          this.clearPendingFocus();
+          // Only a replay preserves its intent across the temporary
+          // no-target gap before a replacement commits. An explicit newer
+          // request whose policy result is no-target ends the retained
+          // intent instead of reviving it later.
+          if (intent?.replay) this.pendingFocusRequest = { kind: 'entry', options };
+          else this.clearPendingFocus();
           this.focusOperation = undefined;
         } else restorePrevious();
         return;
@@ -1138,6 +1150,7 @@ class FocusModuleImpl extends ModuleBase {
       this.clearPendingFocus();
       this.focusApplicationVersion += 1;
       const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options, 'entry');
+      if (current() && applied !== false) this.entryAcquisitionVersion += 1;
       if (current() && applied === false) this.pendingFocusRequest = { kind: 'entry', options };
     } catch (error) {
       if (current() && !operation.admitted) restorePrevious();
@@ -1264,14 +1277,20 @@ class FocusModuleImpl extends ModuleBase {
       this.cancelFocusOperation('target');
       if (this.pendingFocusRequest?.kind === 'target') this.clearPendingFocus();
     }
-    const operation = this.focusOperation;
+    const acquisition = this.entryAcquisitionVersion;
     const epoch = this.focusFactsEpoch;
     this.setFocusState(this.focusableOwned, this.focusableDeclared && !disabled, reason, {
       defaultOnly: this.sys?.execPhase?.() === 'setup',
     });
     // State observers can re-enable and acquire before this transition resumes.
     if (this.focusableConfig !== config) return;
-    if (disabled && operation === this.focusOperation && epoch === this.focusFactsEpoch) {
+    // A rejected replacement entry owns its pending intent, not the old
+    // physical focus. Only successful entry acquisition protects that focus.
+    if (
+      disabled &&
+      acquisition === this.entryAcquisitionVersion &&
+      epoch === this.focusFactsEpoch
+    ) {
       this.blurTarget();
     }
     if (this.focusableConfig !== config) return;

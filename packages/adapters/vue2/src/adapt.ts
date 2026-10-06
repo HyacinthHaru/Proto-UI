@@ -801,6 +801,9 @@ function initSession<Props extends PropsBaseType>(
     },
     onFocusAcquired: () => {
       state.focusTargetRetryCount = 0;
+      // Completion retires queued work for this intent in the current view.
+      focusRetryGeneration += 1;
+      state.focusTargetRetryScheduled = false;
       releaseRequestedTargetReady?.();
       releaseRequestedTargetReady = undefined;
     },

@@ -501,3 +501,65 @@ it.each([
     }
   }
 );
+
+it.each([
+  'replay gap',
+  'explicit no target',
+  'disable',
+  'blur',
+  'terminal',
+  'new resolved request',
+] as const)(
+  'distinguishes a retained replay gap from a newer cancellation boundary: %s',
+  async (boundary) => {
+    const f = await fixture(true);
+    try {
+      f.entry.focus({ reason: 'keyboard', preventScroll: true });
+      f.first.remove();
+      f.ready();
+      if (boundary === 'explicit no target') f.entry.focus({ reason: 'pointer' });
+      else if (boundary === 'disable') {
+        f.entry.setDisabled(true);
+        f.entry.setDisabled(false);
+      } else if (boundary === 'blur') f.focusable!.blur();
+      else if (boundary === 'terminal') await f.session.dispose();
+      const replacement = document.createElement('button');
+      f.initialRoot.append(replacement);
+      if (boundary === 'new resolved request')
+        f.entry.focus({ reason: 'pointer', preventScroll: false });
+      f.setAccept(true);
+      f.ready();
+      f.ready();
+      expect(f.applied).toEqual(
+        boundary === 'replay gap' || boundary === 'new resolved request'
+          ? [
+              {
+                target: replacement,
+                options:
+                  boundary === 'replay gap'
+                    ? { reason: 'keyboard', preventScroll: true }
+                    : { reason: 'pointer', preventScroll: false },
+              },
+            ]
+          : []
+      );
+    } finally {
+      await f.cleanup();
+    }
+  }
+);
+
+it('a first explicit no-target entry does not acquire a future descendant', async () => {
+  const f = await fixture();
+  try {
+    f.first.remove();
+    f.entry.focus();
+    const replacement = document.createElement('button');
+    f.initialRoot.append(replacement);
+    f.setAccept(true);
+    f.ready();
+    expect(f.applied).toEqual([]);
+  } finally {
+    await f.cleanup();
+  }
+});
