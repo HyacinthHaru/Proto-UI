@@ -41,7 +41,7 @@ import {
   resolveProjectionThemeSurfaceStyle,
   watchProjectionThemeSurfaceStyle,
 } from '../PrototypePreviewer/projection-theme';
-import { AdapterIds, isRuntimeId, type RuntimeId } from '../PrototypePreviewer/runtimes/registry';
+import { AdapterIds, isRuntimeId, type RuntimeId } from '../PrototypePreviewer/runtimes/ids';
 
 const LABELS: Record<RuntimeId, string> = {
   wc: 'Web Components',

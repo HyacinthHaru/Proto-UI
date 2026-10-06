@@ -42,6 +42,7 @@ import {
   setElementProps,
   unbindController,
 } from './props';
+import { createOwnedVisualSurface } from './visual-surface';
 import { SlotProjector } from './slot-projector';
 import { createOwnedTwTokenApplier } from './feedback-style';
 import { installDebugHooks, removeDebugHooks } from './debug/hooks';
@@ -63,6 +64,12 @@ import {
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
 import { createWebEffectsPort } from './runtime/effects-port';
+import { getExperimentalVisualConsumer } from './runtime/experimental-visual-consumer';
+import {
+  OWNED_MATERIAL_ID,
+  createOwnedMaterialBinding,
+} from '@proto.ui/module-feedback/internal/owned-slot';
+import { createOpaqueMaterialVisualSink } from './material/owned-texture-sink';
 import {
   createWebComponentModules,
   createWebComponentOwnerModules,
@@ -552,6 +559,20 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
               router,
               rawPropsSource,
               effectsPort: createWebEffectsPort(applier),
+              materialBindingFactory: proto.modules?.some(
+                (declaration) => declaration.id === OWNED_MATERIAL_ID
+              )
+                ? createOwnedMaterialBinding
+                : undefined,
+              finalStyleSink:
+                getExperimentalVisualConsumer(proto)?.(
+                  thisEl,
+                  applier,
+                  createOwnedVisualSurface(thisEl, thisRoot)
+                ) ??
+                (proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
+                  ? createOpaqueMaterialVisualSink(thisEl, applier)
+                  : undefined),
               getMeta,
               colorSchemeSource,
               preferenceSource,
@@ -724,6 +745,11 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
     private [NOTIFY_FOCUS_TARGET_READY](): void {
       for (const listener of Array.from(this._focusTargetReadyListeners)) listener();
+    }
+
+    adoptedCallback() {
+      // A retained view must reproject against its current document and host capabilities.
+      this._controller?.update();
     }
 
     disconnectedCallback() {
