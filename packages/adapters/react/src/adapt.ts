@@ -600,21 +600,56 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           overlayLayerScheduler,
         });
 
-        const hostSession = ownerRef.current!.attachView({
-          modules,
-          disposeView,
-          createSession: (wiring) => createHostSession(wiring, 'eager'),
-        });
+        const owner = ownerRef.current!;
+        const initialSession = !owner.session;
+        try {
+          const hostSession = owner.attachView({
+            modules,
+            disposeView,
+            // The optional no-Context runtime constructs its first session
+            // here, before its lifetime cleanup effect has mounted. Retain the
+            // session before mount can run author render/commit callbacks.
+            createSession: (wiring) => {
+              try {
+                return createHostSession(wiring, 'manual');
+              } catch (error) {
+                // A partially constructed Runtime has not returned its dispose
+                // handle. Revoke the caps already wired into it before view
+                // invalidation can call those abandoned subscriptions again.
+                try {
+                  wiring.afterUnmount();
+                } catch {
+                  // Preserve the construction error through best-effort release.
+                }
+                throw error;
+              }
+            },
+          });
+          if (initialSession) void hostSession.mount();
 
-        hostSessionRef.current = hostSession;
-        controllerRef.current = hostSession.controller as RuntimeController;
-        invokeInCallbackScopeRef.current = hostSession.invokeInCallbackScope;
+          hostSessionRef.current = hostSession;
+          controllerRef.current = hostSession.controller as RuntimeController;
+          invokeInCallbackScopeRef.current = hostSession.invokeInCallbackScope;
 
-        const { kernel } = hostSession;
-        if (kernel && kernel.run) {
-          (kernel.run as any).host = { get: () => rootRef.current };
+          const { kernel } = hostSession;
+          if (kernel && kernel.run) {
+            (kernel.run as any).host = { get: () => rootRef.current };
+          }
+          releaseNativeReadiness.publish();
+        } catch (error) {
+          if (initialSession) {
+            // attachView adopts disposeView before creating the session, so
+            // even a factory that has not returned can release its acquired
+            // host resources. Retire only this captured initial owner; existing
+            // owners keep the normal retained/terminal React cleanup path.
+            try {
+              void owner.dispose().catch(() => {});
+            } catch {
+              // Cleanup cannot replace the original author callback failure.
+            }
+          }
+          throw error;
         }
-        releaseNativeReadiness.publish();
       }, [shouldExist]);
 
       // React StrictMode replays layout effects. Detach immediately so view
