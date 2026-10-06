@@ -92,14 +92,19 @@ Add these at **Settings → Secrets and variables → Actions**:
 | `CLOUDFLARE_ACCOUNT_ID` | Account that owns the per-PR Pages projects. |
 | `CLOUDFLARE_API_TOKEN` | Scoped token with Cloudflare Pages project/deployment edit access for that account. Do not use the global API key. |
 | `POPPY_PREVIEW_EDGE_SECRET` | At least 32 random bytes. The deploy workflow stores it as the `POPPY_PREVIEW_EDGE_SECRET` Pages secret; Poppy holds the same value. It is never embedded in `_worker.js`. |
-| `POPPY_PREVIEW_INGEST_SECRET` | A different, at least 32-byte HMAC key shared with Poppy's deployment-ingest endpoint. |
+| `POPPY_PREVIEW_INGEST_SECRET` | A different, at least 32-byte HMAC key shared only with the central Poppy deployment-ingest endpoint. |
+| `POPPY_PREVIEW_FALLBACK_INGEST_SECRET` | An independent, at least 32-byte HMAC key shared only with the configured fallback deployment. Required for all fallback lifecycle reports and artifact uploads; never reuse the central or edge key. |
 
-Generate the two independent Poppy secrets locally, for example:
+The two examples below are separate keys for the central ingest endpoint and the Pages edge gate. If fallback rollout is separately approved, provision a third independent key for `POPPY_PREVIEW_FALLBACK_INGEST_SECRET`; never reuse either of these two values. These commands are setup examples, not evidence that any key has been generated or configured:
 
 ```bash
 openssl rand -base64 48
 openssl rand -base64 48
 ```
+
+The workflow maps the fallback-only Actions secret into the sender's existing `POPPY_PREVIEW_INGEST_SECRET` environment slot only for fallback requests. The pinned dcbot receiver still reads its own `POPPY_PREVIEW_INGEST_SECRET` setting; that setting must contain the independent fallback value, not the central value. The wire signature and pinned receiver source contract are unchanged. Central steps retain the central secret. Missing fallback credentials fail before any signed request; there is no fallback to the central key.
+
+This source change does not provision credentials or enable a deployment. Before configuring a fallback origin, separately provision the new Actions secret and matching fallback receiver setting through the approved secure setup process. Existing Failed/Closed revocations contact a configured fallback even when Cloudflare mode is selected, so those paths require the fallback key too. Keep rollout disabled until configuration and cross-plane verification are accepted. If a central key was previously shared with a separate fallback deployment, assess and authorize any central-key rotation separately; do not infer that rotation or production isolation has happened from this source patch.
 
 The Cloudflare token only needs the account's **Cloudflare Pages: Edit** capability. The close workflow deletes an entire per-PR project, which also removes its deployments, hostname, Worker secret, and build resources.
 

@@ -698,3 +698,46 @@ test('a successful Pages publication updates its Ready card without failure revo
   );
   assert.equal(conditionForStep(job, 'Maintain the sticky PR comment')(steps, vars), true);
 });
+
+function assertIngestKeySeparation(source) {
+  const bindings = [];
+  for (const step of source.split(/(?=^      - name: )/m).slice(1)) {
+    const assignment = step.match(/^          POPPY_PREVIEW_INGEST_SECRET: (.+)$/m);
+    if (!assignment) continue;
+    const fallback = step.includes(
+      'POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}'
+    );
+    const expected = fallback
+      ? '${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}'
+      : '${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}';
+    assert.equal(assignment[1], expected, step.split('\n')[0]);
+    assert.match(
+      step,
+      /run: node integrations\/proto-ui-preview\/scripts\/(report|upload-poppy-artifact)\.mjs/
+    );
+    bindings.push(fallback ? 'fallback' : 'central');
+  }
+  return bindings;
+}
+
+test('every lifecycle and artifact step binds only its own control-plane ingest key', () => {
+  for (const [source, fallbackCount, centralCount] of [
+    [workflow, 7, 6],
+    [close, 1, 1],
+  ]) {
+    const bindings = assertIngestKeySeparation(source);
+    assert.equal(bindings.filter((plane) => plane === 'fallback').length, fallbackCount);
+    assert.equal(bindings.filter((plane) => plane === 'central').length, centralCount);
+  }
+});
+
+test('key-routing controls reject central reuse and a missing-key fallback expression', () => {
+  const fallback = '${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}';
+  for (const replacement of [
+    '${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}',
+    '${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET || secrets.POPPY_PREVIEW_INGEST_SECRET }}',
+  ]) {
+    assert.throws(() => assertIngestKeySeparation(workflow.replace(fallback, replacement)));
+    assert.throws(() => assertIngestKeySeparation(close.replace(fallback, replacement)));
+  }
+});

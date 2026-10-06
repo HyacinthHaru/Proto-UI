@@ -170,7 +170,7 @@ jobs:
         if: always() && steps.resolve.outputs.report == 'true' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != ''
         continue-on-error: true
         env:
-          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
           POPPY_PREVIEW_FALLBACK_MODE: 'true'
           PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
@@ -284,7 +284,7 @@ jobs:
         id: building
         if: steps.size.outcome == 'success'
         env:
-          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
           POPPY_PREVIEW_FALLBACK_MODE: 'true'
           PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
@@ -326,7 +326,7 @@ jobs:
         env:
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
           POPPY_PREVIEW_ARTIFACT: .poppy/preview.tar.gz
-          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}
           PREVIEW_REPOSITORY: ${{ github.repository }}
           PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
           PREVIEW_SHA: ${{ needs.resolve-deploy.outputs.head_sha }}
@@ -361,7 +361,7 @@ jobs:
         id: ready
         if: steps.final-live.outcome == 'success'
         env:
-          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
           POPPY_PREVIEW_FALLBACK_MODE: 'true'
           PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
@@ -429,7 +429,7 @@ jobs:
 
         continue-on-error: true
         env:
-          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
           POPPY_PREVIEW_FALLBACK_MODE: 'true'
           PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
@@ -559,7 +559,7 @@ jobs:
         if: always() && steps.live.outcome == 'success' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != ''
         continue-on-error: true
         env:
-          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
           POPPY_PREVIEW_FALLBACK_MODE: 'true'
           PREVIEW_PR: ${{ needs.resolve-deploy.outputs.pr }}
@@ -890,7 +890,7 @@ jobs:
         env:
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
           POPPY_PREVIEW_FALLBACK_MODE: 'true'
-          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}
           PREVIEW_PR: ${{ steps.resolve.outputs.pr }}
           PREVIEW_SHA: ${{ steps.resolve.outputs.head_sha }}
           PREVIEW_AUTHOR: ${{ steps.resolve.outputs.author_login }}

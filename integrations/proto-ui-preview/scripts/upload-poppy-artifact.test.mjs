@@ -152,3 +152,41 @@ test('rejects a symlink instead of following an unexpected archive path', async 
     await rm(fixture.root, { recursive: true, force: true });
   }
 });
+
+test('fallback archives use the independent mapped key, never the central test key', async () => {
+  const fixture = await uploadFixture();
+  const fallbackKey = 'fallback-test-key-'.repeat(3);
+  const centralKey = 'central-test-key-'.repeat(3);
+  try {
+    const signature = createHmac('sha256', fallbackKey).update(fixture.bytes).digest('hex');
+    const centralSignature = createHmac('sha256', centralKey).update(fixture.bytes).digest('hex');
+    assert.notEqual(signature, centralSignature);
+    const result = await run(
+      { ...validEnv(fixture), POPPY_PREVIEW_INGEST_SECRET: fallbackKey },
+      `
+      globalThis.fetch = async (_input, init) => {
+        if (init.headers['X-Poppy-Signature-256'] !== 'sha256=${signature}' ||
+            init.headers['X-Poppy-Signature-256'] === 'sha256=${centralSignature}') throw new Error('wrong control-plane key');
+        return Response.json({ accepted: true, pr: 596, head_sha: '${sha}', run_id: 123, run_attempt: 2 });
+      };
+    `
+    );
+    assert.equal(result.status, 0, result.stderr);
+  } finally {
+    await rm(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test('an absent mapped fallback key refuses upload before touching the artifact or network', async () => {
+  const result = await run(
+    {
+      POPPY_CONTROL_PLANE: 'https://fallback.example',
+      POPPY_PREVIEW_INGEST_SECRET: '',
+      POPPY_PREVIEW_ARTIFACT: '/nonexistent-fallback-artifact',
+    },
+    `globalThis.fetch = async () => { throw new Error('NETWORK_SHOULD_NOT_BE_REACHED'); };`
+  );
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /INGEST_SECRET is missing or too short/);
+  assert.doesNotMatch(result.stderr, /NETWORK_SHOULD_NOT_BE_REACHED|regular file/);
+});

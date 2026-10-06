@@ -170,3 +170,62 @@ test('a rejected Closed report exhausts retries and exits nonzero', async () => 
   assert.equal(result.stdout.match(/closed-fetch-attempt/g)?.length, 5);
   assert.match(result.stderr + result.stdout, /Poppy ingest returned 503/);
 });
+
+test('separately configured lifecycle keys cannot authenticate the other control plane', async () => {
+  const keys = { central: 'central-test-key-'.repeat(3), fallback: 'fallback-test-key-'.repeat(3) };
+  for (const plane of ['central', 'fallback']) {
+    for (const status of ['building', 'ready', 'failed', 'closed']) {
+      const other = plane === 'central' ? 'fallback' : 'central';
+      const preload = `
+        const { createHmac } = await import('node:crypto');
+        globalThis.fetch = async (input, init) => {
+          if (String(input) !== 'https://${plane}.example/api/preview/deployments') throw new Error('wrong plane');
+          const signature = init.headers['X-Poppy-Signature-256'];
+          const expected = 'sha256=' + createHmac('sha256', ${JSON.stringify(keys[plane])}).update(init.body).digest('hex');
+          const crossPlane = 'sha256=' + createHmac('sha256', ${JSON.stringify(keys[other])}).update(init.body).digest('hex');
+          if (signature !== expected || signature === crossPlane) throw new Error('control-plane keys were conflated');
+          return new Response('', { status: 200 });
+        };
+      `;
+      const result = await run(
+        status,
+        validEnv({
+          POPPY_CONTROL_PLANE: `https://${plane}.example`,
+          POPPY_PREVIEW_INGEST_SECRET: keys[plane],
+          POPPY_PREVIEW_FALLBACK_MODE: plane === 'fallback' ? 'true' : 'false',
+          PREVIEW_ORIGIN:
+            plane === 'fallback'
+              ? 'https://preview.example'
+              : 'https://poppy-proto-ui-pr-596.pages.dev',
+        }),
+        preload
+      );
+      assert.equal(result.code, 0, `${plane}/${status}: ${result.stderr}`);
+    }
+  }
+});
+
+test('a missing mapped fallback key rejects every lifecycle before fetch', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'poppy-report-key-'));
+  try {
+    for (const status of ['building', 'ready', 'failed', 'closed']) {
+      const marker = path.join(root, status);
+      const result = await run(
+        status,
+        validEnv({ POPPY_PREVIEW_INGEST_SECRET: '' }),
+        `
+        const { writeFileSync } = await import('node:fs');
+        globalThis.fetch = async () => {
+          writeFileSync(${JSON.stringify(marker)}, 'network attempted');
+          return new Response('', { status: 200 });
+        };
+      `
+      );
+      assert.notEqual(result.code, 0, status);
+      assert.match(result.stderr, /INGEST_SECRET is missing or too short/);
+      await assert.rejects(access(marker), { code: 'ENOENT' });
+    }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});

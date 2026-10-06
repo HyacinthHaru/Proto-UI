@@ -79,7 +79,7 @@ jobs:
         if: always() && steps.live.outputs.cleanup == 'true' && vars.POPPY_PREVIEW_FALLBACK_ORIGIN != ''
         continue-on-error: true
         env:
-          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_INGEST_SECRET }}
+          POPPY_PREVIEW_INGEST_SECRET: ${{ secrets.POPPY_PREVIEW_FALLBACK_INGEST_SECRET }}
           POPPY_CONTROL_PLANE: ${{ vars.POPPY_PREVIEW_FALLBACK_ORIGIN }}
           POPPY_PREVIEW_FALLBACK_MODE: 'true'
           PREVIEW_PR: ${{ github.event.pull_request.number }}
