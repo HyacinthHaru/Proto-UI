@@ -863,6 +863,30 @@ describe('contrast probe / real Chromium instrument calibration', () => {
     }
   });
 
+  it('withholds border-image ink ratios independently of the fill model', async () => {
+    const frame = await calibrate(
+      `
+      <div style="position:absolute;left:40px;top:40px;width:700px;height:500px;background:white">
+        <div data-pui-root data-demo-ref="image-border" style="border:8px solid black;border-image:linear-gradient(white,white) 1">Border image</div>
+        <div data-pui-root data-demo-ref="color-border" style="border:8px solid black">Solid control</div>
+      </div>
+    `,
+      'border-image-domain'
+    );
+    const image = surface(frame, 'image-border');
+    for (const edge of image.exterior) {
+      expect(edge.innerBorderVsBackground).toBeNull();
+      expect(edge.opaqueBorderVsPixel).toBeNull();
+      expect(edge.point?.rgb).toEqual([255, 255, 255]);
+      expect(edge.opaqueFillVsPixel).toBe(1);
+      expect(image.borders[edge.side].limits).toContain('unsupported-border-image');
+    }
+    for (const edge of surface(frame, 'color-border').exterior) {
+      expect(edge.innerBorderVsBackground).toBe(21);
+      expect(edge.opaqueBorderVsPixel).toBe(21);
+    }
+  });
+
   it('withholds rounded perimeter metrics without discarding sampled pixels or text', async () => {
     const frame = await calibrate(
       `

@@ -215,6 +215,11 @@ const stateProperties = [
   'border-bottom-style',
   'border-left-style',
   'border-radius',
+  'border-image-source',
+  'border-image-slice',
+  'border-image-width',
+  'border-image-outset',
+  'border-image-repeat',
   'outline-color',
   'outline-width',
   'outline-style',
@@ -1091,7 +1096,11 @@ const collectContrastFrameInScope = async (
           style: borderStyle,
           // Source ink is not continuous adjacency for dash gaps, double
           // stripes or other unsupported styles. Keep this limit side-local.
-          limits: [...ink.limits, ...(borderStyle === 'solid' ? [] : ['unsupported-border-style'])],
+          limits: [
+            ...ink.limits,
+            ...(borderStyle === 'solid' ? [] : ['unsupported-border-style']),
+            ...(style.borderImageSource !== 'none' ? ['unsupported-border-image'] : []),
+          ],
         };
       }
       const nodes: Node[] = [];
@@ -1446,6 +1455,7 @@ const collectContrastFrameInScope = async (
             rectangularPerimeter &&
             inkUnmodified &&
             borders[side].style === 'solid' &&
+            !borders[side].limits.length &&
             borders[side].alpha === 1 &&
             borders[side].color &&
             borders[side].width > 0 &&
@@ -1457,6 +1467,7 @@ const collectContrastFrameInScope = async (
             rectangularPerimeter &&
             inkUnmodified &&
             borders[side].style === 'solid' &&
+            !borders[side].limits.length &&
             borders[side].alpha === 1 &&
             borders[side].color &&
             borders[side].width > 0 &&

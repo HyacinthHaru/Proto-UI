@@ -43,6 +43,7 @@ const borderRatioFixture = async () => {
     (Math.max(luminance(a), luminance(b)) + 0.05) / (Math.min(luminance(a), luminance(b)) + 0.05);
   return ({
     styles = {},
+    borderImageSource = 'none',
     width = 4,
     alpha = 1,
     inactive = false,
@@ -53,6 +54,7 @@ const borderRatioFixture = async () => {
     const ink = () => ({ rgba: color, alpha, limits: [] });
     const borders = readBorders(
       {
+        borderImageSource,
         getPropertyValue: (property) => {
           const [, side, kind] = property.split('-');
           return kind === 'style'
@@ -141,6 +143,22 @@ test('border source ratios retain solid low/high contrasts and existing withhold
           ? null
           : 1
       );
+    }
+  }
+});
+
+test('border images withhold only border metrics while retaining independent fill evidence', async () => {
+  const measure = await borderRatioFixture();
+  for (const borderImageSource of [
+    'linear-gradient(white, white)',
+    'url("data:image/svg+xml,<svg/>")',
+  ]) {
+    const result = measure({ borderImageSource });
+    for (const edge of result.exterior) {
+      assert.equal(edge.innerBorderVsBackground, null);
+      assert.equal(edge.opaqueBorderVsPixel, null);
+      assert.equal(edge.opaqueFillVsPixel, 1);
+      assert.ok(result.borders[edge.side].limits.includes('unsupported-border-image'));
     }
   }
 });

@@ -36,7 +36,7 @@ vi.mock('../src/components/PrototypePreviewer/runtimes/vue2-runtime', async (ori
   return { ...current, loadVue2: async () => require('vue') };
 });
 
-type Family = 'tooltip' | 'dropdown-menu' | 'select' | 'dialog';
+type Family = 'tooltip' | 'dropdown-menu' | 'select' | 'dialog' | 'hover-card';
 type Runtime = 'wc' | 'react' | 'vue' | 'vue2';
 // Playwright serializes these exact callback bodies without their Node closure.
 const browserBefore = (input: unknown) =>
@@ -183,7 +183,8 @@ async function preview(family: Family, runtime: Runtime = 'wc') {
   expect(trigger).not.toBeNull();
   document.body.append(previousFocus);
   previousFocus.focus();
-  if (family === 'tooltip') trigger.dispatchEvent(new Event('pointerenter'));
+  if (family === 'tooltip' || family === 'hover-card')
+    trigger.dispatchEvent(new Event('pointerenter'));
   else {
     // Happy DOM click() omits native pointer-down focus. Dialog's existing
     // pointer journey establishes this Trigger as the pre-open focus owner.
@@ -201,9 +202,9 @@ async function preview(family: Family, runtime: Runtime = 'wc') {
         family === 'tooltip'
           ? trigger.getAttribute('aria-describedby')
           : trigger.getAttribute('aria-controls');
-      expect(id).toBeTruthy();
+      if (family !== 'hover-card') expect(id).toBeTruthy();
       popup = document.querySelector<HTMLElement>(
-        `[id="${id}"][data-projection-prototype="${contentName}"][data-projection-owner="${trigger.dataset.projectionOwner}"]`
+        `${family === 'hover-card' ? '' : `[id="${id}"]`}[data-projection-prototype="${contentName}"][data-projection-owner="${trigger.dataset.projectionOwner}"]`
       )!;
       expect(popup?.getAttribute('data-projection-prototype')).toBe(contentName);
       expect(
@@ -212,7 +213,7 @@ async function preview(family: Family, runtime: Runtime = 'wc') {
     },
     { timeout: 2000 }
   );
-  if (family !== 'tooltip')
+  if (family !== 'tooltip' && family !== 'hover-card')
     await vi.waitFor(() => expect(popup.contains(document.activeElement)).toBe(true));
   const owner = trigger.dataset.projectionOwner;
   const generation = trigger.dataset.projectionGeneration;
@@ -237,6 +238,9 @@ async function preview(family: Family, runtime: Runtime = 'wc') {
           },
           { timeout: suppressEscape ? 100 : 1000, interval: 10 }
         );
+      },
+      waitForSettled: async () => {
+        await new Promise<void>((resolve) => setTimeout(resolve, 0));
       },
       waitForFocus: async () => {
         await vi.waitFor(() => expect(document.activeElement).toBe(trigger));
@@ -421,3 +425,60 @@ for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
     }
   });
 }
+
+for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
+  it(`hover-card/${runtime}: existing Escape retains the same painted popup and focus`, async () => {
+    const restore = measurements();
+    const mounted = await preview('hover-card', runtime);
+    try {
+      const result = await mounted.run();
+      expect(result.achieved).toBe(true);
+      expect(result.after.sameOwnedPopup).toBe(true);
+      expect(result.after.closed).toBe(false);
+      expect(result.after.focusPreserved).toBe(true);
+      expect(document.activeElement).toBe(mounted.previousFocus);
+    } finally {
+      await mounted.destroy();
+      restore();
+    }
+  });
+  it(`hover-card/${runtime}: rejects a dismissal that pointer leave would otherwise mask`, async () => {
+    const restore = measurements();
+    const mounted = await preview('hover-card', runtime);
+    try {
+      // Controlled paint fault after actual Escape; never change product policy.
+      await expect(
+        mounted.run(false, () => {
+          mounted.popup.style.display = 'none';
+        })
+      ).rejects.toThrow('Escape changed the exact painted owned popup or focus');
+      expect(mounted.record.achieved).toBe(false);
+    } finally {
+      await mounted.destroy();
+      restore();
+    }
+  });
+}
+it('hover-card: rejects same-ID replacement and unintended focus restoration', async () => {
+  for (const mutation of ['replacement', 'focus'] as const) {
+    const restore = measurements();
+    const mounted = await preview('hover-card');
+    let clone: HTMLElement | undefined;
+    try {
+      await expect(
+        mounted.run(false, () => {
+          if (mutation === 'focus') mounted.trigger.focus();
+          else {
+            clone = document.createElement('div');
+            for (const { name, value } of mounted.popup.attributes) clone.setAttribute(name, value);
+            mounted.popup.replaceWith(clone);
+          }
+        })
+      ).rejects.toThrow('Escape changed the exact painted owned popup or focus');
+    } finally {
+      clone?.remove();
+      await mounted.destroy();
+      restore();
+    }
+  }
+});

@@ -2069,3 +2069,125 @@ for (const outcome of ['restored', 'focus-refused', 'changed-lease'] as const) {
     ]);
   });
 }
+
+for (const outcome of ['retained', 'dismissed', 'changed-lease'] as const) {
+  it(`Hover Card actual Escape caller ${outcome} is checked before reset`, async () => {
+    const calls: string[] = [];
+    const subject = {};
+    const trigger = { dispose: async () => {} };
+    const popup = {
+      dispose: async () => {},
+      waitForElementState: async () => {
+        throw new Error('Hover Card must not wait for dismissal');
+      },
+    };
+    const observation = { achieved: true, family: 'hover-card' };
+    const baseline = {
+      evaluate: async (fn: Function) => fn({ observation }),
+      dispose: async () => {},
+    };
+    let leases = 0;
+    const page = {
+      keyboard: {
+        press: async (key: string) => {
+          calls.push(key);
+        },
+      },
+      mouse: {
+        move: async () => {
+          calls.push('pointer-reset');
+        },
+      },
+      evaluate: async (fn: Function, value: unknown) => {
+        if (fn === readContrastPopupEscapeAfter) {
+          calls.push('retention-check');
+          return {
+            sameOwnedPopup: true,
+            closed: outcome === 'dismissed',
+            visibility: {
+              visible: outcome !== 'dismissed',
+              classification: 'source-model-visible',
+            },
+            focusPreserved: true,
+          };
+        }
+        expect(value).toBe(subject);
+        return {
+          achieved: true,
+          owner: 'current',
+          generation: ++leases === 2 && outcome === 'changed-lease' ? '2' : '1',
+        };
+      },
+      evaluateHandle: async (fn: Function, input: Record<string, unknown>) => {
+        expect(fn).toBe(readContrastPopupEscapeBefore);
+        expect(input).toEqual({
+          family: 'hover-card',
+          trigger,
+          popup,
+          owner: 'current',
+          generation: '1',
+        });
+        return baseline;
+      },
+    };
+    const target = {
+      elementHandle: async () => trigger,
+      getAttribute: async () => null,
+      focus: async () => {
+        calls.push('focus-reset');
+      },
+    };
+    const owned = async (_page: unknown, prototype: string) => {
+      expect(prototype).toBe('brutalist-hover-card-content');
+      return { count: async () => 1, elementHandle: async () => popup };
+    };
+    const audited = new Function(
+      'caseSubject',
+      'tooltipPortal',
+      'owned',
+      'readContrastPopupEscapeBefore',
+      'readContrastPopupEscapeAfter',
+      'establishContrastPopupEscapeBaseline',
+      'settle',
+      javascript(`${declaration('auditedPopupEscape')};return auditedPopupEscape;`)
+    )(
+      () => subject,
+      () => {
+        throw new Error('Wrong Tooltip path');
+      },
+      owned,
+      readContrastPopupEscapeBefore,
+      readContrastPopupEscapeAfter,
+      establishContrastPopupEscapeBaseline,
+      async () => {
+        calls.push('settle-input-effects');
+      }
+    );
+    const auditCase = item('wc', 'hover-card') as AuditCase & {
+      escapeTransition?: Record<string, unknown>;
+    };
+    const run = escapeRunnerBlock()(page, auditCase, target, audited, owned);
+    if (outcome === 'retained') {
+      await run();
+      expect(auditCase.escapeTransition?.achieved).toBe(true);
+      expect(auditCase.escapeTransition?.criterion).toContain('P-BASE-HOVER-CARD-CONTENT-OVERLAY');
+      expect(calls).toEqual([
+        'Escape',
+        'settle-input-effects',
+        'retention-check',
+        'pointer-reset',
+        'focus-reset',
+        'Tab',
+      ]);
+    } else {
+      await expect(run()).rejects.toThrow(
+        outcome === 'dismissed'
+          ? 'Escape changed the exact painted owned popup or focus'
+          : 'subject changed during Escape'
+      );
+      expect(auditCase.escapeTransition?.achieved).toBe(false);
+      expect(calls).not.toContain('pointer-reset');
+      expect(calls).not.toContain('focus-reset');
+    }
+  });
+}

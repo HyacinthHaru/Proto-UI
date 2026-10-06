@@ -266,6 +266,9 @@ const report: Record<string, unknown> = {
     'Portable Transition entered state is not directly exposed on every runtime DOM; modal entry observations use owned visibility and completed authored CSS animations, not an invented transition attribute.',
     'Spinner snapshots request and observe the real reduced-motion preference only for Spinner cases. Normal-motion rotation/timing and parent composition interactions remain uncovered; no Spinner hover or keyboard-focus claim.',
     'Tooltip hover/focus observations target the first authored Root only. The second Root is structural anatomy coverage, not a sibling warm-window timing or Group handoff journey; dedicated Tooltip semantic/browser evidence remains separate.',
+    'Dialog mask hit ownership is a paint-layer observation, not outside-press dismissal coverage under draft P-BASE-DIALOG-CONTENT-DISMISS. A dedicated native outside-press/focus-restoration journey remains follow-up.',
+    'Button captures pointer release and keyboard focus only; native Space/Enter command activation under draft P-BASE-BUTTON-KEYBOARD-ACTIVATION remains dedicated semantic/browser follow-up, not an achieved target here.',
+    'Hover Card Trigger hover/focus and existing Escape retention do not exercise Trigger-to-Content pointer bridging under draft P-BASE-HOVER-CARD-CONTENT-HOVER-BRIDGE; that native journey remains follow-up.',
     'Hover Card focus-open observes the current one-Root zero-delay demo against draft P-BASE-HOVER-CARD-INTERACTION-INTENT after an independently closed non-hover baseline; not protocol conformance.',
   ],
   authority: [
@@ -1036,16 +1039,18 @@ async function auditedPopupEscape(page: Page, item: Case, target: Locator): Prom
     const popupLocator =
       family === 'tooltip'
         ? await tooltipPortal(page, target)
-        : (
-            await owned(
-              page,
-              family === 'dialog'
-                ? 'brutalist-dialog-content'
-                : family === 'select'
-                  ? 'brutalist-select-content'
-                  : 'brutalist-dropdown-content'
-            )
-          ).and(page.locator(`[id=${JSON.stringify(controlledId)}]`));
+        : family === 'hover-card'
+          ? await owned(page, 'brutalist-hover-card-content')
+          : (
+              await owned(
+                page,
+                family === 'dialog'
+                  ? 'brutalist-dialog-content'
+                  : family === 'select'
+                    ? 'brutalist-select-content'
+                    : 'brutalist-dropdown-content'
+              )
+            ).and(page.locator(`[id=${JSON.stringify(controlledId)}]`));
     if ((await popupLocator.count()) !== 1)
       throw new Error(`${family}: Escape requires exactly one controlled owned popup.`);
     popup = await popupLocator.elementHandle();
@@ -1059,15 +1064,17 @@ async function auditedPopupEscape(page: Page, item: Case, target: Locator): Prom
     });
     const record = (item.escapeTransition = {
       basis:
-        'Existing Escape input closes the same physical owned popup before any pointer/focus reset; Tooltip preserves prior focus, Dropdown/Select/Dialog restore Trigger, Select preserves observed selection.',
+        'Existing Escape input is observed before any pointer/focus reset: Hover Card retains its same painted owned popup and focus; Tooltip closes while preserving prior focus; Dropdown/Select/Dialog close and restore Trigger; Select preserves observed selection.',
       criterion:
-        family === 'tooltip'
-          ? 'P-BASE-TOOLTIP-CONTENT-OVERLAY / ESCAPE (draft)'
-          : family === 'select'
-            ? 'P-BASE-SELECT-CONTENT-DISMISS / P-BASE-SELECT-SELECTION-INVARIANT (draft)'
-            : family === 'dialog'
-              ? 'P-BASE-DIALOG-CONTENT-FOCUS / DISMISS (draft)'
-              : 'P-BASE-DROPDOWN-MENU-CONTENT-DISMISS (draft)',
+        family === 'hover-card'
+          ? 'P-BASE-HOVER-CARD-CONTENT-OVERLAY (draft)'
+          : family === 'tooltip'
+            ? 'P-BASE-TOOLTIP-CONTENT-OVERLAY / ESCAPE (draft)'
+            : family === 'select'
+              ? 'P-BASE-SELECT-CONTENT-DISMISS / P-BASE-SELECT-SELECTION-INVARIANT (draft)'
+              : family === 'dialog'
+                ? 'P-BASE-DIALOG-CONTENT-FOCUS / DISMISS (draft)'
+                : 'P-BASE-DROPDOWN-MENU-CONTENT-DISMISS (draft)',
     });
     await establishContrastPopupEscapeBaseline({
       family,
@@ -1075,6 +1082,7 @@ async function auditedPopupEscape(page: Page, item: Case, target: Locator): Prom
       readBefore: () => baseline!.evaluate((value) => value.observation),
       pressEscape: () => page.keyboard.press('Escape'),
       waitForClosed: () => popup!.waitForElementState('hidden'),
+      waitForSettled: () => settle(page),
       waitForFocus: () =>
         page.waitForFunction((value) => document.activeElement === value.trigger, baseline!),
       readAfter: async () => {
@@ -1987,7 +1995,7 @@ try {
       // Dismiss open menus before testing the trigger's native keyboard route.
       // No pointer/focus reset may mask this exact Escape transition.
       phase = 'escape-attribution';
-      if (['tooltip', 'dropdown-menu', 'select', 'dialog'].includes(family))
+      if (['tooltip', 'dropdown-menu', 'select', 'dialog', 'hover-card'].includes(family))
         await auditedPopupEscape(page, item, target);
       else await page.keyboard.press('Escape');
       await page.mouse.move(0, 0);

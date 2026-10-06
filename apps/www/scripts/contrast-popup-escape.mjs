@@ -7,12 +7,31 @@ export function readContrastPopupEscapeBefore({ family, trigger, popup, owner, g
     'dropdown-menu': 'brutalist-dropdown-content',
     select: 'brutalist-select-content',
     dialog: 'brutalist-dialog-content',
+    'hover-card': 'brutalist-hover-card-content',
   }[family];
   const visibility = globalThis.puiContrastProbe.readContrastPaintedVisibility(popup);
+  // The authored Hover Card has one Root and no aria-controls relationship.
+  // Bind its sole content and Trigger to that exact current recipe ownership.
+  const hoverRoots =
+    family === 'hover-card'
+      ? [
+          ...document.querySelectorAll(
+            '[data-pui-root][data-projection-prototype="brutalist-hover-card-root"]'
+          ),
+        ].filter(
+          (element) =>
+            element.getAttribute('data-projection-owner') === owner &&
+            element.getAttribute('data-projection-generation') === generation
+        )
+      : [];
   const related =
-    family === 'tooltip'
-      ? (trigger.getAttribute('aria-describedby') ?? '').split(/\s+/).includes(popup.id)
-      : trigger.getAttribute('aria-controls') === popup.id;
+    family === 'hover-card'
+      ? hoverRoots.length === 1 &&
+        hoverRoots[0].contains(trigger) &&
+        trigger.getAttribute('data-projection-prototype') === 'brutalist-hover-card-trigger'
+      : family === 'tooltip'
+        ? (trigger.getAttribute('aria-describedby') ?? '').split(/\s+/).includes(popup.id)
+        : trigger.getAttribute('aria-controls') === popup.id;
   const owned =
     !!owner &&
     !!generation &&
@@ -35,7 +54,7 @@ export function readContrastPopupEscapeBefore({ family, trigger, popup, owner, g
       !!contentPrototype &&
       trigger.isConnected &&
       popup.isConnected &&
-      !!popup.id &&
+      (family === 'hover-card' || !!popup.id) &&
       related &&
       owned &&
       popup.getAttribute('data-projection-prototype') === contentPrototype &&
@@ -68,11 +87,18 @@ export function readContrastPopupEscapeBefore({ family, trigger, popup, owner, g
         }
       : null,
   };
-  return { trigger, popup, activeElement: document.activeElement, options, observation };
+  return {
+    trigger,
+    popup,
+    hoverRoot: hoverRoots[0] ?? null,
+    activeElement: document.activeElement,
+    options,
+    observation,
+  };
 }
 
 export function readContrastPopupEscapeAfter(baseline) {
-  const { trigger, popup, activeElement, options, observation: before } = baseline;
+  const { trigger, popup, hoverRoot, activeElement, options, observation: before } = baseline;
   const visibility = globalThis.puiContrastProbe.readContrastPaintedVisibility(popup);
   const matching = [...document.querySelectorAll('[data-pui-root]')].filter(
     (element) =>
@@ -92,9 +118,17 @@ export function readContrastPopupEscapeAfter(baseline) {
             element.getAttribute('data-projection-generation') === before.generation
         ) &&
         popup.getAttribute('data-projection-prototype') === before.contentPrototype)) &&
-    matching.every(
-      (element) => !globalThis.puiContrastProbe.readContrastPaintedVisibility(element).visible
-    );
+    (before.family === 'hover-card'
+      ? matching.length === 1 &&
+        matching[0] === popup &&
+        hoverRoot?.isConnected &&
+        hoverRoot.contains(trigger) &&
+        hoverRoot.getAttribute('data-projection-owner') === before.owner &&
+        hoverRoot.getAttribute('data-projection-generation') === before.generation &&
+        hoverRoot.getAttribute('data-projection-prototype') === 'brutalist-hover-card-root'
+      : matching.every(
+          (element) => !globalThis.puiContrastProbe.readContrastPaintedVisibility(element).visible
+        ));
   const selection = options.map(({ element }) => ({
     id: element.id,
     text: element.textContent?.trim() ?? '',
@@ -143,6 +177,11 @@ export async function establishContrastPopupEscapeBaseline({
   pressEscape,
   waitForClosed,
   waitForFocus,
+  waitForSettled = /** @type {() => Promise<void>} */ (
+    async () => {
+      throw new Error('Hover Card Escape requires input settling.');
+    }
+  ),
   readAfter,
   record,
 }) {
@@ -152,6 +191,22 @@ export async function establishContrastPopupEscapeBaseline({
   if (!record.before.achieved || record.before.family !== family)
     throw new Error(`${family}: Escape baseline lacks the exact visible owned popup.`);
   await pressEscape();
+  if (family === 'hover-card') {
+    record.stage = 'waiting-escape-retention';
+    await waitForSettled();
+    record.after = await readAfter();
+    record.stage = 'after-escape';
+    const after = record.after;
+    record.achieved =
+      after.sameOwnedPopup === true &&
+      after.closed === false &&
+      after.visibility.visible === true &&
+      after.visibility.classification === 'source-model-visible' &&
+      after.focusPreserved === true;
+    if (!record.achieved)
+      throw new Error('hover-card: Escape changed the exact painted owned popup or focus.');
+    return record;
+  }
   record.stage = 'waiting-escape-close';
   await waitForClosed();
   if (family !== 'tooltip') {
