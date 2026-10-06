@@ -1,3 +1,4 @@
+import * as tree from '../src/platform/instance-tree';
 import { asFocusable, asFocusEntry } from '@proto.ui/hooks';
 import { expect, it, vi } from 'vitest';
 import { definePrototype } from '@proto.ui/core';
@@ -6,7 +7,7 @@ import { focusIntentRetryConformance } from '../../base/test/fixtures/focus-inte
 const flush = async () => {
   for (let i = 0; i < 8; i++) await Promise.resolve();
 };
-focusIntentRetryConformance('wc', async (proto) => {
+focusIntentRetryConformance('wc', tree, async (proto) => {
   AdaptToWebComponent(proto);
   const root = document.createElement(proto.name) as HTMLElement & { getExposes(): any };
   document.body.append(root);

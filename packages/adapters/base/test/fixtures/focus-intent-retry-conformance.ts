@@ -14,6 +14,10 @@ type Mounted = {
 // bounded same-intent replay and a fresh budget for a newer explicit intent.
 export function focusIntentRetryConformance(
   adapter: string,
+  tree: {
+    getLogicalEventRouteSurfaceForTarget(target: HTMLElement): any;
+    markProtoInstance(target: HTMLElement, proto: Prototype<any>, token: any): any;
+  },
   mount: (proto: Prototype<any, any>) => Promise<Mounted>
 ) {
   describe(`${adapter}: stable focus intent retry identity`, () => {
@@ -103,6 +107,101 @@ export function focusIntentRetryConformance(
             });
             await flushFrames();
             expect(attempts).toEqual([false, false, false, false, false]);
+          } finally {
+            focus.mockRestore();
+            raf.mockRestore();
+            await mounted.unmount();
+          }
+        }
+      );
+    }
+
+    for (const kind of ['entry', 'native', 'programmatic'] as const) {
+      it.each(['omitted', 'reused'] as const)(
+        `retires queued ${kind} frames when surface readiness succeeds with %s options`,
+        async (optionsMode) => {
+          const options =
+            optionsMode === 'reused' ? Object.freeze({ preventScroll: true }) : undefined;
+          const proto = definePrototype({
+            name: `retry-${adapter}-completed-${kind}-${optionsMode}`,
+            setup(def) {
+              const target = asFocusable();
+              const entry = asFocusEntry();
+              entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+              def.expose.method('request', () => {
+                if (kind === 'entry') entry.focus(options);
+                else if (kind === 'native') target.focusSelf(options);
+                else target.focus(options);
+              });
+              return (r) => r.el('button', 'Completed request target');
+            },
+          });
+          const mounted = await mount(proto);
+          const currentTarget = () =>
+            kind === 'entry' ? mounted.root.querySelector('button')! : mounted.root;
+          const frames: FrameRequestCallback[] = [];
+          const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+            frames.push(callback);
+            return frames.length;
+          });
+          const nativeFocus = HTMLElement.prototype.focus;
+          let accept = false;
+          const attempts: { accepted: boolean; options: FocusOptions | undefined }[] = [];
+          const focus = vi.spyOn(HTMLElement.prototype, 'focus').mockImplementation(function (
+            this: HTMLElement,
+            forwarded?: FocusOptions
+          ) {
+            if (this === currentTarget()) {
+              attempts.push({ accepted: accept, options: forwarded });
+              if (!accept) return;
+            }
+            nativeFocus.call(this, forwarded);
+          });
+          const flushFrames = async () => {
+            for (let round = 0; frames.length && round < 12; round++) {
+              const callbacks = frames.splice(0);
+              await mounted.act(() => callbacks.forEach((callback) => callback(performance.now())));
+            }
+            expect(frames).toHaveLength(0);
+          };
+          try {
+            await mounted.act(() => mounted.getExposes().request());
+            expect(attempts).toEqual([{ accepted: false, options }]);
+            expect(frames.length).toBeGreaterThan(0);
+            expect(document.activeElement).not.toBe(currentTarget());
+
+            // Publish one actual platform surface-readiness notification before
+            // the already queued two-frame layout retry is delivered. Avoid
+            // framework commits that emit extra, unrelated readiness signals.
+            accept = true;
+            await mounted.act(() => {
+              const root = mounted.root;
+              const token = tree.getLogicalEventRouteSurfaceForTarget(root);
+              expect(token).not.toBeNull();
+              tree.markProtoInstance(root, proto, token);
+            });
+            expect(document.activeElement).toBe(currentTarget());
+            expect(attempts.find((attempt) => attempt.accepted)).toEqual({
+              accepted: true,
+              options,
+            });
+            const completedAttempts = attempts.slice();
+            await flushFrames();
+            // Replaying the stale frame would re-project a focused root with
+            // no request options, discarding the completed preventScroll policy.
+            expect(attempts).toEqual(completedAttempts);
+
+            // Completion cancellation must leave a later explicit request with
+            // its own full allowance and the same caller-supplied options.
+            await mounted.act(() => currentTarget().blur());
+            attempts.length = 0;
+            accept = false;
+            await mounted.act(() => mounted.getExposes().request());
+            await flushFrames();
+            expect(attempts).toEqual(
+              Array.from({ length: 4 }, () => ({ accepted: false, options }))
+            );
+            expect(document.activeElement).not.toBe(currentTarget());
           } finally {
             focus.mockRestore();
             raf.mockRestore();

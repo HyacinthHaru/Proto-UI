@@ -1,10 +1,11 @@
+import * as tree from '../src/platform/instance-tree';
 import * as React from 'react';
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createReactAdapter } from '../src';
 import { focusIntentRetryConformance } from '../../base/test/fixtures/focus-intent-retry-conformance';
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
-focusIntentRetryConformance('react', async (proto) => {
+focusIntentRetryConformance('react', tree, async (proto) => {
   const host = document.createElement('div');
   document.body.append(host);
   const root = createRoot(host);
