@@ -46,13 +46,18 @@ function visibleDisclosureOffsets(text) {
     const require = createRequire(import.meta.url);
     markdownTools = {
       fromMarkdown: require('mdast-util-from-markdown').fromMarkdown,
+      gfm: require('micromark-extension-gfm').gfm,
+      gfmFromMarkdown: require('mdast-util-gfm').gfmFromMarkdown,
       toHast: require('mdast-util-to-hast').toHast,
       toHtml: require('hast-util-to-html').toHtml,
       fromHtml: require('hast-util-from-html').fromHtml,
     };
   }
-  const { fromMarkdown, toHast, toHtml, fromHtml } = markdownTools;
-  const ast = fromMarkdown(text);
+  const { fromMarkdown, gfm, gfmFromMarkdown, toHast, toHtml, fromHtml } = markdownTools;
+  const ast = fromMarkdown(text, {
+    extensions: [gfm()],
+    mdastExtensions: [gfmFromMarkdown()],
+  });
   const marker = `pui-dot-disclosure-${randomBytes(16).toString('hex')}-`;
   const candidates = new Map();
   for (const node of ast.children) {
@@ -76,8 +81,22 @@ function visibleDisclosureOffsets(text) {
     { fragment: true }
   );
   const offsets = [];
+  const canonicalCandidate = (node) =>
+    node.type === 'element' &&
+    node.tagName === 'p' &&
+    candidates.get(node.properties?.id)?.kind === 'dot';
+  // Raw HTML can leave text/inline nodes directly under the fragment root.
+  // Inspect that visible flow too, excluding paragraphs validated exactly below.
+  if (
+    disclosureParagraph(
+      textContent({ ...html, children: html.children.filter((node) => !canonicalCandidate(node)) })
+    )
+  )
+    throw new Error('raw HTML text cannot supply or compete with the canonical dot disclosure');
   function inspect(parent) {
     for (const node of parent.children ?? []) {
+      if (node.type === 'text' && disclosureParagraph(node.value))
+        throw new Error('visible text cannot supply or compete with the canonical dot disclosure');
       if (node.type !== 'element' || quotedOrHidden(node)) continue;
       const candidate = candidates.get(node.properties?.id);
       if (
@@ -87,9 +106,11 @@ function visibleDisclosureOffsets(text) {
         throw new Error(
           'dot disclosure cannot substitute or compete with a visible fingerprint receipt'
         );
-      if (candidate?.kind === 'dot' && node.tagName === 'p' && parent === html)
+      if (canonicalCandidate(node) && parent === html) {
         offsets.push(candidate);
-      else if (disclosureParagraph(textContent(node)))
+        continue;
+      }
+      if (disclosureParagraph(textContent(node)))
         throw new Error(
           'nested or raw HTML cannot supply or compete with the canonical dot disclosure'
         );

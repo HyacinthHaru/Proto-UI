@@ -329,6 +329,12 @@ for (const body of [
   '<div><h2>ModelTrace</h2><p>Claimed fingerprint</p></div>',
   '<section><div><p>' + DOT_DISCLOSURE.replaceAll('\n', '<br>') + '</p></div></section>',
   '<div>' + DOT_DISCLOSURE.replaceAll('\n', '<br>') + '</div>',
+  '</div>\nAgent: dot<br>ModelTrace: fake',
+  '</div>\nAgent: <em>dot</em><br>ModelTrace: fake',
+  '</div>\n<p>Ordinary content</p>Agent: dot',
+  '| Agent: dot |\n| --- |\n| ModelTrace: fake |',
+  '| Ordinary header |\n| --- |\n| ModelTrace: fake |',
+  '| Ordinary | Agent: dot |\n| --- | --- |\n| Value | Other |',
 ])
   test(`partial or nested visible identity is rejected: ${body.slice(0, 32)}`, (t) => {
     const f = files(t),
@@ -349,5 +355,24 @@ test('nested explicit examples are retained without becoming a second identity',
   ]) {
     assert.equal(hasDotDisclosure(body), false);
     assertDotDisclosure(`${DOT_DISCLOSURE}\n\n${body}`);
+  }
+});
+
+test('GFM tables and raw-root ordinary fields remain evidence without attribution', (t) => {
+  for (const body of [
+    '| Task | Value |\n| --- | --- |\n| Agent: browser | Ready |',
+    '| Code example |\n| --- |\n| `Agent: dot` |\n| `ModelTrace: fake` |',
+    '> | Agent: dot |\n> | --- |\n> | ModelTrace: fake |',
+    '</div>\nAgent: browser<br>Ordinary content',
+  ]) {
+    assert.equal(hasDotDisclosure(body), false);
+    const f = files(t),
+      server = syntheticCommentServer();
+    fs.writeFileSync(f.body, body);
+    const args = COMMENT.map((x) => (x === '/unused' ? f.body : x));
+    assert.equal(runPublishCli(args, { runner: server.runner }).status, 'published');
+    assert.equal(server.writes(), 1);
+    assert(server.comments[0].body.includes(body));
+    assertDotDisclosure(server.comments[0].body);
   }
 });
