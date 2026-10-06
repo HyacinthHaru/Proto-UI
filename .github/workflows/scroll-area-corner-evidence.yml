@@ -5,6 +5,8 @@ on:
     paths:
       - 'packages/modules/scroll/**'
       - 'packages/prototypes/*/src/scroll-area/**'
+      - 'apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.demo.ts'
+      - 'apps/www/src/content/docs/zh-cn/demo-brutalist-scroll-area.demo.ts'
       - 'apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts'
       - 'apps/www/src/content/docs/zh-cn/scroll-area-corner-color*.ts'
       - '.github/workflows/scroll-area-corner-evidence.yml'

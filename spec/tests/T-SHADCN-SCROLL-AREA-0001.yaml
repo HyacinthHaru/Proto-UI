@@ -128,6 +128,9 @@ exercises:
 revisions:
   - version: 0.3.0-alpha.1
     change: revised
+    summary: Replaced rejected private Shadcn corner-paint expectations with a continuous unpainted intersection and added forced-color Thumb visibility plus unchanged border-box and minimum-endpoint evidence.
+  - version: 0.3.0-alpha.1
+    change: revised
     summary: Added private passive paint, zero-size clipping and orientation ownership evidence without a public Corner part.
   - version: 0.3.0-alpha.1
     change: revised
