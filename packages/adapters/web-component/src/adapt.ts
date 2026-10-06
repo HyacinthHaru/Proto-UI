@@ -42,6 +42,7 @@ import {
   setElementProps,
   unbindController,
 } from './props';
+import { createOwnedVisualSurface } from './visual-surface';
 import { SlotProjector } from './slot-projector';
 import { createOwnedTwTokenApplier } from './feedback-style';
 import { installDebugHooks, removeDebugHooks } from './debug/hooks';
@@ -60,6 +61,12 @@ import {
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
 import { createWebEffectsPort } from './runtime/effects-port';
+import { getExperimentalVisualConsumer } from './runtime/experimental-visual-consumer';
+import {
+  OWNED_MATERIAL_ID,
+  createOwnedMaterialBinding,
+} from '@proto.ui/module-feedback/internal/owned-slot';
+import { createOpaqueMaterialVisualSink } from './material/owned-texture-sink';
 import { createWebComponentModules, createWebComponentOwnerModules } from './runtime/modules';
 import { createWebComponentHostSession } from './runtime/session';
 import type { WebComponentAdapterConstructor } from './types';
@@ -424,52 +431,77 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           this._hostDisplay?.sync();
         };
 
-        owner.attachView({
-          modules: createWebComponentModules({
-            el: thisEl,
-            surfaceProjection: this._surfaceProjection,
-            instanceToken: this._instanceToken,
-            router,
-            rawPropsSource,
-            effectsPort: createWebEffectsPort(applier),
-            getMeta,
-            colorSchemeSource,
-            preferenceSource,
-            styleSupportSource,
-            textControlTarget: this._textControlTarget,
-            imageViewTarget: this._imageViewTarget,
-            exposeStateWebMode,
-            scrollProjection,
-            setExposes,
-            runInCallbackScope,
-            isViewReady: () => thisEl.isConnected && !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
-            subscribeTargetReady: (listener: () => void) => {
-              this._focusTargetReadyListeners.add(listener);
-              return () => this._focusTargetReadyListeners.delete(listener);
-            },
-            retryTargetReady: () => {
-              if (
-                this._focusTargetRetryScheduled ||
-                this._focusTargetRetryCount >= MAX_FOCUS_TARGET_RETRIES
-              ) {
-                return;
-              }
-              this._focusTargetRetryScheduled = true;
-              this._focusTargetRetryCount += 1;
-              scheduleAfterWebLayout(
-                this,
-                () => {
-                  this._focusTargetRetryScheduled = false;
-                  this[NOTIFY_FOCUS_TARGET_READY]();
-                },
-                schedule
-              );
-            },
-            overlayLayerScheduler,
-          }),
-          disposeView,
-          createSession: createHostSession,
-        });
+        try {
+          owner.attachView({
+            modules: createWebComponentModules({
+              el: thisEl,
+              surfaceProjection: this._surfaceProjection,
+              instanceToken: this._instanceToken,
+              router,
+              rawPropsSource,
+              effectsPort: createWebEffectsPort(applier),
+              materialBindingFactory: proto.modules?.some(
+                (declaration) => declaration.id === OWNED_MATERIAL_ID
+              )
+                ? createOwnedMaterialBinding
+                : undefined,
+              finalStyleSink:
+                getExperimentalVisualConsumer(proto)?.(
+                  thisEl,
+                  applier,
+                  createOwnedVisualSurface(thisEl, thisRoot)
+                ) ??
+                (proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
+                  ? createOpaqueMaterialVisualSink(thisEl, applier)
+                  : undefined),
+              getMeta,
+              colorSchemeSource,
+              preferenceSource,
+              styleSupportSource,
+              textControlTarget: this._textControlTarget,
+              imageViewTarget: this._imageViewTarget,
+              exposeStateWebMode,
+              scrollProjection,
+              setExposes,
+              runInCallbackScope,
+              isViewReady: () =>
+                thisEl.isConnected && !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+              subscribeTargetReady: (listener: () => void) => {
+                this._focusTargetReadyListeners.add(listener);
+                return () => this._focusTargetReadyListeners.delete(listener);
+              },
+              retryTargetReady: () => {
+                if (
+                  this._focusTargetRetryScheduled ||
+                  this._focusTargetRetryCount >= MAX_FOCUS_TARGET_RETRIES
+                ) {
+                  return;
+                }
+                this._focusTargetRetryScheduled = true;
+                this._focusTargetRetryCount += 1;
+                scheduleAfterWebLayout(
+                  this,
+                  () => {
+                    this._focusTargetRetryScheduled = false;
+                    this[NOTIFY_FOCUS_TARGET_READY]();
+                  },
+                  schedule
+                );
+              },
+              overlayLayerScheduler,
+            }),
+            disposeView,
+            createSession: createHostSession,
+          });
+        } catch (error) {
+          // Argument construction may fail before the epoch owner receives its disposer.
+          try {
+            disposeView();
+          } catch {
+            /* Preserve the construction error. */
+          }
+          throw error;
+        }
         setViewDetached(false);
       };
 
@@ -531,8 +563,25 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       initializingOwner = false;
       runFocusCallbackScope = hostSession.invokeInCallbackScope;
 
-      if (initialPresent) attachView();
-      else setViewDetached(true);
+      this._invokeUnmounted = () => owner.dispose();
+      try {
+        if (initialPresent) attachView();
+        else setViewDetached(true);
+      } catch (error) {
+        // Failed initial projection still owns a live logical/runtime session.
+        // Retire it immediately and permit a later fresh connection attempt.
+        try {
+          void owner.dispose().catch(() => {});
+        } catch {
+          /* Keep the setup error. */
+        }
+        this._invokeUnmounted = null;
+        unbindProtoInstance(this._instanceToken, this);
+        this._controller = null;
+        this._mountedOnce = false;
+        this._pendingOwnedTokens = null;
+        throw error;
+      }
 
       const { controller, kernel } = hostSession;
       if (kernel && kernel.run) {
@@ -557,8 +606,6 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
       this._controller = controller;
       bindController(this, controller);
-
-      this._invokeUnmounted = () => owner.dispose();
     }
 
     private [NOTIFY_FOCUS_TARGET_READY](): void {
@@ -571,6 +618,11 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       ) {
         this._focusTargetRetryCount = 0;
       }
+    }
+
+    adoptedCallback() {
+      // A retained view must reproject against its current document and host capabilities.
+      this._controller?.update();
     }
 
     disconnectedCallback() {

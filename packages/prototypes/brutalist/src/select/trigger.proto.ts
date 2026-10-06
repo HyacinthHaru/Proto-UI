@@ -1,5 +1,10 @@
 import { definePrototype, type RendererHandle, tw } from '@proto.ui/core';
 import { asSelectTrigger } from '@proto.ui/prototypes-base/select';
+import {
+  BRUTALIST_HOVER_LIFT_TOKENS,
+  BRUTALIST_MOTION_HIT_TOKENS,
+  BRUTALIST_PRESS_TOKENS,
+} from '../style';
 import type { BrutalistSelectTriggerExposes, BrutalistSelectTriggerProps } from './types';
 
 function renderChevron(renderer: Pick<RendererHandle<any>, 'svg' | 'el'>) {
@@ -28,8 +33,9 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     // P-BRUTALIST-SELECT-TRIGGER-SIZE-PROP: public `size` enum `sm | default`; P-BRUTALIST-SELECT-TRIGGER-DEFAULTS restores `default`.
     def.props.define({
       size: { type: 'enum', empty: 'fallback', options: ['sm', 'default'] },
+      appearance: { type: 'enum', empty: 'fallback', options: ['flat', 'elevated'] },
     });
-    def.props.setDefaults({ size: 'default' });
+    def.props.setDefaults({ size: 'default', appearance: 'flat' });
 
     // P-BRUTALIST-SELECT-TRIGGER-BASE-INHERITANCE: inherit Base Select Trigger states once.
     // Resting surface (VISUAL-GRAMMAR) + STATE-DRIVEN interaction rules below.
@@ -53,6 +59,22 @@ const selectTrigger = definePrototype<BrutalistSelectTriggerProps, BrutalistSele
     def.rule({
       when: (w) => w.prop('size').eq('sm'),
       intent: (i) => i.feedback.style.use(tw('h-8')),
+    });
+    // P-BRUTALIST-SELECT-TRIGGER-APPEARANCE: additive Proto UI presentation;
+    // the upstream-aligned public default and the separate popup remain flat.
+    def.rule({
+      when: (w) => w.prop('appearance').eq('elevated'),
+      intent: (i) => i.feedback.style.use(tw('shadow-[4px_4px_0_0_#000]')),
+    });
+    def.rule({
+      when: (w) => w.all(w.prop('appearance').eq('elevated'), w.state(hovered).eq(true)),
+      intent: (i) =>
+        i.feedback.style.use(tw(`${BRUTALIST_HOVER_LIFT_TOKENS} ${BRUTALIST_MOTION_HIT_TOKENS}`)),
+    });
+    def.rule({
+      when: (w) => w.all(w.prop('appearance').eq('elevated'), w.state(pressed).eq(true)),
+      intent: (i) =>
+        i.feedback.style.use(tw(`${BRUTALIST_PRESS_TOKENS} ${BRUTALIST_MOTION_HIT_TOKENS}`)),
     });
     // P-BRUTALIST-SELECT-TRIGGER-PLACEHOLDER-STATE: placeholder keeps paired ink on the main fill (muted ink fails 4.5:1 in both themes).
     def.rule({

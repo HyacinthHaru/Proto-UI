@@ -14,6 +14,7 @@ import { rehypeEnhancedImage } from './src/utils/rehype-enhanced-image.js';
 import { whitepaperRedirectFragments } from './src/utils/whitepaper-redirect-fragments.mjs';
 import { remarkConceptDirective } from './src/utils/remark-concept-directive.js';
 import { codeThemes } from './src/components/PrototypePreviewer/code-themes.mjs';
+import { siteCopyPlugin } from './src/utils/expressive-code-copy.mjs';
 
 const PROTO_UI_PREFIX = '@proto.ui/';
 const repositoryRoot = fileURLToPath(new URL('../..', import.meta.url));
@@ -65,6 +66,86 @@ const protoUiSourcePlugin = {
   resolveId: resolveProtoUiSource,
 };
 
+/** @param {string | null} id */
+function normalizedBundleModuleId(id) {
+  if (id === null) return null;
+  const withoutNullPrefix = id.startsWith('\0') ? `virtual:${id.slice(1)}` : id;
+  const queryIndex = withoutNullPrefix.indexOf('?');
+  const filePart = queryIndex === -1 ? withoutNullPrefix : withoutNullPrefix.slice(0, queryIndex);
+  const queryPart = queryIndex === -1 ? '' : withoutNullPrefix.slice(queryIndex);
+  const normalizedFilePart = path.isAbsolute(filePart)
+    ? path.relative(repositoryRoot, filePart).replaceAll('\\', '/')
+    : filePart.replaceAll('\\', '/');
+  return `${normalizedFilePart}${queryPart}`;
+}
+
+/** @param {string} id */
+function websiteManualChunk(id) {
+  const normalizedId = normalizedBundleModuleId(id);
+  const modulePath = normalizedId?.split('?', 1)[0];
+  if (
+    modulePath === 'apps/www/src/components/site-shadcn-controls.ts' ||
+    /^packages\/adapters\/(?:base|web-component)\//u.test(modulePath ?? '')
+  ) {
+    return 'site-shadcn-controls';
+  }
+  return undefined;
+}
+
+/** @typedef {{ type: 'chunk'; fileName: string; name: string; isEntry: boolean; isDynamicEntry: boolean; facadeModuleId: string | null; imports: string[]; dynamicImports: string[]; modules: Record<string, unknown> }} BundleChunk */
+/** @typedef {{ type: 'asset'; fileName: string; source: string | Uint8Array }} BundleAsset */
+/** @typedef {BundleChunk | BundleAsset} BundleOutput */
+/** @typedef {{ emitFile: (asset: { type: 'asset'; fileName: string; source: string }) => string }} BundlePluginContext */
+/** @typedef {{ name: string; apply: 'build'; configResolved: (config: { build: { ssr?: boolean | string } }) => void; generateBundle: (this: BundlePluginContext, options: unknown, bundle: Record<string, BundleOutput>) => void }} WebsiteBundlePlugin */
+/** @returns {WebsiteBundlePlugin} */
+function websiteBundleGraphPlugin() {
+  let isClientBuild = false;
+  /**
+   * @type {{
+   *   name: string;
+   *   apply: 'build';
+   *   configResolved: (config: { build: { ssr?: unknown } }) => void;
+   *   generateBundle: (
+   *     this: { emitFile: (asset: { type: 'asset'; fileName: string; source: string }) => void },
+   *     options: unknown,
+   *     bundle: Record<string, any>
+   *   ) => void;
+   * }}
+   */
+  const plugin = {
+    name: 'proto-ui-website-bundle-graph',
+    apply: 'build',
+    configResolved(config) {
+      isClientBuild = !config.build.ssr;
+    },
+    generateBundle(_options, bundle) {
+      if (!isClientBuild) return;
+      const chunks = Object.values(bundle)
+        .filter((output) => output.type === 'chunk')
+        .map((chunk) => ({
+          fileName: chunk.fileName.replaceAll('\\', '/'),
+          name: chunk.name,
+          isEntry: chunk.isEntry,
+          isDynamicEntry: chunk.isDynamicEntry,
+          facadeModuleId: normalizedBundleModuleId(chunk.facadeModuleId),
+          imports: [...chunk.imports].map((id) => id.replaceAll('\\', '/')).sort(),
+          dynamicImports: [...chunk.dynamicImports].map((id) => id.replaceAll('\\', '/')).sort(),
+          moduleIds: Object.keys(chunk.modules)
+            .map((id) => normalizedBundleModuleId(id))
+            .filter((id) => id !== null)
+            .sort(),
+        }))
+        .sort((left, right) => left.fileName.localeCompare(right.fileName));
+      this.emitFile({
+        type: 'asset',
+        fileName: 'proto-ui-bundle-graph.json',
+        source: `${JSON.stringify({ version: 1, chunks }, null, 2)}\n`,
+      });
+    },
+  };
+  return plugin;
+}
+
 const inProgressBadge = {
   text: { en: 'WIP', 'zh-CN': '施工中' },
   class: 'docs-wip-badge',
@@ -115,6 +196,8 @@ export default defineConfig({
         }),
       ],
       expressiveCode: {
+        frames: { showCopyToClipboardButton: false },
+        plugins: [siteCopyPlugin()],
         themes: Object.values(codeThemes),
         useStarlightUiThemeColors: false,
         useDarkModeMediaQuery: false,
@@ -376,6 +459,11 @@ export default defineConfig({
                   label: 'Radio Group',
                   translations: { en: 'Radio Group', 'zh-CN': 'Radio Group' },
                   slug: 'ui-libraries/base/radio-group',
+                },
+                {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/base/input',
                 },
                 {
                   label: 'Textarea',
@@ -983,6 +1071,13 @@ export default defineConfig({
     rehypePlugins: [rehypeEnhancedImage, rehypeScrollableTables],
   },
   vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: websiteManualChunk,
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -992,7 +1087,7 @@ export default defineConfig({
       // 允许 dev server 读取到仓库根（否则访问 workspace 包会被拦）
       fs: { allow: ['../..'] },
     },
-    plugins: [protoUiSourcePlugin, tailwindcss()],
+    plugins: [protoUiSourcePlugin, websiteBundleGraphPlugin(), tailwindcss()],
     optimizeDeps: {
       exclude: [
         '@proto.ui/core',

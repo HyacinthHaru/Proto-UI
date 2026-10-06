@@ -7,3 +7,7 @@ export * from './toggle';
 export * from './input';
 export * from './textarea';
 export * from './separator';
+
+export { default as Bootstrap232SurfaceRoot, surfaceRoot } from './surface';
+
+export type { SurfaceRootProps, SurfaceRootExposes } from './surface';

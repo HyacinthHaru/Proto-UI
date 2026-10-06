@@ -1,3 +1,8 @@
+import {
+  ownerAuthorizationFromArgs,
+  ownerAuthorizationAllows,
+  ownerSkillEligibility,
+} from './owner-authorization.mjs';
 import fs from 'node:fs';
 import process from 'node:process';
 import { readPublishedReviewPacket } from './published-review-packet.mjs';
@@ -8,7 +13,6 @@ import {
   validateSelfAssessmentResult,
 } from './assessment-runtime.mjs';
 import {
-  authorizeReviewSubmission,
   computeReviewInputDigest,
   computeReviewIngestionInputDigest,
   computeReviewPacketDigest,
@@ -25,6 +29,7 @@ import {
 } from './review-runtime.mjs';
 import {
   authorizeLivePullRequestMerge,
+  authorizeLiveReviewSubmission,
   collectLiveReviewInput,
   submitGitHubMerge,
   submitGitHubReview,
@@ -37,21 +42,23 @@ import {
   loadSkillRegistry,
   skillRegistryRoot,
   validateSkillHandoff,
+  requireCompletedHandoff,
 } from './skill-registry.mjs';
 
 function usage() {
   return [
     'Usage:',
     '  pnpm agent:review -- input-digest --input <review-input.json>',
-    '  pnpm agent:review -- validate --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>]',
-    '  pnpm agent:review -- inspect --packet <packet.json> --input <review-input.json> --handoff <handoff.json> --current-base <sha> --current-head <sha> [--assessment <result.json>] [--prior-head <sha>] [--seen-keys <comma-separated>] [--prior-packet <prior-packet.json>]',
-    '  pnpm agent:review -- eligibility --handoff <handoff.json> --review-class <class> [--assessment <result.json>]',
-    '  pnpm agent:review -- submit-review --mode human-assisted|autonomous --mode-source <source> --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>] [--external-evidence-file <evidence.json>] [--prior-packet <prior-packet.json>] --authorization <explicit-current-user|proto-ui-scheduled-review-v1>',
+    '  pnpm agent:review -- validate --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--assessment <result.json>] [--prior-handoff <received-handoff.json>]',
+    '  pnpm agent:review -- inspect --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--prior-handoff <received-handoff.json>] --current-base <sha> --current-head <sha> [--assessment <result.json>] [--prior-head <sha>] [--seen-keys <comma-separated>] [--prior-packet <prior-packet.json>]',
+    '  pnpm agent:review -- eligibility --handoff <handoff.json> [--prior-handoff <received-handoff.json>] --review-class <class> [--assessment <result.json>]',
+    '  pnpm agent:review -- submit-review --mode human-assisted|autonomous --mode-source <source> --packet <packet.json> --input <review-input.json> --handoff <handoff.json> [--prior-handoff <received-handoff.json>] [--assessment <result.json>] [--external-evidence-file <evidence.json>] [--prior-packet <prior-packet.json>] --authorization <explicit-current-user|proto-ui-scheduled-review-v1>',
     '  pnpm agent:review -- merge-pull-request --mode human-assisted|autonomous --mode-source <source> --packet <packet.json> --input <review-input.json> --published-review-packet <original-approved-packet.json> --handoff <handoff.json> [--assessment <result.json>] [--external-evidence-file <evidence.json>] --authorization <explicit-current-user|proto-ui-scheduled-merge-v1>',
     '',
     'input-digest, validate, and inspect preserve canonical v3 input for read-only legacy schema v1 COMMENT ingestion. v3 inputs cannot enter submit-review or merge-pull-request; those commands require a freshly collected v5 snapshot. v4 must also be re-collected.',
     '',
-    'submit-review and merge-pull-request require mode and source declared independently by the launcher/operator before artifact reads, matching the handoff. These arguments are declarations, not runtime attestation. Read-only commands retain their existing arguments.',
+    'Validation-origin review handoffs require --prior-handoff <received-handoff.json> for validate, inspect, eligibility and submit-review. This compares supplied structure, not authenticated provenance or execution.',
+    'submit-review and merge-pull-request require mode and source declared independently by the launcher/operator before artifact reads, matching the handoff. These arguments are declarations, not runtime attestation. Read-only review commands retain legacy ingestion, but validation-origin handoffs additionally require their received --prior-handoff.',
     '',
     'submit-review and merge-pull-request re-collect the canonical review input live from GitHub and derive identity, permission, trusted CI, and pull-request state instead of accepting caller-provided claims. Review writes bind commit_id to the packet head; merge writes bind sha to the same head. Schema v1 packets (no agentEvidence) may only COMMENT; dispositions and merges require schema v2. A merge requires the original --published-review-packet artifact (at most 64 MiB), authenticated by both its complete packet and evidence tokens in the same valid exact-head independent APPROVED review. Re-collection may add only that publication and its newly required reviewer permission; base, scope and other input changes require a new review. The refreshed merge packet may change only reviewInputDigest and observedAt. The supplied file alone provides no authority. externalEvidence cannot be re-collected live: pass the exact recorded array with --external-evidence-file, otherwise a packet recorded with external evidence fails the digest check.',
     '',
@@ -95,6 +102,9 @@ const ALLOWED_OPTIONS = new Map([
       '--handoff',
       '--assessment',
       '--authorization',
+      '--owner-authorization',
+      '--owner-key',
+      '--owner-grant',
       '--external-evidence-file',
       '--prior-packet',
     ]),
@@ -110,10 +120,37 @@ const ALLOWED_OPTIONS = new Map([
       '--handoff',
       '--assessment',
       '--authorization',
+      '--owner-authorization',
+      '--owner-key',
+      '--owner-grant',
       '--external-evidence-file',
     ]),
   ],
 ]);
+
+for (const command of ['validate', 'inspect', 'eligibility', 'submit-review'])
+  ALLOWED_OPTIONS.get(command).add('--prior-handoff');
+
+for (const command of ['validate', 'inspect', 'eligibility'])
+  for (const option of [
+    '--mode',
+    '--mode-source',
+    '--owner-authorization',
+    '--owner-key',
+    '--owner-grant',
+  ])
+    ALLOWED_OPTIONS.get(command).add(option);
+
+function loadReadOnlyInvocationContext(args) {
+  const declared = [
+    '--mode',
+    '--mode-source',
+    '--owner-authorization',
+    '--owner-key',
+    '--owner-grant',
+  ].some((name) => args.has(name));
+  return declared ? loadInvocationContext(args) : null;
+}
 
 function parse(argv) {
   if (argv[0] === '--') argv = argv.slice(1);
@@ -170,10 +207,14 @@ function loadInvocationContext(args) {
   establishExecutionMode(executionMode, executionModeSource);
   // Retain the launcher/operator declaration independently of task-authored
   // artifacts. Matching declarations do not authenticate the caller.
-  return Object.freeze({ executionMode, executionModeSource });
+  return Object.freeze({
+    executionMode,
+    executionModeSource,
+    ownerAuthorization: ownerAuthorizationFromArgs(args),
+  });
 }
 
-function loadHandoff(path, nextSkillId, invocationContext = null) {
+function loadHandoff(path, nextSkillId, invocationContext = null, priorPath = null) {
   if (!path) throw new Error('--handoff is required');
   const handoff = JSON.parse(fs.readFileSync(path, 'utf8'));
   if (invocationContext) {
@@ -183,25 +224,60 @@ function loadHandoff(path, nextSkillId, invocationContext = null) {
       }
     }
   }
-  const result = validateSkillHandoff(handoff, loadSkillRegistry());
+  requireCompletedHandoff(handoff);
+  const priorHandoff = priorPath ? JSON.parse(fs.readFileSync(priorPath, 'utf8')) : null;
+  const result = validateSkillHandoff(handoff, loadSkillRegistry(), { priorHandoff });
   if (result.nextSkill?.id !== nextSkillId) {
     throw new Error(`handoff must select ${nextSkillId}`);
   }
   return result;
 }
 
-function validateExecution(args, packet, policy, executionMode) {
+function validateReviewHandoffTarget(handoff, packet, input, inputPath) {
+  if (handoff.schemaVersion !== 2) return;
+  const digest =
+    input.schemaVersion === 3
+      ? computeReviewIngestionInputDigest(input)
+      : computeReviewInputDigest(input);
+  const binding = handoff.binding;
+  if (
+    binding.repositoryId !== packet.repositoryId ||
+    binding.repositoryId !== input.repositoryId ||
+    binding.scopeId !== 'pull-request:' + packet.pullRequest ||
+    packet.pullRequest !== input.pullRequest ||
+    binding.headSha !== packet.headSha ||
+    binding.headSha !== input.headSha ||
+    binding.reviewInputDigest !== digest ||
+    packet.reviewInputDigest !== digest
+  )
+    throw Error('v2 review handoff target binding differs from supplied packet/input');
+  const artifacts = handoff.artifacts.filter((a) => a.type === 'review-input');
+  if (
+    artifacts.length !== 1 ||
+    artifacts[0].reference !== inputPath ||
+    artifacts[0].digest !== 'sha256:' + digest ||
+    artifacts[0].revision !== input.headSha
+  )
+    throw Error('v2 review-input artifact does not bind supplied input path, digest and revision');
+}
+
+function validateExecution(args, packet, policy, executionMode, invocationContext = {}) {
   const selfAssessment = loadAssessment(args.get('--assessment'), policy);
   const eligibility = evaluateReviewEligibility({
     executionMode,
     reviewClass: packet.reviewClass,
     selfAssessment,
     policy,
+    ownerAuthorization: invocationContext.ownerAuthorization,
+    executionModeSource: invocationContext.executionModeSource,
+    repositoryId: packet.repositoryId,
+    scopeId: 'pull-request:' + packet.pullRequest,
   });
   validateReviewPacketEligibility(packet, eligibility, executionMode);
   return { eligibility, selfAssessment };
 }
 function validateIntegrationExecution(args, packet, input, policy, routed, invocationContext) {
+  validateReviewHandoffTarget(routed.handoff, packet, input, args.get('--input'));
   const selfAssessment = loadAssessment(args.get('--assessment'), policy);
   // The reviewed content ceiling was established by the independent reviewer
   // when this packet was sealed; recomputing it against the integrator's
@@ -248,6 +324,11 @@ function validateIntegrationExecution(args, packet, input, policy, routed, invoc
   const skillEligibility = evaluateSkillEligibility(routed.nextSkill, {
     executionMode: invocationContext.executionMode,
     selfAssessment,
+    entrypoint: routed.handoff.entrypoint,
+    ownerAuthorization: invocationContext.ownerAuthorization,
+    executionModeSource: invocationContext.executionModeSource,
+    repositoryId: packet.repositoryId,
+    scopeId: 'pull-request:' + packet.pullRequest,
   });
   if (!skillEligibility.eligible) {
     throw new Error(skillEligibility.reason);
@@ -294,13 +375,26 @@ try {
     const input = readInput(args.get('--input'), { readOnly: true });
     output = { valid: true, reviewInputDigest: computeReviewIngestionInputDigest(input) };
   } else if (command === 'validate') {
+    const invocationContext = loadReadOnlyInvocationContext(args);
     const input = readInput(args.get('--input'), { readOnly: true });
     const packet = readPacket(args.get('--packet'), input);
     const policy = loadCapabilityPolicy(
       new URL('../../internal/agent-operations/capability-policy.yaml', import.meta.url)
     );
-    const { handoff } = loadHandoff(args.get('--handoff'), 'pui-review');
-    const execution = validateExecution(args, packet, policy, handoff.executionMode);
+    const { handoff } = loadHandoff(
+      args.get('--handoff'),
+      'pui-review',
+      invocationContext,
+      args.get('--prior-handoff')
+    );
+    validateReviewHandoffTarget(handoff, packet, input, args.get('--input'));
+    const execution = validateExecution(
+      args,
+      packet,
+      policy,
+      handoff.executionMode,
+      invocationContext ?? {}
+    );
     output = {
       valid: true,
       key: reviewPacketKey(packet, input),
@@ -308,13 +402,26 @@ try {
       eligibility: execution.eligibility,
     };
   } else if (command === 'inspect') {
+    const invocationContext = loadReadOnlyInvocationContext(args);
     const input = readInput(args.get('--input'), { readOnly: true });
     const packet = readPacket(args.get('--packet'), input);
     const policy = loadCapabilityPolicy(
       new URL('../../internal/agent-operations/capability-policy.yaml', import.meta.url)
     );
-    const { handoff } = loadHandoff(args.get('--handoff'), 'pui-review');
-    const execution = validateExecution(args, packet, policy, handoff.executionMode);
+    const { handoff } = loadHandoff(
+      args.get('--handoff'),
+      'pui-review',
+      invocationContext,
+      args.get('--prior-handoff')
+    );
+    validateReviewHandoffTarget(handoff, packet, input, args.get('--input'));
+    const execution = validateExecution(
+      args,
+      packet,
+      policy,
+      handoff.executionMode,
+      invocationContext ?? {}
+    );
     const currentBase = args.get('--current-base');
     const currentHead = args.get('--current-head');
     if (!currentBase || !currentHead)
@@ -347,7 +454,13 @@ try {
       reconciliationBound,
     };
   } else if (command === 'eligibility') {
-    const { handoff } = loadHandoff(args.get('--handoff'), 'pui-review');
+    const invocationContext = loadReadOnlyInvocationContext(args);
+    const { handoff } = loadHandoff(
+      args.get('--handoff'),
+      'pui-review',
+      invocationContext,
+      args.get('--prior-handoff')
+    );
     const reviewClass = args.get('--review-class');
     if (!reviewClass) throw new Error('--review-class is required');
     const policy = loadCapabilityPolicy(
@@ -359,16 +472,33 @@ try {
       reviewClass,
       selfAssessment,
       policy,
+      ownerAuthorization: invocationContext?.ownerAuthorization,
+      executionModeSource: invocationContext?.executionModeSource,
+      repositoryId:
+        handoff.binding?.repositoryId ?? invocationContext?.ownerAuthorization?.repositoryId,
+      scopeId: handoff.binding?.scopeId,
     });
   } else if (command === 'submit-review') {
     const invocationContext = loadInvocationContext(args);
-    loadHandoff(args.get('--handoff'), 'pui-review', invocationContext);
+    const { handoff } = loadHandoff(
+      args.get('--handoff'),
+      'pui-review',
+      invocationContext,
+      args.get('--prior-handoff')
+    );
     const input = readInput(args.get('--input'));
     const packet = readPacket(args.get('--packet'), input);
     const policy = loadCapabilityPolicy(
       new URL('../../internal/agent-operations/capability-policy.yaml', import.meta.url)
     );
-    const execution = validateExecution(args, packet, policy, invocationContext.executionMode);
+    validateReviewHandoffTarget(handoff, packet, input, args.get('--input'));
+    const execution = validateExecution(
+      args,
+      packet,
+      policy,
+      invocationContext.executionMode,
+      invocationContext
+    );
     const externalEvidence = readExternalEvidence(args);
     const priorPath = args.get('--prior-packet');
     const priorPacket = priorPath ? JSON.parse(fs.readFileSync(priorPath, 'utf8')) : null;
@@ -383,34 +513,19 @@ try {
     const live = collectLiveReviewInput(packet.repositoryId, packet.pullRequest, {
       externalEvidence,
     });
-    const authorization = authorizeReviewSubmission({
+    const reviewAuthorizationContext = {
       packet,
       input,
-      liveInput: live.input,
+      priorPacket,
       ...invocationContext,
       authorizationId: args.get('--authorization'),
       policy,
       selfAssessment: execution.selfAssessment,
-      credentialCanReview: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
-      reviewer: live.viewerLogin,
-      priorPacket,
-      ciConclusion: summarizeLiveChecks(live.input.checks, {
-        repositoryId: packet.repositoryId,
-        trustedRepositoryId: policy.trustedCiEvidence?.repositoryId,
-        trustedSource: policy.trustedCiEvidence?.source,
-        trustedCheckNames: policy.trustedCiEvidence?.checkNames,
-        trustedWorkflowNames: policy.trustedCiEvidence?.workflowNames,
-        trustedWorkflowPaths: policy.trustedCiEvidence?.workflowPaths,
-      }),
-      dcoConclusion: summarizeLiveDco(live.input.checks, {
-        repositoryId: packet.repositoryId,
-        trustedRepositoryId: policy.trustedDcoEvidence?.repositoryId,
-        trustedCheckName: policy.trustedDcoEvidence?.checkName,
-        trustedSource: policy.trustedDcoEvidence?.source,
-        trustedProviderId: policy.trustedDcoEvidence?.providerId,
-        trustedDetailsUrl: policy.trustedDcoEvidence?.detailsUrl,
-      }),
-    });
+      actor: live.viewerLogin,
+      viewerPermission: live.viewerPermission,
+      externalEvidence,
+    };
+    const authorization = authorizeLiveReviewSubmission(reviewAuthorizationContext, live);
     if (!authorization.allowed) {
       output = authorization;
     } else {
@@ -425,6 +540,7 @@ try {
         undefined,
         {
           reviewerLogin: live.viewerLogin,
+          authorizationContext: reviewAuthorizationContext,
           invocationId: `${packet.repositoryId}:${packet.pullRequest}:${packet.headSha}:${authorization.recommendedAction}`,
         }
       );

@@ -45,6 +45,10 @@
     "./separator": {
       "types": "./src/separator/index.ts",
       "default": "./src/separator/index.ts"
+    },
+    "./surface": {
+      "types": "./src/surface/index.ts",
+      "default": "./src/surface/index.ts"
     }
   },
   "dependencies": {
