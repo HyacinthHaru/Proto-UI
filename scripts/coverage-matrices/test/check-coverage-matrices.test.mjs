@@ -8387,7 +8387,7 @@ test('the ordinary local checker supplies stable checkout revisions after promot
 
 test('CI runs the full pull-request suite on GitHub merge checkout', () => {
   const workflow = fs.readFileSync(path.resolve('.github/workflows/ci.yml'), 'utf8');
-  const testJobStart = workflow.indexOf('\n  test:\n');
+  const testJobStart = workflow.indexOf('\n  test-general:\n');
   const remainingWorkflow = workflow.slice(testJobStart + 1);
   const nextJobOffset = remainingWorkflow.slice(1).search(/^  [a-zA-Z0-9_-]+:\n/mu);
   const testJob =
@@ -12206,7 +12206,7 @@ test('documentation media allowances remain bound to exact reviewed sources and 
     assert.ok(!message.includes(`raw Proto UI import \`${specifier}\` in \`${bridge}\``));
     assert.ok(message.includes(`raw Proto UI import \`${specifier}\` in \`${copied}\``));
   }
-  assert.ok(!message.includes(`raw Proto UI import \`@proto.ui/core\` in \`${presentation}\``));
+  assert.ok(message.includes(`raw Proto UI import \`@proto.ui/core\` in \`${presentation}\``));
   fs.appendFileSync(path.join(root, bridge), "\nimport '@proto.ui/runtime';");
   fs.appendFileSync(path.join(root, presentation), "\nimport '@proto.ui/adapter-react';");
   message = validationMessage(root);
@@ -13379,6 +13379,13 @@ for (const [name, extension, markup] of [
     'export const Surface=()=> <picture><source srcSet="/surface.bin 1x, /surface.bin 2x"/></picture>;',
   ],
   ['SVG image', 'html', '<svg><image href="/surface.bin"/></svg>'],
+  ['SVG use', 'html', '<svg><use href="/surface.bin#check"/></svg>'],
+  ['SVG legacy use', 'md', '<svg><use xlink:href="/surface.bin#check"/></svg>'],
+  [
+    'SVG JSX use',
+    'tsx',
+    'export const Surface=()=> <svg><use xlinkHref="/surface.bin#check"/></svg>;',
+  ],
   ['SVG legacy image', 'md', '<svg><image xlink:href="/surface.bin"/></svg>'],
   ['percent query fragment', 'astro', '<img src="/surf%61ce.bin?v=2#crop"/>'],
   ['browser normalization', 'astro', '<img src=" \tsurface.bin "/>'],
@@ -17386,3 +17393,129 @@ test('Vue native base Website: bound HTML href names remain case-insensitive', (
     issues.join('\n')
   );
 });
+
+for (const extension of ['html', 'astro', 'md', 'mdx', 'vue', 'svelte', 'tsx']) {
+  for (const [name, markup, reject] of [
+    ['native mixed case', '<sCrIpT src="https://cdn.example/runtime.js"></sCrIpT>', true],
+    [
+      'application x-ecmascript',
+      '<script type="application/x-ecmascript" src="https://cdn.example/runtime.js"></script>',
+      true,
+    ],
+    [
+      'text x-ecmascript',
+      '<script type="text/x-ecmascript" src="https://cdn.example/runtime.js"></script>',
+      true,
+    ],
+    [
+      'component Script',
+      '<Script src="https://cdn.example/runtime.js"></Script>',
+      ['html', 'md'].includes(extension),
+    ],
+    [
+      'JSON remains inert',
+      '<script type="application/json" src="https://cdn.example/data.json"></script>',
+      false,
+    ],
+  ])
+    test(`runtime entry latest review: ${extension} ${name}`, () => {
+      const source =
+        extension === 'tsx'
+          ? `export const Surface=()=>(${markup});`
+          : extension === 'vue'
+            ? `<template>${markup}</template>`
+            : markup;
+      const issues = probeReview('latest-script-review', 'website', source, extension);
+      assert.equal(
+        issues.some((issue) => /external executable (?:worker )?script/u.test(issue)),
+        reject,
+        issues.join('\n')
+      );
+    });
+}
+
+for (const helper of ['browser-harness', 'site-search-evidence']) {
+  test(`main test helper boundary: ${helper} is excluded only while unreachable`, () => {
+    const root = createRoot();
+    writeValidMatrices(root);
+    const relative = `apps/www/src/content/docs/zh-cn/${helper}.ts`;
+    fs.mkdirSync(path.dirname(path.join(root, relative)), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, relative),
+      "import '@proto.ui/runtime'; document.addEventListener('click', () => {});"
+    );
+    assert.doesNotThrow(() => validateCoverageMatrices({ rootDir: root }));
+    fs.writeFileSync(
+      path.join(root, 'apps/www/src/components/override/Search.astro'),
+      `<script>import '../../content/docs/zh-cn/${helper}';</script>`
+    );
+    const message = validationMessage(root);
+    assert.match(message, /raw Proto UI import `@proto.ui\/runtime`/u);
+    assert.ok(message.includes(relative));
+  });
+}
+
+for (const [source, specifiers] of [
+  ['Homepage/homepage-text.ts', ['@proto.ui/prototypes-base/text']],
+  ['InstallCommandCard.astro', ['@proto.ui/adapter-web-component']],
+  ['site-link-recipes.ts', ['@proto.ui/prototypes-base/surface', '@proto.ui/prototypes-base/text']],
+  [
+    'site-native-controls.ts',
+    [
+      '@proto.ui/adapter-web-component',
+      '@proto.ui/prototypes-shadcn/surface',
+      '@proto.ui/prototypes-brutalist/surface',
+      '@proto.ui/prototypes-shadcn/text',
+      '@proto.ui/prototypes-brutalist/text',
+    ],
+  ],
+  ['site-search-commands.ts', ['@proto.ui/module-expose-state']],
+  ['site-text-recipes.ts', ['@proto.ui/prototypes-base/text']],
+  ['surface-recipes.ts', ['@proto.ui/prototypes-base/surface']],
+  [
+    'site-shadcn-controls.ts',
+    ['@proto.ui/prototypes-brutalist/button', '@proto.ui/prototypes-brutalist/select'],
+  ],
+  [
+    'documentation-image-controls.ts',
+    [
+      '@proto.ui/prototypes-base/button',
+      '@proto.ui/prototypes-base/dialog',
+      '@proto.ui/prototypes-shadcn/surface',
+      '@proto.ui/prototypes-brutalist/surface',
+      '@proto.ui/prototypes-shadcn/text',
+      '@proto.ui/prototypes-brutalist/text',
+    ],
+  ],
+])
+  test(`main source imports remain exact: ${source}`, () => {
+    const root = createRoot();
+    writeValidMatrices(root);
+    const relative = `apps/www/src/components/${source}`;
+    const copy = `apps/www/src/components/Copied${path.basename(source)}`;
+    const code = specifiers.map((specifier) => `import '${specifier}';`).join('\n');
+    const content = source.endsWith('.astro') ? `<script>${code}</script>` : code;
+    for (const file of [relative, copy]) {
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(path.join(root, file), content);
+    }
+    const message = validationMessage(root);
+    for (const specifier of specifiers) {
+      assert.ok(
+        !message.includes(`raw Proto UI import \`${specifier}\` in \`${relative}\``),
+        message
+      );
+      assert.ok(message.includes(`raw Proto UI import \`${specifier}\` in \`${copy}\``), message);
+    }
+    fs.writeFileSync(
+      path.join(root, relative),
+      source.endsWith('.astro')
+        ? "<script>import '@proto.ui/runtime';</script>"
+        : "import '@proto.ui/runtime';"
+    );
+    assert.ok(
+      validationMessage(root).includes(
+        `raw Proto UI import \`@proto.ui/runtime\` in \`${relative}\``
+      )
+    );
+  });

@@ -301,7 +301,6 @@ async function renderDemoReact(
   const [{ createReactAdapter }, { loadReact }] = await reactModules();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const { React, ReactDOM } = await loadReact();
-  const { createReactAdapter } = await import('@proto.ui/adapter-react');
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createReactAdapter({
     ...React,
@@ -456,7 +455,6 @@ async function renderDemoVue(
   const [{ createVueAdapter }, { loadVue }] = await vueModules();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const Vue = await loadVue();
-  const { createVueAdapter } = await import('@proto.ui/adapter-vue');
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createVueAdapter(Vue as unknown as AdapterVueRuntime);
 
@@ -586,7 +584,6 @@ async function renderDemoVue2(
     await vue2Modules();
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const Vue = await loadVue2();
-  const { createVue2Adapter } = await import('@proto.ui/adapter-vue2');
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createVue2Adapter(toVue2Runtime(Vue));
 

@@ -161,6 +161,46 @@ const SELF_HOSTED_WEBSITE_RECORD_LABELS = Object.freeze([
   'Results:',
 ]);
 const WEBSITE_RAW_IMPORT_ALLOWLIST = Object.freeze({
+  // Accepted main integrations: exact source owners and public inputs only.
+  // These bindings do not promote draft components or admit sibling imports.
+  'apps/www/src/components/Homepage/homepage-text.ts': Object.freeze({
+    specifiers: Object.freeze(['@proto.ui/prototypes-base/text']),
+  }),
+  'apps/www/src/components/InstallCommandCard.astro': Object.freeze({
+    specifiers: Object.freeze(['@proto.ui/adapter-web-component']),
+  }),
+  'apps/www/src/components/site-link-recipes.ts': Object.freeze({
+    specifiers: Object.freeze([
+      '@proto.ui/prototypes-base/surface',
+      '@proto.ui/prototypes-base/text',
+    ]),
+  }),
+  'apps/www/src/components/site-native-controls.ts': Object.freeze({
+    specifiers: Object.freeze([
+      '@proto.ui/adapter-web-component',
+      '@proto.ui/prototypes-shadcn/surface',
+      '@proto.ui/prototypes-brutalist/surface',
+      '@proto.ui/prototypes-shadcn/text',
+      '@proto.ui/prototypes-brutalist/text',
+    ]),
+  }),
+  'apps/www/src/components/site-search-commands.ts': Object.freeze({
+    specifiers: Object.freeze(['@proto.ui/module-expose-state']),
+    resolvedPaths: Object.freeze([
+      'packages/prototypes/lucide/src/icons/search',
+      'packages/prototypes/lucide/src/icons/x',
+    ]),
+  }),
+  'apps/www/src/components/site-text-recipes.ts': Object.freeze({
+    specifiers: Object.freeze(['@proto.ui/prototypes-base/text']),
+  }),
+  'apps/www/src/components/surface-recipes.ts': Object.freeze({
+    specifiers: Object.freeze(['@proto.ui/prototypes-base/surface']),
+  }),
+  'apps/www/src/components/SiteLibraryStyle.astro': Object.freeze({
+    resolvedPaths: Object.freeze(['packages/prototypes/brutalist/src/theme']),
+  }),
+
   'apps/www/src/components/PrototypePreviewer/demo-renderer.ts': Object.freeze({
     specifiers: Object.freeze([
       '@proto.ui/core',
@@ -218,6 +258,8 @@ const WEBSITE_RAW_IMPORT_ALLOWLIST = Object.freeze({
       '@proto.ui/adapter-web-component',
       '@proto.ui/prototypes-shadcn/button',
       '@proto.ui/prototypes-shadcn/select',
+      '@proto.ui/prototypes-brutalist/button',
+      '@proto.ui/prototypes-brutalist/select',
     ]),
   }),
   // Accepted documentation-media bridge (#787/#797). These are exact source
@@ -230,10 +272,13 @@ const WEBSITE_RAW_IMPORT_ALLOWLIST = Object.freeze({
       '@proto.ui/prototypes-brutalist/button',
       '@proto.ui/prototypes-brutalist/dialog',
       '@proto.ui/prototypes-brutalist/theme',
+      '@proto.ui/prototypes-base/button',
+      '@proto.ui/prototypes-base/dialog',
+      '@proto.ui/prototypes-shadcn/surface',
+      '@proto.ui/prototypes-brutalist/surface',
+      '@proto.ui/prototypes-shadcn/text',
+      '@proto.ui/prototypes-brutalist/text',
     ]),
-  }),
-  'apps/www/src/components/documentation-image-zoom.proto.ts': Object.freeze({
-    specifiers: Object.freeze(['@proto.ui/core', '@proto.ui/prototypes-base/dialog']),
   }),
   'apps/www/src/pages/en/test/liquid-glass-material.astro': Object.freeze({
     specifiers: Object.freeze(['@proto.ui/prototypes-liquid-glass/button']),
@@ -5611,7 +5656,7 @@ function scanScriptModuleSpecifiers(source, fileName, { harnessPreviewBoundary =
       }
       if (!harnessPreviewBoundary && /^(?:iframe|object|embed|webview)$/u.test(tag))
         specifiers.push(UNREVIEWED_WEBSITE_EMBED_SPECIFIER);
-      if (tag === 'script') {
+      if (/^s[cC][rR][iI][pP][tT]$/u.test(tag)) {
         const attributes = new Map();
         let opaque = false;
         for (const attribute of node.attributes.properties) {
@@ -6117,7 +6162,7 @@ function hasHtmlCharacterReference(value) {
 function isExecutableScriptType(type) {
   if (type === null || type.trim() === '' || type.trim().toLowerCase() === 'module') return true;
   const essence = type.split(';', 1)[0].trim().toLowerCase();
-  return /^(?:(?:application|text)\/(?:javascript|ecmascript|x-javascript)|text\/(?:javascript1\.[0-5]|jscript|livescript))$/u.test(
+  return /^(?:(?:application|text)\/(?:javascript|ecmascript|x-javascript|x-ecmascript)|text\/(?:javascript1\.[0-5]|jscript|livescript))$/u.test(
     essence
   );
 }
@@ -6255,9 +6300,10 @@ function externalScriptModuleSpecifiers(content, absolutePath = 'source.html') {
   inspect(parseHtml(parseable, { sourceCodeLocationInfo: true }));
   return jsxOpeningTagCandidates(masked, { includeOffsets: true })
     .filter(({ start, end }) =>
-      (framework ? /^<script(?=[\t\n\r\f />])/u : /^<script(?=[\t\n\r\f />])/iu).test(
-        markup.slice(start, end)
-      )
+      (framework
+        ? /^<s[cC][rR][iI][pP][tT](?=[\t\n\r\f />])/u
+        : /^<script(?=[\t\n\r\f />])/iu
+      ).test(markup.slice(start, end))
     )
     .flatMap(({ start, end }) => {
       const openingTag = markup.slice(start, end);
@@ -7232,6 +7278,7 @@ function promotionMarkupResourceUrls(absolutePath) {
     source: ['src', 'srcset', 'srcSet'],
     track: ['src'],
     image: ['href', 'xlink:href', 'xlinkHref'],
+    use: ['href', 'xlink:href', 'xlinkHref'],
     input: ['src'],
   };
   for (const { name, attributes, opaque, inertDocumentBase } of authoredResourceTags(
@@ -7687,7 +7734,7 @@ function markdownScriptModuleSpecifiers(content, absolutePath, options) {
           if (typeof expression === 'string') inspectBody(expression);
         }
       }
-      if (/^mdxJsx/u.test(node.type) && node.name === 'script') {
+      if (/^mdxJsx/u.test(node.type) && /^s[cC][rR][iI][pP][tT]$/u.test(node.name ?? '')) {
         const attrs = new Map();
         let opaque = false;
         for (const attribute of node.attributes) {
@@ -8868,7 +8915,18 @@ function websiteRawImportIsAllowed(sourcePath, specifier, guardedImport) {
   return allowance.resolvedPaths?.includes(guardedImport.resolvedPath) ?? false;
 }
 
+// Historical Node-only test helpers live beside documentation fixtures. They
+// are not production roots; any import from a production seed restores them
+// (and their complete dependency closure) to every source/consumer scan.
+const WEBSITE_TEST_HELPER_PATHS = [
+  '/apps/www/src/content/docs/zh-cn/browser-harness.ts',
+  '/apps/www/src/content/docs/zh-cn/site-search-evidence.ts',
+];
 function isTestNamedSource(absolutePath) {
+  if (
+    WEBSITE_TEST_HELPER_PATHS.some((suffix) => absolutePath.replaceAll('\\', '/').endsWith(suffix))
+  )
+    return true;
   return /\.(?:browser\.)?(?:test|spec)\.[cm]?[jt]sx?$/iu.test(absolutePath);
 }
 
@@ -8876,10 +8934,10 @@ function isTestNamedSource(absolutePath) {
 // candidate configuration. The full config fingerprint fails closed for any
 // unreviewed resolver/plugin shape; updates require source review and parity tests.
 // Reviewed main contributions change CSS layer order and accepted family
-// sidebar entries; resolver functions and plugin shape stay intact. Parity/mutation tests retain
+// sidebar entries and source-reviewed Copy render plugin; resolver functions stay intact. Parity/mutation tests retain
 // fail-closed behavior for every other configuration change.
 const PROMOTION_RESOLVER_CONFIG_SHA256 =
-  '90ac61e7134b84376dfef9e4db1a75640c25364e16122b7e56806f0388fecfc9';
+  '290aa45788f3be0bb3a8fe1c42f242a774637cbc045f2d6bfd916b4484688791';
 export function promotionBarePackageTargets(root, specifier, metadata) {
   const unverified = () =>
     new Error(`promotion package closure for ${specifier} remains unverified`);

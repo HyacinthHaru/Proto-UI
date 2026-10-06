@@ -135,7 +135,7 @@ function graphFixture() {
 
 test('accepts module-proven demo runtimes isolated from shell static closures', () => {
   assert.deepEqual(validateWebsiteProductionBundle({ graph: graphFixture() }), {
-    shellRuntime: 'native/static',
+    shellRuntime: 'native/static with source-owned lazy runtime consumers',
     primaryDemonstrationHost: 'web-component',
     isolatedDemonstrationRuntimes: 3,
   });
@@ -143,7 +143,6 @@ test('accepts module-proven demo runtimes isolated from shell static closures', 
 
 test('requires every approved demonstration facade in the production graph', () => {
   for (const facadeModuleId of [
-    HOME_DEMO_FACADE,
     PREVIEWER_FACADE,
     PREVIEWER_CLIENT_FACADE,
     STYLE_ISOLATION_FACADE,
@@ -688,3 +687,88 @@ for (const family of ['react', 'vue', 'vue2', 'wc'])
         assert.ok(issues.some((issue) => /runtime chunk.*must be dynamic-only/u.test(issue)));
       else assert.deepEqual(issues, []);
     });
+
+const siteOwners = [
+  ['Homepage/HomepageRuntime.astro', 'Homepage/homepage-runtime-client.ts'],
+  ['override/Header.astro', 'site-header-surface.ts'],
+  ['override/Search.astro', 'site-search-commands.ts'],
+  ['SiteCopyBootstrap.astro', 'site-copy-client.ts'],
+  ['SiteTypographyBootstrap.astro', 'site-typography-client.ts'],
+];
+for (const [entry, owner] of siteOwners) {
+  function siteGraph() {
+    const graph = graphFixture();
+    const facade = `apps/www/src/components/${entry}?astro&type=script&index=0&lang.ts`;
+    const root =
+      graph.chunks.find((item) => item.facadeModuleId === facade) ??
+      chunk('_astro/site-owner.js', {
+        isEntry: true,
+        facadeModuleId: facade,
+        imports: ['_astro/site-shadcn-controls.js'],
+      });
+    if (!graph.chunks.includes(root)) graph.chunks.push(root);
+    root.moduleIds.push(`apps/www/src/components/${owner}`);
+    root.imports.push('_astro/shared-renderer.js');
+    graph.chunks.push(
+      chunk('_astro/shared-renderer.js', {
+        moduleIds: ['apps/www/src/components/PrototypePreviewer/demo-renderer.ts'],
+        dynamicImports: ['_astro/react.js', '_astro/vue.js', '_astro/vue2.js'],
+      })
+    );
+    return { graph, root };
+  }
+  test(`site runtime exact owner: ${entry}`, () => {
+    const { graph } = siteGraph();
+    assert.doesNotThrow(() => validateWebsiteProductionBundle({ graph }));
+  });
+  for (const defect of [
+    'missing owner',
+    'missing renderer',
+    'copied facade',
+    'static framework',
+    'unowned dynamic adapter',
+  ]) {
+    test(`site runtime boundary: ${entry} rejects ${defect}`, () => {
+      const { graph, root } = siteGraph();
+      if (defect === 'missing owner') root.moduleIds = [];
+      if (defect === 'missing renderer')
+        graph.chunks.find((item) => item.fileName === '_astro/shared-renderer.js').moduleIds = [];
+      if (defect === 'copied facade')
+        root.facadeModuleId = root.facadeModuleId.replace(entry, `Copied${entry}`);
+      if (defect === 'static framework') root.imports.push('_astro/react.js');
+      if (defect === 'unowned dynamic adapter') {
+        root.dynamicImports.push('_astro/unowned.js');
+        graph.chunks.push(
+          chunk('_astro/unowned.js', {
+            isDynamicEntry: true,
+            moduleIds: ['packages/adapters/react/src/unreviewed.ts'],
+          })
+        );
+      }
+      const issues = collectWebsiteProductionBundleIssues({ graph });
+      assert.ok(
+        issues.some((issue) => /Website.*(?:forbidden|outside its renderer closure)/u.test(issue)),
+        issues.join('\n')
+      );
+    });
+  }
+}
+test('accepts exact runtime facade identities with the same module-level evidence', () => {
+  const graph = graphFixture();
+  for (const runtime of ['react', 'vue', 'vue2']) {
+    graph.chunks.find((item) => item.fileName === `_astro/${runtime}.js`).facadeModuleId =
+      `apps/www/src/components/PrototypePreviewer/runtimes/${runtime}-runtime.ts`;
+  }
+  assert.doesNotThrow(() => validateWebsiteProductionBundle({ graph }));
+});
+
+test('rejects a runtime facade paired with another runtime source identity', () => {
+  const graph = graphFixture();
+  graph.chunks.find((item) => item.fileName === '_astro/react.js').facadeModuleId =
+    'apps/www/src/components/PrototypePreviewer/runtimes/vue-runtime.ts';
+  assert.ok(
+    collectWebsiteProductionBundleIssues({ graph }).some(
+      (issue) => issue.includes('react-runtime.ts') && issue.includes('found 0')
+    )
+  );
+});

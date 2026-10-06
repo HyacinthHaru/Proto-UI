@@ -1,5 +1,7 @@
 import type { RuntimeAPI, RuntimeId } from './ids';
-// Demonstration Adapters stay lazy so React and Vue never enter the Website shell bundle.
+// Executable loaders stay lazy; static identity consumers import ./ids directly.
+export { AdapterIds, InternalAdapterIds, isRuntimeId, selectRuntimeIds } from './ids';
+export type { RuntimeAPI, RuntimeId, PublicRuntimeId } from './ids';
 
 export const runtimeLoaders: Record<RuntimeId, () => Promise<RuntimeAPI>> = {
   wc: async () => (await import('./wc-runtime')).runtime,

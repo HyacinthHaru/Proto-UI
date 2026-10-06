@@ -15,6 +15,38 @@ const APPROVED_DEMONSTRATION_ENTRY_FACADES = new Set([
   // projection across hosts.
   'apps/www/src/pages/en/test/style-isolation.astro?astro&type=script&index=0&lang.ts',
 ]);
+// Sitewide runtime consumers are admitted as exact entry/owner pairs, never
+// by a directory, filename prefix, or arbitrary reachability to shared chunks.
+const REVIEWED_SITE_RUNTIME_OWNERS = new Map([
+  [
+    'apps/www/src/components/Homepage/HomepageRuntime.astro?astro&type=script&index=0&lang.ts',
+    'apps/www/src/components/Homepage/homepage-runtime-client.ts',
+  ],
+  [
+    'apps/www/src/components/override/Header.astro?astro&type=script&index=0&lang.ts',
+    'apps/www/src/components/site-header-surface.ts',
+  ],
+  [
+    'apps/www/src/components/override/Search.astro?astro&type=script&index=0&lang.ts',
+    'apps/www/src/components/site-search-commands.ts',
+  ],
+  [
+    'apps/www/src/components/SiteCopyBootstrap.astro?astro&type=script&index=0&lang.ts',
+    'apps/www/src/components/site-copy-client.ts',
+  ],
+  [
+    'apps/www/src/components/SiteTypographyBootstrap.astro?astro&type=script&index=0&lang.ts',
+    'apps/www/src/components/site-typography-client.ts',
+  ],
+]);
+const REVIEWED_RENDERER_MODULE = 'apps/www/src/components/PrototypePreviewer/demo-renderer.ts';
+const OPTIONAL_DEMONSTRATION_ENTRY_FACADES = new Set([
+  // Kept for retained callers; current homepage is owned by HomepageRuntime.
+  'apps/www/src/components/PrototypePreviewer/HomeDemoPreviewer.astro?astro&type=script&index=0&lang.ts',
+  'apps/www/src/pages/en/test/site-typography.astro?astro&type=script&index=0&lang.ts',
+]);
+for (const facade of OPTIONAL_DEMONSTRATION_ENTRY_FACADES)
+  APPROVED_DEMONSTRATION_ENTRY_FACADES.add(facade);
 const REVIEWED_DEMONSTRATION_RUNTIME_FACADES = new Set([
   'apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts',
   'apps/www/src/components/PrototypePreviewer/runtimes/vue-runtime.ts',
@@ -142,12 +174,21 @@ function isReviewedWebsiteControlAdapterModule(moduleId) {
 }
 
 function reviewedNullFacadeRuntimeModules(chunk) {
-  if (chunk.facadeModuleId !== null || !Array.isArray(chunk.moduleIds)) return [];
+  if (
+    (chunk.facadeModuleId !== null &&
+      !REVIEWED_NULL_FACADE_RUNTIME_MODULES.has(chunk.facadeModuleId)) ||
+    !Array.isArray(chunk.moduleIds)
+  )
+    return [];
   return [
     ...new Set(
       chunk.moduleIds
         .map(moduleIdWithoutQuery)
-        .filter((moduleId) => REVIEWED_NULL_FACADE_RUNTIME_MODULES.has(moduleId))
+        .filter(
+          (moduleId) =>
+            REVIEWED_NULL_FACADE_RUNTIME_MODULES.has(moduleId) &&
+            (chunk.facadeModuleId === null || chunk.facadeModuleId === moduleId)
+        )
     ),
   ];
 }
@@ -274,7 +315,10 @@ export function collectWebsiteProductionBundleIssues({
 
   for (const facadeModuleId of APPROVED_DEMONSTRATION_ENTRY_FACADES) {
     const owners = approvedDemoRoots.filter((chunk) => chunk.facadeModuleId === facadeModuleId);
-    if (owners.length !== 1) {
+    if (
+      owners.length !== 1 &&
+      !(owners.length === 0 && OPTIONAL_DEMONSTRATION_ENTRY_FACADES.has(facadeModuleId))
+    ) {
       issues.push(
         `production bundle graph must contain exactly one approved demonstration entry for \`${facadeModuleId}\` (found ${owners.length})`
       );
@@ -312,6 +356,20 @@ export function collectWebsiteProductionBundleIssues({
       !REVIEWED_DEMONSTRATION_RUNTIME_FACADES.has(chunk.facadeModuleId) &&
       reviewedNullFacadeRuntimeModules(chunk).length === 0
   );
+  const reviewedSiteRoots = new Set();
+  for (const root of shellRoots) {
+    const owner = REVIEWED_SITE_RUNTIME_OWNERS.get(root.facadeModuleId);
+    if (!owner) continue;
+    const modules = new Set(
+      [...closure(chunksByFileName, root.fileName, ['imports'])]
+        .flatMap((file) => chunksByFileName.get(file)?.moduleIds ?? [])
+        .map(moduleIdWithoutQuery)
+    );
+    if (modules.has(owner) && modules.has(REVIEWED_RENDERER_MODULE))
+      reviewedSiteRoots.add(root.fileName);
+    // Identity-only or static use does not need a renderer admission. A runtime
+    // edge without both source owners falls through to the ordinary shell wall.
+  }
   if (shellRoots.length === 0) issues.push('production bundle graph has no Website shell roots');
   if (routeOwnedDemoRoots.length === 0) {
     issues.push('production bundle graph has no explicitly route-owned demonstration entry');
@@ -475,6 +533,27 @@ export function collectWebsiteProductionBundleIssues({
         }
       }
     }
+    if (reviewedSiteRoots.has(shellRoot.fileName)) {
+      const rendererRoots = chunks.filter((chunk) =>
+        chunk.moduleIds.map(moduleIdWithoutQuery).includes(REVIEWED_RENDERER_MODULE)
+      );
+      const rendererClosure = new Set(
+        rendererRoots.flatMap((chunk) => [
+          ...closure(chunksByFileName, chunk.fileName, ['imports', 'dynamicImports']),
+        ])
+      );
+      for (const fileName of completeClosure) {
+        if (staticClosure.has(fileName) || rendererClosure.has(fileName)) continue;
+        for (const moduleId of chunksByFileName.get(fileName)?.moduleIds ?? []) {
+          if (forbiddenFrameworkFamily(moduleId) !== null || isProtoUiAdapterModule(moduleId)) {
+            issues.push(
+              `reviewed Website runtime entry \`${shellRoot.facadeModuleId}\` reaches Adapter module outside its renderer closure: ${moduleId}`
+            );
+          }
+        }
+      }
+      continue;
+    }
     if (dynamicallyReachedModules.size > 0) {
       const shellIdentity = shellRoot.facadeModuleId ?? `<null facade: ${shellRoot.fileName}>`;
       issues.push(
@@ -485,7 +564,10 @@ export function collectWebsiteProductionBundleIssues({
 
   const demoStaticClosure = new Set();
   const demoCompleteClosure = new Set();
-  for (const demoRoot of approvedDemoRoots) {
+  for (const demoRoot of [
+    ...approvedDemoRoots,
+    ...shellRoots.filter((root) => reviewedSiteRoots.has(root.fileName)),
+  ]) {
     for (const fileName of closure(chunksByFileName, demoRoot.fileName, ['imports'])) {
       demoStaticClosure.add(fileName);
     }
@@ -515,7 +597,7 @@ export function validateWebsiteProductionBundle(options = {}) {
   const issues = collectWebsiteProductionBundleIssues(options);
   if (issues.length > 0) throw new WebsiteProductionBundleValidationError(issues);
   return {
-    shellRuntime: 'native/static',
+    shellRuntime: 'native/static with source-owned lazy runtime consumers',
     primaryDemonstrationHost: 'web-component',
     isolatedDemonstrationRuntimes: 3,
   };

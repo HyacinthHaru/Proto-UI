@@ -1,4 +1,4 @@
-// Static runtime identities stay separate from executable runtime loaders so shell controls cannot reach demo-only Adapter chunks.
+// Static runtime identities stay separate from executable runtime loaders so identity-only consumers do not acquire executable Adapter dependencies.
 export type RuntimeId = 'wc' | 'react' | 'vue' | 'vue2';
 /** Runtimes presented as supported adapters in public website surfaces. */
 export const AdapterIds = ['wc', 'react', 'vue', 'vue2'] as const;
