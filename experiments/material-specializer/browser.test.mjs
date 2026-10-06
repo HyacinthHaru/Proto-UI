@@ -272,6 +272,27 @@ try {
     await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
   }
   await capture('12d-ancestor-context-restored');
+  for (const filter of ['opacity(0.2)', 'brightness(0.2)']) {
+    await page.evaluate((value) => {
+      document.querySelector('#scene').style.filter = value;
+    }, filter);
+    await page.waitForFunction(() => window.probe.state().quality === 'unavailable');
+    assert.equal(
+      await page.evaluate(() => window.probe.pixels()),
+      'data:,',
+      'ancestor filtering withdraws retained enhanced pixels'
+    );
+    await capture(
+      filter.startsWith('opacity')
+        ? '12e-ancestor-filter-opacity'
+        : '12f-ancestor-filter-brightness'
+    );
+    await page.evaluate(() => {
+      document.querySelector('#scene').style.filter = 'none';
+    });
+    await page.waitForFunction(() => window.probe.state().quality === 'experimental-owned-texture');
+  }
+  await capture('12g-ancestor-filter-restored');
 
   await page.evaluate(() => {
     const iframe = document.createElement('iframe');

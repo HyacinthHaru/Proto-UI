@@ -208,16 +208,29 @@ describe('private material through real WC and Feedback', () => {
       }
     });
 
-  for (const boundary of ['opacity', 'transform'] as const)
-    for (const placement of ['light', 'shadow', 'slot'] as const)
+  for (const boundary of [
+    'opacity',
+    'transform',
+    'rotate',
+    'scale',
+    'translate',
+    'filter',
+  ] as const)
+    for (const placement of ['host', 'light', 'shadow', 'slot'] as const)
       it(`rejects unsupported composed ancestor ${boundary} and recovers (placement=${placement})`, () => {
         const container = document.createElement('div');
-        const ancestor = placement === 'slot' ? document.createElement('slot') : container;
         const host = document.createElement('div');
+        const ancestor =
+          placement === 'host'
+            ? host
+            : placement === 'slot'
+              ? document.createElement('slot')
+              : container;
         if (placement === 'slot') {
           container.attachShadow({ mode: 'open' }).append(ancestor);
           container.append(host);
-        } else
+        } else if (placement === 'host') container.append(host);
+        else
           (placement === 'shadow' ? ancestor.attachShadow({ mode: 'open' }) : ancestor).append(
             host
           );
@@ -229,6 +242,10 @@ describe('private material through real WC and Feedback', () => {
           color: 'rgb(0, 0, 0)',
           opacity: '1',
           transform: 'none',
+          rotate: 'none',
+          scale: 'none',
+          translate: 'none',
+          filter: 'none',
           position: 'static',
           borderTopLeftRadius: '8px',
           borderTopRightRadius: '8px',
@@ -237,7 +254,14 @@ describe('private material through real WC and Feedback', () => {
         };
         const ancestorCss = {
           ...safe,
-          [boundary]: boundary === 'opacity' ? '0.2' : 'matrix(0, 1, -1, 0, 0, 0)',
+          [boundary]: {
+            opacity: '0.2',
+            transform: 'matrix(0, 1, -1, 0, 0, 0)',
+            rotate: '8deg',
+            scale: '1.2',
+            translate: '4px',
+            filter: 'opacity(0.2)',
+          }[boundary],
         };
         const computed = vi
           .spyOn(window, 'getComputedStyle')
@@ -295,7 +319,7 @@ describe('private material through real WC and Feedback', () => {
           );
           expect(context).not.toHaveBeenCalled();
           expect(host.dataset.materialReason).toBe(
-            boundary === 'opacity'
+            boundary === 'opacity' || boundary === 'filter'
               ? 'complete-readable-fallback-unavailable'
               : 'geometry-unavailable'
           );

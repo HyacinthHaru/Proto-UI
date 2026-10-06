@@ -71,7 +71,8 @@ function composedPaintInputs(host: HTMLElement): string[] {
       css?.transform || 'none',
       css?.rotate || 'none',
       css?.scale || 'none',
-      css?.translate || 'none'
+      css?.translate || 'none',
+      css?.filter || 'none'
     );
     const root = element.getRootNode();
     element =
@@ -169,6 +170,9 @@ export function createOwnedTextureVisualSink(
       if (retired || (!recoverInputs && canvas.style.display !== 'block')) return;
       try {
         const current = source.current();
+        if (retired) return;
+        const bounds = current ? current.bounds(host) : [];
+        if (retired) return;
         const rect = host.getBoundingClientRect();
         const css = host.ownerDocument.defaultView?.getComputedStyle(host);
         const next = [
@@ -177,7 +181,7 @@ export function createOwnedTextureVisualSink(
           rect.width,
           rect.height,
           host.ownerDocument.defaultView?.devicePixelRatio ?? NaN,
-          ...(current ? current.bounds(host) : []),
+          ...bounds,
           css?.transform ?? 'none',
           css?.borderTopLeftRadius ?? '',
           css?.borderTopRightRadius ?? '',
@@ -199,6 +203,7 @@ export function createOwnedTextureVisualSink(
           repaint();
         }
       } catch {
+        if (retired) return;
         freeGPU();
         fallback('geometry-observation-failed');
       }
@@ -211,6 +216,7 @@ export function createOwnedTextureVisualSink(
     { before: string | undefined; applied: string | undefined }
   >();
   function diagnostic(key: string, value: string | undefined) {
+    if (retired) return;
     const current = host.dataset[key];
     const entry = diagnostics.get(key);
     const before = entry && current === entry.applied ? entry.before : current;
@@ -227,12 +233,14 @@ export function createOwnedTextureVisualSink(
     diagnostics.clear();
   }
   function unavailable(reason: string) {
+    if (retired) return;
     recoverInputs = false;
     stopGeometryWatch();
     canvas.style.display = 'none';
     freeGPU();
     restoreOwnedInline();
     if (last) style.apply([...last.style.tokens]);
+    if (retired) return;
     clearDiagnostics();
     diagnostic('materialQuality', 'unavailable');
     diagnostic('materialReason', reason);
@@ -251,6 +259,7 @@ export function createOwnedTextureVisualSink(
     return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
   };
   function fallback(reason: string) {
+    if (retired) return;
     stopGeometryWatch();
     recoverInputs =
       reason === 'geometry-unavailable' ||
@@ -405,6 +414,7 @@ export function createOwnedTextureVisualSink(
       // Remove competing Proto-owned fill before publishing fallback or enhancement.
       restoreOwnedInline();
       style.apply(last.style.tokens.filter((token) => !paint(token)));
+      if (retired) return;
       const css = ownerWindow?.getComputedStyle(host);
       if (!css) throw new Error('owner-document-unavailable');
       const paintInputs = composedPaintInputs(host);
@@ -417,7 +427,9 @@ export function createOwnedTextureVisualSink(
           : null;
       if (
         !rgba(resolvedForeground) ||
-        paintInputs.some((value, index) => index % 5 === 0 && Number(value) !== 1) ||
+        paintInputs.some((value, index) =>
+          index % 6 === 0 ? Number(value) !== 1 : index % 6 === 5 && value !== 'none'
+        ) ||
         contrast(c.fallback.fill, resolvedForeground) < 4.5
       ) {
         unavailable('complete-readable-fallback-unavailable');
@@ -441,6 +453,7 @@ export function createOwnedTextureVisualSink(
         return;
       }
       const prefs = preferences.current();
+      if (retired) return;
       if (
         prefs.reducedMotion !== 'no-preference' ||
         prefs.reducedTransparency !== 'no-preference' ||
@@ -452,6 +465,7 @@ export function createOwnedTextureVisualSink(
         return;
       }
       const texture = source.current();
+      if (retired) return;
       if (
         !texture ||
         !Number.isSafeInteger(texture.generation) ||
@@ -486,6 +500,7 @@ export function createOwnedTextureVisualSink(
       if (!sameSnapshot(preparedSource, texture) || preparedGeneration !== texture.generation) {
         const nextPixels =
           program.prepareSource?.(texture.pixels, texture.width, texture.height) ?? texture.pixels;
+        if (retired) return;
         if (!(nextPixels instanceof Uint8Array) || nextPixels.length !== texture.pixels.length)
           throw new Error('invalid-prepared-source');
         for (let i = 3; i < nextPixels.length; i += 4)
@@ -502,7 +517,7 @@ export function createOwnedTextureVisualSink(
         css.borderBottomRightRadius,
       ];
       if (
-        paintInputs.some((value, index) => index % 5 !== 0 && value !== 'none') ||
+        paintInputs.some((value, index) => index % 6 > 0 && index % 6 < 5 && value !== 'none') ||
         !radii.every((value) => /^\d+(\.\d+)?px$/.test(value)) ||
         !radii.every((value) => value === radii[0])
       ) {
@@ -537,6 +552,7 @@ export function createOwnedTextureVisualSink(
         pressed: material.pressed,
         disabled: material.disabled,
       };
+      if (retired) return;
       prepareGPU();
       const g = gl!;
       canvas.width = width;
@@ -559,6 +575,7 @@ export function createOwnedTextureVisualSink(
         preparedPixels
       );
       program.writeFrame(g, locations, frame);
+      if (retired) return;
       g.clearColor(0, 0, 0, 0);
       g.clear(g.COLOR_BUFFER_BIT);
       g.disable(g.BLEND);
@@ -579,7 +596,9 @@ export function createOwnedTextureVisualSink(
           fallback('rendered-contrast-unsafe');
           return;
         }
-      if (!sameSnapshot(source.current(), texture)) {
+      const finalSource = source.current();
+      if (retired) return;
+      if (!sameSnapshot(finalSource, texture)) {
         freeGPU();
         fallback('source-replaced-during-frame');
         return;
@@ -587,8 +606,11 @@ export function createOwnedTextureVisualSink(
       if (!ownerWindow?.requestAnimationFrame) throw new Error('geometry-observer-unavailable');
       if (css.position === 'static') ownInline('position', 'relative');
       ownInline('isolation', 'isolate');
+      if (retired) return;
       surface.mount(canvas);
+      if (retired) return;
       ownInline('background', 'transparent');
+      if (retired) return;
       recoverInputs = false;
       canvas.style.display = 'block';
       diagnostic('materialQuality', 'experimental-owned-texture');
@@ -612,6 +634,7 @@ export function createOwnedTextureVisualSink(
       ];
       watchGeometry();
     } catch (error) {
+      if (retired) return;
       freeGPU();
       fallback(error instanceof Error ? error.message : 'material-frame-failed');
     } finally {

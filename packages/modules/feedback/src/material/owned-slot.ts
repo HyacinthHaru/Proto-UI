@@ -119,7 +119,18 @@ export function createOwnedMaterialBinding(
       for (const handle of [pressed, disabled])
         offs.push(
           states.watch(handle, () => {
-            if (!disposed) invalidate();
+            if (disposed) return;
+            try {
+              invalidate();
+            } catch (error) {
+              // Host projection must not abort State's semantic fan-out before
+              // Rule updates its retained style contribution. Feedback keeps
+              // the failed projection retryable; report the original failure
+              // after the current observer delivery rather than swallowing it.
+              queueMicrotask(() => {
+                throw error;
+              });
+            }
           })
         );
     },
