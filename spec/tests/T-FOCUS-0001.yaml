@@ -40,6 +40,7 @@ cases:
       - React, Vue and Vue2 failed marker publication controls assert binding cleanup, not suppression of framework errors or preservation of an error-boundary-unmounted UI.
       - Host failures are deliberate controlled overrides. This evidence does not establish native browser exception behavior, entry admission, or roving navigation.
       - Web Component initial connection controls cover supported focus, props, getProps and diagnostic callback failures with owned-resource rollback, distinct from retained-view and terminal cleanup. They do not define transactions for native listener attachment failures.
+      - React optional no-Context runtime startup controls use actual installed React 18 and 19 ErrorBoundary teardown before explicit test unmount. They distinguish partial factory resource release from acquired-session disposal and retain full-Context normal/error controls; this is not native browser or arbitrary native-method exception evidence.
   - id: T-FOCUS-0001-CASE-REENTRANT-ACQUISITION
     title: Synchronous target and entry effects preserve the latest admitted intent and owner facts
     covers:
@@ -317,6 +318,12 @@ implementations:
     kind: adapter-test
     status: passing
     path: packages/adapters/react/test/focus-exception-cleanup.integration.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-SOURCE-LIFETIME-EXCEPTIONS]
+  - id: react-focus-startup-cleanup
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/react/test/focus-startup-cleanup.integration.test.ts
     required: true
     consumesCases: [T-FOCUS-0001-CASE-SOURCE-LIFETIME-EXCEPTIONS]
   - id: vue-focus-source-exception-cleanup
@@ -668,6 +675,9 @@ exercises:
       coverageImpact: exercises-test-surface
       note: Bounded real React commit fixtures, including nested resolved-owner readiness, and the selected-entry/End/Home Chromium journey exercise current Focus and observation delivery, not the whole React version range or profile.
 revisions:
+  - version: 0.3.0-alpha.1
+    change: strengthened
+    summary: Added bounded React optional-runtime startup rollback evidence with actual ErrorBoundary cleanup, preserving the existing Focus policy and native-exception limits.
   - version: 0.3.0-alpha.1
     change: strengthened
     summary: Added logical-owner retry identity across retained views, post-focus supersession accounting, bounded lease controls and Web Component terminal settlement evidence without broadening native conformance claims.
