@@ -423,6 +423,34 @@ test('natural count deviations are retained without repair', () => {
   assert.equal(record.response.outputs[1].text, f.response.outputs[1].text);
 });
 
+test('stored count deviations cannot be omitted or invented by rebinding the digest', () => {
+  const f = fixture();
+  const exact = f.record.receipt;
+  f.response.outputs[1].text = JSON.stringify(Array(230).fill(137));
+  const deviated = buildModelTraceRecord(f.challenge, f.response).receipt;
+  f.response.outputs[0].text = null;
+  f.response.outputs[0].error = 'unavailable';
+  f.response.outputs[2].text = 'not a strict sample';
+  const nullable = buildModelTraceRecord(f.challenge, f.response).receipt;
+  const absent = fixture({ failed: true }).record.receipt;
+
+  for (const [receipt, fabricate] of [
+    [deviated, false],
+    [exact, true],
+    [nullable, false],
+    [absent, true],
+  ]) {
+    validateModelTraceReceipt(receipt);
+    const forged = structuredClone(receipt);
+    forged.anomalies = forged.anomalies.filter((code) => code !== 'count-deviation');
+    if (fabricate) forged.anomalies.push('count-deviation');
+    forged.anomalies.sort();
+    forged.id = `sha256:${computeModelTraceReceiptDigest(forged)}`;
+    assert.equal(structuralReceipt(forged), true, JSON.stringify(structuralReceipt.errors));
+    assert.throws(() => validateModelTraceReceipt(forged));
+  }
+});
+
 test('expiry, changed task/provider/session and future clocks require a new measurement', () => {
   const f = fixture({ failed: true });
   const receipt = f.record.receipt;

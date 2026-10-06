@@ -672,6 +672,11 @@ export function validateModelTraceReceipt(receipt) {
         ),
     'failure diagnostics differ from retained sampling facts'
   );
+  assert(
+    receipt.anomalies.includes('count-deviation') ===
+      receipt.sampling.counts.some((count, index) => count !== null && count !== COUNTS[index]),
+    'count deviation anomaly differs from retained valid sample counts'
+  );
   labels(receipt.declared);
   const expectedDeclarations = declarationAnomalies(receipt.declared, result, reference);
   assert(
