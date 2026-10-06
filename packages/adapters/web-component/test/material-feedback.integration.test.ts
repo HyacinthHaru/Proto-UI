@@ -185,6 +185,113 @@ describe('private material through real WC and Feedback', () => {
       }
     });
 
+  for (const boundary of ['opacity', 'transform'] as const)
+    for (const placement of ['light', 'shadow', 'slot'] as const)
+      it(`rejects unsupported composed ancestor ${boundary} and recovers (placement=${placement})`, () => {
+        const container = document.createElement('div');
+        const ancestor = placement === 'slot' ? document.createElement('slot') : container;
+        const host = document.createElement('div');
+        if (placement === 'slot') {
+          container.attachShadow({ mode: 'open' }).append(ancestor);
+          container.append(host);
+        } else
+          (placement === 'shadow' ? ancestor.attachShadow({ mode: 'open' }) : ancestor).append(
+            host
+          );
+        document.body.append(container);
+        // happy-dom does not implement assignedSlot; inject the native composed-tree
+        // relationship, while exercising the actual sink admission and recovery.
+        if (placement === 'slot') Object.defineProperty(host, 'assignedSlot', { value: ancestor });
+        const safe = {
+          color: 'rgb(0, 0, 0)',
+          opacity: '1',
+          transform: 'none',
+          position: 'static',
+          borderTopLeftRadius: '8px',
+          borderTopRightRadius: '8px',
+          borderBottomLeftRadius: '8px',
+          borderBottomRightRadius: '8px',
+        };
+        const ancestorCss = {
+          ...safe,
+          [boundary]: boundary === 'opacity' ? '0.2' : 'matrix(0, 1, -1, 0, 0, 0)',
+        };
+        const computed = vi
+          .spyOn(window, 'getComputedStyle')
+          .mockImplementation(
+            (element) => (element === ancestor ? ancestorCss : safe) as CSSStyleDeclaration
+          );
+        const frames = new Map<number, FrameRequestCallback>();
+        let nextFrame = 0;
+        const request = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((fn) => {
+          frames.set(++nextFrame, fn);
+          return nextFrame;
+        });
+        const cancel = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation((id) => {
+          frames.delete(id);
+        });
+        const context = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
+        vi.spyOn(host, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 180, 48));
+        const sink = createOwnedTextureVisualSink(
+          host,
+          createOwnedTwTokenApplier(host),
+          { vertex: '', fragment: '', uniforms: [], writeFrame() {} },
+          {
+            current: () => ({
+              generation: 1,
+              width: 1,
+              height: 1,
+              pixels: new Uint8Array([255, 255, 255, 255]),
+              bounds: () => [0, 0, 1, 1],
+            }),
+            subscribe: () => () => {},
+          },
+          {
+            current: () => ({
+              reducedMotion: 'no-preference',
+              reducedTransparency: 'no-preference',
+              contrast: 'no-preference',
+              forcedColors: 'none',
+            }),
+            subscribe: () => () => {},
+          }
+        );
+        const tick = () => {
+          const tasks = [...frames.values()];
+          frames.clear();
+          tasks.forEach((fn) => fn(0));
+        };
+        try {
+          sink.commit(
+            finalStyleFrame(tw('rounded-full'), 1, 1, {
+              config: button.modules![0].config as OwnedMaterialConfig,
+              pressed: false,
+              disabled: false,
+              bindingsReady: true,
+            })
+          );
+          expect(context).not.toHaveBeenCalled();
+          expect(host.dataset.materialReason).toBe(
+            boundary === 'opacity'
+              ? 'complete-readable-fallback-unavailable'
+              : 'geometry-unavailable'
+          );
+          tick();
+          ancestorCss[boundary] = boundary === 'opacity' ? '1' : 'none';
+          tick();
+          expect(context).toHaveBeenCalledOnce();
+          expect(host.dataset.materialReason).toBe('webgl-unavailable');
+        } finally {
+          sink.release(1);
+          expect(frames.size).toBe(0);
+          computed.mockRestore();
+          request.mockRestore();
+          cancel.mockRestore();
+          context.mockRestore();
+          container.remove();
+        }
+      });
+
   it('retires adapter and owner resources when the visual consumer fails before attachment', async () => {
     const beforeDispose = vi.fn();
     const states: Array<{ get(): boolean }> = [];

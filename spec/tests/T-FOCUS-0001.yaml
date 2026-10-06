@@ -5,6 +5,12 @@ status: draft
 since: 0.1.0
 summary: Runtime and bounded React/Vue evidence for asFocusable target facts, asFocusEntry region policy, setup-only configuration, disabled focus requests, autofocus, scopes, native reveal readiness, one-shot commit effects, and nested surface-owner readiness.
 cases:
+  - id: T-FOCUS-0001-CASE-TARGET-SUPERSESSION-ADMISSION
+    title: Enabled target requests supersede old entry before scope admission
+    covers: [C-AS-FOCUSABLE-0001-G, C-AS-FOCUS-ENTRY-0001-H, C-FOCUS-0001-H]
+    expectation: scope-denied-new-target-cancels-old-entry-before-reentrant-host-readiness-while-disabled-target-attempts-preserve-the-independent-enabled-entry
+    notes:
+      - Real Runtime and shared FocusCenter with controlled host readiness in happy-dom, covering programmatic and native target requests. Non-superseded entry remains separate from Center target admission; null-entry policy is unchanged.
   - id: T-FOCUS-0001-CASE-READINESS-FANOUT
     title: Readiness reaches later subscribers after an earlier observer throws
     covers: [HC-FOCUS-TARGET-0001-C]
@@ -296,6 +302,12 @@ cases:
       - Discriminating red/green execution uses installed framework runtimes in a simulated DOM. It neither injects gate state nor synthesizes focus facts, and does not claim native browser or all-version conformance.
 
 implementations:
+  - id: runtime-focus-scope-supersession
+    kind: runtime-test
+    status: passing
+    path: packages/runtime/test/contract/focus-scope-supersession.contract.test.ts
+    required: true
+    consumesCases: [T-FOCUS-0001-CASE-TARGET-SUPERSESSION-ADMISSION]
   - id: react-focus-readiness-fanout
     kind: adapter-test
     status: passing

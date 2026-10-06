@@ -76,6 +76,7 @@ export function createRuntimeSession<P extends PropsBaseType>(
     | undefined;
   let unmountPending: Promise<void> | undefined;
   let unmountVersion = 0;
+  let unmountWaitingForPresence = false;
   let disposePending: Promise<void> | undefined;
   const pendingDelayTasks = new Set<{ cancel(): void }>();
 
@@ -377,7 +378,19 @@ export function createRuntimeSession<P extends PropsBaseType>(
 
   const unmountInternal = (force = false): Promise<void> => {
     if (mountPhase === 'detached') return Promise.resolve();
-    if (mountPhase === 'unmounting' && unmountPending && !force) return unmountPending;
+    if (mountPhase === 'unmounting' && unmountPending && (!force || !unmountWaitingForPresence))
+      return unmountPending;
+
+    // Publish completion before phase observers or unmount callbacks can reenter.
+    // Terminal disposal may supersede a presence wait, but never a callback pass.
+    let resolveUnmount!: () => void;
+    let rejectUnmount!: (error: unknown) => void;
+    const pending = new Promise<void>((resolve, reject) => {
+      resolveUnmount = resolve;
+      rejectUnmount = reject;
+    });
+    unmountPending = pending;
+    unmountWaitingForPresence = false;
 
     const epoch = mountEpoch;
     const currentUnmountVersion = ++unmountVersion;
@@ -394,15 +407,20 @@ export function createRuntimeSession<P extends PropsBaseType>(
     }
     cancelPendingDelayTasks();
 
-    unmountPending = (async () => {
+    void (async () => {
       // A repeatable detach honors presence/transition approval. Terminal
       // disposal is host-authoritative and must not be held alive by a view
       // transition after the owning host component has already gone away.
       const presencePort = moduleHub.getPort<PresencePort>('presence');
-      if (force) presencePort?.forceUnmount();
-      const presence = force ? undefined : presencePort?.awaitUnmount();
-      if (presence) await presence;
+      const terminal = force || instancePhase === 'disposing';
+      if (terminal) presencePort?.forceUnmount();
+      const presence = terminal ? undefined : presencePort?.awaitUnmount();
+      if (presence) {
+        unmountWaitingForPresence = true;
+        await presence;
+      }
       if (currentUnmountVersion !== unmountVersion) return;
+      unmountWaitingForPresence = false;
 
       let callbackFailed = phaseFailed;
       let callbackError: unknown = phaseError;
@@ -427,11 +445,11 @@ export function createRuntimeSession<P extends PropsBaseType>(
       attempt(() => setMountPhase('detached', epoch));
       cancelPendingDelayTasks();
       emit({ type: 'unmount.done', epoch });
-      unmountPending = undefined;
+      if (unmountPending === pending) unmountPending = undefined;
       if (callbackFailed) throw callbackError;
-    })();
+    })().then(resolveUnmount, rejectUnmount);
 
-    return unmountPending;
+    return pending;
   };
 
   const unmount = (): Promise<void> => unmountInternal(false);
