@@ -55,6 +55,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/test/button-view-lifetime.browser.test.ts',
   'apps/www/test/radio-group-entry.browser.test.ts',
   'apps/workspace/test/lifecycle.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-base-image.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts',
