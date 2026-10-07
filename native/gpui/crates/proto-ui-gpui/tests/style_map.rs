@@ -436,7 +436,7 @@ const EXPECTED_UNMAPPED: [&str; 31] = [
 /// This is a separate list from the property inventory on purpose. `width` is
 /// mapped; `width: fit-content` is not. Recording the pair keeps the property
 /// inventory from claiming that `width` never reaches a surface.
-const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 11] = [
+const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 10] = [
     (
         "color",
         "inherit",
@@ -477,13 +477,6 @@ const EXPECTED_UNMAPPED_VALUES: [(&str, &str, &str); 11] = [
         "height",
         "calc(100% + 2px)",
         "Brutalist Scroll Area's private Web corner accounts for its track's top border. \
-         GPUI cannot add a fixed border length to a parent fraction without layout context; \
-         this Web-only passive presentation is explicitly unmapped, not rounded to 100%.",
-    ),
-    (
-        "height",
-        "calc(100% + 4px)",
-        "Shadcn Scroll Area's private Web corner accounts for both track borders. \
          GPUI cannot add a fixed border length to a parent fraction without layout context; \
          this Web-only passive presentation is explicitly unmapped, not rounded to 100%.",
     ),
