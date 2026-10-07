@@ -1,0 +1,13 @@
+
+ RUN  v2.1.9 <SOURCE_ROOT>
+
+ ✓ apps/www/src/components/PrototypePreviewer/projection-scope.test.ts (37 tests) 268ms
+ ✓ apps/www/src/components/PrototypePreviewer/projection-materializer.test.ts (7 tests) 116ms
+ ✓ apps/www/src/components/Homepage/homepage-runtime-client.test.ts (25 tests) 53ms
+ ✓ apps/www/src/components/PrototypePreviewer/projection-theme.test.ts (9 tests) 117ms
+
+ Test Files  4 passed (4)
+      Tests  78 passed (78)
+   Start at  19:16:20
+   Duration  1.26s (transform 577ms, setup 0ms, collect 782ms, tests 553ms, environment 369ms, prepare 97ms)
+

@@ -1,0 +1,60 @@
+
+ RUN  v2.1.9 <SOURCE_ROOT>
+
+ ✓ apps/www/src/components/site-search-commands.test.ts (5 tests) 7ms
+ ✓ apps/www/src/components/override/Search.styles.test.ts (1 test) 1ms
+stdout | apps/www/src/components/override/Search.commands.test.ts > intent-only module preparation > consumes public intent from shadcn/vue2 and ignores retired command subscriptions
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ apps/www/src/components/override/Search.commands.test.ts (72 tests) 2785ms
+ ❯ apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts (17 tests | 2 failed) 97ms
+   × captures actual supplied owner/semantic transitions without creating readiness 45ms
+     → Cannot read properties of undefined (reading 'projectionOwnerHost')
+   × bounds observations and ignores queued observer/definition callbacks after stop 1ms
+     → Cannot read properties of undefined (reading 'projectionOwnerHost')
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts > captures actual supplied owner/semantic transitions without creating readiness
+TypeError: Cannot read properties of undefined (reading 'projectionOwnerHost')
+ ❯ evalmachine.<anonymous>:41:80
+ ❯ Object.record evalmachine.<anonymous>:32:78
+ ❯ Object.attach evalmachine.<anonymous>:74:13
+ ❯ installSearchStartupTrace evalmachine.<anonymous>:126:9
+ ❯ startupHarness apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts:221:3
+    219|   const install = (sandbox as any).install;
+    220|   expect(install.toString()).not.toMatch(/\b__name\s*\(/);
+    221|   install();
+       |   ^
+    222|   return {
+    223|     trace: sandbox.window.__puiSearchStartup,
+ ❯ apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts:236:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts > bounds observations and ignores queued observer/definition callbacks after stop
+TypeError: Cannot read properties of undefined (reading 'projectionOwnerHost')
+ ❯ evalmachine.<anonymous>:41:80
+ ❯ Object.record evalmachine.<anonymous>:32:78
+ ❯ Object.attach evalmachine.<anonymous>:74:13
+ ❯ installSearchStartupTrace evalmachine.<anonymous>:126:9
+ ❯ startupHarness apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts:221:3
+    219|   const install = (sandbox as any).install;
+    220|   expect(install.toString()).not.toMatch(/\b__name\s*\(/);
+    221|   install();
+       |   ^
+    222|   return {
+    223|     trace: sandbox.window.__puiSearchStartup,
+ ❯ apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts:267:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  2 failed | 93 passed (95)
+   Start at  19:00:07
+   Duration  4.01s (transform 610ms, setup 0ms, collect 1.49s, tests 2.89s, environment 298ms, prepare 105ms)
+

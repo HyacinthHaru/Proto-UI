@@ -1,0 +1,26 @@
+
+ RUN  v2.1.9 <SOURCE_ROOT>
+
+ ❯ apps/www/src/components/override/Search.commands.test.ts (72 tests | 1 failed | 71 skipped) 43ms
+   × intent-only module preparation > starts both module imports after HEAD without serializing the cold open 42ms
+     → expected "spy" to be called 1 times, but got 0 times
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/src/components/override/Search.commands.test.ts > intent-only module preparation > starts both module imports after HEAD without serializing the cold open
+AssertionError: expected "spy" to be called 1 times, but got 0 times
+ ❯ apps/www/src/components/override/Search.commands.test.ts:241:24
+    239|     try {
+    240|       expect(f.loadRuntime).toHaveBeenCalledTimes(1);
+    241|       expect(f.loadUI).toHaveBeenCalledTimes(1);
+       |                        ^
+    242|       expect(f.buildUI).not.toHaveBeenCalled();
+    243|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 71 skipped (72)
+   Start at  18:48:06
+   Duration  1.09s (transform 482ms, setup 0ms, collect 819ms, tests 43ms, environment 117ms, prepare 27ms)
+

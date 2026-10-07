@@ -1,0 +1,56 @@
+
+ RUN  v2.1.9 <SOURCE_ROOT>
+
+ ✓ apps/www/src/components/site-search-commands.test.ts (5 tests) 7ms
+ ✓ apps/www/src/components/override/Search.styles.test.ts (1 test) 1ms
+stdout | apps/www/src/components/override/Search.commands.test.ts > intent-only module preparation > consumes public intent from shadcn/vue2 and ignores retired command subscriptions
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ❯ apps/www/src/components/override/Search.commands.test.ts (72 tests | 1 failed) 2848ms
+   × intent-only module preparation > allows no old import continuation to write into a reconnected service 66ms
+     → expected "spy" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st spy call:
+
+    Array []
+
+
+Number of calls: 1
+
+ ✓ apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts (16 tests) 94ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/src/components/override/Search.commands.test.ts > intent-only module preparation > allows no old import continuation to write into a reconnected service
+AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st spy call:
+
+    Array []
+
+
+Number of calls: 1
+
+ ❯ apps/www/src/components/override/Search.commands.test.ts:404:26
+    402|     resolveRuntime({});
+    403|     await settle();
+    404|     expect(f.loadUI).not.toHaveBeenCalled();
+       |                          ^
+    405|     expect(f.buildUI).not.toHaveBeenCalled();
+    406|     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 93 passed (94)
+   Start at  18:50:20
+   Duration  3.97s (transform 641ms, setup 0ms, collect 1.37s, tests 2.95s, environment 230ms, prepare 89ms)
+

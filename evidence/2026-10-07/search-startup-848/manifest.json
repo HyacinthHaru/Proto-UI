@@ -3,8 +3,8 @@
   "files": [
     {
       "path": "README.md",
-      "bytes": 4906,
-      "sha256": "1cedd09f131006d4d0843108cd5e697384ef8712dfd1c5aa34cb9a6de785ae1b"
+      "bytes": 5628,
+      "sha256": "0827af31ef69a8e14cef8b3b031d0ec6037d366a833b7202c665bf3ac51efcf9"
     },
     {
       "path": "browser-30.log",
@@ -50,6 +50,11 @@
       "path": "focused-100.log",
       "bytes": 1054,
       "sha256": "0f60bd87755cecb2834bd80ce69d892c5a98edfedb314843bf526839392a8024"
+    },
+    {
+      "path": "independent-review.md",
+      "bytes": 3029,
+      "sha256": "a344b7636113773e7e198cfa342a8a1d9dfca3f245dd6610417e4cccd5a31540"
     },
     {
       "path": "integration-78.log",

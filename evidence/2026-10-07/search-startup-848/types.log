@@ -1,0 +1,48 @@
+
+> proto-ui@ check:types <SOURCE_ROOT>
+> corepack pnpm@10.32.1 -s check:types:workspace && corepack pnpm@10.32.1 -s check:types:docs
+
+[build:packages] @proto.ui/cli 500ms 48 files
+[build:packages] complete: 1/44 public packages
+[proto-ui] theme(shadcn): wrote src/styles/shadcn-theme.css
+[website-prototypes] generated one style sheet from 466 package + website tokens
+[proto-ui] style: wrote src/styles/proto-ui-style.css
+19:16:00 [content] Syncing content
+19:16:00 [content] Synced content
+19:16:00 [types] Generated 233ms
+19:16:00 [check] Getting diagnostics for Astro files in <SOURCE_ROOT>/apps/www...
+[96mscripts/audit-brutalist-contrast.mts[0m:[93m824[0m:[93m23[0m - [93mwarning[0m[90m ts(6385): [0m'clip' is deprecated.
+
+[7m824[0m             if (style.clip !== 'auto' || style.clipPath !== 'none' || style.maskImage !== 'none')
+[7m   [0m [93m                      ~~~~[0m
+
+[96mscripts/capture-whitepaper-diagram-evidence.mjs[0m:[93m189[0m:[93m17[0m - [93mwarning[0m[90m ts(2568): [0mProperty 'error' may not exist on type '{ id: string; route: string; viewport: { width: number; height: number; }; theme: string; svgSha256: string; errors: any[]; screenshots: never[]; outcome: string; }'. Did you mean 'errors'?
+
+[7m189[0m           entry.error = String(error);
+[7m   [0m [93m                ~~~~~[0m
+
+[96mscripts/contrast-probe.browser.ts[0m:[93m498[0m:[93m15[0m - [93mwarning[0m[90m ts(6385): [0m'clip' is deprecated.
+
+[7m498[0m     if (style.clip !== 'auto') limits.push('unsupported-legacy-clip');
+[7m   [0m [93m              ~~~~[0m
+
+[96mscripts/reading-reference-collector.mjs[0m:[93m457[0m:[93m32[0m - [93mwarning[0m[90m ts(6385): [0m'platform' is deprecated.
+
+[7m457[0m       platform: navigatorInfo?.platform ?? null,
+[7m   [0m [93m                               ~~~~~~~~[0m
+
+[96msrc/components/site-command-icons.dependencies.test.ts[0m:[93m49[0m:[93m72[0m - [93mwarning[0m[90m ts(6385): [0m'isTypeOnly' is deprecated.
+
+[7m49[0m       if (ts.isImportDeclaration(statement) && statement.importClause?.isTypeOnly) continue;
+[7m  [0m [93m                                                                       ~~~~~~~~~~[0m
+
+[96msrc/content/docs/zh-cn/code-surfaces.browser.test.ts[0m:[93m353[0m:[93m28[0m - [93mwarning[0m[90m ts(6387): [0mThe signature '(x: number, y: number): Range | null' of 'document.caretRangeFromPoint' is deprecated.
+
+[7m353[0m     const range = document.caretRangeFromPoint?.(point.x, point.y);
+[7m   [0m [93m                           ~~~~~~~~~~~~~~~~~~~[0m
+
+Result (483 files): 
+- 0 errors
+- 0 warnings
+- 6 hints
+

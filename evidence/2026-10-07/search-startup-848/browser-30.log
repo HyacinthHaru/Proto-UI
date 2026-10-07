@@ -1,0 +1,100 @@
+
+ RUN  v2.1.9 <SOURCE_ROOT>
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:28.701Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=1 requestMs=4 totalMs=4 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:28.953Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=2 requestMs=1 totalMs=256 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:29.205Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=3 requestMs=1 totalMs=508 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:29.458Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=4 requestMs=1 totalMs=761 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:29.710Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=5 requestMs=1 totalMs=1013 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:29.961Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=6 requestMs=0 totalMs=1264 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:30.212Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=7 requestMs=0 totalMs=1515 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:30.464Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=8 requestMs=0 totalMs=1767 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:30.715Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=9 requestMs=1 totalMs=2018 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:30.966Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=10 requestMs=1 totalMs=2269 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:31.217Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=11 requestMs=1 totalMs=2520 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:31.470Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=12 requestMs=1 totalMs=2773 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:31.720Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=13 requestMs=0 totalMs=3023 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:31.971Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=14 requestMs=0 totalMs=3274 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:32.221Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=15 requestMs=0 totalMs=3524 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:32.473Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=16 requestMs=0 totalMs=3776 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:32.724Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=17 requestMs=1 totalMs=4027 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:32.975Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=18 requestMs=0 totalMs=4278 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:33.226Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=19 requestMs=1 totalMs=4529 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:64357
+
+stdout | apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts
+[server-readiness] 2026-10-07T11:08:35.152Z http://127.0.0.1:64357/zh-cn/ui-libraries/shadcn/button/ attempt=20 requestMs=1674 totalMs=6455 HTTP 200 OK
+
+ ✓ apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts (30 tests) 83489ms
+   ✓ Search family Button commands > shadcn light 390px preserves activation, dismissal and focus 2313ms
+   ✓ Search family Button commands > shadcn light 1440px preserves activation, dismissal and focus 1943ms
+   ✓ Search family Button commands > shadcn dark 390px preserves activation, dismissal and focus 1765ms
+   ✓ Search family Button commands > shadcn dark 1440px preserves activation, dismissal and focus 1925ms
+   ✓ Search family Button commands > brutalist light 390px preserves activation, dismissal and focus 1447ms
+   ✓ Search family Button commands > brutalist light 1440px preserves activation, dismissal and focus 1565ms
+   ✓ Search family Button commands > brutalist dark 390px preserves activation, dismissal and focus 1389ms
+   ✓ Search family Button commands > brutalist dark 1440px preserves activation, dismissal and focus 1518ms
+   ✓ homepage shadcn 1280px aligns actual Search and both selectors in every runtime 3273ms
+   ✓ homepage brutalist 1280px aligns actual Search and both selectors in every runtime 3661ms
+   ✓ homepage shadcn 1440px aligns actual Search and both selectors in every runtime 3292ms
+   ✓ homepage brutalist 1440px aligns actual Search and both selectors in every runtime 3684ms
+   ✓ homepage shadcn 2048px aligns actual Search and both selectors in every runtime 3248ms
+   ✓ homepage brutalist 2048px aligns actual Search and both selectors in every runtime 3727ms
+   ✓ homepage keeps one native dialog through open-runtime transitions and repeat initialization 2224ms
+   ✓ keeps a documentation link available without JavaScript 740ms
+   ✓ Docs shadcn 320px shows complete runtime values beside real Search 3485ms
+   ✓ Docs brutalist 320px shows complete runtime values beside real Search 2626ms
+   ✓ Docs shadcn 390px shows complete runtime values beside real Search 3546ms
+   ✓ Docs brutalist 390px shows complete runtime values beside real Search 2646ms
+   ✓ Docs shadcn 1280px shows complete runtime values beside real Search 3450ms
+   ✓ Docs brutalist 1280px shows complete runtime values beside real Search 2568ms
+   ✓ Docs shadcn 1440px shows complete runtime values beside real Search 3460ms
+   ✓ Docs brutalist 1440px shows complete runtime values beside real Search 2588ms
+   ✓ Docs shadcn 2048px shows complete runtime values beside real Search 3412ms
+   ✓ Docs brutalist 2048px shows complete runtime values beside real Search 2596ms
+   ✓ Docs shadcn 320px keeps enlarged 200% text reachable without clipping 1763ms
+   ✓ Docs brutalist 320px keeps enlarged 200% text reachable without clipping 2342ms
+   ✓ Docs shadcn 390px keeps enlarged 200% text reachable without clipping 1797ms
+   ✓ Docs brutalist 390px keeps enlarged 200% text reachable without clipping 2250ms
+
+ Test Files  1 passed (1)
+      Tests  30 passed (30)
+   Start at  19:08:28
+   Duration  83.78s (transform 41ms, setup 0ms, collect 178ms, tests 83.49s, environment 0ms, prepare 22ms)
+

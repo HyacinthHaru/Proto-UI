@@ -1,0 +1,21 @@
+
+ RUN  v2.1.9 <SOURCE_ROOT>
+
+ ✓ apps/www/src/components/site-search-commands.test.ts (5 tests) 7ms
+ ✓ apps/www/src/components/override/Search.test.ts (5 tests) 2ms
+ ✓ apps/www/src/components/override/Search.styles.test.ts (1 test) 1ms
+stdout | apps/www/src/components/override/Search.commands.test.ts > intent-only module preparation > consumes public intent from shadcn/vue2 and ignores retired command subscriptions
+Download the Vue Devtools extension for a better development experience:
+https://github.com/vuejs/vue-devtools
+You are running Vue in development mode.
+Make sure to turn on production mode when deploying for production.
+See more tips at https://vuejs.org/guide/deployment.html
+
+ ✓ apps/www/src/components/override/Search.commands.test.ts (72 tests) 2775ms
+ ✓ apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts (17 tests) 92ms
+
+ Test Files  5 passed (5)
+      Tests  100 passed (100)
+   Start at  19:08:06
+   Duration  3.86s (transform 622ms, setup 0ms, collect 1.33s, tests 2.88s, environment 298ms, prepare 107ms)
+

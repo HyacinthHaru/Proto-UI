@@ -37,3 +37,9 @@ The UI module request has completed but construction still waits for runtime. Th
 `production-native-14.json.gz` decompresses to the full path-sanitized raw result, including the instrumented observer/input timeline. `production-native-summary.json` removes only timeline fields for reading. `raw-public-map.json` binds original private and derived public bytes. PNGs are unmodified original bytes. Public source/logs replace three local path literals; the sanitized `.mts` source is a source walkthrough, not the exact executed bytes or a claim of portable execution. Original raw bytes remain private.
 
 Evidence is complete for these named local command/service controls and five published captures. Official exact-head CI/Linux production recovery, Windows behavior, independent maintainer acceptance and historical delay attribution remain verification debt. The original #848 failure, earlier props A/B and #847 adverse immediate-open result remain unchanged. No whole-repository test, all-Adapter native performance, or universal1s loading guarantee is claimed.
+
+## Publication reconciliation
+
+First evidence commit `700630596c88016f2094a20b9e17f70d984d2c08` included fifteen files; repository ignore rules omitted twelve prepared `.log` files. Anonymous readback correctly failed404. This additive correction includes every retained log, preserves the first commit, and requires a new whole-package byte verification before publication is reported complete.
+
+Independent local source/evidence review found no unresolved concrete finding; one obsolete timeout comment was corrected. See [the local review](independent-review.md). It binds the staged tree subsequently committed as `a96ecf605f15e60f4ea56f0c82ab5cf0ec8a199b`, keeps partial/ABSTAIN, and establishes no GitHub approval.

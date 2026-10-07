@@ -1,0 +1,33 @@
+
+ RUN  v2.1.9 <SOURCE_ROOT>
+
+ ❯ apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts (17 tests | 1 failed | 16 skipped) 4ms
+   × does not reuse an old generation ready timestamp for a late current command 3ms
+     → expected 999 to be 1500 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts > does not reuse an old generation ready timestamp for a late current command
+AssertionError: expected 999 to be 1500 // Object.is equality
+
+- Expected
++ Received
+
+- 1500
++ 999
+
+ ❯ apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts:418:36
+    416|   });
+    417|   const evidence = await read({ startedAt: 0 });
+    418|   expect(evidence.observedReadyAt).toBe(1500);
+       |                                    ^
+    419|   expect(searchReadinessWasOnTime(evidence)).toBe(false);
+    420| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  18:53:51
+   Duration  137ms (transform 23ms, setup 0ms, collect 27ms, tests 4ms, environment 0ms, prepare 22ms)
+

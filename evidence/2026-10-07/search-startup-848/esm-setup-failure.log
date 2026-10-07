@@ -1,0 +1,25 @@
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+Error: Transform failed with 48 errors:
+<EVIDENCE_ROOT>/production-native-control.ts:13:152: ERROR: Top-level await is currently not supported with the "cjs" output format
+<EVIDENCE_ROOT>/production-native-control.ts:14:0: ERROR: Top-level await is currently not supported with the "cjs" output format
+<EVIDENCE_ROOT>/production-native-control.ts:15:14: ERROR: Top-level await is currently not supported with the "cjs" output format
+<EVIDENCE_ROOT>/production-native-control.ts:16:0: ERROR: Top-level await is currently not supported with the "cjs" output format
+<EVIDENCE_ROOT>/production-native-control.ts:18:13: ERROR: Top-level await is currently not supported with the "cjs" output format
+...
+    at failureErrorWithLog (<SOURCE_ROOT>/node_modules/.pnpm/esbuild@0.27.4/node_modules/esbuild/lib/main.js:1748:15)
+    at <SOURCE_ROOT>/node_modules/.pnpm/esbuild@0.27.4/node_modules/esbuild/lib/main.js:1017:50
+    at responseCallbacks.<computed> (<SOURCE_ROOT>/node_modules/.pnpm/esbuild@0.27.4/node_modules/esbuild/lib/main.js:884:9)
+    at handleIncomingPacket (<SOURCE_ROOT>/node_modules/.pnpm/esbuild@0.27.4/node_modules/esbuild/lib/main.js:939:12)
+    at Socket.readFromStdout (<SOURCE_ROOT>/node_modules/.pnpm/esbuild@0.27.4/node_modules/esbuild/lib/main.js:862:7)
+    at Socket.emit (node:events:514:28)
+    at addChunk (node:internal/streams/readable:568:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:519:3)
+    at Readable.push (node:internal/streams/readable:399:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23) {
+  name: 'TransformError'
+}
+
+Node.js v24.21.0
