@@ -388,9 +388,17 @@ export function runPublishCli(argv, options = {}) {
   const recordPath = path.resolve(args.get('--record'));
   const contextPath = path.resolve(args.get('--context'));
   // Recompute the private raw samples. Never substitute a system/harness model.
-  const measure = () =>
-    loadModelTraceRecord({ recordPath, contextPath, repositoryId, now: options.now ?? new Date() });
-  const receipt = measure();
+  const measure = (fresh = true) =>
+    loadModelTraceRecord({
+      recordPath,
+      contextPath,
+      repositoryId,
+      now: options.now ?? new Date(),
+      fresh,
+    });
+  // GitHub reconciliation is read-only and must retain the original disclosure
+  // after expiry. Commits have no historical reconciliation and stay fresh.
+  const receipt = measure(command === 'commit');
   const io = tools(options);
   if (command === 'commit') {
     assertPrivateCommitInputs(io, recordPath, contextPath);
@@ -597,7 +605,6 @@ export function runPublishCli(argv, options = {}) {
     throw new Error('PR head/base changed before write');
   if (findPublished())
     throw new Error('publication appeared during preflight; rerun read-only reconciliation');
-  assertModelTraceDisclosure(body, measure(), 'markdown');
   authorize(scopeId, viewer.login);
   let route;
   let method = 'POST';
@@ -622,6 +629,9 @@ export function runPublishCli(argv, options = {}) {
     route = `${endpoint}/issues/${number}`;
     method = 'PATCH';
   }
+  // Historical admission never authorizes a write. Re-read the original record
+  // with current freshness immediately before the single mutation attempt.
+  assertModelTraceDisclosure(body, measure(), 'markdown');
   let acknowledged;
   try {
     // Exactly one mutation. Transport/JSON failure may mean it succeeded.
