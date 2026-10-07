@@ -17,7 +17,7 @@ import {
 
 type Kind = 'programmatic' | 'native' | 'entry';
 let identity = 10000;
-async function fixture(haveRequestCap = true, declareScope = false) {
+async function fixture(haveRequestCap = true, declareScope = false, selfEntry = false) {
   let scope: ReturnType<typeof asFocusScope> | undefined;
   let parentToken: unknown = null;
   let parentObserver: (() => void) | undefined;
@@ -55,7 +55,11 @@ async function fixture(haveRequestCap = true, declareScope = false) {
         scope.configure({ entry: 'manual' });
       }
       entry = asFocusEntry();
-      entry.configure({ strategy: 'descendant-first', fallback: 'none' });
+      entry.configure(
+        selfEntry
+          ? { strategy: 'self', fallback: 'self' }
+          : { strategy: 'descendant-first', fallback: 'none' }
+      );
       focusable = asFocusable();
       focusable.focusable.watch((_ctx, event) => {
         if (event.type === 'next') eligibleObserver(event.next);
@@ -261,3 +265,198 @@ describe('tentative entry parent chain', () => {
     }
   });
 });
+
+it.each(['new entry', 'no target', 'entry disabled', 'new blur'] as const)(
+  'target disable preserves the latest eligible observer operation: %s',
+  async (action) => {
+    const f = await fixture(true, false, true);
+    try {
+      f.setResolved(f.root);
+      f.setImpl((el) => {
+        el.focus();
+        return true;
+      });
+      f.focusable.focus();
+      expect(document.activeElement).toBe(f.root);
+      if (action === 'no target') f.setResolved(null);
+      if (action === 'entry disabled') f.entry.setDisabled(true);
+      f.setEligibleObserver((next) => {
+        if (next) return;
+        if (action === 'new blur') f.focusable.blur();
+        else f.entry.focus({ reason: 'pointer' });
+      });
+      f.focusable.setDisabled(true);
+      expect(f.focusable.focusable.get()).toBe(false);
+      expect(document.activeElement === f.root).toBe(action === 'new entry');
+      expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(
+        action === 'new entry' ? 1 : 0
+      );
+    } finally {
+      await f.cleanup();
+    }
+  }
+);
+
+it.each(['pending', 'pending then blur', 'pending then disable entry'] as const)(
+  'target disable clears old physical focus while preserving newer entry policy: %s',
+  async (action) => {
+    const f = await fixture();
+    let accepts = false;
+    // Forward real DOM events into the Runtime host event vocabulary.
+    f.root.addEventListener('focus', () => f.root.dispatchEvent(new Event('host:focus')));
+    f.root.addEventListener('blur', () => f.root.dispatchEvent(new Event('host:blur')));
+    try {
+      f.setImpl((el, _options, kind) => {
+        if (kind === 'entry' && !accepts) return false;
+        el.focus();
+        return true;
+      });
+      f.focusable.focus({ reason: 'keyboard' });
+      expect(document.activeElement).toBe(f.root);
+      expect(f.focusable.focused.get()).toBe(true);
+      f.setEligibleObserver((next) => {
+        if (next) return;
+        f.entry.focus({ reason: 'keyboard', preventScroll: true });
+        if (action === 'pending then blur') f.focusable.blur();
+        else if (action === 'pending then disable entry') f.entry.setDisabled(true);
+      });
+      f.focusable.setDisabled(true);
+      expect(document.activeElement).not.toBe(f.root);
+      expect(f.port.getFacts()).toMatchObject({
+        focused: false,
+        active: false,
+        focusVisible: false,
+      });
+      accepts = true;
+      f.ready();
+      expect(document.activeElement === f.child).toBe(action === 'pending');
+      expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(
+        action === 'pending' ? 2 : 1
+      );
+      if (action === 'pending')
+        expect(f.attempts.at(-1)?.options).toEqual({ reason: 'keyboard', preventScroll: true });
+    } finally {
+      await f.cleanup();
+    }
+  }
+);
+
+it('preserves an acquired self-entry while a subsequent observer entry awaits its descendant', async () => {
+  const f = await fixture();
+  let accepts = true;
+  try {
+    f.setImpl((el, _options, kind) => {
+      if (kind === 'entry' && !accepts) return false;
+      el.focus();
+      return true;
+    });
+    f.focusable.focus();
+    f.setEligibleObserver((next) => {
+      if (next) return;
+      f.setResolved(f.root);
+      f.entry.focus({ reason: 'keyboard', preventScroll: true });
+      f.setResolved(f.child);
+      accepts = false;
+      f.entry.focus({ reason: 'pointer', preventScroll: false });
+    });
+    f.focusable.setDisabled(true);
+    expect(document.activeElement).toBe(f.root);
+    accepts = true;
+    f.ready();
+    expect(document.activeElement).toBe(f.child);
+    expect(f.attempts.at(-1)?.options).toEqual({ reason: 'pointer', preventScroll: false });
+  } finally {
+    await f.cleanup();
+  }
+});
+
+it.each([
+  'disable entry',
+  'disable then reenable entry',
+  'explicit no target',
+  'explicit blur',
+] as const)(
+  'does not count an entry cancelled inside accepted host focus as a surviving acquisition: %s',
+  async (action) => {
+    const f = await fixture(true, false, true);
+    try {
+      f.setResolved(f.root);
+      f.setImpl((el, _options, kind) => {
+        el.focus();
+        if (kind === 'entry') {
+          if (action === 'explicit blur') f.focusable.blur();
+          else if (action === 'explicit no target') {
+            f.setResolved(null);
+            f.entry.focus();
+          } else {
+            f.entry.setDisabled(true);
+            if (action === 'disable then reenable entry') f.entry.setDisabled(false);
+          }
+        }
+        return true;
+      });
+      f.focusable.focus();
+      f.setEligibleObserver((next) => {
+        if (!next) f.entry.focus({ preventScroll: true });
+      });
+      f.focusable.setDisabled(true);
+      expect(document.activeElement).not.toBe(f.root);
+      expect(f.port.getFacts()).toMatchObject({
+        focused: false,
+        active: false,
+        focusVisible: false,
+      });
+      f.setResolved(f.root);
+      f.ready();
+      expect(document.activeElement).not.toBe(f.root);
+      expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(1);
+    } finally {
+      await f.cleanup();
+    }
+  }
+);
+
+it.each(['pending', 'acquired self', 'acquired child'] as const)(
+  'target disable distinguishes acquisition from pending intent inside root getter: %s',
+  async (action) => {
+    const f = await fixture();
+    let accepts = action !== 'pending';
+    try {
+      f.setImpl((el, _options, kind) => {
+        if (kind === 'entry' && !accepts) return false;
+        el.focus();
+        return true;
+      });
+      f.focusable.focus({ reason: 'keyboard' });
+      expect(document.activeElement).toBe(f.root);
+      if (action === 'acquired self') f.setResolved(f.root);
+      let once = true;
+      f.setRootImpl(() => {
+        if (once) {
+          once = false;
+          f.entry.focus({ reason: 'keyboard', preventScroll: true });
+        }
+        return f.root;
+      });
+      f.focusable.setDisabled(true);
+      expect(document.activeElement === f.root).toBe(action === 'acquired self');
+      if (action === 'pending') {
+        expect(f.port.getFacts()).toMatchObject({
+          focused: false,
+          active: false,
+          focusVisible: false,
+        });
+        accepts = true;
+        f.ready();
+        expect(document.activeElement).toBe(f.child);
+        expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(2);
+        expect(f.attempts.at(-1)?.options).toEqual({ reason: 'keyboard', preventScroll: true });
+      } else {
+        expect(document.activeElement).toBe(action === 'acquired self' ? f.root : f.child);
+        expect(f.attempts.filter((attempt) => attempt.kind === 'entry')).toHaveLength(1);
+      }
+    } finally {
+      await f.cleanup();
+    }
+  }
+);

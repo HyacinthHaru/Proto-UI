@@ -251,7 +251,7 @@ describe.sequential('Website Demo Matrix browser smoke', () => {
       await waitForMatrix(page);
       const facts = await readMatrixFacts(page);
       expect(facts.demos).toBeGreaterThan(0);
-      // D-IMAGE-VIEW-PROJECTION-0001-E admits all four official Web adapters.
+      // The internal matrix deliberately compares each prototype across supported Web adapters.
       expect(facts.unavailable).toEqual([]);
       expect(facts.previewers).toBe(facts.demos * RUNTIMES.length);
       expect(facts.initialized).toBe(facts.previewers);
@@ -267,59 +267,13 @@ describe.sequential('Website Demo Matrix browser smoke', () => {
         const signatures = adapters.map((controls) =>
           controls.map(({ role, name }) => `${role}|${name}`)
         );
-        const signatureCount = new Set(signatures.map((signature) => JSON.stringify(signature)))
-          .size;
-        if (demoId === 'demo-brutalist-textarea' || signatureCount > 1) {
-          console.info('[demo-matrix-signatures]', JSON.stringify({ demoId, signatures }));
-        }
-        if (signatureCount > 1) {
-          // Observe after the original signature sample; do not wait for parity
-          // or change the assertion. A later settled DOM is a distinct sample.
-          const observedAfterMismatch = await page.evaluate((id) => {
-            const item = document.getElementById(id);
-            return Array.from(
-              item?.querySelectorAll<HTMLElement>('.demo-matrix__adapter') ?? []
-            ).map((adapter) => ({
-              runtime: adapter.getAttribute('aria-label'),
-              initialized: adapter
-                .querySelector('[data-previewer-id]')
-                ?.getAttribute('data-inited'),
-              hostHTML: adapter.querySelector('.host')?.innerHTML.slice(0, 4000),
-              controls: Array.from(
-                adapter.querySelectorAll<HTMLElement>('[role],button,input,select,textarea')
-              ).map((element) => {
-                const rect = element.getBoundingClientRect();
-                const style = getComputedStyle(element);
-                return {
-                  tag: element.tagName,
-                  role: element.getAttribute('role'),
-                  label: element.getAttribute('aria-label'),
-                  labelledBy: element.getAttribute('aria-labelledby'),
-                  ariaHidden: element.getAttribute('aria-hidden'),
-                  title: element.getAttribute('title'),
-                  text: element.textContent?.slice(0, 250),
-                  value: (element as HTMLInputElement).value,
-                  size: [rect.width, rect.height],
-                  display: style.display,
-                  visibility: style.visibility,
-                  opacity: style.opacity,
-                  html: element.outerHTML.slice(0, 1800),
-                };
-              }),
-            }));
-          }, demoId);
-          console.info(
-            '[demo-matrix-after-mismatch]',
-            JSON.stringify({ demoId, observedAfterMismatch })
-          );
-        }
         expect(
           signatures.flat().every((signature) => signature.endsWith('|') === false),
           `${demoId} has an unnamed visible interactive control`
         ).toBe(true);
         expect(
-          signatureCount,
-          `${demoId} accessible controls differ across runtimes: ${JSON.stringify(signatures)}`
+          new Set(signatures.map((signature) => JSON.stringify(signature))).size,
+          `${demoId} accessible controls differ across runtimes: ${JSON.stringify(Object.fromEntries(RUNTIMES.map((runtime, index) => [runtime, signatures[index]])))}`
         ).toBeLessThanOrEqual(1);
       }
 

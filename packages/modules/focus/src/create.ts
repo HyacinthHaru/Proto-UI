@@ -32,6 +32,7 @@ import type { EventPort } from '@proto.ui/module-event';
 import type { StateFacade, StatePort } from '@proto.ui/module-state';
 import {
   FOCUS_BLUR_CAP,
+  FOCUS_RELEASE_PENDING_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
   FOCUS_IS_NATIVELY_FOCUSABLE_CAP,
   FOCUS_ORDER_CAP,
@@ -124,6 +125,8 @@ type FocusOperation = {
   kind: 'target' | 'entry';
   inFlight: boolean;
   admitted: boolean;
+  preflight: boolean;
+  deferredReadinessVersion?: number;
   cancelled?: boolean;
   previous?: FocusOperation;
 };
@@ -144,6 +147,7 @@ class FocusModuleImpl extends ModuleBase {
   private currentHostFocusTarget: unknown = null;
   private hostFocusTargetGeneration = 0;
   private focusApplicationVersion = 0;
+  private entryAcquisitionVersion = 0;
   private focusOperation: FocusOperation | undefined;
   private focusFactsEpoch = 0;
   private hostEventsWired = false;
@@ -321,10 +325,90 @@ class FocusModuleImpl extends ModuleBase {
     this.statePort.set(handle, next, reason, this.getCallbackCtx());
   }
 
+  private withFocusRequestIntent(
+    kind: FocusOperation['kind'],
+    options: FocusRequestOptions | undefined,
+    apply: (intent: FocusRequestOptions) => void,
+    createIntent = createFocusRequestIntent
+  ): void {
+    const previous = this.focusOperation;
+    const applicationVersion = this.focusApplicationVersion;
+    // Author getters and Proxy traps may request or cancel focus while options
+    // are copied. Reserve tentative ownership without consuming older pending
+    // intent: a throwing snapshot or first unresolved nested entry is a no-op.
+    const operation: FocusOperation = {
+      kind,
+      inFlight: true,
+      admitted: false,
+      preflight: true,
+      previous,
+    };
+    this.focusOperation = operation;
+    let failed = false;
+    try {
+      const intent = createIntent(options);
+      if (this.focusOperation === operation && !operation.cancelled) {
+        this.focusOperation = this.liveFocusPredecessor(previous);
+        apply(intent);
+      }
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      if (this.focusOperation === operation) {
+        this.focusOperation = this.liveFocusPredecessor(previous);
+      }
+      operation.inFlight = false;
+      operation.previous = undefined;
+      this.settleDeferredReadiness(operation, applicationVersion, failed);
+    }
+  }
+
+  private settleDeferredReadiness(
+    operation: FocusOperation,
+    applicationVersion: number,
+    failed: boolean
+  ): void {
+    // Do not lose readiness if preflight threw or entry remained a no-op.
+    // A signal before an attempt has already had its opportunity. A signal
+    // during a rejected current application still owes one coalesced replay.
+    if (
+      operation.deferredReadinessVersion !== undefined &&
+      (applicationVersion === this.focusApplicationVersion ||
+        (operation.deferredReadinessVersion === this.focusApplicationVersion &&
+          this.focusOperation === operation &&
+          !!this.pendingFocusRequest))
+    ) {
+      const readinessVersion = operation.deferredReadinessVersion;
+      operation.deferredReadinessVersion = undefined;
+      // Preparing a Center request may hand the snapshot's ownership to its
+      // still-running host preflight before any application has happened.
+      if (this.focusOperation?.inFlight && this.focusOperation.preflight) {
+        this.focusOperation.deferredReadinessVersion = readinessVersion;
+        return;
+      }
+      try {
+        if (this.pendingFocusRequest) this.fulfillPendingFocus();
+        else if (this.focusedState.get()) {
+          this.requestNativeFocus({
+            reason: this.focusVisibleState.get() ? 'keyboard' : 'programmatic',
+          });
+        }
+      } catch (error) {
+        if (!failed) throw error;
+      }
+    }
+  }
+
   private beginFocusOperation(kind: FocusOperation['kind']): FocusOperation {
     // Execution ownership is separate from the stable request-options identity.
     // Readiness replay keeps its intent while getting a new guarded execution.
-    const operation: FocusOperation = { kind, inFlight: true, admitted: kind === 'target' };
+    const operation: FocusOperation = {
+      kind,
+      inFlight: true,
+      admitted: kind === 'target',
+      preflight: true,
+    };
     this.focusOperation = operation;
     // An enabled target request supersedes older intent before Center admission.
     if (kind === 'target') this.clearPendingFocus();
@@ -411,15 +495,21 @@ class FocusModuleImpl extends ModuleBase {
       requestFocus: (options?: FocusRequestOptions, behavior?: FocusRequestBehavior) => {
         // Center-originated scope/roving requests also need distinct identity.
         // An owned snapshot is a pending replay and must retain its budget.
-        const intent = retainFocusRequestIntent(options);
         let outcome: FocusRequestOutcome = 'rejected';
-        this.runInCallbackScope(() => {
-          if (behavior?.syncFacts === false) {
-            outcome = this.requestNativeFocusDirect(intent);
-            return;
-          }
-          outcome = this.requestFocusDirect(intent);
-        });
+        this.withFocusRequestIntent(
+          'target',
+          options,
+          (intent) => {
+            this.runInCallbackScope(() => {
+              if (behavior?.syncFacts === false) {
+                outcome = this.requestNativeFocusDirect(intent);
+                return;
+              }
+              outcome = this.requestFocusDirect(intent);
+            });
+          },
+          retainFocusRequestIntent
+        );
         return outcome;
       },
       prepareFocusRequest: (options, behavior) => {
@@ -430,25 +520,40 @@ class FocusModuleImpl extends ModuleBase {
             finish: () => {},
           };
         }
-        const operation = prepared ?? this.beginFocusOperation('target');
-        const current = () => this.focusOperation === operation && !operation.cancelled;
+        let operation = prepared;
+        let intent: FocusRequestOptions | undefined;
+        const applicationVersion = this.focusApplicationVersion;
+        if (prepared) intent = retainFocusRequestIntent(options);
+        else {
+          // Center-originated author options need the same tentative owner as
+          // direct requests. Already-owned snapshots retain their retry identity.
+          this.withFocusRequestIntent(
+            'target',
+            options,
+            (snapshot) => {
+              intent = snapshot;
+              operation = this.beginFocusOperation('target');
+            },
+            retainFocusRequestIntent
+          );
+        }
+        const current = () =>
+          !!operation && this.focusOperation === operation && !operation.cancelled;
         return {
           isCurrent: current,
           apply: () => {
             let outcome: FocusRequestOutcome = 'rejected';
             this.runInCallbackScope(() => {
               if (current()) {
-                outcome = this.applyTargetDirect(
-                  retainFocusRequestIntent(options),
-                  behavior?.syncFacts !== false,
-                  operation
-                );
+                outcome = this.applyTargetDirect(intent!, behavior?.syncFacts !== false, operation);
               }
             });
             return outcome;
           },
-          finish: () => {
+          finish: (failed = false) => {
+            if (!operation) return;
             operation.inFlight = false;
+            if (!prepared) this.settleDeferredReadiness(operation, applicationVersion, failed);
           },
         };
       },
@@ -462,6 +567,15 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   private syncCenter() {
+    // Readiness can arrive during setup before any Focus role is declared.
+    // Such a partially constructed module owns no Center entry to publish.
+    if (
+      !this.focusableDeclared &&
+      !this.entryDeclared &&
+      !this.scopeDeclared &&
+      !this.rovingDeclared
+    )
+      return;
     const entry = this.createCenterEntry();
     if (!entry) return;
     FOCUS_CENTER.upsert(entry);
@@ -988,17 +1102,30 @@ class FocusModuleImpl extends ModuleBase {
 
   private clearPendingFocus(): void {
     this.pendingFocusRequest = undefined;
+    if (this.caps.has(FOCUS_RELEASE_PENDING_CAP)) this.caps.get(FOCUS_RELEASE_PENDING_CAP)();
   }
 
   private fulfillPendingFocus(): boolean {
+    // Readiness is an observation, not a newer explicit intent. Let the
+    // current preflight or host application settle before using its signal.
+    if (this.focusOperation?.inFlight) {
+      this.focusOperation.deferredReadinessVersion = this.focusApplicationVersion;
+      return true;
+    }
     const pending = this.pendingFocusRequest;
     if (!pending) return false;
     const target = this.getRootTarget();
     if (this.pendingFocusRequest !== pending) return true;
     if (!target || !this.caps.has(FOCUS_REQUEST_FOCUS_CAP)) return false;
-    this.pendingFocusRequest = undefined;
-    if (pending.kind === 'entry') this.applyEntryFocus(pending.options);
-    else this.applyTargetFocus(pending.options, pending.syncFacts);
+    if (pending.kind === 'entry') {
+      // Do not pre-clear an entry replay: applyEntryFocus keeps the slot when
+      // the replacement target has not mounted yet, so readiness from the
+      // later commit can still fulfill the same intent.
+      this.applyEntryFocus(pending.options, { replay: true });
+    } else {
+      this.pendingFocusRequest = undefined;
+      this.applyTargetFocus(pending.options, pending.syncFacts, true);
+    }
     return true;
   }
 
@@ -1013,8 +1140,10 @@ class FocusModuleImpl extends ModuleBase {
   ): FocusRequestOutcome {
     if (!this.focusableDeclared || this.focusableConfig.disabled) return 'rejected';
     const operation = prepared ?? this.beginFocusOperation('target');
+    const applicationVersion = this.focusApplicationVersion;
     const current = () => this.focusOperation === operation && !operation.cancelled;
     this.clearPendingFocus();
+    let failed = false;
     try {
       if (!syncFacts) {
         if (options.reason === 'keyboard') this.keyboardModality = true;
@@ -1027,6 +1156,7 @@ class FocusModuleImpl extends ModuleBase {
         this.queuePendingFocus(options, syncFacts);
         return 'pending';
       }
+      operation.preflight = false;
       this.focusApplicationVersion += 1;
       const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(
         target,
@@ -1052,8 +1182,12 @@ class FocusModuleImpl extends ModuleBase {
       )
         return 'rejected';
       return current() ? 'applied' : 'rejected';
+    } catch (error) {
+      failed = true;
+      throw error;
     } finally {
       operation.inFlight = false;
+      if (!prepared) this.settleDeferredReadiness(operation, applicationVersion, failed);
     }
   }
 
@@ -1064,32 +1198,39 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   requestFocus(options?: FocusRequestOptions): void {
-    this.applyTargetFocus(createFocusRequestIntent(options), true);
+    this.withFocusRequestIntent('target', options, (intent) => this.applyTargetFocus(intent, true));
   }
 
-  private applyTargetFocus(options: FocusRequestOptions, syncFacts: boolean): void {
+  private applyTargetFocus(options: FocusRequestOptions, syncFacts: boolean, replay = false): void {
     if (!this.focusableDeclared || this.focusableConfig.disabled) return;
     const operation = this.beginFocusOperation('target');
+    const applicationVersion = this.focusApplicationVersion;
+    let failed = false;
     try {
       // The legacy token fallback itself reads the host root and may reenter.
       const entry = this.createCenterEntry(operation);
       if (this.focusOperation !== operation || operation.cancelled) return;
       if (entry) FOCUS_CENTER.requestFocus(entry, options, { syncFacts });
       else this.applyTargetDirect(options, syncFacts, operation);
+    } catch (error) {
+      failed = true;
+      throw error;
     } finally {
       operation.inFlight = false;
+      if (!replay) this.settleDeferredReadiness(operation, applicationVersion, failed);
     }
   }
 
   requestEntryFocus(options?: FocusRequestOptions): void {
     // A private snapshot identifies this distinct intent even when callers
     // reuse options. Readiness replay keeps this same snapshot and retry budget.
-    this.applyEntryFocus(createFocusRequestIntent(options));
+    this.withFocusRequestIntent('entry', options, (intent) => this.applyEntryFocus(intent));
   }
 
-  private applyEntryFocus(options: FocusRequestOptions): void {
+  private applyEntryFocus(options: FocusRequestOptions, intent?: { replay: boolean }): void {
     if (!this.entryDeclared || this.entryConfig.disabled) return;
     const previous = this.focusOperation;
+    const applicationVersion = this.focusApplicationVersion;
     const retainedEntry =
       this.pendingFocusRequest?.kind === 'entry' ||
       (previous?.kind === 'entry' && previous.inFlight && previous.admitted);
@@ -1101,6 +1242,7 @@ class FocusModuleImpl extends ModuleBase {
     const restorePrevious = () => {
       this.focusOperation = this.liveFocusPredecessor(previous);
     };
+    let failed = false;
     try {
       const target = this.getRootTarget();
       if (!current()) return;
@@ -1120,22 +1262,34 @@ class FocusModuleImpl extends ModuleBase {
       if (!current()) return;
       if (!resolved) {
         if (retainedEntry) {
-          this.clearPendingFocus();
+          // Only a replay preserves its intent across the temporary
+          // no-target gap before a replacement commits. An explicit newer
+          // request whose policy result is no-target ends the retained
+          // intent instead of reviving it later.
+          if (intent?.replay) this.pendingFocusRequest = { kind: 'entry', options };
+          else this.clearPendingFocus();
           this.focusOperation = undefined;
         } else restorePrevious();
         return;
       }
       operation.admitted = true;
       this.clearPendingFocus();
+      operation.preflight = false;
       this.focusApplicationVersion += 1;
       const applied = this.caps.get(FOCUS_REQUEST_FOCUS_CAP)(resolved, options, 'entry');
+      if (current() && applied !== false) this.entryAcquisitionVersion += 1;
       if (current() && applied === false) this.pendingFocusRequest = { kind: 'entry', options };
     } catch (error) {
+      failed = true;
       if (current() && !operation.admitted) restorePrevious();
       throw error;
     } finally {
       operation.inFlight = false;
       operation.previous = undefined;
+      // A replay already consumes this readiness opportunity, even when its
+      // target is still absent. Coalesce nested signals rather than retrying
+      // the same unresolved intent recursively.
+      if (!intent?.replay) this.settleDeferredReadiness(operation, applicationVersion, failed);
     }
   }
 
@@ -1144,7 +1298,9 @@ class FocusModuleImpl extends ModuleBase {
   }
 
   private requestNativeFocus(options?: FocusRequestOptions): void {
-    this.applyTargetFocus(createFocusRequestIntent(options), false);
+    this.withFocusRequestIntent('target', options, (intent) =>
+      this.applyTargetFocus(intent, false)
+    );
   }
 
   blur(): void {
@@ -1153,11 +1309,18 @@ class FocusModuleImpl extends ModuleBase {
     this.blurTarget();
   }
 
-  private blurTarget(): void {
+  private blurTarget(disabling = false): void {
     const epoch = this.focusFactsEpoch;
     const operation = this.focusOperation;
+    const acquisition = this.entryAcquisitionVersion;
     const target = this.getRootTarget();
-    if (epoch !== this.focusFactsEpoch || operation !== this.focusOperation) return;
+    // A root getter may create a pending entry while disable is clearing old
+    // physical focus. Only an actual acquisition or newer facts protect it.
+    if (
+      epoch !== this.focusFactsEpoch ||
+      (disabling ? acquisition !== this.entryAcquisitionVersion : operation !== this.focusOperation)
+    )
+      return;
     if (target && this.caps.has(FOCUS_BLUR_CAP)) this.caps.get(FOCUS_BLUR_CAP)(target);
     // A native observer or accepted effect may already have settled newer facts.
     if (epoch === this.focusFactsEpoch) this.clearFocusFacts('blur');
@@ -1255,12 +1418,22 @@ class FocusModuleImpl extends ModuleBase {
       this.cancelFocusOperation('target');
       if (this.pendingFocusRequest?.kind === 'target') this.clearPendingFocus();
     }
+    const acquisition = this.entryAcquisitionVersion;
+    const epoch = this.focusFactsEpoch;
     this.setFocusState(this.focusableOwned, this.focusableDeclared && !disabled, reason, {
       defaultOnly: this.sys?.execPhase?.() === 'setup',
     });
     // State observers can re-enable and acquire before this transition resumes.
     if (this.focusableConfig !== config) return;
-    if (disabled) this.blurTarget();
+    // A rejected replacement entry owns its pending intent, not the old
+    // physical focus. Only successful entry acquisition protects that focus.
+    if (
+      disabled &&
+      acquisition === this.entryAcquisitionVersion &&
+      epoch === this.focusFactsEpoch
+    ) {
+      this.blurTarget(true);
+    }
     if (this.focusableConfig !== config) return;
     this.syncHostFocusable();
     if (this.focusableConfig !== config) return;

@@ -1,4 +1,8 @@
-import { orderFocusTargetsByDocument, resolveWebFocusEntryTarget } from '@proto.ui/adapter-base';
+import {
+  isWebFocusTargetActive,
+  orderFocusTargetsByDocument,
+  resolveWebFocusEntryTarget,
+} from '@proto.ui/adapter-base';
 import {
   cancelWebEventDefaultAction,
   createCapsWiring,
@@ -57,6 +61,7 @@ import {
 } from '@proto.ui/module-expose-state-web';
 import {
   FOCUS_BLUR_CAP,
+  FOCUS_RELEASE_PENDING_CAP,
   FOCUS_INSTANCE_TOKEN_CAP,
   FOCUS_IS_NATIVELY_FOCUSABLE_CAP,
   FOCUS_ORDER_CAP,
@@ -348,6 +353,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   focusIntentState?: FocusIntentState;
   onFocusIntent?: () => void;
   onFocusAcquired?: () => void;
+  onFocusPendingReleased?: () => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
 }) {
   const {
@@ -368,6 +374,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
   let mountedEl: HTMLElement | null = null;
   let originalParent: Node | null = null;
   let originalNext: Node | null = null;
+  let releaseParentProjection: (() => void) | null = null;
   const getConnectedTriggerSurface = () => {
     const target = getLogicalTriggerSurfaceRoot(instanceToken);
     const surface = resolveWebComponentTriggerSurface(el, target);
@@ -458,6 +465,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
       [FOCUS_INSTANCE_TOKEN_CAP, instanceToken],
       [FOCUS_PARENT_CAP, (inst: unknown) => getLogicalParent(inst as LogicalInstanceToken)],
       [FOCUS_TARGET_READY_CAP, subscribeFocusTarget],
+      [FOCUS_RELEASE_PENDING_CAP, () => args.onFocusPendingReleased?.()],
       [FOCUS_ROOT_TARGET_CAP, () => physicalControl() ?? getTriggerSurface()],
       [FOCUS_IS_NATIVELY_FOCUSABLE_CAP, (target: HTMLElement) => isNativelyFocusable(target)],
       [FOCUS_ORDER_CAP, orderFocusTargetsByDocument],
@@ -504,7 +512,7 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
               ? { preventScroll: options.preventScroll }
               : undefined
           );
-          const applied = target.ownerDocument.activeElement === target;
+          const applied = isWebFocusTargetActive(target);
           // Native focus can synchronously issue a newer request. Only the
           // still-current intent owns success or retry-budget accounting.
           if (request.options === options && request.kind === kind) {
@@ -604,40 +612,52 @@ export function createWebComponentModules<Props extends PropsBaseType>(args: {
         OVERLAY_GLOBAL_MOUNT_CAP,
         {
           mount(el: HTMLElement) {
-            if (el.parentNode === document.body) return;
+            // Moving the custom element can synchronously reenter this bridge.
+            // Keep the first acquisition instead of capturing our own shim.
+            if (mountedEl === el || el.parentNode === document.body) return;
             mountedEl = el;
             originalParent = el.parentNode;
             originalNext = el.nextSibling;
             try {
+              const descriptor = Object.getOwnPropertyDescriptor(el, 'parentNode');
+              const parent = originalParent;
+              const getParent = () => parent;
               Object.defineProperty(el, 'parentNode', {
-                get() {
-                  return originalParent;
-                },
+                get: getParent,
                 configurable: true,
               });
+              releaseParentProjection = () => {
+                if (Object.getOwnPropertyDescriptor(el, 'parentNode')?.get !== getParent) return;
+                if (descriptor) Object.defineProperty(el, 'parentNode', descriptor);
+                else Reflect.deleteProperty(el, 'parentNode');
+              };
             } catch {}
             document.body.appendChild(el);
           },
           unmount(_el: HTMLElement) {
             if (!mountedEl) return;
+            const target = mountedEl;
+            const parent = originalParent;
+            const next = originalNext;
+            const release = releaseParentProjection;
+            mountedEl = null;
+            originalParent = null;
+            originalNext = null;
+            releaseParentProjection = null;
+            // Revoke this provider's parent projection before a DOM move can
+            // reconnect the host, without overwriting a replacement property.
+            try {
+              release?.();
+            } catch {}
             // External removal is terminal ownership release, not a portal
             // close. Do not resurrect a detached host during module cleanup.
-            if (mountedEl.isConnected && originalParent) {
-              if (originalNext && originalParent.contains(originalNext)) {
-                originalParent.insertBefore(mountedEl, originalNext);
+            if (target.isConnected && parent) {
+              if (next && parent.contains(next)) {
+                parent.insertBefore(target, next);
               } else {
-                originalParent.appendChild(mountedEl);
+                parent.appendChild(target);
               }
             }
-            try {
-              Object.defineProperty(mountedEl, 'parentNode', {
-                get() {
-                  return originalParent;
-                },
-                configurable: true,
-              });
-            } catch {}
-            mountedEl = null;
           },
         },
       ],

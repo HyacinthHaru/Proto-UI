@@ -31,14 +31,14 @@ export type FocusCenterEntry = {
   /** The host's order for a navigation this entry owns, if the host has one. */
   orderTargets?: FocusOrderTargets;
   requestFocus(options?: FocusRequestOptions, behavior?: FocusRequestBehavior): FocusRequestOutcome;
-  /** Reserve execution ownership before host getters or scope policy can reenter. */
+  /** Snapshot options under execution ownership before host getters or scope policy reenter. */
   prepareFocusRequest?(
     options?: FocusRequestOptions,
     behavior?: FocusRequestBehavior
   ): {
     isCurrent(): boolean;
     apply(): FocusRequestOutcome;
-    finish(): void;
+    finish(failed?: boolean): void;
   };
   hasPendingFocus(): boolean;
   clearFocus(reason: unknown): void;
@@ -245,10 +245,11 @@ export class FocusCenter {
     options?: FocusRequestOptions,
     behavior?: FocusRequestBehavior
   ): FocusRequestOutcome {
-    options = retainFocusRequestIntent(options);
     const execution = entry.prepareFocusRequest?.(options, behavior);
+    if (!execution) options = retainFocusRequestIntent(options);
     const current = () => execution?.isCurrent() ?? true;
     const apply = () => (execution ? execution.apply() : entry.requestFocus(options, behavior));
+    let failed = false;
     try {
       if (!current()) return 'rejected';
       // A pre-projection request is retained until its logical parent and target exist.
@@ -274,8 +275,11 @@ export class FocusCenter {
       if (outcome !== 'applied') return outcome;
       if (behavior?.syncFacts !== false) this.noteFocused(entry);
       return current() ? 'applied' : 'rejected';
+    } catch (error) {
+      failed = true;
+      throw error;
     } finally {
-      execution?.finish();
+      execution?.finish(failed);
     }
   }
 
