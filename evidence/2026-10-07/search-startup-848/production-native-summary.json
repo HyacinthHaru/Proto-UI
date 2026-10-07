@@ -1,0 +1,2446 @@
+{
+  "source": {
+    "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+    "dirty": true,
+    "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+    "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+  },
+  "startedAt": "2026-10-07T11:13:37.156Z",
+  "endedAt": "2026-10-07T11:14:23.270Z",
+  "platform": "darwin",
+  "node": "v24.21.0",
+  "browser": "154.0.8037.98",
+  "scope": "Separate local macOS production-preview diagnostic; not the Linux-only managed runner or canonical CI; HEAD503 and two held runtime GETs are injected, UI/DOM/native keyboard/query real",
+  "cleanup": "browser close and owned preview stop awaited",
+  "samples": [
+    {
+      "family": "shadcn",
+      "mode": "cold-1",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:37.156Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371618528
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371618536
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371618536
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371618573
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371618579
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371618579
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371618599
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371618908
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371618908
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371618908
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371618908
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371618908
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371618532
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618542
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618544
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618578
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618580
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618581
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618604
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618921
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618922
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618922
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618922
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371618922
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371618450,
+        "deadline": 1791371619450,
+        "observedReadyAt": 1791371617879,
+        "completedAt": 1791371618462,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371618491,
+      "inputObservedAt": 1791371618579,
+      "descriptiveOpenToInputMs": 88,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "capture": "shadcn-cold-query.png",
+      "endedAt": "2026-10-07T11:13:39.479Z"
+    },
+    {
+      "family": "shadcn",
+      "mode": "cold-2",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:39.508Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371620769
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371620774
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371620774
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371620795
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371620797
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371620797
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371620819
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371621131
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371621131
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371621131
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371621131
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371621131
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371620773
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371620781
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371620782
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371620796
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371620798
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371620799
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371620821
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371621142
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371621143
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371621143
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371621143
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371621143
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371620707,
+        "deadline": 1791371621707,
+        "observedReadyAt": 1791371620160,
+        "completedAt": 1791371620712,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371620734,
+      "inputObservedAt": 1791371620809,
+      "descriptiveOpenToInputMs": 75,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:13:41.647Z"
+    },
+    {
+      "family": "shadcn",
+      "mode": "cold-3",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:41.662Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371622896
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371622900
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371622900
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371622927
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371622931
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371622931
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371622950
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371623262
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371623262
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371623262
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371623262
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371623262
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371622899
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371622914
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371622914
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371622930
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371622936
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371622936
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371622952
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371623273
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371623273
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371623273
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371623273
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371623273
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371622832,
+        "deadline": 1791371623832,
+        "observedReadyAt": 1791371622304,
+        "completedAt": 1791371622837,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371622860,
+      "inputObservedAt": 1791371622939,
+      "descriptiveOpenToInputMs": 79,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:13:43.779Z"
+    },
+    {
+      "family": "shadcn",
+      "mode": "cold-4",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:43.794Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371625035
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371625057
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371625057
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371625079
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371625080
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371625080
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371625147
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371625460
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371625460
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371625460
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371625460
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371625460
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371625057
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625063
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625064
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625080
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625081
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625081
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625149
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625472
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625473
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625473
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625473
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371625473
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371624971,
+        "deadline": 1791371625971,
+        "observedReadyAt": 1791371624450,
+        "completedAt": 1791371624976,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371624997,
+      "inputObservedAt": 1791371625138,
+      "descriptiveOpenToInputMs": 141,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:13:45.971Z"
+    },
+    {
+      "family": "shadcn",
+      "mode": "cold-5",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:45.985Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371627241
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371627245
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371627245
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371627265
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371627267
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371627267
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371627289
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371627601
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371627601
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371627601
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371627601
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371627601
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371627245
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627250
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627251
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627266
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627268
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627268
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627291
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627611
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627611
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627611
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627612
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371627612
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371627180,
+        "deadline": 1791371628180,
+        "observedReadyAt": 1791371626635,
+        "completedAt": 1791371627184,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371627206,
+      "inputObservedAt": 1791371627280,
+      "descriptiveOpenToInputMs": 74,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:13:48.115Z"
+    },
+    {
+      "family": "shadcn",
+      "mode": "runtime-held",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:48.138Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371629381
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371629385
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371629385
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371629472
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371629473
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371629473
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371629497
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371629805
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371629805
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371629805
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371629805
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371629805
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371629385
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629393
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629459
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629473
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629475
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629475
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629499
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629815
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629815
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629815
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629815
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371629815
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371629320,
+        "deadline": 1791371630320,
+        "observedReadyAt": 1791371628788,
+        "completedAt": 1791371629325,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371629347,
+      "parallelUIWhileRuntimeHeld": true,
+      "capture": "shadcn-runtime-held-loading.png",
+      "inputObservedAt": 1791371629488,
+      "descriptiveOpenToInputMs": 141,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:13:50.324Z"
+    },
+    {
+      "family": "shadcn",
+      "mode": "close-held",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:50.337Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371631584
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371631592
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371631592
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371631725
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371631727
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371631727
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371631745
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371632055
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371632055
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371632055
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371632055
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371632055
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371631592
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371631596
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371631632
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371631726
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371631730
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371631730
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371631747
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371632069
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371632070
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371632070
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371632070
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371632070
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371631520,
+        "deadline": 1791371632520,
+        "observedReadyAt": 1791371631001,
+        "completedAt": 1791371631525,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371631548,
+      "parallelUIWhileRuntimeHeld": true,
+      "closedWithoutLateUI": true,
+      "inputObservedAt": 1791371631728,
+      "descriptiveOpenToInputMs": 180,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:13:52.572Z"
+    },
+    {
+      "family": "shadcn",
+      "mode": "head503-retry",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:52.587Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371633871
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371633929
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371633953
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371633953
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371633975
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371633977
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371633977
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371633994
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371634304
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371634305
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371634305
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371634305
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371634305
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 503,
+          "at": 1791371633874
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371633951
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371633956
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371633957
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371633977
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371633979
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371633980
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371633996
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371634313
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371634313
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371634313
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371634313
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371634313
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371633823,
+        "deadline": 1791371634823,
+        "observedReadyAt": 1791371633286,
+        "completedAt": 1791371633825,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371633845,
+      "retryFromHEAD503": true,
+      "inputObservedAt": 1791371633978,
+      "descriptiveOpenToInputMs": 133,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:13:54.809Z"
+    },
+    {
+      "family": "shadcn",
+      "mode": "intent",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:54.826Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371636121
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371636123
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371636123
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371636232
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371636234
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371636234
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371636247
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371636560
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371636560
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371636560
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371636560
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371636560
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371636123
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636127
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636128
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636234
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636236
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636236
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636249
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636573
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636574
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636574
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636574
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371636574
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371636047,
+        "deadline": 1791371637047,
+        "observedReadyAt": 1791371635497,
+        "completedAt": 1791371636051,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "preparedWithoutUI": true,
+      "openSentAt": 1791371636138,
+      "inputObservedAt": 1791371636235,
+      "descriptiveOpenToInputMs": 97,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:13:57.059Z"
+    },
+    {
+      "family": "brutalist",
+      "mode": "cold-1",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:57.070Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371638184
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371638199
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371638199
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371638217
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371638223
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371638223
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371638237
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371638547
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371638548
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371638548
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371638548
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371638548
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371638198
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638203
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638204
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638223
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638225
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638225
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638239
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638562
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638563
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638563
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638563
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371638563
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371638145,
+        "deadline": 1791371639145,
+        "observedReadyAt": 1791371637629,
+        "completedAt": 1791371638149,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371638164,
+      "inputObservedAt": 1791371638223,
+      "descriptiveOpenToInputMs": 59,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "capture": "brutalist-cold-query.png",
+      "endedAt": "2026-10-07T11:13:59.141Z"
+    },
+    {
+      "family": "brutalist",
+      "mode": "runtime-held",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:13:59.150Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371640236
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371640240
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371640240
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371640266
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371640267
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371640267
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371640289
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371640602
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371640602
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371640602
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371640602
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371640602
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371640239
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640248
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640252
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640267
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640268
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640269
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640291
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640618
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640618
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640618
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640618
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371640618
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371640183,
+        "deadline": 1791371641183,
+        "observedReadyAt": 1791371639667,
+        "completedAt": 1791371640189,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371640207,
+      "parallelUIWhileRuntimeHeld": true,
+      "inputObservedAt": 1791371640280,
+      "descriptiveOpenToInputMs": 73,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:14:01.106Z"
+    },
+    {
+      "family": "brutalist",
+      "mode": "close-held",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:14:01.119Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371642215
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371642219
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371642219
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371642333
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371642335
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371642335
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371642347
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371642659
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371642659
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371642659
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371642659
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371642659
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371642218
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642232
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642259
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642335
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642337
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642337
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642349
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642668
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642668
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642668
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642668
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371642668
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371642161,
+        "deadline": 1791371643161,
+        "observedReadyAt": 1791371641653,
+        "completedAt": 1791371642166,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371642185,
+      "parallelUIWhileRuntimeHeld": true,
+      "closedWithoutLateUI": true,
+      "inputObservedAt": 1791371642335,
+      "descriptiveOpenToInputMs": 150,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:14:03.167Z"
+    },
+    {
+      "family": "brutalist",
+      "mode": "head503-retry",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:14:03.176Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371644279
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371644339
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371644373
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371644375
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371644405
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371644407
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371644407
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371644435
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371644744
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371644747
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371644747
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371644747
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371644747
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 503,
+          "at": 1791371644281
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371644373
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644378
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644380
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644407
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644408
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644409
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644437
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644759
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644763
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644763
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644763
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371644764
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371644224,
+        "deadline": 1791371645224,
+        "observedReadyAt": 1791371643708,
+        "completedAt": 1791371644229,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "openSentAt": 1791371644248,
+      "retryFromHEAD503": true,
+      "inputObservedAt": 1791371644427,
+      "descriptiveOpenToInputMs": 179,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:14:05.255Z"
+    },
+    {
+      "family": "brutalist",
+      "mode": "intent",
+      "source": {
+        "head": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+        "dirty": true,
+        "searchSHA256": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+        "diffSHA256": "b1c0ff47fd6c8775d34eb695237614294a515bf4652d4cacb60e203bb04410dc"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "theme": "light",
+      "startedAt": "2026-10-07T11:14:05.267Z",
+      "requests": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "at": 1791371646393
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "at": 1791371646395
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "at": 1791371646395
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "at": 1791371646463
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "at": 1791371646465
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "at": 1791371646466
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "at": 1791371646478
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "at": 1791371646788
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "at": 1791371646789
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "at": 1791371646789
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "at": 1791371646789
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "at": 1791371646789
+        }
+      ],
+      "responses": [
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "HEAD",
+          "status": 200,
+          "at": 1791371646395
+        },
+        {
+          "path": "/pagefind/pagefind.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646399
+        },
+        {
+          "path": "/_astro/ui-core.5vfW5kUq.js",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646400
+        },
+        {
+          "path": "/pagefind/pagefind-entry.json",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646465
+        },
+        {
+          "path": "/pagefind/pagefind.zh-cn_b0db2d23cd03d.pf_meta",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646467
+        },
+        {
+          "path": "/pagefind/wasm.unknown.pagefind",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646467
+        },
+        {
+          "path": "/pagefind/index/zh-cn_31618d5.pf_index",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646479
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_775831f.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646804
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_1c97a16.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646804
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646804
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646804
+        },
+        {
+          "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+          "method": "GET",
+          "status": 200,
+          "at": 1791371646804
+        }
+      ],
+      "errors": [],
+      "status": "pass",
+      "readiness": {
+        "startedAt": 1791371646298,
+        "deadline": 1791371647298,
+        "observedReadyAt": 1791371645789,
+        "completedAt": 1791371646303,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1"
+      },
+      "preparedWithoutUI": true,
+      "openSentAt": 1791371646408,
+      "inputObservedAt": 1791371646466,
+      "descriptiveOpenToInputMs": 58,
+      "result": {
+        "href": "/zh-cn/ui-libraries/shadcn/button/",
+        "text": "Button"
+      },
+      "endedAt": "2026-10-07T11:14:07.295Z"
+    }
+  ]
+}

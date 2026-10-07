@@ -1,0 +1,92 @@
+[
+  {
+    "run": "candidate-1000-complete30",
+    "source": {
+      "sha": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+      "dirty": true
+    },
+    "id": "shadcn-light-390",
+    "evidence": {
+      "startedAt": 1791371317584,
+      "deadline": 1791371318584,
+      "observedReadyAt": 1791371317005,
+      "completedAt": 1791371317592,
+      "currentDisabled": "false",
+      "owner": "site-search-1-docs-1-open",
+      "generation": "1"
+    },
+    "onTime": true
+  },
+  {
+    "run": "candidate-1000-light390-2",
+    "source": {
+      "sha": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+      "dirty": true
+    },
+    "id": "shadcn-light-390",
+    "evidence": {
+      "startedAt": 1791371420470,
+      "deadline": 1791371421470,
+      "observedReadyAt": 1791371419896,
+      "completedAt": 1791371420478,
+      "currentDisabled": "false",
+      "owner": "site-search-1-docs-1-open",
+      "generation": "1"
+    },
+    "onTime": true
+  },
+  {
+    "run": "candidate-1000-light390-3",
+    "source": {
+      "sha": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+      "dirty": true
+    },
+    "id": "shadcn-light-390",
+    "evidence": {
+      "startedAt": 1791371430237,
+      "deadline": 1791371431237,
+      "observedReadyAt": 1791371429673,
+      "completedAt": 1791371430244,
+      "currentDisabled": "false",
+      "owner": "site-search-1-docs-1-open",
+      "generation": "1"
+    },
+    "onTime": true
+  },
+  {
+    "run": "candidate-1000-light390-4",
+    "source": {
+      "sha": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+      "dirty": true
+    },
+    "id": "shadcn-light-390",
+    "evidence": {
+      "startedAt": 1791371439980,
+      "deadline": 1791371440980,
+      "observedReadyAt": 1791371439417,
+      "completedAt": 1791371439986,
+      "currentDisabled": "false",
+      "owner": "site-search-1-docs-1-open",
+      "generation": "1"
+    },
+    "onTime": true
+  },
+  {
+    "run": "candidate-1000-light390-5",
+    "source": {
+      "sha": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+      "dirty": true
+    },
+    "id": "shadcn-light-390",
+    "evidence": {
+      "startedAt": 1791371449704,
+      "deadline": 1791371450704,
+      "observedReadyAt": 1791371449112,
+      "completedAt": 1791371449712,
+      "currentDisabled": "false",
+      "owner": "site-search-1-docs-1-open",
+      "generation": "1"
+    },
+    "onTime": true
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "productHead": "a96ecf605f15e60f4ea56f0c82ab5cf0ec8a199b",
+  "productTree": "436cc9c2b7594ec8b17ae432e45a31728103fff4",
+  "base": "c8d0ca8cecd6ac12b27678df40a86722d4795068",
+  "sourceHashes": {
+    "apps/www/src/components/override/Search.astro": "ee008d7e8d0794a1c897a7905e2322dc1afe926340aa29123c7c2c149f7eec2c",
+    "apps/www/src/components/override/Search.commands.test.ts": "9ef2a4cab3c90af9b972ed726f63ef1c4a65681d41aecc6be529515e11f76ea8",
+    "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts": "e9704a6628e5688697be00c00090166a235bdd5d0c918e1a26a3fde5bacb9210",
+    "apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts": "769ec153e420eb1d1c0321e8ed2e689b3c745086373c39933c1730ad1a5134ac",
+    "apps/www/src/content/docs/zh-cn/site-search-evidence.ts": "a27e6088b5ad10eff7ad1fdfc3ded527fc3d0289591cd3ec591f20d52adaf1a1",
+    "internal/records/2026-10-07-search-readiness-restoration.md": "d6a972f73a170b78d89c853ade5e23dedcf293edcf01254a07dacba07ce8409a"
+  },
+  "captureSource": "base c8 plus uncommitted candidate source; native product and five tests match final bytes; browser file final delta after capture is only 5000ms\u21921000ms historical-comment correction",
+  "observedAt": "2026-10-07",
+  "unitBaseline": "base product + newly added controlled tests; helper budget restored before stale-owner red",
+  "sourceScope": "6 final paths; shared Adapter/Runtime unchanged",
+  "testCounts": {
+    "focused": 100,
+    "integration": 78,
+    "browser": 30,
+    "selectedRepeated": 5,
+    "productionDiagnostic": 14
+  },
+  "typeResult": "483 files;0error0warning6hints",
+  "build": "286 pages;281 indexed;CLI1/44 style prerequisite",
+  "canonicalCI": "not waited for; Linux managed production and Windows not run locally",
+  "note": "Public sanitized logs/source do not equal the original execution bytes; mapping distinguishes raw/public. PNGs equal original bytes."
+}

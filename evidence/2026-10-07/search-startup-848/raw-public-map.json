@@ -1,0 +1,161 @@
+[
+  {
+    "source": "cold-import-red.log",
+    "public": "cold-import-red.log",
+    "rawSHA256": "c8da22b5ce72c24444d0ebc52dbd3a32c79af0e9e059875742c683bca285ab46",
+    "publicSHA256": "f93bc6a62042a955ca561dcf19a7bb2bf65acf425e3a5d60f86986ed76fdd593",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "stale-ready-red.log",
+    "public": "stale-ready-red.log",
+    "rawSHA256": "545cc558bb3b204050c1eb1621de108bf82980e22cc84bd6a48b92b776de0afb",
+    "publicSHA256": "1c848dfbde58c31403cad169debd221491275560ee0e74f5b0409842690546d3",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "search-focused-complete.log",
+    "public": "focused-100.log",
+    "rawSHA256": "e988a4ed79e6a616e29f4f36dc0036373995bbd421f7ef1317bdbad3f876a585",
+    "publicSHA256": "0f60bd87755cecb2834bd80ce69d892c5a98edfedb314843bf526839392a8024",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "candidate-integration.log",
+    "public": "integration-78.log",
+    "rawSHA256": "580834aae7657147cda6be9ead99f79f98a6068bffb36d52e669858136e97add",
+    "publicSHA256": "1b7c21030e17546891e2e2c88614459ccce469b8514954dbedf82739e19a431c",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "candidate-types.log",
+    "public": "types.log",
+    "rawSHA256": "9db58c3fa1d87a902547c3fa8f40cec811768f762a1de960b0c12afeee831888",
+    "publicSHA256": "ed75a19ef7744e31f48df2a42779fbc908803f388868bf87679ad9c889d3bd74",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "candidate-production-build.log",
+    "public": "production-build.log",
+    "rawSHA256": "ef178e44337bac1839bfb2d9bffd539e107ebf833aab95e7aae81c0e0151923f",
+    "publicSHA256": "dc811bd0fd96aec940458f5051fb918e9cf8c14a6df0fbf9e154eed2e5016988",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "candidate-production-graph.log",
+    "public": "production-graph.log",
+    "rawSHA256": "ccf37f16b0641edb78217985447c7acbc121b122941efdf3e419dc7a2c889294",
+    "publicSHA256": "ccf37f16b0641edb78217985447c7acbc121b122941efdf3e419dc7a2c889294",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "candidate-1000-complete30.log",
+    "public": "browser-30.log",
+    "rawSHA256": "14002685f1ca37631a89255664f9e8888abb946e4f1bc0ddd4a484195d31a65c",
+    "publicSHA256": "5dd6b5544f5c832f2217459b793510f92ff2bb921a89fada51db4e87cc2409c4",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "candidate-complete30-readiness-summary.json",
+    "public": "browser-readiness-8.json",
+    "rawSHA256": "cd50504d79823942dd105e8934c97d437995499a131837da7ce3690bcbb619c8",
+    "publicSHA256": "61ebeac560fd262a6fcb8f9704aa9c14d40088be460f1b3fe5e68ffd7471d19d",
+    "derivation": "three literal local path substitutions; original raw source is retained privately; repository Prettier formatting (preserved semantic values)",
+    "publicBeforeFormattingSHA256": "cd50504d79823942dd105e8934c97d437995499a131837da7ce3690bcbb619c8"
+  },
+  {
+    "source": "candidate-five-readiness.json",
+    "public": "light390-fixed5.json",
+    "rawSHA256": "93d0f4d8be59b4c91473383d51e1d8b2d9fbd06fbd49d3e4c3fd3a5f4c452cab",
+    "publicSHA256": "99fdc40b13af76627721bb6d2391ca14199188841ec5c667928b51f2a6f5021e",
+    "derivation": "three literal local path substitutions; original raw source is retained privately; repository Prettier formatting (preserved semantic values)",
+    "publicBeforeFormattingSHA256": "93d0f4d8be59b4c91473383d51e1d8b2d9fbd06fbd49d3e4c3fd3a5f4c452cab"
+  },
+  {
+    "source": "production-native-control/result.json",
+    "public": "production-native-14.json.gz",
+    "rawSHA256": "753dbfa77ce94191ed860cac39ea4647cbab34515ed653c8b9eba4a031e8864a",
+    "publicSHA256": "c9e3b0f29b72cdfc9dad4ea0e083d26389d4319093cbf4a41ed2a6fd7b611aa6",
+    "derivation": "three literal local path substitutions; original raw source is retained privately; gzip mtime0 public bytes",
+    "decompressedSHA256": "753dbfa77ce94191ed860cac39ea4647cbab34515ed653c8b9eba4a031e8864a"
+  },
+  {
+    "source": "production-native-control.mts",
+    "public": "production-native-control.sanitized.mts",
+    "rawSHA256": "b6faa1b6a5acf6e76c8b84e0ec5d38148271a9eb61e997c34693f273217eed3e",
+    "publicSHA256": "e017733857f56812996d707b4c17c7bac1da2644ae63d31f09c17fabcfac553b",
+    "derivation": "three literal local path substitutions; original raw source is retained privately; repository Prettier formatting (preserved semantic values)",
+    "publicBeforeFormattingSHA256": "e087ef6db85ddaffc334560af5b3bc3c3a54cb1566a120be8daf7c2b26ba89c9"
+  },
+  {
+    "source": "parallel-import-premise-reconciliation.json",
+    "public": "owner-premise-history.json",
+    "rawSHA256": "1f2908d7c9d695e4b177bd3c26aca20a2ff970eb5fdec3d602a0f58de763e9f1",
+    "publicSHA256": "d892bd65e610e039e1e3d13151b9a71dabcb3d923906e2d03e70340d4bd170c0",
+    "derivation": "three literal local path substitutions; original raw source is retained privately; repository Prettier formatting (preserved semantic values)",
+    "publicBeforeFormattingSHA256": "356ddbf6b5fc229b79ea64bdd6aeecde28cf8bbe981324725be2e7f36902ef7f"
+  },
+  {
+    "source": "search-focused-green.log",
+    "public": "owner-premise-failure.log",
+    "rawSHA256": "7b3be041c9709bca5696be4ebbb9cd3d23848d95ed96bb6872838110723d5e89",
+    "publicSHA256": "a5532078efae2561406ace1f1e9a1bc75abb1a6eaf1b4664f1342cbde6a0c4e0",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "search-epoch-focused-green.log",
+    "public": "observer-fixture-failure.log",
+    "rawSHA256": "eedec67d38f7a2b90d5088f39bac34b5b2184cbec3dd005b25bb5239e73ffe80",
+    "publicSHA256": "76a909145d03aa9379a7a9460d3750573ed849ff7343811f57ea69e51201ca6a",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "production-native-control.log",
+    "public": "esm-setup-failure.log",
+    "rawSHA256": "04b818d342f74e977f8b30941ea23b37764a283a9988bc97b2ad71c08826eabc",
+    "publicSHA256": "355da17fe18bea1d32fac6dcfa5c1b5c33a2e4d80243adbb3aab08f70f598107",
+    "derivation": "three literal local path substitutions; original raw source is retained privately"
+  },
+  {
+    "source": "candidate-1000-complete30/browser/search-commands/shadcn-light-390-trigger.png",
+    "public": "dev-light390-trigger.png",
+    "rawSHA256": "80094d98bbf4a2dacfc80c7398f074ba035d76841e9fefc8d848ad61dd33e1d8",
+    "publicSHA256": "80094d98bbf4a2dacfc80c7398f074ba035d76841e9fefc8d848ad61dd33e1d8",
+    "derivation": "unmodified original PNG"
+  },
+  {
+    "source": "candidate-1000-complete30/browser/search-commands/shadcn-light-390-open.png",
+    "public": "dev-light390-open.png",
+    "rawSHA256": "9b9a03e2ee2a6cfa860d0ed2ea28a00222049ae981626aaa27de0b5a4270be3b",
+    "publicSHA256": "9b9a03e2ee2a6cfa860d0ed2ea28a00222049ae981626aaa27de0b5a4270be3b",
+    "derivation": "unmodified original PNG"
+  },
+  {
+    "source": "production-native-control/shadcn-cold-query.png",
+    "public": "shadcn-production-query.png",
+    "rawSHA256": "25bbcd778bbfd84a50e296b68490420afac252b53ff80cc35b5cf7d5ccde5e69",
+    "publicSHA256": "25bbcd778bbfd84a50e296b68490420afac252b53ff80cc35b5cf7d5ccde5e69",
+    "derivation": "unmodified original PNG"
+  },
+  {
+    "source": "production-native-control/brutalist-cold-query.png",
+    "public": "brutalist-production-query.png",
+    "rawSHA256": "a1eb46af4849f6afea51a3f2d9e4de651cbee99e033e29fdbfdb4615a6e25bd8",
+    "publicSHA256": "a1eb46af4849f6afea51a3f2d9e4de651cbee99e033e29fdbfdb4615a6e25bd8",
+    "derivation": "unmodified original PNG"
+  },
+  {
+    "source": "production-native-control/shadcn-runtime-held-loading.png",
+    "public": "production-runtime-held-loading.png",
+    "rawSHA256": "7cefa88c0487e5ddcb1a97642c0ef9f2ee9e3b40ac6b0ab6547484cea6a4875a",
+    "publicSHA256": "7cefa88c0487e5ddcb1a97642c0ef9f2ee9e3b40ac6b0ab6547484cea6a4875a",
+    "derivation": "unmodified original PNG"
+  },
+  {
+    "source": "precommit-focused.log",
+    "public": "precommit-focused-100.log",
+    "rawSHA256": "ed4bd2d843de255ef989e8c81e5568e44789299a29e1cdd6512495c802e5c2a1",
+    "publicSHA256": "05a7fbdd9d0adee8f59701c0ad570b905d8c8322d49e9ba64d899ec64ca86f90",
+    "derivation": "literal SOURCE_ROOT path substitution"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "originalCheck": "UI import had never begun while runtime was pending",
+  "newBehavior": "both imports start aftersuccessfulHEAD whileowneralive",
+  "preservedInvariant": "afterdispose/reconnect,oldruntimecompletion initiates no new import andconstructsnoUI;newopenbuilds exactly1currentUI",
+  "change": "assert stable importcallcount atdisposal\u2192oldcompletion,not zero initialimports",
+  "originalFailedFocusedReceipt": "<EVIDENCE_ROOT>/search-focused-green-receipt.json"
+}
