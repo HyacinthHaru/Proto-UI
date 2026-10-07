@@ -40,6 +40,7 @@ export type Kernel<P extends PropsBaseType> = {
   renderer: RendererHandle<P>;
   renderFn: RenderFn;
 
+  /** Preserve the caller's execution phase when rendering returns or throws. */
   renderOnce(): TemplateChildren;
 };
 
@@ -188,8 +189,6 @@ export function createKernel<P extends PropsBaseType>(
     try {
       return renderFn(renderer);
     } finally {
-      // A synchronous host update can render inside an outward-event callback.
-      // Resume that invocation, including on render failure; never leak render/idle.
       setPhase(previousPhase);
     }
   };

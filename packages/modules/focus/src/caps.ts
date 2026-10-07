@@ -15,9 +15,13 @@ export type FocusSetFocusable = (
   options?: { programmatic?: boolean }
 ) => void;
 
+/** Native requests rely on host-observed facts; entry does not own target facts. */
+export type FocusRequestKind = 'programmatic' | 'native' | 'entry';
+
 export type FocusRequestFocus = (
   target: HTMLElement,
-  options?: FocusRequestOptions
+  options: FocusRequestOptions | undefined,
+  kind: FocusRequestKind
 ) => void | boolean;
 
 export type FocusBlur = (target: HTMLElement) => void;
@@ -88,3 +92,6 @@ export const FOCUS_SAMPLE_SCOPE_TARGETS_CAP = cap<
 >('@proto.ui/focus/sampleScopeTargets');
 
 export const FOCUS_ORDER_CAP = cap<FocusOrderTargets>('@proto.ui/focus/orderTargets');
+
+/** Release host observations/retries retained for a pending focus request. */
+export const FOCUS_RELEASE_PENDING_CAP = cap<() => void>('@proto.ui/focus/releasePending');
