@@ -103,6 +103,19 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('@proto.ui/prototypes-base/toggle');
     registerPrototype('base-toggle', mod.toggle);
   },
+  // Runtime registry loaders keep each preview family out of the initial bundle.
+  'base-collapsible-root': async () => {
+    const mod = await import('@proto.ui/prototypes-base/collapsible');
+    registerPrototype('base-collapsible-root', mod.collapsibleRoot);
+  },
+  'base-collapsible-trigger': async () => {
+    const mod = await import('@proto.ui/prototypes-base/collapsible');
+    registerPrototype('base-collapsible-trigger', mod.collapsibleTrigger);
+  },
+  'base-collapsible-content': async () => {
+    const mod = await import('@proto.ui/prototypes-base/collapsible');
+    registerPrototype('base-collapsible-content', mod.collapsibleContent);
+  },
   'base-switch-root': async () => {
     const mod = await import('@proto.ui/prototypes-base/switch');
     registerPrototype('base-switch-root', mod.switchRoot);
@@ -202,6 +215,26 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
   'base-image-root': async () => {
     const mod = await import('@proto.ui/prototypes-base/image');
     registerPrototype('base-image-root', mod.imageRoot);
+  },
+  'base-table-root': async () => {
+    const mod = await import('@proto.ui/prototypes-base/table');
+    registerPrototype('base-table-root', mod.tableRoot);
+  },
+  'base-table-caption': async () => {
+    const mod = await import('@proto.ui/prototypes-base/table');
+    registerPrototype('base-table-caption', mod.tableCaption);
+  },
+  'base-table-row': async () => {
+    const mod = await import('@proto.ui/prototypes-base/table');
+    registerPrototype('base-table-row', mod.tableRow);
+  },
+  'base-table-header-cell': async () => {
+    const mod = await import('@proto.ui/prototypes-base/table');
+    registerPrototype('base-table-header-cell', mod.tableHeaderCell);
+  },
+  'base-table-cell': async () => {
+    const mod = await import('@proto.ui/prototypes-base/table');
+    registerPrototype('base-table-cell', mod.tableCell);
   },
   'brutalist-textarea-root': async () => {
     const mod = await import('@proto.ui/prototypes-brutalist/textarea');

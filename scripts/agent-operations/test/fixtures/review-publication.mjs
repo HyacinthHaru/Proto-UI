@@ -8,6 +8,7 @@ import {
   reviewerPermissionSubjects,
 } from '../../review-runtime.mjs';
 import { agentEvidence } from './agent-evidence.mjs';
+import { modelTraceFixture } from './modeltrace.mjs';
 
 export const sha = (letter) => letter.repeat(40);
 const publishedPackets = new Map();
@@ -95,7 +96,7 @@ export function reviewPacket(input, overrides = {}) {
     scope: ['exact-head pull-request integration'],
     affectedEntities: [],
     affectedSurfaces: ['GitHub pull request'],
-    agentEvidence: agentEvidence(input.headSha),
+    agentEvidence: agentEvidence(input.headSha, input.repositoryId),
     findings: [],
     validation: {
       commands: [{ command: 'pnpm test', exitCode: 0, result: 'passed' }],
@@ -296,7 +297,7 @@ export function publicationRoundTrip({ existingApproval = false } = {}) {
         body,
       });
     },
-    { reviewerLogin: 'independent-reviewer' }
+    { reviewerLogin: 'independent-reviewer', ...modelTraceFixture(before.repositoryId) }
   );
   assert.equal(receipt.status, 'applied');
   assert.equal(writes, 1);

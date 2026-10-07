@@ -4,6 +4,11 @@ import { canonicalReplyId, collectReviewSnapshot, QUERY } from './review-paginat
 export { QUERY };
 import { ownerAuthorizationAllows } from './owner-authorization.mjs';
 import {
+  assertModelTraceDisclosure,
+  assertModelTraceFresh,
+  renderModelTraceDisclosure,
+} from './modeltrace.mjs';
+import {
   authorizePullRequestMerge,
   authorizeReviewSubmission,
   computeReviewInputDigest,
@@ -385,6 +390,8 @@ export function authorizeLiveReviewSubmission(context, live) {
     policy,
     selfAssessment: context.selfAssessment,
     priorPacket: context.priorPacket ?? null,
+    modelTrace: context.modelTrace,
+    modelTraceContext: context.modelTraceContext,
     credentialCanReview: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
     reviewer: live.viewerLogin,
     ciConclusion: summarizeLiveChecks(live.input.checks, {
@@ -446,6 +453,8 @@ export function submitGitHubReview(
   {
     reviewerLogin = null,
     invocationId = `${commitId}:${event}:${body}`,
+    modelTrace,
+    modelTraceContext,
     authorizationContext = null,
   } = {}
 ) {
@@ -462,6 +471,8 @@ export function submitGitHubReview(
   if (typeof body !== 'string') throw new Error('review submission body is invalid');
   if (typeof reviewerLogin !== 'string' || reviewerLogin.length === 0)
     throw new Error('review submission requires the verified reviewer identity');
+  assertModelTraceFresh(modelTrace, modelTraceContext, { repositoryId });
+  assertModelTraceDisclosure(body, modelTrace);
 
   if (authorizationContext !== null) {
     const context = authorizationContext;
@@ -516,6 +527,7 @@ export function submitGitHubReview(
     '--input',
     '-',
   ];
+  assertModelTraceFresh(modelTrace, modelTraceContext, { repositoryId });
   try {
     const response = JSON.parse(
       runner('gh', postArgs, {
@@ -694,6 +706,8 @@ export function authorizeLivePullRequestMerge(context, live) {
     ownerAuthorization: context.ownerAuthorization,
     policy,
     selfAssessment: context.selfAssessment,
+    modelTrace: context.modelTrace,
+    modelTraceContext: context.modelTraceContext,
     credentialCanMerge: ['ADMIN', 'MAINTAIN', 'WRITE'].includes(live.viewerPermission),
     credentialPermission: live.viewerPermission,
     credentialCanBypass: live.viewerCanMergeAsAdmin,
@@ -793,6 +807,9 @@ export function submitGitHubMerge(
   validateReviewInputSnapshot(input);
   validateReviewPacket(packet, input);
   validatePublishedReviewPacket(packet, authorizationContext.publishedPacket);
+  assertModelTraceFresh(authorizationContext.modelTrace, authorizationContext.modelTraceContext, {
+    repositoryId,
+  });
   // The writer owns this final collection. A caller-supplied allowed boolean
   // or callback cannot stand in for current checks, approvals or permissions.
   const finalLive = collectLiveReviewInput(repositoryId, pullRequest, {
@@ -849,13 +866,44 @@ export function submitGitHubMerge(
     before.state !== 'open' ||
     before.merged !== false ||
     before.draft !== false ||
-    before.base.sha !== expectedBaseSha
+    before.base.sha !== expectedBaseSha ||
+    (before.body ?? '') !== input.pullRequestBody
   )
     throw new Error('merge preflight head, base, target or open state changed; no PUT attempted');
-  // Use the same accepted policy at the last REST boundary, including its
-  // narrow, source-bound preview-authorization exception. The writer's fresh
-  // collection supplies checks, publisher eligibility and bypass capability;
-  // a caller cannot substitute a permission flag or waive an unrelated failure.
+  const base = read(`${prefix}/git/ref/heads/${encodeURIComponent(baseRefName)}`);
+  if (
+    base.ref !== `refs/heads/${baseRefName}` ||
+    base.object?.type !== 'commit' ||
+    base.object?.sha !== expectedBaseSha
+  )
+    throw new Error('live base branch changed before merge; no PUT attempted');
+
+  // Historical text remains readable, but cannot impersonate this merge's
+  // ModelTrace or DCO trailers. Do not rewrite the original Git history.
+  const quoteHistory = (text) =>
+    text
+      .split('\n')
+      .map((line) => `> ${line}`)
+      .join('\n');
+  // GitHub appends commit_message to commit_title. Bind the subject to the
+  // numeric target, never PR/commit title defaults that could add an unquoted
+  // ModelTrace trailer after an irreversible PUT.
+  const commitTitle = `Integrate pull request #${pullRequest}`;
+  const commitMessage = [
+    `Reviewed PR body:\n${quoteHistory(input.pullRequestBody)}`,
+    ...input.commits.map(
+      (commit) => `Reviewed commit ${commit.sha}:\n${quoteHistory(commit.message)}`
+    ),
+    renderModelTraceDisclosure(authorizationContext.modelTrace, 'commit'),
+  ].join('\n\n');
+  assertModelTraceDisclosure(
+    `${commitTitle}\n\n${commitMessage}`,
+    authorizationContext.modelTrace,
+    'commit'
+  );
+  // Revalidate after the last live read and sealed message construction. Owner
+  // revocation and measurement expiry remain independent of the exact head,
+  // trusted checks, publication and narrow preview-authorization exception.
   const restAuthorization = authorizeLivePullRequestMerge(authorizationContext, {
     ...finalLive,
     mergeable: before.mergeable === true ? 'MERGEABLE' : 'UNKNOWN',
@@ -866,14 +914,6 @@ export function submitGitHubMerge(
     throw new Error(
       `final GitHub merge readiness is not eligible: ${restAuthorization.reason}; no PUT attempted`
     );
-  const base = read(`${prefix}/git/ref/heads/${encodeURIComponent(baseRefName)}`);
-  if (
-    base.ref !== `refs/heads/${baseRefName}` ||
-    base.object?.type !== 'commit' ||
-    base.object?.sha !== expectedBaseSha
-  )
-    throw new Error('live base branch changed before merge; no PUT attempted');
-
   let response;
   try {
     response = JSON.parse(
@@ -882,7 +922,12 @@ export function submitGitHubMerge(
         ['api', '--method', 'PUT', `${prefix}/pulls/${pullRequest}/merge`, '--input', '-'],
         {
           encoding: 'utf8',
-          input: JSON.stringify({ sha: headSha, merge_method: mergeMethod }),
+          input: JSON.stringify({
+            sha: headSha,
+            merge_method: mergeMethod,
+            commit_title: commitTitle,
+            commit_message: commitMessage,
+          }),
           stdio: ['pipe', 'pipe', 'pipe'],
           maxBuffer: MAX_LIVE_RESPONSE_BYTES,
         }
@@ -936,6 +981,7 @@ export function submitGitHubMerge(
           commit.parents[0]?.sha !== expectedBaseSha
         )
           throw new Error('resulting merge parent differs from the inspected base');
+        assertModelTraceDisclosure(commit.message, authorizationContext.modelTrace, 'commit');
         return {
           merged: true,
           reconciled: false,

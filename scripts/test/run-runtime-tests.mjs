@@ -11,7 +11,7 @@ import { readFileSync, rmSync } from 'node:fs';
 import { createServer } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { corepackInvocation, createRuntimeTestPlan } from './runtime-test-plan.mjs';
+import { corepackInvocation, createRuntimeTestPlan, READY_ROUTES } from './runtime-test-plan.mjs';
 import { runtimeSelection, assertVitestReport, writeJson, ciContext } from './runtime-ci.mjs';
 import { waitForServerReadiness } from './server-readiness.mjs';
 import {
@@ -24,43 +24,6 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 // Astro dev compiles a route on first request, so a suite probing a cold route
 // can exceed its own hook timeout and fall back to spawning its own server.
 // Warm every route the suites wait on.
-const READY_ROUTES = [
-  '/en/test/style-isolation/',
-  '/en/test/new-projection-families/',
-  '/en/test/bootstrap-state-controls/',
-  '/en/test/liquid-glass-material/',
-  '/en/ui-libraries/base/image/',
-  '/en/start-here/quick-start/',
-  '/en/ui-libraries/shadcn/select/',
-  '/en/ui-libraries/shadcn/input/',
-  '/en/ui-libraries/base/scroll-area/',
-  '/en/ui-libraries/base/textarea/',
-  '/en/ui-libraries/brutalist/components/badge/',
-  '/en/ui-libraries/brutalist/components/button/',
-  '/en/ui-libraries/brutalist/components/card/',
-  '/en/ui-libraries/brutalist/components/dialog/',
-  '/en/ui-libraries/brutalist/components/hover-card/',
-  '/en/ui-libraries/brutalist/components/select/',
-  '/en/ui-libraries/brutalist/components/separator/',
-  '/en/ui-libraries/brutalist/components/skeleton/',
-  '/en/ui-libraries/brutalist/components/switch/',
-  '/en/ui-libraries/brutalist/components/tabs/',
-  '/en/ui-libraries/brutalist/components/toggle/',
-  '/en/ui-libraries/brutalist/components/tooltip/',
-  '/en/ui-libraries/shadcn/checkbox/',
-  '/en/ui-libraries/shadcn/dropdown-menu/',
-  '/en/ui-libraries/shadcn/switch/',
-  '/en/ui-libraries/shadcn/textarea/',
-  '/zh-cn/ui-libraries/base/transition/',
-  '/zh-cn/ui-libraries/shadcn/button/',
-  '/zh-cn/',
-  '/zh-cn/start-here/quick-start/',
-  '/zh-cn/internal/demo-matrix/',
-  '/zh-cn/ui-libraries/shadcn/select/',
-  '/zh-cn/ui-libraries/shadcn/scroll-area/',
-  '/zh-cn/ui-libraries/brutalist/components/checkbox/',
-  '/zh-cn/ui-libraries/shadcn/tooltip/',
-];
 const READY_TIMEOUT_MS = 180_000;
 
 const phase = process.env.PROTO_UI_RUNTIME_PHASE;
