@@ -412,6 +412,10 @@ jobs:
       - name: Install
         run: corepack pnpm@"${PROTO_PNPM_VERSION}" install --frozen-lockfile
 
+      - name: Disable the development toolbar before public-page browser tests
+        run: |
+          corepack pnpm@"${PROTO_PNPM_VERSION}" --filter apps-www exec astro preferences disable devToolbar
+          corepack pnpm@"${PROTO_PNPM_VERSION}" --filter apps-www exec astro preferences get devToolbar.enabled
       - name: Install and identify the bounded video evidence toolchain
         run: |
           set -euo pipefail
@@ -425,7 +429,7 @@ jobs:
           /usr/bin/ffprobe -version | /usr/bin/grep -E '^ffprobe version 6\.1\.'
           # Real fixture decoding proves fd seek/seal and codec capabilities;
           # inventory or version strings alone do not satisfy this gate.
-          node --test scripts/coverage-matrices/test/decode-video-evidence.test.mjs
+          node --test scripts/coverage-matrices/test/decode-video-evidence.integration.mjs
 
       - name: Public documentation gate and repository tests
         env:
@@ -482,6 +486,8 @@ jobs:
           CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
       - name: Install real CJK fallback for typography glyph evidence
+        # Fail setup before a slow mirror consumes the browser execution budget.
+        timeout-minutes: 3
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends fonts-noto-cjk
