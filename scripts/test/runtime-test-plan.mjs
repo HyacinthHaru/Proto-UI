@@ -42,6 +42,9 @@ export const READY_ROUTES = Object.freeze([
 ]);
 
 export const BROWSER_SUITES = Object.freeze([
+  'packages/adapters/base/test/focus-intent-retries.browser.test.ts',
+  'packages/adapters/react/test/focus-entry-readiness.browser.test.ts',
+  'packages/adapters/vue/test/focus-request-readiness.browser.test.ts',
   'apps/www/test/template-style.browser.test.ts',
   'apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts',
   'apps/www/test/evidence/brutalist-fonts.browser.test.ts',
