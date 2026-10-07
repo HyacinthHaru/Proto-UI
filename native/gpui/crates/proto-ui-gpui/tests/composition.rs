@@ -390,6 +390,66 @@ fn the_peer_hears_the_order_the_views_show_in_when_it_changes(cx: &mut TestAppCo
     assert_eq!(orders(composed.outbox()), [vec![ROOT.to_string()]]);
 }
 
+#[gpui::test]
+fn replacing_live_surfaces_replaces_the_peers_whole_order(cx: &mut TestAppContext) {
+    let mut composed = Composed::open(cx);
+    composed.receive(peer(recorded("root")));
+    composed.receive(peer(recorded("thumb")));
+    composed.outbox();
+
+    // The application replaces the forest through the public setter while
+    // both sessions stay open. Repeated surfaces still name one session.
+    for (sessions, expected) in [
+        (vec![THUMB, ROOT, THUMB], vec![THUMB, ROOT]),
+        (vec![ROOT], vec![ROOT]),
+        (vec![THUMB, ROOT], vec![THUMB, ROOT]),
+    ] {
+        let surfaces: Vec<SurfaceNode> = sessions
+            .iter()
+            .enumerate()
+            .map(|(index, session)| SurfaceNode {
+                id: format!("{session}/host-{index}"),
+                session: (*session).into(),
+                style: StyleRefinement::default(),
+                focus: None,
+                a11y: None,
+                children: Vec::new(),
+            })
+            .collect();
+        composed
+            .window
+            .update(&mut composed.cx, |view, window, cx| {
+                view.set_surfaces(surfaces.clone(), window, cx)
+            })
+            .expect("the application replaces the surfaces");
+        composed.draw();
+        assert_eq!(composed.rendered(), expected);
+        let orders: Vec<Vec<String>> = composed
+            .outbox()
+            .into_iter()
+            .filter_map(|message| match message {
+                HostToPeerMessage::ProjectionOrder(order) => Some(order.sessions),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(orders, [expected]);
+        assert!(composed.is_open(ROOT));
+        assert!(composed.is_open(THUMB));
+
+        // Publishing that same forest again sends no second order.
+        composed
+            .window
+            .update(&mut composed.cx, |view, window, cx| {
+                view.set_surfaces(surfaces, window, cx)
+            })
+            .expect("the application republishes the surfaces");
+        assert!(!composed
+            .outbox()
+            .iter()
+            .any(|message| matches!(message, HostToPeerMessage::ProjectionOrder(_))));
+    }
+}
+
 // Review regression GPUI756-F1R: a host-owned wrapper is a supported slot
 // child, and placement must remain recursive while its parent has no view.
 #[gpui::test]

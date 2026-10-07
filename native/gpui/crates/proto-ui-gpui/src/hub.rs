@@ -983,6 +983,12 @@ impl ProtoHostView {
                 Some(place_sessions(root, &roots, &mut vec![id.clone()]))
             })
             .collect();
+        self.publish_order();
+        self.subscribe_focus(window, cx);
+        cx.notify();
+    }
+
+    pub(crate) fn publish_order(&mut self) {
         // Focus orders a navigation's members by the order their views show
         // in, so the peer hears it whenever it changes (HC-FOCUS-ORDER-0001).
         let order = self.rendered_sessions();
@@ -994,8 +1000,6 @@ impl ProtoHostView {
                 }));
             self.hub.order = order;
         }
-        self.subscribe_focus(window, cx);
-        cx.notify();
     }
 
     fn note_a11y(&mut self, session_id: &str, issues: Vec<A11yIssue>) {
