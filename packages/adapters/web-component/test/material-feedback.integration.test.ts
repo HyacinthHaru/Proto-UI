@@ -2,6 +2,7 @@ import { declareTextControl } from '@proto.ui/module-text-control';
 import { describe, it, expect, vi } from 'vitest';
 import { definePrototype, tw, type RunHandle } from '@proto.ui/core';
 import { asButton } from '@proto.ui/prototypes-base/button';
+import { asFocusable } from '@proto.ui/hooks';
 import { AdaptToWebComponent, setElementProps } from '../src';
 import { installExperimentalVisualConsumer } from '../src/runtime/experimental-visual-consumer';
 import type { FinalStyleFrame } from '../../../modules/feedback/src/material/final-style-sink';
@@ -350,6 +351,7 @@ describe('private material through real WC and Feedback', () => {
       name: `material-construction-failure-${++id}`,
       modules: [declareTextControl({ content: 'plain-text', lineMode: 'single', engine: 'host' })],
       setup(def) {
+        asFocusable().configure({ disabled: false });
         states.push(def.state.bool('alive', true));
         def.lifecycle.onBeforeDispose(beforeDispose);
         return () => null;
@@ -370,20 +372,10 @@ describe('private material through real WC and Feedback', () => {
       expect(beforeDispose).toHaveBeenCalledOnce();
       expect(() => states[0].get()).toThrow(/disposed/);
       expect(host.querySelector('[data-pui-style]')).toBeNull();
-      const focusAdds = add.mock.calls
-        .map((args, i) => ({ args, target: add.mock.contexts[i] }))
-        .filter(
-          ({ args, target }) =>
-            ['focus', 'blur'].includes(String(args[0])) && target instanceof HTMLInputElement
-        );
-      expect(focusAdds).toHaveLength(2);
-      for (const { args, target } of focusAdds)
-        expect(
-          remove.mock.calls.some(
-            (call, i) =>
-              remove.mock.contexts[i] === target && call[0] === args[0] && call[1] === args[1]
-          )
-        ).toBe(true);
+      // The consumer failed before the view's Focus capabilities were created.
+      expect(
+        add.mock.calls.filter(([type]) => ['focus', 'blur'].includes(String(type)))
+      ).toHaveLength(0);
       host.remove();
       await settle();
       expect(beforeDispose).toHaveBeenCalledOnce();
@@ -392,6 +384,23 @@ describe('private material through real WC and Feedback', () => {
       await settle();
       expect(states).toHaveLength(2);
       expect(states[1].get()).toBe(true);
+      const focusAdds = add.mock.calls
+        .map((args, i) => ({ args, target: add.mock.contexts[i] }))
+        .filter(
+          ({ args, target }) =>
+            ['focus', 'blur'].includes(String(args[0])) && target instanceof HTMLInputElement
+        );
+      expect(focusAdds).toHaveLength(2);
+      host.remove();
+      await settle();
+      for (const { args, target } of focusAdds)
+        expect(
+          remove.mock.calls.some(
+            (call, i) =>
+              remove.mock.contexts[i] === target && call[0] === args[0] && call[1] === args[1]
+          )
+        ).toBe(true);
+      expect(beforeDispose).toHaveBeenCalledTimes(2);
     } finally {
       off();
       host.remove();

@@ -60,6 +60,13 @@ import {
   unbindLogicalEventTarget,
 } from './platform/instance-tree';
 import { createWebEffectsPort } from './runtime/effects-port';
+import { getExperimentalVisualConsumer } from './runtime/experimental-visual-consumer';
+import {
+  OWNED_MATERIAL_ID,
+  createOwnedMaterialBinding,
+} from '@proto.ui/module-feedback/internal/owned-slot';
+import { createOpaqueMaterialVisualSink } from './material/owned-texture-sink';
+import { createOwnedVisualSurface } from './visual-surface';
 import { createShadowTextControlSurface } from './shadow-text-control-surface';
 import {
   createRebindableWebOverlayModal,
@@ -610,6 +617,21 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
               router,
               rawPropsSource,
               effectsPort: splitEffects ?? createWebEffectsPort(applier!),
+              materialBindingFactory:
+                applier &&
+                proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
+                  ? createOwnedMaterialBinding
+                  : undefined,
+              finalStyleSink: applier
+                ? (getExperimentalVisualConsumer(proto)?.(
+                    thisEl,
+                    applier,
+                    createOwnedVisualSurface(thisEl, thisRoot)
+                  ) ??
+                  (proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
+                    ? createOpaqueMaterialVisualSink(thisEl, applier)
+                    : undefined))
+                : undefined,
               getMeta: ownerGetMeta,
               colorSchemeSource: runtimeColorSchemeSource,
               preferenceSource,
@@ -730,8 +752,25 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       initializingOwner = false;
       runFocusCallbackScope = hostSession.invokeInCallbackScope;
 
-      if (initialPresent) attachView();
-      else setViewDetached(true);
+      try {
+        if (initialPresent) attachView();
+        else setViewDetached(true);
+      } catch (error) {
+        // Failed initial projection still owns a live logical/runtime session.
+        // Retire it immediately and permit a later fresh connection attempt.
+        try {
+          void owner.dispose().catch(() => {});
+        } catch {
+          /* Keep the setup error. */
+        }
+        disposeDefaultKeyedMetaSources();
+        unbindProtoInstance(this._instanceToken, this);
+        bindLogicalParent(this._instanceToken, null);
+        this._controller = null;
+        this._mountedOnce = false;
+        this._pendingOwnedTokens = null;
+        throw error;
+      }
 
       const { controller, kernel } = hostSession;
       if (kernel && kernel.run) {
