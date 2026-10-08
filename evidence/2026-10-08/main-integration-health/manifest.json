@@ -1,0 +1,40 @@
+{
+  "files": {
+    "README.md": {
+      "bytes": 4405,
+      "sha256": "b509bbd669a68bf99f5756fb89e7d4deb659265c41590927733ff321030a5e5c"
+    },
+    "evidence.tar.gz": {
+      "bytes": 5963748,
+      "sha256": "07f1eeea6850793f5ef7db9df4dbeacf0b0b78e0d5bc87fd27db5abac3cc1f38"
+    },
+    "native-source-binding.json": {
+      "bytes": 2959,
+      "sha256": "0df546e5bfbd8fa083940720adc4a1fa2576ed384997532b0fd8ac668e6eb6e4"
+    },
+    "p2-A-original-cpu4-shadcn-dark-390.png": {
+      "bytes": 41683,
+      "sha256": "18c44f67154748ccadd8d1a419d5b4242ab3fc221ffe567f64d350a42fe90a2b"
+    },
+    "p2-A-original-cpu4-shadcn-light-1440.png": {
+      "bytes": 104252,
+      "sha256": "beda744cceec16a98f64a88f4e7bc601516c7aaa7df8b262255c29feaa6b2292"
+    },
+    "p2-B-no-native-initializer-cpu4-shadcn-dark-390.png": {
+      "bytes": 41530,
+      "sha256": "3cf19b34b35bf75c879ca3bf5a606ced068a8eec3d79abfc0d4fd45c1a5a8f5a"
+    },
+    "p2-B-no-native-initializer-cpu4-shadcn-light-1440.png": {
+      "bytes": 101051,
+      "sha256": "386f761b14d9ab2da0869afbcf9a2a0c7b1e81db09f99317606bbd4635f38c2d"
+    },
+    "summary.json": {
+      "bytes": 71242,
+      "sha256": "feebb11e2fef57c3a9b8b3152f92c0598f529bd82a7a88fd862b1271675c929d"
+    }
+  },
+  "archiveMembers": 228,
+  "rawPublicMappings": 227,
+  "source": "product0a2b327b, evidence package not yet published",
+  "privacy": "no privateModelTrace sampling/context; derived strings only;4unchanged actuallyreviewedPNGs"
+}

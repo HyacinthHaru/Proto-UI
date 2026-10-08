@@ -1,0 +1,60 @@
+{
+  "basis": "main169407b2d463d5da5d6694e2d1f8644578046b40 + captured four productsource overrides; all other tracked packages/src and apps/www/src inputs unchanged, except specified temporaryA/B actorcall; scripts/records not browser bundleinputs",
+  "bindings": [
+    {
+      "path": "packages/modules/feedback/src/create.ts",
+      "mainBlob": "5a232ad10f4f681a23f5a4c44c5ed48dbdf07de8",
+      "executedCandidateSHA256": "1fc5827bd5448dd4a48f764d4040433ad1fb80db332153909472408062df9bec",
+      "currentBytesEqualCapturedSnapshot": true
+    },
+    {
+      "path": "packages/modules/focus/src/create.ts",
+      "mainBlob": "61aca774c8f382278e068d85461f90de63576413",
+      "executedCandidateSHA256": "9770f19c9033a6ce70b93294c53e0a82e98c75afc3f3f7188248191438cd088b",
+      "currentBytesEqualCapturedSnapshot": true
+    },
+    {
+      "path": "packages/adapters/web-component/src/adapt.ts",
+      "mainBlob": "bf7a8b60ec1d0bf6e5134034960e05d12d4542a9",
+      "executedCandidateSHA256": "5f724f8a97912e9eb15d84bb266f74f9fd464826f0dc5489756f12bc4d858732",
+      "currentBytesEqualCapturedSnapshot": true
+    },
+    {
+      "path": "packages/adapters/web-component/src/runtime/modules.ts",
+      "mainBlob": "990b9d71890c82622ebb8370766ed89ec8556135",
+      "executedCandidateSHA256": "5e32f4dcb69e282001502ebb45ad357ef901a7a1d22cf7e4a826b2809b551b11",
+      "currentBytesEqualCapturedSnapshot": true
+    },
+    {
+      "path": "apps/www/src/components/override/SocialIcons.astro",
+      "variant": "A-original",
+      "SHA256": "12d59a437c47767ead0edf80c2877b94f071b303bdbeb4542260ab82af8ad401",
+      "currentProductRestoredToA": true
+    },
+    {
+      "path": "apps/www/src/components/override/SocialIcons.astro",
+      "variant": "B-no-native-initializer",
+      "SHA256": "243b08ca64b51f7b81ef8a1ef89cb0a7490e02ca0f67c92fa9619c951e7c622d",
+      "currentProductRestoredToA": true
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/site-search-evidence.ts",
+      "mainBlob": "b6fb2eb9d72af360e00cb95f7e910ad7292a0c78",
+      "SHA256": "a27e6088b5ad10eff7ad1fdfc3ded527fc3d0289591cd3ec591f20d52adaf1a1",
+      "unchangedReaderDeadlineAssertions": true
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+      "mainBlob": "49da9fd804e7983d58b9e6630b6a4ef1c3b0acdf",
+      "SHA256": "e9704a6628e5688697be00c00090166a235bdd5d0c918e1a26a3fde5bacb9210",
+      "unchangedReaderDeadlineAssertions": true
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/browser-harness.ts",
+      "mainBlob": "7ad60af34cc60d704afa343a1680573494467420",
+      "SHA256": "64a6da3f89e8cc9453b2e7ff28a9baa919f636fab45f983d88476ca5bfcb1138",
+      "unchangedReaderDeadlineAssertions": true
+    }
+  ],
+  "limit": "source+version/diff binding; does not claim exhaustive parsed bundle315 inputs or originalignored generatedCSS archives; Node24 frozen main lockfile and originaltype/stylegeneration evidence retained"
+}
