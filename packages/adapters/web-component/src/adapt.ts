@@ -67,6 +67,7 @@ import {
 } from '@proto.ui/module-feedback/internal/owned-slot';
 import { createOpaqueMaterialVisualSink } from './material/owned-texture-sink';
 import { createOwnedVisualSurface } from './visual-surface';
+import type { FinalStyleSink } from '@proto.ui/module-feedback/internal/final-style-sink';
 import { createShadowTextControlSurface } from './shadow-text-control-surface';
 import {
   createRebindableWebOverlayModal,
@@ -591,24 +592,49 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         // A second host listener would see Shadow-retargeted focus and could
         // overwrite native :focus-visible with the shell's false result.
 
+        // The Adapter acquires the sink before capability attachment can fail.
+        // Both Feedback and rollback retire the same lease, including before
+        // any frame exists. Mark it retired before calling user cleanup.
+        let finalStyleSink: FinalStyleSink | undefined;
+        let sinkReleased = false;
+        let sinkView = 0;
+        const releaseSink = (view = sinkView) => {
+          if (sinkReleased || !finalStyleSink) return;
+          sinkReleased = true;
+          finalStyleSink.release(view);
+        };
         let disposed = false;
         const disposeView = () => {
           if (disposed) return;
           disposed = true;
-          eventGate.disable();
-          eventGate.dispose();
-          unbindLogicalEventTarget(this._instanceToken, router.rootTarget);
-          router.dispose();
-          applier?.clear();
-          splitEffects?.dispose();
-          releaseRenderedChildren();
-          if (currentEventGate === eventGate) currentEventGate = null;
-          if (currentRouter === router) currentRouter = null;
-          if (this._applier === applier) this._applier = null;
-          this._hostDisplay?.sync();
+          try {
+            releaseSink();
+          } finally {
+            eventGate.disable();
+            eventGate.dispose();
+            unbindLogicalEventTarget(this._instanceToken, router.rootTarget);
+            router.dispose();
+            applier?.clear();
+            splitEffects?.dispose();
+            releaseRenderedChildren();
+            if (currentEventGate === eventGate) currentEventGate = null;
+            if (currentRouter === router) currentRouter = null;
+            if (this._applier === applier) this._applier = null;
+            this._hostDisplay?.sync();
+          }
         };
 
         try {
+          finalStyleSink = applier
+            ? (getExperimentalVisualConsumer(proto)?.(
+                thisEl,
+                applier,
+                createOwnedVisualSurface(thisEl, thisRoot)
+              ) ??
+              (proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
+                ? createOpaqueMaterialVisualSink(thisEl, applier)
+                : undefined))
+            : undefined;
           owner.attachView({
             modules: createWebComponentModules({
               el: thisEl,
@@ -622,15 +648,15 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
                 proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
                   ? createOwnedMaterialBinding
                   : undefined,
-              finalStyleSink: applier
-                ? (getExperimentalVisualConsumer(proto)?.(
-                    thisEl,
-                    applier,
-                    createOwnedVisualSurface(thisEl, thisRoot)
-                  ) ??
-                  (proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
-                    ? createOpaqueMaterialVisualSink(thisEl, applier)
-                    : undefined))
+              finalStyleSink: finalStyleSink
+                ? {
+                    commit(frame) {
+                      if (sinkReleased) throw new Error('Retired material visual sink');
+                      sinkView = frame.view;
+                      finalStyleSink!.commit(frame);
+                    },
+                    release: releaseSink,
+                  }
                 : undefined,
               getMeta: ownerGetMeta,
               colorSchemeSource: runtimeColorSchemeSource,
@@ -673,7 +699,11 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             createSession: createHostSession,
           });
         } catch (error) {
-          disposeView();
+          try {
+            disposeView();
+          } catch {
+            /* Preserve the attachment failure after retiring its resources. */
+          }
           throw error;
         }
         setViewDetached(false);

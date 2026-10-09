@@ -1,6 +1,12 @@
 import { declareTextControl } from '@proto.ui/module-text-control';
 import { describe, it, expect, vi } from 'vitest';
-import { definePrototype, tw, type RunHandle } from '@proto.ui/core';
+import {
+  declareModule,
+  moduleDeclaration,
+  definePrototype,
+  tw,
+  type RunHandle,
+} from '@proto.ui/core';
 import { asButton } from '@proto.ui/prototypes-base/button';
 import { asFocusable } from '@proto.ui/hooks';
 import { AdaptToWebComponent, setElementProps } from '../src';
@@ -343,6 +349,161 @@ describe('private material through real WC and Feedback', () => {
           container.remove();
         }
       });
+
+  it('retires actual sink subscriptions once per healthy connection and reconnect', async () => {
+    let leases = 0;
+    const unsubscribe = vi.fn(() => {
+      leases--;
+    });
+    const releases: ReturnType<typeof vi.fn>[] = [];
+    const prototype = definePrototype({
+      name: `material-healthy-lease-${++id}`,
+      setup(def) {
+        def.feedback.style.use(tw('rounded-full'));
+        return () => null;
+      },
+    });
+    const off = installExperimentalVisualConsumer(prototype, (host, style, surface) => {
+      const sink = createOwnedTextureVisualSink(
+        host,
+        style,
+        null,
+        {
+          current: () => null,
+          subscribe: () => {
+            leases++;
+            return unsubscribe;
+          },
+        },
+        {
+          current: () => ({
+            reducedMotion: 'no-preference',
+            reducedTransparency: 'no-preference',
+            contrast: 'no-preference',
+            forcedColors: 'none',
+          }),
+          subscribe: () => {
+            leases++;
+            return unsubscribe;
+          },
+        },
+        surface
+      );
+      const release = vi.fn((view: number) => sink.release(view));
+      releases.push(release);
+      return { commit: (frame) => sink.commit(frame), release };
+    });
+    const Constructor = AdaptToWebComponent(prototype);
+    const host = new Constructor();
+    try {
+      for (let cycle = 0; cycle < 2; cycle++) {
+        document.body.append(host);
+        await settle();
+        expect(leases).toBe(2);
+        host.remove();
+        await settle();
+        expect(leases).toBe(0);
+        expect(releases[cycle]).toHaveBeenCalledOnce();
+      }
+      expect(unsubscribe).toHaveBeenCalledTimes(4);
+    } finally {
+      off();
+      host.remove();
+    }
+  });
+
+  for (const [throwOnRelease, releaseFailure] of [
+    [false, undefined],
+    [true, new Error('secondary retirement failure')],
+    [true, null],
+    [true, undefined],
+    [true, 0],
+  ] as const)
+    it(`retires a successfully acquired sink before rejected material attachment (throwing cleanup: ${throwOnRelease}, value: ${String(releaseFailure)})`, async () => {
+      let sourceLeases = 0;
+      let preferenceLeases = 0;
+      const sourceOff = vi.fn(() => {
+        sourceLeases--;
+      });
+      const preferenceOff = vi.fn(() => {
+        preferenceLeases--;
+      });
+      const release = vi.fn();
+      const commit = vi.fn();
+      const beforeDispose = vi.fn();
+      const states: Array<{ get(): boolean }> = [];
+      const prototype = definePrototype({
+        name: `material-preframe-failure-${++id}`,
+        modules: [
+          declareModule(moduleDeclaration('experimental/feedback-material-v1'), { version: 0 }),
+        ],
+        setup(def) {
+          states.push(def.state.bool('alive', true));
+          def.lifecycle.onBeforeDispose(beforeDispose);
+          return () => null;
+        },
+      });
+      const off = installExperimentalVisualConsumer(prototype, (host, style, surface) => {
+        const sink = createOwnedTextureVisualSink(
+          host,
+          style,
+          null,
+          {
+            current: () => null,
+            subscribe: () => {
+              sourceLeases++;
+              return sourceOff;
+            },
+          },
+          {
+            current: () => ({
+              reducedMotion: 'no-preference',
+              reducedTransparency: 'no-preference',
+              contrast: 'no-preference',
+              forcedColors: 'none',
+            }),
+            subscribe: () => {
+              preferenceLeases++;
+              return preferenceOff;
+            },
+          },
+          surface
+        );
+        return {
+          commit(frame) {
+            commit(frame);
+            sink.commit(frame);
+          },
+          release(view) {
+            release(view);
+            sink.release(view);
+            if (throwOnRelease) throw releaseFailure;
+          },
+        };
+      });
+      const Constructor = AdaptToWebComponent(prototype);
+      const host = new Constructor();
+      try {
+        expect(() => document.body.append(host)).toThrow(
+          'Invalid finite owned-material declaration'
+        );
+        await settle();
+        expect(commit).not.toHaveBeenCalled();
+        expect(release).toHaveBeenCalledOnce();
+        expect(sourceLeases).toBe(0);
+        expect(preferenceLeases).toBe(0);
+        expect(sourceOff).toHaveBeenCalledOnce();
+        expect(preferenceOff).toHaveBeenCalledOnce();
+        expect(beforeDispose).toHaveBeenCalledOnce();
+        expect(() => states[0].get()).toThrow(/disposed/);
+        host.remove();
+        await settle();
+        expect(release).toHaveBeenCalledOnce();
+      } finally {
+        off();
+        host.remove();
+      }
+    });
 
   it('retires adapter and owner resources when the visual consumer fails before attachment', async () => {
     const beforeDispose = vi.fn();
