@@ -1,0 +1,23 @@
+{
+  "observedFinalCIFailure": "Exact shadcn Template style case timed out at original5000ms in final6047 closeout job114124178935; selected main EA job113896790779 had passed3602ms",
+  "sameImplementationOfficialControl": "Exact source02 CI job114120211653 passed348ms; numeric6047 only changes budget/record, source3files byte-identical",
+  "localControls": [
+    {
+      "variant": "baseline",
+      "sha256": "5f4cbc7a2711107b681440821d1e615d00cd96cf7b19e4f76d5a9a2fcca7b86c",
+      "exit": 0,
+      "scope": "Original2case selector,109 explicitly filtered, original5000ms/assertion unchanged",
+      "head": "ea19727838d85c05af5e4bca8d5fc235cb44e288"
+    },
+    {
+      "variant": "candidate",
+      "sha256": "9c6918c57805eba0b8b2d28ab01376b1d0a03653be82d356a84ce7b7d7919913",
+      "exit": 0,
+      "scope": "Original2case selector,109 explicitly filtered, original5000ms/assertion unchanged",
+      "head": "6047ee9fb6dbf703f603ffb7832780df58c41fe7"
+    }
+  ],
+  "environment": "Node24.21.0/pnpm10.32.1/macOSarm64/Chrome154.0.8037.98,locked deps;not a new Linux CI run",
+  "dependencyBinding": "template-style-dependency-binding.json",
+  "interpretation": "Case body uses plain DOMShadowRoot/span and unchanged CLI CSS generator, never adds changed Runtime/WC bundle. No new source defect was established by this timeout. Actual CI failure remains;timing/rootcause not claimed solved, no timeout/source/assertion change or upstream rerun."
+}

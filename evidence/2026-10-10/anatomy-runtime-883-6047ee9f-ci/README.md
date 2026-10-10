@@ -1,0 +1,15 @@
+# Issue #883 Group C: final-head CI supplement
+
+Candidate `6047ee9fb6dbf703f603ffb7832780df58c41fe7`, tree `9153dd303e350a4e2d941f8790ea03e7c21429ed`, PR #884; base main `ea19727838d85c05af5e4bca8d5fc235cb44e288`. This is additive evidence after the immutable `ad04567f` source packet, not a rewritten or relabeled earlier execution.
+
+The exact-head CI workflow [38021493495](https://github.com/Proto-UI/Proto-UI/actions/runs/38021493495) is **FAILURE**: all22 jobs terminal,13success/9failure. General:17files failed/755passed/3skipped;6338assertions passed/100failed/34TODO. All45 Group C assertions actually passed:Collapsible24,Delay14,module-resource lifecycle7. Official artifact11659615534 contains the original general log,JSON reporter,selection,receipt and source SHA. Nested reporter suite totals are not file totals.
+
+Selected main general had115failed assertions; all100 final general failure names also occurred there. Across general and8browser jobs,142 final failed names match the selected baseline and one is additional. Matching names do not prove identical causes. Browser shards remain7failed/1passed; main is not restored. Other evidence workflows also retain failures, including Bootstrap state-controls and Homepage capture; this packet is scoped to the CI workflow/runtime comparison and does not classify all external workflows. Vercel fork-team authorization is separate.
+
+The additional shadcn Template style test in browser7 timed out at its original5000ms limit (reported5003ms). The selected main run passed this case3602ms and the same-implementation source02 CI passed348ms. Final6047 changes only the budget/record from02; direct test/CSS generator/token blobs are unchanged. Both family cases passed in the original local selector at each exact baseline/candidate head (2passed/109explicitly filtered,original assertions and deadline unchanged),Node24.21.0/macOS arm64/Chrome154.0.8037.98. Those local observations do not replace the failed full Linux shard. **Cause remains unknown; neither an inherited timeout nor a candidate source regression is established.** No timeout/assertion relaxation or upstream rerun was performed.
+
+The independent assessment is local read-only human-assisted partial/ABSTAIN,not GitHub approval. It narrows direct dependencies but does not locate the time spent in newPage,CSS generation,evaluate/style calculation or page.close. Further phase observation belongs to coordinated Shadow follow-up; no fix for that timeout is claimed.
+
+Final package job114123875955 succeeds:actual44/44builds,44manifests,all9whole-entry budgets;WC117874/118000 leaves126bytes. All9 measured hashes/costs equal source02;source02 package job actually rebuilt39/44affected packages,not44. Source02 general was superseded/cancelled and is not counted as passed.
+
+Files are sanitized derivatives;manifest raw/public mappings preserve the source hashes. No new native capture or rerun is implied by publication. Earlier failures and controls remain in the source packet. This evidence branch is **NEVER MERGE**. Group A/Group B,independent maintainer review,unified revalidation and Issue closure remain open.

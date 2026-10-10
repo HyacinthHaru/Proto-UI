@@ -1,0 +1,109 @@
+{
+  "head": "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+  "run": 38021493495,
+  "attempt": 1,
+  "job": 114124178804,
+  "artifactId": 11659615534,
+  "artifactZipSha256": "6e4b4787bc6cfd5febc6da4bb113939d22353f99fc63f2f336777a2278a8a42a",
+  "logSummary": {
+    "files": 775,
+    "failedFiles": 17,
+    "passedFiles": 755,
+    "skippedFiles": 3
+  },
+  "assertionStatusCounts": {
+    "passed": 6338,
+    "failed": 100,
+    "todo": 34
+  },
+  "groupC": [
+    {
+      "path": "packages/prototypes/base/test/collapsible.test.ts",
+      "status": "passed",
+      "tests": 24,
+      "cases": [
+        "Base Collapsible consumer contract commits uncontrolled requests, initializes defaultOpen once and emits no synchronization events",
+        "Base Collapsible consumer contract keeps controlled expansion and presence canonical until the owner accepts a request",
+        "Base Collapsible consumer contract keeps every part canonical when the owner accepts synchronously inside openChange",
+        "Base Collapsible consumer contract reconciles reused parts with the new domain instead of retaining the former Root facts",
+        "Base Collapsible consumer contract withdraws a Trigger moved outside all Proto ancestors from its former logical domain",
+        "Base Collapsible consumer contract preserves accepted Trigger membership after rejection and permits a later valid adoption",
+        "Base Collapsible consumer contract wakes a detached reused Content when its new Root is already open",
+        "Base Collapsible consumer contract restores accepted Content membership after a rejected adoption without replacing its identity",
+        "Base Collapsible consumer contract suppresses disabled requests and focus without rewriting open or blocking controlled input",
+        "Base Collapsible consumer contract preserves settled focus admission across both disabled-observer owner reversals",
+        "Base Collapsible consumer contract keeps a newer reentrant request canonical when an older Trigger resumes context synchronization",
+        "Base Collapsible consumer contract signals every accepted nested request without replaying it during later synchronization",
+        "Base Collapsible consumer contract preserves accepted disclosure and future request signals across reentrant disabled props",
+        "Base Collapsible consumer contract uses one Enter/Space activation route and does not add roving or content focus",
+        "Base Collapsible consumer contract withdraws detached controls, restores reserved identity and retains keepMounted content",
+        "Base Collapsible consumer contract isolates nested and adjacent domains and removes terminal targets before replacement",
+        "Base Collapsible consumer contract rejects a second same-domain part without enforcing minimum during construction",
+        "Base Collapsible consumer contract preserves controlled and disabled requests while the same Root view is detached",
+        "Base Collapsible consumer contract clears held pointer facts before the same Trigger view rematerializes",
+        "Base Collapsible consumer contract rejects an adopted over-maximum composition when the new Root is first created",
+        "Base Collapsible consumer contract rebinds a cold-adopted detached Trigger before its view rematerializes",
+        "Base Collapsible consumer contract rejects a reused detached Content while its destination Root view is detached",
+        "Base Collapsible consumer contract reports absent required roles through conformance after actual Runtime mount readiness",
+        "Base Collapsible consumer contract composes all three authored asHooks without inheriting another Base protocol"
+      ]
+    },
+    {
+      "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+      "status": "passed",
+      "tests": 14,
+      "cases": [
+        "runtime contract: core delay primitive (v0) finishes failed-creation teardown when diagnostics throw at disposing",
+        "runtime contract: core delay primitive (v0) finishes failed-creation teardown when diagnostics throw at instance.dispose.begin",
+        "runtime contract: core delay primitive (v0) finishes failed-creation teardown when diagnostics throw at disposed",
+        "runtime contract: core delay primitive (v0) finishes failed-creation teardown when diagnostics throw at instance.dispose.done",
+        "runtime contract: core delay primitive (v0) retains both diagnostic and author cleanup errors after the creation error",
+        "runtime contract: core delay primitive (v0) SHADOW-R3: cancels failed creation work and disposes once (cleanup throws: false)",
+        "runtime contract: core delay primitive (v0) SHADOW-R3: cancels failed creation work and disposes once (cleanup throws: true)",
+        "runtime contract: core delay primitive (v0) is runtime-only and exported directly from core",
+        "runtime contract: core delay primitive (v0) validates duration as non-negative finite milliseconds",
+        "runtime contract: core delay primitive (v0) requires a host delay scheduler when delay is used",
+        "runtime contract: core delay primitive (v0) records the requested minimum duration and never runs zero delay synchronously",
+        "runtime contract: core delay primitive (v0) returns an idempotent cancel task and suppresses queued host callbacks after cancel",
+        "runtime contract: core delay primitive (v0) invalidates pending delay callbacks when the instance unmounts",
+        "runtime contract: core delay primitive (v0) runs delay callbacks inside runtime callback context without setup authority"
+      ]
+    },
+    {
+      "path": "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+      "status": "passed",
+      "tests": 7,
+      "cases": [
+        "runtime contract: lifecycle module resource ownership (v1) releases a failed created instance while preserving the original failure",
+        "runtime contract: lifecycle module resource ownership (v1) preserves both created and terminal cleanup failures in the synchronous caller",
+        "runtime contract: lifecycle module resource ownership (v1) keeps Expose Event declarations across view epochs and invalidates emit at disposal",
+        "runtime contract: lifecycle module resource ownership (v1) keeps Feedback logical style state while suppressing detached host flushes",
+        "runtime contract: lifecycle module resource ownership (v1) suspends A11y and ExposeState host projection but publishes latest state on remount",
+        "runtime contract: lifecycle module resource ownership (v1) keeps HitParticipation regions detached and re-syncs them on the next mount",
+        "runtime contract: lifecycle module resource ownership (v1) suspends Overlay host effects while preserving open state across epochs"
+      ]
+    }
+  ],
+  "allGroupC45Passed": true,
+  "wholeGeneralPassed": false,
+  "producerReceipt": {
+    "schemaVersion": 1,
+    "runId": "38021493495",
+    "attempt": 1,
+    "eventSha": "28dcfa68a9e55ce9b3f8355ecb7fa8d09f325c7f",
+    "checkoutSha": "28dcfa68a9e55ce9b3f8355ecb7fa8d09f325c7f",
+    "slot": "general",
+    "outcome": "failure",
+    "payload": null
+  },
+  "artifactSourceSha": "28dcfa68a9e55ce9b3f8355ecb7fa8d09f325c7f",
+  "selectionBinding": {
+    "suiteCount": 775,
+    "fullSelectionSha256": "d7077b588c466c486936b8a6db440f52262c11aa83e1695214b935edb34f6a13",
+    "checkoutSha": "28dcfa68a9e55ce9b3f8355ecb7fa8d09f325c7f",
+    "fullOriginalSelection": "Official runtime-ci-38021493495-general-attempt-1 artifact11659615534, selection-general.json"
+  },
+  "wholeCI": "FAILURE;22 jobs terminal,13success/9failure in CI workflow only;7/8browser shards failed,1passed",
+  "officialRun": "https://github.com/Proto-UI/Proto-UI/actions/runs/38021493495",
+  "sourceTree": "9153dd303e350a4e2d941f8790ea03e7c21429ed"
+}

@@ -1,0 +1,90 @@
+{
+  "candidate": "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+  "tree": "9153dd303e350a4e2d941f8790ea03e7c21429ed",
+  "rawPublicMapping": [
+    {
+      "source": "ci-reconciliation-progress.json",
+      "target": "ci-reconciliation-progress.json",
+      "rawSha256": "b44190f0938d21d3b2413ebb310ac3603f5c36409708f260ab3e920b90233e2a",
+      "publicSha256": "b44190f0938d21d3b2413ebb310ac3603f5c36409708f260ab3e920b90233e2a",
+      "derivative": "machine-path sanitization and formatting normalization; public bytes are not raw execution-byte claims"
+    },
+    {
+      "source": "template-style-control-receipt.json",
+      "target": "template-style-control-receipt.json",
+      "rawSha256": "c7b7decb01a23e7cb6b3c3eab39e850fb95982971cf650721fc039b2dfc16dc3",
+      "publicSha256": "c7b7decb01a23e7cb6b3c3eab39e850fb95982971cf650721fc039b2dfc16dc3",
+      "derivative": "machine-path sanitization and formatting normalization; public bytes are not raw execution-byte claims"
+    },
+    {
+      "source": "template-style-dependency-binding.json",
+      "target": "template-style-dependency-binding.json",
+      "rawSha256": "7a4fc5cc3881f2ee44b18ea47b4f314fcbafb7af9c0162f8914d0f759a1d3f0c",
+      "publicSha256": "7a4fc5cc3881f2ee44b18ea47b4f314fcbafb7af9c0162f8914d0f759a1d3f0c",
+      "derivative": "machine-path sanitization and formatting normalization; public bytes are not raw execution-byte claims"
+    },
+    {
+      "source": "template-style-baseline-control.log",
+      "target": "template-style-baseline-control.log",
+      "rawSha256": "5f4cbc7a2711107b681440821d1e615d00cd96cf7b19e4f76d5a9a2fcca7b86c",
+      "publicSha256": "9c4cbe05983c3f46192e41f98cb4c61632e874ebeba846cec0348c74e41c4c35",
+      "derivative": "machine-path sanitization and formatting normalization; public bytes are not raw execution-byte claims"
+    },
+    {
+      "source": "template-style-candidate-control.log",
+      "target": "template-style-candidate-control.log",
+      "rawSha256": "9c6918c57805eba0b8b2d28ab01376b1d0a03653be82d356a84ce7b7d7919913",
+      "publicSha256": "3ea5a226a0ca94b375e8181530279d8328755f5305c74fbc96f655e362c209cb",
+      "derivative": "machine-path sanitization and formatting normalization; public bytes are not raw execution-byte claims"
+    },
+    {
+      "source": "independent-review/ci-timeout-assessment.json",
+      "target": "independent-timeout-assessment.json",
+      "rawSha256": "5b318b4fdb49ba864fe674ef2096353bcd62faf656a62a030da6145c0d569511",
+      "publicSha256": "0d0335cd5682cb3e62b824adbd8831d7d811b9c6fa362d9a542eabc50d79dcc1",
+      "derivative": "machine-path sanitization and formatting normalization; public bytes are not raw execution-byte claims"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "07b4ae89c3c406741f35f9db44f894a3b9ea7e295e51d2ad0c6142c613c946f1",
+      "bytes": 3154
+    },
+    {
+      "path": "ci-final.json",
+      "sha256": "5048179e3cfa5b38904758e24f3ad113d4d3dc73388b8b331fb69513f3f42622",
+      "bytes": 7849
+    },
+    {
+      "path": "ci-reconciliation-progress.json",
+      "sha256": "b44190f0938d21d3b2413ebb310ac3603f5c36409708f260ab3e920b90233e2a",
+      "bytes": 202555
+    },
+    {
+      "path": "independent-timeout-assessment.json",
+      "sha256": "0d0335cd5682cb3e62b824adbd8831d7d811b9c6fa362d9a542eabc50d79dcc1",
+      "bytes": 10973
+    },
+    {
+      "path": "template-style-baseline-control.log",
+      "sha256": "9c4cbe05983c3f46192e41f98cb4c61632e874ebeba846cec0348c74e41c4c35",
+      "bytes": 333
+    },
+    {
+      "path": "template-style-candidate-control.log",
+      "sha256": "3ea5a226a0ca94b375e8181530279d8328755f5305c74fbc96f655e362c209cb",
+      "bytes": 450
+    },
+    {
+      "path": "template-style-control-receipt.json",
+      "sha256": "c7b7decb01a23e7cb6b3c3eab39e850fb95982971cf650721fc039b2dfc16dc3",
+      "bytes": 1449
+    },
+    {
+      "path": "template-style-dependency-binding.json",
+      "sha256": "7a4fc5cc3881f2ee44b18ea47b4f314fcbafb7af9c0162f8914d0f759a1d3f0c",
+      "bytes": 1140
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+
+ RUN  v2.1.9 <LOCAL_PATH>
+
+ ✓ packages/adapters/web-component/test/shadow-closeout.browser.test.ts (111 tests | 109 skipped) 1729ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed | 109 skipped (111)
+   Start at  12:14:19
+   Duration  2.16s (transform 95ms, setup 0ms, collect 248ms, tests 1.73s, environment 0ms, prepare 33ms)
+

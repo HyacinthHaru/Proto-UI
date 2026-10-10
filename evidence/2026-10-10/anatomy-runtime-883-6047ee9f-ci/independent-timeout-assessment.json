@@ -1,0 +1,195 @@
+{
+  "kind": "independent-read-only-ci-timeout-assessment",
+  "recordedAt": "2026-10-10T04:20:18.212571+00:00",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "githubDisposition": null,
+  "observationId": "ISSUE883-CI-TEMPLATE-TIMEOUT-001",
+  "actionableSourceFindings": [],
+  "scope": "Only the additional shadcn Template Shadow style timeout in final-head browser7; no repeat of whole-source review or other CI classification.",
+  "classification": {
+    "value": "new observed exact-head CI timeout with unresolved cause",
+    "inheritedFailureDemonstrated": false,
+    "candidateSourceRegressionDemonstrated": false,
+    "failureRemainsOpen": true,
+    "rootCause": "unknown",
+    "localSuccessOverridesCanonicalFailure": false
+  },
+  "target": {
+    "head": "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+    "run": 38021493495,
+    "job": 114124178935,
+    "testFile": "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+    "case": "Shadow closeout native boundaries > styles a Template descendant from the shadcn preset Shadow closure",
+    "recordedTimeoutMs": 5000,
+    "recordedElapsedMs": 5003,
+    "rawCheckoutSha": "28dcfa68a9e55ce9b3f8355ecb7fa8d09f325c7f"
+  },
+  "comparison": {
+    "baseline": {
+      "head": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+      "run": 37953108222,
+      "job": 113896790779,
+      "caseResult": "passed",
+      "elapsedMs": 3602,
+      "sameFileOtherFailures": 4,
+      "rawCheckoutSha": "ea19727838d85c05af5e4bca8d5fc235cb44e288"
+    },
+    "sameImplementationSource": {
+      "head": "02a653dc0907e262102b2dd6709f2d95fd4d5413",
+      "job": 114120211653,
+      "caseResult": "passed",
+      "elapsedMs": 348,
+      "sameFileOtherFailures": 4,
+      "rawCheckoutSha": "2a30ecb66181e5dffaea408363a6bace4e7364d7"
+    },
+    "numeric": {
+      "caseResult": "timeout",
+      "sameFileFailures": 5,
+      "newFailureNameComparedWithSelectedBaseline": "Shadow closeout native boundaries > styles a Template descendant from the shadcn preset Shadow closure"
+    },
+    "failureSets": {
+      "baseline": [
+        "Shadow closeout native boundaries > makes Template-local percentage CSS usable without a Root recipe",
+        "Shadow closeout native boundaries > retains moves and restores styled resources after reconnect inside onUnmounted",
+        "Shadow closeout native boundaries > retains moves and restores styled resources after reconnect inside onBeforeDispose",
+        "Default keyed Meta sources in native Web Components > reconciles split consumer styles across preference changes and document adoption"
+      ],
+      "source02": [
+        "Shadow closeout native boundaries > makes Template-local percentage CSS usable without a Root recipe",
+        "Shadow closeout native boundaries > retains moves and restores styled resources after reconnect inside onUnmounted",
+        "Shadow closeout native boundaries > retains moves and restores styled resources after reconnect inside onBeforeDispose",
+        "Default keyed Meta sources in native Web Components > reconciles split consumer styles across preference changes and document adoption"
+      ],
+      "numeric": [
+        "Shadow closeout native boundaries > styles a Template descendant from the shadcn preset Shadow closure",
+        "Shadow closeout native boundaries > makes Template-local percentage CSS usable without a Root recipe",
+        "Shadow closeout native boundaries > retains moves and restores styled resources after reconnect inside onUnmounted",
+        "Shadow closeout native boundaries > retains moves and restores styled resources after reconnect inside onBeforeDispose",
+        "Default keyed Meta sources in native Web Components > reconciles split consumer styles across preference changes and document adoption"
+      ]
+    },
+    "source02ToNumericPaths": [
+      "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+      "scripts/analysis/package-budgets.mjs"
+    ]
+  },
+  "directSource": {
+    "inputs": [
+      {
+        "path": "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+        "blobAtAllThreeHeads": "e9ec865ba2d30de8b163a0905d60a41ff11436f4",
+        "sha256": "766e058cb666a9abcec5f8b14e30370e2be17aac7f0dfddc5d2f30a818e62cdf"
+      },
+      {
+        "path": "packages/cli/src/services/proto-style-css.ts",
+        "blobAtAllThreeHeads": "23b1b63fd22379a167cc368b913e43d1761ec188",
+        "sha256": "4249f189f23095b2c07521c7efbb04ff62679d93095765c9aaed472f167c517a"
+      },
+      {
+        "path": "packages/cli/src/generated/shadcn-style-tokens.ts",
+        "blobAtAllThreeHeads": "fc8ac0df3bd1b16728b2dd121216a829dafd3116",
+        "sha256": "17691f9297f1a47b70ddacb6c1b2bab52b9e97adff370d2a4ec890debe9a4c90"
+      },
+      {
+        "path": "packages/cli/src/generated/brutalist-style-tokens.ts",
+        "blobAtAllThreeHeads": "bb4b474d6fdc8de901e99e76cd1888f7d923ded7",
+        "sha256": "c33f264534b7c0addfe39ce47f56790ca882653be6204a72d483200b22142a47"
+      }
+    ],
+    "unchangedAcrossAllThreeHeads": true,
+    "testBodyLines": [55, 72],
+    "testBody": "browser.newPage(); synchronous renderProtoShadowSplitStyleArtifact(tokens) as argument; page.evaluate creates a plain div/open ShadowRoot/style/span, inserts generated CSS, reads computed display; expect block; finally await page.close().",
+    "changedBundleNotAddedInThisCase": true,
+    "generator": "packages/cli/src/services/proto-style-css.ts:429 is a synchronous in-module generator; no imports/require/dynamic imports of Runtime or WC in that generator or the two token modules.",
+    "beforeAll": "Lines17-44 still build the common Runtime/WC Closeout bundle and launch Chrome with a distinct30000ms hook allowance. That bundle is stored for later cases; this case never calls addScriptTag.",
+    "interpretation": "The direct case body does not execute the changed lifecycle/adoption implementation. Shared beforeAll build/browser startup and process/resource history still exist. Source inspection narrows the direct semantic dependency but cannot rule out all indirect timing effects."
+  },
+  "timingBoundary": {
+    "known": "CI reports a test timeout, not a beforeAll/afterAll hook timeout or an incorrect display assertion.",
+    "possibleUnlocalizedStages": [
+      "browser.newPage/context/renderer creation",
+      "synchronous CSS generation in the test turn",
+      "page.evaluate transport and browser style calculation",
+      "finally page.close() completion"
+    ],
+    "noStageTimingRecorded": true,
+    "beforeAllDirectTimer": "Its separate hook time is not established as the5000ms failing test timer; the hook also remains a possible contributor to surrounding resource history.",
+    "notProven": "No recorded stage indicates which await or synchronous work consumed the deadline; no browser crash, slow generator, CPU/load, scheduler cause or CSS value failure is established."
+  },
+  "localControls": {
+    "environmentFromReceipt": "Node24.21.0/pnpm10.32.1/macOSarm64/Chrome154.0.8037.98,locked deps;not a new Linux CI run",
+    "baseline": {
+      "head": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+      "exitCode": 0,
+      "passed": 2,
+      "explicitlyFiltered": 109
+    },
+    "candidate": {
+      "head": "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+      "exitCode": 0,
+      "passed": 2,
+      "explicitlyFiltered": 109,
+      "shadcnReportedMs": 383
+    },
+    "originalAssertionsAnd5000msSourceUnchanged": true,
+    "meaning": "Both family cases can pass under original source/assertions and deadline in these selected macOS contexts; this does not reproduce the full Linux shard history or explain the recorded failure.",
+    "limits": "The logs contain selected-case counts/results; environment and original selector invocation are additionally documented by the parent receipt. This reviewer did not rerun either command."
+  },
+  "supportedConclusions": [
+    "This exact case is an additional failed name relative to both selected main and same-implementation source02 CI; it cannot be dismissed merely because main has other failures.",
+    "No direct Runtime/WC execution occurs in the case body, and numeric6047 adds no implementation changes to the passing02source. No concrete C-group source defect has been established by this timeout.",
+    "Observed durations vary substantially, but variation alone does not identify a cause.",
+    "The final-head CI failure and verification debt remain visible despite local2/2controls."
+  ],
+  "unsupportedConclusions": [
+    "The timeout is proven inherited from the selected main run.",
+    "The timeout proves a Runtime/WC semantic regression.",
+    "The failure is proven environment-only/flaky or repaired.",
+    "The local selected2cases make LinuxCI or the entire111-case file pass.",
+    "BeforeAll bundle compilation is proven to be the exact failing5000ms stage.",
+    "CSS generator output/display assertion is proven incorrect."
+  ],
+  "boundedNextObservation": "If further diagnosis is authorized, collect phase entry/completion timestamps or an existing Playwright API trace around newPage, synchronous generation, evaluate and close under the original full shard/deadline. That would distinguish the unresolved stages. No timeout/selector/assertion relaxation or unbounded rerun is recommended; no such experiment was executed by this review.",
+  "remainingGeneralStatus": "Other final CI jobs, including test-general, were not polled or classified in this assessment.",
+  "rawEvidence": [
+    {
+      "path": "baseline-job-113896790779.log",
+      "sha256": "14c4953db5ff867c1b1bea479edf3f98ab0a65f43fd8014deff56caf6e89bc43",
+      "bytes": 98478
+    },
+    {
+      "path": "source02-closeout.log",
+      "sha256": "92b56c84a0dde44afed95d007051f299eec4b54fe670b1197c73133c417a1f68",
+      "bytes": 106032
+    },
+    {
+      "path": "numeric-job-114124178935.log",
+      "sha256": "259aa107b704966727a1294c3374a76eb9779623df61e382a84df578010411b2",
+      "bytes": 105408
+    },
+    {
+      "path": "template-style-dependency-binding.json",
+      "sha256": "7a4fc5cc3881f2ee44b18ea47b4f314fcbafb7af9c0162f8914d0f759a1d3f0c",
+      "bytes": 1140
+    },
+    {
+      "path": "template-style-control-receipt.json",
+      "sha256": "c7b7decb01a23e7cb6b3c3eab39e850fb95982971cf650721fc039b2dfc16dc3",
+      "bytes": 1449
+    },
+    {
+      "path": "template-style-baseline-control.log",
+      "sha256": "5f4cbc7a2711107b681440821d1e615d00cd96cf7b19e4f76d5a9a2fcca7b86c",
+      "bytes": 383
+    },
+    {
+      "path": "template-style-candidate-control.log",
+      "sha256": "9c6918c57805eba0b8b2d28ab01376b1d0a03653be82d356a84ce7b7d7919913",
+      "bytes": 495
+    }
+  ],
+  "reviewerActions": "Read local logs/receipts, exact Git blobs, original test/generator and launch helper. Wrote only this private assessment. No tests, browser, build, product edits, GitHub reads/writes or new agents."
+}

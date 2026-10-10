@@ -1,0 +1,26 @@
+{
+  "scope": "Actual timed-out case uses plain DOM ShadowRoot/span and the unchanged CSS generator;the changed Runtime/WC bundle is not added in this case body. BeforeAll still builds that bundle, so whole-file setup/resource variance remains separate.",
+  "inputs": [
+    {
+      "path": "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+      "blob": "e9ec865ba2d30de8b163a0905d60a41ff11436f4",
+      "unchanged": true
+    },
+    {
+      "path": "packages/cli/src/services/proto-style-css.ts",
+      "blob": "23b1b63fd22379a167cc368b913e43d1761ec188",
+      "unchanged": true
+    },
+    {
+      "path": "packages/cli/src/generated/shadcn-style-tokens.ts",
+      "blob": "fc8ac0df3bd1b16728b2dd121216a829dafd3116",
+      "unchanged": true
+    },
+    {
+      "path": "packages/cli/src/generated/brutalist-style-tokens.ts",
+      "blob": "bb4b474d6fdc8de901e99e76cd1888f7d923ded7",
+      "unchanged": true
+    }
+  ],
+  "sameSource02OfficialControl": "Source02 canonical closeout job114120211653 reports this exact shadcn case passed348ms; numeric6047 differs only the budget/record, no implementation bytes changed."
+}

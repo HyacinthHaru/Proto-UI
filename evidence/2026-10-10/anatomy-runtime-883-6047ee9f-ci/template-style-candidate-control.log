@@ -1,0 +1,11 @@
+
+ RUN  v2.1.9 <LOCAL_PATH>
+
+ ✓ packages/adapters/web-component/test/shadow-closeout.browser.test.ts (111 tests | 109 skipped) 1579ms
+   ✓ Shadow closeout native boundaries > styles a Template descendant from the shadcn preset Shadow closure 383ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed | 109 skipped (111)
+   Start at  12:12:30
+   Duration  2.04s (transform 107ms, setup 0ms, collect 266ms, tests 1.58s, environment 0ms, prepare 52ms)
+
