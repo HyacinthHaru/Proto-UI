@@ -1,0 +1,479 @@
+{
+  "kind": "independent-local-source-and-evidence-review",
+  "recordedAt": "2026-10-10T03:22:07.927028+00:00",
+  "scope": "Issue #883 Group C: Anatomy / Runtime lifecycle; exactly three candidate files and their affected owners/consumers.",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "reviewClass": "review-bounded-regression",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "findings": [],
+  "githubDisposition": null,
+  "canonicalV5Packet": false,
+  "conclusion": "No actionable source or evidence-claim finding established in this bounded candidate. Targeted Group C regressions are addressed; full Issue883, full-suite, canonical-CI and package-budget acceptance are not established.",
+  "independence": {
+    "implementedCandidate": false,
+    "priorTaskConclusionsReused": false,
+    "productEdits": false,
+    "externalWrites": false,
+    "newAgents": false,
+    "primaryWorkspaceChanged": false
+  },
+  "sourceBinding": {
+    "base": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+    "reviewIntake": "uncommitted three-file working candidate at base HEAD",
+    "commitObservedDuringReportFinalization": "02a653dc0907e262102b2dd6709f2d95fd4d5413",
+    "tree": "91081ecde318bf45a1e8883e1244155700d3c2c7",
+    "parentEqualsBase": true,
+    "branch": "codex/issue883-anatomy-lifecycle",
+    "workingTreeClean": true,
+    "diffCommand": "git diff --binary --full-index BASE HEAD",
+    "diffSha256": "881f44b3c2a62e71922973faa512b93d9e7e21e46b6476528120133955e160a3",
+    "files": [
+      {
+        "path": "packages/runtime/src/instance/session.ts",
+        "sha256": "4e346f67e5dc3fc82be949a9dddd267e9248b07a063579e5e45879172f02dc96",
+        "bytes": 19896,
+        "gitBlob": "d1e13c715d0349b52c7c647422b04c05763df1e0"
+      },
+      {
+        "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+        "sha256": "4afc212f4eaaae7b60c57deaaa3b5db96d6a44076cf282cf41f3c73f70114132",
+        "bytes": 13314,
+        "gitBlob": "bf4958d53f9491cccdd9a648028a2d5571d4649f"
+      },
+      {
+        "path": "packages/adapters/web-component/src/adapt.ts",
+        "sha256": "96505c801969c9834756efadda248457fbf3c449d135cbd4cab7a71c921735f8",
+        "bytes": 35382,
+        "gitBlob": "827b94ed7ed07dcf0c11eb65b842883d9d858033"
+      }
+    ],
+    "commitFilesExactlyMatchReviewedWorkingBytes": true,
+    "testBinding": "Recorded tests ran precommit on these same bytes; commit binding does not constitute a new test run or hosted CI."
+  },
+  "method": {
+    "entry": "Complete AGENTS.md and pui-dev read; resolver returned pui-review blocked=false with advisory human-assisted eligibility; pui-review read in full.",
+    "actualReview": "Actual three-file diff and relevant full bodies: Runtime session, instance/orchestrator disposal, adapter host/view epoch owner, WC setup/reconnect/detach, logical parent operations, Anatomy claims/notifications/disposal, original Collapsible and lifecycle/Delay tests, related authority and raw logs.",
+    "readOnlyFalsification": "One disposable Node24 compiled-Runtime script with six distinct observations; no heavy suite/build/browser rerun.",
+    "classEligibilityAttempt": "Available regression-handoff.json still selects pui-validate; actual review eligibility command exits1 with handoff must select pui-review. Log retained. No final review intake/canonical PR input was fabricated; this is an administrative evidence limit, not an assessment refusal or source finding."
+  },
+  "authority": [
+    {
+      "id": "C-LIFECYCLE-0002",
+      "path": "spec/contracts/C-LIFECYCLE-0002.yaml",
+      "status": "draft",
+      "anchors": ["B", "F", "G", "H", "Q-CALLBACK-ERRORS"],
+      "sha256": "3b10c5e72815705012269318bd2d8ff3efe5add20df9fb5525567e3a5e897787"
+    },
+    {
+      "id": "C-LIFECYCLE-0006",
+      "path": "spec/contracts/C-LIFECYCLE-0006.yaml",
+      "status": "draft",
+      "anchors": ["A", "B", "C", "D"],
+      "sha256": "0f0c58122e5477a8c75d05454ccb7907796deceff9e9b882906c6e05e2ce19b2"
+    },
+    {
+      "id": "C-LIFECYCLE-0007",
+      "path": "spec/contracts/C-LIFECYCLE-0007.yaml",
+      "status": "draft",
+      "anchors": ["A", "C", "D"],
+      "sha256": "f8246d015822eafdaa1bd318a9b0a8e2852477e5e66096ec69c2a17207ced733"
+    },
+    {
+      "id": "C-DELAY-0001",
+      "path": "spec/contracts/C-DELAY-0001.yaml",
+      "status": "draft",
+      "anchors": ["G", "H", "I"],
+      "sha256": "d00a77db43137e3cf930a4b0a3b0b9fa3fc12dbae27bd52364477f1d3c6064f9"
+    },
+    {
+      "id": "M-ANATOMY-0001",
+      "path": "spec/modules/M-ANATOMY-0001.yaml",
+      "status": "draft",
+      "anchors": ["B", "D", "E", "F"],
+      "sha256": "ef7e5265bac5ac88a85f8b3938b89a34307d3b1e5b4c44e657119a1478294ddc"
+    },
+    {
+      "id": "HC-ANATOMY-STRUCTURE-0001",
+      "path": "spec/host-caps/HC-ANATOMY-STRUCTURE-0001.yaml",
+      "status": "draft",
+      "anchors": ["A", "B"],
+      "sha256": "d03518a5143c20cbc42ceadc123826bf31e9a9f4cc3f375c138f263bd5a5c7bf"
+    },
+    {
+      "id": "P-BASE-COLLAPSIBLE",
+      "path": "spec/prototypes/P-BASE-COLLAPSIBLE.yaml",
+      "status": "draft",
+      "anchors": ["CARDINALITY", "CONTEXT", "NO-SYNC-EVENTS"],
+      "sha256": "b14bd4e295da77df3e90ebc9e18adb76cc428a54328e1a4135da782de5c23283"
+    },
+    {
+      "id": "T-ANATOMY-0004",
+      "path": "spec/tests/T-ANATOMY-0004.yaml",
+      "status": "draft",
+      "anchors": ["CASE-LIFETIME", "CASE-ADAPTER"],
+      "sha256": "3a450e02c34200e7bd9580381e278577906c32857ca569c7ede23d460e4263d7"
+    },
+    {
+      "id": "T-BASE-COLLAPSIBLE-0001",
+      "path": "spec/tests/T-BASE-COLLAPSIBLE-0001.yaml",
+      "status": "draft",
+      "anchors": ["CASE-ANATOMY-CARDINALITY", "CASE-L1-LIFECYCLE", "CASE-DOMAIN-ISOLATION"],
+      "sha256": "a5fe2e5f159b1b66dcc39784e68fe1ae701843909e563bf6942d2c40e613c632"
+    }
+  ],
+  "assessments": [
+    {
+      "topic": "Failed-created retirement",
+      "sourceLines": [
+        "packages/runtime/src/instance/session.ts:454",
+        "packages/runtime/src/instance/session.ts:566"
+      ],
+      "finding": null,
+      "analysis": "Moving created dispatch after construction of the disposal closure preserves setup-before-created-before-first-render order. When created throws, the session is not returned; disposal executes while owner capabilities remain readable. BeforeDispose still sees live State; logical resources retire before the host revokes wiring. Original failure identity is preserved alone if cleanup succeeds, otherwise as AggregateError.errors[0]. The cleanup error—including falsy throws—is preserved as the second member. Diagnostic/author cleanup errors keep encounter order, and shared disposal completion is installed before callbacks can reenter.",
+      "boundary": "C-LIFECYCLE-0002-Q-CALLBACK-ERRORS remains open. This is not a promise that all later callbacks execute, or a general redesign of arbitrary setup, module hook, host scheduler, mount/update/unmount error recovery."
+    },
+    {
+      "topic": "Delay cancellation",
+      "sourceLines": [
+        "packages/runtime/src/instance/session.ts:117",
+        "packages/runtime/test/contract/delay.v0.contract.test.ts:54"
+      ],
+      "finding": null,
+      "analysis": "Checking instancePhase before consuming the active task prevents a terminal diagnostic flush from removing it from the pending set before host cancellation. Task.cancel invalidates before invoking host cancellation and remains idempotent. Tests retain runtime callback scope/setup guards and add four diagnostic points plus exact cancel counts and stale-generation suppression."
+    },
+    {
+      "topic": "WC retained adoption",
+      "sourceLines": [
+        "packages/adapters/web-component/src/adapt.ts:345",
+        "packages/adapters/web-component/src/adapt.ts:554",
+        "packages/adapters/web-component/src/adapt.ts:801"
+      ],
+      "finding": null,
+      "analysis": "The internal Anatomy port is cached after successful owner initialization and cleared at terminal afterUnmount. Retained reconnect captures the accepted logical parent, clears a stale nonportal projection, resolves the current destination and explicitly synchronizes Anatomy for live/detached owners. Immediate structural rejection restores the previous logical parent and resynchronizes; rollback failure preserves both errors. Portal ownership, owner identity, terminal token replacement and resource disposal remain separate.",
+      "boundary": "This transaction covers immediate structure synchronization. It does not roll back physical DOM, introduce global atomicity for later asynchronous effects, or promise new cross-owner retention/cross-tree order behavior."
+    },
+    {
+      "topic": "Regression expectations",
+      "finding": null,
+      "analysis": "The previous Delay cleanup-throw assertion conflicted with the existing module-resource test that requires both creation and cleanup identities. Candidate explicitly corrects this premise and strengthens identities/diagnostic/cancel-count assertions. Original red and stronger implementation-red logs remain. The existing 24-case Base Collapsible and 7-case module-resource test files are unchanged. No assertion timeout, lifecycle status, dependency, cap or unrelated Finf behavior is changed."
+    }
+  ],
+  "provenance": {
+    "sourcePR": 872,
+    "sourceHead": "884651a68b4579b0c0c5a2c5307cdd5c49d58186",
+    "normativeOrAcceptedMain": false,
+    "licenseContext": "same-repository MIT source reuse",
+    "independentRead": "Exact-ref GitHub contents metadata retrieved read-only; saved blobs match returned SHA. Local commit object was absent; no repository fetch/ref mutation was used.",
+    "files": [
+      {
+        "path": "packages/runtime/src/instance/session.ts",
+        "sourceHead": "884651a68b4579b0c0c5a2c5307cdd5c49d58186",
+        "apiSha": "25db98eae10eed601aec17bafedbf17bbbc7f3d5",
+        "savedBlob": "25db98eae10eed601aec17bafedbf17bbbc7f3d5",
+        "savedSha256": "2b476ad34baa2298f01a2f69bb6545c16fc3cbd9318dd6f8e9ec5e82db9764be",
+        "matches": true,
+        "gitUrl": "https://api.github.com/repos/Proto-UI/Proto-UI/git/blobs/25db98eae10eed601aec17bafedbf17bbbc7f3d5",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/blob/884651a68b4579b0c0c5a2c5307cdd5c49d58186/packages/runtime/src/instance/session.ts"
+      },
+      {
+        "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+        "sourceHead": "884651a68b4579b0c0c5a2c5307cdd5c49d58186",
+        "apiSha": "bf4958d53f9491cccdd9a648028a2d5571d4649f",
+        "savedBlob": "bf4958d53f9491cccdd9a648028a2d5571d4649f",
+        "savedSha256": "4afc212f4eaaae7b60c57deaaa3b5db96d6a44076cf282cf41f3c73f70114132",
+        "matches": true,
+        "gitUrl": "https://api.github.com/repos/Proto-UI/Proto-UI/git/blobs/bf4958d53f9491cccdd9a648028a2d5571d4649f",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/blob/884651a68b4579b0c0c5a2c5307cdd5c49d58186/packages/runtime/test/contract/delay.v0.contract.test.ts"
+      },
+      {
+        "path": "packages/adapters/web-component/src/adapt.ts",
+        "sourceHead": "884651a68b4579b0c0c5a2c5307cdd5c49d58186",
+        "apiSha": "f48af945d0869e6209a00c2d95ce3c27a1705555",
+        "savedBlob": "f48af945d0869e6209a00c2d95ce3c27a1705555",
+        "savedSha256": "1a57489181a25f0115f7801c7e3d68f87621ce7f54208d12c76ed02818108283",
+        "matches": true,
+        "gitUrl": "https://api.github.com/repos/Proto-UI/Proto-UI/git/blobs/f48af945d0869e6209a00c2d95ce3c27a1705555",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/blob/884651a68b4579b0c0c5a2c5307cdd5c49d58186/packages/adapters/web-component/src/adapt.ts"
+      }
+    ],
+    "runtimeExcluded": "Only ControlLabel/instance-association integration and adjacent whitespace differ from the saved session source; full exclusions are retained in source-session-exclusions.diff.",
+    "delayTestVerbatim": true,
+    "retainedWcBlockVerbatim": true,
+    "unrelatedFinfImported": false
+  },
+  "verification": {
+    "baseline": {
+      "focused": "14 fail /27 pass /3 unhandled,41 total,exit1",
+      "isolatedControl": "Original selected Collapsible case passes alone; not every combined failure is an independent root cause.",
+      "strongerRuntime": "9 fail /12 pass,21 total,exit1",
+      "runtimeOnlyPort": "3 retained-adoption failures /42 pass,45 total,exit1; original Anatomy missing-capability contamination no longer appears."
+    },
+    "candidate": {
+      "focused": "3 files,45/45 pass,exit0",
+      "expanded": "102 passed files/3 existing skipped files;803 pass/34TODO;105 files total,exit0",
+      "types": "513 Astro files,0errors/0warnings/6hints,exit0",
+      "build": "44/44 public packages,exit0",
+      "manifests": "44 checked,exit0",
+      "publicBrowser": "Original5 cases pass in real local Chrome acrossWC/React/Vue3/Vue2 and Chinese390px,13PNG; not all8repository browser shards."
+    },
+    "budget": {
+      "exitCode": 1,
+      "passed": 8,
+      "failed": 1,
+      "environment": {
+        "node": "v24.21.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "zlib": "1.3.2.1-motley-8002e91",
+        "esbuild": "0.25.12"
+      },
+      "wcGzip": 117874,
+      "wcCap": 117850,
+      "wcOver": 24,
+      "runtimeGzipCap": [71457, 71500],
+      "reactGzipCap": [94516, 94550],
+      "vueGzipCap": [94298, 94350],
+      "capChanged": false,
+      "canonicalHosted": false
+    },
+    "reviewerExecuted": {
+      "kind": "independent-disposable-runtime-observation",
+      "node": "v24.21.0",
+      "platform": "darwin",
+      "sourceRoot": "/workspace/Proto-UI",
+      "observations": [
+        {
+          "case": "failed-created-falsy-cleanup-undefined",
+          "aggregateIdentitiesPreserved": true,
+          "cleanupCalls": 1,
+          "hostCancels": 1,
+          "staleCalls": 0,
+          "stateInvalidated": true
+        },
+        {
+          "case": "failed-created-falsy-cleanup-null",
+          "aggregateIdentitiesPreserved": true,
+          "cleanupCalls": 1,
+          "hostCancels": 1,
+          "staleCalls": 0,
+          "stateInvalidated": true
+        },
+        {
+          "case": "failed-created-falsy-cleanup-false",
+          "aggregateIdentitiesPreserved": true,
+          "cleanupCalls": 1,
+          "hostCancels": 1,
+          "staleCalls": 0,
+          "stateInvalidated": true
+        },
+        {
+          "case": "failed-created-falsy-cleanup-zero",
+          "aggregateIdentitiesPreserved": true,
+          "cleanupCalls": 1,
+          "hostCancels": 1,
+          "staleCalls": 0,
+          "stateInvalidated": true
+        },
+        {
+          "case": "failed-created-falsy-cleanup-empty",
+          "aggregateIdentitiesPreserved": true,
+          "cleanupCalls": 1,
+          "hostCancels": 1,
+          "staleCalls": 0,
+          "stateInvalidated": true
+        },
+        {
+          "case": "normal-dispose-diagnostic-reentry",
+          "phases": [
+            "disposing",
+            "instance.dispose.begin",
+            "beforeDispose",
+            "disposed",
+            "instance.dispose.done"
+          ],
+          "sameCompletion": true,
+          "errorOrderAndIdentitiesPreserved": true,
+          "callbackCalls": 1,
+          "stateInvalidatedSynchronously": true,
+          "finalPhase": "disposed"
+        }
+      ],
+      "unhandledRejections": 0,
+      "bindings": [
+        {
+          "path": "packages/runtime/src/instance/session.ts",
+          "bytes": 19896,
+          "sha256": "4e346f67e5dc3fc82be949a9dddd267e9248b07a063579e5e45879172f02dc96"
+        },
+        {
+          "path": "packages/runtime/dist/instance/session.js",
+          "bytes": 20808,
+          "sha256": "ce9b6ceebd51fe3354c734fa145247c8421eb6882253168d915037992e63697b"
+        },
+        {
+          "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+          "bytes": 13314,
+          "sha256": "4afc212f4eaaae7b60c57deaaa3b5db96d6a44076cf282cf41f3c73f70114132"
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "bytes": 35382,
+          "sha256": "96505c801969c9834756efadda248457fbf3c449d135cbd4cab7a71c921735f8"
+        }
+      ],
+      "limitation": "Local compiled-output observation; no browser, no full-suite or canonical-CI claim."
+    },
+    "rawArtifacts": [
+      {
+        "log": "baseline-focused.log",
+        "sha256": "82dcbeb7109455c00f5a847a3454ac0a9f60d734bc78b89c416be125c85787cf",
+        "exitCode": 1
+      },
+      {
+        "log": "baseline-collapsible-isolated.log",
+        "sha256": "cdbb775983736b664bd4c78dbfd904144b71d333b83be200647aa7024ba04927",
+        "exitCode": 0
+      },
+      {
+        "log": "stronger-runtime-red.log",
+        "sha256": "927b227776326cb1af6f8cbdc3a46d3415d4b3cfe4d2cb9402fa34275debb22a",
+        "exitCode": 1
+      },
+      {
+        "log": "runtime-port-focused.log",
+        "sha256": "eba329c1668a5d164725b540724fa20d02dde2e4f8b3d2975b8d791708b04be7",
+        "exitCode": 1
+      },
+      {
+        "log": "retained-adoption-focused.log",
+        "sha256": "52dfe87da9a394442b494463b09dcc7b78655e9799eb7b2ca382027c7c70571b",
+        "exitCode": 0
+      },
+      {
+        "log": "broad-focused.log",
+        "sha256": "c6432241748ff74aa58253ff84b5838623b0d46ae087f7582805a4a4870e2b79",
+        "exitCode": 0
+      },
+      {
+        "log": "types.log",
+        "sha256": "74e5d32747d2284d67ea17bd8290016f1d4d42bfeacba06bb16f61f177ac7dd4",
+        "exitCode": 0
+      },
+      {
+        "log": "build-packages.log",
+        "sha256": "25a0ba5c284263577efc77933e9af89bd5f02c39d470dda905f6377216952d02",
+        "exitCode": 0
+      },
+      {
+        "log": "manifests.log",
+        "sha256": "a82b613225a36df4747cbdf8fefabe507d0e0074ae949d39a65f894fbcf971d9",
+        "exitCode": 0
+      },
+      {
+        "log": "budgets.log",
+        "sha256": "e1f3ca5411c048e7b62cb96c1912ee0418f39b609b7dd92f50eda51fedd9c0fc",
+        "exitCode": 1
+      },
+      {
+        "log": "browser-public.log",
+        "sha256": "4bc102402374bc43f91cc52b7e15f9827fa46ac5377bd116930c771d5e8cf83e",
+        "exitCode": 0
+      },
+      {
+        "path": "native-adoption/run.log",
+        "sha256": "6ef1b4a73692040ba41f2187771ee4399fce68c045f90d58dd77e353968df2ee",
+        "bytes": 972
+      },
+      {
+        "path": "native-adoption/observations.json",
+        "sha256": "f8e6c597bfd88f4408e4a0035fac4c585451471982ad71220704b53f1596c713",
+        "bytes": 9848
+      },
+      {
+        "path": "native-adoption/source-binding.json",
+        "sha256": "a66fb92698822905968c286434160767afe27e631c22b883fb2f226543b21170",
+        "bytes": 135795
+      },
+      {
+        "path": "native-adoption/setup-failure-1.log",
+        "sha256": "337c511395d98a9445e76ec0ff14550b590bfcecd69d8fbc288fbc5957e93a50",
+        "bytes": 1067
+      },
+      {
+        "path": "native-adoption/setup-failure-2.log",
+        "sha256": "75c92c464873e26068abccba1132ef6d9d15d7496360b96f3e15b192ca494211",
+        "bytes": 2188
+      },
+      {
+        "path": "independent-review/runtime-edge-observation.mjs",
+        "sha256": "d1e15a89619f1d79cc97cd645157f2b1997170dbb3d2a9c3f62f80d45b54999e",
+        "bytes": 4785
+      },
+      {
+        "path": "independent-review/runtime-edge-observation.log",
+        "sha256": "9f43f535b4c3e3eb297337d9adeb89cffd923a510f88fc3c8a2437ff22bbbe13",
+        "bytes": 2547
+      },
+      {
+        "path": "independent-review/shared-source-reconciliation.json",
+        "sha256": "2440bbcede4ce6fbf1b60b56c6758acf49159c57bc7680ca1c97198a7ef30fff",
+        "bytes": 1873
+      },
+      {
+        "path": "independent-review/native-input-reconciliation.json",
+        "sha256": "a58781ecb2c2a3e37b856de5cf97a8eb610485667ab9a77ea6a78d8e130d23ce",
+        "bytes": 1224
+      },
+      {
+        "path": "independent-review/eligibility.log",
+        "sha256": "ae7ee21c5476689624e3b0ec1b132a658bcd9d2f10a0f7a9e37f228f65e11026",
+        "bytes": 364
+      }
+    ]
+  },
+  "nativeAdoption": {
+    "sourceReconciliation": "independent-review/native-input-reconciliation.json",
+    "browser": "154.0.8037.98",
+    "viewport": [1100, 700],
+    "theme": "light",
+    "contexts": 6,
+    "scenarios": ["trigger", "content", "detached-content"],
+    "inputCountsPerVariant": [323, 323],
+    "allRecordedInputHashesIndependentlyMatched": true,
+    "bundleHashesMatched": true,
+    "baselineOverlay": "Exactly the two implementation files restored from base; other sources match candidate. The changed test file is not in the browser graph.",
+    "observed": "All3 baseline scenarios leave moved role counts0/2; all3 candidate scenarios preserve1/1 and original exposed State identity. Actual trusted click on the moved source Trigger affects destination in baseline and source only in candidate.",
+    "errorBoundary": "Native CustomElement ErrorEvents are captured/preventDefault and retained; this is not represented as HappyDOM synchronous throw. Semantic openChange remains a separate untrusted CustomEvent.",
+    "visuallyInspected": ["baseline-trigger-activation.png", "candidate-trigger-activation.png"],
+    "visualLimit": "Only these2 activation PNGs were independently viewed; other25PNG were not claimed visually inspected.",
+    "setupFailuresRetained": [
+      "playwright-core lookup failed before product execution",
+      "3 source aliases unresolved before browser execution"
+    ],
+    "scopeLimit": "Private local native composition fixture; not public full-browser or OS-visible assistive-technology conformance."
+  },
+  "remaining": [
+    {
+      "kind": "verification",
+      "item": "WC local whole-entry gate is24gzip bytes over the unchanged cap. Exact-head pinned canonical CI measurement and any separate justified numeric transaction remain required; no silent cap edit or waiver."
+    },
+    {
+      "kind": "verification",
+      "item": "Full ordinary suite, all8original native browser shards and canonical hosted CI on this commit are not established here."
+    },
+    {
+      "kind": "verification",
+      "item": "Final pui-validate review intake/canonical v5 PR input, platform reviewer independence, trusted CI/DCO and rules are not replaced by this local report."
+    },
+    {
+      "kind": "outside-scope",
+      "item": "Issue883 A/B and other failure groups, general callback-error policy, new Anatomy order guarantees, stable lifecycle admission and arbitrary Shadow/Focus reentrancy combinations are not declared fixed."
+    },
+    {
+      "kind": "publication",
+      "item": "Local evidence exists; no upload, GitHub review/disposition or merge performed by this reviewer."
+    }
+  ]
+}

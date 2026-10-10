@@ -1,0 +1,16 @@
+{
+  "files": {
+    "README.md": "e41051f059217c15746b071e3b5348ea176bf282adb14b0baa8727f07b382fd7",
+    "baseline-source-trigger-activation.png": "393987ef9e4ba4ccb05c546fe90e3df50017b6c9985240e71b357f6afba0a3a6",
+    "candidate-source-trigger-activation.png": "7db1df3acfa9a69ab8db9a24ab4f68f10ac1f6ff39e9184ce0104c1980be7810",
+    "independent-review.json": "c4d53de2066ef06f5f7e9f9076a80b89fda5a5ce94466ca20590ae46e4d9eb5b",
+    "logs-and-recipes.tar.gz": "41e3f6f208f1ae2b590783285b7f42a3268fa8389366c6e7bc73ec143b432874",
+    "native-adoption.json": "f8e6c597bfd88f4408e4a0035fac4c585451471982ad71220704b53f1596c713",
+    "native-inputs.json": "06a921df2d57f941ea1865ee66fdeb3261737d6f779e2bbd130226483b901631",
+    "react-public-open.png": "d06d784b1befc1ba0ec4734dc42fd55d1494b4c3f54e4c7c5dd66fec42e9e6bf",
+    "validation.json": "ac30ec226af8cca7f960dc3572ae70ece7b926f75568b69b951a19b3be659435",
+    "vue-public-open.png": "1eba1fbbd1c91e604e5ec9220d2860b3244ba12e931e18174f40508c15648615",
+    "vue2-public-narrow-open.png": "88642ab0b8871008f81103ad0d9014aedbf693174e038ba274a29a18a6688b18",
+    "wc-public-open.png": "9ff32beda1a10a357cb78727144f3fbf5cb67f9e4e8cc8938c7e7871586186b8"
+  }
+}

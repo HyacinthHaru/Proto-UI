@@ -1,0 +1,596 @@
+{
+  "sourceCommit": "02a653dc0907e262102b2dd6709f2d95fd4d5413",
+  "sourceTree": "91081ecde318bf45a1e8883e1244155700d3c2c7",
+  "baseline": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+  "executionBinding": "All source/harness runs were precommit; three exact source/test hashes equal the signed commit, verified after hooks. No postcommit rerun is claimed.",
+  "sourceHashes": {
+    "packages/runtime/src/instance/session.ts": "4e346f67e5dc3fc82be949a9dddd267e9248b07a063579e5e45879172f02dc96",
+    "packages/runtime/test/contract/delay.v0.contract.test.ts": "4afc212f4eaaae7b60c57deaaa3b5db96d6a44076cf282cf41f3c73f70114132",
+    "packages/adapters/web-component/src/adapt.ts": "96505c801969c9834756efadda248457fbf3c449d135cbd4cab7a71c921735f8"
+  },
+  "environment": {
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "Chrome": "154.0.8037.98",
+    "os": "macOS arm64",
+    "zlib": "1.3.2.1-motley-8002e91",
+    "esbuild": "0.25.12"
+  },
+  "results": {
+    "originalFocused": {
+      "total": 41,
+      "passed": 27,
+      "failed": 14,
+      "unhandled": 3
+    },
+    "strongerRuntimeBaseline": {
+      "total": 21,
+      "passed": 12,
+      "failed": 9
+    },
+    "runtimeOnly": {
+      "total": 45,
+      "passed": 42,
+      "failed": 3,
+      "unhandled": 0
+    },
+    "finalFocused": {
+      "files": 3,
+      "passed": 45
+    },
+    "expanded": {
+      "passedFiles": 102,
+      "skippedFiles": 3,
+      "passedTests": 803,
+      "todo": 34,
+      "workers": "max2/min1;explicit native-browser exclusion"
+    },
+    "publicNative": {
+      "passedCases": 5,
+      "originalCaptures": 13,
+      "publishedCaptures": 4
+    },
+    "adoptionNative": {
+      "baselineContexts": 3,
+      "candidateContexts": 3,
+      "trackedGitInputsEach": 318,
+      "separateInputsEach": 5,
+      "trustedPointerClicks": 2,
+      "nativeErrorEventsCaptured": true,
+      "preventDefaultOnObservedErrorEvents": true
+    },
+    "types": {
+      "astroFiles": 513,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 6
+    },
+    "builds": 44,
+    "manifests": 44,
+    "localBudget": {
+      "passed": 8,
+      "failed": 1,
+      "WC": {
+        "gzip": 117874,
+        "cap": 117850,
+        "over": 24
+      }
+    },
+    "coverageOriginal": {
+      "sourceMatricesPassed": 2,
+      "tests": 2694,
+      "passed": 2525,
+      "failed": 168,
+      "skipped": 1,
+      "observedPathMismatch": "/var versus /private/var temporary-root alias; canonical Node24 environment control tracked separately"
+    }
+  },
+  "limits": [
+    "No whole-main/all8browser CI pass",
+    "No formal independent maintainer APPROVED",
+    "No lifecycle promotion or general callback-error policy settlement",
+    "Source canonical CI confirms WC117874/117850; proposed numeric cap118000 passes locally9/9 with unchanged artifacts; exact numeric-head canonical check remains separate",
+    "Native diagnostic layout around real Base/WC controls is not official family optics; other captured PNGs retained privately/hash-only",
+    "Public recipes/logs are sanitized derivatives, not original execution bytes or a portability claim",
+    "First temp-root control accidentally used host Node26 and full command did not start (Corepack unavailable); Node24 control is separate; neither replaces original red run"
+  ],
+  "canonicalSourceCost": {
+    "baseline": {
+      "sha": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+      "run": 37953108222,
+      "job": 113896790334,
+      "environment": {
+        "node": "v24.21.0",
+        "zlib": "1.3.2.1-motley-8002e91",
+        "esbuild": "0.25.12",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "rows": [
+        {
+          "result": "PASS",
+          "name": "lucide/icons/x",
+          "gzip": 1737,
+          "cap": 3000,
+          "minified": 4670,
+          "sha256": "48d7f79983beca000fd0cbbfa4e84101cb4bce326f3440bbb37db2d401d51e5d"
+        },
+        {
+          "result": "PASS",
+          "name": "lucide root",
+          "gzip": 635866,
+          "cap": 700000,
+          "minified": 4082945,
+          "sha256": "b4f53a871d51032bcb0b8937e51863888eedc167fa92d51d9652efc197820baa"
+        },
+        {
+          "result": "PASS",
+          "name": "core root",
+          "gzip": 6373,
+          "cap": 6600,
+          "minified": 19647,
+          "sha256": "5e266465eb5e23c69989f43ae2c440d1f17f9c2f1cf921d5165708a50491f6e5"
+        },
+        {
+          "result": "PASS",
+          "name": "runtime root",
+          "gzip": 71377,
+          "cap": 71500,
+          "minified": 276844,
+          "sha256": "067a7fbcde838ed31edb22882313be7de5abb872e0810f22ee7078cf204f950e"
+        },
+        {
+          "result": "PASS",
+          "name": "adapter-react root",
+          "gzip": 94422,
+          "cap": 94550,
+          "minified": 348168,
+          "sha256": "8a8dc5ae4642f555f6557e74e5906fb29fb60c573435b0fe23ca3fd1c5c0798d"
+        },
+        {
+          "result": "PASS",
+          "name": "adapter-vue root",
+          "gzip": 94206,
+          "cap": 94350,
+          "minified": 347008,
+          "sha256": "fdf9172ade2259877b8141fabaf6228793e85f9ba9008a7978e6588b1c805f52"
+        },
+        {
+          "result": "PASS",
+          "name": "adapter-web-component root",
+          "gzip": 117706,
+          "cap": 117850,
+          "minified": 418847,
+          "sha256": "6c0bc106413987ae9b8d2722b1189656532f05cfb45ccaebfcfacf31ac25639f"
+        },
+        {
+          "result": "PASS",
+          "name": "prototypes-base/button",
+          "gzip": 3783,
+          "cap": 6000,
+          "minified": 12788,
+          "sha256": "8f9e45fe51a5dcfe61e1ea39ecbcaa07cce6c0cfcb2269108f8d8c2a7cf462d6"
+        },
+        {
+          "result": "PASS",
+          "name": "prototypes-shadcn/button",
+          "gzip": 4625,
+          "cap": 7000,
+          "minified": 16420,
+          "sha256": "ec7e426e45df705075a9af31627181a05c2b01584b508f1f90fa23c7787ade1f"
+        }
+      ]
+    },
+    "candidate": {
+      "sha": "02a653dc0907e262102b2dd6709f2d95fd4d5413",
+      "run": 38020376990,
+      "job": 114120182365,
+      "actualCheckout": {
+        "parents": [
+          "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+          "02a653dc0907e262102b2dd6709f2d95fd4d5413"
+        ],
+        "sha": "2a30ecb66181e5dffaea408363a6bace4e7364d7",
+        "tree": "91081ecde318bf45a1e8883e1244155700d3c2c7"
+      },
+      "environment": {
+        "node": "v24.21.0",
+        "zlib": "1.3.2.1-motley-8002e91",
+        "esbuild": "0.25.12",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "rows": [
+        {
+          "result": "PASS",
+          "name": "lucide/icons/x",
+          "gzip": 1737,
+          "cap": 3000,
+          "minified": 4670,
+          "sha256": "48d7f79983beca000fd0cbbfa4e84101cb4bce326f3440bbb37db2d401d51e5d"
+        },
+        {
+          "result": "PASS",
+          "name": "lucide root",
+          "gzip": 635866,
+          "cap": 700000,
+          "minified": 4082945,
+          "sha256": "b4f53a871d51032bcb0b8937e51863888eedc167fa92d51d9652efc197820baa"
+        },
+        {
+          "result": "PASS",
+          "name": "core root",
+          "gzip": 6373,
+          "cap": 6600,
+          "minified": 19647,
+          "sha256": "5e266465eb5e23c69989f43ae2c440d1f17f9c2f1cf921d5165708a50491f6e5"
+        },
+        {
+          "result": "PASS",
+          "name": "runtime root",
+          "gzip": 71457,
+          "cap": 71500,
+          "minified": 277111,
+          "sha256": "18e05c98b57d91c077d620ae1340a2c048a9c6020cdc60e28fe7ce64bf873d3e"
+        },
+        {
+          "result": "PASS",
+          "name": "adapter-react root",
+          "gzip": 94516,
+          "cap": 94550,
+          "minified": 348449,
+          "sha256": "84c67b560cc3877fb8876957e81b202d663c195a9d5eb1ca4206750cf2b56c41"
+        },
+        {
+          "result": "PASS",
+          "name": "adapter-vue root",
+          "gzip": 94298,
+          "cap": 94350,
+          "minified": 347289,
+          "sha256": "5b78e3975d08f1b21048ac17357201d5fec41144bb6ff5bba66ed8e8ae745bdf"
+        },
+        {
+          "result": "FAIL",
+          "name": "adapter-web-component root",
+          "gzip": 117874,
+          "cap": 117850,
+          "minified": 419438,
+          "sha256": "02ecb49c75c9ade97a88bc7dd21a688a1f60661bd4a66c47291f60b6b3c35e67"
+        },
+        {
+          "result": "PASS",
+          "name": "prototypes-base/button",
+          "gzip": 3783,
+          "cap": 6000,
+          "minified": 12788,
+          "sha256": "8f9e45fe51a5dcfe61e1ea39ecbcaa07cce6c0cfcb2269108f8d8c2a7cf462d6"
+        },
+        {
+          "result": "PASS",
+          "name": "prototypes-shadcn/button",
+          "gzip": 4625,
+          "cap": 7000,
+          "minified": 16420,
+          "sha256": "ec7e426e45df705075a9af31627181a05c2b01584b508f1f90fa23c7787ade1f"
+        }
+      ]
+    },
+    "measurement": {
+      "gzipLevel": 9,
+      "minify": true,
+      "bundle": true,
+      "treeShaking": true,
+      "target": ["es2020"],
+      "format": "esm",
+      "platform": "browser",
+      "workspaceExternalBoundary": "unchanged script/manifest-derived third-party boundary"
+    },
+    "changes": [
+      {
+        "name": "lucide/icons/x",
+        "gzipDelta": 0,
+        "minifiedDelta": 0,
+        "unchangedMinifiedHash": true
+      },
+      {
+        "name": "lucide root",
+        "gzipDelta": 0,
+        "minifiedDelta": 0,
+        "unchangedMinifiedHash": true
+      },
+      {
+        "name": "core root",
+        "gzipDelta": 0,
+        "minifiedDelta": 0,
+        "unchangedMinifiedHash": true
+      },
+      {
+        "name": "runtime root",
+        "gzipDelta": 80,
+        "minifiedDelta": 267,
+        "unchangedMinifiedHash": false
+      },
+      {
+        "name": "adapter-react root",
+        "gzipDelta": 94,
+        "minifiedDelta": 281,
+        "unchangedMinifiedHash": false
+      },
+      {
+        "name": "adapter-vue root",
+        "gzipDelta": 92,
+        "minifiedDelta": 281,
+        "unchangedMinifiedHash": false
+      },
+      {
+        "name": "adapter-web-component root",
+        "gzipDelta": 168,
+        "minifiedDelta": 591,
+        "unchangedMinifiedHash": false
+      },
+      {
+        "name": "prototypes-base/button",
+        "gzipDelta": 0,
+        "minifiedDelta": 0,
+        "unchangedMinifiedHash": true
+      },
+      {
+        "name": "prototypes-shadcn/button",
+        "gzipDelta": 0,
+        "minifiedDelta": 0,
+        "unchangedMinifiedHash": true
+      }
+    ],
+    "proposal": {
+      "entry": "adapter-web-component root",
+      "old": 117850,
+      "new": 118000,
+      "increase": 150,
+      "canonicalCost": 117874,
+      "headroom": 126,
+      "oldHeadroom": 144,
+      "reason": "Existing Group C lifecycle/accepted-parent repair grows actual integrated WC by168. A150 ceiling increase restores126 bytes of bounded margin, slightly below the preceding144; no other cap or gate shape changes."
+    },
+    "canonicalResultsRemainFailed": "Source run budget failure remains historical, not retroactively passed; final head requires new canonical gate."
+  },
+  "coverageCanonicalTemp": {
+    "node": "24.21.0",
+    "TMPDIR": "canonical /private/tmp",
+    "controlCases": 6,
+    "controlPass": 6,
+    "fullTests": 2694,
+    "fullPass": 2692,
+    "fullFail": 1,
+    "fullSkip": 1,
+    "remainingFailure": "Supported Linux sealed video decoder unavailable on macOS; no bypass or tolerance change",
+    "original168FailuresRetained": true
+  },
+  "archiveMappings": [
+    {
+      "path": "baseline-focused.log",
+      "rawSha256": "82dcbeb7109455c00f5a847a3454ac0a9f60d734bc78b89c416be125c85787cf",
+      "publicSha256": "174d51fceb1a09d36a7d68a52a6ec6ab91716cca3b05fd78e30e4aa22e5c973e",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "baseline-collapsible-isolated.log",
+      "rawSha256": "cdbb775983736b664bd4c78dbfd904144b71d333b83be200647aa7024ba04927",
+      "publicSha256": "fb690c1cb73acebd5fb781397e5a964db0750360c59ba8ed45a1e76a79f3d859",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "stronger-runtime-red.log",
+      "rawSha256": "927b227776326cb1af6f8cbdc3a46d3415d4b3cfe4d2cb9402fa34275debb22a",
+      "publicSha256": "f8759d5b9b780e6cb94b3c1d4285690b987bc18fe5307de25636f79886a401c2",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "runtime-port-focused.log",
+      "rawSha256": "eba329c1668a5d164725b540724fa20d02dde2e4f8b3d2975b8d791708b04be7",
+      "publicSha256": "c11341333d842f321cb95f600aea397ee83572009005c6757f903b8b8df536de",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "retained-adoption-focused.log",
+      "rawSha256": "52dfe87da9a394442b494463b09dcc7b78655e9799eb7b2ca382027c7c70571b",
+      "publicSha256": "472e0d29a6c5473a15402fe6820a90462eed64782141c223cabe8b4bcb0d2db2",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "broad-focused.log",
+      "rawSha256": "c6432241748ff74aa58253ff84b5838623b0d46ae087f7582805a4a4870e2b79",
+      "publicSha256": "5481c843b99aa82519d54dd27a8c021228dd6524b459ac6450b50af962c291bf",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "broad-focused-plan.json",
+      "rawSha256": "e03b5b5ef3b9130b652a5cc565047f231e00443ccafcfdf47beefcf4caf3067e",
+      "publicSha256": "e03b5b5ef3b9130b652a5cc565047f231e00443ccafcfdf47beefcf4caf3067e",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "types.log",
+      "rawSha256": "74e5d32747d2284d67ea17bd8290016f1d4d42bfeacba06bb16f61f177ac7dd4",
+      "publicSha256": "0e66b9f118fd6047273e510a5390d014a5c30f97ea2802f44ee54108c392e058",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "build-packages.log",
+      "rawSha256": "25a0ba5c284263577efc77933e9af89bd5f02c39d470dda905f6377216952d02",
+      "publicSha256": "d59cae438f3a14f7420a532e05091ad0ea637308d4b597377718bb4869f99ce8",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "manifests.log",
+      "rawSha256": "a82b613225a36df4747cbdf8fefabe507d0e0074ae949d39a65f894fbcf971d9",
+      "publicSha256": "8ff3c7d54dc4d80f6b9e905b51ce8d86eb12ade3c587565dcde292dab0c89976",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "budgets.log",
+      "rawSha256": "e1f3ca5411c048e7b62cb96c1912ee0418f39b609b7dd92f50eda51fedd9c0fc",
+      "publicSha256": "7c54c9ddb11e5bd8cb5a110258bde069332db9c2de884d9bb123b3c9fc4ed800",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "browser-public.log",
+      "rawSha256": "4bc102402374bc43f91cc52b7e15f9827fa46ac5377bd116930c771d5e8cf83e",
+      "publicSha256": "a20d339e9ed2cf306e7d610456c28f49e031deac420865a5c53fb0ba42406414",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "catalog-generators-receipt.json",
+      "rawSha256": "555d29220575ef136f6eae2da34501f3f53c62c319650e6dcafa015f24df0c49",
+      "publicSha256": "555d29220575ef136f6eae2da34501f3f53c62c319650e6dcafa015f24df0c49",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "check-coverage-matrices.log",
+      "rawSha256": "1e9c7718d73fa272a5a771f3c660fee3aea2abcc1ec47d841d2c1cca67a09cf8",
+      "publicSha256": "3108228aafba4346098d9288371e5ae03c485a0c641c9e13f97f242d3aa73824",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "coverage-canonical-tmp-node26-control.log",
+      "rawSha256": "0b768f4db1a84dc834e5f8a6f0acb1ff95dab6a198ee526355044e343912227e",
+      "publicSha256": "0b768f4db1a84dc834e5f8a6f0acb1ff95dab6a198ee526355044e343912227e",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "native-adoption/entry.ts",
+      "rawSha256": "a850718b655fa7b8a97c57053dee9335cf2e76f793bd933a7cb768a9b4ed187c",
+      "publicSha256": "a850718b655fa7b8a97c57053dee9335cf2e76f793bd933a7cb768a9b4ed187c",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "native-adoption/run.mjs",
+      "rawSha256": "6c475d2d345fc8eff22c2362be2e2311cd5854af8a1d65268b35ca35644b4d77",
+      "publicSha256": "2152332412a1c320058654f17cad1e6987615d837b787a5e86c2e1182e034ab6",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "native-adoption/run.log",
+      "rawSha256": "6ef1b4a73692040ba41f2187771ee4399fce68c045f90d58dd77e353968df2ee",
+      "publicSha256": "6ef1b4a73692040ba41f2187771ee4399fce68c045f90d58dd77e353968df2ee",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "native-adoption/source-binding.json",
+      "rawSha256": "a66fb92698822905968c286434160767afe27e631c22b883fb2f226543b21170",
+      "publicSha256": "cb13560841d880357e6b74b76611c7244a131283a87259e85cd0c2d2e7fdfdd1",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "native-adoption/setup-failure-1.log",
+      "rawSha256": "337c511395d98a9445e76ec0ff14550b590bfcecd69d8fbc288fbc5957e93a50",
+      "publicSha256": "450ca253b6849a79a65c49b806b6ab789afd7b874ead3550f2bcc566f9d1dedf",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "native-adoption/setup-failure-1-source.mjs",
+      "rawSha256": "e8a8d30e7bc996046e08389cf3e859370ed41dea0e525f9884ea00d012167ba7",
+      "publicSha256": "575e302fd784865d5d151c020e2f59802c4945114ad1a304ba8599f992504d8c",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "native-adoption/setup-failure-2.log",
+      "rawSha256": "75c92c464873e26068abccba1132ef6d9d15d7496360b96f3e15b192ca494211",
+      "publicSha256": "41079bd19713c40adf7c27b521212746dd2c47f081433416c65cb64f137c2e4b",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "native-adoption/setup-failure-2-source.mjs",
+      "rawSha256": "2edea6c40a1cfcdb7d268b157bfd116c60a947005fff0abc71826a2ddaa84a82",
+      "publicSha256": "e3bbdb194a14c07f3931da05aca3fd57e4d2ec9c011ec674b7a4ac368e34dca3",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "independent-review/independent-review-883.json",
+      "rawSha256": "d4aa7ff26a0eb013bc0b0e3cbd2a89cbf2aa7dcdbaef08b6cee4ffcef2660280",
+      "publicSha256": "7087d066a0f35fe4f9aeb4584e12eaec7d1330284f58e0d4f3cd8afe3299b128",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "independent-review/independent-review-883.md",
+      "rawSha256": "e5a26776ab1b2db80721ba24ca0b942b3fe4fdaa653837a1aabdf62201e821bc",
+      "publicSha256": "e5a26776ab1b2db80721ba24ca0b942b3fe4fdaa653837a1aabdf62201e821bc",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "independent-review/runtime-edge-observation.mjs",
+      "rawSha256": "d1e15a89619f1d79cc97cd645157f2b1997170dbb3d2a9c3f62f80d45b54999e",
+      "publicSha256": "d1e15a89619f1d79cc97cd645157f2b1997170dbb3d2a9c3f62f80d45b54999e",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "independent-review/runtime-edge-observation.log",
+      "rawSha256": "9f43f535b4c3e3eb297337d9adeb89cffd923a510f88fc3c8a2437ff22bbbe13",
+      "publicSha256": "acef792fa111938827170738870f6d38265e8e6f8a57d46bbe4828050a6b960c",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "independent-review/eligibility.log",
+      "rawSha256": "ae7ee21c5476689624e3b0ec1b132a658bcd9d2f10a0f7a9e37f228f65e11026",
+      "publicSha256": "c05479e7ecd92bd4f971556d4204a1063a80b3ca89ea399388115145402391e9",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "canonical-package-cost.json",
+      "rawSha256": "481d43cefe875567713b4523e0505ecffd174ea7da69fa489b90fbc248ccd847",
+      "publicSha256": "481d43cefe875567713b4523e0505ecffd174ea7da69fa489b90fbc248ccd847",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "budget-attribution.json",
+      "rawSha256": "4fe44b3daabec5b4c2a3e6e3e0e7d8c3b4b610f33c9d0663e671fdfe331db3dd",
+      "publicSha256": "4fe44b3daabec5b4c2a3e6e3e0e7d8c3b4b610f33c9d0663e671fdfe331db3dd",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "budget-attribution.mjs",
+      "rawSha256": "acc888785403a02741081edb9112cb89385ab4ca29ae0c2283598d9aa92c3288",
+      "publicSha256": "d6f8752c089646838baf2df0df3dc8a794846e452fe8bc8da3de879bc66847b6",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "budget-attribution.log",
+      "rawSha256": "59ae8a48c95392ccde6c1c35ca7e8e8715b8f10c4997f60ff474c28691c8ec0e",
+      "publicSha256": "59ae8a48c95392ccde6c1c35ca7e8e8715b8f10c4997f60ff474c28691c8ec0e",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "budgets-numeric.log",
+      "rawSha256": "60c9408e0e015f92ba0bc5c654c8a418d031e2636fa4aed7bb6009f5de126f92",
+      "publicSha256": "b8b9ee7553dce75f986a02eae57c1a55f8c63f005481ddb3d19a9eca60685c93",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "baseline-ci-package.log",
+      "rawSha256": "743a7d4da525cf2b3a216a4ddbbada558630a07db07f461a812487c980674a1a",
+      "publicSha256": "743a7d4da525cf2b3a216a4ddbbada558630a07db07f461a812487c980674a1a",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "coverage-canonical-tmp-control.log",
+      "rawSha256": "df55b04bb68a43f82790c6aa4ffca6a6c2f451fc1bbc284a59201bc44954dc20",
+      "publicSha256": "df55b04bb68a43f82790c6aa4ffca6a6c2f451fc1bbc284a59201bc44954dc20",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "coverage-canonical-tmp-full.log",
+      "rawSha256": "094543a7c7e26e416a3cfe9743593f48934a1bea5f9a894ba282709b7eab9e6c",
+      "publicSha256": "7d3bba6f23d6225b94ea89f01d7722ad5320c2da63de4395bfe8bc4999902b63",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    },
+    {
+      "path": "source-ci-package.log",
+      "rawSha256": "f5695960c1e488916b30960f9b3d12c11cdee79d90ebc895500525d99fb11f27",
+      "publicSha256": "f5695960c1e488916b30960f9b3d12c11cdee79d90ebc895500525d99fb11f27",
+      "derivation": "absolute host paths/local server origins redacted; UTF8 logs or recipe text, not claimed as raw execution bytes"
+    }
+  ],
+  "archiveSha256": "41e3f6f208f1ae2b590783285b7f42a3268fa8389366c6e7bc73ec143b432874",
+  "imageBytes": "Six selected original PNG files copied unchanged and individually inspected; no redaction/re-encoding",
+  "publicRequestParaphrase": "Implement the assigned Anatomy/Runtime lifecycle repair in Issue883, retain original failures, other owners and unified revalidation.",
+  "evidenceDisposition": "partial"
+}

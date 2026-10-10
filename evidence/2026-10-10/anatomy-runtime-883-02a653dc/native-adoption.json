@@ -1,0 +1,353 @@
+{
+  "browser": "154.0.8037.98",
+  "viewport": {
+    "width": 1100,
+    "height": 700
+  },
+  "theme": "light",
+  "input": "Native DOM composition moves plus actual Playwright pointer click; native ErrorEvents captured/preventDefault and retained",
+  "results": [
+    {
+      "variant": "baseline",
+      "scenario": "trigger",
+      "before": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": false,
+        "destinationOpen": false,
+        "sourceExpanded": false,
+        "sourceContentOpen": false,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [],
+        "inputs": [],
+        "changes": []
+      },
+      "rejected": {
+        "sourceTrigger": 0,
+        "sourceContent": 1,
+        "destinationTrigger": 2,
+        "destinationContent": 1,
+        "sourceOpen": false,
+        "destinationOpen": false,
+        "sourceExpanded": false,
+        "sourceContentOpen": false,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [
+          {
+            "message": "Uncaught Error: Collapsible permits only one trigger per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          },
+          {
+            "message": "Uncaught Error: Collapsible permits only one trigger per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          }
+        ],
+        "inputs": [],
+        "changes": []
+      },
+      "activated": {
+        "sourceTrigger": 0,
+        "sourceContent": 1,
+        "destinationTrigger": 2,
+        "destinationContent": 1,
+        "sourceOpen": false,
+        "destinationOpen": true,
+        "sourceExpanded": false,
+        "sourceContentOpen": false,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [
+          {
+            "message": "Uncaught Error: Collapsible permits only one trigger per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          },
+          {
+            "message": "Uncaught Error: Collapsible permits only one trigger per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          },
+          {
+            "message": "Uncaught AggregateError: [Context] callback delivery failed",
+            "code": null
+          }
+        ],
+        "inputs": [
+          {
+            "trusted": true,
+            "target": "source-trigger"
+          }
+        ],
+        "changes": [
+          {
+            "owner": "destination",
+            "detail": {
+              "open": true,
+              "reason": "pointer"
+            },
+            "trusted": false
+          }
+        ]
+      },
+      "accepted": null
+    },
+    {
+      "variant": "baseline",
+      "scenario": "content",
+      "before": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [],
+        "inputs": [],
+        "changes": []
+      },
+      "rejected": {
+        "sourceTrigger": 1,
+        "sourceContent": 0,
+        "destinationTrigger": 1,
+        "destinationContent": 2,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [
+          {
+            "message": "Uncaught Error: Collapsible permits only one content per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          },
+          {
+            "message": "Uncaught Error: Collapsible permits only one content per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          }
+        ],
+        "inputs": [],
+        "changes": []
+      },
+      "activated": null,
+      "accepted": null
+    },
+    {
+      "variant": "baseline",
+      "scenario": "detached-content",
+      "before": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": true,
+        "errors": [],
+        "inputs": [],
+        "changes": []
+      },
+      "rejected": {
+        "sourceTrigger": 1,
+        "sourceContent": 0,
+        "destinationTrigger": 1,
+        "destinationContent": 2,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": true,
+        "errors": [
+          {
+            "message": "Uncaught Error: Collapsible permits only one content per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          }
+        ],
+        "inputs": [],
+        "changes": []
+      },
+      "activated": null,
+      "accepted": null
+    },
+    {
+      "variant": "candidate",
+      "scenario": "trigger",
+      "before": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": false,
+        "destinationOpen": false,
+        "sourceExpanded": false,
+        "sourceContentOpen": false,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [],
+        "inputs": [],
+        "changes": []
+      },
+      "rejected": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": false,
+        "destinationOpen": false,
+        "sourceExpanded": false,
+        "sourceContentOpen": false,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [
+          {
+            "message": "Uncaught Error: Collapsible permits only one trigger per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          }
+        ],
+        "inputs": [],
+        "changes": []
+      },
+      "activated": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [
+          {
+            "message": "Uncaught Error: Collapsible permits only one trigger per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          }
+        ],
+        "inputs": [
+          {
+            "trusted": true,
+            "target": "source-trigger"
+          }
+        ],
+        "changes": [
+          {
+            "owner": "source",
+            "detail": {
+              "open": true,
+              "reason": "pointer"
+            },
+            "trusted": false
+          }
+        ]
+      },
+      "accepted": true
+    },
+    {
+      "variant": "candidate",
+      "scenario": "content",
+      "before": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [],
+        "inputs": [],
+        "changes": []
+      },
+      "rejected": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": false,
+        "errors": [
+          {
+            "message": "Uncaught Error: Collapsible permits only one content per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          }
+        ],
+        "inputs": [],
+        "changes": []
+      },
+      "activated": null,
+      "accepted": true
+    },
+    {
+      "variant": "candidate",
+      "scenario": "detached-content",
+      "before": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": true,
+        "errors": [],
+        "inputs": [],
+        "changes": []
+      },
+      "rejected": {
+        "sourceTrigger": 1,
+        "sourceContent": 1,
+        "destinationTrigger": 1,
+        "destinationContent": 1,
+        "sourceOpen": true,
+        "destinationOpen": false,
+        "sourceExpanded": true,
+        "sourceContentOpen": true,
+        "sourceIdentity": true,
+        "contentIdentity": true,
+        "destinationDetached": true,
+        "errors": [
+          {
+            "message": "Uncaught Error: Collapsible permits only one content per domain.",
+            "code": "COLLAPSIBLE_DUPLICATE_PART"
+          }
+        ],
+        "inputs": [],
+        "changes": []
+      },
+      "activated": null,
+      "accepted": true
+    }
+  ]
+}
