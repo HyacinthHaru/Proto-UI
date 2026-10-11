@@ -1,0 +1,32 @@
+{
+  "observedAt": "2026-10-11T08:19:07.819873+00:00",
+  "validatedFoundation": "2b17ee09700ac3efaa2239beb1b3056b525911e6",
+  "newObservedHead": "38eba2286aead0ee0244e5c7405489d3a12d6ca9",
+  "newHeadNotInValidatedPR": true,
+  "deltaPaths": [
+    "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/finf-representative-features.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/liquid-material-observation.test.ts",
+    "apps/www/src/content/docs/zh-cn/liquid-material-observation.ts",
+    "packages/cli/src/generated/brutalist-style-tokens.ts",
+    "packages/prototypes/brutalist/src/button/button.proto.ts",
+    "packages/prototypes/brutalist/src/select/item.proto.ts",
+    "packages/prototypes/brutalist/src/select/trigger.proto.ts",
+    "packages/prototypes/brutalist/test/button-select-style-closure.test.ts",
+    "packages/prototypes/brutalist/test/button.test.ts",
+    "packages/prototypes/brutalist/test/select.test.ts",
+    "packages/prototypes/liquid-glass/src/accordion/content.proto.ts",
+    "packages/prototypes/liquid-glass/src/accordion/item.proto.ts",
+    "packages/prototypes/liquid-glass/test/accordion-material.test.ts",
+    "spec/prototypes/P-BRUTALIST-BUTTON.yaml",
+    "spec/prototypes/P-BRUTALIST-SELECT-ITEM.yaml",
+    "spec/prototypes/P-BRUTALIST-SELECT-TRIGGER.yaml",
+    "spec/prototypes/P-LIQUID-GLASS-ACCORDION-CONTENT.yaml",
+    "spec/prototypes/P-LIQUID-GLASS-ACCORDION-ITEM.yaml",
+    "spec/tests/T-ACCORDION-RECIPES-0001.yaml",
+    "spec/tests/T-BRUTALIST-SELECT-0001.yaml"
+  ],
+  "coreRuntimeOrAnatomyOverlap": false,
+  "boundary": "New22pathsBrutalistButton/Select,LiquidAccordion,Tooltipobservation;nextcompositioninput,notmixedintocompleted28b2evidence.AllFinfstillWIP."
+}

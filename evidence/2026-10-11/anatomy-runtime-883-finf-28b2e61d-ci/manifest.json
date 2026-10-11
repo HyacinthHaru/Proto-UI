@@ -1,0 +1,44 @@
+{
+  "productHead": "28b2e61d6cf19f0672f1892a6ff10099cad8a081",
+  "mapping": [
+    {
+      "source": "ci-final-receipt.json",
+      "target": "ci-final.json",
+      "rawSha256": "4a11d752659939b40fad1791c8addf2dd349e69d47697164b7228120f24a9237",
+      "publicSha256": "4a11d752659939b40fad1791c8addf2dd349e69d47697164b7228120f24a9237"
+    },
+    {
+      "source": "liquid-focus-control.log",
+      "target": "liquid-focus-control.log",
+      "rawSha256": "dcf74a992ab5ba191356be8ce4221685490fee166db2832403ecbd0464eee8f3",
+      "publicSha256": "fa3ca1bd26a6be3298a0978ec967073086b0d11c9d0ce59a6c76abeba59fefa7"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "1e135bd77be59d003146931d8ad47efcdde3b84b5fdf429857e71dc5ea1e643a",
+      "bytes": 2139
+    },
+    {
+      "path": "ci-final.json",
+      "sha256": "4a11d752659939b40fad1791c8addf2dd349e69d47697164b7228120f24a9237",
+      "bytes": 27918
+    },
+    {
+      "path": "foundation-advance.json",
+      "sha256": "f9c9e0ab007e6a132d6d83ad68220cbbeaab09eb0369e8f98b046961d23f2220",
+      "bytes": 1846
+    },
+    {
+      "path": "liquid-focus-boundary.json",
+      "sha256": "ba998a76fe620795cb94a7e87d766068f884bd89f53e7eb68e9f7e37b6d11ed2",
+      "bytes": 1117
+    },
+    {
+      "path": "liquid-focus-control.log",
+      "sha256": "fa3ca1bd26a6be3298a0978ec967073086b0d11c9d0ce59a6c76abeba59fefa7",
+      "bytes": 7759
+    }
+  ]
+}

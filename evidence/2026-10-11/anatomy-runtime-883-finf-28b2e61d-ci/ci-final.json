@@ -1,0 +1,620 @@
+{
+  "head": "28b2e61d6cf19f0672f1892a6ff10099cad8a081",
+  "tree": "681e4d06f4106e32eb1d77f854c5b5743dac8be6",
+  "run": 38122187154,
+  "runStatus": "completed",
+  "runConclusion": "failure",
+  "observedAt": "2026-10-11T08:13:12.630776+00:00",
+  "jobs": [
+    {
+      "id": 114419066500,
+      "name": "rust-interop",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:41:15Z",
+      "completed_at": "2026-10-11T07:42:42Z"
+    },
+    {
+      "id": 114419066580,
+      "name": "rust-macos",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:42:50Z",
+      "completed_at": "2026-10-11T07:44:57Z"
+    },
+    {
+      "id": 114419066596,
+      "name": "public_package_plan",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:41:26Z",
+      "completed_at": "2026-10-11T07:41:35Z"
+    },
+    {
+      "id": 114419066609,
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:42:07Z",
+      "completed_at": "2026-10-11T07:43:22Z"
+    },
+    {
+      "id": 114419066669,
+      "name": "lockstep-check",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:43:55Z",
+      "completed_at": "2026-10-11T07:44:04Z"
+    },
+    {
+      "id": 114419066677,
+      "name": "rust",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:45:56Z",
+      "completed_at": "2026-10-11T07:46:43Z"
+    },
+    {
+      "id": 114419066684,
+      "name": "release-scan",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:47:08Z",
+      "completed_at": "2026-10-11T07:47:24Z"
+    },
+    {
+      "id": 114419066689,
+      "name": "test-plan",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:46:52Z",
+      "completed_at": "2026-10-11T07:47:06Z"
+    },
+    {
+      "id": 114419136991,
+      "name": "cli-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:47:27Z",
+      "completed_at": "2026-10-11T07:49:58Z"
+    },
+    {
+      "id": 114419137082,
+      "name": "release-stage",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:49:04Z",
+      "completed_at": "2026-10-11T07:51:27Z"
+    },
+    {
+      "id": 114419137115,
+      "name": "public_package_build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:48:19Z",
+      "completed_at": "2026-10-11T07:49:50Z"
+    },
+    {
+      "id": 114419137158,
+      "name": "release-consumer-react",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-11T07:48:11Z",
+      "completed_at": "2026-10-11T07:50:33Z"
+    },
+    {
+      "id": 114420062270,
+      "name": "test-general",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:49:52Z",
+      "completed_at": "2026-10-11T07:50:37Z"
+    },
+    {
+      "id": 114420062327,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:50:36Z",
+      "completed_at": "2026-10-11T07:59:13Z"
+    },
+    {
+      "id": 114420062344,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:49:08Z",
+      "completed_at": "2026-10-11T08:01:04Z"
+    },
+    {
+      "id": 114420062359,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:51:03Z",
+      "completed_at": "2026-10-11T08:06:32Z"
+    },
+    {
+      "id": 114420062360,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:50:48Z",
+      "completed_at": "2026-10-11T08:06:23Z"
+    },
+    {
+      "id": 114420062378,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:51:36Z",
+      "completed_at": "2026-10-11T08:07:23Z"
+    },
+    {
+      "id": 114420062384,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:52:10Z",
+      "completed_at": "2026-10-11T08:00:26Z"
+    },
+    {
+      "id": 114420062394,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:51:51Z",
+      "completed_at": "2026-10-11T08:04:50Z"
+    },
+    {
+      "id": 114420062407,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T07:51:30Z",
+      "completed_at": "2026-10-11T08:07:12Z"
+    },
+    {
+      "id": 114423521873,
+      "name": "test",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-11T08:08:10Z",
+      "completed_at": "2026-10-11T08:08:21Z"
+    }
+  ],
+  "jobConclusions": {
+    "success": 12,
+    "failure": 10
+  },
+  "browser": [
+    {
+      "job": 114420062327,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "conclusion": "failure",
+      "completedAt": "2026-10-11T07:59:13Z",
+      "mode": "completeVitestreportwithfailedassertions",
+      "selection": {
+        "checkoutSha": "af21ede008de8672aa96fff6de90b7f9f9545d95",
+        "phase": "browser",
+        "shard": "1/8",
+        "suites": [
+          "apps/workspace/test/lifecycle.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-dialog.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/library-cards-first-frame.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+          "apps/www/test/template-style.browser.test.ts"
+        ]
+      },
+      "completeSummary": [
+        "Test Files  1 failed | 9 passed (10)",
+        "Tests  1 failed | 46 passed (47)"
+      ],
+      "failedCases": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts",
+          "case": "S4: compositor never repaints a closed Dialog after settings changes",
+          "firstDiagnostic": [
+            "TimeoutError: locator.click: Timeout 30000ms exceeded.",
+            "Call log:",
+            "  - waiting for locator('[data-s4-profile=light][data-s4-part=trigger]')",
+            "    - locator resolved to <pui-s4-light-trigger-0 tabindex=\"0\" role=\"button\" data-pui-root=\"\" class=\"pui-host-root\" aria-disabled=\"false\" aria-expanded=\"false\" data-s4-part=\"trigger\" aria-haspopup=\"dialog\" data-s4-profile=\"light\" data-pui-a11y-actions=\"activate\" aria-controls=\"pui-dialog-2-content\">打开 light 设置</pui-s4-light-trigger-0>",
+            "  - attempting click action",
+            "    - waiting for element to be visible, enabled and stable",
+            "    - element is visible, enabled and stable",
+            "    - scrolling into view if needed",
+            "    - done scrolling",
+            "",
+            " ❯ Module.runS4PaintJourney scripts/analysis/shadow-s4-paint-browser.mjs:90:31",
+            "     88|       const control = (key) => part('content').locator(`[data-s3-compo…"
+          ],
+          "sameFailedNameInSelectedMain": true
+        }
+      ],
+      "completeAssertionsAvailable": true,
+      "rawLogSha256": "a9ca10fbb5f5885dd0c5db6f0d08568a036a10efc2d6d94a334a53abb887a599"
+    },
+    {
+      "job": 114420062344,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "conclusion": "failure",
+      "completedAt": "2026-10-11T08:01:04Z",
+      "mode": "completeVitestreportwithfailedassertions",
+      "selection": {
+        "checkoutSha": "af21ede008de8672aa96fff6de90b7f9f9545d95",
+        "phase": "browser",
+        "shard": "4/8",
+        "suites": [
+          "apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts",
+          "apps/www/test/evidence/brutalist-fonts.browser.test.ts",
+          "packages/adapters/vue/test/focus-request-readiness.browser.test.ts"
+        ]
+      },
+      "completeSummary": [
+        "Test Files  2 failed | 8 passed (10)",
+        "Tests  8 failed | 74 passed (82)"
+      ],
+      "failedCases": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "case": "liquid-glass Collapsible public browser evidence > wc preserves disclosure ownership through native input and view lifetimes",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "case": "liquid-glass Collapsible public browser evidence > react preserves disclosure ownership through native input and view lifetimes",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "case": "liquid-glass Collapsible public browser evidence > vue preserves disclosure ownership through native input and view lifetimes",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "case": "liquid-glass Collapsible public browser evidence > vue2 preserves disclosure ownership through native input and view lifetimes",
+          "firstDiagnostic": [
+            "Error: Matcher did not succeed in 1000ms",
+            " ❯ focused apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts:78:8",
+            "     76|     await expect",
+            "     77|       .poll(() => button.evaluate((element) => document.activeElement …",
+            "     78|       .toBe(true);",
+            "       |        ^",
+            "     79|   } catch (error) {",
+            "     80|     let timer: ReturnType<typeof setTimeout> | undefined;",
+            " ❯ apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts:302:17"
+          ],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "case": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "case": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "case": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "case": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "firstDiagnostic": [
+            "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+            " ❯ waitForRuntimeAt apps/www/src/content/docs/zh-cn/browser-harness.ts:297:14",
+            "    295|   const previewerId = await previewer.getAttribute('data-previewer-id'…",
+            "    296|   if (!previewerId) throw new Error('Runtime readiness requires an ide…",
+            "    297|   await page.waitForFunction(",
+            "       |              ^",
+            "    298|     ({",
+            "    299|       previewerId,",
+            " ❯ Module.selectRuntime apps/www/src/content/docs/zh-cn/browser-harness.ts:269:3",
+            " ❯ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts:391:9"
+          ],
+          "sameFailedNameInSelectedMain": false
+        }
+      ],
+      "completeAssertionsAvailable": true,
+      "rawLogSha256": "d3b52dee4474ad745b3363f9f2a2f79e383c0032531ab95e4648a561bcb6b535"
+    },
+    {
+      "job": 114420062359,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "conclusion": "failure",
+      "completedAt": "2026-10-11T08:06:32Z",
+      "mode": "existing15mcommandtimeout124/SIGTERM",
+      "selection": {
+        "checkoutSha": "af21ede008de8672aa96fff6de90b7f9f9545d95",
+        "phase": "browser",
+        "shard": "7/8",
+        "suites": [
+          "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/runtime-layout-parity.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+          "apps/www/test/preferences.browser.test.ts"
+        ]
+      },
+      "completeSummary": [],
+      "failedCases": [],
+      "completeAssertionsAvailable": false,
+      "rawLogSha256": "f6a584c1961b7eca1bca9ebcb115944f60ab885681f4fbfc876ce7010e161c80"
+    },
+    {
+      "job": 114420062360,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "conclusion": "failure",
+      "completedAt": "2026-10-11T08:06:23Z",
+      "mode": "existing15mcommandtimeout124/SIGTERM",
+      "selection": {
+        "checkoutSha": "af21ede008de8672aa96fff6de90b7f9f9545d95",
+        "phase": "browser",
+        "shard": "2/8",
+        "suites": [
+          "apps/www/src/components/documentation-image-preview.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-base-image.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts",
+          "apps/www/test/button-view-lifetime.browser.test.ts",
+          "packages/adapters/base/test/focus-intent-retries.browser.test.ts"
+        ]
+      },
+      "completeSummary": [],
+      "failedCases": [],
+      "completeAssertionsAvailable": false,
+      "rawLogSha256": "33692b2b3042022a991f964a11a2d1f1b09fdb8cc71e87aebc446c445fada86e"
+    },
+    {
+      "job": 114420062378,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "conclusion": "failure",
+      "completedAt": "2026-10-11T08:07:23Z",
+      "mode": "existing15mcommandtimeout124/SIGTERM",
+      "selection": {
+        "checkoutSha": "af21ede008de8672aa96fff6de90b7f9f9545d95",
+        "phase": "browser",
+        "shard": "6/8",
+        "suites": [
+          "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadow-split-s1.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/quick-start-first-frame.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts",
+          "apps/www/test/message-composition.browser.test.ts"
+        ]
+      },
+      "completeSummary": [],
+      "failedCases": [],
+      "completeAssertionsAvailable": false,
+      "rawLogSha256": "932dc1bd4f801ad653a083aab2415c212eb3ac6e4404632632bd131a8f1e9b60"
+    },
+    {
+      "job": 114420062384,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "conclusion": "failure",
+      "completedAt": "2026-10-11T08:00:26Z",
+      "mode": "completeVitestreportwithfailedassertions",
+      "selection": {
+        "checkoutSha": "af21ede008de8672aa96fff6de90b7f9f9545d95",
+        "phase": "browser",
+        "shard": "3/8",
+        "suites": [
+          "apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-base-input.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+          "apps/www/test/color-scheme.browser.test.ts",
+          "packages/adapters/react/test/focus-entry-readiness.browser.test.ts"
+        ]
+      },
+      "completeSummary": [
+        "Test Files  2 failed | 8 passed (10)",
+        "Tests  6 failed | 62 passed (68)"
+      ],
+      "failedCases": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+          "case": "Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+          "case": "Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+          "case": "Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+          "case": "Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+          "firstDiagnostic": [
+            "Error: Error: Matcher did not succeed in 1000ms",
+            "Browser errors: ",
+            " ❯ apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts:343:15",
+            "    341|           fullPage: true,",
+            "    342|         });",
+            "    343|         throw new Error(`${String(error)}\\nBrowser errors: ${errors.jo…",
+            "       |               ^",
+            "    344|       } finally {",
+            "    345|         await context.close();",
+            "",
+            "Caused by: Error: Matcher did not succeed in 1000ms",
+            " ❯ apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts:324:83"
+          ],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts",
+          "case": "S5 native editor acceptance paths > zh-cn: Light/split/mixed native editing",
+          "firstDiagnostic": [],
+          "sameFailedNameInSelectedMain": true
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts",
+          "case": "S5 native editor acceptance paths > en: Light/split/mixed native editing",
+          "firstDiagnostic": [
+            "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+            " ❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts:29:20",
+            "     27|       try {",
+            "     28|         await page.goto(`${baseUrl}/${locale}/internal/demo-matrix/#sh…",
+            "     29|         await page.waitForFunction(",
+            "       |                    ^",
+            "     30|           () => {",
+            "     31|             const previews = [...document.querySelectorAll('[data-prev…"
+          ],
+          "sameFailedNameInSelectedMain": true
+        }
+      ],
+      "completeAssertionsAvailable": true,
+      "rawLogSha256": "152f3469098126e590af8eac48a4c06f9e7a5073a86e0e490c81a6641f08d682"
+    },
+    {
+      "job": 114420062394,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "conclusion": "failure",
+      "completedAt": "2026-10-11T08:04:50Z",
+      "mode": "completeVitestreportwithfailedassertions",
+      "selection": {
+        "checkoutSha": "af21ede008de8672aa96fff6de90b7f9f9545d95",
+        "phase": "browser",
+        "shard": "5/8",
+        "suites": [
+          "apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/quick-start-first-frame-fragment-control.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts",
+          "apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts",
+          "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+        ]
+      },
+      "completeSummary": [
+        "Test Files  2 failed | 7 passed | 1 skipped (10)",
+        "Tests  2 failed | 171 passed | 15 skipped (188)"
+      ],
+      "failedCases": [
+        {
+          "path": "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+          "case": "Shadow closeout native boundaries > preserves native DOM parent and query behavior while a portal is projected",
+          "firstDiagnostic": [
+            "AssertionError: expected { mounted: { …(5) }, …(2) } to deeply equal { mounted: { …(5) }, …(2) }",
+            "",
+            "- Expected",
+            "+ Received",
+            "",
+            "  Object {",
+            "    \"mounted\": Object {",
+            "      \"absentFromOriginQuery\": true,",
+            "      \"parentElementIsBody\": true,",
+            "      \"parentNodeIsBody\": true,",
+            "      \"presentInBodyQuery\": true,",
+            "      \"rootIsDocument\": true,"
+          ],
+          "sameFailedNameInSelectedMain": false
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts",
+          "case": "shadcn Tooltip browser acceptance > renders state feedback and a supplementary body portal in every public runtime",
+          "firstDiagnostic": [
+            "AssertionError: expected 'flex' to be 'inline-flex' // Object.is equality",
+            "",
+            "Expected: \"inline-flex\"",
+            "Received: \"flex\"",
+            "",
+            " ❯ apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts:173:33",
+            "    171|           expect(paint.borderRadius, `${runtime}/${colorScheme}/radius…",
+            "    172|           expect(paint.borderWidth, `${runtime}/${colorScheme}/border`…",
+            "    173|           expect(paint.display).toBe('inline-flex');",
+            "       |                                 ^",
+            "    174|           expect(paint.maxWidth).toBe('320px');",
+            "    175|           expect(paint.gap).toBe('6px');"
+          ],
+          "sameFailedNameInSelectedMain": false
+        }
+      ],
+      "completeAssertionsAvailable": true,
+      "rawLogSha256": "783d0d746b18274b61628bebcd089ba86031bcdba5b01e5fe91517f037c5f233"
+    },
+    {
+      "job": 114420062407,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "conclusion": "failure",
+      "completedAt": "2026-10-11T08:07:12Z",
+      "mode": "existing15mcommandtimeout124/SIGTERM",
+      "selection": {
+        "checkoutSha": "af21ede008de8672aa96fff6de90b7f9f9545d95",
+        "phase": "browser",
+        "shard": "8/8",
+        "suites": [
+          "apps/www/src/content/docs/zh-cn/demo-base-collapsible.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadow-split-s3.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/runtime-loading-mask.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts",
+          "apps/www/test/radio-group-entry.browser.test.ts"
+        ]
+      },
+      "completeSummary": [],
+      "failedCases": [],
+      "completeAssertionsAvailable": false,
+      "rawLogSha256": "b3365dc8cdbdb6aacaa085c9d264874df454dfca3b137ec3caca0052f739aea6"
+    }
+  ],
+  "browserCompleteReports": 4,
+  "browserTimeoutJobs": 4,
+  "general": "FAILUREpublic-docs82beforeVitest,noofficialC52pass",
+  "package": "SUCCESSactual47/47build47manifests,5PASS4ADVISORYnot9strictpass",
+  "scopeLimit": "TimeoutshardslackfinalJSON/completecasecounts;no missingcase treatedpass/no manualrerun/cancel/sourceassertiontimeoutchange",
+  "historicalNameComparison": "Onlyactualcompletefailureheaderscomparedtosamecaseinselectedmain;absenceisnotfixproof",
+  "localEvidence": "86focusedpass,916firstcompositionpass,localruntime-only10651pass325fail34TODO+1unhandled;localC52+4AdapterCollapsible100pass"
+}

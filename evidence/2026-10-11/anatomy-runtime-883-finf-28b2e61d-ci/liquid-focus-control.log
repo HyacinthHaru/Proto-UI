@@ -1,0 +1,84 @@
+
+ RUN  v2.1.9 <PRODUCT_ROOT>
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:32.528Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=1 requestMs=4 totalMs=5 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:32.781Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=2 requestMs=1 totalMs=257 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:33.032Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=3 requestMs=1 totalMs=508 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:33.284Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=4 requestMs=1 totalMs=760 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:33.535Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=5 requestMs=0 totalMs=1011 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:33.787Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=6 requestMs=1 totalMs=1263 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:34.038Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=7 requestMs=1 totalMs=1514 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:34.289Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=8 requestMs=1 totalMs=1765 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:34.540Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=9 requestMs=0 totalMs=2016 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:34.792Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=10 requestMs=0 totalMs=2268 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:35.043Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=11 requestMs=1 totalMs=2519 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:35.292Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=12 requestMs=0 totalMs=2768 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:35.543Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=13 requestMs=0 totalMs=3019 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:35.795Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=14 requestMs=1 totalMs=3271 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:36.046Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=15 requestMs=1 totalMs=3522 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:36.298Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=16 requestMs=1 totalMs=3774 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:36.549Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=17 requestMs=1 totalMs=4025 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:36.800Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=18 requestMs=0 totalMs=4276 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:37.051Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=19 requestMs=0 totalMs=4527 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:37.303Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=20 requestMs=0 totalMs=4779 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:37.554Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=21 requestMs=0 totalMs=5030 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:37.806Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=22 requestMs=1 totalMs=5282 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:38.056Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=23 requestMs=1 totalMs=5533 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:54150
+
+stdout | apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts
+[server-readiness] 2026-10-11T08:15:40.040Z http://127.0.0.1:54150/en/ui-libraries/shadcn/collapsible/ attempt=24 requestMs=1733 totalMs=7516 HTTP 200 OK
+
+ ✓ apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts (36 tests | 34 skipped) 17149ms
+   ✓ liquid-glass Collapsible public browser evidence > wc preserves disclosure ownership through native input and view lifetimes 6535ms
+   ✓ liquid-glass Collapsible public browser evidence > wc preserves padding and wraps long text at 320px and 200% type 1987ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed | 34 skipped (36)
+   Start at  16:15:32
+   Duration  17.47s (transform 39ms, setup 0ms, collect 184ms, tests 17.15s, environment 0ms, prepare 31ms)
+

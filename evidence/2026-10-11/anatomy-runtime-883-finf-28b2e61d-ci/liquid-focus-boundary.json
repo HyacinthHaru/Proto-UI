@@ -1,0 +1,17 @@
+{
+  "head": "28b2e61d6cf19f0672f1892a6ff10099cad8a081",
+  "job": 114420062344,
+  "cases": [],
+  "sourceBoundary": "Atline302afterpointerclick,aria-expandedtrue/contentvisible/controlsIDinvariantalreadyasserted;physicalfocusedcheckfails;laterkeyboard/controlled/terminaljourneyunexecuted",
+  "cause": "not established fromtheseobservations;notAnatomyfailureproof/notwholeLiquidacceptance",
+  "sourceBoundaryBasis": "Inferencefromorderedoriginalhardassertionsandreportedline302stack;notanindependentDOMmeasurement",
+  "diagnosticPayloadLocated": false,
+  "diagnosticLimit": "No structured focus-failure payload located in canonical raw log; do not invent activeElement or exact cause.",
+  "localControl": {
+    "head": "28b2e61d6cf19f0672f1892a6ff10099cad8a081",
+    "command": "Node24pnpmexecvitest run demo-collapsible-projections.browser.test.ts -t liquid-glass.*wc preserves",
+    "actualResult": "2passed/34explicitlyfiltered,exit0;WCmainjourneyandpaddingcase",
+    "scope": "macOSselectedcontrol,originalassertions/timeouts,no newdiagnosticpatch;doesnotreplaceLinux4failedcases",
+    "rootCause": "unknown"
+  }
+}
