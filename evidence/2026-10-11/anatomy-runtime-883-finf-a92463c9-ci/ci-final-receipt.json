@@ -1,0 +1,364 @@
+{
+  "head": "a92463c9590c233e93f451389bab02b85009fa9a",
+  "tree": "1597454fe2be1bb96ffc6cafc9788fe5f8b5ddba",
+  "runId": 38128749951,
+  "runAttempt": 1,
+  "conclusion": "failure",
+  "all22Terminal": true,
+  "jobCounts": {
+    "success": 12,
+    "failure": 10
+  },
+  "jobs": [
+    {
+      "id": 114438713967,
+      "name": "public_package_plan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114438713967"
+    },
+    {
+      "id": 114438714066,
+      "name": "rust",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114438714066"
+    },
+    {
+      "id": 114438714069,
+      "name": "release-scan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114438714069"
+    },
+    {
+      "id": 114438714072,
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114438714072"
+    },
+    {
+      "id": 114438714115,
+      "name": "lockstep-check",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114438714115"
+    },
+    {
+      "id": 114438714120,
+      "name": "rust-macos",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114438714120"
+    },
+    {
+      "id": 114438714139,
+      "name": "rust-interop",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114438714139"
+    },
+    {
+      "id": 114438714178,
+      "name": "test-plan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114438714178"
+    },
+    {
+      "id": 114439786558,
+      "name": "public_package_build",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114439786558"
+    },
+    {
+      "id": 114439786605,
+      "name": "cli-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114439786605"
+    },
+    {
+      "id": 114439786626,
+      "name": "release-stage",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114439786626"
+    },
+    {
+      "id": 114439786637,
+      "name": "release-consumer-react",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114439786637"
+    },
+    {
+      "id": 114440523728,
+      "name": "test-general",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523728"
+    },
+    {
+      "id": 114440523801,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523801"
+    },
+    {
+      "id": 114440523811,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523811"
+    },
+    {
+      "id": 114440523814,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523814"
+    },
+    {
+      "id": 114440523820,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523820"
+    },
+    {
+      "id": 114440523853,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523853"
+    },
+    {
+      "id": 114440523854,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523854"
+    },
+    {
+      "id": 114440523923,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523923"
+    },
+    {
+      "id": 114440523930,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114440523930"
+    },
+    {
+      "id": 114444428573,
+      "name": "test",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114444428573"
+    }
+  ],
+  "checkoutSHAs": {
+    "114438713967": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114438714066": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114438714069": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114438714072": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114438714115": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114438714120": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114438714139": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114438714178": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114439786558": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114439786605": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114439786626": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114439786637": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523728": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523801": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523811": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523814": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523820": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523853": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523854": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523923": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114440523930": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"],
+    "114444428573": ["6b6f0b98448f60cb4c3d3b71fde7abe7072d3430"]
+  },
+  "checkoutTreeBinding": "All available sourcecheckout references6b6f0b98448f60cb4c3d3b71fde7abe7072d3430 treeequalsproduct1597;noncheckoutgate job distinguished",
+  "browserShards": [
+    {
+      "jobId": 114440523801,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [],
+      "terminalSummaries": ["##[error]Process completed with exit code 124."],
+      "deadlineExit124": true,
+      "hasFinalVitestSummary": false,
+      "focusDiagnosticPayloadCount": 0,
+      "anatomyCapUnavailableMarker": false,
+      "logSha256": "345d1239b6d681231dafff082e5f2ba55c8502f42ae39502597e1c060f8cdc2e"
+    },
+    {
+      "jobId": 114440523811,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts > liquid-glass Collapsible public browser evidence > wc preserves disclosure ownership through native input and view lifetimes",
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts > liquid-glass Collapsible public browser evidence > react preserves disclosure ownership through native input and view lifetimes",
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts > liquid-glass Collapsible public browser evidence > vue preserves disclosure ownership through native input and view lifetimes",
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts > liquid-glass Collapsible public browser evidence > vue2 preserves disclosure ownership through native input and view lifetimes",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+      ],
+      "terminalSummaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 8 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  2 failed | 8 passed (10)",
+        "      Tests  8 failed | 74 passed (82)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadlineExit124": false,
+      "hasFinalVitestSummary": true,
+      "focusDiagnosticPayloadCount": 0,
+      "anatomyCapUnavailableMarker": false,
+      "logSha256": "b1f9c413e34f9f60dc0135e67d61e3acce249b957073d00c7e29df6472a2ba62"
+    },
+    {
+      "jobId": 114440523814,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts > S4: compositor never repaints a closed Dialog after settings changes"
+      ],
+      "terminalSummaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  1 failed | 9 passed (10)",
+        "      Tests  1 failed | 46 passed (47)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadlineExit124": false,
+      "hasFinalVitestSummary": true,
+      "focusDiagnosticPayloadCount": 0,
+      "anatomyCapUnavailableMarker": false,
+      "logSha256": "f09e9cd76667abbd14cd9c586853ed862170f771ef05e8f9a0347466b7971355"
+    },
+    {
+      "jobId": 114440523820,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts > S5 native editor acceptance paths > zh-cn: Light/split/mixed native editing",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts > S5 native editor acceptance paths > en: Light/split/mixed native editing"
+      ],
+      "terminalSummaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 6 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  2 failed | 8 passed (10)",
+        "      Tests  6 failed | 62 passed (68)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadlineExit124": false,
+      "hasFinalVitestSummary": true,
+      "focusDiagnosticPayloadCount": 0,
+      "anatomyCapUnavailableMarker": false,
+      "logSha256": "2f3201cdb3cfb788c15576b9b8e130b64de0b6da60cfc9759961d02ec6239391"
+    },
+    {
+      "jobId": 114440523853,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "packages/adapters/base/test/focus-intent-retries.browser.test.ts > wc native entry requests renew exhausted budgets only on explicit new intent",
+        "packages/adapters/base/test/focus-intent-retries.browser.test.ts > wc ordinary commits preserve an exhausted entry same-view layout budget",
+        "packages/adapters/base/test/focus-intent-retries.browser.test.ts > wc retains an exhausted entry allowance across retained hide/show",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts > S4 complete public Dialog settings > zh-cn: native Light/split/mixed acceptance",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts > S4 complete public Dialog settings > en: native Light/split/mixed acceptance",
+        "apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts > styled Scroll Area corner / actual family geometry > 'shadcn' reserves a non-control corner through layout, overflow, focus, and drag transitions"
+      ],
+      "terminalSummaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 6 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  3 failed | 7 passed (10)",
+        "      Tests  6 failed | 235 passed (241)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadlineExit124": false,
+      "hasFinalVitestSummary": true,
+      "focusDiagnosticPayloadCount": 0,
+      "anatomyCapUnavailableMarker": false,
+      "logSha256": "eb4577f1b78e94ad8d3522bd1326019b852b1fbd2f9200a1c7a42abb92d317aa"
+    },
+    {
+      "jobId": 114440523854,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [],
+      "terminalSummaries": ["##[error]Process completed with exit code 124."],
+      "deadlineExit124": true,
+      "hasFinalVitestSummary": false,
+      "focusDiagnosticPayloadCount": 0,
+      "anatomyCapUnavailableMarker": false,
+      "logSha256": "d37359ca392fba8514896ad0ed219c8298c1d3210cd4eed853981a9273f74079"
+    },
+    {
+      "jobId": 114440523923,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [],
+      "terminalSummaries": ["##[error]Process completed with exit code 124."],
+      "deadlineExit124": true,
+      "hasFinalVitestSummary": false,
+      "focusDiagnosticPayloadCount": 0,
+      "anatomyCapUnavailableMarker": false,
+      "logSha256": "dabbb811ff66267f9dd6db734ebbc2cb6a4ec40a5c43efde548be53b90f33c0d"
+    },
+    {
+      "jobId": 114440523930,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "packages/adapters/web-component/test/shadow-closeout.browser.test.ts > Shadow closeout native boundaries > preserves native DOM parent and query behavior while a portal is projected",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts > shadcn Tooltip browser acceptance > renders state feedback and a supplementary body portal in every public runtime"
+      ],
+      "terminalSummaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 2 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  2 failed | 7 passed | 1 skipped (10)",
+        "      Tests  2 failed | 172 passed | 15 skipped (189)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadlineExit124": false,
+      "hasFinalVitestSummary": true,
+      "focusDiagnosticPayloadCount": 0,
+      "anatomyCapUnavailableMarker": false,
+      "logSha256": "0abcd5ab7c1d70033759a7fd729423c0bfa7231d79bae12393f52220d56feff3"
+    }
+  ],
+  "browserScope": {
+    "completeReports": 5,
+    "deadlineIncompleteReports": 3,
+    "completedReportFailureHeaders": 23,
+    "notClaimed": "No complete full8shard test count or pass for unreported cases;Vitest Tests are cases,not counts ofexpect assertions.",
+    "completedReportPassedTests": 589,
+    "completedReportSkippedTests": 15
+  },
+  "generalPrecheck": "82 public-docs diagnostics exactly equal f8 orderedlist,beforeVitest;canonicalC66notexecuted",
+  "localC66": "Separate actuala924MacgeneralC66pass,notcanonical",
+  "dedicatedCollapsible": {
+    "run": 38128749926,
+    "job": 114438493801,
+    "passed": 35,
+    "failed": 1,
+    "failurePhase": "LiquidWCEnterreopenfocused,line321",
+    "diagnostic": "Snapshotafterpollfailurefocusedtrue,correctactive/expected/pointerDOMobject,ready;notdeadlineorfullwindowproof;noestablishedCcause"
+  },
+  "review": "IndependentpartialABSTAIN;actualfailurepreserved,noassertionortimeoutchange",
+  "observedAt": "2026-10-11T10:14:17.354160+00:00"
+}

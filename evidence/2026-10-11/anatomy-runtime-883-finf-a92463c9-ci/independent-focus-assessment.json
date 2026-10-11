@@ -1,0 +1,159 @@
+{
+  "kind": "independent-read-only-canonical-focus-observation-assessment",
+  "recordedAt": "2026-10-11T10:08:47.202580+00:00",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "githubDisposition": null,
+  "actionableCSourceFindings": [],
+  "classification": "Exact-head canonical focus-poll failure remains unresolved; current evidence does not establish a specificC cause or a provenFocus/browser/runner rootcause.",
+  "target": {
+    "head": "a92463c9590c233e93f451389bab02b85009fa9a",
+    "run": 38128749926,
+    "job": 114438493801,
+    "attempt": 1,
+    "workflow": ".github/workflows/collapsible-projections-evidence.yml",
+    "actualCheckoutLogMatchesHead": true,
+    "result": "FAILURE",
+    "passed": 35,
+    "failed": 1,
+    "total": 36,
+    "case": "liquid-glass Collapsible public browser evidence > wc preserves disclosure ownership through native input and view lifetimes",
+    "failedAssertion": "focused(button),helperline78,journeyline321",
+    "pollTimeoutMs": 1000,
+    "testElapsedMs": 37786
+  },
+  "sourceBindings": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+      "blob": "4dde3fbe900b5b7ed4b1b529027fded7d7db83fa",
+      "sha256": "e7a7f0f4d02ce91f00f59dba92f1789896ca7208c66d8b534726ca7878de4ffe"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/collapsible-focus-observation.ts",
+      "blob": "ec133b9871d7ade66bab13c8c3e4e5776445043b",
+      "sha256": "203fe43bddabca306e453bf9cd0b3eead99e93bae09a73a16feb86dd1948862f"
+    }
+  ],
+  "rawPayloadExactlyMatchesExtractedObservation": true,
+  "stageAssessment": {
+    "differentFromOld38122187154": "OldfourLiquidcases stoppedatinitialpointerfocusline302; thiscase reachesline321afterEnter rematerialization. Samecasename doesnotestablishsamefailurepoint/cause.",
+    "hardAssertionsAlreadyPassedByControlFlow": [
+      "initialpointerexpanded/contentvisible/controlidentity checks andfocused at302",
+      "Spaceclose,Contentabsence,controlswithdrawal,scrollposition andfocused at312",
+      "thecurrentEnterreopen expanded check andcontrolIDequaltooriginalidentity at319-320"
+    ],
+    "cycleInference": "Captured1Spacepair and3Enterpairs,alltargetinguncontrolledTrigger, matchcycle0open+close then cycle1open beforethefailing321assertion. Thisis an ordered-source/event inference, not an explicitloggedcycleidentifier.",
+    "laterJourneyNotReached": "Currentcycleclose, subsequentTab/retained/controlled/terminal sections are notpassed bythisfailedcase."
+  },
+  "snapshotFacts": {
+    "acquiredAfterPollFailure": true,
+    "collectorCallsFocusOrMutatesDom": false,
+    "focused": true,
+    "expectedEqualsActiveByActualElementComparison": true,
+    "expectedTag": "WC-LIQUID-GLASS-COLLAPSIBLE-TRIGGER",
+    "pointerTargetIsExpected": true,
+    "connected": true,
+    "hidden": false,
+    "inertAncestor": false,
+    "pendingAncestor": false,
+    "detachedAncestor": false,
+    "generationState": "active",
+    "projectionState": "ready",
+    "display": "flex",
+    "visibility": "visible",
+    "pointerEvents": "auto",
+    "rect": {
+      "x": 368,
+      "y": 126.5,
+      "width": 496,
+      "height": 66
+    },
+    "materialQuality": "self-optical",
+    "meaning": "These are currentDOMfacts from a separatebutton.evaluate insidecatch, bounded byanother1000ms diagnosticrace. They are not samplesfromtheprecedingexpect.poll window."
+  },
+  "inputHistory": {
+    "recordCount": 18,
+    "capacity": 30,
+    "collectorScope": "Capturephase listeners onthepreviewer element; last30records returned.",
+    "focusEvents": [
+      {
+        "type": "focusin",
+        "trusted": true,
+        "key": null,
+        "targetRef": "__pui_projection__runtime_trigger",
+        "role": "tab",
+        "time": 3977.5
+      },
+      {
+        "type": "focusout",
+        "trusted": true,
+        "key": null,
+        "targetRef": "__pui_projection__runtime_trigger",
+        "role": "tab",
+        "time": 11989.399999999994
+      },
+      {
+        "type": "focusin",
+        "trusted": true,
+        "key": null,
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 11994.899999999994
+      }
+    ],
+    "trustedSpaceKeydownCount": 1,
+    "trustedEnterKeydownCount": 3,
+    "focusEventsAfterUncontrolledInitialFocusin": 0,
+    "identityMeaning": "Thecollector stores theactualElement closesttorolebutton atlastpointerdown; equalityatcapture shows theexpectedtarget isthat sameDOMobject. It doesnotprove no temporarydetach/reinsert, noRuntimeepoch change, or uninterruptedfocus.",
+    "eventLimit": "No laterrecordedfocusout is evidenceonlyforcapturedpreviewer events. It is not a completebrowserfocus/DOM-retirement trace, especially fordetached paths; no per-poll timestamps orresults are retained."
+  },
+  "pollImplementationObservation": {
+    "version": "2.1.9",
+    "localPinnedSource": "node_modules/vitest/dist/chunks/vi.DgezovHB.js",
+    "sha256": "b196854dc043716fc0fe066c45e3de657f402dbe64f3c012f4a134b90d305fde",
+    "behavior": "createExpectPoll starts anindependenttimeout thenawaits fn(); lastError ispopulated onlyaftercallback/assertionerror. Timer canrejectwhile Playwrightbutton.evaluate isstillpending, even iffocuswould later readtrue.",
+    "rawLog": "Renderedfailure contains the1000mstimeout butno loggedfalsepollvalue orcause.",
+    "inferenceLimit": "Pendingprobe/transport/eventloop scheduling is a concretepossiblemechanism, not a measuredrootcause. Thelocallyread pinnedimplementation explains semantics; no CI per-polltrace wasavailable."
+  },
+  "supported": [
+    "Newfailedrun isreal andmustremainfailed despite thepositivepostfailure snapshot andMac41pass.",
+    "Atdiagnostic sampling theexpectedTrigger isactive/ready/visible andsameaslastpointertarget; no persistentlymissing/hidden/inert/retiredsurface isobserved atthat instant.",
+    "No explicitAnatomy/Context/retiredState error oruniqueC-trigger mechanism isshown inthisfailure record.",
+    "The failurepointadvanced relative totheoldfirstclickfocusfailures; same-name comparisonscannotstandinforcausalclassification."
+  ],
+  "notSupported": [
+    "TheTriggerwasdefinitelyunfocusedthroughoutthepollwindow.",
+    "TheTriggerwasdefinitelyfocusedthroughoutthepollwindow.",
+    "Thefailureisprovenrunner-only/environment-only/flaky.",
+    "TheCsourceisprovenresponsible or provenincapable ofcontributing.",
+    "Snapshotfocused:true convertscanonicalfailuretopass orprovesrecoverywithin the originaldeadline.",
+    "generation:active proves aRuntimegenerationidentity wasunchanged."
+  ],
+  "recommendation": "Preserve as unresolvedFocus/browser/runner-observation boundary, with no C edit or timeout relaxation justified bythisrecord. If furtherdiagnosis is separatelyauthorized, thediscriminatingdata isNode-side per-probeentry/resolve timestamps andthe sameDOMpredicate result/targetidentity aroundtheoriginalpoll, correlatedtofocus events. No suchrun orinstrumentation performedhere.",
+  "otherCIBoundary": "The22-jobCI38128749951 aggregate was notpolled/reclassified; thisassessment isonlydedicatedCollapsible38128749926. Sourcepacketpublication467b13b8 is separatehistoricalevidence andnot overwritten.",
+  "rawEvidence": [
+    {
+      "path": "collapsible-workflow-job-114438493801.log",
+      "sha256": "54dc2ffda4c2701a127fbcb7a45c24e2d6369a7e2a0d7d7f370899eed046824d",
+      "bytes": 52414
+    },
+    {
+      "path": "collapsible-canonical-focus-observation.json",
+      "sha256": "eb3e0310a4794c6ee5e8ba87fe1ddc0f36033877cc0dcc8286f742bd0b94e554",
+      "bytes": 5739
+    },
+    {
+      "path": "collapsible-workflow-current.json",
+      "sha256": "a0a597f1bd5a68e9bda70b5f13cff3cd9c2d6e3b73775323b8f7f52cb0bbf11b",
+      "bytes": 16044
+    },
+    {
+      "path": "collapsible-workflow-jobs.json",
+      "sha256": "240a25a105f50cae58bfabbec3782eb00c29e680d1e58da97610876a8ed6f83f",
+      "bytes": 3530
+    }
+  ],
+  "actions": "Read existinglogs/metadata/test/collector/localpinnedpollsource only; no tests/browser/build/sourceedits/externalwrites/newagents."
+}

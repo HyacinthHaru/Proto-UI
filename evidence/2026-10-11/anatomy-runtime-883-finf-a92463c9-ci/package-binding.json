@@ -1,0 +1,112 @@
+{
+  "head": "a92463c9590c233e93f451389bab02b85009fa9a",
+  "run": 38128749951,
+  "job": 114439786558,
+  "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38128749951/job/114439786558",
+  "conclusion": "SUCCESS",
+  "builds": {
+    "actual": 47,
+    "total": 47
+  },
+  "manifestChecks": 47,
+  "checkout": "6b6f0b98448f60cb4c3d3b71fde7abe7072d3430",
+  "checkoutTree": "1597454fe2be1bb96ffc6cafc9788fe5f8b5ddba",
+  "productTreeExactlyEqual": true,
+  "environment": {
+    "node": "v24.21.0",
+    "zlib": "1.3.2.1-motley-8002e91",
+    "esbuild": "0.25.12",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "rows": [
+    {
+      "disposition": "PASS",
+      "name": "lucide/icons/x",
+      "gzipBytes": 1737,
+      "budget": 3000,
+      "overBudgetBytes": 0,
+      "minifiedBytes": 4670,
+      "minifiedSha256": "ad450832dd6cddabb58fad2d969486fa320f6e2b763fc91b40bcad8be88ac708"
+    },
+    {
+      "disposition": "PASS",
+      "name": "lucide root",
+      "gzipBytes": 635722,
+      "budget": 700000,
+      "overBudgetBytes": 0,
+      "minifiedBytes": 4083133,
+      "minifiedSha256": "4441f0833881233ef44b923f111dbe280594de3bf605e48eda88f0b8423c2177"
+    },
+    {
+      "disposition": "PASS",
+      "name": "core root",
+      "gzipBytes": 7499,
+      "budget": 7600,
+      "overBudgetBytes": 0,
+      "minifiedBytes": 23270,
+      "minifiedSha256": "6228e1ce1061fc12ff5fbced4fe46271af96a119345cdbf59d1ed8bc1faa3927"
+    },
+    {
+      "disposition": "ADVISORY",
+      "name": "runtime root",
+      "gzipBytes": 82795,
+      "budget": 78500,
+      "overBudgetBytes": 4295,
+      "minifiedBytes": 321788,
+      "minifiedSha256": "8bb882ac2f16849ea991fd2b0143d2cd12e9c94c7a210328a8611d9de24fc836"
+    },
+    {
+      "disposition": "ADVISORY",
+      "name": "adapter-react root",
+      "gzipBytes": 115065,
+      "budget": 106000,
+      "overBudgetBytes": 9065,
+      "minifiedBytes": 418916,
+      "minifiedSha256": "9ff22137b3cd8bc58740b139c77d991f97055bb6a4b13806e9d5aa758b5fbe64"
+    },
+    {
+      "disposition": "ADVISORY",
+      "name": "adapter-vue root",
+      "gzipBytes": 114884,
+      "budget": 106000,
+      "overBudgetBytes": 8884,
+      "minifiedBytes": 417759,
+      "minifiedSha256": "088f27c555be1c56cf3c31c797ab44b9b8eb71d12dde4f49060bf26d272ba388"
+    },
+    {
+      "disposition": "ADVISORY",
+      "name": "adapter-web-component root",
+      "gzipBytes": 140961,
+      "budget": 132000,
+      "overBudgetBytes": 8961,
+      "minifiedBytes": 496956,
+      "minifiedSha256": "f9a16d2836595ffc05c8f3614f2226a62ee2580e24a79dea5250a221d2c1344a"
+    },
+    {
+      "disposition": "PASS",
+      "name": "prototypes-base/button",
+      "gzipBytes": 3931,
+      "budget": 6000,
+      "overBudgetBytes": 0,
+      "minifiedBytes": 13651,
+      "minifiedSha256": "e97fc3ea706e524e8b387beb945453dd4ba9094c2d25a4d38db8425cf16d2027"
+    },
+    {
+      "disposition": "PASS",
+      "name": "prototypes-shadcn/button",
+      "gzipBytes": 4911,
+      "budget": 7000,
+      "overBudgetBytes": 0,
+      "minifiedBytes": 17979,
+      "minifiedSha256": "e058f756097dea6ac8b4272a51afb4e8b621003a1111f116de5848fa676237ae"
+    }
+  ],
+  "comparison": "All9newcanonicalgzip/minified/hash equal explicit historicalf8cd localmeasurement;notnewlocal47buildorsameartifactgzip-bytecomparison",
+  "strict": {
+    "pass": 5,
+    "fail": 4
+  },
+  "effectivePolicy": "Finf-development4ADVISORYnot4PASS",
+  "observedAt": "2026-10-11T09:55:21.987646+00:00"
+}

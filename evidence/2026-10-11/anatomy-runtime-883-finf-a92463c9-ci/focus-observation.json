@@ -1,0 +1,224 @@
+{
+  "route": "http://127.0.0.1:45469/en/ui-libraries/liquid-glass/collapsible/",
+  "facts": {
+    "focused": true,
+    "expected": {
+      "tag": "WC-LIQUID-GLASS-COLLAPSIBLE-TRIGGER",
+      "id": "",
+      "role": "button",
+      "tabIndex": "0",
+      "text": "Uncontrolled \u00b7 default L1 detach \u00b7 a long disclosure label that wraps safely within the available width",
+      "connected": true,
+      "hidden": false,
+      "inertAncestor": false,
+      "pendingAncestor": false,
+      "detachedAncestor": false,
+      "generation": "active",
+      "display": "flex",
+      "visibility": "visible",
+      "pointerEvents": "auto",
+      "rect": {
+        "x": 368,
+        "y": 126.5,
+        "width": 496,
+        "height": 66
+      },
+      "materialQuality": "self-optical"
+    },
+    "active": {
+      "tag": "WC-LIQUID-GLASS-COLLAPSIBLE-TRIGGER",
+      "id": "",
+      "role": "button",
+      "tabIndex": "0",
+      "text": "Uncontrolled \u00b7 default L1 detach \u00b7 a long disclosure label that wraps safely within the available width",
+      "connected": true,
+      "hidden": false,
+      "inertAncestor": false,
+      "pendingAncestor": false,
+      "detachedAncestor": false,
+      "generation": "active",
+      "display": "flex",
+      "visibility": "visible",
+      "pointerEvents": "auto",
+      "rect": {
+        "x": 368,
+        "y": 126.5,
+        "width": 496,
+        "height": 66
+      },
+      "materialQuality": "self-optical"
+    },
+    "pointerTargetIsExpected": true,
+    "pointerTarget": {
+      "tag": "WC-LIQUID-GLASS-COLLAPSIBLE-TRIGGER",
+      "id": "",
+      "role": "button",
+      "tabIndex": "0",
+      "text": "Uncontrolled \u00b7 default L1 detach \u00b7 a long disclosure label that wraps safely within the available width",
+      "connected": true,
+      "hidden": false,
+      "inertAncestor": false,
+      "pendingAncestor": false,
+      "detachedAncestor": false,
+      "generation": "active",
+      "display": "flex",
+      "visibility": "visible",
+      "pointerEvents": "auto",
+      "rect": {
+        "x": 368,
+        "y": 126.5,
+        "width": 496,
+        "height": 66
+      },
+      "materialQuality": "self-optical"
+    },
+    "runtime": "wc",
+    "projectionState": "ready",
+    "recentInput": [
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "key": null,
+        "targetRef": "__pui_projection__runtime_trigger",
+        "role": "tab",
+        "time": 3963.1999999999825
+      },
+      {
+        "type": "focusin",
+        "trusted": true,
+        "key": null,
+        "targetRef": "__pui_projection__runtime_trigger",
+        "role": "tab",
+        "time": 3977.5
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "key": null,
+        "targetRef": "__pui_projection__runtime_trigger",
+        "role": "tab",
+        "time": 3978.2999999999884
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "key": null,
+        "targetRef": "__pui_projection__runtime_trigger",
+        "role": "tab",
+        "time": 3981.2999999999884
+      },
+      {
+        "type": "click",
+        "trusted": false,
+        "key": null,
+        "targetRef": "__pui_projection__runtime_trigger",
+        "role": "tab",
+        "time": 3981.5
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "key": null,
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 11958.299999999988
+      },
+      {
+        "type": "focusout",
+        "trusted": true,
+        "key": null,
+        "targetRef": "__pui_projection__runtime_trigger",
+        "role": "tab",
+        "time": 11989.399999999994
+      },
+      {
+        "type": "focusin",
+        "trusted": true,
+        "key": null,
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 11994.899999999994
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "key": null,
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 11995.699999999983
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "key": null,
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 12024.799999999988
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "key": " ",
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 19562.29999999999
+      },
+      {
+        "type": "keyup",
+        "trusted": true,
+        "key": " ",
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 19593.199999999983
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "key": "Enter",
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 25575.199999999983
+      },
+      {
+        "type": "keyup",
+        "trusted": true,
+        "key": "Enter",
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 25768
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "key": "Enter",
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 32929.399999999994
+      },
+      {
+        "type": "keyup",
+        "trusted": true,
+        "key": "Enter",
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 32960.19999999998
+      },
+      {
+        "type": "keydown",
+        "trusted": true,
+        "key": "Enter",
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 33842.30000000002
+      },
+      {
+        "type": "keyup",
+        "trusted": true,
+        "key": "Enter",
+        "targetRef": "uncontrolled",
+        "role": "button",
+        "time": 33868.399999999994
+      }
+    ]
+  }
+}
