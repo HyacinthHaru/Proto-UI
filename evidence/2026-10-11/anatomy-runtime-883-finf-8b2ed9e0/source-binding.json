@@ -1,0 +1,22 @@
+{
+  "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+  "tree": "b99ef36e41eee14c8dfc0e6d6dfc28018a77419a",
+  "foundation": "32023278569a62ea3051b49b5e30927ee439ddeb",
+  "main": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+  "netPaths": [
+    "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+    "packages/prototypes/base/src/form/root.proto.ts",
+    "packages/prototypes/base/src/search-primitives/family.ts",
+    "packages/prototypes/base/src/slider/root.proto.ts",
+    "packages/prototypes/base/src/toolbar/separator.proto.ts",
+    "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+    "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+    "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts"
+  ],
+  "netPathCount": 8,
+  "unchangedDatePickerBlob": "056259c695395a899e9e46d582297033049141e7",
+  "noBudgetPolicyWorkflowDeltaFromParent": true,
+  "ordinaryNonrewritingHistory": true,
+  "ownNewIdentityVerified": true,
+  "at": "2026-10-11T11:50:24.590310+00:00"
+}

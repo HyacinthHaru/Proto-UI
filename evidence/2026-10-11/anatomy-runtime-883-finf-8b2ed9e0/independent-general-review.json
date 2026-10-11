@@ -1,0 +1,335 @@
+{
+  "kind": "independent-postcommit-general-and-bounded-isolation-reconciliation",
+  "recordedAt": "2026-10-11T12:01:49.189188+00:00",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "reviewClass": "review-facts-and-ci",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "githubDisposition": null,
+  "target": {
+    "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+    "tree": "b99ef36e41eee14c8dfc0e6d6dfc28018a77419a",
+    "runStart": "2026-10-11T11:45:53.753651+00:00",
+    "runEnd": "2026-10-11T11:52:54.604436+00:00",
+    "actualPostcommit": true,
+    "exitCode": 1,
+    "producerChecksHeadAndWorktreeBeforeAfter": true
+  },
+  "scope": "Existing full repository general diagnostic JSON/log and two bounded original-file isolation runs; no new tests or Compiler/website/source edits. Not full pnpm test, native browser shards or canonical CI.",
+  "independentCounts": {
+    "fileObjects": 1086,
+    "actualPassedFiles": 1069,
+    "failedFiles": 14,
+    "existingAllTODOFiles": 3,
+    "testCases": {
+      "passed": 10722,
+      "failed": 339,
+      "todo": 34
+    },
+    "totalTestCases": 11095,
+    "rawConsoleSummaryMatches": true,
+    "JSONNumTotalTestSuites": 2355,
+    "suiteMetricIsNotFileCount": true,
+    "unhandled": {
+      "count": 1,
+      "message": "Controlled DOM wait did not reach the actual production selector.",
+      "source": "apps/www/test/contrast-projection-identity.test.ts:1400",
+      "sameMarkerInPriorA924": true,
+      "notFixedOrExcused": true
+    }
+  },
+  "actualPassedSubsets": {
+    "C109": [
+      {
+        "path": "packages/prototypes/base/test/collapsible.test.ts",
+        "testStatuses": {
+          "passed": 24
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+        "testStatuses": {
+          "passed": 43
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+        "testStatuses": {
+          "passed": 13
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+        "testStatuses": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+        "testStatuses": {
+          "passed": 14
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+        "testStatuses": {
+          "passed": 14
+        }
+      }
+    ],
+    "AdapterCollapsible100": [
+      {
+        "path": "packages/adapters/react/test/collapsible.test.ts",
+        "testStatuses": {
+          "passed": 25
+        }
+      },
+      {
+        "path": "packages/adapters/vue/test/collapsible.test.ts",
+        "testStatuses": {
+          "passed": 25
+        }
+      },
+      {
+        "path": "packages/adapters/vue2/test/collapsible.test.ts",
+        "testStatuses": {
+          "passed": 25
+        }
+      },
+      {
+        "path": "packages/adapters/web-component/test/collapsible.test.ts",
+        "testStatuses": {
+          "passed": 25
+        }
+      }
+    ]
+  },
+  "failureDifference": {
+    "baseline": "a92463c9590c233e93f451389bab02b85009fa9a",
+    "comparisonKey": "(repository-relative file path, full test name) multiset; duplicate names are not collapsed",
+    "priorFailed": 327,
+    "currentFailed": 339,
+    "added": 12,
+    "cleared": 0,
+    "newByFile": {
+      "packages/compiler/src/watch.test.ts": 11,
+      "apps/www/src/components/site-native-controls.test.ts": 1
+    },
+    "newFailures": [
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch waits for a resettable quiet period and publishes one latest report for a filesystem burst",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch reports the latest source and discards an already-computed superseded success",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch discards superseded failure instead of reporting a stale diagnostic over a corrected source",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch tracks transitive edits and reports deletion as failure with explicitly retained old output",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch observes missing-file parent creation and then subsequent edits beneath the new directory",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch rebinds directory replacement and ignores callbacks from the retired inode watcher",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch recovers when a deleted directory is signaled as a host watcher error rather than rename",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch invalidates configuration content and treats missing configuration as a failed generation",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch stops during an active compile, closes resources immediately and never calls back afterward",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch fails unsupported watcher startup and releases already-acquired directory watchers",
+        "count": 1
+      },
+      {
+        "path": "packages/compiler/src/watch.test.ts",
+        "test": "project-scoped incremental watch reports a runtime watcher failure without reclassifying retained output as fresh success",
+        "count": 1
+      },
+      {
+        "path": "apps/www/src/components/site-native-controls.test.ts",
+        "test": "website native anchor composition data-site-header-navigation retains navigation current feedback on the actual passive surface",
+        "count": 1
+      }
+    ],
+    "newFiles": [
+      "apps/www/src/content/docs/zh-cn/bootstrap-disabled-paint.test.ts",
+      "packages/prototypes/base/test/selection-reset-lifecycle.test.ts"
+    ],
+    "countsReconcile": "a92410681 passed +53 new tests -12 newly failing existing tests =8b2 10722 passed; prior327failed +12 =339."
+  },
+  "unchangedSourceBindings": [
+    {
+      "path": "packages/compiler/src/watch.ts",
+      "a924Blob": "5514c11fda66ae77d5f623f8c5174b1ffc9162b8",
+      "8b2Blob": "5514c11fda66ae77d5f623f8c5174b1ffc9162b8",
+      "sha256": "57a4becd428b2a44cf4aa08f2b677937239024a6ed29cbc930caa4a879cd9406"
+    },
+    {
+      "path": "packages/compiler/src/watch.test.ts",
+      "a924Blob": "dee879c5ef91dee13fd2746f87011a7ca83366f5",
+      "8b2Blob": "dee879c5ef91dee13fd2746f87011a7ca83366f5",
+      "sha256": "69b7669201cdcb0fe39d179831b544dbe848da4eb6d45ba52a35e2df6043137c"
+    },
+    {
+      "path": "apps/www/src/components/site-native-controls.ts",
+      "a924Blob": "77bed67ea6d9765d23ddb2d86497a3614c303e41",
+      "8b2Blob": "77bed67ea6d9765d23ddb2d86497a3614c303e41",
+      "sha256": "605a9ab995189d4cc2675079b67df28e31d4bbd7068f9fbccef122affb11bbc2"
+    },
+    {
+      "path": "apps/www/src/components/site-native-controls.test.ts",
+      "a924Blob": "a934287aa6b40ff3767e0a3405f943685ed90b7f",
+      "8b2Blob": "a934287aa6b40ff3767e0a3405f943685ed90b7f",
+      "sha256": "2599ec52761338794444e2d027a708ef8d21f80dfe23547ccddb7b5d305ea49a"
+    }
+  ],
+  "sourceIdentityLimits": "These four implementation/test blobs are equal to a924; this is not a universal causal exclusion of indirect state, ordering, timing, runner or environmental influence. It is not proof that every related dependency was reexecuted identically.",
+  "isolation": {
+    "setupFailure": {
+      "source": "new-failure-isolation-setup.json",
+      "testProcessExecuted": false,
+      "reason": "corepack missing from invocation PATH before process start; not a product test result"
+    },
+    "default": {
+      "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+      "exit": 1,
+      "files": 2,
+      "CompilerTests": 13,
+      "CompilerFailed": 11,
+      "CompilerPassed": 2,
+      "sitePassed": 5,
+      "totalFailed": 11,
+      "totalPassed": 7
+    },
+    "canonicalTMPDIR": {
+      "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+      "exit": 0,
+      "files": 2,
+      "passed": 18,
+      "CompilerPassed": 13,
+      "sitePassed": 5,
+      "changedCondition": {
+        "TMPDIR": "[tmpdir-real]",
+        "originalTMPDIR": "[tmpdir-alias]"
+      }
+    },
+    "commandListsExactlyEqual": true,
+    "assertionsTimeoutsAndFourSourceBytesUnchanged": true,
+    "singlePairNotFullGeneralRetry": true
+  },
+  "watchDiagnosis": {
+    "classification": "canonical-directory versus fixture alias-string mismatch, supported by source and bounded paired observations",
+    "anchors": [
+      "packages/compiler/src/watch.ts:110-111 canonicalizes requestedRoot with realpath",
+      "packages/compiler/src/watch.ts:271,294 enumerates canonical root and passes directory to runtime.watchDirectory",
+      "packages/compiler/src/watch.test.ts:22-25 records the supplied directory string",
+      "packages/compiler/src/watch.test.ts:28-32 current() requires literal directory equality",
+      "packages/compiler/src/watch.test.ts:76-84 mkdtemp(tmpdir()) retains alias spelling in data.root",
+      "packages/compiler/src/watch.test.ts:356-358 startup-error sentinel compares directory === data.root"
+    ],
+    "observedFailureKinds": {
+      "NoActiveWatcherLookup": 10,
+      "StartupSentinelExpectedFailureButReceivedSuccess": 1
+    },
+    "notSupported": "No evidence that watcher registration was prevented. Canonical root and alias lookup/sentinel disagree; the mock can acquire handles under canonical names. Do not weaken production realpath handling to normalize this report.",
+    "producerCorrectionVerified": "new-failure-diagnosis.json explicitly corrects the initial overstrong missing-registration hypothesis while preserving that old receipt.",
+    "oldA924EnvironmentLimit": "No retrospective TMPDIR claim is made where the old durable receipt did not record it."
+  },
+  "siteDiagnosis": {
+    "fullRunFailure": "data-site-header-navigation underline removal poll at site-native-controls.test.ts:38",
+    "defaultIsolationPassed": 5,
+    "canonicalTMPDIRIsolationPassed": 5,
+    "cause": "unestablished",
+    "unsupportedClaims": [
+      "TMPDIR fixed the site failure",
+      "isolated pass supersedes full-run failure",
+      "unchanged source proves no indirect relation",
+      "flake/environment-only attribution"
+    ]
+  },
+  "findings": [],
+  "limits": [
+    "Original8b2 general exit1,339failed and1unhandled remain unchanged;18selected passing tests do not make it green.",
+    "Official CI38136711275 is outside this read-only reconciliation; no poll/rerun or success claim.",
+    "C109 and Adapter100 are exact8b2 actual executions, while prior source-review/fix acceptance remains bounded.",
+    "No Compiler/website patch, no new runtime semantic decision or broad callback-error policy change."
+  ],
+  "sourceHashes": [
+    {
+      "path": "general-receipt.json",
+      "sha256": "fb15c7c2f3824bb182e050a018bbf0f29489548d72fbf811b1b5bac38ab354c2"
+    },
+    {
+      "path": "general-vitest.json",
+      "sha256": "664eaad4a31e76bd2644045a4f1191a1c8f70cbdd339538746355a1adf4524d3"
+    },
+    {
+      "path": "general.log",
+      "sha256": "13e916af42ec1d2f0dbca11d6187feaeb7b491247e640bf7cb006a6c37d2dfb8"
+    },
+    {
+      "path": "general-failure-comparison.json",
+      "sha256": "208a3d307036fed4e0e428724b427fb6d74fd54ef9fac2304032854b581a0f66"
+    },
+    {
+      "path": "general-complete-reconciliation.json",
+      "sha256": "d24b490f79bd668b816a4687877ebdf120c6b6e7c38ac8526ff3f84ec0e6eb36"
+    },
+    {
+      "path": "run-general.py",
+      "sha256": "ee051364d2e4a85e4f67a30da8361ab74599cc7c3c062379f00b45b63362afdc"
+    },
+    {
+      "path": "new-failure-isolation-setup.json",
+      "sha256": "f8c5bf9129455b1554d94c5244b70f8ddfa11a4d5838c5e869053c29501938a1"
+    },
+    {
+      "path": "new-failure-isolation-receipt.json",
+      "sha256": "457955cd12f5bb4dc4e0c7602a9a598d38cfb1a8bcdb866361c0e2e1dddc0dda"
+    },
+    {
+      "path": "new-failure-isolation.log",
+      "sha256": "125dd224108b3cf2ad2472ce1b833d12c6f8fa4ad79576afa26bd194147f5374"
+    },
+    {
+      "path": "new-failure-canonical-temp-control-receipt.json",
+      "sha256": "cc0afbd2c396910e6d45df3f130e910079ea2387201a3bfd65457b2bd204b4e2"
+    },
+    {
+      "path": "new-failure-canonical-temp-control.log",
+      "sha256": "f185c8286318122b9163bedbd659c94f317984c5107d2f5605e889bc83a9daec"
+    },
+    {
+      "path": "new-failure-diagnosis.json",
+      "sha256": "18e9eb3c6276a19a5c9f8b9e41d6cd6803ecb60b9ec8ca8b55d06975d0f381a5"
+    }
+  ]
+}

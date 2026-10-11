@@ -1,0 +1,14 @@
+{
+  "baselineHead": "049b8fed8ca90da01cbfadcb7acbf9e729beef51",
+  "testSha256": "6cfe825c4345c451eedfb39a05eabe178d951ba62649889fa3669cf893f76148",
+  "candidateSourceSha256": {
+    "packages/prototypes/base/src/form/root.proto.ts": "3dad557919cf8136162d9bbd658ea4f10b6c535a03b8119cb586c34562fb1a24",
+    "packages/prototypes/base/src/search-primitives/family.ts": "1d313d4bdc3bfa4e87030bdb04945ad809fdd125471649f93e0f438c9ef51c07"
+  },
+  "sameFinalTestBytes": true,
+  "baseline": "22failed21passed/43",
+  "green": "43passed/43;focused11files161passed",
+  "testCorrection": "Nested select accepted=true now asserted outside the swallowing ExposeEvent sink. Previous candidate/test/log retained; no assertion or timeout weakened.",
+  "DatePicker": "4baselinepasses;currentEventPortdeactivatesoldwrappers;nosourcechange",
+  "at": "2026-10-11T11:39:22.991087+00:00"
+}

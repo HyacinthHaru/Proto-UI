@@ -1,0 +1,97 @@
+{
+  "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+  "actualPostcommit": true,
+  "exit": 1,
+  "files": {
+    "passed": 1069,
+    "failed": 14,
+    "existingSkipped": 3,
+    "total": 1086
+  },
+  "tests": {
+    "passed": 10722,
+    "failed": 339,
+    "TODO": 34,
+    "total": 11095
+  },
+  "unhandled": 1,
+  "C109": [
+    {
+      "path": "packages/prototypes/base/test/collapsible.test.ts",
+      "statuses": {
+        "passed": 24
+      }
+    },
+    {
+      "path": "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+      "statuses": {
+        "passed": 43
+      }
+    },
+    {
+      "path": "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+      "statuses": {
+        "passed": 13
+      }
+    },
+    {
+      "path": "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+      "statuses": {
+        "passed": 1
+      }
+    },
+    {
+      "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+      "statuses": {
+        "passed": 14
+      }
+    },
+    {
+      "path": "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+      "statuses": {
+        "passed": 14
+      }
+    }
+  ],
+  "AdapterCollapsible100": [
+    {
+      "path": "packages/adapters/react/test/collapsible.test.ts",
+      "statuses": {
+        "passed": 25
+      }
+    },
+    {
+      "path": "packages/adapters/vue/test/collapsible.test.ts",
+      "statuses": {
+        "passed": 25
+      }
+    },
+    {
+      "path": "packages/adapters/vue2/test/collapsible.test.ts",
+      "statuses": {
+        "passed": 25
+      }
+    },
+    {
+      "path": "packages/adapters/web-component/test/collapsible.test.ts",
+      "statuses": {
+        "passed": 25
+      }
+    }
+  ],
+  "compareToA924": {
+    "addedFailures": 12,
+    "clearedFailures": 0,
+    "CompilerWatch": 11,
+    "siteNativeControls": 1,
+    "allFourRelevantFilesGitBlobUnchanged": true
+  },
+  "isolation": {
+    "defaultTwoFiles": "11fail7pass;Compiler11fail,site5pass",
+    "canonicalTMPDIRTwoFiles": "18pass",
+    "condition": "Only TMPDIR realpath spelling changed;13Compiler+5site assertions/timeouts unchanged",
+    "notClaimed": "No fullplan retry/pass;single sitefullplan failure rootcause unestablished,not credited toTMPDIR"
+  },
+  "scope": "Fullrepository general diagnostic,notcanonicalorfullpnpmtest;includesactualChromiumScroll",
+  "at": "2026-10-11T11:57:08.152567+00:00"
+}

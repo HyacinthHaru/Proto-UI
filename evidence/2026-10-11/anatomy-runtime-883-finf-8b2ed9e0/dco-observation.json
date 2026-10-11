@@ -1,0 +1,64 @@
+{
+  "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+  "check": {
+    "id": 114461959234,
+    "name": "DCO",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/Proto-UI/Proto-UI/runs/114461959234",
+    "output": {
+      "title": "DCO",
+      "summary": "The DCO check could not be evaluated because the complete pull request commit list could not be retrieved.\n\nGitHub returned 250 commits from the REST API, so the app attempted to retrieve the full list through GraphQL before evaluating the pull request. That fallback did not complete, so the DCO verdict is unknown.\n\nHTTP status: unknown\nGitHub request ID: unavailable\n\nPlease retry by re-running the check or pushing a new commit.",
+      "text": null,
+      "annotations_count": 0,
+      "annotations_url": "https://api.github.com/repos/Proto-UI/Proto-UI/check-runs/114461959234/annotations"
+    }
+  },
+  "officialVerdict": "unknown from incomplete list retrieval;not missing-signoff finding",
+  "localStructuralObservation": {
+    "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+    "main": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+    "exactLocalRangeCount": 459,
+    "strictAuthorSignoffExceptions": [
+      {
+        "sha": "82f8b60f2aa2b66af319cbe37feb2dc0cb0335c2",
+        "author": "cyjin.yl <chenyejin2004@foxmail.com>",
+        "signoffs": ["cyjin-yl <19223209+cyjin-yl@users.noreply.github.com>"]
+      },
+      {
+        "sha": "69c093ea6c4ac5fb478b828ec7e6d026788eed60",
+        "author": "cyjin.yl <chenyejin2004@foxmail.com>",
+        "signoffs": ["cyjin-yl <19223209+cyjin-yl@users.noreply.github.com>"]
+      },
+      {
+        "sha": "5be76aceabb8df214e936b60484df1782827b117",
+        "author": "cyjin.yl <chenyejin2004@foxmail.com>",
+        "signoffs": ["cyjin-yl <19223209+cyjin-yl@users.noreply.github.com>"]
+      },
+      {
+        "sha": "6e0a1f87cb011c649602586e5bb879c89c64b7ff",
+        "author": "cyjin.yl <chenyejin2004@foxmail.com>",
+        "signoffs": ["cyjin-yl <19223209+cyjin-yl@users.noreply.github.com>"]
+      },
+      {
+        "sha": "c1dc4a850aec7eef98f18cc5bdbadf6d375fde73",
+        "author": "cyjin.yl <chenyejin2004@foxmail.com>",
+        "signoffs": ["cyjin-yl <19223209+cyjin-yl@users.noreply.github.com>"]
+      },
+      {
+        "sha": "eb5271b68d241352016564b2e921df03a7bd2497",
+        "author": "cyjin.yl <chenyejin2004@foxmail.com>",
+        "signoffs": ["cyjin-yl <19223209+cyjin-yl@users.noreply.github.com>"]
+      },
+      {
+        "sha": "95e4fcae93a4e4fd40dbe1590388a24bf87dd23b",
+        "author": "cyjin.yl <chenyejin2004@foxmail.com>",
+        "signoffs": ["cyjin-yl <19223209+cyjin-yl@users.noreply.github.com>"]
+      }
+    ],
+    "note": "Inherited author/signoff alias mismatch is not missing-signoff/App verdict; no alternate-email permission or identity claim inferred; official exacthead DCO awaited."
+  },
+  "noHistoryRewriteOrForeignSignoff": true,
+  "currentOwnSignedCommitVerified": true,
+  "notIndependentApproval": true
+}

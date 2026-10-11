@@ -1,0 +1,16 @@
+{
+  "candidateTree": "b99ef36e41eee14c8dfc0e6d6dfc28018a77419a",
+  "sourceHashes": {
+    "packages/prototypes/base/src/form/root.proto.ts": "3dad557919cf8136162d9bbd658ea4f10b6c535a03b8119cb586c34562fb1a24",
+    "packages/prototypes/base/src/search-primitives/family.ts": "1d313d4bdc3bfa4e87030bdb04945ad809fdd125471649f93e0f438c9ef51c07",
+    "packages/prototypes/base/test/selection-reset-lifecycle.test.ts": "6cfe825c4345c451eedfb39a05eabe178d951ba62649889fa3669cf893f76148"
+  },
+  "focused": "11files161passed;43newcontrols",
+  "red": "22failed21passed/43samefinalbytes",
+  "types": "actualnewfinal821/0/0/11",
+  "fullCommand": "BOMaxis-input/native-linkfailurebeforeVitest,notignored",
+  "sourceOwnership": "Form/Search Itemonly;DatePicker4counterexamplesbaselinepassandunchanged",
+  "nativeEvidence": "newpublicRuntime/EventPortsynthetictransport;nottrustedbrowserorfullAT",
+  "independent": "finalworkingreportpending;notformalGitHubapproval",
+  "at": "2026-10-11T11:44:07.875997+00:00"
+}

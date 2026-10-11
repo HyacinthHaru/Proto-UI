@@ -1,0 +1,17 @@
+{
+  "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+  "tree": "b99ef36e41eee14c8dfc0e6d6dfc28018a77419a",
+  "parent": "049b8fed8ca90da01cbfadcb7acbf9e729beef51",
+  "sourceHashes": {
+    "packages/prototypes/base/src/form/root.proto.ts": "3dad557919cf8136162d9bbd658ea4f10b6c535a03b8119cb586c34562fb1a24",
+    "packages/prototypes/base/src/search-primitives/family.ts": "1d313d4bdc3bfa4e87030bdb04945ad809fdd125471649f93e0f438c9ef51c07",
+    "packages/prototypes/base/test/selection-reset-lifecycle.test.ts": "6cfe825c4345c451eedfb39a05eabe178d951ba62649889fa3669cf893f76148"
+  },
+  "normalHooks": true,
+  "signatureVerified": true,
+  "identity": "HyacinthHaru <hyacinth@haru.ac>",
+  "matchingDCO": true,
+  "noCoauthor": true,
+  "pushed": true,
+  "at": "2026-10-11T11:45:05.375553+00:00"
+}

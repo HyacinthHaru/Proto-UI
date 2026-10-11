@@ -1,0 +1,17 @@
+{
+  "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+  "observedDefaultControl": "Compiler13tests:11fail2pass;site5pass",
+  "changedTMPDIRControl": "same18tests18pass",
+  "correctionToEarlierHypothesis": "Initial control receipt suggested missing registration. Source watchProject first canonicalizes root via realpath and registers canonical directory strings; WatchHost.current compares the original fixture alias string literally. The demonstrated mismatch is canonical-directory versus alias lookup (also the unsupported-startup sentinel uses the alias), not proof that no watcher was acquired.",
+  "sourceAnchors": {
+    "packages/compiler/src/watch.ts": "110-111 requestedRoot then realpath;294 passes canonicaldirectory to runtime.watchDirectory",
+    "packages/compiler/src/watch.test.ts": "WatchHost.current directory===directory;fixture mkdtemp(tmpdir) returns alias;unsupported startup guard compares fixture alias"
+  },
+  "sourceBytesUnchanged": true,
+  "productionCImports": "No Form/Search source change in Compiler watch or siteNativeControls code/test; unchanged source alone is not universal causal proof",
+  "siteFailureBoundary": "One extra underline removal fullplanfailure,isolated5pass beforeandafterTMPDIRcontrol;no establishedcause or TMPDIR attribution",
+  "oldBaselineEnvironment": "a924 actualpassed record retained;no retroactive TMPDIR claim because old receipt didnot record it",
+  "fullGeneralStillFailed": true,
+  "noCompilerWebsiteEdit": true,
+  "at": "2026-10-11T11:58:37.834185+00:00"
+}

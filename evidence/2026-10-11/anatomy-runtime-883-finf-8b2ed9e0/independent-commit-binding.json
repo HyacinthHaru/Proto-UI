@@ -1,0 +1,92 @@
+{
+  "kind": "additive-exact-signed-commit-binding",
+  "recordedAt": "2026-10-11T11:46:59.759652+00:00",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "githubDisposition": null,
+  "commit": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+  "tree": "b99ef36e41eee14c8dfc0e6d6dfc28018a77419a",
+  "parent": "049b8fed8ca90da01cbfadcb7acbf9e729beef51",
+  "identity": {
+    "author": {
+      "name": "HyacinthHaru",
+      "email": "hyacinth@haru.ac"
+    },
+    "committer": {
+      "name": "HyacinthHaru",
+      "email": "hyacinth@haru.ac"
+    },
+    "matchingSignedOffBy": true,
+    "coauthorPresent": false
+  },
+  "SSHSignature": {
+    "gitVerifyCommitExit": 0,
+    "output": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+    "rawLog": "independent-review/verify-commit-8b2ed9e.log"
+  },
+  "reviewedTreeExactlyPreserved": true,
+  "onlyThreeReviewedPathsChanged": true,
+  "sourceBindings": [
+    {
+      "path": "packages/prototypes/base/src/form/root.proto.ts",
+      "bytes": 7540,
+      "gitBlob": "edaae233adad49971b7665a5f34899fe70d3b4b2",
+      "sha256": "3dad557919cf8136162d9bbd658ea4f10b6c535a03b8119cb586c34562fb1a24"
+    },
+    {
+      "path": "packages/prototypes/base/src/search-primitives/family.ts",
+      "bytes": 27122,
+      "gitBlob": "859aedaf90e9207e30dd203cb889826719664638",
+      "sha256": "1d313d4bdc3bfa4e87030bdb04945ad809fdd125471649f93e0f438c9ef51c07"
+    },
+    {
+      "path": "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+      "bytes": 11026,
+      "gitBlob": "c4e4500188a89eb3f695a0102604429a151a0541",
+      "sha256": "6cfe825c4345c451eedfb39a05eabe178d951ba62649889fa3669cf893f76148"
+    }
+  ],
+  "worktreeStatusAtBinding": "",
+  "producerPublicationRecords": {
+    "supportedPublisherLog": "commit-publisher.log",
+    "statusRecorded": "published",
+    "expectedHeadAndTreeMatch": true,
+    "pushLog": "push.log",
+    "recordedPush": "049b8fed8..8b2ed9e00 HEAD -> codex/issue883-anatomy-lifecycle on github.com:HyacinthHaru/Proto-UI.git",
+    "normalHooks": "producer receipt reports true; this binding independently verifies signed output commit/tree, not a second hook execution",
+    "noFreshRemoteAPICall": true
+  },
+  "evidenceBoundary": "Final43 red22fail21pass/green43pass, focused11files161pass and finaltypes821/0/0/11 retain actual precommit execution timestamps and exact signed-byte correspondence. No postcommit rerun is inferred. Full pnpm test BOM preflight exit1 is unchanged. Newly running general/canonical CI results are not assessed or declared green. Local matching DCO trailer does not determine aggregate PR App verdict.",
+  "findingReconciliation": "No additional patch after final working review. Form/Search P2 and sink test P2 remain resolved in bounded scope; DatePicker counterevidence remains no-source-change. No new finding.",
+  "priorReports": [
+    {
+      "path": "final-working-review.json",
+      "sha256": "ff5a32443a272d5a1980b62d3c1598eed51cd3de08fb258476f2af0076be3220"
+    },
+    {
+      "path": "final-type-and-stage-binding.json",
+      "sha256": "8ac93a793c4e3583129499f819e0a4edb867a700a4ae2739a60d918fd50513ab"
+    }
+  ],
+  "rawSourceHashes": [
+    {
+      "path": "commit-receipt.json",
+      "sha256": "0d5b132e3f445e0a1f69cf3fca4e31b3bd35d8db8965ee772d8cc7e525e43add"
+    },
+    {
+      "path": "commit-publisher.log",
+      "sha256": "4f50a5d9253b800a38279de9efcdaa01324a4f02f3b512234f60463a159e583d"
+    },
+    {
+      "path": "push.log",
+      "sha256": "54e0157a2b0c527eaf74e51eefb2fd238e0a96621128edbe469403956493c5f6"
+    }
+  ],
+  "actions": [
+    "Read commit and Git blobs, verify existing SSH signature, read retained publisher/push receipts.",
+    "Private report and verification-log writes only. No tests/build/browser/API/external mutation or product edit."
+  ]
+}

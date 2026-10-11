@@ -1,0 +1,57 @@
+{
+  "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+  "workflows": [
+    {
+      "name": "Collapsible projection evidence",
+      "run": 38136711779,
+      "job": 114461959354,
+      "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+      "status": "completed",
+      "conclusion": "failure",
+      "summaries": [" Test Files  1 failed (1)", "      Tests  4 failed | 32 passed (36)"],
+      "failures": [
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts > liquid-glass Collapsible public browser evidence > wc preserves disclosure ownership through native input and view lifetimes",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts > liquid-glass Collapsible public browser evidence > react preserves disclosure ownership through native input and view lifetimes",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts > liquid-glass Collapsible public browser evidence > vue preserves disclosure ownership through native input and view lifetimes",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts > liquid-glass Collapsible public browser evidence > vue2 preserves disclosure ownership through native input and view lifetimes"
+      ],
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38136711779",
+      "boundary": "32passed4failed;LiquidallfourAdaptersfirstclickfocusline302;noANATOMY_CAP_UNAVAILABLEmarker;newfailureDOMsnapshotnotread,oldfocusedtruecannotbeapplied"
+    },
+    {
+      "name": "Bootstrap state-controls evidence",
+      "run": 38136711150,
+      "job": 114461957544,
+      "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+      "status": "completed",
+      "conclusion": "failure",
+      "summaries": [
+        " Test Files  1 failed | 3 passed (4)",
+        "      Tests  1 failed | 44 passed (45)"
+      ],
+      "failures": [
+        "FAIL  packages/prototypes/bootstrap-2-3-2/test/controls.test.ts > bootstrap-2-3-2: Base state/text parts (simulated WC host) > closes the whole source vocabulary through the physical translator"
+      ],
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38136711150",
+      "boundary": "44passed1failed;wholevocabularyphysicaltranslatorclosure;nativepassesdonotadmitwholefamily"
+    },
+    {
+      "name": "Field family native evidence",
+      "run": 38136711143,
+      "job": 114461957534,
+      "head": "8b2ed9e0075f1b13a4947a1bf3dfa545fa79153d",
+      "status": "completed",
+      "conclusion": "failure",
+      "summaries": [" Test Files  1 failed (1)", "      Tests  3 failed | 22 passed (25)"],
+      "failures": [
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts > Field real browser journeys > liquid-glass react labels, native editing, validity lease, focus and screenshots",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts > Field real browser journeys > liquid-glass vue labels, native editing, validity lease, focus and screenshots",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts > Field real browser journeys > liquid-glass vue2 labels, native editing, validity lease, focus and screenshots"
+      ],
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38136711143",
+      "boundary": "22passed3failed;LiquidReact/Vue/Vue2nativefocuspollatline219;noFormresetretirementcaseclaimed"
+    }
+  ],
+  "at": "2026-10-11T12:03:38.199575+00:00",
+  "notClaimed": "No newlocalnative/Ccause/fix;old049b35/1isnotthishead"
+}
