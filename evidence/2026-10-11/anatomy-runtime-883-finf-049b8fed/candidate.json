@@ -1,0 +1,14 @@
+{
+  "base": "a92463c9590c233e93f451389bab02b85009fa9a",
+  "foundation": "32023278569a62ea3051b49b5e30927ee439ddeb",
+  "tree": "03bb4d472441caf514cbf8c5b53a6af85ae46fda",
+  "paths": [
+    ".github/workflows/bootstrap-state-controls-evidence.yml",
+    "apps/www/src/content/docs/zh-cn/bootstrap-disabled-paint.test.ts",
+    "apps/www/src/content/docs/zh-cn/bootstrap-disabled-paint.ts",
+    "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+    "scripts/test/bootstrap-state-controls-evidence.test.mjs"
+  ],
+  "CSourceExact": "All4Csource/tests identicaltoa924/3d7;allRuntime/Adapter/Prototype,package/lock/config/CIsourceunchanged;only5Bootstrapobservation/test/workflowpathsdelta",
+  "noConflicts": true
+}

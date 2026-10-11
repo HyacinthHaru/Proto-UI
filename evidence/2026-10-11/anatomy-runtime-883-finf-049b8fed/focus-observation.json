@@ -1,0 +1,198 @@
+{
+  "head": "049b8fed8ca90da01cbfadcb7acbf9e729beef51",
+  "observations": [
+    {
+      "route": "http://127.0.0.1:38875/en/ui-libraries/liquid-glass/collapsible/",
+      "facts": {
+        "focused": true,
+        "expected": {
+          "tag": "WC-LIQUID-GLASS-COLLAPSIBLE-TRIGGER",
+          "id": "",
+          "role": "button",
+          "tabIndex": "0",
+          "text": "Uncontrolled \u00b7 default L1 detach \u00b7 a long disclosure label that wraps safely within the available width",
+          "connected": true,
+          "hidden": false,
+          "inertAncestor": false,
+          "pendingAncestor": false,
+          "detachedAncestor": false,
+          "generation": "active",
+          "display": "flex",
+          "visibility": "visible",
+          "pointerEvents": "auto",
+          "rect": {
+            "x": 368,
+            "y": 126.5,
+            "width": 496,
+            "height": 66
+          },
+          "materialQuality": "self-optical"
+        },
+        "active": {
+          "tag": "WC-LIQUID-GLASS-COLLAPSIBLE-TRIGGER",
+          "id": "",
+          "role": "button",
+          "tabIndex": "0",
+          "text": "Uncontrolled \u00b7 default L1 detach \u00b7 a long disclosure label that wraps safely within the available width",
+          "connected": true,
+          "hidden": false,
+          "inertAncestor": false,
+          "pendingAncestor": false,
+          "detachedAncestor": false,
+          "generation": "active",
+          "display": "flex",
+          "visibility": "visible",
+          "pointerEvents": "auto",
+          "rect": {
+            "x": 368,
+            "y": 126.5,
+            "width": 496,
+            "height": 66
+          },
+          "materialQuality": "self-optical"
+        },
+        "pointerTargetIsExpected": true,
+        "pointerTarget": {
+          "tag": "WC-LIQUID-GLASS-COLLAPSIBLE-TRIGGER",
+          "id": "",
+          "role": "button",
+          "tabIndex": "0",
+          "text": "Uncontrolled \u00b7 default L1 detach \u00b7 a long disclosure label that wraps safely within the available width",
+          "connected": true,
+          "hidden": false,
+          "inertAncestor": false,
+          "pendingAncestor": false,
+          "detachedAncestor": false,
+          "generation": "active",
+          "display": "flex",
+          "visibility": "visible",
+          "pointerEvents": "auto",
+          "rect": {
+            "x": 368,
+            "y": 126.5,
+            "width": 496,
+            "height": 66
+          },
+          "materialQuality": "self-optical"
+        },
+        "runtime": "wc",
+        "projectionState": "ready",
+        "recentInput": [
+          {
+            "type": "pointerdown",
+            "trusted": true,
+            "key": null,
+            "targetRef": "__pui_projection__runtime_trigger",
+            "role": "tab",
+            "time": 4202.6999999999825
+          },
+          {
+            "type": "focusin",
+            "trusted": true,
+            "key": null,
+            "targetRef": "__pui_projection__runtime_trigger",
+            "role": "tab",
+            "time": 4217.5
+          },
+          {
+            "type": "pointerup",
+            "trusted": true,
+            "key": null,
+            "targetRef": "__pui_projection__runtime_trigger",
+            "role": "tab",
+            "time": 4218.299999999988
+          },
+          {
+            "type": "click",
+            "trusted": true,
+            "key": null,
+            "targetRef": "__pui_projection__runtime_trigger",
+            "role": "tab",
+            "time": 4221.399999999994
+          },
+          {
+            "type": "click",
+            "trusted": false,
+            "key": null,
+            "targetRef": "__pui_projection__runtime_trigger",
+            "role": "tab",
+            "time": 4221.6999999999825
+          },
+          {
+            "type": "pointerdown",
+            "trusted": true,
+            "key": null,
+            "targetRef": "uncontrolled",
+            "role": "button",
+            "time": 12533.799999999988
+          },
+          {
+            "type": "focusout",
+            "trusted": true,
+            "key": null,
+            "targetRef": "__pui_projection__runtime_trigger",
+            "role": "tab",
+            "time": 12572.399999999994
+          },
+          {
+            "type": "focusin",
+            "trusted": true,
+            "key": null,
+            "targetRef": "uncontrolled",
+            "role": "button",
+            "time": 12578.599999999977
+          },
+          {
+            "type": "pointerup",
+            "trusted": true,
+            "key": null,
+            "targetRef": "uncontrolled",
+            "role": "button",
+            "time": 12579.5
+          },
+          {
+            "type": "click",
+            "trusted": true,
+            "key": null,
+            "targetRef": "uncontrolled",
+            "role": "button",
+            "time": 12615.5
+          },
+          {
+            "type": "keydown",
+            "trusted": true,
+            "key": " ",
+            "targetRef": "uncontrolled",
+            "role": "button",
+            "time": 20389.399999999994
+          },
+          {
+            "type": "keyup",
+            "trusted": true,
+            "key": " ",
+            "targetRef": "uncontrolled",
+            "role": "button",
+            "time": 20421.099999999977
+          },
+          {
+            "type": "keydown",
+            "trusted": true,
+            "key": "Enter",
+            "targetRef": "uncontrolled",
+            "role": "button",
+            "time": 26059.099999999977
+          },
+          {
+            "type": "keyup",
+            "trusted": true,
+            "key": "Enter",
+            "targetRef": "uncontrolled",
+            "role": "button",
+            "time": 26220.399999999994
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "Actualnewdedicatedworkflowpostpollsnapshots;notproofoffocusduringdeadlinewindoworCcause"
+}

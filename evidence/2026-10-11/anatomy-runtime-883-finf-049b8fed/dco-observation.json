@@ -1,0 +1,14 @@
+{
+  "head": "049b8fed8ca90da01cbfadcb7acbf9e729beef51",
+  "officialCheck": {
+    "id": 114451503956,
+    "url": "https://github.com/Proto-UI/Proto-UI/runs/114451503956",
+    "conclusion": "failure",
+    "summary": "The DCO check could not be evaluated because the complete pull request commit list could not be retrieved.\n\nGitHub returned 250 commits from the REST API, so the app attempted to retrieve the full list through GraphQL before evaluating the pull request. That fallback did not complete, so the DCO verdict is unknown.\n\nHTTP status: unknown\nGitHub request ID: unavailable\n\nPlease retry by re-running the check or pushing a new commit."
+  },
+  "localCommitRangeCount": 458,
+  "newFoundation320AndOwn049bAuthorMatchingSignoffs": true,
+  "previousReadOnlyObservation": "Actuala924GraphQLdeclared456,but3pages100+100+50/250unique/hasNextfalse;notrelabelednew049bGraphQLrun",
+  "inheritedSevenIdentityExceptionsUnchanged": "All456a924ancestorcommitsretained;new2signoffs match. No Appverdict,alternateemailpermissionorforeignauthorshipcertificationinferred.",
+  "scope": "Ownednew4productcommitsSSHDCOsignoffsverified;aggregateofficialDCOunknown"
+}

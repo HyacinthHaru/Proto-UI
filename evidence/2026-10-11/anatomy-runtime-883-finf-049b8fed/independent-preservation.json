@@ -1,0 +1,147 @@
+{
+  "kind": "independent-bootstrap-evidence-merge-preservation-review",
+  "recordedAt": "2026-10-11T10:46:46.688983+00:00",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "reviewClass": "review-facts-and-ci",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "githubDisposition": null,
+  "scope": "Only a924 + foundation320 pending nonrewriting merge preservation, five evidence paths, and reuse boundaries. Not whole Finf/Bootstrap semantic acceptance or new runtime validation.",
+  "candidate": {
+    "ownParent": "a92463c9590c233e93f451389bab02b85009fa9a",
+    "foundationParent": "32023278569a62ea3051b49b5e30927ee439ddeb",
+    "tree": "03bb4d472441caf514cbf8c5b53a6af85ae46fda",
+    "commit": null,
+    "stateAtInspection": "pending merge; no unmerged index stages; no unstaged changes; full staged index matches candidate tree",
+    "candidateChangeSha256": "1d66e8a2e769ade9e02d48e28c92b06640f013c03c69fb64029b43f00999b710"
+  },
+  "treeAudit": {
+    "ownParentPathCount": 10745,
+    "foundationPathCount": 10744,
+    "candidatePathCount": 10747,
+    "changedFromOwnParent": [
+      ".github/workflows/bootstrap-state-controls-evidence.yml",
+      "apps/www/src/content/docs/zh-cn/bootstrap-disabled-paint.test.ts",
+      "apps/www/src/content/docs/zh-cn/bootstrap-disabled-paint.ts",
+      "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+      "scripts/test/bootstrap-state-controls-evidence.test.mjs"
+    ],
+    "changedFromFoundation": [
+      "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+      "packages/prototypes/base/src/slider/root.proto.ts",
+      "packages/prototypes/base/src/toolbar/separator.proto.ts",
+      "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+      "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts"
+    ],
+    "allFiveNewPathsExactlyEqualFoundationBlobsAndModes": true,
+    "allNonFiveOwnParentPathsPreserved": true,
+    "allFoundationNonCPathsPreserved": true,
+    "fourCPathsEqualA924And3d7": true,
+    "inheritedBudgetRecordUnchanged": true,
+    "foundationDeltaPatchExactlyPreserved": true,
+    "fullIndexBinaryPatchSha256": "55efbf708fe3b1754076e0c2b83ec77ded31e86f473ccdd6d34c8f34bb14eddd"
+  },
+  "reviewedFivePathBindings": [
+    {
+      "path": ".github/workflows/bootstrap-state-controls-evidence.yml",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "55072cbb769f9d17d07ec08386148199145d40b0",
+      "sha256": "6a8ed1e287ccd1141a65ca5cbbbc1df4e53d5ee0b005cf015fd6ee17cdb07024"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/bootstrap-disabled-paint.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "dcf01f93a9c140a6af26753683dddf71461ef749",
+      "sha256": "1dd78fa7d720505aaaeb664b8008ec710df3437ff20db8edff54c841168b0cec"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/bootstrap-disabled-paint.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "028f5436410ca82a510fe23df303cbe4ff0edd59",
+      "sha256": "20b9dcfb01f4434fbdf21dd97c471a10483d0a6ade52386e13f7140493e55436"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ea18bf0fca40a331fb14b53f406de87166e5e613",
+      "sha256": "3993829f17b414448f5f55df6e6729e31a8f5a84444c44882b6270f4fc50d19c"
+    },
+    {
+      "path": "scripts/test/bootstrap-state-controls-evidence.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3350ee747c591bb3155da0bd8fa8fce33d589067",
+      "sha256": "d7c0807240bea7679028a59526f7f773dc8d0162156b26f4d5bc855a513e7f8b"
+    }
+  ],
+  "preservedCBindings": [
+    {
+      "path": "packages/prototypes/base/src/slider/root.proto.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a71827fa8fd5410a6c668a372a733d43bbcf87f5"
+    },
+    {
+      "path": "packages/prototypes/base/src/toolbar/separator.proto.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7e37e9a2c3578b440d794cfa4746d467fb959715"
+    },
+    {
+      "path": "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5ba9272dd8132501d6cbd012f336beddfb17f840"
+    },
+    {
+      "path": "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72"
+    }
+  ],
+  "staticDeltaObservations": [
+    "Workflow adds exact helper/test wake paths and executes the new negative-control test; no core CI, permission, assertion timeout, or package policy change.",
+    "Finite helper accepts only none or exactly three transparent zero-geometry non-inset layers. Tests reject real raised/active/inset/ring/nonzero/visible/wrong-layer-count values; no broad arbitrary shadow acceptance.",
+    "Browser adds disabled inactive and controlled-active Toggle paint observations and request-suppression checks; existing assertions remain. finally captures the disabled frame even on failure and a successful poll is followed by the same oracle on persisted values.",
+    "CLI shadow-none and composedShadow remain unchanged and provide the three-slot source explanation. This source inspection is not a fresh native optical or cross-browser execution.",
+    "New helper imports are limited to the Bootstrap browser fixture and its new unit test. Original Base/Collapsible native fixtures and shared imports are unchanged.",
+    "Governance/spec lifecycle, Runtime, all Adapters/Prototypes, package/lock/Vitest/core CI, prior C teardown/Delay/Anatomy implementation and historical budget record remain exact a924 bytes."
+  ],
+  "evidenceReuse": {
+    "C66": "May retain as the actual postcommit a924 local general subset result with unchanged relevant tracked source/test/config inputs. Do not relabel sourceSha/tree/execution date or call it a run on tree03bb4d47.",
+    "native41": "May retain as actual a924 Base5 + four-family36 local native evidence with unchanged relevant tracked fixture/runtime/render/config inputs. Keep all 180 JSON sourceSha=a924 and sourceDirty=false; no new-head execution implied.",
+    "wholeGeneralOrCI": "Not a new-candidate result. The new *.test.ts enters ordinary discovery and the Bootstrap browser/workflow behavior has changed, so old overall general/CI totals and this five-path evidence cannot substitute for final-head CI.",
+    "newFocusedWorkflowTypes": "Root-owned executions are in progress or separately collected; no success assertion made by this report.",
+    "DCOAndLinuxFailures": "Prior exact a924 official unknown DCO and failed canonical/browser observations remain retained. Input preservation does not clear any gate or infer a failure root cause."
+  },
+  "findings": [],
+  "newCSourceFindingCount": 0,
+  "actions": [
+    "Read actual full five-path diff and related CLI shadow composition/browser imports.",
+    "Compare every Git tree path/blob/mode, full index and foundation delta patch; no product writes.",
+    "Read existing a924 receipts only; no tests/build/browser/API calls or new agents.",
+    "Write these private report artifacts only."
+  ],
+  "limitations": [
+    "This is a precommit tree binding, not signature/DCO validation of a future merge commit.",
+    "Reuse means unchanged relevant tracked inputs; no claim that environment, event schedule, new test-discovery order, complete process readset or final CI results are identical.",
+    "No full foundation acceptance, new stable lifecycle guarantee or GitHub APPROVE."
+  ],
+  "priorEvidenceBindings": [
+    {
+      "path": "general-final-receipt.json",
+      "sha256": "871054f69ddb919438d8c7de1bdc0e5a35be77c5b6dc64283e2e9dd159ae82db"
+    },
+    {
+      "path": "native-final-receipt.json",
+      "sha256": "ab424c522a85a67a4dc1b20d61a9c2f1d857abd5e5d83835cfef1ac7c1852800"
+    }
+  ]
+}

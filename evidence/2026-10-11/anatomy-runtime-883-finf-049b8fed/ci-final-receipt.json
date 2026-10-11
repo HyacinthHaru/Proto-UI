@@ -1,0 +1,309 @@
+{
+  "head": "049b8fed8ca90da01cbfadcb7acbf9e729beef51",
+  "tree": "03bb4d472441caf514cbf8c5b53a6af85ae46fda",
+  "run": 38133161547,
+  "attempt": 1,
+  "all22Terminal": true,
+  "conclusion": "failure",
+  "jobCounts": {
+    "success": 12,
+    "failure": 10
+  },
+  "jobs": [
+    {
+      "id": 114451503631,
+      "name": "rust",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451503631"
+    },
+    {
+      "id": 114451503719,
+      "name": "lockstep-check",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451503719"
+    },
+    {
+      "id": 114451503722,
+      "name": "test-plan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451503722"
+    },
+    {
+      "id": 114451503730,
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451503730"
+    },
+    {
+      "id": 114451503757,
+      "name": "rust-macos",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451503757"
+    },
+    {
+      "id": 114451503775,
+      "name": "release-scan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451503775"
+    },
+    {
+      "id": 114451503790,
+      "name": "rust-interop",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451503790"
+    },
+    {
+      "id": 114451503853,
+      "name": "public_package_plan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451503853"
+    },
+    {
+      "id": 114451542539,
+      "name": "test-general",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542539"
+    },
+    {
+      "id": 114451542554,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542554"
+    },
+    {
+      "id": 114451542591,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542591"
+    },
+    {
+      "id": 114451542606,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542606"
+    },
+    {
+      "id": 114451542612,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542612"
+    },
+    {
+      "id": 114451542618,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542618"
+    },
+    {
+      "id": 114451542634,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542634"
+    },
+    {
+      "id": 114451542656,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542656"
+    },
+    {
+      "id": 114451542682,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451542682"
+    },
+    {
+      "id": 114451748186,
+      "name": "public_package_build",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451748186"
+    },
+    {
+      "id": 114451748232,
+      "name": "release-stage",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451748232"
+    },
+    {
+      "id": 114451748242,
+      "name": "cli-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451748242"
+    },
+    {
+      "id": 114451748244,
+      "name": "release-consumer-react",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114451748244"
+    },
+    {
+      "id": 114455297887,
+      "name": "test",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38133161547/job/114455297887"
+    }
+  ],
+  "browser": [
+    {
+      "id": 114451542554,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "packages/adapters/web-component/test/shadow-closeout.browser.test.ts > Shadow closeout native boundaries > preserves native DOM parent and query behavior while a portal is projected",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts > shadcn Tooltip browser acceptance > renders state feedback and a supplementary body portal in every public runtime"
+      ],
+      "summaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 2 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  2 failed | 7 passed | 1 skipped (10)",
+        "      Tests  2 failed | 172 passed | 15 skipped (189)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadline124": false,
+      "finalVitestSummary": true,
+      "anatomyCapUnavailableMarker": false
+    },
+    {
+      "id": 114451542591,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [],
+      "summaries": ["##[error]Process completed with exit code 124."],
+      "deadline124": true,
+      "finalVitestSummary": false,
+      "anatomyCapUnavailableMarker": false
+    },
+    {
+      "id": 114451542606,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [],
+      "summaries": ["##[error]Process completed with exit code 124."],
+      "deadline124": true,
+      "finalVitestSummary": false,
+      "anatomyCapUnavailableMarker": false
+    },
+    {
+      "id": 114451542612,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts > S5 native editor acceptance paths > zh-cn: Light/split/mixed native editing",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts > S5 native editor acceptance paths > en: Light/split/mixed native editing"
+      ],
+      "summaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 6 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  2 failed | 8 passed (10)",
+        "      Tests  6 failed | 62 passed (68)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadline124": false,
+      "finalVitestSummary": true,
+      "anatomyCapUnavailableMarker": false
+    },
+    {
+      "id": 114451542618,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [],
+      "summaries": ["##[error]Process completed with exit code 124."],
+      "deadline124": true,
+      "finalVitestSummary": false,
+      "anatomyCapUnavailableMarker": false
+    },
+    {
+      "id": 114451542634,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts > S4: compositor never repaints a closed Dialog after settings changes"
+      ],
+      "summaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  1 failed | 9 passed (10)",
+        "      Tests  1 failed | 46 passed (47)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadline124": false,
+      "finalVitestSummary": true,
+      "anatomyCapUnavailableMarker": false
+    },
+    {
+      "id": 114451542656,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [],
+      "summaries": ["##[error]Process completed with exit code 124."],
+      "deadline124": true,
+      "finalVitestSummary": false,
+      "anatomyCapUnavailableMarker": false
+    },
+    {
+      "id": 114451542682,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "conclusion": "failure",
+      "failureHeaders": [
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+      ],
+      "summaries": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 4 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " Test Files  1 failed | 9 passed (10)",
+        "      Tests  4 failed | 78 passed (82)",
+        "##[error]Process completed with exit code 1."
+      ],
+      "deadline124": false,
+      "finalVitestSummary": true,
+      "anatomyCapUnavailableMarker": false
+    }
+  ],
+  "completeBrowserReports": 4,
+  "deadlineIncomplete": 4,
+  "reportedFailedTests": 13,
+  "general": "82orderedpublicdocsdiagnosticsexactlyequala924beforeVitest;newcompletegeneralnotrunlocally",
+  "reusedEvidence": "C66/native41actuala924andunchangedCinputs,notnewexecutions",
+  "newLocal": {
+    "focusedTests": 24,
+    "workflowTests": 9,
+    "typesFiles": 821,
+    "typeErrors": 0,
+    "warnings": 0,
+    "hints": 11
+  },
+  "package": "47actualbuild47manifests5PASS4ADVISORY;newcanonicalvaluesall9equalprior",
+  "dedicatedCollapsible": "38133161333/job114451502905:35passed1failed,LiquidWCEnterreopenfocusedline321",
+  "DCO": "newcheckfailure/verdictunknown,completePRlistretrievalfailure;localrange458 andnew2commitssignoffmatch;7inheritedexceptionsunchanged",
+  "at": "2026-10-11T11:11:06.905899+00:00",
+  "completeReportFailedTests": 13,
+  "completeReportPassedTests": 358,
+  "completeReportSkippedTests": 15,
+  "completeReportTestTotal": 386,
+  "notClaimed": "No full8-shard total or pass for4incomplete deadline reports;old a9245-report23fail/589pass is not this head."
+}
