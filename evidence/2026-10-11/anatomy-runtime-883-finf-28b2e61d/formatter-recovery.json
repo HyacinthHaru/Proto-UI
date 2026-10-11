@@ -1,0 +1,11 @@
+{
+  "failedLocalCommit": "e2ffa0cfcec2167214aac4414e9a40039bcea8a2",
+  "failedTree": "f66def016068fe6d82cec5e14db39abbbdcf62f5",
+  "privateRetainedRef": "refs/codex/task-state/issue883/hook-format-attempt",
+  "remoteUnchanged": "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+  "restoredCandidateTree": "5f3fe72a0e3d6af2e62823096014d9891566fe98",
+  "formatOnlyScope": "Netdiffagainstfoundation is one unchanged historicalJSONrecord",
+  "reason": "Currentuserrequiresminimaldiff/no unrelatedformatting;normalprecommithookreformatted106foundationpaths",
+  "nextCommit": "Supportedagentpublish;HUSKY=0 for this formatter-only recovery invocation;actualcommit-msghookrunseparately,ModelTrace/DCO/signature/exacttreepublisherchecksremain",
+  "publishedHistoryRewritten": false
+}

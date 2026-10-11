@@ -1,0 +1,22 @@
+{
+  "ownParent": "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+  "foundationParent": "fd34aa54331e7f84827872219aecc1d97f8a8d5b",
+  "candidateTree": "5f3fe72a0e3d6af2e62823096014d9891566fe98",
+  "conflictFiles": [
+    "packages/runtime/src/instance/session.ts",
+    "packages/adapters/web-component/src/adapt.ts",
+    "scripts/analysis/package-budgets.mjs"
+  ],
+  "resolution": "All3conflictsuseexactfoundationbytes;Cbehaviorsalreadyincluded",
+  "netComparedWithFoundation": [
+    "A\tinternal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json"
+  ],
+  "allFoundationPathsPreserved": true,
+  "foundationProductAndTestsByteIdentical": true,
+  "oldRecord": "HistoricalEA\u219202\u21926047numerictransaction;notcurrentFinfcostorcapclaim",
+  "sourceBindings": {
+    "packages/runtime/src/instance/session.ts": "2b476ad34baa2298f01a2f69bb6545c16fc3cbd9318dd6f8e9ec5e82db9764be",
+    "packages/adapters/web-component/src/adapt.ts": "606561a7da5894c15a8917deaafd16ffcb7bbd79ad2be48761aaf0d787b55c54",
+    "scripts/analysis/package-budgets.mjs": "01e4987b4552c2284741a5d9945d990f8798ca7a601b170ded968f3a2feb9c31"
+  }
+}

@@ -1,0 +1,424 @@
+{
+  "kind": "independent-additive-final-merge-binding",
+  "recordedAt": "2026-10-11T07:45:05.652017+00:00",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "findings": [],
+  "githubDisposition": null,
+  "conclusion": "No concrete preservation/binding finding in the two merges. The restored first merge matches its reviewed tree exactly; the final second merge preserves all latestfoundation bytes plus the unchanged historical record. This adds no wholeFinf acceptance or all-green CI claim.",
+  "previousReportsPreserved": true,
+  "commits": [
+    {
+      "head": "026c7398bacdfb0b77cff09b1961cf68bf6b12a2",
+      "tree": "5f3fe72a0e3d6af2e62823096014d9891566fe98",
+      "parents": [
+        "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+        "fd34aa54331e7f84827872219aecc1d97f8a8d5b"
+      ],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committerDate": "2026-10-11T15:35:13+08:00",
+      "DCO": true,
+      "coauthorTrailers": false,
+      "signatureFormat": "SSH",
+      "signatureVerifiedExitCode": 0,
+      "signatureLog": "independent-review/verify-026c7398.log",
+      "actualMessageFileMatchesGitFormatB": true,
+      "postcommitMessageHookStatus": "validated"
+    },
+    {
+      "head": "28b2e61d6cf19f0672f1892a6ff10099cad8a081",
+      "tree": "681e4d06f4106e32eb1d77f854c5b5743dac8be6",
+      "parents": [
+        "026c7398bacdfb0b77cff09b1961cf68bf6b12a2",
+        "2b17ee09700ac3efaa2239beb1b3056b525911e6"
+      ],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committerDate": "2026-10-11T15:39:43+08:00",
+      "DCO": true,
+      "coauthorTrailers": false,
+      "signatureFormat": "SSH",
+      "signatureVerifiedExitCode": 0,
+      "signatureLog": "independent-review/verify-28b2e61d.log",
+      "actualMessageFileMatchesGitFormatB": true,
+      "postcommitMessageHookStatus": "validated"
+    }
+  ],
+  "failedFormatterAttempt": {
+    "commit": "e2ffa0cfcec2167214aac4414e9a40039bcea8a2",
+    "tree": "f66def016068fe6d82cec5e14db39abbbdcf62f5",
+    "privateRef": "refs/codex/task-state/issue883/hook-format-attempt",
+    "differentFoundationPaths": 106,
+    "extraHistoricalRecordAffected": false,
+    "publisherOutcome": "Actual log retains PublicationUnknown:committedtree differs fromauthorization,exit1. This is not a successful authorized-tree publication receipt.",
+    "failedCommitNotAncestorOfFirstMerge": true,
+    "restoredFirstTreeExactlyOriginalReviewedTree": true,
+    "all106DifferencesAbsentFromRestoredTree": true,
+    "recovery": "Root records one invocation HUSKY=0 to prevent unrelated formatter rewrites; existing precommit is lint-staged/Prettier --write. Supportedpublisher successfulcommit receipt and exactsignedtree independently verified.",
+    "remoteBoundary": "Root reports failedattempt notpushed and successful fork fast-forward pushes. This binding independently checks localgraph andsavedpublisherlogs, not a new remote reachability survey."
+  },
+  "commitMessageValidation": {
+    "preparedVsFirstActual": "Only publisher-addedSigned-off-by trailer and trailingblankline differ; publicModelTracepayload unchanged.",
+    "priorPrecommitClaim": "Separate precommit hook calls were reported in the tooltranscript but no contemporaneous redirected logs were retained.",
+    "newEvidence": "Actual Gitcommit messages were extracted and passed to the realcommit-msg hook aftercommit. Savedlogs each show validated with exit0; inputfiles exactly equal gitshowformatB.",
+    "postcommitReceiptAt": "2026-10-11T07:41:50.656157+00:00",
+    "notRetroactivePrecommitEvidence": true,
+    "identityLimit": "SSH signing verifies commit integrity/allowedprincipal; visibleModelTrace remains unsignedclosed-set attribution, not authenticatedbackend identity. Private samples/context notread."
+  },
+  "latestTree": {
+    "foundation": "2b17ee09700ac3efaa2239beb1b3056b525911e6",
+    "foundationTree": "2c197866c56b7a41d75355aa7b6a082e006d72d3",
+    "head": "28b2e61d6cf19f0672f1892a6ff10099cad8a081",
+    "tree": "681e4d06f4106e32eb1d77f854c5b5743dac8be6",
+    "foundationPaths": 10732,
+    "candidatePaths": 10733,
+    "allFoundationBlobsAndModesEqual": true,
+    "onlyAddedPath": "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+    "historicalRecordMatchesOwn6047": true,
+    "treeManifestSha256": "689a288bf1d81bc31cf5a5bd467c153e124a96e5a8173852355bb72559e258ed",
+    "foundationManifestSha256": "34fad729bc896174a98d9a50d1d004d177c14c09ed5a002569353c8d5358f039",
+    "workingTreeClean": true
+  },
+  "searchIncrement": {
+    "from": "fd34aa54331e7f84827872219aecc1d97f8a8d5b",
+    "to": "2b17ee09700ac3efaa2239beb1b3056b525911e6",
+    "changedPaths": [
+      {
+        "path": "internal/contracts/prototype-base/search-selection-completion.v0.md",
+        "blob": "95668bb852c4ae189b294db96a6f681727309fd4",
+        "sha256": "7e332621cee2b4b45446352785e9b971dba860e42e4b916d617b0a7a1fb5d462",
+        "bytes": 2272
+      },
+      {
+        "path": "packages/prototypes/base/src/search-primitives/family.ts",
+        "blob": "a87625a7de75e9fe795d76cb08f5d3b2ddcbd617",
+        "sha256": "8ffc7711cd98af99148924ad143b8b04ccafe036a4cb41324932f151617c8a96",
+        "bytes": 26756
+      },
+      {
+        "path": "packages/prototypes/base/test/search-retirement-probe.test.ts",
+        "blob": "88773b0cda4466826854e994b5408343d766597c",
+        "sha256": "28f1c9fa1dca8206d8d6672021942a7ce51b7a8cdd272759661653f710cb2245",
+        "bytes": 11869
+      }
+    ],
+    "scope": "Merge-preservation-only inspection of newdraftcompletioncontract, selectionepoch/sequence continuation guards, and337-line34case test file. No new fullSearch/Finf semanticapproval.",
+    "noExtraResolutionDelta": true,
+    "preservedCAndBudgetFiles": [
+      {
+        "path": "packages/runtime/src/instance/session.ts",
+        "sameBlobAtFdFirst2bSecond": "25db98eae10eed601aec17bafedbf17bbbc7f3d5"
+      },
+      {
+        "path": "packages/adapters/web-component/src/adapt.ts",
+        "sameBlobAtFdFirst2bSecond": "18c301bececcc6659e15a575d962322808c298ec"
+      },
+      {
+        "path": "scripts/analysis/package-budgets.mjs",
+        "sameBlobAtFdFirst2bSecond": "32246938412ce47f211ce14e78acbbb354723e7d"
+      },
+      {
+        "path": "scripts/analysis/package-budget-policy.mjs",
+        "sameBlobAtFdFirst2bSecond": "3af37e5719091304f7517d885a4ca57f6ebb9e4d"
+      },
+      {
+        "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+        "sameBlobAtFdFirst2bSecond": "bf4958d53f9491cccdd9a648028a2d5571d4649f"
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+        "sameBlobAtFdFirst2bSecond": "e63242549fe51020d808cb3bc8c66697342dd593"
+      },
+      {
+        "path": "packages/prototypes/base/test/collapsible.test.ts",
+        "sameBlobAtFdFirst2bSecond": "b01337f55d176839ca5cc7a6ce1ea4dacf9922e3"
+      }
+    ],
+    "priorCBlocks": "Originaldispose/Delay/reparent byte-preservation result carries through because allprotectedfiles are unchanged betweenfd34 and2b17."
+  },
+  "freshCombinedEvidenceRead": {
+    "focused": {
+      "files": 4,
+      "passed": 86,
+      "C": 52,
+      "Search": 34,
+      "exitCode": 0
+    },
+    "types": {
+      "astroFiles": 815,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 11,
+      "exitCode": 0
+    },
+    "browser": {
+      "cases": 5,
+      "exitCode": 0,
+      "captures": 13,
+      "scope": "ExistingpublicCollapsible WC/React/Vue/Vue2 andChinese390px journey, not allFinf orSearch browser acceptance.",
+      "images": [
+        {
+          "path": "react-controlled-accepted.png",
+          "sha256": "83740204b9f8b2490d665c9e873a51eb7ea32292740a7cc8326130a66e80280c",
+          "bytes": 38095,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "react-initial.png",
+          "sha256": "86d1525fe1598cb8f359e7dc0042679d2644b3ad08bbfcf0938e5b0ca985cd6b",
+          "bytes": 40170,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "react-open.png",
+          "sha256": "50ae302b3bc48c72c4e15f461496ac431df25fb9d11c2d4f75ce64f13b187b80",
+          "bytes": 45924,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "vue-controlled-accepted.png",
+          "sha256": "79f59e906e92ba119bc17cc3c47c695850c4696b3efc92555dd2c1d0c908e106",
+          "bytes": 38084,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "vue-initial.png",
+          "sha256": "930c9f172d5b54d73c3970d2c5fdfed198b9749a37696ebc6278670ad52d7546",
+          "bytes": 40157,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "vue-open.png",
+          "sha256": "f450186ca7400b2fc35eabd9d2707297136a381c1662895ae8fce75fee2e9b3d",
+          "bytes": 45908,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "vue2-controlled-accepted.png",
+          "sha256": "e7e3fbb090765560b6a81eb280011e854c6c445152beac2bc1263359f3971998",
+          "bytes": 38097,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "vue2-initial.png",
+          "sha256": "26b781e0b7e2da1ad902bbed08c34b6c708bb8aba4641ff542b2cd9915f50ebc",
+          "bytes": 40171,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "vue2-open.png",
+          "sha256": "d244cbc834e5dd1f1e2c37128c8017fdfc16fa732b371f49dd888bd4f876876a",
+          "bytes": 45924,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "vue2-zh-cn-390-open.png",
+          "sha256": "938208219ddc0b941975d955329f39782aedd41219eedd9afff02c04788d59e4",
+          "bytes": 41361,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "wc-controlled-accepted.png",
+          "sha256": "ab2568b46e17fcf19eed77ad5b8d629964a1948715a25071db161464aafc77f6",
+          "bytes": 37560,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "wc-initial.png",
+          "sha256": "bd2422292948bcf1a851b6147c0d8611757dad25d7c568d5676e9029d17be638",
+          "bytes": 39710,
+          "equalToPriorFdCapture": true
+        },
+        {
+          "path": "wc-open.png",
+          "sha256": "742be09d4da11518a6cb8a40047363baa6aef0edfe730aded7b6b918d33a757d",
+          "bytes": 45119,
+          "equalToPriorFdCapture": true
+        }
+      ],
+      "visualAttribution": "Independentbytecomparison only inthisbinding. Prior13images were visuallyinspected byroot; thisreviewer didnotclaim newpixel inspection."
+    },
+    "identity": "These source-equivalentpendingtree runs remain their actual execution records; equality tocommitted681tree doesnot turn theminto postcommit reruns orhostedCI."
+  },
+  "diagnosticCorrection": {
+    "priorCatalogBindingRetained": {
+      "file": "catalog-ci-binding.json",
+      "comparedCounts": [550, 82],
+      "sameSortedDiagnostics": false,
+      "interpretation": "Initialcross-check misidentified theofficialprecheck and is superseded, not deleted."
+    },
+    "corrected": {
+      "file": "public-docs-ci-binding.json",
+      "officialCommand": "check:public-docs",
+      "officialCount": 82,
+      "localCommand": "check:public-docs",
+      "localCount": 82,
+      "sameOrderedDiagnosticLinesIndependentlyVerified": true,
+      "officialVitestStarted": false
+    },
+    "separateCatalog": "550 diagnostics belong to a separate localprototype-catalog check, not officialgeneral assertion results.",
+    "separateFullTest": {
+      "candidateTree": "5f3fe72a0e3d6af2e62823096014d9891566fe98",
+      "exitCode": 1,
+      "stoppedAt": "release:assets:check",
+      "reason": "PackageBOMunclassified @proto.ui/module-axis-input and@proto.ui/module-native-link",
+      "laterStagesExecuted": false
+    },
+    "currentRuntimeOnlyDiagnostic": "Rootreported a separate general-runtime-only inventory diagnostic. No result from it is included here; it cannot replace the failed defaultfulltest/preflight or become canonical CI by using the generalplan."
+  },
+  "budgetBoundary": "Policy/module/script unchanged fromfd34foundation. Priorstrict4overruns andadvisoryexit0 measurements remain boundto5f execution; oldWC118000transaction historical. No fresh681budget/canonicalclaim inferred here.",
+  "remaining": [
+    "NoacceptanceofwholeunmergedFinffoundation, itsnewSearchsemantics orotheropenreviews.",
+    "Finalexact-headCI, fullnative/Compiler/GPUI/ATorwholeIssue883closure remain separately governed.",
+    "No newtests/build/browser/hook rerun byreviewer; onlyread-onlyGit signatureverification, hashes/source/retainedlog inspection.",
+    "No GitHubwrite/approval/newagent/productorconfigedit."
+  ],
+  "rawEvidence": [
+    {
+      "path": "candidate-search-increment.json",
+      "sha256": "70a03d737be28fbc689f5db18a4c590cc7ec30da465ac8be55fc902aae3a4f61",
+      "bytes": 636
+    },
+    {
+      "path": "hook-recovery-receipt.json",
+      "sha256": "c0e386d38054a389b92be4f5a07a1d85f805e537d962743db6a0aa59c38323d5",
+      "bytes": 770
+    },
+    {
+      "path": "commit-publisher.log",
+      "sha256": "abdfaed162ad67ae6fbbe4d03e48c95a452d5594208f5a49105339202ef2f84e",
+      "bytes": 898
+    },
+    {
+      "path": "commit-recovery-publisher.log",
+      "sha256": "34a8227a5b6520d0466b53b0a8546945588b1bfc6021e2572d4de0aa56f1b31e",
+      "bytes": 929
+    },
+    {
+      "path": "hook-index.patch",
+      "sha256": "3dad049c7ff14d527686c78f7c545842b2cbfd194ed6f6143beedc6b8f746faa",
+      "bytes": 640446
+    },
+    {
+      "path": "hook-working.patch",
+      "sha256": "43ae8dc6973aa4d58ab27a63ccf38035152ead26e3010b470a12229f96d7cd9f",
+      "bytes": 640677
+    },
+    {
+      "path": "actual-message-validation-receipt.json",
+      "sha256": "ed75ac2418781c676285f8001917cc4e158c0eeb622d6c58677c3723ee4b98d7",
+      "bytes": 1075
+    },
+    {
+      "path": "actual-message-check-026c7398.log",
+      "sha256": "82dab50b3f66092c582bf47c3072575d739c686bba433bebcbe1ceb83b740170",
+      "bytes": 23
+    },
+    {
+      "path": "actual-message-check-28b2e61d.log",
+      "sha256": "82dab50b3f66092c582bf47c3072575d739c686bba433bebcbe1ceb83b740170",
+      "bytes": 23
+    },
+    {
+      "path": "actual-message-026c7398.txt",
+      "sha256": "5bf6225de2decec7740e2f960344732500edf1c19c595795f716245d0e9b994f",
+      "bytes": 2204
+    },
+    {
+      "path": "actual-message-28b2e61d.txt",
+      "sha256": "f0af27070a0267577d65474489e1c2b6820970f548e75f1fd08e5916aed85218",
+      "bytes": 2199
+    },
+    {
+      "path": "focused-search-combination.log",
+      "sha256": "2f4435f63335c0ddea3cc34cb0cb009479cef04932af58766396bc4bbf3fe586",
+      "bytes": 594
+    },
+    {
+      "path": "focused-search-combination.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "types-search-combination.log",
+      "sha256": "3fdfd45a1660da9b015019b65aa2612cb2b33160dec03f83943cbaf774a1b62f",
+      "bytes": 5152
+    },
+    {
+      "path": "types-search-combination.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "browser-capture-search-combination.log",
+      "sha256": "b7f7bbdf5e2bb7cacc148ebd21a0cfaf59db1862cb98ceab9f6f99fb0f9bbbc3",
+      "bytes": 8229
+    },
+    {
+      "path": "browser-capture-search-combination.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "browser-visual-receipt.json",
+      "sha256": "6a26bcafa0ab40b8d07e53e5055ec0fd4431ffb0f0eac10596a8fe6b2d68d06f",
+      "bytes": 3063
+    },
+    {
+      "path": "catalog-ci-binding.json",
+      "sha256": "f131ba0612ab4745c50de1c0c95ab6d52a6a849239913ad0a09f3a5dfe812f44",
+      "bytes": 127529
+    },
+    {
+      "path": "public-docs-ci-binding.json",
+      "sha256": "83b53fe4a11f1675930616a337a7d42afe864c33084b5b871ef8435e70d02c47",
+      "bytes": 14725
+    },
+    {
+      "path": "public-docs.log",
+      "sha256": "97769559e6fc9d3580c7be00a380f45ef8d0f6d59b58ecfa4dd9234c1aa98abc",
+      "bytes": 13973
+    },
+    {
+      "path": "foundation-general-ci.log",
+      "sha256": "d74f22da7673d0748a06567720fe277f264e1cbf1116c4485f0568c3089cfd9e",
+      "bytes": 146366
+    },
+    {
+      "path": "full-test-receipt.json",
+      "sha256": "d3902e51aa1a72276e10f3cce60c1b61f797d6eaef4b322af5d6056154d5f7a4",
+      "bytes": 254
+    },
+    {
+      "path": "full-test.log",
+      "sha256": "79de7866f00507ec306a3915eab97da40e6d6d9377111760577291691a935c71",
+      "bytes": 1981
+    },
+    {
+      "path": "independent-review/merge-increment-review.json",
+      "sha256": "ab0822946f81ee067421de06b37e370cff7d77a1f0d4df17268fdf1759b49f33",
+      "bytes": 19858
+    },
+    {
+      "path": "independent-review/merge-increment-review.md",
+      "sha256": "275c919260d402b28446c63b89241edce32a4dcad1deb0dbd83c048a1fb26d26",
+      "bytes": 2810
+    }
+  ]
+}

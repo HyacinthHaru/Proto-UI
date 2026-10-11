@@ -1,0 +1,448 @@
+{
+  "kind": "independent-local-foundation-merge-increment-review",
+  "recordedAt": "2026-10-11T07:27:42.007656+00:00",
+  "issue": 883,
+  "pullRequest": 884,
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "assessment": "unassessed; advisory",
+  "reviewClass": "review-bounded-regression",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "findings": [],
+  "githubDisposition": null,
+  "formalCanonicalPacket": false,
+  "conclusion": "No concrete merge-preservation finding. Exact foundation tree content is retained, with only the old source-bound numeric record added. This is not acceptance of all Finf implementation, its open reviews, its policy authorization, or the full integrated PR.",
+  "scope": "Prepared non-rewriting merge of own6047 and unmergedfoundationfd34; inspect full tree identity and C-block preservation plus conflict-specific foundation features and current strict/advisory reporting. No repeated whole-source audit.",
+  "preparedMerge": {
+    "ownParent": "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+    "foundationParent": "fd34aa54331e7f84827872219aecc1d97f8a8d5b",
+    "candidateTree": "5f3fe72a0e3d6af2e62823096014d9891566fe98",
+    "foundationTree": "6d63c06814082b83cbd5fa9af86c3895f53b4fa1",
+    "headStillOwnParent": true,
+    "mergeHeadMatchesFoundation": true,
+    "unmergedIndexEntries": 0,
+    "unstagedTrackedChanges": false,
+    "indexMatchesFrozenTree": true,
+    "mergeCommitCreated": false,
+    "oldHistoryPreserved": "HEAD remains own parent; this is a normal prepared merge, not reset/rebase/cherry-pick. Actual signed merge parents require later commit binding."
+  },
+  "treeProof": {
+    "ownParent": "6047ee9fb6dbf703f603ffb7832780df58c41fe7",
+    "foundationParent": "fd34aa54331e7f84827872219aecc1d97f8a8d5b",
+    "foundationTree": "6d63c06814082b83cbd5fa9af86c3895f53b4fa1",
+    "candidateTree": "5f3fe72a0e3d6af2e62823096014d9891566fe98",
+    "foundationPathCount": 10730,
+    "candidatePathCount": 10731,
+    "allFoundationPathsAndModesPreserved": true,
+    "indexExactlyMatchesCandidate": true,
+    "trackedWorktreeMatchesIndex": true,
+    "unmergedEntries": 0,
+    "onlyAdditionalPath": "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+    "historicalRecordBlob": "8ff7877799707f035a5b139abfff4fe0d7f4a0c3",
+    "historicalRecordByteIdenticalToOwnParent": true,
+    "foundationTreeManifestSha256": "0f9b3e683cfd411fc56c25334d8cc41d2676a2116f64952e9114667dfc422bb6",
+    "candidateTreeManifestSha256": "ed24ba51e6c32fada48f3f3454d539095b9e19664cbdb08ee2ed0e0837588610",
+    "indexManifestSha256": "d3dc03f4951c80061d48de9102b5a075118b3a2db4144b0dc884f10605281c1e",
+    "protectedBlocksIdenticalToOwnParent": {
+      "terminalDispose": true,
+      "delayContext": true,
+      "retainedParentTransaction": true
+    },
+    "selectedBindings": [
+      {
+        "path": "packages/runtime/src/instance/session.ts",
+        "foundationBlob": "25db98eae10eed601aec17bafedbf17bbbc7f3d5",
+        "candidateBlob": "25db98eae10eed601aec17bafedbf17bbbc7f3d5",
+        "workingSha256": "2b476ad34baa2298f01a2f69bb6545c16fc3cbd9318dd6f8e9ec5e82db9764be",
+        "unchangedFromOwnParent": false
+      },
+      {
+        "path": "packages/adapters/web-component/src/adapt.ts",
+        "foundationBlob": "18c301bececcc6659e15a575d962322808c298ec",
+        "candidateBlob": "18c301bececcc6659e15a575d962322808c298ec",
+        "workingSha256": "606561a7da5894c15a8917deaafd16ffcb7bbd79ad2be48761aaf0d787b55c54",
+        "unchangedFromOwnParent": false
+      },
+      {
+        "path": "scripts/analysis/package-budgets.mjs",
+        "foundationBlob": "32246938412ce47f211ce14e78acbbb354723e7d",
+        "candidateBlob": "32246938412ce47f211ce14e78acbbb354723e7d",
+        "workingSha256": "01e4987b4552c2284741a5d9945d990f8798ca7a601b170ded968f3a2feb9c31",
+        "unchangedFromOwnParent": false
+      },
+      {
+        "path": "scripts/analysis/package-budget-policy.mjs",
+        "foundationBlob": "3af37e5719091304f7517d885a4ca57f6ebb9e4d",
+        "candidateBlob": "3af37e5719091304f7517d885a4ca57f6ebb9e4d",
+        "workingSha256": "e66c7d8b475d05d349a9fe44db97737b3b42b9361919883b221064d3aa964feb",
+        "unchangedFromOwnParent": false
+      },
+      {
+        "path": "package.json",
+        "foundationBlob": "663da72c209758a9aeaf75de37d6ea61926ee6b4",
+        "candidateBlob": "663da72c209758a9aeaf75de37d6ea61926ee6b4",
+        "workingSha256": "91b28257c6a315ee054256543d751ef836cf75a312d2c7d5fafcacc6df94f1a0",
+        "unchangedFromOwnParent": false
+      },
+      {
+        "path": "internal/governance/finf-package-budgets.md",
+        "foundationBlob": "5edf875f066d8f4f5d5895ed01041383458589a7",
+        "candidateBlob": "5edf875f066d8f4f5d5895ed01041383458589a7",
+        "workingSha256": "c9294391033bd26d8f0a358f03ce240bcfaba8dddce8ba07c9a7b0a4282ae932",
+        "unchangedFromOwnParent": false
+      },
+      {
+        "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+        "foundationBlob": "bf4958d53f9491cccdd9a648028a2d5571d4649f",
+        "candidateBlob": "bf4958d53f9491cccdd9a648028a2d5571d4649f",
+        "workingSha256": "4afc212f4eaaae7b60c57deaaa3b5db96d6a44076cf282cf41f3c73f70114132",
+        "unchangedFromOwnParent": true
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+        "foundationBlob": "e63242549fe51020d808cb3bc8c66697342dd593",
+        "candidateBlob": "e63242549fe51020d808cb3bc8c66697342dd593",
+        "workingSha256": "130477309ba3a48574499fd056462ab9ff72ce9333b78cf37d7b74a91a37c1c4",
+        "unchangedFromOwnParent": false
+      },
+      {
+        "path": "packages/prototypes/base/test/collapsible.test.ts",
+        "foundationBlob": "b01337f55d176839ca5cc7a6ce1ea4dacf9922e3",
+        "candidateBlob": "b01337f55d176839ca5cc7a6ce1ea4dacf9922e3",
+        "workingSha256": "bd803cc14985fd97a615d90366bdb65f42afd3f1d7ab17884825a51d8db1598f",
+        "unchangedFromOwnParent": true
+      },
+      {
+        "path": ".agents/skills/pui-review/SKILL.md",
+        "foundationBlob": "e9a5df2faa71e03a81b245201e954ac58dae6f50",
+        "candidateBlob": "e9a5df2faa71e03a81b245201e954ac58dae6f50",
+        "workingSha256": "6503e9e6ced39a09032f2b1d105de1e183b705e121b5df0434113e59a78eeb5b",
+        "unchangedFromOwnParent": true
+      }
+    ]
+  },
+  "authority": {
+    "CEntityBindings": [
+      {
+        "path": "spec/contracts/C-LIFECYCLE-0002.yaml",
+        "unchangedBlob": "3c9163a88f4245a7c975c93378ff3478583a8faa",
+        "status": "draft"
+      },
+      {
+        "path": "spec/contracts/C-LIFECYCLE-0007.yaml",
+        "unchangedBlob": "2aa5fe498207c0b318b89b750697044405800bad",
+        "status": "draft"
+      },
+      {
+        "path": "spec/contracts/C-DELAY-0001.yaml",
+        "unchangedBlob": "d0fe95edf2c247e23430aed5391f511984e2a8e4",
+        "status": "draft"
+      },
+      {
+        "path": "spec/modules/M-ANATOMY-0001.yaml",
+        "unchangedBlob": "c4053493ebb1fc907427a52251a09b9c442f5306",
+        "status": "draft"
+      },
+      {
+        "path": "spec/host-caps/HC-ANATOMY-STRUCTURE-0001.yaml",
+        "unchangedBlob": "e884d7b4e4f36fb44ea45461abe7c58badaebffc",
+        "status": "draft"
+      },
+      {
+        "path": "spec/prototypes/P-BASE-COLLAPSIBLE.yaml",
+        "unchangedBlob": "c87dcf305a3c5eb9ef323091420f8e031294a5c4",
+        "status": "draft"
+      }
+    ],
+    "unchangedDraftAndOpenCallbackErrorBoundary": true,
+    "interpretation": "Original C authority and its unresolved general callback-error policy remain unchanged. The historical bounded872reuse fields describe the previous port; current integrationOnly/foundation fields govern the broader source sync and do not authorize dropping foundation associations.",
+    "foundationSnapshot": {
+      "observedAt": "2026-10-11T07:13:26.072601+00:00",
+      "number": 872,
+      "head": "fd34aa54331e7f84827872219aecc1d97f8a8d5b",
+      "state": "open",
+      "draft": false,
+      "merged": false,
+      "mergedAt": null,
+      "scopeMeaning": "WIP/incomplete foundation, despite platformdraft=false. No main integration, stable admission or release inferred."
+    },
+    "coordination": "SavedPR/Issue comments request latest872foundation sync while preserving existing work and rerunning exact-head evidence; they explicitly do not grant approval/CIwaiver/merge."
+  },
+  "sourceChecks": [
+    {
+      "area": "C failed-created and Delay",
+      "files": [
+        "packages/runtime/src/instance/session.ts",
+        "packages/runtime/test/contract/delay.v0.contract.test.ts"
+      ],
+      "result": "Terminal dispose and Delay context blocks are byte-identical to own6047. Created dispatch still follows disposal closure construction; failures retire resources while caps exist, preserve original/cleanup identities including falsy values, and suppress queued callbacks before they consume cancellation state. Delay test is exactly unchanged from own parent.",
+      "foundationPreserved": "Instance-association validation/controller transport and ControlLabel presence withdrawal remain in foundation. Initial association validation executes inside the same failed-creation cleanup try."
+    },
+    {
+      "area": "C retained Anatomy transaction",
+      "files": [
+        "packages/adapters/web-component/src/adapt.ts",
+        "packages/prototypes/base/test/collapsible.test.ts"
+      ],
+      "result": "The prior-parent/syncStructure/rollback block is byte-identical to own6047. CachedAnatomy port is set after owner initialization and cleared in both terminal onAfterUnmount releases and retireOwner cleanup. Collapsible24-case source is byte-identical to own parent.",
+      "boundary": "Immediate structural rollback is preserved; no claim of arbitrary callback/global transaction semantics."
+    },
+    {
+      "area": "Foundation terminal owner and host resources",
+      "file": "packages/adapters/web-component/src/adapt.ts",
+      "result": "Complete adapt blob equalsfoundation. The all-profile terminal guard/reconnect request, captured instanceToken, once-only pending-view/sink retirement, per-release cleanup loop and delayed terminal unlock are retained. The older6047split-only cleanup path was not overlaid onto it."
+    },
+    {
+      "area": "Foundation visual and NativeLink integration",
+      "file": "packages/adapters/web-component/src/adapt.ts",
+      "result": "Complete foundation bytes retain createDeferredViewVisualSink, pendingVisualFrame during acquisition, final-style provenance/once-only release, NativeLink declaration/physicalanchor/slotchildren/focusbridge/readiness, and association transport. No old implementation overwrite or partial hunk loss.",
+      "limit": "Presence and conflict resolution checked; comprehensive Finf visual/native semantics and UI correctness are not independently accepted here."
+    },
+    {
+      "area": "Original C tests plus foundation additions",
+      "file": "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+      "result": "Only7additional test instances relative ownparent:5falsy-cleanup and2initial-association failure cases. Prior test bodies/expectations remain. Combined currentfocusedcount is52,not old45."
+    }
+  ],
+  "budget": {
+    "currentPolicyFilesEqualFoundation": true,
+    "currentStrictBaselines": {
+      "lucide/icons/x": 3000,
+      "lucide root": 700000,
+      "core root": 7600,
+      "runtime root": 78500,
+      "adapter-react root": 106000,
+      "adapter-vue root": 106000,
+      "adapter-web-component root": 132000,
+      "prototypes-base/button": 6000,
+      "prototypes-shadcn/button": 7000
+    },
+    "wcStrictBaseline": 132000,
+    "old118000Record": {
+      "path": "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+      "byteIdenticalToOwn6047": true,
+      "boundSource": "02a653dc0907e262102b2dd6709f2d95fd4d5413",
+      "baseline": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+      "meaning": "Historical measured numeric transaction only; not a current Finf cap, current cost or current measurement success."
+    },
+    "invocation": {
+      "defaultPackageScript": "node scripts/analysis/package-budgets.mjs --finf-development",
+      "strictPackageScript": "node scripts/analysis/package-budgets.mjs",
+      "directScriptDefault": "strict",
+      "monorepoSnapshot": "explicit --json --finf-development"
+    },
+    "advisoryScope": "Exactly the existing9FINF_BUDGET_ENTRIES while a valid55core+13prior ledger is incomplete. Unknown args/state, build/measurement failures and unrelatedentry overruns stay blocking. Removal of opt-in or68complete returns strict.",
+    "ledger": {
+      "path": "internal/coverage-matrices/prototype-coverage-matrix.json",
+      "sha256": "14195b286bcb62a80e0703fcd2113d76519fa30b5231aa9a4d7151013e75e8c9",
+      "coreCount": 55,
+      "priorCount": 13,
+      "total": 68,
+      "recordedComplete": 5,
+      "completedIds": [
+        "prior-pr.857",
+        "prior-pr.855",
+        "prior-pr.862",
+        "prior-pr.867",
+        "prior-pr.871"
+      ],
+      "completionIsAcceptance": false,
+      "historicalTextNote": "Governance document retains a0/68phase-start sentence. The current actual ledger and report are5/68; do not reuse0as the live count or infer independent acceptance from completion flags."
+    },
+    "freshLocalReportsRead": {
+      "environment": {
+        "node": "v24.21.0",
+        "zlib": "1.3.2.1-motley-8002e91",
+        "esbuild": "0.25.12",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "strict": {
+        "exitCode": 1,
+        "withinBudgets": false,
+        "failedEntries": [
+          {
+            "name": "runtime root",
+            "gzipBytes": 82795,
+            "budget": 78500,
+            "overBudgetBytes": 4295,
+            "pass": false,
+            "blocking": true
+          },
+          {
+            "name": "adapter-react root",
+            "gzipBytes": 115065,
+            "budget": 106000,
+            "overBudgetBytes": 9065,
+            "pass": false,
+            "blocking": true
+          },
+          {
+            "name": "adapter-vue root",
+            "gzipBytes": 114884,
+            "budget": 106000,
+            "overBudgetBytes": 8884,
+            "pass": false,
+            "blocking": true
+          },
+          {
+            "name": "adapter-web-component root",
+            "gzipBytes": 140961,
+            "budget": 132000,
+            "overBudgetBytes": 8961,
+            "pass": false,
+            "blocking": true
+          }
+        ]
+      },
+      "advisory": {
+        "exitCode": 0,
+        "withinBudgets": false,
+        "failedNumericComparisons": 4,
+        "sameSizesMinifiedHashesAndPassFlagsAsStrict": true,
+        "blockingForFourOverruns": false
+      },
+      "meaning": "Advisoryexit0 is not9strictPASS. These are local source-bound results, not canonical CI of a new merge commit."
+    },
+    "policyAcceptanceBoundary": "This sync preserves the policy supplied by the requestedWIP foundation. It does not independently authenticate/adopt its owner exception or extend it, raise another cap, erase older red measurements or approve the fullFinf."
+  },
+  "freshValidationAlreadyProducedByRoot": {
+    "focused": {
+      "files": 3,
+      "passed": 52,
+      "exitCode": 0
+    },
+    "expanded": {
+      "passedFiles": 108,
+      "skippedFiles": 3,
+      "files": 111,
+      "passedTests": 916,
+      "todo": 34,
+      "exitCode": 0,
+      "candidateTreeFromReceipt": "5f3fe72a0e3d6af2e62823096014d9891566fe98",
+      "nativeBrowserFilesExcluded": true
+    },
+    "types": {
+      "astroFiles": 815,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 11,
+      "exitCode": 0
+    },
+    "reviewerDidNotExecuteTheseRuns": true,
+    "oldResultsNotRelabeled": "Previous6047or02runs remain historical. No fresh native browser/full-suite/fullFinf/canonicalCI acceptance inferred."
+  },
+  "method": {
+    "skill": "Read currentAGENTS/pui-dev deltas and retained unchangedpui-review instructions; local resolver returnedeligible,blocked=false withadvisoryhuman-assisted mode.",
+    "tools": "Read-only Git tree/index/blob comparisons, source reads, deterministic hashes and existing log/JSON parsing only.",
+    "noActions": [
+      "No product/dependency/generated-file edits",
+      "No build/test/browser rerun",
+      "No GitHub write or approval",
+      "No new agents",
+      "No private ModelTrace sample access"
+    ]
+  },
+  "remaining": [
+    {
+      "kind": "verification",
+      "item": "Prepared tree has no merge commit/updatedcanonicalPRinput at this binding; final commit parents/tree and affected exact-head CI/evidence must be reconciled separately."
+    },
+    {
+      "kind": "outside-scope",
+      "item": "Full3145-pathincomingFinf source acceptance, its known review findings, allnative/GPUI/Compiler/optical/ATgoals, and wholeIssue883A/Bclosure are not part of this incremental preservation review."
+    },
+    {
+      "kind": "verification",
+      "item": "Strict4sizeoverruns remain factual. Futureadvisorysuccess must showpass:false/withinBudgets:false andpolicy scope rather thanclaimstrict9PASS."
+    }
+  ],
+  "rawEvidence": [
+    {
+      "path": "candidate-change.json",
+      "sha256": "b80ea0fc4ab3059a832c00f146f7632c09a829ee8264c644808de53e8032952e",
+      "bytes": 1114
+    },
+    {
+      "path": "authority-map.json",
+      "sha256": "d396ed40e0241a1e13cd4f5daad93898c393412e5b46f6f8d697cdd94636fb64",
+      "bytes": 5717
+    },
+    {
+      "path": "live.json",
+      "sha256": "3e7aec2e3bb2f4826a7cd18f12c4964d74df6dd0d6a17275aa9d188a0c4757d8",
+      "bytes": 345744
+    },
+    {
+      "path": "foundation-live.json",
+      "sha256": "372e7dc44fdb12d18d7197ed409662f65370b1347c0e868e281736e9fc9b8944",
+      "bytes": 5764365
+    },
+    {
+      "path": "broad-receipt.json",
+      "sha256": "a0f7a303fa1170728f2472da8a3aa477f050a8cf6a9edd4a45218559216fd6f0",
+      "bytes": 2902
+    },
+    {
+      "path": "focused.log",
+      "sha256": "58de5f5865b22bdb660a274da143229a3d0558dbb57c678df320fba120ec7581",
+      "bytes": 510
+    },
+    {
+      "path": "focused.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "broad-focused.log",
+      "sha256": "64dde2df3349e6d47b4a1a01066caf4c10cb3d853182609aa6c48676a9292bb7",
+      "bytes": 15544
+    },
+    {
+      "path": "broad-focused.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "types.log",
+      "sha256": "578632c885088f646c7a679058da98fd670a5c1c96c8d3c4821f48c2a563038c",
+      "bytes": 5771
+    },
+    {
+      "path": "types.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "budgets-strict-measured.json",
+      "sha256": "6d253bae3a23cac16c6d009b8944a9ab2192f5bf163e053c61103697a328e67f",
+      "bytes": 4222
+    },
+    {
+      "path": "budgets-strict-measured.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "budgets-development.json",
+      "sha256": "d9dc100e0a7c31b29be0f93e48a8f6b6361a53aa2b183f3ab66f10e1bcb93391",
+      "bytes": 5128
+    },
+    {
+      "path": "budgets-development.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "independent-review/review-resolver.log",
+      "sha256": "24df5821b701e176c054cac8a65f491c563d9c59fbbacee2b3c0ed0689905cf0",
+      "bytes": 754
+    },
+    {
+      "path": "independent-review/merge-tree-reconciliation.json",
+      "sha256": "56563d9045e4d507e317a811fe79f140351dbabccb0e21823fe30af9099fbdca",
+      "bytes": 4528
+    }
+  ]
+}

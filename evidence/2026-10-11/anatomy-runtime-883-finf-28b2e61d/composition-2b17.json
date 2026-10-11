@@ -1,0 +1,12 @@
+{
+  "ownParent": "026c7398bacdfb0b77cff09b1961cf68bf6b12a2",
+  "foundationParent": "2b17ee09700ac3efaa2239beb1b3056b525911e6",
+  "candidateTree": "681e4d06f4106e32eb1d77f854c5b5743dac8be6",
+  "sourceDeltaFromPriorFoundation": [
+    "internal/contracts/prototype-base/search-selection-completion.v0.md",
+    "packages/prototypes/base/src/search-primitives/family.ts",
+    "packages/prototypes/base/test/search-retirement-probe.test.ts"
+  ],
+  "netDiffFromFoundation": "Onlyhistoricalbudgetrecord;allfoundationbytes/modespreserved",
+  "reason": "Latest872advancedbyoneSearchcommitduringfirstsync;nohistoryrewrite/no separate taskclaim"
+}
