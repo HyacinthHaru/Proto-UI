@@ -1,0 +1,16 @@
+{
+  "head": "a92463c9590c233e93f451389bab02b85009fa9a",
+  "tree": "1597454fe2be1bb96ffc6cafc9788fe5f8b5ddba",
+  "command": "corepack pnpm@10.32.1 exec vitest run demo-base-collapsible.browser.test.ts demo-collapsible-projections.browser.test.ts --maxWorkers=1 --minWorkers=1 (actual absolute selection in rawlog/turntool)",
+  "exitCode": 0,
+  "files": 2,
+  "cases": 41,
+  "captures": {
+    "png": 193,
+    "json": 180,
+    "publishedSelection": 16
+  },
+  "sourceBindings": "All180JSONa924sourceDirtyfalse;allfinal trackedfilesclean",
+  "logSha256": "f6cef48fadf3290de788152f5c957e9c5fb5878260dcb0bf7971a598c26902ac",
+  "scope": "Actualpostcommita924fulloriginal2files,localMacChrome;notLinuxcanonicalorfullSlider/Toolbarbrowserjourney"
+}

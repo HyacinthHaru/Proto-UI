@@ -1,0 +1,233 @@
+{
+  "kind": "independent-local-retained-lifecycle-repair-review",
+  "recordedAt": "2026-10-11T09:35:11.356228+00:00",
+  "executionMode": "human-assisted",
+  "executionModeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "reviewClass": "review-bounded-regression",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "openFindings": [],
+  "resolvedFindings": [
+    {
+      "id": "ISSUE883-SCALAR-DETACHED-001",
+      "severity": "P2",
+      "status": "resolved",
+      "confidence": "high",
+      "file": "packages/prototypes/base/src/slider/root.proto.ts",
+      "initialLines": [78, 96, 200, 203],
+      "authority": ["C-LIFECYCLE-0002-G", "C-LIFECYCLE-0006-B/D"],
+      "cause": "Initialidentityguard depended ononUnmounted clearingrun. An alive+detached session can dispose withoutunmountedcallbacks (RuntimeunmountInternal immediatelyreturnswhenalreadydetached); run stayedidentical andpublicationaccessedretiredState.",
+      "reproduction": "Revieweridentified the no-mount publiccontroller.applyRawProps path statically; rootexecuted it andretained independent-gaps-red. No reviewer testexecution.",
+      "resolution": "onBeforeDispose invalidatesrun for allterminalinstances; publicStatewrite andProps.valuewrite guards stop retiredcontinuations. Finalmounted/detached controls pass."
+    },
+    {
+      "id": "ISSUE883-SCALAR-CALLER-002",
+      "severity": "P2",
+      "status": "resolved",
+      "confidence": "high",
+      "file": "packages/prototypes/base/src/slider/root.proto.ts",
+      "initialLines": [147, 148, 171, 172],
+      "authority": ["C-LIFECYCLE-0002-G"],
+      "cause": "An earlyreturninsidepublish didnotstoprequestValue/resetValue callers;percentageobserverdisposal ledto nullrun.expose/nullrun.props access afterward.",
+      "reproduction": "Root confirmed the reviewer-specified legitimate session.invokeInCallbackScope(publicexposedmethod) path, notexec-phasemisuse. Actualredstacks identifyrequestValue148 andresetValue172.",
+      "resolution": "publish returns internalcurrent-frame liveness; request/reset/commit/cancel/begin honor it. requestValue also checksaftervalueChange beforeAnatomy access. Nooutwardcompletion afterretiredpublication."
+    }
+  ],
+  "githubDisposition": null,
+  "conclusion": "Both independently found P2 gaps in the initialrepair are resolved in the actualcurrentCfix. No remaining specificsourcefinding in thisboundedrereview. This is not aValues/fullSlider/wholeFinf acceptance.",
+  "sourceBinding": {
+    "base": "f8cd869e894a5934a0b414758dbe9291906bcc79",
+    "fixCommit": "3d7a70e7340485405598a6454c1f7729df6a6641",
+    "tree": "639a6ba5d3e4f4dddb0a22db514e2a59a0e95df3",
+    "files": [
+      {
+        "path": "packages/prototypes/base/src/slider/root.proto.ts",
+        "sha256": "16599d46bf693784f8fba11368672619125da100d8279c4586aca0e3a1b36272",
+        "blob": "a71827fa8fd5410a6c668a372a733d43bbcf87f5",
+        "bytes": 8144
+      },
+      {
+        "path": "packages/prototypes/base/src/toolbar/separator.proto.ts",
+        "sha256": "df2276f27a7ca0d4aa3bf43f5ea26b4fca210fcd4452382c77f369b0721c276d",
+        "blob": "7e37e9a2c3578b440d794cfa4746d467fb959715",
+        "bytes": 1503
+      },
+      {
+        "path": "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+        "sha256": "724d3b854c248868fb4cbd38d7eb864db41229ea1b8f72a37e9be3b0080445a9",
+        "blob": "5ba9272dd8132501d6cbd012f336beddfb17f840",
+        "bytes": 4103
+      },
+      {
+        "path": "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+        "sha256": "b72e41357dd600117aef7d3fb0740c50014e5b6056b859790d9dd06b9aa904ff",
+        "blob": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72",
+        "bytes": 1691
+      }
+    ],
+    "onlyFourChangedPaths": true,
+    "evidenceTiming": "Actualstagedtree executions latermatchedthiscommit;notpostcommitreruns."
+  },
+  "sourceAssessment": {
+    "scalar": "Privatepublishboolean propagatesterminalframe liveness throughcallers. Livevalue/default/bounds/step/providing policy andpublictypes areunchanged; retiredmethodpaths nowstop/returnfalse insteadofinvalidhandle continuation. NoRuntime/Context/Valuesphase,veto,numericorcross-slotmodel implementation isimported.",
+    "separator": "Anatomyrootmembershipchange triggersfreshcurrent-provider cross-axis read; emptyrootparts skiponlyprovider-exit reads. Created/Mounted requiredcontext.read staysstrict. NoContextconnectioncallbackoroptionalglobalfallback added.",
+    "testPrecision": "Oldprovidernegative corrected: afterfirstvertical update itchangesfirstbacktohorizontal whileactiveSecondstillvertical andrequiresSeparatorhorizontal;newSecondhorizontal thenrequiresvertical. This nowdistinguishesoldproviderleak.",
+    "scopeLimit": "No generalnonterminalreentry ordering, allcallback-errorpolicy ornewstable/familyadmission claim."
+  },
+  "authority": {
+    "used": [
+      "C-LIFECYCLE-0002-G(draft)",
+      "C-LIFECYCLE-0006-B/D(draft)",
+      "C-CONTEXT-0011-A/B/E(draft)",
+      "M-ANATOMY-0001-B/D/E(draft)"
+    ],
+    "notTransferred": "C-SLIDER-VALUE-0001 governs additiveValues/unwrappedowner semantics; it is not silently madelegacyscalarSliderauthority. ToolbarSeparator separatecatalogdefinition remains absent; currentcross-axis behavior andContext/Anatomyownership bound thisrepair."
+  },
+  "evidenceHistory": {
+    "initialFormal": "6tests,5fail/1pass onexactf8",
+    "initialRepair": "5pass but1ContextDisconnectedunhandled,exit1;retained",
+    "earlyGreen": "6pass, stillincompletebecause detached/caller paths absent",
+    "independentGapRed": "14tests,7fail/7pass againstinitialrepair",
+    "finalSameTestHeadRed": "14finaltestbytes,12fail/2pass againstexactf8;mounted-value already passed andisnotclaimed newlyfixed",
+    "finalFocused": {
+      "files": 2,
+      "pass": 14,
+      "unhandledReported": 0,
+      "exitCode": 0
+    },
+    "adjacentIntegration": {
+      "files": 14,
+      "pass": 260,
+      "exitCode": 0
+    },
+    "types": {
+      "astroFiles": 817,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 11,
+      "exitCode": 0
+    },
+    "nativeAdjacentRegression": {
+      "files": 2,
+      "pass": 41,
+      "exitCode": 0,
+      "scope": "Base/familyCollapsible, not directnativeToolbar/Scalarretirement acceptance."
+    },
+    "testHashesMatchFinalBaselineReceipt": true,
+    "runsExecutedBy": "root; reviewerinspectedrawrecordswithout rerunning"
+  },
+  "remaining": [
+    "Latercombinedtree159 validation notinferred fromtree639 runs.",
+    "Directnewdefects areproved throughRuntime/publicWCunitDOM; native41 isadjacentCollapsible evidence.",
+    "No formalGitHubreview, canonicalv5packet, fullFinf acceptance or allcallbackpolicy resolution."
+  ],
+  "rawEvidence": [
+    {
+      "path": "authority-map.json",
+      "sha256": "e647ffba6d38dc1a82ca5568611ebfe7375fb97d4c3f8479340d18a873794576",
+      "bytes": 1528
+    },
+    {
+      "path": "candidate-change.json",
+      "sha256": "72b1744896978a1c53d6cf5d23280ec31168a9e0da1e6c3d933b623f0d61f427",
+      "bytes": 995
+    },
+    {
+      "path": "candidate-v2.json",
+      "sha256": "7bc70e504f7f6375d7dea66890d092f20113b6fe80394982a41d2efae67edfea",
+      "bytes": 940
+    },
+    {
+      "path": "formal-baseline-receipt.json",
+      "sha256": "5d9d0d494f701782a4dd059a17e556b4570cac364a7be9f9b67b095fe579f918",
+      "bytes": 569
+    },
+    {
+      "path": "formal-baseline.log",
+      "sha256": "eae7ef17148d11afda2bbaa0836a42b38607ec66de19f4b855e9229a0d4c1889",
+      "bytes": 4171
+    },
+    {
+      "path": "formal-green.log",
+      "sha256": "d38ce61662711381419da07c7961f4765ce28d4e7282d19f9c2dc5e022a3c9c8",
+      "bytes": 422
+    },
+    {
+      "path": "first-repair.log",
+      "sha256": "f1aa33c6ec3b23e79f763d4b4f9990648aa5585b1c6fca6f58a5d4771ee11185",
+      "bytes": 2404
+    },
+    {
+      "path": "first-repair.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "independent-gap-evidence.json",
+      "sha256": "e3012d78238f19a4b473c533cd39cc019f6540f1dae826653819a16f78143314",
+      "bytes": 301
+    },
+    {
+      "path": "independent-gaps-red.log",
+      "sha256": "d5e8549d51c19e327a52ee93ffd620cc1635340c78ff7e5879bbef8e50f2fbc3",
+      "bytes": 5919
+    },
+    {
+      "path": "independent-gaps-red.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "formal-baseline-v2-receipt.json",
+      "sha256": "25afd8f9e5c353d837403e7c34f4c162a0b26d705a6efea424fd2b1d619c2095",
+      "bytes": 499
+    },
+    {
+      "path": "formal-baseline-v2.log",
+      "sha256": "ce471d5645f79f2875f0ec777d1a408301489177736fe0f71bac3c0d5198edf0",
+      "bytes": 9901
+    },
+    {
+      "path": "focused-v2.log",
+      "sha256": "285308902e592cb116bfd7a7c51c5c0f31d1b02004aefe9ad029ea51d8c4adad",
+      "bytes": 425
+    },
+    {
+      "path": "focused-v2.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "integration-v2.log",
+      "sha256": "78b7a8d71fa1899f233a65c2f0f23ad4764dc7bc4c2b1232cc4f3dffb763635b",
+      "bytes": 1443
+    },
+    {
+      "path": "integration-v2.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "types-v2.log",
+      "sha256": "a8cd8bb839af4b5dfc7301dc938f4cc19c98fd8790fb29adc7ab41cfb87f1559",
+      "bytes": 5152
+    },
+    {
+      "path": "types-v2.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "native-v2.log",
+      "sha256": "983df83f9b744a5096abbc752f32c2cb32e7f38e0282623b88a5ae474cedd578",
+      "bytes": 19719
+    },
+    {
+      "path": "native-v2.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    }
+  ],
+  "actions": "Read-onlysource/contracts/log/Gitinspection; private reports only, no tests/build/browser/productedit/externalwrite/newagent."
+}

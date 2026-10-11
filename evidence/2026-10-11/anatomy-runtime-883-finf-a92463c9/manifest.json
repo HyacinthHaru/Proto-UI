@@ -1,0 +1,1908 @@
+{
+  "productHead": "a92463c9590c233e93f451389bab02b85009fa9a",
+  "productTree": "1597454fe2be1bb96ffc6cafc9788fe5f8b5ddba",
+  "foundation": "3f6f1a13c4d90a06b58821b64165fe7addb82fce",
+  "preparedAt": "2026-10-11T09:43:29.531099+00:00",
+  "rawPublicMapping": [
+    {
+      "source": "commit-push-final-receipt.json",
+      "public": "signed-combination.json",
+      "rawSha256": "6b3016260b0e1883381b1231c4347f2952c6d76c4539e02b0b337ba9e35649fa",
+      "publicSha256": "6b3016260b0e1883381b1231c4347f2952c6d76c4539e02b0b337ba9e35649fa",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    },
+    {
+      "source": "general-final-summary.json",
+      "public": "general-final-summary.json",
+      "rawSha256": "990a7b039f0fc476dfbf55bb3d1486fb3eb8b377e7879e6e583ff7c10cf81403",
+      "publicSha256": "0788224d70f3b40f814a0c38890e33cf44c72e7f60510f31a05898081d808f9b",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    },
+    {
+      "source": "native-final-receipt.json",
+      "public": "native-final-receipt.json",
+      "rawSha256": "ab424c522a85a67a4dc1b20d61a9c2f1d857abd5e5d83835cfef1ac7c1852800",
+      "publicSha256": "ab424c522a85a67a4dc1b20d61a9c2f1d857abd5e5d83835cfef1ac7c1852800",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    },
+    {
+      "source": "native-final-review.json",
+      "public": "native-visual-review.json",
+      "rawSha256": "2212b71f872f299afdfe14a9ef0f478eca986f666ab784e9797af4908677a3d2",
+      "publicSha256": "2212b71f872f299afdfe14a9ef0f478eca986f666ab784e9797af4908677a3d2",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    },
+    {
+      "source": "budgets-strict.json",
+      "public": "budget-strict-f8cd.json",
+      "rawSha256": "6d253bae3a23cac16c6d009b8944a9ab2192f5bf163e053c61103697a328e67f",
+      "publicSha256": "68df269d644d4e6cf80ff6bc1a1897f7ef1992b70147ca678b6d96b65742ece7",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    },
+    {
+      "source": "budgets-advisory.json",
+      "public": "budget-advisory-f8cd.json",
+      "rawSha256": "d9dc100e0a7c31b29be0f93e48a8f6b6361a53aa2b183f3ab66f10e1bcb93391",
+      "publicSha256": "9447c236d427ece97c64f82558295fb8ce61af2d164a9a0ea1a40fd9ba6cfd70",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    },
+    {
+      "source": "retained-lifecycle-feedback/independent-review/retained-lifecycle-review-v2.json",
+      "public": "independent-c-review.json",
+      "rawSha256": "51b1eae315fa5cbfbae25f2654a0e7be4befac919434c467b14b0c3efef9b345",
+      "publicSha256": "1b6c4bd935bbe6197b0394c55f97a3cd04de62b72ed30758edbfc4cf67beb73d",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    },
+    {
+      "source": "retained-lifecycle-feedback/independent-review/combined-binding-3f6f1a13.json",
+      "public": "independent-combination-binding.json",
+      "rawSha256": "3485acbf4ededab453e8009579bca5b909e7793361558e70c32076c545a2907c",
+      "publicSha256": "cf494f8d32b5690d0ea7599a81d29fe09da2377e4430486e4fbd0a4a6abb5bba",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    },
+    {
+      "source": "validation-source-binding.json",
+      "public": "historical-38-ed-source-binding.json",
+      "rawSha256": "95d318fee82e65266e91a027963a4b58e8bf0580f3f4606646226618c681ae01",
+      "publicSha256": "95d318fee82e65266e91a027963a4b58e8bf0580f3f4606646226618c681ae01",
+      "derivative": "Machine-path sanitized; outer JSON/Markdown may be formatted before final manifest. Not raw execution bytes or generic portable recipe. Final outer JSON/Markdown formatted before hashing."
+    }
+  ],
+  "archiveMapping": [
+    {
+      "source": "expanded-plan.json",
+      "member": "expanded-plan.json",
+      "rawSha256": "ccec4ff0b818c4912d0b4e9d5844d906d01a382cb67d8647c1b965d3f048b2bf",
+      "publicSha256": "ccec4ff0b818c4912d0b4e9d5844d906d01a382cb67d8647c1b965d3f048b2bf",
+      "bytes": 3250
+    },
+    {
+      "source": "expanded-receipt.json",
+      "member": "expanded-receipt.json",
+      "rawSha256": "f3170c31372b0c1391b7f78ad8f88baf4a4d23ecc45cec9e4542b10db5a93bbf",
+      "publicSha256": "f3170c31372b0c1391b7f78ad8f88baf4a4d23ecc45cec9e4542b10db5a93bbf",
+      "bytes": 3316
+    },
+    {
+      "source": "expanded.log",
+      "member": "expanded.log",
+      "rawSha256": "7c765b036f3a83879d201877b1219d67502f20cee0c6fa972066ac331036e3cf",
+      "publicSha256": "4586f99cc416d00458910566625a3c46f70bd1855369395fcdb831c565731c92",
+      "bytes": 16000
+    },
+    {
+      "source": "types.log",
+      "member": "types.log",
+      "rawSha256": "f1c9840459d11c7ac6bb7082f8849c539e463a8f06329f77c4f2d3f7409685bf",
+      "publicSha256": "1e02ff9ee275923882ca8d23e685fed901cf3135534fa03dd9d1133f68d25757",
+      "bytes": 4980
+    },
+    {
+      "source": "native-combination.log",
+      "member": "native-combination.log",
+      "rawSha256": "8a2edf3340e1f518ad2a2fe765c7276b52351301a40154466ac99f2c920a103c",
+      "publicSha256": "9382482b205d0aa0874f8d744e0b082da76d785bd80433031104dbf6a6352fea",
+      "bytes": 19366
+    },
+    {
+      "source": "native-combination.exit",
+      "member": "native-combination.exit",
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "publicSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "source": "tool-tests.log",
+      "member": "tool-tests.log",
+      "rawSha256": "9793b3ddb2c8ea479b52e1499b0ca87e816fc6b57c6e5fb8b45b30de79e76dc2",
+      "publicSha256": "bcf0fc04c15b242dd1c136b24965b8ba7f99a093a1a17641355b79c9353cfba5",
+      "bytes": 2459
+    },
+    {
+      "source": "lint-report.log",
+      "member": "lint-report.log",
+      "rawSha256": "bf8f7c85260144bbc989ebccf0e496ff7acb0281528a6393cbda070b71ad9356",
+      "publicSha256": "c0f6f26682982595d50970ecdb757e705a90bda0dc134c331bdce235225bf3f0",
+      "bytes": 749132
+    },
+    {
+      "source": "candidate-change-38eba228.json",
+      "member": "candidate-change-38eba228.json",
+      "rawSha256": "4df63e37b2577693908cd80292aca0482d38513c02a3d0463cb5c694f24de91e",
+      "publicSha256": "4df63e37b2577693908cd80292aca0482d38513c02a3d0463cb5c694f24de91e",
+      "bytes": 321
+    },
+    {
+      "source": "candidate-change-ed34000d.json",
+      "member": "candidate-change-ed34000d.json",
+      "rawSha256": "e6725bfd7d2515bd9bd9c34b07b6661ddba23b3183dae845a99b7e1152cb8249",
+      "publicSha256": "e6725bfd7d2515bd9bd9c34b07b6661ddba23b3183dae845a99b7e1152cb8249",
+      "bytes": 723
+    },
+    {
+      "source": "candidate-final.json",
+      "member": "candidate-final.json",
+      "rawSha256": "d7902a038c3d2eef78e710e469408a679e17faa978735f5613555dce14fe01de",
+      "publicSha256": "d7902a038c3d2eef78e710e469408a679e17faa978735f5613555dce14fe01de",
+      "bytes": 748
+    },
+    {
+      "source": "independent-review/ed34000d-final-binding.json",
+      "member": "independent-review/ed34000d-final-binding.json",
+      "rawSha256": "c93da0dd4bc095efe20e02e2b7ed746290f4b6b6d8c254bdb769b88e20468967",
+      "publicSha256": "c93da0dd4bc095efe20e02e2b7ed746290f4b6b6d8c254bdb769b88e20468967",
+      "bytes": 9821
+    },
+    {
+      "source": "general-f8cd869e.log",
+      "member": "general-f8cd869e.log",
+      "rawSha256": "eaaf10a60832aa061fdbc5233a460d3a2a083fd0526a4b08288d8dc4d75963cc",
+      "publicSha256": "6ae814925ce7ea685f3c9b10e952654ffa8bed5a3e87eb3cd7e9347eac1af90f",
+      "bytes": 1200263
+    },
+    {
+      "source": "general-vitest-f8cd869e.json",
+      "member": "general-vitest-f8cd869e.json",
+      "rawSha256": "b0456cf7dd66364fc8c3788e3400ffe183deafe7449fe50ae72cd90a4a222342",
+      "publicSha256": "44af8f74b2d086931b77fc397da74ddbef20a51698287d3a91d630df4053ca6b",
+      "bytes": 4820475
+    },
+    {
+      "source": "general-receipt-f8cd869e.json",
+      "member": "general-receipt-f8cd869e.json",
+      "rawSha256": "c3c6dfb79071e0b96e86e3679608dc444aead480c2e8cd132b093c4ca3e846fb",
+      "publicSha256": "3612f302ab357c9b60117795c47e1243dca29b7465a7423004d02e37fb215f8c",
+      "bytes": 8280
+    },
+    {
+      "source": "general-summary-f8cd869e-v2.json",
+      "member": "general-summary-f8cd869e-v2.json",
+      "rawSha256": "bd2b162791dc8776f69c9dba733665eaf826d8898008b481dab7013929f64c7c",
+      "publicSha256": "bd2b162791dc8776f69c9dba733665eaf826d8898008b481dab7013929f64c7c",
+      "bytes": 1321
+    },
+    {
+      "source": "ci-general-f8cd869e.log",
+      "member": "ci-general-f8cd869e.log",
+      "rawSha256": "af6c89fe55c362da2aceb66c7eceb63150ee2cde7cb4ee08c9413fbdd84fa8a7",
+      "publicSha256": "435a3deed2a3d39f0a59f2cb05fb9d2bc5083aad90cc55c82bfe338e1fef0e30",
+      "bytes": 146229
+    },
+    {
+      "source": "retained-lifecycle-feedback/baseline.log",
+      "member": "retained-lifecycle-feedback/baseline.log",
+      "rawSha256": "80f2e1a5074f0bf02e0bc6d754647a59cc366ab801cee476caf5443111216003",
+      "publicSha256": "eadb5e50ff2328d9da571524a984c3cbae1565aa4a8c731db8c28efb30b1c93c",
+      "bytes": 4064
+    },
+    {
+      "source": "retained-lifecycle-feedback/first-repair.log",
+      "member": "retained-lifecycle-feedback/first-repair.log",
+      "rawSha256": "f1aa33c6ec3b23e79f763d4b4f9990648aa5585b1c6fca6f58a5d4771ee11185",
+      "publicSha256": "bdb311474f6b3c7f23b16c1a03366c5f024b4c31db4a595dec51cec122ffbe61",
+      "bytes": 2361
+    },
+    {
+      "source": "retained-lifecycle-feedback/formal-baseline.log",
+      "member": "retained-lifecycle-feedback/formal-baseline.log",
+      "rawSha256": "eae7ef17148d11afda2bbaa0836a42b38607ec66de19f4b855e9229a0d4c1889",
+      "publicSha256": "1699e0f15555c32d80bc404a30f330236e116f8ef2d3ba3bba1a3d51f9bd4eb5",
+      "bytes": 4128
+    },
+    {
+      "source": "retained-lifecycle-feedback/formal-baseline-receipt.json",
+      "member": "retained-lifecycle-feedback/formal-baseline-receipt.json",
+      "rawSha256": "5d9d0d494f701782a4dd059a17e556b4570cac364a7be9f9b67b095fe579f918",
+      "publicSha256": "5d9d0d494f701782a4dd059a17e556b4570cac364a7be9f9b67b095fe579f918",
+      "bytes": 569
+    },
+    {
+      "source": "retained-lifecycle-feedback/formal-green.log",
+      "member": "retained-lifecycle-feedback/formal-green.log",
+      "rawSha256": "d38ce61662711381419da07c7961f4765ce28d4e7282d19f9c2dc5e022a3c9c8",
+      "publicSha256": "a97015f67477090652f8979b0ef7b84f02d085e6fa60a9b89fd922a97bf67a3e",
+      "bytes": 379
+    },
+    {
+      "source": "retained-lifecycle-feedback/independent-gaps-red.log",
+      "member": "retained-lifecycle-feedback/independent-gaps-red.log",
+      "rawSha256": "d5e8549d51c19e327a52ee93ffd620cc1635340c78ff7e5879bbef8e50f2fbc3",
+      "publicSha256": "c6aff6242e1c8ba4f0f36219f7e4d0c571cd3e2d3d801424e94160e963abd61f",
+      "bytes": 5876
+    },
+    {
+      "source": "retained-lifecycle-feedback/formal-baseline-v2.log",
+      "member": "retained-lifecycle-feedback/formal-baseline-v2.log",
+      "rawSha256": "ce471d5645f79f2875f0ec777d1a408301489177736fe0f71bac3c0d5198edf0",
+      "publicSha256": "8a8add0925a8641e124d79a71be5707878af3d9856aa25d96d0dc859f693432c",
+      "bytes": 9858
+    },
+    {
+      "source": "retained-lifecycle-feedback/formal-baseline-v2-receipt.json",
+      "member": "retained-lifecycle-feedback/formal-baseline-v2-receipt.json",
+      "rawSha256": "25afd8f9e5c353d837403e7c34f4c162a0b26d705a6efea424fd2b1d619c2095",
+      "publicSha256": "25afd8f9e5c353d837403e7c34f4c162a0b26d705a6efea424fd2b1d619c2095",
+      "bytes": 499
+    },
+    {
+      "source": "retained-lifecycle-feedback/focused-v2.log",
+      "member": "retained-lifecycle-feedback/focused-v2.log",
+      "rawSha256": "285308902e592cb116bfd7a7c51c5c0f31d1b02004aefe9ad029ea51d8c4adad",
+      "publicSha256": "b45e7fb343c2fee452a20aeb3a1190a1ef71d61643c7abb1c2104a2f9787dc2e",
+      "bytes": 382
+    },
+    {
+      "source": "retained-lifecycle-feedback/integration-v2.log",
+      "member": "retained-lifecycle-feedback/integration-v2.log",
+      "rawSha256": "78b7a8d71fa1899f233a65c2f0f23ad4764dc7bc4c2b1232cc4f3dffb763635b",
+      "publicSha256": "cba4ee5595edcbac6e53787ede2fe14adece4c76b937a7e622e9e871d5d8f343",
+      "bytes": 1400
+    },
+    {
+      "source": "retained-lifecycle-feedback/types-v2.log",
+      "member": "retained-lifecycle-feedback/types-v2.log",
+      "rawSha256": "a8cd8bb839af4b5dfc7301dc938f4cc19c98fd8790fb29adc7ab41cfb87f1559",
+      "publicSha256": "02d6a1eaa5d67a25b33b1d21a7d2c1265e484d70af8aa19742ea0632f0832fcc",
+      "bytes": 4980
+    },
+    {
+      "source": "retained-lifecycle-feedback/native-v2.log",
+      "member": "retained-lifecycle-feedback/native-v2.log",
+      "rawSha256": "983df83f9b744a5096abbc752f32c2cb32e7f38e0282623b88a5ae474cedd578",
+      "publicSha256": "b7ff3f57c0fafd705bf005a0b846301cb0dd84ce78403f0b2c26930ad196d14b",
+      "bytes": 19676
+    },
+    {
+      "source": "retained-lifecycle-feedback/slider-root.proto.ts",
+      "member": "retained-lifecycle-feedback/slider-root.proto.ts",
+      "rawSha256": "806e03b7d175f744ffde8ded07de4102d28012b6fc98e490c616ae7216d9cf09",
+      "publicSha256": "806e03b7d175f744ffde8ded07de4102d28012b6fc98e490c616ae7216d9cf09",
+      "bytes": 7805
+    },
+    {
+      "source": "retained-lifecycle-feedback/toolbar-separator.proto.ts",
+      "member": "retained-lifecycle-feedback/toolbar-separator.proto.ts",
+      "rawSha256": "df2276f27a7ca0d4aa3bf43f5ea26b4fca210fcd4452382c77f369b0721c276d",
+      "publicSha256": "df2276f27a7ca0d4aa3bf43f5ea26b4fca210fcd4452382c77f369b0721c276d",
+      "bytes": 1503
+    },
+    {
+      "source": "foundation-3f6f-focused.log",
+      "member": "foundation-3f6f-focused.log",
+      "rawSha256": "06ad46b17fb9b567b8783d765b6f458e9463880121c5b226c57d88303ae3e8f7",
+      "publicSha256": "6aa93c02aec33e6b11492170141913e2be1cee94c173973d74d4a50ec6d5cfae",
+      "bytes": 547
+    },
+    {
+      "source": "types-final-combination.log",
+      "member": "types-final-combination.log",
+      "rawSha256": "8dcf05d502f83f312a483debc7c52b0deea12e0eae9a959a6d06614176622b94",
+      "publicSha256": "db2e16625c3dd98e6a6a0362cc79e54d33209856fd6792daaa727f81748c1832",
+      "bytes": 4980
+    },
+    {
+      "source": "full-test-final.log",
+      "member": "full-test-final.log",
+      "rawSha256": "79de7866f00507ec306a3915eab97da40e6d6d9377111760577291691a935c71",
+      "publicSha256": "bd6e8b5e969f9b2b5a2057728c7e4cd50724af9363eeb3991bc42ac275500a36",
+      "bytes": 1809
+    },
+    {
+      "source": "full-test-final-receipt.json",
+      "member": "full-test-final-receipt.json",
+      "rawSha256": "c6bd33f867e6b6d4327d611b5805cb4235a6d331e32922575ae02c1c197e5877",
+      "publicSha256": "c6bd33f867e6b6d4327d611b5805cb4235a6d331e32922575ae02c1c197e5877",
+      "bytes": 430
+    },
+    {
+      "source": "general-final.log",
+      "member": "general-final.log",
+      "rawSha256": "558e16b43667ff9d85a98afe762e691123a5531c8d3312857cac794309978cac",
+      "publicSha256": "80db8854a0f2e6a125f14da6661842175b395698b9efec1828ce8f2f10c24a6c",
+      "bytes": 1198538
+    },
+    {
+      "source": "general-final-plan.json",
+      "member": "general-final-plan.json",
+      "rawSha256": "18d76b3f43e5183e8f3a27169cb7b3d4aa64d5a444e1e67bb75cbc13fc6d65d1",
+      "publicSha256": "18d76b3f43e5183e8f3a27169cb7b3d4aa64d5a444e1e67bb75cbc13fc6d65d1",
+      "bytes": 8059
+    },
+    {
+      "source": "general-final-vitest.json",
+      "member": "general-final-vitest.json",
+      "rawSha256": "17ed37ddd45f75bf8b0d47bbd2fd66fbc08f66e07715c290696f668324ad620b",
+      "publicSha256": "f94937540620271883e9370c42b4635b9c02b18adfb204bf1777834dae4717c2",
+      "bytes": 4828214
+    },
+    {
+      "source": "general-final-receipt.json",
+      "member": "general-final-receipt.json",
+      "rawSha256": "871054f69ddb919438d8c7de1bdc0e5a35be77c5b6dc64283e2e9dd159ae82db",
+      "publicSha256": "df4cfc5370b02c729dfd03d665ba8e90bd02eb365e78baf2a2d718fef87f826d",
+      "bytes": 8253
+    },
+    {
+      "source": "native-final.log",
+      "member": "native-final.log",
+      "rawSha256": "f6cef48fadf3290de788152f5c957e9c5fb5878260dcb0bf7971a598c26902ac",
+      "publicSha256": "540db41630ba17da411de4bcbbd7e4ad1c85cf8fb6d6f910c2a35c57914586a4",
+      "bytes": 19074
+    },
+    {
+      "source": "native-final.exit",
+      "member": "native-final.exit",
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "publicSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/bootstrap-2-3-2-react-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "cead2abfa9da524961991b94c345aef05caeda91299e3f3b761290727a0b8ae6",
+      "publicSha256": "cead2abfa9da524961991b94c345aef05caeda91299e3f3b761290727a0b8ae6",
+      "bytes": 30931
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-320-text200-dark-open.json",
+      "member": "native-final/bootstrap-2-3-2-react-320-text200-dark-open.json",
+      "rawSha256": "85887d369e1bab9720200bc7636eb04a9fc851e6996c0a5ba23c698c1d805fb6",
+      "publicSha256": "85887d369e1bab9720200bc7636eb04a9fc851e6996c0a5ba23c698c1d805fb6",
+      "bytes": 30897
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-320-text200-dark-text-bounds.json",
+      "member": "native-final/bootstrap-2-3-2-react-320-text200-dark-text-bounds.json",
+      "rawSha256": "9c723a7a8d39c6c14e4d34fa12557692980df15f81e5093197a3c88bfc9a197c",
+      "publicSha256": "9c723a7a8d39c6c14e4d34fa12557692980df15f81e5093197a3c88bfc9a197c",
+      "bytes": 18821
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-320-text200-light-before-text-assertion.json",
+      "member": "native-final/bootstrap-2-3-2-react-320-text200-light-before-text-assertion.json",
+      "rawSha256": "d2995e2dc7e824cba05689db2c8ec8f2d396ee82224609c862e1f18dea3f7872",
+      "publicSha256": "d2995e2dc7e824cba05689db2c8ec8f2d396ee82224609c862e1f18dea3f7872",
+      "bytes": 30935
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-320-text200-light-open.json",
+      "member": "native-final/bootstrap-2-3-2-react-320-text200-light-open.json",
+      "rawSha256": "a3ead741cfe0d269a2fc7eb4451d7e66137105e99b65fef064b34151f17a7674",
+      "publicSha256": "a3ead741cfe0d269a2fc7eb4451d7e66137105e99b65fef064b34151f17a7674",
+      "bytes": 30901
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-320-text200-light-text-bounds.json",
+      "member": "native-final/bootstrap-2-3-2-react-320-text200-light-text-bounds.json",
+      "rawSha256": "e46fc5c47eee66e431e56bf3b92052cd04918a8ae1955179107597a3ac007b6d",
+      "publicSha256": "e46fc5c47eee66e431e56bf3b92052cd04918a8ae1955179107597a3ac007b6d",
+      "bytes": 18823
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-controlled-accepted.json",
+      "member": "native-final/bootstrap-2-3-2-react-controlled-accepted.json",
+      "rawSha256": "d4d664e10ae264d0e5cc38fd6d0274a17e4976880a96d6ddc88f83db8bd8eaa5",
+      "publicSha256": "d4d664e10ae264d0e5cc38fd6d0274a17e4976880a96d6ddc88f83db8bd8eaa5",
+      "bytes": 35472
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-initial.json",
+      "member": "native-final/bootstrap-2-3-2-react-initial.json",
+      "rawSha256": "b73b2e237d1586d9c4c59692cce1d6f6a12e9d27732ece713fb80699ee4e4132",
+      "publicSha256": "b73b2e237d1586d9c4c59692cce1d6f6a12e9d27732ece713fb80699ee4e4132",
+      "bytes": 28465
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-keyboard-focus-closed.json",
+      "member": "native-final/bootstrap-2-3-2-react-keyboard-focus-closed.json",
+      "rawSha256": "3570c80098f887cbcdd42a9454817a5e5ec574c9553d7889478538c702ae870b",
+      "publicSha256": "3570c80098f887cbcdd42a9454817a5e5ec574c9553d7889478538c702ae870b",
+      "bytes": 29698
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-keyboard-focus-open.json",
+      "member": "native-final/bootstrap-2-3-2-react-keyboard-focus-open.json",
+      "rawSha256": "8698bcdb4969a5cb132782b5dc4bf3ec401407a8abd9afab9ad997f836849401",
+      "publicSha256": "8698bcdb4969a5cb132782b5dc4bf3ec401407a8abd9afab9ad997f836849401",
+      "bytes": 31509
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-react-open.json",
+      "member": "native-final/bootstrap-2-3-2-react-open.json",
+      "rawSha256": "0a85d5abb9c6034bdeddd985309dd3a2c1a26c26d42bbda823ee4f7526b083be",
+      "publicSha256": "0a85d5abb9c6034bdeddd985309dd3a2c1a26c26d42bbda823ee4f7526b083be",
+      "bytes": 30796
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/bootstrap-2-3-2-vue-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "1fa794b51c0951c3745847c408203a2de031b85d5d068e1825ad95e7815cdd91",
+      "publicSha256": "1fa794b51c0951c3745847c408203a2de031b85d5d068e1825ad95e7815cdd91",
+      "bytes": 30911
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-320-text200-dark-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue-320-text200-dark-open.json",
+      "rawSha256": "24626abba12989a90ea09a3720842e59019cbde3553bc55d1064252d4aaedab3",
+      "publicSha256": "24626abba12989a90ea09a3720842e59019cbde3553bc55d1064252d4aaedab3",
+      "bytes": 30877
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-320-text200-dark-text-bounds.json",
+      "member": "native-final/bootstrap-2-3-2-vue-320-text200-dark-text-bounds.json",
+      "rawSha256": "ab8ffbfe88e502e735fa3af68b4ed935643bc4732215e6a56dd738665d029411",
+      "publicSha256": "ab8ffbfe88e502e735fa3af68b4ed935643bc4732215e6a56dd738665d029411",
+      "bytes": 18817
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-320-text200-light-before-text-assertion.json",
+      "member": "native-final/bootstrap-2-3-2-vue-320-text200-light-before-text-assertion.json",
+      "rawSha256": "ea466de09949c16653c5c86a5f1263c41851579c6ff2c79d987e9a028c2e76db",
+      "publicSha256": "ea466de09949c16653c5c86a5f1263c41851579c6ff2c79d987e9a028c2e76db",
+      "bytes": 30915
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-320-text200-light-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue-320-text200-light-open.json",
+      "rawSha256": "1e08430dff150e2ab4859bf08e4ba9b37606a80cc3776d918f2c824ff282fa76",
+      "publicSha256": "1e08430dff150e2ab4859bf08e4ba9b37606a80cc3776d918f2c824ff282fa76",
+      "bytes": 30881
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-320-text200-light-text-bounds.json",
+      "member": "native-final/bootstrap-2-3-2-vue-320-text200-light-text-bounds.json",
+      "rawSha256": "10b0c292b7eaf6a19907527c4a46afc5bae33af33858f02f7d3f0751dd02956e",
+      "publicSha256": "10b0c292b7eaf6a19907527c4a46afc5bae33af33858f02f7d3f0751dd02956e",
+      "bytes": 18819
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-controlled-accepted.json",
+      "member": "native-final/bootstrap-2-3-2-vue-controlled-accepted.json",
+      "rawSha256": "901fe49cfd6a6971d1eff8d5d60610d0277d8e6f5163d9b2c368425436124253",
+      "publicSha256": "901fe49cfd6a6971d1eff8d5d60610d0277d8e6f5163d9b2c368425436124253",
+      "bytes": 35470
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-initial.json",
+      "member": "native-final/bootstrap-2-3-2-vue-initial.json",
+      "rawSha256": "6c8fbf8dc500f096a88797319beacbf53f24b6fbfe366e9322533efb1dd35a73",
+      "publicSha256": "6c8fbf8dc500f096a88797319beacbf53f24b6fbfe366e9322533efb1dd35a73",
+      "bytes": 28438
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-keyboard-focus-closed.json",
+      "member": "native-final/bootstrap-2-3-2-vue-keyboard-focus-closed.json",
+      "rawSha256": "90a3555218cf3b5d3e6866a8ea57936c0b9969380e8be121adcb17274db0e3ce",
+      "publicSha256": "90a3555218cf3b5d3e6866a8ea57936c0b9969380e8be121adcb17274db0e3ce",
+      "bytes": 29677
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-keyboard-focus-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue-keyboard-focus-open.json",
+      "rawSha256": "6fade911bd29a003c9a62b97e676b799c04c81b1f1d192ae8d8e5cf2fd2f6f50",
+      "publicSha256": "6fade911bd29a003c9a62b97e676b799c04c81b1f1d192ae8d8e5cf2fd2f6f50",
+      "bytes": 31491
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue-open.json",
+      "rawSha256": "aa477f8f61cd5646c3af59f339b8de599603f0a5b3a20fd9bc29733dcb175c8b",
+      "publicSha256": "aa477f8f61cd5646c3af59f339b8de599603f0a5b3a20fd9bc29733dcb175c8b",
+      "bytes": 30773
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "a53915925747311a037d1da5776c01748be33feb2409c1bae77316179082560b",
+      "publicSha256": "a53915925747311a037d1da5776c01748be33feb2409c1bae77316179082560b",
+      "bytes": 30890
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-320-text200-dark-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-320-text200-dark-open.json",
+      "rawSha256": "5837f329a94fa3646f677983ebe819ac6c8b5523be6d483597e3a569716a058e",
+      "publicSha256": "5837f329a94fa3646f677983ebe819ac6c8b5523be6d483597e3a569716a058e",
+      "bytes": 30856
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-320-text200-dark-text-bounds.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-320-text200-dark-text-bounds.json",
+      "rawSha256": "97a42050507c26016c7efe7ac7e2302ffc693f3dc66b5d347c3b41db210234bd",
+      "publicSha256": "97a42050507c26016c7efe7ac7e2302ffc693f3dc66b5d347c3b41db210234bd",
+      "bytes": 18819
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-320-text200-light-before-text-assertion.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-320-text200-light-before-text-assertion.json",
+      "rawSha256": "337407ec6df41b2948a3d767ed853788cf413a47fa20b5dc6c230ad584ece9e5",
+      "publicSha256": "337407ec6df41b2948a3d767ed853788cf413a47fa20b5dc6c230ad584ece9e5",
+      "bytes": 30894
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-320-text200-light-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-320-text200-light-open.json",
+      "rawSha256": "424569dc3b1f14d93fa0885dc580bc6498b3eac9a5a7b1858ca93e29d9ace9de",
+      "publicSha256": "424569dc3b1f14d93fa0885dc580bc6498b3eac9a5a7b1858ca93e29d9ace9de",
+      "bytes": 30860
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-320-text200-light-text-bounds.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-320-text200-light-text-bounds.json",
+      "rawSha256": "929d1da1167a8565d491fb8e4a9a8248dd1984899bd83f16cd0e4e5ac8f8bab5",
+      "publicSha256": "929d1da1167a8565d491fb8e4a9a8248dd1984899bd83f16cd0e4e5ac8f8bab5",
+      "bytes": 18821
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-controlled-accepted.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-controlled-accepted.json",
+      "rawSha256": "c2bba246ec9aec92e90f5a1f891923546a4dfa15bc2f2a184b27eb93eef50bc5",
+      "publicSha256": "c2bba246ec9aec92e90f5a1f891923546a4dfa15bc2f2a184b27eb93eef50bc5",
+      "bytes": 35452
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-initial.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-initial.json",
+      "rawSha256": "db4b89dfc0af12193a09f3ed3c00706a740da7045e018a44659efd98fbca12e7",
+      "publicSha256": "db4b89dfc0af12193a09f3ed3c00706a740da7045e018a44659efd98fbca12e7",
+      "bytes": 28434
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-keyboard-focus-closed.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-keyboard-focus-closed.json",
+      "rawSha256": "4988a3da2a3e1a22dc4247e30b830205f20538a1951c89659abd25b5d430dd03",
+      "publicSha256": "4988a3da2a3e1a22dc4247e30b830205f20538a1951c89659abd25b5d430dd03",
+      "bytes": 29658
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-keyboard-focus-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-keyboard-focus-open.json",
+      "rawSha256": "88dbfb43d187cf870e2b7ea50bc8c97f2de24b5cfa0b50c8de4199ea88f5e07f",
+      "publicSha256": "88dbfb43d187cf870e2b7ea50bc8c97f2de24b5cfa0b50c8de4199ea88f5e07f",
+      "bytes": 31472
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-open.json",
+      "rawSha256": "078aa2aa44e863a14e85db89cb273d12291ff3c20288e8d21863474ff180b8e1",
+      "publicSha256": "078aa2aa44e863a14e85db89cb273d12291ff3c20288e8d21863474ff180b8e1",
+      "bytes": 30767
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-vue2-zh-cn-390-open.json",
+      "member": "native-final/bootstrap-2-3-2-vue2-zh-cn-390-open.json",
+      "rawSha256": "814f44a6b77a4436898a7efbe312d4aed76e2d7d3927ff4564a3f10b6d409cef",
+      "publicSha256": "814f44a6b77a4436898a7efbe312d4aed76e2d7d3927ff4564a3f10b6d409cef",
+      "bytes": 30757
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/bootstrap-2-3-2-wc-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "efa2ad90e8dc1bf1d8e9deee563543c3efe62da6a9c8a1d0d869af447130aa00",
+      "publicSha256": "efa2ad90e8dc1bf1d8e9deee563543c3efe62da6a9c8a1d0d869af447130aa00",
+      "bytes": 32677
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-320-text200-dark-open.json",
+      "member": "native-final/bootstrap-2-3-2-wc-320-text200-dark-open.json",
+      "rawSha256": "224cdd8e1ccd53376c2403d643aaa2be3cae25d87f339167cf6302a14405c980",
+      "publicSha256": "224cdd8e1ccd53376c2403d643aaa2be3cae25d87f339167cf6302a14405c980",
+      "bytes": 32643
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-320-text200-dark-text-bounds.json",
+      "member": "native-final/bootstrap-2-3-2-wc-320-text200-dark-text-bounds.json",
+      "rawSha256": "1a6514738b7db07bf9764b5d831efb8114f0dd2ae58d00190e98a9cc1c6fb0c2",
+      "publicSha256": "1a6514738b7db07bf9764b5d831efb8114f0dd2ae58d00190e98a9cc1c6fb0c2",
+      "bytes": 18815
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-320-text200-light-before-text-assertion.json",
+      "member": "native-final/bootstrap-2-3-2-wc-320-text200-light-before-text-assertion.json",
+      "rawSha256": "f2fde3565a2143dc0060a6d2e0592e9ff8aacf6deeb4d4a8f9447ebaa4519300",
+      "publicSha256": "f2fde3565a2143dc0060a6d2e0592e9ff8aacf6deeb4d4a8f9447ebaa4519300",
+      "bytes": 32681
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-320-text200-light-open.json",
+      "member": "native-final/bootstrap-2-3-2-wc-320-text200-light-open.json",
+      "rawSha256": "aceb8e0c942644247e5485b8fe8a3924363e6b2207299b6d893830542f60e105",
+      "publicSha256": "aceb8e0c942644247e5485b8fe8a3924363e6b2207299b6d893830542f60e105",
+      "bytes": 32647
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-320-text200-light-text-bounds.json",
+      "member": "native-final/bootstrap-2-3-2-wc-320-text200-light-text-bounds.json",
+      "rawSha256": "38f2929b1d952b5dd60bf3c17a019227b85dfa07a88b156f4c4504a41ef1f7cc",
+      "publicSha256": "38f2929b1d952b5dd60bf3c17a019227b85dfa07a88b156f4c4504a41ef1f7cc",
+      "bytes": 18817
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-controlled-accepted.json",
+      "member": "native-final/bootstrap-2-3-2-wc-controlled-accepted.json",
+      "rawSha256": "8ec6438c53f4a5fabcbca771f1d88f4d7756e7c4e3a895661848dc6295e86773",
+      "publicSha256": "8ec6438c53f4a5fabcbca771f1d88f4d7756e7c4e3a895661848dc6295e86773",
+      "bytes": 37382
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-initial.json",
+      "member": "native-final/bootstrap-2-3-2-wc-initial.json",
+      "rawSha256": "40d780a55973df6a1be67bda63c56a07e83b5cbb79d187802364c0f01be99067",
+      "publicSha256": "40d780a55973df6a1be67bda63c56a07e83b5cbb79d187802364c0f01be99067",
+      "bytes": 31630
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-keyboard-focus-closed.json",
+      "member": "native-final/bootstrap-2-3-2-wc-keyboard-focus-closed.json",
+      "rawSha256": "96d681ebc3e4dfeca24e1d6d320e829465dbe9a4f8d2f8f9162ba5031713f800",
+      "publicSha256": "96d681ebc3e4dfeca24e1d6d320e829465dbe9a4f8d2f8f9162ba5031713f800",
+      "bytes": 32867
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-keyboard-focus-open.json",
+      "member": "native-final/bootstrap-2-3-2-wc-keyboard-focus-open.json",
+      "rawSha256": "d29f7ae93d8d65a3c40e60d09ad29f2fc5efe4079e9ed1d10647d91a2d7cb697",
+      "publicSha256": "d29f7ae93d8d65a3c40e60d09ad29f2fc5efe4079e9ed1d10647d91a2d7cb697",
+      "bytes": 33249
+    },
+    {
+      "source": "native-final-captures/bootstrap-2-3-2-wc-open.json",
+      "member": "native-final/bootstrap-2-3-2-wc-open.json",
+      "rawSha256": "24779e07381b620347e21044ab80678d00f197f7b3a34dd625e6cb5f8287d8a7",
+      "publicSha256": "24779e07381b620347e21044ab80678d00f197f7b3a34dd625e6cb5f8287d8a7",
+      "bytes": 32534
+    },
+    {
+      "source": "native-final-captures/brutalist-react-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/brutalist-react-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "3742c5c0cb7b836d4d9edfa0c5faa5b286f20e09a172f61073de9819a843ef1d",
+      "publicSha256": "3742c5c0cb7b836d4d9edfa0c5faa5b286f20e09a172f61073de9819a843ef1d",
+      "bytes": 28031
+    },
+    {
+      "source": "native-final-captures/brutalist-react-320-text200-dark-open.json",
+      "member": "native-final/brutalist-react-320-text200-dark-open.json",
+      "rawSha256": "5ba10c14eed1f5c6890b02093cb0276df694c93452c09723fda128bf517ae47b",
+      "publicSha256": "5ba10c14eed1f5c6890b02093cb0276df694c93452c09723fda128bf517ae47b",
+      "bytes": 27997
+    },
+    {
+      "source": "native-final-captures/brutalist-react-320-text200-dark-text-bounds.json",
+      "member": "native-final/brutalist-react-320-text200-dark-text-bounds.json",
+      "rawSha256": "5434e939ece62997c2b9974cd69098def1d7a44bc01d68147a4cfc18dc006999",
+      "publicSha256": "5434e939ece62997c2b9974cd69098def1d7a44bc01d68147a4cfc18dc006999",
+      "bytes": 18738
+    },
+    {
+      "source": "native-final-captures/brutalist-react-320-text200-light-before-text-assertion.json",
+      "member": "native-final/brutalist-react-320-text200-light-before-text-assertion.json",
+      "rawSha256": "e59e2e0e9630b1e043dae6c4afa812a30eb7a88706b4b0b3f366731ec91870a8",
+      "publicSha256": "e59e2e0e9630b1e043dae6c4afa812a30eb7a88706b4b0b3f366731ec91870a8",
+      "bytes": 27951
+    },
+    {
+      "source": "native-final-captures/brutalist-react-320-text200-light-open.json",
+      "member": "native-final/brutalist-react-320-text200-light-open.json",
+      "rawSha256": "a6ec9b6ed343ed3a0683b55e3e9df23e5be45c73fb2dee3e002c4986aea71f4f",
+      "publicSha256": "a6ec9b6ed343ed3a0683b55e3e9df23e5be45c73fb2dee3e002c4986aea71f4f",
+      "bytes": 27917
+    },
+    {
+      "source": "native-final-captures/brutalist-react-320-text200-light-text-bounds.json",
+      "member": "native-final/brutalist-react-320-text200-light-text-bounds.json",
+      "rawSha256": "6cf07db62ef9fe23bd1bfbbb2fd7ca34ee61ce236b91a3eb83fce2cd8ab209af",
+      "publicSha256": "6cf07db62ef9fe23bd1bfbbb2fd7ca34ee61ce236b91a3eb83fce2cd8ab209af",
+      "bytes": 18740
+    },
+    {
+      "source": "native-final-captures/brutalist-react-controlled-accepted.json",
+      "member": "native-final/brutalist-react-controlled-accepted.json",
+      "rawSha256": "b6b14e932f8dfb8e71541f4bf2271eb724d68abb8fe08ab8c933e6d7bfa39e50",
+      "publicSha256": "b6b14e932f8dfb8e71541f4bf2271eb724d68abb8fe08ab8c933e6d7bfa39e50",
+      "bytes": 32433
+    },
+    {
+      "source": "native-final-captures/brutalist-react-initial.json",
+      "member": "native-final/brutalist-react-initial.json",
+      "rawSha256": "12adf20d33b9625d44cd56e10cf9e2189c4b1e372ac5fd900febe058747c1051",
+      "publicSha256": "12adf20d33b9625d44cd56e10cf9e2189c4b1e372ac5fd900febe058747c1051",
+      "bytes": 25628
+    },
+    {
+      "source": "native-final-captures/brutalist-react-keyboard-focus-closed.json",
+      "member": "native-final/brutalist-react-keyboard-focus-closed.json",
+      "rawSha256": "29f5c22cc011834a9208a0696f303ede2d82cc05e2c2ff1c5df54e8bd9d88e96",
+      "publicSha256": "29f5c22cc011834a9208a0696f303ede2d82cc05e2c2ff1c5df54e8bd9d88e96",
+      "bytes": 26836
+    },
+    {
+      "source": "native-final-captures/brutalist-react-keyboard-focus-open.json",
+      "member": "native-final/brutalist-react-keyboard-focus-open.json",
+      "rawSha256": "e2358a44be0e9b58c9fcb0c6e5b19e971f2d8e4e3dab42ace7c47aea48f357a2",
+      "publicSha256": "e2358a44be0e9b58c9fcb0c6e5b19e971f2d8e4e3dab42ace7c47aea48f357a2",
+      "bytes": 28475
+    },
+    {
+      "source": "native-final-captures/brutalist-react-open.json",
+      "member": "native-final/brutalist-react-open.json",
+      "rawSha256": "bdf6411478a2696d9a39aaea087060db98cb7c9f55fc3810ec7a50ec6d34ec91",
+      "publicSha256": "bdf6411478a2696d9a39aaea087060db98cb7c9f55fc3810ec7a50ec6d34ec91",
+      "bytes": 27796
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/brutalist-vue-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "a1d8b87d2a2a11d6d8dad6a5a025c58654019698c4b2bad9713af342dd84b73b",
+      "publicSha256": "a1d8b87d2a2a11d6d8dad6a5a025c58654019698c4b2bad9713af342dd84b73b",
+      "bytes": 27999
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-320-text200-dark-open.json",
+      "member": "native-final/brutalist-vue-320-text200-dark-open.json",
+      "rawSha256": "7a90658c0f0992752a6c8c057a55672abd3dc3ec96660d4fcc44edf569dbc5ae",
+      "publicSha256": "7a90658c0f0992752a6c8c057a55672abd3dc3ec96660d4fcc44edf569dbc5ae",
+      "bytes": 27965
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-320-text200-dark-text-bounds.json",
+      "member": "native-final/brutalist-vue-320-text200-dark-text-bounds.json",
+      "rawSha256": "51a5fd0fd718aefb52f69ca65806b04864a25c4f459da2d1e5c77a7b12f00cea",
+      "publicSha256": "51a5fd0fd718aefb52f69ca65806b04864a25c4f459da2d1e5c77a7b12f00cea",
+      "bytes": 18734
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-320-text200-light-before-text-assertion.json",
+      "member": "native-final/brutalist-vue-320-text200-light-before-text-assertion.json",
+      "rawSha256": "e8638d6ee6358c3400ed2943147f74b910863ef00cad59d5c859979d0054003b",
+      "publicSha256": "e8638d6ee6358c3400ed2943147f74b910863ef00cad59d5c859979d0054003b",
+      "bytes": 27919
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-320-text200-light-open.json",
+      "member": "native-final/brutalist-vue-320-text200-light-open.json",
+      "rawSha256": "68144b020add3ba7bc496d201edb2fc95b82bdc8616ae75a843019a6a9789c54",
+      "publicSha256": "68144b020add3ba7bc496d201edb2fc95b82bdc8616ae75a843019a6a9789c54",
+      "bytes": 27885
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-320-text200-light-text-bounds.json",
+      "member": "native-final/brutalist-vue-320-text200-light-text-bounds.json",
+      "rawSha256": "519fdfde3c11e0172453894c855fd02ac4cc826b6f2013995c1e3719021c6e6e",
+      "publicSha256": "519fdfde3c11e0172453894c855fd02ac4cc826b6f2013995c1e3719021c6e6e",
+      "bytes": 18736
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-controlled-accepted.json",
+      "member": "native-final/brutalist-vue-controlled-accepted.json",
+      "rawSha256": "8930438e83d98c00ad56a2dd605ca03dc87f4ec9202612f01348c338771b275e",
+      "publicSha256": "8930438e83d98c00ad56a2dd605ca03dc87f4ec9202612f01348c338771b275e",
+      "bytes": 32429
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-initial.json",
+      "member": "native-final/brutalist-vue-initial.json",
+      "rawSha256": "605010c58123c6ce9a6e2b057a5417a8afcb9dc8bfabe64dac0474be247e06cb",
+      "publicSha256": "605010c58123c6ce9a6e2b057a5417a8afcb9dc8bfabe64dac0474be247e06cb",
+      "bytes": 25611
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-keyboard-focus-closed.json",
+      "member": "native-final/brutalist-vue-keyboard-focus-closed.json",
+      "rawSha256": "8b187613ef28de78560b3abe22b254f6532d5288535535e4b11107b22fdd2982",
+      "publicSha256": "8b187613ef28de78560b3abe22b254f6532d5288535535e4b11107b22fdd2982",
+      "bytes": 26809
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-keyboard-focus-open.json",
+      "member": "native-final/brutalist-vue-keyboard-focus-open.json",
+      "rawSha256": "1f1a9df57289a93b6d1d844a0ea4ebc0a96d89b753ca2f582fe08778104b13af",
+      "publicSha256": "1f1a9df57289a93b6d1d844a0ea4ebc0a96d89b753ca2f582fe08778104b13af",
+      "bytes": 28450
+    },
+    {
+      "source": "native-final-captures/brutalist-vue-open.json",
+      "member": "native-final/brutalist-vue-open.json",
+      "rawSha256": "e5a799d70b7627b630c80c98d934a21d07545ccdddea69dbcfca9b8fbc6c20f4",
+      "publicSha256": "e5a799d70b7627b630c80c98d934a21d07545ccdddea69dbcfca9b8fbc6c20f4",
+      "bytes": 27770
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/brutalist-vue2-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "c6783b103f7c993c6124733faee3fe4ecd88489139cee006715b3be698c89664",
+      "publicSha256": "c6783b103f7c993c6124733faee3fe4ecd88489139cee006715b3be698c89664",
+      "bytes": 28020
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-320-text200-dark-open.json",
+      "member": "native-final/brutalist-vue2-320-text200-dark-open.json",
+      "rawSha256": "54dce91a915b4e1fd026d77b918f89b5fd9f63998b234ede59d3425d4e2a54af",
+      "publicSha256": "54dce91a915b4e1fd026d77b918f89b5fd9f63998b234ede59d3425d4e2a54af",
+      "bytes": 27986
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-320-text200-dark-text-bounds.json",
+      "member": "native-final/brutalist-vue2-320-text200-dark-text-bounds.json",
+      "rawSha256": "d534950f8a3c8b7af5ca2ac91a72780bfcfc511a04b2b565d647c1e13422fa0f",
+      "publicSha256": "d534950f8a3c8b7af5ca2ac91a72780bfcfc511a04b2b565d647c1e13422fa0f",
+      "bytes": 18736
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-320-text200-light-before-text-assertion.json",
+      "member": "native-final/brutalist-vue2-320-text200-light-before-text-assertion.json",
+      "rawSha256": "548a6a61eeab3f1cf594a3cb23cc211e3c143bcd7b160fddbbd4991ca26dafff",
+      "publicSha256": "548a6a61eeab3f1cf594a3cb23cc211e3c143bcd7b160fddbbd4991ca26dafff",
+      "bytes": 27940
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-320-text200-light-open.json",
+      "member": "native-final/brutalist-vue2-320-text200-light-open.json",
+      "rawSha256": "ce9179c8feedd254e7f9d7b6f0efbe72f4acf4a40d731b2f3f432b05654d8695",
+      "publicSha256": "ce9179c8feedd254e7f9d7b6f0efbe72f4acf4a40d731b2f3f432b05654d8695",
+      "bytes": 27906
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-320-text200-light-text-bounds.json",
+      "member": "native-final/brutalist-vue2-320-text200-light-text-bounds.json",
+      "rawSha256": "7f24982703a3b75f29e50a61064bd5849ec93036ad9a29971bd5d9b0ac365bda",
+      "publicSha256": "7f24982703a3b75f29e50a61064bd5849ec93036ad9a29971bd5d9b0ac365bda",
+      "bytes": 18738
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-controlled-accepted.json",
+      "member": "native-final/brutalist-vue2-controlled-accepted.json",
+      "rawSha256": "2a566376335a2137be6961d6ac735f2e5aceaa4ceafbb5f834eb2a0812f5e3c1",
+      "publicSha256": "2a566376335a2137be6961d6ac735f2e5aceaa4ceafbb5f834eb2a0812f5e3c1",
+      "bytes": 32477
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-initial.json",
+      "member": "native-final/brutalist-vue2-initial.json",
+      "rawSha256": "69533778c2a83ec77387077d98e8273a6b887432aea05e9a0d5ca7bcc4b24658",
+      "publicSha256": "69533778c2a83ec77387077d98e8273a6b887432aea05e9a0d5ca7bcc4b24658",
+      "bytes": 25636
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-keyboard-focus-closed.json",
+      "member": "native-final/brutalist-vue2-keyboard-focus-closed.json",
+      "rawSha256": "d46ef442b5eec00a019b88a53131c5eb1fd4984af89d4ae348ed14af9597c214",
+      "publicSha256": "d46ef442b5eec00a019b88a53131c5eb1fd4984af89d4ae348ed14af9597c214",
+      "bytes": 26833
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-keyboard-focus-open.json",
+      "member": "native-final/brutalist-vue2-keyboard-focus-open.json",
+      "rawSha256": "24d679ed1226d3fbd00718cfc4feaf366b750533d21343b39de37048231f6d78",
+      "publicSha256": "24d679ed1226d3fbd00718cfc4feaf366b750533d21343b39de37048231f6d78",
+      "bytes": 28463
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-open.json",
+      "member": "native-final/brutalist-vue2-open.json",
+      "rawSha256": "0e49c15af6801f483330012f4be0b1db9c0a74cdaa3c7d6fdf902587cc659fa1",
+      "publicSha256": "0e49c15af6801f483330012f4be0b1db9c0a74cdaa3c7d6fdf902587cc659fa1",
+      "bytes": 27794
+    },
+    {
+      "source": "native-final-captures/brutalist-vue2-zh-cn-390-open.json",
+      "member": "native-final/brutalist-vue2-zh-cn-390-open.json",
+      "rawSha256": "6ab67d53802e20eb49b2be5103c6efc2062969dd7393e7f37bb8c1845f3b8eee",
+      "publicSha256": "6ab67d53802e20eb49b2be5103c6efc2062969dd7393e7f37bb8c1845f3b8eee",
+      "bytes": 27660
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/brutalist-wc-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "d4bd8ede132a2b7257563dca45217c10497b165fcd663e55ed111bb2ed21d7e6",
+      "publicSha256": "d4bd8ede132a2b7257563dca45217c10497b165fcd663e55ed111bb2ed21d7e6",
+      "bytes": 29431
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-320-text200-dark-open.json",
+      "member": "native-final/brutalist-wc-320-text200-dark-open.json",
+      "rawSha256": "1df2675bb9da35f813889640c6b5c68406865b858abfb8a1e90a6498697b47be",
+      "publicSha256": "1df2675bb9da35f813889640c6b5c68406865b858abfb8a1e90a6498697b47be",
+      "bytes": 29397
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-320-text200-dark-text-bounds.json",
+      "member": "native-final/brutalist-wc-320-text200-dark-text-bounds.json",
+      "rawSha256": "6df5e35d7ca5a4f836a28efe30183ef7c17d89d6fe6e7aa5d74dafe13e46afca",
+      "publicSha256": "6df5e35d7ca5a4f836a28efe30183ef7c17d89d6fe6e7aa5d74dafe13e46afca",
+      "bytes": 18732
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-320-text200-light-before-text-assertion.json",
+      "member": "native-final/brutalist-wc-320-text200-light-before-text-assertion.json",
+      "rawSha256": "1eed5fa78c5d1f8df55005de8739604b68179805a0f6f07b0b3b0220f32277b9",
+      "publicSha256": "1eed5fa78c5d1f8df55005de8739604b68179805a0f6f07b0b3b0220f32277b9",
+      "bytes": 29345
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-320-text200-light-open.json",
+      "member": "native-final/brutalist-wc-320-text200-light-open.json",
+      "rawSha256": "a6a19734092feb46ae8e7053016d3678c56e836f2b530a7798806128e2ed5341",
+      "publicSha256": "a6a19734092feb46ae8e7053016d3678c56e836f2b530a7798806128e2ed5341",
+      "bytes": 29311
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-320-text200-light-text-bounds.json",
+      "member": "native-final/brutalist-wc-320-text200-light-text-bounds.json",
+      "rawSha256": "2b105e9ed168b615377ac8110d16da86898efc40d9cdc47190e0d7be67201237",
+      "publicSha256": "2b105e9ed168b615377ac8110d16da86898efc40d9cdc47190e0d7be67201237",
+      "bytes": 18734
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-controlled-accepted.json",
+      "member": "native-final/brutalist-wc-controlled-accepted.json",
+      "rawSha256": "73acc78c2b2ed92aa2d27470fa32b9ce5318dc65c263e933649790ab116360d0",
+      "publicSha256": "73acc78c2b2ed92aa2d27470fa32b9ce5318dc65c263e933649790ab116360d0",
+      "bytes": 34020
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-initial.json",
+      "member": "native-final/brutalist-wc-initial.json",
+      "rawSha256": "fbdc6b97026fae3bb5c606d78ccdcfa6ec9a76ccce72c98737aad954e78f9847",
+      "publicSha256": "fbdc6b97026fae3bb5c606d78ccdcfa6ec9a76ccce72c98737aad954e78f9847",
+      "bytes": 28296
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-keyboard-focus-closed.json",
+      "member": "native-final/brutalist-wc-keyboard-focus-closed.json",
+      "rawSha256": "d4f8794604ad12ecb742b3c1bc9bc2123e8820fd588da3843474857a3cb36fc3",
+      "publicSha256": "d4f8794604ad12ecb742b3c1bc9bc2123e8820fd588da3843474857a3cb36fc3",
+      "bytes": 29508
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-keyboard-focus-open.json",
+      "member": "native-final/brutalist-wc-keyboard-focus-open.json",
+      "rawSha256": "4c7d6719fbf62a30fc26f3bddbbf19c41aab789e45f163010f9cf1f45ab7c94e",
+      "publicSha256": "4c7d6719fbf62a30fc26f3bddbbf19c41aab789e45f163010f9cf1f45ab7c94e",
+      "bytes": 29895
+    },
+    {
+      "source": "native-final-captures/brutalist-wc-open.json",
+      "member": "native-final/brutalist-wc-open.json",
+      "rawSha256": "ee2410cd6df1434b1cd445c9606cbaacd86ae0bedc71ba7cf7d8fcfc330148b5",
+      "publicSha256": "ee2410cd6df1434b1cd445c9606cbaacd86ae0bedc71ba7cf7d8fcfc330148b5",
+      "bytes": 29214
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/liquid-glass-react-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "8e528fec676e3e88fab0e9abaf45ba98da662718f6b6db15347aa888f48b5e98",
+      "publicSha256": "8e528fec676e3e88fab0e9abaf45ba98da662718f6b6db15347aa888f48b5e98",
+      "bytes": 31032
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-320-text200-dark-open.json",
+      "member": "native-final/liquid-glass-react-320-text200-dark-open.json",
+      "rawSha256": "d76dfaf8218d854fc4d29523fdb5be6ddc811f838e24f8dc3177391e4a826cbb",
+      "publicSha256": "d76dfaf8218d854fc4d29523fdb5be6ddc811f838e24f8dc3177391e4a826cbb",
+      "bytes": 30998
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-320-text200-dark-text-bounds.json",
+      "member": "native-final/liquid-glass-react-320-text200-dark-text-bounds.json",
+      "rawSha256": "d55a5a4736f760d86f663f5b161c1f3e5fc685a3b5281536262c51f8426ffdbe",
+      "publicSha256": "d55a5a4736f760d86f663f5b161c1f3e5fc685a3b5281536262c51f8426ffdbe",
+      "bytes": 18735
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-320-text200-light-before-text-assertion.json",
+      "member": "native-final/liquid-glass-react-320-text200-light-before-text-assertion.json",
+      "rawSha256": "fb04bc5b22c2676619e577f1759cf6aba4640bba73d8f63f7eff53a419fa388b",
+      "publicSha256": "fb04bc5b22c2676619e577f1759cf6aba4640bba73d8f63f7eff53a419fa388b",
+      "bytes": 30995
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-320-text200-light-open.json",
+      "member": "native-final/liquid-glass-react-320-text200-light-open.json",
+      "rawSha256": "dc37136c37bf0bc566062a8f91bb97187707d741ad25736e7f1c8be3f5d7c455",
+      "publicSha256": "dc37136c37bf0bc566062a8f91bb97187707d741ad25736e7f1c8be3f5d7c455",
+      "bytes": 30961
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-320-text200-light-text-bounds.json",
+      "member": "native-final/liquid-glass-react-320-text200-light-text-bounds.json",
+      "rawSha256": "589700006e02f4dcca4083edbb98e270de7a01c95627889ff56ebe0710fd4ec6",
+      "publicSha256": "589700006e02f4dcca4083edbb98e270de7a01c95627889ff56ebe0710fd4ec6",
+      "bytes": 18737
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-controlled-accepted.json",
+      "member": "native-final/liquid-glass-react-controlled-accepted.json",
+      "rawSha256": "772e24d91cd905ff639f8cf8a9952ce16b2b191270e20856cc6130b74d6ecc64",
+      "publicSha256": "772e24d91cd905ff639f8cf8a9952ce16b2b191270e20856cc6130b74d6ecc64",
+      "bytes": 35540
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-initial.json",
+      "member": "native-final/liquid-glass-react-initial.json",
+      "rawSha256": "dde358114e6c26b23d796a3c36f91d1738c235ce42a78d0f8a43e5cbf772fd45",
+      "publicSha256": "dde358114e6c26b23d796a3c36f91d1738c235ce42a78d0f8a43e5cbf772fd45",
+      "bytes": 28515
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-keyboard-focus-closed.json",
+      "member": "native-final/liquid-glass-react-keyboard-focus-closed.json",
+      "rawSha256": "9cc242a94be59b4d20aacfec0e5130aba4443bd89541249845f83a8733b6462f",
+      "publicSha256": "9cc242a94be59b4d20aacfec0e5130aba4443bd89541249845f83a8733b6462f",
+      "bytes": 29735
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-keyboard-focus-open.json",
+      "member": "native-final/liquid-glass-react-keyboard-focus-open.json",
+      "rawSha256": "bca8ddb90b763aeab0103127a0150d6895296a1866472fef4008735444d91858",
+      "publicSha256": "bca8ddb90b763aeab0103127a0150d6895296a1866472fef4008735444d91858",
+      "bytes": 31552
+    },
+    {
+      "source": "native-final-captures/liquid-glass-react-open.json",
+      "member": "native-final/liquid-glass-react-open.json",
+      "rawSha256": "7f098ee2e4432414e2f68848d170e7d46efb79fa5a45b31b17768899e0d18a59",
+      "publicSha256": "7f098ee2e4432414e2f68848d170e7d46efb79fa5a45b31b17768899e0d18a59",
+      "bytes": 30861
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/liquid-glass-vue-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "2cdb1124794f6687e56dabab4ad2b25162fa8577736657b48fb04fabb7cf9037",
+      "publicSha256": "2cdb1124794f6687e56dabab4ad2b25162fa8577736657b48fb04fabb7cf9037",
+      "bytes": 31025
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-320-text200-dark-open.json",
+      "member": "native-final/liquid-glass-vue-320-text200-dark-open.json",
+      "rawSha256": "2be5608d5ebdfdfd589c1c40763b43ebfa31a4fddf1f489434639dd656b1f505",
+      "publicSha256": "2be5608d5ebdfdfd589c1c40763b43ebfa31a4fddf1f489434639dd656b1f505",
+      "bytes": 30991
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-320-text200-dark-text-bounds.json",
+      "member": "native-final/liquid-glass-vue-320-text200-dark-text-bounds.json",
+      "rawSha256": "27613eece576bf6cd57d5a6c44981434be29058a86f2e877dfc1ed9096bf4c1e",
+      "publicSha256": "27613eece576bf6cd57d5a6c44981434be29058a86f2e877dfc1ed9096bf4c1e",
+      "bytes": 18731
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-320-text200-light-before-text-assertion.json",
+      "member": "native-final/liquid-glass-vue-320-text200-light-before-text-assertion.json",
+      "rawSha256": "5f7e0e8dcd53468462bc230d038dcd51c719d7c5afb491abed54d73b40b4b77c",
+      "publicSha256": "5f7e0e8dcd53468462bc230d038dcd51c719d7c5afb491abed54d73b40b4b77c",
+      "bytes": 30988
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-320-text200-light-open.json",
+      "member": "native-final/liquid-glass-vue-320-text200-light-open.json",
+      "rawSha256": "1cbf12d2cbdc469acf63044cb38136f3aefb60cbb1010d0e40247d09341fa753",
+      "publicSha256": "1cbf12d2cbdc469acf63044cb38136f3aefb60cbb1010d0e40247d09341fa753",
+      "bytes": 30954
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-320-text200-light-text-bounds.json",
+      "member": "native-final/liquid-glass-vue-320-text200-light-text-bounds.json",
+      "rawSha256": "197401db4dbcf5e034c0559a3cb21e3b0ef4c9512637025b34d92111d111cacb",
+      "publicSha256": "197401db4dbcf5e034c0559a3cb21e3b0ef4c9512637025b34d92111d111cacb",
+      "bytes": 18733
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-controlled-accepted.json",
+      "member": "native-final/liquid-glass-vue-controlled-accepted.json",
+      "rawSha256": "8c85d3ac3eb4a0cb10b2a2c73dce817fb1705d417b4dff29dc0a2332f345f853",
+      "publicSha256": "8c85d3ac3eb4a0cb10b2a2c73dce817fb1705d417b4dff29dc0a2332f345f853",
+      "bytes": 35456
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-initial.json",
+      "member": "native-final/liquid-glass-vue-initial.json",
+      "rawSha256": "eb54d8a0cf2cd35d9def8ac5fa4426f8df6998e2bbffbfc71a3130ce19d7849d",
+      "publicSha256": "eb54d8a0cf2cd35d9def8ac5fa4426f8df6998e2bbffbfc71a3130ce19d7849d",
+      "bytes": 28496
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-keyboard-focus-closed.json",
+      "member": "native-final/liquid-glass-vue-keyboard-focus-closed.json",
+      "rawSha256": "265137e9f1e02ed6781cedd836b86fb410808f6d53db33f9c448a419e31c8dde",
+      "publicSha256": "265137e9f1e02ed6781cedd836b86fb410808f6d53db33f9c448a419e31c8dde",
+      "bytes": 29662
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-keyboard-focus-open.json",
+      "member": "native-final/liquid-glass-vue-keyboard-focus-open.json",
+      "rawSha256": "15da526e65cf633bdc4c03cd977b12f1f893b6d37ecd222491096c354b5167bf",
+      "publicSha256": "15da526e65cf633bdc4c03cd977b12f1f893b6d37ecd222491096c354b5167bf",
+      "bytes": 31468
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue-open.json",
+      "member": "native-final/liquid-glass-vue-open.json",
+      "rawSha256": "cae49edaf602efbbb0d3aa91976d95a68065f76782d5e45eeb9bdbde28861358",
+      "publicSha256": "cae49edaf602efbbb0d3aa91976d95a68065f76782d5e45eeb9bdbde28861358",
+      "bytes": 30802
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/liquid-glass-vue2-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "e86d58c09016cf0641933748ccefdbd579b5ed6eb098aa72bf9de37139fbd01a",
+      "publicSha256": "e86d58c09016cf0641933748ccefdbd579b5ed6eb098aa72bf9de37139fbd01a",
+      "bytes": 31009
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-320-text200-dark-open.json",
+      "member": "native-final/liquid-glass-vue2-320-text200-dark-open.json",
+      "rawSha256": "7f4c1cdccd15c09b97d84e11fde5535868a9ccaef7df27d12bcb44a7de4453c3",
+      "publicSha256": "7f4c1cdccd15c09b97d84e11fde5535868a9ccaef7df27d12bcb44a7de4453c3",
+      "bytes": 30975
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-320-text200-dark-text-bounds.json",
+      "member": "native-final/liquid-glass-vue2-320-text200-dark-text-bounds.json",
+      "rawSha256": "ab4f6427cae8df9167df8834a96e5d6e3221899338cd8b982f630fe31d15a14d",
+      "publicSha256": "ab4f6427cae8df9167df8834a96e5d6e3221899338cd8b982f630fe31d15a14d",
+      "bytes": 18733
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-320-text200-light-before-text-assertion.json",
+      "member": "native-final/liquid-glass-vue2-320-text200-light-before-text-assertion.json",
+      "rawSha256": "5efdca0a6319bbb6d573ac9821dcfd6024f7ab06aecfa5252d2b18796fc90fcf",
+      "publicSha256": "5efdca0a6319bbb6d573ac9821dcfd6024f7ab06aecfa5252d2b18796fc90fcf",
+      "bytes": 30972
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-320-text200-light-open.json",
+      "member": "native-final/liquid-glass-vue2-320-text200-light-open.json",
+      "rawSha256": "d80c2221f715b0379a07621702b51107af2fbce03636394baf535ccb1e8d5fd5",
+      "publicSha256": "d80c2221f715b0379a07621702b51107af2fbce03636394baf535ccb1e8d5fd5",
+      "bytes": 30938
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-320-text200-light-text-bounds.json",
+      "member": "native-final/liquid-glass-vue2-320-text200-light-text-bounds.json",
+      "rawSha256": "f357266d0daac0317a414c2e93d900b0471bf10afef16a1a70a52237211f004e",
+      "publicSha256": "f357266d0daac0317a414c2e93d900b0471bf10afef16a1a70a52237211f004e",
+      "bytes": 18735
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-controlled-accepted.json",
+      "member": "native-final/liquid-glass-vue2-controlled-accepted.json",
+      "rawSha256": "6235b143ee7f633fdad109faa00739650bc0313838a5957ad419773c5cea873d",
+      "publicSha256": "6235b143ee7f633fdad109faa00739650bc0313838a5957ad419773c5cea873d",
+      "bytes": 35456
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-initial.json",
+      "member": "native-final/liquid-glass-vue2-initial.json",
+      "rawSha256": "eda65dba16532997c8e93d87c51b4dfe74e502796a26acb055c9021050765cbe",
+      "publicSha256": "eda65dba16532997c8e93d87c51b4dfe74e502796a26acb055c9021050765cbe",
+      "bytes": 28477
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-keyboard-focus-closed.json",
+      "member": "native-final/liquid-glass-vue2-keyboard-focus-closed.json",
+      "rawSha256": "56054d6d1cd71558be9f80d8e743a0c33764208e8559e524f3413c9ab57eb076",
+      "publicSha256": "56054d6d1cd71558be9f80d8e743a0c33764208e8559e524f3413c9ab57eb076",
+      "bytes": 29683
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-keyboard-focus-open.json",
+      "member": "native-final/liquid-glass-vue2-keyboard-focus-open.json",
+      "rawSha256": "b479abac1030f45226b8a15f87a25d7fd394a162db1ce30f559a46297f52458b",
+      "publicSha256": "b479abac1030f45226b8a15f87a25d7fd394a162db1ce30f559a46297f52458b",
+      "bytes": 31488
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-open.json",
+      "member": "native-final/liquid-glass-vue2-open.json",
+      "rawSha256": "552722ccf27318ae8d22548572e76c3c112ddf290077baf3ef084e29349a9f06",
+      "publicSha256": "552722ccf27318ae8d22548572e76c3c112ddf290077baf3ef084e29349a9f06",
+      "bytes": 30824
+    },
+    {
+      "source": "native-final-captures/liquid-glass-vue2-zh-cn-390-open.json",
+      "member": "native-final/liquid-glass-vue2-zh-cn-390-open.json",
+      "rawSha256": "36977cd85006de5d3c01312e01dab8ec5eb8585b135b5fe03a718808f0c8db78",
+      "publicSha256": "36977cd85006de5d3c01312e01dab8ec5eb8585b135b5fe03a718808f0c8db78",
+      "bytes": 30870
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/liquid-glass-wc-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "5969aafa8646c3b4884bd637ab04e105706f2fe584bae7ed84f3c10e8a86c4d9",
+      "publicSha256": "5969aafa8646c3b4884bd637ab04e105706f2fe584bae7ed84f3c10e8a86c4d9",
+      "bytes": 32689
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-320-text200-dark-open.json",
+      "member": "native-final/liquid-glass-wc-320-text200-dark-open.json",
+      "rawSha256": "a46d23674888ac226cedc0772ad0d93470d5d2359b7ee541fa3b480c477c656f",
+      "publicSha256": "a46d23674888ac226cedc0772ad0d93470d5d2359b7ee541fa3b480c477c656f",
+      "bytes": 32655
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-320-text200-dark-text-bounds.json",
+      "member": "native-final/liquid-glass-wc-320-text200-dark-text-bounds.json",
+      "rawSha256": "31aa1244d7ea7e2d621aaccdcb57c3aad3d251b29219018bdb24ef82a2cc472c",
+      "publicSha256": "31aa1244d7ea7e2d621aaccdcb57c3aad3d251b29219018bdb24ef82a2cc472c",
+      "bytes": 18729
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-320-text200-light-before-text-assertion.json",
+      "member": "native-final/liquid-glass-wc-320-text200-light-before-text-assertion.json",
+      "rawSha256": "8b3b8eb693f71211fbd38e9651328256c5f3b9da1b269a58e42b99eb22e272ac",
+      "publicSha256": "8b3b8eb693f71211fbd38e9651328256c5f3b9da1b269a58e42b99eb22e272ac",
+      "bytes": 32649
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-320-text200-light-open.json",
+      "member": "native-final/liquid-glass-wc-320-text200-light-open.json",
+      "rawSha256": "34b11ede9832656f00ab9a27cddf21172c68fff3614e77a2c0a1ca63f6c81f39",
+      "publicSha256": "34b11ede9832656f00ab9a27cddf21172c68fff3614e77a2c0a1ca63f6c81f39",
+      "bytes": 32615
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-320-text200-light-text-bounds.json",
+      "member": "native-final/liquid-glass-wc-320-text200-light-text-bounds.json",
+      "rawSha256": "bd130ec71f715b4ed0b9227db376ac83afc64a6c1b324e06bae519d98e3d2783",
+      "publicSha256": "bd130ec71f715b4ed0b9227db376ac83afc64a6c1b324e06bae519d98e3d2783",
+      "bytes": 18731
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-controlled-accepted.json",
+      "member": "native-final/liquid-glass-wc-controlled-accepted.json",
+      "rawSha256": "1e09d0533174c85b9d6aa5b153c351f7a23cebf1cb3729fe6fddcc0db33aa519",
+      "publicSha256": "1e09d0533174c85b9d6aa5b153c351f7a23cebf1cb3729fe6fddcc0db33aa519",
+      "bytes": 37299
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-initial.json",
+      "member": "native-final/liquid-glass-wc-initial.json",
+      "rawSha256": "347a9cd920d163d2706732f418c5f486b46f7b590788f4eeb15e20420dcc7e2c",
+      "publicSha256": "347a9cd920d163d2706732f418c5f486b46f7b590788f4eeb15e20420dcc7e2c",
+      "bytes": 31592
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-keyboard-focus-closed.json",
+      "member": "native-final/liquid-glass-wc-keyboard-focus-closed.json",
+      "rawSha256": "2e4692f80f82515b8e625c0f5c8d5ee8089cdc4f10f61781e7ecc226f038fb34",
+      "publicSha256": "2e4692f80f82515b8e625c0f5c8d5ee8089cdc4f10f61781e7ecc226f038fb34",
+      "bytes": 32776
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-keyboard-focus-open.json",
+      "member": "native-final/liquid-glass-wc-keyboard-focus-open.json",
+      "rawSha256": "97658c8ec6384bdb781feea96efbb5e5a8eb29544fe99890cc7defe39dacef44",
+      "publicSha256": "97658c8ec6384bdb781feea96efbb5e5a8eb29544fe99890cc7defe39dacef44",
+      "bytes": 33162
+    },
+    {
+      "source": "native-final-captures/liquid-glass-wc-open.json",
+      "member": "native-final/liquid-glass-wc-open.json",
+      "rawSha256": "2f2c7cd3393925f31cf2b2b7ef576f40adaa91950ea56804ab6437a1609dc37d",
+      "publicSha256": "2f2c7cd3393925f31cf2b2b7ef576f40adaa91950ea56804ab6437a1609dc37d",
+      "bytes": 32485
+    },
+    {
+      "source": "native-final-captures/shadcn-react-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/shadcn-react-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "131823796a8dd79904f104d6ce94fd370527f34a91d5637a51d115be168e8aec",
+      "publicSha256": "131823796a8dd79904f104d6ce94fd370527f34a91d5637a51d115be168e8aec",
+      "bytes": 31042
+    },
+    {
+      "source": "native-final-captures/shadcn-react-320-text200-dark-open.json",
+      "member": "native-final/shadcn-react-320-text200-dark-open.json",
+      "rawSha256": "294b4a7e73b20a6a2049062f92162e53066fc17adc21e3247bb4992ee1e6cc1c",
+      "publicSha256": "294b4a7e73b20a6a2049062f92162e53066fc17adc21e3247bb4992ee1e6cc1c",
+      "bytes": 30977
+    },
+    {
+      "source": "native-final-captures/shadcn-react-320-text200-dark-text-bounds.json",
+      "member": "native-final/shadcn-react-320-text200-dark-text-bounds.json",
+      "rawSha256": "2729e99b9d55097c7d17c53c4da772087a3a8d91fda6b21f3b1f5eb2aaba3f33",
+      "publicSha256": "2729e99b9d55097c7d17c53c4da772087a3a8d91fda6b21f3b1f5eb2aaba3f33",
+      "bytes": 18790
+    },
+    {
+      "source": "native-final-captures/shadcn-react-320-text200-light-before-text-assertion.json",
+      "member": "native-final/shadcn-react-320-text200-light-before-text-assertion.json",
+      "rawSha256": "c4dbd296377b2740b829c45978b133dfb4c8095f3ad4b8d7b13cd605913474aa",
+      "publicSha256": "c4dbd296377b2740b829c45978b133dfb4c8095f3ad4b8d7b13cd605913474aa",
+      "bytes": 30942
+    },
+    {
+      "source": "native-final-captures/shadcn-react-320-text200-light-open.json",
+      "member": "native-final/shadcn-react-320-text200-light-open.json",
+      "rawSha256": "b59e22864bd29a85c634a0706fc67c06d6b6ea4fa8c7453b67e9f75f3929232c",
+      "publicSha256": "b59e22864bd29a85c634a0706fc67c06d6b6ea4fa8c7453b67e9f75f3929232c",
+      "bytes": 30908
+    },
+    {
+      "source": "native-final-captures/shadcn-react-320-text200-light-text-bounds.json",
+      "member": "native-final/shadcn-react-320-text200-light-text-bounds.json",
+      "rawSha256": "c4ed1921b13ce981c27d81ea7e20c836f615816962e02c547c3fc2b6ef7b56ea",
+      "publicSha256": "c4ed1921b13ce981c27d81ea7e20c836f615816962e02c547c3fc2b6ef7b56ea",
+      "bytes": 18858
+    },
+    {
+      "source": "native-final-captures/shadcn-react-controlled-accepted.json",
+      "member": "native-final/shadcn-react-controlled-accepted.json",
+      "rawSha256": "8297c0d403e8fa615a6436c3ac7267839a550291527976c89703c0e8fbc964a2",
+      "publicSha256": "8297c0d403e8fa615a6436c3ac7267839a550291527976c89703c0e8fbc964a2",
+      "bytes": 35429
+    },
+    {
+      "source": "native-final-captures/shadcn-react-initial.json",
+      "member": "native-final/shadcn-react-initial.json",
+      "rawSha256": "b68112b39aa95758b77cfbffbb49c6f361a1fdfa1b0633485352b8dc6bb33744",
+      "publicSha256": "b68112b39aa95758b77cfbffbb49c6f361a1fdfa1b0633485352b8dc6bb33744",
+      "bytes": 28414
+    },
+    {
+      "source": "native-final-captures/shadcn-react-keyboard-focus-closed.json",
+      "member": "native-final/shadcn-react-keyboard-focus-closed.json",
+      "rawSha256": "930eeab5665f541c9a8e1239dbae47d5f472115af9ed67c21264baa57b8fe8cc",
+      "publicSha256": "930eeab5665f541c9a8e1239dbae47d5f472115af9ed67c21264baa57b8fe8cc",
+      "bytes": 29653
+    },
+    {
+      "source": "native-final-captures/shadcn-react-keyboard-focus-open.json",
+      "member": "native-final/shadcn-react-keyboard-focus-open.json",
+      "rawSha256": "31dd442771a69b2986fd364f43b16ae1994d12bd7dbab06981fdebe5c1ec94a6",
+      "publicSha256": "31dd442771a69b2986fd364f43b16ae1994d12bd7dbab06981fdebe5c1ec94a6",
+      "bytes": 31465
+    },
+    {
+      "source": "native-final-captures/shadcn-react-open.json",
+      "member": "native-final/shadcn-react-open.json",
+      "rawSha256": "c41fcc60195a7fe5226d8e38f05fabcdf55bf096fe85a13d8ef8bdc32a2b156f",
+      "publicSha256": "c41fcc60195a7fe5226d8e38f05fabcdf55bf096fe85a13d8ef8bdc32a2b156f",
+      "bytes": 30801
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/shadcn-vue-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "c0ea2036798f618af41c744340f39f879548a0ef26d410baa5336b6b4c08a66c",
+      "publicSha256": "c0ea2036798f618af41c744340f39f879548a0ef26d410baa5336b6b4c08a66c",
+      "bytes": 31039
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-320-text200-dark-open.json",
+      "member": "native-final/shadcn-vue-320-text200-dark-open.json",
+      "rawSha256": "cbe73744d35a17034dbcdf1574c34eb0ea4cffeec5f6c6e33d4b4e230430405e",
+      "publicSha256": "cbe73744d35a17034dbcdf1574c34eb0ea4cffeec5f6c6e33d4b4e230430405e",
+      "bytes": 30974
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-320-text200-dark-text-bounds.json",
+      "member": "native-final/shadcn-vue-320-text200-dark-text-bounds.json",
+      "rawSha256": "1faa025268ad3ee9b289f551cfe1e222049bb3d405eb911ef1966d0c35602ece",
+      "publicSha256": "1faa025268ad3ee9b289f551cfe1e222049bb3d405eb911ef1966d0c35602ece",
+      "bytes": 18786
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-320-text200-light-before-text-assertion.json",
+      "member": "native-final/shadcn-vue-320-text200-light-before-text-assertion.json",
+      "rawSha256": "8c3e90cf9a639775efc4929f19ca191306e9c845c6fea9a672daf65aa40a6f2e",
+      "publicSha256": "8c3e90cf9a639775efc4929f19ca191306e9c845c6fea9a672daf65aa40a6f2e",
+      "bytes": 30939
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-320-text200-light-open.json",
+      "member": "native-final/shadcn-vue-320-text200-light-open.json",
+      "rawSha256": "64c1c5a794f78dca1f9b63fa467c20a956b58a7207b9021fb41d366d6da2b966",
+      "publicSha256": "64c1c5a794f78dca1f9b63fa467c20a956b58a7207b9021fb41d366d6da2b966",
+      "bytes": 30905
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-320-text200-light-text-bounds.json",
+      "member": "native-final/shadcn-vue-320-text200-light-text-bounds.json",
+      "rawSha256": "0634517819d95a896f31efb902a34b4f656145b78f7ac360d194f62e4e25d7cf",
+      "publicSha256": "0634517819d95a896f31efb902a34b4f656145b78f7ac360d194f62e4e25d7cf",
+      "bytes": 18854
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-controlled-accepted.json",
+      "member": "native-final/shadcn-vue-controlled-accepted.json",
+      "rawSha256": "5071339a0cc94a7b8c10a566711742e10612eb4875fa3439ddb1c8cc25905fbc",
+      "publicSha256": "5071339a0cc94a7b8c10a566711742e10612eb4875fa3439ddb1c8cc25905fbc",
+      "bytes": 35371
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-initial.json",
+      "member": "native-final/shadcn-vue-initial.json",
+      "rawSha256": "5999a1f99bf71c0206243d70e600abb4cca864ae5f975ebca6969d7c25bb0d33",
+      "publicSha256": "5999a1f99bf71c0206243d70e600abb4cca864ae5f975ebca6969d7c25bb0d33",
+      "bytes": 28393
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-keyboard-focus-closed.json",
+      "member": "native-final/shadcn-vue-keyboard-focus-closed.json",
+      "rawSha256": "0cf3ce349ebf844e8ff57a1074cc0ad33861fcbf0eb34b56abaafe4acac750a1",
+      "publicSha256": "0cf3ce349ebf844e8ff57a1074cc0ad33861fcbf0eb34b56abaafe4acac750a1",
+      "bytes": 29602
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-keyboard-focus-open.json",
+      "member": "native-final/shadcn-vue-keyboard-focus-open.json",
+      "rawSha256": "96738dec5eb1c60967dba1ba66acaff2f7f51557910d7531227bdaa07adb26b9",
+      "publicSha256": "96738dec5eb1c60967dba1ba66acaff2f7f51557910d7531227bdaa07adb26b9",
+      "bytes": 31415
+    },
+    {
+      "source": "native-final-captures/shadcn-vue-open.json",
+      "member": "native-final/shadcn-vue-open.json",
+      "rawSha256": "0b35baf2d55c444f9b497522ef6aae6cca6cff24cab6cec41dbc49ae7bf351ba",
+      "publicSha256": "0b35baf2d55c444f9b497522ef6aae6cca6cff24cab6cec41dbc49ae7bf351ba",
+      "bytes": 30752
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/shadcn-vue2-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "cd478daf1d412452d8253e9b3291764b9b4f742d2ad9609bcf332a90794112b7",
+      "publicSha256": "cd478daf1d412452d8253e9b3291764b9b4f742d2ad9609bcf332a90794112b7",
+      "bytes": 31050
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-320-text200-dark-open.json",
+      "member": "native-final/shadcn-vue2-320-text200-dark-open.json",
+      "rawSha256": "9f088aeafd9da3d8927131f25f8baf8a952830171bf279aa7e4d4f436a2b9cdc",
+      "publicSha256": "9f088aeafd9da3d8927131f25f8baf8a952830171bf279aa7e4d4f436a2b9cdc",
+      "bytes": 30984
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-320-text200-dark-text-bounds.json",
+      "member": "native-final/shadcn-vue2-320-text200-dark-text-bounds.json",
+      "rawSha256": "cad510a838aa0da3e5b69fb7a0cfd53e31fa2808161452fe4d8d10f9a1a64e0b",
+      "publicSha256": "cad510a838aa0da3e5b69fb7a0cfd53e31fa2808161452fe4d8d10f9a1a64e0b",
+      "bytes": 18788
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-320-text200-light-before-text-assertion.json",
+      "member": "native-final/shadcn-vue2-320-text200-light-before-text-assertion.json",
+      "rawSha256": "608d8e78f6be5a980890c586348cb922b3b14a18ce2b11b64bf9258aebfcec85",
+      "publicSha256": "608d8e78f6be5a980890c586348cb922b3b14a18ce2b11b64bf9258aebfcec85",
+      "bytes": 30949
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-320-text200-light-open.json",
+      "member": "native-final/shadcn-vue2-320-text200-light-open.json",
+      "rawSha256": "77f26ee638a3967b0aac97c35ca2a22bbc254c234266a183daf284787090daa4",
+      "publicSha256": "77f26ee638a3967b0aac97c35ca2a22bbc254c234266a183daf284787090daa4",
+      "bytes": 30915
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-320-text200-light-text-bounds.json",
+      "member": "native-final/shadcn-vue2-320-text200-light-text-bounds.json",
+      "rawSha256": "2e4bbc8ac169febab3f9867932a2ef1f337a9d2ae3a85da899a2a7175ee92a5f",
+      "publicSha256": "2e4bbc8ac169febab3f9867932a2ef1f337a9d2ae3a85da899a2a7175ee92a5f",
+      "bytes": 18856
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-controlled-accepted.json",
+      "member": "native-final/shadcn-vue2-controlled-accepted.json",
+      "rawSha256": "eb833ba7155fa9ed39a38e83a615f9d763341f11bd8058ce11b5b58f7ec8ef39",
+      "publicSha256": "eb833ba7155fa9ed39a38e83a615f9d763341f11bd8058ce11b5b58f7ec8ef39",
+      "bytes": 35438
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-initial.json",
+      "member": "native-final/shadcn-vue2-initial.json",
+      "rawSha256": "85a48927931e7cd1a0dd39bf8ca6b0c233eaed93420f7738034f145ccef4a401",
+      "publicSha256": "85a48927931e7cd1a0dd39bf8ca6b0c233eaed93420f7738034f145ccef4a401",
+      "bytes": 28393
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-keyboard-focus-closed.json",
+      "member": "native-final/shadcn-vue2-keyboard-focus-closed.json",
+      "rawSha256": "36568f8b461e618e446905dac8e71832a5778ec4fb5632a279243294f7da7c5e",
+      "publicSha256": "36568f8b461e618e446905dac8e71832a5778ec4fb5632a279243294f7da7c5e",
+      "bytes": 29641
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-keyboard-focus-open.json",
+      "member": "native-final/shadcn-vue2-keyboard-focus-open.json",
+      "rawSha256": "ec354915f8564f7314907bc1038cdb6ad8e1af5cdecaee0a21d948d7752a1320",
+      "publicSha256": "ec354915f8564f7314907bc1038cdb6ad8e1af5cdecaee0a21d948d7752a1320",
+      "bytes": 31454
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-open.json",
+      "member": "native-final/shadcn-vue2-open.json",
+      "rawSha256": "2458afd5e5b1bdcbf29004018811b7f62c90a378fd33d3385c85f0bc29c8c087",
+      "publicSha256": "2458afd5e5b1bdcbf29004018811b7f62c90a378fd33d3385c85f0bc29c8c087",
+      "bytes": 30778
+    },
+    {
+      "source": "native-final-captures/shadcn-vue2-zh-cn-390-open.json",
+      "member": "native-final/shadcn-vue2-zh-cn-390-open.json",
+      "rawSha256": "8dd3dd3df03fe40a765d996c96bf739bf47e2f03d9dd031683a17a4a7d20d31c",
+      "publicSha256": "8dd3dd3df03fe40a765d996c96bf739bf47e2f03d9dd031683a17a4a7d20d31c",
+      "bytes": 30784
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-320-text200-dark-before-text-assertion.json",
+      "member": "native-final/shadcn-wc-320-text200-dark-before-text-assertion.json",
+      "rawSha256": "d07e0bb01c99c96b5048b1a7cd780359b5fdd807454a576c2aa6441a758f8f7e",
+      "publicSha256": "d07e0bb01c99c96b5048b1a7cd780359b5fdd807454a576c2aa6441a758f8f7e",
+      "bytes": 32559
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-320-text200-dark-open.json",
+      "member": "native-final/shadcn-wc-320-text200-dark-open.json",
+      "rawSha256": "5d252302f84a1a5a860f8aea2e0a3ba3e4b77159d4e158c4890db43fe3432f9b",
+      "publicSha256": "5d252302f84a1a5a860f8aea2e0a3ba3e4b77159d4e158c4890db43fe3432f9b",
+      "bytes": 32525
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-320-text200-dark-text-bounds.json",
+      "member": "native-final/shadcn-wc-320-text200-dark-text-bounds.json",
+      "rawSha256": "94a03b69726232b1b0c438812248197d221b9e49fb08a0397af0df644d795200",
+      "publicSha256": "94a03b69726232b1b0c438812248197d221b9e49fb08a0397af0df644d795200",
+      "bytes": 18784
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-320-text200-light-before-text-assertion.json",
+      "member": "native-final/shadcn-wc-320-text200-light-before-text-assertion.json",
+      "rawSha256": "0c3b8d19413100f9a7d87bf3bcd9a08536591a9ca466ee223d648c8059287c6c",
+      "publicSha256": "0c3b8d19413100f9a7d87bf3bcd9a08536591a9ca466ee223d648c8059287c6c",
+      "bytes": 32492
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-320-text200-light-open.json",
+      "member": "native-final/shadcn-wc-320-text200-light-open.json",
+      "rawSha256": "8f2b873d7bf7853cf56f059f7675f323a4181b20c5708352adfa96f73fcf9af6",
+      "publicSha256": "8f2b873d7bf7853cf56f059f7675f323a4181b20c5708352adfa96f73fcf9af6",
+      "bytes": 32458
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-320-text200-light-text-bounds.json",
+      "member": "native-final/shadcn-wc-320-text200-light-text-bounds.json",
+      "rawSha256": "f9e25d420dc100fefdf91c821631fef11a134ef37da34755f8b2faf6572f1d06",
+      "publicSha256": "f9e25d420dc100fefdf91c821631fef11a134ef37da34755f8b2faf6572f1d06",
+      "bytes": 18852
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-controlled-accepted.json",
+      "member": "native-final/shadcn-wc-controlled-accepted.json",
+      "rawSha256": "0aa70b5516de70bb640648be36fdfd9ebebde065c92957486fe1c3e6c9d32e9a",
+      "publicSha256": "0aa70b5516de70bb640648be36fdfd9ebebde065c92957486fe1c3e6c9d32e9a",
+      "bytes": 37113
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-initial.json",
+      "member": "native-final/shadcn-wc-initial.json",
+      "rawSha256": "7b006297a703712a1280b3a8a9aabda093e6f5762142458b03d92058ed3a521d",
+      "publicSha256": "7b006297a703712a1280b3a8a9aabda093e6f5762142458b03d92058ed3a521d",
+      "bytes": 31372
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-keyboard-focus-closed.json",
+      "member": "native-final/shadcn-wc-keyboard-focus-closed.json",
+      "rawSha256": "7ffa4d6584effcd7eb754a34edd80b9f7caff2bc14bb798a2b36fba83373e4e3",
+      "publicSha256": "7ffa4d6584effcd7eb754a34edd80b9f7caff2bc14bb798a2b36fba83373e4e3",
+      "bytes": 32605
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-keyboard-focus-open.json",
+      "member": "native-final/shadcn-wc-keyboard-focus-open.json",
+      "rawSha256": "c30d79d61647576467aa10fc830267d072cdb898317391f28e3036ae6d8a3937",
+      "publicSha256": "c30d79d61647576467aa10fc830267d072cdb898317391f28e3036ae6d8a3937",
+      "bytes": 32983
+    },
+    {
+      "source": "native-final-captures/shadcn-wc-open.json",
+      "member": "native-final/shadcn-wc-open.json",
+      "rawSha256": "4496ae5be4359c59f115a49a664503ee63291aca16155807d7da0a555e293304",
+      "publicSha256": "4496ae5be4359c59f115a49a664503ee63291aca16155807d7da0a555e293304",
+      "bytes": 32323
+    },
+    {
+      "source": "product@a92463c9/packages/prototypes/base/src/slider/root.proto.ts",
+      "member": "final-source/packages/prototypes/base/src/slider/root.proto.ts",
+      "rawSha256": "16599d46bf693784f8fba11368672619125da100d8279c4586aca0e3a1b36272",
+      "publicSha256": "16599d46bf693784f8fba11368672619125da100d8279c4586aca0e3a1b36272",
+      "bytes": 8144
+    },
+    {
+      "source": "product@a92463c9/packages/prototypes/base/src/toolbar/separator.proto.ts",
+      "member": "final-source/packages/prototypes/base/src/toolbar/separator.proto.ts",
+      "rawSha256": "df2276f27a7ca0d4aa3bf43f5ea26b4fca210fcd4452382c77f369b0721c276d",
+      "publicSha256": "df2276f27a7ca0d4aa3bf43f5ea26b4fca210fcd4452382c77f369b0721c276d",
+      "bytes": 1503
+    },
+    {
+      "source": "product@a92463c9/packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+      "member": "final-source/packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+      "rawSha256": "724d3b854c248868fb4cbd38d7eb864db41229ea1b8f72a37e9be3b0080445a9",
+      "publicSha256": "724d3b854c248868fb4cbd38d7eb864db41229ea1b8f72a37e9be3b0080445a9",
+      "bytes": 4103
+    },
+    {
+      "source": "product@a92463c9/packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+      "member": "final-source/packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+      "rawSha256": "b72e41357dd600117aef7d3fb0740c50014e5b6056b859790d9dd06b9aa904ff",
+      "publicSha256": "b72e41357dd600117aef7d3fb0740c50014e5b6056b859790d9dd06b9aa904ff",
+      "bytes": 1691
+    }
+  ],
+  "pngProvenance": [
+    {
+      "path": "shadcn-wc-open.png",
+      "sha256": "60eda2f6ab5e09a8ec0b86736163da6a869df2077fb9775d6b27b038d3bd3ee7",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "shadcn-wc-controlled-accepted.png",
+      "sha256": "cdd08b660d6dc32550c80c9e2d1b4dd1e98f6eb552abe1f5469605a266fcbfa7",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "bootstrap-2-3-2-react-open.png",
+      "sha256": "19669a2629508c898024acfa72d0a610ec985a642fee7fdd642d8d796639c1b1",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "bootstrap-2-3-2-react-controlled-accepted.png",
+      "sha256": "e77256ec48e94177a6c15f8d3a56bcfbc5b37fe81974c4903ac03a7dea2b8a55",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "brutalist-vue-open.png",
+      "sha256": "618258f8d420b01b9068468e5cccee6258feabfc9484268bc42a8d57350c7f6a",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "brutalist-vue-controlled-accepted.png",
+      "sha256": "e800e7ef4a80c353479461a823a990bd31f780610a7f309804c61d90cfce34cf",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "liquid-glass-vue2-open.png",
+      "sha256": "68beabb79c5a8bf92258fd251ec4e7a2ab1b86078c3518b807372d9e8e1f04b9",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "liquid-glass-vue2-controlled-accepted.png",
+      "sha256": "fae5e4cba37043e07c417f7b6982ffc6d7c30c24fa8aa080c5bcddc7d58ecd3a",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "wc-open.png",
+      "sha256": "742be09d4da11518a6cb8a40047363baa6aef0edfe730aded7b6b918d33a757d",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "react-open.png",
+      "sha256": "50ae302b3bc48c72c4e15f461496ac431df25fb9d11c2d4f75ce64f13b187b80",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "vue-open.png",
+      "sha256": "f450186ca7400b2fc35eabd9d2707297136a381c1662895ae8fce75fee2e9b3d",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "vue2-open.png",
+      "sha256": "d244cbc834e5dd1f1e2c37128c8017fdfc16fa732b371f49dd888bd4f876876a",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "shadcn-wc-320-text200-dark-text-bounds-trigger.png",
+      "sha256": "1d8ab4260d01afe9f11a1cc5a57104846de27979b15c3088f7eaa59bfe2517fb",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "bootstrap-2-3-2-react-320-text200-dark-text-bounds-trigger.png",
+      "sha256": "28f0770e3361f3b576a1ec1776cc82725a3f41601636926f33f6b8f95c4473f3",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "brutalist-vue-320-text200-dark-text-bounds-trigger.png",
+      "sha256": "1bee8bca22553286f8104a59df69ed0cb2c44ca309f3db33301fdd3b29eddca4",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    },
+    {
+      "path": "liquid-glass-vue2-320-text200-dark-text-bounds-trigger.png",
+      "sha256": "ce2d37fdd10dcf092401aa7e1139388d6452ae544c57a3dc1267c123e041067a",
+      "rawBytesUnchanged": true,
+      "actualRun": "native-final.log@a92463c9",
+      "inspected": true
+    }
+  ],
+  "schemaVersion": 1,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7929,
+      "sha256": "def2704f12b4a15b534c17eb684c04730ca9ff709884f92f3c3fee3db3e22505"
+    },
+    {
+      "path": "bootstrap-2-3-2-react-320-text200-dark-text-bounds-trigger.png",
+      "bytes": 20781,
+      "sha256": "28f0770e3361f3b576a1ec1776cc82725a3f41601636926f33f6b8f95c4473f3"
+    },
+    {
+      "path": "bootstrap-2-3-2-react-controlled-accepted.png",
+      "bytes": 57801,
+      "sha256": "e77256ec48e94177a6c15f8d3a56bcfbc5b37fe81974c4903ac03a7dea2b8a55"
+    },
+    {
+      "path": "bootstrap-2-3-2-react-open.png",
+      "bytes": 74936,
+      "sha256": "19669a2629508c898024acfa72d0a610ec985a642fee7fdd642d8d796639c1b1"
+    },
+    {
+      "path": "brutalist-vue-320-text200-dark-text-bounds-trigger.png",
+      "bytes": 22920,
+      "sha256": "1bee8bca22553286f8104a59df69ed0cb2c44ca309f3db33301fdd3b29eddca4"
+    },
+    {
+      "path": "brutalist-vue-controlled-accepted.png",
+      "bytes": 59636,
+      "sha256": "e800e7ef4a80c353479461a823a990bd31f780610a7f309804c61d90cfce34cf"
+    },
+    {
+      "path": "brutalist-vue-open.png",
+      "bytes": 77317,
+      "sha256": "618258f8d420b01b9068468e5cccee6258feabfc9484268bc42a8d57350c7f6a"
+    },
+    {
+      "path": "budget-advisory-f8cd.json",
+      "bytes": 5116,
+      "sha256": "9447c236d427ece97c64f82558295fb8ce61af2d164a9a0ea1a40fd9ba6cfd70"
+    },
+    {
+      "path": "budget-strict-f8cd.json",
+      "bytes": 4210,
+      "sha256": "68df269d644d4e6cf80ff6bc1a1897f7ef1992b70147ca678b6d96b65742ece7"
+    },
+    {
+      "path": "executed-evidence.tar.gz",
+      "bytes": 1522873,
+      "sha256": "3ff0cd72a0213284226ee246ef694646e997e4fab0ba18984ae845c5a838adf9"
+    },
+    {
+      "path": "general-final-summary.json",
+      "bytes": 906171,
+      "sha256": "0788224d70f3b40f814a0c38890e33cf44c72e7f60510f31a05898081d808f9b"
+    },
+    {
+      "path": "historical-38-ed-source-binding.json",
+      "bytes": 1687,
+      "sha256": "95d318fee82e65266e91a027963a4b58e8bf0580f3f4606646226618c681ae01"
+    },
+    {
+      "path": "independent-c-review.json",
+      "bytes": 10080,
+      "sha256": "1b6c4bd935bbe6197b0394c55f97a3cd04de62b72ed30758edbfc4cf67beb73d"
+    },
+    {
+      "path": "independent-combination-binding.json",
+      "bytes": 2800,
+      "sha256": "cf494f8d32b5690d0ea7599a81d29fe09da2377e4430486e4fbd0a4a6abb5bba"
+    },
+    {
+      "path": "liquid-glass-vue2-320-text200-dark-text-bounds-trigger.png",
+      "bytes": 21387,
+      "sha256": "ce2d37fdd10dcf092401aa7e1139388d6452ae544c57a3dc1267c123e041067a"
+    },
+    {
+      "path": "liquid-glass-vue2-controlled-accepted.png",
+      "bytes": 150371,
+      "sha256": "fae5e4cba37043e07c417f7b6982ffc6d7c30c24fa8aa080c5bcddc7d58ecd3a"
+    },
+    {
+      "path": "liquid-glass-vue2-open.png",
+      "bytes": 173453,
+      "sha256": "68beabb79c5a8bf92258fd251ec4e7a2ab1b86078c3518b807372d9e8e1f04b9"
+    },
+    {
+      "path": "native-final-receipt.json",
+      "bytes": 738,
+      "sha256": "ab424c522a85a67a4dc1b20d61a9c2f1d857abd5e5d83835cfef1ac7c1852800"
+    },
+    {
+      "path": "native-visual-review.json",
+      "bytes": 2319,
+      "sha256": "2212b71f872f299afdfe14a9ef0f478eca986f666ab784e9797af4908677a3d2"
+    },
+    {
+      "path": "react-open.png",
+      "bytes": 45924,
+      "sha256": "50ae302b3bc48c72c4e15f461496ac431df25fb9d11c2d4f75ce64f13b187b80"
+    },
+    {
+      "path": "shadcn-wc-320-text200-dark-text-bounds-trigger.png",
+      "bytes": 19710,
+      "sha256": "1d8ab4260d01afe9f11a1cc5a57104846de27979b15c3088f7eaa59bfe2517fb"
+    },
+    {
+      "path": "shadcn-wc-controlled-accepted.png",
+      "bytes": 57666,
+      "sha256": "cdd08b660d6dc32550c80c9e2d1b4dd1e98f6eb552abe1f5469605a266fcbfa7"
+    },
+    {
+      "path": "shadcn-wc-open.png",
+      "bytes": 74643,
+      "sha256": "60eda2f6ab5e09a8ec0b86736163da6a869df2077fb9775d6b27b038d3bd3ee7"
+    },
+    {
+      "path": "signed-combination.json",
+      "bytes": 698,
+      "sha256": "6b3016260b0e1883381b1231c4347f2952c6d76c4539e02b0b337ba9e35649fa"
+    },
+    {
+      "path": "vue-open.png",
+      "bytes": 45908,
+      "sha256": "f450186ca7400b2fc35eabd9d2707297136a381c1662895ae8fce75fee2e9b3d"
+    },
+    {
+      "path": "vue2-open.png",
+      "bytes": 45924,
+      "sha256": "d244cbc834e5dd1f1e2c37128c8017fdfc16fa732b371f49dd888bd4f876876a"
+    },
+    {
+      "path": "wc-open.png",
+      "bytes": 45119,
+      "sha256": "742be09d4da11518a6cb8a40047363baa6aef0edfe730aded7b6b918d33a757d"
+    }
+  ],
+  "counts": {
+    "outerFilesIncludingManifest": 28,
+    "archiveMembers": 225,
+    "publishedPngs": 16,
+    "nativeRunGeneratedPngs": 193,
+    "nativeRunStructuredJsons": 180
+  },
+  "sourceBoundary": "Exact actual executions stated bysource/run;canonicalfinalreceiptpending,notwholeFinfacceptance"
+}

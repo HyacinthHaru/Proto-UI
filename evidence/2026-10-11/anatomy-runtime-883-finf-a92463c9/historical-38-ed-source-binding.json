@@ -1,0 +1,34 @@
+{
+  "executedTree": "865a56ae9a300f59f868fc822c36aad9ee52801d",
+  "executedHEAD": "28b2e61d6cf19f0672f1892a6ff10099cad8a081",
+  "executedDirty": true,
+  "mergedFoundationAtExecution": "38eba2286aead0ee0244e5c7405489d3a12d6ca9",
+  "finalHead": "f8cd869e894a5934a0b414758dbe9291906bcc79",
+  "finalTree": "a46e2535fbb0cea3a35673a314519c9de401044b",
+  "finalFoundation": "ed34000d20f3cb1f0df527cf1a5763d575a5f531",
+  "treeDelta": [
+    "M\tpackage.json",
+    "A\tscripts/analysis/lib/static-public-source.mjs",
+    "A\tscripts/analysis/material-composition-lint.md",
+    "A\tscripts/analysis/material-composition-lint.mjs",
+    "A\tscripts/analysis/test/material-composition-lint.test.mjs"
+  ],
+  "existingPackageFieldsEqual": true,
+  "reusedExecutedEvidence": {
+    "expanded": "117 files=114passed/3existing skip;943passed/34TODO",
+    "types": "817Astro0error0warning11hint;CLI1/47build",
+    "native": "2files41passed;161PNGs;actualprecommit38composition not postcommitnewrun"
+  },
+  "newFinalSourceExecution": {
+    "staticAnalysisTests": "26passed",
+    "staticAnalysisReport": "exit0,statusneeds-runtime"
+  },
+  "receiptFiles": {
+    "expanded-receipt.json": "f3170c31372b0c1391b7f78ad8f88baf4a4d23ecc45cec9e4542b10db5a93bbf",
+    "expanded.log": "7c765b036f3a83879d201877b1219d67502f20cee0c6fa972066ac331036e3cf",
+    "types.log": "f1c9840459d11c7ac6bb7082f8849c539e463a8f06329f77c4f2d3f7409685bf",
+    "native-combination.log": "8a2edf3340e1f518ad2a2fe765c7276b52351301a40154466ac99f2c920a103c",
+    "tool-tests.log": "9793b3ddb2c8ea479b52e1499b0ca87e816fc6b57c6e5fb8b45b30de79e76dc2",
+    "lint-report.log": "bf8f7c85260144bbc989ebccf0e496ff7acb0281528a6393cbda070b71ad9356"
+  }
+}

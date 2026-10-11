@@ -1,0 +1,61 @@
+{
+  "kind": "independent-additive-fix-and-foundation-binding",
+  "recordedAt": "2026-10-11T09:35:11.666022+00:00",
+  "coverage": "partial",
+  "recommendedAction": "ABSTAIN",
+  "openFindings": [],
+  "githubDisposition": null,
+  "commits": [
+    {
+      "head": "3d7a70e7340485405598a6454c1f7729df6a6641",
+      "tree": "639a6ba5d3e4f4dddb0a22db514e2a59a0e95df3",
+      "parents": ["f8cd869e894a5934a0b414758dbe9291906bcc79"],
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "SSHVerifiedExit": 0,
+      "DCO": true,
+      "coauthors": false
+    },
+    {
+      "head": "a92463c9590c233e93f451389bab02b85009fa9a",
+      "tree": "1597454fe2be1bb96ffc6cafc9788fe5f8b5ddba",
+      "parents": [
+        "3d7a70e7340485405598a6454c1f7729df6a6641",
+        "3f6f1a13c4d90a06b58821b64165fe7addb82fce"
+      ],
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "SSHVerifiedExit": 0,
+      "DCO": true,
+      "coauthors": false
+    }
+  ],
+  "allFoundationNonCPathsPreserved": true,
+  "foundation": "3f6f1a13c4d90a06b58821b64165fe7addb82fce",
+  "foundationPaths": 10742,
+  "combinedPaths": 10745,
+  "onlyNetFoundationDifferences": [
+    "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+    "packages/prototypes/base/src/slider/root.proto.ts",
+    "packages/prototypes/base/src/toolbar/separator.proto.ts",
+    "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+    "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts"
+  ],
+  "ownFourPathsExactFixCommit": true,
+  "historicalBudgetRecordPreserved": true,
+  "newSixFoundationPaths": [
+    "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/tooltip-pressed-observation.test.ts",
+    "apps/www/src/content/docs/zh-cn/tooltip-pressed-observation.ts",
+    "packages/cli/src/generated/draft-family-style-tokens.ts",
+    "packages/prototypes/bootstrap-2-3-2/src/toggle/toggle.proto.ts",
+    "packages/prototypes/bootstrap-2-3-2/test/toggle.test.ts"
+  ],
+  "newPathsDoNotTouchCRepair": true,
+  "foundationManifestSha256": "06d37886a131e09f04af30291f53ba957da007893d3ab963b2544cc06c33f6a7",
+  "combinedManifestSha256": "013d3f31fc79dcc32e399041f9198ecc990650d2393e07e123068168041d7148",
+  "currentClean": true,
+  "evidenceBoundary": "Cfocused14/integration260/types817/native41 are actualtree639runs. Do notrelabeledastree159/a924reruns. Rootnew6-pathchecks/finaltypes andsigned-headnative/fullgeneral are separate; noresult assertedhere.",
+  "priorReportSha256": "51b1eae315fa5cbfbae25f2654a0e7be4befac919434c467b14b0c3efef9b345",
+  "noAdditionalExecution": "No tests/build/browser orsourcechanges byreviewer; Git signatureverification only."
+}
