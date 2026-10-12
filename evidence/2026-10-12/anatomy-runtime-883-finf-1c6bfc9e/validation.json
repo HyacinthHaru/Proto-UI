@@ -1,0 +1,52 @@
+{
+  "head": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+  "tree": "bd607349562ef887c6de471bcc92ad51ea84fda0",
+  "result": "partial",
+  "focused": {
+    "files": 5,
+    "passed": 220,
+    "sourceExecution": "precommit450+savedcandidate;8file/336inputbindingto1c6"
+  },
+  "independent": {
+    "new4FeedbackCases": 40,
+    "pass": 40,
+    "findings": 0,
+    "classification": "unassessed human-assisted partial/ABSTAIN notGitHubAPPROVE"
+  },
+  "general": "general-receipt.json",
+  "types": {
+    "command": "corepack pnpm@10.32.1 check:types",
+    "exit": 0,
+    "astroFiles": 852,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 11,
+    "actualBuild": "CLI1/47"
+  },
+  "fullCommand": {
+    "command": "corepack pnpm@10.32.1 test",
+    "exit": 1,
+    "phase": "BOMunclassifiedaxis-input/native-link beforeVitest"
+  },
+  "catalog": {
+    "command": "check:prototype-catalog",
+    "exit": 1,
+    "diagnostics": 552,
+    "declarationFiles": 837,
+    "staticEntries": 1199,
+    "catalogedP": 313
+  },
+  "canonical": "ci-final-receipt.json",
+  "package": "package-binding.json",
+  "platform": "all-platform-observation.json",
+  "dedicated": "dedicated-receipt.json",
+  "dco": "dco-observation.json",
+  "source": "final-source-binding.json",
+  "visualSoftGate": {
+    "disposition": "internal source-bound executable causalwalkthrough;partial",
+    "evidence": "walkthrough.md plus unchanged red/green tests and actual variableobservations",
+    "noNewNativeCapture": "No new trustedinput/pixel/AT/fullAdapterassertion; nativeCI reports are distinct"
+  },
+  "allFailuresPreserved": true,
+  "noTestTimeoutOrAssertionWeakened": true
+}

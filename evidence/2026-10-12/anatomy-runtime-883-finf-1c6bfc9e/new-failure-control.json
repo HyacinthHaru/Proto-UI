@@ -1,0 +1,15 @@
+{
+  "newFailedTitlesVsHistorical500f": 11,
+  "sameFailedBeforeCurrent4CRepairs": 11,
+  "unmatched": [],
+  "control": {
+    "files": 8,
+    "passed": 75,
+    "failed": 13,
+    "exit": 1,
+    "baseTree": "0608a5f6afec47d345f0cbacf86641cf79aa1d12",
+    "loadedTrackedInputs": 513,
+    "allGitHashesMatch": true
+  },
+  "limit": "bounded isolated original suites vs fullplan; does not assign every old failure root cause"
+}

@@ -1,0 +1,53 @@
+{
+  "head": "500f132658f3fa6a790e39ab294c485b4de21476",
+  "tree": "f53fceb706cc9d0db8d9a2cede3ef5fd1fe0d057",
+  "runId": 38213588617,
+  "conclusion": "failure",
+  "all22Terminal": true,
+  "counts": {
+    "success": 9,
+    "failure": 13
+  },
+  "all22CheckoutSha": "d9cae244efa935dbcd7e209bd5a0fda8e992896f",
+  "checkoutCommit": {
+    "sha": "d9cae244efa935dbcd7e209bd5a0fda8e992896f",
+    "node_id": "C_kwDOMhQZjdoAKGQ5Y2FlMjQ0ZWZhOTM1ZGJjZDdlMjA5YmQ1YTBmZGE4ZTk5Mjg5NmY",
+    "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/d9cae244efa935dbcd7e209bd5a0fda8e992896f",
+    "html_url": "https://github.com/Proto-UI/Proto-UI/commit/d9cae244efa935dbcd7e209bd5a0fda8e992896f",
+    "author": {
+      "name": "HaruHyacinth",
+      "email": "hyacinthharu@foxmail.com",
+      "date": "2026-10-12T06:39:21Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2026-10-12T06:39:21Z"
+    },
+    "tree": {
+      "sha": "f53fceb706cc9d0db8d9a2cede3ef5fd1fe0d057",
+      "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/trees/f53fceb706cc9d0db8d9a2cede3ef5fd1fe0d057"
+    },
+    "message": "Merge 500f132658f3fa6a790e39ab294c485b4de21476 into ea19727838d85c05af5e4bca8d5fc235cb44e288",
+    "parents": [
+      {
+        "sha": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+        "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/ea19727838d85c05af5e4bca8d5fc235cb44e288",
+        "html_url": "https://github.com/Proto-UI/Proto-UI/commit/ea19727838d85c05af5e4bca8d5fc235cb44e288"
+      },
+      {
+        "sha": "500f132658f3fa6a790e39ab294c485b4de21476",
+        "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/500f132658f3fa6a790e39ab294c485b4de21476",
+        "html_url": "https://github.com/Proto-UI/Proto-UI/commit/500f132658f3fa6a790e39ab294c485b4de21476"
+      }
+    ],
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqzICZCRC1aQ7uu5UhlAAAGDYQAI12y/05HywNhiydBDaTad1B\ncMpVQBcxN3UNQNxnBH90XOgNitD8iPD9VArnpRkIYhyi5wODVfPwqoyR0vhMkrIy\niguqh+kOFlVzqMuzRQzdq+hSqLgiB9Y6LiY8KUmrh9fEUv5ijzD9+3w9onibtyqR\naR6P6UgPUGlZo66KllJ7g7HKbFx88VZvkJ+mbRaaPc84IjA+2eco37DhEseWiAHx\nJ/jnvSYI2Gx/82+AKWEyC2zvndwskxtDCB0sYhF93zkAAwm3Bhkk3LKRHrD/hKqk\n4tmldUSBdSQdXuewSnZBpds/C6LyvGB9sxPNMDUI7KTEJfR7Sn0KRR1KyjF9h1Cc\nHOCIQkbB9A+b8tI5GT9KP8WUXMvWP/34uXUG1EBlSXaPZBe3QFPwhX6EsKGc+nmN\nykhGCkkQqM2732Udy45gb6yOY9bmqqWuo4VKjCgnLQ6Vtjpw6m0j9Xwci9pHfma0\nPDMZnQAnVfynu/pLcTdGXnk49fdwAdPy3kEynLzm6m0WMDDuxiy/RDxpz01bp1m6\nAN2FXB/HBagfs0GOjjZ5tGoeV3757i95QpsOYPTXWBt8ZJFz2dHuZknxOlshL6LN\nxIWrxr6Mex2pErvaERdZUTHTuzqfE4WoKwciIcT8mJ8scnNnN2B4EOty+kiqTo5n\nyhuxHhvC9eSJ8mBN7ny0\n=XWID\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree f53fceb706cc9d0db8d9a2cede3ef5fd1fe0d057\nparent ea19727838d85c05af5e4bca8d5fc235cb44e288\nparent 500f132658f3fa6a790e39ab294c485b4de21476\nauthor HaruHyacinth <hyacinthharu@foxmail.com> 1791787161 +0000\ncommitter GitHub <noreply@github.com> 1791787161 +0000\n\nMerge 500f132658f3fa6a790e39ab294c485b4de21476 into ea19727838d85c05af5e4bca8d5fc235cb44e288\n",
+      "verified_at": "2026-10-12T06:39:21Z"
+    }
+  },
+  "classification": "historical3f12combo;neverrelabeledas1c6/15317"
+}

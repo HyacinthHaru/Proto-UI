@@ -1,0 +1,26 @@
+{
+  "head": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+  "tree": "bd607349562ef887c6de471bcc92ad51ea84fda0",
+  "startedAndFinishedHeadSame": true,
+  "files": {
+    "total": 1154,
+    "passed": 1126,
+    "failed": 25,
+    "existingSkipped": 3
+  },
+  "tests": {
+    "total": 11960,
+    "passed": 11567,
+    "failed": 359,
+    "todo": 34
+  },
+  "unhandled": 1,
+  "exit": 1,
+  "phase": "current original general plan;max2/min1;no added selection/timeout/assertion changes",
+  "CSelection": {
+    "files": 40,
+    "passed": 499
+  },
+  "history": "../continue-20261012T052626Z/final-general-receipt.json remains500f-only; no retiming",
+  "new11FailureControl": "general-new-baseline/reconciliation.json:all11 before current4C repair;513Gitboundinputs"
+}

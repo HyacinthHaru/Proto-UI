@@ -1,0 +1,180 @@
+{
+  "head": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+  "productTree": "bd607349562ef887c6de471bcc92ad51ea84fda0",
+  "checkoutCommit": {
+    "sha": "eb5bce321876b510b9f7e4a1503e197098508513",
+    "node_id": "C_kwDOMhQZjdoAKGViNWJjZTMyMTg3NmI1MTBiOWY3ZTRhMTUwM2UxOTcwOTg1MDg1MTM",
+    "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/eb5bce321876b510b9f7e4a1503e197098508513",
+    "html_url": "https://github.com/Proto-UI/Proto-UI/commit/eb5bce321876b510b9f7e4a1503e197098508513",
+    "author": {
+      "name": "HaruHyacinth",
+      "email": "hyacinthharu@foxmail.com",
+      "date": "2026-10-12T09:59:22Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2026-10-12T09:59:22Z"
+    },
+    "tree": {
+      "sha": "bd607349562ef887c6de471bcc92ad51ea84fda0",
+      "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/trees/bd607349562ef887c6de471bcc92ad51ea84fda0"
+    },
+    "message": "Merge 1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8 into ea19727838d85c05af5e4bca8d5fc235cb44e288",
+    "parents": [
+      {
+        "sha": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+        "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/ea19727838d85c05af5e4bca8d5fc235cb44e288",
+        "html_url": "https://github.com/Proto-UI/Proto-UI/commit/ea19727838d85c05af5e4bca8d5fc235cb44e288"
+      },
+      {
+        "sha": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+        "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+        "html_url": "https://github.com/Proto-UI/Proto-UI/commit/1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8"
+      }
+    ],
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqzK96CRC1aQ7uu5UhlAAA2+oQABN3FCfbIjtLbxOVSjzePKxX\n0SpI9WrFeywwxKidrgFdoub79eBaY249YqxPYRQQWTyPcwKPAKR+NvVlEY1JfOR5\n21uddtmBbBkWH1gpqVdgKXzoxdVy5Ha6HgJE73D7GDfFxzBSTXL2Kk510AlH01g7\nXjQukkH4VJh62xYclDh46vMhUO1+ioaPKbTKIjZbYcv0Al6WBw6XTZ54C8XzlC+f\nLoWk7MMToa77JP+8DOW7hOm+D9JmAn1tQlL5CIhNLntlXAhwVPiI6YPVWUzKzOib\n6zb+tDLN7tvxlSSqlhHx1P7NZl7wha3VYWq/ZxPfeitJkYAoBQchTS8ueHFKq42l\ngCMyKf3hvLw+vySRUCFkarcxdsMOA6kFqklWthHCHXXNbjOBCyTW34Ik8r9DenMf\nehMWvG3Kv+pzNVfbFsmTwA14iMaID/nu2oiT/CfYEVAxOJcFQgIeZqot+QFmB9rC\nF0MA2nfyZ9dfPHi2Z6ObwsEuTI7Uks0UepPNxNWNc81Y9RGZQYVT+9wzQD84Z5iv\nR8XOb2UE6cDc5UCFiwoIFrZvO1FfOtTPDgV0cMaXVssO1h3pvdg9xseO/JaWTmI5\nNHCst2IqcJZTGY1To9mGiIC9Wgxo2AZSjbi4srWEgFw8lR6aiDrfb49RN5Sfeujx\n/lGopv7JLFQD6EvC5bFa\n=kien\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree bd607349562ef887c6de471bcc92ad51ea84fda0\nparent ea19727838d85c05af5e4bca8d5fc235cb44e288\nparent 1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8\nauthor HaruHyacinth <hyacinthharu@foxmail.com> 1791799162 +0000\ncommitter GitHub <noreply@github.com> 1791799162 +0000\n\nMerge 1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8 into ea19727838d85c05af5e4bca8d5fc235cb44e288\n",
+      "verified_at": "2026-10-12T09:59:23Z"
+    }
+  },
+  "jobs": [
+    {
+      "jobId": 114758200764,
+      "name": "public_package_plan",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758201021,
+      "name": "lockstep-check",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758201050,
+      "name": "release-scan",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758201060,
+      "name": "rust",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758201149,
+      "name": "rust-interop",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758201191,
+      "name": "rust-macos",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758201249,
+      "name": "test-plan",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758201253,
+      "name": "type-check",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758315830,
+      "name": "test-general",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758315837,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758315865,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758315949,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758315968,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758315980,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758315986,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758316019,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758316034,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758335071,
+      "name": "release-stage",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758335160,
+      "name": "release-consumer-react",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758335170,
+      "name": "cli-smoke",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114758335432,
+      "name": "public_package_build",
+      "conclusion": "success",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    },
+    {
+      "jobId": 114767283205,
+      "name": "test",
+      "conclusion": "failure",
+      "checkoutSha": "eb5bce321876b510b9f7e4a1503e197098508513"
+    }
+  ],
+  "all22CheckoutSame": true,
+  "treeExact": true
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "runId": 38233436404,
+    "workflow": "Bootstrap state-controls evidence",
+    "conclusion": "failure",
+    "jobId": 114758200279,
+    "summary": [],
+    "failurePhase": "unsupported physical style token before browser assertions",
+    "behaviorResult": "not-run in this workflow"
+  },
+  {
+    "runId": 38233436327,
+    "workflow": "Collapsible projection evidence",
+    "conclusion": "success",
+    "jobId": 114758200261,
+    "summary": [
+      "2026-10-12T10:08:40.3525680Z  Test Files  1 passed (1)",
+      "2026-10-12T10:08:40.3538111Z       Tests  36 passed (36)"
+    ],
+    "actualTests": 36,
+    "passed": 36
+  },
+  {
+    "runId": 38233436395,
+    "workflow": "Field family native evidence",
+    "conclusion": "failure",
+    "jobId": 114758201029,
+    "summary": [],
+    "failurePhase": "CJK font fallback installation exceeded3min before native test; not reused old22pass3fail",
+    "behaviorResult": "not-run in this workflow"
+  }
+]

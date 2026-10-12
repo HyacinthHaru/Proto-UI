@@ -1,0 +1,99 @@
+{
+  "head": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+  "tree": "bd607349562ef887c6de471bcc92ad51ea84fda0",
+  "jobId": 114758335432,
+  "buildPackages": 47,
+  "manifests": 47,
+  "measurements": [
+    {
+      "result": "PASS",
+      "entry": "lucide/icons/x",
+      "gzip": "1737",
+      "ceiling": "3000",
+      "overBudget": "0",
+      "minified": "4670",
+      "sha256": "122556f7f6f263e7a1656b903c0e9214cb5e757dc3f68cacdefd7d5bea15518d"
+    },
+    {
+      "result": "PASS",
+      "entry": "lucide root",
+      "gzip": "635777",
+      "ceiling": "700000",
+      "overBudget": "0",
+      "minified": "4083171",
+      "sha256": "9c74ac0359182ebf8971d6b8fa6eaa65986750b449e4660dda4d9102eeb6fba0"
+    },
+    {
+      "result": "ADVISORY",
+      "entry": "core root",
+      "gzip": "8034",
+      "ceiling": "7600",
+      "overBudget": "434",
+      "minified": "24962",
+      "sha256": "11b82a510b1760ece9619de27edb806e948a0b45cf331f8f0fc33f51ec2748d3"
+    },
+    {
+      "result": "ADVISORY",
+      "entry": "runtime root",
+      "gzip": "86116",
+      "ceiling": "78500",
+      "overBudget": "7616",
+      "minified": "335589",
+      "sha256": "adee7121a74a5eaf38b08da3842bb58a43c24b2408cd8cd1711f6bc45c4d557b"
+    },
+    {
+      "result": "ADVISORY",
+      "entry": "adapter-react root",
+      "gzip": "129568",
+      "ceiling": "106000",
+      "overBudget": "23568",
+      "minified": "462792",
+      "sha256": "b52c47089de5ffd799d9bebe5d3ced30413d10a1c318ffda65ef838f84139def"
+    },
+    {
+      "result": "ADVISORY",
+      "entry": "adapter-vue root",
+      "gzip": "129299",
+      "ceiling": "106000",
+      "overBudget": "23299",
+      "minified": "461246",
+      "sha256": "5162aedd5b963515f2973407d0708dc231177875cc3c9b8c292b2f08f04a9848"
+    },
+    {
+      "result": "ADVISORY",
+      "entry": "adapter-web-component root",
+      "gzip": "155509",
+      "ceiling": "132000",
+      "overBudget": "23509",
+      "minified": "540808",
+      "sha256": "d6bc3d8d1b27f76fff9d4692548bb9572b52123325403ab42c82a9fdb2ccb503"
+    },
+    {
+      "result": "PASS",
+      "entry": "prototypes-base/button",
+      "gzip": "3946",
+      "ceiling": "6000",
+      "overBudget": "0",
+      "minified": "13707",
+      "sha256": "988e2126bdbefcd94f15f190832135645ef2be2b0aab9d664d5586a60a1c0875"
+    },
+    {
+      "result": "PASS",
+      "entry": "prototypes-shadcn/button",
+      "gzip": "4927",
+      "ceiling": "7000",
+      "overBudget": "0",
+      "minified": "18035",
+      "sha256": "86acd827a02b6c8acd7512c49d0b1a3e5aba6347fcd33189620505214a05cfb3"
+    }
+  ],
+  "canonicalEnvironment": {
+    "node": "24.21.0",
+    "zlib": "1.3.2.1-motley-8002e91",
+    "esbuild": "0.25.12",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "policy": "4PASS/5FinfdevelopmentADVISORY;no numericthreshold/workflowchange",
+  "localScope": "checktypes builtCLI1/47; current47build measurement is canonical, not old500local47 rerun"
+}

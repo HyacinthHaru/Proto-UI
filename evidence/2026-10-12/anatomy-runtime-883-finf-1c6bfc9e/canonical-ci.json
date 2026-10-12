@@ -1,0 +1,39 @@
+{
+  "head": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+  "runId": 38233436413,
+  "attempt": 1,
+  "conclusion": "failure",
+  "jobs": {
+    "total": 22,
+    "success": 12,
+    "failure": 10,
+    "running": 0
+  },
+  "checkout": "eb5bce321876b510b9f7e4a1503e197098508513",
+  "tree": "bd607349562ef887c6de471bcc92ad51ea84fda0",
+  "allCheckoutTreesExact": true,
+  "general": "82 public-docs diagnostics beforeVitest; no canonicalC499 claim",
+  "browser": {
+    "jobs": 8,
+    "failedJobs": 8,
+    "completeReports": 4,
+    "incompleteDeadline124Reports": 4,
+    "completeSubsetTests": {
+      "total": 386,
+      "passed": 333,
+      "failed": 38,
+      "skipped": 15
+    },
+    "notAnEightShardTotal": true
+  },
+  "passedNamed": [
+    "type-check",
+    "public_package_build",
+    "cli-smoke",
+    "release-consumer-react",
+    "rust",
+    "rust-macos",
+    "rust-interop"
+  ],
+  "allRawLogsRetained": 22
+}
